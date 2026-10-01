@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"transcribe_stage2_compre_first_light_recipe"
+display_name = "Stage 2: First Light from Rough Draft Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"transcribe_rough_draft", &"sap_amber"])
+outputs = Array[StringName]([&"compre_first_light"])

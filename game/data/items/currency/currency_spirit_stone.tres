@@ -7,6 +7,6 @@ script = ExtResource("1_item")
 id = &"currency_spirit_stone"
 display_name = "Spirit Stone"
 category = &"currency"
-subcategory = &""
+subcategory = &"token"
 grade = &"spirit"
 sources = Array[StringName]([&"gather"])

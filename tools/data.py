@@ -240,6 +240,10 @@ def _audit(root: Path) -> list[str]:
             if other:
                 gaps.append(f"{type_name} {record_id}: duplicate id, also defined in {other}")
 
+    for item_id, item in sorted(items.items()):
+        if not item["scalars"].get("subcategory"):
+            gaps.append(f"item {item_id}: has no subcategory")
+
     for recipe_id, recipe in recipes.items():
         inputs = recipe["arrays"].get("inputs", [])
         for item_id in inputs:

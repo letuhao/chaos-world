@@ -32,11 +32,23 @@ func craft(recipe: RecipeDef, inventory: Inventory) -> bool:
 	for input_id in recipe.inputs:
 		inventory.remove(input_id, 1)
 	for output_id in recipe.outputs:
-		var def := load("res://data/items/%s.tres" % output_id)
-		if def is ItemDef:
-			inventory.add(def, 1)
+		var def := load_item(output_id)
+		if def == null:
+			failed.emit(recipe.id, "unknown_output")
+			return false
+		inventory.add(def, 1)
 	crafted.emit(recipe.id)
 	return true
+
+
+## Resolve an ItemDef by id. Items live at res://data/items/<category>/<id>.tres,
+## where <category> is the item's own category, so the folder cannot be omitted.
+static func load_item(item_id: StringName) -> ItemDef:
+	for category in ItemCategory.ALL:
+		var path := "res://data/items/%s/%s.tres" % [category, item_id]
+		if ResourceLoader.exists(path):
+			return load(path) as ItemDef
+	return null
 
 
 func time_required() -> float:

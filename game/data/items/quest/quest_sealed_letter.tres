@@ -7,6 +7,6 @@ script = ExtResource("1_item")
 id = &"quest_sealed_letter"
 display_name = "Sealed Letter"
 category = &"quest"
-subcategory = &""
+subcategory = &"letter"
 grade = &"mortal"
 sources = Array[StringName]([&"quest:main_01"])

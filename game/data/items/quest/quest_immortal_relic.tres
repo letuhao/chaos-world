@@ -7,6 +7,6 @@ script = ExtResource("1_item")
 id = &"quest_immortal_relic"
 display_name = "Immortal Relic"
 category = &"quest"
-subcategory = &""
+subcategory = &"relic"
 grade = &"immortal"
 sources = Array[StringName]([&"quest:main_04"])
