@@ -2,6 +2,9 @@ class_name ResourcePool
 extends RefCounted
 
 ## A named current/max pool (health, qi, stamina, essence, ...). Modules add pools.
+## Emits `changed` on mutation so stat caches invalidate automatically.
+
+signal changed
 
 var id: StringName
 var current: float
@@ -19,10 +22,12 @@ func _init(p_id: StringName, p_maximum: float = 0.0) -> void:
 func set_maximum(value: float) -> void:
 	maximum = maxf(0.0, value)
 	current = clampf(current, 0.0, maximum)
+	changed.emit()
 
 
 func change(delta: float) -> void:
 	current = clampf(current + delta, 0.0, maximum)
+	changed.emit()
 
 
 func ratio() -> float:

@@ -16,13 +16,14 @@ var display_name: String
 var faction: StringName
 var tags: Array[StringName]
 var traits: Array[StringName]
-var affinities: Dictionary
+var affinities: AffinityMap
 var relationships: Dictionary
 var stats: ActorStats
 var resources: Dictionary
 var statuses: Array[StatusEffect]
 var paths: Dictionary
 var _context: StatContext
+var _invalidator: StatsInvalidator
 
 
 func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
@@ -31,11 +32,13 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 	faction = &""
 	tags = []
 	traits = []
-	affinities = {}
 	relationships = {}
 	resources = {}
 	statuses = []
 	paths = {}
+	_invalidator = StatsInvalidator.new(self)
+	affinities = AffinityMap.new()
+	affinities.changed.connect(_invalidator.on_changed)
 	stats = ActorStats.new(base)
 	_context = StatContext.new(stats.base_ref(), resources, traits, affinities, paths)
 	stats.set_context(_context)
@@ -43,6 +46,8 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 
 func add_resource(pool: ResourcePool) -> void:
 	resources[pool.id] = pool
+	if not pool.changed.is_connected(_invalidator.on_changed):
+		pool.changed.connect(_invalidator.on_changed)
 	mark_stats_dirty()
 
 
@@ -84,22 +89,19 @@ func affinity_with(partner_id: StringName) -> float:
 
 
 func set_affinity(element_id: StringName, value: float) -> void:
-	affinities[element_id] = value
-	mark_stats_dirty()
+	affinities.set_value(element_id, value)
 
 
 func change_resource(pool_id: StringName, delta: float) -> void:
 	var pool := resource(pool_id)
 	if pool != null:
 		pool.change(delta)
-		mark_stats_dirty()
 
 
 func set_resource_maximum(pool_id: StringName, value: float) -> void:
 	var pool := resource(pool_id)
 	if pool != null:
 		pool.set_maximum(value)
-		mark_stats_dirty()
 
 
 func mark_stats_dirty() -> void:
@@ -129,7 +131,7 @@ func to_dict() -> Dictionary:
 		"faction": String(faction),
 		"tags": _string_array(tags),
 		"traits": _string_array(traits),
-		"affinities": affinities.duplicate(),
+		"affinities": affinities.to_dict(),
 		"relationships": relationships.duplicate(),
 		"base": stats.base_dict(),
 		"resources": _resources_dict(),
@@ -145,12 +147,11 @@ static func from_dict(data: Dictionary) -> Actor:
 		actor.tags.append(StringName(tag_id))
 	for trait_id in data.get("traits", []):
 		actor.traits.append(StringName(trait_id))
-	for key in data.get("affinities", {}).keys():
-		actor.affinities[key] = data["affinities"][key]
+	actor.affinities.set_dict(data.get("affinities", {}))
 	for key in data.get("relationships", {}).keys():
 		actor.relationships[key] = data["relationships"][key]
 	for key in data.get("resources", {}).keys():
-		actor.resources[StringName(key)] = ResourcePool.from_dict(data["resources"][key])
+		actor.add_resource(ResourcePool.from_dict(data["resources"][key]))
 	for key in data.get("paths", {}).keys():
 		actor.paths[StringName(key)] = PathState.from_dict(data["paths"][key])
 	actor.mark_stats_dirty()
