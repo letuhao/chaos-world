@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"agili_silver_greave_recipe"
+display_name = "Silver Greave Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"ore_silver_vein", &"scale_lizard"])
+outputs = Array[StringName]([&"agili_silver_greave"])

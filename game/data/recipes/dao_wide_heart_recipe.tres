@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"dao_wide_heart_recipe"
+display_name = "Wide Heart Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"tablet_jade", &"wood_ancient_heart"])
+outputs = Array[StringName]([&"dao_wide_heart"])
