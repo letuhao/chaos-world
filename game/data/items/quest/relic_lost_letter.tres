@@ -9,4 +9,4 @@ display_name = "Lost Letter Relic"
 category = &"quest"
 subcategory = &"relic"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E1_qi_refinement_warden"])

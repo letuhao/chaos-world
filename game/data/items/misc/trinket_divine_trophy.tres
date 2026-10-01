@@ -9,4 +9,4 @@ display_name = "Divine Trophy"
 category = &"misc"
 subcategory = &"trophy"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F19_origin_warden"])

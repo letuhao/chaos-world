@@ -9,4 +9,4 @@ display_name = "Hollow Crown Relic"
 category = &"quest"
 subcategory = &"token"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:d3_krakenling"])

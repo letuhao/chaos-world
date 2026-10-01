@@ -9,4 +9,4 @@ display_name = "Ancestral Mask Relic"
 category = &"quest"
 subcategory = &"relic"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E4_sea_tide_warden"])

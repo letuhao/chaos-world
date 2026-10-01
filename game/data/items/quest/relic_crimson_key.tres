@@ -9,4 +9,4 @@ display_name = "Crimson Key Relic"
 category = &"quest"
 subcategory = &"token"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:codex_iron_sage"])

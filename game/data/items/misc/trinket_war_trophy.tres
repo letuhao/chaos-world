@@ -9,4 +9,4 @@ display_name = "War Trophy"
 category = &"misc"
 subcategory = &"trophy"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E5_severing_edge"])

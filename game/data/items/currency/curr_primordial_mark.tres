@@ -9,4 +9,4 @@ display_name = "Primordial Mark"
 category = &"currency"
 subcategory = &"mark"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E10_transcendent_oracle"])

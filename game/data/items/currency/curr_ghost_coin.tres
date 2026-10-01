@@ -9,4 +9,4 @@ display_name = "Ghost Coin"
 category = &"currency"
 subcategory = &"token"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:codex_storm_phoenix"])

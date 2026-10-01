@@ -9,4 +9,4 @@ display_name = "Dragon Bond Token"
 category = &"currency"
 subcategory = &"bond"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:amulet_storm_phoenix"])

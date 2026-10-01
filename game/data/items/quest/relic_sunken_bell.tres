@@ -9,4 +9,4 @@ display_name = "Sunken Bell Relic"
 category = &"quest"
 subcategory = &"relic"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E5_manifestation_warden"])

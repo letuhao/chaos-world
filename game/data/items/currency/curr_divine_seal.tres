@@ -9,4 +9,4 @@ display_name = "Divine Seal"
 category = &"currency"
 subcategory = &"seal"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E10_primordial_sentinel"])

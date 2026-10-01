@@ -9,4 +9,4 @@ display_name = "Iron Coin"
 category = &"currency"
 subcategory = &"coin"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E1_core_formation_warden"])

@@ -9,4 +9,4 @@ display_name = "Chaos Sigil Relic"
 category = &"quest"
 subcategory = &"instrument"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F19_ascendant_warden"])

@@ -9,4 +9,4 @@ display_name = "Jade Coin"
 category = &"currency"
 subcategory = &"coin"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:amulet_iron_sage"])

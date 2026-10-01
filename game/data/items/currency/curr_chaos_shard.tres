@@ -9,4 +9,4 @@ display_name = "Chaos Shard"
 category = &"currency"
 subcategory = &"shard"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E10_dao_warden"])

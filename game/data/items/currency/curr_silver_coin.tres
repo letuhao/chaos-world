@@ -9,4 +9,4 @@ display_name = "Silver Coin"
 category = &"currency"
 subcategory = &"coin"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E4_palace_vault_warden"])

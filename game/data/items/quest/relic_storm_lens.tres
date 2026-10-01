@@ -9,4 +9,4 @@ display_name = "Storm Lens Relic"
 category = &"quest"
 subcategory = &"text"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:d2_storm_sovereign"])
