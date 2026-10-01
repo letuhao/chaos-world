@@ -10,6 +10,7 @@ Chaos World is a Godot 4 **action RPG with cultivation**. Core loop: **combat �
 - **All commands go through `uv run python -m tools <task>`.** Never invoke Godot, `gdformat`, `gdlint`, or the test addon directly from docs or CI.
 - **Boundary truth is code, not prose:** `tools/arch/rules.py` (policy) and `tools/arch/registry.json` (machine-managed state). The checker is authoritative.
 - **English, lean docs.** Every document is in English and as short as it can be — see Documentation rules.
+- **No sexual content.** Succubus, dual-cultivation, and fertility are pure gameplay mechanics: never write sexual, explicit, or suggestive prose, descriptions, names, or assets. Keep everything clinical and mechanical.
 
 ## Layout
 ```
@@ -59,7 +60,7 @@ Skills live at `.agents/skills/<id>/SKILL.md`; `.agents/` and `skills-lock.json`
 |---|---|
 | Entry / unsure | `router` |
 | Godot foundation | `godot-gdscript`, `godot-nodes-scenes`, `godot-resources`, `godot-signals-groups`, `godot-physics`, `godot-animation`, `godot-ui-control`, `godot-audio`, `godot-shaders` |
-| Movement / world | `godot-2d-movement` (2D) or `godot-3d-essentials` (3D); `godot-tilemap` for 2D levels |
+| Movement / world | `godot-2d-movement`, `godot-tilemap` (2D — decided, ADR 0001) |
 | Genre anchor | `rpg` — stats, leveling, inventory, combat, quests, saves |
 | Combat | `game-ai`, `ai-behavior-trees-utility-ai`, `game-feel`, `camera-systems`, `input-systems`, `physics-tuning` |
 | Hunting | `game-ai`, `level-design`, `procedural-gen`, plus the movement/world skill |
@@ -69,7 +70,7 @@ Skills live at `.agents/skills/<id>/SKILL.md`; `.agents/` and `skills-lock.json`
 | Prototyping | `prototype-fast` |
 | Build / ship | `godot-gdscript-headless-testing`, `godot-export`; add `itch-publish` / `steam-publish` when releasing |
 
-**Undecided:** 2D vs 3D is not chosen yet — record it in an ADR before the first module. **Out of scope unless a task names it:** `godot-csharp` (GDScript-only repo), all non-Godot engine skills (`unity-*`, `unreal-*`, `bevy-*`, `phaser-*`, `pixijs-*`, `threejs-*`, `love2d-*`, `pygame-*`, `roblox-*`), and off-genre genres (`platformer`, `roguelike`, `fps-shooter`, `card-game`, `puzzle`, `tower-defense`, `visual-novel`, `survival-crafting`). `dialogue-systems` and `godot-multiplayer` are deferred until a feature needs them.
+**Decided:** 2D (ADR 0001). **Out of scope unless a task names it:** `godot-csharp` (GDScript-only repo), all non-Godot engine skills (`unity-*`, `unreal-*`, `bevy-*`, `phaser-*`, `pixijs-*`, `threejs-*`, `love2d-*`, `pygame-*`, `roblox-*`), and off-genre genres (`platformer`, `roguelike`, `fps-shooter`, `card-game`, `puzzle`, `tower-defense`, `visual-novel`, `survival-crafting`). `dialogue-systems` and `godot-multiplayer` are deferred until a feature needs them.
 
 ## Architecture: layers and module boundaries
 `game/src/` is layered. Dependencies point **downward only**, and cross-module dependencies only through a public facade.
@@ -86,6 +87,7 @@ Rules enforced by `tools/arch` (defined in `tools/arch/rules.py`):
 - Module dependency cycles are forbidden.
 - `res://` scene/resource references follow the same rules as script references.
 - GDScript must never import from `tools/`.
+- The shared actor base (`core/actor.gd` + `core/actor_stats.gd`) is the single source of stats for all actors — see ADR 0001.
 
 Design principles to apply:
 - **Composition over inheritance.** Prefer child nodes/scenes as components over deep `extends` chains.
