@@ -21,6 +21,7 @@ var stats: ActorStats
 var resources: Dictionary
 var statuses: Array[StatusEffect]
 var paths: Dictionary
+var _context: StatContext
 
 
 func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
@@ -31,10 +32,12 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 	traits = []
 	affinities = {}
 	relationships = {}
-	stats = ActorStats.new(base)
 	resources = {}
 	statuses = []
 	paths = {}
+	stats = ActorStats.new(base)
+	_context = StatContext.new(stats.base_ref(), resources, traits, affinities)
+	stats.set_context(_context)
 
 
 func add_resource(pool: ResourcePool) -> void:
@@ -88,8 +91,10 @@ static func from_dict(data: Dictionary) -> Actor:
 		actor.tags.append(StringName(tag_id))
 	for trait_id in data.get("traits", []):
 		actor.traits.append(StringName(trait_id))
-	actor.affinities = data.get("affinities", {}).duplicate()
-	actor.relationships = data.get("relationships", {}).duplicate()
+	for key in data.get("affinities", {}).keys():
+		actor.affinities[key] = data["affinities"][key]
+	for key in data.get("relationships", {}).keys():
+		actor.relationships[key] = data["relationships"][key]
 	for key in data.get("resources", {}).keys():
 		actor.resources[StringName(key)] = ResourcePool.from_dict(data["resources"][key])
 	for key in data.get("paths", {}).keys():

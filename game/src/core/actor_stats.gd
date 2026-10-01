@@ -7,6 +7,8 @@ extends RefCounted
 var _base: Dictionary = {}
 var _modifiers: Array[StatModifier] = []
 var _derived: Dictionary = {}
+var _providers: Array[StatProvider] = []
+var _context: StatContext = null
 var _dirty: bool = true
 
 
@@ -30,6 +32,27 @@ func base_dict() -> Dictionary:
 	return _base.duplicate()
 
 
+func base_ref() -> Dictionary:
+	return _base
+
+
+func set_context(context: StatContext) -> void:
+	_context = context
+	_dirty = true
+
+
+func add_provider(provider: StatProvider) -> void:
+	_providers.append(provider)
+
+
+func clear_providers() -> void:
+	_providers.clear()
+
+
+func provider_count() -> int:
+	return _providers.size()
+
+
 func add_modifier(modifier: StatModifier) -> void:
 	_modifiers.append(modifier)
 	_dirty = true
@@ -50,12 +73,24 @@ func modifier_count() -> int:
 
 func derived(id: StringName) -> float:
 	_ensure()
+	if _context == null or _providers.is_empty():
+		return float(_derived.get(id, 0.0))
+	for provider in _providers:
+		var contributed := provider.contribute(_context)
+		if contributed.has(id):
+			return float(contributed[id])
 	return float(_derived.get(id, 0.0))
 
 
 func derived_all() -> Dictionary:
 	_ensure()
-	return _derived.duplicate()
+	var out := _derived.duplicate()
+	if _context != null:
+		for provider in _providers:
+			var contributed := provider.contribute(_context)
+			for id in contributed.keys():
+				out[id] = contributed[id]
+	return out
 
 
 func _ensure() -> void:
