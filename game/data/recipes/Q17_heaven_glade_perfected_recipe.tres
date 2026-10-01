@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Q17_heaven_glade_perfected_recipe"
+display_name = "Heaven Glade Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Q17_heaven_glade_primed", &"orb_flame_essence", &"ore_moonstone"])
+outputs = Array[StringName]([&"Q17_heaven_glade_perfected"])

@@ -7,6 +7,7 @@ extends RefCounted
 ## runtime source; the master JSONL remains the authored SSOT.
 
 const PROJECTION_PATH := "res://data/item_options/derived/option_pools.json"
+const CATALOG_PATH := "res://data/item_options/master_option_pool.jsonl"
 
 const RARITY_TIERS := {"common": 0, "magic": 1, "rare": 2, "legendary": 3}
 
@@ -18,12 +19,48 @@ const MAGNITUDE_POLICY := {
 	"fraction": [0.01, 0.05, 0.005, 0.01],
 }
 
+## Shared instance for the lazily-cached lookups. ItemDef is a Resource loaded
+## many times over, so it resolves catalog records through one shared catalog
+## rather than reparsing the master JSONL per item.
+static var shared: OptionCatalog = null
+
 var _projection: Dictionary = {}
 var _loaded: bool = false
+var _records: Dictionary = {}
+var _records_loaded: bool = false
 
 
 static func rarity_tier(rarity: StringName) -> int:
 	return int(RARITY_TIERS.get(rarity, 0))
+
+
+static func instance() -> OptionCatalog:
+	if shared == null:
+		shared = OptionCatalog.new()
+	return shared
+
+
+## Look up a full option record by id from the master JSONL (ADR 0025).
+func option_record(option_id: StringName) -> Dictionary:
+	if not _records_loaded:
+		_load_records()
+	return _records.get(option_id, {})
+
+
+func _load_records() -> void:
+	if _records_loaded:
+		return
+	if ResourceLoader.exists(CATALOG_PATH):
+		var text := FileAccess.get_file_as_string(CATALOG_PATH)
+		for line in text.split("\n"):
+			line = line.strip_edges()
+			if line.is_empty():
+				continue
+			var json := JSON.new()
+			if json.parse(line) == OK:
+				var record: Dictionary = json.data
+				_records[record.get("id", "")] = record
+	_records_loaded = true
 
 
 func _ensure_loaded() -> void:
@@ -74,11 +111,11 @@ func roll_affixes(
 	var contexts: Array = def.roll_spec.get("contexts", ["prefix", "postfix"])
 	var seen: Dictionary = {}
 	for _i in count:
-		var candidate := _select_affix(contexts, realm_index, rarity_index, rng, seen)
-		if candidate.is_empty():
+		var rolled: StatModifier = _select_affix(contexts, realm_index, rarity_index, rng, seen)
+		if rolled == null:
 			break
-		seen[candidate["id"]] = true
-		modifiers.append(candidate)
+		seen[rolled.stat] = true
+		modifiers.append(rolled)
 	return modifiers
 
 

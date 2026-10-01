@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Q15_immortal_gavel_primed_recipe"
+display_name = "Immortal Gavel Primed Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"Q15_immortal_gavel_aged", &"ore_phoenix_ash", &"body_golden_immortal_tempering_herb", &"fungus_thorncap"])
+outputs = Array[StringName]([&"Q15_immortal_gavel_primed"])

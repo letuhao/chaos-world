@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Q14_immortal_gantry_refined_recipe"
+display_name = "Immortal Gantry Refined Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Q14_immortal_gantry_base", &"gemstone_alexandrite"])
+outputs = Array[StringName]([&"Q14_immortal_gantry_refined"])

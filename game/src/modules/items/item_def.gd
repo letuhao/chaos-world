@@ -43,6 +43,33 @@ func rarity_tier() -> int:
 	return OptionCatalog.rarity_tier(rarity)
 
 
+## Build fixed modifiers from master option references (ADR 0025). Each entry
+## is {option_id, value}; the option's target stat and op come from the catalog.
+func build_fixed_modifiers(source: StringName) -> Array[StatModifier]:
+	var modifiers: Array[StatModifier] = []
+	for entry in fixed_modifiers:
+		var option_id := StringName(entry.get("option_id", ""))
+		if option_id == &"":
+			continue
+		var record: Dictionary = OptionCatalog.instance().option_record(option_id)
+		if record.is_empty():
+			continue
+		var value := float(entry.get("value", 0.0))
+		var op: Stat.Op
+		match String(record.get("op", "FLAT")):
+			"FLAT":
+				op = Stat.Op.FLAT
+			"PERCENT":
+				op = Stat.Op.PERCENT
+			_:
+				op = Stat.Op.MULT
+		var target: Dictionary = record.get("target", {})
+		modifiers.append(
+			StatModifier.new(StringName(target.get("id", option_id)), op, value, source)
+		)
+	return modifiers
+
+
 func build_modifiers(source: StringName) -> Array[StatModifier]:
 	var modifiers: Array[StatModifier] = []
 	for key in flat_modifiers.keys():

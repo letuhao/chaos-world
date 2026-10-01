@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"Q9_divine_eddy_base"
+display_name = "Divine Eddy Base"
+category = &"technique"
+subcategory = &"scroll"
+grade = &"divine"
+sources = Array[StringName]([&"craft:Q9_divine_eddy_base_recipe", &"quest:Q9_divine_eddy_line"])
+percent_modifiers = {
+"aptitude": 0.03
+}
