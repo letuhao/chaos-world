@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"H5_divine_agility_dagger"
+display_name = "Divine Agility Dagger"
+category = &"equipment"
+subcategory = &"weapon"
+grade = &"divine"
+sources = Array[StringName]([&"craft:H5_divine_agility_dagger_recipe"])
+percent_modifiers = {
+"agility": 0.15
+}

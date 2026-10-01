@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"H4_divine_aptitude_tonic_recipe"
+display_name = "Divine Aptitude Tonic Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"divine_netherbloom", &"divine_primordial_essence"])
+outputs = Array[StringName]([&"H4_divine_aptitude_tonic"])

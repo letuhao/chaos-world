@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"H5_divine_agility_dagger_recipe"
+display_name = "Divine Agility Dagger Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"filament_primordial_thread", &"astral_galactic_core_ore"])
+outputs = Array[StringName]([&"H5_divine_agility_dagger"])

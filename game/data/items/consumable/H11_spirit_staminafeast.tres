@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"H11_spirit_staminafeast"
+display_name = "Spirit Stamina Feast"
+category = &"consumable"
+subcategory = &"food"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:H11_spirit_staminafeast_recipe"])
+percent_modifiers = {
+"stamina_regen": 0.05
+}

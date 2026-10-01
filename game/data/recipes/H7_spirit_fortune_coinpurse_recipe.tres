@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"H7_spirit_fortune_coinpurse_recipe"
+display_name = "Spirit Fortune Coinpurse Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"orb_gold_essence", &"ore_gold_vein"])
+outputs = Array[StringName]([&"H7_spirit_fortune_coinpurse"])
