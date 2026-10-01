@@ -38,7 +38,7 @@ Prereqs: `uv` (https://docs.astral.sh/uv/) and a Godot 4.7.x binary.
 - `uv run python -m tools new_module <name>` — scaffold a module and register it in `tools/arch/registry.json`.
 - `uv run python -m tools new_adr "<title>"` — create the next numbered ADR in `docs/adr/`.
 
-**Godot binary is not on `PATH`.** `tools/godot.py` resolves it from the `GODOT_BIN` env var (absolute path to the executable) and fails loudly if unset. Do not hardcode machine paths anywhere else.
+**Godot binary is not on `PATH`.** `tools/godot.py` resolves it from `GODOT_BIN`, else the gitignored `.godot-bin` file, else `PATH`, and fails loudly if none resolve. Do not hardcode machine paths anywhere else.
 
 **Do not rely on bare `python`.** System Python here is inconsistent (3.13 on `PATH`, a broken `py` launcher, 3.10 as `python3`). Always use `uv run`, which honors `.python-version`/`uv.lock`.
 

@@ -11,6 +11,10 @@ func _initialize() -> void:
 	var total_failed := 0
 	for script_path in _find_tests(TEST_ROOT):
 		var script: GDScript = load(script_path)
+		if script == null or not script.can_instantiate():
+			push_error("%s :: failed to load suite" % script_path)
+			total_failed += 1
+			continue
 		var suite: RefCounted = script.new()
 		if not (suite is TestCase):
 			continue

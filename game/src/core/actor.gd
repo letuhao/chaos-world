@@ -84,10 +84,10 @@ static func from_dict(data: Dictionary) -> Actor:
 	var actor := Actor.new(StringName(data.get("id", "")), data.get("base", {}))
 	actor.display_name = String(data.get("display_name", ""))
 	actor.faction = StringName(data.get("faction", ""))
-	for tag in data.get("tags", []):
-		actor.tags.append(StringName(tag))
-	for trait in data.get("traits", []):
-		actor.traits.append(StringName(trait))
+	for tag_id in data.get("tags", []):
+		actor.tags.append(StringName(tag_id))
+	for trait_id in data.get("traits", []):
+		actor.traits.append(StringName(trait_id))
 	actor.affinities = data.get("affinities", {}).duplicate()
 	actor.relationships = data.get("relationships", {}).duplicate()
 	for key in data.get("resources", {}).keys():
