@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"J5_mortal_thunder_perfected_recipe"
+display_name = "Mortal Thunder Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"J5_mortal_thunder_anointed", &"grimoire_paper_herb"])
+outputs = Array[StringName]([&"J5_mortal_thunder_perfected"])
