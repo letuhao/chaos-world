@@ -8,6 +8,15 @@
     "base_spirit",
     "base_will"
   ],
+  "body:FLAT:magnitude": [
+    "cult_bone_density",
+    "cult_carry_capacity",
+    "cult_muscle_fiber",
+    "cult_organ_vitality",
+    "cult_physical_attack",
+    "cult_physical_defense",
+    "cult_regeneration"
+  ],
   "cultivation:FLAT:magnitude": [
     "core_qi_absorption"
   ],
@@ -30,6 +39,16 @@
   ],
   "defense:PERCENT:rate": [
     "core_evasion"
+  ],
+  "dual:FLAT:magnitude": [
+    "cult_charm",
+    "cult_essence_capacity",
+    "cult_essence_regen",
+    "cult_fertility",
+    "cult_purity"
+  ],
+  "dual:PERCENT:rate": [
+    "cult_dual_cultivation_rate"
   ],
   "element:FLAT:magnitude": [
     "element_mastery_dark",
@@ -65,6 +84,21 @@
     "element_resistance_wind",
     "element_resistance_wood"
   ],
+  "fertility:PERCENT:rate": [
+    "cult_conception_chance",
+    "cult_gestation_speed",
+    "cult_maternal_resilience"
+  ],
+  "mind:FLAT:magnitude": [
+    "cult_mental_attack",
+    "cult_mental_clarity",
+    "cult_mental_defense",
+    "cult_perception"
+  ],
+  "mind:PERCENT:rate": [
+    "cult_dodge_chance",
+    "cult_illusion_resistance"
+  ],
   "mobility:PERCENT:rate": [
     "core_move_speed"
   ],
@@ -77,6 +111,17 @@
     "core_attack_speed",
     "core_crit_chance",
     "core_crit_damage"
+  ],
+  "qi:FLAT:magnitude": [
+    "cult_dantian_capacity",
+    "cult_qi_absorption",
+    "cult_qi_affinity",
+    "cult_qi_control",
+    "cult_qi_regen_rate"
+  ],
+  "qi:PERCENT:rate": [
+    "cult_technique_cost_reduction",
+    "cult_technique_power"
   ],
   "utility:PERCENT:rate": [
     "core_cooldown_reduction",

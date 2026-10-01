@@ -1,6 +1,6 @@
 # 0025 Master option catalog ownership: fixed plus rolled modifier model
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-10-02
 
 ## Context

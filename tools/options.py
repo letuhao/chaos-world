@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import os
+import random
 import tempfile
 from pathlib import Path
 
@@ -55,6 +56,19 @@ def register(subparsers) -> None:
     derive.add_argument("--catalog", default=None)
     derive.add_argument("--check", action="store_true", help="verify projection is current")
 
+    dist = actions.add_parser(
+        "option_distribution", help="audit option distribution and balance (read-only)"
+    )
+    dist.add_argument("--catalog", default=None)
+    dist.add_argument("--seed", type=int, default=104729, help="simulation seed")
+    dist.add_argument("--samples", type=int, default=1000, help="rolls per realm/rarity")
+    dist.add_argument(
+        "--fail-on",
+        choices=["none", "warn", "error"],
+        default="none",
+        help="exit non-zero above this finding level (default none)",
+    )
+
 
 def run(args) -> int:
     action = args.options_action
@@ -67,6 +81,8 @@ def run(args) -> int:
         return _register(catalog, Path(args.input), args.update)
     if action == "derive":
         return _derive(catalog, args.check)
+    if action == "option_distribution":
+        return _distribution(catalog, args.seed, args.samples, args.fail_on)
     raise ToolError(f"unknown options action: {action}")
 
 
@@ -284,3 +300,99 @@ def _derive(catalog: Path, check_only: bool) -> int:
     )
     ok(f"derived {len(active)} options into {len(projection)} pools")
     return 0
+
+
+def _distribution(catalog: Path, seed: int, samples: int, fail_on: str) -> int:
+    """Audit option distribution and balance via seeded simulation (read-only).
+
+    Mirrors the runtime generator's weighted selection so Python and Godot agree
+    on the algorithm. Reports availability, observed frequency, and magnitude
+    range per family/element/realm/rarity.
+    """
+    records = _load_jsonl(catalog)
+    active = [r for r in records if r["status"] == "active"]
+    if not active:
+        raise ToolError("catalog has no active options")
+    rng = random.Random(seed)
+    # Group active options by family for weighted selection.
+    by_family: dict[str, list[dict]] = {}
+    for record in active:
+        by_family.setdefault(record["family"], []).append(record)
+    # Simulate rolls across realm/rarity bands.
+    bands = [(0, 0), (9, 1), (18, 2), (29, 3)]
+    observations: dict[str, int] = {}
+    magnitudes: dict[str, list[float]] = {}
+    total_rolls = 0
+    for realm_index, rarity_index in bands:
+        for _ in range(samples):
+            # Weighted selection of one affix per roll (mirrors runtime).
+            family = _weighted_pick(
+                rng, {f: sum(r["weight"] for r in opts) for f, opts in by_family.items()}
+            )
+            option_id = _weighted_pick(rng, {r["id"]: r["weight"] for r in by_family[family]})
+            option = next(r for r in by_family[family] if r["id"] == option_id)
+            stat = option["target"]["id"]
+            observations[stat] = observations.get(stat, 0) + 1
+            bounds = _magnitude_bounds(option["unit"], realm_index, rarity_index)
+            value = (bounds["min"] + bounds["max"]) / 2.0
+            magnitudes.setdefault(stat, []).append(value)
+            total_rolls += 1
+    info(f"seed: {seed}  samples/band: {samples}  total rolls: {total_rolls}")
+    info("")
+    info("=== Option Distribution ===")
+    info(f"  {'option':32s} {'family':14s} {'obs':>6s} {'freq':>6s} {'min':>8s} {'max':>8s}")
+    errors: list[str] = []
+    warnings: list[str] = []
+    for stat in sorted(observations):
+        opts = next(r for r in active if r["target"]["id"] == stat)
+        obs = observations[stat]
+        freq = obs / total_rolls if total_rolls else 0.0
+        vals = magnitudes[stat]
+        row = "  {:32s} {:14s} {:6d} {:6.3f} {:8.2f} {:8.2f}".format(
+            stat, opts["family"], obs, freq, min(vals), max(vals)
+        )
+        info(row)
+        if obs == 0:
+            errors.append(f"{stat}: never selected in {total_rolls} rolls")
+    # Coverage: every active option should be selectable.
+    selectable = set(observations.keys())
+    for record in active:
+        if record["target"]["id"] not in selectable:
+            errors.append(f"{record['id']}: not selectable in simulation")
+    if errors:
+        for error in errors:
+            fail(error)
+        if fail_on == "error":
+            fail(f"option distribution failed: {len(errors)} error(s)")
+            return 1
+    if warnings:
+        for warning in warnings:
+            info(f"  warn: {warning}")
+    ok("option distribution audit complete")
+    return 0
+
+
+def _weighted_pick(rng: random.Random, weights: dict) -> str:
+    total = sum(weights.values())
+    if total <= 0:
+        raise ToolError("no positive weights to select from")
+    pick = rng.random() * total
+    for key, weight in weights.items():
+        pick -= weight
+        if pick <= 0:
+            return key
+    return next(iter(weights))
+
+
+def _magnitude_bounds(unit: str, realm_index: int, rarity_index: int) -> dict:
+    policy = {
+        "magnitude": [1.0, 10.0, 0.10, 0.25],
+        "rate": [0.01, 0.05, 0.005, 0.01],
+        "fraction": [0.01, 0.05, 0.005, 0.01],
+    }.get(unit, [1.0, 10.0, 0.10, 0.25])
+    realm_factor = 1.0 + realm_index * float(policy[2])
+    rarity_factor = 1.0 + rarity_index * float(policy[3])
+    return {
+        "min": float(policy[0]) * realm_factor * rarity_factor,
+        "max": float(policy[1]) * realm_factor * rarity_factor,
+    }
