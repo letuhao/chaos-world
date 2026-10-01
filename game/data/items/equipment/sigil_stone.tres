@@ -14,5 +14,5 @@ flat_modifiers = {
 "defense_spiritual": 22.0
 }
 percent_modifiers = {
-"max_qi": 5.0
+"max_qi": 0.05
 }

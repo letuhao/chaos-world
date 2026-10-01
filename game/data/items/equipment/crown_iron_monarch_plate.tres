@@ -16,5 +16,5 @@ flat_modifiers = {
 "max_health": 80.0
 }
 percent_modifiers = {
-"poise": 5.0
+"poise": 0.05
 }

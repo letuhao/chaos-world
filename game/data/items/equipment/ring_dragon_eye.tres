@@ -14,5 +14,5 @@ flat_modifiers = {
 "max_health": 60.0
 }
 percent_modifiers = {
-"loot_bonus": 8.0
+"loot_bonus": 0.08
 }

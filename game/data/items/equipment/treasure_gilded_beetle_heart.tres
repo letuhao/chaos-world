@@ -14,5 +14,5 @@ flat_modifiers = {
 "physique": 20.0
 }
 percent_modifiers = {
-"health_regen": 7.0
+"health_regen": 0.07
 }

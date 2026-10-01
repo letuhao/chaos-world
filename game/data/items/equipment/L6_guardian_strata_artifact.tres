@@ -11,8 +11,9 @@ subcategory = &"artifact"
 grade = &"earth"
 sources = Array[StringName]([&"boss:d6_stone_guardian"])
 flat_modifiers = {
-"poise": 22.0
+"poise": 11.0,
+"defense_spiritual": 24.0
 }
 percent_modifiers = {
-"defense_spiritual": 7.0
+"defense_spiritual": 0.07
 }

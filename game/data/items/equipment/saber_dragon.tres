@@ -14,5 +14,5 @@ flat_modifiers = {
 "attack_physical": 35.0
 }
 percent_modifiers = {
-"penetration": 8.0
+"penetration": 0.08
 }

@@ -14,5 +14,5 @@ flat_modifiers = {
 "poise": 18.0
 }
 percent_modifiers = {
-"defense_physical": 8.0
+"defense_physical": 0.08
 }

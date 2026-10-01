@@ -11,5 +11,5 @@ subcategory = &"accessory"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:ring_flame_heart_recipe"])
 percent_modifiers = {
-"loot_bonus": 5.0
+"loot_bonus": 0.05
 }

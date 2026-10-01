@@ -15,5 +15,5 @@ flat_modifiers = {
 "max_qi": 40.0
 }
 percent_modifiers = {
-"qi_regen": 4.0
+"qi_regen": 0.04
 }

@@ -14,5 +14,5 @@ flat_modifiers = {
 "defense_physical": 40.0
 }
 percent_modifiers = {
-"max_health": 5.0
+"max_health": 0.05
 }

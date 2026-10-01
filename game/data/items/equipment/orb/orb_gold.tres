@@ -14,5 +14,5 @@ flat_modifiers = {
 "attack_spiritual": 14.0
 }
 percent_modifiers = {
-"qi_regen": 4.0
+"qi_regen": 0.04
 }
