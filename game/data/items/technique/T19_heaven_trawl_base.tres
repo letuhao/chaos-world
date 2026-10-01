@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"T19_heaven_trawl_base"
+display_name = "Heaven Trawl Base"
+category = &"technique"
+subcategory = &"jade_slip"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:T19_heaven_trawl_base_recipe", &"quest:T19_heaven_trawl_line"])
+percent_modifiers = {
+"stamina_regen": 0.03
+}

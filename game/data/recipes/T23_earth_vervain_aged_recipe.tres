@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"T23_earth_vervain_aged_recipe"
+display_name = "Earth Vervain Aged Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"T23_earth_vervain_refined", &"succubus_earth_essence", &"weapon_storm_hide"])
+outputs = Array[StringName]([&"T23_earth_vervain_aged"])

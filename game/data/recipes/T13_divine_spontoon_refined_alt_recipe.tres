@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"T13_divine_spontoon_refined_alt_recipe"
+display_name = "Divine Spontoon Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"T13_divine_spontoon_base", &"divine_voidlotus", &"elemental_transcendent_essence"])
+outputs = Array[StringName]([&"T13_divine_spontoon_refined"])
