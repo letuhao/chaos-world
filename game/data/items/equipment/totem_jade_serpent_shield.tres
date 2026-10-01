@@ -9,7 +9,7 @@ display_name = "Jade Serpent Shield"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:totem_jade_serpent"])
+sources = Array[StringName]([&"boss:totem_jade_serpent", &"boss:d6_jade_serpent"])
 flat_modifiers = {
 "defense_spiritual": 30.0
 "damage_reduction": 0.04

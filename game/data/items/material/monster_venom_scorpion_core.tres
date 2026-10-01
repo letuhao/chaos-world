@@ -9,4 +9,4 @@ display_name = "Venom Scorpion Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"earth"
-sources = Array[StringName]([&"boss:monster_venom_scorpion"])
+sources = Array[StringName]([&"boss:monster_venom_scorpion", &"boss:d4_venom_scorpion"])

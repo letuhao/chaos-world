@@ -9,4 +9,4 @@ display_name = "Storm Phoenix Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:artifact_storm_phoenix"])
+sources = Array[StringName]([&"boss:artifact_storm_phoenix", &"boss:d1_storm_phoenix_ember"])

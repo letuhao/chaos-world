@@ -9,7 +9,7 @@ display_name = "Ash Effigy Ember"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:puppet_ash_effigy"])
+sources = Array[StringName]([&"boss:puppet_ash_effigy", &"boss:d4_ash_effigy"])
 percent_modifiers = {
 "health_regen": 0.05
 }

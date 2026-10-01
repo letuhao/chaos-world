@@ -9,7 +9,7 @@ display_name = "Iron Bull Horn Charm"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:totem_iron_bull"])
+sources = Array[StringName]([&"boss:totem_iron_bull", &"boss:d6_iron_bull"])
 flat_modifiers = {
 "poise": 7.0
 }

@@ -9,4 +9,4 @@ display_name = "Heaven Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:d2_aether_guardian", &"boss:elemental_heaven_guardian"])

@@ -9,4 +9,4 @@ display_name = "Prism Beast Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"divine"
-sources = Array[StringName]([&"boss:elemental_transcendent_guardian"])
+sources = Array[StringName]([&"boss:elemental_transcendent_guardian", &"boss:d3_prism_guardian"])

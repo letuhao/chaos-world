@@ -9,4 +9,4 @@ display_name = "Mortal Veil Heart Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:succubus_mortal_guardian"])
+sources = Array[StringName]([&"boss:succubus_mortal_guardian", &"boss:d5_mortal_veil"])

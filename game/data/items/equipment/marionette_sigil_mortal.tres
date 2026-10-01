@@ -9,7 +9,7 @@ display_name = "Mortal Guardian Sigil"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:succubus_mortal_guardian"])
+sources = Array[StringName]([&"boss:succubus_mortal_guardian", &"boss:d5_mortal_veil"])
 percent_modifiers = {
 "cultivation_rate": 0.0005
 }

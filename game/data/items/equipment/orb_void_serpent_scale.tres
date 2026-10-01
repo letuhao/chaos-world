@@ -9,7 +9,7 @@ display_name = "Void Serpent Scale"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"boss:orb_void_serpent"])
+sources = Array[StringName]([&"boss:orb_void_serpent", &"boss:d4_void_serpent"])
 flat_modifiers = {
 "attack_spiritual": 35.0,
 "max_qi": 70.0

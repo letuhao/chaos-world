@@ -16,17 +16,27 @@ func contribute(context: StatContext) -> Dictionary:
 	var awareness_ratio := _pool_ratio(context, MindStats.AWARENESS)
 	var rank := _mind_rank(context)
 	var scaling := 1.0 + rank * 0.05
+	var meridian_power := _meridian_power_bonus(context)
 
 	return {
 		MindStats.MENTAL_ATTACK: (perception * 2.0 + mental_clarity * 1.5) * scaling,
-		MindStats.MENTAL_DEFENSE: (mental_clarity * 2.0 + will * 0.5) * scaling,
+		MindStats.MENTAL_DEFENSE:
+		(mental_clarity * 2.0 + will * 0.5) * scaling * (1.0 + meridian_power),
 		MindStats.SPIRITUAL_SENSE_RANGE: 50.0 + perception * 5.0 + rank * 10.0,
 		MindStats.CRITICAL_CHANCE: minf(0.75, 0.05 + perception * 0.003 + awareness_ratio * 0.1),
 		MindStats.DODGE_CHANCE: minf(0.6, perception * 0.002 + awareness_ratio * 0.05),
 		MindStats.ILLUSION_RESISTANCE: minf(0.8, mental_clarity * 0.004 + will * 0.002),
-		MindStats.MIND_TECHNIQUE_POWER: (perception * 1.5 + mental_clarity * 1.0) * scaling,
+		MindStats.MIND_TECHNIQUE_POWER:
+		(perception * 1.5 + mental_clarity * 1.0) * scaling * (1.0 + meridian_power),
 		MindStats.COMPREHENSION_BONUS: 1.0 + comprehension * 0.01 + rank * 0.02,
 	}
+
+
+func _meridian_power_bonus(context: StatContext) -> float:
+	var network := context.component(&"meridians")
+	if network is MeridianNetwork:
+		return network.get_power_bonus()
+	return 0.0
 
 
 func _mind_rank(context: StatContext) -> float:

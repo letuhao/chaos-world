@@ -9,7 +9,7 @@ display_name = "Serpent Eye"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:relic_tide_serpent"])
+sources = Array[StringName]([&"boss:relic_tide_serpent", &"boss:d4_tide_serpent"])
 flat_modifiers = {
 "max_health": 80.0
 }

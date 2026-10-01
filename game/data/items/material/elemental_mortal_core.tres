@@ -9,4 +9,4 @@ display_name = "Ember Beast Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:elemental_mortal_guardian"])
+sources = Array[StringName]([&"boss:elemental_mortal_guardian", &"boss:d2_ember_guardian"])

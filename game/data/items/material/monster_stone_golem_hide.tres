@@ -9,4 +9,4 @@ display_name = "Stone Golem Hide"
 category = &"material"
 subcategory = &"hide"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:monster_stone_golem"])
+sources = Array[StringName]([&"boss:monster_stone_golem", &"boss:d3_boulder_golem"])

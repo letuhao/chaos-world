@@ -9,7 +9,7 @@ display_name = "Storm Phoenix Feather"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:amulet_storm_phoenix"])
+sources = Array[StringName]([&"boss:amulet_storm_phoenix", &"boss:d1_storm_phoenix_fledgling"])
 flat_modifiers = {
 "max_health": 20.0
 }

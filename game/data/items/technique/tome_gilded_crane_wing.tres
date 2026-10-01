@@ -9,7 +9,7 @@ display_name = "Gilded Crane Wing"
 category = &"technique"
 subcategory = &"manual"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:tome_gilded_crane"])
+sources = Array[StringName]([&"boss:tome_gilded_crane", &"boss:d6_gilded_crane"])
 percent_modifiers = {
 "move_speed": 0.06
 }

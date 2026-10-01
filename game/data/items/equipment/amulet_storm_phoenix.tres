@@ -9,7 +9,7 @@ display_name = "Storm Phoenix Amulet"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"heaven"
-sources = Array[StringName]([&"boss:amulet_storm_phoenix"])
+sources = Array[StringName]([&"boss:amulet_storm_phoenix", &"boss:d1_storm_phoenix_fledgling"])
 flat_modifiers = {
 "max_qi": 30.0
 }

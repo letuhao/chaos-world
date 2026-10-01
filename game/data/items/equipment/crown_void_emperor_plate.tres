@@ -9,7 +9,7 @@ display_name = "Void Emperor Plate"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"heaven"
-sources = Array[StringName]([&"boss:crown_void_emperor"])
+sources = Array[StringName]([&"boss:crown_void_emperor", &"boss:d2_void_emperor"])
 flat_modifiers = {
 "defense_physical": 35.0,
 "defense_spiritual": 20.0,

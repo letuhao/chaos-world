@@ -9,4 +9,4 @@ display_name = "Frost Manta Ray Frost Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:marine_frost_mantaray"])
+sources = Array[StringName]([&"boss:marine_frost_mantaray", &"boss:d3_manta_raylet"])

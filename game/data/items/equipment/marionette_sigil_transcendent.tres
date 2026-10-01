@@ -9,7 +9,7 @@ display_name = "Transcendent Guardian Sigil"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
-sources = Array[StringName]([&"boss:succubus_transcendent_guardian"])
+sources = Array[StringName]([&"boss:succubus_transcendent_guardian", &"boss:d5_transcendent_radiance"])
 percent_modifiers = {
 "cultivation_rate": 0.0013
 }

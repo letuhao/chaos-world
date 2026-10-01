@@ -9,7 +9,7 @@ display_name = "Titan Plate"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:artifact_iron_titan"])
+sources = Array[StringName]([&"boss:artifact_iron_titan", &"boss:d1_iron_titan_slag"])
 flat_modifiers = {
 "defense_physical": 45.0
 "damage_reduction": 0.08

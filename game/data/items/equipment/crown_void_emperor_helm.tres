@@ -9,7 +9,7 @@ display_name = "Void Emperor Helm"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"heaven"
-sources = Array[StringName]([&"boss:crown_void_emperor"])
+sources = Array[StringName]([&"boss:crown_void_emperor", &"boss:d2_void_emperor"])
 flat_modifiers = {
 "defense_spiritual": 30.0,
 "max_health": 120.0

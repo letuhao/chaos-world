@@ -9,7 +9,7 @@ display_name = "Sage Plate"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"earth"
-sources = Array[StringName]([&"boss:treasure_iron_sage"])
+sources = Array[StringName]([&"boss:treasure_iron_sage", &"boss:d6_iron_sage"])
 flat_modifiers = {
 "max_health": 120.0
 }

@@ -9,7 +9,7 @@ display_name = "Wyrm Heart"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:relic_ash_wyrm"])
+sources = Array[StringName]([&"boss:relic_ash_wyrm", &"boss:d4_ash_wyrm"])
 flat_modifiers = {
 "attack_physical": 15.0
 }

@@ -9,4 +9,4 @@ display_name = "Venom Serpent Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:beast_venom_serpent"])
+sources = Array[StringName]([&"boss:beast_venom_serpent", &"boss:d1_venom_serpent_fledgling"])

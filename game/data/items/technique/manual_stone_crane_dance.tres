@@ -9,7 +9,7 @@ display_name = "Stone Crane Dance"
 category = &"technique"
 subcategory = &"scroll"
 grade = &"earth"
-sources = Array[StringName]([&"boss:manual_stone_crane"])
+sources = Array[StringName]([&"boss:manual_stone_crane", &"boss:d3_stone_crane_dancer"])
 percent_modifiers = {
 "evasion": 0.05
 }

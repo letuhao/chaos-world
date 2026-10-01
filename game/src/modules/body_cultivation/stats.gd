@@ -16,6 +16,9 @@ const CARRY_CAPACITY := &"carry_capacity"
 const REGENERATION := &"regeneration"
 const POISE := &"poise"
 const BODY_CULTIVATION_POWER := &"body_cultivation_power"
+const ACUPOINT_QUALITY := &"acupoint_quality"
+const ACUPOINT_COUNT := &"acupoint_count"
+const ACUPOINT_BLOCKED_COUNT := &"acupoint_blocked_count"
 
 # Resources
 const BODY_INTEGRITY := &"body_integrity"

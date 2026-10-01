@@ -85,7 +85,7 @@ def register(subparsers) -> None:
 
     edit = actions.add_parser("edit", help="update fields on an existing item or boss .tres")
     edit.add_argument("--root", default=None)
-    edit.add_argument("--kind", default="item", choices=["item", "boss"])
+    edit.add_argument("--kind", default="item", choices=["item", "boss", "domain"])
     edit.add_argument("--id", required=True)
     edit.add_argument("--name", default=None)
     edit.add_argument("--subtype", default=None)
@@ -100,6 +100,9 @@ def register(subparsers) -> None:
         "--clear-percent", action="store_true", help="remove the percent_modifiers block"
     )
     edit.add_argument("--add-loot", default="", help="append item ids to a boss's loot array")
+    edit.add_argument(
+        "--add-bosses", default="", help="append boss ids to a domain's boss_ids array"
+    )
 
     new = actions.add_parser("new", help="scaffold a content .tres")
     new.add_argument("--root", default=None)
@@ -290,6 +293,37 @@ def _audit(root: Path) -> list[str]:
         for boss_id in boss_ids:
             if boss_id not in bosses:
                 gaps.append(f"domain {domain_id}: boss '{boss_id}' is not a defined boss")
+            elif bosses[boss_id]["scalars"].get("domain_id") != domain_id:
+                # Both directions are checked separately above, so without this a
+                # boss and a domain can each be internally valid and disagree.
+                gaps.append(
+                    f"domain {domain_id}: lists boss '{boss_id}' whose domain_id is "
+                    f"'{bosses[boss_id]['scalars'].get('domain_id')}'"
+                )
+
+    for boss_id, boss in bosses.items():
+        domain_id = boss["scalars"].get("domain_id", "")
+        if domain_id in domains and boss_id not in domains[domain_id]["arrays"].get("boss_ids", []):
+            gaps.append(f"boss {boss_id}: domain '{domain_id}' does not list it in boss_ids")
+
+    # The reverse of the source check below: an item a boss drops is obtainable
+    # from that boss, so it must declare it. Without this, a second boss sharing
+    # an item's loot is invisible as an acquisition route.
+    drops: dict[str, set[str]] = {}
+    for boss_id, boss in bosses.items():
+        for item_id in boss["arrays"].get("loot", []):
+            drops.setdefault(item_id, set()).add(boss_id)
+    for item_id, droppers in sorted(drops.items()):
+        item = items.get(item_id)
+        if not item:
+            continue
+        declared = {
+            source.split(":", 1)[1]
+            for source in item["arrays"].get("sources", [])
+            if source.startswith("boss:")
+        }
+        for boss_id in sorted(droppers - declared):
+            gaps.append(f"item {item_id}: dropped by boss '{boss_id}' but declares no such source")
 
     for item_id, item in items.items():
         sources = item["arrays"].get("sources", [])
@@ -776,7 +810,8 @@ def _merge_array_block(text: str, field: str, values: list[str]) -> str:
 
 
 def _edit_command(root: Path, args) -> int:
-    folder = "bosses" if args.kind == "boss" else "items"
+    kind = getattr(args, "kind", "item")
+    folder = {"boss": "bosses", "domain": "domains"}.get(kind, "items")
     candidates = sorted((root / folder).rglob(f"{args.id}.tres"))
     if not candidates:
         raise ToolError(f"no {args.kind} found with id '{args.id}'")
@@ -802,6 +837,19 @@ def _edit_command(root: Path, args) -> int:
         path.write_text(text, encoding="utf-8")
         shown = path.relative_to(REPO_ROOT).as_posix()
         ok(f"updated {shown} (+{len(added)} loot: {', '.join(added)})")
+        return 0
+
+    if args.kind == "domain":
+        if not args.add_bosses:
+            raise ToolError("domain edits require --add-bosses")
+        existing = _extract_array(text, "boss_ids")
+        added = [v for v in _split_list(args.add_bosses) if v not in existing]
+        if not added:
+            fail(f"{path}: all requested bosses already present")
+            return 1
+        text = _merge_array_block(text, "boss_ids", existing + added)
+        path.write_text(text, encoding="utf-8")
+        ok(f"updated {path.relative_to(REPO_ROOT).as_posix()} (+{len(added)} bosses)")
         return 0
 
     if args.name is not None:

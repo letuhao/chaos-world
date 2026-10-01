@@ -9,7 +9,7 @@ display_name = "Storm Phoenix Talon"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"boss:orb_storm_phoenix"])
+sources = Array[StringName]([&"boss:orb_storm_phoenix", &"boss:d4_storm_phoenix"])
 flat_modifiers = {
 "attack_spiritual": 90.0,
 "max_qi": 180.0

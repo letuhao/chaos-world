@@ -9,7 +9,7 @@ display_name = "Void Serpent Fang"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"earth"
-sources = Array[StringName]([&"boss:amulet_void_serpent"])
+sources = Array[StringName]([&"boss:amulet_void_serpent", &"boss:d1_void_serpent_venomling"])
 flat_modifiers = {
 "max_qi": 20.0
 }

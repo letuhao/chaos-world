@@ -9,7 +9,7 @@ display_name = "Iron Sage Eye"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:amulet_iron_sage"])
+sources = Array[StringName]([&"boss:amulet_iron_sage", &"boss:d1_iron_sage_adept"])
 flat_modifiers = {
 "max_qi": 15.0
 }

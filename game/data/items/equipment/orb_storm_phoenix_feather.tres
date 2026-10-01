@@ -9,7 +9,7 @@ display_name = "Storm Phoenix Feather"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"heaven"
-sources = Array[StringName]([&"boss:orb_storm_phoenix"])
+sources = Array[StringName]([&"boss:orb_storm_phoenix", &"boss:d4_storm_phoenix"])
 flat_modifiers = {
 "attack_spiritual": 60.0,
 "max_qi": 120.0

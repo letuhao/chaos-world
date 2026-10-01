@@ -9,7 +9,7 @@ display_name = "Ash Effigy Mask"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:puppet_ash_effigy"])
+sources = Array[StringName]([&"boss:puppet_ash_effigy", &"boss:d4_ash_effigy"])
 flat_modifiers = {
 "max_stamina": 18.0
 }

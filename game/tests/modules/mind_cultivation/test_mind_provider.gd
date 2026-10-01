@@ -52,3 +52,43 @@ func test_mind_technique_power_scales() -> void:
 func test_comprehension_bonus_base() -> void:
 	var actor := _actor_with_module()
 	assert_almost_eq(actor.stats.derived(MindStats.COMPREHENSION_BONUS), 1.1, "comprehension bonus")
+
+
+func test_meridian_strengthening_boosts_technique_power() -> void:
+	var actor := _actor_with_module()
+	actor.set_component(&"meridians", actor.meridians)
+	actor.meridians.unlock_for_realm(&"qi_refining")
+	actor.meridians.open_meridian(&"lung")
+	actor.meridians.expand_meridian(&"lung")
+	actor.meridians.strengthen_meridian(&"lung")
+	actor.mark_stats_dirty()
+	var base_power := (20.0 * 1.5 + 15.0 * 1.0) * 1.0
+	var expected := base_power * 1.05
+	assert_almost_eq(
+		actor.stats.derived(MindStats.MIND_TECHNIQUE_POWER),
+		expected,
+		"meridian boosts technique power"
+	)
+
+
+func test_meridian_strengthening_boosts_mental_defense() -> void:
+	var actor := _actor_with_module()
+	actor.set_component(&"meridians", actor.meridians)
+	actor.meridians.unlock_for_realm(&"qi_refining")
+	actor.meridians.open_meridian(&"lung")
+	actor.meridians.expand_meridian(&"lung")
+	actor.meridians.strengthen_meridian(&"lung")
+	actor.mark_stats_dirty()
+	var base_defense := (15.0 * 2.0 + 10.0 * 0.5) * 1.0
+	var expected := base_defense * 1.05
+	assert_almost_eq(
+		actor.stats.derived(MindStats.MENTAL_DEFENSE), expected, "meridian boosts mental defense"
+	)
+
+
+func test_no_meridian_bonus_without_strengthening() -> void:
+	var actor := _actor_with_module()
+	actor.set_component(&"meridians", actor.meridians)
+	actor.meridians.unlock_for_realm(&"qi_refining")
+	actor.mark_stats_dirty()
+	assert_almost_eq(actor.stats.derived(MindStats.MIND_TECHNIQUE_POWER), 45.0, "no meridian bonus")

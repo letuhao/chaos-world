@@ -9,4 +9,4 @@ display_name = "Frost Wolf Hide"
 category = &"material"
 subcategory = &"hide"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:monster_frost_wolf"])
+sources = Array[StringName]([&"boss:monster_frost_wolf", &"boss:d3_frost_wolf_pup"])

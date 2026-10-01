@@ -26,6 +26,18 @@ static func path_def() -> CultivationPathDef:
 	return MindPath.path_def()
 
 
+static func sea(actor: Actor) -> SeaOfConsciousness:
+	return actor.component(&"sea_of_consciousness") as SeaOfConsciousness
+
+
+static func attach_sea(actor: Actor) -> SeaOfConsciousness:
+	var sea := SeaOfConsciousness.new()
+	sea.capacity = actor.stats.get_base(MindStats.SEA_CAPACITY)
+	actor.set_component(&"sea_of_consciousness", sea)
+	actor.stats.add_provider(SeaProvider.new())
+	return sea
+
+
 static func _ensure_resources(actor: Actor) -> void:
 	_add_pool(actor, MindStats.MIND_POWER, true)
 	_add_pool(actor, MindStats.AWARENESS, false)

@@ -9,7 +9,7 @@ display_name = "Beetle Shell"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:treasure_gilded_beetle"])
+sources = Array[StringName]([&"boss:treasure_gilded_beetle", &"boss:d6_gilded_beetle"])
 flat_modifiers = {
 "defense_spiritual": 20.0
 }

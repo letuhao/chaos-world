@@ -9,7 +9,7 @@ display_name = "Cinder Wyrm Eye"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"boss:orb_cinder_wyrm"])
+sources = Array[StringName]([&"boss:orb_cinder_wyrm", &"boss:d4_cinder_wyrm"])
 flat_modifiers = {
 "attack_spiritual": 40.0,
 "max_qi": 80.0

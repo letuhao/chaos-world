@@ -9,7 +9,7 @@ display_name = "Colossus Core"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:relic_stone_colossus"])
+sources = Array[StringName]([&"boss:relic_stone_colossus", &"boss:d4_stone_colossus"])
 flat_modifiers = {
 "defense_spiritual": 25.0
 "damage_reduction": 0.03

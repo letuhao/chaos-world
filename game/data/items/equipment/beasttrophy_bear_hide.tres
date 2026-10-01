@@ -9,7 +9,7 @@ display_name = "Ironhide Trophy"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:beast_ironhide_bear"])
+sources = Array[StringName]([&"boss:beast_ironhide_bear", &"boss:d1_ironhide_bear_cub"])
 flat_modifiers = {
 "defense_physical": 8.0
 }

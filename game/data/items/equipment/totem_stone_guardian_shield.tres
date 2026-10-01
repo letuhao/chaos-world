@@ -9,7 +9,7 @@ display_name = "Stone Guardian Shield"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"boss:totem_stone_guardian"])
+sources = Array[StringName]([&"boss:totem_stone_guardian", &"boss:d6_stone_guardian"])
 flat_modifiers = {
 "defense_physical": 40.0
 "damage_reduction": 0.05

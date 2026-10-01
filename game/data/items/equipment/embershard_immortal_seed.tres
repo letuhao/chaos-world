@@ -9,7 +9,7 @@ display_name = "Immortal Element Seed"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"boss:elemental_immortal_guardian"])
+sources = Array[StringName]([&"boss:elemental_immortal_guardian", &"boss:d2_gale_guardian"])
 percent_modifiers = {
 "insight_gain": 0.09
 }

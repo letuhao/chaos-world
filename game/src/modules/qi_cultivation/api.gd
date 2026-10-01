@@ -11,6 +11,7 @@ const QI_PURITY := QiStats.QI_PURITY
 
 static func attach(actor: Actor) -> void:
 	_ensure_resources(actor)
+	actor.set_component(&"meridians", actor.meridians)
 	actor.stats.add_provider(QiProvider.new())
 
 
@@ -23,6 +24,22 @@ static func provider(actor: Actor) -> QiProvider:
 
 static func path_def() -> CultivationPathDef:
 	return QiPath.path_def()
+
+
+static func meridians(actor: Actor) -> MeridianNetwork:
+	return actor.meridians
+
+
+static func dantian(actor: Actor) -> Dantian:
+	return actor.component(&"dantian") as Dantian
+
+
+static func attach_dantian(actor: Actor) -> Dantian:
+	var dantian := Dantian.new()
+	dantian.capacity = actor.stats.get_base(QiStats.DANTIAN_CAPACITY)
+	actor.set_component(&"dantian", dantian)
+	actor.stats.add_provider(DantianProvider.new())
+	return dantian
 
 
 static func _ensure_resources(actor: Actor) -> void:

@@ -9,7 +9,7 @@ display_name = "Iron Monarchy Band"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:crown_iron_monarch"])
+sources = Array[StringName]([&"boss:crown_iron_monarch", &"boss:d2_iron_monarch"])
 flat_modifiers = {
 "defense_physical": 9.0
 }

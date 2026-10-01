@@ -9,7 +9,7 @@ display_name = "Immortal Guardian Sigil"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"boss:succubus_immortal_guardian"])
+sources = Array[StringName]([&"boss:succubus_immortal_guardian", &"boss:d5_immortal_tide"])
 percent_modifiers = {
 "cultivation_rate": 0.001
 }

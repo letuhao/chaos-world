@@ -9,7 +9,7 @@ display_name = "Cinder Tiger Claw"
 category = &"technique"
 subcategory = &"manual"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:tome_cinder_tiger"])
+sources = Array[StringName]([&"boss:tome_cinder_tiger", &"boss:d6_cinder_tiger"])
 percent_modifiers = {
 "crit_damage": 0.05
 }

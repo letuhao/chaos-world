@@ -9,4 +9,4 @@ display_name = "Ironhide Bear Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:beast_ironhide_bear"])
+sources = Array[StringName]([&"boss:beast_ironhide_bear", &"boss:d1_ironhide_bear_cub"])

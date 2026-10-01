@@ -1,12 +1,13 @@
 class_name BodyCultivationApi
 extends RefCounted
 
-## Public facade for the `body_cultivation` module (ADR 0012).
+## Public facade for the `body_cultivation` module (ADR 0012, ADR 0015).
 ## Other modules may reference ONLY this file (`api.gd`).
 
 const BODY_INTEGRITY := BodyStats.BODY_INTEGRITY
 
 const _COMPONENT_ID := &"body_cultivation_provider"
+const _ACUPOINTS_ID := &"acupoints"
 
 
 static func attach(actor: Actor) -> void:
@@ -22,6 +23,19 @@ static func provider(actor: Actor) -> BodyProvider:
 
 static func path_def() -> CultivationPathDef:
 	return BodyPath.path_def()
+
+
+static func acupoints(actor: Actor) -> Array[Acupoint]:
+	var acupoint_set: AcupointSet = actor.component(_ACUPOINTS_ID)
+	if acupoint_set == null:
+		return []
+	return acupoint_set.points
+
+
+static func attach_acupoints(actor: Actor) -> void:
+	var points: Array[Acupoint] = AcupointDefaults.build_for_realm(actor.realm())
+	actor.set_component(_ACUPOINTS_ID, AcupointSet.new(points))
+	actor.stats.add_provider(AcupointProvider.new())
 
 
 static func _ensure_resources(actor: Actor) -> void:

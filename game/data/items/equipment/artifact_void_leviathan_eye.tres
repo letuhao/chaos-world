@@ -9,7 +9,7 @@ display_name = "Leviathan Eye"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:artifact_void_leviathan"])
+sources = Array[StringName]([&"boss:artifact_void_leviathan", &"boss:d1_void_leviathan_spawn"])
 flat_modifiers = {
 "max_qi": 120.0
 }

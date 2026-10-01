@@ -9,7 +9,7 @@ display_name = "Thunder Crane Wing"
 category = &"technique"
 subcategory = &"scroll"
 grade = &"earth"
-sources = Array[StringName]([&"boss:scroll_thunder_crane"])
+sources = Array[StringName]([&"boss:scroll_thunder_crane", &"boss:d5_thunder_crane"])
 percent_modifiers = {
 "move_speed": 0.05
 }

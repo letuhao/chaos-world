@@ -9,7 +9,7 @@ display_name = "Thunder Ape Roar"
 category = &"technique"
 subcategory = &"jade_slip"
 grade = &"heaven"
-sources = Array[StringName]([&"boss:manual_thunder_ape"])
+sources = Array[StringName]([&"boss:manual_thunder_ape", &"boss:d3_thunder_ape_young"])
 percent_modifiers = {
 "attack_spiritual": 0.05
 }

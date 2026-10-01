@@ -9,4 +9,4 @@ display_name = "Abyssal Kraken Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:marine_abyssal_kraken"])
+sources = Array[StringName]([&"boss:marine_abyssal_kraken", &"boss:d3_krakenling"])

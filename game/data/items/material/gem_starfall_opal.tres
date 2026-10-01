@@ -9,4 +9,4 @@ display_name = "Starfall Opal"
 category = &"material"
 subcategory = &"ore"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:d5_heaven_bloom", &"boss:succubus_heaven_guardian"])

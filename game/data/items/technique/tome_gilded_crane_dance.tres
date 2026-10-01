@@ -9,7 +9,7 @@ display_name = "Gilded Crane Dance"
 category = &"technique"
 subcategory = &"jade_slip"
 grade = &"earth"
-sources = Array[StringName]([&"boss:tome_gilded_crane"])
+sources = Array[StringName]([&"boss:tome_gilded_crane", &"boss:d6_gilded_crane"])
 percent_modifiers = {
 "cooldown_reduction": 0.05
 }

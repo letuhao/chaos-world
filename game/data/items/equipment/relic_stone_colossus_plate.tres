@@ -9,7 +9,7 @@ display_name = "Colossus Plate"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"boss:relic_stone_colossus"])
+sources = Array[StringName]([&"boss:relic_stone_colossus", &"boss:d4_stone_colossus"])
 flat_modifiers = {
 "max_health": 95.0,
 "defense_physical": 15.0

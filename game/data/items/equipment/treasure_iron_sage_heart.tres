@@ -9,7 +9,7 @@ display_name = "Sage Heart"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:treasure_iron_sage"])
+sources = Array[StringName]([&"boss:treasure_iron_sage", &"boss:d6_iron_sage"])
 flat_modifiers = {
 "defense_physical": 25.0
 "damage_reduction": 0.05

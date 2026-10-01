@@ -9,4 +9,4 @@ display_name = "Stone Golem Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:monster_stone_golem"])
+sources = Array[StringName]([&"boss:monster_stone_golem", &"boss:d3_boulder_golem"])

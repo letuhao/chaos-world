@@ -9,4 +9,4 @@ display_name = "Earth Bloom Heart Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:d5_earth_bloom", &"boss:succubus_earth_guardian"])

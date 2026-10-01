@@ -9,7 +9,7 @@ display_name = "Flame Dragon Heart Shard"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"heaven"
-sources = Array[StringName]([&"boss:flame_dragon"])
+sources = Array[StringName]([&"boss:flame_dragon", &"boss:d3_flame_drake"])
 percent_modifiers = {
 "attack_spiritual": 0.07
 }

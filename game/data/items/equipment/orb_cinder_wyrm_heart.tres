@@ -9,7 +9,7 @@ display_name = "Cinder Wyrm Heart"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:orb_cinder_wyrm"])
+sources = Array[StringName]([&"boss:orb_cinder_wyrm", &"boss:d4_cinder_wyrm"])
 flat_modifiers = {
 "attack_spiritual": 25.0,
 "max_qi": 50.0

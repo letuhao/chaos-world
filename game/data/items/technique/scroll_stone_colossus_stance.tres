@@ -9,7 +9,7 @@ display_name = "Stone Colossus Stance"
 category = &"technique"
 subcategory = &"scroll"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:scroll_stone_colossus"])
+sources = Array[StringName]([&"boss:scroll_stone_colossus", &"boss:d5_stone_colossus"])
 flat_modifiers = {
 "poise": 9.0
 }

@@ -9,7 +9,7 @@ display_name = "Transcendent Element Seed"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
-sources = Array[StringName]([&"boss:elemental_transcendent_guardian"])
+sources = Array[StringName]([&"boss:elemental_transcendent_guardian", &"boss:d3_prism_guardian"])
 percent_modifiers = {
 "cultivation_rate": 0.12
 }

@@ -9,7 +9,7 @@ display_name = "Frost Serpent Coil"
 category = &"technique"
 subcategory = &"scroll"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:scroll_frost_serpent"])
+sources = Array[StringName]([&"boss:scroll_frost_serpent", &"boss:d5_frost_serpent"])
 percent_modifiers = {
 "qi_cost_reduction": 0.05
 }

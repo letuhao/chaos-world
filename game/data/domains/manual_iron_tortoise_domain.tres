@@ -6,4 +6,4 @@
 script = ExtResource("1_domain")
 id = &"manual_iron_tortoise_domain"
 display_name = "Iron Tortoise Domain"
-boss_ids = Array[StringName]([&"manual_iron_tortoise"])
+boss_ids = Array[StringName]([&"manual_iron_tortoise", &"d3_iron_tortoise_shell"])

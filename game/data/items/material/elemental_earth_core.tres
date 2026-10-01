@@ -9,4 +9,4 @@ display_name = "Earth Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"earth"
-sources = Array[StringName]([&"boss:elemental_earth_guardian"])
+sources = Array[StringName]([&"boss:elemental_earth_guardian", &"boss:d2_terra_guardian"])

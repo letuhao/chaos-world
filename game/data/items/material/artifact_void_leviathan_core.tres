@@ -9,4 +9,4 @@ display_name = "Void Leviathan Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:artifact_void_leviathan"])
+sources = Array[StringName]([&"boss:artifact_void_leviathan", &"boss:d1_void_leviathan_spawn"])

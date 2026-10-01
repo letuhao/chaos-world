@@ -9,7 +9,7 @@ display_name = "Storm Sovereign Sceptre"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"heaven"
-sources = Array[StringName]([&"boss:crown_storm_sovereign"])
+sources = Array[StringName]([&"boss:crown_storm_sovereign", &"boss:d2_storm_sovereign"])
 flat_modifiers = {
 "attack_spiritual": 18.0
 }

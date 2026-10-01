@@ -9,7 +9,7 @@ display_name = "Serpent Fang"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"boss:relic_tide_serpent"])
+sources = Array[StringName]([&"boss:relic_tide_serpent", &"boss:d4_tide_serpent"])
 flat_modifiers = {
 "attack_spiritual": 30.0
 }

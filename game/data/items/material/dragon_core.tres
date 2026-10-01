@@ -9,4 +9,4 @@ display_name = "Dragon Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:flame_dragon"])
+sources = Array[StringName]([&"boss:flame_dragon", &"boss:d3_flame_drake"])

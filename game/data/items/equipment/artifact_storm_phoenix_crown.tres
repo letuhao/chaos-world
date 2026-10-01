@@ -9,7 +9,7 @@ display_name = "Phoenix Crown"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:artifact_storm_phoenix"])
+sources = Array[StringName]([&"boss:artifact_storm_phoenix", &"boss:d1_storm_phoenix_ember"])
 flat_modifiers = {
 "attack_spiritual": 30.0
 }

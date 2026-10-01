@@ -9,7 +9,7 @@ display_name = "Thunder Ape Fang"
 category = &"technique"
 subcategory = &"jade_slip"
 grade = &"earth"
-sources = Array[StringName]([&"boss:manual_thunder_ape"])
+sources = Array[StringName]([&"boss:manual_thunder_ape", &"boss:d3_thunder_ape_young"])
 percent_modifiers = {
 "attack_physical": 0.06
 }

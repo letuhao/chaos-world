@@ -9,7 +9,7 @@ display_name = "Venom Scorpion Sting Trophy"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:monster_venom_scorpion"])
+sources = Array[StringName]([&"boss:monster_venom_scorpion", &"boss:d4_venom_scorpion"])
 percent_modifiers = {
 "crit_chance": 0.05
 }

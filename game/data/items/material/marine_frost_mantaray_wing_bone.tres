@@ -9,4 +9,4 @@ display_name = "Frost Manta Ray Wing Bone"
 category = &"material"
 subcategory = &"bone"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:marine_frost_mantaray"])
+sources = Array[StringName]([&"boss:marine_frost_mantaray", &"boss:d3_manta_raylet"])

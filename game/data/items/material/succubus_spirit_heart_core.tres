@@ -9,4 +9,4 @@ display_name = "Spirit Bloom Heart Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:succubus_spirit_guardian"])
+sources = Array[StringName]([&"boss:succubus_spirit_guardian", &"boss:d5_spirit_bloom"])

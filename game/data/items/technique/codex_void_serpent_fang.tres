@@ -9,7 +9,7 @@ display_name = "Void Serpent Fang"
 category = &"technique"
 subcategory = &"jade_slip"
 grade = &"earth"
-sources = Array[StringName]([&"boss:codex_void_serpent"])
+sources = Array[StringName]([&"boss:codex_void_serpent", &"boss:d2_void_serpent"])
 percent_modifiers = {
 "attack_physical": 0.05
 }

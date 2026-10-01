@@ -9,7 +9,7 @@ display_name = "Cinder Tiger Palm"
 category = &"technique"
 subcategory = &"scroll"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:tome_cinder_tiger"])
+sources = Array[StringName]([&"boss:tome_cinder_tiger", &"boss:d6_cinder_tiger"])
 percent_modifiers = {
 "attack_physical": 0.06
 }

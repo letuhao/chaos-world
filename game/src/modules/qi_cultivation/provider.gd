@@ -15,15 +15,25 @@ func contribute(context: StatContext) -> Dictionary:
 	var purity := _purity(context)
 	var rank := _rank_index(context)
 	var realm_mult := 1.0 + rank * 0.1
+	var meridian_bonus := _meridian_flow_bonus(context)
 
 	return {
-		QiStats.QI_REGEN_RATE: (qi_affinity * 0.3 + aptitude * 0.1) * realm_mult,
-		QiStats.QI_ABSORPTION: (qi_affinity * 0.5 + spirit * 0.2) * (0.5 + purity * 0.5),
+		QiStats.QI_REGEN_RATE:
+		(qi_affinity * 0.3 + aptitude * 0.1) * realm_mult * (1.0 + meridian_bonus),
+		QiStats.QI_ABSORPTION:
+		(qi_affinity * 0.5 + spirit * 0.2) * (0.5 + purity * 0.5) * (1.0 + meridian_bonus),
 		QiStats.TECHNIQUE_COST_REDUCTION: clampf(qi_control * 0.002, 0.0, 0.5),
 		QiStats.TECHNIQUE_POWER: (1.0 + qi_affinity * 0.05) * (0.5 + purity * 0.5) * realm_mult,
 		QiStats.FLIGHT_SPEED: dantian_capacity * 2.0 * (1.0 + rank * 0.05),
 		QiStats.QI_SENSE_RANGE: (qi_affinity * 10.0 + qi_control * 5.0) * (0.5 + purity * 0.5),
 	}
+
+
+func _meridian_flow_bonus(context: StatContext) -> float:
+	var network := context.component(&"meridians")
+	if network is MeridianNetwork:
+		return network.get_flow_bonus()
+	return 0.0
 
 
 func _purity(context: StatContext) -> float:

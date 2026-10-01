@@ -9,4 +9,4 @@ display_name = "Earthjade"
 category = &"material"
 subcategory = &"ore"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:d5_earth_bloom", &"boss:succubus_earth_guardian"])

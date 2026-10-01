@@ -9,4 +9,4 @@ display_name = "Storm Hawk Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:beast_storm_hawk"])
+sources = Array[StringName]([&"boss:beast_storm_hawk", &"boss:d1_storm_hawk_hatchling"])

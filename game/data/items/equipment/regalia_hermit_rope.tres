@@ -9,7 +9,7 @@ display_name = "Frost Hermit Rope"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"earth"
-sources = Array[StringName]([&"boss:treasure_frost_hermit"])
+sources = Array[StringName]([&"boss:treasure_frost_hermit", &"boss:d6_frost_hermit"])
 flat_modifiers = {
 "max_stamina": 26.0
 }

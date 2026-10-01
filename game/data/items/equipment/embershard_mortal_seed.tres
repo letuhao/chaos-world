@@ -9,7 +9,7 @@ display_name = "Mortal Element Seed"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:elemental_mortal_guardian"])
+sources = Array[StringName]([&"boss:elemental_mortal_guardian", &"boss:d2_ember_guardian"])
 flat_modifiers = {
 "max_health": 28.0
 }

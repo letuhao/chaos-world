@@ -9,7 +9,7 @@ signal path_advanced(path_id: StringName, rank_id: StringName)
 signal status_added(status_id: StringName)
 signal status_removed(status_id: StringName)
 
-const SCHEMA_VERSION := 1
+const SCHEMA_VERSION := 2
 
 var id: StringName
 var display_name: String
@@ -23,6 +23,7 @@ var stats: ActorStats
 var resources: Dictionary
 var statuses: Array[StatusEffect]
 var paths: Dictionary
+var meridians: MeridianNetwork
 var _context: StatContext
 var _invalidator: StatsInvalidator
 
@@ -37,6 +38,7 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 	resources = {}
 	statuses = []
 	paths = {}
+	meridians = MeridianNetwork.new()
 	_invalidator = StatsInvalidator.new(self)
 	traits = NameList.new()
 	traits.changed.connect(_invalidator.on_changed)
@@ -150,6 +152,7 @@ func to_dict() -> Dictionary:
 		"base": stats.base_dict(),
 		"resources": _resources_dict(),
 		"paths": _paths_dict(),
+		"meridians": meridians.to_dict(),
 	}
 
 
@@ -168,6 +171,7 @@ static func from_dict(data: Dictionary) -> Actor:
 		actor.add_resource(ResourcePool.from_dict(data["resources"][key]))
 	for key in data.get("paths", {}).keys():
 		actor.paths[StringName(key)] = PathState.from_dict(data["paths"][key])
+	actor.meridians = MeridianNetwork.from_dict(data.get("meridians", {}))
 	actor.mark_stats_dirty()
 	return actor
 

@@ -9,7 +9,7 @@ display_name = "Iron Sage Gourd"
 category = &"technique"
 subcategory = &"jade_slip"
 grade = &"earth"
-sources = Array[StringName]([&"boss:codex_iron_sage"])
+sources = Array[StringName]([&"boss:codex_iron_sage", &"boss:d1_iron_sage_disciple"])
 percent_modifiers = {
 "cultivation_rate": 0.05
 }

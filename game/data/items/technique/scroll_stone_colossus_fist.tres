@@ -9,7 +9,7 @@ display_name = "Stone Colossus Fist"
 category = &"technique"
 subcategory = &"manual"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:scroll_stone_colossus"])
+sources = Array[StringName]([&"boss:scroll_stone_colossus", &"boss:d5_stone_colossus"])
 flat_modifiers = {
 "attack_physical": 8.0
 }

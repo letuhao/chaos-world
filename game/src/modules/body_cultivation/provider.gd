@@ -2,7 +2,7 @@ class_name BodyProvider
 extends StatProvider
 
 ## Contributes body-cultivation derived stats from base attributes, body integrity
-## ratio, and path rank (ADR 0012).
+## ratio, path rank, and meridian bonuses (ADR 0012, ADR 0015).
 
 
 func contribute(context: StatContext) -> Dictionary:
@@ -15,8 +15,9 @@ func contribute(context: StatContext) -> Dictionary:
 	var integrity_factor := 0.5 + 0.5 * integrity_ratio
 
 	var multiplier := _realm_multiplier(context)
+	var meridian_power := _meridian_power_bonus(context)
 
-	var scaling := integrity_factor * multiplier
+	var scaling := integrity_factor * multiplier * (1.0 + meridian_power)
 
 	return {
 		BodyStats.PHYSICAL_ATTACK: (muscle_fiber * 2.0 + bone_density * 1.0) * scaling,
@@ -38,6 +39,13 @@ func _realm_multiplier(context: StatContext) -> float:
 	if realm == null:
 		return 1.0
 	return realm.power
+
+
+func _meridian_power_bonus(context: StatContext) -> float:
+	var meridians: MeridianNetwork = context.component(&"meridians")
+	if meridians == null:
+		return 0.0
+	return meridians.get_power_bonus()
 
 
 func _pool_ratio(context: StatContext, id: StringName) -> float:

@@ -9,7 +9,7 @@ display_name = "Storm Phoenix Wing"
 category = &"technique"
 subcategory = &"manual"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:codex_storm_phoenix"])
+sources = Array[StringName]([&"boss:codex_storm_phoenix", &"boss:d2_storm_phoenix"])
 percent_modifiers = {
 "move_speed": 0.04
 }

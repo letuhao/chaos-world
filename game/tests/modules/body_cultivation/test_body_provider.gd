@@ -87,3 +87,44 @@ func test_provider_retrievable() -> void:
 	var provider := BodyCultivationApi.provider(actor)
 	assert_eq(provider != null, true, "provider retrievable")
 	assert_eq(provider is BodyProvider, true, "provider type")
+
+
+func test_meridian_power_bonus_scales_stats() -> void:
+	var actor := _actor_with_module()
+	actor.set_component(&"meridians", actor.meridians)
+	# Base physical_attack = 30.0
+	assert_almost_eq(actor.stats.derived(BodyStats.PHYSICAL_ATTACK), 30.0, "no meridian bonus")
+	# Expand and strengthen a meridian for power bonus
+	actor.meridians.unlock_for_realm(&"qi_refining")
+	actor.meridians.open_meridian(&"lung")
+	actor.meridians.expand_meridian(&"lung")
+	actor.meridians.strengthen_meridian(&"lung")
+	actor.mark_stats_dirty()
+	# power_bonus for lung = 0.05, so scaling = 1.0 * 1.0 * (1.0 + 0.05) = 1.05
+	# physical_attack = 30.0 * 1.05 = 31.5
+	assert_almost_eq(actor.stats.derived(BodyStats.PHYSICAL_ATTACK), 31.5, "meridian power bonus")
+
+
+func test_meridian_power_bonus_scales_body_cultivation_power() -> void:
+	var actor := _actor_with_module()
+	actor.set_component(&"meridians", actor.meridians)
+	# Base body_cultivation_power = 15.0
+	assert_almost_eq(
+		actor.stats.derived(BodyStats.BODY_CULTIVATION_POWER), 15.0, "no meridian bonus"
+	)
+	actor.meridians.unlock_for_realm(&"qi_refining")
+	actor.meridians.open_meridian(&"lung")
+	actor.meridians.expand_meridian(&"lung")
+	actor.meridians.strengthen_meridian(&"lung")
+	actor.mark_stats_dirty()
+	# power_bonus = 0.05, scaling = 1.05
+	# body_cultivation_power = 15.0 * 1.05 = 15.75
+	assert_almost_eq(
+		actor.stats.derived(BodyStats.BODY_CULTIVATION_POWER), 15.75, "meridian power on bcp"
+	)
+
+
+func test_no_meridian_component_gives_no_bonus() -> void:
+	var actor := _actor_with_module()
+	# No meridians component attached — should default to no bonus
+	assert_almost_eq(actor.stats.derived(BodyStats.PHYSICAL_ATTACK), 30.0, "no meridian component")

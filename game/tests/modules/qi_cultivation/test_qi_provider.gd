@@ -74,3 +74,27 @@ func test_purity_affects_stats() -> void:
 	purity_pool.current = 50.0
 	# purity = 0.5, absorption = 12.0 * (0.5 + 0.5 * 0.5) = 12.0 * 0.75 = 9.0
 	assert_almost_eq(actor.stats.derived(QiStats.QI_ABSORPTION), 9.0, "half purity")
+
+
+func test_meridian_bonus_applies_to_regen() -> void:
+	var actor := _actor_with_module()
+	actor.meridians.unlock_for_realm(&"qi_refining")
+	actor.meridians.open_meridian(&"lung")
+	actor.mark_stats_dirty()
+	# flow bonus = 0.10, regen = 7.0 * 1.10 = 7.7
+	assert_almost_eq(actor.stats.derived(QiStats.QI_REGEN_RATE), 7.7, "meridian bonus regen")
+
+
+func test_meridian_bonus_applies_to_absorption() -> void:
+	var actor := _actor_with_module()
+	actor.meridians.unlock_for_realm(&"qi_refining")
+	actor.meridians.open_meridian(&"lung")
+	actor.mark_stats_dirty()
+	# flow bonus = 0.10, absorption = 12.0 * 1.10 = 13.2
+	assert_almost_eq(actor.stats.derived(QiStats.QI_ABSORPTION), 13.2, "meridian bonus absorption")
+
+
+func test_no_meridian_bonus_when_closed() -> void:
+	var actor := _actor_with_module()
+	# no meridians opened, flow bonus = 0.0
+	assert_almost_eq(actor.stats.derived(QiStats.QI_REGEN_RATE), 7.0, "no meridian bonus")

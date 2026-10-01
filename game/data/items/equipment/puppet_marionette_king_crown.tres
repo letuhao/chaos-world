@@ -9,7 +9,7 @@ display_name = "Marionette Crown"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"earth"
-sources = Array[StringName]([&"boss:puppet_marionette_king"])
+sources = Array[StringName]([&"boss:puppet_marionette_king", &"boss:d4_marionette_king"])
 flat_modifiers = {
 "attack_physical": 25.0
 }

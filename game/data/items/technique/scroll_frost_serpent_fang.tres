@@ -9,7 +9,7 @@ display_name = "Frost Serpent Fang"
 category = &"technique"
 subcategory = &"jade_slip"
 grade = &"earth"
-sources = Array[StringName]([&"boss:scroll_frost_serpent"])
+sources = Array[StringName]([&"boss:scroll_frost_serpent", &"boss:d5_frost_serpent"])
 percent_modifiers = {
 "attack_physical": 0.05
 }

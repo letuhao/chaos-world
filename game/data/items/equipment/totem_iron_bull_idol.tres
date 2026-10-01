@@ -9,7 +9,7 @@ display_name = "Iron Bull Idol"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"heaven"
-sources = Array[StringName]([&"boss:totem_iron_bull"])
+sources = Array[StringName]([&"boss:totem_iron_bull", &"boss:d6_iron_bull"])
 flat_modifiers = {
 "defense_physical": 60.0
 }

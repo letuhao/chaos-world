@@ -9,7 +9,7 @@ display_name = "Marionette Heart"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:puppet_marionette_king"])
+sources = Array[StringName]([&"boss:puppet_marionette_king", &"boss:d4_marionette_king"])
 flat_modifiers = {
 "max_health": 150.0
 }

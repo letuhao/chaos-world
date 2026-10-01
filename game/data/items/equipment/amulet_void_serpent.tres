@@ -9,7 +9,7 @@ display_name = "Void Serpent Amulet"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"immortal"
-sources = Array[StringName]([&"boss:amulet_void_serpent"])
+sources = Array[StringName]([&"boss:amulet_void_serpent", &"boss:d1_void_serpent_venomling"])
 flat_modifiers = {
 "max_health": 60.0
 }

@@ -9,4 +9,4 @@ display_name = "Coral Leviathan Scale Bone"
 category = &"material"
 subcategory = &"bone"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:marine_coral_leviathan"])
+sources = Array[StringName]([&"boss:marine_coral_leviathan", &"boss:d3_coral_serpent"])

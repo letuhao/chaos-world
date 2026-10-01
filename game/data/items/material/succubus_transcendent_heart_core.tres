@@ -9,4 +9,4 @@ display_name = "Transcendent Radiance Heart Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"divine"
-sources = Array[StringName]([&"boss:succubus_transcendent_guardian"])
+sources = Array[StringName]([&"boss:succubus_transcendent_guardian", &"boss:d5_transcendent_radiance"])

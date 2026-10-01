@@ -9,7 +9,7 @@ display_name = "Dancer Plate"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"earth"
-sources = Array[StringName]([&"boss:puppet_iron_dancer"])
+sources = Array[StringName]([&"boss:puppet_iron_dancer", &"boss:d4_iron_dancer"])
 flat_modifiers = {
 "defense_physical": 40.0
 }
