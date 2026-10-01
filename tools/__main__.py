@@ -6,6 +6,7 @@ import argparse
 
 from . import (
     arch,
+    assets,
     backlog,
     check,
     data,
@@ -24,6 +25,7 @@ COMMANDS = {
     "fmt": fmt,
     "lint": lint,
     "arch": arch,
+    "assets": assets,
     "test": test,
     "check": check,
     "run": run,
