@@ -1,0 +1,26 @@
+# Godot generated import cache
+game/.godot/
+
+# Build output
+build/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.ruff_cache/
+
+# Local agent state (not shared)
+.pi/
+.remember/
+
+# Harness-local skill installs — canonical copy is .agents/ + skills-lock.json
+.claude/
+.commandcode/
+
+# Local Godot binary location
+.godot-bin
+
+# OS noise
+.DS_Store
+Thumbs.db
