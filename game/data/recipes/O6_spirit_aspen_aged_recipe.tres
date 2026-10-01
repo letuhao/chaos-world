@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"O6_spirit_aspen_aged_recipe"
+display_name = "Spirit Aspen Aged Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"O6_spirit_aspen_refined", &"mind_spirit_ascension_mind_herb", &"qi_spirit_manifestation_qi_herb"])
+outputs = Array[StringName]([&"O6_spirit_aspen_aged"])
