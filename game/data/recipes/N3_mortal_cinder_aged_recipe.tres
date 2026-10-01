@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"N3_mortal_cinder_aged_recipe"
+display_name = "Mortal Cinder Aged Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"N3_mortal_cinder_refined", &"qi_body_integration_qi_herb", &"gem_sunstone"])
+outputs = Array[StringName]([&"N3_mortal_cinder_aged"])

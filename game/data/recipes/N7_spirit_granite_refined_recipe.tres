@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"N7_spirit_granite_refined_recipe"
+display_name = "Spirit Granite Refined Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"N7_spirit_granite_base", &"pauldron_boar_leather"])
+outputs = Array[StringName]([&"N7_spirit_granite_refined"])

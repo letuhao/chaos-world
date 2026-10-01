@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"N2_mortal_brine_perfected_recipe"
+display_name = "Mortal Brine Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"N2_mortal_brine_primed", &"mind_great_ascension_mind_herb", &"qi_foundation_qi_herb"])
+outputs = Array[StringName]([&"N2_mortal_brine_perfected"])
