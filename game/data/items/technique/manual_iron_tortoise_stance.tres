@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"manual_iron_tortoise_stance"
+display_name = "Iron Tortoise Stance"
+category = &"technique"
+subcategory = &"manual"
+grade = &"spirit"
+sources = Array[StringName]([&"boss:manual_iron_tortoise"])
