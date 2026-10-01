@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"treaty_second_clause"
+display_name = "Treaty: Second Clause"
+category = &"technique"
+subcategory = &"treaty"
+grade = &"spirit"
+sources = Array[StringName]([&"quest:treaty_second_clause"])
+percent_modifiers = {
+"insight_gain": 0.06
+}

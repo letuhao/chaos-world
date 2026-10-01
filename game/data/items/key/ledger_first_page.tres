@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"ledger_first_page"
+display_name = "First Ledger Page"
+category = &"key"
+subcategory = &"ledger"
+grade = &"mortal"
+sources = Array[StringName]([&"quest:ledger_of_the_first_page"])

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"pact_smith_token"
+display_name = "Smith's Pact Token"
+category = &"equipment"
+subcategory = &"accessory"
+grade = &"earth"
+sources = Array[StringName]([&"quest:pact_of_the_smith"])
+flat_modifiers = {
+"max_health": 40.0
+}
