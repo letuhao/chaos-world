@@ -9,7 +9,7 @@ breakthrough_item = &"mind_true_immortal_breakthrough_pill"
 training_item = &"mind_true_immortal_channel_elixir"
 sea_catalyst = &"mind_true_immortal_sea_catalyst"
 progress_required = 8841.0
-comprehension_required = 1110.0.0
+comprehension_required = 1110.0
 clarity_required = 0.73
 purity_required = 0.78
 sea_fill_required = 1.0
@@ -20,7 +20,7 @@ channel_refinement_cap = 23
 sea_capacity = 650.0
 sea_milestone_work = 1612.0
 meridian_milestone_work = 1209.0
-insight_required = 555.0.0
+insight_required = 555.0
 resonance_required = 5
 rewards = {
 "will": 2.0

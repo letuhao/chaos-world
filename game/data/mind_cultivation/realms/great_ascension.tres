@@ -9,7 +9,7 @@ breakthrough_item = &"mind_great_ascension_breakthrough_pill"
 training_item = &"mind_great_ascension_channel_elixir"
 sea_catalyst = &"mind_great_ascension_sea_catalyst"
 progress_required = 1680.0
-comprehension_required = 150.0.0
+comprehension_required = 150.0
 clarity_required = 0.51
 purity_required = 0.56
 sea_fill_required = 1.0
@@ -20,7 +20,7 @@ channel_refinement_cap = 8
 sea_capacity = 275.0
 sea_milestone_work = 368.0
 meridian_milestone_work = 276.0
-insight_required = 75.0.0
+insight_required = 75.0
 resonance_required = 0
 rewards = {
 "will": 2.0

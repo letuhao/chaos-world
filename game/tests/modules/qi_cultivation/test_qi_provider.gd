@@ -61,11 +61,17 @@ func test_qi_sense_range() -> void:
 func test_realm_scaling() -> void:
 	var actor := _actor_with_module()
 	actor.set_path(PathState.new(QiPath.PATH_ID, &"qi_refining"))
-	# rank 0: throughput_factor = 1.0 (default)
+	# rank 0: throughput_factor = 1.0
 	assert_almost_eq(actor.stats.derived(QiStats.QI_REGEN_RATE), 7.0, "rank 0 regen")
 	actor.path(QiPath.PATH_ID).rank_id = &"spirit_sea"
-	# rank 10: throughput_factor = 1.0 (default, not yet tuned)
-	assert_almost_eq(actor.stats.derived(QiStats.QI_REGEN_RATE), 7.0, "rank 10 regen")
+	# rank 10: regen scales with the seed's throughput_factor. Read the factor
+	# instead of hardcoding it, so retuning the realms does not stale this test.
+	var seed := QiRealmSeed.for_realm(&"spirit_sea")
+	assert_ne(seed, null, "spirit_sea seed")
+	var rank_10: float = actor.stats.derived(QiStats.QI_REGEN_RATE)
+	assert_almost_eq(rank_10, 7.0 * seed.throughput_factor, "rank 10 regen")
+	# the point of the test: a higher rank must actually regen faster
+	assert_eq(rank_10 > 7.0, true, "rank 10 outranks rank 0")
 
 
 func test_purity_affects_stats() -> void:

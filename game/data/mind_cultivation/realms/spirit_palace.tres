@@ -9,7 +9,7 @@ breakthrough_item = &"mind_spirit_palace_breakthrough_pill"
 training_item = &"mind_spirit_palace_channel_elixir"
 sea_catalyst = &"mind_spirit_palace_sea_catalyst"
 progress_required = 3236.0
-comprehension_required = 318.0.0
+comprehension_required = 318.0
 clarity_required = 0.56
 purity_required = 0.61
 sea_fill_required = 1.0
@@ -20,7 +20,7 @@ channel_refinement_cap = 12
 sea_capacity = 375.0
 sea_milestone_work = 648.0
 meridian_milestone_work = 486.0
-insight_required = 159.0.0
+insight_required = 159.0
 resonance_required = 0
 rewards = {
 "will": 2.0

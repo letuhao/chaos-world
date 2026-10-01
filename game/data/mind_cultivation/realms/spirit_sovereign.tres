@@ -9,7 +9,7 @@ breakthrough_item = &"mind_spirit_sovereign_breakthrough_pill"
 training_item = &"mind_spirit_sovereign_channel_elixir"
 sea_catalyst = &"mind_spirit_sovereign_sea_catalyst"
 progress_required = 5572.0
-comprehension_required = 618.0.0
+comprehension_required = 618.0
 clarity_required = 0.64
 purity_required = 0.69
 sea_fill_required = 1.0
@@ -20,7 +20,7 @@ channel_refinement_cap = 17
 sea_capacity = 500.0
 sea_milestone_work = 1056.0
 meridian_milestone_work = 792.0
-insight_required = 309.0.0
+insight_required = 309.0
 resonance_required = 0
 rewards = {
 "will": 2.0

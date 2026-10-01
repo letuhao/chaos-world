@@ -9,7 +9,7 @@ breakthrough_item = &"mind_qi_refining_breakthrough_pill"
 training_item = &"mind_qi_refining_channel_elixir"
 sea_catalyst = &"mind_qi_refining_sea_catalyst"
 progress_required = 100.0
-comprehension_required = 10.0.0
+comprehension_required = 10.0
 clarity_required = 0.40
 purity_required = 0.45
 sea_fill_required = 1.0
@@ -20,7 +20,7 @@ channel_refinement_cap = 1
 sea_capacity = 100.0
 sea_milestone_work = 20.0
 meridian_milestone_work = 15.0
-insight_required = 5.0.0
+insight_required = 5.0
 resonance_required = 0
 rewards = {
 "will": 2.0

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"S6_immortal_farrier_perfected_recipe"
+display_name = "Immortal Farrier Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"S6_immortal_farrier_primed", &"grimoire_void_ink", &"ore_phoenix_ash"])
+outputs = Array[StringName]([&"S6_immortal_farrier_perfected"])

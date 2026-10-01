@@ -9,7 +9,7 @@ breakthrough_item = &"mind_nascent_soul_breakthrough_pill"
 training_item = &"mind_nascent_soul_channel_elixir"
 sea_catalyst = &"mind_nascent_soul_sea_catalyst"
 progress_required = 492.0
-comprehension_required = 46.0.0
+comprehension_required = 46.0
 clarity_required = 0.45
 purity_required = 0.49
 sea_fill_required = 1.0
@@ -20,7 +20,7 @@ channel_refinement_cap = 4
 sea_capacity = 175.0
 sea_milestone_work = 139.0
 meridian_milestone_work = 104.0
-insight_required = 23.0.0
+insight_required = 23.0
 resonance_required = 0
 rewards = {
 "will": 2.0

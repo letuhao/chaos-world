@@ -9,7 +9,7 @@ breakthrough_item = &"mind_tribulation_breakthrough_pill"
 training_item = &"mind_tribulation_channel_elixir"
 sea_catalyst = &"mind_tribulation_sea_catalyst"
 progress_required = 2039.0
-comprehension_required = 186.0.0
+comprehension_required = 186.0
 clarity_required = 0.52
 purity_required = 0.57
 sea_fill_required = 1.0
@@ -20,7 +20,7 @@ channel_refinement_cap = 9
 sea_capacity = 300.0
 sea_milestone_work = 433.0
 meridian_milestone_work = 325.0
-insight_required = 93.0.0
+insight_required = 93.0
 resonance_required = 0
 rewards = {
 "will": 2.0
