@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AcupointDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/acupoint_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"celestial_3"
+display_name = "Dai Mai Celestial Node 04"
+tier = &"celestial"
+unlock_index = 18
+meridian_id = &"dai_mai"
+base_capacity = 800.0

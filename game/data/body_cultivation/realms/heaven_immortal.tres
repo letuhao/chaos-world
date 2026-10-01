@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BodyRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"heaven_immortal"
+breakthrough_item = &"body_heaven_immortal_breakthrough_pill"
+strengthening_item = &"body_heaven_immortal_channel_elixir"
+progress_required = 1900.0
+physique_required = 46.0
+quality_required = 0.68
+quality_target = 0.69
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
+required_refinement = 19
+refinement_cap = 20
+integrity_maximum = 290.0
+rewards = {
+"physique": 2.0,
+"muscle_fiber": 1.0
+}

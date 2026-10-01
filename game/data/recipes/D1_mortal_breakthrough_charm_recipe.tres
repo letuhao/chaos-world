@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"D1_mortal_breakthrough_charm_recipe"
+display_name = "Mortal Breakthrough Charm Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"alchemy_ash_herb", &"jade_ore"])
+outputs = Array[StringName]([&"D1_mortal_breakthrough_charm"])

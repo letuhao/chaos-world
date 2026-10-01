@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BodyRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"spirit_sea"
+breakthrough_item = &"body_spirit_sea_breakthrough_pill"
+strengthening_item = &"body_spirit_sea_channel_elixir"
+progress_required = 1000.0
+physique_required = 28.0
+quality_required = 0.59
+quality_target = 0.60
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai"])
+required_refinement = 10
+refinement_cap = 11
+integrity_maximum = 200.0
+rewards = {
+"physique": 2.0,
+"muscle_fiber": 1.0
+}

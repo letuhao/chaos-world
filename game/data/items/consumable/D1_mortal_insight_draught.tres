@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"D1_mortal_insight_draught"
+display_name = "Mortal Insight Draught"
+category = &"consumable"
+subcategory = &"draught"
+grade = &"mortal"
+sources = Array[StringName]([&"gather", &"craft:D1_mortal_insight_draught_recipe"])
+percent_modifiers = {
+"insight_gain": 0.03
+}

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BodyRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"dao_fruit"
+breakthrough_item = &"body_dao_fruit_breakthrough_pill"
+strengthening_item = &"body_dao_fruit_channel_elixir"
+progress_required = 2500.0
+physique_required = 58.0
+quality_required = 0.74
+quality_target = 0.75
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
+required_refinement = 25
+refinement_cap = 26
+integrity_maximum = 350.0
+rewards = {
+"physique": 2.0,
+"muscle_fiber": 1.0
+}

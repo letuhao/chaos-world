@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"body_spirit_sovereign_channel_elixir"
+display_name = "Body of Void Channel Elixir"
+category = &"consumable"
+subcategory = &"elixir"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:body_spirit_sovereign_elixir_recipe"])
+description = "Restores one damaged channel or trains one channel step and its linked acupoint quality."

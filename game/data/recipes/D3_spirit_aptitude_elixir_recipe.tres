@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"D3_spirit_aptitude_elixir_recipe"
+display_name = "Spirit Aptitude Elixir Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"alchemy_glow_essence", &"soul_clarity_essence"])
+outputs = Array[StringName]([&"D3_spirit_aptitude_elixir"])

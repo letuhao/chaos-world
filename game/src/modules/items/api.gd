@@ -24,3 +24,18 @@ static func equipment(actor: Actor) -> Equipment:
 static func craft(recipe: RecipeDef, inventory: Inventory) -> bool:
 	var crafting := Crafting.new(recipe.station)
 	return crafting.craft(recipe, inventory)
+
+
+## Whether the actor's inventory holds at least `quantity` of `def_id`.
+static func has_item(actor: Actor, def_id: StringName, quantity: int = 1) -> bool:
+	var inv := inventory(actor)
+	return inv != null and inv.has(def_id, quantity)
+
+
+## Remove `quantity` of `def_id` from the actor's inventory. All-or-nothing:
+## returns false and changes nothing when the stack is short.
+static func consume_item(actor: Actor, def_id: StringName, quantity: int = 1) -> bool:
+	var inv := inventory(actor)
+	if inv == null or not inv.has(def_id, quantity):
+		return false
+	return inv.remove(def_id, quantity) == quantity

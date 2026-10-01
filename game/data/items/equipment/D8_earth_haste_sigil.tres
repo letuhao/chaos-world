@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"D8_earth_haste_sigil"
+display_name = "Earth Haste Sigil"
+category = &"equipment"
+subcategory = &"accessory"
+grade = &"earth"
+sources = Array[StringName]([&"gather", &"craft:D8_earth_haste_sigil_recipe"])
+percent_modifiers = {
+"cooldown_reduction": 0.08
+}

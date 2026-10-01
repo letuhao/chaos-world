@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"D6_immortal_healthsalve_recipe"
+display_name = "Immortal Renewal Salve Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"herb_phoenix_feather", &"herb_dragonwhisker"])
+outputs = Array[StringName]([&"D6_immortal_healthsalve"])

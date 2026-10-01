@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"body_spirit_condensation_breakthrough_pill"
+display_name = "Silver Body Tempering Pill"
+category = &"consumable"
+subcategory = &"pill"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:body_spirit_condensation_pill_recipe"])
+description = "Consumed by the Body Cultivation attempt entering Silver Body; no equipment modifier."

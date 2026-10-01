@@ -25,6 +25,13 @@ func assert_almost_eq(
 		_record(label, expected, actual)
 
 
+func assert_ne(actual, unexpected, label: String) -> void:
+	if actual != unexpected:
+		_passed += 1
+	else:
+		_record(label, "not " + str(unexpected), actual)
+
+
 func passed() -> int:
 	return _passed
 

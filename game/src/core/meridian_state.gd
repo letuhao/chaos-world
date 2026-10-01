@@ -6,6 +6,9 @@ extends RefCounted
 var id: StringName
 var state: StringName = &"closed"
 var tier: int = 0
+## Training depth within `strengthened`. Body cultivation raises this past the
+## base state up to a per-realm cap (ADR 0023).
+var refinement: int = 0
 var capacity_bonus: float = 0.0
 var flow_bonus: float = 0.0
 var power_bonus: float = 0.0

@@ -43,3 +43,55 @@ func test_breakthrough_without_condition_is_allowed() -> void:
 	var actor := Actor.new(&"hero")
 	actor.set_path(PathState.new(&"qi", &"qi_refining"))
 	assert_eq(Breakthrough.try_advance(actor, &"qi"), true, "no condition required by core")
+
+
+func test_breakthrough_with_world_below_transcendent() -> void:
+	# Dao Fruit (index 25) → Immortal Sovereign (index 26) — below Transcendent, world not required
+	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
+	actor.set_path(PathState.new(&"qi", &"dao_fruit"))
+	assert_eq(
+		Breakthrough.try_advance_with_world(actor, &"qi", AlwaysCondition.new()),
+		true,
+		"advanced without world"
+	)
+	assert_eq(actor.path(&"qi").rank_id, &"immortal_sovereign", "next realm")
+
+
+func test_breakthrough_with_world_requires_world_at_transcendent() -> void:
+	# Transcendent (index 27) — world required
+	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
+	actor.set_path(PathState.new(&"qi", &"transcendent"))
+	assert_eq(
+		Breakthrough.try_advance_with_world(actor, &"qi", AlwaysCondition.new()),
+		false,
+		"blocked without world"
+	)
+	assert_eq(actor.path(&"qi").rank_id, &"transcendent", "unchanged")
+
+
+func test_breakthrough_with_world_stable_world_allows_advance() -> void:
+	# Transcendent (index 27) with stable world — breakthrough proceeds
+	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
+	actor.set_path(PathState.new(&"qi", &"transcendent"))
+	var world := WorldState.new(WorldState.MICRO, 1.0, 0.5)
+	actor.world = world
+	assert_eq(
+		Breakthrough.try_advance_with_world(actor, &"qi", AlwaysCondition.new()),
+		true,
+		"advanced with world"
+	)
+	assert_eq(actor.path(&"qi").rank_id, &"dao_ancestor", "next realm")
+
+
+func test_breakthrough_with_world_unstable_world_blocks() -> void:
+	# Transcendent (index 27) with unstable world — breakthrough blocked
+	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
+	actor.set_path(PathState.new(&"qi", &"transcendent"))
+	var world := WorldState.new(WorldState.MICRO, 1.0, 0.2)
+	actor.world = world
+	assert_eq(
+		Breakthrough.try_advance_with_world(actor, &"qi", AlwaysCondition.new()),
+		false,
+		"blocked with unstable world"
+	)
+	assert_eq(actor.path(&"qi").rank_id, &"transcendent", "unchanged")

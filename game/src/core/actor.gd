@@ -24,6 +24,16 @@ var resources: Dictionary
 var statuses: Array[StatusEffect]
 var paths: Dictionary
 var meridians: MeridianNetwork
+var tribulation: Tribulation = null
+var inside_world: InsideWorld = null
+var world: WorldState = null
+var ascension: AscensionState:
+	set(value):
+		ascension = value
+		if ascension != null:
+			components[&"ascension"] = ascension
+		if stats != null:
+			mark_stats_dirty()
 var _context: StatContext
 var _invalidator: StatsInvalidator
 
@@ -140,6 +150,18 @@ func realm() -> StringName:
 
 
 func to_dict() -> Dictionary:
+	var tribulation_dict: Dictionary = {}
+	if tribulation != null:
+		tribulation_dict = tribulation.to_dict()
+	var inside_world_dict: Dictionary = {}
+	if inside_world != null:
+		inside_world_dict = inside_world.to_dict()
+	var world_dict: Dictionary = {}
+	if world != null:
+		world_dict = world.to_dict()
+	var ascension_dict: Dictionary = {}
+	if ascension != null:
+		ascension_dict = ascension.to_dict()
 	return {
 		"version": SCHEMA_VERSION,
 		"id": String(id),
@@ -153,6 +175,10 @@ func to_dict() -> Dictionary:
 		"resources": _resources_dict(),
 		"paths": _paths_dict(),
 		"meridians": meridians.to_dict(),
+		"tribulation": tribulation_dict,
+		"inside_world": inside_world_dict,
+		"world": world_dict,
+		"ascension": ascension_dict,
 	}
 
 
@@ -172,6 +198,18 @@ static func from_dict(data: Dictionary) -> Actor:
 	for key in data.get("paths", {}).keys():
 		actor.paths[StringName(key)] = PathState.from_dict(data["paths"][key])
 	actor.meridians = MeridianNetwork.from_dict(data.get("meridians", {}))
+	var tribulation_data: Dictionary = data.get("tribulation", {})
+	if not tribulation_data.is_empty():
+		actor.tribulation = Tribulation.from_dict(tribulation_data)
+	var inside_world_data: Dictionary = data.get("inside_world", {})
+	if not inside_world_data.is_empty():
+		actor.inside_world = InsideWorld.from_dict(inside_world_data)
+	var world_data: Dictionary = data.get("world", {})
+	if not world_data.is_empty():
+		actor.world = WorldState.from_dict(world_data)
+	var ascension_data: Dictionary = data.get("ascension", {})
+	if not ascension_data.is_empty():
+		actor.ascension = AscensionState.from_dict(ascension_data)
 	actor.mark_stats_dirty()
 	return actor
 

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BodyRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"tribulation"
+breakthrough_item = &"body_tribulation_breakthrough_pill"
+strengthening_item = &"body_tribulation_channel_elixir"
+progress_required = 800.0
+physique_required = 24.0
+quality_required = 0.57
+quality_target = 0.58
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver"])
+required_refinement = 8
+refinement_cap = 9
+integrity_maximum = 180.0
+rewards = {
+"physique": 2.0,
+"bone_density": 1.0
+}

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BodyRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"foundation"
+breakthrough_item = &"body_foundation_breakthrough_pill"
+strengthening_item = &"body_foundation_channel_elixir"
+progress_required = 100.0
+physique_required = 10.0
+quality_required = 0.50
+quality_target = 0.51
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen"])
+required_refinement = 1
+refinement_cap = 2
+integrity_maximum = 110.0
+rewards = {
+"physique": 2.0,
+"muscle_fiber": 1.0
+}

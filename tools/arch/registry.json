@@ -41,7 +41,8 @@
     "body_cultivation": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "items"
       ]
     },
     "qi_cultivation": {

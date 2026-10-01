@@ -15,6 +15,12 @@ static func attach(actor: Actor) -> void:
 	var provider := BodyProvider.new()
 	actor.stats.add_provider(provider)
 	actor.set_component(_COMPONENT_ID, provider)
+	var rank := _body_rank(actor)
+	if rank != &"":
+		# Channels must exist as soon as the module is attached. Without this the
+		# network stays empty until the first cultivate(), and strengthen() then
+		# rejects every meridian because it cannot find the channel.
+		actor.meridians.unlock_for_realm(rank)
 
 
 static func provider(actor: Actor) -> BodyProvider:
@@ -33,9 +39,16 @@ static func acupoints(actor: Actor) -> Array[Acupoint]:
 
 
 static func attach_acupoints(actor: Actor) -> void:
-	var points: Array[Acupoint] = AcupointDefaults.build_for_realm(actor.realm())
+	var points: Array[Acupoint] = AcupointDefaults.build_for_realm(_body_rank(actor))
 	actor.set_component(_ACUPOINTS_ID, AcupointSet.new(points))
 	actor.stats.add_provider(AcupointProvider.new())
+
+
+## The body path's own rank. Not Actor.realm(), which returns whichever path
+## happens to come first and would scope acupoints to the wrong cultivation path.
+static func _body_rank(actor: Actor) -> StringName:
+	var state := actor.path(BodyPath.PATH_ID)
+	return &"" if state == null else state.rank_id
 
 
 static func _ensure_resources(actor: Actor) -> void:

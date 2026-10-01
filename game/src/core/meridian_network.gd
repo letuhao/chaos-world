@@ -5,6 +5,10 @@ extends RefCounted
 ## systems. Meridians unlock with realm, progress through states, and grant
 ## flow/capacity/power bonuses.
 
+## Each refinement step on a strengthened meridian adds this fraction of its
+## base power bonus. Depth is raised by body-cultivation training (ADR 0023).
+const REFINE_POWER_STEP := 0.1
+
 var _meridians: Dictionary = {}
 
 
@@ -40,6 +44,19 @@ func strengthen_meridian(id: StringName) -> void:
 		state.state = &"strengthened"
 
 
+## Raise training depth on an already-strengthened meridian. `max_refinement` is
+## supplied by the caller (the per-realm cap lives in module data, ADR 0023) so
+## core stays free of module references. True when depth actually advanced.
+func refine_meridian(id: StringName, max_refinement: int) -> bool:
+	var state := get_meridian(id)
+	if state == null or state.state != &"strengthened":
+		return false
+	if state.refinement >= max_refinement:
+		return false
+	state.refinement += 1
+	return true
+
+
 func damage_meridian(id: StringName) -> void:
 	var state := get_meridian(id)
 	if state != null:
@@ -72,7 +89,8 @@ func get_power_bonus() -> float:
 	var total := 0.0
 	for state in _meridians.values():
 		if state.state == &"strengthened":
-			total += state.power_bonus * state.get_bonus()
+			var depth: float = 1.0 + REFINE_POWER_STEP * float(state.refinement)
+			total += state.power_bonus * state.get_bonus() * depth
 	return total
 
 
@@ -84,6 +102,7 @@ func to_dict() -> Dictionary:
 			"id": String(state.id),
 			"state": String(state.state),
 			"tier": state.tier,
+			"refinement": state.refinement,
 			"capacity_bonus": state.capacity_bonus,
 			"flow_bonus": state.flow_bonus,
 			"power_bonus": state.power_bonus,
@@ -99,6 +118,7 @@ static func from_dict(data: Dictionary) -> MeridianNetwork:
 		state.id = StringName(entry.get("id", ""))
 		state.state = StringName(entry.get("state", "closed"))
 		state.tier = int(entry.get("tier", 0))
+		state.refinement = int(entry.get("refinement", 0))
 		state.capacity_bonus = float(entry.get("capacity_bonus", 0.0))
 		state.flow_bonus = float(entry.get("flow_bonus", 0.0))
 		state.power_bonus = float(entry.get("power_bonus", 0.0))
