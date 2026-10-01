@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"food"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:nectar_clarity_recipe"])
+percent_modifiers = {
+"insight_gain": 0.05
+}

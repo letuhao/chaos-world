@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"pill"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:panacea_vigor_pill_recipe"])
+flat_modifiers = {
+"max_health": 30.0
+}

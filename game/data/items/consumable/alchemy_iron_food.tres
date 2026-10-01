@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"food"
 grade = &"earth"
 sources = Array[StringName]([&"craft:alchemy_iron_food_recipe"])
+flat_modifiers = {
+"max_stamina": 20.0
+}

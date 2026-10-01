@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"pill"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:panacea_ward_pill_recipe"])
+percent_modifiers = {
+"status_resistance": 0.05
+}

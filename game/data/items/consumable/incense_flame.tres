@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"talisman"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:incense_flame_recipe"])
+percent_modifiers = {
+"attack_spiritual": 0.05
+}

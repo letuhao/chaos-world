@@ -10,3 +10,7 @@ category = &"consumable"
 subcategory = &"elixir"
 grade = &"divine"
 sources = Array[StringName]([&"craft:succubus_transcendent_breakthrough_recipe"])
+
+flat_modifiers = {
+"max_qi": 60.0
+}

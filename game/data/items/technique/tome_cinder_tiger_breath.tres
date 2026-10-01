@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"jade_slip"
 grade = &"earth"
 sources = Array[StringName]([&"boss:tome_cinder_tiger"])
+percent_modifiers = {
+"spell_power": 0.06
+}

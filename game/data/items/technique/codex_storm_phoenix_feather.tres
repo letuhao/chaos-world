@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"scroll"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:codex_storm_phoenix"])
+percent_modifiers = {
+"attack_speed": 0.04
+}

@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"elixir"
 grade = &"divine"
 sources = Array[StringName]([&"craft:panacea_clarity_elixir_recipe"])
+percent_modifiers = {
+"insight_gain": 0.07
+}

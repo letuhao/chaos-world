@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"talisman"
 grade = &"earth"
 sources = Array[StringName]([&"craft:talisman_vigor_recipe"])
+flat_modifiers = {
+"max_health": 35.0
+}

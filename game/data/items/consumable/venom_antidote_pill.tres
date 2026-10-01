@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:venom_antidote_pill_recipe"])
+percent_modifiers = {
+"status_resistance": 0.06
+}

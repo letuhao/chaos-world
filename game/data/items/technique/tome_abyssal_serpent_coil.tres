@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"scroll"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:tome_abyssal_serpent"])
+percent_modifiers = {
+"qi_regen": 0.06
+}

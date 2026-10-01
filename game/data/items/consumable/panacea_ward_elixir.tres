@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:panacea_ward_elixir_recipe"])
+percent_modifiers = {
+"status_resistance": 0.07
+}

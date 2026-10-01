@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"talisman"
 grade = &"divine"
 sources = Array[StringName]([&"craft:talisman_heaven_ward_recipe"])
+percent_modifiers = {
+"cultivation_rate": 0.08
+}

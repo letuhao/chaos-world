@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"food"
 grade = &"earth"
 sources = Array[StringName]([&"craft:nectar_surge_recipe"])
+percent_modifiers = {
+"spell_power": 0.06
+}

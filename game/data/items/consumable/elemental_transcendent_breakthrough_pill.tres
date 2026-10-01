@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"pill"
 grade = &"divine"
 sources = Array[StringName]([&"craft:elemental_transcendent_breakthrough_recipe"])
+percent_modifiers = {
+"cultivation_rate": 0.12
+}

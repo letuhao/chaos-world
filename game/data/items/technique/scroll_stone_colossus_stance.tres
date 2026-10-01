@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"scroll"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:scroll_stone_colossus"])
+flat_modifiers = {
+"poise": 9.0
+}

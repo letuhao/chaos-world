@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"manual"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:codex_void_serpent"])
+percent_modifiers = {
+"qi_regen": 0.05
+}

@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"manual"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:manual_iron_tortoise"])
+flat_modifiers = {
+"poise": 8.0
+}

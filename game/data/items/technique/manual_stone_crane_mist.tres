@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"scroll"
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"status_resistance": 0.04
+}

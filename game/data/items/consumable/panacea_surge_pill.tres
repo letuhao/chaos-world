@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:panacea_surge_pill_recipe"])
+percent_modifiers = {
+"spell_power": 0.05
+}

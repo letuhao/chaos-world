@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"talisman"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:incense_celestial_recipe"])
+percent_modifiers = {
+"cultivation_rate": 0.1
+}

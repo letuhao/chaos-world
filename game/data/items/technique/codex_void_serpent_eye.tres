@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"scroll"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:codex_void_serpent"])
+percent_modifiers = {
+"insight_gain": 0.05
+}

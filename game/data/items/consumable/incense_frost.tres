@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"talisman"
 grade = &"earth"
 sources = Array[StringName]([&"craft:incense_frost_recipe"])
+percent_modifiers = {
+"status_resistance": 0.05
+}

@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"elixir"
 grade = &"earth"
 sources = Array[StringName]([&"craft:vial_frost_elixir_recipe"])
+percent_modifiers = {
+"status_resistance": 0.05
+}

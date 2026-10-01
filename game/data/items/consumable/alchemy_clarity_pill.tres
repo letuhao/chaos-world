@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:alchemy_clarity_pill_recipe"])
+percent_modifiers = {
+"insight_gain": 0.05
+}

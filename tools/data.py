@@ -89,6 +89,10 @@ def register(subparsers) -> None:
     edit.add_argument("--add-sources", default="", help="append sources")
     edit.add_argument("--add-flat", default="", help="merge into flat_modifiers")
     edit.add_argument("--add-percent", default="", help="merge into percent_modifiers")
+    edit.add_argument("--clear-flat", action="store_true", help="remove the flat_modifiers block")
+    edit.add_argument(
+        "--clear-percent", action="store_true", help="remove the percent_modifiers block"
+    )
 
     new = actions.add_parser("new", help="scaffold a content .tres")
     new.add_argument("--root", default=None)
@@ -590,7 +594,9 @@ def _edit_command(root: Path, args) -> int:
 
     flat = _split_pairs(args.flat)
     add_flat = _split_pairs(args.add_flat)
-    if flat or args.flat:
+    if args.clear_flat:
+        text = _merge_dict_block(text, "flat_modifiers", [])
+    elif flat or args.flat:
         text = _merge_dict_block(text, "flat_modifiers", flat)
     elif add_flat:
         existing = _extract_dict(text, "flat_modifiers")
@@ -600,7 +606,9 @@ def _edit_command(root: Path, args) -> int:
 
     percent = _split_pairs(args.percent)
     add_percent = _split_pairs(args.add_percent)
-    if percent or args.percent:
+    if args.clear_percent:
+        text = _merge_dict_block(text, "percent_modifiers", [])
+    elif percent or args.percent:
         text = _merge_dict_block(text, "percent_modifiers", percent)
     elif add_percent:
         existing = _extract_dict(text, "percent_modifiers")

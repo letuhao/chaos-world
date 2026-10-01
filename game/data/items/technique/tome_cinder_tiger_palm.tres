@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"scroll"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:tome_cinder_tiger"])
+percent_modifiers = {
+"attack_physical": 0.06
+}

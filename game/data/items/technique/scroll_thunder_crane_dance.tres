@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"manual"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:scroll_thunder_crane"])
+percent_modifiers = {
+"qi_cost_reduction": 0.06
+}

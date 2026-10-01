@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"manual"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:manual_iron_tortoise"])
+percent_modifiers = {
+"defense_physical": 0.05
+}

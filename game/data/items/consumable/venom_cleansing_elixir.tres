@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"elixir"
 grade = &"earth"
 sources = Array[StringName]([&"craft:venom_cleansing_elixir_recipe"])
+percent_modifiers = {
+"health_regen": 0.07
+}

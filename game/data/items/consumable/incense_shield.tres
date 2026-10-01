@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"talisman"
 grade = &"earth"
 sources = Array[StringName]([&"craft:incense_shield_recipe"])
+percent_modifiers = {
+"defense_physical": 0.05
+}

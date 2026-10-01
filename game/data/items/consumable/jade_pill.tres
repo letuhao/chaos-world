@@ -10,3 +10,9 @@ category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:jade_pill_recipe"])
+flat_modifiers = {
+"insight_gain": 8.0
+}
+percent_modifiers = {
+"cultivation_rate": 0.04
+}

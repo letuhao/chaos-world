@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"talisman"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:talisman_frost_ward_recipe"])
+percent_modifiers = {
+"status_resistance": 0.06
+}

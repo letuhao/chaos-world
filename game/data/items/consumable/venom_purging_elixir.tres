@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"elixir"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:venom_purging_elixir_recipe"])
+percent_modifiers = {
+"qi_regen": 0.08
+}

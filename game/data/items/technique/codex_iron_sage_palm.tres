@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"manual"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:codex_iron_sage"])
+percent_modifiers = {
+"cultivation_rate": 0.05
+}

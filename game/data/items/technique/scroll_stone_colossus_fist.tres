@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"manual"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:scroll_stone_colossus"])
+flat_modifiers = {
+"attack_physical": 8.0
+}

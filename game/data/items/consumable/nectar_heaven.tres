@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"food"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:nectar_heaven_recipe"])
+percent_modifiers = {
+"cultivation_rate": 0.08
+}

@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"scroll"
 grade = &"earth"
 sources = Array[StringName]([&"boss:manual_stone_crane"])
+percent_modifiers = {
+"evasion": 0.05
+}

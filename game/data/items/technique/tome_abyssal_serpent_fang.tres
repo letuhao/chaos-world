@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"jade_slip"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:tome_abyssal_serpent"])
+percent_modifiers = {
+"crit_chance": 0.05
+}

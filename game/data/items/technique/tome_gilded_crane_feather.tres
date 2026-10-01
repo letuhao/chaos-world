@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"scroll"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:tome_gilded_crane"])
+percent_modifiers = {
+"qi_cost_reduction": 0.05
+}

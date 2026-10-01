@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"manual"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:scroll_frost_serpent"])
+percent_modifiers = {
+"defense_physical": 0.04
+}

@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:succubus_immortal_breakthrough_recipe"])
+percent_modifiers = {
+"cultivation_rate": 0.1
+}

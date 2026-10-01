@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"pill"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:alchemy_heaven_pill_recipe"])
+percent_modifiers = {
+"cultivation_rate": 0.07
+}

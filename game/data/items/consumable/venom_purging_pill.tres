@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"pill"
 grade = &"earth"
 sources = Array[StringName]([&"craft:venom_purging_pill_recipe"])
+percent_modifiers = {
+"qi_regen": 0.06
+}

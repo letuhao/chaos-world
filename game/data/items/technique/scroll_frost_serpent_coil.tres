@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"scroll"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:scroll_frost_serpent"])
+percent_modifiers = {
+"qi_cost_reduction": 0.05
+}

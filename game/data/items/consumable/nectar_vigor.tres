@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"food"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:nectar_vigor_recipe"])
+flat_modifiers = {
+"max_health": 25.0
+}

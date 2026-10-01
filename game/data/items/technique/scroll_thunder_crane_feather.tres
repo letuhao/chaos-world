@@ -10,3 +10,6 @@ category = &"technique"
 subcategory = &"jade_slip"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:scroll_thunder_crane"])
+percent_modifiers = {
+"attack_speed": 0.05
+}

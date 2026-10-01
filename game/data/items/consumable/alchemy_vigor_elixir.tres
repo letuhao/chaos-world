@@ -10,3 +10,6 @@ category = &"consumable"
 subcategory = &"elixir"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:alchemy_vigor_elixir_recipe"])
+flat_modifiers = {
+"max_health": 30.0
+}
