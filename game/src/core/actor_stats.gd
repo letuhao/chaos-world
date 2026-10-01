@@ -9,6 +9,9 @@ var _modifiers: Array[StatModifier] = []
 var _derived: Dictionary = {}
 var _providers: Array[StatProvider] = []
 var _context: StatContext = null
+var _provider_cache: Dictionary = {}
+var _provider_version: int = -1
+var _version: int = 0
 var _dirty: bool = true
 
 
@@ -25,7 +28,7 @@ func get_base(id: StringName) -> float:
 
 func set_base(id: StringName, value: float) -> void:
 	_base[id] = value
-	_dirty = true
+	mark_dirty()
 
 
 func base_dict() -> Dictionary:
@@ -39,15 +42,22 @@ func base_ref() -> Dictionary:
 func set_context(context: StatContext) -> void:
 	_context = context
 	_context.derived = _derived
-	_dirty = true
+	mark_dirty()
 
 
 func add_provider(provider: StatProvider) -> void:
 	_providers.append(provider)
+	mark_dirty()
 
 
 func clear_providers() -> void:
 	_providers.clear()
+	mark_dirty()
+
+
+func mark_dirty() -> void:
+	_dirty = true
+	_version += 1
 
 
 func provider_count() -> int:
@@ -56,7 +66,7 @@ func provider_count() -> int:
 
 func add_modifier(modifier: StatModifier) -> void:
 	_modifiers.append(modifier)
-	_dirty = true
+	mark_dirty()
 
 
 func remove_modifiers_from(source: StringName) -> void:
@@ -65,7 +75,7 @@ func remove_modifiers_from(source: StringName) -> void:
 		if modifier.source != source:
 			kept.append(modifier)
 	_modifiers = kept
-	_dirty = true
+	mark_dirty()
 
 
 func modifier_count() -> int:
@@ -74,23 +84,18 @@ func modifier_count() -> int:
 
 func derived(id: StringName) -> float:
 	_ensure()
-	if _context == null or _providers.is_empty():
-		return float(_derived.get(id, 0.0))
-	for provider in _providers:
-		var contributed := provider.contribute(_context)
-		if contributed.has(id):
-			return float(contributed[id])
+	_ensure_providers()
+	if _provider_cache.has(id):
+		return float(_provider_cache[id])
 	return float(_derived.get(id, 0.0))
 
 
 func derived_all() -> Dictionary:
 	_ensure()
+	_ensure_providers()
 	var out := _derived.duplicate()
-	if _context != null:
-		for provider in _providers:
-			var contributed := provider.contribute(_context)
-			for id in contributed.keys():
-				out[id] = contributed[id]
+	for id in _provider_cache.keys():
+		out[id] = _provider_cache[id]
 	return out
 
 
@@ -98,6 +103,20 @@ func _ensure() -> void:
 	if _dirty:
 		_recompute()
 		_dirty = false
+
+
+func _ensure_providers() -> void:
+	if _context == null or _providers.is_empty():
+		_provider_cache.clear()
+		return
+	if _provider_version == _version:
+		return
+	_provider_cache.clear()
+	for provider in _providers:
+		var contributed := provider.contribute(_context)
+		for id in contributed.keys():
+			_provider_cache[id] = contributed[id]
+	_provider_version = _version
 
 
 func _recompute() -> void:

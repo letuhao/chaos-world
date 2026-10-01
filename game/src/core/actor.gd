@@ -43,6 +43,7 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 
 func add_resource(pool: ResourcePool) -> void:
 	resources[pool.id] = pool
+	mark_stats_dirty()
 
 
 func resource(pool_id: StringName) -> ResourcePool:
@@ -52,6 +53,7 @@ func resource(pool_id: StringName) -> ResourcePool:
 func add_status(status: StatusEffect) -> void:
 	statuses.append(status)
 	status_added.emit(status.id)
+	mark_stats_dirty()
 
 
 func has_status(status_id: StringName) -> bool:
@@ -74,14 +76,39 @@ func tick_statuses(delta: float) -> void:
 
 func set_relationship(partner_id: StringName, affinity: float) -> void:
 	relationships[partner_id] = affinity
+	mark_stats_dirty()
 
 
 func affinity_with(partner_id: StringName) -> float:
 	return float(relationships.get(partner_id, 0.0))
 
 
+func set_affinity(element_id: StringName, value: float) -> void:
+	affinities[element_id] = value
+	mark_stats_dirty()
+
+
+func change_resource(pool_id: StringName, delta: float) -> void:
+	var pool := resource(pool_id)
+	if pool != null:
+		pool.change(delta)
+		mark_stats_dirty()
+
+
+func set_resource_maximum(pool_id: StringName, value: float) -> void:
+	var pool := resource(pool_id)
+	if pool != null:
+		pool.set_maximum(value)
+		mark_stats_dirty()
+
+
+func mark_stats_dirty() -> void:
+	stats.mark_dirty()
+
+
 func set_path(state: PathState) -> void:
 	paths[state.path_id] = state
+	mark_stats_dirty()
 
 
 func path(path_id: StringName) -> PathState:
@@ -126,6 +153,7 @@ static func from_dict(data: Dictionary) -> Actor:
 		actor.resources[StringName(key)] = ResourcePool.from_dict(data["resources"][key])
 	for key in data.get("paths", {}).keys():
 		actor.paths[StringName(key)] = PathState.from_dict(data["paths"][key])
+	actor.mark_stats_dirty()
 	return actor
 
 

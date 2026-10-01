@@ -40,11 +40,11 @@ func test_essence_capacity_and_pool() -> void:
 func test_purity_falls_with_corruption() -> void:
 	var actor := _actor_with_module()
 	assert_almost_eq(actor.stats.derived(DualCultivationStats.PURITY), 1.0, "start pure")
-	actor.resource(DualCultivationStats.CORRUPTION).change(100.0)
+	actor.change_resource(DualCultivationStats.CORRUPTION, 100.0)
 	assert_almost_eq(actor.stats.derived(DualCultivationStats.PURITY), 0.0, "full corruption")
 
 
 func test_yin_yang_balance_is_pure_yang() -> void:
 	var actor := _actor_with_module()
-	actor.resource(DualCultivationStats.YANG).change(100.0)
+	actor.change_resource(DualCultivationStats.YANG, 100.0)
 	assert_almost_eq(actor.stats.derived(DualCultivationStats.YIN_YANG_BALANCE), 1.0, "pure yang")

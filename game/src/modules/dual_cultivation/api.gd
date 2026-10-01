@@ -39,3 +39,4 @@ static func _sync_essence(actor: Actor) -> void:
 	if essence != null:
 		essence.set_maximum(actor.stats.derived(DualCultivationStats.ESSENCE_CAPACITY))
 		essence.current = essence.maximum
+		actor.mark_stats_dirty()

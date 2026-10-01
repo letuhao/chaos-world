@@ -29,8 +29,10 @@ func apply(actor: Actor) -> void:
 		actor.stats.add_modifier(modifier)
 	if not actor.traits.has(id):
 		actor.traits.append(id)
+	actor.mark_stats_dirty()
 
 
 func remove(actor: Actor) -> void:
 	actor.stats.remove_modifiers_from(id)
 	actor.traits.erase(id)
+	actor.mark_stats_dirty()
