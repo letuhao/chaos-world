@@ -9,5 +9,5 @@ display_name = "Iron Body Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:body_great_ascension_pill_recipe"])
+sources = Array[StringName]([&"craft:body_great_ascension_pill_recipe", &"boss:E2_ascension_sentinel"])
 description = "Consumed by the Body Cultivation attempt entering Iron Body; no equipment modifier."

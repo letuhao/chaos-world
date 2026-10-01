@@ -9,5 +9,5 @@ display_name = "Marrow Cleansing Channel Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:body_nascent_soul_elixir_recipe"])
+sources = Array[StringName]([&"craft:body_nascent_soul_elixir_recipe", &"boss:body_nascent_soul_guardian"])
 description = "Restores one damaged channel or trains one channel step and its linked acupoint quality."

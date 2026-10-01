@@ -431,13 +431,13 @@ def _progression_items() -> set[str]:
     a future seed field naming a consumed item is exempt without a code change.
     """
     ids: set[str] = set()
-    realms = DATA_ROOT / "body_cultivation" / "realms"
-    if not realms.is_dir():
-        return ids
     pattern = re.compile(r'^\w+_item\s*=\s*&"([^"]+)"', re.MULTILINE)
-    for seed in sorted(realms.glob("*.tres")):
-        text = seed.read_text(encoding="utf-8", errors="replace")
-        ids.update(pattern.findall(text))
+    # One realms directory per cultivation path (body, mind, qi); glob so a new
+    # path is covered without touching this function.
+    for realms in sorted(DATA_ROOT.glob("*/realms")):
+        for seed in sorted(realms.glob("*.tres")):
+            text = seed.read_text(encoding="utf-8", errors="replace")
+            ids.update(pattern.findall(text))
     return ids
 
 

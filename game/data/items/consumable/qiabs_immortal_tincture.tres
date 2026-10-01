@@ -9,7 +9,7 @@ display_name = "Immortal Absorption Tincture"
 category = &"consumable"
 subcategory = &"tincture"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E8_mystic_warden"])
 percent_modifiers = {
 "qi_absorption": 0.13
 }

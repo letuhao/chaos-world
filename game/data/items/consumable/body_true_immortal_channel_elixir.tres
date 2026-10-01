@@ -9,5 +9,5 @@ display_name = "Body of Transcendence Channel Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:body_true_immortal_elixir_recipe"])
+sources = Array[StringName]([&"craft:body_true_immortal_elixir_recipe", &"boss:body_true_immortal_guardian"])
 description = "Restores one damaged channel or trains one channel step and its linked acupoint quality."

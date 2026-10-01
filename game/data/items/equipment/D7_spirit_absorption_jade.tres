@@ -9,7 +9,7 @@ display_name = "Spirit Absorption Jade"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:D7_spirit_absorption_jade_recipe"])
+sources = Array[StringName]([&"craft:D7_spirit_absorption_jade_recipe", &"boss:body_spirit_sovereign_guardian"])
 percent_modifiers = {
 "qi_absorption": 0.06
 }

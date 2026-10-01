@@ -16,6 +16,11 @@ var clarity: float = 0.5
 var turbulence: float = 0.0
 
 
+## Stored mind power as a 0..1 fraction of capacity.
+func ratio() -> float:
+	return 0.0 if capacity <= 0.0 else clampf(current / capacity, 0.0, 1.0)
+
+
 func is_full() -> bool:
 	return current >= capacity
 

@@ -9,5 +9,5 @@ display_name = "Body of Earth Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:body_immortal_sovereign_pill_recipe"])
+sources = Array[StringName]([&"craft:body_immortal_sovereign_pill_recipe", &"boss:E9_sovereign_warden"])
 description = "Consumed by the Body Cultivation attempt entering Body of Earth; no equipment modifier."

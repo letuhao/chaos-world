@@ -9,5 +9,5 @@ display_name = "Copper Body Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:body_tribulation_pill_recipe"])
+sources = Array[StringName]([&"craft:body_tribulation_pill_recipe", &"boss:body_tribulation_guardian"])
 description = "Consumed by the Body Cultivation attempt entering Copper Body; no equipment modifier."

@@ -9,7 +9,7 @@ display_name = "Spirit Pierce Talon"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:D9_spirit_pierce_talon_recipe"])
+sources = Array[StringName]([&"craft:D9_spirit_pierce_talon_recipe", &"boss:E5_manifestation_warden"])
 percent_modifiers = {
 "penetration": 0.06
 }

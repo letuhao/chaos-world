@@ -9,5 +9,5 @@ display_name = "Jade Body Tempering Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E4_palace_vault_warden"])
 description = "Gathered tempering reagent."

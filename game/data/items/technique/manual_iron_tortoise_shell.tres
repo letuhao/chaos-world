@@ -9,7 +9,7 @@ display_name = "Iron Tortoise Shell"
 category = &"technique"
 subcategory = &"manual"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:manual_iron_tortoise", &"boss:d3_iron_tortoise_shell"])
+sources = Array[StringName]([&"boss:manual_iron_tortoise", &"boss:d3_iron_tortoise_shell", &"boss:E1_core_formation_warden"])
 flat_modifiers = {
 "damage_reduction": 0.04
 }

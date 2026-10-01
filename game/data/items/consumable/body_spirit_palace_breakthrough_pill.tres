@@ -9,5 +9,5 @@ display_name = "Jade Body Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_palace_pill_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_palace_pill_recipe", &"boss:E4_palace_vault_warden", &"boss:body_spirit_palace_guardian"])
 description = "Consumed by the Body Cultivation attempt entering Jade Body; no equipment modifier."

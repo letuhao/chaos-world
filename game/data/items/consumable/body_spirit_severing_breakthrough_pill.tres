@@ -9,5 +9,5 @@ display_name = "Adamant Body Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_severing_pill_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_severing_pill_recipe", &"boss:E5_severing_edge"])
 description = "Consumed by the Body Cultivation attempt entering Adamant Body; no equipment modifier."

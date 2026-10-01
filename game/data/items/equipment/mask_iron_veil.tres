@@ -9,7 +9,7 @@ display_name = "Iron Veil"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mask_iron_veil_recipe"])
+sources = Array[StringName]([&"craft:mask_iron_veil_recipe", &"boss:body_nascent_soul_guardian", &"boss:E1_qi_refinement_warden"])
 flat_modifiers = {
 "max_health": 20.0
 }

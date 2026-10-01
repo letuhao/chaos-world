@@ -9,7 +9,7 @@ display_name = "Iron Skin"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:tattoo_iron_skin_recipe"])
+sources = Array[StringName]([&"craft:tattoo_iron_skin_recipe", &"boss:E1_qi_refinement_warden"])
 flat_modifiers = {
 "attack_physical": 8.0,
 "max_health": 20.0

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="QiRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/qi_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"spirit_transformation"
+breakthrough_item = &"qi_spirit_transformation_breakthrough_pill"
+training_item = &"qi_spirit_transformation_channel_elixir"
+progress_required = 400.0
+comprehension_required = 16.0
+dantian_quality_required = 0.53
+dantian_fill_required = 1.0
+dantian_tier = &"lower"
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney"])
+required_channel_state = &"open"
+channel_refinement_cap = 5
+dantian_capacity = 200.0
+rewards = {
+"spirit": 2.0
+}

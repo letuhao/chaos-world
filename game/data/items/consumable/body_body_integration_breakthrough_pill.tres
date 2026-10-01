@@ -9,5 +9,5 @@ display_name = "Blood Refining Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:body_body_integration_pill_recipe"])
+sources = Array[StringName]([&"craft:body_body_integration_pill_recipe", &"boss:E1_foundation_warden", &"boss:body_body_integration_guardian"])
 description = "Consumed by the Body Cultivation attempt entering Blood Refining; no equipment modifier."

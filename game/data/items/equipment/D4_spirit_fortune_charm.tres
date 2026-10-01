@@ -9,7 +9,7 @@ display_name = "Spirit Fortune Charm"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:D4_spirit_fortune_charm_recipe"])
+sources = Array[StringName]([&"craft:D4_spirit_fortune_charm_recipe", &"boss:body_spirit_domain_guardian"])
 percent_modifiers = {
 "fortune": 0.06
 }

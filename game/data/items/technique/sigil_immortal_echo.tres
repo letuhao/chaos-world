@@ -9,7 +9,7 @@ display_name = "Immortal Echo Sigil"
 category = &"technique"
 subcategory = &"sigil"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E10_transcendent_oracle"])
 percent_modifiers = {
 "attack_spiritual": 0.09
 }

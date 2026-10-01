@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MindRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/mind_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"nascent_soul"
+breakthrough_item = &"mind_nascent_soul_breakthrough_pill"
+training_item = &"mind_nascent_soul_channel_elixir"
+progress_required = 300.0
+comprehension_required = 14.0
+clarity_required = 0.52
+sea_fill_required = 1.0
+sea_tier = &"shallow"
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen"])
+required_channel_state = &"strengthened"
+channel_refinement_cap = 4
+sea_capacity = 175.0
+rewards = {
+"will": 2.0
+}

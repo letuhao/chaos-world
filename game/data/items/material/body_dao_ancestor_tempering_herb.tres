@@ -9,5 +9,5 @@ display_name = "Body of Divinity Tempering Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:body_dao_ancestor_guardian"])
 description = "Gathered tempering reagent."

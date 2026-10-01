@@ -9,7 +9,7 @@ display_name = "Spirit Will Sigil"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:D4_spirit_will_sigil_recipe"])
+sources = Array[StringName]([&"craft:D4_spirit_will_sigil_recipe", &"boss:body_spirit_domain_guardian"])
 percent_modifiers = {
 "will": 0.06
 }

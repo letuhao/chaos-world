@@ -9,5 +9,5 @@ display_name = "Iron Body Tempering Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E2_ascension_sentinel"])
 description = "Gathered tempering reagent."

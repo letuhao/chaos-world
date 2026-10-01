@@ -9,7 +9,7 @@ display_name = "Sigil of Frost"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:sigil_frost_recipe"])
+sources = Array[StringName]([&"craft:sigil_frost_recipe", &"boss:body_spirit_sovereign_guardian"])
 flat_modifiers = {
 "defense_spiritual": 14.0
 }

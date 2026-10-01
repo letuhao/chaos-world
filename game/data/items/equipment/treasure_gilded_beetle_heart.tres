@@ -9,7 +9,7 @@ display_name = "Beetle Heart"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"boss:treasure_gilded_beetle", &"boss:d6_gilded_beetle"])
+sources = Array[StringName]([&"boss:treasure_gilded_beetle", &"boss:d6_gilded_beetle", &"boss:E7_golden_regent"])
 flat_modifiers = {
 "physique": 20.0
 }

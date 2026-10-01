@@ -9,4 +9,4 @@ display_name = "Iron Titan Slag Ingot"
 category = &"material"
 subcategory = &"ore"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:d1_iron_titan_slag"])
+sources = Array[StringName]([&"boss:d1_iron_titan_slag", &"boss:body_foundation_guardian"])

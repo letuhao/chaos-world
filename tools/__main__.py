@@ -9,6 +9,7 @@ from . import (
     assets,
     backlog,
     check,
+    cultivation,
     data,
     deferred,
     export,
@@ -34,6 +35,7 @@ COMMANDS = {
     "new_adr": new_adr,
     "deferred": deferred,
     "backlog": backlog,
+    "cultivation": cultivation,
     "data": data,
 }
 

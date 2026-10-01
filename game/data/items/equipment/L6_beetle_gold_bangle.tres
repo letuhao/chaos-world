@@ -9,7 +9,7 @@ display_name = "Gilded Beetle Bangle"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"immortal"
-sources = Array[StringName]([&"boss:d6_gilded_beetle"])
+sources = Array[StringName]([&"boss:d6_gilded_beetle", &"boss:E7_golden_regent"])
 flat_modifiers = {
 "fortune": 15.0
 }

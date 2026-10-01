@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="QiRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/qi_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"spirit_unity"
+breakthrough_item = &"qi_spirit_unity_breakthrough_pill"
+training_item = &"qi_spirit_unity_channel_elixir"
+progress_required = 1400.0
+comprehension_required = 36.0
+dantian_quality_required = 0.63
+dantian_fill_required = 1.0
+dantian_tier = &"middle"
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao"])
+required_channel_state = &"open"
+channel_refinement_cap = 15
+dantian_capacity = 450.0
+rewards = {
+"spirit": 2.0
+}

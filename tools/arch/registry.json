@@ -48,13 +48,15 @@
     "qi_cultivation": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "items"
       ]
     },
     "mind_cultivation": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "items"
       ]
     }
   }

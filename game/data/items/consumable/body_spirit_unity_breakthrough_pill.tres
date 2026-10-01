@@ -9,5 +9,5 @@ display_name = "Body of Laws Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_unity_pill_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_unity_pill_recipe", &"boss:E5_unity_weaver"])
 description = "Consumed by the Body Cultivation attempt entering Body of Laws; no equipment modifier."

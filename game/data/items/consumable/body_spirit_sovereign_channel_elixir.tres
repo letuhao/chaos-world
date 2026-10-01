@@ -9,5 +9,5 @@ display_name = "Body of Void Channel Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_sovereign_elixir_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_sovereign_elixir_recipe", &"boss:E6_sovereign_warden"])
 description = "Restores one damaged channel or trains one channel step and its linked acupoint quality."

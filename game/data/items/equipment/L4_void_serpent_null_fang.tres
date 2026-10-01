@@ -9,7 +9,7 @@ display_name = "Null Serpent Fang"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:d4_void_serpent"])
+sources = Array[StringName]([&"boss:d4_void_serpent", &"boss:E5_severing_edge"])
 percent_modifiers = {
 "crit_damage": 0.06,
 "penetration": 0.06

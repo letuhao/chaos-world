@@ -9,4 +9,4 @@ display_name = "Ember Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E3_void_refinement_arbiter"])

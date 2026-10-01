@@ -9,7 +9,7 @@ display_name = "Boulder Jade Slip"
 category = &"technique"
 subcategory = &"jade_slip"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:d5_stone_colossus"])
+sources = Array[StringName]([&"boss:d5_stone_colossus", &"boss:body_core_formation_guardian"])
 percent_modifiers = {
 "defense_physical": 0.04
 }

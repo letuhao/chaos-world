@@ -9,5 +9,5 @@ display_name = "Organ Tempering Channel Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:body_void_refinement_elixir_recipe"])
+sources = Array[StringName]([&"craft:body_void_refinement_elixir_recipe", &"boss:E3_void_refinement_arbiter"])
 description = "Restores one damaged channel or trains one channel step and its linked acupoint quality."

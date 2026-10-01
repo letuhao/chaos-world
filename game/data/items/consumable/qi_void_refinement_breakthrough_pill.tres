@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"qi_void_refinement_breakthrough_pill"
+display_name = "Void Refinement Refinement Pill"
+category = &"consumable"
+subcategory = &"pill"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:qi_void_refinement_pill_recipe"])
+description = "Consumed by the Qi Cultivation attempt entering Void Refinement; no equipment modifier."

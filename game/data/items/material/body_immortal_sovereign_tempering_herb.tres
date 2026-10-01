@@ -9,5 +9,5 @@ display_name = "Body of Earth Tempering Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:body_immortal_sovereign_guardian"])
 description = "Gathered tempering reagent."

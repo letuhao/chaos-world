@@ -9,5 +9,5 @@ display_name = "Body of Laws Channel Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_unity_elixir_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_unity_elixir_recipe", &"boss:body_spirit_unity_guardian"])
 description = "Restores one damaged channel or trains one channel step and its linked acupoint quality."

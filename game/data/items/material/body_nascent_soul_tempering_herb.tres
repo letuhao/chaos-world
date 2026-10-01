@@ -9,5 +9,5 @@ display_name = "Marrow Cleansing Tempering Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E2_nascent_soul_herald"])
 description = "Gathered tempering reagent."

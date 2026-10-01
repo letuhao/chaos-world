@@ -57,13 +57,7 @@ func _meridians_and_tribulation_ready(actor: Actor, seed: BodyRealmSeed, target:
 			return false
 	# Immortal+ additionally needs survived tribulation, a stable inside world,
 	# and at Transcendent a stable world plus completed ascension (ADR 0018-0021).
-	var next_index := target.index
-	return (
-		Breakthrough.tribulation_ok(actor, next_index)
-		and Breakthrough.inside_world_ok(actor, next_index)
-		and Breakthrough.world_ok(actor, next_index)
-		and Breakthrough.ascension_ok(actor, next_index)
-	)
+	return Breakthrough.tier_gates_met(actor, target.index)
 
 
 func describe() -> String:

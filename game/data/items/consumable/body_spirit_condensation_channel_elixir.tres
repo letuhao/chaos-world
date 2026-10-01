@@ -9,5 +9,5 @@ display_name = "Silver Body Channel Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_condensation_elixir_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_condensation_elixir_recipe", &"boss:E4_condensation_warden", &"boss:body_spirit_condensation_guardian"])
 description = "Restores one damaged channel or trains one channel step and its linked acupoint quality."

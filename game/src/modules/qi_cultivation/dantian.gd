@@ -19,6 +19,12 @@ func effective_capacity() -> float:
 	return capacity * 0.75 if damaged else capacity
 
 
+## Stored qi as a 0..1 fraction of usable capacity.
+func ratio() -> float:
+	var usable := effective_capacity()
+	return 0.0 if usable <= 0.0 else clampf(current / usable, 0.0, 1.0)
+
+
 func is_full() -> bool:
 	return current >= effective_capacity()
 

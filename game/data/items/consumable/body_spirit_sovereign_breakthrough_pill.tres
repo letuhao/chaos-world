@@ -9,5 +9,5 @@ display_name = "Body of Void Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_sovereign_pill_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_sovereign_pill_recipe", &"boss:E6_sovereign_warden"])
 description = "Consumed by the Body Cultivation attempt entering Body of Void; no equipment modifier."

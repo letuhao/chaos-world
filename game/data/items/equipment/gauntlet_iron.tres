@@ -9,7 +9,7 @@ display_name = "Iron Gauntlet"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:gauntlet_iron_recipe"])
+sources = Array[StringName]([&"craft:gauntlet_iron_recipe", &"boss:body_foundation_guardian"])
 flat_modifiers = {
 "defense_physical": 6.0
 }

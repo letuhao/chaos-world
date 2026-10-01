@@ -9,7 +9,7 @@ display_name = "Iron Ointment Salve"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:body_qi_refining_guardian"])
 flat_modifiers = {
 "max_health": 20.0
 }

@@ -9,7 +9,7 @@ display_name = "Iron Titan Bellows Heart"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:d1_iron_titan_slag"])
+sources = Array[StringName]([&"boss:d1_iron_titan_slag", &"boss:E5_unity_weaver"])
 flat_modifiers = {
 "attack_physical": 26.0
 }

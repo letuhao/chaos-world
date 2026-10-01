@@ -9,4 +9,4 @@ display_name = "Immortal Keystone"
 category = &"key"
 subcategory = &"sigil"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E9_primordial_warden", &"boss:E8_luo_warden"])

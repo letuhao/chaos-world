@@ -9,7 +9,7 @@ display_name = "Immortal Codex Case"
 category = &"technique"
 subcategory = &"scroll"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E8_luo_warden"])
 percent_modifiers = {
 "insight_gain": 0.1
 }

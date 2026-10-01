@@ -9,5 +9,5 @@ display_name = "Body of Dao Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_domain_pill_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_domain_pill_recipe", &"boss:E6_domain_warden"])
 description = "Consumed by the Body Cultivation attempt entering Body of Dao; no equipment modifier."

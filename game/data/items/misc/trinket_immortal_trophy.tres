@@ -9,4 +9,4 @@ display_name = "Immortal Trophy"
 category = &"misc"
 subcategory = &"trophy"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:body_mystic_immortal_guardian"])

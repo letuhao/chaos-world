@@ -9,7 +9,7 @@ display_name = "Mortal Agility Draught"
 category = &"consumable"
 subcategory = &"draught"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:D3_mortal_agility_draught_recipe"])
+sources = Array[StringName]([&"craft:D3_mortal_agility_draught_recipe", &"boss:E2_spirit_transformation_warden"])
 percent_modifiers = {
 "agility": 0.04
 }

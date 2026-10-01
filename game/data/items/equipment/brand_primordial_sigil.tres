@@ -9,7 +9,7 @@ display_name = "Primordial Sigil Brand"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E10_primordial_sentinel"])
 percent_modifiers = {
 "cultivation_rate": 0.1
 }

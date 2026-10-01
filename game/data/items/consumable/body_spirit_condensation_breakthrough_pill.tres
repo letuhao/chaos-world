@@ -9,5 +9,5 @@ display_name = "Silver Body Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_condensation_pill_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_condensation_pill_recipe", &"boss:E4_condensation_warden", &"boss:body_spirit_condensation_guardian"])
 description = "Consumed by the Body Cultivation attempt entering Silver Body; no equipment modifier."

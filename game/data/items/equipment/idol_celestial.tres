@@ -9,7 +9,7 @@ display_name = "Celestial Idol"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:idol_celestial_recipe"])
+sources = Array[StringName]([&"craft:idol_celestial_recipe", &"boss:E9_transcendant_warden"])
 flat_modifiers = {
 "attack_spiritual": 40.0
 }

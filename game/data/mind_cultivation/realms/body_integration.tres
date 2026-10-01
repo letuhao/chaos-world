@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MindRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/mind_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"body_integration"
+breakthrough_item = &"mind_body_integration_breakthrough_pill"
+training_item = &"mind_body_integration_channel_elixir"
+progress_required = 600.0
+comprehension_required = 20.0
+clarity_required = 0.55
+sea_fill_required = 1.0
+sea_tier = &"shallow"
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney"])
+required_channel_state = &"strengthened"
+channel_refinement_cap = 7
+sea_capacity = 250.0
+rewards = {
+"will": 2.0
+}

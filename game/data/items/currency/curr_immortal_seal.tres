@@ -9,4 +9,4 @@ display_name = "Immortal Seal"
 category = &"currency"
 subcategory = &"seal"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:body_golden_immortal_guardian", &"boss:E8_mystic_warden"])

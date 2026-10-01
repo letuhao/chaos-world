@@ -9,5 +9,5 @@ display_name = "Body of Earth Channel Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:body_immortal_sovereign_elixir_recipe"])
+sources = Array[StringName]([&"craft:body_immortal_sovereign_elixir_recipe", &"boss:body_immortal_sovereign_guardian"])
 description = "Restores one damaged channel or trains one channel step and its linked acupoint quality."

@@ -9,7 +9,7 @@ display_name = "Iron Bull Heart"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"boss:totem_iron_bull"])
+sources = Array[StringName]([&"boss:totem_iron_bull", &"boss:E7_earth_warden"])
 flat_modifiers = {
 "max_health": 200.0
 }

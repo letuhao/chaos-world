@@ -9,7 +9,7 @@ display_name = "Mortal Comprehension Bead"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:D2_mortal_comprehension_bead_recipe"])
+sources = Array[StringName]([&"craft:D2_mortal_comprehension_bead_recipe", &"boss:E2_nascent_soul_herald"])
 percent_modifiers = {
 "comprehension": 0.04
 }

@@ -9,5 +9,5 @@ display_name = "Skin Tempering Tempering Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E1_qi_refinement_warden"])
 description = "Gathered tempering reagent."

@@ -9,7 +9,7 @@ display_name = "Immortal Spirit Leaf"
 category = &"technique"
 subcategory = &"manual"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E8_mystic_warden"])
 percent_modifiers = {
 "spirit": 0.13
 }

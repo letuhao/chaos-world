@@ -9,7 +9,7 @@ display_name = "Spirit Critedge Ward"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
-sources = Array[StringName]([&"gather", &"craft:D8_spirit_critedge_ward_recipe"])
+sources = Array[StringName]([&"gather", &"craft:D8_spirit_critedge_ward_recipe", &"boss:body_spirit_ascension_guardian"])
 percent_modifiers = {
 "crit_damage": 0.06
 }

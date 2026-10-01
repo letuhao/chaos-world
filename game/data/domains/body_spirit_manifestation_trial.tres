@@ -6,4 +6,4 @@
 script = ExtResource("1_domain")
 id = &"body_spirit_manifestation_trial"
 display_name = "Diamond Body Trial"
-boss_ids = Array[StringName]([&"body_spirit_manifestation_guardian"])
+boss_ids = Array[StringName]([&"body_spirit_manifestation_guardian", &"E5_manifestation_warden"])

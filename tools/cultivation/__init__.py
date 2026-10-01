@@ -6,15 +6,17 @@ from ..common import REPO_ROOT, fail, ok
 
 
 def register(subparsers) -> None:
-    parser = subparsers.add_parser("cultivation", help="Body Cultivation content workflow")
-    parser.add_argument("action", choices=["seed", "validate", "prompt"])
+    parser = subparsers.add_parser("cultivation", help="cultivation content workflow")
+    parser.add_argument("action", choices=["seed", "seed-systems", "validate", "prompt"])
 
 
 def run(args) -> int:
-    from . import seed
+    from . import seed, seed_systems
 
     if args.action == "seed":
         return seed.run()
+    if args.action == "seed-systems":
+        return seed_systems.run()
     from . import audit
 
     findings = audit.validate()

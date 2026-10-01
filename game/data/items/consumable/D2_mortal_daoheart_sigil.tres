@@ -9,7 +9,7 @@ display_name = "Mortal Daoheart Sigil"
 category = &"consumable"
 subcategory = &"tincture"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:D2_mortal_daoheart_sigil_recipe"])
+sources = Array[StringName]([&"craft:D2_mortal_daoheart_sigil_recipe", &"boss:E2_nascent_soul_herald"])
 percent_modifiers = {
 "dao_heart": 0.04
 }

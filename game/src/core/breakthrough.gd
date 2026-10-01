@@ -77,6 +77,17 @@ static func ascension_ok(actor: Actor, next_index: int) -> bool:
 	return actor.ascension != null and actor.ascension.is_complete()
 
 
+## Every tier gate the target realm requires, in one call. Per-system conditions
+## delegate here so module code and core cannot drift apart.
+static func tier_gates_met(actor: Actor, next_index: int) -> bool:
+	return (
+		tribulation_ok(actor, next_index)
+		and inside_world_ok(actor, next_index)
+		and world_ok(actor, next_index)
+		and ascension_ok(actor, next_index)
+	)
+
+
 # --- Entry points ----------------------------------------------------------
 
 

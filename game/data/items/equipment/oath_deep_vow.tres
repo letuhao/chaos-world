@@ -9,7 +9,7 @@ display_name = "Oath of the Deep"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"quest:oath_of_the_deep"])
+sources = Array[StringName]([&"quest:oath_of_the_deep", &"boss:E9_sovereign_warden"])
 flat_modifiers = {
 "max_qi": 80.0
 }

@@ -9,4 +9,4 @@ display_name = "Carved Primordial Bone"
 category = &"material"
 subcategory = &"bone"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:body_primordial_origin_guardian"])

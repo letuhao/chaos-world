@@ -9,7 +9,7 @@ display_name = "Iron Bangle"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:bracelet_iron_bangle_recipe"])
+sources = Array[StringName]([&"craft:bracelet_iron_bangle_recipe", &"boss:body_qi_refining_guardian"])
 flat_modifiers = {
 "attack_physical": 4.0
 }

@@ -9,5 +9,5 @@ display_name = "Tendon Strengthening Tempering Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E2_spirit_transformation_warden"])
 description = "Gathered tempering reagent."

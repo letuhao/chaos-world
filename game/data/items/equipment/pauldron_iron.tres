@@ -9,7 +9,7 @@ display_name = "Iron Pauldrons"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:pauldron_iron_recipe"])
+sources = Array[StringName]([&"craft:pauldron_iron_recipe", &"boss:E1_foundation_warden"])
 flat_modifiers = {
 "defense_physical": 11.0
 }

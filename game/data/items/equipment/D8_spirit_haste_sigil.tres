@@ -9,7 +9,7 @@ display_name = "Spirit Haste Sigil"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
-sources = Array[StringName]([&"gather", &"craft:D8_spirit_haste_sigil_recipe"])
+sources = Array[StringName]([&"gather", &"craft:D8_spirit_haste_sigil_recipe", &"boss:body_spirit_ascension_guardian"])
 percent_modifiers = {
 "cooldown_reduction": 0.06
 }

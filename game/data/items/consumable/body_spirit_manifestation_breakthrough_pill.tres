@@ -9,5 +9,5 @@ display_name = "Diamond Body Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_manifestation_pill_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_manifestation_pill_recipe", &"boss:E5_manifestation_warden"])
 description = "Consumed by the Body Cultivation attempt entering Diamond Body; no equipment modifier."

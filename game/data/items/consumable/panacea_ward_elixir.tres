@@ -9,7 +9,7 @@ display_name = "Ward Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:panacea_ward_elixir_recipe"])
+sources = Array[StringName]([&"craft:panacea_ward_elixir_recipe", &"boss:body_earth_immortal_guardian"])
 percent_modifiers = {
 "status_resistance": 0.07
 }

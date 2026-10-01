@@ -9,4 +9,4 @@ display_name = "Divine Jade"
 category = &"material"
 subcategory = &"ore"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E10_dao_warden"])

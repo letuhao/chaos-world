@@ -9,4 +9,4 @@ display_name = "Mortal Ink"
 category = &"material"
 subcategory = &"essence"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E3_integration_arbiter"])

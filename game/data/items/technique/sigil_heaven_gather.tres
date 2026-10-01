@@ -9,7 +9,7 @@ display_name = "Heaven Gather Sigil"
 category = &"technique"
 subcategory = &"sigil"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E7_heaven_arbiter"])
 percent_modifiers = {
 "cultivation_rate": 0.08
 }

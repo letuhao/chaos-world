@@ -9,5 +9,5 @@ display_name = "Gold Body Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_sea_pill_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_sea_pill_recipe", &"boss:E4_sea_tide_warden", &"boss:body_spirit_sea_guardian"])
 description = "Consumed by the Body Cultivation attempt entering Gold Body; no equipment modifier."

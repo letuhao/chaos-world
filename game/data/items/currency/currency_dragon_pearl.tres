@@ -9,4 +9,4 @@ display_name = "Dragon Pearl"
 category = &"currency"
 subcategory = &"token"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:currency_dragon_pearl_recipe"])
+sources = Array[StringName]([&"craft:currency_dragon_pearl_recipe", &"boss:E7_golden_regent"])

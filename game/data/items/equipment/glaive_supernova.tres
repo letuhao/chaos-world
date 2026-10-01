@@ -9,7 +9,7 @@ display_name = "Supernova Glaive"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E7_heaven_arbiter"])
 percent_modifiers = {
 "attack_spiritual": 0.09
 }

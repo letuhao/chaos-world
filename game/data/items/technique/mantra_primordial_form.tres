@@ -9,7 +9,7 @@ display_name = "Primordial Mantra"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E10_dao_warden"])
 percent_modifiers = {
 "insight_gain": 0.1
 }

@@ -9,5 +9,5 @@ display_name = "Tendon Strengthening Channel Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:body_spirit_transformation_elixir_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_transformation_elixir_recipe", &"boss:body_spirit_transformation_guardian"])
 description = "Restores one damaged channel or trains one channel step and its linked acupoint quality."

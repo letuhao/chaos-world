@@ -9,7 +9,7 @@ display_name = "Immortal Feast"
 category = &"consumable"
 subcategory = &"food"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:body_dao_fruit_guardian"])
 flat_modifiers = {
 "max_health": 140.0
 }

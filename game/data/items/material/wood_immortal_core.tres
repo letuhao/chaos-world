@@ -9,4 +9,4 @@ display_name = "Immortal Core"
 category = &"material"
 subcategory = &"herb"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E8_dao_fruit_warden"])

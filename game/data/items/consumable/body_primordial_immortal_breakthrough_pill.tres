@@ -9,5 +9,5 @@ display_name = "Body of Unity Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:body_primordial_immortal_pill_recipe"])
+sources = Array[StringName]([&"craft:body_primordial_immortal_pill_recipe", &"boss:E9_primordial_warden"])
 description = "Consumed by the Body Cultivation attempt entering Body of Unity; no equipment modifier."

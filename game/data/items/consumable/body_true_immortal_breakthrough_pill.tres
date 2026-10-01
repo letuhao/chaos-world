@@ -9,5 +9,5 @@ display_name = "Body of Transcendence Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:body_true_immortal_pill_recipe"])
+sources = Array[StringName]([&"craft:body_true_immortal_pill_recipe", &"boss:E9_transcendant_warden"])
 description = "Consumed by the Body Cultivation attempt entering Body of Transcendence; no equipment modifier."

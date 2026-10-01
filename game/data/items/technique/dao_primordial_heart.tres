@@ -9,7 +9,7 @@ display_name = "Primordial Dao Heart Slip"
 category = &"technique"
 subcategory = &"jade_slip"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:E10_dao_warden"])
 percent_modifiers = {
 "dao_heart": 0.16
 }

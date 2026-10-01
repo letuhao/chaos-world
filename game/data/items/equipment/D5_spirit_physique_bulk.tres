@@ -9,7 +9,7 @@ display_name = "Spirit Physique Bulk"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"spirit"
-sources = Array[StringName]([&"gather", &"craft:D5_spirit_physique_bulk_recipe"])
+sources = Array[StringName]([&"gather", &"craft:D5_spirit_physique_bulk_recipe", &"boss:E5_manifestation_warden"])
 percent_modifiers = {
 "physique": 0.06
 }

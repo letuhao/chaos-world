@@ -9,7 +9,7 @@ display_name = "Sovereign Pauldrons"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:pauldron_sovereign_recipe"])
+sources = Array[StringName]([&"craft:pauldron_sovereign_recipe", &"boss:E9_sovereign_warden"])
 flat_modifiers = {
 "defense_physical": 30.0,
 "defense_spiritual": 25.0,

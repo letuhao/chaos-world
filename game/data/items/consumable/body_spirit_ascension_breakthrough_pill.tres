@@ -9,5 +9,5 @@ display_name = "Body of Chaos Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:body_spirit_ascension_pill_recipe"])
+sources = Array[StringName]([&"craft:body_spirit_ascension_pill_recipe", &"boss:E6_ascension_warden"])
 description = "Consumed by the Body Cultivation attempt entering Body of Chaos; no equipment modifier."

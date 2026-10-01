@@ -9,4 +9,4 @@ display_name = "Iron Keystone"
 category = &"key"
 subcategory = &"key"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:body_core_formation_guardian"])

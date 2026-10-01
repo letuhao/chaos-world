@@ -9,5 +9,5 @@ display_name = "Organ Tempering Tempering Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:body_void_refinement_pill_recipe"])
+sources = Array[StringName]([&"craft:body_void_refinement_pill_recipe", &"boss:body_void_refinement_guardian"])
 description = "Consumed by the Body Cultivation attempt entering Organ Tempering; no equipment modifier."

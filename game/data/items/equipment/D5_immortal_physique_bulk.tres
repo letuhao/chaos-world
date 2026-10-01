@@ -9,7 +9,7 @@ display_name = "Immortal Physique Bulk"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"immortal"
-sources = Array[StringName]([&"gather", &"craft:D5_immortal_physique_bulk_recipe"])
+sources = Array[StringName]([&"gather", &"craft:D5_immortal_physique_bulk_recipe", &"boss:E7_earth_warden"])
 percent_modifiers = {
 "physique": 0.13
 }

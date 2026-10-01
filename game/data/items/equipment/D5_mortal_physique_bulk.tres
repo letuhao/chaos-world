@@ -9,7 +9,7 @@ display_name = "Mortal Physique Bulk"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"mortal"
-sources = Array[StringName]([&"gather", &"craft:D5_mortal_physique_bulk_recipe"])
+sources = Array[StringName]([&"gather", &"craft:D5_mortal_physique_bulk_recipe", &"boss:E2_ascension_sentinel"])
 percent_modifiers = {
 "physique": 0.04
 }

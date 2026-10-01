@@ -9,7 +9,7 @@ display_name = "Transcendent Breakthrough Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:body_transcendent_guardian"])
 percent_modifiers = {
 "breakthrough_chance": 0.2
 }
