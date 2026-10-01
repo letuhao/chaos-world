@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"U7_immortal_yarrow_regalia"
+display_name = "Immortal Yarrow Regalia"
+category = &"consumable"
+subcategory = &"pill"
+grade = &"immortal"
+sources = Array[StringName]([&"boss:mind_mystic_immortal_warden"])
+percent_modifiers = {
+"max_health": 0.06
+}

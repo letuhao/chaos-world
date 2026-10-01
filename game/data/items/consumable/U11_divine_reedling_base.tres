@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"U11_divine_reedling_base"
+display_name = "Divine Reedling Base"
+category = &"consumable"
+subcategory = &"elixir"
+grade = &"divine"
+sources = Array[StringName]([&"craft:U11_divine_reedling_base_recipe", &"quest:U11_divine_reedling_line"])
+percent_modifiers = {
+"dao_heart": 0.03
+}

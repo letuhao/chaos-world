@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"U2_divine_sennit_cup"
+display_name = "Divine Sennit Cup"
+category = &"consumable"
+subcategory = &"draught"
+grade = &"divine"
+sources = Array[StringName]([&"boss:d5_transcendent_radiance"])
+percent_modifiers = {
+"attack_physical": 0.06
+}

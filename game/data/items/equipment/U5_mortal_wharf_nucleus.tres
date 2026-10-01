@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"U5_mortal_wharf_nucleus"
+display_name = "Mortal Wharf Nucleus"
+category = &"equipment"
+subcategory = &"armor"
+grade = &"mortal"
+sources = Array[StringName]([&"boss:body_dao_fruit_guardian"])
+percent_modifiers = {
+"max_qi": 0.06
+}

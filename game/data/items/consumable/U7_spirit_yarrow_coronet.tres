@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"U7_spirit_yarrow_coronet"
+display_name = "Spirit Yarrow Coronet"
+category = &"consumable"
+subcategory = &"pill"
+grade = &"spirit"
+sources = Array[StringName]([&"boss:mind_spirit_palace_warden"])
+percent_modifiers = {
+"max_health": 0.06
+}

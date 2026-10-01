@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"U22_earth_belfry_perfected"
+display_name = "Earth Belfry Perfected"
+category = &"equipment"
+subcategory = &"weapon"
+grade = &"earth"
+sources = Array[StringName]([&"craft:U22_earth_belfry_perfected_recipe"])
+percent_modifiers = {
+"qi_absorption": 0.17
+}

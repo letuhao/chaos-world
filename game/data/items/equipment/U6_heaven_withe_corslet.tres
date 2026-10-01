@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"U6_heaven_withe_corslet"
+display_name = "Heaven Withe Corslet"
+category = &"equipment"
+subcategory = &"accessory"
+grade = &"heaven"
+sources = Array[StringName]([&"boss:mind_earth_immortal_warden"])
+percent_modifiers = {
+"evasion": 0.06
+}

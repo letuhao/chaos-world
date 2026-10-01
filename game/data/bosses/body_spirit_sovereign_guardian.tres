@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"body_spirit_sovereign_guardian"
 display_name = "Body of Void Guardian"
 domain_id = &"body_spirit_sovereign_trial"
-loot = Array[StringName]([&"body_spirit_sovereign_guardian_core", &"D7_spirit_absorption_jade", &"sigil_frost"])
+loot = Array[StringName]([&"body_spirit_sovereign_guardian_core", &"D7_spirit_absorption_jade", &"sigil_frost", &"U7_earth_yarrow_thurible", &"U7_earth_yarrow_wreath"])

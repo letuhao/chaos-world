@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"U23_earth_bracken_base"
+display_name = "Earth Bracken Base"
+category = &"technique"
+subcategory = &"grimoire"
+grade = &"earth"
+sources = Array[StringName]([&"craft:U23_earth_bracken_base_recipe", &"quest:U23_earth_bracken_line"])
+percent_modifiers = {
+"spirit": 0.03
+}

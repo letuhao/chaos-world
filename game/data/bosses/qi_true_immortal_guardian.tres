@@ -7,4 +7,4 @@ script = Ext_resource("1_boss")
 id = &"qi_true_immortal_guardian"
 display_name = "True Immortal Guardian"
 domain_id = &"qi_mystic_immortal_domain"
-loot = Array[StringName]([&"qi_true_immortal_guardian_core"])
+loot = Array[StringName]([&"qi_true_immortal_guardian_core", &"U3_divine_warble_crest", &"U3_divine_warble_partisan"])

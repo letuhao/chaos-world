@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"F14_dao_fruit_warden"
 display_name = "Dao Fruit Warden"
 domain_id = &"mind_dao_fruit_trial"
-loot = Array[StringName]([&"mind_dao_fruit_breakthrough_pill", &"D1_immortal_insight_draught", &"panacea_clarity_pill"])
+loot = Array[StringName]([&"mind_dao_fruit_breakthrough_pill", &"D1_immortal_insight_draught", &"panacea_clarity_pill", &"U4_mortal_weald_armlet", &"U4_mortal_weald_crest"])
