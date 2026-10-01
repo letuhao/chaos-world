@@ -1,6 +1,6 @@
 # 0021 Transcendent ascension system (飞升)
 
-- Status: Draft
+- Status: Accepted
 - Date: 2026-10-02
 
 ## Context

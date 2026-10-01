@@ -1,6 +1,6 @@
 # 0013 Mind cultivation (Tu Niệm)
 
-- Status: Draft
+- Status: Accepted
 - Date: 2026-10-02
 
 ## Context

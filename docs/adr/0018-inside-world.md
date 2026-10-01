@@ -1,6 +1,6 @@
 # 0018 Inside world system (内世界)
 
-- Status: Draft
+- Status: Accepted
 - Date: 2026-10-02
 
 ## Context

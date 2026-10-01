@@ -1,6 +1,6 @@
 # 0017 Meridian network system (Mạch)
 
-- Status: Draft
+- Status: Accepted
 - Date: 2026-10-02
 
 ## Context

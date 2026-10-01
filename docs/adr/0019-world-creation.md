@@ -1,6 +1,6 @@
 # 0019 World creation system (创世)
 
-- Status: Draft
+- Status: Accepted
 - Date: 2026-10-02
 
 ## Context

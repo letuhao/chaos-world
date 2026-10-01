@@ -1,6 +1,6 @@
 # 0012 Body cultivation (Luyện Thể)
 
-- Status: Draft
+- Status: Accepted
 - Date: 2026-10-02
 
 ## Context

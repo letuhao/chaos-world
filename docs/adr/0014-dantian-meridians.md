@@ -1,6 +1,6 @@
 # 0014 Dantian and meridian system (Đan Điền + Mạch)
 
-- Status: Draft
+- Status: Accepted
 - Date: 2026-10-02
 
 ## Context

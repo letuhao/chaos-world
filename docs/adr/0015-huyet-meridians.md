@@ -1,6 +1,6 @@
 # 0015 Huyệt and body meridian system (Huyệt + Mạch)
 
-- Status: Draft
+- Status: Accepted
 - Date: 2026-10-02
 
 ## Context

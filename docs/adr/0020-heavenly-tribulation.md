@@ -1,6 +1,6 @@
 # 0020 Heavenly tribulation system (天劫)
 
-- Status: Draft
+- Status: Accepted
 - Date: 2026-10-02
 
 ## Context

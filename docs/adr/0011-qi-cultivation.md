@@ -1,6 +1,6 @@
 # 0011 Qi cultivation (Luyện Khí)
 
-- Status: Draft
+- Status: Accepted
 - Date: 2026-10-02
 
 ## Context
