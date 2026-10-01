@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"P8_heaven_bobbin_perfected"
+display_name = "Heaven Bobbin Perfected"
+category = &"technique"
+subcategory = &"talisman"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:P8_heaven_bobbin_perfected_recipe"])
+percent_modifiers = {
+"move_speed": 0.17
+}
