@@ -9,5 +9,5 @@ display_name = "Mind Awakening Lucidity Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mind_qi_refining_elixir_recipe"])
+sources = Array[StringName]([&"craft:mind_qi_refining_elixir_recipe", &"boss:mind_qi_refining_warden"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

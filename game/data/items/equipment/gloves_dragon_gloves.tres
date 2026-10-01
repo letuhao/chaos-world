@@ -9,7 +9,7 @@ display_name = "Dragon Gloves"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:gloves_dragon_gloves_recipe"])
+sources = Array[StringName]([&"craft:gloves_dragon_gloves_recipe", &"boss:F17_great_luo_warden"])
 flat_modifiers = {
 "attack_physical": 20.0,
 "defense_physical": 15.0

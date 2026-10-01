@@ -9,4 +9,4 @@ display_name = "Jade Crystal"
 category = &"material"
 subcategory = &"ore"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_core_formation_warden", &"boss:F1_core_formation_warden", &"boss:qi_void_refinement_warden"])

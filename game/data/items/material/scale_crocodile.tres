@@ -9,4 +9,4 @@ display_name = "Crocodile Scale"
 category = &"material"
 subcategory = &"hide"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_spirit_sea_warden"])

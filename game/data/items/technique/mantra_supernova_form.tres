@@ -9,7 +9,7 @@ display_name = "Supernova Mantra"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_primordial_immortal_warden"])
 percent_modifiers = {
 "attack_spiritual": 0.09
 }

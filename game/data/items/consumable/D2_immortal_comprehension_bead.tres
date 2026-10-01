@@ -9,7 +9,7 @@ display_name = "Immortal Comprehension Bead"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:D2_immortal_comprehension_bead_recipe"])
+sources = Array[StringName]([&"craft:D2_immortal_comprehension_bead_recipe", &"boss:F14_mystic_warden"])
 percent_modifiers = {
 "comprehension": 0.13
 }

@@ -9,7 +9,7 @@ display_name = "Eternal Page Manual"
 category = &"technique"
 subcategory = &"manual"
 grade = &"immortal"
-sources = Array[StringName]([&"gather", &"boss:E8_dao_fruit_warden"])
+sources = Array[StringName]([&"gather", &"boss:E8_dao_fruit_warden", &"boss:F17_dao_fruit_warden"])
 percent_modifiers = {
 "comprehension": 0.13
 }

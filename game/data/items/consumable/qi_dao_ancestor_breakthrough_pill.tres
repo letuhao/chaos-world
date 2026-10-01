@@ -9,5 +9,5 @@ display_name = "Dao Ancestor Refinement Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"divine"
-sources = Array[StringName]([&"craft:qi_dao_ancestor_pill_recipe"])
+sources = Array[StringName]([&"craft:qi_dao_ancestor_pill_recipe", &"boss:qi_dao_ancestor_warden"])
 description = "Consumed by the Qi Cultivation attempt entering Dao Ancestor; no equipment modifier."

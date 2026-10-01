@@ -9,7 +9,7 @@ display_name = "Divine Orb"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"divine"
-sources = Array[StringName]([&"craft:orb_divine_recipe"])
+sources = Array[StringName]([&"craft:orb_divine_recipe", &"boss:F20_transcendent_warden", &"boss:F19_origin_warden"])
 flat_modifiers = {
 "attack_spiritual": 68.0
 }

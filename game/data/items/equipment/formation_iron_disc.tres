@@ -9,7 +9,7 @@ display_name = "Formation Iron Disc"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:formation_iron_disc_recipe"])
+sources = Array[StringName]([&"craft:formation_iron_disc_recipe", &"boss:qi_core_formation_warden", &"boss:qi_qi_refining_warden", &"boss:F1_core_formation_warden"])
 flat_modifiers = {
 "defense_physical": 15.0
 "damage_reduction": 0.02

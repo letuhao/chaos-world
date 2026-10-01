@@ -9,7 +9,7 @@ display_name = "Spirit Flow Sigil"
 category = &"technique"
 subcategory = &"sigil"
 grade = &"spirit"
-sources = Array[StringName]([&"gather", &"boss:E5_unity_weaver"])
+sources = Array[StringName]([&"gather", &"boss:E5_unity_weaver", &"boss:qi_spirit_manifestation_warden", &"boss:mind_spirit_sovereign_warden"])
 percent_modifiers = {
 "cultivation_rate": 0.06
 }

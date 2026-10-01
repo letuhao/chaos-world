@@ -9,5 +9,5 @@ display_name = "Discernment Insight Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:mind_spirit_palace_pill_recipe"])
+sources = Array[StringName]([&"craft:mind_spirit_palace_pill_recipe", &"boss:F7_palace_warden"])
 description = "Consumed by the Mind Cultivation attempt entering Discernment; no equipment modifier."

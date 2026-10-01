@@ -9,4 +9,4 @@ display_name = "Marine Pearl Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F10_sea_warden"])

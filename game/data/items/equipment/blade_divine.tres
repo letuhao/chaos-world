@@ -9,7 +9,7 @@ display_name = "Divine Blade"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"divine"
-sources = Array[StringName]([&"craft:blade_divine_recipe"])
+sources = Array[StringName]([&"craft:blade_divine_recipe", &"boss:F19_dao_warden"])
 flat_modifiers = {
 "attack_physical": 40.0,
 "attack_spiritual": 68.0

@@ -9,5 +9,5 @@ display_name = "Primordial Origin Qi Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F20_primordial_warden"])
 description = "Gathered reagent for the realm's elixir."

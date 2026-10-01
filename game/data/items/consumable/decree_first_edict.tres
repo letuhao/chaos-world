@@ -9,7 +9,7 @@ display_name = "Decree: First Edict"
 category = &"consumable"
 subcategory = &"decree"
 grade = &"mortal"
-sources = Array[StringName]([&"quest:decree_first_edict"])
+sources = Array[StringName]([&"quest:decree_first_edict", &"boss:F3_tribulation_warden", &"boss:F5_ascension_warden"])
 flat_modifiers = {
 "max_health": 28.0
 }

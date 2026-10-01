@@ -9,4 +9,4 @@ display_name = "Storm Warband Banner"
 category = &"misc"
 subcategory = &"trophy"
 grade = &"immortal"
-sources = Array[StringName]([&"quest:warband_storm_banner"])
+sources = Array[StringName]([&"quest:warband_storm_banner", &"boss:F16_golden_hoard_tyrant"])

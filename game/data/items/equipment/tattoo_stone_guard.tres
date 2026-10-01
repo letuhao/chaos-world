@@ -9,7 +9,7 @@ display_name = "Stone Guard"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:tattoo_stone_guard_recipe"])
+sources = Array[StringName]([&"craft:tattoo_stone_guard_recipe", &"boss:mind_spirit_transformation_warden"])
 flat_modifiers = {
 "max_health": 15.0
 "damage_reduction": 0.02

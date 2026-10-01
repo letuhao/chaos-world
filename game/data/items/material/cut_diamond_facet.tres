@@ -9,4 +9,4 @@ display_name = "Cut Diamond Facet"
 category = &"material"
 subcategory = &"gemstone"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:cut_diamond_facet_recipe"])
+sources = Array[StringName]([&"craft:cut_diamond_facet_recipe", &"boss:F13_golden_warden"])

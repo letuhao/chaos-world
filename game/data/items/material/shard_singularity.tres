@@ -9,4 +9,4 @@ display_name = "Singularity Shard"
 category = &"material"
 subcategory = &"fragment"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_primordial_origin_warden"])

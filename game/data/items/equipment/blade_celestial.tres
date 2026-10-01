@@ -9,7 +9,7 @@ display_name = "Celestial Blade"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"divine"
-sources = Array[StringName]([&"craft:blade_celestial_recipe"])
+sources = Array[StringName]([&"craft:blade_celestial_recipe", &"boss:F19_ascendant_warden"])
 flat_modifiers = {
 "attack_physical": 50.0,
 "attack_spiritual": 82.0,

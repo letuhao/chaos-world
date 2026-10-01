@@ -9,5 +9,5 @@ display_name = "Contemplation Insight Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:mind_spirit_condensation_pill_recipe"])
+sources = Array[StringName]([&"craft:mind_spirit_condensation_pill_recipe", &"boss:F7_condensation_warden"])
 description = "Consumed by the Mind Cultivation attempt entering Contemplation; no equipment modifier."

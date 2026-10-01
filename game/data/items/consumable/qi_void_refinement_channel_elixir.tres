@@ -9,5 +9,5 @@ display_name = "Void Refinement Channel Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:qi_void_refinement_elixir_recipe"])
+sources = Array[StringName]([&"craft:qi_void_refinement_elixir_recipe", &"boss:F6_void_refinement_warden"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

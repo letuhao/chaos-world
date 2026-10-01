@@ -9,5 +9,5 @@ display_name = "Nascent Soul Refinement Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:qi_nascent_soul_pill_recipe"])
+sources = Array[StringName]([&"craft:qi_nascent_soul_pill_recipe", &"boss:F5_nascent_soul_warden"])
 description = "Consumed by the Qi Cultivation attempt entering Nascent Soul; no equipment modifier."

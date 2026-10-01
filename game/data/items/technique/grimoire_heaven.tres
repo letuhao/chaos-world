@@ -9,7 +9,7 @@ display_name = "Heaven Grimoire"
 category = &"technique"
 subcategory = &"grimoire"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:grimoire_heaven_recipe"])
+sources = Array[StringName]([&"craft:grimoire_heaven_recipe", &"boss:F15_true_warden", &"boss:mind_heaven_immortal_warden"])
 percent_modifiers = {
 "attack_spiritual": 0.09
 }

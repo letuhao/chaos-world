@@ -9,4 +9,4 @@ display_name = "Void Crystal Ore"
 category = &"material"
 subcategory = &"ore"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_true_immortal_warden"])

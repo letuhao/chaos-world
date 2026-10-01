@@ -9,4 +9,4 @@ display_name = "Tincture Immortal Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:mind_true_immortal_warden"])

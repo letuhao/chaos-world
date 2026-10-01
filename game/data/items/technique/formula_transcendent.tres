@@ -9,7 +9,7 @@ display_name = "Transcendent Formula"
 category = &"technique"
 subcategory = &"formula"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F14_luo_warden"])
 percent_modifiers = {
 "attack_spiritual": 0.09
 }

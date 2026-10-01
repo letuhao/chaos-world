@@ -9,7 +9,7 @@ display_name = "Singularity Sigil Brand"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F20_primordial_warden"])
 flat_modifiers = {
 "max_qi": 90.0
 }

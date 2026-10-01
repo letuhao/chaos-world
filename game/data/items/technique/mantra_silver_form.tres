@@ -9,7 +9,7 @@ display_name = "Silver Mantra"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F7_sea_warden"])
 percent_modifiers = {
 "insight_gain": 0.05
 }

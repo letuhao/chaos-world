@@ -9,4 +9,4 @@ display_name = "Cinnabar Ore"
 category = &"material"
 subcategory = &"ore"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F5_qi_refining_warden", &"boss:qi_tribulation_warden"])

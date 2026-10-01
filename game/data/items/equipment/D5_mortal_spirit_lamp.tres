@@ -9,7 +9,7 @@ display_name = "Mortal Spirit Lamp"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"gather", &"craft:D5_mortal_spirit_lamp_recipe"])
+sources = Array[StringName]([&"gather", &"craft:D5_mortal_spirit_lamp_recipe", &"boss:F6_transformation_warden"])
 percent_modifiers = {
 "spirit": 0.04
 }

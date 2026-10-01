@@ -9,7 +9,7 @@ display_name = "Formation Spirit Disc"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:formation_spirit_disc_recipe"])
+sources = Array[StringName]([&"craft:formation_spirit_disc_recipe", &"boss:F11_manifestation_warden", &"boss:F9_ascension_warden"])
 flat_modifiers = {
 "max_qi": 25.0
 }

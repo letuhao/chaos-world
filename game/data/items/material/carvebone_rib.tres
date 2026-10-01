@@ -9,4 +9,4 @@ display_name = "Carved Rib"
 category = &"material"
 subcategory = &"bone"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:mind_body_integration_warden"])

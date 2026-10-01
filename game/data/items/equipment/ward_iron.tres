@@ -9,7 +9,7 @@ display_name = "Iron Ward"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F4_integration_warden"])
 flat_modifiers = {
 "defense_physical": 8.0
 }

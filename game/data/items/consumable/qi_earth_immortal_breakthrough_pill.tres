@@ -9,5 +9,5 @@ display_name = "Earth Immortal Refinement Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:qi_earth_immortal_pill_recipe"])
+sources = Array[StringName]([&"craft:qi_earth_immortal_pill_recipe", &"boss:F16_earth_stoneheart_colossus"])
 description = "Consumed by the Qi Cultivation attempt entering Earth Immortal; no equipment modifier."

@@ -9,5 +9,5 @@ display_name = "Transcendent Refinement Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"divine"
-sources = Array[StringName]([&"craft:qi_transcendent_pill_recipe"])
+sources = Array[StringName]([&"craft:qi_transcendent_pill_recipe", &"boss:qi_transcendent_warden"])
 description = "Consumed by the Qi Cultivation attempt entering Transcendent; no equipment modifier."

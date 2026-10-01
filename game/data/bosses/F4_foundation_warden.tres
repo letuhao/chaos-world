@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BossDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/boss_def.gd" id="1_boss"]
+
+[resource]
+script = ExtResource("1_boss")
+id = &"F4_foundation_warden"
+display_name = "Foundation Warden"
+domain_id = &"qi_foundation_trial"
+loot = Array[StringName]([&"qi_foundation_qi_herb", &"brand_iron_sigil", &"incense_clarity"])

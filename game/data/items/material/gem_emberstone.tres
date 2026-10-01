@@ -9,4 +9,4 @@ display_name = "Emberstone"
 category = &"material"
 subcategory = &"ore"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F6_tribulation_warden"])

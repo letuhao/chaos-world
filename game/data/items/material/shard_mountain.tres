@@ -9,4 +9,4 @@ display_name = "Mountain Shard"
 category = &"material"
 subcategory = &"fragment"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:mind_foundation_warden"])

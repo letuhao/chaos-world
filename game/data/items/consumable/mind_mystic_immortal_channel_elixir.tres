@@ -9,5 +9,5 @@ display_name = "Revelation Lucidity Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:mind_mystic_immortal_elixir_recipe"])
+sources = Array[StringName]([&"craft:mind_mystic_immortal_elixir_recipe", &"boss:mind_mystic_immortal_warden"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

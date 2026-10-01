@@ -9,7 +9,7 @@ display_name = "Void Edge Bladework"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F18_true_warden"])
 percent_modifiers = {
 "penetration": 0.08
 }

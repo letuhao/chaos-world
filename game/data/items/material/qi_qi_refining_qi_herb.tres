@@ -9,5 +9,5 @@ display_name = "Qi Refining Qi Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F5_qi_refining_warden"])
 description = "Gathered reagent for the realm's elixir."

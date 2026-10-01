@@ -9,7 +9,7 @@ display_name = "Mending Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:vial_mending_elixir_recipe"])
+sources = Array[StringName]([&"craft:vial_mending_elixir_recipe", &"boss:qi_body_integration_warden"])
 percent_modifiers = {
 "health_regen": 0.06
 }

@@ -9,5 +9,5 @@ display_name = "Perception Lucidity Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mind_void_refinement_elixir_recipe"])
+sources = Array[StringName]([&"craft:mind_void_refinement_elixir_recipe", &"boss:F3_void_warden"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

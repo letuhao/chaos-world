@@ -9,4 +9,4 @@ display_name = "Sunstone"
 category = &"material"
 subcategory = &"ore"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_tribulation_warden"])

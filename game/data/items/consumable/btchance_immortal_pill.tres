@@ -9,7 +9,7 @@ display_name = "Immortal Breakthrough Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"immortal"
-sources = Array[StringName]([&"gather", &"boss:body_great_luo_guardian"])
+sources = Array[StringName]([&"gather", &"boss:body_great_luo_guardian", &"boss:mind_golden_immortal_warden"])
 percent_modifiers = {
 "breakthrough_chance": 0.15
 }

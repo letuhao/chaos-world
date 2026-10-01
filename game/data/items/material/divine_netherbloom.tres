@@ -9,4 +9,4 @@ display_name = "Netherbloom"
 category = &"material"
 subcategory = &"herb"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:mind_dao_ancestor_warden"])

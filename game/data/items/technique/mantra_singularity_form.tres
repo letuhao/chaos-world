@@ -9,7 +9,7 @@ display_name = "Singularity Mantra"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F19_origin_warden"])
 percent_modifiers = {
 "cultivation_rate": 0.1
 }

@@ -9,7 +9,7 @@ display_name = "Supernova Prism"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F18_primordial_warden"])
 flat_modifiers = {
 "defense_spiritual": 18.0
 }

@@ -9,7 +9,7 @@ display_name = "Glow Everlight"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:everlight_glow_recipe"])
+sources = Array[StringName]([&"craft:everlight_glow_recipe", &"boss:F8_manifestation_warden"])
 flat_modifiers = {
 "max_qi": 30.0
 }

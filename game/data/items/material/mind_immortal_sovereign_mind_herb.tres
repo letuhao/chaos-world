@@ -9,5 +9,5 @@ display_name = "Ascendant of Mind Mind Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F15_sovereign_arbiter"])
 description = "Gathered reagent for the realm's elixir."

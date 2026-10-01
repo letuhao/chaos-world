@@ -9,7 +9,7 @@ display_name = "Celestial Censer"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:censer_celestial_recipe"])
+sources = Array[StringName]([&"craft:censer_celestial_recipe", &"boss:mind_heaven_immortal_warden"])
 flat_modifiers = {
 "defense_spiritual": 45.0
 }

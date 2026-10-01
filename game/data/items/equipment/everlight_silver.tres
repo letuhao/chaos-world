@@ -9,7 +9,7 @@ display_name = "Silver Everlight"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:everlight_silver_recipe"])
+sources = Array[StringName]([&"craft:everlight_silver_recipe", &"boss:qi_spirit_ascension_warden"])
 percent_modifiers = {
 "qi_regen": 0.05
 }

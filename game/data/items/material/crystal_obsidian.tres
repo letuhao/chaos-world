@@ -9,4 +9,4 @@ display_name = "Obsidian Crystal"
 category = &"material"
 subcategory = &"ore"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F3_void_warden", &"boss:F6_void_refinement_warden"])

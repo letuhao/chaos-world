@@ -9,7 +9,7 @@ display_name = "Flame Ward Talisman"
 category = &"consumable"
 subcategory = &"talisman"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:talisman_flame_ward_recipe"])
+sources = Array[StringName]([&"craft:talisman_flame_ward_recipe", &"boss:mind_tribulation_warden"])
 percent_modifiers = {
 "attack_spiritual": 0.06
 }

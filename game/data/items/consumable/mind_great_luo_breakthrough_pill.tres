@@ -9,5 +9,5 @@ display_name = "Transcendence Insight Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:mind_great_luo_pill_recipe"])
+sources = Array[StringName]([&"craft:mind_great_luo_pill_recipe", &"boss:F14_luo_warden"])
 description = "Consumed by the Mind Cultivation attempt entering Transcendence; no equipment modifier."

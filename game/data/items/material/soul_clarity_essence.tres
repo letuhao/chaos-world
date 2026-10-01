@@ -9,4 +9,4 @@ display_name = "Clarity Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:soul_clarity_essence_recipe"])
+sources = Array[StringName]([&"craft:soul_clarity_essence_recipe", &"boss:mind_spirit_manifestation_warden", &"boss:mind_spirit_condensation_warden", &"boss:mind_spirit_sovereign_warden"])

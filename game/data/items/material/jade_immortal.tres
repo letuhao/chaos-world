@@ -9,4 +9,4 @@ display_name = "Immortal Jade"
 category = &"material"
 subcategory = &"ore"
 grade = &"immortal"
-sources = Array[StringName]([&"gather", &"boss:E9_transcendant_warden", &"boss:E8_luo_warden"])
+sources = Array[StringName]([&"gather", &"boss:E9_transcendant_warden", &"boss:E8_luo_warden", &"boss:qi_mystic_immortal_warden"])

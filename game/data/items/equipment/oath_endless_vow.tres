@@ -9,7 +9,7 @@ display_name = "Oath of the Endless"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"quest:oath_of_the_endless"])
+sources = Array[StringName]([&"quest:oath_of_the_endless", &"boss:F15_sovereign_arbiter"])
 percent_modifiers = {
 "cultivation_rate": 0.09
 }

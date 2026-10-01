@@ -9,7 +9,7 @@ display_name = "Celestial Torc"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:torc_celestial_recipe"])
+sources = Array[StringName]([&"craft:torc_celestial_recipe", &"boss:mind_immortal_sovereign_warden"])
 flat_modifiers = {
 "attack_spiritual": 40.0
 }

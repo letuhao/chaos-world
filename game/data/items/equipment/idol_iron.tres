@@ -9,7 +9,7 @@ display_name = "Iron Idol"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:idol_iron_recipe"])
+sources = Array[StringName]([&"craft:idol_iron_recipe", &"boss:mind_foundation_warden"])
 flat_modifiers = {
 "defense_physical": 8.0
 }

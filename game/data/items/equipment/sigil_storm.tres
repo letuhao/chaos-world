@@ -9,7 +9,7 @@ display_name = "Sigil of Storm"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:sigil_storm_recipe"])
+sources = Array[StringName]([&"craft:sigil_storm_recipe", &"boss:F12_ascension_warden"])
 flat_modifiers = {
 "attack_spiritual": 18.0
 }

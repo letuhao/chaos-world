@@ -9,5 +9,5 @@ display_name = "Logic Mind Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F13_earth_warden"])
 description = "Gathered reagent for the realm's elixir."

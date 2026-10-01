@@ -9,7 +9,7 @@ display_name = "Oath of Steel"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"quest:oath_of_steel"])
+sources = Array[StringName]([&"quest:oath_of_steel", &"boss:F11_unity_warden", &"boss:qi_spirit_sovereign_warden"])
 flat_modifiers = {
 "defense_physical": 11.0
 }

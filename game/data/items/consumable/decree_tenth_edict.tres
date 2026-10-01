@@ -9,7 +9,7 @@ display_name = "Decree: Tenth Edict"
 category = &"consumable"
 subcategory = &"decree"
 grade = &"immortal"
-sources = Array[StringName]([&"quest:decree_tenth_edict"])
+sources = Array[StringName]([&"quest:decree_tenth_edict", &"boss:qi_immortal_sovereign_warden"])
 percent_modifiers = {
 "status_resistance": 0.08
 }

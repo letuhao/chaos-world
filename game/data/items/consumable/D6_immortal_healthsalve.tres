@@ -9,7 +9,7 @@ display_name = "Immortal Renewal Salve"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:D6_immortal_healthsalve_recipe"])
+sources = Array[StringName]([&"craft:D6_immortal_healthsalve_recipe", &"boss:mind_earth_immortal_warden"])
 percent_modifiers = {
 "health_regen": 0.12
 }

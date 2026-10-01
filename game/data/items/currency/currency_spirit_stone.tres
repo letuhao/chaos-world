@@ -9,4 +9,4 @@ display_name = "Spirit Stone"
 category = &"currency"
 subcategory = &"token"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F12_ascension_warden", &"boss:F10_palace_warden"])

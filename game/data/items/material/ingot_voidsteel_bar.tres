@@ -9,4 +9,4 @@ display_name = "Voidsteel Bar"
 category = &"material"
 subcategory = &"ingot"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:ingot_voidsteel_bar_recipe"])
+sources = Array[StringName]([&"craft:ingot_voidsteel_bar_recipe", &"boss:F16_earth_stoneheart_colossus"])

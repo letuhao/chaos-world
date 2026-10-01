@@ -9,5 +9,5 @@ display_name = "Knowledge Lucidity Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:mind_spirit_domain_elixir_recipe"])
+sources = Array[StringName]([&"craft:mind_spirit_domain_elixir_recipe", &"boss:qi_spirit_domain_warden"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

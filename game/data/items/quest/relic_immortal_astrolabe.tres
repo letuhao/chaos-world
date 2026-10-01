@@ -9,4 +9,4 @@ display_name = "Immortal Astrolabe Relic"
 category = &"quest"
 subcategory = &"instrument"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F17_great_luo_warden"])

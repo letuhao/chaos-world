@@ -9,7 +9,7 @@ display_name = "Iron Mind Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F2_nascent_soul_warden"])
 percent_modifiers = {
 "aptitude": 0.05
 }

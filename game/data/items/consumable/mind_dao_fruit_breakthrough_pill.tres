@@ -9,5 +9,5 @@ display_name = "Dao of Mind Insight Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:mind_dao_fruit_pill_recipe"])
+sources = Array[StringName]([&"craft:mind_dao_fruit_pill_recipe", &"boss:F14_dao_fruit_warden"])
 description = "Consumed by the Mind Cultivation attempt entering Dao of Mind; no equipment modifier."

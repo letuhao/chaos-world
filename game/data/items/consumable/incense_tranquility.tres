@@ -9,7 +9,7 @@ display_name = "Tranquility Incense"
 category = &"consumable"
 subcategory = &"talisman"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:incense_tranquility_recipe"])
+sources = Array[StringName]([&"craft:incense_tranquility_recipe", &"boss:F2_ascension_warden"])
 percent_modifiers = {
 "qi_regen": 0.06
 }

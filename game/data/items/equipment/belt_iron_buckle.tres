@@ -9,7 +9,7 @@ display_name = "Iron Buckle"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:belt_iron_buckle_recipe"])
+sources = Array[StringName]([&"craft:belt_iron_buckle_recipe", &"boss:F1_foundation_warden"])
 flat_modifiers = {
 "max_health": 15.0,
 "defense_physical": 5.0

@@ -9,5 +9,5 @@ display_name = "Body Integration Qi Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F1_integration_warden"])
 description = "Gathered reagent for the realm's elixir."

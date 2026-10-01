@@ -9,4 +9,4 @@ display_name = "Golden Jade"
 category = &"material"
 subcategory = &"ore"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F9_ascension_warden"])

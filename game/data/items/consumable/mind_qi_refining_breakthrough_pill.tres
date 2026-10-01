@@ -9,5 +9,5 @@ display_name = "Mind Awakening Insight Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mind_qi_refining_pill_recipe"])
+sources = Array[StringName]([&"craft:mind_qi_refining_pill_recipe", &"boss:mind_qi_refining_warden"])
 description = "Consumed by the Mind Cultivation attempt entering Mind Awakening; no equipment modifier."

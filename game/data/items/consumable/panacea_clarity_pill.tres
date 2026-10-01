@@ -9,7 +9,7 @@ display_name = "Clarity Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:panacea_clarity_pill_recipe"])
+sources = Array[StringName]([&"craft:panacea_clarity_pill_recipe", &"boss:F14_dao_fruit_warden"])
 percent_modifiers = {
 "insight_gain": 0.05
 }

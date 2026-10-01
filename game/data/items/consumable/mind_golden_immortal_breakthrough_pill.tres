@@ -9,5 +9,5 @@ display_name = "Inspiration Insight Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:mind_golden_immortal_pill_recipe"])
+sources = Array[StringName]([&"craft:mind_golden_immortal_pill_recipe", &"boss:F13_golden_warden"])
 description = "Consumed by the Mind Cultivation attempt entering Inspiration; no equipment modifier."

@@ -9,5 +9,5 @@ display_name = "Spirit Manifestation Qi Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F11_manifestation_warden"])
 description = "Gathered reagent for the realm's elixir."

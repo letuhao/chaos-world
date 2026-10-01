@@ -9,7 +9,7 @@ display_name = "Glass Needle"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:dagger_glass_needle_recipe", &"boss:E5_severing_edge"])
+sources = Array[StringName]([&"craft:dagger_glass_needle_recipe", &"boss:E5_severing_edge", &"boss:F11_severing_warden"])
 flat_modifiers = {
 "attack_physical": 18.0
 }

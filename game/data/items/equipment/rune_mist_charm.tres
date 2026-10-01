@@ -9,7 +9,7 @@ display_name = "Mist Rune Charm"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:rune_mist_charm_recipe"])
+sources = Array[StringName]([&"craft:rune_mist_charm_recipe", &"boss:mind_spirit_manifestation_warden", &"boss:qi_spirit_domain_warden", &"boss:F9_sovereign_warden"])
 flat_modifiers = {
 "qi_regen": 2.0
 }

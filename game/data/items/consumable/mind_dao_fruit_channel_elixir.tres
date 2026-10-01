@@ -9,5 +9,5 @@ display_name = "Dao of Mind Lucidity Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:mind_dao_fruit_elixir_recipe"])
+sources = Array[StringName]([&"craft:mind_dao_fruit_elixir_recipe", &"boss:mind_dao_fruit_warden"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

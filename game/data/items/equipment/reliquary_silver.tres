@@ -9,7 +9,7 @@ display_name = "Silver Reliquary"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_spirit_unity_warden"])
 percent_modifiers = {
 "loot_bonus": 0.04
 }

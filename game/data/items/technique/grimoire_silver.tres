@@ -9,7 +9,7 @@ display_name = "Silver Grimoire"
 category = &"technique"
 subcategory = &"grimoire"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:grimoire_silver_recipe"])
+sources = Array[StringName]([&"craft:grimoire_silver_recipe", &"boss:F9_domain_warden"])
 percent_modifiers = {
 "insight_gain": 0.05
 }

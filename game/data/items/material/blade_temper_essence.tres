@@ -9,4 +9,4 @@ display_name = "Blade Temper Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F11_severing_warden", &"boss:mind_spirit_severing_warden"])

@@ -9,7 +9,7 @@ display_name = "Clarity Talisman"
 category = &"consumable"
 subcategory = &"talisman"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:talisman_clarity_recipe"])
+sources = Array[StringName]([&"craft:talisman_clarity_recipe", &"boss:qi_spirit_unity_warden", &"boss:F7_palace_warden", &"boss:qi_spirit_condensation_warden"])
 percent_modifiers = {
 "insight_gain": 0.06
 }

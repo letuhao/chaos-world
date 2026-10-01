@@ -9,7 +9,7 @@ display_name = "Seal Iron Spirit Guard"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:seal_iron_spirit_guard_recipe"])
+sources = Array[StringName]([&"craft:seal_iron_spirit_guard_recipe", &"boss:qi_spirit_transformation_warden"])
 flat_modifiers = {
 "defense_spiritual": 10.0,
 "max_qi": 20.0

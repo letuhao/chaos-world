@@ -9,5 +9,5 @@ display_name = "Great Ascension Refinement Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:qi_great_ascension_pill_recipe"])
+sources = Array[StringName]([&"craft:qi_great_ascension_pill_recipe", &"boss:F5_ascension_warden"])
 description = "Consumed by the Qi Cultivation attempt entering Great Ascension; no equipment modifier."

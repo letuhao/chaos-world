@@ -9,7 +9,7 @@ display_name = "First Light Manual"
 category = &"technique"
 subcategory = &"manual"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F3_transformation_warden"])
 percent_modifiers = {
 "comprehension": 0.05
 }

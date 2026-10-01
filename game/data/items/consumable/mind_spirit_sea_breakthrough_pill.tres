@@ -9,5 +9,5 @@ display_name = "Introspection Insight Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:mind_spirit_sea_pill_recipe"])
+sources = Array[StringName]([&"craft:mind_spirit_sea_pill_recipe", &"boss:F7_sea_warden"])
 description = "Consumed by the Mind Cultivation attempt entering Introspection; no equipment modifier."

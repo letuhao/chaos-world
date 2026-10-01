@@ -9,4 +9,4 @@ display_name = "Celestial Tablet"
 category = &"material"
 subcategory = &"tablet"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F15_true_warden", &"boss:F13_heaven_warden"])

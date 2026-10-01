@@ -9,5 +9,5 @@ display_name = "Spirit Condensation Channel Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:qi_spirit_condensation_elixir_recipe"])
+sources = Array[StringName]([&"craft:qi_spirit_condensation_elixir_recipe", &"boss:F10_condensation_warden"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

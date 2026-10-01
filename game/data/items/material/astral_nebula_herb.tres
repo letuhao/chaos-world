@@ -9,4 +9,4 @@ display_name = "Nebula Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F15_primordial_warden", &"boss:qi_dao_fruit_warden"])

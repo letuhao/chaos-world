@@ -9,4 +9,4 @@ display_name = "Gale Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:mind_primordial_immortal_warden"])

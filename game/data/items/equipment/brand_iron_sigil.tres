@@ -9,7 +9,7 @@ display_name = "Iron Sigil Brand"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F3_tribulation_warden", &"boss:F4_foundation_warden"])
 flat_modifiers = {
 "max_health": 25.0
 }

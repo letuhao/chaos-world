@@ -9,7 +9,7 @@ display_name = "Eclipse Physique Pauldron"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_earth_immortal_warden"])
 percent_modifiers = {
 "physique": 0.13
 }

@@ -9,5 +9,5 @@ display_name = "Body Integration Refinement Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:qi_body_integration_pill_recipe"])
+sources = Array[StringName]([&"craft:qi_body_integration_pill_recipe", &"boss:F4_integration_warden"])
 description = "Consumed by the Qi Cultivation attempt entering Body Integration; no equipment modifier."

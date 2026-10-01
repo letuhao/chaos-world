@@ -9,7 +9,7 @@ display_name = "Decree: Twelfth Edict"
 category = &"consumable"
 subcategory = &"decree"
 grade = &"divine"
-sources = Array[StringName]([&"quest:decree_twelfth_edict"])
+sources = Array[StringName]([&"quest:decree_twelfth_edict", &"boss:F19_dao_warden"])
 percent_modifiers = {
 "cultivation_rate": 0.12
 }

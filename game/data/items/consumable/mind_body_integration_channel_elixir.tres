@@ -9,5 +9,5 @@ display_name = "Awareness Lucidity Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mind_body_integration_elixir_recipe"])
+sources = Array[StringName]([&"craft:mind_body_integration_elixir_recipe", &"boss:F1_integration_warden"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

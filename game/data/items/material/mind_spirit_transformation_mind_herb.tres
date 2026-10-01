@@ -9,5 +9,5 @@ display_name = "Enlightenment Mind Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F3_transformation_warden"])
 description = "Gathered reagent for the realm's elixir."

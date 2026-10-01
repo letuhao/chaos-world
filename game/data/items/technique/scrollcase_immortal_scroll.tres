@@ -9,7 +9,7 @@ display_name = "Immortal Scroll Case"
 category = &"technique"
 subcategory = &"scroll"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:mind_true_immortal_warden"])
 percent_modifiers = {
 "cultivation_rate": 0.11
 }

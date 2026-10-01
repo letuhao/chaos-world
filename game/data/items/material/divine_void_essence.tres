@@ -9,4 +9,4 @@ display_name = "Void Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:mind_primordial_origin_warden"])

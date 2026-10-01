@@ -9,5 +9,5 @@ display_name = "Meditation Insight Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mind_tribulation_pill_recipe"])
+sources = Array[StringName]([&"craft:mind_tribulation_pill_recipe", &"boss:F3_tribulation_warden"])
 description = "Consumed by the Mind Cultivation attempt entering Meditation; no equipment modifier."

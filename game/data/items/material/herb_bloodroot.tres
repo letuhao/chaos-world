@@ -9,4 +9,4 @@ display_name = "Bloodroot"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F4_integration_warden"])

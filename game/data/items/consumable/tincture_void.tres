@@ -9,7 +9,7 @@ display_name = "Void Tincture"
 category = &"consumable"
 subcategory = &"tincture"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:tincture_void_recipe"])
+sources = Array[StringName]([&"craft:tincture_void_recipe", &"boss:F18_true_warden"])
 flat_modifiers = {
 "max_qi": 82.0
 }

@@ -9,7 +9,7 @@ display_name = "Leather Greaves"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:greaves_leather_recipe"])
+sources = Array[StringName]([&"craft:greaves_leather_recipe", &"boss:mind_body_integration_warden"])
 flat_modifiers = {
 "max_health": 15.0
 }

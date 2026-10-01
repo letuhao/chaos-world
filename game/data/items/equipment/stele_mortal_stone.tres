@@ -9,7 +9,7 @@ display_name = "Mortal Stele"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"gather", &"boss:E1_core_formation_warden"])
+sources = Array[StringName]([&"gather", &"boss:E1_core_formation_warden", &"boss:qi_great_ascension_warden"])
 flat_modifiers = {
 "defense_physical": 6.0,
 "max_health": 18.0

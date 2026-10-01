@@ -9,7 +9,7 @@ display_name = "Oath of the Primordial"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
-sources = Array[StringName]([&"quest:oath_of_the_primordial"])
+sources = Array[StringName]([&"quest:oath_of_the_primordial", &"boss:qi_dao_ancestor_warden"])
 flat_modifiers = {
 "max_qi": 115.0
 }

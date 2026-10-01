@@ -9,7 +9,7 @@ display_name = "Moon Veil Banner"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:banner_moon_veil_recipe"])
+sources = Array[StringName]([&"craft:banner_moon_veil_recipe", &"boss:F11_unity_warden", &"boss:F8_unity_warden"])
 flat_modifiers = {
 "defense_spiritual": 12.0
 }

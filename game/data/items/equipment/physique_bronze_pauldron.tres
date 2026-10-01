@@ -9,7 +9,7 @@ display_name = "Bronze Physique Pauldron"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_body_integration_warden"])
 percent_modifiers = {
 "physique": 0.05
 }

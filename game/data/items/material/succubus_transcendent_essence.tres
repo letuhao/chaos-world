@@ -9,4 +9,4 @@ display_name = "Transcendent Radiance Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F20_transcendent_warden"])

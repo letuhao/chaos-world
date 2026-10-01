@@ -9,7 +9,7 @@ display_name = "Divine Codex Case"
 category = &"technique"
 subcategory = &"scroll"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F20_dao_warden"])
 percent_modifiers = {
 "insight_gain": 0.14
 }

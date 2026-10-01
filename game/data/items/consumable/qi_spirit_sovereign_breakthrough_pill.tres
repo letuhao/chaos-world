@@ -9,5 +9,5 @@ display_name = "Spirit Sovereign Refinement Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:qi_spirit_sovereign_pill_recipe"])
+sources = Array[StringName]([&"craft:qi_spirit_sovereign_pill_recipe", &"boss:F12_sovereign_warden"])
 description = "Consumed by the Qi Cultivation attempt entering Spirit Sovereign; no equipment modifier."

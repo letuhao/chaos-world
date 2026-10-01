@@ -9,7 +9,7 @@ display_name = "Iron Tortoise Stance"
 category = &"technique"
 subcategory = &"manual"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:manual_iron_tortoise", &"boss:d3_iron_tortoise_shell"])
+sources = Array[StringName]([&"boss:manual_iron_tortoise", &"boss:d3_iron_tortoise_shell", &"boss:F9_domain_warden"])
 flat_modifiers = {
 "poise": 8.0
 }

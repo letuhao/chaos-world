@@ -9,7 +9,7 @@ display_name = "Celestial Bangle"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:bangle_celestial_recipe"])
+sources = Array[StringName]([&"craft:bangle_celestial_recipe", &"boss:qi_heaven_immortal_warden", &"boss:qi_immortal_sovereign_warden"])
 flat_modifiers = {
 "attack_spiritual": 40.0
 }

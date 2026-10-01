@@ -9,5 +9,5 @@ display_name = "Discernment Lucidity Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:mind_spirit_palace_elixir_recipe"])
+sources = Array[StringName]([&"craft:mind_spirit_palace_elixir_recipe", &"boss:mind_spirit_palace_warden"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

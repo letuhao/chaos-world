@@ -9,7 +9,7 @@ display_name = "Supernova Mantle"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F16_heaven_storm_serpent"])
 flat_modifiers = {
 "max_health": 80.0
 }

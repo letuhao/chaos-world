@@ -9,7 +9,7 @@ display_name = "Jade Refill Draught"
 category = &"consumable"
 subcategory = &"draught"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:refill_jade_recipe"])
+sources = Array[StringName]([&"craft:refill_jade_recipe", &"boss:F10_sea_warden"])
 flat_modifiers = {
 "max_qi": 38.0
 }

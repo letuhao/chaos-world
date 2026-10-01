@@ -9,7 +9,7 @@ display_name = "Moon Idol"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:idol_moon_recipe"])
+sources = Array[StringName]([&"craft:idol_moon_recipe", &"boss:mind_spirit_unity_warden"])
 flat_modifiers = {
 "max_qi": 30.0
 }

@@ -9,4 +9,4 @@ display_name = "Divine Keystone"
 category = &"key"
 subcategory = &"seal"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_transcendent_warden"])

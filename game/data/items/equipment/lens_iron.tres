@@ -9,7 +9,7 @@ display_name = "Iron Lens"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:mind_void_refinement_warden"])
 flat_modifiers = {
 "max_qi": 20.0
 }

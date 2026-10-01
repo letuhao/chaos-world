@@ -9,7 +9,7 @@ display_name = "Mist Veil"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:veil_mist_recipe"])
+sources = Array[StringName]([&"craft:veil_mist_recipe", &"boss:F3_void_warden"])
 percent_modifiers = {
 "evasion": 0.03
 }

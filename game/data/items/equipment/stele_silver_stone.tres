@@ -9,7 +9,7 @@ display_name = "Silver Stele"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F12_domain_warden", &"boss:qi_spirit_palace_warden"])
 flat_modifiers = {
 "defense_physical": 14.0,
 "poise": 4.0

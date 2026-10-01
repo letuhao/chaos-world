@@ -9,4 +9,4 @@ display_name = "Stone Tablet"
 category = &"material"
 subcategory = &"tablet"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_foundation_warden", &"boss:mind_core_formation_warden"])

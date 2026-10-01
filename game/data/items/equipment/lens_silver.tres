@@ -9,7 +9,7 @@ display_name = "Silver Lens"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F9_domain_warden"])
 percent_modifiers = {
 "qi_regen": 0.04
 }

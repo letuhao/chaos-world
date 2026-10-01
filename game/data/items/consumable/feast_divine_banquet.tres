@@ -9,7 +9,7 @@ display_name = "Divine Banquet"
 category = &"consumable"
 subcategory = &"food"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F19_ascendant_warden"])
 flat_modifiers = {
 "max_stamina": 95.0
 }

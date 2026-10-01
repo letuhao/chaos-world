@@ -9,5 +9,5 @@ display_name = "Insight Insight Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mind_nascent_soul_pill_recipe"])
+sources = Array[StringName]([&"craft:mind_nascent_soul_pill_recipe", &"boss:mind_nascent_soul_warden", &"boss:qi_spirit_transformation_warden"])
 description = "Consumed by the Mind Cultivation attempt entering Insight; no equipment modifier."

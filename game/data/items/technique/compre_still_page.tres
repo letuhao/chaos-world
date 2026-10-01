@@ -9,7 +9,7 @@ display_name = "Still Page Manual"
 category = &"technique"
 subcategory = &"manual"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F7_condensation_warden"])
 percent_modifiers = {
 "comprehension": 0.06
 }

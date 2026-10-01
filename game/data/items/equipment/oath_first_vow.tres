@@ -9,7 +9,7 @@ display_name = "Oath of the Beginner"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"quest:oath_of_the_beginner"])
+sources = Array[StringName]([&"quest:oath_of_the_beginner", &"boss:mind_spirit_transformation_warden", &"boss:F5_ascension_warden"])
 flat_modifiers = {
 "max_health": 30.0
 }

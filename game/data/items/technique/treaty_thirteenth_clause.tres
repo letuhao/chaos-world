@@ -9,7 +9,7 @@ display_name = "Treaty: Thirteenth Clause"
 category = &"technique"
 subcategory = &"treaty"
 grade = &"immortal"
-sources = Array[StringName]([&"quest:treaty_thirteenth_clause"])
+sources = Array[StringName]([&"quest:treaty_thirteenth_clause", &"boss:F18_sovereign_warden"])
 percent_modifiers = {
 "insight_gain": 0.09
 }

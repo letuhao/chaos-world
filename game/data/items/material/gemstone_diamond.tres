@@ -9,4 +9,4 @@ display_name = "Diamond Gemstone"
 category = &"material"
 subcategory = &"ore"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F16_golden_hoard_tyrant"])

@@ -9,7 +9,7 @@ display_name = "Mortal Veil Bell"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"boss:d5_mortal_veil"])
+sources = Array[StringName]([&"boss:d5_mortal_veil", &"boss:qi_nascent_soul_warden"])
 flat_modifiers = {
 "defense_spiritual": 20.0
 }

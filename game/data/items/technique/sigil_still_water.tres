@@ -9,7 +9,7 @@ display_name = "Still Water Sigil"
 category = &"technique"
 subcategory = &"sigil"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F9_sovereign_warden", &"boss:F8_unity_warden", &"boss:qi_spirit_sea_warden"])
 percent_modifiers = {
 "qi_regen": 0.05
 }

@@ -9,4 +9,4 @@ display_name = "Nether Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:mind_dao_ancestor_warden"])

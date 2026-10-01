@@ -9,7 +9,7 @@ display_name = "Silver Mantle"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_spirit_palace_warden"])
 flat_modifiers = {
 "max_qi": 30.0
 }

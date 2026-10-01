@@ -9,4 +9,4 @@ display_name = "Tide Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:mind_spirit_sea_warden"])

@@ -9,7 +9,7 @@ display_name = "Decree: Second Edict"
 category = &"consumable"
 subcategory = &"decree"
 grade = &"spirit"
-sources = Array[StringName]([&"quest:decree_second_edict"])
+sources = Array[StringName]([&"quest:decree_second_edict", &"boss:F12_sovereign_warden"])
 flat_modifiers = {
 "max_qi": 34.0
 }

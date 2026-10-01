@@ -9,7 +9,7 @@ display_name = "Sigil of Flame"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:sigil_flame_recipe"])
+sources = Array[StringName]([&"craft:sigil_flame_recipe", &"boss:F5_qi_refining_warden", &"boss:F6_tribulation_warden"])
 flat_modifiers = {
 "attack_spiritual": 12.0
 }

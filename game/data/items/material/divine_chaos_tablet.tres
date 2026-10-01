@@ -9,4 +9,4 @@ display_name = "Chaos Tablet"
 category = &"material"
 subcategory = &"tablet"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F20_dao_warden"])

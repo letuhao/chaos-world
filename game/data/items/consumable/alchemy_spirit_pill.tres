@@ -9,7 +9,7 @@ display_name = "Spirit Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:alchemy_spirit_pill_recipe"])
+sources = Array[StringName]([&"craft:alchemy_spirit_pill_recipe", &"boss:F10_condensation_warden", &"boss:F9_ascension_warden"])
 percent_modifiers = {
 "attack_spiritual": 0.06
 }

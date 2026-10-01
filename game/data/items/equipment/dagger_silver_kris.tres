@@ -9,7 +9,7 @@ display_name = "Silver Kris"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:dagger_silver_kris_recipe"])
+sources = Array[StringName]([&"craft:dagger_silver_kris_recipe", &"boss:mind_spirit_severing_warden"])
 flat_modifiers = {
 "attack_physical": 16.0
 }

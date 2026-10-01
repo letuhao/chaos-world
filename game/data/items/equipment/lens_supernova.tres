@@ -9,7 +9,7 @@ display_name = "Supernova Lens"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_heaven_immortal_warden"])
 percent_modifiers = {
 "attack_spiritual": 0.09
 }

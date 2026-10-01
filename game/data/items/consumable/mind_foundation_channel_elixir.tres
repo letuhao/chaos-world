@@ -9,5 +9,5 @@ display_name = "Focus Lucidity Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mind_foundation_elixir_recipe"])
+sources = Array[StringName]([&"craft:mind_foundation_elixir_recipe", &"boss:F1_foundation_warden"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

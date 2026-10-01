@@ -9,7 +9,7 @@ display_name = "Spirit Element Seed"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"boss:elemental_spirit_guardian", &"boss:d2_tide_guardian"])
+sources = Array[StringName]([&"boss:elemental_spirit_guardian", &"boss:d2_tide_guardian", &"boss:F11_manifestation_warden", &"boss:mind_spirit_ascension_warden"])
 flat_modifiers = {
 "max_qi": 36.0
 }

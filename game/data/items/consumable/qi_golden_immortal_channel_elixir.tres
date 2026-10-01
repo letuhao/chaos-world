@@ -9,5 +9,5 @@ display_name = "Golden Immortal Channel Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:qi_golden_immortal_elixir_recipe"])
+sources = Array[StringName]([&"craft:qi_golden_immortal_elixir_recipe", &"boss:F16_golden_hoard_tyrant"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

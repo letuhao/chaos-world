@@ -9,7 +9,7 @@ display_name = "Iron Mantra"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F2_qi_refining_warden"])
 percent_modifiers = {
 "cultivation_rate": 0.05
 }

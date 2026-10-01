@@ -9,7 +9,7 @@ display_name = "Void Veil"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:veil_void_recipe"])
+sources = Array[StringName]([&"craft:veil_void_recipe", &"boss:F14_mystic_warden"])
 flat_modifiers = {
 "damage_reduction": 0.05
 }

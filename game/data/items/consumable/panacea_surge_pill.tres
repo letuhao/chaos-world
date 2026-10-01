@@ -9,7 +9,7 @@ display_name = "Surge Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:panacea_surge_pill_recipe"])
+sources = Array[StringName]([&"craft:panacea_surge_pill_recipe", &"boss:qi_dao_fruit_warden"])
 percent_modifiers = {
 "attack_spiritual": 0.05
 }

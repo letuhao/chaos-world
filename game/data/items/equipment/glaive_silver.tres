@@ -9,7 +9,7 @@ display_name = "Silver Glaive"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_spirit_severing_warden", &"boss:F8_severing_warden"])
 flat_modifiers = {
 "attack_physical": 13.0,
 "poise": 3.0

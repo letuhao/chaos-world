@@ -9,7 +9,7 @@ display_name = "Bronze Mantra"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F8_manifestation_warden"])
 percent_modifiers = {
 "cultivation_rate": 0.06
 }

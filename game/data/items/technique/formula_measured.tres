@@ -9,7 +9,7 @@ display_name = "Measured Formula"
 category = &"technique"
 subcategory = &"formula"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:mind_spirit_ascension_warden"])
 percent_modifiers = {
 "qi_regen": 0.05
 }

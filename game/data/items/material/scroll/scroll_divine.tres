@@ -11,7 +11,7 @@ subcategory = &"scroll"
 grade = &"divine"
 value = 2000
 tags = Array[StringName]([&"mythic"])
-sources = Array[StringName]([&"craft:scroll_divine_recipe"])
+sources = Array[StringName]([&"craft:scroll_divine_recipe", &"boss:mind_transcendent_warden"])
 description = "A radiant scroll inscribed with divine law. Divine-grade power."
 flat_modifiers = {
 "attack_spiritual": 100.0

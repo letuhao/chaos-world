@@ -9,7 +9,7 @@ display_name = "First Rite"
 category = &"technique"
 subcategory = &"rite"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F3_transformation_warden"])
 percent_modifiers = {
 "cultivation_rate": 0.05
 }

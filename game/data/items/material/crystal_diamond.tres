@@ -9,4 +9,4 @@ display_name = "Diamond Crystal"
 category = &"material"
 subcategory = &"ore"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:F17_dao_fruit_warden"])

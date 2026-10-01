@@ -9,7 +9,7 @@ display_name = "Immortal Aptitude Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:D3_immortal_aptitude_elixir_recipe"])
+sources = Array[StringName]([&"craft:D3_immortal_aptitude_elixir_recipe", &"boss:F14_luo_warden"])
 percent_modifiers = {
 "aptitude": 0.13
 }

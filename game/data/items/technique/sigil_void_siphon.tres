@@ -9,7 +9,7 @@ display_name = "Void Siphon Sigil"
 category = &"technique"
 subcategory = &"sigil"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_true_immortal_warden"])
 percent_modifiers = {
 "qi_regen": 0.08
 }

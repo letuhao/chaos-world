@@ -9,4 +9,4 @@ display_name = "Bronze Bar"
 category = &"material"
 subcategory = &"ingot"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:ingot_bronze_bar_recipe"])
+sources = Array[StringName]([&"craft:ingot_bronze_bar_recipe", &"boss:qi_foundation_warden", &"boss:qi_qi_refining_warden", &"boss:F1_foundation_warden"])

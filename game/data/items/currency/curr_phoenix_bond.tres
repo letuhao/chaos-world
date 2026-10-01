@@ -9,4 +9,4 @@ display_name = "Phoenix Bond Token"
 category = &"currency"
 subcategory = &"bond"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:qi_golden_immortal_warden", &"boss:F18_sovereign_warden"])
