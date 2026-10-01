@@ -7,6 +7,6 @@ script = ExtResource("1_item")
 id = &"relic_divine_loom"
 display_name = "Divine Loom Relic"
 category = &"quest"
-subcategory = &"loom"
+subcategory = &"instrument"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])

@@ -389,6 +389,17 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
             )
         if not real and cat in SUBCATEGORY_CATEGORIES:
             findings.append(("warn", f"category '{cat}' items have no subcategory set"))
+        # Over-fragmentation: many singleton subtypes carry no grouping value.
+        if len(real) > 4:
+            per_subtype = len(cat_items) / len(real)
+            if per_subtype < 3.0:
+                findings.append(
+                    (
+                        "warn",
+                        f"category '{cat}' is fragmented: {len(real)} subtypes for "
+                        f"{len(cat_items)} items ({per_subtype:.1f} each)",
+                    )
+                )
 
     # Grade coverage: every category should span the ladder.
     for cat, cat_items in sorted(by_cat.items()):

@@ -7,6 +7,6 @@ script = ExtResource("1_item")
 id = &"relic_void_compass"
 display_name = "Void Compass Relic"
 category = &"quest"
-subcategory = &"compass"
+subcategory = &"instrument"
 grade = &"immortal"
 sources = Array[StringName]([&"gather"])
