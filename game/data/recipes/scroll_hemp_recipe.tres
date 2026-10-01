@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"scroll_hemp_recipe"
+display_name = "Hemp Scroll Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"alchemy_ash_herb", &"bangle_silk_herb"])
+outputs = Array[StringName]([&"scroll_hemp"])

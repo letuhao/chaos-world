@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"scroll_silk"
+display_name = "Silk Scroll"
+category = &"material"
+subcategory = &"scroll"
+grade = &"spirit"
+value = 40
+tags = Array[StringName]([&"uncommon"])
+sources = Array[StringName]([&"craft:scroll_silk_recipe"])
+description = "A smooth silk scroll inscribed with spirit-grade techniques."
+flat_modifiers = {
+&"spell_power": 6.0,
+&"insight_gain": 4.0,
+&"cultivation_rate": 2.0,
+&"qi_cost_reduction": 1.0
+}

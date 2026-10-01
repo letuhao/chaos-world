@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"scroll_divine"
+display_name = "Divine Scroll"
+category = &"material"
+subcategory = &"scroll"
+grade = &"divine"
+value = 2000
+tags = Array[StringName]([&"mythic"])
+sources = Array[StringName]([&"craft:scroll_divine_recipe"])
+description = "A radiant scroll inscribed with divine law. Divine-grade power."
+flat_modifiers = {
+&"spell_power": 100.0,
+&"insight_gain": 70.0,
+&"cultivation_rate": 35.0,
+&"qi_cost_reduction": 18.0
+}

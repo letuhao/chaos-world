@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"scroll_rice"
+display_name = "Rice Scroll"
+category = &"material"
+subcategory = &"scroll"
+grade = &"mortal"
+value = 15
+tags = Array[StringName]([&"common"])
+sources = Array[StringName]([&"craft:scroll_rice_recipe"])
+description = "A scroll made from rice paper. Slightly more refined than hemp."
+flat_modifiers = {
+&"spell_power": 3.0,
+&"insight_gain": 2.0,
+&"cultivation_rate": 1.0,
+&"qi_cost_reduction": 0.0
+}

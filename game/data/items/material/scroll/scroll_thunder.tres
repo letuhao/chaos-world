@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"scroll_thunder"
+display_name = "Thunder Scroll"
+category = &"material"
+subcategory = &"scroll"
+grade = &"immortal"
+value = 800
+tags = Array[StringName]([&"legendary"])
+sources = Array[StringName]([&"craft:scroll_thunder_recipe"])
+description = "A thunderous scroll crackling with immortal lightning. Immortal-grade."
+flat_modifiers = {
+&"spell_power": 55.0,
+&"insight_gain": 38.0,
+&"cultivation_rate": 18.0,
+&"qi_cost_reduction": 9.0
+}

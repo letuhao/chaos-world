@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"orb_celestial"
+display_name = "Celestial Orb"
+category = &"equipment"
+subcategory = &"orb"
+grade = &"divine"
+sources = Array[StringName]([&"craft:orb_celestial_recipe"])
+flat_modifiers = {
+"attack_spiritual": 80.0
+}
+percent_modifiers = {
+"qi_regen": 7.0,
+"cooldown_reduction": 7.0
+}

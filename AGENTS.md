@@ -24,6 +24,7 @@ game/       Godot project root (project.godot lives here). res:// is relative to
 tools/      Python-only automation (uv package, outside res://)
 docs/       architecture notes and ADRs
 ```
+Item art uses reusable SVG families indexed by `game/assets/asset-index.jsonl`; style rules live in `docs/art-direction.md`.
 Because the project is rooted at `game/`, Godot never scans `tools/` or `docs/` — do not add `.gdignore` for them.
 
 ## Commands
