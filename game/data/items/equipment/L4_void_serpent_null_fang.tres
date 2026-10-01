@@ -10,9 +10,7 @@ category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:d4_void_serpent"])
-flat_modifiers = {
-"penetration": 0.06
-}
 percent_modifiers = {
-"crit_damage": 0.06
+"crit_damage": 0.06,
+"penetration": 0.06
 }

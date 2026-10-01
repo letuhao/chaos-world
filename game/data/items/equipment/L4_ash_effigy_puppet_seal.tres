@@ -10,9 +10,7 @@ category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:d4_ash_effigy"])
-flat_modifiers = {
-"dao_heart": 0.13
-}
 percent_modifiers = {
-"insight_gain": 0.07
+"insight_gain": 0.07,
+"dao_heart": 0.13
 }

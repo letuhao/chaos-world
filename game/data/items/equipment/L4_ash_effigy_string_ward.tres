@@ -10,9 +10,7 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:d4_ash_effigy"])
-flat_modifiers = {
-"will": 0.05
-}
 percent_modifiers = {
-"status_resistance": 0.05
+"status_resistance": 0.05,
+"will": 0.05
 }

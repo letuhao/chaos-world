@@ -10,9 +10,7 @@ category = &"equipment"
 subcategory = &"artifact"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:d4_tide_serpent"])
-flat_modifiers = {
-"penetration": 0.06
-}
 percent_modifiers = {
-"crit_chance": 0.05
+"crit_chance": 0.05,
+"penetration": 0.06
 }

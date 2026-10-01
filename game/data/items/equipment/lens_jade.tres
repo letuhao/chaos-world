@@ -11,5 +11,5 @@ subcategory = &"orb"
 grade = &"earth"
 sources = Array[StringName]([&"gather"])
 flat_modifiers = {
-"attack_spiritual": 0.05
+"attack_spiritual": 24.0
 }

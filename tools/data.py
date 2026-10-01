@@ -49,6 +49,8 @@ SCHEMA = {
 }
 TYPE_BY_FOLDER = {"items": "item", "recipes": "recipe", "bosses": "boss", "domains": "domain"}
 BASE_SOURCES = {"gather", "starter"}
+# Stats whose flat modifier is a fraction rather than a magnitude (ADR 0022).
+FRACTION_FLAT_STATS = {"damage_reduction"}
 REF_SOURCES = {"craft": "recipe", "boss": "boss", "domain": "domain"}
 # `quest` is accepted but not reference-checked: there is no QuestDef resource yet.
 UNCHECKED_SOURCES = {"quest"}
@@ -419,6 +421,26 @@ def _modifier_keys(item: dict) -> set[str]:
     return keys
 
 
+def _progression_items() -> set[str]:
+    """Item ids consumed as progression payloads rather than for their stats.
+
+    A breakthrough bundle is a consumable that unlocks a realm; its effect is
+    the unlock, so carrying no modifier is correct (ADR 0009). The body realm
+    seeds name these in `breakthrough_item` / `strengthening_item`, and
+    body_cultivation/advancement.gd consumes them. Keyed on any `*_item` field so
+    a future seed field naming a consumed item is exempt without a code change.
+    """
+    ids: set[str] = set()
+    realms = DATA_ROOT / "body_cultivation" / "realms"
+    if not realms.is_dir():
+        return ids
+    pattern = re.compile(r'^\w+_item\s*=\s*&"([^"]+)"', re.MULTILINE)
+    for seed in sorted(realms.glob("*.tres")):
+        text = seed.read_text(encoding="utf-8", errors="replace")
+        ids.update(pattern.findall(text))
+    return ids
+
+
 def _valid_stats() -> set[str]:
     """Stat ids declared in contracts/stat.gd, so the audit follows the real schema."""
     if not STAT_DEFS.is_file():
@@ -536,12 +558,18 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
         if len(missing) >= 3:
             findings.append(("warn", f"category '{cat}' is missing grades: {', '.join(missing)}"))
 
-    # Modifier coverage for stat-bearing categories.
+    # Modifier coverage for stat-bearing categories. Progression payloads are
+    # exempt: they act through the system that consumes them, not through stats.
+    progression = _progression_items()
     for cat in sorted(MODIFIER_CATEGORIES):
         cat_items = by_cat.get(cat, [])
         if not cat_items:
             continue
-        bare = [item["path"] for item in cat_items if not _modifier_keys(item)]
+        bare = [
+            item["id"]
+            for item in cat_items
+            if not _modifier_keys(item) and item["id"] not in progression
+        ]
         if bare:
             share = _pct(len(bare), len(cat_items))
             level = "error" if share > 25.0 else "warn"
@@ -601,6 +629,27 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
             (
                 "error",
                 f"PERCENT modifier above 1.0, reads as a magnitude not a percentage: {detail}",
+            )
+        )
+
+    # A FLAT modifier below 1.0 is the inverse of the check above: a percentage
+    # written into the flat block. `(base + flat) * (1 + percent)` reads a flat
+    # 0.05 as "+0.05 points", which is invisible beside the attribute family
+    # (physique 20, spirit 15, comprehension 3) and the orb ladder (24-30).
+    # `damage_reduction` is the one stat documented as a fraction in flat terms
+    # (ADR 0022), so it is exempt; every other stat wants a magnitude here.
+    tiny: dict[str, list[str]] = {}
+    for item_id, item in sorted(items.items()):
+        for key, value in item["dicts"].get("flat_modifiers", {}).items():
+            if 0 < value < 1.0 and key not in FRACTION_FLAT_STATS:
+                tiny.setdefault(key, []).append(item_id)
+    if tiny:
+        detail = "; ".join(f"{k}: " + ", ".join(v) for k, v in sorted(tiny.items()))
+        findings.append(
+            (
+                "error",
+                "FLAT modifier below 1.0 reads as a percentage, not a magnitude "
+                f"(use PERCENT): {detail}",
             )
         )
 
