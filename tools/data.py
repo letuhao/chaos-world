@@ -78,6 +78,18 @@ def register(subparsers) -> None:
         help="exit non-zero above this finding level (default none)",
     )
 
+    edit = actions.add_parser("edit", help="update fields on an existing item .tres")
+    edit.add_argument("--root", default=None)
+    edit.add_argument("--id", required=True)
+    edit.add_argument("--name", default=None)
+    edit.add_argument("--subtype", default=None)
+    edit.add_argument("--grade", default=None)
+    edit.add_argument("--flat", default="", help="replace flat_modifiers (stat=value,...)")
+    edit.add_argument("--percent", default="", help="replace percent_modifiers (stat=value,...)")
+    edit.add_argument("--add-sources", default="", help="append sources")
+    edit.add_argument("--add-flat", default="", help="merge into flat_modifiers")
+    edit.add_argument("--add-percent", default="", help="merge into percent_modifiers")
+
     new = actions.add_parser("new", help="scaffold a content .tres")
     new.add_argument("--root", default=None)
     new.add_argument("--kind", required=True, choices=["item", "recipe", "boss", "domain"])
@@ -105,6 +117,8 @@ def run(args) -> int:
         return _report_command(root)
     if args.data_action == "distribution":
         return _distribution_command(root, getattr(args, "fail_on", "none"))
+    if args.data_action == "edit":
+        return _edit_command(root, args)
     if args.data_action == "new":
         return _new_command(root, args)
     raise ToolError(f"unknown data action: {args.data_action}")
@@ -531,6 +545,79 @@ def _tres(kind: str, lines: list[str]) -> str:
         f'script = ExtResource("1_{kind}")\n'
     )
     return header + "\n".join(lines) + "\n"
+
+
+def _merge_dict_block(text: str, field: str, pairs: list[tuple[str, float]]) -> str:
+    """Replace a ``field = { ... }`` block, or append one if absent.
+
+    Uses the same formatting as `_dict_literal` so output stays stable.
+    """
+    pattern = re.compile(rf"(?m)^\s*{field}\s*=\s*\{{.*?\n\}}", re.S)
+    if not pairs:
+        new_text = pattern.sub("", text)
+        return new_text.rstrip() + "\n"
+    block = f"{field} = {_dict_literal(pairs)}"
+    if pattern.search(text):
+        return pattern.sub(lambda _m: block, text)
+    return text.rstrip() + "\n" + block + "\n"
+
+
+def _merge_array_block(text: str, field: str, values: list[str]) -> str:
+    pattern = re.compile(rf"(?m)^\s*{field}\s*=\s*Array\[StringName\]\(\[.*?\]\)", re.S)
+    return pattern.sub(lambda _m: f"{field} = {_array_literal(values)}", text)
+
+
+def _edit_command(root: Path, args) -> int:
+    candidates = sorted((root / "items").rglob(f"{args.id}.tres"))
+    if not candidates:
+        raise ToolError(f"no item found with id '{args.id}'")
+    if len(candidates) > 1:
+        paths = ", ".join(p.relative_to(root).as_posix() for p in candidates)
+        raise ToolError(f"id '{args.id}' is ambiguous ({len(candidates)} files): {paths}")
+    path = candidates[0]
+    text = path.read_text(encoding="utf-8")
+
+    if args.name is not None:
+        if not re.search(r'(?m)^\s*display_name\s*=\s*"', text):
+            raise ToolError(f"{path}: no display_name field to replace")
+        text = re.sub(r'(?m)^(\s*display_name\s*=\s*)"[^"]*"', rf'\1"{args.name}"', text)
+    if args.subtype is not None:
+        text = re.sub(r'(?m)^(\s*subcategory\s*=\s*)&"[^"]*"', rf'\1&"{args.subtype}"', text)
+    if args.grade is not None:
+        if args.grade not in GRADES:
+            raise ToolError(f"unknown grade '{args.grade}' (allowed: {sorted(GRADES)})")
+        text = re.sub(r'(?m)^(\s*grade\s*=\s*)&"[^"]*"', rf'\1&"{args.grade}"', text)
+
+    flat = _split_pairs(args.flat)
+    add_flat = _split_pairs(args.add_flat)
+    if flat or args.flat:
+        text = _merge_dict_block(text, "flat_modifiers", flat)
+    elif add_flat:
+        existing = _extract_dict(text, "flat_modifiers")
+        for key, value in add_flat:
+            existing[key] = value
+        text = _merge_dict_block(text, "flat_modifiers", sorted(existing.items()))
+
+    percent = _split_pairs(args.percent)
+    add_percent = _split_pairs(args.add_percent)
+    if percent or args.percent:
+        text = _merge_dict_block(text, "percent_modifiers", percent)
+    elif add_percent:
+        existing = _extract_dict(text, "percent_modifiers")
+        for key, value in add_percent:
+            existing[key] = value
+        text = _merge_dict_block(text, "percent_modifiers", sorted(existing.items()))
+
+    if args.add_sources:
+        existing = _extract_array(text, "sources")
+        for value in _split_list(args.add_sources):
+            if value not in existing:
+                existing.append(value)
+        text = _merge_array_block(text, "sources", existing)
+
+    path.write_text(text, encoding="utf-8")
+    ok(f"updated {path.relative_to(REPO_ROOT).as_posix()}")
+    return 0
 
 
 def _new_command(root: Path, args) -> int:
