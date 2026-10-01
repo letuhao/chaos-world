@@ -20,6 +20,7 @@ game/       Godot project root (project.godot lives here). res:// is relative to
   scenes/   app-owned scene composition; modules own their own scenes
   assets/   imported art / audio / fonts
   tests/    GDScript tests, mirroring the src/ layout
+  data/     content resources (.tres): items/<category>/, recipes/, bosses/, domains/, ...
 tools/      Python-only automation (uv package, outside res://)
 docs/       architecture notes and ADRs
 ```
@@ -38,6 +39,7 @@ Prereqs: `uv` (https://docs.astral.sh/uv/) and a Godot 4.7.x binary.
 - `uv run python -m tools new_module <name>` — scaffold a module and register it in `tools/arch/registry.json`.
 - `uv run python -m tools new_adr "<title>"` — create the next numbered ADR in `docs/adr/`.
 - `uv run python -m tools deferred report|search|add|done|validate` — inspect and maintain `docs/deferred.jsonl`.
+- `uv run python -m tools data report|audit` — inspect and audit content under `game/data/` (acquisition gaps).
 
 **Godot binary is not on `PATH`.** `tools/godot.py` resolves it from `GODOT_BIN`, else the gitignored `.godot-bin` file, else `PATH`, and fails loudly if none resolve. Do not hardcode machine paths anywhere else.
 

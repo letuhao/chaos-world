@@ -13,6 +13,7 @@ extends Resource
 @export var max_stack: int = 99
 @export var value: int = 0
 @export var tags: Array[StringName] = []
+@export var sources: Array[StringName] = []
 @export var description: String = ""
 @export var flat_modifiers: Dictionary = {}
 @export var percent_modifiers: Dictionary = {}

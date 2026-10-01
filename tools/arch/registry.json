@@ -25,6 +25,12 @@
         "contracts",
         "core"
       ]
+    },
+    "world": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
     }
   }
 }
