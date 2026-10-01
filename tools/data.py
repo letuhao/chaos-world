@@ -229,9 +229,13 @@ def _audit(root: Path) -> list[str]:
     gaps = [f"{path}: missing id" for path in malformed]
 
     for recipe_id, recipe in recipes.items():
-        for item_id in recipe["arrays"].get("inputs", []):
+        inputs = recipe["arrays"].get("inputs", [])
+        for item_id in inputs:
             if item_id not in items:
                 gaps.append(f"recipe {recipe_id}: input '{item_id}' is not a defined item")
+        repeated = sorted({i for i in inputs if inputs.count(i) > 1})
+        for item_id in repeated:
+            gaps.append(f"recipe {recipe_id}: input '{item_id}' is listed more than once")
         outputs = recipe["arrays"].get("outputs", [])
         if not outputs:
             gaps.append(f"recipe {recipe_id}: has no outputs")

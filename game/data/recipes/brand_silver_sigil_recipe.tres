@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"brand_silver_sigil_recipe"
+display_name = "Silver Sigil Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"ore_silver_vein", &"sap_ichor"])
+outputs = Array[StringName]([&"brand_silver_sigil"])

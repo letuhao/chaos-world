@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"glaive_moon_recipe"
+display_name = "Moon Glaive Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"gemstone_turquoise", &"scale_basilisk"])
+outputs = Array[StringName]([&"glaive_moon"])

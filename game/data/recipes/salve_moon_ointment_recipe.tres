@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"salve_moon_ointment_recipe"
+display_name = "Moon Ointment Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"wood_ghost_bark", &"sap_latex"])
+outputs = Array[StringName]([&"salve_moon_ointment"])
