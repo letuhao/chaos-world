@@ -11,6 +11,7 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     ("fmt", ["--check"]),
     ("lint", []),
     ("arch", []),
+    ("deferred", ["validate"]),
     ("test", []),
 )
 

@@ -37,6 +37,7 @@ Prereqs: `uv` (https://docs.astral.sh/uv/) and a Godot 4.7.x binary.
 - `uv run python -m tools export <preset>` — export a build.
 - `uv run python -m tools new_module <name>` — scaffold a module and register it in `tools/arch/registry.json`.
 - `uv run python -m tools new_adr "<title>"` — create the next numbered ADR in `docs/adr/`.
+- `uv run python -m tools deferred report|search|add|done|validate` — inspect and maintain `docs/deferred.jsonl`.
 
 **Godot binary is not on `PATH`.** `tools/godot.py` resolves it from `GODOT_BIN`, else the gitignored `.godot-bin` file, else `PATH`, and fails loudly if none resolve. Do not hardcode machine paths anywhere else.
 
@@ -140,7 +141,7 @@ Changing a boundary rule is an architecture change: update the rule, the ADR, an
 - **Lean by default** — bullets, one fact per line, no tutorials, no restating code or config. If a line would not surprise a competent agent, delete it.
 - **One source of truth** — precedence: code/config > `AGENTS.md` > ADRs. When docs disagree with code, code wins; fix the doc in the same change. Link, never duplicate.
 - **Allowed docs** — `AGENTS.md`, `docs/adr/NNNN-*.md`, and the machine-readable `docs/deferred.jsonl` only. Do not add READMEs, design docs, status files, or notes; ask before creating any other Markdown.
-- **Deferred work** — tracked in `docs/deferred.jsonl`, one JSON object per line with `id`, `area`, `title`, `status`, `source`, `reason`, `next`, `created`. Record deferrals there instead of prose TODOs. When solved, set `status` to `done` and add a `resolved` date; keep the entry as the trace. Add `priority`/`depends_on` when useful. Never delete entries.
+- **Deferred work** — tracked in `docs/deferred.jsonl`, one JSON object per line with `id`, `area`, `title`, `status`, `source`, `reason`, `next`, `created`. Record deferrals there instead of prose TODOs. Use `uv run python -m tools deferred` (`report`/`search`/`add`/`done`/`validate`); `tools check` validates the file. When solved, set `status` to `done` and add a `resolved` date; keep the entry as the trace. Add `priority`/`depends_on` when useful. Never delete entries.
 - **Caps** — `AGENTS.md` ≤ 200 lines; an ADR ≤ 1 page. Over budget means split or delete.
 - **ADRs are immutable** once accepted: supersede with a new ADR, do not rewrite history.
 - **Docs ship with code** in the same change; delete stale text rather than appending "updated" notes.
