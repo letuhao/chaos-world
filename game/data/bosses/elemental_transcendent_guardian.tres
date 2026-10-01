@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"elemental_transcendent_guardian"
 display_name = "Prism Guardian"
 domain_id = &"elemental_transcendent_domain"
-loot = Array[StringName]([&"elemental_transcendent_core"])
+loot = Array[StringName]([&"elemental_transcendent_core", &"embershard_transcendent_seed"])

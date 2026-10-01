@@ -79,8 +79,9 @@ def register(subparsers) -> None:
         help="exit non-zero above this finding level (default none)",
     )
 
-    edit = actions.add_parser("edit", help="update fields on an existing item .tres")
+    edit = actions.add_parser("edit", help="update fields on an existing item or boss .tres")
     edit.add_argument("--root", default=None)
+    edit.add_argument("--kind", default="item", choices=["item", "boss"])
     edit.add_argument("--id", required=True)
     edit.add_argument("--name", default=None)
     edit.add_argument("--subtype", default=None)
@@ -94,6 +95,7 @@ def register(subparsers) -> None:
     edit.add_argument(
         "--clear-percent", action="store_true", help="remove the percent_modifiers block"
     )
+    edit.add_argument("--add-loot", default="", help="append item ids to a boss's loot array")
 
     new = actions.add_parser("new", help="scaffold a content .tres")
     new.add_argument("--root", default=None)
@@ -610,14 +612,33 @@ def _merge_array_block(text: str, field: str, values: list[str]) -> str:
 
 
 def _edit_command(root: Path, args) -> int:
-    candidates = sorted((root / "items").rglob(f"{args.id}.tres"))
+    folder = "bosses" if args.kind == "boss" else "items"
+    candidates = sorted((root / folder).rglob(f"{args.id}.tres"))
     if not candidates:
-        raise ToolError(f"no item found with id '{args.id}'")
+        raise ToolError(f"no {args.kind} found with id '{args.id}'")
     if len(candidates) > 1:
         paths = ", ".join(p.relative_to(root).as_posix() for p in candidates)
         raise ToolError(f"id '{args.id}' is ambiguous ({len(candidates)} files): {paths}")
     path = candidates[0]
     text = path.read_text(encoding="utf-8")
+
+    if args.kind == "boss":
+        if not args.add_loot:
+            raise ToolError("boss edits require --add-loot")
+        existing = _extract_array(text, "loot")
+        added = []
+        for value in _split_list(args.add_loot):
+            if value not in existing:
+                existing.append(value)
+                added.append(value)
+        if not added:
+            fail(f"{path}: all requested loot already present")
+            return 1
+        text = _merge_array_block(text, "loot", existing)
+        path.write_text(text, encoding="utf-8")
+        shown = path.relative_to(REPO_ROOT).as_posix()
+        ok(f"updated {shown} (+{len(added)} loot: {', '.join(added)})")
+        return 0
 
     if args.name is not None:
         if not re.search(r'(?m)^\s*display_name\s*=\s*"', text):

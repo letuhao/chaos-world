@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BossDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/boss_def.gd" id="1_boss"]
+
+[resource]
+script = ExtResource("1_boss")
+id = &"elemental_heaven_guardian"
+display_name = "Aether Guardian"
+domain_id = &"elemental_heaven_domain"
+loot = Array[StringName]([&"elemental_heaven_core", &"elemental_heaven_essence", &"embershard_heaven_seed"])

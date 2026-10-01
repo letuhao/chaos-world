@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"crown_iron_monarch"
 display_name = "Iron Monarch"
 domain_id = &"crown_iron_monarch_domain"
-loot = Array[StringName]([&"crown_iron_monarch_helm", &"crown_iron_monarch_plate"])
+loot = Array[StringName]([&"crown_iron_monarch_helm", &"crown_iron_monarch_plate", &"regalia_iron_band", &"regalia_iron_sceptre"])
