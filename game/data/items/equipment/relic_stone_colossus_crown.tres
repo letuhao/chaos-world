@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"relic_stone_colossus_crown"
+display_name = "Colossus Crown"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"immortal"
+sources = Array[StringName]([&"boss:relic_stone_colossus"])
+flat_modifiers = {
+"attack_spiritual": 40.0,
+"max_qi": 100.0
+}
+percent_modifiers = {
+"crit_chance": 5.0
+}

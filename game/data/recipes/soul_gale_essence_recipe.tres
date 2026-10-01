@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"soul_gale_essence_recipe"
+display_name = "Gale Essence Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"soul_moon_herb", &"soul_glow_essence"])
+outputs = Array[StringName]([&"soul_gale_essence"])
