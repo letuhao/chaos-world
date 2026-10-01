@@ -366,7 +366,54 @@ def _audit(root: Path) -> list[str]:
     cycle = _find_recipe_cycle(recipes)
     if cycle:
         gaps.append("recipe cycle: " + " -> ".join(cycle))
+    gaps.extend(_unobtainable(items, recipes))
     return gaps
+
+
+def _obtainable(items: dict, recipes: dict) -> set[str]:
+    """Items a player can actually acquire, by closing over craftable recipes.
+
+    Roots are items with a non-craft source. A recipe becomes craftable once
+    every one of its inputs is obtainable, and then its outputs are too.
+    Iterated to a fixed point, so a chain of any depth resolves regardless of
+    the order the records are visited in.
+    """
+    root_types = KNOWN_SOURCE_TYPES - {"craft"}
+    roots = {
+        item_id
+        for item_id, item in items.items()
+        if any(
+            source.partition(":")[0] in root_types for source in item["arrays"].get("sources", [])
+        )
+    }
+    obtainable = set(roots)
+    pending = list(recipes.values())
+    progressed = True
+    while progressed:
+        progressed = False
+        still_pending = []
+        for recipe in pending:
+            outputs = recipe["arrays"].get("outputs", [])
+            if not outputs:
+                continue
+            if all(i in obtainable for i in recipe["arrays"].get("inputs", [])):
+                obtainable.update(outputs)
+                progressed = True
+            else:
+                still_pending.append(recipe)
+        pending = still_pending
+    return obtainable
+
+
+def _unobtainable(items: dict, recipes: dict) -> list[str]:
+    """Items nothing in the corpus can ever produce or drop (DEF-0036)."""
+    obtainable = _obtainable(items, recipes)
+    orphans = sorted(set(items) - obtainable)
+    if not orphans:
+        return []
+    listed = ", ".join(orphans[:10])
+    more = f" (+{len(orphans) - 10} more)" if len(orphans) > 10 else ""
+    return [f"{len(orphans)} item(s) cannot be acquired from any source: {listed}{more}"]
 
 
 def _audit_command(root: Path) -> int:
