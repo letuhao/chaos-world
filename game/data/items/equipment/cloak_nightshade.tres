@@ -10,7 +10,7 @@ category = &"equipment"
 subcategory = &"armor"
 grade = &"earth"
 sources = Array[StringName]([&"craft:cloak_nightshade_recipe"])
-percent_modifiers = {
+flat_modifiers = {
 "damage_reduction": 0.03
 }
 percent_modifiers = {

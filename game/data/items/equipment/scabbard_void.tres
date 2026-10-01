@@ -10,6 +10,6 @@ category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:scabbard_void_recipe"])
-percent_modifiers = {
+flat_modifiers = {
 "damage_reduction": 0.06
 }

@@ -61,8 +61,14 @@ const QI_COST_REDUCTION := &"qi_cost_reduction"
 ##   insight_gain 1.0, breakthrough_chance 0.1.
 ## A FLAT modifier on any of these is a content error: `+10` means 1000%, not +10.
 ## PERCENT is always valid on any stat; only FLAT on a rate stat is wrong.
-## Membership requires a NON-ZERO baseline: core/actor_stats.gd resolves a stat
-## as `(base + flat) * (1 + percent)`, so PERCENT on a zero baseline is a no-op.
+## Membership requires a baseline that is not identically zero: actor_stats.gd
+## resolves a stat as `(base + flat) * (1 + percent)`, so PERCENT on a
+## always-zero baseline is a no-op. Two baseline shapes qualify:
+##   constant term     - crit_chance/crit_damage/attack_speed/cultivation_rate/
+##                       insight_gain/breakthrough_chance are non-zero always.
+##   attribute-gated   - evasion/cooldown_reduction/qi_cost_reduction/
+##                       status_resistance are zero only when their governing
+##                       attribute is zero; PERCENT is fine in normal play.
 ## `damage_reduction` has baseline 0.0 and is deliberately absent (ADR 0022).
 const RATE_STATS := [
 	ATTACK_SPEED,

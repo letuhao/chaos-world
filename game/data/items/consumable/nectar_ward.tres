@@ -10,6 +10,6 @@ category = &"consumable"
 subcategory = &"food"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:nectar_ward_recipe"])
-percent_modifiers = {
+flat_modifiers = {
 "damage_reduction": 0.04
 }

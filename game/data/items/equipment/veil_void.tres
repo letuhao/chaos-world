@@ -10,6 +10,6 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:veil_void_recipe"])
-percent_modifiers = {
+flat_modifiers = {
 "damage_reduction": 0.05
 }

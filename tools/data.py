@@ -14,6 +14,7 @@ from .common import REPO_ROOT, ToolError, fail, info, ok
 
 DATA_ROOT = REPO_ROOT / "game" / "data"
 STAT_DEFS = REPO_ROOT / "game" / "src" / "contracts" / "stat.gd"
+ACTOR_STATS = REPO_ROOT / "game" / "src" / "core" / "actor_stats.gd"
 
 CATEGORIES = {
     "material",
@@ -391,6 +392,32 @@ def _resolve_rate_stats() -> set[str]:
     return ids
 
 
+def _resolve_zero_baseline_stats() -> set[str]:
+    """Stats whose baseline in actor_stats.gd is the literal 0.0.
+
+    `_put` resolves `(base + flat) * (1 + percent)`, so a PERCENT modifier on a
+    stat whose baseline is identically zero can never change the result. This is
+    the shape that made `damage_reduction` a no-op for every item that used it
+    (ADR 0022); deriving the set from the resolver keeps that from returning.
+    """
+    if not ACTOR_STATS.is_file():
+        return set()
+    text = ACTOR_STATS.read_text(encoding="utf-8", errors="replace")
+    ids: set[str] = set()
+    for stat_const, baseline in re.findall(
+        r"(?ms)_put\(\s*Stat\.([A-Z_]+)\s*,\s*([0-9.]+)\s*,", text
+    ):
+        if float(baseline) != 0.0:
+            continue
+        found = re.search(
+            rf'const {stat_const} := &"([a-z_]+)"',
+            STAT_DEFS.read_text(encoding="utf-8", errors="replace"),
+        )
+        if found:
+            ids.add(found.group(1))
+    return ids
+
+
 def _collect_findings(items: dict) -> list[tuple[str, str]]:
     """Return (level, message) findings. level is 'error' or 'warn'."""
     findings: list[tuple[str, str]] = []
@@ -514,6 +541,24 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
     if noop:
         findings.append(("warn", f"{len(noop)} zero-valued modifier(s) grant nothing"))
 
+    # PERCENT cannot change a stat whose baseline is identically zero.
+    zero_base = _resolve_zero_baseline_stats()
+    if zero_base:
+        dead_percent: dict[str, list[str]] = {}
+        for item_id, item in sorted(items.items()):
+            for key in item["dicts"].get("percent_modifiers", {}):
+                if key in zero_base:
+                    dead_percent.setdefault(key, []).append(item_id)
+        if dead_percent:
+            detail = "; ".join(f"{k} x{len(v)}" for k, v in sorted(dead_percent.items()))
+            findings.append(
+                (
+                    "error",
+                    "PERCENT modifier on zero-baseline stat(s), can never apply "
+                    f"(use FLAT): {detail}",
+                )
+            )
+
     # Power curve: within a category+subtype, a tier must not be weaker than the one below.
     buckets: dict[tuple[str, str, str, str], list[float]] = {}
     for item in items.values():
@@ -529,7 +574,10 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
             if values and len(values) >= 3:
                 series.append((grade, sum(values) / len(values)))
         for (low, low_mean), (high, high_mean) in zip(series, series[1:], strict=False):
-            if high_mean < low_mean * 0.9:
+            # A relative drop is only meaningful on a magnitude-scale stat. On a
+            # fraction-scale stat (0.05 -> 0.04) a 10% move is noise, so require
+            # an absolute gap as well.
+            if high_mean < low_mean * 0.9 and low_mean - high_mean > 1.0:
                 findings.append(
                     (
                         "warn",
