@@ -37,7 +37,7 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 	statuses = []
 	paths = {}
 	stats = ActorStats.new(base)
-	_context = StatContext.new(stats.base_ref(), resources, traits, affinities)
+	_context = StatContext.new(stats.base_ref(), resources, traits, affinities, paths)
 	stats.set_context(_context)
 
 

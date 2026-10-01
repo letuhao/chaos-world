@@ -15,8 +15,10 @@ func _initialize() -> void:
 			push_error("%s :: failed to load suite" % script_path)
 			total_failed += 1
 			continue
-		var suite: RefCounted = script.new()
-		if not (suite is TestCase):
+		var suite = script.new()
+		if suite == null or not (suite is TestCase):
+			push_error("%s :: failed to instantiate suite" % script_path)
+			total_failed += 1
 			continue
 		for method_name in _test_methods(suite):
 			suite.call(method_name)

@@ -25,3 +25,21 @@ func test_stage_vocabulary_aligns_to_ladder() -> void:
 	assert_eq(def.stage_name(&"tribulation"), "Convergence", "last mortal stage")
 	assert_eq(def.stage_name(&"spirit_sea"), "Rising Tide", "spirit stage")
 	assert_eq(def.stage_name(&"dao_ancestor"), "Elemental Dao Ancestor", "transcendent stage")
+
+
+func test_element_tier_gating() -> void:
+	var rules := ElementsApi.default_rules()
+	assert_eq(
+		ElementMastery.can_use(rules, &"qi_refining", ElementStats.FIRE), true, "tier 1 at mortal"
+	)
+	assert_eq(
+		ElementMastery.can_use(rules, &"qi_refining", ElementStats.LIGHTNING),
+		false,
+		"tier 2 blocked"
+	)
+	assert_eq(
+		ElementMastery.can_use(rules, &"spirit_sea", ElementStats.LIGHTNING),
+		true,
+		"tier 2 at spirit"
+	)
+	assert_eq(ElementMastery.can_use(rules, &"spirit_sea", &"void"), false, "unknown element")

@@ -8,6 +8,7 @@ var base: Dictionary
 var resources: Dictionary
 var traits: Array[StringName]
 var affinities: Dictionary
+var paths: Dictionary
 var derived: Dictionary
 
 
@@ -15,12 +16,14 @@ func _init(
 	p_base: Dictionary,
 	p_resources: Dictionary,
 	p_traits: Array[StringName],
-	p_affinities: Dictionary
+	p_affinities: Dictionary,
+	p_paths: Dictionary
 ) -> void:
 	base = p_base
 	resources = p_resources
 	traits = p_traits
 	affinities = p_affinities
+	paths = p_paths
 	derived = {}
 
 
@@ -36,6 +39,10 @@ func value(id: StringName) -> float:
 
 func resource(id: StringName) -> ResourcePool:
 	return resources.get(id)
+
+
+func path(path_id: StringName) -> PathState:
+	return paths.get(path_id)
 
 
 func has_trait(id: StringName) -> bool:

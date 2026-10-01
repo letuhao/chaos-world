@@ -11,3 +11,7 @@ func can_advance(_state: PathState, _context: Dictionary) -> bool:
 
 func advance(_state: PathState, _context: Dictionary) -> void:
 	pass
+
+
+func on_event(_state: PathState, _event: Dictionary) -> void:
+	pass

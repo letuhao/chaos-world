@@ -23,6 +23,13 @@ static func max_tier(rank_id: StringName) -> int:
 	return mini(MAX_ELEMENT_TIER, realm_tier)
 
 
+static func can_use(rules: ElementRules, rank_id: StringName, element_id: StringName) -> bool:
+	var entry := rules.element(element_id)
+	if entry == null:
+		return false
+	return entry.tier <= max_tier(rank_id)
+
+
 static func _stage_names() -> Array[String]:
 	return [
 		"Spark",
