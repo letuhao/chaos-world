@@ -10,6 +10,6 @@ category = &"equipment"
 subcategory = &"weapon"
 grade = &"heaven"
 sources = Array[StringName]([&"gather"])
-flat_modifiers = {
-"attack_speed": 0.05
+percent_modifiers = {
+"attack_speed": 0.0005
 }

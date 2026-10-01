@@ -14,8 +14,10 @@ tags = Array[StringName]([&"legendary"])
 sources = Array[StringName]([&"craft:scroll_void_recipe"])
 description = "A dark scroll that absorbs light. Immortal-grade with void affinity."
 flat_modifiers = {
-&"attack_spiritual": 65.0,
-&"insight_gain": 45.0,
-&"cultivation_rate": 22.0,
-&"qi_cost_reduction": 11.0
+"attack_spiritual": 65.0
+}
+percent_modifiers = {
+"cultivation_rate": 0.22,
+"insight_gain": 0.45,
+"qi_cost_reduction": 0.11
 }

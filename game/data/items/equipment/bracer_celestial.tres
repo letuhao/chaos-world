@@ -11,8 +11,10 @@ subcategory = &"armor"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:bracer_celestial_recipe"])
 flat_modifiers = {
-"defense_physical": 12.0,
 "attack_physical": 10.0,
-"max_health": 25.0,
-"status_resistance": 8.0
+"defense_physical": 12.0,
+"max_health": 25.0
+}
+percent_modifiers = {
+"status_resistance": 0.08
 }

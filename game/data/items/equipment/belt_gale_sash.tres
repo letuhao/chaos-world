@@ -11,6 +11,8 @@ subcategory = &"armor"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:belt_gale_sash_recipe"])
 flat_modifiers = {
-"max_stamina": 15.0,
-"status_resistance": 5.0
+"max_stamina": 15.0
+}
+percent_modifiers = {
+"status_resistance": 0.05
 }

@@ -11,6 +11,8 @@ subcategory = &"armor"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:bracer_moonstone_recipe"])
 flat_modifiers = {
-"defense_physical": 8.0,
-"status_resistance": 6.0
+"defense_physical": 8.0
+}
+percent_modifiers = {
+"status_resistance": 0.06
 }

@@ -11,7 +11,9 @@ subcategory = &"armor"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:boots_celestial_recipe"])
 flat_modifiers = {
-"move_speed": 20.0,
-"evasion": 8.0,
-"max_stamina": 25.0
+"max_stamina": 25.0,
+"move_speed": 20.0
+}
+percent_modifiers = {
+"evasion": 0.08
 }

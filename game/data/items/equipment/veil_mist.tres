@@ -10,6 +10,6 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:veil_mist_recipe"])
-flat_modifiers = {
-"evasion": 3.0
+percent_modifiers = {
+"evasion": 0.03
 }

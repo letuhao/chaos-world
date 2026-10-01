@@ -10,9 +10,8 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"earth"
 sources = Array[StringName]([&"craft:necklace_moon_pendant_recipe"])
-flat_modifiers = {
-"status_resistance": 10.0
-}
+
 percent_modifiers = {
-"max_health": 0.05
+"max_health": 0.05,
+"status_resistance": 0.1
 }

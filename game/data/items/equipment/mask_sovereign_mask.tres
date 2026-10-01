@@ -11,11 +11,11 @@ subcategory = &"accessory"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:mask_sovereign_mask_recipe"])
 flat_modifiers = {
-"status_resistance": 20.0,
 "max_health": 60.0
 }
 percent_modifiers = {
 "crit_chance": 0.04,
+"cultivation_rate": 0.08,
 "evasion": 0.05,
-"cultivation_rate": 0.08
+"status_resistance": 0.2
 }

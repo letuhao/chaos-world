@@ -10,9 +10,7 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:bracelet_gale_charm_recipe"])
-flat_modifiers = {
-"attack_speed": 5.0
-}
+
 percent_modifiers = {
-"attack_speed": 0.04
+"attack_speed": 0.05
 }

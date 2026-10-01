@@ -14,8 +14,10 @@ tags = Array[StringName]([&"rare"])
 sources = Array[StringName]([&"craft:scroll_moon_recipe"])
 description = "A scroll glowing with lunar essence. Earth-grade with moon affinity."
 flat_modifiers = {
-&"attack_spiritual": 18.0,
-&"insight_gain": 12.0,
-&"cultivation_rate": 6.0,
-&"qi_cost_reduction": 3.0
+"attack_spiritual": 18.0
+}
+percent_modifiers = {
+"cultivation_rate": 0.06,
+"insight_gain": 0.12,
+"qi_cost_reduction": 0.03
 }

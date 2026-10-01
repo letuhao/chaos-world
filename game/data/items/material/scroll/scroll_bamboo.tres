@@ -14,8 +14,10 @@ tags = Array[StringName]([&"uncommon"])
 sources = Array[StringName]([&"craft:scroll_bamboo_recipe"])
 description = "A durable bamboo scroll. Holds spirit-grade cultivation methods."
 flat_modifiers = {
-&"attack_spiritual": 8.0,
-&"insight_gain": 5.0,
-&"cultivation_rate": 3.0,
-&"qi_cost_reduction": 1.0
+"attack_spiritual": 8.0
+}
+percent_modifiers = {
+"cultivation_rate": 0.03,
+"insight_gain": 0.05,
+"qi_cost_reduction": 0.01
 }

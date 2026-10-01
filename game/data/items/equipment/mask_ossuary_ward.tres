@@ -11,9 +11,9 @@ subcategory = &"accessory"
 grade = &"earth"
 sources = Array[StringName]([&"craft:mask_ossuary_ward_recipe"])
 flat_modifiers = {
-"max_health": 40.0,
-"status_resistance": 8.0
+"max_health": 40.0
 }
 percent_modifiers = {
-"cultivation_rate": 0.06
+"cultivation_rate": 0.06,
+"status_resistance": 0.08
 }

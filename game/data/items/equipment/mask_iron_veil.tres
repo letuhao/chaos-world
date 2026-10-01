@@ -11,9 +11,9 @@ subcategory = &"accessory"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:mask_iron_veil_recipe"])
 flat_modifiers = {
-"status_resistance": 6.0,
 "max_health": 20.0
 }
 percent_modifiers = {
-"evasion": 0.03
+"evasion": 0.03,
+"status_resistance": 0.06
 }

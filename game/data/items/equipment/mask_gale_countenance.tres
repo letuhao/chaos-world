@@ -10,10 +10,9 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"earth"
 sources = Array[StringName]([&"craft:mask_gale_countenance_recipe"])
-flat_modifiers = {
-"status_resistance": 10.0
-}
+
 percent_modifiers = {
+"cultivation_rate": 0.05,
 "evasion": 0.05,
-"cultivation_rate": 0.05
+"status_resistance": 0.1
 }

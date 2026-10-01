@@ -10,10 +10,9 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:mask_essence_veil_recipe"])
-flat_modifiers = {
-"status_resistance": 12.0
-}
+
 percent_modifiers = {
 "cultivation_rate": 0.1,
-"evasion": 0.04
+"evasion": 0.04,
+"status_resistance": 0.12
 }

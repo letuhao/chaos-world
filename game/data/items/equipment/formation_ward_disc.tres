@@ -10,9 +10,8 @@ category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
 sources = Array[StringName]([&"craft:formation_ward_disc_recipe"])
-flat_modifiers = {
-"status_resistance": 15.0
-}
+
 percent_modifiers = {
-"evasion": 0.02
+"evasion": 0.02,
+"status_resistance": 0.15
 }

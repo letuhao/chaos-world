@@ -11,9 +11,9 @@ subcategory = &"armor"
 grade = &"earth"
 sources = Array[StringName]([&"craft:belt_moon_veil_recipe"])
 flat_modifiers = {
-"max_stamina": 20.0,
-"status_resistance": 8.0
+"max_stamina": 20.0
 }
 percent_modifiers = {
-"max_health": 0.05
+"max_health": 0.05,
+"status_resistance": 0.08
 }

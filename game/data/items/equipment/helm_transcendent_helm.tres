@@ -11,6 +11,8 @@ subcategory = &"armor"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:helm_transcendent_helm_recipe"])
 flat_modifiers = {
-"defense_spiritual": 12.0,
-"status_resistance": 0.1
+"defense_spiritual": 12.0
+}
+percent_modifiers = {
+"status_resistance": 0.001
 }

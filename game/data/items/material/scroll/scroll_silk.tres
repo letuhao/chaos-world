@@ -14,8 +14,10 @@ tags = Array[StringName]([&"uncommon"])
 sources = Array[StringName]([&"craft:scroll_silk_recipe"])
 description = "A smooth silk scroll inscribed with spirit-grade techniques."
 flat_modifiers = {
-&"attack_spiritual": 6.0,
-&"insight_gain": 4.0,
-&"cultivation_rate": 2.0,
-&"qi_cost_reduction": 1.0
+"attack_spiritual": 6.0
+}
+percent_modifiers = {
+"cultivation_rate": 0.02,
+"insight_gain": 0.04,
+"qi_cost_reduction": 0.01
 }

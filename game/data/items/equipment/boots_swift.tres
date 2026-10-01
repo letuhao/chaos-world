@@ -11,6 +11,8 @@ subcategory = &"armor"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:boots_swift_recipe"])
 flat_modifiers = {
-"move_speed": 8.0,
-"evasion": 3.0
+"move_speed": 8.0
+}
+percent_modifiers = {
+"evasion": 0.03
 }

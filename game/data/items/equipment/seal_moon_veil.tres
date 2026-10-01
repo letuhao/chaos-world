@@ -10,9 +10,8 @@ category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:seal_moon_veil_recipe"])
-flat_modifiers = {
-"status_resistance": 8.0
-}
+
 percent_modifiers = {
-"damage_reduction": 2.0
+"damage_reduction": 2,
+"status_resistance": 0.08
 }

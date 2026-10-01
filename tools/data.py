@@ -359,6 +359,23 @@ def _valid_stats() -> set[str]:
     return set(re.findall(r'&"([a-z_]+)"', text))
 
 
+def _resolve_rate_stats() -> set[str]:
+    """Map RATE_STATS const names through their &"id" values."""
+    if not STAT_DEFS.is_file():
+        return set()
+    text = STAT_DEFS.read_text(encoding="utf-8", errors="replace")
+    match = re.search(r"(?ms)^const RATE_STATS\s*:=\s*\[(.*?)\]", text)
+    if not match:
+        return set()
+    names = set(re.findall(r"^\s*([A-Z_]+),", match.group(1), re.M))
+    ids: set[str] = set()
+    for name in names:
+        found = re.search(rf'const {name} := &"([a-z_]+)"', text)
+        if found:
+            ids.add(found.group(1))
+    return ids
+
+
 def _collect_findings(items: dict) -> list[tuple[str, str]]:
     """Return (level, message) findings. level is 'error' or 'warn'."""
     findings: list[tuple[str, str]] = []
@@ -458,6 +475,29 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
                     f"{len(unused)} declared stat(s) never used by any item: {', '.join(unused)}",
                 )
             )
+
+    # FLAT on a fractional/multiplier stat means e.g. +1000% instead of +10%.
+    rate = _resolve_rate_stats()
+    if rate:
+        offenders: dict[str, list[str]] = {}
+        for item_id, item in sorted(items.items()):
+            for key in item["dicts"].get("flat_modifiers", {}):
+                if key in rate:
+                    offenders.setdefault(key, []).append(item_id)
+        if offenders:
+            detail = "; ".join(f"{k} x{len(v)}" for k, v in sorted(offenders.items()))
+            findings.append(("error", f"FLAT modifier on rate stat(s), must be PERCENT: {detail}"))
+
+    # A zero-valued modifier grants nothing.
+    noop = [
+        item_id
+        for item_id, item in sorted(items.items())
+        for field in ("flat_modifiers", "percent_modifiers")
+        for value in item["dicts"].get(field, {}).values()
+        if value == 0
+    ]
+    if noop:
+        findings.append(("warn", f"{len(noop)} zero-valued modifier(s) grant nothing"))
 
     # Modifier stats that the game does not define are silently ignored at runtime.
     valid = _valid_stats()

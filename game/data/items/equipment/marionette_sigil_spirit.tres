@@ -10,6 +10,6 @@ category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:succubus_spirit_guardian"])
-flat_modifiers = {
-"cultivation_rate": 0.07
+percent_modifiers = {
+"cultivation_rate": 0.0007
 }

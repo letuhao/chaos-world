@@ -10,6 +10,6 @@ category = &"equipment"
 subcategory = &"weapon"
 grade = &"earth"
 sources = Array[StringName]([&"gather"])
-flat_modifiers = {
-"crit_chance": 0.05
+percent_modifiers = {
+"crit_chance": 0.0005
 }

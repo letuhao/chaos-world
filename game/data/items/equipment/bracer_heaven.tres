@@ -13,6 +13,8 @@ sources = Array[StringName]([&"craft:bracer_heaven_recipe"])
 flat_modifiers = {
 "defense_physical": 15.0,
 "max_health": 30.0,
-"status_resistance": 10.0,
 "poise": 12.0
+}
+percent_modifiers = {
+"status_resistance": 0.1
 }

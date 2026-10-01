@@ -14,8 +14,10 @@ tags = Array[StringName]([&"common"])
 sources = Array[StringName]([&"craft:scroll_hemp_recipe"])
 description = "A coarse scroll woven from hemp fibers. Contains basic cultivation insights."
 flat_modifiers = {
-&"attack_spiritual": 2.0,
-&"insight_gain": 1.0,
-&"cultivation_rate": 1.0,
-&"qi_cost_reduction": 0.0
+"attack_spiritual": 2.0
+}
+percent_modifiers = {
+"cultivation_rate": 0.01,
+"insight_gain": 0.01,
+"qi_cost_reduction": 0.05
 }

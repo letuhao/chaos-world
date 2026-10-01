@@ -11,6 +11,8 @@ subcategory = &"armor"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:boots_iron_recipe"])
 flat_modifiers = {
-"move_speed": 12.0,
-"evasion": 5.0
+"move_speed": 12.0
+}
+percent_modifiers = {
+"evasion": 0.05
 }

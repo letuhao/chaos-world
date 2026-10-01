@@ -10,6 +10,6 @@ category = &"equipment"
 subcategory = &"armor"
 grade = &"earth"
 sources = Array[StringName]([&"craft:greaves_moonstone_recipe"])
-flat_modifiers = {
-"status_resistance": 5.0
+percent_modifiers = {
+"status_resistance": 0.05
 }

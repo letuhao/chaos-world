@@ -10,9 +10,8 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"earth"
 sources = Array[StringName]([&"craft:bracelet_celestial_band_recipe"])
-flat_modifiers = {
-"crit_chance": 4.0
-}
+
 percent_modifiers = {
+"crit_chance": 0.04,
 "loot_bonus": 0.05
 }

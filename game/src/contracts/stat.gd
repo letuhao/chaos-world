@@ -52,3 +52,23 @@ const INSIGHT_GAIN := &"insight_gain"
 const LOOT_BONUS := &"loot_bonus"
 const COOLDOWN_REDUCTION := &"cooldown_reduction"
 const QI_COST_REDUCTION := &"qi_cost_reduction"
+
+## Stats whose baseline is a fraction (0..1) or a multiplier (1.0 == no change).
+## Derived in core/actor_stats.gd from these scales:
+##   crit_chance 0.05 (cap 0.75), evasion (cap 0.6), status_resistance (cap 0.8),
+##   cooldown_reduction (cap 0.4), qi_cost_reduction (cap 0.5), damage_reduction 0.0,
+##   attack_speed 1.0 (cap 2.5), cultivation_rate 1.0, insight_gain 1.0,
+##   breakthrough_chance 0.1.
+## A FLAT modifier on any of these is a content error: `+10` means 1000%, not +10.
+const RATE_STATS := [
+	ATTACK_SPEED,
+	BREAKTHROUGH_CHANCE,
+	COOLDOWN_REDUCTION,
+	CRIT_CHANCE,
+	CULTIVATION_RATE,
+	DAMAGE_REDUCTION,
+	EVASION,
+	INSIGHT_GAIN,
+	QI_COST_REDUCTION,
+	STATUS_RESISTANCE,
+]

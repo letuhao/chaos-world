@@ -11,11 +11,11 @@ subcategory = &"accessory"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:mask_heaven_aegis_recipe"])
 flat_modifiers = {
-"status_resistance": 15.0,
 "max_health": 50.0
 }
 percent_modifiers = {
-"evasion": 0.06,
 "crit_chance": 0.03,
-"cultivation_rate": 0.08
+"cultivation_rate": 0.08,
+"evasion": 0.06,
+"status_resistance": 0.15
 }

@@ -10,9 +10,8 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:mask_night_shroud_recipe"])
-flat_modifiers = {
-"status_resistance": 8.0
-}
+
 percent_modifiers = {
-"evasion": 0.04
+"evasion": 0.04,
+"status_resistance": 0.08
 }

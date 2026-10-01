@@ -10,6 +10,6 @@ category = &"equipment"
 subcategory = &"armor"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:greaves_celestial_recipe"])
-flat_modifiers = {
-"status_resistance": 12.0
+percent_modifiers = {
+"status_resistance": 0.12
 }

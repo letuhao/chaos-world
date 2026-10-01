@@ -11,6 +11,8 @@ subcategory = &"armor"
 grade = &"earth"
 sources = Array[StringName]([&"craft:helm_moonstone_helm_recipe"])
 flat_modifiers = {
-"defense_spiritual": 8.0,
-"status_resistance": 0.05
+"defense_spiritual": 8.0
+}
+percent_modifiers = {
+"status_resistance": 0.0005
 }

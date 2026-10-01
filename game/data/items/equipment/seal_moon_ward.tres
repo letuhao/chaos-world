@@ -11,6 +11,8 @@ subcategory = &"artifact"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:seal_moon_ward_recipe"])
 flat_modifiers = {
-"defense_spiritual": 18.0,
-"status_resistance": 5.0
+"defense_spiritual": 18.0
+}
+percent_modifiers = {
+"status_resistance": 0.05
 }

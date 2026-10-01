@@ -12,9 +12,9 @@ grade = &"immortal"
 sources = Array[StringName]([&"boss:crown_void_emperor"])
 flat_modifiers = {
 "defense_spiritual": 40.0,
-"max_health": 200.0,
-"status_resistance": 10.0
+"max_health": 200.0
 }
 percent_modifiers = {
-"poise": 10.0
+"poise": 10,
+"status_resistance": 0.1
 }
