@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = Ext_resource("1_recipe")
+id = &"qi_great_luo_dantian_catalyst_recipe"
+display_name = "Qi Great Luo Dantian Catalyst Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"qi_great_luo_guardian_core", &"qi_great_luo_cultivation_herb"])
+outputs = Array[StringName]([&"qi_great_luo_dantian_catalyst"])

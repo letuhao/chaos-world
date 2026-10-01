@@ -9,6 +9,79 @@ extends RefCounted
 const _ITEMS := preload("res://src/modules/items/api.gd")
 
 
+## Preview the breakthrough: returns structured unmet conditions and costs.
+## Never consumes items, changes progression, or advances RNG.
+static func preview(actor: Actor) -> Dictionary:
+	var result := {
+		"can_attempt": false,
+		"target_realm": "",
+		"unmet_conditions": [],
+		"costs": {},
+		"chance": 0.0,
+	}
+	var state := actor.path(QiPath.PATH_ID)
+	if state == null:
+		result["unmet_conditions"].append("no_qi_path")
+		return result
+	var target := RealmDefaults.ladder().next(state.rank_id)
+	if target == null:
+		result["unmet_conditions"].append("max_realm_reached")
+		return result
+	result["target_realm"] = target.id
+	var seed := QiRealmSeed.for_realm(target.id)
+	if seed == null:
+		result["unmet_conditions"].append("no_seed_for_target")
+		return result
+	var dantian := QiCultivationApi.dantian(actor)
+	if dantian == null:
+		result["unmet_conditions"].append("no_dantian")
+		return result
+
+	# Check all conditions
+	if state.progress < seed.progress_required:
+		result["unmet_conditions"].append("insufficient_progress")
+	if actor.stats.derived(Stat.COMPREHENSION) < seed.comprehension_required:
+		result["unmet_conditions"].append("insufficient_comprehension")
+	if dantian.quality < seed.dantian_quality_required:
+		result["unmet_conditions"].append("insufficient_quality")
+	if dantian.ratio(actor) < seed.dantian_fill_required:
+		result["unmet_conditions"].append("dantian_not_full")
+	if dantian.injured:
+		result["unmet_conditions"].append("dantian_injured")
+	if not _ITEMS.has_item(actor, seed.breakthrough_item):
+		result["unmet_conditions"].append("missing_breakthrough_item")
+	for meridian_id in seed.required_meridians:
+		var channel := actor.meridians.get_meridian(meridian_id)
+		if channel == null or not channel.meets(seed.required_channel_state):
+			result["unmet_conditions"].append("channel_not_ready:%s" % meridian_id)
+	# Tier gates
+	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD:
+		if actor.tribulation == null or not actor.tribulation.is_complete():
+			result["unmet_conditions"].append("tribulation_not_complete")
+		if actor.inside_world == null or not actor.inside_world.is_stable():
+			result["unmet_conditions"].append("inside_world_not_stable")
+	if target.index >= Breakthrough.TRANSCENDENT_REALM_THRESHOLD:
+		if actor.world == null or not actor.world.is_stable():
+			result["unmet_conditions"].append("world_not_stable")
+		if actor.ascension == null or not actor.ascension.is_complete():
+			result["unmet_conditions"].append("ascension_not_complete")
+
+	# Calculate chance
+	var chance := clampf(
+		actor.stats.derived(Stat.BREAKTHROUGH_CHANCE) + dantian.quality * 0.5, 0.05, 0.95
+	)
+	result["chance"] = chance
+	result["can_attempt"] = result["unmet_conditions"].is_empty()
+	result["costs"] = {
+		"breakthrough_item": seed.breakthrough_item,
+	}
+	return result
+
+
+## Execute the breakthrough. Returns true on success, false on failure.
+## On failure, applies deviation consequences (progress loss, dantian damage,
+## channel damage). On success, advances exactly one realm and grants the bound
+## outcome once.
 static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	var state := actor.path(QiPath.PATH_ID)
 	if state == null:
@@ -44,6 +117,25 @@ static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) ->
 	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD and actor.tribulation != null:
 		actor.tribulation.apply_result(actor, true)
 	actor.mark_stats_dirty()
+	return true
+
+
+## Attempt to cancel a committed breakthrough. This counts as a failed attempt
+## with disclosed recoverable consequences. It cannot refund/reroll into a free
+## second attempt.
+static func cancel_attempt(actor: Actor) -> bool:
+	var state := actor.path(QiPath.PATH_ID)
+	if state == null:
+		return false
+	var target := RealmDefaults.ladder().next(state.rank_id)
+	if target == null:
+		return false
+	var seed := QiRealmSeed.for_realm(target.id)
+	var dantian := QiCultivationApi.dantian(actor)
+	if seed == null or dantian == null:
+		return false
+	# Apply deviation consequences
+	_deviate(actor, state, seed, dantian, null)
 	return true
 
 

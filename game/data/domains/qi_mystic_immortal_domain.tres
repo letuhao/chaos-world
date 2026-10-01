@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DomainDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/domain_def.gd" id="1_domain"]
+
+[resource]
+script = Ext_resource("1_domain")
+id = &"qi_mystic_immortal_domain"
+display_name = "Qi Mystic Immortal Domain"
+boss_ids = Array[StringName]([&"qi_mystic_immortal_guardian", &"qi_true_immortal_guardian", &"qi_primordial_immortal_guardian"])

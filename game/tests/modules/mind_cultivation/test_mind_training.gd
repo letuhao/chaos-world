@@ -57,6 +57,7 @@ func _prepare(actor: Actor) -> MindRealmSeed:
 	MindTraining.synchronize(actor)
 	MindTraining.synchronize(actor)
 	MindTraining.synchronize(actor)
+	MindTraining.synchronize(actor)
 	sea.add_turbulence(-sea.turbulence)
 	MindTraining.synchronize(actor)
 	sea.drain(actor, sea.current(actor))
