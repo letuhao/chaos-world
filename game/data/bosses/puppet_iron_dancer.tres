@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BossDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/boss_def.gd" id="1_boss"]
+
+[resource]
+script = ExtResource("1_boss")
+id = &"puppet_iron_dancer"
+display_name = "Iron Dancer"
+domain_id = &"puppet_iron_dancer_domain"
+loot = Array[StringName]([&"puppet_iron_dancer_plate", &"puppet_iron_dancer_blade", &"puppet_iron_dancer_eye"])

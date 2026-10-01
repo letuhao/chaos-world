@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"formation_spirit_disc"
+display_name = "Formation Spirit Disc"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:formation_spirit_disc_recipe"])
+flat_modifiers = {
+"max_qi": 25.0
+}
+percent_modifiers = {
+"cooldown_reduction": 0.03
+}
