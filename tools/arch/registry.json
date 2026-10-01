@@ -7,6 +7,12 @@
         "core"
       ]
     },
+    "elements": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
     "fertility": {
       "deps": [
         "contracts",
