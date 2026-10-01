@@ -10,6 +10,12 @@ func test_grade_maps_to_realm_tier() -> void:
 	assert_eq(ItemGrade.required_tier(&"unknown"), 1, "unknown defaults")
 
 
+func test_subtype_vocabulary() -> void:
+	assert_eq(ItemSubtype.HERB, &"herb", "herb")
+	assert_eq(ItemSubtype.PILL, &"pill", "pill")
+	assert_eq(ItemSubtype.ARTIFACT, &"artifact", "artifact")
+
+
 func test_build_modifiers_is_source_tagged() -> void:
 	var def := ItemDef.new()
 	def.id = &"ring"
