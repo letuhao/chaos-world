@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"greaves_silver"
+display_name = "Silver Greaves"
+category = &"equipment"
+subcategory = &"armor"
+grade = &"earth"
+sources = Array[StringName]([&"craft:greaves_silver_recipe"])
+flat_modifiers = {
+"move_speed": 5.0
+}
