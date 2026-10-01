@@ -5,6 +5,11 @@ extends RefCounted
 ## Other modules may reference ONLY this file (`api.gd`).
 ## Concrete implementations live beside this file and are wired in `app/`.
 
+# Public ids other modules may depend on.
+const CHARM := DualCultivationStats.CHARM
+const FERTILITY := DualCultivationStats.FERTILITY
+const POTENCY := DualCultivationStats.POTENCY
+
 
 static func attach(actor: Actor) -> void:
 	_ensure_resources(actor)

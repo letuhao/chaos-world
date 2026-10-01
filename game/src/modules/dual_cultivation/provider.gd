@@ -7,10 +7,10 @@ extends StatProvider
 
 
 func contribute(context: StatContext) -> Dictionary:
-	var charm := context.base_value(DualCultivationStats.CHARM)
-	var spirit := context.base_value(Stat.SPIRIT)
-	var aptitude := context.base_value(Stat.APTITUDE)
-	var will := context.base_value(Stat.WILL)
+	var charm := context.value(DualCultivationStats.CHARM)
+	var spirit := context.value(Stat.SPIRIT)
+	var aptitude := context.value(Stat.APTITUDE)
+	var will := context.value(Stat.WILL)
 
 	var corruption := _pool_ratio(context, DualCultivationStats.CORRUPTION)
 	var purity := 1.0 - corruption

@@ -22,4 +22,4 @@ func is_expired() -> bool:
 
 func tick(delta: float) -> void:
 	if not is_permanent():
-		remaining -= delta
+		remaining = maxf(0.0, remaining - delta)

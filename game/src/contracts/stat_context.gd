@@ -8,6 +8,7 @@ var base: Dictionary
 var resources: Dictionary
 var traits: Array[StringName]
 var affinities: Dictionary
+var derived: Dictionary
 
 
 func _init(
@@ -20,9 +21,16 @@ func _init(
 	resources = p_resources
 	traits = p_traits
 	affinities = p_affinities
+	derived = {}
 
 
 func base_value(id: StringName) -> float:
+	return float(base.get(id, 0.0))
+
+
+func value(id: StringName) -> float:
+	if derived.has(id):
+		return float(derived[id])
 	return float(base.get(id, 0.0))
 
 

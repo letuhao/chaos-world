@@ -38,6 +38,7 @@ func base_ref() -> Dictionary:
 
 func set_context(context: StatContext) -> void:
 	_context = context
+	_context.derived = _derived
 	_dirty = true
 
 
@@ -113,13 +114,16 @@ func _recompute() -> void:
 			Stat.Op.MULT:
 				mult[modifier.stat] = float(mult.get(modifier.stat, 1.0)) * modifier.value
 
-	var physique := get_base(Stat.PHYSIQUE)
-	var spirit := get_base(Stat.SPIRIT)
-	var aptitude := get_base(Stat.APTITUDE)
-	var comprehension := get_base(Stat.COMPREHENSION)
-	var agility := get_base(Stat.AGILITY)
-	var will := get_base(Stat.WILL)
-	var fortune := get_base(Stat.FORTUNE)
+	for id in _base.keys():
+		_put(id, float(_base[id]), flat, percent, mult)
+
+	var physique := _attr(Stat.PHYSIQUE)
+	var spirit := _attr(Stat.SPIRIT)
+	var aptitude := _attr(Stat.APTITUDE)
+	var comprehension := _attr(Stat.COMPREHENSION)
+	var agility := _attr(Stat.AGILITY)
+	var will := _attr(Stat.WILL)
+	var fortune := _attr(Stat.FORTUNE)
 
 	_put(Stat.MAX_HEALTH, 50.0 + physique * 10.0, flat, percent, mult)
 	_put(Stat.MAX_QI, 20.0 + spirit * 6.0 + aptitude * 8.0, flat, percent, mult)
@@ -158,3 +162,7 @@ func _put(
 	var value := (base_value + float(flat.get(id, 0.0))) * (1.0 + float(percent.get(id, 0.0)))
 	value *= float(mult.get(id, 1.0))
 	_derived[id] = maxf(0.0, value)
+
+
+func _attr(id: StringName) -> float:
+	return float(_derived.get(id, get_base(id)))

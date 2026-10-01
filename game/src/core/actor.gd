@@ -7,6 +7,7 @@ extends RefCounted
 signal stats_changed
 signal path_advanced(path_id: StringName, rank_id: StringName)
 signal status_added(status_id: StringName)
+signal status_removed(status_id: StringName)
 
 const SCHEMA_VERSION := 1
 
@@ -51,6 +52,32 @@ func resource(pool_id: StringName) -> ResourcePool:
 func add_status(status: StatusEffect) -> void:
 	statuses.append(status)
 	status_added.emit(status.id)
+
+
+func has_status(status_id: StringName) -> bool:
+	for status in statuses:
+		if status.id == status_id:
+			return true
+	return false
+
+
+func tick_statuses(delta: float) -> void:
+	var kept: Array[StatusEffect] = []
+	for status in statuses:
+		status.tick(delta)
+		if status.is_expired():
+			status_removed.emit(status.id)
+		else:
+			kept.append(status)
+	statuses = kept
+
+
+func set_relationship(partner_id: StringName, affinity: float) -> void:
+	relationships[partner_id] = affinity
+
+
+func affinity_with(partner_id: StringName) -> float:
+	return float(relationships.get(partner_id, 0.0))
 
 
 func set_path(state: PathState) -> void:
