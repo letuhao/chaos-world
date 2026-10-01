@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"censer_gale"
+display_name = "Gale Censer"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:censer_gale_recipe"])
+percent_modifiers = {
+"cooldown_reduction": 0.04
+}
