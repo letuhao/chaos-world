@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"R24_mortal_poplar_refined"
+display_name = "Mortal Poplar Refined"
+category = &"equipment"
+subcategory = &"weapon"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:R24_mortal_poplar_refined_recipe"])
+percent_modifiers = {
+"attack_speed": 0.06
+}
