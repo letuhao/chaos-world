@@ -7,15 +7,21 @@ script = ExtResource("1")
 id = &"great_ascension"
 breakthrough_item = &"mind_great_ascension_breakthrough_pill"
 training_item = &"mind_great_ascension_channel_elixir"
-progress_required = 700.0
-comprehension_required = 22.0
-clarity_required = 0.56
+sea_catalyst = &"mind_great_ascension_sea_catalyst"
+progress_required = 1680.0
+comprehension_required = 150.0.0
+clarity_required = 0.51
+purity_required = 0.56
 sea_fill_required = 1.0
 sea_tier = &"shallow"
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver"])
 required_channel_state = &"strengthened"
 channel_refinement_cap = 8
 sea_capacity = 275.0
+sea_milestone_work = 368.0
+meridian_milestone_work = 276.0
+insight_required = 75.0.0
+resonance_required = 0
 rewards = {
 "will": 2.0
 }

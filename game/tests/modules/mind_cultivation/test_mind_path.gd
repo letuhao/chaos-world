@@ -37,10 +37,10 @@ func test_stats_scale_with_ladder_rank() -> void:
 	actor.set_path(PathState.new(MindPath.PATH_ID, &"qi_refining"))
 	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_ATTACK), 62.5, "rank 0")
 	actor.path(MindPath.PATH_ID).rank_id = &"spirit_sea"
-	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_ATTACK), 93.75, "rank 10 scales")
+	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_ATTACK), 585.5427, "rank 10 scales")
 
 
 func test_spiritual_sense_range_from_rank() -> void:
 	var actor := _actor_with_module()
 	actor.set_path(PathState.new(MindPath.PATH_ID, &"earth_immortal"))
-	assert_almost_eq(actor.stats.derived(MindStats.SPIRITUAL_SENSE_RANGE), 330.0, "sense range")
+	assert_almost_eq(actor.stats.derived(MindStats.SPIRITUAL_SENSE_RANGE), 700.9267, "sense range")

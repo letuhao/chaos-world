@@ -16,6 +16,9 @@ var stability: float = 0.5
 var qi_density: float = 1.0
 var time_flow: float = 1.0
 var laws: Dictionary = {}
+var anchor_created: bool = false
+var anchor_trial_passed: bool = false
+var anchor_strengthened: bool = false
 
 
 func _init(
@@ -57,6 +60,27 @@ func get_law(law_id: StringName) -> float:
 	return float(laws.get(law_id, 0.0))
 
 
+## Create the anchor for this world tier.
+func create_anchor() -> void:
+	anchor_created = true
+
+
+## Mark the anchor trial as passed.
+func pass_anchor_trial() -> void:
+	anchor_trial_passed = true
+
+
+## Strengthen the anchor's storage/stability.
+func strengthen_anchor() -> void:
+	anchor_strengthened = true
+	improve_stability(0.1)
+
+
+## Check if the anchor is ready for the next tier.
+func anchor_ready() -> bool:
+	return anchor_created and anchor_trial_passed and anchor_strengthened
+
+
 ## Serialize to dictionary.
 func to_dict() -> Dictionary:
 	var laws_out := {}
@@ -69,6 +93,9 @@ func to_dict() -> Dictionary:
 		"qi_density": qi_density,
 		"time_flow": time_flow,
 		"laws": laws_out,
+		"anchor_created": anchor_created,
+		"anchor_trial_passed": anchor_trial_passed,
+		"anchor_strengthened": anchor_strengthened,
 	}
 
 
@@ -83,4 +110,7 @@ static func from_dict(data: Dictionary) -> InsideWorld:
 	)
 	for key in data.get("laws", {}).keys():
 		world.laws[StringName(key)] = float(data["laws"][key])
+	world.anchor_created = bool(data.get("anchor_created", false))
+	world.anchor_trial_passed = bool(data.get("anchor_trial_passed", false))
+	world.anchor_strengthened = bool(data.get("anchor_strengthened", false))
 	return world

@@ -7,15 +7,21 @@ script = ExtResource("1")
 id = &"spirit_transformation"
 breakthrough_item = &"mind_spirit_transformation_breakthrough_pill"
 training_item = &"mind_spirit_transformation_channel_elixir"
-progress_required = 400.0
-comprehension_required = 16.0
-clarity_required = 0.53
+sea_catalyst = &"mind_spirit_transformation_sea_catalyst"
+progress_required = 746.0
+comprehension_required = 66.0.0
+clarity_required = 0.46
+purity_required = 0.51
 sea_fill_required = 1.0
 sea_tier = &"shallow"
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney"])
 required_channel_state = &"strengthened"
 channel_refinement_cap = 5
 sea_capacity = 200.0
+sea_milestone_work = 190.0
+meridian_milestone_work = 143.0
+insight_required = 33.0.0
+resonance_required = 0
 rewards = {
 "will": 2.0
 }

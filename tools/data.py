@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from . import options
 from .common import REPO_ROOT, ToolError, fail, info, ok
 
 DATA_ROOT = REPO_ROOT / "game" / "data"
@@ -124,8 +125,13 @@ def register(subparsers) -> None:
     new.add_argument("--loot", default="")
     new.add_argument("--bosses", default="")
 
+    # Master option catalog tooling (ADR 0025).
+    options.register(actions)
+
 
 def run(args) -> int:
+    if args.data_action == "options":
+        return options.run(args)
     root = Path(args.root) if args.root else DATA_ROOT
     if args.data_action == "audit":
         return _audit_command(root)

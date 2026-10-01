@@ -1,9 +1,9 @@
 """Seed the qi_cultivation and mind_cultivation realm contracts.
 
 Mirrors the body-cultivation seed contract (ADR 0023) for the other two major
-systems: one `.tres` per realm plus the two consumables, two materials, recipe,
-boss, and domain each realm's contract references. Existing authored resources
-are never overwritten.
+systems: one `.tres` per realm plus the consumables, materials, recipe, boss,
+and domain each realm's contract references. Existing authored resources are
+never overwritten.
 """
 
 from __future__ import annotations
@@ -122,6 +122,18 @@ def run() -> int:
     return 0
 
 
+def _power_budget(index: int, tier: int) -> float:
+    """Reference power budget P for a realm (ADR 0013/0016)."""
+    local = index + 1
+    if tier == 1:
+        return 1.0 * (1.25 ** (local - 1))
+    if tier == 2:
+        return 8.0 * (1.22 ** (local - 1))
+    if tier == 3:
+        return 55.0 * (1.20 ** (local - 1))
+    return 330.0 * (1.35 ** (local - 1))
+
+
 def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
     ladder = realms()
     names = stages(spec["path"])
@@ -131,6 +143,7 @@ def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
         grade = TIER_GRADE[tier - 1]
         pill = f"{prefix}_breakthrough_pill"
         elixir = f"{prefix}_channel_elixir"
+        sea_catalyst = f"{prefix}_sea_catalyst"
         herb = f"{prefix}_{spec['prefix']}_herb"
         core = f"{prefix}_warden_core"
         boss = f"{prefix}_warden"
@@ -141,7 +154,12 @@ def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
         source_index = max(0, index - 1)
         required = [channel for channel, unlock in CHANNELS if unlock <= source_index]
         storage_capacity = 100.0 * (1.0 + index * 0.25)
-        quality = 0.5 + 0.01 * source_index
+        clarity_target = 0.40 + 0.015 * index
+        purity_target = 0.45 + 0.015 * index
+        comprehension_floor = 10.0 + 6.0 * index + 2.0 * index * index
+        cultivation_work = round(100.0 * max(1, index) ** 1.45)
+        sea_work = round(20.0 * (index + 1) ** 1.4)
+        meridian_work = round(15.0 * (index + 1) ** 1.4)
         files[f"{spec['dir']}/realms/{realm_id}.tres"] = resource(
             spec["class"],
             spec["script"],
@@ -149,15 +167,21 @@ def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
                 f'id = &"{realm_id}"',
                 f'breakthrough_item = &"{pill}"',
                 f'training_item = &"{elixir}"',
-                f"progress_required = {100.0 * max(1, index)}",
-                f"comprehension_required = {10.0 + 2.0 * max(0, index - 1)}",
-                f"{_quality_field(spec)} = {quality:.2f}",
+                f'sea_catalyst = &"{sea_catalyst}"',
+                f"progress_required = {cultivation_work}.0",
+                f"comprehension_required = {comprehension_floor}.0",
+                f"{_quality_field(spec)} = {clarity_target:.2f}",
+                f"purity_required = {purity_target:.2f}",
                 f"{_fill_field(spec)} = 1.0",
                 f'{_tier_field(spec)} = &"{tier_for(index, tiers)}"',
                 f"required_meridians = {data._array_literal(required)}",
                 f'required_channel_state = &"{spec["channel_state"]}"',
                 f"channel_refinement_cap = {index + 1}",
                 f"{_capacity_field(spec)} = {storage_capacity:.1f}",
+                f"sea_milestone_work = {sea_work}.0",
+                f"meridian_milestone_work = {meridian_work}.0",
+                f"insight_required = {comprehension_floor * 0.5}.0",
+                f"resonance_required = {max(0, index - 17)}",
                 f"rewards = {data._dict_literal([(spec['reward'], 2.0)])}",
             ],
         )
@@ -178,6 +202,14 @@ def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
                 f"craft:{prefix}_elixir_recipe",
                 f"{stage} {spec['elixir_noun']}",
                 "Advances one meridian a step, or deepens a strengthened channel.",
+            ),
+            (
+                sea_catalyst,
+                "consumable",
+                "tonic",
+                f"craft:{prefix}_sea_recipe",
+                f"{stage} Sea Catalyst",
+                "Strengthens the sea of consciousness toward the realm's targets.",
             ),
             (
                 herb,
@@ -208,7 +240,7 @@ def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
                     f'description = "{description}"',
                 ],
             )
-        for suffix, output in (("pill", pill), ("elixir", elixir)):
+        for suffix, output in (("pill", pill), ("elixir", elixir), ("sea", sea_catalyst)):
             recipe = f"{prefix}_{suffix}_recipe"
             files[f"recipes/{recipe}.tres"] = data._tres(
                 "recipe",

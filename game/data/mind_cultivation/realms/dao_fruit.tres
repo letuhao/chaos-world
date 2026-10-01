@@ -7,15 +7,21 @@ script = ExtResource("1")
 id = &"dao_fruit"
 breakthrough_item = &"mind_dao_fruit_breakthrough_pill"
 training_item = &"mind_dao_fruit_channel_elixir"
-progress_required = 2500.0
-comprehension_required = 58.0
-clarity_required = 0.74
+sea_catalyst = &"mind_dao_fruit_sea_catalyst"
+progress_required = 10642.0
+comprehension_required = 1410.0.0
+clarity_required = 0.78
+purity_required = 0.82
 sea_fill_required = 1.0
 sea_tier = &"vast"
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
 required_channel_state = &"strengthened"
 channel_refinement_cap = 26
 sea_capacity = 725.0
+sea_milestone_work = 1914.0
+meridian_milestone_work = 1436.0
+insight_required = 705.0.0
+resonance_required = 8
 rewards = {
 "will": 2.0
 }

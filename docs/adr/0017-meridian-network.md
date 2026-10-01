@@ -53,16 +53,28 @@ State transitions: Closed → Open → Expanded → Strengthened (forward only).
 
 ### Data model
 
-- `Actor.meridians: Dictionary` — `meridian_id → MeridianState`.
-- `MeridianState`: `id`, `state`, `tier`, `capacity_bonus`, `flow_bonus`, `power_bonus`.
-- Stored in `Actor.to_dict()` / `from_dict()` with schema version bump.
+- `Actor.meridians: MeridianNetwork` — `meridian_id → MeridianState`.
+- `MeridianState`: `id`, `state`, `tier`, `capacity_bonus`, `flow_bonus`, `power_bonus`, `refinement`.
+- Stored in `Actor.to_dict()` / `from_dict()` with schema version 3.
 - Meridian network is **core** infrastructure — shared by all cultivation systems.
+
+### Injury overlay
+
+- Injury is an independent recoverable flag/severity with a defined penalty. It does not erase structural attainment.
+- Repair restores previous attained benefits.
+- Legacy `damaged` saves have lost the old structural state. Migrate to the minimum defensible Open state with injury; do not invent a former Strengthened state. Preserve uninjured saved states exactly.
+
+### Resonance (realms 19-30)
+
+- Realms 19-30 reinforce the **same network** through twelve network resonance ranks.
+- Resonance is bounded physiological reinforcement, not twelve new channels, a new cultivation path or another realm ladder.
+- Each resonance rank increases the network's flow/capacity/power bonuses by a fixed amount.
 
 ## Consequences
 
 - ADR 0014/0015/0016 reference this ADR for meridian structure and states; they define only the reservoir-specific interaction.
 - Meridian bonuses feed into `ActorStats` derived stats (cultivation rate, capacity, technique power) via stat providers.
-- Meridian damage is a cross-system debuff — all three cultivation paths read the same `meridians` dictionary.
+- Meridian damage is a cross-system debuff — all three cultivation paths read the same `meridians` network.
 - Adding a new meridian = authoring a `.tres`; no core change.
 - Changing meridian states or unlock rules touches `core/` — requires a new ADR.
-- Save schema version increments; migration path from v1 → v2 adds the `meridians` field.
+- Save schema version increments; migration path from v2 → v3 adds the `sea` field.

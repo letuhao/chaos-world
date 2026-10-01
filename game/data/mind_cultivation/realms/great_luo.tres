@@ -7,15 +7,21 @@ script = ExtResource("1")
 id = &"great_luo"
 breakthrough_item = &"mind_great_luo_breakthrough_pill"
 training_item = &"mind_great_luo_channel_elixir"
-progress_required = 2400.0
-comprehension_required = 56.0
-clarity_required = 0.73
+sea_catalyst = &"mind_great_luo_sea_catalyst"
+progress_required = 10030.0
+comprehension_required = 1306.0.0
+clarity_required = 0.76
+purity_required = 0.81
 sea_fill_required = 1.0
 sea_tier = &"vast"
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
 required_channel_state = &"strengthened"
 channel_refinement_cap = 25
 sea_capacity = 700.0
+sea_milestone_work = 1812.0
+meridian_milestone_work = 1359.0
+insight_required = 653.0.0
+resonance_required = 7
 rewards = {
 "will": 2.0
 }

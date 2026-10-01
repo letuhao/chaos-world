@@ -1,0 +1,86 @@
+{
+  "base:FLAT:magnitude": [
+    "base_agility",
+    "base_aptitude",
+    "base_comprehension",
+    "base_fortune",
+    "base_physique",
+    "base_spirit",
+    "base_will"
+  ],
+  "cultivation:FLAT:magnitude": [
+    "core_qi_absorption"
+  ],
+  "cultivation:PERCENT:rate": [
+    "core_breakthrough_chance",
+    "core_cultivation_rate"
+  ],
+  "defense:FLAT:fraction": [
+    "core_damage_reduction"
+  ],
+  "defense:FLAT:magnitude": [
+    "core_defense_physical",
+    "core_defense_spiritual",
+    "core_health_regen",
+    "core_max_health",
+    "core_max_qi",
+    "core_max_stamina",
+    "core_qi_regen",
+    "core_stamina_regen"
+  ],
+  "defense:PERCENT:rate": [
+    "core_evasion"
+  ],
+  "element:FLAT:magnitude": [
+    "element_mastery_dark",
+    "element_mastery_earth",
+    "element_mastery_fire",
+    "element_mastery_ice",
+    "element_mastery_light",
+    "element_mastery_lightning",
+    "element_mastery_metal",
+    "element_mastery_water",
+    "element_mastery_wind",
+    "element_mastery_wood",
+    "element_power_dark",
+    "element_power_earth",
+    "element_power_fire",
+    "element_power_ice",
+    "element_power_light",
+    "element_power_lightning",
+    "element_power_metal",
+    "element_power_water",
+    "element_power_wind",
+    "element_power_wood"
+  ],
+  "element:PERCENT:rate": [
+    "element_resistance_dark",
+    "element_resistance_earth",
+    "element_resistance_fire",
+    "element_resistance_ice",
+    "element_resistance_light",
+    "element_resistance_lightning",
+    "element_resistance_metal",
+    "element_resistance_water",
+    "element_resistance_wind",
+    "element_resistance_wood"
+  ],
+  "mobility:PERCENT:rate": [
+    "core_move_speed"
+  ],
+  "offense:FLAT:magnitude": [
+    "core_attack_physical",
+    "core_attack_spiritual",
+    "core_penetration"
+  ],
+  "offense:PERCENT:rate": [
+    "core_attack_speed",
+    "core_crit_chance",
+    "core_crit_damage"
+  ],
+  "utility:PERCENT:rate": [
+    "core_cooldown_reduction",
+    "core_loot_bonus",
+    "core_qi_cost_reduction"
+  ]
+}

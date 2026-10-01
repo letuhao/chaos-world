@@ -37,6 +37,9 @@ var ascension: AscensionState:
 			mark_stats_dirty()
 var _context: StatContext
 var _invalidator: StatsInvalidator
+## Item-state serialization hook (ADR 0027). Registered by the items module so core
+## never serializes concrete item types. Null callable means "no item state".
+var _item_state_serializer: Callable = Callable()
 
 
 func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
@@ -115,7 +118,7 @@ func change_resource(pool_id: StringName, delta: float) -> void:
 		pool.change(delta)
 
 
-func set_resource_maximum(pool_id: StringName, value: float) -> void:
+func _set_resource_maximum(pool_id: StringName, value: float) -> void:
 	var pool := resource(pool_id)
 	if pool != null:
 		pool.set_maximum(value)
@@ -196,6 +199,9 @@ func to_dict() -> Dictionary:
 	var module_data_dict: Dictionary = {}
 	for key in module_data.keys():
 		module_data_dict[String(key)] = module_data[key]
+	var item_state_dict: Dictionary = {}
+	if not _item_state_serializer.is_null():
+		item_state_dict = _item_state_serializer.call(self)
 	return {
 		"version": SCHEMA_VERSION,
 		"id": String(id),
@@ -214,11 +220,18 @@ func to_dict() -> Dictionary:
 		"acupoints": acupoints_dict,
 		"body_progress": body_progress_dict,
 		"module_data": module_data_dict,
+		"item_state": item_state_dict,
 		"tribulation": tribulation_dict,
 		"inside_world": inside_world_dict,
 		"world": world_dict,
 		"ascension": ascension_dict,
 	}
+
+
+## Register the item-state serialization hook (ADR 0027). Called by the items module
+## on attach so core never references concrete item types.
+func set_item_state_serializer(serializer: Callable) -> void:
+	_item_state_serializer = serializer
 
 
 static func from_dict(data: Dictionary) -> Actor:
@@ -277,6 +290,8 @@ static func from_dict(data: Dictionary) -> Actor:
 	var ascension_data: Dictionary = data.get("ascension", {})
 	if not ascension_data.is_empty():
 		actor.ascension = AscensionState.from_dict(ascension_data)
+	# Capture raw item state for the items module to restore on attach (ADR 0027).
+	actor.set_module_data(&"item_state", data.get("item_state", {}))
 	actor.mark_stats_dirty()
 	return actor
 

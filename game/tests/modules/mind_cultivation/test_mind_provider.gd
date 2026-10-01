@@ -51,7 +51,9 @@ func test_mind_technique_power_scales() -> void:
 
 func test_comprehension_bonus_base() -> void:
 	var actor := _actor_with_module()
-	assert_almost_eq(actor.stats.derived(MindStats.COMPREHENSION_BONUS), 1.1, "comprehension bonus")
+	assert_almost_eq(
+		actor.stats.derived(MindStats.COMPREHENSION_BONUS), 1.12, "comprehension bonus"
+	)
 
 
 func test_meridian_strengthening_boosts_technique_power() -> void:

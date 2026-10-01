@@ -28,6 +28,19 @@ func all() -> Dictionary:
 func equip(actor: Actor, slot: StringName, def: ItemDef, instance: ItemInstance) -> bool:
 	if not SLOTS.has(slot):
 		return false
+	if not def.is_equipment():
+		return false
+	if instance.def_id != def.id:
+		return false
+	# Grade/realm requirement: the actor's realm tier must meet the item's grade.
+	var actor_realm := actor.realm()
+	if actor_realm != &"":
+		var actor_tier := RealmDefaults.ladder().tier_of(actor_realm)
+		if actor_tier > 0 and actor_tier < def.required_tier():
+			return false
+	# Binding: a bound item equips only for its owner.
+	if instance.bound_to != &"" and instance.bound_to != actor.id:
+		return false
 	if _slots.has(slot):
 		unequip(actor, slot)
 	_slots[slot] = instance

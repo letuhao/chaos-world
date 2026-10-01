@@ -17,6 +17,18 @@ extends Resource
 @export var description: String = ""
 @export var flat_modifiers: Dictionary = {}
 @export var percent_modifiers: Dictionary = {}
+# Rarity controls option counts, affix structure, magnitude budgets, and socket
+# limits (ADR 0025). Separate from grade and realm.
+@export var rarity: StringName = &"common"
+# The canonical 30-realm id this item belongs to; drives eligibility and roll
+# magnitude. Saved as a stable id, not a display name.
+@export var realm: StringName = &""
+# Fixed modifiers reference master option ids with item-authored fixed values
+# (ADR 0025): [{option_id: &"...", value: float}, ...].
+@export var fixed_modifiers: Array[Dictionary] = []
+# Roll specification references a derived pool with count/budget and eligible
+# affix positions (ADR 0025): {pool_id, count, contexts}.
+@export var roll_spec: Dictionary = {}
 
 
 func is_equipment() -> bool:
@@ -25,6 +37,10 @@ func is_equipment() -> bool:
 
 func required_tier() -> int:
 	return ItemGrade.required_tier(grade)
+
+
+func rarity_tier() -> int:
+	return OptionCatalog.rarity_tier(rarity)
 
 
 func build_modifiers(source: StringName) -> Array[StatModifier]:
