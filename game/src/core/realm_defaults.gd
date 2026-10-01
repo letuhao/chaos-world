@@ -19,7 +19,7 @@ static func ladder() -> RealmLadder:
 
 
 static func _all() -> Array[RealmDef]:
-	return [
+	var realms: Array[RealmDef] = [
 		_make(&"qi_refining", "Qi Refining", MORTAL),
 		_make(&"foundation", "Foundation Establishment", MORTAL),
 		_make(&"core_formation", "Core Formation", MORTAL),
@@ -51,6 +51,9 @@ static func _all() -> Array[RealmDef]:
 		_make(&"dao_ancestor", "Dao Ancestor", TRANSCENDENT),
 		_make(&"primordial_origin", "Primordial Origin", TRANSCENDENT),
 	]
+	for i in realms.size():
+		realms[i].power = 1.0 + i * 0.1
+	return realms
 
 
 static func _make(id: StringName, display_name: String, tier: int) -> RealmDef:

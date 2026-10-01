@@ -7,3 +7,4 @@ extends Resource
 @export var display_name: String = ""
 @export var tier: int = 1
 @export var index: int = 0
+@export var power: float = 1.0
