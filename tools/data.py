@@ -499,6 +499,29 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
     if noop:
         findings.append(("warn", f"{len(noop)} zero-valued modifier(s) grant nothing"))
 
+    # Power curve: a tier should never be weaker than the tier below it.
+    buckets: dict[tuple[str, str], list[float]] = {}
+    for item in items.values():
+        grade = item["scalars"].get("grade", "")
+        for key, value in item["dicts"].get("flat_modifiers", {}).items():
+            buckets.setdefault((key, grade), []).append(value)
+    for key in sorted({k for k, _ in buckets}):
+        series = []
+        for grade in GRADE_ORDER:
+            values = buckets.get((key, grade))
+            if values and len(values) >= 4:
+                series.append((grade, sum(values) / len(values)))
+        for (low, low_mean), (high, high_mean) in zip(series, series[1:]):
+            if high_mean < low_mean * 0.9:
+                findings.append(
+                    (
+                        "warn",
+                        f"power curve inverted on '{key}': {high} mean {high_mean:.0f} "
+                        f"is below {low} mean {low_mean:.0f}",
+                    )
+                )
+                break
+
     # Modifier stats that the game does not define are silently ignored at runtime.
     valid = _valid_stats()
     if valid:
