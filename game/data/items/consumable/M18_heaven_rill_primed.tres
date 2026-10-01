@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"M18_heaven_rill_primed"
+display_name = "Heaven Rill Primed"
+category = &"consumable"
+subcategory = &"food"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:M18_heaven_rill_primed_recipe"])
+percent_modifiers = {
+"crit_chance": 0.13
+}

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"M6_mortal_flint_perfected_recipe"
+display_name = "Mortal Flint Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"M6_mortal_flint_primed", &"scepter_copper_ore", &"blade_iron_ore"])
+outputs = Array[StringName]([&"M6_mortal_flint_perfected"])

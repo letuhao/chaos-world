@@ -425,13 +425,17 @@ def _progression_items() -> set[str]:
     """Item ids consumed as progression payloads rather than for their stats.
 
     A breakthrough bundle is a consumable that unlocks a realm; its effect is
-    the unlock, so carrying no modifier is correct (ADR 0009). The body realm
-    seeds name these in `breakthrough_item` / `strengthening_item`, and
-    body_cultivation/advancement.gd consumes them. Keyed on any `*_item` field so
-    a future seed field naming a consumed item is exempt without a code change.
+    the unlock, so carrying no modifier is correct (ADR 0009). The realm seeds
+    name these in `breakthrough_item` / `training_item` / `sea_catalyst`, and the
+    cultivation modules consume them. Keyed on a field suffix so a future seed
+    field naming a consumed item is exempt without a code change.
     """
     ids: set[str] = set()
-    pattern = re.compile(r'^\w+_item\s*=\s*&"([^"]+)"', re.MULTILINE)
+    # `breakthrough_item`, `training_item`, `strengthening_item`, `sea_catalyst`.
+    # Keyed on a field SUFFIX rather than an exact name so a future seed field
+    # naming a consumed item is exempt without a code change. `id` is excluded:
+    # realm ids are not item ids.
+    pattern = re.compile(r'^\w+_(?:item|catalyst)\s*=\s*&"([^"]+)"', re.MULTILINE)
     # One realms directory per cultivation path (body, mind, qi); glob so a new
     # path is covered without touching this function.
     for realms in sorted(DATA_ROOT.glob("*/realms")):

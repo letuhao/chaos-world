@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"M6_mortal_flint_primed"
+display_name = "Mortal Flint Primed"
+category = &"consumable"
+subcategory = &"pill"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:M6_mortal_flint_primed_recipe"])
+percent_modifiers = {
+"aptitude": 0.13
+}
