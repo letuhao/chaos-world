@@ -4,15 +4,12 @@
 
 [resource]
 script = ExtResource("1_item")
-id = &"cloak_nightshade"
-display_name = "Nightshade Cloak"
-category = &"equipment"
-subcategory = &"armor"
+id = &"codex_iron_sage_claw"
+display_name = "Iron Sage Claw Codex"
+category = &"technique"
+subcategory = &"manual"
 grade = &"earth"
-sources = Array[StringName]([&"craft:cloak_nightshade_recipe"])
+sources = Array[StringName]([&"gather"])
 percent_modifiers = {
-"damage_reduction": 0.03
-}
-percent_modifiers = {
-"evasion": 0.06,
+"cultivation_rate": 0.07
 }

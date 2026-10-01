@@ -12,7 +12,5 @@ grade = &"earth"
 sources = Array[StringName]([&"boss:totem_stone_guardian"])
 flat_modifiers = {
 "defense_physical": 40.0
-}
-percent_modifiers = {
-"damage_reduction": 5.0
+"damage_reduction": 0.05
 }

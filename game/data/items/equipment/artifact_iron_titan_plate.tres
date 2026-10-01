@@ -12,7 +12,5 @@ grade = &"spirit"
 sources = Array[StringName]([&"boss:artifact_iron_titan"])
 flat_modifiers = {
 "defense_physical": 45.0
-}
-percent_modifiers = {
-"damage_reduction": 8.0
+"damage_reduction": 0.08
 }

@@ -4,13 +4,12 @@
 
 [resource]
 script = ExtResource("1_item")
-id = &"cloak_heaven"
-display_name = "Heaven Cloak"
-category = &"equipment"
-subcategory = &"armor"
-grade = &"heaven"
-sources = Array[StringName]([&"craft:cloak_heaven_recipe"])
-flat_modifiers = {
-"defense_spiritual": 15.0
+id = &"manual_iron_tortoise_claw"
+display_name = "Iron Tortoise Claw Manual"
+category = &"technique"
+subcategory = &"manual"
+grade = &"earth"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
 "damage_reduction": 0.05
 }

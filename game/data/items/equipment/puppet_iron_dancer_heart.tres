@@ -4,13 +4,15 @@
 
 [resource]
 script = ExtResource("1_item")
-id = &"accessory_iron_bangle"
-display_name = "Iron Bangle"
+id = &"puppet_iron_dancer_heart"
+display_name = "Iron Dancer Heart Puppet"
 category = &"equipment"
-subcategory = &"accessory"
+subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"craft:accessory_iron_bangle_recipe"])
+sources = Array[StringName]([&"gather"])
 flat_modifiers = {
-"defense_physical": 5.0
-"damage_reduction": 0.03
+"max_health": 120.0
+}
+percent_modifiers = {
+"defense_physical": 4.0
 }

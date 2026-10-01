@@ -12,7 +12,5 @@ grade = &"spirit"
 sources = Array[StringName]([&"boss:totem_jade_serpent"])
 flat_modifiers = {
 "defense_spiritual": 30.0
-}
-percent_modifiers = {
-"damage_reduction": 4.0
+"damage_reduction": 0.04
 }

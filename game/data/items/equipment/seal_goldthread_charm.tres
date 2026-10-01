@@ -12,7 +12,5 @@ grade = &"spirit"
 sources = Array[StringName]([&"craft:seal_goldthread_charm_recipe"])
 flat_modifiers = {
 "max_qi": 40.0
-}
-percent_modifiers = {
-"damage_reduction": 3.0
+"damage_reduction": 0.03
 }

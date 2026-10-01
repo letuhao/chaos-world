@@ -12,7 +12,5 @@ grade = &"earth"
 sources = Array[StringName]([&"craft:banner_stone_guard_recipe"])
 flat_modifiers = {
 "defense_physical": 15.0
-}
-percent_modifiers = {
-"damage_reduction": 4.0
+"damage_reduction": 0.04
 }

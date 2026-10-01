@@ -12,7 +12,5 @@ grade = &"spirit"
 sources = Array[StringName]([&"boss:relic_stone_colossus"])
 flat_modifiers = {
 "defense_spiritual": 25.0
-}
-percent_modifiers = {
-"damage_reduction": 3.0
+"damage_reduction": 0.03
 }

@@ -12,8 +12,8 @@ grade = &"heaven"
 sources = Array[StringName]([&"craft:banner_dawnstar_standard_recipe"])
 flat_modifiers = {
 "max_health": 100.0
+"damage_reduction": 0.04
 }
 percent_modifiers = {
 "status_resistance": 8.0,
-"damage_reduction": 4.0
 }

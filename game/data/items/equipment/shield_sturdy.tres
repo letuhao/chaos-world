@@ -15,7 +15,5 @@ flat_modifiers = {
 "defense_spiritual": 6.0,
 "max_health": 25.0,
 "poise": 10.0
-}
-percent_modifiers = {
 "damage_reduction": 0.05
 }

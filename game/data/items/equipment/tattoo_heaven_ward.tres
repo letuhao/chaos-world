@@ -13,7 +13,5 @@ sources = Array[StringName]([&"craft:tattoo_heaven_ward_recipe"])
 flat_modifiers = {
 "max_health": 50.0,
 "attack_spiritual": 15.0
-}
-percent_modifiers = {
 "damage_reduction": 0.05
 }

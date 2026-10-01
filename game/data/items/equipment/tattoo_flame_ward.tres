@@ -12,7 +12,5 @@ grade = &"spirit"
 sources = Array[StringName]([&"craft:tattoo_flame_ward_recipe"])
 flat_modifiers = {
 "attack_spiritual": 12.0
-}
-percent_modifiers = {
 "damage_reduction": 0.03
 }

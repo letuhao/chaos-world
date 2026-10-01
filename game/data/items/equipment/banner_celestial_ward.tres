@@ -12,7 +12,5 @@ grade = &"heaven"
 sources = Array[StringName]([&"craft:banner_celestial_ward_recipe"])
 flat_modifiers = {
 "defense_spiritual": 22.0
-}
-percent_modifiers = {
-"damage_reduction": 5.0
+"damage_reduction": 0.05
 }

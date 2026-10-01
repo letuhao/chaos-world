@@ -184,6 +184,11 @@ def _load(root: Path) -> tuple[dict, list[str]]:
             record["dicts"][field] = _extract_dict(text, field)
         for field in schema["scalars"]:
             record["scalars"][field] = _extract_scalar(text, field) or ""
+        # Records are keyed by id, so a duplicate id would silently overwrite
+        # rather than collide. Track the losers so the audit can report them.
+        previous = records[type_name].get(record_id)
+        if previous is not None:
+            record["duplicate_of"] = previous["path"]
         records[type_name][record_id] = record
     return records, malformed
 
@@ -227,6 +232,12 @@ def _audit(root: Path) -> list[str]:
     bosses = records.get("boss", {})
     domains = records.get("domain", {})
     gaps = [f"{path}: missing id" for path in malformed]
+
+    for type_name in sorted(records):
+        for record_id, record in sorted(records[type_name].items()):
+            other = record.get("duplicate_of")
+            if other:
+                gaps.append(f"{type_name} {record_id}: duplicate id, also defined in {other}")
 
     for recipe_id, recipe in recipes.items():
         inputs = recipe["arrays"].get("inputs", [])
