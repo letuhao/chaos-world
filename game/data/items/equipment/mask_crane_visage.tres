@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"mask_crane_visage"
+display_name = "Crane Visage"
+category = &"equipment"
+subcategory = &"accessory"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:mask_crane_visage_recipe"])
+flat_modifiers = {
+"max_health": 30.0
+}
+percent_modifiers = {
+"crit_chance": 0.02,
+"cultivation_rate": 0.04
+}

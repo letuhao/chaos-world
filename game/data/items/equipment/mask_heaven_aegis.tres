@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"mask_heaven_aegis"
+display_name = "Heaven Aegis"
+category = &"equipment"
+subcategory = &"accessory"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:mask_heaven_aegis_recipe"])
+flat_modifiers = {
+"status_resistance": 15.0,
+"max_health": 50.0
+}
+percent_modifiers = {
+"evasion": 0.06,
+"crit_chance": 0.03,
+"cultivation_rate": 0.08
+}

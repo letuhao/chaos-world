@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"mask_gale_countenance"
+display_name = "Gale Countenance"
+category = &"equipment"
+subcategory = &"accessory"
+grade = &"earth"
+sources = Array[StringName]([&"craft:mask_gale_countenance_recipe"])
+flat_modifiers = {
+"status_resistance": 10.0
+}
+percent_modifiers = {
+"evasion": 0.05,
+"cultivation_rate": 0.05
+}
