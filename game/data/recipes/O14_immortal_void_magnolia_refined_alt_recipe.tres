@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"O14_immortal_void_magnolia_refined_alt_recipe"
+display_name = "Immortal Void Magnolia Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"O14_immortal_void_magnolia_base", &"mind_true_immortal_mind_herb", &"body_true_immortal_tempering_herb"])
+outputs = Array[StringName]([&"O14_immortal_void_magnolia_refined"])
