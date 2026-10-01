@@ -30,7 +30,9 @@ func _sea_ready(
 	# A turbulent sea must be calmed by meditation before the attempt (ADR 0016).
 	if sea.turbulence > 0.0 or sea.clarity < seed.clarity_required:
 		return false
-	return sea.ratio() >= seed.sea_fill_required
+	if sea.purity < seed.purity_required:
+		return false
+	return sea.ratio(actor) >= seed.sea_fill_required
 
 
 func describe() -> String:

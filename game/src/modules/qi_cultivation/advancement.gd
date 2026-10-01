@@ -36,7 +36,9 @@ static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) ->
 		var id := StringName(key)
 		actor.stats.set_base(id, actor.stats.get_base(id) + float(seed.rewards[key]))
 	# The dantian empties into the new realm and is re-sealed at its new capacity.
-	dantian.current = 0.0
+	var pool := actor.resource(QiStats.QI)
+	if pool != null:
+		pool.current = 0.0
 	Breakthrough.try_advance(actor, QiPath.PATH_ID)
 	QiTraining.synchronize(actor)
 	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD and actor.tribulation != null:
@@ -51,7 +53,7 @@ static func _deviate(
 	# Qi deviation scars the dantian and burns a channel it depended on.
 	state.progress *= 0.5
 	dantian.damage()
-	dantian.quality = maxf(0.0, dantian.quality * 0.5)
+	dantian.set_quality(maxf(0.0, dantian.quality * 0.5))
 	if not seed.required_meridians.is_empty():
 		actor.meridians.damage_meridian(
 			seed.required_meridians[_pick(rng, seed.required_meridians.size())]

@@ -10,7 +10,8 @@ strengthening_item = &"body_great_ascension_channel_elixir"
 progress_required = 700.0
 physique_required = 22.0
 quality_required = 0.56
-quality_target = 0.57
+quality_target = 0.505000
+integrity_target = 0.555000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver"])
 required_refinement = 7
 refinement_cap = 8
@@ -19,3 +20,13 @@ rewards = {
 "physique": 2.0,
 "muscle_fiber": 1.0
 }
+power_budget = 4.77
+capacity_factor = 3.77
+throughput_factor = 1.87
+technique_factor = 2.36
+work_required = 1680.0
+acupoint_work = 368.0
+meridian_work = 276.0
+insight_required = 150.0
+resonance_rank = 0
+channel_training = Array[StringName]([])

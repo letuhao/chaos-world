@@ -35,8 +35,11 @@ static func dantian(actor: Actor) -> Dantian:
 
 
 static func attach_dantian(actor: Actor) -> Dantian:
+	var existing := actor.component(&"dantian") as Dantian
+	if existing != null:
+		return existing
 	var dantian := Dantian.new()
-	dantian.capacity = actor.stats.get_base(QiStats.DANTIAN_CAPACITY)
+	dantian.structural_capacity = actor.stats.get_base(QiStats.DANTIAN_CAPACITY)
 	actor.set_component(&"dantian", dantian)
 	actor.stats.add_provider(DantianProvider.new())
 	return dantian

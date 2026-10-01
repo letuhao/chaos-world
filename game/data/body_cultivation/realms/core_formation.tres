@@ -10,7 +10,8 @@ strengthening_item = &"body_core_formation_channel_elixir"
 progress_required = 200.0
 physique_required = 12.0
 quality_required = 0.51
-quality_target = 0.52
+quality_target = 0.430000
+integrity_target = 0.480000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen"])
 required_refinement = 2
 refinement_cap = 3
@@ -19,3 +20,13 @@ rewards = {
 "physique": 2.0,
 "bone_density": 1.0
 }
+power_budget = 1.56
+capacity_factor = 1.46
+throughput_factor = 1.20
+technique_factor = 1.28
+work_required = 273.0
+acupoint_work = 93.0
+meridian_work = 70.0
+insight_required = 30.0
+resonance_rank = 0
+channel_training = Array[StringName]([&"heart", &"small_intestine", &"bladder", &"kidney"])

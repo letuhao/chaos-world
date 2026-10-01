@@ -1,8 +1,9 @@
 class_name AcupointSet
 extends RefCounted
 
-## Container for an actor's acupoints (ADR 0015). Stored as a component on
-## the actor; providers read from it.
+## Container for an actor's acupoints (ADR 0015/0023). Stored as a component on
+## the actor; providers read from it. Body essence is stored in the shared
+## body_integrity ResourcePool, not per-acupoint; this set mediates access.
 
 var points: Array[Acupoint] = []
 
@@ -10,31 +11,79 @@ var points: Array[Acupoint] = []
 ## breakthrough cannot interleave on the same points.
 var busy: bool = false
 
+## The shared body essence pool. Set by BodyTraining.synchronize from the
+## actor's body_integrity resource. All fill/drain/fullness operations go
+## through this pool so there is exactly one energy balance.
+var _pool: ResourcePool = null
+
 
 func _init(p_points: Array[Acupoint] = []) -> void:
 	points = p_points
 
 
-## Bring the set in line with `realm_id`: add acupoints the realm has unlocked
-## and re-derive every capacity from its definition scaled by the meridian
-## network's capacity bonus. Idempotent — stored essence, quality, and blocked
-## flags survive repeat calls.
-func synchronize(realm_id: StringName, capacity_bonus: float) -> void:
+## Set the shared body essence pool. Called by synchronize() after the
+## actor's body_integrity resource is resolved.
+func set_pool(pool: ResourcePool) -> void:
+	_pool = pool
+
+
+func pool() -> ResourcePool:
+	return _pool
+
+
+## Total structural capacity across all open acupoints, derived from the
+## pool maximum and the meridian capacity bonus. This is a derived view,
+## not an independently saved balance.
+func total_capacity() -> float:
+	if _pool == null:
+		return 0.0
+	return _pool.maximum
+
+
+## Current stored body essence, read from the shared pool.
+func current() -> float:
+	if _pool == null:
+		return 0.0
+	return _pool.current
+
+
+## Whether the shared pool is full (current >= maximum).
+func is_full() -> bool:
+	if _pool == null or _pool.maximum <= 0.0:
+		return false
+	return _pool.current >= _pool.maximum
+
+
+## Fill the shared pool by `amount`. Returns false when blocked or no pool.
+func fill(amount: float) -> bool:
+	if _pool == null or amount <= 0.0 or not is_finite(amount):
+		return false
+	_pool.change(amount)
+	return true
+
+
+## Drain the shared pool by `amount`. Returns false when blocked or no pool.
+func drain(amount: float) -> bool:
+	if _pool == null or amount <= 0.0 or not is_finite(amount):
+		return false
+	_pool.change(-amount)
+	return true
+
+
+## Bring the set in line with `realm_id`: add acupoints the realm has unlocked.
+## Idempotent — quality and blocked flags survive repeat calls. The pool
+## reference is preserved.
+func synchronize(realm_id: StringName) -> void:
 	var by_id := {}
 	for point in points:
 		by_id[point.id] = point
 	for def in AcupointDefaults.definitions():
 		if def.unlock_index > maxi(0, RealmDefaults.ladder().index_of(realm_id)):
 			continue
-		var scaled := def.base_capacity * (1.0 + capacity_bonus)
 		var point: Acupoint = by_id.get(def.id)
 		if point == null:
 			point = AcupointDefaults.from_definition(def)
-			point.capacity = scaled
 			points.append(point)
-			continue
-		point.capacity = scaled
-		point.current = clampf(point.current, 0.0, scaled)
 
 
 func open_count() -> int:

@@ -10,7 +10,8 @@ strengthening_item = &"body_transcendent_channel_elixir"
 progress_required = 2700.0
 physique_required = 62.0
 quality_required = 0.76
-quality_target = 0.77
+quality_target = 0.805000
+integrity_target = 0.855000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
 required_refinement = 27
 refinement_cap = 28
@@ -19,3 +20,13 @@ rewards = {
 "physique": 2.0,
 "organ_vitality": 1.0
 }
+power_budget = 330.00
+capacity_factor = 138.27
+throughput_factor = 10.17
+technique_factor = 24.28
+work_required = 11898.0
+acupoint_work = 2123.0
+meridian_work = 1593.0
+insight_required = 1630.0
+resonance_rank = 10
+channel_training = Array[StringName]([])

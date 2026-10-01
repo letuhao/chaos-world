@@ -10,7 +10,8 @@ strengthening_item = &"body_great_luo_channel_elixir"
 progress_required = 2400.0
 physique_required = 56.0
 quality_required = 0.73
-quality_target = 0.74
+quality_target = 0.760000
+integrity_target = 0.810000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
 required_refinement = 24
 refinement_cap = 25
@@ -19,3 +20,13 @@ rewards = {
 "physique": 2.0,
 "organ_vitality": 1.0
 }
+power_budget = 164.23
+capacity_factor = 76.41
+throughput_factor = 7.69
+technique_factor = 16.54
+work_required = 10030.0
+acupoint_work = 1812.0
+meridian_work = 1359.0
+insight_required = 1306.0
+resonance_rank = 7
+channel_training = Array[StringName]([])

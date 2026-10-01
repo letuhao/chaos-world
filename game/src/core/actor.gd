@@ -9,7 +9,7 @@ signal path_advanced(path_id: StringName, rank_id: StringName)
 signal status_added(status_id: StringName)
 signal status_removed(status_id: StringName)
 
-const SCHEMA_VERSION := 2
+const SCHEMA_VERSION := 3
 
 var id: StringName
 var display_name: String
@@ -19,6 +19,7 @@ var traits: NameList
 var affinities: AffinityMap
 var relationships: Dictionary
 var components: Dictionary
+var module_data: Dictionary
 var stats: ActorStats
 var resources: Dictionary
 var statuses: Array[StatusEffect]
@@ -45,6 +46,7 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 	tags = []
 	relationships = {}
 	components = {}
+	module_data = {}
 	resources = {}
 	statuses = []
 	paths = {}
@@ -132,6 +134,14 @@ func component(id: StringName) -> RefCounted:
 	return components.get(id)
 
 
+func set_module_data(id: StringName, data: Dictionary) -> void:
+	module_data[id] = data
+
+
+func get_module_data(id: StringName) -> Dictionary:
+	return module_data.get(id, {})
+
+
 func set_path(state: PathState) -> void:
 	paths[state.path_id] = state
 	if not state.changed.is_connected(_invalidator.on_changed):
@@ -162,6 +172,30 @@ func to_dict() -> Dictionary:
 	var ascension_dict: Dictionary = {}
 	if ascension != null:
 		ascension_dict = ascension.to_dict()
+	var dantian_dict: Dictionary = {}
+	var dantian := component(&"dantian") as Dantian
+	if dantian != null:
+		dantian_dict = dantian.to_dict()
+	var sea_dict: Dictionary = {}
+	var sea := component(&"sea_of_consciousness") as SeaOfConsciousness
+	if sea != null:
+		sea_dict = sea.to_dict()
+	# Acupoint data is serialized as raw dictionaries so core doesn't import
+	# module classes. The body_cultivation module restores the typed set on load.
+	var acupoints_dict: Dictionary = {}
+	var acupoint_set: RefCounted = component(&"acupoints")
+	if acupoint_set != null and acupoint_set.get("points") != null:
+		for point in acupoint_set.points:
+			acupoints_dict[String(point.id)] = point.to_dict()
+	# Body progress (completed realm strengthening) serialized as raw data.
+	var body_progress_dict: Dictionary = {}
+	var body_progress: RefCounted = component(&"body_progress")
+	if body_progress != null and body_progress.get("completed") != null:
+		for realm_id in body_progress.completed:
+			body_progress_dict[String(realm_id)] = true
+	var module_data_dict: Dictionary = {}
+	for key in module_data.keys():
+		module_data_dict[String(key)] = module_data[key]
 	return {
 		"version": SCHEMA_VERSION,
 		"id": String(id),
@@ -175,6 +209,11 @@ func to_dict() -> Dictionary:
 		"resources": _resources_dict(),
 		"paths": _paths_dict(),
 		"meridians": meridians.to_dict(),
+		"dantian": dantian_dict,
+		"sea": sea_dict,
+		"acupoints": acupoints_dict,
+		"body_progress": body_progress_dict,
+		"module_data": module_data_dict,
 		"tribulation": tribulation_dict,
 		"inside_world": inside_world_dict,
 		"world": world_dict,
@@ -196,8 +235,36 @@ static func from_dict(data: Dictionary) -> Actor:
 	for key in data.get("resources", {}).keys():
 		actor.add_resource(ResourcePool.from_dict(data["resources"][key]))
 	for key in data.get("paths", {}).keys():
-		actor.paths[StringName(key)] = PathState.from_dict(data["paths"][key])
+		var state := PathState.from_dict(data["paths"][key])
+		if not state.changed.is_connected(actor._invalidator.on_changed):
+			state.changed.connect(actor._invalidator.on_changed)
+		actor.paths[StringName(key)] = state
 	actor.meridians = MeridianNetwork.from_dict(data.get("meridians", {}))
+	if not actor.meridians.changed.is_connected(actor._invalidator.on_changed):
+		actor.meridians.changed.connect(actor._invalidator.on_changed)
+	var dantian_data: Dictionary = data.get("dantian", {})
+	if not dantian_data.is_empty():
+		var dantian := Dantian.from_dict(dantian_data)
+		actor.set_component(&"dantian", dantian)
+		if not dantian.changed.is_connected(actor._invalidator.on_changed):
+			dantian.changed.connect(actor._invalidator.on_changed)
+	var sea_data: Dictionary = data.get("sea", {})
+	if not sea_data.is_empty():
+		var sea := SeaOfConsciousness.from_dict(sea_data)
+		actor.set_component(&"sea_of_consciousness", sea)
+		if not sea.changed.is_connected(actor._invalidator.on_changed):
+			sea.changed.connect(actor._invalidator.on_changed)
+	# Restore raw acupoint data; the body_cultivation module builds the typed set.
+	var acupoints_data: Dictionary = data.get("acupoints", {})
+	if not acupoints_data.is_empty():
+		actor.set_module_data(&"acupoints", acupoints_data.duplicate())
+	# Restore body progress (completed realm strengthening).
+	var body_progress_data: Dictionary = data.get("body_progress", {})
+	if not body_progress_data.is_empty():
+		actor.set_module_data(&"body_progress", body_progress_data.duplicate())
+	# Restore generic module data (raw dictionaries owned by modules).
+	for key in data.get("module_data", {}).keys():
+		actor.set_module_data(StringName(key), data["module_data"][key])
 	var tribulation_data: Dictionary = data.get("tribulation", {})
 	if not tribulation_data.is_empty():
 		actor.tribulation = Tribulation.from_dict(tribulation_data)

@@ -10,7 +10,8 @@ strengthening_item = &"body_tribulation_channel_elixir"
 progress_required = 800.0
 physique_required = 24.0
 quality_required = 0.57
-quality_target = 0.58
+quality_target = 0.520000
+integrity_target = 0.570000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver"])
 required_refinement = 8
 refinement_cap = 9
@@ -19,3 +20,13 @@ rewards = {
 "physique": 2.0,
 "bone_density": 1.0
 }
+power_budget = 5.96
+capacity_factor = 4.56
+throughput_factor = 2.04
+technique_factor = 2.67
+work_required = 2039.0
+acupoint_work = 433.0
+meridian_work = 325.0
+insight_required = 186.0
+resonance_rank = 0
+channel_training = Array[StringName]([&"du_mai", &"ren_mai", &"chong_mai", &"dai_mai"])

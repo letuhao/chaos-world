@@ -15,6 +15,13 @@ static func attach(actor: Actor) -> void:
 	var provider := BodyProvider.new()
 	actor.stats.add_provider(provider)
 	actor.set_component(_COMPONENT_ID, provider)
+	# Attach the progress tracker, restoring from saved data if present.
+	var saved_progress: Dictionary = actor.get_module_data(&"body_progress")
+	if not saved_progress.is_empty():
+		actor.set_component(&"body_progress", BodyProgress.from_dict(saved_progress))
+		actor.set_module_data(&"body_progress", {})
+	elif actor.component(&"body_progress") == null:
+		actor.set_component(&"body_progress", BodyProgress.new())
 	var rank := _body_rank(actor)
 	if rank != &"":
 		# Channels must exist as soon as the module is attached. Without this the
@@ -39,6 +46,24 @@ static func acupoints(actor: Actor) -> Array[Acupoint]:
 
 
 static func attach_acupoints(actor: Actor) -> void:
+	var existing: AcupointSet = actor.component(_ACUPOINTS_ID)
+	if existing != null:
+		# Idempotent: preserve existing state, just synchronize with current realm.
+		existing.synchronize(_body_rank(actor))
+		var integrity := actor.resource(BodyStats.BODY_INTEGRITY)
+		if integrity != null:
+			existing.set_pool(integrity)
+		return
+	# Restore from raw saved data if present (set by Actor.from_dict).
+	var saved: Dictionary = actor.get_module_data(&"acupoints")
+	if not saved.is_empty():
+		var points: Array[Acupoint] = []
+		for key in saved.keys():
+			points.append(Acupoint.from_dict(saved[key]))
+		actor.set_component(_ACUPOINTS_ID, AcupointSet.new(points))
+		actor.set_component(&"acupoints_data", null)
+		actor.stats.add_provider(AcupointProvider.new())
+		return
 	var points: Array[Acupoint] = AcupointDefaults.build_for_realm(_body_rank(actor))
 	actor.set_component(_ACUPOINTS_ID, AcupointSet.new(points))
 	actor.stats.add_provider(AcupointProvider.new())

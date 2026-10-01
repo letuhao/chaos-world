@@ -1,8 +1,8 @@
 class_name QiProvider
 extends StatProvider
 
-## Contributes Qi Cultivation derived stats from base attributes, realm rank,
-## and qi_purity. Pure function, no scene tree dependency (ADR 0011).
+## Contributes Qi Cultivation derived stats from base attributes, realm profile
+## factors, and qi_purity. Pure function, no scene tree dependency (ADR 0011).
 
 
 func contribute(context: StatContext) -> Dictionary:
@@ -13,18 +13,18 @@ func contribute(context: StatContext) -> Dictionary:
 	var aptitude := context.value(Stat.APTITUDE)
 
 	var purity := _purity(context)
-	var rank := _rank_index(context)
-	var realm_mult := 1.0 + rank * 0.1
+	var profile := _profile_factors(context)
 	var meridian_bonus := _meridian_flow_bonus(context)
 
 	return {
 		QiStats.QI_REGEN_RATE:
-		(qi_affinity * 0.3 + aptitude * 0.1) * realm_mult * (1.0 + meridian_bonus),
+		(qi_affinity * 0.3 + aptitude * 0.1) * profile.throughput * (1.0 + meridian_bonus),
 		QiStats.QI_ABSORPTION:
 		(qi_affinity * 0.5 + spirit * 0.2) * (0.5 + purity * 0.5) * (1.0 + meridian_bonus),
 		QiStats.TECHNIQUE_COST_REDUCTION: clampf(qi_control * 0.002, 0.0, 0.5),
-		QiStats.TECHNIQUE_POWER: (1.0 + qi_affinity * 0.05) * (0.5 + purity * 0.5) * realm_mult,
-		QiStats.FLIGHT_SPEED: dantian_capacity * 2.0 * (1.0 + rank * 0.05),
+		QiStats.TECHNIQUE_POWER:
+		(1.0 + qi_affinity * 0.05) * (0.5 + purity * 0.5) * profile.technique,
+		QiStats.FLIGHT_SPEED: dantian_capacity * 2.0 * profile.throughput,
 		QiStats.QI_SENSE_RANGE: (qi_affinity * 10.0 + qi_control * 5.0) * (0.5 + purity * 0.5),
 	}
 
@@ -43,8 +43,13 @@ func _purity(context: StatContext) -> float:
 	return clampf(pool.current / pool.maximum, 0.0, 1.0)
 
 
-func _rank_index(context: StatContext) -> int:
+## Profile factors from the realm seed. Returns neutral factors when no seed
+## is loaded (e.g. before path initiation).
+func _profile_factors(context: StatContext) -> Dictionary:
 	var state := context.path(QiPath.PATH_ID)
-	if state == null:
-		return 0
-	return maxi(0, RealmDefaults.ladder().index_of(state.rank_id))
+	if state == null or state.rank_id == &"":
+		return {"throughput": 1.0, "technique": 1.0}
+	var seed := QiRealmSeed.for_realm(state.rank_id)
+	if seed == null:
+		return {"throughput": 1.0, "technique": 1.0}
+	return {"throughput": seed.throughput_factor, "technique": seed.technique_factor}

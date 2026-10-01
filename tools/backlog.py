@@ -33,6 +33,14 @@ def register(subparsers) -> None:
     done = actions.add_parser("done", help="mark a backlog item done")
     done.add_argument("id")
 
+    update = actions.add_parser("update", help="update fields on a backlog item")
+    update.add_argument("id")
+    update.add_argument("--status", default=None)
+    update.add_argument("--title", default=None)
+    update.add_argument("--area", default=None)
+    update.add_argument("--source", default=None)
+    update.add_argument("--next", dest="next_step", default=None)
+
     actions.add_parser("validate", help="validate the backlog file")
 
 
@@ -46,6 +54,8 @@ def run(args) -> int:
         return _add(args)
     if action == "done":
         return _done(args)
+    if action == "update":
+        return _update(args)
     if action == "validate":
         return _validate()
     raise ToolError(f"unknown backlog action: {action}")
@@ -127,6 +137,26 @@ def _done(args) -> int:
             entry["completed"] = date.today().isoformat()
             _save(entries)
             ok(f"{args.id} marked done")
+            return 0
+    raise ToolError(f"no backlog item with id {args.id}")
+
+
+def _update(args) -> int:
+    entries = _load()
+    for entry in entries:
+        if entry.get("id") == args.id:
+            if args.status is not None:
+                entry["status"] = args.status
+            if args.title is not None:
+                entry["title"] = args.title
+            if args.area is not None:
+                entry["area"] = args.area
+            if args.source is not None:
+                entry["source"] = args.source
+            if args.next_step is not None:
+                entry["next"] = args.next_step
+            _save(entries)
+            ok(f"{args.id} updated")
             return 0
     raise ToolError(f"no backlog item with id {args.id}")
 

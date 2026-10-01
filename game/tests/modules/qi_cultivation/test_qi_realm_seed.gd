@@ -88,11 +88,14 @@ func test_meets_compares_forward_states() -> void:
 	assert_eq(channel.meets(MeridianState.EXPANDED), true, "strengthened meets expanded")
 
 
-func test_damaged_channel_meets_nothing() -> void:
+func test_injured_channel_meets_nothing() -> void:
 	var channel := MeridianState.new()
-	channel.state = MeridianState.DAMAGED
-	assert_eq(channel.meets(MeridianState.CLOSED), false, "damaged never satisfies")
-	assert_eq(channel.state_rank(), 0, "damaged ranks as closed")
+	channel.state = MeridianState.STRENGTHENED
+	channel.injured = true
+	assert_eq(channel.meets(MeridianState.CLOSED), false, "injured never satisfies")
+	assert_eq(channel.meets(MeridianState.STRENGTHENED), false, "injured meets nothing")
+	# Injury is recoverable and does not erase structural attainment.
+	assert_eq(channel.state_rank(), 3, "injured keeps its structural rank")
 
 
 func test_tier_gates_are_permissive_below_immortal() -> void:

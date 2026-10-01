@@ -9,10 +9,13 @@ extends RefCounted
 const MIND_POWER := MindStats.MIND_POWER
 const AWARENESS := MindStats.AWARENESS
 
+const SEA_COMPONENT := &"sea_of_consciousness"
+
 
 static func attach(actor: Actor) -> void:
 	_ensure_resources(actor)
-	actor.stats.add_provider(MindProvider.new())
+	if not _has_provider(actor, MindProvider):
+		actor.stats.add_provider(MindProvider.new())
 
 
 static func provider(actor: Actor) -> MindProvider:
@@ -27,19 +30,30 @@ static func path_def() -> CultivationPathDef:
 
 
 static func sea(actor: Actor) -> SeaOfConsciousness:
-	return actor.component(&"sea_of_consciousness") as SeaOfConsciousness
+	return actor.component(SEA_COMPONENT) as SeaOfConsciousness
 
 
 static func attach_sea(actor: Actor) -> SeaOfConsciousness:
-	var sea := SeaOfConsciousness.new()
-	sea.capacity = actor.stats.get_base(MindStats.SEA_CAPACITY)
-	actor.set_component(&"sea_of_consciousness", sea)
-	actor.stats.add_provider(SeaProvider.new())
-	return sea
+	var existing := sea(actor)
+	if existing != null:
+		return existing
+	var sea_component := SeaOfConsciousness.new()
+	sea_component.structural_capacity = actor.stats.get_base(MindStats.SEA_CAPACITY)
+	actor.set_component(SEA_COMPONENT, sea_component)
+	if not _has_provider(actor, SeaProvider):
+		actor.stats.add_provider(SeaProvider.new())
+	return sea_component
+
+
+static func _has_provider(actor: Actor, type: Script) -> bool:
+	for entry in actor.stats._providers:
+		if entry.get_script() == type:
+			return true
+	return false
 
 
 static func _ensure_resources(actor: Actor) -> void:
-	_add_pool(actor, MindStats.MIND_POWER, true)
+	_add_pool(actor, MindStats.MIND_POWER, false)
 	_add_pool(actor, MindStats.AWARENESS, false)
 
 

@@ -10,7 +10,8 @@ strengthening_item = &"body_golden_immortal_channel_elixir"
 progress_required = 2000.0
 physique_required = 48.0
 quality_required = 0.69
-quality_target = 0.70
+quality_target = 0.700000
+integrity_target = 0.750000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
 required_refinement = 20
 refinement_cap = 21
@@ -19,3 +20,13 @@ rewards = {
 "physique": 2.0,
 "bone_density": 1.0
 }
+power_budget = 79.20
+capacity_factor = 41.11
+throughput_factor = 5.75
+technique_factor = 11.07
+work_required = 7700.0
+acupoint_work = 1420.0
+meridian_work = 1065.0
+insight_required = 930.0
+resonance_rank = 3
+channel_training = Array[StringName]([])

@@ -10,7 +10,8 @@ strengthening_item = &"body_spirit_sovereign_channel_elixir"
 progress_required = 1600.0
 physique_required = 40.0
 quality_required = 0.65
-quality_target = 0.66
+quality_target = 0.640000
+integrity_target = 0.690000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
 required_refinement = 16
 refinement_cap = 17
@@ -19,3 +20,13 @@ rewards = {
 "physique": 2.0,
 "muscle_fiber": 1.0
 }
+power_budget = 32.18
+capacity_factor = 19.12
+throughput_factor = 4.01
+technique_factor = 6.75
+work_required = 5572.0
+acupoint_work = 1056.0
+meridian_work = 792.0
+insight_required = 618.0
+resonance_rank = 0
+channel_training = Array[StringName]([])

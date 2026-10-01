@@ -11,12 +11,32 @@ static func synchronize(actor: Actor) -> void:
 	actor.meridians.unlock_for_realm(state.rank_id)
 	var acupoint_set: AcupointSet = actor.component(&"acupoints")
 	if acupoint_set != null:
-		acupoint_set.synchronize(state.rank_id, actor.meridians.get_capacity_bonus())
+		acupoint_set.synchronize(state.rank_id)
+		var integrity := actor.resource(BodyStats.BODY_INTEGRITY)
+		if integrity != null:
+			acupoint_set.set_pool(integrity)
 	var seed := BodyRealmSeed.for_realm(state.rank_id)
 	var integrity := actor.resource(BodyStats.BODY_INTEGRITY)
 	if seed != null and integrity != null:
 		integrity.set_maximum(seed.integrity_maximum)
 	actor.mark_stats_dirty()
+
+
+## Meditate to raise comprehension (insight source for realm entry floors).
+## Returns true when comprehension was raised. The amount scales with the
+## actor's insight_gain stat and the current realm's throughput factor.
+static func meditate(actor: Actor, amount: float) -> bool:
+	if amount <= 0.0 or not is_finite(amount):
+		return false
+	var state := actor.path(BodyPath.PATH_ID)
+	if state == null:
+		return false
+	var insight_gain := actor.stats.derived(Stat.INSIGHT_GAIN)
+	var gain := amount * insight_gain
+	var comprehension := actor.stats.get_base(Stat.COMPREHENSION)
+	actor.stats.set_base(Stat.COMPREHENSION, comprehension + gain)
+	actor.mark_stats_dirty()
+	return true
 
 
 static func cultivate(actor: Actor, amount: float) -> bool:
@@ -32,13 +52,13 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 		return false
 	var realm := RealmDefaults.ladder().realm(state.rank_id)
 	var energy := amount * realm.power * (1.0 + actor.meridians.get_flow_bonus())
-	var share := energy / acupoint_set.open_count()
+	# Fill the shared body_integrity pool, not per-acupoint storage.
+	acupoint_set.fill(energy)
+	# Raise quality toward the seed target for all open points.
 	for point in acupoint_set.points:
 		if not point.blocked:
-			point.fill(share)
-			point.quality = minf(seed.quality_target, point.quality + share / point.capacity * 0.01)
+			point.quality = minf(seed.quality_target, point.quality + energy * 0.001)
 	state.progress += energy
-	actor.change_resource(BodyStats.BODY_INTEGRITY, energy * 0.1)
 	actor.mark_stats_dirty()
 	return true
 
@@ -64,20 +84,26 @@ static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
 	if not _ITEMS.consume_item(actor, seed.strengthening_item):
 		acupoint_set.busy = false
 		return false
-	match channel.state:
-		&"closed":
-			actor.meridians.open_meridian(meridian_id)
-		&"open":
-			actor.meridians.expand_meridian(meridian_id)
-		&"expanded":
-			actor.meridians.strengthen_meridian(meridian_id)
-		&"strengthened":
-			actor.meridians.refine_meridian(meridian_id, seed.refinement_cap)
-		&"damaged":
-			actor.meridians.repair_meridian(meridian_id)
+	if channel.injured:
+		actor.meridians.repair_meridian(meridian_id)
+	else:
+		match channel.state:
+			&"closed":
+				actor.meridians.open_meridian(meridian_id)
+			&"open":
+				actor.meridians.expand_meridian(meridian_id)
+			&"expanded":
+				actor.meridians.strengthen_meridian(meridian_id)
+			&"strengthened":
+				actor.meridians.refine_meridian(meridian_id, seed.refinement_cap)
 	_train_points(acupoint_set, meridian_id, seed.quality_target)
 	synchronize(actor)
 	acupoint_set.busy = false
+	# Mark the realm's strengthening complete (once-only improvement).
+	var progress: BodyProgress = actor.component(&"body_progress")
+	if progress != null and not progress.is_complete(state.rank_id):
+		progress.mark_complete(state.rank_id)
+		actor.mark_stats_dirty()
 	return true
 
 

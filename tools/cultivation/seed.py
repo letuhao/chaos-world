@@ -113,6 +113,31 @@ def run() -> int:
             ("physique", 2.0),
             (("organ_vitality", "muscle_fiber", "bone_density")[index % 3], 1.0),
         ]
+        # Profile factors: P = base * growth^(local-1), C = P^0.85, F = P^0.40, T = P^0.55
+        tier_base = (1.0, 8.0, 55.0, 330.0)[tier - 1]
+        tier_growth = (1.25, 1.22, 1.20, 1.35)[tier - 1]
+        local = (
+            index + 1
+            if tier == 1
+            else (index - 8 if tier == 2 else (index - 17 if tier == 3 else index - 26))
+        )
+        p = tier_base * (tier_growth ** (local - 1))
+        c_factor = p**0.85
+        f_factor = p**0.40
+        t_factor = p**0.55
+        # Quality/integrity targets: Q(R) = 0.40 + 0.015*(R-1), U(R) = 0.45 + 0.015*(R-1)
+        quality_target = 0.40 + 0.015 * index
+        integrity_target = 0.45 + 0.015 * index
+        # Work requirements
+        work_required = round(100.0 * max(1, index) ** 1.45) if index > 0 else 0.0
+        acupoint_work = round(20.0 * (index + 1) ** 1.4)
+        meridian_work = round(15.0 * (index + 1) ** 1.4)
+        # Insight floor: 10 + 6*(R-1) + 2*(R-1)^2
+        insight_required = 10.0 + 6.0 * index + 2.0 * index * index
+        # Resonance rank (realms 19-30): R19=1, R20=2, ..., R30=12
+        resonance_rank = max(0, index - 17) if index >= 18 else 0
+        # Channel training after entry
+        channel_training = [ch for ch, unlock in channels if unlock == index + 1]
         files[f"body_cultivation/realms/{realm_id}.tres"] = resource(
             "BodyRealmSeed",
             "res://src/modules/body_cultivation/realm_seed.gd",
@@ -123,12 +148,28 @@ def run() -> int:
                 f"progress_required = {100.0 * max(1, index)}",
                 f"physique_required = {10.0 + 2.0 * max(0, index - 1)}",
                 f"quality_required = {0.5 + 0.01 * source_index:.2f}",
-                f"quality_target = {0.5 + 0.01 * index:.2f}",
+                # Q(R)/U(R) are asserted against the exact formula (epsilon 1e-4),
+                # so 2dp rounding is not enough: 0.835 would be written as 0.83.
+                f"quality_target = {quality_target:.6f}",
+                f"integrity_target = {integrity_target:.6f}",
                 f"required_meridians = {data._array_literal(required)}",
                 f"required_refinement = {max(1, index)}",
                 f"refinement_cap = {index + 1}",
                 f"integrity_maximum = {100.0 * (1.0 + index * 0.1):.1f}",
                 f"rewards = {data._dict_literal(rewards)}",
+                f"power_budget = {p:.2f}",
+                f"capacity_factor = {c_factor:.2f}",
+                f"throughput_factor = {f_factor:.2f}",
+                f"technique_factor = {t_factor:.2f}",
+                # These four are already floats; appending `.0` emitted malformed
+                # literals like `118.0.0`, which abort Godot's parser and silently
+                # drop every property after it (resonance_rank, channel_training).
+                f"work_required = {float(work_required)}",
+                f"acupoint_work = {float(acupoint_work)}",
+                f"meridian_work = {float(meridian_work)}",
+                f"insight_required = {float(insight_required)}",
+                f"resonance_rank = {resonance_rank}",
+                f"channel_training = {data._array_literal(channel_training)}",
             ],
         )
         for item_id, category, subtype, source, name, description in (

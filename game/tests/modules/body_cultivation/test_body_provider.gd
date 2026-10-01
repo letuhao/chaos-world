@@ -76,10 +76,11 @@ func test_integrity_affects_stats() -> void:
 func test_realm_multiplier() -> void:
 	var actor := _actor_with_module()
 	assert_almost_eq(actor.stats.derived(BodyStats.PHYSICAL_ATTACK), 30.0, "no path")
-	# spirit_sea is index 10, power = 1.0 + 10*0.1 = 2.0
+	# spirit_sea is index 10, tier 2 (Spirit), local index 2 (1-based).
+	# P = 8 * 1.22^1 = 9.76, T = P^0.55 ≈ 3.501
 	actor.set_path(PathState.new(BodyPath.PATH_ID, &"spirit_sea"))
-	# result = 30 * 1.0 * 2.0 = 60
-	assert_almost_eq(actor.stats.derived(BodyStats.PHYSICAL_ATTACK), 60.0, "spirit sea")
+	# result = 30 * 1.0 * 3.501279 ≈ 105.03128
+	assert_almost_eq(actor.stats.derived(BodyStats.PHYSICAL_ATTACK), 105.03128, "spirit sea")
 
 
 func test_provider_retrievable() -> void:

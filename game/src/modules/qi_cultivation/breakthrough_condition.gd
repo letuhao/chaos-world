@@ -29,7 +29,7 @@ func _dantian_ready(actor: Actor, state: PathState, seed: QiRealmSeed, dantian: 
 		return false
 	if dantian.quality < seed.dantian_quality_required:
 		return false
-	return dantian.ratio() >= seed.dantian_fill_required
+	return dantian.ratio(actor) >= seed.dantian_fill_required
 
 
 func describe() -> String:

@@ -89,29 +89,28 @@ func test_acupoint_meridian_lookup() -> void:
 
 func test_synchronize_adds_newly_unlocked_points() -> void:
 	var points := AcupointSet.new()
-	points.synchronize(&"qi_refining", 0.0)
+	points.synchronize(&"qi_refining")
 	assert_eq(points.points.size(), 36, "minor only at Mortal")
-	points.synchronize(&"spirit_condensation", 0.0)
+	points.synchronize(&"spirit_condensation")
 	assert_eq(points.points.size(), 48, "major added at Spirit")
 
 
 func test_synchronize_is_idempotent() -> void:
 	var points := AcupointSet.new()
-	points.synchronize(&"qi_refining", 0.0)
-	points.synchronize(&"qi_refining", 0.0)
+	points.synchronize(&"qi_refining")
+	points.synchronize(&"qi_refining")
 	assert_eq(points.points.size(), 36, "no duplicate points")
 
 
-func test_synchronize_scales_capacity_and_preserves_essence() -> void:
+func test_synchronize_preserves_quality_and_blocked() -> void:
 	var points := AcupointSet.new()
-	points.synchronize(&"qi_refining", 0.0)
+	points.synchronize(&"qi_refining")
 	var point := points.points[0]
-	var base_capacity := point.capacity
-	point.fill(base_capacity * 0.5)
-	var stored := point.current
-	points.synchronize(&"qi_refining", 1.0)
-	assert_almost_eq(point.capacity, base_capacity * 2.0, "capacity scaled by bonus")
-	assert_almost_eq(point.current, stored, "essence preserved")
+	point.quality = 0.8
+	point.block()
+	points.synchronize(&"qi_refining")
+	assert_almost_eq(point.quality, 0.8, "quality preserved")
+	assert_eq(point.blocked, true, "blocked flag preserved")
 
 
 # --- Meridian refinement ---------------------------------------------------
@@ -156,3 +155,77 @@ func test_refinement_round_trips_in_saves() -> void:
 	var channel := restored.meridians.get_meridian(&"lung")
 	assert_eq(channel != null, true, "meridian restored")
 	assert_eq(channel.refinement, 2, "refinement depth restored")
+
+
+# --- Profile factors -------------------------------------------------------
+
+
+func test_all_30_realms_have_profile_factors() -> void:
+	for realm in RealmDefaults.ladder().realms():
+		var seed := BodyRealmSeed.for_realm(realm.id)
+		if seed == null:
+			continue
+		assert_eq(seed.power_budget > 0.0, true, "P > 0 for %s" % realm.id)
+		assert_eq(seed.capacity_factor > 0.0, true, "C > 0 for %s" % realm.id)
+		assert_eq(seed.throughput_factor > 0.0, true, "F > 0 for %s" % realm.id)
+		assert_eq(seed.technique_factor > 0.0, true, "T > 0 for %s" % realm.id)
+		# C = P^0.85, F = P^0.40, T = P^0.55 (stored with 2 decimal places)
+		assert_almost_eq(
+			seed.capacity_factor, pow(seed.power_budget, 0.85), "C = P^0.85 for %s" % realm.id, 0.01
+		)
+		assert_almost_eq(
+			seed.throughput_factor,
+			pow(seed.power_budget, 0.40),
+			"F = P^0.40 for %s" % realm.id,
+			0.01
+		)
+		assert_almost_eq(
+			seed.technique_factor,
+			pow(seed.power_budget, 0.55),
+			"T = P^0.55 for %s" % realm.id,
+			0.01
+		)
+
+
+func test_quality_and_integrity_targets_follow_formula() -> void:
+	for realm in RealmDefaults.ladder().realms():
+		var seed := BodyRealmSeed.for_realm(realm.id)
+		if seed == null:
+			continue
+		var index := RealmDefaults.ladder().index_of(realm.id)
+		var expected_q := 0.40 + 0.015 * index
+		var expected_u := 0.45 + 0.015 * index
+		assert_almost_eq(seed.quality_target, expected_q, "Q(R) for %s" % realm.id)
+		assert_almost_eq(seed.integrity_target, expected_u, "U(R) for %s" % realm.id)
+
+
+func test_insight_floor_follows_formula() -> void:
+	for realm in RealmDefaults.ladder().realms():
+		var seed := BodyRealmSeed.for_realm(realm.id)
+		if seed == null:
+			continue
+		var index := RealmDefaults.ladder().index_of(realm.id)
+		var expected := 10.0 + 6.0 * index + 2.0 * index * index
+		assert_almost_eq(seed.insight_required, expected, "insight floor for %s" % realm.id)
+
+
+func test_resonance_ranks_for_high_realms() -> void:
+	for realm in RealmDefaults.ladder().realms():
+		var seed := BodyRealmSeed.for_realm(realm.id)
+		if seed == null:
+			continue
+		var index := RealmDefaults.ladder().index_of(realm.id)
+		if index >= 18:
+			assert_eq(seed.resonance_rank, index - 17, "resonance rank for %s" % realm.id)
+		else:
+			assert_eq(seed.resonance_rank, 0, "no resonance for %s" % realm.id)
+
+
+func test_power_budget_increases_monotonically() -> void:
+	var prev_p := 0.0
+	for realm in RealmDefaults.ladder().realms():
+		var seed := BodyRealmSeed.for_realm(realm.id)
+		if seed == null:
+			continue
+		assert_eq(seed.power_budget > prev_p, true, "P increases for %s" % realm.id)
+		prev_p = seed.power_budget

@@ -112,29 +112,28 @@ func _ensure_providers() -> void:
 	if _provider_version == _version:
 		return
 	_provider_cache.clear()
+	var buckets := _buckets()
 	for provider in _providers:
 		var contributed := provider.contribute(_context)
 		for id in contributed.keys():
-			_provider_cache[id] = contributed[id]
+			# A provider's contribution is the baseline for the stat; the modifier
+			# stack applies exactly once on top (ADR 0026).
+			var b: Dictionary = buckets.get(id, {})
+			var value := (
+				(float(contributed[id]) + float(b.get("flat", 0.0)))
+				* (1.0 + float(b.get("percent", 0.0)))
+			)
+			value *= float(b.get("mult", 1.0))
+			_provider_cache[id] = maxf(0.0, value)
 	_provider_version = _version
 
 
 func _recompute() -> void:
 	_derived.clear()
-	var flat := {}
-	var percent := {}
-	var mult := {}
-	for modifier in _modifiers:
-		match modifier.op:
-			Stat.Op.FLAT:
-				flat[modifier.stat] = float(flat.get(modifier.stat, 0.0)) + modifier.value
-			Stat.Op.PERCENT:
-				percent[modifier.stat] = float(percent.get(modifier.stat, 0.0)) + modifier.value
-			Stat.Op.MULT:
-				mult[modifier.stat] = float(mult.get(modifier.stat, 1.0)) * modifier.value
+	var buckets := _buckets()
 
 	for id in _base.keys():
-		_put(id, float(_base[id]), flat, percent, mult)
+		_put(id, float(_base[id]), buckets)
 
 	var physique := _attr(Stat.PHYSIQUE)
 	var spirit := _attr(Stat.SPIRIT)
@@ -144,43 +143,58 @@ func _recompute() -> void:
 	var will := _attr(Stat.WILL)
 	var fortune := _attr(Stat.FORTUNE)
 
-	_put(Stat.MAX_HEALTH, 50.0 + physique * 10.0, flat, percent, mult)
-	_put(Stat.MAX_QI, 20.0 + spirit * 6.0 + aptitude * 8.0, flat, percent, mult)
-	_put(Stat.MAX_STAMINA, 100.0 + physique + agility * 2.0, flat, percent, mult)
-	_put(Stat.HEALTH_REGEN, physique * 0.1, flat, percent, mult)
-	_put(Stat.QI_REGEN, aptitude * 0.2 + spirit * 0.1, flat, percent, mult)
-	_put(Stat.STAMINA_REGEN, 10.0 + agility * 0.5, flat, percent, mult)
-	_put(Stat.ATTACK_PHYSICAL, physique * 2.0, flat, percent, mult)
-	_put(Stat.ATTACK_SPIRITUAL, spirit * 2.0 + aptitude * 0.5, flat, percent, mult)
-	_put(
-		Stat.CRIT_CHANCE, minf(0.75, 0.05 + fortune * 0.002 + agility * 0.0005), flat, percent, mult
-	)
-	_put(Stat.CRIT_DAMAGE, 1.5 + comprehension * 0.004, flat, percent, mult)
-	_put(Stat.PENETRATION, spirit * 0.5, flat, percent, mult)
-	_put(Stat.ATTACK_SPEED, minf(2.5, 1.0 + agility * 0.008), flat, percent, mult)
-	_put(Stat.DEFENSE_PHYSICAL, physique * 1.5, flat, percent, mult)
-	_put(Stat.DEFENSE_SPIRITUAL, spirit * 1.2 + will * 0.6, flat, percent, mult)
-	_put(Stat.EVASION, minf(0.6, agility * 0.0015), flat, percent, mult)
-	_put(Stat.POISE, physique * 0.5 + will * 0.5, flat, percent, mult)
-	_put(Stat.STATUS_RESISTANCE, minf(0.8, will * 0.003), flat, percent, mult)
-	_put(Stat.MOVE_SPEED, 100.0 + agility * 2.0, flat, percent, mult)
-	_put(Stat.CULTIVATION_RATE, 1.0 + aptitude * 0.02, flat, percent, mult)
-	_put(Stat.QI_ABSORPTION, aptitude * 0.5 + spirit * 0.2, flat, percent, mult)
-	_put(Stat.BREAKTHROUGH_CHANCE, 0.1 + comprehension * 0.01 + will * 0.005, flat, percent, mult)
-	_put(Stat.DAO_HEART, will, flat, percent, mult)
-	_put(Stat.INSIGHT_GAIN, 1.0 + comprehension * 0.01, flat, percent, mult)
-	_put(Stat.LOOT_BONUS, fortune * 0.01, flat, percent, mult)
-	_put(Stat.COOLDOWN_REDUCTION, minf(0.4, comprehension * 0.002), flat, percent, mult)
-	_put(Stat.QI_COST_REDUCTION, minf(0.5, aptitude * 0.001), flat, percent, mult)
-	_put(Stat.DAMAGE_REDUCTION, 0.0, flat, percent, mult)
+	_put(Stat.MAX_HEALTH, 50.0 + physique * 10.0, buckets)
+	_put(Stat.MAX_QI, 20.0 + spirit * 6.0 + aptitude * 8.0, buckets)
+	_put(Stat.MAX_STAMINA, 100.0 + physique + agility * 2.0, buckets)
+	_put(Stat.HEALTH_REGEN, physique * 0.1, buckets)
+	_put(Stat.QI_REGEN, aptitude * 0.2 + spirit * 0.1, buckets)
+	_put(Stat.STAMINA_REGEN, 10.0 + agility * 0.5, buckets)
+	_put(Stat.ATTACK_PHYSICAL, physique * 2.0, buckets)
+	_put(Stat.ATTACK_SPIRITUAL, spirit * 2.0 + aptitude * 0.5, buckets)
+	_put(Stat.CRIT_CHANCE, minf(0.75, 0.05 + fortune * 0.002 + agility * 0.0005), buckets)
+	_put(Stat.CRIT_DAMAGE, 1.5 + comprehension * 0.004, buckets)
+	_put(Stat.PENETRATION, spirit * 0.5, buckets)
+	_put(Stat.ATTACK_SPEED, minf(2.5, 1.0 + agility * 0.008), buckets)
+	_put(Stat.DEFENSE_PHYSICAL, physique * 1.5, buckets)
+	_put(Stat.DEFENSE_SPIRITUAL, spirit * 1.2 + will * 0.6, buckets)
+	_put(Stat.EVASION, minf(0.6, agility * 0.0015), buckets)
+	_put(Stat.POISE, physique * 0.5 + will * 0.5, buckets)
+	_put(Stat.STATUS_RESISTANCE, minf(0.8, will * 0.003), buckets)
+	_put(Stat.MOVE_SPEED, 100.0 + agility * 2.0, buckets)
+	_put(Stat.CULTIVATION_RATE, 1.0 + aptitude * 0.02, buckets)
+	_put(Stat.QI_ABSORPTION, aptitude * 0.5 + spirit * 0.2, buckets)
+	_put(Stat.BREAKTHROUGH_CHANCE, 0.1 + comprehension * 0.01 + will * 0.005, buckets)
+	_put(Stat.DAO_HEART, will, buckets)
+	_put(Stat.INSIGHT_GAIN, 1.0 + comprehension * 0.01, buckets)
+	_put(Stat.LOOT_BONUS, fortune * 0.01, buckets)
+	_put(Stat.COOLDOWN_REDUCTION, minf(0.4, comprehension * 0.002), buckets)
+	_put(Stat.QI_COST_REDUCTION, minf(0.5, aptitude * 0.001), buckets)
+	_put(Stat.DAMAGE_REDUCTION, 0.0, buckets)
 
 
-func _put(
-	id: StringName, base_value: float, flat: Dictionary, percent: Dictionary, mult: Dictionary
-) -> void:
-	var value := (base_value + float(flat.get(id, 0.0))) * (1.0 + float(percent.get(id, 0.0)))
-	value *= float(mult.get(id, 1.0))
+func _put(id: StringName, base_value: float, buckets: Dictionary) -> void:
+	var b: Dictionary = buckets.get(id, {})
+	var value := (base_value + float(b.get("flat", 0.0))) * (1.0 + float(b.get("percent", 0.0)))
+	value *= float(b.get("mult", 1.0))
 	_derived[id] = maxf(0.0, value)
+
+
+## Group the modifier stack into per-stat {flat, percent, mult} buckets.
+## Single source of truth for modifier resolution, shared by core derived stats
+## and provider-contributed baselines (ADR 0026).
+func _buckets() -> Dictionary:
+	var buckets := {}
+	for modifier in _modifiers:
+		var b: Dictionary = buckets.get(modifier.stat, {})
+		match modifier.op:
+			Stat.Op.FLAT:
+				b["flat"] = float(b.get("flat", 0.0)) + modifier.value
+			Stat.Op.PERCENT:
+				b["percent"] = float(b.get("percent", 0.0)) + modifier.value
+			Stat.Op.MULT:
+				b["mult"] = float(b.get("mult", 1.0)) * modifier.value
+		buckets[modifier.stat] = b
+	return buckets
 
 
 func _attr(id: StringName) -> float:

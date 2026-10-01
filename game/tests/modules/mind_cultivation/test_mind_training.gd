@@ -45,11 +45,14 @@ func _prepare(actor: Actor) -> MindRealmSeed:
 		actor.meridians.expand_meridian(meridian_id)
 		actor.meridians.strengthen_meridian(meridian_id)
 	var sea := MindCultivationApi.sea(actor)
-	sea.capacity = seed.sea_capacity
-	sea.clarity = seed.clarity_required
-	sea.turbulence = 0.0
-	sea.drain(sea.current)
-	sea.fill(sea.capacity)
+	sea.set_structural_capacity(seed.sea_capacity)
+	sea.set_clarity(seed.clarity_required)
+	sea.set_purity(seed.purity_required)
+	MindTraining.synchronize(actor)
+	sea.add_turbulence(-sea.turbulence)
+	MindTraining.synchronize(actor)
+	sea.drain(actor, sea.current(actor))
+	sea.fill(actor, sea.effective_capacity())
 	state.progress = seed.progress_required
 	return seed
 
@@ -62,7 +65,7 @@ func test_synchronize_sets_capacity_and_tier() -> void:
 	var sea := MindCultivationApi.sea(actor)
 	assert_eq(sea != null, true, "sea attached")
 	assert_eq(sea.tier, &"shallow", "Mortal uses the shallow sea")
-	assert_almost_eq(sea.capacity, 100.0, "capacity from the seed")
+	assert_almost_eq(sea.structural_capacity, 100.0, "capacity from the seed")
 
 
 func test_synchronize_scales_capacity_with_meridian_bonus() -> void:
@@ -70,9 +73,9 @@ func test_synchronize_scales_capacity_with_meridian_bonus() -> void:
 	var sea := MindCultivationApi.sea(actor)
 	actor.meridians.open_meridian(&"lung")
 	actor.meridians.expand_meridian(&"lung")
-	var base := sea.capacity
+	var base := sea.structural_capacity
 	MindTraining.synchronize(actor)
-	assert_eq(sea.capacity > base, true, "expanded channels widen the sea")
+	assert_eq(sea.structural_capacity > base, true, "expanded channels widen the sea")
 
 
 # --- Cultivation and meditation --------------------------------------------
@@ -81,16 +84,16 @@ func test_synchronize_scales_capacity_with_meridian_bonus() -> void:
 func test_cultivate_fills_the_sea_and_advances_progress() -> void:
 	var actor := _actor()
 	var sea := MindCultivationApi.sea(actor)
-	sea.drain(sea.current)
+	sea.drain(actor, sea.current(actor))
 	assert_eq(MindTraining.cultivate(actor, 50.0), true, "cultivation applied")
-	assert_eq(sea.current > 0.0, true, "mind power stored")
+	assert_eq(sea.current(actor) > 0.0, true, "mind power stored")
 	assert_eq(actor.path(MindPath.PATH_ID).progress > 0.0, true, "progress grew")
 
 
 func test_cultivate_sharpens_clarity() -> void:
 	var actor := _actor()
 	var sea := MindCultivationApi.sea(actor)
-	sea.clarity = 0.0
+	sea.set_clarity(0.0)
 	MindTraining.cultivate(actor, 500.0)
 	assert_eq(sea.clarity > 0.0, true, "clarity sharpened")
 
@@ -98,7 +101,7 @@ func test_cultivate_sharpens_clarity() -> void:
 func test_cultivate_stops_when_the_sea_is_full() -> void:
 	var actor := _actor()
 	var sea := MindCultivationApi.sea(actor)
-	sea.fill(sea.capacity)
+	sea.fill(actor, sea.effective_capacity())
 	assert_eq(MindTraining.cultivate(actor, 10.0), false, "refuses a full sea")
 
 
@@ -134,7 +137,7 @@ func test_train_channel_repairs_a_damaged_channel() -> void:
 	actor.meridians.damage_meridian(&"lung")
 	_stock(actor, MindRealmSeed.for_realm(&"qi_refining").training_item)
 	assert_eq(MindTraining.train_channel(actor, &"lung"), true, "repaired")
-	assert_eq(actor.meridians.get_meridian(&"lung").is_damaged(), false, "no longer damaged")
+	assert_eq(actor.meridians.get_meridian(&"lung").is_injured(), false, "no longer injured")
 
 
 # --- Breakthrough ----------------------------------------------------------
@@ -243,7 +246,7 @@ func test_deviation_turbulates_the_sea_and_damages_a_channel() -> void:
 		var sea := MindCultivationApi.sea(actor)
 		var channel_damaged := false
 		for meridian_id in current.required_meridians:
-			if actor.meridians.get_meridian(meridian_id).is_damaged():
+			if actor.meridians.get_meridian(meridian_id).is_injured():
 				channel_damaged = true
 		deviated = sea.turbulence > 0.0 and channel_damaged
 	assert_eq(deviated, true, "deviation clouded the sea and burned a channel")

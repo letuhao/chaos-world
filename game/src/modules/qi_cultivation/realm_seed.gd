@@ -18,6 +18,9 @@ extends Resource
 @export var channel_refinement_cap: int = 1
 @export var dantian_capacity: float = 100.0
 @export var rewards: Dictionary = {}
+## Profile factors applied by QiProvider (throughput = flow, technique = power).
+@export var throughput_factor: float = 1.0
+@export var technique_factor: float = 1.0
 
 
 static func for_realm(realm_id: StringName) -> QiRealmSeed:

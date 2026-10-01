@@ -37,7 +37,7 @@ func _prepare(actor: Actor) -> QiRealmSeed:
 	_stock(actor, seed.training_item)
 	for meridian_id in seed.required_meridians:
 		var channel := actor.meridians.get_meridian(meridian_id)
-		# A deviation damages a channel, and a damaged channel satisfies nothing,
+		# A deviation injures a channel, and an injured channel satisfies nothing,
 		# so repair before re-training or the next attempt can never qualify.
 		actor.meridians.repair_meridian(meridian_id)
 		if not channel.is_open():
@@ -45,10 +45,11 @@ func _prepare(actor: Actor) -> QiRealmSeed:
 		actor.meridians.expand_meridian(meridian_id)
 		actor.meridians.strengthen_meridian(meridian_id)
 	var dantian := QiCultivationApi.dantian(actor)
-	dantian.capacity = seed.dantian_capacity
-	dantian.quality = seed.dantian_quality_required
-	dantian.drain(dantian.current)
-	dantian.fill(dantian.effective_capacity())
+	dantian.set_structural_capacity(seed.dantian_capacity)
+	dantian.set_quality(seed.dantian_quality_required)
+	QiTraining.synchronize(actor)
+	dantian.drain(actor, dantian.current(actor))
+	dantian.fill(actor, dantian.effective_capacity())
 	state.progress = seed.progress_required
 	return seed
 
@@ -61,7 +62,7 @@ func test_synchronize_sets_capacity_tier_and_unlocks() -> void:
 	var dantian := QiCultivationApi.dantian(actor)
 	assert_eq(dantian != null, true, "dantian attached")
 	assert_eq(dantian.tier, &"lower", "Mortal uses the lower dantian")
-	assert_almost_eq(dantian.capacity, 100.0, "capacity from the seed")
+	assert_almost_eq(dantian.structural_capacity, 100.0, "capacity from the seed")
 
 
 func test_synchronize_scales_capacity_with_meridian_bonus() -> void:
@@ -69,17 +70,19 @@ func test_synchronize_scales_capacity_with_meridian_bonus() -> void:
 	var dantian := QiCultivationApi.dantian(actor)
 	actor.meridians.open_meridian(&"lung")
 	actor.meridians.expand_meridian(&"lung")
-	var base := dantian.capacity
+	var base := dantian.structural_capacity
 	QiTraining.synchronize(actor)
-	assert_eq(dantian.capacity > base, true, "expanded channels widen the dantian")
+	assert_eq(dantian.structural_capacity > base, true, "expanded channels widen the dantian")
 
 
 func test_synchronize_clamps_stored_qi() -> void:
 	var actor := _actor()
 	var dantian := QiCultivationApi.dantian(actor)
-	dantian.fill(dantian.effective_capacity())
+	dantian.fill(actor, dantian.effective_capacity())
 	QiTraining.synchronize(actor)
-	assert_almost_eq(dantian.current, dantian.effective_capacity(), "full dantian stays full")
+	assert_almost_eq(
+		dantian.current(actor), dantian.effective_capacity(), "full dantian stays full"
+	)
 
 
 # --- Cultivation -----------------------------------------------------------
@@ -88,16 +91,17 @@ func test_synchronize_clamps_stored_qi() -> void:
 func test_cultivate_fills_the_dantian_and_advances_progress() -> void:
 	var actor := _actor()
 	var dantian := QiCultivationApi.dantian(actor)
-	dantian.drain(dantian.current)
+	dantian.drain(actor, dantian.current(actor))
 	assert_eq(QiTraining.cultivate(actor, 50.0), true, "cultivation applied")
-	assert_eq(dantian.current > 0.0, true, "qi stored")
+	assert_eq(dantian.current(actor) > 0.0, true, "qi stored")
 	assert_eq(actor.path(QiPath.PATH_ID).progress > 0.0, true, "progress grew")
 
 
 func test_cultivate_refines_dantian_quality() -> void:
 	var actor := _actor()
 	var dantian := QiCultivationApi.dantian(actor)
-	dantian.quality = 0.0
+	dantian.drain(actor, dantian.current(actor))
+	dantian.set_quality(0.0)
 	QiTraining.cultivate(actor, 500.0)
 	assert_eq(dantian.quality > 0.0, true, "quality refined by circulation")
 
@@ -105,7 +109,7 @@ func test_cultivate_refines_dantian_quality() -> void:
 func test_cultivate_stops_when_the_dantian_is_full() -> void:
 	var actor := _actor()
 	var dantian := QiCultivationApi.dantian(actor)
-	dantian.fill(dantian.effective_capacity())
+	dantian.fill(actor, dantian.effective_capacity())
 	assert_eq(QiTraining.cultivate(actor, 10.0), false, "refuses a full dantian")
 
 
@@ -136,13 +140,13 @@ func test_train_channel_rejects_unknown_channel() -> void:
 	assert_eq(QiTraining.train_channel(actor, &"not_a_meridian"), false, "unknown channel")
 
 
-func test_train_channel_repairs_a_damaged_channel() -> void:
+func test_train_channel_repairs_an_injured_channel() -> void:
 	var actor := _actor()
 	var seed := QiRealmSeed.for_realm(&"qi_refining")
 	actor.meridians.damage_meridian(&"lung")
 	_stock(actor, seed.training_item)
 	assert_eq(QiTraining.train_channel(actor, &"lung"), true, "repaired")
-	assert_eq(actor.meridians.get_meridian(&"lung").is_damaged(), false, "no longer damaged")
+	assert_eq(actor.meridians.get_meridian(&"lung").is_injured(), false, "no longer injured")
 
 
 # --- Breakthrough ----------------------------------------------------------
@@ -223,11 +227,11 @@ func test_deviation_scares_the_dantian_and_damages_a_channel() -> void:
 		if QiAdvancement.try_breakthrough(actor, rng):
 			continue
 		var dantian := QiCultivationApi.dantian(actor)
-		var channel_damaged := false
+		var channel_injured := false
 		for meridian_id in current.required_meridians:
-			if actor.meridians.get_meridian(meridian_id).is_damaged():
-				channel_damaged = true
-		deviated = dantian.damaged and channel_damaged
+			if actor.meridians.get_meridian(meridian_id).is_injured():
+				channel_injured = true
+		deviated = dantian.injured and channel_injured
 	assert_eq(deviated, true, "deviation scarred the dantian and burned a channel")
 
 

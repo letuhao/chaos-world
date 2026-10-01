@@ -29,13 +29,17 @@ func craft(recipe: RecipeDef, inventory: Inventory) -> bool:
 	if not can_craft(recipe, inventory):
 		failed.emit(recipe.id, "missing_inputs_or_station")
 		return false
-	for input_id in recipe.inputs:
-		inventory.remove(input_id, 1)
+	# Resolve all outputs before mutating inventory so a failure is atomic.
+	var resolved: Array[ItemDef] = []
 	for output_id in recipe.outputs:
 		var def := load_item(output_id)
 		if def == null:
 			failed.emit(recipe.id, "unknown_output")
 			return false
+		resolved.append(def)
+	for input_id in recipe.inputs:
+		inventory.remove(input_id, 1)
+	for def in resolved:
 		inventory.add(def, 1)
 	crafted.emit(recipe.id)
 	return true

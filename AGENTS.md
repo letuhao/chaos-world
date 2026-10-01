@@ -1,8 +1,6 @@
 # AGENTS.md
 
-Chaos World is a Godot 4 **action RPG with cultivation**. Core loop: **combat → hunting → cultivate → breakthrough**; every other feature is added later. This repo is **greenfield**: nothing exists yet except the agent-tooling dirs `.pi/`, `.remember/`, and `.agents/`, and it is not a git repository. Everything below is the intended standard. Follow it when scaffolding, and update this file whenever a decision changes.
-
-> `tools/` does not exist yet. Creating its entrypoints (below) is the first task; until then the `uv run python -m tools ...` commands will fail.
+Chaos World is a Godot 4 **action RPG with cultivation**. Core loop: **combat → hunting → cultivate → breakthrough**; every other feature is added later. The repo is a git repository with a Python tool bundle (`tools/`), a Godot project (`game/`), content under `game/data/`, and a headless GDScript test suite. Everything below is the intended standard. Follow it when scaffolding, and update this file whenever a decision changes.
 
 ## Non-negotiable rules
 - **Python-only tooling.** Every script, task, and automation entrypoint is a Python module run through `uv`. Do **not** add `.bat`, `.ps1`, `.cmd`, or `.sh` files, and never document a shell one-liner as the supported path.
@@ -34,7 +32,7 @@ Prereqs: `uv` (https://docs.astral.sh/uv/) and a Godot 4.7.x binary.
 - `uv run python -m tools lint` — static lint.
 - `uv run python -m tools arch` — enforce module boundaries + SOLID structure (facade surface, line budget).
 - `uv run python -m tools test` — run the Godot test suite headless.
-- `uv run python -m tools check` — full gate, in order: `fmt --check -> lint -> arch -> test`. Run before every commit; CI runs exactly this.
+- `uv run python -m tools check` — full gate, in order: `fmt --check -> lint -> arch -> deferred validate -> backlog validate -> data audit -> test`. Run before every commit; CI runs exactly this.
 - `uv run python -m tools run` — launch the game.
 - `uv run python -m tools export <preset>` — export a build.
 - `uv run python -m tools new_module <name>` — scaffold a module and register it in `tools/arch/registry.json`.

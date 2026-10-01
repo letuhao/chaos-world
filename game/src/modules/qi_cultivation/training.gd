@@ -18,9 +18,13 @@ static func synchronize(actor: Actor) -> void:
 		return
 	# Capacity comes from the seed, scaled by the meridian network's capacity
 	# bonus so channel investment visibly widens the dantian.
-	dantian.capacity = seed.dantian_capacity * (1.0 + actor.meridians.get_capacity_bonus())
-	dantian.tier = seed.dantian_tier
-	dantian.current = clampf(dantian.current, 0.0, dantian.effective_capacity())
+	dantian.set_structural_capacity(
+		seed.dantian_capacity * (1.0 + actor.meridians.get_capacity_bonus())
+	)
+	dantian.set_tier(seed.dantian_tier)
+	var pool := actor.resource(QiStats.QI)
+	if pool != null:
+		pool.set_maximum(dantian.effective_capacity())
 	actor.mark_stats_dirty()
 
 
@@ -29,7 +33,7 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	var state := actor.path(QiPath.PATH_ID)
 	if dantian == null or state == null or amount <= 0.0 or not is_finite(amount):
 		return false
-	if dantian.is_full():
+	if dantian.is_full(actor):
 		return false
 	synchronize(actor)
 	var seed := QiRealmSeed.for_realm(state.rank_id)
@@ -38,9 +42,9 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	var realm := RealmDefaults.ladder().realm(state.rank_id)
 	# Meridian flow bonus speeds circulation; realm power scales the gain.
 	var gain := amount * realm.power * (1.0 + actor.meridians.get_flow_bonus())
-	dantian.fill(gain)
+	dantian.fill(actor, gain)
 	# Circulating qi refines the dantian toward the seed's quality target.
-	dantian.quality = minf(seed.dantian_quality_required, dantian.quality + gain / 1000.0)
+	dantian.set_quality(minf(seed.dantian_quality_required, dantian.quality + gain / 1000.0))
 	state.progress += gain
 	actor.mark_stats_dirty()
 	return true
@@ -56,17 +60,18 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 		return false
 	if not _ITEMS.consume_item(actor, seed.training_item):
 		return false
-	match channel.state:
-		MeridianState.CLOSED:
-			actor.meridians.open_meridian(meridian_id)
-		MeridianState.OPEN:
-			actor.meridians.expand_meridian(meridian_id)
-		MeridianState.EXPANDED:
-			actor.meridians.strengthen_meridian(meridian_id)
-		MeridianState.DAMAGED:
-			actor.meridians.repair_meridian(meridian_id)
-		_:
-			# Already strengthened: the elixir deepens it toward the seed cap.
-			actor.meridians.refine_meridian(meridian_id, seed.channel_refinement_cap)
+	if channel.injured:
+		actor.meridians.repair_meridian(meridian_id)
+	else:
+		match channel.state:
+			MeridianState.CLOSED:
+				actor.meridians.open_meridian(meridian_id)
+			MeridianState.OPEN:
+				actor.meridians.expand_meridian(meridian_id)
+			MeridianState.EXPANDED:
+				actor.meridians.strengthen_meridian(meridian_id)
+			_:
+				# Already strengthened: the elixir deepens it toward the seed cap.
+				actor.meridians.refine_meridian(meridian_id, seed.channel_refinement_cap)
 	synchronize(actor)
 	return true

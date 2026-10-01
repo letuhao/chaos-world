@@ -10,7 +10,8 @@ strengthening_item = &"body_qi_refining_channel_elixir"
 progress_required = 100.0
 physique_required = 10.0
 quality_required = 0.50
-quality_target = 0.50
+quality_target = 0.400000
+integrity_target = 0.450000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen"])
 required_refinement = 1
 refinement_cap = 1
@@ -19,3 +20,13 @@ rewards = {
 "physique": 2.0,
 "organ_vitality": 1.0
 }
+power_budget = 1.00
+capacity_factor = 1.00
+throughput_factor = 1.00
+technique_factor = 1.00
+work_required = 0.0
+acupoint_work = 20.0
+meridian_work = 15.0
+insight_required = 10.0
+resonance_rank = 0
+channel_training = Array[StringName]([])

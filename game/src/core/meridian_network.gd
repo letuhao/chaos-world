@@ -3,7 +3,10 @@ extends RefCounted
 
 ## Shared meridian network (ADR 0017). Core infrastructure for all cultivation
 ## systems. Meridians unlock with realm, progress through states, and grant
-## flow/capacity/power bonuses.
+## flow/capacity/power bonuses. Injury is a recoverable overlay — it never
+## erases structural attainment.
+
+signal changed
 
 ## Each refinement step on a strengthened meridian adds this fraction of its
 ## base power bonus. Depth is raised by body-cultivation training (ADR 0023).
@@ -20,6 +23,7 @@ func unlock_for_realm(realm_id: StringName) -> void:
 	for def in MeridianDefaults.all():
 		if def.tier <= realm_index and not _meridians.has(def.id):
 			_meridians[def.id] = _state_from_def(def)
+	_emit_changed()
 
 
 func get_meridian(id: StringName) -> MeridianState:
@@ -30,18 +34,21 @@ func open_meridian(id: StringName) -> void:
 	var state := get_meridian(id)
 	if state != null and state.state == &"closed":
 		state.state = &"open"
+		_emit_changed()
 
 
 func expand_meridian(id: StringName) -> void:
 	var state := get_meridian(id)
 	if state != null and state.state == &"open":
 		state.state = &"expanded"
+		_emit_changed()
 
 
 func strengthen_meridian(id: StringName) -> void:
 	var state := get_meridian(id)
 	if state != null and state.state == &"expanded":
 		state.state = &"strengthened"
+		_emit_changed()
 
 
 ## Raise training depth on an already-strengthened meridian. `max_refinement` is
@@ -54,19 +61,25 @@ func refine_meridian(id: StringName, max_refinement: int) -> bool:
 	if state.refinement >= max_refinement:
 		return false
 	state.refinement += 1
+	_emit_changed()
 	return true
 
 
+## Apply recoverable injury. Structural state is preserved; bonuses are halved
+## until repaired.
 func damage_meridian(id: StringName) -> void:
 	var state := get_meridian(id)
 	if state != null:
-		state.state = &"damaged"
+		state.injured = true
+		_emit_changed()
 
 
+## Repair injury. Restores previous attained benefits.
 func repair_meridian(id: StringName) -> void:
 	var state := get_meridian(id)
-	if state != null and state.state == &"damaged":
-		state.state = &"open"
+	if state != null and state.injured:
+		state.injured = false
+		_emit_changed()
 
 
 func get_flow_bonus() -> float:
@@ -98,15 +111,7 @@ func to_dict() -> Dictionary:
 	var out := {}
 	for key in _meridians.keys():
 		var state: MeridianState = _meridians[key]
-		out[String(key)] = {
-			"id": String(state.id),
-			"state": String(state.state),
-			"tier": state.tier,
-			"refinement": state.refinement,
-			"capacity_bonus": state.capacity_bonus,
-			"flow_bonus": state.flow_bonus,
-			"power_bonus": state.power_bonus,
-		}
+		out[String(key)] = state.to_dict()
 	return out
 
 
@@ -114,14 +119,7 @@ static func from_dict(data: Dictionary) -> MeridianNetwork:
 	var network := MeridianNetwork.new()
 	for key in data.keys():
 		var entry = data[key]
-		var state := MeridianState.new()
-		state.id = StringName(entry.get("id", ""))
-		state.state = StringName(entry.get("state", "closed"))
-		state.tier = int(entry.get("tier", 0))
-		state.refinement = int(entry.get("refinement", 0))
-		state.capacity_bonus = float(entry.get("capacity_bonus", 0.0))
-		state.flow_bonus = float(entry.get("flow_bonus", 0.0))
-		state.power_bonus = float(entry.get("power_bonus", 0.0))
+		var state := MeridianState.from_dict(entry)
 		network._meridians[state.id] = state
 	return network
 
@@ -135,3 +133,7 @@ func _state_from_def(def: MeridianDef) -> MeridianState:
 	state.flow_bonus = def.flow_bonus
 	state.power_bonus = def.power_bonus
 	return state
+
+
+func _emit_changed() -> void:
+	changed.emit()

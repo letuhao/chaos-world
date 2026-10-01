@@ -39,8 +39,6 @@ static func from_definition(def: AcupointDef) -> Acupoint:
 	var point := Acupoint.new()
 	point.id = def.id
 	point.tier = def.tier
-	point.capacity = def.base_capacity
-	point.current = 0.0
 	point.quality = 0.5
 	point.blocked = false
 	return point

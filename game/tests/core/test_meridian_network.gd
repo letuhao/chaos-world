@@ -35,7 +35,7 @@ func test_damage_and_repair() -> void:
 	network.unlock_for_realm(&"qi_refining")
 	network.open_meridian(&"lung")
 	network.damage_meridian(&"lung")
-	assert_eq(network.get_meridian(&"lung").state, &"damaged", "damaged")
+	assert_eq(network.get_meridian(&"lung").is_injured(), true, "injured")
 	network.repair_meridian(&"lung")
 	assert_eq(network.get_meridian(&"lung").state, &"open", "repaired to open")
 
@@ -67,13 +67,13 @@ func test_power_bonus() -> void:
 	assert_almost_eq(network.get_power_bonus(), 0.05, "power bonus from strengthened")
 
 
-func test_damaged_reduces_bonus() -> void:
+func test_injury_reduces_bonus() -> void:
 	var network := MeridianNetwork.new()
 	network.unlock_for_realm(&"qi_refining")
 	network.open_meridian(&"lung")
 	var full_bonus := network.get_flow_bonus()
 	network.damage_meridian(&"lung")
-	assert_almost_eq(network.get_flow_bonus(), full_bonus * 0.5, "damaged reduces flow")
+	assert_almost_eq(network.get_flow_bonus(), full_bonus * 0.5, "injured reduces flow")
 
 
 func test_serialization_round_trip() -> void:

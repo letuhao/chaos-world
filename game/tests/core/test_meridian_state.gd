@@ -17,17 +17,18 @@ func test_is_open() -> void:
 	assert_eq(state.is_open(), true, "expanded is open")
 	state.state = &"strengthened"
 	assert_eq(state.is_open(), true, "strengthened is open")
-	state.state = &"damaged"
-	assert_eq(state.is_open(), true, "damaged is open")
+	# Injury is a flag, not a state: a wounded channel stays open.
+	state.injured = true
+	assert_eq(state.is_open(), true, "injured is still open")
 
 
-func test_is_damaged() -> void:
+func test_is_injured() -> void:
 	var state := MeridianState.new()
-	assert_eq(state.is_damaged(), false, "closed is not damaged")
+	assert_eq(state.is_injured(), false, "closed is not injured")
 	state.state = &"open"
-	assert_eq(state.is_damaged(), false, "open is not damaged")
-	state.state = &"damaged"
-	assert_eq(state.is_damaged(), true, "damaged is damaged")
+	assert_eq(state.is_injured(), false, "open is not injured")
+	state.injured = true
+	assert_eq(state.is_injured(), true, "injured is injured")
 
 
 func test_get_bonus() -> void:
@@ -39,5 +40,5 @@ func test_get_bonus() -> void:
 	assert_almost_eq(state.get_bonus(), 1.0, "expanded bonus")
 	state.state = &"strengthened"
 	assert_almost_eq(state.get_bonus(), 1.0, "strengthened bonus")
-	state.state = &"damaged"
-	assert_almost_eq(state.get_bonus(), 0.5, "damaged bonus")
+	state.injured = true
+	assert_almost_eq(state.get_bonus(), 0.5, "injured bonus")

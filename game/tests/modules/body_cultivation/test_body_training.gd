@@ -28,7 +28,7 @@ func _fully_train(actor: Actor, meridian_id: StringName, required_refinement: in
 	# A deviation damages a required channel. open/expand/strengthen all require
 	# an exact prior state, so a damaged channel must be repaired first or the
 	# breakthrough precondition can never be met again.
-	if actor.meridians.get_meridian(meridian_id).is_damaged():
+	if actor.meridians.get_meridian(meridian_id).is_injured():
 		actor.meridians.repair_meridian(meridian_id)
 	actor.meridians.open_meridian(meridian_id)
 	actor.meridians.expand_meridian(meridian_id)
@@ -57,8 +57,8 @@ func _prepare_for_next_realm(actor: Actor) -> BodyRealmSeed:
 	for point in points.points:
 		point.clear_block()
 		point.quality = maxf(point.quality, seed.quality_required)
-		point.fill(point.capacity)
-	actor.change_resource(BodyStats.BODY_INTEGRITY, 100000.0)
+	# Fill the shared pool to maximum.
+	points.fill(seed.integrity_maximum)
 	state.progress = seed.progress_required
 	return seed
 
@@ -88,10 +88,8 @@ func test_cultivate_stores_essence_and_progress() -> void:
 	var actor := _actor()
 	assert_eq(BodyTraining.cultivate(actor, 50.0), true, "cultivation applied")
 	assert_eq(actor.path(BodyPath.PATH_ID).progress > 0.0, true, "progress grew")
-	var stored := 0.0
-	for point in BodyCultivationApi.acupoints(actor):
-		stored += point.current
-	assert_eq(stored > 0.0, true, "essence stored in acupoints")
+	var points: AcupointSet = actor.component(&"acupoints")
+	assert_eq(points.current() > 0.0, true, "essence stored in the shared pool")
 
 
 func test_cultivate_raises_quality_toward_target() -> void:
@@ -226,7 +224,7 @@ func test_deviation_blocks_an_acupoint_and_damages_a_channel() -> void:
 				blocked = true
 		var channel_damaged := false
 		for meridian_id in seed.required_meridians:
-			if actor.meridians.get_meridian(meridian_id).is_damaged():
+			if actor.meridians.get_meridian(meridian_id).is_injured():
 				channel_damaged = true
 		deviated = blocked and channel_damaged
 		attempts += 1

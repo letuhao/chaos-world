@@ -34,7 +34,7 @@ static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) ->
 	for key in seed.rewards:
 		var id := StringName(key)
 		actor.stats.set_base(id, actor.stats.get_base(id) + float(seed.rewards[key]))
-	sea.current = 0.0
+	sea.drain(actor, sea.current(actor))
 	Breakthrough.try_advance(actor, MindPath.PATH_ID)
 	MindTraining.synchronize(actor)
 	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD and actor.tribulation != null:
@@ -53,7 +53,7 @@ static func _deviate(
 	# Mental deviation clouds the sea and burns a channel it depended on.
 	state.progress *= 0.5
 	sea.add_turbulence(0.5)
-	sea.clarity = maxf(0.0, sea.clarity * 0.5)
+	sea.set_clarity(maxf(0.0, sea.clarity * 0.5))
 	if not seed.required_meridians.is_empty():
 		actor.meridians.damage_meridian(
 			seed.required_meridians[_pick(rng, seed.required_meridians.size())]

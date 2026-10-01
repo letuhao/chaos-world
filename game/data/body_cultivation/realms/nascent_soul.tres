@@ -10,7 +10,8 @@ strengthening_item = &"body_nascent_soul_channel_elixir"
 progress_required = 300.0
 physique_required = 14.0
 quality_required = 0.52
-quality_target = 0.53
+quality_target = 0.445000
+integrity_target = 0.495000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen"])
 required_refinement = 3
 refinement_cap = 4
@@ -19,3 +20,13 @@ rewards = {
 "physique": 2.0,
 "organ_vitality": 1.0
 }
+power_budget = 1.95
+capacity_factor = 1.77
+throughput_factor = 1.31
+technique_factor = 1.45
+work_required = 492.0
+acupoint_work = 139.0
+meridian_work = 104.0
+insight_required = 46.0
+resonance_rank = 0
+channel_training = Array[StringName]([])
