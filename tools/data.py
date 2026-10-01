@@ -49,6 +49,9 @@ SCHEMA = {
 TYPE_BY_FOLDER = {"items": "item", "recipes": "recipe", "bosses": "boss", "domains": "domain"}
 BASE_SOURCES = {"gather", "starter"}
 REF_SOURCES = {"craft": "recipe", "boss": "boss", "domain": "domain"}
+# `quest` is accepted but not reference-checked: there is no QuestDef resource yet.
+UNCHECKED_SOURCES = {"quest"}
+KNOWN_SOURCE_TYPES = BASE_SOURCES | set(REF_SOURCES) | UNCHECKED_SOURCES
 
 SCRIPTS = {
     "item": "res://src/modules/items/item_def.gd",
@@ -262,6 +265,9 @@ def _audit(root: Path) -> list[str]:
         for source in sources:
             source_type, _, ref = source.partition(":")
             if source_type in BASE_SOURCES:
+                continue
+            if source_type not in KNOWN_SOURCE_TYPES:
+                gaps.append(f"item {item_id}: unknown acquisition source type '{source_type}'")
                 continue
             target_type = REF_SOURCES.get(source_type)
             if target_type is None:
