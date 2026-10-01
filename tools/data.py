@@ -447,6 +447,18 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
         used = ", ".join(sorted(all_keys))
         findings.append(("warn", f"only {len(all_keys)} distinct modifier stats in use: {used}"))
 
+    # Declared stats that no item modifies leave part of the stat surface unreachable.
+    valid = _valid_stats()
+    if valid:
+        unused = sorted(valid - set(all_keys))
+        if unused:
+            findings.append(
+                (
+                    "warn",
+                    f"{len(unused)} declared stat(s) never used by any item: {', '.join(unused)}",
+                )
+            )
+
     # Modifier stats that the game does not define are silently ignored at runtime.
     valid = _valid_stats()
     if valid:
