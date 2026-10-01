@@ -11,7 +11,8 @@ subcategory = &"accessory"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:puppet_iron_dancer"])
 flat_modifiers = {
-"penetration": 20.0
+"defense_physical": 25.0,
+"max_health": 30.0
 }
 percent_modifiers = {
 "evasion": 0.04

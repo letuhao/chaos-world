@@ -11,7 +11,7 @@ subcategory = &"artifact"
 grade = &"earth"
 sources = Array[StringName]([&"gather"])
 flat_modifiers = {
-"max_health": 120.0
+"max_health": 45.0
 }
 percent_modifiers = {
 "defense_physical": 0.04
