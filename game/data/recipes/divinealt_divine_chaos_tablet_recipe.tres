@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"divinealt_divine_chaos_tablet_recipe"
+display_name = "Divine Chaos Tablet Alternate Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"divine_chaos_tablet", &"divine_voidlotus"])
+outputs = Array[StringName]([&"grimoire_chaos"])
