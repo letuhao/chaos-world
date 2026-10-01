@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"K22_heaven_dao_aged"
+display_name = "Heaven Dao Aged"
+category = &"technique"
+subcategory = &"scroll"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:K22_heaven_dao_aged_recipe"])
+percent_modifiers = {
+"attack_physical": 0.09
+}
