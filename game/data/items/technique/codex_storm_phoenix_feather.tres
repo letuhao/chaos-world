@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"codex_storm_phoenix_feather"
+display_name = "Storm Phoenix Feather"
+category = &"technique"
+subcategory = &"scroll"
+grade = &"heaven"
+sources = Array[StringName]([&"boss:codex_storm_phoenix"])

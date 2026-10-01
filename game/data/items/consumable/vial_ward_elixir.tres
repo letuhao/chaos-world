@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"vial_ward_elixir"
+display_name = "Ward Elixir"
+category = &"consumable"
+subcategory = &"elixir"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:vial_ward_elixir_recipe"])
