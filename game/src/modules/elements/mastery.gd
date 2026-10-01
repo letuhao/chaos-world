@@ -1,34 +1,22 @@
 class_name ElementMastery
 extends RefCounted
 
-## The elemental-mastery cultivation path (ADR 0003/0004). Ranks gate element tiers.
+## The elemental-mastery cultivation path (ADR 0004). It advances along the shared
+## realm ladder (ADR 0005); realm tier gates which element tiers are usable.
 
 const PATH_ID := &"elemental_mastery"
-const RANKS := [&"awakened", &"attuned", &"adept", &"master", &"grandmaster", &"sovereign"]
-const MAX_TIER_BY_RANK := [1, 1, 2, 2, 3, 3]
+const MAX_ELEMENT_TIER := 3
 
 
 static func path_def() -> CultivationPathDef:
 	var def := CultivationPathDef.new()
 	def.id = PATH_ID
 	def.display_name = "Elemental Mastery"
-	def.ranks = _ranks()
 	return def
 
 
-static func rank_index(rank_id: StringName) -> int:
-	return RANKS.find(rank_id)
-
-
 static func max_tier(rank_id: StringName) -> int:
-	var index := rank_index(rank_id)
-	if index < 0:
+	var realm_tier := RealmDefaults.ladder().tier_of(rank_id)
+	if realm_tier <= 0:
 		return 1
-	return int(MAX_TIER_BY_RANK[index])
-
-
-static func _ranks() -> Array[StringName]:
-	var out: Array[StringName] = []
-	for rank in RANKS:
-		out.append(rank)
-	return out
+	return mini(MAX_ELEMENT_TIER, realm_tier)
