@@ -19,6 +19,12 @@
         "core",
         "dual_cultivation"
       ]
+    },
+    "items": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
     }
   }
 }

@@ -9,6 +9,7 @@ var resources: Dictionary
 var traits: NameList
 var affinities: AffinityMap
 var paths: Dictionary
+var components: Dictionary
 var derived: Dictionary
 
 
@@ -17,13 +18,15 @@ func _init(
 	p_resources: Dictionary,
 	p_traits: NameList,
 	p_affinities: AffinityMap,
-	p_paths: Dictionary
+	p_paths: Dictionary,
+	p_components: Dictionary
 ) -> void:
 	base = p_base
 	resources = p_resources
 	traits = p_traits
 	affinities = p_affinities
 	paths = p_paths
+	components = p_components
 	derived = {}
 
 
@@ -43,6 +46,10 @@ func resource(id: StringName) -> ResourcePool:
 
 func path(path_id: StringName) -> PathState:
 	return paths.get(path_id)
+
+
+func component(id: StringName) -> RefCounted:
+	return components.get(id)
 
 
 func has_trait(id: StringName) -> bool:

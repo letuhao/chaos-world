@@ -18,6 +18,7 @@ var tags: Array[StringName]
 var traits: NameList
 var affinities: AffinityMap
 var relationships: Dictionary
+var components: Dictionary
 var stats: ActorStats
 var resources: Dictionary
 var statuses: Array[StatusEffect]
@@ -32,6 +33,7 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 	faction = &""
 	tags = []
 	relationships = {}
+	components = {}
 	resources = {}
 	statuses = []
 	paths = {}
@@ -41,7 +43,7 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 	affinities = AffinityMap.new()
 	affinities.changed.connect(_invalidator.on_changed)
 	stats = ActorStats.new(base)
-	_context = StatContext.new(stats.base_ref(), resources, traits, affinities, paths)
+	_context = StatContext.new(stats.base_ref(), resources, traits, affinities, paths, components)
 	stats.set_context(_context)
 
 
@@ -107,6 +109,15 @@ func set_resource_maximum(pool_id: StringName, value: float) -> void:
 
 func mark_stats_dirty() -> void:
 	stats.mark_dirty()
+
+
+func set_component(id: StringName, component: RefCounted) -> void:
+	components[id] = component
+	mark_stats_dirty()
+
+
+func component(id: StringName) -> RefCounted:
+	return components.get(id)
 
 
 func set_path(state: PathState) -> void:
