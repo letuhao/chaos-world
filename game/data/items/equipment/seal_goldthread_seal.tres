@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"seal_goldthread_seal"
+display_name = "Seal Goldthread Seal"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"earth"
+sources = Array[StringName]([&"craft:seal_goldthread_seal_recipe"])
+flat_modifiers = {
+"max_qi": 50.0,
+"poise": 10.0
+}
+percent_modifiers = {
+"status_resistance": 3.0
+}

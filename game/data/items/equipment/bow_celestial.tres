@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"bow_celestial"
+display_name = "Celestial Bow"
+category = &"equipment"
+subcategory = &"weapon"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:bow_celestial_recipe"])
+flat_modifiers = {
+"attack_physical": 35.0
+}
+percent_modifiers = {
+"evasion": 0.05
+}
