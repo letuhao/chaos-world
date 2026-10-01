@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"V8_immortal_agger_lekythos"
+display_name = "Immortal Agger Lekythos"
+category = &"equipment"
+subcategory = &"accessory"
+grade = &"immortal"
+sources = Array[StringName]([&"boss:F15_true_warden"])
+percent_modifiers = {
+"evasion": 0.06
+}

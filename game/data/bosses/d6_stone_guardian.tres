@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d6_stone_guardian"
 display_name = "Stone Guardian Totem Lesser"
 domain_id = &"totem_stone_guardian_domain"
-loot = Array[StringName]([&"totem_stone_guardian_shield", &"totem_stone_guardian_heart", &"L6_guardian_stele_amulet", &"L6_guardian_strata_artifact"])
+loot = Array[StringName]([&"totem_stone_guardian_shield", &"totem_stone_guardian_heart", &"L6_guardian_stele_amulet", &"L6_guardian_strata_artifact", &"V2_earth_abbey_lekythos"])

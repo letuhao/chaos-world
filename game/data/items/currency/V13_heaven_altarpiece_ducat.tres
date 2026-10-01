@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"V13_heaven_altarpiece_ducat"
+display_name = "Heaven Altarpiece Ducat"
+category = &"currency"
+subcategory = &"writ"
+grade = &"heaven"
+sources = Array[StringName]([&"gather"])

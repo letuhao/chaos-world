@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"V8_immortal_agger_pyxis"
+display_name = "Immortal Agger Pyxis"
+category = &"consumable"
+subcategory = &"elixir"
+grade = &"immortal"
+sources = Array[StringName]([&"boss:E7_earth_warden"])
+percent_modifiers = {
+"defense_spiritual": 0.06
+}

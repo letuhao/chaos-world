@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"scroll_thunder_crane"
 display_name = "Thunder Crane"
 domain_id = &"scroll_thunder_crane_domain"
-loot = Array[StringName]([&"scroll_thunder_crane_wing", &"scroll_thunder_crane_feather", &"scroll_thunder_crane_dance"])
+loot = Array[StringName]([&"scroll_thunder_crane_wing", &"scroll_thunder_crane_feather", &"scroll_thunder_crane_dance", &"V3_heaven_abjuration_oliphant"])

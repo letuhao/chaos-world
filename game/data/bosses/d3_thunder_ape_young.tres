@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d3_thunder_ape_young"
 display_name = "Thunder Ape Lesser"
 domain_id = &"manual_thunder_ape_domain"
-loot = Array[StringName]([&"manual_thunder_ape_fang", &"manual_thunder_ape_roar", &"L3_thunder_ape_iron_fist", &"L3_thunder_ape_thunder_heart"])
+loot = Array[StringName]([&"manual_thunder_ape_fang", &"manual_thunder_ape_roar", &"L3_thunder_ape_iron_fist", &"L3_thunder_ape_thunder_heart", &"V7_heaven_aerie_cithara"])

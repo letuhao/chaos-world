@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"V24_heaven_armature_primed_recipe"
+display_name = "Heaven Armature Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"V24_heaven_armature_aged", &"filament_stormspun", &"orb_flame_ore", &"astral_lunar_veil_herb"])
+outputs = Array[StringName]([&"V24_heaven_armature_primed"])

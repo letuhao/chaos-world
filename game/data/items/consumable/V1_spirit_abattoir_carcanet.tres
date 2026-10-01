@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"V1_spirit_abattoir_carcanet"
+display_name = "Spirit Abattoir Carcanet"
+category = &"consumable"
+subcategory = &"tonic"
+grade = &"spirit"
+sources = Array[StringName]([&"boss:d3_frost_wolf_pup"])
+percent_modifiers = {
+"attack_physical": 0.06
+}

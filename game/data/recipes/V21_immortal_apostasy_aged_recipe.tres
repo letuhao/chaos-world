@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"V21_immortal_apostasy_aged_recipe"
+display_name = "Immortal Apostasy Aged Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"V21_immortal_apostasy_refined", &"mind_golden_immortal_mind_herb", &"qi_heaven_immortal_cultivation_herb"])
+outputs = Array[StringName]([&"V21_immortal_apostasy_aged"])

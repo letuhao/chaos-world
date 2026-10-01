@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d3_flame_drake"
 display_name = "Flame Dragon Lesser"
 domain_id = &"flame_valley"
-loot = Array[StringName]([&"dragon_core", &"embershard_flame_heart", &"L3_drake_ember_core", &"L3_drake_scale_censer"])
+loot = Array[StringName]([&"dragon_core", &"embershard_flame_heart", &"L3_drake_ember_core", &"L3_drake_scale_censer", &"V8_heaven_agger_shakuhachi"])

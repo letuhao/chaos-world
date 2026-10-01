@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"E2_ascension_sentinel"
 display_name = "Ascension Sentinel"
 domain_id = &"body_great_ascension_trial"
-loot = Array[StringName]([&"body_great_ascension_tempering_herb", &"body_great_ascension_breakthrough_pill", &"D5_mortal_physique_bulk"])
+loot = Array[StringName]([&"body_great_ascension_tempering_herb", &"body_great_ascension_breakthrough_pill", &"D5_mortal_physique_bulk", &"V4_mortal_abscissa_pollaxe"])

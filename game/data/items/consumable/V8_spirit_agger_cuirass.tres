@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"V8_spirit_agger_cuirass"
+display_name = "Spirit Agger Cuirass"
+category = &"consumable"
+subcategory = &"tonic"
+grade = &"spirit"
+sources = Array[StringName]([&"boss:F7_condensation_warden"])
+percent_modifiers = {
+"attack_physical": 0.06
+}

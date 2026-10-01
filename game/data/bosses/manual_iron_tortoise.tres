@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"manual_iron_tortoise"
 display_name = "Iron Tortoise"
 domain_id = &"manual_iron_tortoise_domain"
-loot = Array[StringName]([&"manual_iron_tortoise_shell", &"manual_iron_tortoise_stance", &"manual_iron_tortoise_gourd"])
+loot = Array[StringName]([&"manual_iron_tortoise_shell", &"manual_iron_tortoise_stance", &"manual_iron_tortoise_gourd", &"V1_spirit_abattoir_mazer"])

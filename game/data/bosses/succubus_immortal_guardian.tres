@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"succubus_immortal_guardian"
 display_name = "Immortal Tide Guardian"
 domain_id = &"succubus_immortal_domain"
-loot = Array[StringName]([&"succubus_immortal_heart_core", &"marionette_sigil_immortal", &"succubus_immortal_breakthrough_elixir"])
+loot = Array[StringName]([&"succubus_immortal_heart_core", &"marionette_sigil_immortal", &"succubus_immortal_breakthrough_elixir", &"V6_immortal_accretion_mitre"])

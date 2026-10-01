@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"F19_origin_warden"
 display_name = "Origin Warden"
 domain_id = &"mind_primordial_origin_trial"
-loot = Array[StringName]([&"mind_primordial_origin_mind_herb", &"mantra_singularity_form", &"orb_divine", &"trinket_divine_trophy"])
+loot = Array[StringName]([&"mind_primordial_origin_mind_herb", &"mantra_singularity_form", &"orb_divine", &"trinket_divine_trophy", &"V3_divine_abjuration_caliga"])

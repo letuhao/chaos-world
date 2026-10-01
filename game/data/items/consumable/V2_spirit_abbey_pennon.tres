@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"V2_spirit_abbey_pennon"
+display_name = "Spirit Abbey Pennon"
+category = &"consumable"
+subcategory = &"draught"
+grade = &"spirit"
+sources = Array[StringName]([&"boss:E5_manifestation_warden"])
+percent_modifiers = {
+"attack_physical": 0.06
+}

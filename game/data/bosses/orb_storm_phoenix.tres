@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"orb_storm_phoenix"
 display_name = "Storm Phoenix"
 domain_id = &"orb_storm_phoenix_domain"
-loot = Array[StringName]([&"orb_storm_phoenix_feather", &"orb_storm_phoenix_talon", &"ore_phoenix_ash"])
+loot = Array[StringName]([&"orb_storm_phoenix_feather", &"orb_storm_phoenix_talon", &"ore_phoenix_ash", &"V5_immortal_acanthus_shakuhachi"])

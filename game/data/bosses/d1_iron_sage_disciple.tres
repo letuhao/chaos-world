@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d1_iron_sage_disciple"
 display_name = "Iron Sage Disciple Lesser"
 domain_id = &"codex_iron_sage_domain"
-loot = Array[StringName]([&"codex_iron_sage_palm", &"codex_iron_sage_gourd", &"L1_iron_sage_breath_rite", &"L1_iron_sage_marrow_tablet"])
+loot = Array[StringName]([&"codex_iron_sage_palm", &"codex_iron_sage_gourd", &"L1_iron_sage_breath_rite", &"L1_iron_sage_marrow_tablet", &"V3_earth_abjuration_kennel"])

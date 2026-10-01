@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d2_terra_guardian"
 display_name = "Terra Guardian Lesser"
 domain_id = &"elemental_earth_domain"
-loot = Array[StringName]([&"elemental_earth_core", &"elemental_earth_essence", &"L2_terra_guardian_bulwark", &"L2_terra_shard_core"])
+loot = Array[StringName]([&"elemental_earth_core", &"elemental_earth_essence", &"L2_terra_guardian_bulwark", &"L2_terra_shard_core", &"V2_earth_abbey_coif"])

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"V6_immortal_accretion_brigandine"
+display_name = "Immortal Accretion Brigandine"
+category = &"equipment"
+subcategory = &"armor"
+grade = &"immortal"
+sources = Array[StringName]([&"boss:d2_gale_guardian"])
+percent_modifiers = {
+"poise": 0.06
+}

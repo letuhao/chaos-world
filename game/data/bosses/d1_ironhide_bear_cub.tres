@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d1_ironhide_bear_cub"
 display_name = "Ironhide Bear Cub Lesser"
 domain_id = &"beast_ironhide_bear_domain"
-loot = Array[StringName]([&"beasttrophy_bear_hide", &"beast_ironhide_bear_core", &"greataxe_iron"])
+loot = Array[StringName]([&"beasttrophy_bear_hide", &"beast_ironhide_bear_core", &"greataxe_iron", &"V5_mortal_acanthus_lekythos"])

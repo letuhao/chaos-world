@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"treasure_frost_hermit"
 display_name = "Frost Hermit"
 domain_id = &"treasure_frost_hermit_domain"
-loot = Array[StringName]([&"treasure_frost_hermit_eye", &"treasure_frost_hermit_charm", &"treasure_frost_hermit_crown", &"regalia_hermit_coin", &"regalia_hermit_rope"])
+loot = Array[StringName]([&"treasure_frost_hermit_eye", &"treasure_frost_hermit_charm", &"treasure_frost_hermit_crown", &"regalia_hermit_coin", &"regalia_hermit_rope", &"V7_earth_aerie_bardiche"])

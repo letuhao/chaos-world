@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"V3_earth_abjuration_krater"
+display_name = "Earth Abjuration Krater"
+category = &"equipment"
+subcategory = &"armor"
+grade = &"earth"
+sources = Array[StringName]([&"boss:d4_iron_dancer"])
+percent_modifiers = {
+"poise": 0.06
+}

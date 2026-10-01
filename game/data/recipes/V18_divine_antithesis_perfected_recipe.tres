@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"V18_divine_antithesis_perfected_recipe"
+display_name = "Divine Antithesis Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"V18_divine_antithesis_primed", &"Q5_divine_cutlass_mast", &"Q1_divine_courier_lobe"])
+outputs = Array[StringName]([&"V18_divine_antithesis_perfected"])

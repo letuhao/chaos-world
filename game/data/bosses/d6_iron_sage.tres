@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d6_iron_sage"
 display_name = "Iron Sage Lesser"
 domain_id = &"treasure_iron_sage_domain"
-loot = Array[StringName]([&"treasure_iron_sage_heart", &"treasure_iron_sage_plate", &"lens_bronze"])
+loot = Array[StringName]([&"treasure_iron_sage_heart", &"treasure_iron_sage_plate", &"lens_bronze", &"V8_spirit_agger_crosier"])

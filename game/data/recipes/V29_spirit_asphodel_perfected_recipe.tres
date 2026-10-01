@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"V29_spirit_asphodel_perfected_recipe"
+display_name = "Spirit Asphodel Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"V29_spirit_asphodel_primed", &"body_spirit_palace_tempering_herb", &"girdle_scale"])
+outputs = Array[StringName]([&"V29_spirit_asphodel_perfected"])

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"V19_divine_aperture_base"
+display_name = "Divine Aperture Base"
+category = &"technique"
+subcategory = &"mantra"
+grade = &"divine"
+sources = Array[StringName]([&"craft:V19_divine_aperture_base_recipe", &"quest:V19_divine_aperture_line"])
+percent_modifiers = {
+"comprehension": 0.03
+}
