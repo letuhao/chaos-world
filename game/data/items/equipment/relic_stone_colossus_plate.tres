@@ -11,6 +11,6 @@ subcategory = &"artifact"
 grade = &"earth"
 sources = Array[StringName]([&"boss:relic_stone_colossus"])
 flat_modifiers = {
-"max_health": 120.0,
+"max_health": 95.0,
 "defense_physical": 15.0
 }

@@ -12,6 +12,6 @@ grade = &"divine"
 sources = Array[StringName]([&"gather"])
 flat_modifiers = {
 "attack_physical": 45.0,
-"attack_spiritual": 22.0,
+"attack_spiritual": 74.0,
 "poise": 12.0
 }

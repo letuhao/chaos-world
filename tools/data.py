@@ -499,25 +499,27 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
     if noop:
         findings.append(("warn", f"{len(noop)} zero-valued modifier(s) grant nothing"))
 
-    # Power curve: a tier should never be weaker than the tier below it.
-    buckets: dict[tuple[str, str], list[float]] = {}
+    # Power curve: within a category+subtype, a tier must not be weaker than the one below.
+    buckets: dict[tuple[str, str, str, str], list[float]] = {}
     for item in items.values():
         grade = item["scalars"].get("grade", "")
+        cat = item["scalars"].get("category", "")
+        sub = item["scalars"].get("subcategory", "")
         for key, value in item["dicts"].get("flat_modifiers", {}).items():
-            buckets.setdefault((key, grade), []).append(value)
-    for key in sorted({k for k, _ in buckets}):
+            buckets.setdefault((cat, sub, key, grade), []).append(value)
+    for cat, sub, key in sorted({(c, s, k) for c, s, k, _ in buckets}):
         series = []
         for grade in GRADE_ORDER:
-            values = buckets.get((key, grade))
-            if values and len(values) >= 4:
+            values = buckets.get((cat, sub, key, grade))
+            if values and len(values) >= 3:
                 series.append((grade, sum(values) / len(values)))
-        for (low, low_mean), (high, high_mean) in zip(series, series[1:]):
+        for (low, low_mean), (high, high_mean) in zip(series, series[1:], strict=False):
             if high_mean < low_mean * 0.9:
                 findings.append(
                     (
                         "warn",
-                        f"power curve inverted on '{key}': {high} mean {high_mean:.0f} "
-                        f"is below {low} mean {low_mean:.0f}",
+                        f"power curve inverted on '{key}' in {cat}/{sub}: {high} mean "
+                        f"{high_mean:.0f} is below {low} mean {low_mean:.0f}",
                     )
                 )
                 break

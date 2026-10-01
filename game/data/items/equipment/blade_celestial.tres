@@ -12,6 +12,6 @@ grade = &"divine"
 sources = Array[StringName]([&"craft:blade_celestial_recipe"])
 flat_modifiers = {
 "attack_physical": 50.0,
-"attack_spiritual": 25.0,
+"attack_spiritual": 82.0,
 "poise": 10.0
 }

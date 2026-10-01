@@ -11,7 +11,7 @@ subcategory = &"artifact"
 grade = &"earth"
 sources = Array[StringName]([&"boss:totem_stone_guardian"])
 flat_modifiers = {
-"max_health": 120.0
+"max_health": 95.0
 }
 percent_modifiers = {
 "poise": 8.0

@@ -12,6 +12,6 @@ grade = &"divine"
 sources = Array[StringName]([&"craft:greataxe_chaos_recipe"])
 flat_modifiers = {
 "attack_physical": 52.0,
-"attack_spiritual": 26.0,
+"attack_spiritual": 90.0,
 "poise": 13.0
 }
