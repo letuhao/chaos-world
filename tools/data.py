@@ -25,10 +25,22 @@ CATEGORIES = {
     "misc",
 }
 GRADES = {"mortal", "spirit", "earth", "heaven", "immortal", "divine"}
+GRADE_ORDER = ("mortal", "spirit", "earth", "heaven", "immortal", "divine")
+
+# Categories whose items are expected to carry gameplay modifiers.
+MODIFIER_CATEGORIES = {"equipment", "technique", "consumable"}
+
+# Categories where a subcategory is meaningful for grouping.
+SUBCATEGORY_CATEGORIES = {"material", "consumable", "equipment", "technique"}
 
 # folder -> {id, arrays, scalars}
 SCHEMA = {
-    "items": {"id": "id", "arrays": ["sources"], "scalars": []},
+    "items": {
+        "id": "id",
+        "arrays": ["sources"],
+        "dicts": ["flat_modifiers", "percent_modifiers"],
+        "scalars": ["category", "subcategory", "grade"],
+    },
     "recipes": {"id": "id", "arrays": ["inputs", "outputs"], "scalars": ["station"]},
     "bosses": {"id": "id", "arrays": ["loot"], "scalars": ["domain_id"]},
     "domains": {"id": "id", "arrays": ["boss_ids"], "scalars": []},
@@ -53,6 +65,18 @@ def register(subparsers) -> None:
     for name in ("audit", "report"):
         action = actions.add_parser(name)
         action.add_argument("--root", default=None, help="data root (default game/data)")
+
+    dist = actions.add_parser(
+        "distribution",
+        help="audit item characteristic distribution and diversity (read-only, non-gating)",
+    )
+    dist.add_argument("--root", default=None, help="data root (default game/data)")
+    dist.add_argument(
+        "--fail-on",
+        choices=["none", "warn", "error"],
+        default="none",
+        help="exit non-zero above this finding level (default none)",
+    )
 
     new = actions.add_parser("new", help="scaffold a content .tres")
     new.add_argument("--root", default=None)
@@ -79,6 +103,8 @@ def run(args) -> int:
         return _audit_command(root)
     if args.data_action == "report":
         return _report_command(root)
+    if args.data_action == "distribution":
+        return _distribution_command(root, getattr(args, "fail_on", "none"))
     if args.data_action == "new":
         return _new_command(root, args)
     raise ToolError(f"unknown data action: {args.data_action}")
@@ -94,6 +120,14 @@ def _extract_array(text: str, field: str) -> list[str]:
     if not match:
         return []
     return re.findall(r'&"([^"]*)"', match.group(1))
+
+
+def _extract_dict(text: str, field: str) -> dict[str, float]:
+    match = re.search(rf"(?ms)^\s*{field}\s*=\s*\{{(.*?)\}}", text)
+    if not match:
+        return {}
+    pairs = re.findall(r'"([^"]+)"\s*:\s*(-?[\d.]+)', match.group(1))
+    return {key: float(value) for key, value in pairs}
 
 
 def _load(root: Path) -> tuple[dict, list[str]]:
@@ -113,9 +147,17 @@ def _load(root: Path) -> tuple[dict, list[str]]:
         if not record_id:
             malformed.append(rel.as_posix())
             continue
-        record = {"path": rel.as_posix(), "id": record_id, "arrays": {}, "scalars": {}}
+        record = {
+            "path": rel.as_posix(),
+            "id": record_id,
+            "arrays": {},
+            "dicts": {},
+            "scalars": {},
+        }
         for field in schema["arrays"]:
             record["arrays"][field] = _extract_array(text, field)
+        for field in schema.get("dicts", []):
+            record["dicts"][field] = _extract_dict(text, field)
         for field in schema["scalars"]:
             record["scalars"][field] = _extract_scalar(text, field) or ""
         records[type_name][record_id] = record
@@ -242,6 +284,207 @@ def _report_command(root: Path) -> int:
         info(f"{type_name}: {len(entries)}")
         for record_id in sorted(entries):
             info(f"    {record_id}")
+    return 0
+
+
+def _group_by(items: dict, field_set: str, field_name: str) -> dict[str, list[dict]]:
+    groups: dict[str, list[dict]] = {}
+    for item in items.values():
+        key = item[field_set].get(field_name, "")
+        groups.setdefault(key, []).append(item)
+    return groups
+
+
+def _bar(count: int, peak: int, width: int = 28) -> str:
+    if peak <= 0:
+        return ""
+    filled = max(1, round(count * width / peak)) if count else 0
+    return "#" * filled
+
+
+def _pct(count: int, total: int) -> float:
+    return count * 100.0 / total if total else 0.0
+
+
+def _print_table(title: str, rows: list[tuple[str, int]], total: int) -> None:
+    info("")
+    info(f"=== {title} ===")
+    if not rows:
+        info("  (none)")
+        return
+    peak = max(count for _, count in rows)
+    for label, count in rows:
+        info(f"  {label:28s} {count:5d}  {_pct(count, total):5.1f}%  {_bar(count, peak)}")
+
+
+def _modifier_keys(item: dict) -> set[str]:
+    keys: set[str] = set()
+    for values in item["dicts"].values():
+        keys.update(values)
+    return keys
+
+
+def _collect_findings(items: dict) -> list[tuple[str, str]]:
+    """Return (level, message) findings. level is 'error' or 'warn'."""
+    findings: list[tuple[str, str]] = []
+    total = len(items)
+    if not total:
+        return findings
+
+    for item in items.values():
+        path = item["path"]
+        cat = item["scalars"].get("category", "")
+        grade = item["scalars"].get("grade", "")
+        if not cat:
+            findings.append(("error", f"{path}: has no category"))
+        elif cat not in CATEGORIES:
+            findings.append(("error", f"{path}: unknown category '{cat}'"))
+        if not grade:
+            findings.append(("error", f"{path}: has no grade"))
+        elif grade not in GRADES:
+            findings.append(("error", f"{path}: unknown grade '{grade}'"))
+
+    by_cat = _group_by(items, "scalars", "category")
+
+    # Missing categories and empty categories.
+    for cat in sorted(CATEGORIES):
+        if cat not in by_cat:
+            findings.append(("warn", f"category '{cat}' has no items"))
+
+    # Dominant category concentration.
+    if by_cat:
+        top_cat, top_items = max(by_cat.items(), key=lambda kv: len(kv[1]))
+        share = _pct(len(top_items), total)
+        if share > 60.0:
+            findings.append(
+                ("warn", f"category '{top_cat}' holds {share:.1f}% of all items; pool is narrow")
+            )
+
+    # Subtype diversity: a category with only one subtype has no variety.
+    for cat, cat_items in sorted(by_cat.items()):
+        subs = {item["scalars"].get("subcategory", "") for item in cat_items}
+        real = {s for s in subs if s}
+        if len(real) == 1 and len(cat_items) >= 8:
+            only = next(iter(real))
+            findings.append(
+                ("warn", f"category '{cat}' has one subtype '{only}' across {len(cat_items)} items")
+            )
+        if not real and cat in SUBCATEGORY_CATEGORIES:
+            findings.append(("warn", f"category '{cat}' items have no subcategory set"))
+
+    # Grade coverage: every category should span the ladder.
+    for cat, cat_items in sorted(by_cat.items()):
+        grades = {item["scalars"].get("grade", "") for item in cat_items}
+        missing = [g for g in GRADE_ORDER if g not in grades]
+        if len(missing) >= 3:
+            findings.append(("warn", f"category '{cat}' is missing grades: {', '.join(missing)}"))
+
+    # Modifier coverage for stat-bearing categories.
+    for cat in sorted(MODIFIER_CATEGORIES):
+        cat_items = by_cat.get(cat, [])
+        if not cat_items:
+            continue
+        bare = [item["path"] for item in cat_items if not _modifier_keys(item)]
+        if bare:
+            share = _pct(len(bare), len(cat_items))
+            level = "error" if share > 25.0 else "warn"
+            findings.append(
+                (level, f"category '{cat}' has {len(bare)} items with no modifiers ({share:.1f}%)")
+            )
+
+    # Modifier stat diversity overall.
+    all_keys: dict[str, int] = {}
+    for item in items.values():
+        for key in _modifier_keys(item):
+            all_keys[key] = all_keys.get(key, 0) + 1
+    if all_keys and len(all_keys) <= 4:
+        used = ", ".join(sorted(all_keys))
+        findings.append(("warn", f"only {len(all_keys)} distinct modifier stats in use: {used}"))
+
+    return findings
+
+
+def _distribution_command(root: Path, fail_on: str) -> int:
+    records, malformed = _load(root)
+    items = records.get("item", {})
+    total = len(items)
+
+    info("=== Inventory ===")
+    info(f"  total items:   {total}")
+    info(f"  malformed:     {len(malformed)}")
+    for type_name in ("recipe", "boss", "domain"):
+        label = "bosses" if type_name == "boss" else f"{type_name}s"
+        info(f"  {label:14s} {len(records.get(type_name, {}))}")
+
+    if not total:
+        info("")
+        info("no items to analyse")
+        return 0
+
+    by_cat = _group_by(items, "scalars", "category")
+    cat_rows = [(cat or "<none>", len(group)) for cat, group in sorted(by_cat.items())]
+    _print_table("Category Distribution", cat_rows, total)
+
+    sub_rows: list[tuple[str, int]] = []
+    for cat, group in sorted(by_cat.items()):
+        for sub, count in sorted(
+            _group_by({item["id"]: item for item in group}, "scalars", "subcategory").items(),
+            key=lambda kv: (-len(kv[1]), kv[0]),
+        ):
+            sub_rows.append((f"{cat or '<none>'}/{sub or '<none>'}", len(count)))
+    _print_table("Category/Subtype Distribution", sub_rows, total)
+
+    by_grade = _group_by(items, "scalars", "grade")
+    grade_rows = [(grade, len(by_grade.get(grade, []))) for grade in GRADE_ORDER]
+    _print_table("Grade Distribution", grade_rows, total)
+
+    src_counts: dict[str, int] = {}
+    for item in items.values():
+        for source in item["arrays"].get("sources", []):
+            key = source.partition(":")[0]
+            src_counts[key] = src_counts.get(key, 0) + 1
+    _print_table("Acquisition Source Distribution", sorted(src_counts.items()), total)
+
+    flat = {item["id"]: item for item in items.values() if item["dicts"].get("flat_modifiers")}
+    pct = {item["id"]: item for item in items.values() if item["dicts"].get("percent_modifiers")}
+    info("")
+    info("=== Modifier Coverage ===")
+    info(f"  items with flat modifiers:    {len(flat):5d}  ({_pct(len(flat), total):5.1f}%)")
+    info(f"  items with percent modifiers: {len(pct):5d}  ({_pct(len(pct), total):5.1f}%)")
+    info(f"  items with no modifiers:      {total - len({*flat, *pct}):5d}")
+
+    stat_counts: dict[str, int] = {}
+    for item in items.values():
+        for key in _modifier_keys(item):
+            stat_counts[key] = stat_counts.get(key, 0) + 1
+    _print_table("Modifier Stat Distribution", sorted(stat_counts.items()), total)
+
+    findings = _collect_findings(items)
+    errors = [msg for level, msg in findings if level == "error"]
+    warnings = [msg for level, msg in findings if level == "warn"]
+
+    info("")
+    info("=== Findings ===")
+    if not findings:
+        info("  none - distribution is healthy")
+    else:
+        for msg in errors:
+            fail(msg)
+        for msg in warnings:
+            info(f"  warn: {msg}")
+        info(f"  {len(errors)} error(s), {len(warnings)} warning(s)")
+
+    if malformed:
+        for path in malformed:
+            fail(f"malformed: {path}")
+
+    if fail_on != "none" and errors:
+        fail(f"distribution audit failed: {len(errors)} error(s)")
+        return 1
+    if fail_on == "warn" and warnings:
+        fail(f"distribution audit failed: {len(warnings)} warning(s)")
+        return 1
+    ok("distribution audit complete")
     return 0
 
 

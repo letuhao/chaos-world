@@ -41,6 +41,7 @@ Prereqs: `uv` (https://docs.astral.sh/uv/) and a Godot 4.7.x binary.
 - `uv run python -m tools new_adr "<title>"` — create the next numbered ADR in `docs/adr/`.
 - `uv run python -m tools deferred report|search|add|done|validate` — inspect and maintain `docs/deferred.jsonl`.
 - `uv run python -m tools data report|audit` — inspect and audit content under `game/data/` (acquisition gaps).
+- `uv run python -m tools data distribution` — audit item characteristic distribution/diversity (category, subtype, grade, source, modifier coverage). Read-only, non-gating by default; `--fail-on warn|error` to gate. Run before planning a generation wave.
 
 **Godot binary is not on `PATH`.** `tools/godot.py` resolves it from `GODOT_BIN`, else the gitignored `.godot-bin` file, else `PATH`, and fails loudly if none resolve. Do not hardcode machine paths anywhere else.
 
