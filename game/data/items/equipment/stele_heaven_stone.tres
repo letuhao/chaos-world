@@ -4,14 +4,14 @@
 
 [resource]
 script = ExtResource("1_item")
-id = &"glaive_eclipse"
-display_name = "Eclipse Glaive"
+id = &"stele_heaven_stone"
+display_name = "Heaven Stele"
 category = &"equipment"
-subcategory = &"weapon"
+subcategory = &"artifact"
 grade = &"heaven"
 sources = Array[StringName]([&"gather"])
-
-
-percent_modifiers = {
-"crit_damage": 0.07
+flat_modifiers = {
+"defense_physical": 28.0,
+"defense_spiritual": 26.0,
+"poise": 9.0
 }

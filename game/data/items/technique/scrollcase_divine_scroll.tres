@@ -4,14 +4,12 @@
 
 [resource]
 script = ExtResource("1_item")
-id = &"glaive_eclipse"
-display_name = "Eclipse Glaive"
-category = &"equipment"
-subcategory = &"weapon"
-grade = &"heaven"
+id = &"scrollcase_divine_scroll"
+display_name = "Divine Scroll Case"
+category = &"technique"
+subcategory = &"scroll"
+grade = &"divine"
 sources = Array[StringName]([&"gather"])
-
-
 percent_modifiers = {
-"crit_damage": 0.07
+"cultivation_rate": 0.15
 }

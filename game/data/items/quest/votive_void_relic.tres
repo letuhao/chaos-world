@@ -4,14 +4,9 @@
 
 [resource]
 script = ExtResource("1_item")
-id = &"pact_avenger_token"
-display_name = "Avenger's Pact Token"
-category = &"equipment"
-subcategory = &"accessory"
+id = &"votive_void_relic"
+display_name = "Votive of the Void"
+category = &"quest"
+subcategory = &"relic"
 grade = &"immortal"
-sources = Array[StringName]([&"quest:pact_of_the_avenger"])
-
-
-percent_modifiers = {
-"crit_damage": 0.1
-}
+sources = Array[StringName]([&"quest:votive_of_the_void"])

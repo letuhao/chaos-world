@@ -4,14 +4,9 @@
 
 [resource]
 script = ExtResource("1_item")
-id = &"glaive_eclipse"
-display_name = "Eclipse Glaive"
-category = &"equipment"
-subcategory = &"weapon"
-grade = &"heaven"
+id = &"carvebone_tusk"
+display_name = "Carved Tusk"
+category = &"material"
+subcategory = &"bone"
+grade = &"earth"
 sources = Array[StringName]([&"gather"])
-
-
-percent_modifiers = {
-"crit_damage": 0.07
-}

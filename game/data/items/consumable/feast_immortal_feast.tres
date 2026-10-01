@@ -4,14 +4,12 @@
 
 [resource]
 script = ExtResource("1_item")
-id = &"glaive_eclipse"
-display_name = "Eclipse Glaive"
-category = &"equipment"
-subcategory = &"weapon"
-grade = &"heaven"
+id = &"feast_immortal_feast"
+display_name = "Immortal Feast"
+category = &"consumable"
+subcategory = &"food"
+grade = &"immortal"
 sources = Array[StringName]([&"gather"])
-
-
-percent_modifiers = {
-"crit_damage": 0.07
+flat_modifiers = {
+"max_health": 140.0
 }
