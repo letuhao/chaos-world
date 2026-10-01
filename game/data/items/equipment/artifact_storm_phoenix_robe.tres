@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"artifact_storm_phoenix_robe"
+display_name = "Phoenix Robe"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"earth"
+sources = Array[StringName]([&"craft:artifact_storm_phoenix_robe_recipe"])
+flat_modifiers = {
+"defense_spiritual": 35.0
+}
+percent_modifiers = {
+"qi_cost_reduction": 7.0
+}

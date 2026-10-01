@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"armor_moonstone_plate_recipe"
+display_name = "Moonstone Plate Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"armor_moonstone_ore", &"armor_gale_essence"])
+outputs = Array[StringName]([&"armor_moonstone_plate"])
