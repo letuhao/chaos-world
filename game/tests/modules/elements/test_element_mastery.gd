@@ -1,6 +1,7 @@
 extends TestCase
 
-## ADR 0004/0005: elemental mastery advances on the shared ladder and gates tiers.
+## ADR 0004/0005/0006: elemental mastery advances on the shared ladder, gates tiers,
+## and carries its own 30-stage display vocabulary.
 
 
 func test_path_def() -> void:
@@ -15,3 +16,12 @@ func test_tier_gating_from_realm_tier() -> void:
 	assert_eq(ElementMastery.max_tier(&"earth_immortal"), 3, "immortal gates tier 3")
 	assert_eq(ElementMastery.max_tier(&"dao_ancestor"), 3, "transcendent capped at tier 3")
 	assert_eq(ElementMastery.max_tier(&"unknown"), 1, "unknown defaults to tier 1")
+
+
+func test_stage_vocabulary_aligns_to_ladder() -> void:
+	var def := ElementMastery.path_def()
+	assert_eq(def.stage_names.size(), 30, "30 stage names")
+	assert_eq(def.stage_name(&"qi_refining"), "Spark", "first stage")
+	assert_eq(def.stage_name(&"tribulation"), "Convergence", "last mortal stage")
+	assert_eq(def.stage_name(&"spirit_sea"), "Rising Tide", "spirit stage")
+	assert_eq(def.stage_name(&"dao_ancestor"), "Elemental Dao Ancestor", "transcendent stage")
