@@ -1,8 +1,8 @@
-"""Content data audit for game/data (ADR 0008).
+"""Content data tooling for game/data (ADR 0008/0009).
 
-Parses Godot `.tres` content under the data root and checks the acquisition
-dependency layers: item sources -> recipes/bosses/domains, recipe materials,
-boss domains, and domain bosses. No Godot runtime required.
+`audit`/`report` parse Godot `.tres` content and check the acquisition dependency
+layers. `new` scaffolds a valid `.tres` so generators do not hand-write the format.
+No Godot runtime required.
 """
 
 from __future__ import annotations
@@ -13,6 +13,18 @@ from pathlib import Path
 from .common import REPO_ROOT, ToolError, fail, info, ok
 
 DATA_ROOT = REPO_ROOT / "game" / "data"
+
+CATEGORIES = {
+    "material",
+    "consumable",
+    "equipment",
+    "technique",
+    "quest",
+    "key",
+    "currency",
+    "misc",
+}
+GRADES = {"mortal", "spirit", "earth", "heaven", "immortal", "divine"}
 
 # folder -> {id, arrays, scalars}
 SCHEMA = {
@@ -25,13 +37,38 @@ TYPE_BY_FOLDER = {"items": "item", "recipes": "recipe", "bosses": "boss", "domai
 BASE_SOURCES = {"gather", "starter"}
 REF_SOURCES = {"craft": "recipe", "boss": "boss", "domain": "domain"}
 
+SCRIPTS = {
+    "item": "res://src/modules/items/item_def.gd",
+    "recipe": "res://src/modules/items/recipe_def.gd",
+    "boss": "res://src/modules/world/boss_def.gd",
+    "domain": "res://src/modules/world/domain_def.gd",
+}
+SCRIPT_CLASS = {"item": "ItemDef", "recipe": "RecipeDef", "boss": "BossDef", "domain": "DomainDef"}
+
 
 def register(subparsers) -> None:
-    parser = subparsers.add_parser("data", help="audit content data under game/data")
+    parser = subparsers.add_parser("data", help="scaffold and audit content under game/data")
     actions = parser.add_subparsers(dest="data_action", required=True)
+
     for name in ("audit", "report"):
         action = actions.add_parser(name)
         action.add_argument("--root", default=None, help="data root (default game/data)")
+
+    new = actions.add_parser("new", help="scaffold a content .tres")
+    new.add_argument("--root", default=None)
+    new.add_argument("--kind", required=True, choices=["item", "recipe", "boss", "domain"])
+    new.add_argument("--id", required=True)
+    new.add_argument("--name", default=None)
+    new.add_argument("--category", default="misc")
+    new.add_argument("--subtype", default="")
+    new.add_argument("--grade", default="mortal")
+    new.add_argument("--sources", default="")
+    new.add_argument("--station", default="")
+    new.add_argument("--inputs", default="")
+    new.add_argument("--outputs", default="")
+    new.add_argument("--domain", default="")
+    new.add_argument("--loot", default="")
+    new.add_argument("--bosses", default="")
 
 
 def run(args) -> int:
@@ -40,6 +77,8 @@ def run(args) -> int:
         return _audit_command(root)
     if args.data_action == "report":
         return _report_command(root)
+    if args.data_action == "new":
+        return _new_command(root, args)
     raise ToolError(f"unknown data action: {args.data_action}")
 
 
@@ -201,4 +240,81 @@ def _report_command(root: Path) -> int:
         info(f"{type_name}: {len(entries)}")
         for record_id in sorted(entries):
             info(f"    {record_id}")
+    return 0
+
+
+def _display_name(record_id: str) -> str:
+    return " ".join(word.capitalize() for word in record_id.split("_"))
+
+
+def _array_literal(values: list[str]) -> str:
+    return "Array[StringName]([" + ", ".join(f'&"{value}"' for value in values) + "])"
+
+
+def _split_list(raw: str) -> list[str]:
+    return [part.strip() for part in raw.split(",") if part.strip()]
+
+
+def _tres(kind: str, lines: list[str]) -> str:
+    header = (
+        f'[gd_resource type="Resource" script_class="{SCRIPT_CLASS[kind]}" '
+        "load_steps=2 format=3]\n\n"
+        f'[ext_resource type="Script" path="{SCRIPTS[kind]}" id="1_{kind}"]\n\n'
+        "[resource]\n"
+        f'script = ExtResource("1_{kind}")\n'
+    )
+    return header + "\n".join(lines) + "\n"
+
+
+def _new_command(root: Path, args) -> int:
+    record_id = args.id
+    kind = args.kind
+    name = args.name or _display_name(record_id)
+
+    if kind == "item":
+        category = args.category
+        if category not in CATEGORIES:
+            raise ToolError(f"unknown category '{category}' (allowed: {sorted(CATEGORIES)})")
+        if args.grade not in GRADES:
+            raise ToolError(f"unknown grade '{args.grade}' (allowed: {sorted(GRADES)})")
+        path = root / "items" / category / f"{record_id}.tres"
+        lines = [
+            f'id = &"{record_id}"',
+            f'display_name = "{name}"',
+            f'category = &"{category}"',
+            f'subcategory = &"{args.subtype}"',
+            f'grade = &"{args.grade}"',
+            f"sources = {_array_literal(_split_list(args.sources))}",
+        ]
+    elif kind == "recipe":
+        path = root / "recipes" / f"{record_id}.tres"
+        lines = [
+            f'id = &"{record_id}"',
+            f'display_name = "{name}"',
+            f'station = &"{args.station}"',
+            f"inputs = {_array_literal(_split_list(args.inputs))}",
+            f"outputs = {_array_literal(_split_list(args.outputs))}",
+        ]
+    elif kind == "boss":
+        path = root / "bosses" / f"{record_id}.tres"
+        lines = [
+            f'id = &"{record_id}"',
+            f'display_name = "{name}"',
+            f'domain_id = &"{args.domain}"',
+            f"loot = {_array_literal(_split_list(args.loot))}",
+        ]
+    else:  # domain
+        path = root / "domains" / f"{record_id}.tres"
+        lines = [
+            f'id = &"{record_id}"',
+            f'display_name = "{name}"',
+            f"boss_ids = {_array_literal(_split_list(args.bosses))}",
+        ]
+
+    if path.exists():
+        raise ToolError(f"already exists: {path}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(_tres(kind, lines), encoding="utf-8")
+    shown = path.relative_to(REPO_ROOT).as_posix() if path.is_relative_to(REPO_ROOT) else str(path)
+    ok(f"created {shown}")
     return 0
