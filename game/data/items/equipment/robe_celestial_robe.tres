@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"robe_celestial_robe"
+display_name = "Celestial Robe"
+category = &"equipment"
+subcategory = &"armor"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:robe_celestial_robe_recipe"])
+flat_modifiers = {
+"defense_spiritual": 60.0,
+"max_qi": 160.0
+}
+percent_modifiers = {
+"qi_regen": 0.15,
+"status_resistance": 0.12,
+"cultivation_rate": 0.12
+}

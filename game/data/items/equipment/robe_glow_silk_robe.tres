@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"robe_glow_silk_robe"
+display_name = "Glow Silk Robe"
+category = &"equipment"
+subcategory = &"armor"
+grade = &"earth"
+sources = Array[StringName]([&"craft:robe_glow_silk_robe_recipe"])
+flat_modifiers = {
+"defense_spiritual": 28.0,
+"max_qi": 70.0
+}
+percent_modifiers = {
+"qi_regen": 0.08,
+"status_resistance": 0.06,
+"cultivation_rate": 0.07
+}

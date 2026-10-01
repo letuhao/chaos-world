@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"crown_storm_sovereign_plate"
+display_name = "Storm Sovereign Plate"
+category = &"equipment"
+subcategory = &"armor"
+grade = &"immortal"
+sources = Array[StringName]([&"boss:crown_storm_sovereign"])
+flat_modifiers = {
+"defense_physical": 55.0,
+"defense_spiritual": 35.0,
+"max_health": 300.0
+}
+percent_modifiers = {
+"poise": 12.0
+}

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"crown_storm_sovereign_charm"
+display_name = "Storm Sovereign Charm"
+category = &"equipment"
+subcategory = &"armor"
+grade = &"immortal"
+sources = Array[StringName]([&"boss:crown_storm_sovereign"])
+flat_modifiers = {
+"defense_physical": 30.0,
+"defense_spiritual": 50.0,
+"max_health": 200.0,
+"status_resistance": 15.0
+}
+percent_modifiers = {
+"poise": 15.0
+}

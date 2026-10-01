@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"bracelet_moonwell_cuff"
+display_name = "Moonwell Cuff"
+category = &"equipment"
+subcategory = &"accessory"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:bracelet_moonwell_cuff_recipe"])
+flat_modifiers = {
+"attack_physical": 6.0
+}
+percent_modifiers = {
+"crit_chance": 0.03
+}
