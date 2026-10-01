@@ -135,3 +135,6 @@
 {"id":"technique-formula-family","path":"res://assets/items/generated/jade_slip.png","type":"item_icon","match":{"category":"technique","subcategory":"formula"},"source":"reused generated jade-slip family"}
 {"id":"technique-mantra-family","path":"res://assets/items/generated/technique_scroll.png","type":"item_icon","match":{"category":"technique","subcategory":"mantra"},"source":"reused generated technique-scroll family"}
 {"id":"technique-rite-family","path":"res://assets/items/generated/ward_talisman.png","type":"item_icon","match":{"category":"technique","subcategory":"rite"},"source":"reused generated ward-talisman family"}
+{"id":"consumable-decree-family","path":"res://assets/items/generated/sealed_edict.png","type":"item_icon","match":{"category":"consumable","subcategory":"decree"},"source":"OpenAI image_gen; 2026-10-02; sealed-edict family seed"}
+{"id":"technique-treaty-family","path":"res://assets/items/generated/jade_slip.png","type":"item_icon","match":{"category":"technique","subcategory":"treaty"},"source":"reused generated jade-slip family"}
+{"id":"consumable-food-feast","path":"res://assets/items/generated/cultivation_feast.png","type":"item_icon","match":{"category":"consumable","subcategory":"food","id_prefix":"feast_"},"source":"OpenAI image_gen; 2026-10-02; cultivation-feast family seed"}
