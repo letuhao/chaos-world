@@ -15,5 +15,5 @@ flat_modifiers = {
 "max_qi": 60.0
 }
 percent_modifiers = {
-"cooldown_reduction": 10.0
+"cooldown_reduction": 0.1
 }

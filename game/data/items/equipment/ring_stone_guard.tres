@@ -14,5 +14,5 @@ flat_modifiers = {
 "max_health": 40.0
 }
 percent_modifiers = {
-"cooldown_reduction": 3.0
+"cooldown_reduction": 0.03
 }

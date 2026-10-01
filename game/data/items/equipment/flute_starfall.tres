@@ -14,5 +14,5 @@ flat_modifiers = {
 "attack_spiritual": 25.0
 }
 percent_modifiers = {
-"status_resistance": 8.0
+"status_resistance": 0.08
 }

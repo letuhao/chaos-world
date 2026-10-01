@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"L4_stone_colossus_granite_ward"
+display_name = "Granite Ward"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"earth"
+sources = Array[StringName]([&"boss:d4_stone_colossus"])
+flat_modifiers = {
+"max_stamina": 30.0
+}
+percent_modifiers = {
+"stamina_regen": 0.06
+}

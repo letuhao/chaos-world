@@ -11,5 +11,5 @@ subcategory = &"accessory"
 grade = &"earth"
 sources = Array[StringName]([&"craft:ring_wind_whisper_recipe"])
 percent_modifiers = {
-"cultivation_rate": 5.0
+"cultivation_rate": 0.05
 }

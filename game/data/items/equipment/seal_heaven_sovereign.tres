@@ -17,5 +17,5 @@ flat_modifiers = {
 "damage_reduction": 0.05
 }
 percent_modifiers = {
-"status_resistance": 4.0
+"status_resistance": 0.04
 }

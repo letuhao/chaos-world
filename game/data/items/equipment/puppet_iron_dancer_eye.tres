@@ -14,5 +14,5 @@ flat_modifiers = {
 "penetration": 20.0
 }
 percent_modifiers = {
-"evasion": 4.0
+"evasion": 0.04
 }

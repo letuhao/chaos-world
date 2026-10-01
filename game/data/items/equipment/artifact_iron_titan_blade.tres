@@ -14,5 +14,5 @@ flat_modifiers = {
 "attack_spiritual": 40.0
 }
 percent_modifiers = {
-"attack_speed": 6.0
+"attack_speed": 0.06
 }

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"L6_serpent_scale_reliquary"
+display_name = "Serpent Scale Reliquary"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"spirit"
+sources = Array[StringName]([&"boss:d6_jade_serpent"])
+flat_modifiers = {
+"defense_spiritual": 22.0
+}
+percent_modifiers = {
+"qi_regen": 0.06
+}

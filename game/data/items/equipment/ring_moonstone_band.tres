@@ -11,5 +11,5 @@ subcategory = &"accessory"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:ring_moonstone_band_recipe"])
 percent_modifiers = {
-"crit_chance": 3.0
+"crit_chance": 0.03
 }

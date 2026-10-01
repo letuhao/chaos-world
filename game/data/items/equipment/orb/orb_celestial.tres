@@ -14,6 +14,5 @@ flat_modifiers = {
 "attack_spiritual": 80.0
 }
 percent_modifiers = {
-"qi_regen": 7.0,
-"cooldown_reduction": 7.0
+"cooldown_reduction": 0.07
 }

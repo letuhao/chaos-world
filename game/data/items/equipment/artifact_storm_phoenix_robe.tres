@@ -14,5 +14,5 @@ flat_modifiers = {
 "defense_spiritual": 35.0
 }
 percent_modifiers = {
-"qi_cost_reduction": 7.0
+"qi_cost_reduction": 0.07
 }

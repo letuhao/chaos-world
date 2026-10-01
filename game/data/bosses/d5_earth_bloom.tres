@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d5_earth_bloom"
 display_name = "Earth Bloom Lesser"
 domain_id = &"succubus_earth_domain"
-loot = Array[StringName]([&"succubus_earth_heart_core", &"gem_earthjade"])
+loot = Array[StringName]([&"succubus_earth_heart_core", &"gem_earthjade", &"L5_earth_bloom_root_core", &"L5_earth_bloom_deep_ore"])

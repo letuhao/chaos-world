@@ -15,5 +15,5 @@ flat_modifiers = {
 "qi_regen": 6.0
 }
 percent_modifiers = {
-"crit_chance": 3.0
+"crit_chance": 0.03
 }

@@ -582,6 +582,27 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
             detail = "; ".join(f"{k} x{len(v)}" for k, v in sorted(offenders.items()))
             findings.append(("error", f"FLAT modifier on rate stat(s), must be PERCENT: {detail}"))
 
+    # A PERCENT modifier above 1.0 on a rate stat is a magnitude written into the
+    # percent block: `(base + flat) * (1 + percent)` makes 3.0 mean +300%, not
+    # +3%. Every legitimate value in the corpus is below 0.2.
+    hot: dict[str, list[str]] = {}
+    for item_id, item in sorted(items.items()):
+        for key, value in item["dicts"].get("percent_modifiers", {}).items():
+            if key in rate and value > 1.0:
+                hot.setdefault(key, []).append(item_id)
+    if hot:
+        detail = "; ".join(
+            f"{k} x{len(v)} (max {max(items[i]['dicts']['percent_modifiers'][k] for i in v):g})"
+            for k, v in sorted(hot.items())
+        )
+        findings.append(
+            (
+                "error",
+                "PERCENT modifier above 1.0 on a rate stat(s), reads as a "
+                f"magnitude not a percentage: {detail}",
+            )
+        )
+
     # A zero-valued modifier grants nothing.
     noop = [
         item_id

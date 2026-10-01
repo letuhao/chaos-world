@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"L2_void_serpent_mirror_manual"
+display_name = "Void Serpent Mirror Manual"
+category = &"technique"
+subcategory = &"manual"
+grade = &"earth"
+sources = Array[StringName]([&"boss:d2_void_serpent"])
+percent_modifiers = {
+"evasion": 0.05
+}

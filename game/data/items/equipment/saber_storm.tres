@@ -14,5 +14,5 @@ flat_modifiers = {
 "attack_physical": 20.0
 }
 percent_modifiers = {
-"attack_speed": 8.0
+"attack_speed": 0.08
 }

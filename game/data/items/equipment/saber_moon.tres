@@ -14,5 +14,5 @@ flat_modifiers = {
 "attack_physical": 40.0
 }
 percent_modifiers = {
-"crit_chance": 5.0
+"crit_chance": 0.05
 }

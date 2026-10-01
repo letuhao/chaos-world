@@ -15,5 +15,5 @@ flat_modifiers = {
 "defense_physical": 20.0
 }
 percent_modifiers = {
-"status_resistance": 6.0
+"status_resistance": 0.06
 }

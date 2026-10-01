@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d2_ember_guardian"
 display_name = "Ember Guardian Lesser"
 domain_id = &"elemental_mortal_domain"
-loot = Array[StringName]([&"elemental_mortal_core", &"embershard_mortal_seed"])
+loot = Array[StringName]([&"elemental_mortal_core", &"embershard_mortal_seed", &"L2_ember_guardian_censer", &"L2_ember_ash_core"])

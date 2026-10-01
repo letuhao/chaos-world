@@ -14,5 +14,5 @@ flat_modifiers = {
 "attack_spiritual": 34.0
 }
 percent_modifiers = {
-"cultivation_rate": 7.0
+"cultivation_rate": 0.07
 }

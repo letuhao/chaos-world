@@ -15,5 +15,5 @@ flat_modifiers = {
 "max_health": 50.0
 }
 percent_modifiers = {
-"status_resistance": 3.0
+"status_resistance": 0.03
 }

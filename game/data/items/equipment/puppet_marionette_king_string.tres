@@ -10,8 +10,6 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:puppet_marionette_king"])
-
 percent_modifiers = {
-"attack_speed": 0.12,
-"cooldown_reduction": 4
+"cooldown_reduction": 0.04
 }

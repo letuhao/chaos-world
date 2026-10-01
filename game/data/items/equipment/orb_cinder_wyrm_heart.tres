@@ -15,5 +15,5 @@ flat_modifiers = {
 "max_qi": 50.0
 }
 percent_modifiers = {
-"cultivation_rate": 5.0
+"cultivation_rate": 0.05
 }

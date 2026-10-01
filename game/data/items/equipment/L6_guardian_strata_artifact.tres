@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"L6_guardian_strata_artifact"
+display_name = "Strata Guardian Core"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"earth"
+sources = Array[StringName]([&"boss:d6_stone_guardian"])
+flat_modifiers = {
+"poise": 22.0
+}
+percent_modifiers = {
+"defense_spiritual": 7.0
+}
