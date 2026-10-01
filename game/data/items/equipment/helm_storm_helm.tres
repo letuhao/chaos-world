@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"helm_storm_helm"
+display_name = "Storm Helm"
+category = &"equipment"
+subcategory = &"armor"
+grade = &"earth"
+sources = Array[StringName]([&"craft:helm_storm_helm_recipe"])
+flat_modifiers = {
+"defense_spiritual": 6.0
+}
