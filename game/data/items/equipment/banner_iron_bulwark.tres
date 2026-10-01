@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"banner_iron_bulwark"
+display_name = "Iron Bulwark Banner"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:banner_iron_bulwark_recipe"])
+flat_modifiers = {
+"defense_physical": 10.0,
+"max_health": 30.0
+}

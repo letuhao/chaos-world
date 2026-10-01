@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"bracer_heaven"
+display_name = "Heaven Bracer"
+category = &"equipment"
+subcategory = &"armor"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:bracer_heaven_recipe"])
+flat_modifiers = {
+"defense_physical": 15.0,
+"max_health": 30.0,
+"status_resistance": 10.0,
+"poise": 12.0
+}

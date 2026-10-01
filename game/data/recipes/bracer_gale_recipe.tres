@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"bracer_gale_recipe"
+display_name = "Gale Bracer Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"bracer_boar_hide", &"bracer_moon_essence"])
+outputs = Array[StringName]([&"bracer_gale"])
