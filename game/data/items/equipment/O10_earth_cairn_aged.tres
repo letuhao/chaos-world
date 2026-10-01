@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"O10_earth_cairn_aged"
+display_name = "Earth Cairn Aged"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"earth"
+sources = Array[StringName]([&"craft:O10_earth_cairn_aged_recipe"])
+percent_modifiers = {
+"dao_heart": 0.09
+}

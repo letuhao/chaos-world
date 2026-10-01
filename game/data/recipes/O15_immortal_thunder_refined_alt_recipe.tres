@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"O15_immortal_thunder_refined_alt_recipe"
+display_name = "Immortal Thunder Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"O15_immortal_thunder_base", &"astral_cosmic_dust_ore", &"gemstone_alexandrite"])
+outputs = Array[StringName]([&"O15_immortal_thunder_refined"])

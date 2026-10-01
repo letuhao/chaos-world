@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"O12_heaven_jade_seal_refined_alt_recipe"
+display_name = "Heaven Jade Seal Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"O12_heaven_jade_seal_base", &"gemstone_sapphire", &"pendant_heaven_jade"])
+outputs = Array[StringName]([&"O12_heaven_jade_seal_refined"])
