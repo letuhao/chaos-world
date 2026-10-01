@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"torc_copper"
+display_name = "Copper Torc"
+category = &"equipment"
+subcategory = &"accessory"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:torc_copper_recipe"])
+flat_modifiers = {
+"max_health": 20.0
+}
