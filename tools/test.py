@@ -18,5 +18,13 @@ def run(args) -> int:
         return 0
     runner = GAME_DIR / "tests" / "run_tests.gd"
     if not runner.is_file():
-        raise ToolError(f"no test runner at {runner}; add one that calls the pinned test addon")
-    return godot.run_godot(["--headless", "--path", str(GAME_DIR), "-s", RUNNER_REL]).returncode
+        raise ToolError(f"no test runner at {runner}")
+    try:
+        godot.find_godot()
+    except ToolError as exc:
+        warn(f"{exc} Skipping tests.")
+        return 0
+    # Populate .godot/ on a fresh checkout so class_name types resolve.
+    godot.run_godot(["--headless", "--path", str(GAME_DIR), "--import"])
+    result = godot.run_godot(["--headless", "--path", str(GAME_DIR), "-s", RUNNER_REL])
+    return result.returncode
