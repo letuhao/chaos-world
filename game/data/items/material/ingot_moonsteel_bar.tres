@@ -9,4 +9,4 @@ display_name = "Moonsteel Bar"
 category = &"material"
 subcategory = &"ingot"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"craft:ingot_moonsteel_bar_recipe"])

@@ -9,4 +9,4 @@ display_name = "Rough Draft"
 category = &"material"
 subcategory = &"tablet"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"craft:transcribe_rough_draft_recipe"])

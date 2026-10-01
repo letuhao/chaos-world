@@ -9,4 +9,4 @@ display_name = "Perfect Draft"
 category = &"material"
 subcategory = &"tablet"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"craft:transcribe_perfect_draft_recipe"])

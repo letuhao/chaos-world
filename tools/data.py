@@ -244,6 +244,20 @@ def _audit(root: Path) -> list[str]:
         if not item["scalars"].get("subcategory"):
             gaps.append(f"item {item_id}: has no subcategory")
 
+    # A manufactured material (an ingot, a cut gem, a cordial) is not foraged.
+    # If a recipe produces it and its only source is `gather`, the source
+    # metadata claims a route the content does not support.
+    produced_by: dict[str, str] = {}
+    for recipe_id, recipe in recipes.items():
+        for output_id in recipe["arrays"].get("outputs", []):
+            produced_by.setdefault(output_id, recipe_id)
+    for item_id, recipe_id in sorted(produced_by.items()):
+        item = items.get(item_id)
+        if not item or item["scalars"].get("category") != "material":
+            continue
+        if item["arrays"].get("sources") == ["gather"]:
+            gaps.append(f"item {item_id}: produced by '{recipe_id}' but sourced only from 'gather'")
+
     for recipe_id, recipe in recipes.items():
         inputs = recipe["arrays"].get("inputs", [])
         for item_id in inputs:

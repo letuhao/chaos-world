@@ -9,4 +9,4 @@ display_name = "Fine Thread"
 category = &"material"
 subcategory = &"filament"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"craft:spin_fine_thread_recipe"])

@@ -9,4 +9,4 @@ display_name = "Coarse Thread"
 category = &"material"
 subcategory = &"filament"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"craft:spin_coarse_thread_recipe"])

@@ -9,4 +9,4 @@ display_name = "Spirit Cordial"
 category = &"material"
 subcategory = &"essence"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"craft:distil_spirit_cordial_recipe"])

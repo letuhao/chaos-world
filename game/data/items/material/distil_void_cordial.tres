@@ -9,4 +9,4 @@ display_name = "Void Cordial"
 category = &"material"
 subcategory = &"essence"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"craft:distil_void_cordial_recipe"])

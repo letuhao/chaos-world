@@ -9,4 +9,4 @@ display_name = "Mooncloth Thread"
 category = &"material"
 subcategory = &"filament"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"craft:spin_mooncloth_thread_recipe"])

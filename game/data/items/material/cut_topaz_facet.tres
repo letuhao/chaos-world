@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1_item")
-id = &"transcribe_clear_draft"
-display_name = "Clear Draft"
+id = &"cut_topaz_facet"
+display_name = "Cut Topaz Facet"
 category = &"material"
-subcategory = &"tablet"
+subcategory = &"gemstone"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:transcribe_clear_draft_recipe"])
+sources = Array[StringName]([&"craft:cut_topaz_facet_recipe"])

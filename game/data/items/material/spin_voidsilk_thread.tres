@@ -9,4 +9,4 @@ display_name = "Voidsilk Thread"
 category = &"material"
 subcategory = &"filament"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"craft:spin_voidsilk_thread_recipe"])

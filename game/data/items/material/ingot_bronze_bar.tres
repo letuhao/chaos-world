@@ -9,4 +9,4 @@ display_name = "Bronze Bar"
 category = &"material"
 subcategory = &"ingot"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"craft:ingot_bronze_bar_recipe"])

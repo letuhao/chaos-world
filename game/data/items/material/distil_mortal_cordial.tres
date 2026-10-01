@@ -9,4 +9,4 @@ display_name = "Mortal Cordial"
 category = &"material"
 subcategory = &"essence"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"craft:distil_mortal_cordial_recipe"])
