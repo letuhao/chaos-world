@@ -1,0 +1,21 @@
+class_name QiStats
+extends RefCounted
+
+## Stat and resource ids owned by the `qi_cultivation` module (ADR 0011).
+
+# Resources
+const QI := &"qi"
+const QI_PURITY := &"qi_purity"
+
+# Base attributes
+const QI_AFFINITY := &"qi_affinity"
+const QI_CONTROL := &"qi_control"
+const DANTIAN_CAPACITY := &"dantian_capacity"
+
+# Derived stats
+const QI_REGEN_RATE := &"qi_regen_rate"
+const QI_ABSORPTION := &"qi_absorption"
+const TECHNIQUE_COST_REDUCTION := &"technique_cost_reduction"
+const TECHNIQUE_POWER := &"technique_power"
+const FLIGHT_SPEED := &"flight_speed"
+const QI_SENSE_RANGE := &"qi_sense_range"

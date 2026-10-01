@@ -1,0 +1,76 @@
+extends TestCase
+
+## ADR 0011: QiProvider emits derived stats from base attributes, realm rank,
+## and qi_purity.
+
+
+func _actor_with_module() -> Actor:
+	var actor := (
+		Actor
+		. new(
+			&"cultivator",
+			{
+				Stat.SPIRIT: 10.0,
+				Stat.APTITUDE: 10.0,
+				QiStats.QI_AFFINITY: 20.0,
+				QiStats.QI_CONTROL: 15.0,
+				QiStats.DANTIAN_CAPACITY: 30.0,
+			}
+		)
+	)
+	QiCultivationApi.attach(actor)
+	return actor
+
+
+func test_qi_regen_rate() -> void:
+	var actor := _actor_with_module()
+	# (20 * 0.3 + 10 * 0.1) * 1.0 = 7.0
+	assert_almost_eq(actor.stats.derived(QiStats.QI_REGEN_RATE), 7.0, "regen rate")
+
+
+func test_qi_absorption() -> void:
+	var actor := _actor_with_module()
+	# (20 * 0.5 + 10 * 0.2) * (0.5 + 1.0 * 0.5) = 12.0 * 1.0 = 12.0
+	assert_almost_eq(actor.stats.derived(QiStats.QI_ABSORPTION), 12.0, "absorption")
+
+
+func test_technique_cost_reduction() -> void:
+	var actor := _actor_with_module()
+	# clamp(15 * 0.002, 0, 0.5) = 0.03
+	assert_almost_eq(actor.stats.derived(QiStats.TECHNIQUE_COST_REDUCTION), 0.03, "cost reduction")
+
+
+func test_technique_power() -> void:
+	var actor := _actor_with_module()
+	# (1.0 + 20 * 0.05) * (0.5 + 1.0 * 0.5) * 1.0 = 2.0 * 1.0 = 2.0
+	assert_almost_eq(actor.stats.derived(QiStats.TECHNIQUE_POWER), 2.0, "technique power")
+
+
+func test_flight_speed() -> void:
+	var actor := _actor_with_module()
+	# 30 * 2.0 * (1.0 + 0 * 0.05) = 60.0
+	assert_almost_eq(actor.stats.derived(QiStats.FLIGHT_SPEED), 60.0, "flight speed")
+
+
+func test_qi_sense_range() -> void:
+	var actor := _actor_with_module()
+	# (20 * 10 + 15 * 5) * (0.5 + 1.0 * 0.5) = 275 * 1.0 = 275
+	assert_almost_eq(actor.stats.derived(QiStats.QI_SENSE_RANGE), 275.0, "sense range")
+
+
+func test_realm_scaling() -> void:
+	var actor := _actor_with_module()
+	actor.set_path(PathState.new(QiPath.PATH_ID, &"qi_refining"))
+	# rank 0: mult = 1.0
+	assert_almost_eq(actor.stats.derived(QiStats.QI_REGEN_RATE), 7.0, "rank 0 regen")
+	actor.path(QiPath.PATH_ID).rank_id = &"spirit_sea"
+	# rank 10: mult = 2.0, regen = 7.0 * 2.0 = 14.0
+	assert_almost_eq(actor.stats.derived(QiStats.QI_REGEN_RATE), 14.0, "rank 10 regen")
+
+
+func test_purity_affects_stats() -> void:
+	var actor := _actor_with_module()
+	var purity_pool := actor.resource(QiStats.QI_PURITY)
+	purity_pool.current = 50.0
+	# purity = 0.5, absorption = 12.0 * (0.5 + 0.5 * 0.5) = 12.0 * 0.75 = 9.0
+	assert_almost_eq(actor.stats.derived(QiStats.QI_ABSORPTION), 9.0, "half purity")

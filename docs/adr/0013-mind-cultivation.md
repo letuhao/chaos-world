@@ -11,7 +11,7 @@ The game needs a third major cultivation system alongside qi and body. Mind Cult
 
 - **Path definition**: `path_id: "mind_cultivation"`, display name "Mind Cultivation". 30 stage names aligned to the shared ladder (ADR 0005/0006): Mind Awakening, Focus, Clarity, Insight, Enlightenment, ... (full array in `mind_path.gd`).
 - **Resources** (`ResourcePool`): `mind_power` (mental energy pool, fuels techniques) and `awareness` (perceptual acuity, affects detection/crit/dodge).
-- **Base attributes**: `will` (exists in core, ADR 0001 — mind cultivation amplifies it), `perception` (sensory/extrasensory awareness), `mental_clarity` (resistance to illusions/confusion), `dao_heart` (exists as core derived stat — mind cultivation is its primary source).
+- **Base attributes** (module-specific, stored in `ActorStats._base` alongside core's 7): `perception` (sensory/extrasensory awareness), `mental_clarity` (resistance to illusions/confusion). `will` (core, ADR 0001) is amplified by mind cultivation; `dao_heart` (core derived stat) is primarily sourced from mind cultivation via provider.
 - **Derived stats** (emitted by `MindProvider`): `mental_attack`, `mental_defense`, `spiritual_sense_range`, `critical_chance`, `dodge_chance`, `illusion_resistance`, `mind_technique_power`, `comprehension_bonus`.
 - **Progression**: `LadderProgression` (shared ladder, ADR 0005). Breakthrough requires: mind_power pool full, comprehension threshold met, mental_clarity threshold met (low deviation risk), and a breakthrough pill item. Failure causes mental deviation — confusion, hallucinations, dao heart damage.
 - **Stat provider**: `MindProvider` implements `StatProvider` (ADR 0002); emits derived stats from base attributes + realm multipliers + affinities.

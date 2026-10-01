@@ -31,6 +31,30 @@
         "contracts",
         "core"
       ]
+    },
+    "combat": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
+    "body_cultivation": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
+    "qi_cultivation": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
+    "mind_cultivation": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
     }
   }
 }

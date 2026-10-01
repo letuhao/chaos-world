@@ -19,3 +19,8 @@ static func inventory(actor: Actor) -> Inventory:
 
 static func equipment(actor: Actor) -> Equipment:
 	return actor.component(EQUIPMENT_COMPONENT)
+
+
+static func craft(recipe: RecipeDef, inventory: Inventory) -> bool:
+	var crafting := Crafting.new(recipe.station)
+	return crafting.craft(recipe, inventory)

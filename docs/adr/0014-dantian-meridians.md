@@ -41,7 +41,7 @@ ADR 0011 established Qi Cultivation with a `qi` pool, `qi_purity`, and a `dantia
 - Cultivation speed = `base * (1 + meridian_open_bonus) * realm_multiplier` (ADR 0011 `QiProvider` reads meridian state via facade).
 - Breakthrough requires: full dantian + required meridians Open + comprehension ≥ threshold + pill (ADR 0011).
 - Failed breakthrough: dantian damage (capacity -25%) + 1-3 random meridians Damaged.
-- Meridians are shared across all 3 systems — stored in `qi_cultivation` module, exposed via `api.gd` facade for ADR 0012/0013 to read.
+- Meridians are shared across all 3 systems — owned by `qi_cultivation` module (ADR 0017 defines the network), exposed via `api.gd` facade for all modules to read. Body cultivation (ADR 0015) can mutate meridian state (expand/strengthen/repair); mind cultivation (ADR 0016) reads only.
 
 ## Consequences
 

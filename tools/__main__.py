@@ -4,7 +4,20 @@ from __future__ import annotations
 
 import argparse
 
-from . import arch, check, data, deferred, export, fmt, lint, new_adr, new_module, run, test
+from . import (
+    arch,
+    backlog,
+    check,
+    data,
+    deferred,
+    export,
+    fmt,
+    lint,
+    new_adr,
+    new_module,
+    run,
+    test,
+)
 from .common import ToolError, fail
 
 COMMANDS = {
@@ -18,6 +31,7 @@ COMMANDS = {
     "new_module": new_module,
     "new_adr": new_adr,
     "deferred": deferred,
+    "backlog": backlog,
     "data": data,
 }
 
