@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"G10_earth_reliquary_recipe"
+display_name = "Earth Reliquary Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"monster_stone_golem_bone", &"L3_coral_serpent_bone"])
+outputs = Array[StringName]([&"G10_earth_reliquary"])

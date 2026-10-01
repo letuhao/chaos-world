@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"G6_beastcore_immortal_salve_recipe"
+display_name = "Beastcore Immortal Salve Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"G6_heaven_condensate", &"L5_immortal_tide_deep_core"])
+outputs = Array[StringName]([&"D6_immortal_healthsalve"])
