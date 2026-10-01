@@ -17,6 +17,10 @@ static func attach(actor: Actor) -> void:
 	_sync_essence(actor)
 
 
+static func succubus_path() -> CultivationPathDef:
+	return SuccubusPath.path_def()
+
+
 static func _ensure_resources(actor: Actor) -> void:
 	_add_pool(actor, DualCultivationStats.ESSENCE, true)
 	_add_pool(actor, DualCultivationStats.DESIRE, false)

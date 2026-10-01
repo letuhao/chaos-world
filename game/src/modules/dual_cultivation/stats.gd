@@ -20,6 +20,7 @@ const DEVIATION_RISK := &"deviation_risk"
 const DUAL_CULTIVATION_RATE := &"dual_cultivation_rate"
 const QI_TRANSFER_RATE := &"qi_transfer_rate"
 const HARMONY := &"harmony"
+const SUCCUBUS_DOMINION := &"succubus_dominion"
 
 # Resources
 const ESSENCE := &"essence"
