@@ -63,6 +63,8 @@ def register(subparsers) -> None:
     new.add_argument("--subtype", default="")
     new.add_argument("--grade", default="mortal")
     new.add_argument("--sources", default="")
+    new.add_argument("--flat", default="")
+    new.add_argument("--percent", default="")
     new.add_argument("--station", default="")
     new.add_argument("--inputs", default="")
     new.add_argument("--outputs", default="")
@@ -255,6 +257,28 @@ def _split_list(raw: str) -> list[str]:
     return [part.strip() for part in raw.split(",") if part.strip()]
 
 
+def _split_pairs(raw: str) -> list[tuple[str, float]]:
+    pairs: list[tuple[str, float]] = []
+    for part in raw.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        key, _, value = part.partition("=")
+        key = key.strip()
+        if not key:
+            continue
+        try:
+            pairs.append((key, float(value)))
+        except ValueError as exc:
+            raise ToolError(f"bad modifier '{part}' (expected stat=value)") from exc
+    return pairs
+
+
+def _dict_literal(pairs: list[tuple[str, float]]) -> str:
+    body = ",\n".join(f'"{key}": {value}' for key, value in pairs)
+    return "{\n" + body + "\n}"
+
+
 def _tres(kind: str, lines: list[str]) -> str:
     header = (
         f'[gd_resource type="Resource" script_class="{SCRIPT_CLASS[kind]}" '
@@ -286,6 +310,12 @@ def _new_command(root: Path, args) -> int:
             f'grade = &"{args.grade}"',
             f"sources = {_array_literal(_split_list(args.sources))}",
         ]
+        flat = _split_pairs(args.flat)
+        if flat:
+            lines.append(f"flat_modifiers = {_dict_literal(flat)}")
+        percent = _split_pairs(args.percent)
+        if percent:
+            lines.append(f"percent_modifiers = {_dict_literal(percent)}")
     elif kind == "recipe":
         path = root / "recipes" / f"{record_id}.tres"
         lines = [
