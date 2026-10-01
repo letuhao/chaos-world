@@ -27,12 +27,9 @@ func build_modifiers() -> Array[StatModifier]:
 func apply(actor: Actor) -> void:
 	for modifier in build_modifiers():
 		actor.stats.add_modifier(modifier)
-	if not actor.traits.has(id):
-		actor.traits.append(id)
-	actor.mark_stats_dirty()
+	actor.traits.add(id)
 
 
 func remove(actor: Actor) -> void:
 	actor.stats.remove_modifiers_from(id)
-	actor.traits.erase(id)
-	actor.mark_stats_dirty()
+	actor.traits.remove(id)

@@ -15,7 +15,7 @@ var id: StringName
 var display_name: String
 var faction: StringName
 var tags: Array[StringName]
-var traits: Array[StringName]
+var traits: NameList
 var affinities: AffinityMap
 var relationships: Dictionary
 var stats: ActorStats
@@ -31,12 +31,13 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 	display_name = ""
 	faction = &""
 	tags = []
-	traits = []
 	relationships = {}
 	resources = {}
 	statuses = []
 	paths = {}
 	_invalidator = StatsInvalidator.new(self)
+	traits = NameList.new()
+	traits.changed.connect(_invalidator.on_changed)
 	affinities = AffinityMap.new()
 	affinities.changed.connect(_invalidator.on_changed)
 	stats = ActorStats.new(base)
@@ -110,6 +111,8 @@ func mark_stats_dirty() -> void:
 
 func set_path(state: PathState) -> void:
 	paths[state.path_id] = state
+	if not state.changed.is_connected(_invalidator.on_changed):
+		state.changed.connect(_invalidator.on_changed)
 	mark_stats_dirty()
 
 
@@ -130,7 +133,7 @@ func to_dict() -> Dictionary:
 		"display_name": display_name,
 		"faction": String(faction),
 		"tags": _string_array(tags),
-		"traits": _string_array(traits),
+		"traits": traits.to_array(),
 		"affinities": affinities.to_dict(),
 		"relationships": relationships.duplicate(),
 		"base": stats.base_dict(),
@@ -146,7 +149,7 @@ static func from_dict(data: Dictionary) -> Actor:
 	for tag_id in data.get("tags", []):
 		actor.tags.append(StringName(tag_id))
 	for trait_id in data.get("traits", []):
-		actor.traits.append(StringName(trait_id))
+		actor.traits.add(StringName(trait_id))
 	actor.affinities.set_dict(data.get("affinities", {}))
 	for key in data.get("relationships", {}).keys():
 		actor.relationships[key] = data["relationships"][key]

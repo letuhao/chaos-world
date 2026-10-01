@@ -6,7 +6,7 @@ extends RefCounted
 
 var base: Dictionary
 var resources: Dictionary
-var traits: Array[StringName]
+var traits: NameList
 var affinities: AffinityMap
 var paths: Dictionary
 var derived: Dictionary
@@ -15,7 +15,7 @@ var derived: Dictionary
 func _init(
 	p_base: Dictionary,
 	p_resources: Dictionary,
-	p_traits: Array[StringName],
+	p_traits: NameList,
 	p_affinities: AffinityMap,
 	p_paths: Dictionary
 ) -> void:
@@ -46,7 +46,7 @@ func path(path_id: StringName) -> PathState:
 
 
 func has_trait(id: StringName) -> bool:
-	return id in traits
+	return traits.has(id)
 
 
 func affinity(id: StringName) -> float:

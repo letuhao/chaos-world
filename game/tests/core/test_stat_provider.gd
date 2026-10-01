@@ -43,6 +43,21 @@ class AffinityReader:
 		return {&"fire_affinity": context.affinity(&"fire")}
 
 
+class TraitReader:
+	extends StatProvider
+
+	func contribute(context: StatContext) -> Dictionary:
+		return {&"is_succubus": 1.0 if context.has_trait(&"succubus") else 0.0}
+
+
+class PathProgressReader:
+	extends StatProvider
+
+	func contribute(context: StatContext) -> Dictionary:
+		var state := context.path(&"qi")
+		return {&"qi_progress": 0.0 if state == null else state.progress}
+
+
 func test_provider_contributes_stat() -> void:
 	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 7.0})
 	actor.stats.add_provider(DoublePhysiqueProvider.new())
@@ -89,3 +104,21 @@ func test_direct_affinity_mutation_invalidates() -> void:
 	assert_almost_eq(actor.stats.derived(&"fire_affinity"), 0.0, "none")
 	actor.affinities.set_value(&"fire", 7.0)
 	assert_almost_eq(actor.stats.derived(&"fire_affinity"), 7.0, "affinity signal invalidates")
+
+
+func test_direct_trait_mutation_invalidates() -> void:
+	var actor := Actor.new(&"hero")
+	actor.stats.add_provider(TraitReader.new())
+	assert_almost_eq(actor.stats.derived(&"is_succubus"), 0.0, "no trait")
+	actor.traits.add(&"succubus")
+	assert_almost_eq(actor.stats.derived(&"is_succubus"), 1.0, "trait signal invalidates")
+
+
+func test_direct_path_mutation_invalidates() -> void:
+	var actor := Actor.new(&"hero")
+	var state := PathState.new(&"qi", &"qi_refining")
+	actor.set_path(state)
+	actor.stats.add_provider(PathProgressReader.new())
+	assert_almost_eq(actor.stats.derived(&"qi_progress"), 0.0, "no progress")
+	state.progress = 3.0
+	assert_almost_eq(actor.stats.derived(&"qi_progress"), 3.0, "path signal invalidates")

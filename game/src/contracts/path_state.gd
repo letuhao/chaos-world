@@ -1,23 +1,50 @@
 class_name PathState
 extends RefCounted
 
-## One actor's progress along one cultivation path (ADR 0003).
+## One actor's progress along one cultivation path (ADR 0003). Observable: any
+## change to rank/stage/progress/unlocked emits `changed`, so stat caches refresh.
+
+signal changed
 
 var path_id: StringName
-var rank_id: StringName
-var stage: int
-var progress: float
-var unlocked: Array[StringName]
-var resources: Dictionary
+var unlocked: NameList
+
+var rank_id: StringName:
+	get:
+		return _rank_id
+	set(value):
+		if _rank_id == value:
+			return
+		_rank_id = value
+		changed.emit()
+
+var stage: int:
+	get:
+		return _stage
+	set(value):
+		if _stage == value:
+			return
+		_stage = value
+		changed.emit()
+
+var progress: float:
+	get:
+		return _progress
+	set(value):
+		if _progress == value:
+			return
+		_progress = value
+		changed.emit()
+
+var _rank_id: StringName = &""
+var _stage: int = 0
+var _progress: float = 0.0
 
 
 func _init(p_path_id: StringName, p_rank_id: StringName = &"") -> void:
 	path_id = p_path_id
-	rank_id = p_rank_id
-	stage = 0
-	progress = 0.0
-	unlocked = []
-	resources = {}
+	_rank_id = p_rank_id
+	unlocked = NameList.new()
 
 
 func is_started() -> bool:
@@ -25,15 +52,12 @@ func is_started() -> bool:
 
 
 func to_dict() -> Dictionary:
-	var unlocked_out: Array = []
-	for value in unlocked:
-		unlocked_out.append(String(value))
 	return {
 		"path_id": String(path_id),
 		"rank_id": String(rank_id),
 		"stage": stage,
 		"progress": progress,
-		"unlocked": unlocked_out,
+		"unlocked": unlocked.to_array(),
 	}
 
 
@@ -43,6 +67,5 @@ static func from_dict(data: Dictionary) -> PathState:
 	)
 	state.stage = int(data.get("stage", 0))
 	state.progress = float(data.get("progress", 0.0))
-	for value in data.get("unlocked", []):
-		state.unlocked.append(StringName(value))
+	state.unlocked.set_values(data.get("unlocked", []))
 	return state
