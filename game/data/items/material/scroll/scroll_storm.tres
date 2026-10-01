@@ -14,7 +14,7 @@ tags = Array[StringName]([&"epic"])
 sources = Array[StringName]([&"craft:scroll_storm_recipe"])
 description = "A crackling scroll imbued with storm energy. Heaven-grade power."
 flat_modifiers = {
-&"spell_power": 30.0,
+&"attack_spiritual": 30.0,
 &"insight_gain": 20.0,
 &"cultivation_rate": 10.0,
 &"qi_cost_reduction": 5.0

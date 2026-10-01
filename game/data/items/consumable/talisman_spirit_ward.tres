@@ -11,5 +11,5 @@ subcategory = &"talisman"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:talisman_spirit_ward_recipe"])
 percent_modifiers = {
-"spell_power": 0.06
+"attack_spiritual": 0.06
 }

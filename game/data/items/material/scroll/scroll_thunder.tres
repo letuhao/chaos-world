@@ -14,7 +14,7 @@ tags = Array[StringName]([&"legendary"])
 sources = Array[StringName]([&"craft:scroll_thunder_recipe"])
 description = "A thunderous scroll crackling with immortal lightning. Immortal-grade."
 flat_modifiers = {
-&"spell_power": 55.0,
+&"attack_spiritual": 55.0,
 &"insight_gain": 38.0,
 &"cultivation_rate": 18.0,
 &"qi_cost_reduction": 9.0

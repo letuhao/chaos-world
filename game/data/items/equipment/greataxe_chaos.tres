@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"greataxe_chaos"
+display_name = "Chaos Greataxe"
+category = &"equipment"
+subcategory = &"weapon"
+grade = &"divine"
+sources = Array[StringName]([&"craft:greataxe_chaos_recipe"])
+flat_modifiers = {
+"attack_physical": 52.0,
+"attack_spiritual": 26.0,
+"poise": 13.0
+}

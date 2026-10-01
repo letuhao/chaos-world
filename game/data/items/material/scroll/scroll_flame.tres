@@ -14,7 +14,7 @@ tags = Array[StringName]([&"epic"])
 sources = Array[StringName]([&"craft:scroll_flame_recipe"])
 description = "A burning scroll wreathed in heavenly flame. Heaven-grade power."
 flat_modifiers = {
-&"spell_power": 36.0,
+&"attack_spiritual": 36.0,
 &"insight_gain": 24.0,
 &"cultivation_rate": 12.0,
 &"qi_cost_reduction": 6.0

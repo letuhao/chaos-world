@@ -14,7 +14,7 @@ tags = Array[StringName]([&"rare"])
 sources = Array[StringName]([&"craft:scroll_jade_recipe"])
 description = "A jade-inlaid scroll containing earth-grade cultivation secrets."
 flat_modifiers = {
-&"spell_power": 14.0,
+&"attack_spiritual": 14.0,
 &"insight_gain": 9.0,
 &"cultivation_rate": 5.0,
 &"qi_cost_reduction": 2.0

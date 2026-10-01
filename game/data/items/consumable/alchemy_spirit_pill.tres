@@ -11,5 +11,5 @@ subcategory = &"pill"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:alchemy_spirit_pill_recipe"])
 percent_modifiers = {
-"spell_power": 0.06
+"attack_spiritual": 0.06
 }

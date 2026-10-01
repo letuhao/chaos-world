@@ -14,7 +14,7 @@ tags = Array[StringName]([&"common"])
 sources = Array[StringName]([&"craft:scroll_rice_recipe"])
 description = "A scroll made from rice paper. Slightly more refined than hemp."
 flat_modifiers = {
-&"spell_power": 3.0,
+&"attack_spiritual": 3.0,
 &"insight_gain": 2.0,
 &"cultivation_rate": 1.0,
 &"qi_cost_reduction": 0.0

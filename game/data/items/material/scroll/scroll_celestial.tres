@@ -14,7 +14,7 @@ tags = Array[StringName]([&"celestial"])
 sources = Array[StringName]([&"craft:scroll_celestial_recipe"])
 description = "The ultimate scroll, containing celestial-grade cultivation truths."
 flat_modifiers = {
-&"spell_power": 150.0,
+&"attack_spiritual": 150.0,
 &"insight_gain": 100.0,
 &"cultivation_rate": 50.0,
 &"qi_cost_reduction": 25.0

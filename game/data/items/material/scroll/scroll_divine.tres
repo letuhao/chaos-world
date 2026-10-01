@@ -14,7 +14,7 @@ tags = Array[StringName]([&"mythic"])
 sources = Array[StringName]([&"craft:scroll_divine_recipe"])
 description = "A radiant scroll inscribed with divine law. Divine-grade power."
 flat_modifiers = {
-&"spell_power": 100.0,
+&"attack_spiritual": 100.0,
 &"insight_gain": 70.0,
 &"cultivation_rate": 35.0,
 &"qi_cost_reduction": 18.0

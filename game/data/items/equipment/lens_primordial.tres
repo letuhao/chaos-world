@@ -11,5 +11,5 @@ subcategory = &"orb"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])
 percent_modifiers = {
-"spell_power": 0.12
+"attack_spiritual": 0.12
 }

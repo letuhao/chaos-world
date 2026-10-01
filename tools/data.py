@@ -13,6 +13,7 @@ from pathlib import Path
 from .common import REPO_ROOT, ToolError, fail, info, ok
 
 DATA_ROOT = REPO_ROOT / "game" / "data"
+STAT_DEFS = REPO_ROOT / "game" / "src" / "contracts" / "stat.gd"
 
 CATEGORIES = {
     "material",
@@ -342,6 +343,14 @@ def _modifier_keys(item: dict) -> set[str]:
     return keys
 
 
+def _valid_stats() -> set[str]:
+    """Stat ids declared in contracts/stat.gd, so the audit follows the real schema."""
+    if not STAT_DEFS.is_file():
+        return set()
+    text = STAT_DEFS.read_text(encoding="utf-8", errors="replace")
+    return set(re.findall(r'&"([a-z_]+)"', text))
+
+
 def _collect_findings(items: dict) -> list[tuple[str, str]]:
     """Return (level, message) findings. level is 'error' or 'warn'."""
     findings: list[tuple[str, str]] = []
@@ -429,6 +438,24 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
     if all_keys and len(all_keys) <= 4:
         used = ", ".join(sorted(all_keys))
         findings.append(("warn", f"only {len(all_keys)} distinct modifier stats in use: {used}"))
+
+    # Modifier stats that the game does not define are silently ignored at runtime.
+    valid = _valid_stats()
+    if valid:
+        unknown: dict[str, list[str]] = {}
+        for item_id, item in sorted(items.items()):
+            for key in sorted(_modifier_keys(item)):
+                if key not in valid:
+                    unknown.setdefault(key, []).append(item_id)
+        for key, ids in sorted(unknown.items()):
+            findings.append(
+                (
+                    "error",
+                    f"unknown modifier stat '{key}' on {len(ids)} item(s) "
+                    f"(not declared in contracts/stat.gd): {', '.join(ids[:6])}"
+                    + ("..." if len(ids) > 6 else ""),
+                )
+            )
 
     return findings
 
