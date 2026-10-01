@@ -9,7 +9,7 @@ display_name = "Void Pendant"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:pendant_void_recipe"])
+sources = Array[StringName]([&"craft:pendant_void_recipe", &"boss:amulet_void_serpent"])
 percent_modifiers = {
 "status_resistance": 0.08
 }

@@ -9,7 +9,7 @@ display_name = "Void Bangle"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:bangle_void_recipe"])
+sources = Array[StringName]([&"craft:bangle_void_recipe", &"boss:elemental_immortal_guardian"])
 percent_modifiers = {
 "status_resistance": 0.08
 }

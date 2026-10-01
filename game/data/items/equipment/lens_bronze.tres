@@ -9,7 +9,7 @@ display_name = "Bronze Lens"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:d6_iron_sage"])
 flat_modifiers = {
 "max_qi": 28.0
 }

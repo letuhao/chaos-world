@@ -9,7 +9,7 @@ display_name = "Earth Clarity Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:d6_frost_hermit"])
 percent_modifiers = {
 "insight_gain": 0.07
 }

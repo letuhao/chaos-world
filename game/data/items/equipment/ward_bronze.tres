@@ -9,7 +9,7 @@ display_name = "Bronze Ward"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:treasure_gilded_beetle"])
 flat_modifiers = {
 "defense_physical": 11.0
 }

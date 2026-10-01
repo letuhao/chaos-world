@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d2_storm_sovereign"
 display_name = "Storm Sovereign Lesser"
 domain_id = &"crown_storm_sovereign_domain"
-loot = Array[StringName]([&"regalia_storm_circlet", &"regalia_storm_sceptre"])
+loot = Array[StringName]([&"regalia_storm_circlet", &"regalia_storm_sceptre", &"D8_heaven_haste_sigil"])

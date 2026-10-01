@@ -9,7 +9,7 @@ display_name = "Earth Bloom Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:succubus_earth_guardian"])
 percent_modifiers = {
 "cultivation_rate": 0.09
 }

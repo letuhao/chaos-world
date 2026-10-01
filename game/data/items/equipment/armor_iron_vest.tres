@@ -9,7 +9,7 @@ display_name = "Iron Vest"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:armor_iron_vest_recipe"])
+sources = Array[StringName]([&"craft:armor_iron_vest_recipe", &"boss:d3_boulder_golem"])
 flat_modifiers = {
 "defense_physical": 8.0
 }

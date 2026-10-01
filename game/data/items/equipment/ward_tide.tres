@@ -9,7 +9,7 @@ display_name = "Tide Ward"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:tome_abyssal_serpent"])
 flat_modifiers = {
 "defense_physical": 24.0,
 "poise": 7.0

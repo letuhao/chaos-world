@@ -9,4 +9,4 @@ display_name = "Grimoire Ink Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:succubus_spirit_guardian"])

@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"succubus_mortal_guardian"
 display_name = "Mortal Veil Guardian"
 domain_id = &"succubus_mortal_domain"
-loot = Array[StringName]([&"succubus_mortal_heart_core", &"marionette_sigil_mortal"])
+loot = Array[StringName]([&"succubus_mortal_heart_core", &"marionette_sigil_mortal", &"formula_first"])

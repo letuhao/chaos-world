@@ -9,7 +9,7 @@ display_name = "Glow Idol"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"craft:idol_glow_recipe"])
+sources = Array[StringName]([&"craft:idol_glow_recipe", &"boss:d4_iron_dancer"])
 percent_modifiers = {
 "qi_regen": 0.05
 }

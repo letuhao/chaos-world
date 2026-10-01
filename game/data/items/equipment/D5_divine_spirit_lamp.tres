@@ -9,7 +9,7 @@ display_name = "Divine Spirit Lamp"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
-sources = Array[StringName]([&"gather", &"craft:D5_divine_spirit_lamp_recipe"])
+sources = Array[StringName]([&"gather", &"craft:D5_divine_spirit_lamp_recipe", &"boss:elemental_transcendent_guardian"])
 percent_modifiers = {
 "spirit": 0.16
 }

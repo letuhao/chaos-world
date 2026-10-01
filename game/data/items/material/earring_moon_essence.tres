@@ -9,4 +9,4 @@ display_name = "Moon Earring Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:artifact_void_leviathan"])

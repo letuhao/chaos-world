@@ -9,7 +9,7 @@ display_name = "Jade Pendant"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:charm_jade_pendant_recipe"])
+sources = Array[StringName]([&"craft:charm_jade_pendant_recipe", &"boss:elemental_mortal_guardian"])
 flat_modifiers = {
 "max_qi": 18.0
 }

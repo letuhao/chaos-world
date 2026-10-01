@@ -9,7 +9,7 @@ display_name = "Iron Everlight"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:everlight_iron_recipe"])
+sources = Array[StringName]([&"craft:everlight_iron_recipe", &"boss:artifact_iron_titan"])
 flat_modifiers = {
 "max_health": 24.0
 }

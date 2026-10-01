@@ -9,7 +9,7 @@ display_name = "Iron Greataxe"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:greataxe_iron_recipe"])
+sources = Array[StringName]([&"craft:greataxe_iron_recipe", &"boss:d1_ironhide_bear_cub"])
 flat_modifiers = {
 "attack_physical": 9.0
 }

@@ -9,7 +9,7 @@ display_name = "Immortal Tide Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:succubus_immortal_breakthrough_recipe"])
+sources = Array[StringName]([&"craft:succubus_immortal_breakthrough_recipe", &"boss:succubus_immortal_guardian"])
 percent_modifiers = {
 "cultivation_rate": 0.1
 }

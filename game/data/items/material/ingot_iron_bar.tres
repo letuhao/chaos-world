@@ -9,4 +9,4 @@ display_name = "Iron Bar"
 category = &"material"
 subcategory = &"ingot"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:ingot_iron_bar_recipe"])
+sources = Array[StringName]([&"craft:ingot_iron_bar_recipe", &"boss:orb_cinder_wyrm"])

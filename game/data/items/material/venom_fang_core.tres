@@ -9,4 +9,4 @@ display_name = "Fang Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:d3_krakenling"])

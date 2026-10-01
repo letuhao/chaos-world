@@ -9,7 +9,7 @@ display_name = "Tide Adept Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:elemental_spirit_breakthrough_recipe"])
+sources = Array[StringName]([&"craft:elemental_spirit_breakthrough_recipe", &"boss:artifact_storm_phoenix"])
 percent_modifiers = {
 "cultivation_rate": 0.07
 }

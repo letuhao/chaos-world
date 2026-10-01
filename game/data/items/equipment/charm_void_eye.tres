@@ -9,7 +9,7 @@ display_name = "Void Eye"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"heaven"
-sources = Array[StringName]([&"craft:charm_void_eye_recipe"])
+sources = Array[StringName]([&"craft:charm_void_eye_recipe", &"boss:d2_void_emperor"])
 flat_modifiers = {
 "max_qi": 70.0
 }

@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d2_void_emperor"
 display_name = "Void Emperor Lesser"
 domain_id = &"crown_void_emperor_domain"
-loot = Array[StringName]([&"crown_void_emperor_helm", &"crown_void_emperor_plate"])
+loot = Array[StringName]([&"crown_void_emperor_helm", &"crown_void_emperor_plate", &"charm_void_eye"])

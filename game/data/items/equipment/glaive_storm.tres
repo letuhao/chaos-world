@@ -9,7 +9,7 @@ display_name = "Storm Glaive"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:codex_storm_phoenix"])
 percent_modifiers = {
 "attack_speed": 0.0005
 }

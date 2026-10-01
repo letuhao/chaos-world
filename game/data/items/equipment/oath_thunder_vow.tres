@@ -9,7 +9,7 @@ display_name = "Oath of Thunder"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"heaven"
-sources = Array[StringName]([&"quest:oath_of_thunder"])
+sources = Array[StringName]([&"quest:oath_of_thunder", &"boss:manual_thunder_ape"])
 flat_modifiers = {
 "attack_spiritual": 20.0
 }

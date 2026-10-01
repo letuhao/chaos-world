@@ -9,7 +9,7 @@ display_name = "Heaven Bloom Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:succubus_heaven_guardian"])
 percent_modifiers = {
 "cultivation_rate": 0.11
 }

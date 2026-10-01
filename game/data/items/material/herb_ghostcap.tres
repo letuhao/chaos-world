@@ -9,4 +9,4 @@ display_name = "Ghostcap"
 category = &"material"
 subcategory = &"herb"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"boss:d1_venom_serpent_fledgling"])

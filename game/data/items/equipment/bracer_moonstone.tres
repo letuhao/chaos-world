@@ -9,7 +9,7 @@ display_name = "Moonstone Bracer"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:bracer_moonstone_recipe"])
+sources = Array[StringName]([&"craft:bracer_moonstone_recipe", &"boss:elemental_spirit_guardian"])
 flat_modifiers = {
 "defense_physical": 8.0
 }
