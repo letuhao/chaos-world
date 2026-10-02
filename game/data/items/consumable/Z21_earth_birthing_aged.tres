@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"Z21_earth_birthing_aged"
+display_name = "Earth Birthing Aged"
+category = &"consumable"
+subcategory = &"tincture"
+grade = &"earth"
+sources = Array[StringName]([&"craft:Z21_earth_birthing_aged_recipe"])
+percent_modifiers = {
+"will": 0.09
+}

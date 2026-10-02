@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Z16_heaven_bemuse_primed_recipe"
+display_name = "Heaven Bemuse Sigil Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Z16_heaven_bemuse_aged", &"X25_heaven_ordinance_redwood", &"W6_heaven_bastion_glean", &"shard_tide"])
+outputs = Array[StringName]([&"Z16_heaven_bemuse_primed"])

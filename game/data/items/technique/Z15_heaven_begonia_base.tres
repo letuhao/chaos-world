@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"Z15_heaven_begonia_base"
+display_name = "Heaven Begonia Base"
+category = &"technique"
+subcategory = &"sigil"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:Z15_heaven_begonia_base_recipe", &"quest:Z15_heaven_begonia_line"])
+percent_modifiers = {
+"spirit": 0.03
+}

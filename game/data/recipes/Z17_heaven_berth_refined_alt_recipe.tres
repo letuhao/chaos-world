@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Z17_heaven_berth_refined_alt_recipe"
+display_name = "Heaven Berth Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Z17_heaven_berth_base", &"sap_pitch", &"W5_heaven_ashlar_gossan"])
+outputs = Array[StringName]([&"Z17_heaven_berth_refined"])

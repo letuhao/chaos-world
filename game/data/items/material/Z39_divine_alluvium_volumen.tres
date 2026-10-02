@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"Z39_divine_alluvium_volumen"
+display_name = "Divine Colophon Volumen"
+category = &"material"
+subcategory = &"scroll"
+grade = &"divine"
+sources = Array[StringName]([&"quest"])

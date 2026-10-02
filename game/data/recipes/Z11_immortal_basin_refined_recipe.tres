@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Z11_immortal_basin_refined_recipe"
+display_name = "Immortal Basin Refined Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Z11_immortal_basin_base", &"X24_immortal_octroi_rake"])
+outputs = Array[StringName]([&"Z11_immortal_basin_refined"])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Z7_divine_bagatelle_primed_recipe"
+display_name = "Divine Bagatelle Primed Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"Z7_divine_bagatelle_aged", &"body_primordial_origin_tempering_herb", &"divine_primordial_essence", &"Q4_divine_cumin_purlin"])
+outputs = Array[StringName]([&"Z7_divine_bagatelle_primed"])

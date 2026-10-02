@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Z18_earth_bevel_primed_recipe"
+display_name = "Earth Bevel Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Z18_earth_bevel_aged", &"belt_gale_essence", &"W7_earth_bedlam_humus", &"cloak_starlight_herb"])
+outputs = Array[StringName]([&"Z18_earth_bevel_primed"])

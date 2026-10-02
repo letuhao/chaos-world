@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"Z8_immortal_bailiwick_base"
+display_name = "Immortal Bailiwick Base"
+category = &"equipment"
+subcategory = &"lens"
+grade = &"immortal"
+sources = Array[StringName]([&"craft:Z8_immortal_bailiwick_base_recipe", &"quest:Z8_immortal_bailiwick_line"])
+percent_modifiers = {
+"aptitude": 0.03
+}
