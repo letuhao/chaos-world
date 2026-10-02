@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"G16_spirit_gneiss_attack_speed_insight_gain"
+display_name = "Spirit Gneiss Attack speed Insight gain"
+category = &"equipment"
+subcategory = &"greaves"
+grade = &"spirit"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"attack_speed": 0.022,
+"insight_gain": 0.023
+}

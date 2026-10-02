@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F39_divine_gaira_dao_heart_health_regen_loot_bonus"
+display_name = "Divine Gaira Dao heart Health regen Loot bonus"
+category = &"consumable"
+subcategory = &"ferment"
+grade = &"divine"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"dao_heart": 0.022,
+"health_regen": 0.033,
+"loot_bonus": 0.042
+}

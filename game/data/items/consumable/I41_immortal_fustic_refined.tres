@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I41_immortal_fustic_refined"
+display_name = "Immortal Fustic Refined"
+category = &"consumable"
+subcategory = &"ferment"
+grade = &"immortal"
+sources = Array[StringName]([&"craft:I41_immortal_fustic_refined_recipe"])
+percent_modifiers = {
+"poise": 0.06
+}

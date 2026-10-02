@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F39_immortal_gainsay_cooldown_reduction_qi_absorption_spirit"
+display_name = "Immortal Gainsay Cooldown reduction Qi absorption Spirit"
+category = &"consumable"
+subcategory = &"ferment"
+grade = &"immortal"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"cooldown_reduction": 0.031,
+"qi_absorption": 0.041,
+"spirit": 0.028
+}

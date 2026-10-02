@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"G14_spirit_gleamer_cooldown_reduction_health_regen"
+display_name = "Spirit Gleamer Cooldown reduction Health regen"
+category = &"consumable"
+subcategory = &"syrup"
+grade = &"spirit"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"cooldown_reduction": 0.055,
+"health_regen": 0.062
+}

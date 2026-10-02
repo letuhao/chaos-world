@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F38_immortal_gadstyle_loot_bonus_move_speed_will"
+display_name = "Immortal Gadstyle Loot bonus Move speed Will"
+category = &"consumable"
+subcategory = &"syrup"
+grade = &"immortal"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"loot_bonus": 0.038,
+"move_speed": 0.023,
+"will": 0.028
+}

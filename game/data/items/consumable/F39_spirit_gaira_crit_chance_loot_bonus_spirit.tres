@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F39_spirit_gaira_crit_chance_loot_bonus_spirit"
+display_name = "Spirit Gaira Crit chance Loot bonus Spirit"
+category = &"consumable"
+subcategory = &"ferment"
+grade = &"spirit"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"crit_chance": 0.027,
+"loot_bonus": 0.044,
+"spirit": 0.027
+}

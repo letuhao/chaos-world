@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I43_immortal_gainsay_perfected_recipe"
+display_name = "Immortal Gainsay Perfected Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"I43_immortal_gainsay_primed", &"Z36_immortal_porphyry_embryo", &"herb_phoenix_feather"])
+outputs = Array[StringName]([&"I43_immortal_gainsay_perfected"])

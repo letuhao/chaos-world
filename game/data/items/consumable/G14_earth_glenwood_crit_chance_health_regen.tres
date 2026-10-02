@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"G14_earth_glenwood_crit_chance_health_regen"
+display_name = "Earth Glenwood Crit chance Health regen"
+category = &"consumable"
+subcategory = &"syrup"
+grade = &"earth"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"crit_chance": 0.051,
+"health_regen": 0.063
+}

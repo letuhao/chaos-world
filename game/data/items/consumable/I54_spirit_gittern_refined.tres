@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I54_spirit_gittern_refined"
+display_name = "Spirit Gittern Refined"
+category = &"consumable"
+subcategory = &"elixir"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:I54_spirit_gittern_refined_recipe"])
+percent_modifiers = {
+"crit_chance": 0.06
+}

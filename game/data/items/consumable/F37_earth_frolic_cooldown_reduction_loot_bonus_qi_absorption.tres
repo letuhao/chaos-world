@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F37_earth_frolic_cooldown_reduction_loot_bonus_qi_absorption"
+display_name = "Earth Frolic Cooldown reduction Loot bonus Qi absorption"
+category = &"consumable"
+subcategory = &"grease"
+grade = &"earth"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"cooldown_reduction": 0.021,
+"loot_bonus": 0.023,
+"qi_absorption": 0.023
+}

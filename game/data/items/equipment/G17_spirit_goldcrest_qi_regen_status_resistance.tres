@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"G17_spirit_goldcrest_qi_regen_status_resistance"
+display_name = "Spirit Goldcrest Qi regen Status resistance"
+category = &"equipment"
+subcategory = &"bandolier"
+grade = &"spirit"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"qi_regen": 0.026,
+"status_resistance": 0.023
+}

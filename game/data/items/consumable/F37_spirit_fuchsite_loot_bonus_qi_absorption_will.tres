@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F37_spirit_fuchsite_loot_bonus_qi_absorption_will"
+display_name = "Spirit Fuchsite Loot bonus Qi absorption Will"
+category = &"consumable"
+subcategory = &"grease"
+grade = &"spirit"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"loot_bonus": 0.022,
+"qi_absorption": 0.022,
+"will": 0.021
+}

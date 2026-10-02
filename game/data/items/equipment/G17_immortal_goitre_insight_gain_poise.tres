@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"G17_immortal_goitre_insight_gain_poise"
+display_name = "Immortal Goitre Insight gain Poise"
+category = &"equipment"
+subcategory = &"bandolier"
+grade = &"immortal"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"insight_gain": 0.025,
+"poise": 0.022
+}

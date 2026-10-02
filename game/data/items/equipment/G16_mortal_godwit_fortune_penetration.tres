@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"G16_mortal_godwit_fortune_penetration"
+display_name = "Mortal Godwit Fortune Penetration"
+category = &"equipment"
+subcategory = &"greaves"
+grade = &"mortal"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"fortune": 0.026,
+"penetration": 0.027
+}

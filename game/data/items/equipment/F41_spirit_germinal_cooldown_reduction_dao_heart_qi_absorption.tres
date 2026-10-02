@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F41_spirit_germinal_cooldown_reduction_dao_heart_qi_absorption"
+display_name = "Spirit Germinal Cooldown reduction Dao heart Qi absorption"
+category = &"equipment"
+subcategory = &"bandolier"
+grade = &"spirit"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"cooldown_reduction": 0.038,
+"dao_heart": 0.029,
+"qi_absorption": 0.052
+}
