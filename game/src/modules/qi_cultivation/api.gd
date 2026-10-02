@@ -7,6 +7,12 @@ extends RefCounted
 # Public ids other modules may depend on.
 const QI := QiStats.QI
 
+## The training step sizes a UI's Cultivate/Meditate buttons drive. Published so
+## a screen reports the facade's numbers instead of hardcoding its own, which is
+## what the mind path does (ADR 0043).
+const CULTIVATE_STEP := 25.0
+const MEDITATE_STEP := 1.0
+
 
 static func attach(actor: Actor) -> void:
 	_ensure_resources(actor)

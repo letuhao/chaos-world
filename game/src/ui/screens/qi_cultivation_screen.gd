@@ -12,8 +12,6 @@ extends UiScreen
 ## Contract: `summary()` is the testable surface, with child panel summaries
 ## nested under their own key.
 
-const STEPS := {"cultivate": 25.0, "meditate": 1.0}
-
 var _vitals: VBoxContainer = null
 var _rows: Dictionary = {}
 var _actions: ActionSet = null
@@ -49,7 +47,7 @@ func _summary() -> Dictionary:
 		"chance": live.get("chance", 0.0),
 		"unmet": live.get("unmet", []),
 		"costs": live.get("costs", {}),
-		"steps": STEPS,
+		"steps": _steps(),
 	}
 	view["vitals"] = _vitals_summary()
 	view["actions"] = _actions.summary() if _actions != null else {}
@@ -118,7 +116,10 @@ func _feed_children(live: Dictionary) -> void:
 	_set_row(
 		&"dantian",
 		{
-			"name": "Dantian quality",
+			# The tier and the injury are what the `recover` button acts on, so they
+			# are rendered rather than left in the summary where no eye sees them
+			# (ADR 0043 audit).
+			"name": _dantian_label(live),
 			"current": live.get("dantian_quality", 0.0),
 			"maximum": 1.0,
 			"decimals": 2,
@@ -144,6 +145,17 @@ func _feed_children(live: Dictionary) -> void:
 				}
 			)
 		)
+
+
+## The dantian row names its tier and says so when the core is scarred. An injury
+## is a hard breakthrough blocker, and `recover` is the action that clears it, so
+## the row has to say both.
+func _dantian_label(live: Dictionary) -> String:
+	var tier := String(live.get("dantian_tier", ""))
+	var name := "Dantian quality" if tier.is_empty() else "Dantian %s" % tier
+	if bool(live.get("dantian_injured", false)):
+		name += " SCARRED"
+	return name
 
 
 ## Re-read the facade and hand raw values down. The panels own every format.
@@ -190,17 +202,6 @@ func _refresh_view() -> void:
 		)
 	_render_conditions(live)
 	_render_realm(live)
-	if _channels != null:
-		(
-			_channels
-			. set_state(
-				{
-					"channels": _channel_entries(live),
-					"required": live.get("required_channels", []),
-					"show_all": false,
-				}
-			)
-		)
 
 
 ## The realm line the scene declares but used to leave at its placeholder text.
@@ -250,7 +251,7 @@ func _render_conditions(live: Dictionary) -> void:
 func act_cultivate() -> void:
 	if _actor == null:
 		return
-	QiCultivationApi.cultivate(_actor, float(STEPS["cultivate"]))
+	QiCultivationApi.cultivate(_actor, float(_steps()["cultivate"]))
 	set_message("Cultivated qi", TONE_OK)
 	refresh()
 
@@ -258,7 +259,7 @@ func act_cultivate() -> void:
 func act_meditate() -> void:
 	if _actor == null:
 		return
-	QiCultivationApi.meditate(_actor, float(STEPS["meditate"]))
+	QiCultivationApi.meditate(_actor, float(_steps()["meditate"]))
 	set_message("Meditated", TONE_OK)
 	refresh()
 
@@ -337,6 +338,15 @@ func focus_initial() -> void:
 
 
 # --- Plumbing ---------------------------------------------------------------
+
+
+## The facade owns its step sizes, so the screen reports the facade's numbers
+## rather than inventing its own (ADR 0038: steps live in the facade).
+func _steps() -> Dictionary:
+	return {
+		"cultivate": QiCultivationApi.CULTIVATE_STEP,
+		"meditate": QiCultivationApi.MEDITATE_STEP,
+	}
 
 
 func _bind_nodes() -> void:

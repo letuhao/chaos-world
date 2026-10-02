@@ -12,7 +12,7 @@ extends UiScreen
 ## Contract: `summary()` is the testable surface, with child panel summaries
 ## nested under their own key.
 
-const ROWS := [&"mind_power", &"clarity", &"purity", &"turbulence"]
+const ROWS := [&"mind_power", &"clarity", &"purity", &"turbulence", &"trained_stage"]
 
 var _vitals: VBoxContainer = null
 var _rows: Dictionary = {}
@@ -83,6 +83,14 @@ func _channel_entries(live: Dictionary) -> Array:
 	return out
 
 
+## The trained-stage row names the anchor milestone the actor has reached. Below
+## the Immortal tier there is no anchor, so the row says the sea's stage instead.
+func _stage_label(live: Dictionary) -> String:
+	if _at_immortal_tier():
+		return "Anchor stage %d" % int(live.get("trained_stage", 0))
+	return "Sea stage %d" % int(live.get("trained_stage", 0))
+
+
 ## Re-read the facade and hand raw values down. The panels own every format.
 func _refresh_view() -> void:
 	_bind_nodes()
@@ -128,6 +136,16 @@ func _refresh_view() -> void:
 			"maximum": 1.0,
 			"decimals": 2,
 			"mode": StatRow.MODE_BAR,
+		}
+	)
+	# `trained_stage` is what `strengthen_anchor` advances and what the anchor gate
+	# reads, so a row shows it; without one the button's effect is invisible.
+	_set_row(
+		&"trained_stage",
+		{
+			"name": _stage_label(live),
+			"current": live.get("trained_stage", 0),
+			"maximum": 0.0,
 		}
 	)
 	if _actions != null:
@@ -220,23 +238,31 @@ func _render_conditions(preview: Dictionary, on_path: bool) -> void:
 		for key in costs:
 			ids.append("%s x%d" % [key, int(costs[key])])
 		cost_line = " | Needs: %s" % ", ".join(ids)
-	_conditions_label.text = "Conditions: %s%s" % [", ".join(unmet), cost_line]
+	# `anchor_stage` is published by the facade for exactly this case: at the
+	# Immortal tier the gate is an anchor, and a player told only "not ready"
+	# cannot tell an anchor they owe from one they have already earned.
+	var anchor_line := ""
+	var stage := String(preview.get("anchor_stage", ""))
+	if not stage.is_empty():
+		anchor_line = " | Anchor: %s" % stage
+	_conditions_label.text = "Conditions: %s%s%s" % [", ".join(unmet), cost_line, anchor_line]
 	_conditions_label.theme_type_variation = &"MetaLabel"
 
 
-## The realm line the scene declares but used to leave at its placeholder text.
+## The realm line, using the realm's display name when the facade publishes one:
+## `qi_refining` is a machine id and `Qi Refining` is what a player reads.
 func _render_realm(live: Dictionary, preview: Dictionary, on_path: bool) -> void:
 	if _realm_label == null:
 		return
 	if not on_path:
 		_realm_label.text = "Realm: none"
 		return
+	var current := String(live.get("display_name", ""))
+	if current.is_empty():
+		current = String(live.get("rank", ""))
+	var target := String(preview.get("target", ""))
 	_realm_label.text = (
-		"Realm: %s -> %s"
-		% [
-			live.get("rank", ""),
-			preview.get("target", ""),
-		]
+		"Realm: %s" % current if target.is_empty() else "Realm: %s -> %s" % [current, target]
 	)
 
 

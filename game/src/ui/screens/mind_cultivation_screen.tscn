@@ -38,6 +38,9 @@ unique_name_in_owner = true
 [node name="TurbulenceRow" parent="Layout/Vitals" instance=ExtResource("3")]
 unique_name_in_owner = true
 
+[node name="TrainedStageRow" parent="Layout/Vitals" instance=ExtResource("3")]
+unique_name_in_owner = true
+
 [node name="Channels" parent="Layout" instance=ExtResource("4")]
 unique_name_in_owner = true
 
