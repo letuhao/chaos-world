@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F2_earth_cull_move_speed_cooldown_reduction_crit_chance_penetration"
+display_name = "Earth Cull Move_Speed Cooldown_Reduction Crit_Chance Penetration"
+category = &"consumable"
+subcategory = &"grease"
+grade = &"earth"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"move_speed": 0.05,
+"cooldown_reduction": 0.07,
+"crit_chance": 0.03,
+"penetration": 0.05
+}

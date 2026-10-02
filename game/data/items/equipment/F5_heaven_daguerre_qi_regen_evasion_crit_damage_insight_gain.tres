@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F5_heaven_daguerre_qi_regen_evasion_crit_damage_insight_gain"
+display_name = "Heaven Daguerre Qi_Regen Evasion Crit_Damage Insight_Gain"
+category = &"equipment"
+subcategory = &"greaves"
+grade = &"heaven"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"qi_regen": 0.07,
+"evasion": 0.03,
+"crit_damage": 0.05,
+"insight_gain": 0.07
+}

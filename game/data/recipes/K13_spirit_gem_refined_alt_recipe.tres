@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"K13_spirit_gem_refined_alt_recipe"
+display_name = "K13 Spirit Gem Refined Alt Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"K13_spirit_gem_base", &"jade_crimson", &"refill_deep_essence"])
+outputs = Array[StringName]([&"K13_spirit_gem_refined"])

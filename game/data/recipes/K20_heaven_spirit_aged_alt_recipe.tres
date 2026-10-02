@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"K20_heaven_spirit_aged_alt_recipe"
+display_name = "K20 Heaven Spirit Aged Alt Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"K20_heaven_spirit_refined", &"ore_heavenly_jade", &"alchemy_mist_herb"])
+outputs = Array[StringName]([&"K20_heaven_spirit_aged"])

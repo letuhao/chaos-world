@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"K21_heaven_soul_refined_alt_recipe"
+display_name = "K21 Heaven Soul Refined Alt Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"K21_heaven_soul_base", &"W5_heaven_ashlar_glean", &"bracer_heaven_ore"])
+outputs = Array[StringName]([&"K21_heaven_soul_refined"])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"K5_mortal_thunder_aged_alt_recipe"
+display_name = "K5 Mortal Thunder Aged Alt Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"K5_mortal_thunder_refined", &"everlight_iron_ore", &"mind_nascent_soul_mind_herb"])
+outputs = Array[StringName]([&"K5_mortal_thunder_aged"])

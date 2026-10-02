@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F5_heaven_dactyl_qi_cost_reduction_comprehension_agility_stamina_regen"
+display_name = "Heaven Dactyl Qi_Cost_Reduction Comprehension Agility Stamina_Regen"
+category = &"equipment"
+subcategory = &"greaves"
+grade = &"heaven"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"qi_cost_reduction": 0.05,
+"comprehension": 0.07,
+"agility": 0.03,
+"stamina_regen": 0.05
+}

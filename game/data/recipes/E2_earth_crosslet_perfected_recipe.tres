@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"E2_earth_crosslet_perfected_recipe"
+display_name = "Earth Crosslet Perfected Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"E2_earth_crosslet_primed", &"W7_earth_bedlam_ione", &"formation_moon_essence"])
+outputs = Array[StringName]([&"E2_earth_crosslet_perfected"])

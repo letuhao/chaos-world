@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"E1_mortal_cresses_aged_alt_recipe"
+display_name = "E1 Mortal Cresses Aged Alt Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"E1_mortal_cresses_refined", &"Z34_mortal_halite_cupellation", &"C28_mortal_cupellationhouse_dingot"])
+outputs = Array[StringName]([&"E1_mortal_cresses_aged"])

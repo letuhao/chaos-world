@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"M19_heaven_sable_refined_alt_recipe"
+display_name = "M19 Heaven Sable Refined Alt Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"M19_heaven_sable_base", &"everlight_star_ore", &"Z41_heaven_ignimbrite_fibre"])
+outputs = Array[StringName]([&"M19_heaven_sable_refined"])

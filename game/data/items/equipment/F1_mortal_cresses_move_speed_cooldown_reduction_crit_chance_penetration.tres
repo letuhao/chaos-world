@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F1_mortal_cresses_move_speed_cooldown_reduction_crit_chance_penetration"
+display_name = "Mortal Cresses Move_Speed Cooldown_Reduction Crit_Chance Penetration"
+category = &"equipment"
+subcategory = &"lens"
+grade = &"mortal"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"move_speed": 0.07,
+"cooldown_reduction": 0.03,
+"crit_chance": 0.05,
+"penetration": 0.07
+}
