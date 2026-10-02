@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"C22_heaven_corbie_cultivation_rate_attack_physical_attack_spiritual"
+display_name = "Heaven Corbie Cultivation_Rate Attack_Physical Attack_Spiritual"
+category = &"consumable"
+subcategory = &"decree"
+grade = &"heaven"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"cultivation_rate": 0.03,
+"attack_physical": 0.05,
+"attack_spiritual": 0.07
+}

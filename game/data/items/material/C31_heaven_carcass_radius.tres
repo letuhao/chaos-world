@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"C31_heaven_carcass_radius"
+display_name = "Heaven Carcass Radius"
+category = &"material"
+subcategory = &"bone"
+grade = &"heaven"
+sources = Array[StringName]([&"quest", &"gather"])

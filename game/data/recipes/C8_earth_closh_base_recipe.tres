@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"C8_earth_closh_base_recipe"
+display_name = "Earth Closh Base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"W7_earth_bedlam_gypsum", &"W8_earth_birchen_inoculum"])
+outputs = Array[StringName]([&"C8_earth_closh_base"])

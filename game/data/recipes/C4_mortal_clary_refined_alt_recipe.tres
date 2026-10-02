@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"C4_mortal_clary_refined_alt_recipe"
+display_name = "Mortal Clary Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"C4_mortal_clary_base", &"bracer_iron_ore", &"torc_copper_ore"])
+outputs = Array[StringName]([&"C4_mortal_clary_refined"])

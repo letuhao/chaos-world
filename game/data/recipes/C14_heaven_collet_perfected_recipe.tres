@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"C14_heaven_collet_perfected_recipe"
+display_name = "Heaven Collet Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"C14_heaven_collet_primed", &"Z38_heaven_tufa_crumb", &"fungus_shadow_truffle"])
+outputs = Array[StringName]([&"C14_heaven_collet_perfected"])
