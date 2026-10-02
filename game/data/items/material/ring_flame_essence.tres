@@ -9,4 +9,4 @@ display_name = "Flame Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])

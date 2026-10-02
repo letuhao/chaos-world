@@ -9,7 +9,7 @@ display_name = "Bronze Reliquary"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 flat_modifiers = {
 "max_qi": 28.0
 }

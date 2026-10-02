@@ -9,7 +9,7 @@ display_name = "Jade Dust Powder"
 category = &"consumable"
 subcategory = &"powder"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 flat_modifiers = {
 "max_qi": 38.0
 }

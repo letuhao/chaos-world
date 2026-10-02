@@ -9,4 +9,4 @@ display_name = "Yew Wood"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])

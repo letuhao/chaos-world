@@ -9,7 +9,7 @@ display_name = "Bronze Stele"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])
 flat_modifiers = {
 "defense_physical": 11.0,
 "max_health": 32.0

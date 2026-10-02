@@ -9,4 +9,4 @@ display_name = "Spirit Caltrops Meniscus"
 category = &"material"
 subcategory = &"bone"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A34_route"])

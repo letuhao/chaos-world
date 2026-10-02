@@ -9,4 +9,4 @@ display_name = "Jute Filament"
 category = &"material"
 subcategory = &"filament"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])

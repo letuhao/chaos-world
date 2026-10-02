@@ -9,4 +9,4 @@ display_name = "Mortal Kestrel Hatch"
 category = &"key"
 subcategory = &"key"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

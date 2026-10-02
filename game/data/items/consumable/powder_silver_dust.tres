@@ -9,7 +9,7 @@ display_name = "Silver Dust Powder"
 category = &"consumable"
 subcategory = &"powder"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 percent_modifiers = {
 "qi_regen": 0.05
 }

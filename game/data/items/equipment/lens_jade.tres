@@ -9,7 +9,7 @@ display_name = "Jade Lens"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A39_route"])
 flat_modifiers = {
 "attack_spiritual": 24.0
 }

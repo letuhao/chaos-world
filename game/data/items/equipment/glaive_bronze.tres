@@ -9,7 +9,7 @@ display_name = "Bronze Glaive"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A38_route"])
 flat_modifiers = {
 "attack_physical": 9.0
 }

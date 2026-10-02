@@ -9,7 +9,7 @@ display_name = "Iron Dust Powder"
 category = &"consumable"
 subcategory = &"powder"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 flat_modifiers = {
 "max_stamina": 12.0
 }

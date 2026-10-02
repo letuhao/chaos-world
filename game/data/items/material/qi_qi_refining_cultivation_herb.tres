@@ -9,5 +9,5 @@ display_name = "Qi Refining Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 description = "Cultivation herb for Qi Refining. Gathered from the wild."

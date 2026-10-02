@@ -9,4 +9,4 @@ display_name = "Silk Hide"
 category = &"material"
 subcategory = &"hide"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])

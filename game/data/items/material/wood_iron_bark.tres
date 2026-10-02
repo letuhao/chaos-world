@@ -9,4 +9,4 @@ display_name = "Iron Bark"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])

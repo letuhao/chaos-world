@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A4_divine_ailanthus_aged_recipe"
+display_name = "Divine Ailanthus Aged Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"A4_divine_ailanthus_refined", &"X22_divine_messor_reagent", &"X22_divine_messor_saggar"])
+outputs = Array[StringName]([&"A4_divine_ailanthus_aged"])

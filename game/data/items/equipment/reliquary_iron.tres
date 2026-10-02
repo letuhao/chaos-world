@@ -9,7 +9,7 @@ display_name = "Iron Reliquary"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 flat_modifiers = {
 "max_health": 22.0
 }

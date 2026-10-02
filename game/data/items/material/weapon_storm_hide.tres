@@ -9,4 +9,4 @@ display_name = "Storm Hide"
 category = &"material"
 subcategory = &"hide"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])

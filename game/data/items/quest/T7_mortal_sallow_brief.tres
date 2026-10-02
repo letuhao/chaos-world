@@ -9,4 +9,4 @@ display_name = "Mortal Sallow Brief"
 category = &"quest"
 subcategory = &"bounty"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

@@ -9,4 +9,4 @@ display_name = "Spirit Aleph Covenant"
 category = &"key"
 subcategory = &"talisman"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

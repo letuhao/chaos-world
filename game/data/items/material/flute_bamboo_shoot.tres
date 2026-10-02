@@ -9,4 +9,4 @@ display_name = "Bamboo Shoot"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])

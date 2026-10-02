@@ -9,4 +9,4 @@ display_name = "Earth Aleph Bill"
 category = &"key"
 subcategory = &"sigil"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

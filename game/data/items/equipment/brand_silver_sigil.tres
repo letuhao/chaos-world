@@ -9,7 +9,7 @@ display_name = "Silver Sigil Brand"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 flat_modifiers = {
 "poise": 6.0
 }

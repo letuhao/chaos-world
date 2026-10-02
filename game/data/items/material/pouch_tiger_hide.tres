@@ -9,4 +9,4 @@ display_name = "Tiger Hide"
 category = &"material"
 subcategory = &"hide"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])

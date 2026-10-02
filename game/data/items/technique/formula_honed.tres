@@ -9,7 +9,7 @@ display_name = "Honed Formula"
 category = &"technique"
 subcategory = &"formula"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])
 percent_modifiers = {
 "attack_spiritual": 0.06
 }

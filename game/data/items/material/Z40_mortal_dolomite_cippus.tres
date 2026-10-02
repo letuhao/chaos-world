@@ -9,4 +9,4 @@ display_name = "Mortal Dolomite Cippus"
 category = &"material"
 subcategory = &"tablet"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])

@@ -9,7 +9,7 @@ display_name = "Bronze Dust Powder"
 category = &"consumable"
 subcategory = &"powder"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 flat_modifiers = {
 "max_health": 28.0
 }

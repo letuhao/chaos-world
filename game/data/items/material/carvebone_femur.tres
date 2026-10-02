@@ -9,4 +9,4 @@ display_name = "Carved Femur"
 category = &"material"
 subcategory = &"bone"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])

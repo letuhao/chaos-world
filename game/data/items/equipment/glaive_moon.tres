@@ -9,7 +9,7 @@ display_name = "Moon Glaive"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A38_route"])
 percent_modifiers = {
 "crit_chance": 0.0005
 }

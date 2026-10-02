@@ -9,5 +9,5 @@ display_name = "Spirit Severing Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 description = "Cultivation herb for Spirit Severing. Gathered from the wild."

@@ -9,4 +9,4 @@ display_name = "Saber Silver Ore"
 category = &"material"
 subcategory = &"ore"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])

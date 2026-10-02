@@ -9,4 +9,4 @@ display_name = "Formation Silver Ore"
 category = &"material"
 subcategory = &"ore"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])

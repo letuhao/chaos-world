@@ -9,4 +9,4 @@ display_name = "Bangle Moon Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])

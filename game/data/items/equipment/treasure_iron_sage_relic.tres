@@ -9,7 +9,7 @@ display_name = "Iron Sage Reliquary Treasure"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])
 flat_modifiers = {
 "defense_physical": 20.0
 "damage_reduction": 0.04

@@ -9,7 +9,7 @@ display_name = "Clear Rite"
 category = &"technique"
 subcategory = &"rite"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 percent_modifiers = {
 "insight_gain": 0.07
 }

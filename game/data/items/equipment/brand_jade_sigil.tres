@@ -9,7 +9,7 @@ display_name = "Jade Sigil Brand"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 flat_modifiers = {
 "defense_physical": 12.0
 }

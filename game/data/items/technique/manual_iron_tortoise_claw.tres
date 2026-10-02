@@ -9,7 +9,7 @@ display_name = "Iron Tortoise Claw Manual"
 category = &"technique"
 subcategory = &"manual"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A39_route"])
 flat_modifiers = {
 "damage_reduction": 0.05
 }

@@ -9,4 +9,4 @@ display_name = "Sigil Mist Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])

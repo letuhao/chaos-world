@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A24_mortal_boisterous_perfected_recipe"
+display_name = "Mortal Boisterous Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"A24_mortal_boisterous_primed", &"accessory_silver_thread_herb", &"qi_qi_refining_cultivation_herb"])
+outputs = Array[StringName]([&"A24_mortal_boisterous_perfected"])

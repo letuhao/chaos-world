@@ -9,7 +9,7 @@ display_name = "Bronze Mind Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 percent_modifiers = {
 "aptitude": 0.06
 }

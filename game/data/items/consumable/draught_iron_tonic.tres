@@ -9,7 +9,7 @@ display_name = "Iron Tonic Draught"
 category = &"consumable"
 subcategory = &"draught"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])
 flat_modifiers = {
 "max_stamina": 15.0
 }

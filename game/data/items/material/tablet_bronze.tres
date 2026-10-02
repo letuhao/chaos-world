@@ -9,4 +9,4 @@ display_name = "Bronze Tablet"
 category = &"material"
 subcategory = &"tablet"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])

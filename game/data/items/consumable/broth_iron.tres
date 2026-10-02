@@ -9,7 +9,7 @@ display_name = "Iron Broth"
 category = &"consumable"
 subcategory = &"broth"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 flat_modifiers = {
 "max_stamina": 14.0
 }

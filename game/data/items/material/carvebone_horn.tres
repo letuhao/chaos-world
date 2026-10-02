@@ -9,4 +9,4 @@ display_name = "Carved Horn"
 category = &"material"
 subcategory = &"bone"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])

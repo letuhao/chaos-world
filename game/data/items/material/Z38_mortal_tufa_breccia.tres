@@ -9,4 +9,4 @@ display_name = "Mortal Tufa Breccia"
 category = &"material"
 subcategory = &"fragment"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])

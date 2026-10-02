@@ -9,4 +9,4 @@ display_name = "Silver Keystone"
 category = &"key"
 subcategory = &"key"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A39_route"])

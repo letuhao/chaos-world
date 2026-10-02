@@ -9,4 +9,4 @@ display_name = "Mortal Ragwort Epigram"
 category = &"misc"
 subcategory = &"trophy"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

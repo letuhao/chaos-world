@@ -9,7 +9,7 @@ display_name = "Jade Prism"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 flat_modifiers = {
 "defense_spiritual": 8.0
 }

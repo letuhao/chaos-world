@@ -9,7 +9,7 @@ display_name = "Iron Harp Marionette"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A39_route"])
 flat_modifiers = {
 "defense_spiritual": 20.0
 }

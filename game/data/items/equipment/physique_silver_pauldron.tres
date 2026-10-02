@@ -9,7 +9,7 @@ display_name = "Silver Physique Pauldron"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 percent_modifiers = {
 "physique": 0.07
 }

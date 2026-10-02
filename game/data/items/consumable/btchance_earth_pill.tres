@@ -9,7 +9,7 @@ display_name = "Earth Breakthrough Pill"
 category = &"consumable"
 subcategory = &"pill"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 percent_modifiers = {
 "breakthrough_chance": 0.09
 }

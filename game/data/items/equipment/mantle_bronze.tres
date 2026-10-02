@@ -9,7 +9,7 @@ display_name = "Bronze Mantle"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A39_route"])
 flat_modifiers = {
 "max_health": 35.0
 }

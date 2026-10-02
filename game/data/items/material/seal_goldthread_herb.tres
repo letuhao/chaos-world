@@ -9,4 +9,4 @@ display_name = "Seal Goldthread Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])

@@ -9,4 +9,4 @@ display_name = "Mortal Aleph Safeconduct"
 category = &"key"
 subcategory = &"seal"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

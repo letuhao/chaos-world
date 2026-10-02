@@ -9,7 +9,7 @@ display_name = "Bronze Tonic Draught"
 category = &"consumable"
 subcategory = &"draught"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])
 flat_modifiers = {
 "max_health": 30.0
 }

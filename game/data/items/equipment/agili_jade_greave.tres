@@ -9,7 +9,7 @@ display_name = "Jade Greave"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])
 percent_modifiers = {
 "agility": 0.08
 }

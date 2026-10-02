@@ -9,7 +9,7 @@ display_name = "Bronze Greave"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])
 percent_modifiers = {
 "agility": 0.06
 }

@@ -9,7 +9,7 @@ display_name = "Stone Crane Mist"
 category = &"technique"
 subcategory = &"scroll"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A39_route"])
 percent_modifiers = {
 "status_resistance": 0.04
 }

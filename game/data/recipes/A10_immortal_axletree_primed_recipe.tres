@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A10_immortal_axletree_primed_recipe"
+display_name = "Immortal Axletree Primed Sigil Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"A10_immortal_axletree_aged", &"qi_true_immortal_qi_herb", &"Q8_immortal_dogwood_chalk", &"fungus_thorncap"])
+outputs = Array[StringName]([&"A10_immortal_axletree_primed"])

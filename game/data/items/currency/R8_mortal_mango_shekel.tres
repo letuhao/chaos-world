@@ -9,4 +9,4 @@ display_name = "Mortal Mango Shekel"
 category = &"currency"
 subcategory = &"token"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

@@ -9,7 +9,7 @@ display_name = "Earth Mantra"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A39_route"])
 percent_modifiers = {
 "cultivation_rate": 0.07
 }

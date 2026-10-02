@@ -9,4 +9,4 @@ display_name = "Earth Bedlam Lutum"
 category = &"material"
 subcategory = &"filament"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A34_route"])

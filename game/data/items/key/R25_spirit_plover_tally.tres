@@ -9,4 +9,4 @@ display_name = "Spirit Plover Tally"
 category = &"key"
 subcategory = &"seal"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

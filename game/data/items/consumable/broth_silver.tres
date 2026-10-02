@@ -9,7 +9,7 @@ display_name = "Silver Broth"
 category = &"consumable"
 subcategory = &"broth"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 percent_modifiers = {
 "qi_regen": 0.05
 }

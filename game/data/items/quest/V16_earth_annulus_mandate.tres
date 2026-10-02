@@ -9,4 +9,4 @@ display_name = "Earth Annulus Mandate"
 category = &"quest"
 subcategory = &"bounty"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

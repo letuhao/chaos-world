@@ -9,7 +9,7 @@ display_name = "Jade Broth"
 category = &"consumable"
 subcategory = &"broth"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 flat_modifiers = {
 "max_qi": 44.0
 }

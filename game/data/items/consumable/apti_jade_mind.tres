@@ -9,7 +9,7 @@ display_name = "Jade Mind Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 percent_modifiers = {
 "aptitude": 0.08
 }

@@ -9,4 +9,4 @@ display_name = "Mortal Anabasis Ducat"
 category = &"currency"
 subcategory = &"writ"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

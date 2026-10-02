@@ -9,4 +9,4 @@ display_name = "Spirit Annulus Rescript"
 category = &"quest"
 subcategory = &"sachet"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

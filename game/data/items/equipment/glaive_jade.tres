@@ -9,7 +9,7 @@ display_name = "Jade Glaive"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A38_route"])
 flat_modifiers = {
 "attack_physical": 17.0
 }

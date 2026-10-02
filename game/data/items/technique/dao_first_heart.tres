@@ -9,7 +9,7 @@ display_name = "First Dao Heart Slip"
 category = &"technique"
 subcategory = &"jade_slip"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])
 percent_modifiers = {
 "dao_heart": 0.05
 }

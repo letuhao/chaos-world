@@ -9,7 +9,7 @@ display_name = "Silver Edge Bladework"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 flat_modifiers = {
 "attack_physical": 15.0,
 "poise": 3.0

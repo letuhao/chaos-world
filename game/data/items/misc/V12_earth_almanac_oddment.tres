@@ -9,4 +9,4 @@ display_name = "Earth Almanac Oddment"
 category = &"misc"
 subcategory = &"curio"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

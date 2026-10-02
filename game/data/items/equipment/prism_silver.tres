@@ -9,7 +9,7 @@ display_name = "Silver Prism"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 percent_modifiers = {
 "crit_chance": 0.04
 }

@@ -9,4 +9,4 @@ display_name = "Spirit Linden Indenture"
 category = &"key"
 subcategory = &"seal"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

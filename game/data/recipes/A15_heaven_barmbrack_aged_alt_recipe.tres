@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A15_heaven_barmbrack_aged_alt_recipe"
+display_name = "Heaven Barmbrack Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"A15_heaven_barmbrack_refined", &"W5_heaven_ashlar_feldspar", &"bow_moonstone_ore"])
+outputs = Array[StringName]([&"A15_heaven_barmbrack_aged"])

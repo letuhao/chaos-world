@@ -9,7 +9,7 @@ display_name = "Jade Reliquary"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 flat_modifiers = {
 "max_health": 45.0,
 "max_qi": 32.0

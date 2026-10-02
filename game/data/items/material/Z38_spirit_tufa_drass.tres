@@ -9,4 +9,4 @@ display_name = "Spirit Tufa Drass"
 category = &"material"
 subcategory = &"fragment"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])

@@ -9,7 +9,7 @@ display_name = "Frost Serpent Eye Scroll"
 category = &"technique"
 subcategory = &"manual"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])
 percent_modifiers = {
 "attack_physical": 0.06
 }

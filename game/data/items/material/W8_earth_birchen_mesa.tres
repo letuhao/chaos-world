@@ -9,4 +9,4 @@ display_name = "Earth Birchen Mesa"
 category = &"material"
 subcategory = &"ingot"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A34_route"])

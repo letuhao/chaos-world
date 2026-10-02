@@ -9,7 +9,7 @@ display_name = "Earth Mantle"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A39_route"])
 flat_modifiers = {
 "max_stamina": 25.0
 }

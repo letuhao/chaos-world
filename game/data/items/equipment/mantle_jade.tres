@@ -9,7 +9,7 @@ display_name = "Jade Mantle"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A39_route"])
 flat_modifiers = {
 "max_health": 48.0,
 "max_qi": 35.0

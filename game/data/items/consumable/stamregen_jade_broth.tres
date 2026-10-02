@@ -9,7 +9,7 @@ display_name = "Jade Vigor Broth"
 category = &"consumable"
 subcategory = &"broth"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])
 percent_modifiers = {
 "stamina_regen": 0.1
 }

@@ -9,7 +9,7 @@ display_name = "Earth Ward"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])
 flat_modifiers = {
 "defense_physical": 18.0,
 "poise": 5.0

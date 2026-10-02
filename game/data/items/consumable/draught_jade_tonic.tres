@@ -9,7 +9,7 @@ display_name = "Jade Tonic Draught"
 category = &"consumable"
 subcategory = &"draught"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])
 flat_modifiers = {
 "max_qi": 40.0
 }

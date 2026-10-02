@@ -9,4 +9,4 @@ display_name = "River Shard"
 category = &"material"
 subcategory = &"fragment"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])

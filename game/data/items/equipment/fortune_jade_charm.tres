@@ -9,7 +9,7 @@ display_name = "Jade Fortune Charm"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])
 percent_modifiers = {
 "fortune": 0.08
 }

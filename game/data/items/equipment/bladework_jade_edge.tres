@@ -9,7 +9,7 @@ display_name = "Jade Edge Bladework"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 flat_modifiers = {
 "attack_physical": 22.0,
 "defense_spiritual": 10.0

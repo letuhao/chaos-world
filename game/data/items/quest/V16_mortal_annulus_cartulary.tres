@@ -9,4 +9,4 @@ display_name = "Mortal Annulus Cartulary"
 category = &"quest"
 subcategory = &"text"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

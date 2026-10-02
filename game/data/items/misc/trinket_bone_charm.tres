@@ -9,4 +9,4 @@ display_name = "Bone Charm"
 category = &"misc"
 subcategory = &"charm"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])

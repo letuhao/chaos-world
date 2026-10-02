@@ -9,4 +9,4 @@ display_name = "Jade Ring Ore"
 category = &"material"
 subcategory = &"ore"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])

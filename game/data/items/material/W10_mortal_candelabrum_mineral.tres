@@ -9,4 +9,4 @@ display_name = "Mortal Candelabrum Mineral"
 category = &"material"
 subcategory = &"gemstone"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A34_route"])

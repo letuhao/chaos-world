@@ -9,4 +9,4 @@ display_name = "Earth Linden Hatch"
 category = &"key"
 subcategory = &"key"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

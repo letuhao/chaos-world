@@ -9,4 +9,4 @@ display_name = "Mortal Samphire Brief"
 category = &"quest"
 subcategory = &"relic"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

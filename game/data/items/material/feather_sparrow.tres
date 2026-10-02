@@ -9,4 +9,4 @@ display_name = "Sparrow Feather"
 category = &"material"
 subcategory = &"hide"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])

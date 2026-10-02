@@ -9,7 +9,7 @@ display_name = "Earth Draft Page"
 category = &"technique"
 subcategory = &"draft"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])
 percent_modifiers = {
 "qi_regen": 0.06
 }

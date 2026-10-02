@@ -9,4 +9,4 @@ display_name = "Mortal Coucal Suede"
 category = &"material"
 subcategory = &"hide"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])

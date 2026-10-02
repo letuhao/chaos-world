@@ -9,7 +9,7 @@ display_name = "Iron Vigor Broth"
 category = &"consumable"
 subcategory = &"broth"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])
 percent_modifiers = {
 "stamina_regen": 0.05
 }

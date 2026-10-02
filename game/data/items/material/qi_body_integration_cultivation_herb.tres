@@ -9,5 +9,5 @@ display_name = "Body Integration Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 description = "Cultivation herb for Body Integration. Gathered from the wild."

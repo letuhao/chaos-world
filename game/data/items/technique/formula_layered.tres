@@ -9,7 +9,7 @@ display_name = "Layered Formula"
 category = &"technique"
 subcategory = &"formula"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])
 percent_modifiers = {
 "cultivation_rate": 0.07
 }

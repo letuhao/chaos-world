@@ -9,4 +9,4 @@ display_name = "Moonwell Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])

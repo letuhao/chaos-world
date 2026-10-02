@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A8_immortal_archivolt_base_recipe"
+display_name = "Immortal Archivolt Base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"succubus_immortal_essence", &"herb_dragonwhisker"])
+outputs = Array[StringName]([&"A8_immortal_archivolt_base"])

@@ -9,4 +9,4 @@ display_name = "Spirit Caltrops Malachite"
 category = &"material"
 subcategory = &"gemstone"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A34_route"])

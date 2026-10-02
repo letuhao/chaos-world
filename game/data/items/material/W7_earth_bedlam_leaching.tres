@@ -9,4 +9,4 @@ display_name = "Earth Bedlam Leaching"
 category = &"material"
 subcategory = &"gemstone"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A34_route"])

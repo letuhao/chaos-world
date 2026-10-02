@@ -9,4 +9,4 @@ display_name = "Spirit Tannery Doeskin"
 category = &"material"
 subcategory = &"hide"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])

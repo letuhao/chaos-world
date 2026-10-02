@@ -9,4 +9,4 @@ display_name = "Pauldron Gale Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A39_route"])

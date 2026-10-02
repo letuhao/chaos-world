@@ -9,4 +9,4 @@ display_name = "Jade Token"
 category = &"currency"
 subcategory = &"token"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])

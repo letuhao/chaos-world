@@ -9,7 +9,7 @@ display_name = "Bronze Ointment Salve"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])
 flat_modifiers = {
 "max_health": 30.0
 }

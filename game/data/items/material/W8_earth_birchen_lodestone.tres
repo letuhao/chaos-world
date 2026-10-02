@@ -9,4 +9,4 @@ display_name = "Earth Birchen Lodestone"
 category = &"material"
 subcategory = &"scroll"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A34_route"])

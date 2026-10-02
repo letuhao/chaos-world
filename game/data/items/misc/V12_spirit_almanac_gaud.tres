@@ -9,4 +9,4 @@ display_name = "Spirit Almanac Gaud"
 category = &"misc"
 subcategory = &"medal"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

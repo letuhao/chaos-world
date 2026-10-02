@@ -9,4 +9,4 @@ display_name = "Luck Token"
 category = &"misc"
 subcategory = &"token"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])

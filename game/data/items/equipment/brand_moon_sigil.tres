@@ -9,7 +9,7 @@ display_name = "Moon Sigil Brand"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 flat_modifiers = {
 "max_qi": 45.0
 }

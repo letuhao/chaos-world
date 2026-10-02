@@ -9,7 +9,7 @@ display_name = "Iron Resolve Pauldron"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])
 percent_modifiers = {
 "will": 0.05
 }

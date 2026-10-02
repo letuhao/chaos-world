@@ -9,4 +9,4 @@ display_name = "Earth Sallow Manifest"
 category = &"quest"
 subcategory = &"sachet"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

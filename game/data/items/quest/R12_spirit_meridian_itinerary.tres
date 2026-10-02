@@ -9,4 +9,4 @@ display_name = "Spirit Meridian Itinerary"
 category = &"quest"
 subcategory = &"instrument"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

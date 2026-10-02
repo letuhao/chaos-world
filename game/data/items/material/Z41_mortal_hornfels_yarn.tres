@@ -9,4 +9,4 @@ display_name = "Mortal Combing Yarn"
 category = &"material"
 subcategory = &"filament"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])

@@ -9,4 +9,4 @@ display_name = "Mortal Drupelet Hilum"
 category = &"material"
 subcategory = &"core"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])

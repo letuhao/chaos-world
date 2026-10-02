@@ -9,4 +9,4 @@ display_name = "Cotton Filament"
 category = &"material"
 subcategory = &"filament"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])

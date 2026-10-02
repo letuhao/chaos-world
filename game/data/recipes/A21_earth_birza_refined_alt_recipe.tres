@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A21_earth_birza_refined_alt_recipe"
+display_name = "Earth Birza Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"A21_earth_birza_base", &"orb_moon_ore", &"feather_raven"])
+outputs = Array[StringName]([&"A21_earth_birza_refined"])

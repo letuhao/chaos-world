@@ -9,4 +9,4 @@ display_name = "Spirit Flagon Gutter"
 category = &"material"
 subcategory = &"ingot"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])

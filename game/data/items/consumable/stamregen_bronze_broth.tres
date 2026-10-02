@@ -9,7 +9,7 @@ display_name = "Bronze Vigor Broth"
 category = &"consumable"
 subcategory = &"broth"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])
 percent_modifiers = {
 "stamina_regen": 0.07
 }

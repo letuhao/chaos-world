@@ -9,4 +9,4 @@ display_name = "Spirit Isostasy Spessartine"
 category = &"material"
 subcategory = &"gemstone"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])

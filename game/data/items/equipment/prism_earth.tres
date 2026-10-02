@@ -9,7 +9,7 @@ display_name = "Earth Prism"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 flat_modifiers = {
 "max_stamina": 28.0
 }

@@ -9,4 +9,4 @@ display_name = "Earth Loam Gizmo"
 category = &"misc"
 subcategory = &"trophy"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

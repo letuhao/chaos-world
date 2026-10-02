@@ -9,4 +9,4 @@ display_name = "Spirit Dolomite Pillar"
 category = &"material"
 subcategory = &"tablet"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])

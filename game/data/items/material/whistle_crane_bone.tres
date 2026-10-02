@@ -9,4 +9,4 @@ display_name = "Whistle Crane Bone"
 category = &"material"
 subcategory = &"bone"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])

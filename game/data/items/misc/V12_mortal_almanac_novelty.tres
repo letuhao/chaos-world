@@ -9,4 +9,4 @@ display_name = "Mortal Almanac Novelty"
 category = &"misc"
 subcategory = &"token"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

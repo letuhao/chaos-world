@@ -9,7 +9,7 @@ display_name = "Jade Ointment Salve"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])
 flat_modifiers = {
 "max_health": 42.0
 }

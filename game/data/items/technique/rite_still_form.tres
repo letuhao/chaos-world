@@ -9,7 +9,7 @@ display_name = "Still Rite"
 category = &"technique"
 subcategory = &"rite"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])
 percent_modifiers = {
 "insight_gain": 0.05
 }

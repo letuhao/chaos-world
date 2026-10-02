@@ -9,4 +9,4 @@ display_name = "Plum Blossom Petal"
 category = &"material"
 subcategory = &"herb"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])

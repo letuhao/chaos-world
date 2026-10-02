@@ -9,7 +9,7 @@ display_name = "Clear Mind Sigil"
 category = &"technique"
 subcategory = &"sigil"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])
 percent_modifiers = {
 "insight_gain": 0.06
 }

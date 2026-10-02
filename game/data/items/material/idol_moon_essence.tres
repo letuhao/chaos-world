@@ -9,4 +9,4 @@ display_name = "Idol Moon Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A38_route"])

@@ -9,7 +9,7 @@ display_name = "Jade Stele"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A42_route"])
 flat_modifiers = {
 "defense_spiritual": 18.0,
 "poise": 6.0

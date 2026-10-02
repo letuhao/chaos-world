@@ -9,7 +9,7 @@ display_name = "Wide Rite"
 category = &"technique"
 subcategory = &"rite"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])
 percent_modifiers = {
 "cultivation_rate": 0.07
 }

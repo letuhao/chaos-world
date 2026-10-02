@@ -9,7 +9,7 @@ display_name = "Earth Reliquary"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A40_route"])
 flat_modifiers = {
 "defense_spiritual": 14.0
 }

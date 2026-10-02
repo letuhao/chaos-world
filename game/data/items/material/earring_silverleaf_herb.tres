@@ -9,4 +9,4 @@ display_name = "Silverleaf Earring Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])

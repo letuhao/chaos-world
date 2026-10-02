@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A11_immortal_azurite_aged_alt_recipe"
+display_name = "Immortal Azurite Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"A11_immortal_azurite_refined", &"Q7_immortal_dill_cog", &"jade_immortal"])
+outputs = Array[StringName]([&"A11_immortal_azurite_aged"])

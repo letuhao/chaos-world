@@ -9,4 +9,4 @@ display_name = "Gold Ingot"
 category = &"currency"
 subcategory = &"token"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])

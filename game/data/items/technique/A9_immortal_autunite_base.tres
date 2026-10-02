@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"A9_immortal_autunite_base"
+display_name = "Immortal Autunite Base"
+category = &"technique"
+subcategory = &"sigil"
+grade = &"immortal"
+sources = Array[StringName]([&"craft:A9_immortal_autunite_base_recipe", &"quest:A9_immortal_autunite_line"])
+percent_modifiers = {
+"physique": 0.03
+}

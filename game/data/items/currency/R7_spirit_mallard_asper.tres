@@ -9,4 +9,4 @@ display_name = "Spirit Mallard Asper"
 category = &"currency"
 subcategory = &"coin"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

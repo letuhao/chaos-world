@@ -9,7 +9,7 @@ display_name = "Silver Tonic Draught"
 category = &"consumable"
 subcategory = &"draught"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A37_route"])
 percent_modifiers = {
 "health_regen": 0.05
 }

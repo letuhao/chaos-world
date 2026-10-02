@@ -9,4 +9,4 @@ display_name = "Earth Birchen Meerschaum"
 category = &"material"
 subcategory = &"tablet"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A34_route"])

@@ -9,7 +9,7 @@ display_name = "Earth Spirit Leaf"
 category = &"technique"
 subcategory = &"manual"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A36_route"])
 percent_modifiers = {
 "spirit": 0.08
 }

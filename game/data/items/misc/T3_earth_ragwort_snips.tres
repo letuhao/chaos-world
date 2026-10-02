@@ -9,4 +9,4 @@ display_name = "Earth Ragwort Snips"
 category = &"misc"
 subcategory = &"medal"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A33_route"])

@@ -9,7 +9,7 @@ display_name = "Earth Ointment Salve"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])
 flat_modifiers = {
 "max_stamina": 22.0
 }

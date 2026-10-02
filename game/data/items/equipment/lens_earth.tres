@@ -9,7 +9,7 @@ display_name = "Earth Lens"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A39_route"])
 percent_modifiers = {
 "qi_cost_reduction": 0.05
 }

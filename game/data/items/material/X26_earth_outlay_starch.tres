@@ -9,4 +9,4 @@ display_name = "Earth Outlay Starch"
 category = &"material"
 subcategory = &"gemstone"
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A35_route"])

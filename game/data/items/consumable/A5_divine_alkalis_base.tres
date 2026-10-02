@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"A5_divine_alkalis_base"
+display_name = "Divine Alkalis Base"
+category = &"consumable"
+subcategory = &"decree"
+grade = &"divine"
+sources = Array[StringName]([&"craft:A5_divine_alkalis_base_recipe", &"quest:A5_divine_alkalis_line"])
+percent_modifiers = {
+"penetration": 0.03
+}

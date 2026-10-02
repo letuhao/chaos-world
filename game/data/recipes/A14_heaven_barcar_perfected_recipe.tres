@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A14_heaven_barcar_perfected_recipe"
+display_name = "Heaven Barcar Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"A14_heaven_barcar_primed", &"X25_heaven_ordinance_quicklime", &"orb_storm_ore"])
+outputs = Array[StringName]([&"A14_heaven_barcar_perfected"])

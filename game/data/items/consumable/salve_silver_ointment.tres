@@ -9,7 +9,7 @@ display_name = "Silver Ointment Salve"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:A41_route"])
 percent_modifiers = {
 "health_regen": 0.05
 }
