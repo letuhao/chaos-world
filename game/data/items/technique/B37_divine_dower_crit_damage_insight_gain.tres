@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B37_divine_dower_crit_damage_insight_gain"
-display_name = "Divine Dower Crit_Damage Insight_Gain"
+display_name = "Divine Dower Crit Damage Insight Gain"
 category = &"technique"
 subcategory = &"treaty"
 grade = &"divine"

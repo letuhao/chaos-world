@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I20_spirit_ensconce_primed_recipe"
+display_name = "Spirit Ensconce Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I20_spirit_ensconce_aged", &"soul_glow_essence", &"sash_silver_ore", &"Z35_spirit_isostasy_spessartine"])
+outputs = Array[StringName]([&"I20_spirit_ensconce_primed"])

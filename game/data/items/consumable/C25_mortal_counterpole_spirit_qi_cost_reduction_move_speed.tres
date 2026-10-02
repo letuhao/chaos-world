@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C25_mortal_counterpole_spirit_qi_cost_reduction_move_speed"
-display_name = "Mortal Counterpole Spirit Qi_Cost_Reduction Move_Speed"
+display_name = "Mortal Counterpole Spirit Qi Cost Reduction Move Speed"
 category = &"consumable"
 subcategory = &"food"
 grade = &"mortal"

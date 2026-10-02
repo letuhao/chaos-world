@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B44_divine_franchise_max_health_move_speed"
-display_name = "Divine Franchise Max_Health Move_Speed"
+display_name = "Divine Franchise Max Health Move Speed"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"divine"

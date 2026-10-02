@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I2_mortal_dossal_refined_recipe"
+display_name = "Mortal Dossal Refined Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I2_mortal_dossal_base", &"C27_mortal_currier_fell"])
+outputs = Array[StringName]([&"I2_mortal_dossal_refined"])

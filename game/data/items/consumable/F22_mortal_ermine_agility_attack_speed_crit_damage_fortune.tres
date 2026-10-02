@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F22_mortal_ermine_agility_attack_speed_crit_damage_fortune"
+display_name = "Mortal Ermine Agility Attack speed Crit damage Fortune"
+category = &"consumable"
+subcategory = &"decree"
+grade = &"mortal"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"agility": 0.07,
+"attack_speed": 0.03,
+"crit_damage": 0.05,
+"fortune": 0.07
+}

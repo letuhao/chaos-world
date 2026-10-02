@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F7_earth_derring_evasion_crit_damage_insight_gain_status_resistance"
-display_name = "Earth Derring Evasion Crit_Damage Insight_Gain Status_Resistance"
+display_name = "Earth Derring Evasion Crit Damage Insight Gain Status Resistance"
 category = &"consumable"
 subcategory = &"powder"
 grade = &"earth"

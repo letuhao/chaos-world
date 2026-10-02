@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B40_mortal_encumbrance_stamina_regen_dao_heart"
-display_name = "Mortal Encumbrance Stamina_Regen Dao_Heart"
+display_name = "Mortal Encumbrance Stamina Regen Dao Heart"
 category = &"consumable"
 subcategory = &"tincture"
 grade = &"mortal"

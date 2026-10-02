@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F13_spirit_dudman_agility_aptitude_crit_damage_cultivation_rate"
+display_name = "Spirit Dudman Agility Aptitude Crit damage Cultivation rate"
+category = &"equipment"
+subcategory = &"bandolier"
+grade = &"spirit"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"agility": 0.05,
+"aptitude": 0.07,
+"crit_damage": 0.03,
+"cultivation_rate": 0.05
+}

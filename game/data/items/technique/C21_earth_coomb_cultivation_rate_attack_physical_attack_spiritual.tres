@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C21_earth_coomb_cultivation_rate_attack_physical_attack_spiritual"
-display_name = "Earth Coomb Cultivation_Rate Attack_Physical Attack_Spiritual"
+display_name = "Earth Coomb Cultivation Rate Attack Physical Attack Spiritual"
 category = &"technique"
 subcategory = &"rite"
 grade = &"earth"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F4_earth_curtilage_breakthrough_chance_fortune_aptitude_physique"
-display_name = "Earth Curtilage Breakthrough_Chance Fortune Aptitude Physique"
+display_name = "Earth Curtilage Breakthrough Chance Fortune Aptitude Physique"
 category = &"consumable"
 subcategory = &"ferment"
 grade = &"earth"

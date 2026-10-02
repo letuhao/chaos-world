@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F27_heaven_feltt_aptitude_attack_physical_cooldown_reduction_stamina_regen"
+display_name = "Heaven Feltt Aptitude Attack physical Cooldown reduction Stamina regen"
+category = &"technique"
+subcategory = &"grimoire"
+grade = &"heaven"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"aptitude": 0.03,
+"attack_physical": 0.05,
+"cooldown_reduction": 0.07,
+"stamina_regen": 0.03
+}

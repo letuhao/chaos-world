@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F21_mortal_epitrite_agility_attack_physical_physique_will"
+display_name = "Mortal Epitrite Agility Attack physical Physique Will"
+category = &"technique"
+subcategory = &"formula"
+grade = &"mortal"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"agility": 0.03,
+"attack_physical": 0.05,
+"physique": 0.07,
+"will": 0.03
+}

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I4_mortal_drachm_base"
+display_name = "Mortal Drachm Base"
+category = &"equipment"
+subcategory = &"greaves"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:I4_mortal_drachm_base_recipe", &"quest:I4_mortal_drachm_line"])
+percent_modifiers = {
+"defense_physical": 0.03
+}

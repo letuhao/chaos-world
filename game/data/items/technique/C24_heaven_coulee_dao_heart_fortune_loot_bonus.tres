@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C24_heaven_coulee_dao_heart_fortune_loot_bonus"
-display_name = "Heaven Coulee Dao_Heart Fortune Loot_Bonus"
+display_name = "Heaven Coulee Dao Heart Fortune Loot Bonus"
 category = &"technique"
 subcategory = &"draft"
 grade = &"heaven"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F8_heaven_dogger_status_resistance_cultivation_rate_defense_spiritual_max_qi"
-display_name = "Heaven Dogger Status_Resistance Cultivation_Rate Defense_Spiritual Max_Qi"
+display_name = "Heaven Dogger Status Resistance Cultivation Rate Defense Spiritual Max Qi"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"heaven"

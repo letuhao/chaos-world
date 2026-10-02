@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B42_earth_erelong_health_regen_will"
-display_name = "Earth Erelong Health_Regen Will"
+display_name = "Earth Erelong Health Regen Will"
 category = &"technique"
 subcategory = &"sigil"
 grade = &"earth"

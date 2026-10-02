@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F9_divine_dossal_agility_aptitude_attack_speed_cultivation_rate"
+display_name = "Divine Dossal Agility Aptitude Attack speed Cultivation rate"
+category = &"consumable"
+subcategory = &"grease"
+grade = &"divine"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"agility": 0.07,
+"aptitude": 0.03,
+"attack_speed": 0.05,
+"cultivation_rate": 0.07
+}

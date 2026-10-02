@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F3_mortal_cummin_dao_heart_loot_bonus_health_regen_qi_absorption"
-display_name = "Mortal Cummin Dao_Heart Loot_Bonus Health_Regen Qi_Absorption"
+display_name = "Mortal Cummin Dao Heart Loot Bonus Health Regen Qi Absorption"
 category = &"consumable"
 subcategory = &"syrup"
 grade = &"mortal"

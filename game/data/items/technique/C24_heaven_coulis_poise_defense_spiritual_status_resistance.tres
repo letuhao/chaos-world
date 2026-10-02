@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C24_heaven_coulis_poise_defense_spiritual_status_resistance"
-display_name = "Heaven Coulis Poise Defense_Spiritual Status_Resistance"
+display_name = "Heaven Coulis Poise Defense Spiritual Status Resistance"
 category = &"technique"
 subcategory = &"draft"
 grade = &"heaven"

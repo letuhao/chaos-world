@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C23_earth_cothurni_defense_physical_max_qi_max_health"
-display_name = "Earth Cothurni Defense_Physical Max_Qi Max_Health"
+display_name = "Earth Cothurni Defense Physical Max Qi Max Health"
 category = &"technique"
 subcategory = &"treaty"
 grade = &"earth"

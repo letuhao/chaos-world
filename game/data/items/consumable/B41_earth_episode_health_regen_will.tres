@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B41_earth_episode_health_regen_will"
-display_name = "Earth Episode Health_Regen Will"
+display_name = "Earth Episode Health Regen Will"
 category = &"consumable"
 subcategory = &"powder"
 grade = &"earth"

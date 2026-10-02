@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B38_divine_duchy_breakthrough_chance_crit_chance"
-display_name = "Divine Duchy Breakthrough_Chance Crit_Chance"
+display_name = "Divine Duchy Breakthrough Chance Crit Chance"
 category = &"consumable"
 subcategory = &"talisman"
 grade = &"divine"

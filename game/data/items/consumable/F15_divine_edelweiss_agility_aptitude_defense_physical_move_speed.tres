@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F15_divine_edelweiss_agility_aptitude_defense_physical_move_speed"
+display_name = "Divine Edelweiss Agility Aptitude Defense physical Move speed"
+category = &"consumable"
+subcategory = &"broth"
+grade = &"divine"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"agility": 0.07,
+"aptitude": 0.03,
+"defense_physical": 0.05,
+"move_speed": 0.07
+}

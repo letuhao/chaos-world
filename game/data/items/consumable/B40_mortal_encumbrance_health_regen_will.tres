@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B40_mortal_encumbrance_health_regen_will"
-display_name = "Mortal Encumbrance Health_Regen Will"
+display_name = "Mortal Encumbrance Health Regen Will"
 category = &"consumable"
 subcategory = &"tincture"
 grade = &"mortal"

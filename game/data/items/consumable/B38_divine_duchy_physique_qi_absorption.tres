@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B38_divine_duchy_physique_qi_absorption"
-display_name = "Divine Duchy Physique Qi_Absorption"
+display_name = "Divine Duchy Physique Qi Absorption"
 category = &"consumable"
 subcategory = &"talisman"
 grade = &"divine"

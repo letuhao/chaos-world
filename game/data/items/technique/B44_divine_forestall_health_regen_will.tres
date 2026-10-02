@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B44_divine_forestall_health_regen_will"
-display_name = "Divine Forestall Health_Regen Will"
+display_name = "Divine Forestall Health Regen Will"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"divine"

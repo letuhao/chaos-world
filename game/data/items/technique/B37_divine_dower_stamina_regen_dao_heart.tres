@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B37_divine_dower_stamina_regen_dao_heart"
-display_name = "Divine Dower Stamina_Regen Dao_Heart"
+display_name = "Divine Dower Stamina Regen Dao Heart"
 category = &"technique"
 subcategory = &"treaty"
 grade = &"divine"

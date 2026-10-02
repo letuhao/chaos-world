@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C22_heaven_corium_comprehension_agility_stamina_regen"
-display_name = "Heaven Corium Comprehension Agility Stamina_Regen"
+display_name = "Heaven Corium Comprehension Agility Stamina Regen"
 category = &"consumable"
 subcategory = &"decree"
 grade = &"heaven"

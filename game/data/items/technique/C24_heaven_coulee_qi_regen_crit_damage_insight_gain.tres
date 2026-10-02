@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C24_heaven_coulee_qi_regen_crit_damage_insight_gain"
-display_name = "Heaven Coulee Qi_Regen Crit_Damage Insight_Gain"
+display_name = "Heaven Coulee Qi Regen Crit Damage Insight Gain"
 category = &"technique"
 subcategory = &"draft"
 grade = &"heaven"

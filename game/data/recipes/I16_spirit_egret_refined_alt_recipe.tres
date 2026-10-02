@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I16_spirit_egret_refined_alt_recipe"
+display_name = "Spirit Egret Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I16_spirit_egret_base", &"feather_crane", &"mind_spirit_domain_mind_herb"])
+outputs = Array[StringName]([&"I16_spirit_egret_refined"])

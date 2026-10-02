@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C26_earth_creel_comprehension_agility_stamina_regen"
-display_name = "Earth Creel Comprehension Agility Stamina_Regen"
+display_name = "Earth Creel Comprehension Agility Stamina Regen"
 category = &"consumable"
 subcategory = &"tincture"
 grade = &"earth"

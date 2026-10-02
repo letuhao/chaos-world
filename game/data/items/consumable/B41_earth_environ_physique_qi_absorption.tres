@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B41_earth_environ_physique_qi_absorption"
-display_name = "Earth Environ Physique Qi_Absorption"
+display_name = "Earth Environ Physique Qi Absorption"
 category = &"consumable"
 subcategory = &"powder"
 grade = &"earth"

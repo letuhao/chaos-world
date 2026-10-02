@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B40_mortal_endowment_fortune_loot_bonus"
-display_name = "Mortal Endowment Fortune Loot_Bonus"
+display_name = "Mortal Endowment Fortune Loot Bonus"
 category = &"consumable"
 subcategory = &"tincture"
 grade = &"mortal"

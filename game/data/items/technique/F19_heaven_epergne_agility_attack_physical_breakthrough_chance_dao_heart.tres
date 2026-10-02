@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F19_heaven_epergne_agility_attack_physical_breakthrough_chance_dao_heart"
+display_name = "Heaven Epergne Agility Attack physical Breakthrough chance Dao heart"
+category = &"technique"
+subcategory = &"scroll"
+grade = &"heaven"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"agility": 0.07,
+"attack_physical": 0.03,
+"breakthrough_chance": 0.05,
+"dao_heart": 0.07
+}

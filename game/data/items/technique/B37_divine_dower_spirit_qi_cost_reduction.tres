@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B37_divine_dower_spirit_qi_cost_reduction"
-display_name = "Divine Dower Spirit Qi_Cost_Reduction"
+display_name = "Divine Dower Spirit Qi Cost Reduction"
 category = &"technique"
 subcategory = &"treaty"
 grade = &"divine"

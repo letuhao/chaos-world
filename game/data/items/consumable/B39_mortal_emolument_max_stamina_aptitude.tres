@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B39_mortal_emolument_max_stamina_aptitude"
-display_name = "Mortal Emolument Max_Stamina Aptitude"
+display_name = "Mortal Emolument Max Stamina Aptitude"
 category = &"consumable"
 subcategory = &"food"
 grade = &"mortal"

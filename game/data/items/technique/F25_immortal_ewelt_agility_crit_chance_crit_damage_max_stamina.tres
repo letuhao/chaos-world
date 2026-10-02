@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F25_immortal_ewelt_agility_crit_chance_crit_damage_max_stamina"
+display_name = "Immortal Ewelt Agility Crit chance Crit damage Max stamina"
+category = &"technique"
+subcategory = &"draft"
+grade = &"immortal"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"agility": 0.03,
+"crit_chance": 0.05,
+"crit_damage": 0.07,
+"max_stamina": 0.03
+}

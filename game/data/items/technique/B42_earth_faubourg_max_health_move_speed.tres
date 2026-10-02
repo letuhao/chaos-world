@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B42_earth_faubourg_max_health_move_speed"
-display_name = "Earth Faubourg Max_Health Move_Speed"
+display_name = "Earth Faubourg Max Health Move Speed"
 category = &"technique"
 subcategory = &"sigil"
 grade = &"earth"

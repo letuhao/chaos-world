@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C24_heaven_coulee_cooldown_reduction_crit_chance_penetration"
-display_name = "Heaven Coulee Cooldown_Reduction Crit_Chance Penetration"
+display_name = "Heaven Coulee Cooldown Reduction Crit Chance Penetration"
 category = &"technique"
 subcategory = &"draft"
 grade = &"heaven"

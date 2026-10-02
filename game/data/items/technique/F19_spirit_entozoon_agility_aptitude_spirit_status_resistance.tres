@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F19_spirit_entozoon_agility_aptitude_spirit_status_resistance"
+display_name = "Spirit Entozoon Agility Aptitude Spirit Status resistance"
+category = &"technique"
+subcategory = &"scroll"
+grade = &"spirit"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"agility": 0.05,
+"aptitude": 0.07,
+"spirit": 0.03,
+"status_resistance": 0.05
+}

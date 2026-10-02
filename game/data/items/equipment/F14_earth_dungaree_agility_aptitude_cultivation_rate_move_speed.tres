@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F14_earth_dungaree_agility_aptitude_cultivation_rate_move_speed"
+display_name = "Earth Dungaree Agility Aptitude Cultivation rate Move speed"
+category = &"equipment"
+subcategory = &"lens"
+grade = &"earth"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"agility": 0.07,
+"aptitude": 0.03,
+"cultivation_rate": 0.05,
+"move_speed": 0.07
+}

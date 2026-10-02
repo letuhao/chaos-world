@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C19_mortal_compote_dao_heart_fortune_loot_bonus"
-display_name = "Mortal Compote Dao_Heart Fortune Loot_Bonus"
+display_name = "Mortal Compote Dao Heart Fortune Loot Bonus"
 category = &"technique"
 subcategory = &"grimoire"
 grade = &"mortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C24_heaven_coulee_cultivation_rate_attack_physical_attack_spiritual"
-display_name = "Heaven Coulee Cultivation_Rate Attack_Physical Attack_Spiritual"
+display_name = "Heaven Coulee Cultivation Rate Attack Physical Attack Spiritual"
 category = &"technique"
 subcategory = &"draft"
 grade = &"heaven"

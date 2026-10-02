@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B42_earth_erelong_crit_damage_insight_gain"
-display_name = "Earth Erelong Crit_Damage Insight_Gain"
+display_name = "Earth Erelong Crit Damage Insight Gain"
 category = &"technique"
 subcategory = &"sigil"
 grade = &"earth"

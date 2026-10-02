@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C21_earth_coomb_spirit_qi_cost_reduction_move_speed"
-display_name = "Earth Coomb Spirit Qi_Cost_Reduction Move_Speed"
+display_name = "Earth Coomb Spirit Qi Cost Reduction Move Speed"
 category = &"technique"
 subcategory = &"rite"
 grade = &"earth"

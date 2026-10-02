@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C20_mortal_confetti_cooldown_reduction_crit_chance_penetration"
-display_name = "Mortal Confetti Cooldown_Reduction Crit_Chance Penetration"
+display_name = "Mortal Confetti Cooldown Reduction Crit Chance Penetration"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"mortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F3_mortal_cuprous_qi_absorption_spirit_attack_speed_will"
-display_name = "Mortal Cuprous Qi_Absorption Spirit Attack_Speed Will"
+display_name = "Mortal Cuprous Qi Absorption Spirit Attack Speed Will"
 category = &"consumable"
 subcategory = &"syrup"
 grade = &"mortal"

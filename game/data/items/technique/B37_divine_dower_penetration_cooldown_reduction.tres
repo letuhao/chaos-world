@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B37_divine_dower_penetration_cooldown_reduction"
-display_name = "Divine Dower Penetration Cooldown_Reduction"
+display_name = "Divine Dower Penetration Cooldown Reduction"
 category = &"technique"
 subcategory = &"treaty"
 grade = &"divine"

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F9_mortal_dollar_agility_aptitude_attack_physical_cooldown_reduction"
+display_name = "Mortal Dollar Agility Aptitude Attack physical Cooldown reduction"
+category = &"consumable"
+subcategory = &"grease"
+grade = &"mortal"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"agility": 0.03,
+"aptitude": 0.05,
+"attack_physical": 0.07,
+"cooldown_reduction": 0.03
+}

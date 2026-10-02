@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C23_earth_couch_physique_qi_absorption_attack_speed"
-display_name = "Earth Couch Physique Qi_Absorption Attack_Speed"
+display_name = "Earth Couch Physique Qi Absorption Attack Speed"
 category = &"technique"
 subcategory = &"treaty"
 grade = &"earth"

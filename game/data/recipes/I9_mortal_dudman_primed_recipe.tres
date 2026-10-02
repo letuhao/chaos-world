@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I9_mortal_dudman_primed_recipe"
+display_name = "Mortal Dudman Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I9_mortal_dudman_aged", &"wood_iron_bark", &"body_core_formation_tempering_herb", &"shield_iron_ore"])
+outputs = Array[StringName]([&"I9_mortal_dudman_primed"])

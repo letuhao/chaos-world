@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B43_divine_flambeau_attack_speed_penetration"
-display_name = "Divine Flambeau Attack_Speed Penetration"
+display_name = "Divine Flambeau Attack Speed Penetration"
 category = &"technique"
 subcategory = &"formula"
 grade = &"divine"

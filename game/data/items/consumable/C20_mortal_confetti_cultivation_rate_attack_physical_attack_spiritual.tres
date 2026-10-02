@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C20_mortal_confetti_cultivation_rate_attack_physical_attack_spiritual"
-display_name = "Mortal Confetti Cultivation_Rate Attack_Physical Attack_Spiritual"
+display_name = "Mortal Confetti Cultivation Rate Attack Physical Attack Spiritual"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"mortal"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I11_mortal_dungaree_primed_recipe"
+display_name = "Mortal Dungaree Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I11_mortal_dungaree_aged", &"C29_mortal_gemcutter_andradite", &"mind_great_ascension_mind_herb", &"body_great_ascension_tempering_herb"])
+outputs = Array[StringName]([&"I11_mortal_dungaree_primed"])

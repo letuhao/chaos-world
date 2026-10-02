@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"C24_heaven_coulis_health_regen_will_evasion"
-display_name = "Heaven Coulis Health_Regen Will Evasion"
+display_name = "Heaven Coulis Health Regen Will Evasion"
 category = &"technique"
 subcategory = &"draft"
 grade = &"heaven"

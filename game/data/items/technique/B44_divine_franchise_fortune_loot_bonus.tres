@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B44_divine_franchise_fortune_loot_bonus"
-display_name = "Divine Franchise Fortune Loot_Bonus"
+display_name = "Divine Franchise Fortune Loot Bonus"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"divine"

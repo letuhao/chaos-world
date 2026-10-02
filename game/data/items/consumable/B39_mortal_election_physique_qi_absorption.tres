@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"B39_mortal_election_physique_qi_absorption"
-display_name = "Mortal Election Physique Qi_Absorption"
+display_name = "Mortal Election Physique Qi Absorption"
 category = &"consumable"
 subcategory = &"food"
 grade = &"mortal"

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_item")
 id = &"F4_earth_curtilage_qi_absorption_spirit_attack_speed_will"
-display_name = "Earth Curtilage Qi_Absorption Spirit Attack_Speed Will"
+display_name = "Earth Curtilage Qi Absorption Spirit Attack Speed Will"
 category = &"consumable"
 subcategory = &"ferment"
 grade = &"earth"

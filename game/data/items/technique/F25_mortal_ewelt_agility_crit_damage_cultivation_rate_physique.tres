@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F25_mortal_ewelt_agility_crit_damage_cultivation_rate_physique"
+display_name = "Mortal Ewelt Agility Crit damage Cultivation rate Physique"
+category = &"technique"
+subcategory = &"draft"
+grade = &"mortal"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"agility": 0.07,
+"crit_damage": 0.03,
+"cultivation_rate": 0.05,
+"physique": 0.07
+}

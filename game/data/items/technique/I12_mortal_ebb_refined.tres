@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I12_mortal_ebb_refined"
+display_name = "Mortal Ebb Refined"
+category = &"technique"
+subcategory = &"grimoire"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:I12_mortal_ebb_refined_recipe"])
+percent_modifiers = {
+"cooldown_reduction": 0.06
+}
