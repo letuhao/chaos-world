@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"X2_divine_abbey_primed_recipe"
+display_name = "Divine Abbey Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"X2_divine_abbey_aged", &"Q5_divine_cutlass_crucible", &"Q2_divine_cress_cipher", &"Q3_divine_crook_charring"])
+outputs = Array[StringName]([&"X2_divine_abbey_primed"])

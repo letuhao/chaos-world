@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"X6_immortal_accretion_aged_alt_recipe"
+display_name = "Immortal Accretion Aged (Alt) Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"X6_immortal_accretion_refined", &"qi_earth_immortal_cultivation_herb", &"fungus_whispering_fungus"])
+outputs = Array[StringName]([&"X6_immortal_accretion_aged"])

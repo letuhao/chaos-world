@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"X12_earth_alkali_primed_recipe"
+display_name = "Earth Alkali Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"X12_earth_alkali_aged", &"W8_earth_birchen_lodestone", &"W8_earth_birchen_matte", &"shield_moonstone_ore"])
+outputs = Array[StringName]([&"X12_earth_alkali_primed"])

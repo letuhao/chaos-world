@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"X7_immortal_adit_base"
+display_name = "Immortal Adit Base"
+category = &"equipment"
+subcategory = &"lens"
+grade = &"immortal"
+sources = Array[StringName]([&"craft:X7_immortal_adit_base_recipe", &"quest:X7_immortal_adit_line"])
+percent_modifiers = {
+"attack_speed": 0.03
+}

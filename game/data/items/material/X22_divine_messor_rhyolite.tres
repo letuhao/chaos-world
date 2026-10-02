@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"X22_divine_messor_rhyolite"
+display_name = "Divine Messor Rhyolite"
+category = &"material"
+subcategory = &"ingot"
+grade = &"divine"
+sources = Array[StringName]([&"gather"])

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"X11_earth_aleph_base"
+display_name = "Earth Aleph Base"
+category = &"technique"
+subcategory = &"treaty"
+grade = &"earth"
+sources = Array[StringName]([&"craft:X11_earth_aleph_base_recipe", &"quest:X11_earth_aleph_line"])
+percent_modifiers = {
+"cooldown_reduction": 0.03
+}

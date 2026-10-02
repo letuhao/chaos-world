@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"X9_heaven_agger_perfected_recipe"
+display_name = "Heaven Agger Perfected Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"X9_heaven_agger_primed", &"orb_frost_essence", &"W5_heaven_ashlar_gossan"])
+outputs = Array[StringName]([&"X9_heaven_agger_perfected"])
