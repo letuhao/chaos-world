@@ -9,7 +9,7 @@ display_name = "Primordial Physique Pauldron"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 percent_modifiers = {
 "physique": 0.16
 }

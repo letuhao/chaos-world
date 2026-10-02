@@ -9,4 +9,4 @@ display_name = "Immortal Dogwood Scoria"
 category = &"material"
 subcategory = &"ingot"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

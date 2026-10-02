@@ -9,5 +9,5 @@ display_name = "Mystic Immortal Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])
 description = "Cultivation herb for Mystic Immortal. Gathered from the wild."

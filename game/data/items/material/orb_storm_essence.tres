@@ -9,4 +9,4 @@ display_name = "Orb Storm Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W25_route"])

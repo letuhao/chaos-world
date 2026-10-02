@@ -9,4 +9,4 @@ display_name = "Sash Heaven Jade"
 category = &"material"
 subcategory = &"ore"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

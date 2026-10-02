@@ -9,4 +9,4 @@ display_name = "Heaven Anchorage Cartulary"
 category = &"quest"
 subcategory = &"text"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])

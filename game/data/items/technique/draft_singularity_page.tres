@@ -9,7 +9,7 @@ display_name = "Singularity Draft Page"
 category = &"technique"
 subcategory = &"draft"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "insight_gain": 0.09
 }

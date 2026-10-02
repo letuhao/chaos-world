@@ -9,7 +9,7 @@ display_name = "Primordial Ointment Salve"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "max_stamina": 55.0
 }

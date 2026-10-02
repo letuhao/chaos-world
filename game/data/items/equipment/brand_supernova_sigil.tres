@@ -9,7 +9,7 @@ display_name = "Supernova Sigil Brand"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "attack_spiritual": 0.09
 }

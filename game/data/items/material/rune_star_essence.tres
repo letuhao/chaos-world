@@ -9,4 +9,4 @@ display_name = "Star Rune Essence"
 category = &"material"
 subcategory = &"essence"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

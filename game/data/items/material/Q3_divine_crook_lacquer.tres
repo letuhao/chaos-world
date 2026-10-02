@@ -9,4 +9,4 @@ display_name = "Divine Crook Lacquer"
 category = &"material"
 subcategory = &"fragment"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W26_route"])

@@ -9,4 +9,4 @@ display_name = "Divine Cutlass Harrier"
 category = &"material"
 subcategory = &"ore"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W26_route"])

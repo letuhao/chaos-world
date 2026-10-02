@@ -9,4 +9,4 @@ display_name = "Heaven Ore"
 category = &"material"
 subcategory = &"ore"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])

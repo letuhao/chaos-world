@@ -9,4 +9,4 @@ display_name = "Divine Altarpiece Teston"
 category = &"currency"
 subcategory = &"coin"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])

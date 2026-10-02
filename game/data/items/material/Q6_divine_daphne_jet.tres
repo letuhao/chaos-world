@@ -9,4 +9,4 @@ display_name = "Divine Daphne Jet"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

@@ -9,7 +9,7 @@ display_name = "Supernova Edge Bladework"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "crit_damage": 0.12
 }

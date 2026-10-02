@@ -9,7 +9,7 @@ display_name = "Chaos Absorption Tincture"
 category = &"consumable"
 subcategory = &"tincture"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "qi_absorption": 0.16
 }

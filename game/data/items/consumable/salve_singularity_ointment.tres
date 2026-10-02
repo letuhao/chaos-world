@@ -9,7 +9,7 @@ display_name = "Singularity Ointment Salve"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "max_health": 100.0
 }

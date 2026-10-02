@@ -9,7 +9,7 @@ display_name = "Recursive Formula"
 category = &"technique"
 subcategory = &"formula"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "insight_gain": 0.07
 }

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"W15_immortal_bulwark_base_recipe"
+display_name = "Immortal Bulwark Base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"ore_dragonbone", &"ore_void_crystal"])
+outputs = Array[StringName]([&"W15_immortal_bulwark_base"])

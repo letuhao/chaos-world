@@ -9,4 +9,4 @@ display_name = "Divine Courier Node"
 category = &"material"
 subcategory = &"essence"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W26_route"])

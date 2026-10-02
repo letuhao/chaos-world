@@ -9,4 +9,4 @@ display_name = "Immortal Ragwort Monocle"
 category = &"misc"
 subcategory = &"token"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])

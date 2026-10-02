@@ -9,7 +9,7 @@ display_name = "Divine Feast"
 category = &"consumable"
 subcategory = &"food"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "max_health": 220.0
 }

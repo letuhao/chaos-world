@@ -9,5 +9,5 @@ display_name = "Primordial Origin Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])
 description = "Cultivation herb for Primordial Origin. Gathered from the wild."

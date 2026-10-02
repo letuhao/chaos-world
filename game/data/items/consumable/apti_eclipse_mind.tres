@@ -9,7 +9,7 @@ display_name = "Eclipse Mind Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "aptitude": 0.13
 }

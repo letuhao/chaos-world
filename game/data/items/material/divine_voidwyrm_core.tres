@@ -9,4 +9,4 @@ display_name = "Voidwyrm Core"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W25_route"])

@@ -9,7 +9,7 @@ display_name = "Wide Dao Heart Slip"
 category = &"technique"
 subcategory = &"jade_slip"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "dao_heart": 0.1
 }

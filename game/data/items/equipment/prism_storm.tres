@@ -9,7 +9,7 @@ display_name = "Storm Prism"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 percent_modifiers = {
 "crit_damage": 0.06
 }

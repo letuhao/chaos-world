@@ -9,4 +9,4 @@ display_name = "Heavenly Branch"
 category = &"material"
 subcategory = &"herb"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])

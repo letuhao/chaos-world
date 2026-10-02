@@ -9,7 +9,7 @@ display_name = "Moon Absorption Tincture"
 category = &"consumable"
 subcategory = &"tincture"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "qi_absorption": 0.1
 }

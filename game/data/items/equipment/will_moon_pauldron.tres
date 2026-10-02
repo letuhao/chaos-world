@@ -9,7 +9,7 @@ display_name = "Moon Resolve Pauldron"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 percent_modifiers = {
 "will": 0.1
 }

@@ -9,4 +9,4 @@ display_name = "Orb Celestial Ore"
 category = &"material"
 subcategory = &"ore"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W25_route"])

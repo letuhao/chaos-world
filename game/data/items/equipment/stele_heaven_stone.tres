@@ -9,7 +9,7 @@ display_name = "Heaven Stele"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "defense_physical": 28.0,
 "defense_spiritual": 26.0,

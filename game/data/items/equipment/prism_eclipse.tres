@@ -9,7 +9,7 @@ display_name = "Eclipse Prism"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 percent_modifiers = {
 "penetration": 0.06
 }

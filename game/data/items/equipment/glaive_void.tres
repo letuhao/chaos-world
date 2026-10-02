@@ -9,7 +9,7 @@ display_name = "Void Glaive"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "attack_physical": 34.0,
 "poise": 8.0

@@ -9,4 +9,4 @@ display_name = "Divine Marquee Notice"
 category = &"quest"
 subcategory = &"sachet"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])

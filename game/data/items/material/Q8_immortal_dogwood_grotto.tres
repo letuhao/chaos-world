@@ -9,4 +9,4 @@ display_name = "Immortal Dogwood Grotto"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

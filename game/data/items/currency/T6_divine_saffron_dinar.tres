@@ -9,4 +9,4 @@ display_name = "Divine Saffron Dinar"
 category = &"currency"
 subcategory = &"seal"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])

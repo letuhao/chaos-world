@@ -9,7 +9,7 @@ display_name = "Chaos Mind Elixir"
 category = &"consumable"
 subcategory = &"elixir"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "aptitude": 0.16
 }

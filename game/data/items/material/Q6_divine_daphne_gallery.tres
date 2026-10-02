@@ -9,4 +9,4 @@ display_name = "Divine Daphne Gallery"
 category = &"material"
 subcategory = &"ingot"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

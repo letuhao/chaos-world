@@ -9,7 +9,7 @@ display_name = "Tide Mantle"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "max_qi": 50.0
 }

@@ -9,4 +9,4 @@ display_name = "Divine Daphne Wrack"
 category = &"material"
 subcategory = &"hide"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

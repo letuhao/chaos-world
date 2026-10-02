@@ -9,7 +9,7 @@ display_name = "Singularity Reliquary"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "max_qi": 120.0
 }

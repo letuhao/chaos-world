@@ -9,4 +9,4 @@ display_name = "Immortal Dill Cog"
 category = &"material"
 subcategory = &"bone"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

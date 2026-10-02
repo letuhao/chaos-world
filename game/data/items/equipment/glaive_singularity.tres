@@ -9,7 +9,7 @@ display_name = "Singularity Glaive"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "penetration": 0.06
 }

@@ -9,4 +9,4 @@ display_name = "Divine Cress Cadence"
 category = &"material"
 subcategory = &"filament"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W26_route"])

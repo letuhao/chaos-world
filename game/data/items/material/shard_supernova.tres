@@ -9,4 +9,4 @@ display_name = "Supernova Shard"
 category = &"material"
 subcategory = &"fragment"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

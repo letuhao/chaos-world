@@ -9,7 +9,7 @@ display_name = "Singularity Mantle"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "max_health": 110.0,
 "max_qi": 90.0

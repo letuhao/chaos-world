@@ -9,7 +9,7 @@ display_name = "Tide Mantra"
 category = &"technique"
 subcategory = &"mantra"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "cooldown_reduction": 0.05
 }

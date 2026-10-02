@@ -9,7 +9,7 @@ display_name = "Storm Sigil Brand"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "attack_spiritual": 0.06
 }

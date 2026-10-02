@@ -9,7 +9,7 @@ display_name = "Primordial Edge Bladework"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "attack_speed": 0.12
 }

@@ -9,7 +9,7 @@ display_name = "Moon Edge Bladework"
 category = &"equipment"
 subcategory = &"weapon"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "attack_physical": 36.0,
 "poise": 8.0

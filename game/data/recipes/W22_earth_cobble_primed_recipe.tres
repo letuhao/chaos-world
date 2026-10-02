@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"W22_earth_cobble_primed_recipe"
+display_name = "Earth Cobble Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"W22_earth_cobble_aged", &"ring_jade_ore", &"mask_gale_essence", &"elemental_earth_essence"])
+outputs = Array[StringName]([&"W22_earth_cobble_primed"])

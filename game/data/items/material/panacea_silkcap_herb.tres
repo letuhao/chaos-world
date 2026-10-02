@@ -9,4 +9,4 @@ display_name = "Silkcap Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W25_route"])

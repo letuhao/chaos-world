@@ -9,4 +9,4 @@ display_name = "Heaven Ink"
 category = &"material"
 subcategory = &"essence"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])

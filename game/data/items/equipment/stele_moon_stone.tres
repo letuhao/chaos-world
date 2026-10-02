@@ -9,7 +9,7 @@ display_name = "Moon Stele"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "max_qi": 72.0,
 "poise": 10.0

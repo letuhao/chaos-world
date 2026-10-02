@@ -9,4 +9,4 @@ display_name = "Void Keystone"
 category = &"key"
 subcategory = &"sigil"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])

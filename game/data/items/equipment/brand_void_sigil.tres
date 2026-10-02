@@ -9,7 +9,7 @@ display_name = "Void Sigil Brand"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "damage_reduction": 0.06
 }

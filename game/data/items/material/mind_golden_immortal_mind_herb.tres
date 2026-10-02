@@ -9,5 +9,5 @@ display_name = "Inspiration Mind Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W25_route"])
 description = "Gathered reagent for the realm's elixir."

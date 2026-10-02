@@ -9,7 +9,7 @@ display_name = "Supernova Tonic Draught"
 category = &"consumable"
 subcategory = &"draught"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "attack_spiritual": 0.08
 }

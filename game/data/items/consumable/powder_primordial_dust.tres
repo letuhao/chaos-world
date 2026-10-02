@@ -9,7 +9,7 @@ display_name = "Primordial Dust Powder"
 category = &"consumable"
 subcategory = &"powder"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "max_health": 95.0
 }

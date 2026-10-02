@@ -9,7 +9,7 @@ display_name = "Storm Lens"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 percent_modifiers = {
 "attack_spiritual": 0.07
 }

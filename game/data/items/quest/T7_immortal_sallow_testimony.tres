@@ -9,4 +9,4 @@ display_name = "Immortal Sallow Testimony"
 category = &"quest"
 subcategory = &"text"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])

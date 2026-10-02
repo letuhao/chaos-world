@@ -9,4 +9,4 @@ display_name = "Heaven Mallard Denarius"
 category = &"currency"
 subcategory = &"coin"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])

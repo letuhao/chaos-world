@@ -9,4 +9,4 @@ display_name = "Immortal Altarpiece Guilder"
 category = &"currency"
 subcategory = &"seal"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])

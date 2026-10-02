@@ -9,7 +9,7 @@ display_name = "Chaotic Formula"
 category = &"technique"
 subcategory = &"formula"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "insight_gain": 0.11
 }

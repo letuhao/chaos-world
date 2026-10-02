@@ -9,7 +9,7 @@ display_name = "Primordial Reliquary"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 percent_modifiers = {
 "cultivation_rate": 0.1
 }

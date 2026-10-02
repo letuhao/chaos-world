@@ -9,7 +9,7 @@ display_name = "Moon Reflect Sigil"
 category = &"technique"
 subcategory = &"sigil"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "qi_cost_reduction": 0.06
 }

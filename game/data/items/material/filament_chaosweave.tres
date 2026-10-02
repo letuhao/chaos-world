@@ -9,4 +9,4 @@ display_name = "Chaosweave Filament"
 category = &"material"
 subcategory = &"filament"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W25_route"])

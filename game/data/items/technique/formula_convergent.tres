@@ -9,7 +9,7 @@ display_name = "Convergent Formula"
 category = &"technique"
 subcategory = &"formula"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "qi_regen": 0.08
 }

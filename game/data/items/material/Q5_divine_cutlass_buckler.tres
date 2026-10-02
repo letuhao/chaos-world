@@ -9,4 +9,4 @@ display_name = "Divine Cutlass Buckler"
 category = &"material"
 subcategory = &"ingot"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W26_route"])

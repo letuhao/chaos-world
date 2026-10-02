@@ -9,7 +9,7 @@ display_name = "Eclipse Ward"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "damage_reduction": 0.06
 }

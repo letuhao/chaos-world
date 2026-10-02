@@ -9,7 +9,7 @@ display_name = "Singularity Prism"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 percent_modifiers = {
 "evasion": 0.08
 }

@@ -9,7 +9,7 @@ display_name = "Tide Ointment Salve"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "max_stamina": 30.0
 }

@@ -9,7 +9,7 @@ display_name = "Moon Lens"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "max_qi": 45.0
 }

@@ -9,4 +9,4 @@ display_name = "Storm Shard"
 category = &"material"
 subcategory = &"fragment"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

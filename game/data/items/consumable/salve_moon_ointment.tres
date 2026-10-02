@@ -9,7 +9,7 @@ display_name = "Moon Ointment Salve"
 category = &"consumable"
 subcategory = &"salve"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "status_resistance": 0.06
 }

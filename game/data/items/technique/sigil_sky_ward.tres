@@ -9,7 +9,7 @@ display_name = "Sky Ward Sigil"
 category = &"technique"
 subcategory = &"sigil"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "cooldown_reduction": 0.05
 }

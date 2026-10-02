@@ -9,4 +9,4 @@ display_name = "Immortal Dill Tongs"
 category = &"material"
 subcategory = &"beast_core"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

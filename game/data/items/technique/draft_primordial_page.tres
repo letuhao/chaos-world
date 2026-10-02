@@ -9,7 +9,7 @@ display_name = "Primordial Draft Page"
 category = &"technique"
 subcategory = &"draft"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "cultivation_rate": 0.1
 }

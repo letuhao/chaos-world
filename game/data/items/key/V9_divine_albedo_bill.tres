@@ -9,4 +9,4 @@ display_name = "Divine Albedo Bill"
 category = &"key"
 subcategory = &"sigil"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])

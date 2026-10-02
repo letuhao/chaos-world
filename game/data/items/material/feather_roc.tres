@@ -9,4 +9,4 @@ display_name = "Roc Feather"
 category = &"material"
 subcategory = &"hide"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W25_route"])

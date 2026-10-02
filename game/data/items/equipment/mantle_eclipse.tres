@@ -9,7 +9,7 @@ display_name = "Eclipse Mantle"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 percent_modifiers = {
 "qi_cost_reduction": 0.06
 }

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"W1_divine_alcove_conge"
+display_name = "Divine Alcove Conge"
+category = &"material"
+subcategory = &"core"
+grade = &"divine"
+sources = Array[StringName]([&"gather"])

@@ -9,7 +9,7 @@ display_name = "Primordial Resolve Pauldron"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 percent_modifiers = {
 "will": 0.18
 }

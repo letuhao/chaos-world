@@ -9,4 +9,4 @@ display_name = "Immortal Plover Turnstile"
 category = &"key"
 subcategory = &"seal"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])

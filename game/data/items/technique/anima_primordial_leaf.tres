@@ -9,7 +9,7 @@ display_name = "Primordial Spirit Leaf"
 category = &"technique"
 subcategory = &"manual"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "spirit": 0.16
 }

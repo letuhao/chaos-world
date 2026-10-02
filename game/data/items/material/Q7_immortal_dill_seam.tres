@@ -9,4 +9,4 @@ display_name = "Immortal Dill Seam"
 category = &"material"
 subcategory = &"ore"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

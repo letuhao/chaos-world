@@ -9,7 +9,7 @@ display_name = "Primordial Mantle"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "max_health": 100.0,
 "max_stamina": 60.0

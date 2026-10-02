@@ -9,7 +9,7 @@ display_name = "Supernova Reliquary"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 percent_modifiers = {
 "attack_spiritual": 0.08
 }

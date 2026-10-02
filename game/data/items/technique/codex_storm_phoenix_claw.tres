@@ -9,7 +9,7 @@ display_name = "Storm Phoenix Claw Codex"
 category = &"technique"
 subcategory = &"manual"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "move_speed": 0.06
 }

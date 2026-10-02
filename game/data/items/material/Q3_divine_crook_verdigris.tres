@@ -9,4 +9,4 @@ display_name = "Divine Crook Verdigris"
 category = &"material"
 subcategory = &"hide"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W26_route"])

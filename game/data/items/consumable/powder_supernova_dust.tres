@@ -9,7 +9,7 @@ display_name = "Supernova Dust Powder"
 category = &"consumable"
 subcategory = &"powder"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "max_qi": 75.0
 }

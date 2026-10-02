@@ -9,4 +9,4 @@ display_name = "Storm Tablet"
 category = &"material"
 subcategory = &"tablet"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])

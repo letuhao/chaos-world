@@ -9,4 +9,4 @@ display_name = "Heaven Alkali Novelty"
 category = &"misc"
 subcategory = &"token"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])

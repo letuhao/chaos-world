@@ -9,7 +9,7 @@ display_name = "Primordial Stele"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "max_health": 240.0,
 "max_qi": 220.0,

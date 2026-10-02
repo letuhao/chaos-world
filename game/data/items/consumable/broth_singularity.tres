@@ -9,7 +9,7 @@ display_name = "Singularity Broth"
 category = &"consumable"
 subcategory = &"broth"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "max_qi": 115.0
 }

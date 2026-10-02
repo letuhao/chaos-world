@@ -9,7 +9,7 @@ display_name = "Immortal Stamina Broth"
 category = &"consumable"
 subcategory = &"broth"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "stamina_regen": 0.15
 }

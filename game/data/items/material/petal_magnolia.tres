@@ -9,4 +9,4 @@ display_name = "Magnolia Petal"
 category = &"material"
 subcategory = &"herb"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W26_route"])

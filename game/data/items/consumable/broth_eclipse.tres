@@ -9,7 +9,7 @@ display_name = "Eclipse Broth"
 category = &"consumable"
 subcategory = &"broth"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "max_qi": 80.0
 }

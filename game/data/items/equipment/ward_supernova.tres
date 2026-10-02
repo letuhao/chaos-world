@@ -9,7 +9,7 @@ display_name = "Supernova Ward"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "defense_spiritual": 30.0,
 "poise": 9.0

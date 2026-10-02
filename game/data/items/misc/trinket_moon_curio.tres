@@ -9,4 +9,4 @@ display_name = "Moon Curio"
 category = &"misc"
 subcategory = &"curio"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])

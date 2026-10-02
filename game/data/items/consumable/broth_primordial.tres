@@ -9,7 +9,7 @@ display_name = "Primordial Broth"
 category = &"consumable"
 subcategory = &"broth"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 flat_modifiers = {
 "max_health": 98.0
 }

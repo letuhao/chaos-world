@@ -9,4 +9,4 @@ display_name = "Heaven Anchorage Erse"
 category = &"quest"
 subcategory = &"instrument"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])

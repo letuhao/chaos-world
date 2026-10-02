@@ -9,7 +9,7 @@ display_name = "Eclipse Draft Page"
 category = &"technique"
 subcategory = &"draft"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "attack_spiritual": 0.08
 }

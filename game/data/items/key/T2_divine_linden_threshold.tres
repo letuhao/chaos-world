@@ -9,4 +9,4 @@ display_name = "Divine Linden Threshold"
 category = &"key"
 subcategory = &"talisman"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])

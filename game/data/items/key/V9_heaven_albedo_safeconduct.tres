@@ -9,4 +9,4 @@ display_name = "Heaven Albedo Safeconduct"
 category = &"key"
 subcategory = &"seal"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])

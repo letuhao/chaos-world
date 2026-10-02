@@ -9,7 +9,7 @@ display_name = "Primordial Prism"
 category = &"equipment"
 subcategory = &"orb"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "defense_spiritual": 30.0
 }

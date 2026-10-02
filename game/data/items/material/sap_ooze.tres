@@ -9,4 +9,4 @@ display_name = "Ooze Sap"
 category = &"material"
 subcategory = &"essence"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

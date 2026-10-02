@@ -9,4 +9,4 @@ display_name = "Void Lotus"
 category = &"material"
 subcategory = &"herb"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W25_route"])

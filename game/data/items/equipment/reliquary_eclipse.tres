@@ -9,7 +9,7 @@ display_name = "Eclipse Reliquary"
 category = &"equipment"
 subcategory = &"artifact"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 flat_modifiers = {
 "max_qi": 75.0
 }

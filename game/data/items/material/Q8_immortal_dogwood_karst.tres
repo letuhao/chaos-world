@@ -9,4 +9,4 @@ display_name = "Immortal Dogwood Karst"
 category = &"material"
 subcategory = &"filament"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])

@@ -9,5 +9,5 @@ display_name = "Transcendent Herb"
 category = &"material"
 subcategory = &"herb"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W27_route"])
 description = "Cultivation herb for Transcendent. Gathered from the wild."

@@ -9,4 +9,4 @@ display_name = "Celestial Silk Hide"
 category = &"material"
 subcategory = &"hide"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W26_route"])

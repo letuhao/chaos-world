@@ -9,7 +9,7 @@ display_name = "Chaos Greave"
 category = &"equipment"
 subcategory = &"accessory"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W23_route"])
 percent_modifiers = {
 "agility": 0.16
 }

@@ -9,7 +9,7 @@ display_name = "Moon Physique Pauldron"
 category = &"equipment"
 subcategory = &"armor"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W24_route"])
 percent_modifiers = {
 "physique": 0.1
 }

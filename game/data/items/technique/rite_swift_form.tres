@@ -9,7 +9,7 @@ display_name = "Swift Rite"
 category = &"technique"
 subcategory = &"rite"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:W28_route"])
 percent_modifiers = {
 "attack_spiritual": 0.07
 }
