@@ -9,4 +9,4 @@ display_name = "Immortal Apothecary Debenture"
 category = &"misc"
 subcategory = &"charm"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y25_route"])

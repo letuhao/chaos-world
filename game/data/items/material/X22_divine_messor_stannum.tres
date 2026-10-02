@@ -9,4 +9,4 @@ display_name = "Divine Messor Stannum"
 category = &"material"
 subcategory = &"gemstone"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y27_route"])

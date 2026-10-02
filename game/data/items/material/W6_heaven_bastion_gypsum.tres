@@ -9,4 +9,4 @@ display_name = "Heaven Bastion Gypsum"
 category = &"material"
 subcategory = &"ingot"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y25_route"])

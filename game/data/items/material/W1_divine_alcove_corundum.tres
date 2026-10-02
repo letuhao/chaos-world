@@ -9,4 +9,4 @@ display_name = "Divine Alcove Corundum"
 category = &"material"
 subcategory = &"bone"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y23_route"])

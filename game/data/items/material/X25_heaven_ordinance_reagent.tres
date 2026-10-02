@@ -9,4 +9,4 @@ display_name = "Heaven Ordinance Reagent"
 category = &"material"
 subcategory = &"fragment"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y28_route"])

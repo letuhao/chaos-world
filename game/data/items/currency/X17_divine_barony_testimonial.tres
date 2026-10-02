@@ -9,4 +9,4 @@ display_name = "Divine Barony Testimonial"
 category = &"currency"
 subcategory = &"writ"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

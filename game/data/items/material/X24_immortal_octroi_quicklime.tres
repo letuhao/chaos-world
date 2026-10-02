@@ -9,4 +9,4 @@ display_name = "Immortal Octroi Quicklime"
 category = &"material"
 subcategory = &"scroll"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y28_route"])

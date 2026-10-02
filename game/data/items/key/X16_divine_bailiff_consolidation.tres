@@ -9,4 +9,4 @@ display_name = "Divine Bailiff Consolidation"
 category = &"key"
 subcategory = &"sigil"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

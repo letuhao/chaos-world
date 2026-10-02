@@ -9,4 +9,4 @@ display_name = "Immortal Benefice Distraint"
 category = &"currency"
 subcategory = &"bond"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

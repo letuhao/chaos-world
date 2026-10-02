@@ -9,4 +9,4 @@ display_name = "Immortal Burgess Relictum"
 category = &"quest"
 subcategory = &"instrument"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

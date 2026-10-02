@@ -9,4 +9,4 @@ display_name = "Immortal Moidores Zeolite"
 category = &"material"
 subcategory = &"gemstone"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y28_route"])

@@ -9,4 +9,4 @@ display_name = "Immortal Burgess Determinable"
 category = &"quest"
 subcategory = &"text"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

@@ -9,4 +9,4 @@ display_name = "Divine Beadle Caveat"
 category = &"quest"
 subcategory = &"text"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

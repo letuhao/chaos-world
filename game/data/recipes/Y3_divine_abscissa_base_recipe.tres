@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Y3_divine_abscissa_base_recipe"
+display_name = "Divine Abscissa Base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Q1_divine_courier_etching", &"Q3_divine_crook_patina"])
+outputs = Array[StringName]([&"Y3_divine_abscissa_base"])

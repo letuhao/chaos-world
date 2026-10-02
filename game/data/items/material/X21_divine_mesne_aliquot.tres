@@ -9,4 +9,4 @@ display_name = "Divine Mesne Aliquot"
 category = &"material"
 subcategory = &"tablet"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

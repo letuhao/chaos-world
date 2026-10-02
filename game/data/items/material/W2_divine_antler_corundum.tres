@@ -9,4 +9,4 @@ display_name = "Divine Antler Corundum"
 category = &"material"
 subcategory = &"fragment"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y23_route"])

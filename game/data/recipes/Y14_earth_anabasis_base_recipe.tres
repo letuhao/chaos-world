@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Y14_earth_anabasis_base_recipe"
+display_name = "Earth Anabasis Base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"crystal_sapphire", &"jade_moon"])
+outputs = Array[StringName]([&"Y14_earth_anabasis_base"])

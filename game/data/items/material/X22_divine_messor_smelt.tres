@@ -9,4 +9,4 @@ display_name = "Divine Messor Smelt"
 category = &"material"
 subcategory = &"core"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y27_route"])

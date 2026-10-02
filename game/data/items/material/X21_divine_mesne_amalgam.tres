@@ -9,4 +9,4 @@ display_name = "Divine Mesne Amalgam"
 category = &"material"
 subcategory = &"scroll"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

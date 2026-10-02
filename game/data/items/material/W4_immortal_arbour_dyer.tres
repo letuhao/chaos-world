@@ -9,4 +9,4 @@ display_name = "Immortal Arbour Dyer"
 category = &"material"
 subcategory = &"core"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y24_route"])

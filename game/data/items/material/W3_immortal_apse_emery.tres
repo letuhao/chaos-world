@@ -9,4 +9,4 @@ display_name = "Immortal Apse Emery"
 category = &"material"
 subcategory = &"gemstone"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y24_route"])

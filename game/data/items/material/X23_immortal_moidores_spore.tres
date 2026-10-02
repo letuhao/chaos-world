@@ -9,4 +9,4 @@ display_name = "Immortal Moidores Spore"
 category = &"material"
 subcategory = &"scroll"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y27_route"])

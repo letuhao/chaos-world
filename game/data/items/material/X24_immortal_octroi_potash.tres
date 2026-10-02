@@ -9,4 +9,4 @@ display_name = "Immortal Octroi Potash"
 category = &"material"
 subcategory = &"ingot"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y28_route"])

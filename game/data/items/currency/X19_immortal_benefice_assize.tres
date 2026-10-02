@@ -9,4 +9,4 @@ display_name = "Immortal Benefice Assize"
 category = &"currency"
 subcategory = &"writ"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

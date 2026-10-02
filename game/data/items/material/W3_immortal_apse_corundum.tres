@@ -9,4 +9,4 @@ display_name = "Immortal Apse Corundum"
 category = &"material"
 subcategory = &"scroll"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y23_route"])

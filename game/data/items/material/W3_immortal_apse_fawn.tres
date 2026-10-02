@@ -9,4 +9,4 @@ display_name = "Immortal Apse Fawn"
 category = &"material"
 subcategory = &"bone"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y24_route"])

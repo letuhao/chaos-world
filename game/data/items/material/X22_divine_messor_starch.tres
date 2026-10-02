@@ -9,4 +9,4 @@ display_name = "Divine Messor Starch"
 category = &"material"
 subcategory = &"ingot"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y27_route"])

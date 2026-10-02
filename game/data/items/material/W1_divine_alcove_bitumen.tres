@@ -9,4 +9,4 @@ display_name = "Divine Alcove Bitumen"
 category = &"material"
 subcategory = &"scroll"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y23_route"])

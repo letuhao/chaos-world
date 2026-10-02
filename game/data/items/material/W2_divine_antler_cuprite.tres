@@ -9,4 +9,4 @@ display_name = "Divine Antler Cuprite"
 category = &"material"
 subcategory = &"filament"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y23_route"])

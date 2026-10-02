@@ -9,4 +9,4 @@ display_name = "Immortal Burgess Lien"
 category = &"quest"
 subcategory = &"bounty"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

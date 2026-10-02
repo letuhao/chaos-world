@@ -9,4 +9,4 @@ display_name = "Heaven Ashlar Hackle"
 category = &"material"
 subcategory = &"bone"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y25_route"])

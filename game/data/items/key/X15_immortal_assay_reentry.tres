@@ -9,4 +9,4 @@ display_name = "Immortal Assay Reentry"
 category = &"key"
 subcategory = &"seal"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

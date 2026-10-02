@@ -9,4 +9,4 @@ display_name = "Immortal Apothecary Statute"
 category = &"misc"
 subcategory = &"token"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y25_route"])

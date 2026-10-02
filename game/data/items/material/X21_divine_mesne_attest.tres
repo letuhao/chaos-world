@@ -9,4 +9,4 @@ display_name = "Divine Mesne Attest"
 category = &"material"
 subcategory = &"ingot"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

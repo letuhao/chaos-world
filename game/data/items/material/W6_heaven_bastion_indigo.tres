@@ -9,4 +9,4 @@ display_name = "Heaven Bastion Indigo"
 category = &"material"
 subcategory = &"scroll"
 grade = &"heaven"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y25_route"])

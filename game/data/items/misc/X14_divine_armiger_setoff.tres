@@ -9,4 +9,4 @@ display_name = "Divine Armiger Setoff"
 category = &"misc"
 subcategory = &"charm"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

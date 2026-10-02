@@ -9,4 +9,4 @@ display_name = "Divine Antler Damask"
 category = &"material"
 subcategory = &"tablet"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y23_route"])

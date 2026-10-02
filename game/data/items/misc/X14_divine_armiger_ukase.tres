@@ -9,4 +9,4 @@ display_name = "Divine Armiger Ukase"
 category = &"misc"
 subcategory = &"curio"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

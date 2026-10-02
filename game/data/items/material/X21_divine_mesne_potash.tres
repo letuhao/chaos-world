@@ -9,4 +9,4 @@ display_name = "Divine Mesne Potash"
 category = &"material"
 subcategory = &"core"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

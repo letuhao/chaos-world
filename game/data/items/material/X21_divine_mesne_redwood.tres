@@ -9,4 +9,4 @@ display_name = "Divine Mesne Redwood"
 category = &"material"
 subcategory = &"tablet"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y27_route"])

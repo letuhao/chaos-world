@@ -9,4 +9,4 @@ display_name = "Divine Beadle Stipulation"
 category = &"quest"
 subcategory = &"instrument"
 grade = &"divine"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"quest:Y26_route"])

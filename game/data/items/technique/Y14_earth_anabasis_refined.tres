@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"Y14_earth_anabasis_refined"
+display_name = "Earth Anabasis Refined"
+category = &"technique"
+subcategory = &"mantra"
+grade = &"earth"
+sources = Array[StringName]([&"craft:Y14_earth_anabasis_refined_recipe"])
+percent_modifiers = {
+"will": 0.06
+}
