@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"B33_divine_charactery_primed_recipe"
+display_name = "Divine Charactery Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"B33_divine_charactery_aged", &"Q6_divine_daphne_firesteel", &"W2_divine_antler_cobble", &"W2_divine_antler_chert"])
+outputs = Array[StringName]([&"B33_divine_charactery_primed"])

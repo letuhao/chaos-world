@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B17_spirit_cambist_aged"
+display_name = "Spirit Cambist Aged"
+category = &"equipment"
+subcategory = &"lens"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:B17_spirit_cambist_aged_recipe"])
+percent_modifiers = {
+"dao_heart": 0.09
+}

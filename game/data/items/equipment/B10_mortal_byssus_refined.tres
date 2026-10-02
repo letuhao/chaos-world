@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B10_mortal_byssus_refined"
+display_name = "Mortal Byssus Refined"
+category = &"equipment"
+subcategory = &"greaves"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:B10_mortal_byssus_refined_recipe"])
+percent_modifiers = {
+"qi_absorption": 0.06
+}

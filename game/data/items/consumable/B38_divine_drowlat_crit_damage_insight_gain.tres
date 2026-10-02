@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B38_divine_drowlat_crit_damage_insight_gain"
+display_name = "Divine Drowlat Crit_Damage Insight_Gain"
+category = &"consumable"
+subcategory = &"talisman"
+grade = &"divine"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"crit_damage": 0.05,
+"insight_gain": 0.07
+}

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"B23_mortal_caravel_base_recipe"
+display_name = "Mortal Caravel Base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"sash_iron_hide", &"W10_mortal_candelabrum_meniscus"])
+outputs = Array[StringName]([&"B23_mortal_caravel_base"])

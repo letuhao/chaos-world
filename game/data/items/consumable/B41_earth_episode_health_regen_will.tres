@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B41_earth_episode_health_regen_will"
+display_name = "Earth Episode Health_Regen Will"
+category = &"consumable"
+subcategory = &"powder"
+grade = &"earth"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"health_regen": 0.07,
+"will": 0.03
+}

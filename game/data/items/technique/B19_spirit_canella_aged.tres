@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B19_spirit_canella_aged"
+display_name = "Spirit Canella Aged"
+category = &"technique"
+subcategory = &"talisman"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:B19_spirit_canella_aged_recipe"])
+percent_modifiers = {
+"loot_bonus": 0.09
+}

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B40_mortal_encumbrance_spirit_qi_cost_reduction"
+display_name = "Mortal Encumbrance Spirit Qi_Cost_Reduction"
+category = &"consumable"
+subcategory = &"tincture"
+grade = &"mortal"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"spirit": 0.07,
+"qi_cost_reduction": 0.03
+}

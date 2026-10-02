@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B13_mortal_calado_base"
+display_name = "Mortal Calado Base"
+category = &"equipment"
+subcategory = &"bandolier"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:B13_mortal_calado_base_recipe", &"quest:B13_mortal_calado_line"])
+percent_modifiers = {
+"qi_cost_reduction": 0.03
+}

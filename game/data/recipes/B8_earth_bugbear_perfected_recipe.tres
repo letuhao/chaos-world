@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"B8_earth_bugbear_perfected_recipe"
+display_name = "Earth Bugbear Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"B8_earth_bugbear_primed", &"X26_earth_outlay_slime", &"gemstone_aquamarine"])
+outputs = Array[StringName]([&"B8_earth_bugbear_perfected"])

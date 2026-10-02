@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B41_earth_environ_attack_physical_attack_spiritual"
+display_name = "Earth Environ Attack_Physical Attack_Spiritual"
+category = &"consumable"
+subcategory = &"powder"
+grade = &"earth"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"attack_physical": 0.05,
+"attack_spiritual": 0.07
+}

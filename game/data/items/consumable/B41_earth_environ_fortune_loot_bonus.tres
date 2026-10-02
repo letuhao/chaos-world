@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B41_earth_environ_fortune_loot_bonus"
+display_name = "Earth Environ Fortune Loot_Bonus"
+category = &"consumable"
+subcategory = &"powder"
+grade = &"earth"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"fortune": 0.05,
+"loot_bonus": 0.07
+}

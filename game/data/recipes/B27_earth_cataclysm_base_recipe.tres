@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"B27_earth_cataclysm_base_recipe"
+display_name = "Earth Cataclysm Base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"filament_wool", &"W8_earth_birchen_inoculum"])
+outputs = Array[StringName]([&"B27_earth_cataclysm_base"])
