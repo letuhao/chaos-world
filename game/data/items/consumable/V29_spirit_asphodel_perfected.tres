@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V29_spirit_asphodel_perfected"
 display_name = "Spirit Asphodel Perfected"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:V29_spirit_asphodel_perfected_recipe"])
-percent_modifiers = {
-"breakthrough_chance": 0.17
-}

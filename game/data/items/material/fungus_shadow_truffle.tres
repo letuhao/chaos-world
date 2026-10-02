@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"fungus_shadow_truffle"
 display_name = "Shadow Truffle"
 category = &"material"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"heaven"
 sources = Array[StringName]([&"gather", &"quest:W25_route"])

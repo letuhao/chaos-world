@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F19_mortal_entozoon_agility_aptitude_poise_will"
 display_name = "Mortal Entozoon Agility Aptitude Poise Will"
 category = &"technique"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 7.15},
+	{"option_id": &"base_aptitude", "value": 7.15},
+	{"option_id": &"core_poise", "value": 7.15},
+	{"option_id": &"base_will", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"agility": 0.07,
-"aptitude": 0.03,
-"poise": 0.05,
-"will": 0.07
-}

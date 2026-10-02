@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V7_spirit_aerie_casket"
 display_name = "Spirit Aerie Casket"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 8.53},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:F12_domain_warden"])
-percent_modifiers = {
-"max_qi": 0.06
-}

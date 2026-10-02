@@ -7,13 +7,15 @@ script = ExtResource("1_item")
 id = &"orb_void_serpent_eye"
 display_name = "Void Serpent Eye"
 category = &"equipment"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 45.9},
+	{"option_id": &"core_max_qi", "value": 29.7},
+	{"option_id": &"core_crit_chance", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:orb_void_serpent"])
-flat_modifiers = {
-"attack_spiritual": 55.0,
-"max_qi": 110.0
-}
-percent_modifiers = {
-"crit_chance": 0.04
-}

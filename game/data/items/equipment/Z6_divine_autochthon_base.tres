@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"Z6_divine_autochthon_base"
 display_name = "Divine Autochthon Base"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"craft:Z6_divine_autochthon_base_recipe", &"quest:Z6_divine_autochthon_line"])
-percent_modifiers = {
-"cooldown_reduction": 0.03
-}

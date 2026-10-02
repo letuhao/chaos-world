@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"ward_jade"
 display_name = "Jade Ward"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 16},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"gather", &"quest:A42_route"])
-flat_modifiers = {
-"defense_spiritual": 16.0
-}

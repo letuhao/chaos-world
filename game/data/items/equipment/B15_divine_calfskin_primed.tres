@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"B15_divine_calfskin_primed"
 display_name = "Divine Calfskin Primed"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 50.18},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"craft:B15_divine_calfskin_primed_recipe"])
-percent_modifiers = {
-"agility": 0.13
-}

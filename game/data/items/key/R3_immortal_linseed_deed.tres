@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"R3_immortal_linseed_deed"
 display_name = "Immortal Linseed Deed"
 category = &"key"
+rarity = &"legendary"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])

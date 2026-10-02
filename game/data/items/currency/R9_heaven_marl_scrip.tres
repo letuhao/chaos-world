@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"R9_heaven_marl_scrip"
 display_name = "Heaven Marl Scrip"
 category = &"currency"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"token"
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])

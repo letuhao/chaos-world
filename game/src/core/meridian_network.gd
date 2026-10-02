@@ -12,6 +12,16 @@ signal changed
 ## base power bonus. Depth is raised by body-cultivation training (ADR 0023).
 const REFINE_POWER_STEP := 0.1
 
+## Each network resonance rank adds this fraction to every meridian bonus
+## (flow, capacity, power). Realms 19-30 reinforce the same network rather than
+## opening new meridians, so their authored `resonance_rank` (1..12) is the only
+## thing that distinguishes their progression curve (ADR 0017, ADR 0028).
+const RESONANCE_STEP := 0.05
+
+## 0 before the Immortal tier; 1..12 from R19 to R30. Applied as a multiplier to
+## every aggregate bonus, so it lifts the whole network at once.
+var resonance_rank: int = 0
+
 var _meridians: Dictionary = {}
 
 
@@ -28,6 +38,16 @@ func unlock_for_realm(realm_id: StringName) -> void:
 
 func get_meridian(id: StringName) -> MeridianState:
 	return _meridians.get(id)
+
+
+## Every meridian currently on the network, unlocked or not. Callers that want to
+## survey the whole body (save round-trips, balance reports) need all of them,
+## not just the ones they can name.
+func get_all_meridians() -> Array[MeridianState]:
+	var out: Array[MeridianState] = []
+	for key in _meridians.keys():
+		out.append(_meridians[key])
+	return out
 
 
 func open_meridian(id: StringName) -> void:
@@ -82,12 +102,29 @@ func repair_meridian(id: StringName) -> void:
 		_emit_changed()
 
 
+## Set the network's resonance rank. Clamped to non-negative; the multiplier it
+## produces is `1 + RESONANCE_STEP * rank`, so rank 0 is inert and rank 12 lifts
+## every bonus by 60%. Applied to the aggregate, not per meridian, because
+## resonance is a property of the whole cultivated body (ADR 0017).
+func set_resonance_rank(rank: int) -> void:
+	var clamped := maxi(0, rank)
+	if clamped == resonance_rank:
+		return
+	resonance_rank = clamped
+	_emit_changed()
+
+
+## The multiplier resonance applies to every aggregate bonus.
+func resonance_multiplier() -> float:
+	return 1.0 + RESONANCE_STEP * float(resonance_rank)
+
+
 func get_flow_bonus() -> float:
 	var total := 0.0
 	for state in _meridians.values():
 		if state.is_open():
 			total += state.flow_bonus * state.get_bonus()
-	return total
+	return total * resonance_multiplier()
 
 
 func get_capacity_bonus() -> float:
@@ -95,7 +132,7 @@ func get_capacity_bonus() -> float:
 	for state in _meridians.values():
 		if state.state == &"expanded" or state.state == &"strengthened":
 			total += state.capacity_bonus * state.get_bonus()
-	return total
+	return total * resonance_multiplier()
 
 
 func get_power_bonus() -> float:
@@ -104,7 +141,7 @@ func get_power_bonus() -> float:
 		if state.state == &"strengthened":
 			var depth: float = 1.0 + REFINE_POWER_STEP * float(state.refinement)
 			total += state.power_bonus * state.get_bonus() * depth
-	return total
+	return total * resonance_multiplier()
 
 
 func to_dict() -> Dictionary:
@@ -112,15 +149,19 @@ func to_dict() -> Dictionary:
 	for key in _meridians.keys():
 		var state: MeridianState = _meridians[key]
 		out[String(key)] = state.to_dict()
-	return out
+	return {"meridians": out, "resonance_rank": resonance_rank}
 
 
 static func from_dict(data: Dictionary) -> MeridianNetwork:
 	var network := MeridianNetwork.new()
-	for key in data.keys():
-		var entry = data[key]
+	var entries: Dictionary = data.get("meridians", data)
+	for key in entries.keys():
+		if key == "resonance_rank":
+			continue
+		var entry = entries[key]
 		var state := MeridianState.from_dict(entry)
 		network._meridians[state.id] = state
+	network.resonance_rank = maxi(0, int(data.get("resonance_rank", 0)))
 	return network
 
 

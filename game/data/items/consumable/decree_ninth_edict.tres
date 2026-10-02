@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"decree_ninth_edict"
 display_name = "Decree: Ninth Edict"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 32.72},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"immortal"
 sources = Array[StringName]([&"quest:decree_ninth_edict"])
-flat_modifiers = {
-"max_qi": 85.0
-}

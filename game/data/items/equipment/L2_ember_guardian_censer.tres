@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"L2_ember_guardian_censer"
 display_name = "Ember Guardian Censer"
 category = &"equipment"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 6},
+	{"option_id": &"core_max_stamina", "value": 7.7},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"boss:d2_ember_guardian"])
-flat_modifiers = {
-"health_regen": 6.0,
-"max_stamina": 20.0
-}

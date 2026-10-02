@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"N1_mortal_acorn_perfected"
 display_name = "Mortal Acorn Perfected"
 category = &"consumable"
+rarity = &"common"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 8.88},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:N1_mortal_acorn_perfected_recipe"])
-percent_modifiers = {
-"physique": 0.17
-}

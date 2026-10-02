@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"mind_spirit_ascension_breakthrough_pill"
 display_name = "Reasoning Insight Pill"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:mind_spirit_ascension_pill_recipe"])

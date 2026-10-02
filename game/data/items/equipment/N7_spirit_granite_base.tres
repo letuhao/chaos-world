@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"N7_spirit_granite_base"
 display_name = "Spirit Granite Base"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 9.34},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:N7_spirit_granite_base_recipe"])
-percent_modifiers = {
-"agility": 0.03
-}

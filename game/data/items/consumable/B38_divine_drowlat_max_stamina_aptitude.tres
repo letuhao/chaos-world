@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B38_divine_drowlat_max_stamina_aptitude"
 display_name = "Divine Drowlat Max Stamina Aptitude"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 36.57},
+	{"option_id": &"base_aptitude", "value": 21.61},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"max_stamina": 0.07,
-"aptitude": 0.03
-}

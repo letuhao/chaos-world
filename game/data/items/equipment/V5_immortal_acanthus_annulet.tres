@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V5_immortal_acanthus_annulet"
 display_name = "Immortal Acanthus Annulet"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"boss:F17_mystic_warden"])
-percent_modifiers = {
-"max_qi": 0.06
-}

@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"V12_mortal_almanac_novelty"
 display_name = "Mortal Almanac Novelty"
 category = &"misc"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"token"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"quest:A33_route"])

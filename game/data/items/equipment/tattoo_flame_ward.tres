@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"tattoo_flame_ward"
 display_name = "Flame Ward"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 12},
+	{"option_id": &"core_damage_reduction", "value": 0.03},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:tattoo_flame_ward_recipe"])
-flat_modifiers = {
-"attack_spiritual": 12.0
-"damage_reduction": 0.03
-}

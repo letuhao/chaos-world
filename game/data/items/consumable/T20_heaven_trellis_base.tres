@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"T20_heaven_trellis_base"
 display_name = "Heaven Trellis Base"
 category = &"consumable"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 15.6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:T20_heaven_trellis_base_recipe", &"quest:T20_heaven_trellis_line"])
-percent_modifiers = {
-"spirit": 0.03
-}

@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"F39_divine_gaira_cooldown_reduction_health_regen_will"
 display_name = "Divine Gaira Cooldown reduction Health regen Will"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.032},
+	{"option_id": &"core_health_regen", "value": 36.58},
+	{"option_id": &"base_will", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"cooldown_reduction": 0.032,
-"health_regen": 0.034,
-"will": 0.033
-}

@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"gauntlet_gale"
 display_name = "Gale Gauntlet"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:gauntlet_gale_recipe"])
-percent_modifiers = {
-"attack_speed": 0.04
-}

@@ -7,11 +7,15 @@ script = ExtResource("1_item")
 id = &"F40_heaven_garganey_health_regen_spirit_will"
 display_name = "Heaven Garganey Health regen Spirit Will"
 category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 17.06},
+	{"option_id": &"base_spirit", "value": 28.88},
+	{"option_id": &"base_will", "value": 28.88},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"health_regen": 0.038,
-"spirit": 0.032,
-"will": 0.036
-}

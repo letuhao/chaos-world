@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"T14_immortal_tallow_aged"
 display_name = "Immortal Tallow Aged"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 29.84},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:T14_immortal_tallow_aged_recipe"])
-percent_modifiers = {
-"max_stamina": 0.09
-}

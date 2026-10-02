@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A17_heaven_bedel_refined"
 display_name = "Heaven Bedel Refined"
 category = &"consumable"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 14.62},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:A17_heaven_bedel_refined_recipe"])
-percent_modifiers = {
-"dao_heart": 0.06
-}

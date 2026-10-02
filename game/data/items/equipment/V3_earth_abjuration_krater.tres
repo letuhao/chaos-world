@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V3_earth_abjuration_krater"
 display_name = "Earth Abjuration Krater"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 22.28},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"boss:d4_iron_dancer"])
-percent_modifiers = {
-"poise": 0.06
-}

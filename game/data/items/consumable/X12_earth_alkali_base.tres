@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"X12_earth_alkali_base"
 display_name = "Earth Alkali Base"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 9.74},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"earth"
 sources = Array[StringName]([&"craft:X12_earth_alkali_base_recipe", &"quest:X12_earth_alkali_line"])
-percent_modifiers = {
-"max_stamina": 0.03
-}

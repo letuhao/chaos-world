@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U7_spirit_yarrow_halberd"
 display_name = "Spirit Yarrow Halberd"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 17.88},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:qi_spirit_palace_warden"])
-percent_modifiers = {
-"max_health": 0.06
-}

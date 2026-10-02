@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V3_spirit_abjuration_morion"
 display_name = "Spirit Abjuration Morion"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:d6_cinder_tiger"])
-percent_modifiers = {
-"insight_gain": 0.06
-}

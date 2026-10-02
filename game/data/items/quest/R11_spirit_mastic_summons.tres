@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"R11_spirit_mastic_summons"
 display_name = "Spirit Mastic Summons"
 category = &"quest"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base"]}
 subcategory = &"text"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"quest:A33_route"])

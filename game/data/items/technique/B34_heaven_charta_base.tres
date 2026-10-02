@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"B34_heaven_charta_base"
 display_name = "Heaven Charta Base"
 category = &"technique"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 28.05},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"draft"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:B34_heaven_charta_base_recipe", &"quest:B34_heaven_charta_line"])
-percent_modifiers = {
-"max_health": 0.03
-}

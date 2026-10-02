@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"gauntlet_boar_hide"
 display_name = "Gauntlet Boar Hide"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"hide"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"quest:A38_route"])

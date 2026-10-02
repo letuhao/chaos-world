@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"necklace_gale_amulet"
 display_name = "Gale Amulet"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 25},
+	{"option_id": &"core_loot_bonus", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:necklace_gale_amulet_recipe"])
-flat_modifiers = {
-"max_qi": 25.0
-}
-percent_modifiers = {
-"loot_bonus": 0.05
-}

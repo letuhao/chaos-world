@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"whistle_void"
 display_name = "Void Whistle"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"craft:whistle_void_recipe"])
-percent_modifiers = {
-"status_resistance": 0.08
-}

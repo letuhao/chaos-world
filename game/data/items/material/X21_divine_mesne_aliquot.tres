@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"X21_divine_mesne_aliquot"
 display_name = "Divine Mesne Aliquot"
 category = &"material"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"tablet"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"quest:Y26_route"])

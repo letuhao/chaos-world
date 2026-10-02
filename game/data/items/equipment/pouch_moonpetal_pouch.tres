@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"pouch_moonpetal_pouch"
 display_name = "Moonpetal Pouch"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 20},
+	{"option_id": &"base_fortune", "value": 8.12},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:pouch_moonpetal_pouch_recipe"])
-flat_modifiers = {
-"max_qi": 20.0
-}
-percent_modifiers = {
-"fortune": 0.03
-}

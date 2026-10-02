@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"L3_iron_tortoise_eternal_form"
 display_name = "Iron Tortoise Eternal Form"
 category = &"technique"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 23.1},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:d3_iron_tortoise_shell"])
-percent_modifiers = {
-"qi_absorption": 0.08
-}

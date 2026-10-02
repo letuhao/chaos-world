@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"O15_immortal_thunder_refined"
 display_name = "Immortal Thunder Refined"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.02},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:O15_immortal_thunder_refined_recipe"])
-percent_modifiers = {
-"attack_speed": 0.06
-}

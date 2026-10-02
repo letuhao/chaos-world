@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"btchance_mortal_pill"
 display_name = "Mortal Breakthrough Pill"
 category = &"consumable"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"boss:E3_tribulation_arbiter"])
-percent_modifiers = {
-"breakthrough_chance": 0.05
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I2_mortal_dossal_perfected"
 display_name = "Mortal Dossal Perfected"
 category = &"consumable"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 6.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I2_mortal_dossal_perfected_recipe"])
-percent_modifiers = {
-"max_qi": 0.17
-}

@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"helm_transcendent_helm"
 display_name = "Transcendent Helm"
 category = &"equipment"
+rarity = &"rare"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 12},
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:helm_transcendent_helm_recipe"])
-flat_modifiers = {
-"defense_spiritual": 12.0
-}
-percent_modifiers = {
-"status_resistance": 0.001
-}

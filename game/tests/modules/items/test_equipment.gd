@@ -1,48 +1,102 @@
 extends TestCase
 
-## ADR 0007: equipment applies stat modifiers and invalidates the stat cache.
+## ADR 0025/0026/0028: equipment applies an item's fixed and rolled effects
+## exactly once, under its own source id, and removes them reversibly.
 
 
 func _sword() -> ItemDef:
+	# No roll_spec: these tests assert exact authored values. Rolled affixes are
+	# covered in test_item_generator.gd.
 	var def := ItemDef.new()
 	def.id = &"sword"
+	def.display_name = "Sword"
 	def.category = ItemCategory.EQUIPMENT
+	def.subcategory = ItemSubtype.WEAPON
 	def.stackable = false
-	def.flat_modifiers = {String(Stat.ATTACK_PHYSICAL): 25.0}
+	def.rarity = &"rare"
+	def.realm = &"qi_refining"
+	def.fixed_modifiers = [{"option_id": &"core_attack_physical", "value": 25.0}]
 	return def
 
 
-func test_equip_applies_modifier() -> void:
+func _hero() -> Actor:
 	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
 	ItemsApi.attach(actor)
+	return actor
+
+
+func test_equip_applies_fixed_modifier_once() -> void:
+	var actor := _hero()
 	assert_almost_eq(actor.stats.derived(Stat.ATTACK_PHYSICAL), 20.0, "base attack")
 	var instance := ItemInstance.new(&"sword", &"sword_1")
-	var slot := Equipment.WEAPON
-	assert_eq(ItemsApi.equipment(actor).equip(actor, slot, _sword(), instance), true, "equipped")
-	assert_almost_eq(actor.stats.derived(Stat.ATTACK_PHYSICAL), 45.0, "equip bonus")
+	assert_eq(
+		ItemsApi.equipment(actor).equip(actor, Equipment.WEAPON, _sword(), instance),
+		true,
+		"equipped"
+	)
+	assert_almost_eq(actor.stats.derived(Stat.ATTACK_PHYSICAL), 45.0, "equip bonus applied once")
+	# Re-equipping the same instance must not accumulate a second contribution.
+	ItemsApi.equipment(actor).equip(actor, Equipment.WEAPON, _sword(), instance)
+	assert_almost_eq(actor.stats.derived(Stat.ATTACK_PHYSICAL), 45.0, "no drift on re-equip")
 
 
 func test_unequip_removes_modifier() -> void:
-	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
-	ItemsApi.attach(actor)
+	var actor := _hero()
 	var equipment := ItemsApi.equipment(actor)
 	equipment.equip(actor, Equipment.WEAPON, _sword(), ItemInstance.new(&"sword", &"sword_1"))
 	equipment.unequip(actor, Equipment.WEAPON)
 	assert_almost_eq(actor.stats.derived(Stat.ATTACK_PHYSICAL), 20.0, "bonus removed")
 
 
+func test_rolled_option_applies_exactly_once() -> void:
+	var actor := _hero()
+	var def := _sword()
+	var instance := ItemInstance.new(&"sword", &"sword_1")
+	instance.rarity = &"rare"
+	instance.realm = &"qi_refining"
+	instance.rolled = [
+		{
+			"option_id": &"core_max_health",
+			"target_type": &"stat",
+			"target_id": &"max_health",
+			"scope": &"",
+			"op": &"FLAT",
+			"unit": &"magnitude",
+			"value": 30.0,
+			"channel": &"rolled",
+		}
+	]
+	var before := actor.stats.derived(Stat.MAX_HEALTH)
+	ItemsApi.equipment(actor).equip(actor, Equipment.WEAPON, def, instance)
+	assert_almost_eq(actor.stats.derived(Stat.MAX_HEALTH), before + 30.0, "rolled applied once")
+	ItemsApi.equipment(actor).rebuild(actor, Equipment.WEAPON)
+	assert_almost_eq(actor.stats.derived(Stat.MAX_HEALTH), before + 30.0, "rebuild does not drift")
+	ItemsApi.equipment(actor).unequip(actor, Equipment.WEAPON)
+	assert_almost_eq(actor.stats.derived(Stat.MAX_HEALTH), before, "rolled removed")
+
+
+func test_capacity_option_does_not_refill_resource() -> void:
+	var actor := _hero()
+	actor.add_resource(ResourcePool.new(&"health", 100.0))
+	actor.resource(&"health").change(-60.0)
+	var def := _sword()
+	def.fixed_modifiers = [{"option_id": &"restore_health", "value": 500.0}]
+	# A one-shot restore is not a stat modifier, so equipment cannot apply it.
+	ItemsApi.equipment(actor).equip(actor, Equipment.WEAPON, def, ItemInstance.new(&"s", &"s1"))
+	assert_almost_eq(actor.resource(&"health").current, 40.0, "no refill on equip")
+
+
 func test_invalid_slot_rejected() -> void:
-	var actor := Actor.new(&"hero")
-	ItemsApi.attach(actor)
-	var ok := ItemsApi.equipment(actor).equip(
-		actor, &"tail", _sword(), ItemInstance.new(&"sword", &"s")
+	var actor := _hero()
+	assert_eq(
+		ItemsApi.equipment(actor).equip(actor, &"tail", _sword(), ItemInstance.new(&"sword", &"s")),
+		false,
+		"bad slot"
 	)
-	assert_eq(ok, false, "bad slot")
 
 
 func test_equip_rejects_non_equipment() -> void:
-	var actor := Actor.new(&"hero")
-	ItemsApi.attach(actor)
+	var actor := _hero()
 	var herb := ItemDef.new()
 	herb.id = &"herb"
 	herb.category = ItemCategory.MATERIAL
@@ -56,8 +110,7 @@ func test_equip_rejects_non_equipment() -> void:
 
 
 func test_equip_rejects_instance_def_mismatch() -> void:
-	var actor := Actor.new(&"hero")
-	ItemsApi.attach(actor)
+	var actor := _hero()
 	assert_eq(
 		ItemsApi.equipment(actor).equip(
 			actor, Equipment.WEAPON, _sword(), ItemInstance.new(&"other", &"o")
@@ -67,9 +120,40 @@ func test_equip_rejects_instance_def_mismatch() -> void:
 	)
 
 
+func test_equip_rejects_bound_item_for_another_actor() -> void:
+	var actor := _hero()
+	var instance := ItemInstance.new(&"sword", &"sword_1")
+	instance.bound_to = &"someone_else"
+	assert_eq(
+		ItemsApi.equipment(actor).equip(actor, Equipment.WEAPON, _sword(), instance),
+		false,
+		"bound item cannot equip elsewhere"
+	)
+
+
+func test_equip_rejects_grade_requirement_and_keeps_current() -> void:
+	var actor := _hero()
+	actor.set_path(PathState.new(BodyPath.PATH_ID, &"qi_refining"))
+	var weak := _sword()
+	var instance := ItemInstance.new(&"sword", &"sword_1")
+	assert_eq(
+		ItemsApi.equipment(actor).equip(actor, Equipment.WEAPON, weak, instance), true, "equipped"
+	)
+	var strong := _sword()
+	strong.id = &"greatsword"
+	strong.grade = ItemGrade.DIVINE
+	assert_eq(
+		ItemsApi.equipment(actor).equip(
+			actor, Equipment.WEAPON, strong, ItemInstance.new(&"greatsword", &"g1")
+		),
+		false,
+		"grade requirement unmet"
+	)
+	assert_eq(ItemsApi.equipment(actor).equipped(Equipment.WEAPON).def_id, &"sword", "current kept")
+
+
 func test_equip_item_from_inventory() -> void:
-	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
-	ItemsApi.attach(actor)
+	var actor := _hero()
 	var sword := _sword()
 	ItemsApi.inventory(actor).add(sword, 1)
 	assert_eq(ItemsApi.equip_item(actor, Equipment.WEAPON, sword), true, "equipped")
@@ -77,9 +161,19 @@ func test_equip_item_from_inventory() -> void:
 	assert_eq(ItemsApi.inventory(actor).find_instance(&"sword"), null, "left inventory")
 
 
+func test_rejected_equip_leaves_item_in_inventory() -> void:
+	var actor := _hero()
+	var def := ItemDef.new()
+	def.id = &"sword"
+	def.category = ItemCategory.EQUIPMENT
+	def.stackable = false
+	ItemsApi.inventory(actor).add(def, 1)
+	assert_eq(ItemsApi.equip_item(actor, &"tail", def), false, "bad slot rejected")
+	assert_eq(ItemsApi.inventory(actor).find_instance(&"sword") != null, true, "still held")
+
+
 func test_unequip_to_inventory_preserves_instance() -> void:
-	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
-	ItemsApi.attach(actor)
+	var actor := _hero()
 	var sword := _sword()
 	ItemsApi.inventory(actor).add(sword, 1)
 	ItemsApi.equip_item(actor, Equipment.WEAPON, sword)
@@ -92,24 +186,21 @@ func test_unequip_to_inventory_preserves_instance() -> void:
 
 
 func test_actor_save_restore_preserves_equipped_item() -> void:
-	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
-	ItemsApi.attach(actor)
+	var actor := _hero()
 	var def := load("res://data/items/equipment/armor_iron_helm.tres") as ItemDef
 	def.stackable = false
 	ItemsApi.inventory(actor).add(def, 1)
 	assert_eq(ItemsApi.equip_item(actor, Equipment.ARMOR, def), true, "equipped")
-	# Base defense_physical = physique*1.5 = 15, +5 flat from the helm = 20.
-	assert_almost_eq(actor.stats.derived(Stat.DEFENSE_PHYSICAL), 20.0, "bonus before save")
-	# Save and restore into a fresh actor.
+	var expected := actor.stats.derived(Stat.DEFENSE_PHYSICAL)
+	assert_almost_eq(expected, 20.0, "helm bonus applied")
 	var payload := actor.to_dict()
 	assert_eq(payload.has("item_state"), true, "item state in payload")
 	var restored := Actor.from_dict(payload)
 	ItemsApi.attach(restored)
-	assert_almost_eq(restored.stats.derived(Stat.DEFENSE_PHYSICAL), 20.0, "bonus after restore")
+	assert_almost_eq(restored.stats.derived(Stat.DEFENSE_PHYSICAL), expected, "bonus after restore")
 	assert_eq(
 		ItemsApi.equipment(restored).equipped(Equipment.ARMOR) != null, true, "armor restored"
 	)
-	# Unequip reversibly on the restored actor.
 	assert_eq(ItemsApi.unequip_to_inventory(restored, Equipment.ARMOR), true, "unequipped")
 	assert_almost_eq(restored.stats.derived(Stat.DEFENSE_PHYSICAL), 15.0, "bonus removed")
 	assert_eq(
@@ -120,8 +211,7 @@ func test_actor_save_restore_preserves_equipped_item() -> void:
 
 
 func test_save_restore_preserves_inventory_stacks() -> void:
-	var actor := Actor.new(&"hero")
-	ItemsApi.attach(actor)
+	var actor := _hero()
 	var ore := load("res://data/items/material/armor_iron_ore.tres") as ItemDef
 	ItemsApi.inventory(actor).add(ore, 15)
 	var payload := actor.to_dict()

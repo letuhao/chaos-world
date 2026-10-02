@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U6_spirit_withe_regalia"
 display_name = "Spirit Withe Regalia"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_evasion", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:mind_spirit_condensation_warden"])
-percent_modifiers = {
-"evasion": 0.06
-}

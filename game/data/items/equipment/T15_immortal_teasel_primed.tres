@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"T15_immortal_teasel_primed"
 display_name = "Immortal Teasel Primed"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 44.76},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"craft:T15_immortal_teasel_primed_recipe"])
-percent_modifiers = {
-"physique": 0.13
-}

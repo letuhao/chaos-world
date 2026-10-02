@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"B25_earth_carnelian_base"
 display_name = "Earth Carnelian Base"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"earth"
 sources = Array[StringName]([&"craft:B25_earth_carnelian_base_recipe", &"quest:B25_earth_carnelian_line"])
-percent_modifiers = {
-"insight_gain": 0.03
-}

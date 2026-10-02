@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"X11_earth_aleph_base"
 display_name = "Earth Aleph Base"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"earth"
 sources = Array[StringName]([&"craft:X11_earth_aleph_base_recipe", &"quest:X11_earth_aleph_line"])
-percent_modifiers = {
-"cooldown_reduction": 0.03
-}

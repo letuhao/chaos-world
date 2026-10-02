@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"pact_scribe_seal"
 display_name = "Scribe's Pact Seal"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"quest:pact_of_the_scribe"])
-percent_modifiers = {
-"insight_gain": 0.05
-}

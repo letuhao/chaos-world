@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U4_mortal_weald_sphere"
 display_name = "Mortal Weald Sphere"
 category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:body_core_formation_guardian"])
-percent_modifiers = {
-"qi_regen": 0.06
-}

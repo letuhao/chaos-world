@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"R15_immortal_mullein_refined"
 display_name = "Immortal Mullein Refined"
 category = &"technique"
+rarity = &"legendary"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:R15_immortal_mullein_refined_recipe"])
-percent_modifiers = {
-"breakthrough_chance": 0.06
-}

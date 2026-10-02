@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F33_immortal_foolscap_max_health_physique_qi_cost_reduction_stamina_regen"
 display_name = "Immortal Foolscap Max health Physique Qi cost reduction Stamina regen"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 20.47},
+	{"option_id": &"base_physique", "value": 34.65},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+	{"option_id": &"core_stamina_regen", "value": 34.65},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"max_health": 0.03,
-"physique": 0.05,
-"qi_cost_reduction": 0.07,
-"stamina_regen": 0.03
-}

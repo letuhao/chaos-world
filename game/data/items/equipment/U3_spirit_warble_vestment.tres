@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U3_spirit_warble_vestment"
 display_name = "Spirit Warble Vestment"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 8.94},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:qi_spirit_ascension_warden"])
-percent_modifiers = {
-"poise": 0.06
-}

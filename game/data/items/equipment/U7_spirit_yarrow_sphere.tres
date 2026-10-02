@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U7_spirit_yarrow_sphere"
 display_name = "Spirit Yarrow Sphere"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 13.75},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:mind_spirit_palace_warden"])
-percent_modifiers = {
-"defense_physical": 0.06
-}

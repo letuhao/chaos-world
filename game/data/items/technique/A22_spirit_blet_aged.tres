@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A22_spirit_blet_aged"
 display_name = "Spirit Blet Aged"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_evasion", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:A22_spirit_blet_aged_recipe"])
-percent_modifiers = {
-"evasion": 0.09
-}

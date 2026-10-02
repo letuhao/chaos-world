@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"salve_jade_ointment"
 display_name = "Jade Ointment Salve"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 20.62},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"salve"
 grade = &"earth"
 sources = Array[StringName]([&"gather", &"quest:A41_route"])
-flat_modifiers = {
-"max_health": 42.0
-}

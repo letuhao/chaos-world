@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"bounty_hawk_mark"
 display_name = "Stormhawk Bounty Mark"
 category = &"quest"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"bounty"
 grade = &"earth"
 sources = Array[StringName]([&"quest:bounty_stormhawk"])

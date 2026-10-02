@@ -1,0 +1,13 @@
+28 files already formatted
+205 files would be left unchanged
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format tools --check
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game --check
+All checks passed!
+Success: no problems found
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE check tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdlint.EXE D:\Works\source\chaos-world\game
+fail src/ui/screens/item_workbench.gd:182: 'ui/' may reference 'items' only through modules/items/api.gd
+fail gate failed: arch
+== fmt ==
+== lint ==
+== arch ==

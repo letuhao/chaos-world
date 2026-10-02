@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Z20_earth_bilge_perfected"
 display_name = "Earth Bilge Perfected"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 29.32},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"earth"
 sources = Array[StringName]([&"craft:Z20_earth_bilge_perfected_recipe"])
-percent_modifiers = {
-"health_regen": 0.17
-}

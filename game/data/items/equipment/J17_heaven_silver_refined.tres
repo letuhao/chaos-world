@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"J17_heaven_silver_refined"
 display_name = "Heaven Silver Refined"
 category = &"equipment"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:J17_heaven_silver_refined_recipe"])
-percent_modifiers = {
-"move_speed": 0.07
-}

@@ -8,6 +8,7 @@ id = &"tribulation"
 breakthrough_item = &"mind_tribulation_breakthrough_pill"
 training_item = &"mind_tribulation_channel_elixir"
 sea_catalyst = &"mind_tribulation_sea_catalyst"
+recovery_item = &"mind_tribulation_recovery_elixir"
 progress_required = 2039.0
 comprehension_required = 186.0
 clarity_required = 0.52

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"feast_immortal_banquet"
 display_name = "Immortal Banquet"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 26.95},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"boss:F15_sovereign_arbiter"])
-flat_modifiers = {
-"max_stamina": 65.0
-}

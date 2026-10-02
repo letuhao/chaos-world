@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"formula_convergent"
 display_name = "Convergent Formula"
 category = &"technique"
+rarity = &"legendary"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 30.8},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"formula"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"quest:W28_route"])
-percent_modifiers = {
-"qi_regen": 0.08
-}

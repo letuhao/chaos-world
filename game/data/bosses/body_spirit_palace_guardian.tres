@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"body_spirit_palace_guardian"
 display_name = "Jade Body Guardian"
 domain_id = &"body_spirit_palace_trial"
-loot = Array[StringName]([&"body_spirit_palace_guardian_core", &"body_spirit_palace_breakthrough_pill", &"body_spirit_palace_channel_elixir", &"U2_spirit_sennit_fillet", &"U2_spirit_sennit_halberd"])
+loot = Array[StringName]([&"body_spirit_palace_guardian_core", &"body_spirit_palace_breakthrough_pill", &"body_spirit_palace_channel_elixir", &"U2_spirit_sennit_fillet", &"U2_spirit_sennit_halberd", &"set_stormcall_circuit_bell"])

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"N3_mortal_cinder_perfected"
 display_name = "Mortal Cinder Perfected"
 category = &"consumable"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 11.62},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"salve"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:N3_mortal_cinder_perfected_recipe"])
-percent_modifiers = {
-"comprehension": 0.17
-}

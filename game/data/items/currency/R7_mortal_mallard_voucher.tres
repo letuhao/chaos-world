@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"R7_mortal_mallard_voucher"
 display_name = "Mortal Mallard Voucher"
 category = &"currency"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"token"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])

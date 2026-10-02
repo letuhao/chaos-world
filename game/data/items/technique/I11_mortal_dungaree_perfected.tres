@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I11_mortal_dungaree_perfected"
 display_name = "Mortal Dungaree Perfected"
 category = &"technique"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 6.6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I11_mortal_dungaree_perfected_recipe"])
-percent_modifiers = {
-"penetration": 0.17
-}

@@ -4,6 +4,9 @@ game/.godot/
 # Build output
 build/
 
+# Asset proof-of-concept review folder (local only, never committed)
+poc/
+
 # Python
 .venv/
 __pycache__/

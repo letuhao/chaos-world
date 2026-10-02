@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"O15_immortal_thunder_base"
 display_name = "Immortal Thunder Base"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:O15_immortal_thunder_base_recipe"])
-percent_modifiers = {
-"attack_speed": 0.03
-}

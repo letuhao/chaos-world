@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F19_heaven_epergne_agility_aptitude_move_speed_will"
 display_name = "Heaven Epergne Agility Aptitude Move speed Will"
 category = &"technique"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 24.75},
+	{"option_id": &"base_aptitude", "value": 24.75},
+	{"option_id": &"core_move_speed", "value": 0.05},
+	{"option_id": &"base_will", "value": 24.75},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"heaven"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"agility": 0.07,
-"aptitude": 0.03,
-"move_speed": 0.05,
-"will": 0.07
-}

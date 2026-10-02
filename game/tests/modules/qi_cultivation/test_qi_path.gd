@@ -41,6 +41,5 @@ func test_transcendent_stage() -> void:
 
 func test_resource_ids() -> void:
 	var def := QiPath.path_def()
-	assert_eq(def.resource_ids.size(), 2, "two resources")
+	assert_eq(def.resource_ids.size(), 1, "exactly one qi reservoir")
 	assert_eq(def.resource_ids[0], &"qi", "qi resource")
-	assert_eq(def.resource_ids[1], &"qi_purity", "qi_purity resource")

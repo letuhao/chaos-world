@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V4_mortal_abscissa_pallet"
 display_name = "Mortal Abscissa Pallet"
 category = &"equipment"
+rarity = &"common"
+realm = &"great_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 9.35},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"boss:F1_integration_warden"])
-percent_modifiers = {
-"max_qi": 0.06
-}

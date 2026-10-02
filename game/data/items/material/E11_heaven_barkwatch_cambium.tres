@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"E11_heaven_barkwatch_cambium"
 display_name = "Heaven Barkwatch Cambium"
 category = &"material"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"bark"
 grade = &"heaven"
 sources = Array[StringName]([&"gather"])

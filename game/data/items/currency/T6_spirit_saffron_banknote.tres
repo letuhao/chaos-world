@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"T6_spirit_saffron_banknote"
 display_name = "Spirit Saffron Banknote"
 category = &"currency"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base"]}
 subcategory = &"coin"
 grade = &"spirit"
 sources = Array[StringName]([&"quest"])

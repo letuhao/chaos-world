@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"W5_heaven_ashlar_feldspar"
 display_name = "Heaven Ashlar Feldspar"
 category = &"material"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"gemstone"
 grade = &"heaven"
 sources = Array[StringName]([&"gather", &"quest:Y24_route"])

@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d6_gilded_beetle"
 display_name = "Gilded Beetle Lesser"
 domain_id = &"treasure_gilded_beetle_domain"
-loot = Array[StringName]([&"treasure_gilded_beetle_shell", &"treasure_gilded_beetle_heart", &"L6_beetle_shellward", &"L6_beetle_gold_bangle", &"V5_immortal_acanthus_tam-tam"])
+loot = Array[StringName]([&"treasure_gilded_beetle_shell", &"treasure_gilded_beetle_heart", &"L6_beetle_gold_bangle", &"L6_beetle_shellward", &"V5_immortal_acanthus_tam-tam"])

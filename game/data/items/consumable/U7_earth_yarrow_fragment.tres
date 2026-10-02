@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U7_earth_yarrow_fragment"
 display_name = "Earth Yarrow Fragment"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 16.5},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"earth"
 sources = Array[StringName]([&"boss:qi_spirit_domain_warden"])
-percent_modifiers = {
-"max_health": 0.06
-}

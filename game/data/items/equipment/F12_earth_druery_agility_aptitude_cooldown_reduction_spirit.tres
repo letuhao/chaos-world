@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F12_earth_druery_agility_aptitude_cooldown_reduction_spirit"
 display_name = "Earth Druery Agility Aptitude Cooldown reduction Spirit"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 22.28},
+	{"option_id": &"base_aptitude", "value": 22.28},
+	{"option_id": &"core_cooldown_reduction", "value": 0.03},
+	{"option_id": &"base_spirit", "value": 31.39},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.05,
-"aptitude": 0.07,
-"cooldown_reduction": 0.03,
-"spirit": 0.05
-}

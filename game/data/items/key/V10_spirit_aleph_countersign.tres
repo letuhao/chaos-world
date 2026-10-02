@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"V10_spirit_aleph_countersign"
 display_name = "Spirit Aleph Countersign"
 category = &"key"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base"]}
 subcategory = &"key"
 grade = &"spirit"
 sources = Array[StringName]([&"quest"])

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"S13_heaven_seaman_aged"
 display_name = "Heaven Seaman Aged"
 category = &"technique"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:S13_heaven_seaman_aged_recipe"])
-percent_modifiers = {
-"move_speed": 0.09
-}

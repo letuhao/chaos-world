@@ -7,11 +7,15 @@ script = ExtResource("1_item")
 id = &"helm_leather_hood"
 display_name = "Leather Hood"
 category = &"equipment"
+rarity = &"common"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 3},
+	{"option_id": &"core_max_health", "value": 8},
+	{"option_id": &"core_poise", "value": 2},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:helm_leather_hood_recipe"])
-flat_modifiers = {
-"defense_physical": 3.0,
-"max_health": 8.0,
-"poise": 2.0
-}

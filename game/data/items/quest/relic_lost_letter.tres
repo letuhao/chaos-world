@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"relic_lost_letter"
 display_name = "Lost Letter Relic"
 category = &"quest"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"relic"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"boss:E1_qi_refinement_warden"])

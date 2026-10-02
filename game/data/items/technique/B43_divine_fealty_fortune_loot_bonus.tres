@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B43_divine_fealty_fortune_loot_bonus"
 display_name = "Divine Fealty Fortune Loot Bonus"
 category = &"technique"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_fortune", "value": 35.62},
+	{"option_id": &"core_loot_bonus", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"formula"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"fortune": 0.07,
-"loot_bonus": 0.03
-}

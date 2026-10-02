@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"orb_void_ore"
 display_name = "Orb Void Ore"
 category = &"material"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"ore"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"quest:W25_route"])

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"H18_divine_joiner_breakthrough_chance_cultivation_rate_fortune_penetration_physique"
+display_name = "Divine Joiner Breakthrough chance Cultivation rate Fortune Penetration Physique"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 37.6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"salve"
+grade = &"divine"
+sources = Array[StringName]([&"gather"])

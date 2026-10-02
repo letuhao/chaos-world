@@ -19,6 +19,12 @@ static func synchronize(actor: Actor) -> void:
 	var integrity := actor.resource(BodyStats.BODY_INTEGRITY)
 	if seed != null and integrity != null:
 		integrity.set_maximum(seed.integrity_maximum)
+		# Realms 19-30 reinforce the same meridian network instead of opening new
+		# channels; the authored resonance rank is what makes that progression
+		# curve visible (ADR 0017/0028). Never lowers a rank the actor has earned.
+		actor.meridians.set_resonance_rank(
+			maxi(actor.meridians.resonance_rank, seed.resonance_rank)
+		)
 	actor.mark_stats_dirty()
 
 
@@ -50,15 +56,67 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	var seed := BodyRealmSeed.for_realm(state.rank_id)
 	if seed == null:
 		return false
-	var realm := RealmDefaults.ladder().realm(state.rank_id)
-	var energy := amount * realm.power * (1.0 + actor.meridians.get_flow_bonus())
+	# One unit of training work is worth the realm's RATE, and only the rate: this
+	# is a bounded per-realm number that says how much this realm's training
+	# counts, never how strong a thing from this realm is. See `realm_profile.gd`
+	# for why those are different numbers. `BodyTraining.meditate` deliberately
+	# does not read it — comprehension is earned from the insight-gain stat, so
+	# body and qi cannot drift apart on two different ladders.
+	var energy := (
+		amount * BodyRealmProfile.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
+	)
 	# Fill the shared body_integrity pool, not per-acupoint storage.
 	acupoint_set.fill(energy)
-	# Raise quality toward the seed target for all open points.
+	# Raise quality toward the seed target for all open points. The target is a
+	# ceiling for this realm, not a reset: a point already trained above it (a
+	# fresh point starts at 0.5, and strengthening only ever adds) must not be
+	# dragged back down, or cultivation would silently undo real training.
 	for point in acupoint_set.points:
 		if not point.blocked:
-			point.quality = minf(seed.quality_target, point.quality + energy * 0.001)
+			point.quality = maxf(
+				point.quality, minf(seed.quality_target, point.quality + energy * 0.001)
+			)
 	state.progress += energy
+	actor.mark_stats_dirty()
+	return true
+
+
+## Undo the recoverable overlay a failed breakthrough left behind: repair one
+## injured channel and clear the blockages on its linked acupoints. Consumes the
+## realm's recovery item. This is the only action that clears a blockage, so
+## every realm must author a `recovery_item` (ADR 0015/0023).
+##
+## All-or-nothing: nothing is mutated unless the item is present and consumed.
+## Returns true when the recovery actually changed something.
+static func recover(actor: Actor, meridian_id: StringName) -> bool:
+	var acupoint_set: AcupointSet = actor.component(&"acupoints")
+	var state := actor.path(BodyPath.PATH_ID)
+	if acupoint_set == null or acupoint_set.busy or state == null:
+		return false
+	var seed := BodyRealmSeed.for_realm(state.rank_id)
+	if seed == null or seed.recovery_item == &"":
+		return false
+	actor.meridians.unlock_for_realm(state.rank_id)
+	var channel := actor.meridians.get_meridian(meridian_id)
+	if channel == null:
+		return false
+	# Decide first, mutate second: a meridian with nothing to repair must not
+	# consume the item, and a failed consume must leave the blockage in place.
+	var linked: Array[Acupoint] = []
+	for point in acupoint_set.points:
+		if point.blocked and AcupointDefaults.meridian_of(point.id) == meridian_id:
+			linked.append(point)
+	if not channel.is_injured() and linked.is_empty():
+		return false
+	if not _ITEMS.consume_item(actor, seed.recovery_item):
+		return false
+	acupoint_set.busy = true
+	if channel.is_injured():
+		actor.meridians.repair_meridian(meridian_id)
+	for point in linked:
+		point.clear_block()
+	synchronize(actor)
+	acupoint_set.busy = false
 	actor.mark_stats_dirty()
 	return true
 
@@ -99,11 +157,11 @@ static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
 	_train_points(acupoint_set, meridian_id, seed.quality_target)
 	synchronize(actor)
 	acupoint_set.busy = false
-	# Mark the realm's strengthening complete (once-only improvement).
+	# Training while in this realm completes its milestone, which pays a one-time
+	# physique bonus. Marking on entry instead would make the bonus free.
 	var progress: BodyProgress = actor.component(&"body_progress")
-	if progress != null and not progress.is_complete(state.rank_id):
-		progress.mark_complete(state.rank_id)
-		actor.mark_stats_dirty()
+	if progress != null:
+		progress.mark_complete(actor, seed)
 	return true
 
 

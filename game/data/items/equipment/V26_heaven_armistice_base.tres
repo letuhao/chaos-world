@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V26_heaven_armistice_base"
 display_name = "Heaven Armistice Base"
 category = &"equipment"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 25.58},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:V26_heaven_armistice_base_recipe", &"quest:V26_heaven_armistice_line"])
-percent_modifiers = {
-"health_regen": 0.03
-}

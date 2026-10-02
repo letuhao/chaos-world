@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"C30_heaven_nursery_testa"
 display_name = "Heaven Nursery Testa"
 category = &"material"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"core"
 grade = &"heaven"
 sources = Array[StringName]([&"quest", &"gather"])

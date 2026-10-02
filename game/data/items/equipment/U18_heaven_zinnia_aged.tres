@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U18_heaven_zinnia_aged"
 display_name = "Heaven Zinnia Aged"
 category = &"equipment"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 23.1},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:U18_heaven_zinnia_aged_recipe"])
-percent_modifiers = {
-"penetration": 0.09
-}

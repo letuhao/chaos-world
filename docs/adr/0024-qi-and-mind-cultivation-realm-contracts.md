@@ -40,8 +40,10 @@ major systems were not symmetrical, and only one of them could actually be playe
 - **Channel comparison is ordered, not equality.** `MeridianState.meets(required)` compares
   against `STATE_ORDER` and treats a damaged channel as satisfying nothing, so "at least
   strengthened" works and a damaged channel can never pass a gate.
-- **Tier gates stay in core.** All three conditions call `Breakthrough.tier_gates_met`, so
-  module code and the ADR 0018-0021 gates cannot drift apart.
+- **Tier gates stay in core.** Qi and Body call `Breakthrough.tier_gates_met`, so module
+  code and the ADR 0018-0021 gates cannot drift apart. Mind delegates its high-tier anchor
+  requirement to `MindAnchor` instead: the anchor R19 commits is that attempt's own outcome,
+  so it cannot also be its precondition (ADR 0029).
 - **Both modules now depend on `items`** (through the facade, for `has_item`/`consume_item`),
   matching the body module's declared dependency.
 - **Generation is a tool, not hand-authoring.** `uv run python -m tools cultivation

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U3_spirit_warble_fragment"
 display_name = "Spirit Warble Fragment"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:qi_spirit_ascension_warden"])
-percent_modifiers = {
-"status_resistance": 0.06
-}

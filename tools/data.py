@@ -10,8 +10,17 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from . import options
-from .common import REPO_ROOT, ToolError, fail, info, ok
+from . import item_migrate, options
+from .common import REPO_ROOT, ToolError, fail, info, ok, warn
+from .options import (
+    CATEGORY_ACTIVATION,
+    DEFAULT_CATALOG,
+    _load_jsonl,
+    activations_for,
+)
+from .options import (
+    _magnitude_bounds as option_magnitude_bounds,
+)
 
 DATA_ROOT = REPO_ROOT / "game" / "data"
 STAT_DEFS = REPO_ROOT / "game" / "src" / "contracts" / "stat.gd"
@@ -29,6 +38,41 @@ CATEGORIES = {
 }
 GRADES = {"mortal", "spirit", "earth", "heaven", "immortal", "divine"}
 GRADE_ORDER = ("mortal", "spirit", "earth", "heaven", "immortal", "divine")
+RARITIES = ("common", "magic", "rare", "legendary")
+RARITY_COUNT = {"common": 1, "magic": 2, "rare": 3, "legendary": 4}
+RARITY_INDEX = {name: index for index, name in enumerate(RARITIES)}
+GRADE_TIER = {"mortal": 1, "spirit": 2, "earth": 2, "heaven": 3, "immortal": 3, "divine": 4}
+
+# Canonical 30-realm ladder: index, tier, and the display band each realm sits in.
+REALM_ORDER: tuple[str, ...] = ()
+REALM_INDEX: dict[str, int] = {}
+REALM_TIER: dict[str, int] = {}
+
+
+def _load_realms() -> None:
+    global REALM_ORDER, REALM_INDEX, REALM_TIER
+    if REALM_ORDER:
+        return
+    from .item_migrate import realm_ladder  # noqa: PLC0415
+
+    ladder = realm_ladder()
+    REALM_ORDER = tuple(ladder)
+    REALM_INDEX = {realm_id: index for index, realm_id in enumerate(ladder)}
+    REALM_TIER = {
+        realm_id: (1 if index < 9 else 2 if index < 18 else 3 if index < 27 else 4)
+        for index, realm_id in enumerate(ladder)
+    }
+
+
+def _magnitude_bounds(unit: str, realm_index: int, rarity_index: int) -> tuple[float, float]:
+    """Option value window, read from the same source the runtime uses.
+
+    Delegates to the option module so the gate can never validate authored content
+    against numbers the game does not roll.
+    """
+    window = option_magnitude_bounds(unit, realm_index, rarity_index)
+    return float(window["min"]), float(window["max"])
+
 
 # Categories whose items are expected to carry gameplay modifiers.
 MODIFIER_CATEGORIES = {"equipment", "technique", "consumable"}
@@ -41,14 +85,49 @@ SCHEMA = {
     "items": {
         "id": "id",
         "arrays": ["sources"],
-        "dicts": ["flat_modifiers", "percent_modifiers"],
-        "scalars": ["category", "subcategory", "grade"],
+        "dicts": [],
+        "scalars": ["category", "subcategory", "grade", "rarity", "realm"],
+        "fixed": True,
     },
+    # A loot table can produce an item directly or through a nested table. Both
+    # are extracted so the audit can prove every drop is actually obtainable
+    # and that no table can reach itself (ADR 0043).
+    "loot_table": {
+        "id": "id",
+        "arrays": [],
+        "scalars": ["realm", "rarity"],
+        "entries": "item_id",
+        "nested": "table_id",
+    },
+    "loot_tier": {"id": "id", "arrays": ["boss_tables"], "scalars": ["realm", "rarity"]},
     "recipes": {"id": "id", "arrays": ["inputs", "outputs"], "scalars": ["station"]},
     "bosses": {"id": "id", "arrays": ["loot"], "scalars": ["domain_id"]},
     "domains": {"id": "id", "arrays": ["boss_ids"], "scalars": []},
 }
-TYPE_BY_FOLDER = {"items": "item", "recipes": "recipe", "bosses": "boss", "domains": "domain"}
+TYPE_BY_FOLDER = {
+    "items": "item",
+    "recipes": "recipe",
+    "bosses": "boss",
+    "domains": "domain",
+    # A feature module owns its own item namespace, so the audit gates it with
+    # exactly the same rules as `data/items` rather than exempting it (ADR 0008).
+    "socket": "item",
+    "sets/items": "item",
+    "loot/tables": "loot_table",
+    "loot": "loot_tier",
+}
+# Folder prefix -> the schema that parses it. Several prefixes share one schema:
+# a feature module's item namespace is gated by exactly the `items` rules.
+SCHEMA_FOR_PREFIX = {
+    "items": "items",
+    "socket": "items",
+    "sets/items": "items",
+    "loot/tables": "loot_table",
+    "loot": "loot_tier",
+    "recipes": "recipes",
+    "bosses": "bosses",
+    "domains": "domains",
+}
 BASE_SOURCES = {"gather", "starter"}
 # Stats whose flat modifier is a fraction rather than a magnitude (ADR 0022).
 FRACTION_FLAT_STATS = {"damage_reduction"}
@@ -127,11 +206,15 @@ def register(subparsers) -> None:
 
     # Master option catalog tooling (ADR 0025).
     options.register(actions)
+    # Item definition migration from the legacy modifier stub (ADR 0025).
+    item_migrate.register(actions)
 
 
 def run(args) -> int:
     if args.data_action == "options":
         return options.run(args)
+    if args.data_action == "items":
+        return item_migrate.run(args)
     root = Path(args.root) if args.root else DATA_ROOT
     if args.data_action == "audit":
         return _audit_command(root)
@@ -146,8 +229,20 @@ def run(args) -> int:
     raise ToolError(f"unknown data action: {args.data_action}")
 
 
+def _main_resource(text: str) -> str:
+    """The file's own `[resource]` block, ignoring every `sub_resource` before it.
+
+    A loot table authors each entry as a `sub_resource` that carries its own
+    `id`, so a first-match scan over the whole file would read the first entry's
+    id as the table's. Scalars always mean the main resource.
+    """
+    marker = "\n[resource]"
+    index = text.rfind(marker)
+    return text[index + 1 :] if index >= 0 else text
+
+
 def _extract_scalar(text: str, field: str) -> str | None:
-    match = re.search(rf'(?m)^\s*{field}\s*=\s*&"([^"]*)"', text)
+    match = re.search(rf'(?m)^\s*{field}\s*=\s*&"([^"]*)"', _main_resource(text))
     return match.group(1) if match else None
 
 
@@ -166,19 +261,75 @@ def _extract_dict(text: str, field: str) -> dict[str, float]:
     return {key: float(value) for key, value in pairs}
 
 
+def _extract_fixed(text: str) -> dict[str, float]:
+    """`fixed_modifiers` option id -> authored value (ADR 0025)."""
+    match = re.search(r"(?ms)^\s*fixed_modifiers\s*=\s*Array\[Dictionary\]\(\[(.*?)^\]\)", text)
+    if not match:
+        return {}
+    return {
+        option_id: float(value)
+        for option_id, value in re.findall(
+            r'"option_id": &"([a-z_]+)", "value": (-?[\d.]+)', match.group(1)
+        )
+    }
+
+
+def _extract_tokens(text: str, field: str) -> list[str]:
+    """Every `field = &"..."` value in the file.
+
+    Loot entries are authored as `sub_resource` blocks, one field per line, so a
+    whole-file scan is what actually reads them.
+    """
+    return re.findall(rf'(?m)^{field} = &"([^"]+)"', text)
+
+
+def _extract_bool(text: str, field: str, default: str = "true") -> str:
+    match = re.search(rf"(?m)^\s*{field}\s*=\s*(true|false)", text)
+    return match.group(1) if match else default
+
+
+def _extract_roll_spec(text: str) -> dict:
+    match = re.search(r"(?m)^\s*roll_spec\s*=\s*\{(.*)\}\s*$", text)
+    if not match:
+        return {}
+    body = match.group(1)
+    spec: dict = {}
+    count = re.search(r'"count":\s*(-?\d+)', body)
+    if count:
+        spec["count"] = int(count.group(1))
+    contexts = re.search(r'"contexts":\s*\[(.*?)\]', body)
+    if contexts:
+        spec["contexts"] = re.findall(r'"([a-z_]+)"', contexts.group(1))
+    return spec
+
+
+def _folder_key(rel: Path) -> str | None:
+    """Registered folder prefix for a content file, shallowest match first.
+
+    A module may nest its items one level down (`sets/items/...`), so the whole
+    prefix is tried before falling back to the top-level folder alone. Returns
+    the key used by both `TYPE_BY_FOLDER` and `SCHEMA`.
+    """
+    for depth in range(len(rel.parts) - 1, 0, -1):
+        key = "/".join(rel.parts[:depth])
+        if key in TYPE_BY_FOLDER:
+            return key
+    return None
+
+
 def _load(root: Path) -> tuple[dict, list[str]]:
-    records: dict = {name: {} for name in TYPE_BY_FOLDER.values()}
+    records: dict = {name: {} for name in {*TYPE_BY_FOLDER.values(), *SCHEMA_FOR_PREFIX.values()}}
     malformed: list[str] = []
     if not root.is_dir():
         return records, malformed
     for path in sorted(root.rglob("*.tres")):
         rel = path.relative_to(root)
-        folder = rel.parts[0] if rel.parts else ""
-        type_name = TYPE_BY_FOLDER.get(folder)
-        if type_name is None:
+        folder = _folder_key(rel)
+        if folder is None:
             continue
+        type_name = TYPE_BY_FOLDER[folder]
         text = path.read_text(encoding="utf-8", errors="replace")
-        schema = SCHEMA[folder]
+        schema = SCHEMA[SCHEMA_FOR_PREFIX[folder]]
         record_id = _extract_scalar(text, schema["id"])
         if not record_id:
             malformed.append(rel.as_posix())
@@ -189,6 +340,11 @@ def _load(root: Path) -> tuple[dict, list[str]]:
             "arrays": {},
             "dicts": {},
             "scalars": {},
+            "fixed": {},
+            "roll_spec": {},
+            "entries": [],
+            "nested": [],
+            "legacy": bool(re.search(r"(?m)^\s*(flat_modifiers|percent_modifiers)\s*=", text)),
         }
         for field in schema["arrays"]:
             record["arrays"][field] = _extract_array(text, field)
@@ -196,6 +352,14 @@ def _load(root: Path) -> tuple[dict, list[str]]:
             record["dicts"][field] = _extract_dict(text, field)
         for field in schema["scalars"]:
             record["scalars"][field] = _extract_scalar(text, field) or ""
+        if schema.get("entries"):
+            record["entries"] = _extract_tokens(text, schema["entries"])
+        if schema.get("nested"):
+            record["nested"] = _extract_tokens(text, schema["nested"])
+        if schema.get("fixed"):
+            record["fixed"] = _extract_fixed(text)
+            record["roll_spec"] = _extract_roll_spec(text)
+            record["scalars"]["stackable"] = _extract_bool(text, "stackable")
         # Records are keyed by id, so a duplicate id would silently overwrite
         # rather than collide. Track the losers so the audit can report them.
         previous = records[type_name].get(record_id)
@@ -418,6 +582,25 @@ def _unobtainable(items: dict, recipes: dict) -> list[str]:
 
 def _audit_command(root: Path) -> int:
     gaps = _audit(root)
+    records, _ = _load(root)
+    gaps.extend(msg for level, msg in _loot_findings(records) if level == "error")
+    # Report out-of-window fixed values here too. `data distribution` computes
+    # them, but a green audit that silently omits thousands of illegal authored
+    # values is worse than a red one: the count has to be impossible to miss.
+    catalog = {
+        record["id"]: record
+        for record in _load_jsonl(DEFAULT_CATALOG)
+        if record["status"] == "active"
+    }
+    out_of_band = _out_of_band(records.get("item", {}), catalog)
+    if out_of_band:
+        warn(
+            f"{len(out_of_band)} authored fixed value(s) sit outside the option's "
+            f"realm/rarity magnitude window, e.g. "
+            f"{', '.join(out_of_band[:4])}. A scale change retires them; see "
+            f"`data distribution` and re-derive the content against the current "
+            f"scale."
+        )
     if gaps:
         for gap in gaps:
             fail(gap)
@@ -468,10 +651,26 @@ def _print_table(title: str, rows: list[tuple[str, int]], total: int) -> None:
 
 
 def _modifier_keys(item: dict) -> set[str]:
+    """Target stat ids of the option references an item author, via the catalog."""
+    catalog = _catalog()
     keys: set[str] = set()
-    for values in item["dicts"].values():
-        keys.update(values)
+    for option_id in item.get("fixed", {}):
+        record = catalog.get(option_id)
+        if not record:
+            continue
+        target = record["target"]
+        if target["type"] == "stat":
+            keys.add(target["id"])
     return keys
+
+
+def _catalog() -> dict[str, dict]:
+    """Master option catalog keyed by id, read once per audit (ADR 0025)."""
+    cached = getattr(_catalog, "_cache", None)
+    if cached is None:
+        cached = {r["id"]: r for r in _load_jsonl(DEFAULT_CATALOG)}
+        _catalog._cache = cached  # type: ignore[attr-defined]
+    return cached  # type: ignore[return-value]
 
 
 def _progression_items() -> set[str]:
@@ -549,8 +748,84 @@ def _resolve_zero_baseline_stats() -> set[str]:
     return ids
 
 
+def _out_of_band(items: dict, catalog: dict) -> list[str]:
+    """`item:option=value` for every authored fixed value outside its window.
+
+    Authored content is derived against whichever magnitude scale was current when
+    it was written. When the scale is retuned these go stale wholesale, so this is
+    reported by both `data audit` and `data distribution`.
+    """
+    # The realm ladder MUST be loaded here, not by a caller. `REALM_INDEX` is a module
+    # global populated only by `_load_realms()`, and `_out_of_band` reads it with a
+    # `.get(realm, 0)` fallback. If it is empty, EVERY item silently resolves to
+    # ordinal 0 and gets graded against the Qi Refining window — which made `data
+    # audit` report thousands of false positives on content that was in band at its
+    # own realm, and made it under-report the genuine ones. A green audit that
+    # mis-grades every row is worse than a red one, because it is trusted.
+    _load_realms()
+    offenders: list[str] = []
+    for item_id, item in sorted(items.items()):
+        rarity_index = RARITY_INDEX.get(item["scalars"].get("rarity", ""), 0)
+        realm_index = REALM_INDEX.get(item["scalars"].get("realm", ""), 0)
+        for option_id, value in item["fixed"].items():
+            record = catalog.get(option_id)
+            if not record:
+                continue
+            low, high = _magnitude_bounds(record["unit"], realm_index, rarity_index)
+            if value < low or value > high:
+                offenders.append(f"{item_id}:{option_id}={value:g}")
+    return offenders
+
+
+def _loot_findings(records: dict) -> list[tuple[str, str]]:
+    """Loot tables can only produce obtainable items, and cannot reach themselves.
+
+    A table naming an undefined item is an unobtainable drop; a table reaching
+    itself through nesting is an infinite resolution. Both are structural, so
+    the gate fails on them (ADR 0043).
+    """
+    findings: list[tuple[str, str]] = []
+    tables = records.get("loot_table", {})
+    defined_items = set(records.get("item", {}))
+    if not tables:
+        return findings
+    for table_id, table in sorted(tables.items()):
+        for item_id in table["entries"]:
+            if item_id not in defined_items:
+                findings.append(
+                    ("error", f"loot table {table_id}: drops undefined item '{item_id}'")
+                )
+        for nested in table["nested"]:
+            if nested == table_id:
+                findings.append(("error", f"loot table {table_id}: references itself"))
+            elif nested not in tables:
+                findings.append(
+                    ("error", f"loot table {table_id}: references unknown table '{nested}'")
+                )
+
+    # A cycle across two or more tables is as fatal as a self-reference.
+    def reaches_self(start: str) -> bool:
+        seen: set[str] = set()
+        pending = [start]
+        while pending:
+            current = pending.pop()
+            if current in seen:
+                continue
+            seen.add(current)
+            if current == start and len(seen) > 1:
+                return True
+            pending.extend(tables.get(current, {}).get("nested", []))
+        return False
+
+    for table_id in sorted(tables):
+        if reaches_self(table_id):
+            findings.append(("error", f"loot table {table_id}: participates in a cycle"))
+    return findings
+
+
 def _collect_findings(items: dict) -> list[tuple[str, str]]:
     """Return (level, message) findings. level is 'error' or 'warn'."""
+    _load_realms()
     findings: list[tuple[str, str]] = []
     total = len(items)
     if not total:
@@ -615,35 +890,97 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
         if len(missing) >= 3:
             findings.append(("warn", f"category '{cat}' is missing grades: {', '.join(missing)}"))
 
-    # Modifier coverage for stat-bearing categories. Progression payloads are
-    # exempt: they act through the system that consumes them, not through stats.
+    # Fixed/rolled coverage for every category: an item must carry at least one
+    # fixed option with a real consumer and a usable roll spec (ADR 0025/0028).
     progression = _progression_items()
-    for cat in sorted(MODIFIER_CATEGORIES):
-        cat_items = by_cat.get(cat, [])
-        if not cat_items:
-            continue
-        bare = [
-            item["id"]
-            for item in cat_items
-            if not _modifier_keys(item) and item["id"] not in progression
-        ]
-        if bare:
-            share = _pct(len(bare), len(cat_items))
-            level = "error" if share > 25.0 else "warn"
+    catalog = _catalog()
+    bare: list[str] = []
+    unregistered: list[str] = []
+    misactivated: list[str] = []
+    zero_value: list[str] = []
+    missing_roll: list[str] = []
+    bad_rarity: list[str] = []
+    bad_realm: list[str] = []
+    bad_count: list[str] = []
+    stackable_equipment: list[str] = []
+    for item_id, item in sorted(items.items()):
+        if item["legacy"]:
             findings.append(
-                (level, f"category '{cat}' has {len(bare)} items with no modifiers ({share:.1f}%)")
+                (
+                    "error",
+                    f"{item['path']}: legacy flat/percent modifier blocks remain; "
+                    "run `tools data items migrate`",
+                )
             )
+        category = item["scalars"].get("category", "")
+        activation = CATEGORY_ACTIVATION.get(category)
+        if not item["fixed"] and item_id not in progression:
+            bare.append(item_id)
+        for option_id in item["fixed"]:
+            record = catalog.get(option_id)
+            if not record:
+                unregistered.append(f"{item_id}:{option_id}")
+                continue
+            if activation and activation not in activations_for(record):
+                misactivated.append(f"{item_id}:{option_id}")
+            if item["fixed"][option_id] == 0:
+                zero_value.append(item_id)
+        spec = item["roll_spec"]
+        if not spec:
+            missing_roll.append(item_id)
+            continue
+        if int(spec.get("count", 0)) <= 0:
+            bad_count.append(item_id)
+        rarity = item["scalars"].get("rarity", "")
+        if rarity not in RARITIES:
+            bad_rarity.append(f"{item_id}:{rarity or '<none>'}")
+        elif int(spec.get("count", 0)) != RARITY_COUNT[rarity]:
+            bad_count.append(f"{item_id}:count {spec.get('count')} for {rarity}")
+        # Equipment must remain a distinct instance: a stackable item merges and
+        # loses its realized rolls, so it can never be equipped (ADR 0025).
+        if category == "equipment" and item["scalars"].get("stackable", "true") != "false":
+            stackable_equipment.append(item_id)
+        realm = item["scalars"].get("realm", "")
+        if realm not in REALM_INDEX:
+            bad_realm.append(f"{item_id}:{realm or '<none>'}")
+        elif REALM_TIER[realm] < GRADE_TIER.get(item["scalars"].get("grade", ""), 1):
+            bad_realm.append(f"{item_id}:{realm} below grade tier")
+    for label, offenders in (("fixed", bare), ("roll", missing_roll)):
+        if offenders:
+            findings.append(
+                (
+                    "error",
+                    f"{len(offenders)} items carry no {label} channel: "
+                    f"{', '.join(offenders[:6])}" + ("..." if len(offenders) > 6 else ""),
+                )
+            )
+    for offenders, message in (
+        (unregistered, "items reference options that are not in the master catalog"),
+        (misactivated, "items reference options with no consumer for their category"),
+        (zero_value, "items have a zero-valued fixed option that grants nothing"),
+        (bad_rarity, "items have an unknown rarity"),
+        (bad_realm, "items have an invalid realm for their grade"),
+        (bad_count, "items have a roll count that disagrees with their rarity"),
+        (
+            stackable_equipment,
+            "equipment is stackable, so it merges and cannot be equipped; "
+            "run `tools data items migrate`",
+        ),
+    ):
+        if offenders:
+            detail = ", ".join(offenders[:6]) + ("..." if len(offenders) > 6 else "")
+            findings.append(("error", f"{len(offenders)} {message}: {detail}"))
 
-    # Modifier stat diversity overall.
+    # Modifier target diversity overall.
     all_keys: dict[str, int] = {}
     for item in items.values():
         for key in _modifier_keys(item):
             all_keys[key] = all_keys.get(key, 0) + 1
     if all_keys and len(all_keys) <= 4:
         used = ", ".join(sorted(all_keys))
-        findings.append(("warn", f"only {len(all_keys)} distinct modifier stats in use: {used}"))
+        findings.append(("warn", f"only {len(all_keys)} distinct modifier targets in use: {used}"))
 
-    # Declared stats that no item modifies leave part of the stat surface unreachable.
+    # Declared stats that no item targets leave part of the stat surface unreachable.
     valid = _valid_stats()
     if valid:
         unused = sorted(valid - set(all_keys))
@@ -651,106 +988,41 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
             findings.append(
                 (
                     "warn",
-                    f"{len(unused)} declared stat(s) never used by any item: {', '.join(unused)}",
+                    f"{len(unused)} declared stat(s) never targeted by any item: "
+                    f"{', '.join(unused)}",
                 )
             )
 
-    # FLAT on a fractional/multiplier stat means e.g. +1000% instead of +10%.
-    rate = _resolve_rate_stats()
-    if rate:
-        offenders: dict[str, list[str]] = {}
-        for item_id, item in sorted(items.items()):
-            for key in item["dicts"].get("flat_modifiers", {}):
-                if key in rate:
-                    offenders.setdefault(key, []).append(item_id)
-        if offenders:
-            detail = "; ".join(f"{k} x{len(v)}" for k, v in sorted(offenders.items()))
-            findings.append(("error", f"FLAT modifier on rate stat(s), must be PERCENT: {detail}"))
-
-    # A PERCENT modifier above 1.0 is a magnitude written into the percent block.
-    # `(base + flat) * (1 + percent)` makes 3.0 mean +300%, not +3%. Applies to every
-    # stat, not just rate stats: the same units slip happened to magnitude stats.
-    #
-    # The widest legitimate percent is 1.0 (`insight_gain` on `scroll_celestial`) and
-    # the smallest observed offender is 4.0, so the 4x gap is real but NOT the 20x
-    # one an earlier revision of this comment claimed. A legitimate value therefore
-    # sits exactly on the threshold: `insight_gain=1.0` means +100% and passes. Do not
-    # "tidy" that to a narrower bound without re-measuring the corpus first.
-    hot: dict[str, list[str]] = {}
-    for item_id, item in sorted(items.items()):
-        for key, value in item["dicts"].get("percent_modifiers", {}).items():
-            if value > 1.0:
-                hot.setdefault(key, []).append(item_id)
-    if hot:
-        detail = "; ".join(
-            f"{k} x{len(v)} (max {max(items[i]['dicts']['percent_modifiers'][k] for i in v):g})"
-            for k, v in sorted(hot.items())
-        )
+    # Authored fixed values must sit inside the option's realm/rarity magnitude
+    # window. The unit/op policy itself (FLAT on a rate, PERCENT above 1.0, a
+    # PERCENT on a zero baseline) is now a property of the master catalog and is
+    # enforced by `tools data options audit`, so it is checked once there instead
+    # of per item.
+    out_of_band = _out_of_band(items, catalog)
+    if out_of_band:
+        detail = ", ".join(out_of_band[:6]) + ("..." if len(out_of_band) > 6 else "")
         findings.append(
             (
                 "error",
-                f"PERCENT modifier above 1.0, reads as a magnitude not a percentage: {detail}",
+                f"{len(out_of_band)} fixed value(s) outside the option's realm/rarity "
+                f"magnitude window: {detail}",
             )
         )
 
-    # A FLAT modifier below 1.0 is the inverse of the check above: a percentage
-    # written into the flat block. `(base + flat) * (1 + percent)` reads a flat
-    # 0.05 as "+0.05 points", which is invisible beside the attribute family
-    # (physique 20, spirit 15, comprehension 3) and the orb ladder (24-30).
-    # `damage_reduction` is the one stat documented as a fraction in flat terms
-    # (ADR 0022), so it is exempt; every other stat wants a magnitude here.
-    tiny: dict[str, list[str]] = {}
-    for item_id, item in sorted(items.items()):
-        for key, value in item["dicts"].get("flat_modifiers", {}).items():
-            if 0 < value < 1.0 and key not in FRACTION_FLAT_STATS:
-                tiny.setdefault(key, []).append(item_id)
-    if tiny:
-        detail = "; ".join(f"{k}: " + ", ".join(v) for k, v in sorted(tiny.items()))
-        findings.append(
-            (
-                "error",
-                "FLAT modifier below 1.0 reads as a percentage, not a magnitude "
-                f"(use PERCENT): {detail}",
-            )
-        )
-
-    # A zero-valued modifier grants nothing.
-    noop = [
-        item_id
-        for item_id, item in sorted(items.items())
-        for field in ("flat_modifiers", "percent_modifiers")
-        for value in item["dicts"].get(field, {}).values()
-        if value == 0
-    ]
-    if noop:
-        findings.append(("warn", f"{len(noop)} zero-valued modifier(s) grant nothing"))
-
-    # PERCENT cannot change a stat whose baseline is identically zero.
-    zero_base = _resolve_zero_baseline_stats()
-    if zero_base:
-        dead_percent: dict[str, list[str]] = {}
-        for item_id, item in sorted(items.items()):
-            for key in item["dicts"].get("percent_modifiers", {}):
-                if key in zero_base:
-                    dead_percent.setdefault(key, []).append(item_id)
-        if dead_percent:
-            detail = "; ".join(f"{k} x{len(v)}" for k, v in sorted(dead_percent.items()))
-            findings.append(
-                (
-                    "error",
-                    "PERCENT modifier on zero-baseline stat(s), can never apply "
-                    f"(use FLAT): {detail}",
-                )
-            )
-
-    # Power curve: within a category+subtype, a tier must not be weaker than the one below.
+    # Power curve: within a category+subtype, a tier must not be weaker than the
+    # one below, per resolved target stat.
     buckets: dict[tuple[str, str, str, str], list[float]] = {}
     for item in items.values():
         grade = item["scalars"].get("grade", "")
         cat = item["scalars"].get("category", "")
         sub = item["scalars"].get("subcategory", "")
-        for key, value in item["dicts"].get("flat_modifiers", {}).items():
-            buckets.setdefault((cat, sub, key, grade), []).append(value)
+        for option_id, value in item["fixed"].items():
+            record = catalog.get(option_id)
+            if not record or record["target"]["type"] != "stat":
+                continue
+            if record["unit"] != "magnitude":
+                continue
+            buckets.setdefault((cat, sub, record["target"]["id"], grade), []).append(value)
     for cat, sub, key in sorted({(c, s, k) for c, s, k, _ in buckets}):
         series = []
         for grade in GRADE_ORDER:
@@ -758,9 +1030,6 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
             if values and len(values) >= 3:
                 series.append((grade, sum(values) / len(values)))
         for (low, low_mean), (high, high_mean) in zip(series, series[1:], strict=False):
-            # A relative drop is only meaningful on a magnitude-scale stat. On a
-            # fraction-scale stat (0.05 -> 0.04) a 10% move is noise, so require
-            # an absolute gap as well.
             if high_mean < low_mean * 0.9 and low_mean - high_mean > 1.0:
                 findings.append(
                     (
@@ -771,28 +1040,11 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
                 )
                 break
 
-    # Modifier stats that the game does not define are silently ignored at runtime.
-    valid = _valid_stats()
-    if valid:
-        unknown: dict[str, list[str]] = {}
-        for item_id, item in sorted(items.items()):
-            for key in sorted(_modifier_keys(item)):
-                if key not in valid:
-                    unknown.setdefault(key, []).append(item_id)
-        for key, ids in sorted(unknown.items()):
-            findings.append(
-                (
-                    "error",
-                    f"unknown modifier stat '{key}' on {len(ids)} item(s) "
-                    f"(not declared in contracts/stat.gd): {', '.join(ids[:6])}"
-                    + ("..." if len(ids) > 6 else ""),
-                )
-            )
-
     return findings
 
 
 def _distribution_command(root: Path, fail_on: str) -> int:
+    _load_realms()
     records, malformed = _load(root)
     items = records.get("item", {})
     total = len(items)
@@ -800,7 +1052,7 @@ def _distribution_command(root: Path, fail_on: str) -> int:
     info("=== Inventory ===")
     info(f"  total items:   {total}")
     info(f"  malformed:     {len(malformed)}")
-    for type_name in ("recipe", "boss", "domain"):
+    for type_name in ("recipe", "boss", "domain", "loot_table", "loot_tier"):
         label = "bosses" if type_name == "boss" else f"{type_name}s"
         info(f"  {label:14s} {len(records.get(type_name, {}))}")
 
@@ -826,6 +1078,16 @@ def _distribution_command(root: Path, fail_on: str) -> int:
     grade_rows = [(grade, len(by_grade.get(grade, []))) for grade in GRADE_ORDER]
     _print_table("Grade Distribution", grade_rows, total)
 
+    by_rarity = _group_by(items, "scalars", "rarity")
+    rarity_rows = [(rarity, len(by_rarity.get(rarity, []))) for rarity in RARITIES]
+    _print_table("Rarity Distribution", rarity_rows, total)
+
+    realm_rows = [
+        (realm_id, sum(1 for item in items.values() if item["scalars"].get("realm") == realm_id))
+        for realm_id in REALM_ORDER
+    ]
+    _print_table("Realm Distribution (all 30 canonical realms)", realm_rows, total)
+
     src_counts: dict[str, int] = {}
     for item in items.values():
         for source in item["arrays"].get("sources", []):
@@ -833,21 +1095,21 @@ def _distribution_command(root: Path, fail_on: str) -> int:
             src_counts[key] = src_counts.get(key, 0) + 1
     _print_table("Acquisition Source Distribution", sorted(src_counts.items()), total)
 
-    flat = {item["id"]: item for item in items.values() if item["dicts"].get("flat_modifiers")}
-    pct = {item["id"]: item for item in items.values() if item["dicts"].get("percent_modifiers")}
-    info("")
-    info("=== Modifier Coverage ===")
-    info(f"  items with flat modifiers:    {len(flat):5d}  ({_pct(len(flat), total):5.1f}%)")
-    info(f"  items with percent modifiers: {len(pct):5d}  ({_pct(len(pct), total):5.1f}%)")
-    info(f"  items with no modifiers:      {total - len({*flat, *pct}):5d}")
-
-    stat_counts: dict[str, int] = {}
+    catalog = _catalog()
+    fixed_count = sum(1 for item in items.values() if item["fixed"])
+    roll_count = sum(1 for item in items.values() if item["roll_spec"])
+    option_counts: dict[str, int] = {}
     for item in items.values():
-        for key in _modifier_keys(item):
-            stat_counts[key] = stat_counts.get(key, 0) + 1
-    _print_table("Modifier Stat Distribution", sorted(stat_counts.items()), total)
+        for option_id in item["fixed"]:
+            option_counts[option_id] = option_counts.get(option_id, 0) + 1
+    info("")
+    info("=== Option Coverage ===")
+    info(f"  items with fixed options:  {fixed_count:5d}  ({_pct(fixed_count, total):5.1f}%)")
+    info(f"  items with a roll_spec:    {roll_count:5d}  ({_pct(roll_count, total):5.1f}%)")
+    info(f"  distinct options authored: {len(option_counts):5d} / {len(catalog)} registered")
+    _print_table("Fixed Option Distribution", sorted(option_counts.items()), fixed_count or 1)
 
-    findings = _collect_findings(items)
+    findings = [*_collect_findings(items), *_loot_findings(records)]
     errors = [msg for level, msg in findings if level == "error"]
     warnings = [msg for level, msg in findings if level == "warn"]
 

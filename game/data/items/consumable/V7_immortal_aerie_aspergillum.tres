@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V7_immortal_aerie_aspergillum"
 display_name = "Immortal Aerie Aspergillum"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 30.8},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:F15_sovereign_arbiter"])
-percent_modifiers = {
-"attack_spiritual": 0.06
-}

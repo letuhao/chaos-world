@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"X18_divine_beadle_testimonial"
 display_name = "Divine Beadle Testimonial"
 category = &"quest"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 35.62},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"relic"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])

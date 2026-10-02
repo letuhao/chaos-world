@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"dao_clear_heart"
 display_name = "Clear Dao Heart Slip"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 24.22},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"boss:F9_sovereign_warden"])
-percent_modifiers = {
-"dao_heart": 0.07
-}

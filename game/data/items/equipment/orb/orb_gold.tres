@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"orb_gold"
 display_name = "Gold Orb"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 14},
+	{"option_id": &"core_qi_regen", "value": 17.88},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:orb_gold_recipe", &"boss:F12_sovereign_warden", &"boss:F10_palace_warden"])
-flat_modifiers = {
-"attack_spiritual": 14.0
-}
-percent_modifiers = {
-"qi_regen": 0.04
-}

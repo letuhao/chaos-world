@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"Z41_immortal_kimberlite_yarn"
 display_name = "Immortal Retting Yarn"
 category = &"material"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"filament"
 grade = &"immortal"
 sources = Array[StringName]([&"gather"])

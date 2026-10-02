@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"scepter_glow"
 display_name = "Glow Scepter"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 21.46},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:scepter_glow_recipe"])
-percent_modifiers = {
-"qi_regen": 0.05
-}

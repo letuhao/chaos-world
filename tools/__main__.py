@@ -14,11 +14,14 @@ from . import (
     deferred,
     export,
     fmt,
+    item_derive,
     lint,
     new_adr,
     new_module,
+    realm_power,
     run,
     test,
+    ui,
 )
 from .common import ToolError, fail
 
@@ -31,11 +34,14 @@ COMMANDS = {
     "check": check,
     "run": run,
     "export": export,
+    "ui": ui,
     "new_module": new_module,
+    "realm_power": realm_power,
     "new_adr": new_adr,
     "deferred": deferred,
     "backlog": backlog,
     "cultivation": cultivation,
+    "item_derive": item_derive,
     "data": data,
 }
 

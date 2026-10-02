@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U5_heaven_wharf_chalice"
 display_name = "Heaven Wharf Chalice"
 category = &"consumable"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 23.1},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:mind_dao_ancestor_warden"])
-percent_modifiers = {
-"defense_spiritual": 0.06
-}

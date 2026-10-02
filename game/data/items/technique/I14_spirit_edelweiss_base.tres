@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I14_spirit_edelweiss_base"
 display_name = "Spirit Edelweiss Base"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 8.12},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:I14_spirit_edelweiss_base_recipe", &"quest:I14_spirit_edelweiss_line"])
-percent_modifiers = {
-"physique": 0.03
-}

@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F34_mortal_foxed_comprehension_crit_damage_max_stamina_qi_cost_reduction"
 display_name = "Mortal Foxed Comprehension Crit damage Max stamina Qi cost reduction"
 category = &"equipment"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 6.05},
+	{"option_id": &"core_crit_damage", "value": 0.04},
+	{"option_id": &"core_max_stamina", "value": 3.57},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.05},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"comprehension": 0.05,
-"crit_damage": 0.07,
-"max_stamina": 0.03,
-"qi_cost_reduction": 0.05
-}

@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"G15_mortal_glimmer_breakthrough_chance_max_stamina"
 display_name = "Mortal Glimmer Breakthrough chance Max stamina"
 category = &"consumable"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.028},
+	{"option_id": &"core_max_stamina", "value": 6.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"breakthrough_chance": 0.028,
-"max_stamina": 0.039
-}

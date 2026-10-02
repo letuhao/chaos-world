@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"C20_mortal_conjugata_defense_physical_max_qi_max_health"
 display_name = "Mortal Conjugata Defense Physical Max Qi Max Health"
 category = &"consumable"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 8.8},
+	{"option_id": &"core_max_qi", "value": 8.8},
+	{"option_id": &"core_max_health", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"salve"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"defense_physical": 0.03,
-"max_qi": 0.05,
-"max_health": 0.07
-}

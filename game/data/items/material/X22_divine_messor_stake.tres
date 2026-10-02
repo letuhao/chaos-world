@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"X22_divine_messor_stake"
 display_name = "Divine Messor Stake"
 category = &"material"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"quest:Y27_route"])

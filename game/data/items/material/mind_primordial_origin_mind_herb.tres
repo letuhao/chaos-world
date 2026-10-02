@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"mind_primordial_origin_mind_herb"
 display_name = "Primordial Mind Origin Mind Herb"
 category = &"material"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"boss:F19_origin_warden"])

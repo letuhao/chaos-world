@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"W9_spirit_caltrops_mineral"
 display_name = "Spirit Caltrops Mineral"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"quest:A34_route"])

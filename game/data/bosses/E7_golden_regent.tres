@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"E7_golden_regent"
 display_name = "Golden Regent"
 domain_id = &"body_golden_immortal_trial"
-loot = Array[StringName]([&"treasure_gilded_beetle_heart", &"currency_dragon_pearl", &"L6_beetle_gold_bangle", &"V1_immortal_abattoir_processional"])
+loot = Array[StringName]([&"treasure_gilded_beetle_heart", &"currency_dragon_pearl", &"L6_beetle_gold_bangle", &"V1_immortal_abattoir_processional", &"set_void_coil_anchor"])

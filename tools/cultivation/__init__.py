@@ -7,7 +7,7 @@ from ..common import REPO_ROOT, fail, ok
 
 def register(subparsers) -> None:
     parser = subparsers.add_parser("cultivation", help="cultivation content workflow")
-    parser.add_argument("action", choices=["seed", "seed-systems", "validate", "prompt"])
+    parser.add_argument("action", choices=["seed", "seed-systems", "validate", "report", "prompt"])
 
 
 def run(args) -> int:
@@ -17,6 +17,10 @@ def run(args) -> int:
         return seed.run()
     if args.action == "seed-systems":
         return seed_systems.run()
+    if args.action == "report":
+        from . import report
+
+        return report.run()
     from . import audit
 
     findings = audit.validate()

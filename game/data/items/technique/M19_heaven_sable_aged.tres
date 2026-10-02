@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"M19_heaven_sable_aged"
 display_name = "Heaven Sable Aged"
 category = &"technique"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"formula"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:M19_heaven_sable_aged_recipe"])
-percent_modifiers = {
-"move_speed": 0.09
-}

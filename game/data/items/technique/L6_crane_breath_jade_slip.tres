@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"L6_crane_breath_jade_slip"
 display_name = "Crane Breath Jade Slip"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"earth"
 sources = Array[StringName]([&"boss:d6_gilded_crane"])
-percent_modifiers = {
-"move_speed": 0.06
-}

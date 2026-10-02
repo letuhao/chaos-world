@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"bracer_leather"
 display_name = "Leather Bracer"
 category = &"equipment"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 4},
+	{"option_id": &"core_poise", "value": 3},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:bracer_leather_recipe"])
-flat_modifiers = {
-"defense_physical": 4.0,
-"poise": 3.0
-}

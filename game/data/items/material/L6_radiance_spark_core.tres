@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"L6_radiance_spark_core"
 display_name = "Radiance Spark Core"
 category = &"material"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"divine"
 sources = Array[StringName]([&"boss:d5_transcendent_radiance"])

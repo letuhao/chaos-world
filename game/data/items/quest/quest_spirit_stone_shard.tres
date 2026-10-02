@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"quest_spirit_stone_shard"
 display_name = "Spirit Stone Shard"
 category = &"quest"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"shard"
 grade = &"heaven"
 sources = Array[StringName]([&"quest:side_03"])

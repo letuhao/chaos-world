@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"Q18_heaven_gorse_aged"
 display_name = "Heaven Gorse Aged"
 category = &"equipment"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:Q18_heaven_gorse_aged_recipe"])
-percent_modifiers = {
-"move_speed": 0.09
-}

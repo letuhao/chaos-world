@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"C7_earth_cloot_refined"
 display_name = "Earth Cloot Refined"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 21.46},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"earth"
 sources = Array[StringName]([&"craft:C7_earth_cloot_refined_recipe"])
-percent_modifiers = {
-"aptitude": 0.06
-}

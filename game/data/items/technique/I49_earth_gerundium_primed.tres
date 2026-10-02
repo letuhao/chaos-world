@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I49_earth_gerundium_primed"
 display_name = "Earth Gerundium Primed"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 26.74},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"earth"
 sources = Array[StringName]([&"craft:I49_earth_gerundium_primed_recipe"])
-percent_modifiers = {
-"qi_absorption": 0.13
-}

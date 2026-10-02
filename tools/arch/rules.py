@@ -22,10 +22,31 @@ LAYER_DEPS: dict[str, set[str]] = {
     "app": {"*"},
     "core": {"core", "contracts"},
     "contracts": {"contracts"},
+    "ui": {"core", "contracts"},
 }
 
 # Units that may only be referenced from within themselves.
 PRIVATE_UNITS = frozenset({"app"})
+
+# `ui/` is a pure consumer of gameplay modules: it may reach a module only
+# through that module's facade (`api.gd`), and only if the dependency is
+# declared here. This is what lets a UI program and a gameplay program run in
+# parallel without either one silently owning the other's internals.
+# `ui/` may never reference `app/` (boot/wiring) or any other `ui/` layer rule.
+UI_MODULES: dict[str, list[str]] = {
+    "items": [],
+    "body_cultivation": ["items"],
+    "mind_cultivation": ["items"],
+    "qi_cultivation": ["items"],
+    "dual_cultivation": [],
+    "fertility": ["dual_cultivation"],
+    "elements": [],
+    "combat": [],
+    "world": [],
+    "socket": ["items"],
+    "set_bonus": ["items"],
+    "loot": ["items"],
+}
 
 # Dependencies granted to a newly scaffolded module.
 DEFAULT_MODULE_DEPS = ("core", "contracts")

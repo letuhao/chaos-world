@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"W19_heaven_cassine_base"
 display_name = "Heaven Cassine Base"
 category = &"consumable"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 23.92},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:W19_heaven_cassine_base_recipe", &"quest:W19_heaven_cassine_line"])
-percent_modifiers = {
-"agility": 0.03
-}

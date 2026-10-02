@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"L3_stone_crane_mist_step"
 display_name = "Stone Crane Mist Step"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:d3_stone_crane_dancer"])
-percent_modifiers = {
-"move_speed": 0.05
-}

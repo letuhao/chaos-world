@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V3_spirit_abjuration_mace"
 display_name = "Spirit Abjuration Mace"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_damage", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:E5_severing_edge"])
-percent_modifiers = {
-"crit_damage": 0.06
-}

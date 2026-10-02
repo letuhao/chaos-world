@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"D2_divine_comprehension_bead"
 display_name = "Divine Comprehension Bead"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 35.62},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"divine"
 sources = Array[StringName]([&"craft:D2_divine_comprehension_bead_recipe"])
-percent_modifiers = {
-"comprehension": 0.16
-}

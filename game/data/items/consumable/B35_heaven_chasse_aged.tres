@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"B35_heaven_chasse_aged"
 display_name = "Heaven Chasse Aged"
 category = &"consumable"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:B35_heaven_chasse_aged_recipe"])
-percent_modifiers = {
-"move_speed": 0.09
-}

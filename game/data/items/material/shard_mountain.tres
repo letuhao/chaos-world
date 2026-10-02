@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"shard_mountain"
 display_name = "Mountain Shard"
 category = &"material"
+rarity = &"common"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"fragment"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"boss:mind_foundation_warden"])

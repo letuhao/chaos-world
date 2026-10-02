@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F1_mortal_cresses_dao_heart_loot_bonus_health_regen_qi_absorption"
 display_name = "Mortal Cresses Dao Heart Loot Bonus Health Regen Qi Absorption"
 category = &"equipment"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 7.15},
+	{"option_id": &"core_loot_bonus", "value": 0.04},
+	{"option_id": &"core_health_regen", "value": 7.15},
+	{"option_id": &"core_qi_absorption", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"dao_heart": 0.05,
-"loot_bonus": 0.07,
-"health_regen": 0.03,
-"qi_absorption": 0.05
-}

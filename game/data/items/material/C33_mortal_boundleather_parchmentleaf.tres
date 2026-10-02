@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"C33_mortal_boundleather_parchmentleaf"
 display_name = "Mortal Boundleather Parchmentleaf"
 category = &"material"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])

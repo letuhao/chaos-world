@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"H11_mortal_staminafeast"
 display_name = "Mortal Stamina Feast"
 category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:H11_mortal_staminafeast_recipe"])
-percent_modifiers = {
-"stamina_regen": 0.02
-}

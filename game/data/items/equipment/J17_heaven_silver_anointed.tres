@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"J17_heaven_silver_anointed"
 display_name = "Heaven Silver Anointed"
 category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.02},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:J17_heaven_silver_anointed_recipe"])
-percent_modifiers = {
-"move_speed": 0.1
-}

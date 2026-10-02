@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F29_divine_fireside_breakthrough_chance_comprehension_defense_physical_qi_cost_reduction"
 display_name = "Divine Fireside Breakthrough chance Comprehension Defense physical Qi cost reduction"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.04},
+	{"option_id": &"base_comprehension", "value": 35.62},
+	{"option_id": &"core_defense_physical", "value": 35.62},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"breakthrough_chance": 0.07,
-"comprehension": 0.03,
-"defense_physical": 0.05,
-"qi_cost_reduction": 0.07
-}

@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"mantle_jade"
 display_name = "Jade Mantle"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 30.23},
+	{"option_id": &"core_max_qi", "value": 35},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"gather", &"quest:A39_route"])
-flat_modifiers = {
-"max_health": 48.0,
-"max_qi": 35.0
-}

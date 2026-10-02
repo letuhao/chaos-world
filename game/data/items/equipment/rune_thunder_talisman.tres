@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"rune_thunder_talisman"
 display_name = "Thunder Rune Talisman"
 category = &"equipment"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 10},
+	{"option_id": &"core_crit_chance", "value": 0.02},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:rune_thunder_talisman_recipe"])
-flat_modifiers = {
-"attack_spiritual": 10.0
-}
-percent_modifiers = {
-"crit_chance": 0.02
-}

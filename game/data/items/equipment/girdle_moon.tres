@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"girdle_moon"
 display_name = "Moon Girdle"
 category = &"equipment"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_evasion", "value": 0.05},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:girdle_moon_recipe"])
-percent_modifiers = {
-"evasion": 0.05
-}

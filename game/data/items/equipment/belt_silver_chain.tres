@@ -7,13 +7,15 @@ script = ExtResource("1_item")
 id = &"belt_silver_chain"
 display_name = "Silver Chain"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 8},
+	{"option_id": &"core_poise", "value": 6},
+	{"option_id": &"core_max_health", "value": 10.97},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:belt_silver_chain_recipe"])
-flat_modifiers = {
-"defense_physical": 8.0,
-"poise": 6.0
-}
-percent_modifiers = {
-"max_health": 0.03
-}

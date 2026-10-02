@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"seal_iron_ore"
 display_name = "Seal Iron Ore"
 category = &"material"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"ore"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"quest:A41_route"])

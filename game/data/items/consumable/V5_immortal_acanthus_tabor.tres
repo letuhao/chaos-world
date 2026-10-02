@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V5_immortal_acanthus_tabor"
 display_name = "Immortal Acanthus Tabor"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:elemental_immortal_guardian"])
-percent_modifiers = {
-"attack_spiritual": 0.06
-}

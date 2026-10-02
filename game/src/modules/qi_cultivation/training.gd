@@ -33,19 +33,88 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	var state := actor.path(QiPath.PATH_ID)
 	if dantian == null or state == null or amount <= 0.0 or not is_finite(amount):
 		return false
-	if dantian.is_full(actor):
-		return false
 	synchronize(actor)
 	var seed := QiRealmSeed.for_realm(state.rank_id)
 	if seed == null:
 		return false
-	var realm := RealmDefaults.ladder().realm(state.rank_id)
-	# Meridian flow bonus speeds circulation; realm power scales the gain.
-	var gain := amount * realm.power * (1.0 + actor.meridians.get_flow_bonus())
+	# Meridian flow bonus speeds circulation; the realm RATE values one unit of
+	# work. A bounded per-realm number, not the realm's magnitude — see
+	# `realm_profile.gd`. Same rate, same realm, as body and mind.
+	var gain := (
+		amount * QiRealmProfile.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
+	)
+	# A full dantian stops *storing* qi, not *training*: refusing the whole action
+	# deadlocked the path, because the entry gate demands both a full reservoir
+	# and a met progress floor, and the reservoir fills first. `fill` clamps, so
+	# the surplus is simply not kept — the same contract as
+	# `BodyTraining.cultivate` over the shared body pool.
 	dantian.fill(actor, gain)
-	# Circulating qi refines the dantian toward the seed's quality target.
-	dantian.set_quality(minf(seed.dantian_quality_required, dantian.quality + gain / 1000.0))
+	# Quality is refined toward the *next* realm's floor, not this realm's. The
+	# floor rises every realm, so capping at the current realm's own requirement
+	# made every gate from R3 on permanently unreachable (ADR 0028's "reachable
+	# gates" rule, which Body honours via a separate `quality_target`).
+	var ceiling := _quality_ceiling(state.rank_id)
+	if ceiling > 0.0:
+		dantian.set_quality(maxf(dantian.quality, minf(ceiling, dantian.quality + gain / 1000.0)))
 	state.progress += gain
+	actor.mark_stats_dirty()
+	return true
+
+
+## The dantian quality the next realm demands, or the current realm's own floor at
+## the top of the ladder. 0.0 when either realm has no profile.
+static func _quality_ceiling(rank_id: StringName) -> float:
+	var ladder := RealmDefaults.ladder()
+	var next := ladder.next(rank_id)
+	if next != null:
+		var next_seed := QiRealmSeed.for_realm(next.id)
+		if next_seed != null:
+			return next_seed.dantian_quality_required
+	var seed := QiRealmSeed.for_realm(rank_id)
+	return 0.0 if seed == null else seed.dantian_quality_required
+
+
+## Undo the damage a qi deviation left behind: heal the dantian scar and repair
+## one burned channel. Consumes the realm's recovery item, so every realm needs
+## one authored (ADR 0031). All-or-nothing: the item is spent only when there is
+## something to repair.
+static func recover(actor: Actor, meridian_id: StringName) -> bool:
+	var state := actor.path(QiPath.PATH_ID)
+	var dantian := QiCultivationApi.dantian(actor)
+	if state == null or dantian == null:
+		return false
+	var seed := QiRealmSeed.for_realm(state.rank_id)
+	if seed == null or seed.recovery_item == &"":
+		return false
+	actor.meridians.unlock_for_realm(state.rank_id)
+	var channel := actor.meridians.get_meridian(meridian_id)
+	if channel == null:
+		return false
+	if not dantian.injured and not channel.injured:
+		return false
+	if not _ITEMS.consume_item(actor, seed.recovery_item):
+		return false
+	dantian.heal()
+	if channel.injured:
+		actor.meridians.repair_meridian(meridian_id)
+	synchronize(actor)
+	actor.mark_stats_dirty()
+	return true
+
+
+## Raise comprehension, the only route to a realm's `comprehension_required`
+## floor. Circulating qi refines the dantian but never teaches, so without this
+## the gate is unreachable and the path dead-ends partway up the ladder — the
+## realm rewards grant `spirit`, not comprehension. Mirrors `BodyTraining.
+## meditate` (ADR 0024).
+static func meditate(actor: Actor, amount: float) -> bool:
+	if amount <= 0.0 or not is_finite(amount):
+		return false
+	var state := actor.path(QiPath.PATH_ID)
+	if state == null:
+		return false
+	var gain := amount * actor.stats.derived(Stat.INSIGHT_GAIN)
+	actor.stats.set_base(Stat.COMPREHENSION, actor.stats.get_base(Stat.COMPREHENSION) + gain)
 	actor.mark_stats_dirty()
 	return true
 

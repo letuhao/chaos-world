@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"staff_ironbark_herb"
 display_name = "Ironbark Herb"
 category = &"material"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"quest:A42_route"])

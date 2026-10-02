@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F11_heaven_dross_agility_aptitude_cooldown_reduction_crit_damage"
 display_name = "Heaven Dross Agility Aptitude Cooldown reduction Crit damage"
 category = &"consumable"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 11.24},
+	{"option_id": &"base_aptitude", "value": 24.75},
+	{"option_id": &"core_cooldown_reduction", "value": 0.03},
+	{"option_id": &"core_crit_damage", "value": 0.05},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.05,
-"aptitude": 0.07,
-"cooldown_reduction": 0.03,
-"crit_damage": 0.05
-}

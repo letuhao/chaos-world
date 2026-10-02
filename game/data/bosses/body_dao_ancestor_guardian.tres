@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"body_dao_ancestor_guardian"
 display_name = "Body of Divinity Guardian"
 domain_id = &"body_dao_ancestor_trial"
-loot = Array[StringName]([&"body_dao_ancestor_guardian_core", &"body_dao_ancestor_tempering_herb", &"sigil_divine_inception", &"U8_heaven_linlet_partisan", &"U8_heaven_linlet_thurible"])
+loot = Array[StringName]([&"body_dao_ancestor_guardian_core", &"body_dao_ancestor_tempering_herb", &"sigil_divine_inception", &"U8_heaven_linlet_partisan", &"U8_heaven_linlet_thurible", &"unique_lantern_of_the_last_ward"])

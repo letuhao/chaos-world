@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F27_spirit_extempore_aptitude_attack_physical_cooldown_reduction_qi_cost_reduction"
 display_name = "Spirit Extempore Aptitude Attack physical Cooldown reduction Qi cost reduction"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 17.19},
+	{"option_id": &"core_attack_physical", "value": 17.19},
+	{"option_id": &"core_cooldown_reduction", "value": 0.05},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"spirit"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"aptitude": 0.07,
-"attack_physical": 0.03,
-"cooldown_reduction": 0.05,
-"qi_cost_reduction": 0.07
-}

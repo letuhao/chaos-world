@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"C17_mortal_curiositycabinet_musicbox"
 display_name = "Mortal Curiositycabinet Musicbox"
 category = &"misc"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"curio"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])

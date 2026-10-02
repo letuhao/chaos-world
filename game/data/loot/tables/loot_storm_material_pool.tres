@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"smp_phoenix_essence"
+kind = &"item"
+item_id = &"artifact_storm_phoenix_essence"
+weight = 3.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+quantity_max = 2
+rarity_floor = ""
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"smp_titan_ore"
+kind = &"item"
+item_id = &"artifact_iron_titan_ore"
+weight = 2.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = ""
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"smp_leviathan_core"
+kind = &"item"
+item_id = &"artifact_void_leviathan_core"
+weight = 2.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = ""
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"smp_crown"
+kind = &"item"
+item_id = &"artifact_storm_phoenix_crown"
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_storm_material_pool"
+display_name = "Storm Crypt Relics"
+realm = &"heaven_immortal"
+rarity = &"magic"
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3")
+])

@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F8_heaven_doffing_qi_absorption_spirit_attack_speed_will"
 display_name = "Heaven Doffing Qi Absorption Spirit Attack Speed Will"
 category = &"technique"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 23.92},
+	{"option_id": &"base_spirit", "value": 23.92},
+	{"option_id": &"core_attack_speed", "value": 0.04},
+	{"option_id": &"base_will", "value": 23.92},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"qi_absorption": 0.03,
-"spirit": 0.05,
-"attack_speed": 0.07,
-"will": 0.03
-}

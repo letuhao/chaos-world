@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"B16_mortal_calliope_perfected"
 display_name = "Mortal Calliope Perfected"
 category = &"equipment"
+rarity = &"common"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 7.75},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:B16_mortal_calliope_perfected_recipe"])
-percent_modifiers = {
-"stamina_regen": 0.17
-}

@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"charm_void_eye"
 display_name = "Void Eye"
 category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 28.87},
+	{"option_id": &"core_evasion", "value": 0.05},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:charm_void_eye_recipe", &"boss:d2_void_emperor"])
-flat_modifiers = {
-"max_qi": 70.0
-}
-percent_modifiers = {
-"evasion": 0.05
-}

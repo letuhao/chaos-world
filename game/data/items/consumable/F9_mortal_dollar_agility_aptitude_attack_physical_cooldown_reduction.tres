@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F9_mortal_dollar_agility_aptitude_attack_physical_cooldown_reduction"
 display_name = "Mortal Dollar Agility Aptitude Attack physical Cooldown reduction"
 category = &"consumable"
+rarity = &"common"
+realm = &"tribulation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 9.9},
+	{"option_id": &"base_aptitude", "value": 9.9},
+	{"option_id": &"core_attack_physical", "value": 9.9},
+	{"option_id": &"core_cooldown_reduction", "value": 0.03},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.03,
-"aptitude": 0.05,
-"attack_physical": 0.07,
-"cooldown_reduction": 0.03
-}

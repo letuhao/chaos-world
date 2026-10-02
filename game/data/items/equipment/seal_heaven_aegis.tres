@@ -7,11 +7,15 @@ script = ExtResource("1_item")
 id = &"seal_heaven_aegis"
 display_name = "Seal Heaven Aegis"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 25},
+	{"option_id": &"core_poise", "value": 12},
+	{"option_id": &"core_damage_reduction", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:seal_heaven_aegis_recipe"])
-flat_modifiers = {
-"defense_spiritual": 25.0,
-"poise": 12.0
-"damage_reduction": 0.04
-}

@@ -1,0 +1,9 @@
+28 files already formatted
+would reformat D:\Works\source\chaos-world\game\src\modules\body_cultivation\api.gd
+would reformat D:\Works\source\chaos-world\game\src\ui\panels\body_vitals_panel.gd
+would reformat D:\Works\source\chaos-world\game\src\ui\screens\body_cultivation_panel.gd
+3 files would be reformatted, 206 files would be left unchanged.
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format tools --check
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game --check
+fail gate failed: fmt
+== fmt ==

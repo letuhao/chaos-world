@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"W15_immortal_bulwark_primed"
 display_name = "Immortal Bulwark Primed"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:W15_immortal_bulwark_primed_recipe"])
-percent_modifiers = {
-"physique": 0.13
-}

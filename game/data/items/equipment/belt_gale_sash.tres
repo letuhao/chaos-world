@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"belt_gale_sash"
 display_name = "Gale Sash"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 15},
+	{"option_id": &"core_status_resistance", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:belt_gale_sash_recipe"])
-flat_modifiers = {
-"max_stamina": 15.0
-}
-percent_modifiers = {
-"status_resistance": 0.05
-}

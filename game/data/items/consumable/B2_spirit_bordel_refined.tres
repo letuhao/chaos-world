@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"B2_spirit_bordel_refined"
 display_name = "Spirit Bordel Refined"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.02},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:B2_spirit_bordel_refined_recipe"])
-percent_modifiers = {
-"attack_speed": 0.06
-}

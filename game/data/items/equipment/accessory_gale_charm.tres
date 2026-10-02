@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"accessory_gale_charm"
 display_name = "Gale Charm"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 12},
+	{"option_id": &"core_move_speed", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:accessory_gale_charm_recipe"])
-flat_modifiers = {
-"max_stamina": 12.0
-}
-percent_modifiers = {
-"move_speed": 0.05
-}

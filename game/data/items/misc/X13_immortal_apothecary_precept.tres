@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"X13_immortal_apothecary_precept"
 display_name = "Immortal Apothecary Precept"
 category = &"misc"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"trophy"
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])

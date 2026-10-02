@@ -8,6 +8,7 @@ id = &"spirit_manifestation"
 breakthrough_item = &"mind_spirit_manifestation_breakthrough_pill"
 training_item = &"mind_spirit_manifestation_channel_elixir"
 sea_catalyst = &"mind_spirit_manifestation_sea_catalyst"
+recovery_item = &"mind_spirit_manifestation_recovery_elixir"
 progress_required = 3671.0
 comprehension_required = 370.0
 clarity_required = 0.58

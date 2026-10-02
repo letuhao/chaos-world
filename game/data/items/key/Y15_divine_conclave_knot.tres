@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"Y15_divine_conclave_knot"
 display_name = "Divine Conclave Knot"
 category = &"key"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 18.42},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"talisman"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])

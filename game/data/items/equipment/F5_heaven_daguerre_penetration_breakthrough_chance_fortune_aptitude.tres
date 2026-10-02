@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F5_heaven_daguerre_penetration_breakthrough_chance_fortune_aptitude"
 display_name = "Heaven Daguerre Penetration Breakthrough Chance Fortune Aptitude"
 category = &"equipment"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 23.1},
+	{"option_id": &"core_breakthrough_chance", "value": 0.04},
+	{"option_id": &"base_fortune", "value": 23.1},
+	{"option_id": &"base_aptitude", "value": 23.1},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"penetration": 0.05,
-"breakthrough_chance": 0.07,
-"fortune": 0.03,
-"aptitude": 0.05
-}

@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"G4_heaven_weave"
 display_name = "Heaven Weave"
 category = &"material"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"filament"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:G4_heaven_weave_recipe"])

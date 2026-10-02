@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I3_mortal_dowle_perfected"
 display_name = "Mortal Dowle Perfected"
 category = &"consumable"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 10.85},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I3_mortal_dowle_perfected_recipe"])
-percent_modifiers = {
-"poise": 0.17
-}

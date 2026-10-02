@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d3_frost_wolf_pup"
 display_name = "Frost Wolf Lesser"
 domain_id = &"monster_frost_wolf_domain"
-loot = Array[StringName]([&"monster_frost_wolf_core", &"monster_frost_wolf_hide", &"L3_frost_wolf_pup_hide", &"L3_frost_wolf_pup_fang_charm", &"V1_spirit_abattoir_carcanet"])
+loot = Array[StringName]([&"monster_frost_wolf_core", &"monster_frost_wolf_hide", &"L3_frost_wolf_pup_fang_charm", &"L3_frost_wolf_pup_hide", &"V1_spirit_abattoir_carcanet"])

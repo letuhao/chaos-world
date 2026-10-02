@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"writ_star_chip"
 display_name = "Star Writ Chip"
 category = &"currency"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"writ"
 grade = &"heaven"
 sources = Array[StringName]([&"quest:writ_star_chip"])

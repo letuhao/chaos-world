@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"C10_earth_codicil_perfected"
 display_name = "Earth Codicil Perfected"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"earth"
 sources = Array[StringName]([&"craft:C10_earth_codicil_perfected_recipe"])
-percent_modifiers = {
-"attack_speed": 0.17
-}

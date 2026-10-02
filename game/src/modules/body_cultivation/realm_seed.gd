@@ -8,6 +8,10 @@ extends Resource
 @export var id: StringName = &""
 @export var breakthrough_item: StringName = &""
 @export var strengthening_item: StringName = &""
+## Third consumable role: repairs deviation damage (injured channel, blocked
+## acupoint). Blockage is a recoverable overlay, so a realm must also carry the
+## means to clear it — otherwise a failed attempt is unrecoverable.
+@export var recovery_item: StringName = &""
 @export var progress_required: float = 100.0
 @export var physique_required: float = 10.0
 @export var quality_required: float = 0.5
@@ -18,13 +22,10 @@ extends Resource
 @export var refinement_cap: int = 1
 @export var integrity_maximum: float = 100.0
 @export var rewards: Dictionary = {}
-# Profile factors (ADR 0023 expansion). P is a reference power budget, never a
-# stat multiplier. C scales capacity, F scales throughput, T scales technique.
-@export var power_budget: float = 1.0
-@export var capacity_factor: float = 1.0
-@export var throughput_factor: float = 1.0
-@export var technique_factor: float = 1.0
-# Work requirements (elapsed simulation time, not hardcoded real-time).
+# Work requirements (elapsed simulation time, not hardcoded real-time). This is
+# the PRICE side of the cultivation loop and it is authored per realm: the rate
+# that decides what one unit of work is worth is `BodyRealmProfile.rate`, and the two are
+# only meaningful as a pair.
 @export var work_required: float = 100.0
 @export var acupoint_work: float = 20.0
 @export var meridian_work: float = 15.0
@@ -32,6 +33,13 @@ extends Resource
 @export var insight_required: float = 10.0
 # Resonance rank (realms 19-30 reinforce the same network).
 @export var resonance_rank: int = 0
+# Breakthrough risk. `chance_base` is the floor the realm offers and
+# `chance_cap` its ceiling; acupoint quality buys certainty between them.
+# Neither is derived from comprehension: comprehension is the entry GATE
+# (insight_required), so using it for the roll made every attempt from R5 on a
+# guaranteed success and left the deviation/recovery system unreachable.
+@export var chance_base: float = 0.55
+@export var chance_cap: float = 0.95
 # Channel training after entry (channels to train while in this realm).
 @export var channel_training: Array[StringName] = []
 

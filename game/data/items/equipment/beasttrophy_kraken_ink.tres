@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"beasttrophy_kraken_ink"
 display_name = "Abyssal Kraken Ink Trophy"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 52.9},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"boss:marine_abyssal_kraken"])
-flat_modifiers = {
-"max_qi": 120.0
-}

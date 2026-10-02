@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"M23_immortal_wisp_aged"
 display_name = "Immortal Wisp Aged"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"sigil"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:M23_immortal_wisp_aged_recipe"])
-percent_modifiers = {
-"cultivation_rate": 0.09
-}

@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"beasttrophy_scorpion_sting"
 display_name = "Venom Scorpion Sting Trophy"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:monster_venom_scorpion", &"boss:d4_venom_scorpion"])
-percent_modifiers = {
-"crit_chance": 0.05
-}

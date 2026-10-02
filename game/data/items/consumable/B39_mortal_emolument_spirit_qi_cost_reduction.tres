@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B39_mortal_emolument_spirit_qi_cost_reduction"
 display_name = "Mortal Emolument Spirit Qi Cost Reduction"
 category = &"consumable"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 7.7},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"spirit": 0.03,
-"qi_cost_reduction": 0.05
-}

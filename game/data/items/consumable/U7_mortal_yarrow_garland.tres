@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U7_mortal_yarrow_garland"
 display_name = "Mortal Yarrow Garland"
 category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:qi_core_formation_guardian"])
-percent_modifiers = {
-"max_health": 0.06
-}

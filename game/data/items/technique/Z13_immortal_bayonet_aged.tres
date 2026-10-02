@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Z13_immortal_bayonet_aged"
 display_name = "Immortal Bayonet Aged"
 category = &"technique"
+rarity = &"legendary"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 20.47},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:Z13_immortal_bayonet_aged_recipe"])
-percent_modifiers = {
-"agility": 0.09
-}

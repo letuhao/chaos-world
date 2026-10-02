@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F5_heaven_dactyl_attack_spiritual_move_speed_cooldown_reduction_crit_chance"
 display_name = "Heaven Dactyl Attack Spiritual Move Speed Cooldown Reduction Crit Chance"
 category = &"equipment"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 27.22},
+	{"option_id": &"core_move_speed", "value": 0.05},
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+	{"option_id": &"core_crit_chance", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"attack_spiritual": 0.03,
-"move_speed": 0.05,
-"cooldown_reduction": 0.07,
-"crit_chance": 0.03
-}

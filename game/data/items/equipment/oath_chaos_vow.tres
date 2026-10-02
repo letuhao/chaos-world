@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"oath_chaos_vow"
 display_name = "Oath of Chaos"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"quest:oath_of_chaos"])
-percent_modifiers = {
-"cultivation_rate": 0.12
-}

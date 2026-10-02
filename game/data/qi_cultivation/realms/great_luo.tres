@@ -7,6 +7,7 @@ script = ExtResource("1")
 id = &"great_luo"
 breakthrough_item = &"qi_great_luo_breakthrough_pill"
 training_item = &"qi_great_luo_channel_elixir"
+recovery_item = &"qi_great_luo_recovery_elixir"
 progress_required = 2400.0
 comprehension_required = 56.0
 dantian_quality_required = 0.73
@@ -16,8 +17,6 @@ required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach",
 required_channel_state = &"open"
 channel_refinement_cap = 25
 dantian_capacity = 700.0
-throughput_factor = 7.69
-technique_factor = 16.54
 rewards = {
 "spirit": 2.0
 }

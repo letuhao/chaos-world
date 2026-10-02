@@ -1,14 +1,30 @@
 class_name MindAttempt
 extends RefCounted
 
-## A mind-cultivation breakthrough attempt (ADR 0013/0016/0024). Tracks the
-## state of one active attempt: identity, costs, preparation, trial progress,
-## and granted outcome. Only one attempt may be active per actor.
+## A mind-cultivation breakthrough attempt (ADR 0013/0016/0024/0029). One
+## record per attempt: identity, costs, the preparation it was committed
+## against, trial progress, and the granted outcome. Only one attempt may be
+## active per actor; the resolved record is kept so its outcome cannot be
+## granted twice.
+##
+## The award is keyed on this record's identity, never on the path's progress:
+## `outcome_granted` is the single once-only guard (ADR 0029).
 
 const STATUS_PENDING := &"pending"
 const STATUS_COMMITTED := &"committed"
 const STATUS_SUCCESS := &"success"
 const STATUS_FAILED := &"failed"
+## Abandoned before its trial ran (cancelled or superseded): nothing was rolled,
+## so no deviation is owed and the realm is kept.
+const STATUS_CANCELLED := &"cancelled"
+
+## Statuses that end an attempt. `outcome_granted` is the outcome flag, not a
+## status: a cancelled attempt resolved without one.
+const TERMINAL_STATUSES: Array[StringName] = [
+	STATUS_SUCCESS,
+	STATUS_FAILED,
+	STATUS_CANCELLED,
+]
 
 var attempt_id: StringName = &""
 var actor_id: StringName = &""
@@ -23,6 +39,9 @@ var preparation: Dictionary = {}
 var trial_complete: bool = false
 var outcome_granted: bool = false
 var rng_state: int = 0
+## Per-actor attempt counter. Makes the id stable and reproducible instead of
+## wall-clock derived, so a save reload still names the same attempt.
+var sequence: int = 0
 
 
 func _init(
@@ -62,8 +81,22 @@ func fail() -> void:
 	status = STATUS_FAILED
 
 
+## End the attempt without a trial. No deviation, no award, realm kept.
+func cancel() -> void:
+	status = STATUS_CANCELLED
+
+
 func is_active() -> bool:
 	return status == STATUS_PENDING or status == STATUS_COMMITTED
+
+
+func is_resolved() -> bool:
+	return TERMINAL_STATUSES.has(status)
+
+
+## Stable per-actor attempt id: same actor, same sequence, same id.
+static func make_id(p_actor_id: StringName, p_path_id: StringName, p_sequence: int) -> StringName:
+	return StringName("mind_%s_%s_%d" % [p_actor_id, p_path_id, p_sequence])
 
 
 func to_dict() -> Dictionary:
@@ -77,10 +110,11 @@ func to_dict() -> Dictionary:
 		"status": String(status),
 		"pill_consumed": pill_consumed,
 		"costs_paid": costs_paid,
-		"preparation": preparation.duplicate(),
+		"preparation": preparation.duplicate(true),
 		"trial_complete": trial_complete,
 		"outcome_granted": outcome_granted,
 		"rng_state": rng_state,
+		"sequence": sequence,
 	}
 
 
@@ -99,8 +133,10 @@ static func from_dict(data: Dictionary) -> MindAttempt:
 	attempt.status = StringName(data.get("status", STATUS_PENDING))
 	attempt.pill_consumed = bool(data.get("pill_consumed", false))
 	attempt.costs_paid = bool(data.get("costs_paid", false))
-	attempt.preparation = data.get("preparation", {}).duplicate()
+	var preparation: Variant = data.get("preparation", {})
+	attempt.preparation = (preparation.duplicate(true) if preparation is Dictionary else {})
 	attempt.trial_complete = bool(data.get("trial_complete", false))
 	attempt.outcome_granted = bool(data.get("outcome_granted", false))
 	attempt.rng_state = int(data.get("rng_state", 0))
+	attempt.sequence = int(data.get("sequence", 0))
 	return attempt

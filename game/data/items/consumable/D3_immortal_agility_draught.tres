@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"D3_immortal_agility_draught"
 display_name = "Immortal Agility Draught"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 32.72},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:D3_immortal_agility_draught_recipe"])
-percent_modifiers = {
-"agility": 0.13
-}

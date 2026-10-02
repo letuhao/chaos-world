@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"G16_spirit_gneiss_attack_speed_insight_gain"
 display_name = "Spirit Gneiss Attack speed Insight gain"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.022},
+	{"option_id": &"core_insight_gain", "value": 0.023},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"attack_speed": 0.022,
-"insight_gain": 0.023
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"P17_spirit_cleaver_primed"
 display_name = "Spirit Cleaver Primed"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:P17_spirit_cleaver_primed_recipe"])
-percent_modifiers = {
-"attack_speed": 0.13
-}

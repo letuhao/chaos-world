@@ -7,11 +7,15 @@ script = ExtResource("1_item")
 id = &"L2_iron_monarch_greaves"
 display_name = "Iron Monarch Greaves"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 16},
+	{"option_id": &"core_defense_spiritual", "value": 8},
+	{"option_id": &"core_poise", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:d2_iron_monarch"])
-flat_modifiers = {
-"defense_physical": 16.0,
-"defense_spiritual": 8.0,
-"poise": 6.0
-}

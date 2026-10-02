@@ -54,17 +54,17 @@ static func preview(actor: Actor) -> Dictionary:
 		var channel := actor.meridians.get_meridian(meridian_id)
 		if channel == null or not channel.meets(seed.required_channel_state):
 			result["unmet_conditions"].append("channel_not_ready:%s" % meridian_id)
-	# Tier gates
-	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD:
-		if actor.tribulation == null or not actor.tribulation.is_complete():
-			result["unmet_conditions"].append("tribulation_not_complete")
-		if actor.inside_world == null or not actor.inside_world.is_stable():
-			result["unmet_conditions"].append("inside_world_not_stable")
-	if target.index >= Breakthrough.TRANSCENDENT_REALM_THRESHOLD:
-		if actor.world == null or not actor.world.is_stable():
-			result["unmet_conditions"].append("world_not_stable")
-		if actor.ascension == null or not actor.ascension.is_complete():
-			result["unmet_conditions"].append("ascension_not_complete")
+	# Tier gates. These delegate to the same `Breakthrough` predicates
+	# `try_breakthrough` enforces, so the preview can never disagree with it about
+	# whether a realm is enterable (ADR 0032).
+	if not Breakthrough.tribulation_ok(actor, target.index):
+		result["unmet_conditions"].append("tribulation_not_complete")
+	if not Breakthrough.inside_world_ok(actor, target.index):
+		result["unmet_conditions"].append("inside_world_not_stable")
+	if not Breakthrough.world_ok(actor, target.index):
+		result["unmet_conditions"].append("world_not_stable")
+	if not Breakthrough.ascension_ok(actor, target.index):
+		result["unmet_conditions"].append("ascension_not_complete")
 
 	# Calculate chance
 	var chance := clampf(
@@ -112,10 +112,15 @@ static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) ->
 	var pool := actor.resource(QiStats.QI)
 	if pool != null:
 		pool.current = 0.0
-	Breakthrough.try_advance(actor, QiPath.PATH_ID)
+	var advanced := Breakthrough.try_advance_gated(actor, QiPath.PATH_ID)
+	if not advanced:
+		return false
 	QiTraining.synchronize(actor)
 	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD and actor.tribulation != null:
 		actor.tribulation.apply_result(actor, true)
+	# Entering a high tier *commits* the milestone it produces; the next tier
+	# gates on it (ADR 0018-0021).
+	WorldAnchor.commit(actor, target.index)
 	actor.mark_stats_dirty()
 	return true
 

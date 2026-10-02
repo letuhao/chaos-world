@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"F38_spirit_fustic_health_regen_qi_absorption_spirit"
 display_name = "Spirit Fustic Health regen Qi absorption Spirit"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 21.32},
+	{"option_id": &"core_qi_absorption", "value": 21.32},
+	{"option_id": &"base_spirit", "value": 15.12},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"spirit"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"health_regen": 0.031,
-"qi_absorption": 0.032,
-"spirit": 0.024
-}

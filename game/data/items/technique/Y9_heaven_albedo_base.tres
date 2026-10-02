@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Y9_heaven_albedo_base"
 display_name = "Heaven Albedo Base"
 category = &"technique"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_cost_reduction", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"draft"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:Y9_heaven_albedo_base_recipe", &"quest:Y9_heaven_albedo_line"])
-percent_modifiers = {
-"qi_cost_reduction": 0.03
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U4_immortal_weald_grail"
 display_name = "Immortal Weald Grail"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 29.84},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:E3_tribulation_arbiter"])
-percent_modifiers = {
-"qi_regen": 0.06
-}

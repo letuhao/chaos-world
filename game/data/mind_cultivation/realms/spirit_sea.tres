@@ -8,6 +8,7 @@ id = &"spirit_sea"
 breakthrough_item = &"mind_spirit_sea_breakthrough_pill"
 training_item = &"mind_spirit_sea_channel_elixir"
 sea_catalyst = &"mind_spirit_sea_sea_catalyst"
+recovery_item = &"mind_spirit_sea_recovery_elixir"
 progress_required = 2818.0
 comprehension_required = 270.0
 clarity_required = 0.55

@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"Y18_immortal_homestead_decoration"
 display_name = "Immortal Homestead Decoration"
 category = &"misc"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"medal"
 grade = &"immortal"
 sources = Array[StringName]([&"gather"])

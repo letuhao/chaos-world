@@ -2,11 +2,11 @@
 
 - Status: Accepted
 - Date: 2026-10-02
-- Amends: ADR 0011
+- Amends: ADR 0039
 
 ## Context
 
-ADR 0011 put every stat whose baseline is a fraction or a multiplier into `RATE_STATS`, on the rule that a FLAT modifier on such a stat is a content error.
+ADR 0039 put every stat whose baseline is a fraction or a multiplier into `RATE_STATS`, on the rule that a FLAT modifier on such a stat is a content error.
 
 `core/actor_stats.gd` resolves a stat as `(base + flat) * (1 + percent)`. Every other `RATE_STATS` entry has a non-zero baseline, so PERCENT is meaningful for them. `DAMAGE_REDUCTION` is the exception:
 
@@ -14,7 +14,7 @@ ADR 0011 put every stat whose baseline is a fraction or a multiplier into `RATE_
 _put(Stat.DAMAGE_REDUCTION, 0.0, flat, percent, mult)
 ```
 
-With a baseline of `0.0`, a PERCENT modifier evaluates to `(0.0 + 0.0) * (1 + p) = 0.0` for every value of `p`. PERCENT on `damage_reduction` is therefore a guaranteed no-op, and ADR 0011 made it the only legal flag.
+With a baseline of `0.0`, a PERCENT modifier evaluates to `(0.0 + 0.0) * (1 + p) = 0.0` for every value of `p`. PERCENT on `damage_reduction` is therefore a guaranteed no-op, and ADR 0039 made it the only legal flag.
 
 44 items carried a percent `damage_reduction` modifier that granted nothing at all. The content was wrong and the contract that validated it was wrong in the same direction, so the audit stayed clean.
 
@@ -24,7 +24,7 @@ With a baseline of `0.0`, a PERCENT modifier evaluates to `(0.0 + 0.0) * (1 + p)
 - Convert the existing percent `damage_reduction` modifiers to FLAT, preserving intent:
   - value `<= 1.0` -> FLAT at the same number (the author already wrote a 0..1 fraction).
   - value `> 1.0` -> FLAT at `value / 100` (the author wrote a percentage, e.g. `8.0` meant 8%, not 800%).
-- Keep the ADR 0011 invariant that still holds and is the real content rule: **PERCENT is always valid on any stat; only FLAT on a rate stat is wrong.**
+- Keep the ADR 0039 invariant that still holds and is the real content rule: **PERCENT is always valid on any stat; only FLAT on a rate stat is wrong.**
 
 ## Consequences
 

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V7_spirit_aerie_carcanet"
 display_name = "Spirit Aerie Carcanet"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 17.88},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:E4_condensation_warden"])
-percent_modifiers = {
-"qi_regen": 0.06
-}

@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"V15_heaven_anchorage_cadastre"
 display_name = "Heaven Anchorage Cadastre"
 category = &"quest"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"sachet"
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])

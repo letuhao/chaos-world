@@ -8,6 +8,7 @@ id = &"primordial_immortal"
 breakthrough_item = &"mind_primordial_immortal_breakthrough_pill"
 training_item = &"mind_primordial_immortal_channel_elixir"
 sea_catalyst = &"mind_primordial_immortal_sea_catalyst"
+recovery_item = &"mind_primordial_immortal_recovery_elixir"
 progress_required = 9430.0
 comprehension_required = 1206.0
 clarity_required = 0.74

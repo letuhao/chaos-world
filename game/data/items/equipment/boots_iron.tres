@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"boots_iron"
 display_name = "Iron Boots"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+	{"option_id": &"core_evasion", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:boots_iron_recipe"])
-flat_modifiers = {
-"move_speed": 12.0
-}
-percent_modifiers = {
-"evasion": 0.05
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V5_immortal_acanthus_carafe"
 display_name = "Immortal Acanthus Carafe"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:d5_immortal_tide"])
-percent_modifiers = {
-"defense_spiritual": 0.06
-}

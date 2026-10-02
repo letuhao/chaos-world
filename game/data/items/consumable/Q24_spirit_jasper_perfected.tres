@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Q24_spirit_jasper_perfected"
 display_name = "Spirit Jasper Perfected"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_fortune", "value": 26.16},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"salve"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:Q24_spirit_jasper_perfected_recipe"])
-percent_modifiers = {
-"fortune": 0.17
-}

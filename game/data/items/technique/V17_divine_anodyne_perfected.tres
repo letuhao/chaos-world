@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V17_divine_anodyne_perfected"
 display_name = "Divine Anodyne Perfected"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 51.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"divine"
 sources = Array[StringName]([&"craft:V17_divine_anodyne_perfected_recipe"])
-percent_modifiers = {
-"aptitude": 0.17
-}

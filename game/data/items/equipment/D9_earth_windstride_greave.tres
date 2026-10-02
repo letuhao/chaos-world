@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"D9_earth_windstride_greave"
 display_name = "Earth Windstride Greave"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:D9_earth_windstride_greave_recipe"])
-flat_modifiers = {
-"move_speed": 9.0
-}

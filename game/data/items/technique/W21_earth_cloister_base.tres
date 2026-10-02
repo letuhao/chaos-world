@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"W21_earth_cloister_base"
 display_name = "Earth Cloister Base"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 20.62},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"draft"
 grade = &"earth"
 sources = Array[StringName]([&"craft:W21_earth_cloister_base_recipe", &"quest:W21_earth_cloister_line"])
-percent_modifiers = {
-"spirit": 0.03
-}

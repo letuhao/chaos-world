@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Q16_heaven_ginger_refined"
 display_name = "Heaven Ginger Refined"
 category = &"technique"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 32.55},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:Q16_heaven_ginger_refined_recipe"])
-percent_modifiers = {
-"comprehension": 0.06
-}

@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"T7_mortal_sallow_proclamation"
 display_name = "Mortal Sallow Proclamation"
 category = &"quest"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"relic"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])

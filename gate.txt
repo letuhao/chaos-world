@@ -1,0 +1,35 @@
+30 files already formatted
+302 files would be left unchanged
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format tools --check
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game --check
+All checks passed!
+Success: no problems found
+Success: no problems found
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE check tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdlint.EXE D:\Works\source\chaos-world\game\src
+warn tools/ui_driver.gd: 422 lines exceeds budget 400 (SRP signal)
+warn src/modules/loot/loot_state.gd: 647 lines exceeds budget 400 (SRP signal)
+warn src/modules/loot/loot_validator.gd: 463 lines exceeds budget 400 (SRP signal)
+warn src/ui/screens/loot_encounter.gd: 449 lines exceeds budget 400 (SRP signal)
+warn src/ui/screens/mind_cultivation_screen.gd: 441 lines exceeds budget 400 (SRP signal)
+warn src/ui/screens/qi_cultivation_screen.gd: 435 lines exceeds budget 400 (SRP signal)
+warn src/ui/screens/socket_forge.gd: 402 lines exceeds budget 400 (SRP signal)
+warn tests/modules/body_cultivation/test_full_traversal.gd: 433 lines exceeds budget 400 (SRP signal)
+warn tests/modules/loot/test_loot_encounter.gd: 698 lines exceeds budget 400 (SRP signal)
+warn tests/modules/loot/test_loot_resolver.gd: 449 lines exceeds budget 400 (SRP signal)
+warn tests/modules/world/test_world_api.gd: 415 lines exceeds budget 400 (SRP signal)
+fail src/ui/screens/mind_cultivation_screen.gd:196: 'ui/' may reference 'mind_cultivation' only through modules/mind_cultivation/api.gd
+fail src/ui/screens/mind_cultivation_screen.gd:288: 'ui/' may reference 'mind_cultivation' only through modules/mind_cultivation/api.gd
+fail src/ui/screens/mind_cultivation_screen.gd:331: 'ui/' may reference 'mind_cultivation' only through modules/mind_cultivation/api.gd
+fail src/ui/screens/mind_cultivation_screen.gd:334: 'ui/' may reference 'mind_cultivation' only through modules/mind_cultivation/api.gd
+fail src/ui/screens/mind_cultivation_screen.gd:337: 'ui/' may reference 'mind_cultivation' only through modules/mind_cultivation/api.gd
+fail src/ui/screens/qi_cultivation_screen.gd:251: 'ui/' may reference 'qi_cultivation' only through modules/qi_cultivation/api.gd
+fail src/ui/screens/qi_cultivation_screen.gd:254: 'ui/' may reference 'qi_cultivation' only through modules/qi_cultivation/api.gd
+fail src/ui/screens/qi_cultivation_screen.gd:257: 'ui/' may reference 'qi_cultivation' only through modules/qi_cultivation/api.gd
+fail src/ui/screens/qi_cultivation_screen.gd:297: 'ui/' may reference 'qi_cultivation' only through modules/qi_cultivation/api.gd
+fail gate failed: arch
+== adr ==
+ok   adr numbers unique
+== fmt ==
+== lint ==
+== arch ==

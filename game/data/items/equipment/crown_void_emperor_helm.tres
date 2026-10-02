@@ -7,13 +7,15 @@ script = ExtResource("1_item")
 id = &"crown_void_emperor_helm"
 display_name = "Void Emperor Helm"
 category = &"equipment"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 30},
+	{"option_id": &"core_max_health", "value": 38.36},
+	{"option_id": &"core_status_resistance", "value": 0.05},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:crown_void_emperor", &"boss:d2_void_emperor"])
-flat_modifiers = {
-"defense_spiritual": 30.0,
-"max_health": 120.0
-}
-percent_modifiers = {
-"status_resistance": 0.05
-}

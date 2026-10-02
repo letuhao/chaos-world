@@ -23,6 +23,13 @@ func can_breakthrough(actor: Actor, state: PathState, _context: Dictionary) -> b
 
 
 func _dantian_ready(actor: Actor, state: PathState, seed: QiRealmSeed, dantian: Dantian) -> bool:
+	# A scar must be healed before the attempt, not merely refilled. `damage`
+	# drops usable capacity to 75% and clamps the reservoir down with it, so an
+	# injured dantian refills to a full ratio again and would otherwise sail
+	# through the fill gate on a structurally compromised core. The realm's
+	# `recovery_item` is what closes the wound (ADR 0031).
+	if dantian.injured:
+		return false
 	if state.progress < seed.progress_required:
 		return false
 	if actor.stats.derived(Stat.COMPREHENSION) < seed.comprehension_required:

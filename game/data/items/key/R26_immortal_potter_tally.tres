@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"R26_immortal_potter_tally"
 display_name = "Immortal Potter Tally"
 category = &"key"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])

@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"G15_immortal_glimmer_max_stamina_penetration"
 display_name = "Immortal Glimmer Max stamina Penetration"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 33.69},
+	{"option_id": &"core_penetration", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"immortal"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"max_stamina": 0.04,
-"penetration": 0.025
-}

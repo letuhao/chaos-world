@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"writ_eclipse_chip"
 display_name = "Eclipse Writ Chip"
 category = &"currency"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"writ"
 grade = &"immortal"
 sources = Array[StringName]([&"quest:writ_eclipse_chip"])

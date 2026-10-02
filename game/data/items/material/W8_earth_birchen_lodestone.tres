@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"W8_earth_birchen_lodestone"
 display_name = "Earth Birchen Lodestone"
 category = &"material"
+rarity = &"rare"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"earth"
 sources = Array[StringName]([&"gather", &"quest:A34_route"])

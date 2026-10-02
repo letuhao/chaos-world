@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"Q5_divine_cutlass_parma"
 display_name = "Divine Cutlass Parma"
 category = &"material"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"gemstone"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"quest:W26_route"])

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U4_mortal_weald_armlet"
 display_name = "Mortal Weald Armlet"
 category = &"consumable"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 6.6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:F14_dao_fruit_warden"])
-percent_modifiers = {
-"qi_regen": 0.06
-}

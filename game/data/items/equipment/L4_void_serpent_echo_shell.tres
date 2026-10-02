@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"L4_void_serpent_echo_shell"
 display_name = "Void Echo Shell"
 category = &"equipment"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 7},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.05},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:d4_void_serpent"])
-flat_modifiers = {
-"poise": 7.0
-}
-percent_modifiers = {
-"qi_cost_reduction": 0.05
-}

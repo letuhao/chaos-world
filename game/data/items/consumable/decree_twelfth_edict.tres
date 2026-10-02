@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"decree_twelfth_edict"
 display_name = "Decree: Twelfth Edict"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"divine"
 sources = Array[StringName]([&"quest:decree_twelfth_edict", &"boss:F19_dao_warden"])
-percent_modifiers = {
-"cultivation_rate": 0.12
-}

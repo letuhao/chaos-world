@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B38_divine_drowlat_penetration_cooldown_reduction"
 display_name = "Divine Drowlat Penetration Cooldown Reduction"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 37.54},
+	{"option_id": &"core_cooldown_reduction", "value": 0.05},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"penetration": 0.03,
-"cooldown_reduction": 0.05
-}

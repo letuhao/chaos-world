@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"decree_fifth_edict"
 display_name = "Decree: Fifth Edict"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"earth"
 sources = Array[StringName]([&"quest:decree_fifth_edict"])
-percent_modifiers = {
-"insight_gain": 0.06
-}

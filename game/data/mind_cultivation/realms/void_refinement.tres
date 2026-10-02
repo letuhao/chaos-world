@@ -8,6 +8,7 @@ id = &"void_refinement"
 breakthrough_item = &"mind_void_refinement_breakthrough_pill"
 training_item = &"mind_void_refinement_channel_elixir"
 sea_catalyst = &"mind_void_refinement_sea_catalyst"
+recovery_item = &"mind_void_refinement_recovery_elixir"
 progress_required = 1032.0
 comprehension_required = 90.0
 clarity_required = 0.48

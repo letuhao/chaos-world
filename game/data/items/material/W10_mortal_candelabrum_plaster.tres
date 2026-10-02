@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"W10_mortal_candelabrum_plaster"
 display_name = "Mortal Candelabrum Plaster"
 category = &"material"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"core"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"quest:A34_route"])

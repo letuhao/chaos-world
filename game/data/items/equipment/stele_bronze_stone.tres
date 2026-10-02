@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"stele_bronze_stone"
 display_name = "Bronze Stele"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 11},
+	{"option_id": &"core_max_health", "value": 9.74},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"quest:A42_route"])
-flat_modifiers = {
-"defense_physical": 11.0,
-"max_health": 32.0
-}

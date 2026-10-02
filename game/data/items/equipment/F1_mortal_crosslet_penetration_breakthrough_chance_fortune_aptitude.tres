@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F1_mortal_crosslet_penetration_breakthrough_chance_fortune_aptitude"
 display_name = "Mortal Crosslet Penetration Breakthrough Chance Fortune Aptitude"
 category = &"equipment"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 8.8},
+	{"option_id": &"core_breakthrough_chance", "value": 0.03},
+	{"option_id": &"base_fortune", "value": 8.8},
+	{"option_id": &"base_aptitude", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"penetration": 0.07,
-"breakthrough_chance": 0.03,
-"fortune": 0.05,
-"aptitude": 0.07
-}

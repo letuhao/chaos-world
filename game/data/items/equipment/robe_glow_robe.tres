@@ -7,15 +7,17 @@ script = ExtResource("1_item")
 id = &"robe_glow_robe"
 display_name = "Glow Robe"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 22},
+	{"option_id": &"core_max_qi", "value": 29.06},
+	{"option_id": &"core_qi_regen", "value": 20.62},
+	{"option_id": &"core_status_resistance", "value": 0.05},
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:robe_glow_robe_recipe"])
-flat_modifiers = {
-"defense_spiritual": 22.0,
-"max_qi": 55.0
-}
-percent_modifiers = {
-"qi_regen": 0.07,
-"status_resistance": 0.05,
-"cultivation_rate": 0.06
-}

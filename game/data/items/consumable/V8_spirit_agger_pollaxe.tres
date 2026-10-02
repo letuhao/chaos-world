@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V8_spirit_agger_pollaxe"
 display_name = "Spirit Agger Pollaxe"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 15.12},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:treasure_gilded_beetle"])
-percent_modifiers = {
-"qi_regen": 0.06
-}

@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"beasttrophy_golem_core"
 display_name = "Stone Golem Core Trophy"
 category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 10},
+	{"option_id": &"core_max_health", "value": 50},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:monster_stone_golem"])
-flat_modifiers = {
-"poise": 10.0,
-"max_health": 50.0
-}

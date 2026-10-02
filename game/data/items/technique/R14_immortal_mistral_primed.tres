@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"R14_immortal_mistral_primed"
 display_name = "Immortal Mistral Primed"
 category = &"technique"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_loot_bonus", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"formula"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:R14_immortal_mistral_primed_recipe"])
-percent_modifiers = {
-"loot_bonus": 0.13
-}

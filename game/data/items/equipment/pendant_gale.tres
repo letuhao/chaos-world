@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"pendant_gale"
 display_name = "Gale Pendant"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_evasion", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:pendant_gale_recipe"])
-percent_modifiers = {
-"evasion": 0.04
-}

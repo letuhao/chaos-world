@@ -1,10 +1,52 @@
 extends TestCase
 
-## ADR 0013: the mind_cultivation module contributes its stats through a StatProvider.
+## ADR 0013: the mind_cultivation module contributes its stats through a
+## StatProvider, and ADR 0016: the realm rate scales the technique output.
+##
+## Every test here runs on an actor that actually holds a mind path at a named
+## rank. A pathless actor scores the neutral factor (1.0), so a suite that forgets
+## `set_path` passes while proving nothing about the realm profile — that is
+## exactly the trap `test_mind_power_curve.gd` now guards.
+
+## Spirit tier, ladder position 11 (index 10; the Spirit tier starts at index 9).
+## Mind's mental output takes the bounded per-realm rate, so `RANK`'s value comes
+## from the profile class rather than from a literal.
+const RANK := &"spirit_sea"
+
+## Base attributes below make the pre-factor value 45.0 technique power
+## (20 * 1.5 + 15 * 1.0) and 62.5 mental attack (20 * 2.0 + 15 * 1.5).
+const BASE_TECHNIQUE_POWER := 45.0
+const BASE_MENTAL_ATTACK := 62.5
+const BASE_MENTAL_DEFENSE := 35.0
 
 
-func _actor_with_module() -> Actor:
-	var actor := (
+## The rate for the reference realm, read from the profile rather than restated.
+## It used to be a literal derived from Mind's private 601x budget, which is how
+## this suite kept passing while the game moved off that curve, and then off the
+## shared ladder. Deriving it means a retune of the step lands here as a real
+## failure.
+func _rate() -> float:
+	return MindRealmProfile.factor(RANK)
+
+
+## An actor with the module attached and NO path: the rate is neutral (1.0),
+## which is the documented reference, not an accident of a failed profile lookup.
+func _actor_without_path() -> Actor:
+	var actor := _bare_actor()
+	MindCultivationApi.attach(actor)
+	return actor
+
+
+## An actor with the module attached and a mind path at `rank_id`, so the
+## provider resolves that realm's profile factors.
+func _actor_at_rank(rank_id: StringName) -> Actor:
+	var actor := _actor_without_path()
+	actor.set_path(PathState.new(MindPath.PATH_ID, rank_id))
+	return actor
+
+
+func _bare_actor() -> Actor:
+	return (
 		Actor
 		. new(
 			&"mind_cultivator",
@@ -17,80 +59,168 @@ func _actor_with_module() -> Actor:
 			}
 		)
 	)
-	MindCultivationApi.attach(actor)
-	return actor
 
 
 func test_attach_adds_resources() -> void:
-	var actor := _actor_with_module()
+	var actor := _actor_at_rank(RANK)
 	assert_eq(actor.resource(MindStats.MIND_POWER) != null, true, "mind_power pool")
 	assert_eq(actor.resource(MindStats.AWARENESS) != null, true, "awareness pool")
 
 
 func test_mental_attack_scales_with_perception() -> void:
-	var actor := _actor_with_module()
-	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_ATTACK), 62.5, "mental attack")
+	var actor := _actor_at_rank(RANK)
+	# 62.5 * T
+	assert_almost_eq(
+		actor.stats.derived(MindStats.MENTAL_ATTACK),
+		BASE_MENTAL_ATTACK * _rate(),
+		"mental attack",
+		0.01
+	)
 
 
 func test_mental_defense_scales_with_clarity() -> void:
-	var actor := _actor_with_module()
-	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_DEFENSE), 35.0, "mental defense")
+	var actor := _actor_at_rank(RANK)
+	# 35.0 * T
+	assert_almost_eq(
+		actor.stats.derived(MindStats.MENTAL_DEFENSE),
+		BASE_MENTAL_DEFENSE * _rate(),
+		"mental defense",
+		0.01
+	)
 
 
 func test_illusion_resistance_from_clarity_and_will() -> void:
-	var actor := _actor_with_module()
+	var actor := _actor_at_rank(RANK)
+	# Capped and factor-free: 15 * 0.004 + 10 * 0.002
 	assert_almost_eq(
 		actor.stats.derived(MindStats.ILLUSION_RESISTANCE), 0.08, "illusion resistance"
 	)
 
 
 func test_mind_technique_power_scales() -> void:
-	var actor := _actor_with_module()
-	assert_almost_eq(actor.stats.derived(MindStats.MIND_TECHNIQUE_POWER), 45.0, "technique power")
+	var actor := _actor_at_rank(RANK)
+	# 45.0 * T
+	assert_almost_eq(
+		actor.stats.derived(MindStats.MIND_TECHNIQUE_POWER),
+		BASE_TECHNIQUE_POWER * _rate(),
+		"technique power",
+		0.01
+	)
+
+
+func test_spiritual_sense_range_grows_with_the_rate() -> void:
+	var actor := _actor_at_rank(RANK)
+	# 50.0 + 20 * 5.0 + T * 10.0
+	assert_almost_eq(
+		actor.stats.derived(MindStats.SPIRITUAL_SENSE_RANGE),
+		150.0 + _rate() * 10.0,
+		"spiritual sense range",
+		0.01
+	)
 
 
 func test_comprehension_bonus_base() -> void:
-	var actor := _actor_with_module()
+	var actor := _actor_at_rank(RANK)
+	# 1.0 + 10 * 0.01 + T * 0.02
 	assert_almost_eq(
-		actor.stats.derived(MindStats.COMPREHENSION_BONUS), 1.12, "comprehension bonus"
+		actor.stats.derived(MindStats.COMPREHENSION_BONUS),
+		1.1 + _rate() * 0.02,
+		"comprehension bonus",
+		0.0001
 	)
 
 
 func test_meridian_strengthening_boosts_technique_power() -> void:
-	var actor := _actor_with_module()
+	var actor := _actor_at_rank(RANK)
 	actor.set_component(&"meridians", actor.meridians)
 	actor.meridians.unlock_for_realm(&"qi_refining")
 	actor.meridians.open_meridian(&"lung")
 	actor.meridians.expand_meridian(&"lung")
 	actor.meridians.strengthen_meridian(&"lung")
 	actor.mark_stats_dirty()
-	var base_power := (20.0 * 1.5 + 15.0 * 1.0) * 1.0
-	var expected := base_power * 1.05
+	# 45.0 * T * (1 + 0.05 power bonus)
+	var expected := BASE_TECHNIQUE_POWER * _rate() * 1.05
 	assert_almost_eq(
 		actor.stats.derived(MindStats.MIND_TECHNIQUE_POWER),
 		expected,
-		"meridian boosts technique power"
+		"meridian boosts technique power",
+		0.01
 	)
 
 
 func test_meridian_strengthening_boosts_mental_defense() -> void:
-	var actor := _actor_with_module()
+	var actor := _actor_at_rank(RANK)
 	actor.set_component(&"meridians", actor.meridians)
 	actor.meridians.unlock_for_realm(&"qi_refining")
 	actor.meridians.open_meridian(&"lung")
 	actor.meridians.expand_meridian(&"lung")
 	actor.meridians.strengthen_meridian(&"lung")
 	actor.mark_stats_dirty()
-	var base_defense := (15.0 * 2.0 + 10.0 * 0.5) * 1.0
-	var expected := base_defense * 1.05
+	# 35.0 * T * (1 + 0.05 power bonus)
+	var expected := BASE_MENTAL_DEFENSE * _rate() * 1.05
 	assert_almost_eq(
-		actor.stats.derived(MindStats.MENTAL_DEFENSE), expected, "meridian boosts mental defense"
+		actor.stats.derived(MindStats.MENTAL_DEFENSE),
+		expected,
+		"meridian boosts mental defense",
+		0.01
 	)
 
 
 func test_no_meridian_bonus_without_strengthening() -> void:
-	var actor := _actor_with_module()
+	var actor := _actor_at_rank(RANK)
 	actor.set_component(&"meridians", actor.meridians)
 	actor.meridians.unlock_for_realm(&"qi_refining")
 	actor.mark_stats_dirty()
-	assert_almost_eq(actor.stats.derived(MindStats.MIND_TECHNIQUE_POWER), 45.0, "no meridian bonus")
+	# Opening a realm's meridians is not a power bonus: they are still closed.
+	assert_almost_eq(
+		actor.stats.derived(MindStats.MIND_TECHNIQUE_POWER),
+		BASE_TECHNIQUE_POWER * _rate(),
+		"no meridian bonus",
+		0.01
+	)
+
+
+## The neutral reference. T is 1.0 without a path, and R1 has P = 1, so both
+## score the unfactored base — but only because they are the reference, not
+## because the profile lookup silently failed.
+func test_factors_are_neutral_without_a_path() -> void:
+	var actor := _actor_without_path()
+	assert_almost_eq(
+		actor.stats.derived(MindStats.MENTAL_ATTACK), BASE_MENTAL_ATTACK, "no path attack", 0.01
+	)
+	assert_almost_eq(
+		actor.stats.derived(MindStats.MIND_TECHNIQUE_POWER),
+		BASE_TECHNIQUE_POWER,
+		"no path technique power",
+		0.01
+	)
+
+
+func test_r1_is_the_neutral_realm() -> void:
+	var actor := _actor_at_rank(&"qi_refining")
+	assert_almost_eq(
+		actor.stats.derived(MindStats.MIND_TECHNIQUE_POWER),
+		BASE_TECHNIQUE_POWER,
+		"R1 is the 1.0 factor reference",
+		0.01
+	)
+
+
+## `attach` installs exactly one MindProvider into the actor's stats. The facade
+## deliberately does not hand the module's provider type back to callers, so
+## installation is asserted where it actually happens: in ActorStats.
+func test_provider_installed_once() -> void:
+	var actor := _actor_at_rank(RANK)
+	var installed := 0
+	for entry in actor.stats._providers:
+		if entry is MindProvider:
+			installed += 1
+	assert_eq(installed, 1, "attach installs exactly one MindProvider")
+	# Idempotent: a second attach must not stack a duplicate provider, which
+	# would double every Mind contribution.
+	MindCultivationApi.attach(actor)
+	var again := 0
+	for entry in actor.stats._providers:
+		if entry is MindProvider:
+			again += 1
+	assert_eq(again, 1, "attach is idempotent")

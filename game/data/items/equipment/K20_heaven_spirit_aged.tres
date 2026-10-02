@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"K20_heaven_spirit_aged"
 display_name = "Heaven Spirit Aged"
 category = &"equipment"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:K20_heaven_spirit_aged_recipe"])
-percent_modifiers = {
-"insight_gain": 0.09
-}

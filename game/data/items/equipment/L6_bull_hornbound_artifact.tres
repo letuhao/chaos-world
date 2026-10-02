@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"L6_bull_hornbound_artifact"
 display_name = "Hornbound Bulwark"
 category = &"equipment"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 18},
+	{"option_id": &"core_defense_physical", "value": 10.83},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:d6_iron_bull"])
-flat_modifiers = {
-"poise": 18.0
-}
-percent_modifiers = {
-"defense_physical": 0.08
-}

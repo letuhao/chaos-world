@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"oath_first_vow"
 display_name = "Oath of the Beginner"
 category = &"equipment"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"quest:oath_of_the_beginner", &"boss:mind_spirit_transformation_warden", &"boss:F5_ascension_warden"])
-flat_modifiers = {
-"max_health": 30.0
-}

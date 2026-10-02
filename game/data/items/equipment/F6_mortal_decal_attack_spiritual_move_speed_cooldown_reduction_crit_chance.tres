@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F6_mortal_decal_attack_spiritual_move_speed_cooldown_reduction_crit_chance"
 display_name = "Mortal Decal Attack Spiritual Move Speed Cooldown Reduction Crit Chance"
 category = &"equipment"
+rarity = &"common"
+realm = &"great_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 9.35},
+	{"option_id": &"core_move_speed", "value": 0.03},
+	{"option_id": &"core_cooldown_reduction", "value": 0.05},
+	{"option_id": &"core_crit_chance", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"attack_spiritual": 0.07,
-"move_speed": 0.03,
-"cooldown_reduction": 0.05,
-"crit_chance": 0.07
-}

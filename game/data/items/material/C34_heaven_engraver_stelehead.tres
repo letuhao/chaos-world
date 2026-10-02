@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"C34_heaven_engraver_stelehead"
 display_name = "Heaven Engraver Stelehead"
 category = &"material"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"tablet"
 grade = &"heaven"
 sources = Array[StringName]([&"quest", &"gather"])

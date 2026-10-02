@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"powder_singularity_dust"
 display_name = "Singularity Dust Powder"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"quest:W23_route"])
-flat_modifiers = {
-"max_qi": 110.0
-}

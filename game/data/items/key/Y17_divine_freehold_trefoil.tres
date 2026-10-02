@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"Y17_divine_freehold_trefoil"
 display_name = "Divine Freehold Trefoil"
 category = &"key"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 18.32},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"sigil"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])

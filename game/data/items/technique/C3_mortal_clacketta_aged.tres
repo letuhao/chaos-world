@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"C3_mortal_clacketta_aged"
 display_name = "Mortal Clacketta Aged"
 category = &"technique"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.02},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:C3_mortal_clacketta_aged_recipe"])
-percent_modifiers = {
-"crit_chance": 0.09
-}

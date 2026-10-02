@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"physique_bronze_pauldron"
 display_name = "Bronze Physique Pauldron"
 category = &"equipment"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 8.25},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"boss:qi_body_integration_warden"])
-percent_modifiers = {
-"physique": 0.05
-}

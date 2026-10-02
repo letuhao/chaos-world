@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"V12_mortal_almanac_oddment"
 display_name = "Mortal Almanac Oddment"
 category = &"misc"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"medal"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])

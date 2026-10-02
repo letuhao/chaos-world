@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U2_heaven_sennit_garland"
 display_name = "Heaven Sennit Garland"
 category = &"equipment"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_damage", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:qi_dao_ancestor_guardian"])
-percent_modifiers = {
-"crit_damage": 0.06
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"feast_divine_banquet"
 display_name = "Divine Banquet"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"boss:F19_ascendant_warden"])
-flat_modifiers = {
-"max_stamina": 95.0
-}

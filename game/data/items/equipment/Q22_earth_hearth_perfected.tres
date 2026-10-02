@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"Q22_earth_hearth_perfected"
 display_name = "Earth Hearth Perfected"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 18.98},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:Q22_earth_hearth_perfected_recipe"])
-percent_modifiers = {
-"dao_heart": 0.17
-}

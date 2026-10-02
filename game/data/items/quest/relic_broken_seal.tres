@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"relic_broken_seal"
 display_name = "Broken Seal Relic"
 category = &"quest"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"relic"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"boss:E1_foundation_warden"])

@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F3_mortal_cummin_move_speed_cooldown_reduction_crit_chance_penetration"
 display_name = "Mortal Cummin Move Speed Cooldown Reduction Crit Chance Penetration"
 category = &"consumable"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.03},
+	{"option_id": &"core_cooldown_reduction", "value": 0.05},
+	{"option_id": &"core_crit_chance", "value": 0.04},
+	{"option_id": &"core_penetration", "value": 6.6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"move_speed": 0.03,
-"cooldown_reduction": 0.05,
-"crit_chance": 0.07,
-"penetration": 0.03
-}

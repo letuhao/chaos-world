@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B39_mortal_election_comprehension_agility"
 display_name = "Mortal Election Comprehension Agility"
 category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 7.15},
+	{"option_id": &"base_agility", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"comprehension": 0.05,
-"agility": 0.07
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Y7_immortal_aerie_base"
 display_name = "Immortal Aerie Base"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 12.24},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:Y7_immortal_aerie_base_recipe", &"quest:Y7_immortal_aerie_line"])
-percent_modifiers = {
-"stamina_regen": 0.03
-}

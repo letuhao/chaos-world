@@ -7,14 +7,16 @@ script = ExtResource("1_item")
 id = &"crown_storm_sovereign_charm"
 display_name = "Storm Sovereign Charm"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 30},
+	{"option_id": &"core_defense_spiritual", "value": 50},
+	{"option_id": &"core_max_health", "value": 28.88},
+	{"option_id": &"core_poise", "value": 28.88},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"boss:crown_storm_sovereign"])
-flat_modifiers = {
-"defense_physical": 30.0,
-"defense_spiritual": 50.0,
-"max_health": 200.0
-}
-percent_modifiers = {
-"poise": 0.15
-}

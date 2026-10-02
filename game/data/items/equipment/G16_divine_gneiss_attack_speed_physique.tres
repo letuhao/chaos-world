@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"G16_divine_gneiss_attack_speed_physique"
 display_name = "Divine Gneiss Attack speed Physique"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.021},
+	{"option_id": &"base_physique", "value": 21.04},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"attack_speed": 0.021,
-"physique": 0.023
-}

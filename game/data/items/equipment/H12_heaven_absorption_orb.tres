@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"H12_heaven_absorption_orb"
 display_name = "Heaven Absorption Orb"
 category = &"equipment"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 23.1},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:H12_heaven_absorption_orb_recipe"])
-percent_modifiers = {
-"qi_absorption": 0.1
-}

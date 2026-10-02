@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B40_mortal_endowment_poise_status_resistance"
 display_name = "Mortal Endowment Poise Status Resistance"
 category = &"consumable"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 8.8},
+	{"option_id": &"core_status_resistance", "value": 0.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"tincture"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"poise": 0.03,
-"status_resistance": 0.05
-}

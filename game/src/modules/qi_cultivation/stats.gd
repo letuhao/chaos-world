@@ -4,8 +4,9 @@ extends RefCounted
 ## Stat and resource ids owned by the `qi_cultivation` module (ADR 0011).
 
 # Resources
+## One active qi reservoir. The dantian owns structural tier, quality, and injury
+## only; a second qi axis was removed rather than left as a constant no-op.
 const QI := &"qi"
-const QI_PURITY := &"qi_purity"
 
 # Base attributes
 const QI_AFFINITY := &"qi_affinity"

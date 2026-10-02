@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Y8_immortal_agger_refined"
 display_name = "Immortal Agger Refined"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 39.34},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:Y8_immortal_agger_refined_recipe"])
-percent_modifiers = {
-"spirit": 0.06
-}

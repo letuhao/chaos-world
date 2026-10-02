@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"saber_star"
 display_name = "Saber Star"
 category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 44.62},
+	{"option_id": &"core_crit_damage", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:saber_star_recipe"])
-flat_modifiers = {
-"attack_physical": 60.0
-}
-percent_modifiers = {
-"crit_damage": 0.1
-}

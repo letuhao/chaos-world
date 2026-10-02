@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"incense_clarity"
 display_name = "Clarity Incense"
 category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:incense_clarity_recipe", &"boss:F4_foundation_warden"])
-percent_modifiers = {
-"insight_gain": 0.06
-}

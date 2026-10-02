@@ -7,9 +7,10 @@ script = ExtResource("1")
 id = &"spirit_sea"
 breakthrough_item = &"body_spirit_sea_breakthrough_pill"
 strengthening_item = &"body_spirit_sea_channel_elixir"
-progress_required = 1000.0
+recovery_item = &"body_spirit_sea_recovery_elixir"
+progress_required = 92.0
 physique_required = 28.0
-quality_required = 0.59
+quality_required = 0.535000
 quality_target = 0.550000
 integrity_target = 0.600000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai"])
@@ -20,13 +21,11 @@ rewards = {
 "physique": 2.0,
 "muscle_fiber": 1.0
 }
-power_budget = 9.76
-capacity_factor = 6.93
-throughput_factor = 2.49
-technique_factor = 3.50
-work_required = 2818.0
-acupoint_work = 574.0
-meridian_work = 431.0
+work_required = 92.0
+acupoint_work = 2.0
+meridian_work = 2.0
 insight_required = 270.0
 resonance_rank = 0
+chance_base = 0.63
+chance_cap = 0.87
 channel_training = Array[StringName]([])

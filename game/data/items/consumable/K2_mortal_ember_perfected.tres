@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"K2_mortal_ember_perfected"
 display_name = "Mortal Ember Perfected"
 category = &"consumable"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 6.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:K2_mortal_ember_perfected_recipe"])
-percent_modifiers = {
-"qi_absorption": 0.17
-}

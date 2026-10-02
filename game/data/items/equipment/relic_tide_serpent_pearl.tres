@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"relic_tide_serpent_pearl"
 display_name = "Serpent Pearl"
 category = &"equipment"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 36.98},
+	{"option_id": &"core_qi_regen", "value": 23.92},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:relic_tide_serpent"])
-flat_modifiers = {
-"max_qi": 150.0
-}
-percent_modifiers = {
-"qi_regen": 0.08
-}

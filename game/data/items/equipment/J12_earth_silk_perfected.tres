@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"J12_earth_silk_perfected"
 display_name = "Earth Silk Perfected"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:J12_earth_silk_perfected_recipe"])
-percent_modifiers = {
-"attack_speed": 0.14
-}

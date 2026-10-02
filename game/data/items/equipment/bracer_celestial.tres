@@ -7,14 +7,16 @@ script = ExtResource("1_item")
 id = &"bracer_celestial"
 display_name = "Celestial Bracer"
 category = &"equipment"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 10},
+	{"option_id": &"core_defense_physical", "value": 12},
+	{"option_id": &"core_max_health", "value": 25},
+	{"option_id": &"core_status_resistance", "value": 0.02},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:bracer_celestial_recipe"])
-flat_modifiers = {
-"attack_physical": 10.0,
-"defense_physical": 12.0,
-"max_health": 25.0
-}
-percent_modifiers = {
-"status_resistance": 0.08
-}

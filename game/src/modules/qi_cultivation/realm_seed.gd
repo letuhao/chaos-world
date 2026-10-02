@@ -8,6 +8,10 @@ extends Resource
 @export var id: StringName = &""
 @export var breakthrough_item: StringName = &""
 @export var training_item: StringName = &""
+## Third consumable role: repairs the damage a qi deviation leaves behind — the
+## dantian scar and the burned channel. A deviation must stay recoverable
+## through content, not only through a lucky next roll (ADR 0031).
+@export var recovery_item: StringName = &""
 @export var progress_required: float = 100.0
 @export var comprehension_required: float = 10.0
 @export var dantian_quality_required: float = 0.5
@@ -18,9 +22,6 @@ extends Resource
 @export var channel_refinement_cap: int = 1
 @export var dantian_capacity: float = 100.0
 @export var rewards: Dictionary = {}
-## Profile factors applied by QiProvider (throughput = flow, technique = power).
-@export var throughput_factor: float = 1.0
-@export var technique_factor: float = 1.0
 
 
 static func for_realm(realm_id: StringName) -> QiRealmSeed:

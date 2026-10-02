@@ -8,6 +8,7 @@ id = &"spirit_palace"
 breakthrough_item = &"mind_spirit_palace_breakthrough_pill"
 training_item = &"mind_spirit_palace_channel_elixir"
 sea_catalyst = &"mind_spirit_palace_sea_catalyst"
+recovery_item = &"mind_spirit_palace_recovery_elixir"
 progress_required = 3236.0
 comprehension_required = 318.0
 clarity_required = 0.56

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U6_mortal_withe_sphere"
 display_name = "Mortal Withe Sphere"
 category = &"consumable"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:qi_body_integration_warden"])
-percent_modifiers = {
-"attack_spiritual": 0.06
-}

@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"G14_immortal_glenwood_dao_heart_move_speed"
 display_name = "Immortal Glenwood Dao heart Move speed"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 27.92},
+	{"option_id": &"core_move_speed", "value": 0.047},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"dao_heart": 0.041,
-"move_speed": 0.047
-}

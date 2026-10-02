@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V4_spirit_abscissa_poulaine"
 display_name = "Spirit Abscissa Poulaine"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 15.12},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:F11_severing_warden"])
-percent_modifiers = {
-"qi_regen": 0.06
-}

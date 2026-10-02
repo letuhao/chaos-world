@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Q19_heaven_grist_base"
 display_name = "Heaven Grist Base"
 category = &"technique"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 15.11},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:Q19_heaven_grist_base_recipe", &"quest:Q19_heaven_grist_line"])
-percent_modifiers = {
-"agility": 0.03
-}

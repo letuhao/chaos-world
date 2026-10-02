@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U2_heaven_sennit_sphere"
 display_name = "Heaven Sennit Sphere"
 category = &"consumable"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 23.92},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:body_golden_immortal_guardian"])
-percent_modifiers = {
-"attack_physical": 0.06
-}

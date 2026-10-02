@@ -7,14 +7,17 @@ script = ExtResource("1_item")
 id = &"F36_divine_frisson_attack_speed_attack_spiritual_comprehension_defense_spiritual_qi_regen_stamina_regen"
 display_name = "Divine Frisson Attack speed Attack spiritual Comprehension Defense spiritual Qi regen Stamina regen"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.04},
+	{"option_id": &"core_attack_spiritual", "value": 35.62},
+	{"option_id": &"base_comprehension", "value": 35.62},
+	{"option_id": &"core_defense_spiritual", "value": 35.62},
+	{"option_id": &"core_qi_regen", "value": 35.62},
+	{"option_id": &"core_stamina_regen", "value": 35.62},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"attack_speed": 0.07,
-"attack_spiritual": 0.03,
-"comprehension": 0.05,
-"defense_spiritual": 0.07,
-"qi_regen": 0.03,
-"stamina_regen": 0.05
-}

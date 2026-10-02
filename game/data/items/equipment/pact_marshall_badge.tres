@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"pact_marshall_badge"
 display_name = "Marshal's Badge"
 category = &"equipment"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 15},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"quest:pact_of_the_marshall"])
-flat_modifiers = {
-"max_stamina": 15.0
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"T21_heaven_trowel_aged"
 display_name = "Heaven Trowel Aged"
 category = &"technique"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:T21_heaven_trowel_aged_recipe"])
-percent_modifiers = {
-"qi_cost_reduction": 0.09
-}

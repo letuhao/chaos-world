@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"scroll_frost_serpent_scale"
 display_name = "Frost Serpent Scale"
 category = &"technique"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 23.1},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:scroll_frost_serpent"])
-percent_modifiers = {
-"defense_physical": 0.04
-}

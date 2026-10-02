@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F18_immortal_ensconce_agility_aptitude_insight_gain_will"
 display_name = "Immortal Ensconce Agility Aptitude Insight gain Will"
 category = &"technique"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 26.95},
+	{"option_id": &"base_aptitude", "value": 37.98},
+	{"option_id": &"core_insight_gain", "value": 0.03},
+	{"option_id": &"base_will", "value": 26.95},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.05,
-"aptitude": 0.07,
-"insight_gain": 0.03,
-"will": 0.05
-}

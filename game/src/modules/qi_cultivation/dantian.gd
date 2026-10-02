@@ -16,8 +16,6 @@ var quality: float = 0.5
 var injured: bool = false
 ## Structural capacity from training/profile (not equipment-inflated).
 var structural_capacity: float = 100.0
-## Trained stage within the current tier (0 = untrained).
-var trained_stage: int = 0
 
 
 func effective_capacity() -> float:
@@ -103,7 +101,6 @@ func to_dict() -> Dictionary:
 		"quality": quality,
 		"injured": injured,
 		"structural_capacity": structural_capacity,
-		"trained_stage": trained_stage,
 	}
 
 
@@ -113,5 +110,4 @@ static func from_dict(data: Dictionary) -> Dantian:
 	dantian.quality = float(data.get("quality", 0.5))
 	dantian.injured = bool(data.get("injured", false))
 	dantian.structural_capacity = float(data.get("structural_capacity", 100.0))
-	dantian.trained_stage = int(data.get("trained_stage", 0))
 	return dantian

@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"pouch_gale_pouch"
 display_name = "Gale Pouch"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 20},
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:pouch_gale_pouch_recipe"])
-flat_modifiers = {
-"max_stamina": 20.0
-}
-percent_modifiers = {
-"move_speed": 0.04
-}

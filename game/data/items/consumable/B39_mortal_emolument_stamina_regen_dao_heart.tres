@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B39_mortal_emolument_stamina_regen_dao_heart"
 display_name = "Mortal Emolument Stamina Regen Dao Heart"
 category = &"consumable"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 8.8},
+	{"option_id": &"core_dao_heart", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"stamina_regen": 0.07,
-"dao_heart": 0.03
-}

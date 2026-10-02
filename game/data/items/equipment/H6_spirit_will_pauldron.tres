@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"H6_spirit_will_pauldron"
 display_name = "Spirit Will Pauldron"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 15.82},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:H6_spirit_will_pauldron_recipe"])
-percent_modifiers = {
-"will": 0.08
-}

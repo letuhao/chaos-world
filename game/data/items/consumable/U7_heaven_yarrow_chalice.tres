@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U7_heaven_yarrow_chalice"
 display_name = "Heaven Yarrow Chalice"
 category = &"consumable"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 27.22},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:qi_golden_immortal_warden"])
-percent_modifiers = {
-"max_health": 0.06
-}

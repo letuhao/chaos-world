@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"Q7_immortal_dill_bezoar"
 display_name = "Immortal Dill Bezoar"
 category = &"material"
+rarity = &"legendary"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"fragment"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"quest:W27_route"])

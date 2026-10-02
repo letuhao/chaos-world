@@ -7,13 +7,15 @@ script = ExtResource("1_item")
 id = &"gloves_dragon_gloves"
 display_name = "Dragon Gloves"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 20},
+	{"option_id": &"core_defense_physical", "value": 15},
+	{"option_id": &"core_attack_speed", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"craft:gloves_dragon_gloves_recipe", &"boss:F17_great_luo_warden"])
-flat_modifiers = {
-"attack_physical": 20.0,
-"defense_physical": 15.0
-}
-percent_modifiers = {
-"attack_speed": 0.08
-}

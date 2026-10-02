@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"X18_divine_beadle_indentum"
 display_name = "Divine Beadle Indentum"
 category = &"quest"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"sachet"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"quest:Y26_route"])

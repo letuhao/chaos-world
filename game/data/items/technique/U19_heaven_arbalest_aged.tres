@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U19_heaven_arbalest_aged"
 display_name = "Heaven Arbalest Aged"
 category = &"technique"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:U19_heaven_arbalest_aged_recipe"])
-percent_modifiers = {
-"cooldown_reduction": 0.09
-}

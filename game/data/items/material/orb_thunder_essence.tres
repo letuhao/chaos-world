@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"orb_thunder_essence"
 display_name = "Orb Thunder Essence"
 category = &"material"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"essence"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"boss:E7_heaven_arbiter"])

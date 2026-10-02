@@ -31,16 +31,30 @@ func test_path_vocabulary() -> void:
 	assert_eq(def.stage_name(&"dao_ancestor"), "Mind Dao Ancestor", "transcendent stage")
 
 
+## Mind's mental output is scaled by one bounded per-realm RATE. Both
+## expectations below are derived from the code under test rather than pinned to
+## literals that a retune of the step would strand.
+func _rate(rank_id: StringName) -> float:
+	return MindRealmProfile.factor(rank_id)
+
+
 func test_stats_scale_with_ladder_rank() -> void:
 	var actor := _actor_with_module()
 	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_ATTACK), 62.5, "no path")
 	actor.set_path(PathState.new(MindPath.PATH_ID, &"qi_refining"))
 	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_ATTACK), 62.5, "rank 0")
 	actor.path(MindPath.PATH_ID).rank_id = &"spirit_sea"
-	assert_almost_eq(actor.stats.derived(MindStats.MENTAL_ATTACK), 585.5427, "rank 10 scales")
+	var expected := 62.5 * _rate(&"spirit_sea")
+	assert_almost_eq(
+		actor.stats.derived(MindStats.MENTAL_ATTACK), expected, "rank 10 scales", 0.0001
+	)
 
 
 func test_spiritual_sense_range_from_rank() -> void:
 	var actor := _actor_with_module()
 	actor.set_path(PathState.new(MindPath.PATH_ID, &"earth_immortal"))
-	assert_almost_eq(actor.stats.derived(MindStats.SPIRITUAL_SENSE_RANGE), 700.9267, "sense range")
+	# 50.0 + 20 * 5.0 + rate * 10.0
+	var expected := 150.0 + _rate(&"earth_immortal") * 10.0
+	assert_almost_eq(
+		actor.stats.derived(MindStats.SPIRITUAL_SENSE_RANGE), expected, "sense range", 0.0001
+	)

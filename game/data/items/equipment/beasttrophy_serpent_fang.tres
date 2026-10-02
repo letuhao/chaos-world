@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"beasttrophy_serpent_fang"
 display_name = "Venom Serpent Fang Trophy"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 13.06},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:beast_venom_serpent"])
-percent_modifiers = {
-"penetration": 0.05
-}

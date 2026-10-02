@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"keystone_storm"
 display_name = "Storm Keystone"
 category = &"key"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"sigil"
 grade = &"heaven"
 sources = Array[StringName]([&"gather", &"quest:W24_route"])

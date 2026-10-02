@@ -1,0 +1,216 @@
+28 files already formatted
+186 files would be left unchanged
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format tools --check
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game --check
+All checks passed!
+Success: no problems found
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE check tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdlint.EXE D:\Works\source\chaos-world\game
+ok   boundaries ok (13590 files, 9 modules)
+ok   deferred ok (49 items)
+ok   backlog ok (80 items)
+ok   data audit clean
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: res://tests/modules/items/test_equipment.gd :: helm bonus applied: expected 20.0, got 15.0
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/items/test_equipment.gd :: stacks restored: expected 15, got 1
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/items/test_item_def.gd :: cross-activation option dropped: expected 0, got 1
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+SCRIPT ERROR: Invalid call. Nonexistent function 'roll_affixes' in base 'RefCounted (OptionCatalog)'.
+   at: test_roll_affixes_empty_spec (res://tests/modules/items/test_option_catalog.gd:68)
+   GDScript backtrace (most recent call first):
+       [0] test_roll_affixes_empty_spec (res://tests/modules/items/test_option_catalog.gd:68)
+       [1] _initialize (res://tests/run_tests.gd:24)
+SCRIPT ERROR: Invalid call. Nonexistent function 'roll_affixes' in base 'RefCounted (OptionCatalog)'.
+   at: test_roll_affixes_produces_modifiers (res://tests/modules/items/test_option_catalog.gd:37)
+   GDScript backtrace (most recent call first):
+       [0] test_roll_affixes_produces_modifiers (res://tests/modules/items/test_option_catalog.gd:37)
+       [1] _initialize (res://tests/run_tests.gd:24)
+SCRIPT ERROR: Invalid call. Nonexistent function 'roll_affixes' in base 'RefCounted (OptionCatalog)'.
+   at: test_roll_affixes_seeded_reproducible (res://tests/modules/items/test_option_catalog.gd:51)
+   GDScript backtrace (most recent call first):
+       [0] test_roll_affixes_seeded_reproducible (res://tests/modules/items/test_option_catalog.gd:51)
+       [1] _initialize (res://tests/run_tests.gd:24)
+SCRIPT ERROR: Parse Error: Could not parse global class "MindRealmSeed" from "res://src/modules/mind_cultivation/realm_seed.gd".
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_full_traversal.gd:52)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_full_traversal.gd:89)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "target_seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_full_traversal.gd:89)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_full_traversal.gd:90)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "source_seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_full_traversal.gd:90)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_full_traversal.gd:267)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "source_seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_full_traversal.gd:267)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+ERROR: Failed to load script "res://tests/modules/mind_cultivation/test_full_traversal.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+ERROR: res://tests/modules/mind_cultivation/test_full_traversal.gd :: failed to load suite
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:15)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:15)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:15)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:25)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:25)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:34)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:34)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:43)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:43)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:52)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:53)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:54)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:59)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_realm_seed.gd:59)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+ERROR: Failed to load script "res://tests/modules/mind_cultivation/test_mind_realm_seed.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+ERROR: res://tests/modules/mind_cultivation/test_mind_realm_seed.gd :: failed to load suite
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:15)
+SCRIPT ERROR: Parse Error: Could not parse global class "MindRealmSeed" from "res://src/modules/mind_cultivation/realm_seed.gd".
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_training.gd:31)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_training.gd:36)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "target_seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_training.gd:36)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_training.gd:37)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "source_seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_training.gd:37)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_training.gd:130)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindRealmSeed", because of a parser error.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_training.gd:142)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_training.gd:215)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "seed" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_training.gd:228)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "current" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_training.gd:240)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+ERROR: Failed to load script "res://tests/modules/mind_cultivation/test_mind_training.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:13)
+ERROR: res://tests/modules/mind_cultivation/test_mind_training.gd :: failed to load suite
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:15)
+Results: 3892 passed, 6 failed
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game --import
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd
+fail gate failed: test
+== fmt ==
+== lint ==
+== arch ==
+== deferred ==
+== backlog ==
+== data ==
+== test ==

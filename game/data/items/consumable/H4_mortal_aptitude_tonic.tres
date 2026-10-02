@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"H4_mortal_aptitude_tonic"
 display_name = "Mortal Aptitude Tonic"
 category = &"consumable"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 6.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:H4_mortal_aptitude_tonic_recipe"])
-percent_modifiers = {
-"aptitude": 0.04
-}

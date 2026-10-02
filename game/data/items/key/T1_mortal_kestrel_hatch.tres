@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"T1_mortal_kestrel_hatch"
 display_name = "Mortal Kestrel Hatch"
 category = &"key"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"key"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"quest:A33_route"])

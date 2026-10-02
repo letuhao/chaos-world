@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"C26_earth_crepid_spirit_qi_cost_reduction_move_speed"
 display_name = "Earth Crepid Spirit Qi Cost Reduction Move Speed"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 22.28},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+	{"option_id": &"core_move_speed", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"tincture"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"spirit": 0.05,
-"qi_cost_reduction": 0.07,
-"move_speed": 0.03
-}

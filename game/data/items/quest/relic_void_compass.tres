@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"relic_void_compass"
 display_name = "Void Compass Relic"
 category = &"quest"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"instrument"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"boss:E7_earth_warden"])

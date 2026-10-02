@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"venom_antidote_elixir"
 display_name = "Antidote Elixir"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:venom_antidote_elixir_recipe"])
-percent_modifiers = {
-"status_resistance": 0.08
-}

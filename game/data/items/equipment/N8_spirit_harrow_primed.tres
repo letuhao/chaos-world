@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"N8_spirit_harrow_primed"
 display_name = "Spirit Harrow Primed"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 17.18},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:N8_spirit_harrow_primed_recipe"])
-percent_modifiers = {
-"stamina_regen": 0.13
-}

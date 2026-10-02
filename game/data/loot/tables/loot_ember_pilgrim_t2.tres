@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"ep2_ash_charm"
+kind = &"item"
+item_id = &"amulet_iron_sage"
+weight = 1.0
+chance = 0.0
+guaranteed = false
+quantity = 1
+rarity_floor = ""
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_ember_pilgrim_t2"
+display_name = "Ember Vault Ash Pilgrim (Kindled) - nothing comes loose"
+realm = &"spirit_unity"
+rarity = &"magic"
+rolls = 0
+allow_empty = true
+entries = Array[LootEntry]([
+	SubResource("entry_0")
+])

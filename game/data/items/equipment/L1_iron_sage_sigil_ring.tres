@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"L1_iron_sage_sigil_ring"
 display_name = "Iron Sage Sigil Ring"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 18},
+	{"option_id": &"core_insight_gain", "value": 0.03},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:d1_iron_sage_adept"])
-flat_modifiers = {
-"max_qi": 18.0
-}
-percent_modifiers = {
-"insight_gain": 0.03
-}

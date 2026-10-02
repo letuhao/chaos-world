@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"bow_celestial"
 display_name = "Celestial Bow"
 category = &"equipment"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 35},
+	{"option_id": &"core_evasion", "value": 0.05},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:bow_celestial_recipe"])
-flat_modifiers = {
-"attack_physical": 35.0
-}
-percent_modifiers = {
-"evasion": 0.05
-}

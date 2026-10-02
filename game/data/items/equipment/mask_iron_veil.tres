@@ -7,13 +7,15 @@ script = ExtResource("1_item")
 id = &"mask_iron_veil"
 display_name = "Iron Veil"
 category = &"equipment"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 7.15},
+	{"option_id": &"core_evasion", "value": 0.03},
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:mask_iron_veil_recipe", &"boss:body_nascent_soul_guardian", &"boss:E1_qi_refinement_warden"])
-flat_modifiers = {
-"max_health": 20.0
-}
-percent_modifiers = {
-"evasion": 0.03,
-"status_resistance": 0.06
-}

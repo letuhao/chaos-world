@@ -7,17 +7,18 @@ script = ExtResource("1_item")
 id = &"scroll_bamboo"
 display_name = "Bamboo Scroll"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 8},
+	{"option_id": &"core_cultivation_rate", "value": 0.03},
+	{"option_id": &"core_insight_gain", "value": 0.05},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"spirit"
 value = 55
 tags = Array[StringName]([&"uncommon"])
 sources = Array[StringName]([&"craft:scroll_bamboo_recipe"])
 description = "A durable bamboo scroll. Holds spirit-grade cultivation methods."
-flat_modifiers = {
-"attack_spiritual": 8.0
-}
-percent_modifiers = {
-"cultivation_rate": 0.03,
-"insight_gain": 0.05,
-"qi_cost_reduction": 0.01
-}

@@ -8,6 +8,7 @@ id = &"transcendent"
 breakthrough_item = &"mind_transcendent_breakthrough_pill"
 training_item = &"mind_transcendent_channel_elixir"
 sea_catalyst = &"mind_transcendent_sea_catalyst"
+recovery_item = &"mind_transcendent_recovery_elixir"
 progress_required = 11898.0
 comprehension_required = 1630.0
 clarity_required = 0.80

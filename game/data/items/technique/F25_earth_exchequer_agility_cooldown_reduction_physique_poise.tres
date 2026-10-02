@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F25_earth_exchequer_agility_cooldown_reduction_physique_poise"
 display_name = "Earth Exchequer Agility Cooldown reduction Physique Poise"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 21.46},
+	{"option_id": &"core_cooldown_reduction", "value": 0.05},
+	{"option_id": &"base_physique", "value": 21.46},
+	{"option_id": &"core_poise", "value": 21.46},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"draft"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.03,
-"cooldown_reduction": 0.05,
-"physique": 0.07,
-"poise": 0.03
-}

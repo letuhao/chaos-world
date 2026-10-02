@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"rune_mist_charm"
 display_name = "Mist Rune Charm"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 17.19},
+	{"option_id": &"core_status_resistance", "value": 0.03},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:rune_mist_charm_recipe", &"boss:mind_spirit_manifestation_warden", &"boss:qi_spirit_domain_warden", &"boss:F9_sovereign_warden"])
-flat_modifiers = {
-"qi_regen": 2.0
-}
-percent_modifiers = {
-"status_resistance": 0.03
-}

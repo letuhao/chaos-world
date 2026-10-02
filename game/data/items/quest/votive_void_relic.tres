@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"votive_void_relic"
 display_name = "Votive of the Void"
 category = &"quest"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"relic"
 grade = &"immortal"
 sources = Array[StringName]([&"quest:votive_of_the_void"])

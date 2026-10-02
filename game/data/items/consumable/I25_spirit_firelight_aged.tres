@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I25_spirit_firelight_aged"
 display_name = "Spirit Firelight Aged"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 7.72},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:I25_spirit_firelight_aged_recipe"])
-percent_modifiers = {
-"defense_spiritual": 0.09
-}

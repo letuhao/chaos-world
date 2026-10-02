@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"qi_spirit_severing_warden_core"
 display_name = "Spirit Severing Warden Core"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:qi_spirit_severing_warden"])

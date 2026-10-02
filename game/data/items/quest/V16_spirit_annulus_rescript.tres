@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"V16_spirit_annulus_rescript"
 display_name = "Spirit Annulus Rescript"
 category = &"quest"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base"]}
 subcategory = &"sachet"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"quest:A33_route"])

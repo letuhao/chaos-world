@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"bow_heaven"
 display_name = "Heaven Bow"
 category = &"equipment"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 30},
+	{"option_id": &"core_attack_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:bow_heaven_recipe"])
-flat_modifiers = {
-"attack_physical": 30.0
-}
-percent_modifiers = {
-"attack_speed": 0.08
-}

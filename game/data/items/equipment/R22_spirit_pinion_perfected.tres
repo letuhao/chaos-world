@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"R22_spirit_pinion_perfected"
 display_name = "Spirit Pinion Perfected"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 17.19},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:R22_spirit_pinion_perfected_recipe"])
-percent_modifiers = {
-"will": 0.17
-}

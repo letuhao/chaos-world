@@ -9,7 +9,25 @@ signal path_advanced(path_id: StringName, rank_id: StringName)
 signal status_added(status_id: StringName)
 signal status_removed(status_id: StringName)
 
-const SCHEMA_VERSION := 3
+## Schema ladder for the actor payload:
+##   1 — identity, stats, resources, paths, meridians.
+##   2 — tribulation, inside world, created world, ascension.
+##   3 — sea, acupoints, body progress (ADR 0028).
+##   4 — module-owned breakthrough attempt records (ADR 0029).
+const SCHEMA_VERSION := 4
+
+## Module-owned attempt record. Serialized as a raw dictionary so core never
+## imports the module's attempt class; the mind_cultivation module rebuilds the
+## typed attempt from this key on load (ADR 0029).
+const ATTEMPT_MODULE_KEY := &"mind_attempt"
+
+## Resource pools every actor carries, mapped to the derived stat that
+## expresses their capacity. Core owns health and stamina because it owns the
+## stats behind them; modules add their own pools (ADR 0025).
+const CORE_POOL_STATS := {
+	&"health": Stat.MAX_HEALTH,
+	&"stamina": Stat.MAX_STAMINA,
+}
 
 var id: StringName
 var display_name: String
@@ -37,6 +55,7 @@ var ascension: AscensionState:
 			mark_stats_dirty()
 var _context: StatContext
 var _invalidator: StatsInvalidator
+var _syncing_resources: bool = false
 ## Item-state serialization hook (ADR 0027). Registered by the items module so core
 ## never serializes concrete item types. Null callable means "no item state".
 var _item_state_serializer: Callable = Callable()
@@ -64,11 +83,42 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 	stats.set_context(_context)
 
 
+## Resource pools every actor carries, mapped to the derived stat that
+## expresses their capacity. Core owns health and stamina because it owns the
+## stats behind them; modules add their own pools (ADR 0025).
 func add_resource(pool: ResourcePool) -> void:
 	resources[pool.id] = pool
 	if not pool.changed.is_connected(_invalidator.on_changed):
 		pool.changed.connect(_invalidator.on_changed)
 	mark_stats_dirty()
+
+
+## Create the core health and stamina pools if absent and size them from the
+## current derived capacities. A fresh pool starts full; later capacity changes
+## never refill, because `set_maximum` only clamps the current value.
+func attach_core_resources() -> void:
+	for pool_id in CORE_POOL_STATS:
+		if resources.has(pool_id):
+			continue
+		add_resource(ResourcePool.new(pool_id, stats.derived(CORE_POOL_STATS[pool_id])))
+	_sync_core_resources()
+
+
+## Resize the core pools to the derived capacities, preserving current values.
+## Guarded: a pool's `changed` signal re-enters `mark_stats_dirty`, so the sync
+## must not recurse.
+func _sync_core_resources() -> void:
+	if _syncing_resources:
+		return
+	_syncing_resources = true
+	for pool_id in CORE_POOL_STATS:
+		var pool := resources.get(pool_id) as ResourcePool
+		if pool == null:
+			continue
+		var regen_id := Stat.HEALTH_REGEN if pool_id == &"health" else Stat.STAMINA_REGEN
+		pool.regen = stats.derived(regen_id)
+		pool.set_maximum(stats.derived(CORE_POOL_STATS[pool_id]))
+	_syncing_resources = false
 
 
 func resource(pool_id: StringName) -> ResourcePool:
@@ -126,6 +176,8 @@ func _set_resource_maximum(pool_id: StringName, value: float) -> void:
 
 func mark_stats_dirty() -> void:
 	stats.mark_dirty()
+	if resources.has(&"health"):
+		_sync_core_resources()
 
 
 func set_component(id: StringName, component: RefCounted) -> void:
@@ -198,7 +250,13 @@ func to_dict() -> Dictionary:
 			body_progress_dict[String(realm_id)] = true
 	var module_data_dict: Dictionary = {}
 	for key in module_data.keys():
+		# The attempt record has its own payload slot so the schema can version it.
+		if key == ATTEMPT_MODULE_KEY:
+			continue
 		module_data_dict[String(key)] = module_data[key]
+	# Attempt record (active or terminal) serialized as raw data; the module
+	# rebuilds the typed attempt on load. Absent means "no attempt".
+	var attempt_dict: Dictionary = module_data.get(ATTEMPT_MODULE_KEY, {})
 	var item_state_dict: Dictionary = {}
 	if not _item_state_serializer.is_null():
 		item_state_dict = _item_state_serializer.call(self)
@@ -219,6 +277,7 @@ func to_dict() -> Dictionary:
 		"sea": sea_dict,
 		"acupoints": acupoints_dict,
 		"body_progress": body_progress_dict,
+		"mind_attempt": attempt_dict.duplicate(true),
 		"module_data": module_data_dict,
 		"item_state": item_state_dict,
 		"tribulation": tribulation_dict,
@@ -261,12 +320,7 @@ static func from_dict(data: Dictionary) -> Actor:
 		actor.set_component(&"dantian", dantian)
 		if not dantian.changed.is_connected(actor._invalidator.on_changed):
 			dantian.changed.connect(actor._invalidator.on_changed)
-	var sea_data: Dictionary = data.get("sea", {})
-	if not sea_data.is_empty():
-		var sea := SeaOfConsciousness.from_dict(sea_data)
-		actor.set_component(&"sea_of_consciousness", sea)
-		if not sea.changed.is_connected(actor._invalidator.on_changed):
-			sea.changed.connect(actor._invalidator.on_changed)
+	_restore_versioned(data, actor, int(data.get("version", SCHEMA_VERSION)))
 	# Restore raw acupoint data; the body_cultivation module builds the typed set.
 	var acupoints_data: Dictionary = data.get("acupoints", {})
 	if not acupoints_data.is_empty():
@@ -294,6 +348,23 @@ static func from_dict(data: Dictionary) -> Actor:
 	actor.set_module_data(&"item_state", data.get("item_state", {}))
 	actor.mark_stats_dirty()
 	return actor
+
+
+## Restore what the payload's schema version carries. A slot added by a later
+## version is simply absent from an older save, so each restore is gated and
+## defaults to "nothing there" — a v2 payload loads with no sea and no attempt.
+static func _restore_versioned(data: Dictionary, actor: Actor, version: int) -> void:
+	if version >= 3:
+		var sea_data: Dictionary = data.get("sea", {})
+		if not sea_data.is_empty():
+			var sea := SeaOfConsciousness.from_dict(sea_data)
+			actor.set_component(&"sea_of_consciousness", sea)
+			if not sea.changed.is_connected(actor._invalidator.on_changed):
+				sea.changed.connect(actor._invalidator.on_changed)
+	# v4 added the attempt slot; v3 and older carry no attempt at all.
+	var attempt_data: Dictionary = data.get("mind_attempt", {})
+	if not attempt_data.is_empty():
+		actor.set_module_data(ATTEMPT_MODULE_KEY, attempt_data.duplicate(true))
 
 
 func _string_array(values: Array[StringName]) -> Array:

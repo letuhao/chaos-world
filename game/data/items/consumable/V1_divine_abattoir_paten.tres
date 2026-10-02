@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V1_divine_abattoir_paten"
 display_name = "Divine Abattoir Paten"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"divine"
 sources = Array[StringName]([&"boss:E10_dao_warden"])
-percent_modifiers = {
-"max_health": 0.06
-}

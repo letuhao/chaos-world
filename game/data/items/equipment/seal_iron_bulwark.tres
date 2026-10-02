@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"seal_iron_bulwark"
 display_name = "Seal Iron Bulwark"
 category = &"equipment"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 6.05},
+	{"option_id": &"core_poise", "value": 8},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:seal_iron_bulwark_recipe", &"boss:mind_tribulation_warden"])
-flat_modifiers = {
-"defense_spiritual": 12.0,
-"poise": 8.0
-}

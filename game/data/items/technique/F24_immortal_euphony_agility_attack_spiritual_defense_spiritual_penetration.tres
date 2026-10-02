@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F24_immortal_euphony_agility_attack_spiritual_defense_spiritual_penetration"
 display_name = "Immortal Euphony Agility Attack spiritual Defense spiritual Penetration"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 33.69},
+	{"option_id": &"core_attack_spiritual", "value": 33.69},
+	{"option_id": &"core_defense_spiritual", "value": 33.69},
+	{"option_id": &"core_penetration", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.05,
-"attack_spiritual": 0.07,
-"defense_spiritual": 0.03,
-"penetration": 0.05
-}

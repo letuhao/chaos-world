@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"X16_divine_bailiff_discount"
 display_name = "Divine Bailiff Discount"
 category = &"key"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 18.42},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])

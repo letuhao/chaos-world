@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"T17_immortal_tithe_refined"
 display_name = "Immortal Tithe Refined"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 18.77},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:T17_immortal_tithe_refined_recipe"])
-percent_modifiers = {
-"comprehension": 0.06
-}

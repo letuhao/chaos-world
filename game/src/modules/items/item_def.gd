@@ -1,8 +1,10 @@
 class_name ItemDef
 extends Resource
 
-## Data-driven item definition (ADR 0007). Author as a `.tres`; no code needed to
-## add an item.
+## Data-driven item definition (ADR 0007/0025). Author as a `.tres`; no code is
+## needed to add an item. Every definition carries item-authored fixed modifiers
+## referencing master option ids plus a roll specification; the legacy raw
+## stat→value maps are gone, replaced by the master catalog (ADR 0025).
 
 @export var id: StringName = &""
 @export var display_name: String = ""
@@ -15,9 +17,7 @@ extends Resource
 @export var tags: Array[StringName] = []
 @export var sources: Array[StringName] = []
 @export var description: String = ""
-@export var flat_modifiers: Dictionary = {}
-@export var percent_modifiers: Dictionary = {}
-# Rarity controls option counts, affix structure, magnitude budgets, and socket
+# Rarity controls option counts, affix structure, magnitude budgets and socket
 # limits (ADR 0025). Separate from grade and realm.
 @export var rarity: StringName = &"common"
 # The canonical 30-realm id this item belongs to; drives eligibility and roll
@@ -27,8 +27,12 @@ extends Resource
 # (ADR 0025): [{option_id: &"...", value: float}, ...].
 @export var fixed_modifiers: Array[Dictionary] = []
 # Roll specification references a derived pool with count/budget and eligible
-# affix positions (ADR 0025): {pool_id, count, contexts}.
+# affix positions (ADR 0025): {count: int, contexts: [...]}.
 @export var roll_spec: Dictionary = {}
+
+## Optional requirement profile (ADR 0052). Null or empty means no restriction:
+## requirements are opt-in, and rarity never implies demand.
+@export var requirement: ItemRequirement = null
 
 
 func is_equipment() -> bool:
@@ -39,47 +43,42 @@ func required_tier() -> int:
 	return ItemGrade.required_tier(grade)
 
 
-func rarity_tier() -> int:
-	return OptionCatalog.rarity_tier(rarity)
+## Activation channel for this definition's fixed and rolled options (ADR 0028).
+## Derived from category so no item applies effects merely by being held.
+func activation() -> StringName:
+	return ItemActivation.for_category(category)
 
 
-## Build fixed modifiers from master option references (ADR 0025). Each entry
-## is {option_id, value}; the option's target stat and op come from the catalog.
-func build_fixed_modifiers(source: StringName) -> Array[StatModifier]:
-	var modifiers: Array[StatModifier] = []
+## Whether this definition can carry rolled modifiers at all.
+func is_rollable() -> bool:
+	return not roll_spec.is_empty() and ItemRarity.affix_count(rarity) > 0
+
+
+## Normalized effects for this definition plus an optional realized instance.
+## One aggregation path: fixed, rolled and later socket/set/enchantment channels
+## all funnel here so each effect is applied exactly once (ADR 0026/0028). Every
+## returned effect carries the value window it could legally have taken under
+## this item's realm and rarity, so readers never restate the magnitude policy.
+func effects(instance: ItemInstance = null) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	var catalog := OptionCatalog.instance()
 	for entry in fixed_modifiers:
 		var option_id := StringName(entry.get("option_id", ""))
 		if option_id == &"":
 			continue
-		var record: Dictionary = OptionCatalog.instance().option_record(option_id)
-		if record.is_empty():
+		if not catalog.allows_activation(option_id, activation()):
 			continue
-		var value := float(entry.get("value", 0.0))
-		var op: Stat.Op
-		match String(record.get("op", "FLAT")):
-			"FLAT":
-				op = Stat.Op.FLAT
-			"PERCENT":
-				op = Stat.Op.PERCENT
-			_:
-				op = Stat.Op.MULT
-		var target: Dictionary = record.get("target", {})
-		modifiers.append(
-			StatModifier.new(StringName(target.get("id", option_id)), op, value, source)
-		)
-	return modifiers
+		var effect := catalog.fixed_effect(option_id, float(entry.get("value", 0.0)))
+		if not effect.is_empty():
+			out.append(effect)
+	if instance != null:
+		out.append_array(instance.rolled)
+	var rarity := instance.rarity if instance != null else rarity
+	var realm := instance.realm if instance != null and instance.realm != &"" else realm
+	return catalog.with_bounds(out, realm, rarity)
 
 
-func build_modifiers(source: StringName) -> Array[StatModifier]:
-	var modifiers: Array[StatModifier] = []
-	for key in flat_modifiers.keys():
-		modifiers.append(
-			StatModifier.new(StringName(key), Stat.Op.FLAT, float(flat_modifiers[key]), source)
-		)
-	for key in percent_modifiers.keys():
-		modifiers.append(
-			StatModifier.new(
-				StringName(key), Stat.Op.PERCENT, float(percent_modifiers[key]), source
-			)
-		)
-	return modifiers
+## Total value of a numeric item property (crafting potency/yield) across this
+## definition and its instance. Read by Crafting (ADR 0028).
+func property_total(instance: ItemInstance, property_id: StringName) -> float:
+	return ItemEffects.property_value(effects(instance), property_id)

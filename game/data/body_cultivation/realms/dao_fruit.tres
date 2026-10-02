@@ -7,9 +7,10 @@ script = ExtResource("1")
 id = &"dao_fruit"
 breakthrough_item = &"body_dao_fruit_breakthrough_pill"
 strengthening_item = &"body_dao_fruit_channel_elixir"
-progress_required = 2500.0
+recovery_item = &"body_dao_fruit_recovery_elixir"
+progress_required = 1425.0
 physique_required = 58.0
-quality_required = 0.74
+quality_required = 0.760000
 quality_target = 0.775000
 integrity_target = 0.825000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
@@ -20,13 +21,11 @@ rewards = {
 "physique": 2.0,
 "muscle_fiber": 1.0
 }
-power_budget = 197.07
-capacity_factor = 89.21
-throughput_factor = 8.28
-technique_factor = 18.28
-work_required = 10642.0
-acupoint_work = 1914.0
-meridian_work = 1436.0
+work_required = 1425.0
+acupoint_work = 14.0
+meridian_work = 14.0
 insight_required = 1410.0
 resonance_rank = 8
+chance_base = 0.75
+chance_cap = 0.75
 channel_training = Array[StringName]([])

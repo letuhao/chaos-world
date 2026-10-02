@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I70_divine_hauberk_perfected_recipe"
+display_name = "Divine Hauberk Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I70_divine_hauberk_primed", &"Q2_divine_cress_toll", &"X22_divine_messor_saggar"])
+outputs = Array[StringName]([&"I70_divine_hauberk_perfected"])

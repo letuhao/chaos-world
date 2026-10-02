@@ -7,13 +7,15 @@ script = ExtResource("1_item")
 id = &"gloves_heaven_gloves"
 display_name = "Heaven Gloves"
 category = &"equipment"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 15},
+	{"option_id": &"core_defense_physical", "value": 12},
+	{"option_id": &"core_crit_chance", "value": 0.05},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:gloves_heaven_gloves_recipe"])
-flat_modifiers = {
-"attack_physical": 15.0,
-"defense_physical": 12.0
-}
-percent_modifiers = {
-"crit_chance": 0.05
-}

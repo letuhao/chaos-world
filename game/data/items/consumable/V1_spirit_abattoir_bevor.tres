@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V1_spirit_abattoir_bevor"
 display_name = "Spirit Abattoir Bevor"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 15.82},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:F7_palace_warden"])
-percent_modifiers = {
-"defense_spiritual": 0.06
-}

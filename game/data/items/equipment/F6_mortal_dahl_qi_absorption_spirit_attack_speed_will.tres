@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F6_mortal_dahl_qi_absorption_spirit_attack_speed_will"
 display_name = "Mortal Dahl Qi Absorption Spirit Attack Speed Will"
 category = &"equipment"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 6.05},
+	{"option_id": &"base_spirit", "value": 3.57},
+	{"option_id": &"core_attack_speed", "value": 0.05},
+	{"option_id": &"base_will", "value": 6.05},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"qi_absorption": 0.07,
-"spirit": 0.03,
-"attack_speed": 0.05,
-"will": 0.07
-}

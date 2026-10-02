@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"X10_heaven_albedo_base"
 display_name = "Heaven Albedo Base"
 category = &"equipment"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 16.08},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:X10_heaven_albedo_base_recipe", &"quest:X10_heaven_albedo_line"])
-percent_modifiers = {
-"penetration": 0.03
-}

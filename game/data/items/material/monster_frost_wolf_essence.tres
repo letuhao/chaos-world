@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"monster_frost_wolf_essence"
 display_name = "Frost Wolf Essence"
 category = &"material"
+rarity = &"rare"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"essence"
 grade = &"earth"
 sources = Array[StringName]([&"boss:monster_frost_wolf"])

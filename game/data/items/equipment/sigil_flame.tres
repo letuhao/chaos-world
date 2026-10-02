@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"sigil_flame"
 display_name = "Sigil of Flame"
 category = &"equipment"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 12},
+	{"option_id": &"core_cooldown_reduction", "value": 0.03},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:sigil_flame_recipe", &"boss:F5_qi_refining_warden", &"boss:F6_tribulation_warden"])
-flat_modifiers = {
-"attack_spiritual": 12.0
-}
-percent_modifiers = {
-"cooldown_reduction": 0.03
-}

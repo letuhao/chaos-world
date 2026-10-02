@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"qi_core_formation_sea_catalyst"
 display_name = "Core Formation Sea Catalyst"
 category = &"consumable"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:qi_core_formation_sea_recipe"])

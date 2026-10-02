@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A2_divine_abutment_base"
 display_name = "Divine Abutment Base"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"divine"
 sources = Array[StringName]([&"craft:A2_divine_abutment_base_recipe", &"quest:A2_divine_abutment_line"])
-percent_modifiers = {
-"attack_speed": 0.03
-}

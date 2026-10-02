@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"L4_venom_scorpion_carapace_shard"
 display_name = "Venom Scorpion Carapace Shard"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"bone"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:d4_venom_scorpion"])

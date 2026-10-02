@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I26_spirit_fireside_refined"
 display_name = "Spirit Fireside Refined"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 16.5},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:I26_spirit_fireside_refined_recipe"])
-percent_modifiers = {
-"max_qi": 0.06
-}

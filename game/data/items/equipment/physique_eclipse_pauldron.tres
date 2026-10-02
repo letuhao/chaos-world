@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"physique_eclipse_pauldron"
 display_name = "Eclipse Physique Pauldron"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 43.4},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"boss:qi_earth_immortal_warden"])
-percent_modifiers = {
-"physique": 0.13
-}

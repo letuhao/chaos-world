@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"scroll_stone_colossus_stance"
 display_name = "Stone Colossus Stance"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 9},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:scroll_stone_colossus", &"boss:d5_stone_colossus"])
-flat_modifiers = {
-"poise": 9.0
-}

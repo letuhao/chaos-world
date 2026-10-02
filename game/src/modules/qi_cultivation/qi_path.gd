@@ -13,7 +13,7 @@ static func path_def() -> CultivationPathDef:
 	def.id = PATH_ID
 	def.display_name = "Qi Cultivation"
 	def.stage_names = _stage_names()
-	def.resource_ids = [QiStats.QI, QiStats.QI_PURITY]
+	def.resource_ids = [QiStats.QI]
 	return def
 
 

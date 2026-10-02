@@ -1,0 +1,88 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/app/world_entry.gd" id="1"]
+
+[sub_resource type="CircleShape2D" id="1"]
+radius = 32.0
+
+[node name="SpiritWorld" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Ground" type="ColorRect" parent="."]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.3, 0.5, 0.8, 1)
+
+[node name="NavigationRegion" type="NavigationRegion2D" parent="."]
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(400, 300)
+
+[node name="WorldLabel" type="Label" parent="."]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 300.0
+offset_bottom = 48.0
+text = "Spirit World"
+
+[node name="EntryPoints" type="Node2D" parent="."]
+
+[node name="Entry1" type="Marker2D" parent="EntryPoints"]
+position = Vector2(100, 300)
+
+[node name="ExitPoints" type="Node2D" parent="."]
+
+[node name="Exit1" type="Marker2D" parent="ExitPoints"]
+position = Vector2(700, 300)
+
+[node name="NPCSpawnPoints" type="Node2D" parent="."]
+
+[node name="NPC1" type="Marker2D" parent="NPCSpawnPoints"]
+position = Vector2(300, 200)
+
+[node name="NPC2" type="Marker2D" parent="NPCSpawnPoints"]
+position = Vector2(500, 400)
+
+[node name="EnemySpawnZones" type="Node2D" parent="."]
+
+[node name="SpiritBeastZone1" type="Area2D" parent="EnemySpawnZones"]
+position = Vector2(600, 400)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySpawnZones/SpiritBeastZone1"]
+shape = SubResource("1")
+
+[node name="SpiritBeastZone2" type="Area2D" parent="EnemySpawnZones"]
+position = Vector2(200, 500)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySpawnZones/SpiritBeastZone2"]
+shape = SubResource("1")
+
+[node name="ResourceNodes" type="Node2D" parent="."]
+
+[node name="LightningStone1" type="Area2D" parent="ResourceNodes"]
+position = Vector2(200, 200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourceNodes/LightningStone1"]
+shape = SubResource("1")
+
+[node name="CloudEssence1" type="Area2D" parent="ResourceNodes"]
+position = Vector2(600, 200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourceNodes/CloudEssence1"]
+shape = SubResource("1")
+
+[node name="JadeOre1" type="Area2D" parent="ResourceNodes"]
+position = Vector2(400, 500)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResourceNodes/JadeOre1"]
+shape = SubResource("1")
+
+[node name="LocationMarkers" type="Node2D" parent="."]
+
+[node name="CloudPlatform" type="Marker2D" parent="LocationMarkers"]
+position = Vector2(500, 100)
+
+[node name="SpiritShrine" type="Marker2D" parent="LocationMarkers"]
+position = Vector2(150, 450)

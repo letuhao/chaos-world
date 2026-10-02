@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"W2_divine_antler_chalcedony"
 display_name = "Divine Antler Chalcedony"
 category = &"material"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"fragment"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"quest:Y23_route"])

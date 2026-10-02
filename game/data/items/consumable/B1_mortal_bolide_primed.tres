@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"B1_mortal_bolide_primed"
 display_name = "Mortal Bolide Primed"
 category = &"consumable"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:B1_mortal_bolide_primed_recipe"])
-percent_modifiers = {
-"move_speed": 0.13
-}

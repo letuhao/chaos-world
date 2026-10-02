@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"E4_mortal_bullionoffice_spite"
 display_name = "Mortal Bullionoffice Spite"
 category = &"material"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"ingot"
 grade = &"mortal"
 sources = Array[StringName]([&"quest", &"gather"])

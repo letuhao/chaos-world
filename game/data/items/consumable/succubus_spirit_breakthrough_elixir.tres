@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"succubus_spirit_breakthrough_elixir"
 display_name = "Spirit Bloom Elixir"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:succubus_spirit_breakthrough_recipe"])
-percent_modifiers = {
-"cultivation_rate": 0.08
-}

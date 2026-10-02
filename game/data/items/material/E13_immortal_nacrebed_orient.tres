@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"E13_immortal_nacrebed_orient"
 display_name = "Immortal Nacrebed Orient"
 category = &"material"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pearl"
 grade = &"immortal"
 sources = Array[StringName]([&"gather"])

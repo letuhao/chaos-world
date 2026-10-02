@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"J6_mortal_moss_anointed"
 display_name = "Mortal Moss Anointed"
 category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_fortune", "value": 10.08},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:J6_mortal_moss_anointed_recipe"])
-percent_modifiers = {
-"fortune": 0.1
-}

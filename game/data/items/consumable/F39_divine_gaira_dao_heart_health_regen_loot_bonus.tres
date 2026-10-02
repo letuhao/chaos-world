@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"F39_divine_gaira_dao_heart_health_regen_loot_bonus"
 display_name = "Divine Gaira Dao heart Health regen Loot bonus"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 35.62},
+	{"option_id": &"core_health_regen", "value": 16.18},
+	{"option_id": &"core_loot_bonus", "value": 0.042},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"dao_heart": 0.022,
-"health_regen": 0.033,
-"loot_bonus": 0.042
-}

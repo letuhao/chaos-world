@@ -5,7 +5,8 @@ from __future__ import annotations
 import subprocess
 import sys
 
-from .common import REPO_ROOT, fail, info, ok
+from .common import ADR_DIR, REPO_ROOT, fail, info, ok
+from .new_adr import _numbered
 
 STEPS: tuple[tuple[str, list[str]], ...] = (
     ("fmt", ["--check"]),
@@ -14,6 +15,17 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     ("deferred", ["validate"]),
     ("backlog", ["validate"]),
     ("data", ["audit"]),
+    # The authored per-realm power table: one entry per realm, R1 at 1.0, strictly
+    # rising, finite and readable. It replaced the one power ladder's guard (ADR 0050).
+    ("realm_power", ["check"]),
+    # Fast catalog checks: the projection must match the master JSONL, and every
+    # registered option target must have an implemented consumer (ADR 0025/0033).
+    ("data", ["options", "derive", "--check"]),
+    ("data", ["options", "coverage", "--fail-on", "error"]),
+    # The Python option generator's magnitude window must match the Godot runtime,
+    # or the gate validates content against numbers the game never rolls. The
+    # GDScript suite asserts the runtime side.
+    ("data", ["options", "parity", "--check"]),
     ("test", []),
 )
 
@@ -23,8 +35,27 @@ def register(subparsers) -> None:
     parser.add_argument("--keep-going", action="store_true", help="run all steps after a failure")
 
 
+def _check_adr_numbers() -> bool:
+    """One number per ADR. A shared number makes "ADR NNNN" ambiguous, and an
+    agent following that citation cannot tell which decision it points at."""
+    ok_flag = True
+    for number, names in sorted(_numbered(ADR_DIR).items()):
+        if len(names) > 1:
+            ok_flag = False
+            fail(f"ADR {number:04d} is shared by {len(names)} files: {', '.join(sorted(names))}")
+    if ok_flag:
+        ok("adr numbers unique")
+    return ok_flag
+
+
 def run(args) -> int:
     failed: list[str] = []
+    info("== adr ==")
+    if not _check_adr_numbers():
+        failed.append("adr")
+        if not args.keep_going:
+            fail("gate failed: " + ", ".join(failed))
+            return 1
     for name, extra in STEPS:
         info(f"== {name} ==")
         result = subprocess.run(

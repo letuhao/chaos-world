@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I9_mortal_dudman_aged"
 display_name = "Mortal Dudman Aged"
 category = &"consumable"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I9_mortal_dudman_aged_recipe"])
-percent_modifiers = {
-"move_speed": 0.09
-}

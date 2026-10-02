@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"F39_heaven_gaira_crit_chance_qi_absorption_will"
 display_name = "Heaven Gaira Crit chance Qi absorption Will"
 category = &"consumable"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.026},
+	{"option_id": &"core_qi_absorption", "value": 28.88},
+	{"option_id": &"base_will", "value": 28.88},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"crit_chance": 0.026,
-"qi_absorption": 0.036,
-"will": 0.029
-}

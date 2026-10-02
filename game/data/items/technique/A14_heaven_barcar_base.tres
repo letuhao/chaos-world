@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A14_heaven_barcar_base"
 display_name = "Heaven Barcar Base"
 category = &"technique"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 27.22},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:A14_heaven_barcar_base_recipe", &"quest:A14_heaven_barcar_line"])
-percent_modifiers = {
-"stamina_regen": 0.03
-}

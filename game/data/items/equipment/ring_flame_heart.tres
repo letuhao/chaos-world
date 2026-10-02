@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"ring_flame_heart"
 display_name = "Flame Heart"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_loot_bonus", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:ring_flame_heart_recipe"])
-percent_modifiers = {
-"loot_bonus": 0.05
-}

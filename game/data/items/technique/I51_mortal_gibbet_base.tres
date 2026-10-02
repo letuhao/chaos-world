@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I51_mortal_gibbet_base"
 display_name = "Mortal Gibbet Base"
 category = &"technique"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 6.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I51_mortal_gibbet_base_recipe", &"quest:I51_mortal_gibbet_line"])
-percent_modifiers = {
-"will": 0.03
-}

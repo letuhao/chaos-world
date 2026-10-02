@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V8_spirit_agger_pricket"
 display_name = "Spirit Agger Pricket"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 10.16},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:d4_ash_effigy"])
-percent_modifiers = {
-"max_qi": 0.06
-}

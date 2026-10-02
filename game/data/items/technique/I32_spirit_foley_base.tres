@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I32_spirit_foley_base"
 display_name = "Spirit Foley Base"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.03},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:I32_spirit_foley_base_recipe", &"quest:I32_spirit_foley_line"])
-percent_modifiers = {
-"move_speed": 0.03
-}

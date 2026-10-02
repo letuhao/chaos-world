@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"bladework_void_edge"
 display_name = "Void Edge Bladework"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 29.84},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"boss:F18_true_warden"])
-percent_modifiers = {
-"penetration": 0.08
-}

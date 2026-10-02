@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"R12_heaven_meridian_riddle"
 display_name = "Heaven Meridian Riddle"
 category = &"quest"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"relic"
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])

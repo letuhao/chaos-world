@@ -5,10 +5,19 @@ extends Resource
 ## pill and elixirs it consumes, the sea and channel state it demands, and what
 ## a successful advance awards.
 
+## Profiles are immutable content, so resolve each realm id once. Training and
+## advancement read them on every tick; without this they would hit the
+## resource loader each time.
+static var _cache: Dictionary = {}
+
 @export var id: StringName = &""
 @export var breakthrough_item: StringName = &""
 @export var training_item: StringName = &""
 @export var sea_catalyst: StringName = &""
+## Fourth consumable role: repairs the damage a mind deviation leaves behind —
+## the clouded sea and the burned channel. Every realm must author one, or a
+## failed attempt is unrecoverable (ADR 0031).
+@export var recovery_item: StringName = &""
 @export var progress_required: float = 100.0
 @export var comprehension_required: float = 10.0
 @export var clarity_required: float = 0.5
@@ -33,4 +42,15 @@ extends Resource
 static func for_realm(realm_id: StringName) -> MindRealmSeed:
 	if not RealmDefaults.ladder().has(realm_id):
 		return null
-	return load("res://data/mind_cultivation/realms/%s.tres" % realm_id) as MindRealmSeed
+	var cached: MindRealmSeed = _cache.get(realm_id)
+	if cached != null:
+		return cached
+	var loaded := load("res://data/mind_cultivation/realms/%s.tres" % realm_id) as MindRealmSeed
+	if loaded != null:
+		_cache[realm_id] = loaded
+	return loaded
+
+
+## Drop cached profiles (used by content tooling and tests that regenerate data).
+static func clear_cache() -> void:
+	_cache.clear()

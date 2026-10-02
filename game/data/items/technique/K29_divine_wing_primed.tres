@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"K29_divine_wing_primed"
 display_name = "Divine Wing Primed"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"divine"
 sources = Array[StringName]([&"craft:K29_divine_wing_primed_recipe"])
-percent_modifiers = {
-"cultivation_rate": 0.13
-}

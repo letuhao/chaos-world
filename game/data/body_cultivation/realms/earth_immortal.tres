@@ -7,9 +7,10 @@ script = ExtResource("1")
 id = &"earth_immortal"
 breakthrough_item = &"body_earth_immortal_breakthrough_pill"
 strengthening_item = &"body_earth_immortal_channel_elixir"
-progress_required = 1800.0
+recovery_item = &"body_earth_immortal_recovery_elixir"
+progress_required = 318.0
 physique_required = 44.0
-quality_required = 0.67
+quality_required = 0.655000
 quality_target = 0.670000
 integrity_target = 0.720000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
@@ -20,13 +21,11 @@ rewards = {
 "physique": 2.0,
 "organ_vitality": 1.0
 }
-power_budget = 55.00
-capacity_factor = 30.15
-throughput_factor = 4.97
-technique_factor = 9.06
-work_required = 6609.0
-acupoint_work = 1234.0
-meridian_work = 925.0
+work_required = 318.0
+acupoint_work = 4.0
+meridian_work = 4.0
 insight_required = 766.0
 resonance_rank = 1
+chance_base = 0.69
+chance_cap = 0.81
 channel_training = Array[StringName]([])

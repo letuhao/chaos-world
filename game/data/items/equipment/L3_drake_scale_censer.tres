@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"L3_drake_scale_censer"
 display_name = "Drake Scale Censer"
 category = &"equipment"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 23.1},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:d3_flame_drake"])
-percent_modifiers = {
-"attack_physical": 0.07
-}

@@ -2,8 +2,21 @@ class_name MindProvider
 extends StatProvider
 
 ## Contributes the module's actor-scoped derived stats from base attributes,
-## resources, and the mind cultivation path rank (ADR 0013/0016). Uses the
-## realm profile factors (C/F/T) instead of a linear rank multiplier.
+## resources, and the mind cultivation path rank (ADR 0013/0016).
+##
+## Every realm-shaped read here is ONE bounded per-realm number,
+## `MindRealmProfile.factor`, applied to every contribution. It is a RATE: how
+## much a unit of this realm's cultivation counts, never how strong a thing from
+## this realm is. The path's real magnitudes live where they belong —
+## `MindRealmSeed.sea_capacity` for the reservoir (100 -> 825), applied once by
+## `MindTraining.synchronize`, and `RealmScaling` (core) for the shared combat
+## stats — so this provider must not also scale by the realm's strength, or it
+## would count the same realm twice and collide with `SeaProvider`, which owns
+## `MindStats.SEA_CAPACITY`. The body and qi providers read the same number for
+## the same realm.
+##
+## `tests/modules/mind_cultivation/test_mind_power_curve.gd` pins the factor, its
+## bound, and the no-double-count rule.
 
 
 func contribute(context: StatContext) -> Dictionary:
@@ -15,7 +28,7 @@ func contribute(context: StatContext) -> Dictionary:
 
 	var mind_power_ratio := _pool_ratio(context, MindStats.MIND_POWER)
 	var awareness_ratio := _pool_ratio(context, MindStats.AWARENESS)
-	var technique_factor := _technique_factor(context)
+	var technique_factor := _realm_factor(context)
 	var meridian_power := _meridian_power_bonus(context)
 
 	return {
@@ -39,30 +52,13 @@ func _meridian_power_bonus(context: StatContext) -> float:
 	return 0.0
 
 
-func _technique_factor(context: StatContext) -> float:
-	"""Realm profile technique factor T = P^0.55 (ADR 0013/0016)."""
+## The realm factor, or neutral when the path is unstarted. R1 is the neutral
+## realm because it is the first ordinal, so its factor is `RATE_STEP^0`.
+func _realm_factor(context: StatContext) -> float:
 	var state := context.path(MindPath.PATH_ID)
 	if state == null:
-		return 1.0
-	var ladder := RealmDefaults.ladder()
-	var index := ladder.index_of(state.rank_id)
-	if index < 0:
-		return 1.0
-	var tier := ladder.realm(state.rank_id).tier
-	var power := _power_budget(index, tier)
-	return pow(power, 0.55)
-
-
-func _power_budget(index: int, tier: int) -> float:
-	"""Reference power budget P for a realm (ADR 0013/0016)."""
-	var local := index + 1
-	if tier == 1:
-		return 1.0 * (1.25 ** (local - 1))
-	if tier == 2:
-		return 8.0 * (1.22 ** (local - 1))
-	if tier == 3:
-		return 55.0 * (1.20 ** (local - 1))
-	return 330.0 * (1.35 ** (local - 1))
+		return MindRealmProfile.NEUTRAL
+	return MindRealmProfile.factor(state.rank_id)
 
 
 func _pool_ratio(context: StatContext, id: StringName) -> float:

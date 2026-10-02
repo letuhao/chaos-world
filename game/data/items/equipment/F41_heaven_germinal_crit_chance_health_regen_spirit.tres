@@ -7,11 +7,15 @@ script = ExtResource("1_item")
 id = &"F41_heaven_germinal_crit_chance_health_regen_spirit"
 display_name = "Heaven Germinal Crit chance Health regen Spirit"
 category = &"equipment"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.036},
+	{"option_id": &"core_health_regen", "value": 24.75},
+	{"option_id": &"base_spirit", "value": 24.75},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"crit_chance": 0.036,
-"health_regen": 0.045,
-"spirit": 0.036
-}

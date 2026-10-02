@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"L5_thunder_crane_gale_manual"
 display_name = "Gale Manual"
 category = &"technique"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:d5_thunder_crane"])
-percent_modifiers = {
-"move_speed": 0.04
-}

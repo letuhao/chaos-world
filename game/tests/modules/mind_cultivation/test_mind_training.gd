@@ -25,45 +25,40 @@ func _stock(actor: Actor, def_id: StringName) -> void:
 
 
 ## Mind demands strengthened channels, so drive each one all the way up.
+## Prepare the actor to attempt the next realm. Entry checks the *source*
+## realm's milestones (ADR 0029), so the sea and channels are brought to the
+## source realm's targets, not the target realm's.
 func _prepare(actor: Actor) -> MindRealmSeed:
 	var state := actor.path(MindPath.PATH_ID)
 	var target := RealmDefaults.ladder().next(state.rank_id)
 	if target == null:
 		return null
-	var seed := MindRealmSeed.for_realm(target.id)
-	if seed == null:
+	var target_seed := MindRealmSeed.for_realm(target.id)
+	var source_seed := MindRealmSeed.for_realm(state.rank_id)
+	if target_seed == null or source_seed == null:
 		return null
 	actor.meridians.unlock_for_realm(target.id)
-	_stock(actor, seed.breakthrough_item)
-	_stock(actor, seed.training_item)
-	for meridian_id in seed.required_meridians:
+	_stock(actor, target_seed.breakthrough_item)
+	_stock(actor, source_seed.training_item)
+	_stock(actor, source_seed.sea_catalyst)
+	for meridian_id in source_seed.required_meridians:
 		# A deviation damages a channel, and a damaged channel satisfies nothing,
 		# so repair before re-training or the next attempt can never qualify.
 		actor.meridians.repair_meridian(meridian_id)
-		if not actor.meridians.get_meridian(meridian_id).is_open():
+		var channel := actor.meridians.get_meridian(meridian_id)
+		if not channel.is_open():
 			actor.meridians.open_meridian(meridian_id)
 		actor.meridians.expand_meridian(meridian_id)
 		actor.meridians.strengthen_meridian(meridian_id)
+	MindTraining.strengthen_sea(actor)
 	var sea := MindCultivationApi.sea(actor)
-	sea.set_structural_capacity(seed.sea_capacity)
-	sea.set_clarity(seed.clarity_required)
-	sea.set_purity(seed.purity_required)
-	MindTraining.synchronize(actor)
-	MindTraining.synchronize(actor)
-	MindTraining.synchronize(actor)
-	MindTraining.synchronize(actor)
-	MindTraining.synchronize(actor)
-	MindTraining.synchronize(actor)
-	MindTraining.synchronize(actor)
-	MindTraining.synchronize(actor)
-	MindTraining.synchronize(actor)
-	MindTraining.synchronize(actor)
-	sea.add_turbulence(-sea.turbulence)
-	MindTraining.synchronize(actor)
+	sea.calm(sea.turbulence)
 	sea.drain(actor, sea.current(actor))
-	sea.fill(actor, sea.effective_capacity())
-	state.progress = seed.progress_required
-	return seed
+	while not sea.is_full(actor):
+		if not MindTraining.cultivate(actor, 500.0):
+			break
+	state.progress = target_seed.progress_required
+	return target_seed
 
 
 # --- Synchronize -----------------------------------------------------------

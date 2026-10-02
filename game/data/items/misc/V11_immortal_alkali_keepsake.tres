@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"V11_immortal_alkali_keepsake"
 display_name = "Immortal Alkali Keepsake"
 category = &"misc"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"trophy"
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])

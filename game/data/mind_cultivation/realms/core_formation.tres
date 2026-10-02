@@ -8,6 +8,7 @@ id = &"core_formation"
 breakthrough_item = &"mind_core_formation_breakthrough_pill"
 training_item = &"mind_core_formation_channel_elixir"
 sea_catalyst = &"mind_core_formation_sea_catalyst"
+recovery_item = &"mind_core_formation_recovery_elixir"
 progress_required = 273.0
 comprehension_required = 30.0
 clarity_required = 0.43

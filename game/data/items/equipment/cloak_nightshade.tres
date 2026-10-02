@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"cloak_nightshade"
 display_name = "Nightshade Cloak"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_damage_reduction", "value": 0.03},
+	{"option_id": &"core_evasion", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:cloak_nightshade_recipe"])
-flat_modifiers = {
-"damage_reduction": 0.03
-}
-percent_modifiers = {
-"evasion": 0.06,
-}

@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"G13_divine_glasswort_qi_absorption_will"
 display_name = "Divine Glasswort Qi absorption Will"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 37.54},
+	{"option_id": &"base_will", "value": 52.9},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"qi_absorption": 0.066,
-"will": 0.054
-}

@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"P7_immortal_bluegill_refined"
 display_name = "Immortal Bluegill Refined"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"craft:P7_immortal_bluegill_refined_recipe"])
-percent_modifiers = {
-"health_regen": 0.06
-}

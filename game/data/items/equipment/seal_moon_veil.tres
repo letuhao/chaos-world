@@ -7,13 +7,15 @@ script = ExtResource("1_item")
 id = &"seal_moon_veil"
 display_name = "Seal Moon Veil"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_damage_reduction", "value": 0.02},
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:seal_moon_veil_recipe"])
 
-flat_modifiers = {
-"damage_reduction": 0.02
-}
-percent_modifiers = {
-"status_resistance": 0.08
-}

@@ -6,6 +6,15 @@ extends RefCounted
 
 signal changed
 
+## The three cultivation path ids (ADR 0005 ladder, ADR 0011/0012/0013 paths).
+## Declared here so a consumer that only *reads* an actor's paths — the character
+## sheet, a save inspector — does not have to name a module's internals to learn
+## which paths exist.
+const BODY := &"body_cultivation"
+const MIND := &"mind_cultivation"
+const QI := &"qi_cultivation"
+const ALL: Array[StringName] = [BODY, MIND, QI]
+
 var path_id: StringName
 var unlocked: NameList
 

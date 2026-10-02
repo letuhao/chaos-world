@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"Z8_immortal_bailiwick_refined"
 display_name = "Immortal Bailiwick Refined"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 19.9},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"craft:Z8_immortal_bailiwick_refined_recipe"])
-percent_modifiers = {
-"aptitude": 0.06
-}

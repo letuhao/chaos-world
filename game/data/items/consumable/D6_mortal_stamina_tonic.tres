@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"D6_mortal_stamina_tonic"
 display_name = "Mortal Wind Draught"
 category = &"consumable"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 6.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:D6_mortal_stamina_tonic_recipe"])
-percent_modifiers = {
-"stamina_regen": 0.02
-}

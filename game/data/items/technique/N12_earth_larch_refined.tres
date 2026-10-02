@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"N12_earth_larch_refined"
 display_name = "Earth Larch Refined"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 13.16},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"earth"
 sources = Array[StringName]([&"craft:N12_earth_larch_refined_recipe"])
-percent_modifiers = {
-"will": 0.06
-}

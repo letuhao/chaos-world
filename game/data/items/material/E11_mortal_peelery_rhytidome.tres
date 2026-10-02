@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"E11_mortal_peelery_rhytidome"
 display_name = "Mortal Peelery Rhytidome"
 category = &"material"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"bark"
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"D6_divine_healthsalve"
 display_name = "Divine Renewal Salve"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"salve"
 grade = &"divine"
 sources = Array[StringName]([&"craft:D6_divine_healthsalve_recipe"])
-percent_modifiers = {
-"health_regen": 0.15
-}

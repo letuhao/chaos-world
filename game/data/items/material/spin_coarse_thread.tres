@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"spin_coarse_thread"
 display_name = "Coarse Thread"
 category = &"material"
+rarity = &"common"
+realm = &"great_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"filament"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:spin_coarse_thread_recipe"])

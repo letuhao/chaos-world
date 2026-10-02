@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V3_spirit_abjuration_escutcheon"
 display_name = "Spirit Abjuration Escutcheon"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 15.82},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:F8_manifestation_warden"])
-percent_modifiers = {
-"attack_spiritual": 0.06
-}

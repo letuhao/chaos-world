@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"R16_heaven_osprey_aged"
 display_name = "Heaven Osprey Aged"
 category = &"technique"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 26.4},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:R16_heaven_osprey_aged_recipe"])
-percent_modifiers = {
-"max_stamina": 0.09
-}

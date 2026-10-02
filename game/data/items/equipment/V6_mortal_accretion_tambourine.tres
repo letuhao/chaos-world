@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V6_mortal_accretion_tambourine"
 display_name = "Mortal Accretion Tambourine"
 category = &"equipment"
+rarity = &"common"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 5.5},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"boss:d5_mortal_veil"])
-percent_modifiers = {
-"max_qi": 0.06
-}

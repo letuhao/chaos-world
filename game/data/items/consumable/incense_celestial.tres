@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"incense_celestial"
 display_name = "Celestial Incense"
 category = &"consumable"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:incense_celestial_recipe"])
-percent_modifiers = {
-"cultivation_rate": 0.1
-}

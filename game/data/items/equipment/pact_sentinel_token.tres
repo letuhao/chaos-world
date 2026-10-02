@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"pact_sentinel_token"
 display_name = "Sentinel's Pact Token"
 category = &"equipment"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 20},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"quest:pact_of_the_sentinel"])
-flat_modifiers = {
-"defense_spiritual": 20.0
-}

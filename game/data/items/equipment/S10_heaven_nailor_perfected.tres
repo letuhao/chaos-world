@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"S10_heaven_nailor_perfected"
 display_name = "Heaven Nailor Perfected"
 category = &"equipment"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 42.08},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:S10_heaven_nailor_perfected_recipe"])
-percent_modifiers = {
-"stamina_regen": 0.17
-}

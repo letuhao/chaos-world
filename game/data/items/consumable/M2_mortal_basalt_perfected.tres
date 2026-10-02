@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"M2_mortal_basalt_perfected"
 display_name = "Mortal Basalt Perfected"
 category = &"consumable"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 11.62},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:M2_mortal_basalt_perfected_recipe"])
-percent_modifiers = {
-"qi_absorption": 0.17
-}

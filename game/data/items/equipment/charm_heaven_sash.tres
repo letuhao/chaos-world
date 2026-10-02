@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"charm_heaven_sash"
 display_name = "Heaven Sash"
 category = &"equipment"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 29.7},
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:charm_heaven_sash_recipe"])
-flat_modifiers = {
-"max_health": 60.0
-}
-percent_modifiers = {
-"cooldown_reduction": 0.04
-}

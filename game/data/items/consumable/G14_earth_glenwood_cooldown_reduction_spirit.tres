@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"G14_earth_glenwood_cooldown_reduction_spirit"
 display_name = "Earth Glenwood Cooldown reduction Spirit"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+	{"option_id": &"base_spirit", "value": 19.8},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"cooldown_reduction": 0.058,
-"spirit": 0.053
-}

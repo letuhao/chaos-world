@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"codex_storm_phoenix_wing"
 display_name = "Storm Phoenix Wing"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:codex_storm_phoenix", &"boss:d2_storm_phoenix", &"boss:mind_spirit_domain_warden"])
-percent_modifiers = {
-"move_speed": 0.04
-}

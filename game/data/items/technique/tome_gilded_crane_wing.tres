@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"tome_gilded_crane_wing"
 display_name = "Gilded Crane Wing"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:tome_gilded_crane", &"boss:d6_gilded_crane"])
-percent_modifiers = {
-"move_speed": 0.06
-}

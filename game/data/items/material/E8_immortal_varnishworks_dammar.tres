@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"E8_immortal_varnishworks_dammar"
 display_name = "Immortal Varnishworks Dammar"
 category = &"material"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"resin"
 grade = &"immortal"
 sources = Array[StringName]([&"gather"])

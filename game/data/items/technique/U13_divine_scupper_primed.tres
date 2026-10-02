@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U13_divine_scupper_primed"
 display_name = "Divine Scupper Manual"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_evasion", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"divine"
 sources = Array[StringName]([&"craft:U13_divine_scupper_primed_recipe"])
-percent_modifiers = {
-"evasion": 0.13
-}

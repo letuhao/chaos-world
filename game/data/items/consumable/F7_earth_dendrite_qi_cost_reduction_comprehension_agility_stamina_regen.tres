@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F7_earth_dendrite_qi_cost_reduction_comprehension_agility_stamina_regen"
 display_name = "Earth Dendrite Qi Cost Reduction Comprehension Agility Stamina Regen"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+	{"option_id": &"base_comprehension", "value": 19.8},
+	{"option_id": &"base_agility", "value": 19.8},
+	{"option_id": &"core_stamina_regen", "value": 19.8},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"earth"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"qi_cost_reduction": 0.07,
-"comprehension": 0.03,
-"agility": 0.05,
-"stamina_regen": 0.07
-}

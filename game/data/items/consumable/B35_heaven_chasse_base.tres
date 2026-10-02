@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"B35_heaven_chasse_base"
 display_name = "Heaven Chasse Base"
 category = &"consumable"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:B35_heaven_chasse_base_recipe", &"quest:B35_heaven_chasse_line"])
-percent_modifiers = {
-"move_speed": 0.03
-}

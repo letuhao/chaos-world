@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F20_immortal_epigonus_agility_attack_physical_breakthrough_chance_spirit"
 display_name = "Immortal Epigonus Agility Attack physical Breakthrough chance Spirit"
 category = &"technique"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 29.84},
+	{"option_id": &"core_attack_physical", "value": 29.84},
+	{"option_id": &"core_breakthrough_chance", "value": 0.05},
+	{"option_id": &"base_spirit", "value": 29.84},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"sigil"
 grade = &"immortal"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"agility": 0.07,
-"attack_physical": 0.03,
-"breakthrough_chance": 0.05,
-"spirit": 0.07
-}

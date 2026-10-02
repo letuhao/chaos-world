@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I33_spirit_foolscap_base"
 display_name = "Spirit Foolscap Base"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 13.06},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:I33_spirit_foolscap_base_recipe", &"quest:I33_spirit_foolscap_line"])
-percent_modifiers = {
-"comprehension": 0.03
-}

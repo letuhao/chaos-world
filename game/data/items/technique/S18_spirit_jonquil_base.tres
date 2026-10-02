@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"S18_spirit_jonquil_base"
 display_name = "Spirit Jonquil Base"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_fortune", "value": 8.44},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"sigil"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:S18_spirit_jonquil_base_recipe", &"quest:S18_spirit_jonquil_line"])
-percent_modifiers = {
-"fortune": 0.03
-}

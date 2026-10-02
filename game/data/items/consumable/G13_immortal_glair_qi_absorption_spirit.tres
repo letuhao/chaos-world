@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"G13_immortal_glair_qi_absorption_spirit"
 display_name = "Immortal Glair Qi absorption Spirit"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 28.88},
+	{"option_id": &"base_spirit", "value": 28.88},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"qi_absorption": 0.069,
-"spirit": 0.049
-}

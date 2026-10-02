@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"X2_divine_abbey_base"
 display_name = "Divine Abbey Base"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_fortune", "value": 16.62},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"divine"
 sources = Array[StringName]([&"craft:X2_divine_abbey_base_recipe", &"quest:X2_divine_abbey_line"])
-percent_modifiers = {
-"fortune": 0.03
-}

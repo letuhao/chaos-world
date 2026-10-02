@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"Q6_divine_daphne_firesteel"
 display_name = "Divine Daphne Firesteel"
 category = &"material"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"essence"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"quest:W27_route"])

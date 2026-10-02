@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F26_spirit_exlibris_aptitude_attack_physical_comprehension_loot_bonus"
 display_name = "Spirit Exlibris Aptitude Attack physical Comprehension Loot bonus"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 18.56},
+	{"option_id": &"core_attack_physical", "value": 18.56},
+	{"option_id": &"base_comprehension", "value": 18.56},
+	{"option_id": &"core_loot_bonus", "value": 0.03},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"spirit"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"aptitude": 0.03,
-"attack_physical": 0.05,
-"comprehension": 0.07,
-"loot_bonus": 0.03
-}

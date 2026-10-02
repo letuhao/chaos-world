@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"I42_immortal_gadstyle_base"
 display_name = "Immortal Gadstyle Base"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 31.76},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"craft:I42_immortal_gadstyle_base_recipe", &"quest:I42_immortal_gadstyle_line"])
-percent_modifiers = {
-"max_stamina": 0.03
-}

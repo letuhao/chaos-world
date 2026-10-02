@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"P20_mortal_coppice_primed"
 display_name = "Mortal Coppice Primed"
 category = &"technique"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"draft"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:P20_mortal_coppice_primed_recipe"])
-percent_modifiers = {
-"cultivation_rate": 0.13
-}

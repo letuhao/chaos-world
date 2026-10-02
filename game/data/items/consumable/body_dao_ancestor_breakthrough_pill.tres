@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"body_dao_ancestor_breakthrough_pill"
 display_name = "Body of Divinity Tempering Pill"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 36.6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"divine"
 sources = Array[StringName]([&"craft:body_dao_ancestor_pill_recipe"])

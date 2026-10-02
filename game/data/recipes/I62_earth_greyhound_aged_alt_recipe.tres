@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I62_earth_greyhound_aged_alt_recipe"
+display_name = "Earth Greyhound Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I62_earth_greyhound_refined", &"wood_frost_vein", &"W7_earth_bedlam_macerate"])
+outputs = Array[StringName]([&"I62_earth_greyhound_aged"])

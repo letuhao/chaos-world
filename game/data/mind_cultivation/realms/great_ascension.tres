@@ -8,6 +8,7 @@ id = &"great_ascension"
 breakthrough_item = &"mind_great_ascension_breakthrough_pill"
 training_item = &"mind_great_ascension_channel_elixir"
 sea_catalyst = &"mind_great_ascension_sea_catalyst"
+recovery_item = &"mind_great_ascension_recovery_elixir"
 progress_required = 1680.0
 comprehension_required = 150.0
 clarity_required = 0.51

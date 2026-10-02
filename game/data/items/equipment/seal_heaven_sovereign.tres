@@ -7,15 +7,17 @@ script = ExtResource("1_item")
 id = &"seal_heaven_sovereign"
 display_name = "Seal Heaven Sovereign"
 category = &"equipment"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 30},
+	{"option_id": &"core_max_qi", "value": 36.04},
+	{"option_id": &"core_poise", "value": 15},
+	{"option_id": &"core_damage_reduction", "value": 0.05},
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:seal_heaven_sovereign_recipe"])
-flat_modifiers = {
-"defense_spiritual": 30.0,
-"max_qi": 60.0,
-"poise": 15.0
-"damage_reduction": 0.05
-}
-percent_modifiers = {
-"status_resistance": 0.04
-}

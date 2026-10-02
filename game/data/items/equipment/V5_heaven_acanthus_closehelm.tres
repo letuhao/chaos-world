@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V5_heaven_acanthus_closehelm"
 display_name = "Heaven Acanthus Closehelm"
 category = &"equipment"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 27.22},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:d2_void_serpent"])
-percent_modifiers = {
-"poise": 0.06
-}

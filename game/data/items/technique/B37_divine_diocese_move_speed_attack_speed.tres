@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B37_divine_diocese_move_speed_attack_speed"
 display_name = "Divine Diocese Move Speed Attack Speed"
 category = &"technique"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.03},
+	{"option_id": &"core_attack_speed", "value": 0.05},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"move_speed": 0.03,
-"attack_speed": 0.05
-}

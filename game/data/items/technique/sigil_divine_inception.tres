@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"sigil_divine_inception"
 display_name = "Divine Inception Sigil"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"sigil"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"boss:body_dao_ancestor_guardian"])
-percent_modifiers = {
-"cultivation_rate": 0.11
-}

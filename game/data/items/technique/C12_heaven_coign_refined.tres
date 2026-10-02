@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"C12_heaven_coign_refined"
 display_name = "Heaven Coign Refined"
 category = &"technique"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_cost_reduction", "value": 0.02},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"draft"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:C12_heaven_coign_refined_recipe"])
-percent_modifiers = {
-"qi_cost_reduction": 0.06
-}

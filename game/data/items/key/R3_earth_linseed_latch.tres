@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"R3_earth_linseed_latch"
 display_name = "Earth Linseed Latch"
 category = &"key"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"talisman"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])

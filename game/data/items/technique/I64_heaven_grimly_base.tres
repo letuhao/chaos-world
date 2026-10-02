@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I64_heaven_grimly_base"
+display_name = "Heaven Grimly Base"
+category = &"technique"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"mantra"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:I64_heaven_grimly_base_recipe", &"quest:I64_heaven_grimly_line"])

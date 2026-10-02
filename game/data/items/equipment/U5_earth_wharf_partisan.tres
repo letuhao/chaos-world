@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U5_earth_wharf_partisan"
 display_name = "Earth Wharf Partisan"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 18.16},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"boss:qi_spirit_sovereign_warden"])
-percent_modifiers = {
-"max_qi": 0.06
-}

@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"O9_earth_basalt_perfected"
 display_name = "Earth Basalt Perfected"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 22.09},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:O9_earth_basalt_perfected_recipe"])
-percent_modifiers = {
-"spirit": 0.17
-}

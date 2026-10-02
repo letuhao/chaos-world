@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"alchemy_iron_food"
 display_name = "Iron Food"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 20},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"earth"
 sources = Array[StringName]([&"craft:alchemy_iron_food_recipe"])
-flat_modifiers = {
-"max_stamina": 20.0
-}

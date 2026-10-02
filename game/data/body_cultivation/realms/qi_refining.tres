@@ -7,9 +7,10 @@ script = ExtResource("1")
 id = &"qi_refining"
 breakthrough_item = &"body_qi_refining_breakthrough_pill"
 strengthening_item = &"body_qi_refining_channel_elixir"
-progress_required = 100.0
+recovery_item = &"body_qi_refining_recovery_elixir"
+progress_required = 40.0
 physique_required = 10.0
-quality_required = 0.50
+quality_required = 0.400000
 quality_target = 0.400000
 integrity_target = 0.450000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen"])
@@ -20,13 +21,11 @@ rewards = {
 "physique": 2.0,
 "organ_vitality": 1.0
 }
-power_budget = 1.00
-capacity_factor = 1.00
-throughput_factor = 1.00
-technique_factor = 1.00
-work_required = 0.0
-acupoint_work = 20.0
-meridian_work = 15.0
+work_required = 40.0
+acupoint_work = 10.0
+meridian_work = 10.0
 insight_required = 10.0
 resonance_rank = 0
-channel_training = Array[StringName]([])
+chance_base = 0.55
+chance_cap = 0.95
+channel_training = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen"])

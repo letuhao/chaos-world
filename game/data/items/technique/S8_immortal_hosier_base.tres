@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"S8_immortal_hosier_base"
 display_name = "Immortal Hosier Base"
 category = &"technique"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 19.34},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:S8_immortal_hosier_base_recipe", &"quest:S8_immortal_hosier_line"])
-percent_modifiers = {
-"comprehension": 0.03
-}

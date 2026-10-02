@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"X15_immortal_assay_simple"
 display_name = "Immortal Assay Simple"
 category = &"key"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"talisman"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"quest:Y26_route"])

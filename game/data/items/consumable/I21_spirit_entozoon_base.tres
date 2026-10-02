@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I21_spirit_entozoon_base"
 display_name = "Spirit Entozoon Base"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 15.82},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"tincture"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:I21_spirit_entozoon_base_recipe", &"quest:I21_spirit_entozoon_line"])
-percent_modifiers = {
-"spirit": 0.03
-}

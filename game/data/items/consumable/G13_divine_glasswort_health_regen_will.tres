@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"G13_divine_glasswort_health_regen_will"
 display_name = "Divine Glasswort Health regen Will"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 51.54},
+	{"option_id": &"base_will", "value": 51.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"health_regen": 0.061,
-"will": 0.055
-}

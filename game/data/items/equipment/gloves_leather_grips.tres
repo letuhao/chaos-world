@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"gloves_leather_grips"
 display_name = "Leather Grips"
 category = &"equipment"
+rarity = &"common"
+realm = &"tribulation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 4},
+	{"option_id": &"core_defense_physical", "value": 3},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:gloves_leather_grips_recipe"])
-flat_modifiers = {
-"attack_physical": 4.0,
-"defense_physical": 3.0
-}

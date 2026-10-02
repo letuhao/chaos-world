@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V2_divine_abbey_gonfalon"
 display_name = "Divine Abbey Gonfalon"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 16.62},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"boss:E10_primordial_sentinel"])
-percent_modifiers = {
-"defense_physical": 0.06
-}

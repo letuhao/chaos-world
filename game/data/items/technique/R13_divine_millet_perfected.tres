@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"R13_divine_millet_perfected"
 display_name = "Divine Millet Perfected"
 category = &"technique"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 50.18},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"formula"
 grade = &"divine"
 sources = Array[StringName]([&"craft:R13_divine_millet_perfected_recipe"])
-percent_modifiers = {
-"aptitude": 0.17
-}

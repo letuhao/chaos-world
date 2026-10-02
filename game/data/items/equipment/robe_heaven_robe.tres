@@ -7,15 +7,17 @@ script = ExtResource("1_item")
 id = &"robe_heaven_robe"
 display_name = "Heaven Robe"
 category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 35},
+	{"option_id": &"core_max_qi", "value": 28.88},
+	{"option_id": &"core_qi_regen", "value": 28.88},
+	{"option_id": &"core_status_resistance", "value": 0.02},
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:robe_heaven_robe_recipe"])
-flat_modifiers = {
-"defense_spiritual": 35.0,
-"max_qi": 90.0
-}
-percent_modifiers = {
-"qi_regen": 0.1,
-"status_resistance": 0.08,
-"cultivation_rate": 0.08
-}

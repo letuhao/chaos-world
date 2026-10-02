@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"J5_mortal_thunder_base"
 display_name = "Mortal Thunder Base"
 category = &"consumable"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 6.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"tincture"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:J5_mortal_thunder_base_recipe"])
-percent_modifiers = {
-"dao_heart": 0.04
-}

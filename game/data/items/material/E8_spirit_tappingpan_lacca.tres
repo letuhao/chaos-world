@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"E8_spirit_tappingpan_lacca"
 display_name = "Spirit Tappingpan Lacca"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"resin"
 grade = &"spirit"
 sources = Array[StringName]([&"gather"])

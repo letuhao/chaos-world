@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U21_heaven_barrow_base"
 display_name = "Heaven Barrow Base"
 category = &"technique"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 28.88},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:U21_heaven_barrow_base_recipe", &"quest:U21_heaven_barrow_line"])
-percent_modifiers = {
-"physique": 0.03
-}

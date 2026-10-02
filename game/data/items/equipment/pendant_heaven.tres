@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"pendant_heaven"
 display_name = "Heaven Pendant"
 category = &"equipment"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 36.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:pendant_heaven_recipe"])
-flat_modifiers = {
-"max_qi": 90.0
-}

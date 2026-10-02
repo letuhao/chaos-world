@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F3_mortal_cummin_physique_dao_heart_loot_bonus_health_regen"
 display_name = "Mortal Cummin Physique Dao Heart Loot Bonus Health Regen"
 category = &"consumable"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 8.25},
+	{"option_id": &"core_dao_heart", "value": 8.25},
+	{"option_id": &"core_loot_bonus", "value": 0.03},
+	{"option_id": &"core_health_regen", "value": 8.25},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"physique": 0.05,
-"dao_heart": 0.07,
-"loot_bonus": 0.03,
-"health_regen": 0.05
-}

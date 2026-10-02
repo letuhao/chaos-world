@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"banner_celestial_ward"
 display_name = "Celestial Ward Banner"
 category = &"equipment"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 22},
+	{"option_id": &"core_damage_reduction", "value": 0.05},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:banner_celestial_ward_recipe"])
-flat_modifiers = {
-"defense_spiritual": 22.0
-"damage_reduction": 0.05
-}

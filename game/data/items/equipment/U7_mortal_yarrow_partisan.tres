@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U7_mortal_yarrow_partisan"
 display_name = "Mortal Yarrow Partisan"
 category = &"equipment"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"boss:F1_foundation_warden"])
-percent_modifiers = {
-"defense_physical": 0.06
-}

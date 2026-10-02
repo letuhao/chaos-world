@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"treasure_iron_sage_relic"
 display_name = "Iron Sage Reliquary Treasure"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 20},
+	{"option_id": &"core_damage_reduction", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"gather", &"quest:A42_route"])
-flat_modifiers = {
-"defense_physical": 20.0
-"damage_reduction": 0.04
-}

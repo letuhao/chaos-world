@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"I30_spirit_flotsam_base"
 display_name = "Spirit Flotsam Base"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 13.75},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:I30_spirit_flotsam_base_recipe", &"quest:I30_spirit_flotsam_line"])
-percent_modifiers = {
-"max_health": 0.03
-}

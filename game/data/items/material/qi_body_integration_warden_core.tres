@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"qi_body_integration_warden_core"
 display_name = "Body Integration Warden Core"
 category = &"material"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:qi_body_integration_warden"])

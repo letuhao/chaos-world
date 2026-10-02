@@ -7,11 +7,15 @@ script = ExtResource("1_item")
 id = &"stele_immortal_stone"
 display_name = "Immortal Stele"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 42},
+	{"option_id": &"core_defense_spiritual", "value": 40},
+	{"option_id": &"core_poise", "value": 13},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"boss:E7_earth_warden", &"boss:F13_earth_warden", &"boss:qi_great_luo_warden"])
-flat_modifiers = {
-"defense_physical": 42.0,
-"defense_spiritual": 40.0,
-"poise": 13.0
-}

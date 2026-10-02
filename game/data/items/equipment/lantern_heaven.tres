@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"lantern_heaven"
 display_name = "Heaven Lantern"
 category = &"equipment"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 26.4},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:lantern_heaven_recipe"])
-flat_modifiers = {
-"max_qi": 80.0
-}

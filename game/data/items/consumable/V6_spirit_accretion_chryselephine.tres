@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V6_spirit_accretion_chryselephine"
 display_name = "Spirit Accretion Chryselephine"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 14.44},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:relic_ash_wyrm"])
-percent_modifiers = {
-"attack_physical": 0.06
-}

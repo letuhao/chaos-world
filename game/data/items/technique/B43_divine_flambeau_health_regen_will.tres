@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B43_divine_flambeau_health_regen_will"
 display_name = "Divine Flambeau Health Regen Will"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 36.58},
+	{"option_id": &"base_will", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"formula"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"health_regen": 0.03,
-"will": 0.05
-}

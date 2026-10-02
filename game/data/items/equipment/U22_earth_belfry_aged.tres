@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U22_earth_belfry_aged"
 display_name = "Earth Belfry Aged"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 30.23},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:U22_earth_belfry_aged_recipe"])
-percent_modifiers = {
-"qi_absorption": 0.09
-}

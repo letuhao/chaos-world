@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"boots_heaven"
 display_name = "Heaven Boots"
 category = &"equipment"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+	{"option_id": &"core_max_stamina", "value": 20},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:boots_heaven_recipe"])
-flat_modifiers = {
-"move_speed": 18.0,
-"max_stamina": 20.0
-}

@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F22_earth_equipoise_agility_attack_speed_crit_damage_max_stamina"
 display_name = "Earth Equipoise Agility Attack speed Crit damage Max stamina"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 19.8},
+	{"option_id": &"core_attack_speed", "value": 0.05},
+	{"option_id": &"core_crit_damage", "value": 0.04},
+	{"option_id": &"core_max_stamina", "value": 19.8},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.03,
-"attack_speed": 0.05,
-"crit_damage": 0.07,
-"max_stamina": 0.03
-}

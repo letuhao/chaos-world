@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"boots_gale"
 display_name = "Gale Boots"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+	{"option_id": &"core_attack_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:boots_gale_recipe"])
-flat_modifiers = {
-"move_speed": 15.0
-}
-percent_modifiers = {
-"attack_speed": 0.08
-}

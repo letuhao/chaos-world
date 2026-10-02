@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"totem_jade_serpent_shield"
 display_name = "Jade Serpent Shield"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 21.25},
+	{"option_id": &"core_damage_reduction", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:totem_jade_serpent", &"boss:d6_jade_serpent"])
-flat_modifiers = {
-"defense_spiritual": 30.0
-"damage_reduction": 0.04
-}

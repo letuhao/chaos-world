@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"J10_spirit_scale_base"
 display_name = "Spirit Scale Base"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_damage", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:J10_spirit_scale_base_recipe"])
-percent_modifiers = {
-"crit_damage": 0.04
-}

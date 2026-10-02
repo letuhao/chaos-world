@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"R5_spirit_longbow_cabinet"
 display_name = "Spirit Longbow Cabinet"
 category = &"misc"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"token"
 grade = &"spirit"
 sources = Array[StringName]([&"quest"])

@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F31_mortal_flote_comprehension_max_health_penetration_qi_cost_reduction"
 display_name = "Mortal Flote Comprehension Max health Penetration Qi cost reduction"
 category = &"consumable"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 7.7},
+	{"option_id": &"core_max_health", "value": 7.7},
+	{"option_id": &"core_penetration", "value": 7.7},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"comprehension": 0.05,
-"max_health": 0.07,
-"penetration": 0.03,
-"qi_cost_reduction": 0.05
-}

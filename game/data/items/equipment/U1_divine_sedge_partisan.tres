@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U1_divine_sedge_partisan"
 display_name = "Divine Sedge Partisan"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 22.18},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"boss:body_true_immortal_guardian"])
-percent_modifiers = {
-"defense_physical": 0.06
-}

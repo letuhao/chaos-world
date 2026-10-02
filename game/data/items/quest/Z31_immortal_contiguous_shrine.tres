@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"Z31_immortal_contiguous_shrine"
 display_name = "Immortal Contiguous Shrine"
 category = &"quest"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"relic"
 grade = &"immortal"
 sources = Array[StringName]([&"gather"])

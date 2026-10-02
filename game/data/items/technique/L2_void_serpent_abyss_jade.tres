@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"L2_void_serpent_abyss_jade"
 display_name = "Void Serpent Abyss Jade Slip"
 category = &"technique"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 26.95},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:d2_void_serpent"])
-percent_modifiers = {
-"attack_spiritual": 0.08
-}

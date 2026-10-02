@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"C27_mortal_tanneryhouse_morocco"
 display_name = "Mortal Tanneryhouse Morocco"
 category = &"material"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"hide"
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])

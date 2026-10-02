@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"C22_heaven_corbie_cooldown_reduction_crit_chance_penetration"
 display_name = "Heaven Corbie Cooldown Reduction Crit Chance Penetration"
 category = &"consumable"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+	{"option_id": &"core_crit_chance", "value": 0.03},
+	{"option_id": &"core_penetration", "value": 25.58},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"heaven"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"cooldown_reduction": 0.07,
-"crit_chance": 0.03,
-"penetration": 0.05
-}

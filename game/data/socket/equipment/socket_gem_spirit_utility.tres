@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"socket_gem_spirit_utility"
+display_name = "Spirit Utility Gem"
+category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 14.44},
+	{"option_id": &"core_qi_regen", "value": 14.44},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
+subcategory = &"gem"
+stackable = false
+grade = &"spirit"
+sources = Array[StringName]([&"gather"])
+value = 60
+tags = Array[StringName]([&"socket_item", &"socket_kind:utility"])
+description = "Socket item. Utility gem; while its host is worn it adds qi capacity and qi regeneration."

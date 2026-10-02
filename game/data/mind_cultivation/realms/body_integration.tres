@@ -8,6 +8,7 @@ id = &"body_integration"
 breakthrough_item = &"mind_body_integration_breakthrough_pill"
 training_item = &"mind_body_integration_channel_elixir"
 sea_catalyst = &"mind_body_integration_sea_catalyst"
+recovery_item = &"mind_body_integration_recovery_elixir"
 progress_required = 1344.0
 comprehension_required = 118.0
 clarity_required = 0.49

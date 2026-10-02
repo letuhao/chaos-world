@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"oath_steel_vow"
 display_name = "Oath of Steel"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 11},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"quest:oath_of_steel", &"boss:F11_unity_warden", &"boss:qi_spirit_sovereign_warden"])
-flat_modifiers = {
-"defense_physical": 11.0
-}

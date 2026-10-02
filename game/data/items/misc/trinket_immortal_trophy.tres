@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"trinket_immortal_trophy"
 display_name = "Immortal Trophy"
 category = &"misc"
+rarity = &"legendary"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"trophy"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"boss:body_mystic_immortal_guardian"])

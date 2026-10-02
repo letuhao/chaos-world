@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"X19_immortal_benefice_decree"
 display_name = "Immortal Benefice Decree"
 category = &"currency"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"quest:Y26_route"])

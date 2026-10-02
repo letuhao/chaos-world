@@ -1,0 +1,698 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SCRIPT ERROR: Invalid call. Nonexistent function 'add' in base 'Nil'.
+   at: _stock (res://tests/modules/body_cultivation/test_breakthrough_attempt.gd:24)
+   GDScript backtrace (most recent call first):
+       [0] _stock (res://tests/modules/body_cultivation/test_breakthrough_attempt.gd:24)
+       [1] test_milestone_bonuses_are_not_reawarded_on_load (res://tests/modules/body_cultivation/test_breakthrough_attempt.gd:282)
+       [2] _initialize (res://tests/run_tests.gd:24)
+ERROR: qi traversal did not reach the terminal realm
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] test_qi_full_traversal_all_30_realms (res://tests/modules/qi_cultivation/test_full_traversal.gd:183)
+       [1] _initialize (res://tests/run_tests.gd:24)
+SCRIPT ERROR: Invalid call. Nonexistent function 'is_stable' in base 'Nil'.
+   at: test_qi_high_tier_commits_its_own_anchors (res://tests/modules/qi_cultivation/test_full_traversal.gd:227)
+   GDScript backtrace (most recent call first):
+       [0] test_qi_high_tier_commits_its_own_anchors (res://tests/modules/qi_cultivation/test_full_traversal.gd:227)
+       [1] _initialize (res://tests/run_tests.gd:24)
+SCRIPT ERROR: Invalid call. Nonexistent function 'is_complete' in base 'Nil'.
+   at: test_qi_transcendent_tier_commits_world_and_ascension (res://tests/modules/qi_cultivation/test_full_traversal.gd:247)
+   GDScript backtrace (most recent call first):
+       [0] test_qi_transcendent_tier_commits_world_and_ascension (res://tests/modules/qi_cultivation/test_full_traversal.gd:247)
+       [1] _initialize (res://tests/run_tests.gd:24)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: preview ready for earth_immortal: ["tribulation_not_complete"]: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: breakthrough succeeded for earth_immortal: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to earth_immortal: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: visited all 30 realms: expected 30, got 65
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced 29 times: expected 29, got 64
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: at the terminal realm: expected primordial_origin, got earth_immortal
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: no realm after R30: expected <null>, got ():<Resource#-9223371974409976096>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: entered R19: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to R19: expected earth_immortal, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: R19 committed the inside world: expected not <null>, got <null>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: reached the last immortal realm: expected immortal_sovereign, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: entered the Transcendent tier: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: advanced to R28: expected transcendent, got spirit_ascension
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: R28 committed the micro world: expected not <null>, got <null>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/modules/qi_cultivation/test_full_traversal.gd :: R28 committed the ascension: expected not <null>, got <null>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+SCRIPT ERROR: Invalid call. Nonexistent function 'summary' in base 'Nil'.
+   at: test_vitals_row_is_empty_without_state (res://tests/ui/test_body_cultivation_panel.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] test_vitals_row_is_empty_without_state (res://tests/ui/test_body_cultivation_panel.gd:194)
+       [1] _initialize (res://tests/run_tests.gd:24)
+SCRIPT ERROR: Invalid call. Nonexistent function 'set_state' in base 'Nil'.
+   at: test_vitals_row_nests_under_the_screen_summary (res://tests/ui/test_body_cultivation_panel.gd:202)
+   GDScript backtrace (most recent call first):
+       [0] test_vitals_row_nests_under_the_screen_summary (res://tests/ui/test_body_cultivation_panel.gd:202)
+       [1] _initialize (res://tests/run_tests.gd:24)
+SCRIPT ERROR: Invalid access to property or key 'has_actor' on a base object of type 'Dictionary'.
+   at: test_summary_is_empty_without_an_actor (res://tests/ui/test_item_workbench.gd:105)
+   GDScript backtrace (most recent call first):
+       [0] test_summary_is_empty_without_an_actor (res://tests/ui/test_item_workbench.gd:105)
+       [1] _initialize (res://tests/run_tests.gd:24)
+SCRIPT ERROR: Invalid access to property or key 'focus_target' on a base object of type 'Dictionary'.
+   at: test_the_screen_stack_sets_the_initial_focus_for_a_pushed_screen (res://tests/ui/test_screen_stack.gd:123)
+   GDScript backtrace (most recent call first):
+       [0] test_the_screen_stack_sets_the_initial_focus_for_a_pushed_screen (res://tests/ui/test_screen_stack.gd:123)
+       [1] _initialize (res://tests/run_tests.gd:24)
+ERROR: res://tests/ui/test_screen_stack.gd :: the workbench is live: expected ItemWorkbench, got @PanelContainer@341
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/ui/test_screen_stack.gd :: focus routed to the top screen: expected ItemWorkbench, got @PanelContainer@341
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+ERROR: res://tests/ui/test_screen_stack.gd :: the stack routed focus to it: expected ItemWorkbench, got @PanelContainer@354
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+Results: 7495 passed, 156 failed
+ERROR: 4 RID allocations of type 'N16RendererViewport8ViewportE' were leaked at exit.
+WARNING: 4 RIDs of type "Canvas" were leaked.
+   at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2735)
+ERROR: 11 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 126 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.
+WARNING: 202 RIDs of type "CanvasItem" were leaked.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+   at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2735)
+WARNING: 688 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 43 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game --import
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd

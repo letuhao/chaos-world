@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"C1_mortal_choux_base"
 display_name = "Mortal Choux Base"
 category = &"technique"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_damage_reduction", "value": 0.03},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:C1_mortal_choux_base_recipe", &"quest:C1_mortal_choux_line"])
-flat_modifiers = {
-"damage_reduction": 0.03
-}

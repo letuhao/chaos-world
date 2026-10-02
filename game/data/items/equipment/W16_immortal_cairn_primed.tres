@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"W16_immortal_cairn_primed"
 display_name = "Immortal Cairn Primed"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 30.8},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"craft:W16_immortal_cairn_primed_recipe"])
-percent_modifiers = {
-"qi_absorption": 0.13
-}

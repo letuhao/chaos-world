@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"C19_mortal_comfrey_comprehension_agility_stamina_regen"
 display_name = "Mortal Comfrey Comprehension Agility Stamina Regen"
 category = &"technique"
+rarity = &"common"
+realm = &"tribulation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 9.9},
+	{"option_id": &"base_agility", "value": 9.9},
+	{"option_id": &"core_stamina_regen", "value": 9.9},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"comprehension": 0.05,
-"agility": 0.07,
-"stamina_regen": 0.03
-}

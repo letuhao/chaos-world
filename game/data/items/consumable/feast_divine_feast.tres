@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"feast_divine_feast"
 display_name = "Divine Feast"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"quest:W23_route"])
-flat_modifiers = {
-"max_health": 220.0
-}

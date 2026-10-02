@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I36_mortal_foxed_primed"
 display_name = "Mortal Foxed Primed"
 category = &"consumable"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I36_mortal_foxed_primed_recipe"])
-percent_modifiers = {
-"crit_chance": 0.13
-}

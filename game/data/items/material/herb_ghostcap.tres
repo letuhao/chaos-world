@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"herb_ghostcap"
 display_name = "Ghostcap"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"boss:d1_venom_serpent_fledgling"])

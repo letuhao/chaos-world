@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I52_mortal_gigot_base"
 display_name = "Mortal Gigot Base"
 category = &"technique"
+rarity = &"common"
+realm = &"tribulation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 9.9},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"sigil"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I52_mortal_gigot_base_recipe", &"quest:I52_mortal_gigot_line"])
-percent_modifiers = {
-"spirit": 0.03
-}

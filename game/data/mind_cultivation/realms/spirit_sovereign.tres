@@ -8,6 +8,7 @@ id = &"spirit_sovereign"
 breakthrough_item = &"mind_spirit_sovereign_breakthrough_pill"
 training_item = &"mind_spirit_sovereign_channel_elixir"
 sea_catalyst = &"mind_spirit_sovereign_sea_catalyst"
+recovery_item = &"mind_spirit_sovereign_recovery_elixir"
 progress_required = 5572.0
 comprehension_required = 618.0
 clarity_required = 0.64

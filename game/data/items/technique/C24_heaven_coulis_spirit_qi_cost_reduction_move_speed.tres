@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"C24_heaven_coulis_spirit_qi_cost_reduction_move_speed"
 display_name = "Heaven Coulis Spirit Qi Cost Reduction Move Speed"
 category = &"technique"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 29.7},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.05},
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"draft"
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"spirit": 0.03,
-"qi_cost_reduction": 0.05,
-"move_speed": 0.07
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"scrollcase_immortal_codex"
 display_name = "Immortal Codex Case"
 category = &"technique"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"boss:E8_luo_warden"])
-percent_modifiers = {
-"insight_gain": 0.1
-}

@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"W4_immortal_arbour_flux"
 display_name = "Immortal Arbour Flux"
 category = &"material"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"bone"
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"quest:Y24_route"])

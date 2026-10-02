@@ -7,14 +7,16 @@ script = ExtResource("1_item")
 id = &"pauldron_celestial"
 display_name = "Celestial Pauldrons"
 category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 22},
+	{"option_id": &"core_defense_spiritual", "value": 18},
+	{"option_id": &"core_poise", "value": 8},
+	{"option_id": &"core_max_health", "value": 17.06},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:pauldron_celestial_recipe"])
-flat_modifiers = {
-"defense_physical": 22.0,
-"defense_spiritual": 18.0,
-"poise": 8.0
-}
-percent_modifiers = {
-"max_health": 0.06
-}

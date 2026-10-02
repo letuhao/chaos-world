@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F32_immortal_foley_crit_damage_defense_physical_qi_cost_reduction_stamina_regen"
 display_name = "Immortal Foley Crit damage Defense physical Qi cost reduction Stamina regen"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_damage", "value": 0.05},
+	{"option_id": &"core_defense_physical", "value": 26.95},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.03},
+	{"option_id": &"core_stamina_regen", "value": 26.95},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"crit_damage": 0.05,
-"defense_physical": 0.07,
-"qi_cost_reduction": 0.03,
-"stamina_regen": 0.05
-}

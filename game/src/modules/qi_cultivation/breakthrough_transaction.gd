@@ -60,17 +60,17 @@ static func preview(actor: Actor) -> Dictionary:
 		var channel := actor.meridians.get_meridian(meridian_id)
 		if channel == null or not channel.meets(seed.required_channel_state):
 			result["unmet_conditions"].append("channel_not_ready:%s" % meridian_id)
-	# Tier gates
-	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD:
-		if actor.tribulation == null or not actor.tribulation.is_complete():
-			result["unmet_conditions"].append("tribulation_not_complete")
-		if actor.inside_world == null or not actor.inside_world.is_stable():
-			result["unmet_conditions"].append("inside_world_not_stable")
-	if target.index >= Breakthrough.TRANSCENDENT_REALM_THRESHOLD:
-		if actor.world == null or not actor.world.is_stable():
-			result["unmet_conditions"].append("world_not_stable")
-		if actor.ascension == null or not actor.ascension.is_complete():
-			result["unmet_conditions"].append("ascension_not_complete")
+	# Tier gates. These delegate to the same `Breakthrough` predicates `execute`
+	# enforces, so the preview can never disagree with the transaction about
+	# whether a realm is enterable (ADR 0032).
+	if not Breakthrough.tribulation_ok(actor, target.index):
+		result["unmet_conditions"].append("tribulation_not_complete")
+	if not Breakthrough.inside_world_ok(actor, target.index):
+		result["unmet_conditions"].append("inside_world_not_stable")
+	if not Breakthrough.world_ok(actor, target.index):
+		result["unmet_conditions"].append("world_not_stable")
+	if not Breakthrough.ascension_ok(actor, target.index):
+		result["unmet_conditions"].append("ascension_not_complete")
 
 	# Calculate chance
 	var chance := clampf(
@@ -87,12 +87,20 @@ static func preview(actor: Actor) -> Dictionary:
 ## Execute the breakthrough. Returns true on success, false on failure.
 ## On failure, applies deviation consequences (progress loss, dantian damage,
 ## channel damage). The pill is consumed regardless of outcome.
+##
+## This is the production entry point, so it re-validates the full condition
+## set rather than trusting the caller to have previewed first. Without that,
+## two calls in one frame would advance two realms on a single pill with no
+## progress, quality, channels, or tier gates checked.
 static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	var state := actor.path(QiPath.PATH_ID)
 	if state == null:
 		return false
 	var target := RealmDefaults.ladder().next(state.rank_id)
 	if target == null:
+		return false
+	var condition := QiBreakthroughCondition.new()
+	if not Breakthrough.can_advance(actor, QiPath.PATH_ID, condition):
 		return false
 	var seed := QiRealmSeed.for_realm(target.id)
 	var dantian := QiCultivationApi.dantian(actor)
@@ -109,7 +117,17 @@ static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	if roll >= chance:
 		_deviate(actor, state, seed, dantian, rng)
 		return false
-	# Success: grant rewards and advance
+	# Advance through the cumulative tier gate so no Immortal+/Transcendent+ gate
+	# can be side-stepped. The condition was validated before the pill was
+	# consumed, so it is not re-checked here — re-running it would fail on the
+	# already-consumed pill.
+	#
+	# This runs BEFORE anything is granted or emptied. The gate is the only thing
+	# that can still refuse at this point, and a refusal must leave the actor
+	# exactly as it was found: no realm, no rewards, no drained reservoir.
+	var advanced := Breakthrough.try_advance_gated(actor, QiPath.PATH_ID)
+	if not advanced:
+		return false
 	for key in seed.rewards:
 		var id := StringName(key)
 		actor.stats.set_base(id, actor.stats.get_base(id) + float(seed.rewards[key]))
@@ -117,10 +135,12 @@ static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	var pool := actor.resource(QiStats.QI)
 	if pool != null:
 		pool.current = 0.0
-	Breakthrough.try_advance(actor, QiPath.PATH_ID)
 	QiTraining.synchronize(actor)
 	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD and actor.tribulation != null:
 		actor.tribulation.apply_result(actor, true)
+	# Entering a high tier *commits* the milestone it produces; the next tier
+	# gates on it (ADR 0018-0021).
+	WorldAnchor.commit(actor, target.index)
 	actor.mark_stats_dirty()
 	return true
 

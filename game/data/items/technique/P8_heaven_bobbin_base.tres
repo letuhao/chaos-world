@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"P8_heaven_bobbin_base"
 display_name = "Heaven Bobbin Base"
 category = &"technique"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:P8_heaven_bobbin_base_recipe"])
-percent_modifiers = {
-"move_speed": 0.03
-}

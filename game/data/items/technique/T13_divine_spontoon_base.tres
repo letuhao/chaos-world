@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"T13_divine_spontoon_base"
 display_name = "Divine Spontoon Base"
 category = &"technique"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 16.18},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"divine"
 sources = Array[StringName]([&"craft:T13_divine_spontoon_base_recipe", &"quest:T13_divine_spontoon_line"])
-percent_modifiers = {
-"penetration": 0.03
-}

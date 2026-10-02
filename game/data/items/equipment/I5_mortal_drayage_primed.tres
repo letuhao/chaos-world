@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"I5_mortal_drayage_primed"
 display_name = "Mortal Drayage Primed"
 category = &"equipment"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I5_mortal_drayage_primed_recipe"])
-percent_modifiers = {
-"attack_physical": 0.13
-}

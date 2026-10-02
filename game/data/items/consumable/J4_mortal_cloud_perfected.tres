@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"J4_mortal_cloud_perfected"
 display_name = "Mortal Cloud Perfected"
 category = &"consumable"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 6.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:J4_mortal_cloud_perfected_recipe"])
-percent_modifiers = {
-"comprehension": 0.14
-}

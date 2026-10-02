@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"T23_earth_vervain_perfected"
 display_name = "Earth Vervain Perfected"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"earth"
 sources = Array[StringName]([&"craft:T23_earth_vervain_perfected_recipe"])
-percent_modifiers = {
-"move_speed": 0.17
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I15_spirit_eelgrass_aged"
 display_name = "Spirit Eelgrass Aged"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_fortune", "value": 17.88},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"sigil"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:I15_spirit_eelgrass_aged_recipe"])
-percent_modifiers = {
-"fortune": 0.09
-}

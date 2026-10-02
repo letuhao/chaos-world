@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V20_divine_apogee_aged"
 display_name = "Divine Apogee Aged"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"sigil"
 grade = &"divine"
 sources = Array[StringName]([&"craft:V20_divine_apogee_aged_recipe"])
-percent_modifiers = {
-"agility": 0.09
-}

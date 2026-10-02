@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"oath_deep_vow"
 display_name = "Oath of the Deep"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 28.87},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"quest:oath_of_the_deep", &"boss:E9_sovereign_warden"])
-flat_modifiers = {
-"max_qi": 80.0
-}

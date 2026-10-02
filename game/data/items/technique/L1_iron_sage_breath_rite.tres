@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"L1_iron_sage_breath_rite"
 display_name = "Iron Sage Breath Rite"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+	{"option_id": &"core_cooldown_reduction", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:d1_iron_sage_disciple"])
-percent_modifiers = {
-"cultivation_rate": 0.06,
-"cooldown_reduction": 0.05
-}

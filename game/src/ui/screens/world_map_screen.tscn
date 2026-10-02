@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/ui/screens/world_map_screen.gd" id="1"]
+[ext_resource type="Script" path="res://src/ui/screens/map_graph.gd" id="2"]
+
+[node name="WorldMapScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="Layout"]
+layout_mode = 2
+theme_type_variation = &"ScreenTitle"
+text = "World Map"
+
+[node name="MapArea" type="Control" parent="Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MapGraph" type="Control" parent="Layout/MapArea"]
+layout_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("2")
+
+[node name="InfoPanel" type="PanelContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="InfoVBox" type="VBoxContainer" parent="Layout/InfoPanel"]
+layout_mode = 2
+
+[node name="InfoName" type="Label" parent="Layout/InfoPanel/InfoVBox"]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "Location Details"
+
+[node name="InfoTier" type="Label" parent="Layout/InfoPanel/InfoVBox"]
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = ""
+
+[node name="InfoFaction" type="Label" parent="Layout/InfoPanel/InfoVBox"]
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = ""
+
+[node name="InfoDanger" type="Label" parent="Layout/InfoPanel/InfoVBox"]
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = ""
+
+[node name="InfoResources" type="Label" parent="Layout/InfoPanel/InfoVBox"]
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = ""
+
+[node name="InfoInhabitants" type="Label" parent="Layout/InfoPanel/InfoVBox"]
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = ""
+
+[node name="MessageLine" type="Label" parent="Layout"]
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = ""

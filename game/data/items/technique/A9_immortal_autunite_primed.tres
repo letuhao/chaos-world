@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A9_immortal_autunite_primed"
 display_name = "Immortal Autunite Primed"
 category = &"technique"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 31.76},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"sigil"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:A9_immortal_autunite_primed_recipe"])
-percent_modifiers = {
-"physique": 0.13
-}

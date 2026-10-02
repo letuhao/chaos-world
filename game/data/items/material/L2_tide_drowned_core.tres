@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"L2_tide_drowned_core"
 display_name = "Tide Drowned Core"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:d2_tide_guardian"])

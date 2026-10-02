@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"stamregen_iron_broth"
 display_name = "Iron Vigor Broth"
 category = &"consumable"
+rarity = &"common"
+realm = &"great_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 5.52},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"quest:A42_route"])
-percent_modifiers = {
-"stamina_regen": 0.05
-}

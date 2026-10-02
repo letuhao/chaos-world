@@ -46,8 +46,10 @@ func ratio(actor: Actor) -> float:
 	return 0.0 if usable <= 0.0 else clampf(current(actor) / usable, 0.0, 1.0)
 
 
+## Full means the shared pool reached its own maximum. Turbulence lowers that
+## maximum rather than introducing a second target the reservoir cannot reach.
 func is_full(actor: Actor) -> bool:
-	return current(actor) >= effective_capacity()
+	return current(actor) >= maximum(actor) - 0.0001
 
 
 func fill(actor: Actor, amount: float) -> void:

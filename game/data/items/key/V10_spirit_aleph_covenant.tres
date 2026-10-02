@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"V10_spirit_aleph_covenant"
 display_name = "Spirit Aleph Covenant"
 category = &"key"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base"]}
 subcategory = &"talisman"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"quest:A33_route"])

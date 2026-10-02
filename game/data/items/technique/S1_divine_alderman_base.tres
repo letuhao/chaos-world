@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"S1_divine_alderman_base"
 display_name = "Divine Alderman Base"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 14.12},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"divine"
 sources = Array[StringName]([&"craft:S1_divine_alderman_base_recipe", &"quest:S1_divine_alderman_line"])
-percent_modifiers = {
-"aptitude": 0.03
-}

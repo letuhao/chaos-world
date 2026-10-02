@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"A26_immortal_auditroll_tallybook"
 display_name = "Immortal Auditroll Tallybook"
 category = &"key"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"ledger"
 grade = &"immortal"
 sources = Array[StringName]([&"gather"])

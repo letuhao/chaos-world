@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F29_divine_fireside_max_stamina_physique_qi_cost_reduction_qi_regen"
 display_name = "Divine Fireside Max stamina Physique Qi cost reduction Qi regen"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 36.58},
+	{"option_id": &"base_physique", "value": 36.58},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.05},
+	{"option_id": &"core_qi_regen", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"max_stamina": 0.07,
-"physique": 0.03,
-"qi_cost_reduction": 0.05,
-"qi_regen": 0.07
-}

@@ -7,11 +7,15 @@ script = ExtResource("1_item")
 id = &"F41_spirit_germinal_cooldown_reduction_health_regen_spirit"
 display_name = "Spirit Germinal Cooldown reduction Health regen Spirit"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.036},
+	{"option_id": &"core_health_regen", "value": 17.19},
+	{"option_id": &"base_spirit", "value": 17.19},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"cooldown_reduction": 0.036,
-"health_regen": 0.043,
-"spirit": 0.034
-}

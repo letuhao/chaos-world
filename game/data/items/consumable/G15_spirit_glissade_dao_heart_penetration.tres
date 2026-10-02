@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"G15_spirit_glissade_dao_heart_penetration"
 display_name = "Spirit Glissade Dao heart Penetration"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 19.38},
+	{"option_id": &"core_penetration", "value": 13.75},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"spirit"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"dao_heart": 0.044,
-"penetration": 0.024
-}

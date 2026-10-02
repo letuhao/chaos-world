@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"broth_primordial"
 display_name = "Primordial Broth"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"quest:W23_route"])
-flat_modifiers = {
-"max_health": 98.0
-}

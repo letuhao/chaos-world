@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"T18_heaven_toadflax_perfected"
 display_name = "Heaven Toadflax Perfected"
 category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 40.69},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:T18_heaven_toadflax_perfected_recipe"])
-percent_modifiers = {
-"agility": 0.17
-}

@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"H8_mortal_physique_totem"
 display_name = "Mortal Physique Totem"
 category = &"equipment"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:H8_mortal_physique_totem_recipe"])
-percent_modifiers = {
-"physique": 0.03
-}

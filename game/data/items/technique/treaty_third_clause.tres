@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"treaty_third_clause"
 display_name = "Treaty: Third Clause"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 17.88},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"spirit"
 sources = Array[StringName]([&"quest:treaty_third_clause"])
-percent_modifiers = {
-"qi_regen": 0.06
-}

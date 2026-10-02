@@ -36,7 +36,8 @@ def find_godot() -> str:
     )
 
 
-def run_godot(args: list[str]) -> subprocess.CompletedProcess:
+def run_godot(args: list[str], capture: bool = False) -> subprocess.CompletedProcess:
+    """Invoke Godot. With `capture`, stdout is returned instead of streamed."""
     cmd = [find_godot(), *args]
     info("$ " + " ".join(cmd))
-    return subprocess.run(cmd, text=True)
+    return subprocess.run(cmd, text=True, capture_output=capture)

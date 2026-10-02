@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"marine_frost_mantaray_wing_bone"
 display_name = "Frost Manta Ray Wing Bone"
 category = &"material"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"bone"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:marine_frost_mantaray", &"boss:d3_manta_raylet"])

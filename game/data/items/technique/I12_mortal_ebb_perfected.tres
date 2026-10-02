@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I12_mortal_ebb_perfected"
 display_name = "Mortal Ebb Perfected"
 category = &"technique"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I12_mortal_ebb_perfected_recipe"])
-percent_modifiers = {
-"cooldown_reduction": 0.17
-}

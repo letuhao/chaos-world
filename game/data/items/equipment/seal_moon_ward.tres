@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"seal_moon_ward"
 display_name = "Seal Moon Ward"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 18},
+	{"option_id": &"core_status_resistance", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:seal_moon_ward_recipe", &"boss:qi_spirit_severing_warden"])
-flat_modifiers = {
-"defense_spiritual": 18.0
-}
-percent_modifiers = {
-"status_resistance": 0.05
-}

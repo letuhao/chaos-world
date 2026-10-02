@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F20_earth_ephemeris_agility_attack_physical_breakthrough_chance_loot_bonus"
 display_name = "Earth Ephemeris Agility Attack physical Breakthrough chance Loot bonus"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 22.28},
+	{"option_id": &"core_attack_physical", "value": 22.28},
+	{"option_id": &"core_breakthrough_chance", "value": 0.05},
+	{"option_id": &"core_loot_bonus", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"sigil"
 grade = &"earth"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"agility": 0.07,
-"attack_physical": 0.03,
-"breakthrough_chance": 0.05,
-"loot_bonus": 0.07
-}

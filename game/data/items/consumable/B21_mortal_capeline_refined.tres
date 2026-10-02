@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"B21_mortal_capeline_refined"
 display_name = "Mortal Capeline Refined"
 category = &"consumable"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 6.6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:B21_mortal_capeline_refined_recipe"])
-percent_modifiers = {
-"will": 0.06
-}

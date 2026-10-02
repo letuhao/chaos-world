@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"P10_heaven_brier_aged"
 display_name = "Heaven Brier Aged"
 category = &"equipment"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 29.7},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:P10_heaven_brier_aged_recipe"])
-percent_modifiers = {
-"stamina_regen": 0.09
-}

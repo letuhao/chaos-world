@@ -1,0 +1,179 @@
+28 files already formatted
+208 files would be left unchanged
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format tools --check
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game --check
+All checks passed!
+Success: no problems found
+Success: no problems found
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE check tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdlint.EXE D:\Works\source\chaos-world\game\src
+warn src/ui/screens/item_workbench.gd: 445 lines exceeds budget 400 (SRP signal)
+warn tests/modules/body_cultivation/test_full_traversal.gd: 428 lines exceeds budget 400 (SRP signal)
+ok   boundaries ok (13620 files, 9 modules)
+ok   deferred ok (56 items)
+ok   backlog ok (83 items)
+ok   data audit clean
+ok   derived projection is current
+=== Option Target Coverage ===
+  target                                 kind       options  activations
+  agility                                core             1  equipped, learned
+  aptitude                               core             1  equipped, learned
+  attack_physical                        core             1  equipped
+  attack_speed                           core             1  equipped
+  attack_spiritual                       core             1  equipped
+  awareness                              provider         1  consumed
+  body_integrity                         provider         1  consumed
+  bone_density                           provider         1  equipped, learned
+  breakthrough_chance                    core             1  equipped
+  carry_capacity                         provider         1  equipped, learned
+  charm                                  provider         1  equipped, learned
+  comprehension                          core             1  equipped, learned
+  conception_chance                      provider         1  equipped
+  cooldown_reduction                     core             1  equipped
+  craft_potency                          property         1  crafted, property
+  craft_yield                            property         1  crafted, property
+  crit_chance                            core             1  equipped
+  crit_damage                            core             1  equipped
+  cultivation_rate                       core             1  equipped
+  damage_reduction                       core             1  equipped
+  dantian_capacity                       provider         1  equipped, learned
+  dao_heart                              core             1  equipped, learned
+  defense_physical                       core             1  equipped
+  defense_spiritual                      core             1  equipped
+  desire                                 provider         1  consumed
+  dodge_chance                           provider         1  equipped, learned
+  dual_cultivation_rate                  provider         1  equipped, learned
+  element_mastery_dark                   element          1  equipped
+  element_mastery_earth                  element          1  equipped
+  element_mastery_fire                   element          1  equipped
+  element_mastery_ice                    element          1  equipped
+  element_mastery_light                  element          1  equipped
+  element_mastery_lightning              element          1  equipped
+  element_mastery_metal                  element          1  equipped
+  element_mastery_water                  element          1  equipped
+  element_mastery_wind                   element          1  equipped
+  element_mastery_wood                   element          1  equipped
+  element_power_dark                     element          1  equipped
+  element_power_earth                    element          1  equipped
+  element_power_fire                     element          1  equipped
+  element_power_ice                      element          1  equipped
+  element_power_light                    element          1  equipped
+  element_power_lightning                element          1  equipped
+  element_power_metal                    element          1  equipped
+  element_power_water                    element          1  equipped
+  element_power_wind                     element          1  equipped
+  element_power_wood                     element          1  equipped
+  element_resistance_dark                element          1  equipped
+  element_resistance_earth               element          1  equipped
+  element_resistance_fire                element          1  equipped
+  element_resistance_ice                 element          1  equipped
+  element_resistance_light               element          1  equipped
+  element_resistance_lightning           element          1  equipped
+  element_resistance_metal               element          1  equipped
+  element_resistance_water               element          1  equipped
+  element_resistance_wind                element          1  equipped
+  element_resistance_wood                element          1  equipped
+  essence                                provider         1  consumed
+  essence_capacity                       provider         1  equipped, learned
+  essence_regen                          provider         1  equipped, learned
+  evasion                                core             1  equipped
+  fertility                              provider         1  equipped, learned
+  fortune                                core             1  equipped, learned
+  gestation_speed                        provider         1  equipped
+  health                                 resource         1  consumed
+  health_regen                           core             1  equipped
+  illusion_resistance                    provider         1  equipped, learned
+  insight_gain                           core             1  equipped, learned
+  key_reach                              property         1  property
+  loot_bonus                             core             1  equipped
+  maternal_resilience                    provider         1  equipped
+  max_health                             core             1  equipped
+  max_qi                                 core             1  equipped
+  max_stamina                            core             1  equipped
+  mental_attack                          provider         1  equipped, learned
+  mental_clarity                         provider         1  equipped, learned
+  mental_defense                         provider         1  equipped, learned
+  mind_power                             provider         1  consumed
+  move_speed                             core             1  equipped
+  muscle_fiber                           provider         1  equipped, learned
+  organ_vitality                         provider         1  equipped, learned
+  penetration                            core             1  equipped
+  perception                             provider         1  equipped, learned
+  physique                               core             1  equipped, learned
+  poise                                  core             1  equipped, learned
+  purity                                 provider         1  equipped, learned
+  qi                                     provider         1  consumed
+  qi_absorption                          core             2  equipped, learned
+  qi_affinity                            provider         1  equipped, learned
+  qi_control                             provider         1  equipped, learned
+  qi_cost_reduction                      core             1  equipped
+  qi_regen                               core             1  equipped
+  qi_regen_rate                          provider         1  equipped, learned
+  quest_potency                          property         1  property
+  regeneration                           provider         1  equipped, learned
+  spirit                                 core             1  equipped, learned
+  stamina                                resource         1  consumed
+  stamina_regen                          core             1  equipped
+  status_resistance                      core             1  equipped
+  technique_cost_reduction               provider         1  equipped, learned
+  technique_power                        provider         1  equipped, learned
+  trade_value                            property         1  property
+  tribulation_essence                    resource         1  consumed
+  will                                   core             1  equipped, learned
+
+  core       implements   34 target(s)
+  element    implements   30 target(s)
+  property   implements    5 target(s)
+  provider   implements   77 target(s)
+  resource   implements   13 target(s)
+
+ok   option coverage: 104/104 targets have an implemented consumer
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (2 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | MindCultivationApi[39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: res://tests/app/test_item_workbench_app.gd :: realized roll preserved, not rerolled: expected 11.21, got 13.31
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+SCRIPT ERROR: Invalid call. Nonexistent function 'add' in base 'Nil'.
+   at: _stock (res://tests/modules/body_cultivation/test_breakthrough_attempt.gd:24)
+   GDScript backtrace (most recent call first):
+       [0] _stock (res://tests/modules/body_cultivation/test_breakthrough_attempt.gd:24)
+       [1] test_milestone_bonuses_are_not_reawarded_on_load (res://tests/modules/body_cultivation/test_breakthrough_attempt.gd:282)
+       [2] _initialize (res://tests/run_tests.gd:24)
+ERROR: res://tests/modules/body_cultivation/test_deviation_recovery.gd :: exactly one thing is missing: Damaged channels need repair: lung, Meridians or tier gates not met: expected 1, got 2
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:28)
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game --import
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd
+fail gate failed: test
+== fmt ==
+== lint ==
+== arch ==
+== deferred ==
+== backlog ==
+== data ==
+== data ==
+== data ==
+== test ==

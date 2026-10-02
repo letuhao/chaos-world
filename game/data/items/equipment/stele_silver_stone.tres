@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"stele_silver_stone"
 display_name = "Silver Stele"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 14},
+	{"option_id": &"core_poise", "value": 4},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"boss:F12_domain_warden", &"boss:qi_spirit_palace_warden"])
-flat_modifiers = {
-"defense_physical": 14.0,
-"poise": 4.0
-}

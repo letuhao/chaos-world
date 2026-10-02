@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"monster_stone_golem_essence"
 display_name = "Stone Golem Essence"
 category = &"material"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"essence"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:monster_stone_golem", &"boss:d3_boulder_golem"])

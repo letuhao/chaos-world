@@ -15,7 +15,8 @@ Chaos World is a Godot 4 **action RPG with cultivation**. Core loop: **combat �
 game/       Godot project root (project.godot lives here). res:// is relative to game/.
   addons/   pinned editor plugins (test framework, etc.)
   src/      all GDScript, organized by layer/module (see below)
-  scenes/   app-owned scene composition; modules own their own scenes
+  src/ui/   UI program: theme, screens, widgets. Facade-only consumer of modules.
+  scenes/   app-owned scene composition; UI scenes live in src/ui/screens/
   assets/   imported art / audio / fonts
   tests/    GDScript tests, mirroring the src/ layout
   data/     content resources (.tres): items/<category>/, recipes/, bosses/, domains/, ...
@@ -32,14 +33,17 @@ Prereqs: `uv` (https://docs.astral.sh/uv/) and a Godot 4.7.x binary.
 - `uv run python -m tools lint` — static lint.
 - `uv run python -m tools arch` — enforce module boundaries + SOLID structure (facade surface, line budget).
 - `uv run python -m tools test` — run the Godot test suite headless.
+- `uv run python -m tools test --suite <substring>` — run only the suites whose path matches. **Use this while iterating.**
 - `uv run python -m tools check` — full gate, in order: `fmt --check -> lint -> arch -> deferred validate -> backlog validate -> data audit -> test`. Run before every commit; CI runs exactly this.
 - `uv run python -m tools run` — launch the game.
+- `uv run python -m tools ui screens|drive` — drive a screen headlessly and print its state as JSON; `--drive --screen <scene> --path body|qi|mind --cmd <verb>` (repeat `--cmd`). An agent inspects and plays the UI without a display.
 - `uv run python -m tools export <preset>` — export a build.
 - `uv run python -m tools new_module <name>` — scaffold a module and register it in `tools/arch/registry.json`.
 - `uv run python -m tools new_adr "<title>"` — create the next numbered ADR in `docs/adr/`.
 - `uv run python -m tools deferred report|search|add|done|validate` — inspect and maintain `docs/deferred.jsonl`.
 - `uv run python -m tools data report|audit` — inspect and audit content under `game/data/` (acquisition gaps).
 - `uv run python -m tools data distribution` — audit item characteristic distribution/diversity (category, subtype, grade, source, modifier coverage). Read-only, non-gating by default; `--fail-on warn|error` to gate. Run before planning a generation wave.
+- `uv run python -m tools cultivation seed|seed-systems|validate|report` — write missing realm-seed content (never overwrites authored files), audit the generation contract, or print the deterministic body-ladder balance report.
 
 **Godot binary is not on `PATH`.** `tools/godot.py` resolves it from `GODOT_BIN`, else the gitignored `.godot-bin` file, else `PATH`, and fails loudly if none resolve. Do not hardcode machine paths anywhere else.
 
@@ -50,8 +54,9 @@ Optimize for small verifiable steps. The repo is the source of truth; chat histo
 1. **Orient cheaply.** Read this file, then only the target module's `api.gd` and the files you will touch. Do not read the whole repo — take evidence from `tools arch` / `tools test` output instead.
 2. **State the goal in one sentence** in your reply. If it needs a design doc to explain, split it.
 3. **Ship one vertical slice**, then run `uv run python -m tools check`. Fix failures before continuing.
-4. **Record durable decisions only.** An architectural choice future agents could get wrong goes in a one-page `docs/adr/NNNN-<slug>.md`. Everything else is written nowhere.
-5. **Touch this file only when a rule changes.** Never add changelogs, status, or plan sections.
+4. **Test what you changed, not everything.** Use `tools test --suite <substring>` while building. Run the full suite only to release a finished module, or when a critical bug makes the game fail to build or load and you need the whole picture. A full run mid-build wastes minutes and reports other agents' in-flight breakage as if it were yours.
+5. **Record durable decisions only.** An architectural choice future agents could get wrong goes in a one-page `docs/adr/NNNN-<slug>.md`. Everything else is written nowhere.
+6. **Touch this file only when a rule changes.** Never add changelogs, status, or plan sections.
 
 Handoff: commit messages carry the what/why; the active goal carries the now. Do not create notes, plans, or status files.
 
@@ -79,6 +84,7 @@ Skills live at `.agents/skills/<id>/SKILL.md`; `.agents/` and `skills-lock.json`
 `game/src/` is layered. Dependencies point **downward only**, and cross-module dependencies only through a public facade.
 ```
 app/          composition root: boot, autoloads, wiring. May depend on anything.
+ui/           UI program. Depends on core + contracts, and on modules only via their facade.
 modules/<x>/  feature modules. Depend on core + contracts, and on other modules only via their facade.
 core/         foundation primitives (math, events, utils). Depends on contracts only.
 contracts/    dependency-free interfaces, value objects, event/signal contracts. Depends on nothing.
@@ -87,6 +93,7 @@ Rules enforced by `tools/arch` (defined in `tools/arch/rules.py`):
 - `contracts` and `core` must never reference `modules/` or `app/`.
 - Nothing may reference `app/` except `app/`.
 - A module may reference another module **only** through its facade `game/src/modules/<x>/api.gd`; touching any other file in that module is a violation.
+- `ui/` is a **pure consumer**: same facade-only rule, but only for the modules listed in `rules.UI_MODULES`, and it may never reference `app/`.
 - Module dependency cycles are forbidden.
 - `res://` scene/resource references follow the same rules as script references.
 - GDScript must never import from `tools/`.
@@ -98,6 +105,37 @@ Design principles to apply:
 - **Event-driven decoupling.** Cross-module communication uses typed signals/events defined in `contracts`, not direct node lookups.
 - **Minimal autoloads.** Autoloads are global singletons — keep them to documented infrastructure declared in `game/project.godot`, never feature logic. No cross-module `get_node("/root/...")`.
 - One module = one reason to change. If two modules need each other's internals, the boundary is wrong: move the shared part to `contracts`/`core`.
+
+## Realm scale: a magnitude and a rate, never one number
+There is no shared power curve. A realm's strength is authored data and lives in `core/realm_power_table.tres`, one multiplier per realm **keyed by realm id**, R1 at 1.0. Keyed by id, never by position: an inserted realm would silently shift every realm below it.
+- **A magnitude and a rate are different kinds of number.** A magnitude answers "how strong is a thing from this realm"; a rate answers "what is one unit of this realm's training worth". A rate must never track a magnitude — reading a shared exponential as a gain is what once made a single breakthrough worth more than everything else combined.
+- **Magnitudes** are owned where they belong. `RealmScaling` (core) scales the shared combat stats by `realm.power`; each path's own magnitude is authored on its own seed (`integrity_maximum`, `sea_capacity`, …) and applied once. Do not scale the same realm twice.
+- **Rates** live in each path's `realm_profile.gd` as `factor(realm_id) = RATE_STEP^ordinal`, where `ordinal` is `RealmDef.index`. Bounded by construction: `RATE_STEP^29` is under 2x. A rate needs no justification for being modest, but it does need to stay a gain.
+- **`RATE_STEP` is deliberately triplicated** — one per path — because a module may only reach another module through its `api.gd` facade, and the alternative is a shared curve. Retune all three together; nothing enforces that for you.
+- **`RATE_STEP` must stay at or below the smallest per-realm step in the authored work budget**, or the rate outruns the price and the deep realms get cheap.
+- **Guard:** `uv run python -m tools realm_power check` runs in `tools check`. It asserts the table's shape — one entry per realm, R1 at 1.0, strictly rising, finite, inside a readable range — not the recipe that filled it, so the numbers stay hand-editable. `realm_power emit --force` rewrites the file.
+- **Two per-realm tables is deliberate, not drift.** `core/realm_power_table.tres` is actor stat strength (1.0 → 551x); `game/data/item_options/item_magnitude_scale.json` is item magnitudes (1.0 → 3.9x). They measure different things — an item is not an actor — and their ranges differ because an item is a relative upgrade inside a realm/rarity band, not an absolute power claim. Never derive one from the other, and never let either compute from a realm index. Reconciling them is a new decision needing its own ADR (ADR 0050).
+- **Adding a scale is a reviewed change**, not a convenience. A new power-shaped number needs an ADR, not a second curve.
+
+## UI standard
+`ui/` is a separate program from gameplay. It renders state and calls public actions; it never owns game rules.
+- **Layout** — anchors + `Container` nodes only. Never absolute positions, never child anchors inside a container.
+- **Composition** — a screen is `.tscn` + script in `src/ui/screens/`; reusable rows live in `src/ui/panels/`. Never build widgets in `_ready()`.
+- **Theme** — one theme, `src/ui/theme/chaos_world_theme.tres`. Style by `theme_type_variation`; `theme_override_*` is banned.
+- **No `@onready` in `ui/`** — resolve nodes in `_bind_nodes()` via `get_node_or_null("%X")`; headless tests drive panels with no scene tree.
+- **No number formatting in a screen** — screens pass raw values to a panel; the panel owns `%d/%d`, decimals and widths. Step amounts live in the facade.
+- **Focus** — implement the `ScreenStack` hooks (`focus_initial`, `on_screen_shown`, `on_screen_hidden`, `on_stack_input`), never `grab_focus()` in `_ready()`.
+- **Testable contract** — every screen/panel exposes `summary() -> Dictionary`: primitives only, `{}` when no actor, child summaries nested under the child's key. Tests assert that, not pixels.
+- **No autoload** holds feature UI.
+
+`tools arch` enforces the facade rule for `ui/` by scanning bare class references, so panels call the facade by name with no `preload` ceremony. Note `items` and `body_cultivation` are at the 12-method facade cap — a new UI need there means splitting the facade, not growing it.
+
+**Split dev cycle** — gameplay and UI can be built in parallel:
+1. Gameplay publishes a facade method or `preview() -> Dictionary` answering "what is true now?".
+2. UI builds only against that contract, never module internals.
+3. Both stay green independently.
+
+Where a panel needs something the facade does not expose, add it to the facade — do not widen `ui/` to reach internals.
 
 ## SOLID workflow
 Contract-first; the composition root is the only place that knows concrete types.

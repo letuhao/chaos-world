@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"girdle_chaos"
 display_name = "Chaos Girdle"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 44},
+	{"option_id": &"core_defense_spiritual", "value": 38},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"craft:girdle_chaos_recipe"])
-flat_modifiers = {
-"defense_physical": 44.0,
-"defense_spiritual": 38.0
-}

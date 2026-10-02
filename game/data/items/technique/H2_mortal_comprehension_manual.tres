@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"H2_mortal_comprehension_manual"
 display_name = "Mortal Comprehension Manual"
 category = &"technique"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 8.25},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:H2_mortal_comprehension_manual_recipe"])
-percent_modifiers = {
-"comprehension": 0.05
-}

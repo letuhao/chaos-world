@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"L5_spirit_bloom_ember_core"
 display_name = "Spirit Bloom Ember Core"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:d5_spirit_bloom"])

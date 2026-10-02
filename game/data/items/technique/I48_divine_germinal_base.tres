@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I48_divine_germinal_base"
 display_name = "Divine Germinal Base"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_loot_bonus", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"divine"
 sources = Array[StringName]([&"craft:I48_divine_germinal_base_recipe", &"quest:I48_divine_germinal_line"])
-percent_modifiers = {
-"loot_bonus": 0.03
-}

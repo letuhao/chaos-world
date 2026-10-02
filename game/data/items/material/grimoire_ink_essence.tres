@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"grimoire_ink_essence"
 display_name = "Grimoire Ink Essence"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"essence"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"boss:succubus_spirit_guardian"])

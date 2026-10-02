@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"flute_starfall"
 display_name = "Starfall Flute"
 category = &"equipment"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 25},
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:flute_starfall_recipe"])
-flat_modifiers = {
-"attack_spiritual": 25.0
-}
-percent_modifiers = {
-"status_resistance": 0.08
-}

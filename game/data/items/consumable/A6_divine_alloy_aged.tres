@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A6_divine_alloy_aged"
 display_name = "Divine Alloy Aged"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"divine"
 sources = Array[StringName]([&"craft:A6_divine_alloy_aged_recipe"])
-percent_modifiers = {
-"cooldown_reduction": 0.09
-}

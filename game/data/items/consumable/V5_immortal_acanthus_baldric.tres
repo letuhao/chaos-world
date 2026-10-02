@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V5_immortal_acanthus_baldric"
 display_name = "Immortal Acanthus Baldric"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 32.72},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:E9_primordial_warden"])
-percent_modifiers = {
-"qi_regen": 0.06
-}

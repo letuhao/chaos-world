@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"E12_divine_pointworks_hornsheath"
 display_name = "Divine Pointworks Hornsheath"
 category = &"material"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 35.62},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"horn"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])

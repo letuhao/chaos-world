@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"F37_divine_fuchsite_health_regen_loot_bonus_will"
 display_name = "Divine Fuchsite Health regen Loot bonus Will"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 21.61},
+	{"option_id": &"core_loot_bonus", "value": 0.026},
+	{"option_id": &"base_will", "value": 21.61},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"health_regen": 0.022,
-"loot_bonus": 0.026,
-"will": 0.022
-}

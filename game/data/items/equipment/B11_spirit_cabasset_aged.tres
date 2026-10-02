@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"B11_spirit_cabasset_aged"
 display_name = "Spirit Cabasset Aged"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_damage_reduction", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:B11_spirit_cabasset_aged_recipe"])
-flat_modifiers = {
-"damage_reduction": 0.09
-}

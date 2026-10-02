@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"R19_earth_pantry_aged"
 display_name = "Earth Pantry Aged"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 15.68},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"earth"
 sources = Array[StringName]([&"craft:R19_earth_pantry_aged_recipe"])
-percent_modifiers = {
-"comprehension": 0.09
-}

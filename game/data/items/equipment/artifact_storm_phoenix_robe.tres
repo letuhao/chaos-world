@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"artifact_storm_phoenix_robe"
 display_name = "Phoenix Robe"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 23.25},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:artifact_storm_phoenix_robe_recipe"])
-flat_modifiers = {
-"defense_spiritual": 35.0
-}
-percent_modifiers = {
-"qi_cost_reduction": 0.07
-}

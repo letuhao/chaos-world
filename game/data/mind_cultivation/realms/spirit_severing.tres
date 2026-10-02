@@ -8,6 +8,7 @@ id = &"spirit_severing"
 breakthrough_item = &"mind_spirit_severing_breakthrough_pill"
 training_item = &"mind_spirit_severing_channel_elixir"
 sea_catalyst = &"mind_spirit_severing_sea_catalyst"
+recovery_item = &"mind_spirit_severing_recovery_elixir"
 progress_required = 4123.0
 comprehension_required = 426.0
 clarity_required = 0.59

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"W13_divine_bloom_aged"
 display_name = "Divine Bloom Aged"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 51.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"divine"
 sources = Array[StringName]([&"craft:W13_divine_bloom_aged_recipe"])
-percent_modifiers = {
-"max_stamina": 0.09
-}

@@ -7,11 +7,15 @@ script = ExtResource("1_item")
 id = &"F40_immortal_gaslight_crit_chance_loot_bonus_move_speed"
 display_name = "Immortal Gaslight Crit chance Loot bonus Move speed"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.029},
+	{"option_id": &"core_loot_bonus", "value": 0.047},
+	{"option_id": &"core_move_speed", "value": 0.027},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"crit_chance": 0.029,
-"loot_bonus": 0.047,
-"move_speed": 0.027
-}

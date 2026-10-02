@@ -30,7 +30,14 @@ func test_breakthrough_advances_and_rescales() -> void:
 	assert_eq(Breakthrough.try_advance(actor, &"qi", AlwaysCondition.new()), true, "advanced")
 	assert_eq(actor.path(&"qi").rank_id, &"foundation", "next realm")
 	assert_eq(actor.path(&"qi").stage, 1, "stage incremented")
-	assert_almost_eq(actor.stats.derived(Stat.MAX_HEALTH), 165.0, "realm scaling applied")
+	# The new realm's own authored multiplier, not a pasted total: 165.0 here was the
+	# old linear `1.0 + 0.1 * index` shape, already stale under ADR 0042 and now gone
+	# (ADR 0050). Read the ladder so a retune of the power table is a data edit.
+	assert_almost_eq(
+		actor.stats.derived(Stat.MAX_HEALTH),
+		150.0 * RealmDefaults.ladder().realm(&"foundation").power,
+		"realm scaling applied"
+	)
 
 
 func test_no_breakthrough_past_the_top() -> void:

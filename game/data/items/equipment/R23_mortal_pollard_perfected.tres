@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"R23_mortal_pollard_perfected"
 display_name = "Mortal Pollard Perfected"
 category = &"equipment"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:R23_mortal_pollard_perfected_recipe"])
-percent_modifiers = {
-"move_speed": 0.17
-}

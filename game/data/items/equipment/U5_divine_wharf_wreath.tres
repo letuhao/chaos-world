@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U5_divine_wharf_wreath"
 display_name = "Divine Wharf Wreath"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"boss:E10_transcendent_oracle"])
-percent_modifiers = {
-"max_qi": 0.06
-}

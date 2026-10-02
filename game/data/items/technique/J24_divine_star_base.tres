@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"J24_divine_star_base"
 display_name = "Divine Star Base"
 category = &"technique"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"divine"
 sources = Array[StringName]([&"craft:J24_divine_star_base_recipe"])
-percent_modifiers = {
-"insight_gain": 0.04
-}

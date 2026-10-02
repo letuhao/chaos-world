@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U5_immortal_wharf_regalia"
 display_name = "Immortal Wharf Regalia"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 30.8},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:E3_void_refinement_arbiter"])
-percent_modifiers = {
-"defense_spiritual": 0.06
-}

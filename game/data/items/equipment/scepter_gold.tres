@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"scepter_gold"
 display_name = "Gold Scepter"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 15.68},
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:scepter_gold_recipe"])
-flat_modifiers = {
-"attack_spiritual": 34.0
-}
-percent_modifiers = {
-"cultivation_rate": 0.07
-}

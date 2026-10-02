@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"pact_warden_token"
 display_name = "Warden's Pact Token"
 category = &"equipment"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"quest:pact_of_the_warden"])
-percent_modifiers = {
-"status_resistance": 0.06
-}

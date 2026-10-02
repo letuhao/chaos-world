@@ -1,0 +1,9 @@
+30 files already formatted
+would reformat D:\Works\source\chaos-world\game\tests\modules\mind_cultivation\test_mind_breakthrough_chance.gd
+1 file would be reformatted, 307 files would be left unchanged.
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format tools --check
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game --check
+fail gate failed: fmt
+== adr ==
+ok   adr numbers unique
+== fmt ==

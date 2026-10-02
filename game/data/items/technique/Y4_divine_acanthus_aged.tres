@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Y4_divine_acanthus_aged"
 display_name = "Divine Acanthus Aged"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_damage_reduction", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"divine"
 sources = Array[StringName]([&"craft:Y4_divine_acanthus_aged_recipe"])
-flat_modifiers = {
-"damage_reduction": 0.09
-}

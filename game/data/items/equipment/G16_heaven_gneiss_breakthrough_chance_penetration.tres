@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"G16_heaven_gneiss_breakthrough_chance_penetration"
 display_name = "Heaven Gneiss Breakthrough chance Penetration"
 category = &"equipment"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.029},
+	{"option_id": &"core_penetration", "value": 29.7},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"breakthrough_chance": 0.029,
-"penetration": 0.026
-}

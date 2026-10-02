@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U1_immortal_sedge_fragment"
 display_name = "Immortal Sedge Fragment"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 31.76},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:mind_tribulation_warden"])
-percent_modifiers = {
-"max_health": 0.06
-}

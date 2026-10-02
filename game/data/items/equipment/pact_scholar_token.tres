@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"pact_scholar_token"
 display_name = "Scholar's Pact Token"
 category = &"equipment"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.02},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"quest:pact_of_the_scholar"])
-percent_modifiers = {
-"cultivation_rate": 0.07
-}

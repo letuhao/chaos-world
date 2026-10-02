@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"K1_mortal_frost_aged"
 display_name = "Mortal Frost Aged"
 category = &"consumable"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 5.2},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:K1_mortal_frost_aged_recipe"])
-percent_modifiers = {
-"physique": 0.09
-}

@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F28_earth_ferrule_aptitude_attack_physical_loot_bonus_stamina_regen"
 display_name = "Earth Ferrule Aptitude Attack physical Loot bonus Stamina regen"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 17.33},
+	{"option_id": &"core_attack_physical", "value": 17.33},
+	{"option_id": &"core_loot_bonus", "value": 0.04},
+	{"option_id": &"core_stamina_regen", "value": 17.33},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"tincture"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"aptitude": 0.03,
-"attack_physical": 0.05,
-"loot_bonus": 0.07,
-"stamina_regen": 0.03
-}

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I65_heaven_grindstone_perfected_recipe"
+display_name = "Heaven Grindstone Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I65_heaven_grindstone_primed", &"necklace_heaven_jade", &"X25_heaven_ordinance_smelt"])
+outputs = Array[StringName]([&"I65_heaven_grindstone_perfected"])

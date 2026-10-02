@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"A30_immortal_aromatic_fumette"
 display_name = "Immortal Aromatic Fumette"
 category = &"quest"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"sachet"
 grade = &"immortal"
 sources = Array[StringName]([&"gather"])

@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"marionette_iron_needle"
 display_name = "Iron Dancer Needle"
 category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 26},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:puppet_iron_dancer"])
-flat_modifiers = {
-"attack_physical": 26.0
-}

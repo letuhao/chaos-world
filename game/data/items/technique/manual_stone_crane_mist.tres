@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"manual_stone_crane_mist"
 display_name = "Stone Crane Mist"
 category = &"technique"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"quest:A39_route"])
-percent_modifiers = {
-"status_resistance": 0.04
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"S11_heaven_ostler_base"
 display_name = "Heaven Ostler Base"
 category = &"technique"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 12.37},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:S11_heaven_ostler_base_recipe", &"quest:S11_heaven_ostler_line"])
-percent_modifiers = {
-"spirit": 0.03
-}

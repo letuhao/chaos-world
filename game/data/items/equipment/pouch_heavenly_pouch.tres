@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"pouch_heavenly_pouch"
 display_name = "Heavenly Pouch"
 category = &"equipment"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 6},
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:pouch_heavenly_pouch_recipe"])
-flat_modifiers = {
-"defense_physical": 6.0
-}
-percent_modifiers = {
-"cooldown_reduction": 0.04
-}

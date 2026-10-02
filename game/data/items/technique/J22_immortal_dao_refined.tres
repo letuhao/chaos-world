@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"J22_immortal_dao_refined"
 display_name = "Immortal Dao Refined"
 category = &"technique"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 27.92},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:J22_immortal_dao_refined_recipe"])
-percent_modifiers = {
-"aptitude": 0.07
-}

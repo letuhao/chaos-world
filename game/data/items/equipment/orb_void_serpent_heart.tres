@@ -7,13 +7,15 @@ script = ExtResource("1_item")
 id = &"orb_void_serpent_heart"
 display_name = "Void Serpent Heart"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 29.84},
+	{"option_id": &"core_max_qi", "value": 29.84},
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"boss:orb_void_serpent"])
-flat_modifiers = {
-"attack_spiritual": 85.0,
-"max_qi": 170.0
-}
-percent_modifiers = {
-"cultivation_rate": 0.08
-}

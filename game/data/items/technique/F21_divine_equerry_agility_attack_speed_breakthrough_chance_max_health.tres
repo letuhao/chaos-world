@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F21_divine_equerry_agility_attack_speed_breakthrough_chance_max_health"
 display_name = "Divine Equerry Agility Attack speed Breakthrough chance Max health"
 category = &"technique"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 35.62},
+	{"option_id": &"core_attack_speed", "value": 0.03},
+	{"option_id": &"core_breakthrough_chance", "value": 0.05},
+	{"option_id": &"core_max_health", "value": 50.18},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"formula"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"agility": 0.07,
-"attack_speed": 0.03,
-"breakthrough_chance": 0.05,
-"max_health": 0.07
-}

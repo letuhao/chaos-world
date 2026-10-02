@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"qi_immortal_sovereign_warden_core"
 display_name = "Immortal Sovereign Warden Core"
 category = &"material"
+rarity = &"legendary"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 34.65},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:qi_immortal_sovereign_warden"])

@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"J16_earth_iron_refined"
 display_name = "Earth Iron Refined"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:J16_earth_iron_refined_recipe"])
-percent_modifiers = {
-"crit_chance": 0.07
-}

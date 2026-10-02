@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"T6_divine_saffron_dinar"
 display_name = "Divine Saffron Dinar"
 category = &"currency"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"quest:W23_route"])

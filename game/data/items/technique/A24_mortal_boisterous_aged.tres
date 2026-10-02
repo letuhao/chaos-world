@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A24_mortal_boisterous_aged"
 display_name = "Mortal Boisterous Aged"
 category = &"technique"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 4.87},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:A24_mortal_boisterous_aged_recipe"])
-percent_modifiers = {
-"poise": 0.09
-}

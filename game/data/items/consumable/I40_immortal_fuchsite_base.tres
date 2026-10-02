@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I40_immortal_fuchsite_base"
 display_name = "Immortal Fuchsite Base"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 26.95},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:I40_immortal_fuchsite_base_recipe", &"quest:I40_immortal_fuchsite_line"])
-percent_modifiers = {
-"defense_spiritual": 0.03
-}

@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"seal_iron_spirit_guard"
 display_name = "Seal Iron Spirit Guard"
 category = &"equipment"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 10},
+	{"option_id": &"core_max_qi", "value": 3.9},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:seal_iron_spirit_guard_recipe", &"boss:qi_spirit_transformation_warden"])
-flat_modifiers = {
-"defense_spiritual": 10.0,
-"max_qi": 20.0
-}

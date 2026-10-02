@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"N4_mortal_dusk_perfected"
 display_name = "Mortal Dusk Perfected"
 category = &"consumable"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 13.6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:N4_mortal_dusk_perfected_recipe"])
-percent_modifiers = {
-"health_regen": 0.17
-}

@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"ward_supernova"
 display_name = "Supernova Ward"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 30},
+	{"option_id": &"core_poise", "value": 9},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"gather", &"quest:W24_route"])
-flat_modifiers = {
-"defense_spiritual": 30.0,
-"poise": 9.0
-}

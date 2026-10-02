@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"R26_divine_potter_latch"
 display_name = "Divine Potter Latch"
 category = &"key"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 18.24},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"talisman"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])

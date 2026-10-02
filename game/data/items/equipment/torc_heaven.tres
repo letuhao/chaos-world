@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"torc_heaven"
 display_name = "Heaven Torc"
 category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 44.62},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:torc_heaven_recipe"])
-flat_modifiers = {
-"max_qi": 90.0
-}

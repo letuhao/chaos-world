@@ -7,6 +7,7 @@ script = ExtResource("1")
 id = &"spirit_unity"
 breakthrough_item = &"qi_spirit_unity_breakthrough_pill"
 training_item = &"qi_spirit_unity_channel_elixir"
+recovery_item = &"qi_spirit_unity_recovery_elixir"
 progress_required = 1400.0
 comprehension_required = 36.0
 dantian_quality_required = 0.63
@@ -16,8 +17,6 @@ required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach",
 required_channel_state = &"open"
 channel_refinement_cap = 15
 dantian_capacity = 450.0
-throughput_factor = 3.42
-technique_factor = 5.42
 rewards = {
 "spirit": 2.0
 }

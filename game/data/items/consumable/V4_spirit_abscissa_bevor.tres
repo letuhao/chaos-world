@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V4_spirit_abscissa_bevor"
 display_name = "Spirit Abscissa Bevor"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:E5_unity_weaver"])
-percent_modifiers = {
-"status_resistance": 0.06
-}

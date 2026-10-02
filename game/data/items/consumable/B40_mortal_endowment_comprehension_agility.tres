@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B40_mortal_endowment_comprehension_agility"
 display_name = "Mortal Endowment Comprehension Agility"
 category = &"consumable"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 8.8},
+	{"option_id": &"base_agility", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"tincture"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"comprehension": 0.03,
-"agility": 0.05
-}

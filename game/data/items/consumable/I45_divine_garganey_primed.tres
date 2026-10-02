@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I45_divine_garganey_primed"
 display_name = "Divine Garganey Primed"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.044},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"divine"
 sources = Array[StringName]([&"craft:I45_divine_garganey_primed_recipe"])
-percent_modifiers = {
-"move_speed": 0.13
-}

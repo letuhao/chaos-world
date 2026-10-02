@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"C14_heaven_collet_refined"
 display_name = "Heaven Collet Refined"
 category = &"consumable"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 25.58},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:C14_heaven_collet_refined_recipe"])
-percent_modifiers = {
-"comprehension": 0.06
-}

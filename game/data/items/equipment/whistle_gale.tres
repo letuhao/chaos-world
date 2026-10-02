@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"whistle_gale"
 display_name = "Gale Whistle"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:whistle_gale_recipe"])
-percent_modifiers = {
-"attack_speed": 0.04
-}

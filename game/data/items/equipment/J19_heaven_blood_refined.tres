@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"J19_heaven_blood_refined"
 display_name = "Heaven Blood Refined"
 category = &"equipment"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:J19_heaven_blood_refined_recipe"])
-percent_modifiers = {
-"insight_gain": 0.07
-}

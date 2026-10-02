@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"gauntlet_iron"
 display_name = "Iron Gauntlet"
 category = &"equipment"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:gauntlet_iron_recipe", &"boss:body_foundation_guardian"])
-flat_modifiers = {
-"defense_physical": 6.0
-}

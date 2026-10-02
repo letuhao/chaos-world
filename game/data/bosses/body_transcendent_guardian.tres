@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"body_transcendent_guardian"
 display_name = "Body of Humanity Guardian"
 domain_id = &"body_transcendent_trial"
-loot = Array[StringName]([&"body_transcendent_guardian_core", &"body_transcendent_tempering_herb", &"btchance_transcendent_pill", &"U8_divine_linlet_wreath", &"U8_divine_linlet_regalia"])
+loot = Array[StringName]([&"body_transcendent_guardian_core", &"body_transcendent_tempering_herb", &"btchance_transcendent_pill", &"U8_divine_linlet_regalia", &"U8_divine_linlet_wreath", &"set_gilded_bone_helm"])

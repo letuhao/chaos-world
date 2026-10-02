@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U2_earth_sennit_armlet"
 display_name = "Earth Sennit Armlet"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 17.33},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"earth"
 sources = Array[StringName]([&"boss:qi_spirit_severing_guardian"])
-percent_modifiers = {
-"attack_physical": 0.06
-}

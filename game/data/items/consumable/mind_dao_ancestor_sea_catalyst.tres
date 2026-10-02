@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"mind_dao_ancestor_sea_catalyst"
 display_name = "Mind Dao Ancestor Sea Catalyst"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 36.6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"divine"
 sources = Array[StringName]([&"craft:mind_dao_ancestor_sea_recipe"])

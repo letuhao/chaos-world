@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"warband_iron_standard"
 display_name = "Iron Warband Standard"
 category = &"misc"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"trophy"
 grade = &"spirit"
 sources = Array[StringName]([&"quest:warband_iron_standard"])

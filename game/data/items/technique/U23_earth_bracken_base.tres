@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U23_earth_bracken_base"
 display_name = "Earth Bracken Base"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 21.46},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"earth"
 sources = Array[StringName]([&"craft:U23_earth_bracken_base_recipe", &"quest:U23_earth_bracken_line"])
-percent_modifiers = {
-"spirit": 0.03
-}

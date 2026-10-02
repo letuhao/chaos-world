@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"monster_venom_scorpion_bone"
 display_name = "Venom Scorpion Bone"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"bone"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:monster_venom_scorpion"])

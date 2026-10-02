@@ -5,7 +5,11 @@ from __future__ import annotations
 import re
 from datetime import date
 
-from .common import ADR_DIR, REPO_ROOT, ToolError, ok
+from .common import ADR_DIR, REPO_ROOT, ToolError, ok, warn
+
+## The number an ADR file carries. Shared with the duplicate check in `tools check`
+## so both agree on what counts as a number.
+ADR_NUMBER_RE = re.compile(r"^(\d{4})-")
 
 TEMPLATE = """# {number:04d} {title}
 
@@ -25,13 +29,23 @@ def register(subparsers) -> None:
     parser.add_argument("title", nargs="+", help="ADR title")
 
 
-def _next_number(directory) -> int:
-    highest = 0
+def _numbered(directory) -> dict[int, list[str]]:
+    """Map every ADR number in use to the file names holding it.
+
+    Two ADRs sharing a number is the failure this guards: an agent citing
+    "ADR NNNN" then points at two different decisions, and neither reader can
+    tell which one was meant.
+    """
+    used: dict[int, list[str]] = {}
     for path in directory.glob("*.md"):
-        match = re.match(r"^(\d{4})-", path.name)
+        match = ADR_NUMBER_RE.match(path.name)
         if match:
-            highest = max(highest, int(match.group(1)))
-    return highest + 1
+            used.setdefault(int(match.group(1)), []).append(path.name)
+    return used
+
+
+def _next_number(used: dict[int, list[str]]) -> int:
+    return max(used, default=0) + 1
 
 
 def _slugify(text: str) -> str:
@@ -43,7 +57,11 @@ def run(args) -> int:
     if not title:
         raise ToolError("ADR title is required")
     ADR_DIR.mkdir(parents=True, exist_ok=True)
-    number = _next_number(ADR_DIR)
+    used = _numbered(ADR_DIR)
+    for number, names in sorted(used.items()):
+        if len(names) > 1:
+            warn(f"ADR {number:04d} is already shared by {', '.join(sorted(names))}")
+    number = _next_number(used)
     slug = _slugify(title) or "decision"
     path = ADR_DIR / f"{number:04d}-{slug}.md"
     if path.exists():

@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"puppet_marionette_king_crown"
 display_name = "Marionette Crown"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 25},
+	{"option_id": &"core_crit_chance", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"boss:puppet_marionette_king", &"boss:d4_marionette_king"])
-flat_modifiers = {
-"attack_physical": 25.0
-}
-percent_modifiers = {
-"crit_chance": 0.03
-}

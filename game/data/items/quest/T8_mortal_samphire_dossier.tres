@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"T8_mortal_samphire_dossier"
 display_name = "Mortal Samphire Dossier"
 category = &"quest"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"bounty"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])

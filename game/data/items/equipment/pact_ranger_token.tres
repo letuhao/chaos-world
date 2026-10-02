@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"pact_ranger_token"
 display_name = "Ranger's Pact Token"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"quest:pact_of_the_ranger"])
-flat_modifiers = {
-"move_speed": 5.0
-}

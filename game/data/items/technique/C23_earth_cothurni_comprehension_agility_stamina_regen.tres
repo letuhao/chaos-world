@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"C23_earth_cothurni_comprehension_agility_stamina_regen"
 display_name = "Earth Cothurni Comprehension Agility Stamina Regen"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 9.74},
+	{"option_id": &"base_agility", "value": 16.5},
+	{"option_id": &"core_stamina_regen", "value": 16.5},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"comprehension": 0.03,
-"agility": 0.05,
-"stamina_regen": 0.07
-}

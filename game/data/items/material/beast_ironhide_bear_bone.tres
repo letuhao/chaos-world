@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"beast_ironhide_bear_bone"
 display_name = "Ironhide Bear Bone"
 category = &"material"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"bone"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:beast_ironhide_bear"])

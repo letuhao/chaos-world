@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U8_heaven_linlet_nucleus"
 display_name = "Heaven Linlet Nucleus"
 category = &"consumable"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 28.05},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"heaven"
 sources = Array[StringName]([&"boss:qi_great_ascension_guardian"])
-percent_modifiers = {
-"attack_physical": 0.06
-}

@@ -7,9 +7,10 @@ script = ExtResource("1")
 id = &"spirit_condensation"
 breakthrough_item = &"body_spirit_condensation_breakthrough_pill"
 strengthening_item = &"body_spirit_condensation_channel_elixir"
-progress_required = 900.0
+recovery_item = &"body_spirit_condensation_recovery_elixir"
+progress_required = 82.0
 physique_required = 26.0
-quality_required = 0.58
+quality_required = 0.520000
 quality_target = 0.535000
 integrity_target = 0.585000
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver"])
@@ -20,13 +21,11 @@ rewards = {
 "physique": 2.0,
 "organ_vitality": 1.0
 }
-power_budget = 8.00
-capacity_factor = 5.86
-throughput_factor = 2.30
-technique_factor = 3.14
-work_required = 2419.0
-acupoint_work = 502.0
-meridian_work = 377.0
+work_required = 82.0
+acupoint_work = 2.0
+meridian_work = 2.0
 insight_required = 226.0
 resonance_rank = 0
-channel_training = Array[StringName]([])
+chance_base = 0.62
+chance_cap = 0.88
+channel_training = Array[StringName]([&"du_mai", &"ren_mai", &"chong_mai", &"dai_mai"])

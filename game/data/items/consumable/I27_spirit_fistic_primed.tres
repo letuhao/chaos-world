@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I27_spirit_fistic_primed"
 display_name = "Spirit Fistic Primed"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 10.16},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:I27_spirit_fistic_primed_recipe"])
-percent_modifiers = {
-"poise": 0.13
-}

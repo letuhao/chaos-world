@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V7_spirit_aerie_sandalstone"
 display_name = "Spirit Aerie Sandalstone"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 13.06},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"spirit"
 sources = Array[StringName]([&"boss:elemental_spirit_guardian"])
-percent_modifiers = {
-"max_health": 0.06
-}

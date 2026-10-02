@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"banner_silver_aegis"
 display_name = "Silver Aegis Banner"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 18},
+	{"option_id": &"core_max_health", "value": 15.68},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:banner_silver_aegis_recipe"])
-flat_modifiers = {
-"defense_spiritual": 18.0,
-"max_health": 50.0
-}

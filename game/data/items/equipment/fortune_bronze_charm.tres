@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"fortune_bronze_charm"
 display_name = "Bronze Fortune Charm"
 category = &"equipment"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_fortune", "value": 6.05},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"quest:A37_route"])
-percent_modifiers = {
-"fortune": 0.05
-}

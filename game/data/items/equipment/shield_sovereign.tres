@@ -7,13 +7,17 @@ script = ExtResource("1_item")
 id = &"shield_sovereign"
 display_name = "Sovereign Shield"
 category = &"equipment"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 20},
+	{"option_id": &"core_defense_spiritual", "value": 20},
+	{"option_id": &"core_max_health", "value": 40},
+	{"option_id": &"core_poise", "value": 20},
+	{"option_id": &"core_damage_reduction", "value": 0.06},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:shield_sovereign_recipe"])
-flat_modifiers = {
-"defense_physical": 20.0,
-"defense_spiritual": 20.0,
-"max_health": 40.0,
-"poise": 20.0
-"damage_reduction": 0.1
-}

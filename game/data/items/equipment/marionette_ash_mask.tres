@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"marionette_ash_mask"
 display_name = "Ash Effigy Mask"
 category = &"equipment"
+rarity = &"common"
+realm = &"tribulation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 18},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"boss:puppet_ash_effigy", &"boss:d4_ash_effigy"])
-flat_modifiers = {
-"max_stamina": 18.0
-}

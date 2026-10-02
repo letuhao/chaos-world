@@ -8,6 +8,7 @@ id = &"qi_refining"
 breakthrough_item = &"mind_qi_refining_breakthrough_pill"
 training_item = &"mind_qi_refining_channel_elixir"
 sea_catalyst = &"mind_qi_refining_sea_catalyst"
+recovery_item = &"mind_qi_refining_recovery_elixir"
 progress_required = 100.0
 comprehension_required = 10.0
 clarity_required = 0.40

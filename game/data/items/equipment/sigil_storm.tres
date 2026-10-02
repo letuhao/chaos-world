@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"sigil_storm"
 display_name = "Sigil of Storm"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 18},
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:sigil_storm_recipe", &"boss:F12_ascension_warden"])
-flat_modifiers = {
-"attack_spiritual": 18.0
-}
-percent_modifiers = {
-"cooldown_reduction": 0.04
-}

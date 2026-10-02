@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I1_mortal_dollar_refined"
 display_name = "Mortal Dollar Refined"
 category = &"consumable"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 8.25},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I1_mortal_dollar_refined_recipe"])
-percent_modifiers = {
-"defense_spiritual": 0.06
-}

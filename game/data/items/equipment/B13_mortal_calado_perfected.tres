@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"B13_mortal_calado_perfected"
 display_name = "Mortal Calado Perfected"
 category = &"equipment"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:B13_mortal_calado_perfected_recipe"])
-percent_modifiers = {
-"qi_cost_reduction": 0.17
-}

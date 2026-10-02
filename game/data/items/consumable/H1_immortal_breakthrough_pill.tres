@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"H1_immortal_breakthrough_pill"
 display_name = "Immortal Breakthrough Pill"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.02},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:H1_immortal_breakthrough_pill_recipe"])
-percent_modifiers = {
-"breakthrough_chance": 0.12
-}

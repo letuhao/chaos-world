@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"C25_mortal_coutil_comprehension_agility_stamina_regen"
 display_name = "Mortal Coutil Comprehension Agility Stamina Regen"
 category = &"consumable"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 8.8},
+	{"option_id": &"base_agility", "value": 8.8},
+	{"option_id": &"core_stamina_regen", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"comprehension": 0.03,
-"agility": 0.05,
-"stamina_regen": 0.07
-}

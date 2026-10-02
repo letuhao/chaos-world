@@ -1,8 +1,14 @@
 class_name RealmScaling
 extends RefCounted
 
-## Applies the highest realm's power multiplier to an actor's scalable stats as a
+## Applies the highest realm's stat multiplier to an actor's scalable stats as a
 ## source-tagged MULT modifier (ADR 0001/0005). Re-applying replaces the old ones.
+##
+## The multiplier is `RealmDef.power`: one authored number per realm, read from
+## `core/realm_power_table.tres`. Nothing here computes it from the realm index
+## (ADR 0050). There is no formula to fall back on, so a subsystem that needs a
+## different shape has to say so in its own data instead of growing a private curve
+## next door to this one.
 
 const SOURCE := &"realm"
 const SCALED_STATS := [
@@ -21,8 +27,9 @@ static func apply(actor: Actor) -> void:
 	var realm := highest_realm(actor)
 	if realm == null:
 		return
+	var power := realm.power
 	for id in SCALED_STATS:
-		actor.stats.add_modifier(StatModifier.new(id, Stat.Op.MULT, realm.power, SOURCE))
+		actor.stats.add_modifier(StatModifier.new(id, Stat.Op.MULT, power, SOURCE))
 
 
 static func highest_realm(actor: Actor) -> RealmDef:

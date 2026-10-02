@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"H7_spirit_fortune_idol"
 display_name = "Spirit Fortune Idol"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_fortune", "value": 6.87},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:H7_spirit_fortune_idol_recipe"])
-percent_modifiers = {
-"fortune": 0.03
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A7_divine_apocrypha_base"
 display_name = "Divine Apocrypha Base"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 35.62},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"divine"
 sources = Array[StringName]([&"craft:A7_divine_apocrypha_base_recipe", &"quest:A7_divine_apocrypha_line"])
-percent_modifiers = {
-"max_stamina": 0.03
-}

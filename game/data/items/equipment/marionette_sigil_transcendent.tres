@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"marionette_sigil_transcendent"
 display_name = "Transcendent Guardian Sigil"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.02},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"boss:succubus_transcendent_guardian", &"boss:d5_transcendent_radiance"])
-percent_modifiers = {
-"cultivation_rate": 0.0013
-}

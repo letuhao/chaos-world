@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F24_mortal_euphony_agility_attack_spiritual_evasion_penetration"
 display_name = "Mortal Euphony Agility Attack spiritual Evasion Penetration"
 category = &"technique"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 6.6},
+	{"option_id": &"core_attack_spiritual", "value": 6.6},
+	{"option_id": &"core_evasion", "value": 0.04},
+	{"option_id": &"core_penetration", "value": 3.9},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.03,
-"attack_spiritual": 0.05,
-"evasion": 0.07,
-"penetration": 0.03
-}

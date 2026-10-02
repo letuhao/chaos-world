@@ -7,6 +7,12 @@ script = Ext_resource("1_item")
 id = &"qi_great_luo_dantian_catalyst"
 display_name = "Great Luo Lattice"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:qi_great_luo_dantian_catalyst_recipe"])

@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"G14_heaven_gleamer_crit_chance_spirit"
 display_name = "Heaven Gleamer Crit chance Spirit"
 category = &"consumable"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.054},
+	{"option_id": &"base_spirit", "value": 24.75},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"heaven"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"crit_chance": 0.054,
-"spirit": 0.054
-}

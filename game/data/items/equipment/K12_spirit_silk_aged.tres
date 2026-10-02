@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"K12_spirit_silk_aged"
 display_name = "Spirit Silk Aged"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 16.5},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:K12_spirit_silk_aged_recipe"])
-percent_modifiers = {
-"penetration": 0.09
-}

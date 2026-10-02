@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"D8_divine_haste_sigil"
 display_name = "Divine Haste Sigil"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"gather", &"craft:D8_divine_haste_sigil_recipe"])
-percent_modifiers = {
-"cooldown_reduction": 0.15
-}

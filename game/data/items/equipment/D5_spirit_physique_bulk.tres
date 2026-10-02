@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"D5_spirit_physique_bulk"
 display_name = "Spirit Physique Bulk"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 15.82},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"craft:D5_spirit_physique_bulk_recipe", &"boss:E5_manifestation_warden"])
-percent_modifiers = {
-"physique": 0.06
-}

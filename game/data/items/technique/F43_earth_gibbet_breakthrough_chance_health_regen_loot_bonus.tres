@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"F43_earth_gibbet_breakthrough_chance_health_regen_loot_bonus"
 display_name = "Earth Gibbet Breakthrough chance Health regen Loot bonus"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.022},
+	{"option_id": &"core_health_regen", "value": 18.16},
+	{"option_id": &"core_loot_bonus", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"earth"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"breakthrough_chance": 0.022,
-"health_regen": 0.049,
-"loot_bonus": 0.061
-}

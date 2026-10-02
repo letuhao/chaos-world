@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Y3_divine_abscissa_refined"
 display_name = "Divine Abscissa Refined"
 category = &"technique"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 29.86},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"divine"
 sources = Array[StringName]([&"craft:Y3_divine_abscissa_refined_recipe"])
-percent_modifiers = {
-"qi_absorption": 0.06
-}

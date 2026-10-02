@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U5_heaven_wharf_cup"
 display_name = "Heaven Wharf Cup"
 category = &"equipment"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 16.57},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:mind_dao_ancestor_warden"])
-percent_modifiers = {
-"max_qi": 0.06
-}

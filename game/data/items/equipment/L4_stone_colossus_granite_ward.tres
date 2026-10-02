@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"L4_stone_colossus_granite_ward"
 display_name = "Granite Ward"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 30},
+	{"option_id": &"core_stamina_regen", "value": 16.5},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"boss:d4_stone_colossus"])
-flat_modifiers = {
-"max_stamina": 30.0
-}
-percent_modifiers = {
-"stamina_regen": 0.06
-}

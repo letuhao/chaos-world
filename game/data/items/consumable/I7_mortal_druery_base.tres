@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I7_mortal_druery_base"
 display_name = "Mortal Druery Base"
 category = &"consumable"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 3.57},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I7_mortal_druery_base_recipe", &"quest:I7_mortal_druery_line"])
-percent_modifiers = {
-"max_health": 0.03
-}

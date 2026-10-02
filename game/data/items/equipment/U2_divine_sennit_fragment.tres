@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U2_divine_sennit_fragment"
 display_name = "Divine Sennit Fragment"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_damage", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"boss:d5_transcendent_radiance"])
-percent_modifiers = {
-"crit_damage": 0.06
-}

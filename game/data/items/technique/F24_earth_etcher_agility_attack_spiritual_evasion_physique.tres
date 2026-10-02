@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F24_earth_etcher_agility_attack_spiritual_evasion_physique"
 display_name = "Earth Etcher Agility Attack spiritual Evasion Physique"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 24.42},
+	{"option_id": &"core_attack_spiritual", "value": 17.33},
+	{"option_id": &"core_evasion", "value": 0.03},
+	{"option_id": &"base_physique", "value": 17.33},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.05,
-"attack_spiritual": 0.07,
-"evasion": 0.03,
-"physique": 0.05
-}

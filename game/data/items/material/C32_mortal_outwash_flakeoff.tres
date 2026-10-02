@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"C32_mortal_outwash_flakeoff"
 display_name = "Mortal Outwash Flakeoff"
 category = &"material"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"fragment"
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])

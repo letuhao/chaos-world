@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B37_divine_diocese_comprehension_agility"
 display_name = "Divine Diocese Comprehension Agility"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 21.61},
+	{"option_id": &"base_agility", "value": 21.61},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"comprehension": 0.03,
-"agility": 0.05
-}

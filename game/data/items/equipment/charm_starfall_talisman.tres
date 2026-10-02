@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"charm_starfall_talisman"
 display_name = "Starfall Talisman"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 34.43},
+	{"option_id": &"core_loot_bonus", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:charm_starfall_talisman_recipe"])
-flat_modifiers = {
-"max_qi": 45.0
-}
-percent_modifiers = {
-"loot_bonus": 0.06
-}

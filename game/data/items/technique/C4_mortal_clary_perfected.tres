@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"C4_mortal_clary_perfected"
 display_name = "Mortal Clary Perfected"
 category = &"technique"
+rarity = &"common"
+realm = &"great_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 9.35},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:C4_mortal_clary_perfected_recipe"])
-percent_modifiers = {
-"penetration": 0.17
-}

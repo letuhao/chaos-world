@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"W18_heaven_candelabrum_base"
 display_name = "Heaven Candelabrum Base"
 category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 28.88},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:W18_heaven_candelabrum_base_recipe", &"quest:W18_heaven_candelabrum_line"])
-percent_modifiers = {
-"comprehension": 0.03
-}

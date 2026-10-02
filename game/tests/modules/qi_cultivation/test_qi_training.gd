@@ -106,11 +106,52 @@ func test_cultivate_refines_dantian_quality() -> void:
 	assert_eq(dantian.quality > 0.0, true, "quality refined by circulation")
 
 
-func test_cultivate_stops_when_the_dantian_is_full() -> void:
+func test_every_realm_quality_gate_is_reachable_by_circulating_qi() -> void:
+	# ADR 0028's reachable-gates rule. Quality is refined toward the *next*
+	# realm's floor, so one realm of training must be able to reach it. This
+	# failed for 28 of 29 transitions when the ceiling was the current realm's own
+	# requirement, because every realm's floor rises above the one before it.
+	for previous in RealmDefaults.ladder().realms():
+		var next := RealmDefaults.ladder().next(previous.id)
+		if next == null:
+			continue
+		var to_seed := QiRealmSeed.for_realm(next.id)
+		if to_seed == null:
+			continue
+		var actor := Actor.new(&"qi_ceiling", {QiStats.DANTIAN_CAPACITY: 100.0})
+		actor.set_path(PathState.new(QiPath.PATH_ID, previous.id))
+		actor.meridians.unlock_for_realm(previous.id)
+		QiCultivationApi.attach(actor)
+		QiCultivationApi.attach_dantian(actor)
+		var dantian := QiCultivationApi.dantian(actor)
+		dantian.set_quality(0.0)
+		QiTraining.synchronize(actor)
+		var guard := 0
+		while guard < 4096 and dantian.quality < to_seed.dantian_quality_required:
+			guard += 1
+			QiTraining.cultivate(actor, 25.0)
+		assert_eq(
+			dantian.quality >= to_seed.dantian_quality_required,
+			true,
+			"quality floor for %s reachable from %s" % [next.id, previous.id]
+		)
+
+
+func test_cultivate_keeps_training_when_the_dantian_is_full() -> void:
+	# A full dantian stops *storing* qi, not training. Refusing the whole action
+	# deadlocked the path: the entry gate wants a full reservoir AND a met
+	# progress floor, and the reservoir fills first, so progress could never
+	# catch up.
 	var actor := _actor()
 	var dantian := QiCultivationApi.dantian(actor)
 	dantian.fill(actor, dantian.effective_capacity())
-	assert_eq(QiTraining.cultivate(actor, 10.0), false, "refuses a full dantian")
+	var full := dantian.current(actor)
+	var progress_before := actor.path(QiPath.PATH_ID).progress
+	assert_eq(QiTraining.cultivate(actor, 10.0), true, "training continues")
+	assert_eq(dantian.current(actor), full, "no qi stored beyond capacity")
+	assert_eq(
+		actor.path(QiPath.PATH_ID).progress > progress_before, true, "progress still advances"
+	)
 
 
 func test_cultivate_rejects_nonpositive_amount() -> void:

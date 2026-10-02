@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"X6_immortal_accretion_base"
 display_name = "Immortal Accretion Base"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"craft:X6_immortal_accretion_base_recipe", &"quest:X6_immortal_accretion_line"])
-percent_modifiers = {
-"move_speed": 0.03
-}

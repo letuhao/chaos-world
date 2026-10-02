@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"S4_divine_cooper_perfected"
 display_name = "Divine Cooper Perfected"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 52.9},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"craft:S4_divine_cooper_perfected_recipe"])
-percent_modifiers = {
-"max_stamina": 0.17
-}

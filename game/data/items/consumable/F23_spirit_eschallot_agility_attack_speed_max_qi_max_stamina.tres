@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F23_spirit_eschallot_agility_attack_speed_max_qi_max_stamina"
 display_name = "Spirit Eschallot Agility Attack speed Max qi Max stamina"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 10.56},
+	{"option_id": &"core_attack_speed", "value": 0.05},
+	{"option_id": &"core_max_qi", "value": 17.88},
+	{"option_id": &"core_max_stamina", "value": 17.88},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"salve"
 grade = &"spirit"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.03,
-"attack_speed": 0.05,
-"max_qi": 0.07,
-"max_stamina": 0.03
-}

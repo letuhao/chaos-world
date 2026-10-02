@@ -7,13 +7,15 @@ script = ExtResource("1_item")
 id = &"cloak_sovereign"
 display_name = "Sovereign Cloak"
 category = &"equipment"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 12},
+	{"option_id": &"core_max_qi", "value": 30},
+	{"option_id": &"core_status_resistance", "value": 0.02},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:cloak_sovereign_recipe"])
-flat_modifiers = {
-"defense_spiritual": 12.0,
-"max_qi": 30.0
-}
-percent_modifiers = {
-"status_resistance": 0.06
-}

@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"reliquary_jade"
 display_name = "Jade Reliquary"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 17.33},
+	{"option_id": &"core_max_qi", "value": 10.24},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"gather", &"quest:A40_route"])
-flat_modifiers = {
-"max_health": 45.0,
-"max_qi": 32.0
-}

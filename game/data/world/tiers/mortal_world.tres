@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WorldTierDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/world_tier_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+tier_id = &"mortal_world"
+display_name = "Mortal World"
+realm_min = 1
+realm_max = 9
+law_slots = 3
+available_life_forms = Array[StringName]([&"plant", &"beast"])
+upkeep_rate_min = 0.1
+upkeep_rate_max = 0.5
+time_flow_min = 0.5
+time_flow_max = 2.0
+size_min = 10.0
+size_max = 100.0

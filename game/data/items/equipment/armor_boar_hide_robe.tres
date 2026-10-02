@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"armor_boar_hide_robe"
 display_name = "Boar Hide Robe"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 12},
+	{"option_id": &"core_max_health", "value": 17.19},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:armor_boar_hide_robe_recipe"])
-flat_modifiers = {
-"defense_physical": 12.0
-}
-percent_modifiers = {
-"max_health": 0.05
-}

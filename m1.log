@@ -1,0 +1,319 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: Could not parse global class "MindProvider" from "res://src/modules/mind_cultivation/provider.gd".
+   at: GDScript::reload (res://src/modules/mind_cultivation/api.gd:21)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/focus_runner.gd:16)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindProvider", because of a parser error.
+   at: GDScript::reload (res://src/modules/mind_cultivation/api.gd:17)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/focus_runner.gd:16)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindProvider", because of a parser error.
+   at: GDScript::reload (res://src/modules/mind_cultivation/api.gd:18)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/focus_runner.gd:16)
+SCRIPT ERROR: Parse Error: Could not parse global class "MindProvider" from "res://src/modules/mind_cultivation/provider.gd".
+   at: GDScript::reload (res://src/modules/mind_cultivation/api.gd:23)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/focus_runner.gd:16)
+SCRIPT ERROR: Parse Error: Could not parse global class "MindProvider" from "res://src/modules/mind_cultivation/provider.gd".
+   at: GDScript::reload (res://src/modules/mind_cultivation/api.gd:24)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/focus_runner.gd:16)
+SCRIPT ERROR: Parse Error: Could not resolve class "MindProvider", because of a parser error.
+   at: GDScript::reload (res://src/modules/mind_cultivation/api.gd:25)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/focus_runner.gd:16)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://tests/modules/mind_cultivation/test_mind_training.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/focus_runner.gd:16)
+ERROR: Failed to load script "res://tests/modules/mind_cultivation/test_mind_training.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/focus_runner.gd:16)
+FOCUS_BEGIN test_breakthrough_blocked_before_requirements
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_breakthrough_blocked_before_requirements (res://tests/modules/mind_cultivation/test_mind_training.gd:151)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'get_module_data' in base 'Nil'.
+   at: attempt (res://src/modules/mind_cultivation/advancement.gd:108)
+   GDScript backtrace (most recent call first):
+       [0] attempt (res://src/modules/mind_cultivation/advancement.gd:108)
+       [1] active_attempt (res://src/modules/mind_cultivation/advancement.gd:116)
+       [2] start (res://src/modules/mind_cultivation/advancement.gd:137)
+       [3] try_breakthrough (res://src/modules/mind_cultivation/advancement.gd:280)
+       [4] test_breakthrough_blocked_before_requirements (res://tests/modules/mind_cultivation/test_mind_training.gd:154)
+       [5] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'path' in base 'Nil'.
+   at: start (res://src/modules/mind_cultivation/advancement.gd:139)
+   GDScript backtrace (most recent call first):
+       [0] start (res://src/modules/mind_cultivation/advancement.gd:139)
+       [1] try_breakthrough (res://src/modules/mind_cultivation/advancement.gd:280)
+       [2] test_breakthrough_blocked_before_requirements (res://tests/modules/mind_cultivation/test_mind_training.gd:154)
+       [3] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_breakthrough_blocked_before_requirements passed=1 failed=0
+FOCUS_BEGIN test_breakthrough_condition_describes_itself
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_breakthrough_condition_describes_itself (res://tests/modules/mind_cultivation/test_mind_training.gd:158)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'path' in base 'Nil'.
+   at: test_breakthrough_condition_describes_itself (res://tests/modules/mind_cultivation/test_mind_training.gd:160)
+   GDScript backtrace (most recent call first):
+       [0] test_breakthrough_condition_describes_itself (res://tests/modules/mind_cultivation/test_mind_training.gd:160)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_breakthrough_condition_describes_itself passed=1 failed=0
+FOCUS_BEGIN test_breakthrough_condition_passes_once_prepared
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_breakthrough_condition_passes_once_prepared (res://tests/modules/mind_cultivation/test_mind_training.gd:186)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'path' in base 'Nil'.
+   at: _prepare (res://tests/modules/mind_cultivation/test_mind_training.gd:32)
+   GDScript backtrace (most recent call first):
+       [0] _prepare (res://tests/modules/mind_cultivation/test_mind_training.gd:32)
+       [1] test_breakthrough_condition_passes_once_prepared (res://tests/modules/mind_cultivation/test_mind_training.gd:187)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'path' in base 'Nil'.
+   at: test_breakthrough_condition_passes_once_prepared (res://tests/modules/mind_cultivation/test_mind_training.gd:189)
+   GDScript backtrace (most recent call first):
+       [0] test_breakthrough_condition_passes_once_prepared (res://tests/modules/mind_cultivation/test_mind_training.gd:189)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_breakthrough_condition_passes_once_prepared passed=1 failed=1
+FOCUS_BEGIN test_breakthrough_consumes_the_pill
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_breakthrough_consumes_the_pill (res://tests/modules/mind_cultivation/test_mind_training.gd:209)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'path' in base 'Nil'.
+   at: _prepare (res://tests/modules/mind_cultivation/test_mind_training.gd:32)
+   GDScript backtrace (most recent call first):
+       [0] _prepare (res://tests/modules/mind_cultivation/test_mind_training.gd:32)
+       [1] test_breakthrough_consumes_the_pill (res://tests/modules/mind_cultivation/test_mind_training.gd:215)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'component' in base 'Nil'.
+   at: inventory (res://src/modules/items/api.gd:26)
+   GDScript backtrace (most recent call first):
+       [0] inventory (res://src/modules/items/api.gd:26)
+       [1] has_item (res://src/modules/items/api.gd:40)
+       [2] test_breakthrough_consumes_the_pill (res://tests/modules/mind_cultivation/test_mind_training.gd:223)
+       [3] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_breakthrough_consumes_the_pill passed=2 failed=2
+FOCUS_BEGIN test_breakthrough_succeeds_and_advances
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_breakthrough_succeeds_and_advances (res://tests/modules/mind_cultivation/test_mind_training.gd:193)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'path' in base 'Nil'.
+   at: test_breakthrough_succeeds_and_advances (res://tests/modules/mind_cultivation/test_mind_training.gd:194)
+   GDScript backtrace (most recent call first):
+       [0] test_breakthrough_succeeds_and_advances (res://tests/modules/mind_cultivation/test_mind_training.gd:194)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_breakthrough_succeeds_and_advances passed=2 failed=2
+FOCUS_BEGIN test_cultivate_fills_the_sea_and_advances_progress
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_cultivate_fills_the_sea_and_advances_progress (res://tests/modules/mind_cultivation/test_mind_training.gd:89)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'sea' in base 'GDScript'.
+   at: test_cultivate_fills_the_sea_and_advances_progress (res://tests/modules/mind_cultivation/test_mind_training.gd:90)
+   GDScript backtrace (most recent call first):
+       [0] test_cultivate_fills_the_sea_and_advances_progress (res://tests/modules/mind_cultivation/test_mind_training.gd:90)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_cultivate_fills_the_sea_and_advances_progress passed=2 failed=2
+FOCUS_BEGIN test_cultivate_sharpens_clarity
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_cultivate_sharpens_clarity (res://tests/modules/mind_cultivation/test_mind_training.gd:98)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'sea' in base 'GDScript'.
+   at: test_cultivate_sharpens_clarity (res://tests/modules/mind_cultivation/test_mind_training.gd:99)
+   GDScript backtrace (most recent call first):
+       [0] test_cultivate_sharpens_clarity (res://tests/modules/mind_cultivation/test_mind_training.gd:99)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_cultivate_sharpens_clarity passed=2 failed=2
+FOCUS_BEGIN test_cultivate_stops_when_the_sea_is_full
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_cultivate_stops_when_the_sea_is_full (res://tests/modules/mind_cultivation/test_mind_training.gd:106)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'sea' in base 'GDScript'.
+   at: test_cultivate_stops_when_the_sea_is_full (res://tests/modules/mind_cultivation/test_mind_training.gd:107)
+   GDScript backtrace (most recent call first):
+       [0] test_cultivate_stops_when_the_sea_is_full (res://tests/modules/mind_cultivation/test_mind_training.gd:107)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_cultivate_stops_when_the_sea_is_full passed=2 failed=2
+FOCUS_BEGIN test_deviation_turbulates_the_sea_and_damages_a_channel
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_deviation_turbulates_the_sea_and_damages_a_channel (res://tests/modules/mind_cultivation/test_mind_training.gd:227)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'path' in base 'Nil'.
+   at: _prepare (res://tests/modules/mind_cultivation/test_mind_training.gd:32)
+   GDScript backtrace (most recent call first):
+       [0] _prepare (res://tests/modules/mind_cultivation/test_mind_training.gd:32)
+       [1] test_deviation_turbulates_the_sea_and_damages_a_channel (res://tests/modules/mind_cultivation/test_mind_training.gd:228)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'path' in base 'Nil'.
+   at: test_deviation_turbulates_the_sea_and_damages_a_channel (res://tests/modules/mind_cultivation/test_mind_training.gd:230)
+   GDScript backtrace (most recent call first):
+       [0] test_deviation_turbulates_the_sea_and_damages_a_channel (res://tests/modules/mind_cultivation/test_mind_training.gd:230)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_deviation_turbulates_the_sea_and_damages_a_channel passed=2 failed=3
+FOCUS_BEGIN test_meditate_calms_turbulence
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_meditate_calms_turbulence (res://tests/modules/mind_cultivation/test_mind_training.gd:113)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'sea' in base 'GDScript'.
+   at: test_meditate_calms_turbulence (res://tests/modules/mind_cultivation/test_mind_training.gd:114)
+   GDScript backtrace (most recent call first):
+       [0] test_meditate_calms_turbulence (res://tests/modules/mind_cultivation/test_mind_training.gd:114)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_meditate_calms_turbulence passed=2 failed=3
+FOCUS_BEGIN test_meditate_is_a_noop_when_calm
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_meditate_is_a_noop_when_calm (res://tests/modules/mind_cultivation/test_mind_training.gd:121)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'sea' in base 'GDScript'.
+   at: meditate (res://src/modules/mind_cultivation/training.gd:69)
+   GDScript backtrace (most recent call first):
+       [0] meditate (res://src/modules/mind_cultivation/training.gd:69)
+       [1] test_meditate_is_a_noop_when_calm (res://tests/modules/mind_cultivation/test_mind_training.gd:122)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_meditate_is_a_noop_when_calm passed=3 failed=3
+FOCUS_BEGIN test_synchronize_scales_capacity_with_meridian_bonus
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_synchronize_scales_capacity_with_meridian_bonus (res://tests/modules/mind_cultivation/test_mind_training.gd:76)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'sea' in base 'GDScript'.
+   at: test_synchronize_scales_capacity_with_meridian_bonus (res://tests/modules/mind_cultivation/test_mind_training.gd:77)
+   GDScript backtrace (most recent call first):
+       [0] test_synchronize_scales_capacity_with_meridian_bonus (res://tests/modules/mind_cultivation/test_mind_training.gd:77)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_synchronize_scales_capacity_with_meridian_bonus passed=3 failed=3
+FOCUS_BEGIN test_synchronize_sets_capacity_and_tier
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_synchronize_sets_capacity_and_tier (res://tests/modules/mind_cultivation/test_mind_training.gd:68)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'sea' in base 'GDScript'.
+   at: test_synchronize_sets_capacity_and_tier (res://tests/modules/mind_cultivation/test_mind_training.gd:69)
+   GDScript backtrace (most recent call first):
+       [0] test_synchronize_sets_capacity_and_tier (res://tests/modules/mind_cultivation/test_mind_training.gd:69)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_synchronize_sets_capacity_and_tier passed=3 failed=3
+FOCUS_BEGIN test_train_channel_repairs_a_damaged_channel
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_train_channel_repairs_a_damaged_channel (res://tests/modules/mind_cultivation/test_mind_training.gd:140)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid access to property or key 'meridians' on a base object of type 'Nil'.
+   at: test_train_channel_repairs_a_damaged_channel (res://tests/modules/mind_cultivation/test_mind_training.gd:141)
+   GDScript backtrace (most recent call first):
+       [0] test_train_channel_repairs_a_damaged_channel (res://tests/modules/mind_cultivation/test_mind_training.gd:141)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_train_channel_repairs_a_damaged_channel passed=3 failed=3
+FOCUS_BEGIN test_train_channel_requires_the_elixir
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_train_channel_requires_the_elixir (res://tests/modules/mind_cultivation/test_mind_training.gd:136)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'path' in base 'Nil'.
+   at: train_channel (res://src/modules/mind_cultivation/training.gd:114)
+   GDScript backtrace (most recent call first):
+       [0] train_channel (res://src/modules/mind_cultivation/training.gd:114)
+       [1] test_train_channel_requires_the_elixir (res://tests/modules/mind_cultivation/test_mind_training.gd:136)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_train_channel_requires_the_elixir passed=4 failed=3
+FOCUS_BEGIN test_train_channel_walks_the_ladder
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_train_channel_walks_the_ladder (res://tests/modules/mind_cultivation/test_mind_training.gd:129)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'component' in base 'Nil'.
+   at: inventory (res://src/modules/items/api.gd:26)
+   GDScript backtrace (most recent call first):
+       [0] inventory (res://src/modules/items/api.gd:26)
+       [1] _stock (res://tests/modules/mind_cultivation/test_mind_training.gd:24)
+       [2] test_train_channel_walks_the_ladder (res://tests/modules/mind_cultivation/test_mind_training.gd:130)
+       [3] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'add' in base 'Nil'.
+   at: _stock (res://tests/modules/mind_cultivation/test_mind_training.gd:24)
+   GDScript backtrace (most recent call first):
+       [0] _stock (res://tests/modules/mind_cultivation/test_mind_training.gd:24)
+       [1] test_train_channel_walks_the_ladder (res://tests/modules/mind_cultivation/test_mind_training.gd:130)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'path' in base 'Nil'.
+   at: train_channel (res://src/modules/mind_cultivation/training.gd:114)
+   GDScript backtrace (most recent call first):
+       [0] train_channel (res://src/modules/mind_cultivation/training.gd:114)
+       [1] test_train_channel_walks_the_ladder (res://tests/modules/mind_cultivation/test_mind_training.gd:131)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid access to property or key 'meridians' on a base object of type 'Nil'.
+   at: test_train_channel_walks_the_ladder (res://tests/modules/mind_cultivation/test_mind_training.gd:132)
+   GDScript backtrace (most recent call first):
+       [0] test_train_channel_walks_the_ladder (res://tests/modules/mind_cultivation/test_mind_training.gd:132)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_train_channel_walks_the_ladder passed=4 failed=4
+FOCUS_BEGIN test_turbulent_sea_blocks_the_attempt
+SCRIPT ERROR: Invalid call. Nonexistent function 'attach' in base 'GDScript'.
+   at: _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+   GDScript backtrace (most recent call first):
+       [0] _actor (res://tests/modules/mind_cultivation/test_mind_training.gd:11)
+       [1] test_turbulent_sea_blocks_the_attempt (res://tests/modules/mind_cultivation/test_mind_training.gd:167)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'path' in base 'Nil'.
+   at: _prepare (res://tests/modules/mind_cultivation/test_mind_training.gd:32)
+   GDScript backtrace (most recent call first):
+       [0] _prepare (res://tests/modules/mind_cultivation/test_mind_training.gd:32)
+       [1] test_turbulent_sea_blocks_the_attempt (res://tests/modules/mind_cultivation/test_mind_training.gd:168)
+       [2] _initialize (res://tests/focus_runner.gd:30)
+SCRIPT ERROR: Invalid call. Nonexistent function 'sea' in base 'GDScript'.
+   at: test_turbulent_sea_blocks_the_attempt (res://tests/modules/mind_cultivation/test_mind_training.gd:169)
+   GDScript backtrace (most recent call first):
+       [0] test_turbulent_sea_blocks_the_attempt (res://tests/modules/mind_cultivation/test_mind_training.gd:169)
+       [1] _initialize (res://tests/focus_runner.gd:30)
+FOCUS_END test_turbulent_sea_blocks_the_attempt passed=4 failed=5
+FOCUS_FAIL seed loaded: expected not <null>, got <null>
+FOCUS_FAIL breakthrough succeeded: expected true, got false
+FOCUS_FAIL seed loaded: expected not <null>, got <null>
+FOCUS_FAIL lung trained: expected true, got false
+FOCUS_FAIL seed loaded: expected not <null>, got <null>
+FOCUS: passed=4 failed=5

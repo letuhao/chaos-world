@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"F43_mortal_gibbet_dao_heart_move_speed_qi_absorption"
 display_name = "Mortal Gibbet Dao heart Move speed Qi absorption"
 category = &"technique"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 8.25},
+	{"option_id": &"core_move_speed", "value": 0.041},
+	{"option_id": &"core_qi_absorption", "value": 8.25},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"dao_heart": 0.035,
-"move_speed": 0.041,
-"qi_absorption": 0.059
-}

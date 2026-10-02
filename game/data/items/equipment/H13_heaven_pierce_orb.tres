@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"H13_heaven_pierce_orb"
 display_name = "Heaven Pierce Orb"
 category = &"equipment"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 27.22},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:H13_heaven_pierce_orb_recipe"])
-percent_modifiers = {
-"penetration": 0.08
-}

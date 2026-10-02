@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"soul_moon_herb"
 display_name = "Moon Herb"
 category = &"material"
+rarity = &"rare"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"earth"
 sources = Array[StringName]([&"gather", &"quest:A42_route"])

@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"L6_radiance_halo"
 display_name = "Radiance Halo"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 45},
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"boss:d5_transcendent_radiance"])
-flat_modifiers = {
-"defense_spiritual": 45.0
-}
-percent_modifiers = {
-"status_resistance": 0.06
-}

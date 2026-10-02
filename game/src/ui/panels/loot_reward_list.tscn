@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/ui/panels/loot_reward_list.gd" id="1"]
+[ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
+
+[node name="LootRewardList" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")
+
+[node name="RewardTitle" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "Reward - 0 drop(s), 0 waiting"
+
+[node name="TakeAllButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Take all"
+
+[node name="RewardMessage" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = ""
+autowrap_mode = 2
+
+[node name="RewardRows" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3

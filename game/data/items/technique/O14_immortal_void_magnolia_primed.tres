@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"O14_immortal_void_magnolia_primed"
 display_name = "Immortal Void Magnolia Primed"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 47.47},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:O14_immortal_void_magnolia_primed_recipe"])
-percent_modifiers = {
-"penetration": 0.13
-}

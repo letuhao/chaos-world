@@ -1,0 +1,131 @@
+class_name ItemActionRules
+extends RefCounted
+
+## Why an item action is or is not available, and which slot it would use.
+##
+## Pure decisions over primitives: the screen holds the node tree and the
+## formatting, this holds the rules. It reads the facade and `core` only, so it
+## stays inside the `ui/` boundary rule and stays headless-testable.
+##
+## These mirror the facade's preconditions for *feedback*. The facade's own
+## decision is still authoritative — every caller acts through it and treats a
+## rejection as final.
+
+## Activation channels an item can actually be used for. These are the plain
+## lowercase ids `ItemDef.activation()` returns; `ui/` may not name the items
+## module's `ItemActivation` constants, so they are spelled out here and the
+## mismatch is caught by the `not_usable` path rather than by a silent success.
+const USABLE_ACTIVATIONS: Array[StringName] = [&"consumed", &"learned", &"property"]
+
+## Subtype -> the slot that subtype normally occupies.
+const SUBTYPE_SLOTS := {
+	&"weapon": &"weapon",
+	&"armor": &"armor",
+	&"artifact": &"artifact",
+}
+
+const ACCESSORY_SLOTS: Array[StringName] = [&"accessory_a", &"accessory_b"]
+
+const REASON_NONE := ""
+const REASON_NO_SELECTION := "no_selection"
+const REASON_NO_ACTOR := "no_actor"
+const REASON_NOT_CARRIED := "not_carried"
+const REASON_NOT_EQUIPMENT := "not_equipment"
+const REASON_NOT_USABLE := "not_usable"
+const REASON_SLOT_EMPTY := "slot_empty"
+const REASON_INVENTORY_FULL := "inventory_full"
+const REASON_BOUND_TO_OTHER := "bound_to_other"
+const REASON_REALM_TIER_TOO_LOW := "realm_tier_too_low"
+
+
+## `""` when the selected item may be used.
+static func use_block_reason(actor: Actor, row: Dictionary) -> String:
+	if row.is_empty() or row.get("def") == null:
+		return REASON_NO_SELECTION
+	if not USABLE_ACTIVATIONS.has(StringName(row["def"].activation())):
+		return REASON_NOT_USABLE
+	if actor == null or not ItemsApi.has_item(actor, StringName(row["def_id"])):
+		return REASON_NOT_CARRIED
+	return REASON_NONE
+
+
+## `""` when the selected item may be equipped, combining shape and requirements.
+static func equip_block_reason(actor: Actor, row: Dictionary) -> String:
+	var shape := equip_shape_reason(actor, row)
+	if shape != REASON_NONE:
+		return shape
+	return equip_requirement_reason(actor, row)
+
+
+## Whether the selection is an equippable thing the actor actually carries.
+static func equip_shape_reason(actor: Actor, row: Dictionary) -> String:
+	if row.is_empty() or row.get("def") == null:
+		return REASON_NO_SELECTION
+	if not row["def"].is_equipment():
+		return REASON_NOT_EQUIPMENT
+	if actor == null:
+		return REASON_NO_ACTOR
+	var inventory := ItemsApi.inventory(actor)
+	if inventory == null or inventory.find_instance(StringName(row["def_id"])) == null:
+		return REASON_NOT_CARRIED
+	return REASON_NONE
+
+
+## Whether the actor satisfies the requirements the equipment layer enforces: the
+## grade gate and the item's binding.
+static func equip_requirement_reason(actor: Actor, row: Dictionary) -> String:
+	if actor == null:
+		return REASON_NO_ACTOR
+	var gate := realm_block_reason(actor, row["def"])
+	if gate != REASON_NONE:
+		return gate
+	var bound := StringName(String(row.get("bound_to", "")))
+	if bound != &"" and bound != actor.id:
+		return REASON_BOUND_TO_OTHER
+	return REASON_NONE
+
+
+## `""` when the chosen slot can be emptied into the inventory.
+static func unequip_block_reason(actor: Actor, slot: StringName) -> String:
+	if actor == null:
+		return REASON_NO_ACTOR
+	var equipment := ItemsApi.equipment(actor)
+	if equipment == null or equipment.definition(slot) == null:
+		return REASON_SLOT_EMPTY
+	var inventory := ItemsApi.inventory(actor)
+	if inventory != null and inventory.is_full():
+		return REASON_INVENTORY_FULL
+	return REASON_NONE
+
+
+## The grade gate the equipment layer applies: the actor's realm tier must meet
+## the item's required tier. An actor on no path is ungated.
+static func realm_block_reason(actor: Actor, def: Resource) -> String:
+	var realm: StringName = actor.realm()
+	if realm == &"":
+		return REASON_NONE
+	var tier := RealmDefaults.ladder().tier_of(realm)
+	if tier > 0 and tier < def.required_tier():
+		return REASON_REALM_TIER_TOO_LOW
+	return REASON_NONE
+
+
+## The slot the selected row would go into: the subtype's natural slot, the first
+## free accessory slot for accessories, otherwise whatever the player chose.
+static func slot_for(actor: Actor, row: Dictionary, chosen: StringName) -> StringName:
+	var subtype := StringName(row.get("subtype", ""))
+	if subtype == &"accessory":
+		return free_accessory_slot(actor)
+	var preferred: StringName = SUBTYPE_SLOTS.get(subtype, &"")
+	if preferred != &"":
+		return preferred
+	return chosen
+
+
+## First empty accessory slot, or the first accessory slot when both are taken.
+static func free_accessory_slot(actor: Actor) -> StringName:
+	var equipment := ItemsApi.equipment(actor)
+	for slot in ACCESSORY_SLOTS:
+		if equipment == null or equipment.definition(slot) == null:
+			return slot
+	return ACCESSORY_SLOTS[0]

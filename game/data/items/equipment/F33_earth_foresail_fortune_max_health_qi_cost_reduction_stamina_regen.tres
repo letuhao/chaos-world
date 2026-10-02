@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F33_earth_foresail_fortune_max_health_qi_cost_reduction_stamina_regen"
 display_name = "Earth Foresail Fortune Max health Qi cost reduction Stamina regen"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_fortune", "value": 19.8},
+	{"option_id": &"core_max_health", "value": 19.8},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+	{"option_id": &"core_stamina_regen", "value": 19.8},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"fortune": 0.03,
-"max_health": 0.05,
-"qi_cost_reduction": 0.07,
-"stamina_regen": 0.03
-}

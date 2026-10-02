@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"J8_spirit_bone_anointed"
 display_name = "Spirit Bone Anointed"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 15.12},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:J8_spirit_bone_anointed_recipe"])
-percent_modifiers = {
-"spirit": 0.1
-}

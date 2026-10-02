@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"gem_shadowamethyst"
 display_name = "Shadowamethyst"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"ore"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"quest:A38_route"])

@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F23_divine_estaminet_agility_attack_speed_fortune_poise"
 display_name = "Divine Estaminet Agility Attack speed Fortune Poise"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 35.62},
+	{"option_id": &"core_attack_speed", "value": 0.05},
+	{"option_id": &"base_fortune", "value": 35.62},
+	{"option_id": &"core_poise", "value": 35.62},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"salve"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.03,
-"attack_speed": 0.05,
-"fortune": 0.07,
-"poise": 0.03
-}

@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F6_mortal_decal_qi_cost_reduction_comprehension_agility_stamina_regen"
 display_name = "Mortal Decal Qi Cost Reduction Comprehension Agility Stamina Regen"
 category = &"equipment"
+rarity = &"common"
+realm = &"great_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_cost_reduction", "value": 0.03},
+	{"option_id": &"base_comprehension", "value": 9.35},
+	{"option_id": &"base_agility", "value": 9.35},
+	{"option_id": &"core_stamina_regen", "value": 9.35},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"qi_cost_reduction": 0.03,
-"comprehension": 0.05,
-"agility": 0.07,
-"stamina_regen": 0.03
-}

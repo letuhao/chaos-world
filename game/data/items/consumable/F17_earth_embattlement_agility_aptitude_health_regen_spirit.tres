@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F17_earth_embattlement_agility_aptitude_health_regen_spirit"
 display_name = "Earth Embattlement Agility Aptitude Health regen Spirit"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 16.5},
+	{"option_id": &"base_aptitude", "value": 9.74},
+	{"option_id": &"core_health_regen", "value": 16.5},
+	{"option_id": &"base_spirit", "value": 16.5},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"earth"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"agility": 0.07,
-"aptitude": 0.03,
-"health_regen": 0.05,
-"spirit": 0.07
-}

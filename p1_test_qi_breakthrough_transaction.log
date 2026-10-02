@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+FOCUS_BEGIN test_execute_matches_preview_on_readiness
+FOCUS_END test_execute_matches_preview_on_readiness passed=2 failed=0
+FOCUS_BEGIN test_execute_never_advances_two_realms_on_one_pill
+FOCUS_END test_execute_never_advances_two_realms_on_one_pill passed=5 failed=0
+FOCUS_BEGIN test_execute_refuses_an_unprepared_actor
+FOCUS_END test_execute_refuses_an_unprepared_actor passed=7 failed=0
+FOCUS_BEGIN test_execute_refuses_when_the_dantian_is_not_full
+FOCUS_END test_execute_refuses_when_the_dantian_is_not_full passed=9 failed=0
+FOCUS_BEGIN test_execute_refuses_without_the_pill
+FOCUS_END test_execute_refuses_without_the_pill passed=11 failed=0
+FOCUS_BEGIN test_facade_advance_refuses_an_unprepared_actor
+FOCUS_END test_facade_advance_refuses_an_unprepared_actor passed=13 failed=0
+FOCUS: passed=13 failed=0

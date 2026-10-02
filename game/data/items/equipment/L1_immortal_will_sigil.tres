@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"L1_immortal_will_sigil"
 display_name = "Immortal Resolve Band"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"craft:L1_immortal_will_sigil_recipe"])
-percent_modifiers = {
-"will": 0.15
-}

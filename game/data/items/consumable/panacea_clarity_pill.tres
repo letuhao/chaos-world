@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"panacea_clarity_pill"
 display_name = "Clarity Pill"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.05},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:panacea_clarity_pill_recipe", &"boss:F14_dao_fruit_warden"])
-percent_modifiers = {
-"insight_gain": 0.05
-}

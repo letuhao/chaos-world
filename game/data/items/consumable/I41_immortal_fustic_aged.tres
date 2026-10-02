@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I41_immortal_fustic_aged"
 display_name = "Immortal Fustic Aged"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 27.92},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:I41_immortal_fustic_aged_recipe"])
-percent_modifiers = {
-"poise": 0.09
-}

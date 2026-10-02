@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U1_heaven_sedge_sphere"
 display_name = "Heaven Sedge Sphere"
 category = &"equipment"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 11.24},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:mind_heaven_immortal_warden"])
-percent_modifiers = {
-"defense_physical": 0.06
-}

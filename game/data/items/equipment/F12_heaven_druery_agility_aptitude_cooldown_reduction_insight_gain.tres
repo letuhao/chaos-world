@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"F12_heaven_druery_agility_aptitude_cooldown_reduction_insight_gain"
 display_name = "Heaven Druery Agility Aptitude Cooldown reduction Insight gain"
 category = &"equipment"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 25.58},
+	{"option_id": &"base_aptitude", "value": 25.58},
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+	{"option_id": &"core_insight_gain", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.03,
-"aptitude": 0.05,
-"cooldown_reduction": 0.07,
-"insight_gain": 0.03
-}

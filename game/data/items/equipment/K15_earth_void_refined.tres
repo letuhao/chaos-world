@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"K15_earth_void_refined"
 display_name = "Earth Void Refined"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:K15_earth_void_refined_recipe"])
-percent_modifiers = {
-"qi_cost_reduction": 0.06
-}

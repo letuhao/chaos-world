@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U1_spirit_sedge_fillet"
 display_name = "Spirit Sedge Fillet"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 7.72},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:mind_spirit_transformation_warden"])
-percent_modifiers = {
-"defense_physical": 0.06
-}

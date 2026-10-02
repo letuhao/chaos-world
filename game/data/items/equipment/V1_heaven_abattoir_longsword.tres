@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V1_heaven_abattoir_longsword"
 display_name = "Heaven Abattoir Longsword"
 category = &"equipment"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_evasion", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"boss:tome_abyssal_serpent"])
-percent_modifiers = {
-"evasion": 0.06
-}

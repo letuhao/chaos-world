@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"idol_moon"
 display_name = "Moon Idol"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 9.34},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:idol_moon_recipe", &"boss:mind_spirit_unity_warden"])
-flat_modifiers = {
-"max_qi": 30.0
-}

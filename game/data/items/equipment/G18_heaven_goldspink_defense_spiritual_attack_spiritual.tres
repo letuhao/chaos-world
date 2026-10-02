@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"G18_heaven_goldspink_defense_spiritual_attack_spiritual"
 display_name = "Heaven Goldspink Defense spiritual Attack spiritual"
 category = &"equipment"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 23.1},
+	{"option_id": &"core_attack_spiritual", "value": 23.1},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"defense_spiritual": 0.021,
-"attack_spiritual": 0.022
-}

@@ -122,18 +122,6 @@ def run() -> int:
     return 0
 
 
-def _power_budget(index: int, tier: int) -> float:
-    """Reference power budget P for a realm (ADR 0013/0016)."""
-    local = index + 1
-    if tier == 1:
-        return 1.0 * (1.25 ** (local - 1))
-    if tier == 2:
-        return 8.0 * (1.22 ** (local - 1))
-    if tier == 3:
-        return 55.0 * (1.20 ** (local - 1))
-    return 330.0 * (1.35 ** (local - 1))
-
-
 def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
     ladder = realms()
     names = stages(spec["path"])

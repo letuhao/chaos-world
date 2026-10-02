@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U10_divine_quibble_perfected"
 display_name = "Divine Quibble Perfected"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_damage_reduction", "value": 0.08},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"craft:U10_divine_quibble_perfected_recipe"])
-flat_modifiers = {
-"damage_reduction": 0.17
-}

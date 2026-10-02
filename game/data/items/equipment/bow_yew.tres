@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"bow_yew"
 display_name = "Yew Bow"
 category = &"equipment"
+rarity = &"common"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 5.5},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:bow_yew_recipe"])
-flat_modifiers = {
-"attack_physical": 12.0
-}

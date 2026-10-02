@@ -7,17 +7,18 @@ script = ExtResource("1_item")
 id = &"scroll_void"
 display_name = "Void Scroll"
 category = &"material"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 39.34},
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+	{"option_id": &"core_insight_gain", "value": 0.04},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"immortal"
 value = 950
 tags = Array[StringName]([&"legendary"])
 sources = Array[StringName]([&"craft:scroll_void_recipe"])
 description = "A dark scroll that absorbs light. Immortal-grade with void affinity."
-flat_modifiers = {
-"attack_spiritual": 65.0
-}
-percent_modifiers = {
-"cultivation_rate": 0.22,
-"insight_gain": 0.45,
-"qi_cost_reduction": 0.11
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"tincture_heaven"
 display_name = "Heaven Tincture"
 category = &"consumable"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 23.92},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"tincture"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:tincture_heaven_recipe"])
-flat_modifiers = {
-"max_health": 58.0
-}

@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"K17_earth_silver_primed"
 display_name = "Earth Silver Primed"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.02},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:K17_earth_silver_primed_recipe"])
-percent_modifiers = {
-"move_speed": 0.13
-}

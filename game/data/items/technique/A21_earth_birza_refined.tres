@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A21_earth_birza_refined"
 display_name = "Earth Birza Refined"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 17.33},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"earth"
 sources = Array[StringName]([&"craft:A21_earth_birza_refined_recipe"])
-percent_modifiers = {
-"will": 0.06
-}

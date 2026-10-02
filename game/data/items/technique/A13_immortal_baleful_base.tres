@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A13_immortal_baleful_base"
 display_name = "Immortal Baleful Base"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:A13_immortal_baleful_base_recipe", &"quest:A13_immortal_baleful_line"])
-percent_modifiers = {
-"agility": 0.03
-}

@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"R21_spirit_pike_perfected"
 display_name = "Spirit Pike Perfected"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 15.12},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:R21_spirit_pike_perfected_recipe"])
-percent_modifiers = {
-"health_regen": 0.17
-}

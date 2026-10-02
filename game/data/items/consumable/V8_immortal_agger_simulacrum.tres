@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V8_immortal_agger_simulacrum"
 display_name = "Immortal Agger Simulacrum"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 29.84},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:F18_true_warden"])
-percent_modifiers = {
-"max_health": 0.06
-}

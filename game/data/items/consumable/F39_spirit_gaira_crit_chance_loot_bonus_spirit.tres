@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"F39_spirit_gaira_crit_chance_loot_bonus_spirit"
 display_name = "Spirit Gaira Crit chance Loot bonus Spirit"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.027},
+	{"option_id": &"core_loot_bonus", "value": 0.044},
+	{"option_id": &"base_spirit", "value": 18.56},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"spirit"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"crit_chance": 0.027,
-"loot_bonus": 0.044,
-"spirit": 0.027
-}

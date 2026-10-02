@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"M5_mortal_echo_base"
 display_name = "Mortal Echo Base"
 category = &"consumable"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.03},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"tincture"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:M5_mortal_echo_base_recipe"])
-percent_modifiers = {
-"breakthrough_chance": 0.03
-}

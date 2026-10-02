@@ -4,8 +4,10 @@ extends TestCase
 
 
 func test_resource_ids() -> void:
+	# Exactly one qi reservoir. A second axis (`qi_purity`) was removed: it was
+	# created full and never written, so it multiplied three derived stats by a
+	# constant 1.0 while looking like a real gate.
 	assert_eq(QiStats.QI, &"qi", "qi resource id")
-	assert_eq(QiStats.QI_PURITY, &"qi_purity", "qi_purity resource id")
 
 
 func test_base_attribute_ids() -> void:

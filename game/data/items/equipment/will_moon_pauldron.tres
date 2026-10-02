@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"will_moon_pauldron"
 display_name = "Moon Resolve Pauldron"
 category = &"equipment"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 25.58},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"gather", &"quest:W24_route"])
-percent_modifiers = {
-"will": 0.1
-}

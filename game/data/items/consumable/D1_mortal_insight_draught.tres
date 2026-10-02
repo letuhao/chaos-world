@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"D1_mortal_insight_draught"
 display_name = "Mortal Insight Draught"
 category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.03},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"draught"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"craft:D1_mortal_insight_draught_recipe", &"boss:F2_nascent_soul_warden"])
-percent_modifiers = {
-"insight_gain": 0.03
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I8_mortal_dubbing_perfected"
 display_name = "Mortal Dubbing Perfected"
 category = &"technique"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I8_mortal_dubbing_perfected_recipe"])
-percent_modifiers = {
-"attack_spiritual": 0.17
-}

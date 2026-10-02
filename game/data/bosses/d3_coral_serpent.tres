@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d3_coral_serpent"
 display_name = "Coral Leviathan Lesser"
 domain_id = &"marine_coral_leviathan_domain"
-loot = Array[StringName]([&"marine_coral_leviathan_heart_core", &"marine_coral_leviathan_scale_bone", &"L3_coral_serpent_core", &"L3_coral_serpent_bone", &"V7_earth_aerie_timbrel"])
+loot = Array[StringName]([&"marine_coral_leviathan_heart_core", &"marine_coral_leviathan_scale_bone", &"L3_coral_serpent_bone", &"L3_coral_serpent_core", &"V7_earth_aerie_timbrel"])

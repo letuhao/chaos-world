@@ -12,7 +12,22 @@ SOURCE_SUFFIXES = (".gd", ".tscn", ".tres")
 RES_RE = re.compile(r'res://[^"\'\s)]+')
 CLASS_RE = re.compile(r"^\s*class_name\s+([A-Za-z_]\w*)", re.MULTILINE)
 EXTENDS_RE = re.compile(r"^\s*extends\s+([A-Za-z_]\w*)", re.MULTILINE)
-FUNC_RE = re.compile(r"^func\s+([A-Za-z_]\w*)", re.MULTILINE)
+# Every facade in this repo declares `static func`, so the optional `static`
+# prefix is required — without it the ISP cap silently counted zero methods on
+# all twelve facades and never fired.
+FUNC_RE = re.compile(r"^(?:static\s+)?func\s+([A-Za-z_]\w*)", re.MULTILINE)
+# A bare class reference: the name used as a word, not part of a longer identifier.
+# `\b` after the name keeps `BodyTrainingX` from matching `BodyTraining`.
+WORD_RE = re.compile(r"\b([A-Z][A-Za-z0-9_]*)\b")
+# `# comment` and quoted literals are stripped before scanning for bare class
+# references, so prose and user-facing strings never count as dependencies.
+COMMENT_RE = re.compile(r"#.*$", re.MULTILINE)
+STRING_RE = re.compile(r'"[^"\n]*"')
+
+
+def _code_only(text: str) -> str:
+    """Drop comments and string literals so only real code is scanned."""
+    return STRING_RE.sub('""', COMMENT_RE.sub("", text))
 
 
 def register(subparsers) -> None:
@@ -26,11 +41,15 @@ def unit_of(rel: str) -> str | None:
         return None
     if parts[0] == "scenes":
         return "app"
+    if parts[0] == "tools":
+        return "harness"
     if parts[0] != "src" or len(parts) < 2:
         return None
     head = parts[1]
     if head == "modules":
         return f"modules/{parts[2]}" if len(parts) >= 3 else None
+    if head == "ui":
+        return "ui"
     if head in rules.LAYER_DEPS:
         return head
     return None
@@ -66,11 +85,22 @@ def _class_index(files) -> dict[str, tuple[str, str | None, bool]]:
     return index
 
 
-def _references(text):
+def _references(text, scan_bare: bool = False):
+    seen = set()
     for match in RES_RE.finditer(text):
-        yield text.count("\n", 0, match.start()) + 1, match.group(0)
+        seen.add((text.count("\n", 0, match.start()) + 1, match.group(0)))
     for match in EXTENDS_RE.finditer(text):
-        yield text.count("\n", 0, match.start()) + 1, match.group(1)
+        seen.add((text.count("\n", 0, match.start()) + 1, match.group(1)))
+    if scan_bare:
+        # `ui/` is held to the facade rule, so its edges must be visible even when
+        # a class is referenced by bare name (`BodyTraining.cultivate(...)`) with
+        # no `res://` and no `extends`. This is what makes the rule enforceable
+        # without forcing every panel to preload its facade.
+        code = _code_only(text)
+        for match in WORD_RE.finditer(code):
+            line = code.count("\n", 0, match.start()) + 1
+            seen.add((line, match.group(1)))
+    return sorted(seen)
 
 
 def _resolve(ref: str, classes) -> tuple[str | None, bool]:
@@ -89,6 +119,31 @@ def _violation(source: str | None, target: str | None, facade: bool, registry) -
         return None
     if source == "app":
         return None
+    if source == "harness":
+        # `game/tools/` is headless harness code: the test runner and the UI
+        # driver. It builds an Actor directly, so it may reach module internals,
+        # and it instantiates screens to drive them, so `ui/` is allowed too.
+        # What it must not do is reach `app/` — that is the composition root, and
+        # a harness that used it would be testing wiring no player drives.
+        if target == "app":
+            return "'harness/' must not depend on 'app/'"
+        return None
+    if source == "ui":
+        # `ui/` reads gameplay through facades only, and only what it declares.
+        # Reaching into module internals would couple the UI program to the
+        # gameplay program and defeat the split.
+        if target in ("core", "contracts"):
+            return None
+        if target.startswith("modules/"):
+            dep = target.split("/", 1)[1]
+            if not facade:
+                return f"'ui/' may reference '{dep}' only through modules/{dep}/api.gd"
+            if dep not in rules.UI_MODULES:
+                return (
+                    f"'ui/' references undeclared module '{dep}'; register it in rules.UI_MODULES"
+                )
+            return None
+        return f"'ui/' must not depend on '{target}/'"
     if target in rules.PRIVATE_UNITS:
         return f"'{target}/' is private and may only be referenced by app/"
     if source in rules.LAYER_DEPS:
@@ -179,7 +234,7 @@ def run(args) -> int:
         if source is None:
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
-        for line, ref in _references(text):
+        for line, ref in _references(text, scan_bare=source == "ui"):
             target, facade = _resolve(ref, classes)
             reason = _violation(source, target, facade, registry)
             if reason:

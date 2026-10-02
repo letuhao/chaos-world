@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"B9_immortal_burnous_base"
 display_name = "Immortal Burnous Base"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 15.31},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:B9_immortal_burnous_base_recipe", &"quest:B9_immortal_burnous_line"])
-percent_modifiers = {
-"physique": 0.03
-}

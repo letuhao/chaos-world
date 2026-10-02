@@ -1,0 +1,13 @@
+28 files already formatted
+207 files would be left unchanged
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format tools --check
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game --check
+All checks passed!
+D:\Works\source\chaos-world\game\tests\modules\body_cultivation\test_breakthrough_attempt.gd:1: Error: "Class global scope" has more than 20 public methods (functions) (max-public-methods)
+Failure: 1 problem found
+Success: no problems found
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE check tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdlint.EXE D:\Works\source\chaos-world\game
+fail gate failed: lint
+== fmt ==
+== lint ==

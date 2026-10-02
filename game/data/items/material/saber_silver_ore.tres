@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"saber_silver_ore"
 display_name = "Saber Silver Ore"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"ore"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"quest:A41_route"])

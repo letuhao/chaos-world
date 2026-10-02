@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F9_divine_dossal_agility_aptitude_attack_physical_move_speed"
 display_name = "Divine Dossal Agility Aptitude Attack physical Move speed"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 35.62},
+	{"option_id": &"base_aptitude", "value": 21.04},
+	{"option_id": &"core_attack_physical", "value": 35.62},
+	{"option_id": &"core_move_speed", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"divine"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"agility": 0.07,
-"aptitude": 0.03,
-"attack_physical": 0.05,
-"move_speed": 0.07
-}

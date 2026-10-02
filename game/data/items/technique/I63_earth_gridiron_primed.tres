@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I63_earth_gridiron_primed"
+display_name = "Earth Gridiron Primed"
+category = &"technique"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"manual"
+grade = &"earth"
+sources = Array[StringName]([&"craft:I63_earth_gridiron_primed_recipe"])

@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"V16_mortal_annulus_cadastre"
 display_name = "Mortal Annulus Cadastre"
 category = &"quest"
+rarity = &"common"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"sachet"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])

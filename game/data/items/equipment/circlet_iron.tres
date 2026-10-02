@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"circlet_iron"
 display_name = "Iron Circlet"
 category = &"equipment"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 11.62},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:circlet_iron_recipe"])
-flat_modifiers = {
-"max_qi": 20.0
-}

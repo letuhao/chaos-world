@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"K27_immortal_ash_primed"
 display_name = "Immortal Ash Primed"
 category = &"technique"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 35.94},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:K27_immortal_ash_primed_recipe"])
-percent_modifiers = {
-"penetration": 0.13
-}

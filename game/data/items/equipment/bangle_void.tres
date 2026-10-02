@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"bangle_void"
 display_name = "Void Bangle"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"craft:bangle_void_recipe", &"boss:elemental_immortal_guardian"])
-percent_modifiers = {
-"status_resistance": 0.08
-}

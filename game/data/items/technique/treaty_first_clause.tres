@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"treaty_first_clause"
 display_name = "Treaty: First Clause"
 category = &"technique"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"mortal"
 sources = Array[StringName]([&"quest:treaty_first_clause"])
-percent_modifiers = {
-"cultivation_rate": 0.05
-}

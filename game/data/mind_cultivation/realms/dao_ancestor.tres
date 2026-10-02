@@ -8,6 +8,7 @@ id = &"dao_ancestor"
 breakthrough_item = &"mind_dao_ancestor_breakthrough_pill"
 training_item = &"mind_dao_ancestor_channel_elixir"
 sea_catalyst = &"mind_dao_ancestor_sea_catalyst"
+recovery_item = &"mind_dao_ancestor_recovery_elixir"
 progress_required = 12542.0
 comprehension_required = 1746.0
 clarity_required = 0.82

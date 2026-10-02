@@ -7,11 +7,15 @@ script = ExtResource("1_item")
 id = &"formation_sovereign_disc"
 display_name = "Formation Sovereign Disc"
 category = &"equipment"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 30},
+	{"option_id": &"core_defense_spiritual", "value": 30},
+	{"option_id": &"core_damage_reduction", "value": 0.05},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:formation_sovereign_disc_recipe"])
-flat_modifiers = {
-"defense_physical": 30.0,
-"defense_spiritual": 30.0
-"damage_reduction": 0.05
-}

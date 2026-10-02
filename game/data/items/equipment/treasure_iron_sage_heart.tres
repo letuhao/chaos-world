@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"treasure_iron_sage_heart"
 display_name = "Sage Heart"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 25},
+	{"option_id": &"core_damage_reduction", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:treasure_iron_sage", &"boss:d6_iron_sage"])
-flat_modifiers = {
-"defense_physical": 25.0
-"damage_reduction": 0.05
-}

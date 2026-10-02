@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U20_heaven_bale_primed"
 display_name = "Heaven Bale Primed"
 category = &"consumable"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 17.06},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:U20_heaven_bale_primed_recipe"])
-percent_modifiers = {
-"max_stamina": 0.13
-}

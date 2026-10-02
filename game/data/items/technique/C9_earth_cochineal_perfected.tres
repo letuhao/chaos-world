@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"C9_earth_cochineal_perfected"
 display_name = "Earth Cochineal Perfected"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 15.68},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"earth"
 sources = Array[StringName]([&"craft:C9_earth_cochineal_perfected_recipe"])
-percent_modifiers = {
-"qi_absorption": 0.17
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"S12_heaven_salter_refined"
 display_name = "Heaven Salter Refined"
 category = &"consumable"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 26.4},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:S12_heaven_salter_refined_recipe"])
-percent_modifiers = {
-"will": 0.06
-}

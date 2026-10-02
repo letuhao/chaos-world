@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U9_divine_pivot_aged"
 display_name = "Divine Pivot Aged"
 category = &"technique"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 45.22},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"divine"
 sources = Array[StringName]([&"craft:U9_divine_pivot_aged_recipe"])
-percent_modifiers = {
-"aptitude": 0.09
-}

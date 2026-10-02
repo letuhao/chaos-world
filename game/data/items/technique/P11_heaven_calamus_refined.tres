@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"P11_heaven_calamus_refined"
 display_name = "Heaven Calamus Refined"
 category = &"technique"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 27.22},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:P11_heaven_calamus_refined_recipe"])
-percent_modifiers = {
-"spirit": 0.06
-}

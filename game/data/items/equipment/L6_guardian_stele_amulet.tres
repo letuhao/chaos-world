@@ -7,12 +7,14 @@ script = ExtResource("1_item")
 id = &"L6_guardian_stele_amulet"
 display_name = "Guardian Stele Amulet"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 13.75},
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:d6_stone_guardian"])
-flat_modifiers = {
-"max_health": 30.0
-}
-percent_modifiers = {
-"status_resistance": 0.04
-}

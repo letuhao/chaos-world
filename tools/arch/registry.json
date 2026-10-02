@@ -1,6 +1,18 @@
 {
-  "version": 1,
   "modules": {
+    "body_cultivation": {
+      "deps": [
+        "contracts",
+        "core",
+        "items"
+      ]
+    },
+    "combat": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
     "dual_cultivation": {
       "deps": [
         "contracts",
@@ -26,19 +38,14 @@
         "core"
       ]
     },
-    "world": {
+    "loot": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "items"
       ]
     },
-    "combat": {
-      "deps": [
-        "contracts",
-        "core"
-      ]
-    },
-    "body_cultivation": {
+    "mind_cultivation": {
       "deps": [
         "contracts",
         "core",
@@ -52,12 +59,26 @@
         "items"
       ]
     },
-    "mind_cultivation": {
+    "set_bonus": {
       "deps": [
         "contracts",
         "core",
         "items"
       ]
+    },
+    "socket": {
+      "deps": [
+        "contracts",
+        "core",
+        "items"
+      ]
+    },
+    "world": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
     }
-  }
+  },
+  "version": 1
 }

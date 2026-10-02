@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"V14_earth_anabasis_soler"
 display_name = "Earth Anabasis Soler"
 category = &"currency"
+rarity = &"rare"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"writ"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])

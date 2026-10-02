@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"body_primordial_immortal_guardian"
 display_name = "Body of Unity Guardian"
 domain_id = &"body_primordial_immortal_trial"
-loot = Array[StringName]([&"body_primordial_immortal_guardian_core", &"body_primordial_immortal_tempering_herb", &"body_primordial_immortal_channel_elixir", &"U3_immortal_warble_halberd", &"U3_immortal_warble_grail"])
+loot = Array[StringName]([&"body_primordial_immortal_guardian_core", &"body_primordial_immortal_tempering_herb", &"body_primordial_immortal_channel_elixir", &"U3_immortal_warble_grail", &"U3_immortal_warble_halberd"])

@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"E13_mortal_blisterbed_overmote"
 display_name = "Mortal Blisterbed Overmote"
 category = &"material"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pearl"
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])

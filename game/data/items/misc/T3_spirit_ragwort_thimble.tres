@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"T3_spirit_ragwort_thimble"
 display_name = "Spirit Ragwort Thimble"
 category = &"misc"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"token"
 grade = &"spirit"
 sources = Array[StringName]([&"quest"])

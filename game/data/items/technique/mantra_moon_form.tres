@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"mantra_moon_form"
 display_name = "Moon Mantra"
 category = &"technique"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"heaven"
 sources = Array[StringName]([&"gather", &"quest:W28_route"])
-percent_modifiers = {
-"qi_cost_reduction": 0.06
-}

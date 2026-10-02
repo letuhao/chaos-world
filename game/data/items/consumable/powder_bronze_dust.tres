@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"powder_bronze_dust"
 display_name = "Bronze Dust Powder"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 28},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"quest:A40_route"])
-flat_modifiers = {
-"max_health": 28.0
-}

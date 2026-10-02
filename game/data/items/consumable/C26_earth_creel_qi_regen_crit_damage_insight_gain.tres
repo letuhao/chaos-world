@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"C26_earth_creel_qi_regen_crit_damage_insight_gain"
 display_name = "Earth Creel Qi Regen Crit Damage Insight Gain"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 20.62},
+	{"option_id": &"core_crit_damage", "value": 0.05},
+	{"option_id": &"core_insight_gain", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"tincture"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"qi_regen": 0.03,
-"crit_damage": 0.05,
-"insight_gain": 0.07
-}

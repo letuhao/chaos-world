@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"V10_earth_aleph_docket"
 display_name = "Earth Aleph Docket"
 category = &"key"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])

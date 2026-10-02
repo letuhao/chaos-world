@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Q13_immortal_fritter_aged"
 display_name = "Immortal Fritter Aged"
 category = &"technique"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 29.84},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:Q13_immortal_fritter_aged_recipe"])
-percent_modifiers = {
-"physique": 0.09
-}

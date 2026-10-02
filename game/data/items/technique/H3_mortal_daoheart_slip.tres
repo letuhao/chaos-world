@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"H3_mortal_daoheart_slip"
 display_name = "Mortal Daoheart Slip"
 category = &"technique"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 6.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:H3_mortal_daoheart_slip_recipe"])
-percent_modifiers = {
-"dao_heart": 0.02
-}

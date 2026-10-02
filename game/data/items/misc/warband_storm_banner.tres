@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"warband_storm_banner"
 display_name = "Storm Warband Banner"
 category = &"misc"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"trophy"
 grade = &"immortal"
 sources = Array[StringName]([&"quest:warband_storm_banner", &"boss:F16_golden_hoard_tyrant"])

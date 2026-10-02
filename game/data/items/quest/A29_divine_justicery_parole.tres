@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"A29_divine_justicery_parole"
 display_name = "Divine Justicery Parole"
 category = &"quest"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"bounty"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])

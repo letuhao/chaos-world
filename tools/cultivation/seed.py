@@ -3,9 +3,16 @@
 from __future__ import annotations
 
 import re
+from decimal import ROUND_HALF_UP, Decimal
 
 from .. import data
 from ..common import REPO_ROOT, ok
+from ..realm_power import read_multipliers
+
+# `minf`/`maxf` mirror GDScript's clamp helpers so the Python generator and the
+# runtime read the same intent.
+minf = min
+maxf = max
 
 ROOT = REPO_ROOT / "game" / "data"
 PRIMARY = (
@@ -49,6 +56,16 @@ def stages() -> list[str]:
     return re.findall(r'^\s*"([^"]+)",$', text, re.M)
 
 
+def _round_half_up(value: float) -> int:
+    """Round half away from zero, matching GDScript `roundf()`.
+
+    Python's `round()` uses banker's rounding, so an exact .5 rounds to even
+    while GDScript rounds away from zero. The generator and the runtime assert
+    against each other, so they must agree.
+    """
+    return int(Decimal(str(value)).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+
+
 def resource(class_name: str, script: str, lines: list[str]) -> str:
     return (
         f'[gd_resource type="Resource" script_class="{class_name}" load_steps=2 format=3]\n\n'
@@ -60,6 +77,7 @@ def resource(class_name: str, script: str, lines: list[str]) -> str:
 def run() -> int:
     files: dict[str, str] = {}
     channels: list[tuple[str, int]] = []
+    realm_power = read_multipliers()
     for index, channel in enumerate(PRIMARY + EXTRAORDINARY):
         primary = index < 12
         unlock = (index // 4) * 3 if primary else 9 + max(0, (index - 14) // 2) * 3
@@ -105,6 +123,10 @@ def run() -> int:
         prefix = f"body_{realm_id}"
         grade = ("mortal", "spirit", "immortal", "divine")[tier - 1]
         pill, elixir = f"{prefix}_breakthrough_pill", f"{prefix}_channel_elixir"
+        # Third consumable role. A failed breakthrough jams a huyệt and tears a
+        # channel; without a realm-authored repair item that damage would be
+        # permanent, which the design forbids.
+        recovery = f"{prefix}_recovery_elixir"
         herb, core = f"{prefix}_tempering_herb", f"{prefix}_guardian_core"
         boss, domain = f"{prefix}_guardian", f"{prefix}_trial"
         source_index = max(0, index - 1)
@@ -113,31 +135,46 @@ def run() -> int:
             ("physique", 2.0),
             (("organ_vitality", "muscle_fiber", "bone_density")[index % 3], 1.0),
         ]
-        # Profile factors: P = base * growth^(local-1), C = P^0.85, F = P^0.40, T = P^0.55
-        tier_base = (1.0, 8.0, 55.0, 330.0)[tier - 1]
-        tier_growth = (1.25, 1.22, 1.20, 1.35)[tier - 1]
-        local = (
-            index + 1
-            if tier == 1
-            else (index - 8 if tier == 2 else (index - 17 if tier == 3 else index - 26))
-        )
-        p = tier_base * (tier_growth ** (local - 1))
-        c_factor = p**0.85
-        f_factor = p**0.40
-        t_factor = p**0.55
+        # Profile factors: P is the realm's AUTHORED multiplier from
+        # core/realm_power_table.tres, and C = P^0.85, F = P^0.40, T = P^0.55.
+        # Previously P was a read of the one power ladder (ADR 0042); that ladder is
+        # gone (ADR 0050) and the table replaced it. Before the ladder, this was a
+        # private per-tier geometric (base * growth^(local-1)) reaching 601x at R30.
+        t_factor = realm_power[index] ** 0.55
         # Quality/integrity targets: Q(R) = 0.40 + 0.015*(R-1), U(R) = 0.45 + 0.015*(R-1)
         quality_target = 0.40 + 0.015 * index
         integrity_target = 0.45 + 0.015 * index
-        # Work requirements
-        work_required = round(100.0 * max(1, index) ** 1.45) if index > 0 else 0.0
-        acupoint_work = round(20.0 * (index + 1) ** 1.4)
-        meridian_work = round(15.0 * (index + 1) ** 1.4)
+        # Work requirements. These are the prices of the three training verbs, in
+        # labour units, where one labour tick is one `cultivate(actor, 1.0)` call.
+        # The realm budget is what a cultivator must spend to be ready for the
+        # NEXT realm; the two sub-budgets price a full pass of one huyệt and one
+        # channel step. They are cut from T, not from (R-1)^1.45, so that reward
+        # per unit of labour is constant across the ladder instead of peaking at
+        # R9 and collapsing by 15x at R30.
+        labour_per_realm = round(40.0 * t_factor)
+        work_required = float(labour_per_realm)
+        # Round half away from zero so the Python generator and GDScript's
+        # roundf() agree; banker's rounding disagrees on exact .5 and produced a
+        # one-off mismatch at R24.
+        acupoint_work = float(_round_half_up(labour_per_realm / max(1, 4 * (source_index + 1))))
+        meridian_work = float(_round_half_up(labour_per_realm / max(1, 4 * (index + 1))))
         # Insight floor: 10 + 6*(R-1) + 2*(R-1)^2
         insight_required = 10.0 + 6.0 * index + 2.0 * index * index
         # Resonance rank (realms 19-30): R19=1, R20=2, ..., R30=12
         resonance_rank = max(0, index - 17) if index >= 18 else 0
-        # Channel training after entry
-        channel_training = [ch for ch, unlock in channels if unlock == index + 1]
+        # Breakthrough risk. Comprehension is the entry GATE, so it must not also
+        # decide the roll: 0.1 + 0.01*insight_required exceeds the 0.95 clamp
+        # from R5 on, which made 26 of 29 attempts certain successes. The realm
+        # offers a floor and a ceiling instead; acupoint quality buys certainty
+        # between them, so the failure rate stays meaningful (about 20% at R1
+        # rising to about 28% at R30) instead of reaching zero.
+        chance_base = minf(0.55 + 0.008 * index, 0.80)
+        chance_cap = maxf(0.95 - 0.008 * index, 0.70)
+        # Channel training after entry. The generator names channels with
+        # `unlock_index == index`, i.e. the ones that unlock ON entering this
+        # realm. The previous `index + 1` named the NEXT realm's channels, which
+        # do not exist yet and could not be trained.
+        channel_training = [ch for ch, unlock in channels if unlock == index]
         files[f"body_cultivation/realms/{realm_id}.tres"] = resource(
             "BodyRealmSeed",
             "res://src/modules/body_cultivation/realm_seed.gd",
@@ -145,9 +182,18 @@ def run() -> int:
                 f'id = &"{realm_id}"',
                 f'breakthrough_item = &"{pill}"',
                 f'strengthening_item = &"{elixir}"',
-                f"progress_required = {100.0 * max(1, index)}",
+                f'recovery_item = &"{recovery}"',
+                # The gate is a labour budget, matching `work_required` so the two authored
+                # numbers describe one thing instead of diverging by up to 4.6x.
+                f"progress_required = {float(work_required)}",
+                # Physique comes from the milestone bonus plus the seed reward, so
+                # it must stay below what the ladder actually grants by R.
                 f"physique_required = {10.0 + 2.0 * max(0, index - 1)}",
-                f"quality_required = {0.5 + 0.01 * source_index:.2f}",
+                # The entry gate must be reachable with one realm of training: it is
+                # exactly the previous realm's quality target Q(R-1). Anything
+                # higher makes the realm unreachable through the public actions,
+                # because training caps at the current realm's Q.
+                f"quality_required = {0.40 + 0.015 * source_index:.6f}",
                 # Q(R)/U(R) are asserted against the exact formula (epsilon 1e-4),
                 # so 2dp rounding is not enough: 0.835 would be written as 0.83.
                 f"quality_target = {quality_target:.6f}",
@@ -157,10 +203,12 @@ def run() -> int:
                 f"refinement_cap = {index + 1}",
                 f"integrity_maximum = {100.0 * (1.0 + index * 0.1):.1f}",
                 f"rewards = {data._dict_literal(rewards)}",
-                f"power_budget = {p:.2f}",
-                f"capacity_factor = {c_factor:.2f}",
-                f"throughput_factor = {f_factor:.2f}",
-                f"technique_factor = {t_factor:.2f}",
+                # Deliberately NOT emitted: `power_budget`, `capacity_factor`,
+                # `throughput_factor`, `technique_factor`. Those four were a second,
+                # private power scale; they went with the shared ladder (ADR 0050) and
+                # no realm seed carries them. Writing them here would silently
+                # resurrect the fields the migration deleted, and the generation
+                # validator no longer asks for them.
                 # These four are already floats; appending `.0` emitted malformed
                 # literals like `118.0.0`, which abort Godot's parser and silently
                 # drop every property after it (resonance_rank, channel_training).
@@ -169,6 +217,8 @@ def run() -> int:
                 f"meridian_work = {float(meridian_work)}",
                 f"insight_required = {float(insight_required)}",
                 f"resonance_rank = {resonance_rank}",
+                f"chance_base = {chance_base:.2f}",
+                f"chance_cap = {chance_cap:.2f}",
                 f"channel_training = {data._array_literal(channel_training)}",
             ],
         )
@@ -193,6 +243,17 @@ def run() -> int:
                 (
                     "Restores one damaged channel or trains one channel step"
                     " and its linked acupoint quality."
+                ),
+            ),
+            (
+                recovery,
+                "consumable",
+                "elixir",
+                f"craft:{prefix}_recovery_recipe",
+                f"{stage} Mending Elixir",
+                (
+                    "Clears a blocked huyệt and repairs one damaged channel after a"
+                    " failed breakthrough."
                 ),
             ),
             (
@@ -224,7 +285,11 @@ def run() -> int:
                     f'description = "{description}"',
                 ],
             )
-        for suffix, output in (("pill", pill), ("elixir", elixir)):
+        for suffix, output in (
+            ("pill", pill),
+            ("elixir", elixir),
+            ("recovery", recovery),
+        ):
             recipe = f"{prefix}_{suffix}_recipe"
             files[f"recipes/{recipe}.tres"] = data._tres(
                 "recipe",

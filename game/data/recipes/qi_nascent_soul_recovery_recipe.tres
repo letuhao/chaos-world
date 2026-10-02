@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"qi_nascent_soul_recovery_recipe"
+display_name = "Nascent Soul Renewal Elixir Formula"
+station = &"alchemy"
+inputs = Array[StringName]([&"qi_nascent_soul_cultivation_herb", &"qi_nascent_soul_guardian_core"])
+outputs = Array[StringName]([&"qi_nascent_soul_recovery_elixir"])

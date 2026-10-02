@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"V1_spirit_abattoir_oriflamme"
 display_name = "Spirit Abattoir Oriflamme"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_damage", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:F10_palace_warden"])
-percent_modifiers = {
-"crit_damage": 0.06
-}

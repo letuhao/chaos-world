@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A23_spirit_bluecap_perfected"
 display_name = "Spirit Bluecap Perfected"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 15.12},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:A23_spirit_bluecap_perfected_recipe"])
-percent_modifiers = {
-"qi_regen": 0.17
-}

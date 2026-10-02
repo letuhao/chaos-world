@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"B32_divine_champleve_aged"
 display_name = "Divine Champleve aged"
 category = &"technique"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 55.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"divine"
 sources = Array[StringName]([&"craft:B32_divine_champleve_aged_recipe"])
-percent_modifiers = {
-"defense_physical": 0.09
-}

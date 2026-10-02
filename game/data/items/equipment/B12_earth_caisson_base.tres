@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"B12_earth_caisson_base"
 display_name = "Earth Caisson Base"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 13.16},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:B12_earth_caisson_base_recipe", &"quest:B12_earth_caisson_line"])
-percent_modifiers = {
-"spirit": 0.03
-}

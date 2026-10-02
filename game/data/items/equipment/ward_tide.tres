@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"ward_tide"
 display_name = "Tide Ward"
 category = &"equipment"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 24},
+	{"option_id": &"core_poise", "value": 7},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"gather", &"boss:tome_abyssal_serpent"])
-flat_modifiers = {
-"defense_physical": 24.0,
-"poise": 7.0
-}

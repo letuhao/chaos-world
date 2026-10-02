@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"spin_voidsilk_thread"
 display_name = "Voidsilk Thread"
 category = &"material"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 33.69},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"filament"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:spin_voidsilk_thread_recipe"])

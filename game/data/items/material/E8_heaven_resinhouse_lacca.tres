@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"E8_heaven_resinhouse_lacca"
 display_name = "Heaven Resinhouse Lacca"
 category = &"material"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"resin"
 grade = &"heaven"
 sources = Array[StringName]([&"gather"])

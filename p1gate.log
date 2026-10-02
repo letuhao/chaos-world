@@ -1,0 +1,13 @@
+29 files already formatted
+224 files would be left unchanged
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format tools --check
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game --check
+All checks passed!
+D:\Works\source\chaos-world\game\src\modules\set_bonus\set_bonus_state.gd:182: Error: unused function argument 'set_id' (unused-argument)
+Failure: 1 problem found
+Success: no problems found
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE check tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdlint.EXE D:\Works\source\chaos-world\game\src
+fail gate failed: lint
+== fmt ==
+== lint ==

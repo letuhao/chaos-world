@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"J23_immortal_rune_refined"
 display_name = "Immortal Rune Refined"
 category = &"technique"
+rarity = &"legendary"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 34.65},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:J23_immortal_rune_refined_recipe"])
-percent_modifiers = {
-"will": 0.07
-}

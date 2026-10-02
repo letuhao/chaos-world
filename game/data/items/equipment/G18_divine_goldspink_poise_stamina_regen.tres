@@ -7,10 +7,14 @@ script = ExtResource("1_item")
 id = &"G18_divine_goldspink_poise_stamina_regen"
 display_name = "Divine Goldspink Poise Stamina regen"
 category = &"equipment"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 37.54},
+	{"option_id": &"core_stamina_regen", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
+stackable = false
 grade = &"divine"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"poise": 0.025,
-"stamina_regen": 0.025
-}

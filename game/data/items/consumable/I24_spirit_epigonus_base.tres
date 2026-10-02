@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I24_spirit_epigonus_base"
 display_name = "Spirit Epigonus Base"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 8.12},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:I24_spirit_epigonus_base_recipe", &"quest:I24_spirit_epigonus_line"])
-percent_modifiers = {
-"will": 0.03
-}

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I70_divine_hauberk_primed"
+display_name = "Divine Hauberk Primed"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 37.6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"syrup"
+grade = &"divine"
+sources = Array[StringName]([&"craft:I70_divine_hauberk_primed_recipe"])

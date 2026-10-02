@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U11_divine_reedling_aged"
 display_name = "Divine Reedling Aged"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"divine"
 sources = Array[StringName]([&"craft:U11_divine_reedling_aged_recipe"])
-percent_modifiers = {
-"dao_heart": 0.09
-}

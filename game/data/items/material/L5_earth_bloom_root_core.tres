@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"L5_earth_bloom_root_core"
 display_name = "Earth Bloom Root Core"
 category = &"material"
+rarity = &"rare"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"beast_core"
 grade = &"earth"
 sources = Array[StringName]([&"boss:d5_earth_bloom"])

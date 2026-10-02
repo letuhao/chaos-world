@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"Y1_divine_abbey_primed"
 display_name = "Divine Abbey Primed"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 58.02},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"divine"
 sources = Array[StringName]([&"craft:Y1_divine_abbey_primed_recipe"])
-percent_modifiers = {
-"aptitude": 0.13
-}

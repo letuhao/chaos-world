@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"B5_spirit_breloque_base"
 display_name = "Spirit Breloque Base"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.03},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:B5_spirit_breloque_base_recipe", &"quest:B5_spirit_breloque_line"])
-percent_modifiers = {
-"breakthrough_chance": 0.03
-}

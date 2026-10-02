@@ -9,6 +9,11 @@ const SPIRIT := 2
 const IMMORTAL := 3
 const TRANSCENDENT := 4
 
+## The authored per-realm stat multipliers, indexed by ladder position (ADR 0050).
+## A plain preload: it resolves a file and calls nothing here, which is the whole point
+## (see the note in `_all()`).
+const POWER := preload("res://src/core/realm_power_table.tres")
+
 static var _ladder: RealmLadder
 
 
@@ -51,8 +56,24 @@ static func _all() -> Array[RealmDef]:
 		_make(&"dao_ancestor", "Dao Ancestor", TRANSCENDENT),
 		_make(&"primordial_origin", "Primordial Origin", TRANSCENDENT),
 	]
-	for i in realms.size():
-		realms[i].power = 1.0 + i * 0.1
+	# `RealmDef.power` is AUTHORED, loaded from `POWER` above, and that is load-bearing
+	# in three directions.
+	#
+	# It must stay an input. The first version of this field was filled here from
+	# `PowerLadder.value(i)`, and the ladder needs the realm COUNT to solve its own
+	# coefficients - so building the ladder called `RealmDefaults.ladder()` from inside
+	# `RealmDefaults._all()` and recursed until the stack blew. A derived value cached on
+	# the object that produces its own input is the defect; the table has no such cycle,
+	# because reading a file cannot need the realm count (ADR 0050).
+	#
+	# It must stay a field. A consumer that reaches through `RealmDefaults` to look the
+	# number up itself holds a private copy of the same contract, and the two drift the
+	# first time a realm is added.
+	#
+	# It must be looked up by id. The table is keyed by realm id, so a realm inserted in
+	# the middle of the ladder cannot shift every realm below it onto the wrong number.
+	for realm in realms:
+		realm.power = POWER.power_for(realm.id)
 	return realms
 
 

@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"U8_spirit_linlet_chalice"
 display_name = "Spirit Linlet Chalice"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_damage", "value": 0.02},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:body_spirit_ascension_guardian"])
-percent_modifiers = {
-"crit_damage": 0.06
-}

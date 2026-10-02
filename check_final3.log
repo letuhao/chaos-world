@@ -1,0 +1,14 @@
+28 files already formatted
+209 files would be left unchanged
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE format tools --check
+$ D:\Works\source\chaos-world\.venv\Scripts\gdformat.EXE D:\Works\source\chaos-world\game --check
+All checks passed!
+D:\Works\source\chaos-world\game\src\modules\body_cultivation\api.gd:56: Error: Definition out of order in global scope (class-definitions-order)
+D:\Works\source\chaos-world\game\src\ui\panels\action_bar.gd:105: Error: Definition out of order in global scope (class-definitions-order)
+Failure: 2 problems found
+Success: no problems found
+$ D:\Works\source\chaos-world\.venv\Scripts\ruff.EXE check tools
+$ D:\Works\source\chaos-world\.venv\Scripts\gdlint.EXE D:\Works\source\chaos-world\game\src
+fail gate failed: lint
+== fmt ==
+== lint ==

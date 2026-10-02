@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"embershard_spirit_seed"
 display_name = "Spirit Element Seed"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 13.06},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:elemental_spirit_guardian", &"boss:d2_tide_guardian", &"boss:F11_manifestation_warden", &"boss:mind_spirit_ascension_warden"])
-flat_modifiers = {
-"max_qi": 36.0
-}

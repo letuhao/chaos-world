@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"alchemy_spirit_pill"
 display_name = "Spirit Pill"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 18.56},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:alchemy_spirit_pill_recipe", &"boss:F10_condensation_warden", &"boss:F9_ascension_warden"])
-percent_modifiers = {
-"attack_spiritual": 0.06
-}

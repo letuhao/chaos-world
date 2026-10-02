@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"brand_moon_sigil"
 display_name = "Moon Sigil Brand"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 24.42},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"gather", &"quest:A36_route"])
-flat_modifiers = {
-"max_qi": 45.0
-}

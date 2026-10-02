@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"torc_copper"
 display_name = "Copper Torc"
 category = &"equipment"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 7.7},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:torc_copper_recipe"])
-flat_modifiers = {
-"max_health": 20.0
-}

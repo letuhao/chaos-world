@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"marionette_sigil_spirit"
 display_name = "Spirit Guardian Sigil"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"boss:succubus_spirit_guardian", &"boss:d5_spirit_bloom", &"boss:qi_spirit_manifestation_warden"])
-percent_modifiers = {
-"cultivation_rate": 0.0007
-}

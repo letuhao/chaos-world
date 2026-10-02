@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V7_mortal_aerie_oinochoe"
 display_name = "Mortal Aerie Oinochoe"
 category = &"consumable"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 6.6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:F2_ascension_warden"])
-percent_modifiers = {
-"max_health": 0.06
-}

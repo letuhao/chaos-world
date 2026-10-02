@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"scale_crocodile"
 display_name = "Crocodile Scale"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"hide"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"boss:qi_spirit_sea_warden"])

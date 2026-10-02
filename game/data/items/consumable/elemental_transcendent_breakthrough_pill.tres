@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"elemental_transcendent_breakthrough_pill"
 display_name = "Prism Sovereign Pill"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"divine"
 sources = Array[StringName]([&"craft:elemental_transcendent_breakthrough_recipe"])
-percent_modifiers = {
-"cultivation_rate": 0.12
-}

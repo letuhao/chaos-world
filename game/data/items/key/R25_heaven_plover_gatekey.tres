@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"R25_heaven_plover_gatekey"
 display_name = "Heaven Plover Gatekey"
 category = &"key"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"sigil"
 grade = &"heaven"
 sources = Array[StringName]([&"quest"])

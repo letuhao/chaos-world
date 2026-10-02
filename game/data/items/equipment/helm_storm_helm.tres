@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"helm_storm_helm"
 display_name = "Storm Helm"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:helm_storm_helm_recipe"])
-flat_modifiers = {
-"defense_spiritual": 6.0
-}

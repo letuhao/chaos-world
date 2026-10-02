@@ -1,0 +1,25 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+FOCUS_BEGIN test_absorption_is_not_scaled_by_a_second_qi_axis
+FOCUS_END test_absorption_is_not_scaled_by_a_second_qi_axis passed=1 failed=0
+FOCUS_BEGIN test_flight_speed
+FOCUS_END test_flight_speed passed=2 failed=0
+FOCUS_BEGIN test_meridian_bonus_applies_to_absorption
+FOCUS_END test_meridian_bonus_applies_to_absorption passed=3 failed=0
+FOCUS_BEGIN test_meridian_bonus_applies_to_regen
+FOCUS_END test_meridian_bonus_applies_to_regen passed=4 failed=0
+FOCUS_BEGIN test_no_meridian_bonus_when_closed
+FOCUS_END test_no_meridian_bonus_when_closed passed=5 failed=0
+FOCUS_BEGIN test_qi_absorption
+FOCUS_END test_qi_absorption passed=6 failed=0
+FOCUS_BEGIN test_qi_regen_rate
+FOCUS_END test_qi_regen_rate passed=7 failed=0
+FOCUS_BEGIN test_qi_sense_range
+FOCUS_END test_qi_sense_range passed=8 failed=0
+FOCUS_BEGIN test_realm_scaling
+FOCUS_END test_realm_scaling passed=12 failed=0
+FOCUS_BEGIN test_technique_cost_reduction
+FOCUS_END test_technique_cost_reduction passed=13 failed=0
+FOCUS_BEGIN test_technique_power
+FOCUS_END test_technique_power passed=14 failed=0
+FOCUS: passed=14 failed=0

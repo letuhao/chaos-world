@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"O4_mortal_apron_aged"
 display_name = "Mortal Apron Aged"
 category = &"consumable"
+rarity = &"common"
+realm = &"tribulation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 11.92},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:O4_mortal_apron_aged_recipe"])
-percent_modifiers = {
-"health_regen": 0.09
-}

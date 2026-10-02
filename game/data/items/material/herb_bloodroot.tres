@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"herb_bloodroot"
 display_name = "Bloodroot"
 category = &"material"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"boss:F4_integration_warden"])

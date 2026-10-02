@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U3_immortal_warble_halberd"
 display_name = "Immortal Warble Halberd"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"immortal"
 sources = Array[StringName]([&"boss:body_primordial_immortal_guardian"])
-percent_modifiers = {
-"status_resistance": 0.06
-}

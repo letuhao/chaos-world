@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"U8_mortal_linlet_nucleus"
 display_name = "Mortal Linlet Nucleus"
 category = &"consumable"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"mortal"
 sources = Array[StringName]([&"boss:mind_body_integration_warden"])
-percent_modifiers = {
-"attack_physical": 0.06
-}

@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"C16_spirit_combe_primed"
 display_name = "Spirit Combe Primed"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 8.12},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"salve"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:C16_spirit_combe_primed_recipe"])
-percent_modifiers = {
-"stamina_regen": 0.13
-}

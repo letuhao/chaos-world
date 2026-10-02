@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A12_immortal_backstaff_refined"
 display_name = "Immortal Backstaff Refined"
 category = &"technique"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 19.34},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"formula"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:A12_immortal_backstaff_refined_recipe"])
-percent_modifiers = {
-"comprehension": 0.06
-}

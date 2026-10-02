@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F7_earth_dendrite_status_resistance_cultivation_rate_defense_spiritual_max_qi"
 display_name = "Earth Dendrite Status Resistance Cultivation Rate Defense Spiritual Max Qi"
 category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_status_resistance", "value": 0.05},
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+	{"option_id": &"core_defense_spiritual", "value": 21.46},
+	{"option_id": &"core_max_qi", "value": 21.46},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"earth"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"status_resistance": 0.05,
-"cultivation_rate": 0.07,
-"defense_spiritual": 0.03,
-"max_qi": 0.05
-}

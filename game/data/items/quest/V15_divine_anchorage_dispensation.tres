@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"V15_divine_anchorage_dispensation"
 display_name = "Divine Anchorage Dispensation"
 category = &"quest"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"text"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])

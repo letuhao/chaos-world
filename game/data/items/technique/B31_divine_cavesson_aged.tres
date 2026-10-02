@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"B31_divine_cavesson_aged"
 display_name = "Divine Cavesson Aged"
 category = &"technique"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 22.18},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"divine"
 sources = Array[StringName]([&"craft:B31_divine_cavesson_aged_recipe"])
-percent_modifiers = {
-"attack_spiritual": 0.09
-}

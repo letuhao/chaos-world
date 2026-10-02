@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"stamregen_moon_broth"
 display_name = "Moon Vigor Broth"
 category = &"consumable"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 23.92},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"heaven"
 sources = Array[StringName]([&"gather", &"quest:W23_route"])
-percent_modifiers = {
-"stamina_regen": 0.12
-}

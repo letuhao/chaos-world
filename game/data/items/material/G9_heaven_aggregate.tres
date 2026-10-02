@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"G9_heaven_aggregate"
 display_name = "Heaven Aggregate"
 category = &"material"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"fragment"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:G9_heaven_aggregate_recipe"])

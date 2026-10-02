@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F22_immortal_ermine_agility_attack_speed_dao_heart_max_stamina"
 display_name = "Immortal Ermine Agility Attack speed Dao heart Max stamina"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 26.95},
+	{"option_id": &"core_attack_speed", "value": 0.05},
+	{"option_id": &"core_dao_heart", "value": 26.95},
+	{"option_id": &"core_max_stamina", "value": 26.95},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"immortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"agility": 0.03,
-"attack_speed": 0.05,
-"dao_heart": 0.07,
-"max_stamina": 0.03
-}

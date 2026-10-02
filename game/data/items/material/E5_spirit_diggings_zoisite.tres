@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"E5_spirit_diggings_zoisite"
 display_name = "Spirit Diggings Zoisite"
 category = &"material"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"gemstone"
 grade = &"spirit"
 sources = Array[StringName]([&"gather"])

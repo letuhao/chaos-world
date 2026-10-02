@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"I17_spirit_eleemosynary_primed"
 display_name = "Spirit Eleemosynary Primed"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 13.06},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"draft"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:I17_spirit_eleemosynary_primed_recipe"])
-percent_modifiers = {
-"qi_absorption": 0.13
-}

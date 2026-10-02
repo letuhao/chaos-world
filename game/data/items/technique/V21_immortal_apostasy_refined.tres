@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"V21_immortal_apostasy_refined"
 display_name = "Immortal Apostasy Refined"
 category = &"technique"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 26.95},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"draft"
 grade = &"immortal"
 sources = Array[StringName]([&"craft:V21_immortal_apostasy_refined_recipe"])
-percent_modifiers = {
-"stamina_regen": 0.06
-}

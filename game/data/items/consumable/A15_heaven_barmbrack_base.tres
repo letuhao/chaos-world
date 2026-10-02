@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"A15_heaven_barmbrack_base"
 display_name = "Heaven Barmbrack Base"
 category = &"consumable"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 15.11},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"tincture"
 grade = &"heaven"
 sources = Array[StringName]([&"craft:A15_heaven_barmbrack_base_recipe", &"quest:A15_heaven_barmbrack_line"])
-percent_modifiers = {
-"spirit": 0.03
-}

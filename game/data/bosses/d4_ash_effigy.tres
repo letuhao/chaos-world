@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d4_ash_effigy"
 display_name = "Ash Effigy Lesser"
 domain_id = &"puppet_ash_effigy_domain"
-loot = Array[StringName]([&"marionette_ash_mask", &"marionette_ash_ember", &"L4_ash_effigy_string_ward", &"L4_ash_effigy_puppet_seal", &"V8_spirit_agger_pricket"])
+loot = Array[StringName]([&"marionette_ash_mask", &"marionette_ash_ember", &"L4_ash_effigy_puppet_seal", &"L4_ash_effigy_string_ward", &"V8_spirit_agger_pricket"])

@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"curr_silver_coin"
 display_name = "Silver Coin"
 category = &"currency"
+rarity = &"magic"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 6},
+])
+roll_spec = {"count": 2, "contexts": ["base"]}
 subcategory = &"coin"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"boss:E4_palace_vault_warden"])

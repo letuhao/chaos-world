@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"quest_cultivation_manual"
 display_name = "Cultivation Manual"
 category = &"quest"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"manual"
 grade = &"heaven"
 sources = Array[StringName]([&"quest:side_04"])

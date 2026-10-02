@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"M15_earth_onyx_aged"
 display_name = "Earth Onyx Aged"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"earth"
 sources = Array[StringName]([&"craft:M15_earth_onyx_aged_recipe"])
-percent_modifiers = {
-"attack_speed": 0.09
-}

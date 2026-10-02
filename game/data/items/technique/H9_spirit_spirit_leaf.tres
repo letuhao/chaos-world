@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"H9_spirit_spirit_leaf"
 display_name = "Spirit Spirit Leaf"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 13.06},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"draft"
 grade = &"spirit"
 sources = Array[StringName]([&"craft:H9_spirit_spirit_leaf_recipe"])
-percent_modifiers = {
-"spirit": 0.04
-}

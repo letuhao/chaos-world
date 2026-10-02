@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F26_earth_exemplar_agility_dao_heart_penetration_poise"
 display_name = "Earth Exemplar Agility Dao heart Penetration Poise"
 category = &"technique"
+rarity = &"rare"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 19.8},
+	{"option_id": &"core_dao_heart", "value": 19.8},
+	{"option_id": &"core_penetration", "value": 19.8},
+	{"option_id": &"core_poise", "value": 19.8},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"earth"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"agility": 0.07,
-"dao_heart": 0.03,
-"penetration": 0.05,
-"poise": 0.07
-}

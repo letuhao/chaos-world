@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"B44_divine_forestall_stamina_regen_dao_heart"
 display_name = "Divine Forestall Stamina Regen Dao Heart"
 category = &"technique"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 36.58},
+	{"option_id": &"core_dao_heart", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"stamina_regen": 0.03,
-"dao_heart": 0.05
-}

@@ -7,13 +7,15 @@ script = ExtResource("1_item")
 id = &"seal_goldthread_seal"
 display_name = "Seal Goldthread Seal"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_qi", "value": 13.16},
+	{"option_id": &"core_poise", "value": 10},
+	{"option_id": &"core_status_resistance", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:seal_goldthread_seal_recipe"])
-flat_modifiers = {
-"max_qi": 50.0,
-"poise": 10.0
-}
-percent_modifiers = {
-"status_resistance": 0.03
-}

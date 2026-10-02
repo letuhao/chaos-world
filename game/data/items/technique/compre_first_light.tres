@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"compre_first_light"
 display_name = "First Light Manual"
 category = &"technique"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 6.6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"manual"
 grade = &"mortal"
 sources = Array[StringName]([&"gather", &"boss:F3_transformation_warden"])
-percent_modifiers = {
-"comprehension": 0.05
-}

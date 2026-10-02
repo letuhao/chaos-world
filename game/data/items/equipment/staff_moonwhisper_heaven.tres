@@ -7,13 +7,15 @@ script = ExtResource("1_item")
 id = &"staff_moonwhisper_heaven"
 display_name = "Moonwhisper Heaven Staff"
 category = &"equipment"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 23.92},
+	{"option_id": &"core_max_qi", "value": 33.72},
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
+stackable = false
 grade = &"heaven"
 sources = Array[StringName]([&"craft:staff_moonwhisper_heaven_recipe"])
-flat_modifiers = {
-"attack_spiritual": 50.0,
-"max_qi": 60.0
-}
-percent_modifiers = {
-"cooldown_reduction": 0.1
-}

@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"T2_mortal_linden_jamb"
 display_name = "Mortal Linden Jamb"
 category = &"key"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"key"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])

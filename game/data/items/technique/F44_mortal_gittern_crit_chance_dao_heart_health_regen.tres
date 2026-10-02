@@ -7,11 +7,14 @@ script = ExtResource("1_item")
 id = &"F44_mortal_gittern_crit_chance_dao_heart_health_regen"
 display_name = "Mortal Gittern Crit chance Dao heart Health regen"
 category = &"technique"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.046},
+	{"option_id": &"core_dao_heart", "value": 7.15},
+	{"option_id": &"core_health_regen", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])
-percent_modifiers = {
-"crit_chance": 0.046,
-"dao_heart": 0.037,
-"health_regen": 0.055
-}

@@ -8,6 +8,7 @@ id = &"great_luo"
 breakthrough_item = &"mind_great_luo_breakthrough_pill"
 training_item = &"mind_great_luo_channel_elixir"
 sea_catalyst = &"mind_great_luo_sea_catalyst"
+recovery_item = &"mind_great_luo_recovery_elixir"
 progress_required = 10030.0
 comprehension_required = 1306.0
 clarity_required = 0.76

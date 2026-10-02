@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"I6_mortal_dross_perfected"
 display_name = "Mortal Dross Perfected"
 category = &"equipment"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 9.3},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
+stackable = false
 grade = &"mortal"
 sources = Array[StringName]([&"craft:I6_mortal_dross_perfected_recipe"])
-percent_modifiers = {
-"max_stamina": 0.17
-}

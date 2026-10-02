@@ -7,12 +7,15 @@ script = ExtResource("1_item")
 id = &"F27_mortal_extempore_aptitude_attack_physical_health_regen_qi_cost_reduction"
 display_name = "Mortal Extempore Aptitude Attack physical Health regen Qi cost reduction"
 category = &"technique"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 6.6},
+	{"option_id": &"core_attack_physical", "value": 6.6},
+	{"option_id": &"core_health_regen", "value": 6.6},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.03},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"aptitude": 0.03,
-"attack_physical": 0.05,
-"health_regen": 0.07,
-"qi_cost_reduction": 0.03
-}

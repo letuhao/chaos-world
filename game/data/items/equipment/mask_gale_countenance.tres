@@ -7,12 +7,16 @@ script = ExtResource("1_item")
 id = &"mask_gale_countenance"
 display_name = "Gale Countenance"
 category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.05},
+	{"option_id": &"core_evasion", "value": 0.05},
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
+stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"craft:mask_gale_countenance_recipe"])
 
-percent_modifiers = {
-"cultivation_rate": 0.05,
-"evasion": 0.05,
-"status_resistance": 0.1
-}

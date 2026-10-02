@@ -7,6 +7,12 @@ script = ExtResource("1_item")
 id = &"R12_mortal_meridian_chart"
 display_name = "Mortal Meridian Chart"
 category = &"quest"
+rarity = &"common"
+realm = &"great_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"relic"
 grade = &"mortal"
 sources = Array[StringName]([&"quest"])

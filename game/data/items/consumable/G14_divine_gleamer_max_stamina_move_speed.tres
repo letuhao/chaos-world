@@ -7,10 +7,13 @@ script = ExtResource("1_item")
 id = &"G14_divine_gleamer_max_stamina_move_speed"
 display_name = "Divine Gleamer Max stamina Move speed"
 category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 37.54},
+	{"option_id": &"core_move_speed", "value": 0.048},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"syrup"
 grade = &"divine"
 sources = Array[StringName]([&"quest"])
-percent_modifiers = {
-"max_stamina": 0.037,
-"move_speed": 0.048
-}

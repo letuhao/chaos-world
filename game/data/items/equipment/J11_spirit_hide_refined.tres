@@ -7,9 +7,13 @@ script = ExtResource("1_item")
 id = &"J11_spirit_hide_refined"
 display_name = "Spirit Hide Refined"
 category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 25.19},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
+stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"craft:J11_spirit_hide_refined_recipe"])
-percent_modifiers = {
-"penetration": 0.07
-}

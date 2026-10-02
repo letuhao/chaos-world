@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"powder_silver_dust"
 display_name = "Silver Dust Powder"
 category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 13.74},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"quest:A40_route"])
-percent_modifiers = {
-"qi_regen": 0.05
-}

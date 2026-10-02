@@ -7,6 +7,7 @@ script = ExtResource("1")
 id = &"immortal_sovereign"
 breakthrough_item = &"qi_immortal_sovereign_breakthrough_pill"
 training_item = &"qi_immortal_sovereign_channel_elixir"
+recovery_item = &"qi_immortal_sovereign_recovery_elixir"
 progress_required = 2600.0
 comprehension_required = 60.0
 dantian_quality_required = 0.75
@@ -16,8 +17,6 @@ required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach",
 required_channel_state = &"open"
 channel_refinement_cap = 27
 dantian_capacity = 750.0
-throughput_factor = 8.9
-technique_factor = 20.21
 rewards = {
 "spirit": 2.0
 }

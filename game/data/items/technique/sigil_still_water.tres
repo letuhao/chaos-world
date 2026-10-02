@@ -7,9 +7,12 @@ script = ExtResource("1_item")
 id = &"sigil_still_water"
 display_name = "Still Water Sigil"
 category = &"technique"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 15.82},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"sigil"
 grade = &"spirit"
 sources = Array[StringName]([&"gather", &"boss:F9_sovereign_warden", &"boss:F8_unity_warden", &"boss:qi_spirit_sea_warden"])
-percent_modifiers = {
-"qi_regen": 0.05
-}
