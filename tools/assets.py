@@ -9,11 +9,13 @@ import tempfile
 from collections import Counter
 from pathlib import Path
 
+from PIL import Image
+
 from .common import GAME_DIR, REPO_ROOT, ToolError, fail, ok
 
 ITEM_ROOT = GAME_DIR / "data" / "items"
 INDEX_PATH = GAME_DIR / "assets" / "asset-index.jsonl"
-MATCH_FIELDS = {"category", "subcategory", "id_prefix"}
+MATCH_FIELDS = {"category", "subcategory", "id_prefix", "id_regex"}
 
 
 def register(subparsers) -> None:
@@ -23,19 +25,44 @@ def register(subparsers) -> None:
     report.add_argument("--all", action="store_true", help="show every asset family")
     actions.add_parser("audit", help="fail on missing, stale, or conflicting item art links")
     actions.add_parser("sync", help="refresh item_ids in asset-index.jsonl from item match rules")
+    inspect = actions.add_parser("inspect", help="list item seeds assigned to one asset family")
+    inspect.add_argument("asset_id")
+    inspect.add_argument("--limit", type=int, default=30)
+    normalize = actions.add_parser("normalize", help="crop and resize a transparent generated PNG")
+    normalize.add_argument("--source", required=True, help="generated PNG source path")
+    normalize.add_argument("--output", required=True, help="new filename in generated item assets")
 
 
 def run(args) -> int:
     items = _load_items()
     records = _load_index()
+    if args.assets_action == "inspect":
+        return _inspect(records, args.asset_id, args.limit)
     issues: list[str] = []
     winners = _resolve(items, records, issues)
 
     if args.assets_action == "sync":
         if issues:
-            raise ToolError("cannot sync asset links:\n" + "\n".join(issues))
+            missing_ids = items.keys() - winners.keys()
+            groups = Counter(
+                (items[item_id]["category"], items[item_id]["subcategory"])
+                for item_id in missing_ids
+            )
+            summary = ", ".join(
+                f"{category}/{subcategory} ({count})"
+                for (category, subcategory), count in groups.most_common()
+            )
+            samples = "\n".join(f"  - {issue}" for issue in issues[:20])
+            more = f"\n  ... {len(issues) - 20} more" if len(issues) > 20 else ""
+            raise ToolError(
+                f"cannot sync asset links: {len(issues)} unresolved items; "
+                f"groups: {summary}\n{samples}{more}"
+            )
         _write_links(records, winners)
         ok(f"updated {INDEX_PATH.relative_to(REPO_ROOT).as_posix()} ({len(items)} item seeds)")
+        return 0
+    if args.assets_action == "normalize":
+        _normalize_image(Path(args.source), args.output)
         return 0
 
     linked, link_issues = _read_links(items, records, winners)
@@ -47,6 +74,35 @@ def run(args) -> int:
             return 1
         ok("asset audit complete")
     return 0
+
+
+def _normalize_image(source: Path, output_name: str) -> None:
+    source = source.resolve()
+    output_dir = GAME_DIR / "assets" / "items" / "generated"
+    output_path = (output_dir / output_name).resolve()
+    if source.suffix.lower() != ".png" or not source.is_file():
+        raise ToolError(f"source must be an existing PNG: {source}")
+    if Path(output_name).name != output_name or not output_name.lower().endswith(".png"):
+        raise ToolError("output must be a PNG filename without directory components")
+    if not output_path.is_relative_to(output_dir.resolve()):
+        raise ToolError("output must stay under game/assets/items/generated")
+    if output_path.exists():
+        raise ToolError(f"refusing to overwrite existing asset: {output_path}")
+
+    with Image.open(source) as opened:
+        image = opened.convert("RGBA")
+    alpha = image.getchannel("A")
+    if alpha.getextrema()[0] != 0:
+        raise ToolError(f"source has no transparent pixels: {source}")
+    bounds = alpha.getbbox()
+    if bounds is None:
+        raise ToolError(f"source is fully transparent: {source}")
+    image = image.crop(bounds)
+    image.thumbnail((232, 232), Image.Resampling.LANCZOS)
+    canvas = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
+    canvas.alpha_composite(image, ((256 - image.width) // 2, (256 - image.height) // 2))
+    canvas.save(output_path, format="PNG", optimize=True)
+    ok(f"normalized {output_path.relative_to(REPO_ROOT).as_posix()} (256x256, transparent)")
 
 
 def _load_items() -> dict[str, dict[str, str]]:
@@ -106,6 +162,13 @@ def _load_index() -> list[dict]:
             raise ToolError(
                 f"{INDEX_PATH.name}:{line_number}: '{asset_id}' has an empty match value"
             )
+        if "id_regex" in match:
+            try:
+                re.compile(match["id_regex"])
+            except re.error as exc:
+                raise ToolError(
+                    f"{INDEX_PATH.name}:{line_number}: '{asset_id}' has invalid id_regex"
+                ) from exc
         asset_path = record["path"]
         if not asset_path.startswith("res://assets/"):
             raise ToolError(
@@ -127,18 +190,20 @@ def _load_index() -> list[dict]:
 
 def _matches(match: dict, item_id: str, item: dict[str, str]) -> bool:
     return all(
-        key == "id_prefix"
-        and item_id.startswith(value)
-        or key != "id_prefix"
-        and item.get(key) == value
+        item_id.startswith(value)
+        if key == "id_prefix"
+        else re.fullmatch(value, item_id) is not None
+        if key == "id_regex"
+        else item.get(key) == value
         for key, value in match.items()
     )
 
 
-def _specificity(match: dict) -> tuple[int, int, int]:
-    # An id_prefix rule overrides category/subcategory rules; longer prefixes win.
+def _specificity(match: dict) -> tuple[int, int, int, int, int]:
+    # Exact-pattern rules, then prefixes, override category/subcategory rules.
+    regex = match.get("id_regex", "")
     prefix = match.get("id_prefix", "")
-    return (bool(prefix), len(prefix), bool(match.get("subcategory")))
+    return (bool(regex), len(regex), bool(prefix), len(prefix), len(match))
 
 
 def _resolve(
@@ -220,10 +285,25 @@ def _print_report(
 ) -> None:
     counts = Counter(linked.values())
     used = sum(counts.get(record["id"], 0) > 0 for record in records)
+    unique_paths = len({record["path"] for record in records})
     print(
         f"item seeds: {len(items)} | linked: {len(linked)} | gaps: {len(items) - len(linked)} "
-        f"| asset families: {len(records)} | used: {used} | unused: {len(records) - used}"
+        f"| asset families: {len(records)} | unique files: {unique_paths} "
+        f"| used: {used} | unused: {len(records) - used}"
     )
+    gap_groups = Counter(
+        (item["category"], item["subcategory"])
+        for item_id, item in items.items()
+        if item_id not in linked
+    )
+    if gap_groups:
+        print("unlinked item groups:")
+        groups = sorted(gap_groups.items(), key=lambda entry: (-entry[1], entry[0]))
+        shown_groups = groups if show_all else groups[:20]
+        for (category, subcategory), count in shown_groups:
+            print(f"  {category}/{subcategory}: {count}")
+        if len(shown_groups) < len(groups):
+            print(f"  ... {len(groups) - 20} more groups")
     distribution = [record for record in records if show_all or counts.get(record["id"], 0) > 0]
     distribution.sort(key=lambda value: (-counts.get(value["id"], 0), value["id"]))
     shown = distribution if show_all else distribution[:20]
@@ -238,3 +318,19 @@ def _print_report(
             print(f"  - {issue}")
         if len(issues) > 30:
             print(f"  ... {len(issues) - 30} more")
+
+
+def _inspect(records: list[dict], asset_id: str, limit: int) -> int:
+    if limit < 1:
+        raise ToolError("--limit must be positive")
+    record = next((value for value in records if value["id"] == asset_id), None)
+    if record is None:
+        raise ToolError(f"unknown asset family '{asset_id}'")
+    item_ids = record.get("item_ids", [])
+    print(f"{asset_id}: {record['path']} | {len(item_ids)} linked item seeds")
+    print(f"match: {json.dumps(record['match'], separators=(',', ':'))}")
+    for item_id in item_ids[:limit]:
+        print(f"  {item_id}")
+    if len(item_ids) > limit:
+        print(f"  ... {len(item_ids) - limit} more (increase --limit)")
+    return 0

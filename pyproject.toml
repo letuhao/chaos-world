@@ -3,7 +3,7 @@ name = "chaos-world-tools"
 version = "0.0.0"
 description = "Python-only tooling for the Chaos World Godot project."
 requires-python = ">=3.12"
-dependencies = []
+dependencies = ["Pillow>=11.0"]
 
 [dependency-groups]
 dev = [

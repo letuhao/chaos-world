@@ -11,7 +11,7 @@ Cultivation-fantasy relic illustration: calm, mystical, handmade, and legible at
 - Use the shared palette: ink `#263A35`, jade `#739B83`, pale jade `#D8E6D3`, warm ivory `#F2E8D2`, cinnabar `#B75F4A`, antique gold `#C49A53`, mineral blue `#668AA0`, violet `#82739B`.
 - Keep the silhouette and one identifying detail readable at 32×32. No letters, labels, borders, or cast shadows.
 - Reuse a category/subcategory family from `game/assets/asset-index.jsonl`. Generated PNGs are the painted target; SVGs cover families without a generated seed. Item names, elements, and grades can use UI tint or badges instead of one image per variant.
-- A rule with `id_prefix` overrides its category/subcategory family; use it when one subtype contains distinct object forms.
+- `id_prefix` and `id_regex` rules override category/subcategory families for distinct object forms.
 - `item_ids` links each current item seed to its family in the same SSOT index. Run `uv run python -m tools assets sync` after item/rule edits, then `uv run python -m tools assets audit`; `report` shows coverage and distribution.
 
 ## Technical target
