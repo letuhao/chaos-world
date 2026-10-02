@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F36_divine_frisson_attack_speed_attack_spiritual_comprehension_defense_spiritual_qi_regen_stamina_regen"
+display_name = "Divine Frisson Attack speed Attack spiritual Comprehension Defense spiritual Qi regen Stamina regen"
+category = &"consumable"
+subcategory = &"broth"
+grade = &"divine"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"attack_speed": 0.07,
+"attack_spiritual": 0.03,
+"comprehension": 0.05,
+"defense_spiritual": 0.07,
+"qi_regen": 0.03,
+"stamina_regen": 0.05
+}

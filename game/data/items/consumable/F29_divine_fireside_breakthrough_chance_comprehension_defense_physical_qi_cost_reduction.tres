@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F29_divine_fireside_breakthrough_chance_comprehension_defense_physical_qi_cost_reduction"
+display_name = "Divine Fireside Breakthrough chance Comprehension Defense physical Qi cost reduction"
+category = &"consumable"
+subcategory = &"grease"
+grade = &"divine"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"breakthrough_chance": 0.07,
+"comprehension": 0.03,
+"defense_physical": 0.05,
+"qi_cost_reduction": 0.07
+}

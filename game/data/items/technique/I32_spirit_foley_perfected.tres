@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I32_spirit_foley_perfected"
+display_name = "Spirit Foley Perfected"
+category = &"technique"
+subcategory = &"jade_slip"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:I32_spirit_foley_perfected_recipe"])
+percent_modifiers = {
+"move_speed": 0.17
+}

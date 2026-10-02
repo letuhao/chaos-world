@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I28_spirit_florilegium_aged_recipe"
+display_name = "Spirit Florilegium Aged Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"I28_spirit_florilegium_refined", &"E5_spirit_diggings_zoisite", &"W9_spirit_caltrops_nacre"])
+outputs = Array[StringName]([&"I28_spirit_florilegium_aged"])

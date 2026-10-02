@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I30_spirit_flotsam_base_recipe"
+display_name = "Spirit Flotsam Base Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"body_spirit_palace_tempering_herb", &"gloves_gale_essence"])
+outputs = Array[StringName]([&"I30_spirit_flotsam_base"])

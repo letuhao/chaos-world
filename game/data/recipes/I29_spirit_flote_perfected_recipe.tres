@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I29_spirit_flote_perfected_recipe"
+display_name = "Spirit Flote Perfected Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"I29_spirit_flote_primed", &"mind_spirit_ascension_mind_herb", &"E4_spirit_bullionoffice_bloomery"])
+outputs = Array[StringName]([&"I29_spirit_flote_perfected"])

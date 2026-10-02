@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I28_spirit_florilegium_primed"
+display_name = "Spirit Florilegium Primed"
+category = &"equipment"
+subcategory = &"greaves"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:I28_spirit_florilegium_primed_recipe"])
+percent_modifiers = {
+"defense_physical": 0.13
+}

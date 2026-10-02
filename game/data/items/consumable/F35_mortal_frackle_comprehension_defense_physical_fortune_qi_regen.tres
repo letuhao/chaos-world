@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F35_mortal_frackle_comprehension_defense_physical_fortune_qi_regen"
+display_name = "Mortal Frackle Comprehension Defense physical Fortune Qi regen"
+category = &"consumable"
+subcategory = &"broth"
+grade = &"mortal"
+sources = Array[StringName]([&"quest"])
+percent_modifiers = {
+"comprehension": 0.03,
+"defense_physical": 0.05,
+"fortune": 0.07,
+"qi_regen": 0.03
+}

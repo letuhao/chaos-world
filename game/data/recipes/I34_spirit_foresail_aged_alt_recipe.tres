@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I34_spirit_foresail_aged_alt_recipe"
+display_name = "Spirit Foresail Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I34_spirit_foresail_refined", &"body_spirit_unity_tempering_herb", &"qi_spirit_manifestation_qi_herb"])
+outputs = Array[StringName]([&"I34_spirit_foresail_aged"])

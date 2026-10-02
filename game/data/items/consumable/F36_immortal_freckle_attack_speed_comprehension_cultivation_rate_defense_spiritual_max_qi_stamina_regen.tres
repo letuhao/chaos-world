@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F36_immortal_freckle_attack_speed_comprehension_cultivation_rate_defense_spiritual_max_qi_stamina_regen"
+display_name = "Immortal Freckle Attack speed Comprehension Cultivation rate Defense spiritual Max qi Stamina regen"
+category = &"consumable"
+subcategory = &"broth"
+grade = &"immortal"
+sources = Array[StringName]([&"gather"])
+percent_modifiers = {
+"attack_speed": 0.05,
+"comprehension": 0.07,
+"cultivation_rate": 0.03,
+"defense_spiritual": 0.05,
+"max_qi": 0.07,
+"stamina_regen": 0.03
+}
