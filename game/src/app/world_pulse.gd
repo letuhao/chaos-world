@@ -96,7 +96,7 @@ const PERIOD_FACT := &"world_period_elapsed"
 ## on it; it is there so a save or a log says which system earned the accrual.
 const PERIOD_SOURCE := "world:period"
 
-## ## The world's OWN doings: delegated, and this file only routes them
+## **The world's own news: delegated, and this file only routes it.**
 ##
 ## An event trigger is read before `EventApi.begin` writes a beat, so a trigger naming
 ## a fact asks about the world **as it already was** — and four shipped triggers do
@@ -105,9 +105,8 @@ const PERIOD_SOURCE := "world:period"
 ## `war_of_the_nine_fords` on a called war). Nothing produced those four facts, so four
 ## of seven events could never open.
 ##
-## [code]WorldAmbient[/code] holds WHICH facts the world has reached and not yet said.
-## **This file holds only the offering**, because offering a beat is this file's whole
-## job and a roster in a clock is the SRP split `tools arch` warns about.
+## [code]WorldAmbient[/code] holds WHICH facts the world has reached and not yet said;
+## this file holds only the offering, which is this file's whole job.
 const AMBIENT_FACTS := WorldAmbient.ROSTER
 const AMBIENT_SOURCE := WorldAmbient.SOURCE
 
@@ -226,6 +225,12 @@ func offer(fact: StringName, amount: int = 1, source: String = "") -> Dictionary
 		EventFacts.occurrence_id(fact, occurrence), fact, maxi(1, amount), source
 	)
 	var report := _director.offer(_actor, beat)
+	# The director owns the fact -> destiny-counter dispatch, and this method is the
+	# ONE offer point in `app/` (class docstring), so a fate's `counter` gate verb
+	# is answerable from the same beat that made the fact true. Adding it here would
+	# be a second writer beside the director's own — the ADR 0114 failure with a
+	# different name — so nothing is re-offered; `report["counter_total"]` already
+	# carries what the beat moved.
 	_offered += 1
 	return report
 
@@ -270,19 +275,6 @@ func summary() -> Dictionary:
 # --- Internals -------------------------------------------------------------
 
 
-## The ambient roster's fact ids, in authored order. Delegated rather than restated so
-## a test or a panel and [code]WorldAmbient[/code] can never disagree about what
-## "ambient" names.
-func _ambient_ids() -> Array[String]:
-	return WorldAmbient.ids()
-
-
-## How many of the ambient roster the ledger holds. A count, never a table: the
-## detail is the ledger's, and `app/` must hold no memory of its own.
-func _ambient_recorded() -> int:
-	return WorldAmbient.recorded(_actor)
-
-
 ## The one place a whole advance happens, so [method pull] and
 ## [method advance_periods] cannot drift into two half-versions of the same moment.
 ## Returns a report either way, and never loops.
@@ -295,10 +287,8 @@ func _advance(periods: int) -> Dictionary:
 		return _report(true, "")
 
 	# **Ambient news lands BEFORE the events are consulted**, so a trigger gated on
-	# what the world already remembers can be satisfied by news from the same pull
-	# that sighted it. `EventApi.begin` re-checks the trigger itself, so offering
-	# first cannot open an event early — it only lets a sighting and the tide it
-	# causes arrive together rather than one pull apart.
+	# what the world already remembers is satisfied by news from the same pull that
+	# sighted it. `EventApi.begin` re-checks the trigger, so this cannot open early.
 	_offer_ambient(_periods + periods)
 
 	var opened := _open_available()
