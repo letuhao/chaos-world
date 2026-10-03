@@ -1,0 +1,109 @@
+{"from":"history.era_first_breath","rel":"preceded_by","to":"history.founding_the_first_tier","note":"the frame is already standing when somebody works out what it cost to open it"}
+{"from":"history.founding_the_first_tier","rel":"preceded_by","to":"history.discovery_the_law_census","note":"counting seats is what you do once you have seats"}
+{"from":"history.discovery_the_law_census","rel":"preceded_by","to":"history.era_the_gilded_core","note":"the census made the resource dependency legible"}
+{"from":"history.era_the_gilded_core","rel":"preceded_by","to":"history.disaster_the_iron_grief","note":"the grief is the gilded core's seam running out"}
+{"from":"history.disaster_the_iron_grief","rel":"preceded_by","to":"history.migration_the_peak_ascent","note":"you leave after the hole, not before"}
+{"from":"history.migration_the_peak_ascent","rel":"preceded_by","to":"history.era_the_hundredfold_body","note":"who stayed behind worked through the remaining mortal realms"}
+{"from":"history.era_the_hundredfold_body","rel":"preceded_by","to":"history.discovery_the_realm_nine_verdict","note":"the verdict explains the era's ceiling"}
+{"from":"history.discovery_the_realm_nine_verdict","rel":"preceded_by","to":"history.decree_the_branch_cull","note":"once the top is known to be sealed, families cut costs instead of paying them"}
+{"from":"history.decree_the_branch_cull","rel":"preceded_by","to":"history.era_the_sixth_seat","note":"the narrowed lineages are the ones that could afford to leave"}
+{"from":"history.era_the_sixth_seat","rel":"preceded_by","to":"history.discovery_the_sixth_seat_filled","note":"you can only seat a law and diff the result once a composition exists"}
+{"from":"history.discovery_the_sixth_seat_filled","rel":"preceded_by","to":"history.era_the_full_composition","note":"the method is what let the composition be completed deliberately"}
+{"from":"history.era_the_full_composition","rel":"preceded_by","to":"history.disaster_the_cinder_famine","note":"the famine ran through the era that had no spare element to spend"}
+{"from":"history.disaster_the_cinder_famine","rel":"preceded_by","to":"history.consequence_the_density_ceiling","note":"the ceiling is dated by the composition that caused it"}
+{"from":"history.consequence_the_density_ceiling","rel":"preceded_by","to":"history.era_the_broken_bridge","note":"the border is the next frame up from the one the dense could not leave"}
+{"from":"history.era_the_broken_bridge","rel":"preceded_by","to":"history.collapse_the_eighteenth_bed","note":"the bed is what the broken bridge left lying in the gate"}
+{"from":"history.collapse_the_eighteenth_bed","rel":"preceded_by","to":"history.consequence_the_unowned_genealogy","note":"crossings stopped being repeatable, so no descent could be corroborated by movement"}
+{"from":"history.consequence_the_unowned_genealogy","rel":"preceded_by","to":"history.era_the_nine_empty_seats","note":"the first frame with genuine slack follows the last with none"}
+{"from":"history.era_the_nine_empty_seats","rel":"preceded_by","to":"history.decree_the_unfilled_seats","note":"the decree is written by the era's surplus seats"}
+{"from":"history.decree_the_unfilled_seats","rel":"preceded_by","to":"history.discovery_the_passage_ledger","note":"once nobody may occupy a seat by appointment, the only thing left to charge for is passing"}
+{"from":"history.discovery_the_passage_ledger","rel":"preceded_by","to":"history.era_the_still_point","note":"the top tier is reached over roads somebody else controls"}
+{"from":"history.era_the_still_point","rel":"preceded_by","to":"history.schism_the_naming_of_homes","note":"the paths are named to tiers only once all four tiers exist"}
+{"from":"history.schism_the_naming_of_homes","rel":"preceded_by","to":"history.collapse_the_refused_seating","note":"the attempt needed a vacant seat and a doctrine about seats"}
+{"from":"history.collapse_the_refused_seating","rel":"preceded_by","to":"history.consequence_the_unfilled_ledger","note":"the ledger is unfillable because of the refused seating"}
+{"from":"history.founding_the_first_tier","rel":"caused","to":"cosmology.qi_law","since":"history.era_first_breath","note":"qi is the only law with a range wide enough to fund a tier"}
+{"from":"history.founding_the_first_tier","rel":"depends_on","to":"cosmology.mortal_world","note":"the three-seat frame is the one the opener could afford"}
+{"from":"history.discovery_the_law_census","rel":"caused","to":"history.founding_the_first_tier","note":"you can only census seats you have opened"}
+{"from":"history.discovery_the_law_census","rel":"influenced_by","to":"history.disaster_the_iron_grief","note":"the grief is the first empirical proof that an applicable law can be absent"}
+{"from":"history.disaster_the_iron_grief","rel":"caused","to":"history.era_the_gilded_core","note":"one exhausted seam cost the era its ladder"}
+{"from":"history.disaster_the_iron_grief","rel":"depends_on","to":"cosmology.spatial_law","note":"no seated spatial law means no new seam can be opened"}
+{"from":"history.migration_the_peak_ascent","rel":"caused","to":"history.disaster_the_iron_grief","note":"you leave a dead mine"}
+{"from":"history.migration_the_peak_ascent","rel":"migrated_from","to":"geography.mortal_plains","since":"history.disaster_the_iron_grief","note":"the origin is named as a place people left, not one they were native to"}
+{"from":"history.migration_the_peak_ascent","rel":"located_in","to":"geography.spirit_peaks","note":"the destination is the reason the movement was one-way"}
+{"from":"history.era_the_hundredfold_body","rel":"caused","to":"history.migration_the_peak_ascent","note":"the departure thinned the tier that then closed"}
+{"from":"history.era_the_hundredfold_body","rel":"applies_in","to":"cosmology.mortal_world","note":"the ceiling and the life-form roster are the tier's own composition"}
+{"from":"history.era_the_hundredfold_body","rel":"depends_on","to":"cosmology.life_law","note":"the seat spent on the intelligence ceiling is what caps the roster at two forms"}
+{"from":"history.discovery_the_realm_nine_verdict","rel":"caused","to":"history.era_the_hundredfold_body","note":"the verdict is a reading of the era's own ceiling"}
+{"from":"history.discovery_the_realm_nine_verdict","rel":"caused","to":"races.commonborn","note":"the verdict is what put the commonest bodies one gate below a ceiling they could never have reached"}
+{"from":"history.decree_the_branch_cull","rel":"caused","to":"history.discovery_the_realm_nine_verdict","note":"a known ceiling turns per-person cultivation cost into a reason to reduce the number of people"}
+{"from":"history.decree_the_branch_cull","rel":"caused","to":"races.tideculled","note":"the cull is the origin of a narrowed line that crossed races freely"}
+{"from":"history.era_the_sixth_seat","rel":"caused","to":"history.decree_the_branch_cull","note":"the households that could still pay left"}
+{"from":"history.era_the_sixth_seat","rel":"located_in","to":"cosmology.spirit_world","note":"six seats against six laws is the spirit tier's whole identity"}
+{"from":"history.era_the_sixth_seat","rel":"requires","to":"cosmology.qi_law","note":"a six-seat composition is only complete while qi law keeps its seat unshared"}
+{"from":"history.discovery_the_sixth_seat_filled","rel":"caused","to":"history.era_the_sixth_seat","note":"the method needs a composition to diff"}
+{"from":"history.discovery_the_sixth_seat_filled","rel":"influenced_by","to":"history.discovery_the_law_census","note":"the second census is the first one run as a procedure rather than a count"}
+{"from":"history.era_the_full_composition","rel":"caused","to":"history.discovery_the_sixth_seat_filled","note":"knowing what a seat buys is what let the last seat be placed deliberately"}
+{"from":"history.era_the_full_composition","rel":"caused","to":"races.stoneborn","note":"a complete composition with no redundancy is what stops a maximally dense fixed body at seventeen"}
+{"from":"history.disaster_the_cinder_famine","rel":"caused","to":"history.era_the_full_composition","note":"the famine ran inside the frame that had no spare element to spend"}
+{"from":"history.disaster_the_cinder_famine","rel":"caused","to":"races.emberblood","note":"a structural fire affinity with no seated elemental law has to burn its own substrate"}
+{"from":"history.disaster_the_cinder_famine","rel":"depends_on","to":"cosmology.elemental_law","note":"the missing budget is the whole mechanism"}
+{"from":"history.consequence_the_density_ceiling","rel":"caused","to":"history.era_the_full_composition","note":"the ceiling is the composition's residue in a fixed body"}
+{"from":"history.consequence_the_density_ceiling","rel":"caused","to":"races.stoneborn","note":"one race is the ceiling's only surviving evidence"}
+{"from":"history.era_the_broken_bridge","rel":"caused","to":"history.consequence_the_density_ceiling","note":"the dense never left the frame below, so the border was reached by fewer people than it should have been"}
+{"from":"history.era_the_broken_bridge","rel":"located_in","to":"cosmology.spirit_world","note":"realm eighteen is the last gate inside this frame"}
+{"from":"history.era_the_broken_bridge","rel":"caused","to":"history.collapse_the_eighteenth_bed","note":"the bed is what this era's price produced"}
+{"from":"history.collapse_the_eighteenth_bed","rel":"caused","to":"history.era_the_broken_bridge","note":"a border nobody can afford continuously is a border that fails"}
+{"from":"history.collapse_the_eighteenth_bed","rel":"located_in","to":"cosmology.immortal_world","note":"the border and the bed both belong to the frame it failed to reach"}
+{"from":"history.collapse_the_eighteenth_bed","rel":"conflicts_with","to":"organizations.disciple","note":"an unbound office of sworn members is exactly what would be given the crossing"}
+{"from":"history.consequence_the_unowned_genealogy","rel":"caused","to":"history.collapse_the_eighteenth_bed","note":"a crossing that cannot be repeated cannot corroborate a descent by movement"}
+{"from":"history.consequence_the_unowned_genealogy","rel":"conflicts_with","to":"races.tideborn","note":"two records claim seniority and one of them is a memory"}
+{"from":"history.era_the_nine_empty_seats","rel":"caused","to":"history.collapse_the_eighteenth_bed","note":"the first tier reached after a failed crossing is examined for anything left behind"}
+{"from":"history.era_the_nine_empty_seats","rel":"located_in","to":"cosmology.immortal_world","note":"ten seats against six laws is the immortal tier's whole arithmetic"}
+{"from":"history.era_the_nine_empty_seats","rel":"requires","to":"cosmology.immortal_world","note":"the era is defined by the tier's slack"}
+{"from":"history.decree_the_unfilled_seats","rel":"caused","to":"history.era_the_nine_empty_seats","note":"the decree is written by the era's surplus seats"}
+{"from":"history.decree_the_unfilled_seats","rel":"founded_by","to":"civilizations.star_regent","note":"the office that may name a seat and may not take one is the decree's only holder"}
+{"from":"history.decree_the_unfilled_seats","rel":"influenced_by","to":"history.collapse_the_refused_seating","note":"a seat that cannot be told empty is a seat that cannot be filled safely"}
+{"from":"history.discovery_the_passage_ledger","rel":"caused","to":"history.decree_the_unfilled_seats","note":"once an office may not occupy a seat, the only controllable good is permission to move"}
+{"from":"history.discovery_the_passage_ledger","rel":"influenced_by","to":"history.collapse_the_eighteenth_bed","note":"the crossing that could not be held became the crossing that could only be paid for"}
+{"from":"history.discovery_the_passage_ledger","rel":"participated_in","to":"organizations.saltledger","note":"a counting house is a ledger applied to passage"}
+{"from":"history.discovery_the_passage_ledger","rel":"participated_in","to":"organizations.ironpact","note":"a guild-house that rents capacity prices the same crossing"}
+{"from":"history.discovery_the_passage_ledger","rel":"controls","to":"civilizations.marshal","note":"the authority that survives is the one over passage"}
+{"from":"history.discovery_the_passage_ledger","rel":"participated_in","to":"organizations.quiethouse","note":"the house that will not file a record is the house that cannot be billed twice"}
+{"from":"history.era_the_still_point","rel":"caused","to":"history.discovery_the_passage_ledger","note":"the top tier is only reachable over roads somebody else controls"}
+{"from":"history.era_the_still_point","rel":"located_in","to":"cosmology.transcendent_world","note":"fifteen seats against six laws is the transcendent tier's whole identity"}
+{"from":"history.era_the_still_point","rel":"applies_in","to":"cosmology.temporal_law","note":"time flow between ten and a hundred times is the era's second asset"}
+{"from":"history.era_the_still_point","rel":"requires","to":"cosmology.transcendent_world","note":"the era is the top tier's slack expressed as a period"}
+{"from":"history.schism_the_naming_of_homes","rel":"caused","to":"history.era_the_still_point","note":"you can only name a home tier once every tier exists"}
+{"from":"history.schism_the_naming_of_homes","rel":"participated_in","to":"cosmology.body_dao","note":"the body path was named to the mortal tier's three seated laws"}
+{"from":"history.schism_the_naming_of_homes","rel":"participated_in","to":"cosmology.qi_dao","note":"the qi path was named to the one frame where six laws seat with no redundancy"}
+{"from":"history.schism_the_naming_of_homes","rel":"participated_in","to":"cosmology.mind_dao","note":"the mind path was named to the only frame with room to isolate a law"}
+{"from":"history.schism_the_naming_of_homes","rel":"caused","to":"races.commonborn","note":"naming a home tier turned a composed ceiling into an accepted one"}
+{"from":"history.collapse_the_refused_seating","rel":"caused","to":"history.schism_the_naming_of_homes","note":"a doctrine about seats is what made a seat look fillable"}
+{"from":"history.collapse_the_refused_seating","rel":"located_in","to":"cosmology.transcendent_world","note":"the attempt was made where the vacant seats were"}
+{"from":"history.collapse_the_refused_seating","rel":"requires","to":"cosmology.spatial_law","note":"a slot consumed by an absence is a hole with a position, which is the one thing spatial law would have let you check"}
+{"from":"history.consequence_the_unfilled_ledger","rel":"caused","to":"history.collapse_the_refused_seating","note":"the ledger is unfillable because one seat was spent on nothing"}
+{"from":"history.consequence_the_unfilled_ledger","rel":"located_in","to":"cosmology.transcendent_world","note":"nine of the eleven vacant seats in the setting are here"}
+{"from":"history.consequence_the_unfilled_ledger","rel":"conflicts_with","to":"cosmology.mind_dao","note":"the faction that holds both the immortal and the transcendent tier cannot be asked to release either"}
+{"from":"history.consequence_the_unfilled_ledger","rel":"requires","to":"cosmology.immortal_world","note":"the lower four vacant seats are what keeps the upper nine worth holding"}
+{"from":"cosmology.qi_dao","rel":"allied_with","to":"cosmology.mind_dao","since":"history.schism_the_naming_of_homes","note":"authored stance: both frame-and-medium work, so neither needs permanence"}
+{"from":"cosmology.mind_dao","rel":"conflicts_with","to":"cosmology.body_dao","since":"history.schism_the_naming_of_homes","note":"authored stance: a mind that changes what hardness means invalidates every certified form"}
+{"from":"history.era_first_breath","rel":"applies_in","to":"cosmology.mortal_world","note":"the era is the mortal tier at its cheapest upkeep"}
+{"from":"history.era_first_breath","rel":"requires","to":"cosmology.qi_law","note":"one breath is a qi budget, and qi law has a floor of 0.1"}
+{"from":"history.founding_the_first_tier","rel":"applies_in","to":"cosmology.mortal_world","note":"the opened frame is the mortal tier"}
+{"from":"history.discovery_the_law_census","rel":"applies_in","to":"cosmology.mortal_world","note":"the census result is a statement about the mortal tier's three seats"}
+{"from":"history.discovery_the_law_census","rel":"hidden_from","to":"races.commonborn","note":"a body with no native faculty for the frame is the last to be told what the frame is"}
+{"from":"history.era_the_gilded_core","rel":"located_in","to":"geography.mortal_plains","note":"the ore and the ladder are in the same place"}
+{"from":"history.era_the_gilded_core","rel":"requires","to":"geography.mortal_plains","note":"the era cannot exist away from the only worked ground in the tier"}
+{"from":"history.disaster_the_iron_grief","rel":"located_in","to":"geography.mortal_plains","note":"the exhausted seam is on the Mortal Plains"}
+{"from":"history.era_the_hundredfold_body","rel":"located_in","to":"geography.mortal_plains","note":"the realm band is walked in the only frame that seats three laws"}
+{"from":"history.discovery_the_realm_nine_verdict","rel":"applies_in","to":"cosmology.mortal_world","note":"the verdict is about the mortal tier's seated life law"}
+{"from":"history.decree_the_branch_cull","rel":"located_in","to":"geography.mortal_plains","note":"the households that culled were the ones still paying on the plains"}
+{"from":"history.era_the_sixth_seat","rel":"located_in","to":"geography.spirit_peaks","note":"the composition and the resources are in the same frame"}
+{"from":"history.era_the_sixth_seat","rel":"requires","to":"geography.spirit_peaks","note":"spirit stone and jade ore exist nowhere else"}
+{"from":"history.era_the_full_composition","rel":"located_in","to":"geography.spirit_peaks","note":"realms twelve to eighteen are walked in the spirit tier"}
+{"from":"history.consequence_the_density_ceiling","rel":"located_in","to":"geography.spirit_peaks","note":"the surviving account is a stonecutter's, so the evidence is a quarry"}
+{"from":"history.era_the_nine_empty_seats","rel":"located_in","to":"geography.immortal_court","note":"the era's political fact is observed where the vacant seats have a court"}
+{"from":"history.era_the_still_point","rel":"located_in","to":"geography.transcendent_realm","note":"the era is the top tier's slack and the top tier's region"}
+{"from":"history.schism_the_naming_of_homes","rel":"influenced_by","to":"history.discovery_the_sixth_seat_filled","note":"the naming was decided by what a spare seat actually buys"}
+{"from":"history.consequence_the_density_ceiling","rel":"participated_in","to":"organizations.ward","note":"a load-bearing house has no use for a ceiling it cannot carry"}
+{"from":"history.era_the_broken_bridge","rel":"participated_in","to":"organizations.disciple","note":"the unbound office is what the border was meant to serve"}
