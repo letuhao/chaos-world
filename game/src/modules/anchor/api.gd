@@ -161,7 +161,12 @@ static func repair(actor: Actor, periods: int) -> Dictionary:
 			"ok": false,
 			"reason": "nothing_to_repair",
 			"restored": 0,
-			"anchor_id": String(anchor_id)
+			"anchor_id": String(anchor_id),
+			# WHY, because `nothing_to_repair` on a raised hearth reads as a wiring fault and is
+			# usually CONTENT: a fractional rate below 1.0 restores nothing over a single
+			# period, which is exactly what one waiting a season sees.
+			"repair_per_period": def.repair_per_period,
+			"periods": periods,
 		}
 	var healed := SoulApi.repair(actor, amount, "anchor:%s" % anchor_id)
 	var restored := int(healed.get("applied", 0))
@@ -261,6 +266,20 @@ static func validate() -> Array[String]:
 			problems.append("anchor: %s neither repairs nor shelters" % anchor_id)
 		if def.repairs and def.repair_per_period <= 0.0:
 			problems.append("anchor: %s claims to repair at zero per period" % anchor_id)
+		# **A repairing anchor must repair at least ONE integrity over ONE period.** A rate below
+		# 1.0 floors to zero, so a player who waits a single season gets nothing and nothing
+		# reports an error — the hearth stands, costs a fortune, and heals nobody. That is the
+		# silent content gap DEF-0047 records, and it is caught here rather than in play.
+		if def.repairs and def.repair_per_period < 1.0:
+			problems.append(
+				(
+					(
+						"anchor: %s repairs %s per period, which floors to nothing over one "
+						+ "period - author at least 1.0"
+					)
+					% [anchor_id, def.repair_per_period]
+				)
+			)
 	return problems
 
 

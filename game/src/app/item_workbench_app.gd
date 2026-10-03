@@ -346,8 +346,51 @@ func advance_world(periods: int) -> Dictionary:
 ## Advance the world by exactly ONE period. **The verb a screen's "wait a season"
 ## button and a headless probe both call**, so neither has to know the cadence or
 ## pass an argument a driver would hand over as a string.
+##
+## ## An anchor repairs HERE, because this is the period boundary
+##
+## `AnchorApi.repair` takes explicit `periods` precisely because nothing may own a clock
+## (DEF-0111), and this is the caller that owns one. **Wiring it anywhere else would leave the
+## building feature a set of headless verbs**: the hearth would exist, be raisable, and never
+## heal anybody in play. The repair is REPORTED rather than swallowed, because a player who
+## waits a season at a hearth and sees nothing happen cannot tell a bug from a feature that
+## never fired.
 func advance_one_period() -> Dictionary:
-	return advance_world(1)
+	var outcome := advance_world(1)
+	outcome["anchor_repair"] = _repair_at_anchor()
+	return outcome
+
+
+## Raise `anchor_id` where this actor stands, and report what it cost.
+##
+## **The door a construction screen and a probe both call**, so neither has to know the
+## authored cost shape. Refusals are the module's own (`cannot_afford`, `already_raised`,
+## `realm_floor`), passed through verbatim rather than re-worded.
+func raise_anchor(anchor_id: StringName) -> Dictionary:
+	return AnchorApi.raise_anchor(_actor, anchor_id, String(_actor.id))
+
+
+## Select the difficulty this run is played under, and report the scalars it now answers with.
+##
+## **The door a settings screen and a probe both call.** Persisting the id rather than the
+## resolved numbers is what keeps an old save meaningful after a retune (ADR 0129).
+func select_difficulty(difficulty_id: StringName) -> Dictionary:
+	var outcome := DifficultyApi.select(_actor, difficulty_id)
+	if not bool(outcome["ok"]):
+		return outcome
+	return {
+		"ok": true,
+		"reason": "",
+		"difficulty_id": String(difficulty_id),
+		"scalars": DifficultyApi.scalars(_actor),
+	}
+
+
+## Repair the soul from whatever raised anchor stands, for `periods` whole periods.
+func _repair_at_anchor(periods: int = 1) -> Dictionary:
+	if _actor == null:
+		return {"ok": false, "reason": "no_actor", "restored": 0}
+	return AnchorApi.repair(_actor, periods)
 
 
 ## The world's own view of itself, published beside [method summary] so a probe can
@@ -418,6 +461,16 @@ func mint_body(arrival_id: String, incarnation: int) -> Dictionary:
 ## different actors — a screen on the old one, the soul on the new — and no assertion fails,
 ## because both are individually valid. Every holder is re-pointed here, in one place, so a
 ## future binding cannot be forgotten silently.
+## The actor this root is currently holding, or null before boot builds one.
+##
+## **Public because a rebirth makes the actor MOVE.** A screen bound to the body that fell is
+## reading a dead hero, and the only way for it to follow is to ask the root rather than cache
+## what it was handed. The alternative — every screen re-reading on a signal — is a second
+## mechanism for the one fact the root already owns.
+func actor() -> Actor:
+	return _actor
+
+
 func adopt_actor(body: Actor) -> void:
 	if body == null:
 		return

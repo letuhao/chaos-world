@@ -66,4 +66,17 @@ untouched.**
   living in one, which is enough for a ledger and not enough for a map. Honest while
   `domain` has no fixture-placement story to join.
 - **A construction UI is owed.** The verbs exist and are tested headlessly; nothing renders them
-  yet.
+  yet. The doors a screen needs are on the composition root — `raise_anchor` and
+  `select_difficulty` — so a UI is a binding exercise rather than a design one.
+- **An anchor repairs on the PERIOD boundary, which is the only place it can.**
+  `advance_one_period` — the verb a screen's "wait a season" button and a headless probe both
+  call — now repairs. That is the wiring which stops the hearth being a set of headless verbs:
+  it exists, it is raisable, and it would otherwise heal nobody in play. The repair is reported
+  in the period's own return value rather than swallowed, because a player who waits a season
+  and sees nothing happen cannot tell a wiring fault from a feature that never fired.
+- **A repairing anchor must restore at least one integrity over ONE period.** `repair_per_period`
+  is authored as a float and `int(floor(rate * periods))` means a rate below `1.0` restores
+  nothing over a single period. The hearth shipped at `0.5` and healed nobody while every
+  module suite passed. `validate` now fails an anchor whose repairing rate is under `1.0`, and
+  `repair` reports the rate and the periods when it restores nothing — because
+  `nothing_to_repair` on a raised hearth reads as a wiring fault and is nearly always content.

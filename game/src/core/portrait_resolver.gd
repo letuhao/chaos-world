@@ -51,6 +51,23 @@ static func resolve(actor: Actor, race_id: StringName = &"") -> Dictionary:
 		var by_race := PortraitCatalog.instance().for_race(race_id)
 		if by_race != null:
 			return _view(by_race, race_id, "race")
+		# Step 2b: the GENERATED face for that body plan, when one exists. The generator has
+		# shipped, so a race with thousands of authored characters no longer falls through to the
+		# placeholder — and the lookup still goes through `PortraitIndex`, which is the only
+		# file in `core/` that opens the generated index, so the promise this class makes (it
+		# never reads an index) still holds.
+		var generated := PortraitIndex.instance().character_for_race(race_id)
+		var path := PortraitIndex.instance().portrait_path(generated)
+		if path != "":
+			return {
+				"portrait_id": String(generated),
+				"race_id": String(race_id),
+				"layer_paths": [path] as Array[String],
+				"palette_key": String(PortraitIndex.instance().palette_of(generated)),
+				"form": String(PortraitIndex.instance().form_of(generated)),
+				"source": "generated",
+				"is_placeholder": false,
+			}
 	# Step 3: the fallback. Null here means the content tree failed to load, and the view says
 	# so rather than pretending an actor has no face.
 	var placeholder := PortraitCatalog.instance().placeholder()

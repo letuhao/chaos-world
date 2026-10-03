@@ -64,3 +64,15 @@ reads the asset index, so the generator stays optional.**
   and a portrait id, both of which already round-trip through `Actor.to_dict`. It must not gain
   an earn verb: the structural guard that pins exactly one origin earn in the creation flow
   exists precisely to stop this becoming a picker through the back door.
+- **The generator has shipped, and the promise is now testable in both directions.**
+  `tools/character_assets.py` writes `game/assets/characters/character-index.jsonl` with a
+  `dialogue_portrait` row per character, each carrying the `race:`, `palette:` and `build:` tags
+  this ADR's `PortraitDef` authors by hand. `core/portrait_index.gd` is the **sync step** — the
+  only file in `core/` that opens the index, and the only place `race:` becomes a face. The
+  resolver still never names an index, so deleting `PortraitIndex` costs every actor its
+  generated face and none of them their ability to resolve: the chain falls back to a race
+  family, then to the placeholder. That is the property the ADR bought, and it is now a fact
+  about the tree rather than a prediction about it.
+- **A race takes the first match in SORTED id order, never in file order.** `DirAccess`-shaped
+  reads are not stable, and two runs resolving the same actor to different faces would make a
+  save unreproducible — which is the same keyed-by-id rule applied to a generated corpus.
