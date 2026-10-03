@@ -187,16 +187,19 @@ func _climbed_to_the_tier(hero: Actor) -> Array:
 		_fought_once(hero, index, _roll_winning())
 		var won := Breakthrough.tribulation_ok(hero, index)
 		var advanced := Breakthrough.try_advance_gated(hero, BodyPath.PATH_ID)
-		records.append(
-			{
-				"index": index,
-				"gated": gated,
-				"gate_before": gate_before,
-				"won": won,
-				"gate_after": Breakthrough.tribulation_ok(hero, index),
-				"advanced": advanced,
-				"rank": hero.path(BodyPath.PATH_ID).rank_id,
-			}
+		(
+			records
+			. append(
+				{
+					"index": index,
+					"gated": gated,
+					"gate_before": gate_before,
+					"won": won,
+					"gate_after": Breakthrough.tribulation_ok(hero, index),
+					"advanced": advanced,
+					"rank": hero.path(BodyPath.PATH_ID).rank_id,
+				}
+			)
 		)
 		# A transition that did not advance ends the climb: spinning the ladder guard
 		# on a gate that never opens would bury the one line naming which gate it was.
@@ -258,9 +261,7 @@ func test_a_player_reaches_r30_with_every_gate_earned() -> void:
 			assert_eq(step["gate_before"], true, "R%d owes no fight" % (int(step["index"]) + 1))
 			continue
 		gated += 1
-		assert_eq(
-			step["gate_before"], false, "R%d started shut" % (int(step["index"]) + 1)
-		)
+		assert_eq(step["gate_before"], false, "R%d started shut" % (int(step["index"]) + 1))
 		assert_eq(step["won"], true, "R%d was fought and survived" % (int(step["index"]) + 1))
 		assert_eq(step["advanced"], true, "R%d was entered" % (int(step["index"]) + 1))
 		assert_eq(step["rank"], _realm_id(int(step["index"])), "and the rank is the target")
@@ -318,9 +319,7 @@ func test_a_player_reaches_r30_with_every_gate_earned() -> void:
 		"the hero stands at the terminal realm, reached by playing"
 	)
 	assert_eq(
-		RealmDefaults.ladder().next(_realm_id(TERMINAL)),
-		null,
-		"which is the end of the ladder"
+		RealmDefaults.ladder().next(_realm_id(TERMINAL)), null, "which is the end of the ladder"
 	)
 	screen.free()
 
@@ -400,11 +399,7 @@ func test_a_lost_fight_leaves_r30_unreachable_and_names_the_gate() -> void:
 	assert_eq(bool(gates["world"]), true, "and stable")
 	assert_eq(bool(gates["tribulation"]), false, "only the fight is shut")
 
-	assert_eq(
-		screen.call("act_breakthrough"),
-		false,
-		"so the screen's own Breakthrough refuses"
-	)
+	assert_eq(screen.call("act_breakthrough"), false, "so the screen's own Breakthrough refuses")
 	assert_eq(
 		String(hero.path(BodyPath.PATH_ID).rank_id),
 		String(_realm_id(WorldAnchor.COMMIT_MICRO)),
@@ -424,11 +419,7 @@ func test_a_lost_fight_leaves_r30_unreachable_and_names_the_gate() -> void:
 		["Survive a tribulation fought for this realm"],
 		"and names the tribulation as a high-tier gate outstanding"
 	)
-	assert_eq(
-		_clauses_about(unmet, "ascent"),
-		[],
-		"and names no ascent clause — it was walked"
-	)
+	assert_eq(_clauses_about(unmet, "ascent"), [], "and names no ascent clause — it was walked")
 	screen.free()
 
 
@@ -446,13 +437,9 @@ func test_an_unwalked_ascent_shuts_r29_on_the_ascent_clause() -> void:
 	var index := _next_index(hero)
 	assert_eq(index, WorldAnchor.COMMIT_MICRO + 1, "R29 is the realm in front of this hero")
 	_fought_once(hero, index, _roll_winning())
+	assert_eq(Breakthrough.tribulation_ok(hero, index), true, "and its tribulation is won")
 	assert_eq(
-		Breakthrough.tribulation_ok(hero, index), true, "and its tribulation is won"
-	)
-	assert_eq(
-		Breakthrough.ascension_ok(hero, index),
-		false,
-		"but nothing has walked the ascent yet"
+		Breakthrough.ascension_ok(hero, index), false, "but nothing has walked the ascent yet"
 	)
 	assert_eq(
 		Breakthrough.try_advance_gated(hero, BodyPath.PATH_ID),
@@ -461,14 +448,14 @@ func test_an_unwalked_ascent_shuts_r29_on_the_ascent_clause() -> void:
 	)
 	var unmet := (screen.summary() as Dictionary).get("unmet", []) as Array
 	assert_eq(
-		_clauses_about(unmet, "tribulation"),
-		[],
-		"no tribulation is outstanding — it was won"
+		_clauses_about(unmet, "tribulation"), [], "no tribulation is outstanding — it was won"
 	)
 	assert_eq(
 		_ascent(screen.summary() as Dictionary)["outstanding"],
-		"Walk the ascent: %d of %d steps to walk"
-		% [AscensionState.ASCENT_STEPS, AscensionState.ASCENT_STEPS],
+		(
+			"Walk the ascent: %d of %d steps to walk"
+			% [AscensionState.ASCENT_STEPS, AscensionState.ASCENT_STEPS]
+		),
 		"and the ascent is what the screen says is outstanding"
 	)
 	screen.free()
