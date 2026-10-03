@@ -119,6 +119,25 @@ _NAMED_STRING = re.compile(r"^[A-Z0-9_]+$")
 _ROSTER_OPEN = re.compile(r"^\s*const\s+([A-Z0-9_]+)\s*:[^=]*=\s*\[", re.MULTILINE)
 _ROSTER_FACT = re.compile(r'"fact"\s*:\s*&"([a-z0-9_]+)"')
 
+# A file can reach the ledger two ways: it calls `WorldFact.record` itself, or it hands
+# a beat to a dispatcher that does (`app/world_pulse.gd:262 offer` ->
+# `app/beat_director.gd:122 WorldFact.record`). The second is the ADR 0114 chain and the
+# shipped path, so requiring a direct `record` would miss every correctly-dispatched
+# producer and report its gate dead - a false red, which is worse than a false green
+# because it sends an agent to author a producer that already exists. Matched on the
+# dispatcher CALL (`_director.offer(`), not the class name: a filename check would be a
+# claim about one file rather than about reachability.
+_DISPATCH_CALL = re.compile(r"\.offer\s*\(\s*[A-Za-z_][A-Za-z0-9_.]*\s*,")
+
+# `class_name Foo`, to resolve a roster to the file that DECLARES it.
+_CLASS_NAME = re.compile(r"^\s*class_name\s+([A-Z][A-Za-z0-9_]*)", re.MULTILINE)
+# A static call into another class: `WorldAmbient.due(`, `Foo.bar(`. The leading dot is
+# what makes it static, so an instance call cannot be mistaken for one.
+_STATIC_CALL = re.compile(r"\b([A-Z][A-Za-z0-9_]*)\.[a-z_][A-Za-z0-9_]*\s*\(")
+# A roster whose ids are handed onward - a `for` over the roster feeding a call out of
+# the file. Without this a table nothing dispatches would read as supply.
+_ROSTER_DISPATCH = re.compile(r"for\s+\w+\s+in\s+\w*ROSTER\w*\s*:")
+
 
 # `WorldFact.has` floors `need` at 1 (world_fact.gd:187) and `QuestStepDef
 # .required_count()` does the same, so a demand of 0 or less is a demand of one. The
@@ -591,24 +610,48 @@ def _ladder(main: Block, blocks: list[Block]) -> list[Block]:
 def code_owned_supply(supply: dict[str, Supply]) -> None:
     """Add every fact a `res://src` file produces by declaring its id in code.
 
-    Two shapes reach the ledger's writer, and only the first is authored content:
+    Three shapes reach the ledger, and only the first is authored content:
 
     - the id is a member expression (`beat["fact"]`, `claim.fact`) - the value arrived
-      from a beat a `.tres` authored, so `census()` has already counted it; and
+      from a beat a `.tres` authored, so `census()` has already counted it;
     - the id is a name the same file declared as a `const` holding a `StringName`
       literal - a code-owned producer, invisible to a content scan and therefore
-      counted HERE or the ceiling is wrong.
+      counted HERE or the ceiling is wrong; and
+    - the id is a row of a static roster (`{"fact": &"id", ...}`) that the file, or a
+      class it calls, hands to a dispatcher. Measured 2026-10-03 as three further hops
+      than any shape this function had been taught: `app/world_ambient.gd:60 ROSTER` ->
+      `due()` -> `app/world_pulse.gd:332` -> `offer()` -> `app/beat_director.gd:122`
+      `WorldFact.record`. A per-file scan is structurally blind to that, so four shipped
+      event triggers were reported permanently dead while the producer was running.
 
     A writer is pinned by `tests/arch_rules/test_fact_ledger_writers.gd`: the writer
     SET is asserted there, and the id-literal rule there is what keeps this function
     from having to guess about an id it cannot resolve. An id expression this cannot
     resolve - arithmetic on a string, a name from elsewhere - is deliberately NOT
     counted, because inventing a supply figure is how a census starts lying.
+
+    The roster shape is the one place that rule could have been bent, because a roster
+    genuinely IS supply and refusing to see it produces a FALSE RED - which is worse
+    than a false green here, since a false red sends an agent to author a producer that
+    already exists. So it counts under one condition, and the condition is the whole
+    design: a roster counts only when some file that REACHES the writer names its class
+    in a static call. A table nothing dispatches is not supply, and counting it would
+    make the missing-producer finding disappear - the quiet lie this module exists to
+    refuse.
     """
+    dispatchers = _dispatcher_classes()
+    # Seeded with every dispatcher up front, not accumulated during the walk: `app/` sorts
+    # BEFORE `app/world_ambient.gd`'s own neighbours in any ordering that puts `ambient`
+    # first, so a single pass would read the caller's reference before the table exists
+    # and silently count zero. Two passes over 15k files is cheaper than an order-
+    # dependent answer.
+    dispatched: set[str] = set(dispatchers)
     for path in sorted(SRC_DIR.rglob("*.gd")):
         text = path.read_text(encoding="utf-8")
-        reaches_writer = "WorldFact.record" in text or "WorldPulse" in text
-        if not reaches_writer:
+        reaches_writer = "WorldFact.record" in text or _DISPATCH_CALL.search(text) is not None
+        if reaches_writer:
+            dispatched |= _static_class_calls(text, dispatchers)
+        if not reaches_writer and not _static_class_calls(text, dispatchers):
             continue
         consts = dict(_STRING_CONST.findall(text))
         relative = path.relative_to(GAME_DIR).as_posix()
@@ -631,11 +674,65 @@ def code_owned_supply(supply: dict[str, Supply]) -> None:
             row.total += max(0, amount)
             row.sites.append(f"{relative}:{index + 1} ({amount}, code const)")
 
-        for roster, start in _static_rosters(text):
-            for fact in roster:
-                row = supply.setdefault(fact, Supply(fact=fact))
-                row.total += DEFAULT_AMOUNT
-                row.sites.append(f"{relative}:{start} ({DEFAULT_AMOUNT}, code roster)")
+    for roster_relative, ids, start in _roster_files(dispatched):
+        for fact in ids:
+            row = supply.setdefault(fact, Supply(fact=fact))
+            row.total += DEFAULT_AMOUNT
+            row.sites.append(f"{roster_relative}:{start} ({DEFAULT_AMOUNT}, code roster)")
+
+
+def _roster_files(dispatched: set[str]) -> list[tuple[str, list[str], int]]:
+    """Every static roster declared by a class named in `dispatched`.
+
+    The class is resolved through `class_name`, so the roster is read from the file that
+    DECLARES the table (`app/world_ambient.gd`), not from the caller that dispatches it
+    (`app/world_pulse.gd`). Reading the caller's copy would be reading a reference to a
+    table - `const AMBIENT_FACTS := WorldAmbient.ROSTER` - which carries no ids at all,
+    and would report zero supply for a producer that ships.
+    """
+    by_class: dict[str, Path] = {}
+    for path in sorted(SRC_DIR.rglob("*.gd")):
+        name = _CLASS_NAME.search(path.read_text(encoding="utf-8"))
+        if name:
+            by_class[name.group(1)] = path
+
+    out: list[tuple[str, list[str], int]] = []
+    for cls in sorted(dispatched):
+        source = by_class.get(cls)
+        if source is None:
+            continue
+        text = source.read_text(encoding="utf-8")
+        for ids, start in _static_rosters(text):
+            out.append((source.relative_to(GAME_DIR).as_posix(), ids, start))
+    return out
+
+
+def _dispatcher_classes() -> set[str]:
+    """Every `class_name` whose file hands a fact id to a ledger dispatcher.
+
+    A class qualifies only if its file both declares a static roster and calls out of
+    itself - `WorldAmbient.due` is not the writer, but `world_pulse._offer_ambient`
+    loops its answer straight into `offer()`. Requiring the call is what stops an
+    unreferenced table from reading as supply.
+    """
+    out: set[str] = set()
+    for path in sorted(SRC_DIR.rglob("*.gd")):
+        text = path.read_text(encoding="utf-8")
+        if not _static_rosters(text):
+            continue
+        name = _CLASS_NAME.search(text)
+        if name and _ROSTER_DISPATCH.search(text):
+            out.add(name.group(1))
+    return out
+
+
+def _static_class_calls(text: str, known: set[str]) -> set[str]:
+    """Classes this file names in a static call, e.g. `WorldAmbient.due(...)`."""
+    found: set[str] = set()
+    for cls in _STATIC_CALL.findall(text):
+        if cls in known:
+            found.add(cls)
+    return found
 
 
 def _static_rosters(text: str) -> list[tuple[list[str], int]]:
@@ -644,13 +741,9 @@ def _static_rosters(text: str) -> list[tuple[list[str], int]]:
     Returns the ids each roster declares with the 1-based line the `const` opens on, so
     a supply site points at the declaration a reader can go and look at.
 
-    The count is claimed only when `code_owned_supply` has already established that the
-    file REACHES the ledger writer (directly, or by being the `WorldPulse` that owns
-    the ambient roster). That guard is the whole point: a table of ids that nothing
-    dispatches is not supply, and counting it would turn the missing-producer finding
-    into a green wash - the failure mode this module was written to refuse. A roster is
-    a static table by construction, so there is nothing here to guess at: an id it does
-    not literally declare is not counted, exactly as for a scalar const.
+    Only a roster that actually names a `fact` key is read, and only ids it literally
+    declares are counted - the same refusal as the scalar const. A roster is a static
+    table by construction, so there is nothing here to guess at.
     """
     found: list[tuple[list[str], int]] = []
     for match in _ROSTER_OPEN.finditer(text):

@@ -26,6 +26,12 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     # audits rather than after the suite. The writer set this census assumes is
     # pinned by tests/arch_rules/test_fact_ledger_writers.gd.
     ("gate_reach", ["check"]),
+    # A mutation probe that reached a COMMIT. The working-tree half lives in
+    # tests/arch_rules/test_no_stranded_mutation.gd and cannot see history, because git
+    # is unreachable from GDScript at test time (INC-0013). Two real committed probes
+    # were found the moment this shipped, so it is not theoretical. Needs no engine, so
+    # it runs with the other content audits.
+    ("mutation_history", ["check"]),
     # The authored per-realm power table: one entry per realm, R1 at 1.0, strictly
     # rising, finite and readable. It replaced the one power ladder's guard (ADR 0050).
     ("realm_power", ["check"]),
