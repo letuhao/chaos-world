@@ -48,6 +48,14 @@ extends RefCounted
 ## module for a bare `Sect[A-Z]` class name outside that line so the invisible cycle
 ## cannot be written quietly.
 const SECT_FACADE := preload("res://src/modules/sect/api.gd")
+## ## And the one sanctioned edge to `social`, for the same reason
+##
+## A nation's founding, its seats and its wars are public acts, and they move the
+## same institutional `regard` a sect's do (BL-0200). `social` is reached exactly as
+## `sect` is: one `preload`, which is the only shape the resolver reads, because
+## `BARE_REF_UNITS` excludes `modules/*` and a bare `SocialApi` reference out of
+## `modules/nation/` would report ZERO violations (ADR 0083).
+const SOCIAL_FACADE := preload("res://src/modules/social/api.gd")
 
 ## The actor component holding the live projection state.
 const STATE_COMPONENT := &"nation_state"
@@ -56,6 +64,45 @@ const MODULE_KEY := NationState.MODULE_KEY
 ## How far into a standoff a verdict must be, by mode (ADR 0085). A mode changes
 ## the quota and the prize shape only, never how a verdict is produced.
 const QUOTAS := {NationState.CONTEST: 3, NationState.SIEGE: 5, NationState.TRIBUNAL: 1}
+
+## ## The decision verbs (BL-0198)
+##
+## `act` **PROPOSES**; the composition root RESOLVES. That split is ADR 0085's shape
+## applied one layer up — "the conflict module never calls combat, never reads a
+## combat stat, and never owns an `rng`" — and ADR 0114's handler shape: a handler
+## never mutates, it returns a proposal, and the director applies. So nothing below
+## writes a ledger, moves a claim or declares a war; it names what the polity WOULD
+## do, and `app/` calls the verb that does it.
+##
+## **The set is CLOSED, and it is the whole of what `act` may ever return.** Two of
+## the seven institutional verbs live here — `claim_territory` and
+## `accrue_territory`, the module's only per-period income and the only verb a
+## background tick may propose without inventing a number. `set_stance`,
+## `declare_war` and `resolve_conflict` are reachable only from a caller that has an
+## opinion to state and a prize to declare: a clock may not choose a war (ADR 0085 —
+## a conflict is a DECLARATION of sides and a prize, and nothing here declares one).
+##
+## Every `target` is an id the ledger or the catalog already holds; nothing in this
+## path invents a number. Membership is `ACT_VERBS.has(verb)`, which is why this is
+## a const rather than a thirteenth method on a facade that has one slot left.
+const VERB_ACCRUE := "accrue_territory"
+const VERB_CLAIM := "claim_territory"
+
+## The whole closed set this module may propose, in one place, so a test asserts
+## membership against the constant rather than restating the list in a fourth file.
+const ACT_VERBS: Array[StringName] = [VERB_ACCRUE, VERB_CLAIM]
+
+## ## The authored causes a nation's acts move `regard` BY
+##
+## Ids in `social`'s catalog, reached as plain strings through the `preload` above.
+## The pairing with `sect` is deliberate: both tiers ask the same module to record
+## the same kind of fact, which is what makes "regard toward an institution" ONE
+## number rather than three (ADR 0083's answer to the ADR 0066 failure mode).
+const CAUSE_LIVED := &"lived_under_nation"
+const CAUSE_LEFT := &"left_a_nation"
+const CAUSE_EXPELLED := &"expelled_from_nation"
+const CAUSE_HELD_OFFICE := &"held_nation_office"
+const CAUSE_FOUGHT := &"fought_for_a_nation"
 
 
 ## Attach the module to `actor`. Restores any ledger a prior `Actor.from_dict`
@@ -96,6 +143,11 @@ static func found(actor: Actor, nation_id: StringName, founder_id: String = "") 
 		(ledger["offices"] as Dictionary)[String(office_id)] = String(board[office_id])
 	_advance(ledger)
 	_record(ledger, "founded", nation_id, founder_id)
+	# Living under a polity is a public act and moves the institutional `regard` the
+	# other tiers move (BL-0200) — through `social`, so this module keeps no second
+	# copy of it. It does NOT move `standing`: that is what the nation thinks of
+	# the polity, and founding is a beginning rather than an earned reputation.
+	_regard(actor, nation_id, CAUSE_LIVED)
 	_persist(actor, ledger)
 	var bus := NationProjection.events()
 	bus.nation_founded.emit(String(actor.id), nation_id, founder_id)
@@ -464,6 +516,106 @@ static func summary(actor: Actor) -> Dictionary:
 # --- Internals ---------------------------------------------------------------
 
 
+## ## The ONE place this module moves `regard`, and it moves nothing else
+##
+## Identical in shape to `sect`'s counterpart and for the same reason: a nation keeps
+## no regard number, no regard ledger and no increment. It asks `social` to apply an
+## AUTHORED cause to the bond between this actor and the POLITY's id (ADR 0091), and
+## `social` owns the arithmetic, the cause ledger and the projection. Two tiers
+## recording the same kind of fact through one module is what stops the three
+## institutions growing a second copy of one number (ADR 0066).
+##
+## **The partner is the POLITY id, not the actor id.** A nation outlives any one
+## member (ADR 0083's disclosed gap), so an actor id here would write an opinion the
+## world would forget with the person. The same string is the ledger's `nation_id`.
+##
+## ## Silence is a refusal, and every call site is past its own
+##
+## `apply_cause` refuses an unknown cause rather than moving nothing quietly. It can
+## only refuse here if the shipped catalog lacks this id, and a test asserts it does
+## not — so the silent path is a failed test rather than an invisible one.
+static func _regard(actor: Actor, nation_id: StringName, cause_id: StringName) -> void:
+	if actor == null or nation_id == &"":
+		return
+	SOCIAL_FACADE.apply_cause(actor, nation_id, cause_id)
+
+
+## Leave a nation, or be cast out of one. The two are deliberately different verbs
+## with different causes rather than one verb with a flag: ADR 0083 makes leaving
+## always permitted and always costs, while an expulsion is the polity's verdict and
+## must cost more — a single "depart" would have to pick one number for both.
+##
+## Underscore-prefixed, so neither counts against the twelve-method cap. `NationApi`
+## has two free slots today, but a verb whose only caller is another module is not a
+## reason to spend one: the component-id reach is the `TechniquesApi.CASTING_COMPONENT`
+## precedent (ADR 0083 folds reads into `summary()` and keeps the surface small).
+static func _leave(actor: Actor) -> Dictionary:
+	var ledger := _ledger(actor)
+	if not NationState.founded(ledger):
+		return NationState.refuse(NationState.R_NO_NATION)
+	_regard(actor, NationState.nation_id(ledger), CAUSE_LEFT)
+	var cleared := NationState.normalize({})
+	cleared["history"] = (ledger["history"] as Array).duplicate(true)
+	_persist(actor, cleared)
+	return _ok(cleared)
+
+
+static func _expel(actor: Actor) -> Dictionary:
+	var ledger := _ledger(actor)
+	if not NationState.founded(ledger):
+		return NationState.refuse(NationState.R_NO_NATION)
+	_regard(actor, NationState.nation_id(ledger), CAUSE_EXPELLED)
+	var cleared := NationState.normalize({})
+	cleared["history"] = (ledger["history"] as Array).duplicate(true)
+	_persist(actor, cleared)
+	return _ok(cleared)
+
+
+## Seat `actor` in one of their own nation's offices, and let the world hear it.
+## Holding a seat is public recognition and is exactly the fact ADR 0083 separates
+## from `standing` inside the institution — a member may hold a seat on thin
+## standing, and the regard the world extends is the same either way.
+static func _hold_office(actor: Actor, office_id: StringName, holder_id: String) -> Dictionary:
+	var ledger := _ledger(actor)
+	if not NationState.founded(ledger):
+		return NationState.refuse(NationState.R_NO_NATION)
+	if String(holder_id) != String(actor.id):
+		return NationState.refuse(NationState.R_NOT_A_PARTY)
+	if office_id == &"":
+		return NationState.refuse(NationState.R_NO_SEATS)
+	var catalog := _catalog()
+	if not catalog.known_ids().has(String(office_id)):
+		return NationState.refuse(NationState.R_UNKNOWN_OFFICE)
+	var board: Dictionary = ledger["offices"]
+	var seat := String(board.get(String(office_id), ""))
+	var def: Variant = catalog.office_definitions(NationState.nation_id(ledger)).get(
+		String(office_id), null
+	)
+	if seat != "" and (def == null or def.capacity <= 1):
+		return NationState.refuse(NationState.R_SEAT_OCCUPIED)
+	if seat != "" and def != null:
+		# A room above one: count the holders already in it, bounded by the office's
+		# own capacity so a corrupt save cannot ask this loop for more seats than the
+		# room has. Snapshot the bound before the walk — a loop whose bound it is
+		# itself growing does not terminate.
+		var held := 0
+		for other_id in board.keys():
+			if String(board[other_id]) == String(holder_id):
+				held += 1
+		if held >= def.capacity:
+			return NationState.refuse(NationState.R_CAPACITY_FULL)
+	board[String(office_id)] = String(holder_id)
+	_advance(ledger)
+	_record(ledger, "seated", office_id, holder_id)
+	_regard(actor, NationState.nation_id(ledger), CAUSE_HELD_OFFICE)
+	_persist(actor, ledger)
+	var bus := NationProjection.events()
+	bus.office_filled.emit(
+		String(actor.id), office_id, String(holder_id), NationState.nation_id(ledger)
+	)
+	return _ok(ledger, {"office_id": String(office_id), "holder_id": String(holder_id)})
+
+
 static func _catalog() -> NationCatalog:
 	return NationCatalog.instance()
 
@@ -614,6 +766,13 @@ static func _close(
 	(ledger["standoffs"] as Dictionary)[String(standoff_id)] = standoff
 	_advance(ledger)
 	_record(ledger, outcome, StringName(winner), loser)
+	# A closed war is the one deed a nation records publicly about its own people, and
+	# it is what `fought_for_a_nation` is authored for. **Only the standing side gets
+	# it**: a war fought and lost is not a credential, and a cause applied to both
+	# sides would make the prize a participation trophy. A withdrawal is excluded too
+	# — the polity did not fight, it ran.
+	if outcome == "resolved" and winner == String(ledger.get("nation_id", "")):
+		_regard(actor, NationState.nation_id(ledger), CAUSE_FOUGHT)
 	_persist(actor, ledger)
 	NationProjection.events().conflict_resolved.emit(
 		String(actor.id), String(standoff_id), winner, outcome
