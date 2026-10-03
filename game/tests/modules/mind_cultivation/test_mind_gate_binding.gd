@@ -1,30 +1,40 @@
 extends TestCase
 
-## BL-0153: which of the two cultivation-only gates actually binds at each of the
-## 29 mind boundaries, MEASURED through the production action rather than read off
-## the two authored numbers.
+## BL-0153: which of the two cultivation-only gates actually prices a mind
+## breakthrough, MEASURED through the production action rather than read off the
+## two authored numbers.
+##
+## ## "Binding" means the clause the player WAITS ON
+##
+## Both clauses are required, so neither is optional and calling the cheaper one
+## "not a gate" is the mistake this file exists to avoid. The clause that takes
+## MORE sittings to satisfy is the one that sets the price; the one met first is
+## free at that boundary. So `bound` here is the LATER of the two crossovers, and
+## a clause that is met first at every single boundary is the vacuous one.
 ##
 ## ## Why the two numbers cannot be compared directly
 ##
 ## `progress_required` and `comprehension_required` are denominated in different
 ## currencies. Progress accrues one unit per unit of `gain`; comprehension
 ## accrues `INSIGHT_RATE * INSIGHT_GAIN` per unit of `gain`, and `INSIGHT_GAIN` is
-## itself `1.0 + comprehension * 0.01` — a rate that RISES as the floor is
+## itself `1.0 + comprehension * 0.01` -- a rate that RISES as the floor is
 ## approached (BL-0165). So `comprehension_required / INSIGHT_RATE` is not the
 ## work the floor costs; it is only the work it would cost at the bottom of the
-## ladder, and the error grows with the floor. Every figure below is produced by
+## ladder, and the error grows with the floor. Every figure below comes from
 ## actually calling `MindTraining.cultivate` and watching which clause flips first.
 ##
-## ## What BL-0153 claimed, and what is measured
+## ## What BL-0153 recorded, and what the fix moved
 ##
-## The backlog entry measured the comparison with a FLAT `INSIGHT_RATE` and
-## concluded "`state.progress` gates nothing". That conclusion does not survive
-## BL-0165: once the shared insight rate multiplies the mind path's gain, the
-## comprehension curve is no longer linear, and at several boundaries the authored
-## `progress_required` is the cheaper of the two clauses. Both gates are live.
-## Which of them binds where is a BALANCE decision and is recorded in the backlog
+## Measured with the FLAT `INSIGHT_RATE` that shipped before BL-0165, the
+## comprehension floor cost 2.2x-3.6x the progress bar at every one of the 29
+## boundaries, so comprehension was the price and `progress_required` never priced
+## anything. That is the entry's claim and it was correct. Pricing the mind path's
+## insight off core's `Stat.INSIGHT_GAIN` bends the comprehension curve
+## sub-linear, and the result is that the progress budget now takes the LONGER
+## road at most boundaries and is the clause a player waits on. Which of the two
+## SHOULD price the ladder is a balance decision and is recorded in the backlog
 ## rather than retuned here, so what this suite asserts is the invariant that
-## decision must not break: NEITHER gate is vacuous.
+## decision must not break: NEITHER clause is vacuous.
 
 const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
 
@@ -35,7 +45,7 @@ const BOUNDARIES := 29
 ## sized to `progress_required / PROGRESS_SITTINGS` of `gain`, so the progress
 ## clause flips on sitting number PROGRESS_SITTINGS. The comprehension clause is
 ## then raced against it rather than assumed, so this constant only fixes where
-## the two clocks are read from — it does not decide the winner.
+## the two clocks are read from -- it does not decide the winner.
 const PROGRESS_SITTINGS := 64
 
 ## The bound on the wait. It names what failed to converge: a floor this many
@@ -52,7 +62,7 @@ static var _races: Dictionary = {}
 
 ## One sitting sized so the boundary's whole progress budget is spent in exactly
 ## `PROGRESS_SITTINGS` of them. Divided by the realm rate because `gain` is
-## denominated in realm rate (`amount * RealmRate.factor`), not in `amount` — the
+## denominated in realm rate (`amount * RealmRate.factor`), not in `amount` -- the
 ## same correction `Probe.gate_work` makes.
 func _sitting(rank_id: StringName, target_seed: MindRealmSeed) -> float:
 	var rate := RealmRate.factor(rank_id)
@@ -60,8 +70,7 @@ func _sitting(rank_id: StringName, target_seed: MindRealmSeed) -> float:
 
 
 ## Cultivate until BOTH clauses have flipped, recording the sitting each one
-## flipped on. The earlier of the two is the binding gate; a boundary where one
-## never flips inside the bound reports it as unmet rather than guessing.
+## flipped on.
 func _race(rank_id: StringName, target_seed: MindRealmSeed) -> Dictionary:
 	if _races.has(rank_id):
 		return _races[rank_id]
@@ -90,45 +99,38 @@ func _race(rank_id: StringName, target_seed: MindRealmSeed) -> Dictionary:
 	var answer := {
 		"to_progress": to_progress,
 		"to_comprehension": to_comprehension,
-		"bound": _bound_at(to_progress, to_comprehension, target_seed.id),
+		"bound": _bound_at(to_progress, to_comprehension),
 	}
 	_races[rank_id] = answer
 	return answer
 
 
-## Which clause flips first. Equal sittings cannot happen — one clause is checked
-## first within a sitting, so a tie would be a measurement artefact, and it is
-## reported rather than silently resolved.
-func _bound_at(to_progress: int, to_comprehension: int, target_id: StringName) -> String:
+## The clause that takes the LONGER road, i.e. the one the player waits on. Equal
+## sittings cannot happen -- one clause is checked first within a sitting -- so a
+## tie would be a measurement artefact and is reported rather than resolved.
+func _bound_at(to_progress: int, to_comprehension: int) -> String:
 	if to_progress < 0 and to_comprehension < 0:
 		return "neither"
 	if to_progress < 0:
 		return "comprehension"
 	if to_comprehension < 0:
 		return "progress"
-	if to_progress < to_comprehension:
+	if to_progress > to_comprehension:
 		return "progress"
-	if to_comprehension < to_progress:
+	if to_comprehension > to_progress:
 		return "comprehension"
 	return "tie"
 
 
-## "name:count" for every clause, so a failure carries the distribution rather than
-## only the boundary that happened to trip it.
+## "progress N, comprehension M, neither N, tie N" for every clause, so a failure
+## carries the distribution rather than only the boundary that tripped it.
 func _distribution() -> String:
 	var counts := {"progress": 0, "comprehension": 0, "neither": 0, "tie": 0}
 	for boundary in range(BOUNDARIES):
-		var race := _race_at(boundary)
-		var bound := String(race.get("bound", "neither"))
-		counts[bound] = int(counts.get(bound, 0)) + 1
+		counts[String(_race_at(boundary).get("bound", "neither"))] += 1
 	return (
 		"progress %d, comprehension %d, neither %d, tie %d"
-		% [
-			counts["progress"],
-			counts["comprehension"],
-			counts["neither"],
-			counts["tie"],
-		]
+		% [counts["progress"], counts["comprehension"], counts["neither"], counts["tie"]]
 	)
 
 
@@ -153,75 +155,60 @@ func test_every_boundary_names_exactly_one_binding_gate() -> void:
 	for boundary in range(BOUNDARIES):
 		var race := _race_at(boundary)
 		var target_seed := MindRealmSeed.for_realm(RealmDefaults.ladder().realms()[boundary + 1].id)
-		assert_ne(
-			int(race.get("to_comprehension", -1)),
-			-1,
-			(
-				"the comprehension floor %s into %s is earned (reached after %s sittings; %s)"
-				% [
-					target_seed.comprehension_required,
-					RealmDefaults.ladder().realms()[boundary + 1].id,
-					race.get("to_comprehension"),
-					_distribution(),
-				]
+		for clause in ["comprehension", "progress"]:
+			assert_ne(
+				int(race.get("to_%s" % clause, -1)),
+				-1,
+				(
+					"the %s requirement %s into %s is earned after %s sittings (measured: %s)"
+					% [
+						clause,
+						float(target_seed.get("%s_required" % clause)),
+						RealmDefaults.ladder().realms()[boundary + 1].id,
+						race.get("to_%s" % clause),
+						_distribution(),
+					]
+				)
 			)
-		)
-		assert_ne(
-			int(race.get("to_progress", -1)),
-			-1,
-			(
-				"the progress budget %s into %s is earned (%s)"
-				% [
-					target_seed.progress_required,
-					RealmDefaults.ladder().realms()[boundary + 1].id,
-					_distribution(),
-				]
-			)
-		)
 		assert_ne(
 			String(race.get("bound", "")),
 			"neither",
 			(
-				"exactly one clause binds into %s (%s)"
+				"exactly one clause prices %s (%s)"
 				% [RealmDefaults.ladder().realms()[boundary + 1].id, _distribution()]
 			)
 		)
 
 
-## BL-0153's premise, inverted. The entry recorded that `progress_required` never
-## binds, which is what "vacuous gate" means; the measurement says otherwise on a
-## non-empty set of boundaries, and it says so because BL-0165 made the insight
-## rate rise with comprehension. Neither clause may go vacuous again: a boundary
-## where only one of them ever binds is the defect this file exists to keep closed,
-## whichever side it happens to be.
+## BL-0153's invariant, and the one its own measurement would have kept silently
+## broken. Before BL-0165 the comprehension floor priced all 29 boundaries and the
+## progress budget priced none of them -- `state.progress` was authored, gated on,
+## reported to a screen, and could never be the thing a player waited for. Neither
+## clause may go vacuous again: a boundary where one of them is always met first
+## is a half-authored gate, whichever side it is. This is the assertion a balance
+## change has to confront rather than route around.
 func test_neither_cultivation_gate_is_vacuous() -> void:
-	for bound in ["progress", "comprehension"]:
-		var bound_count := 0
+	for clause in ["progress", "comprehension"]:
+		var priced := 0
 		for boundary in range(BOUNDARIES):
-			if String(_race_at(boundary).get("bound", "")) == bound:
-				bound_count += 1
+			if String(_race_at(boundary).get("bound", "")) == clause:
+				priced += 1
 		assert_ne(
-			bound_count,
-			0,
-			"%s binds at at least one boundary (measured: %s)" % [bound, _distribution()]
+			priced, 0, "%s prices at least one boundary (measured: %s)" % [clause, _distribution()]
 		)
 
 
 ## The bound that would have caught a stall. A wait that runs out reports "the
 ## floor was never earned"; this asserts the wait stays inside the bound it
 ## declares, so the bound is a real limit and not a formality. Read off the LAST
-## boundary, which is the deepest floor on the ladder.
+## boundary, which carries the deepest floor on the ladder.
 func test_the_comprehension_wait_stays_inside_its_declared_bound() -> void:
-	var race := _race_at(BOUNDARIES - 1)
-	var waited := int(race.get("to_comprehension", COMPREHENSION_BOUND + 1))
+	var waited := int(_race_at(BOUNDARIES - 1).get("to_comprehension", COMPREHENSION_BOUND + 1))
 	assert_eq(
 		waited < COMPREHENSION_BOUND,
 		true,
 		(
 			"the deepest boundary converges in %d sittings, inside the bound of %d"
-			% [
-				waited,
-				COMPREHENSION_BOUND,
-			]
+			% [waited, COMPREHENSION_BOUND]
 		)
 	)

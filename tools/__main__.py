@@ -39,6 +39,7 @@ check = _load("check")
 cultivation = _load("cultivation")
 data = _load("data")
 deferred = _load("deferred")
+difficulty = _load("difficulty")
 export = _load("export")
 fmt = _load("fmt")
 gate_reach = _load("gate_reach")
@@ -52,6 +53,7 @@ run = _load("run")
 technique_power = _load("technique_power")
 test = _load("test")
 ui = _load("ui")
+worth_rewrite = _load("worth_rewrite")
 
 from .common import ToolError, fail  # noqa: E402  (after the task modules load)
 
@@ -71,6 +73,7 @@ COMMANDS = {
     "new_module": new_module,
     "realm_power": realm_power,
     "technique_power": technique_power,
+    "difficulty": difficulty,
     "new_adr": new_adr,
     "deferred": deferred,
     "incident": incident,
@@ -79,6 +82,7 @@ COMMANDS = {
     "acquisition": acquisition,
     "item_derive": item_derive,
     "data": data,
+    "worth_rewrite": worth_rewrite,
 }
 
 

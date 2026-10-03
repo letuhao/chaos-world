@@ -4,22 +4,25 @@ extends TestCase
 ## <boss>` tag on its own `ItemDef`, which is what `LootRoutes.permits` enforces at
 ## drop time. `unique_routes.jsonl` used to declare the boss a second time — and a
 ## slot a third time, in a `slot` column that was a stale copy of the definition's
-## `subcategory` for three of its five rows. Two declarations of one fact, kept in
-## agreement by luck.
+## `subcategory` for three of its five rows. It then declared the owning set a
+## fourth time, in a `set_id` column that only the membership list could contradict.
+## Four declarations of three facts, kept in agreement by luck.
 ##
 ## These assert the surviving division of labour: the item owns identity, boss and
-## slot; the index owns only the drop tuning a designer knows. A row that restates
-## what the item owns fails, and every column the index does keep is checked
-## against the shipped content it points at.
+## slot; the set definitions own membership; the index owns only the drop tuning a
+## designer knows. A row that restates what is owned or derived elsewhere fails,
+## and every column the index does keep is checked against the shipped content it
+## points at.
 
 const BOSSES_ROOT := "res://data/bosses"
 const DOMAINS_ROOT := "res://data/domains"
 const ROUTES_PATH := "res://data/sets/unique_routes.jsonl"
 
 ## Columns the route index must NOT carry. Each one is a fact the item definition
-## already owns and the runtime already enforces, so a copy here is a second
-## declaration nothing keeps in agreement.
-const OWNED_BY_THE_ITEM := ["boss_id", "slot"]
+## already owns and the runtime already enforces (boss, slot), or one the set
+## definitions already own and the module can derive (membership), so a copy here
+## is a second declaration nothing keeps in agreement.
+const NOT_THE_INDEX_TO_OWN := ["boss_id", "slot", "set_id"]
 
 
 func _unique_ids() -> Array[StringName]:
@@ -74,25 +77,28 @@ func test_every_authored_unique_has_exactly_one_route_row_and_no_row_is_an_orpha
 		assert_eq(seen.has(String(unique_id)), true, "%s has a route row" % unique_id)
 
 
-## The index must never restate a fact the item owns. This is the guard that stops
-## the duplication coming back: without it, re-adding `boss_id` would quietly
-## reintroduce two declarations that today agree only by construction, and the
-## next content edit would silently desynchronise them.
-func test_the_route_index_never_restates_the_boss_or_the_slot_the_item_owns() -> void:
+## The index must never restate a fact something else owns. This is the guard that
+## stops the duplication coming back: without it, re-adding `boss_id` or `set_id`
+## would quietly reintroduce declarations that today cannot drift, and the next
+## content edit would silently desynchronise them.
+func test_the_route_index_never_restates_a_fact_the_item_or_the_sets_already_own() -> void:
 	assert_ne(_route_rows().is_empty(), true, "the route index ships")
 	for row in _route_rows():
 		var unique_id := String(OptionCatalog.text_field(row, "unique_id"))
-		for column in OWNED_BY_THE_ITEM:
+		for column in NOT_THE_INDEX_TO_OWN:
 			assert_eq(
 				row.has(column),
 				false,
 				(
-					"%s: the route index must not restate `%s` — the definition owns it"
+					(
+						"%s: the route index must not restate `%s` — the definition or the set "
+						+ "definitions own it"
+					)
 					% [unique_id, column]
 				)
 			)
-	# And the definition really does answer both, so dropping the copies cost
-	# nothing rather than dropping the only declaration.
+	# And the owners really do answer all three, so dropping the copies cost nothing
+	# rather than dropping the only declaration.
 	for unique_id in _unique_ids():
 		var def := _definition(unique_id)
 		var route := SetBonusApi.drop_route(unique_id)
@@ -109,6 +115,35 @@ func test_the_route_index_never_restates_the_boss_or_the_slot_the_item_owns() ->
 			String(route["item_subtype"]),
 			String(def.subcategory),
 			"%s: and its real slot, not a stale column" % unique_id
+		)
+		assert_eq(
+			String(route["set_id"]),
+			_set_of(unique_id),
+			"%s: and the set that actually lists it, derived from membership" % unique_id
+		)
+
+
+## Membership is read from the set definitions, so a unique cannot be listed by a
+## set and disowned by a column, and a set cannot claim a unique that does not
+## exist. Derived, not declared: this is the whole point of dropping `set_id`.
+func test_the_owning_set_comes_from_membership_rather_than_the_index() -> void:
+	var declared := 0
+	for row in _route_rows():
+		var unique_id := String(OptionCatalog.text_field(row, "unique_id"))
+		assert_eq(row.has("set_id"), false, "%s: the index declares no membership" % unique_id)
+		declared += 1
+	var from_sets := {}
+	for set_id in SetBonusApi.sets():
+		for unique_id in SetBonusApi.set_definition(set_id).uniques:
+			from_sets[String(unique_id)] = true
+	assert_ne(declared, 0, "the index declares routes")
+	for unique_id in from_sets.keys():
+		var derived := String(SetBonusApi.drop_route(StringName(unique_id))["set_id"])
+		assert_ne(derived, "", "%s: its owning set is derived, not empty" % unique_id)
+		assert_eq(
+			derived,
+			_set_of(StringName(unique_id)),
+			"%s: and it is the set that actually lists it" % unique_id
 		)
 
 
@@ -156,8 +191,11 @@ func _set_of(unique_id: StringName) -> String:
 	return ""
 
 
-## The route index and the set definitions must name the same uniques in both
-## directions, or a unique would ship with no set and no route.
+## The route index and the set definitions must agree in the direction that
+## matters: every set member has exactly one route row. A routed unique in no set
+## is a legitimate state, not a mismatch — a standalone unique is still an
+## authored drop — so this asserts that state is reported as `""` rather than
+## inventing a set for it.
 func test_the_route_index_and_the_set_definitions_name_the_same_uniques() -> void:
 	var from_routes := {}
 	for row in _route_rows():
@@ -172,11 +210,76 @@ func test_the_route_index_and_the_set_definitions_name_the_same_uniques() -> voi
 	assert_eq(from_routes.size() >= 4, true, "at least four uniques are declared")
 	for unique_id in from_sets.keys():
 		assert_eq(from_routes.has(unique_id), true, "%s is a set member with a route" % unique_id)
+	var standalone := 0
+	for unique_id in from_routes.keys():
+		if from_sets.has(unique_id):
+			continue
+		standalone += 1
+		assert_eq(
+			String(SetBonusApi.drop_route(StringName(unique_id))["set_id"]),
+			"",
+			"%s: a routed unique in no set reports no set rather than a guessed one" % unique_id
+		)
+	assert_ne(standalone, from_routes.size(), "at least one routed unique belongs to a set")
 
 
-## `set_bonus` cannot name `LootRoutes`' constant without breaking the module
-## boundary, so the route field name is spelled twice. Renaming either side must
-## be loud, because a silent rename would unbind every drop route in the game.
+## The index's rows are not decoration read only by tests: the snapshot the
+## composition root hands the set screen carries each unique's declared tuning, so
+## a player can be told where it drops and how rare the drop is. Without this the
+## five authored rows would be consumed by nothing outside the test suite.
+func test_the_declared_route_tuning_reaches_the_snapshot_the_screen_is_given() -> void:
+	var actor := Actor.new(&"reader", {Stat.PHYSIQUE: 10.0, Stat.SPIRIT: 8.0})
+	ItemsApi.attach(actor, 48)
+	SetBonusApi.attach(actor)
+	var snapshot := SetBonusApi.inspect(actor)
+	var reported := 0
+	for unique_id in _unique_ids():
+		var route := SetBonusApi.drop_route(unique_id)
+		assert_eq(bool(route["declared"]), true, "%s declares a route" % unique_id)
+		for set_id in SetBonusApi.sets():
+			var members: Array = snapshot["sets"][String(set_id)]["members"] as Array
+			for member in members:
+				var entry: Dictionary = member
+				if String(entry["def_id"]) != String(unique_id):
+					continue
+				reported += 1
+				assert_eq(
+					entry.has("route"),
+					true,
+					"%s: the member view carries its declared route" % unique_id
+				)
+				var carried: Dictionary = entry["route"]
+				for key in ["set_id", "boss_id", "domain_id", "route_realm", "min_rarity"]:
+					assert_eq(
+						String(carried[key]),
+						String(route[key]),
+						(
+							"%s: the screen sees the same '%s' the index and definition hold"
+							% [unique_id, key]
+						)
+					)
+				assert_ne(float(carried["drop_weight"]), 0.0, "%s: and its drop weight" % unique_id)
+	assert_eq(
+		reported >= 1, true, "at least one unique's route reached a snapshot a screen is given"
+	)
+	assert_eq(reported, from_sets_reported(snapshot), "every set member unique is reported once")
+
+
+## How many set-member uniques the snapshot reports, so the count above can be
+## checked against something other than itself.
+func from_sets_reported(snapshot: Dictionary) -> int:
+	var total := 0
+	for set_id in SetBonusApi.sets():
+		for member in snapshot["sets"][String(set_id)]["members"] as Array:
+			if bool((member as Dictionary)["is_unique"]):
+				total += 1
+	return total
+
+
+## The route tag field name is the same on both sides of the module boundary, so
+## `set_bonus` cannot name `LootRoutes`' constant without breaking the boundary.
+## Renaming either side must be loud, because a silent rename would unbind every
+## drop route in the game.
 func test_the_route_tag_field_name_is_the_same_on_both_sides_of_the_module_boundary() -> void:
 	assert_eq(UniqueItem.ROUTE_TAG_PREFIX, LootRoutes.TAG_PREFIX, "one field name, both modules")
 	assert_eq(UniqueItem.TAG, &"unique", "the unique tag is unchanged")

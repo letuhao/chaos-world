@@ -11,7 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3")
+theme = ExtResource("4")
 script = ExtResource("1")
 
 [node name="Layout" type="VBoxContainer" parent="."]
@@ -39,7 +39,7 @@ size_flags_horizontal = 3
 [node name="DestinyTitle" type="Label" parent="Layout/Scroll/Codex"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Destiny carried"
+text = "Destinies"
 
 [node name="Destinies" type="VBoxContainer" parent="Layout/Scroll/Codex"]
 layout_mode = 2
@@ -56,7 +56,7 @@ unique_name_in_owner = true
 [node name="FateTitle" type="Label" parent="Layout/Scroll/Codex"]
 layout_mode = 2
 theme_type_variation = &"SectionTitle"
-text = "Fate earned"
+text = "Fate"
 
 [node name="Fates" type="VBoxContainer" parent="Layout/Scroll/Codex"]
 layout_mode = 2

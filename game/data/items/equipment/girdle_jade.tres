@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:girdle_jade_recipe"])
+sources = Array[StringName]([&"craft:girdle_jade_recipe", &"domain:marine_abyssal_kraken_domain"])

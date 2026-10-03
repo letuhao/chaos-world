@@ -11,8 +11,9 @@ rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 18.42},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"divine"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:succubus_earth_domain"])

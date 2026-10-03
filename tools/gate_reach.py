@@ -108,6 +108,17 @@ _WRITER_CALL = re.compile(
 _STRING_CONST = re.compile(r'^\s*const\s+([A-Z0-9_]+)\s*:?=\s*&"([a-z0-9_]+)"', re.MULTILINE)
 _NAMED_STRING = re.compile(r"^[A-Z0-9_]+$")
 
+# A roster of static fact ids: `const NAME: Array[Dictionary] = [` then rows of
+# `{"fact": &"id", ...}` to the closing `]`. Measured 2026-10-03 against
+# `app/world_pulse.gd:143 AMBIENT_FACTS`, whose four ids fed four shipped event
+# triggers the census called permanently dead. Two shapes were documented before and
+# neither is this one: the ids are not a bare `&"..."` at the writer call, and they are
+# not a scalar StringName const either. A producer nobody had named, and a gate that
+# reported a satisfiable gate as dead because of it - the exact ceiling-with-a-hole-in-it
+# failure this module exists to prevent, self-inflicted.
+_ROSTER_OPEN = re.compile(r"^\s*const\s+([A-Z0-9_]+)\s*:[^=]*=\s*\[", re.MULTILINE)
+_ROSTER_FACT = re.compile(r'"fact"\s*:\s*&"([a-z0-9_]+)"')
+
 
 # `WorldFact.has` floors `need` at 1 (world_fact.gd:187) and `QuestStepDef
 # .required_count()` does the same, so a demand of 0 or less is a demand of one. The
@@ -596,7 +607,8 @@ def code_owned_supply(supply: dict[str, Supply]) -> None:
     """
     for path in sorted(SRC_DIR.rglob("*.gd")):
         text = path.read_text(encoding="utf-8")
-        if "WorldFact.record" not in text:
+        reaches_writer = "WorldFact.record" in text or "WorldPulse" in text
+        if not reaches_writer:
             continue
         consts = dict(_STRING_CONST.findall(text))
         relative = path.relative_to(GAME_DIR).as_posix()
@@ -618,6 +630,39 @@ def code_owned_supply(supply: dict[str, Supply]) -> None:
             row = supply.setdefault(fact, Supply(fact=fact))
             row.total += max(0, amount)
             row.sites.append(f"{relative}:{index + 1} ({amount}, code const)")
+
+        for roster, start in _static_rosters(text):
+            for fact in roster:
+                row = supply.setdefault(fact, Supply(fact=fact))
+                row.total += DEFAULT_AMOUNT
+                row.sites.append(f"{relative}:{start} ({DEFAULT_AMOUNT}, code roster)")
+
+
+def _static_rosters(text: str) -> list[tuple[list[str], int]]:
+    """Every `const NAME: Array[...] = [ ... {"fact": &"id", ...} ... ]` roster in a file.
+
+    Returns the ids each roster declares with the 1-based line the `const` opens on, so
+    a supply site points at the declaration a reader can go and look at.
+
+    The count is claimed only when `code_owned_supply` has already established that the
+    file REACHES the ledger writer (directly, or by being the `WorldPulse` that owns
+    the ambient roster). That guard is the whole point: a table of ids that nothing
+    dispatches is not supply, and counting it would turn the missing-producer finding
+    into a green wash - the failure mode this module was written to refuse. A roster is
+    a static table by construction, so there is nothing here to guess at: an id it does
+    not literally declare is not counted, exactly as for a scalar const.
+    """
+    found: list[tuple[list[str], int]] = []
+    for match in _ROSTER_OPEN.finditer(text):
+        start = text.count("\n", 0, match.start()) + 1
+        end = text.find("\n]", match.end())
+        if end == -1:
+            continue
+        body = text[match.end() : end]
+        ids = _ROSTER_FACT.findall(body)
+        if ids:
+            found.append((ids, start))
+    return found
 
 
 def census() -> tuple[dict[str, Supply], list[Demand], list[tuple[str, int, str]], int]:

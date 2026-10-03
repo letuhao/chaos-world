@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"food"
 grade = &"earth"
-sources = Array[StringName]([&"craft:R20_earth_pewter_base_recipe", &"quest:R20_earth_pewter_line"])
+sources = Array[StringName]([&"craft:R20_earth_pewter_base_recipe", &"quest:R20_earth_pewter_line", &"domain:qi_spirit_severing_trial"])

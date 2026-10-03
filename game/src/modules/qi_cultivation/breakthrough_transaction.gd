@@ -90,6 +90,21 @@ static func preview(actor: Actor) -> Dictionary:
 ## two calls in one frame would advance two realms on a single pill with no
 ## progress, quality, channels, or tier gates checked.
 static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
+	# **The body answers first (ADR 0109), and it answers HERE.**
+	#
+	# This is a precondition, not a modifier: a body plan can stop a breakthrough and
+	# can never make one easier. It refuses above every other check and costs the actor
+	# nothing — no wave fought, no pill spent, no realm moved — because the refusal
+	# returns before `face_tribulation` and before anything is consumed.
+	#
+	# The check sits in the TRANSACTION rather than in a facade because the transaction
+	# is the one call every qi entry point makes. `QiCultivationApi.attempt_breakthrough`
+	# and `QiAdvancement.try_breakthrough` both land here, so a gate one layer up left
+	# itself bypassable the moment a second caller appeared — and a rule a caller can
+	# walk around is not a rule. Two predicates, in the order a player would read them:
+	# a path the body plan closes, then a realm above its authored ceiling.
+	if not _body_allows(actor):
+		return false
 	# Face the tribulation owed for this path's next realm BEFORE validating anything
 	# (ADR 0061). This is the production entry point that makes R19-R30 reachable by
 	# play at all: nothing else in `src/` constructs a `Tribulation`, so without this the
@@ -169,6 +184,25 @@ static func cancel(actor: Actor) -> bool:
 		return false
 	_deviate(actor, state, seed, dantian, null)
 	return true
+
+
+# --- Internals ---------------------------------------------------------------
+
+
+## Whether this actor's body plan permits a qi breakthrough at all (ADR 0109).
+##
+## It is a PRECONDITION and never a modifier: it reads the gate and returns a
+## boolean, and nothing here can widen a chance, lower a threshold, or skip a cost.
+##
+## An actor with no race takes no restriction. That is deliberate and unchanged: no
+## body plan has been authored for it, and gating content on a content gap would lock
+## a player out of a path nobody ever denied them (ADR 0109's boundary case).
+static func _body_allows(actor: Actor) -> bool:
+	if actor == null:
+		return false
+	if not RaceGate.path_unmet(actor, PathState.QI).is_empty():
+		return false
+	return RaceGate.realm_ceiling_unmet(actor).is_empty()
 
 
 static func _deviate(

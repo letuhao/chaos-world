@@ -17,4 +17,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:tattoo_thunder_fist_recipe"])
+sources = Array[StringName]([&"craft:tattoo_thunder_fist_recipe", &"domain:qi_qi_refining_domain"])

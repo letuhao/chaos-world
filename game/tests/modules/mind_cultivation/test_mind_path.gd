@@ -35,7 +35,7 @@ func test_path_vocabulary() -> void:
 ## expectations below are derived from the code under test rather than pinned to
 ## literals that a retune of the step would strand.
 func _rate(rank_id: StringName) -> float:
-	return MindRealmProfile.factor(rank_id)
+	return RealmRate.factor(rank_id)
 
 
 func test_stats_scale_with_ladder_rank() -> void:

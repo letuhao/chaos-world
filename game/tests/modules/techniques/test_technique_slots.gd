@@ -249,3 +249,77 @@ func _count_of(slot_keys: Array, kind: StringName) -> int:
 		if TechniqueSlots.kind_of(slot_key) == kind:
 			count += 1
 	return count
+
+
+# --- DEF-0152: a binding the current tier no longer publishes --------------------
+
+
+func test_a_binding_outside_the_current_tier_is_still_reported_as_equipped() -> void:
+	# Immortal grants a universal slot; Mortal does not. An actor bound at Immortal
+	# and rebuilt at Mortal is the case `equipped()` used to drop: it walked only the
+	# CURRENT tier's keys, so the binding vanished from the list and `rebuild` never
+	# visited it, leaving its modifiers on the actor for good.
+	var actor := _actor(IMMORTAL)
+	var shared := _shared()
+	TechniquesApi.codex(actor).learn(shared.id)
+	assert_eq(bool(TechniquesApi.equip(actor, shared)["ok"]), true, "bound at Immortal")
+	var bound_key := _only_bound_key(actor)
+	assert_eq(
+		TechniqueSlots.kind_of(bound_key), TechniqueSlots.UNIVERSAL, "it took a universal slot"
+	)
+	assert_eq(
+		TechniquesApi.slots(actor).equipped(TechniquePolicy.tier_of(actor.realm())).has(shared.id),
+		true,
+		"and reports as equipped while the tier still grants that pool"
+	)
+
+	# Demote every path to Mortal: the universal pool is gone.
+	for path_id in PathState.ALL:
+		actor.set_path(PathState.new(path_id, MORTAL))
+	assert_eq(TechniquePolicy.tier_of(actor.realm()), 1, "the actor reads Mortal now")
+	assert_eq(
+		TechniquesApi.slots(actor).equipped(TechniquePolicy.tier_of(actor.realm())).has(shared.id),
+		true,
+		"a binding is not a permission: dropping the tier does not unbind it"
+	)
+
+
+func _only_bound_key(actor: Actor) -> StringName:
+	var out := &""
+	for key in TechniquesApi.slots(actor).all().keys():
+		out = StringName(key)
+	return out
+
+
+func test_rebuild_clears_a_contribution_whose_binding_is_gone() -> void:
+	# The other half of DEF-0152: a binding removed WITHOUT going through `unequip`
+	# must not leave its modifiers behind. `rebuild` now sweeps the applied record.
+	var actor := _actor()
+	var def := _passive(&"sweep_probe")
+	TechniqueCatalog.instance().register(def)
+	TechniquesApi.codex(actor).learn(def.id)
+	TechniquesApi.equip(actor, def)
+	var applied := TechniqueEffects.applied_count(actor, def.id)
+	assert_eq(applied > 0, true, "the passive contributes while bound")
+
+	# Drop the binding behind the facade's back, as a domain change or a restored
+	# save with fewer bindings would.
+	TechniquesApi.slots(actor).unequip(def.id)
+	TechniquesApi.rebuild(actor)
+	assert_eq(
+		TechniqueEffects.applied_count(actor, def.id),
+		0,
+		"and the contribution is swept even though unequip was bypassed"
+	)
+
+
+## A passive carrying one stat option, so a contribution actually lands.
+func _passive(suffix: String) -> TechniqueDef:
+	var def := TechniqueDef.new()
+	def.id = StringName("passive_%s" % suffix)
+	def.display_name = "Manual"
+	def.grade = ItemGrade.MORTAL
+	def.path = PathState.QI
+	def.active = false
+	def.passive_options = [{"option_id": &"cult_qi_control", "value": 5.0}]
+	return def

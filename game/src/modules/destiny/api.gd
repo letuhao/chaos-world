@@ -24,9 +24,11 @@ extends RefCounted
 ## module never reaches back to call them: it is a write target, not a listener
 ## (ADR 0065).
 
-## The actor component holding the live projection state.
-const STATE_COMPONENT := &"destiny_state"
 ## `actor.module_data` key the versioned ledger is persisted under (ADR 0027).
+## The only key this module writes. It used to sit beside a `STATE_COMPONENT`
+## never wired to an `Actor` component the way every sibling module's is — the
+## same `&"destiny_state"` string in a second namespace, which reads like a
+## second source of truth and is not one.
 const MODULE_KEY := DestinyState.MODULE_KEY
 
 
@@ -48,9 +50,8 @@ static func attach(actor: Actor) -> void:
 ##
 ## `source` names the system that earned it, for the ledger, the history trail
 ## and any consumer that wants to react to *how*. An unknown `fate_id` is
-## refused rather than recorded: a fate the catalog does not define is a
-## content bug, and silently storing it would create a fate nothing can ever
-## pay out.
+## refused rather than recorded: a fate the catalog does not define is a content
+## bug, and storing it would create a fate nothing can ever pay out.
 static func earn_fate(actor: Actor, fate_id: StringName, source: String = "") -> Dictionary:
 	var ledger := _ledger(actor)
 	if DestinyState.has_fate(ledger, fate_id):
@@ -74,8 +75,8 @@ static func earn_fate(actor: Actor, fate_id: StringName, source: String = "") ->
 ##
 ## Refuses — returning the ledger unchanged — when `requires_destinies` or
 ## `requires_fates` are not all held, or when another destiny in the same group
-## is already held. A refused earn is not an error the caller must handle: it
-## means the player did not earn this one, which is a normal outcome.
+## is held. A refused earn is not an error the caller must handle: it means the
+## player did not earn this one, which is a normal outcome.
 static func earn_destiny(actor: Actor, destiny_id: StringName, source: String = "") -> Dictionary:
 	var ledger := _ledger(actor)
 	if DestinyState.has_destiny(ledger, destiny_id):
@@ -116,7 +117,11 @@ static func record(actor: Actor, counter_id: StringName, amount: int = 1) -> int
 		total += amount
 		ledger["counters"][String(counter_id)] = total
 		_record(ledger, "counter", counter_id, str(amount))
-		_persist(actor, ledger, "counter", counter_id)
+		# The APPLIED delta is threaded through rather than re-derived from the
+		# ledger: `_persist` reads `total` back off it, and after an earlier record
+		# the two differ, so passing the total twice announces "moved by 3" on a
+		# step that moved it by one.
+		_persist(actor, ledger, "counter", counter_id, amount)
 	return total
 
 
@@ -134,21 +139,14 @@ static func has_fate(actor: Actor, fate_id: StringName) -> bool:
 	return DestinyState.has_fate(_ledger(actor), fate_id)
 
 
-## Whether `actor` holds `destiny_id`, or any alias authored for it. The
-## question a story gate asks.
+## Whether `actor` holds `destiny_id`, or any alias authored for it. Alias
+## resolution is NOT re-implemented here: `DestinyGate.holds_destiny()` is the one
+## place that knows an id and its aliases are the same answer in both directions,
+## and the facade asks it rather than keeping a copy to drift from the gate's.
 static func has_destiny(actor: Actor, destiny_id: StringName) -> bool:
 	if actor == null:
 		return false
-	var ledger := _ledger(actor)
-	if DestinyState.has_destiny(ledger, destiny_id):
-		return true
-	var def := FateCatalog.instance().destiny_definition(destiny_id)
-	if def == null:
-		return false
-	for alias in def.gate_aliases:
-		if DestinyState.has_destiny(ledger, alias):
-			return true
-	return false
+	return DestinyGate.holds_destiny(_ledger(actor), destiny_id)
 
 
 ## Every destiny the actor holds, canonically ordered. A plain id list, so a
@@ -176,8 +174,8 @@ static func fates(actor: Actor) -> Array[StringName]:
 ##
 ## Returns `{ok: bool, reason: String, unmet: Array[Dictionary]}` where each
 ## unmet entry is `{kind, id, required, actual, label}` — the same shape
-## `ItemRequirement.unmet()` produces, so a panel can render a reason it did not
-## have to invent. `ok` is the whole answer; the rest is for display.
+## `ItemRequirement.unmet()` produces, so a panel renders a reason it did not
+## invent. `ok` is the whole answer; the rest is for display.
 static func gate(actor: Actor, requirement: Dictionary) -> Dictionary:
 	var verdict := DestinyGate.evaluate(actor, requirement)
 	if not bool(verdict.get("ok", false)) and actor != null:
@@ -243,8 +241,7 @@ static func summary(actor: Actor) -> Dictionary:
 			out["hidden_destiny_count"] = int(out["hidden_destiny_count"]) + 1
 			# Folded in rather than exposed as a facade method: the facade is at
 			# its twelve-method cap, and "what is still owed, and what is holding
-			# it back" is exactly what a codex owes the player. An earned destiny
-			# has nothing outstanding, so the list is empty for the ones held.
+			# it back" is exactly what a codex owes the player.
 			var unmet := DestinyGate.unmet_prerequisites(ledger, def)
 			view["available"] = unmet.is_empty()
 			view["blocked_by"] = unmet
@@ -265,18 +262,45 @@ static func _ledger(actor: Actor) -> Dictionary:
 	return DestinyState.normalize(pending, _known_fates(), _known_destinies())
 
 
+## A known-fate filter for `normalize()`.
+##
+## `DestinyState` reads an EMPTY filter as "an unanswered question, not a
+## denial" and keeps everything handed to it — `test_destiny_state.gd` asserts
+## that deliberately, so the rule stays where it was authored. But a catalog
+## that failed to load leaves this one empty, and then it can only mean "this
+## build ships no fates", so an untrusted save would be persisted wholesale and
+## the earn-only invariant (ADR 0065) would mean nothing.
+##
+## So the empty catalog is told apart HERE, at the one place that knows the
+## filter came from the content tree and not a caller, and reported as **no
+## filter** — which drops every entry, so an unreadable save is emptied rather
+## than widened. The dropped ids are the ones no definition answers for.
 static func _known_fates() -> Dictionary:
 	var out := {}
+	if not _catalog_loaded():
+		return out
 	for fate_id in FateCatalog.instance().fate_ids():
 		out[String(fate_id)] = true
 	return out
 
 
+## A known-destiny filter for `normalize()`. Same rule as `_known_fates()`.
 static func _known_destinies() -> Dictionary:
 	var out := {}
+	if not _catalog_loaded():
+		return out
 	for destiny_id in FateCatalog.instance().destiny_ids():
 		out[String(destiny_id)] = true
 	return out
+
+
+## Whether the content tree loaded far enough for a filter derived from it to
+## mean anything. Fates OR destinies, because a tree that lost one of the two is
+## still partly loaded, and one filter keeping nothing while the other accepts
+## everything is the failure this guards.
+static func _catalog_loaded() -> bool:
+	var catalog := FateCatalog.instance()
+	return not catalog._destinies.is_empty() or not catalog._fates.is_empty()
 
 
 static func _next_sequence(ledger: Dictionary) -> int:
@@ -305,7 +329,14 @@ static func _record(ledger: Dictionary, kind: String, id: StringName, detail: St
 ##
 ## `kind` is passed explicitly rather than inferred from the catalog: a counter
 ## id names no definition, and guessing would announce it as a destiny.
-static func _persist(actor: Actor, ledger: Dictionary, kind: String, earned_id: StringName) -> void:
+##
+## `amount` is the delta a counter MOVED BY, which the ledger cannot answer once
+## the delta is in it: `DestinyEvents.counter_changed` declares `amount` as the
+## applied delta and `total` as the value after it, so `total - amount` recovers
+## the previous value only when the caller was told the real delta.
+static func _persist(
+	actor: Actor, ledger: Dictionary, kind: String, earned_id: StringName, amount: int = 0
+) -> void:
 	actor.set_module_data(MODULE_KEY, ledger)
 	DestinyProjection.apply(actor, ledger)
 	var bus := DestinyProjection.events()
@@ -326,7 +357,7 @@ static func _persist(actor: Actor, ledger: Dictionary, kind: String, earned_id: 
 			)
 		_:
 			var total := int((ledger["counters"] as Dictionary).get(String(earned_id), 0))
-			bus.counter_changed.emit(String(actor.id), earned_id, total, total)
+			bus.counter_changed.emit(String(actor.id), earned_id, amount, total)
 
 
 static func _fate_view(def: FateDef, held: bool) -> Dictionary:

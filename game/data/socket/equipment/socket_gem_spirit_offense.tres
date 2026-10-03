@@ -17,6 +17,6 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"gem"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"domain:treasure_iron_sage_domain"])
 tags = Array[StringName]([&"socket_item", &"socket_kind:offense"])
 description = "Socket item. Offensive gem; while its host is worn it adds physical attack and critical chance."

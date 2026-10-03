@@ -160,7 +160,19 @@ func attack(target: Node2D = null) -> void:
 		target = _nearest_interactable()
 	if target == null:
 		return
-	# Combat resolution wired by the combat module facade
+	# Combat resolution wired by the combat module facade: `CombatBoot` injects
+	# `CombatApi.hit` into this seam (ADR 0126), so `app/` still names no module
+	# here and the adapter gains no field for it. An unbound install is reported
+	# rather than swallowed — a blow that never happened is not a silent no-op.
+	if not CombatBoot.has_attack_resolver():
+		push_warning(
+			"PlayerAdapter.attack: no attack resolver is installed (CombatBoot.set_attack_resolver)"
+		)
+		return
+	var defender := _defender_of(target)
+	if defender == null or _actor == null:
+		return
+	CombatBoot.strike(_actor, defender)
 
 
 func set_state(new_state: int) -> void:
@@ -207,6 +219,32 @@ func _nearest_interactable() -> Node2D:
 			nearest_dist = dist
 			nearest = node
 	return nearest
+
+
+## The `Actor` a target node stands for, or null.
+##
+## ## Why a node can answer with an actor
+##
+## Combat resolves over two `Actor`s and needs no node (ADR 0126), but a spatial adapter
+## is handed a `Node2D` because that is what an interaction produced. So the node is
+## asked for its actor rather than the adapter guessing: a `set_meta(&"actor")` answer
+## first (the convention every spawner in `app/` can set without a new base class), then a
+## `PlayerAdapter` target's own wrapped actor. A node that carries neither is not a
+## combatant — a chest, an interactable prop — so it is refused, not coerced.
+func _defender_of(target: Node2D) -> Actor:
+	if target == null or not is_instance_valid(target):
+		return null
+	# Explicitly typed: `get_meta` answers a `Variant`, and inferring from one is a
+	# warning-as-error in this repo. `has_meta` first, because the engine ERRORS on a
+	# missing key rather than answering the default.
+	var wrapped: Variant = null
+	if target.has_meta(&"actor"):
+		wrapped = target.get_meta(&"actor")
+	if wrapped is Actor:
+		return wrapped as Actor
+	if target is PlayerAdapter:
+		return (target as PlayerAdapter).actor()
+	return null
 
 
 func _on_interaction_area_entered(body: Node2D) -> void:

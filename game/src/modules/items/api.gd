@@ -145,8 +145,16 @@ static func generate(actor: Actor, def: ItemDef, seed_value: int) -> ItemInstanc
 	return instance
 
 
-## Use (consume/learn/property) one unit of `def_id`. All-or-nothing: consumes
-## nothing and changes nothing when the item is absent or has no usable effect.
+## Use (consume/learn) one unit of `def_id`. All-or-nothing: consumes nothing
+## and changes nothing when the item is absent or has no usable effect.
+##
+## The spend decision belongs to [method ItemUse.spend_gate], so this verb never
+## has to know why an item may not be spent — it only has to honour the answer.
+## Two named refusals reach a caller here, and both leave the unit in the bag:
+## `progression_input` for a required progression input (BL-0110) and
+## `no_spend_consumer` for a read-only channel. Neither is this module's rule to
+## restate, and neither is a condition a caller may skip past by calling
+## [method ItemUse.apply] itself: this is the only verb that removes anything.
 static func use_item(actor: Actor, def_id: StringName, quantity: int = 1) -> Dictionary:
 	var inv := inventory(actor)
 	if inv == null or quantity <= 0 or not inv.has(def_id, quantity):

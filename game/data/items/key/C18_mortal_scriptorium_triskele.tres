@@ -11,8 +11,9 @@ rarity = &"common"
 realm = &"great_ascension"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"sigil"
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"domain:mind_spirit_ascension_trial"])

@@ -19,5 +19,5 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"spirit"
 tags = Array[StringName]([&"uncommon"])
-sources = Array[StringName]([&"craft:scroll_silk_recipe"])
+sources = Array[StringName]([&"craft:scroll_silk_recipe", &"domain:beast_venom_serpent_domain"])
 description = "A smooth silk scroll inscribed with spirit-grade techniques."

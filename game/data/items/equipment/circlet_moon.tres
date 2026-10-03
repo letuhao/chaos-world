@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:circlet_moon_recipe"])
+sources = Array[StringName]([&"craft:circlet_moon_recipe", &"domain:qi_qi_refining_domain"])

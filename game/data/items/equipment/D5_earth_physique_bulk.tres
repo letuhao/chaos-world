@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"gather", &"craft:D5_earth_physique_bulk_recipe"])
+sources = Array[StringName]([&"gather", &"craft:D5_earth_physique_bulk_recipe", &"domain:mind_primordial_immortal_trial"])

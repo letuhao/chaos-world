@@ -74,6 +74,8 @@ func clear() -> void:
 
 
 ## Everything the row shows, primitives only. `{}` when the row carries nothing.
+## No `tier`: `DestinyApi._destiny_view()` does not publish one, so a key here
+## could only ever report 0 — a second number that means nothing.
 func summary() -> Dictionary:
 	_bind_nodes()
 	if _view.is_empty():
@@ -83,13 +85,11 @@ func summary() -> Dictionary:
 		"held": bool(_view.get("held", false)),
 		"named": _named(),
 		"group": String(_view.get("group", "")),
-		"tier": int(_view.get("tier", 0)),
 		"grants_fate_count": int(_view.get("grants_fate_count", 0)),
 		"has_bearing": _bearing != "",
 		"head": _head,
 		"description": _description,
 		"bearing": _bearing,
-		"bearing_line": _bearing,
 		"meta": _meta,
 		"head_tone": String(_head_tone()),
 		"focus_target": "DestinyBranchRow",

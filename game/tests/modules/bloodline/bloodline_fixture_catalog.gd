@@ -53,7 +53,7 @@ static func inert(lineage_id: StringName) -> BloodlineDef:
 static func _base(lineage_id: StringName) -> BloodlineDef:
 	var def := BloodlineDef.new()
 	def.id = lineage_id
-	def.display_name = String(lineage_id)
+	def.display_name = str(lineage_id)
 	def.description = "A fixture lineage."
 	def.awaken_threshold = 0.42
 	def.percent_modifiers = {}

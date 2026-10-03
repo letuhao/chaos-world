@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"earth"
-sources = Array[StringName]([&"craft:vial_flame_elixir_recipe"])
+sources = Array[StringName]([&"craft:vial_flame_elixir_recipe", &"domain:body_core_formation_trial"])

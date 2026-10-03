@@ -1,0 +1,44 @@
+{
+ "base": 1553,
+ "both": 7981,
+ "edge_both": 6428,
+ "still_blocked_when_both_pulled": [
+  "curr_spirit_coin"
+ ],
+ "still_blocked_detail": {
+  "curr_spirit_coin": {
+   "sources": [],
+   "category": "currency",
+   "blocked_by": []
+  }
+ },
+ "audit_style_signatures_today": {
+  "gather|quest": 4150,
+  "quest": 1392,
+  "gather": 821,
+  "(no unshipped kind)": 66
+ },
+ "gather_only_readings": {
+  "declares gather and NOTHING else (whole corpus)": 805,
+  "blocked, gather is its only UNSHIPPED kind": 821,
+  "blocked, declares gather and not quest": 825
+ },
+ "quest_only_readings": {
+  "blocked, quest is its only UNSHIPPED kind": 1392
+ },
+ "edge_decomposition": {
+  "quest_direct_items_that_declare_it": 3029,
+  "gather_direct_items_that_declare_it": 2149,
+  "quest_edge_total": 5525,
+  "gather_edge_total": 5038
+ },
+ "distinct_dangling_quest_refs": 442,
+ "authored_quest_stems": [
+  "the_returned_instrument",
+  "the_severed_calling",
+  "the_short_road",
+  "the_station_you_held",
+  "what_the_rotation_cost"
+ ],
+ "dangling_refs_that_resolve": []
+}

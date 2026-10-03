@@ -5,7 +5,7 @@ extends StatProvider
 ## factor, and the meridian network. Pure function, no scene tree dependency
 ## (ADR 0011).
 ##
-## The realm factor is ONE bounded per-realm number, `QiRealmProfile.factor`, and
+## The realm factor is ONE bounded per-realm number, `RealmRate.factor`, and
 ## it is a RATE: how much a unit of this realm's circulation counts, never how
 ## strong a thing from this realm is. The path's real magnitudes live where they
 ## belong — `QiRealmSeed.dantian_capacity` for the reservoir, applied once by
@@ -54,10 +54,10 @@ func _meridian_flow_bonus(context: StatContext) -> float:
 
 
 ## The realm factor, or neutral when the path is unstarted. An unknown realm id
-## resolves to neutral inside the profile class, so a path holding a stale rank
+## resolves to neutral inside `RealmRate`, so a path holding a stale rank
 ## degrades instead of throwing.
 func _realm_factor(context: StatContext) -> float:
 	var state := context.path(QiPath.PATH_ID)
 	if state == null or state.rank_id == &"":
-		return QiRealmProfile.NEUTRAL
-	return QiRealmProfile.factor(state.rank_id)
+		return RealmRate.NEUTRAL
+	return RealmRate.factor(state.rank_id)

@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"craft:I42_immortal_gadstyle_base_recipe", &"quest:I42_immortal_gadstyle_line"])
+sources = Array[StringName]([&"craft:I42_immortal_gadstyle_base_recipe", &"quest:I42_immortal_gadstyle_line", &"domain:mind_immortal_sovereign_trial"])

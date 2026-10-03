@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:I4_mortal_drachm_perfected_recipe"])
+sources = Array[StringName]([&"craft:I4_mortal_drachm_perfected_recipe", &"domain:mind_spirit_ascension_trial"])

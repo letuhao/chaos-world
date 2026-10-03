@@ -124,8 +124,7 @@ def _production_prompt(record: dict, subject: str) -> str:
         match = record.get("match", {})
         examples = ", ".join(record.get("family_examples", []))
         traits = ", ".join(
-            trait.replace(":", " ").replace("-", " ")
-            for trait in record.get("visual_traits", [])
+            trait.replace(":", " ").replace("-", " ") for trait in record.get("visual_traits", [])
         )
         framing = (
             f"Create one isolated {match.get('category', 'cultivation')} "

@@ -17,5 +17,5 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:bracelet_celestial_band_recipe"])
+sources = Array[StringName]([&"craft:bracelet_celestial_band_recipe", &"domain:flame_valley"])
 

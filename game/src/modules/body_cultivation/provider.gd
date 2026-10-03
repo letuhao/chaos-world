@@ -10,7 +10,7 @@ extends StatProvider
 ## outright. See stats.gd for the alias/no-alias split.
 ##
 ## Every realm-shaped read here is ONE bounded per-realm factor,
-## `BodyRealmProfile.factor`, applied to every contribution. It is a RATE, not a
+## `RealmRate.factor`, applied to every contribution. It is a RATE, not a
 ## magnitude: the realm's actual magnitudes live in the two places that own them —
 ## `RealmScaling` (core) for the shared combat stats, and
 ## `BodyRealmSeed.integrity_maximum` for the body's reservoir. The qi and mind
@@ -71,13 +71,13 @@ func contribute(context: StatContext) -> Dictionary:
 
 
 ## The realm factor, or neutral when the path is unstarted. An unknown realm id
-## resolves to neutral inside the profile class, so a path holding a stale rank
+## resolves to neutral inside `RealmRate`, so a path holding a stale rank
 ## degrades instead of throwing.
 func _realm_factor(context: StatContext) -> float:
 	var state := context.path(BodyPath.PATH_ID)
 	if state == null:
-		return BodyRealmProfile.NEUTRAL
-	return BodyRealmProfile.factor(state.rank_id)
+		return RealmRate.NEUTRAL
+	return RealmRate.factor(state.rank_id)
 
 
 ## What the trained network is worth: every strengthened channel's power bonus,

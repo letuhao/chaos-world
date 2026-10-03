@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:V28_earth_arterial_aged_recipe"])
+sources = Array[StringName]([&"craft:V28_earth_arterial_aged_recipe", &"domain:body_spirit_sovereign_trial"])

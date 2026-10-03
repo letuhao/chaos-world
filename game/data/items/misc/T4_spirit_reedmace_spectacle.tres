@@ -11,8 +11,9 @@ rarity = &"magic"
 realm = &"spirit_manifestation"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 6},
+	{"option_id": &"trade_value", "value": 18},
 ])
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"curio"
 grade = &"spirit"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:qi_core_formation_trial", &"domain:mind_core_formation_trial"])

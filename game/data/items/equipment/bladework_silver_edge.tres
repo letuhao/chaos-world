@@ -17,4 +17,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"gather", &"quest:A36_route"])
+sources = Array[StringName]([&"gather", &"quest:A36_route", &"domain:marine_abyssal_kraken_domain"])

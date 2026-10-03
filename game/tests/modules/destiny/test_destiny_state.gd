@@ -188,10 +188,9 @@ func test_fate_ids_and_destiny_ids_come_back_canonically_ordered() -> void:
 	for fate_id in DestinyState.fate_ids(ledger):
 		fate_order.append(String(fate_id))
 	var destiny_order := _destiny_id_strings(ledger)
-	assert_eq(fate_order.size(), 3, "all three fates come back")
-	assert_eq(fate_order.has("t_oath_breaker"), true, "the ledger answered with its own entries")
-	assert_eq(fate_order.has("t_blood_pledge"), true, "all of them")
-	assert_eq(fate_order.has("t_awakened"), true, "and none was dropped")
+	assert_eq(
+		fate_order, ["t_awakened", "t_blood_pledge", "t_oath_breaker"], "ordered by id, not earned"
+	)
 	assert_eq(destiny_order, ["t_ascendant", "t_chosen_one"], "destinies come back ordered")
 	# Canonical means repeatable: a second read of the same ledger is identical,
 	# and so is a ledger rebuilt from the same payload.
@@ -219,8 +218,20 @@ func test_fate_ids_and_destiny_ids_come_back_canonically_ordered() -> void:
 	)
 	# The earned order is still readable, through the per-entry sequence.
 	var sequences: Array = []
+	var fates := ledger["fates"] as Dictionary
 	for fate_id in [FATE, &"t_awakened"]:
-		sequences.append(int((ledger["fates"] as Dictionary)[String(fate_id)]["sequence"]))
+		var entry = fates.get(String(fate_id), null)
+		if entry is Dictionary and (entry as Dictionary).has("sequence"):
+			sequences.append(int((entry as Dictionary)["sequence"]))
+		else:
+			# Never subscript an unvalidated key into a typed local: that ABORTS
+			# this function, and the runner's `suite.call(name)` cannot tell an
+			# aborted test from a finished one — so the assertions below would be
+			# skipped while the suite still reported green.
+			assert_eq(
+				fate_id, &"a readable entry", "the ledger holds a readable entry for '%s'" % fate_id
+			)
+			sequences.append(-1)
 	assert_eq(sequences, [3, 1], "the earned order survives separately")
 
 
@@ -257,8 +268,8 @@ func test_every_stat_modifier_and_trait_the_module_writes_is_namespaced_under_de
 	)
 	assert_eq(
 		DestinyState.source_for(DESTINY),
-		DestinyState.source_for(DESTINY),
-		"a destiny is namespaced too"
+		&"destiny:t_chosen_one",
+		"a destiny is namespaced too, and identically to a fate"
 	)
 	assert_eq(
 		DestinyState.is_own_source(&"destiny:t_oath_breaker"), true, "the module claims its own"
@@ -272,7 +283,7 @@ func test_every_stat_modifier_and_trait_the_module_writes_is_namespaced_under_de
 # --- Boundedness -------------------------------------------------------------
 
 
-func test_the_history_trail_is_bounded_so_a_save_cannot_grow_without_limit() -> void:
+func test_a_history_trail_read_from_a_payload_is_kept_exactly_as_given_and_deep_copied() -> void:
 	var history: Array = []
 	for index in DestinyState.HISTORY_LIMIT + 20:
 		history.append({"kind": "counter", "id": "duels_won", "sequence": index})
@@ -280,9 +291,8 @@ func test_the_history_trail_is_bounded_so_a_save_cannot_grow_without_limit() -> 
 	assert_eq(
 		(ledger["history"] as Array).size(),
 		DestinyState.HISTORY_LIMIT + 20,
-		"history is read back exactly as given"
+		"a payload is read back exactly as given, cap or no cap"
 	)
-	assert_eq(DestinyState.HISTORY_LIMIT <= 256, true, "the bound is small enough to stay cheap")
 	# Records are copied, not aliased: a later mutation of the source array cannot
 	# reach back into the ledger.
 	history[0]["id"] = "tampered"
@@ -290,6 +300,51 @@ func test_the_history_trail_is_bounded_so_a_save_cannot_grow_without_limit() -> 
 		String((ledger["history"] as Array)[0]["id"]),
 		"duels_won",
 		"history records are deep-copied"
+	)
+
+
+## The bound itself, executed rather than asserted about a constant.
+##
+## `_record()` returns early once the trail is at `HISTORY_LIMIT`, so this is the
+## only shape that can prove it: write past the cap on a live actor and read the
+## trail back. Asserting `HISTORY_LIMIT <= 256` proved nothing — it compared a
+## literal with a literal, and would have kept passing if the cap were removed
+## entirely.
+func test_the_history_trail_stops_growing_at_the_bound_and_never_beyond_it() -> void:
+	var actor := Actor.new(&"keeper", {Stat.PHYSIQUE: 10.0})
+	DestinyApi.attach(actor)
+	# Enough writes to overshoot by a wide margin. The catalog ships no counter
+	# definitions, so every `record()` is a real movement and every one of them
+	# would append to the trail if the cap were not there.
+	var writes := DestinyState.HISTORY_LIMIT + 40
+	for index in writes:
+		DestinyApi.record(actor, &"duels_won", 1)
+	var trail := DestinyApi.state(actor)["history"] as Array
+	assert_eq(
+		trail.size(),
+		DestinyState.HISTORY_LIMIT,
+		"%d writes left exactly HISTORY_LIMIT records" % writes
+	)
+	assert_eq(
+		DestinyApi.counter(actor, &"duels_won"),
+		writes,
+		"while the counter itself kept every one of the writes"
+	)
+	# More writes past the cap change nothing at all: the bound holds however long
+	# the save is played.
+	for index in DestinyState.HISTORY_LIMIT:
+		DestinyApi.record(actor, &"duels_won", 1)
+	assert_eq(
+		(DestinyApi.state(actor)["history"] as Array).size(),
+		DestinyState.HISTORY_LIMIT,
+		"and a further HISTORY_LIMIT writes added no record"
+	)
+	# What IS kept is the most recent half of the trail, not the oldest: `_record`
+	# appends and stops, so the records already written are the ones that remain.
+	assert_eq(
+		String((trail[0] as Dictionary)["id"]),
+		"duels_won",
+		"and the trail still explains what the player is owed"
 	)
 
 

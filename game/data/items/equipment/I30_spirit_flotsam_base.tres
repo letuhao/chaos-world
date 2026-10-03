@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:I30_spirit_flotsam_base_recipe", &"quest:I30_spirit_flotsam_line"])
+sources = Array[StringName]([&"craft:I30_spirit_flotsam_base_recipe", &"quest:I30_spirit_flotsam_line", &"domain:body_mystic_immortal_trial"])

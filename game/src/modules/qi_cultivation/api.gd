@@ -105,17 +105,15 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 ## Roll the breakthrough attempt. A deviation is recoverable; recover and retry.
 ##
 ## **The body answers first (ADR 0109).** A qi path the actor's race closes, or a realm above its
-## authored `realm_ceiling`, is refused BEFORE the roll — not after, and not silently. The
-## refusal carries `RaceGate`'s own `{kind, id, required, actual, label}` entries so the
-## breakthrough screen can name the closed path or the ceiling it hit, which is the ADR 0034 rule
-## that a gate and its preview must be the same wording. It is a precondition and never a
-## modifier: a race can stop a breakthrough, never make one easier.
+## authored `realm_ceiling`, is refused BEFORE the roll. This facade does NOT ask
+## `RaceGate` itself: the refusal lives in `QiBreakthroughTransaction.execute`, the one
+## call every qi entry point makes, so `QiAdvancement.try_breakthrough` cannot reach a
+## qi realm a caller of this facade could not. The refusal carries `RaceGate`'s own
+## `{kind, id, required, actual, label}` entries so the breakthrough screen can name
+## the closed path or the ceiling it hit, which is the ADR 0034 rule that a gate and
+## its preview must be the same wording. It is a precondition and never a modifier: a
+## race can stop a breakthrough, never make one easier.
 static func attempt_breakthrough(actor: Actor) -> bool:
-	var blocked := RaceGate.path_unmet(actor, PathState.QI)
-	if blocked.is_empty():
-		blocked = RaceGate.realm_ceiling_unmet(actor)
-	if not blocked.is_empty():
-		return false
 	return QiBreakthroughTransaction.execute(actor, null)
 
 

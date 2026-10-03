@@ -17,4 +17,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:greataxe_silver_recipe"])
+sources = Array[StringName]([&"craft:greataxe_silver_recipe", &"domain:elemental_earth_domain"])

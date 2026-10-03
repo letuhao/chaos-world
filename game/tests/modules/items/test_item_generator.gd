@@ -163,11 +163,17 @@ func test_use_consumes_nothing_when_it_cannot_apply() -> void:
 	assert_eq(bool(second.get("ok")), true, "usable once authored")
 
 
-func test_technique_learn_grants_a_permanent_base_attribute() -> void:
+func test_a_technique_manual_that_cannot_be_studied_costs_nothing() -> void:
+	# A `category = technique` item is DELIVERED, not learned into a raw stat stick:
+	# `items` hands it to the installed delivery seam and returns whatever that seam
+	# says. This suite installs none -- a bare-actor test has no composition root --
+	# so the seam refuses `no_seam` (DEF-0151), and what belongs to THIS module is the
+	# cost: a refused delivery must not take the manual with it. `items` never grants
+	# the base attribute itself, so nothing may move either.
 	var actor := _hero()
 	var before := actor.stats.get_base(Stat.COMPREHENSION)
 	var manual := ItemDef.new()
-	manual.id = &"manual_breathing"
+	manual.id = &"body_iron_skin"
 	manual.category = ItemCategory.TECHNIQUE
 	manual.stackable = false
 	manual.rarity = &"magic"
@@ -175,9 +181,15 @@ func test_technique_learn_grants_a_permanent_base_attribute() -> void:
 	manual.roll_spec = {"count": 1, "contexts": ["base"]}
 	manual.fixed_modifiers = [{"option_id": &"base_comprehension", "value": 4.0}]
 	ItemsApi.inventory(actor).add(manual, 1)
-	assert_eq(bool(ItemsApi.use_item(actor, &"manual_breathing").get("ok")), true, "learned")
-	assert_almost_eq(actor.stats.get_base(Stat.COMPREHENSION), before + 4.0, "permanent base gain")
-	assert_eq(ItemsApi.inventory(actor).count(&"manual_breathing"), 0, "consumed")
+	var result := ItemsApi.use_item(actor, manual.id)
+	assert_eq(bool(result.get("ok", false)), false, "no seam, so nothing is studied")
+	assert_eq(String(result.get("reason", "")), "no_seam", "and the refusal names itself")
+	assert_eq(ItemsApi.inventory(actor).count(manual.id), 1, "the manual survived the press")
+	assert_almost_eq(
+		actor.stats.get_base(Stat.COMPREHENSION), before, "and no base attribute was granted"
+	)
+	# The seam's own happy path belongs to the techniques suite, which owns the
+	# delivery contract; re-deriving it here would test that module through this one.
 
 
 func test_material_potency_is_read_by_crafting() -> void:

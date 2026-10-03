@@ -48,9 +48,15 @@ func _own_sources(actor: Actor) -> Array:
 
 func _own_traits(actor: Actor) -> Array:
 	var out: Array = []
-	for trait_id in actor.traits:
-		if String(trait_id).begins_with(BloodlineState.TRAIT_PREFIX):
-			out.append(String(trait_id))
+	# `.to_array()`, not the NameList itself: iterating the live list raises
+	# "error calling _iter_next on iterator object", which aborts the test mid-function and
+	# is reported as an incomplete run rather than a failure. The sibling
+	# `test_bloodline_module.gd` helper already reads it this way.
+	for trait_id in actor.traits.to_array():
+		# `str()`, not `String()`: this build has no callable `String` constructor for a
+		# StringName, so `String(trait_id)` throws — same silent-abort shape.
+		if str(trait_id).begins_with(BloodlineState.TRAIT_PREFIX):
+			out.append(str(trait_id))
 	out.sort()
 	return out
 
@@ -221,10 +227,14 @@ func test_the_ledger_answers_the_questions_the_rest_of_the_module_asks() -> void
 	BloodlineApi.set_purity(actor, RARE, 0.2)
 	BloodlineApi.set_purity(actor, FOUNDING, 0.8)
 	var ledger := BloodlineApi.state(actor)
+	# Canonical order is ALPHABETICAL, which is what `BloodlineState.lineage_ids` sorts on
+	# and what every sibling ledger does. It is not tier order: `t_rare` sorts before
+	# `t_common`, and a ledger that ordered by tier would need to know each lineage's tier
+	# to read itself.
 	assert_eq(
 		BloodlineState.lineage_ids(ledger),
-		[FOUNDING, COMMON, RARE],
-		"every carried lineage, in the catalog's canonical order"
+		[FOUNDING, RARE, COMMON],
+		"every carried lineage, in canonical (sorted) order"
 	)
 	assert_eq(BloodlineState.awake_ids(ledger), [FOUNDING, COMMON], "and the awake ones")
 	assert_almost_eq(BloodlineState.peak(ledger), 0.9, "the strongest")

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoulDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/soul/soul_def.gd" id="1_soul"]
+
+[resource]
+script = ExtResource("1_soul")
+id = &"the_ledger_knows_your_name"
+display_name = "The Ledger Knows Your Name"
+description = "The third return. By now the record of what you were outlives the body doing the recording, and the two are no longer the same size."
+bearing = "The record is longer than you are. Carry it or do not."
+race_id = &"emberblood"
+order = 2
+marks = Array[StringName]([&"the_ledger_knows_your_name"])

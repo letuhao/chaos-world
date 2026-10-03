@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -63,6 +63,234 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_5"
+kind = &"item"
+item_id = &"B21_mortal_capeline_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_6"
+kind = &"item"
+item_id = &"C23_earth_cothurni_breakthrough_chance_max_stamina_aptitude"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_7"
+kind = &"item"
+item_id = &"E12_heaven_tinehouse_scabbardtip"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_8"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_8"
+kind = &"item"
+item_id = &"F1_mortal_cresses_attack_spiritual_move_speed_cooldown_reduction_crit_chance"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_9"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_9"
+kind = &"item"
+item_id = &"F45_divine_goutweed_breakthrough_chance_evasion_physique"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_10"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_10"
+kind = &"item"
+item_id = &"G23_heaven_hurter_comprehension_evasion"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_11"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_11"
+kind = &"item"
+item_id = &"I24_spirit_epigonus_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_12"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_12"
+kind = &"item"
+item_id = &"J5_mortal_thunder_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_13"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_13"
+kind = &"item"
+item_id = &"O10_earth_cairn_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_14"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_14"
+kind = &"item"
+item_id = &"Q8_immortal_dogwood_karst"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_15"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_15"
+kind = &"item"
+item_id = &"T11_divine_sorrel_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_16"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_16"
+kind = &"item"
+item_id = &"V15_heaven_anchorage_martyrology"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_17"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_17"
+kind = &"item"
+item_id = &"X13_immortal_apothecary_caveat"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_18"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_18"
+kind = &"item"
+item_id = &"Y20_immortal_newry_knack"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_19"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_19"
+kind = &"item"
+item_id = &"Z37_mortal_spicule_scapula"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_20"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_20"
+kind = &"item"
+item_id = &"circlet_void_dust"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_21"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_21"
+kind = &"item"
+item_id = &"lantern_star"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_22"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_22"
+kind = &"item"
+item_id = &"qi_spirit_unity_recovery_elixir"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_23"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_warden_domain_23"
+kind = &"item"
+item_id = &"tincture_iron"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_spirit_condensation_warden"
@@ -76,5 +304,24 @@ entries = Array[LootEntry]([
 	SubResource("entry_1"),
 	SubResource("entry_2"),
 	SubResource("entry_3"),
-	SubResource("entry_4")
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7"),
+	SubResource("entry_8"),
+	SubResource("entry_9"),
+	SubResource("entry_10"),
+	SubResource("entry_11"),
+	SubResource("entry_12"),
+	SubResource("entry_13"),
+	SubResource("entry_14"),
+	SubResource("entry_15"),
+	SubResource("entry_16"),
+	SubResource("entry_17"),
+	SubResource("entry_18"),
+	SubResource("entry_19"),
+	SubResource("entry_20"),
+	SubResource("entry_21"),
+	SubResource("entry_22"),
+	SubResource("entry_23")
 ])

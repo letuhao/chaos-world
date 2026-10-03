@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:H6_divine_will_pauldron_recipe"])
+sources = Array[StringName]([&"craft:H6_divine_will_pauldron_recipe", &"domain:orb_cinder_wyrm_domain"])

@@ -11,8 +11,9 @@ rarity = &"legendary"
 realm = &"primordial_immortal"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 6},
+	{"option_id": &"trade_value", "value": 18},
 ])
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"trophy"
 grade = &"immortal"
-sources = Array[StringName]([&"quest:warband_moon_banner"])
+sources = Array[StringName]([&"quest:warband_moon_banner", &"domain:qi_spirit_sea_trial"])

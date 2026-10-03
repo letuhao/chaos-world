@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"sigil"
 grade = &"earth"
-sources = Array[StringName]([&"craft:B27_earth_cataclysm_base_recipe", &"quest:B27_earth_cataclysm_line"])
+sources = Array[StringName]([&"craft:B27_earth_cataclysm_base_recipe", &"quest:B27_earth_cataclysm_line", &"domain:body_nascent_soul_trial"])

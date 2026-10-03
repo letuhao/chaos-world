@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:mind_spirit_unity_elixir_recipe"])
+sources = Array[StringName]([&"craft:mind_spirit_unity_elixir_recipe", &"domain:qi_spirit_unity_trial"])
 description = "Advances one meridian a step, or deepens a strengthened channel."

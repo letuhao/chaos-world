@@ -19,4 +19,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:totem_iron_bull_domain"])

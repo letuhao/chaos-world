@@ -17,6 +17,6 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"gem"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"domain:manual_thunder_ape_domain"])
 tags = Array[StringName]([&"socket_item", &"socket_kind:defense"])
 description = "Socket item. Defensive rune; while its host is worn it adds physical defence and poise."

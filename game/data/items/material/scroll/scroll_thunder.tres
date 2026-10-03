@@ -19,5 +19,5 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"immortal"
 tags = Array[StringName]([&"legendary"])
-sources = Array[StringName]([&"craft:scroll_thunder_recipe"])
+sources = Array[StringName]([&"craft:scroll_thunder_recipe", &"domain:artifact_void_leviathan_domain"])
 description = "A thunderous scroll crackling with immortal lightning. Immortal-grade."

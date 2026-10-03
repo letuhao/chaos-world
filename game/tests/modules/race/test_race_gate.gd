@@ -200,7 +200,7 @@ func test_has_trait_reads_the_mirror_and_nothing_else() -> void:
 	var stone := _born(STONE)
 	var trait_id := RaceState.trait_for(STONE)
 	assert_eq(
-		bool(RaceApi.unmet(stone, {"verb": &"has_trait", "id": String(trait_id)})["ok"]),
+		bool(RaceApi.unmet(stone, {"verb": &"has_trait", "id": str(trait_id)})["ok"]),
 		true,
 		"the mirrored race passes"
 	)

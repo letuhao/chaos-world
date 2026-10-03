@@ -13,7 +13,6 @@ const CHOSEN := &"t_chosen_one"
 const RISE := &"t_rise_of_the_revenants"
 const OATH_KEEPER := &"t_oath_keeper"
 const BRANCH := &"fixture_branch"
-const OATHS := &"oaths_taken"
 
 
 func setup() -> void:
@@ -140,20 +139,20 @@ func test_a_refused_prerequisite_names_what_is_missing_and_by_who() -> void:
 
 func test_a_second_destiny_in_the_same_group_is_refused_once_one_is_held() -> void:
 	var actor := _hero()
-	assert_eq(
-		DestinyApi.earn_destiny(actor, CHOSEN, "story")["destinies"].size(),
-		1,
-		"the first is earned"
-	)
+	var earned := DestinyApi.earn_destiny(actor, CHOSEN, "story")["destinies"] as Dictionary
+	assert_eq(earned.size(), 1, "the first is earned")
 	var ledger := DestinyApi.earn_destiny(actor, RISE, "story")
 	assert_eq(DestinyApi.has_destiny(actor, RISE), false, "the second is refused")
 	assert_eq(DestinyApi.has_destiny(actor, CHOSEN), true, "and the first is untouched")
 	assert_eq(DestinyApi.destinies(actor), [CHOSEN], "the ledger holds one branch")
-	assert_eq(
-		(ledger["destinies"] as Dictionary)[String(CHOSEN)]["bearing"],
-		"You are bound to t_chosen_one.",
-		"the held branch still carries its authored bearing"
-	)
+	var branch = (ledger["destinies"] as Dictionary).get(String(CHOSEN), null)
+	assert_eq(branch is Dictionary, true, "the held branch still has a ledger entry")
+	if branch is Dictionary:
+		assert_eq(
+			String((branch as Dictionary).get("bearing", "")),
+			"You are bound to t_chosen_one.",
+			"and it still carries its authored bearing"
+		)
 
 
 func test_exclusivity_is_permanent_rather_than_a_swap() -> void:
@@ -183,11 +182,8 @@ func test_exclusivity_is_permanent_rather_than_a_swap() -> void:
 func test_a_destiny_outside_every_group_is_exclusive_of_nothing() -> void:
 	var actor := _hero()
 	DestinyApi.earn_fate(actor, OATH, "oath")
-	assert_eq(
-		DestinyApi.earn_destiny(actor, OATH_KEEPER, "story")["destinies"].size(),
-		1,
-		"an empty group is not all destinies"
-	)
+	var earned := DestinyApi.earn_destiny(actor, OATH_KEEPER, "story")["destinies"] as Dictionary
+	assert_eq(earned.size(), 1, "an empty group is not all destinies")
 	DestinyApi.earn_destiny(actor, CHOSEN, "story")
 	DestinyApi.earn_destiny(actor, RISE, "story")
 	# Two destinies are held: the branch, and the ungrouped one. The returned list
@@ -262,9 +258,21 @@ func test_grants_fates_are_appended_in_authored_order_and_are_themselves_exactly
 	DestinyApi.earn_fate(actor, PLEDGE, "combat")
 	var ledger := DestinyApi.earn_destiny(actor, CHOSEN, "story")
 	var sequences: Array = []
+	var fates := ledger["fates"] as Dictionary
+	var unsequenced: Array = []
 	for fate_id in DestinyApi.fates(actor):
-		var entry: Dictionary = (ledger["fates"] as Dictionary)[String(fate_id)]
-		sequences.append({"id": String(fate_id), "sequence": int(entry["sequence"])})
+		# Fetched through `.get()` with the shape checked first: a typed local
+		# assigned an unvalidated subscript ABORTS the function, and the runner
+		# calls each test with `suite.call(name)`, so an aborted test reports green
+		# with everything after the abort silently skipped.
+		var entry = fates.get(String(fate_id), null)
+		if entry is Dictionary and (entry as Dictionary).has("sequence"):
+			sequences.append(
+				{"id": String(fate_id), "sequence": int((entry as Dictionary)["sequence"])}
+			)
+		else:
+			unsequenced.append(String(fate_id))
+	assert_eq(unsequenced, [], "every held fate carries a sequenced ledger entry")
 	sequences.sort_custom(func(a, b): return int(a["sequence"]) < int(b["sequence"]))
 	assert_eq(
 		_earned_order(sequences),
@@ -274,7 +282,7 @@ func test_grants_fates_are_appended_in_authored_order_and_are_themselves_exactly
 	# A fate the destiny granted is exactly as permanent as one earned directly,
 	# and the ledger records where it came from.
 	assert_eq(
-		String((ledger["fates"] as Dictionary)[String(OATH)]["source"]),
+		String(_granted_source(fates, OATH)),
 		"destiny:t_chosen_one",
 		"a granted fate names the destiny that carried it"
 	)
@@ -392,6 +400,17 @@ func _earned_order(entries: Array) -> Array:
 	for entry in entries:
 		out.append(String(entry["id"]))
 	return out
+
+
+## The `source` a fate entry records, or "" when the entry is absent or
+## unreadable — so a missing entry becomes a failed assertion naming the id rather
+## than an abort of the test that was checking everything else.
+func _granted_source(fates: Dictionary, fate_id: StringName) -> String:
+	var entry = fates.get(String(fate_id), null)
+	if entry is Dictionary:
+		return String((entry as Dictionary).get("source", ""))
+	assert_eq(entry is Dictionary, true, "the ledger holds an entry for '%s'" % fate_id)
+	return ""
 
 
 ## The ids the history trail records, in order.

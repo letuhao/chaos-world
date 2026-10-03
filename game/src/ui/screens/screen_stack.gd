@@ -73,9 +73,18 @@ func pop() -> Control:
 
 
 ## Unwind to the first screen. No-op when the stack is empty.
+##
+## The body pops `_screens` ITSELF rather than calling `pop()`, because the drain
+## has to be visible in the body: `tests/arch_rules/test_no_unbounded_wait.gd`
+## only credits a `pop_*` it can read inside the loop, since a call that shrinks
+## the container somewhere else in the file says nothing about this loop.
 func pop_to_root() -> void:
 	while _screens.size() > 1:
-		pop()
+		var screen: Control = _screens.pop_back()
+		remove_child(screen)
+		screen.free()
+		_activate()
+		screen_popped.emit(screen)
 
 
 ## The live screen, or null when the stack is empty.

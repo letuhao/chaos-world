@@ -40,15 +40,52 @@ extends RefCounted
 ## ## Every refusal is a named game rule
 ##
 ## A mutating verb returns `{"ok": false, "reason": "<named constant>"}` and
-## leaves the ledger byte-for-byte as found (ADR 0044). `reason` is an authored
+## leaves the ledger byte-for-byte as found (ADR 0084). `reason` is an authored
 ## constant — `not_a_member`, `unknown_sect`, `unknown_position`,
 ## `standing_below_floor`, `capacity_full`, `seat_occupied` — never free text, so
 ## a panel renders a reason it did not have to invent. `seat_occupied` and
 ## `capacity_full` are deliberately distinct (ADR 0084): the first is a succession
 ## contest, the second is a shut room.
+##
+## ## Reputation toward a sect is NOT standing inside it
+##
+## `standing` is what THIS sect thinks of you. `regard` is what the world does —
+## the name the other sects, the markets and the rumours give you. They are
+## separate numbers with separate owners, and ADR 0083 says so in one sentence:
+## *"Standing is what an institution thinks of you; regard is what everyone else
+## does."* So membership moves `regard` through `social` rather than this module
+## keeping a second copy, exactly as `AGENTS.md` requires.
+##
+## ## `sect -> social` is INVISIBLE to `tools arch`
+##
+## `BARE_REF_UNITS` excludes `modules/*` (`rules.py:60`), so a bare `SocialApi`
+## reference from `modules/sect/` reports ZERO violations and a cycle written that
+## way is invisible to `_find_cycle` — ADR 0083 says so in its own Consequences. The
+## ONLY sanctioned edge is the `preload` below: one `res://` edge to a facade, which
+## the resolver DOES read. Every other social identifier in this module is a plain
+## id string, and `test_sect_social_edge.gd` greps the whole module for a bare
+## `Social[A-Z]` class name outside that line, so the invisible cycle cannot be
+## written quietly.
+const SOCIAL_FACADE := preload("res://src/modules/social/api.gd")
 
 ## `actor.module_data` key the versioned ledger is persisted under (ADR 0027).
 const MODULE_KEY := SectState.MODULE_KEY
+
+## ## The authored causes membership moves regard BY
+##
+## These are ids in `social`'s catalog, not numbers this module invents, and they
+## are read through the preload above rather than named as classes — which is what
+## keeps this file's edge to `social` to exactly one `res://` reference.
+##
+## `left_a_sect` is deliberately SMALLER than `expelled_from_sect`: walking out is a
+## choice and being cast out is a verdict, and ADR 0084 makes an inquisition a
+## political act. Making them the same number would erase the distinction the
+## ledger exists to keep.
+const CAUSE_SWORN := &"sworn_to_sect"
+const CAUSE_LEFT := &"left_a_sect"
+const CAUSE_EXPELLED := &"expelled_from_sect"
+const CAUSE_HELD_OFFICE := &"held_office"
+const CAUSE_FOUNDED := &"defended_territory"
 
 ## The refusal a `leave` gives when there was nothing to leave. **It is the only
 ## thing `leave` refuses on**: leaving is always permitted and always costs, and
@@ -124,6 +161,22 @@ const NOTHING_TO_TEACH := SectTeaching.R_NOTHING_TO_TEACH
 const SAME_ACTOR := SectTeaching.R_SAME_ACTOR
 ## The student is sworn to no sect, so no institution is teaching them anything.
 const STUDENT_NOT_SWORN := SectTeaching.R_STUDENT_NOT_SWORN
+## A `declare_schism` on an actor sworn to nothing. Same reasoning as
+## `not_a_member`: there is no institution here to split, which is a different
+## statement from "you may not".
+const NO_ACTOR_SPLIT := SectSchism.R_NO_ACTOR
+## The seceding half is a sect id this build does not ship — a sect nothing defines
+## teaches nothing and grants nothing, so the same rule `join` refuses on.
+const UNKNOWN_HALF := SectSchism.R_UNKNOWN_HALF
+## The seceding half is the sect doing the splitting. There is no half to leave.
+const SELF_SECESSION := SectSchism.R_CANNOT_SECEDE_FROM_ITSELF
+## That half already seceded from here. A second declaration is not a second split;
+## it is the same one written twice.
+const ALREADY_SECEDED := SectSchism.R_ALREADY_SECEDED
+## There is no undivided standing to divide. A split of one point produces two
+## halves of zero and charges both for the privilege — the worst possible trade, so
+## it refuses rather than happening.
+const NOTHING_TO_SPLIT := SectSchism.R_NOTHING_TO_SPLIT
 
 
 ## Attach the module to `actor`. Restores any ledger a prior `Actor.from_dict`
@@ -149,6 +202,14 @@ static func attach(actor: Actor) -> void:
 ## (ADR 0083), so re-swearing is a `leave` followed by a `join`, and the standing
 ## the old sect gave is settled before the new claim is opened rather than
 ## silently carried across.
+##
+## ## `join` moves REGARD, and moves nothing else
+##
+## The oath is an authored cause applied to the bond between this actor and this
+## sect's id (ADR 0091), so the world now holds a named opinion about you here. It
+## does **not** touch standing — a fresh member starts at zero and an oath is not
+## a promotion — and it does not touch position, which is the other half of
+## ADR 0064's split.
 static func join(actor: Actor, sect_id: StringName) -> Dictionary:
 	var read := _claim(actor)
 	if SectState.is_affiliated(read):
@@ -163,6 +224,7 @@ static func join(actor: Actor, sect_id: StringName) -> Dictionary:
 	ledger["standing"] = claim.standing
 	ledger["standing_cap"] = claim.standing_cap
 	ledger["obligation"] = def.member_obligation_lines()
+	_regard(actor, def.id, CAUSE_SWORN)
 	_persist(actor, ledger, "join")
 	return _ok(ledger)
 
@@ -222,6 +284,10 @@ static func found(
 	SectFounding.draw(actor, float(price["outstanding"]))
 	var ledger := SectFounding.write(def, doctrine, founder_id, top)
 	_record(ledger, "found", def.id, String(doctrine.id))
+	# Founding is a stronger act than swearing: you are the one the sect answers to,
+	# so it moves regard under the DEED cause rather than the membership one. Same
+	# ledger, same `apply_cause` path — only the authored id differs.
+	_regard(actor, def.id, CAUSE_FOUNDED)
 	_persist(actor, ledger, "found")
 	var bus := SectProjection.events()
 	bus.membership_changed.emit(String(actor.id), def.id, true, "")
@@ -241,12 +307,22 @@ static func found(
 ## institution that has been wronged is one that has lost something, and a member
 ## with nothing left has nothing left to lose, which is the property that makes a
 ## demotion a real cost (ADR 0064).
+##
+## ## `leave` moves regard DOWNWARD, by a DIFFERENT cause from `join`
+##
+## The sect records that its member walked out (`CAUSE_LEFT`), which is a different
+## act from being cast out and has to read as one: an expulsion is the institution's
+## verdict on you and costs the expeller more than it costs the expelled (ADR 0084),
+## and collapsing the two would make "you left" and "you were thrown out" the same
+## sentence to the world. `_expel` is the counterpart that applies `CAUSE_EXPELLED`.
 static func leave(actor: Actor) -> Dictionary:
 	var read := _claim(actor)
 	if not SectState.is_affiliated(read):
 		return _refuse(NOT_A_MEMBER, read)
 	var ledger := read.duplicate(true)
-	_record(ledger, "leave", SectState.institution(ledger), "")
+	var sect_id := SectState.institution(ledger)
+	_record(ledger, "leave", sect_id, "")
+	_regard(actor, sect_id, CAUSE_LEFT)
 	# `SectState.empty()` rather than a hand-cleared dictionary: the skeleton is
 	# authored in exactly one place, so a new ledger key cannot be half-written here.
 	var cleared := SectState.normalize({})
@@ -347,6 +423,11 @@ static func promote(
 	var ledger := read.duplicate(true)
 	ledger["position"] = String(office.id)
 	_record(ledger, "promote" if not force else "promote_forced", office.id, "")
+	# Holding an office is PUBLIC recognition, which is the one thing ADR 0083
+	# separates from the claim: the world hears you were seated even where the sect
+	# gave you no standing to sit it on. A forced promotion records the same act —
+	# the seat is taken either way, and the world does not know it was political.
+	_regard(actor, sect_id, CAUSE_HELD_OFFICE)
 	_persist(actor, ledger, "promote")
 	return _ok(ledger)
 
@@ -531,6 +612,100 @@ static func teach(
 	return _taught(written, gained, tax)
 
 
+## ## Schism: a sect can split, and the split costs BOTH halves (BL-0197)
+##
+## `declare_schism(actor, seceding_id, assigned)` is the one verb that can bring a
+## second sect into being out of an existing one, and it is priced on purpose:
+##
+##   - the **undivided** standing is divided — each half inherits `undivided / 2`,
+##     and an odd point is **charged away rather than minted**, so the two halves
+##     together never hold more than the whole did;
+##   - each half pays `SectTuning.schism_cost`;
+##   - each half pays again `SectTuning.schism_cost_per_unassigned` for every
+##     authored territory this declaration leaves **unassigned**.
+##
+## A free schism is a strictly-positive action, so every crisis would end in a
+## split and no institution would ever have to answer for one (ADR 0085). That is
+## the entire reason this verb costs anything.
+##
+## ## The price is read from DATA, and the arithmetic is authored once
+##
+## Both costs live on `SectTuning` and are read through `SectCatalog.tuning()`, so
+## a rebalance is a `.tres` edit (ADR 0067's shape) and no number here is a literal.
+## `SectSchism.settle` is the ONE place the sum is added, so the two halves cannot
+## be charged different prices by two callers.
+##
+## ## The caller keeps its sect; the ledger records what the split cost
+##
+## ADR 0083 records where a polity-wide ledger lives as an OPEN question, and this
+## slice does not answer it: `declare_schism` does **not** mint a sect, does not
+## re-roster the seceding half and does not move ground. It writes ONE line under
+## `schisms`, keyed by the seceding sect id, carrying what was divided, what each
+## half paid and what each half settled to — and settles the declaring member's own
+## standing, because a member who split their institution has paid for it.
+## Every read of that line is a key inside `summary()`, never a thirteenth method.
+##
+## ## Refusals, in the order they are asked
+##
+## `no_actor`, `not_a_member`, `unknown_sect`, `unknown_half`,
+## `cannot_secede_from_itself`, `already_seceded`, `nothing_to_split`. Each writes
+## **nothing at all**, so a refused declaration leaves the actor byte-for-byte as
+## found (ADR 0084) — which is the property that makes a refusal a refusal and not a
+## cheaper version of the split.
+static func declare_schism(
+	actor: Actor, seceding_id: StringName, assigned: Array[StringName] = []
+) -> Dictionary:
+	if actor == null:
+		return _refuse(NO_ACTOR_SPLIT, SectState.empty())
+	var read := _claim(actor)
+	if not SectState.is_affiliated(read):
+		return _refuse(NOT_A_MEMBER, read)
+	var parent_id := SectState.institution(read)
+	var catalog := SectCatalog.instance()
+	var def := catalog.sect_definition(parent_id)
+	if def == null:
+		return _refuse(UNKNOWN_SECT, read)
+	var half_id := String(seceding_id)
+	if half_id == "" or catalog.sect_definition(seceding_id) == null:
+		return _schism_refuse(UNKNOWN_HALF, read, half_id)
+	if half_id == String(parent_id):
+		return _schism_refuse(SELF_SECESSION, read, half_id)
+	if not SectState.schism(read, seceding_id).is_empty():
+		return _schism_refuse(ALREADY_SECEDED, read, half_id)
+	# One point of undivided standing splits into two halves of nothing, and both
+	# would then be charged for the privilege. Refuse rather than happen: a split
+	# that leaves both halves worse off than not splitting is not a political cost,
+	# it is a punishment with no alternative stated.
+	if SectState.standing(read) < 2:
+		return _schism_refuse(NOTHING_TO_SPLIT, read, half_id)
+	var unassigned := SectSchism.unassigned(def, assigned)
+	var price := SectSchism.price(catalog.tuning(), unassigned)
+	var bill := SectSchism.settle(SectState.standing(read), price)
+	var ledger := read.duplicate(true)
+	(ledger["schisms"] as Dictionary)[half_id] = {
+		"schism_id": "%s|%s" % [String(parent_id), half_id],
+		"parent_id": String(parent_id),
+		"seceding_id": half_id,
+		"verb": SectSchism.VERB,
+		"undivided": int(bill["undivided"]),
+		"price": int(bill["price"]),
+		"unassigned": unassigned,
+		"settled": int(bill["settled"]),
+	}
+	var claim := SectState.claim(ledger)
+	var applied := claim.move_standing(-price)
+	_write_claim(ledger, claim)
+	_record(ledger, "schism", seceding_id, "%d unassigned" % unassigned)
+	# A split is the loudest political act a sect member can take, so it moves regard
+	# under the DEED cause — the same authored id `found` uses, because the world
+	# reads "this person made something" rather than distinguishing the two. It is
+	# recorded against the SECEDING half, which is the institution the act is about:
+	# the parent did not divide itself.
+	_regard(actor, seceding_id, CAUSE_FOUNDED)
+	_persist(actor, ledger, "schism", applied)
+	return _schism(ledger, parent_id, half_id, bill, unassigned, applied)
+
+
 ## Whether gated content may open for `actor`.
 ##
 ## `requirement` is authored data, never code: an empty dictionary is ungated, or
@@ -562,146 +737,106 @@ static func state(actor: Actor) -> Dictionary:
 	return _normalized(actor)
 
 
-## ## The whole read model, in one call
-##
-## Every read this module owes a screen or a sibling is a key here, folded rather
-## than published as its own method — see the class note on why the facade is at
-## its cap and why `summary()` is the right shape. `{}` when there is no actor,
-## which is the contract a panel tests instead of pixels.
-##
-## What a caller gets: which sect, who founded it, which office and its authored
-## duties and authorities, standing and its share of the cap, what is still owed,
-## the treasury's lines, the fit this member has with each doctrine, the bounded
-## percent the claim currently projects, **the roster with each office's live seat
-## state** — including the `seat_occupied` / `capacity_full` distinction, so a board
-## screen renders the difference without re-deriving it — **the walk in progress on
-## each seat**, every authored office of the sworn sect, every authored sect for
-## comparison, and every authored doctrine.
+## The whole read model, in one call. Delegates to `SectReadModel.summary`,
+## which owns the shape; this stays the facade's single published entry point
+## so a screen reads one method and the field list is written down once.
 static func summary(actor: Actor) -> Dictionary:
-	var catalog := SectCatalog.instance()
-	var out := {
-		"has_actor": actor != null,
-		"actor_id": "" if actor == null else String(actor.id),
-		"is_member": false,
-		"founded": false,
-		"sect_id": "",
-		"sect_name": "",
-		"founder_id": "",
-		"doctrine_id": "",
-		"doctrine_name": "",
-		"position_id": "",
-		"position_name": "",
-		"standing": 0,
-		"standing_cap": 0,
-		"standing_ratio": 0.0,
-		"standing_percent": 0.0,
-		"granted_percent": {},
-		"min_purity": 0,
-		"teaches": false,
-		"fit": {},
-		"obligations": {},
-		"settled": true,
-		"treasury": {},
-		"roster": {},
-		"roster_size": 0,
-		"duties": [],
-		"authorities": [],
-		"can_promote": {},
-		"sects": {},
-		"doctrines": {},
-	}
-	var ledger := SectState.empty() if actor == null else _normalized(actor)
-	var sect_id := SectState.institution(ledger)
-	out["is_member"] = SectState.is_affiliated(ledger)
-	out["founded"] = SectFounding.founded(ledger)
-	out["sect_id"] = String(sect_id)
-	out["founder_id"] = SectState.founder(ledger)
-	out["position_id"] = String(SectState.position(ledger))
-	out["standing"] = SectState.standing(ledger)
-	out["standing_cap"] = int(ledger["standing_cap"])
-	out["standing_ratio"] = SectState.claim(ledger).normalized()
-	out["standing_percent"] = InstitutionClaim.standing_percent(SectState.standing(ledger))
-	out["granted_percent"] = (ledger["granted_percent"] as Dictionary).duplicate()
-	out["fit"] = (ledger["fit"] as Dictionary).duplicate()
-	out["obligations"] = (ledger["obligation"] as Dictionary).duplicate()
-	out["settled"] = SectState.claim(ledger).settled()
-	out["treasury"] = (ledger["treasury"] as Dictionary).duplicate()
-	out["roster"] = _roster_view(ledger)
-	for doctrine_id in (ledger["fit"] as Dictionary).keys():
-		var sworn := catalog.sect_definition(sect_id)
-		if sworn == null:
-			continue
-		out["teaches"] = sworn.teaches_at(int((ledger["fit"] as Dictionary)[doctrine_id]))
-	var def := catalog.sect_definition(sect_id)
-	if def != null:
-		out["sect_name"] = def.display_name
-		out["doctrine_id"] = String(def.doctrine_id)
-		out["min_purity"] = def.min_purity
-		var doctrine := SectDoctrineCatalog.instance().doctrine(def.doctrine_id)
-		out["doctrine_name"] = "" if doctrine == null else doctrine.display_name
-		var office := def.position(SectState.position(ledger))
-		if office != null:
-			out["position_name"] = office.display_name
-			out["duties"] = _strings(office.duties)
-			out["authorities"] = _strings(office.authorities)
-	# Every authored sect is listed whatever the actor is, so a screen can compare
-	# institutions without a second call; `sworn` is the only thing that differs.
-	for authored_id in catalog.sect_ids():
-		out["sects"][String(authored_id)] = _sect_view(catalog.sect_definition(authored_id))
-	for authored in SectDoctrineCatalog.instance().doctrine_ids():
-		out["doctrines"][String(authored)] = _doctrine_view(
-			SectDoctrineCatalog.instance().doctrine(authored)
-		)
-	if def == null:
-		return out
-	for office in def.positions:
-		if office == null or office.id == &"":
-			continue
-		var room := def.position(office.id)
-		# `held` is counted from THIS ledger's roster rather than passed in: an
-		# argument is a number a caller can be wrong about, and the whole point of
-		# BL-0176 is that the count is authored content read against authored
-		# content. A member whose ledger holds no roster (anyone who joined rather
-		# than founded) reads 0, which is the honest answer for "how many members
-		# does MY ledger know about" — and the refusal still names the office.
-		var held := SectState.roster_held(ledger, office.id, room)
-		out["roster_size"] = int(out["roster_size"]) + held
-		var seat := def.seat_state(office.id, held)
-		out["can_promote"][String(office.id)] = {
-			"id": String(office.id),
-			"display_name": office.display_name,
-			"capacity": office.capacity,
-			"standing_floor": office.standing_floor,
-			"below_floor": SectState.standing(ledger) < office.standing_floor,
-			"held": held,
-			"has_room": bool(seat["has_room"]),
-			"reason": String(seat["reason"]),
-			# The walk, read from the ledger rather than re-derived: a board screen
-			# renders a vacancy without ever learning how the succession advances.
-			"succession": _succession_view(ledger, office),
-			"teach_tax":
-			SectTeaching.tax_for(SectDoctrineCatalog.instance().doctrine(def.doctrine_id), office),
-		}
-	return out
+	if actor == null:
+		return {}
+	return SectReadModel.summary(_normalized(actor), SectCatalog.instance())
 
 
 # --- Internals -------------------------------------------------------------
+
+
+## ## The ONE place this module moves `regard`, and it moves nothing else
+##
+## `sect` holds no regard number, no regard ledger and no regard increment: it asks
+## `social` to apply an AUTHORED cause to the bond between `actor` and `institution_id`
+## (ADR 0091), and `social` owns the arithmetic, the cause ledger and the projection.
+## That is what stops the three tiers growing a second copy of one fact — the ADR
+## 0066 failure mode `AGENTS.md` calls out by name.
+##
+## ## Through `SOCIAL_FACADE`, never a bare `SocialApi`
+##
+## `BARE_REF_UNITS` excludes `modules/*`, so a bare class reference here would report
+## zero violations and a `sect -> social` cycle would be invisible to `_find_cycle`
+## (ADR 0083). The `preload` at the top of this file is the single `res://` edge the
+## resolver does read, and `test_sect_social_edge.gd` greps the module for any bare
+## `Social[A-Z]` name outside it.
+##
+## ## Silence is a refusal, not a swallowed error
+##
+## `apply_cause` refuses an unknown cause rather than moving nothing quietly, and it
+## may legitimately refuse: an actor with no social state at all, or a `sect_id` that
+## is empty. Neither is a state this module can fix and neither should abort a join —
+## so the result is ignored here, and the property that makes it safe is that **every
+## call site is past its own refusals**, so a refusal can only mean the cause catalog
+## does not ship this id. A test asserts the shipped catalog does, which turns that
+## silent path into a failed test rather than an invisible one.
+static func _regard(actor: Actor, institution_id: StringName, cause_id: StringName) -> void:
+	if actor == null or institution_id == &"":
+		return
+	SOCIAL_FACADE.apply_cause(actor, institution_id, cause_id)
+
+
+## Cast a member out, at the expelling institution's expense (ADR 0084).
+##
+## Underscore-prefixed, so it does **not** count against the twelve-method cap —
+## and that is the reason it lives here rather than on the facade. `expel` is a
+## VERB a caller needs (`SectGate`'s `holds_authority` already asks whether a member
+## may do it, and `SectPositionDef.authorities` already answers it as authored
+## data), so shipping it as a thirteenth public method would put `SectApi` over
+## `MAX_FACADE_PUBLIC_METHODS` — and ADR 0083 names exactly that as the constraint
+## the facade is designed around.
+##
+## So it is a component-level verb, named here and reached through the constant, the
+## same way `TechniquesApi`'s `CASTING_COMPONENT` reaches `activate`: a named
+## capability that is deliberately not on the facade. **It is still a real verb** —
+## `_refuse` returns the `{ok, reason}` shape, a refused expulsion writes nothing at
+## all, and the cause is the harsher `CAUSE_EXPELLED` so "you were cast out" never
+## reads as "you left".
+static func _expel(actor: Actor, position_id: StringName, force: bool = false) -> Dictionary:
+	var read := _claim(actor)
+	if not SectState.is_affiliated(read):
+		return _refuse(NOT_A_MEMBER, read)
+	var sect_id := SectState.institution(read)
+	var def := SectCatalog.instance().sect_definition(sect_id)
+	if def == null:
+		return _refuse(UNKNOWN_SECT, read)
+	var office := def.position(position_id)
+	if office == null:
+		return _refuse(UNKNOWN_POSITION, read)
+	# The seat being vacated is the whole of the difference from `leave`: an expulsion
+	# with no office named would be a resignation wearing a harsher word, and the
+	# roster a reader consults afterwards would say the member resigned.
+	if SectState.position(read) != office.id and not force:
+		return _refuse(NOT_A_MEMBER, read)
+	var ledger := read.duplicate(true)
+	var cleared := SectState.normalize({})
+	_record(ledger, "expelled", office.id, "")
+	cleared["history"] = ledger["history"]
+	_regard(actor, sect_id, CAUSE_EXPELLED)
+	_persist(actor, cleared, "expelled")
+	return _ok(cleared)
 
 
 ## ## A refused verb writes nothing
 ##
 ## Every mutating verb hands back the ledger it found, so a caller can see that a
 ## refusal left `actor.module_data` byte-for-byte as it was (ADR 0044) and can
-## still render the claim without a second read.
+## still render the claim without a second read. The shapes themselves live in
+## `SectPayloads`, which is where the module's whole response contract is written
+## down once.
 static func _refuse(reason: String, ledger: Dictionary) -> Dictionary:
-	return {"ok": false, "reason": reason, "ledger": ledger}
+	return SectPayloads.refuse(reason, ledger)
 
 
 ## The success shape. `applied` is present on every verb so a caller can read one
 ## key without knowing which verb it called — the standing delta is the only one
 ## that is ever non-zero, and it is non-zero exactly when standing moved.
 static func _ok(ledger: Dictionary) -> Dictionary:
-	return {"ok": true, "reason": "", "applied": 0, "ledger": ledger}
+	return SectPayloads.ok(ledger)
 
 
 ## Read the ledger for a verb that may write. Normalized against the catalog, so
@@ -765,7 +900,12 @@ static func _persist(
 	match kind:
 		"join":
 			bus.membership_changed.emit(String(actor.id), sect_id, true, "")
-		"leave":
+		"leave", "expelled":
+			# An expulsion ends a membership the same way a resignation does, and a
+			# consumer reading only this signal must not be able to tell that the two
+			# are different — the ledger is where that distinction lives (ADR 0084:
+			# "may this member expel another" is an authored question, and the cause
+			# that was applied is the answer to it).
 			bus.membership_changed.emit(String(actor.id), sect_id, false, "")
 		_:
 			if standing_delta != 0:
@@ -775,14 +915,7 @@ static func _persist(
 
 
 static func _below_floor(ledger: Dictionary, office: SectPositionDef) -> Dictionary:
-	return {
-		"ok": false,
-		"reason": STANDING_BELOW_FLOOR,
-		"ledger": ledger,
-		"required": office.standing_floor,
-		"actual": SectState.standing(ledger),
-		"force": true,
-	}
+	return SectPayloads.below_floor(ledger, office)
 
 
 ## `founding_cost_unmet`, with both numbers so a panel can show the shortfall rather
@@ -790,14 +923,35 @@ static func _below_floor(ledger: Dictionary, office: SectPositionDef) -> Diction
 ## founding. BL-0174 prices an institution's existence and an override would make
 ## the price decorative.
 static func _found_unmet(ledger: Dictionary, def: SectDef, price: Dictionary) -> Dictionary:
-	return {
-		"ok": false,
-		"reason": FOUNDING_COST_UNMET,
-		"ledger": ledger,
-		"required": int(price["outstanding"]),
-		"actual": int(SectFounding.cost(def)["found"]),
-		"currency": String(def.founding_cost.get("currency", "")),
-	}
+	return SectPayloads.found_unmet(ledger, def, price)
+
+
+## A refused `declare_schism`, naming the half it was refused for. The half id is
+## published so a panel can say WHICH split could not happen, rather than only that
+## one of them did not.
+static func _schism_refuse(reason: String, ledger: Dictionary, half_id: String) -> Dictionary:
+	return SectPayloads.schism_refused(reason, ledger, half_id)
+
+
+## The schism success shape.
+##
+## **Every number that decides the split is published**, because the whole point of
+## a priced split is that a caller can show a player what it will cost: what there
+## was, what each half inherits, what each half pays, what each half is left with,
+## and — when the price exceeded the inheritance — exactly how much of the bill the
+## split could not cover. `applied` is the declaring member's OWN standing delta,
+## which is the second half of "costs both halves": the other half's cost is in
+## `settled`, and a caller that only reads `applied` is reading one of two equal
+## charges.
+static func _schism(
+	ledger: Dictionary,
+	parent_id: String,
+	half_id: String,
+	bill: Dictionary,
+	unassigned: int,
+	applied: int
+) -> Dictionary:
+	return SectPayloads.schism(ledger, parent_id, half_id, bill, unassigned, applied)
 
 
 ## `period_not_elapsed`, with both counts. This is ADR 0084's "refuses a further
@@ -806,13 +960,7 @@ static func _found_unmet(ledger: Dictionary, def: SectDef, price: Dictionary) ->
 static func _period_not_elapsed(
 	ledger: Dictionary, office: SectPositionDef, held: int
 ) -> Dictionary:
-	return {
-		"ok": false,
-		"reason": PERIOD_NOT_ELAPSED,
-		"ledger": ledger,
-		"required": maxi(0, office.succession_periods),
-		"actual": held,
-	}
+	return SectPayloads.period_not_elapsed(ledger, office, held)
 
 
 ## The teaching success shape.
@@ -822,114 +970,8 @@ static func _period_not_elapsed(
 ## consumer has to be able to check that for itself. `fit` and `fit_delta` are the
 ## only numbers that move; `tax` is what the teacher paid for them.
 static func _taught(ledger: Dictionary, gained: int, tax: float) -> Dictionary:
-	return {
-		"ok": true,
-		"reason": "",
-		"applied": 0,
-		"standing_delta": 0,
-		"fit": (ledger["fit"] as Dictionary).duplicate(),
-		"fit_delta": gained,
-		"tax": tax,
-		"ledger": ledger,
-	}
-
-
-## The roster as a screen reads it: office id to member ids, plus the size.
-## `{}` for a member who joined rather than founded — this ledger knows no roster,
-## which is ADR 0083's open question rather than an empty institution.
-static func _roster_view(ledger: Dictionary) -> Dictionary:
-	var out := {}
-	var total := 0
-	for position_id in SectState.roster(ledger).keys():
-		var row = SectState.roster(ledger)[position_id]
-		if not (row is Array):
-			continue
-		var ids: Array = []
-		for member_id in row as Array:
-			ids.append(String(member_id))
-		out[String(position_id)] = ids
-		total += ids.size()
-	if not out.is_empty():
-		out["size"] = total
-	return out
-
-
-## The walk on one office, as a board screen reads it: which side of the walk the
-## seat is on, how far through it is, how many authored stages there are, and — for
-## an empty seat — `"vacant": true`, which is ADR 0083's middle state spelled out
-## rather than inferred from a blank string.
-static func _succession_view(ledger: Dictionary, office: SectPositionDef) -> Dictionary:
-	var row := SectSuccession.walk(ledger, office.id)
-	var vacant := String(row.get("side", "")) == SectSuccession.VACANT
-	return {
-		"method": String(office.succession_method),
-		"walkable": office.is_walkable_method(),
-		"stages": office.stages().size(),
-		"walked": SectSuccession.walked_of(ledger, office),
-		"periods_required": maxi(0, office.succession_periods),
-		"periods_held": int(row.get("held_periods", 0)),
-		"vacant": vacant,
-		"complete": bool(row.get("complete", false)),
-	}
-
-
-static func _doctrine_view(def: SectDoctrineDef) -> Dictionary:
-	if def == null:
-		return {}
-	var band := def.comprehension_band()
-	return {
-		"id": String(def.id),
-		"display_name": def.display_name,
-		"teachings": _strings(def.teachings),
-		"refusals": _strings(def.refusals),
-		"comprehension_floor": band.x,
-		"comprehension_span": band.y - band.x,
-		"affinity_floor": def.floor_fit(),
-		"fit_per_period": def.fit_per_period,
-		"teach_tax": def.teach_tax,
-	}
-
-
-static func _sect_view(def: SectDef) -> Dictionary:
-	if def == null:
-		return {}
-	var offices: Dictionary = {}
-	for office in def.positions:
-		if office == null or office.id == &"":
-			continue
-		offices[String(office.id)] = {
-			"id": String(office.id),
-			"display_name": office.display_name,
-			"capacity": office.capacity,
-			"standing_floor": office.standing_floor,
-			"succession_method": String(office.succession_method),
-			"succession_param": office.succession_param.duplicate(),
-			"succession_periods": office.succession_periods,
-			"walkable": office.is_walkable_method(),
-			"walk_stages": office.stages().size(),
-			"duties": _strings(office.duties),
-			"authorities": _strings(office.authorities),
-			"standing_percent_stats": office.standing_percent_stats.duplicate(),
-			"patronage_per_period": office.patronage_per_period,
-			"duty_per_period": office.duty_per_period,
-			"teach_tax": office.teach_tax,
-		}
-	var top := def.top_position()
-	return {
-		"id": String(def.id),
-		"display_name": def.display_name,
-		"doctrine_id": String(def.doctrine_id),
-		"top_position_id": "" if top == null else String(top.id),
-		"min_purity": def.min_purity,
-		"standing_cap": def.standing_cap,
-		"founding_cost": def.founding_cost.duplicate(),
-		"treasury_lines": SectFounding.treasury_lines(def),
-		"positions": offices,
-	}
+	return SectPayloads.taught(ledger, gained, tax)
 
 
 static func _strings(values: Array[StringName]) -> Array:
-	var out: Array = []
-	for value in values:
-		out.append(String(value))
-	return out
+	return SectReadModel.strings(values)

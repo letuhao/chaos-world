@@ -7,31 +7,39 @@ extends TestCase
 ## shared ladder reached 1e46, so a single training tick at R30 was worth more
 ## than every other investment in the game put together (ADR 0050).
 ##
-## The three `*RealmProfile` classes are RENAME SEAMS: they alias the constants here and
-## delegate `factor`, because six production call sites are mid-flight in other agents'
-## changes and may not be edited underneath them. They used to be three private curves.
-## That is the state this file exists to make impossible:
+## The three `*RealmProfile` classes that used to be three private curves are
+## GONE (ADR 0116 retired them): `core/realm_rate.gd` is the one implementation
+## and all three paths call it directly. This file exists to make that state
+## impossible to undo quietly:
 ##
-##   - `BodyRealmProfile` / `QiRealmProfile` / `MindRealmProfile` must return the SAME
-##     rate as `RealmRate` at every one of the 30 realms. This is the assertion the
-##     deleted `test_realm_rate_parity.gd` made and the replacement did not: the
-##     replacement read `RealmRate` three times and compared it with itself.
-##   - no module may AUTHOR a `const RATE_STEP`. The only legal line anywhere in the
-##     three cultivation modules is the alias `const RATE_STEP := RealmRate.RATE_STEP`,
-##     so a fourth copy cannot be added quietly, and cannot be added at all by copying.
+##   - no module may AUTHOR a rate. `const RATE_STEP` and `const NEUTRAL` may not
+##     appear anywhere in the three cultivation modules, and `pow(` is banned in
+##     the same pass, because a path that re-derived the curve would be
+##     numerically identical today and free to drift tomorrow.
+##   - no `*RealmProfile` class may be reintroduced by copying an old file back.
+##   - all three paths must be seen READING the shared curve, so a path cannot
+##     quietly go back to a local implementation under another name.
 ##
-## The rest is carried coverage: the rate rises strictly at every realm; the span is a
-## consequence of the authored step rather than a pasted number and stays a gain; an
-## unknown or empty realm id degrades to `NEUTRAL`; and the rate/magnitude split is
-## MACHINE-CHECKED — `RealmScaling` reads the authored `RealmDef.power`, `RealmRate` must
-## not, or the two would count the same realm twice.
+## A value comparison cannot do any of that. The guard that shipped before this
+## one read `RealmRate.factor` three times and compared the results — `x == x` —
+## so it passed unchanged with all three paths back on private curves. That is
+## why these checks read SOURCE rather than numbers: a numerically-identical
+## fourth copy stays green under every value assertion ever written here.
+##
+## The rest is carried coverage: the rate rises strictly at every realm; the span
+## is a consequence of the authored step rather than a pasted number and stays a
+## gain; an unknown or empty realm id degrades to `NEUTRAL`; the step fits inside
+## the AUTHORED work budget, computed from the seeds rather than typed in; and the
+## rate/magnitude split is MACHINE-CHECKED — `RealmScaling` reads the authored
+## `RealmDef.power`, `RealmRate` must not, or the two would count the same realm
+## twice.
 
 const FIRST := &"qi_refining"
 const LAST := &"primordial_origin"
 const UNKNOWN := &"not_a_realm"
 
-## The three cultivation modules, by the directory that holds their seed ladder and the
-## `realm_profile.gd` seam. Enumerated so a FOURTH path cannot join without a decision.
+## The three cultivation modules, by the directory that holds their seed ladder.
+## Enumerated so a FOURTH path cannot join without a decision.
 const PATH_DIRS := ["body_cultivation", "qi_cultivation", "mind_cultivation"]
 
 ## The authored per-realm training budget, read from the realm seeds. `work_required` on
@@ -136,85 +144,97 @@ func test_the_curve_reads_the_ladder_ordinal_and_nothing_else() -> void:
 		)
 
 
-## The assertion the deleted `test_realm_rate_parity.gd` made and the version that
-## replaced it did not. That version called `RealmRate.factor` three times and compared
-## the results with each other — `x == x` — so it would have passed unchanged with all
-## three paths back on private curves, which is the state it was written against.
+## Every cultivation module READS the shared curve. This is the assertion that
+## survives the collapse: parity of a number can only be checked between surfaces
+## that still exist, and there is one surface left. What is still checkable — and
+## what a re-private-isation would break — is that each path reaches for it.
 ##
-## This compares FOUR independent call sites against each other at EVERY realm on the
-## ladder, so one path being retuned or re-implemented fails here and names the path. The
-## number is free to move, but it must move in all four at once.
-func test_every_path_returns_the_same_rate_as_the_shared_curve() -> void:
-	var realms := RealmDefaults.ladder().realms()
-	for realm in realms:
-		var shared := RealmRate.factor(realm.id)
-		assert_almost_eq(
-			BodyRealmProfile.factor(realm.id), shared, "body rates %s as core does" % realm.id, 1e-9
-		)
-		assert_almost_eq(
-			QiRealmProfile.factor(realm.id), shared, "qi rates %s as core does" % realm.id, 1e-9
-		)
-		assert_almost_eq(
-			MindRealmProfile.factor(realm.id), shared, "mind rates %s as core does" % realm.id, 1e-9
-		)
-	assert_eq(realms.size(), 30, "and the whole ladder was walked")
-
-
-## The same four surfaces off the ladder. A path that disagreed here would let a stale
-## rank move one path's rate and not another's.
-func test_every_path_is_neutral_off_the_ladder() -> void:
-	for realm_id in [&"", UNKNOWN]:
-		var shared := RealmRate.factor(realm_id)
-		assert_almost_eq(
-			BodyRealmProfile.factor(realm_id), shared, "body neutral for '%s'" % realm_id
-		)
-		assert_almost_eq(QiRealmProfile.factor(realm_id), shared, "qi neutral for '%s'" % realm_id)
-		assert_almost_eq(
-			MindRealmProfile.factor(realm_id), shared, "mind neutral for '%s'" % realm_id
+## A path that grew its own rate under some other name would still produce the
+## right answers today, so the value assertions above cannot see it. Reading the
+## source can: `RealmRate.factor` must appear in each path, and the call sites
+## named here are the ones that produce training gain and the provider
+## contributions.
+func test_every_path_reads_the_shared_curve() -> void:
+	for path_dir in PATH_DIRS:
+		var source := _module_source(path_dir)
+		assert_ne(source, "", "%s is readable" % path_dir)
+		assert_eq(
+			source.contains("RealmRate.factor"),
+			true,
+			"%s reads the shared rate rather than a local one" % path_dir
 		)
 
 
-## `RATE_STEP` is duplicated TEXT in four files, so compare the four constants directly.
-## A copy edited but no longer exercised — a seam whose `factor` stopped calling it —
-## would otherwise drift while every behavioural test still agreed with itself.
-func test_every_path_names_the_one_authored_step() -> void:
-	var profiles := {"body": BodyRealmProfile, "qi": QiRealmProfile, "mind": MindRealmProfile}
-	for label in profiles:
-		var profile: Variant = profiles[label]
-		assert_eq(profile.RATE_STEP, RealmRate.RATE_STEP, "%s uses the one RATE_STEP" % label)
-		assert_eq(profile.NEUTRAL, RealmRate.NEUTRAL, "%s uses the one NEUTRAL" % label)
-	assert_eq(profiles.size(), 3, "and there really are three paths")
+## The one place each path prices a unit of training, and the one place each
+## provider resolves a realm's factor. Both are named exactly so a future edit
+## cannot quietly route around the shared curve — a path whose `cultivate` stops
+## reading it, or whose `_realm_factor` does, is a path that has stopped being
+## priced in realm rate at all.
+func test_the_training_and_provider_call_sites_read_the_shared_curve() -> void:
+	var expected := {
+		"qi_cultivation/training.gd": "RealmRate.factor(state.rank_id)",
+		"qi_cultivation/provider.gd": "RealmRate.factor(state.rank_id)",
+		"body_cultivation/training.gd": "RealmRate.factor(state.rank_id)",
+		"body_cultivation/provider.gd": "RealmRate.factor(state.rank_id)",
+		"mind_cultivation/training.gd": "RealmRate.factor(state.rank_id)",
+		"mind_cultivation/provider.gd": "RealmRate.factor(state.rank_id)",
+	}
+	for relative in expected:
+		var source := FileAccess.get_file_as_string("res://src/modules/%s" % relative)
+		assert_ne(source, "", "%s is readable" % relative)
+		assert_eq(
+			source.contains(String(expected[relative])),
+			true,
+			"%s prices through the shared rate" % relative
+		)
+	assert_eq(expected.size(), 6, "and all six call sites are covered")
 
 
-## The guard against the FOURTH copy. `const RATE_STEP` may appear exactly once in each
-## cultivation module, and its right-hand side must be the shared constant, so the only way
-## to add a private rate is to delete this line — and the build then goes red naming which
-## module and which line.
+## The three `*RealmProfile` classes are gone and stay gone. Copying an old
+## `realm_profile.gd` back is the exact failure this closes: it would reintroduce
+## three `class_name` declarations and, with them, a second place to retune. The
+## check is for the CLASS NAME rather than the file name, so the copy cannot be
+## renamed out of reach of it.
+func test_no_cultivation_module_carries_a_realm_profile_class() -> void:
+	for path_dir in PATH_DIRS:
+		for class_name_found in _class_names(_module_source(path_dir)):
+			assert_eq(
+				class_name_found.ends_with("RealmProfile"),
+				false,
+				"%s declares %s, a second realm rate" % [path_dir, class_name_found]
+			)
+
+
+## No module may AUTHOR the curve. `RATE_STEP` and `NEUTRAL` are declared in
+## `core/realm_rate.gd` and nowhere else, so the only way to add a second
+## definition is to add one of these lines — and the build then goes red naming
+## which module and which line.
 ##
-## `pow(` is banned by a different route to the same end: a path that re-derived the curve
-## would be numerically identical today and free to drift tomorrow, and searching for the
-## constant alone would not see it.
+## This is deliberately stricter than the guard that shipped with the seams, which
+## allowed exactly one aliased `const RATE_STEP := RealmRate.RATE_STEP` per module
+## on the argument that an alias authors nothing. An alias still leaves three more
+## names to keep in step, and the whole point of the collapse is that there is one
+## place to retune. `core/realm_rate.gd` is where the number lives.
 func test_no_cultivation_module_authors_its_own_rate_step() -> void:
 	for path_dir in PATH_DIRS:
-		var source := FileAccess.get_file_as_string(
-			"res://src/modules/%s/realm_profile.gd" % path_dir
-		)
-		assert_ne(source, "", "%s/realm_profile.gd is readable" % path_dir)
-		assert_eq(source.contains("pow("), false, "%s derives no curve of its own" % path_dir)
-		var authored := _authored_steps(source)
-		assert_eq(
-			authored,
-			["const RATE_STEP := RealmRate.RATE_STEP"],
-			"%s authors one aliased step" % path_dir
-		)
+		for declaration in _const_declarations(_module_source(path_dir)):
+			var const_name := String(declaration).split(" ", false)[1]
+			assert_eq(
+				const_name in ["RATE_STEP", "NEUTRAL"],
+				false,
+				(
+					"%s authors %s — the rate is authored in core/realm_rate.gd only"
+					% [path_dir, declaration]
+				)
+			)
 
 
-## The same rule widened to the WHOLE module directory rather than one file. The seam
-## happens to be named `realm_profile.gd`, but a private step authored beside
-## `training.gd` — or in a new `rates.gd` — would satisfy the file-level pin above while
-## still being a second number. `get_files()` returns a finished array, so there is no
-## directory walk to bound.
-func test_the_rate_step_is_authored_once_across_the_whole_cultivation_layer() -> void:
+## `pow(` is banned by a different route to the same end: a path that re-derived
+## the curve from some other step would be numerically identical today and free to
+## drift tomorrow, and searching for the constant alone would not see it. This
+## reads the WHOLE module directory rather than one file, so a private step
+## authored beside `training.gd` — or in a new `rates.gd` — is caught too.
+func test_no_cultivation_module_derives_a_curve_of_its_own() -> void:
 	for path_dir in PATH_DIRS:
 		var dir := DirAccess.open("res://src/modules/%s" % path_dir)
 		assert_ne(dir, null, "%s is readable" % path_dir)
@@ -225,25 +245,47 @@ func test_the_rate_step_is_authored_once_across_the_whole_cultivation_layer() ->
 			if not file.ends_with(".gd"):
 				continue
 			var path := "res://src/modules/%s/%s" % [path_dir, file]
-			var source := FileAccess.get_file_as_string(path)
-			for step in _authored_steps(source):
-				assert_eq(
-					step,
-					"const RATE_STEP := RealmRate.RATE_STEP",
-					"%s is the only place a rate step may be declared" % path
-				)
+			assert_eq(
+				FileAccess.get_file_as_string(path).contains("pow("),
+				false,
+				"%s derives no curve of its own" % path
+			)
 
 
-## Every `const RATE_STEP` declaration in a source file, as written. Reading the source
+## Every `class_name` a source file declares, as written.
+func _class_names(source: String) -> Array[String]:
+	return _declarations(source, "class_name")
+
+
+## Every `const <NAME> ...` a source file declares, as written. Reading the source
 ## rather than the value is the point: an unexercised copy is invisible to a value
-## comparison, and this is what the deleted parity test's second test was for.
-func _authored_steps(source: String) -> Array[String]:
-	var authored: Array[String] = []
+## comparison, and an unexercised copy is what drifts.
+func _const_declarations(source: String) -> Array[String]:
+	return _declarations(source, "const")
+
+
+func _declarations(source: String, keyword: String) -> Array[String]:
+	var found: Array[String] = []
 	for line in source.split("\n"):
 		var stripped := String(line).strip_edges()
-		if stripped.begins_with("const RATE_STEP"):
-			authored.append(stripped)
-	return authored
+		if stripped.begins_with("%s " % keyword):
+			found.append(stripped)
+	return found
+
+
+## One cultivation module's whole source, every `.gd` file in it concatenated. The
+## guards above are per-directory, not per-file: naming one file would let a
+## private rate be added beside it.
+func _module_source(path_dir: String) -> String:
+	var joined := ""
+	var dir := DirAccess.open("res://src/modules/%s" % path_dir)
+	if dir == null:
+		return joined
+	for file_name in dir.get_files():
+		var file := String(file_name)
+		if file.ends_with(".gd"):
+			joined += FileAccess.get_file_as_string("res://src/modules/%s/%s" % [path_dir, file])
+	return joined
 
 
 ## `RATE_STEP` is authored, but the bound it must respect is not: it has to stay at or

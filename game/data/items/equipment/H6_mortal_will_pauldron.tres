@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:H6_mortal_will_pauldron_recipe"])
+sources = Array[StringName]([&"craft:H6_mortal_will_pauldron_recipe", &"domain:orb_storm_phoenix_domain"])

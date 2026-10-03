@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:J15_earth_void_base_recipe"])
+sources = Array[StringName]([&"craft:J15_earth_void_base_recipe", &"domain:orb_cinder_wyrm_domain"])

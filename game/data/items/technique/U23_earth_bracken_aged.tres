@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"earth"
-sources = Array[StringName]([&"craft:U23_earth_bracken_aged_recipe"])
+sources = Array[StringName]([&"craft:U23_earth_bracken_aged_recipe", &"domain:loot_ember_vault_domain"])

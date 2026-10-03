@@ -17,4 +17,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"craft:veil_celestial_recipe"])
+sources = Array[StringName]([&"craft:veil_celestial_recipe", &"domain:loot_storm_crypt_domain"])

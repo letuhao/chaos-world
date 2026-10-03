@@ -258,3 +258,53 @@ func test_paying_upkeep_again_reactivates_the_contribution() -> void:
 	assert_eq(revived.has(def.id), true, "it changed state again")
 	assert_eq(TechniqueEffects.applied_count(actor, def.id), 2, "contributing again")
 	assert_eq(actor.resource(&"qi").current < 40.0, true, "and it really was paid")
+
+
+# --- The frame cadence ---------------------------------------------------------
+
+
+func test_a_frame_tick_does_not_settle_before_the_interval_elapses() -> void:
+	# `settle_upkeep` charges IMMEDIATELY, and `StatusLoop.tick` calls it once per
+	# frame. Passing the delta makes the facade accumulate it and settle only when an
+	# authored interval has passed; without that, a 60-second upkeep would be charged
+	# sixty times a second and the technique would suspend within one second of being
+	# equipped — an upkeep nobody could ever keep.
+	var actor := _actor(5000.0)
+	var def := _passive({&"qi": 10.0})
+	def.upkeep_interval = 60.0
+	TechniqueCatalog.instance().register(def)
+	TechniquesApi.codex(actor).learn(def.id)
+	TechniquesApi.equip(actor, def)
+	var before := actor.resource(&"qi").current
+
+	# Sixty frames at 1/60s is one second: not yet due.
+	for _frame in 60:
+		TechniquesApi.settle_upkeep(actor, 1.0 / 60.0)
+	assert_almost_eq(actor.resource(&"qi").current, before, "a second of frames charges nothing")
+
+	# Cross the interval and it charges exactly once, not sixty times.
+	for _frame in 60 * 59:
+		TechniquesApi.settle_upkeep(actor, 1.0 / 60.0)
+	assert_almost_eq(
+		actor.resource(&"qi").current,
+		before - 10.0,
+		"and at sixty seconds it has been charged once, not once per frame"
+	)
+
+
+func test_an_unaffordable_upkeep_suspends_through_the_frame_tick() -> void:
+	# The production path end to end: driven by a delta, not by calling the facade's
+	# immediate settle. This is what `StatusLoop.tick` does, and it is what an
+	# unaffordable upkeep has to look like from the game's point of view.
+	var actor := _actor(10.0)
+	var def := _passive({&"qi": 15.0})
+	def.upkeep_interval = 1.0
+	TechniqueCatalog.instance().register(def)
+	TechniquesApi.codex(actor).learn(def.id)
+	TechniquesApi.equip(actor, def)
+	assert_eq(TechniqueEffects.applied_count(actor, def.id), 2, "contributing at first")
+
+	var changed := TechniquesApi.settle_upkeep(actor, 1.5)
+	assert_eq(changed.has(def.id), true, "the interval elapsed and the payment was refused")
+	assert_eq(TechniquesApi.slots(actor).is_equipped(def.id), true, "still equipped (ADR 0054)")
+	assert_eq(TechniqueEffects.applied_count(actor, def.id), 0, "and contributing nothing")

@@ -89,6 +89,7 @@ const KINDS: Dictionary = {
 	KIND_GATHER: {"ref": REF_FORBIDDEN, "shipped": false},
 }
 
+
 ## Every kind this reader knows, in the authored order of [constant KINDS].
 static func kind_ids() -> Array[String]:
 	var out: Array[String] = []

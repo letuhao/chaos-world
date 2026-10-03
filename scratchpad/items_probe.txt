@@ -1,0 +1,288 @@
+{
+ "items_with_non_empty_description": 0,
+ "total_items": 7982,
+ "gather_subcategory_census": {
+  "herb": 224,
+  "ore": 181,
+  "essence": 136,
+  "hide": 102,
+  "ingot": 94,
+  "gemstone": 94,
+  "bone": 87,
+  "scroll": 82,
+  "fragment": 81,
+  "tablet": 78,
+  "core": 58,
+  "filament": 53,
+  "armor": 47,
+  "artifact": 43,
+  "talisman": 41,
+  "sigil": 40,
+  "formula": 32,
+  "salve": 32,
+  "seal": 31,
+  "token": 31,
+  "broth": 30,
+  "draft": 28,
+  "accessory": 27,
+  "weapon": 25,
+  "food": 24,
+  "powder": 24,
+  "manual": 24,
+  "orb": 24,
+  "curio": 21,
+  "tincture": 21
+ },
+ "quest_subcategory_census": {
+  "ore": 159,
+  "herb": 152,
+  "talisman": 119,
+  "essence": 109,
+  "scroll": 90,
+  "hide": 79,
+  "sigil": 76,
+  "seal": 76,
+  "ingot": 74,
+  "gemstone": 74,
+  "token": 71,
+  "fragment": 68,
+  "decree": 65,
+  "bone": 64,
+  "tablet": 63,
+  "formula": 60,
+  "salve": 59,
+  "treaty": 56,
+  "draft": 54,
+  "grease": 53,
+  "lens": 53,
+  "syrup": 53,
+  "filament": 53,
+  "greaves": 52,
+  "bandolier": 52,
+  "ferment": 52,
+  "food": 51,
+  "curio": 50,
+  "core": 48,
+  "powder": 46
+ },
+ "gather_items_that_are_recipe_inputs": 1174,
+ "gather_items_total": 2428,
+ "quest_items_that_are_recipe_inputs": 1214,
+ "gather_items_that_are_recipe_outputs": 373,
+ "gather_category_vs_craft_category": {
+  "gather": {
+   "material": 1432,
+   "consumable": 268,
+   "equipment": 233,
+   "technique": 213,
+   "misc": 74,
+   "currency": 71,
+   "key": 70,
+   "quest": 67
+  },
+  "craft_declaring": {
+   "consumable": 1286,
+   "equipment": 1044,
+   "technique": 843,
+   "material": 114,
+   "currency": 3,
+   "misc": 2
+  }
+ },
+ "gather_SAMPLES_by_category": [
+  {
+   "category": "material",
+   "subcategory": "hide",
+   "id": "C27_earth_currier_tawed",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "is_recipe_input": true
+  },
+  {
+   "category": "material",
+   "subcategory": "tablet",
+   "id": "X26_earth_outlay_tannin",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:A35_route"
+   ],
+   "is_recipe_input": true
+  },
+  {
+   "category": "consumable",
+   "subcategory": "talisman",
+   "id": "B38_divine_drowlat_health_regen_will",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "consumable",
+   "subcategory": "powder",
+   "id": "F54_earth_hedge_cultivation_rate_penetration_qi_regen",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "equipment",
+   "subcategory": "armor",
+   "id": "D5_divine_physique_bulk",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather",
+    "craft:D5_divine_physique_bulk_recipe"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "equipment",
+   "subcategory": "accessory",
+   "id": "fortune_bronze_charm",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:A37_route"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "technique",
+   "subcategory": "treaty",
+   "id": "B37_divine_diocese_breakthrough_chance_crit_chance",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "technique",
+   "subcategory": "talisman",
+   "id": "G24_spirit_hyacinth_cultivation_rate_max_stamina",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "currency",
+   "subcategory": "writ",
+   "id": "A25_divine_assayoffice_capias",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "currency",
+   "subcategory": "writ",
+   "id": "X17_divine_barony_testimonial",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:Y26_route"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "key",
+   "subcategory": "ledger",
+   "id": "A26_immortal_auditroll_account",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "key",
+   "subcategory": "talisman",
+   "id": "V9_immortal_albedo_covenant",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:W24_route"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "misc",
+   "subcategory": "medal",
+   "id": "A28_immortal_assayer_emeritus",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "misc",
+   "subcategory": "medal",
+   "id": "X13_immortal_apothecary_ratification",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:Y25_route"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "quest",
+   "subcategory": "bounty",
+   "id": "A29_divine_coroner_caption",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "is_recipe_input": false
+  },
+  {
+   "category": "quest",
+   "subcategory": "bounty",
+   "id": "X18_divine_beadle_manorial",
+   "display_name": "",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:Y26_route"
+   ],
+   "is_recipe_input": false
+  }
+ ],
+ "authored_quests_on_disk": [
+  "the_returned_instrument.tres",
+  "the_severed_calling.tres",
+  "the_short_road.tres",
+  "the_station_you_held.tres",
+  "what_the_rotation_cost.tres"
+ ],
+ "QUEST_DIR": "D:\\Works\\source\\chaos-world\\game\\data\\quest\\quests",
+ "quest_dir_exists": true,
+ "holdings_data_dir_exists": false,
+ "holdings_nodes_dir_exists": false
+}

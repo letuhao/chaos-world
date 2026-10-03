@@ -19,4 +19,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:beast_ironhide_bear_domain"])

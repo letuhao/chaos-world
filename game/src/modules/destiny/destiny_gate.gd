@@ -17,8 +17,10 @@ extends RefCounted
 ##   `{verb: &"none_of",      of: [ ...requirements ]}`
 ##
 ## A requirement with no verb, or a verb that is not one of the six, refuses
-## closed and names itself. Refuse-with-cause is the house rule: content that is
-## malformed must fail loudly and locally, never open a door it cannot read.
+## closed and names itself — and so does a composite whose `of` list holds
+## anything that is not itself a requirement. Refuse-with-cause is the house
+## rule: content that is malformed must fail loudly and locally, never open a
+## door it cannot read.
 
 
 ## The full verdict, always this shape:
@@ -143,7 +145,7 @@ static func _has_destiny(actor: Actor, requirement: Dictionary) -> Dictionary:
 	var destiny_id := StringName(requirement.get("id", ""))
 	if destiny_id == &"":
 		return _refuse("malformed", requirement, "A has_destiny gate names no destiny id.")
-	var held := _holds_destiny(actor, destiny_id)
+	var held := holds_destiny(_ledger(actor), destiny_id)
 	if held:
 		return _pass()
 	return _fail(&"destiny", destiny_id, true, false, "Requires the destiny '%s'" % destiny_id)
@@ -179,9 +181,25 @@ static func _composite(
 	var children = requirement.get("of", [])
 	if not (children is Array) or (children as Array).is_empty():
 		return _refuse("malformed", requirement, "A composite gate names no children.")
+	# Every ELEMENT is checked, because `children` is only known to be an Array.
+	# A bare string child used to reach `evaluate(actor, child as Dictionary)`,
+	# and that cast is not a refusal — it is a NULL one. `evaluate()` then took
+	# `null.is_empty()` on it, which is a hard engine error, not the documented
+	# `{ok:false, reason:"malformed"}` verdict: a crash where the module promises
+	# a cause. Refused here instead, loudly and locally, naming the parent.
+	#
+	# Deliberately NOT `children as Array[Dictionary]`: that conversion yields an
+	# EMPTY array when any element fails it, so one bad child would silently
+	# reduce `all_of` to no children at all — and `all_of` over nothing is true.
 	var unmet: Array[Dictionary] = []
 	var passed := 0
 	for child in children as Array:
+		if not (child is Dictionary):
+			return _refuse(
+				"malformed",
+				requirement,
+				"A composite gate holds a child that is not a requirement."
+			)
 		var verdict := evaluate(actor, child as Dictionary)
 		if bool(verdict.get("ok", false)):
 			passed += 1
@@ -206,19 +224,54 @@ static func _composite(
 	}
 
 
-## An alias is as good as the destiny it names, so a gate authored against an
-## alias opens once the destiny is earned.
-static func _holds_destiny(actor: Actor, destiny_id: StringName) -> bool:
-	var ledger := _ledger(actor)
+## Whether `ledger` records `destiny_id` **or an alias authored for it**.
+##
+## One place, BOTH directions, because an alias is only a name for the destiny it
+## was declared on and the two are the same answer whichever one is asked for:
+##
+##   forward  — `the_one_who_returned` declares `the_returned`, and holding
+##              either answers for the other. This is what `FateCatalog
+##              .destiny_gate_ids()` lists.
+##   reverse  — `the_returned` is a pure narrative id: no `the_returned.tres`
+##              ships, because the whole point of declaring it is that story can
+##              be authored before the destiny it will answer for exists. So an
+##              id that is not itself a destiny is resolved by scanning the
+##              authored `gate_aliases` for it. Without this, every gate authored
+##              against an alias of an unearned-or-absent definition reads false,
+##              and the alias costs a content author nothing for that.
+##
+## The catalog is cached, so the reverse scan is a walk of the destiny
+## definitions, not of the content tree.
+##
+## Refuses to widen: only an id that some definition DECLARES as its alias
+## resolves, never an id that merely looks like one, and never an alias claimed
+## by two destinies — a contested alias resolves to nothing rather than to
+## whichever definition the scan reached first.
+static func holds_destiny(ledger: Dictionary, destiny_id: StringName) -> bool:
 	if DestinyState.has_destiny(ledger, destiny_id):
 		return true
 	var def := FateCatalog.instance().destiny_definition(destiny_id)
-	if def == null:
+	if def != null:
+		for alias in def.gate_aliases:
+			if DestinyState.has_destiny(ledger, alias):
+				return true
 		return false
-	for alias in def.gate_aliases:
-		if DestinyState.has_destiny(ledger, alias):
-			return true
-	return false
+	return DestinyState.has_destiny(ledger, _alias_target(destiny_id))
+
+
+## The destiny `id` was declared as an alias of, or `&""` when no definition
+## declares it — or when two do. One, not a list, because a list would let an
+## alias satisfy both exclusive branches of the same group, which is the one
+## answer an alias must never be able to give.
+static func _alias_target(id: StringName) -> StringName:
+	var found: Array[StringName] = []
+	for destiny_id in FateCatalog.instance().destiny_ids():
+		var def := FateCatalog.instance().destiny_definition(destiny_id)
+		if def != null and def.gate_aliases.has(id):
+			found.append(destiny_id)
+	if found.size() == 1:
+		return found[0]
+	return &""
 
 
 static func _ledger(actor: Actor) -> Dictionary:

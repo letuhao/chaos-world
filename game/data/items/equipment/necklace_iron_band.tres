@@ -17,4 +17,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:necklace_iron_band_recipe"])
+sources = Array[StringName]([&"craft:necklace_iron_band_recipe", &"domain:qi_immortal_sovereign_trial"])

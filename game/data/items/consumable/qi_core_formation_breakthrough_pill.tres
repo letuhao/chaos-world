@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:qi_core_formation_pill_recipe"])
+sources = Array[StringName]([&"craft:qi_core_formation_pill_recipe", &"domain:mind_foundation_trial"])
 description = "Consumed by the Qi Cultivation attempt entering Core Formation; no equipment modifier."

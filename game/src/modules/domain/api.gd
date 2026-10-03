@@ -22,6 +22,15 @@ const ERR_NO_ACTOR := "no_actor"
 const ERR_NO_MAP := "no_map"
 const ERR_UNKNOWN_ROOM := "unknown_room"
 const ERR_INVALID_CONTRACT := "invalid_contract"
+const ERR_NO_TEMPLATE := "no_such_template"
+const ERR_GENERATION_REFUSED := "generation_refused"
+
+## Where the authored domain content lives. Deliberately under `game/src/data/`, not
+## `game/data/`: `tools data audit` scans `game/data` (DATA_ROOT in tools/data.py) and
+## the 160 legacy `DomainDef` records there are a DIFFERENT, older content set. Keeping
+## the two apart stops the audit from grading defs it cannot cross-reference.
+const TEMPLATE_DIR := "res://src/data/domains/templates"
+const INHABITANT_DIR := "res://src/data/domains/inhabitants"
 
 
 ## Query: the active domain's map as a primitive dictionary, or `{}` when the actor is
@@ -47,11 +56,85 @@ static func map_summary(actor: Actor) -> Dictionary:
 	}
 
 
-## Query: the whole map, canonical and JSON-clean. This is the headless driver's
-## payload (BL-0220): an agent reads the domain without a display.
-static func map_data(actor: Actor) -> Dictionary:
-	var map := _map(actor)
-	return {} if map == null else map.to_dict()
+## Query: the authored domain templates, as primitives, canonical order. This is the
+## CONTENT CATALOGUE: it answers "which domains exist and what shape are they" without
+## generating anything, so a map screen or an agent can list what is authored before it
+## commits to a seed.
+##
+## Lives on the facade rather than behind `DomainGenerator` because listing content and
+## building a map are different questions, and only the second needs the generator.
+static func templates() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	var dir := DirAccess.open(TEMPLATE_DIR)
+	if dir == null:
+		return out
+	var names: Array[String] = []
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+	while file_name != "":
+		if file_name.ends_with(".tres"):
+			names.append(file_name)
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	names.sort()
+	for name in names:
+		var template := load("%s/%s" % [TEMPLATE_DIR, name]) as DomainTemplateDef
+		if template == null:
+			continue
+		(
+			out
+			. append(
+				{
+					"template_id": String(template.template_id),
+					"display_name": template.display_name,
+					"rooms_in_pool": template.room_pool.size(),
+					"pins": template.pins.size(),
+					"min_rooms": template.min_rooms,
+					"max_rooms": template.max_rooms,
+					"path": "%s/%s" % [TEMPLATE_DIR, name],
+				}
+			)
+		)
+	return out
+
+
+## Action: generate a domain from an authored template and enter it. This is the ONE
+## production entry point into a domain, and it closes the chain that was severed at
+## `LootApi.enter_domain` (BL-0394): template -> DomainMap -> contract -> active run.
+##
+## A template that cannot produce a contract-valid map is REFUSED BY NAME rather than
+## entered: a run that starts in a broken map is a run the player cannot finish.
+static func generate_and_enter(
+	actor: Actor, template_id: StringName, seed_value: int = 0
+) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": ERR_NO_ACTOR}
+	var template := _template(template_id)
+	if template == null:
+		return {"ok": false, "reason": ERR_NO_TEMPLATE, "template_id": String(template_id)}
+	var map := DomainGenerator.generate(template, seed_value)
+	if map == null:
+		# The generator has already push_error'd with the template, seed, condition and
+		# numbers; repeating it here would add a second, vaguer message.
+		return {"ok": false, "reason": ERR_GENERATION_REFUSED, "template_id": String(template_id)}
+	return enter(actor, map, template_id)
+
+
+static func _template(template_id: StringName) -> DomainTemplateDef:
+	var dir := DirAccess.open(TEMPLATE_DIR)
+	if dir == null:
+		return null
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+	while file_name != "":
+		if file_name.ends_with(".tres"):
+			var template := load("%s/%s" % [TEMPLATE_DIR, file_name]) as DomainTemplateDef
+			if template != null and template.template_id == template_id:
+				dir.list_dir_end()
+				return template
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	return null
 
 
 ## Query: rooms as primitive dictionaries in canonical order, so a caller can render a
@@ -99,12 +182,18 @@ static func discovered(actor: Actor) -> Array:
 
 ## Query: a flat machine-readable report of the whole domain, for the headless driver
 ## and for tests. `{}` when the actor is not in a domain.
+##
+## Carries the FULL map under `map_data`, not just the shape summary: the driver has to
+## render the domain from this one dictionary, so it needs the rooms and corridors, not
+## only the counts. Folding it in here rather than exposing a second verb is what keeps
+## the facade inside the 12-method cap.
 static func summary(actor: Actor) -> Dictionary:
-	var map_summary := map_summary(actor)
-	if map_summary.is_empty():
+	var shape := map_summary(actor)
+	if shape.is_empty():
 		return {}
 	return {
-		"map": map_summary,
+		"map": shape,
+		"map_data": _map_data(actor),
 		"rooms": rooms(actor).size(),
 		"zones": environment_zones(actor).size(),
 		"population": population(actor).size(),
@@ -178,6 +267,14 @@ static func visit_room(actor: Actor, room_id: StringName, weather: StringName = 
 
 
 # ── internals ────────────────────────────────────────────────────────────────
+
+
+## The whole map, canonical and JSON-clean. PRIVATE and folded into `summary()` rather
+## than exposed: the facade is at its 12-method cap, and the driver reads the map through
+## `summary()["map_data"]`, so a thirteenth verb would buy nothing.
+static func _map_data(actor: Actor) -> Dictionary:
+	var map := _map(actor)
+	return {} if map == null else map.to_dict()
 
 
 static func _state(actor: Actor) -> Dictionary:

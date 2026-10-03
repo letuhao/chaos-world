@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:lantern_star_recipe"])
+sources = Array[StringName]([&"craft:lantern_star_recipe", &"domain:qi_spirit_condensation_trial"])

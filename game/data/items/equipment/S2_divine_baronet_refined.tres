@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:S2_divine_baronet_refined_recipe"])
+sources = Array[StringName]([&"craft:S2_divine_baronet_refined_recipe", &"domain:monster_venom_scorpion_domain"])

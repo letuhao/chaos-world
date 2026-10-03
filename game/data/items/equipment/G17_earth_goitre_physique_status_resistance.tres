@@ -17,4 +17,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:marine_abyssal_kraken_domain"])

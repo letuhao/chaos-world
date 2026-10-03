@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:H2_heaven_comprehension_jade_recipe"])
+sources = Array[StringName]([&"craft:H2_heaven_comprehension_jade_recipe", &"domain:codex_void_serpent_domain"])

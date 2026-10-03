@@ -17,6 +17,6 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"gem"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"domain:totem_iron_bull_domain"])
 tags = Array[StringName]([&"socket_item", &"socket_kind:defense"])
 description = "Socket item. Defensive gem; while its host is worn it adds physical defence and health."

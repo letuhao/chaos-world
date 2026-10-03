@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"earth"
-sources = Array[StringName]([&"quest:decree_fourth_edict"])
+sources = Array[StringName]([&"quest:decree_fourth_edict", &"domain:treasure_gilded_beetle_domain"])

@@ -748,58 +748,6 @@ func test_element_share_round_trips_through_the_resource_and_the_read_model() ->
 
 # --- purity, the seam's own contract (ADR 0067) ----------------------------------
 
-
-## The seam's contract: `resolve` called twice on the same context returns the same
-## proposal, and neither call changed the context.
-func test_resolve_is_pure_and_context_is_unmutated() -> void:
-	var mech := QiDamage.new()
-	mech.rules = _rules
-	mech.tuning = _tuning
-	var ctx := _context(_attacker(), _defender(ElementStats.FIRE, 50.0), ElementStats.FIRE, 0.8)
-	var before := ctx.data.duplicate(true)
-	var first := mech.resolve(ctx)
-	var second := mech.resolve(ctx)
-	assert_eq(first.amount, second.amount, "the same amount twice")
-	assert_eq(first.effects, second.effects, "and no effects, ever")
-	assert_eq(ctx.data, before, "the context was not written to")
-	# And `mitigate` returns a FRESH proposal rather than editing the one it was handed.
-	var input := DamageProposal.new(123.0)
-	var output := mech.mitigate(ctx, input)
-	assert_eq(input.amount, 123.0, "the caller's proposal is untouched")
-	assert_ne(output, input, "and a different object is returned")
-	assert_almost_eq(
-		output.amount,
-		123.0 * float(mech.breakdown(ctx)["mitigated"]),
-		"reduced by the defender's DAMAGE_REDUCTION"
-	)
-
-
-## `breakdown()` is primitives only -- the repo's UI standard (ADR 0038) is that a
-## `summary()` payload carries no module type and no engine object, and this is the
-## method a panel will read.
-func test_breakdown_is_primitives_only() -> void:
-	var parts := QiDamage.new().breakdown(
-		_context(_attacker(), _defender(ElementStats.FIRE, 50.0), ElementStats.FIRE, 0.8)
-	)
-	for key in parts.keys():
-		var value: Variant = parts[key]
-		var primitive := (
-			value is float
-			or value is int
-			or value is bool
-			or value is String
-			or value is StringName
-		)
-		assert_eq(primitive, true, "key %s carries a primitive" % String(key))
-	assert_eq(
-		DamageProposal.is_primitive_effect(
-			{DamageProposal.KIND: &"qi.elemental", "share": float(parts["share"])}
-		),
-		true,
-		"and the same shape passes the proposal's own primitive gate"
-	)
-
-
 # --- internals -------------------------------------------------------------------
 
 

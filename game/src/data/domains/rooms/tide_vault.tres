@@ -25,4 +25,7 @@ size = Vector2i(10, 8)
 actor_spawn_refs = Array[Dictionary]([
 	{"ref_id": &"tide_sentinel", "inhabitant_id": &"frost_sentinel", "role": &"miniboss", "count": 1}
 ])
+fixtures = Array[Dictionary]([
+	{"fixture_id": &"tide_vault_hoard", "kind": &"treasure", "tags": Array[StringName]([&"treasure_unkeyed", &"cold", &"deep"]), "position": Vector2i(6, 5), "bounds": Rect2i(6, 5, 3, 2), "reward_item_id": &"tide_vault_hoard_of_shells", "reward_count": 1, "key_item_id": &"", "requires_realm": &"", "telegraph_s": 0.0, "damage_share": 0.0, "status_id": &"", "duration_s": 0.0, "mitigation_tags": Array[StringName]([])}
+])
 environment_zones = Array[EnvironmentZoneDef]([SubResource("zone_tide")])

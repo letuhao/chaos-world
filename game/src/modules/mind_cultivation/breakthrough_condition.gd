@@ -23,8 +23,9 @@ func can_breakthrough(actor: Actor, state: PathState, _context: Dictionary) -> b
 	if target_seed == null or source_seed == null or sea == null:
 		return false
 	return (
-		state.progress >= target_seed.progress_required
-		and actor.stats.derived(Stat.COMPREHENSION) >= target_seed.comprehension_required
+		# MUTATION-BL0161-1
+
+		actor.stats.derived(Stat.COMPREHENSION) >= target_seed.comprehension_required
 		and sea.turbulence <= 0.0
 		and sea.clarity >= source_seed.clarity_required
 		and sea.purity >= source_seed.purity_required

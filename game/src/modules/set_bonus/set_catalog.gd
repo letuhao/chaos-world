@@ -102,6 +102,67 @@ func unique_ids() -> Array[StringName]:
 	return out
 
 
+## The slots each of a set's members may occupy, in `member_ids()` order.
+##
+## The ruling comes from the item definition's own authored subtype rule, read
+## through the items module's value object rather than through its internals, so
+## `set_bonus` holds no copy of it. An unruled subtype gets every wearable slot,
+## because that is what `Equipment.equip` grants it; a subtype authored as
+## wearing nowhere gets none, which is the same answer for the same reason.
+##
+## `Equipment.SLOTS` is named directly and deliberately: the wearable slot ids are
+## the vocabulary both sides count in, not behaviour owned by one module, and
+## re-deriving the list here would be a second copy that could drift.
+func member_slots(set_id: StringName) -> Array:
+	var out: Array = []
+	var set_def := set_definition(set_id)
+	if set_def == null:
+		return out
+	for member_id in set_def.member_ids():
+		var def := definition(member_id)
+		if def == null or not def.is_wearable():
+			out.append([])
+			continue
+		var allowed: Array = def.wearable_slots()
+		out.append(allowed if not allowed.is_empty() else Equipment.SLOTS.duplicate())
+	return out
+
+
+## Which slot each member of `set_id` can be worn in at once, in
+## `member_ids()` order, `&""` for a member that cannot be placed. This is the
+## answer a caller acts on: equipping index `i` into this result's `i` is a legal
+## arrangement that reaches [method max_wearable] distinct members.
+func placement(set_id: StringName) -> Array[StringName]:
+	return SetPlacement.assign(member_slots(set_id))
+
+
+## The most distinct members of `set_id` a body can ever have equipped at once.
+##
+## A threshold is satisfied only by what is actually worn, and a body has exactly
+## `Equipment.SLOTS` places to wear it — so a tier above this is unreachable
+## content rather than a reward. It is a placement, not a minimum of two counts:
+## `min(member_count(), Equipment.SLOTS.size())` cannot see that two artifacts
+## contend for one artifact slot, and it called a six-member tier on a five-slot
+## body reachable. See [SetPlacement].
+func max_wearable(set_id: StringName) -> int:
+	return SetPlacement.placed_count(member_slots(set_id))
+
+
+## Which authored tiers of `set_id` no body can ever reach. Empty means the whole
+## ladder is winnable, which is what the content suite asserts over the shipped
+## sets.
+func unreachable_tier_indices(set_id: StringName) -> Array[int]:
+	var out: Array[int] = []
+	var set_def := set_definition(set_id)
+	if set_def == null:
+		return out
+	var ceiling := max_wearable(set_id)
+	for index in set_def.tiers.size():
+		if int((set_def.tiers[index] as Dictionary).get("count", 0)) > ceiling:
+			out.append(index)
+	return out
+
+
 func _ensure_loaded() -> void:
 	if _loaded:
 		return
@@ -133,10 +194,17 @@ func _load_items() -> void:
 			_tree_ids[String(def.id)] = true
 
 
-## One JSON object per line. Keys: `unique_id`, `set_id`, `domain_id`,
-## `route_realm`, `min_rarity`, `drop_weight`. `boss_id` is deliberately absent:
-## the definition's route tag owns it, and a second copy of a fact two files
-## disagree about is how a drop route rots.
+## One JSON object per line. Keys: `unique_id`, `domain_id`, `route_realm`,
+## `min_rarity`, `drop_weight`.
+##
+## `boss_id` and `slot` are deliberately absent: the definition's route tag owns
+## the first and its `subcategory` owns the second, and a second copy of a fact
+## two files disagree about is how a drop route rots. `set_id` is absent for the
+## same reason and is derived from the set definitions instead — this module
+## already knows which set lists a unique, so a column repeating it could only
+## ever disagree with the membership that counts. `domain_id` is kept because the
+## boss's own domain belongs to a module this one may not name; a guard pins the
+## two together, so a disagreement is loud rather than silent.
 func _load_routes() -> void:
 	if not FileAccess.file_exists(ROUTES_PATH):
 		push_error("SetCatalog: unique route index missing at %s" % ROUTES_PATH)

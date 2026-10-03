@@ -174,3 +174,32 @@ static func spawn_npc(
 	# is realm-FLAT on exactly the units that were authored high.
 	_refresh_element_realm(actor)
 	return actor
+
+
+## Mint one inhabitant of a DOMAIN (ADR 0074) — a mob, a mini-boss, a boss, an npc or a
+## rival cultivator.
+##
+## `DomainSpawner.set_minter(...)` wires this in, exactly as `NpcApi.set_minter` wires
+## `spawn_npc`: the domain module names no concrete actor type, so `app/` is the only
+## layer that resolves a def into a living actor (dependency inversion, ADR 0002).
+##
+## **Every inhabitant of this game is an `Actor`** — the project's defining constraint —
+## so this builds through `build()` and gets the SAME provider spine the player gets. A
+## mini-boss and a mob differ by magnitude and by tag, never by which script they extend.
+##
+## The signature is `(inhabitant_id, base)` because that is exactly what
+## `domain_spawner.gd:220` passes. The cultivation path is attached by `DomainSpawner`
+## itself when the def declares it cultivates: enrolling every creature on a path would
+## make a rat a qi cultivator, so "does this creature cultivate" is an AUTHORED decision
+## and never a default.
+static func spawn_inhabitant(
+	inhabitant_id: StringName = &"inhabitant", base: Dictionary = {}
+) -> Actor:
+	var actor := build(inhabitant_id, base)
+	# Social state on every inhabitant, so an npc can hold a bond and be the subject of
+	# one exactly as the player can (ADR 0091).
+	SocialApi.attach(actor)
+	# LAST, so a realm-bearing def has already been enrolled by the spawner and
+	# `apply_realm_modifiers` has a realm to read.
+	_refresh_element_realm(actor)
+	return actor

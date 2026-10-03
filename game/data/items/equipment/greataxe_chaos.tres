@@ -18,4 +18,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:greataxe_chaos_recipe"])
+sources = Array[StringName]([&"craft:greataxe_chaos_recipe", &"domain:tome_gilded_crane_domain"])

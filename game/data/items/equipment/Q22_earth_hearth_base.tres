@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:Q22_earth_hearth_base_recipe", &"quest:Q22_earth_hearth_line"])
+sources = Array[StringName]([&"craft:Q22_earth_hearth_base_recipe", &"quest:Q22_earth_hearth_line", &"domain:succubus_immortal_domain"])

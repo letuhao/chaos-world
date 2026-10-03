@@ -171,16 +171,53 @@ func test_unknown_room_kind_is_reported() -> void:
 	assert_eq(_contains(problems, "unknown kind"), true, "an unknown room kind is reported")
 
 
-func test_spawn_ref_in_a_non_hostile_room_is_reported() -> void:
+func test_spawn_ref_in_an_empty_room_is_reported() -> void:
 	var map := handcrafted_map()
 	var grove := map.room(&"entry_grove")
 	grove.kind = &"settlement"
 	grove.actor_spawn_refs = [_spawn("n1", "elder", "npc", 1)] as Array[Dictionary]
-	# settlement is social, so a spawn ref is legitimate; flip it empty to make it wrong.
+	# A `social` band legitimately holds an npc, so this alone is CORRECT content. Flipping
+	# it to `empty` makes it wrong: an `empty` room is a breather and takes no spawn at all.
 	grove.roster_band = &"empty"
 	var problems := DomainMapContract.assert_valid(map)
 	assert_eq(
-		_contains(problems, "non-hostile"), true, "a hostile ref in a breather room is reported"
+		_contains(problems, "does not permit"),
+		true,
+		"a spawn ref in an `empty` breather room is reported: %s" % ", ".join(problems)
+	)
+
+
+func test_a_social_room_may_hold_an_npc() -> void:
+	# The counterpart to the test above: `social` exists to hold inhabitants, so an npc
+	# elder in a settlement is legal and must NOT be reported. Without this, the rule
+	# would be satisfied by simply forbidding every spawn in every non-hostile room.
+	var map := handcrafted_map()
+	var grove := map.room(&"entry_grove")
+	grove.kind = &"settlement"
+	grove.roster_band = &"social"
+	grove.actor_spawn_refs = [_spawn("n1", "elder", "npc", 1)] as Array[Dictionary]
+	assert_eq(
+		DomainMapContract.assert_valid(map).size(),
+		0,
+		(
+			"a settlement holding an npc passes the contract: %s"
+			% ", ".join(DomainMapContract.assert_valid(map))
+		)
+	)
+
+
+func test_a_social_room_refuses_a_hostile_role() -> void:
+	# A settlement is not a battlefield: a mob in a `social` band is as wrong as any
+	# spawn in an `empty` one, and the rule must catch both.
+	var map := handcrafted_map()
+	var grove := map.room(&"entry_grove")
+	grove.kind = &"settlement"
+	grove.roster_band = &"social"
+	grove.actor_spawn_refs = [_spawn("m1", "hound", "mob", 1)] as Array[Dictionary]
+	assert_eq(
+		_contains(DomainMapContract.assert_valid(map), "does not permit"),
+		true,
+		"a mob in a social room is reported"
 	)
 
 

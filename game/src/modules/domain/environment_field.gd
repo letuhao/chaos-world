@@ -10,6 +10,14 @@ extends RefCounted
 ## `Actor.add_status`; the consequences unfold under `Actor.tick_statuses`, so a hazard
 ## obeys the same duration, stacking and cleanse rules as every other status.
 ##
+## ## The status is not a label; it carries the resolved strength
+##
+## The status handed over carries `magnitude` = the residual THIS actor carries after
+## mitigation, a non-zero `tick_interval`, and a declared `stacking` mode, so a pulse is
+## worth something and a re-entry is a refresh rather than an unbounded stack. A caller
+## that only checks `has_status` is reading presence, not consequence: the load-bearing
+## assertions live on `magnitude` and on what `tick_statuses` actually pays.
+##
 ## The load-bearing rule is ONE status id and THREE structurally different substrates.
 ## qi, body and mind share exactly ONE power ladder (`RealmRate`) and must otherwise
 ## have different mechanisms (ADR 0066). A zone that handed all three paths the same
@@ -40,10 +48,26 @@ extends RefCounted
 ## `domain` declares `core` + `contracts` only, so this file reads no sibling module's
 ## class. Gear, techniques and pills are read as TAG LISTS under the three
 ## `module_data` keys this file owns, which is the repo's established seam for module
-## state on an `Actor` (see `CombatDuel.MODULE_KEY`, `LootState.MODULE_KEY`). The
-## owning module publishes the tags it wants this field to see; nothing here walks
-## another module's payload, so a save written by a newer version of one cannot break
-## this resolution.
+## state on an `Actor` (see `CombatDuel.MODULE_KEY`, `LootState.MODULE_KEY`). Nothing
+## here walks another module's payload, so a save written by a newer version of one
+## cannot break this resolution.
+##
+## ## What is NOT wired up, stated plainly
+##
+## **Nothing in production writes the three tag keys.** Measured over
+## `game/src/**/*.gd`: `env_gear_tags`, `env_technique_tags` and `env_pill_tags` are
+## named in exactly two places — this file's constants and its own test, which writes
+## them by hand to stand in for the owning module. No `items`, `techniques` or
+## `ui/` code publishes them. So `LEVER_GEAR`, `LEVER_TECHNIQUE` and `LEVER_PILL` are
+## RESOLVABLE and REACHABLE but not yet REACHABLE FROM PLAY: they fire only when a
+## caller has put the tags there itself. `LEVER_AFFINITY` is the one lever that fires
+## on its own, because a spirit root is already on the actor.
+##
+## The seam is still worth its three keys — it is what a future `items` publish has to
+## write into, and the repo prefers a named slot over an ad-hoc payload walk. But it is
+## a CONTRACT, not a live feature, and this paragraph is here so nobody reads a green
+## test over `test_gear_reduces_the_amount_when_affinity_is_not_published` and
+## concludes a ward in the inventory already works.
 
 # ── the three cultivation paths, and nothing else branches on them ────────────
 
@@ -156,11 +180,20 @@ const TECHNIQUE_CAP := 0.30
 const PILL_CAP := 0.35
 
 const LEVER_SUBSTRATES: Dictionary = {
+	# `SUBSTRATE_GRADED_BODY` is here because it is the ONE substrate that grades
+	# acute damage by an element, which is what makes a spirit root the honest
+	# answer to it. BL-0247 gives `toxic`/`pressure` a `graded_body_trauma` on
+	# `PATH_BODY` (`:106,:121`) precisely so a wrong-root body cultivator is hurt
+	# MORE, and `toxic` is hostile to `wood`/`verdant` to `wood` (`:202,:206`) —
+	# a wood root blunting that is the design, not a side effect. It was missing
+	# from this list, so `_moves` said `false` for every affinity-rooted body
+	# cultivator and the lever never fired at all.
 	LEVER_AFFINITY:
 	[
 		SUBSTRATE_QI_POOL,
 		SUBSTRATE_QI_THROUGHPUT,
 		SUBSTRATE_OVERGROWTH,
+		SUBSTRATE_GRADED_BODY,
 	],
 	LEVER_GEAR:
 	[
@@ -222,11 +255,69 @@ const BODY_GEAR_FACTOR := 0.75
 ## permanent, and permanence is not something an authored band grants by accident.
 const MIN_DURATION := 0.5
 
+## The authored `env_scourge` def. The hazard's cadence, magnitude ceiling and
+## share-per-pulse are BALANCE, and this repo authors balance as content:
+## `EnvironmentZoneDef.MAGNITUDES` is a table rather than a curve
+## (`environment_zone_def.gd:54`), and ADR 0090's whole claim is that adding a status
+## is a file rather than a literal inside a rule. Retuning the hazard is a `.tres` edit.
+##
+## ## Why `res://src/data/` and not `res://data/statuses/`
+##
+## `StatusCatalog.STATUSES_ROOT` is `res://data/statuses` (`status_catalog.gd:31`) and
+## that tree is a CLOSED twenty whose exact id set is pinned by
+## `tests/modules/status/test_status_catalogue.gd:60` — adding a twenty-first id breaks
+## that suite, which is not this file's to change. `env_scourge` could not live there in
+## any case: it rides NO element, and `StatusDef.problems()` refuses a def that declares
+## none (`status_def.gd:186`), because every status in that catalogue is inflicted by an
+## element-bearing blow. A hazard is not a blow — it is a place.
+##
+## `domain` keeps its authored content under `res://src/data/` for the same reason
+## `domain/api.gd:28-33` gives: `tools data audit` scans `game/data`, so a domain def
+## authored there would be graded by rules it was never written against.
+const SCOURGE_DEF_PATH := "res://src/data/statuses/env_scourge.tres"
+
+## How many pulses one stay window pays. Derived from the authored `stay_budget` and
+## the def's `tick_interval` rather than authored separately, because it is the ratio
+## between two authored numbers and a third literal is a place for them to disagree.
+const PULSES_PER_STAY := 4
+
+## The cadence the hazard falls back to when the def cannot be read. Matches the
+## authored `tick_interval` in `env_scourge.tres` so the degradation is invisible, and
+## is `stay_budget / PULSES_PER_STAY` for the shipped `8.0` budget.
+const TICK_INTERVAL := 2.0
+
+## The strongest hazard this field can resolve, and the ceiling a re-application is held
+## under. It is `EnvironmentZoneDef.MAGNITUDES`'s loudest row (`void` band 3 = `2.00`):
+## a residual is the authored magnitude times one minus a lever cap, so it can never
+## exceed the authored value, and this is that value's maximum.
+const MAX_MAGNITUDE := 2.0
+
 ## Marker slots an owning module publishes the tags this field reads under. `domain`
 ## reads exactly these three keys and no others.
+##
+## ## UNPUBLISHED: nothing writes these in production
+##
+## Measured over `game/src/**/*.gd`, these three ids appear nowhere except the
+## constants below and `tests/modules/domain/test_environment_field.gd`, which writes
+## them itself. So `GEAR_CAP`, `TECHNIQUE_CAP` and `PILL_CAP` are live caps that a
+## correctly-published tag list would honour, and the levers are reachable only by a
+## caller that has already published. `LEVER_AFFINITY` needs no key — a spirit root is
+## on the actor from character creation — which is why it is the only lever that fires
+## in a real run. See the class docblock.
 const GEAR_TAGS_KEY := &"env_gear_tags"
 const TECHNIQUE_TAGS_KEY := &"env_technique_tags"
 const PILL_TAGS_KEY := &"env_pill_tags"
+
+## The authored def, cached after the first read, or null when the file is missing or
+## unreadable. A missing def is NOT fatal: `_hazard` falls back to `TICK_INTERVAL` so a
+## content gap degrades the hazard rather than refusing the whole zone. `static`
+## because the content tree is immutable for the length of a run and every actor
+## resolves the same cadence — the one-cache-per-tree shape `StatusCatalog.shared` uses
+## (`status_catalog.gd:34`). Declared after the consts because `gdlintrc` orders
+## `staticvars` below `consts`, so a block placed with the ladder it belongs to would
+## fail the whole file on a style rule.
+static var _def_cache: Variant = null
+static var _def_loaded: bool = false
 
 
 ## What standing in `zone` does to `actor`, who cultivates `path_id`.
@@ -278,9 +369,16 @@ static func apply(actor: Actor, zone: EnvironmentZoneDef, path_id: StringName) -
 		# Standing inside a zone re-applies on `stay_budget`, so the timer is refreshed
 		# rather than a second entry appended. Refusing instead would let the status
 		# lapse mid-stay; appending would stack it without a stacking rule anywhere.
+		#
+		# REFRESH keeps the STRONGER magnitude (`status_registry.gd:151`), so this also
+		# carries a re-resolved amount rather than only the timer: a player who equips
+		# a ward mid-stay must get the smaller number, not keep the pre-ward one. The
+		# cap is the zone's own authored ceiling rather than a floor, so a zone whose
+		# band is authored BELOW what is already held cannot be talked up by refresh.
 		existing.remaining = duration
+		existing.magnitude = minf(amount, existing.magnitude)
 		return _result(false, zone.status_id, amount, lever, "refreshed an existing status")
-	actor.add_status(StatusEffect.new(zone.status_id, duration))
+	actor.add_status(_hazard(zone, duration, amount))
 	return _result(true, zone.status_id, amount, lever, "")
 
 
@@ -381,6 +479,80 @@ static func primary_path(actor: Actor) -> StringName:
 
 
 # ── resolution ───────────────────────────────────────────────────────────────
+
+
+## The `StatusEffect` a zone actually lands, carrying the residual `amount` the field
+## resolved FOR THIS ACTOR — not the authored magnitude and not zero.
+##
+## ## Why this is not `StatusEffect.new(id, life)`
+##
+## The two-argument constructor leaves every other field at its contract default
+## (`contracts/status_effect.gd:52-96`), and those defaults are the silent kind: a DOT
+## with `magnitude = 0.0` and `tick_interval = 0.0` still ages out, still answers
+## `has_status` true, and pays nothing. That was the live state of this file: the
+## residual was computed at `_amount` and then thrown into a return dictionary nobody
+## acted on, so a player standing in a hazard was mechanically untouched.
+##
+## Each field is set because the tick path reads it:
+## - `magnitude` — what `StatusRegistry.tick` reports on `status_ticked`
+##   (`status_registry.gd:109`), so a pulse is worth something.
+## - `tick_interval` — a non-zero cadence, because `_pulses_due` returns `0` for a
+##   status with none and the DOT never fires.
+## - `stacking` — REFRESH, which is the whole re-entry rule: one instance per
+##   `(actor, status_id)`, and a weaker re-application never shortens a stronger one.
+## - `kind` — DOT, so a consumer reading the contract knows this spends over time
+##   rather than holding a stat.
+##
+## `mitigation_tags` is copied off the ZONE, and that is the honest source rather than
+## a fallback: ADR 0075 makes `EnvironmentZoneDef.mitigation_tags` the authored
+## counterplay for a zone, and `has_mitigation()` (`contracts/status_effect.gd:114`)
+## reads the same four levers. Copying them is what makes the applied status answer
+## true to `has_mitigation()` instead of looking like a hazard nothing can push back
+## against. `EnvironmentZoneDef` is a `Resource` of THIS module, so reading it is
+## in-module and crosses no `domain` -> `status` edge (`tools/arch/registry.json:54`).
+static func _hazard(zone: EnvironmentZoneDef, duration: float, amount: float) -> StatusEffect:
+	var effect := StatusEffect.new(zone.status_id, duration)
+	effect.kind = StatusEffect.Kind.DOT
+	# CULTIVATION scope, not COMBAT: an environment is never opposed by
+	# `Stat.STATUS_RESISTANCE`, because the hazard is a place rather than an attack and
+	# taxing the player for walking into authored scenery is not a difficulty knob.
+	effect.scope = StatusEffect.Scope.CULTIVATION
+	# REFRESH, not STACK: a zone re-applies on `stay_budget` from one entry point, so a
+	# stack would make standing still RAISE the damage on every re-apply. REFRESH is the
+	# rule that keeps one hazard one hazard, and it is the same rule the refresh branch
+	# in `apply` honours by hand.
+	effect.stacking = StatusEffect.Stacking.REFRESH
+	effect.magnitude = minf(maxf(amount, 0.0), MAX_MAGNITUDE)
+	effect.magnitude_cap = MAX_MAGNITUDE
+	effect.tick_interval = hazard_cadence()
+	effect.mitigation_tags = zone.mitigation_tags.duplicate()
+	return effect
+
+
+## The authored hazard def, or null when it cannot be read. Public so a screen or an
+## audit can ask whether the hazard has content behind it rather than discovering it
+## from a hazard that silently pays nothing.
+static func hazard_def() -> StatusDef:
+	if _def_loaded:
+		return _def_cache as StatusDef
+	_def_loaded = true
+	if not ResourceLoader.exists(SCOURGE_DEF_PATH):
+		_def_cache = null
+		return null
+	var loaded := load(SCOURGE_DEF_PATH)
+	_def_cache = loaded as StatusDef
+	return _def_cache as StatusDef
+
+
+## Seconds between hazard pulses: the def's authored `tick_interval`, else [constant
+## TICK_INTERVAL]. A zero would be the silent failure this file exists to have fixed —
+## `_pulses_due` returns `0` for a status with no interval (`status_registry.gd:168`),
+## so a DOT would age out and never pay.
+static func hazard_cadence() -> float:
+	var def := hazard_def()
+	if def == null or def.tick_interval <= 0.0:
+		return TICK_INTERVAL
+	return def.tick_interval
 
 
 ## The lever that actually reduces this zone for this actor on this path, or `""`.

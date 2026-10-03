@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:B17_spirit_cambist_aged_recipe"])
+sources = Array[StringName]([&"craft:B17_spirit_cambist_aged_recipe", &"domain:qi_earth_immortal_trial"])

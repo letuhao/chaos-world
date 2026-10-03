@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:W18_heaven_candelabrum_base_recipe", &"quest:W18_heaven_candelabrum_line"])
+sources = Array[StringName]([&"craft:W18_heaven_candelabrum_base_recipe", &"quest:W18_heaven_candelabrum_line", &"domain:beast_ironhide_bear_domain"])

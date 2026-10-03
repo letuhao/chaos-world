@@ -11,8 +11,9 @@ rarity = &"legendary"
 realm = &"immortal_sovereign"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 34.65},
+	{"option_id": &"trade_value", "value": 18},
 ])
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"token"
 grade = &"immortal"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:qi_spirit_domain_trial"])

@@ -20,7 +20,9 @@ extends TestCase
 ## 2. it is the `DirAccess` terminator (`!= ""`, or `not entry.is_empty()` fed by
 ##    `dir.get_next()`), bounded by the directory's contents rather than game state;
 ## 3. it drains a container, proven by a mutating `pop_*` / `remove_*` / `erase`
-##    on the very container the condition tests -- each call strictly shrinks it;
+##    on the very container the condition tests, INSIDE ITS OWN BODY -- each call
+##    strictly shrinks it, once per pass. `clear()` is not one of them: it empties
+##    a container once and leaves the loop spinning on an empty one;
 ## 4. its body breaks or returns, so an unreachable condition still ends the loop;
 ## 5. it fills a container toward a fixed count, proven by an `append` to that
 ##    container at the loop's own indentation -- not nested in a branch, because
@@ -138,7 +140,7 @@ func _is_bounded(condition: String, source: String) -> bool:
 			return true
 	# 3. A container the body provably shrinks.
 	var drained := _drained_container(condition)
-	if drained != "" and _shrinks_container(source, drained):
+	if drained != "" and _shrinks_container(_loop_body(source, condition), drained):
 		return true
 	# 5. A container the body provably fills toward a fixed count.
 	if _fills_unconditionally(source, condition):
@@ -196,9 +198,16 @@ func _drained_container(condition: String) -> String:
 	return ""
 
 
-func _shrinks_container(source: String, container: String) -> bool:
-	for verb in ["pop_front", "pop_back", "pop_at", "remove_at", "erase", "clear"]:
-		if source.contains(container + "." + verb):
+## The container the loop TESTS, shrunk by the loop's OWN body. Both halves are
+## scoped to the body, and the earlier version of this searched the whole file,
+## which made an `.erase(...)` in a different function read as this loop draining
+## it — so a loop that left the container exactly as full as it found it passed.
+## `clear()` is deliberately absent: it empties the container ONCE and advances
+## nothing, so `while queue.size() > 0:` over such a body spins on an emptied
+## container forever. `tests/arch_rules/test_drain_rule_shape.gd` pins both.
+func _shrinks_container(body: String, container: String) -> bool:
+	for verb in ["pop_front", "pop_back", "pop_at", "remove_at", "erase"]:
+		if body.contains(container + "." + verb):
 			return true
 	return false
 

@@ -13,8 +13,21 @@ extends RefCounted
 ## in combat could unequip, a fight you were winning would strip you mid-fight, and
 ## a player could never opt out of an upkeep they could not afford.
 
+## The shortest interval a technique may author. Anything below this would settle
+## every frame regardless of what it asked for, so a zero or negative `upkeep_interval`
+## degrades to "not every frame" instead of "every frame".
+const MIN_INTERVAL := 1.0
+
 ## technique_id -> true when suspended. Absent means active.
 var _suspended: Dictionary = {}
+
+## Seconds accumulated toward the next settlement. `settle` charges a technique's
+## upkeep IMMEDIATELY, so a caller that invokes it per frame would drain the pool
+## sixty times a second and make every upkeep unaffordable within a second. The
+## accumulator is what lets the composition root's frame tick (`StatusLoop.tick`,
+## ADR 0089) drive upkeep on the same clock as statuses and bonds without either
+## system owning a clock of its own.
+var _elapsed: float = 0.0
 
 
 func is_suspended(technique_id: StringName) -> bool:
@@ -30,6 +43,41 @@ func suspended() -> Array[StringName]:
 
 func clear() -> void:
 	_suspended.clear()
+	_elapsed = 0.0
+
+
+## Accumulate `delta` and settle only when an interval has genuinely elapsed. Returns
+## the ids that changed state on THIS call, so a caller pays for a rebuild only when
+## something moved. A `settle` that finds nothing due is free.
+func advance(actor: Actor, delta: float, equipped: Array[StringName]) -> Array[StringName]:
+	if actor == null:
+		return []
+	_elapsed += maxf(0.0, delta)
+	var interval := _shortest_interval(equipped)
+	# The epsilon is not cosmetic. A frame tick adds 1/60 sixty times, and float
+	# accumulation lands that sum a hair UNDER 60.0 — so a strict `<` never fires at
+	# exactly one interval and a 60-second upkeep silently never charges. The
+	# tolerance is far below MIN_INTERVAL, so it can never settle early by a
+	# meaningful amount.
+	if interval <= 0.0 or _elapsed < interval - 0.001:
+		return []
+	_elapsed -= interval
+	return settle(actor, equipped)
+
+
+## The shortest authored interval among the equipped techniques that declare upkeep,
+## or 0 when none do. The shortest wins so no technique is ever charged late, and
+## `MIN_INTERVAL` bounds a zero that would otherwise settle on every frame.
+func _shortest_interval(equipped: Array[StringName]) -> float:
+	var shortest := 0.0
+	for technique_id in equipped:
+		var def := TechniqueCatalog.instance().definition(technique_id)
+		if def == null or def.upkeep.is_empty():
+			continue
+		var interval := maxf(def.upkeep_interval, MIN_INTERVAL)
+		if shortest <= 0.0 or interval < shortest:
+			shortest = interval
+	return shortest
 
 
 ## Drop the suspension record for a technique that is no longer equipped, so a

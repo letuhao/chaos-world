@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"divine"
-sources = Array[StringName]([&"craft:I46_divine_gaslight_base_recipe", &"quest:I46_divine_gaslight_line"])
+sources = Array[StringName]([&"craft:I46_divine_gaslight_base_recipe", &"quest:I46_divine_gaslight_line", &"domain:mind_great_ascension_trial"])

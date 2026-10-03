@@ -19,5 +19,5 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"mortal"
 tags = Array[StringName]([&"common"])
-sources = Array[StringName]([&"craft:scroll_rice_recipe"])
+sources = Array[StringName]([&"craft:scroll_rice_recipe", &"domain:amulet_storm_phoenix_domain"])
 description = "A scroll made from rice paper. Slightly more refined than hemp."

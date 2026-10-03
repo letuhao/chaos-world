@@ -17,4 +17,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:accessory_silver_ring_recipe"])
+sources = Array[StringName]([&"craft:accessory_silver_ring_recipe", &"domain:mind_core_formation_trial"])

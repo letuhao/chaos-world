@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mind_void_refinement_pill_recipe"])
+sources = Array[StringName]([&"craft:mind_void_refinement_pill_recipe", &"domain:mind_great_luo_trial"])
 description = "Consumed by the Mind Cultivation attempt entering Perception; no equipment modifier."

@@ -58,12 +58,13 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 		return false
 	# One unit of training work is worth the realm's RATE, and only the rate: this
 	# is a bounded per-realm number that says how much this realm's training
-	# counts, never how strong a thing from this realm is. See `realm_profile.gd`
-	# for why those are different numbers. `BodyTraining.meditate` deliberately
-	# does not read it — comprehension is earned from the insight-gain stat, so
-	# body and qi cannot drift apart on two different ladders.
+	# counts, never how strong a thing from this realm is. See
+	# `core/realm_rate.gd` for why those are different numbers.
+	# `BodyTraining.meditate` deliberately does not read it — comprehension is
+	# earned from the insight-gain stat, so body and qi cannot drift apart on two
+	# different ladders.
 	var energy := (
-		amount * BodyRealmProfile.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
+		amount * RealmRate.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
 	)
 	# Fill the shared body_integrity pool, not per-acupoint storage.
 	acupoint_set.fill(energy)

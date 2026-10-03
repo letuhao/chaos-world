@@ -20,4 +20,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:shield_boar_recipe"])
+sources = Array[StringName]([&"craft:shield_boar_recipe", &"domain:manual_thunder_ape_domain"])

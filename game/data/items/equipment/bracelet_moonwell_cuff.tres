@@ -17,4 +17,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:bracelet_moonwell_cuff_recipe"])
+sources = Array[StringName]([&"craft:bracelet_moonwell_cuff_recipe", &"domain:marine_coral_leviathan_domain"])

@@ -11,8 +11,9 @@ rarity = &"magic"
 realm = &"spirit_sovereign"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 2, "contexts": ["base"]}
 subcategory = &"sigil"
 grade = &"spirit"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:mind_dao_fruit_trial"])

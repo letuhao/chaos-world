@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:K19_earth_blood_refined_recipe"])
+sources = Array[StringName]([&"craft:K19_earth_blood_refined_recipe", &"domain:body_qi_refining_trial"])

@@ -19,5 +19,5 @@ roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"divine"
 tags = Array[StringName]([&"celestial"])
-sources = Array[StringName]([&"craft:scroll_celestial_recipe"])
+sources = Array[StringName]([&"craft:scroll_celestial_recipe", &"domain:amulet_iron_sage_domain"])
 description = "The ultimate scroll, containing celestial-grade cultivation truths."

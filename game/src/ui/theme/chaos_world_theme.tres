@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=52 format=3]
+[gd_resource type="Theme" load_steps=55 format=3]
 
 ; The single UI theme for the Chaos World UI program. Every control this program
 ; creates inherits it; no node carries a style or colour override. Rarity and
@@ -588,6 +588,64 @@ content_margin_top = 8.0
 content_margin_right = 10.0
 content_margin_bottom = 8.0
 
+; --- Codex stack: earned fate / destiny against locked one (ADR 0065) --------
+;
+; Same three-state discipline as the institution stack above, for the same reason:
+; "Earned, never chosen" is only legible if a thing the hero OWNS never looks
+; like a thing they do not. So the three entries are distinct surfaces, not one
+; card in three greys — an earned card sits on the brighter `card` ink with the
+; warm gold edge a filled seat gets, a locked card recedes into the list-panel
+; ink with a hairline ash border, and a destiny card (the loudest thing in the
+; codex) takes the gold edge at a heavier weight than either.
+
+[sub_resource type="StyleBoxFlat" id="earned_card"]
+bg_color = Color(0.114, 0.114, 0.137, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.478, 0.408, 0.239, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="locked_card"]
+bg_color = Color(0.055, 0.055, 0.071, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.24, 0.22, 0.18, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="destiny_card"]
+bg_color = Color(0.16, 0.13, 0.06, 0.5)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.898, 0.749, 0.318, 0.55)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+
 [resource]
 default_font_size = 15
 Label/colors/font_color = Color(0.851, 0.843, 0.812, 1)
@@ -696,3 +754,36 @@ OpenStandoffCard/styles/panel = SubResource("open_standoff_card")
 ClosedStandoffCard/styles/panel = SubResource("closed_standoff_card")
 PrizeLabel/colors/font_color = Color(0.898, 0.749, 0.318, 1)
 PrizeLabel/font_sizes/font_size = 14
+
+; --- Codex variations: fate and destiny (ADR 0065) --------------------------
+;
+; A locked entry is never painted in the ink of an earned one. `LockedLabel` is
+; the quiet end of the pair, and it is the same "empty" the game already uses for
+; an absent but real value: `MetaLabel`'s grey body text, a step smaller, and a
+; hairline `list_panel` card behind it. Gold is spent on the accents (screen
+; title, prize, a filled seat) and never on a text that names what the hero
+; still owes, so the two never read as one flat list.
+
+FateNameLabel/colors/font_color = Color(0.898, 0.749, 0.318, 1)
+FateNameLabel/font_sizes/font_size = 17
+EarnedLabel/colors/font_color = Color(0.949, 0.851, 0.643, 1)
+EarnedLabel/font_sizes/font_size = 17
+LockedLabel/colors/font_color = Color(0.667, 0.639, 0.576, 1)
+LockedLabel/font_sizes/font_size = 12
+
+; The strongest weight in the codex goes to a held destiny — the narrative payoff
+; — and to nothing else on this screen, so it cannot be confused with a fate name
+; one step below it.
+DestinyNameLabel/colors/font_color = Color(1, 0.965, 0.871, 1)
+DestinyNameLabel/font_sizes/font_size = 20
+DestinyLockedLabel/colors/font_color = Color(0.667, 0.639, 0.576, 1)
+DestinyLockedLabel/font_sizes/font_size = 14
+
+; The bearing is the author's voice, not body copy: a cool celadon sets it apart
+; from the description's green, so a payoff never reads as a stat line.
+BearingLabel/colors/font_color = Color(0.749, 0.878, 0.831, 1)
+BearingLabel/font_sizes/font_size = 15
+
+EarnedCard/styles/panel = SubResource("earned_card")
+LockedCard/styles/panel = SubResource("locked_card")
+DestinyCard/styles/panel = SubResource("destiny_card")

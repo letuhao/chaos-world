@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:J18_heaven_gold_anointed_recipe"])
+sources = Array[StringName]([&"craft:J18_heaven_gold_anointed_recipe", &"domain:qi_dao_ancestor_trial"])

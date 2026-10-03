@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:D9_divine_pierce_talon_recipe"])
+sources = Array[StringName]([&"craft:D9_divine_pierce_talon_recipe", &"domain:qi_body_integration_trial"])

@@ -11,8 +11,9 @@ rarity = &"rare"
 realm = &"spirit_condensation"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"ledger"
 grade = &"earth"
-sources = Array[StringName]([&"quest:ledger_of_ash"])
+sources = Array[StringName]([&"quest:ledger_of_ash", &"domain:qi_spirit_manifestation_domain"])

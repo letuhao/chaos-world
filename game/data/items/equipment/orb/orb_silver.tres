@@ -17,4 +17,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:orb_silver_recipe"])
+sources = Array[StringName]([&"craft:orb_silver_recipe", &"domain:body_body_integration_trial"])

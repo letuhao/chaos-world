@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:censer_ash_recipe"])
+sources = Array[StringName]([&"craft:censer_ash_recipe", &"domain:qi_transcendent_domain"])

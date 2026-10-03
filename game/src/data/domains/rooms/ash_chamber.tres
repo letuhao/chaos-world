@@ -13,3 +13,7 @@ size = Vector2i(9, 7)
 actor_spawn_refs = Array[Dictionary]([
 	{"ref_id": &"ash_hound", "inhabitant_id": &"cinder_hound", "role": &"mob", "count": 2}
 ])
+fixtures = Array[Dictionary]([
+	{"fixture_id": &"ash_chamber_vein", "kind": &"trap", "tags": Array[StringName]([&"trap_vein", &"ember", &"ruined"]), "position": Vector2i(2, 3), "bounds": Rect2i(2, 3, 2, 2), "reward_item_id": &"", "reward_count": 0, "key_item_id": &"", "requires_realm": &"", "telegraph_s": 1.0, "damage_share": 0.07, "status_id": &"fire_immolation", "duration_s": 6.0, "mitigation_tags": Array[StringName]([&"gear", &"affinity"])},
+	{"fixture_id": &"ash_chamber_collapse", "kind": &"trap", "tags": Array[StringName]([&"trap_vein", &"stone", &"ruined"]), "position": Vector2i(6, 5), "bounds": Rect2i(6, 5, 2, 2), "reward_item_id": &"", "reward_count": 0, "key_item_id": &"", "requires_realm": &"", "telegraph_s": 1.6, "damage_share": 0.10, "status_id": &"earth_quake", "duration_s": 5.0, "mitigation_tags": Array[StringName]([&"technique", &"pill"])}
+])

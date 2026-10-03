@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:D4_divine_fortune_charm_recipe"])
+sources = Array[StringName]([&"craft:D4_divine_fortune_charm_recipe", &"domain:mind_dao_ancestor_trial"])

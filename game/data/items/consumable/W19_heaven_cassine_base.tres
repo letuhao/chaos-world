@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"ferment"
 grade = &"heaven"
-sources = Array[StringName]([&"craft:W19_heaven_cassine_base_recipe", &"quest:W19_heaven_cassine_line"])
+sources = Array[StringName]([&"craft:W19_heaven_cassine_base_recipe", &"quest:W19_heaven_cassine_line", &"domain:body_dao_fruit_trial"])

@@ -17,4 +17,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:accessory_heaven_sash_recipe"])
+sources = Array[StringName]([&"craft:accessory_heaven_sash_recipe", &"domain:qi_primordial_immortal_trial"])

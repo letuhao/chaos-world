@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:N7_spirit_granite_refined_recipe"])
+sources = Array[StringName]([&"craft:N7_spirit_granite_refined_recipe", &"domain:qi_immortal_sovereign_trial"])

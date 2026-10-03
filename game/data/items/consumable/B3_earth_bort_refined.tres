@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"grease"
 grade = &"earth"
-sources = Array[StringName]([&"craft:B3_earth_bort_refined_recipe"])
+sources = Array[StringName]([&"craft:B3_earth_bort_refined_recipe", &"domain:qi_foundation_trial"])

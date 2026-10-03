@@ -209,6 +209,93 @@ func test_population_reports_roles_not_classes() -> void:
 	assert_eq(population[1]["count"], 2, "a group is a count, not two rows")
 
 
+# ── the authored content catalogue and the one production entry point ─────────
+
+
+func test_templates_lists_the_authored_domains() -> void:
+	var templates := DomainApi.templates()
+	assert_eq(templates.is_empty(), false, "the authored catalogue is reachable from the facade")
+	var ids: Array[String] = []
+	for entry in templates:
+		ids.append(entry["template_id"])
+	assert_eq(ids.size(), templates.size(), "every catalogue row names its template")
+	for entry in templates:
+		assert_eq(entry["template_id"] != "", true, "no anonymous template")
+		assert_eq(entry["rooms_in_pool"] > 0, true, "a template with no room pool is not a domain")
+		assert_eq(entry["min_rooms"] > 0, true, "a template declares a room floor")
+		assert_eq(entry["path"].ends_with(".tres"), true, "and the path it was loaded from")
+
+
+func test_templates_are_canonically_ordered() -> void:
+	var first := DomainApi.templates()
+	var second := DomainApi.templates()
+	assert_eq(first.size(), second.size(), "the catalogue is stable between calls")
+	var names: Array[String] = []
+	for entry in first:
+		names.append(entry["template_id"])
+	assert_eq(names, _sorted(names), "template ids are in canonical order, not directory order")
+
+
+func test_generate_and_enter_produces_a_playable_run() -> void:
+	var actor := _actor()
+	var templates := DomainApi.templates()
+	assert_eq(templates.is_empty(), false, "there is something to generate")
+	var result := DomainApi.generate_and_enter(actor, StringName(templates[0]["template_id"]), 7)
+	assert_eq(result.get("ok"), true, "generate_and_enter succeeds: %s" % str(result))
+	# The whole chain is exercised: template -> DomainMap -> contract -> active run.
+	assert_eq(DomainApi.map_summary(actor).get("room_count") > 0, true, "a real map is active")
+	assert_eq(DomainApi.rooms(actor).size() > 0, true, "with rooms")
+	assert_eq(DomainApi.population(actor).size() > 0, true, "and a population to walk into")
+
+
+func test_generate_and_enter_refuses_by_name() -> void:
+	var actor := _actor()
+	var missing := DomainApi.generate_and_enter(actor, &"no_such_domain", 1)
+	assert_eq(missing.get("ok"), false, "an unknown template is refused")
+	assert_eq(missing.get("reason"), DomainApi.ERR_NO_TEMPLATE, "with a named reason")
+	assert_eq(DomainApi.map_summary(actor), {}, "and no run was started")
+	assert_eq(
+		DomainApi.generate_and_enter(null, &"ember_grotto", 1).get("reason"),
+		DomainApi.ERR_NO_ACTOR,
+		"a null actor is refused"
+	)
+
+
+func test_the_same_seed_gives_the_same_run_twice() -> void:
+	var templates := DomainApi.templates()
+	if templates.is_empty():
+		assert_eq(true, true, "no templates authored; nothing to compare")
+		return
+	var template_id := StringName(templates[0]["template_id"])
+	var first := _actor()
+	var second := _actor()
+	DomainApi.generate_and_enter(first, template_id, 1234)
+	DomainApi.generate_and_enter(second, template_id, 1234)
+	assert_eq(
+		JSON.stringify(DomainApi.summary(first)),
+		JSON.stringify(DomainApi.summary(second)),
+		"the same template and seed produce the identical run (AC6 through the facade)"
+	)
+
+
+func test_summary_carries_the_whole_map_for_the_driver() -> void:
+	var actor := _actor()
+	DomainApi.generate_and_enter(actor, StringName(DomainApi.templates()[0]["template_id"]), 3)
+	var summary := DomainApi.summary(actor)
+	# The driver renders the domain from this ONE dictionary, so the full map has to be
+	# here - not only the counts.
+	assert_eq(summary.has("map_data"), true, "summary carries the full map")
+	var rooms_in_map: int = (summary["map_data"] as Dictionary)["rooms"].size()
+	assert_eq(rooms_in_map, summary["rooms"], "the carried map agrees with the room count")
+	assert_eq(summary["discovered"], 1, "a fresh run has discovered only its entry")
+
+
+func _sorted(values: Array[String]) -> Array[String]:
+	var out := values.duplicate()
+	out.sort()
+	return out
+
+
 # ── state hygiene ────────────────────────────────────────────────────────────
 
 

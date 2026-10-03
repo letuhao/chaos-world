@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:X10_heaven_albedo_base_recipe", &"quest:X10_heaven_albedo_line"])
+sources = Array[StringName]([&"craft:X10_heaven_albedo_base_recipe", &"quest:X10_heaven_albedo_line", &"domain:qi_great_luo_domain"])

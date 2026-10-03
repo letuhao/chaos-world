@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="InhabitantDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/inhabitant_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+inhabitant_id = &"cinder_hound"
+display_name = "Cinder Hound"
+realm_id = &""
+base = {&"physique": 9.0, &"spirit": 3.0, &"aptitude": 2.0, &"comprehension": 2.0, &"agility": 14.0, &"will": 6.0, &"fortune": 4.0}
+cultivates = false
+hostile = true
+tags = Array[StringName]([&"beast", &"ember", &"pack"])

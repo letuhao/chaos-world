@@ -19,5 +19,5 @@ roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"heaven"
 tags = Array[StringName]([&"epic"])
-sources = Array[StringName]([&"craft:scroll_flame_recipe"])
+sources = Array[StringName]([&"craft:scroll_flame_recipe", &"domain:codex_iron_sage_domain"])
 description = "A burning scroll wreathed in heavenly flame. Heaven-grade power."

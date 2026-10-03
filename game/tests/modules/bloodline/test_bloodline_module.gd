@@ -49,11 +49,13 @@ func _own_sources(actor: Actor) -> Array:
 func _own_traits(actor: Actor) -> Array:
 	var out: Array = []
 	for trait_id in actor.traits.to_array():
-		if (
-			String(trait_id).begins_with(BloodlineState.TRAIT_PREFIX)
-			or String(trait_id).begins_with("t_")
-		):
-			out.append(String(trait_id))
+		# `str()`, not `String()`: this build has no callable `String` constructor for a
+		# StringName, so `String(trait_id)` throws. A throw aborts the test mid-function,
+		# which the runner reports as "the run above is incomplete" rather than as a
+		# failure — the suite would still print a pass count while this never ran.
+		var text := str(trait_id)
+		if text.begins_with(BloodlineState.TRAIT_PREFIX) or text.begins_with("t_"):
+			out.append(text)
 	out.sort()
 	return out
 

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=8 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -63,6 +63,234 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_5"
+kind = &"item"
+item_id = &"A32_immortal_cabinetwork_curioserie"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_6"
+kind = &"item"
+item_id = &"C13_heaven_cole_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_7"
+kind = &"item"
+item_id = &"C9_earth_cochineal_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_8"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_8"
+kind = &"item"
+item_id = &"F11_mortal_drayage_agility_aptitude_attack_spiritual_qi_absorption"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_9"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_9"
+kind = &"item"
+item_id = &"F37_mortal_frolic_health_regen_loot_bonus_qi_absorption"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_10"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_10"
+kind = &"item"
+item_id = &"G15_heaven_glissade_dao_heart_fortune"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_11"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_11"
+kind = &"item"
+item_id = &"H7_mortal_fortune_idol"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_12"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_12"
+kind = &"item"
+item_id = &"I67_immortal_gruffalo_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_13"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_13"
+kind = &"item"
+item_id = &"M3_mortal_cinder_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_14"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_14"
+kind = &"item"
+item_id = &"Q23_earth_ironwood_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_15"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_15"
+kind = &"item"
+item_id = &"R9_spirit_marl_coupon"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_16"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_16"
+kind = &"item"
+item_id = &"U19_heaven_arbalest_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_17"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_17"
+kind = &"item"
+item_id = &"W4_immortal_arbour_foible"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_18"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_18"
+kind = &"item"
+item_id = &"X8_heaven_aerie_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_19"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_19"
+kind = &"item"
+item_id = &"Z31_immortal_contiguous_pyx"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_20"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_20"
+kind = &"item"
+item_id = &"bounty_hermit_mark"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_21"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_21"
+kind = &"item"
+item_id = &"gloves_iron_gauntlets"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_22"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_22"
+kind = &"item"
+item_id = &"pouch_moonpetal_herb"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_23"]
+script = ExtResource("2_entry")
+id = &"d5_thunder_crane_domain_23"
+kind = &"item"
+item_id = &"sigil_mist_herb"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_thunder_crane"
@@ -76,5 +304,24 @@ entries = Array[LootEntry]([
 	SubResource("entry_1"),
 	SubResource("entry_2"),
 	SubResource("entry_3"),
-	SubResource("entry_4")
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7"),
+	SubResource("entry_8"),
+	SubResource("entry_9"),
+	SubResource("entry_10"),
+	SubResource("entry_11"),
+	SubResource("entry_12"),
+	SubResource("entry_13"),
+	SubResource("entry_14"),
+	SubResource("entry_15"),
+	SubResource("entry_16"),
+	SubResource("entry_17"),
+	SubResource("entry_18"),
+	SubResource("entry_19"),
+	SubResource("entry_20"),
+	SubResource("entry_21"),
+	SubResource("entry_22"),
+	SubResource("entry_23")
 ])

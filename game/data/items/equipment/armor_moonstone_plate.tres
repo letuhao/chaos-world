@@ -17,4 +17,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:armor_moonstone_plate_recipe"])
+sources = Array[StringName]([&"craft:armor_moonstone_plate_recipe", &"domain:body_core_formation_trial"])

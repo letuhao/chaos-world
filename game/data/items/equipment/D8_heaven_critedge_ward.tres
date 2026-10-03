@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"gather", &"craft:D8_heaven_critedge_ward_recipe"])
+sources = Array[StringName]([&"gather", &"craft:D8_heaven_critedge_ward_recipe", &"domain:puppet_iron_dancer_domain"])

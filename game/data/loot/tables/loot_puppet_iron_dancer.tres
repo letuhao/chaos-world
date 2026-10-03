@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=25 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -39,6 +39,234 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_3"
+kind = &"item"
+item_id = &"B14_earth_caldron_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_4"
+kind = &"item"
+item_id = &"C1_mortal_choux_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_5"
+kind = &"item"
+item_id = &"D8_heaven_critedge_ward"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_6"
+kind = &"item"
+item_id = &"F16_spirit_egret_agility_aptitude_defense_spiritual_qi_absorption"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_7"
+kind = &"item"
+item_id = &"F41_spirit_germinal_cooldown_reduction_health_regen_spirit"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_8"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_8"
+kind = &"item"
+item_id = &"G20_earth_hoist_evasion_stamina_regen"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_9"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_9"
+kind = &"item"
+item_id = &"I18_spirit_embattlement_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_10"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_10"
+kind = &"item"
+item_id = &"J16_earth_iron_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_11"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_11"
+kind = &"item"
+item_id = &"N2_mortal_brine_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_12"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_12"
+kind = &"item"
+item_id = &"Q5_divine_cutlass_targe"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_13"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_13"
+kind = &"item"
+item_id = &"S3_divine_cobbler_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_14"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_14"
+kind = &"item"
+item_id = &"V12_mortal_almanac_novelty"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_15"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_15"
+kind = &"item"
+item_id = &"W8_earth_birchen_matte"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_16"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_16"
+kind = &"item"
+item_id = &"Y17_divine_freehold_chevron"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_17"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_17"
+kind = &"item"
+item_id = &"Z35_heaven_millstone_spessartine"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_18"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_18"
+kind = &"item"
+item_id = &"carvebone_femur"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_19"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_19"
+kind = &"item"
+item_id = &"incense_agarwood"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_20"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_20"
+kind = &"item"
+item_id = &"qi_nascent_soul_qi_herb"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_21"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_domain_21"
+kind = &"item"
+item_id = &"succubus_heaven_essence"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_puppet_iron_dancer"
@@ -50,5 +278,24 @@ allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
-	SubResource("entry_2")
+	SubResource("entry_2"),
+	SubResource("entry_3"),
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7"),
+	SubResource("entry_8"),
+	SubResource("entry_9"),
+	SubResource("entry_10"),
+	SubResource("entry_11"),
+	SubResource("entry_12"),
+	SubResource("entry_13"),
+	SubResource("entry_14"),
+	SubResource("entry_15"),
+	SubResource("entry_16"),
+	SubResource("entry_17"),
+	SubResource("entry_18"),
+	SubResource("entry_19"),
+	SubResource("entry_20"),
+	SubResource("entry_21")
 ])

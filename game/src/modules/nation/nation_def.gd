@@ -40,6 +40,15 @@ extends Resource
 @export var initial_offices: Dictionary = {}
 @export var tags: Array[StringName] = []
 
+## Who this polity acts FIRST among the institutions competing for one period's
+## budget (BL-0198). **An integer, because the tie-break is structural and no
+## generator is consulted**: candidates sort by `(act_priority, institution_id)` and
+## `institution_id` is a `StringName`, so the second key is lexicographic and total —
+## ties are impossible by construction, so no seed has to be saved and a test can run
+## the identical walk a hundred times and get identical output. Higher acts sooner; it
+## is an ORDER, never a magnitude, and it is never multiplied by anything.
+@export var act_priority: int = 0
+
 
 ## The polity's own claim, created on demand. Never null after this call, so no
 ## caller has to null-check a `.tres` field an author may simply have left empty.

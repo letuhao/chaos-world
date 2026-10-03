@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -51,6 +51,234 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_4"
+kind = &"item"
+item_id = &"B26_earth_cassowary_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_5"
+kind = &"item"
+item_id = &"C25_mortal_counterpole_breakthrough_chance_max_stamina_aptitude"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_6"
+kind = &"item"
+item_id = &"E14_divine_gutward_shamble"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_7"
+kind = &"item"
+item_id = &"F21_divine_equerry_agility_attack_physical_physique_spirit"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_8"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_8"
+kind = &"item"
+item_id = &"F47_divine_graphitic_attack_speed_breakthrough_chance_evasion"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_9"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_9"
+kind = &"item"
+item_id = &"G25_heaven_iconoclast_crit_chance_qi_regen"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_10"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_10"
+kind = &"item"
+item_id = &"I29_spirit_flote_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_11"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_11"
+kind = &"item"
+item_id = &"K12_spirit_silk_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_12"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_12"
+kind = &"item"
+item_id = &"O16_divine_relentless_cycle_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_13"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_13"
+kind = &"item"
+item_id = &"R11_earth_mastic_handbill"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_14"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_14"
+kind = &"item"
+item_id = &"T16_immortal_tinder_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_15"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_15"
+kind = &"item"
+item_id = &"V18_divine_antithesis_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_16"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_16"
+kind = &"item"
+item_id = &"X15_immortal_assay_delegation"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_17"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_17"
+kind = &"item"
+item_id = &"Y22_immortal_tenement_impression"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_18"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_18"
+kind = &"item"
+item_id = &"Z39_earth_xenolith_banderole"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_19"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_19"
+kind = &"item"
+item_id = &"currency_ancestral_tablet"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_20"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_20"
+kind = &"item"
+item_id = &"mantle_moon"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_21"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_21"
+kind = &"item"
+item_id = &"quest_immortal_relic"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_22"]
+script = ExtResource("2_entry")
+id = &"qi_void_refinement_warden_domain_22"
+kind = &"item"
+item_id = &"treaty_seventeenth_clause"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_void_refinement_warden"
@@ -63,5 +291,24 @@ entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
 	SubResource("entry_2"),
-	SubResource("entry_3")
+	SubResource("entry_3"),
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7"),
+	SubResource("entry_8"),
+	SubResource("entry_9"),
+	SubResource("entry_10"),
+	SubResource("entry_11"),
+	SubResource("entry_12"),
+	SubResource("entry_13"),
+	SubResource("entry_14"),
+	SubResource("entry_15"),
+	SubResource("entry_16"),
+	SubResource("entry_17"),
+	SubResource("entry_18"),
+	SubResource("entry_19"),
+	SubResource("entry_20"),
+	SubResource("entry_21"),
+	SubResource("entry_22")
 ])

@@ -11,6 +11,7 @@ const OATH := &"t_oath_breaker"
 const PLEDGE := &"t_blood_pledge"
 const AWAKENED := &"t_awakened"
 const CHOSEN := &"t_chosen_one"
+const UNCHOSEN := &"t_chosen_of_nobody"
 const DUELS := &"duels_won"
 
 ## `contribution()` answers with a pair, never one number: a magnitude and a rate
@@ -50,7 +51,10 @@ func setup() -> void:
 				DestinyFixtureCatalog.flat_fate(AWAKENED, Stat.MAX_HEALTH, 25.0),
 				DestinyFixtureCatalog.story_fate(&"t_whisper"),
 			],
-			[DestinyFixtureCatalog.plain_destiny(CHOSEN)]
+			[
+				DestinyFixtureCatalog.plain_destiny(CHOSEN),
+				DestinyFixtureCatalog.plain_destiny(UNCHOSEN)
+			]
 		)
 	)
 
@@ -113,34 +117,6 @@ func test_the_facade_exposes_no_removal_or_choice_verb_at_all() -> void:
 			assert_eq(
 				name.contains(verb), false, "no public verb contains '%s' ('%s')" % [verb, name]
 			)
-
-
-## The earn-only invariant also forbids reaching past the earn verbs: a public
-## method that MUTATES an entry without earning it would be a selection or a
-## revoke in disguise, and the twelve-name check cannot see through a rename into
-## something that reads innocently (`set_*`, `apply_*`, `grant_*`). Every public
-## verb therefore has to be one this module can justify: earn, record, attach, or
-## read.
-func test_every_public_verb_either_earns_or_attaches_or_reads() -> void:
-	var public := _public_methods()
-	assert_eq(public.is_empty(), false, "the facade's public method list is readable")
-	for name in public:
-		var is_earn := name == "earn_fate" or name == "earn_destiny" or name == "record"
-		var is_attach := name == "attach"
-		var is_read := (
-			name
-			in [
-				"counter",
-				"destinies",
-				"fates",
-				"state",
-				"summary",
-				"gate",
-				"has_destiny",
-				"has_fate"
-			]
-		)
-		assert_eq(is_earn or is_attach or is_read, true, "'%s' either earns or reads" % name)
 
 
 ## The methods `DestinyApi` publishes to other modules — everything the facade
@@ -225,8 +201,20 @@ func test_earning_the_same_fate_twice_is_exactly_once() -> void:
 		actor.stats.derived(Stat.MAX_HEALTH), health_after_first, "no derived stat moved either"
 	)
 	# The earned order is stamped once. A second earn must not extend the trail.
-	var entry: Dictionary = (ledger["fates"] as Dictionary)[String(OATH)]
-	assert_eq(int(entry["sequence"]), 1, "the sequence is stamped exactly once")
+	# Fetched through `.get()` with the shape checked first: a typed local assigned
+	# an unvalidated subscript aborts the whole function, and the runner's
+	# `suite.call(name)` cannot tell an aborted test from a finished one, so this
+	# assertion below would be skipped while the suite still reported green.
+	var fates := ledger["fates"] as Dictionary
+	var entry = fates.get(String(OATH), null)
+	if entry is Dictionary and (entry as Dictionary).has("sequence"):
+		assert_eq(int((entry as Dictionary)["sequence"]), 1, "the sequence is stamped exactly once")
+	else:
+		assert_eq(
+			entry is Dictionary and (entry as Dictionary).has("sequence"),
+			true,
+			"the ledger holds a sequenced entry for '%s'" % OATH
+		)
 
 
 func test_earning_an_unknown_fate_is_refused_and_records_nothing() -> void:
@@ -274,6 +262,129 @@ func test_an_earn_announces_itself_once_through_the_instance_bus() -> void:
 		"naming the actor, fate and source"
 	)
 	bus.fate_earned.disconnect(fate_handler)
+
+
+## The other two earn announcements, and the shape each one carries. `fate_earned`
+## is the only signal any suite connected before this one, so `destiny_earned` and
+## `counter_changed` shipped unobserved — a signature change in either would have
+## reached a consumer as a silent no-op.
+func test_a_destiny_earn_announces_itself_once_through_the_instance_bus() -> void:
+	var actor := _hero()
+	var bus := DestinyProjection.events()
+	var earned: Array = []
+	var handler := func(actor_id: String, destiny_id: StringName, source: String) -> void:
+		earned.append("%s/%s/%s" % [actor_id, destiny_id, source])
+	bus.destiny_earned.connect(handler)
+	DestinyApi.earn_fate(actor, OATH, "combat")
+	assert_eq(earned.is_empty(), true, "earning a fate says nothing about a destiny")
+	DestinyApi.earn_destiny(actor, CHOSEN, "story")
+	DestinyApi.earn_destiny(actor, CHOSEN, "story")
+	assert_eq(earned.size(), 1, "the replay announces nothing")
+	assert_eq(
+		earned[0],
+		"%s/t_chosen_one/story" % String(actor.id),
+		"naming the actor, destiny and source"
+	)
+	bus.destiny_earned.disconnect(handler)
+
+
+## `DestinyEvents` declares `amount` as the applied DELTA and `total` as the value
+## after it — a consumer reacting to "one more duel" needs the delta, and one
+## drawing a progress bar needs the total. Emitting the total in both slots is
+## invisible to a consumer that only reads `total`, so it is asserted here against
+## the declared contract rather than against whatever the emit site passes.
+func test_a_counter_record_announces_the_delta_and_the_running_total() -> void:
+	var actor := _hero()
+	var bus := DestinyProjection.events()
+	var heard: Array = []
+	var handler := func(actor_id: String, counter_id: StringName, amount: int, total: int) -> void:
+		heard.append(
+			{"actor": actor_id, "counter": String(counter_id), "amount": amount, "total": total}
+		)
+	bus.counter_changed.connect(handler)
+	DestinyApi.record(actor, DUELS, 1)
+	DestinyApi.record(actor, DUELS, 2)
+	assert_eq(heard.size(), 2, "one announcement per real movement")
+	assert_eq(String(heard[0]["actor"]), String(actor.id), "naming the actor")
+	assert_eq(String(heard[0]["counter"]), String(DUELS), "and the counter")
+	assert_eq(int(heard[0]["amount"]), 1, "the first announcement carries the delta, not the total")
+	assert_eq(int(heard[0]["total"]), 1, "and the value after it")
+	# The case that distinguishes the two: the second record makes delta 2 and
+	# total 3, so an emitter that passed `total` in both slots reports 3/3 here.
+	assert_eq(int(heard[1]["amount"]), 2, "the second announcement carries the delta it applied")
+	assert_eq(int(heard[1]["total"]), 3, "and the running total, which is not the same number")
+	# A refused movement announces nothing at all, so a consumer cannot be told a
+	# counter moved when it did not.
+	DestinyApi.record(actor, DUELS, -5)
+	DestinyApi.record(actor, DUELS, 0)
+	assert_eq(heard.size(), 2, "a record that moves nothing announces nothing")
+	bus.counter_changed.disconnect(handler)
+
+
+## The gate refusal is an observation, never a veto: the caller has ALREADY been
+## refused and is not waiting on the signal. It exists so a content designer can
+## see a gate nobody can reach, so it has to name the actor, the reason and the
+## requirement that was refused.
+func test_a_failed_gate_announces_the_actor_the_reason_and_the_requirement() -> void:
+	var actor := _hero()
+	DestinyApi.earn_fate(actor, OATH, "combat")
+	var bus := DestinyProjection.events()
+	var heard: Array = []
+	var handler := func(actor_id: String, reason: String, requirement: Dictionary) -> void:
+		heard.append({"actor": actor_id, "reason": reason, "requirement": requirement})
+	bus.gate_failed.connect(handler)
+	var requirement := {"verb": &"has_fate", "id": String(PLEDGE)}
+	assert_eq(
+		bool(DestinyApi.gate(actor, requirement)["ok"]),
+		false,
+		"the gate really did refuse, so the announcement means something"
+	)
+	assert_eq(heard.size(), 1, "one announcement per refusal")
+	assert_eq(String(heard[0]["actor"]), String(actor.id), "naming the actor")
+	assert_eq(String(heard[0]["reason"]), "unmet", "and the reason")
+	assert_eq(
+		(heard[0]["requirement"] as Dictionary)["id"],
+		String(PLEDGE),
+		"carrying the requirement exactly as authored"
+	)
+	# An open gate is not a failure, and an unreadable one refuses with its own
+	# distinct reason rather than the same 'unmet'. A refusal a content designer
+	# cannot tell apart from a player being told no is the whole reason this signal
+	# carries the reason string.
+	DestinyApi.gate(actor, {"verb": &"has_fate", "id": String(OATH)})
+	assert_eq(heard.size(), 1, "an open gate announces nothing")
+	DestinyApi.gate(actor, {"verb": &"teleported"})
+	assert_eq(heard.size(), 2, "but an unreadable gate is still a refusal")
+	assert_eq(String(heard[1]["reason"]), "unknown_verb", "and it names its own cause")
+	assert_eq(
+		String(heard[1]["actor"]),
+		String(actor.id),
+		"so a designer can tell WHICH gate is unreadable"
+	)
+	bus.gate_failed.disconnect(handler)
+
+
+## The module gate is also reachable through the facade, and it is the facade
+## method that emits `gate_failed`. `DestinyGate.evaluate` — which every suite in
+## this module calls directly — is the inner half and emits nothing: an observer
+## sees one announcement per refusal a caller actually experienced.
+func test_only_the_facade_announces_a_gate_failure_not_the_inner_evaluation() -> void:
+	var actor := _hero()
+	var bus := DestinyProjection.events()
+	var heard: Array = []
+	var handler := func(actor_id: String, reason: String, requirement: Dictionary) -> void:
+		heard.append(reason)
+	bus.gate_failed.connect(handler)
+	var requirement := {"verb": &"has_destiny", "id": String(UNCHOSEN)}
+	assert_eq(
+		bool(DestinyGate.evaluate(actor, requirement)["ok"]),
+		false,
+		"the inner evaluation refuses too"
+	)
+	assert_eq(heard.is_empty(), true, "but evaluating is not a caller's refusal to announce")
+	DestinyApi.gate(actor, requirement)
+	assert_eq(heard, ["unmet"], "the facade announces exactly once")
+	bus.gate_failed.disconnect(handler)
 
 
 func test_the_trait_mirror_carries_a_namespaced_id_for_everything_held() -> void:

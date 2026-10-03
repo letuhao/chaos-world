@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:pendant_copper_recipe"])
+sources = Array[StringName]([&"craft:pendant_copper_recipe", &"domain:crown_storm_sovereign_domain"])

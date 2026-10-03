@@ -39,7 +39,37 @@ static func trait_for(id: StringName) -> StringName:
 
 ## True when a stat modifier source belongs to this module.
 static func is_own_source(source: StringName) -> bool:
-	return String(source).begins_with(SOURCE_PREFIX)
+	return str(source).begins_with(SOURCE_PREFIX)
+
+
+## A ledger field as text, or `""` when it is not text at all.
+##
+## Accepts `String` and `StringName` and refuses everything else. This exists because the two
+## obvious conversions are both wrong in opposite directions: `String(x)` throws on a
+## StringName (aborting the caller mid-function, which the test runner does NOT report as a
+## failure), and `str(x)` coerces an `int` into a plausible-looking id — a save carrying
+## `"applied_race": 17` would otherwise become the race "17". Refusing is the honest answer:
+## an unreadable field is dropped, and a half-read ledger is worse than none.
+static func _text(value: Variant) -> String:
+	if value is StringName:
+		return str(value)
+	if value is String:
+		return value
+	return ""
+
+
+## True when `field` is present on the payload but holds something that is not text.
+##
+## A field that is ABSENT is not unreadable — that is the empty ledger — and neither is a
+## field holding `""`, which is what an empty ledger stores. Only a present, non-text,
+## non-empty value is a malformed payload, and that rejects the whole thing.
+static func _has_unreadable(payload: Dictionary, field: String) -> bool:
+	if not payload.has(field):
+		return false
+	var value: Variant = payload[field]
+	if value is String or value is StringName:
+		return false
+	return true
 
 
 ## A known-race filter for this module. `known_races` comes from the catalog; an entry
@@ -58,14 +88,29 @@ static func normalize(payload: Dictionary, known_races: Dictionary = {}) -> Dict
 	}
 	if payload.is_empty():
 		return out
-	var race_id := String(payload.get("race", ""))
+	# A ledger is read WHOLE or not at all. Every field below is validated, and one
+	# unreadable field returns the empty ledger rather than a half-applied one: the
+	# projection subtracts what this ledger says it already granted, so a payload that
+	# kept `race` but dropped `granted` would subtract the wrong amount from a body it had
+	# already granted.
+	#
+	# Both obvious conversions are wrong in opposite directions, which is why `_text`
+	# exists. `String(x)` THROWS on a StringName — and this build has no callable `String`
+	# constructor for one — which aborted `attach` mid-function; the test runner reports an
+	# aborted test as "script error(s) ... the run above is incomplete", NOT as a failure, so
+	# the suite printed a green pass count while the module was broken. `str(x)` coerces an
+	# `int` into a plausible id, turning `"applied_race": 17` into the race "17". Refusing
+	# the payload is the only answer that is wrong in neither direction.
+	var race_id := _text(payload.get("race", ""))
+	var applied := _text(payload.get("applied_race", ""))
+	if _has_unreadable(payload, "race") or _has_unreadable(payload, "applied_race"):
+		return out
 	if race_id != "" and (known_races.is_empty() or known_races.has(race_id)):
 		out["race"] = race_id
 	# `applied_race` is whatever the projection last put on the actor, including one the
 	# catalog no longer ships: that contribution still has to be subtracted, and a
 	# dropped definition is exactly when it would otherwise be left behind. So this
 	# field is deliberately NOT filtered by `known_races`.
-	var applied := String(payload.get("applied_race", ""))
 	if applied != "":
 		out["applied_race"] = applied
 	# The grant record is the race's own authored base-attribute and affinity payload,
@@ -75,7 +120,7 @@ static func normalize(payload: Dictionary, known_races: Dictionary = {}) -> Dict
 	var granted = payload.get("granted", {})
 	if granted is Dictionary:
 		for race_key in (granted as Dictionary).keys():
-			var key := String(race_key)
+			var key := str(race_key)
 			var record = (granted as Dictionary)[race_key]
 			if not (record is Dictionary):
 				continue

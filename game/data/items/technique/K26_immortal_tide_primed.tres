@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"formula"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:K26_immortal_tide_primed_recipe"])
+sources = Array[StringName]([&"craft:K26_immortal_tide_primed_recipe", &"domain:mind_great_luo_trial"])

@@ -17,7 +17,71 @@ resist_cap = 0.75
 damage_reduction_cap = 0.9
 element_power_prefix = "element_power_"
 resist_resistance_prefix = "element_resistance_"
+default_mind_share = 1.0
+mental_defense_cap = 0.6
+illusion_resistance_cap = 0.8
+coherence_damp = 0.5
+focus_mult = 2.0
+turbulence_to_clarity = 0.5
+rupture_threshold = 0.7
+rupture_bleed = 0.15
+rupture_collapse_time = 3.0
+collapse_clarity_floor = 0.15
+collapse_capacity_floors = {
+"deep": 300.0,
+"shallow": 100.0
+}
+collapse_deviation_duration = 60.0
+mind_stat_prefix = ""
+sea_component = &"sea_of_consciousness"
+awareness_pool_id = &"awareness"
+health_pool_id = &"health"
+mind_deviation_stat = "mind_technique_power"
 status_min_apply = 0.01
 status_potency_scale = 0.25
 status_potency_floor = 1.0
 status_default_duration = 6.0
+min_penetration_ratio = 0.1
+meridian_armour_step = 0.35
+point_quality_step = 0.5
+channel_mult_step = 0.15
+injured_mult_step = 0.25
+blocked_mult = 1.5
+broad_mult = 0.35
+tissue_scale = 1.0
+tissue_stat_divisor = 10.0
+tissue_stat_ids = PackedStringArray("bone_density", "muscle_fiber", "organ_vitality")
+meridian_archetypes = {
+"bladder": "skeletal",
+"chong_mai": "visceral",
+"dai_mai": "visceral",
+"du_mai": "skeletal",
+"gallbladder": "visceral",
+"heart": "vascular",
+"kidney": "skeletal",
+"large_intestine": "muscular",
+"liver": "visceral",
+"lung": "vascular",
+"pericardium": "vascular",
+"ren_mai": "visceral",
+"small_intestine": "muscular",
+"spleen": "visceral",
+"stomach": "muscular",
+"triple_burner": "visceral",
+"yang_qiao": "skeletal",
+"yang_wei": "muscular",
+"yin_qiao": "skeletal",
+"yin_wei": "muscular"
+}
+tissue_weights = {
+"muscular": [0.5, 1.5, 0.5],
+"skeletal": [1.5, 0.5, 0.5],
+"vascular": [0.5, 0.75, 1.25],
+"visceral": [0.75, 0.5, 1.5]
+}
+integrity_pool_id = &"body_integrity"
+acupoint_data_dir = "res://data/body_cultivation/acupoints"
+wound_threshold = 0.05
+necrosis_threshold = 0.25
+necrosis_quality = 0.3
+wound_decay = 0.01

@@ -19,4 +19,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:bracer_celestial_recipe"])
+sources = Array[StringName]([&"craft:bracer_celestial_recipe", &"domain:mind_foundation_trial"])

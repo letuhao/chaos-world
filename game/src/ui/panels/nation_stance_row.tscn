@@ -12,6 +12,7 @@ grow_vertical = 2
 focus_mode = 2
 theme = ExtResource("2")
 script = ExtResource("1")
+visible = false
 
 [node name="Layout" type="VBoxContainer" parent="."]
 layout_mode = 2

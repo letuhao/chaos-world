@@ -17,4 +17,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:charm_starfall_talisman_recipe"])
+sources = Array[StringName]([&"craft:charm_starfall_talisman_recipe", &"domain:qi_nascent_soul_domain"])

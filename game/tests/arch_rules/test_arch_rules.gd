@@ -40,6 +40,14 @@ const FIXTURE_CLASSES := {
 }
 ## `Array[...]` element types that are engine classes, never repo classes.
 const ENGINE_ONLY_FIXTURE := {"Marker2D": ["src/nowhere.gd", "ui", false]}
+## The separator between a warned file and the sentence naming the rule.
+##
+## `enforce.app_state_warnings` emits `f"{rel}: app/ holds a stateful system (...)"`,
+## so this literal is what ties the subject of a report line back to a path on disk.
+## It is copied from the checker rather than paraphrased on purpose: a paraphrase
+## that drifts would go on matching a message nobody emits any more, which is the
+## quiet-checker failure this whole file exists to catch.
+const APP_STATE_WARNING_MARKER := ": app/ holds a stateful system"
 
 # ── Fixtures ─────────────────────────────────────────────────────────────────
 #
@@ -62,7 +70,11 @@ const SKILL_SYSTEM := (
 	+ '\t_actor.set_module_data(MODULE_KEY, {"slots": []})\n'
 )
 
-## The shape of `src/app/consumable_system.gd`: two signals, no tick.
+## The shape of the deleted `consumable_system.gd`, kept because it is the smallest
+## fixture that trips the rule: a slot table with its own save key and no decay
+## loop. ADR 0056 deleted the file, so nothing in the tree ships this shape — the
+## case below is about the heuristic, and its `rel` is a fixture path in a temp
+## directory, not a claim that `src/app/consumable_system.gd` exists.
 const SLOT_TABLE_WITH_SAVE_KEY := (
 	"class_name ConsumableSystem\n"
 	+ "extends RefCounted\n"
@@ -195,21 +207,59 @@ func test_the_retired_prototype_stays_retired() -> void:
 	)
 
 
-func test_the_app_state_check_still_fires_on_a_survivor() -> void:
-	# `skill_system.gd` and `input_handler.gd` were deleted, so the remaining
-	# offender is `consumable_system.gd` (DEF-0098: kept deliberately, its move to
-	# the items module is still owed). The check must keep naming whatever IS there,
-	# or it has gone quiet — which reads exactly like a clean tree.
+func test_the_app_state_check_tracks_whatever_app_actually_holds() -> void:
+	# The invariant, not a filename.
+	#
+	# This case used to assert that the report named `src/app/consumable_system.gd`,
+	# which read as "the check is alive" right up until ADR 0056 deleted that file.
+	# It then failed on a tree that was CLEAN, and the only ways to green it were to
+	# delete the case or to hardcode whatever offender happened to exist next. A
+	# guard that names a file is a guard that expires with the file, and it expires
+	# red, which is the worst way to expire.
+	#
+	# What the check actually promises is a correspondence, so that is what is
+	# asserted. `_app_state_offenders` derives the expected set from `rules.py` over
+	# an independently enumerated listing of `src/app/`; `_reported_app_state_files`
+	# reads back what the gate actually said. Three legs, one per way to be wrong:
+	#
+	#   1. QUIET while an offender exists — the original failure mode, and the one
+	#      that looks like good news. Every file the rule flags must be named.
+	#   2. LOUD with nothing to flag — a false positive is how a warning gets
+	#      ignored until the gate stops being read at all. Every file named must be
+	#      flagged.
+	#   3. app/ SHIPS a stateful system — the repo's own claim, per the comment above
+	#      `APP_STATE_MARKERS`: app/ wires, and a feature holding mutable state
+	#      belongs in a module. This leg is the one that keeps the correspondence
+	#      from being satisfied by both sides agreeing on a file that should never
+	#      have been there, and it is the leg a regression in placement breaks.
+	#
+	# Leg 3 is what gives legs 1 and 2 something to bite on. While app/ is clean all
+	# three sets are empty and the correspondence holds trivially; it is leg 3 that
+	# says so out loud, and it is the drift a placement regression produces. Leg 3
+	# is therefore a tree assertion, and deliberately so — the warning is unenforced
+	# by design (rules.py: "They warn instead of failing so that a prototype file
+	# that predates the convention cannot turn the gate red"), so nothing in the gate
+	# turns it red. Without leg 3 this case is satisfied by a checker and a tree in
+	# agreement, whatever that agreement said.
 	var report := _arch()
+	var offenders := _app_state_offenders()
+	var named := _reported_app_state_files(String(report["text"]))
+	for rel in offenders:
+		assert_eq(
+			named.has(rel),
+			true,
+			"the check went quiet: %s holds state in app/ and the report does not name it" % rel
+		)
+	for rel in named:
+		assert_eq(
+			offenders.has(rel),
+			true,
+			"the report calls %s a stateful app/ system, but the rule finds no signals in it" % rel
+		)
 	assert_eq(
-		String(report["text"]).contains("src/app/consumable_system.gd:"),
-		true,
-		"the surviving stateful system is the one the app/ warning names"
-	)
-	assert_eq(
-		String(report["text"]).contains("app/ holds a stateful system"),
-		true,
-		"and the app/ warning still fires at all"
+		offenders.size(),
+		0,
+		"app/ wires and ships no stateful system, but the rule flags %s" % ", ".join(offenders)
 	)
 
 
@@ -608,6 +658,79 @@ func _resource_flags(body: String, rel: String) -> Array:
 ## The warning text `app_state_warnings` produces for a synthetic file at `rel`.
 func _app_state_flags(body: String, rel: String) -> Array:
 	return _messages("enforce.app_state_warnings([_file(rel)], classes)", rel, body, {})
+
+
+## Every `.gd` in `src/app/`, as `src/app/<name>` paths.
+##
+## Listed with `DirAccess`, NOT with the checker's own `_iter_sources`, on purpose:
+## the file discovery and the `app/` classification are part of what the app/ state
+## case is testing, so borrowing either would make the expected side a second run of
+## the code under test and the comparison could never disagree.
+func _app_gd_files() -> PackedStringArray:
+	var out := PackedStringArray()
+	for name in DirAccess.get_files_at("res://src/app"):
+		if name.ends_with(".gd"):
+			out.append("src/app/" + name)
+	return out
+
+
+## The `src/app/` files `app_state_warnings` would flag, decided one file at a time
+## from the rule's own signal predicate and its own threshold.
+##
+## Only `app_state_signals` is shared with the checker. The threshold comparison,
+## the `unit_of` classification, the message and the `warn()` transport are the
+## checker's alone, so a break in any of them surfaces as a disagreement rather than
+## as a tautology. The bodies are read by the child from disk: shipping them would
+## put every `app/` script on a command line, and writing them into `game/src/` as
+## fixtures would make each one an arch violation of its own.
+##
+## A child that dies returns null, and null would read as "no offenders" — a green
+## run of nothing. So is an EMPTY listing: a `DirAccess` walk that returns nothing
+## has silently disarmed every leg above, which is the one way this case could pass
+## without looking at `app/` at all. Both are asserted rather than left to the
+## comparison, which would happily confirm either.
+func _app_state_offenders() -> Array:
+	var files := _app_gd_files()
+	assert_ne(
+		files.size(), 0, "res://src/app lists .gd files; an empty listing is not a clean tree"
+	)
+	if files.is_empty():
+		return []
+	var quoted := PackedStringArray()
+	for rel in files:
+		quoted.append(_py_str(rel))
+	var lines := _preamble(
+		[
+			"classes = enforce._class_index(list(enforce._iter_sources()))",
+			"game = __root / 'game'",
+			"rels = [%s]" % ", ".join(quoted),
+			"offenders = []",
+			"for rel in rels:",
+			"\tbody = (game / rel).read_text(encoding='utf-8', errors='replace')",
+			"\tif len(enforce.app_state_signals(body, classes)) >= enforce.APP_STATE_MIN_SIGNALS:",
+			"\t\toffenders.append(rel)",
+		]
+	)
+	lines.append("print('::' + json.dumps(offenders))")
+	var value: Variant = _eval(lines)
+	assert_ne(value, null, "the per-file app/ state scan over rules.py ran and answered")
+	return [] if value == null else _to_strings(value)
+
+
+## The `src/app/` paths the arch report called a stateful system.
+##
+## Read back out of the report rather than recomputed: this side of the comparison
+## has to be what the gate actually said, or the case is not testing the gate. Both
+## the marker and the `rel` are taken from the line, so a warning that loses its
+## subject and a warning that loses its sentence fail differently.
+func _reported_app_state_files(text: String) -> Array:
+	var out: Array = []
+	for line in text.split("\n"):
+		var at := line.find(APP_STATE_WARNING_MARKER)
+		if at < 0:
+			continue
+		out.append(line.substr(0, at).strip_edges().trim_prefix("warn "))
+	return out
 
 
 ## The state signals the real heuristic finds in one source body.

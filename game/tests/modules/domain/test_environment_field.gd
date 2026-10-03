@@ -567,3 +567,220 @@ func test_primary_path_is_the_path_the_actor_actually_holds() -> void:
 		0.0,
 		"and an actor cultivating nothing is measured as nothing, never defaulted onto a path"
 	)
+
+
+# ── BL-0392: the hazard must actually DO something ───────────────────────────
+#
+# Every test above asserted PRESENCE or EXPIRY. `has_status` is true of a status whose
+# magnitude is `0.0` and whose `tick_interval` is `0.0` — one that ages out silently
+# and spends nothing — so the whole suite above passed against a hazard that was
+# mechanically inert. These assert CONSEQUENCE.
+
+
+## The applied status carries the residual this field resolved FOR THIS ACTOR, not the
+## authored magnitude and not the constructor's `0.0` default. This is the assertion the
+## rest of this section rests on: a DOT with no magnitude is a comment.
+func test_the_applied_status_carries_the_resolved_magnitude() -> void:
+	var actor := _cultivator(PathState.QI)
+	var zone := _furnace()
+	var result := EnvironmentField.apply(actor, zone, PathState.QI)
+
+	var carried := actor.statuses[0]
+	assert_eq(carried.id, zone.status_id, "the zone's authored status id is what lands")
+	assert_eq(carried.magnitude, float(result["amount"]), "it carries the RESOLVED residual")
+	assert_eq(carried.magnitude > 0.0, true, "and that residual is non-zero, not the default 0.0")
+	# A DOT with no cadence is the other half of the same silent failure:
+	# `_pulses_due` returns 0 for it (`status_registry.gd:168`) and it never pays.
+	assert_eq(
+		carried.tick_interval,
+		EnvironmentField.hazard_cadence(),
+		"and a non-zero cadence, so the tick path can resolve it"
+	)
+	assert_eq(carried.kind, StatusEffect.Kind.DOT, "a hazard spends over time")
+	assert_eq(
+		carried.stacking,
+		StatusEffect.Stacking.REFRESH,
+		"REFRESH: standing still must not stack the hazard"
+	)
+	assert_eq(
+		carried.has_mitigation(),
+		true,
+		"and it publishes the zone's levers, so it is not a hazard nothing answers to"
+	)
+	assert_eq(
+		carried.mitigation_tags,
+		zone.mitigation_tags,
+		"copied off the zone rather than invented here"
+	)
+
+
+## Mitigation reaches the STATUS, not just the returned dictionary. The old code
+## computed the residual, returned it, and applied a bare `0.0` — so this compares two
+## actors who differ ONLY in spirit root and reads what each is actually carrying.
+func test_mitigation_reaches_the_status_and_not_only_the_answer() -> void:
+	var zone := _furnace()
+	var race := _race("emberblood")
+	assert_ne(race, null, "the authored emberblood race is loadable")
+	if race == null:
+		return
+
+	var rooted := _rooted(PathState.QI, race)
+	var bare := _cultivator(PathState.QI)
+	var rooted_hit := EnvironmentField.apply(rooted, zone, PathState.QI)
+	var bare_hit := EnvironmentField.apply(bare, zone, PathState.QI)
+
+	assert_eq(
+		rooted.statuses[0].magnitude,
+		float(rooted_hit["amount"]),
+		"the rooted actor's STATUS carries its mitigated amount"
+	)
+	assert_eq(
+		bare.statuses[0].magnitude, float(bare_hit["amount"]), "and so does the unrooted one's"
+	)
+	assert_eq(
+		rooted.statuses[0].magnitude < bare.statuses[0].magnitude,
+		true,
+		(
+			"and the two statuses differ: %f < %f"
+			% [rooted.statuses[0].magnitude, bare.statuses[0].magnitude]
+		)
+	)
+
+
+## THE consumption proof. A DOT with a real magnitude and a real interval is
+## CONSUMED: `tick_statuses` emits one `status_ticked` per pulse, carrying the
+## magnitude. A hazard that stood still would emit none — which is the shape of the bug
+## this section exists for.
+func test_the_tick_path_consumes_the_hazard() -> void:
+	var actor := _cultivator(PathState.QI)
+	var zone := _furnace()
+	var applied := EnvironmentField.apply(actor, zone, PathState.QI)
+	var expected := float(applied["amount"])
+	assert_eq(expected > 0.0, true, "the hazard resolved to something before it is spent")
+
+	var pulses: Array[float] = []
+	var handler := func(status_id: StringName, magnitude: float) -> void:
+		if status_id == &"env_scourge":
+			pulses.append(magnitude)
+	actor.status_ticked.connect(handler)
+
+	# Derived from the authored `stay_budget` and the def's `tick_interval`, so a
+	# designer retuning either moves this with it instead of leaving a stale literal.
+	var owed := int(zone.stay_budget / EnvironmentField.hazard_cadence())
+	assert_eq(owed > 0, true, "one stay window owes at least one pulse")
+
+	actor.tick_statuses(zone.stay_budget)
+	assert_eq(pulses.size(), owed, "one pulse per authored interval across one stay window")
+	for magnitude in pulses:
+		assert_eq(magnitude, expected, "and every pulse pays the resolved residual")
+
+	# A window costs its pulses and then EXPIRES — the stay budget is the hazard's
+	# lifetime, so a single window cannot pay twice. Sustained exposure is the zone
+	# re-applying, which is what `stay_budget` exists for: re-enter, then pay again.
+	# Asserted as the pair because "expired" alone would also pass on a status that had
+	# already gone inert, and "paid again" alone would pass if the first window paid
+	# twice within itself.
+	assert_eq(actor.has_status(&"env_scourge"), false, "one window exhausts the budget")
+	EnvironmentField.apply(actor, zone, PathState.QI)
+	actor.tick_statuses(zone.stay_budget)
+	assert_eq(
+		pulses.size(),
+		owed * 2,
+		"and re-entering pays a full second window rather than dying for good"
+	)
+	actor.status_ticked.disconnect(handler)
+
+
+## A re-entry must not raise the damage. STACK would compound on every re-apply, so a
+## player standing still in a zone would take more and more — the opposite of the
+## deadline ADR 0075 asks for.
+func test_standing_still_does_not_escalate_the_hazard() -> void:
+	var actor := _cultivator(PathState.QI)
+	var zone := _furnace()
+	EnvironmentField.apply(actor, zone, PathState.QI)
+	var first := actor.statuses[0].magnitude
+
+	for _window in range(EnvironmentField.PULSES_PER_STAY):
+		actor.tick_statuses(zone.stay_budget)
+		EnvironmentField.apply(actor, zone, PathState.QI)
+
+	assert_eq(actor.statuses.size(), 1, "still exactly one hazard instance")
+	assert_eq(
+		actor.statuses[0].magnitude, first, "and its magnitude is unchanged by four re-applications"
+	)
+
+
+## A refresh after the player mitigates must carry the SMALLER number down, not leave
+## the pre-mitigation one on the actor. `StatusRegistry`'s REFRESH keeps the stronger
+## magnitude (`status_registry.gd:151`), so `apply` lowers the held value explicitly.
+func test_a_refresh_carries_a_smaller_amount_down() -> void:
+	var actor := _cultivator(PathState.QI)
+	var zone := _furnace()
+	EnvironmentField.apply(actor, zone, PathState.QI)
+	var unmitigated := actor.statuses[0].magnitude
+
+	actor.set_module_data(EnvironmentField.GEAR_TAGS_KEY, {"tags": ["fire_ward"]})
+	EnvironmentField.apply(actor, zone, PathState.QI)
+
+	assert_eq(
+		actor.statuses[0].magnitude,
+		unmitigated * (1.0 - EnvironmentField.GEAR_CAP),
+		"the held hazard now carries the geared-down residual"
+	)
+
+
+## The authored def exists, is readable, and is what the field resolves its cadence
+## from. BL-0392's first half was `StatusCatalog.definition("env_scourge") == null`
+## with no `.tres` anywhere — so this asserts the FILE is there rather than that the
+## catalogue publishes it (see the next test for why that is a different question).
+func test_the_hazard_has_an_authored_def() -> void:
+	var def := EnvironmentField.hazard_def()
+	assert_ne(def, null, "env_scourge has a StatusDef on disk")
+	if def == null:
+		return
+	assert_eq(def.id, &"env_scourge", "resolved by id, not by filename")
+	assert_eq(def.kind, &"dot", "a hazard is a damage-over-time channel")
+	assert_eq(def.scope, &"cultivation", "and never opposed by combat resistance")
+	assert_eq(def.stacking, &"refresh", "one hazard is one hazard")
+	assert_eq(
+		def.tick_interval,
+		EnvironmentField.hazard_cadence(),
+		"the cadence the field applies IS the authored one, not a literal"
+	)
+	assert_eq(
+		def.magnitude_cap,
+		EnvironmentField.MAX_MAGNITUDE,
+		"and the ceiling matches the authored hazard ladder's loudest row"
+	)
+	# The counterplay contract, which ADR 0075 makes mandatory and `problems()` checks.
+	assert_eq(def.mitigation_tags.has(&"affinity"), true, "affinity answers a hazard")
+	assert_eq(
+		def.mitigation_tags.has(&"pill") or def.mitigation_tags.has(&"technique"),
+		true,
+		"and a wrong-root player has a non-affinity counterplay"
+	)
+
+
+## The def is DELIBERATELY not in `res://data/statuses/`, and this is why. It rides no
+## element, so `StatusDef.problems()` refuses it; and that tree is a closed twenty whose
+## exact id set another suite pins. Both facts are asserted rather than asserted-by-
+## absence, so a future edit that quietly moves the file fails here instead of
+## breaking a suite in a module this file does not own.
+func test_the_hazard_def_is_element_free_on_purpose() -> void:
+	var def := EnvironmentField.hazard_def()
+	assert_ne(def, null, "the def is readable")
+	if def == null:
+		return
+	assert_eq(def.element, &"", "a hazard rides no element: it is a place, not a blow")
+	# `StatusCatalog` scans `res://data/statuses` only, so the def is not published
+	# there — and must not be, because it could not pass that tree's gate.
+	assert_eq(
+		StatusCatalog.instance().definition(&"env_scourge"),
+		null,
+		"and is not in the element-bound catalogue, which would refuse it"
+	)
+	assert_eq(
+		ResourceLoader.exists("res://data/statuses/env_scourge.tres"),
+		false,
+		"no such file is authored there either"
+	)

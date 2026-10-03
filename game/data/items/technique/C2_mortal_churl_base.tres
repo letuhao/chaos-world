@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:C2_mortal_churl_base_recipe", &"quest:C2_mortal_churl_line"])
+sources = Array[StringName]([&"craft:C2_mortal_churl_base_recipe", &"quest:C2_mortal_churl_line", &"domain:qi_dao_fruit_trial"])

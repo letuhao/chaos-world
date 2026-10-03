@@ -55,6 +55,13 @@ static func social_state(actor: Actor) -> SocialState:
 ## Apply an authored cause to the bond between `actor` and `partner_id`.
 ## Returns `{ok, reason}`; an unknown cause is refused rather than silently moving nothing.
 ##
+## **`partner_id` is an INSTITUTION id as often as it is a person.** A sect, a nation or
+## a clan is a legal partner (`SocialBond.partner_id` is a `StringName` and this call
+## performs no actor-identity check), and a cause marked `SocialCauseDef.institutional`
+## is what makes the row an entry in `SocialState.regard`. That is the whole of BL-0200:
+## sect and nation membership moves regard through THIS call, so no module keeps a second
+## number and no cause is a raw write (ADR 0091).
+##
 ## The mirror is left to the caller's transaction, not written here: a bond is a fact
 ## between two actors, and the module that owns an interaction (combat, a gift, an oath)
 ## is the one that knows whether the other party felt it. Writing both directions from one
@@ -140,6 +147,10 @@ static func reputation(actor: Actor) -> float:
 ## The whole read model for a social panel: the three stats, every bond, and the standing
 ## with each institution. `{}` when there is no actor, which is the contract a panel tests
 ## instead of pixels.
+##
+## `regard` is keyed by INSTITUTION id and is derived from the institutional bonds, so
+## `bond_entry(actor, sect_id)["standing"]` and `regard[sect_id]` are the same number by
+## construction rather than by two writers agreeing to.
 static func summary(actor: Actor) -> Dictionary:
 	if actor == null:
 		return {}

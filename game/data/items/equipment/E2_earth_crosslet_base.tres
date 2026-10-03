@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:E2_earth_crosslet_base_recipe", &"quest:E2_earth_crosslet_line"])
+sources = Array[StringName]([&"craft:E2_earth_crosslet_base_recipe", &"quest:E2_earth_crosslet_line", &"domain:mind_core_formation_trial"])

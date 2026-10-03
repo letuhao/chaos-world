@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"quest:oath_of_stillness"])
+sources = Array[StringName]([&"quest:oath_of_stillness", &"domain:qi_qi_refining_trial"])

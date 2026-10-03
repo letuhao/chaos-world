@@ -20,4 +20,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:mask_heaven_aegis_recipe"])
+sources = Array[StringName]([&"craft:mask_heaven_aegis_recipe", &"domain:succubus_spirit_domain"])

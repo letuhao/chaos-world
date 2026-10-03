@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:qi_void_refinement_pill_recipe"])
+sources = Array[StringName]([&"craft:qi_void_refinement_pill_recipe", &"domain:qi_spirit_condensation_domain"])
 description = "Consumed by the Qi Cultivation attempt entering Void Refinement; no equipment modifier."

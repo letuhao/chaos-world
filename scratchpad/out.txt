@@ -1,0 +1,71 @@
+{
+  "id": "DEF-0053",
+  "area": "persistence",
+  "title": "No legacy v2 save fixtures and SCHEMA_VERSION is write-only",
+  "status": "done",
+  "source": "audit 2026-10-02",
+  "reason": "Resolved. Actor.from_dict now reads the version and dispatches through _restore_versioned (SCHEMA_VERSION 3 -> 4 for the mind attempt, ADR 0037), so the counter is no longer write-only. Added tests/fixtures/save_v2.json as a real checked-in v2 payload - no sea slot (v3+) and no mind_attempt (v4+) - because a hand-built dictionary cannot prove an old save is still readable.",
+  "next": "Nothing. tests/core/test_legacy_save.gd loads the fixture, asserts the two absent slots are not invented, and asserts re-saving upgrades the payload and still round-trips.",
+  "created": "2026-10-02",
+  "resolved": "2026-10-02"
+}
+---
+{
+  "id": "DEF-0059",
+  "area": "persistence",
+  "title": "The shipped save persists items only; realm, progress, meridians, acupoints, sea and loot are dropped",
+  "status": "deferred",
+  "source": "ADR 0043 UI coverage audit",
+  "reason": "ItemWorkbench.act_save calls ItemsApi.serialize, not Actor.to_dict. Actor.to_dict has no production caller outside tests, so saving from the game loses cultivation progress, the dantian, the sea, tribulation and loot state. Actor.statuses is never serialized at all",
+  "next": "Make the app composition root save Actor.to_dict plus item state, and add a save round-trip test that asserts a restored actor keeps realm, progress and sea",
+  "created": "2026-10-02"
+}
+---
+{
+  "id": "DEF-0085",
+  "area": "gameplay",
+  "title": "Equip techniques into path-typed slots",
+  "status": "deferred",
+  "source": "technique-system design 2026-10-02",
+  "reason": "ADR 0053 requires per-path slot counts plus universal slots growing with realm tier, so a loadout is a statement about which path is being bet on. The genre convention is four active slots and a known set far larger than that; the gap between known and equipped is the design space. Nothing in the repo expresses a slot limit today.",
+  "next": "Implement equip/unequip against the codex, with slot counts read from each path's published configuration and universal slots keyed off realm tier.",
+  "created": "2026-10-02",
+  "depends_on": [
+    "DEF-0083"
+  ],
+  "priority": "high"
+}
+---
+{
+  "id": "DEF-0111",
+  "area": "core",
+  "title": "No clock or world-turn seam exists, so fate cannot accrue over calendar time",
+  "status": "done",
+  "source": "destiny module wiring 2026-10-02, ADR 0065",
+  "reason": "If a fate ever needs to accrue over time - a counter that rises per day survived, a destiny that unlocks after a season - nothing in this repo can drive it. There is no clock, no calendar, no world turn and no tick that advances time; the only ticks are per-frame physics. DestinyApi.record() is the accrual verb and it takes an explicit amount from a caller, so a time-based earn needs a time source that does not exist.",
+  "next": "RESOLVED 2026-10-03 by build/sect_nation_clock_research.md. The premise behind the original entry was stale: app/ ALREADY owns the single frame driver (app/item_workbench_app.gd:98 _process(delta), passed down an explicit wire through app/status_loop.gd:56), and a test pins the tree to exactly three frame drivers. There is no calendar and no period, which is the part that was true. BL-0198 therefore needs a PERIOD ACCUMULATOR hung off the existing tick, not new time infrastructure - and it must add ZERO new frame drivers, because a fourth _process fails game/tests/app/test_status_clock.gd:222-230. Correct the stale reason text on this entry when convenient.",
+  "created": "2026-10-02"
+}
+---
+{
+  "id": "DEF-0119",
+  "area": "architecture",
+  "title": "OPEN: a nation outlives the actor who founded it, but no world-level persistence root exists to hold its ledger",
+  "status": "deferred",
+  "source": "sect/nation design 2026-10-03, ADR 0083",
+  "reason": "ADR 0083 makes a nation a polity persisting across generations. Measured: actor.module_data is the only persistence root in the repo (core/actor.gd copies it verbatim, with a serializer hook for items only), and it dies with the actor. The only user:// write under game/src is app/item_state_store.gd, which is in the composition root. So a save loaded by an actor who is not a member would lose the entire political world, and the obvious workaround (a Resource or an Actor inside a ledger) is undetectable by tools arch and silently breaks saves.",
+  "next": "Decide where a polity ledger lives before a roster ships, and give it its own ADR: either a world-scoped persistence slot in core (an Actor.SCHEMA_VERSION migration, the ADR 0037 precedent) or an explicit statement that institutions are player-contact only and the background is authored .tres. Do not discover this after a nation screen is built.",
+  "created": "2026-10-03"
+}
+---
+{
+  "id": "DEF-0147",
+  "area": "economy",
+  "title": "wire the real persistent world store that holdings, market and custody all depend on",
+  "status": "deferred",
+  "source": "manual",
+  "reason": "ADR 0101 resolved the SHAPE (set_store with read_ledger/write_ledger) and shipped in-memory ledgers for three modules, but the store itself is owed. It needs a file format, a SCHEMA_VERSION migration story, and a decision on whether the world is per-save or shared across saves. Every module's single-holder path is correct today and wrong the moment a second holder exists, so this is the last thing standing between the program and a real save.",
+  "next": "",
+  "created": "2026-10-03"
+}
+---

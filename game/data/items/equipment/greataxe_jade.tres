@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:greataxe_jade_recipe"])
+sources = Array[StringName]([&"craft:greataxe_jade_recipe", &"domain:totem_stone_guardian_domain"])

@@ -77,6 +77,17 @@ const REDUCTION_CAP := 0.4
 ## rather than being short by one float ULP.
 const EPSILON := 0.000001
 
+## The composition root's damage seam, for a caller that does not pass one per call:
+## `func(attacker: Actor, target: Actor, def: TechniqueDef) -> Variant`.
+##
+## A `static var` rather than a component, because the binding is a fact about how
+## this process was wired rather than about any one actor — the same shape
+## `TechniqueDelivery.install` and `NpcApi.set_minter` use. `app/` installs it once;
+## a suite that installs one clears it in `teardown`, because `run_tests.gd` calls
+## `teardown` after EVERY test precisely because a process-wide binding leaks
+## between suites otherwise.
+static var _installed_resolver: Callable = Callable()
+
 ## technique_id (String) -> `[seconds_left, seconds_total]`. Absent means ready.
 ##
 ## The pair, not a bare number, because a cooldown is only meaningful against its own
@@ -87,6 +98,19 @@ var _remaining: Dictionary = {}
 
 func _init(payload: Dictionary = {}) -> void:
 	_remaining = TechniqueCasting.migrate(payload)
+
+
+## Install the resolver [method activate] falls back to when its caller passes
+## none. Passing an empty Callable clears it, so an uninstall is deterministic
+## rather than only an overwrite.
+static func set_resolver(resolver: Callable) -> void:
+	_installed_resolver = resolver
+
+
+## Whether a fallback resolver is installed, so a caller can say "no target" and
+## "no spine" as two different messages rather than one empty descriptor.
+static func has_resolver() -> bool:
+	return not _installed_resolver.is_null() and _installed_resolver.is_valid()
 
 
 # --- Persistence: ids and numbers, never a definition --------------------------
@@ -285,6 +309,15 @@ func charges_for(actor: Actor, def: TechniqueDef) -> Dictionary:
 ## `resolver` is the composition root's damage seam — see the file header. It is
 ## called AFTER the payment, because the qi is spent whether the swing lands or not,
 ## and ADR 0053's "mastery accrues through use" counts a whiffed swing as a use.
+##
+## When the caller passes no `resolver`, the INSTALLED one is used — the
+## process-wide binding [method set_resolver] publishes. That fallback exists
+## because a per-call argument alone leaves the module unreachable from
+## production: every caller would have to re-derive the spine binding, and
+## `app/` cannot be named from a `ui/` screen (`PRIVATE_UNITS` in
+## `tools/arch/rules.py` makes `app/` referenceable only from itself). A per-call
+## argument still WINS, so a caller that wants its own rng — a replay, a test — is
+## never overruled by the installed default.
 func activate(
 	actor: Actor, def_or_id, target: Actor = null, resolver: Callable = Callable()
 ) -> Dictionary:
@@ -324,7 +357,7 @@ func activate(
 	if started > 0.0:
 		_remaining[String(def.id)] = [started, started]
 	commit(actor)
-	var damage := _resolve(actor, target, def, resolver)
+	var damage := _resolve(actor, target, def, _seam_for(resolver))
 	var rung := _grant_mastery(actor, def)
 	return {
 		"ok": true,
@@ -354,6 +387,16 @@ func cooldown_view(actor: Actor, def: TechniqueDef) -> Dictionary:
 
 
 # --- internals ------------------------------------------------------------------
+
+
+## The resolver this call will use: the caller's own when it passed one, else the
+## installed composition-root seam. A per-call argument WINS, always — the fallback
+## exists only so production has a spine, and it must never quietly overrule a
+## caller that injected a specific one (a replay's rng, a test's recorder).
+func _seam_for(resolver: Callable) -> Callable:
+	if not resolver.is_null() and resolver.is_valid():
+		return resolver
+	return _installed_resolver
 
 
 ## Every pool this activation cannot pay, with what it owed and what it held. Checked
@@ -406,9 +449,15 @@ func _grant_mastery(actor: Actor, def: TechniqueDef) -> int:
 	var reached := TechniqueScales.rung_for(rung + 1, def.mastery_rungs)
 	if reached <= rung:
 		return rung
-	codex.set_rung(def.id, reached)
-	codex.commit(actor)
-	return reached
+	# The codex and the slot table share ONE payload, so the whole snapshot has to be
+	# rewritten whenever a rung moves — writing only the codex half would drop every
+	# equipped binding on the next load (DEF-0154). `TechniquesApi` is at the
+	# 12-method cap, so the commit is reached through its own `raise_mastery`, which
+	# performs set + commit + rebuild together. The rung is therefore NOT set locally
+	# first: that would make `set_rung` inside the facade return false and skip the
+	# commit entirely.
+	var applied := TechniquesApi.raise_mastery(actor, def.id, reached)
+	return int(applied.get("rung", reached)) if bool(applied.get("ok", false)) else reached
 
 
 func _rung_of(actor: Actor, def: TechniqueDef) -> int:

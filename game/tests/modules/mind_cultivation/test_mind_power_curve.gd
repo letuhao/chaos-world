@@ -4,7 +4,7 @@ extends TestCase
 ## the sea reservoir honest.
 ##
 ## Two realm-shaped reads and they are NOT the same kind of number:
-##   - `MindRealmProfile.factor` is a bounded per-realm RATE, applied to every
+##   - `RealmRate.factor` is a bounded per-realm RATE, applied to every
 ##     contribution and to `MindTraining.cultivate`'s fill rate: how much a unit of
 ##     this realm's cultivation is worth.
 ##   - capacity is the AUTHORED per-realm MAGNITUDE in `MindRealmSeed.sea_capacity`
@@ -101,14 +101,14 @@ func test_the_rate_rises_at_every_realm_and_stays_bounded() -> void:
 	var realms := RealmDefaults.ladder().realms()
 	var previous := 0.0
 	for realm in realms:
-		var rate := MindRealmProfile.factor(realm.id)
+		var rate := RealmRate.factor(realm.id)
 		assert_eq(rate > previous, true, "rate rises at %s" % realm.id)
 		previous = rate
-	assert_almost_eq(MindRealmProfile.factor(realms[0].id), 1.0, "R1 is neutral", 0.0001)
+	assert_almost_eq(RealmRate.factor(realms[0].id), 1.0, "R1 is neutral", 0.0001)
 	# The span is a consequence of the authored step, not a pasted number.
 	assert_almost_eq(
 		previous,
-		pow(MindRealmProfile.RATE_STEP, float(realms.size() - 1)),
+		pow(RealmRate.RATE_STEP, float(realms.size() - 1)),
 		"the span is the authored step compounded over the ladder",
 		0.0001
 	)
@@ -117,9 +117,7 @@ func test_the_rate_rises_at_every_realm_and_stays_bounded() -> void:
 
 func test_an_unknown_or_empty_realm_is_neutral() -> void:
 	for realm_id in [&"", &"not_a_realm"]:
-		assert_almost_eq(
-			MindRealmProfile.factor(realm_id), MindRealmProfile.NEUTRAL, "rate for %s" % realm_id
-		)
+		assert_almost_eq(RealmRate.factor(realm_id), RealmRate.NEUTRAL, "rate for %s" % realm_id)
 
 
 # --- The rate, applied ------------------------------------------------------
@@ -139,7 +137,7 @@ func test_technique_power_increases_at_every_one_of_the_30_realms() -> void:
 func test_technique_power_follows_the_rate_ratio() -> void:
 	_assert_rel(
 		_technique_power_at(LAST) / _technique_power_at(FIRST),
-		MindRealmProfile.factor(LAST) / MindRealmProfile.factor(FIRST),
+		RealmRate.factor(LAST) / RealmRate.factor(FIRST),
 		"R30 ratio is the rate ratio"
 	)
 
@@ -154,12 +152,12 @@ func test_technique_power_follows_the_rate_at_every_realm() -> void:
 	for realm in RealmDefaults.ladder().realms():
 		_assert_rel(
 			_technique_power_at(realm.id),
-			BASE_TECHNIQUE_POWER * MindRealmProfile.factor(realm.id),
+			BASE_TECHNIQUE_POWER * RealmRate.factor(realm.id),
 			"technique power = base * rate at %s" % realm.id
 		)
 	_assert_rel(
 		_technique_power_at(LAST),
-		BASE_TECHNIQUE_POWER * MindRealmProfile.factor(LAST),
+		BASE_TECHNIQUE_POWER * RealmRate.factor(LAST),
 		"R30 technique power is base * rate"
 	)
 
@@ -172,7 +170,7 @@ func test_mental_attack_follows_the_rate_at_every_realm() -> void:
 		previous = attack
 		_assert_rel(
 			attack,
-			BASE_MENTAL_ATTACK * MindRealmProfile.factor(realm.id),
+			BASE_MENTAL_ATTACK * RealmRate.factor(realm.id),
 			"mental attack = base * rate at %s" % realm.id
 		)
 	assert_almost_eq(
@@ -186,10 +184,15 @@ func test_mental_attack_follows_the_rate_at_every_realm() -> void:
 ## The provider is scaled by the rate and nothing else. The realm MAGNITUDE lives
 ## in `RealmScaling` (core) and in `sea_capacity`; applying either here would
 ## count the same realm twice.
+##
+## This loop used to end with a `comprehension_bonus` clause, the fourth stat that
+## read the rate. That id was deleted (BL-0163) as a second rate on comprehension
+## gain, so there are three rate-scaled stats left and the loop names all three —
+## which is also what makes this a shape test rather than three hand-written cases.
 func test_no_stat_is_scaled_by_anything_but_the_bounded_rate() -> void:
 	var plain := _actor_without_path()
 	var actor := _actor_at_rank(LAST)
-	var factor := MindRealmProfile.factor(LAST)
+	var factor := RealmRate.factor(LAST)
 	for stat_id in [
 		MindStats.MENTAL_ATTACK,
 		MindStats.MENTAL_DEFENSE,
@@ -201,14 +204,6 @@ func test_no_stat_is_scaled_by_anything_but_the_bounded_rate() -> void:
 			"%s is exactly the rate" % String(stat_id),
 			0.0001
 		)
-	# Comprehension gain is a rate too, so it stays modest: 10 base comprehension
-	# must not buy a 12x bonus.
-	assert_almost_eq(
-		actor.stats.derived(MindStats.COMPREHENSION_BONUS),
-		1.0 + 10.0 * 0.01 + factor * 0.02,
-		"comprehension bonus reads the rate",
-		0.0001
-	)
 	assert_eq(factor < 2.0, true, "the rate really is the modest number (%s)" % factor)
 
 
@@ -305,9 +300,9 @@ func test_sea_capacity_ignores_the_rate() -> void:
 		authored / seed.sea_capacity, 1.0, "capacity is the authored seed, unscaled", 0.0001
 	)
 	assert_eq(
-		authored > seed.sea_capacity * MindRealmProfile.factor(LAST),
+		authored > seed.sea_capacity * RealmRate.factor(LAST),
 		false,
-		"applying the rate would inflate the reservoir by %sx" % MindRealmProfile.factor(LAST)
+		"applying the rate would inflate the reservoir by %sx" % RealmRate.factor(LAST)
 	)
 
 
@@ -326,9 +321,7 @@ func test_fill_rate_increases_at_every_realm() -> void:
 ## flow bonus. R1 is exact only because the first ordinal's rate is 1.
 func test_fill_rate_pins_both_ends_of_the_ladder() -> void:
 	assert_almost_eq(_fill_rate_at(FIRST), R1_FILL, "R1 fill rate", 0.0001)
-	_assert_rel(
-		_fill_rate_at(LAST), MindRealmProfile.factor(LAST), "R30 fill rate is the realm's rate"
-	)
+	_assert_rel(_fill_rate_at(LAST), RealmRate.factor(LAST), "R30 fill rate is the realm's rate")
 
 
 ## The fill rate must stay a bounded gain, or cultivation work becomes
@@ -349,7 +342,7 @@ func _price_of(realm_id: StringName, below_id: StringName) -> float:
 	var seed := MindRealmSeed.for_realm(realm_id)
 	if seed == null or seed.progress_required <= 0.0:
 		return 0.0
-	return seed.progress_required / MindRealmProfile.factor(below_id)
+	return seed.progress_required / RealmRate.factor(below_id)
 
 
 ## Reward gained per unit of labour work never gets worse, and no realm is free —
@@ -361,7 +354,7 @@ func _price_of(realm_id: StringName, below_id: StringName) -> float:
 ## `test_realm_profile.gd` for the full argument.
 func test_reward_per_labour_never_gets_worse_with_depth() -> void:
 	var realms := RealmDefaults.ladder().realms()
-	var entry_rate := MindRealmProfile.factor(realms[0].id)
+	var entry_rate := RealmRate.factor(realms[0].id)
 	var previous_rate := entry_rate
 	var previous_price := 0.0
 	var priced := 0
@@ -372,8 +365,8 @@ func test_reward_per_labour_never_gets_worse_with_depth() -> void:
 		var here_seed := MindRealmSeed.for_realm(here.id)
 		if seed == null or here_seed == null or seed.progress_required <= 0.0:
 			continue
-		var reward := MindRealmProfile.factor(target.id)
-		var price := seed.progress_required / MindRealmProfile.factor(here.id)
+		var reward := RealmRate.factor(target.id)
+		var price := seed.progress_required / RealmRate.factor(here.id)
 		# (1) Reward per unit of work never regresses.
 		assert_eq(reward >= entry_rate, true, "reward per labour holds at %s" % target.id)
 		assert_eq(reward > previous_rate, true, "reward per labour rises into %s" % target.id)

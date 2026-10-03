@@ -11,8 +11,9 @@ rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 18.32},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"divine"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:succubus_mortal_domain"])

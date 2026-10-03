@@ -17,4 +17,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:armor_gale_essence_plate_recipe"])
+sources = Array[StringName]([&"craft:armor_gale_essence_plate_recipe", &"domain:artifact_storm_phoenix_domain"])

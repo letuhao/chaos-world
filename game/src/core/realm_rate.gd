@@ -62,11 +62,14 @@ extends RefCounted
 ## claim — that a shared curve "is the magnitude ladder this replaced" — has been
 ## false since ADR 0050.
 ##
-## `BodyRealmProfile`, `QiRealmProfile` and `MindRealmProfile` still exist, as RENAME
-## SEAMS: they alias `RATE_STEP` and delegate `factor` here, because six call sites are
-## mid-flight in other changes and must not be edited underneath their owners. They
-## author no number, and the test named above fails if one of them ever does. Retiring
-## them is the mechanical `*RealmProfile.factor` -> `RealmRate.factor` rename.
+## `BodyRealmProfile`, `QiRealmProfile` and `MindRealmProfile` are GONE. They
+## were three byte-identical private curves; they were then reduced to rename
+## seams that aliased the constants here and delegated `factor`, so that six call
+## sites sitting in other agents' in-flight changes did not have to move; the
+## seams have now been retired and all three paths call `RealmRate.factor`
+## directly. They were never a second opinion — `RATE_STEP` was authored in
+## exactly one place from the moment the first copy was deleted, and the guards in
+## `tests/core/test_realm_rate.gd` are what kept it that way through both stages.
 
 ## Per-realm compounding step. Bounded by construction: the whole ladder is worth
 ## `RATE_STEP^29`, under 2x — a gain, not a magnitude.

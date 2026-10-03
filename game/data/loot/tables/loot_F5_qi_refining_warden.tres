@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=28 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -51,6 +51,258 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_4"
+kind = &"item"
+item_id = &"A23_spirit_bluecap_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_5"
+kind = &"item"
+item_id = &"B40_mortal_encumbrance_max_stamina_aptitude"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_6"
+kind = &"item"
+item_id = &"C31_heaven_boneworks_phalanx"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_7"
+kind = &"item"
+item_id = &"E3_spirit_leatherworks_shank"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_8"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_8"
+kind = &"item"
+item_id = &"F29_immortal_firelight_max_stamina_penetration_qi_cost_reduction_qi_regen"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_9"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_9"
+kind = &"item"
+item_id = &"F54_immortal_hedge_penetration_physique_status_resistance"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_10"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_10"
+kind = &"item"
+item_id = &"H15_mortal_impala_breakthrough_chance_evasion_fortune_penetration_physique"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_11"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_11"
+kind = &"item"
+item_id = &"I48_divine_germinal_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_12"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_12"
+kind = &"item"
+item_id = &"K6_mortal_moss_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_13"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_13"
+kind = &"item"
+item_id = &"P20_mortal_coppice_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_14"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_14"
+kind = &"item"
+item_id = &"R26_immortal_potter_tally"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_15"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_15"
+kind = &"item"
+item_id = &"T5_heaven_rowan_shilling"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_16"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_16"
+kind = &"item"
+item_id = &"W14_divine_bracken_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_17"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_17"
+kind = &"item"
+item_id = &"X22_divine_messor_smelt"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_18"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_18"
+kind = &"item"
+item_id = &"Z20_earth_bilge_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_19"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_19"
+kind = &"item"
+item_id = &"alchemy_iron_food"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_20"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_20"
+kind = &"item"
+item_id = &"filament_silk"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_21"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_21"
+kind = &"item"
+item_id = &"oath_still_vow"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_22"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_22"
+kind = &"item"
+item_id = &"sash_gale"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_23"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_23"
+kind = &"item"
+item_id = &"wood_ghost_bark"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_24"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_domain_24"
+kind = &"item"
+item_id = &"alchemy_ash_herb"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F5_qi_refining_warden"
@@ -63,5 +315,26 @@ entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
 	SubResource("entry_2"),
-	SubResource("entry_3")
+	SubResource("entry_3"),
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7"),
+	SubResource("entry_8"),
+	SubResource("entry_9"),
+	SubResource("entry_10"),
+	SubResource("entry_11"),
+	SubResource("entry_12"),
+	SubResource("entry_13"),
+	SubResource("entry_14"),
+	SubResource("entry_15"),
+	SubResource("entry_16"),
+	SubResource("entry_17"),
+	SubResource("entry_18"),
+	SubResource("entry_19"),
+	SubResource("entry_20"),
+	SubResource("entry_21"),
+	SubResource("entry_22"),
+	SubResource("entry_23"),
+	SubResource("entry_24")
 ])

@@ -30,6 +30,13 @@ var causes: Dictionary = {}
 ## The last cause applied, for display and for `SocialEntry` summaries.
 var last_cause: StringName = &""
 
+## Whether an INSTITUTION is the partner on this row rather than a person. **Stored,
+## not re-derived.** `SocialState.regard` projects from exactly these rows, and the
+## projection has to answer identically before and after a save/reload — so whether
+## the partner was a sect rather than an npc is a fact on the ledger rather than a
+## lookup into a catalog a later build may have edited or a test may have replaced.
+var institutional: bool = false
+
 ## Accumulated seconds of decay applied, so decay is driven by the same tick that drives
 ## `Actor.tick_statuses` rather than by wall-clock time the tests cannot control.
 var age: float = 0.0
@@ -65,6 +72,11 @@ func apply(cause_def: SocialCauseDef, scale: float = 1.0) -> void:
 	if cause_def.persistent:
 		standing_floor = maxf(standing_floor, standing)
 		trust_floor = maxf(trust_floor, trust)
+	# Sticky, never cleared: an institution stays an institution however many ordinary
+	# causes land on the row afterwards. Clearing it would drop a sect out of `regard`
+	# because a stranger was greeted on the same bond.
+	if cause_def.institutional:
+		institutional = true
 	causes[String(cause_def.id)] = int(causes.get(String(cause_def.id), 0)) + 1
 	last_cause = cause_def.id
 
@@ -94,6 +106,7 @@ func to_dict() -> Dictionary:
 		"trust_floor": trust_floor,
 		"causes": causes.duplicate(),
 		"last_cause": String(last_cause),
+		"institutional": institutional,
 		"age": age,
 	}
 
@@ -105,6 +118,7 @@ static func from_dict(data: Dictionary) -> SocialBond:
 	bond.standing_floor = float(data.get("standing_floor", 0.0))
 	bond.trust_floor = float(data.get("trust_floor", 0.0))
 	bond.last_cause = StringName(data.get("last_cause", ""))
+	bond.institutional = bool(data.get("institutional", false))
 	bond.age = float(data.get("age", 0.0))
 	for key in data.get("causes", {}).keys():
 		bond.causes[String(key)] = int(data["causes"][key])

@@ -14,6 +14,10 @@ base_fertility = 0.35
 base_potency = 0.4
 offspring_variance = 0.05
 closed_paths = Array[StringName]([&"mind_cultivation"])
+; The density that makes this body durable is the same density that will not let a
+; dantian form, so it stops at ordinal 17 — Immortal Sovereign, the last of the nine
+; Immortal realms. It reaches further than a commonborn's 8 for a reason no item buys:
+; the ceiling is anatomy, and nobody has written the surgery that changes it.
 realm_ceiling = 17
 lifespan = 54000.0
 base_attributes = {"physique": 4.0, "will": 1.0}

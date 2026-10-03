@@ -17,4 +17,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:banner_stone_guard_recipe"])
+sources = Array[StringName]([&"craft:banner_stone_guard_recipe", &"domain:codex_void_serpent_domain"])

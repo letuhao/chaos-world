@@ -282,6 +282,7 @@ func _build_actor() -> Actor:
 	# handler reading an un-attached ledger sees no active quest and claims nothing.
 	QuestApi.attach(actor)
 	NpcBoot.install(actor)
+	CombatBoot.bind_mechanisms(actor)
 	# After every attach above: a seam is only correct if the module it wires is
 	# already complete, and `TechniquesApi.attach` is what makes the codex exist for
 	# `TechniqueDelivery` to write into.

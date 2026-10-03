@@ -18,4 +18,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"gather", &"quest:W24_route"])
+sources = Array[StringName]([&"gather", &"quest:W24_route", &"domain:orb_void_serpent_domain"])

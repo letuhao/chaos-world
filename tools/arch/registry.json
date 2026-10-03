@@ -51,6 +51,12 @@
         "core"
       ]
     },
+    "difficulty": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
     "domain": {
       "deps": [
         "contracts",
@@ -140,7 +146,8 @@
       "deps": [
         "contracts",
         "core",
-        "sect"
+        "sect",
+        "social"
       ]
     },
     "npc": {
@@ -176,11 +183,27 @@
         "core"
       ]
     },
+    "relations": {
+      "deps": [
+        "contracts",
+        "core",
+        "nation",
+        "sect",
+        "world"
+      ]
+    },
+    "save": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
     "sect": {
       "deps": [
         "clan",
         "contracts",
-        "core"
+        "core",
+        "social"
       ]
     },
     "set_bonus": {
@@ -197,6 +220,13 @@
       ]
     },
     "socket": {
+      "deps": [
+        "contracts",
+        "core",
+        "items"
+      ]
+    },
+    "soul": {
       "deps": [
         "contracts",
         "core",
@@ -220,6 +250,13 @@
       "deps": [
         "contracts",
         "core"
+      ]
+    },
+    "world_spawn": {
+      "deps": [
+        "contracts",
+        "core",
+        "world"
       ]
     }
   }

@@ -2,6 +2,9 @@
 
 - Status: Accepted
 - Date: 2026-10-02
+- Partly superseded by: ADR 0124 "The derived-stat census is 27, and combat now reads ten of
+  them" — the "Thirteen of the 25 derived combat stats are unread" claim below is false and
+  is superseded, as is the count behind it. Nothing else in this ADR is superseded.
 
 ## Context
 

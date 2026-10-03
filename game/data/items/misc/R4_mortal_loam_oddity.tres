@@ -11,8 +11,9 @@ rarity = &"common"
 realm = &"nascent_soul"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"trophy"
 grade = &"mortal"
-sources = Array[StringName]([&"gather", &"quest:A33_route"])
+sources = Array[StringName]([&"gather", &"quest:A33_route", &"domain:body_heaven_immortal_trial"])

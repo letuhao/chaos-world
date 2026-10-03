@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"craft:I43_immortal_gainsay_aged_recipe"])
+sources = Array[StringName]([&"craft:I43_immortal_gainsay_aged_recipe", &"domain:qi_heaven_immortal_trial"])

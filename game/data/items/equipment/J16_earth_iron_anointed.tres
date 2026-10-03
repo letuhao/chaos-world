@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:J16_earth_iron_anointed_recipe"])
+sources = Array[StringName]([&"craft:J16_earth_iron_anointed_recipe", &"domain:puppet_ash_effigy_domain"])

@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"craft:D4_immortal_fortune_charm_recipe"])
+sources = Array[StringName]([&"craft:D4_immortal_fortune_charm_recipe", &"domain:mind_great_luo_trial"])

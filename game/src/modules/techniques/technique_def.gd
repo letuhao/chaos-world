@@ -95,6 +95,22 @@ extends Resource
 ## produce a negative raw share.
 @export var element_share: float = 0.0
 
+## The meridian this technique aims at, or `""` for no authored aim (ADR 0070). Additive
+## to `element_share` and for the same reason: a def lives in its owning module (ADR
+## 0056), so the body path's one authored location is an export here rather than a
+## change to a `contracts/` type nobody outside this module may extend.
+##
+## `&""` means "the mechanism decides" and NOT "the strike is ungated": the body
+## mechanism reads an authored `&""` as a `random` aim, which is the deterministic
+## highest-multiplier read. A `named` aim names a real `body_target.id` here; a meridian
+## this body has never unlocked is not struck at all, because there is no channel there
+## to subtract from.
+##
+## The AIM MODE is `ctx.data[&"aim_mode"]`, not this field: one id is a `named` aim and
+## its absence is a `random` one, while `broad` is a per-hit choice the author cannot
+## make (an area strike is decided by what the attack is hitting, not by its `.tres`).
+@export var aim_meridian: StringName = &""
+
 ## `ItemDef.fixed_modifiers` verbatim: `[{option_id, value}, ...]`, resolved
 ## through `OptionCatalog.fixed_effect` (ADR 0054). Capped at two options, which
 ## is what keeps a codex page a comparison rather than a table of numbers.

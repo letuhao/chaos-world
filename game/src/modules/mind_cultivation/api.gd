@@ -142,15 +142,15 @@ static func strengthen_anchor(actor: Actor) -> bool:
 ## the roll deterministic in tests.
 ##
 ## **The body answers first (ADR 0109).** A body plan that closes the mind path, or one whose
-## `realm_ceiling` sits below the realm being attempted, is refused BEFORE the roll and carries
-## `RaceGate`'s own `{kind, id, required, actual, label}` entries. Two of the four authored races
-## close mind outright, so this is the gate that actually bites.
+## `realm_ceiling` sits above the realm being entered, is refused BEFORE the roll. This
+## facade does NOT ask `RaceGate` itself: the refusal lives in `MindAdvancement.start`,
+## the one call both this verb and `app/mind_cultivation_ui.gd`'s Breakthrough button
+## make. That UI calls `MindAdvancement.try_breakthrough` DIRECTLY and skips this facade
+## entirely, so a gate here alone was a gate the player could press straight past — two
+## of the four authored races close mind outright, so it is the gate that actually
+## bites. The refusal carries `RaceGate`'s own `{kind, id, required, actual, label}`
+## entries.
 static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
-	var blocked := RaceGate.path_unmet(actor, PathState.MIND)
-	if blocked.is_empty():
-		blocked = RaceGate.realm_ceiling_unmet(actor)
-	if not blocked.is_empty():
-		return false
 	return MindAdvancement.try_breakthrough(actor, rng)
 
 

@@ -17,4 +17,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"craft:orb_thunder_recipe"])
+sources = Array[StringName]([&"craft:orb_thunder_recipe", &"domain:body_great_ascension_trial"])

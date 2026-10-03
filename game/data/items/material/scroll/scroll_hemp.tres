@@ -19,5 +19,5 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"mortal"
 tags = Array[StringName]([&"common"])
-sources = Array[StringName]([&"craft:scroll_hemp_recipe"])
+sources = Array[StringName]([&"craft:scroll_hemp_recipe", &"domain:beast_ironhide_bear_domain"])
 description = "A coarse scroll woven from hemp fibers. Contains basic cultivation insights."

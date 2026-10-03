@@ -17,4 +17,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:flute_moonwell_recipe"])
+sources = Array[StringName]([&"craft:flute_moonwell_recipe", &"domain:mind_spirit_ascension_trial"])

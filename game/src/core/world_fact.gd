@@ -112,7 +112,11 @@ static func normalize_payload(payload: Dictionary) -> Dictionary:
 			row["count"] = (entry as Dictionary).get("count", 0)
 			row["since"] = (entry as Dictionary).get("since", 0)
 		var fact := from_dict(row)
-		if fact.total > 0:
+		# A row is kept only when it names something AND counts something. The
+		# empty id matters: an unnamed row can never be read back by any verb, so
+		# keeping it would persist a fact no query can reach — a memory nothing
+		# can ask for.
+		if fact.id != &"" and fact.total > 0:
 			out["facts"][String(key)] = {"count": fact.total, "since": fact.since}
 	return out
 

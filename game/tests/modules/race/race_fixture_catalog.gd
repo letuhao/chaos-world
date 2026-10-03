@@ -61,7 +61,12 @@ static func mute(race_id: StringName, closed_a: StringName, closed_b: StringName
 static func _base(race_id: StringName) -> RaceDef:
 	var def := RaceDef.new()
 	def.id = race_id
-	def.display_name = String(race_id)
+	# `str()`, not `String()`: this Godot build has no callable `String` constructor for a
+	# StringName, so `String(race_id)` throws the moment a fixture is built. The throw
+	# happened inside fixture construction, which aborted whichever suite called it
+	# mid-function — and the runner reports that as "script error(s) aborted a test", NOT
+	# as a failure, so the suite still printed a pass count. Silent, and worth a comment.
+	def.display_name = str(race_id)
 	def.description = "A fixture body plan."
 	def.dominance = 0.45
 	def.manifestation_threshold = 0.1

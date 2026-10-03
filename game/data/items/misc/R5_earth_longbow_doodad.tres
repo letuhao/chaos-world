@@ -11,8 +11,9 @@ rarity = &"rare"
 realm = &"spirit_manifestation"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 6},
+	{"option_id": &"trade_value", "value": 18},
 ])
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"medal"
 grade = &"earth"
-sources = Array[StringName]([&"gather", &"quest:A33_route"])
+sources = Array[StringName]([&"gather", &"quest:A33_route", &"domain:body_spirit_condensation_trial"])

@@ -11,8 +11,9 @@ rarity = &"common"
 realm = &"spirit_transformation"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"mortal"
-sources = Array[StringName]([&"gather", &"quest:A33_route"])
+sources = Array[StringName]([&"gather", &"quest:A33_route", &"domain:mind_primordial_origin_trial"])

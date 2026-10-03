@@ -151,12 +151,17 @@ static func is_locked(def_or_id, option_id: StringName) -> bool:
 ## The declared drop route for a unique: `{unique_id, set_id, boss_id,
 ## domain_id, route_realm, min_rarity, drop_weight, item_subtype, declared}`.
 ##
-## `boss_id` is read from the definition's own `unique_route:<boss>` tag, because
-## that tag is what the loot runtime enforces — it is the one declaration that
-## cannot drift from behaviour. `item_subtype` is the definition's own
-## `subcategory`. The index carries the drop tuning only. `declared` is true only
-## when the tag names a boss *and* a tuning row exists, so a caller can never
-## mistake a half-declared route for a resolved one.
+## Three of those facts are owned by the item definition and are read from it, not
+## from the route index: `boss_id` comes from the `unique_route:<boss>` tag,
+## because that tag is what the loot runtime enforces and is therefore the one
+## declaration that cannot drift from behaviour; `item_subtype` is the
+## definition's own `subcategory`; and `set_id` is derived from which set
+## actually lists this unique, so membership can never be contradicted by a column.
+## The index carries only the drop tuning a designer knows: `domain_id`,
+## `route_realm`, `min_rarity` and `drop_weight`.
+##
+## `declared` is true only when the tag names a boss *and* a tuning row exists, so
+## a caller can never mistake a half-declared route for a resolved one.
 static func drop_route(item_id: StringName) -> Dictionary:
 	var catalog := SetCatalog.instance()
 	var def := catalog.definition(item_id)
@@ -177,7 +182,7 @@ static func drop_route(item_id: StringName) -> Dictionary:
 		}
 	return {
 		"unique_id": String(item_id),
-		"set_id": OptionCatalog.text_field(row, "set_id"),
+		"set_id": _set_listing(item_id),
 		"boss_id": String(boss_id),
 		"domain_id": OptionCatalog.text_field(row, "domain_id"),
 		"route_realm": OptionCatalog.text_field(row, "route_realm"),
@@ -186,6 +191,19 @@ static func drop_route(item_id: StringName) -> Dictionary:
 		"item_subtype": subtype,
 		"declared": true,
 	}
+
+
+## The set that lists `item_id`, or `""` when it belongs to none. Derived from the
+## set definitions rather than read from the route index, so the two cannot
+## disagree — the index used to carry a `set_id` column that was a second
+## declaration of the very fact this answers.
+static func _set_listing(item_id: StringName) -> String:
+	var catalog := SetCatalog.instance()
+	for set_id in catalog.set_ids():
+		var set_def := catalog.set_definition(set_id)
+		if set_def != null and set_def.is_member(item_id):
+			return String(set_id)
+	return ""
 
 
 ## Realize a unique from a seed. The locked fixed signature is preserved and the
@@ -225,11 +243,11 @@ static func _set_view(set_def: SetDef, entry: Dictionary) -> Dictionary:
 	var slots: Dictionary = entry.get("slots", {})
 	var active: Array = entry.get("active_tiers", [])
 	# A set may be authored wider than a body (the void coil has six members and
-	# five slots), so "complete" means every member a body could wear, not every
-	# member the set names — otherwise a full set reads as permanently
-	# incomplete. `equippable_count` is that ceiling; `member_count` stays the
-	# authored total.
-	var equippable := set_def.max_equippable()
+	# five slots), so "complete" means every member a body could actually wear, not
+	# every member the set names — otherwise a full set reads as permanently
+	# incomplete. `equippable_count` is that placement ceiling; `member_count`
+	# stays the authored total.
+	var equippable := SetCatalog.instance().max_wearable(set_def.id)
 	var out := {
 		"set_id": String(set_def.id),
 		"display_name": set_def.display_name,
@@ -256,7 +274,7 @@ static func _set_view(set_def: SetDef, entry: Dictionary) -> Dictionary:
 static func _member_view(set_def: SetDef, member_id: StringName, slots: Dictionary) -> Dictionary:
 	var def := SetCatalog.instance().definition(member_id)
 	var id := String(member_id)
-	return {
+	var view := {
 		"def_id": id,
 		"display_name": "" if def == null else def.display_name,
 		"kind": String(set_def.member_kind(member_id)),
@@ -270,6 +288,14 @@ static func _member_view(set_def: SetDef, member_id: StringName, slots: Dictiona
 		"locked_option_ids": _locked_ids(def),
 		"route_boss_id": String(UniqueItem.route_boss_id(def)),
 	}
+	# The declared route tuning rides with the member, so a unique's index row is
+	# not decoration read only by tests: the set screen is handed this snapshot by
+	# the composition root and can therefore say where a unique drops and how rare
+	# the drop is. The boss itself is not restated here — the definition's own tag
+	# owns it — so this only carries the columns the index is allowed to keep.
+	if UniqueItem.is_unique(def):
+		view["route"] = drop_route(member_id)
+	return view
 
 
 static func _threshold_view(set_def: SetDef, index: int, active: bool) -> Dictionary:

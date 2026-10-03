@@ -409,10 +409,15 @@ func test_the_confirm_button_commits_through_the_flow() -> void:
 ## ADR 0065's structural guard. A fate picker is a control that grants an unearned
 ## fate; a behavioural test cannot see a control that does not exist, so this reads
 ## the shipped source instead.
+##
+## The search runs over CODE, never over the file as written: both the screen and
+## the flow DOCSTRING the very verbs they must not call, in order to state that
+## they do not. Searching the raw text would fail on the prose documenting the
+## rule, which is the opposite of what this guard is for.
 func test_no_fate_picker_exists_anywhere_on_the_creation_screen() -> void:
-	var source := FileAccess.get_file_as_string(SCREEN_SOURCE)
+	var source := _code_only(SCREEN_SOURCE)
 	assert_ne(source.is_empty(), false, "the creation screen's source is readable")
-	var row_source := FileAccess.get_file_as_string(ROW_SCENE)
+	var row_source := _code_only(ROW_SCENE)
 	assert_ne(row_source.is_empty(), false, "and its row's")
 	for verb in ["earn_fate", "earn_destiny", "fate_definition", "fate_ids"]:
 		assert_eq(
@@ -427,7 +432,7 @@ func test_no_fate_picker_exists_anywhere_on_the_creation_screen() -> void:
 		)
 	# The one earn in the whole feature lives in the creation layer, and this pins
 	# that there is exactly one of them rather than a second copy somewhere.
-	var flow_source := FileAccess.get_file_as_string(FLOW_SOURCE)
+	var flow_source := _code_only(FLOW_SOURCE)
 	assert_eq(
 		flow_source.count("earn_destiny"),
 		1,
@@ -443,7 +448,7 @@ func test_no_fate_picker_exists_anywhere_on_the_creation_screen() -> void:
 ## The codex must still be a codex. Adding a commit button to the read-only screen
 ## would be the same picker wearing a different screen's clothes.
 func test_the_codex_gained_no_commit_verb() -> void:
-	var codex := FileAccess.get_file_as_string(CODEX_SOURCE)
+	var codex := _code_only(CODEX_SOURCE)
 	assert_ne(codex.is_empty(), false, "the codex's source is readable")
 	for verb in ["act_commit", "committed", "earn_fate", "earn_destiny"]:
 		assert_eq(
@@ -454,6 +459,30 @@ func test_the_codex_gained_no_commit_verb() -> void:
 
 
 # --- Helpers -----------------------------------------------------------------
+
+
+## The CODE of a GDScript file, with every comment line removed.
+##
+## The structural guards above search source for a forbidden verb, and the files
+## they read all DOCSTRING those verbs in order to state that they never call
+## them. Searching the raw text therefore fails on the very prose documenting the
+## rule. Stripping comment lines keeps the assertion about code, which is what it
+## was always trying to say.
+##
+## Trailing `#` comments are stripped too, and a line that is ONLY a comment is
+## dropped entirely rather than becoming an empty line.
+func _code_only(path: String) -> String:
+	var code := ""
+	for raw in FileAccess.get_file_as_string(path).split("\n"):
+		var line := String(raw)
+		var trimmed := line.strip_edges()
+		if trimmed.begins_with("#"):
+			continue
+		var hash_at := line.find("#")
+		if hash_at >= 0:
+			line = line.substr(0, hash_at)
+		code += line + "\n"
+	return code
 
 
 ## One hero as a comparable shape: the race, the base attributes it was born with,

@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"craft:X6_immortal_accretion_aged_recipe"])
+sources = Array[StringName]([&"craft:X6_immortal_accretion_aged_recipe", &"domain:puppet_iron_dancer_domain"])

@@ -19,5 +19,5 @@ roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"spirit"
 tags = Array[StringName]([&"uncommon"])
-sources = Array[StringName]([&"craft:scroll_bamboo_recipe"])
+sources = Array[StringName]([&"craft:scroll_bamboo_recipe", &"domain:crown_void_emperor_domain"])
 description = "A durable bamboo scroll. Holds spirit-grade cultivation methods."

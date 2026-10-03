@@ -11,8 +11,9 @@ rarity = &"common"
 realm = &"void_refinement"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"key"
 grade = &"mortal"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:artifact_storm_phoenix_domain"])

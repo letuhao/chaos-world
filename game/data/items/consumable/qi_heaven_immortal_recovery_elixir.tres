@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"immortal"
-sources = Array[StringName]([&"craft:qi_heaven_immortal_recovery_recipe"])
+sources = Array[StringName]([&"craft:qi_heaven_immortal_recovery_recipe", &"domain:monster_frost_wolf_domain"])
 description = "Heals a scarred dantian and repairs one burned channel after a failed qi breakthrough."

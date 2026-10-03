@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="InhabitantDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/inhabitant_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+inhabitant_id = &"frost_sentinel"
+display_name = "Frost Sentinel"
+realm_id = &"core_formation"
+base = {&"physique": 22.0, &"spirit": 20.0, &"aptitude": 8.0, &"comprehension": 9.0, &"agility": 8.0, &"will": 21.0, &"fortune": 5.0}
+cultivates = true
+hostile = true
+tags = Array[StringName]([&"construct", &"frost", &"warden"])

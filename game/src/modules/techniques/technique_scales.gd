@@ -24,7 +24,8 @@ const POWER_STEP := 1.15
 const QI_COST_STEP := 0.94
 const COOLDOWN_STEP := 0.96
 
-## Learning cost, per path and never shared (like `RATE_STEP`). `1.03` sits just
+## Learning cost, per path and never shared — unlike `RATE_STEP`, which is authored
+## once in `core/realm_rate.gd` and aliased by all three paths (ADR 0116). `1.03` sits just
 ## under the magnitude step, so study is always cheaper than a breakthrough and
 ## never runs ahead of one.
 const LEARN_STEP := 1.03

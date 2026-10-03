@@ -118,25 +118,47 @@ func test_attach_is_idempotent() -> void:
 	assert_eq(actor.stats.provider_count(), 1, "no duplicate mind provider")
 
 
-func test_sea_provider_emits_stats() -> void:
+## The sea's emitted stat surface is capacity, and capacity is the RESERVOIR's
+## maximum — the same number `MindTraining.synchronize` sizes the pool from.
+## Clarity, turbulence and fullness were DELETED from the surface (BL-0163): the
+## first two restated component fields ADR 0071 reads off the component itself,
+## and the third was a second definition of "full" that disagreed with
+## `is_full` whenever the sea was turbulent. `test_mind_stat_surface.gd` pins the
+## id set; this pins the value that survives.
+func test_sea_provider_emits_only_the_reservoir_capacity() -> void:
 	var actor := _actor()
 	var sea := MindCultivationApi.sea(actor)
 	sea.set_structural_capacity(100.0)
 	sea.fill(actor, 100.0)
 	actor.mark_stats_dirty()
+	var emitted: Dictionary = SeaProvider.new().contribute(actor.stats._context)
+	assert_eq(emitted.size(), 1, "capacity is the whole sea surface")
+	assert_almost_eq(
+		float(emitted[MindStats.SEA_CAPACITY]),
+		sea.maximum(actor),
+		"the reservoir maximum, not a re-derived capacity",
+		0.01
+	)
 	assert_almost_eq(actor.stats.derived(MindStats.SEA_CAPACITY), 100.0, "provider capacity")
-	assert_almost_eq(actor.stats.derived(MindStats.SEA_CLARITY), 0.5, "provider clarity")
-	assert_almost_eq(actor.stats.derived(MindStats.SEA_TURBULENCE), 0.0, "provider turbulence")
-	assert_almost_eq(actor.stats.derived(MindStats.SEA_FULL), 1.0, "provider full")
 
 
-func test_sea_provider_not_full() -> void:
+## The surviving definition of fullness, stated as a property of the two functions
+## that used to disagree about it. With turbulence at 0.4 the sea's USABLE
+## capacity is 80 of a 100 reservoir, so a reservoir at 85 saturates `ratio` at
+## 1.0 while `is_full` is still false. The deleted `SEA_FULL` stat reported 1.0
+## there: "the ratio is saturated" is not "the reservoir is full", and a gate
+## reading the stat would have opened on a sea the gate's own rule refuses.
+func test_a_turbulent_sea_saturates_its_ratio_without_being_full() -> void:
 	var actor := _actor()
 	var sea := MindCultivationApi.sea(actor)
 	sea.set_structural_capacity(100.0)
-	sea.fill(actor, 50.0)
-	actor.mark_stats_dirty()
-	assert_almost_eq(actor.stats.derived(MindStats.SEA_FULL), 0.0, "not full")
+	sea.fill(actor, 85.0)
+	sea.add_turbulence(0.4)
+	assert_almost_eq(sea.effective_capacity(), 80.0, "turbulence costs a fifth of the sea")
+	assert_almost_eq(sea.ratio(actor), 1.0, "85 of 80 usable saturates the ratio")
+	assert_eq(sea.is_full(actor), false, "and the reservoir is still not full")
+	sea.fill(actor, 15.0)
+	assert_eq(sea.is_full(actor), true, "full means the reservoir reached its own maximum")
 
 
 func test_turbulence_reduces_effective_capacity() -> void:

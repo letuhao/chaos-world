@@ -2,8 +2,9 @@ class_name NationScreen
 extends UiScreen
 
 ## The nation a hero lives under: the board of offices, the claims over places, the
-## stances and the standoffs. A pure consumer of the `nation` facade — it renders
-## `NationApi.summary(actor)` and names NOTHING else in the module (ADR 0083/0085).
+## stances and the standoffs. A pure consumer of the `nation` facade — it renders the
+## facade's `summary(actor)` read model and names NOTHING else in the module
+## (ADR 0083/0085).
 ##
 ## ## The board is the screen, and a vacancy is a seat
 ##
@@ -69,22 +70,32 @@ var _stance_rows: Array = []
 var _standoff_rows: Array = []
 
 
-## Adopt a facade snapshot for the bound actor (`NationApi.summary(actor)` shaped).
-## `setup(actor)` takes the same path; this exists so a headless test or a driver can
-## render a board with no actor at all. An empty snapshot clears it.
+## Adopt a facade snapshot for the bound actor (the `summary(actor)` shape).
+## `setup(actor)` takes the facade path inside `_refresh_view`; this exists so a
+## headless test or a driver can render a board from a snapshot with no actor at all,
+## and — importantly — so adopting a snapshot does NOT re-enter the facade. An empty
+## snapshot clears it.
 func apply_snapshot(snapshot: Dictionary) -> void:
 	_bind_nodes()
 	_board = snapshot.duplicate(true)
-	_refresh_view()
+	_fill_from_board()
 	_render()
 
 
 ## The office ids the board is showing, in display order. Reported, not selectable:
 ## there is nothing here to choose.
+##
+## A SPARE pool row is not a seat and is not reported. It renders `{}` and answers
+## `is_filled() == false`, so its id reads as `""` and is dropped here. That is what
+## keeps the reported list equal to the authored board: a count that included the
+## spare rows would make a polity look like it authors offices its catalog never
+## defined — the exact legibility failure this screen exists to prevent.
 func office_ids() -> Array:
 	var out: Array = []
 	for row in _office_rows:
-		out.append(String((row as NationOfficeRow).office_id()))
+		var office_id := String((row as NationOfficeRow).office_id())
+		if office_id != "":
+			out.append(office_id)
 	return out
 
 
@@ -125,7 +136,10 @@ func _summary() -> Dictionary:
 	}
 
 
-## Re-read the facade and hand raw values down. The rows own every format.
+## Re-read the facade — the ONE call this screen makes — and hand raw values down.
+## Every later read is of the cached `_board`, never of the facade, so a refresh
+## costs exactly one call however many times `summary()` is asked. The rows own
+## every format.
 func _refresh_view() -> void:
 	_bind_nodes()
 	if not _bound:
@@ -133,6 +147,12 @@ func _refresh_view() -> void:
 	var live := NationApi.summary(_actor) if _actor != null else {}
 	if not live.is_empty():
 		_board = live
+	_fill_from_board()
+
+
+## Push the cached board into the row pools. Split out from `_refresh_view` so that
+## adopting a snapshot renders it without a second facade read.
+func _fill_from_board() -> void:
 	_fill_offices()
 	_fill_claims()
 	_fill_stances()
@@ -338,7 +358,7 @@ func _ordered(catalog: Variant, flag: String) -> Array:
 		var plain: Array = []
 		for entry_id in ids:
 			var view: Dictionary = entries[entry_id]
-			if bool(view.get(flag, false)):
+			if _is_set(view.get(flag, null)):
 				flagged.append(view)
 			else:
 				plain.append(view)
@@ -346,6 +366,21 @@ func _ordered(catalog: Variant, flag: String) -> Array:
 	for entry_id in ids:
 		out.append(entries[entry_id])
 	return out
+
+
+## Whether a snapshot key counts as SET. The flag a caller passes is sometimes a
+## bool (`closed`) and sometimes a string (`challenger_id`), and the two have to be
+## read the way each actually means it: an empty challenger id is nobody contesting,
+## while a closed standoff is the opposite of the flag being present. An absent key
+## is never set.
+func _is_set(value: Variant) -> bool:
+	if value == null:
+		return false
+	if value is bool:
+		return bool(value)
+	if value is String or value is StringName:
+		return String(value) != ""
+	return true
 
 
 # --- Reporting --------------------------------------------------------------
@@ -391,17 +426,23 @@ func _standoff_summaries() -> Array:
 
 
 ## Every row id the screen is showing, in display order, so a test can read the
-## board's order without walking the tree.
+## board's order without walking the tree. Spare pool rows carry nothing and so
+## contribute nothing, for the same reason `office_ids()` drops them.
 func row_ids() -> Array:
 	var out: Array = []
-	for row in _office_rows:
-		out.append(String((row as NationOfficeRow).office_id()))
+	out.append_array(office_ids())
 	for row in _claim_rows:
-		out.append(String((row as NationTerritoryRow).territory_id()))
+		var territory_id := String((row as NationTerritoryRow).territory_id())
+		if territory_id != "":
+			out.append(territory_id)
 	for row in _stance_rows:
-		out.append(String((row as NationStanceRow).pair_key()))
+		var pair_key := String((row as NationStanceRow).pair_key())
+		if pair_key != "":
+			out.append(pair_key)
 	for row in _standoff_rows:
-		out.append(String((row as NationStandoffRow).standoff_id()))
+		var standoff_id := String((row as NationStandoffRow).standoff_id())
+		if standoff_id != "":
+			out.append(standoff_id)
 	return out
 
 

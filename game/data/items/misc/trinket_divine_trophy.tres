@@ -11,6 +11,7 @@ rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 37.54},
+	{"option_id": &"trade_value", "value": 18},
 ])
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"trophy"

@@ -11,8 +11,9 @@ rarity = &"magic"
 realm = &"spirit_domain"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 2, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"spirit"
-sources = Array[StringName]([&"gather", &"quest:A33_route"])
+sources = Array[StringName]([&"gather", &"quest:A33_route", &"domain:mind_qi_refining_trial"])

@@ -33,6 +33,9 @@ const FORBIDDEN_VERBS := [
 const PUBLISHED := [
 	"advance_succession",
 	"attach",
+	# BL-0197. A split moves standing and writes a ledger line; it grants nothing,
+	# which is why it joins this list rather than the forbidden one.
+	"declare_schism",
 	"found",
 	"gate",
 	"join",

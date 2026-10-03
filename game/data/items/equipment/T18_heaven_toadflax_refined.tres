@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:T18_heaven_toadflax_refined_recipe"])
+sources = Array[StringName]([&"craft:T18_heaven_toadflax_refined_recipe", &"domain:loot_storm_crypt_domain"])

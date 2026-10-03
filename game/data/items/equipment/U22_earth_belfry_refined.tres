@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:U22_earth_belfry_refined_recipe"])
+sources = Array[StringName]([&"craft:U22_earth_belfry_refined_recipe", &"domain:loot_ember_vault_domain"])

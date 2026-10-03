@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"craft:H8_immortal_physique_totem_recipe"])
+sources = Array[StringName]([&"craft:H8_immortal_physique_totem_recipe", &"domain:tome_gilded_crane_domain"])

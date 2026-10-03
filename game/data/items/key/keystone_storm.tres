@@ -11,8 +11,9 @@ rarity = &"rare"
 realm = &"true_immortal"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"sigil"
 grade = &"heaven"
-sources = Array[StringName]([&"gather", &"quest:W24_route"])
+sources = Array[StringName]([&"gather", &"quest:W24_route", &"domain:qi_nascent_soul_domain"])

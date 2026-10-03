@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:M10_spirit_jetty_refined_recipe"])
+sources = Array[StringName]([&"craft:M10_spirit_jetty_refined_recipe", &"domain:body_earth_immortal_trial"])

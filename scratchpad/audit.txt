@@ -1,0 +1,11 @@
+warn destiny group 'origin' closes the_chosen_instrument, the_one_who_returned, the_one_who_stayed against each other permanently — earning one forfeits the rest
+warn 3 fate(s) carry no stat and exist only to gate story: bound_name_called_once, heaven_s_warning_unread, household_registered_as_heir
+warn acquisition source 'gather' has no shipping route (no acquisition route is declared for it in tools/data.py, so no shipping code claims to deliver it); 2428 item(s) declare it
+warn acquisition source 'quest' has no shipping route (no acquisition route is declared for it in tools/data.py, so no shipping code claims to deliver it); 3076 item(s) declare it
+warn 1697 item(s) declare a `quest:<id>` naming one of 442 quest ids no authored QuestDef defines (A10_immortal_axletree_line, A11_immortal_azurite_line, A12_immortal_backstaff_line, A13_immortal_baleful_line, A14_heaven_barcar_line, A15_heaven_barmbrack_line (+436 more)); 0 resolve, so a quest source is a claim about a quest that does not exist
+warn 2 declared route(s) deliver nothing because no item in the corpus declares them (domain, starter); the route is real and called, so this is a content gap — add a `sources` entry that names it — and not a wiring fault. Breaking such a route cannot move the deliverable count, which is why the count alone is not evidence a route works
+warn 6429 item(s) are obtainable in the content graph but not through any shipping route. Resting on no shipped route, counting every kind they declare: gather 4971, quest 5542. Overlapping, not additive: an unreachable input 66; gather 821; gather+quest 4150; quest 1392. e.g. A10_immortal_axletree_aged, A10_immortal_axletree_base, A10_immortal_axletree_perfected, A10_immortal_axletree_primed, A10_immortal_axletree_refined, A11_immortal_azurite_aged (+6423 more)
+
+acquisition: 7981/7982 item(s) obtainable in the content graph, 1553/7982 deliverable by shipping code
+delivered per live route, a partition of the deliverable total (sums to 1553): boss 1296, craft 257, domain 0, starter 0
+ok   data audit clean (graph reachable only: 5 runtime-availability gap(s) reported above, not gated)

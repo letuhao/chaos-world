@@ -132,8 +132,12 @@ const TABLE: Dictionary = {
 	&"mental_attack": ["Mental attack", 0],
 	&"mental_defense": ["Mental defence", 0],
 	&"spiritual_sense_range": ["Spiritual sense range", 1],
-	&"critical_chance": ["Critical chance", 3],
-	&"dodge_chance": ["Dodge chance", 3],
+	# Renamed by ADR 0071 / BL-0114. The labels move with the ids on purpose: a stat
+	# called "Critical chance" that is read ONLY by the mind mechanism would tell a player
+	# their qi crits are 0.05 higher, which is exactly the misreading this table exists
+	# to prevent (see its module docblock).
+	&"mind_focus_chance": ["Mind focus chance", 3],
+	&"mind_avoidance": ["Mind avoidance", 3],
 	&"illusion_resistance": ["Illusion resistance", 3],
 	&"mind_technique_power": ["Mind technique power", 1],
 	&"comprehension_bonus": ["Comprehension bonus", 2],

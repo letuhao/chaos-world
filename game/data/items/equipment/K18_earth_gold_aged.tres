@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:K18_earth_gold_aged_recipe"])
+sources = Array[StringName]([&"craft:K18_earth_gold_aged_recipe", &"domain:totem_stone_guardian_domain"])

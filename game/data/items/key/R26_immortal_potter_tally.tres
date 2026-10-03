@@ -11,8 +11,9 @@ rarity = &"legendary"
 realm = &"heaven_immortal"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"immortal"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:qi_qi_refining_trial"])

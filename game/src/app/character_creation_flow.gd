@@ -143,7 +143,9 @@ func build(choice_id: StringName, base_stats: Dictionary = {}) -> Dictionary:
 		return _refuse("unknown_origin")
 	if _created:
 		return _refuse("already_created")
-	var race_id := RACE_BY_ORIGIN[choice_id]
+	# Typed explicitly: a Dictionary lookup is Variant, and `:=` on a Variant is
+	# a warning-as-error in this project (see the same rule in nation/api.gd).
+	var race_id: StringName = RACE_BY_ORIGIN[choice_id]
 	var actor := _body(race_id, base_stats)
 	var earned := grant_origin(actor, choice_id)
 	if not bool(earned.get("ok", false)):

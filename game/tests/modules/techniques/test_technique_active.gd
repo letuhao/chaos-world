@@ -372,7 +372,7 @@ func test_mastery_scales_the_cooldown_and_the_qi_cost_per_adr_0055() -> void:
 	assert_almost_eq(_casting(actor).duration_for(actor, def), 10.0, "rung 0 cooldown")
 	assert_almost_eq(_casting(actor).qi_cost_for(actor, def), 100.0, "rung 0 qi cost")
 	TechniquesApi.codex(actor).learn(def.id, 4)
-	TechniquesApi.codex(actor).commit(actor)
+	TechniquesApi.raise_mastery(actor, def.id, 4)
 	var rung_four := TechniqueScales.multipliers_at(4, def.mastery_rungs)
 	assert_almost_eq(
 		_casting(actor).duration_for(actor, def),
@@ -389,7 +389,7 @@ func test_mastery_scales_the_cooldown_and_the_qi_cost_per_adr_0055() -> void:
 	var capped := _actor({Stat.COMPREHENSION: 1000.0})
 	var capped_def := _active(capped, 0.0, 0.0, 10.0)
 	TechniquesApi.codex(capped).learn(capped_def.id, 4)
-	TechniquesApi.codex(capped).commit(capped)
+	TechniquesApi.raise_mastery(capped, capped_def.id, 4)
 	var worst := _casting(capped).duration_for(capped, capped_def)
 	assert_almost_eq(worst, 10.0 * float(rung_four["cooldown"]) * 0.6, "rung 4 at the cap")
 	assert_eq(worst > 5.0, true, "and no rung is ever a trap rung")
@@ -514,13 +514,15 @@ func test_the_cooldown_survives_a_save_and_reload_round_trip() -> void:
 	# `module_data` verbatim, so a full round trip through core is the real test.
 	var restored := Actor.from_dict(actor.to_dict())
 	TechniquesApi.attach(restored)
-	# The slot table is SESSION state and is deliberately not persisted — a loadout
-	# is re-decided per fight (ADR 0053) — so the binding is remade before the
-	# technique can be used again. What must survive is the COOLDOWN.
-	TechniquesApi.equip(restored, def)
+	# The BINDING comes back too. An earlier version of this case asserted the
+	# opposite — "the slot table is SESSION state and is deliberately not
+	# persisted" — and had to re-equip by hand, which papered over DEF-0154: a
+	# reload kept the technique and the cooldowns but silently emptied the loadout.
+	# ADR 0053 makes all three states persistent.
 	var casting := _casting(restored)
 	assert_ne(casting, null, "the restored actor carries a casting table")
 	assert_almost_eq(casting.remaining(def.id), 20.0, "the cooldowns came back with it")
+	assert_eq(TechniquesApi.slots(restored).is_equipped(def.id), true, "and so did the binding")
 	assert_eq(bool(casting.activate(restored, def)["ok"]), false, "so it is still cooling")
 	casting.tick(restored, 20.0)
 	assert_almost_eq(casting.remaining(def.id), 0.0, "the full twenty seconds clear it")

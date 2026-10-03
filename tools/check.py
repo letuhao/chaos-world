@@ -34,6 +34,12 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     # endpoints, plus the learning-cost step that spends player progress. It runs
     # beside the power table because it must never be derived from it.
     ("technique_power", ["check"]),
+    # The difficulty preset table (ADR 0129): a CLOSED set of five scalars per preset, all
+    # bounded, with the shipped default row exactly 1.0 so choosing the middle option is a
+    # no-op. Shape only, and it runs beside the other two power-shaped guards because a sixth
+    # column would be a fourth power curve wearing a difficulty label. A malformed preset must
+    # fail in seconds rather than after the full suite.
+    ("difficulty", ["check"]),
     # Fast catalog checks: the projection must match the master JSONL, and every
     # registered option target must have an implemented consumer (ADR 0025/0033).
     ("data", ["options", "derive", "--check"]),

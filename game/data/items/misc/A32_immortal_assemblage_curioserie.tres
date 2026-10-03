@@ -11,8 +11,9 @@ rarity = &"legendary"
 realm = &"dao_fruit"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 33.69},
+	{"option_id": &"trade_value", "value": 18},
 ])
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"curio"
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"domain:succubus_earth_domain"])

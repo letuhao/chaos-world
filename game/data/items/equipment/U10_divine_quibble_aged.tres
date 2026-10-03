@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:U10_divine_quibble_aged_recipe"])
+sources = Array[StringName]([&"craft:U10_divine_quibble_aged_recipe", &"domain:amulet_iron_sage_domain"])

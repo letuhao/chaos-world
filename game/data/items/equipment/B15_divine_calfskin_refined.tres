@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:B15_divine_calfskin_refined_recipe"])
+sources = Array[StringName]([&"craft:B15_divine_calfskin_refined_recipe", &"domain:qi_core_formation_trial"])

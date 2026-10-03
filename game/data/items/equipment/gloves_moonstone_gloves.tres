@@ -18,4 +18,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:gloves_moonstone_gloves_recipe"])
+sources = Array[StringName]([&"craft:gloves_moonstone_gloves_recipe", &"domain:treasure_gilded_beetle_domain"])

@@ -9,6 +9,12 @@ extends RefCounted
 ## into either an award or a recoverable deviation. Only one attempt is active
 ## per actor.
 ##
+## `preview` and `start` AGREE, and that is a contract rather than a coincidence:
+## a condition `preview` does not report is a button a screen offers that does
+## nothing. `ready` is the boolean the mind screen binds its Breakthrough press
+## to, so anything `start` refuses on — the attempt slot included — has to be a
+## clause in `conditions` (BL-0152).
+##
 ## The award is keyed on the attempt's identity (`outcome_granted`), not on the
 ## path's progress, so re-resolving one attempt can never grant twice. Success
 ## empties the sea and grants the target realm's awards once; failure is mental
@@ -34,36 +40,42 @@ const CLARITY_TO_CHANCE := 0.5
 
 # --- Read side ---------------------------------------------------------------
 
+## The clause an attempt already in flight adds to `conditions`, published so a
+## screen binds to the module's own wording instead of a copied string.
+##
+## `start` refuses a second attempt outright, so `preview` owes this clause. It
+## used to report `ready: true` for an actor `start` would refuse, which put a
+## READY label and a Breakthrough button that does nothing on the same screen
+## (BL-0152). EVERY branch of `preview` reports it, because an early return that
+## dropped it would reopen the same disagreement on a different actor.
+const ATTEMPT_CLAUSE := "Attempt in flight"
+
 
 ## Preview the breakthrough conditions without consuming anything. Returns a
 ## dictionary with unmet conditions, costs, the evaluated chance, the target
 ## realm, and the active attempt id (empty when none is in flight).
 static func preview(actor: Actor) -> Dictionary:
 	var active := active_attempt(actor)
+	# Collected up front and carried into every branch below, so neither clause
+	# `start` refuses on can be the one a refusal path forgets. The order is
+	# `start`'s own order: the ADR 0109 body gate is answered before the slot.
+	var conditions: Array[String] = []
+	conditions.append_array(_body_gate_unmet(actor))
+	if active != null:
+		conditions.append(ATTEMPT_CLAUSE)
 	var state := actor.path(MindPath.PATH_ID)
 	if state == null:
-		return {"ready": false, "conditions": ["No mind path"], "costs": {}, "attempt": _id(active)}
+		return _refusal(conditions, "No mind path", active)
 	var target := RealmDefaults.ladder().next(state.rank_id)
 	if target == null:
-		return {
-			"ready": false,
-			"conditions": ["Already at max realm"],
-			"costs": {},
-			"attempt": _id(active),
-		}
+		return _refusal(conditions, "Already at max realm", active)
 	var seed := MindRealmSeed.for_realm(target.id)
 	var source_seed := MindRealmSeed.for_realm(state.rank_id)
 	var sea := MindCultivationApi.sea(actor)
 	if seed == null or source_seed == null or sea == null:
-		return {
-			"ready": false,
-			"conditions": ["Missing seed or sea"],
-			"costs": {},
-			"attempt": _id(active),
-		}
+		return _refusal(conditions, "Missing seed or sea", active)
 	# Entry checks the *source* realm's completed milestones; the target profile
 	# supplies the pill and the progress bar (ADR 0024/0029).
-	var conditions: Array[String] = []
 	if state.progress < seed.progress_required:
 		conditions.append("Progress: %d/%d" % [int(state.progress), int(seed.progress_required)])
 	if actor.stats.derived(Stat.COMPREHENSION) < seed.comprehension_required:
@@ -208,6 +220,35 @@ static func _anchor_reason(actor: Actor, stage: StringName) -> String:
 	return MindAnchor.describe_stage(stage) if reason == "" else reason
 
 
+## A `preview` for an actor that cannot act at all: the conditions collected so
+## far, plus the single reason there are no more to collect, and no costs or
+## target because there is nothing to spend on. `attempt` is published here too,
+## so a screen cannot read "nothing in flight" off a refusal that happens to have
+## an attempt in flight.
+static func _refusal(conditions: Array[String], reason: String, active: MindAttempt) -> Dictionary:
+	var all := conditions.duplicate()
+	all.append(reason)
+	return {"ready": false, "conditions": all, "costs": {}, "attempt": _id(active)}
+
+
+## The ADR 0109 clauses that are shut for this actor: a body plan that closes the
+## mind path, and one whose `realm_ceiling` sits above the realm being entered.
+##
+## `_body_allows` refuses on exactly these, and `preview` owes them for the same
+## reason it owes `ATTEMPT_CLAUSE`: three of the four authored races close the mind
+## path outright, so without this a stoneborn actor read READY on the mind screen
+## and its Breakthrough press did nothing. Core's own `label` is the clause, as in
+## `_tier_gate_unmet`, and an empty list is the answer when both are open — which
+## is every raceless actor, the boundary ADR 0109 deliberately leaves ungated.
+static func _body_gate_unmet(actor: Actor) -> Array[String]:
+	var out: Array[String] = []
+	for entry in RaceGate.path_unmet(actor, PathState.MIND):
+		out.append(String(entry.get("label", "")))
+	for entry in RaceGate.realm_ceiling_unmet(actor):
+		out.append(String(entry.get("label", "")))
+	return out
+
+
 ## The shared tier gates that are shut for `target_index`, one clause each, in the
 ## order they are earned, and nothing at all when they are all open.
 ##
@@ -286,7 +327,28 @@ static func _id(value: MindAttempt) -> String:
 ## Commit a breakthrough attempt: validate, spend the realm pill exactly once,
 ## and persist the record. Returns null when refused — unprepared, no target
 ## realm, or another attempt is already active.
+##
+## **The body answers first (ADR 0109), and it answers HERE.** A body plan that
+## closes the mind path, or one whose `realm_ceiling` sits above the realm being
+## entered, is refused before any other check and before anything is spent. Two of
+## the four authored races close mind outright, so this is the gate that actually
+## bites — and it is here because this is the ONE call every mind entry point
+## makes. `MindCultivationApi.try_breakthrough` reaches this by way of
+## `try_breakthrough`, and `app/mind_cultivation_ui.gd` calls `try_breakthrough`
+## DIRECTLY, skipping the facade altogether; a gate on the facade alone left the
+## UI's Breakthrough button ungated, which is exactly how a stoneborn walked into
+## mind cultivation. A rule a caller can walk around is not a rule. It is a
+## precondition and never a modifier.
+##
+## One attempt at a time is the module's invariant, not an accident of the check
+## order: `MindAttempt` is a single per-actor slot and `resolve_attempt` is
+## idempotent because the award is keyed on that record's identity (ADR 0029). So
+## a second `start` does not QUEUE or JOIN — it refuses, and `preview` reports it
+## as `ATTEMPT_CLAUSE` rather than as ready. Returning the record already in
+## flight instead would tell a caller a pill was spent when this call spent none.
 static func start(actor: Actor, rng: RandomNumberGenerator = null) -> MindAttempt:
+	if not _body_allows(actor):
+		return null
 	# Face the tribulation owed for this path's next realm BEFORE validating anything
 	# (ADR 0061), so R19-R30 are reachable by play rather than only by a test. Both
 	# entries into an attempt run through here — `start` itself and the one-shot
@@ -451,10 +513,30 @@ static func _replay(committed: MindAttempt) -> RandomNumberGenerator:
 
 ## One-shot breakthrough: commit and resolve in a single call. Prefer
 ## `start`/`resolve_attempt` when the attempt may span a save or a UI turn.
+##
+## This is an entry point in its own right, not a convenience over a gated one:
+## `app/mind_cultivation_ui.gd` calls it directly, so the ADR 0109 gate has to be
+## read at or below it rather than at the facade this call happens to bypass.
 static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	if start(actor, rng) == null:
 		return false
 	return resolve_attempt(actor, rng)
+
+
+## Whether this actor's body plan permits a mind breakthrough at all (ADR 0109).
+##
+## It is a PRECONDITION and never a modifier: it reads the gate and returns a
+## boolean, and nothing here can widen a chance, lower a threshold, or skip a cost.
+##
+## An actor with no race takes no restriction. That is deliberate and unchanged: no
+## body plan has been authored for it, and gating content on a content gap would lock
+## a player out of a path nobody ever denied them (ADR 0109's boundary case).
+static func _body_allows(actor: Actor) -> bool:
+	if actor == null:
+		return false
+	if not RaceGate.path_unmet(actor, PathState.MIND).is_empty():
+		return false
+	return RaceGate.realm_ceiling_unmet(actor).is_empty()
 
 
 static func _deviate(

@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"rite"
 grade = &"heaven"
-sources = Array[StringName]([&"craft:Z14_heaven_bazaar_base_recipe", &"quest:Z14_heaven_bazaar_line"])
+sources = Array[StringName]([&"craft:Z14_heaven_bazaar_base_recipe", &"quest:Z14_heaven_bazaar_line", &"domain:mind_great_luo_trial"])

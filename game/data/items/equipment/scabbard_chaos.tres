@@ -17,4 +17,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:scabbard_chaos_recipe"])
+sources = Array[StringName]([&"craft:scabbard_chaos_recipe", &"domain:mind_spirit_sovereign_trial"])

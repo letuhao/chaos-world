@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -27,6 +27,258 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_2"
+kind = &"item"
+item_id = &"A10_immortal_axletree_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_3"
+kind = &"item"
+item_id = &"B31_divine_cavesson_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_4"
+kind = &"item"
+item_id = &"C27_earth_tanneryhouse_split"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_5"
+kind = &"item"
+item_id = &"E15_spirit_amberworks_succinite"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_6"
+kind = &"item"
+item_id = &"F23_heaven_estaminet_agility_attack_spiritual_breakthrough_chance_dao_heart"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_7"
+kind = &"item"
+item_id = &"F49_heaven_grimly_breakthrough_chance_cultivation_rate_fortune"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_8"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_8"
+kind = &"item"
+item_id = &"G4_heaven_thread"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_9"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_9"
+kind = &"item"
+item_id = &"I34_spirit_foresail_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_10"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_10"
+kind = &"item"
+item_id = &"K18_earth_gold_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_11"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_11"
+kind = &"item"
+item_id = &"O6_spirit_aspen_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_12"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_12"
+kind = &"item"
+item_id = &"R13_divine_millet_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_13"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_13"
+kind = &"item"
+item_id = &"T1_spirit_kestrel_gatepost"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_14"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_14"
+kind = &"item"
+item_id = &"V24_heaven_armature_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_15"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_15"
+kind = &"item"
+item_id = &"X17_divine_barony_manumission"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_16"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_16"
+kind = &"item"
+item_id = &"Y6_immortal_adit_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_17"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_17"
+kind = &"item"
+item_id = &"Z40_mortal_dolomite_cippus"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_18"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_18"
+kind = &"item"
+item_id = &"decree_seventh_edict"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_19"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_19"
+kind = &"item"
+item_id = &"mind_core_formation_mind_herb"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_20"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_20"
+kind = &"item"
+item_id = &"ring_iron_band"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_21"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_21"
+kind = &"item"
+item_id = &"venom_purified_essence"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_22"]
+script = ExtResource("2_entry")
+id = &"E10_dao_warden_domain_22"
+kind = &"item"
+item_id = &"B38_divine_drowlat_penetration_cooldown_reduction"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E10_dao_warden"
@@ -37,5 +289,26 @@ rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
-	SubResource("entry_1")
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3"),
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7"),
+	SubResource("entry_8"),
+	SubResource("entry_9"),
+	SubResource("entry_10"),
+	SubResource("entry_11"),
+	SubResource("entry_12"),
+	SubResource("entry_13"),
+	SubResource("entry_14"),
+	SubResource("entry_15"),
+	SubResource("entry_16"),
+	SubResource("entry_17"),
+	SubResource("entry_18"),
+	SubResource("entry_19"),
+	SubResource("entry_20"),
+	SubResource("entry_21"),
+	SubResource("entry_22")
 ])

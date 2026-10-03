@@ -30,6 +30,8 @@ INDEX_PATH = CHARACTER_ROOT / "character-index.jsonl"
 MIN_CHARACTERS = 2000
 MAX_CHARACTERS = 10000
 CHARACTER_ID_RE = re.compile(r"^character-[0-9]{4,}$")
+CHARACTER_DEFAULT_CHECKPOINT = "FLUX1984AnimeStyleFeat_v20Fp8Noclip.safetensors"
+CHARACTER_DEFAULT_LORA = ""
 
 # These controlled vocabularies are balanced deterministically when the catalog is scaffolded.
 TRAIT_AXES = {
@@ -150,7 +152,9 @@ ASSET_SPECS = {
 VALID_ROLES = {"pc", "npc", "boss"}
 CHARACTER_NEGATIVE = (
     "text, letters, watermark, border, UI, extra people, duplicate face, missing limbs, "
-    "photorealism, 3D render, noisy texture, suggestive clothing, nudity"
+    "photorealism, 3D render, noisy texture, suggestive clothing, cleavage, large breasts, "
+    "sexualized proportions, exposed chest, bare shoulders, strapless, low neckline, "
+    "nudity, child, teen, childlike features"
 )
 
 
@@ -202,8 +206,8 @@ def _add_generation_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--steps", type=int, default=32)
     parser.add_argument("--cfg", type=float, default=1.0)
     parser.add_argument("--guidance", type=float, default=3.5)
-    parser.add_argument("--checkpoint", default=map_generate.DEFAULT_CHECKPOINT)
-    parser.add_argument("--lora", default=map_generate.DEFAULT_LORA)
+    parser.add_argument("--checkpoint", default=CHARACTER_DEFAULT_CHECKPOINT)
+    parser.add_argument("--lora", default=CHARACTER_DEFAULT_LORA)
     parser.add_argument("--lora-strength", type=float, default=0.8)
     parser.add_argument("--negative", default=CHARACTER_NEGATIVE)
     parser.add_argument("--rembg-model", default=map_generate.DEFAULT_REMBG_MODEL)
@@ -627,14 +631,17 @@ def _generate_comfy(record: dict, args, prompt: str, seed: int) -> Path:
 def _prompt(record: dict, slot: str, detail: str) -> str:
     traits = dict(tag.split(":", 1) for tag in record["tags"])
     presentation = {
-        "masculine": "masculine-presenting, with clearly masculine facial features and grooming",
-        "feminine": "feminine-presenting, with clearly feminine facial features and grooming",
-        "androgynous": "androgynous-presenting, with a gender-ambiguous face and understated grooming",
+        "masculine": "an adult man with unmistakably masculine facial features and grooming",
+        "feminine": "an adult woman with clearly feminine facial features and grooming",
+        "androgynous": "an adult with clearly gender-neutral facial features and grooming",
     }[traits["presentation"]]
     age = {
-        "young-adult": "a young adult in their 20s, with unmistakably adult proportions",
-        "adult": "an adult in their 30s to 50s, with mature facial proportions",
-        "elder": "an elder aged 65 or older, with visible age lines and mature facial structure",
+        "young-adult": "a young adult in their mid-20s with mature adult proportions",
+        "adult": "an adult aged 35 to 50 with mature facial proportions",
+        "elder": (
+            "an elder aged 65 or older, with visible lines at the brow, eyes, and mouth "
+            "and mature facial structure"
+        ),
     }[traits["age"]]
     race = {
         "human": "human anatomy",
@@ -642,17 +649,24 @@ def _prompt(record: dict, slot: str, detail: str) -> str:
         "spiritkin": "humanlike anatomy with subtle luminous spirit marks at the temples",
         "dragonkin": "small swept horns, fine scales at the temples and forearms, and a slim tail",
         "aquatic": "subtle gill marks at the neck and slight webbing between the fingers",
-        "celestial": "humanlike anatomy with faint star-flecked eyes and a restrained celestial mark",
+        "celestial": "humanlike anatomy with faint star-flecked eyes and a restrained "
+        "celestial mark",
         "revenant": "cool pallor and faint spectral edge-light, with no decay or skeletal features",
-        "elemental": "a living elemental appearance with complexion-colored material accents and a few motes",
+        "elemental": "a living elemental appearance with complexion-colored material "
+        "accents and a few motes",
         "plantkin": "leaf-veined skin at the temples and hands, with no bulky plant growth",
-        "stonekin": "stone-grain complexion and fine mineral veining, while retaining flexible humanlike features",
+        "stonekin": "stone-grain complexion and fine mineral veining, while retaining "
+        "flexible humanlike features",
     }[traits["race"]]
     path = {
-        "qi": "Qi Dao: creation through energy; show controlled motion and restrained flowing energy marks",
-        "body": "Body Dao: preservation through form; use a grounded stance and practical, enduring construction",
-        "mind": "Mind Dao: transcendence through spirit; use a focused gaze and subtle awareness motifs",
-        "unaffiliated": "an independent Mortal Plains traveler, with practical travel wear and no sect insignia",
+        "qi": "Qi Dao: creation through energy; show controlled motion and "
+        "restrained flowing energy marks",
+        "body": "Body Dao: preservation through form; use a grounded stance and "
+        "practical, enduring construction",
+        "mind": "Mind Dao: transcendence through spirit; use a focused gaze and "
+        "subtle awareness motifs",
+        "unaffiliated": "an independent Mortal Plains traveler, with practical travel "
+        "wear and no sect insignia",
     }[traits["path"]]
     visual_traits = (
         f"{traits['build']} build, {traits['complexion']} complexion, {traits['hair_color']} hair "
@@ -666,12 +680,16 @@ def _prompt(record: dict, slot: str, detail: str) -> str:
         f"Preserve exactly these visible traits: {visual_traits}. "
         f"Cultural and cultivation cue: {path}.{extra} {framing}. "
         "One subject only. Cultivation-fantasy production art for a 2D action RPG. "
-        "Painterly anime gouache, crisp dark ink contours, clear value grouping, material-led "
-        "color, restrained metallic accents, broad planes, soft upper-left light. Use the same "
+        "Painterly anime illustration in matte gouache, fine dark ink contours, broad readable "
+        "value planes, material-led color, restrained metallic accents, soft upper-left light. "
+        "Use a high-collared, fully covered, modest costume with long sleeves and covered shoulders. "
+        "No open neckline. Use the same "
         "visual identity and costume across the character asset family. Keep the face, age, "
-        "presentation, anatomy, palette, and costume faithful to the profile. Transparent background. "
-        "All characters are adults, fully clothed, and nonsexual. No text, labels, UI, frame, "
-        "watermark, extra figures, unrelated props, exaggerated body proportions, or childlike features."
+        "presentation, anatomy, palette, and costume faithful to the profile. Keep the chest "
+        "fully covered. Transparent "
+        "background. All characters are adults, fully clothed, and nonsexual. No text, "
+        "labels, UI, frame, watermark, extra figures, unrelated props, exaggerated "
+        "body proportions, or childlike features."
     )
 
 

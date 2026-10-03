@@ -17,6 +17,6 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"domain:totem_stone_guardian_domain"])
 tags = Array[StringName]([&"socket_host"])
 description = "Equipment that can carry two sockets. The socket subsystem opens, imputes and fills its slots."

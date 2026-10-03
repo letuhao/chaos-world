@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"quest:oath_of_the_moon"])
+sources = Array[StringName]([&"quest:oath_of_the_moon", &"domain:qi_body_integration_trial", &"domain:amulet_void_serpent_domain"])

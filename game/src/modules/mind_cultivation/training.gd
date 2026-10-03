@@ -7,9 +7,11 @@ extends RefCounted
 
 const _ITEMS := preload("res://src/modules/items/api.gd")
 
-## Comprehension earned per unit of cultivation work. Sized so the highest
-## authored comprehension floor stays reachable without a second Mind path
-## (ADR 0013/0024).
+## Comprehension earned per unit of cultivation work, BEFORE the shared insight
+## rate. Sized so the highest authored comprehension floor stays reachable without
+## a second Mind path (ADR 0013/0024). This is the mind path's own coefficient on
+## CULTIVATION WORK; the rate itself is core's `Stat.INSIGHT_GAIN`, read below —
+## see `_grant_insight`.
 const INSIGHT_RATE := 0.05
 
 
@@ -60,9 +62,7 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	# One unit of cultivation work is worth the realm's RATE, and only the rate. A
 	# bounded per-realm number — see `core/realm_rate.gd`. Same rate, same realm,
 	# as body and qi.
-	var gain := (
-		amount * MindRealmProfile.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
-	)
+	var gain := amount * RealmRate.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
 	sea.fill(actor, gain)
 	# Deep meditation sharpens clarity and purity toward the seed's targets.
 	sea.set_clarity(minf(seed.clarity_required, sea.clarity + gain / 1000.0))
@@ -77,9 +77,27 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 ## what earns it. Every profile gates entry on a comprehension floor, so this
 ## rate must be able to reach the highest authored floor — a threshold with no
 ## attainable source would be an invalid gate (ADR 0013/0024).
+##
+## ## It is priced by core's `Stat.INSIGHT_GAIN`, exactly as body and qi price
+## theirs (`BodyTraining.meditate`, `QiTraining.meditate`).
+##
+## Comprehension is a SHARED base attribute: sect offices grant `insight_gain`
+## percentages, races and items carry the stat, and all three cultivation paths
+## add to the same number. A flat `INSIGHT_RATE` alone meant every one of those
+## sources did nothing for the mind path — a granted insight bonus silently did
+## not apply to the one path whose gate is comprehension — and since
+## comprehension IS this path's binding entry gate (BL-0153), the missing
+## multiplier was the gate's own rate, not a cosmetic one.
+##
+## The read happens BEFORE `set_base`: that call invalidates the derived cache,
+## so reading the rate inline in the expression would price this sitting at the
+## rate the comprehension it is about to add implies. `INSIGHT_RATE` stays as the
+## coefficient on cultivation work; the multiplier is core's, which is why there
+## is exactly one insight rate in the game and it is not this file's.
 static func _grant_insight(actor: Actor, gain: float) -> void:
+	var insight_gain := actor.stats.derived(Stat.INSIGHT_GAIN)
 	var current := actor.stats.get_base(Stat.COMPREHENSION)
-	actor.stats.set_base(Stat.COMPREHENSION, current + gain * INSIGHT_RATE)
+	actor.stats.set_base(Stat.COMPREHENSION, current + gain * INSIGHT_RATE * insight_gain)
 
 
 ## Calm turbulence. This is the mind system's unique recovery (ADR 0016).

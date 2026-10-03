@@ -11,8 +11,9 @@ rarity = &"legendary"
 realm = &"mystic_immortal"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 6},
+	{"option_id": &"trade_value", "value": 18},
 ])
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"medal"
 grade = &"immortal"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:qi_dao_ancestor_trial"])

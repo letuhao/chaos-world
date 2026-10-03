@@ -88,6 +88,11 @@ const ROSTER_LIMIT := 64
 ## the walk for more stages than the longest authored walk has. The walk itself is
 ## still clamped again against `SectPositionDef.walk_length()`.
 const STAGE_LIMIT := 8
+## A bound on the schisms this ledger records. One line per declared split, and a
+## declaration is a political event rather than a per-period accrual, so this is a
+## hand-edited-save guard rather than a real budget — the same job `ROSTER_LIMIT`
+## does, for the same reason.
+const SCHISM_LIMIT := 32
 
 
 ## The stat source id one sect contributes under.
@@ -227,6 +232,23 @@ static func succession_open(ledger: Dictionary, position_id: StringName) -> bool
 	return row.has("stage") and not bool(row.get("complete", false))
 
 
+## Every declared split this ledger records, keyed by the SECT id the split
+## produced. Read rather than re-derived, so `declare_schism`'s cost arithmetic and
+## a panel rendering the same declaration cannot disagree about what happened.
+##
+## The map is a plain ledger of primitives — `String` keys, ints, one `String` id —
+## because it round trips through `Actor.to_dict` like every other line here.
+static func schisms(ledger: Dictionary) -> Dictionary:
+	return (ledger.get("schisms", {}) as Dictionary).duplicate(true)
+
+
+## The one declared split that produced `sect_id`, or `{}` when that sect is the
+## product of no split in this ledger.
+static func schism(ledger: Dictionary, sect_id: StringName) -> Dictionary:
+	var entry = (ledger.get("schisms", {}) as Dictionary).get(String(sect_id), null)
+	return (entry as Dictionary).duplicate(true) if entry is Dictionary else {}
+
+
 ## A known-content filter for this module. `known_positions` comes from the
 ## catalog and is keyed by position id; a claim naming a position the build does
 ## not ship is dropped rather than persisted.
@@ -250,6 +272,7 @@ static func normalize(payload: Dictionary, known_positions: Dictionary = {}) -> 
 		"roster": {},
 		"treasury": {},
 		"succession": {},
+		"schisms": {},
 		"applied_standing": 0,
 		"granted_percent": {},
 		"history": [],
@@ -373,6 +396,13 @@ static func normalize(payload: Dictionary, known_positions: Dictionary = {}) -> 
 				"complete": bool(row.get("complete", false)),
 			}
 
+	# A declared split, keyed by the SECT id it produced. **Not** filtered by the
+	# catalog, for the reason `applied_standing` is not: a declaration is a
+	# political fact that happened, and a `.tres` that has since been deleted does
+	# not un-happen it. Dropping an unknown half would silently erase a split the
+	# game is still playing out.
+	out["schisms"] = _schism_rows(data.get("schisms", {}))
+
 	# What the projection last applied. A `StatModifier` cannot lower a base
 	# attribute and `remove_modifiers_from` only knows a source tag, so a rebuild
 	# has to know what it previously added — this is `RaceState`'s `applied_race`
@@ -443,3 +473,34 @@ static func _claim_fields_readable(data: Dictionary) -> bool:
 		if value != null and not (value is int or value is float):
 			return false
 	return true
+
+
+## Every declared split, normalized field by field and capped. A row that is not a
+## map, or that names no seceding sect, is dropped whole — the same lenient-one-line
+## rule the other maps follow — and the cap is the `ROSTER_LIMIT` argument again: a
+## hand-written save cannot ask for a million declarations.
+static func _schism_rows(value: Variant) -> Dictionary:
+	var out: Dictionary = {}
+	if not (value is Dictionary):
+		return out
+	for sect_id in (value as Dictionary).keys():
+		if out.size() >= SCHISM_LIMIT:
+			break
+		var entry = (value as Dictionary)[sect_id]
+		if not (entry is Dictionary):
+			continue
+		var row: Dictionary = entry as Dictionary
+		var half_id := _text(row.get("seceding_id", ""), "")
+		if half_id == "":
+			continue
+		out[String(sect_id)] = {
+			"schism_id": _text(row.get("schism_id", ""), ""),
+			"parent_id": _text(row.get("parent_id", ""), ""),
+			"seceding_id": half_id,
+			"verb": _text(row.get("verb", ""), ""),
+			"undivided": maxi(0, int(row.get("undivided", 0))),
+			"price": maxi(0, int(row.get("price", 0))),
+			"unassigned": maxi(0, int(row.get("unassigned", 0))),
+			"settled": maxi(0, int(row.get("settled", 0))),
+		}
+	return out

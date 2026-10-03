@@ -116,7 +116,17 @@ func test_random_seed_is_not_read_from_a_clock_or_global_rng() -> void:
 	# Reads the source, because the failure is invisible in an assertion: a
 	# `randf()` here would still make two same-seed calls agree within a frame.
 	var script := FileAccess.get_file_as_string("res://src/modules/world_spawn/api.gd")
-	assert_eq(script.contains("randf("), false, "no global rng draw in the facade")
+	# Strip comments before the search: this file's own docstrings NAME `randf()`
+	# to state that it is never called, so a raw substring search would fail on
+	# the very prose documenting the rule.
+	var code := ""
+	for line in script.split("\n"):
+		var trimmed := String(line).strip_edges()
+		if trimmed.begins_with("#"):
+			continue
+		var hash_at := line.find("#")
+		code += (line.substr(0, hash_at) if hash_at >= 0 else line) + "\n"
+	assert_eq(code.contains("randf("), false, "no global rng draw in the facade")
 	assert_eq(script.contains("Time.get_ticks"), false, "no clock read in the facade")
 
 
@@ -269,10 +279,14 @@ func test_attach_after_a_load_preserves_the_location() -> void:
 func test_a_hand_edited_payload_does_not_break_a_read() -> void:
 	# A save is untrusted input: the ledger normalizes rather than trusting.
 	var actor := _actor()
-	actor.set_module_data(WorldSpawnApi.MODULE_KEY, {"location_id": 42, "danger_level": "high"})
+	actor.set_module_data(WorldSpawnApi.MODULE_KEY, {"location_id": 42, "danger_level": 3})
 	var view := WorldSpawnApi.current(actor)
-	assert_eq(view["location_id"], "42", "a non-string id is coerced, not passed through")
-	assert_eq(view["danger_level"], 0, "an uncoercible int reads as zero")
+	# A location id is a `StringName`/`String` in the authored pool, so an int is
+	# UNREADABLE rather than coercible. Coercing it would mint the durable id
+	# "42", a location no `.tres` backs and no `selected` could ever mount.
+	assert_eq(view["location_id"], "", "an int location id reads as absent, never as \"42\"")
+	assert_eq(view["located"], false, "so the actor is nowhere rather than somewhere invalid")
+	assert_eq(view["danger_level"], 3, "and an int danger still reads back as an int")
 
 
 func test_module_data_is_the_only_place_the_id_lives() -> void:

@@ -24,6 +24,11 @@ const SKELETON := [
 	"obligation",
 	"position",
 	"roster",
+	# BL-0197's declared splits. A split is a ledger line keyed by the seceding
+	# half, not a rosted institution, so it lives beside the roster rather than
+	# inside it — and it is NOT filtered by the catalog, because a `.tres` deleted
+	# after a split does not un-happen the split.
+	"schisms",
 	"standing",
 	"standing_cap",
 	"succession",

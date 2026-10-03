@@ -80,11 +80,33 @@ const TREASURY_POOL := &"sect_treasury"
 ## pool against what the sect charges to exist**.
 @export var founding_cost: Dictionary = {}
 
+## The places this sect claims, by id. **Ids, never sub-resources**, and a
+## schism's per-territory charge is counted against this list rather than against
+## whatever the caller happened to pass — a bill a caller can shrink is a bill
+## nobody has to pay (BL-0197, ADR 0085).
+##
+## A claim on ground confers nothing: no combat bonus, no yield, no upkeep. What
+## it decides is who MAY fight and where, and that is the whole of ADR 0085's
+## territory rule. `""` means this sect authors no claims at all, which makes a
+## split of it cost the declared price and nothing more — not a zero price,
+## because the per-territory charge is an addition and never a substitute.
+@export var territory_ids: Array[StringName] = []
+
 ## The office a founder is seated in, by id. `""` means the highest office this
 ## sect authors that a SUCCESSION can actually reach, which is what a founder is:
 ## they hold the top the sect has, and the top is decided by content rather than by
 ## an array index (ADR 0083 — a position is an id, never a ladder position).
 @export var top_position_id: StringName = &""
+
+## Who this sect acts FIRST among the institutions competing for one period's budget
+## (BL-0198). **An integer, because the tie-break is structural and there is no
+## generator anywhere in the decision**: candidates sort by `(act_priority,
+## institution_id)` and `institution_id` is a `StringName`, so the second key is
+## lexicographic and total — ties are impossible by construction, so no seed has to
+## be saved and a test can run the identical walk a hundred times and get identical
+## output. Higher acts sooner; it is an ORDER, never a magnitude, and it is never
+## multiplied by anything.
+@export var act_priority: int = 0
 
 
 ## Whether this sect authors an office under `position_id`.

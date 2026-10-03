@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"quest:oath_of_silence"])
+sources = Array[StringName]([&"quest:oath_of_silence", &"domain:qi_great_ascension_trial", &"domain:artifact_iron_titan_domain"])

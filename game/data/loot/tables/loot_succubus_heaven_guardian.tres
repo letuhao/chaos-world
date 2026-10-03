@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=25 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -39,6 +39,234 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_3"
+kind = &"item"
+item_id = &"B29_divine_catledge_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_4"
+kind = &"item"
+item_id = &"C26_earth_creel_health_regen_will_evasion"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_5"
+kind = &"item"
+item_id = &"E14_mortal_rennetworks_tripe"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_6"
+kind = &"item"
+item_id = &"F22_earth_equipoise_agility_attack_speed_crit_damage_max_stamina"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_7"
+kind = &"item"
+item_id = &"F48_earth_greyhound_evasion_fortune_stamina_regen"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_8"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_8"
+kind = &"item"
+item_id = &"G26_immortal_igloo_cooldown_reduction_insight_gain"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_9"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_9"
+kind = &"item"
+item_id = &"I31_spirit_flype_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_10"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_10"
+kind = &"item"
+item_id = &"K16_earth_iron_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_11"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_11"
+kind = &"item"
+item_id = &"O3_mortal_anvil_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_12"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_12"
+kind = &"item"
+item_id = &"R12_earth_meridian_contract"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_13"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_13"
+kind = &"item"
+item_id = &"T19_heaven_trawl_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_14"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_14"
+kind = &"item"
+item_id = &"V21_immortal_apostasy_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_15"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_15"
+kind = &"item"
+item_id = &"X16_divine_bailiff_discount"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_16"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_16"
+kind = &"item"
+item_id = &"Y3_divine_abscissa_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_17"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_17"
+kind = &"item"
+item_id = &"Z3_divine_aubade_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_18"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_18"
+kind = &"item"
+item_id = &"dagger_night_hide"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_19"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_19"
+kind = &"item"
+item_id = &"mask_essence_veil"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_20"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_20"
+kind = &"item"
+item_id = &"reliquary_earth"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_21"]
+script = ExtResource("2_entry")
+id = &"succubus_heaven_guardian_domain_21"
+kind = &"item"
+item_id = &"veil_mist_herb"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_succubus_heaven_guardian"
@@ -50,5 +278,24 @@ allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
-	SubResource("entry_2")
+	SubResource("entry_2"),
+	SubResource("entry_3"),
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7"),
+	SubResource("entry_8"),
+	SubResource("entry_9"),
+	SubResource("entry_10"),
+	SubResource("entry_11"),
+	SubResource("entry_12"),
+	SubResource("entry_13"),
+	SubResource("entry_14"),
+	SubResource("entry_15"),
+	SubResource("entry_16"),
+	SubResource("entry_17"),
+	SubResource("entry_18"),
+	SubResource("entry_19"),
+	SubResource("entry_20"),
+	SubResource("entry_21")
 ])

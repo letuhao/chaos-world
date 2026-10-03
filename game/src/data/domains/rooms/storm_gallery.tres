@@ -25,4 +25,8 @@ size = Vector2i(9, 8)
 actor_spawn_refs = Array[Dictionary]([
 	{"ref_id": &"storm_acolyte", "inhabitant_id": &"storm_acolyte", "role": &"mob", "count": 2}
 ])
+fixtures = Array[Dictionary]([
+	{"fixture_id": &"storm_gallery_arc", "kind": &"trap", "tags": Array[StringName]([&"trap_vein", &"storm", &"lightning"]), "position": Vector2i(2, 2), "bounds": Rect2i(2, 2, 2, 3), "reward_item_id": &"", "reward_count": 0, "key_item_id": &"", "requires_realm": &"", "telegraph_s": 0.9, "damage_share": 0.06, "status_id": &"lightning_arc", "duration_s": 5.0, "mitigation_tags": Array[StringName]([&"gear", &"technique"])},
+	{"fixture_id": &"storm_gallery_vent", "kind": &"trap", "tags": Array[StringName]([&"trap_vein", &"storm", &"wind"]), "position": Vector2i(6, 6), "bounds": Rect2i(6, 6, 2, 2), "reward_item_id": &"", "reward_count": 0, "key_item_id": &"", "requires_realm": &"", "telegraph_s": 1.1, "damage_share": 0.05, "status_id": &"wind_gust", "duration_s": 6.0, "mitigation_tags": Array[StringName]([&"pill", &"affinity"])}
+])
 environment_zones = Array[EnvironmentZoneDef]([SubResource("zone_static")])

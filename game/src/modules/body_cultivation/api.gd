@@ -179,11 +179,17 @@ static func strengthen_next(actor: Actor) -> bool:
 
 ## The first half of a breakthrough: validate, spend the realm pill once, and
 ## commit the attempt. Returns an empty view when refused — unprepared, no target
-## realm, or an attempt is already in flight.
+## realm, an attempt is already in flight, or the actor's body plan forbids it.
 ##
 ## This is the durable half: the pill is spent here and the record is persisted,
 ## so a save taken now still resolves the same attempt on reload. The resolve is
 ## a separate call so the trial can span a save or a UI turn.
+##
+## **The body answers first (ADR 0109)**, and this call is gated for free: the
+## refusal lives in `BodyAdvancement.start_attempt`, which is where the pill is
+## spent. An empty view here is also what a closed path or a ceiling above the
+## realm being entered looks like — the refusal costs the actor nothing, because
+## it happens before any cost is paid.
 static func begin_breakthrough(actor: Actor) -> Dictionary:
 	var committed := BodyAdvancement.start_attempt(actor, null)
 	if committed == null:
@@ -212,15 +218,14 @@ static func resolve_breakthrough(actor: Actor) -> bool:
 ## diverge.
 ##
 ## **The body answers first (ADR 0109).** A body plan that closes the body path, or one whose
-## `realm_ceiling` sits below the realm being attempted, is refused BEFORE the roll and carries
-## `RaceGate`'s own `{kind, id, required, actual, label}` entries, so the screen names the closed
-## path or the ceiling rather than reporting a bare false.
+## `realm_ceiling` sits above the realm being entered, is refused BEFORE the roll. This
+## facade does NOT ask `RaceGate` itself: the refusal lives in
+## `BodyAdvancement.start_attempt`, which both halves of the durable lifecycle and this
+## one-press call all make, so `begin_breakthrough` is gated by the same check rather
+## than by a second copy of it that could fall out of step. The refusal carries
+## `RaceGate`'s own `{kind, id, required, actual, label}` entries, so the screen names the
+## closed path or the ceiling rather than reporting a bare false.
 static func attempt_breakthrough(actor: Actor) -> bool:
-	var blocked := RaceGate.path_unmet(actor, PathState.BODY)
-	if blocked.is_empty():
-		blocked = RaceGate.realm_ceiling_unmet(actor)
-	if not blocked.is_empty():
-		return false
 	return BodyAdvancement.try_breakthrough(actor, null)
 
 

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="InhabitantDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/inhabitant_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+inhabitant_id = &"ember_warden"
+display_name = "Ember Warden"
+realm_id = &"core_formation"
+base = {&"physique": 24.0, &"spirit": 14.0, &"aptitude": 9.0, &"comprehension": 11.0, &"agility": 12.0, &"will": 18.0, &"fortune": 6.0}
+cultivates = true
+hostile = true
+tags = Array[StringName]([&"humanoid", &"ember", &"warden", &"sworn"])

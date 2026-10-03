@@ -1,0 +1,254 @@
+{
+ "items_total": 7982,
+ "graph_obtainable": 7981,
+ "malformed": 0,
+ "craft_route_live": true,
+ "DELIVERABLE_TODAY": 1553,
+ "BLOCKED_TODAY": 6429,
+ "blocked_signatures_today": {
+  "gather|quest": 4150,
+  "quest": 1392,
+  "gather": 821,
+  "": 66
+ },
+ "LEVER_quest_only": 7078,
+ "LEVER_quest_edge": 5525,
+ "LEVER_gather_only": 6591,
+ "LEVER_gather_edge": 5038,
+ "LEVER_both": 7981,
+ "LEVER_both_edge": 6428,
+ "still_blocked_with_both": 1,
+ "still_blocked_sigs_with_both": {
+  "": 1
+ },
+ "unreachable_inputs_remaining_with_both": 1,
+ "declared_kind_counts_whole_corpus": {
+  "craft": 3292,
+  "quest": 3076,
+  "gather": 2428,
+  "boss": 1500
+ },
+ "declared_kind_counts_blocked_only": {
+  "quest": 3029,
+  "craft": 2888,
+  "gather": 2149
+ },
+ "blocked_by_signature_raw": {
+  "gather_only": 825,
+  "quest_only": 1705,
+  "gather_and_quest": 1324,
+  "no_gather_no_quest": 2575
+ },
+ "gather_declaring_total": 2428,
+ "gather_category_census": {
+  "material": 1432,
+  "consumable": 268,
+  "equipment": 233,
+  "technique": 213,
+  "misc": 74,
+  "currency": 71,
+  "key": 70,
+  "quest": 67
+ },
+ "gather_SAMPLE_10": [
+  {
+   "id": "A25_divine_assayoffice_capias",
+   "category": "currency",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "blocked": true
+  },
+  {
+   "id": "D1_spirit_breakthrough_charm",
+   "category": "consumable",
+   "description": "",
+   "sources": [
+    "gather",
+    "craft:D1_spirit_breakthrough_charm_recipe"
+   ],
+   "blocked": true
+  },
+  {
+   "id": "E8_mortal_resinhouse_dammar",
+   "category": "material",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "blocked": true
+  },
+  {
+   "id": "G17_mortal_goitre_insight_gain_status_resistance",
+   "category": "equipment",
+   "description": "",
+   "sources": [
+    "gather"
+   ],
+   "blocked": true
+  },
+  {
+   "id": "V13_immortal_altarpiece_guilder",
+   "category": "currency",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:W23_route"
+   ],
+   "blocked": true
+  },
+  {
+   "id": "X23_immortal_moidores_smelt",
+   "category": "material",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:Y27_route"
+   ],
+   "blocked": true
+  },
+  {
+   "id": "apti_chaos_mind",
+   "category": "consumable",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:W23_route"
+   ],
+   "blocked": true
+  },
+  {
+   "id": "earring_silverleaf_herb",
+   "category": "material",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:A37_route"
+   ],
+   "blocked": true
+  },
+  {
+   "id": "mind_mystic_immortal_mind_herb",
+   "category": "material",
+   "description": "",
+   "sources": [
+    "gather",
+    "boss:mind_mystic_immortal_warden"
+   ],
+   "blocked": false
+  },
+  {
+   "id": "rune_mist_essence",
+   "category": "material",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:A41_route"
+   ],
+   "blocked": true
+  }
+ ],
+ "quest_declaring_total": 3076,
+ "quest_category_census": {
+  "material": 1014,
+  "consumable": 541,
+  "technique": 434,
+  "equipment": 317,
+  "misc": 197,
+  "quest": 197,
+  "key": 196,
+  "currency": 180
+ },
+ "quest_SAMPLE_10": [
+  {
+   "id": "A10_immortal_axletree_base",
+   "category": "technique",
+   "description": "",
+   "sources": [
+    "craft:A10_immortal_axletree_base_recipe",
+    "quest:A10_immortal_axletree_line"
+   ]
+  },
+  {
+   "id": "C32_earth_spoilheap_granule",
+   "category": "material",
+   "description": "",
+   "sources": [
+    "quest",
+    "gather"
+   ]
+  },
+  {
+   "id": "F3_mortal_cuprous_defense_physical_attack_physical_max_stamina_max_health",
+   "category": "consumable",
+   "description": "",
+   "sources": [
+    "quest"
+   ]
+  },
+  {
+   "id": "H18_heaven_joiner_breakthrough_chance_evasion_fortune_max_stamina_penetration",
+   "category": "consumable",
+   "description": "",
+   "sources": [
+    "quest"
+   ]
+  },
+  {
+   "id": "R4_immortal_loam_ornament",
+   "category": "misc",
+   "description": "",
+   "sources": [
+    "quest"
+   ]
+  },
+  {
+   "id": "V15_heaven_anchorage_erse",
+   "category": "quest",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:W28_route"
+   ]
+  },
+  {
+   "id": "X20_immortal_burgess_fee",
+   "category": "quest",
+   "description": "",
+   "sources": [
+    "quest"
+   ]
+  },
+  {
+   "id": "Z36_earth_relict_chalaza",
+   "category": "material",
+   "description": "",
+   "sources": [
+    "quest"
+   ]
+  },
+  {
+   "id": "formation_moon_essence",
+   "category": "material",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:A37_route"
+   ]
+  },
+  {
+   "id": "qi_nascent_soul_cultivation_herb",
+   "category": "material",
+   "description": "",
+   "sources": [
+    "gather",
+    "quest:A40_route"
+   ]
+  }
+ ],
+ "quest_ref_split": {
+  "with_dangling_ref": 1697,
+  "bare": 1379
+ }
+}

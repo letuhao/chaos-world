@@ -18,4 +18,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:belt_silver_chain_recipe"])
+sources = Array[StringName]([&"craft:belt_silver_chain_recipe", &"domain:artifact_storm_phoenix_domain"])

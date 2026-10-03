@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:whistle_bamboo_recipe"])
+sources = Array[StringName]([&"craft:whistle_bamboo_recipe", &"domain:qi_immortal_sovereign_trial"])

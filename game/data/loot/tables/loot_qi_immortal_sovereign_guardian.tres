@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=25 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -39,6 +39,234 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_3"
+kind = &"item"
+item_id = &"B19_spirit_canella_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_4"
+kind = &"item"
+item_id = &"C21_earth_coomb_physique_qi_absorption_attack_speed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_5"
+kind = &"item"
+item_id = &"E11_immortal_barkwatch_barkfibre"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_6"
+kind = &"item"
+item_id = &"F18_mortal_ensconce_agility_aptitude_max_health_will"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_7"
+kind = &"item"
+item_id = &"F43_mortal_gibbet_dao_heart_move_speed_qi_absorption"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_8"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_8"
+kind = &"item"
+item_id = &"G22_divine_hornbook_max_stamina_qi_regen"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_9"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_9"
+kind = &"item"
+item_id = &"I21_spirit_entozoon_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_10"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_10"
+kind = &"item"
+item_id = &"J21_immortal_soul_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_11"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_11"
+kind = &"item"
+item_id = &"N7_spirit_granite_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_12"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_12"
+kind = &"item"
+item_id = &"Q7_immortal_dill_lode"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_13"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_13"
+kind = &"item"
+item_id = &"S8_immortal_hosier_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_14"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_14"
+kind = &"item"
+item_id = &"V14_mortal_anabasis_carlin"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_15"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_15"
+kind = &"item"
+item_id = &"X10_heaven_albedo_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_16"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_16"
+kind = &"item"
+item_id = &"Y19_divine_marchionry_fetish"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_17"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_17"
+kind = &"item"
+item_id = &"Z36_spirit_porphyry_raphe"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_18"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_18"
+kind = &"item"
+item_id = &"charm_moonstone_amulet"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_19"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_19"
+kind = &"item"
+item_id = &"keystone_bronze"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_20"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_20"
+kind = &"item"
+item_id = &"qi_spirit_palace_qi_herb"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_21"]
+script = ExtResource("2_entry")
+id = &"qi_immortal_sovereign_guardian_domain_21"
+kind = &"item"
+item_id = &"talisman_stone_ward"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_immortal_sovereign_guardian"
@@ -50,5 +278,24 @@ allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
-	SubResource("entry_2")
+	SubResource("entry_2"),
+	SubResource("entry_3"),
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7"),
+	SubResource("entry_8"),
+	SubResource("entry_9"),
+	SubResource("entry_10"),
+	SubResource("entry_11"),
+	SubResource("entry_12"),
+	SubResource("entry_13"),
+	SubResource("entry_14"),
+	SubResource("entry_15"),
+	SubResource("entry_16"),
+	SubResource("entry_17"),
+	SubResource("entry_18"),
+	SubResource("entry_19"),
+	SubResource("entry_20"),
+	SubResource("entry_21")
 ])

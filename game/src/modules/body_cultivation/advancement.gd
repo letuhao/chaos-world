@@ -130,9 +130,19 @@ static func _id(value: BodyAttempt) -> String:
 ## action holds the points, unprepared, no target realm, or another attempt is
 ## already active.
 ##
+## **The body answers first (ADR 0109).** A body plan that closes the body path, or one whose
+## `realm_ceiling` sits above the realm being entered, is refused HERE, before any other
+## check and before anything is spent. It sits here rather than in the facade because this
+## is the one call both halves of the durable lifecycle make: `begin_breakthrough` calls it
+## and so does the one-shot `try_breakthrough`, so a gate one layer up left
+## `begin_breakthrough`/`resolve_breakthrough` — the documented two-phase path where a pill
+## is spent and the attempt persisted across a save — completely ungated. A rule a caller
+## can walk around is not a rule. It is a precondition and never a modifier.
+##
 ## Refusing while `busy` is what keeps a two-phase attempt from interleaving with
 ## `cultivate`/`strengthen`/`recover` on the same huyệt set. `try_breakthrough`
-## holds `busy` across both halves and therefore calls `_start` directly.
+## holds `busy` across both halves and therefore calls `_start` directly — which reads
+## the same gate, so holding `busy` buys no way around it.
 static func start_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> BodyAttempt:
 	var points: AcupointSet = actor.component(&"acupoints")
 	if points != null and points.busy:
@@ -141,6 +151,8 @@ static func start_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> Bo
 
 
 static func _start(actor: Actor, rng: RandomNumberGenerator) -> BodyAttempt:
+	if not _body_allows(actor):
+		return null
 	# Face the tribulation owed for this path's next realm BEFORE validating anything
 	# (ADR 0061), so R19-R30 are reachable by play rather than only by a test. Every
 	# entry into an attempt runs through here — `start_attempt` and the one-shot
@@ -324,6 +336,22 @@ static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) ->
 	var granted := resolve_attempt(actor, rng)
 	points.busy = false
 	return granted
+
+
+## Whether this actor's body plan permits a body breakthrough at all (ADR 0109).
+##
+## It is a PRECONDITION and never a modifier: it reads the gate and returns a
+## boolean, and nothing here can widen a chance, lower a threshold, or skip a cost.
+##
+## An actor with no race takes no restriction. That is deliberate and unchanged: no
+## body plan has been authored for it, and gating content on a content gap would lock
+## a player out of a path nobody ever denied them (ADR 0109's boundary case).
+static func _body_allows(actor: Actor) -> bool:
+	if actor == null:
+		return false
+	if not RaceGate.path_unmet(actor, PathState.BODY).is_empty():
+		return false
+	return RaceGate.realm_ceiling_unmet(actor).is_empty()
 
 
 ## Deviation: lose half the progress, jam a huyệt and tear the channel the

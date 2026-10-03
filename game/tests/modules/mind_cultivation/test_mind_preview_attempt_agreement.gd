@@ -158,6 +158,65 @@ func test_the_attempt_clause_survives_a_refusal_branch_of_preview() -> void:
 	assert_eq(_conditions(report).size(), 2, "the branch's own reason is reported too")
 
 
+# --- The second thing `start` refuses on: the ADR 0109 body gate --------------
+
+
+## `_body_allows` refuses before anything is spent, so `preview` owes it for the
+## same reason it owes `ATTEMPT_CLAUSE`: most authored body plans close the mind
+## path, and without a clause one of them read READY and its Breakthrough press
+## did nothing. Asserted on both sides on one actor, with the realm gate proved
+## met BEFORE the body plan is applied so the refusal is attributable to the body
+## alone and not to progress, clarity or a missing pill.
+func test_preview_and_start_agree_when_the_body_closes_the_mind_path() -> void:
+	var actor := _prepared()
+	assert_eq(
+		MindCultivationApi.preview(actor).get("ready"),
+		true,
+		"the realm gate alone is satisfied before any body plan applies"
+	)
+
+	var body := _a_race_that_closes_mind()
+	assert_ne(body, &"", "an authored body plan closes the mind path at all")
+	RaceApi.attach(actor)
+	assert_eq(RaceApi.set_race(actor, body), true, "the body plan is enrolled")
+
+	# SIDE ONE — the clause is `RaceGate`'s own label, compared whole, so a screen
+	# renders core's wording and this test cannot drift from it.
+	var report := MindCultivationApi.preview(actor)
+	var expected: Array = []
+	for entry in RaceGate.path_unmet(actor, PathState.MIND):
+		expected.append(String(entry.get("label", "")))
+	assert_eq(expected.is_empty(), false, "the enrolled body really does close the path")
+	assert_eq(_conditions(report), expected, "preview names the refusal in RaceGate's wording")
+	assert_eq(report.get("ready"), false, "so a closed path is not reported ready")
+	assert_eq(
+		_conditions(report).has(MindAdvancement.ATTEMPT_CLAUSE),
+		false,
+		"and the attempt is not what it names: %s" % [_conditions(report)]
+	)
+
+	# SIDE TWO — what the press does.
+	assert_eq(MindAdvancement.start(actor, _rng(5)), null, "the attempt is refused")
+	assert_eq(
+		MindCultivationApi.try_breakthrough(actor, _rng(6)),
+		false,
+		"and the facade's press refuses, exactly as preview said"
+	)
+	assert_eq(String(MindCultivationApi.preview(actor).get("attempt")), "", "nothing was committed")
+
+
+## The first authored body plan that closes the mind path, found rather than named:
+## the claim is that a body plan CAN close the path, which holds for whichever one
+## does, so pinning a race id here would only make the test drift when the roster
+## changes.
+func _a_race_that_closes_mind() -> StringName:
+	for race_id: StringName in RaceApi.race_ids():
+		var def := RaceCatalog.instance().race_definition(race_id)
+		if def != null and def.closed_paths.has(PathState.MIND):
+			return race_id
+	return &""
+
+
 # --- Why the abandon verb has no production caller --------------------------
 
 

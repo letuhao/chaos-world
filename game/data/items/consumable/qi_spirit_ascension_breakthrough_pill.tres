@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:qi_spirit_ascension_pill_recipe"])
+sources = Array[StringName]([&"craft:qi_spirit_ascension_pill_recipe", &"domain:qi_great_luo_domain"])
 description = "Consumed by the Qi Cultivation attempt entering Spirit Ascension; no equipment modifier."

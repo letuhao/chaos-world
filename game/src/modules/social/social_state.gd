@@ -24,6 +24,26 @@ const SCHEMA_VERSION := 1
 ## from bonds because a player regards a *clan* without having met any single member, and
 ## the clan module owns that number already (ADR 0064) — this is the read model, not a
 ## second writer of it.
+##
+## ## It is DERIVED, never stored — which is what BL-0200 turned it into
+##
+## It was declared, persisted, restored, published through `summary()` and written by
+## NOTHING: the read model ADR 0091 promised was permanently empty. The fix is not a
+## second number and not an assignment from `sect/` — it is the same bonds, filtered to
+## the rows whose partner is an INSTITUTION (`SocialBond.institutional`). So the cause
+## ledger, the floors, the decay and the anti-farm distinct-cause rule all apply to an
+## institution exactly as they do to a person, which is the property that makes "why
+## does the world think well of you here" answerable from a save.
+##
+## **A separate copy is the ADR 0066 failure mode.** `AGENTS.md` forbids the three
+## tiers growing a second copy of one fact, and a float `sect/` wrote itself would be
+## that copy with no cause ledger behind it. There is one source of truth — the bond —
+## and this is a read of it.
+##
+## **Still JSON-safe**: `String` keys, float values, nothing else. The persistence
+## contract is unchanged, so an older save with `regard: {}` restores and is then
+## rebuilt by the next cause, and a save carrying `regard` restores the BONDS that
+## produce it (see `from_dict`).
 var regard: Dictionary = {}
 
 var _bonds: Dictionary = {}
@@ -60,17 +80,42 @@ func bond_count() -> int:
 
 
 ## Forget a bond entirely. Used when an npc is retired, so a dead minor does not haunt
-## the ledger forever.
+## the ledger forever. An institutional bond forgotten this way leaves `regard` too —
+## a dissolved sect is no longer one you are regarded by, and a read model that kept
+## naming it would outlive the row that produced it.
 func forget(partner_id: StringName) -> bool:
 	if not _bonds.has(String(partner_id)):
 		return false
 	_bonds.erase(String(partner_id))
-	changed.emit()
+	mark_changed()
 	return true
 
 
 func mark_changed() -> void:
+	_rebuild_regard()
 	changed.emit()
+
+
+## Rebuild `regard` from the institutional bonds. Called on every mutation, so the
+## published read model can never disagree with the ledger it claims to summarise.
+##
+## **Why it is a rebuild rather than an `+=` at each call site.** ADR 0091's decay
+## moves a bond toward its floor without going through `apply`, so an additive writer
+## would leave `regard` naming a number the axes no longer hold. One projection, run
+## from the one place mutations are announced, is the shape `RaceProjection` and
+## `SectProjection` already use for exactly this reason.
+##
+## A bond with no institutional cause is not a row here: a partner the player has
+## never sworn, served or been cast out of is not an institution they are regarded by,
+## and `{}` for them is ADR 0083's first state rather than a zero standing.
+func _rebuild_regard() -> void:
+	var out := {}
+	for partner_id in partner_ids():
+		var row := _bonds.get(String(partner_id)) as SocialBond
+		if row == null or not row.institutional:
+			continue
+		out[String(partner_id)] = row.standing
+	regard = out
 
 
 func to_dict() -> Dictionary:
@@ -88,8 +133,12 @@ static func from_dict(data: Dictionary) -> SocialState:
 	var state := SocialState.new()
 	for key in data.get("bonds", {}).keys():
 		state._bonds[String(key)] = SocialBond.from_dict(data["bonds"][key])
-	for key in data.get("regard", {}).keys():
-		state.regard[String(key)] = float(data["regard"][key])
+	# `regard` is NOT restored from the payload. It is a projection, and restoring a
+	# derived value is how a read model starts disagreeing with the ledger it claims
+	# to summarise — the bonds are restored and `_rebuild_regard` recomputes the same
+	# answer, so a save written before BL-0200 (whose `regard` was always `{}`) reads
+	# exactly the same as one written after.
+	state._rebuild_regard()
 	return state
 
 

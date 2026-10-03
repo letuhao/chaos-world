@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"bounty"
 grade = &"mortal"
-sources = Array[StringName]([&"quest:bounty_wolf_pack"])
+sources = Array[StringName]([&"quest:bounty_wolf_pack", &"domain:tome_gilded_crane_domain"])

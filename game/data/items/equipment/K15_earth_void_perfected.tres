@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:K15_earth_void_perfected_recipe"])
+sources = Array[StringName]([&"craft:K15_earth_void_perfected_recipe", &"domain:loot_storm_crypt_domain"])

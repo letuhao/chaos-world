@@ -11,8 +11,9 @@ rarity = &"rare"
 realm = &"spirit_severing"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"sigil"
 grade = &"earth"
-sources = Array[StringName]([&"gather", &"quest:A33_route"])
+sources = Array[StringName]([&"gather", &"quest:A33_route", &"domain:mind_great_ascension_trial"])

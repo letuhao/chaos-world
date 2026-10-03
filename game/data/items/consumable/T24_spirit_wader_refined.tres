@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"salve"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:T24_spirit_wader_refined_recipe"])
+sources = Array[StringName]([&"craft:T24_spirit_wader_refined_recipe", &"domain:qi_spirit_condensation_trial"])

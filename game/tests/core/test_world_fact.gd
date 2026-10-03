@@ -42,7 +42,10 @@ func test_reads_tolerate_a_missing_and_a_foreign_payload() -> void:
 	assert_eq(WorldFact.to_dict(null), WorldFact.empty(), "and carries an empty ledger")
 	var actor := _hero()
 	actor.set_module_data(WorldFact.MODULE_KEY, {"facts": {"killed_boar": 7}})
-	assert_eq(WorldFact.count(actor, BOAR), 7, "a hand-parked row is still read")
+	assert_eq(WorldFact.count(actor, BOAR), 0, "a row that is not a dictionary is unreadable")
+	var parked := _hero()
+	parked.set_module_data(WorldFact.MODULE_KEY, {"facts": {"killed_boar": {"count": 7}}})
+	assert_eq(WorldFact.count(parked, BOAR), 7, "a hand-parked row is still read")
 	var junk := _hero()
 	junk.set_module_data(WorldFact.MODULE_KEY, {"version": 99, "rows": {}})
 	assert_eq(WorldFact.normalize(junk), WorldFact.empty(), "a foreign shape normalises to empty")
@@ -87,7 +90,7 @@ func test_since_is_written_once_and_never_advances() -> void:
 	var fact := WorldFact.fact(actor, BOAR)
 	assert_eq(fact.count, 7, "the count moved to seven")
 	assert_eq(fact.since, 2, "but since is still the count at first record")
-	assert_eq(fact.since != fact.count, true, "so count and since no longer agree")
+	assert_ne(fact.since, fact.count, "so count and since no longer agree")
 	WorldFact.record(actor, BOAR)
 	assert_eq(WorldFact.fact(actor, BOAR).since, 2, "and a third record does not touch it")
 
@@ -99,10 +102,12 @@ func test_since_is_written_once_and_never_advances() -> void:
 ## absence of a verb.
 func test_the_api_surface_has_no_verb_that_lowers_a_count() -> void:
 	var mutators: Array[String] = []
-	for method in WorldFact.get_method_list():
+	# Read the class's OWN script methods, not the whole Object surface:
+	# `remove_meta` and `remove_user_signal` are inherited from Object, and
+	# "WorldFact has no remove verb" was never a claim about every GDScript
+	# class. Filtering to this script is what makes the assertion honest.
+	for method in WorldFact.new().get_script().get_script_method_list():
 		var name := String(method["name"])
-		if name.begins_with("_"):
-			continue
 		var lowered := name.contains("spend") or name.contains("consume")
 		lowered = lowered or name.contains("revoke") or name.contains("remove")
 		lowered = lowered or name.contains("clear") or name.contains("reset")
@@ -188,7 +193,7 @@ func test_a_hand_edited_since_is_clamped_into_range() -> void:
 		WorldFact.MODULE_KEY, {"facts": {"killed_boar": {"count": 4, "since": 99}}}
 	)
 	assert_eq(WorldFact.fact(actor, BOAR).since, 4, "a since above the count clamps down")
-	assert_eq(WorldFact.fact(actor, BOAR).count, 4, "and the count is untouched")
+	assert_eq(WorldFact.fact(actor, BOAR).total, 4, "and the count is untouched")
 	var dropped := _hero()
 	dropped.set_module_data(WorldFact.MODULE_KEY, {"facts": {"killed_boar": {"count": 6}}})
 	assert_eq(WorldFact.fact(dropped, BOAR).since, 0, "a missing since is not invented")

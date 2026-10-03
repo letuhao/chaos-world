@@ -60,7 +60,7 @@ static func ranked(clan_id: StringName, min_realm: int) -> ClanDef:
 static func _base(clan_id: StringName) -> ClanDef:
 	var def := ClanDef.new()
 	def.id = clan_id
-	def.display_name = String(clan_id)
+	def.display_name = str(clan_id)
 	def.description = "A fixture clan."
 	def.founding_bloodline = &""
 	def.ranks = LADDER.duplicate()

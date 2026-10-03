@@ -11,8 +11,9 @@ rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 36.58},
+	{"option_id": &"trade_value", "value": 18},
 ])
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"medal"
 grade = &"divine"
-sources = Array[StringName]([&"gather", &"quest:Y25_route"])
+sources = Array[StringName]([&"gather", &"quest:Y25_route", &"domain:qi_spirit_unity_trial"])

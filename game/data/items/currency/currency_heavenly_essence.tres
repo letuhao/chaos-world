@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"token"
 grade = &"heaven"
-sources = Array[StringName]([&"craft:currency_heavenly_essence_recipe"])
+sources = Array[StringName]([&"craft:currency_heavenly_essence_recipe", &"domain:relic_tide_serpent_domain"])

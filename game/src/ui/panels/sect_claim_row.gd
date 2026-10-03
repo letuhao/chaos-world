@@ -32,6 +32,10 @@ const NOTHING_OWED := "Nothing owed"
 const PERCENT_SUFFIX := "%"
 const UNKNOWN_TEXT := "Institution unnamed"
 const UNKNOWN_POSITION := "Office unnamed"
+## The facade's own refusal constant for a hero sworn to nothing
+## (`SectApi.NOT_A_MEMBER`). Named here rather than inlined so the row renders the
+## MODULE's string, and a test greps the constant rather than a hand-typed copy.
+const NOT_A_MEMBER := "not_a_member"
 
 var _view: Dictionary = {}
 var _reason: String = ""
@@ -60,7 +64,7 @@ func show_claim(view: Dictionary) -> void:
 	_bind_nodes()
 	if view.is_empty():
 		_view = {}
-		_reason = "not_a_member"
+		_reason = NOT_A_MEMBER
 		_render()
 		return
 	_view = view.duplicate(true)
@@ -78,8 +82,19 @@ func show_refusal(result: Dictionary) -> void:
 	_render()
 
 
+## Empty the row completely — no view and no reason, so `summary()` reports `{}`.
+##
+## This is deliberately NOT `show_claim({})`: an unaffiliated hero and a cleared row
+## are different claims about the world. `show_claim({})` renders the `not_a_member`
+## sentence, because "you are sworn to nothing" is a fact worth showing, while
+## `clear()` means "this row carries nothing at all" and is what a spare pool row in
+## the pool reports. Collapsing the two would make an unaffiliated hero read as a
+## missing widget.
 func clear() -> void:
-	show_claim({})
+	_bind_nodes()
+	_view = {}
+	_reason = ""
+	_render()
 
 
 ## Everything the row shows, primitives only. `{}` when the row carries nothing at
@@ -93,7 +108,10 @@ func summary() -> Dictionary:
 	return {
 		"refused": _reason != "",
 		"reason": _reason,
-		"is_member": not bool(_view.get("is_member", false)) and _reason == "",
+		# Read straight off the view, and a REFUSAL is never a membership. Inverting
+		# the view's own flag here reported an unaffiliated hero as a member, which
+		# is the one claim this row exists to get right in both directions.
+		"is_member": _reason == "" and bool(_view.get("is_member", false)),
 		"sect_id": String(_view.get("sect_id", "")),
 		"sect_name": String(_view.get("sect_name", "")),
 		"doctrine_id": String(_view.get("doctrine_id", "")),
@@ -180,7 +198,25 @@ func _compute_lines() -> void:
 	if position == "":
 		position = String(_view.get("position_id", ""))
 	_position = NO_POSITION if position == "" else position
-	_standing = (
+	_standing = _standing_text(position)
+	var duties := _string_list(_view.get("duties", []))
+	_duty = _duty_text() if not duties.is_empty() else ""
+	_meta = _meta_text()
+
+
+## The standing line, and it NAMES THE OFFICE the standing belongs to.
+##
+## This is not decoration: ADR 0064's split is that a position and a standing are
+## two independent facts, and a standing printed with no office attached would read
+## as one derived rank — exactly the spreadsheet the split exists to prevent. The
+## office leads the line and the numbers follow it, so a reader sees "Bulwark, and
+## here is how much standing Bulwark's holder has" as two claims rather than one.
+##
+## With no office held there is no office to name, so the line carries the standing
+## alone and still renders: a member with thick standing and no position is an
+## ordinary state (ADR 0083), not a blank row.
+func _standing_text(position: String) -> String:
+	var numbers := (
 		"%d / %d standing · %d%s recognised"
 		% [
 			int(_view.get("standing", 0)),
@@ -189,9 +225,7 @@ func _compute_lines() -> void:
 			PERCENT_SUFFIX,
 		]
 	)
-	var duties := _string_list(_view.get("duties", []))
-	_duty = _duty_text() if not duties.is_empty() else ""
-	_meta = _meta_text()
+	return numbers if position == "" else "%s · %s" % [position, numbers]
 
 
 ## A position is a duty, not a level (ADR 0083), so a claim that names an office

@@ -227,7 +227,7 @@ func test_a_claim_over_places_is_nested_under_its_own_key() -> void:
 	var screen := _screen()
 	screen.setup(actor)
 	var claims := screen.summary()["claims"] as Array
-	assert_ne(claims.is_empty(), true, "the claim is listed")
+	assert_eq(claims.is_empty(), false, "the claim is listed")
 	var row: Dictionary = claims[0]
 	assert_eq(String(row["territory_id"]), String(CLAIMED), "and named by id")
 	assert_eq(String(row["holder_id"]), String(MARCH), "with the polity that holds it")
@@ -375,7 +375,10 @@ func test_focus_lands_on_a_seat_even_when_every_seat_is_vacant() -> void:
 	var view := screen.summary()
 	if int(view["vacant_offices"]) > 0:
 		screen.focus_initial()
-		assert_ne(String(view["focus_target"]), "", "a vacant seat is focusable")
+		# Re-read after the call. `view` was captured BEFORE `focus_initial()` ran, so
+		# its `focus_target` is the empty string that was true at capture time — the
+		# assertion below would have been asserting against a snapshot of the past.
+		assert_ne(String(screen.summary()["focus_target"]), "", "a vacant seat is focusable")
 	screen.free()
 
 
@@ -432,9 +435,17 @@ func test_the_territory_row_says_a_contest_is_not_a_transfer() -> void:
 	)
 	var view := row.summary()
 	assert_eq(bool(view["contested"]), true, "the row knows it is contested")
-	assert_ne(String(view["challenge_line"]).find("court_of_the_star"), -1, "and says so")
+	# `court_of_the_star` HOLDS this ground and `march_of_the_nine_provinces` is
+	# contesting it. Both assertions below previously named the opposite line, which
+	# would only pass if the row swapped a claim for a conquest — the exact reading
+	# this test exists to forbid.
 	assert_ne(
-		String(view["holder_line"]).find("march_of_the_nine_provinces"),
+		String(view["challenge_line"]).find("march_of_the_nine_provinces"),
+		-1,
+		"and names who is contesting it"
+	)
+	assert_ne(
+		String(view["holder_line"]).find("court_of_the_star"),
 		-1,
 		"while the holder is the side that still holds the ground"
 	)
@@ -489,7 +500,13 @@ func test_a_standoff_row_reports_the_verdict_tally_and_never_a_roll() -> void:
 	var view := row.summary()
 	assert_eq(int(view["verdicts"]), 3, "both sides' wins are one shared count")
 	assert_eq(int(view["quota"]), 3, "against the declared quota")
-	assert_eq(String(view["prize_line"]).find("ownership"), -1, "the prize is not guessed at")
+	# ADR 0085: the prize was FIXED when the two sides declared, so the row prints
+	# what the ledger says. The original assertion here read
+	# `prize_line.find("ownership") == -1` under the label "the prize is not guessed
+	# at" — but the ledger's `transfer` IS `ownership` and a row that hid it would be
+	# the guessing, not the preventing. What is not guessed is the STANDING: that is
+	# asserted below, verbatim off the declared delta.
+	assert_ne(String(view["prize_line"]).find("ownership"), -1, "the declared transfer is printed")
 	assert_ne(String(view["prize_line"]).find("15"), -1, "it is read verbatim off the ledger")
 	assert_eq(bool(view["closed"]), false, "and the standoff is still open")
 	row.free()
@@ -507,8 +524,8 @@ func test_every_row_panel_reports_nothing_before_it_is_shown() -> void:
 	for label in scenes.keys():
 		var row := (load(scenes[label]) as PackedScene).instantiate()
 		assert_eq(row.summary(), {}, "%s row is empty before it is shown" % label)
-		assert_eq(row.is_filled(), false, "and carries nothing" % label)
-		assert_eq(row.visible, false, "and takes up no space" % label)
+		assert_eq(row.is_filled(), false, "%s and carries nothing" % label)
+		assert_eq(row.visible, false, "%s and takes up no space" % label)
 		row.free()
 
 

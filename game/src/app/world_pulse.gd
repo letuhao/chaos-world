@@ -96,6 +96,21 @@ const PERIOD_FACT := &"world_period_elapsed"
 ## on it; it is there so a save or a log says which system earned the accrual.
 const PERIOD_SOURCE := "world:period"
 
+## ## The world's OWN doings: delegated, and this file only routes them
+##
+## An event trigger is read before `EventApi.begin` writes a beat, so a trigger naming
+## a fact asks about the world **as it already was** — and four shipped triggers do
+## exactly that (`beast_tide` on a sighted storm front, `the_dawn_descent` on a sounded
+## void seam, `tournament_of_the_spirit_peaks` on a called tournament,
+## `war_of_the_nine_fords` on a called war). Nothing produced those four facts, so four
+## of seven events could never open.
+##
+## [code]WorldAmbient[/code] holds WHICH facts the world has reached and not yet said.
+## **This file holds only the offering**, because offering a beat is this file's whole
+## job and a roster in a clock is the SRP split `tools arch` warns about.
+const AMBIENT_FACTS := WorldAmbient.ROSTER
+const AMBIENT_SOURCE := WorldAmbient.SOURCE
+
 var _actor: Actor = null
 var _director: BeatDirector = null
 ## Seconds owed to the world but not yet a whole period. Session-only, exactly like
@@ -242,6 +257,10 @@ func summary() -> Dictionary:
 		"sinks": [] if _director == null else _director.sink_names(),
 		"period_fact": String(PERIOD_FACT),
 		"period_count": WorldFact.count(_actor, PERIOD_FACT) if _actor != null else 0,
+		# The world's own news, published so a test reads the roster rather than
+		# hardcoding it, and so a panel can say what the world has already done.
+		"ambient_facts": WorldAmbient.ids(),
+		"ambient_recorded": WorldAmbient.recorded(_actor),
 		"world_period": int(world.get("period", 0)),
 		"active_events": int(world.get("active_count", 0)),
 		"available_events": (world.get("available", []) as Array).size(),
@@ -249,6 +268,19 @@ func summary() -> Dictionary:
 
 
 # --- Internals -------------------------------------------------------------
+
+
+## The ambient roster's fact ids, in authored order. Delegated rather than restated so
+## a test or a panel and [code]WorldAmbient[/code] can never disagree about what
+## "ambient" names.
+func _ambient_ids() -> Array[String]:
+	return WorldAmbient.ids()
+
+
+## How many of the ambient roster the ledger holds. A count, never a table: the
+## detail is the ledger's, and `app/` must hold no memory of its own.
+func _ambient_recorded() -> int:
+	return WorldAmbient.recorded(_actor)
 
 
 ## The one place a whole advance happens, so [method pull] and
@@ -261,6 +293,13 @@ func _advance(periods: int) -> Dictionary:
 		return _report(false, "no_director")
 	if periods <= 0:
 		return _report(true, "")
+
+	# **Ambient news lands BEFORE the events are consulted**, so a trigger gated on
+	# what the world already remembers can be satisfied by news from the same pull
+	# that sighted it. `EventApi.begin` re-checks the trigger itself, so offering
+	# first cannot open an event early — it only lets a sighting and the tide it
+	# causes arrive together rather than one pull apart.
+	_offer_ambient(_periods + periods)
 
 	var opened := _open_available()
 	_opened += opened.size()
@@ -283,6 +322,27 @@ func _advance(periods: int) -> Dictionary:
 		if bool(report.get("claimed", false)):
 			_claimed += 1
 	return _report(true, "")
+
+
+## Offer every fact [code]WorldAmbient[/code] says the world has reached and not yet
+## recorded, through [method offer] so a registered sink sees it.
+##
+## **Through `offer`, never straight at `WorldFact.record`.** Recording is not
+## dispatching (ADR 0114): a direct ledger write makes the fact true and leaves every
+## sink unconsulted, so a quest step watching it reports outstanding forever — a green
+## fact and a permanently open gate. Measured red in
+## `tests/app/test_world_ambient_facts.gd`.
+##
+## The once-check is `WorldAmbient.due`'s ledger read, so this file adds no flag of its
+## own — the ADR 0117 second copy is refused by there being nothing here to drift. The
+## `for` walks that method's array, built before the loop and mutated by neither, which
+## is the shape `test_no_unbounded_wait.gd` accepts; `horizon` is the period count AFTER
+## this advance, snapshotted by the caller.
+func _offer_ambient(horizon: int) -> void:
+	for fact in WorldAmbient.due(_actor, horizon):
+		var report := offer(fact, 1, AMBIENT_SOURCE)
+		if bool(report.get("claimed", false)):
+			_claimed += 1
 
 
 ## Open at most [constant MAX_OPENS_PER_PULL] of the events the world allows, in

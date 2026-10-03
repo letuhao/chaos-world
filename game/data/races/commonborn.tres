@@ -6,7 +6,7 @@
 script = ExtResource("1_race")
 id = &"commonborn"
 display_name = "Commonborn"
-description = "The body everyone is born into before the world has an opinion about them. It caps no realm and lends no discipline, which is exactly why it is weak: nothing about its anatomy favours a path, so a Commonborn must settle on one early and is weakest precisely where a specialist is strongest. Mind is closed to it outright — a body this even has no native faculty for it. Its affinities are broad and shallow, every element faintly legible and none native, so breadth buys flexibility rather than power."
+description = "The body everyone is born into before the world has an opinion about them. It stops where mortals stop and lends no discipline, which is exactly why it is weak: nothing about its anatomy favours a path, so a Commonborn must settle on one early and is weakest precisely where a specialist is strongest. Mind is closed to it outright — a body this even has no native faculty for it. Its affinities are broad and shallow, every element faintly legible and none native, so breadth buys flexibility rather than power."
 dominance = 0.45
 manifestation_threshold = 0.1
 gestation_days = 30.0
@@ -14,7 +14,13 @@ base_fertility = 0.5
 base_potency = 0.5
 offspring_variance = 0.1
 closed_paths = Array[StringName]([&"mind_cultivation"])
-realm_ceiling = 0
+; An unremarkable mortal frame: nothing anyone would call beautiful survives tribulation.
+; Ordinal 8 is Great Ascension, the last of the nine Mortal realms — so a Commonborn who
+; cultivates without ever specialising is mortal forever. It is the same bar stoneborn
+; carries at 17 for the opposite reason: that body is too dense to ascend, this one is
+; too plain to. Neither can be bought off with an item (ADR 0062), and it is what stops
+; the fallback body from being the best body in the game.
+realm_ceiling = 8
 lifespan = 36500.0
 base_attributes = {"physique": 1.0, "spirit": 1.0, "aptitude": 1.0, "comprehension": 1.0, "agility": 1.0, "will": 1.0, "fortune": 1.0}
 percent_modifiers = {"cultivation_rate": 0.02, "breakthrough_chance": 0.0}

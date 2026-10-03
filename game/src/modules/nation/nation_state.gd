@@ -76,6 +76,11 @@ const TRANSFERS: Array[StringName] = [OWNERSHIP, RECOGNITION, TRIBUTE]
 const R_NO_ACTOR := "no_actor"
 const R_ALREADY_FOUNDED := "already_under_a_nation"
 const R_UNKNOWN_NATION := "unknown_nation"
+## The actor lives under no nation, so there is nothing to leave or be cast out of.
+## Distinct from `unknown_nation`, which names a polity this build does not ship: that
+## is a content bug, and this is a player who has not settled anywhere (ADR 0083's
+## first state — "no institution" is representable and is the ordinary start).
+const R_NO_NATION := "no_nation"
 const R_SELF_STANCE := "cannot_stance_against_yourself"
 const R_UNKNOWN_VERB := "unknown_verb"
 const R_WAR_REQUIRES_A_PRIZE := "war_requires_a_prize"

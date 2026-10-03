@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"broth"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:I7_mortal_druery_base_recipe", &"quest:I7_mortal_druery_line"])
+sources = Array[StringName]([&"craft:I7_mortal_druery_base_recipe", &"quest:I7_mortal_druery_line", &"domain:mind_body_integration_trial"])

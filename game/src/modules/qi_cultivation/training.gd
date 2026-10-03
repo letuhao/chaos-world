@@ -39,10 +39,8 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 		return false
 	# Meridian flow bonus speeds circulation; the realm RATE values one unit of
 	# work. A bounded per-realm number, not the realm's magnitude — see
-	# `realm_profile.gd`. Same rate, same realm, as body and mind.
-	var gain := (
-		amount * QiRealmProfile.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
-	)
+	# `core/realm_rate.gd`. Same rate, same realm, as body and mind.
+	var gain := amount * RealmRate.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
 	# A full dantian stops *storing* qi, not *training*: refusing the whole action
 	# deadlocked the path, because the entry gate demands both a full reservoir
 	# and a met progress floor, and the reservoir fills first. `fill` clamps, so

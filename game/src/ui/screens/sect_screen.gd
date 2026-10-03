@@ -4,7 +4,8 @@ extends UiScreen
 ## The sect a hero is sworn to: the member's own claim, its office and its authored
 ## duties, the offices of the sworn sect and their live seat state, and every
 ## authored sect for comparison. A pure consumer of the `sect` facade — it renders
-## `SectApi.summary(actor)` and names NOTHING else in the module (ADR 0083/0084).
+## the facade's `summary(actor)` read model and names NOTHING else in the module
+## (ADR 0083/0084).
 ##
 ## ## Position and standing are TWO lines, never one rank
 ##
@@ -52,13 +53,15 @@ var _claim_rows: Array = []
 var _office_rows: Array = []
 
 
-## Adopt a facade snapshot for the bound actor (`SectApi.summary(actor)` shaped).
-## `setup(actor)` takes the same path; this exists so a headless test or a driver can
-## render with no actor at all. An empty snapshot clears it.
+## Adopt a facade snapshot for the bound actor (the `summary(actor)` shape).
+## `setup(actor)` takes the facade path inside `_refresh_view`; this exists so a
+## headless test or a driver can render from a snapshot with no actor at all, and —
+## importantly — so adopting a snapshot does NOT re-enter the facade. An empty
+## snapshot clears it.
 func apply_snapshot(snapshot: Dictionary) -> void:
 	_bind_nodes()
 	_codex = snapshot.duplicate(true)
-	_refresh_view()
+	_fill_from_codex()
 	_render()
 
 
@@ -93,7 +96,10 @@ func _summary() -> Dictionary:
 	}
 
 
-## Re-read the facade and hand raw values down. The rows own every format.
+## Re-read the facade — the ONE call this screen makes — and hand raw values down.
+## Every later read is of the cached `_codex`, never of the facade, so a refresh
+## costs exactly one call however many times `summary()` is asked. The rows own
+## every format.
 func _refresh_view() -> void:
 	_bind_nodes()
 	if not _bound:
@@ -101,6 +107,12 @@ func _refresh_view() -> void:
 	var live := SectApi.summary(_actor) if _actor != null else {}
 	if not live.is_empty():
 		_codex = live
+	_fill_from_codex()
+
+
+## Push the cached codex into the row pools. Split out from `_refresh_view` so that
+## adopting a snapshot renders it without a second facade read.
+func _fill_from_codex() -> void:
 	_fill_claims()
 	_fill_offices()
 
@@ -315,10 +327,19 @@ func _sect_summaries() -> Array:
 
 
 ## The office ids the board is showing, in display order.
+##
+## A SPARE pool row is not an office and is not reported: it renders `{}` and its id
+## reads as `""`, so it is dropped here. That is what makes the reported count equal
+## the sect's AUTHORED board rather than the size of the pool the scene happened to
+## mount — a sect that authors four offices and a screen that reports twelve has
+## invented eight offices, which is the dead-content failure ADR 0063 already
+## shipped once.
 func row_ids() -> Array:
 	var out: Array = []
 	for row in _office_rows:
-		out.append(String((row as NationOfficeRow).office_id()))
+		var office_id := String((row as NationOfficeRow).office_id())
+		if office_id != "":
+			out.append(office_id)
 	return out
 
 

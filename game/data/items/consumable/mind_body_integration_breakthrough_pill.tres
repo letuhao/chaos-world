@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mind_body_integration_pill_recipe"])
+sources = Array[StringName]([&"craft:mind_body_integration_pill_recipe", &"domain:totem_jade_serpent_domain"])
 description = "Consumed by the Mind Cultivation attempt entering Awareness; no equipment modifier."

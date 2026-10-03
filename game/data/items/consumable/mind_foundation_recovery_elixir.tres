@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"elixir"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mind_foundation_recovery_recipe"])
+sources = Array[StringName]([&"craft:mind_foundation_recovery_recipe", &"domain:body_qi_refining_trial"])
 description = "Calms a clouded sea of consciousness and repairs one burned channel after a failed breakthrough."

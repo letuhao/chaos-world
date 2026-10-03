@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"tincture"
 grade = &"heaven"
-sources = Array[StringName]([&"craft:D2_heaven_daoheart_sigil_recipe"])
+sources = Array[StringName]([&"craft:D2_heaven_daoheart_sigil_recipe", &"domain:loot_ember_vault_domain"])

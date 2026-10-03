@@ -17,4 +17,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:banner_iron_bulwark_recipe"])
+sources = Array[StringName]([&"craft:banner_iron_bulwark_recipe", &"domain:body_true_immortal_trial"])

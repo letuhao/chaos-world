@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -39,6 +39,18 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"F10_condensation_warden_core_0"
+kind = &"item"
+item_id = &"qi_spirit_condensation_channel_elixir"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F10_condensation_warden"
@@ -50,5 +62,6 @@ allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
-	SubResource("entry_2")
+	SubResource("entry_2"),
+	SubResource("entry_3")
 ])

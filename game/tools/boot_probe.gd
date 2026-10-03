@@ -40,6 +40,15 @@ const MAX_WALK_DEPTH := 12
 ## The app's strike deals 25 and the lowest authored boss has 100 vitality, so four
 ## strikes is the whole fight. A cap, never "until it dies" — see `_strike_until_dead`.
 const MAX_STRIKES := 8
+## The two routes the equip half walks between, and the controls it drives there.
+## The hero screen is the honest observable for "the stats changed": it is what the
+## player's own sheet shows, so this cannot pass by reaching past the UI into the actor.
+const HOME_ROUTE := &"workbench"
+const CHARACTER_ROUTE := &"character"
+const EQUIP_BUTTON := "%EquipButton"
+const ACTION_BAR := "%ActionBar"
+const INVENTORY_PANEL := "%InventoryPanel"
+const ITEM_LIST := "%ItemList"
 
 
 func _initialize() -> void:
@@ -78,6 +87,8 @@ func _run() -> void:
 	report["hunt"] = hunt_report
 	var claim_report: Dictionary = await _claim(app, rows_at_boot)
 	report["claim"] = claim_report
+	var equip_report: Dictionary = await _equip(app, claim_report.get("def_ids", []))
+	report["equip"] = equip_report
 	var broken: Array[String] = []
 	if not bool(nav_report.get("ok", false)):
 		broken.append(
@@ -90,6 +101,13 @@ func _run() -> void:
 	if not bool(claim_report.get("ok", false)):
 		broken.append(
 			"its drops cannot be collected: %s" % claim_report.get("why", "nothing was claimed")
+		)
+	if not bool(equip_report.get("ok", false)):
+		broken.append(
+			(
+				"what it collected changes nothing: %s"
+				% equip_report.get("why", "equipping did nothing")
+			)
 		)
 	if bool(report.get("ok", false)) and not broken.is_empty():
 		# Came up, but you cannot go anywhere or fight anything. That is the same
@@ -239,13 +257,157 @@ func _claim(app: Node, rows_at_boot: int) -> Dictionary:
 	if not bool(arrived.get("ok", false)):
 		var lost: String = str(arrived.get("why", "unknown"))
 		return {"ok": false, "why": "the drop was taken but never reached the bag: %s" % lost}
+	# The def ids the reward offered, so the equip half can find what it claimed
+	# rather than hardcoding one: which drop a domain hands out is content, and a
+	# probe that pinned an id would break the day that content changes.
+	var reward := (screen.call(&"summary") as Dictionary).get("reward", {}) as Dictionary
+	var def_ids: Array[String] = []
+	for row in reward.get("rows", []) as Array:
+		def_ids.append(String((row as Dictionary).get("def_id", "")))
 	return {
 		"ok": true,
 		"pending_before": pending_before,
 		"pending_after": pending_after,
 		"rows_at_boot": rows_at_boot,
 		"rows_now": int(arrived.get("rows", 0)),
+		"def_ids": def_ids,
 	}
+
+
+## Wear one of the drops this fight produced, and report what the player's own hero
+## sheet says changed.
+##
+## The claim half proved the drop became an item. That is not the loop finishing:
+## an unequipped item does nothing. This walks to the hero screen, records the stats
+## it publishes, walks back, wears the drop through the bag's own row selection and
+## the real Equip control, then walks to the hero screen again and requires a stat to
+## have RISEN. Comparing published stats rather than the actor's internals is the
+## point — this is the observable a player can see, so it cannot pass by reaching past
+## the UI the way a test with the actor in hand could.
+func _equip(app: Node, def_ids: Array) -> Dictionary:
+	if def_ids.is_empty():
+		return {"ok": false, "why": "the reward named no item, so there is nothing to wear"}
+	var before := await _published_stats(app)
+	if before.is_empty():
+		return {"ok": false, "why": "the hero screen publishes no stats to compare against"}
+	var worn := await _wear_one(app, def_ids)
+	if not bool(worn.get("ok", false)):
+		return {"ok": false, "why": worn.get("why", "the claimed drop could not be worn")}
+	var after := await _published_stats(app)
+	var rose := _stat_that_rose(before, after)
+	if rose == "":
+		return {
+			"ok": false,
+			"why": "wearing '%s' left every published stat unchanged" % worn.get("def_id", ""),
+		}
+	return {"ok": true, "def_id": worn.get("def_id", ""), "stat": rose}
+
+
+## Travel to a route by pressing its own nav button, then report whether it stuck.
+func _goto(app: Node, route_id: StringName) -> Dictionary:
+	var nav := app.get_node_or_null("%NavBar")
+	if nav == null:
+		return {"ok": false, "why": "there is no nav bar to travel with"}
+	var index := _slot_for(route_id)
+	if index < 0:
+		return {"ok": false, "why": "the route table declares no '%s'" % String(route_id)}
+	var blocked := _why_unpressable(nav, index)
+	if blocked != "":
+		return {"ok": false, "why": blocked}
+	(nav.get_node_or_null(NavBar.slot_unique_name(index)) as Button).pressed.emit()
+	await process_frame
+	var now := String(app.call(&"current_route"))
+	if now != String(route_id):
+		return {
+			"ok": false, "why": "slot %d opened '%s', not '%s'" % [index, now, String(route_id)]
+		}
+	return {"ok": true}
+
+
+## The stats the hero screen publishes right now, or `{}` when it cannot be reached.
+func _published_stats(app: Node) -> Dictionary:
+	if not bool((await _goto(app, CHARACTER_ROUTE)).get("ok", false)):
+		return {}
+	var screen := _live_screen(app)
+	if screen == null:
+		return {}
+	var summary := screen.call(&"summary") as Dictionary
+	return summary.get("stats", {}) as Dictionary
+
+
+## Select the first claimed drop the bag is holding and press Equip on it.
+func _wear_one(app: Node, def_ids: Array) -> Dictionary:
+	if not bool((await _goto(app, HOME_ROUTE)).get("ok", false)):
+		return {"ok": false, "why": "could not return to the bag"}
+	var screen := _live_screen(app)
+	if screen == null:
+		return {"ok": false, "why": "the workbench is not the live screen"}
+	var picked := _pick_claimed(screen, def_ids)
+	if not bool(picked.get("ok", false)):
+		return {"ok": false, "why": picked.get("why", "no claimed drop is in the bag")}
+	# One frame between selecting and pressing, because the Equip control is only
+	# live once the detail panel has repainted for the newly selected row.
+	await process_frame
+	# Equip is resolved from the ACTION BAR's own scope, not the workbench's. A `%`
+	# name resolves against the scene that declared it unique, and EquipButton is
+	# declared unique in `action_bar.tscn` - `action_bar.gd` asks for it from itself
+	# the same way. Asking from the workbench finds nothing, so the press would fail
+	# for a reason that has nothing to do with the loop.
+	var bar := screen.get_node_or_null(ACTION_BAR)
+	if bar == null:
+		return {"ok": false, "why": "the workbench composes no action bar to equip through"}
+	if not _press(bar, EQUIP_BUTTON):
+		return {
+			"ok": false, "why": "Equip is not a live control on '%s'" % picked.get("def_id", "")
+		}
+	return {"ok": true, "def_id": picked.get("def_id", "")}
+
+
+## Select the claimed drop the bag is holding, the way a player clicking a row does.
+func _pick_claimed(screen: Node, def_ids: Array) -> Dictionary:
+	var panel := screen.get_node_or_null(INVENTORY_PANEL)
+	if panel == null:
+		return {"ok": false, "why": "the workbench composes no inventory panel"}
+	var ids := (panel.call(&"summary") as Dictionary).get("row_def_ids", []) as Array
+	var chosen := _first_bagged(ids, def_ids)
+	if chosen == "":
+		return {"ok": false, "why": "no claimed drop is in the bag to wear"}
+	var list := panel.get_node_or_null(ITEM_LIST) as ItemList
+	var index := ids.find(chosen)
+	if list == null or index < 0 or index >= list.item_count:
+		return {"ok": false, "why": "the bag's row list cannot select the claimed drop"}
+	list.select(index)
+	list.item_selected.emit(index)
+	return {"ok": true, "def_id": chosen}
+
+
+## The first of `wanted` the bag is actually holding, or "" when it holds none.
+func _first_bagged(held: Array, wanted: Array) -> String:
+	for candidate in wanted:
+		var def_id := String(candidate)
+		if held.has(def_id):
+			return def_id
+	return ""
+
+
+## The first stat key that went UP, or "" when nothing rose. Sorted so the reported
+## name is stable across runs rather than whichever key the dictionary yielded first.
+func _stat_that_rose(before: Dictionary, after: Dictionary) -> String:
+	var keys := after.keys()
+	keys.sort()
+	for key in keys:
+		if float(after[key]) > float(before.get(key, 0.0)):
+			return String(key)
+	return ""
+
+
+## The nav slot bound to a route id, or -1. The bar binds slot N to route N.
+func _slot_for(route_id: StringName) -> int:
+	var slots := ScreenRoutes.all()
+	for index in slots.size():
+		if StringName(slots[index].get("id", "")) == route_id:
+			return index
+	return -1
 
 
 ## Why the reward cannot be collected from. Empty means the player could take a drop.

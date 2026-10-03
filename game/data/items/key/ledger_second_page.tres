@@ -11,8 +11,9 @@ rarity = &"magic"
 realm = &"spirit_domain"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 2, "contexts": ["base"]}
 subcategory = &"ledger"
 grade = &"spirit"
-sources = Array[StringName]([&"quest:ledger_of_the_second_page"])
+sources = Array[StringName]([&"quest:ledger_of_the_second_page", &"domain:qi_spirit_domain_domain"])

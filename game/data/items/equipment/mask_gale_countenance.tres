@@ -18,5 +18,5 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:mask_gale_countenance_recipe"])
+sources = Array[StringName]([&"craft:mask_gale_countenance_recipe", &"domain:succubus_immortal_domain"])
 

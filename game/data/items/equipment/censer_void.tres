@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"craft:censer_void_recipe"])
+sources = Array[StringName]([&"craft:censer_void_recipe", &"domain:qi_body_integration_domain"])

@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"tonic"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:mind_void_refinement_sea_recipe"])
+sources = Array[StringName]([&"craft:mind_void_refinement_sea_recipe", &"domain:mind_immortal_sovereign_trial"])
 description = "Strengthens the sea of consciousness toward the realm's clarity and purity targets."

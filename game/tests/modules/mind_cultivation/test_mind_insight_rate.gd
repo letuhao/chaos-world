@@ -22,6 +22,8 @@ extends TestCase
 
 const RANK := &"qi_refining"
 
+const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
+
 ## Cultivation work per measurement. Sized so the comprehension delta is far above
 ## float noise and far below the sea's capacity, so one sitting cannot be clamped
 ## or truncated by the reservoir.
@@ -128,10 +130,8 @@ func _published_insight_gain(comprehension: float) -> float:
 ## were removed from the tree, and the failure would then be invisible. Naming the
 ## read is what makes "mind reads the shared insight rate" a fact about the source.
 func test_the_mind_path_reads_the_shared_insight_rate() -> void:
-	var source := FileAccess.get_file_as_string("res://src/modules/mind_cultivation/training.gd")
-	assert_ne(source, "", "training.gd is readable")
 	assert_eq(
-		source.contains("Stat.INSIGHT_GAIN"),
+		Probe.module_code("training.gd").contains("Stat.INSIGHT_GAIN"),
 		true,
 		"the insight grant reads the shared rate rather than a local one"
 	)

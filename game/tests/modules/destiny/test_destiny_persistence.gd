@@ -12,8 +12,14 @@ const OATH := &"t_oath_breaker"
 const PLEDGE := &"t_blood_pledge"
 const CHOSEN := &"t_chosen_one"
 const DUELS := &"duels_won"
+## A fate on a third stat, so the fingerprint's `max_health` entry has something
+## to disagree about.
+const ASCENT := &"t_ascendant_health"
 
 
+## The catalog holding exactly the ids this suite earns through. Every fate the
+## round-trip test earns is named here, so `attach()` never filters an entry the
+## test itself put in the ledger.
 func setup() -> void:
 	(
 		DestinyFixtureCatalog
@@ -21,6 +27,11 @@ func setup() -> void:
 			[
 				DestinyFixtureCatalog.flat_fate(OATH, Stat.DEFENSE_PHYSICAL, 3.0),
 				DestinyFixtureCatalog.flat_fate(PLEDGE, Stat.ATTACK_PHYSICAL, 2.0),
+				# A fate on a DIFFERENT stat, so `_fingerprint`'s `max_health` entry
+				# compares 150.0 against something other than 150.0. With only the two
+				# stats above installed, that entry compared the actor's untouched base
+				# total with itself and could not fail.
+				DestinyFixtureCatalog.flat_fate(ASCENT, Stat.MAX_HEALTH, 25.0),
 			],
 			[DestinyFixtureCatalog.plain_destiny(CHOSEN)]
 		)
@@ -43,6 +54,7 @@ func _hero(actor_id: StringName = &"keeper") -> Actor:
 func _earned(actor_id: StringName = &"keeper") -> Actor:
 	var actor := _hero(actor_id)
 	DestinyApi.earn_fate(actor, OATH, "combat")
+	DestinyApi.earn_fate(actor, ASCENT, "path")
 	DestinyApi.earn_destiny(actor, CHOSEN, "story")
 	DestinyApi.record(actor, DUELS, 3)
 	return actor
@@ -55,12 +67,12 @@ func test_the_ledger_lives_in_the_actors_module_data_as_a_versioned_dictionary()
 	var actor := _earned()
 	var stored: Dictionary = actor.get_module_data(MODULE_KEY)
 	assert_eq(int(stored.get("version", 0)), DestinyState.SCHEMA_VERSION, "versioned")
-	var fate: Dictionary = (stored["fates"] as Dictionary)[String(OATH)]
+	var fate := _entry(stored["fates"], OATH)
 	assert_eq(String(fate["source"]), "combat", "the fate records the system that earned it")
 	assert_eq(int(fate["sequence"]) > 0, true, "and when, relative to everything else")
-	var destiny: Dictionary = (stored["destinies"] as Dictionary)[String(CHOSEN)]
+	var destiny := _entry(stored["destinies"], CHOSEN)
 	assert_eq(String(destiny["bearing"]), "You are bound to t_chosen_one.", "the bearing is kept")
-	assert_eq(int(stored["counters"][String(DUELS)]), 3, "the counter is kept")
+	assert_eq(int((stored["counters"] as Dictionary)[String(DUELS)]), 3, "the counter is kept")
 	assert_eq(DestinyApi.state(actor), stored, "the facade reports the persisted payload")
 
 
@@ -72,7 +84,7 @@ func test_held_fates_destinies_and_counters_survive_a_payload_round_trip() -> vo
 	var restored := Actor.from_dict(payload)
 	var carried: Dictionary = restored.get_module_data(MODULE_KEY)
 	assert_eq(carried, before, "the payload carried the ledger verbatim")
-	assert_eq(DestinyApi.fates(restored), [OATH], "the fate is still held")
+	assert_eq(DestinyApi.fates(restored), _held_fates(), "the fates are still held")
 	assert_eq(DestinyApi.destinies(restored), [CHOSEN], "so is the destiny")
 	assert_eq(DestinyApi.counter(restored, DUELS), 3, "and the counter")
 	# It survives a JSON hop, which is what a file-backed save does.
@@ -80,8 +92,15 @@ func test_held_fates_destinies_and_counters_survive_a_payload_round_trip() -> vo
 	assert_ne(parsed, null, "the payload is JSON-safe")
 	var from_json := Actor.from_dict(parsed as Dictionary)
 	assert_eq(DestinyApi.state(from_json), before, "JSON round trip")
-	assert_eq(DestinyApi.fates(from_json), [OATH], "the fate survives the hop")
+	assert_eq(DestinyApi.fates(from_json), _held_fates(), "the fates survive the hop")
 	assert_eq(DestinyApi.counter(from_json, DUELS), 3, "and so does the counter")
+
+
+## The fates `_earned()` earns, in the canonical order the facade hands them back.
+## Canonical, not earned order, so the assertion is about the id list itself rather
+## than about which call happened to come first.
+func _held_fates() -> Array[StringName]:
+	return [ASCENT, OATH]
 
 
 func test_a_restored_actor_re_derives_the_projection_from_the_ledger_rather_than_trusting_it(
@@ -93,6 +112,28 @@ func test_a_restored_actor_re_derives_the_projection_from_the_ledger_rather_than
 	# The stat projection did not: modifiers are always rebuilt from the ledger.
 	DestinyApi.attach(restored)
 	assert_eq(_fingerprint(restored), before, "the same ledger, traits, modifiers and totals")
+	# The fingerprint is only worth comparing if its entries can differ: a
+	# projection that dropped every fate would reproduce the same fingerprint. So
+	# the fate on `max_health` has to be visibly moving that derived total. The
+	# absolute figure belongs to somebody else — the PHYSIQUE curve and realm
+	# scaling both feed it — so what is asserted is that the projection raised it,
+	# not what it raised it to. With only DEFENSE_PHYSICAL and ATTACK_PHYSICAL
+	# installed, this entry compared the actor's untouched total with itself and
+	# could never fail.
+	assert_eq(
+		DestinyProjection.contribution(actor, Stat.MAX_HEALTH),
+		{"flat": 25.0, "percent": 2.5},
+		"the max_health fate is on the stack with both of its channels"
+	)
+	var with_fate := actor.stats.derived(Stat.MAX_HEALTH)
+	DestinyProjection.strip(actor)
+	var without_fate := actor.stats.derived(Stat.MAX_HEALTH)
+	assert_eq(
+		float(with_fate) > float(without_fate),
+		true,
+		"and the derived total genuinely moves, so the fingerprint entry can catch a drift"
+	)
+	DestinyProjection.apply(actor, DestinyApi.state(actor))
 	# Attaching again must not double anything: the projection strips before it
 	# rebuilds, so a replayed attach is free of consequence.
 	DestinyApi.attach(restored)
@@ -133,15 +174,42 @@ func test_an_unreadable_ledger_is_diagnosed_as_empty_rather_than_partially_appli
 		var state := DestinyApi.state(restored)
 		assert_eq(state["fates"] as Dictionary, {}, "rejected payload %s" % [payload])
 		assert_eq(state["counters"] as Dictionary, {}, "including its counters")
-	# The entry that the live catalog still ships is kept even out of a malformed
-	# payload: unreadable neighbours do not condemn the ones beside them.
+	# Both entries here name content the fixture catalog does not ship — `setup()`
+	# installs only OATH and PLEDGE — so the catalog filter rejects them on read
+	# exactly as it would reject a save from a wider content build. Neither is
+	# readable as a fate entry, and neither names content the catalog still ships,
+	# so neither can survive into the normalized ledger.
 	var partial := _hero(&"partial")
 	partial.set_module_data(
 		MODULE_KEY,
 		{"version": 1, "fates": {"t_oath_breaker": "junk", "t_retired": {"source": "old"}}}
 	)
 	DestinyApi.attach(partial)
-	assert_eq(DestinyApi.fates(partial), [], "neither entry is readable")
+	assert_eq(DestinyApi.fates(partial), [], "neither entry survives")
+
+
+## One ledger entry, fetched through `.get()` with a shape assertion in front of
+## it.
+##
+## A typed local assigned an unvalidated subscript ABORTS the function it happens
+## in, and the runner calls each test with `suite.call(name)` — so the abort looks
+## like a test that finished, and every assertion after it is silently skipped
+## while the suite still reports green. Fetching defensively turns "the ledger
+## does not hold what this test was just told it holds" into a named failure that
+## keeps the rest of the test running. Returns `{}` on failure, so the assertions
+## that follow also report rather than abort.
+func _entry(section, entry_id: StringName) -> Dictionary:
+	var id := String(entry_id)
+	var entries := section as Dictionary
+	var found = entries.get(id, null)
+	if found is Dictionary and not (found as Dictionary).is_empty():
+		return found as Dictionary
+	assert_eq(
+		found is Dictionary and not (found as Dictionary).is_empty(),
+		true,
+		"the ledger holds a readable '%s' entry" % id
+	)
+	return {}
 
 
 ## Everything a numeric drift assertion needs: the held ids, the stat sources on

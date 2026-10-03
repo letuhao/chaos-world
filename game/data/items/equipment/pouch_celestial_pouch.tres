@@ -17,4 +17,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:pouch_celestial_pouch_recipe"])
+sources = Array[StringName]([&"craft:pouch_celestial_pouch_recipe", &"domain:scroll_frost_serpent_domain"])

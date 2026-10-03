@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"salve"
 grade = &"earth"
-sources = Array[StringName]([&"craft:S16_earth_wheelwright_base_recipe", &"quest:S16_earth_wheelwright_line"])
+sources = Array[StringName]([&"craft:S16_earth_wheelwright_base_recipe", &"quest:S16_earth_wheelwright_line", &"domain:mind_heaven_immortal_trial"])

@@ -90,10 +90,7 @@ func test_the_sea_provider_publishes_exactly_its_authored_surface() -> void:
 ## The absent case, stated: no sea means no contribution at all rather than a zero
 ## capacity somebody downstream has to know to distrust.
 func test_no_sea_component_means_no_contribution() -> void:
-	var actor := (
-		Actor
-		. new(&"bare", {Stat.WILL: 10.0, MindStats.MENTAL_CLARITY: 15.0})
-	)
+	var actor := Actor.new(&"bare", {Stat.WILL: 10.0, MindStats.MENTAL_CLARITY: 15.0})
 	MindCultivationApi.attach(actor)
 	var emitted: Dictionary = SeaProvider.new().contribute(actor.stats._context)
 	assert_eq(emitted, {}, "nothing to say without a sea")
@@ -105,25 +102,29 @@ func test_no_sea_component_means_no_contribution() -> void:
 ## `Stat.INSIGHT_GAIN` for. One dial per quantity, or a gate gets priced twice
 ## through two numbers that will drift.
 func test_the_module_publishes_no_second_dial_on_a_shared_rate() -> void:
+	var shared: Array[StringName] = []
+	for rate_id in Stat.RATE_STATS:
+		shared.append(rate_id)
 	var actor := _actor()
 	var emitted: Dictionary = MindProvider.new().contribute(actor.stats._context)
 	for key in emitted:
 		assert_eq(
-			emitted.has(key) and String(key) in [String(id) for id in Stat.RATE_STATS],
+			shared.has(key),
 			false,
-			"%s is not a second dial on core's %s" % [String(key), String(key)]
+			"%s is a second dial on core's rate of the same name" % String(key)
 		)
 
 
 ## The two locals BL-0154 named, plus the one it missed: `Stat.SPIRIT` was read
-## into `spirit` and fed nothing. Reading source is the only check that works —
+## into `spirit` and fed nothing. Reading source is the only check that works --
 ## an unused local has no value to compare and no runtime symptom at all, which is
-## precisely why it survived.
+## precisely why it survived. Comment lines are stripped so the docblock recording
+## the deletion does not fail its own guard.
 func test_the_provider_computes_nothing_it_does_not_publish() -> void:
-	var source := FileAccess.get_file_as_string("res://src/modules/mind_cultivation/provider.gd")
-	assert_ne(source, "", "provider.gd is readable")
+	var code := Probe.module_code("provider.gd")
+	assert_ne(code, "", "provider.gd is readable")
 	for dead in ["mind_power_ratio", "Stat.SPIRIT", "comprehension_bonus"]:
-		assert_eq(source.contains(dead), false, "provider.gd no longer reads %s" % dead)
+		assert_eq(code.contains(dead), false, "provider.gd no longer reads %s" % dead)
 
 
 # --- BL-0154: the sea fill is a gate, not a decoration ------------------------
@@ -131,14 +132,18 @@ func test_the_provider_computes_nothing_it_does_not_publish() -> void:
 
 ## Every clause of the entry gate except the fill, satisfied through production
 ## actions only. Returns an actor whose sea is full and whose gate is otherwise
-## ready, so the fill is the single remaining variable.
+## ready, so the fill is the single remaining variable. The pill is stocked because
+## the condition reads it too, and a gate that refuses for want of a pill proves
+## nothing about the sea.
 func _ready_except_the_fill() -> Actor:
 	var actor := Probe.prepared(RANK)
 	assert_ne(actor, null, "an R1 actor can be prepared for %s" % TARGET)
+	if actor != null:
+		Probe.stock(actor, MindRealmSeed.for_realm(TARGET).breakthrough_item)
 	return actor
 
 
-func _condition(actor: Actor) -> MindBreakthroughCondition:
+func _condition(_actor: Actor) -> MindBreakthroughCondition:
 	return MindBreakthroughCondition.new()
 
 
@@ -197,16 +202,15 @@ func test_only_the_sea_fill_clause_moves_when_the_sea_is_emptied() -> void:
 	)
 	assert_almost_eq(float(after.get("value", -1.0)), 0.0, "empty after")
 	# Everything else the condition reads is untouched by draining: clarity,
-	# purity, progress, comprehension and the channels.
-	assert_almost_eq(
-		Probe.value_of(actor, "progress"),
-		float(Probe.gate(actor, "progress").get("required", -1.0)),
-		"progress is still met after the drain",
-		0.01
-	)
-	assert_almost_eq(
-		Probe.value_of(actor, "clarity"),
-		float(Probe.gate(actor, "clarity").get("required", -1.0)),
-		"and so is clarity",
-		0.0001
-	)
+	# purity, progress, comprehension and the channels. Asserted as "still met",
+	# not "still equal" -- cultivation overshoots a budget and that is correct.
+	for clause in ["progress", "comprehension", "clarity", "purity"]:
+		var entry: Dictionary = Probe.gate(actor, clause)
+		assert_eq(
+			Probe.value_of(actor, clause) >= float(entry.get("required", INF)) - 0.0001,
+			true,
+			(
+				"%s is still met after the drain (%s of %s)"
+				% [clause, Probe.value_of(actor, clause), entry.get("required", -1.0)]
+			)
+		)

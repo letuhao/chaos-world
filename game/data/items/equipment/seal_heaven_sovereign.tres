@@ -20,4 +20,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:seal_heaven_sovereign_recipe"])
+sources = Array[StringName]([&"craft:seal_heaven_sovereign_recipe", &"domain:crown_storm_sovereign_domain"])

@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:Z5_divine_aval_perfected_recipe"])
+sources = Array[StringName]([&"craft:Z5_divine_aval_perfected_recipe", &"domain:body_true_immortal_trial"])

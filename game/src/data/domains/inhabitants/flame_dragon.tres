@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="InhabitantDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/inhabitant_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+inhabitant_id = &"flame_dragon"
+display_name = "Flame Dragon"
+realm_id = &"spirit_transformation"
+base = {&"physique": 31.0, &"spirit": 25.0, &"aptitude": 13.0, &"comprehension": 15.0, &"agility": 15.0, &"will": 24.0, &"fortune": 5.0}
+cultivates = true
+hostile = true
+tags = Array[StringName]([&"beast", &"ember", &"wyrm", &"ancient"])

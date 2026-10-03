@@ -14,6 +14,7 @@ extends RefCounted
 const VERB_BOND_AT_LEAST := &"bond_at_least"
 const VERB_TRUST_AT_LEAST := &"trust_at_least"
 const VERB_STANDING_AT_LEAST := &"standing_at_least"
+const VERB_REGARD_AT_LEAST := &"regard_at_least"
 const VERB_CAUSED_BY := &"caused_by"
 const VERB_ALL_OF := &"all_of"
 const VERB_ANY_OF := &"any_of"
@@ -23,6 +24,7 @@ const VERBS: Array[StringName] = [
 	VERB_BOND_AT_LEAST,
 	VERB_TRUST_AT_LEAST,
 	VERB_STANDING_AT_LEAST,
+	VERB_REGARD_AT_LEAST,
 	VERB_CAUSED_BY,
 	VERB_ALL_OF,
 	VERB_ANY_OF,
@@ -46,6 +48,8 @@ static func evaluate(state: SocialState, requirement: Dictionary) -> Dictionary:
 			return _axis_at_least(state, requirement, &"trust")
 		VERB_STANDING_AT_LEAST:
 			return _axis_at_least(state, requirement, &"standing")
+		VERB_REGARD_AT_LEAST:
+			return _regard_at_least(state, requirement)
 		VERB_CAUSED_BY:
 			return _caused_by(state, requirement)
 		VERB_ALL_OF:
@@ -89,6 +93,26 @@ static func _axis_at_least(
 	if actual >= need:
 		return _pass()
 	return _fail(axis, String(partner_id), str(need), str(actual))
+
+
+## ## `regard_at_least` is why `regard` is not write-only
+##
+## Every other verb reads a `SocialBond`, so before BL-0200 the institutional read
+## model had no question anyone could ask of it: an author could not gate content on
+## "the sect thinks well of you" even once something wrote the number. This verb is
+## the reader, and it reads the PROJECTED `regard` rather than a bond's raw standing,
+## so a gate and a panel cannot disagree about the same question.
+##
+## A partner with no institutional bond is `0.0`, which is the honest reading rather
+## than a special case: the actor is not regarded by an institution they have never
+## sworn to, served or been cast out of.
+static func _regard_at_least(state: SocialState, requirement: Dictionary) -> Dictionary:
+	var partner_id := String(requirement.get("partner", ""))
+	var need := float(requirement.get("at_least", 0.0))
+	var actual := float(state.regard.get(partner_id, 0.0))
+	if actual >= need:
+		return _pass()
+	return _fail(VERB_REGARD_AT_LEAST, partner_id, str(need), str(actual))
 
 
 static func _caused_by(state: SocialState, requirement: Dictionary) -> Dictionary:

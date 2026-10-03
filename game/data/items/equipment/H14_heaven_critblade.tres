@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:H14_heaven_critblade_recipe"])
+sources = Array[StringName]([&"craft:H14_heaven_critblade_recipe", &"domain:mind_foundation_trial"])

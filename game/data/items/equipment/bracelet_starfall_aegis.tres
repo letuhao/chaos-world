@@ -17,5 +17,5 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:bracelet_starfall_aegis_recipe"])
+sources = Array[StringName]([&"craft:bracelet_starfall_aegis_recipe", &"domain:mind_dao_ancestor_trial"])
 

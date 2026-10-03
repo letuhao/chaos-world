@@ -25,6 +25,20 @@ extends Resource
 @export var trust: float = 0.0
 @export var respect: float = 0.0
 
+## Whether this cause is one an INSTITUTION moved rather than a person: an oath to
+## a sect, a seat held in a nation, ground defended. **It is a flag rather than a
+## tag lookup because it has to survive a save.** `SocialState.regard` is built
+## from the bonds that carry this flag, and the projection must give the same
+## answer after a reload as it did before — so the fact is stored on the bond
+## rather than re-derived from a catalog that a test may have replaced, an author
+## may have edited, or a save may have outlived.
+##
+## It is deliberately NOT the same thing as having `&"institution"` in `tags`:
+## `held_office` is institutional while a seat in a nation's board is tagged
+## `&"office"`, and conflating the two would make the kind of the act decide
+## whether the actor is regarded by an institution at all.
+@export var institutional: bool = false
+
 ## The class this cause can promote to, or `&""`. Promotion additionally requires the
 ## class's own thresholds, so naming a class sets the ceiling, never the outcome.
 @export var promotes_to: StringName = &""

@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"gather", &"craft:D5_spirit_spirit_lamp_recipe"])
+sources = Array[StringName]([&"gather", &"craft:D5_spirit_spirit_lamp_recipe", &"domain:mind_spirit_condensation_trial"])

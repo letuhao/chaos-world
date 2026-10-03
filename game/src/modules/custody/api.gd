@@ -58,6 +58,9 @@ const TERM_EXCEEDS := "term_exceeds"
 
 static var _store: RefCounted = null
 static var _resolver: Callable = Callable()
+## The injected body constructor, and the only way this module ever holds an `Actor` in
+## hand: it stores a subject DEF ID and nothing else (ADR 0104).
+static var _minter: Callable = Callable()
 
 
 ## Restore and normalize whatever a prior `Actor.from_dict` carried. Idempotent, and safe on
@@ -83,6 +86,60 @@ static func set_resolver(resolver: Callable) -> void:
 ## invisible across actors (ADR 0101). Any object with `read_ledger()`/`write_ledger()`.
 static func set_store(store: RefCounted) -> void:
 	_store = store
+
+
+## Install the constructor that mints a claim's subject as a LIVE actor (ADR 0104).
+##
+## The seam `NpcApi.set_minter` already is, and for the same reason: a claim stores a
+## subject **def id** and never an `Actor`, so this module cannot build the body itself
+## without naming `ActorFactory` — which would be an `app` type inside a module. `app/`
+## passes `ActorFactory.spawn_npc`, whose signature
+## `(npc_def: NpcDef = null, role, rank_id, base)` takes the subject id first and defaults
+## the rest, so `subject` below calls it with one argument.
+##
+## ## A null injection refuses, it does not dereference nothing
+##
+## With nothing installed `subject` returns null rather than raising, so an unwired
+## process reads a captive as "no body available" — the same loud-by-default rule ADR 0002
+## sets for every other injected seam in this program.
+static func set_minter(minter: Callable) -> void:
+	_minter = minter
+
+
+## Whether a constructor is installed, so a caller can say "no claim" and "no constructor"
+## as two different messages rather than one null.
+static func has_minter() -> bool:
+	return _minter.is_valid()
+
+
+## The live `Actor` behind `claim_id`'s subject, or `null`.
+##
+## ## Minted on demand, never stored
+##
+## The claim names a DEF ID. Reading the subject means asking the injected constructor for
+## a body **now** — the ledger is untouched, no row is written, and `NpcPresence` is never
+## consulted, because presence is the `npc` module's read model and custody is a ledger row
+## it may read (ADR 0104). That is why this is safe to call every frame from a screen: it
+## resolves nothing and stores nothing.
+##
+## Returns `null` — never a partially built actor — when the claim is unknown, when it has
+## been RELEASED (a released claim names a subject nobody holds any more, and minting that
+## body would put a free prisoner back on the map), or when no minter is installed.
+static func subject(claim_id: StringName) -> Actor:
+	if not _minter.is_valid():
+		return null
+	var claim := CustodyState.claim(_state(null), claim_id)
+	if claim.is_empty():
+		return null
+	if String(claim.get("status", "")) != CustodyState.HELD:
+		return null
+	var subject_id := String(claim.get("subject_id", ""))
+	if subject_id == "":
+		return null
+	# Explicitly typed, not `:=`: a `Callable.call` returns a `Variant`, and inferring
+	# from one is a warning-as-error in this repo.
+	var minted: Variant = _minter.call(StringName(subject_id))
+	return minted as Actor if minted is Actor else null
 
 
 ## Take custody of `subject_id` for `holder`, on an authored `term_id` owed for `periods`.

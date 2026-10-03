@@ -17,4 +17,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:staff_starfall_recipe"])
+sources = Array[StringName]([&"craft:staff_starfall_recipe", &"domain:mind_spirit_sea_trial"])

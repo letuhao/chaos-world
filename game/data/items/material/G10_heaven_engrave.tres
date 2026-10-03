@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"bone"
 grade = &"heaven"
-sources = Array[StringName]([&"craft:G10_heaven_engrave_recipe"])
+sources = Array[StringName]([&"craft:G10_heaven_engrave_recipe", &"domain:amulet_void_serpent_domain"])

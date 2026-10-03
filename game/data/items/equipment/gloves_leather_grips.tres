@@ -17,4 +17,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:gloves_leather_grips_recipe"])
+sources = Array[StringName]([&"craft:gloves_leather_grips_recipe", &"domain:tome_abyssal_serpent_domain"])

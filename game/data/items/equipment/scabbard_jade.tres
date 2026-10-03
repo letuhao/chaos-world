@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:scabbard_jade_recipe"])
+sources = Array[StringName]([&"craft:scabbard_jade_recipe", &"domain:artifact_iron_titan_domain"])

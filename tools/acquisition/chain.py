@@ -64,6 +64,15 @@ class Consumable:
     item_id: str
     recipe_id: str
     reagents: tuple[Reagent, ...]
+    bosses: tuple[str, ...] = ()
+    drop_only: bool = False
+    """Whether the recipe cannot close, so the item arrives as a drop or not at all.
+
+    A consumable that *is* craftable does not need its boss drop guaranteed: the
+    recipe is the route and the drop is a bonus, so judging the roll there would
+    demand a guarantee no ladder rung depends on. A drop-only one is judged,
+    because the roll is the only route and a miss is permanent (loot rule E2).
+    """
 
 
 @dataclass(frozen=True)
@@ -97,16 +106,25 @@ class Trial:
 
     @property
     def catalysts(self) -> dict[str, tuple[str, ...]]:
-        """boss id -> the reagent ids that boss must drop for this trial.
+        """boss id -> the ids that boss must drop for this trial.
 
-        A boss is a catalyst source only when some recipe input names it, so a
-        boss that merely shares a domain never lands here by accident.
+        Two sources, one answer. A boss is a catalyst source when some recipe
+        *reagent* names it, or when it drops one of the trial's **drop-only**
+        consumables — the 15 qi pills whose recipe input names a route no shipping
+        code implements (DEF-0188), which makes that boss's table the only way to
+        hold them. Reading only the reagents left every one of them rolled, and a
+        rolled catalyst on the only route is the permanent soft-lock this property
+        exists to prevent.
         """
         out: dict[str, list[str]] = {}
         for consumable in self.consumables:
             for reagent in consumable.reagents:
                 for boss_id in reagent.bosses:
                     out.setdefault(boss_id, []).append(reagent.item_id)
+            if not consumable.drop_only:
+                continue
+            for boss_id in consumable.bosses:
+                out.setdefault(boss_id, []).append(consumable.item_id)
         return {boss_id: tuple(sorted(set(ids))) for boss_id, ids in sorted(out.items())}
 
 
@@ -215,6 +233,7 @@ class Graph:
         self.root = root
         self.records, self.malformed = _load(root)
         self._authored_drops_cache: dict[str, set[str]] | None = None
+        self._delivers_cache: dict[str, bool] = {}
         self.items = self.records.get("item", {})
         self.recipes = self.records.get("recipe", {})
         self.bosses = self.records.get("boss", {})
@@ -385,8 +404,81 @@ class Graph:
                 Reagent(reagent_id, self._bosses_of(reagent_id))
                 for reagent_id in self._reagents(recipe_id)
             )
-            out.append(Consumable(role, item_id, recipe_id, reagents))
+            out.append(
+                Consumable(
+                    role,
+                    item_id,
+                    recipe_id,
+                    reagents,
+                    bosses=self._bosses_of(item_id),
+                    drop_only=bool(item_id) and not self.delivers(item_id),
+                )
+            )
         return tuple(out)
+
+    # --- can shipping code hand this item over at all
+
+    def delivers(self, item_id: str, depth: int = 0, chain: tuple[str, ...] = ()) -> bool:
+        """Whether any *shipped* route of `item_id` can actually close.
+
+        The mirror of the GDScript acquisition suite's `_blocker`, and it answers
+        one narrower question: not "is every route refused" but "does at least one
+        route work". A `boss:` route closes once `LootApi.enter_domain` can spawn
+        the boss with a table bound on every band; a `domain:` route closes once
+        some boss of that domain carries it on a band; a `craft:` route closes once
+        every input closes. `gather`, `quest:` and `starter` are `ItemSources`' own
+        unshipped kinds, so they never close anything here.
+
+        Bounded by [constant MAX_ROUTE_DEPTH] and by `chain`, which carries the ids
+        already walked: a recipe that names its own ancestor must terminate rather
+        than recurse until the machine runs out of stack.
+        """
+        if depth > MAX_ROUTE_DEPTH or item_id in chain:
+            return False
+        cached = self._delivers_cache.get(item_id)
+        if cached is not None:
+            return cached
+        inner = (*chain, item_id)
+        found = False
+        for source in self.item_sources(item_id):
+            kind, _, ref = source.partition(":")
+            if kind == "boss" and self._boss_delivers(ref, item_id):
+                found = True
+            elif kind == "domain" and self._domain_delivers(ref, item_id):
+                found = True
+            elif kind == "craft" and self._recipe_delivers(ref, inner, depth):
+                found = True
+            if found:
+                break
+        self._delivers_cache[item_id] = found
+        return found
+
+    def _recipe_delivers(self, recipe_id: str, chain: tuple[str, ...], depth: int) -> bool:
+        if not recipe_id or recipe_id not in self.recipes:
+            return False
+        inputs = self._reagents(recipe_id)
+        return bool(inputs) and all(self.delivers(item_id, depth + 1, chain) for item_id in inputs)
+
+    def _boss_delivers(self, boss_id: str, item_id: str) -> bool:
+        encounter = self.encounter_hosting(boss_id)
+        if encounter is None or boss_id not in encounter.boss_ids:
+            return False
+        return all(
+            (table_id := self.table_for(encounter, tier, boss_id))
+            and item_id in self.reachable(table_id)
+            for tier in encounter.tiers
+        )
+
+    def _domain_delivers(self, domain_id: str, item_id: str) -> bool:
+        encounter = self.encounter_for_domain(domain_id)
+        if encounter is None:
+            return False
+        return any(
+            item_id in self.reachable(table_id)
+            for tier in encounter.tiers
+            for boss_id in encounter.boss_ids
+            if (table_id := self.table_for(tier=tier, encounter=encounter, boss_id=boss_id))
+        )
 
     # --- the world domains
 

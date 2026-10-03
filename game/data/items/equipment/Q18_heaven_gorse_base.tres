@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:Q18_heaven_gorse_base_recipe", &"quest:Q18_heaven_gorse_line"])
+sources = Array[StringName]([&"craft:Q18_heaven_gorse_base_recipe", &"quest:Q18_heaven_gorse_line", &"domain:artifact_void_leviathan_domain"])

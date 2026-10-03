@@ -19,5 +19,5 @@ roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"earth"
 tags = Array[StringName]([&"rare"])
-sources = Array[StringName]([&"craft:scroll_moon_recipe"])
+sources = Array[StringName]([&"craft:scroll_moon_recipe", &"domain:artifact_storm_phoenix_domain"])
 description = "A scroll glowing with lunar essence. Earth-grade with moon affinity."

@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"instrument"
 grade = &"mortal"
-sources = Array[StringName]([&"quest:instrument_of_mortal"])
+sources = Array[StringName]([&"quest:instrument_of_mortal", &"domain:body_spirit_sovereign_trial"])

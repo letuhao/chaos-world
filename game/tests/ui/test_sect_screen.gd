@@ -391,12 +391,23 @@ func test_the_claim_row_formats_the_standing_and_the_screen_does_not() -> void:
 func test_the_claim_row_shows_the_duties_the_office_authored() -> void:
 	# A position is a duty, not a level (ADR 0083), so a claim that names an office
 	# names what the office obliges — in the AUTHOR'S ids, never reworded.
+	#
+	# The ids are compared as `String`, not as `StringName`. The authored seed holds
+	# `Array[StringName]` and `summary()` is primitives-only (AGENTS.md, UI
+	# standard), so the screen reports the same characters with the primitive type
+	# the contract names. Comparing the StringName array directly would be asserting
+	# that a UI summary carries an engine type, which is the thing the contract
+	# forbids — "verbatim" is about the TEXT, and this still fails if a single id is
+	# reworded, re-cased or dropped.
 	var actor := _sworn()
 	var offices: Dictionary = SectApi.summary(actor)["can_promote"]
 	var bulwark: Dictionary = offices["bulwark"]
-	var duties: Array = (
+	var authored: Array = (
 		SectCatalog.instance().sect_definition(IRON_VINE).position(&"bulwark").duties
 	)
+	var duties: Array = []
+	for duty in authored:
+		duties.append(String(duty))
 	var screen := _screen()
 	screen.setup(actor)
 	var reported: Array = screen.summary()["duties"] as Array

@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:H9_heaven_spirit_lamp_recipe"])
+sources = Array[StringName]([&"craft:H9_heaven_spirit_lamp_recipe", &"domain:elemental_immortal_domain"])

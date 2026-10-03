@@ -54,18 +54,27 @@ static var _defs: Dictionary = {}
 
 ## The work one `cultivate` call must do to earn a realm's whole entry gate: its
 ## progress budget, or the insight that budget's comprehension floor needs.
-## Insight is `MindTraining.INSIGHT_RATE` per unit of work and nothing else on
-## this path raises comprehension, so from R2 on comprehension is the binding
-## side and the two never coincide by accident.
+##
+## Insight is `INSIGHT_RATE` per unit of work TIMES core's `Stat.INSIGHT_GAIN`
+## (BL-0165), and `INSIGHT_GAIN` is `1.0 + comprehension * 0.01` — so the real
+## rate rises as the floor is approached. This deliberately prices the insight
+## side with the FLOOR term alone, which is `INSIGHT_GAIN == 1.0`: an UPPER bound
+## on the work the floor needs. Over-earning is safe for a fixture (the gate is
+## met sooner than the estimate says) whereas under-earning is what produced an
+## unreachable-gate report, so the bound is taken in the one direction that cannot
+## hide a stall. It is also what makes BL-0153 measurable rather than asserted: the
+## two terms are compared in the same units here, and
+## `test_mind_gate_binding.gd` re-measures the crossover through the production
+## action instead of trusting this estimate.
 static func gate_work(target_seed: MindRealmSeed) -> float:
 	# Both sides of the gate are denominated in REALM RATE, not in the work one
-	# `cultivate` call is handed: `gain = amount * MindRealmProfile.factor(rank)`.
+	# `cultivate` call is handed: `gain = amount * RealmRate.factor(rank)`.
 	# A sitting sized to the raw budget therefore under- or over-ears by the rate,
 	# which is how this fixture ended up reporting a progress shortfall on a gate
 	# that is in fact reachable — the standing guard treats that as unreachable.
 	# `NEUTRAL` is the documented 1.0 for a realm off the ladder, so this never
 	# divides by zero and never invents a rate the module does not publish.
-	var rate := MindRealmProfile.factor(target_seed.id)
+	var rate := RealmRate.factor(target_seed.id)
 	return maxf(
 		target_seed.progress_required / rate,
 		target_seed.comprehension_required / (MindTraining.INSIGHT_RATE * rate)
@@ -349,3 +358,41 @@ static func strengthen_anchor(actor: Actor) -> void:
 
 static func realm_at(index: int) -> RealmDef:
 	return RealmDefaults.ladder().realms()[index]
+
+
+# --- Reading the module's own source -----------------------------------------
+
+
+## One module file's CODE, with every whole-line `#` comment removed.
+##
+## The guards that read source look for a declaration or an emitted id, and a
+## docblock explaining WHY an id was deleted necessarily spells that id out. A raw
+## `contains()` is then failed by the very comment documenting the fix, which is
+## how a guard gets deleted instead of the code. Stripping comment lines keeps the
+## guard pointed at code, which is what it is for. Comment TAILS on a code line
+## are left alone: they can hide a re-planted id, and none of this module's own
+## code carries one.
+static func module_code(relative_path: String) -> String:
+	var source := FileAccess.get_file_as_string(
+		"res://src/modules/mind_cultivation/%s" % relative_path
+	)
+	var kept: Array[String] = []
+	for line in source.split("\n"):
+		if not String(line).strip_edges().begins_with("#"):
+			kept.append(String(line))
+	return "\n".join(kept)
+
+
+## The whole module's CODE, every `.gd` file concatenated with comments stripped.
+## Per-directory rather than per-file so a deleted id cannot be re-planted in a new
+## file beside the one it was removed from.
+static func module_code_all() -> String:
+	var joined := ""
+	var dir := DirAccess.open("res://src/modules/mind_cultivation")
+	if dir == null:
+		return joined
+	for file_name in dir.get_files():
+		var file := String(file_name)
+		if file.ends_with(".gd"):
+			joined += module_code(file)
+	return joined

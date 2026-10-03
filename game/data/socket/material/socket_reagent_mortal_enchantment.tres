@@ -16,6 +16,6 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"essence"
 stackable = true
 grade = &"mortal"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"domain:elemental_heaven_domain"])
 tags = Array[StringName]([&"enchantment_reagent"])
 description = "Consumed to apply or replace the enchantment channel on an owned item."

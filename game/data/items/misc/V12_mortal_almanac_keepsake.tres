@@ -11,8 +11,9 @@ rarity = &"common"
 realm = &"body_integration"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"charm"
 grade = &"mortal"
-sources = Array[StringName]([&"gather", &"quest:A33_route"])
+sources = Array[StringName]([&"gather", &"quest:A33_route", &"domain:puppet_ash_effigy_domain"])

@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"craft:H7_immortal_fortune_coinpurse_recipe"])
+sources = Array[StringName]([&"craft:H7_immortal_fortune_coinpurse_recipe", &"domain:succubus_mortal_domain"])

@@ -17,5 +17,5 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:mask_night_shroud_recipe"])
+sources = Array[StringName]([&"craft:mask_night_shroud_recipe", &"domain:tome_cinder_tiger_domain"])
 

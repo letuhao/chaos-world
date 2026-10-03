@@ -11,8 +11,9 @@ rarity = &"legendary"
 realm = &"immortal_sovereign"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 18.15},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"talisman"
 grade = &"immortal"
-sources = Array[StringName]([&"quest"])
+sources = Array[StringName]([&"quest", &"domain:relic_stone_colossus_domain"])

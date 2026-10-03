@@ -17,4 +17,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:accessory_moonstone_amulet_recipe"])
+sources = Array[StringName]([&"craft:accessory_moonstone_amulet_recipe", &"domain:mind_dao_ancestor_trial"])

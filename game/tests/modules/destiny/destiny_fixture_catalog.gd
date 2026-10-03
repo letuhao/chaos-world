@@ -7,13 +7,18 @@ extends RefCounted
 ## tests install their own catalog for the duration of a test instead of
 ## depending on which `.tres` files happen to exist.
 ##
-## The fixtures use a reserved `t_` id prefix so they can never collide with a
-## real authored fate or destiny, and `teardown()` restores whatever catalog the
-## process held beforehand — including the case where it held none.
+## Nothing in the repository reserves the `t_` id prefix these fixtures use — the
+## isolation does not come from the prefix. It comes from `install()` REPLACING the
+## `FateCatalog.shared` singleton wholesale: the fixture catalog is the only
+## catalog the module can see for the span of the test, so a fixture id that also
+## exists in `res://data/destiny/` is simply shadowed rather than merged. The
+## prefix is kept only because a fixture id is easy to recognise when it shows up
+## in a failure message.
 ##
-## Nothing here is a production path: `FateCatalog.shared` is swapped only for the
-## span of one test, and a test that forgets to restore cannot affect its
-## siblings because they install their own.
+## `teardown()` restores whatever catalog the process held beforehand — including
+## the case where it held none, because `FateCatalog.instance()` lazily rebuilds
+## the real one from `shared == null`. A test that forgets to restore cannot
+## affect its siblings: every one of them installs its own catalog in `setup()`.
 
 
 ## A fate that grants a flat stat bonus under a real `Stat` id.
@@ -41,6 +46,21 @@ static func story_fate(fate_id: StringName) -> FateDef:
 	def.tier = 1
 	def.visibility = FateDef.HIDDEN
 	def.teaser = "Something happened once."
+	def.tags = [&"fixture"]
+	return def
+
+
+## A fate that is omitted from the codex entirely — `teaser` visibility, the
+## strictest of the three. Not even earning it puts it in the summary.
+static func silent_fate(fate_id: StringName) -> FateDef:
+	var def := FateDef.new()
+	def.id = fate_id
+	def.display_name = String(fate_id)
+	def.description = "A fixture fate nobody is meant to know exists."
+	def.category = &"fixture"
+	def.tier = 1
+	def.visibility = FateDef.TEASER
+	def.teaser = ""
 	def.tags = [&"fixture"]
 	return def
 

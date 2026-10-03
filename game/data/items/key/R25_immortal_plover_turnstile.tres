@@ -11,8 +11,9 @@ rarity = &"legendary"
 realm = &"dao_fruit"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 18.06},
+	{"option_id": &"trade_value", "value": 12},
 ])
 roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"immortal"
-sources = Array[StringName]([&"gather", &"quest:W24_route"])
+sources = Array[StringName]([&"gather", &"quest:W24_route", &"domain:qi_dao_ancestor_trial"])

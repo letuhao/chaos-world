@@ -17,6 +17,6 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"gem"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"gather"])
+sources = Array[StringName]([&"gather", &"domain:flame_valley"])
 tags = Array[StringName]([&"socket_item", &"socket_kind:utility"])
 description = "Socket item. Utility rune; while its host is worn it adds qi and stamina capacity."

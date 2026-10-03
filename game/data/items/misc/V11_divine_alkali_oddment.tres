@@ -11,8 +11,9 @@ rarity = &"legendary"
 realm = &"transcendent"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 35.62},
+	{"option_id": &"trade_value", "value": 18},
 ])
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"curio"
 grade = &"divine"
-sources = Array[StringName]([&"gather", &"quest:W28_route"])
+sources = Array[StringName]([&"gather", &"quest:W28_route", &"domain:mind_spirit_severing_trial"])

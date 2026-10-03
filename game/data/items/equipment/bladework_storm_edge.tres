@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"gather", &"quest:W23_route"])
+sources = Array[StringName]([&"gather", &"quest:W23_route", &"domain:marine_frost_mantaray_domain"])

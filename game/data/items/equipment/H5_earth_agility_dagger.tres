@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:H5_earth_agility_dagger_recipe"])
+sources = Array[StringName]([&"craft:H5_earth_agility_dagger_recipe", &"domain:marine_coral_leviathan_domain"])

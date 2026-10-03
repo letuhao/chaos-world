@@ -32,6 +32,22 @@ const UPKEEP_COMPONENT := &"technique_upkeep"
 ## `TechniqueUpkeep` is — as a component, named here. See `technique_casting.gd`.
 const CASTING_COMPONENT := &"technique_casting"
 
+## The DELIVERY seam: how a `category = &"technique"` item becomes a `CodexEntry`
+## (ADR 0053, DEF-0151). NOT a facade method either, for the same reason: the cap
+## is 12 and this module publishes 12.
+##
+## It is a named constant rather than a component because it is not per-actor state
+## — it is a process-wide binding the composition root installs, exactly the shape
+## `NpcApi.set_minter` and `CustodyApi.set_resolver` already use. `app/` binds it
+## once and `items` calls `TechniqueDelivery.study`; neither `items` nor `app/` can
+## reach it through this file, and that is deliberate: the seam is one-way.
+##
+## ```
+## # app/, at boot:
+## TechniqueDelivery.install(Callable(TechniqueDelivery, "bind_learner"))
+## ```
+const DELIVERY := &"technique_delivery"
+
 const STATE_KEY := &"technique_state"
 
 ## Published so a panel reports the module's numbers instead of hardcoding its own
@@ -46,17 +62,24 @@ const MAX_MASTERY_RUNGS := TechniqueScales.MAX_RUNGS
 ## tracker and a casting table, then adopt whatever state a prior
 ## `Actor.from_dict` carried. Idempotent and safe after a load — the restored
 ## snapshot is the starting state, not a second copy of it.
+##
+## The codex and the slot table share ONE payload under `STATE_KEY`, because a save
+## that kept the techniques but dropped the bindings would restore an empty loadout
+## over a full codex (DEF-0154). `TechniqueCodex` owns the key and `TechniqueSlots`
+## contributes its `bindings` section, so neither half can be written without the
+## other being carried.
 static func attach(actor: Actor) -> void:
 	if actor == null or actor.component(CODEX_COMPONENT) is TechniqueCodex:
 		return
-	var codex := TechniqueCodex.new(actor.get_module_data(STATE_KEY))
+	var stored: Dictionary = actor.get_module_data(STATE_KEY)
+	var codex := TechniqueCodex.new(stored)
 	actor.set_component(CODEX_COMPONENT, codex)
-	actor.set_component(SLOTS_COMPONENT, TechniqueSlots.new())
+	actor.set_component(SLOTS_COMPONENT, TechniqueSlots.new(stored))
 	actor.set_component(UPKEEP_COMPONENT, TechniqueUpkeep.new())
 	actor.set_component(
 		CASTING_COMPONENT, TechniqueCasting.new(actor.get_module_data(TechniqueCasting.STATE_KEY))
 	)
-	actor.set_module_data(STATE_KEY, codex.to_dict())
+	_commit(actor)
 
 
 ## The actor's codex, attached on demand.
@@ -102,6 +125,7 @@ static func equip(actor: Actor, def_or_id) -> Dictionary:
 	# first, and the rebuild below is remove-all-then-re-add, so one technique can
 	# never hold its own modifiers twice.
 	slots(actor).bind(def.id, claim)
+	_commit(actor)
 	rebuild(actor)
 	return {"ok": true, "id": String(def.id), "slots": _strings(claim)}
 
@@ -120,6 +144,11 @@ static func unequip(actor: Actor, def_or_id) -> Dictionary:
 	# a stale refusal.
 	_upkeep(actor).forget(def.id)
 	TechniqueEffects.clear(actor, def.id)
+	# The contribution is gone, so nothing can be left behind: drop the applied
+	# record too, or a later rebuild would sweep for a technique that no longer
+	# contributes and grow its sweep list without bound.
+	slots(actor).forget_applied(def.id)
+	_commit(actor)
 	return {"ok": true, "id": String(def.id)}
 
 
@@ -131,7 +160,8 @@ static func unequip(actor: Actor, def_or_id) -> Dictionary:
 static func rebuild(actor: Actor) -> Dictionary:
 	if actor == null:
 		return {}
-	var equipped_ids := slots(actor).equipped(_tier(actor))
+	var table := slots(actor)
+	var equipped_ids := table.equipped(_tier(actor))
 	var applied := 0
 	for technique_id in equipped_ids:
 		var effects := _contribution(actor, technique_id)
@@ -139,6 +169,16 @@ static func rebuild(actor: Actor) -> Dictionary:
 		applied += (
 			TechniqueEffects.modifiers_of(effects, TechniqueEffects.source_for(technique_id)).size()
 		)
+	# Clear anything this module applied that is NO LONGER bound. Without this, a
+	# contribution outlives its binding whenever the binding leaves the table
+	# without passing through `unequip` — an unequip during a domain change, or a
+	# save restored with fewer bindings than the actor was running with. Nothing
+	# else in the module can find those sources, because the source tag is namespaced
+	# per technique and `ActorStats` only removes a source it is told the name of
+	# (DEF-0152).
+	for technique_id in table.applied_ids():
+		if not equipped_ids.has(technique_id):
+			TechniqueEffects.clear(actor, technique_id)
 	actor.mark_stats_dirty()
 	return {"applied": applied, "equipped": equipped_ids.size()}
 
@@ -147,10 +187,23 @@ static func rebuild(actor: Actor) -> Dictionary:
 ## changed state. A technique that cannot pay is SUSPENDED: still equipped,
 ## contributing nothing, and never unequipped — so spending in combat can never
 ## strip a loadout, and an unaffordable upkeep never blocks an equip.
-static func settle_upkeep(actor: Actor) -> Array[StringName]:
+##
+## `settle` charges IMMEDIATELY. A caller that drives it per frame would drain a
+## pool sixty times a second, so the frame caller uses `tick` instead, which
+## accumulates the delta and settles only when an authored interval has elapsed.
+## `delta` is OPTIONAL and that is the whole point: a frame caller passes it and gets
+## interval-accurate settlement, while a caller that wants to settle right now — a
+## test, or a domain change — omits it and pays immediately. Both are real uses, so
+## neither is the default and the facade does not grow a second method for the other
+## (it is at the 12 cap).
+static func settle_upkeep(actor: Actor, delta: float = -1.0) -> Array[StringName]:
 	if actor == null:
 		return []
-	var changed := _upkeep(actor).settle(actor, slots(actor).equipped(_tier(actor)))
+	var equipped := slots(actor).equipped(_tier(actor))
+	var upkeep := _upkeep(actor)
+	var changed := (
+		upkeep.settle(actor, equipped) if delta < 0.0 else upkeep.advance(actor, delta, equipped)
+	)
 	if not changed.is_empty():
 		rebuild(actor)
 	return changed
@@ -253,8 +306,17 @@ static func _contribution(actor: Actor, technique_id: StringName) -> Array[Dicti
 	return def.effects() if entry == null else entry.effects_for(def)
 
 
+## Write the whole module's snapshot: the codex rows AND the slot bindings, under
+## one key. Persisting only the codex is what made a reload drop the whole loadout
+## (DEF-0154), so both halves are written together and neither can be forgotten.
 static func _commit(actor: Actor) -> void:
-	codex(actor).commit(actor)
+	if actor == null:
+		return
+	var payload := codex(actor).to_dict()
+	var slot_snapshot := slots(actor).to_dict()
+	payload["bindings"] = slot_snapshot.get("bindings", [])
+	payload["applied"] = slot_snapshot.get("applied", [])
+	actor.set_module_data(STATE_KEY, payload)
 
 
 static func _upkeep(actor: Actor) -> TechniqueUpkeep:

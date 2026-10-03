@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:J10_spirit_scale_anointed_recipe"])
+sources = Array[StringName]([&"craft:J10_spirit_scale_anointed_recipe", &"domain:mind_primordial_origin_trial"])

@@ -68,9 +68,14 @@ new stat pipeline, a save field, or a new kind of equipped slot.
   rather than re-evaluating them, so there is exactly one fate evaluator in the repo.
 - A consume/clear fate affordance is refused by this ADR and is recorded as
   deferred, so a future agent finds the decision instead of re-litigating it.
-- What ships and is verifiable today: the ledger, the six gate verbs, the earned
-  bonuses, the codex screen, and 17 fates with 5 destinies behind them.
-- **Remaining seams.** `quest` calls `DestinyApi` but does not declare `destiny` in
+- What ships and is verifiable today: the ledger, the gate evaluator, the codex screen,
+  and 17 fates with 5 destinies behind them. **The earned bonuses are NOT verifiable
+  today** — an earlier draft of this line claimed they were, and that was wrong. No
+  player can earn anything: `QuestApi.accept` and `EventApi.set_location` have no
+  production caller, so no quest is ever accepted and no event ever opens (DEF-0183).
+  The earn and grant paths themselves are sound and tested; they have nothing to fire
+  from. **Remaining seams.** `quest` calls `DestinyApi` but does not declare `destiny` in
   `tools/arch/registry.json`, and `BARE_REF_UNITS` excludes `modules/*` so the arch
-  gate cannot see the edge; and `FateDef.counters` is authored but never read back.
-  Both are recorded in `docs/deferred.jsonl`.
+  gate cannot see the edge; and `FateDef.counters` is authored but never read back,
+  nor written — no `DestinyApi.record()` call site exists, so the `counter` verb has zero
+  authored content and every counter gate is vacuous (DEF-0121, DEF-0181).

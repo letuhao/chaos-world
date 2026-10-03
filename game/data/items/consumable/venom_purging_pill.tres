@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
 grade = &"earth"
-sources = Array[StringName]([&"craft:venom_purging_pill_recipe"])
+sources = Array[StringName]([&"craft:venom_purging_pill_recipe", &"domain:treasure_iron_sage_domain"])

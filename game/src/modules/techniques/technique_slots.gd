@@ -26,6 +26,11 @@ extends RefCounted
 
 signal changed
 
+## The persisted snapshot version. A binding is a plain `{slot_key, id}` pair —
+## no authored definition travels with it (ADR 0056), so a designer retuning a
+## technique cannot rewrite an existing save.
+const VERSION := 1
+
 ## The universal pool's name. Every SHARED technique draws from it, and it is
 ## the only kind of slot a SHARED technique may take. It is a POOL, not a key:
 ## a key is `slot_key(UNIVERSAL, index)`.
@@ -36,6 +41,52 @@ const SLOT_PATH := &"slot_path"
 ## e.g. `slot_path_qi_cultivation0`; how many of each exist is the tier's budget,
 ## never this table.
 var _slots: Dictionary = {}
+
+## Every technique id this table has EVER had bound, whether or not it is bound now.
+##
+## `rebuild` needs the difference between "is bound" and "was ever bound": a
+## contribution left behind by a binding that vanished without passing through
+## `unequip` has no other discoverable owner, because the modifier source tag is
+## namespaced per technique and `ActorStats` can only remove a source it is handed
+## the name of (DEF-0152). Tracked here rather than recomputed, because nothing
+## outside this module can enumerate the `technique:` prefix on `ActorStats`.
+var _applied: Array[StringName] = []
+
+
+## Restored bindings, `payload["bindings"]` as a list of `{"slot", "id"}` rows.
+##
+## WITHOUT this, every equipped binding is lost on a reload while the codex and the
+## cooldowns survive: the three states are meant to be equally persistent, and a
+## save that keeps the technique but drops the loadout quietly empties the build.
+func _init(payload: Dictionary = {}) -> void:
+	for row in payload.get("bindings", []):
+		if not row is Dictionary:
+			continue
+		var slot_key := StringName((row as Dictionary).get("slot", ""))
+		var technique_id := StringName((row as Dictionary).get("id", ""))
+		if slot_key == &"" or technique_id == &"":
+			continue
+		_slots[slot_key] = technique_id
+	for technique_id in payload.get("applied", []):
+		note_applied(StringName(technique_id))
+
+
+## The bindings as a versioned payload, safe to write into an actor's module data.
+##
+## The `applied` record travels with them: a loadout restored with fewer bindings than
+## the actor was running needs to know what to clear, and that list only exists here
+## (DEF-0152).
+func to_dict() -> Dictionary:
+	var bindings: Array = []
+	for slot_key in _slots:
+		bindings.append({"slot": String(slot_key), "id": String(_slots[slot_key])})
+	bindings.sort_custom(
+		func(a: Dictionary, b: Dictionary) -> bool: return String(a["slot"]) < String(b["slot"])
+	)
+	var applied: Array = []
+	for technique_id in _applied:
+		applied.append(String(technique_id))
+	return {"version": VERSION, "bindings": bindings, "applied": applied}
 
 
 ## Slot key for one path's slot 0. Most callers want an arbitrary free slot and
@@ -114,12 +165,31 @@ func is_equipped(technique_id: StringName) -> bool:
 	return _slots.values().has(technique_id)
 
 
-## Every equipped technique id, ordered by the slot keys tier `tier` publishes.
+## Record that `technique_id` was bound, so a later rebuild can find and clear it.
+func note_applied(technique_id: StringName) -> void:
+	if technique_id != &"" and not _applied.has(technique_id):
+		_applied.append(technique_id)
+
+
+## Forget a technique's applied record once nothing can be left behind for it.
+func forget_applied(technique_id: StringName) -> void:
+	_applied.erase(technique_id)
+
+
+## The applied record, for a rebuild sweep.
+func applied_ids() -> Array[StringName]:
+	return _applied.duplicate()
+
+
+## Every technique id that is actually bound, each ONCE, in tier key order
+## followed by anything bound outside it.
 ##
-## Each technique appears ONCE. A path-exclusive technique occupies one slot of
-## its path and `slot_keys` publishes several keys for that path, so walking the
-## keys and collecting ids would report a qi technique three times — and `rebuild`
-## would then apply its contribution once per slot rather than once per technique.
+## Walking only `slot_keys(tier)` looks equivalent but is not: a binding taken while
+## the actor was a higher tier (a universal slot, or any pool that later shrinks)
+## is absent from that list, so `rebuild` never visited it and its modifiers stayed
+## on the actor for good — the inverse of the suspension rule, which does have an
+## explicit clear path (DEF-0152). The tier decides ORDER and the budget for a NEW
+## claim; it does not decide what is already bound.
 func equipped(tier: int) -> Array[StringName]:
 	var out: Array[StringName] = []
 	var seen := {}
@@ -128,6 +198,13 @@ func equipped(tier: int) -> Array[StringName]:
 		# inferred straight into `:=` it is an untyped inference, which this
 		# project treats as an error.
 		var technique_id := StringName(_slots.get(slot_key, &""))
+		if technique_id != &"" and not seen.has(technique_id):
+			seen[technique_id] = true
+			out.append(technique_id)
+	# Anything bound outside the published keys: still equipped, still owing a
+	# rebuild, and still occupying a slot this tier no longer grants.
+	for slot_key in _slots:
+		var technique_id := StringName(_slots[slot_key])
 		if technique_id != &"" and not seen.has(technique_id):
 			seen[technique_id] = true
 			out.append(technique_id)
@@ -185,6 +262,7 @@ func bind(technique_id: StringName, slot_keys: Array[StringName]) -> bool:
 	unequip(technique_id)
 	for slot_key in slot_keys:
 		_slots[slot_key] = technique_id
+	note_applied(technique_id)
 	changed.emit()
 	return true
 

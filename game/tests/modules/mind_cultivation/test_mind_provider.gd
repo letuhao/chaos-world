@@ -8,6 +8,8 @@ extends TestCase
 ## `set_path` passes while proving nothing about the realm profile — that is
 ## exactly the trap `test_mind_power_curve.gd` now guards.
 
+const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
+
 ## Spirit tier, ladder position 11 (index 10; the Spirit tier starts at index 9).
 ## Mind's mental output takes the bounded per-realm rate, so `RANK`'s value comes
 ## from the profile class rather than from a literal.
@@ -26,7 +28,7 @@ const BASE_MENTAL_DEFENSE := 35.0
 ## shared ladder. Deriving it means a retune of the step lands here as a real
 ## failure.
 func _rate() -> float:
-	return MindRealmProfile.factor(RANK)
+	return RealmRate.factor(RANK)
 
 
 ## An actor with the module attached and NO path: the rate is neutral (1.0),
@@ -119,15 +121,35 @@ func test_spiritual_sense_range_grows_with_the_rate() -> void:
 	)
 
 
-func test_comprehension_bonus_base() -> void:
+## `comprehension_bonus` is DELETED (BL-0163) and this test now asserts why it
+## must not come back. It was `1.0 + comprehension * 0.01 + technique_factor *
+## 0.02` -- core's `Stat.INSIGHT_GAIN` term for comprehension gain, plus a second
+## realm-rate term on it -- and nothing read it. With `MindTraining._grant_insight`
+## now pricing the mind path's comprehension through `Stat.INSIGHT_GAIN`, keeping
+## it would have made one gate read two divergent multipliers: the ADR 0116
+## duplicate-rate failure, and the same shape ADR 0071 deleted for
+## `critical_chance`/`dodge_chance`.
+##
+## The second half is a source read because a numerically identical private copy
+## of a deleted rate is invisible to every value test: what has to be impossible
+## is the DECLARATION, not the arithmetic. `Probe.module_code` strips comment
+## lines so the docblock recording the deletion cannot fail its own guard.
+func test_the_module_publishes_no_comprehension_rate_of_its_own() -> void:
 	var actor := _actor_at_rank(RANK)
-	# 1.0 + 10 * 0.01 + T * 0.02
-	assert_almost_eq(
-		actor.stats.derived(MindStats.COMPREHENSION_BONUS),
-		1.1 + _rate() * 0.02,
-		"comprehension bonus",
-		0.0001
+	var emitted: Dictionary = MindProvider.new().contribute(actor.stats._context)
+	for key in emitted:
+		assert_eq(
+			String(key).contains("comprehension"),
+			false,
+			"the provider emits no comprehension dial (%s)" % String(key)
+		)
+	assert_eq(
+		Probe.module_code("stats.gd").contains("comprehension_bonus"),
+		false,
+		"and MindStats declares no comprehension_bonus id"
 	)
+	# The one rate that remains is core's, and it is the one the gate is read
+	# through -- asserted in test_mind_insight_rate.gd, behaviourally.
 
 
 func test_meridian_strengthening_boosts_technique_power() -> void:

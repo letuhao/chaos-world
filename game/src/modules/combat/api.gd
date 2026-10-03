@@ -76,6 +76,34 @@ static func resolve_share(
 	return CombatDamage.resolve_hit(offense, defense, rng)
 
 
+## One blow from `attacker` against `defender`, spent on the defender's own health pool.
+## See [method CombatDuelHit.resolve]: the encounter layer's one-partner exchange, priced
+## by the same [method CombatDamage.resolve_hit] a boss blow is.
+##
+## `seed_value` derives the blow's own stream, exactly as [method CombatExchange.exchange]
+## does for its roll, so `(seed, attacker, defender)` reproduces a blow instead of merely
+## producing one. Refused with a NAMED reason — `no_attacker`, `no_defender`, `same_actor`,
+## `defender_slain`, `no_health_pool` — never an exception.
+static func hit(attacker: Actor, defender: Actor, seed_value: int = 0) -> Dictionary:
+	# Guarded BEFORE the seed is derived, because the seed reads both actors' ids: a
+	# refusal that threw here would surface at a null argument rather than as the named
+	# refusal the caller is documented to get.
+	if attacker == null or defender == null:
+		return CombatDuelHit.resolve(attacker, defender, null)
+	# One stream per blow, salted with BOTH actors, so the same seed against the same pair
+	# is the same outcome and two different duellists are not handed the same roll.
+	var rng := RandomNumberGenerator.new()
+	rng.seed = (
+		(
+			seed_value * 2654435761
+			+ absi(hash(String(attacker.id)))
+			+ absi(hash(String(defender.id)))
+		)
+		& 0x7FFFFFFF
+	)
+	return CombatDuelHit.resolve(attacker, defender, rng)
+
+
 ## The player's own offensive numbers, as the bundle `resolve_share` reads. See
 ## [method CombatExchange.offense].
 static func offense(actor: Actor) -> Dictionary:

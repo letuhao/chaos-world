@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:K17_earth_silver_refined_recipe"])
+sources = Array[StringName]([&"craft:K17_earth_silver_refined_recipe", &"domain:totem_jade_serpent_domain"])

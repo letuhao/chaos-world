@@ -11,8 +11,9 @@ rarity = &"magic"
 realm = &"spirit_unity"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"craft_potency", "value": 6},
+	{"option_id": &"trade_value", "value": 18},
 ])
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"token"
 grade = &"spirit"
-sources = Array[StringName]([&"gather", &"quest:A33_route"])
+sources = Array[StringName]([&"gather", &"quest:A33_route", &"domain:mind_tribulation_trial"])

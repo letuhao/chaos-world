@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"mantra"
 grade = &"divine"
-sources = Array[StringName]([&"craft:B32_divine_champleve_base_recipe", &"quest:B32_divine_champleve_line"])
+sources = Array[StringName]([&"craft:B32_divine_champleve_base_recipe", &"quest:B32_divine_champleve_line", &"domain:body_great_ascension_trial"])

@@ -5,39 +5,100 @@ extends RefCounted
 ## non-equipment category so fixed and rolled options always have a real effect:
 ##   - consumable: one-shot resource restoration, never a permanent modifier
 ##   - technique: permanent base-attribute gains from studying the item
-##   - key/currency/quest/misc: craft-catalyst properties consumed by Crafting
-## Nothing applies merely because an item is held.
+##   - key/currency/quest/misc: craft-catalyst properties, READ by Crafting, loot
+##     and economy — never spent, so this module refuses to spend them either
+## Nothing applies merely because an item is held, and nothing is DESTROYED merely
+## because an item was pressed.
+##
+## ## The spend gate
+##
+## [method apply] is the one place an item can be destroyed, so it is the one place
+## that decides whether destroying it is honest. Two refusals live here and both are
+## named, because a refusal nobody can name is a bug report:
+##
+##   - `progression_input` — the item is a REQUIRED PROGRESSION INPUT
+##     ([ProgressionRoles]): a realm seed names it and the path is the only thing
+##     allowed to spend it. Use would apply a generic one-shot effect and delete the
+##     only copy of the price of an attempt (BL-0110).
+##   - `no_spend_consumer` — the item's channel has no consumer that spends it. The
+##     property channel is a READ channel: `key_reach` is read by loot, `trade_value`
+##     by economy, `craft_potency` by Crafting, and none of them spend the item. So
+##     "using" one destroyed a key, a coin or a quest item and changed nothing at all —
+##     the same destruction BL-0110 is about, on 900 more items, for less benefit.
+##
+## Everything below applies an EFFECT or refuses. There is no branch that returns
+## `ok` while applying nothing, which is what made both defects possible.
+
+## `def` names no definition, so there is nothing to apply.
+const REASON_UNKNOWN_DEFINITION := &"unknown_definition"
+## `def` is a required progression input; the path that names it spends it.
+const REASON_PROGRESSION_INPUT := &"progression_input"
+## `def`'s channel is read-only, so spending it would destroy it for no effect.
+const REASON_NO_SPEND_CONSUMER := &"no_spend_consumer"
+## `def` is spendable, but nothing it carries applies to this actor.
+const REASON_NO_EFFECT := &"no_applicable_effect"
+## `def`'s category has no Use verb at all — equipment and material.
+const REASON_NOT_USABLE := &"not_usable"
 
 
 ## Preview what using `instance` would do. Never consumes, never mutates, and
 ## never advances the roll stream, so UI can show outcomes before committing.
+##
+## `spendable` / `block_reason` / `role` are the gate's own answer rather than a
+## restatement of it, so a caller that wants to grey out a control and a caller
+## that presses it are told the same thing by the same code.
 static func preview(def: ItemDef, instance: ItemInstance) -> Dictionary:
 	var effects := ItemEffects.resolve(def, instance)
 	var restorations := ItemEffects.resource_restorations(effects)
 	var stat_gains := _base_gains(effects)
+	var gate := spend_gate(def, instance)
 	return {
 		"activation": def.activation(),
 		"restores": restorations,
 		"stat_gains": stat_gains,
 		"craft_potency": ItemEffects.property_value(effects, OptionTarget.CRAFT_POTENCY),
 		"lines": ItemEffects.describe(effects),
+		"spendable": gate.is_empty(),
+		"block_reason": String(gate.get("reason", "")),
+		"role": String(gate.get("role", "")),
 	}
 
 
 ## Apply `instance`'s activation to `actor` and return the outcome dictionary.
 ## The caller owns consumption; this never removes inventory on its own.
+##
+## Returns a refusal — never `ok` with nothing applied — when [method spend_gate]
+## refuses, and `ok` only when an effect actually landed on `actor`.
 static func apply(actor: Actor, def: ItemDef, instance: ItemInstance) -> Dictionary:
 	if def == null:
-		return {"ok": false, "reason": "unknown_definition"}
+		return {"ok": false, "reason": REASON_UNKNOWN_DEFINITION}
+	var gate := spend_gate(def, instance)
+	if not gate.is_empty():
+		return gate
 	match def.activation():
 		ItemActivation.CONSUMED:
 			return _apply_consumed(actor, def, instance)
 		ItemActivation.LEARNED:
 			return _apply_learned(actor, def, instance)
 		ItemActivation.PROPERTY:
-			return _apply_property(def, instance)
+			return _refuse_read_only(def, instance)
 		_:
-			return {"ok": false, "reason": "not_usable"}
+			return {"ok": false, "reason": REASON_NOT_USABLE}
+
+
+## Why `def` may not be spent from the inventory, or `{}` when it may.
+##
+## Asked BEFORE any effect is resolved, so a refused spend never even reads the
+## item's options — there is nothing to apply, so there is nothing to compute.
+static func spend_gate(def: ItemDef, instance: ItemInstance = null) -> Dictionary:
+	if def == null:
+		return {"ok": false, "reason": REASON_UNKNOWN_DEFINITION}
+	var role := ProgressionRoles.role_of(def.id)
+	if role != &"":
+		return {"ok": false, "reason": REASON_PROGRESSION_INPUT, "role": String(role)}
+	if def.activation() == ItemActivation.PROPERTY:
+		return _refuse_read_only(def, instance)
+	return {}
 
 
 static func _apply_consumed(actor: Actor, def: ItemDef, instance: ItemInstance) -> Dictionary:
@@ -51,36 +112,82 @@ static func _apply_consumed(actor: Actor, def: ItemDef, instance: ItemInstance) 
 		var delta := float(restorations[pool_id])
 		pool.change(delta)
 		applied[String(pool_id)] = delta
-	# A consumable's stat targets are cultivation seed, not a permanent buff:
-	# they are reported, never silently applied as a permanent modifier.
+	# A consumable's stat targets are cultivation seed, not a permanent buff: they
+	# are REPORTED, never applied as a permanent modifier (ADR 0001). So a
+	# consumable whose only content is a base attribute restores nothing and applies
+	# nothing -- and reporting `ok` there is BL-0110 one category over: the verb
+	# decrements the stack and the actor is identical afterwards. The gains ride along
+	# in the refusal so a caller can still show what the item carries.
 	var stat_gains := _base_gains(effects)
-	if applied.is_empty() and stat_gains.is_empty():
-		return {"ok": false, "reason": "no_applicable_effect"}
+	if applied.is_empty():
+		return {"ok": false, "reason": REASON_NO_EFFECT, "stat_gains": stat_gains}
 	actor.mark_stats_dirty()
 	return {"ok": true, "restores": applied, "stat_gains": stat_gains}
 
 
+## Study an item that is a technique MANUAL.
+##
+## A `category = &"technique"` item DELIVERS a technique (ADR 0053): the three
+## states have three owners, and this one is the item's. So a technique item goes
+## to the delivery seam, which the composition root binds — `app/` may depend on
+## anything by construction, whereas naming a techniques class from here would be
+## an UNDECLARED `items -> techniques` edge the checker cannot even see
+## (`BARE_REF_UNITS` excludes `modules/*`).
+##
+## The seam is reached WITHOUT naming its class, through a Callable the item use
+## path looks up once. `TechniqueDelivery` publishes `installed()`, which returns
+## that Callable (or an unbound one), so `items` holds a `Callable` and no
+## technique type. A build that never installed one refuses `no_seam` rather than
+## silently falling through to the old stat-stick behaviour.
 static func _apply_learned(actor: Actor, def: ItemDef, instance: ItemInstance) -> Dictionary:
+	if def.category == ItemCategory.TECHNIQUE:
+		return _study_technique(actor, def, instance)
 	var gains := _base_gains(ItemEffects.resolve(def, instance))
 	if gains.is_empty():
-		return {"ok": false, "reason": "no_applicable_effect"}
+		return {"ok": false, "reason": REASON_NO_EFFECT}
 	for stat_id in gains.keys():
 		var id := StringName(stat_id)
-		actor.stats.set_base(id, actor.stats.get_base(id) + float(gains[stat_id]))
+		actor.stats.set_base(id, actor.stats.get_base(id) + float(gains[id]))
 	actor.mark_stats_dirty()
 	return {"ok": true, "stat_gains": gains}
 
 
-static func _apply_property(def: ItemDef, instance: ItemInstance) -> Dictionary:
+## Hand a technique manual to the installed delivery seam.
+##
+## The seam is reached through `ProjectSettings`, which the composition root writes
+## at boot. That is a genuinely undeclared-by-type hop: this file names no technique
+## class, holds no `res://` path into the module, and so declares no dependency the
+## `tools/arch` registry has to record. `app/` may depend on anything by construction,
+## so it is the only place that can install one.
+static func _study_technique(actor: Actor, def: ItemDef, instance: ItemInstance) -> Dictionary:
+	if not ProjectSettings.has_setting(DELIVERY_SETTING):
+		return {"ok": false, "reason": "no_seam", "id": String(def.id)}
+	var seam: Variant = ProjectSettings.get_setting(DELIVERY_SETTING)
+	if not (seam is Object and (seam as Object).has_method(&"study")):
+		return {"ok": false, "reason": "no_seam", "id": String(def.id)}
+	return (seam as Object).call(&"study", actor, def, instance)
+
+
+## The `ProjectSettings` key `app/` writes the delivery seam under. A String, so
+## reading it costs nothing and a build with no seam reads as "unset" rather than
+## as a missing symbol.
+const DELIVERY_SETTING := "technique/delivery_seam"
+
+
+## Refuse a read-only channel. The numbers still ride along, because a caller
+## showing the item still wants them — what it must not do is charge the player a
+## key to display them.
+static func _refuse_read_only(def: ItemDef, instance: ItemInstance) -> Dictionary:
 	var values := properties(def, instance)
 	if values.is_empty():
-		return {"ok": false, "reason": "no_applicable_effect"}
-	return {"ok": true, "properties": values}
+		return {"ok": false, "reason": REASON_NO_EFFECT}
+	return {"ok": false, "reason": REASON_NO_SPEND_CONSUMER, "properties": values}
 
 
 ## Numeric item properties carried by `def`/`instance`. Read by Crafting for
-## potency/yield and by ItemsApi for key reach, quest potency and trade value,
-## so a property option is never decorative (ADR 0028).
+## potency/yield, by `loot` for key reach and by `economy` for trade value, so a
+## property option is never decorative (ADR 0028). Read, never spent: that is what
+## [method _refuse_read_only] refuses over.
 static func properties(def: ItemDef, instance: ItemInstance) -> Dictionary:
 	var effects := ItemEffects.resolve(def, instance)
 	var out := {}

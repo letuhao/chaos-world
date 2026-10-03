@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:I6_mortal_dross_primed_recipe"])
+sources = Array[StringName]([&"craft:I6_mortal_dross_primed_recipe", &"domain:loot_ember_vault_domain"])

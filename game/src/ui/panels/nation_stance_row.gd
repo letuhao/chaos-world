@@ -22,7 +22,7 @@ extends PanelContainer
 ## `summary()` is the testable surface.
 
 const UNKNOWN_TEXT := "stance unread"
-const PARTNER_PREFIX := "with"
+const PARTNER_SUFFIX := "in a stance"
 const IDENTITY_TEXT := "against"
 
 var _view: Dictionary = {}
@@ -148,13 +148,15 @@ func _head_tone() -> StringName:
 	return &"WarStanceLabel" if String(_view.get("verb", "")) == "war" else &"SeatLabel"
 
 
-## Both ids of the pair, in the order the canonical key stores them. Printing the
-## pair rather than "you vs them" is what keeps this row symmetric under a swapped
-## read.
+## Both ids of the pair, in the order the canonical key stores them, and the pair
+## LEADS the line. Printing the pair rather than "you vs them" is what keeps this row
+## symmetric under a swapped read; leading with it rather than prefixing it with a
+## connective is what makes that symmetry readable, because a reader who lands on
+## this line sees two polities of equal standing rather than a narrator and an other.
 func _partner_text() -> String:
 	return (
-		"%s %s and %s"
-		% [PARTNER_PREFIX, String(_view.get("a_id", "")), String(_view.get("b_id", ""))]
+		"%s and %s %s"
+		% [String(_view.get("a_id", "")), String(_view.get("b_id", "")), PARTNER_SUFFIX]
 	)
 
 
