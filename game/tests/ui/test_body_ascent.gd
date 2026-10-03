@@ -300,7 +300,7 @@ func test_the_outstanding_wording_is_cores_own_verbatim() -> void:
 
 
 ## `WorldAnchor.NO_ASCENT` is core declining to state a requirement, not a
-## requirement. Driven at `realm:transcendent` + `commit:28` the row printed it as
+## requirement. Driven at `realm:transcendent` + `commit:27` the row printed it as
 ## its label, with `required: true`, `offered: false` and a `0/4` bar beside it — so
 ## the player was shown an ascent that did not exist yet and a control they could
 ## not press. The guard used to suppress the sentinel only below the Transcendent

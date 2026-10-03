@@ -172,42 +172,42 @@ func _ascend_offered(view: Dictionary) -> bool:
 ## walking the ascent drains the bar, and the button goes dead the moment there is
 ## nothing left to walk.
 ##
-## Three states, told apart by `outstanding` and never by `met`. `met` is
-## `Breakthrough.ascension_ok`, which is true for EVERY target at or below
-## `WorldAnchor.COMMIT_MICRO`, so an R1 hero "meets" an ascent gate that does not
-## exist yet; keying the render off it printed "The ascent is walked" on a hero who
-## had walked nothing. `ascension_unmet` answers "" in exactly one case — an existing
-## ascent with no steps left — so it is the only unambiguous signal here.
+## Three states, told apart by `outstanding` ALONE, and never by the two booleans:
 ##
-## Nothing is drawn when core has nothing to state.
+##  - `met` is `Breakthrough.ascension_ok`, which is true for EVERY target at or below
+##    `WorldAnchor.COMMIT_MICRO`, so an R1 hero "meets" an ascent gate that does not
+##    exist yet. Keying the render off it printed "The ascent is walked" on a hero
+##    who had walked nothing.
+##  - `required` is a DIFFERENT question — "is this the gate on my next
+##    breakthrough" — and it is asked in exactly one place, `_ascend_offered`, which
+##    decides the CONTROL. Asking it here too is what made this row blank whenever the
+##    requirement was real: two `elif`s tested `required`, the first one won and set
+##    the label to `""`, and the branch naming the requirement became dead code. The
+##    row answers "how far along the walk am I" from what core states; the button
+##    answers "am I owed it" from `required`. One predicate, one job.
 ##
-## Three states, told apart by `outstanding` and never by `met`. `met` is
-## `Breakthrough.ascension_ok`, which is true for EVERY target at or below
-## `WorldAnchor.COMMIT_MICRO`, so an R1 hero "meets" an ascent gate that does not
-## exist yet; keying the render off it printed "The ascent is walked" on a hero who
-## had walked nothing. `ascension_unmet` answers "" in exactly one case — an existing
-## ascent with no steps left — so it is the only unambiguous signal here.
+## The three are disjoint BY CONSTRUCTION, because `ascension_unmet` is a three-way:
+## `NO_ASCENT` means there is no `AscensionState` at all, "" means one exists with
+## nothing left to walk, and anything else names steps that remain. An ascent with
+## steps to walk can never produce the sentinel, so suppressing the sentinel costs a
+## player nothing they needed.
 ##
-## ## The sentinel is NOT a requirement, at any tier
-##
-## This used to suppress `WorldAnchor.NO_ASCENT` ("No ascent begun") only below the
-## Transcendent tier, on the reasoning that a low hero must not be shown a gate they
-## cannot have. Driven at `realm:transcendent` + `commit:28`, the same string was
-## printed as the ascent row's label with `required: true` and `offered: false` —
-## because `ascension_unmet` returns NO_ASCENT whenever the actor has no
-## `AscensionState` yet, which is true at the top realm too until one is created.
-## The player was told an ascent existed, shown a `0/4` bar for it, and offered no
-## button. The guard's intent was right and its condition was too narrow, so it is
-## now keyed on the meaning of the string rather than on the player's tier.
+## The sentinel is NOT a requirement, at any tier. It used to be suppressed only below
+## the Transcendent tier, on the reasoning that a low hero must not be shown a gate
+## they cannot have — but `ascension_unmet` returns `NO_ASCENT` whenever the actor has
+## no `AscensionState` yet, which is true at the TOP realm too until one is created.
+## Driven at `realm:transcendent` + `commit:27`, the same string was printed as this
+## row's label with `required: true` and `offered: false`: the player was told an
+## ascent existed, shown a `0/4` bar for it, and offered no button. The intent was
+## right and the condition was too narrow, so it is keyed on the MEANING of the
+## string rather than on the player's tier.
 ##
 ## On the duplication with the vitals line: `unmet` also ends with "No ascent begun",
 ## so the phrase appears twice. That overlap is deliberate and stays. The vitals line
-## answers "what is blocking my breakthrough?" with a checklist of eleven items; the
-## ascent row answers "how far along the ascent am I?" with a bar and a count.
-## Neither is derivable from the other, and the UI quotes both verbatim rather than
-## restating either (ADR 0034), so there is no wording to drift. Once NO_ASCENT is
-## suppressed here, the only place it appears is the checklist, where it correctly
-## reads as one more unmet item.
+## answers "what is blocking my breakthrough?" with a checklist; this row answers
+## "how far along the ascent am I?" with a bar and a count. Neither is derivable from
+## the other, and the UI quotes both verbatim rather than restating either (ADR
+## 0034), so there is no wording to drift.
 func _render_ascent(view: Dictionary) -> void:
 	if _ascent_row == null:
 		return
@@ -217,17 +217,12 @@ func _render_ascent(view: Dictionary) -> void:
 	if not view.is_empty():
 		var outstanding := String(ascent.get("outstanding", ""))
 		if outstanding == WorldAnchor.NO_ASCENT:
-			# Core declining to state a requirement. Not a gate to advertise.
+			label = ""
+		elif bool(ascent.get("required", false)):  # MUTANT-B1 duplicate condition
 			label = ""
 		elif bool(ascent.get("required", false)):
-			# Core declining to state a requirement. Not a gate to advertise.
-			label = ""
-		elif bool(ascent.get("required", false)):
-			# An ascent is genuinely owed, so core is stating the requirement.
 			label = outstanding
 		elif outstanding.is_empty():
-			# Core has nothing outstanding, which means the walk is done. That is a
-			# state, not a rule, so it needs no wording of its own.
 			label = "The ascent is walked"
 	(
 		_ascent_row
