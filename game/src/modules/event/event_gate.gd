@@ -143,8 +143,7 @@ static func _has_fact(actor: Actor, requirement: Dictionary) -> Dictionary:
 	if fact_id == &"":
 		return _refuse("malformed", "", "A fact requirement names no fact id.")
 	var need := maxi(1, int(requirement.get("need", 1)))
-	var ledger := EventFacts.ledger(actor)
-	var actual := EventFacts.count_of(ledger, fact_id)
+	var actual := EventFacts.count_of(actor, fact_id)
 	if actual >= need:
 		return _pass()
 	return {

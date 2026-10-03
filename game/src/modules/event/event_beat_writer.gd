@@ -12,15 +12,27 @@ extends RefCounted
 ## the caller that pulled the periods decide that, and this is the only path by which
 ## a fact the world gains becomes a count in a ledger.
 ##
-## ## Both ledgers are named by CONSTANT, never by reaching into a sibling
+## ## The fact ledger is `WorldFact`'s, and this file calls it
 ##
-## The fact ledger's key is ADR 0113's (`world_facts`, recorded in this module as
-## `EventFacts.MODULE_KEY`) and the npc roster's is `NpcState.MODULE_KEY`, read by
-## name rather than through `NpcApi`. `BARE_REF_UNITS` excludes `modules/*`, so a
-## bare `NpcState` reference here would report ZERO boundary violations and a cycle
-## written that way would be invisible to `_find_cycle` — the exact hazard ADR 0083
-## documents. A constant cannot hide an edge: it is one string, greppable, and it
-## has no type behind it for a cycle to travel through.
+## ADR 0113 places the ledger at `actor.module_data["world_facts"]` and
+## `core/world_fact.gd` owns it. **This writer records through `WorldFact.record`
+## and normalises nothing itself.** It used to carry its own `normalize` and its own
+## `record` over the same key, which meant an event beat silently rewrote every
+## other system's rows into `{id, count}` and dropped their `since` — the field
+## `WorldFact`'s "has this happened exactly once" gate reads. One writer, one key.
+## `core` is a declared dependency of `event` in `tools/arch/registry.json`, so the
+## edge is declared rather than inferred.
+##
+## ## The npc roster key is named by CONSTANT, never reached through a sibling
+##
+## The roster's key is `NpcState.MODULE_KEY`, read by name rather than through a
+## bare `NpcState` reference. `BARE_REF_UNITS` excludes `modules/*`, so a bare
+## `NpcState` here would report ZERO boundary violations and a cycle written that
+## way would be invisible to `_find_cycle` — the exact hazard ADR 0083 documents. A
+## constant cannot hide an edge: it is one string, greppable, and it has no type
+## behind it for a cycle to travel through. `WorldFact` is the opposite case and is
+## the right one: `core` is a layer every module depends on, so the bare reference
+## declares nothing surprising.
 
 ## The roster key `NpcApi` persists under, read by name rather than through a bare
 ## `NpcState` reference (see the class note on why a bare one would be invisible).
@@ -45,7 +57,7 @@ const KINDS: Array[StringName] = [KIND_FACT, KIND_NPC_TALLY]
 ## `occurrence` mints the beat id per ADR 0114's once-rule: the caller NAMES the
 ## occurrence (`killed_boar@3`) because a monotone ledger can only answer "has this
 ## fired" by counting. It is a caller's own counter, never a clock read.
-static func offer(actor: Actor, beat: Dictionary, occurrence: int, sequence: int) -> Dictionary:
+static func offer(actor: Actor, beat: Dictionary, occurrence: int) -> Dictionary:
 	var fact_id := StringName(beat.get("fact", ""))
 	if fact_id == &"":
 		return {"ok": false, "reason": "no_fact", "skipped": 1}
@@ -56,11 +68,15 @@ static func offer(actor: Actor, beat: Dictionary, occurrence: int, sequence: int
 	if not KINDS.has(kind):
 		return {"ok": false, "reason": "unknown_beat_kind", "kind": String(kind), "skipped": 1}
 
-	var ledger := EventFacts.ledger(actor)
 	var beat_id := EventFacts.occurrence_id(fact_id, occurrence)
-	var before := EventFacts.count_of(ledger, fact_id)
-	EventFacts.record(ledger, fact_id, amount, sequence)
-	_write_facts(actor, ledger)
+	# **The ONE write path into the fact ledger.** `WorldFact.record` reads the
+	# stored row before adding to it and normalises on the way out, so a beat cannot
+	# truncate another system's `since` and cannot invent a second row shape.
+	var written := WorldFact.record(actor, fact_id, amount)
+	if not bool(written.get("ok", false)):
+		# Unreachable through `offer`'s own checks above, and REFUSED rather than
+		# assumed: a ledger that would not take the beat is reported, not bypassed.
+		return {"ok": false, "reason": String(written.get("reason", "")), "skipped": 1}
 
 	var tallied := false
 	if kind == KIND_NPC_TALLY:
@@ -74,15 +90,9 @@ static func offer(actor: Actor, beat: Dictionary, occurrence: int, sequence: int
 		"source": String(beat.get("source", "")),
 		"kind": String(kind),
 		"fact_id": String(fact_id),
-		"count": maxi(before, EventFacts.count_of(ledger, fact_id)),
+		"count": int(written.get("count", 0)),
 		"npc_tallied": tallied,
 	}
-
-
-## Write the ledger back under ADR 0113's key, normalized. Normalized on the way out
-## so a hand-edited save cannot inject a wrong type into the next reader.
-static func _write_facts(actor: Actor, ledger: Dictionary) -> void:
-	actor.set_module_data(EventFacts.MODULE_KEY, EventFacts.normalize(ledger))
 
 
 ## Route an `npc_tally` beat into the roster's tally table, which is `NpcApi.tally`'s

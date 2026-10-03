@@ -76,11 +76,11 @@ func _actor(at: String = &"spirit_peaks", founded: bool = false) -> Actor:
 	return actor
 
 
-## Record a fact through the ONE ledger ADR 0113 fixes, with the shape a beat carries.
+## Record a fact the way a beat does — through the ONE writer that owns the ledger.
+## Not through the event module's own hand-rolled write, which is exactly what the
+## ADR 0066 tests below forbid.
 func _remember(actor: Actor, fact_id: StringName, amount: int = 1) -> void:
-	var ledger := EventFacts.ledger(actor)
-	EventFacts.record(ledger, fact_id, amount, 0)
-	actor.set_module_data(EventFacts.MODULE_KEY, EventFacts.normalize(ledger))
+	WorldFact.record(actor, fact_id, amount)
 
 
 func _stage_id(actor: Actor, event_id: StringName) -> String:
@@ -709,21 +709,96 @@ func test_an_opened_stage_records_its_beats_in_the_one_fact_ledger() -> void:
 	var actor := _actor(&"mortal_plains")
 	_remember(actor, &"storm_front_sighted")
 	EventApi.begin(actor, TIDE)
-	var facts := EventFacts.ledger(actor)
 	assert_eq(
-		EventFacts.count_of(facts, &"beast_tide_started"),
+		EventFacts.count_of(actor, &"beast_tide_started"),
 		1,
 		"the def's own on_enter beat is recorded under ADR 0113's key"
 	)
 	assert_eq(
-		EventFacts.count_of(facts, &"beast_tide_moving"),
+		EventFacts.count_of(actor, &"beast_tide_moving"),
 		1,
 		"and so is the first stage's, which is a BEAT and not a reward (ADR 0114)"
 	)
 	assert_eq(
-		(actor.get_module_data(EventFacts.MODULE_KEY) as Dictionary).has("facts"),
+		(actor.get_module_data(WorldFact.MODULE_KEY) as Dictionary).has("facts"),
 		true,
 		"the ledger lives where ADR 0113 says it does: actor.module_data['world_facts']"
+	)
+
+
+# --- One ledger, one normaliser (ADR 0066) -----------------------------------
+
+
+func test_the_event_module_declares_no_second_writer_over_the_world_fact_ledger() -> void:
+	# ADR 0066's shape, spelled: two normalisers over ONE key.
+	# `core/world_fact.gd` owns `actor.module_data["world_facts"]` and emits
+	# `{version, facts:{id:{count, since}}}`. `EventFacts` shipped a SECOND
+	# normaliser emitting `{version, facts:{id:{id, count}}, sequence}` over the same
+	# key, plus its own `record`. Two writers on one key means each truncates the
+	# other's rows on the way out, silently.
+	#
+	# Asserted over the SOURCE because `tools arch` cannot see a method that does not
+	# exist — a normaliser that reappears in a future edit is invisible to every other
+	# gate in the repo, and the two tests below would only catch it if a beat happened
+	# to land on the right key.
+	var offenders: Array[String] = []
+	for path in _module_files(MODULE_ROOT):
+		var code := _strip_comments(FileAccess.get_file_as_string(path))
+		if not code.contains("WorldFact"):
+			continue
+		if code.contains("func normalize(") or code.contains("func record("):
+			offenders.append(path.get_file())
+	assert_eq(
+		offenders,
+		[],
+		(
+			"`event/` reads and writes the ledger through `WorldFact` and must not "
+			+ "declare a normaliser or a write verb of its own over it (ADR 0066)"
+		)
+	)
+
+
+func test_a_beat_recorded_by_an_event_survives_the_worlds_own_reader() -> void:
+	# The round trip that matters. A beat the event director records is a FACT, and
+	# it must be readable by the module that owns the ledger, with `since` intact.
+	# While `EventFacts.normalize` wrote rows of `{id, count}` over a ledger whose
+	# rows are `{count, since}`, one event beat deleted the `since` of every OTHER
+	# system's facts in the same ledger — and `since` is what
+	# `WorldFact`'s "has this happened exactly once" gate reads.
+	var actor := _actor(&"mortal_plains")
+	WorldFact.record(actor, &"a_beast_was_slain", 1)
+	assert_eq(
+		WorldFact.fact(actor, &"a_beast_was_slain").since, 1, "the world's own row carries a since"
+	)
+	_remember(actor, &"storm_front_sighted")
+	EventApi.begin(actor, TIDE)
+	assert_eq(
+		WorldFact.fact(actor, &"a_beast_was_slain").since,
+		1,
+		"an event beat recording OTHER facts did not delete this row's since"
+	)
+	assert_eq(WorldFact.count(actor, &"a_beast_was_slain"), 1, "and did not change its count")
+	assert_eq(
+		WorldFact.count(actor, &"beast_tide_started"),
+		1,
+		"while the event's own beat IS visible to the world's reader"
+	)
+
+
+func test_a_fact_the_world_and_an_event_both_record_stays_one_monotone_count() -> void:
+	# Two writers over one key is not only a lost field — it is a count that can
+	# disagree. `WorldFact.record` reads the stored row before adding to it, so a
+	# writer that stores a DIFFERENT row shape leaves the next reader repairing a
+	# value rather than counting it.
+	var actor := _actor(&"mortal_plains")
+	WorldFact.record(actor, &"beast_slain", 2)
+	_remember(actor, &"storm_front_sighted")
+	EventApi.begin(actor, TIDE)
+	WorldFact.record(actor, &"beast_slain", 3)
+	assert_eq(
+		WorldFact.count(actor, &"beast_slain"),
+		5,
+		"the world's own reader counts every accrual, whichever system recorded it"
 	)
 
 
@@ -731,31 +806,36 @@ func test_a_beat_id_is_unique_per_occurrence_as_adr_0114_requires() -> void:
 	# "A beat's id MUST be unique per occurrence — the caller mints `&"killed_boar@3"`
 	# for the third boar — and the ledger records occurrence ids under a count."
 	var actor := _actor()
-	var ledger := EventFacts.ledger(actor)
 	var ids: Array[String] = []
 	for occurrence in range(1, 4):
 		ids.append(String(EventFacts.occurrence_id(&"killed_boar", occurrence)))
-		EventFacts.record(ledger, &"killed_boar", 1, occurrence)
+		WorldFact.record(actor, &"killed_boar", 1)
 	assert_eq(ids[0], "killed_boar@1", "the first occurrence is named 1")
 	assert_ne(ids[0], ids[1], "two occurrences are never the same id")
 	assert_ne(ids[1], ids[2], "and neither are three")
-	assert_eq(EventFacts.count_of(ledger, &"killed_boar"), 3, "while the fact counts all three")
+	assert_eq(EventFacts.count_of(actor, &"killed_boar"), 3, "while the fact counts all three")
 
 
-func test_a_fact_is_monotone_and_a_zero_amount_records_nothing() -> void:
-	# ADR 0113: `record()` raises a count and never lowers one. A "consumed" thing is
-	# a quest step, not a fact.
-	var ledger := EventFacts.ledger(null)
-	EventFacts.record(ledger, &"beast_slain", 2, 4)
-	assert_eq(EventFacts.count_of(ledger, &"beast_slain"), 2, "it counted two")
-	EventFacts.record(ledger, &"beast_slain", 0, 5)
-	assert_eq(EventFacts.count_of(ledger, &"beast_slain"), 2, "a zero amount changes nothing")
-	EventFacts.record(ledger, &"beast_slain", -5, 6)
-	assert_eq(EventFacts.count_of(ledger, &"beast_slain"), 2, "and neither does a negative one")
+func test_a_fact_is_monotone_and_a_non_positive_amount_records_nothing() -> void:
+	# ADR 0113: the ledger's write verb raises a count and never lowers one. A
+	# "consumed" thing is a quest step, not a fact. A zero or negative amount is
+	# REFUSED with a reason rather than absorbed: a caller computing a delta of zero
+	# has a bug, and absorbing it leaves the ledger claiming a thing that did not
+	# happen.
+	var actor := _actor()
+	var written := WorldFact.record(actor, &"beast_slain", 2)
+	assert_eq(bool(written.get("ok", false)), true, "it counted two")
+	assert_eq(EventFacts.count_of(actor, &"beast_slain"), 2, "which is what the reader sees")
+	var refused := WorldFact.record(actor, &"beast_slain", 0)
+	assert_eq(bool(refused.get("ok", false)), false, "a zero amount is refused")
+	assert_eq(String(refused.get("reason", "")), "non_positive", "with a named reason")
+	assert_eq(EventFacts.count_of(actor, &"beast_slain"), 2, "and changes nothing")
+	WorldFact.record(actor, &"beast_slain", -5)
+	assert_eq(EventFacts.count_of(actor, &"beast_slain"), 2, "and neither does a negative one")
 	assert_eq(
-		int((ledger["facts"] as Dictionary)["beast_slain"]["since"]),
-		4,
-		"`since` is the sequence at which it FIRST occurred, carried forward"
+		WorldFact.fact(actor, &"beast_slain").since,
+		2,
+		"`since` is the count at FIRST record, carried forward"
 	)
 
 

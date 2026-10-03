@@ -193,7 +193,7 @@ static func begin(actor: Actor, event_id: StringName, period: int = 0) -> Dictio
 	ledger["period"] = maxi(int(ledger["period"]), at)
 	_persist(actor, ledger)
 
-	var beats := _offer_beats(actor, ledger, def, def.opening_beats(), at)
+	var beats := _offer_beats(actor, ledger, def, def.opening_beats())
 	WorldEventBus.conflict_triggered(
 		String(actor.id), event_id, float(def.stage_count()) * EventPrize.STABILITY_COST_PER_PERIOD
 	)
@@ -329,7 +329,7 @@ static func advance(actor: Actor, periods: int) -> Dictionary:
 			entry["opened_period"] = at
 			entry["periods_held"] = 0
 			(ledger["active"] as Dictionary)[String(event_id)] = entry
-			var beats := _offer_beats(actor, ledger, def, following.on_enter, at)
+			var beats := _offer_beats(actor, ledger, def, following.on_enter)
 			WorldEventBus.upkeep_paid(
 				String(actor.id),
 				float(following.duration_periods),
@@ -542,12 +542,12 @@ static func _record(
 	return (history[history.size() - 1] as Dictionary).duplicate(true)
 
 
-## Offer a stage's beats through the one writer. The occurrence counter is the fact
-## ledger's OWN sequence, which `EventBeatWriter` advances as it records — so a beat
-## id is unique per occurrence (ADR 0114's once-rule) without this module keeping a
-## second counter, and it is derived from the ledger rather than from a clock.
+## Offer a stage's beats through the one writer. The occurrence number is derived
+## from the ledger's own count and this module's sequence — never from a clock — so a
+## beat id is unique per occurrence (ADR 0114's once-rule) without this module
+## keeping a second counter of its own.
 static func _offer_beats(
-	actor: Actor, ledger: Dictionary, def: EventDef, beats: Array[Dictionary], period: int
+	actor: Actor, ledger: Dictionary, def: EventDef, beats: Array[Dictionary]
 ) -> Dictionary:
 	var applied: Array[Dictionary] = []
 	var skipped := 0
@@ -555,16 +555,10 @@ static func _offer_beats(
 		var proposal := beat.duplicate()
 		proposal["source"] = def.fate_source()
 		proposal["actor_id"] = String(actor.id)
-		var facts := EventFacts.ledger(actor)
-		var occurrence := maxi(
-			1,
-			(
-				EventFacts.count_of(facts, StringName(proposal.get("fact", "")))
-				+ int(ledger["sequence"])
-			)
-		)
-		proposal["id"] = EventFacts.occurrence_id(StringName(proposal.get("fact", "")), occurrence)
-		var outcome := EventBeatWriter.offer(actor, proposal, occurrence, period)
+		var fact_id := StringName(proposal.get("fact", ""))
+		var occurrence := maxi(1, EventFacts.count_of(actor, fact_id) + int(ledger["sequence"]))
+		proposal["id"] = EventFacts.occurrence_id(fact_id, occurrence)
+		var outcome := EventBeatWriter.offer(actor, proposal, occurrence)
 		if bool(outcome.get("ok", false)):
 			applied.append(outcome)
 		else:
