@@ -323,6 +323,77 @@ func test_no_public_door_into_the_stack_is_reachable_only_by_a_test() -> void:
 		)
 
 
+## A nav bar that RENDERS sixteen buttons is not a route until a press on one moves
+## the game. Asserting the bar's signal is connected proves the wiring exists; only a
+## press proves a player can take it. The rest of this file reaches routes by calling
+## `navigate_to` directly, which is a real door but not a *user action* — so the
+## button-to-screen half of "reachable by a concrete user action" was unproven.
+##
+## Slot N is bound to route N by `NavBar._publish_routes`, so slot 1 is a destination
+## the game does not boot on. Proving a move needs somewhere to move to.
+func test_pressing_a_nav_button_moves_the_game_to_that_routes_screen() -> void:
+	var harness := _boot()
+	if harness.boot_error != "":
+		return
+	var nav := harness.app.get_node_or_null("%NavBar")
+	assert_ne(nav, null, "the mounted app carries the nav bar it composes")
+	if nav == null:
+		return
+	var listed: Array = harness.routes().get("routes", [])
+	assert_ne(listed.size() > 1, false, "the route table holds a destination besides the home route")
+	if listed.size() < 2:
+		return
+
+	var target: Dictionary = listed[1]
+	var target_id := StringName(target.get("id", ""))
+	var target_scene := String(target.get("scene", ""))
+	assert_ne(target_id, &"", "route slot 1 names a destination")
+	assert_ne(target_scene, "", "and names the scene it opens")
+	var booted_at := String(harness.current_route().get("route", ""))
+	assert_ne(booted_at, String(target_id), "the game does not boot on the route this button opens")
+
+	# THE PRESS. A real Button, its real signal, the real handler, the real stack.
+	# The button's name comes from the bar's own binding helper, so the test states
+	# "slot 1" and lets the bar say which node that is. `press` refuses a disabled
+	# control rather than counting it as success, so this also fails if the bar
+	# renders the button greyed out.
+	var slot_one := NavBar.slot_unique_name(1)
+	assert_eq(harness.press(nav, slot_one), true, "the nav bar's slot-1 button is a live control")
+
+	assert_eq(
+		String(harness.current_route().get("route", "")),
+		String(target_id),
+		"pressing it moved the game to that route, so the bar is not decoration"
+	)
+	var mounted := harness.mounted(target_scene)
+	assert_ne(mounted, null, "and the route's own screen is mounted")
+	assert_eq(
+		harness.live_screen(),
+		mounted,
+		"and it is the live screen, not merely a node somebody parented"
+	)
+
+	# The bar tracks where it sent you. A hub that navigates but never repaints is
+	# the same "present but not wired out" shape this whole suite exists to catch.
+	var nav_summary: Dictionary = nav.call(&"summary")
+	assert_eq(
+		String(nav_summary.get("active", "")),
+		String(target_id),
+		"the bar marks the pressed route active, so it reports where the game is"
+	)
+
+	# The one thing a hub must NOT do: pressing the same destination twice must not
+	# stack a second copy. This is the double-push that `ScreenStack.push` reports,
+	# reached here through a real button rather than through a test's own call.
+	var depth := int((harness.app.call(&"summary") as Dictionary).get("stack", {}).get("depth", 0))
+	assert_eq(harness.press(nav, slot_one), true, "the button is still live on the route it opened")
+	assert_eq(
+		int((harness.app.call(&"summary") as Dictionary).get("stack", {}).get("depth", 0)),
+		depth,
+		"pressing the route you are already on leaves the stack exactly one deep"
+	)
+
+
 func _is_door(method_name: String) -> bool:
 	for prefix in DOOR_PREFIXES:
 		if method_name.begins_with(prefix):

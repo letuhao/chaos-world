@@ -54,6 +54,16 @@ func _run() -> void:
 	for _frame in FRAMES:
 		await process_frame
 	var report := _inspect(path, app)
+	var nav_report: Dictionary = await _press_nav(app)
+	report["nav"] = nav_report
+	if bool(report.get("ok", false)) and not bool(nav_report.get("ok", false)):
+		# Came up, but you cannot go anywhere. That is the same failure a player sees
+		# as a window with nothing in it, so it must not read as a pass.
+		report["ok"] = false
+		report["why"] = (
+			"the shell came up but its navigation is dead: %s"
+			% nav_report.get("why", "a nav button did nothing")
+		)
 	# Detach before freeing: the engine holds the parent pointer, and this probe
 	# shares the process with nothing else, so leaving the subtree parented would
 	# only leak it (AGENTS.md, the free-not-queue_free rule).
@@ -61,6 +71,75 @@ func _run() -> void:
 	app.free()
 	_emit(report)
 	quit(EXIT_OK if bool(report.get("ok", false)) else EXIT_FAIL)
+
+
+## Press a REAL nav bar button in a REAL boot and report where it took the game.
+##
+## This is the half the headless suite structurally cannot prove. `SeamHarness`
+## mounts the app into a root that is not yet inside the tree, so the engine never
+## delivers `_ready` to the bar and the suite has to call the app's `_ready` by hand;
+## anything the bar does in its own `_ready` is therefore never exercised there. A
+## gate that only ever runs the harness is blind to exactly the wiring a player uses
+## to move. Here the tree is live, `_ready` ran on its own, and the button is the one
+## the composition root authored.
+func _press_nav(app: Node) -> Dictionary:
+	var nav := app.get_node_or_null("%NavBar")
+	if nav == null:
+		return {"ok": false, "why": "the app composes no %NavBar, so it offers no destinations"}
+	var before := String(app.call(&"current_route"))
+	var slots := ScreenRoutes.all()
+	var index := _first_other_route(slots, before)
+	if index < 0:
+		return {
+			"ok": false, "why": "the route table declares no destination other than '%s'" % before
+		}
+	var blocked := _why_unpressable(nav, index)
+	if blocked != "":
+		return {"ok": false, "why": blocked}
+	var target := String(slots[index].get("scene", ""))
+	(nav.get_node_or_null(NavBar.slot_unique_name(index)) as Button).pressed.emit()
+	await process_frame
+	var after := String(app.call(&"current_route"))
+	var wrong := _why_wrong_landing(app, index, before, after, slots)
+	if wrong != "":
+		return {"ok": false, "why": wrong}
+	return {"ok": true, "slot": index, "from": before, "to": after, "scene": target}
+
+
+## The first slot that is not where the game already is. Pressing the route you are
+## on proves nothing, so the probe needs a destination it is not already at.
+func _first_other_route(slots: Array, before: String) -> int:
+	for candidate in slots.size():
+		if StringName(slots[candidate].get("id", "")) != StringName(before):
+			return candidate
+	return -1
+
+
+## Why no player could press this slot. Empty means the control is genuinely live, so
+## a failure after the press is the navigation's fault rather than the button's.
+func _why_unpressable(nav: Node, index: int) -> String:
+	var button := nav.get_node_or_null(NavBar.slot_unique_name(index)) as Button
+	if button == null:
+		return "the nav bar authors no button for slot %d" % index
+	if button.disabled:
+		return "slot %d is disabled, so no player can press it" % index
+	if not button.visible:
+		return "slot %d is hidden, so no player can press it" % index
+	return ""
+
+
+## Why the press did not land on the route the slot advertises. Empty is a pass.
+func _why_wrong_landing(
+	app: Node, index: int, before: String, after: String, slots: Array
+) -> String:
+	if after == before:
+		return "pressing slot %d left the game on '%s'" % [index, before]
+	var advertised := String(slots[index].get("id", ""))
+	if StringName(after) != StringName(advertised):
+		return "slot %d advertises '%s' but opened '%s'" % [index, advertised, after]
+	if (app.call(&"summary") as Dictionary).get("screen", {}).is_empty():
+		return "slot %d navigated to '%s' but mounted no screen" % [index, after]
+	return ""
 
 
 ## Ask the app what it managed to build, then judge it. Every failure below is a

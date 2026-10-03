@@ -76,29 +76,54 @@ def _survives(scene: str, frames: int) -> tuple[bool, str]:
     return False, f"{scene} exited {result.returncode} after {frames} frames{hint}"
 
 
-def _comes_up() -> tuple[bool, str]:
-    """Phase two: does the shell come up with something on it?
+def _comes_up() -> tuple[bool, str, dict]:
+    """Phase two: does the shell come up with something on it, and can it be moved?
 
     Surviving is not arriving. `ItemWorkbenchApp._ready` returns quietly when it
     cannot find `%ScreenStack` or the root route will not load, and every one of
-    those still exits 0 with a blank window. The probe mounts the real scene and
-    asks it to describe itself.
+    those still exits 0 with a blank window. Coming up is not navigable either: a
+    bar whose buttons render and do nothing is the same blank window from a
+    player's seat. So the probe mounts the real scene, asks it to describe itself,
+    then presses a real nav button and checks it landed on the route that slot
+    advertises.
+
+    Returns the report as well as the verdict, so the pass message can name where
+    the press went. A gate that only says "ok" makes it impossible to tell a working
+    press from a check that quietly stopped looking.
     """
     result = godot.run_godot(
         ["--headless", "--path", str(GAME_DIR), "-s", PROBE],
         capture=True,
         tag="bootprobe",
     )
-    report = _parse_report(result.stdout)
-    if report is None:
+    report = _parse_report(result.stdout) or {}
+    if not report:
         return (
             False,
             f"{PROBE} printed no BOOTJSON line (exit {result.returncode});"
             " the probe never finished",
+            {},
         )
     if not report.get("ok", False):
-        return False, str(report.get("why", "the shell came up empty-handed for an unnamed reason"))
-    return True, ""
+        return (
+            False,
+            str(report.get("why", "the shell came up empty-handed for an unnamed reason")),
+            report,
+        )
+    return True, "", report
+
+
+def _nav_line(report: dict) -> str:
+    """One line naming where the probe's button press took the game.
+
+    Printed on success because it is the evidence, not just the verdict: a gate that
+    only says "ok" makes it impossible to tell a working press from a check that
+    quietly stopped looking.
+    """
+    nav = report.get("nav", {})
+    if not isinstance(nav, dict) or not nav.get("ok", False):
+        return ""
+    return f"{nav.get('from', '?')} -> {nav.get('to', '?')}"
 
 
 def _parse_report(stdout: str | None) -> dict | None:
@@ -124,9 +149,10 @@ def run(args) -> int:
     else:
         fail(f"the main scene did not boot: {why}")
         failures.append("crash")
-    came_up, why = _comes_up()
+    came_up, why, report = _comes_up()
     if came_up:
         ok("the shell came up with a live route, a bound actor and a mounted screen")
+        ok(f"a real nav button press moved the game: {_nav_line(report)}")
     else:
         fail(f"the main scene booted but is empty: {why}")
         failures.append("empty")

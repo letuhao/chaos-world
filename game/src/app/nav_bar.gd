@@ -96,7 +96,9 @@ func summary() -> Dictionary:
 func _unhandled_input(event: InputEvent) -> void:
 	if event == null or not event.is_pressed() or event.is_echo():
 		return
-	for route in _routes:
+	# The shipped table, for the same reason `_on_slot_pressed` uses it: a key that
+	# silently does nothing is not a control.
+	for route in ScreenRoutes.all():
 		var route_id := StringName(route.get("id", ""))
 		if not event.is_action_pressed(ScreenRoutes.action_of(route_id)):
 			continue
@@ -168,7 +170,19 @@ func _button_for(route_id: StringName) -> Button:
 	return null
 
 
+## Route from the SHIPPED TABLE, not from the `_routes` render cache.
+##
+## `_routes` is filled by `_publish_routes`, which only `_ready()` calls. Anything that
+## binds this bar without the engine delivering `_ready()` — a headless suite mounting
+## the shell, a caller that reaches the bar before the tree settles — got buttons that
+## were present, visible, enabled, and did absolutely nothing, with no error to explain
+## it. A control that can only fail silently is exactly the shape this gate exists to
+## catch, so input resolves from the same source the buttons are labelled from.
 func _on_slot_pressed(index: int) -> void:
-	if index >= _routes.size():
+	var routes := ScreenRoutes.all()
+	if index >= routes.size():
 		return
-	route_requested.emit(StringName(_routes[index].get("id", "")))
+	var route_id := StringName(routes[index].get("id", ""))
+	if route_id == &"":
+		return
+	route_requested.emit(route_id)
