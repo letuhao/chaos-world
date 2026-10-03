@@ -74,7 +74,8 @@ ENVIRONMENTS = (
         "immortal_court",
         "Immortal World",
         "Immortal Court",
-        "Ivory stone terraces, formal layouts, antique-gold seams, cloud carving.",
+        "Ivory stone terraces, balanced formal layouts, fine antique-gold seams, "
+        "and cloud carving.",
     ),
     (
         "immortal_cloud_isles",
@@ -92,7 +93,8 @@ ENVIRONMENTS = (
         "immortal_star_lake",
         "Immortal World",
         "Immortal Star Lake",
-        "Deep teal lake stone, star-like reflections, silver highlights, celestial markings.",
+        "Deep teal lake stone, star-like reflections, quiet silver highlights, "
+        "and celestial markings.",
     ),
     (
         "transcendent_realm",
@@ -110,7 +112,8 @@ ENVIRONMENTS = (
         "void_shoal",
         "Transcendent World",
         "Void Shoal",
-        "Black glass shoals, deep violet water, scattered stone, sparse cyan glimmers.",
+        "Black glass shoals, deep violet water, scattered stone fragments, "
+        "and sparse cyan glimmers.",
     ),
     (
         "dao_fracture",
@@ -128,7 +131,8 @@ ENVIRONMENTS = (
         "flame_valley_depths",
         "Spirit World",
         "Flame Valley Depths",
-        "Layered cinder slopes, copper-red stone, scorched earth, internal firelight.",
+        "Layered cinder slopes, copper-red stone, scorched earth, "
+        "and controlled internal firelight.",
     ),
     (
         "stormwrack_reach",
@@ -314,10 +318,7 @@ def register(parent_parser) -> None:
     generate.add_argument(
         "--rembg-model",
         default=map_generate.DEFAULT_REMBG_MODEL,
-        help=(
-            "cutout model (default: isnet-anime; use --compare-rembg "
-            "to compare installed choices)"
-        ),
+        help="cutout model (default: isnet-anime; --compare-rembg lists installed choices)",
     )
     generate.add_argument(
         "--rembg-post-processing", action=argparse.BooleanOptionalAction, default=False
