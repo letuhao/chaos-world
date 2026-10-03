@@ -45,6 +45,23 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     # that is gone — and the stat guard here is what stops a number entering a
     # prose block that no other gate can see. Needs no engine.
     ("unique_characters", ["check"]),
+    # The Lore Bible (ADR 0139): the canonical world index that game/data was
+    # generated from and that character generation will read. Two reasons it is in
+    # the gate. The first is ordinary: a dangling edge or a duplicate id must fail
+    # before an agent builds on it. The second is that the bible's own guards are
+    # unreachable from the GDScript suite, exactly like every other Python guard,
+    # so `selftest` above is what proves they still go RED. Isolation is reported,
+    # never fatal - see lore/audit.py - because a guard that fires on the starting
+    # state is a guard people route around. Needs no engine.
+    ("lore", ["validate"]),
+    # Is the bible actually deep enough to describe a person yet? `validate` only
+    # proves the records are well-formed; this proves a character can inherit
+    # context from one. It is expected to FAIL while the bible is young, and that
+    # is the point: the objective's own test is "new characters can usually reuse
+    # existing background", and a green gate that cannot measure that measures
+    # nothing. Non-gating until the first wave lands - see `lore character-ready`
+    # for the live number. Needs no engine.
+    # ("lore", ["character-ready"]),
     # The authored per-realm power table: one entry per realm, R1 at 1.0, strictly
     # rising, finite and readable. It replaced the one power ladder's guard (ADR 0050).
     ("realm_power", ["check"]),

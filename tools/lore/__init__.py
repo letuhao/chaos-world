@@ -42,6 +42,7 @@ from .audit import (
     structural_duplicates,
 )
 from .brief import write_brief
+from .context import character_draft, readiness_gaps, resolve_context
 from .model import LORE_ROOT, load_bible
 
 
@@ -77,6 +78,24 @@ def register(subparsers) -> None:
 
     ready = actions.add_parser("readiness", help="can a character's context be walked end to end")
     ready.add_argument("chain", help="character | conflict | lineage")
+
+    context = actions.add_parser(
+        "context", help="what a character anchored on an entity already inherits"
+    )
+    context.add_argument("id", help="anchor entity, e.g. races.emberblood")
+    context.add_argument("--depth", type=int, default=2)
+    context.add_argument("--json", action="store_true", help="emit the full resolution")
+    context.add_argument(
+        "--draft",
+        metavar="NAME",
+        help="also emit a unique_characters-shaped draft for this name",
+    )
+    context.add_argument("--path", default="unaffiliated", help="cultivation path for the draft")
+
+    actions.add_parser(
+        "character-ready",
+        help="sample character anchors and report which domains are still missing",
+    )
 
     brief = actions.add_parser("brief", help="write an agent brief for a domain")
     brief.add_argument("domain")
@@ -158,6 +177,10 @@ def run(args) -> int:
         for row in payload["leaves"]:
             info(f"  {row['degree']:>4}  {row['id']}")
         return 0
+    if action == "context":
+        return _context(bible, args)
+    if action == "character-ready":
+        return _character_ready(bible)
     if action == "search":
         return _search(bible, args)
     if action == "show":
@@ -276,6 +299,77 @@ def _audit(bible) -> int:
         return 1
     ok("no contradictions, duplicate names or structural duplicates")
     return 0
+
+
+def _context(bible, args) -> int:
+    """The deliverable: what a character anchored here inherits, and what is missing."""
+    anchor_id = resolve_shot(bible, args.id)["id"]
+    context = resolve_context(bible, anchor_id, depth=args.depth)
+    if args.json:
+        print(json.dumps(context, indent=2, ensure_ascii=False))
+        return 0 if context["ready"] else 1
+    info(f"context for {context['anchor']['id']} ({context['anchor']['name']})")
+    info(f"  {context['entities_examined']} entities examined at depth {context['depth']}")
+    info("")
+    info("INHERITED")
+    for domain, items in context["inherited"].items():
+        info(f"  {domain} ({len(items)}):")
+        for item in items[:5]:
+            depth_note = " [stub]" if item.get("lore_depth") == "stub" else ""
+            info(f"      {item['id']:<44} {item['name']}{depth_note}")
+        if len(items) > 5:
+            info(f"      ... and {len(items) - 5} more")
+    if context["thin_domains"]:
+        info("")
+        info("THIN - reached, but every record is still a content-free stub:")
+        for domain in context["thin_domains"]:
+            info(f"      {domain}")
+    info("")
+    if context["gaps"]:
+        info("MISSING - no edge reached this domain at all:")
+        for gap in context["gaps"]:
+            info(f"      [{gap['severity']:<12}] {gap['domain']:<14} {gap['why']}")
+        if args.draft:
+            info("")
+            info("A draft would inherit holes. Fill them or close them first.")
+    else:
+        ok(f"context complete: all {len(context['inherited'])} character domains reached")
+    if args.draft:
+        info("")
+        info(f"DRAFT for {args.draft!r} (unique_characters shape, prose only):")
+        info("")
+        info(json.dumps(character_draft(context, name=args.draft, path=args.path), indent=2))
+    return 0 if context["ready"] else 1
+
+
+def _character_ready(bible) -> int:
+    payload = readiness_gaps(bible)
+    if not payload["sampled"]:
+        fail("no race anchors exist to sample; the bible has no species to anchor on")
+        return 1
+    info(
+        f"character readiness: {payload['ready']}/{payload['sampled']} anchors complete "
+        f"({payload['readiness_ratio']:.0%})"
+    )
+    info("")
+    info("most frequent missing domains:")
+    for domain, count in list(payload["missing_domain_frequency"].items())[:12]:
+        info(f"  {domain:<16} missing in {count}/{payload['sampled']} anchors")
+    info("")
+    for row in payload["results"]:
+        mark = "ok  " if row["ready"] else "GAP "
+        info(
+            f"  [{mark}] {row['anchor']:<40} {row['domains']:>2} domains"
+            + ("" if row["ready"] else "  missing: " + ", ".join(row["gaps"]))
+        )
+    if payload["ready"] == payload["sampled"]:
+        ok("every sampled character anchor resolves a complete context")
+        return 0
+    fail(
+        f"only {payload['ready']}/{payload['sampled']} character anchors resolve completely; "
+        "a character generated now would have invented background the bible does not hold"
+    )
+    return 1
 
 
 def _search(bible, args) -> int:

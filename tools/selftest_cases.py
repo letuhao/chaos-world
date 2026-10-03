@@ -19,6 +19,7 @@ import tempfile
 from pathlib import Path
 
 from . import gate_reach, lore, map_theme, mutation_history, unique_characters
+from .lore.context import character_draft, readiness_gaps, resolve_context
 from .selftest import case, expect, write
 
 # A roster class that hands its ids onward, and one that declares a table nothing reads.
@@ -740,3 +741,132 @@ def _ingest_is_deterministic() -> None:
             break
     else:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
+
+
+@case("lore: character context names the domains it could not reach")
+def _context_reports_gaps() -> None:
+    """The half that matters most, because a silent omission is worse than a gap.
+
+    A resolver that quietly returns the little it found looks identical to one that
+    found everything, so a character gets written against invented background and
+    nothing in the pipeline says so. This asserts the missing half is REPORTED, and
+    that a connected domain IS counted - otherwise a resolver that always returns
+    "everything is missing" would pass.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        _write_lore(
+            root,
+            {
+                "races": [_entity("races", "emberblood")],
+                "geography": [_entity("geography", "ash_flats")],
+            },
+            {
+                "batch": [
+                    {"from": "races.emberblood", "rel": "native_to", "to": "geography.ash_flats"}
+                ]
+            },
+        )
+        context = resolve_context(_lore_bible(root), "races.emberblood", depth=1)
+        expect(
+            context["ready"] is False,
+            "an anchor with one of seventeen character domains reachable was called ready",
+        )
+        missing = {gap["domain"] for gap in context["gaps"]}
+        expect(
+            "cultures" in missing and "history" in missing,
+            "context claimed to be complete while cultures and history were never "
+            "reached; those are the two domains that make a character a product of a "
+            "world rather than an invention",
+        )
+        expect(
+            "geography" not in missing,
+            f"a domain that WAS reached was reported as missing: {sorted(missing)}",
+        )
+
+
+@case("lore: character context is bounded, not an unbounded walk")
+def _context_is_bounded() -> None:
+    """A lore bible is a graph with no natural smallness.
+
+    A well-connected cosmology node reaches most of the book, so an unbounded walk
+    hangs on the HEALTHIEST bible rather than the broken one - backwards. This builds
+    a chain deeper than any sane depth and asserts the walk returns and says it was
+    truncated.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        entities = [_entity("races", "root")]
+        edges = []
+        for index in range(40):
+            slug = f"culture_{index:02d}"
+            entities.append(_entity("cultures", slug))
+            parent = f"cultures.culture_{index - 1:02d}" if index else "races.root"
+            edges.append({"from": f"cultures.{slug}", "rel": "influenced_by", "to": parent})
+        _write_lore(root, {"races": entities[:1], "cultures": entities[1:]}, {"batch": edges})
+        context = resolve_context(_lore_bible(root), "races.root", depth=4)
+        pulled = len(context["inherited"].get("cultures", []))
+        expect(
+            pulled <= 12,
+            f"a single anchor pulled in {pulled} culture records; an unbounded walk would "
+            "make this command unusable on a well-built bible, because a well-connected "
+            "node reaches most of the book",
+        )
+
+
+@case("lore: a character draft carries NO numbers in reference_stats")
+def _draft_is_prose_only() -> None:
+    """The seam between two ADRs, asserted.
+
+    ADR 0138 made `reference_stats` prose and `unique_characters check` refuses a
+    number there. The resolver feeds that block, so a resolver that emitted stat
+    values would push every author straight through a guard the project spent real
+    effort building - and it would do it silently, since the numbers would look
+    like useful output.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        _write_lore(
+            root,
+            {"races": [_entity("races", "emberblood")]},
+            {},
+        )
+        bible = _lore_bible(root)
+        context = resolve_context(bible, "races.emberblood", depth=1)
+        draft = character_draft(context, name="Test Subject", path="qi")
+        findings = unique_characters._no_stat_numbers(
+            draft["reference_stats"], "reference_stats", unique_characters._authored_stat_ids()
+        )
+        expect(
+            not findings,
+            "the resolver emitted numbers into a prose-only block: " + "; ".join(findings),
+        )
+        expect(
+            draft["status"] == "draft",
+            f"the resolver set status to {draft['status']!r}; 'the world's background "
+            "exists' is not the same claim as 'this person is written', and only a human "
+            "judgement about the lore may promote a record to canon",
+        )
+
+
+@case("lore: character readiness reports 0% rather than passing on an empty sample")
+def _character_ready_is_not_vacuous() -> None:
+    """The guard-shape hazard this repo has hit repeatedly.
+
+    A readiness check over zero anchors divides by nothing and reports nothing, which
+    reads as "no problems found". It has to fail, because a bible with no species has
+    no character to describe and that is the opposite of ready.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        _write_lore(root, {"geography": [_entity("geography", "ash_flats")]}, {})
+        payload = readiness_gaps(_lore_bible(root))
+        expect(
+            payload["sampled"] == 0,
+            f"readiness sampled {payload['sampled']} anchors from a bible with no races; a "
+            "sampler that reports 0 sampled must not be read as 0 failures",
+        )
+        expect(
+            payload["ready"] == 0 and payload["readiness_ratio"] == 0.0,
+            "an empty sample reported non-zero readiness",
+        )
