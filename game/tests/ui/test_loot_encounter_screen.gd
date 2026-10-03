@@ -6,6 +6,13 @@ extends TestCase
 
 const SCREEN_SCENE := "res://src/ui/screens/loot_encounter.tscn"
 
+## Every screen this suite instantiated. The runner shares one process across every
+## suite, so an unfreed screen stays resident for the rest of the run — and this is
+## the heaviest screen in the program, each instance carrying a domain list, tier
+## bands, a fight readout and reward rows. Freed centrally because the call sites
+## are interleaved and a test returning early would skip a free at its end.
+var _born: Array[Node] = []
+
 
 ## The first authored domain that needs no key item, and the first authored tier it
 ## declares. Discovered rather than declared: the domain table grows as trials and
@@ -83,14 +90,6 @@ func _bridge() -> LootBridge:
 	bridge.reclaim = Callable(LootApi, "reclaim")
 	bridge.read_state = Callable(LootApi, "summary")
 	return bridge
-
-
-## Every screen this suite instantiated. The runner shares one process across every
-## suite, so an unfreed screen stays resident for the rest of the run — and this is
-## the heaviest screen in the program, each instance carrying a domain list, tier
-## bands, a fight readout and reward rows. Freed centrally because the call sites
-## are interleaved and a test returning early would skip a free at its end.
-var _born: Array[Node] = []
 
 
 ## Free everything this suite instantiated. Idempotent, so it is safe after an abort.

@@ -12,6 +12,10 @@ extends TestCase
 
 const THIRD_BEAR := &"killed_boar@3"
 const BOAR := &"killed_boar"
+## How deep `_is_json_safe` will walk before it stops. A cap and not a `while`: the
+## recursion is the point, and an unbounded one on a cyclic payload would be exactly
+## the runaway the arch rule exists to refuse.
+const MAX_JSON_DEPTH := 4
 
 # --- A beat is well-formed, or it names itself -------------------------------
 
@@ -281,12 +285,6 @@ func test_every_named_sink_overrides_both_virtuals_with_the_contract_signature()
 			)
 
 
-## How deep [method _is_json_safe] will walk before it stops. A cap and not a
-## `while`: the recursion is the point, and an unbounded one on a cyclic payload
-## would be exactly the runaway the arch rule exists to refuse.
-const MAX_JSON_DEPTH := 4
-
-
 ## Whether `value` survives a JSON round trip: a primitive, or an Array/Dictionary
 ## of them. That is the bar `BeatSink.resolve` is documented at, and it is a
 ## property of the VALUE rather than of any one key, so the quest sink may report
@@ -304,15 +302,27 @@ func _is_json_safe(value, depth: int = 0) -> bool:
 	):
 		return true
 	if kind == TYPE_ARRAY:
-		for member in value as Array:
-			if not _is_json_safe(member, depth + 1):
-				return false
-		return true
+		return _every_member_is_safe(value as Array, depth)
 	if kind == TYPE_DICTIONARY:
-		for key in (value as Dictionary).keys():
-			if typeof(key) != TYPE_STRING:
-				return false
-			if not _is_json_safe((value as Dictionary)[key], depth + 1):
-				return false
-		return true
+		var entries := value as Dictionary
+		return _every_key_is_a_string(entries) and _every_member_is_safe(entries.values(), depth)
 	return false
+
+
+## Whether every one of `members` survives the save hop at one level deeper. The
+## recursion's step, so the container branches of `_is_json_safe` each have a single
+## exit: an empty container is safe, and one unsafe member condemns the whole.
+func _every_member_is_safe(members: Array, depth: int) -> bool:
+	for member in members:
+		if not _is_json_safe(member, depth + 1):
+			return false
+	return true
+
+
+## Whether `entries` can be a JSON object at all: a non-String key does not survive
+## the hop, so it is refused here rather than by the value walk.
+func _every_key_is_a_string(entries: Dictionary) -> bool:
+	for key in entries.keys():
+		if typeof(key) != TYPE_STRING:
+			return false
+	return true

@@ -22,6 +22,12 @@ const PANEL_SCRIPT := "res://src/ui/panels/loot_boss_panel.gd"
 ## the clock, so a headless test passes its own rather than reading `Time` (ADR 0089).
 const FRAME := 1.0 / 60.0
 
+## Every screen this suite instantiated. The runner shares one process across every
+## suite, so an unfreed screen stays resident for the rest of the run — and this is
+## the heaviest screen in the program. Freed centrally because the call sites are
+## interleaved and a test returning early would skip a free at its end.
+var _born: Array[Node] = []
+
 
 ## The player and the composition root's own status wire over them — the same pair
 ## `item_workbench_app.gd` builds, so a purge here is the purge the app performs.
@@ -43,13 +49,6 @@ func _bridge() -> LootBridge:
 	bridge.reclaim = Callable(LootApi, "reclaim")
 	bridge.read_state = Callable(LootApi, "summary")
 	return bridge
-
-
-## Every screen this suite instantiated. The runner shares one process across every
-## suite, so an unfreed screen stays resident for the rest of the run — and this is
-## the heaviest screen in the program. Freed centrally because the call sites are
-## interleaved and a test returning early would skip a free at its end.
-var _born: Array[Node] = []
 
 
 ## Free everything `_screen()` handed out. Idempotent, so it is safe after an abort.
