@@ -70,7 +70,7 @@ extends RefCounted
 
 ## Per-realm compounding step. Bounded by construction: the whole ladder is worth
 ## `RATE_STEP^29`, under 2x — a gain, not a magnitude.
-const RATE_STEP := 1.04
+const RATE_STEP := 1.02
 
 ## Neutral is 1.0: an unstarted path, or a realm that is not on the ladder,
 ## contributes exactly what an actor with no path would.

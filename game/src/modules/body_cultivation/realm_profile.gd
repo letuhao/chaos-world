@@ -27,7 +27,4 @@ const NEUTRAL := RealmRate.NEUTRAL
 
 ## The realm factor for `realm_id`. One implementation: `RealmRate.factor`.
 static func factor(realm_id: StringName) -> float:
-	var ordinal := RealmDefaults.ladder().index_of(realm_id)
-	if ordinal < 0:
-		return NEUTRAL
 	return RealmRate.factor(realm_id)
