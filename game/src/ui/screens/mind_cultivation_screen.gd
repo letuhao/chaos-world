@@ -9,6 +9,14 @@ extends UiScreen
 ## this screen normalizes on the way in. The sea of consciousness gets its own
 ## rows because clarity, purity and turbulence are the mind path's vitals.
 ##
+## The ONE action that is not a facade call is `act_ascend`, for the reason body
+## gives and in the same shape (ADR 0041): the ascent belongs to no single path —
+## every path carries the same `AscensionState` — so no facade serves it and `ui`
+## may call `core` directly. Its read model is this path's own `gates.ascent`
+## block, so nothing here restates the gate: the wording the conditions line
+## already shows is `WorldAnchor.ascension_unmet`'s, verbatim (ADR 0034). Without
+## this verb that clause was a gate a player could read and never satisfy.
+##
 ## Contract: `summary()` is the testable surface, with child panel summaries
 ## nested under their own key.
 
@@ -52,6 +60,7 @@ func _summary() -> Dictionary:
 		"costs": preview.get("costs", {}),
 		"steps": _steps(),
 	}
+	view["ascent"] = _ascent_view(preview)
 	view["vitals"] = _vitals_summary()
 	view["actions"] = _actions.summary() if _actions != null else {}
 	if _channels != null:
@@ -161,6 +170,7 @@ func _refresh_view() -> void:
 						&"train_channel",
 						&"strengthen_sea",
 						&"strengthen_anchor",
+						&"ascend",
 						&"breakthrough",
 					],
 					"labels":
@@ -170,6 +180,9 @@ func _refresh_view() -> void:
 						"train_channel": "Train Channel",
 						"strengthen_sea": "Strengthen Sea",
 						"strengthen_anchor": "Strengthen Anchor",
+						# Body's own wording, so the two screens offering the same
+						# action name it identically.
+						"ascend": "Walk Ascent",
 						"breakthrough": "Breakthrough",
 					},
 					"enabled":
@@ -183,6 +196,12 @@ func _refresh_view() -> void:
 						# Anchors only exist at the Immortal tier, so the button is offered
 						# from there up rather than dead on every early realm.
 						"strengthen_anchor": on_path and _at_immortal_tier(),
+						# The ascent the tier gate is owed. Declared on every realm and
+						# live only while one is owed and unwalked, which is the same
+						# conjunction body offers it under: a control that appears out of
+						# nowhere when the gate opens is a gate the player never saw
+						# arriving.
+						"ascend": on_path and _ascend_offered(preview),
 						"breakthrough": ready,
 					},
 					"primary": &"breakthrough",
@@ -216,6 +235,59 @@ func _at_immortal_tier() -> bool:
 	if state == null:
 		return false
 	return RealmDefaults.ladder().index_of(state.rank_id) >= Breakthrough.IMMORTAL_REALM_THRESHOLD
+
+
+# --- The ascent ---------------------------------------------------------------
+#
+# Read from the facade's `gates.ascent` block, which is DATA and not a verb: the
+# ascent itself is `WorldAnchor.ascend`, a core entry point `ui/` may call directly
+# (ADR 0041), so nothing here grows the mind facade's twelve-method surface.
+
+
+## A player may walk the ascent only while one is owed AND unfinished — the same
+## conjunction `BodyCultivationPanel._ascend_offered` applies, so the two screens
+## cannot disagree about when the control is live.
+##
+## `required` is core's own answer to "is the ascent this realm's gate at all", and
+## `steps_remaining` is what is left to walk, so the pair is the rule without this
+## screen re-deriving it. An actor below the Transcendent tier fails `required`
+## because `ascension_ok` is true for every target at or below
+## `WorldAnchor.COMMIT_MICRO`, so nothing here is conditional on the tier.
+func _ascend_offered(preview: Dictionary) -> bool:
+	if preview.is_empty():
+		return false
+	var gates: Dictionary = preview.get("gates", {})
+	var ascent: Dictionary = gates.get("ascent", {})
+	return bool(ascent.get("required", false)) and int(ascent.get("steps_remaining", 0)) > 0
+
+
+## The ascent as this screen reports it, under the key body publishes it under so
+## one question is answered one way across both screens.
+##
+## `steps` is the walk still TO DO, which is the quantity core's own `outstanding`
+## sentence counts, and `outstanding` is that sentence verbatim rather than a
+## restatement of the rule it names (ADR 0034). There is no `steps_total` here on
+## purpose: body reads the whole walk's length off its facade, and naming core's
+## constant a second time on the UI side is a number two places can drift. The
+## total is inside `outstanding` either way.
+##
+## `outstanding` is published as core states it, including `WorldAnchor.NO_ASCENT`.
+## That sentinel is core declining to state a requirement — there is no
+## `AscensionState` yet, so there is nothing to walk — and the screen keeps it in
+## its read model rather than filtering it, so the two screens agree on the raw
+## value and neither hides data a caller reads. `offered` is what the button is
+## keyed on, and it is false for the sentinel, so neither screen renders it as a
+## gate a player must satisfy.
+func _ascent_view(preview: Dictionary) -> Dictionary:
+	var gates: Dictionary = preview.get("gates", {})
+	var ascent: Dictionary = gates.get("ascent", {})
+	return {
+		"required": bool(ascent.get("required", false)),
+		"steps": int(ascent.get("steps_remaining", 0)),
+		"met": bool(ascent.get("value", false)),
+		"outstanding": String(ascent.get("outstanding", "")),
+		"offered": _ascend_offered(preview),
+	}
 
 
 ## The unmet list is how a player knows what to do next. It was computed and
@@ -362,11 +434,45 @@ func act_strengthen_anchor() -> bool:
 	return strengthened
 
 
+## Walk ONE step of the Transcendent ascent.
+##
+## The only action here that is not a facade call, and deliberately so, for the
+## reason body gives: the ascent belongs to no single path — every path carries the
+## same `AscensionState` — so no facade serves it and `core` is where the entry
+## point lives (ADR 0041). Its gate is read from this path's facade rather than
+## re-derived here, so this screen can never open a gate `Breakthrough.ascension_ok`
+## would refuse.
+##
+## Both refusals read exactly as body's do, because they are the same action: a
+## player who has learned one screen's wording meets the other (ADR 0043 — a verb
+## that returns false and says nothing is indistinguishable from a button wired to
+## nothing at all).
+func act_ascend() -> bool:
+	if _actor == null:
+		return false
+	if not _ascend_offered(MindCultivationApi.preview(_actor)):
+		set_message("No ascent is owed yet", TONE_ERROR)
+		refresh()
+		return false
+	var stepped := WorldAnchor.ascend(_actor)
+	set_message(
+		"Walked a step of the ascent" if stepped else "The ascent will not open",
+		TONE_OK if stepped else TONE_ERROR
+	)
+	refresh()
+	return stepped
+
+
 ## Meditation is the mind path's first move: it clears the turbulence that blocks
-## every other action, so it is the landing spot.
+## every other action, so it is the landing spot. An owed ascent overrides it, for
+## body's reason: once a tier gate has opened an ascent, walking it is the only
+## thing left to do, and the screen already says so in its conditions line.
 func focus_initial() -> void:
 	_bind_nodes()
-	var target := _button_name(&"meditate") if _actor != null else ""
+	var target := ""
+	if _actor != null:
+		var preview := MindCultivationApi.preview(_actor)
+		target = _button_name(&"ascend") if _ascend_offered(preview) else _button_name(&"meditate")
 	_focus_target = target
 	var button := _find_button(target)
 	if button != null and button.is_inside_tree():
@@ -437,6 +543,8 @@ func _on_action(action: StringName) -> void:
 			act_train_next_channel()
 		&"strengthen_anchor":
 			act_strengthen_anchor()
+		&"ascend":
+			act_ascend()
 		_:
 			act_breakthrough()
 
