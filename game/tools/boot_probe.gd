@@ -51,14 +51,16 @@ const MAX_WALK_DEPTH := 12
 ## them is driven by a live screen, never by a snapshot, so it needs a fixed cap
 ## rather than a bound derived from what the screen happens to be showing.
 const MAX_DROPS_PER_REWARD := 8
-## How many (domain, tier) pairs the walk may try before it insists none of them
-## pays something the hero can wear. One boss is not a guarantee of gear: a fight
-## may pay a consumable, a material, or a drop whose grade is above the hero's own
-## tier, and none of those can be equipped. The loot tables do reference 1339
-## wearable equipment items, so a narrow sample says more about the sample than
-## about the corpus -- hence a real sweep, and a cap so a corpus that genuinely
-## pays nothing cannot spin forever.
-const MAX_EQUIP_HUNTS := 8
+## How many domains the walk may fight before it insists none of them pays
+## something the hero can wear. One boss is not a guarantee of gear: a fight may
+## pay a consumable, a material, or a drop whose grade is above the hero's tier.
+## The tables reference 1339 wearable equipment items and 188 of 1383 tables
+## stock some a tier-1 hero can wear, so a handful of fights says more about the
+## handful than about the corpus. Each attempt now covers a DIFFERENT domain's
+## entry band rather than sliding along a diagonal, which is what let eight
+## fights be read as the whole game (BL-0625, retracted). Wide enough to reach a
+## table that stocks gear, capped so a corpus that pays nothing cannot spin.
+const MAX_EQUIP_HUNTS := 24
 ## The app's strike deals 25 and the lowest authored boss has 100 vitality, so four
 ## strikes is the whole fight. A cap, never "until it dies" — see `_strike_until_dead`.
 const MAX_STRIKES := 8
@@ -285,11 +287,20 @@ func _why_wrong_landing(
 ## Runs after `_press_nav`, which leaves the game on the loot route.
 ## Move the domain selector onto the nth option, the way a player picking from
 ## the dropdown does, and return the label now showing.
-func _choose_domain(screen: Node, nth: int) -> String:
+## Walk the domain selector by TIER BAND rather than by attempt number.
+##
+## The nth attempt used to pick `domain[n]` and `tier[n]` together, so the walk
+## travelled a diagonal through a grid of 160 domains by 2 tiers and sampled a
+## slice of it. That is how eight fights came to be reported as the whole
+## corpus: the slice missed the one table that stocks wearable gear, and a claim
+## about the game was made from a sample. Covering the first TIER of every
+## domain instead visits each domain's entry band, which is both a fairer sample
+## and the band a starting hero can actually fight.
+func _choose_domain(screen: Node, band: int) -> String:
 	var option := screen.get_node_or_null(DOMAIN_OPTION) as OptionButton
 	if option == null or option.item_count <= 0:
 		return ""
-	var index := nth % option.item_count
+	var index := band % option.item_count
 	option.select(index)
 	option.item_selected.emit(index)
 	return String(option.get_item_text(index))
@@ -318,14 +329,16 @@ func _ready_to_hunt(app: Node) -> Dictionary:
 ## of (domain, tier) pairs rather than replaying one table. Picking a fixed tier
 ## would be wrong in the other direction too: a drop's grade scales with the tier
 ## it was fought at, and the grade gate refuses anything above the hero's tier.
-func _choose_tier(screen: Node, nth: int) -> String:
+func _choose_tier(screen: Node, _band: int) -> String:
 	var option := screen.get_node_or_null(TIER_OPTION) as OptionButton
 	if option == null or option.item_count <= 0:
 		return ""
-	var index := nth % option.item_count
-	option.select(index)
-	option.item_selected.emit(index)
-	return String(option.get_item_text(index))
+	# Always the FIRST band. The entry band is the one a starting hero can fight
+	# and win, and holding it fixed is what makes each attempt a different DOMAIN
+	# rather than a different cell of the same diagonal.
+	option.select(0)
+	option.item_selected.emit(0)
+	return String(option.get_item_text(0))
 
 
 ## `where` is filled with the domain and tier this attempt chose, and is read by

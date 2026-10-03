@@ -1738,17 +1738,29 @@ def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
     runtime = _runtime_findings(records)
     for note in _destiny_findings(records)[1]:
         warn(note)
-    if gaps:
-        for gap in gaps:
-            fail(gap)
-        fail(f"data audit failed: {len(gaps)} gap(s)")
-        return 1
+    # The measurement prints BEFORE the verdict and nothing returns early above
+    # it. A content gap used to `return 1` before this readout, so one bad
+    # `sources` entry silently erased the deliverable count -- the single number
+    # the acquisition work is graded on. A gate that hides its own measurement
+    # when it fails is how a regression hides behind an unrelated red.
     total, graph, runtime_count = _runtime_summary(records)
     info("")
     info(
         f"acquisition: {graph}/{total} item(s) obtainable in the content graph, "
         f"{runtime_count}/{total} deliverable by shipping code"
     )
+    # Per-route delivery is a MEASUREMENT, so it prints before any early return
+    # too. It is the only thing that distinguishes "the domain route works" from
+    # "the total went up", and a gate that withholds it while a content gap is
+    # open forces the next reader to re-derive the picture from a count alone.
+    for level, message in runtime:
+        if level == "info":
+            info(message)
+    if gaps:
+        for gap in gaps:
+            fail(gap)
+        fail(f"data audit failed: {len(gaps)} gap(s)")
+        return 1
     for level, message in runtime:
         if level == "info":
             # A measurement, not a gap: the per-route delivery breakdown states a
