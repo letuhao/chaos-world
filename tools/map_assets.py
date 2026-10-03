@@ -270,6 +270,11 @@ def register(parent_parser) -> None:
     install.add_argument("--generated-on", required=True, help="generation date (YYYY-MM-DD)")
     install.add_argument("--prompt-ref", required=True, help="stable prompt identifier")
     install.add_argument("--prompt", required=True, help="exact generation prompt")
+    install.add_argument(
+        "--replace-generated",
+        action="store_true",
+        help="replace a previously generated asset after reviewing its preview",
+    )
     install.add_argument("--reference-id", action="append", default=[])
     generate = actions.add_parser(
         "generate", help="generate and index one map asset through local ComfyUI"
