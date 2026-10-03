@@ -583,7 +583,11 @@ def _generate_comfy(record: dict, args, prompt: str, seed: int) -> Path:
     graph["3"]["inputs"].update(clip_l=args.negative, guidance=args.guidance)
     graph["4"]["inputs"].update(width=args.size, height=args.size)
     graph["8"]["inputs"].update(
-        noise_seed=seed, steps=args.steps, cfg=args.cfg, sampler_name="euler", scheduler="normal"
+        noise_seed=seed,
+        steps=args.steps,
+        cfg=args.cfg,
+        sampler_name="euler",
+        scheduler="normal",
     )
     graph["15"]["inputs"].update(model=args.rembg_model, transparency=True)
     source_path = (
@@ -621,17 +625,53 @@ def _generate_comfy(record: dict, args, prompt: str, seed: int) -> Path:
 
 
 def _prompt(record: dict, slot: str, detail: str) -> str:
-    traits = ", ".join(tag.replace(":", " ").replace("-", " ") for tag in record["tags"])
+    traits = dict(tag.split(":", 1) for tag in record["tags"])
+    presentation = {
+        "masculine": "masculine-presenting, with clearly masculine facial features and grooming",
+        "feminine": "feminine-presenting, with clearly feminine facial features and grooming",
+        "androgynous": "androgynous-presenting, with a gender-ambiguous face and understated grooming",
+    }[traits["presentation"]]
+    age = {
+        "young-adult": "a young adult in their 20s, with unmistakably adult proportions",
+        "adult": "an adult in their 30s to 50s, with mature facial proportions",
+        "elder": "an elder aged 65 or older, with visible age lines and mature facial structure",
+    }[traits["age"]]
+    race = {
+        "human": "human anatomy",
+        "beastkin": "subtle animal ears and a short tail from one coherent animal type",
+        "spiritkin": "humanlike anatomy with subtle luminous spirit marks at the temples",
+        "dragonkin": "small swept horns, fine scales at the temples and forearms, and a slim tail",
+        "aquatic": "subtle gill marks at the neck and slight webbing between the fingers",
+        "celestial": "humanlike anatomy with faint star-flecked eyes and a restrained celestial mark",
+        "revenant": "cool pallor and faint spectral edge-light, with no decay or skeletal features",
+        "elemental": "a living elemental appearance with complexion-colored material accents and a few motes",
+        "plantkin": "leaf-veined skin at the temples and hands, with no bulky plant growth",
+        "stonekin": "stone-grain complexion and fine mineral veining, while retaining flexible humanlike features",
+    }[traits["race"]]
+    path = {
+        "qi": "Qi Dao: creation through energy; show controlled motion and restrained flowing energy marks",
+        "body": "Body Dao: preservation through form; use a grounded stance and practical, enduring construction",
+        "mind": "Mind Dao: transcendence through spirit; use a focused gaze and subtle awareness motifs",
+        "unaffiliated": "an independent Mortal Plains traveler, with practical travel wear and no sect insignia",
+    }[traits["path"]]
+    visual_traits = (
+        f"{traits['build']} build, {traits['complexion']} complexion, {traits['hair_color']} hair "
+        f"in a {traits['hairstyle']} style, {traits['eyes']} eyes, {traits['palette']} palette, "
+        f"{traits['attire']} with a restrained {traits['motif']} motif"
+    )
     framing = ASSET_SPECS[slot]["framing"]
     extra = f" Character-specific detail: {detail.strip()}." if detail.strip() else ""
     return (
-        f"{framing}. Character identity {record['id']}; preserve these designed traits: {traits}."
-        f"{extra} One subject only. Cultivation-fantasy production art for a 2D action RPG. "
+        f"One adult character, identity {record['id']}: {age}; {presentation}; {race}. "
+        f"Preserve exactly these visible traits: {visual_traits}. "
+        f"Cultural and cultivation cue: {path}.{extra} {framing}. "
+        "One subject only. Cultivation-fantasy production art for a 2D action RPG. "
         "Painterly anime gouache, crisp dark ink contours, clear value grouping, material-led "
         "color, restrained metallic accents, broad planes, soft upper-left light. Use the same "
-        "visual identity and costume across the character asset family. Transparent background. "
+        "visual identity and costume across the character asset family. Keep the face, age, "
+        "presentation, anatomy, palette, and costume faithful to the profile. Transparent background. "
         "All characters are adults, fully clothed, and nonsexual. No text, labels, UI, frame, "
-        "watermark, extra figures, or unrelated props."
+        "watermark, extra figures, unrelated props, exaggerated body proportions, or childlike features."
     )
 
 
