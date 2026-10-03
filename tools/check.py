@@ -44,6 +44,12 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     # loot encounters and no domain may carry two encounters. Content that no
     # player can reach is still a green suite.
     ("acquisition", ["validate"]),
+    # The entry point boots. `tools test` calls `_ready()` by hand and runs no
+    # frame, so it cannot see a fault that needs the engine to deliver one: the
+    # shell killed itself on frame 1 while the whole suite was green (BL-0359).
+    # Placed before `test` so a shell that cannot start fails in two seconds
+    # rather than after the full suite.
+    ("boot", []),
     ("test", []),
 )
 

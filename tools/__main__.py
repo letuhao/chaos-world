@@ -33,6 +33,7 @@ acquisition = _load("acquisition")
 arch = _load("arch")
 assets = _load("assets")
 backlog = _load("backlog")
+boot = _load("boot")
 check = _load("check")
 cultivation = _load("cultivation")
 data = _load("data")
@@ -57,6 +58,7 @@ COMMANDS = {
     "arch": arch,
     "assets": assets,
     "test": test,
+    "boot": boot,
     "check": check,
     "run": run,
     "export": export,
