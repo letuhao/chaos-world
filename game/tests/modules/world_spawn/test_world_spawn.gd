@@ -284,7 +284,7 @@ func test_a_hand_edited_payload_does_not_break_a_read() -> void:
 	# A location id is a `StringName`/`String` in the authored pool, so an int is
 	# UNREADABLE rather than coercible. Coercing it would mint the durable id
 	# "42", a location no `.tres` backs and no `selected` could ever mount.
-	assert_eq(view["location_id"], "", "an int location id reads as absent, never as \"42\"")
+	assert_eq(view["location_id"], "", 'an int location id reads as absent, never as "42"')
 	assert_eq(view["located"], false, "so the actor is nowhere rather than somewhere invalid")
 	assert_eq(view["danger_level"], 3, "and an int danger still reads back as an int")
 
