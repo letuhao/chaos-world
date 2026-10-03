@@ -52,6 +52,9 @@ var _bosses: Dictionary = {}
 var _boss_index: Dictionary = {}
 var _boss_index_built: bool = false
 var _domains: Dictionary = {}
+## Domain ids a caller seeded through [method provide_domain]. Per instance, so a test can
+## seed a scratch corpus without touching the shared index.
+var _seeded_domains: Array[String] = []
 
 
 static func instance() -> LootContent:
@@ -294,6 +297,62 @@ func domain_record(domain_id: StringName) -> Dictionary:
 	)
 	_domains[key] = record
 	return record
+
+
+## Every authored domain id under [constant DOMAIN_DIR], sorted.
+##
+## This is the OTHER side of [method encounter_ids], and the two together are what make an
+## orphaned domain detectable at all: `LootApi.domains()` enumerates encounters only, so a
+## `DomainDef` with no encounter is one no surface can offer and nothing would otherwise say
+## so (BL-0338). One directory level, the same bound [method _tres_files] uses, sorted so
+## content order never depends on the filesystem.
+func domain_ids() -> Array[String]:
+	var out: Array[String] = []
+	for path in _tres_files(DOMAIN_DIR):
+		var id := _text_field(load(path) as Resource, "id")
+		if not id.is_empty() and not out.has(id):
+			out.append(id)
+	for id in _seeded_domains:
+		if not out.has(id):
+			out.append(id)
+	out.sort()
+	return out
+
+
+## Seed the domain index with an id the caller already knows, exactly as [method provide]
+## does for an item and [method provide_boss] does for a boss.
+##
+## `domain_ids()` is a directory walk, so without this a domain that exists only in a live
+## world — or in a caller that has already resolved it — would be invisible to
+## [method orphan_domains], which is BL-0338's defect one level down. A seeded id is a
+## domain the content authors, and [method orphan_domains] then answers the only question
+## that matters about it: does any encounter host it?
+##
+## Seed on an instance that is not [method instance] when the seed is test-only, so the
+## shared index every other caller reads is left alone.
+func provide_domain(domain_id: StringName) -> void:
+	var key := String(domain_id)
+	if key.is_empty() or _seeded_domains.has(key):
+		return
+	_seeded_domains.append(key)
+	_seeded_domains.sort()
+
+
+## Domains a player cannot reach: authored, and with no `LootEncounterDef` to enter.
+##
+## Reported rather than swallowed, so a domain dropped into the corpus without an encounter
+## fails the content gate instead of sitting there invisible.
+func orphan_domains() -> Array[String]:
+	var hosted := {}
+	for encounter_id in encounter_ids():
+		var encounter := encounter_by_id(StringName(encounter_id))
+		if encounter != null:
+			hosted[String(encounter.domain_id)] = true
+	var out: Array[String] = []
+	for domain_id in domain_ids():
+		if not hosted.has(domain_id):
+			out.append(domain_id)
+	return out
 
 
 func _read_record(directory: String, key: String) -> Dictionary:

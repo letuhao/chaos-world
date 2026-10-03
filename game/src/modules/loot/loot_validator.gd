@@ -26,6 +26,7 @@ extends RefCounted
 const SCOPE_ALL := ""
 const SCOPE_TABLES := "tables"
 const SCOPE_ENCOUNTERS := "encounters"
+const SCOPE_DOMAINS := "domains"
 
 
 ## Validate the authored content tree. `scope` is "" (everything), `tables` or
@@ -42,6 +43,34 @@ static func validate(scope: String = SCOPE_ALL) -> Array[String]:
 		problems.append_array(validate_tables(tables))
 	if scope == SCOPE_ALL or scope == SCOPE_ENCOUNTERS:
 		problems.append_array(validate_encounters(LootContent.instance()))
+	if scope == SCOPE_ALL or scope == SCOPE_DOMAINS:
+		problems.append_array(validate_domains(LootContent.instance()))
+	return problems
+
+
+## Every authored domain a player cannot enter, named.
+##
+## `LootApi.domains()` enumerates encounters, so the set of enterable domains is exactly the
+## set of authored encounters and nothing else. A `DomainDef` with no encounter is therefore
+## invisible: no surface offers it, and `enter_domain` answers `unknown_domain` — which is a
+## lie, because the domain exists. That was true of 128 domains when BL-0338 was filed; they
+## all carry encounters now, so this check is here to keep the class of defect loud rather
+## than to re-report a fixed one.
+static func validate_domains(content: LootContent) -> Array[String]:
+	var problems: Array[String] = []
+	for domain_id in content.orphan_domains():
+		(
+			problems
+			. append(
+				(
+					(
+						"domain %s: authored with no encounter, so no surface offers it and enter_domain"
+						% domain_id
+					)
+					+ " answers unknown_domain for a domain that exists"
+				)
+			)
+		)
 	return problems
 
 
