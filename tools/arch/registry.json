@@ -164,6 +164,12 @@
         "core"
       ]
     },
+    "quick_use": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
     "race": {
       "deps": [
         "contracts",
