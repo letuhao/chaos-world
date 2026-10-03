@@ -140,7 +140,17 @@ static func strengthen_anchor(actor: Actor) -> bool:
 
 ## Start then immediately resolve one breakthrough attempt. Pass an rng to make
 ## the roll deterministic in tests.
+##
+## **The body answers first (ADR 0109).** A body plan that closes the mind path, or one whose
+## `realm_ceiling` sits below the realm being attempted, is refused BEFORE the roll and carries
+## `RaceGate`'s own `{kind, id, required, actual, label}` entries. Two of the four authored races
+## close mind outright, so this is the gate that actually bites.
 static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
+	var blocked := RaceGate.path_unmet(actor, PathState.MIND)
+	if blocked.is_empty():
+		blocked = RaceGate.realm_ceiling_unmet(actor)
+	if not blocked.is_empty():
+		return false
 	return MindAdvancement.try_breakthrough(actor, rng)
 
 

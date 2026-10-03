@@ -32,20 +32,34 @@ static func synchronize(actor: Actor) -> void:
 	actor.mark_stats_dirty()
 
 
+## One sitting of cultivation. A full sea stops *storing* mind power, it does not
+## stop *training*: refusing the whole action deadlocked this path, and the
+## refusal has been reintroduced more than once. Do not put it back.
+##
+## The entry gate demands BOTH a filled reservoir (`sea_fill_required`) and a met
+## progress floor, and the reservoir fills first, so a refusal leaves the actor
+## holding a full sea with no way to earn the progress the same gate demands. A
+## deviation makes that permanent — it halves progress and clouds the sea without
+## draining it, and `cultivate` is the only source of either, so a failed attempt
+## left a state the player could never leave. Every wait for "the sea is full"
+## became unreachable, and an unreachable wait is what filled the user's disk with
+## a 1 GB/s Godot log.
+##
+## `fill` clamps, so the surplus is simply not kept. Same contract as
+## `QiTraining.cultivate` and `BodyTraining.cultivate` over the shared body pool.
+## `test_mind_deviation_recovery.gd` fails if the refusal returns.
 static func cultivate(actor: Actor, amount: float) -> bool:
 	var sea := MindCultivationApi.sea(actor)
 	var state := actor.path(MindPath.PATH_ID)
 	if sea == null or state == null or amount <= 0.0 or not is_finite(amount):
-		return false
-	if sea.is_full(actor):
 		return false
 	synchronize(actor)
 	var seed := MindRealmSeed.for_realm(state.rank_id)
 	if seed == null:
 		return false
 	# One unit of cultivation work is worth the realm's RATE, and only the rate. A
-	# bounded per-realm number — see `realm_profile.gd`. Same rate, same realm, as
-	# body and qi.
+	# bounded per-realm number — see `core/realm_rate.gd`. Same rate, same realm,
+	# as body and qi.
 	var gain := (
 		amount * MindRealmProfile.factor(state.rank_id) * (1.0 + actor.meridians.get_flow_bonus())
 	)

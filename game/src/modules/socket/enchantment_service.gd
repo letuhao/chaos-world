@@ -64,7 +64,7 @@ static func preview(
 	out["ok"] = true
 	out["cost"] = [reagent.id]
 	out["permitted"] = SocketPools.permitted(
-		SocketPools.CHANNEL_ENCHANT, _realm_index(target), _rarity_index(target), _used_ids(target)
+		SocketPools.CHANNEL_ENCHANT, _realm_id(target), _rarity_index(target), _used_ids(target)
 	)
 	out["stream_advanced"] = _advanced(rng, stream_before)
 	return out
@@ -100,7 +100,7 @@ static func commit(
 	var effect := SocketPools.roll(
 		SocketPools.CHANNEL_ENCHANT,
 		_used_ids(target),
-		_realm_index(target),
+		_realm_id(target),
 		_rarity_index(target),
 		rng
 	)
@@ -182,10 +182,7 @@ static func _refusal(
 	if (
 		SocketPools
 		. permitted(
-			SocketPools.CHANNEL_ENCHANT,
-			_realm_index(target),
-			_rarity_index(target),
-			_used_ids(target)
+			SocketPools.CHANNEL_ENCHANT, _realm_id(target), _rarity_index(target), _used_ids(target)
 		)
 		. is_empty()
 	):
@@ -208,13 +205,18 @@ static func _used_ids(target: ItemInstance) -> Array[StringName]:
 	return SocketPolicy.foreign_option_ids(target)
 
 
-static func _realm_index(target: ItemInstance) -> int:
-	var realm_id := &""
-	if target != null:
-		realm_id = target.realm
-		if realm_id == &"" and target.def_ref != null:
-			realm_id = target.def_ref.realm
-	return maxi(0, RealmDefaults.ladder().index_of(realm_id))
+## The realm the roll is scaled for, as an ID and never as a ladder position:
+## `OptionCatalog._realm_factor` keys a MAGNITUDE by realm id (ADR 0050) and reads
+## a RATE as `realm_ordinal`, which clamps an unknown id to 0 itself. Threading an
+## index through instead made every magnitude lookup miss.
+static func _realm_id(target: ItemInstance) -> StringName:
+	if target == null:
+		return &""
+	if target.realm != &"":
+		return target.realm
+	if target.def_ref != null:
+		return target.def_ref.realm
+	return &""
 
 
 static func _rarity_index(target: ItemInstance) -> int:

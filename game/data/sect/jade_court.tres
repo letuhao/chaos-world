@@ -1,0 +1,78 @@
+[gd_resource type="Resource" script_class="SectDef" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/modules/sect/sect_def.gd" id="1_sect"]
+[ext_resource type="Script" path="res://src/modules/sect/sect_position_def.gd" id="2_position"]
+
+[sub_resource type="Resource" id="position_disciple"]
+script = ExtResource("2_position")
+id = &"disciple"
+display_name = "Disciple"
+description = "The open door of the sect. Everyone who is sworn and holds no office sits here in all but name, and it recognises nothing at all, because recognition begins where office begins."
+standing_floor = 0
+capacity = 0
+duties = Array[StringName]([&"attend_instruction", &"labour_in_the_hall"])
+authorities = Array[StringName]([&"use_the_common_shelf"])
+succession_method = &"seniority"
+succession_param = {"order": "most_standing"}
+standing_percent_stats = {}
+patronage_per_period = 0
+duty_per_period = 1
+
+[sub_resource type="Resource" id="position_reader"]
+script = ExtResource("2_position")
+id = &"reader"
+display_name = "Reader"
+description = "Four readers keep the outer hall. The office is recognised on the mind alone and carries no authority over anybody, which is why it is not the step below the Steward."
+standing_floor = 20
+capacity = 4
+duties = Array[StringName]([&"keep_the_ledger", &"attend_instruction"])
+authorities = Array[StringName]([&"read_the_outer_shelf", &"nominate_a_disciple"])
+succession_method = &"seniority"
+succession_param = {"order": "most_standing"}
+standing_percent_stats = {"insight_gain": 0.0, "comprehension": 0.0}
+patronage_per_period = 1
+duty_per_period = 1
+
+[sub_resource type="Resource" id="position_steward"]
+script = ExtResource("2_position")
+id = &"steward"
+display_name = "Steward"
+description = "The one seat in the sect. It runs the hall, it holds the seal, and it is the only office here that may bar a door, so it is the only office anyone competes for."
+standing_floor = 60
+capacity = 1
+duties = Array[StringName]([&"hold_the_seal", &"teach", &"settle_the_ledger"])
+authorities = Array[StringName]([&"read_the_sealed_shelf", &"nominate_a_reader", &"expel"])
+succession_method = &"trial"
+succession_param = {"stage_keeper": "the_four_readers", "question": "what_the_house_will_teach_next"}
+succession_periods = 1
+teach_tax = 1.0
+standing_percent_stats = {"insight_gain": 0.0, "qi_regen": 0.0}
+patronage_per_period = 2
+duty_per_period = 2
+
+[sub_resource type="Resource" id="position_lantern"]
+script = ExtResource("2_position")
+id = &"lantern_keeper"
+display_name = "Lantern Keeper"
+description = "The watch of the outer gate. Two may hold it at once because a gate with one keeper is a gate with one point of failure, and this sect lost an archive to exactly that."
+standing_floor = 10
+capacity = 2
+duties = Array[StringName]([&"keep_the_watch", &"carry_the_lantern"])
+authorities = Array[StringName]([&"open_the_gate", &"turn_away_a_stranger"])
+succession_method = &"named"
+succession_param = {"naming_body": "the_outer_ring"}
+standing_percent_stats = {"poise": 0.0, "max_stamina": 0.0}
+patronage_per_period = 1
+duty_per_period = 2
+
+[resource]
+script = ExtResource("1_sect")
+id = &"jade_court"
+display_name = "The Jade Court"
+description = "A school of ledgers and quiet rooms. The Court teaches that comprehension is a discipline rather than a gift, and it is organised around one contested seat: everything it offers is offered by the Steward who holds the seal."
+doctrine_id = &"still_water"
+top_position_id = &"steward"
+positions = Array[SectPositionDef]([SubResource("position_disciple"), SubResource("position_reader"), SubResource("position_lantern"), SubResource("position_steward")])
+min_purity = 0
+standing_cap = 100
+founding_cost = {"currency": "silver", "amount": 400, "found": 400, "outstanding": 400}

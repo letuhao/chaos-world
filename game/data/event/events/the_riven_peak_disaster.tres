@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="EventDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/event/event_def.gd" id="1_event"]
+[ext_resource type="Script" path="res://src/modules/event/event_stage_def.gd" id="2_stage"]
+
+[sub_resource type="Resource" id="Stage_riven"]
+script = ExtResource("2_stage")
+stage_id = &"riven"
+display_name = "The Peaks Riven"
+requires = {}
+duration_periods = 1
+on_enter = [{"fact": &"disaster_struck", "amount": 1}]
+
+[sub_resource type="Resource" id="Stage_holding"]
+script = ExtResource("2_stage")
+stage_id = &"holding"
+display_name = "Holding"
+requires = {"verb": &"fact", "id": &"disaster_struck", "need": 1}
+duration_periods = 2
+on_enter = [{"fact": &"disaster_held", "amount": 1}]
+
+[sub_resource type="Resource" id="Stage_aftermath"]
+script = ExtResource("2_stage")
+stage_id = &"aftermath"
+display_name = "Aftermath"
+requires = {"verb": &"fact", "id": &"disaster_held", "need": 1}
+duration_periods = 0
+on_enter = [{"fact": &"disaster_survived", "amount": 1}]
+
+[resource]
+script = ExtResource("1_event")
+id = &"the_riven_peak_disaster"
+display_name = "The Riven Peak"
+description = "The eastern peak came apart in one afternoon and stayed broken. Ungated on purpose: nobody schedules a disaster, so this trigger is empty and any actor standing in the spirit peaks may walk into one. It is the one event here that is not waiting on a summons."
+kind = &"disaster"
+trigger = {}
+location_id = &"spirit_peaks"
+on_enter = [{"fact": &"disaster_begun", "amount": 1}]
+stages = Array[EventStageDef]([SubResource("Stage_riven"), SubResource("Stage_holding"), SubResource("Stage_aftermath")])
+pay = Array[Dictionary]([{"kind": &"fate", "id": &"remembered_by_the_mountain", "amount": 1}])

@@ -17,6 +17,18 @@ Cultivation-fantasy relic illustration: mystical, handmade, and legible at inven
 - `id_prefix` and `id_regex` rules override category/subcategory families for distinct object forms.
 - `item_ids` links each current item seed to its family in the same SSOT index. Run `uv run python -m tools assets sync` after item/rule edits, then `uv run python -m tools assets audit`; `report` shows coverage and distribution.
 
+## Top-down world map
+
+- Camera is orthographic and straight down: show ground-facing silhouettes and top surfaces, with no horizon, isometric projection, or perspective convergence.
+- Carry the item art's gouache finish, fine `#263A35` contours, material-led palette, and upper-left light into the world. Use broader value planes and less surface detail so terrain stays quiet behind actors.
+- Reserve warm ivory and antique gold for readable focal details. Terrain hues follow material and environment; Qi azure, Body gold, and Mind violet are restrained faction accents, not full-scene filters.
+- Base terrain tiles use opaque 128×128 PNGs as the initial authoring grid; transition tiles, props, and decals use transparent PNGs. Props use 128–512 px canvases and a bottom-center ground pivot; tiles and decals use a center pivot. These are source canvases, pending review at actual gameplay scale.
+- Tiles must include base, edge, corner, and transition pieces that repeat without visible seams. Props keep shadows short and attached to the footprint; painted shadows never imply collision. No baked labels or UI.
+- Keep walkable ground low contrast. Make blockers, harvest nodes, routes, domain entrances, and landmarks distinct by silhouette and placement. Decorative flora, decals, and effects carry no collision unless the index says `solid`.
+- Build coherent environment sets across the Mortal, Spirit, Immortal, and Transcendent worlds plus authored domains. Environmental variants change form and material to fit the place; hue-only recolors do not count as separate art.
+- The style target is a native-scale patch with one actor, ground, blocker, resource node, and landmark together. Approve its scale and contrast in-game before generating full batches; no gameplay capture is approved yet.
+- `game/assets/map-asset-index.jsonl` tracks each planned or produced map asset. Run `uv run python -m tools assets map report|audit`; `assets map scaffold` creates the initial plan only when no index exists.
+
 ## Technical target
 
 Godot 4.7, 2D, transparent 256×256 PNG item art and SVG family symbols. SVGs use a 64×64 view box. In-game sizing and filtering follow the consuming UI. No representative in-game capture exists yet.

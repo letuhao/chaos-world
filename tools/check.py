@@ -18,6 +18,11 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     # The authored per-realm power table: one entry per realm, R1 at 1.0, strictly
     # rising, finite and readable. It replaced the one power ladder's guard (ADR 0050).
     ("realm_power", ["check"]),
+    # The technique magnitude ladder (ADR 0055): a third per-realm table, bounded
+    # by the work-budget floor on EVERY consecutive ratio rather than at its
+    # endpoints, plus the learning-cost step that spends player progress. It runs
+    # beside the power table because it must never be derived from it.
+    ("technique_power", ["check"]),
     # Fast catalog checks: the projection must match the master JSONL, and every
     # registered option target must have an implemented consumer (ADR 0025/0033).
     ("data", ["options", "derive", "--check"]),
@@ -26,6 +31,19 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     # or the gate validates content against numbers the game never rolls. The
     # GDScript suite asserts the runtime side.
     ("data", ["options", "parity", "--check"]),
+    # The body realm ladder's generation contract (30 realms, 60 acupoints, 20
+    # meridians). Its guards live here rather than in a test so a hand-edited seed
+    # cannot quietly desync from the ladder it is checked against.
+    ("cultivation", ["validate"]),
+    # ...and a guard nobody has seen fire is not a guard. Nine deliberate
+    # mutations on a throwaway copy of the seeds, each asserted to be caught, so a
+    # rule that goes vacuous fails the gate instead of waiting for the next
+    # balance change to expose it.
+    ("cultivation", ["mutate"]),
+    # The acquisition graph: every realm's catalysts must resolve through authored
+    # loot encounters and no domain may carry two encounters. Content that no
+    # player can reach is still a green suite.
+    ("acquisition", ["validate"]),
     ("test", []),
 )
 

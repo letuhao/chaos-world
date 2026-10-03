@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:ironhide_vigil"])
 sources = Array[StringName]([&"boss:E1_core_formation_warden"])
 description = "Ground quartz lens that reads an incoming technique before it lands."

@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="EventDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/event/event_def.gd" id="1_event"]
+[ext_resource type="Script" path="res://src/modules/event/event_stage_def.gd" id="2_stage"]
+
+[sub_resource type="Resource" id="Stage_lots_read"]
+script = ExtResource("2_stage")
+stage_id = &"lots_read"
+display_name = "The Lots Are Read"
+requires = {}
+duration_periods = 1
+on_enter = [{"fact": &"auction_lots_read", "amount": 1}]
+
+[sub_resource type="Resource" id="Stage_bids_open"]
+script = ExtResource("2_stage")
+stage_id = &"bids_open"
+display_name = "Bids Open"
+requires = {"verb": &"fact", "id": &"auction_lots_read", "need": 1}
+duration_periods = 1
+on_enter = [{"fact": &"auction_bids_placed", "amount": 1}]
+
+[sub_resource type="Resource" id="Stage_hammer"]
+script = ExtResource("2_stage")
+stage_id = &"hammer"
+display_name = "The Hammer Falls"
+requires = {"verb": &"fact", "id": &"auction_bids_placed", "need": 1}
+duration_periods = 0
+on_enter = [{"fact": &"auction_closed", "amount": 1}]
+
+[resource]
+script = ExtResource("1_event")
+id = &"auction_at_the_immortal_court"
+display_name = "The Auction at the Immortal Court"
+description = "What the Court has no use for and cannot refuse to be seen selling. The lots, the bids and the hammer are this event's; what a lot actually resolves to is the market's, and the coins move there. Nothing here prices anything."
+kind = &"auction"
+trigger = {"verb": &"any_of", "of": [{"verb": &"has_fate", "id": &"first_blood_duel"}, {"verb": &"fact", "id": &"court_invitation_received", "need": 1}]}
+location_id = &"immortal_court"
+on_enter = [{"fact": &"auction_opened", "amount": 1}]
+stages = Array[EventStageDef]([SubResource("Stage_lots_read"), SubResource("Stage_bids_open"), SubResource("Stage_hammer")])
+pay = Array[Dictionary]([{"kind": &"fate", "id": &"night_off_the_rotation", "amount": 1}])

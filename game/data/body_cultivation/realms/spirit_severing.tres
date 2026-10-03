@@ -9,10 +9,10 @@ breakthrough_item = &"body_spirit_severing_breakthrough_pill"
 strengthening_item = &"body_spirit_severing_channel_elixir"
 recovery_item = &"body_spirit_severing_recovery_elixir"
 progress_required = 138.0
-physique_required = 34.0
-quality_required = 0.580000
-quality_target = 0.595000
-integrity_target = 0.645000
+physique_required = 79.6
+quality_required = 0.676500
+quality_target = 0.756500
+integrity_target = 0.806500
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao"])
 required_refinement = 13
 refinement_cap = 14
@@ -21,11 +21,8 @@ rewards = {
 "physique": 2.0,
 "muscle_fiber": 1.0
 }
-work_required = 138.0
-acupoint_work = 3.0
-meridian_work = 2.0
 insight_required = 426.0
 resonance_rank = 0
-chance_base = 0.65
-chance_cap = 0.85
+chance_base = 0.3860
+chance_cap = 0.8143
 channel_training = Array[StringName]([])

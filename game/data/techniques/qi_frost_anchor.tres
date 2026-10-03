@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"qi_frost_anchor"
+display_name = "Frost Anchor"
+description = "Locks a standing pool of cold in place rather than throwing it. The qi stays where it is put, which is what makes it a control art instead of a damage one."
+tags = Array[StringName]([&"technique", &"ice", &"control"])
+grade = &"earth"
+rarity = &"common"
+element = &"ice"
+schools = Array[StringName]([&"emitting", &"control"])
+active = true
+path = &"qi_cultivation"
+min_path_realm = {&"qi_cultivation": 21}
+qi_cost = 54.0
+stamina_cost = 16.0
+cooldown = 14.0
+mastery_rungs = 5
+magnitude = 1.6
+element_share = 0.7
+

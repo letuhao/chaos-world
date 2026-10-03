@@ -18,6 +18,5 @@ subcategory = &"weapon"
 stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"gather"])
-value = 200
 tags = Array[StringName]([&"socket_host"])
 description = "Equipment that can carry one socket. The socket subsystem opens, imputes and fills its slots."

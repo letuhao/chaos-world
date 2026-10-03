@@ -9,10 +9,10 @@ breakthrough_item = &"body_great_ascension_breakthrough_pill"
 strengthening_item = &"body_great_ascension_channel_elixir"
 recovery_item = &"body_great_ascension_recovery_elixir"
 progress_required = 66.0
-physique_required = 22.0
-quality_required = 0.490000
-quality_target = 0.505000
-integrity_target = 0.555000
+physique_required = 44.2
+quality_required = 0.613500
+quality_target = 0.693500
+integrity_target = 0.743500
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver"])
 required_refinement = 7
 refinement_cap = 8
@@ -21,11 +21,8 @@ rewards = {
 "physique": 2.0,
 "muscle_fiber": 1.0
 }
-work_required = 66.0
-acupoint_work = 2.0
-meridian_work = 2.0
 insight_required = 150.0
 resonance_rank = 0
-chance_base = 0.61
-chance_cap = 0.89
+chance_base = 0.4340
+chance_cap = 0.8308
 channel_training = Array[StringName]([])

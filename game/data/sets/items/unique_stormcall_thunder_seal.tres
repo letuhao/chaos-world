@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
 stackable = false
-value = 2600
 tags = Array[StringName]([&"unique", &"unique_route:E5_severing_edge", &"set:stormcall_circuit"])
 sources = Array[StringName]([&"boss:E5_severing_edge"])
 description = "A pressed seal carrying one stored discharge. Locks a fixed spiritual-cut signature; the seal discharges through the wearer, not beside them."

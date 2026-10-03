@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="EventDef" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/modules/event/event_def.gd" id="1_event"]
+[ext_resource type="Script" path="res://src/modules/event/event_stage_def.gd" id="2_stage"]
+
+[sub_resource type="Resource" id="Stage_registered"]
+script = ExtResource("2_stage")
+stage_id = &"registered"
+display_name = "The Register Closes"
+requires = {}
+duration_periods = 1
+on_enter = [{"fact": &"tournament_registered", "amount": 1}]
+
+[sub_resource type="Resource" id="Stage_first_round"]
+script = ExtResource("2_stage")
+stage_id = &"first_round"
+display_name = "The First Round"
+requires = {"verb": &"fact", "id": &"tournament_registered", "need": 1}
+duration_periods = 1
+on_enter = [{"fact": &"tournament_rounds_fought", "amount": 1}]
+
+[sub_resource type="Resource" id="Stage_final"]
+script = ExtResource("2_stage")
+stage_id = &"final"
+display_name = "The Final"
+requires = {"verb": &"fact", "id": &"tournament_rounds_fought", "need": 2}
+duration_periods = 1
+on_enter = [{"fact": &"tournament_final_fought", "amount": 1}]
+
+[resource]
+script = ExtResource("1_event")
+id = &"tournament_of_the_spirit_peaks"
+display_name = "The Tournament of the Spirit Peaks"
+description = "Every three years the sects who can reach the peaks send one entrant, and every three years somebody wins the mountain. This event decides WHO ENTERED and HOW FAR THE LADDER GOT. The exchanges themselves were fought elsewhere, and the winner arrives at the final as a verdict from outside."
+kind = &"tournament"
+trigger = {"verb": &"fact", "id": &"tournament_called", "need": 1}
+location_id = &"spirit_peaks"
+on_enter = []
+stages = Array[EventStageDef]([SubResource("Stage_registered"), SubResource("Stage_first_round"), SubResource("Stage_final")])
+pay = Array[Dictionary]([{"kind": &"fate", "id": &"first_blood_duel", "amount": 1}, {"kind": &"destiny", "id": &"the_chosen_instrument", "amount": 1}])

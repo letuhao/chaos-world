@@ -3,19 +3,20 @@ extends TestCase
 ## The qi path's price/rate pair, and the invariant the deleted power ladder
 ## existed to protect.
 ##
-## `QiRealmProfile.factor` is a bounded per-realm RATE (what one unit of
-## circulation work is worth); `QiRealmSeed.progress_required` is the PRICE. The
-## qi path's MAGNITUDES belong elsewhere — `dantian_capacity` for the reservoir,
-## applied once by `QiTraining.synchronize`, and `RealmScaling` (core) for the
-## shared combat stats — so nothing here may re-derive one. The contract is that
-## reward per unit of work never regresses, and that a breakthrough is never
-## cheaper than the one below it.
+## `RealmRate.factor` is a bounded per-realm RATE (what one unit of circulation
+## work is worth); `QiRealmSeed.progress_required` is the PRICE. The qi path's
+## MAGNITUDES belong elsewhere — `dantian_capacity` for the reservoir, applied once
+## by `QiTraining.synchronize`, and `RealmScaling` (core) for the shared combat
+## stats — so nothing here may re-derive one. The contract is that reward per unit
+## of work never regresses, and that a breakthrough is never cheaper than the one
+## below it.
 ##
-## The body path asserts the same property in `test_realm_profile.gd`. It is
-## duplicated rather than shared because a module may only reach another module
-## through its `api.gd` facade, and each suite reads its own path's seed and its
-## own path's profile class — so a regression in one path's content cannot hide
-## behind the other's.
+## The RATE is one shared curve in `core` (ADR 0066), asserted on its own terms in
+## `tests/core/test_realm_rate.gd`. This suite keeps the qi path's PRICE-side
+## pairing of that rate against this path's own authored budget, and it is
+## duplicated across the three paths rather than shared because each suite reads
+## its own path's seed — a regression in one path's content must not hide behind
+## another's.
 
 
 ## Cultivation work units needed to break into `realm_id`, measured from the realm
@@ -25,21 +26,21 @@ func _price_of(realm_id: StringName, below_id: StringName) -> float:
 	var seed := QiRealmSeed.for_realm(realm_id)
 	if seed == null or seed.progress_required <= 0.0:
 		return 0.0
-	return seed.progress_required / QiRealmProfile.factor(below_id)
+	return seed.progress_required / RealmRate.factor(below_id)
 
 
 func test_the_rate_rises_at_every_realm_and_stays_bounded() -> void:
 	var realms := RealmDefaults.ladder().realms()
 	var previous := 0.0
 	for realm in realms:
-		var rate := QiRealmProfile.factor(realm.id)
+		var rate := RealmRate.factor(realm.id)
 		assert_eq(rate > previous, true, "rate rises at %s" % realm.id)
 		previous = rate
-	assert_almost_eq(QiRealmProfile.factor(realms[0].id), 1.0, "R1 is neutral", 0.0001)
+	assert_almost_eq(RealmRate.factor(realms[0].id), 1.0, "R1 is neutral", 0.0001)
 	# The span is a consequence of the authored step, not a pasted number.
 	assert_almost_eq(
 		previous,
-		pow(QiRealmProfile.RATE_STEP, float(realms.size() - 1)),
+		pow(RealmRate.RATE_STEP, float(realms.size() - 1)),
 		"the span is the authored step compounded over the ladder",
 		0.0001
 	)
@@ -48,9 +49,7 @@ func test_the_rate_rises_at_every_realm_and_stays_bounded() -> void:
 
 func test_an_unknown_or_empty_realm_is_neutral() -> void:
 	for realm_id in [&"", &"not_a_realm"]:
-		assert_almost_eq(
-			QiRealmProfile.factor(realm_id), QiRealmProfile.NEUTRAL, "rate for %s" % realm_id
-		)
+		assert_almost_eq(RealmRate.factor(realm_id), RealmRate.NEUTRAL, "rate for %s" % realm_id)
 
 
 ## The dantian reservoir is the qi path's MAGNITUDE, authored per realm, and is
@@ -75,10 +74,9 @@ func test_dantian_capacity_is_the_authored_value_and_nothing_else() -> void:
 			)
 		)
 		QiCultivationApi.attach(actor)
-		QiCultivationApi.attach_dantian(actor)
 		actor.set_path(PathState.new(QiPath.PATH_ID, realm.id))
 		QiTraining.synchronize(actor)
-		var dantian := QiCultivationApi.dantian(actor)
+		var dantian := QiAccess.dantian(actor)
 		assert_ne(dantian, null, "dantian at %s" % realm.id)
 		if dantian == null:
 			continue
@@ -95,11 +93,11 @@ func test_dantian_capacity_is_the_authored_value_and_nothing_else() -> void:
 ## budget. The old quotient form (reward ratio over cost ratio) is unsatisfiable
 ## once the shared magnitude is gone: the only reward-per-unit-of-work left is the
 ## rate, and a rate cannot rise faster than the price it is measured against
-## without ceasing to be a rate. See `test_realm_profile.gd` in the body suite for
-## the full argument.
+## without ceasing to be a rate. See `tests/core/test_realm_rate.gd` for the rate
+## itself, and `test_realm_profile.gd` in the body suite for the full argument.
 func test_reward_per_labour_never_gets_worse_with_depth() -> void:
 	var realms := RealmDefaults.ladder().realms()
-	var entry_rate := QiRealmProfile.factor(realms[0].id)
+	var entry_rate := RealmRate.factor(realms[0].id)
 	var previous_rate := entry_rate
 	var previous_price := 0.0
 	var priced := 0
@@ -110,8 +108,8 @@ func test_reward_per_labour_never_gets_worse_with_depth() -> void:
 		var here_seed := QiRealmSeed.for_realm(here.id)
 		if seed == null or here_seed == null or seed.progress_required <= 0.0:
 			continue
-		var reward := QiRealmProfile.factor(target.id)
-		var price := seed.progress_required / QiRealmProfile.factor(here.id)
+		var reward := RealmRate.factor(target.id)
+		var price := seed.progress_required / RealmRate.factor(here.id)
 		# (1) Reward per unit of work never regresses.
 		assert_eq(reward >= entry_rate, true, "reward per labour holds at %s" % target.id)
 		assert_eq(reward > previous_rate, true, "reward per labour rises into %s" % target.id)

@@ -38,7 +38,7 @@ static func preview(actor: Actor) -> Dictionary:
 	if seed == null:
 		result["unmet_conditions"].append("no_seed_for_target")
 		return result
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	if dantian == null:
 		result["unmet_conditions"].append("no_dantian")
 		return result
@@ -58,7 +58,7 @@ static func preview(actor: Actor) -> Dictionary:
 		result["unmet_conditions"].append("missing_breakthrough_item")
 	for meridian_id in seed.required_meridians:
 		var channel := actor.meridians.get_meridian(meridian_id)
-		if channel == null or not channel.meets(seed.required_channel_state):
+		if not seed.channel_met(channel):
 			result["unmet_conditions"].append("channel_not_ready:%s" % meridian_id)
 	# Tier gates. These delegate to the same `Breakthrough` predicates `execute`
 	# enforces, so the preview can never disagree with the transaction about
@@ -72,11 +72,8 @@ static func preview(actor: Actor) -> Dictionary:
 	if not Breakthrough.ascension_ok(actor, target.index):
 		result["unmet_conditions"].append("ascension_not_complete")
 
-	# Calculate chance
-	var chance := clampf(
-		actor.stats.derived(Stat.BREAKTHROUGH_CHANCE) + dantian.quality * 0.5, 0.05, 0.95
-	)
-	result["chance"] = chance
+	# Calculate chance. Reads the dantian and nothing else (ADR 0051's rule).
+	result["chance"] = QiChance.of(dantian)
 	result["can_attempt"] = result["unmet_conditions"].is_empty()
 	result["costs"] = {
 		"breakthrough_item": seed.breakthrough_item,
@@ -93,6 +90,14 @@ static func preview(actor: Actor) -> Dictionary:
 ## two calls in one frame would advance two realms on a single pill with no
 ## progress, quality, channels, or tier gates checked.
 static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
+	# Face the tribulation owed for this path's next realm BEFORE validating anything
+	# (ADR 0061). This is the production entry point that makes R19-R30 reachable by
+	# play at all: nothing else in `src/` constructs a `Tribulation`, so without this the
+	# gate is a wall only a test can pass. One call fights ONE wave, and the return is
+	# discarded because a wave never opens the gate — the survivor is spent by the next
+	# attempt. A refusal at R19+ therefore mutates the actor: that is ADR 0061's one
+	# disclosed exception to ADR 0044, and nothing is granted and no pill is spent here.
+	Breakthrough.face_tribulation(actor, QiPath.PATH_ID, rng)
 	var state := actor.path(QiPath.PATH_ID)
 	if state == null:
 		return false
@@ -103,16 +108,15 @@ static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	if not Breakthrough.can_advance(actor, QiPath.PATH_ID, condition):
 		return false
 	var seed := QiRealmSeed.for_realm(target.id)
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	if seed == null or dantian == null:
 		return false
 	# Consume the pill
 	if not _ITEMS.consume_item(actor, seed.breakthrough_item):
 		return false
-	# Roll for success
-	var chance := clampf(
-		actor.stats.derived(Stat.BREAKTHROUGH_CHANCE) + dantian.quality * 0.5, 0.05, 0.95
-	)
+	# Roll for success. The same rule the preview reports: the dantian decides,
+	# never a quantity this attempt's own entry gate already pinned (ADR 0051).
+	var chance := QiChance.of(dantian)
 	var roll := randf() if rng == null else rng.randf()
 	if roll >= chance:
 		_deviate(actor, state, seed, dantian, rng)
@@ -136,8 +140,12 @@ static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	if pool != null:
 		pool.current = 0.0
 	QiTraining.synchronize(actor)
-	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD and actor.tribulation != null:
-		actor.tribulation.apply_result(actor, true)
+	# Nothing here decides a tribulation. `Breakthrough.resolve_tribulation` is the
+	# only place a fight is decided and the only place its award is paid, so the
+	# consumer of a survivor must not pay again: this used to call
+	# `apply_result(actor, true)` on entering a high tier, handing R19 twice the
+	# insight for one fight and stacking two `heavenly_blessing` statuses
+	# (ADR 0041/0061).
 	# Entering a high tier *commits* the milestone it produces; the next tier
 	# gates on it (ADR 0018-0021).
 	WorldAnchor.commit(actor, target.index)
@@ -156,7 +164,7 @@ static func cancel(actor: Actor) -> bool:
 	if target == null:
 		return false
 	var seed := QiRealmSeed.for_realm(target.id)
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	if seed == null or dantian == null:
 		return false
 	_deviate(actor, state, seed, dantian, null)

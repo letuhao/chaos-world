@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"water_deluge"
+element = &"water"
+kind = &"burst"
+scope = &"combat"
+stacking = &"replace"
+duration = 2.0
+magnitude_unit = &"health_share"
+magnitude_cap = 12.0
+tick_interval = 2.0
+mitigation_tags = Array[StringName]([&"affinity", &"gear"])
+payload = {
+"mechanic": &"wave",
+"text": "A full wave lands at once: one heavy, unblockable impact that spends its whole force the moment it arrives.",
+"pool": &"health",
+"share_per_pulse": 0.15,
+"spends_on_apply": true,
+"blockable": false,
+"modifiers": []
+}

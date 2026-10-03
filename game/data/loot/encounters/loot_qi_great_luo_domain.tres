@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"core_formation"
+rarity = &"common"
+vitality = 56.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"qi_great_luo_guardian", "table_id": &"loot_qi_great_luo_guardian"},
+	{"boss_id": &"qi_dao_fruit_guardian", "table_id": &"loot_qi_dao_fruit_guardian"},
+	{"boss_id": &"qi_immortal_sovereign_guardian", "table_id": &"loot_qi_immortal_sovereign_guardian"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"core_formation"
+rarity = &"rare"
+vitality = 89.6
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"qi_great_luo_guardian", "table_id": &"loot_qi_great_luo_guardian"},
+	{"boss_id": &"qi_dao_fruit_guardian", "table_id": &"loot_qi_dao_fruit_guardian"},
+	{"boss_id": &"qi_immortal_sovereign_guardian", "table_id": &"loot_qi_immortal_sovereign_guardian"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_qi_great_luo_domain"
+display_name = "Qi Great Luo Immortal Domain"
+domain_id = &"qi_great_luo_domain"
+boss_ids = Array[StringName]([&"qi_great_luo_guardian", &"qi_dao_fruit_guardian", &"qi_immortal_sovereign_guardian"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

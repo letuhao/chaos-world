@@ -39,26 +39,36 @@ func test_seed_defines_both_items_and_meridians() -> void:
 	assert_eq(seed.required_meridians.is_empty(), false, "requires meridians")
 
 
+## `continue` on a null seed is right — a realm with no seed is covered by
+## `test_every_realm_has_a_seed` — but it also means the loop below can assert
+## NOTHING and still pass. The counter is what makes "every realm" mean it: a
+## rename that broke every `load` would otherwise report green here.
 func test_seed_meridians_resolve_in_the_network() -> void:
 	var known: Array[StringName] = []
 	for def in MeridianDefaults.all():
 		known.append(def.id)
+	var checked := 0
 	for realm in RealmDefaults.ladder().realms():
 		var seed := BodyRealmSeed.for_realm(realm.id)
 		if seed == null:
 			continue
+		checked += 1
 		for meridian_id in seed.required_meridians:
 			assert_eq(known.has(meridian_id), true, "meridian %s exists" % meridian_id)
+	assert_eq(checked, 30, "every realm's seed was inspected")
 
 
 func test_seed_items_resolve_in_content() -> void:
+	var checked := 0
 	for realm in RealmDefaults.ladder().realms():
 		var seed := BodyRealmSeed.for_realm(realm.id)
 		if seed == null:
 			continue
+		checked += 1
 		for item_id in [seed.breakthrough_item, seed.strengthening_item]:
 			var path := "res://data/items/consumable/%s.tres" % item_id
 			assert_eq(ResourceLoader.exists(path), true, "item %s exists" % item_id)
+	assert_eq(checked, 30, "every realm's seed was inspected")
 
 
 # --- Acupoint definitions --------------------------------------------------

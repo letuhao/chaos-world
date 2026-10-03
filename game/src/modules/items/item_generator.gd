@@ -37,14 +37,13 @@ static func roll(def: ItemDef, rng: RandomNumberGenerator) -> Array[Dictionary]:
 	var count := roll_count(def)
 	if count <= 0:
 		return []
-	var realm_index := realm_index_for(def)
 	var rarity_index := ItemRarity.tier(def.rarity)
 	var realized: Array[Dictionary] = []
 	var used: Array[StringName] = []
 	for position in count:
 		var context: StringName = chosen[position % chosen.size()]
 		var effect := OptionCatalog.instance().roll_next(
-			def.activation(), context, used, realm_index, rarity_index, rng
+			def.activation(), context, used, def.realm, rarity_index, rng
 		)
 		if effect.is_empty():
 			break
@@ -61,12 +60,3 @@ static func roll_count(def: ItemDef) -> int:
 	if def.roll_spec.is_empty():
 		return from_rarity
 	return maxi(1, int(def.roll_spec.get("count", from_rarity)))
-
-
-## Index of the definition's realm on the canonical 30-realm ladder. Items with
-## no authored realm roll at the ladder's start; gates are a separate concern.
-static func realm_index_for(def: ItemDef) -> int:
-	if def.realm == &"":
-		return 0
-	var index := RealmDefaults.ladder().index_of(def.realm)
-	return maxi(0, index)

@@ -102,12 +102,13 @@ func test_magnitude_grows_with_the_authored_realm_scale() -> void:
 	# else: no second curve applied on top of it, and no ramp recomputed by the
 	# runtime. Same rarity at both ends, so rarity scales out of the ratio.
 	var catalog := OptionCatalog.instance()
-	var first := catalog.magnitude_bounds("magnitude", 0, 0)
-	var last := catalog.magnitude_bounds("magnitude", 29, 0)
+	var first := catalog.magnitude_bounds("magnitude", &"qi_refining", 0)
+	var last := catalog.magnitude_bounds("magnitude", &"primordial_origin", 0)
 	assert_eq(float(last["max"]) > float(first["max"]), true, "late realms roll higher")
 
 	var scale_span := (
-		OptionCatalog.realm_magnitude_scale(29) / OptionCatalog.realm_magnitude_scale(0)
+		OptionCatalog.realm_magnitude_scale(&"primordial_origin")
+		/ OptionCatalog.realm_magnitude_scale(&"qi_refining")
 	)
 	var item_span := float(last["max"]) / float(first["max"])
 	# The window is exactly base * scale * rarity, so the span IS the scale's span.
@@ -117,7 +118,9 @@ func test_magnitude_grows_with_the_authored_realm_scale() -> void:
 	# The scale is data of sane size, so the whole 30-realm span is a bounded,
 	# readable multiple rather than an astronomical one.
 	assert_eq(scale_span < 100.0, true, "the realm span stays a readable multiple")
-	assert_eq(OptionCatalog.realm_magnitude_scale(29) < INF, true, "and stays finite")
+	assert_eq(
+		OptionCatalog.realm_magnitude_scale(&"primordial_origin") < INF, true, "and stays finite"
+	)
 
 
 func test_consumable_restores_a_resource_once() -> void:

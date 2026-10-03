@@ -9,7 +9,7 @@ func can_breakthrough(actor: Actor, state: PathState, _context: Dictionary) -> b
 		return false
 	var target := RealmDefaults.ladder().next(state.rank_id)
 	var seed := QiRealmSeed.for_realm(target.id) if target != null else null
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	if seed == null or dantian == null:
 		return false
 	return (
@@ -40,12 +40,19 @@ func _dantian_ready(actor: Actor, state: PathState, seed: QiRealmSeed, dantian: 
 
 
 func describe() -> String:
-	return "Dantian filled and refined, channels trained, comprehension, and realm pill"
+	return (
+		"Dantian filled and refined, channels trained to the realm's depth, comprehension,"
+		+ " and realm pill"
+	)
 
 
+## Present, at the realm's state, and refined to the realm's depth. The whole
+## predicate is `QiRealmSeed.channel_met`, so this gate, `QiAdvancement.preview`
+## and `QiBreakthroughTransaction.preview` cannot disagree (ADR 0044) — the three
+## each carried their own copy, which is exactly how a preview came to report a
+## realm enterable while the transaction refused it.
 func _channels_ready(actor: Actor, seed: QiRealmSeed) -> bool:
 	for id in seed.required_meridians:
-		var channel := actor.meridians.get_meridian(id)
-		if channel == null or not channel.meets(seed.required_channel_state):
+		if not seed.channel_met(actor.meridians.get_meridian(id)):
 			return false
 	return true

@@ -7,6 +7,8 @@ extends TestCase
 ##
 ## Tests own the RNG: a roll is searched for deterministically, never hoped for.
 
+const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
+
 
 func _actor() -> Actor:
 	var actor := Actor.new(
@@ -32,6 +34,10 @@ func _stock(actor: Actor, def_id: StringName) -> void:
 ## Bring the actor to the brink of the next realm through public actions. Entry
 ## checks the source realm's milestones (ADR 0029), so the sea and the channels
 ## go to the *current* realm's targets.
+##
+## No drain and no hand-written progress. The transactional guarantees below are
+## only worth anything if the state they operate on is one a player can produce,
+## and this fixture used to produce it by emptying the sea itself.
 func _prepare(actor: Actor) -> MindRealmSeed:
 	var state := actor.path(MindPath.PATH_ID)
 	var target := RealmDefaults.ladder().next(state.rank_id)
@@ -46,21 +52,14 @@ func _prepare(actor: Actor) -> MindRealmSeed:
 	_stock(actor, source_seed.training_item)
 	_stock(actor, source_seed.sea_catalyst)
 	_stock(actor, source_seed.recovery_item)
-	for meridian_id in source_seed.required_meridians:
-		actor.meridians.repair_meridian(meridian_id)
-		var channel := actor.meridians.get_meridian(meridian_id)
-		if not channel.is_open():
-			actor.meridians.open_meridian(meridian_id)
-		actor.meridians.expand_meridian(meridian_id)
-		actor.meridians.strengthen_meridian(meridian_id)
+	assert_eq(
+		Probe.train_channels(actor, source_seed), true, "channels trained in %s" % state.rank_id
+	)
 	MindTraining.strengthen_sea(actor)
-	var sea := MindCultivationApi.sea(actor)
-	sea.calm(sea.turbulence)
-	sea.drain(actor, sea.current(actor))
-	while not sea.is_full(actor):
-		if not MindTraining.cultivate(actor, 500.0):
-			break
-	state.progress = target_seed.progress_required
+	assert_eq(Probe.calm_sea(actor), true, "sea calm in %s" % state.rank_id)
+	assert_eq(Probe.sharpen_sea(actor), true, "sea sharpened in %s" % state.rank_id)
+	assert_eq(Probe.earn_gate(actor, target_seed), true, "progress earned for %s" % target.id)
+	assert_eq(Probe.fill_sea(actor), true, "sea filled for %s" % target.id)
 	return target_seed
 
 

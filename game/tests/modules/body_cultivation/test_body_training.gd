@@ -93,8 +93,8 @@ func test_cultivate_stores_essence_and_progress() -> void:
 	var actor := _actor()
 	assert_eq(BodyTraining.cultivate(actor, 50.0), true, "cultivation applied")
 	assert_eq(actor.path(BodyPath.PATH_ID).progress > 0.0, true, "progress grew")
-	var points: AcupointSet = actor.component(&"acupoints")
-	assert_eq(points.current() > 0.0, true, "essence stored in the shared pool")
+	var integrity: ResourcePool = actor.resource(BodyStats.BODY_INTEGRITY)
+	assert_eq(integrity.current > 0.0, true, "essence stored in the shared pool")
 
 
 func test_cultivate_raises_quality_toward_target() -> void:
@@ -105,11 +105,15 @@ func test_cultivate_raises_quality_toward_target() -> void:
 	assert_eq(points[0].quality > 0.0, true, "quality trained upward")
 
 
+## `busy` is a re-entrancy guard that no production path can currently observe.
+## The guard's own contract lives in `test_busy_guard.gd`; this stays here only
+## because `cultivate` is the verb the other suite's guard check reaches.
 func test_cultivate_rejects_busy_set() -> void:
 	var actor := _actor()
 	var points: AcupointSet = actor.component(&"acupoints")
 	points.busy = true
 	assert_eq(BodyTraining.cultivate(actor, 10.0), false, "blocked while busy")
+	points.busy = false
 
 
 # --- Channel training ------------------------------------------------------
@@ -182,14 +186,20 @@ func test_recover_is_a_noop_on_a_healthy_channel() -> void:
 	)
 
 
+## The counter is the assertion that matters here: skipping a realm whose seed
+## failed to load is right, but it also means a rename that broke every `load`
+## would leave this loop asserting nothing at all and reporting green.
 func test_every_realm_authors_all_three_consumables() -> void:
+	var checked := 0
 	for def in RealmDefaults.ladder().realms():
 		var seed := BodyRealmSeed.for_realm(def.id)
 		if seed == null:
 			continue
+		checked += 1
 		assert_ne(seed.breakthrough_item, &"", "breakthrough item for %s" % def.id)
 		assert_ne(seed.strengthening_item, &"", "strengthening item for %s" % def.id)
 		assert_ne(seed.recovery_item, &"", "recovery item for %s" % def.id)
+	assert_eq(checked, 30, "every realm's seed was inspected")
 
 
 # --- Breakthrough ----------------------------------------------------------

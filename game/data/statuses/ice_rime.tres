@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"ice_rime"
+element = &"ice"
+on_landed_blow = true
+kind = &"control"
+scope = &"combat"
+stacking = &"refresh"
+duration = 9.0
+magnitude_unit = &"stat_modifier"
+magnitude_cap = 0.7
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique", &"pill"])
+payload = {
+"mechanic": &"slow",
+"text": "The wet cold locks in. They go stiff from the knees up and lose the balance that would have let them step out of the next one.",
+"modifiers": [
+{"stat": &"move_speed", "op": &"flat", "value": -40.0},
+{"stat": &"poise", "op": &"percent", "value": -0.3}
+]
+}

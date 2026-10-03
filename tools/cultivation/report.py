@@ -11,13 +11,17 @@ from __future__ import annotations
 import re
 
 from ..common import REPO_ROOT, ToolError, info, ok
-from .seed import minf
+from .ladder import attempt_band
 from .seed import realms as ladder_realms
 
 REALM_DIR = REPO_ROOT / "game" / "data" / "body_cultivation" / "realms"
 
 # Mirrors `BodyAdvancement.QUALITY_TO_CHANCE`.
 QUALITY_TO_CHANCE = 0.5
+
+# The fields `BodyRealmSeed` now derives rather than authors, so the report reads
+# the authored one and never reports a number the runtime does not use.
+DERIVED_FIELDS = ("work_required", "acupoint_work", "meridian_work")
 
 # Provider composition (BodyProvider.contribute) for a reference body at full
 # integrity with no meridian bonus, so the report shows the profile factors
@@ -41,7 +45,7 @@ COLUMNS = (
 
 
 def load(realm_id: str) -> dict:
-    """Parse one realm seed: scalars, StringNames, and StringName arrays."""
+    """Parse one realm seed: scalars, StringNames, StringName arrays, dict blocks."""
     path = REALM_DIR / f"{realm_id}.tres"
     if not path.is_file():
         raise ToolError(f"missing realm seed: {path.relative_to(REPO_ROOT).as_posix()}")
@@ -57,7 +61,16 @@ def load(realm_id: str) -> dict:
         key: re.findall(r'&"([^"]*)"', raw)
         for key, raw in re.findall(r"(?ms)^([a-z_]+)\s*=\s*Array\[StringName\]\(\[(.*?)\]\)", text)
     }
-    return {"scalars": scalars, "arrays": arrays}
+    # `rewards = {"physique": 2.0, ...}`. The ladder-granted physique audit reads
+    # this, and a reward it cannot see would make that audit silently vacuous.
+    dicts = {
+        key: {
+            option: float(value)
+            for option, value in re.findall(r'"([^"]+)"\s*:\s*(-?[\d.]+)', body)
+        }
+        for key, body in re.findall(r"(?ms)^([a-z_]+)\s*=\s*\{(.*?)\}", text)
+    }
+    return {"scalars": scalars, "arrays": arrays, "dicts": dicts}
 
 
 def derived_stats(seed: dict, strength: float) -> tuple[float, float, float]:
@@ -75,32 +88,63 @@ def derived_stats(seed: dict, strength: float) -> tuple[float, float, float]:
     return attack, defense, power * strength
 
 
-def chance_range(seed: dict) -> tuple[float, float]:
-    """Worst and best breakthrough chance for the realm, ignoring acupoints.
+def chance_range(seed: dict, ceiling: float | None = None) -> tuple[float, float]:
+    """Worst and best breakthrough chance for the realm, as an actor can reach it.
 
-    The floor is the realm's own `chance_base` with no huyệt trained; the best is
-    with every point at the realm's quality target. Both are clamped to
-    `chance_cap`, which is what guarantees no realm is a free success.
+    An actor attempting to ENTER this realm holds every unlocked huyệt at no less
+    than `quality_required` (that is what `_acupoints_ready` gates on) and at no more
+    than the previous realm's `quality_target` (that is what `cultivate` will not
+    exceed). `gate..ceiling` is therefore the whole span available at the moment of
+    the attempt, and `BodyAdvancement._chance` maps it through
+    `chance_base + quality * 0.5`, clamped to `chance_cap`.
+
+    `ceiling` defaults to this realm's own `quality_target`, which is the right answer
+    for the first realm (nothing below it) and an over-estimate for every other — the
+    ladder's `attempt_band` supplies the real ceiling.
+
+    When the two ends come out equal the band is degenerate: nothing an actor can
+    train separates the worst case from the best. The caller must report that rather
+    than print a range that looks like a choice.
     """
     scalars = seed["scalars"]
     base = float(scalars.get("chance_base", 0.0))
     cap = float(scalars.get("chance_cap", 1.0))
-    worst = minf(base, cap)
-    best = minf(base + float(scalars.get("quality_target", 0.0)) * QUALITY_TO_CHANCE, cap)
-    return worst, best
+    gate = float(scalars.get("quality_required", 0.0))
+    reach = float(scalars.get("quality_target", 0.0)) if ceiling is None else ceiling
+    return attempt_band(0, gate, reach, base, cap)
 
 
-def _row(index: int, realm_id: str, seed: dict, strength: float) -> tuple[str, ...]:
+def band_is_live(seed: dict, ceiling: float | None = None) -> bool:
+    """Whether acupoint quality can change this realm's outcome at all."""
+    worst, best = chance_range(seed, ceiling)
+    return best - worst > 1e-9
+
+
+def _ceiling_at(index: int, seeds: list[tuple[int, str, dict]]) -> float | None:
+    """The huyệt ceiling an actor has while attempting realm `index`.
+
+    Entering realm `index` means standing in realm `index - 1`, so the ceiling is the
+    PREVIOUS seed's `quality_target`. The first realm has no previous, so it is
+    `None` and `chance_range` falls back to its own target.
+    """
+    if index <= 0:
+        return None
+    return float(seeds[index - 1][2]["scalars"].get("quality_target", 0.0))
+
+
+def _row(
+    index: int, realm_id: str, seed: dict, strength: float, ceiling: float | None
+) -> tuple[str, ...]:
     scalars = seed["scalars"]
     attack, defense, power = derived_stats(seed, strength)
-    worst, best = chance_range(seed)
+    worst, best = chance_range(seed, ceiling)
     return (
         str(index + 1),
         realm_id,
         f"{strength:.2f}",
         f"{float(scalars.get('quality_required', 0.0)):.3f}",
         f"{float(scalars.get('quality_target', 0.0)):.3f}",
-        f"{float(scalars.get('work_required', 0.0)):.0f}",
+        f"{float(scalars.get('progress_required', 0.0)):.0f}",
         f"{float(scalars.get('insight_required', 0.0)):.0f}",
         str(scalars.get("resonance_rank", 0)),
         f"{worst:.2f}-{best:.2f}",
@@ -121,17 +165,24 @@ def run() -> int:
     info(" ".join(name.ljust(width) for name, width in COLUMNS))
     info(" ".join("-" * width for _, width in COLUMNS))
     for index, realm_id, seed in seeds:
-        row = _row(index, realm_id, seed, strengths[index])
+        row = _row(index, realm_id, seed, strengths[index], _ceiling_at(index, seeds))
         info(
             " ".join(
                 value.ljust(width) for value, (_, width) in zip(row, COLUMNS, strict=True)
             ).rstrip()
         )
 
-    total_work = sum(float(seed["scalars"].get("work_required", 0.0)) for _, _, seed in seeds)
-    worst_risk = min(
-        1.0 - chance_range(seed)[1] for _, _, seed in seeds if chance_range(seed)[1] < 1.0
-    )
+    total_work = sum(float(seed["scalars"].get("progress_required", 0.0)) for _, _, seed in seeds)
+    risks = [
+        (1.0 - chance_range(seed, _ceiling_at(index, seeds))[1], index + 1, realm_id)
+        for index, realm_id, seed in seeds
+    ]
+    worst_risk, worst_at, worst_realm = min(risks)
+    dead = [
+        (index + 1, realm_id)
+        for index, realm_id, seed in seeds
+        if not band_is_live(seed, _ceiling_at(index, seeds))
+    ]
     info("")
     info(f"realms: {len(seeds)}  total work: {total_work:.0f}")
     info(
@@ -141,15 +192,22 @@ def run() -> int:
     )
     info(
         f"breakthrough failure rate stays at or above {worst_risk * 100.0:.0f}% even with"
-        " perfect huyệt"
+        f" perfect huyệt (worst realm: R{worst_at} {worst_realm})"
+    )
+    if dead:
+        listed = ", ".join(f"R{index} {realm_id}" for index, realm_id in dead)
+        info(
+            f"warn {len(dead)} realm(s) have a zero-width chance band, so huyệt quality "
+            f"cannot enter the roll there and 'even with perfect huyệt' is vacuous: {listed}"
+        )
+    info(
+        "entry gate = the realm's own quality floor, set a headroom below the previous "
+        "realm's quality ceiling (ADR 0028)"
     )
     info(
-        "entry gate = previous realm's quality target; refinement gate = previous "
-        "realm's cap (ADR 0028)"
-    )
-    info(
-        "chance = chance_base + average huyệt quality * 0.5, capped by chance_cap;"
-        " comprehension does not enter the roll"
+        "chance = chance_base + average huyệt quality * 0.5, capped by chance_cap,"
+        " over the span quality_required..previous realm's quality_target that an actor"
+        " attempting this realm can actually hold; comprehension does not enter the roll"
     )
     ok(f"body ladder report for {len(seeds)} realms")
     return 0

@@ -18,6 +18,5 @@ subcategory = &"gem"
 stackable = false
 grade = &"earth"
 sources = Array[StringName]([&"gather"])
-value = 60
 tags = Array[StringName]([&"socket_item", &"socket_kind:utility"])
 description = "Socket item. Utility rune; while its host is worn it adds qi and stamina capacity."

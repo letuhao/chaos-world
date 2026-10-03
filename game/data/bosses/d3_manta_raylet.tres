@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d3_manta_raylet"
 display_name = "Frost Manta Ray Lesser"
 domain_id = &"marine_frost_mantaray_domain"
-loot = Array[StringName]([&"marine_frost_mantaray_wing_bone", &"marine_frost_mantaray_frost_essence", &"L3_manta_raylet_core", &"L3_manta_raylet_frost_veil", &"V4_spirit_abscissa_baetyl"])
+loot = Array[StringName]([])

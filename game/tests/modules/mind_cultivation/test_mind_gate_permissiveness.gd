@@ -95,6 +95,12 @@ func test_the_sea_fill_gate_is_closed_for_a_bare_actor() -> void:
 ## up to it. So the gate converges on exactly the realm's demand however much work
 ## is done, at every realm — which is what makes the demand a real target rather
 ## than a default that happens to be higher.
+##
+## There is no drain here, and that is the point. This test used to empty the sea
+## itself before every convergence run, because `cultivate` refused a full
+## reservoir — and a full reservoir is the state a real actor reaches first. The
+## fixture was doing the player's job, which is exactly why the refusal survived
+## a green suite.
 func test_cultivation_converges_clarity_and_purity_on_the_realm_targets() -> void:
 	for realm in RealmDefaults.ladder().realms():
 		if RealmDefaults.ladder().next(realm.id) == null:
@@ -105,7 +111,6 @@ func test_cultivation_converges_clarity_and_purity_on_the_realm_targets() -> voi
 		var high_sea := MindCultivationApi.sea(high)
 		high_sea.set_clarity(minf(1.0, seed.clarity_required))
 		high_sea.set_purity(minf(1.0, seed.purity_required))
-		high_sea.drain(high, high_sea.current(high))
 		MindTraining.cultivate(high, 5000.0)
 		assert_almost_eq(
 			high_sea.clarity,
@@ -124,17 +129,7 @@ func test_cultivation_converges_clarity_and_purity_on_the_realm_targets() -> voi
 		var low_sea := MindCultivationApi.sea(low)
 		low_sea.set_clarity(0.0)
 		low_sea.set_purity(0.0)
-		low_sea.drain(low, low_sea.current(low))
-		var guard := 0
-		while (
-			(low_sea.clarity < seed.clarity_required or low_sea.purity < seed.purity_required)
-			and guard < 64
-		):
-			guard += 1
-			if low_sea.is_full(low):
-				low_sea.drain(low, low_sea.current(low))
-			if not MindTraining.cultivate(low, 5000.0):
-				break
+		assert_eq(Probe.sharpen_sea(low), true, "clarity and purity converge at %s" % realm.id)
 		assert_almost_eq(
 			low_sea.clarity,
 			minf(1.0, seed.clarity_required),

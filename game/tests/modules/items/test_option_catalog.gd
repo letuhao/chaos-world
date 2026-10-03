@@ -37,10 +37,10 @@ func test_rarity_tier_mapping() -> void:
 
 func test_magnitude_bounds_scale_with_realm_and_rarity() -> void:
 	var catalog := _catalog()
-	var base: Dictionary = catalog.magnitude_bounds("magnitude", 0, 0)
-	assert_almost_eq(float(base["min"]), 1.0, "base min at realm 0")
-	assert_almost_eq(float(base["max"]), 10.0, "base max at realm 0")
-	var late: Dictionary = catalog.magnitude_bounds("magnitude", 29, 3)
+	var base: Dictionary = catalog.magnitude_bounds("magnitude", &"qi_refining", 0)
+	assert_almost_eq(float(base["min"]), 1.0, "base min at the first realm")
+	assert_almost_eq(float(base["max"]), 10.0, "base max at the first realm")
+	var late: Dictionary = catalog.magnitude_bounds("magnitude", &"primordial_origin", 3)
 	assert_eq(float(late["min"]) > float(base["min"]), true, "min grows")
 	assert_eq(float(late["max"]) > float(base["max"]), true, "max grows")
 

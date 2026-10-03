@@ -86,6 +86,16 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 ## realm's recovery item. This is the only action that clears a blockage, so
 ## every realm must author a `recovery_item` (ADR 0015/0023).
 ##
+## A blockage is cleared even when `meridian_id` names a meridian the actor has
+## NOT unlocked, and nothing else changes in that case. That case is a migration
+## path, not a route: `BodyAdvancement` will not jam a huyệt whose meridian is
+## off the network, so the shipped failure branch cannot produce one. What it can
+## produce is an actor carrying one — a save written before that rule, whose
+## `blocked` flag travelled through `Acupoint.from_dict` untouched. Refusing
+## there leaves that actor with no route to the next realm at all, which is the
+## one outcome this action exists to prevent, so it frees the huyệt and still
+## charges the item.
+##
 ## All-or-nothing: nothing is mutated unless the item is present and consumed.
 ## Returns true when the recovery actually changed something.
 static func recover(actor: Actor, meridian_id: StringName) -> bool:
@@ -98,20 +108,19 @@ static func recover(actor: Actor, meridian_id: StringName) -> bool:
 		return false
 	actor.meridians.unlock_for_realm(state.rank_id)
 	var channel := actor.meridians.get_meridian(meridian_id)
-	if channel == null:
-		return false
 	# Decide first, mutate second: a meridian with nothing to repair must not
 	# consume the item, and a failed consume must leave the blockage in place.
 	var linked: Array[Acupoint] = []
 	for point in acupoint_set.points:
 		if point.blocked and AcupointDefaults.meridian_of(point.id) == meridian_id:
 			linked.append(point)
-	if not channel.is_injured() and linked.is_empty():
+	var injured := channel != null and channel.is_injured()
+	if not injured and linked.is_empty():
 		return false
 	if not _ITEMS.consume_item(actor, seed.recovery_item):
 		return false
 	acupoint_set.busy = true
-	if channel.is_injured():
+	if injured:
 		actor.meridians.repair_meridian(meridian_id)
 	for point in linked:
 		point.clear_block()

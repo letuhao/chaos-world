@@ -18,7 +18,6 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"divine"
-value = 5000
 tags = Array[StringName]([&"celestial"])
 sources = Array[StringName]([&"craft:scroll_celestial_recipe"])
 description = "The ultimate scroll, containing celestial-grade cultivation truths."

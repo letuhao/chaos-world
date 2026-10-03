@@ -98,6 +98,34 @@ def tier_for(index: int, tiers: tuple[tuple[int, str], ...]) -> str:
     return chosen
 
 
+# DEF-0084: the qi and mind seeds drifted from this generator. The authored
+# `.tres` files are the shipped balance, so the formulas below are corrected to
+# reproduce them exactly rather than the other way round.
+#
+# The qi ladder is flat across the first step in two independent fields:
+# `progress_required` is 100 at both R1 and R2, and `dantian_quality_required`
+# is 0.50 at both. The `max(0, index - 1)` clamp is what encodes that flat, and
+# dropping it silently shifts every qi realm by one step of the ladder.
+def qi_progress(index: int) -> float:
+    """qi `progress_required`: exactly linear, 100 labour units per realm."""
+    return 100.0 * max(1, index)
+
+
+def qi_comprehension(index: int) -> float:
+    """qi `comprehension_required`: +2 per realm, flat across the R1->R2 step."""
+    return 10.0 + 2.0 * max(0, index - 1)
+
+
+def qi_dantian_quality(index: int) -> float:
+    """qi `dantian_quality_required`: +0.01 per realm, flat across R1->R2."""
+    return 0.50 + 0.01 * max(0, index - 1)
+
+
+def mind_comprehension(index: int) -> float:
+    """mind `comprehension_required` == body `insight_required`: 10 + 6i + 2i^2."""
+    return 10.0 + 6.0 * index + 2.0 * index * index
+
+
 def resource(class_name: str, script: str, lines: list[str]) -> str:
     return (
         f'[gd_resource type="Resource" script_class="{class_name}" load_steps=2 format=3]\n\n'
@@ -132,6 +160,7 @@ def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
         pill = f"{prefix}_breakthrough_pill"
         elixir = f"{prefix}_channel_elixir"
         sea_catalyst = f"{prefix}_sea_catalyst"
+        recovery = f"{prefix}_recovery_elixir"
         herb = f"{prefix}_{spec['prefix']}_herb"
         core = f"{prefix}_warden_core"
         boss = f"{prefix}_warden"
@@ -141,37 +170,67 @@ def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
         # realm being entered, because that is the vessel cultivated afterwards.
         source_index = max(0, index - 1)
         required = [channel for channel, unlock in CHANNELS if unlock <= source_index]
+        # The storage vessel grows by a quarter of its base capacity per realm and
+        # is authored identically for the dantian and the sea, so both systems read
+        # the same expression.
         storage_capacity = 100.0 * (1.0 + index * 0.25)
         clarity_target = 0.40 + 0.015 * index
         purity_target = 0.45 + 0.015 * index
-        comprehension_floor = 10.0 + 6.0 * index + 2.0 * index * index
-        cultivation_work = round(100.0 * max(1, index) ** 1.45)
-        sea_work = round(20.0 * (index + 1) ** 1.4)
-        meridian_work = round(15.0 * (index + 1) ** 1.4)
+        comprehension_floor = mind_comprehension(index)
+        lines = [
+            f'id = &"{realm_id}"',
+            f'breakthrough_item = &"{pill}"',
+            f'training_item = &"{elixir}"',
+        ]
+        if spec["prefix"] == "mind":
+            # Only the mind cultivates a sea of consciousness, so only the mind
+            # carries a sea catalyst. QiRealmSeed has no such field; writing one
+            # would invent a property the resource does not have.
+            lines.append(f'sea_catalyst = &"{sea_catalyst}"')
+        # Both systems author a recovery item: a failed attempt must stay
+        # repairable through content (ADR 0031).
+        lines.append(f'recovery_item = &"{recovery}"')
+        if spec["prefix"] == "qi":
+            # qi's ladder is linear where the mind's is not. See the helpers
+            # above for why the clamps are there.
+            lines.append(f"progress_required = {qi_progress(index):.1f}")
+            lines.append(f"comprehension_required = {qi_comprehension(index):.1f}")
+            lines.append(f"dantian_quality_required = {qi_dantian_quality(index):.2f}")
+            lines.append("dantian_fill_required = 1.0")
+            lines.append(f'dantian_tier = &"{tier_for(index, tiers)}"')
+            lines.append(f"required_meridians = {data._array_literal(required)}")
+            lines.append(f'required_channel_state = &"{spec["channel_state"]}"')
+            lines.append(f"channel_refinement_cap = {index + 1}")
+            lines.append(f"dantian_capacity = {storage_capacity:.1f}")
+            lines.append(f"rewards = {data._dict_literal([(spec['reward'], 2.0)])}")
+        else:
+            # The mind keeps the accelerating ladders: work grows at i^1.45, and
+            # comprehension is the quadratic 10 + 6i + 2i^2 whose insight floor is
+            # exactly half of it.
+            cultivation_work = round(100.0 * max(1, index) ** 1.45)
+            sea_work = round(20.0 * (index + 1) ** 1.4)
+            meridian_work = round(15.0 * (index + 1) ** 1.4)
+            lines.extend(
+                [
+                    f"progress_required = {cultivation_work}.0",
+                    f"comprehension_required = {comprehension_floor:.1f}",
+                    f"clarity_required = {clarity_target:.2f}",
+                    f"purity_required = {purity_target:.2f}",
+                    "sea_fill_required = 1.0",
+                    f'sea_tier = &"{tier_for(index, tiers)}"',
+                    f"required_meridians = {data._array_literal(required)}",
+                    f'required_channel_state = &"{spec["channel_state"]}"',
+                    f"channel_refinement_cap = {index + 1}",
+                    f"sea_capacity = {storage_capacity:.1f}",
+                    f"sea_milestone_work = {sea_work}.0",
+                    f"meridian_milestone_work = {meridian_work}.0",
+                    f"insight_required = {comprehension_floor * 0.5:.1f}",
+                    f"resonance_required = {max(0, index - 17)}",
+                    f"rewards = {data._dict_literal([(spec['reward'], 2.0)])}",
+                ]
+            )
         files[f"{spec['dir']}/realms/{realm_id}.tres"] = resource(
-            spec["class"],
-            spec["script"],
-            [
-                f'id = &"{realm_id}"',
-                f'breakthrough_item = &"{pill}"',
-                f'training_item = &"{elixir}"',
-                f'sea_catalyst = &"{sea_catalyst}"',
-                f"progress_required = {cultivation_work}.0",
-                f"comprehension_required = {comprehension_floor:.1f}",
-                f"{_quality_field(spec)} = {clarity_target:.2f}",
-                f"purity_required = {purity_target:.2f}",
-                f"{_fill_field(spec)} = 1.0",
-                f'{_tier_field(spec)} = &"{tier_for(index, tiers)}"',
-                f"required_meridians = {data._array_literal(required)}",
-                f'required_channel_state = &"{spec["channel_state"]}"',
-                f"channel_refinement_cap = {index + 1}",
-                f"{_capacity_field(spec)} = {storage_capacity:.1f}",
-                f"sea_milestone_work = {sea_work}.0",
-                f"meridian_milestone_work = {meridian_work}.0",
-                f"insight_required = {comprehension_floor * 0.5:.1f}",
-                f"resonance_required = {max(0, index - 17)}",
-                f"rewards = {data._dict_literal([(spec['reward'], 2.0)])}",
-            ],
+            spec["class"], spec["script"], lines
         )
         for item_id, category, subtype, source, name, description in (
             (
@@ -257,19 +316,3 @@ def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:
                 f"boss_ids = {data._array_literal([boss])}",
             ],
         )
-
-
-def _quality_field(spec: dict) -> str:
-    return "dantian_quality_required" if spec["prefix"] == "qi" else "clarity_required"
-
-
-def _fill_field(spec: dict) -> str:
-    return "dantian_fill_required" if spec["prefix"] == "qi" else "sea_fill_required"
-
-
-def _tier_field(spec: dict) -> str:
-    return "dantian_tier" if spec["prefix"] == "qi" else "sea_tier"
-
-
-def _capacity_field(spec: dict) -> str:
-    return "dantian_capacity" if spec["prefix"] == "qi" else "sea_capacity"

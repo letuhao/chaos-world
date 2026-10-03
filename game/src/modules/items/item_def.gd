@@ -13,7 +13,6 @@ extends Resource
 @export var grade: StringName = ItemGrade.MORTAL
 @export var stackable: bool = true
 @export var max_stack: int = 99
-@export var value: int = 0
 @export var tags: Array[StringName] = []
 @export var sources: Array[StringName] = []
 @export var description: String = ""

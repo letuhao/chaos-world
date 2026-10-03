@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"qi_refining"
+rarity = &"common"
+vitality = 40.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"qi_qi_refining_guardian", "table_id": &"loot_qi_qi_refining_guardian"},
+	{"boss_id": &"qi_foundation_guardian", "table_id": &"loot_qi_foundation_guardian"},
+	{"boss_id": &"qi_core_formation_guardian", "table_id": &"loot_qi_core_formation_guardian"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"qi_refining"
+rarity = &"rare"
+vitality = 64.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"qi_qi_refining_guardian", "table_id": &"loot_qi_qi_refining_guardian"},
+	{"boss_id": &"qi_foundation_guardian", "table_id": &"loot_qi_foundation_guardian"},
+	{"boss_id": &"qi_core_formation_guardian", "table_id": &"loot_qi_core_formation_guardian"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_qi_qi_refining_domain"
+display_name = "Qi Qi Refining Domain"
+domain_id = &"qi_qi_refining_domain"
+boss_ids = Array[StringName]([&"qi_qi_refining_guardian", &"qi_foundation_guardian", &"qi_core_formation_guardian"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

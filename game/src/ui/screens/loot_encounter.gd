@@ -6,11 +6,25 @@ extends UiScreen
 ## drop container are always listed, so nothing that exists in the world is hidden
 ## from the player.
 ##
-## It is a pure consumer. The gameplay side arrives as a [LootBridge] of plain
-## callables built by the composition root, so this screen names no module type and
-## no item type, and it owns no rule: every enabled state and every wording comes
-## from what the facade returned. Each rejected action leaves the actor untouched
-## and says why.
+## It is a pure consumer. The `loot` side arrives as a [LootBridge] of plain callables
+## built by the composition root, so this screen names no loot type and no item type, and
+## it owns no rule: every enabled state and every wording comes from what a facade
+## returned. The `combat` side is reached by name — `combat` is declared in
+## `rules.UI_MODULES`, so `CombatApi` is this program's declared door to it, and a fight
+## is `CombatApi.exchange` rather than a damage number a caller chose (ADR 0076). Each
+## rejected action leaves the actor untouched and says why.
+##
+## The encounter readout, including every figure in it, belongs to [LootBossPanel]. This
+## screen hands over two primitive views and formats nothing.
+##
+## ## The status readout is here too (ADR 0106)
+##
+## `status` is declared in `rules.UI_MODULES`, so [StatusApi] is this program's declared
+## door to it, exactly as `combat` is. `StatusApi.summary` is already primitives-only
+## (AGENTS.md's testable contract), so the active ids and their timers are read here
+## and the *wording* goes to the panel — a screen that printed `fire_immolation 4s`
+## itself would own a number format the panel is supposed to own, and the readout would
+## then have two places to change.
 ##
 ## Widgets live in `loot_encounter.tscn`; the four `ScreenStack` hooks are inherited
 ## from [UiScreen] and are safe to call at any time.
@@ -23,7 +37,6 @@ var _bridge: LootBridge = null
 var _domains: Array = []
 var _domain_index: int = -1
 var _tier_index: int = 0
-var _strike_damage: float = 25.0
 var _selected_encounter: String = ""
 var _focus_initialized: bool = false
 var _header_label: Label = null
@@ -31,29 +44,27 @@ var _domain_option: OptionButton = null
 var _tier_option: OptionButton = null
 var _gate_label: Label = null
 var _enter_button: Button = null
-var _boss_label: Label = null
-var _vitality_bar: ProgressBar = null
-var _vitality_label: Label = null
 var _strike_button: Button = null
 var _leave_button: Button = null
 var _bonus_label: Label = null
+var _boss_panel: LootBossPanel = null
 var _reward_list: LootRewardList = null
 var _stash_list: LootRewardList = null
 
 
 ## Inject the gameplay side. Safe to call again; the domains are re-read.
+##
+## Repaints, and that is the point rather than a convenience. `bind_bridge` used to
+## fill the selectors and stop, so a screen bound to an actor that already had a
+## reward showed an EMPTY reward list: the drops were in the world and nothing on
+## screen said so until the player pressed an unrelated control and the refresh
+## happened as a side effect. A defeated boss's payload was invisible until you
+## touched something else.
 func bind_bridge(bridge: LootBridge) -> void:
 	_bind_nodes()
 	_bridge = bridge
-	_strike_damage = 25.0 if bridge == null else bridge.strike_damage
 	_domains = _read_domains()
 	_refresh_domains()
-
-
-## How much damage one strike deals. Authored per caller, never derived from the
-## actor's gear here: boss vitality is content, and the fight is the caller's.
-func set_strike_damage(damage: float) -> void:
-	_strike_damage = maxf(0.0, damage)
 	refresh()
 
 
@@ -103,16 +114,32 @@ func act_enter() -> bool:
 	return _accepted(result)
 
 
-## Deal one strike's worth of damage to the live boss.
+## Exchange one blow with the live boss.
 func act_strike() -> bool:
 	_bind_nodes()
-	if _bridge == null or not _bridge.has(&"strike"):
-		return _reject("no_loot_module")
+	if _actor == null:
+		return _reject("no_actor")
 	if not _in_domain():
 		return _reject("not_in_domain")
-	var result := _bridge.call_action(&"strike", [_actor, _strike_damage, STRIKE_SEED])
+	var result := CombatApi.exchange(_actor, STRIKE_SEED)
 	_settle(result)
+	var outcome := String(result.get("outcome", ""))
+	if outcome == CombatApi.OUTCOME_PLAYER_LOST:
+		return _lost()
+	if outcome == CombatApi.OUTCOME_BOSS_DEFEATED:
+		set_message("The boss falls.", TONE_OK)
+		refresh()
+		return true
 	return _accepted(result)
+
+
+## A lost run is not a refusal: the player did everything right and the boss was better.
+## The panel shows their restored health and the loss they just took, so these words only
+## have to name what happened.
+func _lost() -> bool:
+	set_message("You fall. The run is lost.", TONE_ERROR)
+	refresh()
+	return true
 
 
 ## Leave the domain. Unclaimed rewards are kept, so this never loses anything.
@@ -140,14 +167,36 @@ func act_pickup(drop_id: String) -> bool:
 
 
 ## Take every claimable drop of the listed reward.
-func act_take_all() -> bool:
+##
+## ## Why this takes the encounter id the signal sends
+##
+## `LootRewardList.take_all_requested` declares one argument, and this used to take
+## none, so Godot refused the connection with "Method expected 0 argument(s), but
+## called with 1". The button rendered, was enabled, and did nothing but log -- the
+## exact shape of a control that looks alive and is dead.
+##
+## The alternative was `.unbind(1)`, which makes the arity match by throwing the
+## payload away. That is worse: the signal would keep declaring an id it does not
+## use, and the one piece of information that says *which* reward the button belongs
+## to would be discarded in transit. So the parameter is taken, with a default so
+## the zero-argument callers keep working -- `tools ui drive` invokes `act_take_all()`
+## with no arguments and so does the headless suite.
+##
+## The id is then checked rather than trusted. This screen lists exactly one reward
+## (`rewards[0]`), so a signal naming a *different* one means the button belongs to
+## a reward that is no longer the one on screen, and taking everything from a reward
+## the player cannot see is worse than refusing. That refusal is named
+## `stale_reward` so it reads as a refusal.
+func act_take_all(encounter_id: String = "") -> bool:
 	_bind_nodes()
 	if _bridge == null or not _bridge.has(&"pickup_all"):
 		return _reject("no_loot_module")
-	var encounter_id := _reward_list.encounter_id()
-	if encounter_id.is_empty():
+	var shown := _reward_list.encounter_id()
+	if shown.is_empty():
 		return _reject("no_reward_selected")
-	var result := _bridge.call_action(&"pickup_all", [_actor, encounter_id])
+	if not encounter_id.is_empty() and encounter_id != shown:
+		return _reject("stale_reward")
+	var result := _bridge.call_action(&"pickup_all", [_actor, shown])
 	_settle(result)
 	return _accepted(result)
 
@@ -172,6 +221,8 @@ func _summary() -> Dictionary:
 	var rewards: Array = state.get("rewards", [])
 	var shown: Dictionary = _reward_list.summary()
 	var stashed: Dictionary = _stash_list.summary()
+	var boss: Dictionary = _boss_panel.summary()
+	var active := state.get("active", {}) as Dictionary
 	return {
 		"has_actor": _actor != null,
 		"actor_id": String(_actor.id),
@@ -182,10 +233,10 @@ func _summary() -> Dictionary:
 		"tier_label":
 		_tier_option.get_item_text(_tier_option.selected) if _tier_count() > 0 else "",
 		"in_domain": _in_domain(),
-		"boss_id": String((state.get("active", {}) as Dictionary).get("boss_id", "")),
-		"encounter_id": String((state.get("active", {}) as Dictionary).get("encounter_id", "")),
-		"vitality": float((state.get("active", {}) as Dictionary).get("vitality", 0.0)),
-		"vitality_max": float((state.get("active", {}) as Dictionary).get("vitality_max", 0.0)),
+		"boss_id": String(active.get("boss_id", "")),
+		"encounter_id": String(active.get("encounter_id", "")),
+		"vitality": float(active.get("vitality", 0.0)),
+		"vitality_max": float(active.get("vitality_max", 0.0)),
 		"reward_count": rewards.size(),
 		"reward_encounter_id": String(shown.get("encounter_id", "")),
 		"pending_drops": int(state.get("pending_drops", 0)),
@@ -197,8 +248,21 @@ func _summary() -> Dictionary:
 		"loot_bonus": float(state.get("loot_bonus", 0.0)),
 		"enabled": _enabled(),
 		"gate": _gate_label.text,
-		"vitality_label": _vitality_label.text,
+		"vitality_label": _boss_panel.vitality_text(),
+		"boss_label": _boss_panel.boss_text(),
+		"player_label": _boss_panel.player_text(),
+		"defeat_label": _boss_panel.defeat_text(),
+		# The status line is the panel's sentence; the ids behind it stay structured
+		# under `boss` rather than being mirrored here as a flat list. A flat copy is a
+		# second thing that can be wrong — and the obvious one to get wrong is the
+		# catalogue's `ids`, which names every status the game has authored rather than
+		# the ones the player is carrying.
+		"status_label": _boss_panel.status_text(),
+		"health": float(boss.get("health", 0.0)),
+		"health_max": float(boss.get("health_max", 0.0)),
+		"defeats": int(boss.get("defeats", 0)),
 		"bonus": _bonus_label.text,
+		"boss": boss,
 		"reward": shown,
 		"stashed": stashed,
 	}
@@ -224,17 +288,19 @@ func _bind_nodes() -> void:
 	_tier_option = get_node_or_null("%TierOption") as OptionButton
 	_gate_label = get_node_or_null("%GateLabel") as Label
 	_enter_button = get_node_or_null("%EnterButton") as Button
-	_boss_label = get_node_or_null("%BossLabel") as Label
-	_vitality_bar = get_node_or_null("%VitalityBar") as ProgressBar
-	_vitality_label = get_node_or_null("%VitalityLabel") as Label
+	_boss_panel = get_node_or_null("%BossPanel") as LootBossPanel
 	_strike_button = get_node_or_null("%StrikeButton") as Button
 	_leave_button = get_node_or_null("%LeaveButton") as Button
 	_bonus_label = get_node_or_null("%BonusLabel") as Label
 	_reward_list = get_node_or_null("%RewardList") as LootRewardList
 	_stash_list = get_node_or_null("%StashList") as LootRewardList
-	_reward_list.pickup_requested.connect(act_pickup)
+	_reward_list.row_action_requested.connect(act_pickup)
 	_reward_list.take_all_requested.connect(act_take_all)
-	_stash_list.pickup_requested.connect(act_reclaim)
+	# One signal, two meanings: the list says "this row's action was pressed" and the
+	# screen decides what that means for the list it belongs to. The stash list's
+	# action is a reclaim, and routing it here is what makes the world-drop-container
+	# overflow branch reachable at all.
+	_stash_list.row_action_requested.connect(act_reclaim)
 	if (
 		_domain_option != null
 		and not _domain_option.item_selected.is_connected(_on_domain_selected)
@@ -333,29 +399,41 @@ func _in_domain() -> bool:
 	return bool((_state().get("active", {}) as Dictionary).get("in_domain", false))
 
 
+## The player's own fight state, as primitives. Read through the `combat` facade, which
+## `ui/` may name because `combat` is declared in `rules.UI_MODULES`. Empty when there is
+## no actor, so the panel reads "no health" rather than a fabricated pool.
+func _player_view() -> Dictionary:
+	return CombatApi.preview(_actor) if _actor != null else {}
+
+
+## What is on the player right now, as primitives (ADR 0106).
+##
+## Read through the `status` facade, which `ui/` may name because `status` is declared
+## in `rules.UI_MODULES`. `{}` with no actor, so a panel bound to nothing reads "no
+## statuses" rather than a fabricated one. Nothing here is formatted: the raw dict is
+## what the panel renders, and the screen formats no figure.
+func _status_view() -> Dictionary:
+	return StatusApi.summary(_actor) if _actor != null else {}
+
+
 func _render_encounter() -> void:
 	var state := _state()
 	var active := state.get("active", {}) as Dictionary
 	var descriptor := _selected_descriptor()
-	_gate_label.text = _gate_text(descriptor, state)
+	var required := float(descriptor.get("key_reach", 0.0))
+	var carrying := float(state.get("key_reach", 0.0))
+	# Every figure on these two lines belongs to the panel; the screen routes the
+	# panel's sentences to the labels and formats nothing itself (AGENTS.md).
+	_gate_label.text = _boss_panel.gate_text(required, carrying)
 	# The player's own `loot_bonus` is shown whether or not a boss is live, so the
 	# number that shapes every drop is never hidden.
-	_bonus_label.text = "Loot bonus %.2f" % float(state.get("loot_bonus", 0.0))
-	if not bool(active.get("in_domain", false)):
-		_boss_label.text = "Outside a domain"
-		_vitality_bar.value = 0.0
-		_vitality_label.text = ""
-		return
-	_boss_label.text = String(active.get("boss_id", ""))
-	_vitality_bar.max_value = maxf(1.0, float(active.get("vitality_max", 1.0)))
-	_vitality_bar.value = clampf(float(active.get("vitality", 0.0)), 0.0, _vitality_bar.max_value)
-	_vitality_label.text = (
-		"%d / %d vitality"
-		% [
-			int(active.get("vitality", 0.0)),
-			int(active.get("vitality_max", 0.0)),
-		]
-	)
+	_bonus_label.text = _boss_panel.bonus_text(float(state.get("loot_bonus", 0.0)))
+	# Both sides of the fight, and both sides' wording, belong to the panel. The screen
+	# passes the two primitive views through and formats nothing (ADR 0076).
+	_boss_panel.show_fight(active, _player_view())
+	# What is eating the player belongs on the same line (ADR 0106), and it is a
+	# facade read like the other two: no status rule is re-derived here.
+	_boss_panel.show_statuses(_status_view().get("active", []))
 
 
 func _render_lists() -> void:
@@ -387,19 +465,14 @@ func _enabled() -> Dictionary:
 			and not _in_domain()
 			and _selected_domain_id() != ""
 		),
-		"strike": _bridge != null and _bridge.has(&"strike") and _in_domain(),
+		# `strike` is deliberately not gated on the loot bridge: the exchange is the
+		# `combat` module's own verb (ADR 0076), so it is offered whenever a boss is live.
+		"strike": _in_domain(),
 		"leave": _bridge != null and _bridge.has(&"leave") and _in_domain(),
 		"pickup": _bridge != null and _bridge.has(&"pickup") and _can_pick_up(),
 		"take_all": _bridge != null and _bridge.has(&"pickup_all") and _can_pick_up(),
 		"reclaim": _bridge != null and _bridge.has(&"reclaim") and _can_reclaim(),
 	}
-
-
-func _gate_text(descriptor: Dictionary, state: Dictionary) -> String:
-	var required := int(descriptor.get("key_reach", 0))
-	if required <= 0:
-		return "Open domain"
-	return "Needs key reach %d, carrying %d" % [required, int(state.get("key_reach", 0.0))]
 
 
 func _header_text() -> String:

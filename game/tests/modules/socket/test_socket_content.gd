@@ -56,14 +56,13 @@ func test_every_authored_value_sits_inside_its_realm_and_rarity_window() -> void
 	var catalog := OptionCatalog.instance()
 	for item_id in _ids():
 		var def := SocketApi.resolve_content(item_id)
-		var realm_index := maxi(0, RealmDefaults.ladder().index_of(def.realm))
+		var realm_id := def.realm
 		var rarity_index := OptionCatalog.rarity_tier(def.rarity)
 		for entry in def.fixed_modifiers:
 			var option_id := StringName(entry.get("option_id", ""))
 			var record := catalog.option_record(option_id)
-			var window := catalog.magnitude_bounds(
-				String(record["unit"]), realm_index, rarity_index
-			)
+			# Keyed by realm id, never by ladder position (ADR 0050).
+			var window := catalog.magnitude_bounds(String(record["unit"]), realm_id, rarity_index)
 			var value := float(entry.get("value", 0.0))
 			assert_eq(value != 0.0, true, "%s: %s grants something" % [item_id, option_id])
 			# `%s` on both sides, never `%g`/`%.4f`: Godot's `%` operator has no

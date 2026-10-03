@@ -199,21 +199,38 @@ func test_deviation_targets_the_deepest_channel_and_its_own_huyet() -> void:
 	assert_eq(jammed_on_target, true, "a huyệt on the torn channel was jammed too")
 
 
-## Across realms, the torn channel must not always be the first one listed.
-func test_the_torn_channel_is_not_always_the_first_required() -> void:
-	var torn_ids: Dictionary = {}
-	var attempts := 0
-	while attempts < 40 and torn_ids.size() < 2:
+## The wound lands on the channel the actor trained DEEPEST. That is a statement
+## about depth, not about position in the seed's list.
+##
+## This used to be called "the torn channel is not always the first required",
+## which the game never did and the test never checked: with an even network
+## `_deepest_required_channel` breaks its tie toward `required_meridians[0]`, so
+## the wound is always that channel, and the assertion it carried
+## (`torn_ids.size() >= 1`) passed for exactly the regression the file exists to
+## prevent. What is true -- and what has to be pinned -- is that the location
+## FOLLOWS THE DEPTH: train one channel past the rest and the wound moves there,
+## for every position in the list and not only the first.
+func test_the_torn_channel_follows_depth_not_position() -> void:
+	var rng := RandomNumberGenerator.new()
+	var landed := 0
+	# Bounded: one attempt per required channel. A realm requiring four channels
+	# is four attempts, minus any roll that succeeds instead of deviating.
+	for index in 4:
 		var actor := _actor()
 		var seed := _prepare(actor)
-		if seed == null:
+		assert_ne(seed, null, "prepared a fresh actor")
+		if seed.required_meridians.size() <= index:
 			break
-		var rng := RandomNumberGenerator.new()
-		rng.seed = 977 + attempts
+		var target: StringName = seed.required_meridians[index]
+		# Take this one channel a step past the rest, so the deepest is the one at
+		# this position in the list rather than the first.
+		assert_eq(actor.meridians.refine_meridian(target, 9), true, "deepened %s" % target)
+		assert_eq(actor.meridians.refine_meridian(target, 9), true, "deepened %s" % target)
+		rng.seed = 5501 + index
 		if BodyAdvancement.try_breakthrough(actor, rng):
-			attempts += 1
 			continue
-		for meridian_id in _wounded_required(actor, seed):
-			torn_ids[meridian_id] = true
-		attempts += 1
-	assert_eq(torn_ids.size() >= 1, true, "at least one wound landed: %s" % str(torn_ids.keys()))
+		var wounded := _wounded_required(actor, seed)
+		assert_eq(wounded.size(), 1, "one channel came out wounded: %s" % str(wounded))
+		landed += 1
+		assert_eq(wounded[0], target, "the deepest channel was the torn one (%s)" % target)
+	assert_eq(landed >= 2, true, "at least two deviations landed (%d)" % landed)

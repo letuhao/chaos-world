@@ -148,24 +148,42 @@ static func is_locked(def_or_id, option_id: StringName) -> bool:
 	return UniqueItem.is_locked(_as_def(def_or_id), option_id)
 
 
-## The declared drop route for a unique, straight from the authored route index:
-## `{unique_id, set_id, boss_id, domain_id, route_realm, min_rarity,
-## drop_weight, slot, declared}`. `declared` is false when the unique has no
-## route, so a caller can never mistake "no route" for "route resolved".
+## The declared drop route for a unique: `{unique_id, set_id, boss_id,
+## domain_id, route_realm, min_rarity, drop_weight, item_subtype, declared}`.
+##
+## `boss_id` is read from the definition's own `unique_route:<boss>` tag, because
+## that tag is what the loot runtime enforces — it is the one declaration that
+## cannot drift from behaviour. `item_subtype` is the definition's own
+## `subcategory`. The index carries the drop tuning only. `declared` is true only
+## when the tag names a boss *and* a tuning row exists, so a caller can never
+## mistake a half-declared route for a resolved one.
 static func drop_route(item_id: StringName) -> Dictionary:
 	var catalog := SetCatalog.instance()
+	var def := catalog.definition(item_id)
+	var boss_id := UniqueItem.route_boss_id(def)
+	var subtype := "" if def == null else String(def.subcategory)
 	var row := catalog.route(item_id)
-	if row.is_empty():
-		return {"unique_id": String(item_id), "boss_id": "", "domain_id": "", "declared": false}
+	if row.is_empty() or boss_id == &"":
+		return {
+			"unique_id": String(item_id),
+			"set_id": "",
+			"boss_id": "",
+			"domain_id": "",
+			"route_realm": "",
+			"min_rarity": "",
+			"drop_weight": 0.0,
+			"item_subtype": subtype,
+			"declared": false,
+		}
 	return {
 		"unique_id": String(item_id),
 		"set_id": OptionCatalog.text_field(row, "set_id"),
-		"boss_id": OptionCatalog.text_field(row, "boss_id"),
+		"boss_id": String(boss_id),
 		"domain_id": OptionCatalog.text_field(row, "domain_id"),
 		"route_realm": OptionCatalog.text_field(row, "route_realm"),
 		"min_rarity": OptionCatalog.text_field(row, "min_rarity"),
 		"drop_weight": float(row.get("drop_weight", 1.0)),
-		"slot": OptionCatalog.text_field(row, "slot"),
+		"item_subtype": subtype,
 		"declared": true,
 	}
 
@@ -206,6 +224,12 @@ static func _set_view(set_def: SetDef, entry: Dictionary) -> Dictionary:
 	var members: Array = entry.get("members", [])
 	var slots: Dictionary = entry.get("slots", {})
 	var active: Array = entry.get("active_tiers", [])
+	# A set may be authored wider than a body (the void coil has six members and
+	# five slots), so "complete" means every member a body could wear, not every
+	# member the set names — otherwise a full set reads as permanently
+	# incomplete. `equippable_count` is that ceiling; `member_count` stays the
+	# authored total.
+	var equippable := set_def.max_equippable()
 	var out := {
 		"set_id": String(set_def.id),
 		"display_name": set_def.display_name,
@@ -214,8 +238,9 @@ static func _set_view(set_def: SetDef, entry: Dictionary) -> Dictionary:
 		"rarity": ItemRarity.display_name(set_def.rarity),
 		"counting": String(set_def.counting),
 		"member_count": set_def.member_count(),
+		"equippable_count": equippable,
 		"equipped_count": members.size(),
-		"complete": members.size() == set_def.member_count(),
+		"complete": members.size() >= equippable,
 		"members": [],
 		"thresholds": [],
 		"active_threshold_count": active.size(),

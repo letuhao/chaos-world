@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="TechniqueDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[ext_resource type="Script" path="res://src/modules/items/item_requirement.gd" id="2_req"]
+
+[sub_resource type="Resource" id="Requirement"]
+script = ExtResource("2_req")
+min_realm_index = 18
+
+[resource]
+script = ExtResource("1_def")
+id = &"shared_bone_mending_splint"
+display_name = "Bone Mending Splint"
+description = "Splints and knits a fracture between one breath and the next. Pure restoration; the qi goes into the mend and none of it comes back as a strike."
+tags = Array[StringName]([&"technique", &"shared", &"universal_slot", &"utility", &"no_element"])
+grade = &"earth"
+rarity = &"magic"
+element = &""
+schools = Array[StringName]([&"foundation"])
+active = true
+path = &"shared"
+qi_cost = 0.0
+stamina_cost = 14.0
+cooldown = 45.0
+mastery_rungs = 5
+magnitude = 1.3
+requirement = SubResource("Requirement")

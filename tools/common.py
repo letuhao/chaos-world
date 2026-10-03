@@ -13,7 +13,8 @@ MODULES_DIR = SRC_DIR / "modules"
 TESTS_DIR = GAME_DIR / "tests"
 DOCS_DIR = REPO_ROOT / "docs"
 ADR_DIR = DOCS_DIR / "adr"
-ARCH_DIR = Path(__file__).resolve().parent / "arch"
+TOOLS_DIR = Path(__file__).resolve().parent
+ARCH_DIR = TOOLS_DIR / "arch"
 REGISTRY_PATH = ARCH_DIR / "registry.json"
 
 

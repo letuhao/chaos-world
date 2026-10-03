@@ -9,9 +9,10 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from typing import NamedTuple
 
 from . import item_migrate, options
-from .common import REPO_ROOT, ToolError, fail, info, ok, warn
+from .common import REPO_ROOT, SRC_DIR, ToolError, fail, info, ok, warn
 from .options import (
     CATEGORY_ACTIVATION,
     DEFAULT_CATALOG,
@@ -64,13 +65,14 @@ def _load_realms() -> None:
     }
 
 
-def _magnitude_bounds(unit: str, realm_index: int, rarity_index: int) -> tuple[float, float]:
+def _magnitude_bounds(unit: str, realm_id: str, rarity_index: int) -> tuple[float, float]:
     """Option value window, read from the same source the runtime uses.
 
-    Delegates to the option module so the gate can never validate authored content
-    against numbers the game does not roll.
+    Keyed by realm ID, never by ladder position (ADR 0050). Delegates to the option
+    module so the gate can never validate authored content against numbers the game
+    does not roll.
     """
-    window = option_magnitude_bounds(unit, realm_index, rarity_index)
+    window = option_magnitude_bounds(unit, realm_id, rarity_index)
     return float(window["min"]), float(window["max"])
 
 
@@ -99,10 +101,33 @@ SCHEMA = {
         "entries": "item_id",
         "nested": "table_id",
     },
-    "loot_tier": {"id": "id", "arrays": ["boss_tables"], "scalars": ["realm", "rarity"]},
+    "loot_tier": {
+        "id": "id",
+        "arrays": [],
+        "scalars": ["realm", "rarity"],
+        "bindings": "boss_tables",
+    },
     "recipes": {"id": "id", "arrays": ["inputs", "outputs"], "scalars": ["station"]},
     "bosses": {"id": "id", "arrays": ["loot"], "scalars": ["domain_id"]},
     "domains": {"id": "id", "arrays": ["boss_ids"], "scalars": []},
+    # Fate and destiny content is stat-bearing like items but has no acquisition
+    # graph, so it gets its own schema rather than borrowing the items rules: the
+    # gates that matter here are a real stat id and a FLAT/PERCENT split that
+    # respects `Stat.RATE_STATS`. A bad stat id in a `.tres` is otherwise silent,
+    # because nothing re-reads the field after load.
+    "fate": {
+        "id": "id",
+        "arrays": ["counters", "tags"],
+        "dicts": ["flat_modifiers", "percent_modifiers"],
+        "scalars": ["category", "visibility"],
+        "rate_stats": True,
+    },
+    "destiny": {
+        "id": "id",
+        "arrays": ["grants_fates", "requires_fates", "requires_destinies", "gate_aliases"],
+        "dicts": [],
+        "scalars": ["group", "visibility"],
+    },
 }
 TYPE_BY_FOLDER = {
     "items": "item",
@@ -115,6 +140,8 @@ TYPE_BY_FOLDER = {
     "sets/items": "item",
     "loot/tables": "loot_table",
     "loot": "loot_tier",
+    "destiny/fates": "fate",
+    "destiny/destinies": "destiny",
 }
 # Folder prefix -> the schema that parses it. Several prefixes share one schema:
 # a feature module's item namespace is gated by exactly the `items` rules.
@@ -127,14 +154,81 @@ SCHEMA_FOR_PREFIX = {
     "recipes": "recipes",
     "bosses": "bosses",
     "domains": "domains",
+    "destiny/fates": "fate",
+    "destiny/destinies": "destiny",
 }
 BASE_SOURCES = {"gather", "starter"}
+# A numeraire is the economy's unit of account, held as an integer purse
+# (`economy/api.gd` `purse(actor) -> int`), not as an item in an inventory. ADR 0099:
+# it is exempt from the acquisition requirement and must declare no source at all.
+NUMERAIRE_SUBCATEGORY = "numeraire"
 # Stats whose flat modifier is a fraction rather than a magnitude (ADR 0022).
 FRACTION_FLAT_STATS = {"damage_reduction"}
 REF_SOURCES = {"craft": "recipe", "boss": "boss", "domain": "domain"}
 # `quest` is accepted but not reference-checked: there is no QuestDef resource yet.
 UNCHECKED_SOURCES = {"quest"}
 KNOWN_SOURCE_TYPES = BASE_SOURCES | set(REF_SOURCES) | UNCHECKED_SOURCES
+
+
+# --- Runtime availability ----------------------------------------------------
+# "Obtainable in the content graph" and "obtainable by code that ships" are two
+# different questions, and only the first one is a statement about content.
+# `ItemDef.sources` (`src/modules/items/item_def.gd:18`) is authoring metadata:
+# nothing in `game/src` reads it, so naming a source proves nothing about whether
+# a player can ever hold the item. Every source type below declares the shipping
+# code that would deliver it plus the membership an item must satisfy to be
+# delivered through that code. A source type with no entry has no route at all,
+# so items resting on it are graph-obtainable and runtime-unreachable, and the
+# audit says so instead of counting them as roots.
+class Route(NamedTuple):
+    """One acquisition source type and the code that can actually deliver it."""
+
+    script: str
+    """Path under `game/src` that implements the route."""
+
+    symbols: tuple[str, ...]
+    """Every marker that must be present for the route to count as shipping."""
+
+    membership: str
+    """Rule id the item must satisfy, named in the finding message."""
+
+    detail: str
+    """What that rule requires, in one clause."""
+
+
+RUNTIME_ROUTES: dict[str, Route] = {
+    "craft": Route(
+        "modules/items/api.gd",
+        ("static func craft(",),
+        "recipe_output",
+        "a recipe whose inputs are all reachable produces it",
+    ),
+    # `LootApi.enter_domain` spawns a boss and `LootApi.strike` defeats it, and
+    # `LootContent.table_for_boss` answers from the boss's own `loot` list, so a
+    # `boss:` source is delivered once an authored encounter hosts that boss.
+    "boss": Route(
+        "modules/loot/api.gd",
+        ("static func enter_domain(", "static func strike("),
+        "hosted_boss",
+        "an authored LootEncounterDef lists it in boss_ids, so enter_domain spawns it",
+    ),
+    "domain": Route(
+        "modules/loot/api.gd",
+        ("static func enter_domain(",),
+        "entered_domain",
+        "an authored LootEncounterDef references it and one of its bosses drops the item",
+    ),
+    # The only grant of a starter item is the composition root's own list.
+    "starter": Route(
+        "app/item_workbench_app.gd",
+        ("STARTER_ITEMS",),
+        "granted_id",
+        "the composition root lists its id in STARTER_ITEMS",
+    ),
+}
+# Authored encounter content is what makes a boss reachable: `LootApi.enter_domain`
+# resolves an encounter by domain id and spawns `encounter.boss_ids`.
+ENCOUNTER_DIR = DATA_ROOT / "loot" / "encounters"
 
 SCRIPTS = {
     "item": "res://src/modules/items/item_def.gd",
@@ -152,6 +246,13 @@ def register(subparsers) -> None:
     for name in ("audit", "report"):
         action = actions.add_parser(name)
         action.add_argument("--root", default=None, help="data root (default game/data)")
+        if name == "audit":
+            action.add_argument(
+                "--fail-on-unreachable",
+                action="store_true",
+                help="also fail when content is graph-obtainable but no shipping route "
+                "delivers it (default: report only)",
+            )
 
     dist = actions.add_parser(
         "distribution",
@@ -217,7 +318,7 @@ def run(args) -> int:
         return item_migrate.run(args)
     root = Path(args.root) if args.root else DATA_ROOT
     if args.data_action == "audit":
-        return _audit_command(root)
+        return _audit_command(root, getattr(args, "fail_on_unreachable", False))
     if args.data_action == "report":
         return _report_command(root)
     if args.data_action == "distribution":
@@ -283,6 +384,45 @@ def _extract_tokens(text: str, field: str) -> list[str]:
     return re.findall(rf'(?m)^{field} = &"([^"]+)"', text)
 
 
+def _extract_bindings(text: str) -> list[tuple[str, str]]:
+    """`{boss_id, table_id}` pairs from a tier's `boss_tables` array.
+
+    Read as ordered token runs rather than per-line fields, because each binding
+    is authored as one inline dictionary.
+    """
+    boss_ids = re.findall(r'"boss_id":\s*&"([^"]+)"', text)
+    table_ids = re.findall(r'"table_id":\s*&"([^"]+)"', text)
+    return list(zip(boss_ids, table_ids, strict=False))
+
+
+def _authored_boss_drops(records: dict) -> dict[str, set[str]]:
+    """boss id -> every item an authored loot table bound to it can produce.
+
+    A boss's drops are declared in exactly one place. Normally that is its
+    `BossDef.loot` array; when the boss is bound in an authored loot tier the
+    table is the authority instead (`LootValidator` rejects a boss carrying
+    both). The gate has to accept either, or it would demand a second
+    declaration the runtime deliberately ignores.
+    """
+    drops: dict[str, set[str]] = {}
+    tables = records.get("loot_table", {})
+
+    def collect(table_id: str, seen: set[str]) -> set[str]:
+        if table_id in seen:
+            return set()
+        seen.add(table_id)
+        table = tables.get(table_id, {})
+        found = set(table.get("entries", []))
+        for nested in table.get("nested", []):
+            found |= collect(nested, seen)
+        return found
+
+    for tier in records.get("loot_tier", {}).values():
+        for boss_id, table_id in tier.get("bindings", []):
+            drops.setdefault(boss_id, set()).update(collect(table_id, set()))
+    return drops
+
+
 def _extract_bool(text: str, field: str, default: str = "true") -> str:
     match = re.search(rf"(?m)^\s*{field}\s*=\s*(true|false)", text)
     return match.group(1) if match else default
@@ -344,6 +484,7 @@ def _load(root: Path) -> tuple[dict, list[str]]:
             "roll_spec": {},
             "entries": [],
             "nested": [],
+            "bindings": [],
             "legacy": bool(re.search(r"(?m)^\s*(flat_modifiers|percent_modifiers)\s*=", text)),
         }
         for field in schema["arrays"]:
@@ -352,6 +493,8 @@ def _load(root: Path) -> tuple[dict, list[str]]:
             record["dicts"][field] = _extract_dict(text, field)
         for field in schema["scalars"]:
             record["scalars"][field] = _extract_scalar(text, field) or ""
+        if schema.get("bindings"):
+            record["bindings"] = _extract_bindings(text)
         if schema.get("entries"):
             record["entries"] = _extract_tokens(text, schema["entries"])
         if schema.get("nested"):
@@ -407,6 +550,12 @@ def _audit(root: Path) -> list[str]:
     recipes = records.get("recipe", {})
     bosses = records.get("boss", {})
     domains = records.get("domain", {})
+    # A boss's drops are declared in exactly one place, and there are two
+    # authoring eras for it: a `BossDef.loot` array, or an authored loot table
+    # bound to the boss in an encounter tier (`LootValidator` rejects a boss
+    # carrying both). The gate has to read whichever one is populated, or every
+    # table-hosted boss would report each of its drops as a false gap.
+    authored_drops = _authored_boss_drops(records)
     gaps = [f"{path}: missing id" for path in malformed]
 
     for type_name in sorted(records):
@@ -481,6 +630,12 @@ def _audit(root: Path) -> list[str]:
     # The reverse of the source check below: an item a boss drops is obtainable
     # from that boss, so it must declare it. Without this, a second boss sharing
     # an item's loot is invisible as an acquisition route.
+    #
+    # Read from `BossDef.loot` alone, deliberately. A loot table may list an item
+    # the definition does not name as a drop — the shipped ember and storm
+    # tables both do — and that is a statement about the table, not about the
+    # item's own acquisition claim. Enforcing it here would gate content the
+    # loot module already accepts, so the check stays where the claim is authored.
     drops: dict[str, set[str]] = {}
     for boss_id, boss in bosses.items():
         for item_id in boss["arrays"].get("loot", []):
@@ -499,6 +654,15 @@ def _audit(root: Path) -> list[str]:
 
     for item_id, item in items.items():
         sources = item["arrays"].get("sources", [])
+        # A numeraire is a unit of account, not something a player holds, so there is
+        # no item to acquire (ADR 0099). Declaring a source is itself the finding:
+        # without that half the exemption would park an unreachable item quietly.
+        if item["scalars"].get("subcategory") == NUMERAIRE_SUBCATEGORY:
+            if sources:
+                gaps.append(
+                    f"item {item_id}: a numeraire is a unit of account, not loot; drop its sources"
+                )
+            continue
         if not sources:
             gaps.append(f"item {item_id}: has no acquisition source")
             continue
@@ -522,7 +686,9 @@ def _audit(root: Path) -> list[str]:
             elif target_type == "boss":
                 if ref not in bosses:
                     gaps.append(f"item {item_id}: boss '{ref}' is not defined")
-                elif item_id not in bosses[ref]["arrays"].get("loot", []):
+                elif item_id not in bosses[ref]["arrays"].get("loot", []) and (
+                    item_id not in authored_drops.get(ref, set())
+                ):
                     gaps.append(f"item {item_id}: boss '{ref}' does not drop it")
             elif target_type == "domain" and ref not in domains:
                 gaps.append(f"item {item_id}: domain '{ref}' is not defined")
@@ -534,22 +700,12 @@ def _audit(root: Path) -> list[str]:
     return gaps
 
 
-def _obtainable(items: dict, recipes: dict) -> set[str]:
-    """Items a player can actually acquire, by closing over craftable recipes.
+def _close_recipes(roots: set[str], recipes: dict) -> set[str]:
+    """Roots plus every recipe output whose whole input set is already reachable.
 
-    Roots are items with a non-craft source. A recipe becomes craftable once
-    every one of its inputs is obtainable, and then its outputs are too.
     Iterated to a fixed point, so a chain of any depth resolves regardless of
     the order the records are visited in.
     """
-    root_types = KNOWN_SOURCE_TYPES - {"craft"}
-    roots = {
-        item_id
-        for item_id, item in items.items()
-        if any(
-            source.partition(":")[0] in root_types for source in item["arrays"].get("sources", [])
-        )
-    }
     obtainable = set(roots)
     pending = list(recipes.values())
     progressed = True
@@ -569,10 +725,35 @@ def _obtainable(items: dict, recipes: dict) -> set[str]:
     return obtainable
 
 
+def _obtainable(items: dict, recipes: dict) -> set[str]:
+    """Items the content graph can acquire, by closing over craftable recipes.
+
+    Roots are items with a non-craft source. This is a statement about the
+    content graph only: it says nothing about whether shipping code can deliver
+    those sources. `_runtime_reachable` is the other measurement.
+    """
+    root_types = KNOWN_SOURCE_TYPES - {"craft"}
+    roots = {
+        item_id
+        for item_id, item in items.items()
+        if any(
+            source.partition(":")[0] in root_types for source in item["arrays"].get("sources", [])
+        )
+    }
+    return _close_recipes(roots, recipes)
+
+
 def _unobtainable(items: dict, recipes: dict) -> list[str]:
     """Items nothing in the corpus can ever produce or drop (DEF-0036)."""
     obtainable = _obtainable(items, recipes)
-    orphans = sorted(set(items) - obtainable)
+    orphans = sorted(
+        item_id
+        for item_id in set(items) - obtainable
+        # A numeraire is a unit of account rather than something the corpus produces
+        # or drops (ADR 0099), so demanding a route to it asks for a delivery path to
+        # an item no inventory ever holds.
+        if items[item_id]["scalars"].get("subcategory") != NUMERAIRE_SUBCATEGORY
+    )
     if not orphans:
         return []
     listed = ", ".join(orphans[:10])
@@ -580,10 +761,326 @@ def _unobtainable(items: dict, recipes: dict) -> list[str]:
     return [f"{len(orphans)} item(s) cannot be acquired from any source: {listed}{more}"]
 
 
-def _audit_command(root: Path) -> int:
+# --- Runtime reachability ----------------------------------------------------
+
+
+def _route_present(route: Route) -> bool:
+    """Whether the production code backing a route is actually in the tree."""
+    path = SRC_DIR / route.script
+    if not path.is_file():
+        return False
+    text = path.read_text(encoding="utf-8", errors="replace")
+    return all(symbol in text for symbol in route.symbols)
+
+
+def _hosted_bosses() -> set[str]:
+    """Boss ids an authored encounter can spawn through `LootApi.enter_domain`."""
+    if not ENCOUNTER_DIR.is_dir():
+        return set()
+    hosted: set[str] = set()
+    for path in sorted(ENCOUNTER_DIR.glob("*.tres")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for block in re.findall(r"(?ms)^boss_ids\s*=\s*Array\[StringName\]\(\[(.*?)\]\)", text):
+            hosted |= set(re.findall(r'&"([^"]*)"', block))
+    return hosted
+
+
+def _entered_domains() -> dict[str, set[str]]:
+    """domain id -> the boss ids an authored encounter spawns inside it."""
+    domains: dict[str, set[str]] = {}
+    if not ENCOUNTER_DIR.is_dir():
+        return domains
+    for path in sorted(ENCOUNTER_DIR.glob("*.tres")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        domain = re.search(r'(?m)^domain_id\s*=\s*&"([^"]*)"', text)
+        if not domain:
+            continue
+        bosses = domains.setdefault(domain.group(1), set())
+        for block in re.findall(r"(?ms)^boss_ids\s*=\s*Array\[StringName\]\(\[(.*?)\]\)", text):
+            bosses |= set(re.findall(r'&"([^"]*)"', block))
+    return domains
+
+
+def _granted_ids() -> set[str]:
+    """Item ids the composition root hands a fresh actor."""
+    path = SRC_DIR / RUNTIME_ROUTES["starter"].script
+    if not path.is_file():
+        return set()
+    text = path.read_text(encoding="utf-8", errors="replace")
+    match = re.search(r"(?ms)^const STARTER_ITEMS[^=]*=\s*\[(.*?)\]", text)
+    return set(re.findall(r'&"([^"]*)"', match.group(1))) if match else set()
+
+
+def _boss_drops(bosses: dict, authored: dict | None = None) -> dict[str, set[str]]:
+    """boss id -> the item ids it can hand out.
+
+    Both authoring eras feed one answer: the legacy `BossDef.loot` list, and the
+    authored loot table bound to the boss in an encounter tier. `LootValidator`
+    rejects a boss carrying both, so this never has to choose.
+    """
+    drops: dict[str, set[str]] = {boss_id: set() for boss_id in bosses}
+    for boss_id, boss in bosses.items():
+        drops[boss_id] = set(boss["arrays"].get("loot", []))
+    for boss_id, ids in (authored or {}).items():
+        drops.setdefault(boss_id, set()).update(ids)
+    return drops
+
+
+def _runtime_roots(
+    items: dict, bosses: dict, authored: dict | None = None
+) -> tuple[set[str], dict[str, str]]:
+    """Items a present route can deliver outright, and why the rest cannot.
+
+    The second return value maps every rejected item to the source type that
+    rejected it, so the report can attribute a shortfall instead of only
+    counting it.
+    """
+    hosted = _hosted_bosses()
+    domains = _entered_domains()
+    drops = _boss_drops(bosses, authored)
+    granted = _granted_ids()
+    roots: set[str] = set()
+    blocked: dict[str, str] = {}
+    for item_id, item in items.items():
+        source_type = None
+        for source in item["arrays"].get("sources", []):
+            kind = source.partition(":")[0]
+            if kind == "craft":
+                continue
+            route = RUNTIME_ROUTES.get(kind)
+            if route is None:
+                source_type = source_type or kind
+                continue
+            if not _route_present(route):
+                source_type = source_type or kind
+                continue
+            _, _, ref = source.partition(":")
+            if kind == "boss" and ref in hosted:
+                source_type = None
+                break
+            if kind == "starter" and item_id in granted:
+                source_type = None
+                break
+            if kind == "domain" and any(
+                item_id in drops.get(boss_id, set()) for boss_id in domains.get(ref, set())
+            ):
+                source_type = None
+                break
+            source_type = source_type or kind
+        if source_type is None:
+            roots.add(item_id)
+        else:
+            blocked[item_id] = source_type
+    return roots, blocked
+
+
+def _runtime_reachable(
+    items: dict, recipes: dict, bosses: dict, authored: dict | None = None
+) -> tuple[set[str], dict[str, str]]:
+    """What shipping code can deliver: route-satisfying roots, closed over recipes."""
+    roots, blocked = _runtime_roots(items, bosses, authored)
+    reachable = _close_recipes(roots, recipes)
+    # A recipe output inherits its inputs' blocking reason only if no root covers
+    # it; attributing it to the input's source type is what makes the count
+    # explainable ("2125 items rest on a source type with no route").
+    for item_id in reachable - set(roots):
+        blocked.pop(item_id, None)
+    return reachable, blocked
+
+
+def _runtime_findings(records: dict) -> list[tuple[str, str]]:
+    """Graph-obtainable content that no shipping code can deliver.
+
+    Level is always `warn`. The shortfall mixes a missing subsystem (no forager,
+    no quest system) with missing authored content (no encounter hosting the
+    bosses that carry 872 drops). Neither is a data defect inside a subsystem
+    that already ships, so neither belongs in the gating set; what belongs there
+    is reported, loudly, every run. `data audit --fail-on-unreachable` promotes
+    these to failures for a caller that wants the gate.
+    """
+    items = records.get("item", {})
+    recipes = records.get("recipe", {})
+    bosses = records.get("boss", {})
+    if not items:
+        return []
+    findings: list[tuple[str, str]] = []
+
+    declared: dict[str, int] = {}
+    for item in items.values():
+        for source in item["arrays"].get("sources", []):
+            kind = source.partition(":")[0]
+            declared[kind] = declared.get(kind, 0) + 1
+
+    for kind in sorted(declared):
+        route = RUNTIME_ROUTES.get(kind)
+        if route is not None and _route_present(route):
+            continue
+        expected = (
+            f"{route.script} must still define {' / '.join(route.symbols)}"
+            if route is not None
+            else "no acquisition route is declared for it in tools/data.py"
+        )
+        findings.append(
+            (
+                "warn",
+                f"acquisition source '{kind}' has no shipping route ({expected}); "
+                f"{declared[kind]} item(s) declare it",
+            )
+        )
+
+    reachable, blocked = _runtime_reachable(items, recipes, bosses, _authored_boss_drops(records))
+    orphans = sorted(set(items) - reachable)
+    if orphans:
+        attributed: dict[str, int] = {}
+        for item_id in orphans:
+            kind = blocked.get(item_id, "an unreachable input")
+            attributed[kind] = attributed.get(kind, 0) + 1
+        detail = ", ".join(f"{kind} {count}" for kind, count in sorted(attributed.items()))
+        listed = ", ".join(orphans[:6])
+        more = f" (+{len(orphans) - 6} more)" if len(orphans) > 6 else ""
+        findings.append(
+            (
+                "warn",
+                f"{len(orphans)} item(s) are obtainable in the content graph but not "
+                f"through any shipping route [{detail}], e.g. {listed}{more}",
+            )
+        )
+
+    hosted = _hosted_bosses()
+    drops = _boss_drops(bosses, _authored_boss_drops(records))
+    unhosted = sorted({boss_id for boss_id, ids in drops.items() if ids} - hosted)
+    if unhosted:
+        stranded = sum(len(drops[boss_id]) for boss_id in unhosted)
+        listed = ", ".join(unhosted[:6])
+        more = f" (+{len(unhosted) - 6} more)" if len(unhosted) > 6 else ""
+        findings.append(
+            (
+                "warn",
+                f"{len(unhosted)} boss record(s) carrying {stranded} drop(s) appear in no "
+                f"authored loot encounter, so LootApi.enter_domain cannot spawn them: "
+                f"{listed}{more}",
+            )
+        )
+    return findings
+
+
+def _runtime_summary(records: dict) -> tuple[int, int, int]:
+    """(total items, graph reachable, runtime reachable) for the printed report."""
+    items = records.get("item", {})
+    graph = len(_obtainable(items, records.get("recipe", {})))
+    runtime = len(
+        _runtime_reachable(
+            items,
+            records.get("recipe", {}),
+            records.get("boss", {}),
+            _authored_boss_drops(records),
+        )[0]
+    )
+    return len(items), graph, runtime
+
+
+def _destiny_findings(records: dict) -> tuple[list[str], list[str]]:
+    """Defects in fate/destiny content, and authoring notes worth surfacing.
+
+    A `.tres` stat id is never re-read after load: an unknown key produces a
+    modifier nobody can attribute, and a FLAT on a rate stat multiplies a 0..1
+    baseline into something enormous. Neither raises, so this gate is the only
+    place they can be caught. Cross-references are checked here too, because a
+    `grants_fates` entry naming a deleted fate silently grants nothing.
+    """
+    fates = records.get("fate", {})
+    destinies = records.get("destiny", {})
+    if not fates and not destinies:
+        return [], []
+    gaps: list[str] = []
+    valid = _valid_stats()
+    rate_stats = _resolve_rate_stats()
+    fraction_flat = FRACTION_FLAT_STATS | rate_stats
+    visibility = {"revealed", "hidden", "teaser"}
+    narrative: list[str] = []
+    notes: list[str] = []
+
+    for fate_id, fate in sorted(fates.items()):
+        where = fate["path"]
+        if fate.get("duplicate_of"):
+            gaps.append(f"{where}: duplicate fate id '{fate_id}' also in {fate['duplicate_of']}")
+        vis = fate["scalars"].get("visibility", "")
+        if vis and vis not in visibility:
+            gaps.append(f"{where}: fate '{fate_id}' declares unknown visibility '{vis}'")
+        for field in ("flat_modifiers", "percent_modifiers"):
+            for stat_id in fate["dicts"].get(field, {}):
+                if stat_id not in valid:
+                    gaps.append(
+                        f"{where}: fate '{fate_id}' {field} names unknown stat "
+                        f"'{stat_id}'; it would contribute nothing"
+                    )
+                elif field == "flat_modifiers" and stat_id in fraction_flat:
+                    gaps.append(
+                        f"{where}: fate '{fate_id}' applies FLAT to rate stat "
+                        f"'{stat_id}'; use percent_modifiers or the value multiplies "
+                        f"the baseline"
+                    )
+        if not fate["dicts"].get("flat_modifiers") and not fate["dicts"].get("percent_modifiers"):
+            # Not a gap: a pure-narrative fate is a legitimate authoring choice,
+            # and gating story is the module's whole reason for existing.
+            narrative.append(fate_id)
+
+    for destiny_id, destiny in sorted(destinies.items()):
+        where = destiny["path"]
+        if destiny.get("duplicate_of"):
+            gaps.append(
+                f"{where}: duplicate destiny id '{destiny_id}' also in {destiny['duplicate_of']}"
+            )
+        vis = destiny["scalars"].get("visibility", "")
+        if vis and vis not in visibility:
+            gaps.append(f"{where}: destiny '{destiny_id}' declares unknown visibility '{vis}'")
+        for field, known in (
+            ("grants_fates", set(fates)),
+            ("requires_fates", set(fates)),
+            ("requires_destinies", set(destinies)),
+        ):
+            for ref in destiny["arrays"].get(field, []):
+                if ref not in known:
+                    gaps.append(
+                        f"{where}: destiny '{destiny_id}' {field} names '{ref}', "
+                        f"which no authored record defines"
+                    )
+        for ref in destiny["arrays"].get("requires_destinies", []):
+            if ref == destiny_id:
+                gaps.append(f"{where}: destiny '{destiny_id}' requires itself")
+
+    groups: dict[str, list[str]] = {}
+    for destiny_id, destiny in sorted(destinies.items()):
+        group = destiny["scalars"].get("group", "")
+        if group:
+            groups.setdefault(group, []).append(destiny_id)
+    # Exclusivity and pure-narrative fates are authoring choices, not defects, so
+    # they are surfaced rather than gated: a group closes its members for good,
+    # which is worth seeing once, and a fate may legitimately carry no numbers.
+    for group, members in sorted(groups.items()):
+        if len(members) > 1:
+            notes.append(
+                f"destiny group '{group}' closes {', '.join(members)} against each other "
+                f"permanently — earning one forfeits the rest"
+            )
+    if narrative:
+        notes.append(
+            f"{len(narrative)} fate(s) carry no stat and exist only to gate story: "
+            f"{', '.join(narrative)}"
+        )
+    return gaps, notes
+
+
+def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
     gaps = _audit(root)
     records, _ = _load(root)
     gaps.extend(msg for level, msg in _loot_findings(records) if level == "error")
+    # Fate/destiny content is gated rather than warned: these defects are inside
+    # a subsystem that already ships, so a typo would silently ship a fate that
+    # grants nothing (bad stat id) or one that multiplies instead of adding
+    # (FLAT on a rate stat). Nothing re-reads the field after load, so the audit
+    # is the only place the mistake can still be caught.
+    gaps.extend(_destiny_findings(records)[0])
     # Report out-of-window fixed values here too. `data distribution` computes
     # them, but a green audit that silently omits thousands of illegal authored
     # values is worse than a red one: the count has to be impossible to miss.
@@ -601,11 +1098,34 @@ def _audit_command(root: Path) -> int:
             f"`data distribution` and re-derive the content against the current "
             f"scale."
         )
+    runtime = _runtime_findings(records)
+    for note in _destiny_findings(records)[1]:
+        warn(note)
     if gaps:
         for gap in gaps:
             fail(gap)
         fail(f"data audit failed: {len(gaps)} gap(s)")
         return 1
+    total, graph, runtime_count = _runtime_summary(records)
+    info("")
+    info(
+        f"acquisition: {graph}/{total} item(s) obtainable in the content graph, "
+        f"{runtime_count}/{total} deliverable by shipping code"
+    )
+    for _level, message in runtime:
+        if fail_on_unreachable:
+            fail(message)
+        else:
+            warn(message)
+    if fail_on_unreachable and runtime:
+        fail(f"data audit failed: {len(runtime)} runtime-availability gap(s)")
+        return 1
+    if runtime:
+        ok(
+            f"data audit clean (graph reachable only: {len(runtime)} runtime-availability "
+            "gap(s) reported above, not gated)"
+        )
+        return 0
     ok("data audit clean")
     return 0
 
@@ -755,23 +1275,26 @@ def _out_of_band(items: dict, catalog: dict) -> list[str]:
     it was written. When the scale is retuned these go stale wholesale, so this is
     reported by both `data audit` and `data distribution`.
     """
-    # The realm ladder MUST be loaded here, not by a caller. `REALM_INDEX` is a module
-    # global populated only by `_load_realms()`, and `_out_of_band` reads it with a
-    # `.get(realm, 0)` fallback. If it is empty, EVERY item silently resolves to
-    # ordinal 0 and gets graded against the Qi Refining window — which made `data
-    # audit` report thousands of false positives on content that was in band at its
-    # own realm, and made it under-report the genuine ones. A green audit that
-    # mis-grades every row is worse than a red one, because it is trusted.
+    # The realm ladder MUST be loaded here, not by a caller: `REALM_INDEX` and
+    # `REALM_TIER` are module globals populated only by `_load_realms()`, and the
+    # caller `_collect_findings` reads them. The window itself is keyed by realm ID
+    # (ADR 0050), so the item's own `realm` field is passed straight through — a
+    # ladder position would grade every row against a neighbour's window.
     _load_realms()
     offenders: list[str] = []
     for item_id, item in sorted(items.items()):
         rarity_index = RARITY_INDEX.get(item["scalars"].get("rarity", ""), 0)
-        realm_index = REALM_INDEX.get(item["scalars"].get("realm", ""), 0)
+        realm_id = item["scalars"].get("realm", "")
+        # A numeraire declares no realm on purpose: its trade value is the unit the
+        # other values are measured in, so there is no per-realm window to grade it
+        # against and `magnitude_scale("")` would abort the entire audit on it.
+        if not realm_id:
+            continue
         for option_id, value in item["fixed"].items():
             record = catalog.get(option_id)
             if not record:
                 continue
-            low, high = _magnitude_bounds(record["unit"], realm_index, rarity_index)
+            low, high = _magnitude_bounds(record["unit"], realm_id, rarity_index)
             if value < low or value > high:
                 offenders.append(f"{item_id}:{option_id}={value:g}")
     return offenders
@@ -1108,6 +1631,24 @@ def _distribution_command(root: Path, fail_on: str) -> int:
     info(f"  items with a roll_spec:    {roll_count:5d}  ({_pct(roll_count, total):5.1f}%)")
     info(f"  distinct options authored: {len(option_counts):5d} / {len(catalog)} registered")
     _print_table("Fixed Option Distribution", sorted(option_counts.items()), fixed_count or 1)
+
+    # Reachability is printed before the findings pass so an unrelated hard
+    # failure downstream (a magnitude window that cannot resolve) cannot swallow
+    # these numbers the way it swallowed every section after it.
+    total_items, graph_items, runtime_items = _runtime_summary(records)
+    runtime = _runtime_findings(records)
+    info("")
+    info("=== Runtime Reachability ===")
+    info(f"  total items:                {total_items:5d}")
+    info(
+        f"  content-graph reachable:    {graph_items:5d}  ({_pct(graph_items, total_items):5.1f}%)"
+    )
+    info(
+        f"  shipping-code reachable:    {runtime_items:5d}  "
+        f"({_pct(runtime_items, total_items):5.1f}%)"
+    )
+    for message in (msg for _level, msg in runtime):
+        info(f"  warn: {message}")
 
     findings = [*_collect_findings(items), *_loot_findings(records)]
     errors = [msg for level, msg in findings if level == "error"]

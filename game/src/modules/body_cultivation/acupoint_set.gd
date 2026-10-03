@@ -7,13 +7,20 @@ extends RefCounted
 
 var points: Array[Acupoint] = []
 
-## Set while an acupoint-consuming action is in flight, so cultivation and
-## breakthrough cannot interleave on the same points.
+## Re-entrancy guard on the acupoint-consuming verbs. Every window that sets it
+## is synchronous and clears it before returning, so nothing observes it today;
+## it exists because `MeridianNetwork.changed` and `Actor.path_advanced` fire
+## *inside* those windows, and a handler on either would otherwise re-enter
+## cultivate/strengthen/recover/attempt mid-mutation. Keep it a plain bool: an
+## await inside a guarded window would make this genuinely observable, and the
+## flag is what stops that from silently corrupting a body.
 var busy: bool = false
 
 ## The shared body essence pool. Set by BodyTraining.synchronize from the
-## actor's body_integrity resource. All fill/drain/fullness operations go
-## through this pool so there is exactly one energy balance.
+## actor's body_integrity resource. All fill/drain operations go through this
+## pool so there is exactly one energy balance. The set mediates access and
+## deliberately does not hand the pool out: read it through
+## `actor.resource(BodyStats.BODY_INTEGRITY)`, mutate it through fill/drain.
 var _pool: ResourcePool = null
 
 
@@ -25,33 +32,6 @@ func _init(p_points: Array[Acupoint] = []) -> void:
 ## actor's body_integrity resource is resolved.
 func set_pool(pool: ResourcePool) -> void:
 	_pool = pool
-
-
-func pool() -> ResourcePool:
-	return _pool
-
-
-## Total structural capacity across all open acupoints, derived from the
-## pool maximum and the meridian capacity bonus. This is a derived view,
-## not an independently saved balance.
-func total_capacity() -> float:
-	if _pool == null:
-		return 0.0
-	return _pool.maximum
-
-
-## Current stored body essence, read from the shared pool.
-func current() -> float:
-	if _pool == null:
-		return 0.0
-	return _pool.current
-
-
-## Whether the shared pool is full (current >= maximum).
-func is_full() -> bool:
-	if _pool == null or _pool.maximum <= 0.0:
-		return false
-	return _pool.current >= _pool.maximum
 
 
 ## Fill the shared pool by `amount`. Returns false when blocked or no pool.

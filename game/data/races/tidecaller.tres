@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="RaceDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/race/race_def.gd" id="1_race"]
+
+[resource]
+script = ExtResource("1_race")
+id = &"tidecaller"
+display_name = "Tidecaller"
+description = "A long-lived body built for perception rather than force. Comprehension and will carry it through realms that would end a hotter body, and it cannot take the body path at all: it was assembled for looking, not for being hit. Water affinity is the only one it holds."
+dominance = 0.55
+manifestation_threshold = 0.2
+gestation_days = 36.0
+base_fertility = 0.45
+base_potency = 0.45
+offspring_variance = 0.15
+closed_paths = Array[StringName]([&"body_cultivation"])
+realm_ceiling = 0
+lifespan = 58400.0
+base_attributes = {"comprehension": 3.0, "will": 2.0, "spirit": 1.0}
+percent_modifiers = {"insight_gain": 0.2, "breakthrough_chance": 0.05, "evasion": 0.15, "attack_physical": -0.2, "defense_physical": -0.1}
+affinities = {"water": 10.0, "ice": 3.0}
+tags = Array[StringName]([&"mind", &"long_lived", &"fragile"])

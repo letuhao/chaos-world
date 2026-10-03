@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"armor"
 grade = &"mortal"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:ironhide_vigil"])
 sources = Array[StringName]([&"boss:body_core_formation_guardian"])
 description = "Layered hide plate that distributes a body blow across the frame."

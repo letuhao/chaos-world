@@ -9,6 +9,7 @@ func test_world_creation_defaults() -> void:
 	assert_eq(world.size, 1.0, "default size")
 	assert_eq(world.stability, 0.5, "default stability")
 	assert_eq(world.will_strength, 0.5, "default will_strength")
+	assert_eq(world.origin_index, -1, "nothing built this world")
 	assert_eq(world.laws.is_empty(), true, "no laws by default")
 	assert_eq(world.layers.is_empty(), true, "no layers by default")
 	assert_eq(world.inhabitants.is_empty(), true, "no inhabitants by default")
@@ -52,6 +53,8 @@ func test_world_add_layer() -> void:
 	world.add_layer(layer)
 	assert_eq(world.layers.size(), 1, "layer added")
 	assert_eq(world.layers[0].layer_id, &"surface", "layer_id correct")
+	assert_eq(world.get_layer(&"surface") != null, true, "layer found by id")
+	assert_eq(world.get_layer(&"nonexistent") == null, true, "missing layer returns null")
 
 
 func test_world_add_inhabitant() -> void:
@@ -63,17 +66,10 @@ func test_world_add_inhabitant() -> void:
 	assert_eq(world.inhabitants[0].loyalty, 0.7, "loyalty correct")
 
 
-func test_world_pay_upkeep() -> void:
-	var world := WorldState.new()
-	world.upkeep_rate = 10.0
-	assert_eq(world.pay_upkeep(15.0), true, "sufficient qi")
-	assert_eq(world.pay_upkeep(5.0), false, "insufficient qi")
-	assert_eq(world.pay_upkeep(10.0), true, "exact qi")
-
-
 func test_world_serialization() -> void:
 	var world := WorldState.new(WorldState.GREAT, 100.0, 0.9)
 	world.will_strength = 0.8
+	world.origin_index = WorldAnchor.COMMIT_MICRO
 	world.upkeep_rate = 5.0
 	world.time_flow_rate = 10.0
 	world.add_law(WorldLawState.new(&"fire", WorldLawState.ELEMENTAL, 0.7))
@@ -85,6 +81,7 @@ func test_world_serialization() -> void:
 	assert_eq(data["size"], 100.0, "size serialized")
 	assert_eq(data["stability"], 0.9, "stability serialized")
 	assert_eq(data["will_strength"], 0.8, "will_strength serialized")
+	assert_eq(data["origin_index"], WorldAnchor.COMMIT_MICRO, "origin_index serialized")
 	assert_eq(data["upkeep_rate"], 5.0, "upkeep_rate serialized")
 	assert_eq(data["time_flow_rate"], 10.0, "time_flow_rate serialized")
 	assert_eq(data["laws"].size(), 1, "laws serialized")
@@ -96,6 +93,7 @@ func test_world_serialization() -> void:
 	assert_eq(restored.size, 100.0, "size restored")
 	assert_eq(restored.stability, 0.9, "stability restored")
 	assert_eq(restored.will_strength, 0.8, "will_strength restored")
+	assert_eq(restored.origin_index, WorldAnchor.COMMIT_MICRO, "origin_index restored")
 	assert_eq(restored.upkeep_rate, 5.0, "upkeep_rate restored")
 	assert_eq(restored.time_flow_rate, 10.0, "time_flow_rate restored")
 	assert_eq(restored.laws.size(), 1, "laws restored")
@@ -113,6 +111,7 @@ func test_world_from_dict_defaults() -> void:
 	assert_eq(world.size, 1.0, "default size")
 	assert_eq(world.stability, 0.5, "default stability")
 	assert_eq(world.will_strength, 0.5, "default will_strength")
+	assert_eq(world.origin_index, -1, "a payload without a stamp is unbuilt")
 	assert_eq(world.laws.is_empty(), true, "no laws")
 	assert_eq(world.layers.is_empty(), true, "no layers")
 	assert_eq(world.inhabitants.is_empty(), true, "no inhabitants")

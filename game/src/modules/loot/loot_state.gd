@@ -538,6 +538,11 @@ static func _spawn(
 		"encounter_id": encounter_id(String(encounter.domain_id), String(boss_id), tier_index, run),
 		"vitality": vitality,
 		"vitality_max": vitality,
+		# The fight's own numbers are frozen with the boss (ADR 0076), not re-derived on
+		# every exchange: a resumed fight is the fight the band priced, and a retuned
+		# content file cannot change the terms of a run already in flight.
+		"attack": tier.attack_for(boss_id),
+		"defense": tier.defense_for(boss_id),
 		"defeated": false,
 	}
 

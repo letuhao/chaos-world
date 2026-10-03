@@ -9,10 +9,10 @@ breakthrough_item = &"body_spirit_palace_breakthrough_pill"
 strengthening_item = &"body_spirit_palace_channel_elixir"
 recovery_item = &"body_spirit_palace_recovery_elixir"
 progress_required = 105.0
-physique_required = 30.0
-quality_required = 0.550000
-quality_target = 0.565000
-integrity_target = 0.615000
+physique_required = 67.0
+quality_required = 0.655500
+quality_target = 0.735500
+integrity_target = 0.785500
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai"])
 required_refinement = 11
 refinement_cap = 12
@@ -21,11 +21,8 @@ rewards = {
 "physique": 2.0,
 "bone_density": 1.0
 }
-work_required = 105.0
-acupoint_work = 2.0
-meridian_work = 2.0
 insight_required = 318.0
 resonance_rank = 0
-chance_base = 0.64
-chance_cap = 0.86
+chance_base = 0.4020
+chance_cap = 0.8198
 channel_training = Array[StringName]([])

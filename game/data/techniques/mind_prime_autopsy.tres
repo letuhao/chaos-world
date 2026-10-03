@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"mind_prime_autopsy"
+display_name = "Prime Autopsy"
+description = "Walks a hostile intention back to the first decision that produced it. Entirely dark: nothing resists it except light, and the qi bill is the steepest in the mind tree."
+tags = Array[StringName]([&"technique", &"mind", &"dark", &"execute"])
+grade = &"divine"
+rarity = &"legendary"
+element = &"dark"
+schools = Array[StringName]([&"mind", &"elemental"])
+active = true
+path = &"mind_cultivation"
+min_path_realm = {&"mind_cultivation": 29}
+qi_cost = 165.0
+stamina_cost = 6.0
+cooldown = 36.0
+mastery_rungs = 5
+magnitude = 4.0
+element_share = 1.0
+

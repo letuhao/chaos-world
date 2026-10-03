@@ -5,9 +5,29 @@ extends TestCase
 ## pickup was refused.
 
 const SCREEN_SCENE := "res://src/ui/screens/loot_encounter.tscn"
-const EMBER_DOMAIN := &"loot_ember_vault_domain"
-const EMBER_TIER := 1
-const MARK := &"amulet_iron_sage_eye"
+
+
+## The first authored domain that needs no key item, and the first authored tier it
+## declares. Discovered rather than declared: the domain table grows as trials and
+## wardens are authored, and domains sort by id, so a hard-coded id is a test that
+## fails the next time one is added ahead of it. "" when the screen offers none.
+func _open_domain() -> Dictionary:
+	for entry in LootApi.domains():
+		var descriptor := entry as Dictionary
+		if int(descriptor.get("key_reach", 0)) != 0:
+			continue
+		var tiers: Array = descriptor.get("tiers", [])
+		return {} if tiers.is_empty() else descriptor
+	return {}
+
+
+## A domain that *is* gated, so the gate line has a real requirement to report. "" when
+## every authored domain is open.
+func _gated_domain_id() -> String:
+	for entry in LootApi.domains():
+		if int((entry as Dictionary).get("key_reach", 0)) > 0:
+			return String((entry as Dictionary)["domain_id"])
+	return ""
 
 
 func _actor(capacity: int = 24) -> Actor:
@@ -18,12 +38,45 @@ func _actor(capacity: int = 24) -> Actor:
 	return actor
 
 
+## Occupy every inventory slot, so the next drop has to overflow into the world.
+##
+## Uses an AUTHORED definition so the filler is indistinguishable from a real item:
+## a fabricated `ItemDef` is exactly what the headless driver documents as making a
+## harness lie about what the player is carrying.
+func _fill_inventory(actor: Actor) -> void:
+	var inventory := ItemsApi.inventory(actor)
+	if inventory == null:
+		return
+	var def := Crafting.resolve(&"alchemy_ash_herb")
+	if def == null:
+		return
+	inventory.add(def, inventory.used_slots() + 1)
+
+
+## Press Strike until the live boss is gone, and report whether it was. A boss now
+## answers every blow (ADR 0076), so one press is one exchange rather than a whole fight,
+## and a loss ends the run rather than killing the boss — so "the run ended" is explicitly
+## not success. Bounded, so a screen that never resolves a kill fails instead of hanging.
+func _defeat_boss(view: LootEncounterScreen, limit: int = 60) -> bool:
+	var start := String(view.summary().get("encounter_id", ""))
+	if start.is_empty():
+		return false
+	var exchanges := 0
+	while exchanges < limit:
+		view.act_strike()
+		exchanges += 1
+		var state := view.summary()
+		if String(state.get("encounter_id", "")) != start:
+			return true
+		if not bool(state.get("in_domain", false)):
+			return false
+	return false
+
+
 func _bridge() -> LootBridge:
 	var bridge := LootBridge.new()
-	bridge.strike_damage = 10000.0
 	bridge.list_domains = Callable(LootApi, "domains")
 	bridge.enter_domain = Callable(LootApi, "enter_domain")
-	bridge.strike = Callable(LootApi, "strike")
 	bridge.leave_domain = Callable(LootApi, "abandon")
 	bridge.pickup = Callable(LootApi, "pickup")
 	bridge.pickup_all = Callable(LootApi, "pickup_all")
@@ -54,12 +107,23 @@ func test_a_screen_with_no_actor_or_no_bridge_reads_empty() -> void:
 func test_the_screen_lists_the_authored_domains_and_their_entry_gate() -> void:
 	var screen := _screen(_actor())
 	var summary := screen.summary()
+	var expected := _open_domain()
+	assert_eq(expected.is_empty(), false, "an ungated authored domain exists to open")
+	if expected.is_empty():
+		return
 	assert_eq(
 		int(summary["domain_count"]), LootApi.domains().size(), "every authored domain is offered"
 	)
-	assert_eq(String(summary["domain_id"]), String(EMBER_DOMAIN), "the first domain is selected")
-	assert_eq(int(summary["tier"]), EMBER_TIER, "at its lowest authored band")
-	assert_eq(str(summary["tier_label"]), "Warded", "the band label comes from content")
+	assert_eq(
+		String(summary["domain_id"]),
+		String(expected["domain_id"]),
+		"the first domain the screen selects is one a fresh actor may enter"
+	)
+	var first_tier: Dictionary = (expected["tiers"] as Array)[0]
+	assert_eq(int(summary["tier"]), int(first_tier["tier"]), "at its lowest authored band")
+	assert_eq(
+		str(summary["tier_label"]), String(first_tier["label"]), "the band label comes from content"
+	)
 	assert_eq(str(summary["gate"]), "Open domain", "and its entry gate is shown")
 	assert_eq(bool(summary["in_domain"]), false, "nobody is in a domain yet")
 	assert_eq(bool((summary["enabled"] as Dictionary)["enter"]), true, "so entering is offered")
@@ -67,10 +131,20 @@ func test_the_screen_lists_the_authored_domains_and_their_entry_gate() -> void:
 
 
 func test_a_gated_domain_reports_the_key_it_needs() -> void:
+	var gated := _gated_domain_id()
+	assert_ne(gated, "", "a gated authored domain exists, so the gate has something to report")
+	if gated.is_empty():
+		return
 	var actor := _actor()
 	var screen := _screen(actor)
-	(screen.get_node_or_null("%DomainOption") as OptionButton).select(1)
-	screen.refresh()
+	var option := screen.get_node_or_null("%DomainOption") as OptionButton
+	var index := _domain_index(gated)
+	assert_ne(index, -1, "the gated domain is offered in the selector")
+	if index < 0:
+		return
+	# Selected the way a player picks one: `select()` alone emits nothing.
+	option.select(index)
+	option.item_selected.emit(index)
 	assert_eq(
 		str(screen.summary()["gate"]).contains("Needs key reach"), true, "the gate is reported"
 	)
@@ -83,13 +157,51 @@ func test_a_gated_domain_reports_the_key_it_needs() -> void:
 	assert_eq(String(screen.summary()["tone"]), "error", "with the error tone")
 
 
+## The selector index of `domain_id`, or -1. Matched on the stable id rather than the
+## display label, which is presentation.
+func _domain_index(domain_id: String) -> int:
+	for entry in LootApi.domains():
+		if String((entry as Dictionary)["domain_id"]) == domain_id:
+			return LootApi.domains().find(entry)
+	return -1
+
+
+## The definition ids the reward listed, i.e. what the pickups were supposed to hand
+## over. Read from the reward the screen still reports, so the assertion is "the item
+## the drop named is the item the bag holds" rather than "the bag holds a literal".
+func _claimed_def_ids(actor: Actor, screen: Node) -> Array[String]:
+	var encounter := String((screen.summary() as Dictionary)["encounter_id"])
+	var payload := LootApi.reward(actor, encounter)
+	var reward := payload.get("reward", {}) as Dictionary
+	var out: Array[String] = []
+	for drop in reward.get("drops", []):
+		out.append(String((drop as Dictionary).get("def_id", "")))
+	return out
+
+
+## The authored drop table the live boss draws from, read back through the facade
+## rather than written as a literal — the boss behind a domain changes as content is
+## authored, and a hard-coded id is a test that fails for the wrong reason.
+func _table_of(actor: Actor, screen: Node) -> StringName:
+	var encounter := String((screen.summary() as Dictionary)["encounter_id"])
+	var for_encounter := LootApi.reward(actor, encounter)
+	var reward := for_encounter.get("reward", {}) as Dictionary
+	return StringName(String(reward.get("table_id", "")))
+
+
 func test_the_full_loop_runs_through_the_screen() -> void:
 	var actor := _actor()
 	var screen := _screen(actor)
+	assert_eq(_open_domain().is_empty(), false, "an ungated domain exists to open")
 	assert_eq(bool(screen.act_enter()), true, "entered the domain")
 	var inside := screen.summary()
 	assert_eq(bool(inside["in_domain"]), true, "a boss is live")
-	assert_eq(String(inside["boss_id"]), "loot_ember_vault_warden", "the authored first boss")
+	assert_ne(String(inside["boss_id"]), "", "the domain's authored boss is named")
+	assert_eq(
+		String(inside["boss_id"]),
+		String(LootApi.table(_table_of(actor, screen))["source_id"]),
+		"and it is the boss that encounter's table belongs to"
+	)
 	assert_eq(float(inside["vitality_max"]) > 0.0, true, "it has authored vitality")
 	assert_eq(bool((inside["enabled"] as Dictionary)["strike"]), true, "so striking is offered")
 	assert_eq(bool((inside["enabled"] as Dictionary)["enter"]), false, "and entering again is not")
@@ -97,7 +209,6 @@ func test_the_full_loop_runs_through_the_screen() -> void:
 	# Partial damage keeps the boss alive and shows the pool it is drawn from.
 	var partial := _actor()
 	var chipper := _screen(partial)
-	chipper.call("set_strike_damage", 10.0)
 	chipper.act_enter()
 	assert_eq(bool(chipper.act_strike()), true, "a partial hit lands")
 	var hurt := chipper.summary()
@@ -106,7 +217,7 @@ func test_the_full_loop_runs_through_the_screen() -> void:
 		String(hurt["vitality_label"]).contains("vitality"), true, "the panel owns the wording"
 	)
 
-	assert_eq(bool(screen.act_strike()), true, "the boss is defeated")
+	assert_eq(_defeat_boss(screen), true, "the boss is defeated")
 	var after := screen.summary()
 	assert_eq(int(after["reward_count"]) > 0, true, "the reward is listed")
 	assert_eq(int(after["pending_drops"]) > 0, true, "with drops waiting")
@@ -119,14 +230,33 @@ func test_the_full_loop_runs_through_the_screen() -> void:
 	var emptied := screen.summary()
 	assert_eq(int(emptied["pending_drops"]), 0, "nothing is left waiting")
 	assert_eq(int(emptied["claimed_encounters"]), 1, "the claim ledger records the spend")
-	assert_eq(bool(ItemsApi.has_item(actor, MARK)), true, "and the item is genuinely carried")
+	# The item is whatever the authored table rolled, so it is read back from the
+	# reward rather than pinned: a drop table retune must not fail this assertion.
+	var claimed := _claimed_def_ids(actor, screen)
+	assert_ne(claimed.is_empty(), true, "and at least one drop is genuinely carried")
+	for def_id in claimed:
+		assert_eq(
+			bool(ItemsApi.has_item(actor, StringName(def_id))), true, "'%s' is carried" % def_id
+		)
 
 
 func test_a_refused_pickup_says_why_and_keeps_the_drop() -> void:
 	var actor := _actor(1)
+	# Fill the single slot BEFORE the fight, so the first drop has nowhere to go
+	# whatever the boss happens to roll.
+	#
+	# This used to depend on the selected tier dropping two or more items: with one
+	# drop and one slot the pickup simply succeeded, nothing overflowed, and the test
+	# failed on authored content rather than on the screen. That left the entire
+	# overflow branch unproved — the branch that is the whole reason `Reclaim`
+	# exists. Occupying the slot makes the overflow the screen's doing, not the loot
+	# table's.
+	_fill_inventory(actor)
 	var screen := _screen(actor)
 	screen.act_enter()
-	screen.act_strike()
+	# One exchange is not a whole fight (ADR 0076): the boss answers, so the pool
+	# has to be emptied by fighting rather than by one press.
+	_defeat_boss(screen)
 	var rows := (screen.summary()["reward"] as Dictionary)["rows"] as Array
 	assert_eq(rows.is_empty(), false, "the reward is listed")
 	var stashed_before := 0
@@ -163,7 +293,9 @@ func test_a_spent_claim_is_reported_rather_than_handed_out_again() -> void:
 	var actor := _actor()
 	var screen := _screen(actor)
 	screen.act_enter()
-	screen.act_strike()
+	# One exchange is not a whole fight (ADR 0076): the boss answers, so the pool
+	# has to be emptied by fighting rather than by one press.
+	_defeat_boss(screen)
 	var summary := screen.summary()
 	var encounter := String((summary["reward"] as Dictionary)["encounter_id"])
 	screen.act_take_all()
@@ -178,7 +310,9 @@ func test_leaving_keeps_the_reward_and_the_screen_reports_it() -> void:
 	var actor := _actor()
 	var screen := _screen(actor)
 	screen.act_enter()
-	screen.act_strike()
+	# One exchange is not a whole fight (ADR 0076): the boss answers, so the pool
+	# has to be emptied by fighting rather than by one press.
+	_defeat_boss(screen)
 	var pending := int(screen.summary()["pending_drops"])
 	assert_eq(bool(screen.act_leave()), true, "the domain is left")
 	var out := screen.summary()

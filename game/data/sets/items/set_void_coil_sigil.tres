@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"heaven"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:void_serpent_coil"])
 sources = Array[StringName]([&"boss:E8_mystic_warden"])
 description = "A coiled sigil engraved on a single sliver of void iron."

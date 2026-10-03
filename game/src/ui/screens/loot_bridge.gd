@@ -19,8 +19,6 @@ extends RefCounted
 var list_domains: Callable
 ## `LootApi.enter_domain(actor, domain_id, tier_index, seed_value)` -> Dictionary
 var enter_domain: Callable
-## `LootApi.strike(actor, damage, seed_value)` -> Dictionary
-var strike: Callable
 ## `LootApi.abandon(actor)` -> Dictionary
 var leave_domain: Callable
 ## `LootApi.pickup(actor, encounter_id, drop_id)` -> Dictionary
@@ -32,9 +30,13 @@ var reclaim: Callable
 ## `LootApi.summary(actor)` -> Dictionary
 var read_state: Callable
 
-## The damage one strike deals, decided by the caller rather than by the loot
-## module: boss vitality is authored data and this screen only drives the fight.
-var strike_damage: float = 25.0
+## There is deliberately no `strike` slot and no strike-damage number here (ADR 0076).
+## This bridge used to carry a `damage` argument the caller chose, so a fight was however
+## many presses that constant bought whatever the actor was made of, and nothing ever
+## answered back — no fight could be lost. The exchange is now `CombatApi.exchange`, which
+## `ui/` may call by name because `combat` is declared in `rules.UI_MODULES`, and it
+## resolves both blows from the actor's own stats. A flat-damage slot here would not be
+## redundant: it would be a live path that silently bypasses the whole model.
 
 
 ## Whether a callable is wired. A screen reads this before it offers an action.
@@ -51,7 +53,6 @@ func _actions() -> Dictionary:
 	return {
 		"domains": list_domains,
 		"enter": enter_domain,
-		"strike": strike,
 		"leave": leave_domain,
 		"pickup": pickup,
 		"pickup_all": pickup_all,

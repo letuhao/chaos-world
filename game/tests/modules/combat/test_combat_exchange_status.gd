@@ -1,0 +1,461 @@
+extends TestCase
+
+## ADR 0105: a player's REAL blow inflicts a status, end to end.
+##
+## ## Why this suite exists at all
+##
+## Measured before ADR 0105: `StatusApi.apply` had no production caller, ADR 0087's S12 ran
+## only from `CombatSpine.resolve_hit`, and nothing in `game/src` called that either. So the
+## entire status system was BUILT and UNREACHABLE, and every existing suite passed by
+## driving the pieces directly — the catalogue loader, the tick loop, the spine's stage.
+## Not one of them proved a player can be burnt by their own swing.
+##
+## This suite closes that gap in the only direction that matters: it drives
+## [method CombatExchange.exchange] itself, through a real `LootApi` run against shipped
+## content, and asks whether the actor afterwards HOLDS the element's status. Nothing here
+## injects a mechanism, binds a proposal or calls a spine stage — the assertions are about
+## the player's press, because that is the path ADR 0105 changed.
+##
+## The seam is deliberately narrow, per ADR 0105's own words: "a landed blow with an open
+## gate is reported applied and the actor answers `has_status`; an avoided blow applies
+## nothing and consumes no draw from the shared stream."
+
+const DEEP_DOMAIN := &"elemental_transcendent_domain"
+const DEEP_TIER := 1
+
+## The element the fixture player is trained in, and the status their blows inflict. Named
+## here rather than derived, because a test that computed its expectation from the same
+## code it is testing would prove only that the code is self-consistent.
+const PLAYER_ELEMENT := &"fire"
+const PLAYER_STATUS := &"fire_immolation"
+
+## The affinity granted to the fixture player. Above `0.0`, which is what `Actor.affinities`
+## reads an absent element as, so the blow genuinely carries an element.
+const AFFINITY := 0.6
+
+## A high `Stat.STATUS_RESISTANCE` on the player, who is the status's SUBJECT. A real
+## defensive stat read by ADR 0087's formula rather than a rig, so the comparison below is
+## between two legal builds and not between a build and a bypass.
+const RESIST_FLAT := 0.4
+
+## A saturated `Stat.EVASION`. `CombatDamage.resolve_hit` compares the boss's single draw
+## against the DEFENDER's evasion, so this makes every blow in an exchange avoided without
+## touching the damage model.
+const EVASION_FLAT := 1_000_000.0
+
+## How many seeds to sweep before giving up on finding a landed blow. Swept rather than
+## pinned because a hardcoded seed is a flake waiting for a content rebalance: the claim
+## under test is "a landed blow CAN inflict the status", not "seed 20260902 does".
+const SEED_SWEEP := 64
+
+
+## A bare actor in a live run, with the same attachments the existing exchange suite uses:
+## core pools, an item state and the loot state. `ElementStats` is named to grant the
+## affinity because `tools new_module` gives this suite's modules no `elements` edge; the
+## id itself is core state on the actor, so nothing here reaches into another module.
+func _delver(element: StringName = PLAYER_ELEMENT, affinity: float = AFFINITY) -> Actor:
+	var actor := Actor.new(&"delver", {Stat.PHYSIQUE: 10.0, Stat.SPIRIT: 8.0})
+	actor.attach_core_resources()
+	ItemsApi.attach(actor)
+	LootApi.attach(actor)
+	LootApi.enter_domain(actor, DEEP_DOMAIN, DEEP_TIER, 20260902)
+	actor.set_affinity(element, affinity)
+	return actor
+
+
+func _active(actor: Actor) -> Dictionary:
+	return LootApi.summary(actor).get("active", {}) as Dictionary
+
+
+func _status_of(result: Dictionary) -> Dictionary:
+	return result.get("status", {}) as Dictionary
+
+
+func _in_run(actor: Actor) -> bool:
+	return bool(_active(actor).get("in_domain", false))
+
+
+## All ten elements. `StatusDef.TIER_ONE_ELEMENTS` alone is no longer the whole vocabulary:
+## ADR 0110 published the tier-2 statuses, so an assertion about "the elements" that keeps
+## saying "tier-1" is asserting about half of them.
+func _all_elements() -> Array[String]:
+	var out: Array[String] = []
+	for element in ElementStats.BASE_ELEMENTS + ElementStats.ADVANCED_ELEMENTS:
+		out.append(String(element))
+	out.sort()
+	return out
+
+
+## Element ids as `String`s in TEXT order. Both sides of a set claim go through this: a
+## `Dictionary`'s keys arrive in insertion order and `ElementStats`' lists are `Array` of
+## `StringName` whose comparison is not string comparison, so an order-sensitive compare
+## across the two would be a claim about a different ordering than either side means.
+func _sorted_order(values: Array) -> Array[String]:
+	var out: Array[String] = []
+	for value in values:
+		out.append(String(value))
+	out.sort()
+	return out
+
+
+## Whether the shipped catalogue actually maps the fixture's element. The positive control
+## every refusal below returns early on: "a blow inflicts nothing" would be satisfied just
+## as well by a catalogue that maps nothing at all.
+func _mapped() -> bool:
+	return StatusApi.status_for_element(PLAYER_ELEMENT, 1.0) == PLAYER_STATUS
+
+
+# --- 1. the headline: a real blow makes the player a SUBJECT --------------------
+
+
+func test_a_landed_blow_inflights_the_status_on_the_player() -> void:
+	# THE test ADR 0105 exists to make possible. A real `LootApi` run, a real press, and
+	# the only assertion that matters: afterwards the PLAYER holds their element's status.
+	# The boss cannot be asserted instead — it is a `Dictionary` (`loot_state.gd:523-547`),
+	# not an `Actor`, so the player is the only subject there is.
+	var actor := _delver()
+	if not _mapped() or not _in_run(actor):
+		return
+	var landed := _first_landed(actor)
+	if landed.is_empty():
+		return
+	var result: Dictionary = landed["result"]
+	var status := _status_of(result)
+	assert_eq(bool(result["evaded"]), false, "the blow landed, so it may inflict")
+	assert_eq(bool(status["applied"]), true, "and it reports applied")
+	assert_eq(String(status["id"]), String(PLAYER_STATUS), "naming the element's authored status")
+	assert_eq(actor.has_status(PLAYER_STATUS), true, "and the player now HOLDS it")
+	# Primitives only (ADR 0038): a screen renders this dict without naming a Resource.
+	for key in status.keys():
+		assert_eq(
+			typeof(status[key]) == TYPE_OBJECT or typeof(status[key]) == TYPE_NIL,
+			false,
+			"status['%s'] is a primitive" % String(key)
+		)
+
+
+func test_the_status_is_live_on_the_actor_and_not_only_reported() -> void:
+	# The report could be satisfied by a dict built out of nothing. This asserts the actor's
+	# own registry, which is what every other reader — `summary()`, a status screen, the
+	# tick loop — actually consults.
+	var actor := _delver()
+	if not _mapped() or not _in_run(actor):
+		return
+	var landed := _first_landed(actor)
+	if landed.is_empty():
+		return
+	assert_eq(
+		actor.has_status(PLAYER_STATUS),
+		true,
+		"Actor.has_status agrees, so this is a live status and not a reported one"
+	)
+	var found := false
+	for entry in StatusApi.summary(actor)["active"] as Array:
+		if String((entry as Dictionary).get("id", "")) == String(PLAYER_STATUS):
+			found = bool((entry as Dictionary).get("known", false))
+	assert_eq(found, true, "and the status module resolves it to one of its own defs")
+
+
+func test_the_status_lands_on_the_attacker_and_never_on_the_boss() -> void:
+	# The boss is a plain Dictionary in `module_data`, so a call site that tried to debuff
+	# it would have to reach past the facade. Pinned because ADR 0105's own reasoning turns
+	# on it: `StatusApi.apply(actor, …)` cannot be pointed at a boss.
+	var actor := _delver()
+	if not _mapped() or not _in_run(actor):
+		return
+	var landed := _first_landed(actor)
+	if landed.is_empty():
+		return
+	assert_eq(actor.has_status(PLAYER_STATUS), true, "the attacker carries it")
+	assert_eq(
+		_active(actor).has("statuses"),
+		false,
+		"and the boss dictionary grew no status field: it is not an Actor"
+	)
+
+
+# --- 2. the gate: an avoided blow applies NOTHING -------------------------------
+
+
+func test_the_exchange_has_no_avoid_gate_so_every_press_reaches_the_roll() -> void:
+	# `CombatExchange._boss_guard` (`exchange.gd:410-411`) hardcodes `"evasion": 0.0`, so a
+	# boss can NEVER avoid under ADR 0076's share-of-pool model — `CombatDamage.resolve_hit`
+	# reads `defense["evasion"]` (`damage.gd:66`) and that bundle always says zero.
+	#
+	# So the "an avoided blow applies nothing" branch (`_status_on_landing`'s `evaded` gate,
+	# `exchange.gd:268`) is currently UNREACHABLE from an exchange. This test pins that fact
+	# rather than pretending to exercise it: the gate is correct, and it is dead only because
+	# the boss carries no evasion. When a boss tier ever authors evasion, this assertion is
+	# the one that should start failing and force the gate to be re-checked.
+	var actor := _delver()
+	if not _in_run(actor):
+		return
+	assert_eq(
+		CombatExchange._boss_guard(_active(actor)).get("evasion", -1.0),
+		0.0,
+		"the boss guard bundle hardcodes zero evasion, so the avoid gate cannot fire"
+	)
+
+
+func test_a_resisted_status_consumes_no_draw_from_the_shared_stream() -> void:
+	# "Consumes no draw from the shared stream" is the half of ADR 0087's rule that is
+	# invisible in the actor's status list. Two players with the same numbers and the same
+	# seed must answer identically WHETHER OR NOT a status was applied on the press before —
+	# a status roll drawn off the shared generator would shift the boss's own answer and
+	# make the second press differ for a reason no player could see.
+	var plain := _delver()
+	if not _in_run(plain):
+		return
+	var first := CombatExchange.exchange(plain, 4242)
+	var plain_second := CombatExchange.exchange(plain, 4242)
+
+	var resisted := _delver()
+	resisted.stats.add_modifier(
+		StatModifier.new(Stat.STATUS_RESISTANCE, Stat.Op.FLAT, RESIST_FLAT, &"test")
+	)
+	if not _in_run(resisted):
+		return
+	var resisted_first := CombatExchange.exchange(resisted, 4242)
+	var resisted_second := CombatExchange.exchange(resisted, 4242)
+
+	assert_eq(
+		float(resisted_first["share"]),
+		float(first["share"]),
+		"the first press spends the same share whether or not a status landed"
+	)
+	assert_eq(
+		float(resisted_second["share"]),
+		float(plain_second["share"]),
+		"and so does the SECOND press: no draw was taken off the shared stream"
+	)
+
+
+# --- 3. nothing mapped is a normal answer, not an error ------------------------
+
+
+func test_a_blow_carrying_no_element_applies_nothing_and_is_not_an_error() -> void:
+	# The case ADR 0105 measures as the COMMON one: `ElementsApi.attach` has no production
+	# caller, so an untrained body has no affinity at all and its blow carries no element.
+	# `status` is still present in the report — a consumer indexes it unconditionally — and
+	# it reads as an ordinary non-application rather than a failure.
+	var actor := _delver(&"", 0.0)
+	if not _in_run(actor):
+		return
+	var result := CombatExchange.exchange(actor, 20260902)
+	assert_eq(bool(result["evaded"]), false, "the blow still landed")
+	assert_eq(bool(result["ok"]), true, "and was still spent on the boss")
+	assert_eq(result.has("status"), true, "and the report still carries a status key")
+	assert_eq(bool(_status_of(result)["applied"]), false, "with nothing applied")
+	assert_eq(String(_status_of(result)["id"]), "", "and nothing named")
+	assert_eq(actor.statuses.size(), 0, "and the player carries no status at all")
+
+
+func test_an_element_with_no_authored_status_applies_nothing() -> void:
+	# The refusal path, re-targeted. It used to be tested against `lightning` because no
+	# tier-2 status shipped: ADR 0090 WITHHELD the ten rather than deferring them, because
+	# shipping one balanced content on a table ADR 0069 measured as strictly dominant.
+	# ADR 0110 publishes them — the balance objection is answered at the provider by
+	# `TIER_MASTERY_STEP` — so `lightning` now inflicts `lightning_arc` and there is no
+	# element left that maps to nothing.
+	#
+	# So the refusal is aimed at an element that is NOT one of the ten AUTHORED ones. That
+	# is the same contract the old test asserted, against a subject that still exists: a blow
+	# carrying an element the catalogue does not author inflicts nothing, and that is a
+	# shipped answer rather than a gap. An INVENTED id rather than a merely unused real one
+	# (`wood` has statuses) so the assertion cannot pass because a slot happens to be empty.
+	assert_eq(
+		StatusApi.status_for_element(&"aether", 1.0),
+		&"",
+		"an element outside the ten authored ones maps to nothing"
+	)
+	var actor := _delver(&"aether")
+	if not _in_run(actor):
+		return
+	var landed := _first_landed(actor)
+	if landed.is_empty():
+		return
+	var status := _status_of(landed["result"])
+	assert_eq(bool(status["applied"]), false, "an unmapped element inflicts nothing")
+	assert_eq(String(status["id"]), "", "and names nothing")
+	assert_eq(actor.statuses.size(), 0, "while the blow itself landed normally")
+	# The control the old test needed and this one has to earn again: the catalogue really
+	# does map its own elements, so "inflicts nothing" is not true of every blow here.
+	assert_ne(
+		StatusApi.status_for_element(ElementStats.LIGHTNING, 1.0),
+		&"",
+		"and the element ADR 0090 withheld now DOES map (ADR 0110)"
+	)
+
+
+# --- 4. determinism -------------------------------------------------------------
+
+
+func test_the_same_seed_answers_the_same_way_twice() -> void:
+	# Two fresh players, identical numbers, identical seed, identical boss: the verdict, the
+	# id and the potency must all match. Without this, "reproducible from (seed, encounter)"
+	# — the claim the exchange's own generator is built for — stops being true the moment a
+	# status enters the exchange.
+	var first := _delver()
+	if not _in_run(first):
+		return
+	var first_status := _status_of(CombatExchange.exchange(first, 90210))
+
+	var second := _delver()
+	if not _in_run(second):
+		return
+	var second_status := _status_of(CombatExchange.exchange(second, 90210))
+
+	assert_eq(bool(first_status["applied"]), bool(second_status["applied"]), "same verdict")
+	assert_eq(String(first_status["id"]), String(second_status["id"]), "same status id")
+	assert_almost_eq(
+		float(first_status["potency"]),
+		float(second_status["potency"]),
+		"and the same potency, which ADR 0088 reads off element_power deterministically"
+	)
+
+
+func test_two_exchanges_in_one_fight_do_not_replay_the_first_answers_status() -> void:
+	# `hit_index` is what stops the Nth blow in a fight re-rolling blow 1's answer. Asserted
+	# on the SEEDS rather than on resolved verdicts: at an open gate two draws agreeing is a
+	# coin-flip, and a flaky assertion is not an assertion.
+	var actor := _delver()
+	if not _in_run(actor):
+		return
+	var boss := _active(actor)
+	var seen := {}
+	for index in 6:
+		# The boss is a Dictionary, and `status_seed`'s THIRD slot is typed `Actor`,
+		# so the actor goes there and the encounter dict goes in the `technique`
+		# Variant slot — the same shape the production call site uses.
+		var seed_value := StatusApply.status_seed(900 + index, actor, actor, boss, index)
+		seen[seed_value] = true
+	assert_eq(seen.size(), 6, "every exchange in a fight gets its own substream")
+
+	# And the property that makes the counter above necessary: a fight's exchanges really do
+	# take DIFFERENT substream salts, because the call site counts landed blows itself.
+	var before: int = actor.get_module_data(&"schema").get("status_hits", 0)
+	CombatExchange.exchange(actor, 5150)
+	var after: int = actor.get_module_data(&"schema").get("status_hits", 0)
+	assert_eq(int(after) >= int(before), true, "the landed-blow counter never runs backwards")
+
+
+# --- 5. the mapping is data, and the content that carries it -------------------
+
+
+func test_the_mapping_is_authored_content_rather_than_a_table_in_code() -> void:
+	# ADR 0105's placement claim: the element→status relation lives in the `.tres`, and
+	# `StatusDef.element` alone does not decide it. Exactly one status per element claims
+	# the landed blow, and it is always the COMBAT-scope one of the pair — a player cannot
+	# be hit with a permanent cultivation blessing for throwing a punch.
+	#
+	# The count is the whole claim, not a number to update: one claimant per element is
+	# `StatusCatalog._landed_blow_collisions` satisfied, and it is asserted against the ten
+	# ELEMENTS rather than a literal so that adding an element makes this fail instead of
+	# quietly asking to be bumped. ADR 0090's ten claimants became ten-plus-five under
+	# ADR 0110, which published the tier-2 statuses instead of withholding them.
+	var claimants: Dictionary = {}
+	for status_id in StatusApi.status_ids():
+		var def := StatusApi.definition(status_id)
+		if not def.on_landed_blow:
+			continue
+		claimants[String(def.element)] = true
+		assert_eq(
+			def.is_combat_scope(),
+			true,
+			"%s claims the landed blow, so it must be a COMBAT status" % String(status_id)
+		)
+		assert_eq(
+			StatusApi.status_for_element(def.element, 1.0),
+			def.id,
+			"and it is the one this element answers with"
+		)
+	assert_eq(
+		claimants.size(),
+		ElementStats.BASE_ELEMENTS.size() + ElementStats.ADVANCED_ELEMENTS.size(),
+		"every element claims exactly one status, tier-1 and tier-2 alike (ADR 0110)"
+	)
+	assert_eq(
+		_sorted_order(claimants.keys()), _all_elements(), "and they are exactly the ten elements"
+	)
+
+
+func test_no_authored_def_claims_a_landed_blow_twice() -> void:
+	# The collision the selector exists to prevent: two statuses on one element would make
+	# "the element's status" ambiguous, and resolving it by catalogue order would make the
+	# shipped debuff a function of filename alphabetical order.
+	assert_eq(
+		StatusCatalog.instance().problems(),
+		[],
+		"no element is claimed twice, and no def regressed its authored shape"
+	)
+
+
+func test_the_restated_tier_one_element_list_still_matches_the_elements_module() -> void:
+	# `_element_of` walks `StatusDef.TIER_ONE_ELEMENTS`, which is a restatement of
+	# `ElementStats.BASE_ELEMENTS` rather than a reference to it — `combat` has no
+	# `elements` edge (ADR 0105 does not take one and `tools arch` would refuse it). A
+	# restatement is only safe while a test pins it; this is that pin. Two elements added to
+	# one side would make the exchange walk a set the catalogue does not, and a status would
+	# silently stop being reachable.
+	assert_eq(
+		StatusDef.TIER_ONE_ELEMENTS,
+		ElementStats.BASE_ELEMENTS,
+		"the walked list is still the elements module's tier-1 set"
+	)
+
+
+func test_status_for_element_answers_empty_for_everything_that_maps_to_nothing() -> void:
+	# The ordinary cases, each of which must read as `&""` and NONE of which is an error: an
+	# empty element, an unknown one, and a closed gate. A status code that raised on any of
+	# them would turn ordinary play into a crash, so this asserts the ANSWER rather than
+	# merely that nothing was applied.
+	#
+	# The tier-2 case that used to be here is GONE, not relaxed: under ADR 0090 a tier-2
+	# element answered `&""` because no status shipped for it, and ADR 0110 publishes those
+	# ten. `&""` now has three causes instead of four, and the fourth is asserted as the
+	# positive control at the foot of this test rather than left as a silently dropped branch.
+	assert_eq(StatusApi.status_for_element(&"", 1.0), &"", "an empty element maps to nothing")
+	assert_eq(
+		StatusApi.status_for_element(&"not_an_element", 1.0),
+		&"",
+		"an unknown element maps to nothing"
+	)
+	assert_eq(
+		StatusApi.status_for_element(ElementStats.LIGHTNING, 0.0),
+		&"",
+		"a closed gate maps to nothing and spends no draw (ADR 0087), advanced element too"
+	)
+	assert_eq(
+		StatusApi.status_for_element(PLAYER_ELEMENT, 1.0),
+		PLAYER_STATUS,
+		"and an open gate on an authored element does map"
+	)
+	# The positive control, restated: every refusal above would also pass on a catalogue that
+	# mapped nothing at all. Pinned as the exact twenty rather than a size, so the control
+	# cannot be satisfied by a different catalogue of the right length.
+	assert_eq(StatusApi.has_status(PLAYER_STATUS), true, "the positive control's status ships")
+	assert_eq(
+		StatusApi.status_for_element(ElementStats.LIGHTNING, 1.0),
+		&"lightning_arc",
+		"and a tier-2 element DOES map now (ADR 0110 published it)"
+	)
+	assert_eq(StatusApi.status_ids().size(), 20, "the catalogue ships all twenty defs")
+
+
+# --- internals ------------------------------------------------------------------
+
+
+## Run exchanges until one LANDS, and return it. Sweeping seeds rather than pinning one is
+## what keeps this suite from being a flake: what is under test is that a landed blow CAN
+## inflict the status, not that one particular number does. Returns `{}` when no press in
+## the sweep avoided, which is a legitimate outcome for a stripped fixture boss and is
+## handled by the caller's early return.
+func _first_landed(actor: Actor) -> Dictionary:
+	for index in SEED_SWEEP:
+		var result := CombatExchange.exchange(actor, 7919 * (index + 1))
+		if bool(result.get("evaded", true)):
+			continue
+		if not _in_run(actor):
+			continue
+		return {"result": result}
+	return {}

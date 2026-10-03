@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="NpcDef" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/modules/npc/npc_def.gd" id="1_def"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_stage_def.gd" id="2_stage"]
+
+[sub_resource type="Resource" id="Stage_gatekeeper"]
+script = ExtResource("2_stage")
+stage_id = &"gatekeeper"
+index = 0
+display_name = "Gatekeeper"
+stat_multipliers = {}
+tags = Array[StringName]([])
+advance_after = 0
+terminal = false
+
+[sub_resource type="Resource" id="Stage_sworn"]
+script = ExtResource("2_stage")
+stage_id = &"sworn_servant"
+index = 1
+display_name = "Sworn Servant"
+stat_multipliers = {}
+tags = Array[StringName]([&"combat", &"teaches"])
+advance_after = 0
+terminal = false
+
+[sub_resource type="Resource" id="Stage_retired"]
+script = ExtResource("2_stage")
+stage_id = &"retired"
+index = 2
+display_name = "Retired"
+stat_multipliers = {}
+tags = Array[StringName]([&"absent"])
+advance_after = 0
+terminal = true
+
+[resource]
+script = ExtResource("1_def")
+npc_id = &"elder_wei"
+display_name = "Elder Wei"
+inhabitant_id = &"azure_disciple"
+tier = &"story"
+faction = &"qi_dao"
+tags = Array[StringName]([&"teaches", &"elder", &"sworn_oath"])
+realm_id = &"core_formation"
+base = {"physique": 14.0, "spirit": 16.0, "aptitude": 12.0, "comprehension": 18.0, "will": 20.0}
+stages = Array[NpcStageDef]([SubResource("Stage_gatekeeper"), SubResource("Stage_sworn"), SubResource("Stage_retired")])
+initial_stage = &"gatekeeper"

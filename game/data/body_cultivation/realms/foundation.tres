@@ -9,10 +9,10 @@ breakthrough_item = &"body_foundation_breakthrough_pill"
 strengthening_item = &"body_foundation_channel_elixir"
 recovery_item = &"body_foundation_recovery_elixir"
 progress_required = 42.0
-physique_required = 10.0
-quality_required = 0.400000
-quality_target = 0.415000
-integrity_target = 0.465000
+physique_required = 16.0
+quality_required = 0.550500
+quality_target = 0.630500
+integrity_target = 0.680500
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen"])
 required_refinement = 1
 refinement_cap = 2
@@ -21,11 +21,8 @@ rewards = {
 "physique": 2.0,
 "muscle_fiber": 1.0
 }
-work_required = 42.0
-acupoint_work = 11.0
-meridian_work = 5.0
 insight_required = 18.0
 resonance_rank = 0
-chance_base = 0.56
-chance_cap = 0.94
+chance_base = 0.4820
+chance_cap = 0.8473
 channel_training = Array[StringName]([])

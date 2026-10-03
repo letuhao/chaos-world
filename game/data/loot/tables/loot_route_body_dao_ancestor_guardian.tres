@@ -1,0 +1,89 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_unique"]
+script = ExtResource("2_entry")
+id = &"guaranteed_unique"
+kind = &"item"
+item_id = &"unique_lantern_of_the_last_ward"
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"drop_0"
+kind = &"item"
+item_id = &"body_dao_ancestor_guardian_core"
+weight = 6.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"drop_1"
+kind = &"item"
+item_id = &"body_dao_ancestor_tempering_herb"
+weight = 5.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"drop_2"
+kind = &"item"
+item_id = &"sigil_divine_inception"
+weight = 4.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"drop_3"
+kind = &"item"
+item_id = &"U8_heaven_linlet_partisan"
+weight = 3.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"drop_4"
+kind = &"item"
+item_id = &"U8_heaven_linlet_thurible"
+weight = 2.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_route_body_dao_ancestor_guardian"
+display_name = "Dao Ancestor Guardian spoils"
+realm = &"dao_ancestor"
+rarity = &"legendary"
+rolls = 2
+rolls_max = 3
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_unique"),
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3"),
+	SubResource("entry_4")
+])

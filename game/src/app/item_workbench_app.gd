@@ -1,94 +1,344 @@
 class_name ItemWorkbenchApp
 extends Control
 
-## Composition root for the playable item workbench (ADR 0002, 0027, 0033).
+## Composition root for the playable slice (ADR 0002, 0027, 0033).
 ##
 ## The only place that knows concrete module types and the attach order. It
-## builds one actor, mounts the UI screen, and injects file-backed persistence —
-## the UI program itself never names a module type or touches the filesystem.
+## builds one actor, mounts the screen stack the scene already declares, and
+## injects file-backed persistence — the UI program itself never names a module
+## type or touches the filesystem.
+##
+## Every surface a player can reach is named by `ScreenRoutes`, and this root is
+## the only thing that mounts one: `navigate_to(route_id)` is the single
+## navigation mechanism, called by the navigation bar, by a screen that asks for
+## another screen, and by a headless probe that presses the same control a player
+## presses. A screen the route table does not name cannot be reached at all, so
+## "shipped" and "reachable" cannot drift apart.
 
-const WORKBENCH_SCENE := "res://scenes/item_workbench/item_workbench.tscn"
-const STACK_SCENE := "res://src/ui/screens/screen_stack.tscn"
-const SOCKET_SCREEN_SCENE := "res://src/ui/screens/socket_forge.tscn"
 const SAVE_PATH := "user://item_workbench_state.json"
-const LOOT_SCREEN_SCENE := "res://src/ui/screens/loot_encounter.tscn"
-## Damage one loot-screen strike deals. Boss vitality is authored content; the
-## composition root decides how much of it a strike spends.
-const LOOT_STRIKE_DAMAGE := 25.0
 ## Enough real content to exercise every activation channel on first run.
 const STARTER_ITEMS: Array[StringName] = [
 	&"armor_iron_helm",
 	&"accessory_iron_bangle",
 	&"armor_iron_ore",
 ]
+## The routes whose screen needs more than `setup(actor)`. Every other route is a
+## `UiScreen`, which is bound by the default arm below.
+const ROUTE_LOOT := &"loot_encounter"
+const ROUTE_SOCKET := &"socket_forge"
+const ROUTE_BODY := &"body_cultivation"
+const ROUTE_WORLD_MAP := &"world_map"
+const ROUTE_CRAFTING := &"crafting"
+const ROUTE_WORKBENCH := &"workbench"
+const ROUTE_SET_BONUS := &"set_bonus"
 
 var _actor: Actor = null
-var _workbench: Control = null
-var _socket_screen: Control = null
-var _loot_screen: Control = null
-var _stack: Control = null
-var _socket_request: int = 0
+## The composition root's status clock (ADR 0106). It holds no state of its own —
+## only the actor it ticks — so wiring it here is what ADR 0056 means by "app/ wires".
+var _status_loop: StatusLoop = null
+## The stack and the bar the scene declares. Resolved by unique name; the root
+## never builds a second one, because two stacks means two answers to "which
+## screen is live".
+var _stack: ScreenStack = null
+var _nav: NavBar = null
+## The pinned home screen at the bottom of the stack, and the one screen pushed
+## over it. Both are cleared the moment the stack drops them, so a stale handle
+## can never outlive the node it names.
+var _root_screen: Control = null
+var _feature_screen: Control = null
+## The socket forge's gameplay half. It owns the forge's round trip, so a screen
+## the stack has since freed is a no-op rather than a crash.
+var _forge: SocketForgeProgram = null
+var _route: StringName = &""
 
 
 func _ready() -> void:
-	_workbench = get_node_or_null("%Workbench") as Control
-	if _workbench == null:
-		push_error("ItemWorkbenchApp: no workbench in the scene")
-		return
-	_actor = _build_actor()
-	# The socket ledger lives on the actor, so the subsystem is attached here, in
-	# the one place that knows concrete module types (ADR 0027).
-	SocketApi.attach(_actor)
-	# The loot lifecycle state lives on the actor too, so it is attached here, in
-	# the one place that knows concrete module types.
-	LootApi.attach(_actor)
-	_workbench.call("setup", _actor, Callable(self, "_save_state"), Callable(self, "_load_state"))
-	_mount_stack()
-
-
-## Put every playable surface behind one screen stack, so the socket forge and the
-## loot encounter are reachable from the running app instead of existing only as
-## headless-callable scenes. The workbench stays the root; the feature screens are
-## pushed over it.
-func _mount_stack() -> void:
-	var scene: PackedScene = load(STACK_SCENE)
-	if scene == null:
-		push_error("ItemWorkbenchApp: no screen stack at %s" % STACK_SCENE)
-		return
-	_stack = scene.instantiate() as Control
-	add_child(_stack)
-	mount_socket_screen(_stack)
-	mount_loot_screen(_stack)
-	# The stack shows exactly one screen, so hand focus back to the workbench.
-	_stack.call("pop")
-	_stack.call("pop_to_root")
-
-
-## Push a screen the workbench opens on request, so every feature surface has a
-## reachable entry point rather than being mounted and immediately covered.
-func open_screen(scene_path: String) -> Control:
+	_stack = get_node_or_null("%ScreenStack") as ScreenStack
 	if _stack == null:
-		return null
-	var scene: PackedScene = load(scene_path)
-	if scene == null:
-		push_error("ItemWorkbenchApp: no screen at %s" % scene_path)
-		return null
-	return _stack.call("push", scene.instantiate()) as Control
+		push_error("ItemWorkbenchApp: the scene must carry a ScreenStack named %ScreenStack")
+		return
+	_nav = get_node_or_null("%NavBar") as NavBar
+	_actor = _build_actor()
+	# The socket ledger and the loot lifecycle state both live on the actor, so
+	# they are attached here, in the one place that knows concrete module types
+	# (ADR 0027).
+	SocketApi.attach(_actor)
+	LootApi.attach(_actor)
+	# The status clock is built last, because it can only tick the actor every
+	# other attachment has already made complete (ADR 0106).
+	_status_loop = StatusLoop.new(_actor)
+	_forge = SocketForgeProgram.new(_actor)
+	if not _mount_home():
+		return
+	if _nav != null and not _nav.route_requested.is_connected(_on_route_requested):
+		_nav.route_requested.connect(_on_route_requested)
 
 
-## A fresh hero with the core resource pools, the items subsystem attached, and
-## a starting kit drawn from the shipped content tree.
+## The one tick caller in the game (ADR 0106, read against ADR 0089).
+##
+## ## Why this frame and not a status-specific one
+##
+## A status nobody can tick is decoration: with no production caller, no burn spent
+## a pulse and nothing expired, and the readout had nothing to show. `_physics_process`
+## would have been the wrong answer in a different way — a status is a game-time
+## concept, not a simulation one, and a fixed 60 Hz would age it differently
+## depending on what else the frame did. So the idle process callback it is.
+##
+## `delta` is the engine's, always. Nothing here reads `Time.get_ticks_*`: whoever
+## owns time passes the elapsed time down, so a status ticks identically under a
+## headless test, a replay and a frame that hitched (ADR 0089).
+##
+## ## Why `ui/` can never grow this
+##
+## `ui/` is a pure consumer, and a `_process` there would be a second clock — two
+## callers means a status ages at two different rates depending on which screen is
+## mounted. This is the sentence that survives the ADR: ONE tick caller, in `app/`,
+## passing an explicit `delta`. Anything that wants statuses ticked calls
+## `StatusApi.tick_statuses` with a delta it was given, never with a clock of its own.
+func _process(delta: float) -> void:
+	# A no-op on a null actor rather than a crash: the root can be mounted before it
+	# built one, and a frame that cannot advance anything is not a reason to stop the
+	# whole UI. `StatusLoop.tick` refuses that same case by name.
+	if _status_loop == null or delta <= 0.0:
+		return
+	_status_loop.tick(delta)
+
+
+## The route table this root publishes, so the navigation bar, a probe and a
+## test all read the same list. Primitives only.
+func routes() -> Array[Dictionary]:
+	return ScreenRoutes.summary()
+
+
+## Open `route_id` and make it the live screen. The single navigation mechanism:
+## the navigation bar calls it, a screen that asks for another screen calls it,
+## and nothing pushes onto the stack by any other route.
+##
+## Returns false when the table names no such route or its scene stops loading,
+## so an unreachable screen is a reported refusal rather than a silent hole.
+func navigate_to(route_id: StringName) -> bool:
+	if _stack == null or not ScreenRoutes.has(route_id):
+		return false
+	if route_id == _route:
+		return true
+	# One level is ever stacked over the home screen, so this unwinds at most one
+	# screen. The home screen is never popped: the workbench is where the player
+	# keeps state, and a route change must not destroy it.
+	_stack.call("pop_to_root")
+	_feature_screen = null
+	if route_id != ScreenRoutes.ROOT_ID:
+		var screen := _instantiate_route(route_id)
+		if screen == null:
+			return false
+		_feature_screen = _stack.call("push", screen) as Control
+		if _feature_screen == null:
+			return false
+	_route = route_id
+	_announce_route()
+	return true
+
+
+## The route the live screen serves, or "" before the first mount.
+func current_route() -> StringName:
+	return _route
+
+
+## Everything the shell is showing, as primitives: the stack, the live screen and
+## the navigation bar. `nav_probe` reads this rather than the app's own opinion of
+## itself.
+func summary() -> Dictionary:
+	var live := _live_screen()
+	return {
+		"route": String(_route),
+		"actor_id": "" if _actor == null else String(_actor.id),
+		"feature": "" if _feature_screen == null else String(_feature_screen.name),
+		"stack": _stack.summary() if _stack != null else {},
+		"screen": live.call(&"summary") if live != null else {},
+		"nav": _nav.summary() if _nav != null else {},
+	}
+
+
+## Re-read the socket program's read model and hand it to the mounted forge.
+## Published because a caller that stocks items behind the screen's back has to
+## be able to repaint it; a no-op when the forge is not the live screen.
+func refresh_socket_screen() -> void:
+	if _forge == null or _route != ROUTE_SOCKET or not _forge.is_live():
+		return
+	_forge.refresh()
+
+
+## A fresh hero with every path the shipped slice offers, the core resource
+## pools, and a starting kit drawn from the shipped content tree.
+##
+## The attach order is load-bearing and is the only place it exists:
+##   1. `build` — core pools and the sect ledger, which grants recognition and
+##      never power (ADR 0084), so wiring it cannot hand a new actor an edge;
+##   2. the body path — it enrols the actor, and the element realm refresh below reads
+##      the highest realm off the actor's paths to write each element's realm
+##      multiplier. Refreshing the element realm before a path exists writes nothing,
+##      which is exactly the silent realm degression ADR 0069 records;
+##   3. dual cultivation, then fertility — fertility adds to the fertility and
+##      potency bases dual cultivation owns, so it must follow it;
+##   4. the element realm half, because it reads the paths step 2 wrote. The PROVIDER
+##      itself is mounted by `ActorFactory.build` — step 1 — so this is
+##      `apply_realm_modifiers` and never `attach`, or the stat is contributed twice;
+##   5. items, because body training spends the realm's elixirs through the
+##      inventory and an action must never find no bag to spend from;
+##   6. techniques LAST, because the technique module resolves its authored
+##      options through the items module's `OptionCatalog` and applies them
+##      through `ItemEffects` — the items vocabulary has to exist first (ADR 0056).
+##   7. social state, then the npc boot. Social belongs to EVERY actor, the player
+##      included (ADR 0091) — attaching it here rather than only inside the npc
+##      constructor is what makes the symmetry real: one ledger type answers for
+##      the player and for every inhabitant. `NpcBoot.install` then injects the npc
+##      constructor and binds the roster to this actor (ADR 0092); without it
+##      `NpcApi.spawn` can only ever return null.
 func _build_actor() -> Actor:
 	var actor := ActorFactory.build(
 		&"player", {Stat.PHYSIQUE: 12.0, Stat.SPIRIT: 8.0, Stat.APTITUDE: 6.0}
 	)
+	ActorFactory.with_body_cultivation(actor)
+	# The other two cultivation paths, enrolled the same way. A player who cannot
+	# open the qi or mind screen has not got two paths, they have got one — and
+	# both screens mount bound to an actor they cannot read otherwise.
+	ActorFactory.with_qi_cultivation(actor)
+	ActorFactory.with_mind_cultivation(actor)
+	DualCultivationApi.attach(actor)
+	# A species is a `race` module term for an inhabitant; the hero has none, so
+	# the species contribution is skipped rather than invented.
+	FertilityApi.attach(actor)
+	# The element provider is mounted by `ActorFactory.build`, so the player already
+	# carries it; this line REFRESHES the realm half and must never re-attach. It sits
+	# after step 2 for exactly that reason — see `ActorFactory._refresh_element_realm`
+	# and ADR 0069's "attach once" rule. A second `attach` here would stack a second
+	# `ElementProvider` (`ActorStats.add_provider` appends unguarded), and then
+	# `element_power_<e>` — the channel ADR 0088 makes status potency read — would be
+	# computed twice, silently doubling an npc's debuff on every landed blow.
+	ElementsApi.apply_realm_modifiers(actor)
 	ItemsApi.attach(actor)
+	# After `ItemsApi.attach`, as its own docstring requires: set bonus reads the
+	# items vocabulary, so it must never run first.
+	SetBonusApi.attach(actor)
+	# Techniques LAST: they read the items vocabulary written above, never the
+	# other way round (ADR 0056 — app/ wires the module, the module owns it).
+	TechniquesApi.attach(actor)
+	SocialApi.attach(actor)
+	NpcBoot.install(actor)
 	var inventory := ItemsApi.inventory(actor)
 	for item_id in STARTER_ITEMS:
 		var def := _resolve(item_id)
 		if def != null:
 			inventory.add(def, 1)
 	return actor
+
+
+## Push the one route the shell mounts at boot and never pops, so `ui_cancel`
+## always lands somewhere.
+func _mount_home() -> bool:
+	var screen := _instantiate_route(ScreenRoutes.ROOT_ID)
+	if screen == null:
+		push_error("ItemWorkbenchApp: the home route '%s' will not load" % ScreenRoutes.ROOT_ID)
+		return false
+	_root_screen = _stack.call("push", screen) as Control
+	_route = ScreenRoutes.ROOT_ID
+	_announce_route()
+	return true
+
+
+## Load one route's scene, name it for the route it serves, and bind it to the
+## app's actor. Naming it is what lets the live screen say which route it is in
+## the node tree, not only in the shell.
+func _instantiate_route(route_id: StringName) -> Control:
+	var scene_path := ScreenRoutes.scene_of(route_id)
+	var packed := load(scene_path) as PackedScene
+	if packed == null:
+		push_error("ItemWorkbenchApp: route '%s' has no scene at %s" % [route_id, scene_path])
+		return null
+	var screen := packed.instantiate() as Control
+	if screen == null:
+		push_error("ItemWorkbenchApp: route '%s' instantiates to no Control" % route_id)
+		return null
+	screen.name = ScreenRoutes.node_of(route_id)
+	_bind_route_screen(route_id, screen)
+	return screen
+
+
+## Bind one mounted screen to the app's actor, plus whatever read model it is a
+## pure view of. A screen that needs more than `setup(actor)` names it here; this
+## is the only place a gameplay type and a screen type meet.
+func _bind_route_screen(route_id: StringName, screen: Control) -> void:
+	match route_id:
+		ROUTE_WORKBENCH:
+			# The workbench is a plain view that also needs the persistence the UI
+			# program is not allowed to own (ADR 0027).
+			screen.call(
+				"setup", _actor, Callable(self, "_save_state"), Callable(self, "_load_state")
+			)
+		ROUTE_LOOT:
+			screen.call("setup", _actor)
+			screen.call("bind_bridge", _loot_bridge())
+		ROUTE_SOCKET:
+			screen.call("setup", _actor)
+			_forge.bind(screen)
+		ROUTE_CRAFTING:
+			# Recipes are pushed in, never discovered by `ui/`: `ItemsApi` publishes
+			# no catalog, so which recipes are listed is a composition-root call
+			# (ADR 0043).
+			screen.call("setup", _actor)
+			screen.call("set_recipes", RecipeCatalog.offerable(_actor))
+		ROUTE_BODY:
+			screen.call("setup", _actor)
+			# The body screen's World Map button is a real navigation door, so the
+			# route it opens is the same one the navigation bar opens.
+			if screen.has_signal(&"world_map_requested"):
+				screen.connect(&"world_map_requested", _on_world_map_requested)
+		ROUTE_SET_BONUS:
+			# The set screen renders exclusively from a snapshot the composition
+			# root supplies, so it needs BOTH: the actor like every other screen,
+			# and the snapshot nothing else feeds it.
+			screen.call("setup", _actor)
+			screen.call("apply_snapshot", SetBonusApi.inspect(_actor))
+		_:
+			screen.call("setup", _actor)
+
+
+## The loot program's public surface, as plain callables. The UI program may only
+## reach a gameplay module through that module's facade, so the bridge keeps every
+## module type on this side of the boundary. It carries no strike and no damage figure:
+## a domain fight is `CombatApi.exchange`, which the loot screen calls by name because
+## `combat` is declared in `rules.UI_MODULES` (ADR 0076).
+func _loot_bridge() -> LootBridge:
+	var bridge := LootBridge.new()
+	bridge.list_domains = Callable(LootApi, "domains")
+	bridge.enter_domain = Callable(LootApi, "enter_domain")
+	bridge.leave_domain = Callable(LootApi, "abandon")
+	bridge.pickup = Callable(LootApi, "pickup")
+	bridge.pickup_all = Callable(LootApi, "pickup_all")
+	bridge.reclaim = Callable(LootApi, "reclaim")
+	bridge.read_state = Callable(LootApi, "summary")
+	return bridge
+
+
+## The navigation bar asks; this root decides. One request in, one screen out.
+func _on_route_requested(route_id: StringName) -> void:
+	navigate_to(route_id)
+
+
+## A screen asked for another screen. Same mechanism as the bar, so there is one
+## navigation mechanism rather than two.
+func _on_world_map_requested() -> void:
+	navigate_to(ROUTE_WORLD_MAP)
+
+
+## Mark the live route on the bar, so the player can see where they are without
+## inferring it from button styling.
+func _announce_route() -> void:
+	if _nav != null:
+		_nav.set_active(_route)
+
+
+func _live_screen() -> Control:
+	return null if _stack == null else _stack.call("current") as Control
 
 
 ## Look a definition up by id through the items module's single resolver, so the
@@ -114,128 +364,3 @@ func _load_state() -> Dictionary:
 	var text := FileAccess.get_file_as_string(SAVE_PATH)
 	var parsed = JSON.parse_string(text)
 	return parsed if parsed is Dictionary else {}
-
-
-## Mount the socket forge on `stack` and hand it the socket program's read model.
-## The screen is a pure view: it never names the socket module, so this is where
-## the two are wired together and where every socket action is executed.
-func mount_socket_screen(stack: Control) -> Control:
-	if stack == null or _actor == null:
-		return null
-	var scene: PackedScene = load(SOCKET_SCREEN_SCENE)
-	if scene == null:
-		push_error("ItemWorkbenchApp: socket screen missing at %s" % SOCKET_SCREEN_SCENE)
-		return null
-	var screen := scene.instantiate() as Control
-	screen.call("setup", _actor)
-	screen.connect(&"socket_action_requested", Callable(self, "_on_socket_action"))
-	_socket_screen = screen
-	stack.call("push", screen)
-	refresh_socket_screen()
-	return screen
-
-
-## Re-read the socket program's read model for the host the screen is looking at,
-## and hand it in. The host id rides the view, so one read serves every widget.
-func refresh_socket_screen() -> void:
-	if _socket_screen == null:
-		return
-	_socket_screen.call("bind_view", SocketApi.panel_state(_actor, _socket_host_id()))
-
-
-## Run one screen intent against the socket program, then repaint from the result.
-## A refusal is reported through the message line, never swallowed.
-func _on_socket_action(action: StringName, args: Dictionary) -> void:
-	var result := _run_socket_action(action, args)
-	_socket_screen.call("set_message", _socket_outcome(action, result), _socket_tone(result))
-	refresh_socket_screen()
-
-
-func _run_socket_action(action: StringName, args: Dictionary) -> Dictionary:
-	var host := StringName(String(args.get("host_id", _socket_host_id())))
-	var reagent := StringName(String(args.get("reagent_id", "")))
-	var index := int(args.get("index", 0))
-	match action:
-		&"create_slot":
-			return SocketApi.create_slot(_actor, host, reagent)
-		&"impute_slot":
-			return SocketApi.impute_slot(_actor, host, index, reagent)
-		&"insert_socket":
-			return SocketApi.insert_socket(
-				_actor, host, index, StringName(String(args.get("gem_instance_id", "")))
-			)
-		&"extract_socket":
-			return SocketApi.extract_socket(_actor, host, index)
-		_:
-			return SocketApi.commit_enchantment(
-				_actor, host, reagent, _next_socket_request_id(), Time.get_ticks_usec()
-			)
-
-
-func _socket_host_id() -> String:
-	if _socket_screen != null:
-		return String(_socket_screen.call("selected_host"))
-	var parent: Dictionary = SocketApi.panel_state(_actor).get("parent", {})
-	return String(parent.get("instance_id", ""))
-
-
-func _next_socket_request_id() -> StringName:
-	_socket_request += 1
-	return StringName("socket_request_%d" % _socket_request)
-
-
-func _socket_outcome(action: StringName, result: Dictionary) -> String:
-	if bool(result.get("ok", false)):
-		return "%s committed" % action
-	return "Rejected: %s" % result.get("reason", "")
-
-
-func _socket_tone(result: Dictionary) -> StringName:
-	return &"ok" if bool(result.get("ok", false)) else &"error"
-
-
-## Mount the loot surface on `stack` and hand it the loot program's read model.
-## The screen is a pure view of a [LootBridge] of plain callables, so this is the
-## only place the two are wired together and the only place a loot action is run.
-func mount_loot_screen(stack: Control) -> Control:
-	if stack == null or _actor == null:
-		return null
-	if _loot_screen != null:
-		refresh_loot_screen()
-		return _loot_screen
-	var scene: PackedScene = load(LOOT_SCREEN_SCENE)
-	if scene == null:
-		push_error("ItemWorkbenchApp: loot screen missing at %s" % LOOT_SCREEN_SCENE)
-		return null
-	var screen := scene.instantiate() as Control
-	screen.call("setup", _actor)
-	screen.call("bind_bridge", loot_bridge())
-	screen.call("set_strike_damage", LOOT_STRIKE_DAMAGE)
-	_loot_screen = screen
-	stack.call("push", screen)
-	return screen
-
-
-## The loot program's public surface, as plain callables. The UI program may only
-## reach a gameplay module through that module's facade, so the bridge keeps every
-## module type on this side of the boundary.
-func loot_bridge() -> LootBridge:
-	var bridge := LootBridge.new()
-	bridge.strike_damage = LOOT_STRIKE_DAMAGE
-	bridge.list_domains = Callable(LootApi, "domains")
-	bridge.enter_domain = Callable(LootApi, "enter_domain")
-	bridge.strike = Callable(LootApi, "strike")
-	bridge.leave_domain = Callable(LootApi, "abandon")
-	bridge.pickup = Callable(LootApi, "pickup")
-	bridge.pickup_all = Callable(LootApi, "pickup_all")
-	bridge.reclaim = Callable(LootApi, "reclaim")
-	bridge.read_state = Callable(LootApi, "summary")
-	return bridge
-
-
-## Re-read the loot program's read model and hand it in. The screen repaints from
-## it, so a refusal can never leave the view out of step with the world.
-func refresh_loot_screen() -> void:
-	if _loot_screen == null:
-		return
-	_loot_screen.call("bind_bridge", loot_bridge())

@@ -45,6 +45,7 @@ func _initialize() -> void:
 		quit(EXIT_ERROR)
 		return
 	_bootstrap_actor(argv)
+	_bind_read_models()
 	_emit(
 		{
 			"event": "ready",
@@ -84,15 +85,47 @@ func _bootstrap_actor(argv: PackedStringArray) -> void:
 	_screen.call("setup", _actor)
 
 
+## Give a screen whatever read model it asks for by name. Some screens are not a
+## plain view of the actor: `loot_encounter` takes a [LootBridge] of plain
+## callables, because `loot` is not one of the modules `rules.UI_MODULES` declares
+## and `ui/` may not name `LootApi`. Without this the driver instantiated the
+## screen, bound nothing, and every verb read as "not available" — so a live
+## feature measured as dead, and BL-0320 was filed against the game when the fault
+## was the instrument. Mirrors `ItemWorkbenchApp._bind_route_screen`, which is the
+## production site for the same wiring.
+func _bind_read_models() -> void:
+	if _actor == null or not _screen.has_method("bind_bridge"):
+		return
+	LootApi.attach(_actor)
+	_screen.call("bind_bridge", _loot_bridge())
+
+
+func _loot_bridge() -> LootBridge:
+	var bridge := LootBridge.new()
+	bridge.list_domains = Callable(LootApi, "domains")
+	bridge.enter_domain = Callable(LootApi, "enter_domain")
+	bridge.leave_domain = Callable(LootApi, "abandon")
+	bridge.pickup = Callable(LootApi, "pickup")
+	bridge.pickup_all = Callable(LootApi, "pickup_all")
+	bridge.reclaim = Callable(LootApi, "reclaim")
+	bridge.read_state = Callable(LootApi, "summary")
+	return bridge
+
+
 ## Give the actor the items every realm gate needs, so a caller is not stuck at
 ## R1 forever with no way to satisfy the breakthrough gate. Data-driven, not a
 ## shortcut: these are the real realm items the facade checks for.
 func _stock_seed_items() -> void:
 	for def_id in _seed_item_ids():
-		var def := ItemDef.new()
-		def.id = StringName(def_id)
-		def.stackable = true
-		def.max_stack = 9999
+		# The authored definition, via the game's one stable-id resolver
+		# (ADR 0007). A fabricated `ItemDef.new()` stub is NOT equivalent: it made
+		# this harness report a seeded pill the realm gate could not see, which
+		# reads exactly like a broken gate.
+		var def := Crafting.resolve(def_id)
+		if def == null:
+			_emit({"event": "error", "command": "seed", "error": "no such item: " + def_id})
+			_failures.append("seed")
+			continue
 		ItemsApi.inventory(_actor).add(def, 999)
 
 
@@ -219,7 +252,6 @@ func _reattach_components(path_id: String) -> void:
 			BodyTraining.synchronize(_actor)
 		"qi":
 			QiCultivationApi.attach(_actor)
-			QiCultivationApi.attach_dantian(_actor)
 			QiTraining.synchronize(_actor)
 		"mind":
 			MindCultivationApi.attach(_actor)
@@ -262,6 +294,9 @@ func _run_action(command: String) -> void:
 		return
 	if command.begins_with("realm:"):
 		_run_realm(command.substr(6))
+		return
+	if command.begins_with("commit:"):
+		_run_commit(command.substr(7))
 		return
 	if not command.begins_with("act_"):
 		_emit({"event": "error", "command": command, "error": "unknown command"})
@@ -313,17 +348,27 @@ func _run_grant(def_id: String) -> void:
 		_emit({"event": "error", "command": "grant", "error": "no inventory"})
 		_failures.append("grant")
 		return
-	var def := ItemDef.new()
-	def.id = StringName(def_id)
-	def.stackable = true
-	def.max_stack = 9999
+	# Resolve the AUTHORED definition through the one stable-id resolver the game
+	# itself uses (ADR 0007), so a grant is indistinguishable from a real drop.
+	# Fabricating a bare `ItemDef.new()` here once made this harness lie: it
+	# reported `granted: 999` for a pill the realm gate still called missing.
+	var def := Crafting.resolve(StringName(def_id))
+	if def == null:
+		_emit({"event": "error", "command": "grant", "error": "no such item: " + def_id})
+		_failures.append("grant")
+		return
 	# `add` returns the LEFTOVER, not the amount added, so 0 means it all fit.
 	var leftover := inventory.add(def, 999)
 	_emit(
 		{
 			"event": "action",
 			"command": "grant:" + def_id,
-			"result": {"granted": 999 - leftover, "leftover": leftover},
+			"result":
+			{
+				"granted": 999 - leftover,
+				"leftover": leftover,
+				"inventory_count": inventory.count(StringName(def_id)),
+			},
 		}
 	)
 
@@ -339,6 +384,44 @@ func _run_realm(rank_id: String) -> void:
 	state.rank_id = StringName(rank_id)
 	_refresh_after_move()
 	_emit({"event": "action", "command": "realm:" + rank_id, "result": String(state.rank_id)})
+
+
+## `commit:<index>` runs `WorldAnchor.commit(actor, index)` — the same core entry
+## point a high-tier breakthrough runs, and the ONLY thing that creates an
+## `AscensionState`, commits to a world, or grows the inside world.
+##
+## `realm:` sets `PathState.rank_id` and stops there. That shortcut moves the
+## rank WITHOUT the milestone that rank is supposed to have earned, so every
+## screen reading core's committed state rendered "No ascent begun" and every
+## ascent verb refused — a state the shipped game cannot actually reach. The
+## refusal was correct; the driver was manufacturing an impossible state and the
+## refusal read as a dead end. Two independent reports hit this before it was
+## fixed. `commit:` performs the real milestone so the ascent, the inside world
+## and the R28+ gates are drivable from a terminal.
+func _run_commit(argument: String) -> void:
+	if _actor == null:
+		_emit({"event": "error", "command": "commit", "error": "no actor"})
+		_failures.append("commit")
+		return
+	var index := argument.to_int()
+	if index == 0 and argument.strip_edges() != "0":
+		_emit({"event": "error", "command": "commit", "error": "commit needs a realm index"})
+		_failures.append("commit")
+		return
+	WorldAnchor.commit(_actor, index)
+	_refresh_after_move()
+	_emit(
+		{
+			"event": "action",
+			"command": "commit:" + argument,
+			"result":
+			{
+				"index": index,
+				"ascension": _actor.ascension != null,
+				"world": _actor.world != null,
+			},
+		}
+	)
 
 
 func _current_path_id() -> StringName:

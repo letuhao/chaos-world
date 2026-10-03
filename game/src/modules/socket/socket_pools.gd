@@ -66,7 +66,7 @@ static func invalidate() -> void:
 static func roll(
 	channel: StringName,
 	used: Array[StringName],
-	realm_index: int,
+	realm_id: StringName,
 	rarity_index: int,
 	rng: RandomNumberGenerator
 ) -> Dictionary:
@@ -84,21 +84,21 @@ static func roll(
 		if pick <= 0.0:
 			chosen = candidate["record"]
 			break
-	return catalog.realize(chosen, realm_index, rarity_index, rng)
+	return catalog.realize(chosen, realm_id, rarity_index, rng)
 
 
 ## What a roll for `channel` may produce right now: every legal option with the
 ## value window it could legally take. A preview is this list plus costs, so a
 ## player never has to commit to find out what was possible.
 static func permitted(
-	channel: StringName, realm_index: int, rarity_index: int, used: Array[StringName]
+	channel: StringName, realm_id: StringName, rarity_index: int, used: Array[StringName]
 ) -> Array[Dictionary]:
 	var catalog := OptionCatalog.instance()
 	var out: Array[Dictionary] = []
 	for candidate in _weighted(channel, used):
 		var record: Dictionary = candidate["record"]
 		var window := catalog.magnitude_bounds(
-			String(record.get("unit", "magnitude")), realm_index, rarity_index
+			String(record.get("unit", "magnitude")), realm_id, rarity_index
 		)
 		var target: Dictionary = record.get("target", {})
 		(

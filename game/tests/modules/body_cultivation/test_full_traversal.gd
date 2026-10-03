@@ -5,6 +5,15 @@ extends TestCase
 ## meditate, and breakthrough. Tests control RNG but never directly set rank,
 ## channels, or success flags.
 
+## Bounds that name what they catch. A tribulation is at most nine waves plus the
+## warning, trial, climax and aftermath phases, so one fight fits in a dozen
+## advances; the bound names a fight that would stop advancing. An ascent is four
+## steps to the caps, so ASCENT_BOUND is that plus slack -- `WorldAnchor.ascend`
+## refuses on its own past the caps, so this never has to be raised, and raising it
+## would convert a loud failure into a slow one.
+const WAVE_BOUND := 64
+const ASCENT_BOUND := 8
+
 var _defs: Dictionary = {}
 
 
@@ -77,8 +86,10 @@ func _points_below(actor: Actor, meridian_id: StringName, quality_target: float)
 
 
 func _pool_full(actor: Actor) -> bool:
-	var points: AcupointSet = actor.component(&"acupoints")
-	return points != null and points.is_full()
+	# The body reservoir IS the body_integrity pool; read it there rather than
+	# through the acupoint set, which no longer hands its pool out.
+	var integrity := actor.resource(BodyStats.BODY_INTEGRITY)
+	return integrity != null and integrity.ratio() >= 1.0
 
 
 ## Cultivate until the realm's progress floor is met, the shared body reservoir
@@ -120,10 +131,16 @@ func _meditate_to_floor(actor: Actor, insight_required: float) -> void:
 		BodyTraining.meditate(actor, 1.0)
 
 
-## Immortal+ breakthroughs are gated by a survived tribulation; the inside world,
-## world, and ascension a tier produces are *committed by the breakthrough itself*
-## (ADR 0032), so this only has to fight the tribulation — it must not hand-write
-## the world systems, which is what previously made R19-R30 unreachable in play.
+## Immortal+ breakthroughs are gated by a survived tribulation. The inside world and
+## the created world are COMMITTED by the breakthroughs that introduce them (ADR
+## 0032), so this must not write them: inventing an anchor or a world is what
+## previously made R19-R30 unreachable in play.
+##
+## The ASCENSION is different, and this used to get it wrong in the test's favour:
+## `WorldAnchor.commit` only *begins* the ascent when the Transcendent tier lands,
+## and ADR 0021 requires it COMPLETE before the next realm. The old comment here
+## claimed there was "no ascent to walk", so nothing ever walked one and R28-R30
+## were unreachable -- 151 assertions, all one wall.
 func _satisfy_tier_gates(actor: Actor, target: RealmDef) -> void:
 	if target.index < Breakthrough.IMMORTAL_REALM_THRESHOLD:
 		return
@@ -131,15 +148,30 @@ func _satisfy_tier_gates(actor: Actor, target: RealmDef) -> void:
 	# to the realm being entered and `resolve_tribulation` is the sole thing that
 	# decides survival. Hand-writing `actor.tribulation` here is exactly what
 	# made R19-R30 unreachable in play.
-	if Breakthrough.tribulation_ok(actor, target.index):
-		return
-	var tribulation := Breakthrough.begin_tribulation(actor, target.index)
-	if tribulation == null:
-		return
+	if not Breakthrough.tribulation_ok(actor, target.index):
+		var tribulation := Breakthrough.begin_tribulation(actor, target.index)
+		if tribulation != null:
+			var wave_guard := 0
+			while Breakthrough.advance_tribulation(actor) and wave_guard < WAVE_BOUND:
+				wave_guard += 1
+			Breakthrough.resolve_tribulation(actor, true)
+	_walk_ascent(actor, target)
+
+
+## Walk the Transcendent ascent with core's own entry point (ADR 0041): the ascent
+## belongs to no single path -- every path carries the same `AscensionState` -- so
+## no facade serves it and `ui` may call `core` directly.
+##
+## `WorldAnchor.ascend` refuses on the step past the caps, so its own `false` is the
+## loop's real exit. `ASCENT_BOUND` only names an ascent that will not finish; it
+## is not a budget to spend, and raising it would turn a loud failure into a slow
+## one.
+func _walk_ascent(actor: Actor, target: RealmDef) -> void:
 	var guard := 0
-	while Breakthrough.advance_tribulation(actor) and guard < 64:
+	while not Breakthrough.ascension_ok(actor, target.index) and guard < ASCENT_BOUND:
+		if not WorldAnchor.ascend(actor):
+			break
 		guard += 1
-	Breakthrough.resolve_tribulation(actor, true)
 
 
 ## Undo everything a deviation left behind, using only the public recovery
@@ -228,9 +260,14 @@ func test_full_traversal_all_30_realms() -> void:
 	var ladder := RealmDefaults.ladder()
 	var visited: Array[StringName] = [actor.path(BodyPath.PATH_ID).rank_id]
 	var breakthroughs := 0
-	# Bounded: an unresolvable realm must fail the assertions above, not spin.
+	# Bounded: an unresolvable realm must fail the assertions above, not spin. The bound
+	# is in the CONDITION and not only in the body, because GDScript's flow analysis
+	# cannot prove a `while true:` terminates and refuses to compile the file when the
+	# function has a return type -- which is how one unanalysable loop once took a
+	# 407-line suite down to zero assertions. The body check names the condition that
+	# failed to converge, so the run says WHICH walk gave up rather than just stopping.
 	var guard := 0
-	while true:
+	while guard <= 64:
 		guard += 1
 		if guard > 64:
 			push_error("body traversal did not reach the terminal realm")
@@ -248,9 +285,7 @@ func test_full_traversal_all_30_realms() -> void:
 		# that prices them, and it must not collapse to neutral here — a realm
 		# whose rate read 1.0 would make the whole traversal free.
 		assert_eq(
-			BodyRealmProfile.factor(target.id) > BodyRealmProfile.NEUTRAL,
-			true,
-			"realm rate for %s" % target.id
+			RealmRate.factor(target.id) > RealmRate.NEUTRAL, true, "realm rate for %s" % target.id
 		)
 		assert_eq(seed.work_required >= 0.0, true, "work required for %s" % target.id)
 		assert_eq(seed.insight_required > 0.0, true, "insight floor for %s" % target.id)

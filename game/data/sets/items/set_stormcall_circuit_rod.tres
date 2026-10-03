@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"artifact"
 grade = &"spirit"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:stormcall_circuit"])
 sources = Array[StringName]([&"boss:body_spirit_severing_guardian"])
 description = "A severing-edge rod that keeps a partial discharge in the circuit."

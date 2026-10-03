@@ -87,15 +87,24 @@ static func preview(actor: Actor) -> Dictionary:
 		var channel := actor.meridians.get_meridian(id)
 		if channel == null or not channel.meets(source_seed.required_channel_state):
 			conditions.append("Channel %s not ready" % id)
+	# The four shared tier gates and the anchor are SEPARATE clauses and all of them
+	# are owed. ADR 0024 delegated the anchor to `MindAnchor` and nothing else, so
+	# the shared list is reported here rather than assumed by the condition.
+	var tier_unmet := _tier_gate_unmet(actor, target.index)
 	var stage := MindAnchor.required_stage(target.index)
 	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD:
-		if not Breakthrough.tribulation_ok(actor, target.index):
-			conditions.append("Tribulation not survived")
+		conditions.append_array(tier_unmet)
 		if not MindAnchor.stage_met(actor, stage):
-			conditions.append(MindAnchor.describe_stage(stage))
+			# The shortfall, not the rule: a screen must be able to say which part of
+			# the anchor is outstanding, and `MindAnchor.outstanding` reports exactly
+			# the clause that is false for THIS actor.
+			conditions.append(_anchor_reason(actor, stage))
 	return {
 		"ready": conditions.is_empty(),
 		"conditions": conditions,
+		# The shared gates on their own, so a screen can mark which of the four is
+		# shut without re-deriving them out of the flat clause list above.
+		"tier_gate_unmet": tier_unmet,
 		"costs": {seed.breakthrough_item: 1},
 		"chance": _chance(actor, sea),
 		"target": target.id,
@@ -156,13 +165,72 @@ static func _gates(
 			"required": target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD,
 			"value": Breakthrough.tribulation_ok(actor, target.index),
 		},
+		# The three gates the anchor is NOT. They are published under the same keys
+		# body publishes them under, each holding core's own verdict, so a screen can
+		# mark which of the four is shut without restating a rule (ADR 0034).
+		"inside_world":
+		{
+			"required": target.index > Breakthrough.IMMORTAL_REALM_THRESHOLD,
+			"value": Breakthrough.inside_world_ok(actor, target.index),
+		},
+		"world":
+		{
+			"required": target.index > WorldAnchor.COMMIT_MICRO,
+			"value": Breakthrough.world_ok(actor, target.index),
+		},
+		"ascent":
+		{
+			"required": target.index > WorldAnchor.COMMIT_MICRO,
+			"value": Breakthrough.ascension_ok(actor, target.index),
+			# Published as a PROGRESS, not a boolean: this gate is WALKED, four
+			# deliberate steps, and a screen cannot render "four steps to walk" out
+			# of a `false`.
+			"outstanding": WorldAnchor.ascension_unmet(actor),
+			"steps_remaining": actor.ascension.steps_remaining() if actor.ascension != null else 0,
+		},
 		"anchor":
 		{
 			"required": stage != MindAnchor.STAGE_NONE,
 			"stage": String(stage),
 			"value": MindAnchor.stage_met(actor, stage),
+			# The named clause that is false right now, so a screen can mark the
+			# actionable milestone without restating the stage policy.
+			"outstanding": MindAnchor.outstanding(actor, stage),
 		},
 	}
+
+
+## `MindAnchor.outstanding` names the shortfall, and never returns empty for a
+## stage the caller already found unmet. The fallback keeps `conditions` free of a
+## blank line if the two ever disagree.
+static func _anchor_reason(actor: Actor, stage: StringName) -> String:
+	var reason := MindAnchor.outstanding(actor, stage)
+	return MindAnchor.describe_stage(stage) if reason == "" else reason
+
+
+## The shared tier gates that are shut for `target_index`, one clause each, in the
+## order they are earned, and nothing at all when they are all open.
+##
+## Every verdict is core's own predicate — the same four `Breakthrough.tier_gates_met`
+## ANDs — so this list cannot disagree with the gate that refuses. The ASCENSION
+## clause is core's wording too (`WorldAnchor.ascension_unmet`, ADR 0034): it names
+## how many steps are left to walk, because a gate a player is told merely exists is
+## a gate they cannot act on.
+##
+## Below each gate's own threshold its predicate is true, so a mortal or spirit realm
+## sees none of this. Nothing here is conditional on the tier, which is why it can be
+## read at every boundary rather than only at a high one.
+static func _tier_gate_unmet(actor: Actor, target_index: int) -> Array[String]:
+	var out: Array[String] = []
+	if not Breakthrough.tribulation_ok(actor, target_index):
+		out.append("Survive a tribulation fought for this realm")
+	if not Breakthrough.inside_world_ok(actor, target_index):
+		out.append("The realm inside you is not ready yet")
+	if not Breakthrough.world_ok(actor, target_index):
+		out.append("The world you made is not stable yet")
+	if not Breakthrough.ascension_ok(actor, target_index):
+		out.append(WorldAnchor.ascension_unmet(actor))
+	return out
 
 
 ## The evaluated chance, and the single formula that produces it.
@@ -219,6 +287,12 @@ static func _id(value: MindAttempt) -> String:
 ## and persist the record. Returns null when refused — unprepared, no target
 ## realm, or another attempt is already active.
 static func start(actor: Actor, rng: RandomNumberGenerator = null) -> MindAttempt:
+	# Face the tribulation owed for this path's next realm BEFORE validating anything
+	# (ADR 0061), so R19-R30 are reachable by play rather than only by a test. Both
+	# entries into an attempt run through here — `start` itself and the one-shot
+	# `try_breakthrough` — so the wave is charged once per committed attempt. The
+	# return is discarded on purpose: a wave never opens the gate.
+	Breakthrough.face_tribulation(actor, MindPath.PATH_ID, rng)
 	if active_attempt(actor) != null:
 		return null
 	var state := actor.path(MindPath.PATH_ID)
@@ -300,6 +374,15 @@ static func resolve_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> 
 	if seed == null or sea == null:
 		_end(actor, committed, false)
 		return false
+	# The tier gates are re-read before the roll, so a gate that closed underneath
+	# the attempt — a save round trip, a tribulation record that did not survive it —
+	# costs no roll, no deviation and no award, and the attempt is CANCELLED rather
+	# than failed. Body reads the gates here for the same reason; qi re-reads them at
+	# the advance instead. This must stay ABOVE `mark_trial_complete`: below it the
+	# record would read as a lost trial the actor never fought.
+	if not Breakthrough.tier_gates_met(actor, target.index):
+		_end(actor, committed, false)
+		return false
 	committed.mark_trial_complete()
 	var generator := rng if rng != null else _replay(committed)
 	var chance := float(committed.preparation.get("chance", _chance(actor, sea)))
@@ -307,19 +390,26 @@ static func resolve_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> 
 		_deviate(actor, state, seed, sea, generator)
 		_end(actor, committed, false)
 		return false
+	# The gate is the last thing that can still refuse, and a refusal must leave the
+	# actor exactly as it was found: no realm, no rewards, no drained sea. The award
+	# and the drain therefore both FOLLOW the advance, as they do on body and qi.
+	# Draining first would hand the actor a full reservoir's worth of progress for a
+	# breakthrough that never happened, and the drain is reachable precisely because
+	# the advance can now refuse where `try_advance` never could.
+	if not Breakthrough.try_advance_gated(actor, MindPath.PATH_ID):
+		_end(actor, committed, false)
+		return false
 	for key in seed.rewards:
 		var id := StringName(key)
 		actor.stats.set_base(id, actor.stats.get_base(id) + float(seed.rewards[key]))
 	sea.drain(actor, sea.current(actor))
-	if not Breakthrough.try_advance(actor, MindPath.PATH_ID):
-		_end(actor, committed, false)
-		return false
 	MindTraining.synchronize(actor)
-	# High tiers commit their anchor as an outcome of this breakthrough, and the
-	# survived tribulation is spent here (ADR 0024/0029).
+	# High tiers commit their anchor as an outcome of this breakthrough. Nothing here
+	# decides a tribulation: the fight already paid its own award and consumed a dao
+	# heart, so paying again here handed R19 twice the insight for one fight and
+	# stacked two `heavenly_blessing` statuses (ADR 0041/0061). A breakthrough CONSUMES
+	# a survivor; it does not manufacture one.
 	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD:
-		if actor.tribulation != null:
-			actor.tribulation.apply_result(actor, true)
 		MindAnchor.commit(actor, target.index)
 	_end(actor, committed, true)
 	return true

@@ -8,12 +8,31 @@ const TEST_ROOT := "res://tests"
 ## be checked without paying for the whole suite.
 const ARG_SUITE := "--suite"
 
+## Where the running tally is mirrored after EVERY suite. A GDScript runtime error in
+## one suite kills this process mid-loop, and the tally at the end of the loop is then
+## never printed -- one agent's in-flight file once took out all 260 suites and left a
+## run with no pass/fail count at all, which reads exactly like a run that measured
+## nothing. `tools/test.py` falls back to this file when stdout has no `Results:` line,
+## and labels the number as incomplete rather than presenting it as a clean result.
+const TALLY_PATH := "user://test-tally.txt"
+
+
+func _write_tally(total_passed: int, total_failed: int, ran: int) -> void:
+	var file := FileAccess.open(TALLY_PATH, FileAccess.WRITE)
+	if file == null:
+		return
+	file.store_line(
+		"Results: %d passed, %d failed (%d suite(s))" % [total_passed, total_failed, ran]
+	)
+	file.close()
+
 
 func _initialize() -> void:
 	var suite_filter := _suite_filter()
 	var total_passed := 0
 	var total_failed := 0
 	var ran := 0
+	_write_tally(total_passed, total_failed, ran)
 	for script_path in _find_tests(TEST_ROOT):
 		if not suite_filter.is_empty() and not script_path.contains(suite_filter):
 			continue
@@ -29,11 +48,19 @@ func _initialize() -> void:
 			continue
 		ran += 1
 		for method_name in _test_methods(suite):
+			suite.call("setup")
 			suite.call(method_name)
+			# `teardown` runs after EVERY test, not once per suite. A suite that
+			# installs a process-wide singleton (a content catalog's `shared`) and
+			# only released it at the end of the file would leak it into every suite
+			# that runs later, so a shipped-content assertion would fail for reasons
+			# unrelated to the content it is checking.
+			suite.call("teardown")
 		total_passed += suite.passed()
 		total_failed += suite.failed()
 		for failure in suite.failures():
 			push_error("%s :: %s" % [script_path, failure])
+		_write_tally(total_passed, total_failed, ran)
 	print("Results: %d passed, %d failed (%d suite(s))" % [total_passed, total_failed, ran])
 	quit(1 if total_failed > 0 else 0)
 

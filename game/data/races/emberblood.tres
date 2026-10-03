@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="RaceDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/race/race_def.gd" id="1_race"]
+
+[resource]
+script = ExtResource("1_race")
+id = &"emberblood"
+display_name = "Emberblood"
+description = "A body that runs hot and short. It refines qi faster than anything here and reads intent at the speed of a struck match, at the cost of a lifespan measured in decades rather than centuries and a mind path that closes once the furnace is lit. Fire affinity is structural, not a gift."
+dominance = 0.7
+manifestation_threshold = 0.15
+gestation_days = 24.0
+base_fertility = 0.6
+base_potency = 0.55
+offspring_variance = 0.2
+closed_paths = Array[StringName]([&"mind_cultivation"])
+realm_ceiling = 0
+lifespan = 18250.0
+base_attributes = {"spirit": 2.0, "aptitude": 3.0, "agility": 1.0}
+percent_modifiers = {"cultivation_rate": 0.15, "qi_regen": 0.2, "attack_spiritual": 0.1, "max_health": -0.1, "defense_spiritual": -0.15}
+affinities = {"fire": 10.0}
+tags = Array[StringName]([&"qi", &"short_lived", &"volatile"])

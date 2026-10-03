@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"golden_immortal"
+rarity = &"common"
+vitality = 200.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"qi_golden_immortal_warden", "table_id": &"loot_qi_golden_immortal_warden"},
+	{"boss_id": &"F16_golden_hoard_tyrant", "table_id": &"loot_F16_golden_hoard_tyrant"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"golden_immortal"
+rarity = &"rare"
+vitality = 320.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"qi_golden_immortal_warden", "table_id": &"loot_qi_golden_immortal_warden"},
+	{"boss_id": &"F16_golden_hoard_tyrant", "table_id": &"loot_F16_golden_hoard_tyrant"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_qi_golden_immortal_trial"
+display_name = "Golden Immortal Trial"
+domain_id = &"qi_golden_immortal_trial"
+boss_ids = Array[StringName]([&"qi_golden_immortal_warden", &"F16_golden_hoard_tyrant"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

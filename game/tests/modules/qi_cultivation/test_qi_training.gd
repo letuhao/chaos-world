@@ -1,56 +1,60 @@
 extends TestCase
 
-## ADR 0024: the qi-cultivation action layer — refining the dantian, training a
+## ADR 0024/0095: the qi-cultivation action layer — refining the dantian, training a
 ## meridian, and the seeded breakthrough that spends the pill.
+##
+## Every preparation below goes through the production actions and through authored
+## content. It used to mint `ItemDef` stubs and to call `open_meridian` /
+## `expand_meridian` / `strengthen_meridian` directly, which asserted the gate
+## against a state the fixture had written itself: a gate no player could satisfy
+## still measured as satisfied. `test_qi_channel_ladder.gd` now owns the
+## reachability proof; this suite owns the mechanism.
+
+const Probe := preload("res://tests/modules/qi_cultivation/qi_gate_probe.gd")
+
+const PATH := QiPath.PATH_ID
 
 
 func _actor() -> Actor:
 	var actor := Actor.new(&"qi_hero", {Stat.COMPREHENSION: 40.0, QiStats.DANTIAN_CAPACITY: 100.0})
-	actor.set_path(PathState.new(QiPath.PATH_ID, &"qi_refining"))
+	actor.set_path(PathState.new(PATH, &"qi_refining"))
 	actor.meridians.unlock_for_realm(&"qi_refining")
 	QiCultivationApi.attach(actor)
-	QiCultivationApi.attach_dantian(actor)
 	# A roomy inventory: repeated attempts re-stock both items each roll.
-	ItemsApi.attach(actor, 200)
+	ItemsApi.attach(actor, 400)
 	QiTraining.synchronize(actor)
 	return actor
 
 
 func _stock(actor: Actor, def_id: StringName) -> void:
-	var def := ItemDef.new()
-	def.id = def_id
-	def.stackable = true
-	def.max_stack = 99
-	ItemsApi.inventory(actor).add(def, 1)
+	assert_eq(Probe.stock(actor, def_id, 1), true, "authored item %s stocked" % def_id)
 
 
+## Bring the actor to the brink of the next realm through public actions only.
 func _prepare(actor: Actor) -> QiRealmSeed:
-	var state := actor.path(QiPath.PATH_ID)
+	var state := actor.path(PATH)
 	var target := RealmDefaults.ladder().next(state.rank_id)
 	if target == null:
 		return null
 	var seed := QiRealmSeed.for_realm(target.id)
 	if seed == null:
 		return null
-	actor.meridians.unlock_for_realm(target.id)
+	# A deviation injures a channel, and an injured channel refuses to climb, so
+	# close every wound before training or the next attempt can never qualify.
+	Probe.recover_all(actor)
 	_stock(actor, seed.breakthrough_item)
 	_stock(actor, seed.training_item)
-	for meridian_id in seed.required_meridians:
-		var channel := actor.meridians.get_meridian(meridian_id)
-		# A deviation injures a channel, and an injured channel satisfies nothing,
-		# so repair before re-training or the next attempt can never qualify.
-		actor.meridians.repair_meridian(meridian_id)
-		if not channel.is_open():
-			actor.meridians.open_meridian(meridian_id)
-		actor.meridians.expand_meridian(meridian_id)
-		actor.meridians.strengthen_meridian(meridian_id)
-	var dantian := QiCultivationApi.dantian(actor)
+	assert_eq(Probe.train_gate_channels(actor, seed), true, "channels trained for %s" % target.id)
+	Probe.recover_all(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.set_structural_capacity(seed.dantian_capacity)
 	dantian.set_quality(seed.dantian_quality_required)
 	QiTraining.synchronize(actor)
 	dantian.drain(actor, dantian.current(actor))
 	dantian.fill(actor, dantian.effective_capacity())
-	state.progress = seed.progress_required
+	# The work budget is earned, not written: `cultivate` is the only thing that
+	# moves it, and a fixture that assigns it proves the gate against itself.
+	assert_eq(Probe.earn_progress(actor, seed), true, "progress earned for %s" % target.id)
 	return seed
 
 
@@ -59,7 +63,7 @@ func _prepare(actor: Actor) -> QiRealmSeed:
 
 func test_synchronize_sets_capacity_tier_and_unlocks() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	assert_eq(dantian != null, true, "dantian attached")
 	assert_eq(dantian.tier, &"lower", "Mortal uses the lower dantian")
 	assert_almost_eq(dantian.structural_capacity, 100.0, "capacity from the seed")
@@ -67,7 +71,7 @@ func test_synchronize_sets_capacity_tier_and_unlocks() -> void:
 
 func test_synchronize_scales_capacity_with_meridian_bonus() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	actor.meridians.open_meridian(&"lung")
 	actor.meridians.expand_meridian(&"lung")
 	var base := dantian.structural_capacity
@@ -77,7 +81,7 @@ func test_synchronize_scales_capacity_with_meridian_bonus() -> void:
 
 func test_synchronize_clamps_stored_qi() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.fill(actor, dantian.effective_capacity())
 	QiTraining.synchronize(actor)
 	assert_almost_eq(
@@ -90,7 +94,7 @@ func test_synchronize_clamps_stored_qi() -> void:
 
 func test_cultivate_fills_the_dantian_and_advances_progress() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.drain(actor, dantian.current(actor))
 	assert_eq(QiTraining.cultivate(actor, 50.0), true, "cultivation applied")
 	assert_eq(dantian.current(actor) > 0.0, true, "qi stored")
@@ -99,7 +103,7 @@ func test_cultivate_fills_the_dantian_and_advances_progress() -> void:
 
 func test_cultivate_refines_dantian_quality() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.drain(actor, dantian.current(actor))
 	dantian.set_quality(0.0)
 	QiTraining.cultivate(actor, 500.0)
@@ -122,8 +126,7 @@ func test_every_realm_quality_gate_is_reachable_by_circulating_qi() -> void:
 		actor.set_path(PathState.new(QiPath.PATH_ID, previous.id))
 		actor.meridians.unlock_for_realm(previous.id)
 		QiCultivationApi.attach(actor)
-		QiCultivationApi.attach_dantian(actor)
-		var dantian := QiCultivationApi.dantian(actor)
+		var dantian := QiAccess.dantian(actor)
 		dantian.set_quality(0.0)
 		QiTraining.synchronize(actor)
 		var guard := 0
@@ -143,7 +146,7 @@ func test_cultivate_keeps_training_when_the_dantian_is_full() -> void:
 	# progress floor, and the reservoir fills first, so progress could never
 	# catch up.
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.fill(actor, dantian.effective_capacity())
 	var full := dantian.current(actor)
 	var progress_before := actor.path(QiPath.PATH_ID).progress
@@ -267,7 +270,7 @@ func test_deviation_scares_the_dantian_and_damages_a_channel() -> void:
 			break
 		if QiAdvancement.try_breakthrough(actor, rng):
 			continue
-		var dantian := QiCultivationApi.dantian(actor)
+		var dantian := QiAccess.dantian(actor)
 		var channel_injured := false
 		for meridian_id in current.required_meridians:
 			if actor.meridians.get_meridian(meridian_id).is_injured():
@@ -278,7 +281,7 @@ func test_deviation_scares_the_dantian_and_damages_a_channel() -> void:
 
 func test_damaged_dantian_reduces_usable_capacity() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	var full := dantian.effective_capacity()
 	dantian.damage()
 	assert_almost_eq(dantian.effective_capacity(), full * 0.75, "damage costs 25% capacity")

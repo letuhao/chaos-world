@@ -3,6 +3,10 @@ extends TestCase
 ## ADR 0028: the breakthrough attempt lifecycle. Preview must be side-effect
 ## free, an attempt has identity and survives a save, costs are consumed once,
 ## and a deviation is recoverable.
+##
+## The lifecycle is the only implementation: `try_breakthrough` is the same two
+## calls, so a single press and a save-spanning attempt cannot diverge. What
+## these tests pin is the *record*, not the outcome — the outcome is a roll.
 
 
 func _actor() -> Actor:
@@ -14,6 +18,12 @@ func _actor() -> Actor:
 	ItemsApi.attach(actor)
 	BodyTraining.synchronize(actor)
 	return actor
+
+
+func _rng(seed_value: int) -> RandomNumberGenerator:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value
+	return rng
 
 
 func _stock(actor: Actor, def_id: StringName, quantity: int = 1) -> void:
@@ -86,6 +96,7 @@ func test_preview_reports_unmet_before_preparation() -> void:
 	assert_eq(preview["ready"], false, "not ready yet")
 	assert_eq(preview["target"], &"foundation", "targets the next realm")
 	assert_ne(preview["unmet"], [], "unmet list is populated")
+	assert_eq(preview["attempt"], "", "no attempt in flight")
 
 
 func test_preview_does_not_mutate_anything() -> void:
@@ -120,11 +131,26 @@ func test_preview_at_the_terminal_realm_is_not_ready() -> void:
 	assert_eq(preview["target"], &"", "no target realm")
 
 
+## The preview is the read side of the lifecycle, so it must name the attempt in
+## flight — otherwise a screen cannot tell "breakthrough is available" from "a pill
+## is already spent, resolve it".
+func test_preview_names_the_attempt_in_flight() -> void:
+	var actor := _actor()
+	_prepare(actor)
+	var committed := BodyAdvancement.start_attempt(actor)
+	assert_ne(committed == null, true, "attempt started")
+	var preview := BodyAdvancement.preview(actor)
+	assert_eq(preview["attempt"], String(committed.attempt_id), "the preview names it")
+	# A resolved attempt is no longer in flight and must stop being advertised.
+	BodyAdvancement.resolve_attempt(actor, _rng(3))
+	assert_eq(BodyAdvancement.preview(actor)["attempt"], "", "resolved: nothing in flight")
+
+
 # --- Start ------------------------------------------------------------------
 
 
 func test_start_attempt_is_blocked_before_preparation() -> void:
-	assert_eq(BodyAdvancement.start_attempt(_actor()), &"", "unprepared, no attempt")
+	assert_eq(BodyAdvancement.start_attempt(_actor()) == null, true, "unprepared, no attempt")
 
 
 func test_start_attempt_records_identity_and_consumes_one_pill() -> void:
@@ -132,27 +158,97 @@ func test_start_attempt_records_identity_and_consumes_one_pill() -> void:
 	var seed := _prepare(actor)
 	_stock(actor, seed.breakthrough_item, 1)
 	assert_eq(ItemsApi.inventory(actor).count(seed.breakthrough_item), 2, "two pills in hand")
-	var attempt_id := BodyAdvancement.start_attempt(actor)
-	assert_ne(attempt_id, &"", "attempt started")
-	var attempt := actor.get_module_data(&"body_attempt")
-	assert_eq(attempt.get("id"), attempt_id, "attempt id matches")
-	assert_eq(attempt.get("path_id"), String(BodyPath.PATH_ID), "path recorded")
-	assert_eq(attempt.get("source"), String(&"qi_refining"), "source recorded")
-	assert_eq(attempt.get("target"), String(&"foundation"), "target recorded")
-	assert_eq(attempt.get("pill"), String(seed.breakthrough_item), "pill recorded")
-	assert_eq(attempt.get("status"), "pending", "attempt is pending")
+	var committed := BodyAdvancement.start_attempt(actor)
+	assert_ne(committed == null, true, "attempt started")
+	assert_eq(committed.path_id, BodyPath.PATH_ID, "path recorded")
+	assert_eq(committed.actor_id, actor.id, "actor recorded")
+	assert_eq(committed.source_rank, &"qi_refining", "source recorded")
+	assert_eq(committed.target_rank, &"foundation", "target recorded")
+	assert_eq(committed.seed_id, seed.id, "seed recorded")
+	assert_eq(committed.status, BodyAttempt.STATUS_COMMITTED, "attempt is committed")
+	assert_eq(committed.pill_consumed, true, "the spent pill is recorded")
+	assert_eq(committed.outcome_granted, false, "nothing granted yet")
+	assert_eq(committed.sequence, 1, "first attempt is sequence 1")
+	# The persisted copy is the record, not a lossy summary of it.
+	assert_eq(BodyAdvancement.attempt(actor).to_dict(), committed.to_dict(), "record round-trips")
 	assert_eq(ItemsApi.inventory(actor).count(seed.breakthrough_item), 1, "exactly one pill spent")
 	assert_eq(actor.path(BodyPath.PATH_ID).rank_id, &"qi_refining", "no advance yet")
 
 
+## The id must be derived from the actor and the sequence, not the wall clock: a
+## `Time.get_ticks_msec()` id names a *different* attempt after every reload, so
+## a save could never be traced back to the attempt that spent its pill.
+func test_the_attempt_id_is_reproducible_not_wall_clock_derived() -> void:
+	var actor := _actor()
+	_prepare(actor)
+	var first := BodyAdvancement.start_attempt(actor)
+	assert_ne(first == null, true, "attempt started")
+	assert_eq(
+		first.attempt_id,
+		BodyAttempt.make_id(actor.id, BodyPath.PATH_ID, 1),
+		"the id is a pure function of actor, path and sequence"
+	)
+	BodyAdvancement.cancel(actor)
+	# The first attempt spent the realm's pill; re-prepare so the second start is
+	# refused for the right reason (sequence, not a missing item).
+	_prepare(actor)
+	var second := BodyAdvancement.start_attempt(actor)
+	assert_ne(second == null, true, "second attempt started")
+	assert_eq(second.sequence, 2, "the sequence advanced past the cancelled one")
+	assert_ne(second.attempt_id, first.attempt_id, "a new attempt has a new id")
+
+
+## The single-active-attempt rule, and the second half of it: the refusal must
+## not spend a second pill.
 func test_only_one_attempt_is_active_at_a_time() -> void:
 	var actor := _actor()
 	var seed := _prepare(actor)
 	_stock(actor, seed.breakthrough_item, 1)
-	assert_ne(BodyAdvancement.start_attempt(actor), &"", "first attempt started")
-	assert_eq(BodyAdvancement.start_attempt(actor), &"", "second attempt refused")
-	# The refusal must not spend another pill.
+	assert_ne(BodyAdvancement.start_attempt(actor) == null, true, "first attempt started")
+	assert_eq(BodyAdvancement.start_attempt(actor) == null, true, "second attempt refused")
 	assert_eq(ItemsApi.inventory(actor).count(seed.breakthrough_item), 1, "no extra pill spent")
+
+
+## The resolved record is KEPT, so "is one in flight?" must key on the record's
+## status, not on whether the bag is empty. Keying on emptiness made a kept
+## record a permanent lockout: every retry after the first breakthrough was
+## refused with no way out.
+func test_a_terminal_record_does_not_lock_out_the_next_attempt() -> void:
+	var actor := _actor()
+	var seed := _prepare(actor)
+	var resolved := false
+	for attempt_index in 32:
+		var prepared := _prepare(actor)
+		if prepared == null:
+			break
+		_stock(actor, prepared.breakthrough_item, 1)
+		if BodyAdvancement.start_attempt(actor) == null:
+			break
+		if BodyAdvancement.resolve_attempt(actor, _rng(attempt_index + 1)):
+			resolved = true
+			break
+	assert_eq(resolved, true, "an attempt resolved")
+	var record := BodyAdvancement.attempt(actor)
+	assert_ne(record == null, true, "the resolved record is kept, not cleared")
+	assert_eq(record.is_active(), false, "and it is not active")
+	assert_eq(BodyAdvancement.active_attempt(actor) == null, true, "nothing is in flight")
+	# The next realm's attempt must still be reachable.
+	_prepare(actor)
+	assert_ne(BodyAdvancement.start_attempt(actor) == null, true, "the next attempt starts")
+
+
+## A two-phase attempt that skipped the re-entrancy guard could interleave with a
+## cultivate/strengthen on the same huyệt set. `try_breakthrough` already held
+## `busy`; `start_attempt` did not, so driving the two halves from a screen left
+## the guard decorative.
+func test_start_attempt_refuses_while_the_acupoints_are_busy() -> void:
+	var actor := _actor()
+	_prepare(actor)
+	var points: AcupointSet = actor.component(&"acupoints")
+	points.busy = true
+	assert_eq(BodyAdvancement.start_attempt(actor) == null, true, "refused while busy")
+	points.busy = false
+	assert_ne(BodyAdvancement.start_attempt(actor) == null, true, "accepted once free")
 
 
 # --- Resolve ----------------------------------------------------------------
@@ -165,25 +261,28 @@ func test_resolve_without_an_attempt_is_a_noop() -> void:
 ## Resolve under a seeded RNG until one attempt succeeds; preparation between
 ## attempts is the recovery a deviation requires.
 func _resolve_until_success(actor: Actor, attempts: int = 32) -> bool:
-	var rng := RandomNumberGenerator.new()
 	for attempt in attempts:
 		var seed := _prepare(actor)
 		if seed == null:
 			return false
 		_stock(actor, seed.breakthrough_item, 1)
-		if BodyAdvancement.start_attempt(actor) == &"":
+		if BodyAdvancement.start_attempt(actor) == null:
 			return false
-		rng.seed = attempt + 1
-		if BodyAdvancement.resolve_attempt(actor, rng):
+		if BodyAdvancement.resolve_attempt(actor, _rng(attempt + 1)):
 			return true
 	return false
 
 
-func test_resolve_advances_and_clears_the_attempt() -> void:
+func test_resolve_advances_and_records_the_outcome() -> void:
 	var actor := _actor()
 	assert_eq(_resolve_until_success(actor), true, "an attempt resolved successfully")
 	assert_eq(actor.path(BodyPath.PATH_ID).rank_id, &"foundation", "realm advanced")
-	assert_eq(actor.get_module_data(&"body_attempt").is_empty(), true, "attempt cleared")
+	var record := BodyAdvancement.attempt(actor)
+	assert_ne(record == null, true, "the record is kept")
+	assert_eq(record.status, BodyAttempt.STATUS_SUCCESS, "status is success")
+	assert_eq(record.outcome_granted, true, "the award is flagged granted")
+	assert_eq(record.trial_complete, true, "the trial ran")
+	assert_eq(record.is_resolved(), true, "terminal")
 	# Entering a realm never grants its milestone; only training while in it does.
 	# (`test_milestone_grants_physique_once` covers the grant itself.)
 	var progress: BodyProgress = actor.component(&"body_progress")
@@ -195,7 +294,6 @@ func test_resolve_advances_and_clears_the_attempt() -> void:
 
 func test_failed_attempt_is_recoverable() -> void:
 	var actor := _actor()
-	var rng := RandomNumberGenerator.new()
 	var deviated := false
 	var damaged_channel: StringName = &""
 	for attempt in 64:
@@ -203,18 +301,21 @@ func test_failed_attempt_is_recoverable() -> void:
 		if seed == null:
 			break
 		_stock(actor, seed.breakthrough_item, 1)
-		if BodyAdvancement.start_attempt(actor) == &"":
+		if BodyAdvancement.start_attempt(actor) == null:
 			break
 		var before := actor.path(BodyPath.PATH_ID).rank_id
-		rng.seed = attempt + 1
-		if BodyAdvancement.resolve_attempt(actor, rng):
+		if BodyAdvancement.resolve_attempt(actor, _rng(attempt + 1)):
 			assert_eq(actor.path(BodyPath.PATH_ID).rank_id != before, true, "a success advances")
 			continue
 		deviated = true
 		damaged_channel = seed.required_meridians[0]
 		break
 	assert_eq(deviated, true, "a deviation resolved as a failure")
-	assert_eq(actor.get_module_data(&"body_attempt").is_empty(), true, "failed attempt cleared")
+	var record := BodyAdvancement.attempt(actor)
+	assert_ne(record == null, true, "the record is kept")
+	assert_eq(record.status, BodyAttempt.STATUS_FAILED, "status is failed")
+	assert_eq(record.outcome_granted, false, "a deviation grants nothing")
+	assert_eq(record.trial_complete, true, "but the trial did run")
 	var points: AcupointSet = actor.component(&"acupoints")
 	assert_eq(points.blocked_count() >= 1, true, "an acupoint was blocked")
 	assert_eq(actor.meridians.get_meridian(damaged_channel).is_injured(), true, "channel damaged")
@@ -222,28 +323,162 @@ func test_failed_attempt_is_recoverable() -> void:
 	assert_ne(_prepare(actor), null, "prepared again after the deviation")
 	assert_eq(points.blocked_count(), 0, "blockages cleared")
 	assert_eq(actor.meridians.get_meridian(damaged_channel).is_injured(), false, "injury repaired")
-	assert_eq(points.is_full(), true, "reservoir refilled")
+	var refilled: ResourcePool = actor.resource(BodyStats.BODY_INTEGRITY)
+	assert_eq(refilled.ratio() >= 1.0, true, "reservoir refilled")
 
 
-## Stock the pill for whichever realm the actor is now standing in.
-func _body_pill(actor: Actor) -> void:
-	var seed := BodyRealmSeed.for_realm(actor.path(BodyPath.PATH_ID).rank_id)
-	if seed != null:
-		_stock(actor, seed.breakthrough_item, 1)
-
-
+## An attempt whose target realm is no longer the one the actor would enter has
+## to end without a deviation: nothing was rolled, so nothing is owed. Keying this
+## on "the rank already equals the target" would mark it granted and pay an award
+## for a trial that never happened.
 func test_resolve_aborts_when_the_stored_target_no_longer_matches() -> void:
 	var actor := _actor()
 	var seed := _prepare(actor)
 	_stock(actor, seed.breakthrough_item, 1)
-	assert_ne(BodyAdvancement.start_attempt(actor), &"", "attempt started")
+	var committed := BodyAdvancement.start_attempt(actor)
+	assert_ne(committed == null, true, "attempt started")
 	# Something else moved the actor on; the stale attempt must not fire.
 	actor.path(BodyPath.PATH_ID).rank_id = &"core_formation"
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 1
-	assert_eq(BodyAdvancement.resolve_attempt(actor, rng), false, "stale attempt aborted")
-	assert_eq(actor.get_module_data(&"body_attempt").is_empty(), true, "stale attempt cleared")
+	var record := BodyAdvancement.resolve_attempt(actor, _rng(1))
+	assert_eq(record, false, "stale attempt aborted")
+	var stored := BodyAdvancement.attempt(actor)
+	assert_ne(stored == null, true, "the stale record is kept, not cleared")
+	assert_eq(stored.status, BodyAttempt.STATUS_CANCELLED, "cancelled: no trial ran")
+	assert_eq(stored.outcome_granted, false, "the record does not claim an outcome")
+	assert_eq(stored.trial_complete, false, "and owes no deviation")
 	assert_eq(actor.path(BodyPath.PATH_ID).rank_id, &"core_formation", "rank untouched")
+
+
+## The gate a save can invalidate. The attempt is committed with its tier gate
+## open, then the gate shuts underneath it — the tribulation record or the
+## inside world did not survive the round trip. Resolving anyway would roll for an
+## outcome no gate permits.
+##
+## The status is the observable that separates the two designs. A gate that shut
+## is CANCELLED: nothing was rolled, so no deviation is owed and no award is due.
+## Rolling first and letting `try_advance_gated` refuse reports the same `false`,
+## but records a FAILED attempt — telling the player it deviated, which it did
+## not.
+func test_resolve_cancels_when_the_tier_gate_shut_under_the_attempt() -> void:
+	var actor := _actor()
+	var ladder := RealmDefaults.ladder()
+	var realms := ladder.realms()
+	var threshold := Breakthrough.IMMORTAL_REALM_THRESHOLD
+	var source := realms[threshold - 1].id
+	var target := realms[threshold]
+	# Stand in the realm before the Immortal tier, then prepare for the tier's
+	# first realm through the same helper every other fixture uses.
+	actor.path(BodyPath.PATH_ID).rank_id = source
+	actor.meridians.unlock_for_realm(source)
+	# `_prepare` raises the quality of the points that EXIST but never grows the
+	# set, and the gate reads every huyệt the current realm has unlocked. Sync
+	# first, so the points R1..R17 introduced are present for `_prepare` to
+	# train; otherwise the gate reports "quality below the realm requirement" for
+	# points the actor has never heard of.
+	BodyTraining.synchronize(actor)
+	var seed := _prepare(actor)
+	assert_ne(seed == null, true, "prepared for %s" % target.id)
+	# R19's only live gate is the tribulation: `stage_met` short-circuits to true
+	# at or below COMMIT_SEED, and `world_ok`/`ascension_ok` below COMMIT_MICRO.
+	assert_eq(Breakthrough.inside_world_ok(actor, threshold), true, "no inside world needed yet")
+	assert_eq(Breakthrough.world_ok(actor, threshold), true, "no created world needed yet")
+	assert_eq(Breakthrough.ascension_ok(actor, threshold), true, "no ascent needed yet")
+	assert_eq(Breakthrough.tribulation_ok(actor, threshold), false, "the tribulation is the gate")
+	var fight := Breakthrough.begin_tribulation(actor, threshold)
+	assert_ne(fight == null, true, "a tribulation was begun for the tier")
+	var wave_guard := 0
+	while Breakthrough.advance_tribulation(actor) and wave_guard < 64:
+		wave_guard += 1
+	Breakthrough.resolve_tribulation(actor, true)
+	assert_eq(
+		Breakthrough.tribulation_ok(actor, threshold), true, "the gate is open before it shuts"
+	)
+	_stock(actor, seed.breakthrough_item)
+	var committed := BodyAdvancement.start_attempt(actor)
+	assert_ne(committed == null, true, "attempt started with the gate open")
+	assert_eq(committed.target_rank, target.id, "and it names the gated realm")
+	# Shut the gate without touching the path the attempt named.
+	actor.tribulation = null
+	assert_eq(Breakthrough.tier_gates_met(actor, threshold), false, "the gate is now shut")
+	var physique := actor.stats.get_base(Stat.PHYSIQUE)
+	var progress := actor.path(BodyPath.PATH_ID).progress
+	var blocked: int = (actor.component(&"acupoints") as AcupointSet).blocked_count()
+	assert_eq(BodyAdvancement.resolve_attempt(actor, _rng(1)), false, "the shut gate refuses")
+	assert_eq(actor.stats.get_base(Stat.PHYSIQUE), physique, "no award")
+	assert_almost_eq(actor.path(BodyPath.PATH_ID).progress, progress, "progress untouched", 0.0001)
+	assert_eq(
+		(actor.component(&"acupoints") as AcupointSet).blocked_count(),
+		blocked,
+		"no deviation: nothing was rolled"
+	)
+	assert_eq(actor.path(BodyPath.PATH_ID).rank_id, source, "realm untouched")
+	var stored := BodyAdvancement.attempt(actor)
+	assert_ne(stored == null, true, "the record is kept")
+	assert_eq(stored.status, BodyAttempt.STATUS_CANCELLED, "cancelled, not a deviation")
+	assert_eq(stored.outcome_granted, false, "nothing granted")
+	assert_eq(stored.trial_complete, false, "no trial ran")
+
+
+func test_cancel_ends_the_attempt_without_a_deviation() -> void:
+	var actor := _actor()
+	var seed := _prepare(actor)
+	_stock(actor, seed.breakthrough_item, 1)
+	var committed := BodyAdvancement.start_attempt(actor)
+	assert_ne(committed == null, true, "attempt started")
+	var progress := actor.path(BodyPath.PATH_ID).progress
+	var blocked: int = (actor.component(&"acupoints") as AcupointSet).blocked_count()
+	assert_eq(BodyAdvancement.cancel(actor), true, "cancelled")
+	var stored := BodyAdvancement.attempt(actor)
+	assert_eq(stored.status, BodyAttempt.STATUS_CANCELLED, "cancelled")
+	assert_eq(stored.outcome_granted, false, "nothing granted")
+	assert_eq(
+		(actor.component(&"acupoints") as AcupointSet).blocked_count(),
+		blocked,
+		"no deviation was applied"
+	)
+	assert_almost_eq(actor.path(BodyPath.PATH_ID).progress, progress, "progress untouched", 0.0001)
+	assert_eq(BodyAdvancement.cancel(actor), false, "nothing left to cancel")
+
+
+# --- The wired one-press path ------------------------------------------------
+
+
+## The facade's `attempt_breakthrough` is what the breakthrough button calls, so
+## it must go through the persisted lifecycle rather than a parallel
+## implementation. If it ever stops doing so, this is the test that notices.
+func test_the_one_press_path_goes_through_the_persisted_attempt() -> void:
+	var actor := _actor()
+	var advanced := false
+	for attempt_index in 32:
+		var seed := _prepare(actor)
+		if seed == null:
+			break
+		_stock(actor, seed.breakthrough_item, 1)
+		if BodyCultivationApi.attempt_breakthrough(actor):
+			advanced = true
+			break
+	assert_eq(advanced, true, "a breakthrough went through")
+	var record := BodyAdvancement.attempt(actor)
+	assert_ne(record == null, true, "the one-press path left a record")
+	assert_eq(record.outcome_granted, true, "and it is the granted one")
+	assert_eq(record.is_active(), false, "no attempt left in flight")
+
+
+## `busy` is what stops a body action interleaving on the same huyệt set. It was
+## cleared on every exit of the old hand-rolled path; assert it is still cleared,
+## including on the refusal path, so a refused breakthrough cannot wedge the actor.
+## The return value is deliberately not asserted: it is a roll, and every exit
+## must clear `busy` whichever way the roll went.
+func test_the_one_press_path_leaves_the_acupoints_unbusy() -> void:
+	var actor := _actor()
+	var points: AcupointSet = actor.component(&"acupoints")
+	BodyCultivationApi.attempt_breakthrough(actor)
+	assert_eq(points.busy, false, "the refusal path cleared busy")
+	_prepare(actor)
+	BodyCultivationApi.attempt_breakthrough(actor)
+	assert_eq(points.busy, false, "the accepted path cleared busy")
+	# A wedged actor could never cultivate again, so prove it still can.
+	assert_eq(BodyTraining.cultivate(actor, 25.0), true, "the actor is not wedged")
 
 
 # --- Milestones ------------------------------------------------------------
@@ -303,7 +538,7 @@ func test_milestone_bonuses_are_not_reawarded_on_load() -> void:
 ## fire. These assert the roll is independent of it.
 func test_chance_does_not_depend_on_comprehension() -> void:
 	var actor := _actor()
-	var seed := _prepare(actor)
+	_prepare(actor)
 	var before := float(BodyAdvancement.preview(actor)["chance"])
 	actor.stats.set_base(Stat.COMPREHENSION, actor.stats.get_base(Stat.COMPREHENSION) * 4.0)
 	var after := float(BodyAdvancement.preview(actor)["chance"])
@@ -345,36 +580,3 @@ func test_resonance_lifts_the_meridian_network_from_the_seed() -> void:
 	assert_eq(actor.meridians.resonance_rank, 1, "R19 sets resonance rank 1")
 	var after := actor.meridians.get_power_bonus()
 	assert_almost_eq(after, before * 1.05, "resonance lifts the network")
-
-
-# --- Persistence ------------------------------------------------------------
-
-
-func test_a_pending_attempt_survives_save_and_load() -> void:
-	var actor := _actor()
-	var seed := _prepare(actor)
-	_stock(actor, seed.breakthrough_item, 1)
-	var attempt_id := BodyAdvancement.start_attempt(actor)
-	assert_ne(attempt_id, &"", "attempt started")
-	var restored := Actor.from_dict(actor.to_dict())
-	var attempt := restored.get_module_data(&"body_attempt")
-	assert_eq(attempt.get("id"), attempt_id, "attempt id survived")
-	assert_eq(attempt.get("status"), "pending", "still pending after load")
-	assert_eq(attempt.get("target"), String(&"foundation"), "target survived")
-	# Re-attach the module as the composition root would, then resolve.
-	BodyCultivationApi.attach(restored)
-	BodyCultivationApi.attach_acupoints(restored)
-	ItemsApi.attach(restored)
-	BodyTraining.synchronize(restored)
-	var rng := RandomNumberGenerator.new()
-	var advanced := false
-	for attempt_index in 32:
-		_prepare(restored)
-		_body_pill(restored)
-		BodyAdvancement.start_attempt(restored)
-		rng.seed = attempt_index + 1
-		if BodyAdvancement.resolve_attempt(restored, rng):
-			advanced = true
-			break
-	assert_eq(advanced, true, "restored actor can still resolve an attempt")
-	assert_eq(restored.path(BodyPath.PATH_ID).rank_id, &"foundation", "restored actor advanced")

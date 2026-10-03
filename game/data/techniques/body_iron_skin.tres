@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"body_iron_skin"
+display_name = "Iron Skin"
+description = "Drives qi into the fascia until the skin stops being soft. Barely elemental, so it reads as blunt force taken rather than a strike dealt."
+tags = Array[StringName]([&"technique", &"body", &"guard"])
+grade = &"mortal"
+rarity = &"common"
+element = &"earth"
+schools = Array[StringName]([&"body"])
+active = true
+path = &"body_cultivation"
+min_path_realm = {&"body_cultivation": 2}
+qi_cost = 0.0
+stamina_cost = 30.0
+cooldown = 10.0
+mastery_rungs = 5
+magnitude = 0.6
+element_share = 0.2
+

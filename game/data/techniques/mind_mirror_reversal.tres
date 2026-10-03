@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"mind_mirror_reversal"
+display_name = "Mirror Reversal"
+description = "Splits an incoming impression and sends half of it back down the same path. A dark reflection, so it is weakest against light and best against its own kind."
+tags = Array[StringName]([&"technique", &"mind", &"dark", &"counter"])
+grade = &"spirit"
+rarity = &"magic"
+element = &"dark"
+schools = Array[StringName]([&"mind"])
+active = true
+path = &"mind_cultivation"
+min_path_realm = {&"mind_cultivation": 13}
+qi_cost = 34.0
+stamina_cost = 5.0
+cooldown = 16.0
+mastery_rungs = 5
+magnitude = 1.2
+element_share = 0.4
+

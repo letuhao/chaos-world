@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FateDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/destiny/fate_def.gd" id="1_fate"]
+
+[resource]
+script = ExtResource("1_fate")
+id = &"heaven_s_chosen_instrument"
+display_name = "Heaven's Chosen Instrument"
+description = "Marked from outside by a discipline the sect does not teach. The mark reads as an instruction. It has never been explained and does not answer to argument."
+category = &"heaven"
+tier = 2
+visibility = &"revealed"
+percent_modifiers = {"cultivation_rate": 0.05, "breakthrough_chance": 0.02}
+counters = Array[StringName]([&"heaven_marks"])
+tags = Array[StringName]([&"marked", &"fast_path"])

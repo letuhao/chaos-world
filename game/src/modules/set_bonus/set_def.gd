@@ -32,12 +32,40 @@ const COUNT_DISTINCT_DEFINITION := &"distinct_definition"
 @export var uniques: Array[StringName] = []
 ## Threshold tiers in ascending piece-count order:
 ##   `{count: int, label: String, options: [{option_id: &"...", value: float}]}`
+## `count` is distinct equipped members, so it may never exceed
+## `max_equippable()` — see that method for why the slot list is the ceiling.
 @export var tiers: Array[Dictionary] = []
 
 
 ## How many definitions this set counts toward its thresholds.
 func member_count() -> int:
 	return pieces.size() + uniques.size()
+
+
+## The most distinct members of this set a body can ever have equipped at once.
+##
+## A threshold is satisfied only by what is actually worn, and a body has exactly
+## `Equipment.SLOTS` places to wear it, so a tier above this is unreachable
+## content rather than a reward. Reading the same slot list the runtime iterates
+## (`SetBonusState._distinct_equipped`) is the whole point: a ceiling computed from
+## the set's own member count is arithmetic that cannot fail, and it stayed green
+## while `void_serpent_coil` shipped a six-member tier no body could reach.
+func max_equippable() -> int:
+	var declared: int = member_count()
+	var slots: int = Equipment.SLOTS.size()
+	return declared if declared < slots else slots
+
+
+## Which authored tiers no body can ever reach, given the members this set
+## declares and the slots a body actually has. Empty means the whole ladder is
+## winnable, which is what the content suite asserts over the shipped sets.
+func unreachable_tier_indices() -> Array[int]:
+	var out: Array[int] = []
+	var ceiling := max_equippable()
+	for index in tiers.size():
+		if int(tiers[index].get("count", 0)) > ceiling:
+			out.append(index)
+	return out
 
 
 ## Every counted member id, pieces first.

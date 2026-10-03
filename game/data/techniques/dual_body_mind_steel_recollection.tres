@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"dual_body_mind_steel_recollection"
+display_name = "Steel Recollection"
+description = "The body repeats a movement the mind still remembers exactly. Purely raw output and no elemental term at all, so nothing resists it; the price is that both paths must already be at the Immortal floor."
+tags = Array[StringName]([&"technique", &"dual", &"body_mind", &"recall", &"no_element"])
+grade = &"heaven"
+rarity = &"rare"
+element = &""
+schools = Array[StringName]([&"cultivation", &"dual", &"body"])
+active = true
+path = &"body_cultivation+mind_cultivation"
+min_path_realm = {&"body_cultivation": 26, &"mind_cultivation": 26}
+qi_cost = 0.0
+stamina_cost = 48.0
+cooldown = 19.0
+mastery_rungs = 5
+magnitude = 2.5
+

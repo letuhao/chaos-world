@@ -171,6 +171,23 @@ func _recompute() -> void:
 	_put(Stat.QI_COST_REDUCTION, minf(0.5, aptitude * 0.001), buckets)
 	_put(Stat.DAMAGE_REDUCTION, 0.0, buckets)
 
+	# A modifier on a stat NOTHING backs used to be discarded outright. `_recompute`
+	# writes a fixed list of core ids and `_ensure_providers` writes whatever providers
+	# contribute, so a FLAT modifier on a MODULE-owned id -- combat's `accuracy`,
+	# `parry.rate`, `reflect.resist.rate` and the rest of `CombatStats.RATE_IDS`, which
+	# have no provider and no core entry -- read `0.0` instead of its own value. The
+	# modifier was on the actor and simply never applied.
+	#
+	# Back every remaining bucket at `0.0` through the SAME `_put` formula, so the ADR
+	# 0022 trap is preserved rather than papered over: a FLAT reads `(0.0 + v) * 1 = v`,
+	# and a PERCENT still reads `(0.0 + 0.0) * 1.25 = 0.0`, which is exactly why
+	# `CombatStats.RATE_DEFAULTS` is all zeros and why ADR 0068 demands a shape test.
+	# A percentage must not be able to conjure a rate out of nothing; a flat addition is
+	# an authored number and has always been legal.
+	for id in buckets.keys():
+		if not _derived.has(id):
+			_put(id, 0.0, buckets)
+
 
 func _put(id: StringName, base_value: float, buckets: Dictionary) -> void:
 	var b: Dictionary = buckets.get(id, {})

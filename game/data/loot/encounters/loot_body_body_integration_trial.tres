@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"body_integration"
+rarity = &"common"
+vitality = 88.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"body_body_integration_guardian", "table_id": &"loot_body_body_integration_guardian"},
+	{"boss_id": &"E3_integration_arbiter", "table_id": &"loot_E3_integration_arbiter"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"body_integration"
+rarity = &"rare"
+vitality = 140.8
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"body_body_integration_guardian", "table_id": &"loot_body_body_integration_guardian"},
+	{"boss_id": &"E3_integration_arbiter", "table_id": &"loot_E3_integration_arbiter"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_body_body_integration_trial"
+display_name = "Blood Refining Trial"
+domain_id = &"body_body_integration_trial"
+boss_ids = Array[StringName]([&"body_body_integration_guardian", &"E3_integration_arbiter"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

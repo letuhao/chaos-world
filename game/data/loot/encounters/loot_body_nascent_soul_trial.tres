@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"nascent_soul"
+rarity = &"common"
+vitality = 64.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"body_nascent_soul_guardian", "table_id": &"loot_body_nascent_soul_guardian"},
+	{"boss_id": &"E2_nascent_soul_herald", "table_id": &"loot_route_e2_nascent_soul_herald"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"nascent_soul"
+rarity = &"rare"
+vitality = 102.4
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"body_nascent_soul_guardian", "table_id": &"loot_body_nascent_soul_guardian"},
+	{"boss_id": &"E2_nascent_soul_herald", "table_id": &"loot_route_e2_nascent_soul_herald"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_body_nascent_soul_trial"
+display_name = "Marrow Cleansing Trial"
+domain_id = &"body_nascent_soul_trial"
+boss_ids = Array[StringName]([&"body_nascent_soul_guardian", &"E2_nascent_soul_herald"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

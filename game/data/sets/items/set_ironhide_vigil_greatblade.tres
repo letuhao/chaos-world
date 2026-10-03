@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"weapon"
 grade = &"mortal"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:ironhide_vigil"])
 sources = Array[StringName]([&"boss:body_nascent_soul_guardian"])
 description = "Quarry blade kept blunt-edged; the weight is the weapon, not the edge."

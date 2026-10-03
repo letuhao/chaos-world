@@ -1,6 +1,6 @@
 extends TestCase
 
-## The option magnitude window is applied once.
+## The option magnitude window is applied once, and is keyed by REALM ID.
 ##
 ## `OptionCatalog.magnitude_bounds` is what the game actually rolls; the Python
 ## mirror in `tools/options.py` is what the gate validates authored content
@@ -20,11 +20,19 @@ extends TestCase
 ## So the fixture also carries `scales`: the authored per-realm multipliers keyed
 ## by REALM ID, taken straight from `data/item_options/item_magnitude_scale.json`
 ## and never composed by the generator. The expectations below are recomposed from
-## that column by a deliberately separate route — resolve the id through the
-## ladder, look the scale up BY NAME, multiply with constants typed in this file —
-## and then compared against the runtime. A wrong argument, a wrong unit or a
-## wrong realm in either implementation moves these numbers and fails here, which
-## is disagreement the `windows` column structurally cannot produce.
+## that column by a deliberately separate route — look the scale up BY NAME,
+## multiply with constants typed in this file — and then compared against the
+## runtime. A wrong argument, a wrong unit or a wrong realm in either
+## implementation moves these numbers and fails here, which is disagreement the
+## `windows` column structurally cannot produce.
+##
+## ## Why every call here passes a realm id and never an ordinal
+##
+## The runtime takes `realm_id: StringName`. That is the point of ADR 0050: a
+## magnitude is authored data keyed by realm, so inserting a realm must not
+## silently hand every realm below it a neighbour's number. This suite therefore
+## only ever *iterates* by ordinal — to walk all 30 realms — and converts to an id
+## before touching the runtime, which is exactly the discipline the rule asks for.
 
 const FIXTURE := "res://tests/fixtures/option_magnitude_windows.json"
 const SCALE_PATH := "res://data/item_options/item_magnitude_scale.json"
@@ -80,33 +88,39 @@ func _scale_file() -> Dictionary:
 	return parsed if parsed is Dictionary else {}
 
 
-func _realm_id(realm_index: int) -> String:
-	var realms := RealmDefaults.ladder().realms()
-	return String(realms[realm_index].id)
+## Every realm id on the ladder, in ladder order. Tests walk this; they never hand
+## the runtime an ordinal.
+func _realm_ids() -> Array[String]:
+	var out: Array[String] = []
+	for realm in RealmDefaults.ladder().realms():
+		out.append(String(realm.id))
+	return out
 
 
 ## Realm ORDINAL for a named realm, resolved through the ladder's own id lookup.
 ## The historic bug was an index passed where an id was expected; going through
-## `realm(id)` means a unit confusion in the runtime shows up here as a wrong
-## number rather than agreeing with a fixture generated the same wrong way.
+## `index_of` means a unit confusion in the runtime shows up here as a wrong
+## number rather than agreeing with a fixture generated the same wrong way. Only a
+## rate's independent recomposition needs this — a magnitude never does.
 func _ordinal_of(realm_id: String) -> int:
 	return RealmDefaults.ladder().index_of(StringName(realm_id))
 
 
 ## Expected window recomposed from the authored scale column, not from the
 ## fixture's generated `windows`. Scale is looked up BY REALM ID; the rarity and
-## base terms come from constants typed in this file.
-func _independent_window(unit: String, realm_index: int, rarity_index: int) -> Array:
+## base terms come from constants typed in this file. A rate instead takes the
+## ordinal, because a rate legitimately is linear in position.
+func _independent_window(unit: String, realm_id: String, rarity_index: int) -> Array:
 	var policy: Array = INDEPENDENT_POLICY[unit]
 	var base_min := float(policy[0])
 	var base_max := float(policy[1])
 	var rarity_scale := float(policy[2])
 	var rarity := 1.0 + rarity_index * rarity_scale
 	if unit == "magnitude":
-		var scale := float(_scales()[_realm_id(realm_index)])
+		var scale := float(_scales()[realm_id])
 		return [base_min * scale * rarity, base_max * scale * rarity]
 	var slope := float(INDEPENDENT_RATE_SLOPE[unit])
-	var realm := 1.0 + realm_index * slope
+	var realm := 1.0 + _ordinal_of(realm_id) * slope
 	return [base_min * realm * rarity, base_max * realm * rarity]
 
 
@@ -114,7 +128,9 @@ func test_the_fixture_covers_every_unit_realm_and_rarity() -> void:
 	var windows := _windows()
 	assert_eq(windows.size(), UNIT_COUNT * REALM_COUNT * RARITY_COUNT, "full coverage")
 	for unit in ["magnitude", "rate", "fraction"]:
-		assert_ne(windows.get("%s:0:0" % unit, []), [], "%s windows present" % unit)
+		assert_ne(
+			windows.get("%s:%s:0" % [unit, _realm_ids()[0]], []), [], "%s windows present" % unit
+		)
 
 
 func test_the_fixture_shape_is_the_one_this_suite_understands() -> void:
@@ -136,35 +152,32 @@ func test_the_scale_column_is_the_file_the_runtime_reads() -> void:
 	assert_eq(_scales(), on_disk.get("realms", {}), "fixture records the runtime's own table")
 
 
-## Every realm on the ladder has exactly one authored scale, and the scale is
-## resolved through the ladder rather than through a position in the file.
+## Every realm on the ladder has exactly one authored scale, resolved by name.
 func test_every_realm_on_the_ladder_has_one_authored_scale() -> void:
 	var scales := _scales()
 	assert_eq(scales.size(), REALM_COUNT, "one scale per realm, and no others")
-	for realm_index in REALM_COUNT:
-		var realm_id := _realm_id(realm_index)
+	for realm_id in _realm_ids():
 		assert_ne(scales.get(realm_id, null), null, "scale authored for %s" % realm_id)
 		assert_almost_eq(
-			OptionCatalog.realm_magnitude_scale(realm_index),
+			OptionCatalog.realm_magnitude_scale(StringName(realm_id)),
 			float(scales[realm_id]),
-			"the runtime resolves %s at ordinal %d" % [realm_id, realm_index],
+			"the runtime resolves %s by name" % realm_id,
 			TOLERANCE
 		)
 
 
 ## THE INDEPENDENT ASSERTION. Every magnitude window is recomposed from the
 ## id-keyed scale column through a separate route and compared against the
-## runtime, so a wrong unit, a wrong index or a wrong realm in either
-## implementation fails here even though the generated `windows` column agrees
-## with both by construction.
+## runtime, so a wrong unit or a wrong realm in either implementation fails here
+## even though the generated `windows` column agrees with both by construction.
 func test_every_magnitude_window_survives_an_independent_recomposition() -> void:
 	var windows := _windows()
 	var catalog := OptionCatalog.new()
-	for realm_index in REALM_COUNT:
+	for realm_id in _realm_ids():
 		for rarity_index in RARITY_COUNT:
-			var expected := _independent_window("magnitude", realm_index, rarity_index)
-			var window := catalog.magnitude_bounds("magnitude", realm_index, rarity_index)
-			var key := "magnitude:%d:%d" % [realm_index, rarity_index]
+			var expected := _independent_window("magnitude", realm_id, rarity_index)
+			var window := catalog.magnitude_bounds("magnitude", StringName(realm_id), rarity_index)
+			var key := "magnitude:%s:%d" % [realm_id, rarity_index]
 			assert_almost_eq(
 				float(window["min"]), float(expected[0]), "%s min, recomposed" % key, TOLERANCE
 			)
@@ -187,7 +200,9 @@ func test_the_runtime_matches_every_golden_window() -> void:
 	var catalog := OptionCatalog.new()
 	for key in windows:
 		var parts := String(key).split(":")
-		var window: Dictionary = catalog.magnitude_bounds(parts[0], int(parts[1]), int(parts[2]))
+		var window: Dictionary = catalog.magnitude_bounds(
+			parts[0], StringName(parts[1]), int(parts[2])
+		)
 		var expected: Array = windows[key]
 		assert_almost_eq(float(window["min"]), float(expected[0]), "%s min" % key, TOLERANCE)
 		assert_almost_eq(float(window["max"]), float(expected[1]), "%s max" % key, TOLERANCE)
@@ -198,12 +213,12 @@ func test_the_runtime_matches_every_golden_window() -> void:
 ## chain moves these.
 func test_the_named_ends_of_the_ladder_have_the_stated_magnitudes() -> void:
 	var catalog := OptionCatalog.new()
-	var first := catalog.magnitude_bounds("magnitude", _ordinal_of("qi_refining"), 0)
+	var first := catalog.magnitude_bounds("magnitude", &"qi_refining", 0)
 	assert_almost_eq(float(first["min"]), 1.0, "Qi Refining rolls 1..10", TOLERANCE)
 	assert_almost_eq(float(first["max"]), 10.0, "Qi Refining rolls 1..10", TOLERANCE)
 
-	var last := catalog.magnitude_bounds("magnitude", _ordinal_of("primordial_origin"), 0)
-	# The authored table's top entry is 3.9, i.e. 1.0 + 0.10 * 29.
+	var last := catalog.magnitude_bounds("magnitude", &"primordial_origin", 0)
+	# The authored table's top entry is 3.9, stated by the balance owner.
 	assert_almost_eq(float(last["min"]), 3.9, "Primordial Origin's authored scale", TOLERANCE)
 	assert_almost_eq(float(last["max"]), 39.0, "so its window is 3.9..39", TOLERANCE)
 
@@ -218,8 +233,6 @@ func test_the_scale_is_data_the_runtime_never_recomputes() -> void:
 		var scale := float(scales[realm_id])
 		assert_eq(scale > 0.0, true, "%s has a positive scale" % realm_id)
 		assert_eq(scale < INF, true, "%s has a finite scale" % realm_id)
-	# The ordinal the runtime resolves must equal the table's own end values, so a
-	# regenerated table cannot quietly renumber which realm is which.
 	assert_almost_eq(
 		float(scales["qi_refining"]), 1.0, "the first realm is the 1.0x baseline", TOLERANCE
 	)
@@ -233,17 +246,18 @@ func test_the_authored_scale_never_falls_below_the_baseline() -> void:
 	# property: it is exactly the sort of thing a designer must be able to author,
 	# so it is checked rather than assumed.
 	var scales := _scales()
-	for realm_index in range(1, REALM_COUNT):
-		var previous := float(scales[_realm_id(realm_index - 1)])
-		var current := float(scales[_realm_id(realm_index)])
-		assert_eq(current >= previous, true, "realm %d is not weaker than the last" % realm_index)
+	var ids := _realm_ids()
+	for index in range(1, ids.size()):
+		var previous := float(scales[ids[index - 1]])
+		var current := float(scales[ids[index]])
+		assert_eq(current >= previous, true, "%s is not weaker than the one below" % ids[index])
 
 
 func test_rarity_widens_the_window_without_becoming_a_second_scale() -> void:
 	var windows := _windows()
-	for realm_index in [0, 18, 29]:
-		var common: Array = windows["magnitude:%d:0" % realm_index]
-		var legendary: Array = windows["magnitude:%d:3" % realm_index]
+	for realm_id in [_realm_ids()[0], _realm_ids()[18], _realm_ids()[29]]:
+		var common: Array = windows["magnitude:%s:0" % realm_id]
+		var legendary: Array = windows["magnitude:%s:3" % realm_id]
 		assert_eq(float(legendary[1]) > float(common[1]), true, "legendary rolls higher")
 		# Rarity is a quality axis: the ratio is the same at every realm, so it
 		# scales the window without becoming a second power curve.
@@ -259,9 +273,10 @@ func test_rarity_widens_the_window_without_becoming_a_second_scale() -> void:
 ## at every realm or "linear" would be unfalsifiable.
 func test_a_rate_reads_the_ordinal_linearly_not_the_authored_scale() -> void:
 	var windows := _windows()
-	var first: Array = windows["rate:0:0"]
-	var mid: Array = windows["rate:9:0"]
-	var top: Array = windows["rate:29:0"]
+	var ids := _realm_ids()
+	var first: Array = windows["rate:%s:0" % ids[0]]
+	var mid: Array = windows["rate:%s:0" % ids[9]]
+	var top: Array = windows["rate:%s:0" % ids[29]]
 	# The rate step is 0.005, so nine realms is 1.045x — not the authored scale.
 	assert_almost_eq(
 		float(mid[0]) / float(first[0]), 1.045, "a rate is linear in the ordinal", TOLERANCE
@@ -273,7 +288,7 @@ func test_a_rate_reads_the_ordinal_linearly_not_the_authored_scale() -> void:
 	# rate branch started reading the table, "linear" would become unfalsifiable.
 	assert_ne(
 		float(mid[0]) / float(first[0]),
-		float(_scales()[_realm_id(9)]),
+		float(_scales()[ids[9]]),
 		"a rate does not read the authored magnitude scale"
 	)
 
@@ -283,10 +298,10 @@ func test_rates_are_recomposed_independently_too() -> void:
 	# between "data" and "linear contest read" is asserted on both sides.
 	var windows := _windows()
 	var catalog := OptionCatalog.new()
-	for realm_index in REALM_COUNT:
-		var expected := _independent_window("rate", realm_index, 0)
-		var window := catalog.magnitude_bounds("rate", realm_index, 0)
-		var key := "rate:%d:0" % realm_index
+	for realm_id in _realm_ids():
+		var expected := _independent_window("rate", realm_id, 0)
+		var window := catalog.magnitude_bounds("rate", StringName(realm_id), 0)
+		var key := "rate:%s:0" % realm_id
 		assert_almost_eq(float(window["min"]), float(expected[0]), "%s min" % key, TOLERANCE)
 		assert_almost_eq(float(window["max"]), float(expected[1]), "%s max" % key, TOLERANCE)
 		var generated: Array = windows[key]

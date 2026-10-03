@@ -18,7 +18,6 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"immortal"
-value = 800
 tags = Array[StringName]([&"legendary"])
 sources = Array[StringName]([&"craft:scroll_thunder_recipe"])
 description = "A thunderous scroll crackling with immortal lightning. Immortal-grade."

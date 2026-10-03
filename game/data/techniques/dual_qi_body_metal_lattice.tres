@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"dual_qi_body_metal_lattice"
+display_name = "Metal Lattice"
+description = "Stiffens the frame into a lattice qi can be stored in, which is why the technique holds a target in place rather than moving it. Both paths have to be deep."
+tags = Array[StringName]([&"technique", &"dual", &"qi_body", &"metal", &"control"])
+grade = &"heaven"
+rarity = &"rare"
+element = &"metal"
+schools = Array[StringName]([&"cultivation", &"dual", &"body"])
+active = true
+path = &"qi_cultivation+body_cultivation"
+min_path_realm = {&"qi_cultivation": 23, &"body_cultivation": 23}
+qi_cost = 70.0
+stamina_cost = 40.0
+cooldown = 15.0
+mastery_rungs = 5
+magnitude = 2.6
+element_share = 0.7
+

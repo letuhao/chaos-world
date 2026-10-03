@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="NationTerritoryDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/nation/nation_territory_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"star_court"
+display_name = "The Star Court"
+tier_index = 3
+location_ids = Array[StringName]([&"immortal_court"])
+seat_location_id = &"immortal_court"
+seat_kind = &"star_seat"
+tags = Array[StringName]([&"crownland", &"immortal", &"contested"])

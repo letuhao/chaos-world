@@ -9,10 +9,10 @@ breakthrough_item = &"body_transcendent_breakthrough_pill"
 strengthening_item = &"body_transcendent_channel_elixir"
 recovery_item = &"body_transcendent_recovery_elixir"
 progress_required = 2350.0
-physique_required = 62.0
-quality_required = 0.790000
-quality_target = 0.805000
-integrity_target = 0.855000
+physique_required = 190.2
+quality_required = 0.823500
+quality_target = 0.903500
+integrity_target = 0.953500
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
 required_refinement = 27
 refinement_cap = 28
@@ -21,11 +21,8 @@ rewards = {
 "physique": 2.0,
 "organ_vitality": 1.0
 }
-work_required = 2350.0
-acupoint_work = 22.0
-meridian_work = 21.0
 insight_required = 1630.0
 resonance_rank = 10
-chance_base = 0.77
-chance_cap = 0.73
+chance_base = 0.2740
+chance_cap = 0.7758
 channel_training = Array[StringName]([])

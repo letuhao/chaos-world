@@ -1,4 +1,12 @@
-"""Bootstrap missing resources; preserve existing authored seeds."""
+"""Bootstrap missing resources; preserve existing authored seeds.
+
+The realm seeds under `game/data/body_cultivation/realms/` are AUTHORED DATA. This
+module is the bootstrap that writes one if it is missing, not the source the balance
+is read from - the runtime and the tests read the `.tres`, and `cultivation seed`
+never overwrites one. That is a deliberate ruling, and it comes with an obligation:
+a bootstrap mirror nobody checks is how 24 of 30 realms ended up carrying a work
+budget from a deleted curve. `balance.seed_drift` is that check.
+"""
 
 from __future__ import annotations
 
@@ -6,13 +14,18 @@ import re
 from decimal import ROUND_HALF_UP, Decimal
 
 from .. import data
-from ..common import REPO_ROOT, ok
-from ..realm_power import read_multipliers
-
-# `minf`/`maxf` mirror GDScript's clamp helpers so the Python generator and the
-# runtime read the same intent.
-minf = min
-maxf = max
+from ..common import REPO_ROOT, ToolError, ok
+from .ladder import (
+    PHYSIQUE_REWARD,
+    chance_base,
+    chance_cap,
+    integrity_maximum,
+    integrity_target,
+    milestone_physique_ratio,
+    physique_required,
+    quality_ceiling,
+    quality_gate,
+)
 
 ROOT = REPO_ROOT / "game" / "data"
 PRIMARY = (
@@ -66,6 +79,71 @@ def _round_half_up(value: float) -> int:
     return int(Decimal(str(value)).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
 
 
+# The authored body labour budget, in labour units per realm, R1..R30.
+#
+# DEF-0084: this used to be computed as `round(40 * P**0.55)` against the power
+# table, which no longer reproduces the shipped seeds - the table tops out at
+# 551.46x while these numbers imply a 4328.76x ladder, and 27 of 30 realms
+# disagreed. The data is the shipped balance (18k+ tests pass against it), so the
+# generator is corrected to match the data, not the reverse.
+#
+# It is an explicit table rather than a curve on purpose. The growth RATE itself
+# grows here: `ln(work/40)/i` climbs from 0.049 at R2 to 0.159 at R30. The best
+# log-quadratic fit, `40 * exp(-0.0017 + 0.04402*i + 0.003959*i^2)`, stays within
+# 0.69% of every authored value but still rounds to the wrong integer at 5 realms
+# (R17, R23, R28, R29, R30), and an approximation that is 0.7% off changes the
+# per-realm step ratio the technique ladder is sized against. A designer
+# retuning a realm edits one number here; the runtime never recomputes it.
+#
+# DEF-0130: the DEF-0130 retune left this table untouched. It moved the quality
+# ladders, the chance band and the physique floor (all now in `ladder.py`), and
+# deleted the three derived lines the seeds used to carry, but every labour budget
+# still reads from here. The R1 -> R2 step is +2 and stays +2.
+BODY_WORK_REQUIRED: tuple[int, ...] = (
+    40,
+    42,
+    44,
+    47,
+    51,
+    55,
+    60,
+    66,
+    73,
+    82,
+    92,
+    105,
+    120,
+    138,
+    161,
+    188,
+    222,
+    265,
+    318,
+    385,
+    469,
+    577,
+    714,
+    892,
+    1123,
+    1425,
+    1823,
+    2350,
+    3054,
+    4000,
+)
+
+
+def labour_budget(index: int) -> int:
+    """The realm's authored labour budget in labour units.
+
+    One labour tick is one `cultivate(actor, 1.0)` call; the budget is what a
+    cultivator must spend to be ready for the NEXT realm. `RealmRate.factor`
+    is the rate that work converts at; the budget is the price. They are only
+    meaningful as a pair, and neither is a magnitude.
+    """
+    return BODY_WORK_REQUIRED[index]
+
+
 def resource(class_name: str, script: str, lines: list[str]) -> str:
     return (
         f'[gd_resource type="Resource" script_class="{class_name}" load_steps=2 format=3]\n\n'
@@ -75,9 +153,17 @@ def resource(class_name: str, script: str, lines: list[str]) -> str:
 
 
 def run() -> int:
+    # The physique floor is derived from what the ladder grants for itself, and the
+    # milestone bonus is a runtime constant. Reading it here means the bootstrap and
+    # `BodyProgress` cannot price the floor against different numbers.
+    ratio = milestone_physique_ratio()
+    if ratio is None:
+        raise ToolError(
+            "cannot read MILESTONE_PHYSIQUE_RATIO from BodyProgress; the physique floor is"
+            " derived from the ladder's own grants and has no defensible default"
+        )
     files: dict[str, str] = {}
     channels: list[tuple[str, int]] = []
-    realm_power = read_multipliers()
     for index, channel in enumerate(PRIMARY + EXTRAORDINARY):
         primary = index < 12
         unlock = (index // 4) * 3 if primary else 9 + max(0, (index - 14) // 2) * 3
@@ -132,32 +218,21 @@ def run() -> int:
         source_index = max(0, index - 1)
         required = [channel for channel, unlock in channels if unlock <= source_index]
         rewards = [
-            ("physique", 2.0),
+            ("physique", PHYSIQUE_REWARD),
             (("organ_vitality", "muscle_fiber", "bone_density")[index % 3], 1.0),
         ]
-        # Profile factors: P is the realm's AUTHORED multiplier from
-        # core/realm_power_table.tres, and C = P^0.85, F = P^0.40, T = P^0.55.
-        # Previously P was a read of the one power ladder (ADR 0042); that ladder is
-        # gone (ADR 0050) and the table replaced it. Before the ladder, this was a
-        # private per-tier geometric (base * growth^(local-1)) reaching 601x at R30.
-        t_factor = realm_power[index] ** 0.55
-        # Quality/integrity targets: Q(R) = 0.40 + 0.015*(R-1), U(R) = 0.45 + 0.015*(R-1)
-        quality_target = 0.40 + 0.015 * index
-        integrity_target = 0.45 + 0.015 * index
-        # Work requirements. These are the prices of the three training verbs, in
-        # labour units, where one labour tick is one `cultivate(actor, 1.0)` call.
-        # The realm budget is what a cultivator must spend to be ready for the
-        # NEXT realm; the two sub-budgets price a full pass of one huyệt and one
-        # channel step. They are cut from T, not from (R-1)^1.45, so that reward
-        # per unit of labour is constant across the ladder instead of peaking at
-        # R9 and collapsing by 15x at R30.
-        labour_per_realm = round(40.0 * t_factor)
-        work_required = float(labour_per_realm)
-        # Round half away from zero so the Python generator and GDScript's
-        # roundf() agree; banker's rounding disagrees on exact .5 and produced a
-        # one-off mismatch at R24.
-        acupoint_work = float(_round_half_up(labour_per_realm / max(1, 4 * (source_index + 1))))
-        meridian_work = float(_round_half_up(labour_per_realm / max(1, 4 * (index + 1))))
+        # The quality ceiling, the entry gate and the reservoir target. The gate sits
+        # a fixed headroom BELOW the ceiling rather than exactly on it: that gap is
+        # what a breakthrough roll is buying, and pinning the gate to the ceiling
+        # (as `0.40 + 0.015*(R-1)` did) made average huyệt quality at the moment of
+        # an attempt a single number on every realm.
+        ceiling = quality_ceiling(index)
+        gate = quality_gate(index)
+        # The labour budget is the PRICE of a breakthrough; `RealmRate.factor`
+        # is the RATE it converts at. The two sub-budgets that used to be emitted here
+        # (`acupoint_work`, `meridian_work`) are now derived in `BodyRealmSeed` from
+        # this one figure, and `work_required` is an alias of the gate below.
+        budget = float(labour_budget(index))
         # Insight floor: 10 + 6*(R-1) + 2*(R-1)^2
         insight_required = 10.0 + 6.0 * index + 2.0 * index * index
         # Resonance rank (realms 19-30): R19=1, R20=2, ..., R30=12
@@ -166,10 +241,12 @@ def run() -> int:
         # decide the roll: 0.1 + 0.01*insight_required exceeds the 0.95 clamp
         # from R5 on, which made 26 of 29 attempts certain successes. The realm
         # offers a floor and a ceiling instead; acupoint quality buys certainty
-        # between them, so the failure rate stays meaningful (about 20% at R1
-        # rising to about 28% at R30) instead of reaching zero.
-        chance_base = minf(0.55 + 0.008 * index, 0.80)
-        chance_cap = maxf(0.95 - 0.008 * index, 0.70)
+        # between them, so the failure rate stays meaningful (24% at R1 rising to
+        # 32% at R30) instead of reaching zero.
+        #
+        # The floor DECLINES with depth, which is what makes the ceiling meaningful.
+        # A floor that rises into a falling ceiling (the old `0.55 + 0.008i` against
+        # `0.95 - 0.008i`) crossed at R26 and left five realms with `base >= cap`.
         # Channel training after entry. The generator names channels with
         # `unlock_index == index`, i.e. the ones that unlock ON entering this
         # realm. The previous `index + 1` named the NEXT realm's channels, which
@@ -183,25 +260,23 @@ def run() -> int:
                 f'breakthrough_item = &"{pill}"',
                 f'strengthening_item = &"{elixir}"',
                 f'recovery_item = &"{recovery}"',
-                # The gate is a labour budget, matching `work_required` so the two authored
-                # numbers describe one thing instead of diverging by up to 4.6x.
-                f"progress_required = {float(work_required)}",
-                # Physique comes from the milestone bonus plus the seed reward, so
-                # it must stay below what the ladder actually grants by R.
-                f"physique_required = {10.0 + 2.0 * max(0, index - 1)}",
-                # The entry gate must be reachable with one realm of training: it is
-                # exactly the previous realm's quality target Q(R-1). Anything
-                # higher makes the realm unreachable through the public actions,
-                # because training caps at the current realm's Q.
-                f"quality_required = {0.40 + 0.015 * source_index:.6f}",
-                # Q(R)/U(R) are asserted against the exact formula (epsilon 1e-4),
-                # so 2dp rounding is not enough: 0.835 would be written as 0.83.
-                f"quality_target = {quality_target:.6f}",
-                f"integrity_target = {integrity_target:.6f}",
+                # The one labour budget. `BodyRealmSeed.work_required` and its two
+                # sub-budgets are DERIVED from this, not authored beside it: they were
+                # byte-identical copies of the same quantity in all 30 seeds, free to
+                # diverge the first time anyone edited one of the three.
+                f"progress_required = {budget}",
+                # The ladder grants base physique for itself: this realm's reward plus
+                # every earlier realm's milestone. The floor sits a margin ABOVE that,
+                # so it is a gate the player has to act on rather than a formality the
+                # ladder has already paid.
+                f"physique_required = {physique_required(index, ratio):.1f}",
+                f"quality_required = {gate:.6f}",
+                f"quality_target = {ceiling:.6f}",
+                f"integrity_target = {integrity_target(index):.6f}",
                 f"required_meridians = {data._array_literal(required)}",
                 f"required_refinement = {max(1, index)}",
                 f"refinement_cap = {index + 1}",
-                f"integrity_maximum = {100.0 * (1.0 + index * 0.1):.1f}",
+                f"integrity_maximum = {integrity_maximum(index):.1f}",
                 f"rewards = {data._dict_literal(rewards)}",
                 # Deliberately NOT emitted: `power_budget`, `capacity_factor`,
                 # `throughput_factor`, `technique_factor`. Those four were a second,
@@ -209,16 +284,13 @@ def run() -> int:
                 # no realm seed carries them. Writing them here would silently
                 # resurrect the fields the migration deleted, and the generation
                 # validator no longer asks for them.
-                # These four are already floats; appending `.0` emitted malformed
+                # These floats are already formatted; appending `.0` emitted malformed
                 # literals like `118.0.0`, which abort Godot's parser and silently
                 # drop every property after it (resonance_rank, channel_training).
-                f"work_required = {float(work_required)}",
-                f"acupoint_work = {float(acupoint_work)}",
-                f"meridian_work = {float(meridian_work)}",
                 f"insight_required = {float(insight_required)}",
                 f"resonance_rank = {resonance_rank}",
-                f"chance_base = {chance_base:.2f}",
-                f"chance_cap = {chance_cap:.2f}",
+                f"chance_base = {chance_base(index):.4f}",
+                f"chance_cap = {chance_cap(index):.4f}",
                 f"channel_training = {data._array_literal(channel_training)}",
             ],
         )

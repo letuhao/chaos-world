@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://src/modules/world/boss_def.gd" id="1_boss"]
 
 [resource]
-script = Ext_resource("1_boss")
+script = ExtResource("1_boss")
 id = &"qi_earth_immortal_guardian"
 display_name = "Earth Immortal Guardian"
 domain_id = &"qi_earth_immortal_domain"
-loot = Array[StringName]([&"qi_earth_immortal_guardian_core", &"U4_heaven_weald_chalice", &"U4_heaven_weald_sphere"])
+loot = Array[StringName]([])

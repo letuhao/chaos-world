@@ -244,6 +244,8 @@ static func active_view(active: Dictionary) -> Dictionary:
 			"encounter_id": "",
 			"boss_id": "",
 			"defeated": false,
+			"attack": 0.0,
+			"defense": 0.0,
 		}
 	var vitality := float(active.get("vitality", 0.0))
 	var vitality_max := maxf(1.0, float(active.get("vitality_max", 1.0)))
@@ -262,5 +264,10 @@ static func active_view(active: Dictionary) -> Dictionary:
 		"health_ratio": clampf(vitality / vitality_max, 0.0, 1.0),
 		"realm": String(active.get("tier_realm", "")),
 		"rarity": String(active.get("tier_rarity", "")),
+		# The boss's own numbers, priced off the band's authored vitality (ADR 0076). Read
+		# here so the combat module can meet a blow with them through this module's
+		# facade, and so a panel can show what it is fighting.
+		"attack": float(active.get("attack", 0.0)),
+		"defense": float(active.get("defense", 0.0)),
 		"defeated": bool(active.get("defeated", false)),
 	}

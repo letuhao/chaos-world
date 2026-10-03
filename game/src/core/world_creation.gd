@@ -12,9 +12,21 @@ const GREAT := &"great"
 
 const STABILITY_THRESHOLD := 0.3
 
+## The layer a Transcendent breakthrough builds. The structure layer is the half of
+## "a breakthrough made this world" that a tier alone cannot express: a bootstrap
+## world handed out at the first realm is already Micro-sized and already stable, so
+## only a layer this world's builder put there distinguishes the two (ADR 0058).
+const STRUCTURE_LAYER := &"structure"
+
 var tier: StringName = MICRO
 var size: float = 1.0
 var stability: float = 0.5
+## The ladder index of the breakthrough that built this world, or -1 when no
+## breakthrough ever built it. Written once, by the builder, and never rewritten by
+## the tier raised on top of it — so a world promoted from Micro to Great still
+## names the breakthrough that made it. Serialized, because a gate that reads it
+## must survive a save or it silently re-closes itself on reload.
+var origin_index: int = -1
 var will_strength: float = 0.5
 var laws: Array[WorldLawState] = []
 var layers: Array[WorldLayerState] = []
@@ -50,6 +62,15 @@ func add_layer(layer: WorldLayerState) -> void:
 	layers.append(layer)
 
 
+## The layer with this id, or null. The reader `add_layer`'s writer lacks, so a gate
+## can ask what is in a world instead of counting what a builder put in it.
+func get_layer(layer_id: StringName) -> WorldLayerState:
+	for layer in layers:
+		if layer.layer_id == layer_id:
+			return layer
+	return null
+
+
 func add_inhabitant(inhabitant: InhabitantRef) -> void:
 	inhabitants.append(inhabitant)
 
@@ -75,6 +96,7 @@ func to_dict() -> Dictionary:
 		"tier": String(tier),
 		"size": size,
 		"stability": stability,
+		"origin_index": origin_index,
 		"will_strength": will_strength,
 		"laws": laws_out,
 		"layers": layers_out,
@@ -92,6 +114,9 @@ static func from_dict(data: Dictionary) -> WorldState:
 		float(data.get("stability", 0.5))
 	)
 	world.will_strength = float(data.get("will_strength", 0.5))
+	# A payload written before the stamp existed builds nothing, so it loads
+	# unstamped and must be re-built rather than inheriting a breakthrough's worth.
+	world.origin_index = int(data.get("origin_index", -1))
 	for law_data in data.get("laws", []):
 		world.laws.append(WorldLawState.from_dict(law_data))
 	for layer_data in data.get("layers", []):

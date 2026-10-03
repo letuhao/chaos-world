@@ -22,7 +22,9 @@ static func definitions() -> Array[AcupointDef]:
 
 
 ## Acupoints an actor should hold at `realm_id`, built from the definitions whose
-## unlock_index the realm has reached. Capacity comes from the definition.
+## unlock_index the realm has reached. Capacity is NOT taken from the definition:
+## essence lives in the shared body_integrity pool (ADR 0012), and
+## `AcupointDef.base_capacity` is authored but unread.
 static func build_for_realm(realm_id: StringName) -> Array[Acupoint]:
 	var realm_index := RealmDefaults.ladder().index_of(realm_id)
 	if realm_index < 0:

@@ -18,6 +18,5 @@ subcategory = &"gem"
 stackable = false
 grade = &"spirit"
 sources = Array[StringName]([&"gather"])
-value = 60
 tags = Array[StringName]([&"socket_item", &"socket_kind:defense"])
 description = "Socket item. Defensive rune; while its host is worn it adds physical defence and poise."

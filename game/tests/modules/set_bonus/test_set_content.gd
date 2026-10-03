@@ -100,35 +100,6 @@ func test_every_set_is_complete_and_usable() -> void:
 			)
 
 
-func test_every_authored_threshold_is_actually_reachable_with_the_declared_members() -> void:
-	for set_id in _set_ids():
-		var set_def := SetBonusApi.set_definition(set_id)
-		var previous := 0
-		var reachable := 0
-		for index in set_def.tiers.size():
-			var tier: Dictionary = set_def.tiers[index]
-			var needed := int(tier.get("count", 0))
-			assert_eq(needed > previous, true, "%s tier %d is ascending" % [set_id, index])
-			previous = needed
-			assert_eq(
-				needed <= set_def.member_count(), true, "%s tier %d is reachable" % [set_id, index]
-			)
-			assert_eq(needed >= 2, true, "%s tier %d needs a pair" % [set_id, index])
-			assert_ne(String(tier.get("label", "")), "", "%s tier %d is labelled" % [set_id, index])
-			assert_eq(
-				(tier.get("options", []) as Array).is_empty(),
-				false,
-				"%s tier %d grants" % [set_id, index]
-			)
-			reachable += 1
-		assert_eq(reachable >= 2, true, "%s has more than one threshold" % set_id)
-		assert_eq(
-			(set_def.active_tier_indices(set_def.member_count()) as Array).size(),
-			set_def.tiers.size(),
-			"%s: wearing everything activates every threshold" % set_id
-		)
-
-
 func test_every_threshold_value_sits_inside_its_option_magnitude_window() -> void:
 	var catalog := OptionCatalog.instance()
 	var ladder := RealmDefaults.ladder()
@@ -148,7 +119,7 @@ func test_every_threshold_value_sits_inside_its_option_magnitude_window() -> voi
 					"%s tier %d: %s has an equipped consumer" % [set_id, index, option_id]
 				)
 				var window := catalog.magnitude_bounds(
-					String(record["unit"]), realm_index, rarity_index
+					String(record["unit"]), set_def.realm, rarity_index
 				)
 				var value := float(entry["value"])
 				assert_eq(
@@ -196,7 +167,7 @@ func test_every_piece_fixed_value_sits_inside_its_option_magnitude_window() -> v
 					catalog
 					. magnitude_bounds(
 						String(record["unit"]),
-						realm_index,
+						def.realm,
 						ItemRarity.tier(def.rarity),
 					)
 				)

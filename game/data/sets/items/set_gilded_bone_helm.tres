@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"armor"
 grade = &"immortal"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:gilded_bone_pact"])
 sources = Array[StringName]([&"boss:body_transcendent_guardian"])
 description = "A bone helm plated in gold leaf; the wearer answers slowly and completely."

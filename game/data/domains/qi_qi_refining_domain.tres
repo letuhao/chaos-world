@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/modules/world/domain_def.gd" id="1_domain"]
 
 [resource]
-script = Ext_resource("1_domain")
+script = ExtResource("1_domain")
 id = &"qi_qi_refining_domain"
 display_name = "Qi Qi Refining Domain"
 boss_ids = Array[StringName]([&"qi_qi_refining_guardian", &"qi_foundation_guardian", &"qi_core_formation_guardian"])

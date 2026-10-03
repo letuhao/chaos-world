@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="DomainTemplateDef" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/domain_template_def.gd" id="1_template"]
+[ext_resource type="Resource" path="res://src/data/domains/rooms/ash_floor.tres" id="2_floor"]
+[ext_resource type="Resource" path="res://src/data/domains/rooms/ash_chamber.tres" id="3_chamber"]
+[ext_resource type="Script" path="res://src/modules/domain/template_pin.gd" id="4_pin"]
+[ext_resource type="Resource" path="res://src/data/domains/rooms/ash_camp.tres" id="5_camp"]
+
+[sub_resource type="Resource" id="pin_camp"]
+script = ExtResource("4_pin")
+leaf_index = 2
+room_def = ExtResource("5_camp")
+kind = &"settlement"
+display_name = "Pilgrim Camp"
+
+[resource]
+script = ExtResource("1_template")
+template_id = &"ember_grotto"
+display_name = "Ember Grotto"
+extent = Vector2i(72, 48)
+min_leaf = 7
+max_depth = 5
+split_ratio_range = Vector2(0.4, 0.6)
+repeat_axis_chance = 0.25
+margin = 1
+loop_ratio = 0.0
+max_loop_edges = 0
+loop_gap_tiles = 6
+corridor_tiles = 2
+min_rooms = 6
+max_rooms = 10
+entry_anchor = Vector2i(3, 3)
+room_pool = Array[RoomDef]([
+	ExtResource("2_floor"),
+	ExtResource("3_chamber"),
+	ExtResource("5_camp")
+])
+pins = Array[TemplatePin]([SubResource("pin_camp")])

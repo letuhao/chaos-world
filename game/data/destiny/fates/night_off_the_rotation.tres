@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FateDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/destiny/fate_def.gd" id="1_fate"]
+
+[resource]
+script = ExtResource("1_fate")
+id = &"night_off_the_rotation"
+display_name = "Night off the Rotation"
+description = "Left the post you were assigned and did not return to it. The roster carries the gap. It has not been reassigned."
+category = &"debauch"
+tier = 1
+visibility = &"revealed"
+percent_modifiers = {"move_speed": 0.05}
+counters = Array[StringName]([&"watch_turned"])
+tags = Array[StringName]([&"desertion", &"unbound"])

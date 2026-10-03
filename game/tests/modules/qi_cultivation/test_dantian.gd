@@ -7,7 +7,6 @@ extends TestCase
 func _actor() -> Actor:
 	var actor := Actor.new(&"test", {QiStats.DANTIAN_CAPACITY: 100.0})
 	QiCultivationApi.attach(actor)
-	QiCultivationApi.attach_dantian(actor)
 	# The shared qi pool starts full; empty it so fill/drain start from zero.
 	actor.resource(QiStats.QI).change(-actor.resource(QiStats.QI).current)
 	return actor
@@ -15,7 +14,7 @@ func _actor() -> Actor:
 
 func test_fill_and_drain() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.set_structural_capacity(100.0)
 	dantian.fill(actor, 50.0)
 	assert_almost_eq(dantian.current(actor), 50.0, "fill 50")
@@ -25,7 +24,7 @@ func test_fill_and_drain() -> void:
 
 func test_fill_clamps_to_capacity() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.set_structural_capacity(100.0)
 	dantian.fill(actor, 150.0)
 	assert_almost_eq(dantian.current(actor), 100.0, "clamped to capacity")
@@ -33,7 +32,7 @@ func test_fill_clamps_to_capacity() -> void:
 
 func test_drain_clamps_to_zero() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.set_structural_capacity(100.0)
 	dantian.fill(actor, 50.0)
 	dantian.drain(actor, 80.0)
@@ -42,7 +41,7 @@ func test_drain_clamps_to_zero() -> void:
 
 func test_is_full() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.set_structural_capacity(100.0)
 	assert_eq(dantian.is_full(actor), false, "not full when empty")
 	dantian.fill(actor, 100.0)
@@ -51,7 +50,7 @@ func test_is_full() -> void:
 
 func test_damage_reduces_effective_capacity() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.set_structural_capacity(100.0)
 	dantian.damage()
 	assert_eq(dantian.injured, true, "injured flag set")
@@ -60,7 +59,7 @@ func test_damage_reduces_effective_capacity() -> void:
 
 func test_damage_clamps_current() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.set_structural_capacity(100.0)
 	dantian.fill(actor, 100.0)
 	dantian.damage(actor)
@@ -69,7 +68,7 @@ func test_damage_clamps_current() -> void:
 
 func test_heal_restores_capacity() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.set_structural_capacity(100.0)
 	dantian.damage()
 	dantian.heal()
@@ -90,22 +89,36 @@ func test_serialization_round_trip() -> void:
 	assert_eq(restored.injured, true, "injured round trip")
 
 
-func test_attach_dantian_sets_capacity_from_base() -> void:
+## The dantian is attached by the one production call, not by a second one a
+## composition root has to remember: `QiCultivationApi.attach` creates it (ADR
+## 0095). Nothing in `app/` ever called the separate `attach_dantian`, so every qi
+## actor the game built had none and the whole path refused every action.
+func test_attaching_the_path_attaches_the_dantian_from_the_base_attribute() -> void:
 	var actor := Actor.new(&"test", {QiStats.DANTIAN_CAPACITY: 50.0})
-	var dantian := QiCultivationApi.attach_dantian(actor)
+	var dantian := QiAccess.attach_dantian(actor)
 	assert_almost_eq(dantian.structural_capacity, 50.0, "capacity from base attribute")
 
 
 func test_attach_dantian_is_idempotent() -> void:
 	var actor := Actor.new(&"test", {QiStats.DANTIAN_CAPACITY: 50.0})
-	var dantian1 := QiCultivationApi.attach_dantian(actor)
-	var dantian2 := QiCultivationApi.attach_dantian(actor)
+	var dantian1 := QiAccess.attach_dantian(actor)
+	var dantian2 := QiAccess.attach_dantian(actor)
 	assert_eq(dantian1 == dantian2, true, "same instance returned")
+
+
+## And through the facade itself, so the guarantee is the production one.
+func test_the_facade_attach_leaves_the_actor_ready() -> void:
+	var actor := Actor.new(&"test", {QiStats.DANTIAN_CAPACITY: 50.0})
+	QiCultivationApi.attach(actor)
+	var dantian := QiAccess.dantian(actor)
+	assert_ne(dantian, null, "attach created the dantian")
+	assert_almost_eq(dantian.structural_capacity, 50.0, "from the base attribute")
+	assert_ne(actor.resource(QiCultivationApi.QI), null, "and the reservoir")
 
 
 func test_dantian_provider_emits_stats() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.fill(actor, 100.0)
 	actor.mark_stats_dirty()
 	assert_almost_eq(actor.stats.derived(QiStats.DANTIAN_CAPACITY), 100.0, "provider capacity")
@@ -115,7 +128,7 @@ func test_dantian_provider_emits_stats() -> void:
 
 func test_dantian_provider_damage_reduces_capacity() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.damage()
 	actor.mark_stats_dirty()
 	assert_almost_eq(actor.stats.derived(QiStats.DANTIAN_CAPACITY), 75.0, "damaged capacity")

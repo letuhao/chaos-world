@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"heaven"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:void_serpent_coil"])
 sources = Array[StringName]([&"boss:body_golden_immortal_guardian"])
 description = "A ring that draws ambient qi into the coil instead of dispersing it."

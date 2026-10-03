@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"qi_heavenly_glare"
+display_name = "Heavenly Glare"
+description = "Every particle of the technique is light, with no raw share to soften it. The highest ceiling in the tree and the steepest qi bill that goes with it."
+tags = Array[StringName]([&"technique", &"light", &"pierce"])
+grade = &"divine"
+rarity = &"legendary"
+element = &"light"
+schools = Array[StringName]([&"emitting", &"elemental"])
+active = true
+path = &"qi_cultivation"
+min_path_realm = {&"qi_cultivation": 29}
+qi_cost = 210.0
+stamina_cost = 22.0
+cooldown = 20.0
+mastery_rungs = 5
+magnitude = 4.1
+element_share = 1.0
+

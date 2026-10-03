@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"mind_abyssal_drown"
+display_name = "Abyssal Drown"
+description = "Floods a mind's own recall until it cannot separate a real memory from a planted one. Two thirds water, so fire burns the flood out and an empty mind drowns in nothing."
+tags = Array[StringName]([&"technique", &"mind", &"water", &"control"])
+grade = &"heaven"
+rarity = &"rare"
+element = &"water"
+schools = Array[StringName]([&"mind", &"elemental"])
+active = true
+path = &"mind_cultivation"
+min_path_realm = {&"mind_cultivation": 25}
+qi_cost = 88.0
+stamina_cost = 7.0
+cooldown = 30.0
+mastery_rungs = 5
+magnitude = 2.7
+element_share = 0.65
+

@@ -85,9 +85,15 @@ static func enter_domain(
 	return result
 
 
-## Deal `damage` to the active boss and defeat it when its authored vitality is
-## spent. A boss that is already dead resolves its existing payload instead of
-## minting a second one.
+## Spend `damage` on the active boss and defeat it when its authored vitality is spent.
+## A boss that is already dead resolves its existing payload instead of minting a second
+## one.
+##
+## This is the primitive, and it stays one: it takes an amount because an amount is what a
+## pool is spent with. It is **not** where the game's damage comes from —
+## `CombatExchange.exchange` is what a player presses, because a blow is a resolution
+## against the actor's own combat numbers rather than a caller's constant (ADR 0076). The
+## composition root points the loot bridge's `strike` at the exchange, not here.
 static func strike(actor: Actor, damage: float, seed_value: int = 0) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor"}

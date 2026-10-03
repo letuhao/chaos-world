@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RoomDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/room_def.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+room_id = &"ash_gate"
+display_name = "Cinder Gate"
+kind = &"gate"
+roster_band = &"contact"
+tags = Array[StringName]([&"threshold", &"ruined"])
+size = Vector2i(7, 5)
+actor_spawn_refs = Array[Dictionary]([
+	{"ref_id": &"ash_hound", "inhabitant_id": &"cinder_hound", "role": &"mob", "count": 1},
+	{"ref_id": &"ash_pilgrim", "inhabitant_id": &"ember_pilgrim", "role": &"rival_cultivator", "count": 1}
+])

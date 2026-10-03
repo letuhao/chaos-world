@@ -23,6 +23,25 @@ WORD_RE = re.compile(r"\b([A-Z][A-Za-z0-9_]*)\b")
 # references, so prose and user-facing strings never count as dependencies.
 COMMENT_RE = re.compile(r"#.*$", re.MULTILINE)
 STRING_RE = re.compile(r'"[^"\n]*"')
+# An authored content type: a direct `extends Resource`. Caught only where it
+# belongs, so a `Resource` is read as a placement question and not an edge.
+RESOURCE_RE = re.compile(r"^\s*extends\s+Resource\s*$", re.MULTILINE)
+# A member whose declared type is a bare `Array` — a table this file owns, with
+# no engine node type and no repo class behind it. `Array[Marker2D]` is a bound
+# node list and does not match; `Array[SkillDef]` matches only when `SkillDef` is
+# a class this repo actually defines.
+APP_UNSHAPED_ARRAY_RE = re.compile(rules.APP_UNSHAPED_ARRAY_RE, re.MULTILINE)
+APP_CONTENT_ARRAY_RE = re.compile(rules.APP_CONTENT_ARRAY_RE, re.MULTILINE)
+# `static var` is process-wide memoisation, not per-instance state: `recipe_catalog.gd`
+# caches a directory walk in one and is not a feature system.
+APP_MARKER_RES: tuple[tuple[str, re.Pattern[str]], ...] = tuple(
+    (label, re.compile(pattern, re.MULTILINE)) for label, pattern in rules.APP_STATE_MARKERS
+)
+# Two independent signals, not one: `world_entry.gd` and `nav_bar.gd` are controls
+# with legitimate per-instance collections, and `player_adapter.gd` legitimately
+# has a `_physics_process`. One signal never decides; two always describe a file
+# that holds a feature's mutable state rather than wiring it.
+APP_STATE_MIN_SIGNALS = 2
 
 
 def _code_only(text: str) -> str:
@@ -78,7 +97,7 @@ def _class_index(files) -> dict[str, tuple[str, str | None, bool]]:
     for path in files:
         if path.suffix != ".gd":
             continue
-        rel = path.relative_to(GAME_DIR).as_posix()
+        rel = _relative_to_game(path)
         text = path.read_text(encoding="utf-8", errors="replace")
         for name in CLASS_RE.findall(text):
             index[name] = (rel, unit_of(rel), is_facade(rel))
@@ -205,7 +224,7 @@ def _structural_checks(files) -> tuple[list[str], list[str]]:
     for path in files:
         if path.suffix != ".gd":
             continue
-        rel = path.relative_to(GAME_DIR).as_posix()
+        rel = _relative_to_game(path)
         text = path.read_text(encoding="utf-8", errors="replace")
         if is_facade(rel):
             public = [name for name in FUNC_RE.findall(text) if not name.startswith("_")]
@@ -220,6 +239,189 @@ def _structural_checks(files) -> tuple[list[str], list[str]]:
     return violations, warnings
 
 
+def _is_resource_home(unit: str | None) -> bool:
+    """Whether an authored `Resource` filed under this unit is the repo precedent."""
+    if unit in rules.RESOURCE_HOME_UNITS:
+        return True
+    return unit is not None and unit.startswith("modules/")
+
+
+def resource_home_warnings(files) -> list[str]:
+    """Flag an authored `Resource` that was filed in `contracts/`.
+
+    Exact heuristic: a `.gd` whose `unit_of()` is `contracts` and whose text
+    contains a line matching `^\\s*extends\\s+Resource\\s*$`. Nothing else — a
+    `Resource` in its owning module or in `core/` is the precedent, and a
+    contracts value object that extends another contracts class is untouched.
+
+    A warning and not a failure on purpose: the convention is real but unenforced,
+    and hard-failing would turn the gate red on a prototype file that predates it
+    for anyone working on something else. The precedent count in the message is
+    measured on the same pass, so it cannot drift from the tree.
+    """
+    offenders: list[tuple[str, str]] = []
+    precedent = 0
+    for path in files:
+        if path.suffix != ".gd":
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if not RESOURCE_RE.search(text):
+            continue
+        rel = _relative_to_game(path)
+        if _is_resource_home(unit_of(rel)):
+            precedent += 1
+        elif unit_of(rel) == "contracts":
+            offenders.append((rel, next(iter(CLASS_RE.findall(text)), "this class")))
+    return [
+        (
+            f"{rel}: {class_name} extends Resource inside contracts/ — an authored content "
+            f"type belongs to the module that owns it, or in core/ for shared foundation data; "
+            f"all {precedent} other authored Resources in this repo sit in one of those two "
+            "places, and no .tres binds a contracts/ script, so nothing is authored against "
+            "this one. Move it to the owning module and let that module's facade expose it."
+        )
+        for rel, class_name in offenders
+    ]
+
+
+def app_state_signals(text: str, classes) -> list[str]:
+    """Which independent state signals a script carries. `classes` disambiguates.
+
+    Three signals, all of which mean "this file owns mutable feature state"
+    rather than "this file wires things together":
+
+    - `persistence` — calls `set_module_data` / `get_module_data`, i.e. it writes
+      its state into an actor's save blob under its own key.
+    - `tick-loop`   — declares `tick(` / `process(` / `physics_process(`, i.e. it
+      is advanced by time rather than called by a caller.
+    - `state-table` — declares a member `Array` with no element type, or with a
+      repo-defined element type. An unshaped array is a table the file built; a
+      typed one is a table of authored content. `Array[Marker2D]` and friends do
+      not match: those are bound node lists, and a name in the class index is
+      required for the typed branch so an engine class never counts.
+
+    `classes` may be a mapping of class name to index entry OR a plain container
+    of class names: the typed-array branch only asks whether a name is known, and
+    accepting both shapes keeps a caller from having to fabricate an index entry
+    for a name it merely wants to assert exists.
+
+    `static var` is excluded from all three by construction — the member patterns
+    anchor on `var` with no `static` before it.
+    """
+    signals = [label for label, pattern in APP_MARKER_RES if pattern.search(text)]
+    if APP_UNSHAPED_ARRAY_RE.search(text) or any(
+        _class_known(element, classes) for element in APP_CONTENT_ARRAY_RE.findall(text)
+    ):
+        signals.append("state-table")
+    return signals
+
+
+def _class_known(name: str, classes) -> bool:
+    """Whether `classes` declares a class by this name, in either supported shape."""
+    if classes is None:
+        return False
+    try:
+        return name in classes
+    except TypeError:
+        return False
+
+
+def _relative_to_game(path: Path) -> str:
+    """A path as a `game/`-relative posix string, whatever tree it actually sits in.
+
+    `unit_of` reads the unit off the path SHAPE — it requires the path to begin
+    with `src` (or `scenes`/`tools`). A test fixture lives in a temp directory, so
+    `relative_to(GAME_DIR)` raises on it, and falling back to the raw absolute
+    text does not help either: `unit_of` still reads `None` off a leading
+    `C:/Users/...` and the heuristic silently skips the file. So the path is
+    re-anchored on the last `src`/`scenes`/`tools` segment, which is the part the
+    unit actually depends on.
+
+    Without this every heuristic built on `unit_of` was untestable: a fixture was
+    accepted and then ignored, which reads as a passing negative case.
+    """
+    try:
+        return path.relative_to(GAME_DIR).as_posix()
+    except ValueError:
+        pass
+    parts = path.as_posix().split("/")
+    for marker in ("src", "scenes", "tools"):
+        if marker in parts:
+            return "/".join(parts[parts.index(marker) :])
+    return path.as_posix()
+
+
+def app_state_warnings(files, classes) -> list[str]:
+    """Flag a feature system living in the composition root.
+
+    Exact heuristic: a `.gd` in `app/` carrying at least
+    `APP_STATE_MIN_SIGNALS` (2) of `app_state_signals`. Two is the load-bearing
+    number — a lone `tick` is a controller (`player_adapter.gd` has
+    `_physics_process` and is legitimate wiring), and a lone member array is a
+    node list (`nav_bar.gd`, `world_entry.gd` are legitimate wiring). Both
+    together describe a file that holds a slot table, decays it over time and
+    persists it, which is a module's job: the rules that own that data would then
+    live in `app/`, outside the module that would change to fix them.
+    """
+    warnings: list[str] = []
+    for path in files:
+        if path.suffix != ".gd":
+            continue
+        rel = _relative_to_game(path)
+        if unit_of(rel) != "app":
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        signals = app_state_signals(text, classes)
+        if len(signals) < APP_STATE_MIN_SIGNALS:
+            continue
+        warnings.append(
+            f"{rel}: app/ holds a stateful system ({', '.join(signals)}) — app/ is the "
+            "composition root and wires; a feature that keeps its own state, decays it over "
+            "time and persists it belongs in a module behind a facade, so the rules that own "
+            "it sit next to the feature instead of in it."
+        )
+    return warnings
+
+
+def module_inventory_warnings(registry) -> list[str]:
+    """Report a registered module that has no directory, or no facade, on disk.
+
+    `registry.json` and `UI_MODULES` are permission lists: naming a module there
+    grants edges to it and costs nothing if the module does not exist, so a
+    green run used to say nothing about whether any of the twelve names had a
+    body. This walks both lists against `game/src/modules/` and says so.
+
+    A module on disk that neither list names is *not* reported: an unregistered
+    module is inert, not a broken permission, and `tools new_module` registers one
+    as its first step anyway.
+    """
+    root = SRC_DIR / "modules"
+    warnings: list[str] = []
+    for name in sorted(set(registry) | set(rules.UI_MODULES)):
+        directory = root / name
+        if not directory.is_dir():
+            declared = ", ".join(
+                part
+                for part, present in (
+                    ("registry.json", name in registry),
+                    ("UI_MODULES", name in rules.UI_MODULES),
+                )
+                if present
+            )
+            warnings.append(
+                f"modules/{name}: registered in {declared} but no directory on disk — the "
+                "permission is granted to nothing; build the module or drop the entry"
+            )
+            continue
+        if not (directory / rules.FACADE_FILENAME).is_file():
+            warnings.append(
+                f"modules/{name}: no facade at modules/{name}/{rules.FACADE_FILENAME} — a "
+                "module with no facade cannot be reached by ui/ or by a sibling module, so "
+                "every edge that names it is a violation and nothing can use it"
+            )
+    return warnings
+
+
 def run(args) -> int:
     if not SRC_DIR.is_dir():
         warn("game/src not found; nothing to check")
@@ -229,12 +431,13 @@ def run(args) -> int:
     registry = rules.load_registry()
     violations: list[str] = []
     for path in files:
-        rel = path.relative_to(GAME_DIR).as_posix()
+        rel = _relative_to_game(path)
         source = unit_of(rel)
         if source is None:
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
-        for line, ref in _references(text, scan_bare=source == "ui"):
+        bare = source in rules.BARE_REF_UNITS
+        for line, ref in _references(text, scan_bare=bare):
             target, facade = _resolve(ref, classes)
             reason = _violation(source, target, facade, registry)
             if reason:
@@ -242,8 +445,12 @@ def run(args) -> int:
     cycle = _find_cycle(registry)
     if cycle:
         violations.append("module dependency cycle: " + " -> ".join(cycle))
-    structural, warnings = _structural_checks(files)
+    structural, structural_warnings = _structural_checks(files)
     violations.extend(structural)
+    warnings = structural_warnings
+    warnings.extend(resource_home_warnings(files))
+    warnings.extend(app_state_warnings(files, classes))
+    warnings.extend(module_inventory_warnings(registry))
     for warning in warnings:
         warn(warning)
     if violations:

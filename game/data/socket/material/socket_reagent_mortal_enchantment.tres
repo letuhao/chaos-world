@@ -17,6 +17,5 @@ subcategory = &"essence"
 stackable = true
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])
-value = 30
 tags = Array[StringName]([&"enchantment_reagent"])
 description = "Consumed to apply or replace the enchantment channel on an owned item."

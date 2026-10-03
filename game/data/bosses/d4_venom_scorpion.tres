@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d4_venom_scorpion"
 display_name = "Venom Scorpion Lesser"
 domain_id = &"monster_venom_scorpion_domain"
-loot = Array[StringName]([&"monster_venom_scorpion_core", &"beasttrophy_scorpion_sting", &"L4_venom_scorpion_carapace_shard", &"L4_venom_scorpion_venom_fang", &"V8_earth_agger_prayer"])
+loot = Array[StringName]([])

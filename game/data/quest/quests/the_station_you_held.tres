@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="QuestDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/quest/quest_def.gd" id="1_quest"]
+[ext_resource type="Script" path="res://src/modules/quest/quest_step_def.gd" id="2_step"]
+
+[sub_resource type="Resource" id="QuestStep_defended_pass"]
+script = ExtResource("2_step")
+step_id = &"defended_pass"
+fact = &"sect_post_held"
+need = 1
+display_name = "Stand a full rotation on the pass"
+
+[sub_resource type="Resource" id="QuestStep_terms_discharged"]
+script = ExtResource("2_step")
+step_id = &"terms_discharged"
+fact = &"oaths_discharged"
+need = 3
+display_name = "Discharge three sworn terms in full"
+
+[sub_resource type="Resource" id="QuestStep_heir_registered"]
+script = ExtResource("2_step")
+step_id = &"heir_registered"
+fact = &"household_heir_registered"
+need = 1
+display_name = "See your name entered in the household register"
+
+[resource]
+script = ExtResource("1_quest")
+id = &"the_station_you_held"
+display_name = "The Station You Held"
+description = "No clerk asked you to stay and no clerk wrote down that you did. The register shows a blank where a rotation should read, and the blank is the record. Pay the sect's arrears from what the pass cost you."
+kind = &"authored"
+tier = 1
+requirement = {}
+steps = Array[ExtResource("2_step")]([SubResource("QuestStep_defended_pass"), SubResource("QuestStep_terms_discharged"), SubResource("QuestStep_heir_registered")])
+grants = Array[Dictionary]([{"kind": &"fate", "id": &"oath_kept_under_witness", "amount": 1}, {"kind": &"destiny", "id": &"the_one_who_stayed", "amount": 1}])

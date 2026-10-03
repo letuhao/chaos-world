@@ -18,7 +18,6 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"mortal"
-value = 10
 tags = Array[StringName]([&"common"])
 sources = Array[StringName]([&"craft:scroll_hemp_recipe"])
 description = "A coarse scroll woven from hemp fibers. Contains basic cultivation insights."

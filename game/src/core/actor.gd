@@ -8,6 +8,10 @@ signal stats_changed
 signal path_advanced(path_id: StringName, rank_id: StringName)
 signal status_added(status_id: StringName)
 signal status_removed(status_id: StringName)
+## One resolution of a held status: refreshed, stacked or replaced (ADR 0086).
+signal status_merged(status_id: StringName, outcome: StringName, stacks: int)
+## A `tick_interval` came due. The status is data; the listener pays it.
+signal status_ticked(status_id: StringName, magnitude: float)
 
 ## Schema ladder for the actor payload:
 ##   1 — identity, stats, resources, paths, meridians.
@@ -40,9 +44,21 @@ var components: Dictionary
 var module_data: Dictionary
 var stats: ActorStats
 var resources: Dictionary
-var statuses: Array[StatusEffect]
 var paths: Dictionary
-var meridians: MeridianNetwork
+## The meridian network: core state, created here and replaced on load (ADR 0057).
+##
+## Assigning re-points the stat context and connects the invalidator, so the context
+## can never be left holding a network this field has moved off — `from_dict`
+## restores through this path rather than a second place that repeats it.
+var meridians: MeridianNetwork:
+	set(value):
+		meridians = value
+		if _context != null:
+			_context.meridians = value
+		if value != null and _invalidator != null:
+			if not value.changed.is_connected(_invalidator.on_changed):
+				value.changed.connect(_invalidator.on_changed)
+var statuses: Array[StatusEffect]
 var tribulation: Tribulation = null
 var inside_world: InsideWorld = null
 var world: WorldState = null
@@ -53,6 +69,10 @@ var ascension: AscensionState:
 			components[&"ascension"] = ascension
 		if stats != null:
 			mark_stats_dirty()
+## The merge rules for `statuses` (ADR 0086). The array stays the actor's own,
+## so the modules that read and erase it directly are untouched; the rules that
+## resolve a re-application live in one place instead of on this file.
+var _statuses: StatusRegistry
 var _context: StatContext
 var _invalidator: StatsInvalidator
 var _syncing_resources: bool = false
@@ -71,15 +91,22 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 	module_data = {}
 	resources = {}
 	statuses = []
+	_statuses = StatusRegistry.new(statuses)
 	paths = {}
-	meridians = MeridianNetwork.new()
+	# The invalidator exists before the network so the `meridians` setter can wire
+	# the two on the assignment below, exactly as traits and affinities are wired
+	# right after: one place creates the network, one place invalidates on it
+	# changing (ADR 0057).
 	_invalidator = StatsInvalidator.new(self)
+	meridians = MeridianNetwork.new()
 	traits = NameList.new()
 	traits.changed.connect(_invalidator.on_changed)
 	affinities = AffinityMap.new()
 	affinities.changed.connect(_invalidator.on_changed)
 	stats = ActorStats.new(base)
-	_context = StatContext.new(stats.base_ref(), resources, traits, affinities, paths, components)
+	_context = StatContext.new(
+		stats.base_ref(), resources, traits, affinities, paths, components, meridians
+	)
 	stats.set_context(_context)
 
 
@@ -125,28 +152,34 @@ func resource(pool_id: StringName) -> ResourcePool:
 	return resources.get(pool_id)
 
 
-func add_status(status: StatusEffect) -> void:
-	statuses.append(status)
+## Apply a status, merging it onto the instance already carrying that id.
+## Returns `{ok, status_id, outcome, stacks, reason}` — applied / refreshed /
+## stacked / replaced, or refused for a null or id-less status (ADR 0086).
+func add_status(status: StatusEffect) -> Dictionary:
+	var answer := _statuses.apply(self, status)
+	# Relayed, not returned, from the registry: an Actor's listeners existed before
+	# ADR 0086, so `status_added` must still fire the way it always did.
+	if status == null:
+		return answer
 	status_added.emit(status.id)
-	mark_stats_dirty()
+	var outcome := StringName(answer.get(&"outcome", &""))
+	if outcome != StatusRegistry.APPLIED:
+		status_merged.emit(status.id, outcome, int(answer.get(&"stacks", 0)))
+	return answer
 
 
 func has_status(status_id: StringName) -> bool:
-	for status in statuses:
-		if status.id == status_id:
-			return true
-	return false
+	return _statuses.find(status_id) != null
 
 
 func tick_statuses(delta: float) -> void:
-	var kept: Array[StatusEffect] = []
-	for status in statuses:
-		status.tick(delta)
-		if status.is_expired():
-			status_removed.emit(status.id)
-		else:
-			kept.append(status)
-	statuses = kept
+	var ticked := _statuses.tick(self, delta)
+	# The registry removes what expired; the actor's listeners heard `status_removed`
+	# long before ADR 0086 and must keep hearing it.
+	for status_id in ticked.removed:
+		status_removed.emit(status_id)
+	for entry in ticked.ticks:
+		status_ticked.emit(entry.id, entry.magnitude)
 
 
 func set_relationship(partner_id: StringName, affinity: float) -> void:
@@ -194,7 +227,16 @@ func set_module_data(id: StringName, data: Dictionary) -> void:
 
 
 func get_module_data(id: StringName) -> Dictionary:
-	return module_data.get(id, {})
+	# A save is untrusted input: the module_data dictionary holds whatever the JSON
+	# decoder produced, and nothing stops a hand-edited or foreign save from parking
+	# a bare String, int or Array under a module's key. Returning that untyped would
+	# make the declared `Dictionary` return a lie the caller cannot see — the mismatch
+	# is only diagnosed at the assignment, far from the save that caused it. So the
+	# contract is honoured here: anything that is not a dictionary reads as absent,
+	# which is what a missing key reads as anyway, and each module's `normalize`
+	# is the single place that decides what an unusable payload means.
+	var value = module_data.get(id, {})
+	return value if value is Dictionary else {}
 
 
 func set_path(state: PathState) -> void:
@@ -260,6 +302,11 @@ func to_dict() -> Dictionary:
 	var item_state_dict: Dictionary = {}
 	if not _item_state_serializer.is_null():
 		item_state_dict = _item_state_serializer.call(self)
+	# NO `statuses` key, deliberately (ADR 0089). Every status is session-only and
+	# `SCHEMA_VERSION` stays 4: persisting one is a schema decision with its own ADR
+	# (ADR 0089 §Consequences, "when a cultivation outcome can read a status across a
+	# save"), and a live-resolution record in the payload would also put potency,
+	# escalation state and authored def ids into every save.
 	return {
 		"version": SCHEMA_VERSION,
 		"id": String(id),
@@ -311,9 +358,10 @@ static func from_dict(data: Dictionary) -> Actor:
 		if not state.changed.is_connected(actor._invalidator.on_changed):
 			state.changed.connect(actor._invalidator.on_changed)
 		actor.paths[StringName(key)] = state
+	# The restored network REPLACES the one `_init` built. The `meridians` setter
+	# re-points the stat context and connects the invalidator, so nothing here can
+	# leave a provider reading the discarded object (ADR 0057).
 	actor.meridians = MeridianNetwork.from_dict(data.get("meridians", {}))
-	if not actor.meridians.changed.is_connected(actor._invalidator.on_changed):
-		actor.meridians.changed.connect(actor._invalidator.on_changed)
 	var dantian_data: Dictionary = data.get("dantian", {})
 	if not dantian_data.is_empty():
 		var dantian := Dantian.from_dict(dantian_data)
@@ -332,6 +380,10 @@ static func from_dict(data: Dictionary) -> Actor:
 	# Restore generic module data (raw dictionaries owned by modules).
 	for key in data.get("module_data", {}).keys():
 		actor.set_module_data(StringName(key), data["module_data"][key])
+	# NO status restore, deliberately (ADR 0089): a save carries no `statuses` key and
+	# restoring one would need the schema bump that ADR defers. An older save that does
+	# carry the key is ignored rather than refused — a load never fails on a field this
+	# schema does not read.
 	var tribulation_data: Dictionary = data.get("tribulation", {})
 	if not tribulation_data.is_empty():
 		actor.tribulation = Tribulation.from_dict(tribulation_data)

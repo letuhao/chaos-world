@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d6_cinder_tiger"
 display_name = "Cinder Tiger Lesser"
 domain_id = &"tome_cinder_tiger_domain"
-loot = Array[StringName]([&"tome_cinder_tiger_claw", &"tome_cinder_tiger_palm", &"L6_cinder_ember_jade_slip", &"L6_cinder_palm_manual", &"V3_spirit_abjuration_morion"])
+loot = Array[StringName]([])

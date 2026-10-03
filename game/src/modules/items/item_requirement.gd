@@ -20,14 +20,16 @@ extends Resource
 ##    it is not a barrier to equipping. Combat spending therefore cannot cause an
 ##    equip cascade, while a strong item still carries a running price.
 ##
-## The four profiles are independent and may combine:
+## The five profiles are independent and may combine:
 ##   realm   — a minimum realm ordinal, so a R30 relic needs a R30 actor
+##   path    — a minimum ordinal on NAMED paths, so a qi technique needs qi
 ##   fixed   — minimum base value for named attributes
 ##   ratio   — minimum SHARE of the actor's base allocation, so the item favours a build
 ##   upkeep  — a resource drained per interval while equipped
 
 ## Profile kinds. An item declares at most one of each.
 const REALM := &"realm"
+const PATH_REALM := &"path_realm"
 const FIXED := &"fixed"
 const RATIO := &"ratio"
 const UPKEEP := &"upkeep"
@@ -37,8 +39,20 @@ const UPKEEP := &"upkeep"
 ## natural unit of "this item demands a practitioner" - the actor is at a realm, not
 ## at a number - so the floor is compared straight across without any conversion.
 ## Breakthroughs inside a realm do not move it: a floor names a realm, and the
-## ordinal is what an item can honestly be said to require.
+## ordinal is what an item can honestly be required to reach.
 @export var min_realm_index: int = 0
+
+## Minimum realm ORDINAL per NAMED cultivation path, `path_id -> ordinal` (ADR 0059).
+## Every path named here must individually reach its own floor, so a dual technique
+## commits both of its paths rather than the best one.
+##
+## `min_realm_index` above is deliberately the BEST-path gate, kept as it was, because
+## an item should never demand one specific system. A technique is the case where the
+## opposite is true: a qi manual gated on "best path" would be learnable by an actor at
+## R30 body and R3 qi, which is exactly the mistake the path-typed slots exist to make
+## expensive. Empty means no path-scoped restriction, and it composes with
+## `min_realm_index` rather than replacing it.
+@export var min_path_realm: Dictionary = {}
 
 ## Minimum BASE attribute value, keyed by Stat id.
 @export var fixed_minimums: Dictionary = {}
@@ -61,6 +75,7 @@ const UPKEEP := &"upkeep"
 func is_empty() -> bool:
 	return (
 		min_realm_index <= 0
+		and min_path_realm.is_empty()
 		and fixed_minimums.is_empty()
 		and ratio_minimums.is_empty()
 		and upkeep.is_empty()
@@ -87,6 +102,25 @@ func unmet(actor: Actor) -> Array[Dictionary]:
 					}
 				)
 			)
+	for path_id in min_path_realm:
+		var required := int(min_path_realm[path_id])
+		if required <= 0:
+			continue
+		var actual := _path_realm_index(actor, StringName(path_id))
+		if actual >= required:
+			continue
+		(
+			problems
+			. append(
+				{
+					"kind": PATH_REALM,
+					"id": StringName(path_id),
+					"required": required,
+					"actual": actual,
+					"label": "Requires %s realm %d (you are at %d)" % [path_id, required, actual],
+				}
+			)
+		)
 	for stat_id in fixed_minimums:
 		var required := float(fixed_minimums[stat_id])
 		var actual := actor.stats.get_base(stat_id)
@@ -149,3 +183,17 @@ func _actor_realm_index(actor: Actor) -> int:
 			continue
 		best = maxi(best, RealmDefaults.ladder().index_of(state.rank_id))
 	return best
+
+
+## The actor's ordinal on ONE named path, or 0 when they have not started it (ADR
+## 0059). An unstarted path can therefore never satisfy a floor, which is what makes
+## "both of a dual technique's paths" a real requirement rather than a formality.
+##
+## Reads `PathState` and `RealmDefaults`, both of which live in `contracts/` and
+## `core/`, so this crosses no module boundary: the three cultivation facades are
+## each at the 12-method cap and none of them grows.
+func _path_realm_index(actor: Actor, path_id: StringName) -> int:
+	var state: PathState = actor.path(path_id)
+	if state == null or state.rank_id == &"":
+		return 0
+	return maxi(0, RealmDefaults.ladder().index_of(state.rank_id))

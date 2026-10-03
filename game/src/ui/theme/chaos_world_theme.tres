@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=34 format=3]
+[gd_resource type="Theme" load_steps=52 format=3]
 
 ; The single UI theme for the Chaos World UI program. Every control this program
 ; creates inherits it; no node carries a style or colour override. Rarity and
@@ -437,6 +437,157 @@ content_margin_top = 6.0
 content_margin_right = 10.0
 content_margin_bottom = 6.0
 
+; --- Institution stack: sect claims and nation offices (ADR 0083) ------------
+;
+; A FILLED seat and a VACANT one get visibly different cards, tints and label
+; tones, because the succession design depends on a player being able to tell them
+; apart at a glance. A vacancy is never rendered as a filled seat in quieter ink;
+; that would have collapsed ADR 0083's three states into two.
+
+[sub_resource type="StyleBoxFlat" id="filled_seat_card"]
+bg_color = Color(0.114, 0.114, 0.137, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.478, 0.408, 0.239, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="vacant_seat_card"]
+bg_color = Color(0.16, 0.13, 0.06, 0.5)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.898, 0.749, 0.318, 0.55)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="claim_card"]
+bg_color = Color(0.09, 0.1, 0.13, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.4, 0.55, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="refused_card"]
+bg_color = Color(0.16, 0.08, 0.08, 0.5)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.937, 0.482, 0.427, 0.5)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="contested_claim_card"]
+bg_color = Color(0.14, 0.1, 0.08, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.937, 0.482, 0.427, 0.55)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="stance_card"]
+bg_color = Color(0.08, 0.09, 0.11, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.28, 0.3, 0.36, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 10.0
+content_margin_top = 7.0
+content_margin_right = 10.0
+content_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxFlat" id="war_stance_card"]
+bg_color = Color(0.15, 0.07, 0.06, 0.6)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.937, 0.482, 0.427, 0.7)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 10.0
+content_margin_top = 7.0
+content_margin_right = 10.0
+content_margin_bottom = 7.0
+
+[sub_resource type="StyleBoxFlat" id="open_standoff_card"]
+bg_color = Color(0.14, 0.11, 0.06, 0.7)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.898, 0.749, 0.318, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="closed_standoff_card"]
+bg_color = Color(0.06, 0.06, 0.07, 0.7)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.24, 0.2, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+
 [resource]
 default_font_size = 15
 Label/colors/font_color = Color(0.851, 0.843, 0.812, 1)
@@ -523,3 +674,25 @@ MapNodeCurrent/styles/pressed = SubResource("map_node_current_pressed")
 MapNodeCurrent/styles/disabled = SubResource("button_disabled")
 MapNodeCurrent/styles/focus = SubResource("focus_ring")
 MapNodeCurrent/styles/panel = SubResource("map_node_current_normal")
+FilledSeatCard/styles/panel = SubResource("filled_seat_card")
+VacantSeatCard/styles/panel = SubResource("vacant_seat_card")
+SeatLabel/colors/font_color = Color(0.902, 0.882, 0.831, 1)
+SeatLabel/font_sizes/font_size = 16
+SeatHolderLabel/colors/font_color = Color(0.667, 0.639, 0.576, 1)
+SeatHolderLabel/font_sizes/font_size = 14
+VacantSeatLabel/colors/font_color = Color(0.898, 0.749, 0.318, 1)
+VacantSeatLabel/font_sizes/font_size = 16
+ClaimLabel/colors/font_color = Color(0.749, 0.831, 0.976, 1)
+ClaimLabel/font_sizes/font_size = 18
+ClaimCard/styles/panel = SubResource("claim_card")
+RefusedCard/styles/panel = SubResource("refused_card")
+ContestedClaimCard/styles/panel = SubResource("contested_claim_card")
+ContestedClaimLabel/colors/font_color = Color(0.937, 0.749, 0.482, 1)
+ContestedClaimLabel/font_sizes/font_size = 16
+StanceCard/styles/panel = SubResource("stance_card")
+WarStanceCard/styles/panel = SubResource("war_stance_card")
+WarStanceLabel/colors/font_color = Color(0.937, 0.482, 0.427, 1)
+OpenStandoffCard/styles/panel = SubResource("open_standoff_card")
+ClosedStandoffCard/styles/panel = SubResource("closed_standoff_card")
+PrizeLabel/colors/font_color = Color(0.898, 0.749, 0.318, 1)
+PrizeLabel/font_sizes/font_size = 14

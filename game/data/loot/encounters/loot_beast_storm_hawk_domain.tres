@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"body_integration"
+rarity = &"common"
+vitality = 88.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"beast_storm_hawk", "table_id": &"loot_beast_storm_hawk"},
+	{"boss_id": &"d1_storm_hawk_hatchling", "table_id": &"loot_d1_storm_hawk_hatchling"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"body_integration"
+rarity = &"rare"
+vitality = 140.8
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"beast_storm_hawk", "table_id": &"loot_beast_storm_hawk"},
+	{"boss_id": &"d1_storm_hawk_hatchling", "table_id": &"loot_d1_storm_hawk_hatchling"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_beast_storm_hawk_domain"
+display_name = "Storm Hawk Domain"
+domain_id = &"beast_storm_hawk_domain"
+boss_ids = Array[StringName]([&"beast_storm_hawk", &"d1_storm_hawk_hatchling"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

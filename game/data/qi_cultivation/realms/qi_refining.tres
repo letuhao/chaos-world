@@ -15,6 +15,7 @@ dantian_fill_required = 1.0
 dantian_tier = &"lower"
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen"])
 required_channel_state = &"open"
+required_channel_refinement = 0
 channel_refinement_cap = 1
 dantian_capacity = 100.0
 rewards = {

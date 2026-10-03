@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d2_aether_guardian"
 display_name = "Aether Guardian Lesser"
 domain_id = &"elemental_heaven_domain"
-loot = Array[StringName]([&"elemental_heaven_core", &"elemental_heaven_essence", &"L2_aether_guardian_halo", &"L2_aether_wisp_essence", &"V4_heaven_abscissa_mazer"])
+loot = Array[StringName]([])

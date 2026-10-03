@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"armor"
 grade = &"heaven"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:void_serpent_coil"])
 sources = Array[StringName]([&"boss:body_mystic_immortal_guardian"])
 description = "Serpent hides kept under tension; the coil tightens as the wearer moves."

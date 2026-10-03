@@ -18,7 +18,6 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"earth"
-value = 160
 tags = Array[StringName]([&"rare"])
 sources = Array[StringName]([&"craft:scroll_moon_recipe"])
 description = "A scroll glowing with lunar essence. Earth-grade with moon affinity."

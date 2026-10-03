@@ -17,6 +17,5 @@ subcategory = &"essence"
 stackable = true
 grade = &"spirit"
 sources = Array[StringName]([&"gather"])
-value = 30
 tags = Array[StringName]([&"socket_reagent", &"imputation_reagent"])
 description = "Consumed to give an empty socket slot its own modifiers at spirit scale."

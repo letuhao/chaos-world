@@ -17,6 +17,5 @@ subcategory = &"essence"
 stackable = true
 grade = &"mortal"
 sources = Array[StringName]([&"gather"])
-value = 30
 tags = Array[StringName]([&"socket_reagent", &"slot_creation", &"socket_kind:utility"])
 description = "Consumed to open a utility socket slot on an owned item."

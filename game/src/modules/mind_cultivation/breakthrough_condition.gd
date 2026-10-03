@@ -9,8 +9,8 @@ const _ITEMS := preload("res://src/modules/items/api.gd")
 ## targets, so checking R's targets here would be circular (ADR 0013/0016/0024).
 ## The target profile supplies the breakthrough pill and the progress bar; the
 ## source profile supplies the training prerequisites that are reachable from
-## R-1. High tiers additionally require their previously committed anchor and a
-## survived tribulation (ADR 0024).
+## R-1. High tiers additionally require every shared tier gate and the anchor the
+## previous realm committed (ADR 0024).
 func can_breakthrough(actor: Actor, state: PathState, _context: Dictionary) -> bool:
 	if state.path_id != MindPath.PATH_ID:
 		return false
@@ -50,11 +50,25 @@ func _channels_ready(actor: Actor, source_seed: MindRealmSeed) -> bool:
 	return true
 
 
-## High tiers require a survived tribulation and the anchor the previous realm
-## committed. The anchor this realm creates is never a prerequisite here.
+## High tiers require every SHARED tier gate AND the anchor the previous realm
+## committed. The two are different clauses and both are owed.
+##
+## ADR 0024 delegated the ANCHOR clause to `MindAnchor` — the anchor a breakthrough
+## commits is that attempt's own outcome, so it cannot also be its precondition — and
+## it delegated nothing else: "Tier gates stay in core. Qi and Body call
+## `Breakthrough.tier_gates_met`." Reading only `MindAnchor` here deleted
+## `inside_world_ok`, `world_ok` and `ascension_ok` from this path, so a mind actor
+## entered R29 and R30 having satisfied none of them and never walked the
+## Transcendent ascent that body and qi walk. The delegation is kept; the deletion is
+## not.
+##
+## Reading the gates HERE and at the advance is deliberate rather than redundant:
+## `start` spends the realm pill on the strength of this condition, so a gate that
+## only `try_advance_gated` checked would let the pill be spent on a breakthrough
+## that then refuses.
 func _anchor_ready(actor: Actor, target: RealmDef) -> bool:
 	if target.index < Breakthrough.IMMORTAL_REALM_THRESHOLD:
 		return true
-	if not Breakthrough.tribulation_ok(actor, target.index):
+	if not Breakthrough.tier_gates_met(actor, target.index):
 		return false
 	return MindAnchor.stage_met(actor, MindAnchor.required_stage(target.index))

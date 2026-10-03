@@ -100,18 +100,36 @@ func test_acupoint_provider_blocked_count() -> void:
 	assert_almost_eq(actor.stats.derived(BodyStats.ACUPOINT_BLOCKED_COUNT), 3.0, "blocked count")
 
 
-func test_acupoint_set_pool_operations() -> void:
+## The set mediates the shared body reservoir rather than handing the pool out,
+## so wiring is proved through the verbs: `fill`/`drain` return false until
+## `synchronize` has pointed the set at the actor's body_integrity resource.
+func test_acupoint_set_fill_and_drain_the_shared_pool() -> void:
 	var actor := Actor.new(&"test", {})
 	actor.set_path(PathState.new(BodyPath.PATH_ID, &"qi_refining"))
 	BodyCultivationApi.attach(actor)
+	# `attach_acupoints` builds the set but points it at no pool; only
+	# `synchronize` resolves the actor's body_integrity resource into it. That gap
+	# is what these verbs must refuse to touch.
 	BodyCultivationApi.attach_acupoints(actor)
-	BodyTraining.synchronize(actor)
 	var points: AcupointSet = actor.component(&"acupoints")
-	assert_eq(points.pool() != null, true, "pool is set")
-	assert_eq(points.is_full(), true, "pool starts full")
-	# Drain first, then fill — the pool starts at maximum.
-	points.drain(50.0)
-	assert_almost_eq(points.current(), 50.0, "drain removes from pool")
-	points.fill(30.0)
-	assert_almost_eq(points.current(), 80.0, "fill adds to pool")
-	assert_eq(points.is_full(), false, "no longer full after drain")
+	assert_eq(points.drain(1.0), false, "no pool wired, so no drain")
+	assert_eq(points.fill(1.0), false, "no pool wired, so no fill")
+
+	BodyTraining.synchronize(actor)
+	var integrity: ResourcePool = actor.resource(BodyStats.BODY_INTEGRITY)
+	var full := integrity.current
+	assert_almost_eq(integrity.ratio(), 1.0, "the pool starts full")
+
+	assert_eq(points.drain(50.0), true, "drain accepted")
+	# Relative to `full`, not to an authored maximum: the realm seed owns that
+	# number and this test must not fail when it is retuned.
+	assert_almost_eq(integrity.current, full - 50.0, "drain removed from the pool")
+	assert_eq(integrity.ratio() < 1.0, true, "no longer full after the drain")
+
+	assert_eq(points.fill(30.0), true, "fill accepted")
+	assert_almost_eq(integrity.current, full - 20.0, "fill added to the pool")
+
+	# A rejected amount must leave the balance alone rather than half-apply.
+	assert_eq(points.fill(0.0), false, "zero fill rejected")
+	assert_eq(points.drain(-5.0), false, "negative drain rejected")
+	assert_almost_eq(integrity.current, full - 20.0, "balance untouched by rejected verbs")

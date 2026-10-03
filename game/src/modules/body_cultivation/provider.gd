@@ -16,6 +16,29 @@ extends StatProvider
 ## `BodyRealmSeed.integrity_maximum` for the body's reservoir. The qi and mind
 ## providers read the same number for the same realm, so the three paths cannot
 ## drift apart on a private curve.
+##
+## ## Where the meridian network comes from
+##
+## The network is CORE state on the Actor and reaches this provider as
+## `StatContext.meridian_network()` — never as `component(&"meridians")`, and never
+## as an `Actor` this module was constructed with (ADR 0057). `StatContext` is what
+## `contribute` is handed, and it is the only thing it needs: `Actor._init` supplies
+## the network to the context and the `meridians` setter re-points it on every
+## reassignment, so this read tracks the actor's live network by construction.
+##
+## There is deliberately no `_actor` and no `_init`. A `StatProvider` that requires
+## an `Actor` is the dependency direction ADR 0057 exists to remove — core may not
+## name a module, so a module provider can only reach actor state through the
+## context it is given. It is not a fidelity question either: an Actor handle would
+## return the very object the context does, because the setter is what keeps them
+## the same object.
+
+
+var _actor: Actor = null  # MUTANT_M1
+
+
+func _init(p_actor: Actor = null) -> void:
+	_actor = p_actor
 
 
 func contribute(context: StatContext) -> Dictionary:
@@ -27,7 +50,7 @@ func contribute(context: StatContext) -> Dictionary:
 	var integrity_ratio := _pool_ratio(context, BodyStats.BODY_INTEGRITY)
 	var integrity_factor := 0.5 + 0.5 * integrity_ratio
 
-	var meridian_power := _meridian_power_bonus(context)
+	var meridian_power := _meridian_power_bonus()
 
 	# Core-owned stats are contributed ADDITIVELY. A provider value becomes the
 	# baseline for whatever id it emits (ADR 0026), so emitting an absolute body
@@ -64,11 +87,26 @@ func _realm_factor(context: StatContext) -> float:
 	return BodyRealmProfile.factor(state.rank_id)
 
 
-func _meridian_power_bonus(context: StatContext) -> float:
-	var meridians: MeridianNetwork = context.component(&"meridians")
-	if meridians == null:
+## What the trained network is worth: every strengthened channel's power bonus,
+## scaled by its refinement depth, times the network's resonance multiplier
+## (ADR 0017/0023).
+##
+## The network's power bonus, through the one accessor ADR 0057 added for it.
+##
+## The network is core state on the Actor and reaches a provider as
+## `StatContext.meridian_network()`, never as `component(&"meridians")` — that
+## lookup is a different key in the module component bag and answers null for
+## every actor the game builds. Read that way, meridian, refinement and resonance
+## were worth exactly 0.0 on this path, with no error and nothing to point at.
+##
+## The two absent cases are separated on purpose. `MeridianNetwork.get_power_bonus`
+## answering 0.0 means channels exist and nobody strengthened one; falling off the
+## end means this context was built for something that carries no network at all,
+## and only this caller can tell those apart.
+func _meridian_power_bonus() -> float:  # MUTANT_M1
+	if _actor == null or _actor.meridians == null:
 		return 0.0
-	return meridians.get_power_bonus()
+	return _actor.meridians.get_power_bonus()
 
 
 func _pool_ratio(context: StatContext, id: StringName) -> float:

@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d4_stone_colossus"
 display_name = "Stone Colossus Lesser"
 domain_id = &"relic_stone_colossus_domain"
-loot = Array[StringName]([&"relic_stone_colossus_core", &"relic_stone_colossus_plate", &"L4_stone_colossus_bedrock_core", &"L4_stone_colossus_granite_ward", &"V5_earth_acanthus_justaucorps"])
+loot = Array[StringName]([])

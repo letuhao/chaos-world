@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"artifact"
 grade = &"divine"
 stackable = false
-value = 26000
 tags = Array[StringName]([&"unique", &"unique_route:body_dao_ancestor_guardian"])
 sources = Array[StringName]([&"boss:body_dao_ancestor_guardian"])
 description = "A ward-lantern carried from the last defended gate. Locks a fixed transcendent signature; the light does not leave the wearer."

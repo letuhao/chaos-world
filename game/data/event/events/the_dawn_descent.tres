@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="EventDef" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/modules/event/event_def.gd" id="1_event"]
+[ext_resource type="Script" path="res://src/modules/event/event_stage_def.gd" id="2_stage"]
+
+[sub_resource type="Resource" id="Stage_at_the_gate"]
+script = ExtResource("2_stage")
+stage_id = &"at_the_gate"
+display_name = "Something Is At The Gate"
+requires = {}
+duration_periods = 1
+on_enter = [{"fact": &"demonic_invasion_sighted", "amount": 1}]
+
+[sub_resource type="Resource" id="Stage_in_the_court"]
+script = ExtResource("2_stage")
+stage_id = &"in_the_court"
+display_name = "In The Court"
+requires = {"verb": &"fact", "id": &"demonic_invasion_sighted", "need": 1}
+duration_periods = 2
+on_enter = [{"fact": &"demonic_invasion_entered", "amount": 1}, {"fact": &"demonic_invasion_fought", "amount": 1}]
+
+[sub_resource type="Resource" id="Stage_driven_out"]
+script = ExtResource("2_stage")
+stage_id = &"driven_out"
+display_name = "Driven Out"
+requires = {"verb": &"fact", "id": &"demonic_invasion_fought", "need": 2}
+duration_periods = 0
+on_enter = [{"fact": &"demonic_invasion_repelled", "amount": 1}]
+
+[resource]
+script = ExtResource("1_event")
+id = &"the_dawn_descent"
+display_name = "The Dawn Descent"
+description = "They came up out of the void crystal seams at the hour the Court has nobody left to count. Gated on what the world already remembers rather than on a summons, because the dead do not file invitations. The fighting is combat's; this is the shape of the week it took."
+kind = &"demonic_invasion"
+trigger = {"verb": &"all_of", "of": [{"verb": &"fact", "id": &"void_seam_sounded", "need": 1}, {"verb": &"has_fate", "id": &"heaven_eye_circled_once"}]}
+location_id = &"transcendent_realm"
+on_enter = [{"fact": &"demonic_invasion_begun", "amount": 1}]
+stages = Array[EventStageDef]([SubResource("Stage_at_the_gate"), SubResource("Stage_in_the_court"), SubResource("Stage_driven_out")])
+pay = Array[Dictionary]([{"kind": &"fate", "id": &"heaven_s_chosen_instrument", "amount": 1}])

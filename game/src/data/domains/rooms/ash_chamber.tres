@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RoomDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/room_def.gd" id="1_room"]
+
+[resource]
+script = ExtResource("1_room")
+room_id = &"ash_chamber"
+display_name = "Ash Chamber"
+kind = &"chamber"
+roster_band = &"skirmish"
+tags = Array[StringName]([&"inland", &"ruined"])
+size = Vector2i(9, 7)
+actor_spawn_refs = Array[Dictionary]([
+	{"ref_id": &"ash_hound", "inhabitant_id": &"cinder_hound", "role": &"mob", "count": 2}
+])

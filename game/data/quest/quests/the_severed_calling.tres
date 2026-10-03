@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="QuestDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/quest/quest_def.gd" id="1_quest"]
+[ext_resource type="Script" path="res://src/modules/quest/quest_step_def.gd" id="2_step"]
+
+[sub_resource type="Resource" id="QuestStep_severed_road"]
+script = ExtResource("2_step")
+step_id = &"severed_road"
+fact = &"the_road_severed"
+need = 1
+display_name = "Walk a road you have already cut"
+
+[sub_resource type="Resource" id="QuestStep_name_called"]
+script = ExtResource("2_step")
+step_id = &"name_called"
+fact = &"bound_name_called"
+need = 1
+display_name = "Be called by a name that binds"
+
+[resource]
+script = ExtResource("1_quest")
+id = &"the_severed_calling"
+display_name = "The Severed Calling"
+description = "The cutting and the calling are two separate ledgers in the world, and this quest opens only where BOTH have already been written. Neither alone is enough — the sect does not hand out a bound name to someone who has not first lost the road."
+kind = &"systemic"
+tier = 4
+requirement = {"verb": &"all_of", "of": [{"verb": &"has_destiny", "id": &"the_severed"}, {"verb": &"has_fate", "id": &"oath_breaker"}]}
+steps = Array[ExtResource("2_step")]([SubResource("QuestStep_severed_road"), SubResource("QuestStep_name_called")])
+grants = Array[Dictionary]([{"kind": &"fate", "id": &"bound_name_called_once", "amount": 1}])

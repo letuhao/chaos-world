@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
 
 [resource]
-script = Ext_resource("1_recipe")
+script = ExtResource("1_recipe")
 id = &"qi_spirit_severing_breakthrough_pill_recipe"
 display_name = "Qi Spirit Severing Breakthrough Pill Recipe"
 station = &"alchemy"

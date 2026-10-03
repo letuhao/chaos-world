@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="TechniqueDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[ext_resource type="Script" path="res://src/modules/items/item_requirement.gd" id="2_req"]
+
+[sub_resource type="Resource" id="Requirement"]
+script = ExtResource("2_req")
+min_realm_index = 9
+
+[resource]
+script = ExtResource("1_def")
+id = &"shared_footwork_basics"
+display_name = "Footwork Basics"
+description = "Where the feet go when nothing else is happening. Unelemental and cheap, but it takes a universal slot, which is a slot a path technique could have used."
+tags = Array[StringName]([&"technique", &"shared", &"universal_slot", &"no_element"])
+grade = &"mortal"
+rarity = &"common"
+element = &""
+schools = Array[StringName]([&"foundation"])
+active = true
+path = &"shared"
+qi_cost = 6.0
+stamina_cost = 6.0
+cooldown = 5.0
+mastery_rungs = 5
+magnitude = 0.55
+requirement = SubResource("Requirement")

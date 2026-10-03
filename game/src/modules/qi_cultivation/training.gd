@@ -13,7 +13,7 @@ static func synchronize(actor: Actor) -> void:
 		return
 	actor.meridians.unlock_for_realm(state.rank_id)
 	var seed := QiRealmSeed.for_realm(state.rank_id)
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	if seed == null or dantian == null:
 		return
 	# Capacity comes from the seed, scaled by the meridian network's capacity
@@ -29,7 +29,7 @@ static func synchronize(actor: Actor) -> void:
 
 
 static func cultivate(actor: Actor, amount: float) -> bool:
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	var state := actor.path(QiPath.PATH_ID)
 	if dantian == null or state == null or amount <= 0.0 or not is_finite(amount):
 		return false
@@ -80,7 +80,7 @@ static func _quality_ceiling(rank_id: StringName) -> float:
 ## something to repair.
 static func recover(actor: Actor, meridian_id: StringName) -> bool:
 	var state := actor.path(QiPath.PATH_ID)
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	if state == null or dantian == null:
 		return false
 	var seed := QiRealmSeed.for_realm(state.rank_id)
@@ -119,13 +119,26 @@ static func meditate(actor: Actor, amount: float) -> bool:
 	return true
 
 
+## One elixir: climb the channel one state, or one step of depth once it is
+## already strengthened, and spend the realm's `training_item`.
+##
+## A channel that is injured is repaired instead of trained, because `meets`
+## fails on the injury flag alone. A channel with nothing left to learn at this
+## realm's `channel_refinement_cap` is REFUSED before the item is spent: the cap
+## is the only thing bounding depth, so an elixir consumed past it is an elixir
+## burned for nothing, and a path whose training verb silently eats its own
+## currency is a path whose gate stops meaning what it says (ADR 0095).
 static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 	var state := actor.path(QiPath.PATH_ID)
 	var channel := actor.meridians.get_meridian(meridian_id)
 	if state == null or channel == null:
 		return false
 	var seed := QiRealmSeed.for_realm(state.rank_id)
-	if seed == null or _ITEMS.has_item(actor, seed.training_item) == false:
+	# Decide before spending: a channel with nothing left to learn at this realm's
+	# cap must refuse, or the elixir is burned for no progress at all.
+	if seed == null or not can_train_channel(actor, meridian_id):
+		return false
+	if not _ITEMS.has_item(actor, seed.training_item):
 		return false
 	if not _ITEMS.consume_item(actor, seed.training_item):
 		return false
@@ -144,3 +157,42 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 				actor.meridians.refine_meridian(meridian_id, seed.channel_refinement_cap)
 	synchronize(actor)
 	return true
+
+
+## Whether `meridian_id` has anything left to learn while standing in this realm:
+## an injured channel still has its repair, a climbable one its next state, and a
+## strengthened one its remaining depth under the realm's cap. The decision is
+## made BEFORE the item is spent, so a refusal costs the actor nothing.
+static func can_train_channel(actor: Actor, meridian_id: StringName) -> bool:
+	var state := actor.path(QiPath.PATH_ID)
+	var channel := actor.meridians.get_meridian(meridian_id)
+	if state == null or channel == null:
+		return false
+	var seed := QiRealmSeed.for_realm(state.rank_id)
+	if seed == null:
+		return false
+	if channel.is_injured():
+		return true
+	if channel.state != MeridianState.STRENGTHENED:
+		return true
+	return channel.refinement < seed.channel_refinement_cap
+
+
+## How many elixirs one channel still needs to reach `target`: the state climb
+## plus the outstanding depth. Read, not spent — a caller that wants the number for
+## a screen or a budget takes it from here rather than counting itself.
+##
+## Both halves are counted unconditionally, because both are still owed. Depth only
+## accrues on a channel already at `strengthened`, so gating the depth term on the
+## climb having happened made a fresh channel's budget the climb alone — and a
+## caller bounding a walk by this number then gave up the moment the channel
+## reached the state, one step before the depth the gate also demands.
+static func elixirs_to_gate(actor: Actor, meridian_id: StringName, target: QiRealmSeed) -> int:
+	var state := actor.path(QiPath.PATH_ID)
+	var channel := actor.meridians.get_meridian(meridian_id)
+	if state == null or channel == null or target == null:
+		return 0
+	var wanted := int(MeridianState.STATE_ORDER.get(target.required_channel_state, 0))
+	var climb := maxi(0, wanted - channel.state_rank())
+	var depth := maxi(0, target.required_channel_refinement - channel.refinement)
+	return climb + depth

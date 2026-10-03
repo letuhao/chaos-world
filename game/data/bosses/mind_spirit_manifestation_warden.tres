@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"mind_spirit_manifestation_warden"
 display_name = "Comprehension Warden"
 domain_id = &"mind_spirit_manifestation_trial"
-loot = Array[StringName]([&"mind_spirit_manifestation_warden_core", &"soul_clarity_essence", &"rune_mist_charm", &"U2_earth_sennit_corslet", &"U2_earth_sennit_nucleus"])
+loot = Array[StringName]([])

@@ -7,10 +7,72 @@ extends RefCounted
 ## the same two questions of every one of the 29 boundaries — is each demand
 ## reachable from a source-realm pre-state, and is each demand actually
 ## discriminating — so they share how to build a bare actor, how to prepare one
-## through production actions, and how to read the gate inputs `preview` reports.
+## through the production actions, and how to read the gate inputs `preview`
+## reports.
+##
+## It is also where every WAIT in the Mind tests lives. A `while` on game state
+## with no bound is what wrote a 1 GB/s Godot log onto the user's disk: the
+## condition it waits on was unreachable, so the loop spun forever. Each wait
+## below therefore names the condition it is waiting on, bounds it at a small
+## count, and returns whether the condition was met, so a gate that cannot be
+## satisfied fails an assertion instead of hanging.
+## `test_mind_deviation_recovery.gd` fails the build if an unbounded `while`
+## comes back into this directory.
 
 ## The ladder has 30 realms, so there are 29 boundaries between them.
 const BOUNDARY_COUNT := 29
+
+# --- Bounds, and the condition each one names --------------------------------
+
+## A reservoir holds at most R30's authored 825, so a full sea is reached in a
+## couple of sittings whatever work a sitting is sized to. The bound is a canary
+## for "the fill stopped converging", not a budget to spend.
+const FILL_BOUND := 4
+
+## Same for the progress budget and the comprehension floor: one sitting sized
+## to the whole gate clears both, so this is that sitting plus slack.
+const GATE_BOUND := 4
+
+## `meditate` steps by the facade's own 0.1 and a deviation clouds the sea by
+## 0.5, so a clouded sea needs five presses. The bound is that plus slack.
+const CALM_BOUND := 8
+
+## A channel climbs the four-state ladder one state per elixir, so a channel at
+## the bottom needs three. The bound is that plus the one that confirms it.
+const CLIMB_BOUND := 4
+
+## At most nine waves (Tribulation.WAVES_BY_TIER) plus the warning and aftermath
+## phases. The bound names a wave that would stop advancing.
+const TRIBULATION_BOUND := 16
+
+## Authored item defs resolved once. `Crafting.resolve` falls through to a
+## recursive scan of the whole item content tree whenever the id does not sit in
+## the category its prefix implies, so an uncached resolve per stocking call turns
+## a 30-realm audit into minutes of directory walking.
+static var _defs: Dictionary = {}
+
+
+## The work one `cultivate` call must do to earn a realm's whole entry gate: its
+## progress budget, or the insight that budget's comprehension floor needs.
+## Insight is `MindTraining.INSIGHT_RATE` per unit of work and nothing else on
+## this path raises comprehension, so from R2 on comprehension is the binding
+## side and the two never coincide by accident.
+static func gate_work(target_seed: MindRealmSeed) -> float:
+	# Both sides of the gate are denominated in REALM RATE, not in the work one
+	# `cultivate` call is handed: `gain = amount * MindRealmProfile.factor(rank)`.
+	# A sitting sized to the raw budget therefore under- or over-ears by the rate,
+	# which is how this fixture ended up reporting a progress shortfall on a gate
+	# that is in fact reachable — the standing guard treats that as unreachable.
+	# `NEUTRAL` is the documented 1.0 for a realm off the ladder, so this never
+	# divides by zero and never invents a rate the module does not publish.
+	var rate := MindRealmProfile.factor(target_seed.id)
+	return maxf(
+		target_seed.progress_required / rate,
+		target_seed.comprehension_required / (MindTraining.INSIGHT_RATE * rate)
+	)
+
+
+# --- Actors -----------------------------------------------------------------
 
 
 ## An actor at `rank_id` with the module and the sea attached and nothing earned.
@@ -28,6 +90,161 @@ static func fresh_actor(rank_id: StringName) -> Actor:
 	return actor
 
 
+## The strongest pre-state a player standing in `rank_id` can hold, reached only
+## through the production actions: the source realm's sea and channel milestones
+## completed, then the target's progress budget and comprehension floor earned by
+## cultivation, then the sea topped up.
+##
+## Nothing here reaches past the facade to drain the sea or hand-write progress.
+## It used to, and that is exactly how a stalled path stayed green: the fixtures
+## were doing the player's job, so a gate no player could satisfy still measured
+## as satisfied.
+##
+## The waits report whether they converged, but this returns the actor either
+## way: the audit suites assert the resulting gate values themselves, so a
+## prepare that could not finish surfaces there as "the progress budget for X is
+## earned while in Y" rather than as a null dereference.
+static func prepared(rank_id: StringName) -> Actor:
+	var actor := fresh_actor(rank_id)
+	var target := RealmDefaults.ladder().next(rank_id)
+	var source_seed := MindRealmSeed.for_realm(rank_id)
+	stock(actor, source_seed.sea_catalyst)
+	MindCultivationApi.strengthen_sea(actor)
+	train_channels(actor, source_seed)
+	sharpen_sea(actor)
+	earn_gate(actor, MindRealmSeed.for_realm(target.id))
+	fill_sea(actor)
+	return actor
+
+
+# --- Bounded waits ----------------------------------------------------------
+
+
+## Cultivate until the reservoir is full. `is_full` is the condition, and the
+## bound is a canary for it.
+static func fill_sea(actor: Actor) -> bool:
+	var sea := MindCultivationApi.sea(actor)
+	if sea == null:
+		return false
+	var waited := 0
+	while not sea.is_full(actor) and waited < FILL_BOUND:
+		waited += 1
+		if not MindTraining.cultivate(actor, work_for(actor)):
+			return false
+	return sea.is_full(actor)
+
+
+## Cultivate until the target realm's progress budget AND comprehension floor are
+## both met — the two gates only cultivation moves. Sized so one sitting covers
+## both, because a test is not a UI pressing a fixed step thousands of times.
+static func earn_gate(actor: Actor, target_seed: MindRealmSeed) -> bool:
+	var state := actor.path(MindPath.PATH_ID)
+	if state == null or target_seed == null:
+		return false
+	var work := gate_work(target_seed)
+	var waited := 0
+	while (
+		waited < GATE_BOUND
+		and (
+			state.progress < target_seed.progress_required
+			or actor.stats.get_base(Stat.COMPREHENSION) < target_seed.comprehension_required
+		)
+	):
+		waited += 1
+		if not MindTraining.cultivate(actor, work):
+			return false
+	return (
+		state.progress >= target_seed.progress_required
+		and actor.stats.get_base(Stat.COMPREHENSION) >= target_seed.comprehension_required
+	)
+
+
+## Meditate until the sea is calm again. `turbulence` is the condition.
+static func calm_sea(actor: Actor) -> bool:
+	var sea := MindCultivationApi.sea(actor)
+	if sea == null:
+		return false
+	var waited := 0
+	while sea.turbulence > 0.0 and waited < CALM_BOUND:
+		waited += 1
+		if not MindCultivationApi.meditate(actor):
+			return false
+	return sea.turbulence <= 0.0
+
+
+## Train every channel the source realm demands to its demanded state, repairing
+## a burned one first: `meets` fails on the injury flag alone, and
+## `train_channel` repairs an injured channel instead of climbing it, so the
+## repair is a step of its own. `required_channel_state` is the condition.
+static func train_channels(actor: Actor, source_seed: MindRealmSeed) -> bool:
+	var state := actor.path(MindPath.PATH_ID)
+	if state == null or source_seed == null:
+		return false
+	actor.meridians.unlock_for_realm(state.rank_id)
+	var target: int = MeridianState.STATE_ORDER.get(source_seed.required_channel_state, 0)
+	for meridian_id in source_seed.required_meridians:
+		var channel := actor.meridians.get_meridian(meridian_id)
+		if channel == null:
+			return false
+		if channel.is_injured():
+			stock(actor, source_seed.training_item)
+			if not MindCultivationApi.train_channel(actor, meridian_id):
+				return false
+			channel = actor.meridians.get_meridian(meridian_id)
+		for _climb in CLIMB_BOUND:
+			if channel.state_rank() >= target:
+				break
+			stock(actor, source_seed.training_item)
+			if not MindCultivationApi.train_channel(actor, meridian_id):
+				return false
+			channel = actor.meridians.get_meridian(meridian_id)
+		if not channel.meets(source_seed.required_channel_state):
+			return false
+	return true
+
+
+## Cultivate until clarity and purity have both reached the realm the actor is
+## standing in's own milestones — the two a deviation degrades and the sea's entry
+## gate reads. A deviation halves clarity; cultivation is the one action that
+## lifts it back, and that is what makes a deviation recoverable without a higher
+## realm.
+static func sharpen_sea(actor: Actor) -> bool:
+	var sea := MindCultivationApi.sea(actor)
+	var state := actor.path(MindPath.PATH_ID)
+	if sea == null or state == null:
+		return false
+	var source_seed := MindRealmSeed.for_realm(state.rank_id)
+	if source_seed == null:
+		return false
+	var work := work_for(actor)
+	var waited := 0
+	while (
+		waited < GATE_BOUND
+		and (sea.clarity < source_seed.clarity_required or sea.purity < source_seed.purity_required)
+	):
+		waited += 1
+		if not MindTraining.cultivate(actor, work):
+			return false
+	return sea.clarity >= source_seed.clarity_required and sea.purity >= source_seed.purity_required
+
+
+## The work for one sitting against the gate the actor currently stands before:
+## the next realm's whole budget, or this realm's own when there is no next.
+static func work_for(actor: Actor) -> float:
+	var state := actor.path(MindPath.PATH_ID)
+	if state == null:
+		return 0.0
+	var ladder := RealmDefaults.ladder()
+	var target := ladder.next(state.rank_id)
+	if target != null:
+		return gate_work(MindRealmSeed.for_realm(target.id))
+	var source_seed := MindRealmSeed.for_realm(state.rank_id)
+	return 0.0 if source_seed == null else source_seed.progress_required
+
+
+# --- Reading the gates ------------------------------------------------------
+
+
 ## The gate inputs `preview` reports for the realm after `rank_id`, read from the
 ## module rather than restated from the seeds.
 static func gates_at(rank_id: StringName) -> Dictionary:
@@ -35,62 +252,31 @@ static func gates_at(rank_id: StringName) -> Dictionary:
 	return gates if gates is Dictionary else {}
 
 
-## The strongest pre-state a player standing in `rank_id` can hold, reached only
-## through the production actions: the source realm's sea and channel milestones
-## completed, then the target's progress budget and comprehension floor earned by
-## cultivation, then the sea topped up.
-static func prepared(rank_id: StringName) -> Actor:
-	var actor := fresh_actor(rank_id)
-	var state := actor.path(MindPath.PATH_ID)
-	var target := RealmDefaults.ladder().next(rank_id)
-	var source_seed := MindRealmSeed.for_realm(rank_id)
-	var target_seed := MindRealmSeed.for_realm(target.id)
-	stock(actor, source_seed.sea_catalyst)
-	MindTraining.strengthen_sea(actor)
-	stock(actor, source_seed.training_item)
-	var wanted: int = MeridianState.STATE_ORDER.get(source_seed.required_channel_state, 0)
-	for meridian_id in source_seed.required_meridians:
-		var channel := actor.meridians.get_meridian(meridian_id)
-		if channel == null:
-			continue
-		while MeridianState.STATE_ORDER.get(channel.state, 0) < wanted:
-			stock(actor, source_seed.training_item)
-			if not MindTraining.train_channel(actor, meridian_id):
-				break
-			channel = actor.meridians.get_meridian(meridian_id)
-	var sea := MindCultivationApi.sea(actor)
-	var guard := 0
-	while (
-		guard < 8192
-		and (
-			state.progress < target_seed.progress_required
-			or actor.stats.get_base(Stat.COMPREHENSION) < target_seed.comprehension_required
-		)
-	):
-		guard += 1
-		if sea.is_full(actor):
-			sea.drain(actor, sea.current(actor))
-		if not MindTraining.cultivate(actor, 500.0):
-			break
-	while not sea.is_full(actor) and guard < 16384:
-		guard += 1
-		if not MindTraining.cultivate(actor, 500.0):
-			break
-	return actor
-
-
 ## Resolve a real authored item and put one in the actor's inventory. Resolving
 ## through the item tree is what proves the seed's content exists and loads.
+##
+## Cached, and the cache is load-bearing rather than tidy: `Crafting.resolve`
+## falls through to a recursive scan of the whole item content tree whenever the
+## id does not sit in the category its prefix implies, so an uncached resolve per
+## stocking call turns a 30-realm audit into minutes of directory walking.
 static func stock(actor: Actor, def_id: StringName) -> void:
 	if def_id.is_empty():
 		return
-	var def := Crafting.resolve(def_id)
+	var def := _def(def_id)
 	if def == null:
 		return
-	var guard := 0
-	while not ItemsApi.has_item(actor, def_id) and guard < 64:
+	for _unit in 64:
+		if ItemsApi.has_item(actor, def_id):
+			return
 		ItemsApi.inventory(actor).add(def, 1)
-		guard += 1
+
+
+static func _def(def_id: StringName) -> ItemDef:
+	if _defs.has(def_id):
+		return _defs[def_id]
+	var resolved := Crafting.resolve(def_id)
+	_defs[def_id] = resolved
+	return resolved
 
 
 ## One gate entry out of an actor's own `preview` report. Returned untyped because
@@ -117,6 +303,9 @@ static func number(entry: Dictionary, key: String) -> float:
 	return float(value) if value is float or value is int else 0.0
 
 
+# --- High tier --------------------------------------------------------------
+
+
 ## Fight the tribulation bound to `target` to a decided win, through the
 ## production entry points only (ADR 0041). Finishing the phases is not enough: a
 ## gate opens only for a decided win, so the fight must be resolved as well. A
@@ -127,9 +316,9 @@ static func fight(actor: Actor, target: RealmDef) -> void:
 		return
 	if Breakthrough.begin_tribulation(actor, target.index) == null:
 		return
-	var guard := 0
-	while Breakthrough.advance_tribulation(actor) and guard < 128:
-		guard += 1
+	for _wave in TRIBULATION_BOUND:
+		if not Breakthrough.advance_tribulation(actor):
+			break
 	Breakthrough.resolve_tribulation(actor, true)
 
 
@@ -155,7 +344,7 @@ static func strengthen_anchor(actor: Actor) -> void:
 	if seed == null:
 		return
 	stock(actor, seed.training_item)
-	MindTraining.strengthen_anchor(actor)
+	MindCultivationApi.strengthen_anchor(actor)
 
 
 static func realm_at(index: int) -> RealmDef:

@@ -1,5 +1,9 @@
 extends TestCase
 
+## Shared fixtures for the Mind path: bounded, production-action setup. Named to
+## sit outside the `test_*` discovery pattern, so the runner ignores it.
+const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
+
 ## ADR 0028's defect class, audited on the Mind path. `BodyAdvancement` refused
 ## to read `Stat.BREAKTHROUGH_CHANCE` because comprehension drives that stat and
 ## comprehension is the body path's entry GATE, so the gate's own floor made the
@@ -22,6 +26,14 @@ extends TestCase
 ## past it. The gate only demands `>=`, so both are pre-states a player may hold.
 const GATE_FLOOR := 1.0
 const ONE_STEP_PAST := 2.0
+
+## How many cultivate steps preparing one realm may take. Replaces the 4096/8192
+## caps this file used to carry: a cap that large does not prevent the runaway,
+## it only makes it write gigabytes before stopping. Sized above the deepest
+## authored work budget (heaven_immortal progress_required 7148) divided by what
+## one 500.0 cultivate is worth, with slack — a ceiling on failure, not a licence
+## to spin (AGENTS.md disk-safety).
+const CULTIVATE_STEP_CAP := 2048
 
 
 func _actor_at(rank_id: StringName) -> Actor:
@@ -131,19 +143,12 @@ func test_clarity_is_the_chances_one_input() -> void:
 
 
 func _stock(actor: Actor, def_id: StringName) -> void:
-	if def_id.is_empty():
-		return
-	var def := Crafting.resolve(def_id)
-	if def == null:
-		return
-	var guard := 0
-	while not ItemsApi.has_item(actor, def_id) and guard < 64:
-		ItemsApi.inventory(actor).add(def, 1)
-		guard += 1
+	Probe.stock(actor, def_id)
 
 
 ## A fully prepared actor standing in `rank_id`, reached only through the
-## production actions — the same legal pre-state the traversal prepares.
+## production actions — the same legal pre-state the traversal prepares, and for
+## the same reason it may not drain the sea or hand-write progress.
 func _prepared_actor(rank_id: StringName) -> Actor:
 	var actor := _actor_at(rank_id)
 	ItemsApi.attach(actor, 500)
@@ -153,37 +158,11 @@ func _prepared_actor(rank_id: StringName) -> Actor:
 	var target_seed := MindRealmSeed.for_realm(target.id)
 	_stock(actor, source_seed.sea_catalyst)
 	MindTraining.strengthen_sea(actor)
-	_stock(actor, source_seed.training_item)
-	var wanted: int = MeridianState.STATE_ORDER.get(source_seed.required_channel_state, 0)
-	for meridian_id in source_seed.required_meridians:
-		var channel := actor.meridians.get_meridian(meridian_id)
-		if channel == null:
-			continue
-		if channel.is_injured():
-			actor.meridians.repair_meridian(meridian_id)
-		while MeridianState.STATE_ORDER.get(channel.state, 0) < wanted:
-			_stock(actor, source_seed.training_item)
-			if not MindTraining.train_channel(actor, meridian_id):
-				break
-			channel = actor.meridians.get_meridian(meridian_id)
-	var sea := MindCultivationApi.sea(actor)
-	var guard := 0
-	while (
-		guard < 4096
-		and (
-			state.progress < target_seed.progress_required
-			or actor.stats.get_base(Stat.COMPREHENSION) < target_seed.comprehension_required
-		)
-	):
-		guard += 1
-		if sea.is_full(actor):
-			sea.drain(actor, sea.current(actor))
-		if not MindTraining.cultivate(actor, 500.0):
-			break
-	while not sea.is_full(actor) and guard < 8192:
-		guard += 1
-		if not MindTraining.cultivate(actor, 500.0):
-			break
+	assert_eq(Probe.train_channels(actor, source_seed), true, "channels trained in %s" % rank_id)
+	assert_eq(Probe.calm_sea(actor), true, "sea calm in %s" % rank_id)
+	assert_eq(Probe.sharpen_sea(actor), true, "sea sharpened in %s" % rank_id)
+	assert_eq(Probe.earn_gate(actor, target_seed), true, "progress earned for %s" % target.id)
+	assert_eq(Probe.fill_sea(actor), true, "sea filled for %s" % target.id)
 	_stock(actor, target_seed.breakthrough_item)
 	return actor
 

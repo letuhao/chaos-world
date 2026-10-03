@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"lightning_arc"
+element = &"lightning"
+on_landed_blow = true
+kind = &"dot"
+scope = &"combat"
+stacking = &"refresh"
+duration = 14.0
+magnitude_unit = &"element_power"
+magnitude_cap = 9.0
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
+payload = {
+"mechanic": &"escalating_burn",
+"text": "The storm keeps its hand on them. Every bolt after the first lands harder than the one before, and none of them is the last.",
+"pool": &"health",
+"share_per_pulse": 0.025,
+"escalation_per_tick": 0.1,
+"escalation_cap": 2.5,
+"modifiers": []
+}

@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"E3_void_refinement_arbiter"
 display_name = "Void Refinement Arbiter"
 domain_id = &"body_void_refinement_trial"
-loot = Array[StringName]([&"body_void_refinement_channel_elixir", &"distil_mortal_cordial", &"elemental_mortal_essence", &"U5_immortal_wharf_regalia", &"U5_immortal_wharf_armlet"])
+loot = Array[StringName]([])

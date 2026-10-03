@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EventDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/event/event_def.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+id = &"the_stone_that_answering"
+display_name = "The Stone That Answering"
+description = "A dao fragment that answers when it is read, once, and then stops. No ladder: it is found, it is read, it is over. A one-stage event authored with no stage list at all — the shape that proves `stages` is optional rather than mandatory ceremony."
+kind = &"rare_treasure"
+trigger = {"verb": &"none_of", "of": [{"verb": &"fact", "id": &"treasure_stone_read", "need": 1}]}
+location_id = &"transcendent_realm"
+on_enter = [{"fact": &"treasure_stone_found", "amount": 1}]
+stages = Array[EventStageDef]([])
+pay = Array[Dictionary]([{"kind": &"fate", "id": &"heaven_s_warning_unread", "amount": 1}, {"kind": &"nation_standing", "id": &"march_of_the_nine_provinces", "amount": 4}])

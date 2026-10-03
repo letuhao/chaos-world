@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"immortal"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:gilded_bone_pact"])
 sources = Array[StringName]([&"boss:E10_transcendent_oracle"])
 description = "A bone charm cut for counting rather than warding."

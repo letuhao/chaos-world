@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"tribulation"
+rarity = &"common"
+vitality = 104.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"beast_venom_serpent", "table_id": &"loot_beast_venom_serpent"},
+	{"boss_id": &"d1_venom_serpent_fledgling", "table_id": &"loot_d1_venom_serpent_fledgling"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"tribulation"
+rarity = &"rare"
+vitality = 166.4
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"beast_venom_serpent", "table_id": &"loot_beast_venom_serpent"},
+	{"boss_id": &"d1_venom_serpent_fledgling", "table_id": &"loot_d1_venom_serpent_fledgling"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_beast_venom_serpent_domain"
+display_name = "Venom Serpent Domain"
+domain_id = &"beast_venom_serpent_domain"
+boss_ids = Array[StringName]([&"beast_venom_serpent", &"d1_venom_serpent_fledgling"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

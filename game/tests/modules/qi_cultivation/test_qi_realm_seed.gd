@@ -56,21 +56,109 @@ func test_storage_tier_advances_with_realm() -> void:
 	assert_eq(QiRealmSeed.for_realm(&"earth_immortal").dantian_tier, &"upper", "Immortal is upper")
 
 
+## ADR 0036's reachability rule, on the data: a seed describes the realm being
+## ENTERED, so every channel it requires must already be unlocked by the realm the
+## actor is leaving. Unlocking at the target's own index is one tier too loose — it
+## would pass a seed demanding a channel that appears only in the realm being
+## entered, which is exactly how 28 of 29 qi transitions became unplayable.
 func test_seed_never_requires_an_unopened_channel() -> void:
-	# A seed describes the realm being entered, so its required channels must
-	# already be unlocked at the realm the actor is leaving.
-	for realm in RealmDefaults.ladder().realms():
-		var seed := QiRealmSeed.for_realm(realm.id)
+	var known: Dictionary = {}
+	for def in MeridianDefaults.all():
+		known[def.id] = def.tier
+	var realms := RealmDefaults.ladder().realms()
+	# R1 is the STARTING realm: nobody enters it, so its seed's gate is never applied
+	# and there is no realm below it to unlock from. Its channels are checked against
+	# its own index instead, so the content is still covered rather than skipped.
+	var start := QiRealmSeed.for_realm(realms[0].id)
+	if start != null:
+		for meridian_id in start.required_meridians:
+			assert_eq(
+				int(known.get(meridian_id, 99)) <= 0,
+				true,
+				"%s needs %s, which unlocks at index 0" % [realms[0].id, meridian_id]
+			)
+	for index in range(1, realms.size()):
+		var seed := QiRealmSeed.for_realm(realms[index].id)
 		if seed == null:
 			continue
-		var network := MeridianNetwork.new()
-		network.unlock_for_realm(realm.id)
+		var source := index - 1
 		for meridian_id in seed.required_meridians:
+			assert_eq(known.has(meridian_id), true, "%s is a known channel" % meridian_id)
+			if not known.has(meridian_id):
+				continue
 			assert_eq(
-				network.get_meridian(meridian_id) != null,
+				int(known[meridian_id]) <= source,
 				true,
-				"%s openable for %s" % [meridian_id, realm.id]
+				(
+					"%s needs %s, which unlocks at index %d, and %s is entered from index %d"
+					% [
+						realms[index].id,
+						meridian_id,
+						int(known[meridian_id]),
+						realms[index].id,
+						source,
+					]
+				)
 			)
+
+
+## Every realm authors a channel gate that can actually fail, and a depth that is
+## reachable from the realm below's cap (ADR 0095). All 30 seeds demanded `open`
+## before this, which made `expand`, `strengthen` and `refine` unreachable and
+## `channel_refinement_cap` a branch that could not run.
+func test_every_realm_authors_a_rising_channel_gate() -> void:
+	var realms := RealmDefaults.ladder().realms()
+	var previous_cap := 0
+	for index in range(realms.size()):
+		var seed := QiRealmSeed.for_realm(realms[index].id)
+		assert_ne(seed, null, "seed for %s" % realms[index].id)
+		if seed == null:
+			continue
+		assert_ne(
+			seed.required_channel_state, MeridianState.CLOSED, "demand for %s" % realms[index].id
+		)
+		assert_eq(
+			seed.channel_refinement_cap,
+			index + 1,
+			"the cap rises one per realm at %s" % realms[index].id
+		)
+		assert_eq(
+			seed.channel_refinement_cap > previous_cap,
+			true,
+			"and never falls at %s" % realms[index].id
+		)
+		previous_cap = seed.channel_refinement_cap
+		if index + 1 >= realms.size():
+			continue
+		var after := QiRealmSeed.for_realm(realms[index + 1].id)
+		if after != null:
+			assert_eq(
+				after.required_channel_refinement <= seed.channel_refinement_cap,
+				true,
+				(
+					"%s demands depth %d but %s only offers %d"
+					% [
+						realms[index + 1].id,
+						after.required_channel_refinement,
+						realms[index].id,
+						seed.channel_refinement_cap,
+					]
+				)
+			)
+
+
+## The depth gate is only satisfiable on a strengthened channel, so a seed that
+## asked for depth below `strengthened` would be unsatisfiable by construction.
+func test_depth_is_never_demanded_below_strengthened() -> void:
+	for realm in RealmDefaults.ladder().realms():
+		var seed := QiRealmSeed.for_realm(realm.id)
+		if seed == null or seed.required_channel_refinement <= 0:
+			continue
+		assert_eq(
+			seed.required_channel_state,
+			MeridianState.STRENGTHENED,
+			"%s demands depth %d" % [realm.id, seed.required_channel_refinement]
+		)
 
 
 # --- Channel state comparison ----------------------------------------------

@@ -1,0 +1,822 @@
+diff --git a/game/src/app/actor_factory.gd b/game/src/app/actor_factory.gd
+index 016ac2a8..0ec3411c 100644
+--- a/game/src/app/actor_factory.gd
++++ b/game/src/app/actor_factory.gd
+@@ -10,6 +10,19 @@ static func build(id: StringName, base: Dictionary = {}) -> Actor:
+ 	# Core health and stamina pools exist for every actor; capacities follow the
+ 	# derived stats, so an item that raises max_health never refills (ADR 0025).
+ 	actor.attach_core_resources()
++	# An actor is born into no sect, but the ledger is written here anyway so the
++	# claim is the same shape for a fresh actor and for a restored save: one attach
++	# in the composition root, and every later verb has a ledger to read. It
++	# projects nothing at all, because an institution grants recognition and access
++	# and never power (ADR 0084) — so wiring it cannot hand a new actor an edge.
++	SectApi.attach(actor)
++	# Clan is the lineage layer above bloodline (ADR 0064). Every actor belongs to no
++	# clan — that is the normal state — but the ledger is written here anyway so the
++	# claim is the same shape for a fresh actor and for a restored save: one attach in
++	# the composition root, and every later verb has a ledger to read. It projects no
++	# stat at all, because a clan grants recognition and never power — so wiring it
++	# cannot hand a new actor an edge.
++	ClanApi.attach(actor)
+ 	return actor
+ 
+ 
+@@ -18,8 +31,11 @@ static func with_dual_cultivation(actor: Actor) -> Actor:
+ 	return actor
+ 
+ 
+-static func with_fertility(actor: Actor, species: SpeciesDef = null) -> Actor:
+-	FertilityApi.attach(actor, species)
++## Attach the fertility module. Reproduction parameters live on the actor's RACE now
++## (ADR 0062/0108), so there is no second `species` argument to thread — a body plan is read
++## at birth from `RaceApi`, and an actor with none falls back to the published default.
++static func with_fertility(actor: Actor) -> Actor:
++	FertilityApi.attach(actor)
+ 	return actor
+ 
+ 
+@@ -31,3 +47,73 @@ static func with_body_cultivation(actor: Actor, rank_id: StringName = &"qi_refin
+ 	BodyCultivationApi.attach_acupoints(actor)
+ 	BodyTraining.synchronize(actor)
+ 	return actor
++
++
++## Enrol the actor on the qi path, in the same shape as the body enrolment above.
++##
++## Attaching is not enrolling: `QiCultivationApi.attach` installs the dantian and
++## the provider but registers no path, and `panel_state` returns `{}` when
++## `actor.path(QiPath.PATH_ID)` is null. Without this, `build_npc`'s enrolment
++## makes a rival cultivator a rival *cultivator* while the player is enrolled on
++## body alone, and the qi screen mounts bound to an actor it cannot read.
++static func with_qi_cultivation(actor: Actor, rank_id: StringName = &"qi_refining") -> Actor:
++	actor.set_path(PathState.new(QiPath.PATH_ID, rank_id))
++	QiCultivationApi.attach(actor)
++	QiTraining.synchronize(actor)
++	return actor
++
++
++## Enrol the actor on the mind path. Same reason as the qi enrolment above, and
++## `MindCultivationApi` was never attached to the player at all.
++static func with_mind_cultivation(actor: Actor, rank_id: StringName = &"qi_refining") -> Actor:
++	actor.set_path(PathState.new(MindPath.PATH_ID, rank_id))
++	MindCultivationApi.attach(actor)
++	MindTraining.synchronize(actor)
++	return actor
++
++
++## Mint an npc of any role — mob, miniboss, boss, npc or rival cultivator — as an
++## `Actor` (ADR 0074). The second constructor this factory publishes, and the reason
++## `build` above did not have to grow a second shape for "a thing in the world".
++##
++## **The role is a tag, never a class.** It is stamped onto `Actor.tags` and read by
++## content; nothing branches on it here or in damage resolution, because three
++## mechanisms that each branch on a role are three mechanisms that disagree.
++##
++## `npc_def` is the authored individual: it supplies the realm, the base build, the
++## faction and the display name. Passing null mints a plain actor at the supplied realm.
++## This method deliberately does not name `WorldInhabitantDef`, so the `app` layer stays
++## the only place that resolves a species into an individual.
++##
++## `NpcApi.set_minter(this callable)` wires this in; the npc module never names this
++## factory, which is the inversion the module boundary depends on (ADR 0002).
++static func spawn_npc(
++	npc_def: NpcDef = null,
++	role: StringName = &"npc",
++	rank_id: StringName = &"qi_refining",
++	base: Dictionary = {}
++) -> Actor:
++	var actor_base := base
++	if actor_base.is_empty() and npc_def != null:
++		actor_base = npc_def.base
++	var actor_id := &"npc"
++	if npc_def != null:
++		actor_id = StringName("npc_%s" % String(npc_def.npc_id))
++	var actor := build(actor_id, actor_base)
++	actor.tags.append(role)
++	if npc_def != null:
++		actor.display_name = npc_def.display_name
++		actor.faction = npc_def.faction
++		for tag_id in npc_def.tags:
++			actor.tags.append(tag_id)
++	# Every inhabitant carries social state, so an npc can hold a bond and be the subject
++	# of one exactly as the player can (ADR 0091).
++	SocialApi.attach(actor)
++	# An npc that cultivates is enrolled on a path exactly as the player is, so a rival
++	# cultivator is a rival *cultivator* rather than a mob with a name and a realm.
++	var realm := rank_id
++	if npc_def != null and npc_def.realm_id != &"":
++		realm = npc_def.realm_id
++	actor.set_path(PathState.new(QiPath.PATH_ID, realm))
++	QiCultivationApi.attach(actor)
++	return actor
+diff --git a/game/src/app/item_workbench_app.gd b/game/src/app/item_workbench_app.gd
+index 4bc40294..9c0adf70 100644
+--- a/game/src/app/item_workbench_app.gd
++++ b/game/src/app/item_workbench_app.gd
+@@ -1,88 +1,220 @@
+ class_name ItemWorkbenchApp
+ extends Control
+ 
+-## Composition root for the playable item workbench (ADR 0002, 0027, 0033).
++## Composition root for the playable slice (ADR 0002, 0027, 0033).
+ ##
+ ## The only place that knows concrete module types and the attach order. It
+-## builds one actor, mounts the UI screen, and injects file-backed persistence —
+-## the UI program itself never names a module type or touches the filesystem.
++## builds one actor, mounts the screen stack the scene already declares, and
++## injects file-backed persistence — the UI program itself never names a module
++## type or touches the filesystem.
++##
++## Every surface a player can reach is named by `ScreenRoutes`, and this root is
++## the only thing that mounts one: `navigate_to(route_id)` is the single
++## navigation mechanism, called by the navigation bar, by a screen that asks for
++## another screen, and by a headless probe that presses the same control a player
++## presses. A screen the route table does not name cannot be reached at all, so
++## "shipped" and "reachable" cannot drift apart.
+ 
+-const WORKBENCH_SCENE := "res://scenes/item_workbench/item_workbench.tscn"
+-const STACK_SCENE := "res://src/ui/screens/screen_stack.tscn"
+-const SOCKET_SCREEN_SCENE := "res://src/ui/screens/socket_forge.tscn"
+ const SAVE_PATH := "user://item_workbench_state.json"
+-const LOOT_SCREEN_SCENE := "res://src/ui/screens/loot_encounter.tscn"
+-## Damage one loot-screen strike deals. Boss vitality is authored content; the
+-## composition root decides how much of it a strike spends.
+-const LOOT_STRIKE_DAMAGE := 25.0
+ ## Enough real content to exercise every activation channel on first run.
+ const STARTER_ITEMS: Array[StringName] = [
+ 	&"armor_iron_helm",
+ 	&"accessory_iron_bangle",
+ 	&"armor_iron_ore",
+ ]
++## The routes whose screen needs more than `setup(actor)`. Every other route is a
++## `UiScreen`, which is bound by the default arm below.
++const ROUTE_LOOT := &"loot_encounter"
++const ROUTE_SOCKET := &"socket_forge"
++const ROUTE_BODY := &"body_cultivation"
++const ROUTE_WORLD_MAP := &"world_map"
++const ROUTE_CRAFTING := &"crafting"
++const ROUTE_WORKBENCH := &"workbench"
++const ROUTE_SET_BONUS := &"set_bonus"
+ 
+ var _actor: Actor = null
+-var _workbench: Control = null
+-var _socket_screen: Control = null
+-var _loot_screen: Control = null
+-var _stack: Control = null
+-var _socket_request: int = 0
++## The composition root's status clock (ADR 0106). It holds no state of its own —
++## only the actor it ticks — so wiring it here is what ADR 0056 means by "app/ wires".
++var _status_loop: StatusLoop = null
++## The stack and the bar the scene declares. Resolved by unique name; the root
++## never builds a second one, because two stacks means two answers to "which
++## screen is live".
++var _stack: ScreenStack = null
++var _nav: NavBar = null
++## The pinned home screen at the bottom of the stack, and the one screen pushed
++## over it. Both are cleared the moment the stack drops them, so a stale handle
++## can never outlive the node it names.
++var _root_screen: Control = null
++var _feature_screen: Control = null
++## The socket forge's gameplay half. It owns the forge's round trip, so a screen
++## the stack has since freed is a no-op rather than a crash.
++var _forge: SocketForgeProgram = null
++var _route: StringName = &""
+ 
+ 
+ func _ready() -> void:
+-	_workbench = get_node_or_null("%Workbench") as Control
+-	if _workbench == null:
+-		push_error("ItemWorkbenchApp: no workbench in the scene")
++	_stack = get_node_or_null("%ScreenStack") as ScreenStack
++	if _stack == null:
++		push_error("ItemWorkbenchApp: the scene must carry a ScreenStack named %ScreenStack")
+ 		return
++	_nav = get_node_or_null("%NavBar") as NavBar
+ 	_actor = _build_actor()
+-	# The socket ledger lives on the actor, so the subsystem is attached here, in
+-	# the one place that knows concrete module types (ADR 0027).
++	# The socket ledger and the loot lifecycle state both live on the actor, so
++	# they are attached here, in the one place that knows concrete module types
++	# (ADR 0027).
+ 	SocketApi.attach(_actor)
+-	# The loot lifecycle state lives on the actor too, so it is attached here, in
+-	# the one place that knows concrete module types.
+ 	LootApi.attach(_actor)
+-	_workbench.call("setup", _actor, Callable(self, "_save_state"), Callable(self, "_load_state"))
+-	_mount_stack()
+-
+-
+-## Put every playable surface behind one screen stack, so the socket forge and the
+-## loot encounter are reachable from the running app instead of existing only as
+-## headless-callable scenes. The workbench stays the root; the feature screens are
+-## pushed over it.
+-func _mount_stack() -> void:
+-	var scene: PackedScene = load(STACK_SCENE)
+-	if scene == null:
+-		push_error("ItemWorkbenchApp: no screen stack at %s" % STACK_SCENE)
++	# The status clock is built last, because it can only tick the actor every
++	# other attachment has already made complete (ADR 0106).
++	_status_loop = StatusLoop.new(_actor)
++	_forge = SocketForgeProgram.new(_actor)
++	if not _mount_home():
+ 		return
+-	_stack = scene.instantiate() as Control
+-	add_child(_stack)
+-	mount_socket_screen(_stack)
+-	mount_loot_screen(_stack)
+-	# The stack shows exactly one screen, so hand focus back to the workbench.
+-	_stack.call("pop")
+-	_stack.call("pop_to_root")
++	if _nav != null and not _nav.route_requested.is_connected(_on_route_requested):
++		_nav.route_requested.connect(_on_route_requested)
+ 
+ 
+-## Push a screen the workbench opens on request, so every feature surface has a
+-## reachable entry point rather than being mounted and immediately covered.
+-func open_screen(scene_path: String) -> Control:
+-	if _stack == null:
+-		return null
+-	var scene: PackedScene = load(scene_path)
+-	if scene == null:
+-		push_error("ItemWorkbenchApp: no screen at %s" % scene_path)
+-		return null
+-	return _stack.call("push", scene.instantiate()) as Control
++## The one tick caller in the game (ADR 0106, read against ADR 0089).
++##
++## ## Why this frame and not a status-specific one
++##
++## A status nobody can tick is decoration: with no production caller, no burn spent
++## a pulse and nothing expired, and the readout had nothing to show. `_physics_process`
++## would have been the wrong answer in a different way — a status is a game-time
++## concept, not a simulation one, and a fixed 60 Hz would age it differently
++## depending on what else the frame did. So the idle process callback it is.
++##
++## `delta` is the engine's, always. Nothing here reads `Time.get_ticks_*`: whoever
++## owns time passes the elapsed time down, so a status ticks identically under a
++## headless test, a replay and a frame that hitched (ADR 0089).
++##
++## ## Why `ui/` can never grow this
++##
++## `ui/` is a pure consumer, and a `_process` there would be a second clock — two
++## callers means a status ages at two different rates depending on which screen is
++## mounted. This is the sentence that survives the ADR: ONE tick caller, in `app/`,
++## passing an explicit `delta`. Anything that wants statuses ticked calls
++## `StatusApi.tick_statuses` with a delta it was given, never with a clock of its own.
++func _process(delta: float) -> void:
++	# A no-op on a null actor rather than a crash: the root can be mounted before it
++	# built one, and a frame that cannot advance anything is not a reason to stop the
++	# whole UI. `StatusLoop.tick` refuses that same case by name.
++	if _status_loop == null or delta <= 0.0:
++		return
++	_status_loop.tick(delta)
+ 
+ 
+-## A fresh hero with the core resource pools, the items subsystem attached, and
+-## a starting kit drawn from the shipped content tree.
++## The route table this root publishes, so the navigation bar, a probe and a
++## test all read the same list. Primitives only.
++func routes() -> Array[Dictionary]:
++	return ScreenRoutes.summary()
++
++
++## Open `route_id` and make it the live screen. The single navigation mechanism:
++## the navigation bar calls it, a screen that asks for another screen calls it,
++## and nothing pushes onto the stack by any other route.
++##
++## Returns false when the table names no such route or its scene stops loading,
++## so an unreachable screen is a reported refusal rather than a silent hole.
++func navigate_to(route_id: StringName) -> bool:
++	if _stack == null or not ScreenRoutes.has(route_id):
++		return false
++	if route_id == _route:
++		return true
++	# One level is ever stacked over the home screen, so this unwinds at most one
++	# screen. The home screen is never popped: the workbench is where the player
++	# keeps state, and a route change must not destroy it.
++	_stack.call("pop_to_root")
++	_feature_screen = null
++	if route_id != ScreenRoutes.ROOT_ID:
++		var screen := _instantiate_route(route_id)
++		if screen == null:
++			return false
++		_feature_screen = _stack.call("push", screen) as Control
++		if _feature_screen == null:
++			return false
++	_route = route_id
++	_announce_route()
++	return true
++
++
++## The route the live screen serves, or "" before the first mount.
++func current_route() -> StringName:
++	return _route
++
++
++## Everything the shell is showing, as primitives: the stack, the live screen and
++## the navigation bar. `nav_probe` reads this rather than the app's own opinion of
++## itself.
++func summary() -> Dictionary:
++	var live := _live_screen()
++	return {
++		"route": String(_route),
++		"actor_id": "" if _actor == null else String(_actor.id),
++		"feature": "" if _feature_screen == null else String(_feature_screen.name),
++		"stack": _stack.summary() if _stack != null else {},
++		"screen": live.call(&"summary") if live != null else {},
++		"nav": _nav.summary() if _nav != null else {},
++	}
++
++
++## Re-read the socket program's read model and hand it to the mounted forge.
++## Published because a caller that stocks items behind the screen's back has to
++## be able to repaint it; a no-op when the forge is not the live screen.
++func refresh_socket_screen() -> void:
++	if _forge == null or _route != ROUTE_SOCKET or not _forge.is_live():
++		return
++	_forge.refresh()
++
++
++## A fresh hero with every path the shipped slice offers, the core resource
++## pools, and a starting kit drawn from the shipped content tree.
++##
++## The attach order is load-bearing and is the only place it exists:
++##   1. `build` — core pools and the sect ledger, which grants recognition and
++##      never power (ADR 0084), so wiring it cannot hand a new actor an edge;
++##   2. the body path — it enrols the actor, and `ElementsApi.attach` below reads
++##      the highest realm off the actor's paths to write each element's realm
++##      multiplier. Attaching elements before a path exists writes nothing, which
++##      is exactly the silent realm degression ADR 0069 records;
++##   3. dual cultivation, then fertility — fertility adds to the fertility and
++##      potency bases dual cultivation owns, so it must follow it;
++##   4. elements, last, because it reads the paths step 2 wrote;
++##   5. items, because body training spends the realm's elixirs through the
++##      inventory and an action must never find no bag to spend from;
++##   6. techniques LAST, because the technique module resolves its authored
++##      options through the items module's `OptionCatalog` and applies them
++##      through `ItemEffects` — the items vocabulary has to exist first (ADR 0056).
++##   7. social state, then the npc boot. Social belongs to EVERY actor, the player
++##      included (ADR 0091) — attaching it here rather than only inside the npc
++##      constructor is what makes the symmetry real: one ledger type answers for
++##      the player and for every inhabitant. `NpcBoot.install` then injects the npc
++##      constructor and binds the roster to this actor (ADR 0092); without it
++##      `NpcApi.spawn` can only ever return null.
+ func _build_actor() -> Actor:
+ 	var actor := ActorFactory.build(
+ 		&"player", {Stat.PHYSIQUE: 12.0, Stat.SPIRIT: 8.0, Stat.APTITUDE: 6.0}
+ 	)
++	ActorFactory.with_body_cultivation(actor)
++	# The other two cultivation paths, enrolled the same way. A player who cannot
++	# open the qi or mind screen has not got two paths, they have got one — and
++	# both screens mount bound to an actor they cannot read otherwise.
++	ActorFactory.with_qi_cultivation(actor)
++	ActorFactory.with_mind_cultivation(actor)
++	DualCultivationApi.attach(actor)
++	# A species is a `race` module term for an inhabitant; the hero has none, so
++	# the species contribution is skipped rather than invented.
++	FertilityApi.attach(actor)
++	ElementsApi.attach(actor)
+ 	ItemsApi.attach(actor)
++	# After `ItemsApi.attach`, as its own docstring requires: set bonus reads the
++	# items vocabulary, so it must never run first.
++	SetBonusApi.attach(actor)
++	# Techniques LAST: they read the items vocabulary written above, never the
++	# other way round (ADR 0056 — app/ wires the module, the module owns it).
++	TechniquesApi.attach(actor)
++	SocialApi.attach(actor)
++	NpcBoot.install(actor)
+ 	var inventory := ItemsApi.inventory(actor)
+ 	for item_id in STARTER_ITEMS:
+ 		var def := _resolve(item_id)
+@@ -91,6 +223,115 @@ func _build_actor() -> Actor:
+ 	return actor
+ 
+ 
++## Push the one route the shell mounts at boot and never pops, so `ui_cancel`
++## always lands somewhere.
++func _mount_home() -> bool:
++	var screen := _instantiate_route(ScreenRoutes.ROOT_ID)
++	if screen == null:
++		push_error("ItemWorkbenchApp: the home route '%s' will not load" % ScreenRoutes.ROOT_ID)
++		return false
++	_root_screen = _stack.call("push", screen) as Control
++	_route = ScreenRoutes.ROOT_ID
++	_announce_route()
++	return true
++
++
++## Load one route's scene, name it for the route it serves, and bind it to the
++## app's actor. Naming it is what lets the live screen say which route it is in
++## the node tree, not only in the shell.
++func _instantiate_route(route_id: StringName) -> Control:
++	var scene_path := ScreenRoutes.scene_of(route_id)
++	var packed := load(scene_path) as PackedScene
++	if packed == null:
++		push_error("ItemWorkbenchApp: route '%s' has no scene at %s" % [route_id, scene_path])
++		return null
++	var screen := packed.instantiate() as Control
++	if screen == null:
++		push_error("ItemWorkbenchApp: route '%s' instantiates to no Control" % route_id)
++		return null
++	screen.name = ScreenRoutes.node_of(route_id)
++	_bind_route_screen(route_id, screen)
++	return screen
++
++
++## Bind one mounted screen to the app's actor, plus whatever read model it is a
++## pure view of. A screen that needs more than `setup(actor)` names it here; this
++## is the only place a gameplay type and a screen type meet.
++func _bind_route_screen(route_id: StringName, screen: Control) -> void:
++	match route_id:
++		ROUTE_WORKBENCH:
++			# The workbench is a plain view that also needs the persistence the UI
++			# program is not allowed to own (ADR 0027).
++			screen.call(
++				"setup", _actor, Callable(self, "_save_state"), Callable(self, "_load_state")
++			)
++		ROUTE_LOOT:
++			screen.call("setup", _actor)
++			screen.call("bind_bridge", _loot_bridge())
++		ROUTE_SOCKET:
++			screen.call("setup", _actor)
++			_forge.bind(screen)
++		ROUTE_CRAFTING:
++			# Recipes are pushed in, never discovered by `ui/`: `ItemsApi` publishes
++			# no catalog, so which recipes are listed is a composition-root call
++			# (ADR 0043).
++			screen.call("setup", _actor)
++			screen.call("set_recipes", RecipeCatalog.offerable(_actor))
++		ROUTE_BODY:
++			screen.call("setup", _actor)
++			# The body screen's World Map button is a real navigation door, so the
++			# route it opens is the same one the navigation bar opens.
++			if screen.has_signal(&"world_map_requested"):
++				screen.connect(&"world_map_requested", _on_world_map_requested)
++		ROUTE_SET_BONUS:
++			# The set screen renders exclusively from a snapshot the composition
++			# root supplies, so it needs BOTH: the actor like every other screen,
++			# and the snapshot nothing else feeds it.
++			screen.call("setup", _actor)
++			screen.call("apply_snapshot", SetBonusApi.inspect(_actor))
++		_:
++			screen.call("setup", _actor)
++
++
++## The loot program's public surface, as plain callables. The UI program may only
++## reach a gameplay module through that module's facade, so the bridge keeps every
++## module type on this side of the boundary. It carries no strike and no damage figure:
++## a domain fight is `CombatApi.exchange`, which the loot screen calls by name because
++## `combat` is declared in `rules.UI_MODULES` (ADR 0076).
++func _loot_bridge() -> LootBridge:
++	var bridge := LootBridge.new()
++	bridge.list_domains = Callable(LootApi, "domains")
++	bridge.enter_domain = Callable(LootApi, "enter_domain")
++	bridge.leave_domain = Callable(LootApi, "abandon")
++	bridge.pickup = Callable(LootApi, "pickup")
++	bridge.pickup_all = Callable(LootApi, "pickup_all")
++	bridge.reclaim = Callable(LootApi, "reclaim")
++	bridge.read_state = Callable(LootApi, "summary")
++	return bridge
++
++
++## The navigation bar asks; this root decides. One request in, one screen out.
++func _on_route_requested(route_id: StringName) -> void:
++	navigate_to(route_id)
++
++
++## A screen asked for another screen. Same mechanism as the bar, so there is one
++## navigation mechanism rather than two.
++func _on_world_map_requested() -> void:
++	navigate_to(ROUTE_WORLD_MAP)
++
++
++## Mark the live route on the bar, so the player can see where they are without
++## inferring it from button styling.
++func _announce_route() -> void:
++	if _nav != null:
++		_nav.set_active(_route)
++
++
++func _live_screen() -> Control:
++	return null if _stack == null else _stack.call("current") as Control
++
++
+ ## Look a definition up by id through the items module's single resolver, so the
+ ## app uses the same lookup as inventory, crafting, the generator and loot.
+ ## Returns null rather than guessing, so a missing starter item never blocks the
+@@ -114,128 +355,3 @@ func _load_state() -> Dictionary:
+ 	var text := FileAccess.get_file_as_string(SAVE_PATH)
+ 	var parsed = JSON.parse_string(text)
+ 	return parsed if parsed is Dictionary else {}
+-
+-
+-## Mount the socket forge on `stack` and hand it the socket program's read model.
+-## The screen is a pure view: it never names the socket module, so this is where
+-## the two are wired together and where every socket action is executed.
+-func mount_socket_screen(stack: Control) -> Control:
+-	if stack == null or _actor == null:
+-		return null
+-	var scene: PackedScene = load(SOCKET_SCREEN_SCENE)
+-	if scene == null:
+-		push_error("ItemWorkbenchApp: socket screen missing at %s" % SOCKET_SCREEN_SCENE)
+-		return null
+-	var screen := scene.instantiate() as Control
+-	screen.call("setup", _actor)
+-	screen.connect(&"socket_action_requested", Callable(self, "_on_socket_action"))
+-	_socket_screen = screen
+-	stack.call("push", screen)
+-	refresh_socket_screen()
+-	return screen
+-
+-
+-## Re-read the socket program's read model for the host the screen is looking at,
+-## and hand it in. The host id rides the view, so one read serves every widget.
+-func refresh_socket_screen() -> void:
+-	if _socket_screen == null:
+-		return
+-	_socket_screen.call("bind_view", SocketApi.panel_state(_actor, _socket_host_id()))
+-
+-
+-## Run one screen intent against the socket program, then repaint from the result.
+-## A refusal is reported through the message line, never swallowed.
+-func _on_socket_action(action: StringName, args: Dictionary) -> void:
+-	var result := _run_socket_action(action, args)
+-	_socket_screen.call("set_message", _socket_outcome(action, result), _socket_tone(result))
+-	refresh_socket_screen()
+-
+-
+-func _run_socket_action(action: StringName, args: Dictionary) -> Dictionary:
+-	var host := StringName(String(args.get("host_id", _socket_host_id())))
+-	var reagent := StringName(String(args.get("reagent_id", "")))
+-	var index := int(args.get("index", 0))
+-	match action:
+-		&"create_slot":
+-			return SocketApi.create_slot(_actor, host, reagent)
+-		&"impute_slot":
+-			return SocketApi.impute_slot(_actor, host, index, reagent)
+-		&"insert_socket":
+-			return SocketApi.insert_socket(
+-				_actor, host, index, StringName(String(args.get("gem_instance_id", "")))
+-			)
+-		&"extract_socket":
+-			return SocketApi.extract_socket(_actor, host, index)
+-		_:
+-			return SocketApi.commit_enchantment(
+-				_actor, host, reagent, _next_socket_request_id(), Time.get_ticks_usec()
+-			)
+-
+-
+-func _socket_host_id() -> String:
+-	if _socket_screen != null:
+-		return String(_socket_screen.call("selected_host"))
+-	var parent: Dictionary = SocketApi.panel_state(_actor).get("parent", {})
+-	return String(parent.get("instance_id", ""))
+-
+-
+-func _next_socket_request_id() -> StringName:
+-	_socket_request += 1
+-	return StringName("socket_request_%d" % _socket_request)
+-
+-
+-func _socket_outcome(action: StringName, result: Dictionary) -> String:
+-	if bool(result.get("ok", false)):
+-		return "%s committed" % action
+-	return "Rejected: %s" % result.get("reason", "")
+-
+-
+-func _socket_tone(result: Dictionary) -> StringName:
+-	return &"ok" if bool(result.get("ok", false)) else &"error"
+-
+-
+-## Mount the loot surface on `stack` and hand it the loot program's read model.
+-## The screen is a pure view of a [LootBridge] of plain callables, so this is the
+-## only place the two are wired together and the only place a loot action is run.
+-func mount_loot_screen(stack: Control) -> Control:
+-	if stack == null or _actor == null:
+-		return null
+-	if _loot_screen != null:
+-		refresh_loot_screen()
+-		return _loot_screen
+-	var scene: PackedScene = load(LOOT_SCREEN_SCENE)
+-	if scene == null:
+-		push_error("ItemWorkbenchApp: loot screen missing at %s" % LOOT_SCREEN_SCENE)
+-		return null
+-	var screen := scene.instantiate() as Control
+-	screen.call("setup", _actor)
+-	screen.call("bind_bridge", loot_bridge())
+-	screen.call("set_strike_damage", LOOT_STRIKE_DAMAGE)
+-	_loot_screen = screen
+-	stack.call("push", screen)
+-	return screen
+-
+-
+-## The loot program's public surface, as plain callables. The UI program may only
+-## reach a gameplay module through that module's facade, so the bridge keeps every
+-## module type on this side of the boundary.
+-func loot_bridge() -> LootBridge:
+-	var bridge := LootBridge.new()
+-	bridge.strike_damage = LOOT_STRIKE_DAMAGE
+-	bridge.list_domains = Callable(LootApi, "domains")
+-	bridge.enter_domain = Callable(LootApi, "enter_domain")
+-	bridge.strike = Callable(LootApi, "strike")
+-	bridge.leave_domain = Callable(LootApi, "abandon")
+-	bridge.pickup = Callable(LootApi, "pickup")
+-	bridge.pickup_all = Callable(LootApi, "pickup_all")
+-	bridge.reclaim = Callable(LootApi, "reclaim")
+-	bridge.read_state = Callable(LootApi, "summary")
+-	return bridge
+-
+-
+-## Re-read the loot program's read model and hand it in. The screen repaints from
+-## it, so a refusal can never leave the view out of step with the world.
+-func refresh_loot_screen() -> void:
+-	if _loot_screen == null:
+-		return
+-	_loot_screen.call("bind_bridge", loot_bridge())
+diff --git a/game/src/modules/elements/api.gd b/game/src/modules/elements/api.gd
+index 2c0439b6..750c398b 100644
+--- a/game/src/modules/elements/api.gd
++++ b/game/src/modules/elements/api.gd
+@@ -12,9 +12,102 @@ static func default_rules() -> ElementRules:
+ 	return _default_rules
+ 
+ 
++## Attach the element provider, and the REALM modifier that keeps `element_power_<e>`
++## on the same scale as `Stat.ATTACK_SPIRITUAL` (ADR 0069).
++##
++## ## Why the modifier exists
++##
++## `RealmScaling.SCALED_STATS` is seven STATIC ids, and `element_power_<e>` is not one
++## of them -- it cannot be, the ids are built from the element id at read time. So it
++## would be realm-FLAT while the raw term `m_0 * ATTACK_SPIRITUAL` grows by the
++## authored `RealmDef.power`, 1.00 -> 551.46. Measured element fraction of a qi hit at
++## `share = 0.8`: **0.7619 at R1, 0.3678 at R11, 0.0058 at R30** -- a silent realm
++## degression of the element channel to numerical noise, and worse than useless because
++## it looks like a balance curve.
++##
++## The fix reuses ADR 0026's existing composition rather than adding an authored table:
++## one source-tagged `StatModifier(power_id, Op.MULT, realm.power, SOURCE)` per element,
++## which is the same shape `RealmScaling.apply` writes and lands on the same
++## `mult` bucket, so it composes with an item's modifier exactly once. The element's
++## share of a qi hit is then realm-INVARIANT -- the invariant worth a test, because it is
++## the difference between "elements matter at every realm" and "elements stopped
++## mattering somewhere past Foundation Establishment".
++##
++## ## `element_resistance_<e>` deliberately gets NO modifier
++##
++## It is a RATE, and a rate must never track a magnitude (ADR 0050). Scaling a
++## defender's authored resistance by 551.46 would make deep-realm qi immunity automatic
++## and silently, and a per-point investment a player paid for would become worthless.
++## Recorded here rather than inherited by accident: the channel stays realm-flat, and
++## the realm multiplier on the ATTACKER's power is what compensates.
++##
++## ## NOT IDEMPOTENT, and that is the ONE part worth being careful about
++##
++## `ActorStats.add_provider` appends unguarded, so calling `attach` twice on one actor
++## would stack two providers. `add_modifier` is likewise unguarded, and
++## `remove_modifiers_from` matches a source tag EXACTLY -- core has no prefix matching
++## (see `NpcStageProjection.strip`), so a source shared with `RealmScaling` cannot be
++## swept selectively. This module therefore does the repo's strip-then-apply dance
++## itself: [method apply_realm_modifiers] removes only the `(RealmScaling.SOURCE,
++## element_power_<e>)` pairs and rewrites them. Re-attaching the realm half is free.
++##
++## The consequence the ADR records honestly: attach once, and after a breakthrough call
++## `RealmScaling.apply(actor)` (which clears the source tag wholesale) or
++## [method apply_realm_modifiers] -- never `attach` again to "refresh" it.
+ static func attach(actor: Actor, rules: ElementRules = null) -> void:
+ 	var resolved := rules if rules != null else default_rules()
+ 	actor.stats.add_provider(ElementProvider.new(resolved))
++	apply_realm_modifiers(actor, resolved)
++
++
++## Write (or rewrite) the realm MULT on every `element_power_<e>` this rules set knows.
++##
++## Separate from [method attach] for two reasons. An actor's element set can change -- a
++## cross-training unlock, a new tier's element arriving with a breakthrough -- and the
++## elements the rules know are not necessarily the elements the actor has affinity in.
++## And it is the cheap, safe way to pick up a new realm after a breakthrough without a
++## second `attach`, which is exactly what `RealmScaling.apply` does for the seven static
++## ids.
++static func apply_realm_modifiers(actor: Actor, rules: ElementRules = null) -> void:
++	if actor == null or actor.stats == null:
++		return
++	var resolved := rules if rules != null else default_rules()
++	var realm := RealmScaling.highest_realm(actor)
++	if realm == null:
++		# No realm on the ladder: `RealmScaling.apply` removes and returns, so a
++		# R1-authored 1.0 is NOT written. Matching that is what makes the modifier
++		# invisible on an unstatted test actor instead of a `mult` of 1.0 per element.
++		return
++	strip_realm_modifiers(actor, resolved)
++	for element in resolved.ids():
++		actor.stats.add_modifier(
++			StatModifier.new(
++				ElementStats.power_id(element), Stat.Op.MULT, realm.power, RealmScaling.SOURCE
++			)
++		)
++
++
++## Take back only this module's element-power realm modifiers, and nothing else.
++##
++## Walks the stack itself rather than asking core for a prefix match, because core's verb
++## is exact-source by design and `RealmScaling.SOURCE` is core's tag -- clearing it
++## wholesale would take the seven scaled ids with it, which is a different module's
++## business. A `(source, stat)` pair is the only thing removed.
++static func strip_realm_modifiers(actor: Actor, rules: ElementRules = null) -> void:
++	if actor == null or actor.stats == null:
++		return
++	var resolved := rules if rules != null else default_rules()
++	var owned: Array[StringName] = []
++	for element in resolved.ids():
++		owned.append(ElementStats.power_id(element))
++	var kept: Array[StatModifier] = []
++	for modifier in actor.stats._modifiers:
++		var ours := modifier.source == RealmScaling.SOURCE and owned.has(modifier.stat)
++		if not ours:
++			kept.append(modifier)
++	if kept.size() != actor.stats._modifiers.size():
++		actor.stats._modifiers = kept
++		actor.stats.mark_dirty()
+ 
+ 
+ static func multiplier(rules: ElementRules, attacker: StringName, defender: StringName) -> float:
+diff --git a/game/src/modules/elements/provider.gd b/game/src/modules/elements/provider.gd
+index c0b541a6..489a6d51 100644
+--- a/game/src/modules/elements/provider.gd
++++ b/game/src/modules/elements/provider.gd
+@@ -4,6 +4,47 @@ extends StatProvider
+ ## Contributes per-element derived stats: element_power_<e> and
+ ## element_resistance_<e> for every element in the rules (ADR 0004).
+ ## element_mastery_<e> is a base attribute owned by core, not passed through here.
++##
++## ## The per-tier mastery divisor, and why it lives HERE
++##
++## Measured over the shipped 10-element graph, `ElementDefaults.advanced()` gives
++## `lightning` and `ice` a row mean of **1.100000**, `wind`/`light`/`dark` **1.050000**,
++## and every tier-1 row **0.875..0.975** (the tier-1-vs-tier-1 mean is exactly
++## 0.950000; grand mean 0.997500). Every advanced element's row sits ABOVE every
++## tier-1 row: an advanced element is a strictly better attack than a basic one with
++## the same numbers. "Tier 2 has two overcomes" is true of `lightning`/`ice`/`wind` and
++## FALSE of `light`/`dark`, which have one each -- so the dominance is a property of
++## the shipped data, not of a rule.
++##
++## The fix taxes the MASTERY term only:
++## `element_power_<e> = affinity * (1 + mastery * 0.1 / (1 + (tier - 1) * TIER_MASTERY_STEP))`.
++## Tier 1's divisor is exactly `1.0` -- `(tier - 1)` is `0` -- so **tier 1 is
++## bit-for-bit unchanged** and `tests/modules/elements/test_element_provider.gd::
++## test_mastery_scales_power` needs no edit. The tax falls only on the dominant tier.
++##
++## ## The tax divides the MASTERY term, never the affinity
++##
++## That is what keeps an actor's `element_power_<e>` rising MONOTONICALLY with
++## mastery at every tier: the divisor moves where mastery saturates, never whether it
++## pays. An untrained element (affinity 0) still reads 0.0 at every tier, which is the
++## qi mechanism's "untrained element" case, and a trainer with no mastery pays no tax
++## at all -- the tax is on the marginal return of mastery in a dominant element, which
++## is where the excess is.
++##
++## ## A missing or malformed `ElementDef` reads as TIER 1
++##
++## `rules.element(id)` returning null must not divide by a tier-1 tax on an advanced
++## element, nor throw on a null. It reads as tier 1 -- divisor 1.0, no tax -- which is
++## the same fail-safe as every other null read here: the shape nobody authored.
++
++## The extra mastery tax per tier above the first, on the MASTERY term only.
++##
++## At `0.10`, tier 2's mastery coefficient is `0.1 / 1.1 = 0.0909...` against tier 1's
++## `0.1`, a 9.1% reduction on the mastery term -- which lands tier 2's 1.100000 row mean
++## almost exactly on tier 1's 0.950000 without touching a single `ElementDef`. Tier 3
++## divides by 1.2 for the same reason: the tax compounds with the tier a player had to
++## reach, and `ElementMastery.MAX_ELEMENT_TIER` is 3.
++const TIER_MASTERY_STEP := 0.10
+ 
+ var _rules: ElementRules
+ 
+@@ -20,6 +61,26 @@ func contribute(context: StatContext) -> Dictionary:
+ 		# Read mastery post-modifier so an item modifier on it flows into power
+ 		# exactly once, with no stale input and no double application (ADR 0026).
+ 		var mastery := context.value(ElementStats.mastery_id(element))
+-		out[ElementStats.power_id(element)] = maxf(0.0, affinity * (1.0 + mastery * 0.1))
++		out[ElementStats.power_id(element)] = maxf(
++			0.0, affinity * (1.0 + _mastery_rate(element) * mastery)
++		)
+ 		out[ElementStats.resistance_id(element)] = maxf(0.0, affinity * 0.5 + will * 0.2)
+ 	return out
++
++
++## `0.1 / (1 + (tier - 1) * TIER_MASTERY_STEP)`: the mastery coefficient this element's
++## tier is allowed to pay.
++##
++## Exactly `0.1` at tier 1 -- the number `ElementProvider` has always contributed -- and
++## strictly less above it. A null def, a tier below 1 and a non-finite mastery all
++## resolve to tier 1, so there is no path through this function that returns a
++## non-finite coefficient and poisons `element_power_<e>` for every actor carrying it.
++func _mastery_rate(element: StringName) -> float:
++	var entry := _rules.element(element)
++	if entry == null:
++		return 0.1
++	var tier := maxi(1, entry.tier)
++	var divisor := 1.0 + float(tier - 1) * TIER_MASTERY_STEP
++	if not is_finite(divisor) or divisor <= 0.0:
++		return 0.1
++	return 0.1 / divisor

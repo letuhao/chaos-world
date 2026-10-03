@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FateDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/destiny/fate_def.gd" id="1_fate"]
+
+[resource]
+script = ExtResource("1_fate")
+id = &"first_blood_duel"
+display_name = "First Blood"
+description = "Opened a duel and closed it, alone, without assistance. The sect's record names no second party because the second party filed nothing."
+category = &"blood"
+tier = 1
+visibility = &"revealed"
+flat_modifiers = {"attack_physical": 4.0, "agility": 1.0}
+counters = Array[StringName]([&"duels_won", &"kills"])
+tags = Array[StringName]([&"duel", &"first", &"solitary"])

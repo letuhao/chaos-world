@@ -13,7 +13,7 @@ extends VBoxContainer
 ##
 ## Contract: `summary()` is the testable surface.
 
-signal pickup_requested(drop_id: String)
+signal row_action_requested(drop_id: String)
 signal take_all_requested(encounter_id: String)
 
 ## One scene per row, composed in `loot_drop_row.tscn` rather than built in code.
@@ -43,6 +43,9 @@ var _claim_token: String = ""
 var _message: String = ""
 var _tone: StringName = &""
 var _rows: Array = []
+## Every row ever built, including the ones this rebuild is not using. See `_build`
+## for why they are pooled rather than freed.
+var _pool: Array[LootDropRow] = []
 var _take_all_enabled: bool = false
 var _title_label: Label = null
 var _take_all_button: Button = null
@@ -62,7 +65,8 @@ func show_reward(reward: Dictionary, can_pick_up: bool) -> void:
 	_bind_nodes()
 	_mode = &"reward"
 	if reward.is_empty():
-		clear()
+		_emptied()
+		_render()
 		return
 	_encounter_id = String(reward.get("encounter_id", ""))
 	_claim_token = String(reward.get("claim_token", ""))
@@ -77,7 +81,8 @@ func show_stashes(stashes: Array, can_reclaim: bool) -> void:
 	_bind_nodes()
 	_mode = &"stashed"
 	if stashes.is_empty():
-		clear()
+		_emptied()
+		_render()
 		return
 	_encounter_id = ""
 	_claim_token = ""
@@ -88,11 +93,24 @@ func show_stashes(stashes: Array, can_reclaim: bool) -> void:
 func clear() -> void:
 	_bind_nodes()
 	_mode = &"reward"
+	_emptied()
+	_render()
+
+
+## Show nothing, without touching `_mode`.
+##
+## The empty paths used to route through `clear()`, which resets the mode to
+## `reward`. So an EMPTY stash list came back as a reward list: `_render` shows the
+## `Take all` control whenever the mode is `reward`, which put a Take-all button on
+## the world-drop container with nothing in it -- an offer for an action that cannot
+## mean anything there. The mode is what a caller asked for; emptying the list is a
+## separate fact.
+func _emptied() -> void:
 	_encounter_id = ""
 	_claim_token = ""
-	_rows = []
 	_take_all_enabled = false
-	_render()
+	_rows = []
+	_hide_from(0)
 
 
 ## Report what a pickup or reclaim actually did, on the row it belongs to. The
@@ -178,20 +196,57 @@ func _bind_nodes() -> void:
 		_take_all_button.pressed.connect(_on_take_all)
 
 
+## Rows are POOLED, never destroyed on a rebuild.
+##
+## This used to `remove_child` + `free()` every row and instantiate a fresh set, and
+## that freed the row that was mid-signal: button press -> `action_requested.emit` ->
+## this list -> the screen's `act_pickup` -> `refresh()` -> `_build()` -> free the
+## very node still inside its own `action_requested` emission. Godot refused with
+## "Attempted to free a locked object", 14 times in one run.
+##
+## Deferring is not an option: `queue_free()` is banned in `res://src` because the
+## headless runner drives every test from `SceneTree._initialize()`, which returns
+## before the first frame, so a deferred free never runs at all. And deferring the
+## free would not fix it anyway -- the lock is on the node, not on the frame.
+##
+## So the rows are reused, exactly as `CraftingScreen._fill_rows` already does with
+## its leftover rows: `_pool` holds every row ever built, `_active` says how many of
+## them this rebuild is using, and the surplus is hidden rather than destroyed. The
+## pool is bounded by the largest drop list this player has seen, which is small.
+## Nothing is ever freed, so nothing can be freed while locked.
 func _build(entries: Array, action_label: String, enabled: bool, take_all: bool) -> void:
 	_rows = []
 	_take_all_enabled = take_all
 	if _rows_box == null:
 		return
-	for child in _rows_box.get_children():
-		_rows_box.remove_child(child)
-		child.free()
-	for entry in entries:
-		var row = (ROW_SCENE as PackedScene).instantiate() as LootDropRow
-		_rows_box.add_child(row)
-		row.action_requested.connect(_on_row_action)
-		row.show_drop(entry as Dictionary, action_label, enabled)
+	var index := 0
+	while index < entries.size():
+		var row := _pooled_row(index)
+		row.visible = true
+		row.show_drop(entries[index] as Dictionary, action_label, enabled)
 		_rows.append(row)
+		index += 1
+	_hide_from(index)
+
+
+## The row at `index`, instantiating and wiring one only if the pool is short. The
+## `action_requested` connection is made once per node, at creation, so a reused row
+## is not re-connected to this list.
+func _pooled_row(index: int) -> LootDropRow:
+	while _pool.size() <= index:
+		var row := (ROW_SCENE as PackedScene).instantiate() as LootDropRow
+		row.action_requested.connect(_on_row_action)
+		_rows_box.add_child(row)
+		_pool.append(row)
+	return _pool[index]
+
+
+## Hide every pooled row from `index` on. Hidden, not freed: see `_build`.
+func _hide_from(index: int) -> void:
+	var position := index
+	while position < _pool.size():
+		(_pool[position] as LootDropRow).visible = false
+		position += 1
 
 
 func _row_keys() -> Array:
@@ -238,10 +293,26 @@ func _pending() -> int:
 	return count
 
 
+## A row's action was pressed, in EITHER mode.
+##
+## This used to swallow the press in `stashed` mode:
+##
+##     if _mode == &"stashed":
+##         return
+##
+## which made `act_reclaim` unreachable and took the whole world-drop-container
+## failure branch with it. A player who overflowed their stash saw the drops listed
+## in the world with a `Reclaim` button on them, pressed it, and nothing happened --
+## and nothing anywhere said "your stash is full, make room", because the only
+## sentence that could have said it was behind a dead control.
+##
+## The fix is not to special-case the mode here. This list does not know what its
+## rows' buttons MEAN; the screen does, and it wires this one signal to
+## `act_pickup` for the reward list and to `act_reclaim` for the stash list. A list
+## that filtered by mode was re-deciding, in the wrong layer, a routing decision its
+## owner had already made by choosing which signal to connect.
 func _on_row_action(drop_id: String) -> void:
-	if _mode == &"stashed":
-		return
-	pickup_requested.emit(drop_id)
+	row_action_requested.emit(drop_id)
 
 
 func _on_take_all() -> void:

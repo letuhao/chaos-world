@@ -64,6 +64,18 @@ func test_inside_world_laws() -> void:
 	assert_eq(world.get_law(&"fire"), 0.9, "law updated")
 
 
+## A higher tier is a new world, not a relabelled one: `WorldAnchor` builds a
+## fresh `InsideWorld` when the tier changes, so the lower tier's laws go with it
+## and each band gates on the law its own world carries.
+func test_a_higher_tier_starts_a_fresh_law_set() -> void:
+	var seed := InsideWorld.new(InsideWorld.SEED)
+	seed.add_law(&"earth_law", 1.0)
+	var pocket := InsideWorld.new(InsideWorld.POCKET)
+	pocket.add_law(&"heaven_law", 1.0)
+	assert_eq(pocket.get_law(&"earth_law"), 0.0, "the seed law is not carried")
+	assert_eq(pocket.get_law(&"heaven_law"), 1.0, "and the pocket law is present")
+
+
 func test_inside_world_serialization() -> void:
 	var world := InsideWorld.new(InsideWorld.INNER, 50.0, 0.9, 3.0, 5.0)
 	world.add_law(&"fire", 0.8)

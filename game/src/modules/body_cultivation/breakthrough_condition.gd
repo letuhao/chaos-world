@@ -66,11 +66,36 @@ func describe_unmet(actor: Actor, state: PathState) -> Array[String]:
 		unmet.append("Damaged channels need repair: %s" % ", ".join(wounded))
 	if not _channels_ready(actor, seed):
 		unmet.append("Required channels are not trained deep enough")
-	# Reported independently of the channels: a wound must not hide a closed
-	# Immortal+ gate, or the player repairs the body and hits the same wall.
-	if not Breakthrough.tier_gates_met(actor, target.index):
-		unmet.append("Immortal tier gates not met (tribulation, inside world, ascension)")
+	# Reported gate by gate, never as one omnibus line. A player told "tribulation,
+	# inside world, ascension" cannot act on any of them: the tribulation is fought
+	# somewhere else entirely, the inside world is grown by training, and the ascent
+	# is walked step by step. One line naming three gates is the same defect as no
+	# line at all, and it is why R19-R30 read as one unreachable wall.
+	unmet.append_array(_tier_gate_unmet(actor, target.index))
 	return unmet
+
+
+## The tier gates that are shut for `target`, one clause each, in the order they
+## are earned, and nothing at all when they are all open.
+##
+## Every verdict is core's own predicate, the same four `Breakthrough.tier_gates_met`
+## ANDs, so this list cannot disagree with the gate it describes. The ASCENSION
+## clause is core's wording too (`WorldAnchor.ascension_unmet`, ADR 0034): it names
+## how many steps are left to walk, because a gate a player is told merely exists is
+## a gate they cannot act on.
+func _tier_gate_unmet(actor: Actor, target_index: int) -> Array[String]:
+	var out: Array[String] = []
+	# Below each gate's own threshold its predicate is true, so a mortal or spirit
+	# realm sees none of this. Nothing here is conditional on the tier.
+	if not Breakthrough.tribulation_ok(actor, target_index):
+		out.append("Survive a tribulation fought for this realm")
+	if not Breakthrough.inside_world_ok(actor, target_index):
+		out.append("The realm inside you is not ready yet")
+	if not Breakthrough.world_ok(actor, target_index):
+		out.append("The world you made is not stable yet")
+	if not Breakthrough.ascension_ok(actor, target_index):
+		out.append(WorldAnchor.ascension_unmet(actor))
+	return out
 
 
 ## Quality of every acupoint the current realm has unlocked. Pool fullness is a

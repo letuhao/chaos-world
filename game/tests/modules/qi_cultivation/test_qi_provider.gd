@@ -67,7 +67,7 @@ func test_realm_scaling() -> void:
 	# it from the seed's authored field, and then from a shared ladder, and stayed
 	# green through both changes — which is how a provider can move three times
 	# without a test noticing.
-	var factor := QiRealmProfile.factor(&"spirit_sea")
+	var factor := RealmRate.factor(&"spirit_sea")
 	var rank_10: float = actor.stats.derived(QiStats.QI_REGEN_RATE)
 	assert_almost_eq(rank_10, 7.0 * factor, "rank 10 regen")
 	# the point of the test: a higher rank must actually regen faster
@@ -85,7 +85,7 @@ func test_no_stat_is_scaled_by_anything_but_the_bounded_rate() -> void:
 	var plain := _actor_with_module()
 	var actor := _actor_with_module()
 	actor.set_path(PathState.new(QiPath.PATH_ID, &"primordial_origin"))
-	var factor := QiRealmProfile.factor(&"primordial_origin")
+	var factor := RealmRate.factor(&"primordial_origin")
 	for stat_id in [
 		QiStats.QI_REGEN_RATE,
 		QiStats.TECHNIQUE_POWER,

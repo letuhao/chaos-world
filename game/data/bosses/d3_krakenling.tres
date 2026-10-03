@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"d3_krakenling"
 display_name = "Abyssal Kraken Lesser"
 domain_id = &"marine_abyssal_kraken_domain"
-loot = Array[StringName]([&"marine_abyssal_kraken_core", &"marine_abyssal_kraken_tentacle_bone", &"venom_fang_core", &"relic_hollow_crown", &"V3_earth_abjuration_nobs"])
+loot = Array[StringName]([])

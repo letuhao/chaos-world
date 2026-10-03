@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"spirit"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:stormcall_circuit"])
 sources = Array[StringName]([&"boss:body_spirit_palace_guardian"])
 description = "A struck-spirit bell; each ring stores a measure of ambient qi."

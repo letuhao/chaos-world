@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"earth_quake"
+element = &"earth"
+on_landed_blow = true
+kind = &"control"
+scope = &"combat"
+stacking = &"refresh"
+duration = 7.0
+magnitude_unit = &"stat_modifier"
+magnitude_cap = 0.7
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique", &"pill"])
+payload = {
+"mechanic": &"root",
+"text": "The ground goes out from under them. They cannot be moved, and they cannot close.",
+"modifiers": [
+{"stat": &"move_speed", "op": &"flat", "value": -45.0},
+{"stat": &"poise", "op": &"flat", "value": -10.0}
+]
+}

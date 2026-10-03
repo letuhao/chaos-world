@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"accessory"
 grade = &"mortal"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:ironhide_vigil"])
 sources = Array[StringName]([&"boss:body_qi_refining_guardian"])
 description = "Quarry-iron wristband stamped with a warden sigil; steadies the hand."

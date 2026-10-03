@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="EventDef" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/modules/event/event_def.gd" id="1_event"]
+[ext_resource type="Script" path="res://src/modules/event/event_stage_def.gd" id="2_stage"]
+
+[sub_resource type="Resource" id="Stage_moving"]
+script = ExtResource("2_stage")
+stage_id = &"moving"
+display_name = "The Herd Is Moving"
+requires = {}
+duration_periods = 1
+on_enter = [{"fact": &"beast_tide_moving", "amount": 1}]
+
+[sub_resource type="Resource" id="Stage_on_the_plain"]
+script = ExtResource("2_stage")
+stage_id = &"on_the_plain"
+display_name = "Onto the Plain"
+requires = {"verb": &"fact", "id": &"beast_tide_moving", "need": 1}
+duration_periods = 1
+on_enter = [{"fact": &"beast_tide_broken", "amount": 1}, {"fact": &"hundredth_beast_slain", "amount": 1}]
+
+[sub_resource type="Resource" id="Stage_dispersed"]
+script = ExtResource("2_stage")
+stage_id = &"dispersed"
+display_name = "Dispersed"
+requires = {"verb": &"fact", "id": &"beast_tide_broken", "need": 1}
+duration_periods = 0
+on_enter = [{"fact": &"beast_tide_survived", "amount": 1}]
+
+[resource]
+script = ExtResource("1_event")
+id = &"beast_tide_of_the_mortal_plains"
+display_name = "Beast Tide of the Mortal Plains"
+description = "The ironhide herds come down out of the hills twice a year and the plain counts the cost. This event is the tide's own shape — the moving, the breaking, the dispersing — and the world remembers what it did about it. No animal is fought here; the slaying happens where combat lives."
+kind = &"beast_tide"
+trigger = {"verb": &"fact", "id": &"storm_front_sighted", "need": 1}
+location_id = &"mortal_plains"
+on_enter = [{"fact": &"beast_tide_started", "amount": 1}]
+stages = Array[EventStageDef]([SubResource("Stage_moving"), SubResource("Stage_on_the_plain"), SubResource("Stage_dispersed")])
+pay = Array[Dictionary]([{"kind": &"fate", "id": &"one_hundredth_slain", "amount": 1}])

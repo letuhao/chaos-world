@@ -18,7 +18,6 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"spirit"
-value = 55
 tags = Array[StringName]([&"uncommon"])
 sources = Array[StringName]([&"craft:scroll_bamboo_recipe"])
 description = "A durable bamboo scroll. Holds spirit-grade cultivation methods."

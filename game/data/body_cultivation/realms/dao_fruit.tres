@@ -9,10 +9,10 @@ breakthrough_item = &"body_dao_fruit_breakthrough_pill"
 strengthening_item = &"body_dao_fruit_channel_elixir"
 recovery_item = &"body_dao_fruit_recovery_elixir"
 progress_required = 1425.0
-physique_required = 58.0
-quality_required = 0.760000
-quality_target = 0.775000
-integrity_target = 0.825000
+physique_required = 172.0
+quality_required = 0.802500
+quality_target = 0.882500
+integrity_target = 0.932500
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
 required_refinement = 25
 refinement_cap = 26
@@ -21,11 +21,8 @@ rewards = {
 "physique": 2.0,
 "muscle_fiber": 1.0
 }
-work_required = 1425.0
-acupoint_work = 14.0
-meridian_work = 14.0
 insight_required = 1410.0
 resonance_rank = 8
-chance_base = 0.75
-chance_cap = 0.75
+chance_base = 0.2900
+chance_cap = 0.7812
 channel_training = Array[StringName]([])

@@ -232,10 +232,10 @@ def _parity_fixture() -> dict:
     """
     windows = {}
     for unit in sorted(MAGNITUDE_POLICY):
-        for realm_index in range(30):
+        for realm_id in _scale_ladder():
             for rarity_index in range(len(RARITIES)):
-                window = _magnitude_bounds(unit, realm_index, rarity_index)
-                windows[f"{unit}:{realm_index}:{rarity_index}"] = [
+                window = _magnitude_bounds(unit, realm_id, rarity_index)
+                windows[f"{unit}:{realm_id}:{rarity_index}"] = [
                     round(window["min"], 6),
                     round(window["max"], 6),
                 ]
@@ -754,14 +754,15 @@ def _distribution(catalog: Path, seed: int, samples: int, fail_on: str, as_json:
             if rid in eligible:
                 eligible[rid] += 1
 
-    bands = [(0, 0), (8, 1), (17, 2), (26, 3), (29, 3)]
+    ladder = _scale_ladder()
+    bands = [(ladder[i], r) for i, r in ((0, 0), (8, 1), (17, 2), (26, 3), (29, 3))]
     total_rolls = 0
-    for realm_index, rarity_index in bands:
+    for realm_id, rarity_index in bands:
         for rarity in RARITIES:
             count = RARITY_AFFIX_COUNT[rarity]
             for _ in range(samples):
                 for context in _roll_contexts(count):
-                    picked = _roll_one(rng, pools, by_id, context, realm_index, rarity_index)
+                    picked = _roll_one(rng, pools, by_id, context, realm_id, rarity_index)
                     if picked is None:
                         continue
                     option_id, value = picked
@@ -881,7 +882,7 @@ def _roll_one(
     pools: dict[str, list[str]],
     by_id: dict[str, dict],
     context: str,
-    realm_index: int,
+    realm_id: str,
     rarity_index: int,
 ) -> tuple[str, float] | None:
     """One weighted selection from a context pool, with exclusivity honored."""
@@ -918,11 +919,11 @@ def _roll_one(
             break
     record = by_id[chosen]
     family = record.get("exclusive_family")
-    return chosen, _roll_value(record, realm_index, rarity_index, rng)
+    return chosen, _roll_value(record, realm_id, rarity_index, rng)
 
 
-def _roll_value(record: dict, realm_index: int, rarity_index: int, rng: random.Random) -> float:
-    bounds = _magnitude_bounds(record["unit"], realm_index, rarity_index)
+def _roll_value(record: dict, realm_id: str, rarity_index: int, rng: random.Random) -> float:
+    bounds = _magnitude_bounds(record["unit"], realm_id, rarity_index)
     value = bounds["min"] + (bounds["max"] - bounds["min"]) * rng.random()
     precision = int(record.get("precision", 2))
     return round(value, precision)
@@ -984,17 +985,30 @@ def load_scale() -> dict[str, float]:
     return out
 
 
-def magnitude_scale(realm_index: int) -> float:
-    """The authored magnitude multiplier for one realm ordinal.
+def magnitude_scale(realm_id: str) -> float:
+    """The authored magnitude multiplier for one realm, looked up by realm id.
 
-    Resolved through the canonical ladder so the ordinal -> realm id mapping is
-    the single one both the tooling and the runtime use, and a realm is never
-    read out of position by accident.
+    Keyed by id and never by position: an inserted realm must not silently hand
+    every realm below it a neighbour's number (ADR 0050). Mirrors
+    `OptionCatalog.realm_magnitude_scale`, so the gate cannot validate content
+    against numbers the runtime would not roll.
+    """
+    scale = load_scale()
+    if realm_id not in scale:
+        raise ToolError(
+            f"{SCALE_PATH.name}: no magnitude scale for realm '{realm_id}'; "
+            "every realm on the ladder rolls items"
+        )
+    return scale[realm_id]
+
+
+def realm_ordinal(realm_id: str) -> int:
+    """A realm's position on the canonical ladder, or 0 when it is not on it.
+
+    This is an ordinal, not a scale: only a rate reads it.
     """
     ladder = _scale_ladder()
-    if realm_index < 0 or realm_index >= len(ladder):
-        raise ToolError(f"realm index {realm_index} is off the {len(ladder)}-realm ladder")
-    return load_scale()[ladder[realm_index]]
+    return ladder.index(realm_id) if realm_id in ladder else 0
 
 
 def _scale(write: bool, check: bool) -> int:
@@ -1039,26 +1053,25 @@ def _scale_report() -> int:
     return 0
 
 
-def realm_factor(unit: str, realm_index: int, slope: float) -> float:
-    """Realm factor for one option unit.
+def realm_factor(unit: str, realm_id: str, slope: float) -> float:
+    """Realm factor for one option unit, keyed by realm id.
 
-    A magnitude is DATA: the authored per-realm scale table, one multiplier per
-    realm, keyed by realm id so a renumbered realm cannot silently inherit
-    another realm's number. A rate or fraction is not a magnitude and stays a
-    contest read: linear in the realm ordinal with the unit's authored weight, so
-    a one-realm gap is worth the same at R30 as at R5.
+    A magnitude is DATA: the authored per-realm scale table. A rate or fraction is
+    not a magnitude and stays a contest read: linear in the realm ordinal with the
+    unit's authored weight, so a one-realm gap is worth the same at R30 as at R5.
 
     Mirrors `OptionCatalog._realm_factor`, so tooling and the game cannot disagree
     about what a rolled item is worth.
     """
     if unit == "magnitude":
-        return magnitude_scale(realm_index)
-    return 1.0 + realm_index * slope  # power: rate-read
+        return magnitude_scale(realm_id)
+    # power: rate-read - a rate is linear in the realm ordinal by design.
+    return 1.0 + realm_ordinal(realm_id) * slope
 
 
-def _magnitude_bounds(unit: str, realm_index: int, rarity_index: int) -> dict:
+def _magnitude_bounds(unit: str, realm_id: str, rarity_index: int) -> dict:
     policy = MAGNITUDE_POLICY.get(unit, MAGNITUDE_POLICY["magnitude"])
-    realm = realm_factor(unit, realm_index, float(policy[2]))
+    realm = realm_factor(unit, realm_id, float(policy[2]))
     rarity = 1.0 + rarity_index * float(policy[3])
     return {
         "min": float(policy[0]) * realm * rarity,

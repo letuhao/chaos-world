@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"wind_gust"
+element = &"wind"
+on_landed_blow = true
+kind = &"dot"
+scope = &"combat"
+stacking = &"refresh"
+duration = 10.0
+magnitude_unit = &"element_power"
+magnitude_cap = 7.0
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
+payload = {
+"mechanic": &"drain",
+"text": "The wind does not stop at the skin. It grinds grit into the guard and takes the breath with it, and the body only makes more slowly.",
+"pool": &"stamina",
+"share_per_pulse": 0.05,
+"modifiers": [
+{"stat": &"stamina_regen", "op": &"flat", "value": -2.0},
+{"stat": &"defense_physical", "op": &"percent", "value": -0.2}
+]
+}

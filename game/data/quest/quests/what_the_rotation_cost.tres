@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="QuestDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/quest/quest_def.gd" id="1_quest"]
+[ext_resource type="Script" path="res://src/modules/quest/quest_step_def.gd" id="2_step"]
+
+[sub_resource type="Resource" id="QuestStep_vigil_broken"]
+script = ExtResource("2_step")
+step_id = &"vigil_broken"
+fact = &"vigil_broken"
+need = 1
+display_name = "Break the night rotation by your own hand"
+
+[sub_resource type="Resource" id="QuestStep_duels_won"]
+script = ExtResource("2_step")
+step_id = &"duels_won"
+fact = &"duels_won"
+need = 3
+display_name = "Win three duels the sect counted"
+optional = true
+
+[sub_resource type="Resource" id="QuestStep_spared"]
+script = ExtResource("2_step")
+step_id = &"spared"
+fact = &"third_man_spared"
+need = 1
+display_name = "Let the third man walk"
+
+[resource]
+script = ExtResource("1_quest")
+id = &"what_the_rotation_cost"
+display_name = "What the Rotation Cost"
+description = "Nobody authored this. A body that broke the vigil and let a third man walk has crossed two unrelated ledgers at once, and the world has now written the consequence down. It ends whether you intended it to or not."
+kind = &"emergent"
+tier = 3
+requirement = {}
+steps = Array[ExtResource("2_step")]([SubResource("QuestStep_vigil_broken"), SubResource("QuestStep_duels_won"), SubResource("QuestStep_spared")])
+grants = Array[Dictionary]([{"kind": &"fate", "id": &"vigil_broken_by_hand", "amount": 1}, {"kind": &"fate", "id": &"the_third_man_spared", "amount": 1}])

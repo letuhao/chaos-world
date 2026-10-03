@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"E8_dao_fruit_warden_heaven_immortal_0"
+kind = &"item"
+item_id = &"compre_eternal_page"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"E8_dao_fruit_warden_heaven_immortal_1"
+kind = &"item"
+item_id = &"rite_eternal_form"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_E8_dao_fruit_warden_pool_heaven_immortal"
+display_name = "Dao Fruit Warden salvage (heaven_immortal)"
+realm = &"heaven_immortal"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1")
+])

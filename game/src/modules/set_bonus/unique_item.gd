@@ -16,6 +16,12 @@ extends RefCounted
 ## Tag every unique definition carries. Identity is data, not a subclass.
 const TAG := &"unique"
 ## `tags` entry naming the boss a unique drops from: `unique_route:<boss_id>`.
+##
+## This literal is the same field name the `loot` module enforces, and the
+## duplication is forced by the module boundary — `set_bonus` may not reach into
+## `loot`'s internals, so it cannot name `LootRoutes.TAG_PREFIX`. That also makes
+## it driftable, so the two are pinned together by a test rather than by a shared
+## constant: if either is renamed, that test goes red.
 const ROUTE_TAG_PREFIX := "unique_route:"
 ## Hard ceiling on how many extra rolled options a unique may gain while topping
 ## up around its locked signature. A bounded search never runs away.

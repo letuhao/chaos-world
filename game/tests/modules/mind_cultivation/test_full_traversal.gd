@@ -12,6 +12,8 @@ extends TestCase
 ## R1 is the starting realm, so advancing through the ladder is 29 transitions.
 const TRANSITIONS := 29
 
+const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
+
 static var _cached: Actor = null
 
 
@@ -45,50 +47,25 @@ func _stock(actor: Actor, def_id: StringName) -> void:
 		return
 	var def := Crafting.resolve(def_id)
 	assert_ne(def, null, "authored item %s exists" % def_id)
-	if def == null:
-		return
-	var guard := 0
-	while not ItemsApi.has_item(actor, def_id) and guard < 64:
-		ItemsApi.inventory(actor).add(def, 1)
-		guard += 1
-
-
-## Train every channel the source realm requires with the source realm's channel
-## elixir, repairing injury first. Eligibility (unlock) and opening (train) stay
-## separate: a realm award exposes channels, training opens them.
-func _train_required_channels(actor: Actor, source_seed: MindRealmSeed) -> void:
-	var target_rank: int = MeridianState.STATE_ORDER.get(source_seed.required_channel_state, 0)
-	for meridian_id in source_seed.required_meridians:
-		var channel := actor.meridians.get_meridian(meridian_id)
-		if channel == null:
-			continue
-		if channel.is_injured():
-			actor.meridians.repair_meridian(meridian_id)
-		while MeridianState.STATE_ORDER.get(channel.state, 0) < target_rank:
-			_stock(actor, source_seed.training_item)
-			if not MindTraining.train_channel(actor, meridian_id):
-				break
-			channel = actor.meridians.get_meridian(meridian_id)
+	Probe.stock(actor, def_id)
 
 
 ## Fight and win the tribulation for the realm being entered, through the
 ## production entry points only (ADR 0041). Finishing the phases is not enough:
 ## a gate opens only for a decided win, so the fight must be resolved as well.
 func _survive_tribulation(actor: Actor, target: RealmDef) -> void:
-	if target.index < Breakthrough.IMMORTAL_REALM_THRESHOLD:
-		return
-	if Breakthrough.tribulation_ok(actor, target.index):
-		return
-	if Breakthrough.begin_tribulation(actor, target.index) == null:
-		return
-	var guard := 0
-	while Breakthrough.advance_tribulation(actor) and guard < 128:
-		guard += 1
-	assert_eq(Breakthrough.resolve_tribulation(actor, true), true, "tribulation won")
+	Probe.fight(actor, target)
 
 
 ## Prepare every prerequisite the entry rules require. Returns the preview so
 ## callers can assert the attempt is actually legal.
+##
+## Every wait below is a bounded, named one from `Probe`, and none of them drains
+## the sea or hand-writes progress. That is the whole contract of this file: the
+## walk must reach each realm the way a player reaches it. It used to empty the
+## sea itself before every cultivation run, because `cultivate` refused a full
+## reservoir — so the fixture was doing the player's job and the walk proved
+## nothing about whether the game was playable.
 func _prepare(actor: Actor) -> Dictionary:
 	var state := actor.path(MindPath.PATH_ID)
 	var target := RealmDefaults.ladder().next(state.rank_id)
@@ -100,49 +77,53 @@ func _prepare(actor: Actor) -> Dictionary:
 		return {}
 
 	actor.meridians.unlock_for_realm(target.id)
-	_train_required_channels(actor, source_seed)
+	assert_eq(
+		Probe.train_channels(actor, source_seed), true, "channels trained in %s" % state.rank_id
+	)
 
 	# Both per-realm strengthening milestones must actually complete.
-	_stock(actor, source_seed.sea_catalyst)
+	Probe.stock(actor, source_seed.sea_catalyst)
 	assert_eq(MindTraining.strengthen_sea(actor), true, "sea milestone completed")
-	_stock(actor, source_seed.training_item)
+	Probe.stock(actor, source_seed.training_item)
 	# R19 commits the first anchor, so only later high tiers have one to
 	# reinforce; at R19 this milestone is a legitimate no-op.
 	if target.index > Breakthrough.IMMORTAL_REALM_THRESHOLD:
 		assert_eq(MindTraining.strengthen_anchor(actor), true, "resonance milestone completed")
 
-	_survive_tribulation(actor, target)
-
-	var sea := MindCultivationApi.sea(actor)
-	while sea.turbulence > 0.0:
-		MindTraining.meditate(actor, 1.0)
-
-	# Progress and insight are both earned only through `cultivate`. A full
-	# reservoir refuses work, so mind power is spent to make room — the real loop
-	# is fill, spend, fill — and the reservoir is topped off last because entry
-	# also requires it full.
-	var guard := 0
-	while (
-		guard < 8192
-		and (
-			state.progress < target_seed.progress_required
-			or actor.stats.get_base(Stat.COMPREHENSION) < target_seed.comprehension_required
+	# High tiers demand a DECIDED win, so finishing the phases is not enough.
+	Probe.fight(actor, target)
+	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD:
+		assert_eq(
+			Breakthrough.tribulation_ok(actor, target.index),
+			true,
+			"tribulation won for %s" % target.id
 		)
-	):
-		guard += 1
-		if sea.is_full(actor):
-			sea.drain(actor, sea.current(actor))
-		if not MindTraining.cultivate(actor, 500.0):
-			break
-	assert_eq(
-		state.progress >= target_seed.progress_required, true, "progress earned for %s" % target.id
-	)
-	while not sea.is_full(actor) and guard < 16384:
-		guard += 1
-		if not MindTraining.cultivate(actor, 500.0):
-			break
 
-	_stock(actor, target_seed.breakthrough_item)
+	assert_eq(Probe.calm_sea(actor), true, "sea calm in %s" % state.rank_id)
+	assert_eq(Probe.sharpen_sea(actor), true, "clarity and purity met in %s" % state.rank_id)
+	# The numbers travel with the failure: "earn_gate returned false" does not say
+	# WHICH of the two cultivation-only gates stopped converging, and a stalled
+	# gate is the exact bug this file exists to catch.
+	assert_eq(
+		Probe.earn_gate(actor, target_seed),
+		true,
+		(
+			"progress and insight earned for %s (progress %s/%s, comprehension %s/%s)"
+			% [
+				target.id,
+				state.progress,
+				target_seed.progress_required,
+				actor.stats.get_base(Stat.COMPREHENSION),
+				target_seed.comprehension_required,
+			]
+		)
+	)
+	# The reservoir fills long before the budget does, so this is where a stall
+	# used to hide: `cultivate` refused once the sea was full, and it was the two
+	# waits above that could then never finish.
+	assert_eq(Probe.fill_sea(actor), true, "sea filled for %s" % target.id)
+
+	Probe.stock(actor, target_seed.breakthrough_item)
 	return MindAdvancement.preview(actor)
 
 
@@ -293,9 +274,7 @@ func test_failure_is_recoverable_without_a_higher_realm() -> void:
 		"turbulence shrank usable capacity"
 	)
 	# Meditation is the Mind system's recovery and needs no higher realm.
-	while sea.turbulence > 0.0:
-		MindTraining.meditate(actor, 1.0)
-	assert_eq(sea.turbulence, 0.0, "meditation clears turbulence")
+	assert_eq(Probe.calm_sea(actor), true, "meditation clears turbulence")
 	assert_eq(sea.effective_capacity(), sea.structural_capacity, "usable capacity restored")
 	# The deviation injured a channel; training repairs it and keeps attainment.
 	var source_seed := MindRealmSeed.for_realm(&"qi_refining")

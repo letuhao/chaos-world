@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"spirit_manifestation"
+rarity = &"common"
+vitality = 136.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"marine_coral_leviathan", "table_id": &"loot_marine_coral_leviathan"},
+	{"boss_id": &"d3_coral_serpent", "table_id": &"loot_d3_coral_serpent"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"spirit_manifestation"
+rarity = &"rare"
+vitality = 217.6
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"marine_coral_leviathan", "table_id": &"loot_marine_coral_leviathan"},
+	{"boss_id": &"d3_coral_serpent", "table_id": &"loot_d3_coral_serpent"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_marine_coral_leviathan_domain"
+display_name = "Coral Leviathan Domain"
+domain_id = &"marine_coral_leviathan_domain"
+boss_ids = Array[StringName]([&"marine_coral_leviathan", &"d3_coral_serpent"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

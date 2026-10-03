@@ -5,11 +5,12 @@ extends TestCase
 ## entry gate must be reachable with one realm of training.
 ##
 ## Two realm-shaped numbers exist and they are NOT the same kind of thing:
-## `BodyRealmProfile.factor` is the realm RATE (what one unit of training work
-## is worth) and `BodyRealmSeed.work_required` is the PRICE. The body path's
-## MAGNITUDES are authored per realm where they belong — `integrity_maximum` for
-## the reservoir, and core's `RealmScaling` for the shared combat stats — so
-## nothing here may re-derive one.
+## `RealmRate.factor` is the realm RATE (what one unit of training work is worth)
+## and `BodyRealmSeed.work_required` is the PRICE. The body path's MAGNITUDES are
+## authored per realm where they belong — `integrity_maximum` for the reservoir,
+## and core's `RealmScaling` for the shared combat stats — so nothing here may
+## re-derive one. The RATE itself is asserted in `tests/core/test_realm_rate.gd`;
+## what this suite owns is the body's PRICE side of the pair.
 
 # --- The rate ---------------------------------------------------------------
 
@@ -19,7 +20,7 @@ extends TestCase
 func test_the_realm_rate_rises_at_every_one_of_the_30_realms() -> void:
 	var previous := 0.0
 	for realm in RealmDefaults.ladder().realms():
-		var rate := BodyRealmProfile.factor(realm.id)
+		var rate := RealmRate.factor(realm.id)
 		assert_eq(rate > previous, true, "rate rises at %s" % realm.id)
 		previous = rate
 
@@ -31,13 +32,13 @@ func test_the_realm_rate_rises_at_every_one_of_the_30_realms() -> void:
 ## than every other investment in the game.
 func test_the_rate_is_a_bounded_gain_and_not_a_magnitude() -> void:
 	var realms := RealmDefaults.ladder().realms()
-	var first := BodyRealmProfile.factor(realms[0].id)
-	var last := BodyRealmProfile.factor(realms[realms.size() - 1].id)
+	var first := RealmRate.factor(realms[0].id)
+	var last := RealmRate.factor(realms[realms.size() - 1].id)
 	assert_almost_eq(first, 1.0, "R1 is the neutral rate", 0.0001)
 	# The span is a consequence of the authored step, not a pasted number.
 	assert_almost_eq(
 		last,
-		pow(BodyRealmProfile.RATE_STEP, float(realms.size() - 1)),
+		pow(RealmRate.RATE_STEP, float(realms.size() - 1)),
 		"the span is the authored step compounded over the ladder",
 		0.0001
 	)
@@ -48,9 +49,7 @@ func test_the_rate_is_a_bounded_gain_and_not_a_magnitude() -> void:
 ## degrade to neutral rather than scale a stat to zero or throw.
 func test_an_unknown_or_empty_realm_is_neutral() -> void:
 	for realm_id in [&"", &"not_a_realm"]:
-		assert_almost_eq(
-			BodyRealmProfile.factor(realm_id), BodyRealmProfile.NEUTRAL, "rate for %s" % realm_id
-		)
+		assert_almost_eq(RealmRate.factor(realm_id), RealmRate.NEUTRAL, "rate for %s" % realm_id)
 
 
 ## The reservoir is the body path's MAGNITUDE and it is authored per realm. It
@@ -69,7 +68,7 @@ func test_the_reservoir_magnitude_rises_and_is_not_the_rate() -> void:
 		assert_eq(seed.integrity_maximum > previous, true, "reservoir rises for %s" % realm.id)
 		previous = seed.integrity_maximum
 		assert_eq(
-			seed.integrity_maximum > BodyRealmProfile.factor(realm.id),
+			seed.integrity_maximum > RealmRate.factor(realm.id),
 			true,
 			"the reservoir is a magnitude, not the rate, at %s" % realm.id
 		)
@@ -78,14 +77,69 @@ func test_the_reservoir_magnitude_rises_and_is_not_the_rate() -> void:
 # --- Targets and work ------------------------------------------------------
 
 
-func test_quality_and_integrity_targets_follow_formula() -> void:
+## True when every entry equals the first within `tolerance`. The authored
+## scalars are written to fixed decimal places, so differences recomputed in
+## float can disagree in the last ulp; the tolerance is one rounding step, and
+## any real disagreement between two ladders is orders of magnitude above it.
+func _all_equal(values: Array[float], tolerance: float = 0.0001) -> bool:
+	if values.is_empty():
+		return false
+	var first := values[0]
+	for value in values:
+		if absf(value - first) > tolerance:
+			return false
+	return true
+
+
+## Q(R) and U(R) are AUTHORED DATA (`BodyRealmSeed.quality_target` /
+## `integrity_target`), not functions the runtime evaluates. The recipe that
+## filled them lives in exactly one place — `tools/cultivation/ladder.py` — and
+## `cultivation audit` asserts every `.tres` against it, so a retune is a
+## legitimate content change and this suite does not re-own a copy of it. The
+## old assertion pasted `0.40 + 0.015i` / `0.45 + 0.015i`, which is a second
+## copy of the generator's recipe: it desynchronised the moment a seed was
+## retuned, and it asserted nothing about the game.
+##
+## What is this suite's to own is the SHAPE those two numbers must keep
+## together, read out of the data rather than pasted from a curve:
+##
+##   - the reservoir is charged at least as far as the huyệt are trained, so
+##     U(R) must sit strictly above the quality ceiling it is reached with;
+##   - and both steps are UNIFORM, so no realm can be retuned out of line with
+##     the rest of the ladder.
+##
+## The uniformity is the half that earns its keep: retuning the base and the
+## step together keeps it green without editing this file, while a single realm
+## moved by hand fails it.
+func test_quality_and_integrity_targets_keep_uniform_gaps() -> void:
+	var ceiling_steps: Array[float] = []
+	var reservoir_gaps: Array[float] = []
+	var counted := 0
+	var previous_ceiling := 0.0
 	for realm in RealmDefaults.ladder().realms():
 		var seed := BodyRealmSeed.for_realm(realm.id)
 		if seed == null:
 			continue
-		var index := RealmDefaults.ladder().index_of(realm.id)
-		assert_almost_eq(seed.quality_target, 0.40 + 0.015 * index, "Q(R) for %s" % realm.id)
-		assert_almost_eq(seed.integrity_target, 0.45 + 0.015 * index, "U(R) for %s" % realm.id)
+		var ceiling := seed.quality_target
+		var reservoir := seed.integrity_target
+		assert_eq(
+			reservoir > ceiling,
+			true,
+			(
+				"reservoir target %.4f is not charged as far as the %.4f ceiling at %s"
+				% [reservoir, ceiling, realm.id]
+			)
+		)
+		if counted > 0:
+			ceiling_steps.append(ceiling - previous_ceiling)
+		reservoir_gaps.append(reservoir - ceiling)
+		previous_ceiling = ceiling
+		counted += 1
+	assert_eq(counted, 30, "every realm has a seed")
+	assert_eq(_all_equal(ceiling_steps), true, "Q(R) steps by one distance across the whole ladder")
+	assert_eq(
+		_all_equal(reservoir_gaps), true, "U(R) stands off Q(R) by one distance on every realm"
+	)
 
 
 ## GDScript's `roundf()` rounds half away from zero. Python's `round()` does not,
@@ -184,7 +238,7 @@ func test_progress_requirement_equals_the_work_budget() -> void:
 ## breakthrough costs, and the rate you convert that work at never regresses.
 func test_reward_per_labour_never_gets_worse_with_depth() -> void:
 	var realms := RealmDefaults.ladder().realms()
-	var entry_rate := BodyRealmProfile.factor(realms[0].id)
+	var entry_rate := RealmRate.factor(realms[0].id)
 	var previous_rate := entry_rate
 	var previous_price := 0.0
 	var priced := 0
@@ -194,8 +248,8 @@ func test_reward_per_labour_never_gets_worse_with_depth() -> void:
 		var seed := BodyRealmSeed.for_realm(target.id)
 		if seed == null or seed.work_required <= 0.0:
 			continue
-		var reward := BodyRealmProfile.factor(target.id)
-		var price := seed.work_required / BodyRealmProfile.factor(here.id)
+		var reward := RealmRate.factor(target.id)
+		var price := seed.work_required / RealmRate.factor(here.id)
 		# (1) Reward per unit of work never regresses: the rate is monotonic and
 		# never falls below the R1 reference.
 		assert_eq(reward >= entry_rate, true, "reward per labour holds at %s" % target.id)
@@ -245,21 +299,76 @@ func test_resonance_ranks_for_high_realms() -> void:
 			assert_eq(seed.resonance_rank, 0, "no resonance for %s" % realm.id)
 
 
-## Risk must never reach certainty, and the ceiling must tighten as the ladder
-## climbs. Both bounds are authored per realm so the curve is tunable.
-func test_breakthrough_risk_bounds_follow_formula() -> void:
-	for realm in RealmDefaults.ladder().realms():
+## Risk must never reach certainty, and the floor must stay under the ceiling.
+## Both bounds are AUTHORED per realm (`chance_base` / `chance_cap`), so this
+## suite does not re-own the generator's recipe for them — `tools/cultivation/
+## ladder.py` holds it once and `cultivation audit` asserts every `.tres`
+## against it. The old assertion pasted `minf(0.55 + 0.008i, 0.80)` /
+## `maxf(0.95 - 0.008i, 0.70)`, a second copy of that recipe that reported 148
+## failures when the seeds were retuned and asserted nothing about the game.
+##
+## What is asserted here is the SHAPE the two numbers must keep for the roll to
+## mean anything, all read out of the data rather than pasted from a curve:
+##
+##   - a floor strictly under the ceiling, or `BodyAdvancement._chance`'s clamp
+##     swallows the huyệt term and training the body cannot change the outcome;
+##   - no realm a certain success, so the deviation loop stays reachable;
+##   - the ceiling strictly ABOVE what a fully trained body can roll, so it is a
+##     backstop against over-training rather than the thing that prices the
+##     attempt — a cap an ordinary body already meets would make the last of the
+##     huyệt work free;
+##   - and the floor DECLINES with depth, which is what keeps the ceiling
+##     meaningful further up the ladder.
+##
+## That last one is the shape the old `0.55 + 0.008i` recipe violated: a floor
+## rising into a falling ceiling crossed at R26 and left five realms certain.
+func test_breakthrough_risk_bounds_keep_a_live_band() -> void:
+	var ladder := RealmDefaults.ladder()
+	var previous_base := INF
+	var counted := 0
+	for index in ladder.realms().size():
+		var realm := ladder.realms()[index]
 		var seed := BodyRealmSeed.for_realm(realm.id)
 		if seed == null:
 			continue
-		var index := RealmDefaults.ladder().index_of(realm.id)
-		# Seeds store these to 2 decimal places, so the tolerance is half a step.
-		var expected_base := minf(0.55 + 0.008 * index, 0.80)
-		var expected_cap := maxf(0.95 - 0.008 * index, 0.70)
-		assert_almost_eq(seed.chance_base, expected_base, "chance base for %s" % realm.id, 0.005)
-		assert_almost_eq(seed.chance_cap, expected_cap, "chance cap for %s" % realm.id, 0.005)
-		assert_eq(seed.chance_cap < 1.0, true, "no realm is a guaranteed success (%s)" % realm.id)
-		assert_eq(seed.chance_cap >= 0.70, true, "risk stays meaningful (%s)" % realm.id)
+		var floor := seed.chance_base
+		var cap := seed.chance_cap
+		# A floor at or above the ceiling is not a band: the clamp in
+		# `BodyAdvancement._chance` swallows the acupoint term entirely.
+		assert_eq(
+			floor < cap,
+			true,
+			"chance floor %.4f must sit below the ceiling %.4f at %s" % [floor, cap, realm.id]
+		)
+		assert_eq(cap < 1.0, true, "no realm is a guaranteed success (%s)" % cap)
+		assert_eq(
+			floor >= BodyAdvancement.MIN_CHANCE,
+			true,
+			"floor %.4f is under the clamp at %s" % [floor, realm.id]
+		)
+		# The ceiling is priced against the best quality an actor can actually
+		# hold while attempting this realm: the realm BELOW's training ceiling,
+		# since standing above `gate` is what the attempt demands.
+		var best := seed.quality_target
+		if index > 0:
+			var below := BodyRealmSeed.for_realm(ladder.realms()[index - 1].id)
+			if below != null:
+				best = below.quality_target
+		var reach := floor + best * BodyAdvancement.QUALITY_TO_CHANCE
+		assert_eq(
+			cap > reach,
+			true,
+			"ceiling %.4f is met by the %.4f a trained body reaches at %s" % [cap, reach, realm.id]
+		)
+		if counted > 0:
+			assert_eq(
+				floor <= previous_base,
+				true,
+				"floor %.4f rises into the band at %s" % [floor, realm.id]
+			)
+		previous_base = floor
+		counted += 1
+	assert_eq(counted, 30, "every realm has a seed")
 
 
 func test_channel_training_names_real_meridians() -> void:
@@ -280,23 +389,61 @@ func test_channel_training_names_real_meridians() -> void:
 ## A realm must be enterable with one realm of training: its gate can never ask
 ## for more than the previous realm can produce. This is the invariant that was
 ## broken before ADR 0028 and stalled the traversal at R8.
+##
+## Reachability is the property, so it is asserted as a COMPARISON between two
+## seeds and never as a pasted number. The old form demanded
+## `quality_required == previous.quality_target`, which was only ever true
+## while the generator pinned the gate onto the ceiling — and that pinning is
+## itself the bug this suite now guards against, because a gate level with the
+## ceiling leaves no span of huyệt quality for the breakthrough roll to price.
+## So the two halves are:
+##
+##   1. REACHABLE — the gate is at or below what the realm below can train to;
+##   2. and a strict HEADROOM below it, so acupoint quality still decides
+##      something. `test_seed_balance_invariants.gd` asserts the same shape;
+##      it is restated here because this suite is the one that owns the entry
+##      gate's relationship to the realm below.
+##
+## The uniform headroom is derived, not pasted: the generator sets every gate
+## one `QUALITY_HEADROOM` under the ceiling, so the gap is a constant across the
+## ladder. Reading it as a constant asserts the recipe holds uniformly without
+## restating its value — retune the ladder and this stays green.
 func test_entry_gates_are_reachable_from_the_previous_realm() -> void:
 	var realms := RealmDefaults.ladder().realms()
+	var headrooms: Array[float] = []
+	var counted := 0
 	for index in range(1, realms.size()):
 		var target := BodyRealmSeed.for_realm(realms[index].id)
 		var source := BodyRealmSeed.for_realm(realms[index - 1].id)
 		if target == null or source == null:
 			continue
-		assert_almost_eq(
-			target.quality_required,
-			source.quality_target,
-			"quality gate for %s is one realm of training" % realms[index].id
+		var gate := target.quality_required
+		var ceiling := source.quality_target
+		assert_eq(
+			gate <= ceiling,
+			true,
+			(
+				"gate %.4f for %s is above the %.4f the realm below can train to"
+				% [gate, realms[index].id, ceiling]
+			)
 		)
+		assert_eq(
+			gate < ceiling,
+			true,
+			(
+				"no huyệt quality to price at %s: gate %.4f is level with ceiling %.4f"
+				% [realms[index].id, gate, ceiling]
+			)
+		)
+		headrooms.append(ceiling - gate)
 		assert_eq(
 			target.required_refinement <= source.refinement_cap,
 			true,
 			"refinement gate for %s fits in %s" % [realms[index].id, realms[index - 1].id]
 		)
+		counted += 1
+	assert_eq(counted, 29, "every transition on the ladder was checked")
+	assert_eq(_all_equal(headrooms), true, "the gate sits one headroom below every ceiling")
 
 
 func test_meridian_integration_increases_with_each_tier() -> void:

@@ -50,7 +50,6 @@ func _qi_actor() -> Actor:
 	actor.set_path(PathState.new(QiPath.PATH_ID, &"qi_refining"))
 	actor.meridians.unlock_for_realm(&"qi_refining")
 	QiCultivationApi.attach(actor)
-	QiCultivationApi.attach_dantian(actor)
 	QiTraining.synchronize(actor)
 	return actor
 

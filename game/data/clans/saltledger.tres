@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ClanDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/clan/clan_def.gd" id="1_clan"]
+
+[resource]
+script = ExtResource("1_clan")
+id = &"saltledger"
+display_name = "The Saltledger"
+description = "A counting house that has decided access is the only thing worth fighting over. Members trade on every road the house holds, and the house answers that access with a ledger: who may use the roads, at what rate, on whose word. It publishes credit, safe-conduct and trading posts against exclusivity — a member who will not carry a rival's goods. It rivals the Ironpact over the harbour tariffs, because one of them writes the contract and the other decides what it is worth."
+founding_bloodline = &"hearthborn"
+ranks = Array[StringName]([&"outer", &"inner", &"core", &"heir", &"head"])
+standing_bands = Array[int]([0, 20, 50, 90, 150])
+patronage = {"credit_line": "Extended credit against the house books, repaid in goods, not coin.", "road_warrant": "Safe-conduct on every road the house holds, for the member and their household.", "trade_post": "A trading post and a clerk, for a member the house calls competent."}
+duty = {"exclusivity": "Carry the house goods and no rival's, on any road the house holds.", "declaration": "Every contract you witness is entered in the house books within the month.", "hedge": "A share of the member's own risk is underwritten by the house — and recalled."}
+rival_clans = Array[StringName]([&"quiethouse"])
+tags = Array[StringName]([&"trade", &"roads"])
+min_purity = 0.42
+required_race = &""
+min_realm = 0

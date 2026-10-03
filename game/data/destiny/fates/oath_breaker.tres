@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="FateDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/destiny/fate_def.gd" id="1_fate"]
+
+[resource]
+script = ExtResource("1_fate")
+id = &"oath_breaker"
+display_name = "Oath-Breaker"
+description = "Witnessed swearing an oath and witnessed breaking it, both in the same quarter hour. The sect records the second event. It keeps no file on the first."
+category = &"oath"
+tier = 2
+visibility = &"revealed"
+flat_modifiers = {"attack_physical": 7.0}
+percent_modifiers = {"crit_chance": 0.03}
+counters = Array[StringName]([&"oaths_broken"])
+tags = Array[StringName]([&"broken_promise", &"aggressive"])

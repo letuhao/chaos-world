@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="CombatTuning" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/combat_engine/combat_tuning.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+min_chip_abs = 1.0
+min_chip_share = 0.01
+avoidance_band_cap = 0.95
+chain_depth_limit = 6
+rate_scale = 1000.0
+amp_scale = 10.0
+lifesteal_pool = &"health"
+default_element_share = 0.8
+resist_divisor = 100.0
+resist_cap = 0.75
+damage_reduction_cap = 0.9
+element_power_prefix = "element_power_"
+resist_resistance_prefix = "element_resistance_"
+status_min_apply = 0.01
+status_potency_scale = 0.25
+status_potency_floor = 1.0
+status_default_duration = 6.0

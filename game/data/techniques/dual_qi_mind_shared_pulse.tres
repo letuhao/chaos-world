@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"dual_qi_mind_shared_pulse"
+display_name = "Shared Pulse"
+description = "Runs one circuit from the dantian up through the mind and back, so each half feeds the other. Unelemental, so there is no matchup to read, and both paths must be at the floor before it can be learned."
+tags = Array[StringName]([&"technique", &"dual", &"qi_mind", &"unelemental", &"no_element"])
+grade = &"spirit"
+rarity = &"rare"
+element = &""
+schools = Array[StringName]([&"cultivation", &"dual"])
+active = true
+path = &"qi_cultivation+mind_cultivation"
+min_path_realm = {&"qi_cultivation": 12, &"mind_cultivation": 12}
+qi_cost = 40.0
+stamina_cost = 8.0
+cooldown = 18.0
+mastery_rungs = 5
+magnitude = 1.3
+

@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"armor"
 grade = &"spirit"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:stormcall_circuit"])
 sources = Array[StringName]([&"boss:body_spirit_condensation_guardian"])
 description = "A condensation mantle that sheds charge into the wearer's meridian run."

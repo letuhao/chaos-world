@@ -4,42 +4,34 @@ extends TestCase
 ## dantian and burns a channel; both are recoverable overlays, so every realm
 ## must author a `recovery_item` that `QiTraining.recover` spends.
 
+const Probe := preload("res://tests/modules/qi_cultivation/qi_gate_probe.gd")
+
 
 func _actor() -> Actor:
 	var actor := Actor.new(&"qi_hero", {Stat.COMPREHENSION: 40.0, QiStats.DANTIAN_CAPACITY: 100.0})
 	actor.set_path(PathState.new(QiPath.PATH_ID, &"qi_refining"))
 	actor.meridians.unlock_for_realm(&"qi_refining")
 	QiCultivationApi.attach(actor)
-	QiCultivationApi.attach_dantian(actor)
-	ItemsApi.attach(actor, 64)
+	ItemsApi.attach(actor, 400)
 	QiTraining.synchronize(actor)
 	return actor
 
 
 func _stock(actor: Actor, def_id: StringName) -> void:
-	var def := ItemDef.new()
-	def.id = def_id
-	def.stackable = true
-	def.max_stack = 99
-	ItemsApi.inventory(actor).add(def, 1)
+	assert_eq(Probe.stock(actor, def_id, 1), true, "authored item %s stocked" % def_id)
 
 
 func _recovery_id() -> StringName:
 	return QiRealmSeed.for_realm(&"qi_refining").recovery_item
 
 
-## Open every channel the target realm demands, so the injury is the *only*
-## remaining blocker. Without this a "refused" assertion would pass for the
-## wrong reason and prove nothing.
+## Train every channel the target realm demands to its gate, through the public
+## verb, so the injury is the *only* remaining blocker. Without this a "refused"
+## assertion would pass for the wrong reason and prove nothing. It used to hand-open
+## each channel instead, which stopped discriminating the moment the ladder began
+## to demand depth as well as state (ADR 0095).
 func _open_required_channels(actor: Actor, seed: QiRealmSeed) -> void:
-	actor.meridians.unlock_for_realm(seed.id)
-	for meridian_id in seed.required_meridians:
-		var channel := actor.meridians.get_meridian(meridian_id)
-		if channel == null:
-			continue
-		actor.meridians.repair_meridian(meridian_id)
-		if not channel.is_open():
-			actor.meridians.open_meridian(meridian_id)
+	assert_eq(Probe.train_gate_channels(actor, seed), true, "channels trained for %s" % seed.id)
 
 
 ## A scar must be healed, not merely refilled. `Dantian.damage` drops usable
@@ -49,7 +41,7 @@ func _open_required_channels(actor: Actor, seed: QiRealmSeed) -> void:
 ## agree: this is the test that fails without the `_dantian_ready` injury check.
 func test_a_scarred_dantian_cannot_be_spent_on_a_breakthrough() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	var target := RealmDefaults.ladder().next(&"qi_refining")
 	var seed := QiRealmSeed.for_realm(target.id)
 	_open_required_channels(actor, seed)
@@ -58,10 +50,12 @@ func test_a_scarred_dantian_cannot_be_spent_on_a_breakthrough() -> void:
 	dantian.set_quality(seed.dantian_quality_required)
 	QiTraining.synchronize(actor)
 	dantian.damage(actor)
-	# Refill to the reduced capacity, so only the injury can be blocking.
+	# Refill to the reduced capacity, so only the injury can be blocking. The work
+	# budget is earned rather than assigned: this test claims the injury is the ONLY
+	# unmet condition, so every other gate has to be genuinely met.
 	dantian.fill(actor, dantian.effective_capacity())
 	QiTraining.synchronize(actor)
-	actor.path(QiPath.PATH_ID).progress = seed.progress_required
+	assert_eq(Probe.earn_progress(actor, seed), true, "the work budget was earned, not written")
 	assert_eq(dantian.injured, true, "scarred")
 	assert_eq(dantian.ratio(actor), 1.0, "refilled to its reduced capacity")
 	assert_eq(
@@ -82,7 +76,7 @@ func test_a_scarred_dantian_cannot_be_spent_on_a_breakthrough() -> void:
 ## some other gate quietly refusing.
 func test_a_healed_dantian_is_spendable_again() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	var target := RealmDefaults.ladder().next(&"qi_refining")
 	var seed := QiRealmSeed.for_realm(target.id)
 	_open_required_channels(actor, seed)
@@ -96,7 +90,7 @@ func test_a_healed_dantian_is_spendable_again() -> void:
 	assert_eq(QiCultivationApi.recover_next(actor), true, "healed")
 	dantian.fill(actor, dantian.effective_capacity())
 	QiTraining.synchronize(actor)
-	actor.path(QiPath.PATH_ID).progress = seed.progress_required
+	assert_eq(Probe.earn_progress(actor, seed), true, "the work budget was earned, not written")
 	var condition := QiBreakthroughCondition.new()
 	assert_eq(
 		condition.can_breakthrough(actor, actor.path(QiPath.PATH_ID), {}),
@@ -110,7 +104,7 @@ func test_a_healed_dantian_is_spendable_again() -> void:
 
 func test_recover_heals_the_scarred_dantian() -> void:
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.damage(actor)
 	assert_eq(dantian.injured, true, "dantian scarred")
 	_stock(actor, _recovery_id())
@@ -142,10 +136,10 @@ func test_recover_is_a_noop_on_a_healthy_actor() -> void:
 
 func test_recover_rejects_an_unknown_channel() -> void:
 	var actor := _actor()
-	QiCultivationApi.dantian(actor).damage(actor)
+	QiAccess.dantian(actor).damage(actor)
 	_stock(actor, _recovery_id())
 	assert_eq(QiTraining.recover(actor, &"not_a_meridian"), false, "unknown channel")
-	assert_eq(QiCultivationApi.dantian(actor).injured, true, "dantian untouched")
+	assert_eq(QiAccess.dantian(actor).injured, true, "dantian untouched")
 
 
 func test_recover_heals_structural_damage_but_leaves_quality_to_circulation() -> void:
@@ -153,7 +147,7 @@ func test_recover_heals_structural_damage_but_leaves_quality_to_circulation() ->
 	# retrained by `cultivate`, which is why the traversal test circulates again
 	# after every recovery. It deliberately does *not* restore quality itself.
 	var actor := _actor()
-	var dantian := QiCultivationApi.dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	dantian.set_quality(0.8)
 	dantian.damage(actor)
 	dantian.set_quality(0.4)

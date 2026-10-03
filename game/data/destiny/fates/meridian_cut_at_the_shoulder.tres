@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FateDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/destiny/fate_def.gd" id="1_fate"]
+
+[resource]
+script = ExtResource("1_fate")
+id = &"meridian_cut_at_the_shoulder"
+display_name = "Cut at the Shoulder"
+description = "A channel opened in order to be carried, then closed at the shoulder. The method is permanent, repeatable and widely documented. It is performed anyway."
+category = &"severance"
+tier = 2
+visibility = &"revealed"
+flat_modifiers = {"attack_physical": 6.0, "agility": 2.0}
+counters = Array[StringName]([&"severances"])
+tags = Array[StringName]([&"severance", &"sacrifice"])

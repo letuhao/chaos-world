@@ -10,7 +10,6 @@ category = &"equipment"
 subcategory = &"artifact"
 grade = &"heaven"
 stackable = false
-value = 100
 tags = Array[StringName]([&"set:void_serpent_coil"])
 sources = Array[StringName]([&"boss:E7_golden_regent"])
 description = "An anchor that fixes the coil's shape while the wearer is still."

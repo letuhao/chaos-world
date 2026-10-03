@@ -18,6 +18,5 @@ subcategory = &"armor"
 stackable = false
 grade = &"immortal"
 sources = Array[StringName]([&"gather"])
-value = 200
 tags = Array[StringName]([&"socket_host"])
 description = "Equipment that can carry two sockets. The socket subsystem opens, imputes and fills its slots."

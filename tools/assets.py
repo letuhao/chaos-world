@@ -11,6 +11,7 @@ from pathlib import Path
 
 from PIL import Image
 
+from . import map_assets
 from .common import GAME_DIR, REPO_ROOT, ToolError, fail, ok
 
 ITEM_ROOT = GAME_DIR / "data" / "items"
@@ -31,9 +32,12 @@ def register(subparsers) -> None:
     normalize = actions.add_parser("normalize", help="crop and resize a transparent generated PNG")
     normalize.add_argument("--source", required=True, help="generated PNG source path")
     normalize.add_argument("--output", required=True, help="new filename in generated item assets")
+    map_assets.register(actions)
 
 
 def run(args) -> int:
+    if args.assets_action == "map":
+        return map_assets.run(args)
     items = _load_items()
     records = _load_index()
     if args.assets_action == "inspect":

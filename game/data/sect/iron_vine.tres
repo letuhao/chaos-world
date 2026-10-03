@@ -1,0 +1,78 @@
+[gd_resource type="Resource" script_class="SectDef" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/modules/sect/sect_def.gd" id="1_sect"]
+[ext_resource type="Script" path="res://src/modules/sect/sect_position_def.gd" id="2_position"]
+
+[sub_resource type="Resource" id="position_ward"]
+script = ExtResource("2_position")
+id = &"ward"
+display_name = "Ward"
+description = "Every sworn member of the Iron Vine who holds no office is a Ward. It is the unbounded office of the house, and it recognises no stat at all, because what the Vine hands out is load and not edge."
+standing_floor = 0
+capacity = 0
+duties = Array[StringName]([&"haul_at_the_yard", &"attend_instruction"])
+authorities = Array[StringName]([&"use_the_commons"])
+succession_method = &"seniority"
+succession_param = {"order": "most_standing"}
+standing_percent_stats = {}
+patronage_per_period = 0
+duty_per_period = 1
+
+[sub_resource type="Resource" id="position_bulwark"]
+script = ExtResource("2_position")
+id = &"bulwark"
+display_name = "Bulwark"
+description = "Three at a time, because a wall one body wide is a wall with a door in it. The Bulwark is recognised on endurance and carries the right to refuse entry, which is the second authority in this repo to be authored rather than ranked."
+standing_floor = 30
+capacity = 3
+duties = Array[StringName]([&"hold_the_line", &"haul_at_the_yard"])
+authorities = Array[StringName]([&"open_the_yard", &"turn_away_a_stranger"])
+succession_method = &"seniority"
+succession_param = {"order": "most_standing"}
+standing_percent_stats = {"max_health": 0.0, "defense_physical": 0.0}
+patronage_per_period = 1
+duty_per_period = 2
+
+[sub_resource type="Resource" id="position_iron_root"]
+script = ExtResource("2_position")
+id = &"iron_root"
+display_name = "Iron Root"
+description = "The single seat of the Vine, and the only office with the right to expel. It is deliberately a seat rather than a rank: whoever holds it can be put out of the house by any three Bulwarks acting together, which is the one exit from a totem pole an institution needs."
+standing_floor = 70
+capacity = 1
+duties = Array[StringName]([&"hold_the_root", &"teach", &"judge_the_yard"])
+authorities = Array[StringName]([&"read_the_sealed_shelf", &"expel", &"nominate_a_bulwark"])
+succession_method = &"trial"
+succession_param = {"stage_keeper": "the_three_bulwarks", "question": "what_the_yard_could_carry"}
+succession_periods = 1
+teach_tax = 2.0
+standing_percent_stats = {"max_health": 0.0, "defense_physical": 0.0, "poise": 0.0}
+patronage_per_period = 3
+duty_per_period = 3
+
+[sub_resource type="Resource" id="position_root_listener"]
+script = ExtResource("2_position")
+id = &"root_listener"
+display_name = "Root Listener"
+description = "One seat, and this one is empty more often than not. It exists to be legible when vacant, which is why an absent holder is a visible row and never a zero."
+standing_floor = 15
+capacity = 1
+duties = Array[StringName]([&"sit_with_the_vine", &"record_the_yard"])
+authorities = Array[StringName]([&"counsel_a_bulwark"])
+succession_method = &"inherited"
+succession_param = {"charter": "the_vine_charter"}
+standing_percent_stats = {"dao_heart": 0.0}
+patronage_per_period = 1
+duty_per_period = 1
+
+[resource]
+script = ExtResource("1_sect")
+id = &"iron_vine"
+display_name = "The Iron Vine"
+description = "A school of load and endurance, organised around the Iron Root. It asks less of a member's ear than of their back, and it is the sect in this build whose teaching gate actually refuses: below a third affinity nothing here is taught at all."
+doctrine_id = &"iron_vine"
+top_position_id = &"iron_root"
+positions = Array[SectPositionDef]([SubResource("position_ward"), SubResource("position_bulwark"), SubResource("position_root_listener"), SubResource("position_iron_root")])
+min_purity = 30
+standing_cap = 120
+founding_cost = {"currency": "silver", "amount": 900, "found": 900, "outstanding": 900}

@@ -187,7 +187,7 @@ func test_the_list_reports_the_action_that_was_pressed() -> void:
 	var list := _list()
 	var picked: Array = []
 	var taken: Array = []
-	list.pickup_requested.connect(func(drop_id: String) -> void: picked.append(drop_id))
+	list.row_action_requested.connect(func(drop_id: String) -> void: picked.append(drop_id))
 	list.take_all_requested.connect(func(encounter_id: String) -> void: taken.append(encounter_id))
 	var reward := _reward([_drop("a"), _drop("b")], 2)
 	list.show_reward(reward, true)
@@ -195,6 +195,53 @@ func test_the_list_reports_the_action_that_was_pressed() -> void:
 	assert_eq(str(picked), '["b"]', "the pressed drop id is what is reported")
 	(list.get_node_or_null("%TakeAllButton") as Button).pressed.emit()
 	assert_eq(str(taken), '["%s"]' % reward["encounter_id"], "take all names the encounter")
+
+
+## A row press reports itself in STASH mode too.
+##
+## The list used to `return` early when `_mode == &"stashed"`, so a `Reclaim` button
+## was rendered, enabled, and inert: `act_reclaim` was unreachable and the entire
+## world-drop-container overflow branch — the one that tells a player their stash is
+## full — had no way to fire. The list does not know what its buttons mean; the
+## screen does, by choosing which signal to wire.
+func test_a_stashed_row_press_is_reported_too() -> void:
+	var list := _list()
+	var acted: Array = []
+	list.row_action_requested.connect(func(drop_id: String) -> void: acted.append(drop_id))
+	var stashed := _drop("a")
+	stashed["stashed"] = true
+	stashed["stash_id"] = "a"
+	list.show_stashes([stashed], true)
+	(_row_node(list, 0).get_node_or_null("%DropAction") as Button).pressed.emit()
+	assert_eq(str(acted), '["a"]', "a Reclaim press is reported, not swallowed")
+
+
+## Rebuilding must not destroy the row that is mid-emission.
+##
+## The old `_build` freed every row and made new ones, so pressing a button freed the
+## very node still inside its own `action_requested` emission -- Godot's "Attempted
+## to free a locked object", 14 times in a run. Worse, it *masked* the resulting
+## script errors, which is how a broken mutation elsewhere in this screen's tests
+## stayed green. Rows are pooled and reused, so nothing is freed at all.
+func test_a_rebuild_never_frees_the_row_that_is_pressing() -> void:
+	var list := _list()
+	# An Array, not an int: a GDScript lambda captures a local BY VALUE, so
+	# `presses += 1` would bump the lambda's own copy and this test would count zero
+	# presses no matter how many happened.
+	var presses: Array = []
+	list.row_action_requested.connect(func(_drop_id: String) -> void: presses.append(1))
+	list.show_reward(_reward([_drop("a"), _drop("b")], 2), true)
+	# Press, and let the handler rebuild the list under the emitter's feet.
+	(_row_node(list, 0).get_node_or_null("%DropAction") as Button).pressed.emit()
+	assert_eq(presses.size(), 1, "the press reached the screen")
+	# Now shrink the list: the surplus row must survive as a hidden pooled row.
+	list.show_reward(_reward([_drop("a")], 1), true)
+	assert_eq(int(list.summary()["row_count"]), 1, "the list shrank")
+	# And grow it again: the pooled row comes back rather than a new one appearing.
+	list.show_reward(_reward([_drop("a"), _drop("b")], 2), true)
+	assert_eq(int(list.summary()["row_count"]), 2, "and grew back")
+	(_row_node(list, 1).get_node_or_null("%DropAction") as Button).pressed.emit()
+	assert_eq(presses.size(), 2, "a reused row still reports its press")
 
 
 func test_focus_lands_on_a_live_action() -> void:

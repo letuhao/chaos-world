@@ -1,13 +1,57 @@
 {
+  "version": 1,
   "modules": {
+    "bloodline": {
+      "deps": [
+        "contracts",
+        "core",
+        "race"
+      ]
+    },
     "body_cultivation": {
       "deps": [
         "contracts",
         "core",
-        "items"
+        "items",
+        "race"
+      ]
+    },
+    "clan": {
+      "deps": [
+        "bloodline",
+        "contracts",
+        "core",
+        "race"
       ]
     },
     "combat": {
+      "deps": [
+        "contracts",
+        "core",
+        "loot",
+        "status"
+      ]
+    },
+    "combat_engine": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
+    "custody": {
+      "deps": [
+        "contracts",
+        "core",
+        "economy"
+      ]
+    },
+    "destiny": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
+    "domain": {
       "deps": [
         "contracts",
         "core"
@@ -19,17 +63,48 @@
         "core"
       ]
     },
+    "economy": {
+      "deps": [
+        "contracts",
+        "core",
+        "items"
+      ]
+    },
     "elements": {
       "deps": [
         "contracts",
         "core"
       ]
     },
-    "fertility": {
+    "event": {
       "deps": [
         "contracts",
         "core",
-        "dual_cultivation"
+        "destiny",
+        "nation",
+        "npc",
+        "world"
+      ]
+    },
+    "fertility": {
+      "deps": [
+        "bloodline",
+        "contracts",
+        "core",
+        "dual_cultivation",
+        "race"
+      ]
+    },
+    "heavenly_tribulation": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
+    "holdings": {
+      "deps": [
+        "contracts",
+        "core"
       ]
     },
     "items": {
@@ -45,18 +120,61 @@
         "items"
       ]
     },
+    "market": {
+      "deps": [
+        "contracts",
+        "core",
+        "economy",
+        "items"
+      ]
+    },
     "mind_cultivation": {
       "deps": [
         "contracts",
         "core",
-        "items"
+        "items",
+        "race"
+      ]
+    },
+    "nation": {
+      "deps": [
+        "contracts",
+        "core",
+        "sect"
+      ]
+    },
+    "npc": {
+      "deps": [
+        "contracts",
+        "core",
+        "social"
       ]
     },
     "qi_cultivation": {
       "deps": [
         "contracts",
         "core",
-        "items"
+        "items",
+        "race"
+      ]
+    },
+    "quest": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
+    "race": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
+    "sect": {
+      "deps": [
+        "clan",
+        "contracts",
+        "core"
       ]
     },
     "set_bonus": {
@@ -66,7 +184,26 @@
         "items"
       ]
     },
+    "social": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
     "socket": {
+      "deps": [
+        "contracts",
+        "core",
+        "items"
+      ]
+    },
+    "status": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
+    "techniques": {
       "deps": [
         "contracts",
         "core",
@@ -79,6 +216,5 @@
         "core"
       ]
     }
-  },
-  "version": 1
+  }
 }

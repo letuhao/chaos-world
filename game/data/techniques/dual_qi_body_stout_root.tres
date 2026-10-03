@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"dual_qi_body_stout_root"
+display_name = "Stout Root"
+description = "Fuses the dantian's reservoir into the skeleton so the body stops being a separate machine. Denser bone and a deeper dantian: the only passive carrying one structural option and one qi option together."
+tags = Array[StringName]([&"passive", &"dual", &"qi_body", &"structure"])
+grade = &"earth"
+rarity = &"common"
+element = &""
+schools = Array[StringName]([&"cultivation", &"dual", &"body"])
+active = false
+path = &"qi_cultivation+body_cultivation"
+min_path_realm = {&"qi_cultivation": 18, &"body_cultivation": 18}
+mastery_rungs = 5
+magnitude = 1.0
+passive_options = Array[Dictionary]([
+	{"option_id": &"cult_bone_density", "value": 9.0},
+	{"option_id": &"cult_dantian_capacity", "value": 5.0},
+])
+

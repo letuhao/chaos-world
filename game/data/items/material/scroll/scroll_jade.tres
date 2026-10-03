@@ -18,7 +18,6 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"scroll"
 grade = &"earth"
-value = 120
 tags = Array[StringName]([&"rare"])
 sources = Array[StringName]([&"craft:scroll_jade_recipe"])
 description = "A jade-inlaid scroll containing earth-grade cultivation secrets."

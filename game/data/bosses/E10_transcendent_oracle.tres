@@ -7,4 +7,4 @@ script = ExtResource("1_boss")
 id = &"E10_transcendent_oracle"
 display_name = "Transcendent Oracle"
 domain_id = &"body_transcendent_trial"
-loot = Array[StringName]([&"sigil_immortal_echo", &"stele_divine_stone", &"astral_starfall_essence", &"curr_primordial_mark", &"U5_divine_wharf_thurible", &"U5_divine_wharf_wreath", &"set_gilded_bone_charm", &"set_gilded_bone_relic"])
+loot = Array[StringName]([])

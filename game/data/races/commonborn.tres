@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="RaceDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/race/race_def.gd" id="1_race"]
+
+[resource]
+script = ExtResource("1_race")
+id = &"commonborn"
+display_name = "Commonborn"
+description = "The body everyone is born into before the world has an opinion about them. It caps no realm and lends no discipline, which is exactly why it is weak: nothing about its anatomy favours a path, so a Commonborn must settle on one early and is weakest precisely where a specialist is strongest. Mind is closed to it outright — a body this even has no native faculty for it. Its affinities are broad and shallow, every element faintly legible and none native, so breadth buys flexibility rather than power."
+dominance = 0.45
+manifestation_threshold = 0.1
+gestation_days = 30.0
+base_fertility = 0.5
+base_potency = 0.5
+offspring_variance = 0.1
+closed_paths = Array[StringName]([&"mind_cultivation"])
+realm_ceiling = 0
+lifespan = 36500.0
+base_attributes = {"physique": 1.0, "spirit": 1.0, "aptitude": 1.0, "comprehension": 1.0, "agility": 1.0, "will": 1.0, "fortune": 1.0}
+percent_modifiers = {"cultivation_rate": 0.02, "breakthrough_chance": 0.0}
+affinities = {"metal": 2.0, "wood": 2.0, "water": 2.0, "fire": 2.0, "earth": 2.0}
+tags = Array[StringName]([&"baseline", &"unbound"])

@@ -3,6 +3,8 @@ extends TestCase
 ## ADR 0024: the mind-cultivation action layer — filling the sea, meditating to
 ## calm turbulence, training a channel, and the seeded breakthrough.
 
+const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
+
 
 func _actor() -> Actor:
 	var actor := Actor.new(&"mind_hero", {Stat.COMPREHENSION: 40.0, MindStats.SEA_CAPACITY: 100.0})
@@ -28,6 +30,9 @@ func _stock(actor: Actor, def_id: StringName) -> void:
 ## Prepare the actor to attempt the next realm. Entry checks the *source*
 ## realm's milestones (ADR 0029), so the sea and channels are brought to the
 ## source realm's targets, not the target realm's.
+##
+## No drain and no hand-written progress: the actor has to be able to reach this
+## state the way a player reaches it, or these tests measure the fixture.
 func _prepare(actor: Actor) -> MindRealmSeed:
 	var state := actor.path(MindPath.PATH_ID)
 	var target := RealmDefaults.ladder().next(state.rank_id)
@@ -41,23 +46,16 @@ func _prepare(actor: Actor) -> MindRealmSeed:
 	_stock(actor, target_seed.breakthrough_item)
 	_stock(actor, source_seed.training_item)
 	_stock(actor, source_seed.sea_catalyst)
-	for meridian_id in source_seed.required_meridians:
-		# A deviation damages a channel, and a damaged channel satisfies nothing,
-		# so repair before re-training or the next attempt can never qualify.
-		actor.meridians.repair_meridian(meridian_id)
-		var channel := actor.meridians.get_meridian(meridian_id)
-		if not channel.is_open():
-			actor.meridians.open_meridian(meridian_id)
-		actor.meridians.expand_meridian(meridian_id)
-		actor.meridians.strengthen_meridian(meridian_id)
+	# A deviation damages a channel, and a damaged channel satisfies nothing, so
+	# the repair is a step of its own before the climb.
+	assert_eq(
+		Probe.train_channels(actor, source_seed), true, "channels trained in %s" % state.rank_id
+	)
 	MindTraining.strengthen_sea(actor)
-	var sea := MindCultivationApi.sea(actor)
-	sea.calm(sea.turbulence)
-	sea.drain(actor, sea.current(actor))
-	while not sea.is_full(actor):
-		if not MindTraining.cultivate(actor, 500.0):
-			break
-	state.progress = target_seed.progress_required
+	assert_eq(Probe.calm_sea(actor), true, "sea calm in %s" % state.rank_id)
+	assert_eq(Probe.sharpen_sea(actor), true, "sea sharpened in %s" % state.rank_id)
+	assert_eq(Probe.earn_gate(actor, target_seed), true, "progress earned for %s" % target.id)
+	assert_eq(Probe.fill_sea(actor), true, "sea filled for %s" % target.id)
 	return target_seed
 
 
@@ -88,7 +86,8 @@ func test_synchronize_scales_capacity_with_meridian_bonus() -> void:
 func test_cultivate_fills_the_sea_and_advances_progress() -> void:
 	var actor := _actor()
 	var sea := MindCultivationApi.sea(actor)
-	sea.drain(actor, sea.current(actor))
+	# No drain: the reservoir starts empty, which is the state a fresh actor is
+	# in, and draining it here would only be hiding a full-sea refusal.
 	assert_eq(MindTraining.cultivate(actor, 50.0), true, "cultivation applied")
 	assert_eq(sea.current(actor) > 0.0, true, "mind power stored")
 	assert_eq(actor.path(MindPath.PATH_ID).progress > 0.0, true, "progress grew")
@@ -102,11 +101,42 @@ func test_cultivate_sharpens_clarity() -> void:
 	assert_eq(sea.clarity > 0.0, true, "clarity sharpened")
 
 
-func test_cultivate_stops_when_the_sea_is_full() -> void:
+## The reservoir is the FIRST gate a real actor meets and the progress floor is
+## the second, so a full sea must stop *storing* and not *training*. This test
+## used to assert the opposite — that `cultivate` refuses a full sea — and that
+## assertion is what hid the deadlock: refusing made the progress floor
+## unreachable, the suite answered by draining the sea itself, and a failed
+## breakthrough (which halves progress without draining) became permanent.
+func test_a_full_sea_still_earns_progress_and_insight() -> void:
 	var actor := _actor()
 	var sea := MindCultivationApi.sea(actor)
 	sea.fill(actor, sea.effective_capacity())
-	assert_eq(MindTraining.cultivate(actor, 10.0), false, "refuses a full sea")
+	assert_eq(sea.is_full(actor), true, "the sea really is full first")
+	var progress_before := actor.path(MindPath.PATH_ID).progress
+	var comprehension_before := actor.stats.get_base(Stat.COMPREHENSION)
+	assert_eq(MindTraining.cultivate(actor, 10.0), true, "a full sea still trains")
+	assert_eq(actor.path(MindPath.PATH_ID).progress > progress_before, true, "progress still grows")
+	assert_eq(
+		actor.stats.get_base(Stat.COMPREHENSION) > comprehension_before, true, "insight still grows"
+	)
+	assert_eq(sea.current(actor), sea.maximum(actor), "the surplus is simply not stored")
+
+
+func test_cultivate_refuses_nothing_that_a_player_could_do() -> void:
+	var actor := _actor()
+	var sea := MindCultivationApi.sea(actor)
+	sea.fill(actor, sea.effective_capacity())
+	sea.add_turbulence(0.5)
+	sea.set_clarity(0.0)
+	# Clouded, blurred and full: the exact state a deviation leaves behind. Every
+	# one of those used to make `cultivate` the only remaining action, and it is
+	# the action that has to keep working or the realm is never earned again.
+	assert_eq(MindTraining.cultivate(actor, 500.0), true, "cultivate works on a clouded full sea")
+	assert_eq(
+		actor.path(MindPath.PATH_ID).progress > 0.0,
+		true,
+		"progress is still earnable after a deviation"
+	)
 
 
 func test_meditate_calms_turbulence() -> void:
@@ -232,11 +262,10 @@ func test_deviation_turbulates_the_sea_and_damages_a_channel() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 13
 	# Rolls are not forced, so keep re-preparing until one deviates. A success
-	# only moves the target realm; it does not invalidate the search.
+	# only moves the target realm; it does not invalidate the search. Bounded by
+	# the `for`, and the assertion below names what was never found.
 	var deviated := false
-	var attempts := 0
-	while attempts < 40 and not deviated:
-		attempts += 1
+	for _attempt in 40:
 		var current := _prepare(actor)
 		if current == null:
 			break
@@ -252,5 +281,7 @@ func test_deviation_turbulates_the_sea_and_damages_a_channel() -> void:
 		for meridian_id in current.required_meridians:
 			if actor.meridians.get_meridian(meridian_id).is_injured():
 				channel_damaged = true
-		deviated = sea.turbulence > 0.0 and channel_damaged
+		if sea.turbulence > 0.0 and channel_damaged:
+			deviated = true
+			break
 	assert_eq(deviated, true, "deviation clouded the sea and burned a channel")

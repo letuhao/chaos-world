@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="NationDef" load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://src/modules/nation/nation_def.gd" id="1_nation"]
+[ext_resource type="Script" path="res://src/modules/nation/nation_office_def.gd" id="2_office"]
+[ext_resource type="Script" path="res://src/core/institution_claim.gd" id="3_claim"]
+
+[sub_resource type="Resource" id="office_star_regent"]
+script = ExtResource("2_office")
+id = &"star_regent"
+display_name = "Star Regent"
+description = "Sits where the crown is claimed to sit, which is a claim and not a crown. The Regent may name a seat and may not take one: every appointment goes through a trial the Regent cannot judge, which is what stops the highest office from being self-perpetuating."
+powers = Array[StringName]([&"name_a_heir", &"open_the_star_court"])
+capacity = 1
+succession_method = &"trial"
+succession_param = {"stages": ["named", "held_a_year", "confirmed_by_the_court"]}
+standing_percent_stats = {"max_qi": 0.0, "breakthrough_chance": 0.0}
+
+[sub_resource type="Resource" id="office_law_reader"]
+script = ExtResource("2_office")
+id = &"law_reader"
+display_name = "Reader of the Law"
+description = "Recognised on the ear rather than the back. The Reader decides which doctrine tier a case may be heard under, which is ACCESS and never power: the office opens a shelf and grants nothing on the other side of it."
+powers = Array[StringName]([&"read_the_precedent", &"set_a_doctrine_tier"])
+capacity = 1
+succession_method = &"appointed"
+succession_param = {"naming_body": "the_star_regent"}
+standing_percent_stats = {"comprehension": 0.0}
+
+[sub_resource type="Resource" id="office_marshal_of_the_court"]
+script = ExtResource("2_office")
+id = &"marshal_of_the_court"
+display_name = "Marshal of the Court"
+description = "Two at a time, so neither can refuse the other's order alone. The pair may together dissolve an office, which is the only way this build dissolves one, and never dissolves a person."
+powers = Array[StringName]([&"seal_an_office", &"guard_the_seat"])
+capacity = 2
+succession_method = &"heir"
+succession_param = {"charter": "the_star_charter"}
+standing_percent_stats = {"poise": 0.0, "defense_spiritual": 0.0}
+
+[sub_resource type="Resource" id="office_hermit_of_the_outer_seat"]
+script = ExtResource("2_office")
+id = &"hermit_of_the_outer_seat"
+display_name = "Hermit of the Outer Seat"
+description = "The seat that is always empty and is never going to be filled on this build. It exists because a polity whose highest seat has never been occupied is a legible fact about that polity, and hiding the row would say the office does not exist."
+powers = Array[StringName]([])
+capacity = 1
+succession_method = &"appointed"
+succession_param = {}
+standing_percent_stats = {}
+
+[sub_resource type="Resource" id="claim_court"]
+script = ExtResource("3_claim")
+position = &"crown"
+standing = 95
+standing_cap = 150
+obligation = {"court_etiquette": 1}
+
+[resource]
+script = ExtResource("1_nation")
+id = &"court_of_the_star"
+display_name = "The Court of the Star"
+description = "A highland polity that governs by precedent rather than by water. It holds the crown claim over the Star Court and no claim at all over the lowlands, so a war with the March is fought over a territory neither of them currently holds."
+offices = Array[NationOfficeDef]([SubResource("office_star_regent"), SubResource("office_law_reader"), SubResource("office_marshal_of_the_court"), SubResource("office_hermit_of_the_outer_seat")])
+territory_ids = Array[StringName]([&"star_court"])
+sect_ids = Array[StringName]([&"jade_court"])
+initial_offices = {"star_regent": "imperial_wen", "law_reader": "sable_of_the_precedent", "marshal_of_the_court": "ordren", "hermit_of_the_outer_seat": ""}
+claim = SubResource("claim_court")
+tags = Array[StringName]([&"highland", &"precedent", &"crown"])

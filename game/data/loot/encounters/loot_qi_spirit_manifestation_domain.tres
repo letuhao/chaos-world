@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"spirit_condensation"
+rarity = &"common"
+vitality = 112.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"qi_spirit_manifestation_guardian", "table_id": &"loot_qi_spirit_manifestation_guardian"},
+	{"boss_id": &"qi_spirit_severing_guardian", "table_id": &"loot_qi_spirit_severing_guardian"},
+	{"boss_id": &"qi_spirit_unity_guardian", "table_id": &"loot_qi_spirit_unity_guardian"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"spirit_condensation"
+rarity = &"rare"
+vitality = 179.2
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"qi_spirit_manifestation_guardian", "table_id": &"loot_qi_spirit_manifestation_guardian"},
+	{"boss_id": &"qi_spirit_severing_guardian", "table_id": &"loot_qi_spirit_severing_guardian"},
+	{"boss_id": &"qi_spirit_unity_guardian", "table_id": &"loot_qi_spirit_unity_guardian"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_qi_spirit_manifestation_domain"
+display_name = "Qi Spirit Manifestation Domain"
+domain_id = &"qi_spirit_manifestation_domain"
+boss_ids = Array[StringName]([&"qi_spirit_manifestation_guardian", &"qi_spirit_severing_guardian", &"qi_spirit_unity_guardian"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

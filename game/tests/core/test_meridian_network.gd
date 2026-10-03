@@ -3,6 +3,26 @@ extends TestCase
 ## ADR 0017: MeridianNetwork manages meridian unlock, state, and bonuses.
 
 
+## A provider that reads the network the way ADR 0057 prescribes, so this suite can
+## watch the whole chain rather than a version counter: a mutation with no verb after
+## it, and a published stat that moved anyway.
+##
+## The absent case gets its OWN stat id rather than a number beside the bonus. An
+## untrained network really does answer `0.0`, so folding "no network" into the same
+## number is what made the payout silently vanish before ADR 0057.
+class NetworkPowerReader:
+	extends StatProvider
+
+	var calls: int = 0
+
+	func contribute(context: StatContext) -> Dictionary:
+		calls += 1
+		var network := context.meridian_network()
+		if network == null:
+			return {&"meridian_power_absent": 1.0}
+		return {&"meridian_power": network.get_power_bonus()}
+
+
 func test_unlock_for_realm() -> void:
 	var network := MeridianNetwork.new()
 	network.unlock_for_realm(&"qi_refining")
@@ -213,7 +233,13 @@ func test_body_condition_refuses_the_bypass() -> void:
 	# Everything the body owns is met; the Immortal gate still must refuse.
 	var condition := BodyBreakthroughCondition.new()
 	var unmet: Array[String] = condition.describe_unmet(actor, state)
-	var only_the_gate := unmet.size() == 1 and unmet[0].contains("Immortal tier gates")
+	# The gate is reported CLAUSE BY CLAUSE, not as one omnibus "Immortal tier
+	# gates" line: a player told only that a gate exists cannot act on it, because
+	# the tribulation is fought somewhere else entirely, the inside world is grown by
+	# training, and the ascent is walked. So the thing asserted here is that exactly
+	# ONE clause is unmet and that it is the tribulation — the one an actor at this
+	# tier cannot satisfy from inside the body path.
+	var only_the_gate := unmet.size() == 1 and unmet[0].contains("tribulation")
 	assert_eq(only_the_gate, true, "the tier gate is the only thing unmet: %s" % ", ".join(unmet))
 	assert_eq(
 		BodyAdvancement.try_breakthrough(actor, RandomNumberGenerator.new()),
@@ -221,6 +247,143 @@ func test_body_condition_refuses_the_bypass() -> void:
 		"the body path refuses to cross the Immortal gate"
 	)
 	assert_eq(state.rank_id, &"spirit_ascension", "rank unchanged")
+
+
+## `Actor._init` must connect `meridians.changed` to the stats invalidator, exactly
+## as it already does for traits and affinities. The connect used to live only in
+## `from_dict`, so on a normally constructed actor `_emit_changed` invalidated
+## nothing and any meridian mutation without a following `mark_stats_dirty` served
+## a stale power bonus (ADR 0057).
+func test_meridian_mutation_invalidates_stats_on_a_fresh_actor() -> void:
+	var actor := Actor.new(&"fresh", {Stat.PHYSIQUE: 10.0})
+	# Warm the provider cache so a later read has to recompute to be correct.
+	actor.mark_stats_dirty()
+	actor.stats.derived(Stat.MAX_HEALTH)
+	var before := actor.stats._version
+	actor.meridians.unlock_for_realm(&"qi_refining")
+	actor.meridians.open_meridian(&"lung")
+	actor.meridians.strengthen_meridian(&"lung")
+	assert_eq(
+		actor.stats._version > before, true, "touching the network marked the actor's stats dirty"
+	)
+
+
+## The end-to-end shape of ADR 0057, and the strongest thing this suite can say: the
+## wiring is not merely present, it works. A provider handed the context, reading the
+## network the prescribed way, is asked AGAIN and publishes the trained network after
+## a mutation that no body verb follows. Every earlier test here observes one link;
+## this one observes the chain.
+func test_a_provider_reading_the_network_sees_a_mutation_with_no_verb_after_it() -> void:
+	var actor := Actor.new(&"wired_provider", {Stat.PHYSIQUE: 10.0})
+	var reader := NetworkPowerReader.new()
+	actor.stats.add_provider(reader)
+	assert_almost_eq(
+		actor.stats.derived(&"meridian_power"), 0.0, "an untrained network pays nothing"
+	)
+	var calls_before := reader.calls
+	# No body verb, no mark_stats_dirty, no provider churn: only the network moves.
+	actor.meridians.unlock_for_realm(&"qi_refining")
+	actor.meridians.open_meridian(&"lung")
+	actor.meridians.expand_meridian(&"lung")
+	actor.meridians.strengthen_meridian(&"lung")
+	# Read BEFORE counting: a provider runs lazily inside `derived`, so the call
+	# count is evidence only once the read that would trigger it has happened.
+	var published := actor.stats.derived(&"meridian_power")
+	assert_eq(reader.calls > calls_before, true, "the provider was asked again")
+	assert_almost_eq(
+		published, actor.meridians.get_power_bonus(), "and it published the trained network"
+	)
+	assert_almost_eq(
+		actor.stats.derived(&"meridian_power_absent"),
+		0.0,
+		"an actor's context is never the absent case"
+	)
+
+
+## The `_init` half of the wiring, read from the other end: the context a provider
+## is handed must already carry the network, not wait for a save to supply one.
+## ADR 0057 §Consequences — `component(&"meridians")` answers null for every actor
+## `Actor` builds, so this accessor is the only read that resolves.
+func test_a_fresh_actor_context_already_carries_its_network() -> void:
+	var actor := Actor.new(&"wired", {Stat.PHYSIQUE: 10.0})
+	assert_eq(
+		actor.stats._context.meridian_network(),
+		actor.meridians,
+		"the context built by _init holds the network _init made"
+	)
+	assert_eq(actor.component(&"meridians"), null, "and the network is not a module component")
+
+
+## Replacing the field is the hazard the from_dict re-point exists for, and the
+## `meridians` setter covers every assignment rather than only the one in
+## `from_dict`. A context left on the discarded object is the same class of bug as
+## never connecting the signal: a stat served off a network the actor moved off.
+func test_swapping_the_field_re_points_the_context() -> void:
+	var actor := Actor.new(&"swapped", {Stat.PHYSIQUE: 10.0})
+	var original := actor.meridians
+	actor.meridians.unlock_for_realm(&"qi_refining")
+	actor.meridians.open_meridian(&"lung")
+	actor.meridians.strengthen_meridian(&"lung")
+
+	actor.meridians = MeridianNetwork.from_dict(original.to_dict())
+	assert_eq(
+		actor.stats._context.meridian_network(), actor.meridians, "the context followed the field"
+	)
+	assert_ne(
+		actor.stats._context.meridian_network(), original, "and let go of the discarded object"
+	)
+	# And the connect followed too, so the new object invalidates on its own.
+	var before := actor.stats._version
+	actor.meridians.open_meridian(&"spleen")
+	assert_eq(actor.stats._version > before, true, "the replacement is wired to the invalidator")
+
+
+## **null is not a network worth zero.** The two states are distinguishable, which is
+## the whole point: an absent network says the owner has none, while a network nobody
+## trained is a real object answering 0.0. A provider that cannot tell them apart
+## turns the first into the second, which is the quiet zero ADR 0057 exists to end.
+func test_an_absent_network_reads_as_null_not_as_a_zero_bonus() -> void:
+	var bare := StatContext.new({}, {}, NameList.new(), AffinityMap.new(), {}, {})
+	assert_eq(bare.meridian_network(), null, "a context built for no network says so")
+	assert_eq(
+		Actor.new(&"trained").stats._context.meridian_network() != null,
+		true,
+		"an actor's context is never the absent case"
+	)
+	assert_almost_eq(
+		Actor.new(&"untrained").meridians.get_power_bonus(), 0.0, "an untrained network IS zero"
+	)
+
+
+## The restored network REPLACES the one `_init` built, so the stat context must be
+## re-pointed at it. Reading the discarded object would be the same class of bug as
+## never connecting the signal at all.
+func test_stat_context_reads_the_restored_network_not_the_discarded_one() -> void:
+	var actor := Actor.new(&"restored", {Stat.PHYSIQUE: 10.0})
+	var original := actor.meridians
+	actor.meridians.unlock_for_realm(&"qi_refining")
+	# State steps are ordered: closed -> open -> expanded -> strengthened.
+	actor.meridians.open_meridian(&"lung")
+	actor.meridians.expand_meridian(&"lung")
+	actor.meridians.strengthen_meridian(&"lung")
+	var expected := actor.meridians.get_power_bonus()
+	assert_eq(expected > 0.0, true, "the original network has power")
+
+	var restored := Actor.from_dict(actor.to_dict())
+	assert_eq(restored.meridians != original, true, "the restored network is a new object")
+	assert_eq(
+		restored.stats._context.meridian_network(),
+		restored.meridians,
+		"the context is re-pointed at the restored network"
+	)
+	assert_ne(
+		restored.stats._context.meridian_network(),
+		original,
+		"and no longer holds the discarded object"
+	)
+	assert_almost_eq(
+		restored.meridians.get_power_bonus(), expected, "power survived the round trip"
+	)
 
 
 ## The pre-ADR-0034 payload was a bare per-meridian map. Old saves must still

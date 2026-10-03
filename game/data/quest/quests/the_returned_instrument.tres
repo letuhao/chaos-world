@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="QuestDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/modules/quest/quest_def.gd" id="1_quest"]
+[ext_resource type="Script" path="res://src/modules/quest/quest_step_def.gd" id="2_step"]
+
+[sub_resource type="Resource" id="QuestStep_mountain_remembered"]
+script = ExtResource("2_step")
+step_id = &"mountain_remembered"
+fact = &"mountain_circled_once"
+need = 1
+display_name = "Walk the mountain once, all the way around"
+
+[resource]
+script = ExtResource("1_quest")
+id = &"the_returned_instrument"
+display_name = "The Returned Instrument"
+description = "The sect only explains itself to someone who has already come back. Until you hold The One Who Returned, this page is not written for you and asking for it earns you nothing but a closed door."
+kind = &"authored"
+tier = 2
+requirement = {"verb": &"has_destiny", "id": &"the_one_who_returned"}
+steps = Array[ExtResource("2_step")]([SubResource("QuestStep_mountain_remembered")])
+grants = Array[Dictionary]([{"kind": &"fate", "id": &"remembered_by_the_mountain", "amount": 1}, {"kind": &"item", "id": &"quest_sealed_letter", "amount": 1}])

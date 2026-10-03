@@ -6,6 +6,16 @@ extends RefCounted
 
 
 static func base() -> Array[ElementDef]:
+	# The 相克 cycle is 金克木 · 木克土 · 土克水 · 水克火 · 火克金, and each entry's
+	# `overcomes` list names the element it BEATS: metal>wood, wood>earth, earth>water,
+	# water>fire, fire>metal. Measured over the 25 tier-1 pairs this row means exactly
+	# 0.950 with a 0.5..1.5 spread, which is the balanced value ADR 0069 pins.
+	#
+	# ⚠️ DEF-0140 was filed against this table on the claim that it is TRANSPOSED (that
+	# `fire > wood` should be STRONG). It is not: `fire > metal` reading 1.5 and
+	# `fire > wood` reading 1.0 is the correct cycle, and 0.950 is the mean the shipped
+	# balance wants. The defect is in the TEST that asserted `fire > wood`, not here —
+	# so this table is left as authored.
 	return [
 		_make(ElementStats.METAL, "Metal", 1, [ElementStats.WATER], [ElementStats.WOOD]),
 		_make(ElementStats.WOOD, "Wood", 1, [ElementStats.FIRE], [ElementStats.EARTH]),

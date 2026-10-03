@@ -19,6 +19,7 @@ const CRAFT_POTENCY := &"craft_potency"  # Crafting: raises output quality/yield
 const CRAFT_YIELD := &"craft_yield"  # Crafting: extra-output chance.
 const KEY_REACH := &"key_reach"  # ItemsApi.key_reach: highest domain a key opens.
 const QUEST_POTENCY := &"quest_potency"  # ItemsApi.quest_potency: reward size.
-const TRADE_VALUE := &"trade_value"  # ItemsApi.trade_value: reagent worth.
+## The fixed, authored worth a price is computed from (ADR 0094). Never rolled.
+const TRADE_VALUE := &"trade_value"
 
 const PROPERTIES := [CRAFT_POTENCY, CRAFT_YIELD, KEY_REACH, QUEST_POTENCY, TRADE_VALUE]

@@ -12,6 +12,24 @@ extends Resource
 ## `boss_tables` is the single place a boss's loot table is bound for this band:
 ## `[{boss_id: StringName, table_id: StringName, vitality: float}]`. `vitality` is
 ## optional and falls back to the band's authored value.
+##
+## ## The band's vitality also prices the fight (ADR 0076)
+##
+## `attack_for` / `defense_for` express a boss's own combat numbers as multiples of the
+## vitality this band already authors, so one authored number prices both halves of an
+## encounter: a band that is hard to kill is a band that hits back, and a weak binding is
+## weak in both directions. It is deliberately **not** a second authored field per
+## binding — sixty-odd tiers of new content would be a content wave to express a
+## relationship `vitality` already implies — and it is deliberately **not** derived from a
+## realm index: a band names its realm, and `RealmPowerTable` is the actor table, not a
+## boss's.
+
+## What share of a band's authored vitality one point of a boss's attack is worth, and of
+## its defense. Two named constants rather than two authored tables: the numbers a boss
+## fights with are a consequence of how hard the band is to kill, not a second balance
+## dial nobody owns. A band at 520 vitality fields an attack of 130.
+const ATTACK_PER_VITALITY := 0.25
+const DEFENSE_PER_VITALITY := 0.25
 
 @export var tier: int = 1
 @export var label: String = ""
@@ -41,6 +59,18 @@ func binding_for(boss_id: StringName) -> Dictionary:
 func vitality_for(boss_id: StringName) -> float:
 	var authored := float(binding_for(boss_id).get("vitality", 0.0))
 	return maxf(1.0, authored if authored > 0.0 else vitality)
+
+
+## The attack `boss_id` exchanges with, priced off the same authored vitality its pool is
+## drawn from (ADR 0076). Frozen into the spawned boss, so a resumed fight is the fight
+## that was priced.
+func attack_for(boss_id: StringName) -> float:
+	return vitality_for(boss_id) * ATTACK_PER_VITALITY
+
+
+## The defense `boss_id` meets a blow with, on the same terms as [method attack_for].
+func defense_for(boss_id: StringName) -> float:
+	return vitality_for(boss_id) * DEFENSE_PER_VITALITY
 
 
 ## Boss ids bound in this band, in authored order.

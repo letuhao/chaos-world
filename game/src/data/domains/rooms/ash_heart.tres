@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="RoomDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/room_def.gd" id="1_room"]
+[ext_resource type="Script" path="res://src/modules/domain/environment_zone_def.gd" id="2_zone"]
+
+[sub_resource type="Resource" id="zone_heart"]
+script = ExtResource("2_zone")
+zone_id = &"furnace_heart"
+kind = &"super_hot"
+intensity = 3
+status_id = &"env_scourge"
+stay_budget = 6.0
+tags = Array[StringName]([&"fire", &"hostile_to_metal"])
+mitigation_tags = Array[StringName]([&"gear", &"affinity"])
+bounds = Rect2i(0, 0, 5, 5)
+
+[resource]
+script = ExtResource("1_room")
+room_id = &"ash_heart"
+display_name = "Heart of Ashes"
+kind = &"core"
+roster_band = &"boss"
+tags = Array[StringName]([&"deep", &"hot"])
+size = Vector2i(12, 10)
+actor_spawn_refs = Array[Dictionary]([
+	{"ref_id": &"ash_dragon", "inhabitant_id": &"flame_dragon", "role": &"boss", "count": 1}
+])
+environment_zones = Array[EnvironmentZoneDef]([SubResource("zone_heart")])

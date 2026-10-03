@@ -266,7 +266,6 @@ static func _realize(
 	var realm_id := &""
 	if instance != null:
 		realm_id = instance.realm
-	var realm_index := maxi(0, RealmDefaults.ladder().index_of(realm_id))
 	var rarity := instance.rarity if instance != null else &"common"
 	var rarity_index := OptionCatalog.rarity_tier(rarity)
 	var used := SocketPolicy.foreign_option_ids(instance)
@@ -279,9 +278,7 @@ static func _realize(
 			room = SocketPolicy.IMPRINT_CAP - imputed.size()
 	var effects: Array[Dictionary] = []
 	for _position in room:
-		var effect := SocketPools.roll(
-			SocketPools.CHANNEL_SLOT, used, realm_index, rarity_index, rng
-		)
+		var effect := SocketPools.roll(SocketPools.CHANNEL_SLOT, used, realm_id, rarity_index, rng)
 		if effect.is_empty():
 			break
 		used.append(StringName(effect.get("option_id", &"")))
