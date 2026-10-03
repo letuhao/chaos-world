@@ -126,6 +126,23 @@ def _nav_line(report: dict) -> str:
     return f"{nav.get('from', '?')} -> {nav.get('to', '?')}"
 
 
+def _hunt_line(report: dict) -> str:
+    """One line naming what the probe's fight actually minted.
+
+    The primary loop is not "the screen opened" but "damage landed, the pool emptied
+    and a reward came out". Printing the counts makes that checkable by eye, and a
+    reward of zero becomes visible rather than something inferred from an "ok".
+    """
+    hunt = report.get("hunt", {})
+    if not isinstance(hunt, dict) or not hunt.get("ok", False):
+        return ""
+    return (
+        f"{hunt.get('strikes', '?')} strikes killed the boss;"
+        f" {hunt.get('reward_count', '?')} rewards minted,"
+        f" {hunt.get('pending_drops', '?')} drops pending"
+    )
+
+
 def _parse_report(stdout: str | None) -> dict | None:
     for line in (stdout or "").splitlines():
         marker = line.find(REPORT_PREFIX)
@@ -153,6 +170,7 @@ def run(args) -> int:
     if came_up:
         ok("the shell came up with a live route, a bound actor and a mounted screen")
         ok(f"a real nav button press moved the game: {_nav_line(report)}")
+        ok(f"a real fight in the running app: {_hunt_line(report)}")
     else:
         fail(f"the main scene booted but is empty: {why}")
         failures.append("empty")

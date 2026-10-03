@@ -24,6 +24,13 @@ const EXIT_FAIL := 1
 ## Frames to let the first layout, the workbench's own `_ready` and a `_process`
 ## tick settle before asking. Three is what "booted" means here.
 const FRAMES := 3
+## The loot screen's own controls, by unique name. Named here because they are the
+## production seam being driven, not because the probe should know the screen's guts.
+const ENTER_BUTTON := "%EnterButton"
+const STRIKE_BUTTON := "%StrikeButton"
+## The app's strike deals 25 and the lowest authored boss has 100 vitality, so four
+## strikes is the whole fight. A cap, never "until it dies" — see `_strike_until_dead`.
+const MAX_STRIKES := 8
 
 
 func _initialize() -> void:
@@ -56,14 +63,23 @@ func _run() -> void:
 	var report := _inspect(path, app)
 	var nav_report: Dictionary = await _press_nav(app)
 	report["nav"] = nav_report
-	if bool(report.get("ok", false)) and not bool(nav_report.get("ok", false)):
-		# Came up, but you cannot go anywhere. That is the same failure a player sees
-		# as a window with nothing in it, so it must not read as a pass.
-		report["ok"] = false
-		report["why"] = (
-			"the shell came up but its navigation is dead: %s"
-			% nav_report.get("why", "a nav button did nothing")
+	var hunt_report: Dictionary = await _hunt(app)
+	report["hunt"] = hunt_report
+	var broken: Array[String] = []
+	if not bool(nav_report.get("ok", false)):
+		broken.append(
+			"its navigation is dead: %s" % nav_report.get("why", "a nav button did nothing")
 		)
+	if not bool(hunt_report.get("ok", false)):
+		broken.append(
+			"its hunt mints nothing: %s" % hunt_report.get("why", "the fight did nothing")
+		)
+	if bool(report.get("ok", false)) and not broken.is_empty():
+		# Came up, but you cannot go anywhere or fight anything. That is the same
+		# failure a player sees as a window with nothing in it, so it must not read as
+		# a pass. Each half is named separately because they are separate faults.
+		report["ok"] = false
+		report["why"] = "the shell came up but " + "; and ".join(broken)
 	# Detach before freeing: the engine holds the parent pointer, and this probe
 	# shares the process with nothing else, so leaving the subtree parented would
 	# only leak it (AGENTS.md, the free-not-queue_free rule).
@@ -140,6 +156,125 @@ func _why_wrong_landing(
 	if (app.call(&"summary") as Dictionary).get("screen", {}).is_empty():
 		return "slot %d navigated to '%s' but mounted no screen" % [index, after]
 	return ""
+
+
+## Fight a boss to death in the RUNNING app and report what it minted.
+##
+## This is the objective's primary loop, walked by pressing the loot screen's own
+## buttons: enter the domain, strike until the authored vitality pool is gone, and
+## confirm a reward payload was minted with drops still pending. Nothing here grants
+## an item or calls a facade directly, so a pass means the shipped controls produced
+## the acquisition rather than that a test handed one over.
+##
+## Runs after `_press_nav`, which leaves the game on the loot route.
+func _hunt(app: Node) -> Dictionary:
+	var screen := _live_screen(app)
+	if screen == null:
+		return {"ok": false, "why": "the app has no live screen reporting state to fight from"}
+	var before := screen.call(&"summary") as Dictionary
+	if bool(before.get("in_domain", false)):
+		return {"ok": false, "why": "a boss was already live before the player entered one"}
+	if not _press(screen, ENTER_BUTTON):
+		return {"ok": false, "why": "Enter domain is not a live control"}
+	await process_frame
+	if not bool((screen.call(&"summary") as Dictionary).get("in_domain", false)):
+		return {
+			"ok": false, "why": "entering the domain left no boss live, so nothing can be fought"
+		}
+	var fight := await _strike_until_dead(screen)
+	var why := _why_fight_did_not_pay(screen, fight)
+	if why != "":
+		return {"ok": false, "why": why}
+	var after := screen.call(&"summary") as Dictionary
+	return {
+		"ok": true,
+		"strikes": int(fight.get("strikes", 0)),
+		"reward_count": int(after.get("reward_count", 0)),
+		"pending_drops": int(after.get("pending_drops", 0)),
+	}
+
+
+## The live screen, or null when the shell has nothing reporting state.
+func _live_screen(app: Node) -> Node:
+	var stack := app.get_node_or_null("%ScreenStack")
+	if stack == null:
+		return null
+	var screen := stack.call(&"current") as Node
+	if screen == null or not screen.has_method(&"summary"):
+		return null
+	return screen
+
+
+## Why a fight that ran to completion did not mint an acquisition. Empty is a pass.
+##
+## Each branch is a different fault, so each is named separately: a vitality pool
+## nothing spends, a boss nothing can kill, a kill that pays nothing, or a reward with
+## nothing left to claim.
+func _why_fight_did_not_pay(screen: Node, fight: Dictionary) -> String:
+	var stopped := String(fight.get("why", ""))
+	if stopped != "":
+		return stopped
+	var strikes := int(fight.get("strikes", 0))
+	var after := screen.call(&"summary") as Dictionary
+	if bool(after.get("in_domain", false)):
+		return "%d strikes landed and the boss is still alive" % strikes
+	if int(after.get("reward_count", 0)) < 1:
+		return "the boss died and minted no reward at all"
+	if int(after.get("pending_drops", 0)) < 1:
+		return "the reward lists drops but none are pending to claim"
+	return ""
+
+
+## Press Strike while it is offered, and report how many it took. Bounded by
+## MAX_STRIKES rather than "until it dies": the app's strike deals 25 and the lowest
+## authored boss has 100 vitality, so four strikes is the whole fight. A boss that
+## outlasts that is a content bug and must fail loudly instead of spinning
+## (AGENTS.md, the runaway rule). Returns -1 when the cap was hit.
+func _strike_until_dead(screen: Node) -> Dictionary:
+	var strikes := 0
+	while _strike_offered(screen):
+		if strikes >= MAX_STRIKES:
+			return {
+				"strikes": strikes,
+				"why":
+				(
+					"the boss outlived %d strikes; the authored vitality pool is not spent"
+					% MAX_STRIKES
+				),
+			}
+		if not _press(screen, STRIKE_BUTTON):
+			return {
+				"strikes": strikes,
+				"why": "the screen offers a strike but its Strike control is not pressable",
+			}
+		strikes += 1
+		await process_frame
+	return {"strikes": strikes, "why": ""}
+
+
+## Whether the screen itself says a strike is available.
+##
+## Read from the screen's published `enabled` rather than from the Button's own
+## disabled flag. `enabled` is what the screen declares a player may do, and the
+## button is only a view of it — looping on the view instead asks the control to
+## decide the rules, and a button that stays enabled after the boss dies then keeps
+## the fight alive forever.
+func _strike_offered(screen: Node) -> bool:
+	var enabled := (screen.call(&"summary") as Dictionary).get("enabled", {}) as Dictionary
+	return bool(enabled.get("strike", false))
+
+
+func _offered(screen: Node, unique_name: String) -> bool:
+	var button := screen.get_node_or_null(unique_name) as Button
+	return button != null and not button.disabled and button.visible
+
+
+func _press(screen: Node, unique_name: String) -> bool:
+	var button := screen.get_node_or_null(unique_name) as Button
+	if not _offered(screen, unique_name):
+		return false
+	button.pressed.emit()
+	return true
 
 
 ## Ask the app what it managed to build, then judge it. Every failure below is a
