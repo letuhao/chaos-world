@@ -40,6 +40,7 @@ data = _load("data")
 deferred = _load("deferred")
 export = _load("export")
 fmt = _load("fmt")
+incident = _load("incident")
 item_derive = _load("item_derive")
 lint = _load("lint")
 new_adr = _load("new_adr")
@@ -68,6 +69,7 @@ COMMANDS = {
     "technique_power": technique_power,
     "new_adr": new_adr,
     "deferred": deferred,
+    "incident": incident,
     "backlog": backlog,
     "cultivation": cultivation,
     "acquisition": acquisition,

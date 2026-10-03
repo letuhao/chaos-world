@@ -13,6 +13,9 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     ("lint", []),
     ("arch", []),
     ("deferred", ["validate"]),
+    # A hazard we hit and did not guard is a hazard waiting to repeat, so an
+    # incident claiming to be handled must name the guard that handles it.
+    ("incident", ["validate"]),
     ("backlog", ["validate"]),
     ("data", ["audit"]),
     # The authored per-realm power table: one entry per realm, R1 at 1.0, strictly
