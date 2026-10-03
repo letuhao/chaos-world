@@ -40,7 +40,7 @@ func contribute(context: StatContext) -> Dictionary:
 	## owed belongs to ADR 0071's `MindDamage`, which does not exist yet.
 	var awareness_ratio := _pool_ratio(context, MindStats.AWARENESS)
 	var technique_factor := _realm_factor(context)
-	var meridian_power := 0.0  # MUTATION-A: drop the trained network from the mind defence
+	var meridian_power := _meridian_power_bonus(context)
 
 	return {
 		MindStats.MENTAL_ATTACK: (perception * 2.0 + mental_clarity * 1.5) * technique_factor,

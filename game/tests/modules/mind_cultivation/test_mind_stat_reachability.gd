@@ -241,6 +241,36 @@ func test_the_shipped_tuning_resolves_the_bare_ids_and_carries_live_numbers() ->
 # --- what a player can observe ------------------------------------------------
 
 
+## The other half of the enumeration, and the half a reader-side scan cannot see.
+##
+## `test_every_resolved_id_is_named_at_the_mechanisms_resolution_site` reads
+## `mind_damage.gd`, so it proves the mechanism looks these ids UP. It cannot see
+## whether this module PUBLISHES them under those spellings, and a divergence
+## there is silent in both directions: the mechanism reads `0.0` and every
+## assertion about the mechanism still passes. MUTATION-B (the defence published
+## as `mind_defense` while the mechanism resolves `mental_defense`) kills exactly
+## this line and nothing else in the tree.
+##
+## `ActorStats.derived` answers `0.0` for an id no provider contributes, so the
+## public stat bag is the check -- never `contribute`, which would only prove the
+## provider agrees with itself.
+func test_every_resolved_id_is_published_under_that_exact_spelling() -> void:
+	var actor := _actor()
+	for _sitting in Probe.FILL_BOUND:
+		if actor.stats.derived(MindStats.MENTAL_ATTACK) > 0.0:
+			break
+		MindCultivationApi.cultivate(actor)
+	for id in RESOLVED_IDS:
+		# `mind_focus_chance` and `mind_avoidance` are floors (`0.05 +` and
+		# `perception * 0.002`), so a published one is never `0.0` on this fixture
+		# and a strict non-zero discriminates rather than fudges.
+		assert_ne(
+			actor.stats.derived(id),
+			0.0,
+			"%s is published under the spelling MindDamage resolves" % String(id)
+		)
+
+
 ## The seam, restated as a number: the `mental_defense` the bound mechanism
 ## computed IS the `mental_defense` this module published, read off the actor's
 ## public bag. Not `contribute`, not a fixture pin -- the two agree because one
@@ -307,6 +337,10 @@ func test_training_a_mind_channel_lowers_the_erosion_the_mechanism_resolves() ->
 	assert_ne(seed, null, "the R1 seed loads")
 	if seed == null:
 		return
+	# Snapshot the press count BEFORE the ladder, and never test a bound the loop
+	# itself moves: `train_channel` is refused at STRENGTHENED's successor, so a
+	# `while channel.state_rank() < target` here would stop on the same condition
+	# it just satisfied and is bounded only by luck (INC-0002's shape).
 	for meridian_id in seed.required_meridians:
 		for _step in CHANNEL_STEPS:
 			Probe.stock(actor, seed.training_item)
