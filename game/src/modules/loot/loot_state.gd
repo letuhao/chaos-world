@@ -13,9 +13,9 @@ extends RefCounted
 ##       owns at most one payload, keyed by its deterministic encounter id. A
 ##       repeated death event, a re-entry and a save/load all resolve the same id,
 ##       so none of them can mint a second payload.
-##   E2  A cleared tier grants no new run. Re-entering at or below the highest
-##       cleared tier is refused (`domain_cleared`) and mints nothing. A higher
-##       authored tier grants the next run.
+##   E2  A cleared band grants no new run. Re-entering a band that has been cleared is
+##       refused (`domain_cleared`) and mints nothing. A band that has not been cleared
+##       grants the next run — or resumes the one still in flight there.
 ##   E3  The next boss spawns as soon as the previous one is defeated, whether or
 ##       not its reward has been picked up. A full inventory therefore never
 ##       blocks progress and never loses a drop.
@@ -28,7 +28,7 @@ extends RefCounted
 ##       nothing records the encounter as spent immediately, so it cannot be
 ##       re-rolled by a repeated death event.
 
-const SCHEMA_VERSION := 1
+const SCHEMA_VERSION := 2
 const MODULE_KEY := &"loot_state"
 ## Bounded world drop container. A pickup that cannot fit the inventory overflows
 ## here while there is room; once it is full a pickup is refused outright.
@@ -76,6 +76,21 @@ static func blank() -> Dictionary:
 ## A usable state from anything `module_data` may hold. A payload written before
 ## a field existed loads with that field empty rather than failing, and the
 ## schema version is stamped on the way out.
+##
+## ## One ledger key, and why the version moved
+##
+## The run ledger used to be keyed by `domain_id` alone and to carry a single
+## `run` / `run_tier` / `cleared_tier` triple per domain. Everything else in this file —
+## `active`, `rewards`, `claimed` — is keyed by [method encounter_id], which embeds
+## **both** the authored band and the run. So the two disagreed the moment one domain
+## had two bands in flight: the second band's entry overwrote the first's, and the
+## first band's remaining bosses became unreachable, because re-entering it computed a
+## run number its encounter ids no longer used (BL-0252).
+##
+## Keyed per (domain, band) — [method run_key] — the ledger names the same triple
+## structure as the ids it has to keep straight, so the disagreement is no longer
+## expressible. A v1 payload migrates through [method _migrate_runs], which preserves
+## the rules it was written under rather than improving on them.
 static func normalize(raw: Dictionary) -> Dictionary:
 	var state := blank()
 	if raw.is_empty():
@@ -85,8 +100,61 @@ static func normalize(raw: Dictionary) -> Dictionary:
 			state[key] = (raw[key] as Dictionary).duplicate(true)
 	if raw.get("world_drops") is Array:
 		state["world_drops"] = (raw["world_drops"] as Array).duplicate(true)
+	var runs := state["runs"] as Dictionary
+	if int(raw.get("version", 1)) < SCHEMA_VERSION:
+		runs = _migrate_runs(runs)
+	state["runs"] = _normalized_runs(runs)
 	state["version"] = SCHEMA_VERSION
 	return state
+
+
+## The run ledger's key: one entry per (domain, authored band), never one per domain.
+## It carries the same two facts [method encounter_id] embeds, so the ledger and the ids
+## it has to keep straight are keyed identically.
+static func run_key(domain_id: String, tier_index: int) -> String:
+	return "%s@%d" % [domain_id, tier_index]
+
+
+## Re-file a v1 ledger, keyed by domain, onto (domain, band). A v1 record always wrote
+## `run_tier` beside `run`, so the band it belongs to is named in the record itself; a
+## record without one names no band and cannot be placed, so it is dropped rather than
+## guessed at. A band counts as cleared exactly when it sat at or below v1's
+## `cleared_tier`, because that is what v1 refused — a save resumes under the rules it
+## was written under, not under stricter ones.
+static func _migrate_runs(legacy: Dictionary) -> Dictionary:
+	var out: Dictionary = {}
+	for domain_id in legacy.keys():
+		var raw = legacy[domain_id]
+		if not raw is Dictionary:
+			continue
+		var record := raw as Dictionary
+		var tier := int(record.get("run_tier", -1))
+		if tier < 0:
+			continue
+		out[run_key(String(domain_id), tier)] = {
+			"run": int(record.get("run", 0)),
+			"cleared": int(record.get("cleared_tier", -1)) >= tier,
+		}
+	return out
+
+
+## A ledger of well-formed band entries: every key names a band, every record is a
+## `{run, cleared}` pair of the right types. An unusable entry is dropped rather than
+## repaired, so a hand-edited save cannot inject a run number nothing agrees with.
+static func _normalized_runs(raw: Dictionary) -> Dictionary:
+	var out: Dictionary = {}
+	for band in raw.keys():
+		if not String(band).contains("@"):
+			continue
+		var value = raw[band]
+		if not value is Dictionary:
+			continue
+		var record := value as Dictionary
+		out[String(band)] = {
+			"run": maxi(0, int(record.get("run", 0))),
+			"cleared": bool(record.get("cleared", false)),
+		}
+	return out
 
 
 ## Deterministic encounter id. It is the claim token and the payload key, so it
@@ -107,6 +175,15 @@ static func is_spent(state: Dictionary, encounter_id: String) -> bool:
 
 
 ## Rule E2/E4: grant or resume a run in `domain_id` at `tier_index`.
+##
+## The ledger is written **once the outcome is known**, never before. It used to be
+## written first, which meant the entry's refusal paths were describing a ledger that
+## had already moved. The branch that refused a fully-claimed run turned out to be
+## unreachable — `resumes` implies `_run_in_flight`, which implies
+## `_first_undefeated >= 0`, so that lookup could never come back empty — so the
+## reachable defect was the keying alone. The ordering is kept because the two shapes
+## disagreeing is the thing worth making unrepresentable, not just the one case that
+## happened to be reachable.
 static func enter(
 	state: Dictionary, encounter: LootEncounterDef, tier_index: int, seed_value: int
 ) -> Dictionary:
@@ -118,47 +195,41 @@ static func enter(
 	if tier == null:
 		return {"ok": false, "reason": ERR_UNKNOWN_TIER, "tier": tier_index}
 	var domain_id := String(encounter.domain_id)
+	var band := run_key(domain_id, tier_index)
 	var runs: Dictionary = state["runs"]
-	var record: Dictionary = runs.get(domain_id, {})
-	var cleared_tier := int(record.get("cleared_tier", -1))
-	if tier_index <= cleared_tier:
-		# E2: a tier that has been cleared grants no new run, so walking back in
-		# cannot farm it and cannot re-award the encounter that cleared it.
-		return {
-			"ok": false,
-			"reason": ERR_DOMAIN_CLEARED,
-			"domain_id": domain_id,
-			"cleared_tier": cleared_tier,
-			"tier": tier_index,
-		}
+	var record: Dictionary = runs.get(band, {})
+	if bool(record.get("cleared", false)):
+		# E2: a band that has been fought through grants no new run, so walking back in
+		# cannot farm it and cannot re-award the encounter that cleared it. Refusing the
+		# BAND rather than the domain is the honest report: another band of the same
+		# domain may well be unfinished, and v1's single `cleared_tier` maximum could
+		# not say so.
+		return _cleared(domain_id, band, tier_index, int(record.get("run", 0)))
 	var existing_run := int(record.get("run", 0))
-	# Rule E4 resumes the same run only at the tier that run belongs to: a run is
-	# per (domain, tier), so clearing tier 1 cannot make tier 2 look "in flight".
-	var resumes := (
-		existing_run > 0
-		and int(record.get("run_tier", -1)) == tier_index
-		and _run_in_flight(state, encounter, tier_index, existing_run)
-	)
+	# Rule E4 resumes the same run only when it is still in flight **at this band**. The
+	# band is part of the ledger key, so this can no longer be answering for a band that
+	# is not the one being entered.
+	var resumes := existing_run > 0 and _run_in_flight(state, encounter, tier_index, existing_run)
 	var run := existing_run if resumes else existing_run + 1
 	record["run"] = run
-	record["run_tier"] = tier_index
-	runs[domain_id] = record
+	runs[band] = record
 	state["runs"] = runs
 	var boss_index := _first_undefeated(state, encounter, tier_index, run)
 	if boss_index < 0:
-		record["cleared_tier"] = maxi(cleared_tier, tier_index)
-		return {
-			"ok": false,
-			"reason": ERR_DOMAIN_CLEARED,
-			"domain_id": domain_id,
-			"cleared_tier": int(record["cleared_tier"]),
-			"tier": tier_index,
-		}
+		# The run this band resumed is already fought through — every boss of it holds a
+		# reward or a spent claim. That is a cleared band, and saying so is the only
+		# honest answer; recording it here rather than on the way in is what keeps a
+		# refusal from having moved the counter.
+		record["cleared"] = true
+		runs[band] = record
+		state["runs"] = runs
+		return _cleared(domain_id, band, tier_index, run)
 	state["active"] = _spawn(encounter, tier, tier_index, run, boss_index)
 	var result := {
 		"ok": true,
 		"reason": OK_ENTERED,
 		"domain_id": domain_id,
+		"band": band,
 		"tier": tier_index,
 		"tier_label": String(tier.label),
 		"run": run,
@@ -166,6 +237,19 @@ static func enter(
 	}
 	result["active"] = LootRewards.active_view(state["active"])
 	return result
+
+
+## Rule E2's refusal, naming the band rather than a per-domain maximum.
+static func _cleared(domain_id: String, band: String, tier_index: int, run: int) -> Dictionary:
+	return {
+		"ok": false,
+		"reason": ERR_DOMAIN_CLEARED,
+		"domain_id": domain_id,
+		"band": band,
+		"tier": tier_index,
+		"run": run,
+		"cleared": true,
+	}
 
 
 # --- Combat -----------------------------------------------------------------
@@ -548,7 +632,7 @@ static func _spawn(
 
 
 ## Rule E3: the next boss spawns on defeat. When the run is done it clears and
-## records the cleared tier, which is what rule E2 then refuses to re-grant.
+## records the cleared band, which is what rule E2 then refuses to re-grant.
 static func _advance(state: Dictionary) -> void:
 	var active: Dictionary = state.get("active", {})
 	if active.is_empty():
@@ -571,11 +655,14 @@ static func _advance(state: Dictionary) -> void:
 	state["active"] = _spawn(encounter, encounter.tier_at(tier_index), tier_index, run, next)
 
 
+## Mark one band cleared. The run number is left exactly as `enter` wrote it: this is
+## the outcome of that run, not a new one.
 static func _clear(state: Dictionary, domain_id: String, tier_index: int) -> void:
 	var runs: Dictionary = state["runs"]
-	var record: Dictionary = runs.get(domain_id, {})
-	record["cleared_tier"] = maxi(int(record.get("cleared_tier", -1)), tier_index)
-	runs[domain_id] = record
+	var band := run_key(domain_id, tier_index)
+	var record: Dictionary = runs.get(band, {})
+	record["cleared"] = true
+	runs[band] = record
 	state["runs"] = runs
 	state["active"] = {}
 

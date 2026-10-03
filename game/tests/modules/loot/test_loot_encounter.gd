@@ -401,17 +401,23 @@ func test_a_domain_can_be_cleared_and_re_entered_without_re_awarding() -> void:
 	assert_eq(
 		int(LootApi.summary(actor)["reward_count"]), EMBER_BOSS_COUNT, "all three are pending"
 	)
+	var ledger := LootApi.summary(actor)["runs"] as Dictionary
 	assert_eq(
-		int(LootApi.summary(actor)["runs"][EMBER_DOMAIN]["cleared_tier"]),
-		EMBER_TIER,
-		"the clear is recorded"
+		bool(ledger[LootState.run_key(String(EMBER_DOMAIN), EMBER_TIER)]["cleared"]),
+		true,
+		"the clear is recorded against that band"
 	)
 
-	# Rule E2: the cleared tier grants no new run.
+	# Rule E2: the cleared band grants no new run.
 	var again := LootApi.enter_domain(actor, EMBER_DOMAIN, EMBER_TIER, 77)
-	assert_eq(bool(again["ok"]), false, "a cleared tier cannot be re-entered")
+	assert_eq(bool(again["ok"]), false, "a cleared band cannot be re-entered")
 	assert_eq(String(again["reason"]), LootState.ERR_DOMAIN_CLEARED, "and says why")
-	assert_eq(int(again["cleared_tier"]), EMBER_TIER, "reporting the cleared tier")
+	assert_eq(
+		String(again["band"]),
+		LootState.run_key(String(EMBER_DOMAIN), EMBER_TIER),
+		"naming the band it refuses rather than a per-domain maximum"
+	)
+	assert_eq(bool(again["cleared"]), true, "and reporting the band as cleared")
 	assert_eq(
 		int(LootApi.summary(actor)["reward_count"]), EMBER_BOSS_COUNT, "no new payload was minted"
 	)
@@ -422,13 +428,27 @@ func test_a_domain_can_be_cleared_and_re_entered_without_re_awarding() -> void:
 			"each payload is still claimable"
 		)
 
-	# A higher authored tier is a new run, and the old tier stays closed.
+	# A higher authored band is its OWN ladder, and its own first run. It used to report run 2
+	# here, because the ledger counted runs per DOMAIN and the cleared band had already spent
+	# the number — a number that had nothing to do with this band's encounters. Band 2's ids
+	# read `@2#N`, so nothing depended on the old numbering; pinning the new one is what
+	# keeps a shared counter from creeping back in (BL-0252).
 	var higher := LootApi.enter_domain(actor, EMBER_DOMAIN, EMBER_TIER + 1, 78)
-	assert_eq(bool(higher["ok"]), true, "a higher tier grants the next run")
-	assert_eq(int(higher["active"]["run"]), 2, "the run advanced")
-	assert_eq(bool(LootApi.abandon(actor)["ok"]), true, "left the higher tier")
+	assert_eq(bool(higher["ok"]), true, "a higher band opens")
+	assert_eq(int(higher["active"]["run"]), 1, "as its own first run, not a continuation")
+	assert_eq(
+		String(higher["band"]),
+		LootState.run_key(String(EMBER_DOMAIN), EMBER_TIER + 1),
+		"under its own ledger key"
+	)
+	assert_eq(
+		String(higher["active"]["encounter_id"]).ends_with("@%d#1" % (EMBER_TIER + 1)),
+		true,
+		"and its encounter ids carry this band's own numbering"
+	)
+	assert_eq(bool(LootApi.abandon(actor)["ok"]), true, "left the higher band")
 	var retread := LootApi.enter_domain(actor, EMBER_DOMAIN, EMBER_TIER, 79)
-	assert_eq(String(retread["reason"]), LootState.ERR_DOMAIN_CLEARED, "the old tier stays closed")
+	assert_eq(String(retread["reason"]), LootState.ERR_DOMAIN_CLEARED, "the old band stays closed")
 	assert_eq(
 		int(LootApi.summary(actor)["reward_count"]), EMBER_BOSS_COUNT, "and still mints nothing"
 	)

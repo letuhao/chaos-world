@@ -191,13 +191,9 @@ func test_the_run_clears_and_the_cleared_tier_cannot_be_re_entered() -> void:
 	assert_eq(bool(state["in_domain"]), false, "the run is over, so nobody is in a domain")
 	# The run ledger is module state, so it is read through the facade that owns it
 	# rather than through a copy the screen happens to publish.
-	assert_eq(
-		int(
-			(LootApi.summary(actor)["runs"] as Dictionary)[str(LootScreenRig.EMBER_DOMAIN)]["cleared_tier"]
-		),
-		LootScreenRig.EMBER_TIER,
-		"and the run recorded the tier it cleared"
-	)
+	var ledger := LootApi.summary(actor)["runs"] as Dictionary
+	var band := LootState.run_key(String(LootScreenRig.EMBER_DOMAIN), LootScreenRig.EMBER_TIER)
+	assert_eq(bool(ledger[band]["cleared"]), true, "and the run recorded the band it cleared")
 	assert_eq(int(state["pending_drops"]), 0, "with nothing left owing")
 	assert_eq(
 		int(state["claimed_encounters"]),
