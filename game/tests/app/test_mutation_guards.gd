@@ -91,7 +91,11 @@ func test_pressing_generate_repeatedly_never_returns_the_same_roll_twice() -> vo
 		)
 		for key in _row_keys(workbench):
 			seen[String(key)] = true
-	assert_eq(seen.size(), 7, "four presses added four distinct realizations to three rows")
+	assert_eq(
+		seen.size(),
+		ItemWorkbenchApp.STARTER_ITEMS.size() + 4,
+		"four presses added four distinct realizations to the authored starter rows"
+	)
 
 
 # --- MUTATION 2: deserialize that appends instead of replacing --------------
@@ -111,7 +115,11 @@ func test_loading_replaces_item_state_and_never_duplicates_it() -> void:
 	assert_ne(ItemsApi.generate(actor, def, 777), null, "an extra helm is acquired")
 
 	var rows_before := int((workbench.summary() as Dictionary)["row_count"])
-	assert_eq(rows_before, 4, "the app carries the starter kit plus the new helm")
+	assert_eq(
+		rows_before,
+		ItemWorkbenchApp.STARTER_ITEMS.size() + 1,
+		"the app carries the starter kit plus the new helm"
+	)
 
 	# Round-trip the payload three times in memory, exactly as the workbench's Load
 	# control does.
