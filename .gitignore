@@ -4,6 +4,9 @@ game/.godot/
 # Build output
 build/
 
+# Private generated character asset folders. Keep the catalog and tags at the parent path tracked.
+game/assets/characters/*/
+
 # Asset proof-of-concept review folder (local only, never committed)
 poc/
 

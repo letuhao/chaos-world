@@ -32,6 +32,7 @@ def _load(name: str):
 acquisition = _load("acquisition")
 arch = _load("arch")
 assets = _load("assets")
+character_assets = _load("character_assets")
 backlog = _load("backlog")
 boot = _load("boot")
 check = _load("check")
@@ -60,6 +61,7 @@ COMMANDS = {
     "lint": lint,
     "arch": arch,
     "assets": assets,
+    "character_assets": character_assets,
     "test": test,
     "boot": boot,
     "check": check,
