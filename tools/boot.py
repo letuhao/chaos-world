@@ -143,6 +143,22 @@ def _hunt_line(report: dict) -> str:
     )
 
 
+def _claim_line(report: dict) -> str:
+    """One line naming what the collected drop did to the bag.
+
+    Minting a reward is not the loop finishing. A reward the player cannot collect is
+    a number on a screen, so this reports the bag before and after the pickup press:
+    the drop has to become an item the workbench lists, or the fight fed nothing.
+    """
+    claim = report.get("claim", {})
+    if not isinstance(claim, dict) or not claim.get("ok", False):
+        return ""
+    return (
+        f"pending {claim.get('pending_before', '?')} -> {claim.get('pending_after', '?')}"
+        f"; the bag grew {claim.get('rows_at_boot', '?')} -> {claim.get('rows_now', '?')} rows"
+    )
+
+
 def _parse_report(stdout: str | None) -> dict | None:
     for line in (stdout or "").splitlines():
         marker = line.find(REPORT_PREFIX)
@@ -171,6 +187,7 @@ def run(args) -> int:
         ok("the shell came up with a live route, a bound actor and a mounted screen")
         ok(f"a real nav button press moved the game: {_nav_line(report)}")
         ok(f"a real fight in the running app: {_hunt_line(report)}")
+        ok(f"the drop was collected through the reward list: {_claim_line(report)}")
     else:
         fail(f"the main scene booted but is empty: {why}")
         failures.append("empty")

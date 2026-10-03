@@ -28,6 +28,15 @@ const FRAMES := 3
 ## production seam being driven, not because the probe should know the screen's guts.
 const ENTER_BUTTON := "%EnterButton"
 const STRIKE_BUTTON := "%StrikeButton"
+## The reward list's row control, by node name rather than unique name: the rows are
+## instantiated from `loot_drop_row.tscn`, so no single owner holds them all.
+const REWARD_LIST := "%RewardList"
+const DROP_ACTION := "DropAction"
+## Recursion needs a depth cap like any other loop (AGENTS.md): a traversal with no cap
+## is an unbounded loop the moment the tree it walks turns out to contain a cycle, and
+## the `while`-scanning rules cannot see a recursive call at all. The reward list is
+## three levels deep, so this is slack rather than a tuned number.
+const MAX_WALK_DEPTH := 12
 ## The app's strike deals 25 and the lowest authored boss has 100 vitality, so four
 ## strikes is the whole fight. A cap, never "until it dies" — see `_strike_until_dead`.
 const MAX_STRIKES := 8
@@ -61,10 +70,14 @@ func _run() -> void:
 	for _frame in FRAMES:
 		await process_frame
 	var report := _inspect(path, app)
+	var rows_at_boot := _bag_rows(app)
+	report["rows_at_boot"] = rows_at_boot
 	var nav_report: Dictionary = await _press_nav(app)
 	report["nav"] = nav_report
 	var hunt_report: Dictionary = await _hunt(app)
 	report["hunt"] = hunt_report
+	var claim_report: Dictionary = await _claim(app, rows_at_boot)
+	report["claim"] = claim_report
 	var broken: Array[String] = []
 	if not bool(nav_report.get("ok", false)):
 		broken.append(
@@ -73,6 +86,10 @@ func _run() -> void:
 	if not bool(hunt_report.get("ok", false)):
 		broken.append(
 			"its hunt mints nothing: %s" % hunt_report.get("why", "the fight did nothing")
+		)
+	if not bool(claim_report.get("ok", false)):
+		broken.append(
+			"its drops cannot be collected: %s" % claim_report.get("why", "nothing was claimed")
 		)
 	if bool(report.get("ok", false)) and not broken.is_empty():
 		# Came up, but you cannot go anywhere or fight anything. That is the same
@@ -192,6 +209,126 @@ func _hunt(app: Node) -> Dictionary:
 		"reward_count": int(after.get("reward_count", 0)),
 		"pending_drops": int(after.get("pending_drops", 0)),
 	}
+
+
+## Pick the fight's drop up out of the reward list and confirm it reached the bag.
+##
+## Minting a reward is not the loop finishing. A reward the player cannot collect is
+## a number on a screen, which is the exact shape the objective calls out: the drop has
+## to become an item the bag lists. So this presses the row's own "Pick up" control,
+## requires the pending count to fall, then walks back to the workbench by nav button
+## and requires the bag to be larger than it was at boot.
+##
+## `rows_at_boot` was captured before the hunt, so this compares against what the
+## player actually started with rather than against a hardcoded starter count.
+func _claim(app: Node, rows_at_boot: int) -> Dictionary:
+	var screen := _live_screen(app)
+	if screen == null:
+		return {"ok": false, "why": "the fight left no live screen to collect from"}
+	var blocked := _why_cannot_claim(screen)
+	if blocked != "":
+		return {"ok": false, "why": blocked}
+	var pending_before := int((screen.call(&"summary") as Dictionary).get("pending_drops", 0))
+	_first_drop_action(screen).pressed.emit()
+	await process_frame
+	var pending_after := int((screen.call(&"summary") as Dictionary).get("pending_drops", 0))
+	var stuck := _why_still_pending(pending_after, pending_before)
+	if stuck != "":
+		return {"ok": false, "why": stuck}
+	var arrived := await _bag_grew(app, rows_at_boot)
+	if not bool(arrived.get("ok", false)):
+		var lost: String = str(arrived.get("why", "unknown"))
+		return {"ok": false, "why": "the drop was taken but never reached the bag: %s" % lost}
+	return {
+		"ok": true,
+		"pending_before": pending_before,
+		"pending_after": pending_after,
+		"rows_at_boot": rows_at_boot,
+		"rows_now": int(arrived.get("rows", 0)),
+	}
+
+
+## Why the reward cannot be collected from. Empty means the player could take a drop.
+func _why_cannot_claim(screen: Node) -> String:
+	if int((screen.call(&"summary") as Dictionary).get("pending_drops", 0)) < 1:
+		return "there was nothing pending to collect"
+	var action := _first_drop_action(screen)
+	if action == null:
+		return "the reward lists drops but offers no control to take one"
+	if action.disabled:
+		return "the drop's Pick up control is disabled, so it cannot be taken"
+	return ""
+
+
+## Why pressing Pick up did not reduce what is owed. Empty is a pass.
+func _why_still_pending(after: int, before: int) -> String:
+	if after >= before:
+		return "taking a drop left %d of %d pending; nothing was collected" % [after, before]
+	return ""
+
+
+## Walk back to the workbench by its own nav button and report the bag it shows.
+func _bag_grew(app: Node, rows_at_boot: int) -> Dictionary:
+	var nav := app.get_node_or_null("%NavBar")
+	if nav == null:
+		return {"ok": false, "why": "there is no nav bar to walk back with"}
+	var home := _home_slot()
+	if home < 0:
+		return {"ok": false, "why": "the route table declares no home slot to walk back to"}
+	var button := nav.get_node_or_null(NavBar.slot_unique_name(home)) as Button
+	if button == null or button.disabled or not button.visible:
+		return {"ok": false, "why": "the nav bar's home button is not pressable"}
+	button.pressed.emit()
+	await process_frame
+	var rows := _bag_rows(app)
+	if rows <= rows_at_boot:
+		return {
+			"ok": false,
+			"why":
+			"the workbench lists %d rows, no more than the %d at boot" % [rows, rows_at_boot],
+		}
+	return {"ok": true, "rows": rows}
+
+
+## The slot index of the home route, or -1.
+func _home_slot() -> int:
+	var slots := ScreenRoutes.all()
+	for index in slots.size():
+		if bool(slots[index].get("root", false)):
+			return index
+	return -1
+
+
+## How many rows the live screen's bag lists, or -1 when it is not a bag view.
+func _bag_rows(app: Node) -> int:
+	var screen := _live_screen(app)
+	if screen == null:
+		return -1
+	var summary: Variant = screen.call(&"summary")
+	if not (summary is Dictionary):
+		return -1
+	return int((summary as Dictionary).get("row_count", -1))
+
+
+## The reward list's first row control, or null when the reward has no rows.
+func _first_drop_action(screen: Node) -> Button:
+	var list := screen.get_node_or_null(REWARD_LIST)
+	if list == null:
+		return null
+	return _first_named(list, DROP_ACTION) as Button
+
+
+## Depth-first search for a node by name, with a depth cap. See MAX_WALK_DEPTH.
+func _first_named(node: Node, node_name: String, depth: int = 0) -> Node:
+	if depth > MAX_WALK_DEPTH:
+		return null
+	if node.name == node_name:
+		return node
+	for child in node.get_children():
+		var found := _first_named(child, node_name, depth + 1)
+		if found != null:
+			return found
+	return null
 
 
 ## The live screen, or null when the shell has nothing reporting state.
