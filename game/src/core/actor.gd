@@ -18,12 +18,20 @@ signal status_ticked(status_id: StringName, magnitude: float)
 ##   2 — tribulation, inside world, created world, ascension.
 ##   3 — sea, acupoints, body progress (ADR 0028).
 ##   4 — module-owned breakthrough attempt records (ADR 0029).
-const SCHEMA_VERSION := 4
+##   5 — the body's wound ledger, so necrosis survives a save (ADR 0140).
+const SCHEMA_VERSION := 5
 
 ## Module-owned attempt record. Serialized as a raw dictionary so core never
 ## imports the module's attempt class; the mind_cultivation module rebuilds the
 ## typed attempt from this key on load (ADR 0029).
 const ATTEMPT_MODULE_KEY := &"mind_attempt"
+## The body's wound ledger — per-meridian severity and the NECROSIS flags
+## (ADR 0070, ADR 0140). Serialized as a raw dictionary and EXCLUDED from the
+## generic `module_data` loop, exactly as the attempt record is: it gets its own
+## payload slot so the schema can version it, and so it is written once rather
+## than twice. Core never imports `combat_engine`'s type; the module restores its
+## own typed ledger from this key on attach.
+const WOUNDS_MODULE_KEY := &"body_wounds"
 
 ## Resource pools every actor carries, mapped to the derived stat that
 ## expresses their capacity. Core owns health and stamina because it owns the
@@ -292,21 +300,28 @@ func to_dict() -> Dictionary:
 			body_progress_dict[String(realm_id)] = true
 	var module_data_dict: Dictionary = {}
 	for key in module_data.keys():
-		# The attempt record has its own payload slot so the schema can version it.
-		if key == ATTEMPT_MODULE_KEY:
+		# The two versioned slots have their own payload keys, so they are excluded
+		# here and serialized exactly once (ADR 0029, ADR 0140).
+		if key == ATTEMPT_MODULE_KEY or key == WOUNDS_MODULE_KEY:
 			continue
 		module_data_dict[String(key)] = module_data[key]
 	# Attempt record (active or terminal) serialized as raw data; the module
 	# rebuilds the typed attempt on load. Absent means "no attempt".
 	var attempt_dict: Dictionary = module_data.get(ATTEMPT_MODULE_KEY, {})
+	# The body's wound ledger, read from the COMPONENT the body path binds it on and
+	# serialized as raw data. A ledger with nothing on it is `{}` — an empty slot —
+	# which is the same answer an unhit body gives, so "never hit" and "hit and fully
+	# decayed" stay distinguishable only where they are actually different facts.
+	var wounds_dict: Dictionary = _wounds_dict()
 	var item_state_dict: Dictionary = {}
 	if not _item_state_serializer.is_null():
 		item_state_dict = _item_state_serializer.call(self)
 	# NO `statuses` key, deliberately (ADR 0089). Every status is session-only and
-	# `SCHEMA_VERSION` stays 4: persisting one is a schema decision with its own ADR
-	# (ADR 0089 §Consequences, "when a cultivation outcome can read a status across a
-	# save"), and a live-resolution record in the payload would also put potency,
-	# escalation state and authored def ids into every save.
+	# persisting one is a schema decision with its OWN ADR: the `version` bump in
+	# ADR 0140 is for wounds, and a status is not a wound — ADR 0089 §Consequences
+	# defers it to "when a cultivation outcome can read a status across a save". A
+	# live-resolution record in the payload would also put potency, escalation state
+	# and authored def ids into every save (DEF-0059).
 	return {
 		"version": SCHEMA_VERSION,
 		"id": String(id),
@@ -325,6 +340,7 @@ func to_dict() -> Dictionary:
 		"acupoints": acupoints_dict,
 		"body_progress": body_progress_dict,
 		"mind_attempt": attempt_dict.duplicate(true),
+		"body_wounds": wounds_dict,
 		"module_data": module_data_dict,
 		"item_state": item_state_dict,
 		"tribulation": tribulation_dict,
@@ -404,7 +420,8 @@ static func from_dict(data: Dictionary) -> Actor:
 
 ## Restore what the payload's schema version carries. A slot added by a later
 ## version is simply absent from an older save, so each restore is gated and
-## defaults to "nothing there" — a v2 payload loads with no sea and no attempt.
+## defaults to "nothing there" — a v2 payload loads with no sea and no attempt,
+## and a v4 payload loads with no wounds.
 static func _restore_versioned(data: Dictionary, actor: Actor, version: int) -> void:
 	if version >= 3:
 		var sea_data: Dictionary = data.get("sea", {})
@@ -417,6 +434,28 @@ static func _restore_versioned(data: Dictionary, actor: Actor, version: int) -> 
 	var attempt_data: Dictionary = data.get("mind_attempt", {})
 	if not attempt_data.is_empty():
 		actor.set_module_data(ATTEMPT_MODULE_KEY, attempt_data.duplicate(true))
+	# v5 added the wound slot; v4 and older carry no wounds at all, and an absent slot
+	# stays absent rather than becoming an EMPTY one — "this body was never hit" and
+	# "this body was hit and every wound decayed" are different facts, and inventing an
+	# empty ledger for an old save would assert the second. The raw payload is stashed in
+	# `module_data` exactly as the attempt's is; `CombatEngineApi.attach_wounds` rebuilds
+	# the typed ledger from it, because core never imports `combat_engine`.
+	var wounds_data: Variant = data.get("body_wounds", {})
+	if wounds_data is Dictionary and not (wounds_data as Dictionary).is_empty():
+		actor.set_module_data(WOUNDS_MODULE_KEY, (wounds_data as Dictionary).duplicate(true))
+
+
+## The wound ledger's raw payload, read through the component the body path binds it
+## on. `{}` when nothing is bound, when the bound object has no `to_dict`, or when
+## `to_dict` answered something that is not a dictionary — an untrusted save or a
+## foreign component cannot turn a payload key into a type error. Core never names
+## `BodyWounds`; it calls the method and checks the shape (ADR 0140).
+func _wounds_dict() -> Dictionary:
+	var ledger: RefCounted = component(WOUNDS_MODULE_KEY)
+	if ledger == null or not ledger.has_method(&"to_dict"):
+		return {}
+	var raw: Variant = ledger.call(&"to_dict")
+	return raw if raw is Dictionary else {}
 
 
 func _string_array(values: Array[StringName]) -> Array:

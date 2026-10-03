@@ -17,11 +17,11 @@ extends TestCase
 ## ## Teardown matters more than usual here
 ##
 ## `HoldingsApi._store`, `HoldingsApi._resolver`, `MarketApi._store`, `CustodyApi._store`,
-## `CustodyApi._resolver`, `CustodyApi._minter` and the `ResourceNodeCatalog` singleton are
-## all process-wide and all outlive this suite. A suite that leaves them installed holds
-## authored `ResourceNodeDef` resources and a live `Actor` graph alive until the engine
-## shuts down, and ObjectDB then reports leaked instances at exit with every assertion
-## green — a suite that passes and still fails the run.
+## `CustodyApi._resolver`, `CustodyApi._minter`, `ForageApi._granter` and the
+## `ResourceNodeCatalog` singleton are all process-wide and all outlive this suite. A suite
+## that leaves them installed holds authored `ResourceNodeDef` resources and a live `Actor`
+## graph alive until the engine shuts down, and ObjectDB then reports leaked instances at
+## exit with every assertion green — a suite that passes and still fails the run.
 
 const SUBJECT := &"guard_captain"
 const SECT := &"iron_vine"
@@ -47,6 +47,7 @@ func teardown() -> void:
 	CustodyApi.set_resolver(Callable())
 	CustodyApi.set_store(null)
 	CustodyApi.set_minter(Callable())
+	ForageApi.set_granter(Callable())
 	ResourceNodeCatalog.instance().reset()
 
 
@@ -131,6 +132,14 @@ func test_all_five_seams_report_installed() -> void:
 	assert_eq(bool(CustodyApi.summary(actor)["resolver_installed"]), true, "custody resolver")
 	assert_eq(bool(CustodyApi.summary(actor)["store_installed"]), true, "custody store")
 	assert_eq(bool(CustodyApi.has_minter()), true, "the custody minter, which has no summary key")
+	assert_eq(
+		bool(ForageApi.has_granter()),
+		true,
+		(
+			"the forage granter, which has no summary key either — without it `gather` is a flag "
+			+ "with no verb behind it"
+		)
+	)
 	# `MarketApi.summary` publishes no seam booleans, so its store is proven by BEHAVIOUR
 	# instead: a drop on one actor must be visible to a SECOND actor through the facade's
 	# own read model, which is the whole reason the store exists (ADR 0100/0101). Read

@@ -73,6 +73,24 @@ func _facing_warden() -> Actor:
 	return actor
 
 
+## The shared boss record the freeze test is about to overwrite, kept so `teardown` can put it
+## back.
+##
+## `LootContent`'s boss index is a process-wide singleton and the runner drives every suite
+## from ONE process, so a record replaced here outlives this suite. An earlier version of the
+## freeze test left the dragon carrying `domain_id ""` and `boss_ids []`, and three later
+## suites reported it — which is why the restore lives in `teardown` and not at the end of the
+## test body: a test that aborts mid-way would skip a cleanup at its own end.
+var _saved_dragon: Dictionary = {}
+
+
+func teardown() -> void:
+	if _saved_dragon.is_empty():
+		return
+	LootContent.instance().provide_boss(FLAME_DRAGON, _saved_dragon)
+	_saved_dragon = {}
+
+
 ## A shipped boss's authored record, loaded straight off disk, so this suite reads the real
 ## content rather than a fixture that could drift away from it.
 func _authored(boss_id: StringName) -> BossDef:
@@ -415,10 +433,10 @@ func test_the_authored_defense_changes_what_a_blow_meets() -> void:
 ## change terms because a content file was edited under it — the ADR 0076 rule, applied to
 ## the new fields. Observed through live exchanges, not through the state dictionary.
 ##
-## The record it corrupts is `flame_dragon`, not an ember boss, and that is deliberate:
-## `LootContent`'s index is a process-wide singleton and suites run ALPHABETICALLY, so an
-## edit made here outlives this suite and would otherwise turn some later suite's failure
-## into this one's. A boss nothing else reads keeps that from being someone else's problem.
+## The record it corrupts is `flame_dragon`, and the seed is UNDONE in `teardown`. Picking a
+## boss nothing else reads keeps the blast radius small; restoring it is what keeps it zero,
+## because `LootContent`'s boss index is a process-wide singleton every later suite reads.
+## Suites also run ALPHABETICALLY, so "this suite will be over by then" is not an argument.
 func test_the_profile_is_frozen_with_the_boss_not_re_read_per_exchange() -> void:
 	var actor := _hero()
 	assert_eq(
@@ -438,6 +456,7 @@ func test_the_profile_is_frozen_with_the_boss_not_re_read_per_exchange() -> void
 
 	# Corrupt the authored record. A frozen fight must not notice — and a boss spawned AFTER
 	# the edit must carry the new numbers, so "frozen" cannot quietly mean "never updated".
+	_saved_dragon = LootContent.instance().boss_record(FLAME_DRAGON).duplicate(true)
 	(
 		LootContent
 		. instance()

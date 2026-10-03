@@ -323,15 +323,86 @@ func test_the_ledger_round_trips_through_the_ordinary_actor_payload() -> void:
 	var actor := _actor()
 	SocialApi.apply_cause(actor, MERCHANT, &"an_oath")
 	SocialApi.apply_cause(actor, MERCHANT, &"a_teaching")
-	SocialApi.state(actor)
+	# NO `SocialApi.state(actor)` here. That call was the only thing that ever flushed the
+	# ledger into `module_data`, so asserting persistence after calling it proved the codec
+	# and nothing else — and no production code ever made that call (BL-0627). This test
+	# now reaches the save path the way `SaveApi.persist` does: `to_dict` and nothing else.
 	var restored := Actor.from_dict(actor.to_dict())
 	SocialApi.attach(restored)
 	var bond := SocialApi.social_state(restored).bond(MERCHANT)
-	assert_ne(bond, null, "the bond survived the save")
+	assert_ne(bond, null, "the bond survived the save without anyone remembering to flush")
 	assert_almost_eq(bond.standing, 8.0, "with its standing")
 	assert_almost_eq(bond.trust, 0.4, "its trust")
 	assert_eq(bond.distinct_causes(), 2, "and its cause ledger, which is what a class derives from")
 	assert_eq(bond.bond_class(), SocialBondClass.FRIEND, "and its derived class")
+
+
+## ## The load-bearing one: the save path, reached the way PRODUCTION reaches it
+##
+## `SaveApi.persist` does exactly `actor.to_dict()`. No caller, and no module, remembers to
+## flush first — the flush has to be inside the mutating verb or it does not happen. So this
+## test builds the save envelope's actor payload by that one call, reads it back through
+## `Actor.from_dict`, and asserts the bond is in it.
+##
+## **It is a mutation-complete test.** Delete the `_persist(state, actor)` line from
+## `apply_cause` and `restored` has no bond at all, so the first assertion goes red. There
+## is no surviving `SocialApi.state(...)` call in this suite's path that would paper over it
+## — that was the defect this test exists to fix (BL-0627).
+func test_a_bond_earned_and_saved_reaches_the_save_path_without_a_manual_flush() -> void:
+	SocialCauseCatalog.instance().reset()
+	var gift := SocialCauseDef.new()
+	gift.id = &"a_gift"
+	gift.standing = 6.0
+	gift.trust = 0.5
+	SocialCauseCatalog.instance().install([gift])
+	var actor := _actor()
+	# The production entry point: `sect/api.gd` and `nation/api.gd` reach this verb for
+	# institution membership, and `NpcBoot.tick` reaches `tick` for decay. Nobody calls
+	# `SocialApi.state` — nothing in `game/src` does, which is why this test must not.
+	SocialApi.apply_cause(actor, MERCHANT, &"a_gift")
+	SocialApi.tick(actor, 24.0 * 60.0 * 60.0 * 30.0)
+	# The whole of the save path, byte for byte: `var payload := actor.to_dict()`.
+	var payload := actor.to_dict()
+	var restored := Actor.from_dict(payload)
+	SocialApi.attach(restored)
+	var bond := SocialApi.social_state(restored).bond(MERCHANT)
+	assert_ne(bond, null, "the flushed ledger reached module_data, so the save carries it")
+	assert_almost_eq(bond.standing, 5.0, "including the decay tick that moved it", 0.001)
+	# Trust decays THIRTY times faster than standing, so a month takes a transient trust to
+	# its floor of zero completely. Asserting the floor rather than a half-decayed fraction
+	# is deliberate: it is the honest answer for this cause and it proves the trust AXIS
+	# round-tripped too, which a standing-only assertion would not.
+	assert_almost_eq(bond.trust, 0.0, "and the trust axis, which decays 30x faster, is spent", 0.001)
+	assert_almost_eq(bond.age, 24.0 * 60.0 * 60.0 * 30.0, "and the age the tick recorded", 0.001)
+	assert_eq(bond.distinct_causes(), 1, "the cause ledger is the thing a class derives from")
+	assert_eq(
+		SocialApi.social_state(restored).regard.get(String(MERCHANT), null),
+		null,
+		"an ordinary cause is not an institution row"
+	)
+
+
+## `tick` is a mutating verb too, and its flush is the only reason accumulated DECAY
+## survives a save. Without it a bond would silently rewind to its state at the last cause.
+func test_decay_accumulates_across_saves_rather_than_rewinding_to_the_last_cause() -> void:
+	SocialCauseCatalog.instance().reset()
+	var gift := SocialCauseDef.new()
+	gift.id = &"a_gift"
+	gift.standing = 10.0
+	SocialCauseCatalog.instance().install([gift])
+	var actor := _actor()
+	SocialApi.apply_cause(actor, MERCHANT, &"a_gift")
+	for _i in range(3):
+		SocialApi.tick(actor, 24.0 * 60.0 * 60.0 * 30.0)
+		var restored := Actor.from_dict(actor.to_dict())
+		SocialApi.attach(restored)
+		actor = restored
+	assert_almost_eq(
+		SocialApi.social_state(actor).bond(MERCHANT).standing,
+		7.0,
+		"three months of silence, each carried through a save, not three times the same month",
+		0.001
+	)
 
 
 func test_the_ledger_needs_no_core_schema_bump() -> void:

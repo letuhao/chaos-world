@@ -102,7 +102,7 @@ func failures() -> Array[String]:
 ## are per-assertion, so a body that returns early adds neither a pass nor a
 ## failure and is invisible to `passed()`/`failed()`.
 func assertion_count() -> int:
-	return _passed + _failed
+	return _assertions
 
 
 func _record(label: String, expected, actual) -> void:

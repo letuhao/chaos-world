@@ -122,10 +122,43 @@ const LEVERS: Array[StringName] = [&"affinity", &"gear", &"technique", &"pill"]
 ## Pools a status may spend. A bounded pool write is a channel, not a damage formula.
 const POOLS: Array[StringName] = [&"health", &"qi", &"stamina"]
 const OPS: Array[StringName] = [&"flat", &"percent"]
-## Stats whose baseline in `core/actor_stats.gd` is the literal `0.0`, where a PERCENT
-## modifier evaluates to a guaranteed no-op (`damage_reduction`, ADR 0022). The audit
-## is checked against the STAT, never against the status that carries it (ADR 0090).
-const ZERO_BASELINE_STATS: Array[StringName] = [&"damage_reduction"]
+## Stats a PERCENT modifier on is a GUARANTEED no-op, because
+## `ActorStats._put` resolves `(base + flat) * (1 + percent)` and their baseline
+## reads `0.0` for every actor the shipped content can build (ADR 0022).
+##
+## ## Why this list is longer than the literal `0.0`
+##
+## `damage_reduction` is the only one whose baseline is the CONSTANT `0.0`. The other
+## four are `minf(cap, attribute * k)` — the shape ADR 0022 calls `attribute-gated` and
+## keeps in `Stat.RATE_STATS`, correctly, because a cap term makes FLAT the worse error.
+## But "zero when the attribute is low" and "zero at every attribute this game builds"
+## are different claims, and only the second makes PERCENT a guaranteed no-op. Measured
+## over the numbers actually authored under `game/data`, the split is:
+##
+## - `evasion`      = `minf(0.6, agility * 0.0015)`           needs agility 400; authored 1..15
+## - `status_resistance` = `minf(0.8, will * 0.003)`          needs will 250;    authored -2..24
+## - `cooldown_reduction` = `minf(0.4, comprehension * 0.002)` needs comprehension 500; authored 0..18
+## - `qi_cost_reduction` = `minf(0.5, aptitude * 0.001)`      needs aptitude 500; authored 1..13
+## - `damage_reduction`  = `0.0`                              needs nothing
+##
+## Every gate is one to two orders of magnitude past the top of its authored range, so
+## these are not "degrade for a low-agility build" — they are zero for EVERY actor, and a
+## PERCENT on any of them reads `(0.0 + 0.0) * (1 + p) = 0.0` forever. This is exactly
+## the defect ADR 0022 measured for `damage_reduction` (44 items granting nothing at all)
+## still present under four other ids, and `Stat.RATE_STATS` cannot catch it because
+## membership there is a claim about FLAT, not about PERCENT.
+##
+## The audit is checked against the STAT, never against the status that carries it
+## (ADR 0090). `tests/modules/status/test_status_refusals.gd` pins each id against a
+## real `ActorStats` baseline rather than against this list, so a stat moved in or out
+## fails the suite rather than silently changing what `problems()` refuses.
+const ZERO_BASELINE_STATS: Array[StringName] = [
+	&"cooldown_reduction",
+	&"damage_reduction",
+	&"evasion",
+	&"qi_cost_reduction",
+	&"status_resistance",
+]
 ## `StatusEffect.is_permanent()`'s sentinel, restated as a duration a designer can
 ## author: a CULTIVATION gift with no expiry.
 const DURATION_FOREVER := -1.0
@@ -346,10 +379,16 @@ func _modifier_problems() -> Array[String]:
 				)
 			)
 		if op == &"percent" and ZERO_BASELINE_STATS.has(stat_id):
-			out.append(
-				(
-					"stat '%s' has a 0.0 baseline, so PERCENT is a no-op (ADR 0022). Use flat."
-					% String(stat_id)
+			(
+				out
+				. append(
+					(
+						(
+							"stat '%s' has a 0.0 baseline for every actor this game builds, so PERCENT "
+							+ "reads (0.0 + 0.0) * (1 + p) = 0.0 and grants nothing (ADR 0022). Use flat."
+						)
+						% String(stat_id)
+					)
 				)
 			)
 	return out

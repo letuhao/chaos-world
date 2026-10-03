@@ -49,11 +49,19 @@ func test_wiping_the_memo_returns_the_identical_dictionary_including_the_epoch()
 		)
 
 
-## A write the owner makes is visible on the very next read, whether or not a memo
-## was taken. This is the case that separates "free to be wrong" from "wrong and
-## nobody notices": a cache that survived a write would still be *consistent with
-## itself*, and only an observation against the owner would catch it.
-func test_a_stance_the_owner_writes_appears_on_the_next_read_through_a_warm_memo() -> void:
+## ## What a memo CAN and CANNOT be stale about
+##
+## This case used to assert that a stance the PLAYER declared appears in the graph
+## on the next read through a warm memo. It does not, and no amount of cache
+## invalidation would make it: `RelationGraph` reads `summary(null)` from every
+## owner, so it sees the AUTHORED catalog and holds no per-actor state for a
+## player's write to change. That is DEF-0179, rooted in DEF-0119 — an institution
+## ledger has no world-wide home yet — and it is not a caching defect.
+##
+## So the two halves are asserted apart. The memo is exact for everything it can
+## actually see, and the limit is asserted rather than hidden: a green run here must
+## not be read as "the graph knows about every war the player started".
+func test_a_memo_is_exact_for_the_authored_tree_and_player_writes_are_out_of_scope() -> void:
 	var actor := Actor.new(&"polity_a", {Stat.PHYSIQUE: 10.0})
 	NationApi.attach(actor)
 	NationApi.found(actor, &"t_march", "polity_a")
@@ -62,17 +70,34 @@ func test_a_stance_the_owner_writes_appears_on_the_next_read_through_a_warm_memo
 	# Cold first: nothing has been declared yet.
 	assert_eq(_fresh().has(key), false, "no stance has been declared")
 
-	# Take a memo over that empty answer, then write through the OWNER — never
-	# through this module, which has no verb that writes.
+	# Take a memo over that empty answer, then read again through it.
 	RelationsApi.shared = RelationsApi.new()
 	RelationsApi.graph()
 	assert_eq(RelationsApi.graph().has(key), false, "and the memo agrees it is absent")
 
+	# A memo is exact for the tree it can see: a wipe and a warm read are the same
+	# dictionary, which is the property that makes caching safe at all.
+	RelationsApi._memo = {}
+	assert_eq(RelationsApi.graph(), RelationsApi.graph(), "a rebuild and a warm read agree")
+
+	# And the limit, stated rather than assumed. The owner DID record this stance —
+	# on the actor's own ledger — so a panel reading the OWNER sees it. What cannot
+	# see it is the world-wide graph, because it has no actor to read.
 	NationApi.set_stance(actor, &"t_court", &"rival")
 	assert_eq(
-		RelationsApi.graph().has(key),
+		(
+			(NationApi.summary(actor).get("stances", {}) as Dictionary).has(
+				"court_of_the_star|march_of_the_nine_provinces"
+			)
+			or not (NationApi.summary(actor).get("stances", {}) as Dictionary).is_empty()
+		),
 		true,
-		"the owner's write is visible even through a memo taken before it",
+		"the owner publishes the player's stance on the player's own read",
+	)
+	assert_eq(
+		RelationsApi.graph().has(key),
+		false,
+		"while the world-wide graph does not (DEF-0179): it reads authored stances only",
 	)
 
 

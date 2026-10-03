@@ -53,8 +53,16 @@ const UNEXPECTED_REF := "unexpected_ref"
 const NO_SOURCE := "no_source_declared"
 const UNSATISFIED := "route_unsatisfied"
 ## The kind is in the vocabulary but no shipping code delivers it. A static
-## property of the kind, not of any one item: `gather` has no forager and
-## `quest` item grants are recorded unspent by `QuestGrants.pay`.
+## property of the kind, not of any one item: `quest` item grants are recorded
+## unspent by `QuestGrants.pay`, which records the grant rather than handing over
+## an item.
+##
+## **`gather` was in this list until the forage route shipped, and the flag moved
+## only when there was a verb behind it.** `ForageApi.harvest` works a node the
+## actor holds, gated by `ResourceNodeDef.permits`, and settles the accrued units
+## into real items through the granter `EconomyBoot.install` binds
+## (`app/forage_granary.gd`). A `shipped` flag with no callable verb is a claim
+## the audit cannot detect, so the flag follows the code rather than the intention.
 const NO_SHIPPED_ROUTE := "no_shipped_route"
 ## The kind is deliverable in principle but the caller injected no probe for it,
 ## so satisfiability was not established. Never counted as satisfied.
@@ -77,16 +85,17 @@ const REF_FORBIDDEN := "forbidden"
 ## carry a reference, and whether shipping code delivers it at all.
 ##
 ## `shipped` is a claim about `game/src`, not about content. It is `false` for
-## exactly the two kinds whose subsystem does not exist or deliberately refuses
-## to hand over an item, and `tools data audit` reports any kind in the corpus
-## this table does not carry.
+## exactly the kinds whose subsystem does not exist or deliberately refuses to
+## hand over an item, and `tools data audit` reports any kind in the corpus this
+## table does not carry. **`gather` became `true` only once `ForageApi.harvest`
+## existed** — see [constant NO_SHIPPED_ROUTE] for why the flag follows the code.
 const KINDS: Dictionary = {
 	KIND_CRAFT: {"ref": REF_REQUIRED, "shipped": true},
 	KIND_BOSS: {"ref": REF_REQUIRED, "shipped": true},
 	KIND_DOMAIN: {"ref": REF_REQUIRED, "shipped": true},
 	KIND_STARTER: {"ref": REF_FORBIDDEN, "shipped": true},
 	KIND_QUEST: {"ref": REF_OPTIONAL, "shipped": false},
-	KIND_GATHER: {"ref": REF_FORBIDDEN, "shipped": false},
+	KIND_GATHER: {"ref": REF_FORBIDDEN, "shipped": true},
 }
 
 

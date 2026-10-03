@@ -32,3 +32,25 @@ signal npc_restored(npc_id: String, tier: StringName, stage_id: StringName, trac
 
 ## A consumer answered a decision the npc module asked. `kind` names the question.
 signal decision_answered(npc_id: String, kind: StringName, decision: Dictionary)
+
+
+## ## The one bus, and why it lives HERE rather than behind `NpcApi.events()`
+##
+## `NpcApi.events()` is still how a SUBSCRIBER reaches the contract — the accessor ADR 0093
+## names stays the public face, unchanged. But `bond_changed` is announced by `social/`,
+## which owns the ledger that a bond is, and `social/` declares `contracts` and `core` and
+## NOT `npc/`. A bus held only on the facade would therefore be unreachable from the one
+## module with something to announce, which is precisely how a declared signal becomes a
+## signal nobody emits — the state ADR 0093 describes and does not excuse.
+##
+## `contracts/` is the leaf layer (`LAYER_DEPS` in `tools/arch/rules.py`), so a static here
+## is a legal home for a shared instance and no dependency is invented to carry it.
+static var _shared: NpcEvents = null
+
+
+## The single bus every npc-event publisher and subscriber shares. Stable across calls, so
+## a subscriber that connected once is still connected the next time this is asked for.
+static func shared() -> NpcEvents:
+	if _shared == null:
+		_shared = NpcEvents.new()
+	return _shared

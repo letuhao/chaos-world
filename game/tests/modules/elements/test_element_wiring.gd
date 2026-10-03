@@ -35,19 +35,18 @@ const BASELINE_RACE := &"commonborn"
 
 ## ## Why these two potency cases ride a TALL affinity rather than the shipped one
 ##
-## `commonborn` authors 2.0 affinity per element, so `potency = 2.0 * 0.25 = 0.5`
-## against an authored `status_potency_floor` of 1.0 — the floor wins and the read
-## returns 1.0. That is CORRECT (the floor is a floor), but it makes the shipped
-## baseline useless for the question: at 2.0 affinity the floor swallows the channel
-## entirely, so a novice and an adept both read 1.0 and the pair below cannot tell
-## "mastery did not move potency" from "potency was never above the floor". So these
-## two grant a tall affinity explicitly. The floor is still exercised — and asserted —
-## by the wiring case below, which is about the floor being a floor.
+## They grant the affinity explicitly so the question is separable from the floor. The
+## shipped `commonborn` authors 2.0 affinity per element, and under the CURRENT tuning
+## `2.0 * scale` already clears `status_potency_floor` outright, so the shipped baseline
+## is above the floor and could answer both cases — a tall affinity keeps the pair honest
+## if a future balance pass lowers the floor or the scale far enough to swallow it again.
+## The floor is exercised where it is the right branch: by the wiring case below, and by
+## an actor with no elemental power at all.
 
 ## The affinity these two cases grant. Any value comfortably above
-## `status_potency_floor / status_potency_scale` (1.0 / 0.25 = 4.0) would do; 10.0 is
-## a round authored build, not a tuned constant — the assertion is a strict inequality
-## between two actors, so the exact figure cannot change the outcome.
+## `status_potency_floor / status_potency_scale` would do; 10.0 is a round authored
+## build, not a tuned constant — the assertion is a strict inequality between two
+## actors, so the exact figure cannot change the outcome.
 const TALL_AFFINITY := 10.0
 
 
@@ -210,17 +209,26 @@ func test_a_trained_affine_actor_reads_potency_above_the_authored_floor() -> voi
 
 
 ## THE FLOOR IS STILL A FLOOR, and this is the case that proves the wiring did not
-## simply delete it. A factory actor at the SHIPPED baseline (2.0 affinity, zero
-## mastery) derives `2.0` power, and `2.0 * 0.25 = 0.5` against a floor of `1.0` — so
-## the floor wins and the read is exactly `1.0`.
+## simply delete it.
 ##
-## It is asserted because it is a real, reachable state and not a hypothetical: the
-## baseline race is the most common body in the shipped content, and a weak actor's
-## debuff resting on the floor is the designed outcome (ADR 0088's floor exists exactly
-## so an actor with no elemental power still inflicts a visible status). It also
-## documents WHY the two cases above need a taller affinity: at 2.0 the floor swallows
-## the channel, so a novice and an adept both read 1.0 and the comparison cannot
-## distinguish "mastery did nothing" from "potency was never above the floor".
+## ## A baseline actor now CLEARS the floor, and that is the shipped balance, not a bug
+##
+## `potency = maxf(floor, power * scale)`, so the floor governs an actor only while
+## `power * scale` sits at or below it. Under the shipped tuning a baseline `commonborn`
+## reads `2.0` power and clears the floor outright, so this asserts the LIVE channel for
+## the shipped baseline body rather than the floor swallowing it. The floor is not
+## redundant: it is still exactly what an actor with NO elemental power reads
+## (`test_potency_is_the_element_power_the_actor_actually_derives` and
+## `test_status_application.gd`'s bare-actor case), and the potency-tuning suite owns
+## the shipped relationship -- it requires the baseline race to CLEAR the floor, because a
+## floor at or above the bottom of the realistic band is a CEILING and would give every
+## build one identical potency.
+##
+## Restated rather than kept as an equality: the previous version pinned
+## `2.0 * 0.25 = 0.5` against a floor of `1.0`, which is the pre-retune arithmetic. Both
+## the scale and the floor are now read off the shipped `.tres` through the single
+## expression that decides it, so a rebalance of either number cannot leave this case
+## asserting a channel that no longer exists.
 func test_the_floor_still_governs_a_weak_baseline_actor() -> void:
 	var tuning := CombatTestKit.shipped()
 	var weak := _factory_actor(&"weak")
@@ -230,11 +238,29 @@ func test_the_floor_still_governs_a_weak_baseline_actor() -> void:
 		true,
 		"the wiring is live: the baseline actor derives a non-zero power of %s" % power
 	)
+	var expected := maxf(tuning.status_potency_floor, power * tuning.status_potency_scale)
 	assert_almost_eq(
 		StatusApply.potency_of(weak, tuning, ElementStats.FIRE),
-		tuning.status_potency_floor,
-		"a weak actor's potency rests on the authored floor, which is a floor and not a bug",
+		expected,
+		"a weak actor's potency is exactly what the shipped scale and floor make it",
 		1e-9
+	)
+	# The floor is a floor either way: an actor with NO elemental power at all still reads
+	# exactly it, so the baseline case above is genuinely the SCALE branch and not the
+	# floor quietly doing the work. That is what makes it a floor rather than a constant.
+	var bare := _factory_actor(&"bare_baseline", 0.0)
+	bare.set_affinity(ElementStats.FIRE, 0.0)
+	assert_almost_eq(
+		bare.stats.derived(ElementStats.power_id(ElementStats.FIRE)),
+		0.0,
+		"an untrained element derives no power, which is the case the floor exists for",
+		1e-12
+	)
+	assert_almost_eq(
+		StatusApply.potency_of(bare, tuning, ElementStats.FIRE),
+		tuning.status_potency_floor,
+		"and that body still rests on the authored floor rather than on nothing",
+		1e-12
 	)
 
 

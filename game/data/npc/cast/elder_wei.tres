@@ -10,7 +10,8 @@ index = 0
 display_name = "Gatekeeper"
 stat_multipliers = {}
 tags = Array[StringName]([])
-advance_after = 0
+advance_after = 3
+advance_verb = &"favours"
 terminal = false
 
 [sub_resource type="Resource" id="Stage_sworn"]
@@ -20,7 +21,8 @@ index = 1
 display_name = "Sworn Servant"
 stat_multipliers = {}
 tags = Array[StringName]([&"combat", &"teaches"])
-advance_after = 0
+advance_after = 5
+advance_verb = &"oaths_sworn"
 terminal = false
 
 [sub_resource type="Resource" id="Stage_retired"]

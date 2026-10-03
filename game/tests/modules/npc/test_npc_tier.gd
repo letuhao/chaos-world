@@ -12,6 +12,7 @@ const GATE_KEEPER := &"gate_keeper_bo"
 
 
 func setup() -> void:
+	SocialCauseCatalog.instance().install_defaults()
 	var elder_first := _stage(&"elder", "Elder", 0)
 	var elder_taught := _stage(&"elder_taught", "Taught", 1)
 	elder_taught.terminal = true
@@ -182,6 +183,58 @@ func test_a_terminal_stage_retires_the_npc_and_they_never_spawn_again() -> void:
 	assert_eq(NpcApi.summary(ELDER)["presence"], "Retired", "the elder is done")
 	NpcApi.despawn(ELDER)
 	assert_eq(NpcApi.spawn(ELDER), null, "and will not appear again")
+
+
+## ## Retirement also forgets the bond (BL-0627)
+##
+## `SocialApi.forget`'s own docstring promises "a dead minor does not haunt the ledger
+## forever", and until `advance_stage` called it the verb had NO production caller — the
+## promise existed only in a comment. These assert the two halves of the real promise: the
+## row is gone from the live ledger AND from the save payload, because a forget that flushed
+## nothing would resurrect the bond on the next load.
+func test_retiring_an_npc_forgets_the_bond_so_a_dead_minor_does_not_haunt_the_ledger() -> void:
+	var player := NpcApi._player()
+	SocialApi.apply_cause(player, ELDER, &"shared_brotherhood")
+	assert_ne(
+		SocialApi.social_state(player).bond(ELDER),
+		null,
+		"the elder is somebody the player has sworn to"
+	)
+	NpcApi.spawn(ELDER)
+	NpcApi.advance_stage(ELDER, &"elder_taught", "story")
+	assert_eq(SocialApi.social_state(player).bond(ELDER), null, "retirement forgets the bond")
+	assert_eq(SocialApi.summary(player)["bond_count"], 0, "so the read model no longer names them")
+
+
+func test_a_forgotten_bond_stays_forgotten_across_a_save() -> void:
+	var player := NpcApi._player()
+	SocialApi.apply_cause(player, ELDER, &"shared_brotherhood")
+	NpcApi.spawn(ELDER)
+	NpcApi.advance_stage(ELDER, &"elder_taught", "story")
+	# The whole point of the flush: a forget that did not reach `module_data` would save the
+	# OLD ledger and hand the player their dead friend back on the next load.
+	var restored := Actor.from_dict(player.to_dict())
+	NpcApi.attach(restored)
+	SocialApi.attach(restored)
+	assert_eq(
+		SocialApi.social_state(restored).bond(ELDER),
+		null,
+		"the save carries the retirement, not the bond it erased"
+	)
+
+
+## The mirror half of the same bug: a bond earned toward a npc who is STILL HERE must not
+## be swept up by the retirement wiring. Forgetting the wrong row would be worse than not
+## forgetting at all, so this asserts the forget is targeted.
+func test_retiring_one_npc_leaves_every_other_bond_alone() -> void:
+	var player := NpcApi._player()
+	SocialApi.apply_cause(player, ELDER, &"shared_brotherhood")
+	SocialApi.apply_cause(player, SMITH, &"gifted_item")
+	NpcApi.spawn(ELDER)
+	NpcApi.advance_stage(ELDER, &"elder_taught", "story")
+	assert_eq(SocialApi.social_state(player).bond(ELDER), null, "the retired one is gone")
+	assert_ne(SocialApi.social_state(player).bond(SMITH), null, "the smith is still a stranger-turned-friend")
+	assert_eq(SocialApi.summary(player)["bond_count"], 1, "and exactly one bond remains")
 
 
 func test_a_stage_magnitude_is_applied_once_and_never_stacks() -> void:

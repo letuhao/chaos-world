@@ -326,7 +326,7 @@ func test_the_history_trail_stops_growing_at_the_bound_and_never_beyond_it() -> 
 		"%d writes left exactly HISTORY_LIMIT records" % writes
 	)
 	assert_eq(
-		DestinyApi.counter(actor, &"duels_won"),
+		_counter(actor, &"duels_won"),
 		writes,
 		"while the counter itself kept every one of the writes"
 	)
@@ -358,6 +358,16 @@ func test_the_module_key_is_the_one_core_persists_generic_module_data_under() ->
 	assert_eq(
 		DestinyApi.MODULE_KEY, DestinyState.MODULE_KEY, "the facade persists under the same key"
 	)
+
+
+## The recorded value of one counter, read off the ledger [method DestinyApi.state]
+## publishes rather than off a facade verb. `counter(actor, id)` was retired when
+## the twelve-method cap forced a choice to pay for `events()`: it was the one
+## public verb with no caller in `game/src` at all, so what it answered was already
+## one dictionary key away from every one of its twenty read sites.
+func _counter(actor: Actor, counter_id: StringName) -> int:
+	var ledger := DestinyApi.state(actor)
+	return int((ledger["counters"] as Dictionary).get(String(counter_id), 0))
 
 
 # --- Round-tripping ----------------------------------------------------------

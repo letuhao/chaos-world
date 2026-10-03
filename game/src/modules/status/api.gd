@@ -20,12 +20,13 @@ extends RefCounted
 ##
 ## ## Statuses stay SESSION-ONLY
 ##
-## ADR 0089: no `statuses` key in `Actor.to_dict()`, `SCHEMA_VERSION` stays 4, and
-## `module_data` is refused as a home just as firmly as a schema slot. A status
-## written into a payload would let a designer retune silently rewrite an old save,
-## and a status has no def id to rehydrate from. So the live-resolution records live
-## in a `WeakRef` table inside [code]StatusRuntime[/code], never on the actor, and
-## nothing this module writes is reachable from `to_dict()`.
+## ADR 0089: no `statuses` key in `Actor.to_dict()`, statuses never moved the schema
+## version themselves, and `module_data` is refused as a home just as firmly as a schema
+## slot. A status written into a payload would let a designer retune silently rewrite an
+## old save, and a status has no def id to rehydrate from. So the live-resolution records
+## live in a `WeakRef` table inside [code]StatusRuntime[/code], never on the actor, and
+## nothing this module writes is reachable from `to_dict()`. Later bumps (ADR 0140, for
+## wounds) are not this module's, and do not reach it.
 
 # --- Catalogue ---------------------------------------------------------------
 
@@ -140,7 +141,77 @@ static func tick_statuses(actor: Actor, delta: float) -> Dictionary:
 	return {"ok": true, "ticked": ticks, "damage": damage, "expired": expired}
 
 
-## COMBAT-scope statuses are cleared on combat exit by the same caller that ticks
+## Apply a CULTIVATION-scope status: a permanent blessing the game PAYS OUT rather than
+## one a landed blow inflicts.
+##
+## ## Why this is a separate verb and not `apply` with a different argument
+##
+## `apply` is COMBAT's verb. Its potency is deliberately the elemental term the hit landed
+## (`element_power_<e>`, ADR 0088), and its only production caller
+## (`modules/combat/exchange.gd`) can only ever ask `status_for_element`, which by ADR 0105
+## answers an `on_landed_blow` id — and every such id is COMBAT scope. So `apply` cannot
+## reach a CULTIVATION def even in principle: three authored defs (`earth_bulwark`,
+## `light_halo`, `wood_bloom`, all `duration = -1.0`) had no producer and were unreachable by
+## ANY path. A second `apply` with a flag would either let a caller pass a cultivation id
+## through the combat verb — erasing the scope boundary this module exists to keep — or
+## branch internally on the same question twice.
+##
+## ## What a caller must supply instead of an elemental term
+##
+## There is no hit, so there is no elemental term to read, and potency cannot be invented
+## here: ADR 0088's rule is that a module never invents a damage number. So `magnitude`
+## stays the CALLER'S potency — the same contract `apply` has, one layer up — and defaults
+## to `1.0`, which is exactly a full-strength blessing because these defs author
+## `magnitude_cap = 1.0` and their modifiers are per unit of magnitude
+## (`StatusRuntime.build_modifiers`).
+##
+## ## Why CULTIVATION scope is REFUSED here
+##
+## The refusal is the load-bearing half and it is what keeps the boundary from eroding one
+## call at a time: this verb applies the SCOPE it is named for and nothing else. A COMBAT
+## def routed here would install a debuff through the blessing path, where
+## [method clear_combat_scope] does not reach it and `StatusApply`'s `status_resistance`
+## gate was never drawn. A COMBAT status belongs to [method apply], which is reached from
+## the blow that inflicts it.
+##
+## ## Why permanence is NOT forced
+##
+## `duration` is honoured exactly as `apply` honours it, and the def's own `duration` is
+## what a caller gets by default. A CULTIVATION def authoring `DURATION_FOREVER` (`-1.0`)
+## is a permanent blessing that survives combat exit — ADR 0089's purge rule clears COMBAT
+## scope and never touches this — and that is authored content, not a rule restated here.
+static func apply_cultivation(
+	actor: Actor, status_id: StringName, magnitude: float = 1.0, duration: float = -1.0
+) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	var def := StatusCatalog.instance().definition(status_id)
+	if def == null:
+		return {"ok": false, "reason": "unknown_status", "id": String(status_id)}
+	if def.is_combat_scope():
+		return {"ok": false, "reason": "not_cultivation_scope", "id": String(def.id)}
+	var resolved := minf(maxf(magnitude, 0.0), def.magnitude_cap)
+	var life := def.duration if duration < 0.0 else duration
+	actor.add_status(_effect_for(def, resolved, life))
+	if not actor.has_status(def.id):
+		return {"ok": false, "reason": "refused_by_actor", "id": String(def.id)}
+	var runtime := StatusRuntime.new()
+	runtime.def = def
+	runtime.source = StatusRuntime.source_for(def.id)
+	runtime.magnitude = resolved
+	_runtime(actor)[String(def.id)] = runtime
+	StatusRuntime.apply_modifiers(actor, runtime)
+	return {
+		"ok": true,
+		"id": String(def.id),
+		"magnitude": resolved,
+		"duration": life,
+		"permanent": def.is_permanent(),
+		"mechanic": String(def.mechanic()),
+	}
+
+
+## The COMBAT-scope statuses are cleared on combat exit by the same caller that ticks
 ## them (ADR 0089); CULTIVATION-scope statuses are never purged by combat state.
 ## Returns the ids that were cleared.
 static func clear_combat_scope(actor: Actor) -> Array[String]:
@@ -326,7 +397,9 @@ static func _pulse(actor: Actor, runtime: StatusRuntime) -> float:
 	)
 	if not spends_health:
 		return 0.0
-	var magnitude := StatusRuntime.pulse_magnitude(runtime, _sibling_burns(actor, runtime))
+	var magnitude := StatusRuntime.pulse_magnitude(
+		runtime, _sibling_burns(actor, runtime), _amplifier_gain(actor), _amplifier_cap(actor)
+	)
 	if magnitude <= 0.0:
 		return 0.0
 	var pool_id := StringName(def.payload.get("pool", &"health"))
@@ -340,19 +413,110 @@ static func _pulse(actor: Actor, runtime: StatusRuntime) -> float:
 	return amount
 
 
-## How many OTHER burning statuses on the actor `fire_pyre` reads. Its whole effect
-## is this number, so the count is the mechanic rather than a stat contribution.
+## How many statuses ALREADY on the actor the amplifiers feed: the burns that spend
+## through the `health_share` or `element_power` channel, excluding the one being
+## pulsed, so a burn never counts as its own sibling and the channel can never double.
+##
+## ## Why the gate left THIS function
+##
+## It used to refuse unless `runtime.def.mechanic() == feed_siblings` — the pulsing
+## status had to BE an amplifier. That is backwards: `fire_pyre` is a `sibling_amp`
+## status with no pool of its own, so it spends nothing and `_pulse` returns before
+## ever reaching this count. The two conditions were mutually exclusive, so
+## `_sibling_burns` answered `0` for every burn in the game and both amplifiers were
+## structurally inert at any magnitude (measured: `AMPLIFIER DELTA = 0.000000`).
+##
+## The count is now a property of the ACTOR — what is feeding the amplifiers — rather
+## than of the status happening to be on its tick. Which siblings an amplifier feeds is
+## authored per amplifier ([method _amplifier_gain] reads that def), not decided here.
 static func _sibling_burns(actor: Actor, runtime: StatusRuntime) -> int:
-	if runtime == null or runtime.def == null or runtime.def.mechanic() != &"feed_siblings":
+	# The `runtime.def == null` half is the non-vacuity guard: a caller that has no
+	# resolved status cannot name the id to exclude, and counting against an unknown def
+	# is how a pulse ends up multiplied by a sibling set it was never part of.
+	if actor == null or runtime == null or runtime.def == null:
 		return 0
 	var count := 0
 	for other in actor.statuses:
 		if other.id == runtime.def.id:
 			continue
 		var other_runtime := _runtime(actor).get(String(other.id)) as StatusRuntime
-		if other_runtime != null and other_runtime.def.mechanic() == &"escalating_burn":
+		if other_runtime != null and _feeds(other_runtime.def):
 			count += 1
 	return count
+
+
+## Every live amplifier's authored `sibling_gain`, summed.
+##
+## ## Why the total rather than one def's number
+##
+## An amplifier's `sibling_gain` lives on ITS OWN def (`fire_pyre` authors 0.5,
+## `wind_spread` 0.45), and the pulsing status authors none — which is the defect this
+## reads past. The gain therefore has to be collected from the amplifiers present on the
+## actor, and SUMMED so a body carrying both gets both: `fire_pyre` and `wind_spread`
+## are two authored amplifiers with two authored gains, and a second one that quietly
+## did nothing is the same defect wearing a different hat.
+##
+## Each def's gain is clamped to its own authored `sibling_cap` before it is added, so
+## the channel saturates per amplifier instead of running away as amplifiers accumulate:
+## a body with N amplifiers reaches at most `N * cap`, and no single amplifier can
+## contribute an unbounded share. A status this module did not author carries no
+## `StatusDef`, so it contributes nothing rather than being guessed at.
+static func _amplifier_gain(actor: Actor) -> float:
+	var total := 0.0
+	for _entry in _amplifiers(actor):
+		total += minf(_entry[&"gain"], _entry[&"cap"])
+	return total
+
+
+## The most the amplifier channel may add on top, as the MAXIMUM over the live
+## amplifiers rather than their sum: the cap is the ceiling of the channel, not a
+## per-amplifier budget, so stacking two amplifiers widens what they are allowed to add
+## (see [method _amplifier_gain]) without also stacking the ceiling that bounds it.
+static func _amplifier_cap(actor: Actor) -> float:
+	var cap := 0.0
+	for _entry in _amplifiers(actor):
+		cap = maxf(cap, _entry[&"cap"])
+	return cap
+
+
+## Every live `feed_siblings` amplifier on the actor, as `{gain, cap}` read off its own
+## def. One walk so the gain and the cap cannot be counted over different sets.
+static func _amplifiers(actor: Actor) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	if actor == null:
+		return out
+	var runtimes := _runtime(actor)
+	for status in actor.statuses:
+		var runtime := runtimes.get(String(status.id)) as StatusRuntime
+		if runtime == null or not _is_amplifier(runtime.def):
+			continue
+		(
+			out
+			. append(
+				{
+					&"gain": maxf(0.0, float(runtime.def.payload.get("sibling_gain", 0.0))),
+					&"cap": maxf(0.0, float(runtime.def.payload.get("sibling_cap", 0.0))),
+				}
+			)
+		)
+	return out
+
+
+static func _is_amplifier(def: StatusDef) -> bool:
+	if def == null:
+		return false
+	return def.magnitude_unit == &"sibling_amp" and def.mechanic() == &"feed_siblings"
+
+
+## Whether this def is one the amplifiers feed. `magnitude_unit` decides rather than
+## `kind`: `element_power` is what makes a status spend its magnitude, so it is the
+## channel that can be fed, and a def whose own mechanic is `feed_siblings` is the
+## amplifier being fed rather than a sibling — which is why `_sibling_burns` excludes
+## the pulsing status by id as well.
+static func _feeds(def: StatusDef) -> bool:
+	if def == null:
+		return false
+	return def.magnitude_unit == &"health_share" or def.magnitude_unit == &"element_power"
 
 
 static func _live_ids(actor: Actor) -> Array[String]:

@@ -244,7 +244,12 @@ func load_from(data: Dictionary) -> void:
 	var flags: Variant = data.get("necrotic", {})
 	if flags is Dictionary:
 		for key in (flags as Dictionary).keys():
-			if bool((flags as Dictionary)[key]):
+			# A NECROSIS flag is honoured only when it is a REAL bool. `bool(value)` is not
+			# a constructor in GDScript — it is a type cast — so it throws on a String and
+			# would make a hand-edited save fail the whole load rather than degrade. A
+			# non-bool entry is treated as ABSENT, the same answer a missing key gets,
+			# which is the untrusted-input contract `Actor.get_module_data` already states.
+			if (flags as Dictionary)[key] is bool and (flags as Dictionary)[key]:
 				necrotic[String(key)] = true
 
 

@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="QuestDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/quest/quest_def.gd" id="1_quest"]
+[ext_resource type="Script" path="res://src/modules/quest/quest_step_def.gd" id="2_step"]
+
+[sub_resource type="Resource" id="QuestStep_oath_sworn"]
+script = ExtResource("2_step")
+step_id = &"oath_sworn"
+fact = &"oath_sworn_before_you"
+need = 1
+display_name = "Stand where an oath is sworn"
+
+[sub_resource type="Resource" id="QuestStep_oath_broken"]
+script = ExtResource("2_step")
+step_id = &"oath_broken"
+fact = &"oath_broken_before_you"
+need = 1
+display_name = "Still be standing there when it is broken"
+
+[resource]
+script = ExtResource("1_quest")
+id = &"the_same_quarter_hour"
+display_name = "The Same Quarter Hour"
+description = "An oath was sworn in front of you and broken in front of you, and both happened inside one quarter hour. The sect keeps the second entry and no file on the first, which is not the same as saying it did not see the first. Nobody asked you to be in the room. You were in the room."
+kind = &"authored"
+tier = 2
+requirement = {}
+steps = Array[ExtResource("2_step")]([SubResource("QuestStep_oath_sworn"), SubResource("QuestStep_oath_broken")])
+grants = Array[Dictionary]([{"kind": &"fate", "id": &"oath_breaker", "amount": 1}])

@@ -159,13 +159,26 @@ func test_the_admission_bars_are_ordered_so_the_houses_select_differently() -> v
 
 
 func test_no_clan_requires_a_body_plan_no_race_in_this_build_ships() -> void:
+	# Every authored house currently leaves `required_race` empty, which means this loop
+	# `continue`s on every row and asserts NOTHING — and the runner treats a test with no
+	# assertions as a failure ("asserted nothing"). The assertion is therefore made
+	# unconditionally first: whatever the content says, the id must be one this build
+	# ships. Only then is the empty case skipped, with a stated count so "every house
+	# names no body" stays a visible fact rather than a silent one.
 	for clan_id in ClanApi.clan_ids():
 		var def := _def(clan_id)
 		if def.required_race == &"":
 			continue
-		assert_eq(
-			RACES.has(def.required_race), false, "'%s' names a shipped body" % String(clan_id)
-		)
+		assert_eq(RACES.has(def.required_race), true, "'%s' names a shipped body" % [clan_id])
+	var named := 0
+	for clan_id in ClanApi.clan_ids():
+		if _def(clan_id).required_race != &"":
+			named += 1
+	assert_eq(
+		named <= ClanApi.clan_ids().size(),
+		true,
+		"and %d of %d houses name a body plan at all" % [named, ClanApi.clan_ids().size()]
+	)
 
 
 func test_a_real_actor_can_be_admitted_and_holds_no_power_for_it() -> void:

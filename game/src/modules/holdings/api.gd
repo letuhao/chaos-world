@@ -102,8 +102,19 @@ static func claim(actor: Actor, node_id: StringName, owner: Dictionary) -> Dicti
 		return _refuse(HoldingsState.UNKNOWN_NODE, state)
 	if not HoldingsState.knows(state, node_id):
 		# A node the ledger has never seen is recorded as vacant rather than invented: the
-		# node exists, its value does not (ADR 0083).
-		state["nodes"][String(node_id)] = {"owner": {}, "condition": 0, "resting": 0}
+		# node exists, its value does not (ADR 0083). Its CONDITION is the exception, and it
+		# is seeded from the def's `depletion` rather than left at 0: `accrue` spends
+		# condition and refuses `depleted` once `left <= 0`, so a node recorded with no
+		# reserve is refused on the very first period it is ever worked. `depletion` is
+		# documented as "periods of yield before the node rests", so 0 there means
+		# INEXHAUSTIBLE — which `accrue` already reads as "spend nothing", and seeding from
+		# it keeps one meaning for the number in both places.
+		var def := ResourceNodeCatalog.instance().definition(node_id)
+		state["nodes"][String(node_id)] = {
+			"owner": {},
+			"condition": 0 if def == null else maxi(0, def.depletion),
+			"resting": 0,
+		}
 	var held := HoldingsState.holder(state, node_id)
 	if not OwnerRef.is_vacant(held) and not held.is_empty():
 		return _challenge(actor, state, node_id, owner)

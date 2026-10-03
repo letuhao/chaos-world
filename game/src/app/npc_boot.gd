@@ -13,6 +13,20 @@ extends RefCounted
 ## facade method that could only ever return null. A feature nobody can start is
 ## decoration — the same failure ADR 0089 measured for statuses.
 ##
+## ## The cast is CONTENT, and it is read here (BL-0626)
+##
+## `install` is the one seam that runs before anything can spawn, so it is where the
+## authored tree is read. Before this, `NpcCatalog` was filled only by `install(defs)`
+## — a TEST seam — so `NpcApi.spawn` refused every id at `api.gd:131` and a player
+## could meet nobody. The read is a `load_authored()` scan, not a literal list, so a new
+## cast member is a `.tres` and never a code edit (ADR 0074).
+##
+## It runs BEFORE the null guard on purpose: the cast is process-wide content and is
+## not per-player, so an `install(null)` still brings the shipped tree in rather than
+## leaving the catalog empty for the next caller. Reading it does not `attach` anything
+## and touches no actor, so it cannot half-bind a roster the way `set_minter` + `attach`
+## could.
+##
 ## ## One clock, no clock of its own
 ##
 ## Nothing here ticks. Decay is driven from `StatusLoop`, which is already the
@@ -21,9 +35,13 @@ extends RefCounted
 ## calling it on boot and again after a load is the intended usage, not a mistake.
 
 
-## Install the constructor and bind the roster to `player`. Safe to call again after a
-## load: `attach` rebuilds the live registry and re-announces the restored cast.
+## Install the constructor, read the authored cast, and bind the roster to `player`.
+## Safe to call again after a load: the catalog read is idempotent and `attach` rebuilds
+## the live registry and re-announces the restored cast.
 static func install(player: Actor) -> void:
+	# Content first, and unconditionally — see the section note above. `load_authored`
+	# short-circuits on its second call, so a boot and a later re-install cost one scan.
+	NpcCatalog.instance().load_authored()
 	if player == null:
 		return
 	# The one place that knows the concrete constructor. Passing the facade verb as a

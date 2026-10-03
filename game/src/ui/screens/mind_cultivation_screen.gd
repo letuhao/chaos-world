@@ -171,6 +171,7 @@ func _refresh_view() -> void:
 						&"cultivate",
 						&"meditate",
 						&"train_channel",
+						&"recover",
 						&"strengthen_sea",
 						&"strengthen_anchor",
 						&"ascend",
@@ -181,6 +182,9 @@ func _refresh_view() -> void:
 						"cultivate": "Cultivate",
 						"meditate": "Meditate",
 						"train_channel": "Train Channel",
+						# Qi's own wording, so the two screens offering the same verb
+						# name it identically.
+						"recover": "Recover",
 						"strengthen_sea": "Strengthen Sea",
 						"strengthen_anchor": "Strengthen Anchor",
 						# Body's own wording, so the two screens offering the same
@@ -195,6 +199,13 @@ func _refresh_view() -> void:
 						# The gate demands channels at `required_channel_state`; without this
 						# button the mind path cannot satisfy its own entry rule (ADR 0043).
 						"train_channel": on_path,
+						# Live on every realm, not only a wounded one. The burn is priced by
+						# the realm's recovery elixir (ADR 0031), so the commonest refusal is
+						# "you have not bought it" -- and a control that is greyed out until
+						# the burn exists cannot say so (ADR 0043: a verb that returns false
+						# and says nothing is indistinguishable from a button wired to
+						# nothing). Qi's recover is keyed the same way.
+						"recover": on_path,
 						"strengthen_sea": on_path,
 						# Anchors only exist at the Immortal tier, so the button is offered
 						# from there up rather than dead on every early realm.
@@ -388,6 +399,14 @@ func act_breakthrough() -> bool:
 ## on this path trains them, so without this the path cannot advance (ADR 0043).
 ## The gate itself is read from the facade's published `required_channels` /
 ## `required_channel_state`, never from the realm seed, which is a module internal.
+##
+## The refusal names the PRICE. Every verb on this path is priced by a
+## realm-authored consumable, so a player who has spent them reaches the bottom of
+## this loop having done nothing, and the old terminal message told them there was
+## no channel left to train. That is the one answer that cannot be true: the loop
+## got here because a channel did NOT meet `required_channel_state`, so there IS one
+## left. What is missing is the elixir that pays for it, and a screen that says
+## "nothing to do" sends the player looking for content that exists.
 func act_train_next_channel() -> bool:
 	if _actor == null:
 		return false
@@ -405,17 +424,83 @@ func act_train_next_channel() -> bool:
 	for definition in MeridianDefaults.all():
 		if not candidates.has(definition.id):
 			candidates.append(definition.id)
+	# Read BEFORE the call: `train_channel` on a burn spends the recovery elixir and
+	# repairs the channel, so an injured flag read afterwards would be the answer to
+	# a question about a different actor state. `injured` is the discriminator between
+	# the two prices (ADR 0141): `training_item` walks a healthy channel,
+	# `recovery_item` undoes a burned one.
+	var owed := 0
+	var price := ""
 	for meridian_id in candidates:
 		var channel := _actor.meridians.get_meridian(meridian_id)
 		if channel == null or channel.meets(target_state):
 			continue
+		owed += 1
+		var burned := channel.is_injured()
 		if MindCultivationApi.train_channel(_actor, meridian_id):
 			set_message("Trained %s" % meridian_id, TONE_OK)
 			refresh()
 			return true
-	set_message("No channel left to train", TONE_ERROR)
+		if price.is_empty():
+			price = "recovery elixir" if burned else "channel elixir"
+	if price.is_empty():
+		set_message("No channel left to train", TONE_ERROR)
+	else:
+		# The elixir's ID is authored in the realm seed, which is a module internal
+		# this screen may not read (ADR 0043), so the price is named by its ROLE --
+		# the word the authored content and its acquisition are indexed by -- and not
+		# by an id restated here and free to drift out of step with the seeds.
+		set_message("%s absent; %d channel(s) still owed" % [price, owed], TONE_ERROR)
 	refresh()
 	return false
+
+
+## Close the first burned channel with the realm's recovery elixir.
+##
+## This is the verb every realm authors a `recovery_item` for (ADR 0031) and the
+## only one that spends it. `meditate` calms the sea and `train_channel` hands a
+## burn to `recover` (ADR 0141), so the burn WAS repairable -- but through a verb
+## whose own price is a different elixir, and with no control on this screen a
+## player could not spend the authored one at all. Thirty authored elixirs had no
+## way to leave the inventory, and the sea's clarity gate a burn blocks had no way
+## to be reopened.
+##
+## The refusal separates the two things `recover_next` reports with one bool. "There
+## is no burn" sends the player elsewhere; "you owe the realm's recovery elixir" is
+## a purchase to make. Reporting both as one line (ADR 0043 -- a verb that returns
+## false and says nothing is indistinguishable from a button wired to nothing) sent
+## the player hunting for a wound that did not exist.
+func act_recover() -> bool:
+	if _actor == null:
+		return false
+	var repaired := MindCultivationApi.recover_next(_actor)
+	set_message(
+		"Repaired a burned channel" if repaired else _recovery_refusal(),
+		TONE_OK if repaired else TONE_ERROR
+	)
+	refresh()
+	return repaired
+
+
+## What a refused recovery means, read from the same scan `recover_next` performs:
+## a burned channel on the network is a wound the elixir would close, so its
+## absence is the price. A channel that is merely not yet unlocked is not a wound,
+## which is why this counts through the network rather than off the facade's
+## `channels` list -- that list reports an un-unlocked channel as injured, so it
+## would answer "you owe an elixir" to a hero who has never been burned.
+func _recovery_refusal() -> String:
+	return "Recovery elixir absent" if _burned_channels() > 0 else "No burned channel to repair"
+
+
+func _burned_channels() -> int:
+	var burned := 0
+	if _actor == null:
+		return burned
+	for definition in MeridianDefaults.all():
+		var channel := _actor.meridians.get_meridian(definition.id)
+		if channel != null and channel.is_injured():
+			burned += 1
+	return burned
 
 
 ## Reinforce the anchor an earlier high-tier breakthrough committed. Below the
@@ -544,6 +629,8 @@ func _on_action(action: StringName) -> void:
 			act_strengthen_sea()
 		&"train_channel":
 			act_train_next_channel()
+		&"recover":
+			act_recover()
 		&"strengthen_anchor":
 			act_strengthen_anchor()
 		&"ascend":

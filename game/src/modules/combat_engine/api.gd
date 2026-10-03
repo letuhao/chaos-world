@@ -32,6 +32,16 @@ extends RefCounted
 
 const SHIELD_COMPONENT := &"Shield"
 const MECHANISM_COMPONENT := &"damage_mechanism"
+## The component id the wound ledger is bound on. It is also the key the payload slot
+## travels under and the key `BodyLocation.wounds_of` reads, so there is ONE spelling of
+## "the wound ledger" in the codebase and `Actor._wounds_dict` can find it by name
+## without this module's types (ADR 0140).
+const WOUNDS_COMPONENT := &"body_wounds"
+## The module's payload key for that ledger, which is the ledger's OWN declaration rather
+## than a second spelling of it. `Actor.WOUNDS_MODULE_KEY` in core is the third copy and
+## is unavoidable: core cannot import this module. These two agree by construction, and
+## the round-trip test is what holds them to it.
+const WOUNDS_MODULE_KEY := BodyWounds.MODULE_KEY
 
 
 ## The shipped balance numbers, loaded from the module's `.tres`. Every constant the
@@ -116,6 +126,50 @@ static func band(
 ## "no build" and "0 damage", which are different messages.
 static func has_mechanism(actor: Actor) -> bool:
 	return actor != null and actor.component(MECHANISM_COMPONENT) is DamageMechanism
+
+
+## Bind this actor's wound ledger, RESTORING it from a save when one is stashed and
+## creating an empty one when it is not (ADR 0140). Idempotent: an actor that already
+## carries a ledger keeps it, so a re-attach never erases wounds earned this session.
+##
+## This is the composition root's only obligation for wound persistence. `Actor.to_dict`
+## reads the ledger straight off the component, so nothing needs to be flushed before a
+## save; on load, `Actor._restore_versioned` stashes the raw payload in `module_data`
+## and this call turns it back into the typed object. Core never imports `BodyWounds`,
+## which is why the module owns the whole half of the round trip.
+##
+## `tuning` is bound once for the life of the ledger, the same field `BodyDamage.tuning`
+## takes — a ledger whose every threshold read as `0.0` would wound on the first gash
+## and sit on the necrosis floor immediately.
+static func attach_wounds(actor: Actor, tuning: CombatTuning = null) -> BodyWounds:
+	if actor == null:
+		return null
+	var existing := wounds_of(actor)
+	if existing != null:
+		if tuning != null:
+			existing.tuning = tuning
+		return existing
+	var ledger := BodyWounds.new()
+	ledger.tuning = tuning
+	# `get_module_data` is the UNTRUSTED read: it answers `{}` for a missing key and for
+	# anything under the key that is not a dictionary, so a hand-edited save degrades to
+	# an empty ledger here instead of failing the load.
+	ledger.load_from(actor.get_module_data(WOUNDS_MODULE_KEY))
+	# The raw payload has been consumed. Clearing it keeps the stashed copy and the live
+	# ledger from drifting apart, and keeps a later save from writing the stash twice.
+	actor.set_module_data(WOUNDS_MODULE_KEY, {})
+	actor.set_component(WOUNDS_COMPONENT, ledger)
+	return ledger
+
+
+## The ledger bound on `actor`, or null. The non-loud read, matching
+## [method has_mechanism]'s role for the mechanism slot: a caller that genuinely does
+## not know whether the actor was ever hit may ask, and production code that expects a
+## ledger calls [method attach_wounds] instead.
+static func wounds_of(actor: Actor) -> BodyWounds:
+	if actor == null:
+		return null
+	return actor.component(WOUNDS_COMPONENT) as BodyWounds
 
 
 ## Everything a combat readout needs about one actor, primitives only: its own offense

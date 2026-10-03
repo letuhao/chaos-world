@@ -5,8 +5,17 @@ extends UiScreen
 ## by tier, with faction-colored nodes, danger indicators, and click-to-teleport.
 ## A pure consumer of the `world` facade: it reads state and emits signals.
 ##
+## It also shows the world's CLOCK, which is reachable from no other layer: `app` is a
+## private unit and `event` is not in `rules.UI_MODULES`, so this screen can neither
+## reference the pulse nor call `EventApi.advance`. It holds a [WorldPulseBridge] of
+## plain callables the root fills instead — the way the `loot` screen receives its
+## module. The world's MEMORY is on the actor and `WorldFact` is `core/`, which `ui/` may
+## reference, so the news is readable with nothing wired; the period count and cadence
+## are the pulse's own constants in `app/`, and a second copy here is the private-copy
+## failure `tests/core/test_realm_rate.gd` exists to catch. `WorldPulseReader` does the
+## reading; this screen binds it, forwards the raw view, nests the panel's summary.
+##
 ## Contract: `summary()` is the testable surface with node and edge data.
-
 signal location_selected(location_id: StringName)
 
 const FACTION_VARIATIONS := {
@@ -50,6 +59,38 @@ var _edges: Array[Dictionary] = []
 var _current_location: StringName = &""
 var _locations: Array[Dictionary] = []
 var _selected_location: StringName = &""
+## Resolves the world's clock through the root's callables. Its own file because
+## drawing a graph and reading a clock are two reasons to change this screen.
+var _world: WorldPulseReader = WorldPulseReader.new()
+var _world_panel: WorldPulsePanel = null
+## The panel's last line, so `summary()` reports what the player read about their last
+## action on the clock. The map's own `MessageLine` is a different subject.
+var _world_message: String = ""
+var _world_tone: StringName = &""
+
+
+## Inject the world's clock. Repaints rather than only storing the bridge: a surface
+## bound after its first paint would otherwise show the state it had before the binding.
+func bind_world(bridge: WorldPulseBridge) -> void:
+	_bind_nodes()
+	_world.bind(bridge)
+	refresh()
+
+
+## Advance the world by exactly one period. The verb behind the panel's button, and
+## reachable by `tools ui drive --cmd act_wait_season` with no arguments on purpose:
+## neither a button nor a driver should have to know the cadence to ask for a period.
+func act_wait_season() -> bool:
+	_bind_nodes()
+	if _actor == null:
+		return _refuse_world("no_actor")
+	var result := _world.request_advance()
+	if not bool(result.get("ok", false)):
+		return _refuse_world(String(result.get("reason", "")))
+	_world_message = "" if _world_panel == null else _world_panel.reason_text("")
+	_world_tone = TONE_OK
+	refresh()
+	return true
 
 
 ## Everything this screen displays. Primitives only; `{}` with no actor.
@@ -62,6 +103,10 @@ func _summary() -> Dictionary:
 		"selected_location": _selected_location,
 		"nodes": _nodes_summary(),
 		"edges": _edges_summary(),
+		# The panel's own summary, nested under its key: it already reports the outcome
+		# of the last clock action as `message_text`/`tone`, so mirroring those two here
+		# would be a second copy of one fact.
+		"world": _world_panel.summary() if _world_panel != null else {},
 	}
 
 
@@ -75,10 +120,27 @@ func _refresh_view() -> void:
 	)
 	_rebuild_graph()
 	_update_info_panel()
+	if _world_panel != null:
+		var view := _world.view(_actor)
+		view["message"] = _world_message
+		view["tone"] = String(_world_tone)
+		_world_panel.show_world(view)
 
 
 func _render() -> void:
 	pass
+
+
+# --- The world's clock ------------------------------------------------------
+
+
+## A refusal, reported through the panel's own vocabulary and repainted from the
+## untouched actor, so nothing on the clock can drift from the world.
+func _refuse_world(reason: String) -> bool:
+	_world_message = "" if _world_panel == null else _world_panel.reason_text(reason)
+	_world_tone = TONE_ERROR
+	refresh()
+	return false
 
 
 # --- Plumbing ---------------------------------------------------------------
@@ -87,6 +149,9 @@ func _render() -> void:
 func _bind_nodes() -> void:
 	if _map_area != null:
 		return
+	_world_panel = get_node_or_null("%WorldPulsePanel") as WorldPulsePanel
+	if _world_panel != null and not _world_panel.advance_requested.is_connected(act_wait_season):
+		_world_panel.advance_requested.connect(act_wait_season)
 	_map_area = get_node_or_null("Layout/MapArea") as Control
 	_map_graph = get_node_or_null("Layout/MapArea/MapGraph") as Control
 	_info_name = get_node_or_null("Layout/InfoPanel/InfoVBox/InfoName") as Label

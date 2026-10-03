@@ -28,10 +28,12 @@ extends RefCounted
 ##
 ## ## Every refusal is NAMED, never thrown
 ##
-## `no_attacker`, `no_defender`, `same_actor`, `defender_slain`, `no_health_pool`. A caller
-## that passes a null is a caller in the middle of wiring, and a crash there surfaces far
-## from the call that caused it. A dead defender is an ordinary outcome of a fight, not an
-## error at all, so it is refused rather than charged to a corpse.
+## `no_attacker`, `no_defender`, `same_actor`, `defender_slain`, `defender_spared`,
+## `no_health_pool`. A caller that passes a null is a caller in the middle of wiring, and
+## a crash there surfaces far from the call that caused it. A dead defender is an ordinary
+## outcome of a fight, not an error at all, so it is refused rather than charged to a
+## corpse — and a SPARED defender is refused for the same reason, one step earlier: the
+## duel is already over with them and this blow would undo a decision somebody else made.
 
 ## The health pool this module spends. Core already owns and already serializes it.
 const HEALTH_POOL := &"health"
@@ -69,11 +71,20 @@ static func resolve(
 		# Refused BEFORE the roll: a corpse spends nothing, so an evaded blow and a
 		# blow on a body already down are not distinguishable by their arithmetic.
 		return _refusal("defender_slain")
+	if CombatDuel.spared(CombatDuel.normalize(defender.get_module_data(CombatDuel.MODULE_KEY))):
+		# Also refused BEFORE the roll, and for the same reason. A spared opponent is
+		# somebody the duel is already OVER with: `CombatApi.spare` ended it without a
+		# killing blow, and spending a share of their health afterwards would make the
+		# mercy a note somebody else could undo with the next swing.
+		return _refusal("defender_spared")
 	var blow := CombatDamage.resolve_hit(_offense(attacker), _guard(defender), rng)
 	var share := float(blow.get("share", 0.0))
 	var taken := share * pool.maximum
 	pool.change(-taken)
 	var health := alive(defender)
+	var slain := not bool(health["ok"])
+	if slain:
+		_record_win(attacker, defender)
 	return {
 		"ok": true,
 		"reason": "",
@@ -83,7 +94,7 @@ static func resolve(
 		"evaded": bool(blow.get("evaded", false)),
 		"power": float(blow.get("power", 0.0)),
 		"mitigation": float(blow.get("mitigation", 0.0)),
-		"defender_slain": not bool(health["ok"]),
+		"defender_slain": slain,
 	}
 
 
@@ -205,3 +216,37 @@ static func _refusal(reason: String) -> Dictionary:
 		"mitigation": 0.0,
 		"defender_slain": false,
 	}
+
+
+## Count the duel this blow ended, on the attacker's own record, and tell the world.
+##
+## ## Recorded on the WINNER, and only on a killing blow
+##
+## `defender_slain` is the one bit that means the duel is over and somebody lost it, so
+## this is the only place `duels_won` is written. A spared opponent (`CombatApi.spare`)
+## deliberately does NOT come through here: the fight ended without a killing blow, the
+## loser is on their feet, and calling that a duel won would make the counter mean "a
+## fight ended" instead of "a fight was won".
+##
+## ## Once per slaying blow, never per blow
+##
+## `resolve` is the module's only blow verb and it is called once per swing, so a
+## survivor's tenth exchange records nothing. The ledger is monotone, so a per-swing
+## write would be a number that grows with how hard somebody fought rather than with
+## what they achieved.
+static func _record_win(attacker: Actor, defender: Actor) -> void:
+	var duel := CombatDuel.normalize(attacker.get_module_data(CombatDuel.MODULE_KEY))
+	(
+		CombatDuel
+		. record_win(
+			duel,
+			{
+				"outcome": "duel_won",
+				"opponent_id": String(defender.id),
+				"wins": int(duel.get("wins", 0)) + 1,
+			}
+		)
+	)
+	attacker.set_module_data(CombatDuel.MODULE_KEY, duel)
+	# LAST, once the record it describes is on the ledger (ADR 0137).
+	CombatFacts.record_duel_won(attacker)

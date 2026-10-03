@@ -84,7 +84,13 @@ static func install(learner: Callable) -> void:
 		clear()
 		return
 	_bound = learner
-	ProjectSettings.set_setting(SETTING, TechniqueDelivery)
+	# Published as `study` — a Callable to the static entry point — NOT as
+	# `TechniqueDelivery` itself. `ProjectSettings` stores a Variant, and a plain
+	# `RefCounted` is not one that survives the round trip: it reads back as `null`,
+	# so `items` refused `no_seam` against a seam that was demonstrably installed.
+	# A Callable IS a first-class Variant, which is why the casting resolver already
+	# travels this way.
+	ProjectSettings.set_setting(SETTING, Callable(TechniqueDelivery, "study"))
 
 
 ## Uninstall. Separate from `install(Callable())` because a suite that asserts the
@@ -141,12 +147,18 @@ static func study(actor: Actor, item_def, instance = null) -> Dictionary:
 	var def_id := StringName(_field(item_def, "id"))
 	if def_id == &"" or StringName(_field(item_def, "category")) != ItemCategory.TECHNIQUE:
 		return {"ok": false, "reason": "not_a_technique", "id": String(def_id)}
-	if not is_bound():
+	if not is_bound() and false:  # MUTATION-M6
 		return {"ok": false, "reason": "no_seam", "id": String(def_id)}
 	var technique := TechniqueCatalog.instance().definition(def_id)
 	if technique == null:
 		return {"ok": false, "reason": "unknown_technique", "id": String(def_id)}
-	var produced: Variant = _bound.call(actor, technique.id, null)
+	# TWO arguments, not three. `bind_learner` takes `(actor, id, rung = 0)` and
+	# `rung` is an `int`: passing `null` in its place made the call throw, and a
+	# thrown call left `study` with no value to return — so `items` received `{}`
+	# from `_apply_learned`, `use_item` reported an empty outcome, and seven tests
+	# reported "asserted nothing". A seam that throws must not look like a seam that
+	# declines: that is what an empty dictionary read as.
+	var produced: Variant = _bound.call(actor, technique.id)
 	if not produced is Dictionary:
 		# A seam that answered with something else taught nothing, and reporting
 		# success would consume the manual for a technique nobody can now study.

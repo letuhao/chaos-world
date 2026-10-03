@@ -62,7 +62,8 @@ static func preview(actor: Actor) -> Dictionary:
 	return CombatExchange.preview(actor)
 
 
-## The fights this actor has lost. See [method CombatExchange.duel].
+## The fights this actor has finished: the ones lost, the ones won, and the one that
+## ended in mercy. See [method CombatExchange.duel].
 static func duel(actor: Actor) -> Dictionary:
 	return CombatExchange.duel(actor)
 
@@ -114,3 +115,67 @@ static func offense(actor: Actor) -> Dictionary:
 ## [method CombatExchange.guard].
 static func guard(actor: Actor) -> Dictionary:
 	return CombatExchange.guard(actor)
+
+
+## End a duel between `winner` and `loser` WITHOUT a killing blow, and let them walk.
+## Returns `{ok, reason, loser_id, winner_id, spared}`.
+##
+## ## Why a non-lethal ending is a verb at all
+##
+## `CombatDuelHit.resolve` could only end a fight two ways: the defender was slain, or
+## the defender was not. There was no third shape, so "let the third man walk" had
+## nothing to be an instance of and `what_the_rotation_cost.tres` gated on a fact no
+## combat outcome could produce (ADR 0137). A spare is that missing outcome.
+##
+## ## It has teeth, and they are on the LOSER
+##
+## The mercy is recorded on the **defender's** duel record as a terminal state, and
+## `CombatDuelHit.resolve` refuses the next blow with `defender_spared`. A mercy the
+## loser's ledger knows nothing about would be a line of flavour the following swing
+## quietly cancels, so the state lives where the refusal can read it — the same reason a
+## defeat is recorded on the loser.
+##
+## ## The world is told on the WINNER's ledger
+##
+## `third_man_spared` is a fact about the person who showed mercy, so that is whose
+## ledger carries it (ADR 0137).
+##
+## ## Refusals, and each writes nothing
+##
+## `no_actor`, `same_actor`, `loser_slain`, `already_spared`. A defeat is an ordinary
+## outcome of a fight rather than an error, so a corpse cannot be shown mercy — and a
+## second mercy on the same loser is the same one written twice. The ledger is monotone.
+static func spare(winner: Actor, loser: Actor) -> Dictionary:
+	if winner == null or loser == null:
+		return _spare_refusal("no_actor")
+	if winner == loser:
+		return _spare_refusal("same_actor")
+	if not bool(CombatDuelHit.alive(loser)["ok"]):
+		return _spare_refusal("loser_slain")
+	var duel := CombatDuel.normalize(loser.get_module_data(CombatDuel.MODULE_KEY))
+	if CombatDuel.spared(duel):
+		return _spare_refusal("already_spared")
+	CombatDuel.record_spare(duel, {"outcome": "spared", "winner_id": String(winner.id)})
+	loser.set_module_data(CombatDuel.MODULE_KEY, duel)
+	# LAST, once the state it describes is on the loser's ledger (ADR 0137).
+	CombatFacts.record_spared(winner)
+	return {
+		"ok": true,
+		"reason": "",
+		"loser_id": String(loser.id),
+		"winner_id": String(winner.id),
+		"spared": true,
+	}
+
+
+## One shape on every refusal, so a caller reads `spared` without asking which path it
+## took — and it is `false` on a refusal because a mercy that did not happen is not a
+## mercy that was declined.
+static func _spare_refusal(reason: String) -> Dictionary:
+	return {
+		"ok": false,
+		"reason": reason,
+		"loser_id": "",
+		"winner_id": "",
+		"spared": false,
+	}

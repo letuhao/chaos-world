@@ -56,6 +56,17 @@ extends RefCounted
 ## does."* So membership moves `regard` through `social` rather than this module
 ## keeping a second copy, exactly as `AGENTS.md` requires.
 ##
+## ## What the world is told, and which verbs carry it
+##
+## Two facts about a member's institutional life reach `core`'s ledger from THIS module
+## rather than from `app/`, because this module is the only system that knows they
+## happened (ADR 0137): `sect_post_held` when a seat is actually taken, and
+## `oaths_discharged` when `SectDuty.serve` brings a sworn term to zero. Both are written
+## AFTER the ledger change they describe has landed, and neither is reachable on a
+## refusal — a refused verb writes nothing at all, the ledger included. The verbs
+## themselves live on `SectDuty` and `SectFacts`, off this facade, for the reason
+## `SectAct` gives below.
+
 ## ## `sect -> social` is INVISIBLE to `tools arch`
 ##
 ## `BARE_REF_UNITS` excludes `modules/*` (`rules.py:60`), so a bare `SocialApi`
@@ -292,6 +303,12 @@ static func found(
 	var bus := SectProjection.events()
 	bus.membership_changed.emit(String(actor.id), def.id, true, "")
 	bus.claim_changed.emit(String(actor.id), def.id, top.id, "found")
+	# A founder is SEATED in the top office by this verb, so this is an office being
+	# held and not only an institution coming into being. Recorded on the same path
+	# `promote` uses, because a gate that asked whether the post was held and answered
+	# "yes for everybody the house promoted, no for the one who made it" is a gate that
+	# reports politics rather than fact.
+	SectFacts.record_post_held(actor)
 	return _ok(ledger)
 
 
@@ -421,7 +438,18 @@ static func promote(
 	if not bool(seat["has_room"]) and not force:
 		return _refuse(String(seat["reason"]), read)
 	var ledger := read.duplicate(true)
+	# Whether this call SEATS somebody or tells the holder of a seat they still hold it.
+	# Read before the write, and it is the whole of what `sect_post_held` counts: an
+	# office being HELD is a transition, so a re-promotion into the seat already held is
+	# not a second post taken and must not be counted as one.
+	var seated := SectState.position(read) != office.id
 	ledger["position"] = String(office.id)
+	# Taking the seat OPENS what the seat obliges, at the office's own authored rate.
+	# Founding has always done this for the founder's top office
+	# (`SectFounding.write`); a promotion that did not would leave `SectGate`'s
+	# `duty_owed` gate reading zero for every office holder on earth, which is a gate
+	# answering `yes` to everybody rather than one that refuses.
+	ledger["obligation"] = SectDuty.open_office(ledger["obligation"] as Dictionary, office)
 	_record(ledger, "promote" if not force else "promote_forced", office.id, "")
 	# Holding an office is PUBLIC recognition, which is the one thing ADR 0083
 	# separates from the claim: the world hears you were seated even where the sect
@@ -429,6 +457,11 @@ static func promote(
 	# the seat is taken either way, and the world does not know it was political.
 	_regard(actor, sect_id, CAUSE_HELD_OFFICE)
 	_persist(actor, ledger, "promote")
+	# LAST, once the seat it describes is actually written (ADR 0137: the owning module
+	# records the fact when the action succeeds). Nothing above this line is reachable
+	# on a refused promotion, so a refusal records nothing at all.
+	if seated:
+		SectFacts.record_post_held(actor)
 	return _ok(ledger)
 
 
@@ -740,9 +773,16 @@ static func state(actor: Actor) -> Dictionary:
 ## The whole read model, in one call. Delegates to `SectReadModel.summary`,
 ## which owns the shape; this stays the facade's single published entry point
 ## so a screen reads one method and the field list is written down once.
+##
+## **A null actor still gets every key**, empty rather than missing. `summary` is
+## not `{}` for no actor — that is `state` and `gate`, which are whole-membership
+## reads — because a panel asks this one method for its shape once and then reads
+## `schisms`, `roster` and the rest unconditionally. Returning a bare `{}` would
+## make every one of those a key error in a screen that has no actor bound yet,
+## which is the normal state of a screen that has not been handed one.
 static func summary(actor: Actor) -> Dictionary:
 	if actor == null:
-		return {}
+		return SectReadModel.summary(SectState.empty(), SectCatalog.instance())
 	return SectReadModel.summary(_normalized(actor), SectCatalog.instance())
 
 
@@ -783,19 +823,10 @@ static func _regard(actor: Actor, institution_id: StringName, cause_id: StringNa
 ## Cast a member out, at the expelling institution's expense (ADR 0084).
 ##
 ## Underscore-prefixed, so it does **not** count against the twelve-method cap —
-## and that is the reason it lives here rather than on the facade. `expel` is a
-## VERB a caller needs (`SectGate`'s `holds_authority` already asks whether a member
-## may do it, and `SectPositionDef.authorities` already answers it as authored
-## data), so shipping it as a thirteenth public method would put `SectApi` over
-## `MAX_FACADE_PUBLIC_METHODS` — and ADR 0083 names exactly that as the constraint
-## the facade is designed around.
-##
-## So it is a component-level verb, named here and reached through the constant, the
-## same way `TechniquesApi`'s `CASTING_COMPONENT` reaches `activate`: a named
-## capability that is deliberately not on the facade. **It is still a real verb** —
-## `_refuse` returns the `{ok, reason}` shape, a refused expulsion writes nothing at
-## all, and the cause is the harsher `CAUSE_EXPELLED` so "you were cast out" never
-## reads as "you left".
+## which is why it lives here rather than on the facade. It is still a real verb:
+## it returns the `{ok, reason}` shape, a refused expulsion writes nothing, and the
+## cause is the harsher `CAUSE_EXPELLED`, so "you were cast out" never reads as
+## "you left". `SectGate`'s `holds_authority` is what asks whether the caller may.
 static func _expel(actor: Actor, position_id: StringName, force: bool = false) -> Dictionary:
 	var read := _claim(actor)
 	if not SectState.is_affiliated(read):
@@ -883,16 +914,12 @@ static func _write_claim(ledger: Dictionary, claim: InstitutionClaim) -> void:
 ## operation because a half-applied change — stats without a ledger, a ledger
 ## without stats — is the one state a player cannot recover from.
 ##
-## `standing_delta` is the applied amount and is published so the write is
-## observable: a refused verb never reaches here, so a consumer that sees this
-## signal knows the ledger moved.
+## The RETURN VALUE is persisted, never the argument: `SectProjection.apply` rewrites
+## `applied_standing` / `granted_percent` as part of the rebuild, so the ledger handed
+## in is stale the moment the projection runs.
 static func _persist(
 	actor: Actor, ledger: Dictionary, kind: String, standing_delta: int = 0
 ) -> void:
-	# The return value, never the argument: `SectProjection.apply` rewrites
-	# `applied_standing` / `granted_percent` as part of the rebuild, so the ledger
-	# handed in is stale the moment the projection runs. Persisting it would leave
-	# the save naming a grant the actor is no longer carrying.
 	var written := SectProjection.apply(actor, ledger)
 	var sect_id := SectState.institution(written)
 	var bus := SectProjection.events()
@@ -933,16 +960,8 @@ static func _schism_refuse(reason: String, ledger: Dictionary, half_id: String) 
 	return SectPayloads.schism_refused(reason, ledger, half_id)
 
 
-## The schism success shape.
-##
-## **Every number that decides the split is published**, because the whole point of
-## a priced split is that a caller can show a player what it will cost: what there
-## was, what each half inherits, what each half pays, what each half is left with,
-## and — when the price exceeded the inheritance — exactly how much of the bill the
-## split could not cover. `applied` is the declaring member's OWN standing delta,
-## which is the second half of "costs both halves": the other half's cost is in
-## `settled`, and a caller that only reads `applied` is reading one of two equal
-## charges.
+## The schism success shape, and every number that decides it. See
+## `SectPayloads.schism` — the shape and the reason for publishing each field.
 static func _schism(
 	ledger: Dictionary,
 	parent_id: String,
@@ -954,21 +973,15 @@ static func _schism(
 	return SectPayloads.schism(ledger, parent_id, half_id, bill, unassigned, applied)
 
 
-## `period_not_elapsed`, with both counts. This is ADR 0084's "refuses a further
-## step until a period elapses" made legible: a panel can render "the seat has been
-## empty 0 of 2 periods" without knowing what a stage is.
+## `period_not_elapsed`, with both counts. See `SectPayloads.period_not_elapsed`.
 static func _period_not_elapsed(
 	ledger: Dictionary, office: SectPositionDef, held: int
 ) -> Dictionary:
 	return SectPayloads.period_not_elapsed(ledger, office, held)
 
 
-## The teaching success shape.
-##
-## `standing_delta` is **always 0** and is published rather than omitted, because
-## ADR 0064's two-part split is the reason a lesson may not touch standing and a
-## consumer has to be able to check that for itself. `fit` and `fit_delta` are the
-## only numbers that move; `tax` is what the teacher paid for them.
+## The teaching success shape, where `standing_delta` is always 0 and published so a
+## consumer can check that for itself. See `SectPayloads.taught`.
 static func _taught(ledger: Dictionary, gained: int, tax: float) -> Dictionary:
 	return SectPayloads.taught(ledger, gained, tax)
 

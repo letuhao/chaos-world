@@ -86,9 +86,16 @@ func _prepare(actor: Actor) -> Dictionary:
 	assert_eq(MindTraining.strengthen_sea(actor), true, "sea milestone completed")
 	Probe.stock(actor, source_seed.training_item)
 	# R19 commits the first anchor, so only later high tiers have one to
-	# reinforce; at R19 this milestone is a legitimate no-op.
+	# reinforce; at R19 this milestone is a legitimate no-op. And the milestone is
+	# paid ONCE per committed anchor — ADR 0115's flag IS the milestone — so at a
+	# later boundary the actor is still holding an anchor it already reinforced and
+	# the press is a refusal that must cost nothing. Both branches assert, so the
+	# walk proves the contract instead of assuming every press succeeds.
 	if target.index > Breakthrough.IMMORTAL_REALM_THRESHOLD:
-		assert_eq(MindTraining.strengthen_anchor(actor), true, "resonance milestone completed")
+		if MindTraining.anchor_reinforced(actor):
+			assert_eq(MindTraining.strengthen_anchor(actor), false, "a paid milestone refuses")
+		else:
+			assert_eq(MindTraining.strengthen_anchor(actor), true, "resonance milestone completed")
 
 	# High tiers demand a DECIDED win, so finishing the phases is not enough.
 	Probe.fight(actor, target)
@@ -293,7 +300,9 @@ func test_failure_is_recoverable_without_a_higher_realm() -> void:
 	# Meditation is the Mind system's recovery and needs no higher realm.
 	assert_eq(Probe.calm_sea(actor), true, "meditation clears turbulence")
 	assert_eq(sea.effective_capacity(), sea.structural_capacity, "usable capacity restored")
-	# The deviation injured a channel; training repairs it and keeps attainment.
+	# The deviation injured a channel; the repair is a RECOVERY, not a training
+	# step, so it is the realm's recovery elixir this pays (ADR 0031) — the channel
+	# elixir below is what walks the ladder and nothing else.
 	var source_seed := MindRealmSeed.for_realm(&"qi_refining")
 	var injured := 0
 	for def in MeridianDefaults.all():
@@ -302,7 +311,7 @@ func test_failure_is_recoverable_without_a_higher_realm() -> void:
 			continue
 		injured += 1
 		var state_before: StringName = channel.state
-		_stock(actor, source_seed.training_item)
+		_stock(actor, source_seed.recovery_item)
 		assert_eq(MindTraining.train_channel(actor, def.id), true, "training repairs %s" % def.id)
 		var repaired := actor.meridians.get_meridian(def.id)
 		assert_eq(repaired.is_injured(), false, "no longer injured")

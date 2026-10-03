@@ -283,13 +283,19 @@ func test_the_elbow_leads_with_the_longer_leg() -> void:
 	map.entry_room = &"west"
 	var route: Dictionary = (DomainPaths.routes(map))[0]
 	var points: Array = route["points"]
-	# `west` sorts before `east`, so the corridor runs west -> east: column 0 to column
-	# 1, same row, equal extents, so dx and dy are equal and the >= sends it horizontal.
-	assert_eq(route["from"], "west", "canonical direction")
+	# Canonical direction is by STRING: "east" < "west", so the corridor is emitted
+	# east -> west even though `west` is the entry. Direction is a pure function of the
+	# two ids, never of which room the player happens to be standing in — a route that
+	# flipped with the walker's position would be a different map every step.
+	# `west` is laid out at column 0 (width 4), `east` at column 6, so the polyline runs
+	# 6 -> 3: out of `east`'s left wall, into `west`'s right wall. Same row, equal
+	# extents, so dx and dy are equal and the `>=` sends the L horizontal.
+	assert_eq(route["from"], "east", "canonical direction is by string, not by entry room")
+	assert_eq(route["to"], "west", "and it names the other end")
 	assert_eq(points.size(), 2, "a straight run needs no elbow, so the L collapses to a line")
 	assert_eq(int(points[0][1]), int(points[1][1]), "a horizontal run holds its row")
-	assert_eq(int(points[0][0]), 3, "and leaves `west` on its right wall, facing `east`")
-	assert_eq(int(points[1][0]), 6, "to enter `east` on its left wall")
+	assert_eq(int(points[0][0]), 6, "and leaves `east` on its left wall, facing `west`")
+	assert_eq(int(points[1][0]), 3, "to enter `west` on its right wall")
 
 
 ## A route's points stay inside the two rooms it joins or the clearance between them.
@@ -410,7 +416,16 @@ func test_a_cyclic_map_terminates() -> void:
 	map.room(&"vault").exits.append(&"hub")
 	var route := DomainPaths.path_between(map, &"entry", &"west")
 	assert_eq(route, ["entry", "hub", "west"] as Array[String], "still the shortest")
-	assert_eq(DomainPaths.travel_steps(map, &"vault", &"entry"), 3, "and travel agrees")
+	# The edge this test just added SHORTENS the walk: `vault -> hub -> entry` is two
+	# corridors, where the acyclic map needed three (`vault -> west -> hub -> entry`).
+	# Asserting the shorter number is what pins that the new edge is actually READ —
+	# a traversal that ignored it would still report 3 and the test would pass for the
+	# wrong reason.
+	assert_eq(
+		DomainPaths.travel_steps(map, &"vault", &"entry"),
+		2,
+		"the added shortcut is one corridor shorter, and travel agrees"
+	)
 
 
 # ── primitives ───────────────────────────────────────────────────────────────

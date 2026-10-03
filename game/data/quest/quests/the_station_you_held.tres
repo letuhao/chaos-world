@@ -33,4 +33,4 @@ kind = &"authored"
 tier = 1
 requirement = {}
 steps = Array[ExtResource("2_step")]([SubResource("QuestStep_defended_pass"), SubResource("QuestStep_terms_discharged"), SubResource("QuestStep_heir_registered")])
-grants = Array[Dictionary]([{"kind": &"fate", "id": &"oath_kept_under_witness", "amount": 1}, {"kind": &"destiny", "id": &"the_one_who_stayed", "amount": 1}])
+grants = Array[Dictionary]([{"kind": &"fate", "id": &"oath_kept_under_witness", "amount": 1}, {"kind": &"fate", "id": &"household_registered_as_heir", "amount": 1}, {"kind": &"destiny", "id": &"the_one_who_stayed", "amount": 1}])

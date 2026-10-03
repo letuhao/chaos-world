@@ -9,7 +9,7 @@ display_name = "Vigil Ash"
 description = "A pinch of ash from a fire kept burning for someone who had not come back. Spent the instant a body fails, it closes the wound the body cannot survive."
 category = &"consumable"
 rarity = &"rare"
-realm = &"qi_condensation"
+realm = &"qi_refining"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"restore_health", "value": 40.0},
 ])

@@ -206,15 +206,28 @@ func restore_actor() -> Dictionary:
 	# The saved body needs its providers re-mounted and its items deserialized. The payload
 	# carries both, and a body with neither is a body whose stats never resolve -- silently,
 	# because core never names a module and so cannot re-attach one.
-	ActorFactory.with_body_cultivation(actor)
-	ActorFactory.with_qi_cultivation(actor)
-	ActorFactory.with_mind_cultivation(actor)
+	#
+	# `restore_cultivation` attaches what the payload CARRIED and does not re-enrol: the
+	# enrolment verbs overwrite `paths[path_id]`, so reusing them here reset every restored
+	# rank, stage and progress back to `qi_refining` and shrank the sea with it. That made
+	# the read half erase what the write half had just saved. It also gates the attach on
+	# the path, because `MindCultivationApi.attach` mints a sea when the component is
+	# absent -- an ungated restore hands a body a Sea of Consciousness it was never
+	# enrolled in (BL-0523).
+	ActorFactory.restore_cultivation(actor)
 	DualCultivationApi.attach(actor)
 	FertilityApi.attach(actor)
 	ElementsApi.apply_realm_modifiers(actor)
 	ItemsApi.attach(actor)
 	SetBonusApi.attach(actor)
 	TechniquesApi.attach(actor)
+	# The per-actor mounts, so this method is self-contained: a caller that drives a
+	# restore directly gets a body as complete as a fresh one. `_ready` calls the same
+	# list again for the fresh branch, and that second call is safe by construction --
+	# every verb in the list normalizes an existing ledger rather than appending, so
+	# mounting twice is the same state as mounting once. `ItemsApi.attach` is the one
+	# that is NOT safe twice (it replaces the inventory), which is why it lives on the
+	# branch above and not in this list.
 	_mount_player_modules(actor)
 	return {
 		"ok": true,

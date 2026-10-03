@@ -118,7 +118,14 @@ func test_boot_is_idempotent_so_a_load_can_re_install_it() -> void:
 
 
 func test_boot_on_a_null_actor_is_a_no_op_rather_than_a_crash() -> void:
+	# A guard with no assertion is a comment, not a test: it passes whether `install`
+	# crashes or not. Prove both halves — it returns cleanly, and it binds nothing, so
+	# the next caller's `install(actor)` is unaffected by this stray call.
+	var before := NpcApi._player()
 	NpcBoot.install(null)
+	assert_eq(NpcApi._player(), before, "a null install binds no player")
+	NpcBoot.install(_player())
+	assert_ne(NpcApi._player(), null, "and a real install still works after one")
 
 
 # --- The clock is the one already in app/ --------------------------------------

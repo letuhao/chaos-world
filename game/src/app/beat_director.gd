@@ -89,7 +89,20 @@ func sink_names() -> Array[String]:
 ##                       would refuse anyway, so it is refused here with the same
 ##                       cause rather than three stages later.
 ## On a refusal nothing is written and no sink is consulted: a claim that cannot be
-## read is not offered to anybody.
+## read is not offered to anybody. **A refusal also moves no destiny counter**, and
+## says so: `counter_total` is 0 on every refusal path, so the one report shape
+## carries the answer whether or not the beat was recorded.
+##
+## ## A beat that a fate reads also moves that fate's counter
+##
+## `destiny`'s gate verb `counter` reads `DestinyApi.counter`, and nothing else in
+## the tree writes one. So after the sinks are consulted and before the report is
+## built, [method DestinyProjection.on_fact_recorded] moves the counter this beat's
+## fact is authored against — the mapping is an explicit table, never a name match.
+## That closes DEF-0121/DEF-0181 (`duels_won`, `kills` and the rest were
+## permanently 0, so the verb was theatre) without a second dispatcher and without a
+## frame driver. See `modules/destiny/destiny_projection.gd` for why it is here
+## rather than in a sink.
 func offer(actor: Actor, beat) -> Dictionary:
 	if actor == null:
 		return _report(false, "no_actor", "", &"", 0, "", false, {}, "")
@@ -135,6 +148,30 @@ func offer(actor: Actor, beat) -> Dictionary:
 	if winner != null:
 		outcome = winner.resolve(claim, actor)
 		claimed = bool(outcome.get("claimed", true))
+
+	# ## The `destiny` bridge — the last step, after everything above
+	#
+	# `destiny`'s gate verb `counter` reads `DestinyApi.counter`, and until this
+	# dispatch existed nothing in the shipped tree ever wrote one: all nine authored
+	# counter ids sat at 0 forever, so `{verb: &"counter", id: &"duels_won", need: 3}`
+	# in a `.tres` could never open (DEF-0121, DEF-0181).
+	#
+	# **Here, and nowhere else, for two reasons.**
+	# 1. *One writer.* `beat_director.gd:122` is the ONE place a beat is made
+	#    true in production — `WorldPulse.offer` reaches it, and `WorldPulse.offer`
+	#    is the only offer point in `app/` (class docstring). Dispatching here gives
+	#    the `counter` verb a writer without a second dispatcher, which is ADR
+	#    0114's named failure under a different name.
+	# 2. *After the sinks, never instead of one.* A sink is PURE and the director
+	#    applies (ADR 0117); a beat is still recorded whether or not a handler cared.
+	#    The counter moves after the winner holds its own report, so a beat belonging
+	#    to the quest or the event module is not diverted, and the report below still
+	#    names `claimed_by`.
+	#
+	# `DestinyProjection.on_fact_recorded` is a pure lookup followed by one call to
+	# `DestinyApi.record` — the facade's own monotone verb. It weakens nothing,
+	# lowers nothing, and adds no frame driver.
+	var counter := DestinyProjection.on_fact_recorded(actor, claim.fact, claim.amount)
 	return _report(
 		recorded,
 		"",
@@ -144,7 +181,11 @@ func offer(actor: Actor, beat) -> Dictionary:
 		claim.source,
 		claimed,
 		outcome,
-		"" if winner == null else sink_name(winner)
+		"" if winner == null else sink_name(winner),
+		# Present on every report, and 0 for the overwhelming majority of beats. An
+		# audit reads `counter_id == ""` as "this beat moved no fate counter" without
+		# having to know which facts are wired.
+		0 if counter <= 0 else counter
 	)
 
 
@@ -187,6 +228,13 @@ static func sink_name(sink: BeatSink) -> String:
 ## One primitives-only report. `outcome` is COPIED key by key and only where it
 ## does not collide with the report's own keys, so a sink cannot overwrite
 ## `recorded` with its own idea of the word — the director owns what it recorded.
+##
+## `counter_total` is the destiny counter the beat moved, AFTER the move, and 0 for
+## every refusal and for every beat no fate reads. **Always present**, including on
+## a refusal, so the report keeps ONE shape: a caller can read `counter_total`
+## without first asking whether the beat was recorded. It rides here rather than
+## into `detail` because the director produced it, not a sink, and a sink must not
+## be able to overwrite it the way `detail`'s copy rule exists to prevent.
 static func _report(
 	ok: bool,
 	reason: String,
@@ -196,7 +244,8 @@ static func _report(
 	source: String,
 	claimed: bool,
 	outcome: Dictionary,
-	claimed_by: String
+	claimed_by: String,
+	counter_total: int = 0
 ) -> Dictionary:
 	var out := {
 		"ok": ok,
@@ -207,6 +256,7 @@ static func _report(
 		"source": source,
 		"claimed": claimed,
 		"claimed_by": claimed_by,
+		"counter_total": counter_total,
 		"resolve_reason": String(outcome.get("reason", "")),
 		"detail": {},
 	}

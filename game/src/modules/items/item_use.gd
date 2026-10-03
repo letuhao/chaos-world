@@ -164,14 +164,17 @@ static func _apply_learned(actor: Actor, def: ItemDef, instance: ItemInstance) -
 ## `tools/arch` registry has to record. `app/` may depend on anything by construction,
 ## so it is the only place that can install one.
 static func _study_technique(actor: Actor, def: ItemDef, instance: ItemInstance) -> Dictionary:
+	# The seam travels as a CALLABLE, not as the seam object. `TechniqueDelivery` is
+	# a `RefCounted` script singleton: storing it through `ProjectSettings.set_setting`
+	# gives back `null`, because a plain Object is not a serialisable Variant and the
+	# setting drops it. A Callable IS storable, and a Callable to a static function is
+	# exactly the shape the composition root already installs elsewhere.
 	if not ProjectSettings.has_setting(DELIVERY_SETTING):
 		return {"ok": false, "reason": "no_seam", "id": String(def.id)}
 	var seam: Variant = ProjectSettings.get_setting(DELIVERY_SETTING)
-	if not (seam is Object and (seam as Object).has_method(&"study")):
+	if not (seam is Callable) or not (seam as Callable).is_valid():
 		return {"ok": false, "reason": "no_seam", "id": String(def.id)}
-	return (seam as Object).call(&"study", actor, def, instance)
-
-
+	return (seam as Callable).call(actor, def, instance)
 
 
 ## Refuse a read-only channel. The numbers still ride along, because a caller

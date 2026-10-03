@@ -166,12 +166,40 @@ func test_train_channel_requires_the_elixir() -> void:
 	assert_eq(MindTraining.train_channel(_actor(), &"lung"), false, "no elixir, no training")
 
 
-func test_train_channel_repairs_a_damaged_channel() -> void:
+## A burn is REPAIRED, not trained, and the repair is priced by the realm's
+## `recovery_item` rather than by the channel elixir (ADR 0031): `train_channel`
+## hands a burn to `recover`, so there is one repair at one price.
+##
+## The old version of this test stocked `training_item` and called the repair a
+## training step, which is exactly why the wrong consumable went unnoticed — the
+## price of a repair was checked by nothing in the suite, so the repair the player
+## could afford and the repair the seed authors are two different acts. Counts are
+## read from the inventory rather than assumed, so "spent the wrong one" is a
+## failure and not an unmeasured detail.
+func test_train_channel_repairs_a_burn_at_the_recovery_elixir_price() -> void:
 	var actor := _actor()
+	var seed := MindRealmSeed.for_realm(&"qi_refining")
+	assert_ne(seed.recovery_item, &"", "the realm authors a recovery elixir (ADR 0031)")
+	assert_ne(
+		seed.recovery_item, seed.training_item, "and it is a different consumable from the elixir"
+	)
 	actor.meridians.damage_meridian(&"lung")
-	_stock(actor, MindRealmSeed.for_realm(&"qi_refining").training_item)
+	_stock(actor, seed.training_item)
+	_stock(actor, seed.recovery_item)
+	var elixirs := ItemsApi.inventory(actor).count(seed.training_item)
+	var recoveries := ItemsApi.inventory(actor).count(seed.recovery_item)
 	assert_eq(MindTraining.train_channel(actor, &"lung"), true, "repaired")
 	assert_eq(actor.meridians.get_meridian(&"lung").is_injured(), false, "no longer injured")
+	assert_eq(
+		ItemsApi.inventory(actor).count(seed.recovery_item),
+		recoveries - 1,
+		"the realm's recovery elixir paid for it"
+	)
+	assert_eq(
+		ItemsApi.inventory(actor).count(seed.training_item),
+		elixirs,
+		"and the channel elixir did not: a repair is not one training step"
+	)
 
 
 # --- Breakthrough ----------------------------------------------------------

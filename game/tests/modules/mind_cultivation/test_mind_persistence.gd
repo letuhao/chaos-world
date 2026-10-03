@@ -274,4 +274,10 @@ func test_the_attempt_is_serialized_exactly_once() -> void:
 func test_the_payload_version_is_the_current_schema() -> void:
 	var actor := _mid_attempt()
 	assert_eq(actor.to_dict().get("version"), Actor.SCHEMA_VERSION, "current version")
-	assert_eq(Actor.SCHEMA_VERSION, 4, "v4 is the schema that added the attempt slot")
+	# The attempt slot arrived in v4 and must keep round-tripping whatever the schema has
+	# moved on to since (ADR 0140 bumped it to 5 for wounds). Asserting the literal 4 here
+	# would pin the whole schema to the mind path's addition, which is not what this test
+	# is about — the attempt's durability is.
+	assert_eq(Actor.SCHEMA_VERSION >= 4, true, "the schema still carries the attempt slot")
+	var slot: Variant = actor.to_dict().get("mind_attempt", {})
+	assert_eq(slot is Dictionary and not (slot as Dictionary).is_empty(), true, "and it is present")

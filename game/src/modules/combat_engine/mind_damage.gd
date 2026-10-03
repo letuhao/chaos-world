@@ -119,9 +119,13 @@ const TUNING_KEY := &"tuning"
 ## turbulence and the clarity it costs are the same event: a panel that read them as two
 ## effects could show a sea that went turbulent without paying for it.
 const EFFECT_KIND := &"mind.erosion"
-## The kind name as the payload spells it. A name rather than the enum ordinal: an ordinal
-## in a save payload is a renumbering hazard and a name is not.
-const KEY_KIND := &"kind"
+## The strike kind (`disrupt` / `obscure` / `attend`) as a PAYLOAD field of the erosion
+## effect. A name rather than the enum ordinal: an ordinal in a save payload is a renumbering
+## hazard and a name is not.
+##
+## NOT `DamageProposal.KIND`, which is `"kind"` too and means the effect's OWN vocabulary --
+## see [_effects].
+const KEY_STRIKE_KIND := &"strike_kind"
 ## The turbulence ADDED by this hit, before the sea clamps it into `[0, 1]`.
 const KEY_TURBULENCE := &"turbulence"
 ## The clarity LOST. Negative, because it is a delta.
@@ -299,12 +303,14 @@ func tick_rupture(
 	# divisor, so an authored `1.0` would be `0.0 / 0.0` on the one tick it must not be.
 	var threshold := clampf(_finite(bound.rupture_threshold), 0.0, 0.999999)
 	result[KEY_THRESHOLD] = threshold
-	var turbulence := clampf(_finite(_number(_read(sea_component, &"turbulence", 0.0))), 0.0, 1.0)
+	var turbulence: float = clampf(
+		_finite(_number(_read(sea_component, &"turbulence", 0.0))), 0.0, 1.0
+	)
 	result[KEY_STATE_TURBULENCE] = turbulence
 	if turbulence <= threshold:
 		return result
 	var bleed := _share(bound.rupture_bleed)
-	var pool := _pool_of(actor, bound.health_pool_id)
+	var pool: Variant = _pool_of(actor, bound.health_pool_id)
 	if bleed <= 0.0 or pool == null:
 		return result
 	var maximum := maxf(0.0, _finite(_number(_read(pool, &"maximum", 0.0))))
@@ -360,7 +366,7 @@ static func tick_collapse(
 	if window <= 0.0 or turbulence < 1.0:
 		result[KEY_HELD] = 0.0
 		return result
-	var held_now := result[KEY_HELD] + maxf(0.0, _finite(delta))
+	var held_now: float = float(result[KEY_HELD]) + maxf(0.0, _finite(delta))
 	result[KEY_HELD] = held_now
 	if held_now < window:
 		return result
@@ -411,7 +417,12 @@ static func apply_deviation(actor: Variant, tuning: CombatTuning = null) -> Stri
 	if stats is Object and (stats as Object).has_method(&"derived"):
 		var current := _finite(_number((stats as Object).call(&"derived", zeroed)))
 		if (stats as Object).has_method(&"add_modifier"):
-			stats.as.Object.call(
+			# `stats.as.Object` is not a CAST -- GDScript has no `.as` property, so this read
+			# a property on the object rather than narrowing the Variant and raised
+			# `Invalid access to property or key 'as'` against EVERY actor with an
+			# `ActorStats`. The `add_modifier` guard above is the real check that the method
+			# exists, and `call` needs the receiver only.
+			stats.call(
 				&"add_modifier", StatModifier.new(zeroed, Stat.Op.FLAT, -current, DEVIATION_STATUS)
 			)
 	# Hole 7: `StatusEffect`'s own `-1.0` sentinel means PERMANENT, so a non-positive
@@ -424,7 +435,16 @@ static func apply_deviation(actor: Variant, tuning: CombatTuning = null) -> Stri
 	_assign(effect, &"magnitude", 0.0)
 	if not holder.has_method(&"add_status"):
 		return DEVIATION_STATUS
-	holder.call(&"add_status", effect)
+	# The registry's ANSWER is read, not discarded. `Actor.add_status` refuses an empty id or
+	# a null status and reports it as `{ok, status_id, outcome, ...}`, so a status that was
+	# never registered left the actor holding nothing while this function went on to answer
+	# `DEVIATION_STATUS` — "the loser is disarmed for a minute" silently not happening, which
+	# is the exact failure this docblock exists to prevent. A refusal is now REPORTED as `""`.
+	var answer: Variant = holder.call(&"add_status", effect)
+	if answer is Dictionary:
+		var outcome := StringName((answer as Dictionary).get(&"outcome", &""))
+		if not (answer as Dictionary).get(&"ok", false) and outcome != StatusRegistry.APPLIED:
+			return &""
 	var held := (
 		true
 		if not holder.has_method(&"has_status")
@@ -573,7 +593,7 @@ func _awareness_delta_of(kind_value: Kind, awareness: float, erosion: float) -> 
 ## WORST coherence — which is the honest answer for a target with no awareness at all rather
 ## than a fabricated full one.
 func _awareness_ratio_of(ctx: AttackContext, tuning: CombatTuning) -> float:
-	var pool := _pool_of(ctx.target, tuning.awareness_pool_id)
+	var pool: Variant = _pool_of(ctx.target, tuning.awareness_pool_id)
 	if pool == null:
 		return 0.0
 	var maximum := _finite(_number(_read(pool, &"maximum", 0.0)))
@@ -585,7 +605,7 @@ func _awareness_ratio_of(ctx: AttackContext, tuning: CombatTuning) -> float:
 ## The sea's `structural_capacity` — ADR 0071's denominator and the reason the mechanism is
 ## realm-invariant. Read through `get()` off the injected sea, never off a named type.
 func _structural_capacity_of(ctx: AttackContext, tuning: CombatTuning) -> float:
-	var state := _sea_of(ctx, tuning)
+	var state: Variant = _sea_of(ctx, tuning)
 	return 0.0 if state == null else _capacity_of(state)
 
 
@@ -615,10 +635,23 @@ static func _capacity_of(state: Variant) -> float:
 	return maxf(0.0, _finite(_number(_read(state, &"structural_capacity", 0.0))))
 
 
-## The sea tier ladder, shallowest first, read from `collapse_capacity_floors`' own keys in
-## SORTED order so a tie cannot be broken by whatever order a `Dictionary` happens to
-## enumerate — a demotion that changed between two identical runs would be a defect nobody
-## could reproduce. `shallow`, `deep`, `vast` is the shipped order and also the only one.
+## The sea tier ladder, shallowest first.
+##
+## ## Why it is NOT sorted
+##
+## This once read the `collapse_capacity_floors` keys back in SORTED order so that a tie could
+## not be broken by whatever order a `Dictionary` happens to enumerate. That is determinism,
+## and it is the wrong determinism: sorting only stands in for an ORDER, and the shipped tier
+## names defeat it outright -- `"deep" < "shallow" < "vast"` alphabetically, so a sea pinned at
+## `shallow`, the FIRST rung a real actor has and the one every collapse starts from, sorted to
+## the LAST index and had no successor. Every collapse was then refused by hole 8 as "no
+## successor", which is a correct guard firing on a ladder that was in the wrong order beneath it.
+##
+## The order now comes from the TABLE'S OWN INSERTION ORDER, which is authored, stable and the
+## one place the ladder is declared, and it is VERIFIED rather than assumed: the authored
+## capacities must be non-decreasing down the ladder, and a table that is not gets reversed
+## rather than demoted towards the floor. No second copy of the capacities is kept here — this
+## reads the same `collapse_capacity_floors` [method _capacity_floor_of] already reads.
 static func _ladder_of(tuning: CombatTuning) -> Array[StringName]:
 	var keys: Array[StringName] = []
 	if tuning.collapse_capacity_floors is Dictionary:
@@ -626,7 +659,14 @@ static func _ladder_of(tuning: CombatTuning) -> Array[StringName]:
 			keys.append(StringName(key))
 	if keys.is_empty():
 		return [&"shallow", &"deep", &"vast"]
-	keys.sort()
+	var previous: float = -1.0
+	for tier in keys:
+		var capacity := _capacity_floor_of(tuning, tier)
+		if capacity < previous:
+			# Authored deepest-first: demote towards the floor rather than towards the top.
+			keys.reverse()
+			break
+		previous = capacity
 	return keys
 
 
@@ -662,11 +702,24 @@ func _kind_of(ctx: AttackContext) -> Kind:
 
 ## The erosion effects for one hit: ONE entry carrying every write, so a panel can never show
 ## a sea that went turbulent without the clarity it cost.
+##
+## ## The one `kind` key, and why the strike's kind is NOT it
+##
+## `DamageProposal.KIND` is `"kind"` and it is the effect's OWN vocabulary -- what the write
+## IS. `BodyWounds` and `StatusApply` both put their `EFFECT_KIND` there and put their payload
+## under their own keys, and that is the shape this file now follows: `effect_of(EFFECT_KIND)`
+## matches, `mitigate` matches, and a reader asks the entry for its turbulence.
+##
+## This literal originally spelled BOTH `DamageProposal.KIND: EFFECT_KIND` and
+## `KEY_KIND: <the strike kind>` -- two constants with the same value in one dictionary, which
+## is a duplicate key the parser rejects outright, and semantically two different meanings
+## fighting over one field. `KEY_KIND` is therefore the STRIKE kind under its own name,
+## `KEY_STRIKE_KIND`, and the id of the write stays under `DamageProposal.KIND`.
 func _effects(parts: Dictionary) -> Array[Dictionary]:
 	return [
 		{
 			DamageProposal.KIND: EFFECT_KIND,
-			KEY_KIND: String(parts["kind"]),
+			KEY_STRIKE_KIND: String(parts["kind"]),
 			KEY_TURBULENCE: _finite(float(parts["turbulence"])),
 			KEY_CLARITY: _finite(float(parts["clarity_delta"])),
 			KEY_AWARENESS: _finite(float(parts["awareness_delta"])),
@@ -784,8 +837,29 @@ static func _number(value: Variant) -> float:
 	return 0.0
 
 
+## A `Variant` as text, or `""` when it is not text at all.
+##
+## `StringName` is NOT a `String` — `x is String` is FALSE for one, because a `StringName` is
+## its own interned type — so this accepted only literal `String` and silently discarded
+## EVERY `StringName` it was handed. That is invisible in prose and catastrophic in effect:
+## every `StringName`-typed field this module reads arrives empty, so
+## - `tick_collapse` read a sea's `tier` as `""`, found no successor in the ladder and
+##   REFUSED every collapse (hole 8, wrongly — the sea was demotable the whole time);
+## - `_mind_stat` built the bare name `"mental_attack"` instead of `&"mental_attack"`, which
+##   no provider contributes, so `mental_attack`, `mental_defense`, `mind_focus_chance`,
+##   `mind_avoidance` and `illusion_resistance` ALL read `0.0` — which is why
+##   "defense 0.0 saturates at the cap" could pass with a `0.0` on BOTH sides of the
+##   assertion and the `40%` floor check beside it, and the fixture's sea silently stopped
+##   being read at all;
+## - `apply_deviation` zeroed the bare name `"mind_technique_power"` rather than the id.
+##
+## The fix is to accept both text types rather than to restate the value at each call site:
+## `String()` on either is lossless. `_number` above stays strict on purpose, because a
+## `StringName` used as a NUMBER is a genuine defect and not a spelling to paper over.
 static func _text(value: Variant) -> String:
-	return String(value) if value is String else ""
+	if value is String or value is StringName:
+		return String(value)
+	return ""
 
 
 ## What a null context answers. Every key present, so a panel rendering [method breakdown]'s

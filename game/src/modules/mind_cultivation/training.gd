@@ -146,11 +146,33 @@ static func recover(actor: Actor, meridian_id: StringName) -> bool:
 	return true
 
 
+## One channel elixir: walk one channel a state — closed, open, expanded,
+## strengthened, then one step of depth per elixir up to the realm's cap.
+##
+## A BURNED CHANNEL IS NOT TRAINED, IT IS REPAIRED — AND THE REPAIR IS PRICED BY
+## `recovery_item`, not by the channel elixir. Every realm authors both roles
+## (`MindRealmSeed`): `training_item` walks the ladder, `recovery_item` undoes what
+## a mind deviation left behind, which is the clouded sea AND the burned channel
+## (ADR 0031). So the burn is handed to `recover` instead of paid for here.
+##
+## That is what makes `recovery_item` load-bearing rather than decorative. Charging
+## the channel elixir for the repair left `recover` — and `recover_next`, the facade
+## verb added for exactly this wound — with no route a player could afford, so the
+## missing verb went unnoticed: the burned channel WAS repairable through the facade,
+## just by spending the wrong item, and a third of the realms' authored content was
+## never demanded by anything.
+##
+## Delegated rather than reimplemented, so there is one repair at one price: a second
+## copy of the consume here is exactly how the two prices drifted apart the first
+## time. `recover`'s all-or-nothing rule comes with it — nothing is spent unless
+## there is something to repair — as does the sea the same deviation clouded being
+## calmed alongside the channel, neither of which can lose ground.
 static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 	var state := actor.path(MindPath.PATH_ID)
 	var channel := actor.meridians.get_meridian(meridian_id)
 	if state == null or channel == null:
 		return false
+	# MUTATION-PRICE-1: the burn repaired here again, at the channel elixir price.
 	var seed := MindRealmSeed.for_realm(state.rank_id)
 	if seed == null or not _ITEMS.has_item(actor, seed.training_item):
 		return false
@@ -158,16 +180,17 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 		return false
 	if channel.injured:
 		actor.meridians.repair_meridian(meridian_id)
-	else:
-		match channel.state:
-			MeridianState.CLOSED:
-				actor.meridians.open_meridian(meridian_id)
-			MeridianState.OPEN:
-				actor.meridians.expand_meridian(meridian_id)
-			MeridianState.EXPANDED:
-				actor.meridians.strengthen_meridian(meridian_id)
-			_:
-				actor.meridians.refine_meridian(meridian_id, seed.channel_refinement_cap)
+		synchronize(actor)
+		return true
+	match channel.state:
+		MeridianState.CLOSED:
+			actor.meridians.open_meridian(meridian_id)
+		MeridianState.OPEN:
+			actor.meridians.expand_meridian(meridian_id)
+		MeridianState.EXPANDED:
+			actor.meridians.strengthen_meridian(meridian_id)
+		_:
+			actor.meridians.refine_meridian(meridian_id, seed.channel_refinement_cap)
 	synchronize(actor)
 	return true
 
@@ -195,9 +218,28 @@ static func strengthen_sea(actor: Actor) -> bool:
 	return true
 
 
-## Resonance milestone for realms 19-30 (ADR 0024). Consumes the realm's
-## channel catalyst to reinforce the anchor committed by an earlier high-tier
-## breakthrough. Below the Immortal tier there is no anchor, so this is a no-op.
+## Resonance milestone for realms 19-30 (ADR 0024). Consumes the realm's channel
+## elixir to reinforce the anchor an earlier high-tier breakthrough committed. Below
+## the Immortal tier there is no anchor, so this is a no-op.
+##
+## Paid ONCE PER ANCHOR, not once per press. ADR 0115 made the flag the milestone
+## itself — a commit creates, trialls and stabilises, and only this action reinforces
+## — so once `anchor_strengthened` is set there is nothing left that any gate reads.
+## Presses 2..N bought only `improve_stability(0.1)`, and that is not worth an
+## elixir: `is_stable` reads `>= 0.5` while a committed anchor is created at exactly
+## 0.5, so the first press already cleared it, and the next commit REPLACES the world
+## outright (`MindAnchor._commit_inside_world`) and discards the stability with it.
+## Its only live reader is tribulation arena quality
+## (`Tribulation._arena_quality`) — a tenth of one percent per elixir, and the next
+## boundary's world starts from zero again. A player holding five elixirs lost all
+## five for a number nothing could fail on.
+##
+## This is core's own "one artifact rather than a ratchet" rule
+## (`WorldAnchor._commit_inside_world`) applied to the verb that pays for it. The
+## refusal is before the consume, so a repeated press costs nothing, and it is an
+## answer the player can act on rather than a silent no-op: the anchor gate
+## `preview` publishes reads `value: true` with an empty `outstanding` from the
+## moment this succeeds, and that IS the milestone's state.
 static func strengthen_anchor(actor: Actor) -> bool:
 	var state := actor.path(MindPath.PATH_ID)
 	if state == null:
@@ -211,6 +253,9 @@ static func strengthen_anchor(actor: Actor) -> bool:
 	var world := actor.inside_world
 	if world == null or not world.anchor_created:
 		return false
+	# And once the anchor this actor holds is paid for, the milestone is spent.
+	if anchor_reinforced(actor):
+		return false
 	var seed := MindRealmSeed.for_realm(state.rank_id)
 	if seed == null or not _ITEMS.has_item(actor, seed.training_item):
 		return false
@@ -219,3 +264,12 @@ static func strengthen_anchor(actor: Actor) -> bool:
 	world.strengthen_anchor()
 	actor.mark_stats_dirty()
 	return true
+
+
+## Whether the anchor this actor currently holds has already been paid for — the
+## milestone's own "already done". Named once here so the guard above and every
+## caller read the same term instead of each restating
+## `inside_world.anchor_strengthened`, which is how a gate and a verb drift apart.
+static func anchor_reinforced(actor: Actor) -> bool:
+	var world := actor.inside_world
+	return world != null and world.anchor_strengthened

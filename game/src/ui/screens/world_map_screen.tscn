@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://src/ui/screens/world_map_screen.gd" id="1"]
 [ext_resource type="Script" path="res://src/ui/screens/map_graph.gd" id="2"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/world_pulse_panel.tscn" id="3"]
 
 [node name="WorldMapScreen" type="Control"]
 layout_mode = 3
@@ -78,3 +79,7 @@ text = ""
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
 text = ""
+
+[node name="WorldPulsePanel" parent="Layout" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2

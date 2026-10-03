@@ -12,6 +12,19 @@ extends UiScreen
 ## fills it, and `on_stack_input` consumes nothing, so `ui_cancel` pops the screen
 ## the way it pops every other read-only one.
 ##
+## ## It listens, so fate earned is never silent
+##
+## The module announces every earn on `DestinyApi.events()`. Until
+## something connected, this codex only learned about a fate when a player
+## navigated to it — a stat change with no narrative explanation, and a page
+## that was already stale while it was open. So this screen is that
+## subscriber: `fate_earned` and `destiny_earned` re-read the facade and
+## repaint, and the announcement becomes the screen's own message line.
+##
+## **Still read-only.** A repaint reads `summary()`; it grants nothing, revokes
+## nothing and selects nothing. There is no button anywhere on this surface, and
+## a handler that re-reads the codex is the whole of what an earn can make it do.
+##
 ## Contract: `summary()` is the testable surface, with each row's own summary
 ## nested under `destinies` / `fates`. `{}` with no actor.
 
@@ -24,6 +37,17 @@ const BRANCH_SCENE := "res://src/ui/panels/destiny_branch_row.tscn"
 const FATE_SCENE := "res://src/ui/panels/fate_row.tscn"
 const HEADER_TEXT := "Earned, never chosen. Fate and destiny are owed for good."
 const NO_ACTOR_TEXT := "No hero bound."
+## The notice shown when fate or destiny is earned. The wording is a constant
+## because the screen owns no vocabulary of its own: the NARRATIVE is the row's
+## (`FateRow` prints the authored description and meta line, `DestinyBranchRow`
+## the authored bearing), and this only says the thing happened.
+const FATE_EARNED_NOTICE := "Earned, and yours for good:"
+const DESTINY_EARNED_NOTICE := "A destiny settles, and it cannot be undone:"
+## An earn the codex cannot attribute to the hero it is rendering. The bus
+## carries an `actor_id`, not an `Actor`, so a second hero earning a fate while
+## this page is open is a real possibility and is counted rather than painted
+## onto the wrong ledger.
+const FOREIGN_EARN_NOTE := "An earn announced for another hero is counted, never painted onto this ledger."
 
 var _codex: Dictionary = {}
 var _header: Label = null
@@ -33,6 +57,8 @@ var _fate_box: VBoxContainer = null
 var _bound: bool = false
 var _branch_rows: Array = []
 var _fate_rows: Array = []
+var _earned_ids: Array = []
+var _foreign_earns: int = 0
 
 
 ## Adopt a facade snapshot for the bound actor (`DestinyApi.summary(actor)`
@@ -55,6 +81,38 @@ func row_ids() -> Array:
 	for row in _fate_rows:
 		out.append(String((row as FateRow).row_id()))
 	return out
+
+
+## Every entry the screen is holding in its notice line, oldest first.
+##
+## A report, not a menu, and a REPORT of what has already happened: nothing here
+## can be acted on, chosen or dismissed. `{}` with no actor, because the screen
+## contract says a screen reports nothing rather than keys when nothing is bound.
+##
+## The notice carries ids rather than sentences, because the screen formats no
+## number and invents no copy — the row that owns an entry is what renders it.
+func earned_notices() -> Array:
+	_bind_nodes()
+	if _actor == null:
+		return []
+	return _earned_ids.duplicate()
+
+
+## How many earns this screen heard and ignored because they belonged to a
+## different hero — or to no hero at all, which is the same case from here: there
+## is no ledger to paint. Reported so the filter is visible rather than silent,
+## and asserted by the suite: a codex that silently dropped a notification is the
+## failure mode a counter makes testable.
+func foreign_earns() -> int:
+	_bind_nodes()
+	return _foreign_earns
+
+
+## Drop the notice history. The only thing a caller can do with a notice, and it
+## changes no fate: an announcement is a fact that has already happened.
+func clear_earned_notices() -> void:
+	_bind_nodes()
+	_earned_ids.clear()
 
 
 func _summary() -> Dictionary:
@@ -80,6 +138,12 @@ func _summary() -> Dictionary:
 		"catalog_destinies": _catalog_ids("destinies"),
 		"catalog_fates": _catalog_ids("fates"),
 		"row_ids": row_ids(),
+		# The listener half of the surface, reported the same way as the rest: raw
+		# ids, counted, never acted on. `announces` is what proves the codex is
+		# subscribed to the bus rather than only re-reading on navigation.
+		"earned_notices": earned_notices(),
+		"earned_notice_count": _earned_ids.size(),
+		"foreign_earns": _foreign_earns,
 	}
 
 
@@ -101,6 +165,47 @@ func _render() -> void:
 		return
 	_header.text = HEADER_TEXT if _actor != null else NO_ACTOR_TEXT
 	_footer.text = "Read-only: nothing here is chosen, equipped or given up."
+
+
+# --- Hearing the bus ---------------------------------------------------------
+##
+## ADR 0065 makes fate earned and never choosable, so the whole of what an earn
+## may make this screen do is **show that it happened**: re-read the facade,
+## repaint, and say so. Both handlers are that and nothing else — no earn call,
+## no selection, no state a player could change. The notice is appended rather
+## than REPLACED so two fates earned in the same beat (a destiny carries its own
+## `grants_fates`) are both reported instead of one overwriting the other.
+##
+## `source` is accepted and deliberately unused: it names the system that earned
+## the fate, which is for a log or an audio cue, and this screen formats nothing.
+func _on_fate_earned(actor_id: String, fate_id: StringName, _source: String) -> void:
+	_record_announcement(actor_id, &"fate", fate_id)
+
+
+## The destiny half, identical in kind. Separate only because the bus declares
+## it separately, and a subscriber that cared about the difference would be
+## filtering on `kind` rather than branching in two functions.
+func _on_destiny_earned(actor_id: String, destiny_id: StringName, _source: String) -> void:
+	_record_announcement(actor_id, &"destiny", destiny_id)
+
+
+## Repaint if the announcement is this screen's hero's, and say so if it is not.
+##
+## The bus carries an `actor_id` STRING rather than an `Actor` (ADR 0136), so a
+## subscriber holding a stale reference cannot detect the swap by itself. With no
+## hero bound there is no ledger to paint, so the earn is dropped either way —
+## a codex mounted with no actor must not grow a notice it cannot render.
+func _record_announcement(actor_id: String, kind: StringName, entry_id: StringName) -> void:
+	_bind_nodes()
+	if _actor == null or String(_actor.id) != actor_id:
+		_foreign_earns += 1
+		return
+	_earned_ids.append({"kind": String(kind), "id": String(entry_id), "actor": actor_id})
+	# The facade is the only truth, and it has already been written by the time
+	# this fires — so the repaint costs one `summary()` call and cannot disagree
+	# with the ledger it is reporting.
+	refresh()
+	set_message(FATE_EARNED_NOTICE if kind == &"fate" else DESTINY_EARNED_NOTICE, TONE_OK)
 
 
 # --- ScreenStack hooks ------------------------------------------------------
@@ -147,6 +252,25 @@ func _bind_nodes() -> void:
 	_branch_rows = _rows_in(_branch_box, BRANCH_SCENE, "Branch", BRANCH_ROWS)
 	# One row past the mounted pool: the heading between earned and locked.
 	_fate_rows = _rows_in(_fate_box, FATE_SCENE, "Fate", FATE_ROWS + 1)
+	_connect_events()
+
+
+## Subscribe to the two earn announcements, guarded so binding twice is not a
+## second handler per earn.
+##
+## `_bind_nodes()` is idempotent and returns early once `_header` is bound, so
+## the guard is what makes "one handler per connection" a fact rather than an
+## accident of the early return — the moment anything calls this a second time,
+## an unguarded connect would duplicate silently. `counter_changed` and
+## `gate_failed` are deliberately NOT connected: ADR 0136 records `gate_failed`
+## as telemetry that fires once per EVALUATION, so a consumer that rendered it
+## would spam, and a counter move is not a narrative event worth interrupting for.
+func _connect_events() -> void:
+	var events := DestinyApi.events()
+	if not events.fate_earned.is_connected(_on_fate_earned):
+		events.fate_earned.connect(_on_fate_earned)
+	if not events.destiny_earned.is_connected(_on_destiny_earned):
+		events.destiny_earned.connect(_on_destiny_earned)
 
 
 ## The rows the scene declares, in order, then the ones grown at runtime.

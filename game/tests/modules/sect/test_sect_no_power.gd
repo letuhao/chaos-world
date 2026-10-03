@@ -64,6 +64,8 @@ const MODULE_FILES := [
 	"res://src/modules/sect/sect_catalog.gd",
 	"res://src/modules/sect/sect_doctrine_def.gd",
 	"res://src/modules/sect/sect_doctrine_catalog.gd",
+	"res://src/modules/sect/sect_duty.gd",
+	"res://src/modules/sect/sect_facts.gd",
 	"res://src/modules/sect/sect_founding.gd",
 	"res://src/modules/sect/sect_succession.gd",
 	"res://src/modules/sect/sect_teaching.gd",

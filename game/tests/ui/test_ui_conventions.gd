@@ -13,6 +13,12 @@ extends TestCase
 ## Each guard fails for a named reason, so a red assertion here names the regression
 ## rather than a symptom. The screen-inventory and reachability claims that need a
 ## running app live in `tests/app/test_screen_reachability.gd`.
+##
+## Every guard here is paired with a case that proves it can still SEE. A guard whose
+## assertions all live inside a filter fires zero times on a clean tree, and zero is
+## also exactly what a rule nothing violates produces — the two are indistinguishable
+## in the tally. The synthetic fixtures those cases read are held below, in this file,
+## and are never loaded.
 
 const UI_ROOT := "res://src/ui"
 const MODULES_ROOT := "res://src/modules"
@@ -23,11 +29,137 @@ const PROGRAM_ROOTS := ["res://src", "res://scenes"]
 const MAX_FACADE_PUBLIC_METHODS := 12
 ## Extensions, not suffixes: a `.uid` sibling sits next to every script, and reading
 ## those would add noise without adding coverage.
+##
+## Note the absence of a leading dot, which `String.get_extension()` also omits: the
+## three guards below used to filter on `".gd"` / `".tscn"` and so rejected every file
+## in the tree, including the ones they exist to check. This table is the proof of the
+## convention they should have followed.
 const SCANNED_SUFFIXES := ["gd", "tscn"]
+## The one file of a module that may be named from outside it. Spelled once so the
+## rule and the proof that the rule still fires read the same string.
+const FACADE_FILENAME := "api.gd"
 ## Directories under a program root that are not part of the program itself: the test
 ## suite and the editor's own addons. Anything here is not shipped code, so a rule
 ## about shipped code does not apply to it.
 const EXCLUDED_DIRS := ["tests", "addons", "data", "assets"]
+
+# --- Fixtures: one violation and one control per guard -----------------------
+#
+# The three guards below can each fire zero times on a clean tree and still look
+# perfect in the tally — a filter that matches nothing and a tree with nothing to
+# report are the same number. Each fixture here is a file that WOULD break its
+# guard, so the proof is unconditional: it does not read `res://src/ui` at all, and
+# it cannot be satisfied by that directory being empty.
+#
+# Synthetic text rather than files, deliberately. Nothing here is ever loaded, only
+# scanned, and Godot parses every `.tscn` under `res://` as a resource and pairs
+# every `.gd` with a `.uid` sibling — a file would be two extra artifacts to keep in
+# step with a string. `tests/ui/fixtures/` holds the other kind: fixtures the engine
+# instantiates. Holding the text here also keeps each fixture beside the assertion
+# that reads it, so neither can be deleted alone.
+#
+# Paired with a control that must read CLEAN, or the proof could be satisfied by a
+# predicate that flags everything — which is a guard with no rule in it at all.
+
+## A `.tscn` in `src/ui/panels/` that instances a module script as a sub-resource.
+const FACADE_FIXTURE_SCENE := {
+	"path": "res://src/ui/panels/facade_fixture_panel.tscn",
+	"text":
+	(
+		"[gd_scene load_steps=3 format=3]\n"
+		+ "\n"
+		+ '[ext_resource type="Script" path="res://src/ui/panels/other_panel.gd" id="1"]\n'
+		+ (
+			'[ext_resource type="Script" '
+			+ 'path="res://src/modules/status/tribulation_blessing.gd" id="2"]\n'
+		)
+		+ "\n"
+		+ '[node name="FixturePanel" type="Control"]\n'
+		+ 'script = ExtResource("1")\n'
+		+ 'blessing = ExtResource("2")\n'
+	),
+}
+
+## The same shape naming nothing under `res://src/modules/`, which is every shipped
+## scene.
+const FACADE_FIXTURE_CLEAN_SCENE := {
+	"path": "res://src/ui/panels/facade_fixture_clean_panel.tscn",
+	"text":
+	(
+		"[gd_scene load_steps=2 format=3]\n"
+		+ "\n"
+		+ '[ext_resource type="Script" path="res://src/ui/panels/other_panel.gd" id="1"]\n'
+		+ "\n"
+		+ '[node name="FixturePanel" type="Control"]\n'
+		+ 'script = ExtResource("1")\n'
+	),
+}
+
+## A panel that binds a node in `@onready`, and resolves nothing else, so this fixture
+## breaks the `@onready` guard and no other. Its own doc comment names the token on
+## purpose: the guard must skip that comment and still catch the annotation below it.
+const ONREADY_FIXTURE_SCRIPT := {
+	"path": "res://src/ui/panels/onready_fixture_panel.gd",
+	"text":
+	(
+		"extends VBoxContainer\n"
+		+ "\n"
+		+ "var _label: Label = null\n"
+		+ "\n"
+		+ "## This comment names @onready, and is not what the guard is looking for;\n"
+		+ "## the annotation on the next line is.\n"
+		+ "@onready var _bound: Label = $Row/Label\n"
+	),
+}
+
+## A panel that only NAMES the token, in a comment — the shape every real panel that
+## documents the rule has.
+const ONREADY_FIXTURE_CLEAN_SCRIPT := {
+	"path": "res://src/ui/panels/onready_fixture_clean_panel.gd",
+	"text":
+	(
+		"extends VBoxContainer\n"
+		+ "\n"
+		+ "var _label: Label = null\n"
+		+ "\n"
+		+ "## No annotation here: this panel resolves lazily, which is why the token\n"
+		+ "## is named in this comment and nowhere else.\n"
+		+ "func _bind_nodes() -> void:\n"
+		+ '\t_label = get_node_or_null("%Label")\n'
+	),
+}
+
+## A panel that resolves a widget once, in `_ready()`. This is the case the lazy rule
+## exists for and no shipped panel has: the headless runner drives suites from
+## `SceneTree._initialize()` and never fires `_ready()`, so the binding never happens.
+const LAZY_FIXTURE_SCRIPT := {
+	"path": "res://src/ui/panels/lazy_fixture_panel.gd",
+	"text":
+	(
+		"extends VBoxContainer\n"
+		+ "\n"
+		+ "var _rows: VBoxContainer = null\n"
+		+ "\n"
+		+ "func _ready() -> void:\n"
+		+ '\t_rows = get_node_or_null("%Rows")\n'
+	),
+}
+
+## The same panel resolving lazily, which is what every shipped panel does.
+const LAZY_FIXTURE_CLEAN_SCRIPT := {
+	"path": "res://src/ui/panels/lazy_fixture_clean_panel.gd",
+	"text":
+	(
+		"extends VBoxContainer\n"
+		+ "\n"
+		+ "var _rows: VBoxContainer = null\n"
+		+ "\n"
+		+ "## Idempotent by construction: nothing is cached across calls, so binding\n"
+		+ "## twice is the same as binding once.\n"
+		+ "func _bind_nodes() -> void:\n"
+		+ '\t_rows = get_node_or_null("%Rows")\n'
+	),
+}
 
 # --- 1. summary() is empty with no actor ------------------------------------
 
@@ -197,21 +329,62 @@ func test_no_module_facade_exceeds_its_public_method_cap() -> void:
 func test_no_ui_file_reaches_a_module_by_anything_but_its_facade() -> void:
 	# `ui/` may only name a module facade. A `.tscn` that instances a module resource
 	# would put a concrete module type on the UI side of the boundary.
-	var facades: Dictionary = {}
-	for path in _facade_scripts():
-		facades[path.get_file().trim_suffix(".gd")] = path
+	#
+	# Two filters decide whether this guard can see anything, and both are load-bearing:
+	# `"tscn"` rather than `".tscn"` (a dotted comparison is true for every file in the
+	# tree, so the filter `continue`d past everything it exists to check), and a module
+	# listing that is not empty (no modules, no crossings, no assertion). Neither
+	# reports itself: the dotted filter produced a green run on a clean tree and a
+	# green run on a broken one, which is the shape of a guard that is not running.
+	var modules := _module_dirs()
+	assert_eq(
+		modules.is_empty(), false, "the module tree lists directories, so a crossing is visible"
+	)
 	for entry in _source_texts(UI_ROOT):
 		var path: String = entry["path"]
-		if path.get_extension() != ".tscn":
+		if path.get_extension() != "tscn":
 			continue
-		var text: String = entry["text"]
-		for module_dir in _module_dirs():
-			if text.contains("res://src/modules/%s/" % module_dir):
-				assert_eq(
-					path.ends_with("api.gd"),
-					true,
-					"%s instances a module file directly; only api.gd may cross" % path
-				)
+		for module_dir in _module_dirs_named_by(entry["text"] as String, modules):
+			assert_eq(
+				_may_name_a_module(path),
+				true,
+				"%s names modules/%s/ directly; only api.gd may cross" % [path, module_dir]
+			)
+
+
+func test_the_facade_guard_still_sees_a_scene_that_names_a_module() -> void:
+	# No shipped scene under `res://src/ui` names a module directory, so the scan above
+	# runs to completion having asserted nothing and reports a tree that satisfies it.
+	# That is the whole rule, so the guard protecting it — the architectural
+	# constraint every screen in this program is written against — could go blind with
+	# nothing to say so. The case below asks the same predicate the same question
+	# about a fixture, so the difference between "the tree is clean" and "the guard is
+	# asleep" is an assertion instead of a reading of the tally.
+	#
+	# Legs, one per way to be wrong, as in `test_arch_rules.gd`: the fixture IS a
+	# crossing, the rule REJECTS it, and a scene naming nothing under `modules/` is not
+	# one. Drop the third and the second would be satisfied by a predicate that flags
+	# every scene it is shown.
+	var path := String(FACADE_FIXTURE_SCENE["path"])
+	assert_eq(path.get_extension(), "tscn", "the fixture is the shape the scan above filters for")
+	assert_eq(
+		_module_dirs_named_by(String(FACADE_FIXTURE_SCENE["text"]), _module_dirs()).is_empty(),
+		false,
+		"a scene that instances a module file is a crossing, and the scan sees it"
+	)
+	assert_eq(
+		_may_name_a_module(path),
+		false,
+		"and the rule rejects that crossing, because a scene is not a module's facade"
+	)
+	assert_eq(
+		(
+			_module_dirs_named_by(String(FACADE_FIXTURE_CLEAN_SCENE["text"]), _module_dirs())
+			. is_empty()
+		),
+		true,
+		"a scene naming nothing under modules/ is not a crossing"
+	)
 
 
 # --- 4. no theme override, no @onready under src/ui -------------------------
@@ -253,15 +426,19 @@ func test_no_ui_file_uses_a_theme_override() -> void:
 
 
 func test_no_ui_script_uses_onready() -> void:
+	# `"gd"` rather than `".gd"`: `String.get_extension()` omits the dot, so the dotted
+	# comparison this filter used to make was true of EVERY script under `src/ui`, every
+	# one of them was skipped, and the guard reported `asserted nothing`. This is the one
+	# filter whose blindness no shape of the tree could expose: the loop was written to
+	# assert once per `.gd` file, so on paper the count looked right and in the tally it
+	# was zero. A guard that filters with a string nothing produces is the same guard as
+	# no guard, and it reads exactly like a rule nothing violates.
 	for entry in _source_texts(UI_ROOT):
 		var path: String = entry["path"]
-		if path.get_extension() != ".gd":
+		if path.get_extension() != "gd":
 			continue
-		# Comments are stripped first: the panels document *why* they resolve lazily
-		# by naming `@onready`, and a doc comment is not a regression.
-		var code := _strip_comments(entry["text"] as String)
 		assert_eq(
-			code.contains("@onready"),
+			_binds_in_onready(entry["text"] as String),
 			false,
 			(
 				"%s binds a node in @onready; panels must resolve in _bind_nodes() so a " % path
@@ -270,21 +447,74 @@ func test_no_ui_script_uses_onready() -> void:
 		)
 
 
+func test_the_onready_guard_still_sees_an_onready_binding() -> void:
+	# The scan above asks one boolean question of each panel. Nothing in `res://src/ui`
+	# answers it with a yes, so the answer it returns is unverified: a guard that asked
+	# the wrong question, or of the wrong text, would report this tree as clean. Three
+	# legs, as in `test_arch_rules.gd` — the fixture binds in `@onready` and IS caught,
+	# and a panel that only NAMES the token in a comment is NOT, which is what keeps the
+	# first leg from being satisfied by a guard that flags the word wherever it finds it.
+	assert_eq(
+		String(ONREADY_FIXTURE_SCRIPT["path"]).get_extension(),
+		"gd",
+		"the fixture is the shape the scan above filters for"
+	)
+	assert_eq(
+		_binds_in_onready(String(ONREADY_FIXTURE_SCRIPT["text"])),
+		true,
+		"a panel that binds a node in @onready is caught"
+	)
+	assert_eq(
+		_binds_in_onready(String(ONREADY_FIXTURE_CLEAN_SCRIPT["text"])),
+		false,
+		"and a panel that only names the token in a comment is not, which every real one does"
+	)
+
+
 func test_ui_scripts_resolve_their_nodes_lazily() -> void:
 	# The positive form of the rule above: a panel that binds widgets must do it
 	# through an idempotent `_bind_nodes()`, not a one-shot in `_ready()`.
+	#
+	# Asked of every `.gd` file rather than of the subset that resolves something, for
+	# two reasons. The dotted filter used to make this ask nothing at all (see the guard
+	# above), and the inner `continue` meant the count depended on how many panels
+	# happened to resolve nodes: a panel that stopped resolving, or a UI program with no
+	# panels in it, both read as a tree with nothing to break this rule.
 	for entry in _source_texts(UI_ROOT):
 		var path: String = entry["path"]
-		if path.get_extension() != ".gd":
-			continue
-		var code := _strip_comments(entry["text"] as String)
-		if not code.contains("get_node_or_null("):
+		if path.get_extension() != "gd":
 			continue
 		assert_eq(
-			code.contains("func _bind_nodes()"),
-			true,
+			_resolves_without_bind_nodes(entry["text"] as String),
+			false,
 			"%s resolves nodes, so it must do it in an idempotent _bind_nodes()" % path
 		)
+
+
+func test_the_lazy_bind_guard_still_sees_a_panel_that_resolves_nothing_lazily() -> void:
+	# The other half of the pair above, and the quieter failure of the two: its filter was
+	# the same dotted comparison AND its body skipped every file that resolved nothing,
+	# so both halves could go blind together: a UI program with no panels in it, or a
+	# panel that stopped resolving, each produced a zero that reads like a clean tree.
+	# Three legs: a panel resolving in `_ready()` IS caught, the same panel resolving in
+	# `_bind_nodes()` is NOT, and the fixture is the shape the scan filters for.
+	assert_eq(
+		String(LAZY_FIXTURE_SCRIPT["path"]).get_extension(),
+		"gd",
+		"the fixture is the shape the scan above filters for"
+	)
+	assert_eq(
+		_resolves_without_bind_nodes(String(LAZY_FIXTURE_SCRIPT["text"])),
+		true,
+		"a panel that resolves a widget in _ready() and has no _bind_nodes() is caught"
+	)
+	assert_eq(
+		_resolves_without_bind_nodes(String(LAZY_FIXTURE_CLEAN_SCRIPT["text"])),
+		false,
+		"and the same panel resolving in _bind_nodes() is not, which every real one does"
+	)
+
+
 
 
 # --- Plumbing ---------------------------------------------------------------
@@ -329,6 +559,40 @@ func _module_dirs() -> Array[String]:
 	dir.list_dir_end()
 	out.sort()
 	return out
+
+
+## The module directories `text` names. A plain `contains` over the file's own text,
+## so it is asked about a file that has not been loaded — which is the point: the rule
+## is about what a UI file NAMES, and a load would have to resolve first.
+func _module_dirs_named_by(text: String, modules: Array[String]) -> Array[String]:
+	var out: Array[String] = []
+	for module_dir in modules:
+		if text.contains("res://src/modules/%s/" % module_dir):
+			out.append(module_dir)
+	return out
+
+
+## Whether `path` may name a module at all. The entire facade rule in one expression,
+## read by the scan AND by the case that proves the scan can still see, so the proof
+## cannot be satisfied by a rule the scan never consults.
+func _may_name_a_module(path: String) -> bool:
+	return path.ends_with(FACADE_FILENAME)
+
+
+## Whether `text` binds a node in `@onready`. Comments are stripped first: the panels
+## document *why* they resolve lazily by naming the token, and a doc comment is not a
+## regression.
+func _binds_in_onready(text: String) -> bool:
+	return _strip_comments(text).contains("@onready")
+
+
+## Whether `text` resolves nodes without an idempotent `_bind_nodes()` to resolve them
+## in. A file that resolves nothing has no widgets to bind, so it is not a violation
+## and the rule reads as "resolves ⇒ binds in `_bind_nodes()`" — which is why the scan
+## asks it of every file rather than of a filtered subset.
+func _resolves_without_bind_nodes(text: String) -> bool:
+	var code := _strip_comments(text)
+	return code.contains("get_node_or_null(") and not code.contains("func _bind_nodes()")
 
 
 ## The script a screen scene instantiates, resolved from its `ext_resource` line so

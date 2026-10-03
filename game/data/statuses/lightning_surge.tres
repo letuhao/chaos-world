@@ -18,7 +18,7 @@ payload = {
 "mechanic": &"sunder",
 "text": "The bolt finds the seams. What it passed through, the spirit guard and the instinct to slip aside do not close behind it.",
 "modifiers": [
-{"stat": &"defense_spiritual", "op": &"percent", "value": -0.45},
-{"stat": &"evasion", "op": &"percent", "value": -0.3}
+	{"stat": &"defense_spiritual", "op": "percent", "value": -0.45},
+	{"stat": &"defense_physical", "op": "percent", "value": -0.18}
 ]
 }

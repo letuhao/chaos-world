@@ -181,10 +181,15 @@ static func calm_sea(actor: Actor) -> bool:
 	return sea.turbulence <= 0.0
 
 
-## Train every channel the source realm demands to its demanded state, repairing
-## a burned one first: `meets` fails on the injury flag alone, and
-## `train_channel` repairs an injured channel instead of climbing it, so the
-## repair is a step of its own. `required_channel_state` is the condition.
+## Train every channel the source realm demands to its demanded state. A burned
+## channel is REPAIRED, not trained, and the repair is priced by the realm's
+## `recovery_item` rather than its `training_item`: `MindTraining.train_channel`
+## hands a burn to `recover` because that is what the seed authors it for
+## (ADR 0031). `meets` fails on the injury flag alone, so the repair is a step of
+## its own and it is a step the fixture has to PAY for — stocking the channel
+## elixir here left the repair unreachable and the whole audit reporting a gate as
+## unmet for a reason that was the fixture's own. `required_channel_state` is the
+## condition.
 static func train_channels(actor: Actor, source_seed: MindRealmSeed) -> bool:
 	var state := actor.path(MindPath.PATH_ID)
 	if state == null or source_seed == null:
@@ -196,7 +201,7 @@ static func train_channels(actor: Actor, source_seed: MindRealmSeed) -> bool:
 		if channel == null:
 			return false
 		if channel.is_injured():
-			stock(actor, source_seed.training_item)
+			stock(actor, source_seed.recovery_item)
 			if not MindCultivationApi.train_channel(actor, meridian_id):
 				return false
 			channel = actor.meridians.get_meridian(meridian_id)

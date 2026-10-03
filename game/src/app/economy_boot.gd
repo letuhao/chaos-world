@@ -3,14 +3,15 @@ extends RefCounted
 
 ## The composition root's economy wiring (ADR 0094, ADR 0097, ADR 0100, ADR 0101,
 ## ADR 0104). Wiring, not rules: `app/` attaches the four ledgers, injects the three
-## stores and the one shared owner resolver, and injects the constructor that mints a
-## captive. Every module keeps owning what its numbers mean.
+## stores, the one shared owner resolver and the constructor that mints a captive, and the
+## granter that turns a foraged unit into an item. Every module keeps owning what its
+## numbers mean.
 ##
 ## ## Why this file exists
 ##
-## Four modules shipped, each tested, each **completely unwired** — and the shape of the
-## unwiring was the same in all four. Every one of them had a seam (`set_store`,
-## `set_resolver`, `set_minter`) with ZERO production callers, so:
+## Five modules shipped, each tested, each **completely unwired** — and the shape of the
+## unwiring was the same in all five. Every one of them had a seam (`set_store`,
+## `set_resolver`, `set_minter`, `set_granter`) with ZERO production callers, so:
 ##
 ##   - a holder's resource node lived in the holder's own `module_data`, so a rival read
 ##     a held node as vacant and conquered it outright (ADR 0097);
@@ -19,7 +20,9 @@ extends RefCounted
 ##   - a custody claim was invisible across actors, so a transfer refused
 ##     `no_such_claim` for a claim someone else took (ADR 0104);
 ##   - an institution claim refused `no_resolver` on BOTH ledgers, so a clan, a sect or a
-##     nation could hold nothing at all.
+##     nation could hold nothing at all;
+##   - a foraged unit could never become an item, so the `gather` acquisition source had
+##     no verb behind it and `ItemSources.KINDS` had to mark it unshipped.
 ##
 ## That is the same failure ADR 0074 measured for npcs and ADR 0089 for statuses: a feature
 ## nobody can start is decoration. This is the `NpcBoot`/`DomainBoot`/`CombatBoot` shape,
@@ -52,15 +55,17 @@ const _BOUND := true
 
 ## Install every economy-module seam and report what each one did.
 ##
-## `{ok, bound, attached, store, resolver, minter, reason}` — one call, one answer, and no
-## caller has to reach into a module to find out whether it is wired.
+## `{ok, bound, attached, store, resolver, minter, granter, reason}` — one call, one answer,
+## and no caller has to reach into a module to find out whether it is wired.
 ##
 ## ## The attach order is the order the modules depend on each other
 ##
 ## `economy` first, because `market` and `custody` both settle through `EconomyApi.trade`
 ## and a market floor that settles before the trade ledger exists prices against a purse
 ## nothing has recorded. Then `market`, `holdings` and `custody`: the three that share the
-## resolver, in the order they were built.
+## resolver, in the order they were built. `forage` attaches nothing — it has no ledger of
+## its own — so it is last, because it is the one seam that depends on a module being
+## complete before it can answer.
 ##
 ## ## Idempotent by construction
 ##
@@ -77,6 +82,7 @@ static func install(actor: Actor) -> Dictionary:
 			"store": false,
 			"resolver": false,
 			"minter": false,
+			"granter": false,
 			"reason": "no_actor",
 		}
 	EconomyApi.attach(actor)
@@ -89,14 +95,16 @@ static func install(actor: Actor) -> Dictionary:
 	var store: bool = _install_stores()
 	var resolver: bool = _install_resolver()
 	var minter: bool = _install_minter()
+	var granter: bool = _install_granter()
 	return {
-		"ok": store and resolver and minter,
+		"ok": store and resolver and minter and granter,
 		"bound": _BOUND,
 		"attached": ["economy", "market", "holdings", "custody"],
 		"store": store,
 		"resolver": resolver,
 		"minter": minter,
-		"reason": "" if (store and resolver and minter) else "seam_not_installed",
+		"granter": granter,
+		"reason": "" if (store and resolver and minter and granter) else "seam_not_installed",
 	}
 
 
@@ -179,6 +187,27 @@ static func _install_resolver() -> bool:
 static func _install_minter() -> bool:
 	CustodyApi.set_minter(EconomyBoot._subject_minter)
 	return CustodyApi.has_minter()
+
+
+## The granter a forage settles through — the fourth seam in this file, and the one that
+## makes `gather` a real route instead of a flag.
+##
+## `forage` owns the harvest RULE and deliberately declares no `items` edge: `ItemsApi` sits
+## at its twelve-method cap so no def-resolution verb can be added to it, `Crafting.resolve`
+## is `items` internals that only `app/` may name, and `holdings` may not name `ItemsApi` at
+## all. So the conversion arrives through the injected-`Callable` seam this file has already
+## installed three times, and `ForageGranary` is the adapter — the same
+## "the SEAM is right, the SIGNATURES disagree" situation `_install_minter` documents for
+## the captive minter.
+##
+## **Before this seam existed the gather route had no verb behind it at all.** Sixteen nodes
+## were authored and `ItemSources.KINDS` marked `gather` unshipped, because nothing in
+## `game/src` knew which item a node produced: `ResourceNodeDef` carries no item id and
+## cannot be given one. Installing the granter is what makes `is_shipped(KIND_GATHER)` a
+## claim about shipping code rather than a hope.
+static func _install_granter() -> bool:
+	ForageApi.set_granter(ForageGranary.deliver)
+	return ForageApi.has_granter()
 
 
 ## Mint a live body for a subject def id, through `ActorFactory.spawn_npc`.

@@ -435,6 +435,29 @@ static func resolve_conflict(
 	return _close(actor, ledger, standoff_id, standoff, winner, loser, close_outcome)
 
 
+## What this polity would do on `periods` elapsing, at `tier` — the proposal, not
+## the action (ADR 0085's rule: a conflict declares, a verdict arrives from
+## outside).
+##
+## ## The caller dispatches; this method never acts
+##
+## `NationAct` holds no `rng` and computes no damage, so the whole decision is a
+## function of the ledger and a period count. The resolver in `app/` walks the
+## returned `intents` and calls the matching verb, which is what keeps a
+## background tick from being a second writer of this module's state.
+##
+## ## The budget is the caller's, and the tier names itself
+##
+## `budget` defaults to `InstitutionBudget.shipped()` and a tier it does not know
+## refuses `unknown_tier` rather than silently falling back to a nearer one — a
+## fallback would make the cap decorative, which is the whole point of authoring
+## three of them.
+static func act(
+	actor: Actor, periods: int, tier: StringName = &"near", budget: InstitutionBudget = null
+) -> Dictionary:
+	return NationAct.propose(actor, periods, tier, budget)
+
+
 ## The actor's versioned ledger exactly as core persists it. This is the payload a
 ## save carries, so a caller never reaches into `actor.module_data`.
 static func state(actor: Actor) -> Dictionary:

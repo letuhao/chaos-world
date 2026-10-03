@@ -23,7 +23,8 @@ extends RefCounted
 ## Nothing in this file knows what a qi, a body or a mind hit is. The seam is
 ## `mechanism.resolve(ctx)` then `mechanism.mitigate(ctx, proposal)`; swapping the
 ## stub for qi is one `app/` line and zero combat edits. That is a property of THIS
-## file, so it is a test: `tests/modules/combat/test_combat_mechanism_seam.gd` drives
+## file, so it is a test: `tests/modules/combat_engine/test_combat_mechanism_seam.gd`
+## drives
 ## three stub mechanisms with three distinct returns through the identical code.
 ##
 ## ## Numerics

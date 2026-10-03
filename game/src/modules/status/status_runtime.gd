@@ -83,14 +83,39 @@ static func source_for(status_id: StringName) -> StringName:
 	return StringName("%s%s" % [SOURCE_PREFIX, String(status_id)])
 
 
-## Magnitude for one pulse, after the def's escalation and after every amplifier on
-## the actor that names this status has fed it.
+## Magnitude for one pulse, after the def's escalation and after the amplifier
+## channel the actor's live amplifiers describe.
 ##
-## `sibling_gain`/`sibling_cap` is how `fire_pyre` differs from `fire_immolation`:
-## it authors no stat and no pool at all, and its whole effect is a second-order read
-## over the burns already on the target. So a pyre with no burning sibling does
-## nothing, and that is correct rather than a defect.
-static func pulse_magnitude(runtime: StatusRuntime, sibling_burns: int) -> float:
+## ## Why `sibling_gain` is an ARGUMENT and not this def's payload
+##
+## It was read off `runtime.def`, and that made the amplifier channel structurally
+## inert. `runtime.def` is the status BEING PULSED — `fire_immolation` — which authors
+## no `sibling_gain` at all, so the branch never fired for any burn at any magnitude.
+## The count was gated just as wrong: `StatusApi._sibling_burns` refused unless the
+## pulsing def was itself a `feed_siblings` amplifier, and an amplifier is a
+## `sibling_amp` status that spends nothing, so the two conditions could never both
+## hold. Measured over a `fire_pyre` on the actor: **AMPLIFIER DELTA = 0.000000**, with
+## the burn spending an identical `0.041600` either way.
+##
+## The numbers therefore arrive from the amplifiers PRESENT ON THE ACTOR, aggregated by
+## [method StatusApi._amplifier_feed] and passed in. Only the caller can see the actor,
+## which is the whole reason the aggregation is not in this file — and it is what keeps
+## this function pure: it applies a curve, it does not look anything up.
+##
+## The curve is `raw * (1 + min(gain * siblings, cap))`. `gain` is what one live
+## amplifier adds per feeding sibling and `cap` is the most the amplifier channel may
+## add on top, both authored on the amplifier's `.tres` and neither invented here. A
+## pyre with no burning sibling does nothing, and that is correct rather than a defect.
+##
+## ## Why the defaults matter
+##
+## `sibling_gain`/`sibling_cap` default to `0.0`, so the existing two-argument call is
+## the un-amplified magnitude: a status with no amplifier beside it answers exactly as it
+## did before the channel was read off the right object, and a caller that has not
+## measured the actor's amplifiers cannot accidentally double a pulse.
+static func pulse_magnitude(
+	runtime: StatusRuntime, sibling_burns: int, sibling_gain: float = 0.0, sibling_cap: float = 0.0
+) -> float:
 	if runtime == null or runtime.def == null:
 		return 0.0
 	var raw := runtime.magnitude
@@ -104,8 +129,9 @@ static func pulse_magnitude(runtime: StatusRuntime, sibling_burns: int) -> float
 				/ cap
 			)
 		)
-	if float(runtime.def.payload.get("sibling_gain", 0.0)) > 0.0:
-		raw *= 1.0 + float(runtime.def.payload.get("sibling_gain", 0.0)) * float(sibling_burns)
+	var gain := maxf(0.0, sibling_gain)
+	if gain > 0.0 and sibling_burns > 0:
+		raw *= 1.0 + minf(gain * float(sibling_burns), maxf(0.0, sibling_cap))
 	return clampf(raw, 0.0, runtime.def.magnitude_cap)
 
 

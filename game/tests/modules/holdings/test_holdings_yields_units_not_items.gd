@@ -217,8 +217,27 @@ func test_resource_node_content_is_authored() -> void:
 
 ## The runtime agrees, at the one place that answers "is `gather` shipped". If a forager
 ## is ever built this flips, and that is the moment the route may be declared.
-func test_the_runtime_reports_gather_as_unshipped() -> void:
-	assert_eq(ItemSources.is_shipped(ItemSources.KIND_GATHER), false, "gather is not shipped")
+##
+## ## THIS FLIPPED — the forager exists, and this file said it would
+##
+## The assertion was `is_shipped(KIND_GATHER) == false`, and it held only while nothing in
+## `game/src` knew which item a node produced. `ForageApi.harvest` (behind
+## `ForageAction.gather`) now works a held node through `HoldingsApi.accrue` and settles the
+## units into a real item through the granter `EconomyBoot.install` binds, so the flag
+## describes shipping code rather than an intention. `test_gather_route` is the evidence: it
+## asserts a real item count rises in a real bag.
+##
+## **The other two facts in this file did not move, and that is the point.** `holdings`
+## still names no item type, `accrue` still deals in integers, and `ResourceNodeDef` still
+## carries no item id — the conversion lives in a MODULE BESIDE holdings with the item half
+## injected. A green flag here is not a licence for those to change; the tests below are
+## what keep them honest.
+func test_the_runtime_reports_gather_as_shipped() -> void:
+	assert_eq(
+		ItemSources.is_shipped(ItemSources.KIND_GATHER),
+		true,
+		"gather ships because ForageApi.harvest exists, not because the flag moved"
+	)
 	assert_eq(
 		ItemSources.parse(&"gather"),
 		{"kind": &"gather", "ref": "", "ok": true, "reason": "", "satisfied": false},

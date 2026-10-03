@@ -37,8 +37,8 @@ new stat pipeline, a save field, or a new kind of equipped slot.
   outside the module emits through it. It is deliberately **not** on the facade:
   the facade is already at its twelve-method cap, so a thirteenth method for a bus
   would have meant dropping something real. `WorldEvents` declares the same shape
-  of idea but has no emitter and no consumer anywhere in the tree, so it is not a
-  working precedent to copy.
+  of idea; the `event` module has since given it an emitter (`WorldEventBus`,
+  `event/api.gd:197,333,338,425`), so it is now a working precedent (ADR 0136).
 - **Exclusivity is permanent.** A destiny closes its `group` for good. It is not a
   swap, and no later fate can reopen it.
 - **Ids are plain, and separation is structural.** A fate id is `oath_of_the_empty_hand`,
@@ -79,3 +79,8 @@ new stat pipeline, a save field, or a new kind of equipped slot.
   gate cannot see the edge; and `FateDef.counters` is authored but never read back,
   nor written — no `DestinyApi.record()` call site exists, so the `counter` verb has zero
   authored content and every counter gate is vacuous (DEF-0121, DEF-0181).
+- **The consumer contract is a separate decision.** The twelve verbs a consumer may
+  call, the registry rule a consumer MUST satisfy, the measured earn-source matrix,
+  and the refusal contract are recorded in **ADR 0134**. This ADR owns the invariant;
+  ADR 0134 owns the surface. An item or unique that grants a fate is decided by
+  **ADR 0135**; the signal bus a consumer may observe is decided by **ADR 0136**.

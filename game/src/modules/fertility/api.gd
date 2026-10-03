@@ -14,6 +14,37 @@ extends RefCounted
 ## their facades and depend on nothing here, so the stack stays acyclic — race, then bloodline,
 ## then clan, with birth as the consumer at the top.
 
+## ## The actor-builder seam: why a child is minted, and not born with, a spine
+##
+## `resolve_offspring` mints its child through an injected constructor rather than calling
+## `Actor.new` inline, and the seam exists for one reason: **this module may not name `app/`.**
+## `PRIVATE_UNITS` in `tools/arch/rules.py` makes `app/` referenceable only from itself, and
+## `ActorFactory` — the one place that knows the provider spine every actor gets — lives there.
+## So the constructor is injected from the composition root exactly as `NpcApi.set_minter`
+## (`modules/npc/api.gd:115`) and `DomainSpawner.set_minter` (`modules/domain/domain_spawner.gd:52`)
+## do it, verbatim: a `Callable`, never a concrete actor type, and this file names neither
+## (dependency inversion, ADR 0002).
+##
+## **What breaks if it is bypassed.** A child born in play would be an `Actor` with NO health
+## pool and NO stamina pool: `Actor.attach_core_resources` (`core/actor.gd:126`) is what creates
+## them, sized from the derived capacities, and it is called only from `ActorFactory.build`
+## (`app/actor_factory.gd:12`). An actor with no `health` key cannot be damaged or healed — not
+## "damages oddly", but `Actor.change_resource` finds no pool and does nothing, silently — and it
+## would also carry no sect ledger, no clan ledger and no element provider, so
+## `element_power_<e>` reads 0.0 on a newborn and every status lands on `status_potency_floor`
+## instead of on the child's actual element. That contradicts ADR 0074 ("Every inhabitant of this
+## game is an `Actor` ... gets the SAME provider spine the player gets") and ADR 0025 (core
+## pools exist for every actor).
+##
+## **The default is deliberately the bare `Actor.new`, not a "safe" subset.** The headless suites
+## in `tests/modules/fertility` drive birth without a composition root, and they assert on lineage
+## — race and purity (ADR 0108) — which the spine does not touch. So a caller that never injects
+## a builder keeps the exact behaviour it had, and the seam can be added without moving a single
+## existing assertion. That is the same contract `DomainSpawner._mint` states: the default is the
+## core-only half, and `app/` installs the full spine. If a caller wants the default to carry
+## pools, it injects one; nothing here guesses.
+static var _actor_builder: Callable = Callable()
+
 
 ## Attach the module to `actor`. Idempotent, and safe on an actor with no race: a body plan is
 ## read at birth, not baked in at attach, so there is nothing to seed here any more.
@@ -21,6 +52,23 @@ static func attach(actor: Actor) -> void:
 	if actor == null or _has_provider(actor):
 		return
 	actor.stats.add_provider(FertilityProvider.new())
+
+
+## Install the actor builder birth mints through. `app/` passes
+## `ActorFactory.build`, so this module never names a concrete actor type and never names
+## `app/` (dependency inversion, ADR 0002) — the `NpcApi.set_minter` shape, verbatim.
+##
+## Signature: `Callable(actor_id: StringName, base: Dictionary) -> Actor`, which is exactly
+## `ActorFactory.build`'s own signature (`app/actor_factory.gd:8`), so the direct Callable is
+## the whole wiring — the same form `NpcBoot.install` uses at `app/npc_boot.gd:39`, and for
+## the same reason: a typed lambda forwarding to another script's static function is not the
+## only form the engine boots.
+##
+## Idempotent, and `Callable()` restores the bare-`Actor.new` default. That is the reset a
+## test suite must do in `teardown`, because this is process-wide state on a static: left
+## installed it leaks into whatever suite runs next.
+static func set_actor_builder(builder: Callable) -> void:
+	_actor_builder = builder
 
 
 static func _has_provider(actor: Actor) -> bool:
@@ -139,12 +187,26 @@ static func roll_offspring_count(actor: Actor, roll: float) -> int:
 ##
 ## A child is born into NO house. Admission is a gate with its own rules (ADR 0064) and silently
 ## enrolling a newborn would bypass it; a caller that means it calls `ClanApi.join` afterwards.
+##
+## ## The child is minted through `set_actor_builder`, never inline
+##
+## The FIRST of the four steps, and the one with an injection point. The constructor comes from
+## `app/` so the child is born with the same provider spine every other actor gets — health and
+## stamina pools above all, without which a newborn cannot be damaged or healed. `app/` may not
+## be named from here (`tools/arch/rules.py` PRIVATE_UNITS), so the seam IS the mechanism; see
+## the module docstring for the full argument. With nothing installed the child is a bare
+## `Actor`, exactly as it was before the seam existed, which is what keeps every headless
+## lineage assertion unchanged. A builder that returns null is a wiring fault and fails out
+## loud: silently falling back would reintroduce the poolless newborn the seam exists to
+## prevent, and would do it invisibly.
 static func resolve_offspring(mother: Actor, status: PregnancyStatus) -> Array[Actor]:
 	if mother == null or status == null:
 		return []
 	var quality := mother.stats.derived(FertilityStats.OFFSPRING_QUALITY)
 	var base := _combine(mother.stats.base_dict(), status.partner_base, quality)
-	var child := Actor.new(StringName("%s_offspring" % mother.id), base)
+	var child := _build_child(StringName("%s_offspring" % mother.id), base)
+	if child == null:
+		return []
 	child.faction = mother.faction
 	# Attach before resolving, so each ledger normalizes against the shipped catalog rather
 	# than against whatever the child happens to be holding.
@@ -155,6 +217,31 @@ static func resolve_offspring(mother: Actor, status: PregnancyStatus) -> Array[A
 	for lineage_id in inherited.keys():
 		BloodlineApi.set_purity(child, StringName(lineage_id), float(inherited[lineage_id]))
 	return [child]
+
+
+## Mint one child through the injected builder, or through the bare default when none is
+## installed.
+##
+## The default is `Actor.new` and nothing else: no pool is invented here, because `core` owns
+## the pool stats and the size rule (`Actor.attach_core_resources`, ADR 0025) and a second copy
+## of that sizing would be a second thing to retune — the same argument the purity blend makes
+## for not reimplementing `BloodlineApi.inherit_from`. The pools come from whoever injected the
+## builder, and in the running game that is `ActorFactory.build`.
+static func _build_child(actor_id: StringName, base: Dictionary) -> Actor:
+	if _actor_builder.is_null():
+		return Actor.new(actor_id, base)
+	var built := _actor_builder.call(actor_id, base) as Actor
+	if built == null:
+		push_error(
+			(
+				(
+					"FertilityApi: the installed actor builder returned null for '%s'; the pregnancy "
+					+ "resolved to no child. Check the Callable installed by set_actor_builder."
+				)
+				% String(actor_id)
+			)
+		)
+	return built
 
 
 ## The per-lineage concentration a child of these two parents starts with. The partner's half is

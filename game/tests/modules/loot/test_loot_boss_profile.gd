@@ -122,16 +122,23 @@ func test_every_authored_band_prices_its_bosses_a_fight_it_can_lose() -> void:
 
 
 func test_the_profile_adds_no_rule_the_authored_content_can_fail() -> void:
-	# Deliberately NOT "the content is valid": the shipped encounters carry problems of
-	# their own (a boss with both an authored table and a legacy loot list), and a test
-	# that reported those as this suite's failures would be reporting another owner's
-	# content drift. What is asserted is narrower and is this change's own claim: pricing a
-	# boss from its band's vitality introduced no validation rule of its own, so no
-	# reported problem is about the profile.
+	# Deliberately NOT "the content is valid": a test that reported another owner's content
+	# drift as this suite's failure would be reporting the wrong thing. What is asserted is
+	# narrower and is this change's own claim: pricing a boss from its band's vitality, and
+	# giving it an authored profile, introduced no validation rule of its own, so no reported
+	# problem is about either.
+	#
+	# Counted rather than asserted per problem, because a per-problem loop over an EMPTY
+	# array asserts nothing at all — and a test that passes by having nothing to say is not a
+	# test. This ran exactly that way while the corpus was briefly clean, and the runner named
+	# it (`asserted nothing`); the count is unconditional so it cannot.
 	var problems := LootApi.validate(LootValidator.SCOPE_ENCOUNTERS)
+	var about_the_boss := 0
 	for problem in problems:
-		assert_eq(
-			problem.contains("attack") or problem.contains("defense"),
-			false,
-			"no validator problem is about the boss profile: %s" % problem
-		)
+		if problem.contains("attack") or problem.contains("defense"):
+			about_the_boss += 1
+	assert_eq(
+		about_the_boss,
+		0,
+		"no validator problem is about a boss's own numbers: %s" % str(problems)
+	)

@@ -71,15 +71,29 @@ static func with_fertility(actor: Actor) -> Actor:
 	return actor
 
 
+## The seam that makes a newborn a whole actor.
+##
+## `FertilityApi.resolve_offspring` cannot call `build()` — `app/` is private to every
+## module — so it mints through a Callable installed here, the same shape as
+## `NpcApi.set_minter` / `DomainSpawner.set_minter`. Without it a child is a bare
+## `Actor.new()` with **no health pool**: it cannot be damaged or healed, and no existing
+## test noticed because they all built children the same way.
+##
+## Installed once, at load, from the composition root — the only layer allowed to name
+## `app/`. The Callable is idempotent and cheap, so re-running it is free.
+static func install_fertility_actor_builder() -> void:
+	FertilityApi.set_actor_builder(_build_fertility_child)
+
+
+static func _build_fertility_child(actor_id: StringName, base: Dictionary) -> Actor:
+	return build(actor_id, base)
+
+
 ## Enrol an actor in the body path and give it an acupoint layout. The only
 ## place that knows the attach order (ADR 0002, ADR 0012/0023).
 static func with_body_cultivation(actor: Actor, rank_id: StringName = &"qi_refining") -> Actor:
 	actor.set_path(PathState.new(BodyPath.PATH_ID, rank_id))
-	BodyCultivationApi.attach(actor)
-	BodyCultivationApi.attach_acupoints(actor)
-	BodyTraining.synchronize(actor)
-	_refresh_element_realm(actor)
-	return actor
+	return _attach_body(actor)
 
 
 ## Enrol the actor on the qi path, in the same shape as the body enrolment above.
@@ -91,19 +105,87 @@ static func with_body_cultivation(actor: Actor, rank_id: StringName = &"qi_refin
 ## body alone, and the qi screen mounts bound to an actor it cannot read.
 static func with_qi_cultivation(actor: Actor, rank_id: StringName = &"qi_refining") -> Actor:
 	actor.set_path(PathState.new(QiPath.PATH_ID, rank_id))
-	QiCultivationApi.attach(actor)
-	QiTraining.synchronize(actor)
-	_refresh_element_realm(actor)
-	return actor
+	return _attach_qi(actor)
 
 
 ## Enrol the actor on the mind path. Same reason as the qi enrolment above, and
 ## `MindCultivationApi` was never attached to the player at all.
 static func with_mind_cultivation(actor: Actor, rank_id: StringName = &"qi_refining") -> Actor:
 	actor.set_path(PathState.new(MindPath.PATH_ID, rank_id))
+	return _attach_mind(actor)
+
+
+## ## Why enrolling and attaching are two verbs and not one
+##
+## **An enrolment OVERWRITES the path, and on a restored actor the path is the save.**
+## `set_path` replaces `paths[path_id]` outright, so calling `with_mind_cultivation`
+## over a body built by `Actor.from_dict` replaces a restored `rank_id`, `stage` and
+## `progress` with a fresh `qi_refining`/0/0.0 — and `MindTraining.synchronize` then
+## reads THAT rank and shrinks the sea back to the R1 seed. So a restore that reused
+## the enrolment verbs reset the entire cultivation loop on every boot, which is the
+## very gap the save exists to close: the write half would land and the read half
+## would erase it again.
+##
+## The attach half is therefore its own private verb, shared by the fresh boot and
+## the restore, so "what mounting the body path means" is written once. Every part of
+## it already reads the actor's CURRENT rank and returns early when there is no path —
+## `attach_acupoints` restores the saved layout rather than rerolling, and both
+## `synchronize` verbs reconcile to `actor.path(...)` — so attaching over a restored
+## path is safe. `set_path` is the only destructive step, and it is the enrolment's.
+static func _attach_body(actor: Actor) -> Actor:
+	BodyCultivationApi.attach(actor)
+	BodyCultivationApi.attach_acupoints(actor)
+	BodyTraining.synchronize(actor)
+	_refresh_element_realm(actor)
+	return actor
+
+
+static func _attach_qi(actor: Actor) -> Actor:
+	QiCultivationApi.attach(actor)
+	QiTraining.synchronize(actor)
+	_refresh_element_realm(actor)
+	return actor
+
+
+static func _attach_mind(actor: Actor) -> Actor:
 	MindCultivationApi.attach(actor)
 	MindTraining.synchronize(actor)
 	_refresh_element_realm(actor)
+	return actor
+
+
+## Re-mount the cultivation modules a RESTORED actor needs — and only the ones its own
+## payload carried. The second verb a restore needs, beside `_attach_*` above.
+##
+## ## Why the gate reads the actor's own paths
+##
+## **An attach is a grant, so an ungated one hands out what the save never earned.**
+## `MindCultivationApi.attach` calls `attach_sea`, which mints a `SeaOfConsciousness`
+## when the component is absent, and the qi attach installs a dantian on the same
+## terms. Running either over a payload with no such path therefore gives a body a sea
+## or a dantian regardless of enrolment — BL-0523, which sat behind 10,186 green
+## assertions precisely because it looked like ordinary wiring. `core` cannot be the
+## place to prevent it: `Actor.from_dict` restores components and never a `StatProvider`,
+## and `core` may not name `modules` at all (`tools arch`), so the composition root is
+## the only layer that can re-attach *and* the only one that may know a provider exists.
+##
+## The gate reads `actor.path(...)` rather than re-parsing the payload dictionary, so
+## it cannot disagree with what `Actor.from_dict` actually restored — one source of
+## truth for "is this body on this path", and an absent path is what a payload without
+## one means.
+##
+## Every `_attach_*` below refreshes the element realm itself, and it is idempotent
+## (`apply_realm_modifiers` strips before it applies), so a caller may refresh once more
+## afterwards without stacking a second modifier.
+static func restore_cultivation(actor: Actor) -> Actor:
+	if actor == null:
+		return null
+	if actor.path(BodyPath.PATH_ID) != null:
+		_attach_body(actor)
+	if actor.path(QiPath.PATH_ID) != null:
+		_attach_qi(actor)
+	if actor.path(MindPath.PATH_ID) != null:
+		_attach_mind(actor)
 	return actor
 
 

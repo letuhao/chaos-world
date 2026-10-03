@@ -181,19 +181,46 @@ func test_a_node_read_model_exposes_no_item_id() -> void:
 ## The runtime's own answer, which `tools/data.py::_route_agreement_problems` cross-checks
 ## against the gate's routes. Same two-sided pin as the quest suite: a route declared for
 ## a kind the engine calls unshipped fails the audit, and this is the assertion that says
-## the engine's answer is `false`.
-func test_the_runtime_itself_reports_the_gather_source_kind_as_unshipped() -> void:
+## the engine's answer is `true`.
+##
+## ## THIS FLIPPED — the missing subsystem now exists, and this file predicted it would
+##
+## The header above called the answer "leave the audit reporting 2428 items", and said the
+## route needed a NEW SUBSYSTEM rather than a wiring fix. That subsystem is `forage`:
+## `ForageApi.harvest` + `ForageAction.gather` work a held node and settle the accrued
+## units into a real item through the granter `EconomyBoot.install` binds. So the engine's
+## verdict moved from "no route delivers a gather source" to "a gather source is shipped".
+##
+## **Everything above this line still holds, and that is the point.** The lifecycle tests
+## still show `accrue`/`settle` dealing in integers, and the two structural tests below
+## still show `ResourceNodeDef` carrying nothing that could name an item — both are green
+## right now. The conversion was added BESIDE holdings with the item half injected, which
+## is the only shape that lets this verdict move while those four tests stay true. If the
+## structural tests below ever go red, the verdict here is not the thing to update: the
+## content type changed, and `tools/data.py`'s route table has to move with it.
+func test_the_runtime_itself_reports_the_gather_source_kind_as_shipped() -> void:
 	assert_eq(
 		ItemSources.is_shipped(ItemSources.KIND_GATHER),
-		false,
-		"the engine says no route delivers a gather source, because there is no forager"
+		true,
+		"the engine says a route delivers a gather source, because ForageApi.harvest exists"
 	)
 	var sources: Array[StringName] = [ItemSources.KIND_GATHER]
 	var def := ItemDef.new()
 	def.id = &"t_gather_only_ore"
 	def.sources = sources
+	# `gather` is `REF_FORBIDDEN` — it names the KIND and no target — so there is nothing
+	# for a caller to probe and resolution has no way to mark it satisfied on its own.
+	# Obtainable-by-kind is exactly what `is_shipped` above already reports, and asserting
+	# the sub-answer keeps this pinned rather than asserting nothing: a gather item IS
+	# now deliverable, and the reason that is not visible from here is the ref policy, not
+	# a missing verb.
 	assert_eq(
-		bool(ItemSources.resolve(def)["obtainable"]),
+		bool(ItemSources.obtainable(def)),
 		false,
-		"an item on a gather source alone is not obtainable"
+		"a gather source names no target, so it is never satisfied on its own"
+	)
+	assert_eq(
+		String((ItemSources.resolve(def)["routes"][0] as Dictionary)["reason"]),
+		ItemSources.UNPROBED,
+		"and it says so by name rather than reporting a route that cannot be checked"
 	)

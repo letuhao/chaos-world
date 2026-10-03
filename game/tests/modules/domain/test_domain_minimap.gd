@@ -95,6 +95,24 @@ func _every_tag_map() -> DomainMap:
 		guard.roster_band = &"empty"
 		map.add_room(guard)
 	map.entry_room = &"poi_0"
+	# The rooms are chained into one line. A map whose rooms all exit to NOTHING is
+	# refused by `DomainMapContract` ("has no exit at all"), so `DomainApi.enter` would
+	# decline it and the actor would never be IN a domain — every marker assertion below
+	# would then pass vacuously against an empty payload.
+	var line: Array[StringName] = [
+		&"poi_0",
+		&"poi_1",
+		&"poi_2",
+		&"guard_0",
+		&"guard_1",
+	]
+	for index in line.size():
+		var room: RoomDef = map.room(line[index])
+		room.exits = [] as Array[StringName]
+		if index + 1 < line.size():
+			room.exits.append(line[index + 1])
+		if index > 0:
+			room.exits.append(line[index - 1])
 	return map
 
 
@@ -136,8 +154,23 @@ func test_only_discovered_rooms_are_drawn() -> void:
 func test_fog_covers_every_layer() -> void:
 	var map := _tiered_map()
 	var payload := DomainMinimap.render(_actor_in(map, [&"vault"] as Array[StringName]), map)
-	assert_eq(payload["pois"].size(), 0, "nothing is marked before it is found")
 	assert_eq(payload["discovered"], ["entry", "vault"] as Array, "discovered is canonical")
+	# Exactly ONE marker survives the fog, and it belongs to the ENTRY: `enter` seeds the
+	# discovered set with the entry, so the room the player is standing in is always drawn
+	# and always legible. This fixture's entry carries `refuge`, so that one marker is the
+	# refuge. Asserting `0` would be asserting the player cannot see the room they are in.
+	var pois: Array = payload["pois"]
+	assert_eq(pois.size(), 1, "only the entry's own marker survives the fog: %s" % str(pois))
+	assert_eq(pois[0]["room_id"], "entry", "and it is the entry's")
+	assert_eq(pois[0]["tag"], "refuge", "the tag the entry is authored with")
+	# The rooms behind the frontier contributed nothing, which is the actual claim: the
+	# vault is a `treasure_keyed` settlement and the core is `boss_worthy`, and neither
+	# marker is here.
+	var marked: Array[String] = []
+	for poi in pois:
+		marked.append(String(poi["room_id"]))
+	assert_eq(marked.has("rest"), false, "an undiscovered treasure room marks nothing")
+	assert_eq(marked.has("core"), false, "nor does an undiscovered boss room")
 
 
 func test_render_refuses_without_an_actor_or_a_map() -> void:
@@ -151,7 +184,13 @@ func test_render_refuses_without_an_actor_or_a_map() -> void:
 
 func test_room_flags_are_correct() -> void:
 	var map := _tiered_map()
-	var payload := DomainMinimap.render(_actor_in(map, [&"core"] as Array[StringName]), map)
+	# Every room visited, because the flags below are about a room that IS drawn: a room
+	# still under fog is absent from the payload, so reading its flag would be reading a
+	# key the minimap deliberately never publishes.
+	var actor := _actor_in(map)
+	for room_id in map.room_ids_sorted():
+		DomainApi.visit_room(actor, room_id)
+	var payload := DomainMinimap.render(actor, map)
 	var by_id := {}
 	for row in payload["rooms"]:
 		by_id[row["room_id"]] = row
@@ -174,10 +213,17 @@ func test_room_flags_are_correct() -> void:
 ## role — so the test cannot pass on a shape heuristic alone.
 func test_an_arena_promises_a_miniboss_and_a_core_a_boss() -> void:
 	var map := _tiered_map()
-	var payload := DomainMinimap.render(_actor_in(map, [&"core"] as Array[StringName]), map)
+	# Every room is visited: the assertion below is about how a room is DRAWN once found,
+	# and a room that is still fogged is not in the payload at all — reading its tier would
+	# be reading a key the minimap deliberately never publishes.
+	var actor := _actor_in(map)
+	for room_id in map.room_ids_sorted():
+		DomainApi.visit_room(actor, room_id)
+	var payload := DomainMinimap.render(actor, map)
 	var tiers := {}
 	for row in payload["rooms"]:
 		tiers[row["room_id"]] = row["tier"]
+	assert_eq(tiers.size(), map.room_count(), "every discovered room is drawn")
 	assert_eq(tiers["gauntlet"], "miniboss", "an arena is a miniboss")
 	assert_eq(tiers["core"], "boss", "a core is a boss")
 	assert_eq(tiers["vault"], "room", "an ordinary chamber promises nothing")
@@ -195,7 +241,11 @@ func test_tier_falls_back_to_the_room_kind() -> void:
 	var pit := _room(&"pit", &"arena", [&"entry"] as Array[StringName])
 	map.add_room(pit)
 	map.entry_room = &"entry"
-	var payload := DomainMinimap.render(_actor_in(map), map)
+	# `pit` is not discovered yet, so it is not in the payload at all — the claim here is
+	# what an arena's tier resolves to ONCE it is drawn, so the room is visited first.
+	var actor := _actor_in(map)
+	DomainApi.visit_room(actor, &"pit")
+	var payload := DomainMinimap.render(actor, map)
 	assert_eq(payload["rooms"][1]["room_id"], "pit", "canonical order puts the pit second")
 	assert_eq(
 		payload["rooms"][1]["tier"], "miniboss", "an authored-empty arena still promises a miniboss"
@@ -258,7 +308,20 @@ func test_a_tag_the_minimap_does_not_know_marks_nothing() -> void:
 	var map := _tiered_map()
 	map.room(&"vault").tags = [&"not_a_known_tag"] as Array[StringName]
 	var payload := DomainMinimap.render(_actor_in(map, [&"vault"] as Array[StringName]), map)
-	assert_eq(payload["pois"].size(), 0, "an unknown tag is content, not a marker to invent")
+	# The vault's `treasure_keyed` was REPLACED by an unknown tag, so the vault itself
+	# contributes nothing — but the entry is discovered and carries `refuge`, so one marker
+	# legitimately survives. The claim under test is that the UNKNOWN tag invented nothing,
+	# so it is checked by asking whether any marker names it.
+	var invented := false
+	for poi in payload["pois"]:
+		if String(poi["tag"]) == "not_a_known_tag":
+			invented = true
+	assert_eq(invented, false, "an unknown tag is content, not a marker to invent")
+	assert_eq(
+		DomainMinimap.POI_BY_TAG.has(&"not_a_known_tag"),
+		false,
+		"and it is not in the published POI table either"
+	)
 
 
 # ── zones and weather ────────────────────────────────────────────────────────
@@ -325,7 +388,40 @@ func test_the_payload_is_json_clean_primitives() -> void:
 	)
 	# And the round trip is lossless, which is what makes the headless driver and a
 	# screen read the same thing.
-	assert_eq(JSON.stringify(parsed), JSON.stringify(payload), "a JSON round trip loses nothing")
+	#
+	# Compared after NORMALISING both sides, because two differences here are not data
+	# loss: `JSON.parse_string` reads every number back as a float (an integer tile `42`
+	# returns as `42.0`), and a JSON object is unordered, so the two dictionaries may
+	# spell their keys in a different order. Normalising collapses exactly those two and
+	# leaves a real change — a dropped key, a changed value — still failing.
+	assert_eq(_normalise(parsed), _normalise(payload), "a JSON round trip loses nothing")
+
+
+## Recursively re-key and re-order a JSON value so two structurally equal payloads
+## serialise identically: keys sorted, whole floats that are really integers written back
+## as integers. Bounded by the payload's own size — it walks data, and the data is a
+## finite dictionary this suite built.
+func _normalise(value: Variant) -> Variant:
+	match typeof(value):
+		TYPE_DICTIONARY:
+			var keys: Array = (value as Dictionary).keys()
+			keys.sort()
+			var out := {}
+			for key in keys:
+				out[String(key)] = _normalise((value as Dictionary)[key])
+			return out
+		TYPE_ARRAY:
+			var items: Array = []
+			for item in value as Array:
+				items.append(_normalise(item))
+			return items
+		TYPE_FLOAT:
+			var number := float(value)
+			if is_equal_approx(number, round(number)) and absf(number) < 9007199254740992.0:
+				return int(round(number))
+			return number
+		_:
+			return value
 
 
 func test_render_is_deterministic() -> void:

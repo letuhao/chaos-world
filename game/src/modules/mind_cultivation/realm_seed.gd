@@ -29,14 +29,11 @@ static var _cache: Dictionary = {}
 @export var channel_refinement_cap: int = 1
 @export var sea_capacity: float = 100.0
 @export var rewards: Dictionary = {}
-## Work required for the Thức Hải strengthening milestone.
-@export var sea_milestone_work: float = 20.0
-## Work required for the meridian strengthening milestone.
-@export var meridian_milestone_work: float = 15.0
-## Insight required for entry.
+## Unread. `comprehension_required` above is the ENFORCED entry gate
+## (`MindBreakthroughCondition`, `MindAdvancement._gates`), and this is exactly
+## half of it at all 30 realms, so a weaker copy of a threshold that already binds
+## can never bind itself. Delete it with the case that pins it — see BL-0146.
 @export var insight_required: float = 0.0
-## Resonance rank required (realms 19-30).
-@export var resonance_required: int = 0
 
 
 static func for_realm(realm_id: StringName) -> MindRealmSeed:

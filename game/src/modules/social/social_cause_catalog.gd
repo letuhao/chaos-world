@@ -35,7 +35,54 @@ func _install_defaults() -> void:
 	_add(&"killed_their_kin", {"standing": -10.0, "tags": [&"combat", &"harm"]})
 	_add(&"betrayed_oath", {"standing": -12.0, "trust": -0.4, "tags": [&"oath", &"harm"]})
 	_add(&"slandered", {"standing": -4.0, "trust": -0.12, "tags": [&"harm"]})
+	_add_intimacy()
 	_install_institutional()
+
+
+## ## `bound_in_intimacy`: the one cause that writes a PERSON'S standing for an act
+## two people share
+##
+## Every shipped cause is an act one actor did to another: a gift, a rescue, an oath.
+## Conception is the exception, and it is recorded here as an ordinary personal cause
+## rather than kept out of the vocabulary, because the ledger is the only place the
+## world can read "what is the history of these two" from (ADR 0091) — and a bond
+## whose one permanent, un-erasable entry is missing from that ledger is a bond the
+## save cannot explain.
+##
+## ## It is NOT institutional, and that is the whole decision
+##
+## `institutional` is a stored FLAG, not a tag (ADR 0091): a row carrying it is
+## projected into `SocialState.regard`, which is the read model for an actor's
+## standing with a SECT or a NATION. This cause's `partner_id` is a person, so the
+## row must stay out of `regard` — a partner is not an institution the world holds an
+## opinion about, and folding one in would make "how well is this actor regarded"
+## answer a question nobody asked. `_institutional()` is therefore NOT used: the flag
+## is what decides the projection, and leaving it off is a property of the call site.
+##
+## ## The magnitudes are sized against the ladder, not for effect
+##
+## Standing lands at `FRIEND_AT` (6.0) on the first application — see
+## `SocialBondClass`. `Seduction.REQUIRED_STANDING` reads exactly this figure, so one
+## recorded conception is what promotes the pair past the social floor the attempt
+## itself demands. That is a deliberate circularity and it is the safe direction: the
+## gate can only ever be opened by an act that has already happened, so conception can
+## never reach a stranger and no chain of unearned attempts can walk the ladder.
+##
+## `persistent` is true because the act is a fact, and `SocialBond.apply` raises the
+## floor on a persistent cause — so time moves this bond toward the record rather than
+## back toward a stranger. `trust` is large: this is the one act that cannot be
+## withdrawn or disputed, and a bond that quietly undid it would misreport the
+## partner's history.
+func _add_intimacy() -> void:
+	_add(
+		&"bound_in_intimacy",
+		{
+			"standing": 6.0,
+			"trust": 0.5,
+			"persistent": true,
+			"tags": [&"intimacy"],
+		}
+	)
 
 
 ## ## Institutional causes: the bond between an actor and an INSTITUTION

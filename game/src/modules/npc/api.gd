@@ -46,12 +46,40 @@ static var _current_player: Actor = null
 static var _minter: Callable = Callable()
 
 
+## The `social` facade, preloaded. Reached for ONE verb — `forget` — and the dependency is
+## declared: `npc` lists `social` in `tools/arch/registry.json`.
+const SOCIAL_FACADE := preload("res://src/modules/social/api.gd")
+
+
 ## The event contract, for a consumer to subscribe to. On the facade and not behind a
-## projection because a subscriber in another module has to be able to reach it.
+## projection because a subscriber in another module has to be able to reach it. Returns the
+## contract's ONE shared instance rather than a facade-owned one, so `social/` — which may
+## not depend on `npc/` — publishes `bond_changed` on the same bus a subscriber here hears.
 static func events() -> NpcEvents:
 	if _events == null:
-		_events = NpcEvents.new()
+		_events = NpcEvents.shared()
 	return _events
+
+
+## Drop the player's bond with a retired npc, so a dead minor does not haunt the ledger
+## forever. `SocialApi.forget` is the verb that promises it and until this call site it had
+## no production caller at all — the promise was in a docstring and nowhere else.
+##
+## **Automatic, and deliberately so.** Retirement is TERMINAL: `spawn` refuses a retired id
+## and `despawn` refuses to promote them back to KNOWN. A ledger that outlived the individual
+## is therefore a permanent, unsatisfiable record — a grudge against someone the player can
+## never meet again, still gating `bond_at_least` content that nothing can now open. The one
+## counter-case is a bond with an INSTITUTION partner, and `advance_stage` is only ever
+## called with a def id, so a sect row is never named here; a dissolved institution has its
+## own removal path.
+##
+## Underscore-prefixed, so it does not count against the facade's twelve-method cap. It
+## returns nothing because forgetting a bond that was never there is not a failure the
+## caller can act on.
+static func _forget_bond(player: Actor, npc_id: StringName) -> void:
+	if player == null or npc_id == &"":
+		return
+	SOCIAL_FACADE.forget(player, npc_id)
 
 
 ## Restore the roster from the player actor's `module_data` and clear the live registry.
@@ -293,6 +321,7 @@ static func advance_stage(
 	events().stage_advanced.emit(String(npc_id), stage_id, String(source))
 	if target.terminal:
 		events().presence_changed.emit(String(npc_id), NpcPresence.RETIRED)
+		_forget_bond(player, npc_id)
 	return {"ok": true, "reason": ""}
 
 
@@ -311,7 +340,14 @@ static func tally(npc_id: StringName, verb: StringName, source: String = &"") ->
 		return {"ok": false, "reason": "tally_full"}
 	var def := NpcCatalog.instance().definition(entry.def_id)
 	var current := def.stage(entry.stage_id) if def != null else null
-	if current != null and current.advance_after > 0:
+	# The verb matters as much as the count. A stage that names `advance_verb` counts ONLY
+	# that verb, so an unrelated tally cannot walk a story npc to its last rung; a stage
+	# that names none keeps the older "any verb" reading.
+	if (
+		current != null
+		and current.advance_after > 0
+		and (current.advance_verb == &"" or current.advance_verb == verb)
+	):
 		if entry.tally_of(verb) >= current.advance_after:
 			var next_id := def.next_stage_id(entry.stage_id)
 			if next_id != &"":

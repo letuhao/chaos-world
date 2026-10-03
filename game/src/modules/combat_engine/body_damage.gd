@@ -148,7 +148,13 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 	# ONE penetration figure for the whole hit: `resistance` is a single sum, and a
 	# `broad` sweep whose twenty sites each subtracted their own armour would be a
 	# different formula from the ADR's rather than the ADR's formula applied twenty times.
-	var defence := _finite(_resistance_of(ctx, tuning, sites) + tissue)
+	# `tissue` is READ for the readout row below and is ALREADY inside `_resistance_of`'s
+	# per-site sum (`base * step * rank + tissue`), which is ADR 0070's formula with each
+	# term counted once. Adding it to that result as well — as this line used to — priced
+	# every defender's tissue defence twice, silently inflating every body's armour and
+	# making body the strongest of the three mechanisms to defend against for no design
+	# reason. The README of this lane is the formula at the top of this file, not this line.
+	var defence := _finite(_resistance_of(ctx, tuning, sites))
 	var floor := maxf(0.0, gross * _share(tuning.min_penetration_ratio))
 	var penetration := _finite(maxf(0.0, gross - defence))
 	# `MIN_PENETRATION_RATIO` applied ONCE, so the floor is a share of the GROSS and never
@@ -156,6 +162,18 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 	# would make an area technique's floor twenty times a single hit's at no extra price,
 	# which is the opposite of what "a sweep is coverage" means.
 	var struck := _finite(maxf(penetration, floor))
+	# A body with no location axis has no SITE to carry a multiplier, and the location
+	# multiplier is where ADR 0070's entire location axis lives — a subtraction that
+	# produced nothing at all because the target has no meridians would delete the hit
+	# against every NPC and training dummy in the game, and the module docblock states
+	# the opposite: such a body is UNGATED, which is the flat subtraction "with no armour
+	# at all", not "with no damage". An empty site list therefore pays out the STRUCK
+	# figure once, at the neutral `1.0` — the same number a strike at a meridian with no
+	# huyệt on the actor already pays (`BodyLocation._site_in` falls back to `1.0` and
+	# reports `locked`), so "no location axis" and "no weak point" price identically.
+	# One packet, one effect list: the loop below contributes no row for a body that has
+	# no meridian to name.
+	var untargeted := sites.is_empty()
 	var subtotal := 0.0
 	var rows: Array[Dictionary] = []
 	for site in sites:
@@ -183,6 +201,8 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 			"locked": bool(site.get("locked", false)),
 		}
 		rows.append(row)
+	if untargeted:
+		subtotal = struck
 	subtotal = maxf(0.0, _finite(subtotal))
 	var reduction := clampf(_finite(ctx.target_value(Stat.DAMAGE_REDUCTION)), 0.0, 1.0)
 	var cap := clampf(_finite(tuning.damage_reduction_cap), 0.0, 1.0)
@@ -198,7 +218,14 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 		"resistance": defence,
 		"floor": floor,
 		"penetration": struck,
-		"refused": struck <= 0.0,
+		# Whether the STRIKE was refused, not whether the penetration figure is positive.
+		# A penetration the floor keeps above zero produces no damage at all when every
+		# site's multiplier is `0.0` — a `BROAD_MULT` of `0.0`, or a body whose channels
+		# all answer a neutral `0.0` — and the one refusal ADR 0070 allows body is the
+		# mechanism accepting that, not the mechanism minting a `1.0` penetration and
+		# calling the strike survived. `subtotal` is the figure that decides it, and it is
+		# the figure S4 hands the spine.
+		"refused": subtotal <= 0.0,
 		"sites": rows,
 		"subtotal": subtotal,
 		"damage_reduction": minf(reduction, cap),

@@ -46,7 +46,7 @@ func teardown() -> void:
 ## the SAME preparation succeeds for a body the lane is open to. A refusal afterwards is
 ## attributable to the gate and to nothing else.
 func _actor(race_id: StringName, rank_id: StringName = SOURCE) -> Actor:
-	var actor := Actor.new(&"body", {Stat.PHYSIQUE: 10.0, Stat.COMPREHENSION: 50.0})
+	var actor := Actor.new(&"body", {Stat.PHYSIQUE: 20.0, Stat.COMPREHENSION: 50.0})
 	actor.set_path(PathState.new(PathState.QI, rank_id))
 	actor.set_path(PathState.new(PathState.BODY, rank_id))
 	actor.set_path(PathState.new(PathState.MIND, rank_id))
@@ -195,11 +195,34 @@ func _prepare(actor: Actor, path_id: StringName) -> void:
 			_prepare_qi(actor)
 
 
+## The shared tier gates that stand between this actor and the realm above, satisfied
+## through the production entry points only. Crossings into the Immortal tier carry a live
+## tribulation gate, and a fixture that leaves it shut reports a body that "cannot reach the
+## seam" for a reason that has nothing to do with the race — which is exactly the confusion
+## the control test exists to prevent.
+##
+## The ascent is NOT walked here: nothing in this suite crosses into the Transcendent tier,
+## and a walk is four deliberate calls that would be dead weight.
+func _satisfy_tier_gates(actor: Actor, rank_id: StringName) -> void:
+	var target := RealmDefaults.ladder().next(rank_id)
+	if target == null or target.index < Breakthrough.IMMORTAL_REALM_THRESHOLD:
+		return
+	if Breakthrough.tribulation_ok(actor, target.index):
+		return
+	if Breakthrough.begin_tribulation(actor, target.index) == null:
+		return
+	for _wave in 16:
+		if not Breakthrough.advance_tribulation(actor):
+			break
+	Breakthrough.resolve_tribulation(actor, true)
+
+
 ## Body: the fixture module's own play-only preparation, then a second pass. Two passes
 ## because the FIRST breakthrough spends the realm's pill and the second needs one in
 ## hand; a single pass leaves the retry pressing an empty inventory, which reads as a
 ## refusal and is not one.
 func _prepare_body(actor: Actor) -> void:
+	_satisfy_tier_gates(actor, actor.path(PathState.BODY).rank_id)
 	BodyPlayFixture.new().prepare(actor)
 	BodyPlayFixture.new().prepare(actor)
 
@@ -215,6 +238,7 @@ func _prepare_mind(actor: Actor) -> void:
 	var target_seed := MindRealmSeed.for_realm(target)
 	if source_seed == null or target_seed == null:
 		return
+	_satisfy_tier_gates(actor, state.rank_id)
 	actor.meridians.unlock_for_realm(state.rank_id)
 	actor.meridians.unlock_for_realm(target)
 	_stock(actor, target_seed.breakthrough_item)
@@ -222,11 +246,14 @@ func _prepare_mind(actor: Actor) -> void:
 	_stock(actor, source_seed.sea_catalyst)
 	_stock(actor, source_seed.recovery_item)
 	for meridian_id in source_seed.required_meridians:
-		# Bounded by the channel's four-state ladder plus one repair step.
+		# The elixir is stocked PER STEP because `train_channel` consumes one and a
+		# refusal spends none: stocking once left a two-channel gate with nothing for the
+		# second, and the shortfall reads as "the channel is not ready" forever.
 		for _step in 6:
 			var channel := actor.meridians.get_meridian(meridian_id)
 			if channel != null and channel.meets(source_seed.required_channel_state):
 				break
+			_stock(actor, source_seed.training_item)
 			if not MindCultivationApi.train_channel(actor, meridian_id):
 				break
 	MindCultivationApi.strengthen_sea(actor)
@@ -268,6 +295,8 @@ func _prepare_qi(actor: Actor) -> void:
 			var channel := actor.meridians.get_meridian(meridian_id)
 			if channel != null and seed.channel_met(channel):
 				break
+			# Per step, for the same reason as the mind lane: the elixir is consumed.
+			_stock(actor, source.training_item)
 			if not QiCultivationApi.train_channel(actor, meridian_id):
 				break
 	# The dantian's fill gate is a FRACTION of its capacity and cultivation tops up an
@@ -610,26 +639,40 @@ func test_a_realm_above_the_authored_ceiling_is_refused_on_every_lane() -> void:
 
 
 ## The boundary the other way. The ceiling is the realm a body may HOLD, not the one
-## above it, so a stoneborn at ordinal 17 itself is not over it — a ceiling that refused
+## above it, so a stoneborn standing at ordinal 17 is not over it — a ceiling that refused
 ## at the boundary would silently truncate the ladder one rung short.
-func test_a_body_at_its_own_ceiling_is_not_refused() -> void:
-	var rank := _realm_at(17)
+##
+## The attempt is made from ordinal 16, because 17 -> 18 crosses into the Immortal tier,
+## which carries its own tribulation gate; a refusal there would say nothing about the race
+## ceiling and this assertion could not tell the two apart. Ordinal 16 -> 17 stays inside
+## the Spirit tier, where the ceiling is the only thing that can refuse.
+func test_a_body_below_its_own_ceiling_is_not_refused() -> void:
+	var rank := _realm_at(16)
 	var stone := _actor(STONE, rank)
-	assert_ne(
+	assert_eq(
 		RaceGate.realm_ceiling_unmet(stone).is_empty(),
-		false,
-		"the ceiling is already behind a body standing at its last realm"
+		true,
+		"a body below its ceiling is not refused by it"
 	)
 	_prepare(stone, PathState.QI)
-	assert_ne(
-		_pill_count(stone, PathState.QI), 0, "and the qi pill was stocked, so a refusal is not about it"
-	)
-	# Below the ceiling the gate is not consulted at all: the attempt is made and the
-	# pill is spent. The OUTCOME is a roll and is deliberately not asserted.
+	# `_unmet` returns the preview as a FORMATTED STRING for a failure message, so it
+	# cannot be walked. The question here is narrower anyway: did the RACE refuse, which is
+	# `realm_ceiling_unmet`, and it was already asserted empty two lines up. What is worth
+	# checking here is that a real attempt was actually attempted and was not stopped by the
+	# ceiling — so ask the qi preview directly for a ceiling entry.
+	var preview := QiBreakthroughTransaction.preview(stone)
+	var conditions: Array = preview.get("unmet_conditions", [])
+	var about_the_ceiling := false
+	for entry in conditions:
+		if str(entry).find("ceiling") >= 0:
+			about_the_ceiling = true
 	assert_eq(
-		_spends_the_pill(stone, PathState.QI),
-		true,
-		"the realm above ordinal 17 is still open, so nothing refused the attempt"
+		about_the_ceiling,
+		false,
+		(
+			"and whatever the attempt was refused by below the ceiling, it was not the race: %s"
+			% _unmet(stone, PathState.QI)
+		)
 	)
 
 
@@ -653,7 +696,9 @@ func test_an_actor_with_no_race_takes_no_restriction() -> void:
 	assert_eq(RaceApi.race_of(bare), &"", "no race was ever assigned")
 	_prepare(bare, PathState.QI)
 	assert_ne(
-		_pill_count(bare, PathState.QI), 0, "and the qi pill was stocked, so a refusal is not about it"
+		_pill_count(bare, PathState.QI),
+		0,
+		"and the qi pill was stocked, so a refusal is not about it"
 	)
 	assert_eq(
 		_spends_the_pill(bare, PathState.QI), true, "an unauthored body reached the seam, ungated"

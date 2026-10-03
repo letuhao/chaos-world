@@ -90,14 +90,21 @@ func test_the_facade_exposes_no_removal_or_choice_verb_at_all() -> void:
 	# 1. The public set is EXACTLY the earn-and-read surface ADR 0065 describes.
 	#    Naming all twelve means an unlisted verb added later fails here instead of
 	#    slipping past the word list below.
+	#
+	#    Still twelve, and still earn-and-read: `events` took the slot `counter`
+	#    held. `events` is how a consumer OBSERVES an earn rather than performing
+	#    one, so it grants and revokes nothing and belongs to this surface; `counter`
+	#    was a read of a ledger key that `state()` already returns. The facade is
+	#    at its twelve-method cap either way, so the two verbs cannot both be here
+	#    — see `test_destiny_events_facade.gd` for the new one's own contract.
 	assert_eq(
 		public,
 		[
 			"attach",
-			"counter",
 			"destinies",
 			"earn_destiny",
 			"earn_fate",
+			"events",
 			"fates",
 			"gate",
 			"has_destiny",
@@ -409,20 +416,20 @@ func test_the_trait_mirror_carries_a_namespaced_id_for_everything_held() -> void
 
 func test_recording_raises_a_counter_and_returns_the_value_after_the_delta() -> void:
 	var actor := _hero()
-	assert_eq(DestinyApi.counter(actor, DUELS), 0, "a counter that was never recorded is zero")
+	assert_eq(_counter(actor, DUELS), 0, "a counter that was never recorded is zero")
 	assert_eq(DestinyApi.record(actor, DUELS), 1, "the first record is worth one")
 	assert_eq(DestinyApi.record(actor, DUELS, 2), 3, "the second adds its amount")
-	assert_eq(DestinyApi.counter(actor, DUELS), 3, "and the value is what the caller was handed")
-	assert_eq(DestinyApi.counter(actor, &"never_recorded"), 0, "an untouched counter stays zero")
+	assert_eq(_counter(actor, DUELS), 3, "and the value is what the caller was handed")
+	assert_eq(_counter(actor, &"never_recorded"), 0, "an untouched counter stays zero")
 
 
 func test_a_counter_can_never_be_lowered() -> void:
 	var actor := _hero()
 	DestinyApi.record(actor, DUELS, 3)
 	assert_eq(DestinyApi.record(actor, DUELS, -5), 3, "a negative amount moves nothing")
-	assert_eq(DestinyApi.counter(actor, DUELS), 3, "and the counter did not fall")
+	assert_eq(_counter(actor, DUELS), 3, "and the counter did not fall")
 	assert_eq(DestinyApi.record(actor, DUELS, 0), 3, "a zero amount moves nothing either")
-	assert_eq(DestinyApi.counter(actor, DUELS), 3, "still three")
+	assert_eq(_counter(actor, DUELS), 3, "still three")
 	# Nothing was recorded on a refused movement, so there is no trail of a
 	# counter that tried to go backwards.
 	var ledger := DestinyState.normalize(actor.get_module_data(MODULE_KEY))
@@ -439,6 +446,16 @@ func test_a_record_that_moves_nothing_does_not_persist() -> void:
 	DestinyApi.record(actor, DUELS, -1)
 	DestinyApi.record(actor, &"never_recorded", 0)
 	assert_eq(DestinyApi.state(actor), before, "the persisted ledger is untouched")
+
+
+## The recorded value of one counter, read off the ledger [method DestinyApi.state]
+## publishes rather than off a facade verb. `counter(actor, id)` was retired when
+## the twelve-method cap forced a choice to pay for `events()`: it was the one
+## public verb with no caller in `game/src` at all, so what it answered was already
+## one dictionary key away from every one of its twenty read sites.
+func _counter(actor: Actor, counter_id: StringName) -> int:
+	var ledger := DestinyApi.state(actor)
+	return int((ledger["counters"] as Dictionary).get(String(counter_id), 0))
 
 
 # --- The projection is derived, so it is idempotent ---------------------------

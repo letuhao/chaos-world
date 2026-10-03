@@ -255,7 +255,11 @@ func test_the_status_clock_leaves_the_save_payload_alone() -> void:
 	_frames(harness.app, 90)
 	assert_eq(harness.actor.has_status(&"fire_immolation"), true, "the burn is live while ticking")
 	var ticked := harness.actor.to_dict()
-	assert_eq(int(ticked["version"]), 4, "schema version is unchanged at 4")
+	assert_eq(
+		int(ticked["version"]),
+		Actor.SCHEMA_VERSION,
+		"the payload is at the current schema, whatever bumps it"
+	)
 	assert_eq(String(ticked["id"]), String(harness.actor.id), "and the actor reserializes itself")
 	# The keys a status runtime could have spilled into are all absent. Nothing this
 	# change added reaches the payload: the runtime table is a `WeakRef` map inside the

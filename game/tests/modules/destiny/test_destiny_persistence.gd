@@ -60,6 +60,16 @@ func _earned(actor_id: StringName = &"keeper") -> Actor:
 	return actor
 
 
+## The recorded value of one counter, read off the ledger [method DestinyApi.state]
+## publishes rather than off a facade verb. `counter(actor, id)` was retired when
+## the twelve-method cap forced a choice to pay for `events()`: it was the one
+## public verb with no caller in `game/src` at all, so what it answered was already
+## one dictionary key away from every one of its twenty read sites.
+func _counter(actor: Actor, counter_id: StringName) -> int:
+	var ledger := DestinyApi.state(actor)
+	return int((ledger["counters"] as Dictionary).get(String(counter_id), 0))
+
+
 # --- The payload -------------------------------------------------------------
 
 
@@ -86,14 +96,14 @@ func test_held_fates_destinies_and_counters_survive_a_payload_round_trip() -> vo
 	assert_eq(carried, before, "the payload carried the ledger verbatim")
 	assert_eq(DestinyApi.fates(restored), _held_fates(), "the fates are still held")
 	assert_eq(DestinyApi.destinies(restored), [CHOSEN], "so is the destiny")
-	assert_eq(DestinyApi.counter(restored, DUELS), 3, "and the counter")
+	assert_eq(_counter(restored, DUELS), 3, "and the counter")
 	# It survives a JSON hop, which is what a file-backed save does.
 	var parsed = JSON.parse_string(JSON.stringify(payload))
 	assert_ne(parsed, null, "the payload is JSON-safe")
 	var from_json := Actor.from_dict(parsed as Dictionary)
 	assert_eq(DestinyApi.state(from_json), before, "JSON round trip")
 	assert_eq(DestinyApi.fates(from_json), _held_fates(), "the fates survive the hop")
-	assert_eq(DestinyApi.counter(from_json, DUELS), 3, "and so does the counter")
+	assert_eq(_counter(from_json, DUELS), 3, "and so does the counter")
 
 
 ## The fates `_earned()` earns, in the canonical order the facade hands them back.

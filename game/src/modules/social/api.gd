@@ -22,6 +22,29 @@ const MODULE_KEY := SocialState.MODULE_KEY
 
 const _PROVIDER_COMPONENT := &"social_provider"
 
+## The `npc` event bus, reached through the contract in `contracts/` and never through
+## `npc/api.gd`: `social/` declares `contracts` and `core` and NOT `npc/`, and `bond_changed`
+## is a fact about a bond, which is this module's state (ADR 0093).
+const _NPC_EVENTS := preload("res://src/contracts/npc_events.gd")
+
+
+## Fold the live ledger into `module_data` so `Actor.to_dict` alone is a complete save.
+##
+## Called from EVERY mutating verb, not only from `state()`, for the same reason
+## `NpcApi._persist` is: a caller that earns a bond and then serialises the player should
+## not have to know that a second verb exists to flush the ledger. Persisting on change is
+## what makes the live component and the save payload unable to disagree.
+##
+## This is BL-0627. Before it, `state()` was the only writer of `module_data[social_state]`
+## and NO production code called it — only three tests did — so a player who earned standing
+## and reloaded lost every bond since the last flush, through `sect/` and `nation/` calls
+## to `apply_cause` alike.
+static func _persist(state: SocialState, actor: Actor) -> void:
+	if state == null or actor == null:
+		return
+	state.mark_changed()
+	actor.set_module_data(MODULE_KEY, state.to_dict())
+
 
 ## Attach the module to `actor`: restore any ledger a prior `Actor.from_dict` carried,
 ## normalize it, expose it as the state component and register the provider. Idempotent,
@@ -78,7 +101,14 @@ static func apply_cause(
 	if state == null:
 		return {"ok": false, "reason": "no_social_state"}
 	state.ensure_bond(partner_id).apply(cause, scale)
-	state.mark_changed()
+	_persist(state, actor)
+	# The announcement, after the flush, so a subscriber that answers by reading the save
+	# payload reads the cause already in it. The signal's own signature is
+	# `bond_changed(npc_id, cause_id)`, and the subject of a bond change is the PARTNER —
+	# the merchant who now regards you, not the player who did the deed. A cause id rather
+	# than a delta, so the anti-farm rule survives into the contract and a subscriber cannot
+	# re-derive a class that disagrees.
+	_NPC_EVENTS.shared().bond_changed.emit(String(partner_id), cause_id)
 	return {"ok": true, "reason": ""}
 
 
@@ -99,7 +129,7 @@ static func tick(actor: Actor, delta: float) -> int:
 		if not is_equal_approx(before, bond.standing):
 			moved += 1
 	if moved > 0:
-		state.mark_changed()
+		_persist(state, actor)
 	return moved
 
 
@@ -178,6 +208,10 @@ static func state(actor: Actor) -> Dictionary:
 	var ledger := social_state(actor)
 	if ledger == null:
 		return SocialState.empty()
+	# `SocialState.mark_changed` also rebuilds `regard`, so this is the flush every mutating
+	# verb already performs. Kept as an explicit call rather than relying on `_persist`,
+	# because the return value below is the payload and must not be a second `to_dict`.
+	ledger.mark_changed()
 	actor.set_module_data(MODULE_KEY, ledger.to_dict())
 	return ledger.to_dict()
 
@@ -187,7 +221,12 @@ static func forget(actor: Actor, partner_id: StringName) -> bool:
 	var state := social_state(actor)
 	if state == null:
 		return false
-	return state.forget(partner_id)
+	# `SocialState.forget` marks the ledger changed, so this is the same flush the other
+	# verbs perform: a retirement that saved as the OLD ledger would resurrect the bond.
+	var removed := state.forget(partner_id)
+	if removed:
+		_persist(state, actor)
+	return removed
 
 
 static func _sorted_cause_ids(bond: SocialBond) -> Array:

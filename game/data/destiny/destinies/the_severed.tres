@@ -12,4 +12,3 @@ tier = 2
 visibility = &"hidden"
 teaser = "There is a gap in the lineage chart where a name should be. The chart does not say whose name."
 grants_fates = Array[StringName]([&"meridian_cut_at_the_shoulder"])
-requires_fates = Array[StringName]([&"bound_name_called_once"])

@@ -280,7 +280,14 @@ static func install(defs: Array[SectDef] = []) -> void:
 ## it never asked for.
 static func install_doctrine(defs: Array[SectDoctrineDef] = []) -> void:
 	var catalog := SectDoctrineCatalog.new()
-	var fallback: Array[SectDoctrineDef] = [default_doctrine()] if defs.is_empty() else defs
+	# Built by append rather than by a ternary: `[default_doctrine()]` infers a
+	# plain `Array`, and assigning that to a typed `Array[SectDoctrineDef]` is a
+	# runtime type error, not a warning. The loop keeps one type throughout.
+	var fallback: Array[SectDoctrineDef] = []
+	if defs.is_empty():
+		fallback.append(default_doctrine())
+	else:
+		fallback.append_array(defs)
 	for def in fallback:
 		catalog._doctrines[String(def.id)] = def
 	catalog._loaded = true

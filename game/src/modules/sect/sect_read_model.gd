@@ -228,60 +228,69 @@ static func summary(ledger: Dictionary, catalog: SectCatalog) -> Dictionary:
 	out["schisms"] = SectReadModel.schism_view(ledger)
 	out["schism_count"] = (out["schisms"] as Dictionary).size()
 	for doctrine_id in (ledger["fit"] as Dictionary).keys():
-	var sworn := catalog.sect_definition(sect_id)
-	if sworn == null:
-		continue
-	out["teaches"] = sworn.teaches_at(int((ledger["fit"] as Dictionary)[doctrine_id]))
+		var sworn := catalog.sect_definition(sect_id)
+		if sworn == null:
+			continue
+		out["teaches"] = sworn.teaches_at(int((ledger["fit"] as Dictionary)[doctrine_id]))
 	var def := catalog.sect_definition(sect_id)
 	if def != null:
-	out["sect_name"] = def.display_name
-	out["doctrine_id"] = String(def.doctrine_id)
-	out["min_purity"] = def.min_purity
-	var doctrine := SectDoctrineCatalog.instance().doctrine(def.doctrine_id)
-	out["doctrine_name"] = "" if doctrine == null else doctrine.display_name
-	var office := def.position(SectState.position(ledger))
-	if office != null:
-		out["position_name"] = office.display_name
-		out["duties"] = SectReadModel.strings(office.duties)
-		out["authorities"] = SectReadModel.strings(office.authorities)
+		out["sect_name"] = def.display_name
+		out["doctrine_id"] = String(def.doctrine_id)
+		out["min_purity"] = def.min_purity
+		var doctrine := SectDoctrineCatalog.instance().doctrine(def.doctrine_id)
+		out["doctrine_name"] = "" if doctrine == null else doctrine.display_name
+		var office := def.position(SectState.position(ledger))
+		if office != null:
+			out["position_name"] = office.display_name
+			out["duties"] = SectReadModel.strings(office.duties)
+			out["authorities"] = SectReadModel.strings(office.authorities)
 	# Every authored sect is listed whatever the actor is, so a screen can compare
 	# institutions without a second call; `sworn` is the only thing that differs.
 	for authored_id in catalog.sect_ids():
-	out["sects"][String(authored_id)] = SectReadModel.sect_view(
-		catalog.sect_definition(authored_id)
-	)
+		out["sects"][String(authored_id)] = SectReadModel.sect_view(
+			catalog.sect_definition(authored_id)
+		)
 	for authored in SectDoctrineCatalog.instance().doctrine_ids():
-	out["doctrines"][String(authored)] = SectReadModel.doctrine_view(
-		SectDoctrineCatalog.instance().doctrine(authored)
-	)
+		out["doctrines"][String(authored)] = SectReadModel.doctrine_view(
+			SectDoctrineCatalog.instance().doctrine(authored)
+		)
 	if def == null:
-	return out
+		return out
+	var teaching_doctrine := SectDoctrineCatalog.instance().doctrine(def.doctrine_id)
 	for office in def.positions:
-	if office == null or office.id == &"":
-		continue
-	var room := def.position(office.id)
-	# `held` is counted from THIS ledger's roster rather than passed in: an
-	# argument is a number a caller can be wrong about, and the whole point of
-	# BL-0176 is that the count is authored content read against authored
-	# content. A member whose ledger holds no roster (anyone who joined rather
-	# than founded) reads 0, which is the honest answer for "how many members
-	# does MY ledger know about" — and the refusal still names the office.
-	var held := SectState.roster_held(ledger, office.id, room)
-	out["roster_size"] = int(out["roster_size"]) + held
-	var seat := def.seat_state(office.id, held)
-	out["can_promote"][String(office.id)] = {
-		"id": String(office.id),
-		"display_name": office.display_name,
-		"capacity": office.capacity,
-		"standing_floor": office.standing_floor,
-		"below_floor": SectState.standing(ledger) < office.standing_floor,
-		"held": held,
-		"has_room": bool(seat["has_room"]),
-		"reason": String(seat["reason"]),
-		# The walk, read from the ledger rather than re-derived: a board screen
-		# renders a vacancy without ever learning how the succession advances.
-		"succession": SectReadModel.succession_view(ledger, office),
-		"teach_tax":
-		SectTeaching.tax_for(SectDoctrineCatalog.instance().doctrine(def.doctrine_id), office),
-	}
+		if office == null or office.id == &"":
+			continue
+		var room := def.position(office.id)
+		# `held` is counted from THIS ledger's roster rather than passed in: an
+		# argument is a number a caller can be wrong about, and the whole point of
+		# BL-0176 is that the count is authored content read against authored
+		# content. A member whose ledger holds no roster (anyone who joined rather
+		# than founded) reads 0, which is the honest answer for "how many members
+		# does MY ledger know about" — and the refusal still names the office.
+		var held := SectState.roster_held(ledger, office.id, room)
+		out["roster_size"] = int(out["roster_size"]) + held
+		var seat := def.seat_state(office.id, held)
+		out["can_promote"][String(office.id)] = {
+			"id": String(office.id),
+			"display_name": office.display_name,
+			"capacity": office.capacity,
+			"standing_floor": office.standing_floor,
+			"below_floor": SectState.standing(ledger) < office.standing_floor,
+			"held": held,
+			"has_room": bool(seat["has_room"]),
+			"reason": String(seat["reason"]),
+			# The walk, read from the ledger rather than re-derived: a board screen
+			# renders a vacancy without ever learning how the succession advances.
+			"succession": SectReadModel.succession_view(ledger, office),
+			# `SectTeaching.tax_for` is a null-receiver on a doctrine this build does
+			# not ship, so the office's own authored tax is the fallback. A missing
+			# doctrine must not abort the whole summary — a panel still renders the
+			"teach_tax":
+			(
+				# seat it can see.
+				SectTeaching.tax_for(teaching_doctrine, office)
+				if teaching_doctrine != null
+				else office.teach_tax
+			),
+		}
 	return out

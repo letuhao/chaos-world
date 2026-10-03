@@ -138,19 +138,32 @@ func site_of(target: Variant, technique: Variant, mode: StringName = &"") -> Dic
 ## Every site one `broad` strike touches: one row per UNLOCKED meridian, at
 ## `BROAD_MULT`, in sorted id order so two identical sweeps produce identical payloads.
 ## A broad strike on a body with no network is `[]`, and never one synthetic row.
+##
+## ## `BROAD_MULT` is clamped into `[0, 1]` on read — hole 3 in `BodyDamage`'s docblock
+##
+## `_positive(..., 1.0)` only floored it at zero and fell back to `1.0` for a non-finite
+## value, so an authored `4.0` reached the multiplier untouched and a sweep's per-channel
+## share out-scaled the single strike on that same channel — which is precisely the
+## "strongest single hit in the game, twenty times over" the module exists to prevent.
+## Clamped to `[0, 1]` the shipped `0.35` is BIT-FOR-BIT unchanged, while `4.0` and
+## `1.0e9` both read `1.0`: a sweep is still the SUM of its channels, so it beats one
+## strike and loses to twenty of them either way, and no authored number can invert it
+## into twenty crits. A negative still reads `0.0` rather than inverting the sweep into a
+## negative. `_share` is `BodyDamage`'s `[0, 1]` rate reader; this is `BodyLocation`'s own
+## so neither file reaches through the other's internals for one clamp.
 func broad_sites(target: Variant, tuning: CombatTuning = null) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	var network: Variant = _network_of(target)
 	if network == null:
 		return out
 	var resolved := _tuning_of(tuning)
-	var share := _positive(resolved.broad_mult, 1.0)
+	var share := _share(resolved.broad_mult)
 	var ids: Array[StringName] = []
 	for state in _all_meridians(network):
 		var id := _id_of(_read(state, &"id", &""))
 		if id != &"":
 			ids.append(id)
-	ids.sort()
+	ids.sort_custom(_by_text)
 	for id in ids:
 		var site := _site_in(network, target, id)
 		site["multiplier"] = maxf(0.0, site["multiplier"]) * share
@@ -446,12 +459,32 @@ static func _id_of(value: Variant) -> StringName:
 	return StringName(value) if value is StringName or value is String else &""
 
 
+## `Array[StringName]`'s own `<` is a HANDLE comparison, not a text one: two ids interned
+## from equal text are the same handle and compare equal, and two different ids compare
+## by pointer, which is an allocation order nothing in this file controls. `broad_sites`
+## documents "sorted id order so two identical sweeps produce identical payloads", so the
+## order has to be the ORDER OF THE TEXT. `_meridian_ids` in the fixture sorts `String`
+## for the same reason and the two must agree.
+static func _by_text(a: StringName, b: StringName) -> bool:
+	return String(a) < String(b)
+
+
 static func _non_negative(value: Variant) -> float:
 	return maxf(0.0, _finite(float(value))) if (value is float or value is int) else 0.0
 
 
 static func _positive(value: Variant, fallback: float) -> float:
 	return _finite(maxf(0.0, float(value))) if (value is float or value is int) else fallback
+
+
+## A rate read out of DATA and clamped into `[0, 1]`: `BROAD_MULT` is the only one this
+## file reads, and above `1.0` it makes a sweep's per-channel share out-scale the single
+## strike on that same channel — see [method broad_sites]. Deliberately NOT `_positive`,
+## which floors at zero and stops there; a negative `BROAD_MULT` is clamped to `0.0` (a
+## sweep that deals nothing, which is the refusal) rather than turned into a negative
+## damage that S9's one sign flip would spend as a heal.
+static func _share(value: Variant) -> float:
+	return clampf(_finite(float(value)), 0.0, 1.0) if (value is float or value is int) else 0.0
 
 
 static func _finite(value: float) -> float:

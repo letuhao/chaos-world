@@ -53,7 +53,13 @@ static func attach(actor: Actor) -> void:
 ## refused rather than recorded: a fate the catalog does not define is a content
 ## bug, and storing it would create a fate nothing can ever pay out.
 static func earn_fate(actor: Actor, fate_id: StringName, source: String = "") -> Dictionary:
+	# A null actor earns nothing. Refused here rather than at `_persist`, because
+	# the ledger is computed against `DestinyState.empty()` for a null actor and
+	# the write is what actually crashes. A consumer wiring an earn through a
+	# half-built actor gets "nothing happened" instead of an engine error.
 	var ledger := _ledger(actor)
+	if actor == null:
+		return ledger
 	if DestinyState.has_fate(ledger, fate_id):
 		return ledger
 	var def := FateCatalog.instance().fate_definition(fate_id)
@@ -79,6 +85,10 @@ static func earn_fate(actor: Actor, fate_id: StringName, source: String = "") ->
 ## player did not earn this one, which is a normal outcome.
 static func earn_destiny(actor: Actor, destiny_id: StringName, source: String = "") -> Dictionary:
 	var ledger := _ledger(actor)
+	# Same refusal as `earn_fate`: nothing is written for an actor that is not
+	# there, and the write is what would crash.
+	if actor == null:
+		return ledger
 	if DestinyState.has_destiny(ledger, destiny_id):
 		return ledger
 	var def := FateCatalog.instance().destiny_definition(destiny_id)
@@ -111,6 +121,12 @@ static func earn_destiny(actor: Actor, destiny_id: StringName, source: String = 
 ## it is never refunded. Returns the value after the delta. A negative `amount`
 ## is clamped to zero movement rather than unwinding a counter.
 static func record(actor: Actor, counter_id: StringName, amount: int = 1) -> int:
+	# A null actor is refused rather than scored against the empty ledger: without
+	# this the call returned `amount` for an actor that does not exist, so a
+	# consumer wiring a beat through a half-built actor would be told a counter
+	# moved when nothing was written. Every other read verb already null-checks.
+	if actor == null or counter_id == &"":
+		return 0
 	var ledger := _ledger(actor)
 	var total := DestinyState.counter_value(ledger, counter_id)
 	if amount > 0:
@@ -125,11 +141,38 @@ static func record(actor: Actor, counter_id: StringName, amount: int = 1) -> int
 	return total
 
 
-## The recorded value of a counter, 0 when never recorded.
-static func counter(actor: Actor, counter_id: StringName) -> int:
-	if actor == null:
-		return 0
-	return DestinyState.counter_value(_ledger(actor), counter_id)
+## The module's signal bus — the one instance every earn announcement fires on.
+##
+## ## What this cost: `counter` is no longer a facade verb
+##
+## The facade was AT [code]tools/arch/rules.py[/code]'s twelve-method cap, so
+## reaching here was not free. What was retired is [code]counter(actor,
+## counter_id)[/code] — the one public verb with **no caller in `game/src` at
+## all**, counted over non-comment lines: every reader of a counter already holds
+## the ledger [method state] hands back, and every writer holds it from the return
+## value of [method record]. Read it as
+## [code]DestinyApi.state(actor)["counters"][counter_id][/code].
+##
+## Two other verbs measured the same way and were kept, because a zero `src/`
+## count is not a zero caller count: [method has_fate] is ten read sites and
+## [method state] forty-nine, both almost entirely production assertions about a
+## save round trip, and deleting those would have been deleting the checks rather
+## than a redundancy. [method counter] was twenty, and unlike those it was a
+## *convenience* over a dictionary key rather than a contract any gate could use.
+##
+## On the facade because a consumer has to be able to REACH it: `ui/` is a pure
+## consumer and may name `destiny` only through this file, so a codex that listens
+## to `fate_earned` / `destiny_earned` has exactly one legal way in. This is the
+## house shape — [code]NpcApi.events()[/code], [code]HoldingsApi.events()[/code]
+## and [code]EventApi.events()[/code] are the same verb on the same reason, the
+## two newest of them at the full twelve.
+##
+## The bus itself still lives on [code]DestinyProjection[/code], and this returns
+## it rather than keeping a second copy: one instance or the subscribers would be
+## split across two buses and every listener would see nothing. Nothing outside
+## the module emits through it — that stays the module's own rule.
+static func events() -> DestinyEvents:
+	return DestinyProjection.events()
 
 
 ## Whether `actor` holds `fate_id`. The question a gate asks.

@@ -104,7 +104,26 @@ static func routes(map: DomainMap) -> Array[Dictionary]:
 			if not _connects_both_ways(map, room_id, exit_id):
 				continue
 			out.append(_corridor(map, room_id, exit_id, rects))
+	out.sort_custom(_corridor_order)
 	return out
+
+
+## A corridor is DIRECTED canonically: `from` is the lexicographically smaller id.
+##
+## `_exits_of` hands back exits sorted by string, so emitting `(room_id, exit_id)`
+## verbatim produces `from: east, to: west` for a pair whose alphabetical order is the
+## other way round, and a consumer reading `from` as "where the walk starts" would begin
+## on the wrong side of the corridor. Sorting by STRING — never by `StringName`, which
+## GDScript compares by hash, so the order would not be stable between runs — makes the
+## direction a pure function of the two ids.
+static func _corridor_order(a: Dictionary, b: Dictionary) -> bool:
+	var a_from := String(a.get("from", ""))
+	var a_to := String(a.get("to", ""))
+	var b_from := String(b.get("from", ""))
+	var b_to := String(b.get("to", ""))
+	if a_from != b_from:
+		return a_from < b_from
+	return a_to < b_to
 
 
 ## The corridor joining two rooms, or `{}`. Reads `routes` rather than rebuilding it,
@@ -246,11 +265,17 @@ static func _rebuild(parents: Dictionary, from_id: StringName, to_id: StringName
 static func _corridor(
 	map: DomainMap, from_id: StringName, to_id: StringName, rects: Dictionary
 ) -> Dictionary:
+	# Directed canonically: `from` is the lexicographically smaller id. See
+	# `_corridor_order` for why this cannot be left to the caller's iteration order.
+	var one := String(from_id)
+	var other := String(to_id)
+	var head := one if one < other else other
+	var tail := other if one < other else one
 	return {
-		"from": String(from_id),
-		"to": String(to_id),
-		"points": _polyline(rects[String(from_id)], rects[String(to_id)]),
-		"width": _width_for(map.room(from_id), map.room(to_id)),
+		"from": head,
+		"to": tail,
+		"points": _polyline(rects[head], rects[tail]),
+		"width": _width_for(map.room(StringName(head)), map.room(StringName(tail))),
 	}
 
 

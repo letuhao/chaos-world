@@ -32,6 +32,17 @@ extends Resource
 ## only by an explicit call from the system that owns the story beat.
 @export var advance_after: int = 0
 
+## The ONE verb whose tally this stage counts. Empty means `advance_after` is measured
+## against any verb at all.
+##
+## This field is what makes `advance_after` mean something. Without it the count is
+## "any tally whatsoever", so a player who farms an unrelated verb walks the ladder to its
+## last rung and retires a story NPC by accident — which is exactly what happened, and it
+## is why the docstring above always said "a named verb" while no such field existed.
+## A stage that wants to count several verbs authors the threshold on the stage that
+## matters and lets the story system advance the rest explicitly.
+@export var advance_verb: StringName = &""
+
 ## A retired stage. The npc spawns here no more, and the roster entry becomes a trace.
 @export var terminal: bool = false
 

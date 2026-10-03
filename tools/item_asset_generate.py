@@ -59,7 +59,7 @@ def register(actions) -> None:
     )
     generate.add_argument("--lora", help="Flux LoRA; Krea2 uses its bundled workflow LoRAs")
     generate.add_argument("--lora-strength", type=float)
-    generate.add_argument("--rembg-model", default=map_generate.DEFAULT_REMBG_MODEL)
+    generate.add_argument("--rembg-model")
     generate.add_argument("--rembg-post-processing", action="store_true")
     generate.add_argument("--alpha-matting", action="store_true")
     generate.add_argument("--alpha-foreground-threshold", type=int, default=240)
@@ -173,13 +173,19 @@ def run(args) -> int:
         "profile": args.profile,
         "checkpoint": args.checkpoint,
         "lora": (
-            "workflow character LoRAs"
-            if args.profile == "krea2" and args.lora_strength > 0
-            else "workflow character LoRAs (disabled)"
+            "Krea2 v2 workflow LoRAs"
             if args.profile == "krea2"
             else args.lora
         ),
         "lora_strength": args.lora_strength,
+        "lora_strengths": (
+            {
+                key: args.lora_strength if args.lora_strength > 0 else default_strength
+                for _node_id, _name, key, default_strength in map_generate.KREA2_LORAS
+            }
+            if args.profile == "krea2"
+            else {}
+        ),
         "seed": seed,
         "steps": args.steps,
         "size": args.size,

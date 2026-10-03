@@ -83,19 +83,50 @@ func test_an_unknown_territory_is_refused_and_names_itself() -> void:
 func test_a_claim_below_the_tier_floor_is_refused_as_a_route_not_a_wall() -> void:
 	# ADR 0084: the standing floor is a ROUTE, not a wall. So the refusal names it
 	# and reports both numbers, so a caller can show the player how far they are.
+	#
+	# ## And the case PICKS a territory whose floor its polity is actually under
+	#
+	# This used to `return` when the actor already met the floor, which is the shape
+	# that turns a test into a silent no-op: the suite went green because the one
+	# assertion that mattered never ran. A polity is AUTHORED at a starting
+	# standing (`NationDef.claim`) rather than beginning at zero, so the tier has to
+	# be chosen against the shipped content instead of assumed. The scan finds the
+	# deepest tier the polity cannot meet, and ASSERTS it found one — so a rebalance
+	# that made every tier reachable from a fresh polity fails loudly instead of
+	# quietly skipping the case a second time.
 	var actor := _actor()
-	var deep := &"nine_province_reach"
-	var floor := NationCatalog.instance().tuning().claim_floor_for(
-		NationCatalog.instance().territory_definition(deep).tier_index
-	)
 	var standing := int(NationApi.summary(actor)["standing"])
-	if standing >= floor:
-		return
-	var refused := NationApi.claim_territory(actor, deep)
+	var tuning := NationCatalog.instance().tuning()
+	var blocked := &""
+	var floor := 0.0
+	for territory_id in _all_territory_ids():
+		var tier := NationCatalog.instance().territory_definition(territory_id).tier_index
+		if float(standing) < tuning.claim_floor_for(tier):
+			blocked = territory_id
+			floor = tuning.claim_floor_for(tier)
+			break
+	assert_eq(
+		blocked == &"",
+		false,
+		"this build authors a claim floor above a fresh polity's standing %d" % standing,
+	)
+	var refused := NationApi.claim_territory(actor, blocked)
 	assert_eq(bool(refused.get("ok", false)), false, "below the floor the claim is refused")
 	assert_eq(String(refused.get("reason", "")), "standing_below_floor", "with the authored reason")
 	assert_eq(int(refused.get("standing", 0)), standing, "reporting the standing it read")
 	assert_eq(float(refused.get("floor", 0.0)), floor, "and the floor it needed")
+	# And the route is open: a refusal names the shortfall rather than hiding it.
+	assert_eq(float(refused.get("floor", 0.0)) > standing, true, "the shortfall is visible")
+
+
+## Every authored territory id, so the case above scans content rather than
+## hard-coding one. A hard-coded id is a test that breaks when a `.tres` is renamed
+## and says nothing about the tiers it never looked at.
+func _all_territory_ids() -> Array[StringName]:
+	var out: Array[StringName] = []
+	for territory_id in NationCatalog.instance().territory_ids():
+		out.append(territory_id)
+	return out
 
 
 # --- Held ground: the load-bearing invariant -------------------------------

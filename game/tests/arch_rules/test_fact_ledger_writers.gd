@@ -49,12 +49,24 @@ const SRC_ROOT := "res://src"
 ##   - `character_creation_flow.gd` declares `const FACT_ID` and writes it directly, so
 ##     the census reads that one out of GDScript source. It is listed rather than
 ##     refused for exactly that reason.
+##   - `clan_facts.gd` / `combat_facts.gd` / `sect_facts.gd` are ADR 0137's
+##     module-owned producers: the owning module records a fact when the action that
+##     earns it succeeds. Each declares every id it owns as a same-file `const` named
+##     AT the `record` call, which is the shape `code_owned_supply` already resolves.
+##     They are KNOWN writers but deliberately NOT in `CODE_OWNED_WRITERS` below: that
+##     list's contract is a const spelled exactly `FACT_ID`, and a module owning more
+##     than one fact cannot honour it. Their const-to-call wiring is asserted in
+##     `tests/modules/{sect,clan,combat}` instead, and the census does not care which of
+##     the two spellings a writer uses.
 ## A name NOT in this list is not an oversight to fix by adding a name: it is a
 ## producer the census cannot see until it is taught to read it, in the same change.
 const KNOWN_WRITERS: Array[String] = [
 	"res://src/app/beat_director.gd",
 	"res://src/app/character_creation_flow.gd",
+	"res://src/modules/clan/clan_facts.gd",
+	"res://src/modules/combat/combat_facts.gd",
 	"res://src/modules/event/event_beat_writer.gd",
+	"res://src/modules/sect/sect_facts.gd",
 ]
 ## Writers whose id is a same-file `const`, and therefore a producer the census has to
 ## read out of GDScript rather than out of content. Asserted by test so that moving a

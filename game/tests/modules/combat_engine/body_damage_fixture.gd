@@ -10,12 +10,29 @@ extends TestCase
 ##
 ## ## What is pinned, and why these particular numbers
 ##
-## The attacker's `ATTACK_PHYSICAL` is `physique * 2.0` (`actor_stats.gd:152`) and the
-## defender's `DEFENSE_PHYSICAL` is `physique * 1.5` (`actor_stats.gd:158`). So physique
-## 10.0 gives `20.0` and `15.0`, and every body's arithmetic in the suite is legible
-## without restating a derived-stat formula. `DEFENSE_PHYSICAL` is FLAT and
-## `0.0`-baselined (ADR 0022), so a FLAT modifier is the only form that can raise it —
-## the same trap `ADR 0022` names and `qi_damage.gd` guards.
+## Only the BASE attributes are pinned. The DERIVED stats are READ OFF THE ACTOR, and
+## that is the whole discipline of this fixture.
+##
+## An earlier version of this file restated core's formulas in prose and let every
+## suite's arithmetic hang off the resulting literals: `ATTACK_PHYSICAL = physique * 2.0`
+## and `DEFENSE_PHYSICAL = physique * 1.5`, so physique `10.0` meant `20.0` and `15.0`.
+## Both derivations were TRUE of `actor_stats.gd` and BOTH were wrong about the actors
+## these builders produce, because the defender runs `BodyCultivationApi.attach` and
+## therefore carries a `BodyProvider`. `ActorStats._ensure_providers` makes a provider's
+## contribution the BASELINE for whatever id it emits (ADR 0026), and `BodyProvider`
+## emits `BodyStats.PHYSICAL_DEFENSE`, which is an ALIAS of `Stat.DEFENSE_PHYSICAL` —
+## so a body-path defender reads core's `15.0` **plus** `(bone * 1.5 + vitality * 1.0)
+## x shaped`, not `15.0`. Every armour assertion that quoted the hand-copied baseline was
+## therefore asserting about an actor that does not exist, and it went red the moment the
+## provider's shape moved.
+##
+## So nothing here derives a number. `attack_of()` / `defence_of()` ask the actor, and a
+## suite that wants to say "the armour term moved and only the armour term moved" reads
+## the two rows `breakdown` already publishes (`defense_physical`, `tissue`, `channel_rank`)
+## instead of recomputing the sum from a formula it would then have to maintain.
+##
+## `DEFENSE_PHYSICAL` is FLAT and `0.0`-baselined (ADR 0022), so a FLAT modifier is the
+## only form that can raise it — the same trap `ADR 0022` names and `qi_damage.gd` guards.
 ##
 ## Tissue is a weighting of `bone_density` / `muscle_fiber` / `organ_vitality`
 ## (`CombatTuning.tissue_stat_ids`), and `BodyProvider` contributes those ids only when
@@ -23,9 +40,10 @@ extends TestCase
 ## `BodyCultivationApi.attach` run. `_defender` does that; the fixture never invents a
 ## number the actor's own derived read would not produce.
 
-## The attacker's pinned physique: `ATTACK_PHYSICAL = 20.0`, `DEFENSE_PHYSICAL = 15.0`.
+## The attacker's pinned BASE physique. What `ATTACK_PHYSICAL` is FOLLOWS from it.
 const PHYSIQUE := 10.0
-## The defender's pinned physique: `DEFENSE_PHYSICAL = 15.0` before any modifier.
+## The defender's pinned BASE physique. See the docblock: `DEFENSE_PHYSICAL` is NOT this
+## number, because a body-path defender also carries `BodyProvider`'s additive bonus.
 const DEFENDER_PHYSIQUE := 10.0
 ## `body_integrity`'s maximum. A wound's severity is `damage / maximum`, so this is the
 ## divisor every wound assertion divides by — and it is read off the pool the fixture
@@ -93,6 +111,28 @@ func _defender(meridians: Array = ["lung"], states: Dictionary = {}) -> Actor:
 	for entry in meridians:
 		_open_to(actor, StringName(entry), StringName(states.get(entry, &"")))
 	return actor
+
+
+## ## The one place a suite reads an actor's strength from
+##
+## Both go through `ActorStats.derived`, which is the LIVE cache the mechanism's
+## `AttackContext.target_value` / `attacker_value` resolve to (`_stat_of` prefers a live
+## `derived` over the context's own table). A suite that quoted `physique * 1.5` here
+## instead was asserting against a body with no `BodyProvider` on it — an actor
+## `_defender` never builds.
+##
+## Read these, never a formula. They are what makes a rebalance of `actor_stats.gd` or
+## of `BodyProvider`'s shape invisible to the suites, which is the property a hand-copied
+## formula destroys: it keeps passing while describing an actor that does not exist, and
+## goes red for a reason that has nothing to do with the mechanism under test.
+func attack_of(actor: Actor) -> float:
+	return actor.stats.derived(Stat.ATTACK_PHYSICAL)
+
+
+## The defender's live `DEFENSE_PHYSICAL` — core's baseline PLUS whatever `BodyProvider`
+## contributed, because a body-path actor carries both.
+func defence_of(actor: Actor) -> float:
+	return actor.stats.derived(Stat.DEFENSE_PHYSICAL)
 
 
 ## Walk one channel to `state` through the network's own ladder, because the ladder is
@@ -183,12 +223,32 @@ func _site_of(parts: Dictionary, meridian_id: StringName) -> Dictionary:
 	return {}
 
 
-## The meridian ids the fixture's defender actually carries, as `StringName`s. Read off
-## the network rather than restated, so the 20-bucket claim is measured.
+## The meridian ids the fixture's defender actually carries, as `StringName`s, in the
+## order `BodyLocation.broad_sites` emits them: **sorted**, which is that implementation's
+## documented contract ("one row per UNLOCKED meridian, in sorted id order so two
+## identical sweeps produce identical payloads").
+##
+## Read off the network rather than restated, so the 20-bucket claim is measured. The
+## sort here is what makes the two agree, and it is done on the `String` form on purpose:
+## `MeridianNetwork.get_all_meridians` returns a `Dictionary`'s insertion order, which is
+## the order the defs were AUTHORED in (lung, large_intestine, stomach, spleen), while
+## `broad_sites` sorts its own `Array[StringName]`. The two orders agree here only
+## because these twenty ids share a prefix and differ in a single digit, and
+## `StringName`'s comparison — which falls back to the handle when the pointers differ —
+## is NOT the text order that `String` gives. Sorting `String` values is the form whose
+## order a reader can check by eye.
+##
+## Previously this returned the network's authored order, so the sweep loop was
+## comparing an implementation against itself, twice unsorted: "the sweep really is in
+## sorted id order" was never actually being checked.
 func _meridian_ids(actor: Actor) -> Array[StringName]:
-	var out: Array[StringName] = []
+	var sorted: Array[String] = []
 	for state in actor.meridians.get_all_meridians():
-		out.append(state.id)
+		sorted.append(String(state.id))
+	sorted.sort()
+	var out: Array[StringName] = []
+	for id in sorted:
+		out.append(StringName(id))
 	return out
 
 

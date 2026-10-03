@@ -58,9 +58,23 @@ static var shared: RelationsApi = null
 static var _memo: Dictionary = {}
 
 
-## The graph, or the memoized copy of it when one has been taken. Rebuild it by
-## assigning `RelationsApi.shared = null` — which is legal, free, and produces the
-## identical dictionary, and that property is the contract rather than an accident.
+## The graph, or the memoized copy when one has been taken. Rebuild it by assigning
+## `RelationsApi.shared = null` — legal, free, and produces the identical dictionary,
+## and that property is the contract rather than an accident.
+##
+## ## The memo is a SPEEDUP over a rebuild, never a source of its own
+##
+## It is not invalidated on a write, because **there is nothing to invalidate on**:
+## `RelationGraph` reads `summary(null)` from every owner, so what it sees is the
+## AUTHORED catalog, and it holds no per-actor state for an owner write to change. A
+## stance the PLAYER declares lives on that actor's ledger and reaches a panel
+## through the owner's own `summary(actor)` — it is not in here, and that is DEF-0179
+## rather than a caching bug. Its root is DEF-0119: an institution ledger has no
+## world-wide home yet.
+##
+## So the memo answers the only question it can: "the authored tree has not changed
+## since I looked". When an institution ledger does get a home, a content fingerprint
+## belongs here — and until then, "rebuild when asked" is the honest memo.
 static func graph() -> Dictionary:
 	if shared != null and not _memo.is_empty():
 		return _memo.duplicate(true)
@@ -68,6 +82,18 @@ static func graph() -> Dictionary:
 	if shared != null:
 		_memo = built
 	return built
+
+
+static func _fingerprint(edges: Dictionary) -> String:
+	var parts: Array[String] = []
+	for key in edges.keys():
+		var edge = edges[key]
+		var stance := (
+			"" if not (edge is Dictionary) else String((edge as Dictionary).get("stance", ""))
+		)
+		parts.append("%s=%s" % [key, stance])
+	parts.sort()
+	return "|".join(parts)
 
 
 ## The edge between two node keys, or `{}` when the two have never been declared in

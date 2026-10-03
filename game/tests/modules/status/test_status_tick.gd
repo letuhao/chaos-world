@@ -231,12 +231,15 @@ func test_ticking_an_unwired_loop_is_still_safe() -> void:
 
 
 func test_a_save_carries_no_status_and_still_loads() -> void:
-	# ADR 0089: statuses are session-only. `SCHEMA_VERSION` stays 4, `to_dict()` has
-	# no `statuses` key, and an older save with no status data at all loads cleanly.
+	# ADR 0089: statuses are session-only. `to_dict()` has no `statuses` key, and an
+	# older save with no status data at all loads cleanly. The version is asserted against
+	# the CONSTANT, not a literal: statuses never bumped the schema, and ADR 0140 bumping
+	# it for wounds does not make this assertion wrong — "no statuses key" is the
+	# contract, and the number is the current one whatever it is.
 	StatusApi.apply(_actor, &"fire_immolation", 2.0)
 	var payload := _actor.to_dict()
 	assert_eq(payload.has("statuses"), false, "no statuses key is emitted")
-	assert_eq(int(payload["version"]), 4, "schema version is unchanged at 4")
+	assert_eq(int(payload["version"]), Actor.SCHEMA_VERSION, "the payload is the current schema")
 	var text := JSON.stringify(payload)
 	assert_eq(text.contains("fire_immolation"), false, "no status id leaks into the payload")
 	assert_eq(text.contains("share_per_pulse"), false, "and no status payload leaks either")
@@ -244,7 +247,9 @@ func test_a_save_carries_no_status_and_still_loads() -> void:
 	# The round trip restores an actor, and the status is simply gone.
 	var restored := Actor.from_dict(payload)
 	assert_eq(restored.has_status(&"fire_immolation"), false, "the status is session-only")
-	assert_eq(int(restored.to_dict()["version"]), 4, "and the restored actor reserializes")
+	assert_eq(
+		int(restored.to_dict()["version"]), Actor.SCHEMA_VERSION, "and it reserializes at current"
+	)
 
 	# An OLD save — schema 4 written before this change — has no status data at all.
 	var legacy := payload.duplicate(true)

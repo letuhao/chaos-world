@@ -700,34 +700,74 @@ REPEATABLE = -1  # "callable again", so no authored ceiling applies
 
 
 def _record_verb_is_reachable(relative: str) -> bool:
-    """Is the class that records this fact called from production code OUTSIDE its module?
+    """Is the writer's MODULE reached from production code outside it?
 
-    `relative` is the declaring file. Two things this must not get wrong, both of which I
-    got wrong first:
+    Reachability is a property of the module, not of the declaring class. My first version
+    asked whether the declaring CLASS is referenced elsewhere, which is wrong the moment a
+    module routes its own writes through a component:
+
+        app/institution_resolver.gd -> SectDuty.serve -> SectFacts.record_oaths_discharged
+
+    `SectFacts` is named only inside `modules/sect/`, so the class test reported the verb
+    unreachable even though `app/` drives it - and `oaths_discharged` stayed red for exactly
+    the wrong reason after ADR 0145 had wired it. The module test is the honest one: if a
+    file outside `modules/sect/` mentions `SectDuty`, the sect module is driven, and the
+    writer behind it is reachable.
+
+    Two things this must still get right, both of which I got wrong first:
 
     - the identity is the `class_name`, not the filename. `combat_facts.gd` declares
-      `CombatFacts`, and a caller writes `CombatFacts.record_duel_won(` - matching the
-      snake_case stem as a substring finds nothing and silently reports every site
-      unreachable, which reads as a tool limitation rather than a bug.
-    - "outside the module" means outside the MODULE, not outside the file. `duel_hit.gd`
-      calls `CombatFacts.record_duel_won`, but both live in `modules/combat/`, and a writer
-      only its own module calls is exactly the dead writer this is meant to catch.
+      `CombatFacts` and a caller writes `CombatFacts.` - matching the snake_case stem as a
+      substring finds nothing and silently reports every site unreachable.
+    - "outside" means outside the MODULE. A writer only its own module calls is the dead
+      writer this exists to catch, so sibling files inside the module do not count.
     """
-    owner = Path(relative).stem
-    declaring = (GAME_DIR / relative).read_text(encoding="utf-8")
-    found = _CLASS_NAME.search(declaring)
-    class_name = found.group(1) if found else _to_pascal(owner)
-    if not class_name:
+    module_dir = str(Path(relative).parent)
+    names = _module_public_names(module_dir)
+    if not names:
         return False
-    module = str(Path(relative).parent)
+    pattern = "|".join(re.escape(name) for name in sorted(names))
     for path in sorted(SRC_DIR.rglob("*.gd")):
         candidate = path.relative_to(GAME_DIR).as_posix()
-        if str(Path(candidate).parent) == module:
+        if str(Path(candidate).parent) == module_dir:
             continue
-        text = path.read_text(encoding="utf-8")
-        if re.search(rf"\b{class_name}\s*\.", text):
+        if _names_any(path.read_text(encoding="utf-8"), names):
             return True
     return False
+
+
+def _names_any(text: str, names: set[str]) -> bool:
+    """Does `text` CALL one of `names`, rather than merely mention it?
+
+    Comment-stripped, and matched on `Name.` rather than the bare name. Both are needed and
+    both were found by mutation, not by reading: `MUTATION-G2` deleted the one line that
+    drives `SectDuty` and the gate stayed green, because the ADR 0145 comment two lines above
+    still named `SectDuty`. A reachability check that matches prose reports the shape of the
+    wiring rather than the wiring.
+    """
+    code = text.split("\n")
+    stripped = []
+    for line in code:
+        cut = line.find("#")
+        stripped.append(line if cut == -1 else line[:cut])
+    body = "\n".join(stripped)
+    for name in names:
+        if re.search(rf"\b{re.escape(name)}\s*\.\s*[a-z_][A-Za-z0-9_]*\s*\(", body):
+            return True
+    return False
+
+
+def _module_public_names(module_dir: str) -> set[str]:
+    """Every `class_name` the module declares, which is what an outside caller can name."""
+    root = GAME_DIR / module_dir
+    if not root.is_dir():
+        return set()
+    names: set[str] = set()
+    for path in root.rglob("*.gd"):
+        found = _CLASS_NAME.search(path.read_text(encoding="utf-8"))
+        if found:
+            names.add(found.group(1))
+    return names
 
 
 def _to_pascal(stem: str) -> str:

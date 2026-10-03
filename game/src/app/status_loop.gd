@@ -25,11 +25,19 @@ extends RefCounted
 ##
 ## ## Session-only
 ##
-## Nothing here persists. ADR 0089: statuses never enter `Actor.to_dict()` and
-## `SCHEMA_VERSION` stays 4, so a save carries no status and loading an older save is
-## unaffected.
+## Nothing here persists. ADR 0089: statuses never enter `Actor.to_dict()`, so a save
+## carries no status and loading an older save is unaffected. The schema has since moved
+## on for other reasons (ADR 0140, wounds); that is not this loop's doing and does not
+## reach it.
 
 var _actor: Actor
+
+## Seconds of real time per gestation DAY. `FertilityApi.advance` measures its step in
+## days — it divides by an authored `gestation_days` — so the frame delta is converted
+## here, where a frame is the thing that has seconds. Authored as a constant rather than
+## inlined so the cadence is greppable: a pregnancy of N days must last N * this many
+## frames, and that relation should be checkable by reading one line.
+const SECONDS_PER_GESTATION_DAY := 1.0
 
 
 func _init(actor: Actor = null) -> void:
@@ -66,6 +74,13 @@ func actor() -> Actor:
 ## delta makes the facade accumulate it and settle only when an authored interval has
 ## actually elapsed, which is why the cadence belongs to the techniques module and not
 ## here: the same reason `event` owns its own `periods`.
+##
+## Pregnancy rides here for the same reason as the other two, and with the same caveat
+## written larger: `FertilityApi.advance` divides by a gestation length in DAYS, so it
+## needs a period, not the raw frame delta. Passing seconds unchanged would make a
+## 30-day pregnancy last tens of thousands of frames. The conversion is named here
+## rather than hidden inside the module, because this loop is the only place that knows
+## what a frame is worth.
 func tick(delta: float) -> Dictionary:
 	if _actor == null:
 		return {"ok": false, "reason": "no_actor", "ticked": 0, "damage": 0.0, "expired": 0}
@@ -74,6 +89,7 @@ func tick(delta: float) -> Dictionary:
 	# The ids whose suspension state flipped, so a caller can react to a suspension
 	# without re-reading the whole loadout.
 	result["technique_suspensions"] = _strings(TechniquesApi.settle_upkeep(_actor, delta))
+	result["born"] = FertilityApi.advance(_actor, delta * SECONDS_PER_GESTATION_DAY)
 	return result
 
 

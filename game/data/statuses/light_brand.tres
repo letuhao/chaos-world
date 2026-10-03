@@ -21,7 +21,7 @@ payload = {
 "pool": &"health",
 "share_per_pulse": 0.02,
 "modifiers": [
-{"stat": &"evasion", "op": &"percent", "value": -0.3},
-{"stat": &"status_resistance", "op": &"percent", "value": -0.25}
+	{"stat": &"defense_spiritual", "op": "flat", "value": -8.0},
+	{"stat": &"attack_speed", "op": "percent", "value": -0.25}
 ]
 }

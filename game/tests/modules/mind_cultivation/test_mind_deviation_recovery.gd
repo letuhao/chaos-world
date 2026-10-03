@@ -195,10 +195,20 @@ func test_a_deviation_is_recoverable_through_facade_verbs_only() -> void:
 	assert_eq(MindCultivationApi.sea(actor).turbulence, 0.0, "meditation calmed the sea")
 
 	# 2. The burned channel. `meets` fails on the injury flag alone, so the
-	#    elixir has to be spent before the channel counts again.
-	Probe.stock(actor, source_seed.training_item)
+	#    recovery elixir has to be spent before the channel counts again — and it is
+	#    the RECOVERY elixir that pays, not the channel elixir: `train_channel`
+	#    hands a burn to `recover`, so the two are one act at one price (ADR 0031).
+	#    This assertion used to stock `training_item`, which is what let the wrong
+	#    consumable be the real price of every repair for as long as it did.
+	var elixirs := ItemsApi.inventory(actor).count(source_seed.training_item)
+	Probe.stock(actor, source_seed.recovery_item)
 	assert_eq(MindCultivationApi.train_channel(actor, burned), true, "channel repaired")
 	assert_eq(actor.meridians.get_meridian(burned).is_injured(), false, "no longer injured")
+	assert_eq(
+		ItemsApi.inventory(actor).count(source_seed.training_item),
+		elixirs,
+		"and the channel elixir is untouched: a repair is not a training step"
+	)
 
 	# 3. A fresh pill. `start` spends the realm pill to commit the attempt and a
 	#    deviation does not refund it, so the retry needs another one. That is part

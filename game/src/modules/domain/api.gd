@@ -187,6 +187,10 @@ static func discovered(actor: Actor) -> Array:
 ## render the domain from this one dictionary, so it needs the rooms and corridors, not
 ## only the counts. Folding it in here rather than exposing a second verb is what keeps
 ## the facade inside the 12-method cap.
+##
+## `fixtures` is folded in for the same reason and because `DomainFixtures` has THREE
+## separate verbs (arm / attempt / claim) with no room for a fourth: a reader that can
+## call neither needs the whole fixture state here to draw the telegraph.
 static func summary(actor: Actor) -> Dictionary:
 	var shape := map_summary(actor)
 	if shape.is_empty():
@@ -198,6 +202,7 @@ static func summary(actor: Actor) -> Dictionary:
 		"zones": environment_zones(actor).size(),
 		"population": population(actor).size(),
 		"discovered": discovered(actor).size(),
+		"fixtures": DomainFixtures.summary(actor),
 	}
 
 
@@ -223,6 +228,11 @@ static func enter(actor: Actor, map: DomainMap, domain_id: StringName = &"") -> 
 	state["domain_id"] = String(domain_id)
 	state["map"] = map.to_dict()
 	state["discovered"] = [String(map.entry_room)]
+	# A trap's `spent` flag is RUN state, so a fresh run arms every trap again rather
+	# than inheriting the last one's spent ledger. Cleared here and only here: `leave`
+	# discards the whole state, so a second clear would be the same line twice.
+	# (`DomainFixtures.STATE_KEY` — nested, not a sibling, so `leave` reclaims it.)
+	state.erase(DomainFixtures.STATE_KEY)
 	actor.set_module_data(MODULE_KEY, state)
 	return {"ok": true, "domain_id": String(domain_id), "room_count": map.room_count()}
 

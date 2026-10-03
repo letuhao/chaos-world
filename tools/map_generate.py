@@ -22,10 +22,53 @@ KREA2_MODEL = "krea2/raySemiReal_krea2TurboV1Nsfw.safetensors"
 KREA2_CLIP = "qwen3vl_4b_fp8_scaled.safetensors"
 KREA2_VAE = "qwen_image_vae.safetensors"
 KREA2_LORAS = (
-    "krea2/painterlyfantasycharstyle_000009000.safetensors",
-    "krea2/dishwasher_000011250.safetensors",
-    "krea2/meion_krea2_style_v7.0_c1-st4000.safetensors",
+    ("885", "krea2/AddMicroDetails_Krea2_v1.safetensors", "micro_details", 0.0),
+    (
+        "883",
+        "krea2/painterlyfantasycharstyle_000009000.safetensors",
+        "painterly_fantasy",
+        0.0,
+    ),
+    ("884", "krea2/dishwasher_000011250.safetensors", "dishwasher", 0.0),
+    (
+        "887",
+        "krea2/meion_krea2_style_v7.0_c1-st4000.safetensors",
+        "meion_style",
+        1.0,
+    ),
+    (
+        "888",
+        "krea2/Hentai_Studio_Quality_krea2_3350141_epoch_10.safetensors",
+        "studio_quality",
+        0.0,
+    ),
+    ("904", "krea2/MeIoN_Krea2.safetensors", "meion_krea2", 0.0),
+    (
+        "905",
+        "krea2/888_DunHuang_Murals_Style_krea2.safetensors",
+        "dunhuang_murals",
+        0.0,
+    ),
+    ("906", "krea2/neo_tangzhuang-KreaRaw-V2.safetensors", "neo_tangzhuang", 0.0),
+    ("907", "krea2/shuangbatian Krea2 v1 EP2.safetensors", "shuangbatian", 0.0),
+    (
+        "908",
+        "krea2/Krea2_Ephemeral_Elegance_000007000.safetensors",
+        "ephemeral_elegance",
+        1.0,
+    ),
+    ("911", "krea2/MJCN_Style_000005000.safetensors", "mjcn_style", 0.0),
+    ("910", "krea2/2ment_c1-st5000.safetensors", "2ment", 0.0),
+    ("909", "krea2/houtei9_style_8000.safetensors", "houtei9", 0.0),
+    ("912", "krea2/3D RPG Style.safetensors", "3d_rpg", 0.0),
+    (
+        "913",
+        "krea2/granblue_1138_detail_l_black_bg_krea2_lora-000008.safetensors",
+        "granblue_detail",
+        0.0,
+    ),
 )
+KREA2_REMBG_MODEL = "RMBG-2.0"
 DEFAULT_NEGATIVE = (
     "text, letters, watermark, border, UI, extra objects, duplicate subject, "
     "isometric view, perspective, horizon, photorealism, 3D render, noisy texture"
@@ -125,7 +168,7 @@ WORKFLOW = {
     },
 }
 
-# Item-icon adaptation of moodyKrea2Minimal_v40_api.json. ResolutionSelector is
+# Item-icon adaptation of moodyKrea2Minimal_v40_api_v2.json. ResolutionSelector is
 # replaced by EmptyLatentImage so the CLI can produce square inventory icons.
 KREA2_ITEM_WORKFLOW = {
     "599": {
@@ -139,7 +182,7 @@ KREA2_ITEM_WORKFLOW = {
             "start_at_step": 0,
             "end_at_step": 8,
             "return_with_leftover_noise": "enable",
-            "model": ["854", 0],
+            "model": ["913", 0],
             "positive": ["627", 0],
             "negative": ["763", 0],
             "latent_image": ["698", 0],
@@ -155,7 +198,7 @@ KREA2_ITEM_WORKFLOW = {
         "class_type": "EmptyLatentImage",
     },
     "732": {
-        "inputs": {"filename_prefix": "chaos_world_item", "images": ["866", 0]},
+        "inputs": {"filename_prefix": "chaos_world_item", "images": ["871", 0]},
         "class_type": "SaveImage",
     },
     "755": {
@@ -170,46 +213,52 @@ KREA2_ITEM_WORKFLOW = {
     "763": {"inputs": {"conditioning": ["627", 0]}, "class_type": "ConditioningZeroOut"},
     "829": {"inputs": {"samples": ["599", 0], "vae": ["757", 0]}, "class_type": "VAEDecode"},
     "851": {"inputs": {"seed": 0}, "class_type": "SeedNode"},
-    "854": {
+    "871": {
         "inputs": {
-            "lora_name": KREA2_LORAS[2],
-            "strength_model": 0.0,
-            "model": ["867", 0],
+            "model": KREA2_REMBG_MODEL,
+            "sensitivity": 0.01,
+            "process_res": 1024,
+            "mask_blur": 0,
+            "mask_offset": 0,
+            "invert_output": False,
+            "refine_foreground": True,
+            "unload_model": False,
+            "background": "Alpha",
+            "background_color": "#ffffff",
+            "image": ["829", 0],
         },
-        "class_type": "LoraLoaderModelOnly",
-    },
-    "866": {
-        "inputs": {
-            "transparency": True,
-            "model": DEFAULT_REMBG_MODEL,
-            "post_processing": False,
-            "only_mask": False,
-            "alpha_matting": False,
-            "alpha_matting_foreground_threshold": 240,
-            "alpha_matting_background_threshold": 10,
-            "alpha_matting_erode_size": 0,
-            "background_color": "none",
-            "images": ["829", 0],
-        },
-        "class_type": "Image Rembg (Remove Background)",
-    },
-    "867": {
-        "inputs": {
-            "lora_name": KREA2_LORAS[1],
-            "strength_model": 0.0,
-            "model": ["868", 0],
-        },
-        "class_type": "LoraLoaderModelOnly",
-    },
-    "868": {
-        "inputs": {
-            "lora_name": KREA2_LORAS[0],
-            "strength_model": 0.0,
-            "model": ["761", 0],
-        },
-        "class_type": "LoraLoaderModelOnly",
+        "class_type": "RMBG",
     },
 }
+
+_KREA2_LORA_PARENTS = (
+    "761",
+    "885",
+    "883",
+    "884",
+    "887",
+    "888",
+    "904",
+    "905",
+    "906",
+    "907",
+    "908",
+    "911",
+    "910",
+    "909",
+    "912",
+)
+for (node_id, lora_name, _key, default_strength), parent in zip(
+    KREA2_LORAS, _KREA2_LORA_PARENTS, strict=True
+):
+    KREA2_ITEM_WORKFLOW[node_id] = {
+        "inputs": {
+            "lora_name": lora_name,
+            "strength_model": default_strength,
+            "model": [parent, 0],
+        },
+        "class_type": "LoraLoaderModelOnly",
+    }
 
 
 PROFILES = {
@@ -217,6 +266,7 @@ PROFILES = {
         "checkpoint": DEFAULT_CHECKPOINT,
         "lora": DEFAULT_LORA,
         "lora_strength": 0.8,
+        "rembg_model": DEFAULT_REMBG_MODEL,
         "steps": 32,
         "cfg": 1.0,
         "guidance": 3.5,
@@ -227,6 +277,7 @@ PROFILES = {
         "checkpoint": KREA2_MODEL,
         "lora": "",
         "lora_strength": 0.0,
+        "rembg_model": KREA2_REMBG_MODEL,
         "steps": 8,
         "cfg": 1.0,
         "guidance": None,
@@ -360,19 +411,14 @@ def generate(
             scheduler=args.scheduler,
             end_at_step=args.steps,
         )
-        graph["866"]["inputs"].update(
+        graph["871"]["inputs"].update(
             model=args.rembg_model,
-            transparency=record["alpha"] == "transparent",
-            post_processing=args.rembg_post_processing,
-            alpha_matting=args.alpha_matting,
-            alpha_matting_foreground_threshold=args.alpha_foreground_threshold,
-            alpha_matting_background_threshold=args.alpha_background_threshold,
-            alpha_matting_erode_size=args.alpha_erode_size,
+            background="Alpha" if record["alpha"] == "transparent" else "Color",
         )
         if record["alpha"] == "opaque":
             graph["732"]["inputs"]["images"] = ["829", 0]
         if args.lora_strength != 0:
-            for node_id in ("854", "867", "868"):
+            for node_id, _lora_name, _key, _default in KREA2_LORAS:
                 graph[node_id]["inputs"]["strength_model"] = args.lora_strength
     else:
         graph = copy.deepcopy(WORKFLOW)

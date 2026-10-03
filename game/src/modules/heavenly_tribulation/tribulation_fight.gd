@@ -88,6 +88,7 @@ static func fight_wave(actor: Actor, rng: RandomNumberGenerator = null) -> Dicti
 		"reason": "",
 		"decided": true,
 		"survived": actor.tribulation.survived(),
+		"blessing": TribulationBlessing.award(actor),
 	}
 
 

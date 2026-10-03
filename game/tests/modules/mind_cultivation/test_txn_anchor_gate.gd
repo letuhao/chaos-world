@@ -99,6 +99,11 @@ func _fight(actor: Actor, target: RealmDef) -> void:
 
 
 ## The resonance milestone, which is what pays for an anchor's reinforcement.
+##
+## Paid ONCE per committed anchor: ADR 0115 made the reinforcement flag the
+## milestone itself, so a boundary that crosses no new commit is pressing one the
+## actor already paid and the press is refused for free. Both branches assert, so a
+## walk that stopped reinforcing at all would fail here rather than pass quietly.
 func _reinforce(actor: Actor) -> void:
 	var state := actor.path(MindPath.PATH_ID)
 	if state == null or actor.inside_world == null:
@@ -107,7 +112,10 @@ func _reinforce(actor: Actor) -> void:
 	if seed == null:
 		return
 	_stock(actor, seed.training_item)
-	assert_eq(MindTraining.strengthen_anchor(actor), true, "the resonance milestone completed")
+	if MindTraining.anchor_reinforced(actor):
+		assert_eq(MindTraining.strengthen_anchor(actor), false, "an already-paid milestone refuses")
+	else:
+		assert_eq(MindTraining.strengthen_anchor(actor), true, "the resonance milestone completed")
 
 
 ## One realm of the high tier, the way the real path does it: fight the

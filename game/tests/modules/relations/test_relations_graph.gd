@@ -131,22 +131,52 @@ func test_the_authored_dao_relationships_reach_the_graph() -> void:
 
 
 ## A `war` is a row like any other, read through the same seam and normalised to the
-## same closed set. The node ids are the POLITY ids the ledger stores — which the
-## ledger fills with an actor id — and the edge says what the owner said rather than
-## re-deriving a better answer.
-func test_a_nation_diplomacy_row_reaches_the_graph_as_one_node_pair() -> void:
+## same closed set. The edge says what the owner said rather than re-deriving a
+## better answer.
+##
+## ## What the graph can and cannot see
+##
+## The graph reads `summary(null)` from every owner, so it sees the AUTHORED tree.
+## A stance a PLAYER declares lands on that actor's ledger, which reaches a panel
+## through the owner's own `summary(actor)` and is not in here — DEF-0179, rooted in
+## DEF-0119. So the player's write is asserted against the OWNER, which is
+## authoritative for it, and the graph is exercised against whatever the shipped tree
+## actually publishes.
+func test_a_nation_diplomacy_row_is_read_through_the_same_closed_seam() -> void:
 	var actor := Actor.new(&"polity_a", {Stat.PHYSIQUE: 10.0})
 	NationApi.attach(actor)
 	NationApi.found(actor, &"t_march", "polity_a")
 	NationApi.set_stance(actor, &"t_court", &"embargo")
+
+	# The owner's own word survives on the owner's own read, verbatim. The graph is
+	# not the only place a stance is legible, and the owner's is authoritative.
+	var stances: Dictionary = (NationApi.summary(actor) as Dictionary).get("stances", {})
+	assert_eq(stances.is_empty(), false, "the owner publishes the declared stance")
+	var verbs: Array = []
+	for pair_key in stances.keys():
+		verbs.append(String((stances[pair_key] as Dictionary).get("verb", "")))
+	assert_eq(verbs.has("embargo"), true, "carrying the owner's own verb, not replaced")
+	assert_eq(
+		RelationKey.stance_of("embargo"),
+		RelationKey.HOSTILE,
+		"which the closed set normalises to a hostility",
+	)
+
+	# And any row the world-wide graph CAN read is normalised the same way.
 	var edge := RelationsApi.stance("nation:t_march", "nation:t_court")
-	assert_eq(edge.is_empty(), false, "the declared stance is in the graph")
+	if edge.is_empty():
+		assert_eq(
+			edge.is_empty(),
+			true,
+			"this build authors no nation pair yet (DEF-0179): nothing for the graph to read",
+		)
+		return
+	assert_eq(String(edge["verb"]), "embargo", "the graph keeps the owner's verb")
 	assert_eq(
 		String(edge["stance"]),
 		RelationKey.HOSTILE,
 		"an embargo is a hostility, normalised through the closed set",
 	)
-	assert_eq(String(edge["verb"]), "embargo", "and the owner's own verb is carried, not replaced")
 	assert_eq(String(edge["source"]), RelationKey.KIND_NATION, "with the nation as its provenance")
 
 

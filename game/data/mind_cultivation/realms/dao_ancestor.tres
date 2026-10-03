@@ -19,10 +19,7 @@ required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach",
 required_channel_state = &"strengthened"
 channel_refinement_cap = 29
 sea_capacity = 800.0
-sea_milestone_work = 2230.0
-meridian_milestone_work = 1673.0
 insight_required = 873.0
-resonance_required = 11
 rewards = {
 "will": 2.0
 }

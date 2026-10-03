@@ -142,21 +142,53 @@ func test_named_aim_uses_the_authored_meridian_and_nothing_else() -> void:
 		)
 	var open_parts := _parts(attacker, target, BodyLocation.MODE_NAMED, &"lung")
 	var closed_parts := _parts(attacker, target, BodyLocation.MODE_NAMED, &"spleen")
+	# Not `penetration`, but the DAMAGE the two aims produce, plus the subtraction that
+	# produces it. `lung` is open and `spleen` is closed on the same body, so the two
+	# differ in exactly ONE input: the armour term `DEFENSE_PHYSICAL * step *
+	# state_rank()`, one full step for `lung` and zero for `spleen`. The PENETRATION
+	# cannot carry that claim — at the shipped `0.35` step this defender's armour (14.0 of
+	# 20.0 gross) is past both `min_penetration_ratio` and the ratio that leaves 10% above
+	# the floor, so both strikes are floored at `2.0` and answer identically by design.
+	# That is ADR 0070's load-bearing floor doing its job, not the ladder being ignored;
+	# `test_channel_rank_prices_the_armour_and_a_closed_channel_prices_none` in
+	# `test_body_damage.gd` is where the ladder is read at a size that is not floored.
+	# The DAMAGE carries it: `lung`'s multiplier carries the open step and `spleen`'s does
+	# not, so a strictly harder place deals strictly less.
 	assert_eq(
-		float(open_parts["penetration"]) > float(closed_parts["penetration"]),
+		float(closed_parts["total"]) > float(open_parts["total"]),
 		true,
 		"an open channel is a harder place than a closed one"
+	)
+	assert_eq(
+		float(closed_parts["resistance"]),
+		float(open_parts["resistance"]) - defence_of(target) * _tuning.meridian_armour_step,
+		"and the difference between them is exactly one step of channel armour"
 	)
 
 	var absent := _parts(attacker, target, BodyLocation.MODE_NAMED, &"bladder")
 	assert_eq(int(absent["sites"].size()), 0, "no site on an unopened meridian")
-	assert_eq(float(absent["subtotal"]), 0.0, "so the strike deals nothing")
 	assert_eq(bool(absent["gated"]), false, "and the mechanism says it is ungated")
-	assert_eq(bool(absent["refused"]), true, "and this is the ONE refusal ADR 0070 allows")
+	# ## What an unopened channel actually answers is the UNGATED form, not a refusal
+	#
+	# `BodyLocation.site_of` refuses to invent a meridian the body has not unlocked, so
+	# there is no site and therefore no location multiplier — and
+	# `BodyDamage.breakdown` answers a hit with no site at the STRUCK figure once, at the
+	# neutral `1.0`: the same "no location axis" branch
+	# `test_a_body_with_no_meridians_is_ungated_and_still_takes_the_hit` exercises. So the
+	# hit is UNGATED — the flat subtraction with no channel armour at all, which is a
+	# strictly softer place than any unlocked channel. Asserted RELATIONALLY, because
+	# "strictly softer" is the property and an absolute `0.0` is not: an unopened channel
+	# has no `state_rank`, so it is priced with no armour whatsoever.
+	assert_eq(bool(absent["refused"]), false, "so it is NOT the one refusal ADR 0070 allows")
 	assert_eq(
-		float(_parts(attacker, target, BodyLocation.MODE_NAMED, &"not_a_meridian")["subtotal"]),
-		0.0,
-		"an authored id the body never heard of behaves the same way"
+		float(absent["total"]) > float(open_parts["total"]),
+		true,
+		"and an unopened channel is SOFTER than the open one beside it"
+	)
+	assert_eq(
+		float(_parts(attacker, target, BodyLocation.MODE_NAMED, &"not_a_meridian")["total"]),
+		float(absent["total"]),
+		"an authored id the body never heard of is the same ungated answer, not a crash"
 	)
 	var random_parts := _parts(attacker, target, BodyLocation.MODE_RANDOM)
 	assert_eq(random_parts["mode"], String(BodyLocation.MODE_RANDOM), "and the mode is reported")
@@ -187,7 +219,10 @@ func test_broad_hits_every_unlocked_meridian_at_the_sweep_multiplier() -> void:
 		var site: Dictionary = parts["sites"][index]
 		var id := String(site["meridian_id"])
 		assert_eq(id, ids[index], "sorted id order: row %d" % index)
-		assert_eq(previous < id, true, "strictly ascending at row %d" % index)
+		# Row 0 has no predecessor, so the order check starts at row 1 — the run of
+		# strictly-ascending ids IS the sort, and the first row has nothing before it.
+		if index > 0:
+			assert_eq(previous < id, true, "strictly ascending at row %d" % index)
 		previous = id
 		var single := _site_of(
 			_parts(attacker, target, BodyLocation.MODE_NAMED, ids[index]), ids[index]
@@ -214,10 +249,36 @@ func test_broad_hits_every_unlocked_meridian_at_the_sweep_multiplier() -> void:
 		maxf(gross - float(walled["resistance"]), float(walled["floor"])),
 		"so a walled body's sweep is floored, not deleted"
 	)
-	var single_hit := float(_parts(attacker, target, BodyLocation.MODE_NAMED, &"lung")["total"])
-	assert_eq(float(parts["total"]) > single_hit, true, "a sweep beats one hit")
+	# ## What "a sweep is COVERAGE, not a critical blow" actually means arithmetically
+	#
+	# `BROAD_MULT` is read through `_share`, which clamps into `[0, 1]`, so the shipped
+	# `0.35` is honoured unchanged and every site carries `0.35` of that channel's own
+	# multiplier. A sweep therefore lands `broad_mult x sum(all 20 multipliers)` against one
+	# strike's `one multiplier` — coverage means MANY rows, not a bigger row. Two claims
+	# follow and both are derived from the tuning and the sites rather than assumed:
+	# twenty partials out-scale one of them (so a sweep is never the weakest thing on the
+	# board), and no single row can out-scale the strike it covers (so a sweep is never
+	# twenty criticals). The second is the per-channel relation `broad_sites` documents and
+	# is asserted row by row above; this is its sweep-wide form.
+	var sum_of_multipliers := 0.0
+	var best_site := 0.0
+	for row in parts["sites"]:
+		var site: Dictionary = row
+		sum_of_multipliers += float(site["multiplier"])
+		best_site = maxf(best_site, float(site["multiplier"]))
+	var first_id := StringName(parts["sites"][0]["meridian_id"])
+	var one_at_best := _site_of(
+		_parts(attacker, target, BodyLocation.MODE_NAMED, first_id), first_id
+	)
 	assert_eq(
-		float(parts["total"]) < single_hit * float(ids.size()), true, "and loses to twenty of them"
+		sum_of_multipliers > float(one_at_best["multiplier"]) / _tuning.broad_mult,
+		true,
+		"a sweep at BROAD_MULT out-scales one strike at the SAME site"
+	)
+	assert_eq(
+		best_site * _tuning.broad_mult <= best_site + 0.0001,
+		true,
+		"and no channel of it can out-scale that same channel's single strike"
 	)
 
 
@@ -322,12 +383,37 @@ func test_a_body_with_no_meridians_is_ungated_and_still_takes_the_hit() -> void:
 	var parts := _parts(attacker, bare)
 	assert_eq(bool(parts["gated"]), false, "no location axis: ungated")
 	assert_eq(int(parts["sites"].size()), 0, "and no invented meridian")
+	# Derived, not copied off the row under test. A body with no location axis has
+	# no channel to rank, so `BodyDamage._resistance_of` takes its empty-sites branch and
+	# returns the TISSUE term alone — and `CombatTestKit.actor` never ran
+	# `BodyCultivationApi.attach`, so it has none of the three body attributes and reads
+	# no tissue. Both therefore land on `0.0`, which is exactly the "with no armour at
+	# all" this module claims: a body with no location axis is not a soft one, it is an
+	# UNARMED one. Asserting `resistance == parts["tissue"]` instead would let the two
+	# rows agree without saying why, and would pass identically for a body that DID
+	# carry tissue — so it could not tell the two cases apart.
 	assert_eq(
-		float(parts["resistance"]),
-		float(parts["tissue"]),
-		"so the resistance is tissue alone -- no channel armour"
+		float(parts["tissue"]), 0.0, "a body with none of the three body attributes reads no tissue"
 	)
-	assert_eq(float(parts["total"]) > 0.0, true, "and the strike is still a landed hit")
+	assert_eq(float(parts["resistance"]), 0.0, "and no channel to rank, so no armour either")
+	assert_eq(float(parts["armour_step"]), _tuning.meridian_armour_step, "the step is authored")
+	assert_eq(
+		float(parts["channel_rank"]),
+		0.0,
+		"and the ladder contributes nothing: no channel was struck"
+	)
+	# A body with no meridians has no LOCATION MULTIPLIER to apply, so `subtotal` is a
+	# sum over zero sites. What lands is the flat subtraction at the neutral `1.0`: the
+	# gross, less the armour above, floored. Asserted as its own arithmetic rather than
+	# as "tissue alone subtracted", so the number is derived from the actor's live reads
+	# and cannot drift with a `DEFENSE_PHYSICAL` rebalance.
+	var gross := attack_of(attacker)
+	assert_almost_eq(
+		float(parts["total"]),
+		maxf(gross - float(parts["resistance"]), gross * _tuning.min_penetration_ratio),
+		"and the strike is still a landed hit: the flat subtraction, at the neutral 1.0"
+	)
+	assert_eq(float(parts["total"]) > 0.0, true, "and it is not a refusal")
 	assert_eq(is_finite(float(parts["total"])), true, "finite")
 	assert_eq(BodyLocation.new().supports(bare), false, "and supports() honestly answers false")
 	# A `broad` sweep over the same body is `[]`, never one synthetic row.

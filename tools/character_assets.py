@@ -20,7 +20,7 @@ from collections import Counter
 from datetime import UTC, datetime
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 from . import map_generate
 from .common import GAME_DIR, REPO_ROOT, ToolError, fail, ok
@@ -31,6 +31,10 @@ MIN_CHARACTERS = 2000
 MAX_CHARACTERS = 10000
 CHARACTER_ID_RE = re.compile(r"^character-[0-9]{4,}$")
 CHARACTER_DEFAULT_PROFILE = "krea2"
+CHARACTER_KEY_RGB = (255, 0, 255)
+CHARACTER_KEY_CONNECT_THRESHOLD = 80
+CHARACTER_KEY_ALPHA_LOW = 28
+CHARACTER_KEY_ALPHA_HIGH = 184
 CHARACTER_ASPECT_RATIOS = (
     "1:1 (Square)",
     "2:3 (Portrait Photo)",
@@ -44,7 +48,7 @@ CHARACTER_ASPECT_RATIOS = (
 CHARACTER_PROFILES = {
     "krea2": {
         "checkpoint": map_generate.KREA2_MODEL,
-        "rembg_model": "silueta",
+        "rembg_model": map_generate.KREA2_REMBG_MODEL,
         "steps": 8,
         "cfg": 1.0,
         "guidance": None,
@@ -233,9 +237,9 @@ def _add_generation_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--detail", default="", help="optional character-specific prompt detail")
     parser.add_argument(
         "--profile",
-        choices=tuple(CHARACTER_PROFILES),
+        choices=("krea2",),
         default=CHARACTER_DEFAULT_PROFILE,
-        help="default Krea2; flux1s remains available for comparison",
+        help="Krea2 character asset workflow",
     )
     parser.add_argument(
         "--seed",
@@ -257,13 +261,25 @@ def _add_generation_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--cfg", type=float)
     parser.add_argument("--guidance", type=float)
     parser.add_argument("--checkpoint")
-    parser.add_argument("--lora", help="Flux LoRA; Krea2 uses its three built-in LoRAs")
-    parser.add_argument("--lora-strength", type=float, help="Flux LoRA strength")
-    parser.add_argument("--lora-painterly-strength", type=float, default=0.0)
-    parser.add_argument("--lora-dishwasher-strength", type=float, default=1.0)
-    parser.add_argument("--lora-meion-strength", type=float, default=1.0)
+    for _node_id, _lora_name, lora_key, default_strength in map_generate.KREA2_LORAS:
+        flag = f"--lora-{lora_key.replace('_', '-')}-strength"
+        parser.add_argument(
+            flag,
+            dest=f"lora_{lora_key}_strength",
+            type=float,
+            default=default_strength,
+            help=(
+                f"Krea2 {lora_key.replace('_', ' ')} LoRA strength (default: {default_strength:g})"
+            ),
+        )
     parser.add_argument("--negative", default=CHARACTER_NEGATIVE)
     parser.add_argument("--rembg-model", help="ComfyUI background-removal model")
+    parser.add_argument(
+        "--background-mode",
+        choices=("rembg", "chroma-key"),
+        default="rembg",
+        help="use ComfyUI segmentation or Python removal of the Krea2 magenta key",
+    )
     parser.add_argument("--comfy-url", default="http://127.0.0.1:8188")
     parser.add_argument("--timeout", type=int, default=600)
     parser.add_argument("--preview-only", action="store_true")
@@ -597,11 +613,7 @@ def _generate(records: list[dict], args) -> None:
         not math.isfinite(args.lora_strength) or not 0 <= args.lora_strength <= 2
     ):
         raise ToolError("Flux LoRA strength must be between 0 and 2")
-    krea2_lora_strengths = (
-        args.lora_painterly_strength,
-        args.lora_dishwasher_strength,
-        args.lora_meion_strength,
-    )
+    krea2_lora_strengths = _profile_lora_strengths(args).values()
     if args.profile == "krea2" and any(
         not math.isfinite(strength) or not 0 <= strength <= 2 for strength in krea2_lora_strengths
     ):
@@ -628,11 +640,9 @@ def _generate(records: list[dict], args) -> None:
         raise ToolError(f"refusing to replace {args.character_id}/{args.slot} ({asset['status']})")
     seed = args.seed if args.seed is not None else _stable_seed(args.character_id)
     prompt = _prompt(record, args.slot, args.detail)
-    if args.profile == "krea2":
-        prompt = prompt.replace(
-            "Transparent background.",
-            "A perfectly flat pure white background with no gradient, shadow, texture, "
-            "or scenery. Keep a crisp clear edge around the figure.",
+    if args.background_mode == "chroma-key":
+        prompt = prompt.rsplit("White background.", 1)[0] + (
+            "A perfectly flat solid #FF00FF background for chroma-key removal."
         )
     raw_path = _generate_comfy(record, args, prompt, seed)
     if args.preview_only:
@@ -654,9 +664,8 @@ def _generate(records: list[dict], args) -> None:
             "lora_strength": args.lora_strength,
             "lora_names": (
                 {
-                    "painterly": map_generate.KREA2_LORAS[0],
-                    "dishwasher": map_generate.KREA2_LORAS[1],
-                    "meion": map_generate.KREA2_LORAS[2],
+                    lora_key: lora_name
+                    for _node_id, lora_name, lora_key, _default in map_generate.KREA2_LORAS
                 }
                 if args.profile == "krea2"
                 else {}
@@ -673,7 +682,11 @@ def _generate(records: list[dict], args) -> None:
             "sampler": args.sampler,
             "scheduler": args.scheduler,
             "seed": seed,
-            "background_removal": args.rembg_model,
+            "background_mode": args.background_mode,
+            "background_removal": (
+                args.rembg_model if args.background_mode == "rembg" else "disabled"
+            ),
+            "background_key_color": ("#FF00FF" if args.background_mode == "chroma-key" else None),
         },
     )
 
@@ -682,9 +695,8 @@ def _profile_lora_strengths(args) -> dict[str, float]:
     if args.profile != "krea2":
         return {}
     return {
-        "painterly": args.lora_painterly_strength,
-        "dishwasher": args.lora_dishwasher_strength,
-        "meion": args.lora_meion_strength,
+        lora_key: getattr(args, f"lora_{lora_key}_strength")
+        for _node_id, _lora_name, lora_key, _default in map_generate.KREA2_LORAS
     }
 
 
@@ -703,16 +715,15 @@ def _render_dimensions(aspect_ratio: str, megapixels: float, multiple: int) -> t
 def _generation_source(args) -> str:
     if args.profile == "krea2":
         weights = _profile_lora_strengths(args)
-        return (
-            f"ComfyUI Krea2 checkpoint: {args.checkpoint}; LoRAs: "
-            f"painterly={weights['painterly']}, dishwasher={weights['dishwasher']}, "
-            f"meion={weights['meion']}"
-        )
+        lora_settings = ", ".join(f"{name}={weight:g}" for name, weight in weights.items())
+        return f"ComfyUI Krea2 checkpoint: {args.checkpoint}; LoRAs: {lora_settings}"
     return f"ComfyUI checkpoint: {args.checkpoint}; LoRA: {args.lora}"
 
 
 def _generate_comfy(record: dict, args, prompt: str, seed: int) -> Path:
     output_node = "7"
+    if args.background_mode == "chroma-key" and args.profile != "krea2":
+        raise ToolError("Python chroma-key removal currently requires the Krea2 workflow")
     if args.profile == "krea2":
         graph = copy.deepcopy(map_generate.KREA2_ITEM_WORKFLOW)
         graph["761"]["inputs"]["unet_name"] = args.checkpoint
@@ -740,22 +751,16 @@ def _generate_comfy(record: dict, args, prompt: str, seed: int) -> Path:
             scheduler=args.scheduler,
             end_at_step=args.steps,
         )
-        for node_id, strength in (
-            ("868", args.lora_painterly_strength),
-            ("867", args.lora_dishwasher_strength),
-            ("854", args.lora_meion_strength),
-        ):
-            graph[node_id]["inputs"]["strength_model"] = strength
-        graph["866"]["inputs"].update(
-            model=args.rembg_model,
-            transparency=True,
-            post_processing=True,
-            alpha_matting=True,
-            alpha_matting_foreground_threshold=240,
-            alpha_matting_background_threshold=10,
-            alpha_matting_erode_size=4,
-            background_color="none",
-        )
+        for node_id, _lora_name, lora_key, _default in map_generate.KREA2_LORAS:
+            graph[node_id]["inputs"]["strength_model"] = getattr(args, f"lora_{lora_key}_strength")
+        if args.background_mode == "chroma-key":
+            graph["732"]["inputs"]["images"] = ["829", 0]
+        else:
+            graph["871"]["inputs"].update(
+                model=args.rembg_model,
+                background="Alpha",
+                background_color="#ffffff",
+            )
         output_node = "732"
     else:
         graph = copy.deepcopy(map_generate.WORKFLOW)
@@ -816,7 +821,63 @@ def _generate_comfy(record: dict, args, prompt: str, seed: int) -> Path:
     image = _node_image(entry or {}, output_node)
     image_url = f"{base_url}/view?{urllib.parse.urlencode(image)}"
     _write_new_file(source_path, _http_bytes(image_url))
+    if args.background_mode == "chroma-key":
+        _remove_chroma_background(source_path)
     return source_path
+
+
+def _remove_chroma_background(image_path: Path) -> None:
+    try:
+        with Image.open(image_path) as opened:
+            image = opened.convert("RGBA")
+    except OSError as exc:
+        raise ToolError(
+            f"generated image cannot be opened for Python keying: {image_path}"
+        ) from exc
+
+    red, green, blue = image.convert("RGB").split()
+    distance = ImageChops.lighter(
+        ImageChops.lighter(ImageChops.invert(red), green), ImageChops.invert(blue)
+    )
+    width, height = image.size
+    corners = ((0, 0), (width - 1, 0), (0, height - 1), (width - 1, height - 1))
+    if any(distance.getpixel(point) > CHARACTER_KEY_CONNECT_THRESHOLD for point in corners):
+        raise ToolError(
+            f"generated image did not keep the #FF00FF key in every corner; "
+            f"inspect the raw image at {image_path}"
+        )
+
+    connected = distance.point(
+        [255 if value <= CHARACTER_KEY_CONNECT_THRESHOLD else 0 for value in range(256)]
+    )
+    for point in corners:
+        if connected.getpixel(point) == 255:
+            ImageDraw.floodfill(connected, point, 128)
+    connected_pixels = connected.histogram()[128]
+    if connected_pixels < width * height * 0.10:
+        raise ToolError(
+            f"generated image has too little connected #FF00FF background "
+            f"({connected_pixels} pixels); inspect the raw image at {image_path}"
+        )
+
+    edge_zone = connected.point([255 if value == 128 else 0 for value in range(256)])
+    edge_zone = edge_zone.filter(ImageFilter.MaxFilter(9))
+    alpha_table = [
+        0
+        if value <= CHARACTER_KEY_ALPHA_LOW
+        else 255
+        if value >= CHARACTER_KEY_ALPHA_HIGH
+        else round(
+            (value - CHARACTER_KEY_ALPHA_LOW)
+            * 255
+            / (CHARACTER_KEY_ALPHA_HIGH - CHARACTER_KEY_ALPHA_LOW)
+        )
+        for value in range(256)
+    ]
+    keyed_alpha = distance.point(alpha_table)
+    alpha = ImageChops.composite(keyed_alpha, image.getchannel("A"), edge_zone)
+    image.putalpha(alpha)
+    image.save(image_path, format="PNG", optimize=True)
 
 
 def _prompt(record: dict, slot: str, detail: str) -> str:
@@ -873,14 +934,17 @@ def _prompt(record: dict, slot: str, detail: str) -> str:
         "One subject only. Cultivation-fantasy production art for a 2D action RPG. "
         "Painterly anime illustration in matte gouache, fine dark ink contours, broad readable "
         "value planes, material-led color, restrained metallic accents, soft upper-left light. "
-        "Use a loose-fitting, opaque, high-necked robe with a closed collar, long sleeves, and "
-        "covered shoulders. Keep all torso skin covered. No garment cutouts, short hems, or "
+        "Use a layered outfit: an opaque high-neck inner tunic closed from collar to waist, "
+        "under a loose ceremonial robe. Keep the entire chest fully covered by unbroken opaque "
+        "fabric. Sleeves may end below the elbows so the forearms and hands are visible; keep "
+        "the shoulders covered. No open or low neckline, no visible chest skin, garment cutouts, "
+        "short hems, or "
         "transparent fabric. Use the same visual identity and costume across the character asset "
         "family. Keep the face, age, presentation, anatomy, palette, and costume faithful to the "
-        "profile. Use a neutral upright pose with arms at the sides. Transparent "
-        "background. All characters are adults, fully clothed, and nonsexual. No text, "
+        "profile. Use a neutral upright pose with arms at the sides. All characters "
+        "are adults, fully clothed, and nonsexual. No text, "
         "labels, UI, frame, watermark, extra figures, unrelated props, exaggerated "
-        "body proportions, or childlike features."
+        "body proportions, or childlike features. White background."
     )
 
 

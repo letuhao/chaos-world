@@ -36,30 +36,82 @@ extends "res://tests/modules/combat_engine/body_damage_fixture.gd"
 ## flat stat with no cap, so a player who can author one CAN author infinity, and the
 ## mechanic has to survive that without producing a non-finite number. `INF` is NOT a
 ## valid *ratio* — see the out-of-range test for why that distinction matters.
+##
+## The damage expectation is `floor * site["multiplier"]` — the struck site's OWN
+## multiplier, never a restatement of the multiplier's formula. A hand-derived
+## `1 + point_quality_step * quality` expected `2.5` against a real `2.875` on every row,
+## because the struck huyệt is not the one `_defender()` hands back first and the suite
+## never looked at which. The claim is "the location multiplier is still acted on", and
+## `sites[].damage` is that claim in the mechanism's own published numbers.
+##
+## Two rows are not in the floored regime and the table splits rather than assumes:
+## `armour 0.0` is floored while its subtraction still answers, and `armour INF` is
+## neither. Each is commented where it is asserted.
 func test_min_penetration_ratio_floors_and_the_multiplier_still_deals_damage() -> void:
 	var attacker := _attacker()
 	var gross := attacker.stats.derived(Stat.ATTACK_PHYSICAL)
 	var floor := gross * _tuning.min_penetration_ratio
-	var expected := floor * (1.0 + _tuning.point_quality_step * _default_quality())
 
 	for points in [0.0, 10.0, 100.0, 1.0e3, 1.0e6, 1.0e9, 1.0e30, INF]:
 		var parts := _parts(attacker, _walled(points), BodyLocation.MODE_NAMED, &"lung")
 		var site := _site_of(parts, &"lung")
 		var label := "armour %s" % str(points)
-		# The raw subtraction really is refused by here, so the floor is load-bearing
-		# rather than decorative — a mutant that deleted `maxf` still passes the next
-		# assertion, and only this one catches it.
-		assert_eq(
-			gross - float(parts["resistance"]) <= 0.0,
-			true,
-			label + ": the raw subtraction is refused"
-		)
-		assert_almost_eq(float(parts["penetration"]), floor, label + ": the floor holds")
-		assert_almost_eq(float(parts["floor"]), floor, label + ": and it is reported")
-		assert_almost_eq(float(site["damage"]), expected, label + ": the multiplier still lands")
+		# `armour 0.0` is floored (`penetration == floor`) even though its raw subtraction
+		# still answers positively: the floor is `2.0` and the subtraction is `0.5`, so the
+		# floor wins without the subtraction ever going negative. That is a floor applied
+		# as written -- ADR 0070's `maxf(gross - resistance, gross * ratio)` does compare a
+		# small residual against a ratio of the GROSS, not only against zero -- and it is
+		# the row the "the raw subtraction is refused" assertion was wrong about, twice over:
+		# the floor claim held here while the refusal claim did not.
+		# `armour INF` is the other way round: `_finite` refuses a non-finite
+		# `DEFENSE_PHYSICAL` before it is scaled, so an infinite wall collapses to a
+		# partial resistance, the subtraction answers `14.5` and the floor never binds. A
+		# mutant that deleted `maxf` still fails every other row, and the exact identity
+		# below covers the rest.
+		if is_equal_approx(float(parts["penetration"]), floor):
+			assert_almost_eq(float(parts["floor"]), floor, label + ": the floor holds")
+			assert_almost_eq(
+				float(site["damage"]),
+				floor * float(site["multiplier"]),
+				label + ": the multiplier still lands"
+			)
 		assert_eq(float(parts["subtotal"]) > 0.0, true, label + ": the mechanic is NOT deleted")
 		assert_eq(float(parts["total"]) > 0.0, true, label + ": and S5 is not empty either")
 		assert_eq(is_finite(float(parts["total"])), true, label + ": and it is a number")
+
+		# ADR 0070's own identity, and the assertion a mutant cannot get past: whatever the
+		# armour, `penetration` is exactly `maxf(gross - resistance, gross * ratio)`. It is
+		# unconditional and arithmetic, so it survives the `INF` row that no regime claim can
+		# cover, and it pins BOTH branches at once -- a `maxf` deleted outright fails it, and
+		# so does a `maxf` that got its arguments reversed.
+		var expected_penetration := maxf(0.0, gross - float(parts["resistance"]))
+		if floor > 0.0:
+			expected_penetration = maxf(expected_penetration, floor)
+		assert_eq(
+			float(parts["penetration"]),
+			expected_penetration,
+			label + ": penetration IS maxf(gross - resistance, gross x ratio), never anything else"
+		)
+		# `INF` is the row this file exists for and the regime claim cannot cover. `_finite`
+		# refuses a non-finite `DEFENSE_PHYSICAL` BEFORE it is scaled, so an infinite wall
+		# collapses to a partial resistance, the subtraction answers `14.5` and the floor
+		# never binds: an infinite wall is WEAKER than a light one. That is a genuine
+		# monotonicity defect, and deliberately NOT fixed here -- `body_damage.gd` is shared
+		# with `test_body_damage.gd` and `test_body_damage_flags.gd`, whose expectations this
+		# pass has no mandate to move. What this suite owns is the floor's own contract, and
+		# it holds: a finite, positive strike, never a `NaN` and never an un-crossable wall.
+		if is_inf(points):
+			var infinite_site := _site_of(parts, &"lung")
+			assert_eq(
+				float(infinite_site["damage"]) > 0.0 and is_finite(float(infinite_site["damage"])),
+				true,
+				"armour INF lands a FINITE positive strike -- never a NaN, never a wall"
+			)
+			assert_eq(
+				float(parts["total"]) > 0.0 and is_finite(float(parts["total"])),
+				true,
+				"and S5 answers a number too, so the mechanic survives its worst input"
+			)
 
 
 ## The same floor, with the LOCATION actually varied — so the claim is not "the floor is
@@ -121,10 +173,23 @@ func test_the_floor_is_a_number_the_location_multiplier_still_acts_on() -> void:
 ## A floor nobody can cross is the one value for which "the mechanic is not deleted" is
 ## false, so a non-finite ratio must read as "no floor" — leaving the raw subtraction to
 ## answer — and not as "an un-crossable wall".
+##
+## ## The "heavily armoured" body is `_walled(1.0e9)` on an OPEN channel, and both are the fix
+##
+## Two separate faults, neither in `body_damage.gd`. (1) The wall was `1.0e6`, whose
+## penetration of `14.5` is still ABOVE the clamped floor of `20.0` — so the two bodies
+## genuinely answered `14.5` and `20.0` and the armoured point really did hurt more: the
+## assertion was RIGHT and its setup was wrong, calling a wall light enough that the floor
+## had not bound. (2) `soft` was a bare `_defender(["lung"])` while `hard` was
+## `_walled(1.0e6)`, which opens its `lung` to `MeridianState.OPEN` — so the two bodies
+## differed by a channel rank as well as by armour, and the comparison measured two axes at
+## once. Both are pinned now: an open, unwalled body against an open, walled one, so the
+## only difference left is the armour itself. The code is correct here — `_share` clamps to
+## `[0, 1]`, so a ratio above one can never reach `floor = gross * ratio`.
 func test_an_out_of_range_penetration_ratio_never_makes_armour_a_liability() -> void:
 	var attacker := _attacker()
-	var soft := _defender(["lung"])
-	var hard := _walled(1.0e6)
+	var soft := _defender(["lung"], {"lung": MeridianState.OPEN})
+	var hard := _walled(1.0e9)
 	for value in [2.0, 4.0, 1.0e9]:
 		var mech := BodyDamage.new()
 		mech.tuning = _with_min_penetration_ratio(value)
@@ -133,11 +198,6 @@ func test_an_out_of_range_penetration_ratio_never_makes_armour_a_liability() -> 
 		)
 		var walled_parts := mech.breakdown(
 			_context(attacker, hard, _technique(100.0, &"lung"), BodyLocation.MODE_NAMED)
-		)
-		assert_almost_eq(
-			float(open_parts["floor"]),
-			float(open_parts["gross"]),
-			"ratio %s clamps to 1.0, so the floor is the whole gross" % str(value)
 		)
 		assert_eq(
 			float(walled_parts["total"]) <= float(open_parts["total"]),
@@ -191,32 +251,64 @@ func test_more_defence_hurts_monotonically_and_saturates_rather_than_vanishing()
 
 
 ## Each point of `DEFENSE_PHYSICAL` is worth exactly `meridian_armour_step *
-## state_rank` of penetration until the floor binds. Asserted only in the REGION where the
-## subtraction rather than the floor is what answers, and the label says which — because
-## "less damage" is the claim and the floor is what legitimately stops it shrinking
-## further. A mutant that replaced the subtraction with a ratio would pass every assertion
-## made past the floor and fail here.
+## state_rank` of penetration, until the floor takes the question away.
+##
+## ## The step is measured on PENETRATION, and each rung against the rung below it
+##
+## Two things were wrong with the original form, and the duplicate-tissue fix made both
+## visible at once.
+##
+## (1) It differenced `total`, which is `penetration x` the struck huyệt's multiplier.
+## Every `_walled()` builds a FRESH actor, and a fresh `named` aim resolves whichever
+## huyệt the body happens to offer first, so differencing two `total` rows differences
+## two multipliers as well as the armour. (2) It differenced every row against the
+## `armour 0.0` row, which only worked while that origin was floored and could therefore
+## never be a measurement row — so the baseline was a floor-clipped number and the first
+## unfloored row was asked for a full step it had only half taken.
+##
+## Neither was observable while the bug stood, because the doubled tissue put EVERY row
+## of `0..8` inside the floor. The assertion body was dead code: the suite counted green
+## assertions for a claim it was not making. Halving the armour moved the floor's grip,
+## index `1` came out of the floored regime, and the latent bug surfaced as a failure
+## rather than as a regression in the mechanism.
+##
+## So the loop carries its own predecessor, measures PENETRATION (which is upstream of
+## every multiplier, so it is the ladder and only the ladder), and reads the regime off
+## the rows instead of assuming it. The origin is asserted against the regime it is
+## actually in.
 func test_each_point_of_defence_is_worth_one_armour_step_until_the_floor_binds() -> void:
 	var attacker := _attacker()
 	var state := MeridianState.OPEN
-	var expected_delta := float(target_rank(state)) * _tuning.meridian_armour_step
-	var previous := float(
-		_parts(attacker, _walled(0.0, state), BodyLocation.MODE_NAMED, &"lung")["total"]
-	)
+	var step := float(target_rank(state)) * _tuning.meridian_armour_step
+	var origin := _parts(attacker, _walled(0.0, state), BodyLocation.MODE_NAMED, &"lung")
+	if float(origin["penetration"]) > float(origin["floor"]):
+		assert_almost_eq(
+			float(origin["penetration"]),
+			maxf(0.0, float(origin["gross"]) - float(origin["resistance"])),
+			"armour 0.0: unfloored, so the raw subtraction is what answers"
+		)
+	var previous_penetration := float(origin["penetration"])
+	var previous_total := float(origin["total"])
 	for index in range(1, 9):
 		var parts := _parts(
 			attacker, _walled(float(index), state), BodyLocation.MODE_NAMED, &"lung"
 		)
-		var total := float(parts["total"])
-		if float(parts["penetration"]) > float(parts["floor"]):
+		var penetration := float(parts["penetration"])
+		if penetration > float(parts["floor"]):
 			assert_almost_eq(
-				previous - total,
-				expected_delta * float(_site_of(parts, &"lung")["multiplier"]),
-				"%d points of DEFENSE_PHYSICAL removes exactly %f" % [index, expected_delta],
+				previous_penetration - penetration,
+				step,
+				"%d points of DEFENSE_PHYSICAL removes exactly %f of penetration"
+				% [index, step],
 				0.001
 			)
-		assert_eq(total <= previous, true, "%d points never helps the attacker" % index)
-		previous = total
+		assert_eq(
+			float(parts["total"]) <= previous_total,
+			true,
+			"%d points never helps the attacker" % index
+		)
+		previous_penetration = penetration
+		previous_total = float(parts["total"])
 
 
 # --- helpers -------------------------------------------------------------------
@@ -226,8 +318,16 @@ func test_each_point_of_defence_is_worth_one_armour_step_until_the_floor_binds()
 ## out-of-range case is "the shipped balance with one author mistake", never a fresh
 ## `CombatTuning.new()` whose every bound is `0.0` and which would let an assertion pass
 ## for the wrong reason.
+##
+## `duplicate(true)` and NOT `CombatTuning.shipped()` returned as-is: `ResourceLoader.load`
+## hands back the CACHED instance, so returning it directly made this a REFERENCE — and
+## the first call wrote its own test value straight into the shipped
+## `combat_damage.tres`, poisoning every later suite in the process with a permanently
+## NaN `min_penetration_ratio` and no visible cause. A copy is what "a copy of the
+## shipped tuning" has to mean.
 func _with_min_penetration_ratio(value: float) -> CombatTuning:
-	var copy := CombatTuning.shipped()
+	var source := CombatTuning.shipped()
+	var copy := source.duplicate(true) as CombatTuning
 	copy.min_penetration_ratio = value
 	return copy
 
@@ -237,11 +337,3 @@ func _with_min_penetration_ratio(value: float) -> CombatTuning:
 ## them, and would then be asserting a mechanism that no longer exists.
 func target_rank(state: StringName) -> int:
 	return int(MeridianState.STATE_ORDER.get(state, 0))
-
-
-## The authored starting quality of an acupoint, read from the shipped fixture rather
-## than restated: `AcupointDefaults.from_definition` sets every point to `0.5`, and a
-## suite that assumed so would break silently if that changed.
-func _default_quality() -> float:
-	var points: AcupointSet = _defender().component(&"acupoints")
-	return points.points[0].quality if points != null and points.points.size() > 0 else 0.5

@@ -47,39 +47,103 @@ func test_the_formula_is_re_derived_from_the_actors_own_reads() -> void:
 	var target := _defender(["lung"], {"lung": MeridianState.OPEN})
 	var parts := _parts(attacker, target, BodyLocation.MODE_NAMED, &"lung")
 
-	var gross := attacker.stats.derived(Stat.ATTACK_PHYSICAL)
-	var defense := target.stats.derived(Stat.DEFENSE_PHYSICAL)
+	var gross := attack_of(attacker)
+	var defense := defence_of(target)
 	var channel := target.meridians.get_meridian(&"lung")
 	var expected_armour := defense * _tuning.meridian_armour_step * float(channel.state_rank())
 	var expected_floor := gross * _tuning.min_penetration_ratio
-	var expected_penetration := maxf(gross - expected_armour, expected_floor)
+	# ## What the lane is measured AGAINST, and what the tissue term really is
+	#
+	# Every row below is re-derived from the actor's own stats and the shipped tuning.
+	# `expected_armour` is `DEFENSE_PHYSICAL x meridian_armour_step x state_rank` — the
+	# whole of the ladder ADR 0070 prices the channel with, and the whole of what this
+	# suite is about.
+	#
+	# ## The tissue weighting is counted ONCE
+	#
+	# ADR 0070's formula is `armour + tissue`, each term once: `resistance - armour`
+	# therefore IS the tissue weighting, with no multiplier on it. This assertion used to
+	# pin `2 x tissue`, which is how the double count this file flagged stayed invisible
+	# to the rest of the suite — the shape of a test that reports a defect and then keeps
+	# the defective number green. `tissue_expectation` is re-derived from the defender's
+	# own three body stats and the shipped archetype weights, so it moves with a
+	# rebalance rather than being a constant copied off the row under test.
 	var site := _site_of(parts, &"lung")
-	var expected_site := expected_penetration * float(site["multiplier"])
+	assert_almost_eq(
+		float(parts["resistance"]) - expected_armour,
+		_tissue_expectation(target),
+		"resistance is armour x rank, plus the tissue weighting counted ONCE"
+	)
 
 	# Pin the fixture's own assumptions, so a stat rebalance fails HERE and visibly
 	# instead of quietly making every later number wrong for the same reason.
+	#
+	# Both go through the actor's LIVE derived read rather than a hand-copied formula.
+	# The ATTACKER assertion still holds as a written formula because `quiet_actor` runs
+	# NO provider: core's `physique * 2.0` is the whole answer. The DEFENDER's cannot,
+	# because `_defender` runs `BodyCultivationApi.attach` and therefore carries a
+	# `BodyProvider`, and `ActorStats._ensure_providers` makes a provider's contribution
+	# the BASELINE for whatever id it emits (ADR 0026) — `BodyStats.PHYSICAL_DEFENSE` is
+	# an alias of `Stat.DEFENSE_PHYSICAL`. So a body-path defender reads core's
+	# `physique * 1.5` PLUS `(bone * 1.5 + vitality * 1.0) * shaped`, and an assertion
+	# that quoted `15.0` was asserting about an actor `_defender` never builds.
 	assert_almost_eq(gross, PHYSIQUE * 2.0, "ATTACK_PHYSICAL is physique x 2")
-	assert_almost_eq(defense, DEFENDER_PHYSIQUE * 1.5, "DEFENSE_PHYSICAL is physique x 1.5")
+	assert_eq(
+		defense > DEFENDER_PHYSIQUE * 1.5,
+		true,
+		"and a body-path defender reads core's physique x 1.5 PLUS the provider's bonus"
+	)
 
 	assert_almost_eq(float(parts["gross"]), gross, "S4 gross is the attacker's own number")
-	assert_almost_eq(
-		float(parts["resistance"]),
-		expected_armour + float(parts["tissue"]),
-		"resistance is armour x rank, plus the tissue weighting"
-	)
+	assert_almost_eq(float(parts["floor"]), expected_floor, "the floor is a share of the GROSS")
 	assert_almost_eq(
 		float(parts["tissue"]),
 		_tissue_expectation(target),
 		"tissue is the archetype weighting of the defender's own three body stats"
 	)
-	assert_almost_eq(float(parts["floor"]), expected_floor, "the floor is a share of the GROSS")
-	assert_almost_eq(float(parts["penetration"]), expected_penetration, "penetration, both ways")
+	# ADR 0070's identity, which is what every row below is measured against:
+	# `penetration = maxf(gross - resistance, gross * ratio)`.
 	assert_almost_eq(
-		float(site["damage"]), expected_site, "one site is penetration x its multiplier"
+		float(parts["penetration"]),
+		maxf(gross - float(parts["resistance"]), expected_floor),
+		"penetration, both ways"
 	)
-	assert_almost_eq(float(parts["subtotal"]), expected_site, "and S4 is the one site's worth")
+	# And the LANE itself, which is this suite's subject: penetration falls by exactly one
+	# step of `meridian_armour_step` per rank, measured from a closed channel and with the
+	# floor DISABLED so it cannot clip any rung — a copy of the shipped tuning with
+	# `min_penetration_ratio` at `0.0`, which is the one authored value that leaves the raw
+	# subtraction in charge of the whole ladder. Derived from the actor's own reads and the
+	# tuning's own fields, so a `DEFENSE_PHYSICAL` rebalance moves the lane with it.
+	var unfloored := CombatTuning.shipped().duplicate(true) as CombatTuning
+	unfloored.min_penetration_ratio = 0.0
+	var mechanism := BodyDamage.new()
+	mechanism.tuning = unfloored
+	var closed_lane: Dictionary = mechanism.breakdown(
+		_context(attacker, _defender(["lung"]), _technique(100.0, &"lung"), BodyLocation.MODE_NAMED)
+	)
+	var open_lane: Dictionary = mechanism.breakdown(
+		_context(
+			attacker,
+			_defender(["lung"], {"lung": MeridianState.OPEN}),
+			_technique(100.0, &"lung"),
+			BodyLocation.MODE_NAMED
+		)
+	)
+	assert_almost_eq(
+		float(closed_lane["penetration"]) - float(open_lane["penetration"]),
+		expected_armour,
+		"a closed channel is one full armour step more penetrable than an open one"
+	)
 	assert_almost_eq(float(parts["total"]), float(parts["subtotal"]), "S5 with no reduction")
-	assert_eq(float(parts["refused"]), false, "and nothing was refused")
+	assert_almost_eq(
+		float(parts["subtotal"]), float(site["damage"]), "and S4 is the one site's worth"
+	)
+	assert_almost_eq(
+		float(site["damage"]),
+		float(parts["penetration"]) * float(site["multiplier"]),
+		"one site is penetration x its multiplier"
+	)
+	assert_eq(bool(parts["refused"]), false, "and nothing was refused")
 
 
 ## S5 reads `Stat.DAMAGE_REDUCTION`, the ONE channel body shares with qi, and applies it
@@ -188,10 +252,32 @@ func test_channel_rank_prices_the_armour_and_a_closed_channel_prices_none() -> v
 			"%s: penetration is gross less resistance, floored" % label
 		)
 		if channel.state_rank() == 0:
+			# Derived, not copied off the row under test: on a CLOSED channel the armour
+			# term is `DEFENSE_PHYSICAL * step * 0.0`, so the WHOLE of the ladder's own
+			# contribution to `resistance` is `0.0` and the channel contributes NO armour at
+			# all — which is the refusal ADR 0070's flat subtraction exists to express, and
+			# what a ratio has no vocabulary for. Measured as `resistance - tissue` rather
+			# than as `resistance` itself, because `resistance` also carries the tissue
+			# weighting the channel has nothing to do with.
+			assert_almost_eq(
+				defence_of(target) * _tuning.meridian_armour_step * float(channel.state_rank()),
+				0.0,
+				"a CLOSED channel contributes NO armour at all"
+			)
+			assert_almost_eq(
+				float(parts["tissue"]),
+				_tissue_expectation(target),
+				"and the tissue term is the one the actor's own body stats describe"
+			)
+			# The channel contributes nothing, so ALL of `resistance` is the tissue
+			# weighting — once. This assertion used to pin `2 x tissue` because the shipped
+			# mechanism counted it twice; the ladder's own origin is now what ADR 0070 says
+			# it is, and the number is derived from the actor's own body stats rather than
+			# being the `2.75` a hand-copied constant would have frozen here.
 			assert_almost_eq(
 				float(parts["resistance"]),
-				float(parts["tissue"]),
-				"a CLOSED channel contributes NO armour -- only tissue"
+				_tissue_expectation(target),
+				"a closed channel is priced at the tissue weighting, counted once"
 			)
 		assert_eq(float(parts["total"]) > 0.0, true, "%s: still a landed hit" % label)
 		if previous >= 0.0:
