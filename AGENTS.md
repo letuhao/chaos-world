@@ -69,10 +69,14 @@ Optimize for small verifiable steps. The repo is the source of truth; chat histo
 2. **State the goal in one sentence** in your reply. If it needs a design doc to explain, split it.
 3. **Ship one vertical slice**, then run `uv run python -m tools check`. Fix failures before continuing.
 4. **Test what you changed, not everything.** Use `tools test --suite <substring>` while building; run the full suite only to release a finished module or when a critical bug makes the game fail to build or load. A full run mid-build wastes minutes and reports other agents' in-flight breakage as if it were yours.
+   - **Re-measure a tracked finding before dispatching against it** (BL-0619). Nothing fails when a tracked finding becomes untrue, so a list carried across turns decays silently — 14+ of the 2026-10-03 audit's 17 entries were already fixed, and each would have rebuilt working code. Verify with `rg`/a suite run, never from the entry's own text.
+   - **A green guard is not a tested guard** (INC-0016). Every validator in `tools/` is unreachable from the GDScript suite, so `tools selftest run` asserts each still goes **RED**. Adding a validator there means adding its red path; "it passes on today's tree" is what `check` already does and proves nothing.
 5. **Record durable decisions only.** An architectural choice future agents could get wrong goes in a one-page `docs/adr/NNNN-<slug>.md`. Everything else is written nowhere.
 6. **Touch this file only when a rule changes.** Never add changelogs, status, or plan sections.
 7. **Commit your own work; committing is part of the task, not a favour.** Uncommitted work is **unrecoverable** — there is no reflog entry for a file that was never staged. Commit at the end of each vertical slice, before starting the next.
    - Stage **only your own paths**: `git add <path> <path>`, never `git add -A`, `git add .`, `git commit -a`, `git commit -am` or `git add -u`. A blanket stage sweeps every modified tracked path, swallows a concurrent agent's in-flight edits, and makes them unrecoverable too. Before committing, `git status --short` and confirm every staged path is one you edited; if something foreign appears, unstage it (`git restore --staged <path>`) rather than committing it.
+   - **A narrow pathspec is necessary and NOT sufficient** (INC-0011). `git commit --only <path>` commits that path's **entire working-tree state**, not a hunk — so editing 2 lines of a file another agent left dirty commits their ~157 too. Before committing a path, `git diff --stat -- <path>`: a count far larger than your edit means someone else's uncommitted work rode in.
+   - **Never remove `.git/index.lock`** (BL-0424). With ~20 concurrent agents a lock that reappears within a minute belongs to a live process; deleting it lets two git processes write one index. Check for live git processes and whether HEAD is moving, then wait and retry. Leave the work uncommitted rather than force it: the next committer recovers it, a corrupted index does not.
 8. **The working tree is shared with live agents.** Never `git checkout`, `git restore`, `git revert`, or `git stash` a path you do not own — a concurrent agent's edits and this file itself are not yours to roll back. Bulk-reverting "my" files has twice destroyed another agent's finished work. Undo your own mistake by hand, path by path.
    - `git checkout .` / `git restore .` / `git stash` with no pathspec are **forbidden outright**: they are not "reverting my files", they are reverting everyone's. Same for `git push --force` and `git reset --hard` on a shared branch — there is no undo once another agent has pulled.
    - To undo your own edit, fix it forward with `edit_file`/`write_file`, or revert one specific commit you authored by hash (`git revert <your-sha>`), never a path-wide sweep.
@@ -88,12 +92,10 @@ Skills live at `.agents/skills/<id>/SKILL.md`; `.agents/` and `skills-lock.json`
 | Entry / unsure | `router` |
 | Godot foundation | `godot-gdscript`, `godot-nodes-scenes`, `godot-resources`, `godot-signals-groups`, `godot-physics`, `godot-animation`, `godot-ui-control`, `godot-audio`, `godot-shaders` |
 | Movement / world | `godot-2d-movement`, `godot-tilemap` (2D — decided, ADR 0001) |
-| Genre anchor | `rpg` — stats, leveling, inventory, combat, quests, saves |
-| Combat | `game-ai`, `ai-behavior-trees-utility-ai`, `game-feel`, `camera-systems`, `input-systems`, `physics-tuning` |
-| Hunting | `game-ai`, `level-design`, `procedural-gen`, plus the movement/world skill |
-| Cultivate | `rpg`, `godot-resources`, `save-systems` |
-| Breakthrough | `rpg`, `save-systems`, `game-ui-ux`, `godot-ui-control`, `game-feel` |
-| Cross-cutting | `game-ui-ux`, `audio-design`, `performance-optimization`, `create-game-assets` |
+| Genre anchor | `rpg` — stats, leveling, inventory, combat, quests, saves. Cultivate/breakthrough build on it |
+| Combat | `game-ai`, `ai-behavior-trees-utility-ai`, `game-feel`, `camera-systems`, `input-systems`, `physics-tuning`. Hunting adds `level-design`, `procedural-gen` + the movement/world skill |
+| Breakthrough UI | `game-ui-ux`, `godot-ui-control` |
+| Cross-cutting | `game-ui-ux`, `audio-design`, `performance-optimization`, `create-game-assets`; `save-systems` when state persists |
 | Prototyping | `prototype-fast` |
 | Build / ship | `godot-gdscript-headless-testing`, `godot-export`; add `itch-publish` / `steam-publish` when releasing |
 
