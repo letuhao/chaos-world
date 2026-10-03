@@ -40,10 +40,6 @@ static func attach(actor: Actor) -> void:
 	attach_sea(actor)
 
 
-static func path_def() -> CultivationPathDef:
-	return MindPath.path_def()
-
-
 static func sea(actor: Actor) -> SeaOfConsciousness:
 	return actor.component(SEA_COMPONENT) as SeaOfConsciousness
 
@@ -141,6 +137,22 @@ static func meditate(actor: Actor) -> bool:
 
 static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 	return MindTraining.train_channel(actor, meridian_id)
+
+
+## Close the first wound a recovery item can heal: the burned channel, scanned in
+## authored order so the wound the player is nearest to reading is the one closed.
+## Consumes the realm's `recovery_item` (ADR 0031). Returns true when a repair
+## happened, so a panel can tell a real recovery from a no-op.
+##
+## The mind path has no second wound to check first, unlike qi's dantian scar or
+## the body's blocked huyệt: `MindTraining.recover` acts on the channel named and
+## calms the sea with it, so the injured channel IS the whole selection.
+static func recover_next(actor: Actor) -> bool:
+	for def in MeridianDefaults.all():
+		var channel := actor.meridians.get_meridian(def.id)
+		if channel != null and channel.is_injured() and MindTraining.recover(actor, def.id):
+			return true
+	return false
 
 
 static func strengthen_sea(actor: Actor) -> bool:

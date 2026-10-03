@@ -23,7 +23,7 @@ func _actor_with_module() -> Actor:
 
 
 func test_path_vocabulary() -> void:
-	var def := MindCultivationApi.path_def()
+	var def := MindAccess.path_def()
 	assert_eq(def.id, MindPath.PATH_ID, "path id")
 	assert_eq(def.stage_names.size(), 30, "30 stages")
 	assert_eq(def.stage_name(&"qi_refining"), "Mind Awakening", "first stage")
