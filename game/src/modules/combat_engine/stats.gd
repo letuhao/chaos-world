@@ -40,9 +40,21 @@ extends RefCounted
 ## Reduces the defender's `EVASION` for this attacker. Flat, because `EVASION` is a
 ## rate and a rate is contested by subtraction, never by multiplication (ADR 0068).
 const ACCURACY := &"accuracy"
-## How hard the attacker cuts the defender's guard: a read-only input to a mechanism's
-## `mitigate`, never a stage of the spine (ADR 0068).
-const PENETRATION := &"penetration"
+## How hard the attacker cuts the defender's elemental guard, as a RATE in the same
+## `[0, 1]` space as `resist`, so it can be SUBTRACTED from a resistance before the clamp
+## (ADR 0069). A read-only input to a mechanism's `mitigate`, never a stage of the spine.
+##
+## ## Why this is `penetration.rate` and NOT `Stat.PENETRATION`
+##
+## It was `&"penetration"`, which is core's id, and core derives that one in POINTS
+## (`spirit * 0.5`, `core/actor_stats.gd:156`). One string, two quantities: an actor with
+## spirit 10.0 derived `5.0`, which `_resistance_of` then subtracted from a resistance
+## living in `[0, 1]` — so every elemental resistance in the game read `0.0` and mastery
+## penetration could never be observed at all. Nothing caught it because
+## `test_no_combat_id_is_a_core_stat_id` compared against `Stat.BASE_ATTRIBUTES +
+## Stat.RATE_STATS`, and core's DERIVED ids are in neither list; that test now probes a
+## live actor instead, which is the only check that sees this class.
+const PENETRATION := &"penetration.rate"
 ## Scales the attacker's amount up. Read at S7 with `REDUCTION`, and only there.
 const AMPLIFICATION := &"amplification"
 ## The flat subtraction applied at S7. Reads `Stat.DAMAGE_REDUCTION` too; see
@@ -136,6 +148,7 @@ const ALL_IDS: Array[StringName] = [
 const RATE_IDS: Array[StringName] = [
 	ACCURACY,
 	ABSORPTION,
+	PENETRATION,
 	PARRY_RATE,
 	PARRY_STRENGTH,
 	BLOCK_RATE,
@@ -152,6 +165,7 @@ const RATE_IDS: Array[StringName] = [
 const RATE_DEFAULTS: Dictionary = {
 	ACCURACY: 0.0,
 	ABSORPTION: 0.0,
+	PENETRATION: 0.0,
 	PARRY_RATE: 0.0,
 	PARRY_STRENGTH: 0.0,
 	BLOCK_RATE: 0.0,
@@ -165,7 +179,6 @@ const RATE_DEFAULTS: Dictionary = {
 ## shield with no capacity absorbs nothing, a strength of 1.0 scales nothing.
 const DEFAULTS: Dictionary = {
 	REDUCTION: 0.0,
-	PENETRATION: 0.0,
 	AMPLIFICATION: 0.0,
 	REFLECT_DAMAGE: 1.0,
 	REFLECT_RESIST_DAMAGE: 1.0,

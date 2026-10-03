@@ -27,39 +27,59 @@ func setup() -> void:
 	_rules = ElementsApi.default_rules()
 
 
-## The parts for a real STRONG/NEUTRAL/whatever pair at a chosen share and a chosen
-## number of points of authored elemental resistance on the defender.
+## The parts for one case at a chosen elemental share and a chosen number of points of
+## authored elemental RESISTANCE.
+##
+## `resistance_points` is resistance in the ATTACKER's element, because that is where
+## `QiDamage._resistance_of` reads it: `clampf(element_resistance_<attacker_element> /
+## resist_divisor - penetration, 0, resist_cap)`. `defender_element` is a SEPARATE axis and
+## is carried explicitly on `DEFENDER_ELEMENT_KEY` rather than left to the dominance walk,
+## because the two answers were previously conflated into one affinity slot and every
+## resistance case in this subsystem was silently measuring a defender who resisted
+## nothing.
 func _parts(
 	element: StringName, defender_element: StringName, share: float, resistance_points: float
 ) -> Dictionary:
-	var attacker := _attacker()
-	var target := _defender(defender_element, resistance_points)
-	return QiDamage.new().breakdown(_context(attacker, target, element, share))
+	var attacker := _attacker(element)
+	var target := _defender(element, resistance_points)
+	return QiDamage.new().breakdown(
+		_context(attacker, target, element, share, 100.0, defender_element)
+	)
 
 
 ## An attacker whose numbers are pinned so the arithmetic is legible: spirit 10.0 and
-## aptitude 10.0 give `ATTACK_SPIRITUAL = 25.0`, and fire affinity 10.0 with no mastery
-## gives `element_power_fire = 10.0`.
+## aptitude 10.0 give `ATTACK_SPIRITUAL = 25.0`, and an affinity of 10.0 in `element` with
+## no mastery gives `element_power_<element> = 10.0`.
+##
+## The affinity is in the element UNDER TEST, so every case carries the same elemental
+## power and the matchup is the only thing that varies between two rows of the table.
 ##
 ## The base dictionary is a single named constant rather than an inline literal so
 ## gdformat has one dict to wrap instead of one per call site, and so the pinned numbers
 ## have exactly one definition across these suites.
-func _attacker() -> Actor:
+func _attacker(element: StringName = ElementStats.FIRE) -> Actor:
 	var actor := Actor.new(&"attacker", ATTACKER_BASE)
 	actor.add_resource(ResourcePool.new(&"health", 1000.0))
-	actor.set_affinity(ElementStats.FIRE, _fire_affinity())
+	if element != &"":
+		actor.set_affinity(element, _affinity())
 	ElementsApi.attach(actor, _rules)
 	return actor
 
 
-## A defender with a health pool, an affinity in `element`, and `will` 0.0 so its
-## `element_resistance_<element>` is exactly `affinity * 0.5` -- no `will` term to
-## account for. `resistance_points` is the RESISTANCE, so the affinity is twice it.
-func _defender(element: StringName, resistance_points: float) -> Actor:
+## A defender whose resistance is authored in `resisted_element`, and `will` is left at
+## 0.0 so `element_resistance_<resisted_element>` is exactly `affinity * 0.5` with no
+## `will` term to account for. `resistance_points` is the RESISTANCE, so the affinity is
+## twice it.
+##
+## `ElementsApi.attach` is REQUIRED, not decoration: `element_resistance_<e>` is
+## contributed by `ElementProvider` and reads `0.0` on an actor nobody attached one to.
+## Without it every resistance assertion in both qi suites was measuring "no contest".
+func _defender(resisted_element: StringName, resistance_points: float) -> Actor:
 	var actor := Actor.new(&"defender", {Stat.PHYSIQUE: 10.0, Stat.COMPREHENSION: 10.0})
 	actor.add_resource(ResourcePool.new(&"health", 5000.0))
-	if element != &"":
-		actor.set_affinity(element, resistance_points * 2.0)
+	if resisted_element != &"":
+		actor.set_affinity(resisted_element, resistance_points * 2.0)
+	ElementsApi.attach(actor, _rules)
 	return actor
 
 
@@ -74,20 +94,37 @@ func _technique(element: StringName, share: float) -> TechniqueDef:
 
 ## A context shaped exactly as `CombatSpine._context` shapes one, minus the spine's own
 ## stage writes the mechanism does not read.
+##
+## `with_rules = false` is the only way to reach the "nothing injected anywhere"
+## degradation case: this helper injects the rules unconditionally, so the case that
+## asserts `rules_bound == false` was asserting against a context that had them.
 func _context(
-	attacker: Actor, target: Actor, element: Variant, share: float, magnitude: float = 100.0
+	attacker: Actor,
+	target: Actor,
+	element: Variant,
+	share: float,
+	magnitude: float = 100.0,
+	defender_element: StringName = &"",
+	with_rules: bool = true
 ) -> AttackContext:
 	var ctx := AttackContext.new(attacker, target, null, _tuning, magnitude)
-	ctx.set_data(QiDamage.ELEMENT_RULES_KEY, _rules)
-	if element is Array:
-		# The blend a caller might hand over: an `Array`, never an element id.
-		ctx.set_data(QiDamage.ELEMENT_KEY, element)
-	else:
-		ctx.set_data(QiDamage.ELEMENT_KEY, element)
+	if with_rules:
+		ctx.set_data(QiDamage.ELEMENT_RULES_KEY, _rules)
+	# The blend a caller might hand over is an `Array`, never an element id, so both
+	# branches below are the same write: the shape is rejected downstream, not here.
+	ctx.set_data(QiDamage.ELEMENT_KEY, element)
 	ctx.set_data(QiDamage.ELEMENT_SHARE_KEY, share)
+	if defender_element != &"":
+		ctx.set_data(QiDamage.DEFENDER_ELEMENT_KEY, defender_element)
 	return ctx
 
 
+## The affinity every fixture actor is built with, in whatever element is under test.
+func _affinity() -> float:
+	return 10.0
+
+
+## The pinned single spelling of the fixture's affinity, for the assertions that quote it.
 func _fire_affinity() -> float:
 	return 10.0
 

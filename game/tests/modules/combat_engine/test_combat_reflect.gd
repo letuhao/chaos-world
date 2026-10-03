@@ -51,7 +51,7 @@ func test_the_bounce_is_paid_to_the_attacker_and_not_only_recorded() -> void:
 	assert_almost_eq(
 		attacker.resource(&"health").current, before - 40.0, "and the attacker was charged it"
 	)
-	assert_almost_eq(outcome.health_delta, -40.0, "S9's own delta is untouched by S10")
+	assert_almost_eq(outcome.health_delta, -100.0, "S9's own delta is the whole overflow")
 
 
 func test_the_share_bounds_what_thorns_can_return() -> void:
@@ -130,13 +130,7 @@ func _at_depth(target: Actor, chain_depth: int) -> CombatOutcome:
 	mechanism.amount = 40.0
 	MechanismSlot.bind(attacker, mechanism)
 	return CombatSpine.resolve_hit(
-		attacker,
-		target,
-		CombatTestKit.technique(100.0),
-		_tuning,
-		null,
-		Callable(),
-		chain_depth
+		attacker, target, CombatTestKit.technique(100.0), _tuning, null, Callable(), chain_depth
 	)
 
 

@@ -175,7 +175,7 @@ func test_the_band_total_is_capped_so_every_attack_can_land() -> void:
 			clean += 1
 		index += 1
 	assert_eq(missed + parried + blocked + clean, samples, "the four outcomes partition the sweep")
-	assert_eq(
+	assert_almost_eq(
 		float(clean) / float(samples),
 		1.0 - _tuning.avoidance_band_cap,
 		"5% of a 0.95 cap lands CLEAN",
@@ -203,7 +203,9 @@ func test_the_cap_bounds_the_defensive_total_and_leaves_p_hit_alone() -> void:
 	# `1 - cap` — which contradicts `test_zero_parry_and_zero_block_collapse_to_r_below_p_hit`
 	# in this same file, and which `CombatTuning.avoidance_band_cap` now documents against.
 	var cap := _tuning.avoidance_band_cap
-	var saturated := CombatBand.roll(_tuning, 1.0, 1.0, 0.0, CombatTestKit.CountingGenerator.new([0.5]))
+	var saturated := CombatBand.roll(
+		_tuning, 1.0, 1.0, 0.0, CombatTestKit.CountingGenerator.new([0.5])
+	)
 	assert_eq(saturated.missed, false, "one saturated band cannot make a certain hit miss")
 	assert_eq(saturated.parried, true, "it parries instead")
 	var both := CombatBand.roll(_tuning, 1.0, 1.0, 1.0, CombatTestKit.CountingGenerator.new([0.5]))

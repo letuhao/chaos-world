@@ -26,11 +26,13 @@ func test_the_element_fraction_is_realm_invariant() -> void:
 		# wholesale (core has no prefix matching), so the element modifiers have to be
 		# rewritten -- which is exactly what `ElementsApi.apply_realm_modifiers` is for.
 		ElementsApi.apply_realm_modifiers(attacker, _rules)
-		var target := _defender(&"wood", 0.0)
+		var target := _defender(ElementStats.FIRE, 0.0)
 		target.set_path(PathState.new(PathState.QI, realm_id))
 		RealmScaling.apply(target)
 		ElementsApi.apply_realm_modifiers(target, _rules)
-		var parts := QiDamage.new().breakdown(_context(attacker, target, ElementStats.FIRE, share))
+		var parts := QiDamage.new().breakdown(
+			_context(attacker, target, ElementStats.FIRE, share, 100.0, ElementStats.WOOD)
+		)
 		var subtotal := float(parts["subtotal"])
 		fractions.append(float(parts["elemental_term"]) / subtotal)
 		observed.append(
@@ -76,28 +78,37 @@ func test_the_realm_modifier_covers_power_and_never_resistance() -> void:
 	actor.set_path(PathState.new(PathState.QI, &"spirit_sea"))
 	RealmScaling.apply(actor)
 	var power_before := actor.stats.derived(ElementStats.power_id(ElementStats.FIRE))
-	var resist_before := actor.stats.derived(ElementStats.resistance_id(ElementStats.FIRE))
 	assert_almost_eq(power_before, 0.0, "no affinity, no power to scale")
 	actor.set_affinity(ElementStats.FIRE, 10.0)
 	actor.set_affinity(ElementStats.WATER, 10.0)
-	ElementsApi.apply_realm_modifiers(actor, _rules)
-	var power_after := actor.stats.derived(ElementStats.power_id(ElementStats.FIRE))
+	# `attach` is REQUIRED, not decoration: `element_power_<e>` is contributed by
+	# `ElementProvider` and reads `0.0` on an actor nobody attached one to, so the realm
+	# MULT was being written onto a base of nothing. A realm modifier cannot make a stat
+	# exist. `attach` writes the provider AND the realm half, so the resistance baseline is
+	# read AFTER it -- otherwise the "unchanged" comparison below would be measuring the
+	# provider appearing rather than the realm multiplier being withheld.
+	ElementsApi.attach(actor, _rules)
+	var power_with_modifier := actor.stats.derived(ElementStats.power_id(ElementStats.FIRE))
 	var resist_after := actor.stats.derived(ElementStats.resistance_id(ElementStats.FIRE))
 	assert_almost_eq(
-		power_after, 10.0 * _power_of(&"spirit_sea"), "element_power_fire took R11's authored power"
+		power_with_modifier,
+		10.0 * _power_of(&"spirit_sea"),
+		"element_power_fire took R11's authored power"
 	)
-	assert_almost_eq(
-		resist_after,
-		resist_before,
-		"element_resistance_fire is a RATE and did NOT take the realm power"
-	)
+	assert_almost_eq(resist_after, 5.0, "element_resistance_fire is the affinity's own half")
 	# Re-applying replaces rather than stacks, which is what keeps a second breakthrough
-	# from compounding the multiplier.
+	# from compounding the multiplier -- and it touches the resistance channel not at all,
+	# which is the property this suite exists for.
 	ElementsApi.apply_realm_modifiers(actor, _rules)
 	assert_almost_eq(
 		actor.stats.derived(ElementStats.power_id(ElementStats.FIRE)),
-		power_after,
+		power_with_modifier,
 		"re-applying is idempotent"
+	)
+	assert_almost_eq(
+		actor.stats.derived(ElementStats.resistance_id(ElementStats.FIRE)),
+		resist_after,
+		"element_resistance_fire is a RATE and did NOT take the realm power"
 	)
 
 
@@ -132,18 +143,39 @@ func test_the_element_fraction_would_collapse_without_the_realm_modifier() -> vo
 	var flat := Actor.new(&"attacker", ATTACKER_BASE)
 	flat.add_resource(ResourcePool.new(&"health", 1000.0))
 	flat.set_affinity(ElementStats.FIRE, _fire_affinity())
+	# `attach` BEFORE the path, deliberately. `ElementsApi.attach` writes the provider AND
+	# calls `apply_realm_modifiers`, and `apply_realm_modifiers` returns early on an actor
+	# with no realm on the ladder -- so attaching first installs the provider and writes no
+	# MULT, which is exactly the "no realm modifier" state this negative case needs. The
+	# old order (path first, then no `attach` at all) left the actor with NO provider, so
+	# `element_power_fire` read `0.0` and the "flat" case was not flat -- it was absent,
+	# which is why it asserted 10.0 and measured 0.0.
+	ElementsApi.attach(flat)
 	flat.set_path(PathState.new(PathState.QI, &"spirit_sea"))
 	RealmScaling.apply(flat)
-	# NOTE: no `ElementsApi.attach`, and no `apply_realm_modifiers` either.
 	var fixed_actor := _attacker()
 	fixed_actor.set_path(PathState.new(PathState.QI, &"spirit_sea"))
 	RealmScaling.apply(fixed_actor)
 	ElementsApi.apply_realm_modifiers(fixed_actor, _rules)
 	var flat_parts := QiDamage.new().breakdown(
-		_context(flat, _defender(&"wood", 0.0), ElementStats.FIRE, 0.8)
+		_context(
+			flat,
+			_defender(ElementStats.FIRE, 0.0),
+			ElementStats.FIRE,
+			0.8,
+			100.0,
+			ElementStats.WOOD
+		)
 	)
 	var fixed_parts := QiDamage.new().breakdown(
-		_context(fixed_actor, _defender(&"wood", 0.0), ElementStats.FIRE, 0.8)
+		_context(
+			fixed_actor,
+			_defender(ElementStats.FIRE, 0.0),
+			ElementStats.FIRE,
+			0.8,
+			100.0,
+			ElementStats.WOOD
+		)
 	)
 	assert_almost_eq(
 		float(flat_parts["elemental_power"]), _fire_affinity(), "power stayed realm-FLAT"

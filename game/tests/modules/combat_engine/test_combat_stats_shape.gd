@@ -92,9 +92,49 @@ func test_no_combat_rate_id_is_in_core_rate_stats() -> void:
 
 func test_no_combat_id_is_a_core_stat_id() -> void:
 	# The ids are MINE, not core's. A collision would mean two owners of one string.
+	#
+	# Checked twice, because the two halves catch different things. The list comparison is
+	# the cheap one; the PROBE is the one that matters, and it exists because core's derived
+	# ids live in no list at all -- `Stat` declares `BASE_ATTRIBUTES` and `RATE_STATS` and
+	# nothing else, so `Stat.PENETRATION` (derived as `spirit * 0.5`) was in neither.
+	# `CombatStats.PENETRATION` was therefore declared as `&"penetration"` -- the same
+	# string, a different quantity (a `[0, 1]` rate subtracted from an elemental
+	# resistance) -- and every elemental resistance in the game silently read `0.0`.
+	#
+	# The probe is what a constant list can never be: a bare actor carries no provider and
+	# no modifier, so a core-derived id reads non-zero and a combat-owned one reads exactly
+	# 0.0. If core ever starts deriving one of these strings, this fails here.
+	#
+	# EVERY base attribute is set, and generously. `CombatTestKit.actor` gives an actor
+	# PHYSIQUE and COMPREHENSION only, and core derives `Stat.PENETRATION` from `spirit` --
+	# so probing that builder read `0.0` for the very id this check exists to catch and the
+	# collision went GREEN. The base dict is walked from `Stat.BASE_ATTRIBUTES` so it cannot
+	# fall behind core adding an attribute.
 	var core_ids := Stat.BASE_ATTRIBUTES + Stat.RATE_STATS
 	for id in CombatStats.ALL_IDS:
 		assert_eq(core_ids.has(id), false, "%s does not collide with core" % String(id))
+	var generous := {}
+	for id in Stat.BASE_ATTRIBUTES:
+		generous[id] = 100.0
+	var probe := Actor.new(&"probe", generous)
+	probe.add_resource(ResourcePool.new(&"health", 100.0))
+	for id in CombatStats.ALL_IDS:
+		assert_almost_eq(
+			probe.stats.derived(id),
+			0.0,
+			(
+				(
+					"%s is derived by nothing, so no other owner can reach it -- a non-zero here "
+					% String(id)
+				)
+				+ "means core or a provider already owns this string"
+			)
+		)
+	# And the negative control, so the probe is falsifiable rather than vacuous: the same
+	# actor DOES derive a non-zero for core's own PENETRATION, which is precisely what the
+	# loop above is comparing against. A probe that read 0.0 for everything would otherwise
+	# look like a pass.
+	assert_ne(probe.stats.derived(Stat.PENETRATION), 0.0, "core's own PENETRATION is non-zero here")
 
 
 # --- the spine reads them -------------------------------------------------------

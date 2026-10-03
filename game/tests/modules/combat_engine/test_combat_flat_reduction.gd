@@ -148,9 +148,7 @@ func test_the_factor_never_goes_negative_at_or_past_its_floor() -> void:
 	assert_eq(is_finite(CombatSpine.amp_factor(-1e9, _tuning)), true, "still finite")
 	# A tuning with no scale is a caller who supplied no contest, so the factor is the
 	# identity rather than the `0.0 / 0.0` NaN `maxf` passes straight through to S8.
-	assert_almost_eq(
-		CombatSpine.amp_factor(0.0, CombatTestKit.bare()), 1.0, "no scale, no contest"
-	)
+	assert_almost_eq(CombatSpine.amp_factor(0.0, CombatTestKit.bare()), 1.0, "no scale, no contest")
 	assert_almost_eq(CombatSpine.amp_factor(-1e9, CombatTestKit.bare()), 1.0, "and never a NaN")
 
 

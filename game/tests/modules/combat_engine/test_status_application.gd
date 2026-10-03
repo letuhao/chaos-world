@@ -81,7 +81,21 @@ func test_the_same_seed_produces_the_same_outcome_twice() -> void:
 	var second_target := CombatTestKit.actor(&"target")
 	var second := _resolve(second_target, _mech(), _request(0.5), &"hero", 90210)
 	assert_eq(first[StatusApply.APPLIED], second[StatusApply.APPLIED], "same seed, same verdict")
-	assert_almost_eq(float(first[&"potency"]), float(second[&"potency"]), "and the same potency")
+	# `potency` is a field of an APPLIED result only: `StatusApply._refused` answers
+	# `{applied: false, refused: <reason>}` and a refusal legitimately carries no potency.
+	# `[]` on it aborted the whole function mid-way, so the pair this test is about was
+	# never compared at all. `.get()` with an explicit fallback says what it means: two
+	# refusals agree on potency (both absent) as much as two applications do.
+	assert_almost_eq(
+		float(first.get(&"potency", 0.0)),
+		float(second.get(&"potency", 0.0)),
+		"and the same potency when either applied"
+	)
+	assert_eq(
+		first.has(&"potency"),
+		second.has(&"potency"),
+		"and the same shape of answer, so a refusal is not read as an application"
+	)
 
 
 func test_the_outcome_is_a_function_of_the_seed_and_not_a_constant() -> void:
