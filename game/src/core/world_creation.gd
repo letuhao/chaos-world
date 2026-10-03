@@ -75,13 +75,6 @@ func add_inhabitant(inhabitant: InhabitantRef) -> void:
 	inhabitants.append(inhabitant)
 
 
-## Pay qi upkeep. Returns false if insufficient qi.
-func pay_upkeep(qi_amount: float) -> bool:
-	if qi_amount < upkeep_rate:
-		return false
-	return true
-
-
 func to_dict() -> Dictionary:
 	var laws_out: Array = []
 	for law in laws:
