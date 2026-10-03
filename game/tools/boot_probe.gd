@@ -38,6 +38,11 @@ const DOMAIN_OPTION := "%DomainOption"
 ## fighting the default tier can hand over gear this hero may not wear. A player
 ## picks the tier they can equip from; so does the probe.
 const TIER_OPTION := "%TierOption"
+## The screen's own Leave control. A sweep runs many fights, and entering a new
+## domain while the last one is still live is refused, so every attempt after the
+## first would fail on the previous attempt's leftovers. Leaving is also what a
+## player does between hunts.
+const LEAVE_BUTTON := "%LeaveButton"
 ## The reward list's row control, by node name rather than unique name: the rows are
 ## instantiated from `loot_drop_row.tscn`, so no single owner holds them all.
 const REWARD_LIST := "%RewardList"
@@ -320,6 +325,17 @@ func _ready_to_hunt(app: Node) -> Dictionary:
 	var screen := _live_screen(app)
 	if screen == null:
 		return {"ok": false, "why": "the app has no live screen reporting state to fight from"}
+	if bool((screen.call(&"summary") as Dictionary).get("in_domain", false)):
+		# Leave before fighting, not after: a sweep runs many fights, and the
+		# refusal below fires the moment a boss is still live, so every attempt
+		# after the first would fail on the previous attempt's leftovers. This is
+		# also what a player does between hunts.
+		if not _press(screen, LEAVE_BUTTON):
+			return {"ok": false, "why": "a boss is still live and Leave is not a live control"}
+		await process_frame
+		screen = _live_screen(app)
+		if screen == null:
+			return {"ok": false, "why": "leaving the domain left no live screen"}
 	return {"ok": true, "screen": screen}
 
 
