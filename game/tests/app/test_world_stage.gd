@@ -22,7 +22,7 @@ func setup() -> void:
 	_key_presses = 0
 	_handler_answer = HANDLED.duplicate(true)
 	_stage = WorldStage.new()
-	WorldStage.set_interaction_handler(_record)
+	WorldStage.set_interaction_handler(_note_interaction)
 
 
 func teardown() -> void:
@@ -47,7 +47,11 @@ func teardown() -> void:
 ## Counts handler invocations. `interact()` has its own range gate — a body far
 ## from the target emits nothing at all — so a bridge test that asserted only on
 ## emitted signals would pass for the wrong reason.
-func _record(actor: Actor, location_id: StringName, target_name: String) -> Dictionary:
+##
+## Named `_note_interaction`, not `_record`: `TestCase` already declares
+## `_record(String, Variant, Variant)` and a same-named override with an
+## incompatible signature is a parse error, not a shadow.
+func _note_interaction(actor: Actor, location_id: StringName, target_name: String) -> Dictionary:
 	_key_presses += 1
 	_calls.append(
 		{"actor_id": String(actor.id), "location_id": String(location_id), "target": target_name}
@@ -506,7 +510,20 @@ func test_a_screen_selection_survives_a_null_screen() -> void:
 
 func test_the_screen_seam_does_not_name_the_map_screen() -> void:
 	# The screen keeps its signal; `app/` decides what it means. Reaching for
-	# `WorldMapScreen` from here would invert the layer the gate enforces.
-	var script := FileAccess.get_file_as_string("res://src/app/world_stage.gd")
-	assert_eq(script.contains("WorldMapScreen.location_selected"), false, "no hard screen binding")
-	assert_eq(script.contains("extends "), true, "the stage is its own file, not a screen subclass")
+	# the map screen from here would invert the layer the gate enforces.
+	#
+	# The search runs over CODE, not the file as written: the docstring above
+	# `on_location_selected` NAMES the very call this forbids, in order to say it
+	# is never made. Searching the raw text would fail on the prose stating the
+	# rule, which is the opposite of what the assertion is for.
+	var code := ""
+	for raw in FileAccess.get_file_as_string("res://src/app/world_stage.gd").split("\n"):
+		var line := String(raw)
+		if line.strip_edges().begins_with("#"):
+			continue
+		var hash_at := line.find("#")
+		if hash_at >= 0:
+			line = line.substr(0, hash_at)
+		code += line + "\n"
+	assert_eq(code.contains("WorldMapScreen.location_selected"), false, "no hard screen binding")
+	assert_eq(code.contains("extends "), true, "the stage is its own file, not a screen subclass")

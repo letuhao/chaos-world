@@ -27,8 +27,12 @@ func _ready() -> void:
 
 
 func _bind_nodes() -> void:
-	if _spawn_point != null:
-		return
+	# No early return on `_spawn_point`. The guard made binding ORDER-dependent:
+	# a `_ready()` that ran before the authored children existed left
+	# `_spawn_point` null forever, because the one call that could have filled
+	# it had already been skipped. Children added after `_ready()` - which a
+	# headless test and a streamed scene both do - then read a null marker and
+	# silently fell back to `Vector2.ZERO`.
 	_spawn_point = get_node_or_null("SpawnPoint") as Marker2D
 	_npc_spawn_points = _collect_nodes("NPCSpawnPoints", Marker2D)
 	_enemy_spawn_zones = _collect_nodes("EnemySpawnZones", Area2D)
@@ -38,13 +42,23 @@ func _bind_nodes() -> void:
 	_location_markers = _collect_nodes("LocationMarkers", Marker2D)
 
 
-func _collect_nodes(group_name: String, type: GDScript) -> Array:
+## Every child of `group_name` that is an instance of `type`.
+##
+## `type` is a `Variant`, NOT a `GDScript`: every call site passes an engine
+## class (`Marker2D`, `Area2D`), and those are `GDScriptNativeClass` instances.
+## Declaring the parameter `GDScript` is a PARSE ERROR for an argument of that
+## type, which is what stopped this file - and every script that reaches it -
+## from compiling at all.
+##
+## `null` collects everything under the group, which is how a group of raw
+## nodes is read without naming a type that does not exist yet.
+func _collect_nodes(group_name: String, type: Variant = null) -> Array:
 	var out: Array = []
 	var group := get_node_or_null(group_name)
 	if group == null:
 		return out
 	for child in group.get_children():
-		if child.get_script() == type or type == null or is_instance_of(child, type):
+		if type == null or is_instance_of(child, type):
 			out.append(child)
 	return out
 
@@ -63,6 +77,13 @@ func _notification(what: int) -> void:
 
 
 func spawn_position() -> Vector2:
+	# Bind lazily when the marker is still missing. `_ready()` is the only other
+	# caller of `_bind_nodes`, and it runs before a caller can attach children,
+	# so a read that trusted it saw `Vector2.ZERO` for a scene that HAS an
+	# authored SpawnPoint. Re-binding here makes the read self-healing and
+	# idempotent rather than order-dependent.
+	if _spawn_point == null:
+		_bind_nodes()
 	if _spawn_point != null:
 		return _spawn_point.global_position
 	return Vector2.ZERO

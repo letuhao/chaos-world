@@ -121,7 +121,7 @@ func mount(
 	_player.set_map_bounds(_bounds)
 	# The clamp is the point of this call. `set_map_bounds` moved the camera
 	# limits only; without the line below the body is still free to leave.
-	_player.global_position = _clamp_into(_spawn_position())
+	_player.global_position = _clamp_body(_spawn_position())
 	_register_nodes()
 	_bind_interact_signal()
 	_rebuild_rows()
@@ -129,7 +129,10 @@ func mount(
 		"ok": true,
 		"reason": "",
 		"location_id": String(location_id),
-		"location_name": String(placed["state"]["display_name"]),
+		# `WorldSpawnApi._ok` FLATTENS the location view into the top level
+		# rather than nesting it under a "state" key, so the display name is
+		# read from the answer itself.
+		"location_name": String(placed.get("display_name", "")),
 		"spawn": _position_of(_player.global_position),
 		"interactable_count": _interactables.size(),
 	}
@@ -269,7 +272,7 @@ func interact(target_name: String) -> Dictionary:
 	if _actor == null:
 		return {"ok": false, "reason": "no_actor"}
 	if _player != null:
-		_player.global_position = _clamp_into(_player.global_position)
+		_player.global_position = _clamp_body(_player.global_position)
 	if target_name == "":
 		return {"ok": false, "reason": "no_target"}
 	if not _handler.is_valid():
