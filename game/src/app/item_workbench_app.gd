@@ -36,6 +36,11 @@ var _actor: Actor = null
 ## The composition root's status clock (ADR 0106). It holds no state of its own —
 ## only the actor it ticks — so wiring it here is what ADR 0056 means by "app/ wires".
 var _status_loop: StatusLoop = null
+## The world's clock and the ONE place a beat reaches a sink (ADR 0117, DEF-0111).
+## A director with no production instance is the same defect as a facade with no
+## callers: `add_sink` / `offer` were tested and a player could never reach them.
+var _world: WorldPulse = null
+
 ## The stack and the bar the scene declares. Resolved by unique name; the root
 ## never builds a second one, because two stacks means two answers to "which
 ## screen is live".
@@ -67,6 +72,9 @@ func _ready() -> void:
 	# The status clock is built last, because it can only tick the actor every
 	# other attachment has already made complete (ADR 0106).
 	_status_loop = StatusLoop.new(_actor)
+	# The world's clock, after the actor and wired to a director of its OWN: it is not
+	# a module and shares no ledger with the status clock.
+	_world = WorldPulse.new(_actor, BeatDirector.new())
 	_forge = SocketForgeProgram.new(_actor)
 	if not _mount_home():
 		return
@@ -102,6 +110,33 @@ func _process(delta: float) -> void:
 	if _status_loop == null or delta <= 0.0:
 		return
 	_status_loop.tick(delta)
+	# The WORLD's clock, same frame, same delta: a world that aged on a different
+	# cadence from a status is a world whose pace nobody could reason about (ADR 0089,
+	# one layer up). `WorldPulse` turns seconds into whole periods, no clock of its own.
+	if _world != null:
+		_world.pull(delta)
+
+
+## Advance the world by exactly `periods` whole periods, with no elapsed time — the
+## player-facing half of the tick. `EventApi.advance` refuses `periods <= 0` by
+## design (ADR 0085), so nothing accrues without a caller saying how much.
+func advance_world(periods: int) -> Dictionary:
+	return (
+		{"ok": false, "reason": "no_world"} if _world == null else _world.advance_periods(periods)
+	)
+
+
+## Advance the world by exactly ONE period. **The verb a screen's "wait a season"
+## button and a headless probe both call**, so neither has to know the cadence or
+## pass an argument a driver would hand over as a string.
+func advance_one_period() -> Dictionary:
+	return advance_world(1)
+
+
+## The world's own view of itself, published beside [method summary] so a probe can
+## tell a dead director from a quiet one without reaching into the pulse.
+func world_summary() -> Dictionary:
+	return {} if _world == null else _world.summary()
 
 
 ## The route table this root publishes, so the navigation bar, a probe and a
@@ -155,6 +190,9 @@ func summary() -> Dictionary:
 		"stack": _stack.summary() if _stack != null else {},
 		"screen": live.call(&"summary") if live != null else {},
 		"nav": _nav.summary() if _nav != null else {},
+		# The world's half of the shell, published because this root is the only place
+		# the two composition-root wires meet.
+		"world": world_summary(),
 	}
 
 
@@ -223,13 +261,101 @@ func _build_actor() -> Actor:
 	# other way round (ADR 0056 — app/ wires the module, the module owns it).
 	TechniquesApi.attach(actor)
 	SocialApi.attach(actor)
+	# Fate is earned, never chosen, so birth only normalizes an EMPTY ledger and
+	# grants nothing: this is the composition-root entry point that makes the
+	# ledger exist before any earn call site writes to it. Without it the module
+	# is unwired — `DestinyApi._ledger` lazily self-attaches on first write, so
+	# the codex screen reads zero for an actor that was never attached, and a
+	# quest or event grant lands in a key nothing initialized (ADR 0065).
+	DestinyApi.attach(actor)
+	# The world ledger, attached here for the same reason `DestinyApi.attach` above:
+	# ADR 0117 named `EventApi` a facade with ZERO production callers, so nothing
+	# owned the moment ADR 0114 requires an owner of. Attaching normalizes an EMPTY
+	# ledger and grants nothing, and it is the one place the attach order exists, so a
+	# world event's prize — a `DestinyApi.earn_fate` through `EventPrize` — lands in a
+	# key that already exists. After `DestinyApi.attach`, because that is what it
+	# creates. It does NOT start anything: `EventApi.advance` still has no production
+	# caller and must not gain one until a caller owns a PERIOD COUNT (ADR 0085's
+	# pull-based tick, DEF-0111) — recorded in `docs/deferred.jsonl`.
+	EventApi.attach(actor)
+	# Quests, for the same reason: `QuestBeatHandler` is a registered sink, and a
+	# handler reading an un-attached ledger sees no active quest and claims nothing.
+	QuestApi.attach(actor)
 	NpcBoot.install(actor)
+	# After every attach above: a seam is only correct if the module it wires is
+	# already complete, and `TechniquesApi.attach` is what makes the codex exist for
+	# `TechniqueDelivery` to write into.
+	_bind_technique_seams()
 	var inventory := ItemsApi.inventory(actor)
 	for item_id in STARTER_ITEMS:
 		var def := _resolve(item_id)
 		if def != null:
 			inventory.add(def, 1)
 	return actor
+
+
+## Bind the two seams the techniques module needs from OUTSIDE its own directory.
+##
+## ## Why these live here and not in the techniques module
+##
+## `app/` is the composition root and may depend on anything by construction
+## (`tools/arch/rules.py`, `LAYER_DEPS["app"] == {"*"}`). Both seams below exist
+## because the edge they carry is NOT legal where the mechanic lives:
+##
+##   - **delivery** — `modules/items/item_use.gd` has to turn a
+##     `category = &"technique"` item into a `CodexEntry`. Naming `TechniquesApi`
+##     from `items` would be an `items -> techniques` edge the registry does not
+##     declare, and a bare class reference out of `modules/*` is not even an edge
+##     the checker sees (`BARE_REF_UNITS` excludes `modules/*`), so it would have
+##     been UNDECLARED rather than real. `TechniqueDelivery` is the resolver seam;
+##     this call is what makes it live.
+##   - **casting** — `TechniqueCasting.activate` resolves its hit through an
+##     injected `resolver` rather than naming `CombatEngineApi`, for the identical
+##     reason (`technique_casting.gd` says so at length). Without this binding an
+##     active technique fires, pays its qi, starts its cooldown and returns an
+##     EMPTY damage descriptor, because nothing ever handed it the spine.
+##
+## ## Why `bind_learner` and not a closure
+##
+## `TechniqueDelivery.bind_learner` already forwards to `TechniquesApi.learn`, so
+## binding it is passing the module's own entry point rather than a lambda defined
+## in here. If a future edit needs the root's own logic in the loop, that is a
+## closure over THIS root — and the seam still keeps the dependency one-way.
+##
+## Called from `_build_actor` and NOT from `_ready`: `_ready` runs once but a
+## caller that rebuilds an actor (`ActorFactory` is public) would otherwise leave a
+## freshly built actor with no seam, because a process-wide binding survives while
+## the actor it was installed for does not. Installing here means every actor this
+## root builds is wired, which is the property that was missing.
+func _bind_technique_seams() -> void:
+	TechniqueDelivery.install(Callable(TechniqueDelivery, "bind_learner"))
+	TechniqueCasting.set_resolver(Callable(self, "_resolve_technique_hit"))
+
+
+## The damage resolver `TechniqueCasting.activate` is handed, for the same reason
+## the delivery seam above exists and for the same edge it cannot draw itself.
+##
+## ## Why the resolver is a method here and not a lambda
+##
+## A lambda would work and would be shorter, but it would be unreadable at the call
+## site three lines later. As a method the signature — three actors/def in, one
+## descriptor out — is stated where a reader is already looking, and it can be
+## passed to a test as `Callable(app, "_resolve_technique_hit")` to prove the wiring
+## without a fight.
+##
+## ## Why `rng` is null
+##
+## A null rng means NO randomness and every attack lands (`CombatEngineApi
+## .resolve_hit` documents it, ADR 0067). That is the correct default for a shell
+## with no combat system driving it: a technique must produce a real, readable
+## damage descriptor, and a random miss in a probe or a screen would report "0
+## damage" for a technique that works perfectly. A caller that wants the roll
+## injects its own rng through the same seam.
+##
+## `breakdown` is the descriptor form and is the right return: `TechniqueCasting
+## ._resolve` accepts a `Dictionary` verbatim and this is exactly one.
+func _resolve_technique_hit(attacker: Actor, target: Actor, technique: TechniqueDef) -> Dictionary:
+	return CombatEngineApi.breakdown(attacker, target, technique, CombatEngineApi.tuning(), null)
 
 
 ## Push the one route the shell mounts at boot and never pops, so `ui_cancel`
