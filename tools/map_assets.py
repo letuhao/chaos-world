@@ -236,6 +236,21 @@ def register(parent_parser) -> None:
     actions.add_parser("report", help="summarize map assets by environment and category")
     next_assets = actions.add_parser("next", help="prioritize undercovered map assets")
     next_assets.add_argument("--count", type=int, default=12)
+    next_assets.add_argument(
+        "--exclude-category",
+        action="append",
+        choices=sorted(ASSET_ROLES),
+        default=[],
+        help="omit a category (repeat to omit more than one)",
+    )
+    next_assets.add_argument(
+        "--type",
+        dest="asset_types",
+        action="append",
+        choices=sorted({role[2] for roles in ASSET_ROLES.values() for role in roles}),
+        default=[],
+        help="include only this asset type (repeat to include multiple types)",
+    )
     actions.add_parser("audit", help="validate the map asset index")
     actions.add_parser("preview", help="build a contact sheet of produced map assets")
     actions.add_parser("migrate", help="add explicit alpha mode to older index entries")
@@ -383,7 +398,7 @@ def run(args) -> int:
         issues = _validate(records)
         if issues:
             raise ToolError(f"cannot prioritize an invalid map index ({len(issues)} issue(s))")
-        _next_assets(records, args.count)
+        _next_assets(records, args.count, args.exclude_category, args.asset_types)
         return 0
     issues = _validate(records)
     if action == "report":
@@ -1083,18 +1098,36 @@ def _preview_repeated_tiles(produced: list[dict]) -> None:
     ok(f"wrote {output_path.relative_to(REPO_ROOT).as_posix()} ({len(tiles)} repeated tiles)")
 
 
-def _next_assets(records: list[dict], count: int) -> None:
-    environment_totals = Counter(record["environment"] for record in records)
-    category_totals = Counter(record["category"] for record in records)
+def _next_assets(
+    records: list[dict],
+    count: int,
+    excluded_categories: list[str],
+    asset_types: list[str],
+) -> None:
+    eligible = [
+        record
+        for record in records
+        if record["category"] not in excluded_categories
+        and (not asset_types or record["type"] in asset_types)
+    ]
+    environment_totals = Counter(record["environment"] for record in eligible)
+    category_totals = Counter(record["category"] for record in eligible)
     environment_produced: Counter[str] = Counter()
     category_produced: Counter[str] = Counter()
     planned: list[tuple[int, dict]] = []
     for index, record in enumerate(records):
+        if record["category"] in excluded_categories or (
+            asset_types and record["type"] not in asset_types
+        ):
+            continue
         if record["status"] == "planned":
             planned.append((index, record))
         elif record["status"] in {"generated", "approved"}:
             environment_produced[record["environment"]] += 1
             category_produced[record["category"]] += 1
+
+    if not planned:
+        raise ToolError("no planned map assets match the selected filters")
 
     selected: list[dict] = []
     for _ in range(min(count, len(planned))):
