@@ -39,6 +39,10 @@ const REASON_NO_SPEND_CONSUMER := &"no_spend_consumer"
 const REASON_NO_EFFECT := &"no_applicable_effect"
 ## `def`'s category has no Use verb at all — equipment and material.
 const REASON_NOT_USABLE := &"not_usable"
+## The `ProjectSettings` key `app/` writes the delivery seam under. A String, so
+## reading it costs nothing and a build with no seam reads as "unset" rather than
+## as a missing symbol.
+const DELIVERY_SETTING := "technique/delivery_seam"
 
 
 ## Preview what using `instance` would do. Never consumes, never mutates, and
@@ -168,10 +172,6 @@ static func _study_technique(actor: Actor, def: ItemDef, instance: ItemInstance)
 	return (seam as Object).call(&"study", actor, def, instance)
 
 
-## The `ProjectSettings` key `app/` writes the delivery seam under. A String, so
-## reading it costs nothing and a build with no seam reads as "unset" rather than
-## as a missing symbol.
-const DELIVERY_SETTING := "technique/delivery_seam"
 
 
 ## Refuse a read-only channel. The numbers still ride along, because a caller

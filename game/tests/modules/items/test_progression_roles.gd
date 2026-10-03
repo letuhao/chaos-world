@@ -21,19 +21,14 @@ extends TestCase
 ##   4. NON-TRIVIALITY. A bare actor is refused before the gate is even reached, so
 ##      half 2 is not the only way to fail and the guard is not vacuous.
 ##
-## The seed sweep reads `data/*/realms/*.tres` as TEXT. That is a deliberate,
-## bounded one-way read of authored content in a test — not a runtime edge — and it
-## is what makes the table provable against the authority that writes it instead of
-## against a second copy of itself.
+## The seed sweep reads `data/*/realms/*.tres` as TEXT: a bounded, one-way read of
+## authored content in a test, not a runtime edge. It is what makes the table
+## provable against the authority that writes it rather than a second copy of it.
 
-## The three cultivation paths and the seed field each one uses for each role.
-## The suffix is the seed field's own name with `_item` dropped, so a new realm
-## field is a new row here and not a new branch in the rule.
-const SEED_ROOTS := {
-	"body_cultivation": "body",
-	"qi_cultivation": "qi",
-	"mind_cultivation": "mind",
-}
+## The three cultivation paths, and the seed field behind each role. The suffix is
+## the field's own name with `_item` dropped, so a new realm field is a new row
+## here rather than a new branch in the rule.
+const SEED_ROOTS := {"body_cultivation": "body", "qi_cultivation": "qi", "mind_cultivation": "mind"}
 const SEED_FIELDS := {
 	"breakthrough_item": "breakthrough",
 	"strengthening_item": "strengthening",
@@ -56,6 +51,9 @@ const EXPENDABLE := "F46_mortal_grainery_attack_speed_evasion_fortune"
 ## An authored pill no seed names. Its role is empty and its subtype is the same one
 ## the progression pills use, which is what makes it the control for the gate.
 const UNRULED_PILL := "H1_mortal_breakthrough_pill"
+## An authored, unruled consumable whose only fixed option is one its own category
+## refuses, so the definition resolves to no effects at all.
+const BASE_ONLY_TINCTURE := "A15_heaven_barmbrack_base"
 
 
 func setup() -> void:
@@ -83,18 +81,13 @@ func _seeded_roles() -> Array:
 	for root_dir in SEED_ROOTS.keys():
 		var short_path := String(SEED_ROOTS[root_dir])
 		for path in ContentScan.files_under("res://data/%s/realms" % root_dir):
-			var text := FileAccess.get_file_as_string(path)
-			for line in text.split("\n"):
+			for line in FileAccess.get_file_as_string(path).split("\n"):
 				var fields := line.strip_edges().split(" = ", false)
-				if fields.size() != 2:
-					continue
-				var field := fields[0]
-				if not SEED_FIELDS.has(field):
+				if fields.size() != 2 or not SEED_FIELDS.has(fields[0]):
 					continue
 				var item_id := fields[1].trim_prefix('&"').trim_suffix('"')
-				if item_id.is_empty():
-					continue
-				out.append([item_id, "%s_%s" % [short_path, SEED_FIELDS[field]]])
+				if not item_id.is_empty():
+					out.append([item_id, "%s_%s" % [short_path, SEED_FIELDS[fields[0]]]])
 	return out
 
 
@@ -171,18 +164,12 @@ func test_a_progression_input_is_refused_by_name_and_survives_the_press() -> voi
 		var result := ItemsApi.use_item(actor, StringName(item_id))
 		assert_eq(bool(result.get("ok", false)), false, "%s is refused" % item_id)
 		assert_eq(
-			String(result.get("reason", "")),
-			String(ItemUse.REASON_PROGRESSION_INPUT),
-			"and the refusal names itself"
+			String(result.get("reason", "")), String(ItemUse.REASON_PROGRESSION_INPUT), "named"
 		)
 		assert_eq(
 			String(result.get("role", "")), String(role), "and names the path it serves: %s" % role
 		)
-		assert_eq(
-			ItemsApi.inventory(actor).count(StringName(item_id)),
-			1,
-			"%s survived the press" % item_id
-		)
+		assert_eq(ItemsApi.inventory(actor).count(StringName(item_id)), 1, "%s survived" % item_id)
 		# The pill carries a `restore_health` option, so the defect was never that
 		# the heal was missing. It is that pressing the button charged the player a
 		# progression item for a heal it was never meant to give.
@@ -224,9 +211,7 @@ func test_a_read_only_channel_is_refused_instead_of_destroyed() -> void:
 	ItemsApi.inventory(actor).add(key, 1)
 	var result := ItemsApi.use_item(actor, key.id)
 	assert_eq(bool(result.get("ok", false)), false, "a key is not spendable")
-	assert_eq(
-		String(result.get("reason", "")), String(ItemUse.REASON_NO_SPEND_CONSUMER), "named refusal"
-	)
+	assert_eq(String(result.get("reason", "")), String(ItemUse.REASON_NO_SPEND_CONSUMER), "named")
 	assert_eq(ItemsApi.inventory(actor).count(key.id), 1, "the key survived")
 	assert_eq(
 		float((result.get("properties", {}) as Dictionary).get("key_reach", 0.0)),
@@ -279,7 +264,6 @@ func test_a_genuinely_expendable_consumable_is_still_spent() -> void:
 	assert_eq(ProgressionRoles.role_of(def.id), &"", "%s is authored as expendable" % EXPENDABLE)
 	var actor := _hero()
 	var pool := actor.resource(&"health")
-	var start := pool.current
 	pool.change(-30.0)
 	var wounded := pool.current
 	ItemsApi.inventory(actor).add(def, 3)
@@ -315,14 +299,50 @@ func test_the_gate_leaves_an_unruled_pill_alone() -> void:
 		String(ItemUse.REASON_PROGRESSION_INPUT),
 		"while the ruled one is refused by the same question"
 	)
-	var actor := _hero()
-	ItemsApi.inventory(actor).add(unruled, 1)
+
+
+func test_a_consumable_that_restores_nothing_is_refused_and_kept() -> void:
+	# The third member of this family, and the one easiest to miss: a consumable
+	# whose options resolve to nothing at all must not cost a unit. Reporting `ok`
+	# there is BL-0110 one category over -- the verb decrements the stack and the
+	# actor is identical afterwards.
+	#
+	# The subject is an authored tincture whose fixed `base_spirit` the catalog
+	# declares for `equipment`/`technique`, so the `consumed` channel refuses the
+	# option and the item resolves to no effects whatsoever. That is real shipped
+	# content, not a fixture, and it is why the verb has nothing to charge for.
+	#
+	# Asked on a COPY with its roll spec dropped, because every authored consumable
+	# rolls and a roll decides for itself whether this press lands. Copying rather
+	# than mutating matters: the loaded resource is shared with every other suite in
+	# the process, and clearing a spec on it would change what they roll too.
+	var authored := _def(BASE_ONLY_TINCTURE)
+	assert_ne(authored, null, "%s resolves" % BASE_ONLY_TINCTURE)
+	if authored == null:
+		return
+	var fixed_only := authored.duplicate(true) as ItemDef
+	fixed_only.roll_spec = {}
+	fixed_only.id = &"fixed_only_tincture"
+	assert_eq(ItemUse.spend_gate(fixed_only).is_empty(), true, "the gate allows it through")
 	assert_eq(
-		bool(ItemsApi.use_item(actor, unruled.id).get("ok", false)),
-		false,
-		"and spending it is still refused for its OWN reason -- it restores nothing"
+		ItemEffects.resolve(fixed_only, null).size(),
+		0,
+		"its fixed option is refused by its own category, so it carries nothing at all"
 	)
-	assert_eq(ItemsApi.inventory(actor).count(unruled.id), 1, "so the refusal kept the unit")
+	var actor := _hero()
+	var pool := actor.resource(&"health")
+	pool.change(-50.0)
+	var wounded := pool.current
+	ItemsApi.inventory(actor).add(fixed_only, 1)
+	var result := ItemsApi.use_item(actor, fixed_only.id)
+	assert_eq(bool(result.get("ok", false)), false, "so there is nothing to restore")
+	assert_eq(
+		String(result.get("reason", "")),
+		String(ItemUse.REASON_NO_EFFECT),
+		"so it is refused by name"
+	)
+	assert_eq(ItemsApi.inventory(actor).count(fixed_only.id), 1, "and the unit was kept")
+	assert_almost_eq(pool.current, wounded, "and no pool moved")
 
 
 # --- 4. Non-triviality ------------------------------------------------------
@@ -343,14 +363,13 @@ func test_a_bare_actor_is_refused_before_the_gate_is_reached() -> void:
 
 
 func test_the_gate_is_asked_even_for_a_def_the_bag_never_knew() -> void:
-	# `use_item` resolves a definition the inventory does not hold a reference to,
-	# so the gate is not a property of the carried `def_ref` and cannot be bypassed
-	# by handing the verb a definition the bag never saw.
+	# `use_item` resolves a definition the inventory does not hold a reference to, so
+	# the gate is a property of the DEFINITION, not of the carried `def_ref`, and
+	# cannot be bypassed by handing the verb a definition the bag never saw.
 	var def := _def(String(PILL_BY_ROLE["qi_breakthrough"]))
 	var actor := _hero()
-	ItemsApi.inventory(actor).add(def, 1)
-	ItemsApi.inventory(actor).clear()
-	# Re-add through a fresh inventory whose def_ref came from the content tree.
+	# A fresh inventory whose def_ref came from the content tree, not from the add
+	# that built the previous bag.
 	actor.set_component(ItemsApi.INVENTORY_COMPONENT, Inventory.new(4))
 	var gate := ItemUse.spend_gate(def)
 	assert_eq(String(gate.get("reason", "")), String(ItemUse.REASON_PROGRESSION_INPUT), "refused")

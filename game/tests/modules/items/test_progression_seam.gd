@@ -5,8 +5,8 @@ extends TestCase
 ## Everything else in this module's suite calls `ItemsApi.use_item` directly, which
 ## proves the rule but not the button. This file mounts the real composition root,
 ## presses the real `%UseButton` on a real authored pill, and reads the real
-## validation line — because the reported defect is a press, and a rule that only a
-## test can reach is not a fix.
+## validation line — because the reported defect is a press, and a rule only a test
+## can reach is not a fix.
 ##
 ## Both halves are here on purpose:
 ##
@@ -23,94 +23,105 @@ const PILL := &"mind_core_formation_breakthrough_pill"
 const DRAUGHT := &"F46_mortal_grainery_attack_speed_evasion_fortune"
 const WORKBENCH_SCENE := "res://src/ui/screens/item_workbench.tscn"
 
+var _harness: SeamHarness = null
+var _workbench: ItemWorkbench = null
+
 
 func setup() -> void:
-	if SeamHarness.live != null:
-		SeamHarness.live.teardown()
+	_harness = null
+	_workbench = null
 
 
 func teardown() -> void:
+	# One mount per test and one teardown, always paired. `SeamHarness.live` is
+	# process-wide and the runner shares one process across every suite, so a mount
+	# left behind leaks into the next test.
 	if SeamHarness.live != null:
 		SeamHarness.live.teardown()
 	SeamHarness.live = null
+	_harness = null
+	_workbench = null
 
 
-## The mounted app, opened on the workbench the way a player reaches it. Returns
-## null after recording the failure, so a broken composition root is a red run and
-## not a silent skip.
-func _open_workbench() -> ItemWorkbench:
-	var harness := SeamHarness.mount_new()
-	assert_eq(harness.boot_error, "", "the real ItemWorkbenchApp scene boots")
-	if harness.boot_error != "":
-		return null
-	var moved := harness.navigate(SeamHarness.route_for_scene(WORKBENCH_SCENE))
+## Mount the real app and open the workbench the way a player reaches it. Records
+## the failure and returns false rather than skipping, because a broken composition
+## root is a red run and never a neutral observation.
+func _open() -> bool:
+	_harness = SeamHarness.mount_new()
+	assert_eq(_harness.boot_error, "", "the real ItemWorkbenchApp scene boots")
+	if _harness.boot_error != "":
+		return false
+	var moved := _harness.navigate(SeamHarness.route_for_scene(WORKBENCH_SCENE))
 	assert_eq(moved["ok"], true, "the workbench route opens: %s" % moved["note"])
 	if not bool(moved["ok"]):
-		return null
-	return harness.mounted(WORKBENCH_SCENE) as ItemWorkbench
+		return false
+	_workbench = _harness.mounted(WORKBENCH_SCENE) as ItemWorkbench
+	assert_ne(_workbench, null, "the mounted workbench is the screen on the stack")
+	return _workbench != null
 
 
 ## Acquire `def_id` through the facade's own verb, so the item arrives the way a
 ## drop or a craft would rather than by being handed to the bag.
-func _acquire(harness: SeamHarness, def_id: StringName, seed_value: int) -> ItemDef:
+func _acquire(def_id: StringName, seed_value: int) -> bool:
 	var def := Crafting.resolve(def_id)
 	assert_ne(def, null, "%s resolves from the shipped content tree" % def_id)
 	if def == null:
-		return null
-	var held := ItemsApi.generate(harness.actor, def, seed_value)
-	assert_ne(held, null, "%s was acquired through ItemsApi.generate" % def_id)
-	return def
+		return false
+	assert_ne(
+		ItemsApi.generate(_harness.actor, def, seed_value),
+		null,
+		"%s was acquired through ItemsApi.generate" % def_id
+	)
+	return true
 
 
 func test_pressing_use_on_a_progression_pill_keeps_it_and_says_why() -> void:
-	var harness := SeamHarness.mount_new()
-	var workbench := _open_workbench()
-	if workbench == null:
+	if not _open():
 		return
-	var def := _acquire(harness, PILL, 4117)
-	if def == null:
+	if not _acquire(PILL, 4117):
 		return
-	var row := harness.row_of_def(workbench, String(PILL))
+	var row := _harness.row_of_def(_workbench, String(PILL))
 	assert_ne(row, -1, "the acquired pill is an inventory row a player can select")
-	assert_eq(harness.pick_row(workbench, row), true, "and is picked")
+	assert_eq(_harness.pick_row(_workbench, row), true, "and is picked")
 	# Wounded first, so "nothing was applied" is a claim about a pool that could have
-	# risen rather than about a pool already at its cap.
-	harness.actor.resource(&"health").change(-40.0)
-	var wounded := harness.actor.resource(&"health").current
-	assert_eq(harness.button(workbench, "%UseButton") != null, true, "Use is a real control")
+	# risen rather than about a pool already sitting at its cap.
+	_harness.actor.resource(&"health").change(-40.0)
+	var wounded := _harness.actor.resource(&"health").current
+	assert_ne(_harness.button(_workbench, "%UseButton"), null, "Use is a real control")
 	assert_eq(
-		bool((workbench.summary() as Dictionary)["action_enabled"]["use"]),
+		bool((_workbench.summary() as Dictionary)["action_enabled"]["use"]),
 		true,
 		"and it is live -- the press reaches the facade, so this is not a dead control"
 	)
-	assert_eq(harness.press(workbench, "%UseButton"), true, "Use is pressed")
-	var after: Dictionary = workbench.summary()
+	assert_eq(_harness.press(_workbench, "%UseButton"), true, "Use is pressed")
+	var after: Dictionary = _workbench.summary()
 	assert_eq(String(after["message"]), "Rejected: progression_input", "the line names the refusal")
 	assert_eq(String(after["tone"]), "error", "reported as a rejection, not a success")
 	assert_eq(
-		ItemsApi.inventory(harness.actor).count(PILL), 1, "the pill is still in the bag afterwards"
+		ItemsApi.inventory(_harness.actor).count(PILL), 1, "the pill is still in the bag afterwards"
 	)
-	assert_almost_eq(harness.actor.resource(&"health").current, wounded, "and no pool moved for it")
+	assert_almost_eq(
+		_harness.actor.resource(&"health").current, wounded, "and no pool moved for it"
+	)
 
 
 func test_pressing_use_on_a_gathered_draught_still_spends_it() -> void:
-	var harness := SeamHarness.mount_new()
-	var workbench := _open_workbench()
-	if workbench == null:
+	if not _open():
 		return
-	var def := _acquire(harness, DRAUGHT, 5221)
-	if def == null:
+	if not _acquire(DRAUGHT, 5221):
 		return
-	harness.actor.resource(&"health").change(-40.0)
-	var wounded := harness.actor.resource(&"health").current
-	var row := harness.row_of_def(workbench, String(DRAUGHT))
+	_harness.actor.resource(&"health").change(-40.0)
+	var wounded := _harness.actor.resource(&"health").current
+	var row := _harness.row_of_def(_workbench, String(DRAUGHT))
 	assert_ne(row, -1, "the acquired draught is an inventory row")
-	assert_eq(harness.pick_row(workbench, row), true, "and is picked")
-	assert_eq(harness.press(workbench, "%UseButton"), true, "Use is pressed")
-	var after: Dictionary = workbench.summary()
+	assert_eq(_harness.pick_row(_workbench, row), true, "and is picked")
+	assert_eq(_harness.press(_workbench, "%UseButton"), true, "Use is pressed")
+	var after: Dictionary = _workbench.summary()
 	assert_eq(String(after["tone"]), "ok", "accepted rather than rejected")
 	assert_eq(
 		String(after["message"]).begins_with("Used "), true, "and the bar names the item used"
 	)
-	assert_eq(ItemsApi.inventory(harness.actor).count(DRAUGHT), 0, "exactly one unit was consumed")
-	assert_eq(harness.actor.resource(&"health").current > wounded, true, "and a pool actually rose")
+	assert_eq(ItemsApi.inventory(_harness.actor).count(DRAUGHT), 0, "exactly one unit was consumed")
+	assert_eq(
+		_harness.actor.resource(&"health").current > wounded, true, "and a pool actually rose"
+	)
