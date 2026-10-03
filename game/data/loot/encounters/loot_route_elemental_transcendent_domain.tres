@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
@@ -11,7 +11,20 @@ realm = &"transcendent"
 rarity = &"legendary"
 vitality = 500.0
 boss_tables = Array[Dictionary]([
-	{"boss_id": &"d3_prism_guardian", "table_id": &"loot_route_d3_prism_guardian"}
+	{"boss_id": &"d3_prism_guardian", "table_id": &"loot_route_d3_prism_guardian"},
+	{"boss_id": &"elemental_transcendent_guardian", "table_id": &"loot_elemental_transcendent_guardian"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"transcendent"
+rarity = &"legendary"
+vitality = 800.0
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"d3_prism_guardian", "table_id": &"loot_route_d3_prism_guardian"},
+	{"boss_id": &"elemental_transcendent_guardian", "table_id": &"loot_elemental_transcendent_guardian"},
 ])
 
 [resource]
@@ -19,6 +32,9 @@ script = ExtResource("1_encounter")
 id = &"loot_route_elemental_transcendent_domain"
 display_name = "Prism Guardian (elemental_transcendent_domain)"
 domain_id = &"elemental_transcendent_domain"
-boss_ids = Array[StringName]([&"d3_prism_guardian"])
+boss_ids = Array[StringName]([&"d3_prism_guardian", &"elemental_transcendent_guardian"])
 key_reach = 0
-tiers = Array[LootTier]([SubResource("tier_0")])
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

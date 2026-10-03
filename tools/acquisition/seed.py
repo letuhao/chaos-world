@@ -72,7 +72,9 @@ def seed(graph: Graph, force: bool = False) -> Written:
     """
     written = Written()
     gaps: list[str] = []
-    for trial in sorted(graph.all_trials, key=lambda entry: (not entry.ladder, entry.path, entry.index)):
+    for trial in sorted(
+        graph.all_trials, key=lambda entry: (not entry.ladder, entry.path, entry.index)
+    ):
         gaps.extend(_seed_trial(graph, trial, written, force))
     if gaps:
         # Loud, not silent: a boss with nothing to drop would produce a table the
@@ -168,8 +170,7 @@ def _seed_trial(graph: Graph, trial: Trial, written: Written, force: bool) -> li
             completing = True
             adopted = _adopted_tables(graph, existing)
             written.completed.append(
-                f"{trial.domain_id}: {existing.path.name} never spawned "
-                f"{', '.join(unspawned)}"
+                f"{trial.domain_id}: {existing.path.name} never spawned {', '.join(unspawned)}"
             )
         elif not design.supersedes(existing.encounter_id):
             written.contested.append(
@@ -229,11 +230,7 @@ def _seed_trial(graph: Graph, trial: Trial, written: Written, force: bool) -> li
         bindings.append({"boss_id": boss_id, "table_id": table})
         _retire_legacy_loot(graph, boss_id, written)
     if completing and existing is not None:
-        added = [
-            binding
-            for binding in bindings
-            if binding["boss_id"] not in existing.boss_ids
-        ]
+        added = [binding for binding in bindings if binding["boss_id"] not in existing.boss_ids]
         unspawned = [boss for boss in trial.boss_ids if boss not in existing.boss_ids]
         if added and _complete_encounter(existing.path, unspawned, added):
             written.completed_ids.append(existing.path.name)
@@ -281,12 +278,19 @@ def _complete_encounter(path: Path, missing: list[str], bindings: list[dict]) ->
     it into a `common`/`rare` pair silently downgrades every one of them.
 
     So the author's bands, their rarity, their vitality and their existing bindings
-    are all preserved verbatim and the missing bosses are appended. The edit is
-    purely additive and is verified by reading the file back, so a shape this does
-    not understand is reported rather than rewritten.
+    are all preserved verbatim and the missing bosses are appended.
+
+    The candidate text is verified **before** anything is written. An earlier
+    version appended `boss_ids` unconditionally and inserted the bindings only
+    after a line ending `}),`, which the last binding of a hand-written band does
+    not: it left an encounter listing a boss no band bound, returned False, and the
+    caller turned that into a gap. `LootValidator` rejects exactly that shape
+    ("does not bind boss '<id>'"), so a failed completion used to replace one
+    content error with a different one. A shape this does not understand is now
+    reported without touching the file.
     """
     text = path.read_text(encoding="utf-8")
-    entries = "".join(
+    entries = [
         "\t"
         + "{"
         + ", ".join(
@@ -295,7 +299,7 @@ def _complete_encounter(path: Path, missing: list[str], bindings: list[dict]) ->
         )
         + "},\n"
         for binding in bindings
-    )
+    ]
     boss_line = ", ".join(emit.name(boss_id) for boss_id in missing)
     blocks = 0
     out_lines: list[str] = []
@@ -310,29 +314,49 @@ def _complete_encounter(path: Path, missing: list[str], bindings: list[dict]) ->
             continue
         if inside:
             if line.startswith("])"):
+                # Closed the array: the binding lines are already out, so this is
+                # where the new ones belong. `emit.dictionary_array` terminates the
+                # last binding with `},` and a hand-written band may terminate it
+                # with `}`, so the previous non-blank line is comma-terminated here
+                # rather than detected by its own suffix.
+                inner = [index for index, done in enumerate(out_lines) if done.strip()]
+                if inner and not out_lines[inner[-1]].rstrip().endswith(","):
+                    out_lines[inner[-1]] = out_lines[inner[-1]].rstrip("\n") + ",\n"
+                out_lines.extend(entries)
                 inside = False
                 blocks += 1
                 out_lines.append(line)
                 continue
-            if line.strip() == "":
-                out_lines.append(line)
-                continue
             out_lines.append(line)
-            if line.rstrip().endswith("}),"):
-                out_lines.append(entries)
             continue
         out_lines.append(line)
     if blocks == 0:
         return False
+    if not _reads_completed("".join(out_lines), missing, blocks):
+        return False
     path.write_text("".join(out_lines), encoding="utf-8")
-    reread = path.read_text(encoding="utf-8")
+    return True
+
+
+def _reads_completed(text: str, missing: list[str], bands: int) -> bool:
+    """Whether `text` lists every boss in `missing` **and binds it on every band**.
+
+    Every band, not one: `LootValidator` requires each tier to bind each boss the
+    encounter lists, so a binding on a single band is a content error rather than a
+    partial success.
+    """
+    listed = string_array(text, "boss_ids")
+    band_chunks = [chunk for chunk in sub_resources(text) if "boss_tables" in chunk]
+    if len(band_chunks) != bands:
+        return False
     return all(
-        boss_id in string_array(reread, "boss_ids")
-        and any(
-            unquote(str(binding.get("boss_id", ""))) == boss_id
-            for chunk in sub_resources(reread)
-            if "boss_tables" in chunk
-            for binding in read_bindings(chunk, "boss_tables")
+        boss_id in listed
+        and all(
+            any(
+                unquote(str(binding.get("boss_id", ""))) == boss_id
+                for binding in read_bindings(chunk, "boss_tables")
+            )
+            for chunk in band_chunks
         )
         for boss_id in missing
     )

@@ -413,11 +413,15 @@ class Graph:
             # that gates a ladder would keep a rolled catalyst forever. An
             # incomplete one is included too, because its omitted boss is owed a
             # route whatever wrote the encounter.
-            if existing is not None and existing.encounter_id != design.encounter_id(
-                domain_id
-            ) and not _omits_declared_bosses(existing, self.domain_bosses(domain_id)):
+            if (
+                existing is not None
+                and existing.encounter_id != design.encounter_id(domain_id)
+                and not _omits_declared_bosses(existing, self.domain_bosses(domain_id))
+            ):
                 continue
-            boss_ids = tuple(boss for boss in self.domain_bosses(domain_id) if self.boss_drops(boss))
+            boss_ids = tuple(
+                boss for boss in self.domain_bosses(domain_id) if self.declared_drops(boss)
+            )
             if not boss_ids:
                 continue
             realm_id = self.band_realm(domain_id, boss_ids)
@@ -491,7 +495,51 @@ class Graph:
                     out.append(table_id)
         return tuple(out)
 
+    def declared_drops(self, boss_id: str) -> tuple[str, ...]:
+        """Every item `boss_id` **declares** it can hand out, bound or not.
+
+        [method boss_drops] answers *reachable* drops: it counts a table only once
+        an encounter binds it. Trial membership cannot be gated on that, because the
+        binding is precisely what the seeder has yet to write — so a boss whose only
+        table nothing binds yet reads as drop-less, is filtered out of its own
+        trial, and so is never given the binding that would make it reachable. The
+        filter keeps its own output out of its input.
+
+        `elemental_transcendent_guardian` is that shape: a `BossDef` its domain
+        declares, a full authored table holding the five items that declare
+        `boss:elemental_transcendent_guardian`, and no binding anywhere. Read as
+        reachable it has nothing, so the world trial for its domain left it out,
+        so the seeder never bound it, so it stayed unreadable.
+
+        So the question a trial asks is "has this boss authored drop content?",
+        which is a property of a file on disk and not of an encounter. The table
+        named after the boss is that file; reading it by name is naming, not
+        authorship, and it is the same rule [method seed._owns_table] already
+        applies when it decides whether `--force` may rewrite a table.
+        """
+        items = set(self.boss_drops(boss_id))
+        own = design.table_id(boss_id)
+        if own in self.loot_tables:
+            items |= self.reachable(own)
+        return tuple(sorted(items))
+
     # --- authored encounters
+
+    def reachable(self, table_id: str, depth: int = 0) -> set[str]:
+        """Every item `table_id` can produce, nested tables included.
+
+        Bounded by [constant MAX_TABLE_NESTING] so a cyclic table terminates
+        instead of recursing past the resolver's own guard.
+        """
+        if depth > MAX_TABLE_NESTING:
+            return set()
+        table = self.loot_tables.get(table_id)
+        if table is None:
+            return set()
+        found = set(table.get("entries", ()))
+        for nested in table.get("nested", ()):
+            found |= self.reachable(nested, depth + 1)
+        return found
 
     def _authored_drops(self) -> dict[str, set[str]]:
         """boss id -> every item an authored loot table bound to it can produce.
@@ -501,24 +549,12 @@ class Graph:
         """
         if self._authored_drops_cache is None:
             out: dict[str, set[str]] = {}
-
-            def collect(table_id: str, depth: int) -> set[str]:
-                if depth > MAX_TABLE_NESTING:
-                    return set()
-                table = self.loot_tables.get(table_id)
-                if table is None:
-                    return set()
-                found = set(table.get("entries", ()))
-                for nested in table.get("nested", ()):
-                    found |= collect(nested, depth + 1)
-                return found
-
             for encounter in self.encounters.values():
                 for tier in encounter.tiers:
                     for boss_id in encounter.boss_ids:
                         table_id = self.table_for(encounter, tier, boss_id)
                         if table_id:
-                            out.setdefault(boss_id, set()).update(collect(table_id, 0))
+                            out.setdefault(boss_id, set()).update(self.reachable(table_id))
             self._authored_drops_cache = out
         return self._authored_drops_cache
 

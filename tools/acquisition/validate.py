@@ -26,7 +26,7 @@ from __future__ import annotations
 
 from typing import NamedTuple
 
-from .chain import Encounter, Graph, Trial
+from .chain import Encounter, Graph, Trial, unquote
 from .design import ROUTE_PREFIX
 from .loot import guaranteed_items, guaranteed_quantities, reachable_items
 
@@ -48,7 +48,7 @@ def validate(graph: Graph) -> list[str]:
 
 
 def _content_problems(graph: Graph) -> list[str]:
-    """The two facts a per-realm walk cannot see, because it only ever reads one.
+    """The facts a per-realm walk cannot see, because it only ever reads one.
 
     `encounter_for_domain` answers with the first match, so a second encounter for a
     domain is invisible to every other check: the winner looks perfect while the
@@ -64,6 +64,7 @@ def _content_problems(graph: Graph) -> list[str]:
     for encounter in graph.encounters.values():
         claims.setdefault(encounter.domain_id, []).append(encounter.encounter_id)
         for tier in encounter.tiers:
+            problems.extend(_band_agreement_problems(encounter, tier))
             for boss_id in encounter.boss_ids:
                 table_id = graph.table_for(encounter, tier, boss_id)
                 if table_id:
@@ -94,6 +95,39 @@ def _content_problems(graph: Graph) -> list[str]:
             problems.append(
                 f"table {table_id}: no band binds it, so the drops it holds are unreachable"
             )
+    return problems
+
+
+def _band_agreement_problems(encounter: Encounter, tier: dict) -> list[str]:
+    """A band and its encounter must name the same bosses, in both directions.
+
+    `LootValidator` rejects either half ("does not bind boss '<id>'", "binds boss
+    '<id>' which the encounter does not list"), but only when the engine loads the
+    content. Nothing in the Python gates could see it, because the walk that judges
+    bindings is the *catalyst* walk: it reads `trial.catalysts`, and a world trial
+    has none, so all 68 world encounters' bands were unchecked on both sides.
+
+    Both directions matter and they fail differently. A boss listed but unbound is
+    a boss `enter_domain` spawns with no table, so its declared drops are
+    undeliverable. A boss bound but unlisted is worse for the acquisition graph: the
+    binding still credits the boss with every item its table holds, so an item
+    declaring `boss:<id>` passes `data audit` on the strength of a boss the
+    encounter never spawns. Both were verified as mutations that leave the gate
+    green, and both are now named here.
+    """
+    listed = set(encounter.boss_ids)
+    bound = {unquote(str(binding.get("boss_id", ""))) for binding in tier["bindings"]}
+    problems: list[str] = []
+    for boss_id in sorted(listed - bound):
+        problems.append(
+            f"{encounter.encounter_id} band {tier['tier']}: lists boss '{boss_id}' but "
+            f"binds no table for it, so its drops are undeliverable"
+        )
+    for boss_id in sorted(bound - listed):
+        problems.append(
+            f"{encounter.encounter_id} band {tier['tier']}: binds boss '{boss_id}' which "
+            f"the encounter does not list, so enter_domain never spawns it"
+        )
     return problems
 
 
