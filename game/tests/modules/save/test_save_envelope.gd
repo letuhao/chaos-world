@@ -71,8 +71,12 @@ func test_the_actor_payload_is_carried_whole_so_cultivation_progress_survives() 
 	SaveApi.persist(_actor, "standard")
 	var envelope := SaveStore.restore()["envelope"] as Dictionary
 	var restored := Actor.from_dict(envelope["actor"] as Dictionary)
-	assert_eq(String(restored.display_name), "Named Hero", "the actor round-trips through the envelope")
-	assert_eq(int(restored.to_dict()["version"]), Actor.SCHEMA_VERSION, "the actor schema is untouched")
+	assert_eq(
+		String(restored.display_name), "Named Hero", "the actor round-trips through the envelope"
+	)
+	assert_eq(
+		int(restored.to_dict()["version"]), Actor.SCHEMA_VERSION, "the actor schema is untouched"
+	)
 
 
 func test_the_soul_rides_beside_the_actor_and_not_inside_it() -> void:
@@ -83,7 +87,9 @@ func test_the_soul_rides_beside_the_actor_and_not_inside_it() -> void:
 	var envelope := SaveStore.restore()["envelope"] as Dictionary
 	var world := envelope["world"] as Dictionary
 	assert_eq(int((world["soul"] as Dictionary)["integrity"]), 70, "the soul is in the world slot")
-	assert_eq(bool((envelope["actor"] as Dictionary).has("soul_state")), false, "and not in the actor")
+	assert_eq(
+		bool((envelope["actor"] as Dictionary).has("soul_state")), false, "and not in the actor"
+	)
 
 
 func test_the_soul_survives_the_actor_being_replaced() -> void:
@@ -102,7 +108,9 @@ func test_the_envelope_version_and_the_actor_version_are_independent() -> void:
 	# ADR 0037: `SCHEMA_VERSION` is pinned at exactly 4 and a new world key must not bump it.
 	SaveApi.persist(_actor, "standard")
 	var envelope := SaveStore.restore()["envelope"] as Dictionary
-	assert_eq(int(envelope["envelope_version"]), SaveSlot.ENVELOPE_VERSION, "the envelope carries its own")
+	assert_eq(
+		int(envelope["envelope_version"]), SaveSlot.ENVELOPE_VERSION, "the envelope carries its own"
+	)
 	assert_eq(
 		int((envelope["actor"] as Dictionary)["version"]),
 		Actor.SCHEMA_VERSION,
@@ -143,15 +151,23 @@ func test_the_temp_file_is_never_read_as_a_slot() -> void:
 	# A temp file may be a partial write. Promoting it is exactly the corruption this design
 	# exists to prevent, so it is refused at the reader rather than trusted by convention.
 	assert_eq(SavePaths.is_temp(SavePaths.TEMP), true, "the temp path is recognised")
-	assert_eq(SaveSlot.is_readable({"anything": true}), false, "a file without the marker is not a save")
+	assert_eq(
+		SaveSlot.is_readable({"anything": true}), false, "a file without the marker is not a save"
+	)
 
 
 func test_a_file_that_is_not_a_save_is_reported_unreadable_rather_than_half_read() -> void:
 	# Three checks and no more: a dictionary, the format marker, and a version this build
 	# knows. Anything else routes to the backup instead of a half-populated world.
 	assert_eq(SaveSlot.is_readable("a string"), false, "a string is not an envelope")
-	assert_eq(SaveSlot.is_readable({"format": "something-else"}), false, "a foreign format is refused")
-	assert_eq(SaveSlot.is_readable({"format": SaveSlot.FORMAT, "envelope_version": 99}), false, "a future version is refused")
+	assert_eq(
+		SaveSlot.is_readable({"format": "something-else"}), false, "a foreign format is refused"
+	)
+	assert_eq(
+		SaveSlot.is_readable({"format": SaveSlot.FORMAT, "envelope_version": 99}),
+		false,
+		"a future version is refused"
+	)
 
 
 # --- Recovery ----------------------------------------------------------------
@@ -187,7 +203,11 @@ func test_recovery_reports_that_it_recovered_rather_than_saying_nothing() -> voi
 	# The recovered generation is a WHOLE one, not a salvage of the broken file.
 	assert_eq(SaveSlot.is_readable(out["envelope"]), true, "the recovered envelope is complete")
 	# The good text is still what was recovered, so nothing was lost by the failed write.
-	assert_eq(String((out["envelope"] as Dictionary)["format"]), SaveSlot.FORMAT, "the format marker survived")
+	assert_eq(
+		String((out["envelope"] as Dictionary)["format"]),
+		SaveSlot.FORMAT,
+		"the format marker survived"
+	)
 
 
 # --- The schedule -------------------------------------------------------------
@@ -235,8 +255,13 @@ func test_no_shipped_caller_can_name_the_backup_slot() -> void:
 		var file_name := path.get_file()
 		if allow_listed.has(file_name):
 			continue
-		var source := FileAccess.get_file_as_string(path)
-		for forbidden in ["load_backup", "restore_backup", "rollback", "revert_save", "SLOT_BACKUP"]:
+		# Read CODE, not raw text: every forbidden verb is named in this suite's own docstring and
+		# in `SaveStore`'s, so scanning unstripped text matches the prose and reports correct code
+		# as an affordance. A guard that fires on its own documentation is one nobody trusts.
+		var source := _code_only(FileAccess.get_file_as_string(path))
+		for forbidden in [
+			"load_backup", "restore_backup", "rollback", "revert_save", "SLOT_BACKUP"
+		]:
 			if source.contains(forbidden):
 				offenders.append("%s names %s" % [file_name, forbidden])
 	assert_eq(offenders, [], "no shipped caller can reach the backup")
@@ -244,9 +269,10 @@ func test_no_shipped_caller_can_name_the_backup_slot() -> void:
 
 func test_the_facade_exposes_no_backup_slot_constant() -> void:
 	# The other half: a caller cannot name the backup because there is no name for it. The only
-	# slot the facade publishes is the live one.
-	var source := FileAccess.get_file_as_string("res://src/modules/save/api.gd")
-	assert_eq(source.contains("&\"backup\""), false, "the facade names no backup slot")
+	# slot the facade publishes is the live one. Read from CODE, since the facade's docstring
+	# discusses the backup slot by name.
+	var source := _code_only(FileAccess.get_file_as_string("res://src/modules/save/api.gd"))
+	assert_eq(source.contains('&"backup"'), false, "the facade names no backup slot")
 	assert_eq(String(SaveApi.SLOT), "primary", "the one slot is the live one")
 
 

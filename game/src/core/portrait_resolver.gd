@@ -139,7 +139,7 @@ static func _view(def: PortraitDef, race_id: StringName, source: String) -> Dict
 		"race_id": String(race_id),
 		"layer_paths": def.layer_paths.duplicate(),
 		"palette_key": String(def.palette_key),
-		"form": def.trait("form"),
+		"form": def.trait_value("form"),
 		"source": source,
 		"is_placeholder": def.is_placeholder(),
 	}

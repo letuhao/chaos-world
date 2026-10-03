@@ -56,10 +56,17 @@ func is_placeholder() -> bool:
 
 ## One trait's value, or `""`. Read through this rather than by scanning `visual_traits`, so a
 ## caller never re-implements the `axis:value` split.
-func trait(axis: String) -> String:
-	var prefix := "%s:" % axis
+##
+## ## Why the method is `trait_value` and not `trait`
+##
+## **`trait` is a reserved GDScript keyword**, the one that introduced traits before
+## `@export` groups existed, and a member may not be named after it. Declaring `func trait(...)`
+## fails the whole file with "Could not parse global class PortraitDef" — which reads as a
+## corruption rather than as a name clash. The accessor carries the qualifier.
+func trait_value(axis_name: String) -> String:
+	var prefix := "%s:" % axis_name
 	for trait_id in visual_traits:
-		var name := String(trait_id)
-		if name.begins_with(prefix):
-			return name.substr(prefix.length())
+		var trait_name := String(trait_id)
+		if trait_name.begins_with(prefix):
+			return trait_name.substr(prefix.length())
 	return ""

@@ -98,7 +98,7 @@ func test_the_soul_module_references_no_power_table() -> void:
 	# The guard `tools arch` cannot provide. `AGENTS.md` records that `BARE_REF_UNITS` excludes
 	# `modules/*`, so a bare `RealmPowerTable.power_for()` from `soul` reports zero violations
 	# and a code-only cycle is invisible to the checker.
-	var source := FileAccess.get_file_as_string(SOUL_SOURCE)
+	var source := _code_only(FileAccess.get_file_as_string(SOUL_SOURCE))
 	for forbidden in ["RealmPowerTable", "RealmRate", "realm_power", "pow("]:
 		assert_eq(source.contains(forbidden), false, "soul names no %s" % forbidden)
 
@@ -106,7 +106,7 @@ func test_the_soul_module_references_no_power_table() -> void:
 func test_the_soul_ledger_derives_no_number_from_a_realm_index() -> void:
 	# The ledger's numbers are authored constants. A realm-indexed term here would make a soul's
 	# damage a function of how deep the player is, which is the second power curve.
-	var source := FileAccess.get_file_as_string(SOUL_STATE_SOURCE)
+	var source := _code_only(FileAccess.get_file_as_string(SOUL_STATE_SOURCE))
 	for forbidden in ["realm", "RealmRate", "pow("]:
 		assert_eq(
 			source.to_lower().contains(forbidden.to_lower()),
@@ -119,7 +119,7 @@ func test_the_difficulty_module_never_names_the_soul() -> void:
 	# ADR 0093's rule: the observer registers with the subject. `difficulty` is the subject here,
 	# so `soul` pulls from it and `difficulty` must not reach back — a two-way edge is a cycle
 	# the gate cannot see.
-	var source := FileAccess.get_file_as_string(DIFFICULTY_SOURCE)
+	var source := _code_only(FileAccess.get_file_as_string(DIFFICULTY_SOURCE))
 	for forbidden in ["SoulApi", "soul_state", "SoulState"]:
 		assert_eq(source.contains(forbidden), false, "difficulty names no %s" % forbidden)
 
@@ -127,6 +127,18 @@ func test_the_difficulty_module_never_names_the_soul() -> void:
 func test_difficulty_declares_no_clock_and_no_frame_driver() -> void:
 	# DEF-0111: nothing may read `Time.get_ticks*`, declare `_process` or call `get_tree()`. A
 	# difficulty that rises with playtime would need exactly that, and it is not available.
-	var source := FileAccess.get_file_as_string(DIFFICULTY_SOURCE)
+	var source := _code_only(FileAccess.get_file_as_string(DIFFICULTY_SOURCE))
 	for forbidden in ["Time.get_ticks", "_process", "_physics_process", "get_tree()"]:
 		assert_eq(source.contains(forbidden), false, "difficulty declares no %s" % forbidden)
+
+
+## `source` with every comment line removed, so a structural guard reads CODE and not the prose
+## describing what the code must not do. Every forbidden token above is named in these files'
+## own docstrings, so scanning raw text matches the explanation and fails on correct code.
+func _code_only(source: String) -> String:
+	var out: PackedStringArray = []
+	for line in source.split("\n"):
+		if line.strip_edges().begins_with("#"):
+			continue
+		out.append(line)
+	return "\n".join(out)

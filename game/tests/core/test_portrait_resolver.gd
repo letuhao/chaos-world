@@ -147,8 +147,11 @@ func test_the_resolver_is_answered_from_authored_resources_only() -> void:
 func test_a_portrait_declares_no_stat_field() -> void:
 	# ADR 0062: a race without a liability is a content bug, and appearance that changes numbers
 	# is a balance surface. Structural, because a value assertion cannot see an absent field.
-	var source := FileAccess.get_file_as_string("res://src/core/portrait_def.gd")
-	for forbidden in ["stat_modifier", "set_base", "add_modifier", "@export var power", "realm"]:
+	#
+	# Read from CODE, not raw text: this very docstring explains the rule using the words the
+	# guard forbids, so scanning the file unstripped matches the PROSE and fails on correct code.
+	var source := _code_only(FileAccess.get_file_as_string("res://src/core/portrait_def.gd"))
+	for forbidden in ["stat_modifier", "set_base", "add_modifier", "power", "realm", "rate"]:
 		assert_eq(source.contains(forbidden), false, "PortraitDef declares no %s" % forbidden)
 
 
@@ -188,3 +191,18 @@ func _base_stats(actor: Actor) -> String:
 		pairs.append("%s=%s" % [key, actor.stats.base_dict()[key]])
 	pairs.sort()
 	return ",".join(pairs)
+
+
+## `source` with every GDScript comment line removed, so a structural guard reads CODE and never
+## the prose describing what the code must not do.
+##
+## Removed by LINE because a docstring explaining a rule naturally uses the rule's own words: a
+## guard that scans raw text matches the explanation and fails on correct code, which is how a
+## guard ends up disabled instead of enforced.
+func _code_only(source: String) -> String:
+	var out: PackedStringArray = []
+	for line in source.split("\n"):
+		if line.strip_edges().begins_with("#"):
+			continue
+		out.append(line)
+	return "\n".join(out)

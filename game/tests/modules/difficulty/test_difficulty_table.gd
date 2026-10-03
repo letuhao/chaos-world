@@ -136,6 +136,20 @@ func test_no_difficulty_column_is_named_after_a_power_table() -> void:
 	# Structural: difficulty must never grow a reference to a power-shaped table, because
 	# scaling one by the other is the second curve ADR 0050 forbids. `tools arch` cannot see a
 	# module-to-module call with no `res://` in it, so this reads the source.
-	var source := FileAccess.get_file_as_string("res://src/modules/difficulty/api.gd")
+	#
+	# Read from CODE: this file's own docstring names the very tables the guard forbids, so
+	# scanning raw text matches the prose and fails on correct code.
+	var source := _code_only(FileAccess.get_file_as_string("res://src/modules/difficulty/api.gd"))
 	for forbidden in ["RealmPowerTable", "RealmRate", "realm_power", "pow("]:
 		assert_eq(source.contains(forbidden), false, "difficulty names no %s" % forbidden)
+
+
+## `source` with every comment line removed, so a structural guard reads CODE and not the prose
+## describing what the code must not do.
+func _code_only(source: String) -> String:
+	var out: PackedStringArray = []
+	for line in source.split("\n"):
+		if line.strip_edges().begins_with("#"):
+			continue
+		out.append(line)
+	return "\n".join(out)
