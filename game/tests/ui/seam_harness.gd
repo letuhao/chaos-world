@@ -52,6 +52,14 @@ const NAV_MISSING_CURRENT_ROUTE := (
 ## a suite calls it from `setup()`, so a test that aborted mid-function cannot leak a
 ## second mounted app into the next test. The runner shares one process across every
 ## suite, so a leak here is a leak everywhere.
+## The reward row scene and its own action control, by node name: the rows are
+## instantiated, so no single owner holds them and a unique name will not resolve.
+const DROP_ROW_NODE := "LootDropRow"
+const DROP_ACTION_NODE := "%DropAction"
+## Depth ceiling for the row walk. The reward list is three levels deep, so this is
+## slack rather than a tuned number.
+const MAX_TREE_WALK := 12
+
 static var live: SeamHarness = null
 
 var root: Window = null
@@ -350,6 +358,44 @@ func button(node: Node, unique_name: String) -> Button:
 ## the workbench resolves `%InventoryPanel` (declared in `item_workbench.tscn`) but
 ## not `%GenerateButton`, which is declared two levels down in `action_bar.tscn`.
 ## Falling back to a name search finds the same control the player sees.
+## Press a reward row's own action control — "Pick up" on a claimable drop.
+##
+## The rows are instantiated from `loot_drop_row.tscn`, so no single owner holds them
+## and `%DropAction` cannot be reached from the screen directly; this walks the list
+## for the nth row and returns its control. Returns false when there is no such row or
+## the control is disabled, so a dead control can never read as a successful pickup.
+func press_drop_action(screen: Node, index: int = 0) -> bool:
+	if screen == null:
+		return false
+	var list := _find_unique(screen, "%RewardList")
+	if list == null:
+		return false
+	var rows := _all_named(list, DROP_ROW_NODE, 0)
+	if index < 0 or index >= rows.size():
+		return false
+	var button := _find_unique(rows[index], DROP_ACTION_NODE) as Button
+	if button == null or button.disabled:
+		return false
+	button.pressed.emit()
+	return true
+
+
+## Every descendant named `node_name`, in tree order.
+##
+## Depth-capped for the same reason the arch rule requires it of any recursive walk: a
+## traversal with no cap is an unbounded loop the moment the tree contains a cycle, and
+## the `while`-scanning rules cannot see a recursive call at all.
+func _all_named(node: Node, node_name: String, depth: int) -> Array[Node]:
+	var found: Array[Node] = []
+	if depth > MAX_TREE_WALK:
+		return found
+	for child in node.get_children():
+		if String(child.name) == node_name:
+			found.append(child)
+		found.append_array(_all_named(child, node_name, depth + 1))
+	return found
+
+
 func _find_unique(node: Node, unique_name: String) -> Node:
 	if node == null:
 		return null
