@@ -1,4 +1,4 @@
-# 0033 Every cultivation path's gates are reachable through its own actions
+# 0036 Every cultivation path's gates are reachable through its own actions
 
 - Status: Accepted
 - Date: 2026-10-02

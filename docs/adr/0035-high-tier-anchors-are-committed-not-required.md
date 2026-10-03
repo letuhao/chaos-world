@@ -1,4 +1,4 @@
-# 0032 High-tier anchors are committed by the breakthrough, not required by it
+# 0035 High-tier anchors are committed by the breakthrough, not required by it
 
 - Status: Accepted
 - Date: 2026-10-02

@@ -5,6 +5,15 @@ extends RefCounted
 ## BreakthroughCondition is met. The core orchestrates and rescales; per-system
 ## conditions are supplied by modules (ADR 0003/0005).
 ##
+## `try_advance` also COMMITS the milestone that entering a realm produces, via
+## `WorldAnchor.commit`. It used to be two hand-written calls, one each in the body
+## and qi resolve paths, and the mind resolve path did not have one — which left
+## `actor.ascension` permanently null on that path and `ascension_ok` permanently
+## false there: an R29 no player action could ever open. `try_advance` is the one
+## call all three paths already reach on success, so the milestone now has one owner
+## and no path can forget it (ADR 0018-0021, ADR 0041, and the ADR 0066 shape it
+## replaces). `commit` is idempotent, so a path that also commits costs nothing.
+##
 ## For Immortal+ tiers the ladder is gated by the systems built in ADR 0018
 ## (inside world), ADR 0019 (world creation), ADR 0020 (tribulation) and ADR
 ## 0021 (ascension). Use try_advance_gated to apply every applicable gate; the
@@ -44,6 +53,7 @@ static func try_advance(
 	state.stage += 1
 	state.progress = 0.0
 	RealmScaling.apply(actor)
+	WorldAnchor.commit(actor, RealmDefaults.ladder().index_of(next_realm.id))
 	actor.path_advanced.emit(path_id, next_realm.id)
 	return true
 
@@ -97,15 +107,21 @@ static func advance_tribulation(actor: Actor) -> bool:
 	return not actor.tribulation.is_complete()
 
 
-## Fight the in-progress tribulation to its end, returning whether the actor
-## survived. Applies the result (ADR 0020) and clears it, so the gate is left
-## to `tribulation_ok`. A tribulation is only ever resolved by an explicit
+## Resolve the in-progress tribulation with an explicit verdict, returning whether
+## the actor is a survivor. A tribulation is only ever resolved by an explicit
 ## outcome: nothing infers survival from reaching the last phase.
+##
+## The guard is `outcome == OUTCOME_UNRESOLVED`, NOT `is_complete()` (ADR 0041/0061).
+## A record that ran to its last phase is still undecided, and ADR 0041 claimed this
+## function idempotent while guarding only on the phases — so a second call re-paid the
+## award. Returns the record's STANDING outcome, not the argument: a caller that passed
+## `true` for a fight it had already lost is told it lost.
 static func resolve_tribulation(actor: Actor, success: bool) -> bool:
 	if actor.tribulation == null or not actor.tribulation.is_complete():
 		return false
-	actor.tribulation.apply_result(actor, success)
-	return success
+	if actor.tribulation.outcome == Tribulation.OUTCOME_UNRESOLVED:
+		actor.tribulation.apply_result(actor, success)
+	return actor.tribulation.survived()
 
 
 ## Abandon an in-progress tribulation without resolving it. The waves survived
@@ -113,6 +129,49 @@ static func resolve_tribulation(actor: Actor, success: bool) -> bool:
 ## lost, which is what lets a player walk away from a fight they cannot win.
 static func cancel_tribulation(actor: Actor) -> void:
 	actor.tribulation = null
+
+
+## The production entry point for the tribulation gate: answer whether `path_id` is
+## stopped by a tribulation, and if it is, descend ONE wave of the fight it owes.
+##
+## THE CALL THAT DESCENDS NEVER OPENS THE GATE. The return is the gate as it stood
+## *before* this call, so the survivor a wave wins is opened by the *next* attempt.
+## That is what stops the gate from requiring an artifact the same call produces: one
+## "face it" press could otherwise win the fight and spend the reward in a single
+## step, and a loop over this function would report success on the wave that earned
+## the win instead of on the attempt that spends it.
+##
+## One wave per call, because a tribulation is an encounter with turns rather than
+## one opaque check. `rng` makes the deciding roll a caller's choice; null uses the
+## engine's.
+##
+## Path-scoped on purpose: it answers "is THIS path owed a fight", not "is any
+## enrolled path owed one". The slot holds one record, so a hero with two paths past
+## the Immortal tier is owed the lower of the two gates first.
+##
+## Below the Immortal tier, and at the top of the ladder where no realm remains, this
+## is a no-op that reports true: no tribulation stands in front of that path.
+static func face_tribulation(
+	actor: Actor, path_id: StringName, rng: RandomNumberGenerator = null
+) -> bool:
+	var next_index := _next_index(actor, path_id)
+	if next_index < 0 or tribulation_ok(actor, next_index):
+		return true
+	if begin_tribulation(actor, next_index) == null:
+		return tribulation_ok(actor, next_index)
+	_fight_one_wave(actor, rng)
+	return false
+
+
+## Descend one wave of the fight, which is also where the verdict is taken: charging
+## the wave toll and rolling the deciding wave belong to the record, so a caller cannot
+## descend a wave for free or decide a fight without paying for it (ADR 0061).
+## Re-entered freely: a decided record is left exactly as it stands, which is why
+## calling this again on a finished fight is a no-op rather than a second verdict.
+static func _fight_one_wave(actor: Actor, rng: RandomNumberGenerator) -> void:
+	if actor.tribulation == null:
+		return
+	actor.tribulation.fight_wave(actor, rng)
 
 
 ## Entering R19 *commits* the Seed inside world, so R19 must not require it as a
@@ -130,8 +189,19 @@ static func world_ok(actor: Actor, next_index: int) -> bool:
 	return actor.world != null and actor.world.is_stable()
 
 
+## ## Past the last realm, nothing is owed
+##
+## The terminal realm commits the Great world and no realm follows it, so there is
+## no next breakthrough for the ascent to gate. A caller that asks about the index
+## one past the end is asking about a realm that does not exist, and the honest
+## answer is that it owes nothing — not that the actor still has an unwalked ascent
+## on the record. Without this the terminal realm reads as permanently owing a
+## gate nothing will ever call, which is the same circular gate ADR 0018-0021 and
+## ADR 0058 removed twice already.
 static func ascension_ok(actor: Actor, next_index: int) -> bool:
 	if next_index <= WorldAnchor.COMMIT_MICRO:
+		return true
+	if next_index >= RealmDefaults.ladder().size():
 		return true
 	return actor.ascension != null and actor.ascension.is_complete()
 
