@@ -219,13 +219,25 @@ func test_the_provider_follows_a_restored_network_rather_than_the_discarded_one(
 
 ## The network swapped out from under a provider that is already attached. Mark
 ## the stats dirty by hand: this is about WHICH network the read resolves, not
-## about invalidation (the connect in `attach` is bound to the network it saw).
+## about invalidation (core's connect follows the setter).
+##
+## The warm read before the swap is load-bearing, and it was missing. Without it
+## this provider's FIRST read happens after the replacement, so a provider that
+## captured the network on first read captures the NEW one and passes — verified:
+## such a mutant leaves this whole suite green. Resolving once first is the
+## realistic shape (stats computed, then the network restored underneath), and it
+## is what makes the capture visible.
 func test_the_provider_never_serves_a_network_the_actor_discarded() -> void:
 	var actor := _actor()
 	_strengthen_lung(actor)
 	var original: MeridianNetwork = actor.meridians
 	var paid := original.get_power_bonus()
 	assert_eq(paid > 0.0, true, "the first network pays")
+	assert_almost_eq(
+		actor.stats.derived(BodyStats.BODY_CULTIVATION_POWER),
+		15.0 * (1.0 + paid),
+		"the provider resolved against the ORIGINAL network first"
+	)
 
 	actor.meridians = MeridianNetwork.from_dict(original.to_dict())
 	assert_eq(actor.meridians != original, true, "the field was replaced")

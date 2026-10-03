@@ -22,7 +22,7 @@ const STEPS := {"cultivate": 25.0, "meditate": 1.0}
 ## working one.
 static func attach(actor: Actor) -> void:
 	_ensure_resources(actor)
-	var provider := BodyProvider.new(actor)  # MUTANT_M1
+	var provider := BodyProvider.new()
 	actor.stats.add_provider(provider)
 	actor.set_component(_COMPONENT_ID, provider)
 	# Attach the progress tracker, restoring from saved data if present.

@@ -34,13 +34,6 @@ extends StatProvider
 ## the same object.
 
 
-var _actor: Actor = null  # MUTANT_M1
-
-
-func _init(p_actor: Actor = null) -> void:
-	_actor = p_actor
-
-
 func contribute(context: StatContext) -> Dictionary:
 	var bone_density := context.value(BodyStats.BONE_DENSITY)
 	var muscle_fiber := context.value(BodyStats.MUSCLE_FIBER)
@@ -50,7 +43,7 @@ func contribute(context: StatContext) -> Dictionary:
 	var integrity_ratio := _pool_ratio(context, BodyStats.BODY_INTEGRITY)
 	var integrity_factor := 0.5 + 0.5 * integrity_ratio
 
-	var meridian_power := _meridian_power_bonus()
+	var meridian_power := _meridian_power_bonus(context)
 
 	# Core-owned stats are contributed ADDITIVELY. A provider value becomes the
 	# baseline for whatever id it emits (ADR 0026), so emitting an absolute body
@@ -103,10 +96,11 @@ func _realm_factor(context: StatContext) -> float:
 ## answering 0.0 means channels exist and nobody strengthened one; falling off the
 ## end means this context was built for something that carries no network at all,
 ## and only this caller can tell those apart.
-func _meridian_power_bonus() -> float:  # MUTANT_M1
-	if _actor == null or _actor.meridians == null:
-		return 0.0
-	return _actor.meridians.get_power_bonus()
+func _meridian_power_bonus(context: StatContext) -> float:
+	var network := context.meridian_network()
+	if network is MeridianNetwork:
+		return network.get_power_bonus()
+	return 0.0
 
 
 func _pool_ratio(context: StatContext, id: StringName) -> float:
