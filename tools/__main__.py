@@ -47,6 +47,7 @@ incident = _load("incident")
 item_derive = _load("item_derive")
 lint = _load("lint")
 mutation_history = _load("mutation_history_cmd")
+map_theme = _load("map_theme")
 new_adr = _load("new_adr")
 new_module = _load("new_module")
 realm_power = _load("realm_power")
@@ -63,6 +64,7 @@ COMMANDS = {
     "gate_reach": gate_reach,
     "lint": lint,
     "mutation_history": mutation_history,
+    "map_theme": map_theme,
     "arch": arch,
     "assets": assets,
     "character_assets": character_assets,

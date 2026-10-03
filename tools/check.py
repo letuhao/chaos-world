@@ -32,6 +32,12 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     # were found the moment this shipped, so it is not theoretical. Needs no engine, so
     # it runs with the other content audits.
     ("mutation_history", ["check"]),
+    # Every environment_theme the map index ships must still have its prose in
+    # map_assets.py. The prose is pasted verbatim into ComfyUI prompts and `migrate`
+    # cannot refresh an existing value, so a shortened string leaves rows rendering
+    # text the generator no longer holds - which is what 7bf3e4bc did to 260 rows with
+    # every gate green (INC-0015). Needs no engine, so it runs with the content audits.
+    ("map_theme", ["check"]),
     # The authored per-realm power table: one entry per realm, R1 at 1.0, strictly
     # rising, finite and readable. It replaced the one power ladder's guard (ADR 0050).
     ("realm_power", ["check"]),
