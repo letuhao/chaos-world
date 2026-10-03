@@ -429,8 +429,8 @@ def _print_diversity(
 
 
 def _print_equipment_forms(items: dict[str, dict[str, str]], records: list[dict]) -> None:
-    forms: dict[str, dict[str, set[str]]] = {}
     equipment_ids = {item_id for item_id, item in items.items() if item["category"] == "equipment"}
+    forms: dict[str, dict[str, set[str]]] = {}
     for record in records:
         match = record["match"]
         if match.get("category") != "equipment" or "id_prefix" not in match:
@@ -444,9 +444,7 @@ def _print_equipment_forms(items: dict[str, dict[str, str]], records: list[dict]
     print("  equipment id-prefix forms:")
     if not forms:
         print("    none indexed")
-    ordered_forms = sorted(
-        forms.items(), key=lambda entry: (-len(entry[1]["items"]), entry[0])
-    )
+    ordered_forms = sorted(forms.items(), key=lambda entry: (-len(entry[1]["items"]), entry[0]))
     for name, values in ordered_forms:
         print(
             f"    {name}: {len(values['items'])} seeds | "
@@ -465,9 +463,7 @@ def _print_equipment_forms(items: dict[str, dict[str, str]], records: list[dict]
     )
 
 
-def _print_equipment_presentations(
-    items: dict[str, dict[str, str]], records: list[dict]
-) -> None:
+def _print_equipment_presentations(items: dict[str, dict[str, str]], records: list[dict]) -> None:
     equipment_families: list[tuple[dict, set[str]]] = []
     for record in records:
         ids = {
@@ -499,14 +495,8 @@ def _print_equipment_presentations(
     labels = ("male", "female", "unisex")
     counts = ", ".join(f"{label} {tagged[label]}" for label in labels)
     seed_counts = ", ".join(f"{label} {tagged_items[label]}" for label in labels)
-    print(
-        "  equipment presentation tags (families): "
-        f"{counts}, untagged {untagged_families}"
-    )
-    print(
-        "  equipment presentation tags (seeds): "
-        f"{seed_counts}, untagged {untagged_items}"
-    )
+    print(f"  equipment presentation tags (families): {counts}, untagged {untagged_families}")
+    print(f"  equipment presentation tags (seeds): {seed_counts}, untagged {untagged_items}")
 
 
 def _print_palette_distribution(
@@ -576,13 +566,29 @@ def _print_visual_trait_distribution(items: dict[str, dict[str, str]], records: 
     traits: dict[str, dict[str, set[str]]] = {}
     tagged_families: set[str] = set()
     tagged_items: set[str] = set()
+    category_families: dict[str, set[str]] = {}
+    category_items: dict[str, set[str]] = {}
+    category_axis_families: dict[tuple[str, str], set[str]] = {}
+    category_axis_items: dict[tuple[str, str], set[str]] = {}
     for record in records:
         values = record.get("visual_traits", [])
+        axes = {trait.split(":", 1)[0] for trait in values}
+        item_ids = {item_id for item_id in record.get("item_ids", []) if item_id in items}
+        categories = {items[item_id]["category"] for item_id in item_ids}
+        for category in categories:
+            category_families.setdefault(category, set()).add(record["id"])
+            category_items.setdefault(category, set()).update(
+                item_id for item_id in item_ids if items[item_id]["category"] == category
+            )
+            for axis in axes:
+                key = (category, axis)
+                category_axis_families.setdefault(key, set()).add(record["id"])
+                category_axis_items.setdefault(key, set()).update(
+                    item_id for item_id in item_ids if items[item_id]["category"] == category
+                )
         if values:
             tagged_families.add(record["id"])
-            tagged_items.update(
-                item_id for item_id in record.get("item_ids", []) if item_id in items
-            )
+            tagged_items.update(item_ids)
         for trait in values:
             axis, value = trait.split(":", 1)
             entry = traits.setdefault(axis, {}).setdefault(value, set())
@@ -592,6 +598,17 @@ def _print_visual_trait_distribution(items: dict[str, dict[str, str]], records: 
         f"{len(tagged_families)} of {len(records)} families tagged; "
         f"{len(tagged_items)} of {len(items)} seeds covered"
     )
+    axes = sorted(set(traits) | SINGLE_VALUE_TRAIT_AXES | {"motif"})
+    print("    trait-tag coverage by item category (families; seeds):")
+    for category in sorted(category_families):
+        total_families = len(category_families[category])
+        total_items = len(category_items[category])
+        coverage = ", ".join(
+            f"{axis} {len(category_axis_families.get((category, axis), set()))}/{total_families}"
+            f" families, {len(category_axis_items.get((category, axis), set()))}/{total_items} seeds"
+            for axis in axes
+        )
+        print(f"      {category}: {coverage}")
     if not traits:
         print("    no visual_traits recorded yet")
         return
@@ -600,9 +617,7 @@ def _print_visual_trait_distribution(items: dict[str, dict[str, str]], records: 
         print(f"    {axis} ({axis_total} family tags):")
         for value, families in sorted(values.items(), key=lambda entry: (-len(entry[1]), entry[0])):
             seed_count = sum(
-                len(record.get("item_ids", []))
-                for record in records
-                if record["id"] in families
+                len(record.get("item_ids", [])) for record in records if record["id"] in families
             )
             print(f"      {value}: {len(families)} families | {seed_count} seeds")
 
