@@ -18,6 +18,14 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     ("incident", ["validate"]),
     ("backlog", ["validate"]),
     ("data", ["audit"]),
+    # Can the authored world satisfy the gate it declares? A content census over
+    # game/data, judged against the total every authored beat offers. Two event
+    # stages asked for `need: 2` on a fact one beat supplies, and `EventApi.advance`
+    # offers a stage's beats once on entry, so both ladders were dead while every
+    # other gate validated clean. Needs no engine, so it runs with the other content
+    # audits rather than after the suite. The writer set this census assumes is
+    # pinned by tests/arch_rules/test_fact_ledger_writers.gd.
+    ("gate_reach", ["check"]),
     # The authored per-realm power table: one entry per realm, R1 at 1.0, strictly
     # rising, finite and readable. It replaced the one power ladder's guard (ADR 0050).
     ("realm_power", ["check"]),
