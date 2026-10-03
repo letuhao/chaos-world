@@ -61,7 +61,9 @@ static func is_readable(parsed) -> bool:
 ## `world` is normalized in both directions here rather than trusted: a store that returned a
 ## malformed ledger must not be able to write a half-formed world into a file that later reads
 ## as authoritative.
-static func build(actor_payload: Dictionary, world: Dictionary, difficulty: String, generation: int) -> Dictionary:
+static func build(
+	actor_payload: Dictionary, world: Dictionary, difficulty: String, generation: int
+) -> Dictionary:
 	var safe_world := {}
 	for key in WORLD_KEYS:
 		var value = world.get(key)

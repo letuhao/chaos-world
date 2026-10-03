@@ -141,7 +141,6 @@ static func reset_clock() -> void:
 
 # --- Internals -------------------------------------------------------------
 
-
 ## The stores the composition root installed, keyed by world name. NOT a static the world
 ## modules read directly: it exists so `publish_world` can reach each one, and an entry with no
 ## store is skipped rather than fabricated.
