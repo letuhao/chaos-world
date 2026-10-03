@@ -217,12 +217,21 @@ func _render_ascent(view: Dictionary) -> void:
 	if not view.is_empty():
 		var outstanding := String(ascent.get("outstanding", ""))
 		if outstanding == WorldAnchor.NO_ASCENT:
+			# Core declining to state a requirement: there is no `AscensionState` to
+			# walk, so a bar beside this sentence would read 0/4 for a ritual that
+			# does not exist. Not a gate to advertise, so the row takes no space.
 			label = ""
-		elif bool(ascent.get("required", false)):  # MUTANT-B1 duplicate condition
-			label = ""
-		elif bool(ascent.get("required", false)):
+		elif not outstanding.is_empty():
+			# Core IS stating a requirement — steps remain — so state it, verbatim.
+			# This is the owed case, and it is the one the duplicated `elif` used to
+			# swallow: the player was owed the ascent and this row said nothing at all.
 			label = outstanding
-		elif outstanding.is_empty():
+		else:
+			# Core has nothing outstanding, which means an existing ascent has been
+			# walked to its end. That is a state, not a rule, so the wording is the
+			# screen's own rather than core's — and it earns its space, because a row
+			# that vanishes the moment the walk completes is indistinguishable from one
+			# that never existed.
 			label = "The ascent is walked"
 	(
 		_ascent_row
