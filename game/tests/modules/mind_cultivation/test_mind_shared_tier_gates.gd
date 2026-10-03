@@ -429,8 +429,10 @@ func test_mind_refuses_r29_while_the_ascent_is_unwalked_and_spends_nothing() -> 
 
 ## A gate that closes BETWEEN the two halves of an attempt must cost the player
 ## nothing: no roll consumed, no deviation, and the record CANCELLED rather than
-## failed. `cancel_tribulation` is a shipped core verb and is exactly the stale-record
-## case body guards for, so nothing here is forged — and the status is what
+## failed. The created world is cleared, which is the stale-state case body's own
+## comment names ("an inside world that did not survive the round trip leaves the gate
+## shut") — and it is a plain field with no production caller that re-creates it, so
+## the gate is unambiguously shut underneath the attempt. The status is what
 ## distinguishes "refused before the roll" from "rolled, then the advance stopped it".
 func test_a_gate_that_closes_after_the_attempt_started_costs_no_roll() -> void:
 	var actor := _standing_before_fresh(SOURCE)
@@ -438,10 +440,12 @@ func test_a_gate_that_closes_after_the_attempt_started_costs_no_roll() -> void:
 	var rng := _winning(float(MindAdvancement.preview(actor).get("chance", -1.0)))
 	var committed := MindAdvancement.start(actor, rng)
 	assert_ne(committed, null, "the attempt starts while every gate is still open")
-	# Void the survivor the boundary was earned with, between the two halves.
-	Breakthrough.cancel_tribulation(actor)
+	# Lose the created world between the two halves of the attempt.
+	actor.world = null
 	assert_eq(
-		Breakthrough.tribulation_ok(actor, TARGET), false, "so the gate is shut underneath it"
+		Breakthrough.world_ok(actor, TARGET),
+		false,
+		"so the created-world gate is shut underneath it, on the pre-state chosen here"
 	)
 	assert_eq(MindAdvancement.resolve_attempt(actor, rng), false, "and the resolve refuses")
 	assert_eq(
@@ -535,13 +539,21 @@ func _climb_and_prepare(index: int) -> Actor:
 ## its own `false` is the real exit and the bound only names an ascent that will not
 ## finish.
 func _walk_the_ascent(actor: Actor) -> int:
+	assert_ne(
+		actor.ascension, null, "the Transcendent breakthrough began the ascent on this pre-state"
+	)
 	var walked := 0
 	var guard := 0
 	while guard < AscensionState.ASCENT_STEPS + 1 and WorldAnchor.ascend(actor):
 		guard += 1
 		walked += 1
 	assert_eq(
-		walked, AscensionState.ASCENT_STEPS, "the whole ladder, one step at a time, and no more"
+		walked,
+		AscensionState.ASCENT_STEPS,
+		(
+			"the whole ladder, one step at a time, and no more (steps now %d of %d)"
+			% [actor.ascension.steps, AscensionState.ASCENT_STEPS]
+		)
 	)
 	return walked
 
