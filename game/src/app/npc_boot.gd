@@ -28,10 +28,15 @@ static func install(player: Actor) -> void:
 		return
 	# The one place that knows the concrete constructor. Passing the facade verb as a
 	# Callable keeps `npc/` free of any reference to `ActorFactory` (ADR 0002).
-	NpcApi.set_minter(
-		func(def: NpcDef, role: StringName = &"npc") -> Actor:
-			return ActorFactory.spawn_npc(def, role)
-	)
+	# The one place that knows the concrete constructor. Handing the facade the
+	# static function itself, rather than a lambda that forwards to it, is what
+	# `npc/` needs to stay free of any reference to `ActorFactory` (ADR 0002) —
+	# and it is also the only form the engine boots: a typed lambda whose body
+	# calls into another script's static function killed the process with an
+	# access violation on the shell's first frame, with nothing in the log.
+	# `spawn_npc` takes the minter's two arguments positionally and defaults the
+	# rest, so the direct Callable and the former wrapper were equivalent.
+	NpcApi.set_minter(ActorFactory.spawn_npc)
 	NpcApi.attach(player)
 
 
