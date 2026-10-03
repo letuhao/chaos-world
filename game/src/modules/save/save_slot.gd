@@ -27,7 +27,7 @@ const FORMAT := "chaos-world.save"
 ## The world ledger keys carried beside the actor. `soul` is one of them for ADR 0127's reason:
 ## it is a world fact by the ADR 0101 test — per-actor it would be incorrect the moment a second
 ## soul existed.
-const WORLD_KEYS: Array[String] = ["holdings", "market", "custody", "soul"]
+const WORLD_KEYS: Array[String] = ["holdings", "market", "custody", "soul", "anchor"]
 
 
 ## The empty envelope, before anything is written into it.

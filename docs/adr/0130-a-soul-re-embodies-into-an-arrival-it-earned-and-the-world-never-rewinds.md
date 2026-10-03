@@ -66,6 +66,17 @@ module chose, and the ledger decides which — never the player.**
   a tags field and no current rule reads it. An item the player must be able to find wants a
   source that is actually shipped — the gather route has no forager yet, so a guardian authored
   against it would be unobtainable in play while the acquisition audit counted it reachable.
+- **The guardian item is EARNED CONTENT WITH A LOAD-BEARING RESTORATION.**
+  `ItemUse._apply_consumed` returns `no_effect` for a consumable whose resource restorations are
+  empty, and `use_item` then refuses to spend it. So a guardian tagged but with no restore would
+  read as "held" and be unspendable — a death the player pays for and cannot refuse. The
+  authored `restore_health` option is what makes `spend_guardian` succeed at all, which is why
+  it is on the def rather than added by code. The `.tres` carries no comment: Godot's text
+  resource parser silently swallows the property after one, the `realm_power.py` note.
+- **A body id is derived from the soul's incarnation, and the count is PASSED IN.** The mint
+  runs before `reincarnate` advances the ledger, so a mint that read it would see the old count
+  and mint the id the previous body already holds. Two `Actor`s with one id is a world where the
+  second is invisible, because every ledger and roster is keyed by it.
 - **Difficulty sets the cost, never the consequence.** ADR 0129's scalars scale how much
   integrity a death costs and how much a guardian is worth. They do not decide whether a
   death re-embodies, so a hard run is harder rather than different.

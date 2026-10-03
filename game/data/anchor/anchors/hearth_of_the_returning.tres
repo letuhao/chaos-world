@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AnchorDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/anchor/anchor_def.gd" id="1_anchor"]
+
+[resource]
+script = ExtResource("1_anchor")
+id = &"hearth_of_the_returning"
+display_name = "Hearth of the Returning"
+description = "A low, sealed hearth that burns without fuel and holds a soul steady while its owner is inside it. It does not close a wound; it gives one somewhere to stop bleeding."
+build_cost = {"coins": 400, "items": {"vial_mending_elixir": 2}}
+repair_per_period = 0.5
+realm_floor = &""
+repairs = true
+shelters = false

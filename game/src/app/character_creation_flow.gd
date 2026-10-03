@@ -138,6 +138,63 @@ func race_for(choice_id: StringName) -> StringName:
 ## open_paths, destinies, fates, fact}`. On refusal: `{ok: false, reason:
 ## "unknown_origin" | "already_created" | "gate_unmet", unmet: [...]}` — the three
 ## reasons a player can be told no, named rather than guessed at by the caller.
+## Create a hero for a REBIRTH arrival (ADR 0130).
+##
+## ## Why a second verb rather than relaxing [method build]
+##
+## **`build` refuses `already_created`, and that guard is correct.** It exists so a player who
+## answers the creation screen twice does not receive two heroes. A rebirth is the opposite
+## case: a returning soul is SUPPOSED to arrive in a new body, and the guard would make the
+## second arrival impossible. So the two are separate verbs with separate guards rather than one
+## verb with a flag, because a flag would have to be settable by a screen.
+##
+## ## What a forced build does NOT do
+##
+## **It takes no origin DESTINY.** A `SoulDef` is an arrival the soul earned by dying, not an
+## entry in the `group = &"origin"` exclusivity set character creation offers. Granting it
+## through `earn_destiny` would close two of the three original arrivals permanently and hand
+## the player a destiny picker by the back door (ADR 0065). So the soul ledger records the
+## arrival and the character's own destiny ledger starts empty, exactly as a first hero's does.
+##
+## ## The race comes from the ARRIVAL, not from a table in this file
+##
+## `SoulDef.race_id` is authored on the arrival, so a returning soul arrives in the body its
+## arrival names rather than in one this file's constant happens to map to. That is why the
+## arrival table may grow without editing `RACE_BY_ORIGIN`, which only the creation screen's
+## three origins use.
+##
+## Refuses `unknown_arrival` for an id no arrival defines, and `no_body_mint` when the actor
+## cannot be built — naming the failure rather than returning a half-built hero.
+static func build_forced(
+	arrival_id: StringName, incarnation: int = 0, base_stats: Dictionary = {}
+) -> Dictionary:
+	var def := SoulCatalog.instance().arrival_definition(arrival_id)
+	if def == null:
+		return {"ok": false, "reason": "unknown_arrival", "actor": null}
+	var race_id := def.race_id
+	if race_id == &"":
+		return {"ok": false, "reason": "arrival_names_no_body", "actor": null}
+	var actor := _body(race_id, base_stats)
+	if actor == null:
+		return {"ok": false, "reason": "no_body_mint", "actor": null}
+	# The id is DERIVED FROM THE SOUL'S INCARNATION, not from a counter this file owns: `_body`
+	# mints every hero as `&"player"`, so without this every rebirth in a run would produce the
+	# SAME actor id — and two Actors with one id is a world where the second is invisible, because
+	# every ledger and roster is keyed by it. The count is PASSED IN by the caller rather than read
+	# from the soul here, because this runs before `reincarnate` and a read would see the old one.
+	actor.id = StringName("player_incarnation_%d" % incarnation)
+	return {
+		"ok": true,
+		"reason": "",
+		"actor": actor,
+		"arrival": String(arrival_id),
+		"race": String(race_id),
+		"destinies": DestinyApi.destinies(actor),
+		"fates": DestinyApi.fates(actor),
+		"is_rebirth": true,
+	}
+
+
 func build(choice_id: StringName, base_stats: Dictionary = {}) -> Dictionary:
 	if not _is_origin(choice_id):
 		return _refuse("unknown_origin")
@@ -274,7 +331,7 @@ func _candidate(origin_id: StringName, view: Dictionary) -> Dictionary:
 ## actor before any path reads it. `attach_core_resources` is then re-run because
 ## pool capacities follow the derived stats and the race has just changed them; it
 ## is idempotent by its own docstring and preserves current values.
-func _body(race_id: StringName, base_stats: Dictionary) -> Actor:
+static func _body(race_id: StringName, base_stats: Dictionary) -> Actor:
 	var actor := ActorFactory.build(&"player", base_stats)
 	RaceApi.attach(actor)
 	RaceApi.set_race(actor, race_id)

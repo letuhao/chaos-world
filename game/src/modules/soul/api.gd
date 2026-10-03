@@ -190,7 +190,11 @@ static func reincarnate(actor: Actor, body_id: StringName) -> Dictionary:
 
 
 ## The soul exactly as the save carries it, so a caller never reaches into `module_data`.
-static func state(_actor: Actor) -> Dictionary:
+## **The actor parameter may be omitted entirely.** The ledger lives in the STORE, so asking
+## "what does this soul look like" is answerable without naming a body -- which is what lets a
+## caller derive a body id from the soul's incarnation BEFORE that body exists. An underscore
+## prefix rather than an unused name, because the ledger genuinely does not read it.
+static func state(_actor: Actor = null) -> Dictionary:
 	return _state()
 
 
@@ -289,6 +293,13 @@ static func _guardian_ids(actor: Actor) -> Array[StringName]:
 		return out
 	for stack in bag.stacks():
 		var def := bag.definition_of(stack.def_id) as ItemDef
+		# Resolved through the catalog when the stack carries no `def_ref`. A stack built by
+		# `Inventory.add(def, n)` has one, but one restored from a save may not, and
+		# `definition_of` returns null for a stack it cannot resolve -- so a guardian restored
+		# mid-run would read as "no guardian held" and the player would lose a death they had paid
+		# to avoid. The fallback is the difference between a restored bag and a broken one.
+		if def == null:
+			def = Crafting.resolve(stack.def_id)
 		if def != null and (def.tags as Array).has(GUARDIAN_TAG):
 			out.append(def.id)
 	return out

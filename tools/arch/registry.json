@@ -1,6 +1,13 @@
 {
-  "version": 1,
   "modules": {
+    "anchor": {
+      "deps": [
+        "contracts",
+        "core",
+        "items",
+        "soul"
+      ]
+    },
     "bloodline": {
       "deps": [
         "contracts",
@@ -98,13 +105,22 @@
         "contracts",
         "core",
         "dual_cultivation",
-        "race"
+        "race",
+        "social"
+      ]
+    },
+    "forage": {
+      "deps": [
+        "contracts",
+        "core",
+        "holdings"
       ]
     },
     "heavenly_tribulation": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "status"
       ]
     },
     "holdings": {
@@ -259,5 +275,6 @@
         "world"
       ]
     }
-  }
+  },
+  "version": 1
 }

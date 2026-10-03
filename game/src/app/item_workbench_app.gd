@@ -17,10 +17,17 @@ extends Control
 
 const SAVE_PATH := "user://item_workbench_state.json"
 ## Enough real content to exercise every activation channel on first run.
+##
+## `curr_spirit_coin` is here because the economy's numeraire is a HELD item, not an integer
+## balance (ADR 0094): `EconomyExchange` physically moves the stack, so a player who cannot
+## obtain one cannot trade at all. `starter` is the only route that both roots the acquisition
+## graph AND is actually granted here — `gather` is graph-rooted but `ItemSources.KINDS` marks
+## it `shipped: false`, so a gather source would still be runtime-unreachable.
 const STARTER_ITEMS: Array[StringName] = [
 	&"armor_iron_helm",
 	&"accessory_iron_bangle",
 	&"armor_iron_ore",
+	&"curr_spirit_coin",
 ]
 ## The routes whose screen needs more than `setup(actor)`. Every other route is a
 ## `UiScreen`, which is bound by the default arm below.
@@ -32,6 +39,18 @@ const ROUTE_CRAFTING := &"crafting"
 const ROUTE_WORKBENCH := &"workbench"
 const ROUTE_SET_BONUS := &"set_bonus"
 
+## The cast standing in the settlement the slice opens on. Every id is an authored
+## `.tres` under `res://data/npc/cast`, never a literal def, so a reader can open the
+## file and see the person (ADR 0074). Sized under `NpcApi.MAX_ROOM_POPULATION` on
+## purpose: it is a starting settlement, not a full population.
+const STARTING_CAST: Array[StringName] = [&"gate_keeper_bo", &"smith_bearcutter", &"drifter"]
+
+## What [code]NpcBoot.populate_room[/code] answered at boot: how many bodies stood up
+## and who they are. Held so a probe can read the cast without reaching past `app/` —
+## the live instances themselves stay in `npc`'s own registry, which is where ADR 0092
+## says a room's occupants live.
+var _npc_settlement: Dictionary = {}
+
 var _actor: Actor = null
 ## The composition root's status clock (ADR 0106). It holds no state of its own —
 ## only the actor it ticks — so wiring it here is what ADR 0056 means by "app/ wires".
@@ -40,6 +59,16 @@ var _status_loop: StatusLoop = null
 ## A director with no production instance is the same defect as a facade with no
 ## callers: `add_sink` / `offer` were tested and a player could never reach them.
 var _world: WorldPulse = null
+## The death resolver (ADR 0130). Polled from [method _process] like every other clock here,
+## because a module may not declare its own frame driver (DEF-0111) and a FOURTH `_process`
+## fails `tests/app/test_status_clock.gd`.
+var _death: SoulDeath = null
+## The actor id the death poll is currently watching. Armed on adoption and re-armed on a body
+## swap, so a poll never fires twice for the same body and never fires for a replaced one.
+var _death_armed: String = ""
+## The last resolved death, as primitives, so `summary()` can report what happened without a
+## screen re-deriving it.
+var _last_death: Dictionary = {}
 
 ## The stack and the bar the scene declares. Resolved by unique name; the root
 ## never builds a second one, because two stacks means two answers to "which
@@ -69,6 +98,31 @@ func _ready() -> void:
 	# (ADR 0027).
 	SocketApi.attach(_actor)
 	LootApi.attach(_actor)
+	# The world-scoped stores, installed BEFORE anything reads them: a soul outlives its body
+	# and an anchor stands in a place, so neither may live in `actor.module_data` (ADR 0127,
+	# ADR 0132, and ADR 0101's argument that a per-actor copy of a world fact is a bug). The
+	# save's store is the real one; a test installs the in-memory ledger instead.
+	SoulApi.set_store(SaveStore.new())
+	AnchorApi.set_store(SaveStore.new())
+	DifficultyApi.attach(_actor)
+	SoulApi.attach(_actor)
+	AnchorApi.attach(_actor)
+	SaveApi.install_store("soul", _world_store())
+	SaveApi.install_store("anchor", _world_store())
+	# A newborn is minted through a Callable rather than built inline, because
+	# `fertility` may not name `app/` (BL-0280). Without this the child is a bare
+	# `Actor.new()` with no health pool, so it cannot be damaged or healed. Installed
+	# beside the other seams, before anything can conceive.
+	ActorFactory.install_fertility_actor_builder()
+	# A restored world is published BEFORE any `Actor.from_dict`, so a body built from a save
+	# finds its soul and its anchors already in place rather than starting empty.
+	SaveApi.publish_world()
+	# The death resolver, injected rather than constructed here so it names no `app/` type and
+	# stays a plain value object a test can drive. It holds no state and declares no
+	# `_process`: THIS function polls it, which is what keeps the tree at exactly three frame
+	# drivers (`tests/app/test_status_clock.gd`).
+	_death = SoulDeath.new(mint_body, adopt_actor)
+	_death_armed = ""
 	# The status clock is built last, because it can only tick the actor every
 	# other attachment has already made complete (ADR 0106).
 	_status_loop = StatusLoop.new(_actor)
@@ -80,6 +134,19 @@ func _ready() -> void:
 		return
 	if _nav != null and not _nav.route_requested.is_connected(_on_route_requested):
 		_nav.route_requested.connect(_on_route_requested)
+
+
+## The one world store this root installs into the soul and the anchors.
+##
+## **One instance, shared, never one per module.** Both ledgers are read through the same
+## `read_ledger` / `write_ledger` object so they land in ONE `envelope.world` payload and are
+## written and restored together. Two stores would mean two independent ledgers, and a save
+## carrying one of them is a save that lost the other.
+##
+## Built fresh per boot rather than cached in a static, because a second boot must not inherit
+## the first one's world — the same per-slot reasoning ADR 0128 applies to the store itself.
+func _world_store() -> SaveStore:
+	return SaveStore.new()
 
 
 ## The one tick caller in the game (ADR 0106, read against ADR 0089).
@@ -115,6 +182,11 @@ func _process(delta: float) -> void:
 	# one layer up). `WorldPulse` turns seconds into whole periods, no clock of its own.
 	if _world != null:
 		_world.pull(delta)
+	# Death and autosave ride the SAME frame and the SAME delta, for the same reason the world
+	# clock does: a second cadence means a save that lands on a different schedule from a status,
+	# which nobody could reason about. Neither adds a frame driver of its own.
+	poll_death()
+	poll_save(delta)
 
 
 ## Advance the world by exactly `periods` whole periods, with no elapsed time — the
@@ -139,10 +211,113 @@ func world_summary() -> Dictionary:
 	return {} if _world == null else _world.summary()
 
 
+## Resolve a death for the current body, once.
+##
+## **Armed on the actor id, so one body dies once.** A poll that fired on every frame would
+## charge the soul repeatedly for a single wound, and re-arming after a body swap is the only
+## reason a rebirth can happen at all. Called from [method _process] and directly by tests and
+## probes, so the rule is testable without driving frames.
+##
+## A body with no lives left stays in place rather than being swapped for null: there is nowhere
+## to swap TO, and a null actor would take every screen with it.
+func poll_death() -> Dictionary:
+	if _death == null or _actor == null:
+		return {}
+	if _death_armed != String(_actor.id):
+		_death_armed = String(_actor.id)
+		return {}
+	if not _death.is_dead(_actor):
+		return {}
+	_last_death = _death.resolve(_actor)
+	# Re-arm whatever stands now, so a guardian death does not re-fire next frame and a rebirth
+	# arms the NEW body rather than the one that fell.
+	_death_armed = String(_actor.id)
+	# A death is a thing that happened to the world, so it is saved immediately rather than
+	# waiting for the next boundary: the run state that matters most is the state at death.
+	SaveApi.persist(_actor, String(DifficultyApi.current_id(_actor)))
+	return _last_death
+
+
+## The last resolved death, as primitives. `{}` before anything has died.
+func last_death() -> Dictionary:
+	return _last_death.duplicate(true)
+
+
+## Write the save if the clock says one is due.
+##
+## **The player never decides when this happens.** The clock counts whole periods and the save
+## lands on a boundary they never see, which is the requirement rather than a limitation
+## (ADR 0128). Called from [method _process] with the engine's delta; no module reads a clock.
+func poll_save(delta: float) -> Dictionary:
+	if not SaveApi.clock.pull(delta):
+		return {}
+	return SaveApi.persist(_actor, String(DifficultyApi.current_id(_actor)))
+
+
+## Mint a fresh body for `arrival_id` — the composition root's half of a rebirth.
+##
+## The body is built through the SAME arrival table character creation uses, so a returning
+## soul arrives the way a first one does and there is one rule for "how does a hero arrive"
+## rather than two. Refuses an arrival the catalog does not define rather than minting a hero
+## nothing can explain.
+func mint_body(arrival_id: String, incarnation: int) -> Dictionary:
+	var arrival := StringName(arrival_id)
+	if SoulCatalog.instance().arrival_definition(arrival) == null:
+		return {"ok": false, "reason": "unknown_arrival"}
+	return CharacterCreationFlow.build_forced(arrival, incarnation)
+
+
+## Make `body` the current actor, re-binding everything that held the old one.
+##
+## **A half-swapped body is the failure this exists to prevent**: the game would read two
+## different actors — a screen on the old one, the soul on the new — and no assertion fails,
+## because both are individually valid. Every holder is re-pointed here, in one place, so a
+## future binding cannot be forgotten silently.
+func adopt_actor(body: Actor) -> void:
+	if body == null:
+		return
+	_actor = body
+	SocketApi.attach(body)
+	LootApi.attach(body)
+	DifficultyApi.attach(body)
+	SoulApi.attach(body)
+	AnchorApi.attach(body)
+	_status_loop = StatusLoop.new(body)
+	_world = WorldPulse.new(body, BeatDirector.new())
+	_forge = SocketForgeProgram.new(body)
+	_death_armed = ""
+	_last_death = {}
+	if _live_screen() != null:
+		_live_screen().setup(body)
+
+
+## The soul, the difficulty, the anchors and the save, as primitives, so a probe can assert the
+## wiring without reaching into a module.
+func soul_summary() -> Dictionary:
+	return {
+		"soul": SoulApi.soul(_actor),
+		"difficulty": String(DifficultyApi.current_id(_actor)),
+		"anchors": AnchorApi.summary(_actor),
+		"last_death": _last_death,
+		"save": SaveApi.summary(),
+	}
+
+
 ## The route table this root publishes, so the navigation bar, a probe and a
 ## test all read the same list. Primitives only.
 func routes() -> Array[Dictionary]:
 	return ScreenRoutes.summary()
+
+
+## Who is standing in the settlement this root stocked at boot (BL-0626).
+##
+## Published for the same reason `routes()` is: a probe or a test must be able to
+## READ what the boot did without reaching into `npc`'s registry or re-deriving the
+## cast list. The answer is `populate_room`'s own dictionary verbatim — a count, the
+## location id, and one read-model row per npc — so nothing here can disagree with
+## what was actually minted.
+func npc_presence() -> Dictionary:
+	return _npc_settlement.duplicate(true)
 
 
 ## Open `route_id` and make it the live screen. The single navigation mechanism:
@@ -281,7 +456,21 @@ func _build_actor() -> Actor:
 	# Quests, for the same reason: `QuestBeatHandler` is a registered sink, and a
 	# handler reading an un-attached ledger sees no active quest and claims nothing.
 	QuestApi.attach(actor)
+	# The npc boot, and the LAST thing the actor is handed: it injects the npc
+	# constructor, reads the authored cast off disk (`NpcCatalog.load_authored`) and
+	# binds the roster to this actor (ADR 0092, BL-0626). Without the read, `spawn`
+	# refuses every id it is handed and a player meets nobody; without the install,
+	# the read alone buys a catalog nothing can mint from.
 	NpcBoot.install(actor)
+	# …and stock the place the player starts in, through the ONE room entry point
+	# (`populate_room`), so the cast is standing in a location rather than merely
+	# reachable. `NpcApi.populate`'s own cap bounds the room, and `replace_first`
+	# defaults true, so this is a stock rather than an accumulation. It is a single
+	# starting settlement, NOT a room system: no arrival re-stocks anywhere, because
+	# nothing in this repo models a room or an arrival yet (see the report on
+	# BL-0626). A place gets a cast when an author wires one, and until then the boot
+	# path stands one up where the player already is.
+	_npc_settlement = NpcBoot.populate_room(actor, STARTING_CAST, NpcApi.ROLE_NPC, &"mortal_plains")
 	CombatBoot.bind_mechanisms(actor)
 	# After every attach above: a seam is only correct if the module it wires is
 	# already complete, and `TechniquesApi.attach` is what makes the codex exist for
