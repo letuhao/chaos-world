@@ -21,7 +21,7 @@ id = &"loot_qi_golden_immortal_guardian_pool_golden_immortal"
 display_name = "Golden Immortal Guardian salvage (golden_immortal)"
 realm = &"golden_immortal"
 rarity = &""
-rolls = 1
+rolls = 0
 allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0")

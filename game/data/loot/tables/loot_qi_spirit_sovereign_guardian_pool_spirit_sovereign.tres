@@ -21,7 +21,7 @@ id = &"loot_qi_spirit_sovereign_guardian_pool_spirit_sovereign"
 display_name = "Spirit Sovereign Guardian salvage (spirit_sovereign)"
 realm = &"spirit_sovereign"
 rarity = &""
-rolls = 1
+rolls = 0
 allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0")

@@ -8,7 +8,11 @@ func test_boss_def_loads() -> void:
 	var boss := load("res://data/bosses/flame_dragon.tres")
 	assert_eq(boss is BossDef, true, "loads BossDef")
 	assert_eq(boss.domain_id, &"flame_valley", "domain")
-	assert_eq(boss.loot.has(&"dragon_core"), true, "loot")
+	# The legacy flat `loot` array is the migration path and is empty across the whole
+	# shipped corpus: what this boss drops is bound on `LootTier.boss_tables` instead
+	# (ADR 0033). Asserting the migration field would pin the test to content that has
+	# since been migrated, which is how this line came to be wrong.
+	assert_eq(boss.loot.is_empty(), true, "the migration loot array is left to the loot module")
 
 
 func test_domain_def_loads() -> void:

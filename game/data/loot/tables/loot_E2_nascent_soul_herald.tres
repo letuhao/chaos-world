@@ -21,7 +21,7 @@ id = &"loot_E2_nascent_soul_herald"
 display_name = "Nascent Soul Herald"
 realm = &""
 rarity = &""
-rolls = 1
+rolls = 0
 allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0")
