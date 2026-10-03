@@ -12,7 +12,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-from . import map_generate
+from . import map_generate, map_layout
 from .common import GAME_DIR, REPO_ROOT, ToolError, fail, ok
 
 INDEX_PATH = GAME_DIR / "assets" / "map-asset-index.jsonl"
@@ -259,7 +259,7 @@ def register(parent_parser) -> None:
     actions.add_parser("preview", help="build a contact sheet of produced map assets")
     actions.add_parser("migrate", help="add explicit alpha mode to older index entries")
     compose = actions.add_parser(
-        "compose", help="place indexed sprites over a terrain texture using a JSON layout"
+        "compose", help="compose terrain and sprites from pixel or matrix grid coordinates"
     )
     compose.add_argument("--layout", required=True, help="JSON terrain and sprite placements")
     install = actions.add_parser("install", help="normalize and register one generated sprite")
@@ -971,6 +971,9 @@ def _compose(records: list[dict], args) -> None:
     placements = layout.get("placements")
     if not isinstance(placements, list):
         raise ToolError("composition placements must be a JSON array")
+    if "grid" in layout:
+        map_layout.compose(records, layout, terrain)
+        return
 
     terrain_path = GAME_DIR / terrain["path"].removeprefix("res://")
     try:
