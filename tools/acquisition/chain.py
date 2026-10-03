@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from ..common import REPO_ROOT, ToolError
-from ..data import DATA_ROOT, _load  # noqa: PLC0415  one parser for the whole corpus
+from ..data import DATA_ROOT, _gatherable_ids, _load  # noqa: PLC0415  one parser for the corpus
 from ..item_migrate import realm_ladder
 from . import design
 
@@ -54,6 +54,12 @@ ROUTE_DOMAIN = "domain"
 # `LootContent.MAX_NESTING_DEPTH`, mirrored so a walk over authored tables bounds
 # its own recursion rather than inheriting the resolver's guard from a distance.
 MAX_TABLE_NESTING = 4
+# A recipe names other recipes, so a walk over recipe inputs is a recursive walk
+# over authored content and needs its own ceiling: nothing in `game/data` enforces
+# that the `craft:` graph is acyclic, and a corpus that grew a cycle would take
+# this walk with it. The deepest authored chain is two (a consumable -> a
+# reagent); the cap is a bound, not a budget.
+MAX_RECIPE_DEPTH = 8
 
 
 @dataclass(frozen=True)
@@ -149,6 +155,22 @@ class Encounter:
 
 # --- Field readers ----------------------------------------------------------
 
+
+# `loot.py` imports this module for its scalar readers, so the two table walkers
+# cannot be imported at module scope without a cycle. They are resolved per call
+# instead, which keeps `Graph` the single owner of the recursion guards.
+def _guaranteed(graph: Graph, table_id: str) -> set[str]:
+    from .loot import guaranteed_items  # noqa: PLC0415
+
+    return guaranteed_items(graph, table_id)
+
+
+def _reachable(graph: Graph, table_id: str) -> set[str]:
+    from .loot import reachable_items  # noqa: PLC0415
+
+    return reachable_items(graph, table_id)
+
+
 _ARRAY = r"Array\[[^\]]*\]\(\[(.*?)\]\)"
 
 
@@ -241,6 +263,7 @@ class Graph:
         self.root = root
         self.records, self.malformed = _load(root)
         self._authored_drops_cache: dict[str, set[str]] | None = None
+        self._gatherable_cache: frozenset[str] | None = None
         self.items = self.records.get("item", {})
         self.recipes = self.records.get("recipe", {})
         self.bosses = self.records.get("boss", {})
@@ -462,6 +485,98 @@ class Graph:
                     found.append(boss_id)
         return tuple(sorted(found))
 
+    def delivers_unconditionally(self, item_id: str) -> tuple[str, ...]:
+        """Every authored table that pays `item_id` on **every** resolve of it.
+
+        [method delivering_bosses] answers "can a boss hand this out"; this answers
+        "does handing it out depend on a draw". The difference is a cleared band
+        granting no second run (rule E2), so a rolled delivery is a permanent miss
+        and a guaranteed one is not. Each entry is `boss@table`, so a report can
+        name the exact file and band binding that pays or fails to pay.
+        """
+        found: list[str] = []
+        for boss_id in self.delivering_bosses(item_id):
+            encounter = self.encounter_hosting(boss_id)
+            if encounter is None:
+                continue
+            for tier in encounter.tiers:
+                table_id = self.table_for(encounter, tier, boss_id)
+                if table_id and item_id in _guaranteed(self, table_id):
+                    entry = f"{boss_id}@{table_id}"
+                    if entry not in found:
+                        found.append(entry)
+        return tuple(found)
+
+    def rolled_deliveries(self, item_id: str) -> tuple[str, ...]:
+        """Every authored table that can pay `item_id` but only by a draw."""
+        found: list[str] = []
+        for boss_id in self.delivering_bosses(item_id):
+            encounter = self.encounter_hosting(boss_id)
+            if encounter is None:
+                continue
+            for tier in encounter.tiers:
+                table_id = self.table_for(encounter, tier, boss_id)
+                if not table_id:
+                    continue
+                if item_id in _reachable(self, table_id) - _guaranteed(self, table_id):
+                    entry = f"{boss_id}@{table_id}/band{tier['tier']}"
+                    if entry not in found:
+                        found.append(entry)
+        return tuple(found)
+
+    def gatherable_ids(self) -> frozenset[str]:
+        """Item ids a `gather` source can actually produce, cached.
+
+        Read from `ForageApi.NODE_YIELDS` through the one reader `tools/data.py`
+        already owns, because `ResourceNodeDef` carries no item id and that table is
+        the only place in `game/src` that knows what a node yields. It matters here
+        for a reason that is not theoretical: every qi herb declares `gather`, so a
+        walk that answered "unconditional?" from loot tables alone would report all
+        30 `cultivation_herb`s as unreachable while the flag that would make that
+        true is a claim no authored node pays.
+        """
+        if self._gatherable_cache is None:
+            self._gatherable_cache = frozenset(_gatherable_ids())
+        return self._gatherable_cache
+
+    def sole_route_blocker(
+        self, item_id: str, depth: int = 0, seen: frozenset[str] = frozenset()
+    ) -> tuple[str, str] | None:
+        """The first reagent that leaves `item_id` obtainable only by a roll.
+
+        Returns `(reagent, why)`, or None when `item_id` is obtainable without
+        relying on a draw: a guaranteed drop, a gatherable node yield, or a recipe
+        whose every input satisfies that in turn.
+
+        The walk is the answer to "is this the ONLY route", which is the question a
+        blanket guarantee rule cannot ask. Demanding that every `domain:` route be
+        unconditional would demand 6540 guarantees across the corpus; demanding it
+        only where the item is **sole-routed** asks about 41, and each one names the
+        single edit that closes it.
+
+        Bounded by [constant MAX_RECIPE_DEPTH] and by `seen`, which carries the
+        recipe ids already on this path: recipes name other recipes, nothing in
+        `game/data` forbids a cycle, and an uncapped walk over one never returns
+        (INC-0002). Both bounds are on values read from the corpus, never on a
+        container this walk grows.
+        """
+        if self.delivers_unconditionally(item_id):
+            return None
+        if item_id in self.gatherable_ids():
+            return None
+        recipe_id = self._craft_recipe(item_id)
+        if not recipe_id:
+            return item_id, "no craft route and no guaranteed drop"
+        if recipe_id in seen:
+            return item_id, f"recipe cycle through {recipe_id}"
+        if depth >= MAX_RECIPE_DEPTH:
+            return item_id, f"recipe walk hit the depth cap at {recipe_id}"
+        for reagent_id in self._reagents(recipe_id):
+            found = self.sole_route_blocker(reagent_id, depth + 1, seen | {recipe_id})
+            if found is not None:
+                return found
+        return None
+
     def unpayable_domain_routes(self) -> tuple[tuple[str, str], ...]:
         """(item, domain) for every `domain:` claim nothing can deliver.
 
@@ -472,6 +587,12 @@ class Graph:
         roll is reachable, and calling it broken here would demand 41 new content
         guarantees across a corpus whose `domain:` routes are authored as ordinary
         drops.
+
+        **Reachability is the whole rule here, and that judgement no longer holds
+        for every item** (DEF-0210). A rolled `domain:` route is acceptable friction
+        for a trinket and a soft-lock for a pill a realm seed gates a breakthrough on.
+        The two are told apart by *sole* route, not by domain, and the question is
+        asked where the seed names the item: [method sole_route_blocker].
         """
         out: list[tuple[str, str]] = []
         for item_id in sorted(self.items):

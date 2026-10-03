@@ -216,6 +216,43 @@ def _trial_problems(graph: Graph, trial: Trial, hosted: set[str]) -> list[str]:
         problems.extend(_boss_problems(graph, trial.trial_id, host, _Boss(boss_id, catalysts)))
         problems.extend(_supply_problems(label, host, set(catalysts), graph))
     problems.extend(_band_problems(label, encounter, trial, graph))
+    problems.extend(_sole_route_problems(label, trial, graph))
+    return problems
+
+
+def _sole_route_problems(label: str, trial: Trial, graph: Graph) -> list[str]:
+    """A realm seed's consumable must be obtainable without relying on a draw.
+
+    The rule that closes DEF-0210, and it is deliberately **narrower** than
+    "every `domain:` route is unconditional" — the rule
+    [method Graph.unpayable_domain_routes] deliberately does not assert. That one
+    would demand 6540 guarantees over a corpus that authors domain drops as
+    ordinary rolls. This one asks the question that separates them: *is this item's
+    rolled route the only one?* A pill with a second, reliable route is friction; a
+    pill whose recipe needs a reagent nothing guarantees is a soft-lock, because a
+    cleared band grants no second run (rule E2) and `QiBreakthroughCondition` refuses
+    the attempt without it.
+
+    Scoped to the realm seeds' three roles, which is why it costs 41 findings and
+    not thousands: the seed is the one place the game declares an item it cannot
+    play without. Measured across the shipped corpus it fires 41 times, all of them
+    on the qi ladder and all of them at one reagent deep — body and mind report
+    none, which is the evidence that this is a content gap and not a rule too broad.
+    """
+    problems: list[str] = []
+    for consumable in trial.consumables:
+        if not consumable.item_id:
+            continue
+        found = graph.sole_route_blocker(consumable.item_id)
+        if found is None:
+            continue
+        blocker, why = found
+        rolled = graph.rolled_deliveries(blocker) or graph.rolled_deliveries(consumable.item_id)
+        paid_by = f", rolled on {rolled[0]}" if rolled else ", on no authored table at all"
+        problems.append(
+            f"{label}: {consumable.role} {consumable.item_id} is obtainable only by a "
+            f"draw: {blocker} ({why}{paid_by}), and a cleared band grants no second run"
+        )
     return problems
 
 
