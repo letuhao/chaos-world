@@ -18,7 +18,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from . import gate_reach, lore, map_theme, mutation_history, unique_characters
+from . import gate_reach, loop_guard, lore, map_theme, mutation_history, unique_characters
 from .acquisition import selftest_case  # noqa: F401  registers its cases on import
 from .lore.context import character_draft, readiness_gaps, resolve_context
 from .selftest import case, expect, write
@@ -454,6 +454,83 @@ def _stat_findings(block: object) -> list[str]:
     """
     return unique_characters._no_stat_numbers(
         block, "reference_stats", unique_characters._authored_stat_ids()
+    )
+
+
+@case("loop_guard: INC-0021's exact command is REFUSED")
+def _inc_0021_command_is_refused() -> None:
+    """The verbatim shape that burned 11.6 GB, asserted still caught.
+
+    A red path, not a happy path: the guard passing on a harmless command proves
+    nothing, because a harmless command is what it was written against. What
+    matters is that the real runaway is still recognised.
+    """
+    command = (
+        "uv run python -c \"import sys,base64,pathlib; print('READY',flush=True); "
+        "data=b''.join(iter(lambda:sys.stdin.readline().strip().encode(),"
+        "b'END_IMAGE_DATA')); "
+        "p=pathlib.Path('build/void_shoal_shallow_water_source.png'); "
+        'p.write_bytes(base64.b64decode(data)); print(p.resolve(),flush=True)"'
+    )
+    found = loop_guard.check_command([command])
+    expect(
+        bool(found),
+        "the exact command from INC-0021 was reported clean, so the shape that "
+        "reached 11.6 GB resident and 42 GB commit is not refused",
+    )
+    expect(
+        any(f[2] == "iter-sentinel-unreachable" for f in found),
+        f"the runaway was caught under an unrelated rule id: {[f[2] for f in found]}",
+    )
+
+
+@case("loop_guard: a sentinel the callable CAN return is not flagged")
+def _reachable_sentinel_is_not_flagged() -> None:
+    """The fixture that tells this guard from a blanket `iter(callable, x)` ban.
+
+    `iter(lambda: sys.stdin.buffer.readline(), b'')` is the same shape with an
+    EMPTY sentinel — and ''.encode() IS b'', so EOF does satisfy it and the loop
+    terminates. Refusing this would drive authors away from the one safe spelling.
+    A generator that yields the sentinel terminates too, transform and all.
+    """
+    for command, why in (
+        (
+            "python -c \"import sys; d=b''.join(iter(lambda: sys.stdin.buffer.readline(), b''))\"",
+            "an empty-bytes sentinel IS reachable at EOF, so this loop terminates",
+        ),
+        (
+            'python -c "import sys\ndef lines():\n    for l in sys.stdin:\n'
+            "        if l.rstrip()==b'END': return\n        yield l\nd=b''.join(lines())\"",
+            "a generator yields the sentinel itself, so iter() stops on it",
+        ),
+        (
+            'python -c "import sys; d=sys.stdin.read()"',
+            "plain read() to EOF cannot overrun its own input",
+        ),
+    ):
+        expect(
+            not loop_guard.check_command([command]),
+            f"a TERMINATING loop was refused: {why}",
+        )
+
+
+@case("loop_guard: a while-True reading stdin with no EOF test is REFUSED")
+def _unbounded_stdin_while_is_refused() -> None:
+    """The same runaway, different spelling.
+
+    `while True:` around `readline()` has no EOF test, and at EOF `readline()`
+    returns '' forever — so the condition never flips and nothing is ever written.
+    This is INC-0019's shape in a command string, where `test_no_unbounded_wait.gd`
+    cannot see it at all because the loop does not live in a file.
+    """
+    command = (
+        'python -c "import sys\nbuf=[]\nwhile True:\n    line=sys.stdin.readline()\n'
+        '    buf.append(line)\nprint(len(buf))"'
+    )
+    expect(
+        any(f[2] == "unbounded-stdin-while" for f in loop_guard.check_command([command])),
+        "a while-True readline loop with no EOF test was reported clean, so the "
+        "runaway that INC-0019 describes is not refused when it is typed inline",
     )
 
 

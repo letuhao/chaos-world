@@ -46,6 +46,7 @@ gate_reach = _load("gate_reach")
 incident = _load("incident")
 item_derive = _load("item_derive")
 lint = _load("lint")
+loop_guard = _load("loop_guard")
 lore = _load("lore")
 mutation_history = _load("mutation_history_cmd")
 # Importing the cases module is what REGISTERS them with the harness, so the load is
@@ -70,6 +71,7 @@ COMMANDS = {
     "fmt": fmt,
     "gate_reach": gate_reach,
     "lint": lint,
+    "loop_guard": loop_guard,
     "lore": lore,
     "mutation_history": mutation_history,
     "selftest": selftest,
