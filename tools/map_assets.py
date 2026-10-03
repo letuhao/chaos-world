@@ -19,9 +19,8 @@ INDEX_PATH = GAME_DIR / "assets" / "map-asset-index.jsonl"
 ASSET_ROOT = GAME_DIR / "assets" / "world_map"
 MIN_ASSETS = 1000
 
-# Each environment gets a coherent 64-asset base kit. Region-specific art is
-# generated from the same object role with materials and silhouettes suited to
-# that environment; this is not a hue-only recolor list.
+# Each environment gets one large terrain surface and a coherent 64-asset kit.
+# Region-specific art changes materials and silhouettes, not just hue.
 ENVIRONMENTS = (
     (
         "mortal_plains",
@@ -154,6 +153,9 @@ ASSET_ROLES = {
         ("sacred_ground", "Sacred ground", "tile", 128, "center", "none"),
         ("resource_bare_ground", "Resource bare ground", "tile", 128, "center", "none"),
     ),
+    "terrain_texture": (
+        ("base_surface", "Base terrain surface", "terrain_texture", 1024, "center", "none"),
+    ),
     "terrain_transition": (
         ("ground_edge", "Ground edge", "tile", 128, "center", "none"),
         ("trail_edge", "Trail edge", "tile", 128, "center", "none"),
@@ -228,15 +230,19 @@ ASSET_ROLES = {
 
 
 def register(parent_parser) -> None:
-    parser = parent_parser.add_parser("map", help="plan and validate top-down map assets")
+    parser = parent_parser.add_parser("map", help="plan, generate, and compose top-down map art")
     actions = parser.add_subparsers(dest="map_assets_action", required=True)
-    actions.add_parser("scaffold", help="write the initial 1,216-entry map asset plan")
+    actions.add_parser("scaffold", help="write the initial map asset plan")
     actions.add_parser("report", help="summarize map assets by environment and category")
     next_assets = actions.add_parser("next", help="prioritize undercovered map assets")
     next_assets.add_argument("--count", type=int, default=12)
     actions.add_parser("audit", help="validate the map asset index")
     actions.add_parser("preview", help="build a contact sheet of produced map assets")
     actions.add_parser("migrate", help="add explicit alpha mode to older index entries")
+    compose = actions.add_parser(
+        "compose", help="place indexed sprites over a terrain texture using a JSON layout"
+    )
+    compose.add_argument("--layout", required=True, help="JSON terrain and sprite placements")
     install = actions.add_parser("install", help="normalize and register one generated sprite")
     install.add_argument("--asset-id", required=True)
     install.add_argument("--source", required=True, help="generated transparent PNG")
@@ -342,6 +348,14 @@ def run(args) -> int:
                 suffix = record.get("id", "").rsplit(".", 1)[-1]
                 record["alpha"] = _alpha_mode(category, suffix, record.get("type", ""))
                 changed += 1
+        existing_ids = {record.get("id") for record in records}
+        for environment in ENVIRONMENTS:
+            for role in ASSET_ROLES["terrain_texture"]:
+                terrain_record = _record_for_role(environment, "terrain_texture", role)
+                if terrain_record["id"] not in existing_ids:
+                    records.append(terrain_record)
+                    existing_ids.add(terrain_record["id"])
+                    changed += 1
         if changed:
             _atomic_write(
                 "".join(
@@ -359,6 +373,9 @@ def run(args) -> int:
         return 0
     if action == "preview":
         _preview(records)
+        return 0
+    if action == "compose":
+        _compose(records, args)
         return 0
     if action == "next":
         if args.count < 1:
@@ -385,33 +402,9 @@ def _scaffold() -> None:
     if INDEX_PATH.exists():
         raise ToolError(f"refusing to overwrite existing index: {INDEX_PATH}")
     records: list[dict] = []
-    for environment_id, world_tier, environment_name, environment_theme in ENVIRONMENTS:
+    for environment in ENVIRONMENTS:
         for category, roles in ASSET_ROLES.items():
-            for suffix, display_name, kind, size, pivot, collision in roles:
-                asset_id = f"{environment_id}.{category}.{suffix}"
-                records.append(
-                    {
-                        "id": asset_id,
-                        "path": (
-                            f"res://assets/world_map/{environment_id}/{category}/{suffix}.png"
-                        ),
-                        "type": kind,
-                        "category": category,
-                        "environment": environment_id,
-                        "environment_name": environment_name,
-                        "environment_theme": environment_theme,
-                        "world_tier": world_tier,
-                        "archetype": f"{category}.{suffix}",
-                        "name": display_name,
-                        "canvas_px": [size, size],
-                        "alpha": _alpha_mode(category, suffix, kind),
-                        "pivot": pivot,
-                        "collision": collision,
-                        "status": "planned",
-                        "source": "planned; not generated",
-                        "license": "not applicable until generated",
-                    }
-                )
+            records.extend(_record_for_role(environment, category, role) for role in roles)
     if len(records) < MIN_ASSETS:
         raise ToolError(f"scaffold contains only {len(records)} assets; minimum is {MIN_ASSETS}")
     content = "".join(
@@ -419,6 +412,30 @@ def _scaffold() -> None:
     )
     _atomic_write(content)
     ok(f"wrote {INDEX_PATH.relative_to(REPO_ROOT).as_posix()} ({len(records)} planned assets)")
+
+
+def _record_for_role(environment: tuple, category: str, role: tuple) -> dict:
+    environment_id, world_tier, environment_name, environment_theme = environment
+    suffix, display_name, kind, size, pivot, collision = role
+    return {
+        "id": f"{environment_id}.{category}.{suffix}",
+        "path": f"res://assets/world_map/{environment_id}/{category}/{suffix}.png",
+        "type": kind,
+        "category": category,
+        "environment": environment_id,
+        "environment_name": environment_name,
+        "environment_theme": environment_theme,
+        "world_tier": world_tier,
+        "archetype": f"{category}.{suffix}",
+        "name": display_name,
+        "canvas_px": [size, size],
+        "alpha": _alpha_mode(category, suffix, kind),
+        "pivot": pivot,
+        "collision": collision,
+        "status": "planned",
+        "source": "planned; not generated",
+        "license": "not applicable until generated",
+    }
 
 
 def _load_index() -> list[dict]:
@@ -439,7 +456,9 @@ def _load_index() -> list[dict]:
 
 
 def _alpha_mode(category: str, suffix: str, kind: str) -> str:
-    if category == "ground_tile" or (category == "water_feature" and kind == "tile"):
+    if category in {"ground_tile", "terrain_texture"} or (
+        category == "water_feature" and kind == "tile"
+    ):
         return "opaque"
     return "transparent"
 
@@ -489,7 +508,7 @@ def _generate(records: list[dict], args) -> None:
             "guidance": args.guidance,
             "sampler": args.sampler,
             "scheduler": args.scheduler,
-            "rembg_model": args.rembg_model,
+            "rembg_model": args.rembg_model if record["alpha"] == "transparent" else "none",
             "rembg_post_processing": args.rembg_post_processing,
             "alpha_matting": args.alpha_matting,
             "alpha_foreground_threshold": args.alpha_foreground_threshold,
@@ -689,6 +708,7 @@ def _validate(records: list[dict]) -> list[str]:
             issues.append(f"{label}: unknown world tier '{record.get('world_tier')}'")
         if not isinstance(asset_type, str) or asset_type not in {
             "tile",
+            "terrain_texture",
             "prop",
             "landmark",
             "resource_node",
@@ -897,6 +917,118 @@ def _preview(records: list[dict]) -> None:
     _preview_repeated_tiles(produced)
 
 
+def _compose(records: list[dict], args) -> None:
+    issues = _validate(records)
+    if issues:
+        raise ToolError(f"cannot compose from an invalid map index ({len(issues)} issue(s))")
+    layout_path = Path(args.layout)
+    try:
+        layout = json.loads(layout_path.read_text(encoding="utf-8"))
+    except OSError as exc:
+        raise ToolError(f"cannot read composition layout: {layout_path}") from exc
+    except json.JSONDecodeError as exc:
+        raise ToolError(f"composition layout is invalid JSON: {layout_path}") from exc
+    if not isinstance(layout, dict):
+        raise ToolError("composition layout must be a JSON object")
+    layout_id = layout.get("id")
+    if (
+        not isinstance(layout_id, str)
+        or not layout_id
+        or not all(character.isalnum() or character in "_-" for character in layout_id)
+    ):
+        raise ToolError("composition layout id may contain only letters, numbers, '_' and '-'")
+
+    by_id = {record["id"]: record for record in records}
+    terrain_id = layout.get("terrain_id")
+    terrain = by_id.get(terrain_id) if isinstance(terrain_id, str) else None
+    if (
+        terrain is None
+        or terrain["type"] != "terrain_texture"
+        or terrain["status"] not in {"generated", "approved"}
+        or terrain["alpha"] != "opaque"
+    ):
+        raise ToolError("terrain_id must name an opaque generated terrain_texture asset")
+    placements = layout.get("placements")
+    if not isinstance(placements, list):
+        raise ToolError("composition placements must be a JSON array")
+
+    terrain_path = GAME_DIR / terrain["path"].removeprefix("res://")
+    try:
+        with Image.open(terrain_path) as opened:
+            composite = opened.convert("RGBA")
+    except OSError as exc:
+        raise ToolError(f"cannot read terrain texture: {terrain_path}") from exc
+    width, height = composite.size
+    for index, placement in enumerate(placements, 1):
+        label = f"placement {index}"
+        if not isinstance(placement, dict):
+            raise ToolError(f"{label} must be a JSON object")
+        asset_id = placement.get("asset_id")
+        asset = by_id.get(asset_id) if isinstance(asset_id, str) else None
+        if (
+            asset is None
+            or asset["environment"] != terrain["environment"]
+            or asset["type"] == "terrain_texture"
+            or asset["alpha"] != "transparent"
+            or asset["status"] not in {"generated", "approved"}
+        ):
+            raise ToolError(
+                f"{label} must name a transparent generated asset in the terrain's environment"
+            )
+        x, y, scale = placement.get("x"), placement.get("y"), placement.get("scale", 0.25)
+        if (
+            isinstance(x, bool)
+            or not isinstance(x, (int, float))
+            or not 0 <= x <= width
+            or isinstance(y, bool)
+            or not isinstance(y, (int, float))
+            or not 0 <= y <= height
+            or isinstance(scale, bool)
+            or not isinstance(scale, (int, float))
+            or not 0 < scale <= 4
+        ):
+            raise ToolError(f"{label} needs in-canvas x/y coordinates and scale in (0, 4]")
+        asset_path = GAME_DIR / asset["path"].removeprefix("res://")
+        try:
+            with Image.open(asset_path) as opened:
+                sprite = opened.convert("RGBA")
+        except OSError as exc:
+            raise ToolError(f"cannot read composition sprite: {asset_path}") from exc
+        if scale != 1:
+            sprite = sprite.resize(
+                (max(1, round(sprite.width * scale)), max(1, round(sprite.height * scale))),
+                Image.Resampling.LANCZOS,
+            )
+        left = round(x - sprite.width / 2)
+        top = round(
+            y - sprite.height if asset["pivot"] == "bottom_center" else y - sprite.height / 2
+        )
+        crop_left, crop_top = max(0, left), max(0, top)
+        crop_right, crop_bottom = min(width, left + sprite.width), min(height, top + sprite.height)
+        if crop_left >= crop_right or crop_top >= crop_bottom:
+            raise ToolError(f"{label} falls completely outside the terrain texture")
+        visible = sprite.crop(
+            (crop_left - left, crop_top - top, crop_right - left, crop_bottom - top)
+        )
+        composite.alpha_composite(visible, (crop_left, crop_top))
+
+    output_path = REPO_ROOT / "build" / "map-compositions" / f"{layout_id}.png"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            suffix=".png", dir=output_path.parent, delete=False
+        ) as temporary:
+            temporary_path = Path(temporary.name)
+        composite.save(temporary_path, format="PNG", optimize=True)
+        os.replace(temporary_path, output_path)
+        temporary_path = None
+    finally:
+        if temporary_path and temporary_path.exists():
+            temporary_path.unlink()
+    ok(f"wrote {output_path.relative_to(REPO_ROOT).as_posix()} with {len(placements)} sprites")
+
+
 def _preview_repeated_tiles(produced: list[dict]) -> None:
     tiles = [record for record in produced if record.get("type") == "tile"]
     if not tiles:
@@ -967,13 +1099,14 @@ def _next_assets(records: list[dict], count: int) -> None:
     selected: list[dict] = []
     for _ in range(min(count, len(planned))):
 
-        def priority(item: tuple[int, dict]) -> tuple[float, float, float, int, int, int]:
+        def priority(item: tuple[int, dict]) -> tuple[int, float, float, float, int, int, int]:
             index, record = item
             environment = record["environment"]
             category = record["category"]
             environment_ratio = environment_produced[environment] / environment_totals[environment]
             category_ratio = category_produced[category] / category_totals[category]
             return (
+                0 if category == "terrain_texture" else 1,
                 environment_ratio + category_ratio,
                 environment_ratio,
                 category_ratio,

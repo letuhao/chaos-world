@@ -120,7 +120,13 @@ WORKFLOW = {
 
 def _production_prompt(record: dict, subject: str) -> str:
     framing = ""
-    if record["type"] == "tile":
+    if record["type"] == "terrain_texture":
+        framing = (
+            "Fill the full square canvas with one continuous terrain surface seen straight down. "
+            "Treat it as a broad, non-repeating area texture, not a tile or framed platform. "
+            "Include no props, structures, border, or focal object. "
+        )
+    elif record["type"] == "tile":
         framing = "Show a complete square tile viewed straight down. "
         if record["alpha"] == "opaque":
             framing += "Fill the canvas edge to edge and keep it seamlessly repeatable. "
@@ -142,7 +148,7 @@ def _production_prompt(record: dict, subject: str) -> str:
         f"Environment art signature: {record['environment_theme']} "
         f"{framing}{transparency}"
         "Straight-down orthographic camera, with no horizon or isometric projection. "
-        "Hand-painted gouache, fine dark #263A35 ink contours, broad readable value "
+        "Anime-painted gouache, dark #263A35 ink contours, broad readable value "
         "planes, material-led colors, restrained surface detail, soft upper-left light. "
         "Keep the silhouette and identifying detail legible at the indexed game size. "
         "No text, labels, UI, frame, watermark, or unrelated objects."
@@ -210,6 +216,8 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
         alpha_matting_background_threshold=args.alpha_background_threshold,
         alpha_matting_erode_size=args.alpha_erode_size,
     )
+    if record["alpha"] == "opaque":
+        graph["7"]["inputs"]["images"] = ["6", 0]
 
     comparison_nodes: dict[str, str] = {}
     if args.compare_rembg:
@@ -235,14 +243,18 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
             }
             comparison_nodes[save_node] = model
 
-    model_slug = args.rembg_model.replace("/", "_").replace(" ", "_")
+    rembg_slug = (
+        args.rembg_model.replace("/", "_").replace(" ", "_")
+        if record["alpha"] == "transparent"
+        else "opaque"
+    )
     lora_slug = args.lora.strip().replace("/", "_").replace(" ", "_") or "base"
     lora_slug = f"{lora_slug}-s{args.lora_strength:g}"
     output = (
         REPO_ROOT
         / "build"
         / "map-generated"
-        / f"{record['id'].replace('.', '_')}-{seed}-{model_slug}-{lora_slug}.png"
+        / f"{record['id'].replace('.', '_')}-{seed}-{rembg_slug}-{lora_slug}.png"
     )
     output.parent.mkdir(parents=True, exist_ok=True)
     if output.exists():
