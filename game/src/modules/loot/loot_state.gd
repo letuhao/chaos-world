@@ -609,6 +609,7 @@ static func _spawn(
 ) -> Dictionary:
 	var boss_id := encounter.boss_ids[boss_index]
 	var vitality := tier.vitality_for(boss_id)
+	var profile := boss_profile(boss_id)
 	return {
 		"encounter_def": String(encounter.id),
 		"domain_id": String(encounter.domain_id),
@@ -627,7 +628,34 @@ static func _spawn(
 		# content file cannot change the terms of a run already in flight.
 		"attack": tier.attack_for(boss_id),
 		"defense": tier.defense_for(boss_id),
+		# ...and so is the boss's own striking profile, for the same reason. Without it the
+		# boss answered every blow through one hardcoded zero-profile that no content could
+		# move (BL-0224): it never critted, never pierced, never slipped a blow and never
+		# softened one, so no boss could ACT differently from any other.
+		"crit_chance": profile["crit_chance"],
+		"crit_damage": profile["crit_damage"],
+		"penetration": profile["penetration"],
+		"evasion": profile["evasion"],
+		"damage_reduction": profile["damage_reduction"],
 		"defeated": false,
+	}
+
+
+## The striking profile a spawned boss fights with: the authored numbers off its
+## `BossDef`, defaulted to the inert profile for a boss nobody authored one for.
+##
+## `crit_damage` is a **multiplier**, not a probability, so it is only held non-negative;
+## the other four are bounded fractions. `CombatDamage` clamps all five again at the point
+## of use, so this is about the profile a reader is *shown* being honest rather than about
+## the arithmetic being safe.
+static func boss_profile(boss_id: StringName) -> Dictionary:
+	var authored := LootContent.instance().boss_record(boss_id).get("profile", {}) as Dictionary
+	return {
+		"crit_chance": clampf(float(authored.get("crit_chance", 0.0)), 0.0, 1.0),
+		"crit_damage": maxf(0.0, float(authored.get("crit_damage", 1.0))),
+		"penetration": maxf(0.0, float(authored.get("penetration", 0.0))),
+		"evasion": clampf(float(authored.get("evasion", 0.0)), 0.0, 1.0),
+		"damage_reduction": clampf(float(authored.get("damage_reduction", 0.0)), 0.0, 1.0),
 	}
 
 

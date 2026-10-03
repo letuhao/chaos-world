@@ -398,19 +398,33 @@ static func _still_standing(before: Dictionary, after: Dictionary) -> bool:
 	)
 
 
-## A boss crits and pierces at nothing: its profile is authored as two multiples of its
-## band vitality, and inventing a crit chance here would be a third balance dial.
+## The boss's offense, read off the live boss.
+##
+## `attack` is priced off the band's authored vitality (ADR 0076). The rest is the
+## boss's own authored striking profile, frozen with the boss by `LootState._spawn` and
+## read through `LootApi`'s facade like everything else about it. These used to be
+## literals in this function — `crit_chance 0`, `crit_damage 1`, `penetration 0` — which
+## meant no boss in the game could crit, pierce, or vary its answer at all, and no
+## authored content could make one (BL-0224). Reading them costs nothing here: they are
+## already in the bundle `CombatDamage.resolve_hit` expects, and that function clamps
+## every one, so a boss nobody profiled still fights exactly as it did before.
 static func _boss_offense(active: Dictionary) -> Dictionary:
 	return {
 		"attack": float(active.get("attack", 0.0)),
-		"crit_chance": 0.0,
-		"crit_damage": 1.0,
-		"penetration": 0.0,
+		"crit_chance": float(active.get("crit_chance", 0.0)),
+		"crit_damage": float(active.get("crit_damage", 1.0)),
+		"penetration": float(active.get("penetration", 0.0)),
 	}
 
 
+## The boss's defense. Its armor is priced off the band; its evasion and flat damage
+## reduction are the authored half, read for the same reason as [method _boss_offense].
 static func _boss_guard(active: Dictionary) -> Dictionary:
-	return {"defense": float(active.get("defense", 0.0)), "damage_reduction": 0.0, "evasion": 0.0}
+	return {
+		"defense": float(active.get("defense", 0.0)),
+		"damage_reduction": float(active.get("damage_reduction", 0.0)),
+		"evasion": float(active.get("evasion", 0.0)),
+	}
 
 
 ## The actor's health pool, created on first use. `attach_core_resources` sizes it from the

@@ -246,6 +246,11 @@ static func active_view(active: Dictionary) -> Dictionary:
 			"defeated": false,
 			"attack": 0.0,
 			"defense": 0.0,
+			"crit_chance": 0.0,
+			"crit_damage": 1.0,
+			"penetration": 0.0,
+			"evasion": 0.0,
+			"damage_reduction": 0.0,
 		}
 	var vitality := float(active.get("vitality", 0.0))
 	var vitality_max := maxf(1.0, float(active.get("vitality_max", 1.0)))
@@ -269,5 +274,13 @@ static func active_view(active: Dictionary) -> Dictionary:
 		# facade, and so a panel can show what it is fighting.
 		"attack": float(active.get("attack", 0.0)),
 		"defense": float(active.get("defense", 0.0)),
+		# ...and the profile it fights with, authored on the boss rather than on the band
+		# (BL-0224). Frozen alongside attack and defense for the same reason: a resumed
+		# fight is the fight the boss was priced as.
+		"crit_chance": float(active.get("crit_chance", 0.0)),
+		"crit_damage": float(active.get("crit_damage", 1.0)),
+		"penetration": float(active.get("penetration", 0.0)),
+		"evasion": float(active.get("evasion", 0.0)),
+		"damage_reduction": float(active.get("damage_reduction", 0.0)),
 		"defeated": bool(active.get("defeated", false)),
 	}

@@ -27,6 +27,16 @@ const BOSS_DIR := "res://data/bosses/"
 const DOMAIN_DIR := "res://data/domains/"
 ## Id prefix for a table produced by the legacy `BossDef.loot` projection.
 const LEGACY_PREFIX := "legacy:"
+## The boss profile fields `LootContent` reads off a boss record, in the order
+## `CombatDamage.resolve_hit` reads them. A named list rather than a
+## `BossDef` reference, so this module keeps compiling against no `world` type.
+const PROFILE_FIELDS: Array[String] = [
+	"crit_chance",
+	"crit_damage",
+	"penetration",
+	"evasion",
+	"damage_reduction",
+]
 ## Depth ceiling for nested table references.
 const MAX_NESTING_DEPTH := 4
 
@@ -254,8 +264,11 @@ func has_authored_table(boss_id: StringName) -> bool:
 # --- Boss / domain content records ------------------------------------------
 
 
-## `{found, id, domain_id, loot}` for a boss, read without naming its resource
-## type. `loot` is the legacy flat item-id list.
+## `{found, id, domain_id, loot, profile}` for a boss, read without naming its resource
+## type. `loot` is the legacy flat item-id list. `profile` is the boss's authored striking
+## profile — the numbers that decide HOW it fights, as opposed to the band vitality that
+## decides how hard it is to kill (ADR 0076). Read generically, because the alternative
+## is a `loot -> world` reference this module deliberately does not have.
 func boss_record(boss_id: StringName) -> Dictionary:
 	var key := String(boss_id)
 	if _bosses.has(key):
@@ -287,7 +300,14 @@ func _read_record(directory: String, key: String) -> Dictionary:
 	var path := key
 	if not directory.is_empty():
 		path = "%s%s.tres" % [directory, key]
-	var missing := {"found": false, "id": key, "domain_id": "", "boss_ids": [], "loot": []}
+	var missing := {
+		"found": false,
+		"id": key,
+		"domain_id": "",
+		"boss_ids": [],
+		"loot": [],
+		"profile": {},
+	}
 	if not ResourceLoader.exists(path):
 		return missing
 	var resource = load(path)
@@ -299,7 +319,42 @@ func _read_record(directory: String, key: String) -> Dictionary:
 		"domain_id": _text_field(resource, "domain_id"),
 		"boss_ids": _string_list(resource.get("boss_ids")),
 		"loot": _string_list(resource.get("loot")),
+		# A field the resource does not declare reads as `null` here, so an older
+		# `BossDef` without a profile yields an empty one rather than a zeroed one full of
+		# keys that were never authored. `LootState` decides what an empty profile means.
+		"profile": _boss_profile(resource),
 	}
+
+
+## The authored striking profile of a boss record, or `{}` when the record declares none.
+##
+## Read field by field with [method _float_field] rather than by calling the resource's
+## own projection, so this stays a `Object.get` read and `loot` still names no `world`
+## type. Every authored value is clamped into the range `CombatDamage` works in, so a
+## hand-edited `.tres` cannot hand the combat model a number it does not already bound.
+static func _boss_profile(resource: Resource) -> Dictionary:
+	if resource == null:
+		return {}
+	var declared := false
+	var profile: Dictionary = {}
+	for field in PROFILE_FIELDS:
+		var value = resource.get(field)
+		if value == null:
+			continue
+		declared = true
+		var number := float(value)
+		match String(field):
+			"crit_chance", "evasion":
+				profile[field] = clampf(number, 0.0, 1.0)
+			"damage_reduction":
+				profile[field] = clampf(number, 0.0, 1.0)
+			"crit_damage":
+				profile[field] = maxf(0.0, number)
+			_:
+				profile[field] = maxf(0.0, number)
+	if not declared:
+		return {}
+	return profile
 
 
 func _build_boss_index() -> void:
