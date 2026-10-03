@@ -18,7 +18,7 @@ signal route_requested(route_id: StringName)
 ## still the single source of truth for *what* a route is, and a table longer than
 ## the scene is reported instead of silently truncated. Authored with headroom over
 ## the current table so adding a route is a table edit first and a scene edit second.
-const SLOT_COUNT := 12
+const SLOT_COUNT := 16
 const SLOT_NAME := "Slot%dButton"
 const ACTIVE_VARIATION := &"PrimaryButton"
 const IDLE_VARIATION := &"Button"

@@ -91,7 +91,31 @@ text = "-"
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Route slot 12"
-text = "-"
+text = "q"
+
+[node name="Slot12Button" type="Button" parent="Layout/RouteRow"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Route slot 13"
+text = "e"
+
+[node name="Slot13Button" type="Button" parent="Layout/RouteRow"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Route slot 14"
+text = "c"
+
+[node name="Slot14Button" type="Button" parent="Layout/RouteRow"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Route slot 15"
+text = "l"
+
+[node name="Slot15Button" type="Button" parent="Layout/RouteRow"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Route slot 16"
+text = "t"
 
 [node name="StatusLabel" type="Label" parent="Layout"]
 unique_name_in_owner = true
