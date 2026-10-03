@@ -130,20 +130,34 @@ def _check_adr_numbers() -> bool:
 
 def run(args) -> int:
     failed: list[str] = []
-    info("== adr ==")
-    if not _check_adr_numbers():
-        failed.append("adr")
-        if not args.keep_going:
-            fail("gate failed: " + ", ".join(failed))
-            return 1
-    # The runaway guards run BEFORE every other stage, not as part of `test`.
+
+    def _gate(name: str, passed: bool) -> bool:
+        """Record a hoisted stage. Returns False when the gate must stop here.
+
+        Every hoisted stage routes through this so the stop condition is stated once:
+        a stage runs to completion before anything decides whether to bail out.
+        """
+        if passed:
+            return True
+        failed.append(name)
+        if args.keep_going:
+            return True
+        fail("gate failed: " + ", ".join(failed))
+        return False
+
+    # ORDER is by blast radius, not by cost, and every stage here is engine-free.
     #
-    # This loop breaks on the first failing stage, so anything ordered after a
-    # stage that routine work can red-flag is a stage that does not run. Those guards
-    # live in `arch_rules` and cover the two hazards that actually cost this machine
-    # time: the disk flood and the 67 GB leak (INC-0001, INC-0002). Under the old
-    # order a single unformatted string in tools/ stopped the gate before either
-    # executed, which is how a cosmetic failure silently disarmed both.
+    # These guards cover the hazards that actually cost this machine time: the disk
+    # flood and the 67 GB leak (INC-0001, INC-0002). Each loop below breaks on the
+    # first failing stage, so anything ordered after a stage that routine work can
+    # red-flag is a stage that does not run. Under the old order a single unformatted
+    # string in tools/ stopped the gate before either guard executed, which is how a
+    # cosmetic failure silently disarmed both (BL-0398).
+    #
+    # The ADR-number check ran FIRST here, and that reopened the same hole one level
+    # up: a duplicate ADR number is doc hygiene, yet it returned 1 before either
+    # runaway guard had spawned, so editing a filename could disarm the disk and leak
+    # guards (BL-0632). Hygiene now goes LAST among the hoisted stages.
     #
     # The cost is honest and deliberate: a red tree now starts Godot before failing
     # fast on `fmt`. A guard that an unrelated lint error can switch off is not a
@@ -153,22 +167,19 @@ def run(args) -> int:
         [sys.executable, "-m", "tools", "test", "--suite", "arch_rules"],
         cwd=str(REPO_ROOT),
     )
-    if guard.returncode != 0:
-        failed.append("guards")
-        if not args.keep_going:
-            fail("gate failed: " + ", ".join(failed))
-            return 1
+    if not _gate("guards", guard.returncode == 0):
+        return 1
     for name, extra in PREAMBLE_STEPS:
         info(f"== {name} ==")
         preamble = subprocess.run(
             [sys.executable, "-m", "tools", name, *extra],
             cwd=str(REPO_ROOT),
         )
-        if preamble.returncode != 0:
-            failed.append(name)
-            if not args.keep_going:
-                fail("gate failed: " + ", ".join(failed))
-                return 1
+        if not _gate(name, preamble.returncode == 0):
+            return 1
+    info("== adr ==")
+    if not _gate("adr", _check_adr_numbers()):
+        return 1
     for name, extra in STEPS:
         info(f"== {name} ==")
         result = subprocess.run(
