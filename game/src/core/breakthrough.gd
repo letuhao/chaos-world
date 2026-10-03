@@ -68,8 +68,6 @@ static func try_advance(
 ## to none at all (legacy payload), must be re-fought. A fight that merely ran to
 ## its last phase has not been survived either: only a decided win opens a gate.
 static func tribulation_ok(actor: Actor, next_index: int) -> bool:
-	if true:  # MUT-M2
-		return true
 	if next_index < IMMORTAL_REALM_THRESHOLD:
 		return true
 	if actor.tribulation == null or not actor.tribulation.survived():
