@@ -32,10 +32,22 @@ const WAVE_GUARD := 16
 const SEED_GUARD := 64
 const ASCENT_WALK_GUARD := 16
 
+## Passes the stocking retry may take before it gives up on finding a slot. Headroom,
+## not a budget: one pass adds the single unit the milestone costs, and the spend
+## that follows frees the slot again.
+const STOCK_GUARD := 64
+
 ## One canonical walk from the first realm to R30, cached per path so the three
 ## walks are the same code measured three times. Declared with the other globals:
 ## `gdlint` reads a `var` after a method as out of order.
 static var _walks: Dictionary = {}
+
+## Authored item defs resolved once. The cache is load-bearing rather than tidy:
+## `Crafting.resolve` falls through to a recursive scan of the whole item content tree
+## whenever the id does not sit in the category its prefix implies, so an uncached
+## resolve per stocked milestone turns a 29-transition walk into seconds of directory
+## walking.
+static var _defs: Dictionary = {}
 
 # --- Fixtures -----------------------------------------------------------------
 
@@ -48,6 +60,10 @@ func _hero_at(index: int, path_id: StringName) -> Actor:
 	var actor := Actor.new(&"high_tier", {Stat.COMPREHENSION: 40.0})
 	actor.set_path(PathState.new(path_id, _realm_id(index)))
 	actor.meridians.unlock_for_realm(_realm_id(index))
+	# Inventory and nothing more: the milestones Mind owes are paid in items, so a
+	# walk that could not spend one could not be a walk a player takes. Body and qi
+	# spend nothing here, and an empty inventory costs them nothing.
+	ItemsApi.attach(actor)
 	return actor
 
 
@@ -117,6 +133,52 @@ func _commit(path_id: StringName, actor: Actor, entered: int) -> void:
 	WorldAnchor.commit(actor, entered)
 	if path_id == MindPath.PATH_ID:
 		MindAnchor.commit(actor, entered)
+
+
+## The anchor milestone one path has to PAY for, as distinct from the ones its commit
+## settles. Body and qi read the shared `WorldAnchor.stage_met` schedule, which a
+## commit writes directly, so they owe nothing here and this is a no-op on both.
+##
+## Mind reads `MindAnchor`, whose demand additionally requires the anchor REINFORCED.
+## Reinforcement is the resonance milestone: the realm's channel elixir spent through
+## `MindCultivationApi.strengthen_anchor`, and no commit grants it (ADR 0115 — while
+## `_commit_inside_world` stamped it, the breakthrough `Breakthrough.try_advance` makes
+## for every path paid the very gate it was supposed to govern). It is called on all
+## three paths so the difference stays the module's rather than the fixture's: a walk
+## that skipped the spend for Mind would be asserting the old, broken gate.
+func _pay_anchor(path_id: StringName, actor: Actor) -> void:
+	if path_id != MindPath.PATH_ID:
+		return
+	var rank_id: StringName = actor.path(MindPath.PATH_ID).rank_id
+	if RealmDefaults.ladder().index_of(rank_id) < IMMORTAL:
+		return
+	var seed := MindRealmSeed.for_realm(rank_id)
+	if seed == null:
+		return
+	_stock(actor, seed.training_item)
+	MindCultivationApi.strengthen_anchor(actor)
+
+
+## Put one unit of a real authored item in the actor's inventory. Resolving through
+## the item content tree is what proves the milestone's elixir exists and loads.
+func _stock(actor: Actor, def_id: StringName) -> void:
+	if def_id.is_empty():
+		return
+	var def := _item_def(def_id)
+	if def == null:
+		return
+	for _unit in STOCK_GUARD:
+		if ItemsApi.has_item(actor, def_id):
+			return
+		ItemsApi.inventory(actor).add(def, 1)
+
+
+func _item_def(def_id: StringName) -> ItemDef:
+	if _defs.has(def_id):
+		return _defs[def_id]
+	var resolved := Crafting.resolve(def_id)
+	_defs[def_id] = resolved
+	return resolved
 
 
 ## The anchor gate the given path actually reads at `index`. Mind substitutes its own
@@ -252,6 +314,10 @@ func _walked(path_id: StringName) -> Dictionary:
 		var advanced := Breakthrough.try_advance_gated(actor, path_id)
 		if advanced:
 			_commit(path_id, actor, ladder.index_of(actor.path(path_id).rank_id))
+			# Paid AFTER the commit, because the milestone reinforces the anchor the
+			# commit creates — and BEFORE the next transition reads the gate, so the
+			# gate the walk is about to face is one the walk has already paid for.
+			_pay_anchor(path_id, actor)
 		(
 			steps
 			. append(

@@ -166,8 +166,17 @@ func test_the_anchor_demand_is_satisfiable_from_prior_commitments() -> void:
 			assert_eq(stage, MindAnchor.STAGE_NONE, "no anchor below the Immortal tier")
 			continue
 		var actor := Probe.prepared(realm.id)
+		# Walked in ladder order and STOPPED the moment this boundary's own demand is
+		# earned. Walking on past it is not extra proof: a later tier's commit
+		# REPLACES the inside world this demand reads (`MindAnchor._commit_inside_world`
+		# builds a fresh world at the new tier), so the walk would destroy the stage it
+		# had already paid for and fail a boundary whose gate is in fact satisfiable.
+		# The ladder as a whole is `test_full_traversal.gd`'s claim; this one asks
+		# whether THIS gate can be opened by committing earlier tiers.
 		for earlier in range(Breakthrough.IMMORTAL_REALM_THRESHOLD, target.index):
 			Probe.walk_high_tier(actor, earlier)
+			if MindAnchor.stage_met(actor, stage):
+				break
 		assert_eq(
 			stage == MindAnchor.STAGE_NONE or MindAnchor.stage_met(actor, stage),
 			true,
@@ -222,7 +231,7 @@ func test_the_price_of_a_breakthrough_rises_strictly_with_depth() -> void:
 		var target := realms[index]
 		var below := realms[index - 1]
 		var price := (
-			MindRealmSeed.for_realm(target.id).progress_required / MindRealmProfile.factor(below.id)
+			MindRealmSeed.for_realm(target.id).progress_required / RealmRate.factor(below.id)
 		)
 		assert_eq(
 			price > previous_price,
@@ -246,7 +255,7 @@ func test_the_rate_step_never_outruns_the_budget_step_it_converts() -> void:
 	var checked := 0
 	for index in range(1, realms.size()):
 		var budget := MindRealmSeed.for_realm(realms[index].id).progress_required
-		var rate := MindRealmProfile.factor(realms[index].id)
+		var rate := RealmRate.factor(realms[index].id)
 		if checked > 0:
 			assert_eq(
 				rate / previous_rate <= budget / previous_budget,
