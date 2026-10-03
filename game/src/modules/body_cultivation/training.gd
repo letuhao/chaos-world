@@ -143,10 +143,10 @@ static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
 	var channel := actor.meridians.get_meridian(meridian_id)
 	if seed == null or channel == null:
 		return false
-	var cap_reached := (
-		channel.state == &"strengthened" and channel.refinement >= seed.refinement_cap
-	)
-	if cap_reached and not _needs_point_training(acupoint_set, meridian_id, seed.quality_target):
+	if (
+		at_channel_cap(channel, seed)
+		and not _needs_point_training(acupoint_set, meridian_id, seed.quality_target)
+	):
 		return false
 	acupoint_set.busy = true
 	if not _ITEMS.consume_item(actor, seed.strengthening_item):
@@ -173,6 +173,14 @@ static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
 	if progress != null:
 		progress.mark_complete(actor, seed)
 	return true
+
+
+static func at_channel_cap(channel: MeridianState, seed: BodyRealmSeed) -> bool:
+	# A channel at its refinement ceiling has nothing left to gain from training.
+	# Named because the answer is a RULE the realm seed and the channel state
+	# jointly decide, not an inline comparison: `strengthen` asks it, and the
+	# tests ask it, so one definition is the only place that can be wrong.
+	return channel.state == &"strengthened" and channel.refinement >= seed.refinement_cap
 
 
 static func _needs_point_training(
