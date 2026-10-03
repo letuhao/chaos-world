@@ -22,7 +22,11 @@ extends TestCase
 const HUB_METHODS := [&"routes", &"navigate_to", &"current_route"]
 ## Where a screen a player can reach has to be named, outside the test suite.
 const PROGRAM_ROOTS := ["res://src", "res://scenes"]
-const SUFFIXES := [".gd", ".tscn"]
+## Dot-free on purpose: `String.get_extension()` returns `"gd"`, never `".gd"`. A dotted
+## literal here silently skipped every file in every root (BL-0650), and the guard that
+## read nothing reported its own blindness as a finding. `test_the_program_scan_actually_reads_files`
+## is the liveness term that makes that shape impossible to re-introduce silently.
+const SUFFIXES := ["gd", "tscn"]
 ## The composition root's own script: where a door into the screen stack lives.
 const APP_SCRIPT := "res://src/app/item_workbench_app.gd"
 ## A public method that opens a screen. Each needs a caller in `src/`, or it is a
@@ -308,8 +312,7 @@ func test_no_public_door_into_the_stack_is_reachable_only_by_a_test() -> void:
 			continue
 		var callers := 0
 		for text in program:
-			if text.contains("%s(" % method):
-				callers += 1
+			callers += _count_call_sites(text, method)
 		assert_eq(
 			callers > 0,
 			true,
@@ -321,6 +324,69 @@ func test_no_public_door_into_the_stack_is_reachable_only_by_a_test() -> void:
 				+ "it is a route only a test can use (BL-0121)"
 			)
 		)
+
+
+## The walk must be ABLE to read. `_source_texts` filtered on `String.get_extension()`,
+## which returns `"gd"` with NO dot, so a dotted `SUFFIXES` matched nothing, every root
+## returned `[]`, and the door guard above reported its own blindness as a finding
+## (BL-0650). A guard that can read zero files must not report success while doing it,
+## so this asserts a non-zero count AND that it agrees with an independent count built
+## on `ends_with` — whose needle legitimately carries its dot, so it cannot be broken the
+## same way. No filter on either side, and neither number is grown by the walk it measures.
+func test_the_program_scan_actually_reads_files() -> void:
+	var texts := _program_text()
+	assert_ne(texts.size(), 0, "the source walk under res://src and res://scenes read files at all")
+	assert_eq(
+		texts.size(),
+		_count_program_sources(),
+		"the walk read exactly the .gd/.tscn files an independent ends_with count finds"
+	)
+
+
+## An independent count of the same set, deliberately on a DIFFERENT predicate.
+func _count_program_sources() -> int:
+	var total := 0
+	for root in PROGRAM_ROOTS:
+		total += _count_sources(root)
+	return total
+
+
+func _count_sources(root: String) -> int:
+	var total := 0
+	var dir := DirAccess.open(root)
+	if dir == null:
+		return total
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while entry != "":
+		var path := root.path_join(entry)
+		if dir.current_is_dir():
+			if not entry.begins_with("."):
+				total += _count_sources(path)
+		elif path.ends_with(".gd") or path.ends_with(".tscn"):
+			total += 1
+		entry = dir.get_next()
+	dir.list_dir_end()
+	return total
+
+
+## How many lines of `text` CALL `method` rather than declare it. The count used to be
+## `text.contains("%s(" % method)`, and a definition line contains that substring — so
+## every door matched its own `func` signature and the guard could not tell "has a caller"
+## from "is declared", which is the exact BL-0121 shape it was filed to detect. Blank the
+## `func <name>(` head first; nothing else about the match changes.
+func _count_call_sites(text: String, method: String) -> int:
+	var needle := "%s(" % method
+	var calls := text.replace("func %s(" % method, "func _declared(")
+	var count := 0
+	# Bounded by the string, not by a tunable cap: `find(needle, at + needle.length())`
+	# resumes strictly past the match it just counted, so it cannot revisit one and
+	# `find` returns -1 at the end. Iterations <= calls.length() / needle.length().
+	var at := calls.find(needle)
+	while at != -1:
+		count += 1
+		at = calls.find(needle, at + needle.length())
+	return count
 
 
 ## A nav bar that RENDERS sixteen buttons is not a route until a press on one moves
