@@ -340,7 +340,9 @@ func test_pressing_a_nav_button_moves_the_game_to_that_routes_screen() -> void:
 	if nav == null:
 		return
 	var listed: Array = harness.routes().get("routes", [])
-	assert_ne(listed.size() > 1, false, "the route table holds a destination besides the home route")
+	assert_ne(
+		listed.size() > 1, false, "the route table holds a destination besides the home route"
+	)
 	if listed.size() < 2:
 		return
 
