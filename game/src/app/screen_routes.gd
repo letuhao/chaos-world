@@ -116,6 +116,15 @@ const ROUTES: Array[Dictionary] = [
 		"root": false,
 	},
 	{
+		"id": &"character_creation",
+		"node": "CharacterCreation",
+		"label": "Arrival",
+		"hint": "The origin you arrive under, and the body it arrives in.",
+		"scene": "res://src/ui/screens/character_creation.tscn",
+		"key": "k",
+		"root": false,
+	},
+	{
 		"id": &"destiny",
 		"node": "DestinyScreen",
 		"label": "Fate",
