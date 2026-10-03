@@ -20,7 +20,15 @@ def register(actions) -> None:
     generate = actions.add_parser(
         "generate", help="generate and index one item-family icon through local ComfyUI"
     )
-    generate.add_argument("--asset-id", required=True, help="family id from asset-index.jsonl")
+    family = generate.add_mutually_exclusive_group(required=True)
+    family.add_argument("--asset-id", help="existing family id from asset-index.jsonl")
+    family.add_argument("--family-id", help="new family id to add to asset-index.jsonl")
+    generate.add_argument(
+        "--match-item",
+        action="append",
+        default=[],
+        help="item seed to assign to a new family; repeat to group matching seeds",
+    )
     generate.add_argument("--prompt", required=True, help="item appearance and material details")
     generate.add_argument("--negative", default=map_generate.DEFAULT_NEGATIVE)
     generate.add_argument("--seed", type=int, default=-1, help="-1 chooses a random seed")
@@ -62,9 +70,23 @@ def register(actions) -> None:
 
 def run(args) -> int:
     records = assets._load_index()
-    record = next((item for item in records if item["id"] == args.asset_id), None)
-    if record is None:
-        raise ToolError(f"unknown item asset family '{args.asset_id}'")
+    new_family = args.family_id is not None
+    if new_family:
+        if not args.match_item:
+            raise ToolError("--family-id requires at least one --match-item")
+        if len(args.match_item) != len(set(args.match_item)):
+            raise ToolError("--match-item values must be unique")
+        items = assets._load_items()
+        record = _new_family_record(args.family_id, args.match_item, items)
+        if any(item["id"] == record["id"] for item in records):
+            raise ToolError(f"item asset family '{record['id']}' already exists")
+        _validate_new_family(records, record, items)
+    else:
+        if args.match_item:
+            raise ToolError("--match-item can only be used with --family-id")
+        record = next((item for item in records if item["id"] == args.asset_id), None)
+        if record is None:
+            raise ToolError(f"unknown item asset family '{args.asset_id}'")
     if not ASSET_ID_RE.fullmatch(record["id"]):
         raise ToolError(f"item asset id '{record['id']}' cannot form a safe filename")
     if args.target_size < 64 or args.target_size > 2048 or args.target_size % 16:
@@ -82,6 +104,8 @@ def run(args) -> int:
     filename = f"{record['id']}.png"
     asset_path = f"res://assets/items/generated/{filename}"
     output_path = OUTPUT_DIR / filename
+    if new_family and args.replace_generated:
+        raise ToolError("--replace-generated only applies to an existing family")
     _check_install_target(records, record, asset_path, output_path, args.replace_generated)
 
     generation_record = {
@@ -109,14 +133,23 @@ def run(args) -> int:
 
     # Rendering may take minutes. Reload so the final write preserves concurrent index edits.
     current_records = assets._load_index()
-    current = next((item for item in current_records if item["id"] == args.asset_id), None)
-    if current is None:
-        raise ToolError(f"item asset family '{args.asset_id}' was removed while generating")
-    if current.get("match") != record.get("match"):
-        raise ToolError(f"item asset family '{args.asset_id}' changed while generating")
+    if new_family:
+        current_items = assets._load_items()
+        current = _new_family_record(args.family_id, args.match_item, current_items)
+        if any(item["id"] == current["id"] for item in current_records):
+            raise ToolError(f"item asset family '{args.family_id}' was added while generating")
+        _validate_new_family(current_records, current, current_items)
+    else:
+        current = next((item for item in current_records if item["id"] == args.asset_id), None)
+        if current is None:
+            raise ToolError(f"item asset family '{args.asset_id}' was removed while generating")
+        if current.get("match") != record.get("match"):
+            raise ToolError(f"item asset family '{args.asset_id}' changed while generating")
     _check_install_target(current_records, current, asset_path, output_path, args.replace_generated)
     assets._normalize_image(image_path, filename, replace=args.replace_generated)
 
+    if new_family:
+        current_records.append(current)
     current["path"] = asset_path
     current["source"] = f"ComfyUI local checkpoint: {args.checkpoint}"
     current["prompt_ref"] = f"comfyui-item-v1:{record['id']}:{seed}"
@@ -153,9 +186,65 @@ def run(args) -> int:
         current["visual_traits"] = sorted(traits)
     else:
         current.pop("visual_traits", None)
-    _write_index(current_records)
-    ok(f"installed {asset_path}; retained {len(current.get('item_ids', []))} item-seed links")
+    if new_family:
+        issues: list[str] = []
+        winners = assets._resolve(current_items, current_records, issues)
+        if issues:
+            raise ToolError(f"cannot add item family: item match has {len(issues)} issue(s)")
+        if any(winners.get(item_id) != current["id"] for item_id in args.match_item):
+            raise ToolError("new item family does not win its selected seed matches")
+        assets._write_links(current_records, winners)
+        linked_count = len(args.match_item)
+    else:
+        _write_index(current_records)
+        linked_count = len(current.get("item_ids", []))
+    ok(f"installed {asset_path}; linked {linked_count} item seeds")
     return 0
+
+
+def _new_family_record(family_id: str, item_ids: list[str], items: dict[str, dict]) -> dict:
+    if not ASSET_ID_RE.fullmatch(family_id):
+        raise ToolError(f"item asset id '{family_id}' cannot form a safe filename")
+    missing = sorted(set(item_ids) - items.keys())
+    if missing:
+        raise ToolError(f"unknown item seed(s): {', '.join(missing[:10])}")
+    categories = {
+        (items[item_id]["category"], items[item_id]["subcategory"]) for item_id in item_ids
+    }
+    if len(categories) != 1:
+        raise ToolError("all --match-item seeds must share one category and subcategory")
+    category, subcategory = next(iter(categories))
+    expression = "^(?:" + "|".join(re.escape(item_id) for item_id in sorted(item_ids)) + ")$"
+    return {
+        "id": family_id,
+        "path": f"res://assets/items/generated/{family_id}.png",
+        "type": "item_icon",
+        "match": {"category": category, "subcategory": subcategory, "id_regex": expression},
+        "item_ids": sorted(item_ids),
+    }
+
+
+def _validate_new_family(records: list[dict], record: dict, items: dict[str, dict]) -> None:
+    selected = set(record["item_ids"])
+    matched = {
+        item_id
+        for item_id, item in items.items()
+        if assets._matches(record["match"], item_id, item)
+    }
+    if matched != selected:
+        raise ToolError(f"family '{record['id']}' match rule includes unselected item seeds")
+    issues: list[str] = []
+    winners = assets._resolve(items, [*records, record], issues)
+    if issues:
+        raise ToolError(
+            f"cannot create item family: existing asset matches have {len(issues)} issue(s)"
+        )
+    not_won = sorted(item_id for item_id in selected if winners.get(item_id) != record["id"])
+    if not_won:
+        raise ToolError(
+            f"family '{record['id']}' does not win its selected seed matches: "
+            + ", ".join(not_won[:10])
+        )
 
 
 def _check_install_target(
