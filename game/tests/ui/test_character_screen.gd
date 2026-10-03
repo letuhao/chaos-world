@@ -93,8 +93,122 @@ func test_every_derived_stat_is_reachable_not_silently_dropped() -> void:
 	for row in _screen_rows(screen):
 		names[String(row.get("name", ""))] = true
 	for key in stats:
-		assert_eq(names.has(String(key)), true, "%s is rendered, not dropped" % key)
+		# Rows are labelled, not keyed by id: `acupoint_quality` is shown as
+		# "Huyệt quality", so this compares the stat id to the label the sheet would
+		# print for it. Comparing id to id instead would pass again the moment the
+		# sheet went back to printing raw ids.
+		assert_eq(
+			names.has(StatPresenter.label_for(StringName(key))),
+			true,
+			"%s is rendered, not dropped" % key
+		)
 	screen.free()
+
+
+## The test above passed while the sheet rendered NOTHING, and this is why.
+##
+## `_screen_rows` walked the children looking for `StatRow`, and `StatRow.new()`
+## children are `StatRow`s -- they just have no `%StatLabel` or `%ValueLabel`, so
+## they draw an empty box. Their `summary()` still answered with a name, a current
+## and a `text` read off plain fields, so "is this stat rendered?" was answered yes
+## by rows that were not on screen. A row has to be able to report that it failed
+## to render, and the sheet has to be asked.
+func test_every_row_on_the_sheet_actually_draws() -> void:
+	var screen := _screen()
+	screen.setup(_actor())
+	var rows := _screen_rows(screen)
+	assert_ne(rows.size(), 0, "there are rows")
+	for row in rows:
+		var name := String(row.get("name", ""))
+		assert_eq(
+			bool(row.get("rendered", false)), true, "%s has a value label and can draw" % name
+		)
+		assert_eq(
+			String(row.get("label_text", "")),
+			name,
+			"%s puts its name in the label node, not only in a field" % name
+		)
+	screen.free()
+
+
+## The sheet binds its rows by `%` unique name, and those names are CASE-SENSITIVE.
+## It used to ask for `%pool0Row` while the scene declares `Pool0Row`, so
+## `get_node_or_null` answered null for every row, the screen concluded it had none,
+## and composed all 38 itself -- as childless rows. A pool is the resource the
+## player spends, so "the reservoir does not appear" is the sharpest form of this.
+func test_the_resource_pools_reach_the_sheet_as_rows() -> void:
+	var screen := _screen()
+	screen.setup(_actor())
+	var vitals: Dictionary = screen.summary().get("vitals", {})
+	assert_eq(
+		vitals.has("Body integrity"), true, "body_integrity is drawn as a row, keyed by its label"
+	)
+	var row: Dictionary = vitals.get("Body integrity", {})
+	assert_eq(bool(row.get("rendered", false)), true, "and it draws")
+	assert_eq(bool(row.get("bar_visible", false)), true, "a pool is shown as a bar")
+	screen.free()
+
+
+## The defect as a figure. `acupoint_quality` is 0.5 on a fresh R1 body actor and
+## used to read "1"; `crit_chance` is 0.05 and used to read "0", which told a player
+## they could never crit. A row that is present and wrong fails this.
+## `breakthrough_chance` is `0.1 + comprehension*0.01 + will*0.005` on this actor's
+## stats, so it reads 0.100 here. The 0.2 figure is `test_stat_presenter.gd`'s,
+## which pins the format against a literal rather than against a derived actor.
+func test_fraction_stats_are_not_rounded_on_the_sheet() -> void:
+	var screen := _screen()
+	screen.setup(_actor())
+	var rows := _by_name(_screen_rows(screen))
+	assert_eq(
+		rows.get("Huyệt quality", {}).get("text", ""),
+		"0.50",
+		"acupoint_quality = 0.5 must read 0.50, not 1"
+	)
+	assert_eq(
+		rows.get("Crit chance", {}).get("text", ""),
+		"0.050",
+		"crit_chance = 0.05 must read 0.050, not 0"
+	)
+	assert_eq(
+		rows.get("Breakthrough chance", {}).get("text", ""),
+		"0.100",
+		"breakthrough_chance must read 0.100, not 0"
+	)
+	screen.free()
+
+
+## The raw id is not a label. A sheet that prints `acupoint_quality` tells the
+## player nothing about what the number means.
+func test_no_row_on_the_sheet_shows_a_raw_stat_id() -> void:
+	var screen := _screen()
+	screen.setup(_actor())
+	for row in _screen_rows(screen):
+		var name := String(row.get("name", ""))
+		assert_eq(name, StatPresenter.label_for(StringName(name)), "%s is labelled" % name)
+		assert_eq(name.contains("_"), false, "%s is not a raw id" % name)
+	screen.free()
+
+
+## The line above the sheet names the path a player reads, not the module id.
+func test_the_paths_line_is_written_for_a_player() -> void:
+	var screen := _screen()
+	screen.setup(_actor())
+	var label := screen.get_node_or_null("%PathsLabel") as Label
+	assert_ne(label, null, "the paths label exists")
+	assert_eq(
+		label.text.contains("body_cultivation"),
+		false,
+		"the sheet does not print a module id to the player"
+	)
+	assert_eq(label.text.contains("Body qi_refining"), true, "it says Body: %s" % label.text)
+	screen.free()
+
+
+func _by_name(rows: Array) -> Dictionary:
+	var out: Dictionary = {}
+	for row in rows:
+		out[String(row.get("name", ""))] = row
+	return out
 
 
 ## Every non-empty row the screen composed, so a test can count what is rendered.

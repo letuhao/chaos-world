@@ -51,6 +51,49 @@ func test_stat_row_decimals_are_opt_in() -> void:
 	row.free()
 
 
+## A row that takes its precision from the call site is for a COUNT. `decimals: 0`
+## on 0.5 still prints "1" -- that is the caller saying so, and it is why a stat
+## must not be presented that way. Presenting it that way is what the sheet did.
+func test_an_explicit_integer_rounding_is_the_callers_choice_and_says_so() -> void:
+	var row := _row()
+	row.set_state({"name": "Dantian", "current": 0.5, "decimals": 0})
+	assert_eq(row.summary().get("text", ""), "1", "asked for, so given")
+	row.set_state({"stat": &"acupoint_quality", "current": 0.5})
+	assert_eq(row.summary().get("text", ""), "0.50", "the stat id overrides the default")
+	row.free()
+
+
+## `StatRow.create()` instances the panel's own scene, so the row has the three
+## widgets. `StatRow.new()` does not, and a row with no `%ValueLabel` draws nothing
+## while still answering `summary()` with a name and a figure -- which is precisely
+## how the character sheet rendered an empty stat list behind a green suite.
+func test_a_created_row_can_draw_and_a_bare_new_one_cannot() -> void:
+	var created := StatRow.create()
+	assert_ne(created, null, "the panel builds its own scene")
+	created.set_state({"stat": &"max_health", "current": 250.0})
+	assert_eq(bool(created.summary().get("rendered", false)), true, "it draws")
+	assert_eq(created.summary().get("label_text", ""), "Max health", "and it is labelled")
+
+	var bare := StatRow.new()
+	bare.set_state({"stat": &"max_health", "current": 250.0})
+	assert_eq(
+		bool(bare.summary().get("rendered", true)),
+		false,
+		"a bare StatRow reports that it cannot draw"
+	)
+	assert_eq(bare.summary().get("text", ""), "250", "but still computes the figure")
+	bare.free()
+	created.free()
+
+
+func test_stat_row_reports_the_precision_it_used() -> void:
+	var row := _row()
+	row.set_state({"stat": &"crit_chance", "current": 0.05})
+	assert_eq(int(row.summary().get("decimals", 0)), 3, "the declared precision is reported")
+	assert_eq(row.summary().get("text", ""), "0.050", "and is what got printed")
+	row.free()
+
+
 func test_stat_row_bar_ratio_is_clamped() -> void:
 	var row := _row()
 	row.set_state({"name": "Qi", "current": 50.0, "maximum": 100.0, "mode": StatRow.MODE_BAR})
@@ -144,7 +187,6 @@ func test_screen_reports_the_shared_key_vocabulary() -> void:
 	ItemsApi.attach(actor, 64)
 	actor.set_path(PathState.new(QiPath.PATH_ID, &"qi_refining"))
 	QiCultivationApi.attach(actor)
-	QiCultivationApi.attach_dantian(actor)
 	screen.setup(actor)
 	var view := screen.summary()
 	for key in ["realm", "target", "progress", "can_act", "chance", "unmet", "costs"]:
@@ -162,7 +204,6 @@ func test_screen_actions_change_real_state() -> void:
 	ItemsApi.attach(actor, 64)
 	actor.set_path(PathState.new(QiPath.PATH_ID, &"qi_refining"))
 	QiCultivationApi.attach(actor)
-	QiCultivationApi.attach_dantian(actor)
 	screen.setup(actor)
 	var before := float(screen.summary().get("progress", 0.0))
 	screen.act_cultivate()
@@ -178,7 +219,6 @@ func test_breakthrough_is_refused_when_the_gate_is_not_met() -> void:
 	ItemsApi.attach(actor, 64)
 	actor.set_path(PathState.new(QiPath.PATH_ID, &"qi_refining"))
 	QiCultivationApi.attach(actor)
-	QiCultivationApi.attach_dantian(actor)
 	screen.setup(actor)
 	assert_eq(screen.act_breakthrough(), false, "no pill, no channels, no advance")
 	assert_eq(actor.path(QiPath.PATH_ID).rank_id, &"qi_refining", "the realm is unchanged")
@@ -192,7 +232,6 @@ func test_screen_nests_its_child_panel_summaries() -> void:
 	ItemsApi.attach(actor, 64)
 	actor.set_path(PathState.new(QiPath.PATH_ID, &"qi_refining"))
 	QiCultivationApi.attach(actor)
-	QiCultivationApi.attach_dantian(actor)
 	screen.setup(actor)
 	var view := screen.summary()
 	var vitals: Dictionary = view.get("vitals", {})
@@ -209,7 +248,6 @@ func test_screen_records_focus_without_a_viewport() -> void:
 	ItemsApi.attach(actor, 64)
 	actor.set_path(PathState.new(QiPath.PATH_ID, &"qi_refining"))
 	QiCultivationApi.attach(actor)
-	QiCultivationApi.attach_dantian(actor)
 	screen.setup(actor)
 	screen.focus_initial()
 	assert_eq(screen.summary().get("focus_target", ""), "CultivateButton", "cultivate lands focus")

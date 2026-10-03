@@ -9,8 +9,26 @@ extends UiScreen
 ## Contract: `summary()` is the testable surface, with child panel summaries
 ## nested under their own key.
 
-const MAX_LISTED_POOLS := 16
-const POOL_ROW := &"pool"
+## The two row prefixes the scene declares. These are CASE-SENSITIVE `%` unique
+## names, and getting one wrong is silent: `get_node_or_null` answers null, the
+## screen concludes it has no rows, and composes every row itself. This sheet did
+## exactly that -- it asked for `%pool0Row` while the scene declares `Pool0Row`, so
+## it bound nothing and rendered an empty stat list and an empty resource list
+## while `summary()` still reported all 38 stats. Every row below is therefore
+## looked up by the exact name the scene writes.
+const STAT_ROW_PREFIX := "Stat"
+const POOL_ROW_PREFIX := "Pool"
+const ROW_SUFFIX := "Row"
+const SCENE_ROWS := 8
+
+## The one line a player reads above the sheet. The `paths` block keeps its ids
+## because that is a data contract tests assert on, but the STRING a person reads
+## must not be `body_cultivation qi_refining`.
+const PATH_LABELS: Dictionary = {
+	&"body_cultivation": "Body",
+	&"qi_cultivation": "Qi",
+	&"mind_cultivation": "Mind",
+}
 
 var _vitals: VBoxContainer = null
 var _realm_label: Label = null
@@ -75,7 +93,8 @@ func _path_text() -> String:
 	for path_id in PathState.ALL:
 		var entry: Dictionary = _paths().get(String(path_id), {})
 		if bool(entry.get("enrolled", false)):
-			parts.append("%s %s" % [path_id, entry.get("realm", "")])
+			var label: String = PATH_LABELS.get(path_id, String(path_id))
+			parts.append("%s %s" % [label, entry.get("realm", "")])
 	return ", ".join(parts) if not parts.is_empty() else "none"
 
 
@@ -121,18 +140,26 @@ func _bind_nodes() -> void:
 		return
 	_pool_rows.clear()
 	_stat_rows.clear()
-	for index in MAX_LISTED_POOLS:
-		var row := _list.get_node_or_null("%s%dRow" % [POOL_ROW, index]) as StatRow
-		if row == null:
-			continue
-		if index < 8:
-			_stat_rows.append(row)
-		else:
-			_pool_rows.append(row)
+	for index in SCENE_ROWS:
+		var pool := _list.get_node_or_null(_row_name(POOL_ROW_PREFIX, index)) as StatRow
+		if pool != null:
+			_pool_rows.append(pool)
+		var stat := _list.get_node_or_null(_row_name(STAT_ROW_PREFIX, index)) as StatRow
+		if stat != null:
+			_stat_rows.append(stat)
+
+
+## The exact `%` unique name the scene declares for one row, e.g. `%Pool0Row`.
+func _row_name(prefix: String, index: int) -> String:
+	return "%%%s%d%s" % [prefix, index, ROW_SUFFIX]
 
 
 ## Pool rows come first in the scene, so fill them from the pool map and the stat
 ## rows from the derived map, in a fixed order so two runs agree.
+##
+## A pool id is NOT a stat id, so it is named and precision-declared by the caller
+## and `StatPresenter` is deliberately not consulted: a pool is a count of a
+## reservoir, and the one place that knows its unit is `StatPresenter`'s caller.
 func _fill_pool_rows() -> void:
 	var pools := _pools()
 	var keys: Array = pools.keys()
@@ -146,7 +173,7 @@ func _fill_pool_rows() -> void:
 				row
 				. set_state(
 					{
-						"name": String(keys[index]),
+						"name": StatPresenter.label_for(StringName(keys[index])),
 						"current": entry.get("current", 0.0),
 						"maximum": entry.get("maximum", 0.0),
 						"mode": StatRow.MODE_BAR,
@@ -158,6 +185,14 @@ func _fill_pool_rows() -> void:
 		index += 1
 
 
+## One row per derived stat, handed the stat ID and nothing else.
+##
+## The screen passes the id; `StatPresenter` owns the label and the precision. That
+## is the whole fix for the wrong-figure class: the screen used to pass the raw id
+## as the label and no precision at all, so every fraction on the sheet rounded to
+## an integer -- `acupoint_quality = 0.5` read as "1", `crit_chance = 0.05` and
+## `breakthrough_chance = 0.2` both read as "0". A screen cannot be trusted to
+## remember a per-stat decimal count, and there is no way for it to forget one now.
 func _fill_stat_rows() -> void:
 	var stats := _derived_stats()
 	var keys := _stat_keys(stats)
@@ -169,18 +204,25 @@ func _fill_stat_rows() -> void:
 	while index < _stat_rows.size():
 		var row := _stat_rows[index]
 		if index < keys.size():
-			row.set_state({"name": String(keys[index]), "current": stats[keys[index]]})
+			row.set_state({"stat": StringName(keys[index]), "current": stats[keys[index]]})
 		else:
 			row.set_state({})
 		index += 1
 
 
 ## Grow or shrink the row pool to match the data, so scrolling shows everything.
+##
+## `StatRow.create()` instances this panel's own scene. It must not be
+## `StatRow.new()`: a bare `StatRow` has no `%StatLabel`/`%ValueLabel`, renders an
+## empty box, and still answers `summary()` with a name and a figure -- which is how
+## 30 of the 38 rows on this sheet came up blank while the suite stayed green.
 func _ensure_row_count(needed: int) -> void:
 	if _list == null:
 		return
 	while _stat_rows.size() < needed:
-		var row := StatRow.new()
+		var row := StatRow.create()
+		if row == null:
+			break
 		row.name = "ExtraStatRow%d" % _stat_rows.size()
 		_list.add_child(row)
 		_stat_rows.append(row)
