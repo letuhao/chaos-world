@@ -73,6 +73,9 @@ var _last_death: Dictionary = {}
 ## when no hero exists yet — a returning player with a restored body boots straight to the
 ## workbench.
 var _creation: CharacterCreationProgram = null
+## Whether the live actor came from a save rather than from creation. A boot flow reads this
+## through [method restored_from_save] to decide whether to offer arrival at all.
+var _recovered_from_save: bool = false
 
 ## The stack and the bar the scene declares. Resolved by unique name; the root
 ## never builds a second one, because two stacks means two answers to "which
@@ -96,21 +99,17 @@ func _ready() -> void:
 		push_error("ItemWorkbenchApp: the scene must carry a ScreenStack named %ScreenStack")
 		return
 	_nav = get_node_or_null("%NavBar") as NavBar
-	_actor = _build_actor()
-	# The socket ledger and the loot lifecycle state both live on the actor, so
-	# they are attached here, in the one place that knows concrete module types
-	# (ADR 0027).
-	SocketApi.attach(_actor)
-	LootApi.attach(_actor)
+
 	# The world-scoped stores, installed BEFORE anything reads them: a soul outlives its body
 	# and an anchor stands in a place, so neither may live in `actor.module_data` (ADR 0127,
-	# ADR 0132, and ADR 0101's argument that a per-actor copy of a world fact is a bug). The
+	# ADR 0146, and ADR 0101's argument that a per-actor copy of a world fact is a bug). The
 	# save's store is the real one; a test installs the in-memory ledger instead.
+	#
+	# **Stores before actors, on purpose.** `publish_world` and `restore_actor` both read them,
+	# and the actor mirror is written by every attach below — so installing a store after an
+	# attach would leave that attach reading an empty ledger and silently writing it back.
 	SoulApi.set_store(SaveStore.new())
 	AnchorApi.set_store(SaveStore.new())
-	DifficultyApi.attach(_actor)
-	SoulApi.attach(_actor)
-	AnchorApi.attach(_actor)
 	SaveApi.install_store("soul", _world_store())
 	SaveApi.install_store("anchor", _world_store())
 	# A newborn is minted through a Callable rather than built inline, because
@@ -121,6 +120,17 @@ func _ready() -> void:
 	# A restored world is published BEFORE any `Actor.from_dict`, so a body built from a save
 	# finds its soul and its anchors already in place rather than starting empty.
 	SaveApi.publish_world()
+	# The save is read AFTER the stores are installed and the world published, because that is
+	# the only point at which a restore can actually read a ledger — and BEFORE a fresh hero is
+	# built, because the envelope carries the actor payload this recovers: building first and
+	# restoring over it would leave a fresh hero's providers on a restored body. A save with no
+	# readable slot answers a refusal, which is a new game rather than an error.
+	if not bool(restore_actor().get("ok", false)):
+		_actor = _build_actor()
+	# The per-actor modules, mounted over whichever body now stands. One list, called from both
+	# the fresh build and the restore, because two copies of an order that is load-bearing is
+	# two places for it to drift.
+	_mount_player_modules(_actor)
 	# The death resolver, injected rather than constructed here so it names no `app/` type and
 	# stays a plain value object a test can drive. It holds no state and declares no
 	# `_process`: THIS function polls it, which is what keeps the tree at exactly three frame
@@ -163,6 +173,96 @@ func _ready() -> void:
 ## the first one's world — the same per-slot reasoning ADR 0128 applies to the store itself.
 func _world_store() -> SaveStore:
 	return SaveStore.new()
+
+
+## Restore the live slot, or answer that there is nothing to restore.
+##
+## **This is the READ half of the save, and without it the write half is decoration.** `persist`
+## was wired at boot and `restore` was not, so cultivation progress, the soul and the anchors were
+## written every period and never observed on the next session — a save that nobody reads is a
+## file, not a save. ADR 0128 called the envelope "built to round-trip"; this is the round trip.
+##
+## Called from `_ready` BEFORE the actor is built, because the envelope carries the actor
+## payload this is here to recover: building a fresh hero first and restoring over it would
+## leave the fresh hero's paths mounted on a restored body.
+##
+## Returns `{ok, reason, recovered, generation}`. **A corrupt primary recovers the backup
+## silently** — the player has no backup choice to make, so a dialog reporting an error they
+## cannot act on would be noise — while `recovered` and `reason` stay observable to a probe.
+func restore_actor() -> Dictionary:
+	var restored := SaveApi.restore()
+	if not bool(restored.get("ok", false)):
+		# A new game, not an error. The caller builds a fresh hero and the shell plays on.
+		return {"ok": false, "reason": String(restored.get("reason", "no_readable_save")), "recovered": false, "generation": 0}
+	var envelope := restored.get("envelope", {}) as Dictionary
+	var payload := envelope.get("actor", {}) as Dictionary
+	if payload.is_empty():
+		return {"ok": false, "reason": "no_actor_payload", "recovered": bool(restored.get("recovered", false)), "generation": int(envelope.get("generation", 0))}
+	var actor := Actor.from_dict(payload)
+	if actor == null:
+		return {"ok": false, "reason": "actor_unreadable", "recovered": bool(restored.get("recovered", false)), "generation": int(envelope.get("generation", 0))}
+	_actor = actor
+	_recovered_from_save = true
+	# The saved body needs its providers re-mounted and its items deserialized. The payload
+	# carries both, and a body with neither is a body whose stats never resolve -- silently,
+	# because core never names a module and so cannot re-attach one.
+	ActorFactory.with_body_cultivation(actor)
+	ActorFactory.with_qi_cultivation(actor)
+	ActorFactory.with_mind_cultivation(actor)
+	DualCultivationApi.attach(actor)
+	FertilityApi.attach(actor)
+	ElementsApi.apply_realm_modifiers(actor)
+	ItemsApi.attach(actor)
+	SetBonusApi.attach(actor)
+	TechniquesApi.attach(actor)
+	_mount_player_modules(actor)
+	return {
+		"ok": true,
+		"reason": "",
+		"recovered": bool(restored.get("recovered", false)),
+		"generation": int(envelope.get("generation", 0)),
+		"difficulty": String(envelope.get("difficulty", "")),
+	}
+
+
+## Whether the live actor came from a save rather than from creation. A boot flow asks this to
+## decide whether to offer character creation at all.
+func restored_from_save() -> bool:
+	return _recovered_from_save
+
+
+## The save's own condition, as primitives, so a status line can report that saving happened
+## without asking permission and without naming the backup.
+func save_summary() -> Dictionary:
+	return SaveApi.summary()
+
+
+## Mount every module a hero carries, over an actor that already exists.
+##
+## ## Why this is a separate method and not part of `_build_actor`
+##
+## **A restored body needs the same providers as a fresh one, and forgetting that is silent.**
+## `Actor.from_dict` rebuilds the actor's own state — stats, pools, paths, ledgers — but it
+## does not re-attach the modules that CONTRIBUTE to those stats, because core never names a
+## module. So a restored hero without this line has no item bag, no technique codex and no
+## set-bonus projection, and nothing reports an error: every screen that reads them answers
+## empty. That is the shape DEF-0151 records for a module that is "built and unwired".
+##
+## ## Why the order is unchanged
+##
+## It is `_build_actor`'s order, verbatim, because the order is load-bearing and documented
+## there: body before the element realm refresh, items before set bonus and techniques,
+## techniques last, destiny before event. Copying the sequence into a second literal would let
+## the two drift, so there is one list and the fresh build calls it too.
+
+func _mount_player_modules(actor: Actor) -> void:
+	SocketApi.attach(actor)
+	LootApi.attach(actor)
+	DifficultyApi.attach(actor)
+	SoulApi.attach(actor)
+	AnchorApi.attach(actor)
+	SocialApi.attach(actor)
+	DestinyApi.attach(actor)
 
 
 ## The one tick caller in the game (ADR 0106, read against ADR 0089).
