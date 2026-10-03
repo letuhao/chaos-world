@@ -119,7 +119,8 @@ func _run() -> void:
 	var sweep: Array[Dictionary] = []
 	for attempt in MAX_EQUIP_HUNTS:
 		attempts = attempt + 1
-		hunt_report = await _hunt(app, attempt)
+		var where: Dictionary = {}
+		hunt_report = await _hunt(app, attempt, where)
 		report["hunt"] = hunt_report
 		# A domain that mints nothing is one dead cell of the grid, not a verdict
 		# on the corpus. Stopping there would let a single unpayable table answer
@@ -129,8 +130,8 @@ func _run() -> void:
 				sweep
 				. append(
 					{
-						"domain": hunt_report.get("domain", ""),
-						"tier": hunt_report.get("tier", ""),
+						"domain": where.get("domain", ""),
+						"tier": where.get("tier", ""),
 						"hunt": hunt_report.get("why", "minted nothing"),
 					}
 				)
@@ -143,8 +144,8 @@ func _run() -> void:
 				sweep
 				. append(
 					{
-						"domain": hunt_report.get("domain", ""),
-						"tier": hunt_report.get("tier", ""),
+						"domain": where.get("domain", ""),
+						"tier": where.get("tier", ""),
 						"claim": claim_report.get("why", "nothing claimed"),
 					}
 				)
@@ -153,8 +154,8 @@ func _run() -> void:
 		equip_report = await _equip(app, claim_report.get("def_ids", []))
 		report["equip"] = equip_report
 		var cell := {
-			"domain": hunt_report.get("domain", ""),
-			"tier": hunt_report.get("tier", ""),
+			"domain": where.get("domain", ""),
+			"tier": where.get("tier", ""),
 			"def_ids": claim_report.get("def_ids", []),
 		}
 		if not bool(equip_report.get("ok", false)):
@@ -327,13 +328,19 @@ func _choose_tier(screen: Node, nth: int) -> String:
 	return String(option.get_item_text(index))
 
 
-func _hunt(app: Node, nth: int) -> Dictionary:
+## `where` is filled with the domain and tier this attempt chose, and is read by
+## the caller whatever the outcome. It is a parameter rather than part of the
+## return because `_hunt` is already at the six-return cap, and a failure that
+## does not say which domain failed is the least useful kind.
+func _hunt(app: Node, nth: int, where: Dictionary) -> Dictionary:
 	var ready := await _ready_to_hunt(app)
 	if not bool(ready.get("ok", false)):
 		return {"ok": false, "why": ready.get("why", "cannot reach the loot surface")}
 	var screen := ready.get("screen") as Node
 	var domain := _choose_domain(screen, nth)
 	var tier := _choose_tier(screen, nth)
+	where["domain"] = domain
+	where["tier"] = tier
 	var before := screen.call(&"summary") as Dictionary
 	if bool(before.get("in_domain", false)):
 		return {"ok": false, "why": "a boss was already live before the player entered one"}
@@ -729,7 +736,13 @@ func _why_fight_did_not_pay(screen: Node, fight: Dictionary) -> String:
 	if bool(after.get("in_domain", false)):
 		return "%d strikes landed and the boss is still alive" % strikes
 	if int(after.get("reward_count", 0)) < 1:
-		return "the boss died and minted no reward at all"
+		# Name the boss. Every authored tier carries a non-empty `boss_tables`, so
+		# a boss that dies paying nothing is not missing data -- it is a boss the
+		# tier's table list does not cover, and the id is what makes that checkable.
+		return (
+			"the boss '%s' died and minted no reward at all"
+			% String(after.get("boss_id", "<unnamed>"))
+		)
 	if int(after.get("pending_drops", 0)) < 1:
 		return "the reward lists drops but none are pending to claim"
 	return ""
