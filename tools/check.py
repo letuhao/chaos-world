@@ -91,6 +91,28 @@ def run(args) -> int:
         if not args.keep_going:
             fail("gate failed: " + ", ".join(failed))
             return 1
+    # The runaway guards run BEFORE every other stage, not as part of `test`.
+    #
+    # This loop breaks on the first failing stage, so anything ordered after a
+    # stage that routine work can red-flag is a stage that does not run. Those guards
+    # live in `arch_rules` and cover the two hazards that actually cost this machine
+    # time: the disk flood and the 67 GB leak (INC-0001, INC-0002). Under the old
+    # order a single unformatted string in tools/ stopped the gate before either
+    # executed, which is how a cosmetic failure silently disarmed both.
+    #
+    # The cost is honest and deliberate: a red tree now starts Godot before failing
+    # fast on `fmt`. A guard that an unrelated lint error can switch off is not a
+    # guard, and ~40s is cheaper than a 10 GB log or a power-cycle.
+    info("== guards (arch_rules) ==")
+    guard = subprocess.run(
+        [sys.executable, "-m", "tools", "test", "--suite", "arch_rules"],
+        cwd=str(REPO_ROOT),
+    )
+    if guard.returncode != 0:
+        failed.append("guards")
+        if not args.keep_going:
+            fail("gate failed: " + ", ".join(failed))
+            return 1
     for name, extra in STEPS:
         info(f"== {name} ==")
         result = subprocess.run(
