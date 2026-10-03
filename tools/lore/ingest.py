@@ -25,9 +25,38 @@ import json
 import re
 from collections import Counter
 from datetime import date
+from pathlib import Path
 
-from ..common import GAME_DIR, REPO_ROOT, ok
-from .model import BIBLE_DIR, EDGES_DIR, SUMMARY_MAX
+from ..common import GAME_DIR, REPO_ROOT, info, ok, warn
+from .model import SUMMARY_MAX, bible_dir, edges_dir
+
+
+def _bible_dir() -> Path:
+    return bible_dir()
+
+
+def _edges_dir() -> Path:
+    return edges_dir()
+
+
+def _repo_root() -> Path:
+    """The repository root, resolved at call time. See `_game_dir` for why."""
+    return Path(REPO_ROOT)
+
+
+def _game_dir() -> Path:
+    """The authored tree, resolved at call time.
+
+    `GAME_DIR` was a module constant captured at import, so pointing
+    `lore.model.REPO_ROOT` at a fixture moved the bible but NOT the authored data
+    the importer reads. A test then exercised the repository's 528 real records
+    while asserting on a fixture - which is how the first version of the
+    re-ingest regression test failed for the wrong reason, against real content it
+    never wrote. Same class as the `LORE_ROOT` bug the lore fixtures already
+    caught.
+    """
+    return Path(GAME_DIR)
+
 
 SCHEMA_VERSION = 1
 
@@ -169,7 +198,7 @@ def _summary_for(kind: str, display_name: str, description: str) -> tuple[str, s
 
 
 def _collect_source(spec: dict) -> list[dict]:
-    directory = GAME_DIR / spec["path"]
+    directory = _game_dir() / spec["path"]
     if not directory.is_dir():
         return []
     rows: list[dict] = []
@@ -201,7 +230,7 @@ def _collect_source(spec: dict) -> list[dict]:
                 "type": spec["kind"],
                 "domain": spec["domain"],
                 "attributes": attrs,
-                "source_path": path.relative_to(REPO_ROOT).as_posix(),
+                "source_path": path.relative_to(_repo_root()).as_posix(),
             }
         )
     return rows
@@ -231,8 +260,22 @@ def _edges_for(row: dict, spec: dict, known: set[str]) -> list[dict]:
         if isinstance(attrs.get("faction_id"), str):
             add("member_of", f"cosmology.{_slugify(attrs['faction_id'])}")
     if kind == "world-law":
-        for tier in attrs.get("tier_ids", []):
-            add("applies_in", f"cosmology.{_slugify(tier)}")
+        # `tier_ids` is APPLICABILITY, not seating. The authored
+        # WorldLawDef.tier_ids lists every tier a law *may* hold force in, so
+        # emitting one `applies_in` per tier states "governs every tier equally" -
+        # which flatly contradicts the seat budget both the authored
+        # `law_slots` (3/6/10/15 against six laws) and the world's own material
+        # describe, and which two independent author agents both flagged as
+        # incoherent.
+        #
+        # So applicability is recorded as an ATTRIBUTE on the law (it already is:
+        # `tier_ids`) and the graph edge is reserved for the one claim the data
+        # actually makes: a law holds force inside a tier. Whether a given tier
+        # SEATS a law is a per-world fact that no authored record states and that
+        # the cosmology and history domains are building from first principles.
+        # Inventing the edge here would have hard-coded one interpretation into
+        # the importer, where it reads as data.
+        pass
     if kind == "spirit-creature":
         for tier in attrs.get("tier_ids", []):
             add("native_to", f"cosmology.{_slugify(tier)}")
@@ -303,17 +346,36 @@ def build_import() -> tuple[dict[str, list[dict]], list[dict], Counter]:
     return domains, edges, counts
 
 
-def write_import() -> int:
-    """Write the import into the bible. Refuses to clobber hand-authored content."""
+# Fields a lore agent owns once it has touched a record. The game data is the
+# source for the other fields, so those keep refreshing on re-import.
+#
+# `attributes` is deliberately NOT here: it is a merge of both. A `lore_depth` an
+# agent set from `stub` to `authored` must survive, and an authored field the game
+# later adds must still land - so attributes are merged key by key instead, and
+# `lore_depth` is protected explicitly below.
+AGENT_OWNED_FIELDS = frozenset({"summary", "tags", "name", "type", "lore_ref"})
+
+_FORCE = False
+
+
+def _import_view(record: dict) -> dict:
+    """The fields the importer owns, for reporting what a refresh did."""
+    return {key: value for key, value in record.items() if key not in AGENT_OWNED_FIELDS}
+
+
+def write_import(force: bool = False) -> int:
+    """Write the import into the bible. Non-destructive unless `force`."""
+    global _FORCE
+    _FORCE = force
     domains, edges, counts = build_import()
-    BIBLE_DIR.mkdir(parents=True, exist_ok=True)
-    EDGES_DIR.mkdir(parents=True, exist_ok=True)
+    _bible_dir().mkdir(parents=True, exist_ok=True)
+    _edges_dir().mkdir(parents=True, exist_ok=True)
 
     written = 0
     for domain, records in sorted(domains.items()):
         if not records:
             continue
-        path = BIBLE_DIR / f"{domain}.jsonl"
+        path = _bible_dir() / f"{domain}.jsonl"
         existing: list[dict] = []
         if path.is_file():
             existing = [
@@ -321,9 +383,49 @@ def write_import() -> int:
                 for line in path.read_text(encoding="utf-8").splitlines()
                 if line.strip() and not _is_import_line(line)
             ]
+        # Merge policy: an imported record REFRESHES only what the authored tree
+        # is the source of, and never overwrites work an agent has done on top.
+        #
+        # The first version assigned unconditionally, which meant `lore ingest` was
+        # destructive: re-running it silently reverted every enriched stub in a
+        # domain back to a content-free placeholder. It cost the cosmology legion
+        # seven authored records and 359 characters of prose in one command, and
+        # nothing reported it - the re-ingest printed `ok` and the count was
+        # unchanged. A tool whose happy path destroys work is worse than a tool
+        # that refuses, because `ok` is read as "nothing happened".
+        #
+        # So the imported record fills MISSING fields and refreshes the fields the
+        # game data actually owns, and a hand-authored summary, `lore_depth` or
+        # tag set always wins. `--force` is the deliberate way to discard an
+        # agent's work on a record, and it says so.
         merged = {record["id"]: record for record in existing}
+        overwritten: list[str] = []
         for record in records:
-            merged[record["id"]] = record
+            current = merged.get(record["id"])
+            if current is None or _FORCE:
+                merged[record["id"]] = record
+                continue
+            for field, value in record.items():
+                # Prose and curation are the agent's; scalars are the game's.
+                if field in AGENT_OWNED_FIELDS and current.get(field) not in (None, [], {}, ""):
+                    continue
+                if field == "attributes":
+                    merged_attrs = dict(value)
+                    # `lore_depth` is the one attribute that records CURATION
+                    # rather than content, so an agent's promotion out of `stub`
+                    # outranks the importer's fresh copy of it. Everything else in
+                    # attributes is authored game data and does refresh.
+                    if current.get("attributes", {}).get("lore_depth") != "stub":
+                        prior_depth = current.get("attributes", {}).get("lore_depth")
+                        if prior_depth is not None:
+                            merged_attrs["lore_depth"] = prior_depth
+                    current["attributes"] = merged_attrs
+                    continue
+                if current.get(field) != value:
+                    current[field] = value
+            merged[record["id"]] = current
+            if _import_view(current) != _import_view(record):
+                overwritten.append(record["id"])
         lines = [
             json.dumps(record, ensure_ascii=False, separators=(",", ":"))
             for record in sorted(merged.values(), key=lambda item: item["id"])
@@ -336,7 +438,7 @@ def write_import() -> int:
         written += len(records)
         ok(f"imported {len(records):>4} into lore/bible/{domain}.jsonl")
 
-    edge_path = EDGES_DIR / "ingest-game.jsonl"
+    edge_path = _edges_dir() / "ingest-game.jsonl"
     if edges:
         lines = [json.dumps(edge, ensure_ascii=False, separators=(",", ":")) for edge in edges]
         edge_path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
@@ -348,10 +450,26 @@ def write_import() -> int:
         for record in records
         if record["attributes"].get("lore_depth") == "stub"
     )
+    preserved = sum(
+        1
+        for path in sorted(_bible_dir().glob("*.jsonl"))
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not _is_import_line(line)
+    )
     ok(
         f"game ingest complete: {written} entities, {len(edges)} edges, "
         f"{stubs} flagged as lore gaps (named figures and domains with no lore yet)"
     )
+    if preserved:
+        info(
+            f"  {preserved} agent-authored record(s) preserved; this run refreshed only "
+            "the fields the game data owns"
+        )
+    if force:
+        warn(
+            "--force discarded agent-authored summary/tags/name on every imported record; "
+            "recover from git if that was not intended"
+        )
     return 0
 
 

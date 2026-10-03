@@ -32,10 +32,23 @@ from pathlib import Path
 
 from ..common import REPO_ROOT, ToolError
 
+# The subdirectories are reached through `bible_dir()`, `edges_dir()` and
+# `prose_dir()` rather than these constants. A constant captured at import reads
+# the repository no matter what a test points `LORE_ROOT` at, which is how the
+# lore fixtures and the importer fixtures each ended up exercising the real tree
+# while asserting on a fixture - see `bible_dir`'s docstring. Kept as names for
+# anything that wants to state the layout, not to open a file.
 LORE_ROOT = REPO_ROOT / "lore"
-BIBLE_DIR = LORE_ROOT / "bible"
-EDGES_DIR = LORE_ROOT / "edges"
-PROSE_DIR = LORE_ROOT / "prose"
+
+
+def lore_root() -> Path:
+    """The bible root, resolved at call time. See `bible_dir` for why."""
+    return Path(LORE_ROOT)
+
+
+BIBLE_DIRNAME = "bible"
+EDGES_DIRNAME = "edges"
+PROSE_DIRNAME = "prose"
 REGISTRY_PATH = LORE_ROOT / "registry.json"
 
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:[_-][a-z0-9]+)*$")
@@ -81,7 +94,7 @@ class Registry:
 
 def registry_path() -> Path:
     """Resolved at call time, for the same reason `bible_dir` is."""
-    return LORE_ROOT / "registry.json"
+    return lore_root() / "registry.json"
 
 
 def load_registry() -> Registry:
@@ -180,11 +193,11 @@ def bible_dir() -> Path:
     silent and total - a fixture asserting on the real bible passes while testing
     nothing - so every path is resolved through here.
     """
-    return LORE_ROOT / "bible"
+    return lore_root() / BIBLE_DIRNAME
 
 
 def edges_dir() -> Path:
-    return LORE_ROOT / "edges"
+    return lore_root() / EDGES_DIRNAME
 
 
 def _read_jsonl(path: Path, *, origin: str) -> list[dict]:
@@ -328,7 +341,7 @@ def validate_edges(bible: Bible) -> list[str]:
 
 
 def prose_dir() -> Path:
-    return LORE_ROOT / "prose"
+    return lore_root() / PROSE_DIRNAME
 
 
 def validate_external_refs(bible: Bible) -> list[str]:

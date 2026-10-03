@@ -44,6 +44,7 @@ from .audit import (
 from .brief import write_brief
 from .context import character_draft, readiness_gaps, resolve_context
 from .model import LORE_ROOT, load_bible
+from .queue import build_queue
 
 
 def register(subparsers) -> None:
@@ -56,6 +57,11 @@ def register(subparsers) -> None:
     actions.add_parser("audit", help="contradictions, duplicates and isolation")
     actions.add_parser("labels", help="imported entities that share a display name")
     actions.add_parser("coverage", help="per-domain depth and diversity, worst first")
+    queue = actions.add_parser(
+        "queue", help="the ranked work queue: which specific record to fix, and why"
+    )
+    queue.add_argument("--domain")
+    queue.add_argument("--limit", type=int, default=25)
     actions.add_parser("hubs", help="the most and least connected entities, and component count")
 
     find = actions.add_parser("search", help="find entities by id, name, tag or summary")
@@ -112,6 +118,13 @@ def register(subparsers) -> None:
     ingest_parser.add_argument(
         "--dry-run", action="store_true", help="report what would import and write nothing"
     )
+    ingest_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="DISCARD agent-authored summary/tags/name on imported records. Without this "
+        "the importer only refreshes the fields the game data owns, so re-running it is "
+        "safe; with it, hand-written prose on a stub is overwritten.",
+    )
 
 
 def run(args) -> int:
@@ -123,7 +136,7 @@ def run(args) -> int:
             for domain, count in sorted(counts.items()):
                 ok(f"  {domain}: {count}")
             return 0
-        return ingest.write_import()
+        return ingest.write_import(force=getattr(args, "force", False))
     if action == "brief":
         write_brief(load_bible(), args.domain, batch=args.batch, focus=args.focus)
         return 0
@@ -167,6 +180,8 @@ def run(args) -> int:
         return 0
     if action == "coverage":
         return _coverage(bible)
+    if action == "queue":
+        return _queue(bible, args)
     if action == "hubs":
         payload = hubs_and_leaves(bible)
         info(f"graph components: {payload['components']}")
@@ -298,6 +313,27 @@ def _audit(bible) -> int:
         fail(f"audit found {total} issue(s)")
         return 1
     ok("no contradictions, duplicate names or structural duplicates")
+    return 0
+
+
+def _queue(bible, args) -> int:
+    """Per-record work, not per-domain counts.
+
+    The interleaving matters as much as the ranking: a queue ordered purely by
+    damage hands an agent forty consecutive stubs of identical shape, and a batch
+    like that is how a domain ends up monocultural while every individual entry was
+    a legitimate fix.
+    """
+    rows = build_queue(bible, domain=args.domain, limit=args.limit)
+    if not rows:
+        ok("nothing in the queue; every record scores clean on all four criteria")
+        return 0
+    info(f"{len(rows)} record(s) to fix, interleaved by type:")
+    for row in rows:
+        info(f"  [{row['score']:>2}] {row['id']:<46} {row['type']}")
+        for reason in row["why"]:
+            info(f"        - {reason}")
+        info(f"        done when: {row['fixed_when']}")
     return 0
 
 

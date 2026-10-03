@@ -19,6 +19,7 @@ import tempfile
 from pathlib import Path
 
 from . import gate_reach, lore, map_theme, mutation_history, unique_characters
+from .acquisition import selftest_case  # noqa: F401  registers its cases on import
 from .lore.context import character_draft, readiness_gaps, resolve_context
 from .selftest import case, expect, write
 
@@ -522,26 +523,37 @@ def _lore_bible(root: Path) -> lore.model.Bible:
     bible already contained the targets it was checking for. A test that reads the
     wrong tree is worse than no test, because it looks like coverage.
     """
-    source = lore.model.REGISTRY_PATH
-    target = root / "registry.json"
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+    source = lore.model.registry_path()
+    lore_root = root / "lore"
+    (lore_root).mkdir(parents=True, exist_ok=True)
+    # The registry lives AT the lore root, next to bible/ and edges/, so the
+    # fixture writes it to `root/lore/registry.json` - the same relative position
+    # it occupies in the repository. The first version put it at `root/`, which
+    # made every fixture raise `lore registry missing` once the importer tests
+    # started redirecting LORE_ROOT correctly, and eleven assertions "errored"
+    # rather than testing anything.
+    (lore_root / "registry.json").write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
     original_root = lore.model.LORE_ROOT
-    original_registry = lore.model.REGISTRY_PATH
-    lore.model.LORE_ROOT = root
-    lore.model.REGISTRY_PATH = target
+    lore.model.LORE_ROOT = lore_root
     try:
         return lore.model.load_bible()
     finally:
         lore.model.LORE_ROOT = original_root
-        lore.model.REGISTRY_PATH = original_registry
 
 
 def _write_lore(root: Path, entities: dict[str, list[dict]], edges: dict[str, list[dict]]) -> None:
+    """Write fixture entities and edges under the SAME root the loader reads.
+
+    `_lore_bible` points `LORE_ROOT` at `root/lore`, so writing to `root/bible`
+    leaves the loader reading an empty directory and every assertion below
+    "passes" against a bible with no entities in it - or raises. The fixture and
+    the loader have to agree on the path or the test measures nothing.
+    """
+    lore_root = root / "lore"
     for domain, rows in entities.items():
-        write(root / "bible" / f"{domain}.jsonl", "".join(json.dumps(r) + "\n" for r in rows))
+        write(lore_root / "bible" / f"{domain}.jsonl", "".join(json.dumps(r) + "\n" for r in rows))
     for name, rows in edges.items():
-        write(root / "edges" / f"{name}.jsonl", "".join(json.dumps(r) + "\n" for r in rows))
+        write(lore_root / "edges" / f"{name}.jsonl", "".join(json.dumps(r) + "\n" for r in rows))
 
 
 def _entity(domain: str, slug: str, **over: object) -> dict:
@@ -870,3 +882,190 @@ def _character_ready_is_not_vacuous() -> None:
             payload["ready"] == 0 and payload["readiness_ratio"] == 0.0,
             "an empty sample reported non-zero readiness",
         )
+
+
+@case("lore: re-ingest does NOT revert an enriched stub (it did, destructively)")
+def _ingest_preserves_agent_work() -> None:
+    """A regression test for a real loss of authored work.
+
+    `lore ingest` originally assigned over every record it imported, so re-running
+    it reverted each enriched stub to the content-free placeholder the importer
+    generates. It cost the cosmology batch seven records and 359 characters of
+    prose in a single command that printed `ok` - the entity count was unchanged,
+    so nothing looked wrong.
+
+    This asserts the merge respects an agent's curation: a record whose summary and
+    `lore_depth` were written by hand survives a re-import, while the fields the
+    game data actually owns still refresh.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        original = lore.model.REPO_ROOT
+        original_game = lore.ingest.GAME_DIR
+        original_repo = lore.ingest.REPO_ROOT
+        original_lore = lore.model.LORE_ROOT
+        lore.model.REPO_ROOT = root
+        lore.ingest.REPO_ROOT = root
+        lore.ingest.GAME_DIR = root / "game"
+        lore.model.LORE_ROOT = root / "lore"
+        try:
+            game = root / "game" / "data" / "races"
+            game.mkdir(parents=True)
+            (game / "emberblood.tres").write_text(
+                '[gd_resource type="Resource" script_class="RaceDef" format=3]\n\n[resource]\n'
+                'id = &"emberblood"\n'
+                'display_name = "Emberblood"\n'
+                'description = "A body that runs hot."\n'
+                "realm_ceiling = 8\n",
+                encoding="utf-8",
+            )
+            bible_dir = root / "lore" / "bible"
+            bible_dir.mkdir(parents=True)
+            domains, _edges, _counts = lore.ingest.build_import()
+            enriched = {
+                "id": "races.emberblood",
+                "domain": "races",
+                "type": "race",
+                "name": "Emberblood",
+                "summary": "AGENT AUTHORED PROSE that explains why this body exists.",
+                "tags": ["agent-written"],
+                "status": "active",
+                "provenance": {"author": "an-agent"},
+                "attributes": {"lore_depth": "authored", "realm_ceiling": 99},
+            }
+            for domain, records in domains.items():
+                merged = {r["id"]: r for r in records}
+                if "races.emberblood" in merged:
+                    merged["races.emberblood"] = enriched
+                (bible_dir / f"{domain}.jsonl").write_text(
+                    "".join(
+                        json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n"
+                        for r in sorted(merged.values(), key=lambda item: item["id"])
+                    ),
+                    encoding="utf-8",
+                )
+            lore.ingest.write_import(force=False)
+            rows = [
+                json.loads(line)
+                for line in (bible_dir / "races.jsonl").read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            ]
+            after = next(r for r in rows if r["id"] == "races.emberblood")
+        finally:
+            lore.model.REPO_ROOT = original
+            lore.ingest.GAME_DIR = original_game
+            lore.ingest.REPO_ROOT = original_repo
+            lore.model.LORE_ROOT = original_lore
+
+    expect(
+        after["summary"] == enriched["summary"],
+        "re-ingest overwrote an agent-authored summary: "
+        f"{after['summary'][:70]!r}. `ok` was printed and the entity count was unchanged, "
+        "so the loss was invisible - see INC-0007's shape in a different tool",
+    )
+    expect(
+        after["attributes"]["lore_depth"] == "authored",
+        f"re-ingest reverted lore_depth to {after['attributes']['lore_depth']!r}, undoing an "
+        "agent's promotion of a stub",
+    )
+    expect(
+        after["attributes"]["realm_ceiling"] == 8,
+        f"re-ingest did not refresh a game-owned scalar: "
+        f"{after['attributes']['realm_ceiling']!r} should have become 8, the value the "
+        "authored .tres states. The merge exempts only AGENT_OWNED_FIELDS and "
+        "attributes.lore_depth, so an authored scalar must still track the game data - "
+        "and a scalar that never refreshed would let the bible drift from the game "
+        "silently, which is the coupling this index exists to keep honest",
+    )
+
+
+@case("lore: --force IS destructive, and says so")
+def _force_is_destructive() -> None:
+    """The opt-out has to actually opt out, or the safe default is the only path.
+
+    Without this, `force` could be wired to nothing and the default path would look
+    deliberate while being the only behaviour anyone can reach.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        original = lore.model.REPO_ROOT
+        original_game = lore.ingest.GAME_DIR
+        original_repo = lore.ingest.REPO_ROOT
+        original_lore = lore.model.LORE_ROOT
+        lore.model.REPO_ROOT = root
+        lore.ingest.REPO_ROOT = root
+        lore.ingest.GAME_DIR = root / "game"
+        lore.model.LORE_ROOT = root / "lore"
+        try:
+            game = root / "game" / "data" / "races"
+            game.mkdir(parents=True)
+            (game / "emberblood.tres").write_text(
+                '[gd_resource type="Resource" format=3]\n\n[resource]\n'
+                'id = &"emberblood"\ndisplay_name = "Emberblood"\n'
+                'description = "A body."\n',
+                encoding="utf-8",
+            )
+            bible_dir = root / "lore" / "bible"
+            bible_dir.mkdir(parents=True)
+            lore.ingest.write_import(force=False)
+            domains, _edges, _counts = lore.ingest.build_import()
+            merged = {r["id"]: r for r in domains.get("races", [])}
+            if "races.emberblood" in merged:
+                merged["races.emberblood"]["summary"] = "HAND WRITTEN"
+            (bible_dir / "races.jsonl").write_text(
+                "".join(
+                    json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n"
+                    for r in sorted(merged.values(), key=lambda item: item["id"])
+                ),
+                encoding="utf-8",
+            )
+            lore.ingest.write_import(force=True)
+            rows = [
+                json.loads(line)
+                for line in (bible_dir / "races.jsonl").read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            ]
+            # Look the record up by id. Reading `splitlines()[0]` assumed the
+            # fixture held exactly one race and would silently assert on the wrong
+            # record the moment it held two.
+            after = next(r for r in rows if r["id"] == "races.emberblood")
+        finally:
+            lore.model.REPO_ROOT = original
+            lore.ingest.GAME_DIR = original_game
+            lore.ingest.REPO_ROOT = original_repo
+            lore.model.LORE_ROOT = original_lore
+
+    expect(
+        after["summary"] != "HAND WRITTEN",
+        "--force did not discard the hand-written summary, so the flag that warns about "
+        "data loss is wired to nothing and the safe default is the only reachable path",
+    )
+
+
+@case("lore: the importer states no law SEATS in a tier it never reads that fact from")
+def _ingest_does_not_assert_seating() -> None:
+    """Two author agents independently reported this contradiction, unprompted.
+
+    `WorldLawDef.tier_ids` lists every tier a law may hold force in - APPLICABILITY.
+    Emitting one `applies_in` edge per tier therefore asserted "all six laws govern
+    all four tiers equally", which contradicts the authored `law_slots` of 3/6/10/15
+    against six laws AND the material each tier lists. Both the cosmology and the
+    history batch flagged it as incoherent, from opposite directions.
+
+    The importer must not resolve a question it has no data for: seating is a
+    per-world fact no `.tres` states.
+    """
+    domains, edges, _counts = lore.ingest.build_import()
+    seating = [edge for edge in edges if edge["rel"] == "applies_in"]
+    expect(
+        not seating,
+        f"the importer emitted {len(seating)} applies_in edges asserting every law "
+        "governs every tier, which contradicts the seat budget the same importer "
+        "reads from law_slots",
+    )
+    laws = domains.get("cosmology", [])
+    mortal = next((r for r in laws if r["id"] == "cosmology.mortal_world"), None)
+    expect(
+        mortal is not None and "tier_ids" not in mortal.get("attributes", {}),
+        "tier_ids on a tier record is applicability metadata on the wrong entity",
+    )
