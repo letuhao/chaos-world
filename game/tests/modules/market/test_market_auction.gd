@@ -80,9 +80,16 @@ func test_listing_escrows_the_instance_out_of_the_sellers_inventory() -> void:
 
 func test_a_lot_freezes_its_price_from_the_one_formula() -> void:
 	var shop := _shop_with_good(GOOD)
-	var instance := ItemsApi.inventory(shop).find_instance(_first_instance_id(shop))
+	# `find_by_instance_id`, not `find_instance`: the latter matches `def_id` despite its
+	# name, so it returned null here and the test died on a nil deref rather than on the
+	# property it claims to assert.
+	var instance := ItemsApi.inventory(shop).find_by_instance_id(_first_instance_id(shop))
+	assert_eq(instance != null, true, "the escrow fixture is findable by instance id")
+	if instance == null:
+		return
 	var listed := MarketApi.list(shop, instance.instance_id, 3)
 	var expected := EconomyValuation.price_of(instance)
+	assert_eq(bool(listed["ok"]), true, "the lot was listed: %s" % listed.get("reason", ""))
 	assert_eq(int(listed["price"]), expected, "the lot price is the one formula's price")
 	assert_eq(int(listed["opening"]) > expected, true, "and it opens above it")
 
@@ -157,12 +164,18 @@ func test_settlement_pays_the_highest_bidder_and_delivers_the_good() -> void:
 	assert_eq(bool(placed["ok"]), true, "the bid is placed")
 
 	var paid := int(placed["amount"])
+	var purse_before := EconomyApi.purse(winner)
+	var house_before := EconomyApi.purse(shop)
 	var settled := MarketApi.settle_lot(shop, _resolve_bidder([winner]), StringName(lot_id), 3)
 	assert_eq(bool(settled["ok"]), true, "the lot settles: %s" % settled.get("reason", ""))
 	assert_eq(String(settled["status"]), "sold", "and it sold")
 	assert_eq(String(settled["winner"]), "winner", "to the high bidder")
 	assert_eq(ItemsApi.inventory(winner).instances().size(), 1, "who received the good")
-	assert_eq(EconomyApi.purse(winner), 500 - paid, "and paid their bid to the house")
+	# The house's purse is asserted too, because "the winner paid" and "the house received"
+	# are the same fact from two sides and only the pair proves the coins actually MOVED
+	# rather than being destroyed somewhere between.
+	assert_eq(EconomyApi.purse(winner), purse_before - paid, "and paid their bid to the house")
+	assert_eq(EconomyApi.purse(shop), house_before + paid, "which arrived at the house holding it")
 
 
 func test_a_bidder_who_spent_their_money_loses_the_lot() -> void:

@@ -136,31 +136,97 @@ func test_a_lost_fight_can_be_refought() -> void:
 
 ## Endurance is a share of fights survived at, never a certainty and never a
 ## coin-flip: a gate a player cannot walk through is as broken as no gate at all.
+## Read through `TribulationEndurance`, the one curve — the record's own
+## actor-free `endurance` was a second answer and is deleted (ADR 0119).
 func test_endurance_is_bounded_at_both_ends() -> void:
 	var actor := _actor_at_r18()
 	for realm in RealmDefaults.ladder().realms():
 		var tribulation := Tribulation.new(Tribulation.ELEMENTAL)
 		tribulation.start(actor, realm.id)
-		assert_eq(
-			tribulation.endurance() >= Tribulation.MIN_ENDURANCE, true, "%s has a floor" % realm.id
-		)
-		assert_eq(
-			tribulation.endurance() <= Tribulation.MAX_ENDURANCE,
-			true,
-			"%s has a ceiling" % realm.id
-		)
-		assert_eq(tribulation.endurance() < 1.0, true, "%s can still be lost" % realm.id)
+		var share := TribulationEndurance.endurance(actor, tribulation)
+		assert_eq(share >= TribulationEndurance.MIN_ENDURANCE, true, "%s has a floor" % realm.id)
+		assert_eq(share <= TribulationEndurance.MAX_ENDURANCE, true, "%s has a ceiling" % realm.id)
+		assert_eq(share < 1.0, true, "%s can still be lost" % realm.id)
+
+
+## Bounded at both ends is NOT pinned to a value, and two formulas can share a clamp
+## and still disagree about every fight inside it. The record's deleted `endurance()`
+## read `MAX - rating * PER` where the live curve reads
+## `MIN + dao_heart * 0.01 - rating * PER`: for this exact fight it answered 0.1675
+## while the roll that decided the fight used 0.3192. That is the whole reason there
+## is one curve, so this pins the arithmetic, not just its limits.
+func test_the_survival_curve_is_pinned_to_a_value_and_not_only_to_its_bounds() -> void:
+	var actor := _actor_at_r18()
+	actor.stats.set_base(Stat.COMPREHENSION, 70.0)
+	var record := Tribulation.new(Tribulation.ELEMENTAL)
+	record.start(actor, &"earth_immortal")
+	assert_eq(
+		record.difficulty,
+		(
+			float(Tribulation.WAVES_BY_TIER[RealmDefaults.IMMORTAL])
+			* float(Tribulation.TYPE_PRESSURE[Tribulation.ELEMENTAL])
+		),
+		"the rating is the wave count times the kind's pressure"
+	)
+	var share := TribulationEndurance.endurance(actor, record)
+	assert_eq(
+		share,
+		(
+			TribulationEndurance.MIN_ENDURANCE
+			+ 70.0 * TribulationEndurance.DAO_HEART_TO_ENDURANCE
+			- record.difficulty * Tribulation.ENDURANCE_PER_RATING
+		),
+		"the share is the authored slope applied to this actor and this rating"
+	)
+	assert_eq(
+		share > TribulationEndurance.MIN_ENDURANCE and share < TribulationEndurance.MAX_ENDURANCE,
+		true,
+		"and it is interior, so the two assertions above were not the clamp talking"
+	)
 
 
 ## A harder tribulation is a smaller share of fights survived at. Without this the
 ## rating would be priced and never read.
+##
+## The actor is given the dao heart that keeps every answer INTERIOR, and that is the
+## point: at the floor or the ceiling every pair compares EQUAL, so the version of
+## this assertion that ran on a comprehension of 40 passed only because both fights
+## clamped, and would have passed with the rating deleted entirely.
 func test_a_harder_tribulation_is_endured_less_often() -> void:
 	var actor := _actor_at_r18()
-	var soft := Tribulation.new(Tribulation.LIGHTNING)
-	soft.start(actor, &"earth_immortal")
-	var hard := Tribulation.new(Tribulation.ELEMENTAL)
-	hard.start(actor, &"transcendent")
-	assert_eq(hard.endurance() < soft.endurance(), true, "the harder one is endured less")
+	actor.stats.set_base(Stat.COMPREHENSION, 70.0)
+	var light_spirit := Tribulation.new(Tribulation.LIGHTNING)
+	light_spirit.start(actor, &"spirit_condensation")
+	var elemental_spirit := Tribulation.new(Tribulation.ELEMENTAL)
+	elemental_spirit.start(actor, &"spirit_condensation")
+	var light_immortal := Tribulation.new(Tribulation.LIGHTNING)
+	light_immortal.start(actor, &"earth_immortal")
+	for record in [light_spirit, elemental_spirit, light_immortal]:
+		var share := TribulationEndurance.endurance(actor, record)
+		assert_eq(
+			(
+				share > TribulationEndurance.MIN_ENDURANCE
+				and share < TribulationEndurance.MAX_ENDURANCE
+			),
+			true,
+			"%s is interior, so the order is the rating's and not the clamp's" % record.type
+		)
+	assert_eq(
+		(
+			TribulationEndurance.endurance(actor, elemental_spirit)
+			< TribulationEndurance.endurance(actor, light_spirit)
+		),
+		true,
+		"the harder kind of the same fight is endured less"
+	)
+	assert_eq(
+		(
+			TribulationEndurance.endurance(actor, light_immortal)
+			< TribulationEndurance.endurance(actor, elemental_spirit)
+		),
+		true,
+		"and so is the same kind fought over more waves"
+	)
 
 
 # --- The wave toll ------------------------------------------------------------

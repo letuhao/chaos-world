@@ -63,10 +63,23 @@ static func price(
 	var payer_inventory := ItemsApi.inventory(payer)
 	if payer_inventory == null or not payer_inventory.has(EconomyValuation.numeraire_id(), coins):
 		return {"ok": false, "reason": SHOP_CANNOT_PAY}
-	return {
-		"ok": true,
-		"reason": "",
-		"coins": coins,
-		"offer": [{"def_id": String(EconomyValuation.numeraire_id()), "quantity": coins}],
-		"want": goods,
-	}
+	var coins_row := [{"def_id": String(EconomyValuation.numeraire_id()), "quantity": coins}]
+	# ## The legs SWAP with the direction, and getting this wrong is invisible at price 1
+	#
+	# `trade(player, shop, offer, want)` plans `offer` against the PLAYER and `want` against
+	# the SHOP, and the guard is `received <= offered`. So:
+	#
+	#   shop sells : the player hands over COINS and receives GOODS.
+	#                offer = coins, want = goods. offered = coins >= received = goods ✔
+	#   player sells: the player hands over GOODS and receives COINS.
+	#                offer = goods, want = coins. offered = goods >= received = coins ✔
+	#
+	# Putting the coins on `offer` in BOTH directions is what an earlier version did, and it
+	# makes **every player sale of a genuinely-priced good refuse** `settlement_short`: the
+	# goods are worth `u` per unit and the coins only `0.5u`, so `received > offered` for any
+	# `u >= 2`. It survived because the one end-to-end round-trip test uses an unauthored
+	# scroll, whose `unit_price` floors to 1 — where the `maxi(1, …)` floor collapses both
+	# legs and the inversion is arithmetically invisible.
+	if shop_is_seller:
+		return {"ok": true, "reason": "", "coins": coins, "offer": coins_row, "want": goods}
+	return {"ok": true, "reason": "", "coins": coins, "offer": goods, "want": coins_row}

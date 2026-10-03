@@ -14,8 +14,25 @@ extends TestCase
 ## same file or in the suites above it.
 
 const TRIBULATION_SRC := "res://src/core/tribulation.gd"
+const TRIBULATION_ENDURANCE_SRC := "res://src/core/tribulation_endurance.gd"
 const BREAKTHROUGH_SRC := "res://src/core/breakthrough.gd"
 const CONDITION_SRC := "res://src/core/tribulation_condition.gd"
+const FIGHT_SRC := "res://src/modules/heavenly_tribulation/tribulation_fight.gd"
+
+## Every `src/` file. The wave driver and the survival curve are only single if
+## NOTHING reaches around them, and "no `src/` file" is a claim only a sweep of all
+## of them can make.
+const SRC_FILES := "res://src"
+
+## The two wave verbs that descend a wave WITHOUT charging `WAVE_TOLL`. Legal in
+## the files that define the mechanism; a fight driven through either is a free
+## fight.
+const FREE_WAVE_VERBS := ["advance_tribulation(", ".advance_wave("]
+
+## Depth cap for the `src/` sweep. `res://src` is a tree with no cycles, so the cap
+## is unreachable by construction — it is here because an unbounded recursive walk is
+## an unbounded loop with a slower fuse, and this one reads every file in the game.
+const MAX_WALK_DEPTH := 12
 
 ## One bound, naming what it catches: a fight that stopped converging would spin the
 ## wave descent instead of descending it.
@@ -75,14 +92,77 @@ func test_every_named_identifier_of_the_mechanism_is_present() -> void:
 		"PREPARATION_FLOOR",
 	]:
 		assert_eq(name in _source(TRIBULATION_SRC), true, "Tribulation names %s" % name)
-	for signature in ["func fight_wave(", "func endurance(", "func rate(", "func apply_result("]:
+	for signature in ["func fight_wave(", "func rate(", "func apply_result("]:
 		assert_eq(
 			signature in _source(TRIBULATION_SRC), true, "Tribulation declares %s" % signature
 		)
-	for signature in ["static func face_tribulation(", "static func resolve_tribulation("]:
+	for signature in [
+		"static func face_tribulation(",
+		"static func resolve_tribulation(",
+		"static func owed_index(",
+	]:
 		assert_eq(
 			signature in _source(BREAKTHROUGH_SRC), true, "Breakthrough declares %s" % signature
 		)
+
+
+## ONE answer to "how often does this actor survive". The record used to carry a
+## second, actor-free `endurance()` that no `src/` file called — same slope, same
+## clamp, and no dao heart, so a screen quoting it would have shown a worse number
+## than the roll actually used. Deleted (ADR 0119); this fails if it comes back.
+func test_the_survival_formula_is_single_sourced() -> void:
+	assert_eq(
+		"func endurance(" in _source(TRIBULATION_SRC),
+		false,
+		"Tribulation answers no survival question of its own"
+	)
+	assert_eq(
+		_code_of(TRIBULATION_ENDURANCE_SRC).count("func endurance("),
+		1,
+		"TribulationEndurance declares the one curve"
+	)
+	assert_eq(_code_of(TRIBULATION_ENDURANCE_SRC).count("func survives("), 1, "and the one roll")
+
+
+## ONE derivation of "which realm is owed". `TribulationFight.target_index` and a
+## private `TribulationEndurance._owed_realm` were the same rule in two homes, so a
+## change to one was invisible to a test on the other — and they priced the odds
+## against one realm while the fight was fought for another.
+func test_the_owed_realm_rule_has_one_home() -> void:
+	assert_eq(
+		"_owed_realm" in _code_of(TRIBULATION_ENDURANCE_SRC),
+		false,
+		"core's curve no longer keeps a private copy"
+	)
+	assert_eq(
+		"func owed_index(" in _code_of(FIGHT_SRC),
+		false,
+		"and the module delegates rather than re-deriving"
+	)
+	assert_eq(
+		"Breakthrough.owed_index(actor)" in _code_of(FIGHT_SRC),
+		true,
+		"to the one derivation core owns"
+	)
+
+
+## ONE wave driver. `advance_tribulation` and `advance_wave` walk the phase machine
+## without charging `WAVE_TOLL`, and the tribulation screen used to fight through the
+## first of them — so the same fight cost one comprehension per wave from a
+## breakthrough action and nothing at all from the screen. Only the two files that
+## DEFINE the mechanism may name a free verb; every other file in `res://src`,
+## `heavenly_tribulation/tribulation_fight.gd` INCLUDED, must descend a fight through
+## `Tribulation.fight_wave`.
+func test_no_production_call_site_fights_a_wave_without_paying_the_toll() -> void:
+	var offenders: Array[String] = []
+	for path in _gd_files(SRC_FILES):
+		if path == TRIBULATION_SRC or path == BREAKTHROUGH_SRC:
+			continue
+		var code := _code_of(path)
+		for verb in FREE_WAVE_VERBS:
+			if verb in code:
+				offenders.append("%s calls %s" % [path.get_file(), verb])
+	assert_eq(offenders.is_empty(), true, "a free wave is never a fight: %s" % str(offenders))
 
 
 ## The threshold has ONE home. `Tribulation.TRIBULATION_REALM_THRESHOLD` duplicated
@@ -133,6 +213,29 @@ func _code_of(path: String) -> String:
 		if not line.strip_edges().begins_with("#"):
 			kept.append(line)
 	return "\n".join(kept)
+
+
+## Every `.gd` under `root`, capped at `MAX_WALK_DEPTH` so the walk itself cannot be
+## the runaway. `DirAccess.get_next()` returning "" is what ends each listing.
+func _gd_files(root: String, depth: int = 0) -> Array[String]:
+	var found: Array[String] = []
+	if depth >= MAX_WALK_DEPTH:
+		return found
+	var dir := DirAccess.open(root)
+	if dir == null:
+		return found
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while entry != "":
+		if not entry.begins_with("."):
+			var path := root.path_join(entry)
+			if dir.current_is_dir():
+				found.append_array(_gd_files(path, depth + 1))
+			elif entry.ends_with(".gd"):
+				found.append(path)
+		entry = dir.get_next()
+	dir.list_dir_end()
+	return found
 
 
 # --- Behaviours the phase-machine suites cannot see ---------------------------

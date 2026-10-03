@@ -88,13 +88,20 @@ entirely, because a hand-off with no coin leg must not be forced to invent one.
 - **`custody` is a new module with deps `["contracts", "core", "economy"]`** — no `items` (no
   `Inventory` is touched; the coin leg goes through `EconomyApi`), and no `npc`, `clan`,
   `sect` or `nation`. `UI_MODULES` gets `"custody": []`.
-- **`Actor.to_dict` now carries `statuses`.** It did not, so an actor restored from a payload
-  came back with depleted pools and full health — a save that lies, and the exact failure a
-  captive-as-payload would inherit. `StatusEffect` gained `to_dict`/`from_dict` with enums as
-  ints and a coerced read-back, and statuses restore **last**, after every pool they could
-  modify, through `StatusRegistry.apply` so the merge rule still decides what survives. A
-  save written before this key loads with no statuses, which is the day-one compatibility
-  case.
+- **`Actor.to_dict` deliberately does NOT carry `statuses`, and this ADR does not change
+  that.** An earlier draft of this ADR added the key, on the reasoning that a captive restored
+  from a payload would otherwise return with depleted pools and full health. That reasoning is
+  sound and the change was made — and then **ADR 0089's decision was found already in
+  `actor.gd`, made deliberately by another line of work**: statuses are session-only, and
+  persisting one is *"a schema decision with its own ADR"*, because a live-resolution record
+  in the payload puts potency, escalation state and authored def ids into every save. ADR
+  0089 wins, and the change was reverted.
+  **The consequence for custody is real and is recorded rather than papered over:** a captive
+  restored across a save comes back with no statuses. That is the game's stated intent — a
+  status is a live resolution, not a fact about the world — and custody does not depend on it,
+  because a custody record stores a **subject def id** and never an `Actor` payload. The
+  moment custody *did* store an actor would be the moment ADR 0089 would have to be reopened,
+  and that is recorded as its own future decision rather than assumed here.
 - **A custody record has NO `description`, no `flavor`, and no `display_name`.** The subject's
   name is authored on its def and read through the catalog; prose in a save schema is how
   prose becomes what gets read. Vocabulary is exactly: `holder`, `claim`, `term`, `periods`,

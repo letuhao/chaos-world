@@ -3,28 +3,18 @@ extends RefCounted
 
 ## The heavenly tribulation's fight lifecycle (ADR 0020, ADR 0032).
 ##
-## `core` owns the record, the phase machine and the rewards. This module owns
-## the three questions core deliberately does not answer:
+## `core` owns the record, the phase machine, the wave toll, the rewards AND the
+## roll. This module owns the one question core cannot answer by itself: WHICH realm
+## a tribulation is owed. `actor.tribulation` is a single slot, and
+## `Breakthrough.tribulation_ok` accepts only a record bound to the exact realm being
+## entered, so somebody has to pick one — `Breakthrough.owed_index` (ADR 0119).
 ##
-##   - WHICH realm a tribulation is owed. `actor.tribulation` is a single slot,
-##     and `Breakthrough.tribulation_ok` accepts only a record bound to the exact
-##     realm being entered, so somebody has to pick one. The rule is the FIRST
-##     tier any enrolled path still owes: a hero standing at R18 owes R19 before
-##     a second path on the same actor owes R28.
-##   - WHEN the fight is decided. Reaching the last phase is not surviving
-##     (`Tribulation.survived`), so the wave that completes the record is where
-##     the verdict is taken — once, and never inferred.
-##   - HOW MUCH of a fight this actor survives. That is NOT this module's: the roll
-##     and the curve behind it are `TribulationEndurance`, in core, so there is one
-##     answer to "did this actor survive" rather than one per module (ADR 0066). This
-##     module decides WHEN the verdict is taken and reports it.
+## It does NOT decide anything about a wave. `fight_wave` below is the screen's
+## entry point and nothing more: it calls `Tribulation.fight_wave`, the same verb
+## `Breakthrough.face_tribulation` calls, and reports the record's verdict. It used
+## to descend waves through `Breakthrough.advance_tribulation` and take the roll
+## itself, which skipped `WAVE_TOLL` — so a fight fought from this screen was free.
 ##
-## SEAM. `TribulationEndurance._owed_realm` restates this module's
-## `target_realm` — the same "first tier any enrolled path still owes" rule, in two
-## places, because core's copy is private. `TribulationEndurance.owed_realm` should
-## become public and this module's `target_realm` should delete; until then the rule
-## has two homes and a test on either would not catch a change to the other.
-
 ## Upper bound on waves one fight may drag on, and the loop guard for a driver
 ## that keeps calling `fight_wave`. `Tribulation.max_waves` is authored 3..9 and
 ## `advance_wave` refuses to pass it, so `max_waves + 2` calls complete a fight;
@@ -36,30 +26,17 @@ const WAVE_GUARD := 16
 
 
 ## Ladder index of the realm this actor's next tribulation is owed for, or -1
-## when no enrolled path is owed one.
+## when no enrolled path is owed one. Delegated: the rule lives in core
+## (`Breakthrough.owed_index`) because `TribulationEndurance` has to ask it too, and
+## two copies of "first tier any enrolled path still owes" is a rule that can name
+## two different realms for the same actor.
 static func target_index(actor: Actor) -> int:
-	var ladder := RealmDefaults.ladder()
-	var best := -1
-	for state in actor.paths.values():
-		if state == null or not state.is_started():
-			continue
-		var upcoming := ladder.next(state.rank_id)
-		if upcoming == null:
-			continue
-		var index := ladder.index_of(upcoming.id)
-		# Lowest tier owed wins, not highest: the slot holds one fight, so the
-		# closest unearned gate is the one worth filling.
-		if index >= Breakthrough.IMMORTAL_REALM_THRESHOLD and (best < 0 or index < best):
-			best = index
-	return best
+	return Breakthrough.owed_index(actor)
 
 
 ## The realm id a tribulation is owed for, or empty when none is owed.
 static func target_realm(actor: Actor) -> StringName:
-	var index := target_index(actor)
-	if index < 0:
-		return &""
-	return RealmDefaults.ladder().realms()[index].id
+	return Breakthrough.owed_realm(actor)
 
 
 # --- The fight ----------------------------------------------------------------
@@ -87,22 +64,31 @@ static func begin(actor: Actor) -> Dictionary:
 	}
 
 
-## Fight one wave. The wave that brings the record to its last phase also takes
-## the verdict, because a record that merely ran to its last phase has survived
-## nothing. `rng` makes the roll a test's choice instead of a hope; null uses the
-## engine's.
+## Fight one wave, through the record's own verb. `Tribulation.fight_wave` charges
+## `WAVE_TOLL`, descends the wave and takes the deciding roll, so this function
+## decides nothing and rolls nothing — it only reports what the record now says.
+##
+## It used to call `Breakthrough.advance_tribulation`, which walks the phase machine
+## WITHOUT charging the toll, and then rolled and resolved the fight itself. That is
+## the defect ADR 0119 records: the same fight cost one comprehension per wave
+## through the breakthrough button and cost NOTHING through this one, so a player
+## chose a free tribulation by opening a different screen.
+##
+## `rng` makes the roll a test's choice instead of a hope; null uses the engine's.
 static func fight_wave(actor: Actor, rng: RandomNumberGenerator = null) -> Dictionary:
 	if actor.tribulation == null:
 		return _refused("no tribulation has begun")
 	if actor.tribulation.outcome != Tribulation.OUTCOME_UNRESOLVED:
 		return _refused("the tribulation is already decided")
-	if not actor.tribulation.is_complete():
-		Breakthrough.advance_tribulation(actor)
-	if not actor.tribulation.is_complete():
+	actor.tribulation.fight_wave(actor, rng)
+	if actor.tribulation.outcome == Tribulation.OUTCOME_UNRESOLVED:
 		return {"ok": true, "reason": "", "decided": false, "wave": actor.tribulation.wave}
-	var won := TribulationEndurance.survives(actor, actor.tribulation, rng)
-	Breakthrough.resolve_tribulation(actor, won)
-	return {"ok": true, "reason": "", "decided": true, "survived": won}
+	return {
+		"ok": true,
+		"reason": "",
+		"decided": true,
+		"survived": actor.tribulation.survived(),
+	}
 
 
 ## Fight from whatever phase the record is in to a decided verdict, bounded by

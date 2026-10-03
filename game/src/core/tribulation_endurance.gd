@@ -6,10 +6,13 @@ extends RefCounted
 ##
 ## ONE curve, in `core`, for the same reason `RealmRate` is (ADR 0066): the roll
 ## is a mechanic, not a module's business, and a second copy of these five numbers
-## is a second answer to "how often does this actor survive a tribulation". The
-## `heavenly_tribulation` module's `endurance`/`_verdict` are the copy this
-## supersedes; they are written to be deleted, and the numbers below are theirs,
-## unchanged, so the deletion is a deletion and not a retune.
+## is a second answer to "how often does this actor survive a tribulation". It is
+## the ONLY answer: `Tribulation.endurance` was a second one, reachable from no
+## `src/` caller, and is deleted (ADR 0119).
+##
+## `TribulationFight`'s twin is deleted too: the module now descends waves through
+## `Tribulation.fight_wave` — the same verb `Breakthrough.face_tribulation` calls —
+## so a fight costs `WAVE_TOLL` however the player started it.
 ##
 ## It deliberately does NOT read `Stat.BREAKTHROUGH_CHANCE`, for the reason ADR 0028
 ## gives: that stat is derived from the comprehension the entry gate already pins, so
@@ -21,16 +24,11 @@ extends RefCounted
 ## file adds the one term the record cannot know — the actor's own dao heart.
 const MIN_ENDURANCE := Tribulation.MIN_ENDURANCE
 const MAX_ENDURANCE := Tribulation.MAX_ENDURANCE
-## How much of the bounded span a fully prepared actor and a free fight divide
-## between them.
-const PREPARATION_SPAN := Tribulation.MAX_ENDURANCE - Tribulation.MIN_ENDURANCE
 ## One point of the actor's own dao heart is this much of the span.
 const DAO_HEART_TO_ENDURANCE := 0.01
-## The largest rating `Tribulation.rate` can reach — the wave count's
-## authored ceiling times the most pressured tribulation type. The rating's range is
-## `Tribulation`'s business; this only needs to know it cannot exceed it, so the
-## price term can never swallow more than the span it is drawn from.
-const RATING_SPAN := Tribulation.RATING_SPAN
+## What one point of a fight's rating is worth, off `Tribulation`'s span. The span
+## itself is not re-declared here: an alias nothing reads is a second name for the
+## same number, which is how the two answers to this question got started.
 const RATING_TO_ENDURANCE := Tribulation.ENDURANCE_PER_RATING
 
 
@@ -73,36 +71,9 @@ static func _price(actor: Actor, record: Tribulation) -> float:
 		return record.difficulty
 	if actor.tribulation != null and not actor.tribulation.is_complete():
 		return actor.tribulation.difficulty
-	var realm_id := _owed_realm(actor)
+	var realm_id := Breakthrough.owed_realm(actor)
 	if realm_id == &"":
 		return 0.0
 	var provisional := Tribulation.new()
 	provisional.start(actor, realm_id)
 	return provisional.difficulty
-
-
-## The realm id of the lowest tier this actor's enrolled paths still owe a fight for,
-## or empty when none is owed. The single tribulation slot means the closest unearned
-## gate is the one worth filling; a hero at R18 owes R19 before a second path on the
-## same actor owes R28.
-##
-## The threshold is `Breakthrough.IMMORTAL_REALM_THRESHOLD`, the one copy left after
-## ADR 0061 deleted `Tribulation`'s duplicate. That leaves a core-internal read in the
-## direction `Breakthrough` already reads this file, which GDScript resolves through
-## the global class registry rather than load order, so it is a constant lookup at
-## run time and not a cycle.
-static func _owed_realm(actor: Actor) -> StringName:
-	var ladder := RealmDefaults.ladder()
-	var best := -1
-	for state in actor.paths.values():
-		if state == null or not state.is_started():
-			continue
-		var upcoming := ladder.next(state.rank_id)
-		if upcoming == null:
-			continue
-		var index := ladder.index_of(upcoming.id)
-		if index >= Breakthrough.IMMORTAL_REALM_THRESHOLD and (best < 0 or index < best):
-			best = index
-	if best < 0:
-		return &""
-	return ladder.realms()[best].id

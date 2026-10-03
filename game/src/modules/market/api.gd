@@ -459,10 +459,19 @@ static func settle_lot(
 			# Money left between bid and close. Named, visible, consequential: the lot falls
 			# to the next bidder at THEIR OWN bid, never to the seller charged a shortfall.
 			continue
+		# **Deliver BEFORE marking the lot sold, and set the amount it will charge BEFORE
+		# delivering.** The delivery charges `winning_amount`, so it must already be written or
+		# the house is credited zero. An earlier version marked the lot sold first and set
+		# `winning_amount` after the delivery — which meant a bidder who won a lot received the
+		# goods and the house received nothing, and the call still returned `ok: true`. A won
+		# lot that delivers nothing is the worst outcome an auction can produce, so on failure
+		# the lot stays `open` and the challenge passes to the next bidder: the goods are still
+		# escrowed and still owed.
+		lot["winning_amount"] = int(row["amount"])
+		if not _deliver_lot(winner_actor, bidder, lot):
+			continue
 		lot["status"] = "sold"
 		lot["winner"] = String(row["actor_id"])
-		lot["winning_amount"] = int(row["amount"])
-		var delivered := _deliver_lot(winner_actor, bidder, lot)
 		state["lots"][String(lot_id)] = lot
 		_save(winner_actor, state)
 		return {
@@ -471,7 +480,7 @@ static func settle_lot(
 			"status": "sold",
 			"winner": String(row["actor_id"]),
 			"amount": int(row["amount"]),
-			"delivered": delivered,
+			"delivered": true,
 		}
 	lot["status"] = "unsold"
 	state["lots"][String(lot_id)] = lot
@@ -516,20 +525,27 @@ static func _deliver_lot(winner_actor: Actor, bidder: Actor, lot: Dictionary) ->
 		)
 	)
 	instance.def_ref = def
+	# **Both legs are checked BEFORE either runs.** An earlier version added the item and
+	# then charged the coins — so a bidder who could not pay walked away with the goods, and
+	# the lot was marked sold. The room check and the coin leg now both pass first; only then
+	# does anything move. There is no rollback here, so the ordering IS the atomicity.
 	if not def.stackable and inventory.is_full():
+		return false
+	# `winning_amount` is set on the row BEFORE this call — the delivery reads the amount it
+	# is about to charge. Setting it after the delivery is what an earlier ordering did, and
+	# it meant the coin leg charged a ZERO amount: the goods went out, the house received
+	# nothing, and the lot reported itself sold.
+	var amount := int(lot.get("winning_amount", 0))
+	if amount <= 0:
+		return false
+	var coins := [{"def_id": String(EconomyValuation.numeraire_id()), "quantity": amount}]
+	var paid := EconomyApi.trade(bidder, winner_actor, coins, [], bidder.id)
+	if not bool(paid.get("ok", false)):
 		return false
 	var added := inventory.add_instance(instance)
 	if added != 0:
 		return false
-	# The coins leave the winner and arrive at the house, through the one transfer path.
-	var coins := [
-		{
-			"def_id": String(EconomyValuation.numeraire_id()),
-			"quantity": int(lot.get("winning_amount", 0)),
-		}
-	]
-	var paid := EconomyApi.trade(bidder, winner_actor, coins, [], bidder.id)
-	return bool(paid.get("ok", false))
+	return true
 
 
 # --- internals ---------------------------------------------------------------

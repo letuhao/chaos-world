@@ -63,6 +63,38 @@ static func try_advance(
 # when that tier does not require it.
 
 
+## The lowest ladder index ANY started path still owes a fight for, or -1 when
+## none is owed. THE single derivation of that rule (ADR 0119): it lives in core
+## because `TribulationEndurance` must price a fight that has not begun yet and
+## cannot reach a module, and because the module that drives the fight has to ask
+## the same question — two copies of "which realm is owed" is a rule that can
+## disagree with itself about which gate the next survivor opens.
+##
+## Lowest tier owed wins, not highest: `actor.tribulation` is a single slot, so
+## the closest unearned gate is the one worth filling.
+static func owed_index(actor: Actor) -> int:
+	var ladder := RealmDefaults.ladder()
+	var best := -1
+	for state in actor.paths.values():
+		if state == null or not state.is_started():
+			continue
+		var upcoming := ladder.next(state.rank_id)
+		if upcoming == null:
+			continue
+		var index := ladder.index_of(upcoming.id)
+		if index >= IMMORTAL_REALM_THRESHOLD and (best < 0 or index < best):
+			best = index
+	return best
+
+
+## The realm id `owed_index` names, or empty when no realm is owed.
+static func owed_realm(actor: Actor) -> StringName:
+	var index := owed_index(actor)
+	if index < 0:
+		return &""
+	return _realm_id_at(index)
+
+
 ## Survive the tribulation fought for the realm being entered (ADR 0020). One
 ## survivor unlocks only its own gate: a tribulation bound to another realm, or
 ## to none at all (legacy payload), must be re-fought. A fight that merely ran to
@@ -98,8 +130,19 @@ static func begin_tribulation(actor: Actor, next_index: int) -> Tribulation:
 	return tribulation
 
 
-## Advance the in-progress tribulation by one wave. Returns true while the
-## tribulation is still running, false once it is complete or there is none.
+## Walk the phase machine one wave WITHOUT fighting: no toll, no roll, no verdict.
+## Returns true while the tribulation is still running, false once it is complete
+## or there is none.
+##
+## NOT a wave driver, and that is the whole reason it exists beside `fight_wave`:
+## it is the phase-machine half of the explicit-verdict pair (`advance_tribulation`
+## then `resolve_tribulation`), which ADR 0061 kept for a caller that already knows
+## the outcome. It charges no `WAVE_TOLL`, so anything that DESCENDS A FIGHT must
+## call `Tribulation.fight_wave` instead — `face_tribulation` does, and so does the
+## tribulation screen. This was the defect ADR 0119 records: the screen descended
+## waves through here and the toll a player paid depended on which button they used.
+## `tests/core/test_tribulation_mechanism.gd` fails the build if any `src/` call
+## site uses this or `advance_wave` to fight.
 static func advance_tribulation(actor: Actor) -> bool:
 	if actor.tribulation == null or actor.tribulation.is_complete():
 		return false

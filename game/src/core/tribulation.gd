@@ -52,15 +52,17 @@ const WAVE_TOLL := 1.0
 
 ## The share of fights survived is bounded at BOTH ends and never reaches either: a
 ## certainty makes the fight a formality, and a coin flip makes the gate unopenable,
-## which is the same defect as no gate at all. These two numbers are the ONLY copy;
-## `TribulationEndurance` adds the actor's dao heart to the same slope and clamp
-## (ADR 0103), so there is one answer to "how often does this actor survive".
+## which is the same defect as no gate at all. These two numbers are the ONLY copy,
+## and the record itself does not answer the question: `TribulationEndurance` is the
+## one curve that turns this rating and an actor's dao heart into a share, so a
+## screen and the roll can never quote different odds (ADR 0103, ADR 0119).
 const MIN_ENDURANCE := 0.15
 const MAX_ENDURANCE := 0.85
 
 ## The largest rating `rate` can reach: the authored wave ceiling times the most
-## pressured tribulation type. `endurance` spends its span across exactly this range,
-## so the price term can never swallow more than the span it is drawn from.
+## pressured tribulation type. `TribulationEndurance.endurance` spends its span
+## across exactly this range, so the price term can never swallow more than the span
+## it is drawn from.
 const RATING_SPAN := 12.0
 const ENDURANCE_PER_RATING := (MAX_ENDURANCE - MIN_ENDURANCE) / RATING_SPAN
 
@@ -141,6 +143,12 @@ func advance_wave() -> void:
 ## ran to its last phase has survived nothing, so the deciding roll is taken there
 ## and nowhere else.
 ##
+## THIS is the tribulation's only wave driver (ADR 0119). `advance_wave` walks the
+## phase machine for a caller that is not fighting and charges nothing, and both
+## production fight paths — `Breakthrough.face_tribulation` and the tribulation
+## screen's `TribulationFight.fight_wave` — come through here, so a wave fought from
+## a breakthrough button and a wave fought from the screen cost the same thing.
+##
 ## `rng` makes the roll a caller's choice rather than a hope; null uses the engine's.
 ## The roll itself belongs to `TribulationEndurance`, the one curve in core that
 ## answers "did this actor survive" (ADR 0103).
@@ -197,14 +205,6 @@ func apply_result(actor: Actor, success: bool) -> bool:
 ## ran to its last phase without being decided, is not a survivor.
 func survived() -> bool:
 	return is_complete() and outcome == OUTCOME_SURVIVED
-
-
-## The share of fights THIS tribulation is survived at, read off its own rating and
-## nothing else: no actor and no rng, so it is pure and a screen can price a fight
-## before it begins. `TribulationEndurance.endurance` is the actor-aware answer and
-## is the same slope and clamp with the dao heart added.
-func endurance() -> float:
-	return clampf(MAX_ENDURANCE - difficulty * ENDURANCE_PER_RATING, MIN_ENDURANCE, MAX_ENDURANCE)
 
 
 ## What this fight is fought at, given the aid currently recorded on it. Public and
