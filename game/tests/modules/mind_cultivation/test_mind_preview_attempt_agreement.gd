@@ -2,17 +2,27 @@ extends TestCase
 
 ## BL-0152: `preview.ready` must not promise an action `start` refuses.
 ##
-## The claim under test is an AGREEMENT BETWEEN TWO FUNCTIONS ON ONE ACTOR, so
-## every test here reads both sides: `preview` is what a screen binds its
-## Breakthrough press to, and `start`/`try_breakthrough` is what that press
-## actually does. Asserting one side alone passes on the original code, where
-## `preview` read `ready: true` while `start` refused — both halves were true at
-## the same moment, which is the whole defect.
+## `start` refuses on two things — an attempt already in flight, and a body plan
+## that closes the mind path (ADR 0109) — and `preview` owes a clause for each.
+## Everything below is one rule: **a condition `preview` does not report is a
+## button a screen offers that does nothing.** `ready` is the boolean the mind
+## screen binds its Breakthrough press to, so every refusal has to be a clause.
 ##
-## Nothing below pastes a threshold or a roll. The pre-state is prepared through
-## the production actions, and every expectation is read off the actor's own
-## state or off `preview`'s own published contract, so the test cannot drift from
-## the code it describes.
+## The claim under test is an AGREEMENT BETWEEN TWO FUNCTIONS ON ONE ACTOR, so
+## every test here reads both sides: `preview` is what the screen reads, and
+## `start`/`try_breakthrough` is what the press actually does. Asserting one side
+## alone passes on the original code, where `preview` read `ready: true` while
+## `start` refused — both halves were true at the same moment, which is the whole
+## defect.
+##
+## Nothing below pastes a threshold, a clause or a roll. The pre-state is prepared
+## through the production actions, the expected wording is read off the gate that
+## produced it, and the outcome is decided by rolling the module's own published
+## chance, so no expectation can drift from the code it describes.
+##
+## BL-0151 is measured here too, at the bottom: whether a player can be stranded
+## holding an attempt is a property of the production entry point, not a matter of
+## theory.
 
 const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
 
