@@ -11,7 +11,7 @@ item_id = &""
 table_id = &"loot_qi_great_luo_guardian_pool_great_luo"
 weight = 1.0
 chance = -1.0
-guaranteed = false
+guaranteed = true
 quantity = 1
 rarity_floor = &""
 
@@ -23,7 +23,7 @@ item_id = &"B18_mortal_camerlengo_perfected"
 table_id = &""
 weight = 1.0
 chance = -1.0
-guaranteed = false
+guaranteed = true
 quantity = 1
 rarity_floor = &""
 
