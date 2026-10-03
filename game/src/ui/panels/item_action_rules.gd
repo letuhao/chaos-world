@@ -17,15 +17,6 @@ extends RefCounted
 ## mismatch is caught by the `not_usable` path rather than by a silent success.
 const USABLE_ACTIVATIONS: Array[StringName] = [&"consumed", &"learned", &"property"]
 
-## Subtype -> the slot that subtype normally occupies.
-const SUBTYPE_SLOTS := {
-	&"weapon": &"weapon",
-	&"armor": &"armor",
-	&"artifact": &"artifact",
-}
-
-const ACCESSORY_SLOTS: Array[StringName] = [&"accessory_a", &"accessory_b"]
-
 const REASON_NONE := ""
 const REASON_NO_SELECTION := "no_selection"
 const REASON_NO_ACTOR := "no_actor"
@@ -110,22 +101,39 @@ static func realm_block_reason(actor: Actor, def: Resource) -> String:
 	return REASON_NONE
 
 
-## The slot the selected row would go into: the subtype's natural slot, the first
-## free accessory slot for accessories, otherwise whatever the player chose.
+## The slot the selected row would go into: the slot its subtype authorises, the
+## first free accessory slot for a two-slot subtype, otherwise whatever the player
+## chose.
+##
+## The rule is asked of the items module through the facade rather than restated
+## here — a second copy in `ui/` is the drift this avoids. An empty answer means
+## the subtype expresses no opinion, so the player's own choice stands.
 static func slot_for(actor: Actor, row: Dictionary, chosen: StringName) -> StringName:
-	var subtype := StringName(row.get("subtype", ""))
-	if subtype == &"accessory":
-		return free_accessory_slot(actor)
-	var preferred: StringName = SUBTYPE_SLOTS.get(subtype, &"")
-	if preferred != &"":
-		return preferred
+	var def: Resource = row.get("def", null)
+	if actor == null or def == null:
+		return chosen
+	var equipment := ItemsApi.equipment(actor)
+	if equipment == null:
+		return chosen
+	var allowed := equipment.slots_for(def)
+	if allowed.size() == 1:
+		return allowed[0]
+	if allowed.size() > 1:
+		return free_accessory_slot(actor, def)
 	return chosen
 
 
-## First empty accessory slot, or the first accessory slot when both are taken.
-static func free_accessory_slot(actor: Actor) -> StringName:
+## First empty slot among those `def`'s subtype authorises, or the first of them
+## when all are taken. The candidate slots come from the items module, so this
+## panel names no slot id of its own.
+static func free_accessory_slot(actor: Actor, def: Resource) -> StringName:
 	var equipment := ItemsApi.equipment(actor)
-	for slot in ACCESSORY_SLOTS:
-		if equipment == null or equipment.definition(slot) == null:
+	if equipment == null or def == null:
+		return &""
+	var allowed := equipment.slots_for(def)
+	if allowed.is_empty():
+		return &""
+	for slot in allowed:
+		if equipment.definition(slot) == null:
 			return slot
-	return ACCESSORY_SLOTS[0]
+	return allowed[0]

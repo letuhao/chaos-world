@@ -59,13 +59,12 @@ static func instance() -> OptionCatalog:
 func with_bounds(
 	effects: Array[Dictionary], realm_id: StringName, rarity: StringName
 ) -> Array[Dictionary]:
-	var realm_index := maxi(0, RealmDefaults.ladder().index_of(realm_id))
 	var rarity_index := rarity_tier(rarity)
 	var out: Array[Dictionary] = []
 	for source in effects:
 		var effect: Dictionary = source.duplicate()
 		var window := magnitude_bounds(
-			String(effect.get("unit", "magnitude")), realm_index, rarity_index
+			String(effect.get("unit", "magnitude")), realm_id, rarity_index
 		)
 		effect["value_min"] = window["min"]
 		effect["value_max"] = window["max"]
@@ -149,7 +148,7 @@ func roll_next(
 	activation: StringName,
 	context: StringName,
 	used: Array[StringName],
-	realm_index: int,
+	realm_id: StringName,
 	rarity_index: int,
 	rng: RandomNumberGenerator
 ) -> Dictionary:
@@ -187,10 +186,10 @@ func roll_next(
 		if pick <= 0.0:
 			chosen = candidate["record"]
 			break
-	return realize(chosen, realm_index, rarity_index, rng)
+	return realize(chosen, realm_id, rarity_index, rng)
 
 
-## Min/max for an option's unit under a realm index and rarity index.
+## Min/max for an option's unit under a realm id and rarity index.
 ##
 ## Two reads, and they are deliberately different in KIND, not just in number:
 ##
@@ -203,9 +202,9 @@ func roll_next(
 ##
 ## Keeping the two apart is the point: a magnitude has no reason to be computable,
 ## and a rate has no reason to be more than linear.
-func magnitude_bounds(unit: String, realm_index: int, rarity_index: int) -> Dictionary:
+func magnitude_bounds(unit: String, realm_id: StringName, rarity_index: int) -> Dictionary:
 	var policy: Array = MAGNITUDE_POLICY.get(unit, MAGNITUDE_POLICY["magnitude"])
-	var realm_factor := _realm_factor(unit, realm_index, float(policy[2]))
+	var realm_factor := _realm_factor(unit, realm_id, float(policy[2]))
 	var rarity_factor := 1.0 + rarity_index * float(policy[3])
 	return {
 		"min": float(policy[0]) * realm_factor * rarity_factor,
@@ -215,26 +214,43 @@ func magnitude_bounds(unit: String, realm_index: int, rarity_index: int) -> Dict
 
 ## Realm factor for one unit. `slope` is the unit's authored per-realm weight and
 ## is used only by rates.
-func _realm_factor(unit: String, realm_index: int, slope: float) -> float:
+##
+## A magnitude is keyed by realm ID; a rate is a linear read of the ordinal. That
+## asymmetry is deliberate and is the whole point (ADR 0050): a magnitude is an
+## authored balance fact that must follow its realm if realms are renumbered,
+## while a rate's slope is per ordinal step and must not.
+func _realm_factor(unit: String, realm_id: StringName, slope: float) -> float:
 	if unit == "magnitude":
-		return realm_magnitude_scale(realm_index)
-	return 1.0 + realm_index * slope  # power: rate-read
+		return realm_magnitude_scale(realm_id)
+	return 1.0 + realm_ordinal(realm_id) * slope  # power: rate-read
 
 
-## The authored magnitude multiplier for one realm ordinal. Resolved by realm ID
-## through the shared ladder, never by array position, so renumbering a realm moves
-## its authored number with it instead of handing it a neighbour's.
-static func realm_magnitude_scale(realm_index: int) -> float:
-	_ensure_scales()
-	var realms: Array = RealmDefaults.ladder().realms()
-	if realm_index < 0 or realm_index >= realms.size():
-		push_error("OptionCatalog: realm index %d is off the ladder" % realm_index)
+## The realm's position on the shared ladder, or -1 when it is not on it. Used
+## only by rates; magnitudes never go through this.
+static func realm_ordinal(realm_id: StringName) -> int:
+	return maxi(0, RealmDefaults.ladder().index_of(realm_id))
+
+
+## The authored magnitude multiplier for one realm. Resolved by realm ID, never by
+## array position, so renumbering a realm moves its authored number with it
+## instead of handing it a neighbour's.
+##
+## An EMPTY realm is not an error: content authors items that are not realm-scaled
+## (a currency, for one), and an item with no realm has no per-realm magnitude to
+## look up, so the multiplier is the unscaled 1.0. Reporting that would fire
+## `push_error` once per roll of every such item, which is a per-roll error storm
+## rather than a diagnostic.
+##
+## A realm that IS named but absent from the table is a genuine content defect and
+## still fails loudly: that realm rolls items, so it needs an authored number.
+static func realm_magnitude_scale(realm_id: StringName) -> float:
+	if realm_id == &"":
 		return 1.0
-	var realm_id := String(realms[realm_index].id)
-	if not _scales.has(realm_id):
+	_ensure_scales()
+	if not _scales.has(String(realm_id)):
 		push_error("OptionCatalog: no authored magnitude scale for realm '%s'" % realm_id)
 		return 1.0
-	return float(_scales[realm_id])
+	return float(_scales[String(realm_id)])
 
 
 static func _ensure_scales() -> void:
@@ -267,10 +283,10 @@ static func _ensure_scales() -> void:
 
 ## option's declared precision and clamped to its declared final bounds.
 func roll_value(
-	record: Dictionary, realm_index: int, rarity_index: int, rng: RandomNumberGenerator
+	record: Dictionary, realm_id: StringName, rarity_index: int, rng: RandomNumberGenerator
 ) -> float:
 	var unit := String(record.get("unit", "magnitude"))
-	var bounds := magnitude_bounds(unit, realm_index, rarity_index)
+	var bounds := magnitude_bounds(unit, realm_id, rarity_index)
 	var low := float(bounds["min"])
 	var high := float(bounds["max"])
 	if rng != null and high > low:
@@ -306,12 +322,10 @@ static func make_effect(record: Dictionary, value: float, channel: StringName) -
 
 
 func realize(
-	record: Dictionary, realm_index: int, rarity_index: int, rng: RandomNumberGenerator
+	record: Dictionary, realm_id: StringName, rarity_index: int, rng: RandomNumberGenerator
 ) -> Dictionary:
-	var effect := make_effect(record, roll_value(record, realm_index, rarity_index, rng), &"rolled")
-	var window := magnitude_bounds(
-		String(effect.get("unit", "magnitude")), realm_index, rarity_index
-	)
+	var effect := make_effect(record, roll_value(record, realm_id, rarity_index, rng), &"rolled")
+	var window := magnitude_bounds(String(effect.get("unit", "magnitude")), realm_id, rarity_index)
 	effect["value_min"] = window["min"]
 	effect["value_max"] = window["max"]
 	return effect

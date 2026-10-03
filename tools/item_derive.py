@@ -54,6 +54,7 @@ from decimal import ROUND_CEILING, ROUND_FLOOR, Decimal
 from pathlib import Path
 
 from .common import REPO_ROOT, ToolError, fail, info, ok
+from .options import _scale_ladder  # noqa: PLC0415
 
 # Content roots the derivation owns. `items` is the main item tree; `socket` is a
 # module's own item namespace, which `data audit` gates with exactly the same
@@ -142,6 +143,8 @@ def run(args) -> int:
         info(f"  left alone: {count:5d}  {key}")
     for detail in notes["details"][:10]:
         info(f"    {detail}")
+    for line in notes["skipped"][:10]:
+        info(f"    skipped: {line}")
     if notes["details"]:
         fail(
             f"{len(notes['details'])} value(s) cannot be represented inside their window at "
@@ -170,7 +173,7 @@ def _edge(value: float, precision: int, rounding: str) -> int:
     return int(scaled.to_integral_value(rounding=rounding))
 
 
-def _window(record: dict, realm_index: int, rarity_index: int) -> tuple[float, float]:
+def _window(record: dict, realm_id: str, rarity_index: int) -> tuple[float, float]:
     """The option's realm/rarity magnitude range, intersected with its final bounds.
 
     The intersection is what the game will actually apply to a fixed value
@@ -179,7 +182,7 @@ def _window(record: dict, realm_index: int, rarity_index: int) -> tuple[float, f
     """
     from .data import _magnitude_bounds  # noqa: PLC0415
 
-    low, high = _magnitude_bounds(record["unit"], realm_index, rarity_index)
+    low, high = _magnitude_bounds(record["unit"], realm_id, rarity_index)
     limits = record.get("bounds") or {}
     if "min" in limits:
         low = max(low, float(limits["min"]))
@@ -196,17 +199,15 @@ MAX_EXTRA_PLACES = 1
 
 
 def window_ticks(
-    record: dict, realm_index: int, rarity_index: int, places: int | None = None
+    record: dict, realm_id: str, rarity_index: int, places: int | None = None
 ) -> tuple[int, int, int]:
     """`(first, last, places)` grid ticks of an option's representable window."""
-    low, high = _window(record, realm_index, rarity_index)
+    low, high = _window(record, realm_id, rarity_index)
     places = int(record.get("precision", 2)) if places is None else places
     return _edge(low, places, ROUND_CEILING), _edge(high, places, ROUND_FLOOR), places
 
 
-def places_for(
-    record: dict, realm_index: int, rarity_index: int, needed: int
-) -> tuple[int, int, int]:
+def places_for(record: dict, realm_id: str, rarity_index: int, needed: int) -> tuple[int, int, int]:
     """The finest grid that can tell a cohort's authored values apart.
 
     The option's declared precision answers for every cohort whose distinct values
@@ -214,9 +215,9 @@ def places_for(
     authored values onto one another.
     """
     declared = int(record.get("precision", 2))
-    fallback = window_ticks(record, realm_index, rarity_index, declared)
+    fallback = window_ticks(record, realm_id, rarity_index, declared)
     for places in range(declared, declared + MAX_EXTRA_PLACES + 1):
-        first, last, _ = window_ticks(record, realm_index, rarity_index, places)
+        first, last, _ = window_ticks(record, realm_id, rarity_index, places)
         if last - first + 1 >= needed:
             return first, last, places
     return fallback
@@ -296,13 +297,25 @@ def plan_derivation(root: Path, roots: tuple[str, ...]) -> tuple[dict[Path, dict
     by_root: Counter[str] = Counter()
     by_side: Counter[str] = Counter()
     sample: list[dict] = []
+    skipped: list[str] = []
+    scale_ladder = set(_scale_ladder())
     for key in sorted(cohorts):
         category, _sub, option_id, realm, rarity = key
         members = cohorts[key]
         record = catalog[option_id]
-        realm_index = data.REALM_INDEX.get(realm, 0)
         rarity_index = data.RARITY_INDEX.get(rarity, 0)
-        low, high = _window(record, realm_index, rarity_index)
+        # A cohort whose items declare no realm is not realm-scaled, so there is no
+        # authored per-realm factor to check it against. Falling back to a ladder
+        # position would judge it against a realm it does not belong to, which is
+        # the index-keyed mistake ADR 0050 exists to prevent. Report and skip.
+        if realm not in scale_ladder:
+            reasons["item declares no realm, so it has no authored realm window"] += len(members)
+            skipped.append(
+                f"{category}/{option_id}@{realm or '<no realm>'}/{rarity}: "
+                f"{len(members)} authored value(s) left alone, the item declares no realm"
+            )
+            continue
+        low, high = _window(record, realm, rarity_index)
         # Staleness is judged against the window the gate judges against, not
         # against a grid: an authored value carrying more decimals than the
         # option's declared precision is still a legal authored value, and the
@@ -311,7 +324,7 @@ def plan_derivation(root: Path, roots: tuple[str, ...]) -> tuple[dict[Path, dict
         if not stale:
             continue
         first, last, places = places_for(
-            record, realm_index, rarity_index, len(set(value for _, value in members))
+            record, realm, rarity_index, len(set(value for _, value in members))
         )
         table = derived_values([value for _, value in members], first, last)
         if not table:
@@ -365,6 +378,7 @@ def plan_derivation(root: Path, roots: tuple[str, ...]) -> tuple[dict[Path, dict
     return plan, {
         "reasons": reasons,
         "details": details,
+        "skipped": skipped,
         "by_root": by_root,
         "by_side": by_side,
         "sample": ordered,

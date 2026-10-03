@@ -8,6 +8,18 @@ extends RefCounted
 const INVENTORY_COMPONENT := &"inventory"
 const EQUIPMENT_COMPONENT := &"equipment"
 const DEFAULT_CAPACITY := 24
+## Schema version of this module's own serialized payload.
+##
+## Independent of `Actor.SCHEMA_VERSION` on purpose. `Actor.to_dict` nests this
+## dictionary under `item_state` and `Actor._restore_versioned` hands it over
+## raw without reading it, so the two counters never interpret each other's
+## fields and can be bumped in either order without a half-landed state.
+##
+## 3 records the inventory's `capacity`. Version 2 omitted it, so a load rebuilt
+## a default-sized bag and `Inventory.add` silently dropped every stack past the
+## default — a session's work deleted with no error. Version 1 predates the
+## instance rows.
+const SCHEMA_VERSION := 3
 
 
 static func attach(actor: Actor, capacity: int = DEFAULT_CAPACITY) -> void:
@@ -167,8 +179,13 @@ static func serialize(actor: Actor) -> Dictionary:
 				"def_id": String(eq.equipped(slot).def_id),
 			}
 	return {
-		"version": 2,
-		"inventory": {"stacks": stacks, "instances": instances},
+		"version": SCHEMA_VERSION,
+		"inventory":
+		{
+			"capacity": inv.capacity if inv != null else DEFAULT_CAPACITY,
+			"stacks": stacks,
+			"instances": instances
+		},
 		"equipment": slots,
 	}
 
@@ -177,7 +194,8 @@ static func serialize(actor: Actor) -> Dictionary:
 ## item state: existing stacks, instances and equipped items are cleared first,
 ## so loading a save can never duplicate loot or double-equip. Realized values
 ## are restored exactly as saved and never rerolled (ADR 0027).
-static func deserialize(actor: Actor, data: Dictionary) -> void:
+static func deserialize(actor: Actor, raw: Dictionary) -> void:
+	var data := _migrate_item_state(raw)
 	if data.is_empty():
 		return
 	var inv := inventory(actor)
@@ -189,10 +207,23 @@ static func deserialize(actor: Actor, data: Dictionary) -> void:
 			eq.unequip(actor, slot)
 	inv.clear()
 	var inv_data: Dictionary = data.get("inventory", {})
+	# A load must never rebuild a bag narrower than the one being restored, or
+	# `add` drops the overflow and the save is what deletes the items. Widening is
+	# the only safe direction: a caller that asked for a smaller bag gets the
+	# contents back rather than a silent truncation.
+	inv.capacity = maxi(inv.capacity, int(inv_data.get("capacity", DEFAULT_CAPACITY)))
 	for stack_data in inv_data.get("stacks", []):
-		var def := _resolve_def(inv, StringName(stack_data.get("def_id", "")))
-		if def != null:
-			inv.add(def, int(stack_data.get("quantity", 0)))
+		# The saved stack already carries its realized rolls, rarity and realm.
+		# Restoring it through `add` would mint a fresh realization and throw
+		# those away, so a load would silently re-roll every stack the player
+		# had already rolled — the same class of loss as the missing capacity.
+		var stack := ItemStack.from_dict(stack_data)
+		if stack == null or stack.def_id == &"":
+			continue
+		stack.def_ref = _resolve_def(inv, stack.def_id)
+		if stack.def_ref == null:
+			continue
+		inv.add_batch(stack)
 	for instance_data in inv_data.get("instances", []):
 		var instance := ItemInstance.from_dict(ItemInstance.migrate(instance_data))
 		instance.def_ref = _resolve_def(inv, instance.def_id)
@@ -204,6 +235,32 @@ static func deserialize(actor: Actor, data: Dictionary) -> void:
 		var def := _resolve_def(inv, instance.def_id)
 		if def != null:
 			eq.equip(actor, StringName(slot), def, instance)
+
+
+## Bring a stored payload up to [constant SCHEMA_VERSION], or reject it.
+##
+## Returns `{}` for a payload written by a newer build: its fields may mean
+## something this build does not know, and restoring them anyway is the same
+## silent-misread class of bug as reading a version it does not understand. An
+## empty result restores nothing, which is loud enough to notice and safe.
+static func _migrate_item_state(raw: Dictionary) -> Dictionary:
+	if raw.is_empty():
+		return {}
+	var version := int(raw.get("version", 1))
+	if version > SCHEMA_VERSION:
+		return {}
+	if version >= SCHEMA_VERSION:
+		return raw
+	var out := raw.duplicate(true)
+	out["version"] = SCHEMA_VERSION
+	# Version 2 and earlier omitted `capacity` entirely. Supply the default such a
+	# bag was built at rather than zero, so an old save restores at the size it
+	# was actually saved at instead of at nothing.
+	var inv_data: Dictionary = out.get("inventory", {})
+	if not inv_data.has("capacity"):
+		inv_data["capacity"] = DEFAULT_CAPACITY
+		out["inventory"] = inv_data
+	return out
 
 
 ## Prefer the definition the inventory already knows, so an in-memory definition

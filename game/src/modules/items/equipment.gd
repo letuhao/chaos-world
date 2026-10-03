@@ -15,6 +15,33 @@ const ARTIFACT := &"artifact"
 
 const SLOTS := [WEAPON, ARMOR, ACCESSORY_A, ACCESSORY_B, ARTIFACT]
 
+## The only slots a declared equipment subtype may occupy.
+##
+## Keyed by the subtype vocabulary [ItemSubtype] already owns, so this is the one
+## place the rule lives rather than a second copy in `ui/`. A subtype outside that
+## vocabulary is deliberately absent and therefore permissive: content authors
+## subtypes beyond these four (`lens`, `greaves`, `orb`), and refusing to equip
+## them anywhere would be inventing a rule nobody authored. See [method slots_for].
+const SLOTS_BY_SUBTYPE: Dictionary = {
+	ItemSubtype.WEAPON: [WEAPON],
+	ItemSubtype.ARMOR: [ARMOR],
+	ItemSubtype.ACCESSORY: [ACCESSORY_A, ACCESSORY_B],
+	ItemSubtype.ARTIFACT: [ARTIFACT],
+}
+
+## Why the last [method equip] returned false. Empty after a success.
+##
+## Every refusal used to be a bare `return false`, so a caller could not tell a
+## full inventory from a wrong slot from unmet requirements, and no test could
+## name the branch it was exercising.
+const REASON_NO_SUCH_SLOT := "no_such_slot"
+const REASON_NOT_EQUIPMENT := "not_equipment"
+const REASON_INSTANCE_MISMATCH := "instance_mismatch"
+const REASON_REQUIREMENTS_UNMET := "requirements_unmet"
+const REASON_WRONG_SLOT := "wrong_slot_for_subtype"
+
+var _last_refusal: String = ""
+
 var _slots: Dictionary = {}
 var _defs: Dictionary = {}
 ## Upkeep state for equipped items (ADR 0052). Null until the items module wires it,
@@ -56,15 +83,47 @@ func effects(slot: StringName) -> Array[Dictionary]:
 	return ItemEffects.resolve(def, instance)
 
 
+## The slots `def` may be equipped into, or `[]` when the subtype expresses no
+## opinion.
+##
+## Empty is deliberately not "every slot": it means this rule has nothing to say
+## about that subtype, which is different from ruling every slot in. A caller that
+## wants the effective set unions this with [constant SLOTS]. That distinction is
+## what lets `ui/` ask for a suggestion without having to restate the rule: a
+## non-empty answer is a real constraint, an empty one means "leave it to the
+## player".
+func slots_for(def: ItemDef) -> Array[StringName]:
+	if def == null:
+		return []
+	var out: Array[StringName] = []
+	for slot in SLOTS_BY_SUBTYPE.get(def.subcategory, []):
+		out.append(StringName(slot))
+	return out
+
+
+## Why the last [method equip] refused, or `""` when it succeeded. Read it after
+## a `false` to name the branch; never a substitute for the boolean.
+func last_refusal() -> String:
+	return _last_refusal
+
+
 func equip(actor: Actor, slot: StringName, def: ItemDef, instance: ItemInstance) -> bool:
+	_last_refusal = ""
 	if not SLOTS.has(slot):
-		return false
+		return _refuse(REASON_NO_SUCH_SLOT)
 	if def == null or instance == null or not def.is_equipment():
-		return false
+		return _refuse(REASON_NOT_EQUIPMENT)
 	if instance.def_id != def.id:
-		return false
+		return _refuse(REASON_INSTANCE_MISMATCH)
+	# A weapon in the armour slot is not a stylistic choice: the slot decides which
+	# upkeep and which suspension the item pays, so a mismatch would charge the
+	# wrong cost. Refused here rather than tolerated. An empty answer is no
+	# opinion, so it restricts nothing.
+	var allowed := slots_for(def)
+	if not allowed.is_empty() and not allowed.has(slot):
+		return _refuse(REASON_WRONG_SLOT)
 	if not _meets_requirements(actor, def, instance):
-		return false
+		return _refuse(REASON_REQUIREMENTS_UNMET)
 	# Replacing a slot is atomic: validate first, then swap, so an invalid
 	# replacement leaves the current equipment intact.
 	var previous: ItemInstance = _slots.get(slot)
@@ -73,17 +132,26 @@ func equip(actor: Actor, slot: StringName, def: ItemDef, instance: ItemInstance)
 		actor.stats.remove_modifiers_from(previous.instance_id)
 	_slots[slot] = instance
 	_defs[slot] = def
-	for modifier in ItemEffects.stat_modifiers(
-		ItemEffects.resolve(def, instance), instance.instance_id
-	):
+	# Suspension is per slot, so swapping INTO a suspended slot must not hand the
+	# incoming item the outgoing one's contribution back (ADR 0052, DEF-0088). The
+	# new item is equipped and inert until upkeep is paid again.
+	var applied: Array[Dictionary] = []
+	if not _is_suspended(slot):
+		applied = ItemEffects.resolve(def, instance)
+	for modifier in ItemEffects.stat_modifiers(applied, instance.instance_id):
 		actor.stats.add_modifier(modifier)
-	for modifier in ItemEffects.resource_modifiers(
-		ItemEffects.resolve(def, instance), instance.instance_id
-	):
+	for modifier in ItemEffects.resource_modifiers(applied, instance.instance_id):
 		actor.stats.add_modifier(modifier)
 	actor.mark_stats_dirty()
 	changed.emit()
 	return true
+
+
+## Record why an equip was refused and report the failure. One helper so every
+## refusal sets the reason; a bare `return false` would leave it stale.
+func _refuse(reason: String) -> bool:
+	_last_refusal = reason
+	return false
 
 
 func unequip(actor: Actor, slot: StringName) -> ItemInstance:
@@ -106,14 +174,26 @@ func rebuild(actor: Actor, slot: StringName) -> bool:
 	if instance == null or def == null:
 		return false
 	actor.stats.remove_modifiers_from(instance.instance_id)
-	var effects := ItemEffects.resolve(def, instance)
-	for modifier in ItemEffects.stat_modifiers(effects, instance.instance_id):
+	# The remove-then-add above runs unconditionally, so a suspended slot ends the
+	# rebuild with nothing applied — the same "equipped but contributes nothing"
+	# result effects() reports. Rebuilding must never hand a suspended item its
+	# modifiers back (DEF-0088).
+	var applied: Array[Dictionary] = []
+	if not _is_suspended(slot):
+		applied = ItemEffects.resolve(def, instance)
+	for modifier in ItemEffects.stat_modifiers(applied, instance.instance_id):
 		actor.stats.add_modifier(modifier)
-	for modifier in ItemEffects.resource_modifiers(effects, instance.instance_id):
+	for modifier in ItemEffects.resource_modifiers(applied, instance.instance_id):
 		actor.stats.add_modifier(modifier)
 	actor.mark_stats_dirty()
 	changed.emit()
 	return true
+
+
+## True when upkeep has suspended this slot. Null upkeep means nothing is ever
+## suspended, so a bare Equipment behaves exactly as it did before ADR 0052.
+func _is_suspended(slot: StringName) -> bool:
+	return _upkeep != null and _upkeep.is_suspended(slot)
 
 
 ## Optional requirement profile check (ADR 0052). Runs alongside the tier and
