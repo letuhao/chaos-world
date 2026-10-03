@@ -20,6 +20,19 @@ func setup() -> void:
 	HoldingsApi.attach(_actor)
 
 
+## Release the process-wide singletons this suite installed. `HoldingsApi._store`,
+## `HoldingsApi._resolver` and the `ResourceNodeCatalog` singleton all outlive the suite, so
+## a suite that leaves them populated holds authored `ResourceNodeDef` resources alive until
+## the engine shuts down. ObjectDB then reports leaked instances at exit and the process
+## leaves non-zero **with every assertion green** — a suite that passes and still fails the
+## run. Idempotent, and safe after an early return.
+func teardown() -> void:
+	_actor = null
+	HoldingsApi.set_resolver(Callable())
+	HoldingsApi.set_store(null)
+	ResourceNodeCatalog.instance().reset()
+
+
 func _node(
 	node_id: StringName, yield_units: int, depletion: int, upkeep: int, floor_value: int = 0
 ) -> ResourceNodeDef:

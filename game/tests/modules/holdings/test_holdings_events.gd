@@ -42,6 +42,23 @@ func setup() -> void:
 	)
 
 
+## Release everything this suite installed on a process-wide singleton.
+##
+## `HoldingsApi.events()`, `HoldingsApi._store`/`_resolver` and
+## `ResourceCatalog.instance()` are all statics that outlive the suite, so a suite that
+## leaves them populated keeps its own connections — and the actors those lambdas
+## captured — alive until the engine shuts down. ObjectDB then reports leaked instances
+## at exit and the process leaves non-zero **with every assertion green**, which is the
+## worst possible reading: a suite that passes and still fails the run.
+func teardown() -> void:
+	_disconnect_all()
+	_seen.clear()
+	_actor = null
+	HoldingsApi.set_resolver(Callable())
+	HoldingsApi.set_store(null)
+	ResourceNodeCatalog.instance().reset()
+
+
 ## Drop every connection this suite made. A test framework that leaves signal connections on
 ## a shared singleton is how a green suite becomes order-dependent.
 func _disconnect_all() -> void:
