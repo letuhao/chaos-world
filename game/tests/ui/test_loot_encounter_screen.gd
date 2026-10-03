@@ -188,27 +188,30 @@ func _domain_index(domain_id: String) -> int:
 ## over. Read from the reward the screen still reports, so the assertion is "the item
 ## the drop named is the item the bag holds" rather than "the bag holds a literal".
 func _claimed_def_ids(actor: Actor, screen: Node) -> Array[String]:
-	var encounter := String((screen.summary() as Dictionary)["encounter_id"])
-	var payload := LootApi.reward(actor, encounter)
-	var reward := payload.get("reward", {}) as Dictionary
 	var out: Array[String] = []
-	for drop in reward.get("drops", []):
+	for drop in _reward_view(actor, screen).get("drops", []):
 		out.append(String((drop as Dictionary).get("def_id", "")))
 	return out
 
 
-## The reward view the facade publishes for the live encounter.
+## The reward view the facade publishes for the reward the screen is showing.
+##
+## ## The encounter id comes from the REWARD, not from `active`
+##
+## `summary()["encounter_id"]` is the live encounter, and a defeated boss clears it.
+## Both helpers used to read it that way, so after the fight they asked the facade
+## about "" and got `{"reward": {}}` back -- which is why "at least one drop is
+## genuinely carried" failed against a reward that had been paid in full.
+## `summary()["reward"]["encounter_id"]` is the reward's own id and survives the kill.
 ##
 ## This replaces a lookup of `LootApi.table(table_id)["source_id"]`, which raised
 ## "Invalid access to property or key 'source_id'" on every run and aborted this test
 ## mid-function: `LootApi.table` publishes id, display_name, realm, rarity, rolls and
 ## entries -- it has no `source_id`. Because the abort happened mid-function the test
 ## reported no failure, so the suite stayed green over a test that was not finishing.
-## `LootRewards.view` does publish `boss_id`, and comparing against it asserts the
-## claim this screen can actually make: the boss on screen is the boss whose reward
-## is listed.
 func _reward_view(actor: Actor, screen: Node) -> Dictionary:
-	var encounter := String((screen.summary() as Dictionary)["encounter_id"])
+	var shown := screen.summary() as Dictionary
+	var encounter := String((shown.get("reward", {}) as Dictionary).get("encounter_id", ""))
 	return LootApi.reward(actor, encounter).get("reward", {}) as Dictionary
 
 
@@ -220,11 +223,6 @@ func test_the_full_loop_runs_through_the_screen() -> void:
 	var inside := screen.summary()
 	assert_eq(bool(inside["in_domain"]), true, "a boss is live")
 	assert_ne(String(inside["boss_id"]), "", "the domain's authored boss is named")
-	assert_eq(
-		String(inside["boss_id"]),
-		_reward_view(actor, screen).get("boss_id", ""),
-		"and it is the same boss the encounter's reward is drawn for"
-	)
 	assert_eq(float(inside["vitality_max"]) > 0.0, true, "it has authored vitality")
 	assert_eq(bool((inside["enabled"] as Dictionary)["strike"]), true, "so striking is offered")
 	assert_eq(bool((inside["enabled"] as Dictionary)["enter"]), false, "and entering again is not")
@@ -247,16 +245,30 @@ func test_the_full_loop_runs_through_the_screen() -> void:
 	var listed := after["reward"] as Dictionary
 	assert_eq(int(listed["row_count"]) > 0, true, "one row per drop")
 	assert_eq(String(listed["encounter_id"]) != "", true, "the reward names its encounter")
+	# The boss on screen is the boss that reward is drawn for. Checked HERE and not
+	# on entry: a reward is minted when a boss falls, so before the fight there is
+	# no reward view to compare against and the comparison was vacuous.
+	assert_eq(
+		String(inside["boss_id"]),
+		_reward_view(actor, screen).get("boss_id", ""),
+		"and it is the same boss the encounter's reward is drawn for"
+	)
+
+	# What the reward owes, read BEFORE it is spent.
+	#
+	# `LootApi.reward` answers `{"reward": {}}` once the claim is settled, so asking
+	# it after `act_take_all` returns no drops at all and "at least one drop is
+	# genuinely carried" fails on a reward that was in fact paid in full. The items
+	# are whatever the authored table rolled, so they are read back rather than
+	# pinned: a drop-table retune must not fail this assertion.
+	var claimed := _claimed_def_ids(actor, screen)
+	assert_ne(claimed.is_empty(), true, "the reward names at least one drop")
 
 	# Take every drop the listed reward owes.
 	assert_eq(bool(screen.act_take_all()), true, "take all is accepted")
 	var emptied := screen.summary()
 	assert_eq(int(emptied["pending_drops"]), 0, "nothing is left waiting")
 	assert_eq(int(emptied["claimed_encounters"]), 1, "the claim ledger records the spend")
-	# The item is whatever the authored table rolled, so it is read back from the
-	# reward rather than pinned: a drop table retune must not fail this assertion.
-	var claimed := _claimed_def_ids(actor, screen)
-	assert_ne(claimed.is_empty(), true, "and at least one drop is genuinely carried")
 	for def_id in claimed:
 		assert_eq(
 			bool(ItemsApi.has_item(actor, StringName(def_id))), true, "'%s' is carried" % def_id
