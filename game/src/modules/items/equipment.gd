@@ -15,20 +15,6 @@ const ARTIFACT := &"artifact"
 
 const SLOTS := [WEAPON, ARMOR, ACCESSORY_A, ACCESSORY_B, ARTIFACT]
 
-## The only slots a declared equipment subtype may occupy.
-##
-## Keyed by the subtype vocabulary [ItemSubtype] already owns, so this is the one
-## place the rule lives rather than a second copy in `ui/`. A subtype outside that
-## vocabulary is deliberately absent and therefore permissive: content authors
-## subtypes beyond these four (`lens`, `greaves`, `orb`), and refusing to equip
-## them anywhere would be inventing a rule nobody authored. See [method slots_for].
-const SLOTS_BY_SUBTYPE: Dictionary = {
-	ItemSubtype.WEAPON: [WEAPON],
-	ItemSubtype.ARMOR: [ARMOR],
-	ItemSubtype.ACCESSORY: [ACCESSORY_A, ACCESSORY_B],
-	ItemSubtype.ARTIFACT: [ARTIFACT],
-}
-
 ## Why the last [method equip] returned false. Empty after a success.
 ##
 ## Every refusal used to be a bare `return false`, so a caller could not tell a
@@ -39,6 +25,11 @@ const REASON_NOT_EQUIPMENT := "not_equipment"
 const REASON_INSTANCE_MISMATCH := "instance_mismatch"
 const REASON_REQUIREMENTS_UNMET := "requirements_unmet"
 const REASON_WRONG_SLOT := "wrong_slot_for_subtype"
+## The definition's subtype is authored as wearing nowhere — a socket payload,
+## not something a body puts on. Its own branch, because "wrong slot" would name
+## a slot the rule never offered and send a caller looking for a fix that does
+## not exist.
+const REASON_UNWEARABLE := "unwearable_subtype"
 
 var _last_refusal: String = ""
 
@@ -92,13 +83,22 @@ func effects(slot: StringName) -> Array[Dictionary]:
 ## what lets `ui/` ask for a suggestion without having to restate the rule: a
 ## non-empty answer is a real constraint, an empty one means "leave it to the
 ## player".
+##
+## The rule itself is authored content read by [ItemSlots], so a subtype nobody
+## declared here is still ruled on if the content tree rules it. A subtype
+## authored as wearing nowhere also answers `[]` here; [method equip] refuses it
+## on its own branch, and [method is_wearable] is how a caller tells the two
+## apart before offering the player a choice that cannot succeed.
 func slots_for(def: ItemDef) -> Array[StringName]:
 	if def == null:
 		return []
-	var out: Array[StringName] = []
-	for slot in SLOTS_BY_SUBTYPE.get(def.subcategory, []):
-		out.append(StringName(slot))
-	return out
+	return ItemSlots.for_subtype(def.subcategory)
+
+
+## Whether `def` may be worn at all. False only for a subtype the authored rule
+## places in no wearable slot.
+func is_wearable(def: ItemDef) -> bool:
+	return def == null or ItemSlots.is_wearable(def.subcategory)
 
 
 ## Why the last [method equip] refused, or `""` when it succeeded. Read it after
@@ -109,21 +109,9 @@ func last_refusal() -> String:
 
 func equip(actor: Actor, slot: StringName, def: ItemDef, instance: ItemInstance) -> bool:
 	_last_refusal = ""
-	if not SLOTS.has(slot):
-		return _refuse(REASON_NO_SUCH_SLOT)
-	if def == null or instance == null or not def.is_equipment():
-		return _refuse(REASON_NOT_EQUIPMENT)
-	if instance.def_id != def.id:
-		return _refuse(REASON_INSTANCE_MISMATCH)
-	# A weapon in the armour slot is not a stylistic choice: the slot decides which
-	# upkeep and which suspension the item pays, so a mismatch would charge the
-	# wrong cost. Refused here rather than tolerated. An empty answer is no
-	# opinion, so it restricts nothing.
-	var allowed := slots_for(def)
-	if not allowed.is_empty() and not allowed.has(slot):
-		return _refuse(REASON_WRONG_SLOT)
-	if not _meets_requirements(actor, def, instance):
-		return _refuse(REASON_REQUIREMENTS_UNMET)
+	var refused := _refusal_for(actor, slot, def, instance)
+	if not refused.is_empty():
+		return _refuse(refused)
 	# Replacing a slot is atomic: validate first, then swap, so an invalid
 	# replacement leaves the current equipment intact.
 	var previous: ItemInstance = _slots.get(slot)
@@ -145,6 +133,58 @@ func equip(actor: Actor, slot: StringName, def: ItemDef, instance: ItemInstance)
 	actor.mark_stats_dirty()
 	changed.emit()
 	return true
+
+
+## Why this equip must be refused, or `""` when it is legal.
+##
+## Every guard [method equip] applies is a pure read of the arguments, so they live
+## here and `equip` keeps a single refusal exit — which is what the `REASON_*`
+## constants exist for: a caller naming the branch it hit, instead of one left
+## guessing from a bare `false`.
+##
+## The two halves are the ones the two checks already were: does this request even
+## name a wearable item for this slot, and then does policy allow it. Half one runs
+## first because a half-two check dereferences a `def` that half one may have refused.
+func _refusal_for(actor: Actor, slot: StringName, def: ItemDef, instance: ItemInstance) -> String:
+	var reason := _request_refusal(slot, def, instance)
+	if reason.is_empty():
+		reason = _policy_refusal(actor, slot, def, instance)
+	return reason
+
+
+## The well-formedness half, or `""` when the request names a real item of this kind.
+##
+## Order matters and is load-bearing. `REASON_NOT_EQUIPMENT` precedes
+## `REASON_INSTANCE_MISMATCH` because a null `def` has no `id` to compare against.
+func _request_refusal(slot: StringName, def: ItemDef, instance: ItemInstance) -> String:
+	if not SLOTS.has(slot):
+		return REASON_NO_SUCH_SLOT
+	if def == null or instance == null or not def.is_equipment():
+		return REASON_NOT_EQUIPMENT
+	if instance.def_id != def.id:
+		return REASON_INSTANCE_MISMATCH
+	return ""
+
+
+## The policy half: authored slot rule, unwearability, then requirements.
+func _policy_refusal(
+	actor: Actor, slot: StringName, def: ItemDef, instance: ItemInstance
+) -> String:
+	# Unwearable is checked before the slot rule because a subtype ruled to no slot
+	# at all answers `[]` too, so only that branch can refuse it, and naming it
+	# "wrong_slot" would point a caller at a slot the rule never offered.
+	if not is_wearable(def):
+		return REASON_UNWEARABLE
+	# A weapon in the armour slot is not a stylistic choice: the slot decides which
+	# upkeep and which suspension the item pays, so a mismatch would charge the
+	# wrong cost. Refused here rather than tolerated. An empty answer is no
+	# opinion, so it restricts nothing.
+	var allowed := slots_for(def)
+	if not allowed.is_empty() and not allowed.has(slot):
+		return REASON_WRONG_SLOT
+	if not _meets_requirements(actor, def, instance):
+		return REASON_REQUIREMENTS_UNMET
+	return ""
 
 
 ## Record why an equip was refused and report the failure. One helper so every

@@ -38,6 +38,23 @@ func is_equipment() -> bool:
 	return category == ItemCategory.EQUIPMENT
 
 
+## The wearable slots this definition's subtype may occupy, or `[]` when the
+## authored rule has no opinion (or rules the subtype to wear nowhere).
+##
+## Read through the definition rather than through `Equipment` so any module
+## holding content can ask where a subtype goes without reaching into another
+## module's internals. `Equipment.slots_for` is the same answer for the same
+## definition; this is the value-object spelling of it.
+func wearable_slots() -> Array[StringName]:
+	return ItemSlots.for_subtype(subcategory)
+
+
+## Whether a body may wear this definition at all. False only for a subtype the
+## authored rule places in no wearable slot — socket material, chiefly.
+func is_wearable() -> bool:
+	return ItemSlots.is_wearable(subcategory)
+
+
 func required_tier() -> int:
 	return ItemGrade.required_tier(grade)
 

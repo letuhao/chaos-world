@@ -1,0 +1,14 @@
+{
+	"version": 1,
+	"by_subtype": {
+		"weapon": ["weapon"],
+		"armor": ["armor"],
+		"accessory": ["accessory_a", "accessory_b"],
+		"artifact": ["artifact"],
+		"bandolier": ["armor"],
+		"greaves": ["armor"],
+		"lens": ["accessory_a", "accessory_b"],
+		"orb": ["accessory_a", "accessory_b"]
+	},
+	"unwearable": ["gem"]
+}
