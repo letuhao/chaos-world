@@ -515,8 +515,6 @@ func test_the_lazy_bind_guard_still_sees_a_panel_that_resolves_nothing_lazily() 
 	)
 
 
-
-
 # --- Plumbing ---------------------------------------------------------------
 
 
