@@ -7,16 +7,26 @@ extends RefCounted
 ## ## The player chooses nothing
 ##
 ## There is no save button, no load button and no slot list. The game autosaves on a period
-## boundary the player never sees, and reads back the one slot it wrote. A backup exists on
-## disk for crash recovery and **no shipped caller names it** — that is a design rule with a
-## guard, not a missing feature, and the guard is what keeps it a rule.
+## boundary the player never sees. A backup exists on disk for crash recovery and **no shipped
+## caller names it** — that is a design rule with a guard, not a missing feature, and the guard
+## is what keeps it a rule.
 ##
 ## ## Why the envelope and not the actor payload
 ##
-## `Actor.to_dict()` has had no production caller at all (DEF-0059), so saving from the game
-## dropped cultivation progress, the dantian, the sea and every module ledger. Putting it under
-## `envelope.actor` whole closes that with no second item path, because `item_state` already
-## rides inside it.
+## `Actor.to_dict()` IS reached in production: `persist` below is called from the composition
+## root's period autosave, so cultivation progress, the dantian, the sea and every module ledger
+## ride out under `envelope.actor` whole, with no second item path, because `item_state`
+## already rides inside it.
+##
+## ## The write half ships; the read half does not
+##
+## `SaveApi.restore()` has no caller anywhere in `res://src` outside this file, so nothing reads
+## the slot back at boot and the composition root builds a fresh actor instead. Cultivation
+## progress is written every period and never observed on the next session (BL-0061).
+##
+## Do not read that absence as the design. The envelope is built to round-trip — this docblock
+## previously claimed `Actor.to_dict()` had no production caller at all, which stopped being
+## true once `persist` was wired, and that stale claim is what DEF-0059 was filed against.
 ##
 ## The soul and the world ledgers ride BESIDE the actor, under `envelope.world` — not inside
 ## it. A soul outlives its body (ADR 0127), so anything stored on the actor dies with it.
