@@ -222,7 +222,11 @@ func _fill_fates() -> void:
 func _grow(
 	box: VBoxContainer, rows: Array, scene_path: String, prefix: String, needed: int
 ) -> void:
-	while rows.size() < needed:
+	# `needed` comes from the data, so it is bounded rather than trusted: a pool
+	# that grows to fit an unbounded count is the shape that reaches tens of
+	# gigabytes of live Controls. See RowBudget.
+	var target := RowBudget.cap(needed)
+	while rows.size() < target:
 		var row := load(scene_path).instantiate() as Control
 		row.name = "%s%d" % [prefix, rows.size()]
 		box.add_child(row)

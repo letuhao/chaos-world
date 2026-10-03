@@ -18,6 +18,11 @@ const STORM_TIER := 3
 const EMBER_BOSS_COUNT := 3
 const EMBER_FIRST_BOSS := "loot_ember_vault_warden"
 
+## Every screen `screen()` instantiated, so `release()` can free it. The runner
+## shares one process across every suite, so an unfreed screen stays resident for
+## the rest of the run rather than being cleaned up per suite.
+var _born: Array[Node] = []
+
 
 ## A delver with the core pools, an inventory of `capacity` slots and the loot
 ## lifecycle attached — the same attach order the composition root uses.
@@ -73,15 +78,30 @@ func _no_domains() -> Array:
 
 ## The loot screen scene, bound to `actor` and to the real facade. Instantiated
 ## directly and driven off-tree, which is how the headless suite exercises UI.
+##
+## Every screen it mints is recorded so `release()` can free it. Nothing else in
+## this rig frees anything, and the runner shares one process across every suite:
+## an unfreed screen here survives the whole run, and each one is the heaviest
+## screen in the program.
 func screen(actor: Actor) -> LootEncounterScreen:
 	var scene: PackedScene = load(SCREEN_SCENE)
 	if scene == null:
 		return null
 	var view := scene.instantiate() as LootEncounterScreen
+	_born.append(view)
 	view.call("_ready")
 	view.call("setup", actor)
 	view.call("bind_bridge", bridge())
 	return view
+
+
+## Free every screen this rig instantiated. Idempotent, so a suite can call it
+## from `teardown()` and be safe even when a test aborted mid-way.
+func release() -> void:
+	for node in _born:
+		if is_instance_valid(node):
+			node.free()
+	_born.clear()
 
 
 # --- Control drivers. Each one presses the control a player presses.

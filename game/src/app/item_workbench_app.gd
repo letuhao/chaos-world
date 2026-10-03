@@ -290,7 +290,13 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			screen.call("setup", _actor)
 			# The body screen's World Map button is a real navigation door, so the
 			# route it opens is the same one the navigation bar opens.
-			if screen.has_signal(&"world_map_requested"):
+			# Guarded like the app's own connections: safe today only because every
+			# navigation instantiates a fresh screen, and an unguarded connect would
+			# start duplicating handlers the moment one is ever reused or cached.
+			if (
+				screen.has_signal(&"world_map_requested")
+				and not screen.is_connected(&"world_map_requested", _on_world_map_requested)
+			):
 				screen.connect(&"world_map_requested", _on_world_map_requested)
 		ROUTE_SET_BONUS:
 			# The set screen renders exclusively from a snapshot the composition

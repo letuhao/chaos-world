@@ -26,6 +26,13 @@ func setup(actor: Actor) -> void:
 
 
 func _build_ui() -> void:
+	# Idempotent. The headless harness drives `_ready()` by hand after
+	# `add_child`, so a node with a live parent can get the engine's own `_ready()`
+	# as well — and an unguarded build then parents a second VBox and duplicates
+	# every handler, leaving the first one orphaned under nothing. The early return
+	# is the same guard every screen in `src/ui/` uses.
+	if _cultivate_button != null:
+		return
 	var vbox := VBoxContainer.new()
 	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(vbox)

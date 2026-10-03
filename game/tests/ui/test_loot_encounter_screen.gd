@@ -85,10 +85,27 @@ func _bridge() -> LootBridge:
 	return bridge
 
 
+## Every screen this suite instantiated. The runner shares one process across every
+## suite, so an unfreed screen stays resident for the rest of the run — and this is
+## the heaviest screen in the program, each instance carrying a domain list, tier
+## bands, a fight readout and reward rows. Freed centrally because the call sites
+## are interleaved and a test returning early would skip a free at its end.
+var _born: Array[Node] = []
+
+
+## Free everything this suite instantiated. Idempotent, so it is safe after an abort.
+func teardown() -> void:
+	for node in _born:
+		if is_instance_valid(node):
+			node.free()
+	_born.clear()
+
+
 func _screen(actor: Actor) -> LootEncounterScreen:
 	var scene: PackedScene = load(SCREEN_SCENE)
 	assert_ne(scene, null, "the loot screen scene loads")
 	var screen := scene.instantiate() as LootEncounterScreen
+	_born.append(screen)
 	screen.call("_ready")
 	screen.call("setup", actor)
 	screen.call("bind_bridge", _bridge())
@@ -98,6 +115,7 @@ func _screen(actor: Actor) -> LootEncounterScreen:
 func test_a_screen_with_no_actor_or_no_bridge_reads_empty() -> void:
 	var scene: PackedScene = load(SCREEN_SCENE)
 	var bare := scene.instantiate() as LootEncounterScreen
+	_born.append(bare)
 	bare.call("_ready")
 	assert_eq(bare.summary().is_empty(), true, "no actor means no view")
 	bare.call("setup", _actor())
@@ -179,14 +197,19 @@ func _claimed_def_ids(actor: Actor, screen: Node) -> Array[String]:
 	return out
 
 
-## The authored drop table the live boss draws from, read back through the facade
-## rather than written as a literal — the boss behind a domain changes as content is
-## authored, and a hard-coded id is a test that fails for the wrong reason.
-func _table_of(actor: Actor, screen: Node) -> StringName:
+## The reward view the facade publishes for the live encounter.
+##
+## This replaces a lookup of `LootApi.table(table_id)["source_id"]`, which raised
+## "Invalid access to property or key 'source_id'" on every run and aborted this test
+## mid-function: `LootApi.table` publishes id, display_name, realm, rarity, rolls and
+## entries -- it has no `source_id`. Because the abort happened mid-function the test
+## reported no failure, so the suite stayed green over a test that was not finishing.
+## `LootRewards.view` does publish `boss_id`, and comparing against it asserts the
+## claim this screen can actually make: the boss on screen is the boss whose reward
+## is listed.
+func _reward_view(actor: Actor, screen: Node) -> Dictionary:
 	var encounter := String((screen.summary() as Dictionary)["encounter_id"])
-	var for_encounter := LootApi.reward(actor, encounter)
-	var reward := for_encounter.get("reward", {}) as Dictionary
-	return StringName(String(reward.get("table_id", "")))
+	return LootApi.reward(actor, encounter).get("reward", {}) as Dictionary
 
 
 func test_the_full_loop_runs_through_the_screen() -> void:
@@ -199,8 +222,8 @@ func test_the_full_loop_runs_through_the_screen() -> void:
 	assert_ne(String(inside["boss_id"]), "", "the domain's authored boss is named")
 	assert_eq(
 		String(inside["boss_id"]),
-		String(LootApi.table(_table_of(actor, screen))["source_id"]),
-		"and it is the boss that encounter's table belongs to"
+		_reward_view(actor, screen).get("boss_id", ""),
+		"and it is the same boss the encounter's reward is drawn for"
 	)
 	assert_eq(float(inside["vitality_max"]) > 0.0, true, "it has authored vitality")
 	assert_eq(bool((inside["enabled"] as Dictionary)["strike"]), true, "so striking is offered")

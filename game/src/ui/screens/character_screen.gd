@@ -219,14 +219,19 @@ func _fill_stat_rows() -> void:
 func _ensure_row_count(needed: int) -> void:
 	if _list == null:
 		return
-	while _stat_rows.size() < needed:
+	# The sheet scrolls rather than truncates, but `needed` is the number of DISTINCT
+	# stats any module has written a modifier for, and nothing bounds that. Every
+	# row here is a live Control parented into the tree, so an unbounded count is an
+	# unbounded node count. Clamped once, and the sheet draws what fits.
+	var target := RowBudget.cap(needed)
+	while _stat_rows.size() < target:
 		var row := StatRow.create()
 		if row == null:
 			break
 		row.name = "ExtraStatRow%d" % _stat_rows.size()
 		_list.add_child(row)
 		_stat_rows.append(row)
-	while _stat_rows.size() > needed and not _stat_rows.is_empty():
+	while _stat_rows.size() > target and not _stat_rows.is_empty():
 		var extra: StatRow = _stat_rows.pop_back()
 		if extra != null and extra.get_parent() != null:
 			extra.get_parent().remove_child(extra)

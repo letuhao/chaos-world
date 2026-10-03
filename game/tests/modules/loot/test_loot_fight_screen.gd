@@ -17,9 +17,22 @@ const DEEP_TIER := 1
 ## One exchange of the two-sided readout the panel renders.
 const EXCHANGE_CAP := 40
 
+## The rig this suite's screens were minted from, kept so `teardown()` can free
+## them. The runner shares one process across every suite, so a screen the rig
+## instantiated and nobody freed stays resident for the rest of the run.
+var _current_rig: LootScreenRig = null
+
+
+## Free whatever the rig minted. Idempotent, so it is safe after an abort.
+func teardown() -> void:
+	if _current_rig != null:
+		_current_rig.release()
+		_current_rig = null
+
 
 func _rig() -> LootScreenRig:
-	return LootScreenRig.new()
+	_current_rig = LootScreenRig.new()
+	return _current_rig
 
 
 ## Enter the deep band through the screen's own controls, as a player does: pick it in the

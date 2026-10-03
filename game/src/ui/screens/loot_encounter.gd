@@ -294,13 +294,20 @@ func _bind_nodes() -> void:
 	_bonus_label = get_node_or_null("%BonusLabel") as Label
 	_reward_list = get_node_or_null("%RewardList") as LootRewardList
 	_stash_list = get_node_or_null("%StashList") as LootRewardList
-	_reward_list.row_action_requested.connect(act_pickup)
-	_reward_list.take_all_requested.connect(act_take_all)
+	# Guarded like every connect below. `_bind_nodes` returning early keeps these
+	# to one per instance, but a guarded connect is what makes that a fact rather
+	# than an accident of the early return: an unguarded one duplicates silently
+	# the moment anything calls this again.
+	if not _reward_list.row_action_requested.is_connected(act_pickup):
+		_reward_list.row_action_requested.connect(act_pickup)
+	if not _reward_list.take_all_requested.is_connected(act_take_all):
+		_reward_list.take_all_requested.connect(act_take_all)
 	# One signal, two meanings: the list says "this row's action was pressed" and the
 	# screen decides what that means for the list it belongs to. The stash list's
 	# action is a reclaim, and routing it here is what makes the world-drop-container
 	# overflow branch reachable at all.
-	_stash_list.row_action_requested.connect(act_reclaim)
+	if not _stash_list.row_action_requested.is_connected(act_reclaim):
+		_stash_list.row_action_requested.connect(act_reclaim)
 	if (
 		_domain_option != null
 		and not _domain_option.item_selected.is_connected(_on_domain_selected)

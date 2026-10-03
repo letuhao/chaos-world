@@ -100,6 +100,13 @@ func test_interaction_out_of_range() -> void:
 	adapter.interacted.connect(func(name): emitted.append(name))
 	adapter.interact()
 	assert_eq(emitted.size(), 0, "no signal when out of range")
+	# Both nodes were parented for this test only. The runner shares one process
+	# across every suite, so anything left under `root` outlives the test that made
+	# it — and the NPC's own children with it.
+	adapter.remove_interactable(npc)
+	npc.free()
+	adapter.get_parent().remove_child(adapter)
+	adapter.free()
 
 
 func test_state_transition() -> void:

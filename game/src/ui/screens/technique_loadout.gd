@@ -142,7 +142,7 @@ func _rows_in(box: VBoxContainer, extra: int) -> Array:
 		var row := child as TechniqueSlotRow
 		if row != null:
 			out.append(row)
-	while out.size() < extra:
+	while out.size() < RowBudget.cap(extra):
 		box.add_child(_new_row(out.size()))
 		out.append(box.get_child(box.get_child_count() - 1) as TechniqueSlotRow)
 	return out

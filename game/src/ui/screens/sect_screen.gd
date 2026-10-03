@@ -185,7 +185,10 @@ func _rows_in(box: VBoxContainer, scene_path: String, prefix: String, extra: int
 func _grow(
 	box: VBoxContainer, rows: Array, scene_path: String, prefix: String, needed: int
 ) -> void:
-	while rows.size() < needed:
+	# Bounded, not trusted: `needed` is a data-derived claim/office count, and a
+	# pool that grows to fit an unbounded one parents live Controls without limit.
+	var target := RowBudget.cap(needed)
+	while rows.size() < target:
 		var row := load(scene_path).instantiate() as Control
 		row.name = "%s%d" % [prefix, rows.size()]
 		box.add_child(row)

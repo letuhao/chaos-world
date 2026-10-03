@@ -45,10 +45,26 @@ func _bridge() -> LootBridge:
 	return bridge
 
 
+## Every screen this suite instantiated. The runner shares one process across every
+## suite, so an unfreed screen stays resident for the rest of the run — and this is
+## the heaviest screen in the program. Freed centrally because the call sites are
+## interleaved and a test returning early would skip a free at its end.
+var _born: Array[Node] = []
+
+
+## Free everything `_screen()` handed out. Idempotent, so it is safe after an abort.
+func teardown() -> void:
+	for node in _born:
+		if is_instance_valid(node):
+			node.free()
+	_born.clear()
+
+
 func _screen(actor: Actor) -> LootEncounterScreen:
 	var scene: PackedScene = load(SCREEN_SCENE)
 	assert_ne(scene, null, "the loot screen scene loads")
 	var screen := scene.instantiate() as LootEncounterScreen
+	_born.append(screen)
 	screen.call("_ready")
 	screen.call("setup", actor)
 	screen.call("bind_bridge", _bridge())
@@ -199,6 +215,7 @@ func test_a_screen_with_no_actor_reports_nothing_at_all() -> void:
 	# reads a half-initialised screen as a real view.
 	var scene: PackedScene = load(SCREEN_SCENE)
 	var bare := scene.instantiate() as LootEncounterScreen
+	_born.append(bare)
 	bare.call("_ready")
 	assert_eq(bare.summary(), {}, "no actor means no view — not a readout of nothing")
 

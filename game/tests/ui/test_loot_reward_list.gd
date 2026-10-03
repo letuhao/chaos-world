@@ -5,11 +5,27 @@ extends TestCase
 
 const LIST_SCENE := "res://src/ui/panels/loot_reward_list.tscn"
 
+## Every panel this suite instantiated. The runner shares one process across every
+## suite, so a panel that is never freed stays resident for the rest of the run —
+## and each one is a whole row subtree, so eight leaked panels is hundreds of live
+## Controls. Tracked centrally rather than freed at each call site because the
+## call sites are interleaved and a test that returns early would skip a free.
+var _born: Array[Node] = []
+
+
+## Free everything `_list()` handed out. Idempotent, so it is safe after an abort.
+func teardown() -> void:
+	for node in _born:
+		if is_instance_valid(node):
+			node.free()
+	_born.clear()
+
 
 func _list() -> LootRewardList:
 	var scene: PackedScene = load(LIST_SCENE)
 	assert_ne(scene, null, "the reward list scene loads")
 	var list := scene.instantiate() as LootRewardList
+	_born.append(list)
 	list.call("_ready")
 	return list
 
