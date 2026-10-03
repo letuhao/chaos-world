@@ -167,6 +167,21 @@ func provide(item_id: StringName, def: ItemDef) -> void:
 	_definitions[String(item_id)] = def
 
 
+## Seed the boss index with a record the caller already holds, exactly as
+## [method provide] does for an item.
+##
+## The legacy `BossDef.loot` projection is a migration path with **no live content**:
+## every shipped boss carries an empty `loot` array and is bound to an authored table
+## instead, so there is no shipped boss whose projection could be observed. Without a
+## seam the only honest way to prove the projection would be to reintroduce a second
+## loot authority into the content tree — which is precisely the hazard the validator
+## exists to refuse. So a caller authors the probe the projection needs.
+func provide_boss(boss_id: StringName, record: Dictionary) -> void:
+	if boss_id == &"" or not bool(record.get("found", false)):
+		return
+	_bosses[String(boss_id)] = record
+
+
 # --- The single boss -> table authority -------------------------------------
 
 

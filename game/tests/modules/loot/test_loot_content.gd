@@ -185,28 +185,83 @@ func test_the_facade_projects_a_table_with_its_declared_semantics() -> void:
 
 
 ## The validator refuses content where a boss would have two loot authorities.
+##
+## The probe is authored here rather than borrowed from the shipped content, because no
+## shipped boss carries a legacy `loot` array any more: the corpus was migrated to
+## authored bindings, so the only boss that still has a legacy list is one a caller
+## authors. Asserting against a shipped id would pin the test to content drift — which
+## is how this assertion came to be wrong in the first place.
 func test_the_validator_rejects_two_boss_loot_authorities() -> void:
 	var content := _content()
-	var record := content.boss_record(&"beast_ironhide_bear")
-	assert_eq((record["loot"] as Array).is_empty(), false, "a legacy boss does carry a loot list")
+	var legacy := &"probe_legacy_loot_bear"
+	content.provide_boss(
+		legacy,
+		{
+			"found": true,
+			"id": String(legacy),
+			"domain_id": "",
+			"boss_ids": [],
+			"loot": ["amulet_iron_sage_eye"]
+		}
+	)
+	var record := content.boss_record(legacy)
+	assert_eq(bool(record["found"]), true, "the probe boss content resolves")
+	assert_eq((record["loot"] as Array).is_empty(), false, "and it carries a legacy loot list")
 	# A synthetic encounter that binds a boss which also has a legacy loot list is
 	# exactly the conflict the validator exists to catch.
 	var encounter := LootEncounterDef.new()
 	encounter.id = &"probe_two_authorities"
 	encounter.domain_id = &"beast_ironhide_bear_domain"
-	encounter.boss_ids = [&"beast_ironhide_bear"] as Array[StringName]
+	encounter.boss_ids = [legacy] as Array[StringName]
 	var tier := LootTier.new()
 	tier.tier = 1
 	tier.realm = &"spirit_severing"
 	tier.vitality = 10.0
 	tier.boss_tables = (
-		[{"boss_id": &"beast_ironhide_bear", "table_id": &"loot_ember_material_pool"}]
-		as Array[Dictionary]
+		[{"boss_id": legacy, "table_id": &"loot_ember_material_pool"}] as Array[Dictionary]
 	)
 	encounter.tiers = [tier] as Array[LootTier]
 	var text := "\n".join(LootValidator._encounter_problems(encounter))
 	assert_eq(text.contains("legacy loot entries"), true, "the conflict is reported")
 	assert_eq(text.contains("does not bind boss"), false, "the bindings themselves are complete")
+
+
+## The migration path is a migration path: with the corpus migrated, **no** shipped
+## boss carries a legacy `loot` list, so the projection cannot silently become a second
+## authority in the content tree. Pinned over the whole shipped corpus, because a single
+## surviving `loot` array would put every one of its bosses at risk of two answers to
+## "what does this boss drop".
+func test_no_shipped_boss_carries_a_legacy_loot_list() -> void:
+	var content := _content()
+	var legacy: Array = []
+	for path in _boss_tres_files():
+		var record := content.boss_record(StringName(path.get_file().trim_suffix(".tres")))
+		if (record.get("loot", []) as Array).size() > 0:
+			legacy.append(String(record.get("id", "")))
+	assert_eq(legacy, [], "every shipped boss is bound to an authored table instead")
+	assert_eq(
+		bool(content.has_authored_table(&"beast_ironhide_bear")),
+		true,
+		"and the bear the legacy suites once borrowed is now authored"
+	)
+
+
+## Every `.tres` under [constant LootContent.BOSS_DIR], one level deep, so the corpus
+## scan above reads the same set the content index does. Bounded by the directory walk
+## itself, which `DirAccess` terminates.
+func _boss_tres_files() -> Array:
+	var out: Array = []
+	var dir := DirAccess.open(LootContent.BOSS_DIR)
+	if dir == null:
+		return out
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+	while file_name != "":
+		if not file_name.begins_with(".") and file_name.ends_with(".tres"):
+			out.append(LootContent.BOSS_DIR + file_name)
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	return out
 
 
 ## The unique-route field name is one constant, so the authoring field can be

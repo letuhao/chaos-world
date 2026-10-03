@@ -608,6 +608,11 @@ func test_a_boss_is_defeated_and_its_drop_is_genuinely_acquired() -> void:
 
 ## The declared authority for a boss's loot is the authored table; the legacy
 ## `BossDef.loot` list is only projected when no authored table exists.
+##
+## The legacy boss is authored here rather than borrowed. No shipped boss carries a
+## legacy `loot` array any more, so borrowing one would have pinned this assertion to
+## content drift — and the assertion would then be describing a corpus that no longer
+## exists instead of a rule that still holds.
 func test_the_boss_loot_authority_is_single_and_legacy_is_projected() -> void:
 	var content := LootContent.instance()
 	var authored := content.table_for_boss(&"loot_ember_vault_warden", EMBER_TIER)
@@ -619,14 +624,29 @@ func test_the_boss_loot_authority_is_single_and_legacy_is_projected() -> void:
 
 	# A boss authored before loot tables carried a flat item list. It is projected
 	# deterministically, once, into an implicit table.
-	var legacy_boss := &"beast_ironhide_bear"
+	var legacy_boss := &"probe_projected_loot_bear"
+	(
+		content
+		. provide_boss(
+			legacy_boss,
+			{
+				"found": true,
+				"id": String(legacy_boss),
+				"domain_id": "",
+				"boss_ids": [],
+				"loot": ["amulet_iron_sage_eye", "amulet_storm_phoenix_feather"],
+			}
+		)
+	)
 	var record := content.boss_record(legacy_boss)
 	assert_eq(bool(record["found"]), true, "the legacy boss content resolves")
 	assert_eq((record["loot"] as Array).is_empty(), false, "and carries a legacy loot list")
 	assert_eq(bool(content.has_authored_table(legacy_boss)), false, "no authored table claims it")
 	var projected := content.table_for_boss(legacy_boss, 0)
 	assert_ne(projected, null, "the legacy list projects into a table")
-	assert_eq(String(projected.id), "legacy:beast_ironhide_bear", "under a declared legacy id")
+	assert_eq(
+		String(projected.id), "legacy:probe_projected_loot_bear", "under a declared legacy id"
+	)
 	assert_eq(bool(projected.allow_empty), true, "a projection may legitimately drop nothing")
 	assert_eq(projected.entries.size(), (record["loot"] as Array).size(), "one entry per item")
 	for entry in projected.entries:
