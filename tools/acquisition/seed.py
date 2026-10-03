@@ -456,7 +456,8 @@ def _boss_entries(
     for item_id in pooled:
         buckets.setdefault(_catalyst_realm(graph, item_id, trial.realm_id), []).append(item_id)
     for realm_id in sorted(buckets):
-        pool = _pool_entries(graph, boss_id, realm_id, buckets[realm_id], set(catalysts))
+        bucket = buckets[realm_id]
+        pool = _pool_entries(graph, boss_id, realm_id, bucket, set(catalysts))
         if not pool:
             # Every item in this realm is route-limited to a different boss, so a
             # pool here could only resolve to refused drops. No file, no entry.
@@ -477,7 +478,29 @@ def _boss_entries(
         ):
             _check_table(pool_path, pool_id)
         entries.append(
-            emit.Entry(f"{boss_id}_pool_{realm_id or design.UNREALMED}", table_id=pool_id)
+            emit.Entry(
+                f"{boss_id}_pool_{realm_id or design.UNREALMED}",
+                table_id=pool_id,
+                # **A pool carrying a foreign-realm catalyst is itself guaranteed.**
+                # The catalyst is only a `guaranteed` entry *inside* the pool, and a
+                # pool is one weighted candidate among many on this table, so a
+                # rolled parent leaves the catalyst to a draw — and a cleared band
+                # grants no second run (rule E2), so that draw is a permanent miss.
+                # This is the third incident of one class: DEF-0187 rolled the
+                # consumables, `ddc9229d` promoted those to direct entries, and the
+                # same guarantee-weakening survived one level down on 26
+                # `qi_<realm>_guardian_core` reagents plus one mind herb.
+                #
+                # Guaranteeing the nesting entry rather than promoting the catalyst
+                # to a direct entry is what the content already does and the only
+                # thing it can do: `LootResolver._child_context` gives the pool's own
+                # `realm` priority over the band's, so a direct entry on this table
+                # would realize the catalyst at the *band's* realm — and on the qi
+                # ladder three realms' guardians share one domain, so two thirds of
+                # them would be scaled at the wrong rung. The pool exists for that
+                # reason and is not optional.
+                guaranteed=any(item_id in pooled for item_id in bucket),
+            )
         )
     return entries
 

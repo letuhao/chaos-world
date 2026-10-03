@@ -239,9 +239,9 @@ item_id = &"mind_tribulation_mind_herb"
 table_id = &""
 weight = 1.0
 chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
+guaranteed = true
+quantity = 6
+rarity_floor = &"common"
 
 [sub_resource type="Resource" id="entry_20"]
 script = ExtResource("2_entry")

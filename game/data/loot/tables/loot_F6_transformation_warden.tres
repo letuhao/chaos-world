@@ -23,7 +23,7 @@ item_id = &""
 table_id = &"loot_F6_transformation_warden_pool_nascent_soul"
 weight = 1.0
 chance = -1.0
-guaranteed = false
+guaranteed = true
 quantity = 1
 rarity_floor = &""
 

@@ -95,7 +95,54 @@ def _content_problems(graph: Graph) -> list[str]:
             problems.append(
                 f"table {table_id}: no band binds it, so the drops it holds are unreachable"
             )
+    problems.extend(_domain_route_problems(graph))
     return problems
+
+
+def _domain_route_problems(graph: Graph) -> list[str]:
+    """A `domain:` route must name a domain an encounter can actually deliver from.
+
+    The mirror of the `boss:` rule the module docstring states. `ItemSources` calls
+    `domain` a **shipped** kind — the reader resolves it — so a `domain:` ref is a
+    delivery claim, and 6540 of them across 160 domains were being read by nothing
+    here. That is not a small omission: it is the half of the drop graph that made
+    DEF-0188 call 41 items unobtainable when a domain was handing out every one of
+    them, because the analysis that produced it walked `boss:` refs only.
+
+    It stays a *reachability* rule and is deliberately not a guarantee rule. A
+    domain that pays an item by a roll is reachable, and the guarantee question is
+    already asked where it belongs — [method Trial.catalysts] over `boss:` routes,
+    and [method _band_problems] over every table a band binds. Demanding
+    unconditional delivery here instead would not describe the content, it would
+    demand 41 new guaranteed entries across a corpus that authors `domain:` drops as
+    ordinary rolls.
+    """
+    return [
+        f"item {item_id}: declares route 'domain:{domain_id}', which no authored "
+        f"encounter can deliver from ({_why_unpayable(graph, domain_id)}), so the "
+        f"source is a claim nothing pays"
+        for item_id, domain_id in graph.unpayable_domain_routes()
+    ]
+
+
+def _why_unpayable(graph: Graph, domain_id: str) -> str:
+    """Which of the three failures made a `domain:` route unpayable.
+
+    Reported rather than counted, because "your route points nowhere" and "your
+    route points at a boss one band forgot to bind" are different authoring mistakes
+    and a validator that merges them names only the first.
+    """
+    if domain_id not in graph.domains:
+        return f"no domain '{domain_id}' exists"
+    if graph.encounter_for_domain(domain_id) is None:
+        return f"domain '{domain_id}' has no authored encounter"
+    unbound = graph.unbound_delivery_bosses(domain_id)
+    if unbound:
+        return (
+            f"domain '{domain_id}' spawns boss '{unbound[0]}' with no table bound on "
+            f"every band, and a cleared band is never re-run"
+        )
+    return f"domain '{domain_id}' binds no boss that can deliver"
 
 
 def _band_agreement_problems(encounter: Encounter, tier: dict) -> list[str]:

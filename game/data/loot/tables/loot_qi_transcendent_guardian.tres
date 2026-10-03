@@ -35,7 +35,7 @@ item_id = &""
 table_id = &"loot_qi_transcendent_guardian_pool_transcendent"
 weight = 1.0
 chance = -1.0
-guaranteed = false
+guaranteed = true
 quantity = 1
 rarity_floor = &""
 

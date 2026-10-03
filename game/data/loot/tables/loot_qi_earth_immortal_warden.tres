@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=26 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=47 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -279,6 +279,258 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_23"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_23"
+kind = &"item"
+item_id = &"A19_earth_bezold_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_24"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_24"
+kind = &"item"
+item_id = &"B38_divine_drowlat_penetration_cooldown_reduction"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_25"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_25"
+kind = &"item"
+item_id = &"C2_heaven_billet"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_26"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_26"
+kind = &"item"
+item_id = &"E18_immortal_feltworks_setae"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_27"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_27"
+kind = &"item"
+item_id = &"F27_earth_feltt_aptitude_attack_physical_comprehension_will"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_28"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_28"
+kind = &"item"
+item_id = &"F52_earth_hauberk_breakthrough_chance_evasion_max_stamina"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_29"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_29"
+kind = &"item"
+item_id = &"H13_earth_pierce_ward"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_30"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_30"
+kind = &"item"
+item_id = &"H15_mortal_impala_evasion_fortune_insight_gain_penetration_physique"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_31"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_31"
+kind = &"item"
+item_id = &"I42_immortal_gadstyle_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_32"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_32"
+kind = &"item"
+item_id = &"K27_immortal_ash_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_33"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_33"
+kind = &"item"
+item_id = &"P15_earth_cedar_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_34"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_34"
+kind = &"item"
+item_id = &"R23_mortal_pollard_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_35"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_35"
+kind = &"item"
+item_id = &"T3_heaven_ragwort_bodkin"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_36"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_36"
+kind = &"item"
+item_id = &"W10_mortal_candelabrum_mineral"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_37"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_37"
+kind = &"item"
+item_id = &"X20_immortal_burgess_setoff"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_38"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_38"
+kind = &"item"
+item_id = &"Z15_heaven_begonia_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_39"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_39"
+kind = &"item"
+item_id = &"Z9_immortal_balustrade_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_40"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_40"
+kind = &"item"
+item_id = &"elemental_transcendent_essence"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_41"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_41"
+kind = &"item"
+item_id = &"necklace_copper_loop"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_42"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_42"
+kind = &"item"
+item_id = &"saber_silver"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_43"]
+script = ExtResource("2_entry")
+id = &"qi_earth_immortal_warden_declared_43"
+kind = &"item"
+item_id = &"weapon_iron_sword"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_earth_immortal_warden"
@@ -310,5 +562,26 @@ entries = Array[LootEntry]([
 	SubResource("entry_19"),
 	SubResource("entry_20"),
 	SubResource("entry_21"),
-	SubResource("entry_22")
+	SubResource("entry_22"),
+	SubResource("entry_23"),
+	SubResource("entry_24"),
+	SubResource("entry_25"),
+	SubResource("entry_26"),
+	SubResource("entry_27"),
+	SubResource("entry_28"),
+	SubResource("entry_29"),
+	SubResource("entry_30"),
+	SubResource("entry_31"),
+	SubResource("entry_32"),
+	SubResource("entry_33"),
+	SubResource("entry_34"),
+	SubResource("entry_35"),
+	SubResource("entry_36"),
+	SubResource("entry_37"),
+	SubResource("entry_38"),
+	SubResource("entry_39"),
+	SubResource("entry_40"),
+	SubResource("entry_41"),
+	SubResource("entry_42"),
+	SubResource("entry_43")
 ])

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=29 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -263,9 +263,9 @@ item_id = &"mind_spirit_palace_mind_herb"
 table_id = &""
 weight = 1.0
 chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
 
 [sub_resource type="Resource" id="entry_22"]
 script = ExtResource("2_entry")
@@ -296,6 +296,18 @@ script = ExtResource("2_entry")
 id = &"E8_dao_fruit_warden_domain_24"
 kind = &"item"
 item_id = &"E4_divine_slagpit_prill"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_25"]
+script = ExtResource("2_entry")
+id = &"E8_dao_fruit_warden_domain_25"
+kind = &"item"
+item_id = &"F44_immortal_gittern_cooldown_reduction_move_speed_spirit"
 table_id = &""
 weight = 1.0
 chance = -1.0
@@ -336,5 +348,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_21"),
 	SubResource("entry_22"),
 	SubResource("entry_23"),
-	SubResource("entry_24")
+	SubResource("entry_24"),
+	SubResource("entry_25")
 ])

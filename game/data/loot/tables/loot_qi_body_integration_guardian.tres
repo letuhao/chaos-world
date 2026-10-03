@@ -11,7 +11,7 @@ item_id = &""
 table_id = &"loot_qi_body_integration_guardian_pool_body_integration"
 weight = 1.0
 chance = -1.0
-guaranteed = false
+guaranteed = true
 quantity = 1
 rarity_floor = &""
 

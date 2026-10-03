@@ -11,7 +11,7 @@ item_id = &""
 table_id = &"loot_qi_spirit_ascension_guardian_pool_spirit_ascension"
 weight = 1.0
 chance = -1.0
-guaranteed = false
+guaranteed = true
 quantity = 1
 rarity_floor = &""
 

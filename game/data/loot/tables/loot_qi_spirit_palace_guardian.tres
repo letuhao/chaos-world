@@ -23,7 +23,7 @@ item_id = &""
 table_id = &"loot_qi_spirit_palace_guardian_pool_spirit_palace"
 weight = 1.0
 chance = -1.0
-guaranteed = false
+guaranteed = true
 quantity = 1
 rarity_floor = &""
 

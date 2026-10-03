@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=29 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=30 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -275,9 +275,9 @@ item_id = &"mind_spirit_domain_mind_herb"
 table_id = &""
 weight = 1.0
 chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
 
 [sub_resource type="Resource" id="entry_23"]
 script = ExtResource("2_entry")
@@ -308,6 +308,18 @@ script = ExtResource("2_entry")
 id = &"E7_earth_warden_domain_25"
 kind = &"item"
 item_id = &"E3_mortal_saddlery_bend"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_26"]
+script = ExtResource("2_entry")
+id = &"E7_earth_warden_domain_26"
+kind = &"item"
+item_id = &"F29_heaven_fireside_fortune_max_stamina_qi_cost_reduction_qi_regen"
 table_id = &""
 weight = 1.0
 chance = -1.0
@@ -349,5 +361,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_22"),
 	SubResource("entry_23"),
 	SubResource("entry_24"),
-	SubResource("entry_25")
+	SubResource("entry_25"),
+	SubResource("entry_26")
 ])

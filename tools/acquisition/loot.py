@@ -33,8 +33,9 @@ def reachable_items(graph: Graph, table_id: str, depth: int = 0) -> set[str]:
 def guaranteed_items(graph: Graph, table_id: str, depth: int = 0) -> set[str]:
     """Items `table_id` resolves unconditionally, nested tables included.
 
-    A guaranteed entry inside a pool counts: the pool resolves it once whenever it
-    is reached, so it is as unconditional as a direct entry.
+    A guaranteed entry inside a pool counts **only when the pool itself is
+    reached unconditionally**: see [method guaranteed_quantities], which is where
+    the enclosing step is checked.
     """
     return set(guaranteed_quantities(graph, table_id, depth))
 
@@ -44,16 +45,28 @@ def guaranteed_quantities(graph: Graph, table_id: str, depth: int = 0) -> dict[s
 
     A resolve pays a guaranteed entry once, at its exact authored quantity, and the
     draw count does not multiply it, so this is a supply figure and not a per-draw
-    one. Nested tables count under the same reading as [method guaranteed_items].
+    one.
 
-    A nested entry is followed whether or not **it** is flagged `guaranteed`, and
-    that distinction is the whole fix: a nested entry cannot meaningfully be one —
-    `LootValidator` rejects a guaranteed entry that declares a chance, and a nested
-    table is resolved by its own resolver rather than by the parent's — so every
-    pool entry in a generated boss table reads `guaranteed = false` while the
-    *guaranteed items inside that pool* are what the trial depends on. Skipping
-    non-guaranteed entries before asking whether they are nested therefore reported
-    every pooled catalyst as a roll, and a qi realm's breakthrough reagent with it.
+    **Every enclosing step has to be unconditional, and that is the whole rule.** A
+    guaranteed entry inside a pool is unconditional *only if the entry that nests
+    that pool is itself guaranteed*. A pool is one weighted candidate among many on
+    its parent's table, so a rolled parent leaves the whole subtree to a draw — and
+    a cleared band grants no second run (rule E2), so that draw is a permanent miss.
+    Walking the nesting edge unconditionally (which this function used to do)
+    reported the pool's contents as guaranteed whatever the parent was, which is how
+    26 `qi_<realm>_guardian_core` reagents read as safe while their pool usually did
+    not drop: the third incident of this class, one level below the two `ddc9229d`
+    fixed. It is a narrowing, never a widening: an item already counted is still
+    counted whenever every step above it is guaranteed, and one that was only
+    reachable through a rolled parent now correctly reads as a roll.
+
+    Descending only through guaranteed nesting entries is also what the runtime does.
+    `LootResolver._resolve` pays `guaranteed_entries()` first and unconditionally,
+    and `weighted_pool` (which excludes guaranteed entries) is what the draw range
+    chooses from — so a guaranteed nested entry resolves on every resolve, exactly
+    as this walk now reports, and `LootValidator` permits it: the only rule on the
+    flag is that a guaranteed entry must not declare a chance, and a nested entry
+    carries the `NO_CHANCE` sentinel.
     """
     if depth > MAX_NESTING_DEPTH:
         return {}
@@ -64,6 +77,10 @@ def guaranteed_quantities(graph: Graph, table_id: str, depth: int = 0) -> dict[s
     for chunk in sub_resources(graph.read(record)):
         nested = scalar(chunk, "table_id")
         if nested:
+            # The enclosing step. A rolled nesting entry is a draw, so nothing the
+            # pool holds is unconditional — however the pool's own entries read.
+            if "guaranteed = true" not in chunk:
+                continue
             for item_id, count in guaranteed_quantities(graph, nested, depth + 1).items():
                 out[item_id] = out.get(item_id, 0) + count
             continue

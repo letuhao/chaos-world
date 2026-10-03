@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=25 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=46 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -267,6 +267,258 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_22"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_22"
+kind = &"item"
+item_id = &"A16_heaven_bastide_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_23"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_23"
+kind = &"item"
+item_id = &"B37_divine_diocese_fortune_loot_bonus"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_24"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_24"
+kind = &"item"
+item_id = &"C29_heaven_facetter_sillimanite"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_25"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_25"
+kind = &"item"
+item_id = &"E17_spirit_thatchbed_hypnodium"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_26"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_26"
+kind = &"item"
+item_id = &"F26_earth_exemplar_agility_dao_heart_penetration_poise"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_27"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_27"
+kind = &"item"
+item_id = &"F51_earth_gruffalo_attack_speed_evasion_insight_gain"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_28"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_28"
+kind = &"item"
+item_id = &"F52_earth_hauberk_breakthrough_chance_evasion_max_stamina"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_29"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_29"
+kind = &"item"
+item_id = &"H11_mortal_staminatalisman"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_30"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_30"
+kind = &"item"
+item_id = &"I40_immortal_fuchsite_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_31"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_31"
+kind = &"item"
+item_id = &"K24_heaven_abyss_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_32"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_32"
+kind = &"item"
+item_id = &"P13_earth_carob_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_33"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_33"
+kind = &"item"
+item_id = &"R20_earth_pewter_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_34"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_34"
+kind = &"item"
+item_id = &"T2_immortal_linden_lintel"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_35"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_35"
+kind = &"item"
+item_id = &"V9_divine_albedo_docket"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_36"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_36"
+kind = &"item"
+item_id = &"X1_divine_abattoir_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_37"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_37"
+kind = &"item"
+item_id = &"Z12_immortal_bassinet_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_38"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_38"
+kind = &"item"
+item_id = &"Z6_divine_autochthon_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_39"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_39"
+kind = &"item"
+item_id = &"draught_tide_tonic"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_40"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_40"
+kind = &"item"
+item_id = &"mind_spirit_unity_mind_herb"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
+
+[sub_resource type="Resource" id="entry_41"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_41"
+kind = &"item"
+item_id = &"rune_star_essence"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_42"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_ascension_warden_declared_42"
+kind = &"item"
+item_id = &"ward_earth"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_spirit_ascension_warden"
@@ -297,5 +549,26 @@ entries = Array[LootEntry]([
 	SubResource("entry_18"),
 	SubResource("entry_19"),
 	SubResource("entry_20"),
-	SubResource("entry_21")
+	SubResource("entry_21"),
+	SubResource("entry_22"),
+	SubResource("entry_23"),
+	SubResource("entry_24"),
+	SubResource("entry_25"),
+	SubResource("entry_26"),
+	SubResource("entry_27"),
+	SubResource("entry_28"),
+	SubResource("entry_29"),
+	SubResource("entry_30"),
+	SubResource("entry_31"),
+	SubResource("entry_32"),
+	SubResource("entry_33"),
+	SubResource("entry_34"),
+	SubResource("entry_35"),
+	SubResource("entry_36"),
+	SubResource("entry_37"),
+	SubResource("entry_38"),
+	SubResource("entry_39"),
+	SubResource("entry_40"),
+	SubResource("entry_41"),
+	SubResource("entry_42")
 ])

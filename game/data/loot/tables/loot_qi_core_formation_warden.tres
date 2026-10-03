@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=26 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=47 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -279,6 +279,258 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_23"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_23"
+kind = &"item"
+item_id = &"A22_spirit_blet_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_24"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_24"
+kind = &"item"
+item_id = &"B3_earth_bort_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_25"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_25"
+kind = &"item"
+item_id = &"C31_earth_carcass_sternum"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_26"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_26"
+kind = &"item"
+item_id = &"E3_mortal_leatherworks_bend"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_27"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_27"
+kind = &"item"
+item_id = &"F29_earth_fireside_defense_physical_fortune_qi_cost_reduction_qi_regen"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_28"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_28"
+kind = &"item"
+item_id = &"F54_earth_hedge_breakthrough_chance_dao_heart_qi_regen"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_29"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_29"
+kind = &"item"
+item_id = &"H15_earth_impala_breakthrough_chance_evasion_fortune_penetration_qi_regen"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_30"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_30"
+kind = &"item"
+item_id = &"I47_divine_gauche_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_31"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_31"
+kind = &"item"
+item_id = &"K5_mortal_thunder_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_32"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_32"
+kind = &"item"
+item_id = &"P1_divine_auger_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_33"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_33"
+kind = &"item"
+item_id = &"R26_divine_potter_latch"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_34"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_34"
+kind = &"item"
+item_id = &"T4_spirit_reedmace_spectacle"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_35"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_35"
+kind = &"item"
+item_id = &"W13_divine_bloom_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_36"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_36"
+kind = &"item"
+item_id = &"X22_divine_messor_saltcake"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_37"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_37"
+kind = &"item"
+item_id = &"X22_divine_messor_shale"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_38"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_38"
+kind = &"item"
+item_id = &"Z1_divine_abjure_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_39"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_39"
+kind = &"item"
+item_id = &"alchemy_ash_herb"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_40"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_40"
+kind = &"item"
+item_id = &"filament_flax"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_41"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_41"
+kind = &"item"
+item_id = &"oath_blood_vow"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_42"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_42"
+kind = &"item"
+item_id = &"sap_pitch"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_43"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_declared_43"
+kind = &"item"
+item_id = &"will_star_pauldron"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_core_formation_warden"
@@ -310,5 +562,26 @@ entries = Array[LootEntry]([
 	SubResource("entry_19"),
 	SubResource("entry_20"),
 	SubResource("entry_21"),
-	SubResource("entry_22")
+	SubResource("entry_22"),
+	SubResource("entry_23"),
+	SubResource("entry_24"),
+	SubResource("entry_25"),
+	SubResource("entry_26"),
+	SubResource("entry_27"),
+	SubResource("entry_28"),
+	SubResource("entry_29"),
+	SubResource("entry_30"),
+	SubResource("entry_31"),
+	SubResource("entry_32"),
+	SubResource("entry_33"),
+	SubResource("entry_34"),
+	SubResource("entry_35"),
+	SubResource("entry_36"),
+	SubResource("entry_37"),
+	SubResource("entry_38"),
+	SubResource("entry_39"),
+	SubResource("entry_40"),
+	SubResource("entry_41"),
+	SubResource("entry_42"),
+	SubResource("entry_43")
 ])

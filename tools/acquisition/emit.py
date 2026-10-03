@@ -121,7 +121,22 @@ def table(
     `realm` and `rarity` are left empty on a boss's own table so the drop context
     stays the band's, and declared on a realm pool so its items roll at their own
     realm instead of the trial's.
+
+    **`rolls` is derived, never assumed.** A table with no weighted entry draws
+    nothing it could pick, and `LootValidator` rejects exactly that: `rolls > 0`
+    with a total weighted weight of zero is "draws 1 roll(s) but its weighted
+    weights sum to 0.0000". A catalyst-only pool is the case that reaches it —
+    every entry guaranteed, so `weighted_entries()` is empty — and it is the same
+    content the shipped pools already carry as `rolls = 0`. Writing `design.DRAWS`
+    unconditionally would make the generator emit a table the validator refuses,
+    which is the one direction a generator must never be wrong in. Guaranteed and
+    independent entries are unaffected: they resolve on their own pass.
     """
+    # `LootEntry.is_weighted()` is `not guaranteed and chance < 0.0`, and every
+    # entry this module writes carries the `NO_CHANCE` sentinel, so a weighted entry
+    # is exactly a non-guaranteed one.
+    has_weighted = any(not entry.guaranteed for entry in entries)
+    effective_draws = draws if has_weighted else 0
     sub_resources = "".join(entry.body(f"entry_{index}") for index, entry in enumerate(entries))
     refs = ",\n".join(f'\tSubResource("entry_{index}")' for index in range(len(entries)))
     listed = f"Array[LootEntry]([\n{refs}\n])" if entries else "Array[LootEntry]([])"
@@ -139,7 +154,7 @@ def table(
         f'display_name = "{display_name}"\n'
         f"realm = {name(realm)}\n"
         f"rarity = {name(rarity)}\n"
-        f"rolls = {draws}\n"
+        f"rolls = {effective_draws}\n"
         f"allow_empty = {str(allow_empty).lower()}\n"
         f"entries = {listed}\n"
     )

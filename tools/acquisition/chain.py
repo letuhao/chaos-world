@@ -43,6 +43,14 @@ WORLD_PATH = "world"
 # candidate, and the candidate's own `domain_id` is the answer, so a renamed trial
 # domain resolves and a misnamed boss does not.
 TRIAL_PREFIX = "{path}_{realm_id}_"
+# `ItemSources.KINDS`, mirrored for the two kinds that name a *drop site* rather
+# than a verb. `craft`/`gather`/`starter`/`quest` name no boss and no domain, so
+# they are deliberately absent: a walk that needed them would be asking a different
+# question. Spelling them here rather than inline keeps the reader honest about the
+# fact that the `sources` vocabulary is owned by `game/src` and mirrored, not
+# invented — `tools data audit` cross-checks the two.
+ROUTE_BOSS = "boss"
+ROUTE_DOMAIN = "domain"
 # `LootContent.MAX_NESTING_DEPTH`, mirrored so a walk over authored tables bounds
 # its own recursion rather than inheriting the resolver's guard from a distance.
 MAX_TABLE_NESTING = 4
@@ -391,7 +399,106 @@ class Graph:
         return tuple(
             source.split(":", 1)[1]
             for source in self.item_sources(item_id)
-            if source.startswith("boss:")
+            if source.startswith(f"{ROUTE_BOSS}:")
+        )
+
+    def _refs(self, item_id: str, kind: str) -> tuple[str, ...]:
+        """Every `<kind>:<ref>` source `item_id` declares, de-duplicated in order."""
+        prefix = f"{kind}:"
+        seen: dict[str, None] = {}
+        for source in self.item_sources(item_id):
+            if source.startswith(prefix):
+                seen.setdefault(source[len(prefix) :], None)
+        return tuple(seen)
+
+    def domain_routes(self, item_id: str) -> tuple[str, ...]:
+        """Every domain `item_id` declares as a `domain:` route.
+
+        `ItemSources.KIND_DOMAIN`, and it is `shipped` — the reader resolves it, so
+        a `domain:` ref is a delivery claim exactly like a `boss:` one. It was the
+        larger of the two by count (6540 declarations over 160 domains, against 1501
+        `boss:` ones) and nothing here read it, which is how a walk that only
+        followed `boss:` could conclude that an item was unreachable while a domain
+        was handing it out. That conflation cost DEF-0188, which reported 41 items
+        unobtainable and was wrong about every one of them.
+        """
+        return self._refs(item_id, ROUTE_DOMAIN)
+
+    def domain_delivery_bosses(self, domain_id: str) -> tuple[str, ...]:
+        """The bosses a `domain:` route actually delivers through.
+
+        A domain delivers through the bosses an authored encounter for it spawns,
+        narrowed to those every band binds a table for. A boss the domain declares
+        but the encounter omits cannot be spawned by `LootApi.enter_domain`, and a
+        boss with no bound table has nothing to drop from, so neither counts as a
+        delivery route — the same two facts `_content_problems` already reports, read
+        here as "can this claim be paid" instead of "is this content broken".
+        """
+        encounter = self.encounter_for_domain(domain_id)
+        if encounter is None or not encounter.tiers:
+            return ()
+        spawnable = set(encounter.boss_ids)
+        return tuple(
+            boss_id
+            for boss_id in encounter.boss_ids
+            if boss_id in spawnable
+            and all(self.table_for(encounter, tier, boss_id) for tier in encounter.tiers)
+        )
+
+    def delivering_bosses(self, item_id: str) -> tuple[str, ...]:
+        """Every boss that can hand out `item_id`, by either drop route kind.
+
+        The honest answer to "can a player ever hold this", and the reason the
+        earlier `boss:`-only walk was wrong: a `domain:` route reaches a boss the
+        named-boss walk never visits. It reports *reachability*, never *guarantee* —
+        which boss delivers an item and whether that delivery is unconditional are
+        two different questions, and only [method Trial.catalysts] may raise the
+        second.
+        """
+        found = list(self._bosses_of(item_id))
+        for domain_id in self.domain_routes(item_id):
+            for boss_id in self.domain_delivery_bosses(domain_id):
+                if boss_id not in found:
+                    found.append(boss_id)
+        return tuple(sorted(found))
+
+    def unpayable_domain_routes(self) -> tuple[tuple[str, str], ...]:
+        """(item, domain) for every `domain:` claim nothing can deliver.
+
+        The mirror of the `boss:` rule the module docstring states: a source naming
+        something no encounter spawns is a claim nothing can pay, and it is reported
+        at authoring time — the only moment the file that wrote it can still be
+        found. Deliberately *not* a guarantee demand. A domain that pays an item by
+        roll is reachable, and calling it broken here would demand 41 new content
+        guarantees across a corpus whose `domain:` routes are authored as ordinary
+        drops.
+        """
+        out: list[tuple[str, str]] = []
+        for item_id in sorted(self.items):
+            for domain_id in self.domain_routes(item_id):
+                if domain_id not in self.domains:
+                    out.append((item_id, domain_id))
+                elif not self.domain_delivery_bosses(domain_id):
+                    out.append((item_id, domain_id))
+        return tuple(out)
+
+    def unbound_delivery_bosses(self, domain_id: str) -> tuple[str, ...]:
+        """Bosses an encounter for `domain_id` spawns that some band leaves unbound.
+
+        The middle case [method unpayable_domain_routes] folds into "unpayable": a
+        domain whose only boss has no table on some band cannot deliver through that
+        band, and rule E2 means a band is never re-run, so what it cannot deliver is
+        gone. Split out here so the report can name which boss and which band, which
+        is the difference between "your route points nowhere" and "your route points
+        at a boss one band forgot to bind".
+        """
+        encounter = self.encounter_for_domain(domain_id)
+        if encounter is None:
+            return ()
+        return tuple(
+            boss_id
+            for boss_id in encounter.boss_ids
+            if any(not self.table_for(encounter, tier, boss_id) for tier in encounter.tiers)
         )
 
     def _consumables(self, seed: str, roles: tuple[str, ...]) -> tuple[Consumable, ...]:

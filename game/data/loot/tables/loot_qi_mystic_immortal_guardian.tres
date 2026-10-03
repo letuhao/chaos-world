@@ -23,7 +23,7 @@ item_id = &""
 table_id = &"loot_qi_mystic_immortal_guardian_pool_mystic_immortal"
 weight = 1.0
 chance = -1.0
-guaranteed = false
+guaranteed = true
 quantity = 1
 rarity_floor = &""
 
