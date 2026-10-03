@@ -22,7 +22,6 @@ const ITEMS_DIR := "res://data/items"
 ## until the stack gives out.
 const WALK_DEPTH := 6
 
-
 # --- The claim a player can actually walk ------------------------------------
 
 
@@ -107,7 +106,9 @@ func test_a_definition_with_no_source_is_not_obtainable() -> void:
 	def.id = &"a_numeraire_like_unit_of_account"
 	assert_eq(ItemSources.obtainable(def, _content_probe()), false, "nothing is claimed")
 	assert_eq(
-		String(ItemSources.resolve(def, _content_probe())["reason"]), ItemSources.NO_SOURCE, "reason"
+		String(ItemSources.resolve(def, _content_probe())["reason"]),
+		ItemSources.NO_SOURCE,
+		"reason"
 	)
 
 
@@ -180,7 +181,9 @@ func test_a_gather_route_reports_that_no_shipping_code_delivers_it() -> void:
 		false,
 		"gather is listed"
 	)
-	assert_ne(String(ItemSources.KIND_BOSS) in ItemSources.unshipped_kind_ids(), true, "boss is not")
+	assert_ne(
+		String(ItemSources.KIND_BOSS) in ItemSources.unshipped_kind_ids(), true, "boss is not"
+	)
 
 
 func test_a_duplicate_source_is_one_route() -> void:
@@ -214,9 +217,7 @@ func test_the_corpus_declares_a_boss_route_for_a_pill_the_pill_names() -> void:
 		return
 	var probe := _content_probe()
 	assert_eq(bool(probe[ItemSources.KIND_BOSS].call(REAL_BOSS)), true, "the boss is hosted")
-	assert_eq(
-		bool(probe[ItemSources.KIND_CRAFT].call(REAL_RECIPE)), true, "the recipe is authored"
-	)
+	assert_eq(bool(probe[ItemSources.KIND_CRAFT].call(REAL_RECIPE)), true, "the recipe is authored")
 
 
 # --- Content-derived probes --------------------------------------------------
@@ -226,19 +227,16 @@ func test_the_corpus_declares_a_boss_route_for_a_pill_the_pill_names() -> void:
 ## root's injection. Deliberately the same three questions the content audit
 ## asks, so a test and the audit cannot read the tree differently.
 func _content_probe() -> Dictionary:
+	var craft := func(recipe_id: String) -> bool:
+		return ResourceLoader.exists("%s/%s.tres" % [RECIPE_DIR, recipe_id])
+	var boss := func(boss_id: String) -> bool: return _hosted_bosses().has(boss_id)
+	var domain := func(_domain_id: String) -> bool:
+		return ResourceLoader.exists("res://data/domains/%s.tres" % _domain_id)
 	return {
-		ItemSources.KIND_CRAFT:
-		func(recipe_id: String) -> bool:
-			return ResourceLoader.exists("%s/%s.tres" % [RECIPE_DIR, recipe_id]),
-		ItemSources.KIND_BOSS:
-		func(boss_id: String) -> bool:
-			return _hosted_bosses().has(boss_id),
-		ItemSources.KIND_DOMAIN:
-		func(_domain_id: String) -> bool:
-			return ResourceLoader.exists("res://data/domains/%s.tres" % _domain_id),
-		ItemSources.KIND_STARTER:
-		func(_ref: String) -> bool:
-			return false,
+		ItemSources.KIND_CRAFT: craft,
+		ItemSources.KIND_BOSS: boss,
+		ItemSources.KIND_DOMAIN: domain,
+		ItemSources.KIND_STARTER: func(_ref: String) -> bool: return false,
 	}
 
 
