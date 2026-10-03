@@ -453,6 +453,16 @@ func _focus_target() -> String:
 # --- Plumbing ---------------------------------------------------------------
 
 
+## Mount the scene under the tree root.
+##
+## **A composition root needs its `_ready()` driven by hand.** The runner is a
+## `SceneTree` whose `_initialize()` returns before the first frame, so `root` is not
+## yet inside the tree and the engine never delivers `_ready()` — a leaf screen does
+## not care, because the driver reaches it through its public verbs, but a root that
+## BUILDS its actor and wires its modules would answer every command with the state it
+## had before boot. `SeamHarness._mount` already does exactly this and says why
+## (`tests/ui/seam_harness.gd`), so the two agree instead of the CLI silently
+## measuring an unbooted app.
 func _instantiate(path: String) -> Node:
 	var packed := load(path) as PackedScene
 	if packed == null:
@@ -460,6 +470,8 @@ func _instantiate(path: String) -> Node:
 	var node := packed.instantiate()
 	if node != null and node.get_parent() == null:
 		root.add_child(node)
+		if node.has_method("_ready"):
+			node.call("_ready")
 	return node
 
 
