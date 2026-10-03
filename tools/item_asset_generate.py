@@ -30,22 +30,35 @@ def register(actions) -> None:
         help="item seed to assign to a new family; repeat to group matching seeds",
     )
     generate.add_argument("--prompt", required=True, help="item appearance and material details")
-    generate.add_argument("--negative", default=map_generate.DEFAULT_NEGATIVE)
+    generate.add_argument(
+        "--negative",
+        default=map_generate.DEFAULT_NEGATIVE,
+        help="Flux negative prompt; the supplied Krea2 graph zeroes negative conditioning",
+    )
     generate.add_argument("--seed", type=int, default=-1, help="-1 chooses a random seed")
+    generate.add_argument(
+        "--profile",
+        choices=tuple(map_generate.PROFILES),
+        default="krea2",
+        help="local image model profile (default: krea2)",
+    )
     generate.add_argument("--size", type=int, default=1024, help="square generation resolution")
     generate.add_argument("--target-size", type=int, default=256, help="installed square canvas")
     generate.add_argument("--preview-only", action="store_true", help="do not install or index")
     generate.add_argument(
         "--replace-generated", action="store_true", help="replace this family's generated icon"
     )
-    generate.add_argument("--steps", type=int, default=32)
-    generate.add_argument("--cfg", type=float, default=1.0)
-    generate.add_argument("--guidance", type=float, default=3.5)
-    generate.add_argument("--sampler", default="euler")
-    generate.add_argument("--scheduler", default="normal")
-    generate.add_argument("--checkpoint", default=map_generate.DEFAULT_CHECKPOINT)
-    generate.add_argument("--lora", default=map_generate.DEFAULT_LORA)
-    generate.add_argument("--lora-strength", type=float, default=0.8)
+    generate.add_argument("--steps", type=int)
+    generate.add_argument("--cfg", type=float)
+    generate.add_argument("--guidance", type=float, help="Flux guidance; Krea2 uses --cfg")
+    generate.add_argument("--sampler")
+    generate.add_argument("--scheduler")
+    generate.add_argument(
+        "--checkpoint",
+        help="Flux checkpoint or Krea2 UNET name; defaults to the selected profile",
+    )
+    generate.add_argument("--lora", help="Flux LoRA; Krea2 uses its bundled workflow LoRAs")
+    generate.add_argument("--lora-strength", type=float)
     generate.add_argument("--rembg-model", default=map_generate.DEFAULT_REMBG_MODEL)
     generate.add_argument("--rembg-post-processing", action="store_true")
     generate.add_argument("--alpha-matting", action="store_true")
@@ -151,14 +164,21 @@ def run(args) -> int:
     if new_family:
         current_records.append(current)
     current["path"] = asset_path
-    current["source"] = f"ComfyUI local checkpoint: {args.checkpoint}"
-    current["prompt_ref"] = f"comfyui-item-v1:{record['id']}:{seed}"
+    current["source"] = f"ComfyUI local profile {args.profile}: {args.checkpoint}"
+    current["prompt_ref"] = f"comfyui-item-{args.profile}-v1:{record['id']}:{seed}"
     current["prompt"] = prompt
     current["generated_on"] = date.today().isoformat()
     current["license"] = args.license
     current["generation_settings"] = {
+        "profile": args.profile,
         "checkpoint": args.checkpoint,
-        "lora": args.lora,
+        "lora": (
+            "workflow character LoRAs"
+            if args.profile == "krea2" and args.lora_strength > 0
+            else "workflow character LoRAs (disabled)"
+            if args.profile == "krea2"
+            else args.lora
+        ),
         "lora_strength": args.lora_strength,
         "seed": seed,
         "steps": args.steps,

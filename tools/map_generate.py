@@ -18,6 +18,14 @@ from .common import REPO_ROOT, ToolError
 
 DEFAULT_CHECKPOINT = "Flux1S/originByN0utis_originFluxAnimeV1.safetensors"
 DEFAULT_LORA = "flux/gokaygokayFlux-2D-Game-Assets-LoRA.safetensors"
+KREA2_MODEL = "krea2/raySemiReal_krea2TurboV1Nsfw.safetensors"
+KREA2_CLIP = "qwen3vl_4b_fp8_scaled.safetensors"
+KREA2_VAE = "qwen_image_vae.safetensors"
+KREA2_LORAS = (
+    "krea2/painterlyfantasycharstyle_000009000.safetensors",
+    "krea2/dishwasher_000011250.safetensors",
+    "krea2/meion_krea2_style_v7.0_c1-st4000.safetensors",
+)
 DEFAULT_NEGATIVE = (
     "text, letters, watermark, border, UI, extra objects, duplicate subject, "
     "isometric view, perspective, horizon, photorealism, 3D render, noisy texture"
@@ -117,6 +125,116 @@ WORKFLOW = {
     },
 }
 
+# Item-icon adaptation of moodyKrea2Minimal_v40_api.json. ResolutionSelector is
+# replaced by EmptyLatentImage so the CLI can produce square inventory icons.
+KREA2_ITEM_WORKFLOW = {
+    "599": {
+        "inputs": {
+            "add_noise": "enable",
+            "noise_seed": ["851", 0],
+            "steps": 8,
+            "cfg": 1.0,
+            "sampler_name": "euler_ancestral",
+            "scheduler": "beta",
+            "start_at_step": 0,
+            "end_at_step": 8,
+            "return_with_leftover_noise": "enable",
+            "model": ["854", 0],
+            "positive": ["627", 0],
+            "negative": ["763", 0],
+            "latent_image": ["698", 0],
+        },
+        "class_type": "KSamplerAdvanced",
+    },
+    "627": {
+        "inputs": {"text": "PROMPT_PLACEHOLDER", "clip": ["755", 0]},
+        "class_type": "CLIPTextEncode",
+    },
+    "698": {
+        "inputs": {"width": 1024, "height": 1024, "batch_size": 1},
+        "class_type": "EmptyLatentImage",
+    },
+    "732": {
+        "inputs": {"filename_prefix": "chaos_world_item", "images": ["866", 0]},
+        "class_type": "SaveImage",
+    },
+    "755": {
+        "inputs": {"clip_name": KREA2_CLIP, "type": "krea2", "device": "default"},
+        "class_type": "CLIPLoader",
+    },
+    "757": {"inputs": {"vae_name": KREA2_VAE}, "class_type": "VAELoader"},
+    "761": {
+        "inputs": {"unet_name": KREA2_MODEL, "weight_dtype": "default"},
+        "class_type": "UNETLoader",
+    },
+    "763": {"inputs": {"conditioning": ["627", 0]}, "class_type": "ConditioningZeroOut"},
+    "829": {"inputs": {"samples": ["599", 0], "vae": ["757", 0]}, "class_type": "VAEDecode"},
+    "851": {"inputs": {"seed": 0}, "class_type": "SeedNode"},
+    "854": {
+        "inputs": {
+            "lora_name": KREA2_LORAS[2],
+            "strength_model": 0.0,
+            "model": ["867", 0],
+        },
+        "class_type": "LoraLoaderModelOnly",
+    },
+    "866": {
+        "inputs": {
+            "transparency": True,
+            "model": DEFAULT_REMBG_MODEL,
+            "post_processing": False,
+            "only_mask": False,
+            "alpha_matting": False,
+            "alpha_matting_foreground_threshold": 240,
+            "alpha_matting_background_threshold": 10,
+            "alpha_matting_erode_size": 0,
+            "background_color": "none",
+            "images": ["829", 0],
+        },
+        "class_type": "Image Rembg (Remove Background)",
+    },
+    "867": {
+        "inputs": {
+            "lora_name": KREA2_LORAS[1],
+            "strength_model": 0.0,
+            "model": ["868", 0],
+        },
+        "class_type": "LoraLoaderModelOnly",
+    },
+    "868": {
+        "inputs": {
+            "lora_name": KREA2_LORAS[0],
+            "strength_model": 0.0,
+            "model": ["761", 0],
+        },
+        "class_type": "LoraLoaderModelOnly",
+    },
+}
+
+
+PROFILES = {
+    "flux1s": {
+        "checkpoint": DEFAULT_CHECKPOINT,
+        "lora": DEFAULT_LORA,
+        "lora_strength": 0.8,
+        "steps": 32,
+        "cfg": 1.0,
+        "guidance": 3.5,
+        "sampler": "euler",
+        "scheduler": "normal",
+    },
+    "krea2": {
+        "checkpoint": KREA2_MODEL,
+        "lora": "",
+        "lora_strength": 0.0,
+        "steps": 8,
+        "cfg": 1.0,
+        "guidance": None,
+        "sampler": "euler_ancestral",
+        "scheduler": "beta",
+    },
+}
+
 
 def _production_prompt(record: dict, subject: str) -> str:
     framing = ""
@@ -192,12 +310,21 @@ def generate(
     output_dir: str = "map-generated",
     client_id: str = "chaos-world-map",
 ) -> tuple[Path, str, int]:
+    profile = getattr(args, "profile", "flux1s")
+    if profile not in PROFILES:
+        raise ToolError(f"unknown generation profile '{profile}'")
+    settings = PROFILES[profile]
+    for name, value in settings.items():
+        if getattr(args, name, None) is None:
+            setattr(args, name, value)
     if not 256 <= args.size <= 2048 or args.size % 16:
         raise ToolError("--size must be a multiple of 16 between 256 and 2048")
     if not 1 <= args.steps <= 64:
         raise ToolError("--steps must be between 1 and 64")
-    if args.cfg < 0 or args.guidance < 0:
+    if args.cfg < 0 or (args.guidance is not None and args.guidance < 0):
         raise ToolError("--cfg and --guidance must be non-negative")
+    if profile == "krea2" and args.guidance is not None:
+        raise ToolError("--guidance only applies to the flux1s profile; Krea2 uses --cfg")
     if not 1 <= args.timeout <= 900:
         raise ToolError("--timeout must be between 1 and 900 seconds")
     if not args.prompt.strip() or not args.checkpoint.strip() or not args.rembg_model.strip():
@@ -218,42 +345,72 @@ def generate(
 
     seed = args.seed if args.seed >= 0 else secrets.randbelow(2**31)
     prompt = _production_prompt(record, args.prompt)
-    graph = copy.deepcopy(WORKFLOW)
-    graph["1"]["inputs"]["ckpt_name"] = args.checkpoint
-    if args.lora.strip():
-        graph["10"] = {
-            "inputs": {
-                "model": ["1", 0],
-                "clip": ["12", 0],
-                "lora_name": args.lora.strip(),
-                "strength_model": args.lora_strength,
-                "strength_clip": args.lora_strength,
-            },
-            "class_type": "LoraLoader",
-        }
-    graph["2"]["inputs"]["t5xxl"] = prompt
-    graph["2"]["inputs"]["guidance"] = args.guidance
-    graph["3"]["inputs"]["clip_l"] = args.negative
-    graph["3"]["inputs"]["guidance"] = args.guidance
-    graph["4"]["inputs"].update(width=args.size, height=args.size)
-    graph["8"]["inputs"].update(
-        noise_seed=seed,
-        steps=args.steps,
-        cfg=args.cfg,
-        sampler_name=args.sampler,
-        scheduler=args.scheduler,
-    )
-    graph["15"]["inputs"].update(
-        model=args.rembg_model,
-        transparency=record["alpha"] == "transparent",
-        post_processing=args.rembg_post_processing,
-        alpha_matting=args.alpha_matting,
-        alpha_matting_foreground_threshold=args.alpha_foreground_threshold,
-        alpha_matting_background_threshold=args.alpha_background_threshold,
-        alpha_matting_erode_size=args.alpha_erode_size,
-    )
-    if record["alpha"] == "opaque":
-        graph["7"]["inputs"]["images"] = ["6", 0]
+    output_node = "7"
+    if profile == "krea2":
+        graph = copy.deepcopy(KREA2_ITEM_WORKFLOW)
+        output_node = "732"
+        graph["761"]["inputs"]["unet_name"] = args.checkpoint
+        graph["627"]["inputs"]["text"] = prompt
+        graph["698"]["inputs"].update(width=args.size, height=args.size)
+        graph["851"]["inputs"]["seed"] = seed
+        graph["599"]["inputs"].update(
+            steps=args.steps,
+            cfg=args.cfg,
+            sampler_name=args.sampler,
+            scheduler=args.scheduler,
+            end_at_step=args.steps,
+        )
+        graph["866"]["inputs"].update(
+            model=args.rembg_model,
+            transparency=record["alpha"] == "transparent",
+            post_processing=args.rembg_post_processing,
+            alpha_matting=args.alpha_matting,
+            alpha_matting_foreground_threshold=args.alpha_foreground_threshold,
+            alpha_matting_background_threshold=args.alpha_background_threshold,
+            alpha_matting_erode_size=args.alpha_erode_size,
+        )
+        if record["alpha"] == "opaque":
+            graph["732"]["inputs"]["images"] = ["829", 0]
+        if args.lora_strength != 0:
+            for node_id in ("854", "867", "868"):
+                graph[node_id]["inputs"]["strength_model"] = args.lora_strength
+    else:
+        graph = copy.deepcopy(WORKFLOW)
+        graph["1"]["inputs"]["ckpt_name"] = args.checkpoint
+        if args.lora.strip():
+            graph["10"] = {
+                "inputs": {
+                    "model": ["1", 0],
+                    "clip": ["12", 0],
+                    "lora_name": args.lora.strip(),
+                    "strength_model": args.lora_strength,
+                    "strength_clip": args.lora_strength,
+                },
+                "class_type": "LoraLoader",
+            }
+        graph["2"]["inputs"]["t5xxl"] = prompt
+        graph["2"]["inputs"]["guidance"] = args.guidance
+        graph["3"]["inputs"]["clip_l"] = args.negative
+        graph["3"]["inputs"]["guidance"] = args.guidance
+        graph["4"]["inputs"].update(width=args.size, height=args.size)
+        graph["8"]["inputs"].update(
+            noise_seed=seed,
+            steps=args.steps,
+            cfg=args.cfg,
+            sampler_name=args.sampler,
+            scheduler=args.scheduler,
+        )
+        graph["15"]["inputs"].update(
+            model=args.rembg_model,
+            transparency=record["alpha"] == "transparent",
+            post_processing=args.rembg_post_processing,
+            alpha_matting=args.alpha_matting,
+            alpha_matting_foreground_threshold=args.alpha_foreground_threshold,
+            alpha_matting_background_threshold=args.alpha_background_threshold,
+            alpha_matting_erode_size=args.alpha_erode_size,
+        )
+        if record["alpha"] == "opaque":
+            graph["7"]["inputs"]["images"] = ["6", 0]
 
     comparison_nodes: dict[str, str] = {}
     if getattr(args, "compare_rembg", False):
@@ -318,7 +475,7 @@ def generate(
     else:
         raise ToolError(f"ComfyUI generation exceeded {args.timeout} seconds")
 
-    image = _node_image(entry or {}, "7")
+    image = _node_image(entry or {}, output_node)
     data = _get_bytes(f"{comfy_url}/view?{urllib.parse.urlencode(image)}")
     _write_new_file(output, data)
     print(
