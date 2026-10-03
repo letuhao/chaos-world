@@ -37,16 +37,14 @@ const ALLOWED_FILES: Array[String] = []
 
 
 func test_no_production_script_defers_a_free() -> void:
-	var audited := 0
+	var scanned := 0
+	var violations := 0
 	for path in _gdscript_files(SRC_ROOT):
+		scanned += 1
 		var text := FileAccess.get_file_as_string(path)
 		assert_ne(text.is_empty(), true, "%s is readable" % path)
-		if not text.contains("queue_free"):
-			continue
-		# Comments explain the rule and must not read as a violation of it. Only
-		# lines that actually call it count.
 		for entry in _call_sites(text):
-			audited += 1
+			violations += 1
 			var relative := path.replace("res://", "")
 			assert_eq(
 				ALLOWED_FILES.has(relative),
@@ -61,10 +59,30 @@ func test_no_production_script_defers_a_free() -> void:
 					+ "it: see ScreenStack.pop()."
 				)
 			)
-	# A scan that has gone blind passes forever, so prove it still reads files and
-	# would still see a call. Both counts must be non-zero.
-	assert_eq(audited > 0, true, "the scan still finds production scripts to audit")
-	assert_eq(_gdscript_files(SRC_ROOT).size() > 0, true, "the scan still sees res://src")
+	# A scan that reads nothing passes forever, so prove it still walks the tree.
+	# Note it does NOT require a violation to exist: zero is the correct state
+	# here, and a guard that failed on clean code would be unfixable. Liveness is
+	# proven by the self-test below, which runs the detector on a known string.
+	assert_eq(scanned > 0, true, "the scan still walks res://src")
+	assert_eq(violations, 0, "no production script defers a free")
+
+
+## The detector itself, proven on strings rather than on the tree.
+##
+## A liveness assertion that required a real violation would force an agent to
+## commit a `queue_free()` to keep the guard honest, and a synthetic one is the
+## only way to prove the detector still fires without depending on the tree.
+func test_the_detector_still_recognises_a_deferred_free() -> void:
+	var code := "func pop() -> Control:\n\tscreen.queue_free()\n\treturn screen\n"
+	assert_eq(_call_sites(code).size(), 1, "a real call is found")
+	assert_eq(_call_sites(code)[0]["line"], 2, "and its line number is right")
+	# Prose about the rule is not a violation, or the documentation of this very
+	# file would fail the rule it states.
+	var documented := "## Freed immediately, not with `queue_free()`.\nvar x := 1\n"
+	assert_eq(_call_sites(documented).size(), 0, "a comment naming it is not a call")
+	# A trailing comment after a real call still counts the call.
+	var trailing := "\tchild.queue_free()  # this used to leak\n"
+	assert_eq(_call_sites(trailing).size(), 1, "a call with a trailing comment counts")
 
 
 ## Every line that CALLS queue_free, as `{"line": int}` — comments that merely
