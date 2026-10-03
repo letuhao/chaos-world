@@ -124,6 +124,23 @@ func _prepare(actor: Actor) -> Dictionary:
 	assert_eq(Probe.fill_sea(actor), true, "sea filled for %s" % target.id)
 
 	Probe.stock(actor, target_seed.breakthrough_item)
+
+	# Every milestone above is STOCKED; the ascent is WALKED. `Breakthrough.ascension_ok`
+	# reads `AscensionState.is_complete`, whose `steps` clause only `WorldAnchor.ascend`
+	# moves -- the R28 commit grants `advance_stage` and `improve_dao`, never a step. So a
+	# walk that pays the tribulation, the sea, the channels and the resonance milestone and
+	# still stops here is not failing to pay; it is omitting the one gate that is walked
+	# rather than stocked. `mind_cultivation_screen.act_ascend` is the player-facing route.
+	#
+	# Bounded by `ASCENT_STEPS + 1`: `AscensionState.ascend` returns false once the steps are
+	# spent, so exactly ASCENT_STEPS iterations run and the last call is the exit. The walk
+	# is idempotent-by-false, so running it for both the index-28 and index-29 attempts costs
+	# nothing the second time.
+	if target.index > WorldAnchor.COMMIT_MICRO:
+		var ascent_guard := 0
+		while ascent_guard < AscensionState.ASCENT_STEPS + 1 and WorldAnchor.ascend(actor):
+			ascent_guard += 1
+
 	return MindAdvancement.preview(actor)
 
 
