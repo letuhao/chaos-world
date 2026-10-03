@@ -69,6 +69,10 @@ var _death_armed: String = ""
 ## The last resolved death, as primitives, so `summary()` can report what happened without a
 ## screen re-deriving it.
 var _last_death: Dictionary = {}
+## The boot-time arrival program (ADR 0130). Opens the SAME nav route the bar uses, and only
+## when no hero exists yet — a returning player with a restored body boots straight to the
+## workbench.
+var _creation: CharacterCreationProgram = null
 
 ## The stack and the bar the scene declares. Resolved by unique name; the root
 ## never builds a second one, because two stacks means two answers to "which
@@ -130,10 +134,22 @@ func _ready() -> void:
 	# a module and shares no ledger with the status clock.
 	_world = WorldPulse.new(_actor, BeatDirector.new())
 	_forge = SocketForgeProgram.new(_actor)
+	# The boot-time arrival program. It opens the SAME route the nav bar uses rather than
+	# pushing a second copy of the scene: two doors to one screen means a screen the route
+	# table does not know about, which is what 	est_screen_reachability exists to catch.
+	_creation = CharacterCreationProgram.new(_stack, CharacterCreationFlow.new(), navigate_to)
 	if not _mount_home():
 		return
 	if _nav != null and not _nav.route_requested.is_connected(_on_route_requested):
 		_nav.route_requested.connect(_on_route_requested)
+	# Boot OPENS creation when no hero has been created yet. This is the one
+	# production caller `open_creation` had: the docstring above it claimed a
+	# shipped title flow would call it, and none existed, so the door was only
+	# ever openable from a test. A hero that already exists boots straight to the
+	# workbench, which is the returning-player path and is why the check is here
+	# rather than unconditional.
+	if not _creation.has_hero():
+		open_creation()
 
 
 ## The one world store this root installs into the soul and the anchors.
@@ -289,6 +305,22 @@ func adopt_actor(body: Actor) -> void:
 	_last_death = {}
 	if _live_screen() != null:
 		_live_screen().setup(body)
+
+
+## Open character creation, and answer whether it opened.
+##
+## **Opens the nav route the table already names**, so there is one door rather than two
+## (ADR 0130). Boot calls this when no hero exists, which is why it is public with a production
+## caller: `test_screen_reachability` fails a public mount nothing in `src/` calls, and
+## `_ready` is that caller.
+func open_creation() -> Dictionary:
+	return {} if _creation == null else _creation.open()
+
+
+## The creation program's own view of itself, so a probe can assert reachability without
+## reaching into a private field.
+func creation_summary() -> Dictionary:
+	return {} if _creation == null else _creation.summary()
 
 
 ## The soul, the difficulty, the anchors and the save, as primitives, so a probe can assert the
@@ -620,6 +652,9 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# and the snapshot nothing else feeds it.
 			screen.call("setup", _actor)
 			screen.call("apply_snapshot", SetBonusApi.inspect(_actor))
+		ROUTE_WORLD_MAP:
+			screen.call("setup", _actor)
+			screen.call("bind_world", _world_bridge())
 		_:
 			screen.call("setup", _actor)
 
@@ -638,6 +673,35 @@ func _loot_bridge() -> LootBridge:
 	bridge.pickup_all = Callable(LootApi, "pickup_all")
 	bridge.reclaim = Callable(LootApi, "reclaim")
 	bridge.read_state = Callable(LootApi, "summary")
+	return bridge
+
+
+## The world's clock, as plain callables — the same shape as `_loot_bridge` and for the
+## same reason, but the reasoning is sharper here because there is no module to name.
+##
+## `app` is a PRIVATE unit (`tools/arch/rules.py`), so no screen may reference it, and
+## `event` is not in `rules.UI_MODULES`, so no screen may name `EventApi`. The world's
+## period tick therefore has exactly one legal seam: the composition root handing over two
+## verbs as callables. Neither verb is invented — `advance_one_period` and `world_summary`
+## already existed on this class.
+##
+## ## Why the screen does not get the numbers for free
+##
+## `WorldPulse.PERIOD_SECONDS` and `PERIOD_FACT` are `app/`'s and unreachable from `ui/`.
+## A screen that duplicated them would be a second copy of a rate, which is the failure
+## `tests/core/test_realm_rate.gd` exists to catch in GDScript and which no rule catches in
+## a panel. So the clock arrives through this bridge or it does not arrive.
+##
+## ## Why `advance_one_period` and not `EventApi.advance`
+##
+## Calling the event module from a screen would make a SECOND dispatcher for one moment: it
+## would skip the ambient news, the one-open-per-pull budget and the institution settling
+## that `WorldPulse.pull` owns. The pulse is the only thing allowed to decide what a period
+## means, so a screen asks the pulse and not the module.
+func _world_bridge() -> WorldPulseBridge:
+	var bridge := WorldPulseBridge.new()
+	bridge.read_state = Callable(self, "world_summary")
+	bridge.advance = Callable(self, "advance_one_period")
 	return bridge
 
 
