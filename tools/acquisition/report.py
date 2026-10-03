@@ -51,12 +51,7 @@ def run(graph: Graph) -> int:
         f"({ladders} on a cultivation ladder, {len(trials) - ladders} world domain(s))"
     )
     unspawnable = sorted(
-        {
-            boss_id
-            for trial in trials
-            for boss_id in trial.boss_ids
-            if boss_id not in hosted
-        }
+        {boss_id for trial in trials for boss_id in trial.boss_ids if boss_id not in hosted}
     )
     if unspawnable:
         info(f"{len(unspawnable)} boss(es) a trial names are in no encounter at all:")
