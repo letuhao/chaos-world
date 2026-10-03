@@ -30,8 +30,39 @@ INDEX_PATH = CHARACTER_ROOT / "character-index.jsonl"
 MIN_CHARACTERS = 2000
 MAX_CHARACTERS = 10000
 CHARACTER_ID_RE = re.compile(r"^character-[0-9]{4,}$")
-CHARACTER_DEFAULT_CHECKPOINT = "FLUX1984AnimeStyleFeat_v20Fp8Noclip.safetensors"
-CHARACTER_DEFAULT_LORA = ""
+CHARACTER_DEFAULT_PROFILE = "krea2"
+CHARACTER_ASPECT_RATIOS = (
+    "1:1 (Square)",
+    "2:3 (Portrait Photo)",
+    "3:2 (Photo)",
+    "3:4 (Portrait Standard)",
+    "4:3 (Standard)",
+    "9:16 (Portrait Widescreen)",
+    "16:9 (Widescreen)",
+    "21:9 (Ultrawide)",
+)
+CHARACTER_PROFILES = {
+    "krea2": {
+        "checkpoint": map_generate.KREA2_MODEL,
+        "rembg_model": "silueta",
+        "steps": 8,
+        "cfg": 1.0,
+        "guidance": None,
+        "sampler": "euler_ancestral",
+        "scheduler": "beta",
+    },
+    "flux1s": {
+        "checkpoint": "FLUX1984AnimeStyleFeat_v20Fp8Noclip.safetensors",
+        "rembg_model": map_generate.DEFAULT_REMBG_MODEL,
+        "lora": "",
+        "lora_strength": 0.8,
+        "steps": 32,
+        "cfg": 1.0,
+        "guidance": 3.5,
+        "sampler": "euler",
+        "scheduler": "normal",
+    },
+}
 
 # These controlled vocabularies are balanced deterministically when the catalog is scaffolded.
 TRAIT_AXES = {
@@ -133,6 +164,7 @@ ASSET_SPECS = {
         "folder": "map_sprites",
         "canvas_px": [128, 192],
         "fit_px": [112, 176],
+        "aspect_ratio": "2:3 (Portrait Photo)",
         "framing": (
             "one complete standing character viewed from a strict top-down three-quarter angle, "
             "facing north, feet visible, clear readable silhouette, centered with a bottom-center "
@@ -141,8 +173,10 @@ ASSET_SPECS = {
     },
     "dialogue_portrait": {
         "folder": "dialogue_portraits",
-        "canvas_px": [512, 512],
-        "fit_px": [480, 480],
+        "canvas_px": [384, 512],
+        "legacy_canvas_px": [[512, 512]],
+        "fit_px": [352, 480],
+        "aspect_ratio": "3:4 (Portrait Standard)",
         "framing": (
             "one head-and-shoulders dialogue portrait, front or gentle three-quarter view, "
             "face and expression clearly readable, shoulders included"
@@ -198,19 +232,38 @@ def _add_generation_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--slot", choices=tuple(ASSET_SPECS), required=True)
     parser.add_argument("--detail", default="", help="optional character-specific prompt detail")
     parser.add_argument(
+        "--profile",
+        choices=tuple(CHARACTER_PROFILES),
+        default=CHARACTER_DEFAULT_PROFILE,
+        help="default Krea2; flux1s remains available for comparison",
+    )
+    parser.add_argument(
         "--seed",
         type=int,
         help="defaults to a stable character identity seed shared across its asset slots",
     )
-    parser.add_argument("--size", type=int, default=1024, help="square ComfyUI render size")
-    parser.add_argument("--steps", type=int, default=32)
-    parser.add_argument("--cfg", type=float, default=1.0)
-    parser.add_argument("--guidance", type=float, default=3.5)
-    parser.add_argument("--checkpoint", default=CHARACTER_DEFAULT_CHECKPOINT)
-    parser.add_argument("--lora", default=CHARACTER_DEFAULT_LORA)
-    parser.add_argument("--lora-strength", type=float, default=0.8)
+    parser.add_argument(
+        "--aspect-ratio",
+        choices=CHARACTER_ASPECT_RATIOS,
+        help="defaults to 2:3 for map sprites and 3:4 for dialogue portraits",
+    )
+    parser.add_argument(
+        "--megapixels", type=float, default=2.0, help="target render size in megapixels"
+    )
+    parser.add_argument(
+        "--multiple", type=int, default=32, help="round output dimensions to this multiple"
+    )
+    parser.add_argument("--steps", type=int)
+    parser.add_argument("--cfg", type=float)
+    parser.add_argument("--guidance", type=float)
+    parser.add_argument("--checkpoint")
+    parser.add_argument("--lora", help="Flux LoRA; Krea2 uses its three built-in LoRAs")
+    parser.add_argument("--lora-strength", type=float, help="Flux LoRA strength")
+    parser.add_argument("--lora-painterly-strength", type=float, default=0.0)
+    parser.add_argument("--lora-dishwasher-strength", type=float, default=1.0)
+    parser.add_argument("--lora-meion-strength", type=float, default=1.0)
     parser.add_argument("--negative", default=CHARACTER_NEGATIVE)
-    parser.add_argument("--rembg-model", default=map_generate.DEFAULT_REMBG_MODEL)
+    parser.add_argument("--rembg-model", help="ComfyUI background-removal model")
     parser.add_argument("--comfy-url", default="http://127.0.0.1:8188")
     parser.add_argument("--timeout", type=int, default=600)
     parser.add_argument("--preview-only", action="store_true")
@@ -403,9 +456,11 @@ def _validate_image(path: str, spec: dict, label: str) -> list[str]:
         return [f"{label}: generated image is missing ({path})"]
     try:
         with Image.open(local_path) as opened:
-            if list(opened.size) != spec["canvas_px"]:
+            accepted_sizes = [spec["canvas_px"], *spec.get("legacy_canvas_px", [])]
+            if list(opened.size) not in accepted_sizes:
                 return [
-                    f"{label}: expected {spec['canvas_px']}, found {[opened.width, opened.height]}"
+                    f"{label}: expected one of {accepted_sizes}, found "
+                    f"{[opened.width, opened.height]}"
                 ]
             image = opened.convert("RGBA")
             if image.getchannel("A").getextrema()[0] != 0:
@@ -511,17 +566,49 @@ def _next(records: list[dict], count: int, slot_filter: str | None) -> None:
 
 
 def _generate(records: list[dict], args) -> None:
-    if args.size < 256 or args.size > 2048 or args.size % 16:
-        raise ToolError("--size must be a multiple of 16 between 256 and 2048")
-    if not 1 <= args.steps <= 64 or args.cfg < 0 or args.guidance < 0:
-        raise ToolError("steps must be 1-64 and cfg/guidance must be non-negative")
+    profile_defaults = CHARACTER_PROFILES[args.profile]
+    for name, value in profile_defaults.items():
+        if getattr(args, name, None) is None:
+            setattr(args, name, value)
+    args.sampler = profile_defaults["sampler"]
+    args.scheduler = profile_defaults["scheduler"]
+    if args.profile == "krea2":
+        args.lora = ""
+        args.lora_strength = 0.0
+    record = _character(records, args.character_id)
+    slot_spec = ASSET_SPECS[args.slot]
+    args.aspect_ratio = args.aspect_ratio or slot_spec["aspect_ratio"]
+    if not math.isfinite(args.megapixels) or not 0.1 <= args.megapixels <= 16:
+        raise ToolError("--megapixels must be between 0.1 and 16")
+    if not 8 <= args.multiple <= 128 or args.multiple % 4:
+        raise ToolError("--multiple must be a multiple of 4 between 8 and 128")
+    args.render_width, args.render_height = _render_dimensions(
+        args.aspect_ratio, args.megapixels, args.multiple
+    )
     if (
-        not 1 <= args.timeout <= 900
-        or not math.isfinite(args.lora_strength)
-        or not 0 <= args.lora_strength <= 2
+        not 1 <= args.steps <= 64
+        or args.cfg < 0
+        or (args.guidance is not None and args.guidance < 0)
     ):
-        raise ToolError("timeout must be 1-900 seconds and LoRA strength must be 0-2")
-    if not math.isfinite(args.cfg) or not math.isfinite(args.guidance):
+        raise ToolError("steps must be 1-64 and cfg/guidance must be non-negative")
+    if not 1 <= args.timeout <= 900:
+        raise ToolError("timeout must be 1-900 seconds")
+    if args.profile == "flux1s" and (
+        not math.isfinite(args.lora_strength) or not 0 <= args.lora_strength <= 2
+    ):
+        raise ToolError("Flux LoRA strength must be between 0 and 2")
+    krea2_lora_strengths = (
+        args.lora_painterly_strength,
+        args.lora_dishwasher_strength,
+        args.lora_meion_strength,
+    )
+    if args.profile == "krea2" and any(
+        not math.isfinite(strength) or not 0 <= strength <= 2 for strength in krea2_lora_strengths
+    ):
+        raise ToolError("Krea2 LoRA strengths must be between 0 and 2")
+    if not math.isfinite(args.cfg) or (
+        args.guidance is not None and not math.isfinite(args.guidance)
+    ):
         raise ToolError("cfg and guidance must be finite numbers")
     if args.seed is not None and not 0 <= args.seed < 2**31:
         raise ToolError("--seed must be between 0 and 2147483647")
@@ -533,15 +620,20 @@ def _generate(records: list[dict], args) -> None:
         or comfy.password
     ):
         raise ToolError("--comfy-url must be an HTTP(S) URL without embedded credentials")
-    if not args.checkpoint.strip() or not args.rembg_model.strip():
-        raise ToolError("checkpoint and background-removal model must be non-empty")
-    record = _character(records, args.character_id)
+    if not args.checkpoint.strip() or (args.profile == "flux1s" and not args.rembg_model.strip()):
+        raise ToolError("checkpoint and selected background-removal settings must be non-empty")
     asset = record["assets"][args.slot]
     replacing = args.replace_generated and asset["status"] == "generated"
     if asset["status"] != "planned" and not replacing:
         raise ToolError(f"refusing to replace {args.character_id}/{args.slot} ({asset['status']})")
     seed = args.seed if args.seed is not None else _stable_seed(args.character_id)
     prompt = _prompt(record, args.slot, args.detail)
+    if args.profile == "krea2":
+        prompt = prompt.replace(
+            "Transparent background.",
+            "A perfectly flat pure white background with no gradient, shadow, texture, "
+            "or scenery. Keep a crisp clear edge around the figure.",
+        )
     raw_path = _generate_comfy(record, args, prompt, seed)
     if args.preview_only:
         ok(f"generated private preview only; catalog unchanged ({raw_path.relative_to(REPO_ROOT)})")
@@ -551,51 +643,150 @@ def _generate(records: list[dict], args) -> None:
         args.slot,
         raw_path,
         prompt,
-        f"ComfyUI checkpoint: {args.checkpoint}; LoRA: {args.lora}",
+        _generation_source(args),
         "Generated locally; source checkpoint and LoRA license terms apply",
         seed,
         replacing,
         generation_settings={
+            "profile": args.profile,
             "checkpoint": args.checkpoint,
             "lora": args.lora,
             "lora_strength": args.lora_strength,
-            "size": args.size,
+            "lora_names": (
+                {
+                    "painterly": map_generate.KREA2_LORAS[0],
+                    "dishwasher": map_generate.KREA2_LORAS[1],
+                    "meion": map_generate.KREA2_LORAS[2],
+                }
+                if args.profile == "krea2"
+                else {}
+            ),
+            "lora_strengths": _profile_lora_strengths(args),
+            "aspect_ratio": args.aspect_ratio,
+            "megapixels": args.megapixels,
+            "multiple": args.multiple,
+            "render_width": args.render_width,
+            "render_height": args.render_height,
             "steps": args.steps,
             "cfg": args.cfg,
             "guidance": args.guidance,
+            "sampler": args.sampler,
+            "scheduler": args.scheduler,
             "seed": seed,
-            "rembg_model": args.rembg_model,
+            "background_removal": args.rembg_model,
         },
     )
 
 
-def _generate_comfy(record: dict, args, prompt: str, seed: int) -> Path:
-    graph = copy.deepcopy(map_generate.WORKFLOW)
-    graph["1"]["inputs"]["ckpt_name"] = args.checkpoint
-    if args.lora.strip():
-        graph["10"] = {
-            "inputs": {
-                "model": ["1", 0],
-                "clip": ["12", 0],
-                "lora_name": args.lora.strip(),
-                "strength_model": args.lora_strength,
-                "strength_clip": args.lora_strength,
-            },
-            "class_type": "LoraLoader",
-        }
-    graph["2"]["inputs"].update(t5xxl=prompt, guidance=args.guidance)
-    graph["3"]["inputs"].update(clip_l=args.negative, guidance=args.guidance)
-    graph["4"]["inputs"].update(width=args.size, height=args.size)
-    graph["8"]["inputs"].update(
-        noise_seed=seed,
-        steps=args.steps,
-        cfg=args.cfg,
-        sampler_name="euler",
-        scheduler="normal",
+def _profile_lora_strengths(args) -> dict[str, float]:
+    if args.profile != "krea2":
+        return {}
+    return {
+        "painterly": args.lora_painterly_strength,
+        "dishwasher": args.lora_dishwasher_strength,
+        "meion": args.lora_meion_strength,
+    }
+
+
+def _render_dimensions(aspect_ratio: str, megapixels: float, multiple: int) -> tuple[int, int]:
+    ratio = aspect_ratio.split(" ", 1)[0]
+    ratio_width, ratio_height = (float(part) for part in ratio.split(":"))
+    ratio_value = ratio_width / ratio_height
+    area = megapixels * 1_000_000
+    width = math.sqrt(area * ratio_value)
+    height = math.sqrt(area / ratio_value)
+    return tuple(
+        max(multiple, int(round(value / multiple) * multiple)) for value in (width, height)
     )
-    graph["15"]["inputs"].update(model=args.rembg_model, transparency=True)
+
+
+def _generation_source(args) -> str:
+    if args.profile == "krea2":
+        weights = _profile_lora_strengths(args)
+        return (
+            f"ComfyUI Krea2 checkpoint: {args.checkpoint}; LoRAs: "
+            f"painterly={weights['painterly']}, dishwasher={weights['dishwasher']}, "
+            f"meion={weights['meion']}"
+        )
+    return f"ComfyUI checkpoint: {args.checkpoint}; LoRA: {args.lora}"
+
+
+def _generate_comfy(record: dict, args, prompt: str, seed: int) -> Path:
+    output_node = "7"
+    if args.profile == "krea2":
+        graph = copy.deepcopy(map_generate.KREA2_ITEM_WORKFLOW)
+        graph["761"]["inputs"]["unet_name"] = args.checkpoint
+        graph["627"]["inputs"]["text"] = prompt
+        graph["627"]["inputs"]["clip"] = ["755", 0]
+        graph["763"] = {
+            "inputs": {"text": args.negative, "clip": ["755", 0]},
+            "class_type": "CLIPTextEncode",
+        }
+        graph["599"]["inputs"]["negative"] = ["763", 0]
+        graph["857"] = {
+            "inputs": {
+                "aspect_ratio": args.aspect_ratio,
+                "megapixels": args.megapixels,
+                "multiple": args.multiple,
+            },
+            "class_type": "ResolutionSelector",
+        }
+        graph["698"]["inputs"].update(width=["857", 0], height=["857", 1])
+        graph["851"]["inputs"]["seed"] = seed
+        graph["599"]["inputs"].update(
+            steps=args.steps,
+            cfg=args.cfg,
+            sampler_name=args.sampler,
+            scheduler=args.scheduler,
+            end_at_step=args.steps,
+        )
+        for node_id, strength in (
+            ("868", args.lora_painterly_strength),
+            ("867", args.lora_dishwasher_strength),
+            ("854", args.lora_meion_strength),
+        ):
+            graph[node_id]["inputs"]["strength_model"] = strength
+        graph["866"]["inputs"].update(
+            model=args.rembg_model,
+            transparency=True,
+            post_processing=True,
+            alpha_matting=True,
+            alpha_matting_foreground_threshold=240,
+            alpha_matting_background_threshold=10,
+            alpha_matting_erode_size=4,
+            background_color="none",
+        )
+        output_node = "732"
+    else:
+        graph = copy.deepcopy(map_generate.WORKFLOW)
+        graph["1"]["inputs"]["ckpt_name"] = args.checkpoint
+        if args.lora.strip():
+            graph["10"] = {
+                "inputs": {
+                    "model": ["1", 0],
+                    "clip": ["12", 0],
+                    "lora_name": args.lora.strip(),
+                    "strength_model": args.lora_strength,
+                    "strength_clip": args.lora_strength,
+                },
+                "class_type": "LoraLoader",
+            }
+        graph["2"]["inputs"].update(t5xxl=prompt, guidance=args.guidance)
+        graph["3"]["inputs"].update(clip_l=args.negative, guidance=args.guidance)
+        graph["4"]["inputs"].update(width=args.render_width, height=args.render_height)
+        graph["8"]["inputs"].update(
+            noise_seed=seed,
+            steps=args.steps,
+            cfg=args.cfg,
+            sampler_name=args.sampler,
+            scheduler=args.scheduler,
+        )
+        graph["15"]["inputs"].update(model=args.rembg_model, transparency=True)
     source_path = (
-        REPO_ROOT / "build" / "character-generated" / f"{record['id']}-{args.slot}-{seed}.png"
+        REPO_ROOT
+        / "build"
+        / "character-generated"
+        / f"{record['id']}-{args.slot}-{args.profile}-{seed}.png"
     )
     source_path.parent.mkdir(parents=True, exist_ok=True)
     if source_path.exists():
@@ -622,7 +813,7 @@ def _generate_comfy(record: dict, args, prompt: str, seed: int) -> Path:
         time.sleep(min(2, max(0, deadline - time.monotonic())))
     else:
         raise ToolError(f"ComfyUI generation exceeded {args.timeout} seconds")
-    image = _node_image(entry or {}, "7")
+    image = _node_image(entry or {}, output_node)
     image_url = f"{base_url}/view?{urllib.parse.urlencode(image)}"
     _write_new_file(source_path, _http_bytes(image_url))
     return source_path
@@ -682,11 +873,11 @@ def _prompt(record: dict, slot: str, detail: str) -> str:
         "One subject only. Cultivation-fantasy production art for a 2D action RPG. "
         "Painterly anime illustration in matte gouache, fine dark ink contours, broad readable "
         "value planes, material-led color, restrained metallic accents, soft upper-left light. "
-        "Use a high-collared, fully covered, modest costume with long sleeves and covered shoulders. "
-        "No open neckline. Use the same "
-        "visual identity and costume across the character asset family. Keep the face, age, "
-        "presentation, anatomy, palette, and costume faithful to the profile. Keep the chest "
-        "fully covered. Transparent "
+        "Use a loose-fitting, opaque, high-necked robe with a closed collar, long sleeves, and "
+        "covered shoulders. Keep all torso skin covered. No garment cutouts, short hems, or "
+        "transparent fabric. Use the same visual identity and costume across the character asset "
+        "family. Keep the face, age, presentation, anatomy, palette, and costume faithful to the "
+        "profile. Use a neutral upright pose with arms at the sides. Transparent "
         "background. All characters are adults, fully clothed, and nonsexual. No text, "
         "labels, UI, frame, watermark, extra figures, unrelated props, exaggerated "
         "body proportions, or childlike features."
