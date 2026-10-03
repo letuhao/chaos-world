@@ -26,12 +26,6 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     # audits rather than after the suite. The writer set this census assumes is
     # pinned by tests/arch_rules/test_fact_ledger_writers.gd.
     ("gate_reach", ["check"]),
-    # A mutation probe that reached a COMMIT. The working-tree half lives in
-    # tests/arch_rules/test_no_stranded_mutation.gd and cannot see history, because git
-    # is unreachable from GDScript at test time (INC-0013). Two real committed probes
-    # were found the moment this shipped, so it is not theoretical. Needs no engine, so
-    # it runs with the other content audits.
-    ("mutation_history", ["check"]),
     # A guard shipped in Python has no test of its own: the GDScript suite cannot reach it,
     # and nothing asserts it still goes RED. That is how gate_reach stayed blind to a
     # producer shape long enough to report four shipped triggers as dead with every gate
@@ -95,6 +89,26 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     ("test", []),
 )
 
+# Engine-free safety guards that must run BEFORE any stage a routine edit can red-flag.
+#
+# Same reasoning as the arch_rules hoist below, for the same reason: the STEPS loop breaks on
+# the first failing stage, so a guard sitting after `fmt --check` is a guard one stray space
+# can switch off. `mutation_history` used to live in STEPS, where a lint error in tools/
+# skipped it silently - a committed mutation probe ships behaviour that is wrong while the
+# whole build is green (BL-0615). It runs in the hoisted phase instead, and it costs ~150ms.
+#
+# ORDER within the hoisted phase is deliberate: the runaway guards go FIRST because machine
+# damage (a 10 GB log, a 67 GB leak) is worse than wrong shipped behaviour, so a cheap
+# engine-free failure must never be what stops them from running.
+PREAMBLE_STEPS: tuple[tuple[str, list[str]], ...] = (
+    # A mutation probe that reached a COMMIT. The working-tree half lives in
+    # tests/arch_rules/test_no_stranded_mutation.gd and cannot see a ref, because git is
+    # unreachable from GDScript at test time (INC-0013). Its gate is ref-TIP state, not
+    # history: history is immutable, so an event-shaped gate is permanently red once a probe
+    # is ever committed, and a permanently-red gate is a gate people learn to ignore.
+    ("mutation_history", ["check"]),
+)
+
 
 def register(subparsers) -> None:
     parser = subparsers.add_parser("check", help="run fmt --check, lint, arch, test in order")
@@ -144,6 +158,17 @@ def run(args) -> int:
         if not args.keep_going:
             fail("gate failed: " + ", ".join(failed))
             return 1
+    for name, extra in PREAMBLE_STEPS:
+        info(f"== {name} ==")
+        preamble = subprocess.run(
+            [sys.executable, "-m", "tools", name, *extra],
+            cwd=str(REPO_ROOT),
+        )
+        if preamble.returncode != 0:
+            failed.append(name)
+            if not args.keep_going:
+                fail("gate failed: " + ", ".join(failed))
+                return 1
     for name, extra in STEPS:
         info(f"== {name} ==")
         result = subprocess.run(
