@@ -45,7 +45,7 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     # text the generator no longer holds - which is what 7bf3e4bc did to 260 rows with
     # every gate green (INC-0015). Needs no engine, so it runs with the content audits.
     ("map_theme", ["check"]),
-    # The named cast (ADR 0132): one JSONL record per unique character, carrying
+    # The named cast (ADR 0138): one JSONL record per unique character, carrying
     # lore, personality, and a prose stat read. It is reference data the game never
     # reads, so the only thing that can go wrong is a malformed record or an image
     # that is gone — and the stat guard here is what stops a number entering a
