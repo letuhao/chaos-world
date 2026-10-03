@@ -172,16 +172,14 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 	var channel := actor.meridians.get_meridian(meridian_id)
 	if state == null or channel == null:
 		return false
-	# MUTATION-PRICE-1: the burn repaired here again, at the channel elixir price.
+	# Ahead of the seed read and ahead of any consume: a burn has its own price.
+	if channel.injured:
+		return recover(actor, meridian_id)
 	var seed := MindRealmSeed.for_realm(state.rank_id)
 	if seed == null or not _ITEMS.has_item(actor, seed.training_item):
 		return false
 	if not _ITEMS.consume_item(actor, seed.training_item):
 		return false
-	if channel.injured:
-		actor.meridians.repair_meridian(meridian_id)
-		synchronize(actor)
-		return true
 	match channel.state:
 		MeridianState.CLOSED:
 			actor.meridians.open_meridian(meridian_id)
