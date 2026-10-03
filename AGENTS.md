@@ -47,7 +47,28 @@ Prereqs: `uv` (https://docs.astral.sh/uv/) and a Godot 4.7.x binary.
 
 **Godot binary is not on `PATH`.** `tools/godot.py` resolves it from `GODOT_BIN`, else the gitignored `.godot-bin` file, else `PATH`, and fails loudly if none resolve. Do not hardcode machine paths anywhere else.
 
+**Never invoke the Godot binary directly.** Go through `tools/godot.py` (`tools test`, `tools run`, `tools ui`, `tools export`). It passes `--log-file build/godot.log` and enforces a 900 s ceiling. Bypassing it opts you into the hazard below.
+
 **Do not rely on bare `python`.** System Python here is inconsistent (3.13 on `PATH`, a broken `py` launcher, 3.10 as `python3`). Always use `uv run`, which honors `.python-version`/`uv.lock`.
+
+## Logs, memory, and runaway loops: hard disk- and machine-safety rules
+Three ceilings exist because three different runaway shapes exist. `tools/godot.py` enforces all of them; none is optional and none may be raised to stop a failure firing.
+
+**1. Log (disk).** Godot's own log defaults to `%APPDATA%/Godot/app_userdata/<project>/logs/`, rotating at **2 GB per file with no total ceiling** (`max_log_files=5`) — ~10 GB per incident, re-created every run, on the user's **C:** drive. A mind_cultivation test once entered an unbounded retry loop, `push_error` fired every iteration, and ~10 GB was written before anyone noticed.
+- **A loop that spams is a bug to fix, never output to preserve.** Do not "let it log" a failure you have not read.
+- `debug/file_logging/enable_file_logging` in `project.godot` **does not disable it** — the engine reads the `.pc` variant, which stays `true`. Only `--log-file` redirects the sink, which is why `tools/godot.py` owns it. Do not "fix" this by editing `project.godot`. A persisted log goes in `build/` (gitignored) — never the user profile.
+
+**2. Memory (RAM).** A `tests/ui` run once reached **67 GB resident / 105 GB commit at ~0.3 GB/s** and the machine had to be power-cycled. The clock and disk ceilings both measure *output*, so an allocating loop that prints nothing passes both — that is the gap `RAM_CEILING_BYTES` closes.
+- **A loop that allocates without releasing is the same defect as a loop that spams.** Leaking a `Node`, `Resource` or `String` per iteration exhausts RAM exactly as fast as logging fills the SSD, and is just as invisible.
+- **Anything mounted under `root` in a test must be freed.** `add_child` without a matching `free()`/`queue_free()` is a leak, not a fixture. `SeamHarness.teardown()` is idempotent and safe after an abort — call it.
+
+**3. Infinite loop (time).** A feature that cannot work must fail out loud, not spin. If an exit condition cannot be met, never leave it running and never bound it by a huge iteration count — that just burns disk or RAM more slowly. Make it fail.
+- **Every loop gets a real guard.** A `while` on game state needs a bounded, *small* cap that names the condition which failed to converge. Never a bare unbounded `while`.
+- **That rule is enforced, not just written.** `tests/arch_rules/test_no_unbounded_wait.gd` fails the build on any `while` in `res://src` **or `res://tests`** it cannot show terminating: it moves a counter it reads, is the `DirAccess` terminator, drains a container it tests, fills one toward a fixed count with an *unconditional* append, or breaks/returns. Tests are scanned because the loop that filled the disk was a test's. Do not add an exception because a loop "looks fine" — that judgement shipped the 1 GB/s loop.
+- **Recursion needs a depth cap** for the same reason: a cycle in a traversal (A holds B, B holds A) is an unbounded loop that `while` scanning cannot see.
+- **Never re-run a loop body that asserts.** `TestCase` (`game/tests/framework.gd`) kills the process via `OS.crash` past `MAX_FAILURES` / `MAX_ASSERTIONS`; that is the intended backstop, not a number to raise until it stops firing.
+
+**Never reproduce a runaway to diagnose it.** A timeout, a `=== FATAL ===` crash, or a ceiling breach already names the cause in its message and points at the log; a manual repro spends the user's disk, RAM and time to re-learn what the ceiling just reported, and has twice forced a power-cycle. Read the log, read the code, fix the loop. Fix first, verify by the guard not firing — that is the whole test, and it is not an A/B experiment. If a repro is genuinely unavoidable, say so and get the user's go-ahead first.
 
 ## Agent workflow
 Optimize for small verifiable steps. The repo is the source of truth; chat history is not.
@@ -57,6 +78,14 @@ Optimize for small verifiable steps. The repo is the source of truth; chat histo
 4. **Test what you changed, not everything.** Use `tools test --suite <substring>` while building. Run the full suite only to release a finished module, or when a critical bug makes the game fail to build or load and you need the whole picture. A full run mid-build wastes minutes and reports other agents' in-flight breakage as if it were yours.
 5. **Record durable decisions only.** An architectural choice future agents could get wrong goes in a one-page `docs/adr/NNNN-<slug>.md`. Everything else is written nowhere.
 6. **Touch this file only when a rule changes.** Never add changelogs, status, or plan sections.
+7. **Commit your own work; committing is part of the task, not a favour.** An uncommitted change is only safe while you are still alive. This tree is shared with live agents: a bulk revert, a stray `git checkout .`, or one agent's session ending can wipe uncommitted work, and uncommitted work is **unrecoverable** — there is no reflog entry for a file that was never staged. Commit at the end of each vertical slice, before you start the next one.
+   - Stage **only your own paths**: `git add <path> <path>`, never `git add -A`, `git add .`, or `git commit -a`. A blanket stage swallows a concurrent agent's in-flight edits into your commit and makes them unrecoverable too.
+   - `git commit -am`/`git add -u` are equally unsafe here — they sweep every modified tracked path, including other agents'.
+   - Before committing, `git status --short` and confirm every staged path is one you edited. If something foreign appears, unstage it (`git restore --staged <path>`) rather than committing it.
+8. **The working tree is shared with live agents.** Never `git checkout`, `git restore`, `git revert`, or `git stash` a path you do not own — a concurrent agent's edits and this file itself are not yours to roll back. Bulk-reverting "my" files has twice destroyed another agent's finished work. Undo your own mistake by hand, path by path.
+   - `git checkout .` / `git restore .` / `git stash` with no pathspec are **forbidden outright**: they are not "reverting my files", they are reverting everyone's.
+   - Never `git push --force` or `git reset --hard` on a shared branch. There is no undo for either once another agent has pulled.
+   - To undo your own edit, fix it forward with `edit_file`/`write_file`, or revert one specific commit you authored by hash (`git revert <your-sha>`), never a path-wide sweep.
 
 Handoff: commit messages carry the what/why; the active goal carries the now. Do not create notes, plans, or status files.
 
@@ -110,12 +139,23 @@ Design principles to apply:
 There is no shared power curve. A realm's strength is authored data and lives in `core/realm_power_table.tres`, one multiplier per realm **keyed by realm id**, R1 at 1.0. Keyed by id, never by position: an inserted realm would silently shift every realm below it.
 - **A magnitude and a rate are different kinds of number.** A magnitude answers "how strong is a thing from this realm"; a rate answers "what is one unit of this realm's training worth". A rate must never track a magnitude — reading a shared exponential as a gain is what once made a single breakthrough worth more than everything else combined.
 - **Magnitudes** are owned where they belong. `RealmScaling` (core) scales the shared combat stats by `realm.power`; each path's own magnitude is authored on its own seed (`integrity_maximum`, `sea_capacity`, …) and applied once. Do not scale the same realm twice.
-- **Rates** live in each path's `realm_profile.gd` as `factor(realm_id) = RATE_STEP^ordinal`, where `ordinal` is `RealmDef.index`. Bounded by construction: `RATE_STEP^29` is under 2x. A rate needs no justification for being modest, but it does need to stay a gain.
-- **`RATE_STEP` is deliberately triplicated** — one per path — because a module may only reach another module through its `api.gd` facade, and the alternative is a shared curve. Retune all three together; nothing enforces that for you.
+- **Rates** are ONE shared curve in `core/realm_rate.gd` (`RealmRate`): `factor(realm_id) = RATE_STEP^ordinal`, where `ordinal` is `RealmDef.index`. Bounded by construction — `RATE_STEP^29` is under 2x, a gain and never a magnitude. `RATE_STEP` is authored there once and shared by all three paths (ADR 0066): it is not triplicated, because `core` is a layer, not a module, so the cross-module facade rule never applied to it. Retuning it is a one-line edit and cannot desynchronise a copy — but `tools realm_power check` does not cover it.
 - **`RATE_STEP` must stay at or below the smallest per-realm step in the authored work budget**, or the rate outruns the price and the deep realms get cheap.
 - **Guard:** `uv run python -m tools realm_power check` runs in `tools check`. It asserts the table's shape — one entry per realm, R1 at 1.0, strictly rising, finite, inside a readable range — not the recipe that filled it, so the numbers stay hand-editable. `realm_power emit --force` rewrites the file.
-- **Two per-realm tables is deliberate, not drift.** `core/realm_power_table.tres` is actor stat strength (1.0 → 551x); `game/data/item_options/item_magnitude_scale.json` is item magnitudes (1.0 → 3.9x). They measure different things — an item is not an actor — and their ranges differ because an item is a relative upgrade inside a realm/rarity band, not an absolute power claim. Never derive one from the other, and never let either compute from a realm index. Reconciling them is a new decision needing its own ADR (ADR 0050).
+- **Two more per-realm tables are deliberate, not drift.** `game/data/item_options/item_magnitude_scale.json` is item magnitudes (1.0 → 3.9x) and technique magnitudes are ~1.0 → ~2.8x geometric (ADR 0055) — an item is not an actor, and a technique bonus rides on top of both, so it stays an order of magnitude below `realm_power_table.tres` (1.0 → 551x). Never derive any of the three from another, and never let any of them compute from a realm index. Reconciling the item table with the actor table is an open decision needing its own ADR (ADR 0050).
 - **Adding a scale is a reviewed change**, not a convenience. A new power-shaped number needs an ADR, not a second curve.
+
+## Institutions: clan, sect, nation
+Three tiers, one vocabulary, and each answers a question no other answers (ADR 0083).
+- **clan is born to** (ADR 0064) — a lineage across generations. **sect is sworn to** — the institution you join; it teaches and holds a roster. **nation is lived under** — a polity whose offices may be vacant. They are **not** nested: a clan exists without a sect, and `nation → sect` exists because offices are filled from sects, not because a nation contains them.
+- **One claim shape in `core/institution_claim.gd`**: `position` (discrete, authored), `standing` (continuous, earned, can fall), `obligation` (open terms). The three tiers must never grow a second copy — that is the ADR 0066 failure mode. It is in `core/` rather than `contracts/` because it must be an `@export` field on `.tres` Resources, and `core` is a layer, so the facade rule never applied to it.
+- **Position and standing never derive from each other** (ADR 0064's split, carried forward). `SectApi.promote` writes one, `SectApi.move_standing` writes the other, and neither reads the other. That gap is the politics layer.
+- **An institution grants recognition and access, never power** (ADR 0084). The only stat surface is `InstitutionClaim.standing_percent()`, a bounded PERCENT capped by `STANDING_PERCENT_CAP`. Never a FLAT, never `set_base`, never a second stat composer, never a new `StatProvider`. `tools arch` cannot see a method that does not exist, so `tests/modules/sect/test_sect_no_power.gd` pins it structurally.
+- **Reputation is not standing.** `social` (ADR 0091) already owns `regard` per institution and a `trust` axis that gates teaching. Sect membership *moves* `regard` through `SocialApi.apply_cause`; it never keeps a second copy.
+- **A conflict is a declaration of sides and a prize, never a formula** (ADR 0085). `nation` owns no damage arithmetic, no `rng`, and no `army_strength`. Verdicts arrive from combat; the political layer counts them and pays the prize declared at declaration.
+- **The three-state vocabulary is load-bearing for every screen** (ADR 0083): `{}` = does not exist; `"vacant": true` = exists and its value is absent; `{"ok": false, "reason": R}` = refused. A vacancy is never `0` and never a hidden row.
+- **The `nation → sect` edge is enforced by review, not by the gate.** `BARE_REF_UNITS` excludes `modules/*`, so a bare `SectApi` reference from `modules/nation/` reports zero violations and a code-only cycle is invisible to `_find_cycle`. Reach `sect` only through a `preload` of its facade and spell every other identifier as a plain id.
+- **No institution owns a clock.** Nothing in `sect/` or `nation/` may read `Time.get_ticks*`, declare `_process`, or call `get_tree()`; every accrual takes an explicit `periods` from a caller that owns time (DEF-0111).
 
 ## UI standard
 `ui/` is a separate program from gameplay. It renders state and calls public actions; it never owns game rules.
@@ -132,8 +172,7 @@ There is no shared power curve. A realm's strength is authored data and lives in
 
 **Split dev cycle** — gameplay and UI can be built in parallel:
 1. Gameplay publishes a facade method or `preview() -> Dictionary` answering "what is true now?".
-2. UI builds only against that contract, never module internals.
-3. Both stay green independently.
+2. UI builds only against that contract, never module internals, and both stay green independently.
 
 Where a panel needs something the facade does not expose, add it to the facade — do not widen `ui/` to reach internals.
 
@@ -145,14 +184,7 @@ Contract-first; the composition root is the only place that knows concrete types
 4. **O — extend, do not edit.** Add a module or component and wire it in `app/`; never put feature logic in `core/`. Changing a `contracts/` interface or `core/` behavior requires an ADR in the same change.
 5. **L — substitutable implementations.** Any script implementing a `contracts/` interface must pass the same contract tests.
 
-Loop: contract -> implementation -> app wiring -> contract test -> `tools check`.
-
-Where it is enforced:
-- DIP/ISP: `tools arch` — facade-only cross-module edges, no upward layer deps.
-- ISP: `tools arch` caps the public surface of `api.gd`.
-- SRP: `tools arch` warns when a script exceeds the line budget.
-- OCP: an ADR is required for `core/`/`contracts/` changes.
-- LSP: each `contracts/` interface ships contract tests under `game/tests/contracts/`.
+Loop: contract -> implementation -> app wiring -> contract test -> `tools check`. It is enforced by: `tools arch` for DIP/ISP (facade-only cross-module edges, no upward layer deps, a cap on the public surface of `api.gd`) and SRP (a warning past the line budget); an ADR in the same change for OCP (`core/`/`contracts/`); and contract tests under `game/tests/contracts/` for LSP.
 
 ## Adding or changing a module
 1. Run `uv run python -m tools new_module <name>` (or create `game/src/modules/<name>/` with an `api.gd` facade).
@@ -180,7 +212,7 @@ Changing a boundary rule is an architecture change: update the rule, the ADR, an
 - **English only** — docs, code comments, commit messages, ADRs, issues, PR text.
 - **Lean by default** — bullets, one fact per line, no tutorials, no restating code or config. If a line would not surprise a competent agent, delete it.
 - **One source of truth** — precedence: code/config > `AGENTS.md` > ADRs. When docs disagree with code, code wins; fix the doc in the same change. Link, never duplicate.
-- **Allowed docs** — `AGENTS.md`, `docs/adr/NNNN-*.md`, and the machine-readable `docs/deferred.jsonl` only. Do not add READMEs, design docs, status files, or notes; ask before creating any other Markdown.
+- **Allowed docs** — `AGENTS.md`, `docs/adr/NNNN-*.md`, `docs/art-direction.md`, and the machine-readable `docs/deferred.jsonl` only. Do not add READMEs, design docs, status files, or notes; ask before creating any other Markdown.
 - **Deferred work** — tracked in `docs/deferred.jsonl`, one JSON object per line with `id`, `area`, `title`, `status`, `source`, `reason`, `next`, `created`. Record deferrals there instead of prose TODOs. Use `uv run python -m tools deferred` (`report`/`search`/`add`/`done`/`validate`); `tools check` validates the file. When solved, set `status` to `done` and add a `resolved` date; keep the entry as the trace. Add `priority`/`depends_on` when useful. Never delete entries.
 - **Caps** — `AGENTS.md` ≤ 200 lines; an ADR ≤ 1 page. Over budget means split or delete.
 - **ADRs are immutable** once accepted: supersede with a new ADR, do not rewrite history.
