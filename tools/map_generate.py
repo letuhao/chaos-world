@@ -123,6 +123,10 @@ def _production_prompt(record: dict, subject: str) -> str:
     if record["type"] == "item_icon":
         match = record.get("match", {})
         examples = ", ".join(record.get("family_examples", []))
+        traits = ", ".join(
+            trait.replace(":", " ").replace("-", " ")
+            for trait in record.get("visual_traits", [])
+        )
         framing = (
             f"Create one isolated {match.get('category', 'cultivation')} "
             f"{match.get('subcategory', 'item')} inventory icon. "
@@ -132,6 +136,8 @@ def _production_prompt(record: dict, subject: str) -> str:
         )
         if examples:
             framing += f"Family examples for its theme: {examples}. "
+        if traits:
+            framing += f"Follow these tagged visual distinctions: {traits}. "
         framing += "Center the complete object with generous clear padding. "
     elif record["type"] == "terrain_texture":
         framing = (

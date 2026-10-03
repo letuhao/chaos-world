@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import colorsys
 import json
 import os
 import re
@@ -17,6 +18,9 @@ from .common import GAME_DIR, REPO_ROOT, ToolError, fail, ok
 ITEM_ROOT = GAME_DIR / "data" / "items"
 INDEX_PATH = GAME_DIR / "assets" / "asset-index.jsonl"
 MATCH_FIELDS = {"category", "subcategory", "id_prefix", "id_regex"}
+VISUAL_TRAIT_RE = re.compile(r"^[a-z][a-z0-9_-]*:[a-z][a-z0-9_-]*$")
+SINGLE_VALUE_TRAIT_AXES = {"form", "palette", "presentation"}
+MIN_UNIQUE_IMAGE_TARGET = 2000
 
 
 def register(subparsers) -> None:
@@ -24,6 +28,9 @@ def register(subparsers) -> None:
     actions = parser.add_subparsers(dest="assets_action", required=True)
     report = actions.add_parser("report", help="show item coverage and asset-family distribution")
     report.add_argument("--all", action="store_true", help="show every asset family")
+    report.add_argument(
+        "--diversity", action="store_true", help="show visual palette and item-form diversity"
+    )
     actions.add_parser("audit", help="fail on missing, stale, or conflicting item art links")
     actions.add_parser("sync", help="refresh item_ids in asset-index.jsonl from item match rules")
     inspect = actions.add_parser("inspect", help="list item seeds assigned to one asset family")
@@ -74,7 +81,14 @@ def run(args) -> int:
 
     linked, link_issues = _read_links(items, records, winners)
     issues.extend(link_issues)
-    _print_report(items, records, linked, issues, show_all=getattr(args, "all", False))
+    _print_report(
+        items,
+        records,
+        linked,
+        issues,
+        show_all=getattr(args, "all", False),
+        show_diversity=getattr(args, "diversity", False),
+    )
     if args.assets_action == "audit":
         if issues:
             fail(f"asset audit failed: {len(issues)} issue(s)")
@@ -217,6 +231,25 @@ def _load_index() -> list[dict]:
             raise ToolError(
                 f"{INDEX_PATH.name}:{line_number}: '{asset_id}' item_ids must be strings"
             )
+        visual_traits = record.get("visual_traits", [])
+        if not isinstance(visual_traits, list) or any(
+            not isinstance(value, str) or not VISUAL_TRAIT_RE.fullmatch(value)
+            for value in visual_traits
+        ):
+            raise ToolError(
+                f"{INDEX_PATH.name}:{line_number}: '{asset_id}' visual_traits "
+                "must be namespaced strings such as 'form:robe'"
+            )
+        single_axes = [
+            value.split(":", 1)[0]
+            for value in visual_traits
+            if value.split(":", 1)[0] in SINGLE_VALUE_TRAIT_AXES
+        ]
+        if len(single_axes) != len(set(single_axes)):
+            raise ToolError(
+                f"{INDEX_PATH.name}:{line_number}: '{asset_id}' has conflicting "
+                "form, palette, or presentation tags"
+            )
         records.append(record)
     return records
 
@@ -315,6 +348,7 @@ def _print_report(
     issues: list[str],
     *,
     show_all: bool,
+    show_diversity: bool = False,
 ) -> None:
     counts = Counter(linked.values())
     used = sum(counts.get(record["id"], 0) > 0 for record in records)
@@ -351,6 +385,226 @@ def _print_report(
             print(f"  - {issue}")
         if len(issues) > 30:
             print(f"  ... {len(issues) - 30} more")
+    if show_diversity:
+        _print_diversity(items, records, linked)
+
+
+def _print_diversity(
+    items: dict[str, dict[str, str]], records: list[dict], linked: dict[str, str]
+) -> None:
+    unique_images = len({record["path"] for record in records})
+    print(
+        f"  unique image target: at least {MIN_UNIQUE_IMAGE_TARGET} | "
+        f"current {unique_images} | remaining {max(0, MIN_UNIQUE_IMAGE_TARGET - unique_images)}"
+    )
+    grouped_items: Counter[tuple[str, str]] = Counter(
+        (item["category"], item["subcategory"]) for item in items.values()
+    )
+    grouped_families: dict[tuple[str, str], set[str]] = {}
+    grouped_paths: dict[tuple[str, str], set[str]] = {}
+    for record in records:
+        groups = {
+            (items[item_id]["category"], items[item_id]["subcategory"])
+            for item_id in record.get("item_ids", [])
+            if item_id in items
+        }
+        for group in groups:
+            grouped_families.setdefault(group, set()).add(record["id"])
+            grouped_paths.setdefault(group, set()).add(record["path"])
+
+    print("\nitem visual diversity:")
+    print("  seed category/subcategory | seeds | families | unique images")
+    for category, subcategory in sorted(grouped_items):
+        group = (category, subcategory)
+        print(
+            f"  {category}/{subcategory} | {grouped_items[group]} | "
+            f"{len(grouped_families.get(group, set()))} | "
+            f"{len(grouped_paths.get(group, set()))}"
+        )
+
+    _print_equipment_forms(items, records)
+    _print_equipment_presentations(items, records)
+    _print_palette_distribution(items, records, linked)
+    _print_visual_trait_distribution(items, records)
+
+
+def _print_equipment_forms(items: dict[str, dict[str, str]], records: list[dict]) -> None:
+    forms: dict[str, dict[str, set[str]]] = {}
+    equipment_ids = {item_id for item_id, item in items.items() if item["category"] == "equipment"}
+    for record in records:
+        match = record["match"]
+        if match.get("category") != "equipment" or "id_prefix" not in match:
+            continue
+        prefix = match["id_prefix"].removesuffix("_")
+        form = forms.setdefault(prefix, {"items": set(), "families": set(), "paths": set()})
+        form["items"].update(set(record.get("item_ids", [])) & equipment_ids)
+        form["families"].add(record["id"])
+        form["paths"].add(record["path"])
+
+    print("  equipment id-prefix forms:")
+    if not forms:
+        print("    none indexed")
+    ordered_forms = sorted(
+        forms.items(), key=lambda entry: (-len(entry[1]["items"]), entry[0])
+    )
+    for name, values in ordered_forms:
+        print(
+            f"    {name}: {len(values['items'])} seeds | "
+            f"{len(values['families'])} families | {len(values['paths'])} images"
+        )
+
+    gender_words = {"male", "female", "masculine", "feminine"}
+    explicit_ids = {
+        item_id
+        for item_id in equipment_ids
+        if gender_words & set(re.findall(r"[a-z]+", item_id.lower()))
+    }
+    print(
+        "  equipment seed IDs with explicit gender words: "
+        f"{len(explicit_ids)} of {len(equipment_ids)}"
+    )
+
+
+def _print_equipment_presentations(
+    items: dict[str, dict[str, str]], records: list[dict]
+) -> None:
+    equipment_families: list[tuple[dict, set[str]]] = []
+    for record in records:
+        ids = {
+            item_id
+            for item_id in record.get("item_ids", [])
+            if items.get(item_id, {}).get("category") == "equipment"
+        }
+        if ids:
+            equipment_families.append((record, ids))
+    tagged: Counter[str] = Counter()
+    tagged_items: Counter[str] = Counter()
+    untagged_families = 0
+    untagged_items = 0
+    for record, item_ids in equipment_families:
+        presentation = next(
+            (
+                value.removeprefix("presentation:")
+                for value in record.get("visual_traits", [])
+                if value.startswith("presentation:")
+            ),
+            None,
+        )
+        if presentation is None:
+            untagged_families += 1
+            untagged_items += len(item_ids)
+        else:
+            tagged[presentation] += 1
+            tagged_items[presentation] += len(item_ids)
+    labels = ("male", "female", "unisex")
+    counts = ", ".join(f"{label} {tagged[label]}" for label in labels)
+    seed_counts = ", ".join(f"{label} {tagged_items[label]}" for label in labels)
+    print(
+        "  equipment presentation tags (families): "
+        f"{counts}, untagged {untagged_families}"
+    )
+    print(
+        "  equipment presentation tags (seeds): "
+        f"{seed_counts}, untagged {untagged_items}"
+    )
+
+
+def _print_palette_distribution(
+    items: dict[str, dict[str, str]], records: list[dict], linked: dict[str, str]
+) -> None:
+    path_palette = {
+        path: _dominant_palette(GAME_DIR / path.removeprefix("res://"))
+        for path in sorted({record["path"] for record in records})
+    }
+    palette_files: Counter[str] = Counter()
+    palette_families: Counter[str] = Counter()
+    palette_items: Counter[str] = Counter()
+    for record in records:
+        palette = path_palette[record["path"]]
+        palette_families[palette] += 1
+        palette_items[palette] += sum(
+            linked.get(item_id) == record["id"] for item_id in record.get("item_ids", [])
+        )
+    for palette in path_palette.values():
+        palette_files[palette] += 1
+
+    print("  dominant raster hue by unique image (SVGs are marked unmeasured):")
+    for palette, _count in palette_files.most_common():
+        print(
+            f"    {palette}: {palette_files[palette]} files | "
+            f"{palette_families[palette]} families | {palette_items[palette]} seeds"
+        )
+
+
+def _dominant_palette(path: Path) -> str:
+    if path.suffix.lower() != ".png":
+        suffix = path.suffix.lower().lstrip(".") or "unknown"
+        return f"{suffix}-unmeasured"
+    with Image.open(path) as opened:
+        image = opened.convert("RGBA")
+    image.thumbnail((64, 64), Image.Resampling.BOX)
+    colors: Counter[str] = Counter()
+    for red, green, blue, alpha in image.getdata():
+        if alpha < 128:
+            continue
+        hue, saturation, value = colorsys.rgb_to_hsv(red / 255, green / 255, blue / 255)
+        if saturation < 0.2 or value < 0.12:
+            continue
+        colors[_hue_family(hue)] += 1
+    return colors.most_common(1)[0][0] if colors else "neutral"
+
+
+def _hue_family(hue: float) -> str:
+    if hue < 0.035 or hue >= 0.965:
+        return "red"
+    if hue < 0.10:
+        return "orange"
+    if hue < 0.17:
+        return "yellow"
+    if hue < 0.42:
+        return "green"
+    if hue < 0.53:
+        return "cyan"
+    if hue < 0.69:
+        return "blue"
+    if hue < 0.80:
+        return "violet"
+    return "magenta"
+
+
+def _print_visual_trait_distribution(items: dict[str, dict[str, str]], records: list[dict]) -> None:
+    traits: dict[str, dict[str, set[str]]] = {}
+    tagged_families: set[str] = set()
+    tagged_items: set[str] = set()
+    for record in records:
+        values = record.get("visual_traits", [])
+        if values:
+            tagged_families.add(record["id"])
+            tagged_items.update(
+                item_id for item_id in record.get("item_ids", []) if item_id in items
+            )
+        for trait in values:
+            axis, value = trait.split(":", 1)
+            entry = traits.setdefault(axis, {}).setdefault(value, set())
+            entry.add(record["id"])
+    print(
+        "  explicit visual traits: "
+        f"{len(tagged_families)} of {len(records)} families tagged; "
+        f"{len(tagged_items)} of {len(items)} seeds covered"
+    )
+    if not traits:
+        print("    no visual_traits recorded yet")
+        return
+    for axis, values in sorted(traits.items()):
+        axis_total = sum(len(families) for families in values.values())
+        print(f"    {axis} ({axis_total} family tags):")
+        for value, families in sorted(values.items(), key=lambda entry: (-len(entry[1]), entry[0])):
+            seed_count = sum(
+                len(record.get("item_ids", []))
+                for record in records
+                if record["id"] in families
+            )
+            print(f"      {value}: {len(families)} families | {seed_count} seeds")
 
 
 def _inspect(records: list[dict], asset_id: str, limit: int) -> int:

@@ -52,6 +52,12 @@ def register(actions) -> None:
         help="terms recorded with the generated asset",
     )
     generate.add_argument("--reference-id", action="append", default=[])
+    generate.add_argument(
+        "--visual-trait",
+        action="append",
+        default=[],
+        help="record a tag such as form:robe, presentation:female, or palette:cinnabar",
+    )
 
 
 def run(args) -> int:
@@ -63,6 +69,15 @@ def run(args) -> int:
         raise ToolError(f"item asset id '{record['id']}' cannot form a safe filename")
     if args.target_size < 64 or args.target_size > 2048 or args.target_size % 16:
         raise ToolError("--target-size must be a multiple of 16 between 64 and 2048")
+    if any(not assets.VISUAL_TRAIT_RE.fullmatch(value) for value in args.visual_trait):
+        raise ToolError("--visual-trait must use lowercase namespace:value form")
+    selected_axes = [
+        value.split(":", 1)[0]
+        for value in args.visual_trait
+        if value.split(":", 1)[0] in assets.SINGLE_VALUE_TRAIT_AXES
+    ]
+    if len(selected_axes) != len(set(selected_axes)):
+        raise ToolError("only one form, palette, and presentation tag may be supplied per family")
 
     filename = f"{record['id']}.png"
     asset_path = f"res://assets/items/generated/{filename}"
@@ -79,6 +94,7 @@ def run(args) -> int:
         ),
         "match": record["match"],
         "family_examples": record.get("item_ids", [])[:5],
+        "visual_traits": args.visual_trait,
     }
     image_path, prompt, seed = map_generate.generate(
         generation_record,
@@ -127,6 +143,16 @@ def run(args) -> int:
         "alpha_erode_size": args.alpha_erode_size,
     }
     current["reference_id"] = args.reference_id or ["docs/art-direction.md#item-icons"]
+    traits = set(current.get("visual_traits", []))
+    for value in args.visual_trait:
+        axis = value.split(":", 1)[0]
+        if axis in assets.SINGLE_VALUE_TRAIT_AXES:
+            traits = {existing for existing in traits if not existing.startswith(f"{axis}:")}
+        traits.add(value)
+    if traits:
+        current["visual_traits"] = sorted(traits)
+    else:
+        current.pop("visual_traits", None)
     _write_index(current_records)
     ok(f"installed {asset_path}; retained {len(current.get('item_ids', []))} item-seed links")
     return 0
@@ -138,9 +164,7 @@ def _check_install_target(
     if not asset_path.startswith("res://assets/items/generated/"):
         raise ToolError("generated item icons must be stored under res://assets/items/generated/")
     shared = [
-        other["id"]
-        for other in records
-        if other is not record and other["path"] == asset_path
+        other["id"] for other in records if other is not record and other["path"] == asset_path
     ]
     if shared:
         raise ToolError(f"generated path is also assigned to another family: {', '.join(shared)}")
@@ -159,8 +183,7 @@ def _check_install_target(
 def _write_index(records: list[dict]) -> None:
     index_path = assets.INDEX_PATH
     content = "".join(
-        json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n"
-        for record in records
+        json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n" for record in records
     )
     index_path.parent.mkdir(parents=True, exist_ok=True)
     temporary_path: Path | None = None

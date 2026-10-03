@@ -16,6 +16,8 @@ Cultivation-fantasy relic illustration: mystical, handmade, and legible at inven
 - Reuse a category/subcategory family from `game/assets/asset-index.jsonl`. Generated PNGs are the painted target; SVGs cover families without a generated seed. Item names, elements, and grades can use UI tint or badges instead of one image per variant.
 - `id_prefix` and `id_regex` rules override category/subcategory families for distinct object forms.
 - `item_ids` links each current item seed to its family in the same SSOT index. Run `uv run python -m tools assets sync` after item/rule edits, then `uv run python -m tools assets audit`; `report` shows coverage and distribution.
+- Optional `visual_traits` use `axis:value` tags such as `form:robe`, `presentation:female`, `palette:cinnabar`, and `motif:cloud-scroll`.
+- Review palette, forms, tags, and the 2,000 unique-image floor with `uv run python -m tools assets report --diversity` before planning generation batches.
 
 ## Top-down world map
 
