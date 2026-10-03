@@ -482,23 +482,34 @@ func act_recover() -> bool:
 	return repaired
 
 
-## What a refused recovery means, read from the same scan `recover_next` performs:
-## a burned channel on the network is a wound the elixir would close, so its
-## absence is the price. A channel that is merely not yet unlocked is not a wound,
-## which is why this counts through the network rather than off the facade's
-## `channels` list -- that list reports an un-unlocked channel as injured, so it
-## would answer "you owe an elixir" to a hero who has never been burned.
+## What a refused recovery means, read from the facade's own per-channel `injured`
+## flag rather than inferred from the `false` alone (ADR 0150).
+##
+## The two branches `recover_next` can refuse on are forced apart here: a burn on
+## the network is a wound the elixir would close, so a refusal with one present has
+## exactly one remaining cause — the elixir. A refusal with none is "look
+## elsewhere". Collapsing both into one sentence (ADR 0043 — a verb that returns
+## false and says nothing is indistinguishable from a button wired to nothing) sent
+## the player hunting for a wound that did not exist.
+##
+## Not-yet-unlocked is filtered because the facade reports a channel that is not
+## yet on the network as `injured: true`; counting those would answer "you owe an
+## elixir" to a hero who has never been burned.
 func _recovery_refusal() -> String:
 	return "Recovery elixir absent" if _burned_channels() > 0 else "No burned channel to repair"
 
 
+## The facade publishes no elixir id, so the price is named by its ROLE — the word
+## the authored content and its acquisition are indexed by — and never by an id
+## restated here and free to drift out of step with the seeds. That residual gap
+## against ADR 0150 is recorded, not papered over: publishing the ids is a facade
+## change, and this screen may not make one.
 func _burned_channels() -> int:
 	var burned := 0
 	if _actor == null:
 		return burned
-	for definition in MeridianDefaults.all():
-		var channel := _actor.meridians.get_meridian(definition.id)
-		if channel != null and channel.is_injured():
+	for entry in _channel_entries(MindCultivationApi.summary(_actor)):
+		if String(entry.get("state", "")) != "unknown" and bool(entry.get("injured", false)):
 			burned += 1
 	return burned
 
