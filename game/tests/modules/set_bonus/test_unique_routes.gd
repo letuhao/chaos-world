@@ -89,13 +89,7 @@ func test_the_route_index_never_restates_a_fact_the_item_or_the_sets_already_own
 			assert_eq(
 				row.has(column),
 				false,
-				(
-					(
-						"%s: the route index must not restate `%s` — the definition or the set "
-						+ "definitions own it"
-					)
-					% [unique_id, column]
-				)
+				"%s: the route index must not restate `%s` — its owner does" % [unique_id, column]
 			)
 	# And the owners really do answer all three, so dropping the copies cost nothing
 	# rather than dropping the only declaration.
@@ -124,8 +118,7 @@ func test_the_route_index_never_restates_a_fact_the_item_or_the_sets_already_own
 
 
 ## Membership is read from the set definitions, so a unique cannot be listed by a
-## set and disowned by a column, and a set cannot claim a unique that does not
-## exist. Derived, not declared: this is the whole point of dropping `set_id`.
+## set and disowned by a column. Derived, not declared: this is why `set_id` is gone.
 func test_the_owning_set_comes_from_membership_rather_than_the_index() -> void:
 	var declared := 0
 	for row in _route_rows():
@@ -141,9 +134,7 @@ func test_the_owning_set_comes_from_membership_rather_than_the_index() -> void:
 		var derived := String(SetBonusApi.drop_route(StringName(unique_id))["set_id"])
 		assert_ne(derived, "", "%s: its owning set is derived, not empty" % unique_id)
 		assert_eq(
-			derived,
-			_set_of(StringName(unique_id)),
-			"%s: and it is the set that actually lists it" % unique_id
+			derived, _set_of(StringName(unique_id)), "%s: it is the set that lists it" % unique_id
 		)
 
 
