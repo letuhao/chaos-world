@@ -91,7 +91,11 @@ func test_the_sea_provider_publishes_exactly_its_authored_surface() -> void:
 ## capacity somebody downstream has to know to distrust.
 func test_no_sea_component_means_no_contribution() -> void:
 	var actor := Actor.new(&"bare", {Stat.WILL: 10.0, MindStats.MENTAL_CLARITY: 15.0})
-	MindCultivationApi.attach(actor)
+	# `attach` is deliberately NOT called here. It used to leave the actor sea-less,
+	# which is how this test built the absent case -- but ADR 0095's shape now makes the
+	# sea part of the path, so `attach` guarantees one (BL-0523). Calling it would make
+	# the absent case unreachable and this assertion would silently stop testing
+	# anything. A bare actor is the honest way to have no sea.
 	var emitted: Dictionary = SeaProvider.new().contribute(actor.stats._context)
 	assert_eq(emitted, {}, "nothing to say without a sea")
 

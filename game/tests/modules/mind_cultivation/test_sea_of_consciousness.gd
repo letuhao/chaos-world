@@ -114,8 +114,13 @@ func test_attach_sea_is_idempotent() -> void:
 func test_attach_is_idempotent() -> void:
 	var actor := Actor.new(&"test", {})
 	MindCultivationApi.attach(actor)
+	var after_first := actor.stats.provider_count()
+	assert_eq(after_first > 0, true, "attach installs the mind's providers")
 	MindCultivationApi.attach(actor)
-	assert_eq(actor.stats.provider_count(), 1, "no duplicate mind provider")
+	# Idempotence is "a second attach adds nothing", not a fixed total. `attach` now
+	# installs MindProvider AND SeaProvider (BL-0523), so the old hardcoded 1 described
+	# the pre-fix world; asserting the count is unchanged is the property that matters.
+	assert_eq(actor.stats.provider_count(), after_first, "no duplicate provider on re-attach")
 
 
 ## The sea's emitted stat surface is capacity, and capacity is the RESERVOIR's
