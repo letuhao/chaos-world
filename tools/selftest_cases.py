@@ -14,11 +14,13 @@ quiet lie with a non-zero exit code attached.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import tempfile
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from . import gate_reach, loop_guard, lore, map_theme, mutation_history, unique_characters
+from . import gate_reach, godot, loop_guard, lore, map_theme, mutation_history, unique_characters
 from .acquisition import selftest_case  # noqa: F401  registers its cases on import
 from .lore.context import character_draft, readiness_gaps, resolve_context
 from .selftest import case, expect, write
@@ -1146,3 +1148,163 @@ def _ingest_does_not_assert_seating() -> None:
         mortal is not None and "tier_ids" not in mortal.get("attributes", {}),
         "tier_ids on a tier record is applicability metadata on the wrong entity",
     )
+
+
+# --- INC-0018: an expired lock wait must name WHO holds it and how long, or say that
+# --- nobody has. The two cases used to be one sentence, and the only safe response to an
+# --- ambiguous lock is to WAIT, so an agent that cannot tell them apart eventually
+# --- deletes godot.lock - which is BL-0424 on a lock with a live owner.
+
+
+def _expiry_against(root: Path) -> str:
+    """`_lock_expiry` over a fixture sidecar rather than the repository's.
+
+    Both paths are redirected, not just the lock. `PROJECT_LOCK` is read back into the
+    message ("do not delete godot.lock"), so leaving it pointed at the real file would
+    report a name the fixture never asserted - and a guard test that checks a real
+    path for a real file's contents is the wrong-tree bug `lore.context` already paid
+    for once.
+
+    The message is built with NO holder rather than by driving `project_lock()` at an
+    expired clock. That is deliberate: a wait expiry needs an *other* live process to
+    race for the lock, and this repo has been reset twice by runaway processes. A test
+    suite that hangs is worse than the bug it covers, so the message is exercised where
+    the incident lives - in what it says - and the acquire/release contract is asserted
+    separately, in-process, with no contention and no engine.
+    """
+    original = godot.PROJECT_LOCK, godot.PROJECT_LOCK_OWNER
+    godot.PROJECT_LOCK = root / godot.PROJECT_LOCK.name
+    godot.PROJECT_LOCK_OWNER = root / godot.PROJECT_LOCK_OWNER.name
+    try:
+        return godot._lock_expiry(f"another Godot run still held {godot.PROJECT_LOCK.name}")
+    finally:
+        godot.PROJECT_LOCK, godot.PROJECT_LOCK_OWNER = original
+
+
+def _owner_sidecar(root: Path, pid: int, seconds_ago: float) -> Path:
+    """A fixture sidecar naming `pid` as holding the lock `seconds_ago`."""
+    since = datetime.now(UTC) - timedelta(seconds=seconds_ago)
+    return write(
+        root / godot.PROJECT_LOCK_OWNER.name,
+        json.dumps({"pid": pid, "since": since.isoformat(timespec="seconds")}) + "\n",
+    )
+
+
+@case("godot: an expired lock wait NAMES the holder pid and how long it has held it")
+def _lock_expiry_names_the_holder() -> None:
+    """The case INC-0018 actually reported, and the reason the sidecar exists.
+
+    The old message was `another Godot run has held godot.lock for more than 900s`. An
+    agent reading that learns nothing actionable: it cannot tell a run that started two
+    seconds ago from one that wedged at the same moment it did, and it cannot tell
+    either from a holder that died mid-lock. So it waits, and then it deletes the file,
+    because waiting has stopped being a plan.
+    """
+    holder = 71564
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        _owner_sidecar(root, holder, seconds_ago=95)
+
+        message = _expiry_against(root)
+
+        expect(
+            str(holder) in message,
+            f"the expiry message names no holder pid, so a blocked agent cannot find "
+            f"out who to wait for: {message}",
+        )
+        expect(
+            "1m" in message,
+            f"the expiry message reports no hold duration; a lock taken 95s ago has to "
+            f"read as 1m so the number is comparable to the 900s ceiling: {message}",
+        )
+        expect(
+            "since" in message and "WAIT" in message,
+            "the expiry message gives neither the moment the lock was taken nor the "
+            f"action to take next, which is the whole content of the fix: {message}",
+        )
+
+
+@case("godot: an expired lock wait with NO sidecar says the holder never recorded itself")
+def _lock_expiry_without_a_sidecar_says_so() -> None:
+    """The branch that matters most, and the one the old message could not express.
+
+    A missing sidecar while the lock is demonstrably held is not an absence of
+    information, it IS the information: the process that took the lock never reached
+    its own cleanup. That is the case INC-0018's reporter would otherwise have had to
+    resolve by deleting a live lock file - it looked exactly like the 22-hour-old empty
+    stale lock they were staring at.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+
+        message = _expiry_against(root)
+
+        expect(
+            godot.PROJECT_LOCK_OWNER.name in message
+            and "no holder has ever recorded itself there" in message,
+            "the expiry message does not say that no holder recorded itself, so the "
+            "dead-holder case still reads as an ordinary queue: " + message,
+        )
+        expect(
+            "WAITING CANNOT HELP" in message and "re-run the same command" in message,
+            "the no-sidecar branch does not name the action that can work. Waiting is "
+            "provably futile here - the process that holds the lock is not running to "
+            "release it - so the message has to say so: " + message,
+        )
+        expect(
+            "do not delete the file" in message,
+            "the no-sidecar branch leaves an agent with no safe instruction, which is "
+            "precisely how the lock file gets deleted: " + message,
+        )
+
+
+@case("godot: holding the project lock publishes its holder, and releases clear it")
+def _lock_publishes_and_clears_its_holder() -> None:
+    """The other half of the contract, and the half that keeps the two cases apart.
+
+    If the sidecar were written before the lock was taken, or cleared after it was
+    given up, it would describe a holder that does not have the lock - which is how a
+    diagnostic turns into a lie. And if it is never cleared at all, every expiry would
+    name the last agent to run and none of them would ever look dead.
+
+    No contention and no engine: this only needs one process entering and leaving the
+    critical section, which is what the sidecar's lifecycle is defined against.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        original = godot.PROJECT_LOCK, godot.PROJECT_LOCK_OWNER
+        godot.PROJECT_LOCK = root / godot.PROJECT_LOCK.name
+        godot.PROJECT_LOCK_OWNER = root / godot.PROJECT_LOCK_OWNER.name
+        try:
+            expect(
+                not godot.PROJECT_LOCK_OWNER.exists(),
+                f"fixture did not start clean: {godot.PROJECT_LOCK_OWNER} already exists, "
+                "so nothing below can distinguish writing from finding",
+            )
+            with godot.project_lock():
+                record = json.loads(godot.PROJECT_LOCK_OWNER.read_text(encoding="utf-8"))
+                expect(
+                    record.get("pid") == os.getpid(),
+                    f"the sidecar inside the critical section names pid "
+                    f"{record.get('pid')!r} rather than the process holding the lock, so a "
+                    "blocked agent would be sent to wait on someone else",
+                )
+                expect(
+                    isinstance(record.get("since"), str),
+                    f"the sidecar records no `since`: {record!r}. Without a start time a "
+                    "blocked agent can see WHO but not HOW LONG, which is half the fix",
+                )
+            expect(
+                not godot.PROJECT_LOCK_OWNER.exists(),
+                f"the sidecar outlived the lock: {godot.PROJECT_LOCK_OWNER} is still there "
+                "after release, so every future expiry names a holder who has already "
+                "let go",
+            )
+            expect(
+                godot.PROJECT_LOCK.exists(),
+                f"{godot.PROJECT_LOCK} was removed by the critical section. The advisory "
+                "lock IS the mutual exclusion; unlinking the file hands the next arriving "
+                "process one nobody holds, and that is BL-0424",
+            )
+        finally:
+            godot.PROJECT_LOCK, godot.PROJECT_LOCK_OWNER = original

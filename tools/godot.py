@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import subprocess
 import time
 from collections.abc import Iterator
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from .common import REPO_ROOT, ToolError, info, warn
@@ -106,6 +108,60 @@ RAM_CEILING_BYTES = 12 * 1024 * 1024 * 1024
 PROJECT_LOCK = LOG_DIR / "godot.lock"
 LOCK_WAIT_SECONDS = 900
 
+# WHO holds the lock, published beside it. INC-0018: the expiry error used to say only
+# "held for more than 900s", so "queued behind a live run" and "held by a process that
+# died mid-lock" were the same sentence. With ~20 agents the first is routine and the
+# second is a genuine incident, and the only safe response to an ambiguous lock is to
+# WAIT - so an agent that cannot tell them apart eventually deletes the lock file, which
+# is BL-0424 on a lock with a live owner and lets two Godot processes write one project.
+#
+# The sidecar is what tells them apart. It is written on ACQUIRE and removed on RELEASE,
+# and the OS drops the advisory lock the instant the holder's process dies without
+# running that `finally`. So the sidecar's ABSENCE while someone is demonstrably blocked
+# is itself the finding: it can only mean the previous owner died holding the lock. That
+# possibility is reported, not hidden - see `_lock_expiry`.
+#
+# Two things this sidecar is deliberately NOT:
+#
+#   - Not mtime. `godot.lock`'s own mtime is worthless here (the incident reporter found
+#     it 22 hours old and empty, which looks exactly like a stale lock, while it was
+#     live: an OS advisory lock ignores mtime entirely). This file's own mtime is equally
+#     suspect for the same reason - it records when the holder was last *touched*, not
+#     how long it has held. The explicit `since` field is authoritative; `stat` is only
+#     ever a fallback for a sidecar too malformed to parse.
+#   - Not a liveness oracle. A stale sidecar in a moment when the lock is FREE says
+#     nothing about a current holder, and is the residue of an acquisition whose owner
+#     was killed between taking the lock and writing this file. The consumer therefore
+#     only reads it where a failed `msvcrt.locking`/`fcntl.flock` has just PROVED
+#     somebody else holds the lock, which is what makes the sidecar meaningful at all.
+PROJECT_LOCK_OWNER = LOG_DIR / "godot.lock.owner"
+
+# Both locking backends below take an EXCLUSIVE byte-range lock held by the operating
+# system for the life of the process (Windows: `msvcrt.locking`, POSIX: `fcntl.flock`).
+# A handle close does NOT release it, which is why the finally below explicitly unlocks:
+# on the docstring's account `handle.close()` is "the last reference the lock file has
+# outside this process", which is not the same claim as "this releases the lock". So the
+# unlock has to run, and a process that dies without running it relies on the OS instead.
+#
+# That last step is the one this whole change turns on, and it is worth being exact
+# about it: the repo cannot verify it. `msvcrt.locking` is a thin wrapper over
+# `LockFile`/`LockFileEx`, and whether the byte range is dropped when a process dies
+# belongs to the kernel - as does whether the calling process is a lock OWNER or a lock
+# HANDLE holder (Windows terminology, not the POSIX one). Neither is decided by anything
+# in this file, and nothing here tests it. What IS true and is relied on:
+#
+#   - The next acquirer's non-blocking lock attempt returned `OSError` *just now*. That
+#     is observed, not assumed, and it is the entire premise of every claim below. If
+#     someone is holding it, they are holding it.
+#   - The holder has not released it. The holder's own release is the `finally` block
+#     below; the holder that is *not* releasing it is a process that is not executing
+#     that block, i.e. one that was killed or crashed.
+#
+# Those two together are the whole of "safe to proceed": no process of ours is in the
+# critical section, and the sidecar says whose it was. The claim is deliberately NOT
+# "this file is stale", because that is the claim INC-0018 says is unverifiable, and it
+# is not what is being asserted.
+
 
 @contextmanager
 def project_lock() -> Iterator[None]:
@@ -113,7 +169,13 @@ def project_lock() -> Iterator[None]:
 
     Serialises `--import` and suite runs so concurrent agents cannot corrupt the
     shared import cache. Fails loudly after `LOCK_WAIT_SECONDS` rather than
-    blocking indefinitely.
+    blocking indefinitely, and the failure names the holder.
+
+    Publishes `PROJECT_LOCK_OWNER` for the life of the critical section and removes it
+    on the way out, so a blocked agent can tell a live queue from a lock whose owner
+    died without running the cleanup. Nothing here ever deletes `PROJECT_LOCK` itself:
+    the advisory lock IS the mutual exclusion, so unlinking it would hand the next
+    arriving process a file nobody holds a lock on.
     """
     PROJECT_LOCK.parent.mkdir(parents=True, exist_ok=True)
     handle = open(PROJECT_LOCK, "a+")  # noqa: SIM115 - closed in the finally below
@@ -134,12 +196,27 @@ def project_lock() -> Iterator[None]:
             except OSError:
                 if time.monotonic() >= deadline:
                     raise ToolError(
-                        f"another Godot run has held {PROJECT_LOCK.name} for more than "
-                        f"{LOCK_WAIT_SECONDS}s; giving up rather than waiting forever"
+                        _lock_expiry(
+                            f"another Godot run still held {PROJECT_LOCK.name} after "
+                            f"{LOCK_WAIT_SECONDS}s; giving up rather than waiting forever"
+                        )
                     ) from None
                 time.sleep(1.0)
+        # Only written once the lock is HELD, so the sidecar can never claim a holder
+        # that does not have it. The gap between the line above and this write is the
+        # only window where the sidecar can be absent for a live holder: a process
+        # killed inside it takes the lock with it. That is a microsecond, and it is the
+        # same by construction on every release, so it is far from the 900s that
+        # distinguishes the two readings.
+        _write_lock_owner()
         yield
     finally:
+        # Clear the sidecar BEFORE unlocking. The other order has a real failure mode:
+        # between the unlock and the unlink another agent can legitimately acquire the
+        # lock and write its own sidecar, and this process would then delete it - leaving
+        # a live lock with no owner record, which reads as the dead-holder case and is
+        # exactly the confusion this file exists to remove.
+        _clear_lock_owner()
         if acquired:
             try:
                 if os.name == "nt":
@@ -154,6 +231,147 @@ def project_lock() -> Iterator[None]:
             except OSError as exc:  # pragma: no cover - best-effort release
                 warn(f"could not release the project lock: {exc}")
         handle.close()
+
+
+def _utc_now() -> datetime:
+    """Now, in the timezone the sidecar records - UTC, so two machines on two zones
+    still write a comparable `since`."""
+    return datetime.now(UTC)
+
+
+def _write_lock_owner() -> None:
+    """Publish who holds the lock and since when, for a blocked agent to read.
+
+    Written atomically: a reader can find a truncated sidecar if the write were not,
+    and a half-written record is indistinguishable from a corrupted one.
+
+    Best-effort by design. It is a diagnostic, and refusing to run Godot because a
+    diagnostic could not be written would turn a reporting nicety into the outage. The
+    expiry path degrades honestly: an unreadable sidecar is reported as unreadable
+    rather than guessed at.
+    """
+    moment = _utc_now()
+    record = json.dumps(
+        {
+            "pid": os.getpid(),
+            "since": moment.isoformat(timespec="seconds"),
+            "lock": PROJECT_LOCK.name,
+        }
+    )
+    staging = PROJECT_LOCK_OWNER.with_name(PROJECT_LOCK_OWNER.name + f".{os.getpid()}")
+    try:
+        staging.write_text(record + "\n", encoding="utf-8")
+        os.replace(staging, PROJECT_LOCK_OWNER)
+    except OSError as exc:
+        warn(f"could not record the lock holder in {PROJECT_LOCK_OWNER.name}: {exc}")
+        with suppress(OSError):
+            staging.unlink()
+
+
+def _clear_lock_owner() -> None:
+    """Remove the sidecar this process wrote, and never anyone else's.
+
+    The `pid` guard is the whole point. A process killed between acquiring the lock and
+    writing the sidecar leaves none, so that is not a source of a survivor; but a
+    process killed *during* a run leaves one, and the next holder must not remove it on
+    the strength of reaching its own `finally` - the sidecar is the evidence that the
+    dead owner never reached theirs. So the record that is deleted has to be provably
+    ours.
+    """
+    try:
+        record = json.loads(PROJECT_LOCK_OWNER.read_text(encoding="utf-8"))
+        mine = record.get("pid") == os.getpid()
+    except (OSError, ValueError):
+        mine = False
+    if not mine:
+        return
+    with suppress(OSError):
+        PROJECT_LOCK_OWNER.unlink()
+
+
+def _held_since(since: str) -> str:
+    """How long the lock has been held, in human units.
+
+    Minutes once it matters, seconds while the numbers are still small - the difference
+    between "12s" and "12m" is the difference between a run that just started and one
+    that has been stuck for a fifth of the wait ceiling, and only the second one is
+    worth interrupting anyone over.
+
+    An unparseable timestamp is reported as such rather than guessed at: an age
+    computed from a fallback would be a number nobody can act on.
+    """
+    try:
+        age = _utc_now() - datetime.fromisoformat(since)
+    except (TypeError, ValueError):
+        return "an unknown time (the recorded `since` is not a readable timestamp)"
+    if age < timedelta(minutes=1):
+        return f"{int(age.total_seconds())}s"
+    return f"{int(age.total_seconds() // 60)}m"
+
+
+def _lock_expiry(lede: str) -> str:
+    """Name the holder on an expired wait, or say plainly that nobody has.
+
+    The two cases this separates are the ones INC-0018 says looked identical. Reaching
+    here means a non-blocking lock attempt failed, so somebody does hold the lock; the
+    only question is whether they are alive and running Godot.
+
+    The next action is named in both branches, and they are opposite:
+
+      - A sidecar exists, so the holder published an identity. WAIT. It may be queued
+        work rather than a stuck run, and the only safe response to a live holder is
+        patience.
+      - No sidecar exists, so the holder published nothing. Re-run and it will acquire.
+        Waiting cannot help, because the process this error is about is not running.
+
+    The second branch is a conclusion drawn from a negative, so it says exactly how far
+    the evidence goes rather than asserting a fact about the kernel: the lock attempt
+    really did fail (observed), the holder never published an identity (observed), and
+    the holder is therefore a process that did not reach its cleanup - killed, crashed,
+    or stopped between acquiring the lock and writing its sidecar. Whether the OS has
+    already dropped its advisory lock is the one step this module cannot verify from
+    inside Python, and the instruction is written to be correct under either answer:
+    prove it by re-running, rather than asserting it. Re-running is safe in both cases
+    because the lock is mutual exclusion, not a flag - if the previous owner really is
+    still alive, the re-run simply queues behind it again, which is what waiting would
+    have done.
+
+    It never says "delete the lock file", and neither should anything else. The file is
+    the mutual exclusion; removing it lets two Godot processes write one project
+    (BL-0424).
+    """
+    try:
+        record = json.loads(PROJECT_LOCK_OWNER.read_text(encoding="utf-8"))
+        pid, since = record["pid"], record["since"]
+    except FileNotFoundError:
+        pid = since = None
+    except (OSError, ValueError, KeyError, TypeError):
+        pid, since = None, None
+    head = f"{lede}. {PROJECT_LOCK_OWNER.name} says: "
+    if pid is None:
+        return (
+            head + "no holder has ever recorded itself there. Nobody alive is holding "
+            "this lock through this tool - the process that took it was killed, crashed, "
+            "or stopped before it could write its own sidecar, which is exactly the "
+            "case the old message could not express. WAITING CANNOT HELP: that process "
+            "is not running to release anything. Next action: re-run the same command. "
+            "There is no need to touch " + PROJECT_LOCK.name + " - the file is the "
+            "mutual exclusion, and removing it is how two Godot processes end up "
+            "writing one project (BL-0424). If the re-run fails to acquire with this "
+            "same message, then some holder really is still in the critical section "
+            "and this diagnosis is wrong: report that, do not delete the file."
+        )
+    return (
+        f"{head}pid {pid}, holding it since {since} - {_held_since(since)} as of "
+        f"now, so this is a live queue, not a dead holder. Next action: WAIT, and do "
+        f"engine-free work meanwhile (tools guards, tracker writes, ADRs, static "
+        f"checks, gdformat/gdlint --check; none of them take the lock). Do not delete "
+        f"{PROJECT_LOCK.name}: it is the mutual exclusion, and it ignores mtime, so a "
+        f"22-hour-old empty lock file is NOT evidence of a stale one - that reading is "
+        f"what nearly cost this repo BL-0424 on a live owner. If pid {pid} is not in "
+        f"`tasklist`, its holder has died without releasing, and the next run takes the "
+        f"lock on its own; waiting is then simply a waste of the ceiling."
+    )
 
 
 # A wall-clock ceiling bounds TIME, not BYTES, and that gap cost 10 GB of an SSD
