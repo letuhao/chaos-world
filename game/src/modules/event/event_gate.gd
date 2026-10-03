@@ -12,15 +12,33 @@ extends RefCounted
 ## `{verb, ...}` map:
 ##
 ##   `{verb: "fact",       id: &"<fact_id>", need: 3}`  — the world fact ledger
+##   `{verb: "declare",    other_id: &"<polity>"}`      — the war's sides and prize
 ##   `{verb: "has_fate",   id: &"<fate_id>"}`           — DestinyApi, delegated
 ##   `{verb: "counter",    id: &"<counter_id>", need: 3}` — DestinyApi, delegated
 ##   `{verb: "all_of",     of: [...]}`
 ##   `{verb: "any_of",     of: [...]}`
 ##   `{verb: "none_of",    of: [...]}`
 ##
-## **Only `fact` is local.** Every other verb is handed to `DestinyApi.gate`
-## verbatim, so there is exactly one fate evaluator in this repo and this module
-## cannot become a second one that answers a slightly different question.
+## **Only `fact` and `declare` are local.** Every other verb is handed to
+## `DestinyApi.gate` verbatim, so there is exactly one fate evaluator in this repo
+## and this module cannot become a second one that answers a slightly different
+## question.
+##
+## ## `declare` is a verb that gates NOTHING about the player
+##
+## A `sect_war` authors its declaration inside its own trigger:
+## `{verb: "declare", other_id, territory_id, mode, transfer, standing}`. It is not a
+## requirement — there is no ledger question it asks, and a world where the war is
+## "levied" is the same world in every period. It is a PAYLOAD the director reads
+## ([method EventApi._war_declaration]) and hands to `NationApi.declare_war`.
+##
+## It is nonetheless a verb in the requirement language, so it must be one this
+## evaluator can read: a requirement naming a verb the gate does not know refuses
+## closed, which made every authored `sect_war` unopenable with
+## `trigger_unmet/unknown_verb` — a war that exists in content and in a test and
+## cannot happen in the game. It passes when it names an `other_id` and refuses
+## `malformed` when it does not, because a war whose sides cannot be read must not
+## open with no declared prize (ADR 0085).
 ##
 ## ## Refuse-with-cause, never a silent false
 ##
@@ -34,14 +52,20 @@ const VERB_ANY_OF := &"any_of"
 const VERB_NONE_OF := &"none_of"
 const COMPOSITE_VERBS: Array[StringName] = [VERB_ALL_OF, VERB_ANY_OF, VERB_NONE_OF]
 
+## The verb a `sect_war` authors its sides and prize under. A payload rather than a
+## requirement — see the class docstring — but a requirement-language verb all the
+## same, so it is read here instead of being reported as a typo in every `.tres`.
+const VERB_DECLARE := &"declare"
+
 ## The verbs `DestinyGate` owns and this module therefore DELEGATES rather than
 ## re-implements. Listed so `catalog_report` can tell a typo from a delegation.
 const DELEGATED_VERBS: Array[StringName] = [&"has_fate", &"has_destiny", &"counter"]
 
-## The full vocabulary this module reads: the one it contributes plus the three it
+## The full vocabulary this module reads: the two it contributes plus the three it
 ## delegates. A verb outside this set is a content bug and is named as one.
 const KNOWN_VERBS: Array[StringName] = [
 	EventFacts.VERB_FACT,
+	VERB_DECLARE,
 	VERB_ALL_OF,
 	VERB_ANY_OF,
 	VERB_NONE_OF,
@@ -70,6 +94,8 @@ static func evaluate(actor: Actor, requirement: Dictionary) -> Dictionary:
 	match verb:
 		EventFacts.VERB_FACT:
 			return _has_fact(actor, requirement)
+		VERB_DECLARE:
+			return _declaration(requirement)
 		VERB_ALL_OF:
 			return _composite(actor, requirement, true, false)
 		VERB_ANY_OF:
@@ -135,6 +161,23 @@ static func _has_fact(actor: Actor, requirement: Dictionary) -> Dictionary:
 			}
 		],
 	}
+
+
+## A `declare` row reads as READABLE or it refuses — and it is the only question
+## asked of it. `actor` is deliberately NOT a parameter: this verb gates nothing
+## about the player, so the verdict cannot depend on a ledger and the composite
+## above may mix it freely with `fact` rows.
+##
+## Refusing on an unreadable declaration is the refusal that matters. A `sect_war`
+## whose `declare` row names no `other_id` would otherwise pass its own trigger,
+## open, and then be refused by `EventApi._declare` after `begin` had already
+## written the active row — a war that exists for one call and names no sides.
+static func _declaration(requirement: Dictionary) -> Dictionary:
+	if String(requirement.get("other_id", "")) == "":
+		return _refuse(
+			"malformed", "", "A declare row names the war's other side. This one names no other_id."
+		)
+	return _pass()
 
 
 ## Hand the requirement to the module that owns the verb, unchanged. Its verdict is

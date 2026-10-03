@@ -2,6 +2,12 @@ extends TestCase
 
 ## BL-0054 / ADR 0113 / ADR 0114 / ADR 0085: **the world event director.**
 ##
+## ## This file drives the WORLD; `test_event_content.gd` audits the TREE
+##
+## Everything below builds an actor and moves the world through it. The authored
+## content under `res://data/event/events/` has its own suite, so the two concerns
+## stay separate and this file fits inside the 1000-line lint cap.
+##
 ## ## The properties, not the buttons
 ##
 ## Every test here asserts something that must be true of the DESIGN rather than of
@@ -53,21 +59,8 @@ const TOURNAMENT := &"tournament_of_the_spirit_peaks"
 const TIDE := &"beast_tide_of_the_mortal_plains"
 const AUCTION := &"auction_at_the_immortal_court"
 const DISASTER := &"the_riven_peak_disaster"
-const INVASION := &"the_dawn_descent"
 const TREASURE := &"the_stone_that_answering"
 const MARCH := &"march_of_the_nine_provinces"
-const COURT := &"court_of_the_star"
-
-## BL-0054's named list. A director that ships none of these has not closed BL-0054.
-const NAMED_KINDS: Array[StringName] = [
-	EventDef.KIND_SECT_WAR,
-	EventDef.KIND_TOURNAMENT,
-	EventDef.KIND_BEAST_TIDE,
-	EventDef.KIND_AUCTION,
-	EventDef.KIND_DISASTER,
-	EventDef.KIND_DEMONIC_INVASION,
-	EventDef.KIND_RARE_TREASURE,
-]
 
 # --- Fixtures ---------------------------------------------------------------
 
@@ -286,6 +279,40 @@ func test_the_composite_verbs_are_reused_not_reimplemented() -> void:
 	assert_eq(bool(none_of.get("ok", false)), false, "none_of refuses a held fact")
 
 
+func test_the_declare_verb_is_readable_because_the_shipped_war_authors_one() -> void:
+	# A `sect_war` authors its declaration inside its own trigger, and that row is a
+	# verb in the requirement language. The gate did not know it, so every authored
+	# `sect_war` refused its OWN trigger with `unknown_verb` and could not open — a
+	# war that exists in content, in a test and in a catalog report and cannot
+	# happen in the game. `catalog_report` reported it as an unknown verb too, so
+	# the tree was unauditable as well as unopenable.
+	assert_eq(
+		EventGate.KNOWN_VERBS.has(EventGate.VERB_DECLARE),
+		true,
+		"`declare` is a verb this module reads"
+	)
+	assert_eq(
+		EventApi.catalog()["unknown_verbs"] as Array,
+		[],
+		"and the shipped war no longer reports one"
+	)
+	var declared := EventGate.evaluate(
+		_actor(), {"verb": &"declare", "other_id": &"court_of_the_star", "mode": &"siege"}
+	)
+	assert_eq(
+		bool(declared.get("ok", false)), true, "a declaration naming its other side is readable"
+	)
+
+
+func test_a_declaration_naming_no_other_side_is_malformed_never_passed() -> void:
+	# A war whose sides cannot be read must not open with no declared prize
+	# (ADR 0085). Passing it would let `begin` write the active row and then be
+	# refused by `_declare` a few lines later — a war that exists for one call.
+	var verdict := EventGate.evaluate(_actor(), {"verb": &"declare", "mode": &"siege"})
+	assert_eq(bool(verdict.get("ok", false)), false, "a declare row with no other_id is refused")
+	assert_eq(String(verdict.get("reason", "")), "malformed", "as malformed, not unmet")
+
+
 # --- 3. Stages and duration -------------------------------------------------
 
 
@@ -303,19 +330,51 @@ func test_a_stage_holds_for_exactly_the_authored_number_of_periods() -> void:
 
 
 func test_a_multi_period_pull_walks_one_stage_per_period_not_one_per_call() -> void:
-	# `final` requires two rounds fought; `first_round` fires one per period. So a
-	# single `advance(actor, 5)` must stop at `final`, not sprint past a requirement
-	# that the beats it would have skipped were supposed to write.
+	# `final` requires two rounds fought; `first_round` fires its beats once, when it
+	# opens. So a single `advance(actor, 5)` must stop at `final`, not sprint past a
+	# requirement that the beats it would have skipped were supposed to write.
+	#
+	# FIVE, not six. `registered` and `first_round` each hold one whole period and
+	# `final` holds one more, so the sixth period is the one that would resolve it.
+	# The comment here always said five; the call said six.
 	var actor := _actor()
 	_remember(actor, &"tournament_called")
 	EventApi.begin(actor, TOURNAMENT)
-	EventApi.advance(actor, 6)
+	EventApi.advance(actor, 5)
 	assert_eq(
 		_stage_id(actor, TOURNAMENT),
 		"final",
 		"a long pull stops where the next stage's requirement is not yet met"
 	)
 	assert_eq(int(EventApi.summary(actor)["active_count"]), 1, "and the event is still open")
+
+
+func test_a_zero_period_stage_resolves_at_the_next_pull_and_not_before() -> void:
+	# The boundary that the off-by-one collapsed. `duration_periods = 0` must mean
+	# "hold for no time", so the FIRST pull moves the ladder — and, on the last
+	# stage, RESOLVES the event. Under the old `<` comparison, `0` and `1` moved on
+	# the same pull and an authored `0` was indistinguishable from an authored `1`.
+	#
+	# The auction's `hammer` is the final stage and authors `duration_periods = 0`,
+	# so it settles on the pull that reaches it.
+	var actor := _actor(&"immortal_court")
+	# The auction's own trigger, not the fact its first stage records: `begin` opens
+	# on the SUMMONS and the stage beats fire afterwards.
+	_remember(actor, &"court_invitation_received")
+	var opened := EventApi.begin(actor, AUCTION)
+	assert_eq(bool(opened.get("ok", false)), true, "the auction opened: %s" % opened)
+	assert_eq(_stage_id(actor, AUCTION), "lots_read", "on its first stage")
+	# p1: `lots_read` holds. p2: `bids_open` opens. p3: `bids_open` holds.
+	# p4: `hammer` (duration 0) opens on this pull rather than holding.
+	# p5: `hammer` is final and holds for nothing, so this pull RESOLVES it.
+	var fifth := EventApi.advance(actor, 5)
+	assert_eq((fifth["resolved"] as Array).size(), 1, "the zero-period final stage resolved")
+	assert_eq(int(EventApi.summary(actor)["active_count"]), 0, "and the event is closed")
+	assert_eq(
+		EventState.has_resolved(EventApi.state(actor), AUCTION),
+		true,
+		"the once-guard records it as resolved"
+	)
 
 
 func test_an_event_that_authors_no_stage_is_refused_by_name() -> void:
@@ -416,21 +475,30 @@ func test_a_conflict_event_delegates_resolution_to_the_nation_module() -> void:
 	var standoff_id := StringName(opened["standoff_id"])
 	assert_ne(String(standoff_id), "", "against a real standoff")
 
+	# **The winner is the actor's OWN id, not the `nation_id`.** `NationApi
+	# .declare_war` keys a standoff's two sides by `String(actor.id)` and the
+	# authored `other_id`, so the sides here are `{event_actor, court_of_the_star}`.
+	# `march_of_the_nine_provinces` is the `NationDef` id the actor was founded
+	# UNDER and is not a side, so injecting it makes `nation` refuse
+	# `unknown_winner` — which is `nation` answering correctly about a verdict the
+	# caller invented, not this module failing to delegate.
+	var winner := StringName(actor.id)
+
 	# `nation` owns the quota. A siege is five; the event director must not decide how
 	# many verdicts that takes, so this reads `NationApi.QUOTAS` rather than a literal.
 	var quota := int(NationApi.QUOTAS["siege"])
 	assert_eq(quota, 5, "the siege quota is `nation`'s to declare")
 	for verdict in range(quota):
-		var step := EventApi.resolve(actor, WAR, &"march_of_the_nine_provinces")
+		var step := EventApi.resolve(actor, WAR, winner)
 		assert_eq(
 			bool(step.get("delegated", false)),
 			true,
-			"every resolution is a DELEGATION, not a computation: verdict %d" % verdict
+			"every resolution is a DELEGATION, not a computation: verdict %d — %s" % [verdict, step]
 		)
 		assert_eq(
 			bool(step.get("closed", false)), false, "and the war is still open at %d" % verdict
 		)
-	var closed := EventApi.resolve(actor, WAR, &"march_of_the_nine_provinces")
+	var closed := EventApi.resolve(actor, WAR, winner)
 	assert_eq(bool(closed.get("closed", false)), true, "the declared quota closes it")
 	assert_eq(bool(closed.get("paid", false)), true, "and the prize is paid once")
 	var ledger := NationApi.state(actor)
@@ -441,11 +509,62 @@ func test_a_conflict_event_delegates_resolution_to_the_nation_module() -> void:
 	)
 
 
+func test_resolving_a_war_for_a_side_that_is_not_one_of_its_two_is_refused() -> void:
+	# The counterpart of the test above, and the reason the winner above is
+	# `actor.id`: a verdict naming a third polity is not a tally this module may
+	# count. `nation` refuses it, and this module reports that refusal rather than
+	# substituting a side of its own.
+	var actor := _actor(&"mortal_plains", true)
+	_remember(actor, &"sect_war_called")
+	EventApi.begin(actor, WAR)
+	var refused := EventApi.resolve(actor, WAR, &"court_of_another_star")
+	assert_eq(bool(refused.get("ok", false)), false, "a stranger cannot win a declared war")
+	assert_eq(String(refused.get("reason", "")), EventState.R_UNKNOWN_WINNER, "with a named reason")
+	assert_eq(int(EventApi.summary(actor)["active_count"]), 1, "and the war stays open")
+
+
+func test_the_declaration_lands_on_the_event_row_not_wherever_the_builder_looks() -> void:
+	# **This is the test that pins the `_declare` arity.**
+	#
+	# `EventApi._declare` is a BUILDER: it takes `(actor, def, period)`, writes into
+	# `nation`'s ledger and nowhere else, and the caller copies the result onto the
+	# row it persists. The call site once passed a fourth `ledger` argument, which
+	# is a compile error in GDScript — the whole facade failed to load, so nothing
+	# about this module was measurable. The argument was dropped rather than added
+	# to the definition, so this test exists to prove that was safe: if the
+	# declaration reached the ledger through the builder rather than through the
+	# caller, `standoff_id` and `territory_id` would be empty on the persisted row
+	# and `resolve` could never find the standoff to hand `nation`.
+	var actor := _actor(&"mortal_plains", true)
+	_remember(actor, &"sect_war_called")
+	var opened := EventApi.begin(actor, WAR)
+	assert_eq(bool(opened.get("ok", false)), true, "the war opened: %s" % opened)
+
+	# Read the PERSISTED ledger, not the returned payload: the return value is what
+	# the builder said, and the ledger is what a later `resolve` reads.
+	var entry: Dictionary = (EventApi.state(actor)["active"] as Dictionary)[String(WAR)]
+	assert_eq(
+		String(entry["standoff_id"]),
+		String(opened["standoff_id"]),
+		"the standoff id is ON THE ROW, so `resolve` can hand it back to `nation`"
+	)
+	assert_eq(String(entry["territory_id"]), "river_march", "and so is the declared territory")
+	assert_eq(bool(entry["declared"]), true, "and the row says it was declared")
+
+	# The whole point: the standoff id on the row is one `nation` actually holds,
+	# so the delegation downstream is real rather than a dangling reference.
+	assert_eq(
+		(NationApi.state(actor)["standoffs"] as Dictionary).has(String(entry["standoff_id"])),
+		true,
+		"and `nation` holds that standoff, so the declaration landed in BOTH ledgers"
+	)
+
+
 func test_the_event_records_the_delegation_rather_than_the_outcome_arithmetic() -> void:
 	var actor := _actor(&"mortal_plains", true)
 	_remember(actor, &"sect_war_called")
 	EventApi.begin(actor, WAR)
-	EventApi.resolve(actor, WAR, &"march_of_the_nine_provinces")
+	EventApi.resolve(actor, WAR, StringName(actor.id))
 	var ledger := EventApi.state(actor)
 	var entry: Dictionary = (ledger["active"] as Dictionary)[String(WAR)]
 	var kinds: Array[String] = []
@@ -708,123 +827,15 @@ func test_opening_and_closing_an_event_announces_through_the_contract() -> void:
 	var actor := _actor()
 	_remember(actor, &"tournament_called")
 	EventApi.begin(actor, TOURNAMENT)
-	EventApi.advance(actor, 1)
+	# TWO periods, because `registered` is authored `duration_periods = 1` and a
+	# stage holds for that many WHOLE periods. This test asserted the evolution on
+	# ONE pull, which is only true of the off-by-one that made `duration_periods = 0`
+	# and `= 1` behave identically.
+	EventApi.advance(actor, 2)
 	bus.world_evolved.disconnect(on_evolved)
 	assert_eq(seen.has("triggered"), true, "opening announced a conflict was triggered")
 	assert_eq(seen.has("evolved"), true, "and the stage move announced the evolution")
 	assert_eq(seen.size(), 2, "and nothing else fired")
-
-
-# --- The catalog (BL-0054 content) -----------------------------------------
-
-
-func test_the_catalog_ships_one_event_for_every_kind_bl_0054_names() -> void:
-	var report := EventApi.catalog()
-	for kind in NAMED_KINDS:
-		assert_eq(
-			int((report["by_kind"] as Dictionary).get(String(kind), 0)) >= 1,
-			true,
-			"BL-0054 names %s and the tree ships none" % kind
-		)
-	assert_eq(int(report["count"]) >= 6, true, "at least six authored events")
-	assert_eq(
-		(report["problems"] as Array).size(), 0, "and no content defect: %s" % report["problems"]
-	)
-	assert_eq((report["rejected"] as Array).size(), 0, "and nothing rejected")
-
-
-func test_no_authored_trigger_names_a_verb_this_module_cannot_read() -> void:
-	# The tool-facing half of `catalog()`: a typo in a `.tres` is caught here rather
-	# than by a player failing to open the event it locked.
-	var unknown := EventApi.catalog()["unknown_verbs"] as Array
-	assert_eq(
-		unknown.size(),
-		0,
-		"every authored requirement names a known verb: %s" % ", ".join(_verb_texts(unknown))
-	)
-
-
-func test_every_authored_event_is_tied_to_a_location_the_world_module_ships() -> void:
-	# ADR 0113: the playfield is a `WorldLocationDef` reference. An event pointing at a
-	# place that does not exist is an event nobody can open.
-	var shipped: Array[String] = []
-	for row in WorldApi.locations(null):
-		shipped.append(String(row["location_id"]))
-	assert_eq(shipped.size() >= 4, true, "the world module ships locations to check against")
-	for event_id in EventCatalog.instance().event_ids():
-		var def := EventCatalog.instance().event_definition(event_id)
-		assert_eq(
-			shipped.has(String(def.location_id)),
-			true,
-			(
-				"%s is tied to location '%s', which the world module does not ship"
-				% [String(event_id), String(def.location_id)]
-			)
-		)
-
-
-func test_every_authored_prize_names_content_the_build_actually_ships() -> void:
-	# The authored tree may only name ids that exist, or the gate and the prize refuse
-	# forever — which is exactly what DEF-0105/0106/0107 recorded about unreachable
-	# gates. A fate the destiny catalog does not define would silently pay nothing.
-	var report := EventApi.catalog()
-	var war: Dictionary = (report["events"] as Dictionary)[String(WAR)]
-	assert_eq(bool(war["is_conflict"]), true, "the sect war is authored as a conflict")
-	for event_id in EventCatalog.instance().event_ids():
-		var def := EventCatalog.instance().event_definition(event_id)
-		for row in def.pay:
-			var kind := StringName(row.get("kind", ""))
-			var id := StringName(row.get("id", ""))
-			if kind == EventDef.PAY_FATE or kind == EventDef.PAY_DESTINY:
-				var catalog := FateCatalog.instance()
-				var known := (
-					catalog.fate_definition(id) != null
-					if kind == EventDef.PAY_FATE
-					else catalog.destiny_definition(id) != null
-				)
-				assert_eq(
-					known,
-					true,
-					(
-						"%s pays %s '%s', which the destiny catalog does not ship"
-						% [String(event_id), String(kind), String(id)]
-					)
-				)
-			if kind == EventDef.PAY_NATION_STANDING:
-				assert_ne(
-					String(id),
-					"",
-					(
-						"%s pays nation standing but names no polity to read the declaration from"
-						% String(event_id)
-					)
-				)
-
-
-func test_an_event_def_walk_is_not_vacuous() -> void:
-	# A structural test that reads no files proves nothing. Prove the catalog is
-	# actually loaded before every assertion above is believed.
-	var ids := EventCatalog.instance().event_ids()
-	assert_eq(ids.size() >= 6, true, "the catalog loaded: %d events" % ids.size())
-	assert_eq(EventCatalog.instance().has(WAR), true, "the war is in it")
-	assert_eq(EventCatalog.instance().has(TREASURE), true, "and the treasure")
-
-
-func test_a_malformed_def_is_rejected_and_reported_rather_than_silently_absent() -> void:
-	# An event that loads and can never open is the shape ADR 0077 named. A refusal
-	# that is REPORTED is a content bug the author finds.
-	var bad := EventDef.new()
-	bad.id = &"an_event_with_a_kind_nobody_reads"
-	bad.display_name = "Bad"
-	bad.kind = &"doomsday"
-	var accepted := EventCatalog.instance().register(bad)
-	assert_eq(accepted, false, "a def with an unknown kind is refused")
-	var reported: Array[Dictionary] = EventCatalog.instance().rejected()
-	var named := false
-	for entry in reported:
-		if String(entry["id"]) == "an_event_with_a_kind_nobody_reads":
-			named = true
-	assert_eq(named, true, "and it is reported with its reason: %s" % reported)
 
 
 # --- Plumbing ---------------------------------------------------------------
@@ -867,19 +878,3 @@ func _strip_comments(text: String) -> String:
 		var hash := line.find("#")
 		out.append(line.substr(0, hash) if hash >= 0 else line)
 	return "\n".join(out)
-
-
-func _verb_texts(unknown: Array) -> Array[String]:
-	var out: Array[String] = []
-	for entry in unknown:
-		out.append(
-			(
-				"%s(%s) names '%s'"
-				% [
-					String((entry as Dictionary)["event_id"]),
-					String((entry as Dictionary)["where"]),
-					String((entry as Dictionary)["verb"])
-				]
-			)
-		)
-	return out

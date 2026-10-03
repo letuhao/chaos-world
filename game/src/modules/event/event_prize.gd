@@ -65,8 +65,12 @@ static func apply(actor: Actor, def: EventDef, period: int) -> Dictionary:
 ## settlement. **A read is not a write**: `WorldApi.trigger_conflict` refuses without
 ## a world, and that refusal is returned rather than forced through, so an event
 ## running on an actor that has no `actor.world` still advances.
+##
+## `def` is a `Resource`, so the absent case is `null` and NOT `&""`: comparing an
+## `EventDef` to a `StringName` is a parse error in Godot 4.7, not a comparison that
+## quietly answers false.
 static func settle_period(actor: Actor, def: EventDef, severity: float) -> Dictionary:
-	if actor == null or def == &"":
+	if actor == null or def == null:
 		return {"ok": false, "reason": "no_actor"}
 	return WorldApi.trigger_conflict(actor, def.id, severity)
 
@@ -102,7 +106,11 @@ static func _apply_row(actor: Actor, def: EventDef, row: Dictionary) -> Dictiona
 		if not NationState.founded(ledger):
 			return {
 				"ok": false,
-				"reason": EventState.R_UNKNOWN_NATION,
+				# `nation`'s own reason constant, not `EventState`'s: this module
+				# authors its refusal vocabulary in `EventState`, and a reason is a
+				# NAMED game rule its owner publishes. Naming it through the wrong
+				# class is a parse error, not a near miss.
+				"reason": NationState.R_UNKNOWN_NATION,
 				"kind": String(kind),
 				"id": String(id),
 			}

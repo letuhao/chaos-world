@@ -170,8 +170,16 @@ static func begin(actor: Actor, event_id: StringName, period: int = 0) -> Dictio
 	# **The declaration happens BEFORE the beats and is recorded on the row.** A war
 	# with no declared prize must never open (ADR 0085), so if `declare_war` refuses,
 	# the whole `begin` refuses and nothing was recorded in either ledger.
+	#
+	# **`_declare` is the BUILDER and THIS is the recorder.** It writes nothing into
+	# `ledger`; it returns what `nation` decided and the three lines below are the
+	# only place a declaration reaches this module's ledger. Do not pass `ledger` to
+	# it: `NationApi._declare` takes one because that one IS a recorder, and the
+	# leading-argument convention was copied here after the split had already
+	# happened. `test_the_declaration_lands_on_the_event_row_not_wherever_the
+	# builder_happens_to_look` is the test that fails if it is passed again.
 	if def.kind == EventDef.KIND_SECT_WAR:
-		var declaration := _declare(ledger, actor, def, at)
+		var declaration := _declare(actor, def, at)
 		if not bool(declaration.get("ok", false)):
 			return declaration
 		entry["standoff_id"] = String(declaration["standoff_id"])
@@ -212,14 +220,22 @@ static func begin(actor: Actor, event_id: StringName, period: int = 0) -> Dictio
 ## is not a negative accrual.
 ##
 ## Per period, for each open event:
-##   1. the current stage's `duration_periods` must have elapsed;
+##   1. the current stage's `duration_periods` must have elapsed — the stage holds
+##      for that many WHOLE periods and the NEXT pull is what moves it, so
+##      `duration_periods = 0` advances on the very next period;
 ##   2. the next stage's `requires` must pass against the ledger;
 ##   3. its `on_enter` beats are offered, and one period of upkeep announced.
 ## On the FINAL stage the prize is paid — through [method _pay] exactly once — and the
 ## event leaves `active` with its period written into `resolved`.
 ##
 ## Returns `{ok, periods, advanced, resolved, held}`.
-static func advance(actor: Actor, periods: int = 1) -> Dictionary:
+##
+## `periods` carries **NO default**, and that is enforced by a test reading this
+## file's source: a default of `1` makes `advance(actor)` legal, which is a timer
+## that fires whether or not any time was owed to it (ADR 0085, DEF-0111). If a
+## default is ever added here, `test_advance_declares_no_default_period_count` goes
+## red.
+static func advance(actor: Actor, periods: int) -> Dictionary:
 	if actor == null:
 		return EventState.refuse(EventState.R_NO_ACTOR)
 	var ledger := _ledger(actor)
@@ -250,7 +266,13 @@ static func advance(actor: Actor, periods: int = 1) -> Dictionary:
 			if stage == null:
 				continue
 			entry["periods_held"] = int(entry.get("periods_held", 0)) + 1
-			if int(entry["periods_held"]) < stage.duration_periods:
+			# **A stage holds for `duration_periods` WHOLE periods and moves on the
+			# next one.** `held <= duration` holds; `held > duration` advances. The
+			# off-by-one matters because `duration_periods = 0` and `= 1` would
+			# otherwise behave identically — both moving on the first pull — which
+			# would make an authored `1` mean "holds for no time at all" and would
+			# collide with `EventStageDef`'s own "zero resolves at the next pull".
+			if int(entry["periods_held"]) <= stage.duration_periods:
 				(ledger["active"] as Dictionary)[String(event_id)] = entry
 				(
 					held
@@ -605,6 +627,16 @@ static func _pay(
 ## shape `NationApi.declare_war` refuses when it is absent (ADR 0085: `war` is
 ## reachable ONLY through the declaration verb). The mode is `nation`'s own constant,
 ## and the quota is whatever that mode declares — this module never counts verdicts.
+##
+## ## A BUILDER, not a recorder — and that is why it takes no ledger
+##
+## This writes into `nation`'s ledger through `declare_war` and into nothing else.
+## It does NOT touch this module's ledger, which is why its signature has no
+## `ledger` parameter: the declaration reaches `actor.module_data` when `begin` copies
+## `standoff_id` / `territory_id` / `declared` onto the row it then persists.
+## Handing it a ledger would be a second writer over one dictionary for a record the
+## caller already makes, and the caller's own `_record(ledger, "declared", ...)`
+## would silently become dead.
 static func _declare(actor: Actor, def: EventDef, period: int) -> Dictionary:
 	var authored := _war_declaration(def.trigger)
 	if authored.is_empty():
