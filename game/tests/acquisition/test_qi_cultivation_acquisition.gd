@@ -2,88 +2,127 @@ extends TestCase
 
 ## Qi cultivation is playable only when every realm's three consumables can be
 ## acquired through the shipping program: hunt a trial, take what its bosses drop,
-## craft the pill.
+## craft the pill. Nothing hands an actor an `ItemDef`: every assertion walks the
+## authored graph — `sources` -> a recipe or a boss or a domain -> the table bound
+## to that boss -> `LootApi` — because a source no shipping code delivers is the
+## defect this suite exists to catch (ADR 0007, ADR 0033). The qi gate audits
+## cannot: `qi_gate_probe.gd:83` uses `Probe.stock`, so nothing was acquired.
 ##
-## Nothing here hands an actor an `ItemDef`. Every assertion walks the authored
-## acquisition graph — `ItemDef.sources` -> a recipe or a boss -> the domain that
-## hosts that boss -> `LootApi` — because a source no shipping code can deliver is
-## exactly the defect this suite exists to catch (ADR 0007, ADR 0033). The qi gate
-## audits cannot: `tests/modules/qi_cultivation/qi_gate_probe.gd:83` obtains its
-## items from `Probe.stock`, so they were never acquired at all.
+## ## The ladder is obtainable. It is not yet obtainable EVERY time.
 ##
-## ## The one gap this suite cannot prove away, and the one it now guards
+## 1. **Obtainable — 210 of 210 chain items.** All 90 consumables resolve to an
+##    `ItemDef`, a recipe that outputs it and inputs that resolve, and every hop
+##    CLOSES. Nothing rests only on `gather`/`quest`, both `shipped: false`. That
+##    was DEF-0188's finding and it no longer holds: `6f141711` gave those 41
+##    materials a real `domain:` route with a bound table, so the pin is 0.
+## 2. **Obtainable on EVERY clear — 49 of 90.** A cleared band grants no second run
+##    (loot rule E2), so "a table can yield this" is not enough: the item must
+##    arrive where every hop is `guaranteed`. 41 are left to a roll — 30 recovery
+##    elixirs, 6 breakthrough pills, 5 channel elixirs, all 30 realms (DEF-0199).
 ##
-## The body twin (`test_body_cultivation_acquisition.gd`) walks all thirty realms
-## end to end, because every one of its reagents names a `boss:` source. The qi
-## path has one content gap left, and one class that used to be a second:
-##
-## 1. **41 of the qi path's 120 distinct reagents declare no shipped route at
-##    all** — only `gather` and `quest:<route>`, and `ItemSources.KINDS` marks both
-##    `shipped: false`. There is no forager for `gather` (it is `REF_FORBIDDEN`, so
-##    it cannot even name one) and `QuestGrants.pay` records a `quest:` grant
-##    unspent. **All 30 realms' recovery elixir is unacquirable**, plus 6
-##    breakthrough pills and 5 channel elixirs (DEF-0022, DEF-0023, DEF-0188).
-##    Pinned, not asserted away: it cannot widen silently.
-## 2. **The 15 qi consumables that carry a direct `boss:` source are GUARANTEED**
-##    entries of that boss's own table. They were all rolled, which `tools
-##    acquisition validate` could not see because `Trial.catalysts` was built from
-##    a recipe REAGENT's `boss:` sources; for the 11 whose boss drop is the only
-##    route, a cleared band granted no second run (loot rule E2) so the miss was
-##    permanent (DEF-0187). `Trial.catalysts` reads a consumable's own sources
-##    now, so the catalogue gate judges them too and the pin below asserts the
-##    rolled set is empty rather than listing which items are broken.
-##
-## So every assertion below is one of two things: a real invariant that holds and
-## would fail loudly if it broke, or an exact pin on a known gap so the gap cannot
-## widen silently and this suite cannot go quietly green on a real break.
-##
-## Every loop is bounded and names the condition that failed to converge.
+## That is why `_reaches` takes an `unconditional` flag, and why every loop below is
+## bounded and names the condition that failed to converge.
 
 const REALM_DIR := "res://data/qi_cultivation/realms/"
 const RECIPE_DIR := "res://data/recipes/"
 const REALM_COUNT := 30
-## One strike spends this much vitality (the composition root's strike damage).
 const STRIKE_DAMAGE := 25.0
-## Stops when a boss's authored vitality stops falling. Names the condition: a
-## table that never resolves a defeat would otherwise strike forever. The deepest
-## authored qi band costs 435.2, so 64 x 25.0 clears every one of them.
+## Stops when a boss's authored vitality stops falling: the deepest lowest band any
+## domain here hunts costs 272.0, so 64 x 25.0 clears every one of them.
+
 const MAX_STRIKES := 64
-## Stops claiming payloads when nothing is pending. Names the condition: a drop
-## that never leaves the pending state would otherwise be re-claimed forever.
 const MAX_CLAIMS := 16
-## One actor walks 41 hunt domains and holds every reagent it needs, so the bag is
-## sized for that walk rather than for one realm.
-const INVENTORY_SLOTS := 512
-## Fixed seed so a hunt resolves the same way on every run.
+const INVENTORY_SLOTS := 256
 const HUNT_SEED := 20260903
 const CONSUMABLE_ROLES := ["breakthrough_item", "training_item", "recovery_item"]
-## `LootContent.MAX_NESTING_DEPTH`, mirrored so the walks over nested tables below
-## stop where the resolver stops.
 const MAX_TABLE_DEPTH := 4
-## Stops the backward walk when a recipe chain nests deeper than any authored one.
-## Names the condition: a recipe naming its own ancestor never bottoms out.
 const MAX_CRAFT_DEPTH := 4
-## Every distinct domain the qi chain's boss sources resolve to. Widening the walk
-## to the consumables' own `boss:` sources added none, which is worth asserting:
-## the whole qi ladder is reachable from its 30 trials plus 10 side domains.
-const HUNT_DOMAIN_COUNT := 41
-## The one refusal GAP 1 is allowed to produce, in two pieces: a caller tests the
-## marker alone, so a genuine break cannot be mistaken for the known gap by
-## matching the whole sentence.
+
+const CHAIN_DOMAIN_COUNT := 77
 const UNSHIPPED_PREFIX := "%s: every route is unshipped [%s]"
 const UNSHIPPED_MARKER := "every route is unshipped"
-## GAP 1. The number of distinct qi reagents whose every declared route is one no
-## shipping code implements. Pinned, not asserted away: growth is a regression,
-## shrinkage means a herb was given a boss and this pin must be re-declared.
-const PINNED_UNSHIPPED_REAGENTS := 41
-## GAP 1. How many of the 90 consumables that leaves unacquirable, by role. Keyed
-## by the seed's own role names so a failure reads as which role lost its route.
-const PINNED_BLOCKED_BY_ROLE := {"breakthrough_item": 6, "recovery_item": 30, "training_item": 5}
-## GAP 2, fixed. Every qi consumable a boss drops directly, and every one of them
-## is now a GUARANTEED entry of that boss's own table. Pinned by exact id so the
-## list is still the finding: a new direct drop, or a removal of one, trips here
-## and forces this pin to be re-declared — and the assertion below is that the
-## rolled set is EMPTY, so demoting any of them back to a roll fails outright.
+
+const PINNED_UNSHIPPED_REAGENTS := 0
+## Pinned: how many of the 90 consumables rule E2 leaves to a roll, keyed by the seed's
+## own role names. Growth regresses; shrinkage is progress and trips this pin.
+
+const PINNED_ROLLED_BY_ROLE := {"breakthrough_item": 6, "training_item": 5, "recovery_item": 30}
+## DEF-0199, pinned by exact id: the consumables a single clear can miss, sorted.
+const PINNED_ROLLED_CONSUMABLES := [
+	"qi_body_integration_recovery_elixir",
+	"qi_core_formation_breakthrough_pill",
+	"qi_core_formation_recovery_elixir",
+	"qi_dao_ancestor_recovery_elixir",
+	"qi_dao_fruit_recovery_elixir",
+	"qi_earth_immortal_channel_elixir",
+	"qi_earth_immortal_recovery_elixir",
+	"qi_foundation_recovery_elixir",
+	"qi_golden_immortal_breakthrough_pill",
+	"qi_golden_immortal_recovery_elixir",
+	"qi_great_ascension_channel_elixir",
+	"qi_great_ascension_recovery_elixir",
+	"qi_great_luo_recovery_elixir",
+	"qi_heaven_immortal_recovery_elixir",
+	"qi_immortal_sovereign_recovery_elixir",
+	"qi_mystic_immortal_recovery_elixir",
+	"qi_nascent_soul_channel_elixir",
+	"qi_nascent_soul_recovery_elixir",
+	"qi_primordial_immortal_recovery_elixir",
+	"qi_primordial_origin_recovery_elixir",
+	"qi_qi_refining_recovery_elixir",
+	"qi_spirit_ascension_breakthrough_pill",
+	"qi_spirit_ascension_recovery_elixir",
+	"qi_spirit_condensation_breakthrough_pill",
+	"qi_spirit_condensation_recovery_elixir",
+	"qi_spirit_domain_recovery_elixir",
+	"qi_spirit_manifestation_recovery_elixir",
+	"qi_spirit_palace_channel_elixir",
+	"qi_spirit_palace_recovery_elixir",
+	"qi_spirit_sea_recovery_elixir",
+	"qi_spirit_severing_recovery_elixir",
+	"qi_spirit_sovereign_channel_elixir",
+	"qi_spirit_sovereign_recovery_elixir",
+	"qi_spirit_transformation_breakthrough_pill",
+	"qi_spirit_transformation_recovery_elixir",
+	"qi_spirit_unity_recovery_elixir",
+	"qi_transcendent_recovery_elixir",
+	"qi_tribulation_recovery_elixir",
+	"qi_true_immortal_recovery_elixir",
+	"qi_void_refinement_breakthrough_pill",
+	"qi_void_refinement_recovery_elixir",
+]
+## DEF-0199, pinned by exact id: the boss-dropped qi REAGENTS guaranteed only inside a
+## ROLLED pool, the `qi_<realm>_guardian_core` family, asserted so a fix trips the pin.
+
+const PINNED_ROLLED_REAGENTS := [
+	"qi_body_integration_guardian_core",
+	"qi_core_formation_guardian_core",
+	"qi_dao_ancestor_guardian_core",
+	"qi_dao_fruit_guardian_core",
+	"qi_foundation_guardian_core",
+	"qi_golden_immortal_guardian_core",
+	"qi_great_ascension_guardian_core",
+	"qi_great_luo_guardian_core",
+	"qi_heaven_immortal_guardian_core",
+	"qi_immortal_sovereign_guardian_core",
+	"qi_mystic_immortal_guardian_core",
+	"qi_primordial_immortal_guardian_core",
+	"qi_primordial_origin_guardian_core",
+	"qi_spirit_ascension_guardian_core",
+	"qi_spirit_domain_guardian_core",
+	"qi_spirit_manifestation_guardian_core",
+	"qi_spirit_palace_guardian_core",
+	"qi_spirit_sea_guardian_core",
+	"qi_spirit_severing_guardian_core",
+	"qi_spirit_sovereign_guardian_core",
+	"qi_spirit_transformation_guardian_core",
+	"qi_spirit_unity_guardian_core",
+	"qi_transcendent_guardian_core",
+	"qi_tribulation_guardian_core",
+	"qi_true_immortal_guardian_core",
+	"qi_void_refinement_guardian_core",
+]
+
 const BOSS_DROPPED_CONSUMABLES := [
 	"qi_body_integration_breakthrough_pill",
 	"qi_core_formation_channel_elixir",
@@ -102,22 +141,17 @@ const BOSS_DROPPED_CONSUMABLES := [
 	"qi_void_refinement_channel_elixir",
 ]
 
-## `Crafting.resolve` walks the whole item tree on a miss, so the resolver is the
-## one thing memoized here. Everything else is cheap to derive and is derived
-## fresh, so no case's answer depends on which case happened to run first.
 var _defs: Dictionary = {}
 
 # --- The authored chain -----------------------------------------------------
 
 
-## An `ItemDef` by id, through the items module's own single resolver.
 func _def(item_id: String) -> ItemDef:
 	if not _defs.has(item_id):
 		_defs[item_id] = Crafting.resolve(StringName(item_id))
 	return _defs[item_id] as ItemDef
 
 
-## Every qi realm id, from the authored seeds, sorted.
 func _realms() -> Array[String]:
 	var out: Array[String] = []
 	var dir := DirAccess.open(REALM_DIR)
@@ -135,20 +169,16 @@ func _realms() -> Array[String]:
 	return out
 
 
-## One realm's authored seed, or null.
 func _seed(realm_id: String) -> QiRealmSeed:
 	return load(REALM_DIR + realm_id + ".tres") as QiRealmSeed
 
 
-## A `RecipeDef` by id, loaded from the one directory that holds them.
 func _recipe(recipe_id: String) -> RecipeDef:
 	if recipe_id.is_empty():
 		return null
 	return load(RECIPE_DIR + recipe_id + ".tres") as RecipeDef
 
 
-## The `craft:` recipe `item_id` declares, or "". An item with no `craft:` source
-## has no recipe, which is a finding rather than an empty list to walk past.
 func _craft_recipe(item_id: String) -> String:
 	var def := _def(item_id)
 	if def == null:
@@ -159,7 +189,6 @@ func _craft_recipe(item_id: String) -> String:
 	return ""
 
 
-## Every distinct route kind `item_id` declares, sorted.
 func _kinds(item_id: String) -> Array[String]:
 	var out: Array[String] = []
 	var def := _def(item_id)
@@ -173,36 +202,21 @@ func _kinds(item_id: String) -> Array[String]:
 	return out
 
 
-## Every `boss:` id `item_id` names as a drop, sorted. An item can name several:
-## the qi consumables that carry a direct drop name one on top of their recipe.
-func _bosses_of(item_id: String) -> Array[String]:
+func _refs_of(item_id: String, kind: StringName) -> Array[String]:
 	var out: Array[String] = []
 	var def := _def(item_id)
 	if def == null:
 		return out
 	for route in ItemSources.routes(def):
-		if StringName(route["kind"]) != ItemSources.KIND_BOSS:
+		if StringName(route["kind"]) != kind:
 			continue
-		var boss_id := String(route["ref"])
-		if not out.has(boss_id):
-			out.append(boss_id)
+		var ref := String(route["ref"])
+		if not out.has(ref):
+			out.append(ref)
 	out.sort()
 	return out
 
 
-## Whether `item_id` has at least one route shipping code can deliver.
-func _has_shipped_route(item_id: String) -> bool:
-	var def := _def(item_id)
-	if def == null:
-		return false
-	for route in ItemSources.routes(def):
-		if bool(route["ok"]) and ItemSources.is_shipped(StringName(route["kind"])):
-			return true
-	return false
-
-
-## Every qi consumable, as `{realm, role, item, recipe, inputs}`, resolved purely
-## from authored data and in a stable order so a failure is reproducible.
 func _consumables() -> Array:
 	var out: Array = []
 	for realm_id in _realms():
@@ -230,21 +244,6 @@ func _consumables() -> Array:
 	return out
 
 
-## Every distinct reagent the qi recipes need, sorted, so a reagent shared by
-## three recipes is one hop rather than three.
-func _reagents() -> Array[String]:
-	var out: Array[String] = []
-	for consumable in _consumables():
-		for item_id in consumable["inputs"] as Array[String]:
-			if not out.has(item_id):
-				out.append(item_id)
-	out.sort()
-	return out
-
-
-## Every item whose own sources the chain depends on: the consumables AND their
-## reagents. A consumable can be reachable by a drop its recipe never mentions,
-## which is exactly how 11 unacquirable-looking pills turn out to be acquirable.
 func _chain_items() -> Array[String]:
 	var out: Array[String] = []
 	for consumable in _consumables():
@@ -255,38 +254,16 @@ func _chain_items() -> Array[String]:
 	return out
 
 
-## The domain that hosts `boss_id`, as its own boss record declares it.
 func _domain_of(boss_id: String) -> String:
 	return String(LootContent.instance().boss_record(StringName(boss_id))["domain_id"])
 
 
-## Whether `item_id` is one of the realm seeds' three consumables. A direct boss
-## drop of one of these is the GAP 2 class; a reagent is not, because its recipe
-## consumes it however the boss hands it over.
-func _is_consumable(item_id: String) -> bool:
-	for consumable in _consumables():
-		if String((consumable as Dictionary)["item"]) == item_id:
-			return true
-	return false
-
-
-## Every boss the qi chain names as a drop, sorted.
-func _catalyst_bosses() -> Array[String]:
+func _hunt_domains_of(item_id: String) -> Array[String]:
 	var out: Array[String] = []
-	for item_id in _chain_items():
-		for boss_id in _bosses_of(item_id):
-			if not out.has(boss_id):
-				out.append(boss_id)
-	out.sort()
-	return out
-
-
-## Every domain a qi hunt happens in: the domain of every boss the chain names.
-## The domain, not the boss, is the unit a hunt clears, so this is also what stops
-## the walk from re-entering a domain one run already finished (loot rule E2).
-func _hunt_domains() -> Array[String]:
-	var out: Array[String] = []
-	for boss_id in _catalyst_bosses():
+	for domain_id in _refs_of(item_id, ItemSources.KIND_DOMAIN):
+		if not out.has(domain_id):
+			out.append(domain_id)
+	for boss_id in _refs_of(item_id, ItemSources.KIND_BOSS):
 		var domain_id := _domain_of(boss_id)
 		if not domain_id.is_empty() and not out.has(domain_id):
 			out.append(domain_id)
@@ -294,29 +271,69 @@ func _hunt_domains() -> Array[String]:
 	return out
 
 
-## Whether `recipe_id`'s every input is reachable, i.e. this consumable can be
-## CRAFTED. Distinct from `_blocker` on the item: a consumable with an unshipped
-## recipe input can still arrive as a direct boss drop.
-func _craftable(recipe_id: String) -> bool:
-	var recipe := _recipe(recipe_id)
-	if recipe == null:
-		return false
-	for input_id in recipe.inputs:
-		if not _blocker(String(input_id), 0, []).is_empty():
-			return false
-	return true
+func _chain_domains() -> Array[String]:
+	var out: Array[String] = []
+	for item_id in _chain_items():
+		for domain_id in _hunt_domains_of(item_id):
+			if not out.has(domain_id):
+				out.append(domain_id)
+	out.sort()
+	return out
+
+
+func _catalyst_bosses() -> Array[String]:
+	var out: Array[String] = []
+	for item_id in _chain_items():
+		for boss_id in _refs_of(item_id, ItemSources.KIND_BOSS):
+			if not out.has(boss_id):
+				out.append(boss_id)
+	out.sort()
+	return out
+
+
+func _is_consumable(item_id: String) -> bool:
+	for consumable in _consumables():
+		if String((consumable as Dictionary)["item"]) == item_id:
+			return true
+	return false
+
+
+func _lowest_band_tables(domain_id: String) -> Array[String]:
+	var out: Array[String] = []
+	var encounter := LootContent.instance().encounter_for_domain(StringName(domain_id))
+	if encounter == null:
+		return out
+	var lowest := _first_tier(domain_id)
+	for tier in encounter.tiers:
+		if tier == null or tier.tier != lowest:
+			continue
+		for boss_id in encounter.boss_ids:
+			var table_id := String(tier.table_for(boss_id))
+			if not table_id.is_empty() and not out.has(table_id):
+				out.append(table_id)
+	out.sort()
+	return out
 
 
 # --- The backward walk -----------------------------------------------------
 
+## Whether `table_id` can yield `item_id`, nested tables included — and, when
+## `unconditional` is set, ONLY along a path every hop of which is `guaranteed`. A
+## guaranteed item inside a ROLLED pool is still rolled, the pool being one weighted
+## candidate among many, so descending into it unconditionally over-claims by one
+## draw. That flag is the rule DEF-0187 was written against.
+##
+## Bounded twice: by the resolver's nesting limit, and by the ids already walked, so a
+## self-referencing table terminates instead of recursing on the depth guard alone.
 
-## Whether `table_id` can yield `item_id`, nested tables included. Bounded twice
-## over: by the resolver's own nesting limit, and by the ids already walked, so a
-## table that references itself terminates instead of recursing on the depth guard
-## alone. A `for` over a fixed array of entries cannot fail to converge; `chain`
-## is the only re-entry guard this walk needs.
+
 func _reaches(
-	content: LootContent, table_id: String, item_id: String, depth: int = 0, chain: Array = []
+	content: LootContent,
+	table_id: String,
+	item_id: String,
+	unconditional: bool,
+	depth: int = 0,
+	chain: Array = []
 ) -> bool:
 	if depth > MAX_TABLE_DEPTH or chain.has(table_id):
 		return false
@@ -329,40 +346,16 @@ func _reaches(
 		if entry == null:
 			continue
 		if entry.is_nested():
-			if _reaches(content, String(entry.table_id), item_id, depth + 1, next_chain):
+			if unconditional and not entry.guaranteed:
+				continue
+			var child := String(entry.table_id)
+			if _reaches(content, child, item_id, unconditional, depth + 1, next_chain):
 				return true
-		elif String(entry.item_id) == item_id:
+		elif String(entry.item_id) == item_id and (not unconditional or entry.guaranteed):
 			return true
 	return false
 
 
-## Whether `table_id` resolves `item_id` unconditionally, nested tables included.
-## A guaranteed entry inside a pool counts: the pool resolves it once it is
-## reached, which is as unconditional as a direct entry. Bounded as `_reaches` is.
-func _guarantees(
-	content: LootContent, table_id: String, item_id: String, depth: int = 0, chain: Array = []
-) -> bool:
-	if depth > MAX_TABLE_DEPTH or chain.has(table_id):
-		return false
-	var table := content.table(StringName(table_id))
-	if table == null:
-		return false
-	var next_chain := chain.duplicate()
-	next_chain.append(table_id)
-	for entry in table.entries:
-		if entry == null:
-			continue
-		if entry.is_nested():
-			if _guarantees(content, String(entry.table_id), item_id, depth + 1, next_chain):
-				return true
-		elif String(entry.item_id) == item_id and entry.guaranteed:
-			return true
-	return false
-
-
-## "" when shipping code can deliver `item_id`, otherwise the one hop that stops.
-## Depth-bounded and cycle-guarded by `chain`, which carries both item ids and
-## recipe ids so a recipe that names its own ancestor terminates.
 func _blocker(item_id: String, depth: int, chain: Array) -> String:
 	if depth > MAX_CRAFT_DEPTH:
 		return "%s: craft chain deeper than MAX_CRAFT_DEPTH" % item_id
@@ -393,9 +386,9 @@ func _blocker(item_id: String, depth: int, chain: Array) -> String:
 	return first_refusal
 
 
-## Whether one shipped route can close. Mirrors what `tools/data.py` calls each
-## route's membership rule, so the runtime and the catalog cannot disagree about
-## what a satisfied route means.
+## Whether one shipped route can close, by the membership rule `tools/data.py` uses.
+
+
 func _route_blocker(item_id: String, route: Dictionary, depth: int, chain: Array) -> String:
 	var ref := String(route["ref"])
 	match StringName(route["kind"]):
@@ -415,16 +408,13 @@ func _route_blocker(item_id: String, route: Dictionary, depth: int, chain: Array
 					return "%s via craft:%s needs %s" % [item_id, ref, reason]
 			return ""
 		_:
-			# `starter` is granted by the composition root's own list rather than by
-			# a content probe, and no qi item declares it. The kinds the chain
-			# actually exercises are asserted, so this stays an unreachable branch
-			# rather than a silent "yes" for anything a future author adds.
+			# `starter` is granted by the composition root's own list rather than by a
+			# content probe, and no qi item declares it. The kinds the chain actually
+			# exercises are asserted, so this stays an unreachable branch rather than
+			# a silent "yes" for anything a future author adds.
 			return "UNPROBED_ROUTE:%s" % String(route["kind"])
 
 
-## A `boss:` route closes only once `LootApi.enter_domain` can spawn the boss,
-## which needs an authored encounter in the boss's OWN domain that lists it and
-## binds a table that resolves on every band.
 func _boss_blocker(item_id: String, boss_id: String) -> String:
 	var content := LootContent.instance()
 	var record := content.boss_record(StringName(boss_id))
@@ -441,7 +431,7 @@ func _boss_blocker(item_id: String, boss_id: String) -> String:
 		reason = "%s: the %s encounter never spawns %s" % [item_id, domain_id, boss_id]
 	for tier in encounter.tiers:
 		if reason.is_empty() and tier != null:
-			var table_id := tier.table_for(StringName(boss_id))
+			var table_id := String(tier.table_for(StringName(boss_id)))
 			if String(table_id).is_empty():
 				reason = "%s: %s binds no table at band %d" % [item_id, domain_id, tier.tier]
 			elif content.table(table_id) == null:
@@ -449,30 +439,111 @@ func _boss_blocker(item_id: String, boss_id: String) -> String:
 	return reason
 
 
-## A `domain:` route closes only when an authored encounter spawns a boss whose
-## own table can actually yield the item. No qi item declares one; the route is
-## walked because a material that grows one must be judged by the same rule.
 func _domain_blocker(item_id: String, domain_id: String) -> String:
-	var content := LootContent.instance()
-	var encounter := content.encounter_for_domain(StringName(domain_id))
-	if encounter == null:
+	if LootContent.instance().encounter_for_domain(StringName(domain_id)) == null:
 		return "%s: domain %s has no authored encounter" % [item_id, domain_id]
-	for tier in encounter.tiers:
-		if tier == null:
+	for table_id in _lowest_band_tables(domain_id):
+		if _reaches(LootContent.instance(), table_id, item_id, false):
+			return ""
+	return "%s: no boss on %s drops it at band %d" % [item_id, domain_id, _first_tier(domain_id)]
+
+
+# --- Rule E2: obtainable on every clear ------------------------------------
+
+## Whether `item_id` is obtainable on EVERY clear of one of its domains, so one
+## unlucky draw cannot lock a player out (loot rule E2). `_blocker`'s shape with a
+## stronger rule on the two drop kinds: a table must GUARANTEE the item, not merely
+## be able to yield it. `craft:` composes as `_blocker` does, so a pill is certain
+## exactly when both its reagents are.
+
+
+func _certain(item_id: String, depth: int, chain: Array) -> bool:
+	if depth > MAX_CRAFT_DEPTH or chain.has(item_id):
+		return false
+	var def := _def(item_id)
+	if def == null:
+		return false
+	var next_chain := chain.duplicate()
+	next_chain.append(item_id)
+	for route in ItemSources.routes(def):
+		var kind := StringName(route["kind"])
+		if not bool(route["ok"]) or not ItemSources.is_shipped(kind):
 			continue
-		for boss_id in encounter.boss_ids:
-			var table_id := tier.table_for(boss_id)
-			if not String(table_id).is_empty() and _reaches(content, String(table_id), item_id):
-				return ""
-	return "%s: no boss on %s can drop it" % [item_id, domain_id]
+		match kind:
+			ItemSources.KIND_BOSS:
+				if _boss_guarantees(item_id, String(route["ref"])):
+					return true
+			ItemSources.KIND_DOMAIN:
+				if _domain_guarantees(item_id, String(route["ref"])):
+					return true
+			ItemSources.KIND_CRAFT:
+				var recipe := _recipe(String(route["ref"]))
+				if recipe == null:
+					continue
+				var inner := next_chain.duplicate()
+				inner.append(String(route["ref"]))
+				var short := ""
+				for input_id in recipe.inputs:
+					if not _certain(String(input_id), depth + 1, inner):
+						short = String(input_id)
+						break
+				if short.is_empty():
+					return true
+	return false
+
+
+func _boss_guarantees(item_id: String, boss_id: String) -> bool:
+	var record := LootContent.instance().boss_record(StringName(boss_id))
+	if not bool(record["found"]):
+		return false
+	var domain_id := String(record["domain_id"])
+	if domain_id.is_empty():
+		return false
+	var encounter := LootContent.instance().encounter_for_domain(StringName(domain_id))
+	if encounter == null or not (encounter.boss_ids as Array).has(StringName(boss_id)):
+		return false
+	for tier in encounter.tiers:
+		if tier == null or tier.tier != _first_tier(domain_id):
+			continue
+		var table_id := String(tier.table_for(StringName(boss_id)))
+		if not table_id.is_empty() and _reaches(LootContent.instance(), table_id, item_id, true):
+			return true
+	return false
+
+
+func _domain_guarantees(item_id: String, domain_id: String) -> bool:
+	for table_id in _lowest_band_tables(domain_id):
+		if _reaches(LootContent.instance(), table_id, item_id, true):
+			return true
+	return false
+
+
+func _realm_plan(realm_id: String) -> Dictionary:
+	var certain: Array[String] = []
+	var rolled: Array[String] = []
+	var domains: Array[String] = []
+	for consumable in _consumables():
+		var entry := consumable as Dictionary
+		if String(entry["realm"]) != realm_id:
+			continue
+		var item_id := String(entry["item"])
+		if not _certain(item_id, 0, []):
+			rolled.append(item_id)
+			continue
+		certain.append(item_id)
+		for needed in [item_id] + (entry["inputs"] as Array[String]):
+			for domain_id in _hunt_domains_of(needed):
+				if not domains.has(domain_id):
+					domains.append(domain_id)
+	certain.sort()
+	rolled.sort()
+	domains.sort()
+	return {"certain": certain, "rolled": rolled, "domains": domains}
 
 
 # --- The shipping program ---------------------------------------------------
 
 
-## The lowest band a domain's own encounter declares, as `enter_domain` spells
-## it. Read from the content rather than assumed to be 1: a tier index nothing
-## authored is a refusal that reads as a wiring failure.
 func _first_tier(domain_id: String) -> int:
 	var encounter := LootContent.instance().encounter_for_domain(StringName(domain_id))
 	if encounter == null or encounter.tiers.is_empty():
@@ -484,9 +555,6 @@ func _first_tier(domain_id: String) -> int:
 	return lowest
 
 
-## A delver with the loot lifecycle and an inventory attached, in the same order
-## the composition root uses. `Actor` and `Inventory` are `RefCounted`, so nothing
-## here needs freeing and `queue_free` is banned in `res://src` besides.
 func _hero() -> Actor:
 	var actor := Actor.new(&"qi_delver", {Stat.COMPREHENSION: 10.0, Stat.SPIRIT: 8.0})
 	actor.attach_core_resources()
@@ -495,9 +563,6 @@ func _hero() -> Actor:
 	return actor
 
 
-## Clear one authored band of `domain_id` and take everything it owed, the way the
-## Hunt screen does: enter, strike until the boss is defeated, claim. Returns the
-## reason the run stopped so a caller can name it.
 func _hunt(actor: Actor, domain_id: String, tier: int) -> String:
 	var entered := LootApi.enter_domain(actor, StringName(domain_id), tier, HUNT_SEED)
 	if not bool(entered.get("ok", false)):
@@ -508,9 +573,7 @@ func _hunt(actor: Actor, domain_id: String, tier: int) -> String:
 		# Defeating the last boss ends the run and clears the live boss (rule E3).
 		# That is not a failure: the payload the last boss left is still unclaimed,
 		# so the run ends by claiming rather than by reporting an exit.
-		if not bool(active.get("in_domain", false)):
-			return _claim_all(actor)
-		if bool(active.get("defeated", false)):
+		if not bool(active.get("in_domain", false)) or bool(active.get("defeated", false)):
 			return _claim_all(actor)
 		var result := LootApi.strike(actor, STRIKE_DAMAGE, HUNT_SEED)
 		if not bool(result.get("ok", false)):
@@ -521,9 +584,6 @@ func _hunt(actor: Actor, domain_id: String, tier: int) -> String:
 	return "strikes_exhausted:%d" % MAX_STRIKES
 
 
-## Claim every outstanding payload, so one unclaimed drop cannot look like a
-## failed hunt. Claimed after each domain rather than once at the end, so the bag
-## never has to hold 41 domains of unclaimed loot at once.
 func _claim_all(actor: Actor) -> String:
 	var rounds := 0
 	while rounds < MAX_CLAIMS:
@@ -539,8 +599,6 @@ func _claim_all(actor: Actor) -> String:
 	return "claims_exhausted:%d" % MAX_CLAIMS
 
 
-## The recipe inputs the bag is short of, so a craft failure names the drop that
-## never arrived instead of only reporting that the craft failed.
 func _short(recipe: RecipeDef, actor: Actor) -> String:
 	var missing: Array[String] = []
 	for input_id in recipe.inputs:
@@ -549,85 +607,62 @@ func _short(recipe: RecipeDef, actor: Actor) -> String:
 	return "the bag is short of " + (", ".join(missing) if not missing.is_empty() else "nothing")
 
 
+func _chain_broken(realm_id: String) -> String:
+	var seed := _seed(realm_id)
+	if seed == null:
+		return "%s has no realm seed" % realm_id
+	if not RealmDefaults.ladder().has(StringName(realm_id)):
+		return "%s is not on the canonical ladder" % realm_id
+	var broken := ""
+	for role in CONSUMABLE_ROLES:
+		broken = _role_broken(realm_id, seed, role)
+		if not broken.is_empty():
+			break
+	return broken
+
+
+func _role_broken(realm_id: String, seed: QiRealmSeed, role: String) -> String:
+	var item_id := String(seed.get(role))
+	if _def(item_id) == null:
+		return "%s: %s resolves to no ItemDef" % [realm_id, item_id]
+	var recipe_id := _craft_recipe(item_id)
+	var recipe := _recipe(recipe_id)
+	if recipe == null:
+		return (
+			"%s: %s declares no usable craft: route (sources %s)"
+			% [realm_id, item_id, _kinds(item_id)]
+		)
+	if not (recipe.outputs as Array).has(StringName(item_id)):
+		return "%s: %s does not list %s as an output" % [realm_id, recipe_id, item_id]
+	if recipe.inputs.is_empty():
+		return "%s: %s consumes nothing, so the pill is free" % [realm_id, recipe_id]
+	for input_id in recipe.inputs:
+		if _def(String(input_id)) == null:
+			return "%s: %s needs %s, which resolves to no ItemDef" % [realm_id, recipe_id, input_id]
+	return ""
+
+
 # --- The contract -----------------------------------------------------------
 
+## Every realm authors a seed, and every seed's three consumables resolve to a real
+## item, a recipe that outputs it, and real items for every input.
 
-## Every realm on the ladder authors a seed, and every seed's three consumables
-## resolve to a real item, a real recipe that outputs it, and real items for every
-## input. Without this the rest of the suite would walk an empty graph and pass.
-##
-## One report, naming the first realm that does not resolve: a precondition check
-## that asserts every hop of every realm reports the same defect ninety times and
-## hides which one it was.
+
 func test_every_qi_realm_authors_three_resolvable_craft_chains() -> void:
 	var realms := _realms()
 	assert_eq(realms.size(), REALM_COUNT, "30 qi realms are authored")
-	var ladder := RealmDefaults.ladder()
 	var first_broken := ""
-	var checked := 0
 	for realm_id in realms:
-		var seed := _seed(realm_id)
-		if seed == null:
-			first_broken = "%s has no realm seed" % realm_id
-			break
-		if not ladder.has(StringName(realm_id)):
-			first_broken = "%s is not on the canonical ladder" % realm_id
-			break
-		for role in CONSUMABLE_ROLES:
-			var item_id := String(seed.get(role))
-			if _def(item_id) == null:
-				first_broken = "%s: %s resolves to no ItemDef" % [realm_id, item_id]
-				break
-			var recipe_id := _craft_recipe(item_id)
-			if recipe_id.is_empty():
-				first_broken = (
-					"%s: %s declares no craft: route (sources %s)"
-					% [
-						realm_id,
-						item_id,
-						_kinds(item_id),
-					]
-				)
-				break
-			var recipe := _recipe(recipe_id)
-			if recipe == null:
-				first_broken = "%s: recipe %s does not load" % [realm_id, recipe_id]
-				break
-			if not (recipe.outputs as Array).has(StringName(item_id)):
-				first_broken = (
-					"%s: %s does not list %s as an output" % [realm_id, recipe_id, item_id]
-				)
-				break
-			if recipe.inputs.is_empty():
-				first_broken = (
-					"%s: %s consumes nothing, so the pill is free" % [realm_id, recipe_id]
-				)
-				break
-			for input_id in recipe.inputs:
-				if _def(String(input_id)) == null:
-					first_broken = (
-						"%s: %s needs %s, which resolves to no ItemDef"
-						% [
-							realm_id,
-							recipe_id,
-							input_id,
-						]
-					)
-					break
-			if not first_broken.is_empty():
-				break
-			checked += 1
+		first_broken = _chain_broken(realm_id)
 		if not first_broken.is_empty():
 			break
 	assert_eq(first_broken, "", "every qi realm's craft chain resolves")
-	assert_eq(checked, REALM_COUNT * CONSUMABLE_ROLES.size(), "all 90 consumables walked")
 
 
-## The whole point, part one: every boss the qi chain names must be a real boss,
-## hosted by an authored encounter, in the domain its own record declares. A
-## `boss:` source is only delivered once `LootApi.enter_domain` can spawn it, so
-## an authoring claim a player can never cash is a content defect. This covers the
-## consumables' own drops as well as the reagents', which is where 15 of them hide.
+## The ladder is OBTAINABLE, part one: every boss the chain names is a real boss,
+## hosted by an authored encounter, in the domain its own record declares.
+
+
 func test_every_qi_boss_source_is_a_real_boss_hosted_in_its_own_domain() -> void:
 	var bosses := _catalyst_bosses()
 	assert_eq(bosses.is_empty(), false, "the qi chain names at least one boss")
@@ -654,12 +689,16 @@ func test_every_qi_boss_source_is_a_real_boss_hosted_in_its_own_domain() -> void
 	assert_eq(hosts, bosses.size(), "every boss the qi chain names is enterable")
 
 
-## One authority per domain: a domain the qi chain hunts carries exactly one
-## encounter, that encounter spawns every boss the domain declares, and every band
-## binds a table that resolves. `encounter_for_domain` answers with the first
-## match, so a second encounter for a domain is invisible to every other check —
-## the loser sits on disk holding a boss nothing can spawn (rule E10's shape).
-func test_every_qi_hunt_domain_carries_one_encounter_that_spawns_what_it_declares() -> void:
+## One authority per domain: a reached domain carries exactly one encounter, which
+## spawns every boss the domain declares, with every band binding a table that
+## resolves. `encounter_for_domain` answers with the first match, so a second
+## encounter is invisible elsewhere: the loser sits on disk holding a spawnable boss.
+##
+## Judged over every domain the chain names by ANY route, because a `domain:` ref
+## points at a trial the qi path does not own: `boss:` refs alone left 36 unjudged.
+
+
+func test_every_qi_chain_domain_carries_one_encounter_that_spawns_what_it_declares() -> void:
 	var content := LootContent.instance()
 	var claims: Dictionary = {}
 	for encounter_id in content.encounter_ids():
@@ -669,15 +708,15 @@ func test_every_qi_hunt_domain_carries_one_encounter_that_spawns_what_it_declare
 		var ids: Array = claims.get(String(encounter.domain_id), [])
 		ids.append(String(encounter.id))
 		claims[String(encounter.domain_id)] = ids
-	var hunted := 0
+	var reached := 0
 	var bands := 0
-	for domain_id in _hunt_domains():
+	for domain_id in _chain_domains():
 		var ids: Array = claims.get(domain_id, [])
 		assert_eq(ids.size(), 1, "%s carries exactly one encounter" % domain_id)
 		if ids.size() != 1:
 			continue
 		var encounter := content.encounter_by_id(StringName(ids[0]))
-		hunted += 1
+		reached += 1
 		for boss_id in content.domain_record(StringName(domain_id))["boss_ids"] as Array:
 			assert_eq(
 				(encounter.boss_ids as Array).has(String(boss_id)),
@@ -695,30 +734,28 @@ func test_every_qi_hunt_domain_carries_one_encounter_that_spawns_what_it_declare
 				assert_ne(
 					content.table(table_id), null, "%s resolves table %s" % [domain_id, table_id]
 				)
-	assert_eq(hunted, HUNT_DOMAIN_COUNT, "the qi chain hunts exactly 41 domains")
-	assert_eq(bands > hunted, true, "every hunted domain has more than one band")
+	assert_eq(reached, CHAIN_DOMAIN_COUNT, "the qi chain reaches exactly 77 domains")
+	assert_eq(bands > reached, true, "every reached domain has more than one band")
 
 
-## GAP 2, now asserted rather than pinned. A cleared band grants no second run
-## (loot rule E2), so a catalyst that is only *rolled* can leave a player
-## permanently unable to reach the next realm. Every boss-sourced item in the qi
-## chain must therefore be a guaranteed entry of the LOWEST band of the encounter
-## hosting it — the band a walk clears, and the cheapest to clear.
-##
-## Every REAGENT already was. The 15 boss-dropped CONSUMABLES were not, and for 11
-## of them that drop is the only route to the consumable, so a miss was permanent
-## (DEF-0187). They are guaranteed entries of the boss's own table now, which is
-## the only placement that removes the roll: a pool is one weighted candidate among
-## many, so guaranteeing an item *inside* a pool still leaves the pool itself to a
-## draw. `tools acquisition validate` sees the same set, because `Trial.catalysts`
-## now reads a consumable's own `boss:` sources and not only its reagents'.
-func test_every_boss_sourced_qi_chain_item_is_guaranteed_at_the_lowest_band() -> void:
+## DEF-0187, asserted rather than pinned. A cleared band grants no second run (loot
+## rule E2), so a consumable a boss drops DIRECTLY must be a guaranteed entry of that
+## boss's own lowest-band table. All 15 are now, which is what `ddc9229d` did, so the
+## CONSUMABLE rolled set is asserted EMPTY. A REAGENT is judged separately: a recipe
+## consumes it however the boss hands it over, so a rolled reagent is DEF-0199 rather
+## than a repeat of DEF-0187, and is pinned by id instead.
+
+
+func test_every_boss_dropped_qi_consumable_is_guaranteed_at_the_lowest_band() -> void:
 	var content := LootContent.instance()
 	var guaranteed := 0
 	var rolled: Array[String] = []
+	var rolled_reagents: Array[String] = []
 	var direct: Array[String] = []
 	for item_id in _chain_items():
-		for boss_id in _bosses_of(item_id):
+		var is_pill := _is_consumable(item_id)
+		var boss_ids := _refs_of(item_id, ItemSources.KIND_BOSS)
+		for boss_id in boss_ids:
 			var domain_id := _domain_of(boss_id)
 			if domain_id.is_empty():
 				continue
@@ -736,20 +773,22 @@ func test_every_boss_sourced_qi_chain_item_is_guaranteed_at_the_lowest_band() ->
 				var table_id := String(tier.table_for(StringName(boss_id)))
 				if table_id.is_empty():
 					continue
-				reaches = _reaches(content, table_id, item_id)
-				unconditional = _guarantees(content, table_id, item_id)
+				reaches = _reaches(content, table_id, item_id, false)
+				unconditional = _reaches(content, table_id, item_id, true)
 			assert_eq(
 				reaches, true, "%s is droppable by %s at band %d" % [item_id, boss_id, lowest]
 			)
 			if reaches and not unconditional:
-				rolled.append(item_id)
+				if is_pill:
+					rolled.append(item_id)
+				else:
+					rolled_reagents.append(item_id)
 			elif unconditional:
 				guaranteed += 1
-		# A boss dropping one of the realm's own consumables IS the GAP 2 class; a
-		# reagent dropped by a boss is not, because a recipe consumes it either way.
-		if _is_consumable(item_id) and not _bosses_of(item_id).is_empty():
+		if is_pill and not boss_ids.is_empty():
 			direct.append(item_id)
 	rolled.sort()
+	rolled_reagents.sort()
 	direct.sort()
 	assert_eq(guaranteed > 0, true, "at least one qi catalyst is guaranteed")
 	assert_eq(
@@ -761,17 +800,27 @@ func test_every_boss_sourced_qi_chain_item_is_guaranteed_at_the_lowest_band() ->
 		rolled,
 		[] as Array[String],
 		(
-			"nothing in the qi chain is left to a roll — a cleared band grants no second"
-			+ " run, so each of these is a permanent soft-lock"
+			"no boss-dropped qi consumable is left to a roll — a cleared band grants no"
+			+ " second run, so each of these is a permanent soft-lock"
+		)
+	)
+	assert_eq(
+		rolled_reagents,
+		PINNED_ROLLED_REAGENTS as Array[String],
+		(
+			"the boss-dropped qi reagents still left to a roll — each is guaranteed inside a"
+			+ " ROLLED pool, so the draw that reaches the pool decides it, not the entry"
 		)
 	)
 
 
-## GAP 1, pinned. The ONLY reason any qi consumable is unreachable is that some
-## reagent rests on a route kind no shipping code implements. Everything else —
-## resolution, recipe, host, domain, binding — is proven reachable here, so a new
-## break names itself instead of hiding inside the known gap.
-func test_the_only_unreachable_hop_in_the_qi_chain_is_the_unshipped_route_gap() -> void:
+## The ladder is OBTAINABLE, part two: nothing rests on a route kind no shipping
+## code implements, judged by the same membership rules `tools/data.py` uses, so
+## `gather`/`quest`-only material is caught rather than assumed acquirable. This
+## is DEF-0188's pin, re-declared at 0.
+
+
+func test_no_qi_chain_item_rests_only_on_a_route_kind_nothing_ships() -> void:
 	var unshipped: Array[String] = []
 	var other: Array[String] = []
 	var exercised: Array[String] = []
@@ -788,118 +837,139 @@ func test_the_only_unreachable_hop_in_the_qi_chain_is_the_unshipped_route_gap() 
 			continue
 		unshipped.append(item_id)
 		for kind in _kinds(item_id):
-			# A reagent with no shipped route must be ENTIRELY unshipped. One that
-			# declared a shipped kind alongside these would be a real break wearing
-			# the gap's name, so the kinds are re-checked rather than trusted above.
+			# An item with no shipped route must be ENTIRELY unshipped. One declaring a
+			# shipped kind alongside these would be a real break wearing the gap's name.
 			if ItemSources.is_shipped(StringName(kind)):
 				other.append("%s declares shipped kind %s but resolves no route" % [item_id, kind])
-	unshipped.sort()
-	exercised.sort()
-	var blocked_by_role: Dictionary = {}
-	for role in CONSUMABLE_ROLES:
-		blocked_by_role[role] = 0
 	for consumable in _consumables():
 		var entry := consumable as Dictionary
 		var reason := _blocker(String(entry["item"]), 0, [])
-		if reason.is_empty():
-			continue
-		if reason.contains(UNSHIPPED_MARKER):
-			blocked_by_role[entry["role"]] = int(blocked_by_role[entry["role"]]) + 1
-		else:
+		if not reason.is_empty() and not reason.contains(UNSHIPPED_MARKER):
 			other.append("%s %s: %s" % [entry["realm"], entry["role"], reason])
-	assert_eq(other, [] as Array[String], "no qi hop is unreachable for any other reason")
+	unshipped.sort()
+	exercised.sort()
+	assert_eq(other, [] as Array[String], "no qi hop is unreachable for any reason")
 	assert_eq(
 		unshipped.size(),
 		PINNED_UNSHIPPED_REAGENTS,
-		"the pinned unshipped-route qi reagent count has not moved"
-	)
-	assert_eq(
-		blocked_by_role,
-		PINNED_BLOCKED_BY_ROLE,
-		"the pinned per-role count of qi consumables the gap leaves unacquirable"
-	)
-	assert_eq(
-		int(blocked_by_role["recovery_item"]),
-		REALM_COUNT,
-		"no qi realm has a shipping route to its recovery elixir"
+		"no qi chain item rests only on gather/quest — the DEF-0188 gap stays closed"
 	)
 	assert_eq(
 		exercised,
-		["boss", "craft", "gather", "quest"] as Array[String],
+		["boss", "craft", "domain", "gather", "quest"] as Array[String],
 		"the qi chain declares only kinds the backward walk and the catalog both know"
 	)
 
 
-## The end-to-end proof for everything the gap leaves craftable: hunt every domain
-## the qi chain names, take what its bosses drop, and craft every consumable whose
-## recipe inputs are all reachable. This is the chain a player walks, and it is
-## what the qi gate audits never exercise because `Probe.stock` grants items
+func _has_shipped_route(item_id: String) -> bool:
+	var def := _def(item_id)
+	if def == null:
+		return false
+	for route in ItemSources.routes(def):
+		if bool(route["ok"]) and ItemSources.is_shipped(StringName(route["kind"])):
+			return true
+	return false
+
+
+## DEF-0199, pinned. Every hop closes, so the only thing left between a player and
+## a consumable is whether ONE clear delivers it. 41 do not, and rule E2 grants no retry.
+
+
+func test_the_qi_consumables_rule_e2_leaves_to_a_roll_are_pinned() -> void:
+	var rolled: Array[String] = []
+	var by_role: Dictionary = {}
+	for role in CONSUMABLE_ROLES:
+		by_role[role] = 0
+	for consumable in _consumables():
+		var entry := consumable as Dictionary
+		var item_id := String(entry["item"])
+		if _certain(item_id, 0, []):
+			continue
+		rolled.append(item_id)
+		by_role[entry["role"]] = int(by_role[entry["role"]]) + 1
+	rolled.sort()
+	assert_eq(
+		by_role, PINNED_ROLLED_BY_ROLE, "the per-role count of qi consumables one clear can miss"
+	)
+	assert_eq(
+		rolled,
+		PINNED_ROLLED_CONSUMABLES as Array[String],
+		"exactly these qi consumables are obtainable only on a roll"
+	)
+	assert_eq(
+		rolled.size(),
+		REALM_COUNT,
+		"every qi realm has at least one consumable a single clear can miss"
+	)
+
+
+## The end-to-end proof, per realm, exactly as the body twin does it: a fresh delver
+## hunts the domains that realm's certain chain names and ends up holding every
+## consumable rule E2 guarantees. Each realm is walked alone because a hunt is per
+## actor and one clear is the only one a player gets. This is the chain a player
+## walks, and the qi gate audits never exercise it because `Probe.stock` grants items
 ## outright.
 ##
-## The 11 consumables that a boss drops but no recipe can make are counted as
-## `drop_only` rather than crafted: their recipe input has no shipping route, so
-## the craft cannot be attempted. They are not a defect — they arrive guaranteed
-## now, which the test above proves — and the 41 the gap leaves unacquirable are
-## named by the test above. Neither is hidden: all three counts must sum to the
-## whole ladder.
-func test_every_craftable_qi_consumable_is_crafted_end_to_end_from_its_trial() -> void:
-	var domains := _hunt_domains()
-	assert_eq(domains.is_empty(), false, "the qi chain names at least one hunt domain")
-	var actor := _hero()
-	var first_failure := ""
-	for domain_id in domains:
-		var reason := _hunt(actor, domain_id, _first_tier(domain_id))
-		if reason != "claimed":
-			first_failure = "hunting %s stopped: %s" % [domain_id, reason]
-			break
+## Two ways to hold a certain consumable, both counted: 15 are guaranteed DIRECT
+## drops already in the bag, the rest are crafted. A guaranteed drop is never
+## re-crafted, because its recipe can name a rolled reagent, so insisting on the craft
+## would assert something no player needs to do. The pinned 41 are counted, not
+## acquired: they are obtainable, but not on demand, and asserting they arrive would
+## make the test depend on the hunt seed.
+
+
+func test_every_certain_qi_consumable_is_held_end_to_end_from_its_own_domains() -> void:
+	var realms := _realms()
+	assert_eq(realms.size(), REALM_COUNT, "30 realms are walked")
 	var crafted := 0
-	var drop_only := 0
-	var unacquirable := 0
-	if first_failure.is_empty():
-		for consumable in _consumables():
-			var entry := consumable as Dictionary
-			# Three outcomes, and the difference matters: an item with a blocker has
-			# NO shipping route at all, while an unblocked item whose recipe is
-			# blocked still arrives as a direct boss drop. Collapsing the second into
-			# the first is what would let a rolled drop pass for a craftable pill.
-			if not _blocker(String(entry["item"]), 0, []).is_empty():
-				unacquirable += 1
+	var dropped := 0
+	var rolled := 0
+	var first_failure := ""
+	for realm_id in realms:
+		var plan := _realm_plan(realm_id)
+		var certain := plan["certain"] as Array[String]
+		rolled += (plan["rolled"] as Array[String]).size()
+		if certain.is_empty():
+			continue
+		var actor := _hero()
+		for domain_id in plan["domains"] as Array[String]:
+			var reason := _hunt(actor, domain_id, _first_tier(domain_id))
+			if reason != "claimed":
+				first_failure = "%s: hunting %s stopped: %s" % [realm_id, domain_id, reason]
+				break
+		if not first_failure.is_empty():
+			break
+		for item_id in certain:
+			if ItemsApi.has_item(actor, StringName(item_id)):
+				dropped += 1
 				continue
-			if not _craftable(String(entry["recipe"])):
-				drop_only += 1
-				continue
-			var recipe := _recipe(String(entry["recipe"]))
+			var recipe := _recipe(_craft_recipe(item_id))
 			if recipe == null:
-				first_failure = "%s: recipe %s does not load" % [entry["realm"], entry["recipe"]]
+				first_failure = "%s: %s has no loadable recipe" % [realm_id, item_id]
 				break
 			if not ItemsApi.craft(recipe, ItemsApi.inventory(actor)):
 				first_failure = (
-					"%s: crafting %s failed, %s"
-					% [
-						entry["realm"],
-						entry["item"],
-						_short(recipe, actor),
-					]
+					"%s: crafting %s failed, %s" % [realm_id, item_id, _short(recipe, actor)]
 				)
 				break
-			if not ItemsApi.has_item(actor, StringName(entry["item"])):
-				first_failure = (
-					"%s: crafted %s but the bag does not hold it"
-					% [
-						entry["realm"],
-						entry["item"],
-					]
-				)
+			if not ItemsApi.has_item(actor, StringName(item_id)):
+				first_failure = "%s: crafted %s but the bag does not hold it" % [realm_id, item_id]
 				break
 			crafted += 1
+		if not first_failure.is_empty():
+			break
 	assert_eq(
-		first_failure, "", "every craftable qi consumable is crafted from what its own trials drop"
+		first_failure, "", "every certain qi consumable is held after hunting its own domains"
 	)
 	assert_eq(
-		crafted + drop_only + unacquirable,
+		crafted + dropped + rolled,
 		REALM_COUNT * CONSUMABLE_ROLES.size(),
-		"every qi consumable was crafted, dropped, or named as gap-blocked"
+		"every qi consumable was crafted, dropped, or is named as the pinned roll gap"
 	)
-	assert_eq(crafted, 38, "38 qi consumables are craftable through the shipping program")
-	assert_eq(drop_only, 11, "11 qi consumables arrive as a boss drop, not as a craft")
-	assert_eq(unacquirable, 41, "41 qi consumables have no shipping route at all")
+	assert_eq(crafted + dropped, 49, "49 qi consumables are acquirable on every single clear")
+	assert_eq(
+		dropped,
+		BOSS_DROPPED_CONSUMABLES.size(),
+		"the boss-dropped consumables arrive as guaranteed drops, not as crafts"
+	)
+	assert_eq(rolled, 41, "41 qi consumables arrive only when the roll favours the player")
