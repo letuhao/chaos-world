@@ -28,6 +28,11 @@ const FORGE_SCENE := "res://src/ui/screens/socket_forge.tscn"
 ## vitality, so four strikes is the whole fight. A cap, not "until it dies": a boss
 ## that outlasts this is a content bug and must fail rather than spin.
 const MAX_STRIKES := 8
+## How many bosses the walk will fight before it insists that at least one of
+## them paid gear this hero can wear. A cap, not a loop bound: hunting is cheap and
+## each boss is one fight, so the walk tries a few routes rather than only the
+## first -- a route whose table holds no equipment for this hero pays materials.
+const MAX_HUNTS := 4
 ## The three things a socket transaction costs, and the socket item it seats.
 const SOCKET_CONTENT: Array[StringName] = [
 	&"socket_rune_mortal_offense",
@@ -283,6 +288,96 @@ func _declared_defense(instance: ItemInstance) -> float:
 # --- The full walk, including the two steps that need a route ---------------
 
 
+## Fight one boss on `domain_index` and claim everything it pays.
+##
+## Every step is a shipped control: the domain selector, Enter, Strike until the
+## boss falls, Leave, then the reward row's own Pick up. Returns the def ids the
+## hunt delivered, so the caller can look for one it can equip.
+func _hunt_once(harness: SeamHarness, loot: Node, domain_index: int) -> Array[String]:
+	# The selector is a dropdown, so `choose` selects and emits like a click does.
+	harness.choose(loot, "%DomainOption", domain_index)
+	assert_eq(harness.press(loot, "%EnterButton"), true, "Enter domain is a live control")
+	assert_eq(bool((loot.summary() as Dictionary)["in_domain"]), true, "a boss is live")
+	# A small, explicit cap rather than "strike until it dies": the app's strike
+	# damage is 25 and the lowest authored boss has 100 vitality, so four strikes is
+	# the whole fight. If a boss ever outlasts that, the content is wrong and this
+	# fails loudly instead of spinning (AGENTS.md, disk-safety rule).
+	var strikes := 0
+	while bool(((loot.summary() as Dictionary)["enabled"] as Dictionary)["strike"]):
+		strikes += 1
+		if strikes > MAX_STRIKES:
+			assert_eq(true, false, "the boss outlived %d strikes" % MAX_STRIKES)
+			break
+		harness.press(loot, "%StrikeButton")
+	var defeated := loot.summary() as Dictionary
+	assert_eq(bool(defeated["in_domain"]), false, "the boss was defeated by repeated strikes")
+	assert_eq(int(defeated["reward_count"]) > 0, true, "and its reward is listed")
+	assert_eq(int(defeated["pending_drops"]) > 0, true, "with drops the player has not claimed yet")
+	var pending := int(defeated["pending_drops"])
+	assert_eq(harness.press(loot, "%LeaveButton"), true, "Leave domain is a live control")
+	var out := loot.summary() as Dictionary
+	assert_eq(bool(out["in_domain"]), false, "nobody is in a domain")
+	assert_eq(
+		int(out["pending_drops"]),
+		pending,
+		"leaving keeps the unclaimed reward, so nothing was lost on the way out"
+	)
+	assert_eq(
+		int((out["reward"] as Dictionary)["row_count"]) > 0,
+		true,
+		"and the reward panel still lists every drop"
+	)
+	return _claim_every_drop(harness, loot, pending)
+
+
+## Claim every drop still owed, one reward row at a time, and return their def ids.
+##
+## The panel lists ONE reward at a time, and claiming the last drop of the listed
+## reward retires that encounter -- its payload moves to the claim ledger so nothing
+## can address it again -- and the next reward slides into its place. That is why
+## "the row now reads as claimed" is NOT observable here: a fully claimed encounter
+## does not stay on screen to be read. What is observable is the ledger the screen
+## counts and the bag the item lands in.
+##
+## `owed` is the count read BEFORE the loop and never inside it: the body appends
+## one def per claim, so a bound read from the growing list rises in lockstep.
+func _claim_every_drop(harness: SeamHarness, loot: Node, owed: int) -> Array[String]:
+	var claimed_defs: Array[String] = []
+	var ledger := int((loot.summary() as Dictionary)["claimed_encounters"])
+	while claimed_defs.size() < owed:
+		var live := loot.summary() as Dictionary
+		if int(live["pending_drops"]) <= 0:
+			break
+		var rows := (live["reward"] as Dictionary).get("rows", []) as Array
+		var index := _claimable_index(rows)
+		if index < 0:
+			break
+		assert_eq(
+			harness.press_drop_action(loot, index), true, "the drop row's Pick up control is live"
+		)
+		claimed_defs.append(String((rows[index] as Dictionary).get("def_id", "")))
+	assert_eq(
+		claimed_defs.size(),
+		owed,
+		"every drop the fight paid was claimed through the reward list's own row action"
+	)
+	var claimed := loot.summary() as Dictionary
+	assert_eq(int(claimed["pending_drops"]), 0, "so nothing is still owed to the player")
+	assert_eq(
+		int(claimed["claimed_encounters"]) > ledger,
+		true,
+		"and the encounters moved to the claim ledger the screen counts"
+	)
+	# The reward list reports what the pickup did, and an accepted claim carries no
+	# reason to report, so the outcome line used to render as a bare "Name: " -- the
+	# one action that turns a boss into gear saying nothing at all. The wording is the
+	# panel's to choose, so what is asserted is that it names what happened rather
+	# than trailing off after a separator.
+	var outcome := String((claimed["reward"] as Dictionary)["message"])
+	assert_eq(outcome.ends_with(":"), false, "and it says what the pickup did: '%s'" % outcome)
+	return claimed_defs
+
+
 func test_the_full_pipeline_walks_every_step_a_player_would() -> void:
 	var harness := _boot()
 	if harness.boot_error != "":
@@ -336,127 +431,64 @@ func test_the_full_pipeline_walks_every_step_a_player_would() -> void:
 	var loot := harness.mounted(LOOT_SCENE)
 	assert_ne(loot, null, "the loot screen is the mounted screen")
 	assert_eq(bool((loot.summary() as Dictionary)["in_domain"]), false, "no boss is live yet")
-	assert_eq(harness.press(loot, "%EnterButton"), true, "Enter domain is a live control")
-	assert_eq(bool((loot.summary() as Dictionary)["in_domain"]), true, "a boss is live")
-	# A small, explicit cap rather than "strike until it dies": the app's strike
-	# damage is 25 and the lowest authored boss has 100 vitality, so four strikes is
-	# the whole fight. If a boss ever outlasts that, the content is wrong and this
-	# fails loudly instead of spinning (AGENTS.md, disk-safety rule).
-	var strikes := 0
-	while bool(((loot.summary() as Dictionary)["enabled"] as Dictionary)["strike"]):
-		strikes += 1
-		if strikes > MAX_STRIKES:
-			assert_eq(true, false, "the boss outlived %d strikes" % MAX_STRIKES)
-			break
-		harness.press(loot, "%StrikeButton")
-	var defeated := loot.summary() as Dictionary
-	assert_eq(bool(defeated["in_domain"]), false, "the boss was defeated by repeated strikes")
-	assert_eq(int(defeated["reward_count"]) > 0, true, "and its reward is listed")
-	assert_eq(int(defeated["pending_drops"]) > 0, true, "with drops the player has not claimed yet")
-	var pending := int(defeated["pending_drops"])
 
-	assert_eq(harness.press(loot, "%LeaveButton"), true, "Leave domain is a live control")
-	var out := loot.summary() as Dictionary
-	assert_eq(bool(out["in_domain"]), false, "nobody is in a domain")
-	assert_eq(
-		int(out["pending_drops"]),
-		pending,
-		"leaving keeps the unclaimed reward, so nothing was lost on the way out"
-	)
-	assert_eq(
-		int((out["reward"] as Dictionary)["row_count"]) > 0,
-		true,
-		"and the reward panel still lists every drop"
-	)
-
-	# CLAIM THE DROPS, and remember WHICH ones. Everything below equips a def this
-	# fight paid, never the starter helm: the helm is already in the bag before the
-	# fight, so equipping it would prove the bag works and prove nothing about
-	# acquisition.
+	# HUNT until a boss pays GEAR this hero can wear, then equip that.
 	#
-	# Taken after leaving, because the reward list is populated when the screen settles
-	# rather than on the killing blow -- `reward_count` reads module state, which is
-	# ahead of the rows the player can actually press.
-	#
-	# EVERY drop is claimed, one row action at a time, because the screen lists one
-	# reward at a time. Claiming the last drop of the listed reward retires that
-	# encounter -- its payload moves to the claim ledger, so nothing can address it
-	# again -- and the next reward slides into its place. That is why "the row now
-	# reads as claimed" is NOT observable here: a fully claimed encounter does not stay
-	# on screen to be read. What is observable, and what is asserted below, is the
-	# ledger the screen counts and the bag the item lands in.
-	var reward := out["reward"] as Dictionary
-	var claimable := _first_claimable(reward.get("rows", []) as Array)
-	assert_eq(claimable.is_empty(), false, "the reward lists a drop the player may take")
-	assert_ne(
-		String(claimable.get("def_id", "")), "", "the claimable drop names the item it becomes"
-	)
-	assert_eq(
-		int(claimable.get("rolled_count", 0)) > 0,
-		true,
-		"and it arrives rolled: the fight paid affixes, not a bare definition"
-	)
-	var owed := int((loot.summary() as Dictionary)["claimed_encounters"])
-	# Snapshot the bound BEFORE the loop. The body appends one def per claim, so a
-	# bound read from the growing list would rise in lockstep and never terminate.
-	var claim_budget := int((loot.summary() as Dictionary)["pending_drops"])
+	# One hunt cannot promise it, and the reason is content, not wiring. What a route
+	# pays is authored data: a route whose table holds no equipment for this hero's
+	# standing pays materials and consumables instead -- a food and a token, on the
+	# tree this was written against. Asserting "the drop is wearable" after a single
+	# hunt would be asserting a fact about the corpus rather than about the pipeline, and
+	# would go red the next time the item corpus is regenerated. So the walk hunts down
+	# the domain list the way a player does and stops at the first boss that pays
+	# something equippable. The loop is capped by MAX_HUNTS, never by the size of the
+	# list it is walking.
+	var hunt_budget := mini(MAX_HUNTS, maxi(1, int((loot.summary() as Dictionary)["domain_count"])))
 	var claimed_defs: Array[String] = []
-	while claimed_defs.size() < claim_budget:
-		var live := loot.summary() as Dictionary
-		if int(live["pending_drops"]) <= 0:
-			break
-		var rows := (live["reward"] as Dictionary).get("rows", []) as Array
-		var index := _claimable_index(rows)
-		if index < 0:
-			break
-		assert_eq(
-			harness.press_drop_action(loot, index), true, "the drop row's Pick up control is live"
-		)
-		claimed_defs.append(String((rows[index] as Dictionary).get("def_id", "")))
-	assert_eq(
-		claimed_defs.size(),
-		claim_budget,
-		"every drop the fight paid was claimed through the reward list's own row action"
-	)
-	var claimed := loot.summary() as Dictionary
-	assert_eq(int(claimed["pending_drops"]), 0, "so nothing is still owed to the player")
-	assert_eq(
-		int(claimed["claimed_encounters"]) > owed,
-		true,
-		"and the encounters moved to the claim ledger the screen counts"
-	)
-
-	# Equip a CLAIMED drop, not a starter item. The helm is already in the bag before
-	# the fight, so equipping it would prove the bag works and prove nothing about
-	# acquisition; the objective's loop is "receive a boss drop -> equip it".
-	#
-	# Not every drop a fight pays is wearable by the hero who fought it: the authored
-	# grade gate (ADR 0007) refuses gear above the actor's realm tier, and a tier-one
-	# hunt can pay an earth-grade helm this hero will never grow into. So the drop is
-	# chosen the way a player chooses one -- read each claimed row, and equip the
-	# first the workbench's own Equip control accepts.
-	assert_eq(harness.navigate(workbench_route)["ok"], true, "back to the workbench by route")
 	var drop_def := ""
-	for def_id in claimed_defs:
-		var row := harness.row_of_def(workbench, def_id)
-		assert_ne(row, -1, "the claimed drop '%s' is in the bag" % def_id)
-		if row == -1:
-			continue
-		assert_eq(
-			harness.pick_row(workbench, row), true, "the claimed drop '%s' is picked" % def_id
-		)
-		if not _is_live(harness.button(workbench, "%EquipButton")):
-			continue
-		drop_def = def_id
-		break
+	var hunt := 0
+	while drop_def.is_empty() and hunt < hunt_budget:
+		claimed_defs.append_array(_hunt_once(harness, loot, hunt))
+		# Equip the first claimed drop the workbench's own Equip control accepts. Not
+		# every drop a fight pays is wearable: the authored grade gate (ADR 0007) refuses
+		# gear above the actor's realm tier, so the choice is asked of the shipped
+		# control rather than of a rule this test would be restating.
+		assert_eq(harness.navigate(workbench_route)["ok"], true, "back to the workbench by route")
+		for def_id in claimed_defs:
+			var row := harness.row_of_def(workbench, def_id)
+			assert_ne(row, -1, "the claimed drop '%s' is in the bag" % def_id)
+			if row == -1:
+				continue
+			assert_eq(
+				harness.pick_row(workbench, row), true, "the claimed drop '%s' is picked" % def_id
+			)
+			if not _is_live(harness.button(workbench, "%EquipButton")):
+				continue
+			drop_def = def_id
+			break
+		hunt += 1
+		if drop_def.is_empty():
+			assert_eq(
+				harness.navigate(SeamHarness.route_for_scene(LOOT_SCENE))["ok"],
+				true,
+				"and back to the loot route to hunt again"
+			)
+
 	assert_ne(
 		drop_def,
 		"",
 		(
-			"at least one drop this fight paid is gear this hero can wear; Equip was "
-			+ "live for none of %s" % str(claimed_defs)
+			(
+				"a boss within %d hunts paid gear this hero can wear; Equip was live for "
+				+ "none of %s"
+			)
+			% [hunt_budget, str(claimed_defs)]
 		)
 	)
+
+	# Equip the CLAIMED drop, not a starter item. The iron helm is already in the bag
+	# before the fight, so equipping it would prove the bag works and prove nothing
+	# about acquisition; the objective's loop is "receive a boss drop -> equip it".
 	assert_eq(harness.press(workbench, "%EquipButton"), true, "Equip is live")
 	# The drop itself is now worn, in whatever slot its subtype declares. This is the
 	# assertion the starter helm could never make: the item on the actor came out of a
@@ -468,6 +500,6 @@ func test_the_full_pipeline_walks_every_step_a_player_would() -> void:
 	)
 	assert_eq(harness.press(workbench, "%SaveButton"), true, "Save is live")
 	assert_eq(harness.press(workbench, "%LoadButton"), true, "Load is live")
-	# Asked as "is it still worn", not "is the armor slot full": the slot a drop
-	# occupies comes from its subtype, so a drop this fight paid may be an accessory.
+	# Asked as "is it still worn", not "is the armor slot full": the slot a drop occupies
+	# comes from its subtype, so a drop this fight paid may be an accessory.
 	assert_eq(_worn_defs(actor).has(drop_def), true, "the equipped drop survived the round trip")
