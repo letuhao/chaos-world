@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResourceNodeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/holdings/resource_node_def.gd" id="1_node"]
+
+[resource]
+script = ExtResource("1_node")
+node_id = &"spirit_sea_quiet_vein"
+display_name = "Quiet Vein"
+kind = &"spirit_vein"
+realm = &"spirit_sea"
+yield_per_period = 9
+upkeep_per_period = 6
+claim_cost = {"survey": 3, "tribute": 3}
+depletion = 60
+claim_floor = 40

@@ -60,76 +60,35 @@ static func resolve(kind: String, id: String) -> Dictionary:
 			# live `Actor` elsewhere (ADR 0104's minter), so a non-empty id is enough.
 			return _OK
 		&"clan":
-			# `ClanApi.clan_ids` is the facade's own published list of authored houses.
-			return _known(ClanApi.clan_ids(), id, UNKNOWN_CLAN)
+			return _known(ClanCatalog.instance().clan_ids(), id, UNKNOWN_CLAN)
 		&"sect":
-			# `SectApi` publishes no id list — it is at the twelve-method cap — but its
-			# `summary` carries every authored sect under `sects` whatever the actor is,
-			# exactly so a screen can compare institutions in one call. That payload is
-			# the read, and `null` is a legitimate argument for it: the world listing is
-			# built before the actor is ever consulted.
-			return _known(_sect_ids(), id, UNKNOWN_SECT)
+			return _known(SectCatalog.instance().sect_ids(), id, UNKNOWN_SECT)
 		&"nation":
 			return _nation(id)
 		_:
 			return {"ok": false, "reason": UNKNOWN_KIND}
 
 
-## The authored sect ids, read out of `SectApi.summary`'s `sects` map.
-static func _sect_ids() -> Array[StringName]:
-	var out: Array[StringName] = []
-	var asked := Callable(SectApi, "summary")
-	if not asked.is_valid():
-		return out
-	var answered: Variant = asked.call(null)
-	if not answered is Dictionary:
-		return out
-	var sects: Variant = (answered as Dictionary).get("sects", {})
-	if not sects is Dictionary:
-		return out
-	for sect_id in (sects as Dictionary).keys():
-		out.append(StringName(sect_id))
-	return out
-
-
-## ## The nation branch, and the asymmetry it records rather than hides
+## ## Why every tier is read through its CATALOG rather than its facade
 ##
-## `ClanApi` publishes `clan_ids`; `SectApi` publishes `sects` inside its `summary`; and
-## **`NationApi` publishes neither.** Its `summary` is the actor's OWN board — offices,
-## claims, stances, standoffs — and it holds no world list of polities at all. So there is
-## no facade call that answers "does this build ship a nation of that id", and this branch
-## is therefore built in two steps rather than pretending the symmetry is there:
+## `ClanApi` happens to publish `clan_ids` and `SectApi` publishes no id list at all, so
+## "call the facade" is not one shape across the three tiers — asking each a different
+## question is how they would drift apart again. The catalog IS the repo's own precedent
+## for the root asking a content question: `institution_resolver.gd:129` already reads
+## `SectCatalog` from this layer, `app/` may name any concrete type by construction
+## (`LAYER_DEPS["app"] == {"*"}`), and a catalog is the literal answer to "does this build
+## ship an institution of that id". Each one loads lazily, read-only, through
+## `ContentScan.files_under` — so nothing here reads a directory by hand.
 ##
-##   1. ask the facade anyway, through a `Callable` rather than a direct call, and read a
-##      `nations` map out of it if one is ever added (`sect` proves the shape is idiomatic
-##      here). This is the half that keeps working when the facade grows the list;
-##   2. fall back to `NationCatalog`, which is the authored `.tres` tree the facade itself
-##      reads through `_catalog()`. `app/` may name any concrete type by construction
-##      (`LAYER_DEPS["app"] == {"*"}`), and `institution_resolver.gd:129` already reads
-##      `SectCatalog` from this layer, so this is the repo's own precedent rather than a
-##      new reach.
+## ## The nation asymmetry, recorded rather than hidden
 ##
-## Without the fallback the branch would have to answer "no" for every nation id, which
-## would make a real polity unable to hold a node — a wrong answer that looks like a
-## working gate, which is worse than the seam it would be.
-##
-## ## What the `Callable` guards, precisely
-##
-## It guards a method that is ABSENT and an answer that is not a `Dictionary` — both of
-## which turn into a named refusal instead of a runtime fault or a null dereference
-## (ADR 0002's rule). It does NOT guard a parse error inside `nation/api.gd` itself: a
-## class that fails to compile is a load failure for every dependent at once, which no
-## probe on this side can intercept. What keeps this file off that blast radius is that it
-## names `NationApi` and nothing else of the module, and never imports
-## `institution_resolver.gd`.
+## `NationApi` publishes no world list of polities: its `summary` is the actor's OWN board,
+## and `state` is that actor's ledger. Asking either "which nations exist" would be
+## answering about one actor and reading it as an answer about the world — the
+## single-actor-passes / multi-actor-fails shape ADR 0101 found. So the nation tier reads
+## `NationCatalog`, which is the authored `.tres` tree the facade itself resolves through
+## `_catalog()`.
 static func _nation(id: String) -> Dictionary:
-	var asked := Callable(NationApi, "summary")
-	if asked.is_valid():
-		var answered: Variant = asked.call(null)
-		if answered is Dictionary:
-			var known: Variant = (answered as Dictionary).get("nations", {})
-			if known is Dictionary and (known as Dictionary).has(String(id)):
-				return _OK
 	return _known(NationCatalog.instance().nation_ids(), id, UNKNOWN_NATION)
 
 

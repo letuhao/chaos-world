@@ -144,15 +144,49 @@ static func _install_resolver() -> bool:
 ##
 ## ADR 0104 says a live subject is minted on demand through the same injected-`Callable`
 ## seam `NpcApi.set_minter` already uses, so `custody` keeps no `npc` edge and no stat
-## provider graph. Handing the module `ActorFactory.spawn_npc` ITSELF — not a lambda that
-## forwards to it — is the form `NpcBoot.install` and `DomainBoot.install` both use, and
-## for the documented reason: a typed lambda calling another script's static function
-## crashed the process with an access violation on the shell's first frame.
+## provider graph.
 ##
-## The signature lines up without an adapter: `spawn_npc(npc_def, role, rank_id, base)`
-## takes the subject id first and defaults the rest, which is the shape a captive's body
-## needs. A subject whose id no catalog ships still mints — a plain actor — because a
-## claim names a def id and the body is borrowed for the moment, not resolved out of it.
+## ## Why this is an adapter and not `ActorFactory.spawn_npc` handed over bare
+##
+## The instruction this file implements says "wire `CustodyApi.set_minter
+## (ActorFactory.spawn_npc)`", and it is right about the SEAM — but that exact Callable
+## does not fit the call, because the two signatures disagree:
+##
+##   - `spawn_npc(npc_def: NpcDef = null, role, rank_id, base)` takes an **`NpcDef`**;
+##   - `CustodyApi.subject` has a **subject def ID**, a plain `String`, because ADR 0104
+##     stores an id and never a resource.
+##
+## Handing the bare constructor across is an invalid-type error at the call, which is
+## "a null injection fails loudly" one level below the thing it protects. So the SEAM is
+## still an injected `Callable` and the module still names no concrete type — the
+## composition root simply supplies the one function that speaks both vocabularies, which
+## is the entire job of this layer.
+##
+## ## And why the adapter is a static function rather than a lambda
+##
+## `NpcBoot.install` and `DomainBoot.install` both hand over a bare static-function
+## reference, and both document the same reason: a typed lambda whose body calls another
+## script's static function killed the process with an access violation on the shell's
+## first frame, with nothing in the log. This is that shape, not a closure over one.
+##
+## ## The catalog lookup lives HERE, not in `custody`
+##
+## `registry.json` gives `custody` `["contracts", "core", "economy"]` and no `npc`, so
+## resolving a subject id against `NpcCatalog` from inside the module would be an
+## **undeclared dependency** the boundary checker fails on. `app/` may name any concrete
+## type by construction, so the edge is legal here and nowhere else — ADR 0002's dependency
+## inversion, enforced rather than asserted.
 static func _install_minter() -> bool:
-	CustodyApi.set_minter(ActorFactory.spawn_npc)
+	CustodyApi.set_minter(EconomyBoot._subject_minter)
 	return CustodyApi.has_minter()
+
+
+## Mint a live body for a subject def id, through `ActorFactory.spawn_npc`.
+##
+## The def is passed when it is AUTHORED and `null` when it is not, because `spawn_npc`'s
+## own contract says a null def "mints a plain actor at the supplied realm". That is the
+## right answer for a captive rather than an error: a claim names an id, the body is
+## borrowed for the moment it is displayed, and a subject this build ships no individual for
+## is still a body instead of a null the caller cannot tell apart from an unwired seam.
+static func _subject_minter(subject_id: String) -> Actor:
+	return ActorFactory.spawn_npc(NpcCatalog.instance().definition(StringName(subject_id)))

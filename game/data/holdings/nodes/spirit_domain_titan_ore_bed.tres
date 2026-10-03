@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResourceNodeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/holdings/resource_node_def.gd" id="1_node"]
+
+[resource]
+script = ExtResource("1_node")
+node_id = &"spirit_domain_titan_ore_bed"
+display_name = "Titan Ore Bed"
+kind = &"ore"
+realm = &"spirit_domain"
+yield_per_period = 10
+upkeep_per_period = 8
+claim_cost = {"tribute": 4}
+depletion = 72
+claim_floor = 50

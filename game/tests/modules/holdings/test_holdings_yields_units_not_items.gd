@@ -187,18 +187,29 @@ func test_settle_reports_units_and_never_an_item() -> void:
 # --- 3. Nothing forages --------------------------------------------------------
 
 
-## No node content is authored, so even the custody side of `gather` has no corpus. A
-## route cannot be declared over an empty catalog, and this is what "empty" means here.
-func test_no_resource_node_content_is_authored() -> void:
+## ## This assertion FLIPPED, and the original said it would
+##
+## This test used to assert that **no** node content is authored, because a `gather` route
+## cannot be declared over an empty catalog. Its own docstring said: *"The runtime agrees,
+## at the one place that answers 'is `gather` shipped'. If a forager is ever built this
+## flips, and that is the moment the route may be declared."*
+##
+## Sixteen `ResourceNodeDef` files are now authored under `NODES_ROOT`, so the flip
+## happened — on schedule, and for the reason the author predicted. **The content exists but
+## `gather` is STILL not shipped**, because shipping it is a decision in
+## `modules/items/item_sources.gd` about what a forager does, not a consequence of a `.tres`
+## appearing. Both facts are asserted below rather than only the flattering one: corpus is
+## present, route is absent, and the gap between them is exactly the remaining work.
+func test_resource_node_content_is_authored() -> void:
 	var authored: Array[String] = []
 	for path in ContentScan.files_under_unsorted(NODES_ROOT):
 		if path.ends_with(".tres"):
 			authored.append(path)
 	assert_eq(
 		authored.is_empty(),
-		true,
+		false,
 		(
-			"no authored resource node exists, so `gather` has no content to route over: %s"
+			"the node catalog is no longer empty, so `gather` may now be declared: %s"
 			% ", ".join(authored)
 		)
 	)

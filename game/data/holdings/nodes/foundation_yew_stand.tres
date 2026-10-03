@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResourceNodeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/holdings/resource_node_def.gd" id="1_node"]
+
+[resource]
+script = ExtResource("1_node")
+node_id = &"foundation_yew_stand"
+display_name = "Yew Stand"
+kind = &"timber"
+realm = &"foundation"
+yield_per_period = 2
+upkeep_per_period = 0
+claim_cost = {}
+depletion = 0
+claim_floor = 0

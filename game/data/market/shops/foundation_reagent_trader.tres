@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ShopDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/market/shop_def.gd" id="1_shop"]
+
+[resource]
+script = ExtResource("1_shop")
+shop_id = &"foundation_reagent_trader"
+display_name = "Foundation Reagent Trader"
+kind = &"trader"
+stock = Array[Dictionary]([{"def_id": &"alchemy_clarity_pill", "quantity": 6}, {"def_id": &"alchemy_vigor_elixir", "quantity": 4}, {"def_id": &"alchemy_mist_herb", "quantity": 10}])
+buys = Array[StringName]([&"alchemy_mist_herb", &"astral_lunar_veil_herb"])
+location_id = &"foundation_reagent_row"
+capacity = 12

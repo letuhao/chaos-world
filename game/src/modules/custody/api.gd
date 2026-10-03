@@ -91,11 +91,27 @@ static func set_store(store: RefCounted) -> void:
 ## Install the constructor that mints a claim's subject as a LIVE actor (ADR 0104).
 ##
 ## The seam `NpcApi.set_minter` already is, and for the same reason: a claim stores a
-## subject **def id** and never an `Actor`, so this module cannot build the body itself
-## without naming `ActorFactory` — which would be an `app` type inside a module. `app/`
-## passes `ActorFactory.spawn_npc`, whose signature
-## `(npc_def: NpcDef = null, role, rank_id, base)` takes the subject id first and defaults
-## the rest, so `subject` below calls it with one argument.
+## subject **DEF ID** and never an `Actor`, so this module cannot build the body itself
+## without naming `ActorFactory` — which would be an `app` type inside a module.
+##
+## ## The constructor is expected to take the subject DEF ID first
+##
+## `app/` wires `EconomyBoot._subject_minter`, which wraps `ActorFactory.spawn_npc`:
+## `spawn_npc`'s own first parameter is an `NpcDef`, and a subject id is a plain string,
+## so the two are not interchangeable types. The adapter the composition root installs
+## resolves the id against the `npc` catalog — where the edge is legal — and passes the def
+## or `null`, which is `spawn_npc`'s documented meaning of "mint a plain actor at the
+## supplied realm". That is correct for a captive whose def the build does not ship: the
+## claim names an id, the body is borrowed for the moment, and a subject with no authored
+## def is still a body rather than an error.
+##
+## ## `custody` keeps ZERO edges to `npc`, and this is where that is enforced
+##
+## The def lookup lives in `app/` precisely because `registry.json` gives this module
+## `["contracts", "core", "economy"]` and no `npc` — ADR 0104's "custody has no `npc`
+## dependency" is a boundary the checker enforces, so resolving the def in here would be an
+## undeclared dependency rather than a convenience. The minter is the seam that carries the
+## lookup instead, which is the whole point of a seam.
 ##
 ## ## A null injection refuses, it does not dereference nothing
 ##
@@ -138,7 +154,7 @@ static func subject(claim_id: StringName) -> Actor:
 		return null
 	# Explicitly typed, not `:=`: a `Callable.call` returns a `Variant`, and inferring
 	# from one is a warning-as-error in this repo.
-	var minted: Variant = _minter.call(StringName(subject_id))
+	var minted: Variant = _minter.call(subject_id)
 	return minted as Actor if minted is Actor else null
 
 
