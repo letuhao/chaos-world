@@ -56,7 +56,10 @@ func test_push_order_and_pop_return_the_top_screen() -> void:
 	assert_eq(pushed["visible"], ["SecondScreen"], "a covered screen is hidden")
 	assert_eq(pushed["input_names"], ["SecondScreen"], "a covered screen gets no input")
 	assert_eq(stack.pop() == second, true, "pop hands back the top screen")
-	assert_eq(second.is_queued_for_deletion(), true, "the popped screen is freed")
+	# Freed immediately, not queued: the headless runner never processes a frame,
+	# so a deferred free would never run and every pop would leak a screen subtree
+	# for the life of the process.
+	assert_eq(is_instance_valid(second), false, "the popped screen is freed")
 	assert_eq(stack.depth(), 1, "back to one screen")
 	var popped := stack.summary()
 	assert_eq(popped["current"], "FirstScreen", "the uncovered screen is live again")

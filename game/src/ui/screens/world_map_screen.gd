@@ -124,9 +124,15 @@ func _rebuild_graph() -> void:
 func _clear_graph() -> void:
 	if _map_area == null:
 		return
+	# Freed immediately, not queued. `queue_free()` defers to the end of the frame
+	# and the headless test runner never processes a frame, so every deferred node
+	# stayed parented to `_map_area` while the next `_rebuild_graph()` added a fresh
+	# set on top — an unbounded per-refresh accumulation, and the only surviving
+	# `queue_free()` in `src/ui/`. Same rationale as `ScreenStack.pop()`.
 	for child in _map_area.get_children():
 		if child != _map_graph:
-			child.queue_free()
+			_map_area.remove_child(child)
+			child.free()
 	_node_buttons.clear()
 	_node_positions.clear()
 	_edges.clear()

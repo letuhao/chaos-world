@@ -42,12 +42,21 @@ func push(screen: Control) -> Control:
 
 ## Drop the top screen and hand the live slot back to the one below it. Returns
 ## the removed screen, or null when the stack was already empty.
+##
+## Freed IMMEDIATELY, not with `queue_free()`. `queue_free()` defers to the end
+## of the frame, and the headless runner drives every test from inside
+## `SceneTree._initialize()`, where no frame is ever processed — so a deferred
+## free never runs there and every pop leaked a whole screen subtree for the
+## life of the process. That is the defect that took a `tests/ui` run to 67 GB
+## resident. `free()` is safe in a normal game too: the node is already
+## detached from the tree here, so there is nothing left to defer, and every
+## signal it holds is disconnected by the free itself.
 func pop() -> Control:
 	if _screens.is_empty():
 		return null
 	var screen: Control = _screens.pop_back()
 	remove_child(screen)
-	screen.queue_free()
+	screen.free()
 	_activate()
 	screen_popped.emit(screen)
 	return screen
