@@ -858,8 +858,21 @@ def _generate(records: list[dict], args) -> None:
                 "revealing clothing",
                 "sexualized styling",
                 "mature body proportions",
+                "adult figures",
+                "adults in background",
+                "cropped people",
+                "body fragments",
+                "group portrait",
+                "crowd",
             )
         )
+        if args.slot == "dialogue_portrait":
+            prompt = prompt.replace(
+                "Plain white background.",
+                "Tight head-and-shoulders crop of this child alone, filling the frame. "
+                "No other people, no adults, no secondary figures, and no cropped bodies "
+                "or silhouettes anywhere in the image. Plain white background.",
+            )
     if args.background_mode == "chroma-key":
         prompt = prompt.rsplit("White background.", 1)[0] + (
             "A perfectly flat solid #FF00FF background for chroma-key removal."
