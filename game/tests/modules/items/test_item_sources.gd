@@ -175,7 +175,11 @@ func test_a_gather_route_reports_that_no_shipping_code_delivers_it() -> void:
 	assert_eq(String(result["reason"]), ItemSources.NO_SHIPPED_ROUTE, "named as no route")
 	assert_eq(ItemSources.is_shipped(ItemSources.KIND_GATHER), false, "gather is unshipped")
 	assert_eq(ItemSources.is_shipped(ItemSources.KIND_BOSS), true, "boss is shipped")
-	assert_ne(String(ItemSources.KIND_GATHER) in ItemSources.unshipped_kind_ids(), false, "gather is listed")
+	assert_ne(
+		String(ItemSources.KIND_GATHER) in ItemSources.unshipped_kind_ids(),
+		false,
+		"gather is listed"
+	)
 	assert_ne(String(ItemSources.KIND_BOSS) in ItemSources.unshipped_kind_ids(), true, "boss is not")
 
 
