@@ -77,14 +77,19 @@ func _add_batch(def: ItemDef, remaining: int) -> int:
 	# A roll-bearing definition gets one realization per batch; merging only
 	# happens between batches whose signature already matches.
 	var prototype := _roll_instance(def)
+	# `max_stack` is authored content on an `@export int`, so a `.tres` can set it
+	# to 0 or below. Unclamped, `chunk` would be 0 and `remaining` would never
+	# fall, so the loop appended a batch every pass until the container grew
+	# without limit. One unit per pass is the smallest a stack can ever hold.
+	var stack_size := maxi(1, def.max_stack)
 	while remaining > 0:
 		var merged := false
 		for batch in _stacks:
-			if batch.def_id != def.id or batch.quantity >= def.max_stack:
+			if batch.def_id != def.id or batch.quantity >= stack_size:
 				continue
 			if batch.signature() != prototype.signature():
 				continue
-			var moved := mini(def.max_stack - batch.quantity, remaining)
+			var moved := mini(stack_size - batch.quantity, remaining)
 			batch.quantity += moved
 			remaining -= moved
 			merged = true
@@ -94,7 +99,7 @@ func _add_batch(def: ItemDef, remaining: int) -> int:
 			continue
 		if _stacks.size() >= capacity:
 			return remaining
-		var chunk := mini(def.max_stack, remaining)
+		var chunk := mini(stack_size, remaining)
 		var batch := ItemStack.from_instance(prototype, chunk)
 		_stacks.append(batch)
 		remaining -= chunk
@@ -161,9 +166,26 @@ func remove(def_id: StringName, quantity: int) -> int:
 	return removed
 
 
+## The first instance carrying `def_id`, in insertion order.
+##
+## **Despite the name this matches `def_id`, not `instance_id`** — `ItemsApi.equip_item` relies
+## on that, passing an `instance_id` that happens to equal its `def_id`. An auction escrow
+## cannot: it must address ONE realized roll of a definition that may be carried many times,
+## so it uses `find_by_instance_id`. Renaming this is a change to a working call site and is
+## therefore an ADR, not a drive-by.
 func find_instance(def_id: StringName) -> ItemInstance:
 	for instance in _instances:
 		if instance.def_id == def_id:
+			return instance
+	return null
+
+
+## The instance whose `instance_id` is exactly `instance_id`, or null. **This is the lookup a
+## caller needs when identity matters** — an escrow, a bound item, a listed lot — because two
+## instances of one definition are different things.
+func find_by_instance_id(instance_id: StringName) -> ItemInstance:
+	for instance in _instances:
+		if instance.instance_id == instance_id:
 			return instance
 	return null
 

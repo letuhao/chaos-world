@@ -120,21 +120,11 @@ static func _category_of(item_id: StringName) -> String:
 
 
 static func _scan(root: String, item_id: StringName) -> Array[String]:
+	var wanted := String(item_id) + ".tres"
 	var out: Array[String] = []
-	var dir := DirAccess.open(root)
-	if dir == null:
-		return out
-	dir.list_dir_begin()
-	var entry := dir.get_next()
-	while entry != "":
-		if not entry.begins_with("."):
-			var path := root.path_join(entry)
-			if dir.current_is_dir():
-				out.append_array(_scan(path, item_id))
-			elif entry == String(item_id) + ".tres":
-				out.append(path)
-		entry = dir.get_next()
-	dir.list_dir_end()
+	for path in ContentScan.files_under(root):
+		if path.get_file() == wanted:
+			out.append(path)
 	return out
 
 

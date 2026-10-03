@@ -52,34 +52,12 @@ static func _scan(item_id: StringName) -> ItemDef:
 
 
 static func _walk(path: String, out: Array[StringName]) -> void:
-	var dir := DirAccess.open(path)
-	if dir == null:
-		return
-	dir.list_dir_begin()
-	var entry := dir.get_next()
-	while entry != "":
-		if not entry.begins_with("."):
-			var child := path.path_join(entry)
-			if dir.current_is_dir():
-				_walk(child, out)
-			elif entry.ends_with(".tres"):
-				out.append(StringName(entry.trim_suffix(".tres")))
-		entry = dir.get_next()
-	dir.list_dir_end()
+	for found in ContentScan.files_under(path):
+		out.append(StringName(found.get_file().trim_suffix(".tres")))
 
 
 static func _collect(path: String, item_id: String, found: Array[String]) -> void:
-	var dir := DirAccess.open(path)
-	if dir == null:
-		return
-	dir.list_dir_begin()
-	var entry := dir.get_next()
-	while entry != "":
-		if not entry.begins_with("."):
-			var child := path.path_join(entry)
-			if dir.current_is_dir():
-				_collect(child, item_id, found)
-			elif entry == item_id + ".tres":
-				found.append(child)
-		entry = dir.get_next()
-	dir.list_dir_end()
+	var wanted := item_id + ".tres"
+	for candidate in ContentScan.files_under(path):
+		if candidate.get_file() == wanted:
+			found.append(candidate)

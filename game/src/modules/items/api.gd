@@ -8,6 +8,10 @@ extends RefCounted
 const INVENTORY_COMPONENT := &"inventory"
 const EQUIPMENT_COMPONENT := &"equipment"
 const DEFAULT_CAPACITY := 24
+## Ceiling on a bag restored from a save. Authored play never approaches this;
+## a save that claims more is truncated rather than obeyed, so a corrupt file
+## cannot widen the bag into the unbounded `_add_batch` append loop.
+const MAX_CAPACITY := 4096
 ## Schema version of this module's own serialized payload.
 ##
 ## Independent of `Actor.SCHEMA_VERSION` on purpose. `Actor.to_dict` nests this
@@ -211,7 +215,14 @@ static func deserialize(actor: Actor, raw: Dictionary) -> void:
 	# `add` drops the overflow and the save is what deletes the items. Widening is
 	# the only safe direction: a caller that asked for a smaller bag gets the
 	# contents back rather than a silent truncation.
-	inv.capacity = maxi(inv.capacity, int(inv_data.get("capacity", DEFAULT_CAPACITY)))
+	# Bounded above too, because this value comes straight out of a save file and
+	# `capacity` is the only brake on `_add_batch`'s append loop. Unclamped, a
+	# corrupt or hostile save could widen the bag until memory ran out; a save
+	# cannot legitimately claim a bag larger than the ceiling, and one that does is
+	# truncated rather than obeyed.
+	inv.capacity = clampi(
+		maxi(inv.capacity, int(inv_data.get("capacity", DEFAULT_CAPACITY))), 1, MAX_CAPACITY
+	)
 	for stack_data in inv_data.get("stacks", []):
 		# The saved stack already carries its realized rolls, rarity and realm.
 		# Restoring it through `add` would mint a fresh realization and throw
