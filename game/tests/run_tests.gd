@@ -49,7 +49,17 @@ func _initialize() -> void:
 		ran += 1
 		for method_name in _test_methods(suite):
 			suite.call("setup")
+			# Count assertions across the call, because "passed" and "never ran" are
+			# otherwise the same event. The tallies here are per-assertion, so a body
+			# that bails on an early `return` -- the usual shape when a harness failed
+			# to mount -- records nothing at all and the suite would report
+			# `0 passed, 0 failed` and exit 0. That is a green which skipped the whole
+			# proof, and it is worse than a red because it reads as success.
+			var asserted_before: int = suite.assertion_count()
 			suite.call(method_name)
+			if suite.assertion_count() == asserted_before:
+				push_error("%s :: %s asserted nothing" % [script_path, method_name])
+				total_failed += 1
 			# `teardown` runs after EVERY test, not once per suite. A suite that
 			# installs a process-wide singleton (a content catalog's `shared`) and
 			# only released it at the end of the file would leak it into every suite

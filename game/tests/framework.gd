@@ -94,6 +94,17 @@ func failures() -> Array[String]:
 	return _failures
 
 
+## Every assertion this suite has recorded, passed or failed alike.
+##
+## The runner reads this immediately before and after each test method, because
+## a test that asserts nothing is not a passing test -- it is a test that never
+## ran. Nothing else in this file can tell those two cases apart: the tallies
+## are per-assertion, so a body that returns early adds neither a pass nor a
+## failure and is invisible to `passed()`/`failed()`.
+func assertion_count() -> int:
+	return _passed + _failed
+
+
 func _record(label: String, expected, actual) -> void:
 	_failed += 1
 	_failures.append("%s: expected %s, got %s" % [label, expected, actual])
