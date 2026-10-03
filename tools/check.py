@@ -32,12 +32,25 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     # were found the moment this shipped, so it is not theoretical. Needs no engine, so
     # it runs with the other content audits.
     ("mutation_history", ["check"]),
+    # A guard shipped in Python has no test of its own: the GDScript suite cannot reach it,
+    # and nothing asserts it still goes RED. That is how gate_reach stayed blind to a
+    # producer shape long enough to report four shipped triggers as dead with every gate
+    # green (INC-0012). Each case asserts a RED path, because "the guard passes on today's
+    # tree" is what check already does and proves nothing. Needs no engine, so it runs
+    # first among the content audits.
+    ("selftest", ["run"]),
     # Every environment_theme the map index ships must still have its prose in
     # map_assets.py. The prose is pasted verbatim into ComfyUI prompts and `migrate`
     # cannot refresh an existing value, so a shortened string leaves rows rendering
     # text the generator no longer holds - which is what 7bf3e4bc did to 260 rows with
     # every gate green (INC-0015). Needs no engine, so it runs with the content audits.
     ("map_theme", ["check"]),
+    # The named cast (ADR 0132): one JSONL record per unique character, carrying
+    # lore, personality, and a prose stat read. It is reference data the game never
+    # reads, so the only thing that can go wrong is a malformed record or an image
+    # that is gone — and the stat guard here is what stops a number entering a
+    # prose block that no other gate can see. Needs no engine.
+    ("unique_characters", ["check"]),
     # The authored per-realm power table: one entry per realm, R1 at 1.0, strictly
     # rising, finite and readable. It replaced the one power ladder's guard (ADR 0050).
     ("realm_power", ["check"]),

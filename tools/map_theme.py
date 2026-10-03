@@ -55,6 +55,32 @@ def index_themes() -> dict[str, int]:
     return counts
 
 
+def authored_prose() -> set[str]:
+    """The PROSE the generator can still produce: the VALUES of ENVIRONMENT_THEMES.
+
+    Its own function because the failure this guard guards against is precisely a change
+    to this line. With the comparison inlined in `run`, the first version of the self-test
+    could not see a break here - it passed its own `authored` set straight to the helper, so
+    mutating `values()` to `()` or to the dict's keys left all seven self-tests green. A
+    test that supplies the very value under test is not testing it.
+    """
+    return set(ENVIRONMENT_THEMES.values())
+
+
+def unbacked(counts: dict[str, int]) -> dict[str, int]:
+    """Themes the index ships that the generator can no longer reproduce, with row counts.
+
+    Split out of `run` so the comparison can be asserted directly. The index stores the
+    PROSE, not the environment key: map_assets.py:363 writes
+    `ENVIRONMENT_THEMES.get(record["environment"], "")`, so a row's environment_theme is the
+    value that was pasted into the prompt. Comparing it against the dict's KEYS reports all
+    19 themes missing and is the one mistake available here - a name is not the text a
+    renderer receives.
+    """
+    authored = authored_prose()
+    return {theme: n for theme, n in counts.items() if theme not in authored}
+
+
 def register(subparsers: argparse._SubParsersAction) -> None:
     parser = subparsers.add_parser(
         "map_theme",
@@ -80,13 +106,7 @@ def run(args: argparse.Namespace) -> int:
         return 1
 
     rows = sum(counts.values())
-    # The index stores the PROSE, not the environment key: map_assets.py:363 writes
-    # `ENVIRONMENT_THEMES.get(record["environment"], "")`, so a row's environment_theme is
-    # the value that was pasted into the prompt. Comparing it against the dict's KEYS
-    # reports all 19 themes missing and is the one mistake available here - a name is not
-    # the text a renderer receives.
-    authored = set(ENVIRONMENT_THEMES.values())
-    missing = {theme: n for theme, n in counts.items() if theme not in authored}
+    missing = unbacked(counts)
     known = len(ENVIRONMENT_THEMES)
 
     if missing:

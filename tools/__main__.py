@@ -47,6 +47,11 @@ incident = _load("incident")
 item_derive = _load("item_derive")
 lint = _load("lint")
 mutation_history = _load("mutation_history_cmd")
+# Importing the cases module is what REGISTERS them with the harness, so the load is
+# load-bearing rather than an unused name: ruff sees the import as unused and would strip
+# it. Assigning it to a name keeps both the import and the lint honest.
+selftest_cases = _load("selftest_cases")
+selftest = _load("selftest")
 map_theme = _load("map_theme")
 new_adr = _load("new_adr")
 new_module = _load("new_module")
@@ -55,6 +60,7 @@ run = _load("run")
 technique_power = _load("technique_power")
 test = _load("test")
 ui = _load("ui")
+unique_characters = _load("unique_characters")
 worth_rewrite = _load("worth_rewrite")
 
 from .common import ToolError, fail  # noqa: E402  (after the task modules load)
@@ -64,10 +70,12 @@ COMMANDS = {
     "gate_reach": gate_reach,
     "lint": lint,
     "mutation_history": mutation_history,
+    "selftest": selftest,
     "map_theme": map_theme,
     "arch": arch,
     "assets": assets,
     "character_assets": character_assets,
+    "unique_characters": unique_characters,
     "test": test,
     "boot": boot,
     "check": check,

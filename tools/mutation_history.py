@@ -20,8 +20,15 @@ from __future__ import annotations
 import re
 import subprocess
 from dataclasses import dataclass
+from pathlib import Path
 
-from .common import REPO_ROOT  # noqa: F401  (documents the tree this tool describes)
+from .common import REPO_ROOT
+
+#: The repository this sweep reads. A module global rather than a local so a test can
+#: point the guard at a fixture repository: `sweep()` shells out to git, and without a seam
+#: there the only way to test it is against the real history - which is how the first
+#: version of this tool shipped reporting `ok` on a repo that contained a committed probe.
+REPO: Path = REPO_ROOT
 
 # `MUTAT` + `ION`, assembled so this file does not match itself.
 MARKER = "MUTAT" + "ION"
@@ -73,7 +80,7 @@ def _git(*args: str) -> str:
     try:
         done = subprocess.run(
             ("git", *args),
-            cwd=REPO_ROOT,
+            cwd=REPO,
             capture_output=True,
             text=True,
             timeout=300,
