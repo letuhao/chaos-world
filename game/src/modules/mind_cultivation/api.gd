@@ -44,16 +44,35 @@ static func sea(actor: Actor) -> SeaOfConsciousness:
 	return actor.component(SEA_COMPONENT) as SeaOfConsciousness
 
 
+## Give the actor a sea, and the provider that publishes it. Idempotent in both,
+## and the provider registration is NOT inside the "no component yet" branch.
+##
+## It used to be. `Actor.from_dict` restores components and never a `StatProvider`
+## — providers are wiring the composition root and each module's `attach` install —
+## so re-attaching IS how a loaded actor gets its providers back. With the early
+## return, that re-attach did nothing at all for a restored actor: it arrived
+## carrying a `sea` payload slot, `attach_sea` found the component and returned
+## before reaching `add_provider`, and `MindStats.SEA_CAPACITY` published nothing.
+## The character sheet builds its rows from `ActorStats.derived_all()`
+## (`ui/screens/character_screen.gd`), so the id being absent from that map made
+## the "Sea capacity" row VANISH rather than read zero — silent, and only for an
+## actor the player has saved at least once (BL-0108).
+##
+## Registration sits after the component branch for one reason: `contribute` reads
+## the sea out of the component, and a provider registered first would be asked for
+## a sea that did not exist yet. Both orders invalidate correctly — `set_component`
+## and `add_provider` each `mark_stats_dirty` — so this is ordering for
+## readability, not for the cache.
 static func attach_sea(actor: Actor) -> SeaOfConsciousness:
 	var existing := sea(actor)
-	if existing != null:
-		return existing
-	var sea_component := SeaOfConsciousness.new()
-	sea_component.structural_capacity = actor.stats.get_base(MindStats.SEA_CAPACITY)
-	actor.set_component(SEA_COMPONENT, sea_component)
+	if existing == null:
+		var sea_component := SeaOfConsciousness.new()
+		sea_component.structural_capacity = actor.stats.get_base(MindStats.SEA_CAPACITY)
+		actor.set_component(SEA_COMPONENT, sea_component)
+		existing = sea_component
 	if not _has_provider(actor, SeaProvider):
 		actor.stats.add_provider(SeaProvider.new())
-	return sea_component
+	return existing
 
 
 ## Everything a panel needs to render, as plain values. No module types cross
