@@ -24,6 +24,7 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 from . import map_generate
 from .common import GAME_DIR, REPO_ROOT, ToolError, fail, ok
+from .godot import run_godot
 
 CHARACTER_ROOT = GAME_DIR / "assets" / "characters"
 INDEX_PATH = CHARACTER_ROOT / "character-index.jsonl"
@@ -83,7 +84,7 @@ TRAIT_AXES = {
         "stonekin",
     ),
     "presentation": ("masculine", "feminine", "androgynous"),
-    "age": ("young-adult", "adult", "elder"),
+    "age": ("child", "teen", "young-adult", "adult", "elder"),
     "build": ("slender", "wiry", "athletic", "sturdy", "broad", "tall"),
     "complexion": (
         "porcelain",
@@ -145,6 +146,43 @@ TRAIT_AXES = {
         "ceremonial-vestment",
         "leather-armor",
         "scholar-robes",
+        "streetwear",
+        "businesswear",
+        "school-uniform",
+        "work-uniform",
+        "athletic-wear",
+        "outdoor-clothes",
+        "eveningwear",
+        "bikini",
+        "swimwear",
+    ),
+    "setting": (
+        "cultivation-world",
+        "modern-city",
+        "modern-rural",
+        "modern-coastal",
+        "spirit-realm",
+        "immortal-court",
+        "frontier-world",
+        "future-city",
+    ),
+    "disability": (
+        "none",
+        "wheelchair-user",
+        "mobility-cane-user",
+        "white-cane-user",
+        "prosthetic-arm",
+        "prosthetic-leg",
+        "hearing-aid-user",
+        "limb-difference",
+    ),
+    "injury": (
+        "none",
+        "healing-bandage",
+        "arm-sling",
+        "leg-brace",
+        "healing-scar",
+        "non-graphic-burn-scar",
     ),
     "motif": (
         "cloud-scroll",
@@ -163,6 +201,55 @@ TRAIT_AXES = {
     "path": ("qi", "body", "mind", "unaffiliated"),
 }
 
+# Repeated entries define deterministic proportions while each scaffold remains balanced.
+TRAIT_WEIGHTS = {
+    "age": {"child": 4, "teen": 8, "young-adult": 32, "adult": 42, "elder": 14},
+    "disability": {
+        "none": 72,
+        "wheelchair-user": 5,
+        "mobility-cane-user": 4,
+        "white-cane-user": 3,
+        "prosthetic-arm": 4,
+        "prosthetic-leg": 4,
+        "hearing-aid-user": 4,
+        "limb-difference": 4,
+    },
+    "injury": {
+        "none": 68,
+        "healing-bandage": 9,
+        "arm-sling": 5,
+        "leg-brace": 5,
+        "healing-scar": 8,
+        "non-graphic-burn-scar": 5,
+    },
+    "attire": {
+        **{
+            value: 5
+            for value in (
+                "traveling-robe",
+                "layered-tunic",
+                "light-armor",
+                "formal-robes",
+                "field-clothes",
+                "scaled-coat",
+                "woven-mantle",
+                "ceremonial-vestment",
+                "leather-armor",
+                "scholar-robes",
+                "streetwear",
+                "businesswear",
+                "school-uniform",
+                "work-uniform",
+                "athletic-wear",
+                "outdoor-clothes",
+                "eveningwear",
+                "swimwear",
+            )
+        },
+        "bikini": 1,
+    },
+}
+
 ASSET_SPECS = {
     "map_sprite": {
         "folder": "map_sprites",
@@ -170,9 +257,9 @@ ASSET_SPECS = {
         "fit_px": [112, 176],
         "aspect_ratio": "2:3 (Portrait Photo)",
         "framing": (
-            "one complete standing character viewed from a strict top-down three-quarter angle, "
-            "facing north, feet visible, clear readable silhouette, centered with a bottom-center "
-            "ground pivot"
+            "one complete standing character from a normal eye-level camera, front-facing or "
+            "gentle three-quarter view, facing the viewer, feet visible, clear readable silhouette, "
+            "centered with a bottom-center ground pivot"
         ),
     },
     "dialogue_portrait": {
@@ -182,17 +269,33 @@ ASSET_SPECS = {
         "fit_px": [352, 480],
         "aspect_ratio": "3:4 (Portrait Standard)",
         "framing": (
-            "one head-and-shoulders dialogue portrait, front or gentle three-quarter view, "
-            "face and expression clearly readable, shoulders included"
+            "one straight-on head-and-shoulders dialogue portrait, camera at eye height, "
+            "face square to the lens, shoulders included"
         ),
     },
 }
+MAP_SPRITE_POSES = (
+    ("at_ease", "standing at ease with hands relaxed beside the hips"),
+    ("walking", "taking one measured step forward, arms moving naturally"),
+    ("hand_at_waist", "standing with one hand resting lightly at the waist and the other relaxed"),
+    ("three_quarter_turn", "standing at a gentle three-quarter angle while looking at the viewer"),
+    ("arms_folded", "standing with forearms loosely folded and shoulders relaxed"),
+    ("adjusting_sleeve", "adjusting one sleeve with the opposite hand in a quiet idle gesture"),
+    (
+        "ready_stance",
+        "standing in a balanced ready stance with feet naturally apart and hands open",
+    ),
+    ("weight_shift", "shifting weight onto one leg while keeping both feet clearly visible"),
+)
 VALID_ROLES = {"pc", "npc", "boss"}
 CHARACTER_NEGATIVE = (
-    "text, letters, watermark, border, UI, extra people, duplicate face, missing limbs, "
-    "photorealism, 3D render, noisy texture, suggestive clothing, cleavage, large breasts, "
-    "sexualized proportions, exposed chest, bare shoulders, strapless, low neckline, "
-    "nudity, child, teen, childlike features"
+    "text, letters, watermark, border, UI, extra people, duplicate face, pose sheet, "
+    "character lineup, triptych, collage, turnaround sheet, repeated character, missing limbs, "
+    "photorealism, 3D render, noisy texture, sexualized pose, erotic framing, fetish clothing, "
+    "explicit sexual content, nudity, exposed genitals, nipples, sexualized child, sexualized minor, "
+    "graphic injury, gore, exposed bone, "
+    "multiple characters, two figures, three figures, side-by-side characters, cloned character, "
+    "split panel"
 )
 
 
@@ -203,6 +306,10 @@ def register(subparsers) -> None:
     actions = parser.add_subparsers(dest="character_assets_action", required=True)
     scaffold = actions.add_parser("scaffold", help="create a balanced catalog of 2,000+ profiles")
     scaffold.add_argument("--count", type=int, default=MIN_CHARACTERS)
+    migrate = actions.add_parser(
+        "migrate", help="add new diversity tags and refresh planned profiles"
+    )
+    migrate.add_argument("--apply", action="store_true", help="write the validated migration")
     actions.add_parser("report", help="report character, tag, and asset-slot coverage")
     actions.add_parser("audit", help="validate catalog tags and installed image files")
     next_assets = actions.add_parser("next", help="prioritize ungenerated character asset slots")
@@ -228,7 +335,11 @@ def register(subparsers) -> None:
         "--license", required=True, help="license or generated-media terms to record"
     )
     install.add_argument("--seed", type=int)
-    install.add_argument("--replace-generated", action="store_true")
+    install.add_argument(
+        "--replace-generated",
+        action="store_true",
+        help="replace the current generated or approved asset after validation",
+    )
 
 
 def _add_generation_arguments(parser: argparse.ArgumentParser) -> None:
@@ -283,7 +394,11 @@ def _add_generation_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--comfy-url", default="http://127.0.0.1:8188")
     parser.add_argument("--timeout", type=int, default=600)
     parser.add_argument("--preview-only", action="store_true")
-    parser.add_argument("--replace-generated", action="store_true")
+    parser.add_argument(
+        "--replace-generated",
+        action="store_true",
+        help="replace the current generated or approved asset after validation",
+    )
 
 
 def run(args) -> int:
@@ -292,6 +407,9 @@ def run(args) -> int:
         _scaffold(args.count)
         return 0
     records = _load_index()
+    if action == "migrate":
+        _migrate(records, apply=args.apply)
+        return 0
     if action == "report":
         _report(records)
         return 0
@@ -344,15 +462,7 @@ def _scaffold(count: int) -> None:
         raise ToolError(f"--count must be no more than {MAX_CHARACTERS}")
     if INDEX_PATH.exists():
         raise ToolError(f"refusing to overwrite private character catalog: {INDEX_PATH}")
-    balanced_axes: dict[str, list[str]] = {}
-    for axis, values in TRAIT_AXES.items():
-        permutations = []
-        cycles = (count + len(values) - 1) // len(values)
-        for cycle in range(cycles):
-            shuffled = list(values)
-            random.Random(f"chaos-world:{axis}:{cycle}").shuffle(shuffled)
-            permutations.extend(shuffled)
-        balanced_axes[axis] = permutations[:count]
+    balanced_axes = _balanced_axes(count)
     records = []
     for number in range(1, count + 1):
         tags = [f"{axis}:{balanced_axes[axis][number - 1]}" for axis in TRAIT_AXES]
@@ -372,6 +482,68 @@ def _scaffold(count: int) -> None:
     ok(
         f"created {INDEX_PATH.relative_to(REPO_ROOT).as_posix()} with {count} profiles, "
         f"{len(ASSET_SPECS)} private asset slots each"
+    )
+
+
+def _balanced_axes(count: int) -> dict[str, list[str]]:
+    balanced: dict[str, list[str]] = {}
+    for axis, values in TRAIT_AXES.items():
+        weights = TRAIT_WEIGHTS.get(axis, {})
+        weighted_values = [value for value in values for _ in range(weights.get(value, 1))]
+        permutations = []
+        cycles = (count + len(weighted_values) - 1) // len(weighted_values)
+        for cycle in range(cycles):
+            shuffled = list(weighted_values)
+            random.Random(f"chaos-world:{axis}:{cycle}").shuffle(shuffled)
+            permutations.extend(shuffled)
+        balanced[axis] = permutations[:count]
+    return balanced
+
+
+def _migrate(records: list[dict], *, apply: bool) -> None:
+    if len(records) < MIN_CHARACTERS:
+        raise ToolError(f"cannot migrate a catalog with fewer than {MIN_CHARACTERS} characters")
+    balanced = _balanced_axes(len(records))
+    migrated = copy.deepcopy(records)
+    frozen = 0
+    for index, record in enumerate(migrated):
+        existing = dict(
+            tag.split(":", 1)
+            for tag in record.get("tags", [])
+            if isinstance(tag, str) and ":" in tag
+        )
+        has_art = any(
+            isinstance(asset, dict) and asset.get("status") in {"generated", "approved"}
+            for asset in record.get("assets", {}).values()
+        )
+        if has_art:
+            frozen += 1
+            traits = {axis: existing.get(axis, balanced[axis][index]) for axis in TRAIT_AXES}
+            traits.update(
+                setting=existing.get("setting", "cultivation-world"),
+                disability=existing.get("disability", "none"),
+                injury=existing.get("injury", "none"),
+            )
+        else:
+            traits = {axis: balanced[axis][index] for axis in TRAIT_AXES}
+        if traits["age"] in {"child", "teen"} and traits["attire"] == "bikini":
+            allowed = [value for value in TRAIT_AXES["attire"] if value not in {"bikini"}]
+            traits["attire"] = allowed[index % len(allowed)]
+        record["tags"] = [f"{axis}:{traits[axis]}" for axis in TRAIT_AXES]
+    issues = _validate(migrated, check_files=False)
+    if issues:
+        raise ToolError("character tag migration failed validation: " + "; ".join(issues[:8]))
+    planned = len(migrated) - frozen
+    if not apply:
+        print(
+            f"migration preview: {len(migrated)} profiles, {planned} planned profiles rebalanced, "
+            f"{frozen} profiles with generated art preserved; run with --apply to write"
+        )
+        return
+    _atomic_write(migrated)
+    ok(
+        f"migrated {len(migrated)} profiles; rebalanced {planned} planned profiles and "
+        f"preserved tags for {frozen} profiles with generated art"
     )
 
 
@@ -436,6 +608,8 @@ def _validate(records: list[dict], *, check_files: bool) -> list[str]:
         missing_axes = set(TRAIT_AXES) - values.keys()
         if missing_axes:
             issues.append(f"{label}: missing tag axes {', '.join(sorted(missing_axes))}")
+        if values.get("age") in {"child", "teen"} and values.get("attire") == "bikini":
+            issues.append(f"{label}: bikini attire is reserved for adult characters")
         signatures.add(tuple(f"{axis}:{values[axis]}" for axis in sorted(values)))
         assets = record.get("assets")
         if not isinstance(assets, dict) or set(assets) != set(ASSET_SPECS):
@@ -635,11 +809,57 @@ def _generate(records: list[dict], args) -> None:
     if not args.checkpoint.strip() or (args.profile == "flux1s" and not args.rembg_model.strip()):
         raise ToolError("checkpoint and selected background-removal settings must be non-empty")
     asset = record["assets"][args.slot]
-    replacing = args.replace_generated and asset["status"] == "generated"
+    replacing = args.replace_generated and asset["status"] in {"generated", "approved"}
     if asset["status"] != "planned" and not replacing:
         raise ToolError(f"refusing to replace {args.character_id}/{args.slot} ({asset['status']})")
     seed = args.seed if args.seed is not None else _stable_seed(args.character_id)
-    prompt = _prompt(record, args.slot, args.detail)
+    pose_variant = _map_sprite_pose(seed) if args.slot == "map_sprite" else None
+    prompt = _prompt(record, args.slot, args.detail, pose_variant)
+    if args.slot == "map_sprite":
+        args.negative = ", ".join(
+            (
+                args.negative,
+                "top-down view",
+                "overhead camera",
+                "bird's-eye view",
+                "isometric view",
+            )
+        )
+    else:
+        args.negative = ", ".join(
+            (
+                args.negative,
+                "looking up",
+                "upward gaze",
+                "gaze above camera",
+                "eyes toward ceiling",
+                "raised chin",
+                "looking down",
+                "downcast eyes",
+                "downward gaze",
+                "looking away",
+                "profile view",
+                "sleepy expression",
+                "drooping eyelids",
+                "half-closed eyes",
+                "squinting",
+                "reading a book",
+                "looking at a document",
+                "looking at a prop",
+                "props in portrait",
+            )
+        )
+    traits = dict(tag.split(":", 1) for tag in record["tags"])
+    if traits["age"] in {"child", "teen"}:
+        args.negative = ", ".join(
+            (
+                args.negative,
+                "bikini",
+                "revealing clothing",
+                "sexualized styling",
+                "mature body proportions",
+            )
+        )
     if args.background_mode == "chroma-key":
         prompt = prompt.rsplit("White background.", 1)[0] + (
             "A perfectly flat solid #FF00FF background for chroma-key removal."
@@ -687,6 +907,8 @@ def _generate(records: list[dict], args) -> None:
                 args.rembg_model if args.background_mode == "rembg" else "disabled"
             ),
             "background_key_color": ("#FF00FF" if args.background_mode == "chroma-key" else None),
+            "negative_prompt": args.negative,
+            "pose_variant": pose_variant[0] if pose_variant else None,
         },
     )
 
@@ -880,14 +1102,50 @@ def _remove_chroma_background(image_path: Path) -> None:
     image.save(image_path, format="PNG", optimize=True)
 
 
-def _prompt(record: dict, slot: str, detail: str) -> str:
+def _map_sprite_pose(seed: int) -> tuple[str, str]:
+    return random.Random(seed).choice(MAP_SPRITE_POSES)
+
+
+def _prompt(
+    record: dict,
+    slot: str,
+    detail: str,
+    pose_variant: tuple[str, str] | None = None,
+) -> str:
     traits = dict(tag.split(":", 1) for tag in record["tags"])
-    presentation = {
-        "masculine": "an adult man with unmistakably masculine facial features and grooming",
-        "feminine": "an adult woman with clearly feminine facial features and grooming",
-        "androgynous": "an adult with clearly gender-neutral facial features and grooming",
-    }[traits["presentation"]]
+    age_group = traits["age"]
+    presentation_nouns = {
+        "masculine": {"child": "boy", "teen": "teen boy", "adult": "man"},
+        "feminine": {"child": "girl", "teen": "teen girl", "adult": "woman"},
+        "androgynous": {
+            "child": "child",
+            "teen": "androgynous teenager",
+            "adult": "androgynous adult",
+        },
+    }
+    noun = presentation_nouns[traits["presentation"]].get(
+        age_group,
+        {"masculine": "elder man", "feminine": "elder woman", "androgynous": "elder"}[
+            traits["presentation"]
+        ],
+    )
+    article = "an" if noun.startswith("elder") else "a"
+    presentation = (
+        f"{article} {noun} with {traits['presentation']} presentation and age-appropriate features"
+    )
+    body_shape = (
+        "age-appropriate child proportions"
+        if age_group == "child"
+        else "age-appropriate teen proportions"
+        if age_group == "teen"
+        else f"a {traits['build']} adult body"
+    )
+    presentation_lock = (
+        f" Identity lock: {noun}, {traits['presentation']} presentation, age-appropriate styling."
+    )
     age = {
+        "child": "a child aged 8 to 12, with clearly childlike, age-appropriate proportions",
+        "teen": "a teenager aged 13 to 17, with age-appropriate teen proportions",
         "young-adult": "a young adult in their mid-20s with mature adult proportions",
         "adult": "an adult aged 35 to 50 with mature facial proportions",
         "elder": (
@@ -915,36 +1173,98 @@ def _prompt(record: dict, slot: str, detail: str) -> str:
         "restrained flowing energy marks",
         "body": "Body Dao: preservation through form; use a grounded stance and "
         "practical, enduring construction",
-        "mind": "Mind Dao: transcendence through spirit; use a focused gaze and "
-        "subtle awareness motifs",
-        "unaffiliated": "an independent Mortal Plains traveler, with practical travel "
-        "wear and no sect insignia",
+        "mind": "Mind Dao: transcendence through spirit; use restrained perception "
+        "and spatial-temporal motifs in the clothing",
+        "unaffiliated": "an independent traveler, with practical wear and no sect insignia",
     }[traits["path"]]
+    setting = {
+        "cultivation-world": "a cultivation world with practical layered robes, sect craft, and restrained qi motifs",
+        "modern-city": "a contemporary city with modern street, work, or formal fashion and urban materials",
+        "modern-rural": "a contemporary rural community with practical modern clothes and everyday tools",
+        "modern-coastal": "a contemporary coastal community with modern casual and weather-ready clothing",
+        "spirit-realm": "a spirit realm with luminous natural forms and clothing suited to its environment",
+        "immortal-court": "an immortal court with ceremonial fashion, refined materials, and distinctive insignia",
+        "frontier-world": "a frontier world with travel-ready layers, durable gear, and locally made details",
+        "future-city": "a future city with functional contemporary silhouettes and subtle advanced materials",
+    }[traits["setting"]]
+    attire = {
+        "traveling-robe": "traveling robe",
+        "layered-tunic": "layered tunic",
+        "light-armor": "light armor over practical clothing",
+        "formal-robes": "formal robes",
+        "field-clothes": "work-ready field clothes",
+        "scaled-coat": "scaled protective coat",
+        "woven-mantle": "woven mantle over everyday clothes",
+        "ceremonial-vestment": "ceremonial vestment",
+        "leather-armor": "light leather armor",
+        "scholar-robes": "scholar robes",
+        "streetwear": "modern streetwear",
+        "businesswear": "modern businesswear",
+        "school-uniform": "age-appropriate school uniform",
+        "work-uniform": "modern work uniform",
+        "athletic-wear": "athletic wear",
+        "outdoor-clothes": "modern outdoor clothing",
+        "eveningwear": "formal eveningwear",
+        "bikini": "an opaque adult bikini swimsuit, styled as ordinary swimwear",
+        "swimwear": "age-appropriate opaque swimwear",
+    }[traits["attire"]]
+    disability = {
+        "none": "no visible disability marker",
+        "wheelchair-user": "a wheelchair user, naturally seated in a clearly visible, practical wheelchair",
+        "mobility-cane-user": "a mobility-cane user, standing naturally with the cane clearly visible",
+        "white-cane-user": "a white-cane user, holding the cane naturally and confidently",
+        "prosthetic-arm": "a character with a visible functional prosthetic arm",
+        "prosthetic-leg": "a character with a visible functional prosthetic leg",
+        "hearing-aid-user": "a character with visible hearing aids",
+        "limb-difference": "a character with a visible limb difference, shown matter-of-factly",
+    }[traits["disability"]]
+    injury = {
+        "none": "no visible injury",
+        "healing-bandage": "a few clean bandages showing a minor healing injury",
+        "arm-sling": "one arm in a clean sling, suggesting a non-graphic healing injury",
+        "leg-brace": "a practical leg brace suggesting a healing injury",
+        "healing-scar": "a healed, non-graphic scar",
+        "non-graphic-burn-scar": "a healed, non-graphic burn scar",
+    }[traits["injury"]]
     visual_traits = (
         f"{traits['build']} build, {traits['complexion']} complexion, {traits['hair_color']} hair "
         f"in a {traits['hairstyle']} style, {traits['eyes']} eyes, {traits['palette']} palette, "
         f"{traits['attire']} with a restrained {traits['motif']} motif"
     )
     framing = ASSET_SPECS[slot]["framing"]
+    if slot == "map_sprite" and traits["disability"] == "wheelchair-user":
+        framing = (
+            "one complete character seated naturally in a wheelchair, with the complete chair "
+            "visible from an eye-level camera, front-facing or gentle three-quarter view, "
+            "clear readable silhouette, centered with a bottom-center ground pivot"
+        )
+    pose = pose_variant[1] if pose_variant else "relaxed shoulders and a composed portrait pose"
     extra = f" Character-specific detail: {detail.strip()}." if detail.strip() else ""
+    gaze = (
+        " Portrait gaze: head upright, chin parallel to the ground, both eyes open, pupils centered, "
+        "gaze level and directly into the camera; neutral relaxed expression."
+        if slot == "dialogue_portrait"
+        else " Sprite gaze: head upright and level, face toward the camera, eyes directed straight "
+        "at the viewer from eye height; keep the face and full silhouette readable."
+    )
+    wardrobe = (
+        f"Wardrobe: {attire}, adapted to the {traits['setting']} setting. Adults may wear "
+        "fashionable revealing outfits or swimwear, but clothing remains opaque and nonsexual. "
+        "Children and teenagers wear age-appropriate non-revealing clothes."
+    )
     return (
-        f"One adult character, identity {record['id']}: {age}; {presentation}; {race}. "
-        f"Preserve exactly these visible traits: {visual_traits}. "
-        f"Cultural and cultivation cue: {path}.{extra} {framing}. "
-        "One subject only. Cultivation-fantasy production art for a 2D action RPG. "
-        "Painterly anime illustration in matte gouache, fine dark ink contours, broad readable "
-        "value planes, material-led color, restrained metallic accents, soft upper-left light. "
-        "Use a layered outfit: an opaque high-neck inner tunic closed from collar to waist, "
-        "under a loose ceremonial robe. Keep the entire chest fully covered by unbroken opaque "
-        "fabric. Sleeves may end below the elbows so the forearms and hands are visible; keep "
-        "the shoulders covered. No open or low neckline, no visible chest skin, garment cutouts, "
-        "short hems, or "
-        "transparent fabric. Use the same visual identity and costume across the character asset "
-        "family. Keep the face, age, presentation, anatomy, palette, and costume faithful to the "
-        "profile. Use a neutral upright pose with arms at the sides. All characters "
-        "are adults, fully clothed, and nonsexual. No text, "
-        "labels, UI, frame, watermark, extra figures, unrelated props, exaggerated "
-        "body proportions, or childlike features. White background."
+        f"One character, identity {record['id']}: {age}; {presentation}; {body_shape}; {race}. "
+        f"{framing}.{gaze} "
+        f"Preserve these visible identity traits: {visual_traits}. {presentation_lock} "
+        f"Visual setting: {setting}. Wardrobe direction: {wardrobe} "
+        f"Disability representation: {disability}. Injury state: {injury}. "
+        f"Cultivation and cultural visual cue: {path}.{extra} "
+        f"One isolated figure, centered in one pose and one view. Character-specific pose: {pose}. "
+        "2D game character illustration in painterly anime style, matte gouache, fine "
+        "dark ink contours, broad readable value planes, material-led color, restrained metallic "
+        "accents, soft upper-left light. Preserve the profile's face, age, presentation, disability "
+        "representation, setting, palette, and costume. "
+        "Plain white background."
     )
 
 
@@ -966,7 +1286,7 @@ def _install(
         raise ToolError(f"invalid character catalog ({len(catalog_issues)} issue(s))")
     original = _character(original_records, character_id)
     original_asset = original["assets"][slot]
-    replacing = replace_generated and original_asset["status"] == "generated"
+    replacing = replace_generated and original_asset["status"] in {"generated", "approved"}
     if original_asset["status"] != "planned" and not replacing:
         raise ToolError(f"refusing to replace {character_id}/{slot} ({original_asset['status']})")
     if not source.is_file() or source.suffix.lower() != ".png":
@@ -981,34 +1301,53 @@ def _install(
     output_path = (CHARACTER_ROOT / spec["folder"] / filename).resolve()
     if not output_path.is_relative_to(CHARACTER_ROOT.resolve()):
         raise ToolError("asset output must stay under the private character asset folder")
-    if output_path.exists():
+    original_path = original_asset.get("path", "")
+    replacing_same_path = (
+        replacing
+        and bool(original_path)
+        and (GAME_DIR / original_path.removeprefix("res://")).resolve() == output_path
+    )
+    if output_path.exists() and not replacing_same_path:
         raise ToolError(f"refusing to overwrite existing character art: {output_path}")
 
     canvas = _normalize(source, spec)
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    previous_image = output_path.read_bytes() if replacing_same_path else None
+    import_path = output_path.with_suffix(output_path.suffix + ".import")
+    previous_import = import_path.read_bytes() if import_path.is_file() else None
     descriptor = None
     created_output = False
     try:
-        descriptor = os.open(output_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-        created_output = True
+        flags = os.O_CREAT | os.O_WRONLY | (os.O_TRUNC if replacing_same_path else os.O_EXCL)
+        descriptor = os.open(output_path, flags, 0o600)
+        created_output = not replacing_same_path
         with os.fdopen(descriptor, "wb") as output:
             descriptor = None
             canvas.save(output, format="PNG", optimize=True)
+        asset_path = f"res://assets/characters/{spec['folder']}/{filename}"
+        findings = _validate_image(asset_path, spec, f"{character_id} {slot}")
+        if findings:
+            raise ToolError("cannot approve invalid image: " + "; ".join(findings))
+        _import_character_asset()
+        if not import_path.is_file():
+            raise ToolError(f"Godot did not create import metadata for {asset_path}")
         current_records = _load_index()
         current = _character(current_records, character_id)
         if current.get("tags") != original.get("tags"):
             raise ToolError(f"{character_id} visual profile changed while generating")
         current_asset = current["assets"][slot]
         if current_asset["status"] != "planned" and not (
-            replacing and current_asset["status"] == "generated"
+            replacing and current_asset["status"] in {"generated", "approved"}
         ):
             raise ToolError(f"{character_id}/{slot} changed while generating")
+        accepted_on = datetime.now(UTC).date().isoformat()
         current_asset.update(
-            status="generated",
-            path=f"res://assets/characters/{spec['folder']}/{filename}",
+            status="approved",
+            path=asset_path,
             source=source_name,
             prompt=prompt,
-            generated_on=datetime.now(UTC).date().isoformat(),
+            generated_on=accepted_on,
+            approved_on=accepted_on,
             license=license_text,
             seed=seed,
             generation_settings=generation_settings or {},
@@ -1017,14 +1356,35 @@ def _install(
     except Exception:
         if created_output:
             output_path.unlink(missing_ok=True)
+        elif previous_image is not None:
+            output_path.write_bytes(previous_image)
+        if previous_import is None:
+            import_path.unlink(missing_ok=True)
+        else:
+            import_path.write_bytes(previous_import)
         raise
     finally:
         if descriptor is not None:
             os.close(descriptor)
     ok(
-        f"installed private {character_id}/{slot} at "
+        f"installed and approved private {character_id}/{slot} with Godot import metadata at "
         f"{output_path.relative_to(REPO_ROOT).as_posix()}"
     )
+
+
+def _import_character_asset() -> None:
+    result = run_godot(
+        ["--headless", "--editor", "--path", str(GAME_DIR), "--import"],
+        capture=True,
+        timeout=900,
+        tag="character-asset-import",
+    )
+    if result.returncode != 0:
+        diagnostic = "\n".join(filter(None, (result.stdout, result.stderr)))
+        raise ToolError(
+            "Godot could not import the generated character asset"
+            + (f": {diagnostic[-1200:]}" if diagnostic else "")
+        )
 
 
 def _normalize(source: Path, spec: dict) -> Image.Image:
@@ -1064,6 +1424,12 @@ def _approve(records: list[dict], character_id: str, slot: str) -> None:
     findings = _validate_image(asset["path"], ASSET_SPECS[slot], f"{character_id} {slot}")
     if findings:
         raise ToolError("cannot approve invalid image: " + "; ".join(findings))
+    path = (GAME_DIR / asset["path"].removeprefix("res://")).resolve()
+    import_path = path.with_suffix(path.suffix + ".import")
+    if not import_path.is_file():
+        _import_character_asset()
+    if not import_path.is_file():
+        raise ToolError(f"Godot did not create import metadata for {asset['path']}")
     asset["status"] = "approved"
     asset["approved_on"] = datetime.now(UTC).date().isoformat()
     _atomic_write(records)

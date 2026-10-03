@@ -33,6 +33,16 @@ Cultivation-fantasy relic illustration: mystical, handmade, and legible at inven
 - The style target is a native-scale patch with one actor, ground, blocker, resource node, and landmark together. Approve its scale and contrast in-game before generating full batches; no gameplay capture is approved yet.
 - `game/assets/map-asset-index.jsonl` tracks each planned or produced map asset. Run `uv run python -m tools assets map report|audit`; `assets map scaffold` creates the initial plan only when no index exists.
 
+## Character LoRAs
+
+- Krea2 character generation exposes all 32 adapters from the configured workflow; every adapter defaults to strength 0. Enable adapters selectively and record exact weights with reviewed outputs. LoRA effects depend on prompt, seed, and combinations, so filenames alone are not evidence of style or role.
+- Character profiles balance cultivation, modern, frontier, spirit, court, and future settings; varied clothing; child, teen, adult, and elder ages; visible disability; and non-graphic injuries. Children and teens always use age-appropriate, non-revealing clothing. Adult swimwear and other revealing non-nude outfits are allowed.
+- Disability traits are shown naturally and respectfully, including wheelchairs, canes, prosthetics, hearing aids, and limb differences. Injuries use clean bandages, slings, braces, or healed non-graphic scars; exclude gore and exposed wounds.
+- The user previously preferred Dishwasher + Meion Style at strength 1, but a small character sample also showed lowered gaze. Treat this as a historical observation, not a default: keep both at 0 and retain direct-gaze instructions in character prompts.
+- Ephemeral Elegance was also observed to lower gaze and remains at 0. Hentai Studio Quality remains at 0 under the project's nonsexual-art rule.
+- The two pose adapters, More Dynamic Poses and v67 Pose Framing, are available for experiments; their effects and interaction with map-sprite framing have not yet been validated.
+- No evil-character adapter or combination has been verified. Explore the style adapters one at a time with a consistent character prompt and seed, then compare any candidate combination. Keep evil characterization in nonsexual visual cues such as severe expression, dark materials, controlled posture, and ominous motifs until a specific adapter effect is demonstrated.
+
 ## Technical target
 
 Godot 4.7, 2D, transparent 256×256 PNG item art and SVG family symbols. SVGs use a 64×64 view box. In-game sizing and filtering follow the consuming UI. No representative in-game capture exists yet.
