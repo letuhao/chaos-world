@@ -46,6 +46,7 @@ gate_reach = _load("gate_reach")
 incident = _load("incident")
 item_derive = _load("item_derive")
 lint = _load("lint")
+lore = _load("lore")
 mutation_history = _load("mutation_history_cmd")
 # Importing the cases module is what REGISTERS them with the harness, so the load is
 # load-bearing rather than an unused name: ruff sees the import as unused and would strip
@@ -69,6 +70,7 @@ COMMANDS = {
     "fmt": fmt,
     "gate_reach": gate_reach,
     "lint": lint,
+    "lore": lore,
     "mutation_history": mutation_history,
     "selftest": selftest,
     "map_theme": map_theme,

@@ -27,6 +27,19 @@ const MIND_FOCUS_CHANCE := &"mind_focus_chance"
 ## STEADIER, not a refusal, which is why it can be as cheap as a half and why it can
 ## never reach a second miss channel the way an evasion stat could.
 const MIND_AVOIDANCE := &"mind_avoidance"
+## BL-0114 RESIDUE (not fixed here -- `game/data/` is not this module's to edit):
+## the rename is complete in `res://src` but NOT in the authored content. The item
+## option `cult_dodge_chance` (`data/item_options/master_option_pool.jsonl:42`,
+## `"status": "active"`) still targets `"id": "dodge_chance"`, and
+## `data/techniques/passive_quick_reaction.tres:20` ships it at `value = 5.0` under
+## a description that promises "Dodge chance and mental attack". `MindProvider` no
+## longer emits that id and core's own is `evasion`, so `OptionCatalog.make_effect`
+## normalises it to `target_id = &"dodge_chance"` and `ActorStats` applies a PERCENT
+## modifier to a bucket no provider ever fills: the modifier is inert and half that
+## technique is a no-op. It is also in 5 entries of `derived/option_pools.json`, so
+## equipment can roll it. Tracked in `docs/backlog.jsonl`; it needs an `items`/
+## content decision (retarget to `mind_avoidance`, or retire the option), not a
+## change to this module.
 const MIND_TECHNIQUE_POWER := &"mind_technique_power"
 const ILLUSION_RESISTANCE := &"illusion_resistance"
 
