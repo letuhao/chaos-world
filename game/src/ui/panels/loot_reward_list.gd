@@ -24,6 +24,10 @@ const ACTION_RECLAIM := "Reclaim"
 ## Wording for each reason the loot facade reports. The UI program owns no rule, so
 ## it only says what the facade decided.
 const REASON_TEXT := {
+	# An accepted claim carries no reason, so this is the only sentence the outcome
+	# line can be built from. Without it the line rendered as a bare "Name: " and the
+	# one action a player took to turn a boss into gear said nothing at all.
+	"": "Taken",
 	"inventory_full": "Inventory full - the drop is in the world and can be reclaimed",
 	"world_drops_full": "Inventory full and the world drops are full - make room, then take it",
 	"drop_already_claimed": "Already taken",
@@ -34,7 +38,6 @@ const REASON_TEXT := {
 	"no_inventory": "The actor has no inventory",
 	"unknown_definition": "The item is not defined in the content tree",
 	"unknown_stash": "That world drop is no longer listed",
-	"": "",
 }
 
 var _mode: StringName = &"reward"

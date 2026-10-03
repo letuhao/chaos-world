@@ -59,15 +59,26 @@ func _first_claimable(rows: Array) -> Dictionary:
 	return {}
 
 
-## The row index of the first drop still claimable, or 0 when there is none.
+## The row index of the first drop still claimable, or -1 when there is none.
 ##
 ## The row a player presses is found by position in the tree, so the test has to
 ## name the same position it is about to read rather than assume row 0 is claimable.
+## `-1` for "nothing left to press", so a caller can stop rather than keep pressing
+## row 0 of a reward it has already taken.
 func _claimable_index(rows: Array) -> int:
 	for index in rows.size():
 		if bool((rows[index] as Dictionary).get("claimable", false)):
 			return index
-	return 0
+	return -1
+
+
+## Whether a control is one a player could actually press.
+##
+## Asked of the control rather than of a rule the test restates: the grade gate and
+## the profile gate behind Equip live in the items module, and a test that
+## recomputed them would prove its own arithmetic instead of the shipped answer.
+func _is_live(control: Button) -> bool:
+	return control != null and not control.disabled
 
 
 ## The def ids this actor currently has worn, across every slot.
@@ -358,47 +369,94 @@ func test_the_full_pipeline_walks_every_step_a_player_would() -> void:
 		"and the reward panel still lists every drop"
 	)
 
-	# CLAIM THE DROP, and remember WHICH one. Everything below equips this def rather
-	# than the starter helm: the helm is already in the bag before the fight, so
-	# equipping it would prove the bag works and prove nothing about acquisition.
+	# CLAIM THE DROPS, and remember WHICH ones. Everything below equips a def this
+	# fight paid, never the starter helm: the helm is already in the bag before the
+	# fight, so equipping it would prove the bag works and prove nothing about
+	# acquisition.
 	#
 	# Taken after leaving, because the reward list is populated when the screen settles
-	# rather than on the killing blow — `reward_count` reads module state, which is
+	# rather than on the killing blow -- `reward_count` reads module state, which is
 	# ahead of the rows the player can actually press.
+	#
+	# EVERY drop is claimed, one row action at a time, because the screen lists one
+	# reward at a time. Claiming the last drop of the listed reward retires that
+	# encounter -- its payload moves to the claim ledger, so nothing can address it
+	# again -- and the next reward slides into its place. That is why "the row now
+	# reads as claimed" is NOT observable here: a fully claimed encounter does not stay
+	# on screen to be read. What is observable, and what is asserted below, is the
+	# ledger the screen counts and the bag the item lands in.
 	var reward := out["reward"] as Dictionary
 	var claimable := _first_claimable(reward.get("rows", []) as Array)
 	assert_eq(claimable.is_empty(), false, "the reward lists a drop the player may take")
-	var drop_def := String(claimable.get("def_id", ""))
-	assert_ne(drop_def, "", "the claimable drop names the item it becomes")
-	var rolled := int(claimable.get("rolled_count", 0))
+	assert_ne(
+		String(claimable.get("def_id", "")), "", "the claimable drop names the item it becomes"
+	)
 	assert_eq(
-		harness.press_drop_action(loot, _claimable_index(reward.get("rows", []) as Array)),
+		int(claimable.get("rolled_count", 0)) > 0,
 		true,
-		"the drop row's Pick up control is live"
+		"and it arrives rolled: the fight paid affixes, not a bare definition"
+	)
+	var owed := int((loot.summary() as Dictionary)["claimed_encounters"])
+	# Snapshot the bound BEFORE the loop. The body appends one def per claim, so a
+	# bound read from the growing list would rise in lockstep and never terminate.
+	var claim_budget := int((loot.summary() as Dictionary)["pending_drops"])
+	var claimed_defs: Array[String] = []
+	while claimed_defs.size() < claim_budget:
+		var live := loot.summary() as Dictionary
+		if int(live["pending_drops"]) <= 0:
+			break
+		var rows := (live["reward"] as Dictionary).get("rows", []) as Array
+		var index := _claimable_index(rows)
+		if index < 0:
+			break
+		assert_eq(
+			harness.press_drop_action(loot, index), true, "the drop row's Pick up control is live"
+		)
+		claimed_defs.append(String((rows[index] as Dictionary).get("def_id", "")))
+	assert_eq(
+		claimed_defs.size(),
+		claim_budget,
+		"every drop the fight paid was claimed through the reward list's own row action"
 	)
 	var claimed := loot.summary() as Dictionary
+	assert_eq(int(claimed["pending_drops"]), 0, "so nothing is still owed to the player")
 	assert_eq(
-		int(claimed["pending_drops"]),
-		pending - 1,
-		"taking the drop reduced what is owed to the player"
-	)
-	assert_eq(
-		int((claimed["reward"] as Dictionary).get("claimed_count", 0)) >= 1,
+		int(claimed["claimed_encounters"]) > owed,
 		true,
-		"and the row now reads as claimed rather than pending"
+		"and the encounters moved to the claim ledger the screen counts"
 	)
 
-	# Equip the CLAIMED drop, not a starter item. The helm is already in the bag before
+	# Equip a CLAIMED drop, not a starter item. The helm is already in the bag before
 	# the fight, so equipping it would prove the bag works and prove nothing about
 	# acquisition; the objective's loop is "receive a boss drop -> equip it".
+	#
+	# Not every drop a fight pays is wearable by the hero who fought it: the authored
+	# grade gate (ADR 0007) refuses gear above the actor's realm tier, and a tier-one
+	# hunt can pay an earth-grade helm this hero will never grow into. So the drop is
+	# chosen the way a player chooses one -- read each claimed row, and equip the
+	# first the workbench's own Equip control accepts.
 	assert_eq(harness.navigate(workbench_route)["ok"], true, "back to the workbench by route")
-	var drop_row := harness.row_of_def(workbench, drop_def)
+	var drop_def := ""
+	for def_id in claimed_defs:
+		var row := harness.row_of_def(workbench, def_id)
+		assert_ne(row, -1, "the claimed drop '%s' is in the bag" % def_id)
+		if row == -1:
+			continue
+		assert_eq(
+			harness.pick_row(workbench, row), true, "the claimed drop '%s' is picked" % def_id
+		)
+		if not _is_live(harness.button(workbench, "%EquipButton")):
+			continue
+		drop_def = def_id
+		break
 	assert_ne(
-		drop_row,
-		-1,
-		"the claimed drop '%s' is in the bag, carried by its rolled affixes" % drop_def
+		drop_def,
+		"",
+		(
+			"at least one drop this fight paid is gear this hero can wear; Equip was "
+			+ "live for none of %s" % str(claimed_defs)
+		)
 	)
-	assert_eq(harness.pick_row(workbench, drop_row), true, "the claimed drop is picked")
 	assert_eq(harness.press(workbench, "%EquipButton"), true, "Equip is live")
 	# The drop itself is now worn, in whatever slot its subtype declares. This is the
 	# assertion the starter helm could never make: the item on the actor came out of a
@@ -410,8 +468,6 @@ func test_the_full_pipeline_walks_every_step_a_player_would() -> void:
 	)
 	assert_eq(harness.press(workbench, "%SaveButton"), true, "Save is live")
 	assert_eq(harness.press(workbench, "%LoadButton"), true, "Load is live")
-	assert_eq(
-		ItemsApi.equipment(actor).equipped(&"armor") != null,
-		true,
-		"the equipped item survived the round trip"
-	)
+	# Asked as "is it still worn", not "is the armor slot full": the slot a drop
+	# occupies comes from its subtype, so a drop this fight paid may be an accessory.
+	assert_eq(_worn_defs(actor).has(drop_def), true, "the equipped drop survived the round trip")
