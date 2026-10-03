@@ -136,8 +136,13 @@ func _stat_surface() -> Dictionary:
 
 ## The ascent block as this screen reports it, with the row's own summary nested
 ## under `row` and whether a player is offered the control.
+##
+## `row` is `{}` whenever the row takes no space, so "no ascent to show" and "an
+## ascent shown with no wording" are distinguishable: the first has no row summary
+## at all.
 func _ascent_view(view: Dictionary) -> Dictionary:
 	var ascent: Dictionary = view.get("ascent", {})
+	var shown := "" if _ascent_row == null else String(_ascent_row.summary().get("name", ""))
 	return {
 		"required": bool(ascent.get("required", false)),
 		"steps": int(ascent.get("steps", 0)),
@@ -145,6 +150,7 @@ func _ascent_view(view: Dictionary) -> Dictionary:
 		"met": bool(ascent.get("met", false)),
 		"outstanding": String(ascent.get("outstanding", "")),
 		"offered": _ascend_offered(view),
+		"shown": shown,
 		"row": _ascent_row.summary() if _ascent_row != null else {},
 	}
 
@@ -173,9 +179,35 @@ func _ascend_offered(view: Dictionary) -> bool:
 ## had walked nothing. `ascension_unmet` answers "" in exactly one case — an existing
 ## ascent with no steps left — so it is the only unambiguous signal here.
 ##
-## Nothing is drawn for a hero below the Transcendent tier, where `outstanding`
-## reads "No ascent begun": that is core declining to state a requirement, and
-## printing it on an R1 body screen would advertise a gate the player cannot have.
+## Nothing is drawn when core has nothing to state.
+##
+## Three states, told apart by `outstanding` and never by `met`. `met` is
+## `Breakthrough.ascension_ok`, which is true for EVERY target at or below
+## `WorldAnchor.COMMIT_MICRO`, so an R1 hero "meets" an ascent gate that does not
+## exist yet; keying the render off it printed "The ascent is walked" on a hero who
+## had walked nothing. `ascension_unmet` answers "" in exactly one case — an existing
+## ascent with no steps left — so it is the only unambiguous signal here.
+##
+## ## The sentinel is NOT a requirement, at any tier
+##
+## This used to suppress `WorldAnchor.NO_ASCENT` ("No ascent begun") only below the
+## Transcendent tier, on the reasoning that a low hero must not be shown a gate they
+## cannot have. Driven at `realm:transcendent` + `commit:28`, the same string was
+## printed as the ascent row's label with `required: true` and `offered: false` —
+## because `ascension_unmet` returns NO_ASCENT whenever the actor has no
+## `AscensionState` yet, which is true at the top realm too until one is created.
+## The player was told an ascent existed, shown a `0/4` bar for it, and offered no
+## button. The guard's intent was right and its condition was too narrow, so it is
+## now keyed on the meaning of the string rather than on the player's tier.
+##
+## On the duplication with the vitals line: `unmet` also ends with "No ascent begun",
+## so the phrase appears twice. That overlap is deliberate and stays. The vitals line
+## answers "what is blocking my breakthrough?" with a checklist of eleven items; the
+## ascent row answers "how far along the ascent am I?" with a bar and a count.
+## Neither is derivable from the other, and the UI quotes both verbatim rather than
+## restating either (ADR 0034), so there is no wording to drift. Once NO_ASCENT is
+## suppressed here, the only place it appears is the checklist, where it correctly
+## reads as one more unmet item.
 func _render_ascent(view: Dictionary) -> void:
 	if _ascent_row == null:
 		return
@@ -184,7 +216,13 @@ func _render_ascent(view: Dictionary) -> void:
 	var label := ""
 	if not view.is_empty():
 		var outstanding := String(ascent.get("outstanding", ""))
-		if bool(ascent.get("required", false)):
+		if outstanding == WorldAnchor.NO_ASCENT:
+			# Core declining to state a requirement. Not a gate to advertise.
+			label = ""
+		elif bool(ascent.get("required", false)):
+			# Core declining to state a requirement. Not a gate to advertise.
+			label = ""
+		elif bool(ascent.get("required", false)):
 			# An ascent is genuinely owed, so core is stating the requirement.
 			label = outstanding
 		elif outstanding.is_empty():

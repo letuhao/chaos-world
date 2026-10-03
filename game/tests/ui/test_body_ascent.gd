@@ -299,6 +299,40 @@ func test_the_outstanding_wording_is_cores_own_verbatim() -> void:
 	screen.free()
 
 
+## `WorldAnchor.NO_ASCENT` is core declining to state a requirement, not a
+## requirement. Driven at `realm:transcendent` + `commit:28` the row printed it as
+## its label, with `required: true`, `offered: false` and a `0/4` bar beside it — so
+## the player was shown an ascent that did not exist yet and a control they could
+## not press. The guard used to suppress the sentinel only below the Transcendent
+## tier, which is not where the condition that produces it stops applying.
+func test_the_no_ascent_sentinel_is_never_rendered_as_a_requirement() -> void:
+	var actor := _transcendent()
+	# No `AscensionState` on this actor, so core has nothing to state.
+	actor.ascension = null
+	var screen := _screen()
+	screen.setup(actor)
+	assert_eq(
+		WorldAnchor.ascension_unmet(actor),
+		WorldAnchor.NO_ASCENT,
+		"precondition: core declines to state a requirement"
+	)
+	var ascent := _ascent(screen)
+	assert_eq(
+		String((ascent.get("row", {}) as Dictionary).get("name", "")),
+		"",
+		"so the row takes no space rather than advertising a gate"
+	)
+	assert_eq(String(ascent.get("shown", "x")), "", "and reports that it showed nothing")
+	# The facade's own value is still published untouched: the screen suppresses a
+	# SENTENCE, it does not filter the data a caller reads.
+	assert_eq(
+		String(ascent.get("outstanding", "")),
+		WorldAnchor.NO_ASCENT,
+		"the raw view is unchanged; only the wording on screen is withheld"
+	)
+	screen.free()
+
+
 ## Focus follows the only thing left to do. Cultivate is the landing spot
 ## normally; once a tier gate has opened an ascent it is the ascent.
 func test_focus_lands_on_the_ascent_once_one_is_owed() -> void:
