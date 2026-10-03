@@ -416,6 +416,9 @@ class Supply:
     fact: str
     total: int = 0
     sites: list[str] = field(default_factory=list)
+    #: True once a code-owned verb has been shown reachable from production code, which is
+    #: what lets `total` mean "no ceiling" rather than "one occurrence".
+    repeatable: bool = False
 
 
 @dataclass
@@ -673,12 +676,85 @@ def code_owned_supply(supply: dict[str, Supply]) -> None:
             row = supply.setdefault(fact, Supply(fact=fact))
             row.total += max(0, amount)
             row.sites.append(f"{relative}:{index + 1} ({amount}, code const)")
+            _note_reachability(row, relative)
 
     for roster_relative, ids, start in _roster_files(dispatched):
         for fact in ids:
             row = supply.setdefault(fact, Supply(fact=fact))
             row.total += DEFAULT_AMOUNT
             row.sites.append(f"{roster_relative}:{start} ({DEFAULT_AMOUNT}, code roster)")
+
+
+#: A code-owned producer is a VERB, and a verb can be called again. Its authored ceiling is
+#: therefore not one occurrence but "as many as the game can reach" — and the only honest
+#: reading of that needs the call graph, which this module does not walk. So the supply is
+#: conditional on REACHABILITY, measured the way `tools/acquisition` measures a route: is the
+#: recording verb called from production code OUTSIDE the module that declares it?
+#:
+#: This is not a convenience. `SectDuty.serve` discharged obligations correctly and had zero
+#: production callers, and a census that counted its three terms would have reported a
+#: `need: 3` gate satisfiable by a verb nothing drives — the ADR 0066 quiet lie with a
+#: number attached. Conditional supply keeps the finding honest in both directions: an
+#: unwired verb stays red, and wiring it turns the gate green for the real reason.
+REPEATABLE = -1  # "callable again", so no authored ceiling applies
+
+
+def _record_verb_is_reachable(relative: str) -> bool:
+    """Is the class that records this fact called from production code OUTSIDE its module?
+
+    `relative` is the declaring file. Two things this must not get wrong, both of which I
+    got wrong first:
+
+    - the identity is the `class_name`, not the filename. `combat_facts.gd` declares
+      `CombatFacts`, and a caller writes `CombatFacts.record_duel_won(` - matching the
+      snake_case stem as a substring finds nothing and silently reports every site
+      unreachable, which reads as a tool limitation rather than a bug.
+    - "outside the module" means outside the MODULE, not outside the file. `duel_hit.gd`
+      calls `CombatFacts.record_duel_won`, but both live in `modules/combat/`, and a writer
+      only its own module calls is exactly the dead writer this is meant to catch.
+    """
+    owner = Path(relative).stem
+    declaring = (GAME_DIR / relative).read_text(encoding="utf-8")
+    found = _CLASS_NAME.search(declaring)
+    class_name = found.group(1) if found else _to_pascal(owner)
+    if not class_name:
+        return False
+    module = str(Path(relative).parent)
+    for path in sorted(SRC_DIR.rglob("*.gd")):
+        candidate = path.relative_to(GAME_DIR).as_posix()
+        if str(Path(candidate).parent) == module:
+            continue
+        text = path.read_text(encoding="utf-8")
+        if re.search(rf"\b{class_name}\s*\.", text):
+            return True
+    return False
+
+
+def _to_pascal(stem: str) -> str:
+    """`combat_facts` -> `CombatFacts`. Read from the file when it declares a different
+    `class_name`, because that is the identifier a caller actually writes."""
+    return "".join(part.capitalize() for part in stem.split("_") if part)
+
+
+def _note_reachability(row: Supply, relative: str) -> None:
+    """Upgrade a code-owned site's ceiling to REPEATABLE, but only if it is driven.
+
+    No guard on the amount expression. My first version skipped a site whose amount was the
+    literal `1`, on the reasoning that an authored quantity stands on its own - and that
+    silently exempted exactly the case that matters: `CombatFacts.record_duel_won` passes a
+    literal `1` meaning "one duel per call", and a `need: 3` gate then read dead with no
+    note explaining why. A literal at a code-owned writer is an amount PER OCCURRENCE. The
+    ceiling is a property of how many times the game can call the verb, never of the number
+    written at one call site.
+    """
+    if row.repeatable:
+        return
+    if not _record_verb_is_reachable(relative):
+        row.sites.append(f"{relative} (UNDECLARED CEILING: verb reached only from itself)")
+        return
+    row.total += REPEATABLE
+    row.repeatable = True
+    row.sites.append(f"{relative} (repeatable: verb reached from production code)")
 
 
 def _roster_files(dispatched: set[str]) -> list[tuple[str, list[str], int]]:
@@ -801,6 +877,12 @@ def judge(
         if not demand.hard:
             continue
         offered = supply.get(demand.fact)
+        # A REPEATABLE contributor means a verb the game can call again, so the authored
+        # tree imposes no ceiling on this fact and `need` cannot outrun it. Counting the
+        # sentinel arithmetically would be wrong in the other direction - a `need: 3` gate
+        # would read as unsatisfiable against a total of -1.
+        if offered is not None and offered.repeatable:
+            continue
         total = offered.total if offered else 0
         if demand.need <= total:
             continue

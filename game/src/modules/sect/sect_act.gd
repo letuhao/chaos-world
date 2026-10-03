@@ -44,8 +44,13 @@ extends RefCounted
 ## the only names this file may ever produce**, and `app/` resolves exactly these.
 const VERB_WAIT_OFFICE := "wait_office"
 const VERB_TEACH := "teach"
+## Pay a term of the obligation `join` opened. Last on the ladder (ADR 0145): waiting for
+## an office and teaching are what a sect actively pursues, while serving a term is what
+## happens when neither is open — and it is the only one of the three that can DISCHARGE
+## anything, so without it a member's debt accrues at `join` and never clears.
+const VERB_SERVE_DUTY := "serve_duty"
 
-const VERBS: Array[StringName] = [VERB_WAIT_OFFICE, VERB_TEACH]
+const VERBS: Array[StringName] = [VERB_WAIT_OFFICE, VERB_TEACH, VERB_SERVE_DUTY]
 
 ## Why there is no third verb. A sect's per-period business is a vacancy ageing and a
 ## lesson running — both already implemented, both already taking an explicit
@@ -135,8 +140,24 @@ static func intent(ledger: Dictionary, def: SectDef) -> Dictionary:
 	# an office that may teach and a student admitted to this sect — and both are
 	# `SectTeaching`'s business, already gated at `SectApi.teach`. Naming a lesson
 	# that `teach` would refuse would be proposing a refusal every period, so the
-	# honest default is `do_nothing` and the sect waits for a walk to open.
-	return {}
+	# honest default is `do_nothing` — EXCEPT for a member who still owes a term
+	# (ADR 0145).
+	#
+	# Serving is proposed only when there is genuinely something to pay. A member
+	# whose lines are all clear gets `{}` as before, so a settled claim never
+	# proposes a verb that would discharge nothing. The owed check reads the claim
+	# rather than restating it, so `InstitutionClaim` stays the single definition of
+	# what is owed (the ADR 0066 shape this repo keeps refusing).
+	var claim := SectState.claim(ledger)
+	if claim.settled():
+		return {}
+	return {
+		"verb": VERB_SERVE_DUTY,
+		"institution_id": sect_id,
+		"institution_kind": "sect",
+		"target": "",
+		"act_priority": def.act_priority,
+	}
 
 
 ## The lowest-id office whose walk is open and un-finished, or `""` when none is.

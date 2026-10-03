@@ -156,6 +156,14 @@ static func _resolve(actor: Actor, periods: int, intent: Dictionary) -> bool:
 			)
 		&"accrue_territory":
 			return bool(NationApi.accrue_territory(actor, periods).get("ok", false))
+		&"serve_duty":
+			# Pay every open obligation line, one term at a time (ADR 0145). `SectDuty`
+			# rather than a `SectApi` verb because the facade is at its twelve-method cap
+			# and `institution_resolver.gd:100-104` records the repo's own answer to a
+			# full facade: fold the work into a component, do not widen the surface.
+			# `periods` is a count of periods to serve, so a long unpaid term pays down
+			# over several ticks instead of in one.
+			return bool(SectDuty.serve(actor, periods).get("ok", false))
 		_:
 			# Unknown verb: refused closed and NOT executed. `tests/arch_rules` and
 			# `test_nation_act.gd` both read this line, so a fourth verb cannot be

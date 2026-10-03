@@ -13,11 +13,12 @@ quiet lie with a non-zero exit code attached.
 
 from __future__ import annotations
 
+import json
 import subprocess
 import tempfile
 from pathlib import Path
 
-from . import gate_reach, map_theme, mutation_history, unique_characters
+from . import gate_reach, lore, map_theme, mutation_history, unique_characters
 from .selftest import case, expect, write
 
 # A roster class that hands its ids onward, and one that declares a table nothing reads.
@@ -135,6 +136,61 @@ def _dispatched_roster_is_supply() -> None:
                 f"{fact} is produced by a dispatched roster but the census cannot see it, "
                 "which is INC-0012: a gate reported dead while its producer was running",
             )
+
+
+@case("gate_reach: an UNREACHABLE code writer keeps its gate red")
+def _unreachable_code_writer_stays_red() -> None:
+    """The property `REPEATABLE` exists to protect.
+
+    A code-owned producer is a verb, so its ceiling depends on how many times the game can
+    call it — but only if something calls it. `SectDuty.serve` discharged obligations
+    correctly with zero production callers, and a census that counted its three terms would
+    report a `need: 3` gate satisfiable by a verb nothing drives.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        src = root / "src"
+        write(
+            src / "modules" / "sect" / "sect_facts.gd",
+            "class_name SectFacts\nextends RefCounted\n\n"
+            'const FACT := &"oaths"\n\n\n'
+            "static func record(actor: Actor) -> Dictionary:\n"
+            "\treturn WorldFact.record(actor, FACT, 1)\n",
+        )
+
+        supply = _supply_against(src)
+        row = supply.get("oaths")
+        expect(row is not None, "the code-owned writer was not counted at all")
+        expect(
+            not row.repeatable,
+            "a writer nothing outside its own module calls was marked repeatable, so a "
+            "need:3 gate would read satisfiable by a verb nobody drives",
+        )
+
+
+@case("gate_reach: a REACHABLE code writer has no ceiling")
+def _reachable_code_writer_is_repeatable() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        src = root / "src"
+        write(
+            src / "modules" / "sect" / "sect_facts.gd",
+            "class_name SectFacts\nextends RefCounted\n\n"
+            'const FACT := &"oaths"\n\n\n'
+            "static func record(actor: Actor) -> Dictionary:\n"
+            "\treturn WorldFact.record(actor, FACT, 1)\n",
+        )
+        # The driver lives OUTSIDE modules/sect/, which is the whole condition.
+        write(src / "app" / "tick.gd", "SectFacts.record(actor)\n")
+
+        supply = _supply_against(src)
+        row = supply.get("oaths")
+        expect(row is not None, "the code-owned writer was not counted at all")
+        expect(
+            row.repeatable,
+            "a writer the composition root drives was still capped at one occurrence, so a "
+            "need:3 gate would read dead while the game can plainly discharge three terms",
+        )
 
 
 @case("map_theme: a shipped theme with no authored prose FAILS the check")
@@ -446,3 +502,241 @@ def _prose_digits_are_not_stats() -> None:
             f"ordinary prose was refused as a stat: {block!r}. The guard matches the "
             "authored stat ids, not digits, so a name with a numeral is still writable",
         )
+
+
+# --- ADR 0139: the lore bible's guards must go RED, and the Bible must be importable ---
+
+
+def _lore_bible(root: Path) -> lore.model.Bible:
+    """A Bible loaded from a fixture tree instead of the repository.
+
+    The registry is copied in rather than hand-written: it is the vocabulary every
+    guard reads, so a miniature one would let a fixture pass under relations the
+    real registry does not have.
+
+    LORE_ROOT alone is not enough. The first version moved only LORE_ROOT, and
+    `load_bible` resolved the registry through a module constant captured at import
+    time - so the fixture read the REPOSITORY's 528 entities while its own edges
+    pointed at two of them. Every dangling-edge assertion passed because the real
+    bible already contained the targets it was checking for. A test that reads the
+    wrong tree is worse than no test, because it looks like coverage.
+    """
+    source = lore.model.REGISTRY_PATH
+    target = root / "registry.json"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+    original_root = lore.model.LORE_ROOT
+    original_registry = lore.model.REGISTRY_PATH
+    lore.model.LORE_ROOT = root
+    lore.model.REGISTRY_PATH = target
+    try:
+        return lore.model.load_bible()
+    finally:
+        lore.model.LORE_ROOT = original_root
+        lore.model.REGISTRY_PATH = original_registry
+
+
+def _write_lore(root: Path, entities: dict[str, list[dict]], edges: dict[str, list[dict]]) -> None:
+    for domain, rows in entities.items():
+        write(root / "bible" / f"{domain}.jsonl", "".join(json.dumps(r) + "\n" for r in rows))
+    for name, rows in edges.items():
+        write(root / "edges" / f"{name}.jsonl", "".join(json.dumps(r) + "\n" for r in rows))
+
+
+def _entity(domain: str, slug: str, **over: object) -> dict:
+    record = {
+        "id": f"{domain}.{slug}",
+        "domain": domain,
+        "type": "thing",
+        "name": slug.replace("_", " ").title(),
+        "summary": "A thing that exists for a reason.",
+        "tags": ["sample"],
+        "status": "active",
+        "provenance": {"author": "fixture"},
+        "attributes": {},
+    }
+    record.update(over)
+    return record
+
+
+@case("lore: a dangling edge reference FAILS validation")
+def _dangling_edge_fails() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        _write_lore(
+            root,
+            {"geography": [_entity("geography", "somewhere")]},
+            {
+                "batch": [
+                    {"from": "geography.somewhere", "rel": "located_in", "to": "geography.nowhere"}
+                ]
+            },
+        )
+        findings = lore.run_audit(_lore_bible(root))
+        expect(
+            any("geography.nowhere" in finding for finding in findings),
+            "an edge pointing at an entity that does not exist was accepted, so a bible "
+            "can grow references to worlds and people nobody ever wrote",
+        )
+
+
+@case("lore: two exclusive relations on one pair FAILS validation")
+def _exclusive_relations_fail() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        _write_lore(
+            root,
+            {
+                "organizations": [
+                    _entity("organizations", "alpha"),
+                    _entity("organizations", "beta"),
+                ]
+            },
+            {
+                "batch": [
+                    {
+                        "from": "organizations.alpha",
+                        "rel": "allied_with",
+                        "to": "organizations.beta",
+                    },
+                    {"from": "organizations.beta", "rel": "enemy_of", "to": "organizations.alpha"},
+                ]
+            },
+        )
+        findings = lore.run_audit(_lore_bible(root))
+        expect(
+            any("exclusive" in finding for finding in findings),
+            "two parties were recorded as both allied and at war with no complaint, which "
+            "is the contradiction a lore audit exists to catch",
+        )
+
+
+@case("lore: a self-referential entity FAILS validation")
+def _self_reference_fails() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        _write_lore(
+            root,
+            {"cosmology": [_entity("cosmology", " Ouroboros")]},
+            {
+                "batch": [
+                    {"from": "cosmology.ouroboros", "rel": "part_of", "to": "cosmology.ouroboros"}
+                ]
+            },
+        )
+        findings = lore.run_audit(_lore_bible(root))
+        expect(
+            any("cannot bear a relation to itself" in finding for finding in findings),
+            "an entity related to itself was accepted, so every traversal from it loops",
+        )
+
+
+@case("lore: an id with no domain prefix FAILS validation")
+def _bare_id_fails() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        _write_lore(root, {"geography": [_entity("geography", "x", id="bare_name")]}, {})
+        findings = lore.run_audit(_lore_bible(root))
+        expect(
+            any("namespaced" in finding for finding in findings),
+            "a bare id with no domain prefix was accepted, which is how a lore id and a "
+            "game id end up colliding with no namespace to tell them apart",
+        )
+
+
+@case("lore: an over-long summary FAILS validation")
+def _long_summary_fails() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        _write_lore(root, {"geography": [_entity("geography", "x", summary="w" * 900)]}, {})
+        findings = lore.run_audit(_lore_bible(root))
+        expect(
+            any("index ceiling" in finding for finding in findings),
+            "a summary far over the index ceiling was accepted, so the domain file stops "
+            "being greppable by an agent working in a bounded window",
+        )
+
+
+@case("lore: a missing authored counterpart FAILS validation")
+def _missing_external_ref_fails() -> None:
+    # An external_ref resolves against the REPOSITORY root, not the fixture tree,
+    # because `game/data` only exists there. So the fixture names a path that is
+    # genuinely absent rather than one it invented: the first version pointed at a
+    # real race file, the guard correctly stayed silent, and the test was wrong
+    # about its own subject.
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        record = _entity(
+            "races",
+            "emberblood",
+            external_ref={
+                "game_id": "emberborn_via_rename",
+                "path": "game/data/races/no_such_race.tres",
+            },
+        )
+        _write_lore(root, {"races": [record]}, {})
+        findings = lore.run_audit(_lore_bible(root))
+        expect(
+            any("external_ref path does not exist" in finding for finding in findings),
+            "a lore record claimed an authored counterpart that is not on disk, so the "
+            "correspondence between the bible and the game became unverifiable",
+        )
+
+
+@case("lore: an external_ref that DOES exist is NOT reported")
+def _present_external_ref_is_silent() -> None:
+    """The negative half, and the half a loosened guard breaks first.
+
+    A guard that reported every external_ref would pass the case above while being
+    useless: it fires on all 528 imported records, and a reader learns to ignore it
+    within one run. This is what INC-0016's shape looks like in practice.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        record = _entity(
+            "races",
+            "emberblood",
+            external_ref={"game_id": "emberblood", "path": "game/data/races/emberblood.tres"},
+        )
+        _write_lore(root, {"races": [record]}, {})
+        findings = lore.run_audit(_lore_bible(root))
+        expect(
+            not [finding for finding in findings if "external_ref" in finding],
+            "an external_ref pointing at a real authored resource was reported as broken, so "
+            "the guard fires on correct data and stops being read",
+        )
+
+
+@case("lore: the game import is deterministic and flags stubs, not invents lore")
+def _ingest_is_deterministic() -> None:
+    """The importer runs against the real repository twice.
+
+    Two properties matter and neither is visible from the record count: the second
+    run must produce identical output (so a re-import cannot churn the bible), and
+    a content-free authored resource must import as an explicit stub whose summary
+    says so. An importer that invents plausible prose for the 331 bosses would
+    leave the bible looking authored where nothing is authored.
+    """
+    first_domains, first_edges, _counts = lore.ingest.build_import()
+    second_domains, second_edges, _counts2 = lore.ingest.build_import()
+    expect(
+        json.dumps(first_domains, sort_keys=True) == json.dumps(second_domains, sort_keys=True),
+        "two imports of the same authored tree produced different records, so re-running "
+        "the ingest silently rewrites lore",
+    )
+    expect(
+        json.dumps(first_edges, sort_keys=True) == json.dumps(second_edges, sort_keys=True),
+        "two imports produced different edges, so the graph is not reproducible",
+    )
+    bosses = first_domains.get("people", [])
+    expect(bosses, "the importer found no named figures, so it cannot be absorbing game/data")
+    for record in bosses:
+        if record["attributes"].get("lore_depth") == "stub":
+            expect(
+                "gap" in record["summary"].lower(),
+                f"{record['id']} imported as a stub but its summary does not say so, so an "
+                "agent reading it cannot tell a hole from a finished entry",
+            )
+            break
+    else:
+        expect(False, "no named figure imported as a stub, so the stub flag is untested")
