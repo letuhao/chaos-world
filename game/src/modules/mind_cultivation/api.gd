@@ -25,6 +25,19 @@ static func attach(actor: Actor) -> void:
 	_ensure_resources(actor)
 	if not _has_provider(actor, MindProvider):
 		actor.stats.add_provider(MindProvider.new())
+	# The sea is part of the path, not an optional extra: the composition root's single
+	# `attach` call must leave the actor ready. ADR 0095 decided exactly this for qi,
+	# where `attach_dantian` existed but nothing called it and "the whole qi path was
+	# inert in play".
+	#
+	# Without this line, `attach_sea` had ZERO callers in `res://src` -- the only
+	# production enrolment path, `ActorFactory.with_mind_cultivation`, called `attach`
+	# and `synchronize` and never `attach_sea`. Every actor the game built therefore had
+	# no SeaOfConsciousness: `cultivate` refused at training.gd:56, `recover` refused at
+	# training.gd:125, and `summary` reported `mind_power: 0.0`. Ten thousand green
+	# assertions never caught it because all 38 `attach_sea` call sites are in tests,
+	# where every hand-built actor attaches the sea itself.
+	attach_sea(actor)
 
 
 static func path_def() -> CultivationPathDef:
