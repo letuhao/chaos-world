@@ -20,12 +20,14 @@ Cultivation-fantasy relic illustration: mystical, handmade, and legible at inven
 ## Top-down world map
 
 - Camera is orthographic and straight down: show ground-facing silhouettes and top surfaces, with no horizon, isometric projection, or perspective convergence.
-- Carry the item art's gouache finish, fine `#263A35` contours, material-led palette, and upper-left light into the world. Use broader value planes and less surface detail so terrain stays quiet behind actors.
+- Preferred rendering reference: anime-painted gouache, dark `#263A35` ink contours, broad readable value planes, material-led colors, and restrained upper-left light.
+- Keep terrain quieter than props with broader value planes and less surface detail; keep the camera strictly overhead even for architectural subjects.
 - Reserve warm ivory and antique gold for readable focal details. Terrain hues follow material and environment; Qi azure, Body gold, and Mind violet are restrained faction accents, not full-scene filters.
 - Base terrain tiles use opaque 128×128 PNGs as the initial authoring grid; transition tiles, props, and decals use transparent PNGs. Props use 128–512 px canvases and a bottom-center ground pivot; tiles and decals use a center pivot. These are source canvases, pending review at actual gameplay scale.
 - Tiles must include base, edge, corner, and transition pieces that repeat without visible seams. Props keep shadows short and attached to the footprint; painted shadows never imply collision. No baked labels or UI.
 - Keep walkable ground low contrast. Make blockers, harvest nodes, routes, domain entrances, and landmarks distinct by silhouette and placement. Decorative flora, decals, and effects carry no collision unless the index says `solid`.
 - Build coherent environment sets across the Mortal, Spirit, Immortal, and Transcendent worlds plus authored domains. Environmental variants change form and material to fit the place; hue-only recolors do not count as separate art.
+- `environment_theme` in the map index is each region's generation brief for materials, silhouettes, and terrain forms; carry it into every asset prompt.
 - The style target is a native-scale patch with one actor, ground, blocker, resource node, and landmark together. Approve its scale and contrast in-game before generating full batches; no gameplay capture is approved yet.
 - `game/assets/map-asset-index.jsonl` tracks each planned or produced map asset. Run `uv run python -m tools assets map report|audit`; `assets map scaffold` creates the initial plan only when no index exists.
 

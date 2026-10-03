@@ -17,6 +17,7 @@ from PIL import Image, ImageDraw, ImageFont
 from .common import REPO_ROOT, ToolError
 
 DEFAULT_CHECKPOINT = "Flux1S/originByN0utis_originFluxAnimeV1.safetensors"
+DEFAULT_LORA = "flux/gokaygokayFlux-2D-Game-Assets-LoRA.safetensors"
 DEFAULT_NEGATIVE = (
     "text, letters, watermark, border, UI, extra objects, duplicate subject, "
     "isometric view, perspective, horizon, photorealism, 3D render, noisy texture"
@@ -138,6 +139,7 @@ def _production_prompt(record: dict, subject: str) -> str:
         f"Production sprite for Chaos World, a 2D top-down cultivation action RPG. "
         f"Asset: {record['name']} ({record['id']}); environment: "
         f"{record['environment_name']} in the {record['world_tier']}. "
+        f"Environment art signature: {record['environment_theme']} "
         f"{framing}{transparency}"
         "Straight-down orthographic camera, with no horizon or isometric projection. "
         "Hand-painted gouache, fine dark #263A35 ink contours, broad readable value "
@@ -158,6 +160,8 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
         raise ToolError("--timeout must be between 1 and 900 seconds")
     if not args.prompt.strip() or not args.checkpoint.strip() or not args.rembg_model.strip():
         raise ToolError("prompt, checkpoint, and background-removal model must be non-empty")
+    if not 0.0 <= args.lora_strength <= 2.0:
+        raise ToolError("--lora-strength must be between 0 and 2")
     if any(
         not 0 <= value <= 255
         for value in (
@@ -174,6 +178,17 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
     prompt = _production_prompt(record, args.prompt)
     graph = copy.deepcopy(WORKFLOW)
     graph["1"]["inputs"]["ckpt_name"] = args.checkpoint
+    if args.lora.strip():
+        graph["10"] = {
+            "inputs": {
+                "model": ["1", 0],
+                "clip": ["12", 0],
+                "lora_name": args.lora.strip(),
+                "strength_model": args.lora_strength,
+                "strength_clip": args.lora_strength,
+            },
+            "class_type": "LoraLoader",
+        }
     graph["2"]["inputs"]["t5xxl"] = prompt
     graph["2"]["inputs"]["guidance"] = args.guidance
     graph["3"]["inputs"]["clip_l"] = args.negative
@@ -211,7 +226,9 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
             }
             graph[save_node] = {
                 "inputs": {
-                    "filename_prefix": f"chaos_world_map_compare/{record['id'].replace('.', '_')}-{seed}-{model}",
+                    "filename_prefix": (
+                        f"chaos_world_map_compare/{record['id'].replace('.', '_')}-{seed}-{model}"
+                    ),
                     "images": [rembg_node, 0],
                 },
                 "class_type": "SaveImage",
@@ -219,11 +236,13 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
             comparison_nodes[save_node] = model
 
     model_slug = args.rembg_model.replace("/", "_").replace(" ", "_")
+    lora_slug = args.lora.strip().replace("/", "_").replace(" ", "_") or "base"
+    lora_slug = f"{lora_slug}-s{args.lora_strength:g}"
     output = (
         REPO_ROOT
         / "build"
         / "map-generated"
-        / f"{record['id'].replace('.', '_')}-{seed}-{model_slug}.png"
+        / f"{record['id'].replace('.', '_')}-{seed}-{model_slug}-{lora_slug}.png"
     )
     output.parent.mkdir(parents=True, exist_ok=True)
     if output.exists():
@@ -265,7 +284,7 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
             REPO_ROOT
             / "build"
             / "map-rembg-comparisons"
-            / f"{record['id'].replace('.', '_')}-{seed}-{model}.png"
+            / f"{record['id'].replace('.', '_')}-{seed}-{model}-{lora_slug}.png"
         )
         comparison.parent.mkdir(parents=True, exist_ok=True)
         _write_new_file(comparison, data)
@@ -275,7 +294,7 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
             f"{comparison.relative_to(REPO_ROOT).as_posix()}"
         )
     if comparison_nodes:
-        sheet = _write_comparison_sheet(record, seed, comparison_paths)
+        sheet = _write_comparison_sheet(record, seed, lora_slug, comparison_paths)
         print(
             f"[map generate] wrote remover comparison sheet {sheet.relative_to(REPO_ROOT).as_posix()}"
         )
@@ -294,7 +313,9 @@ def _node_image(entry: dict, node_id: str) -> dict:
     raise ToolError(f"ComfyUI completed without returning an image from node {node_id}")
 
 
-def _write_comparison_sheet(record: dict, seed: int, images: dict[str, Path]) -> Path:
+def _write_comparison_sheet(
+    record: dict, seed: int, lora_slug: str, images: dict[str, Path]
+) -> Path:
     columns = 3
     cell_size = 320
     image_size = 288
@@ -339,7 +360,7 @@ def _write_comparison_sheet(record: dict, seed: int, images: dict[str, Path]) ->
         REPO_ROOT
         / "build"
         / "map-rembg-comparisons"
-        / f"{record['id'].replace('.', '_')}-{seed}-contact-sheet.png"
+        / f"{record['id'].replace('.', '_')}-{seed}-{lora_slug}-contact-sheet.png"
     )
     output.parent.mkdir(parents=True, exist_ok=True)
     sheet.save(output, format="PNG", optimize=True)

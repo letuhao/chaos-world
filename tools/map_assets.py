@@ -23,28 +23,124 @@ MIN_ASSETS = 1000
 # generated from the same object role with materials and silhouettes suited to
 # that environment; this is not a hue-only recolor list.
 ENVIRONMENTS = (
-    ("mortal_plains", "Mortal World", "Mortal Plains"),
-    ("mortal_greenwood", "Mortal World", "Mortal Greenwood"),
-    ("mortal_riverlands", "Mortal World", "Mortal Riverlands"),
-    ("mortal_highlands", "Mortal World", "Mortal Highlands"),
-    ("spirit_peaks", "Spirit World", "Spirit Peaks"),
-    ("spirit_bamboo_sea", "Spirit World", "Spirit Bamboo Sea"),
-    ("spirit_moonfen", "Spirit World", "Spirit Moonfen"),
-    ("spirit_ghostwood", "Spirit World", "Spirit Ghostwood"),
-    ("immortal_court", "Immortal World", "Immortal Court"),
-    ("immortal_cloud_isles", "Immortal World", "Immortal Cloud Isles"),
-    ("immortal_jade_orchard", "Immortal World", "Immortal Jade Orchard"),
-    ("immortal_star_lake", "Immortal World", "Immortal Star Lake"),
-    ("transcendent_realm", "Transcendent World", "Transcendent Realm"),
-    ("primordial_wilds", "Transcendent World", "Primordial Wilds"),
-    ("void_shoal", "Transcendent World", "Void Shoal"),
-    ("dao_fracture", "Transcendent World", "Dao Fracture"),
-    ("ember_grotto", "Mortal World", "Ember Grotto"),
-    ("flame_valley_depths", "Spirit World", "Flame Valley Depths"),
-    ("stormwrack_reach", "Immortal World", "Stormwrack Reach"),
+    (
+        "mortal_plains",
+        "Mortal World",
+        "Mortal Plains",
+        "Sun-warmed ochre loam, low golden grasses, rounded hills, and worn farm tracks.",
+    ),
+    (
+        "mortal_greenwood",
+        "Mortal World",
+        "Mortal Greenwood",
+        "Dense broadleaf canopy, tangled roots, emerald moss, and dappled forest clearings.",
+    ),
+    (
+        "mortal_riverlands",
+        "Mortal World",
+        "Mortal Riverlands",
+        "Silt banks, winding slate-blue channels, smooth river stones, and reed beds.",
+    ),
+    (
+        "mortal_highlands",
+        "Mortal World",
+        "Mortal Highlands",
+        "Exposed grey granite, steep broken ledges, wind-shaped pines, and pale lichen.",
+    ),
+    (
+        "spirit_peaks",
+        "Spirit World",
+        "Spirit Peaks",
+        "Cold blue stone, sparse snow, crystalline mist, and hardy dark mountain pines.",
+    ),
+    (
+        "spirit_bamboo_sea",
+        "Spirit World",
+        "Spirit Bamboo Sea",
+        "Interlocking jade bamboo crowns, pale leaf litter, green shoots, and winding footpaths.",
+    ),
+    (
+        "spirit_moonfen",
+        "Spirit World",
+        "Spirit Moonfen",
+        "Blue-black fen pools, silver reeds, peat islands, and restrained moonlit reflections.",
+    ),
+    (
+        "spirit_ghostwood",
+        "Spirit World",
+        "Spirit Ghostwood",
+        "Charcoal soil, bone-pale roots, sparse ghost grass, and small cold cyan spirit lights.",
+    ),
+    (
+        "immortal_court",
+        "Immortal World",
+        "Immortal Court",
+        "Ivory stone terraces, balanced formal layouts, fine antique-gold seams, and cloud carving.",
+    ),
+    (
+        "immortal_cloud_isles",
+        "Immortal World",
+        "Immortal Cloud Isles",
+        "Floating pale rock shelves, soft cloud banks, cool blue-grey shade, and airy silhouettes.",
+    ),
+    (
+        "immortal_jade_orchard",
+        "Immortal World",
+        "Immortal Jade Orchard",
+        "Ancient ordered fruit trees, pale blossoms, jade moss, and clear mineral pools.",
+    ),
+    (
+        "immortal_star_lake",
+        "Immortal World",
+        "Immortal Star Lake",
+        "Deep teal lake stone, star-like reflections, quiet silver highlights, and celestial markings.",
+    ),
+    (
+        "transcendent_realm",
+        "Transcendent World",
+        "Transcendent Realm",
+        "Calm ivory and platinum forms, sparse gold accents, and impossibly clean sacred stone.",
+    ),
+    (
+        "primordial_wilds",
+        "Transcendent World",
+        "Primordial Wilds",
+        "Colossal exposed roots, ancient moss-dark basalt, amber minerals, and untamed growth.",
+    ),
+    (
+        "void_shoal",
+        "Transcendent World",
+        "Void Shoal",
+        "Black glass shoals, deep violet water, scattered stone fragments, and sparse cyan glimmers.",
+    ),
+    (
+        "dao_fracture",
+        "Transcendent World",
+        "Dao Fracture",
+        "Misaligned stone planes, impossible cracks, suspended shards, and narrow luminous seams.",
+    ),
+    (
+        "ember_grotto",
+        "Mortal World",
+        "Ember Grotto",
+        "Soot-dark basalt, warm umber stone, ember fissures, and compact volcanic formations.",
+    ),
+    (
+        "flame_valley_depths",
+        "Spirit World",
+        "Flame Valley Depths",
+        "Layered cinder slopes, copper-red stone, scorched earth, and controlled internal firelight.",
+    ),
+    (
+        "stormwrack_reach",
+        "Immortal World",
+        "Stormwrack Reach",
+        "Wet dark coastal rock, broken seafoam, wind-bent coastal flora, and weathered driftwood.",
+    ),
 )
 ENVIRONMENT_IDS = {entry[0] for entry in ENVIRONMENTS}
 WORLD_TIERS = {entry[1] for entry in ENVIRONMENTS}
+ENVIRONMENT_THEMES = {entry[0]: entry[3] for entry in ENVIRONMENTS}
 
 # id suffix, display name, asset kind, canvas size, pivot, collision role
 ASSET_ROLES = {
@@ -189,6 +285,12 @@ def register(parent_parser) -> None:
         help="ComfyUI checkpoint name; must match the loaded CLIP/VAE workflow",
     )
     generate.add_argument(
+        "--lora",
+        default=map_generate.DEFAULT_LORA,
+        help="ComfyUI LoRA name for model and CLIP (default: selected 2D game-asset LoRA)",
+    )
+    generate.add_argument("--lora-strength", type=float, default=0.8)
+    generate.add_argument(
         "--rembg-model",
         default=map_generate.DEFAULT_REMBG_MODEL,
         help="cutout model (default: isnet-anime; use --compare-rembg to compare installed choices)",
@@ -232,6 +334,9 @@ def run(args) -> int:
     if action == "migrate":
         changed = 0
         for record in records:
+            if "environment_theme" not in record:
+                record["environment_theme"] = ENVIRONMENT_THEMES.get(record.get("environment"), "")
+                changed += 1
             if "alpha" not in record:
                 category = record.get("category", "")
                 suffix = record.get("id", "").rsplit(".", 1)[-1]
@@ -244,7 +349,7 @@ def run(args) -> int:
                     for item in records
                 )
             )
-        ok(f"added alpha mode to {changed} map asset records")
+        ok(f"added missing map metadata to {changed} asset records")
         return 0
     if action == "install":
         _install(records, args)
@@ -280,7 +385,7 @@ def _scaffold() -> None:
     if INDEX_PATH.exists():
         raise ToolError(f"refusing to overwrite existing index: {INDEX_PATH}")
     records: list[dict] = []
-    for environment_id, world_tier, environment_name in ENVIRONMENTS:
+    for environment_id, world_tier, environment_name, environment_theme in ENVIRONMENTS:
         for category, roles in ASSET_ROLES.items():
             for suffix, display_name, kind, size, pivot, collision in roles:
                 asset_id = f"{environment_id}.{category}.{suffix}"
@@ -294,6 +399,7 @@ def _scaffold() -> None:
                         "category": category,
                         "environment": environment_id,
                         "environment_name": environment_name,
+                        "environment_theme": environment_theme,
                         "world_tier": world_tier,
                         "archetype": f"{category}.{suffix}",
                         "name": display_name,
@@ -373,6 +479,8 @@ def _generate(records: list[dict], args) -> None:
         negative_prompt=args.negative,
         generation_settings={
             "checkpoint": args.checkpoint,
+            "lora": args.lora,
+            "lora_strength": args.lora_strength,
             "seed": seed,
             "steps": args.steps,
             "size": args.size,
@@ -551,6 +659,7 @@ def _validate(records: list[dict]) -> list[str]:
             "category",
             "environment",
             "environment_name",
+            "environment_theme",
             "world_tier",
             "archetype",
             "name",
