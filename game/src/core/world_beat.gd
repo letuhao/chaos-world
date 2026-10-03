@@ -114,3 +114,23 @@ static func from_dict(data: Dictionary) -> WorldBeat:
 		int(data.get("amount", 1)),
 		String(data.get("source", ""))
 	)
+
+
+## A beat from whatever a caller had, or **null** when it had none.
+##
+## One dispatch point for the two spellings a beat arrives in: the value object,
+## and the plain dictionary the event writer builds (which carries extra keys —
+## `kind`, `npc_id` — that this class has no opinion about and ignores). Without
+## it every sink re-implemented `if beat is Dictionary`, and one of them got the
+## nesting wrong: `contracts/` may not name this class, so a sink cannot call
+## [method coerce] itself and has to read the raw shape by hand.
+##
+## Null is a real answer and not a failure to coerce: `null`, a `String`, a
+## number — none of those is a claim that something happened, and the caller
+## refuses them by name rather than manufacturing a beat with no id and no fact.
+static func coerce(beat) -> WorldBeat:
+	if beat is WorldBeat:
+		return beat as WorldBeat
+	if beat is Dictionary:
+		return from_dict(beat as Dictionary)
+	return null
