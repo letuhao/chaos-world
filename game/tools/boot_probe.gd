@@ -51,12 +51,14 @@ const MAX_WALK_DEPTH := 12
 ## them is driven by a live screen, never by a snapshot, so it needs a fixed cap
 ## rather than a bound derived from what the screen happens to be showing.
 const MAX_DROPS_PER_REWARD := 8
-## How many bosses the walk may fight before it insists at least one of them paid
-## something the hero can wear. A fight may legitimately pay a consumable or a
-## token, and neither can be equipped, so one boss is not a guarantee of gear. A
-## player keeps hunting; the probe keeps hunting with them. This is a guard
-## against a corpus that pays no gear at all, not a search strategy.
-const MAX_EQUIP_HUNTS := 4
+## How many (domain, tier) pairs the walk may try before it insists none of them
+## pays something the hero can wear. One boss is not a guarantee of gear: a fight
+## may pay a consumable, a material, or a drop whose grade is above the hero's own
+## tier, and none of those can be equipped. The loot tables do reference 1339
+## wearable equipment items, so a narrow sample says more about the sample than
+## about the corpus -- hence a real sweep, and a cap so a corpus that genuinely
+## pays nothing cannot spin forever.
+const MAX_EQUIP_HUNTS := 8
 ## The app's strike deals 25 and the lowest authored boss has 100 vitality, so four
 ## strikes is the whole fight. A cap, never "until it dies" — see `_strike_until_dead`.
 const MAX_STRIKES := 8
@@ -113,17 +115,51 @@ func _run() -> void:
 	var hunt_report: Dictionary = {}
 	var claim_report: Dictionary = {}
 	var equip_report: Dictionary = {}
-	for _attempt in MAX_EQUIP_HUNTS:
-		hunt_report = await _hunt(app, _attempt)
+	var attempts := 0
+	var sweep: Array[Dictionary] = []
+	for attempt in MAX_EQUIP_HUNTS:
+		attempts = attempt + 1
+		hunt_report = await _hunt(app, attempt)
 		report["hunt"] = hunt_report
+		# A domain that mints nothing is one dead cell of the grid, not a verdict
+		# on the corpus. Stopping there would let a single unpayable table answer
+		# the question the whole sweep exists to ask.
 		if not bool(hunt_report.get("ok", false)):
-			break
+			(
+				sweep
+				. append(
+					{
+						"domain": hunt_report.get("domain", ""),
+						"tier": hunt_report.get("tier", ""),
+						"hunt": hunt_report.get("why", "minted nothing"),
+					}
+				)
+			)
+			continue
 		claim_report = await _claim(app, rows_at_boot)
 		report["claim"] = claim_report
 		if not bool(claim_report.get("ok", false)):
+			(
+				sweep
+				. append(
+					{
+						"domain": hunt_report.get("domain", ""),
+						"tier": hunt_report.get("tier", ""),
+						"claim": claim_report.get("why", "nothing claimed"),
+					}
+				)
+			)
 			continue
 		equip_report = await _equip(app, claim_report.get("def_ids", []))
 		report["equip"] = equip_report
+		var cell := {
+			"domain": hunt_report.get("domain", ""),
+			"tier": hunt_report.get("tier", ""),
+			"def_ids": claim_report.get("def_ids", []),
+		}
+		if not bool(equip_report.get("ok", false)):
+			cell["equip"] = equip_report.get("why", "could not be worn")
+		sweep.append(cell)
 		if bool(equip_report.get("ok", false)):
 			break
 		# `wearable: false` is the one failure worth another boss: the fight paid
@@ -131,7 +167,8 @@ func _run() -> void:
 		# and repeating it would only multiply the same red.
 		if bool(equip_report.get("wearable", true)):
 			break
-		continue
+	report["hunts"] = attempts
+	report["sweep"] = sweep
 	var broken: Array[String] = []
 	if not bool(nav_report.get("ok", false)):
 		broken.append(
@@ -260,29 +297,34 @@ func _choose_domain(screen: Node, nth: int) -> String:
 ## Travel to the loot surface if the walk is not already there, and confirm there
 ## is a live screen to fight from.
 func _ready_to_hunt(app: Node) -> Dictionary:
-	if String(app.call(&"current_route")) != String(LOOT_ROUTE):
+	var here := String(app.call(&"current_route"))
+	if here != String(LOOT_ROUTE):
 		var travel := await _goto(app, LOOT_ROUTE)
 		if not bool(travel.get("ok", false)):
-			return {"ok": false, "why": travel.get("why", "cannot reach the loot surface")}
+			var said := String(travel.get("why", ""))
+			if said.is_empty():
+				said = "travel reported no reason"
+			return {"ok": false, "why": "from '%s': %s" % [here, said]}
 	var screen := _live_screen(app)
 	if screen == null:
 		return {"ok": false, "why": "the app has no live screen reporting state to fight from"}
 	return {"ok": true, "screen": screen}
 
 
-## Move the tier selector onto its lowest option and return the label now showing.
+## Move the tier selector onto the nth option and return the label now showing.
 ##
-## Lowest, not "whatever is selected": a drop's grade scales with the tier, and
-## the grade gate refuses anything above the hero's tier, so the default selection
-## can hand over gear this hero is not allowed to wear. Choosing the lowest tier is
-## the choice a starting hero makes, and it is the one that pays winnable gear.
-func _choose_tier(screen: Node) -> String:
+## Both selectors advance with the attempt, so the sweep walks the authored grid
+## of (domain, tier) pairs rather than replaying one table. Picking a fixed tier
+## would be wrong in the other direction too: a drop's grade scales with the tier
+## it was fought at, and the grade gate refuses anything above the hero's tier.
+func _choose_tier(screen: Node, nth: int) -> String:
 	var option := screen.get_node_or_null(TIER_OPTION) as OptionButton
 	if option == null or option.item_count <= 0:
 		return ""
-	option.select(0)
-	option.item_selected.emit(0)
-	return String(option.get_item_text(0))
+	var index := nth % option.item_count
+	option.select(index)
+	option.item_selected.emit(index)
+	return String(option.get_item_text(index))
 
 
 func _hunt(app: Node, nth: int) -> Dictionary:
@@ -291,7 +333,7 @@ func _hunt(app: Node, nth: int) -> Dictionary:
 		return {"ok": false, "why": ready.get("why", "cannot reach the loot surface")}
 	var screen := ready.get("screen") as Node
 	var domain := _choose_domain(screen, nth)
-	var tier := _choose_tier(screen)
+	var tier := _choose_tier(screen, nth)
 	var before := screen.call(&"summary") as Dictionary
 	if bool(before.get("in_domain", false)):
 		return {"ok": false, "why": "a boss was already live before the player entered one"}
@@ -515,7 +557,11 @@ func _baseline_wearable(screen: Node, bar: Node) -> String:
 		if not _select_row(screen, def_id):
 			continue
 		await process_frame
-		if _press(bar, EQUIP_BUTTON):
+		# `_offered`, not `_press`: this asks whether the control is live and stops
+		# there. Pressing would equip the row, which then reads as "nothing is
+		# wearable" on every later attempt -- the diagnostic would destroy the very
+		# evidence it exists to collect.
+		if _offered(bar, EQUIP_BUTTON):
 			return def_id
 	return ""
 
