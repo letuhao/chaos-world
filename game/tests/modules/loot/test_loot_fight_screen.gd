@@ -10,6 +10,10 @@ extends TestCase
 ##
 ## Every assertion here goes through `LootEncounterScreen.summary()` — the screen contract —
 ## or through the rendered widget text, so what is proved is what a player can see.
+##
+## One consequence of that is `_spent`: the contract reports the LIVE boss, and rule E3
+## replaces the live boss the moment the struck one falls, so a spend is only ever read
+## against the boss it was aimed at by keying on `encounter_id`.
 
 ## The deepest authored band an actor with no key can enter at all (ADR 0033's gate).
 const DEEP_DOMAIN := &"elemental_transcendent_domain"
@@ -93,14 +97,52 @@ func test_a_strike_resolves_from_the_actors_own_numbers_and_not_a_flat_constant(
 	var strong_hit := strong_view.summary()
 	rig_strike(strong_view)
 
-	var weak_spent := float(weak_hit["vitality_max"]) - float(weak_view.summary()["vitality"])
-	var strong_spent := float(strong_hit["vitality_max"]) - float(strong_view.summary()["vitality"])
+	var weak_spent := _spent(weak_hit, weak_view.summary())
+	var strong_spent := _spent(strong_hit, strong_view.summary())
 	assert_eq(weak_spent > 0.0, true, "one press spends some of the boss's pool")
+	assert_eq(
+		weak_spent < float(weak_hit["vitality_max"]),
+		true,
+		"a bare actor only PARTLY drains that pool, so the boss it struck is still up"
+	)
 	assert_eq(
 		strong_spent > weak_spent,
 		true,
 		"and a stronger actor spends more of the identical authored pool than a bare one"
 	)
+
+
+func test_a_band_of_several_bosses_is_several_one_boss_fights_and_its_last_one_clears_the_run(
+) -> void:
+	# The other half of the spend assertion, and the reason it needs an encounter id:
+	# rule E3 hands the readout to the NEXT boss the instant the struck one falls, so
+	# a band of N is N one-boss fights, and the LAST of them is the one-boss shape a
+	# single-boss domain produces when its only boss falls. Every press spends exactly
+	# one authored pool, and the run ends on the boss that emptied it.
+	var rig := _rig()
+	var view := _entered(rig, rig.hero(24, 0.0, 60.0))
+	if view == null:
+		return
+	var faced: Array[String] = []
+	var presses := 0
+	while presses < EXCHANGE_CAP:
+		var before := view.summary()
+		if not bool(before.get("in_domain", false)):
+			break
+		faced.append(String(before.get("boss_id", "")))
+		var pool := float(before.get("vitality_max", 0.0))
+		rig_strike(view)
+		presses += 1
+		assert_eq(
+			_spent(before, view.summary()),
+			pool,
+			"a press meets exactly one boss's pool, and spends all of it: %s" % faced[-1]
+		)
+	# Bounded by `EXCHANGE_CAP`, and every pass spent a whole pool, so a press that
+	# stalls would fail the equality above rather than spin: a boss cannot.
+	assert_eq(faced.size() > 1, true, "the band held more than one boss: %s" % ", ".join(faced))
+	assert_eq(faced.size(), presses, "and every press met a boss of its own")
+	assert_eq(bool(view.summary().get("in_domain", false)), false, "and the last boss ends the run")
 
 
 func test_a_loser_sees_the_run_end_and_the_reward_never_arrive() -> void:
@@ -195,7 +237,30 @@ func test_striking_is_offered_only_while_a_boss_is_live() -> void:
 	)
 
 
-# --- Helpers that drive the screen the way a player does ----------------------
+# --- Helpers that drive the screen as a player does, and read what it says -----
+
+
+## What one press spent of the boss it was aimed at.
+##
+## `vitality_max - vitality` measures that boss only while it is still the one on
+## screen, and rule E3 hands the readout to the NEXT boss the instant the struck one
+## falls. So the raw difference read a killing blow — the strongest blow in the fight,
+## and the one this assertion is about — as "nothing spent at all", because the second
+## number belonged to a boss nobody had touched. The encounter id is what says which
+## boss a pair of numbers describes: the same id is the difference; the struck boss gone
+## is a pool spent whole. A boss swap and a cleared run are the same statement about
+## that pool, so one branch covers both.
+##
+## A LOSS also takes the struck boss off the screen and leaves its pool untouched, and
+## `defeats` is the one signal only a loss produces — the same tell `_fight_to_an_end`
+## reads to tell the two ends of a run apart.
+func _spent(before: Dictionary, after: Dictionary) -> float:
+	var pool := float(before.get("vitality_max", 0.0))
+	if String(after.get("encounter_id", "")) == String(before.get("encounter_id", "")):
+		return pool - float(after.get("vitality", 0.0))
+	if int(after.get("defeats", 0)) > int(before.get("defeats", 0)):
+		return 0.0
+	return pool
 
 
 func rig_strike(view: LootEncounterScreen) -> void:
