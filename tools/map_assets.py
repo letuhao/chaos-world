@@ -159,6 +159,21 @@ def register(parent_parser) -> None:
     generate.add_argument("--seed", type=int, default=-1, help="-1 chooses a random seed")
     generate.add_argument("--size", type=int, default=1024, help="square generation resolution")
     generate.add_argument(
+        "--preview-only",
+        action="store_true",
+        help="save a generated preview without installing it in the map index",
+    )
+    generate.add_argument(
+        "--replace-generated",
+        action="store_true",
+        help="replace an existing generated asset after reviewing its preview",
+    )
+    generate.add_argument(
+        "--compare-rembg",
+        action="store_true",
+        help="also save cutouts from each installed background-removal model",
+    )
+    generate.add_argument(
         "--target-size",
         type=int,
         help="installed square canvas; defaults to --size to keep the high-resolution result",
@@ -173,7 +188,30 @@ def register(parent_parser) -> None:
         default=map_generate.DEFAULT_CHECKPOINT,
         help="ComfyUI checkpoint name; must match the loaded CLIP/VAE workflow",
     )
-    generate.add_argument("--rembg-model", default="u2netp")
+    generate.add_argument(
+        "--rembg-model",
+        default=map_generate.DEFAULT_REMBG_MODEL,
+        help="cutout model (default: isnet-anime; use --compare-rembg to compare installed choices)",
+    )
+    generate.add_argument(
+        "--rembg-post-processing", action=argparse.BooleanOptionalAction, default=False
+    )
+    generate.add_argument("--alpha-matting", action=argparse.BooleanOptionalAction, default=False)
+    generate.add_argument(
+        "--alpha-foreground-threshold",
+        type=int,
+        default=240,
+        help="alpha matting foreground cutoff",
+    )
+    generate.add_argument(
+        "--alpha-background-threshold", type=int, default=10, help="alpha matting background cutoff"
+    )
+    generate.add_argument(
+        "--alpha-erode-size",
+        type=int,
+        default=0,
+        help="alpha matting edge erosion; 0 preserves fine painted edges",
+    )
     generate.add_argument("--comfy-url", default="http://127.0.0.1:8188")
     generate.add_argument("--timeout", type=int, default=600, help="generation timeout in seconds")
     generate.add_argument(
@@ -311,7 +349,14 @@ def _generate(records: list[dict], args) -> None:
     record = next((item for item in records if item["id"] == args.asset_id), None)
     if record is None:
         raise ToolError(f"unknown map asset id '{args.asset_id}'")
-    if record["status"] != "planned":
+    if args.preview_only:
+        image_path, _, _ = map_generate.generate(record, args)
+        ok(
+            f"generated preview only; map index unchanged ({image_path.relative_to(REPO_ROOT).as_posix()})"
+        )
+        return
+    replace_generated = args.replace_generated and record["status"] == "generated"
+    if record["status"] != "planned" and not replace_generated:
         raise ToolError(f"refusing to replace '{args.asset_id}' with status '{record['status']}'")
 
     image_path, prompt, seed = map_generate.generate(record, args)
@@ -323,6 +368,7 @@ def _generate(records: list[dict], args) -> None:
         generated_on=date.today().isoformat(),
         prompt_ref=f"comfyui-map-v1:{args.asset_id}:{seed}",
         prompt=prompt,
+        replace_generated=replace_generated,
         canvas_px=[args.target_size or args.size, args.target_size or args.size],
         negative_prompt=args.negative,
         generation_settings={
@@ -336,6 +382,11 @@ def _generate(records: list[dict], args) -> None:
             "sampler": args.sampler,
             "scheduler": args.scheduler,
             "rembg_model": args.rembg_model,
+            "rembg_post_processing": args.rembg_post_processing,
+            "alpha_matting": args.alpha_matting,
+            "alpha_foreground_threshold": args.alpha_foreground_threshold,
+            "alpha_background_threshold": args.alpha_background_threshold,
+            "alpha_erode_size": args.alpha_erode_size,
         },
         reference_id=args.reference_id or ["docs/art-direction.md#top-down-world-map"],
     )
@@ -351,7 +402,10 @@ def _install(records: list[dict], args) -> None:
     record = next((item for item in records if item["id"] == args.asset_id), None)
     if record is None:
         raise ToolError(f"unknown map asset id '{args.asset_id}'")
-    if record["status"] != "planned":
+    replace_generated = (
+        getattr(args, "replace_generated", False) and record["status"] == "generated"
+    )
+    if record["status"] != "planned" and not replace_generated:
         raise ToolError(f"refusing to replace '{args.asset_id}' with status '{record['status']}'")
     if not args.reference_id or any(not value.strip() for value in args.reference_id):
         raise ToolError("at least one non-empty --reference-id is required")
@@ -370,8 +424,9 @@ def _install(records: list[dict], args) -> None:
     output_path = (GAME_DIR / record["path"].removeprefix("res://")).resolve()
     if not output_path.is_relative_to(ASSET_ROOT.resolve()):
         raise ToolError("asset output must stay under game/assets/world_map")
-    if output_path.exists():
+    if output_path.exists() and not replace_generated:
         raise ToolError(f"refusing to overwrite existing asset: {output_path}")
+    previous_image = output_path.read_bytes() if replace_generated else None
 
     try:
         with Image.open(source_path) as opened:
@@ -440,7 +495,21 @@ def _install(records: list[dict], args) -> None:
                 )
             )
         except OSError:
-            output_path.unlink(missing_ok=True)
+            if previous_image is None:
+                output_path.unlink(missing_ok=True)
+            else:
+                restore_path: Path | None = None
+                try:
+                    with tempfile.NamedTemporaryFile(
+                        suffix=".png", dir=output_path.parent, delete=False
+                    ) as restore:
+                        restore.write(previous_image)
+                        restore_path = Path(restore.name)
+                    os.replace(restore_path, output_path)
+                    restore_path = None
+                finally:
+                    if restore_path and restore_path.exists():
+                        restore_path.unlink()
             raise
     finally:
         if temporary_path and temporary_path.exists():
