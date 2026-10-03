@@ -60,9 +60,17 @@ def _survives(scene: str, frames: int) -> tuple[bool, str]:
     The half that caught BL-0359, where the shell killed the process on its first
     frame. A scene can fail this and pass the other phase, and the other phase can
     fail while this one passes, which is why both exist.
+
+    The scene is NOT passed as a positional argument. Godot already launches
+    `run/main_scene` from project.godot when none is given, and naming it on the
+    command line took a different path through the engine: that form died with an
+    access violation and a two-line log while `tools run` booted the same scene
+    cleanly for sixty frames. A gate that reports a crash the player would never
+    see is worse than no gate, because it sends whoever reads it hunting a fault
+    in the game instead of in the gate.
     """
     result = godot.run_godot(
-        ["--headless", "--path", str(GAME_DIR), "--quit-after", str(frames), scene],
+        ["--headless", "--path", str(GAME_DIR), "--quit-after", str(frames)],
         tag="boot",
     )
     if result.returncode == 0:
