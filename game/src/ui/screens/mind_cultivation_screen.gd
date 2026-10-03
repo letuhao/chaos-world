@@ -94,10 +94,12 @@ func _channel_entries(live: Dictionary) -> Array:
 
 ## The trained-stage row names the anchor milestone the actor has reached. Below
 ## the Immortal tier there is no anchor, so the row says the sea's stage instead.
-func _stage_label(live: Dictionary) -> String:
-	if _at_immortal_tier():
-		return "Anchor stage %d" % int(live.get("trained_stage", 0))
-	return "Sea stage %d" % int(live.get("trained_stage", 0))
+##
+## The NOUN only: the screen hands `trained_stage` down as `current` and
+## `StatRow.value_text` formats it. Printing the figure here too showed the stage
+## twice, and only the panel's copy went through the one formatting rule.
+func _stage_label() -> String:
+	return "Anchor stage" if _at_immortal_tier() else "Sea stage"
 
 
 ## Re-read the facade and hand raw values down. The panels own every format.
@@ -148,11 +150,12 @@ func _refresh_view() -> void:
 		}
 	)
 	# `trained_stage` is what `strengthen_anchor` advances and what the anchor gate
-	# reads, so a row shows it; without one the button's effect is invisible.
+	# reads, so a row shows it; without one the button's effect is invisible. The
+	# name carries the noun; the row formats the figure.
 	_set_row(
 		&"trained_stage",
 		{
-			"name": _stage_label(live),
+			"name": _stage_label(),
 			"current": live.get("trained_stage", 0),
 			"maximum": 0.0,
 		}

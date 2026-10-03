@@ -99,6 +99,33 @@ func test_breakthrough_is_offered_only_when_the_gate_is_met() -> void:
 	screen.free()
 
 
+func test_the_stage_row_leaves_the_figure_to_the_panel() -> void:
+	var screen := _screen()
+	screen.setup(_actor())
+	var row: Dictionary = screen.summary().get("vitals", {}).get("trained_stage", {})
+	assert_eq(row.get("rendered", false), true, "the stage row actually renders")
+	# The screen names the row and the PANEL formats the figure. A screen that
+	# printed its own `%d` into the name showed the stage twice — once from each
+	# side — and only the panel's copy went through the single formatting rule.
+	assert_eq(row.get("name", ""), "Sea stage", "the screen names the row and prints no number")
+	assert_eq(row.get("label_text", ""), "Sea stage", "the label is the noun alone")
+	assert_eq(row.get("text", ""), "0", "the panel owns the figure")
+	screen.free()
+
+
+func test_the_stage_row_hands_the_figure_down_raw() -> void:
+	var screen := _screen()
+	screen.setup(_actor())
+	# The row names the sea below the Immortal tier, and the figure reaches the
+	# panel unformatted whatever the tier: the raw stage is `current`, never text
+	# the screen built.
+	var row: Dictionary = screen.summary().get("vitals", {}).get("trained_stage", {})
+	assert_eq(row.get("name", ""), "Sea stage", "below the Immortal tier it is a sea stage")
+	assert_eq(int(row.get("current", -1)), 0, "the raw stage is handed down unformatted")
+	assert_eq(float(row.get("maximum", -1.0)), 0.0, "no maximum, so the row is plain not a bar")
+	screen.free()
+
+
 func test_focus_lands_on_meditation() -> void:
 	var screen := _screen()
 	screen.setup(_actor())
