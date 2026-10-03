@@ -289,6 +289,100 @@ def _every_shape_is_caught() -> None:
         )
 
 
+def _carried_in(root: Path) -> list:
+    """Sweep `root`'s ref tips instead of the repository's."""
+    original = mutation_history.REPO
+    mutation_history.REPO = root
+    try:
+        return mutation_history.carried()
+    finally:
+        mutation_history.REPO = original
+
+
+def _probe_repo(root: Path) -> tuple[Path, Path]:
+    """A repository whose HEAD tip carries a probe marker. Returns (root, the file)."""
+    _git(root, "init", "-q")
+    _git(root, "config", "user.email", "selftest@local")
+    _git(root, "config", "user.name", "selftest")
+    thing = root / "game" / "src" / "thing.gd"
+    write(thing, "extends RefCounted\n\n\nfunc ok() -> bool:\n\treturn true\n")
+    _git(root, "add", "-A")
+    _git(root, "commit", "-qm", "base")
+    write(
+        thing,
+        "extends RefCounted\n\n\nfunc ok() -> bool:\n\treturn true\n\n# MUTATION-SELFTEST\n",
+    )
+    _git(root, "add", "-A")
+    _git(root, "commit", "-qm", "probe")
+    return root, thing
+
+
+@case("mutation_history: a probe carried by a ref TIP is found")
+def _carried_probe_is_found() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root, _ = _probe_repo(Path(raw))
+
+        found = _carried_in(root)
+        expect(
+            bool(found),
+            "a ref tip carrying a probe was reported clean, so a probe that reached a commit "
+            "stays invisible forever (BL-0615: the working tree was correct the whole time, "
+            "which is exactly why nobody noticed HEAD was broken)",
+        )
+        expect(
+            all(probe.path == "game/src/thing.gd" for probe in found),
+            f"the finding named the wrong path, so it cannot be acted on: {found}",
+        )
+
+
+@case("mutation_history: a REPAIRED tip is clean, so the gate can go green")
+def _repaired_tip_is_clean() -> None:
+    # The property the gate depends on, and the reason it is not `git log -S`. History is
+    # immutable, so "did any commit ever carry a probe" is permanently yes once true - the
+    # first version of this guard shipped exactly that way and `tools check` could never pass
+    # again, which is worth less than no guard at all. State is what can go green.
+    with tempfile.TemporaryDirectory() as raw:
+        root, thing = _probe_repo(Path(raw))
+        expect(bool(_carried_in(root)), "fixture did not start dirty, so this case proves nothing")
+        write(
+            thing,
+            "extends RefCounted\n\n\nfunc ok() -> bool:\n\treturn true\n",
+        )
+        _git(root, "add", "-A")
+        _git(root, "commit", "-qm", "repair")
+
+        expect(
+            not _carried_in(root),
+            "a tip whose probe was repaired still reads as dirty, so the gate is permanently "
+            "red and a guard that can never pass is a guard people learn to ignore",
+        )
+        expect(
+            bool(_sweep_in(root)),
+            "the probe left no forensic trace once repaired, so there is no way to learn which "
+            "commit introduced it - `report` exists for exactly that question",
+        )
+
+
+@case("mutation_history: a probe reachable only from an AGENT-LOCAL ref is ignored")
+def _agent_local_refs_do_not_gate() -> None:
+    # `refs/stash`, `refs/recovery/*` and `refs/codex/*` are one machine's transient state
+    # and exist in no clone, so a guard that reads them is not reproducible: the same commit
+    # is red here and green for a colleague. INC-0013's second probe was a dropped stash,
+    # reachable only through refs/recovery, and it is what pinned the old gate red forever.
+    with tempfile.TemporaryDirectory() as raw:
+        root, _ = _probe_repo(Path(raw))
+        probe_commit = _git(root, "rev-parse", "HEAD").stdout.strip()
+        base = _git(root, "rev-parse", "HEAD~1").stdout.strip()
+        _git(root, "update-ref", "refs/recovery/stash-selftest", probe_commit)
+        _git(root, "update-ref", "refs/heads/master", base)
+
+        expect(
+            not _carried_in(root),
+            "a machine-local recovery ref gated the build, so the verdict depends on invisible "
+            "local state and differs between this machine and every clone",
+        )
+
+
 # --- ADR 0138: reference_stats is prose, and the guard has to mean that precisely ---
 
 
