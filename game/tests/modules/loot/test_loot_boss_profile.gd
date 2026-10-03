@@ -138,7 +138,5 @@ func test_the_profile_adds_no_rule_the_authored_content_can_fail() -> void:
 		if problem.contains("attack") or problem.contains("defense"):
 			about_the_boss += 1
 	assert_eq(
-		about_the_boss,
-		0,
-		"no validator problem is about a boss's own numbers: %s" % str(problems)
+		about_the_boss, 0, "no validator problem is about a boss's own numbers: %s" % str(problems)
 	)

@@ -157,6 +157,13 @@ func test_every_bound_boss_resolves_to_a_table() -> void:
 
 
 ## The facade's table projection carries the authored semantics to a reader.
+##
+## The counts are FLOORS, not exact totals. They were written as exact numbers, which meant
+## a content wave that legitimately added weighted candidates broke a test about whether the
+## three mechanisms are distinguishable in the projection — the same brittleness that made
+## the legacy-loot assertions above describe a corpus that no longer exists. What has to stay
+## true is that all three mechanisms appear and that every entry resolves to exactly one of
+## them.
 func test_the_facade_projects_a_table_with_its_declared_semantics() -> void:
 	var view := LootApi.table(&"loot_ember_warden_t1")
 	assert_ne(view.is_empty(), true, "the table projects")
@@ -177,9 +184,14 @@ func test_the_facade_projects_a_table_with_its_declared_semantics() -> void:
 			independent += 1
 		else:
 			weighted += 1
-	assert_eq(guaranteed, 1, "one guaranteed entry")
-	assert_eq(weighted, 2, "two weighted candidates")
-	assert_eq(independent, 1, "one independent chance roll")
+	assert_eq(guaranteed >= 1, true, "guaranteed entries are authored")
+	assert_eq(weighted >= 2, true, "weighted candidates are authored")
+	assert_eq(independent >= 1, true, "an independent chance roll is authored")
+	assert_eq(
+		guaranteed + weighted + independent,
+		int(view["entries"].size()),
+		"and every entry is one of the three mechanisms, so none is read as the wrong kind"
+	)
 	assert_eq((view["item_ids"] as Array).size() > 0, true, "and it reaches real item ids")
 	assert_eq(LootApi.table(&"no_such_table").is_empty(), true, "an unknown table projects empty")
 

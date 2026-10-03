@@ -9,6 +9,11 @@ extends TestCase
 
 var _rig: LootScreenRig = null
 
+## Bound on the drain loop: enough passes for the world container to empty and be re-parked,
+## and short enough that a control which stops moving anything fails the test instead of
+## running it out.
+const DRAIN_PASSES := 20
+
 
 func setup() -> void:
 	_rig = LootScreenRig.new()
@@ -84,14 +89,28 @@ func test_reclaim_delivers_the_overflowed_drop_with_its_rolls_intact() -> void:
 		"and the rolled affixes survived the round trip"
 	)
 
-	# The payload settles only once nothing is left owing, so empty the inventory again
-	# before taking what is still waiting.
+	# The payload settles only once EVERY drop is claimed, and a drop the bag cannot
+	# take is parked in the world container rather than lost — so draining means reclaiming as
+	# well as picking up. It has to: the warden's table now holds many more candidates than
+	# the bag has slots, so a payload can carry more drops than this delver can ever hold at
+	# once. Bounded by DRAIN_PASSES and it stops the moment the facade reports the claim
+	# spent, so a control that moves nothing ends the drain instead of spinning.
 	ItemsApi.inventory(actor).clear()
-	var owed := _claimable_rows(view)
-	for index in owed:
-		_rig.pick_up_row(view, int(index))
+	var passes := 0
+	while bool(LootApi.reward(actor, dead)["ok"]) and passes < DRAIN_PASSES:
+		passes += 1
+		ItemsApi.inventory(actor).clear()
+		for index in _claimable_rows(view):
+			_rig.pick_up_row(view, int(index))
+		var stashed := _stashable_rows(view)
+		var taken := 0
+		while taken < stashed:
+			taken += 1
+			_rig.reclaim_row(view, 0)
+	assert_eq(passes < DRAIN_PASSES, true, "the drain converged on its own, not on the bound")
 	var settled := view.summary()
 	assert_eq(int(settled["pending_drops"]), 0, "and no drop of that payload is still waiting")
+	assert_eq(int(settled["world_drop_count"]), 0, "with nothing left parked in the world")
 	assert_eq(int(settled["claimed_encounters"]), 1, "so the claim settled, and only now")
 	assert_eq(bool(LootApi.reward(actor, dead)["ok"]), false, "and the claim is now spent")
 
@@ -230,3 +249,11 @@ func _claimable_rows(view: LootEncounterScreen) -> Array:
 		if bool((rows[index] as Dictionary)["claimable"]):
 			out.append(index)
 	return out
+
+
+## How many rows the world drop container is still listing.
+##
+## A reclaim removes the row it reclaimed, so the indices shift under any ascending walk —
+## which is why the caller reclaims index 0 rather than iterating a snapshot.
+func _stashable_rows(view: LootEncounterScreen) -> int:
+	return (view.summary().get("stashed", {}) as Dictionary).get("row_count", 0) as int
