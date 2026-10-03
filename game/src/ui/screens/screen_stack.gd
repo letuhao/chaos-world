@@ -31,6 +31,16 @@ var _focus_route: String = ""
 func push(screen: Control) -> Control:
 	if screen == null:
 		return null
+	if _screens.has(screen):
+		push_error(
+			(
+				(
+					"ScreenStack: '%s' is already on the stack at depth %d; pushing it again "
+					+ "would leave a freed copy behind"
+				)
+				% [screen.name, _screens.size()]
+			)
+		)
 	if screen.get_parent() != null:
 		screen.get_parent().remove_child(screen)
 	add_child(screen)
