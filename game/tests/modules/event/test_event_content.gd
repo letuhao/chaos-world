@@ -46,7 +46,9 @@ func test_the_catalog_ships_one_event_for_every_kind_bl_0054_names() -> void:
 		)
 	assert_eq(int(report["count"]) >= 6, true, "at least six authored events")
 	assert_eq(
-		(report["problems"] as Array).size(), 0, "and no content defect: %s" % report["problems"]
+		(report["problems"] as Array).size(),
+		0,
+		"and no content defect: %s" % str(report["problems"])
 	)
 	assert_eq((report["rejected"] as Array).size(), 0, "and nothing rejected")
 

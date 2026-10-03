@@ -23,7 +23,7 @@ on_enter = [{"fact": &"tournament_rounds_fought", "amount": 1}]
 script = ExtResource("2_stage")
 stage_id = &"final"
 display_name = "The Final"
-requires = {"verb": &"fact", "id": &"tournament_rounds_fought", "need": 2}
+requires = {"verb": &"fact", "id": &"tournament_rounds_fought", "need": 1}
 duration_periods = 1
 on_enter = [{"fact": &"tournament_final_fought", "amount": 1}]
 

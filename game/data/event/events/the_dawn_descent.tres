@@ -23,7 +23,7 @@ on_enter = [{"fact": &"demonic_invasion_entered", "amount": 1}, {"fact": &"demon
 script = ExtResource("2_stage")
 stage_id = &"driven_out"
 display_name = "Driven Out"
-requires = {"verb": &"fact", "id": &"demonic_invasion_fought", "need": 2}
+requires = {"verb": &"fact", "id": &"demonic_invasion_fought", "need": 1}
 duration_periods = 0
 on_enter = [{"fact": &"demonic_invasion_repelled", "amount": 1}]
 
