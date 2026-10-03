@@ -1,11 +1,15 @@
-# Law Void
+# Unwritten Law
 
 ## The definition
 
-A **law void** is a law group that no layer of this world holds an imprint of. Not a law
-that is weak. Not a law that is forbidden in this tier. A law that is available — every
+An **unwritten law** is a law group that no layer of this world holds an imprint of. Not a
+law that is weak. Not a law that is forbidden in this tier. A law that is available — every
 authored `WorldLawDef` lists all four tiers in `tier_ids` — and simply never written,
 because the slots went elsewhere.
+
+Not "void" either: that word is already spent in this setting on the void crystal, void
+refinement and the serpent lineages. An unwritten law is not an emptiness — it is an
+absence with three specific signatures.
 
 ## The three signatures
 
@@ -30,10 +34,10 @@ Because the difference is mechanical, not literary.
 - A **strained** law is imprinted at the floor of its authored range. It has a dial, and
   the dial is wired down. Qi at 0.1 runs: a seed germinates, a body breathes, an ironhide
   bear reaches combat power 5. Pushing costs qi and returns the same reading.
-- A **void** law has no dial. There is nothing to push. An elemental technique practised
+- An **unwritten** law has no dial. There is nothing to push. An elemental technique practised
   here does not do a little; it does nothing at all.
 
-That is the sharpest consequence in the setting: **in a law void, a technique fails at
+That is the sharpest consequence in the setting: **where a law is unwritten, a technique fails at
 full strength.** Not reduced. Absent.
 
 ## The cost side of a small budget
@@ -53,20 +57,20 @@ Only by writing the imprint. That costs:
 
 ## Where it shows up
 
-| void | tier | what is missing |
+| unwritten group | tier | what is missing |
 |---|---|---|
 | `elemental_law` | mortal | seasons, affinities, elementals |
 | `spatial_law` | mortal | growth — the size band is a ceiling, not a range |
 | `temporal_law` | mortal | an anchor — the clock drifts, which is why the band is 0.5 – 2.0 |
 | `qi_law` | hypothetical mortal world that spent its slots elsewhere | cultivation itself |
 
-The last row is the reason a void is a design constraint rather than a flavour. A
+The last row is the reason an unwritten group is a design constraint rather than a flavour. A
 mortal-tier world that chose `physical`, `life` and `spatial` instead would have no
 cultivation at all, and it would be the same tier, the same size and the same life forms.
 
-## What a void leaves behind
+## What an unwritten law leaves behind
 
 Removing an imprint from a layer that held one does not restore the layer. It leaves a
 **law scar**: the outline of a group that is gone, still shaped like the thing it lost. A
-body that grew up beside the void meets the difference as an injury, not as a weaker
+body that grew up beside the absence meets the difference as an injury, not as a weaker
 ability.
