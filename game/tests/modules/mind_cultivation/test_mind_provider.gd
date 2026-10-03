@@ -132,7 +132,6 @@ func test_comprehension_bonus_base() -> void:
 
 func test_meridian_strengthening_boosts_technique_power() -> void:
 	var actor := _actor_at_rank(RANK)
-	actor.set_component(&"meridians", actor.meridians)
 	actor.meridians.unlock_for_realm(&"qi_refining")
 	actor.meridians.open_meridian(&"lung")
 	actor.meridians.expand_meridian(&"lung")
@@ -150,7 +149,6 @@ func test_meridian_strengthening_boosts_technique_power() -> void:
 
 func test_meridian_strengthening_boosts_mental_defense() -> void:
 	var actor := _actor_at_rank(RANK)
-	actor.set_component(&"meridians", actor.meridians)
 	actor.meridians.unlock_for_realm(&"qi_refining")
 	actor.meridians.open_meridian(&"lung")
 	actor.meridians.expand_meridian(&"lung")
@@ -168,7 +166,6 @@ func test_meridian_strengthening_boosts_mental_defense() -> void:
 
 func test_no_meridian_bonus_without_strengthening() -> void:
 	var actor := _actor_at_rank(RANK)
-	actor.set_component(&"meridians", actor.meridians)
 	actor.meridians.unlock_for_realm(&"qi_refining")
 	actor.mark_stats_dirty()
 	# Opening a realm's meridians is not a power bonus: they are still closed.

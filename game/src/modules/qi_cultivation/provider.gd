@@ -35,8 +35,19 @@ func contribute(context: StatContext) -> Dictionary:
 	}
 
 
+## The network's flow bonus, through the one accessor ADR 0057 added for it.
+##
+## The network is core state on the Actor and reaches a provider as
+## `StatContext.meridian_network()`, never as `component(&"meridians")` — that
+## lookup is a different key in the module component bag and answers null for
+## every actor the game builds.
+##
+## The two absent cases are separated on purpose. `MeridianNetwork.get_flow_bonus`
+## answering 0.0 means channels exist and nobody trained one; falling off the end
+## means this context was built for something that carries no network at all, and
+## only this caller can tell those apart.
 func _meridian_flow_bonus(context: StatContext) -> float:
-	var network := context.component(&"meridians")
+	var network := context.meridian_network()
 	if network is MeridianNetwork:
 		return network.get_flow_bonus()
 	return 0.0

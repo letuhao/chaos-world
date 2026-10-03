@@ -3,6 +3,11 @@ extends RefCounted
 
 ## Public facade for the `qi_cultivation` module.
 ## Other modules may reference ONLY this file (`api.gd`).
+##
+## Verbs and one read model, nothing else (ADR 0095). The accessors this module
+## used to publish for itself live in `QiAccess`, which is internal: nothing
+## outside the module called them, and their place on this facade is what kept
+## `attach` from also attaching the dantian.
 
 # Public ids other modules may depend on.
 const QI := QiStats.QI
@@ -14,40 +19,18 @@ const CULTIVATE_STEP := 25.0
 const MEDITATE_STEP := 1.0
 
 
+## Enrol an actor on the qi path: one reservoir, the qi provider, and the
+## dantian. The dantian is part of the path, not an optional extra — `cultivate`,
+## `recover`, the preview and the breakthrough condition all refuse an actor
+## without one — so this single call leaves the actor ready (ADR 0095). The
+## meridian network is core state on the Actor and reaches `QiProvider` through
+## `StatContext.meridian_network()`, so this module registers no component copy
+## of it: a second, divergent source of truth for core state is exactly what
+## ADR 0057 removes, and the copy made the wrong read look like a working one.
 static func attach(actor: Actor) -> void:
 	_ensure_resources(actor)
-	actor.set_component(&"meridians", actor.meridians)
 	actor.stats.add_provider(QiProvider.new())
-
-
-static func provider(actor: Actor) -> QiProvider:
-	for p in actor.stats._providers:
-		if p is QiProvider:
-			return p
-	return QiProvider.new()
-
-
-static func path_def() -> CultivationPathDef:
-	return QiPath.path_def()
-
-
-static func meridians(actor: Actor) -> MeridianNetwork:
-	return actor.meridians
-
-
-static func dantian(actor: Actor) -> Dantian:
-	return actor.component(&"dantian") as Dantian
-
-
-static func attach_dantian(actor: Actor) -> Dantian:
-	var existing := actor.component(&"dantian") as Dantian
-	if existing != null:
-		return existing
-	var dantian := Dantian.new()
-	dantian.structural_capacity = actor.stats.get_base(QiStats.DANTIAN_CAPACITY)
-	actor.set_component(&"dantian", dantian)
-	actor.stats.add_provider(DantianProvider.new())
-	return dantian
+	QiAccess.attach_dantian(actor)
 
 
 # --- Read model and actions for the UI program ------------------------------
@@ -60,17 +43,19 @@ static func panel_state(actor: Actor) -> Dictionary:
 	var state := actor.path(QiPath.PATH_ID)
 	if state == null:
 		return {}
-	var dantian := dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	var pool := actor.resource(QI)
 	var preview := QiBreakthroughTransaction.preview(actor)
-	# The channels this realm's own gate needs, and the state they must reach.
-	# Publishing them here means a screen can offer the training action without
-	# reaching for the realm seed, which is a module internal (ADR 0043).
+	# The channels this realm's own gate needs, and the state and depth they must
+	# reach. Publishing them here means a screen can offer the training action
+	# without reaching for the realm seed, which is a module internal (ADR 0043).
 	var required_channels: Array = []
 	var required_state := ""
+	var required_depth := 0
 	var gate := QiRealmSeed.for_realm(state.rank_id)
 	if gate != null:
 		required_state = String(gate.required_channel_state)
+		required_depth = gate.required_channel_refinement
 		for meridian_id in gate.required_meridians:
 			required_channels.append(String(meridian_id))
 	var channels: Array[String] = []
@@ -103,6 +88,7 @@ static func panel_state(actor: Actor) -> Dictionary:
 		"channels": channels,
 		"required_channels": required_channels,
 		"required_channel_state": required_state,
+		"required_channel_depth": required_depth,
 		"can_attempt": bool(preview.get("can_attempt", false)),
 		"chance": float(preview.get("chance", 0.0)),
 		"unmet": preview.get("unmet_conditions", []),
@@ -117,7 +103,19 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 
 
 ## Roll the breakthrough attempt. A deviation is recoverable; recover and retry.
+##
+## **The body answers first (ADR 0109).** A qi path the actor's race closes, or a realm above its
+## authored `realm_ceiling`, is refused BEFORE the roll — not after, and not silently. The
+## refusal carries `RaceGate`'s own `{kind, id, required, actual, label}` entries so the
+## breakthrough screen can name the closed path or the ceiling it hit, which is the ADR 0034 rule
+## that a gate and its preview must be the same wording. It is a precondition and never a
+## modifier: a race can stop a breakthrough, never make one easier.
 static func attempt_breakthrough(actor: Actor) -> bool:
+	var blocked := RaceGate.path_unmet(actor, PathState.QI)
+	if blocked.is_empty():
+		blocked = RaceGate.realm_ceiling_unmet(actor)
+	if not blocked.is_empty():
+		return false
 	return QiBreakthroughTransaction.execute(actor, null)
 
 
@@ -127,9 +125,12 @@ static func meditate(actor: Actor, amount: float) -> bool:
 	return QiTraining.meditate(actor, amount)
 
 
-## Train one channel toward the realm's required state. The qi breakthrough gate
-## demands specific channels reach `required_channel_state`, and `cultivate` never
-## touches meridians, so without this a qi actor cannot satisfy its own gate.
+## Train one channel toward the realm's required state and depth. The qi
+## breakthrough gate demands specific channels reach `required_channel_state` AND
+## `required_channel_refinement`, and `cultivate` never touches meridians, so
+## without this a qi actor cannot satisfy its own gate. Spends the realm's
+## `training_item`, and refuses without spending it once the channel has nothing
+## left to learn at this realm's cap.
 static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 	return QiTraining.train_channel(actor, meridian_id)
 
@@ -137,7 +138,7 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 ## Close the first wound a recovery item can heal: the dantian scar, then the
 ## burned channel. Consumes the realm's `recovery_item` (ADR 0031).
 static func recover_next(actor: Actor) -> bool:
-	var dantian := dantian(actor)
+	var dantian := QiAccess.dantian(actor)
 	if dantian != null and dantian.injured:
 		for def in MeridianDefaults.all():
 			if QiTraining.recover(actor, def.id):
