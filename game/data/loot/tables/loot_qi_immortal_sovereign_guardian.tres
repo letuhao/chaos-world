@@ -251,8 +251,8 @@ item_id = &"qi_spirit_palace_qi_herb"
 table_id = &""
 weight = 1.0
 chance = -1.0
-guaranteed = false
-quantity = 1
+guaranteed = true
+quantity = 6
 rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_21"]
