@@ -51,18 +51,6 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
-[sub_resource type="Resource" id="entry_4"]
-script = ExtResource("2_entry")
-id = &"body_tribulation_guardian_pool_tribulation"
-kind = &"table"
-item_id = &""
-table_id = &"loot_body_tribulation_guardian_pool_tribulation"
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
 [sub_resource type="Resource" id="entry_5"]
 script = ExtResource("2_entry")
 id = &"body_tribulation_guardian_domain_5"
@@ -291,6 +279,18 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_24"]
+script = ExtResource("2_entry")
+id = &"body_tribulation_guardian_core_2"
+kind = &"item"
+item_id = &"body_tribulation_breakthrough_pill"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"common"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_tribulation_guardian"
@@ -304,7 +304,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_1"),
 	SubResource("entry_2"),
 	SubResource("entry_3"),
-	SubResource("entry_4"),
 	SubResource("entry_5"),
 	SubResource("entry_6"),
 	SubResource("entry_7"),
@@ -323,5 +322,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_20"),
 	SubResource("entry_21"),
 	SubResource("entry_22"),
-	SubResource("entry_23")
+	SubResource("entry_23"),
+	SubResource("entry_24")
 ])

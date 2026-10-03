@@ -39,18 +39,6 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
-[sub_resource type="Resource" id="entry_3"]
-script = ExtResource("2_entry")
-id = &"body_true_immortal_guardian_pool_true_immortal"
-kind = &"table"
-item_id = &""
-table_id = &"loot_body_true_immortal_guardian_pool_true_immortal"
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
 [sub_resource type="Resource" id="entry_4"]
 script = ExtResource("2_entry")
 id = &"body_true_immortal_guardian_domain_4"
@@ -279,6 +267,18 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_23"]
+script = ExtResource("2_entry")
+id = &"body_true_immortal_guardian_core_2"
+kind = &"item"
+item_id = &"body_true_immortal_channel_elixir"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"legendary"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_body_true_immortal_guardian"
@@ -291,7 +291,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
 	SubResource("entry_2"),
-	SubResource("entry_3"),
 	SubResource("entry_4"),
 	SubResource("entry_5"),
 	SubResource("entry_6"),
@@ -310,5 +309,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_19"),
 	SubResource("entry_20"),
 	SubResource("entry_21"),
-	SubResource("entry_22")
+	SubResource("entry_22"),
+	SubResource("entry_23")
 ])

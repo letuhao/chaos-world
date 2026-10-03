@@ -14,17 +14,6 @@ guaranteed = true
 quantity = 1
 rarity_floor = &"legendary"
 
-[sub_resource type="Resource" id="entry_0"]
-script = ExtResource("2_entry")
-id = &"drop_0"
-kind = &"item"
-item_id = &"body_spirit_severing_breakthrough_pill"
-weight = 6.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &"rare"
-
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
 id = &"drop_1"
@@ -298,6 +287,18 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_24"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_core_0"
+kind = &"item"
+item_id = &"body_spirit_severing_breakthrough_pill"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_route_e5_severing_edge"
@@ -309,7 +310,6 @@ rolls_max = 3
 allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_unique"),
-	SubResource("entry_0"),
 	SubResource("entry_1"),
 	SubResource("entry_2"),
 	SubResource("entry_3"),
@@ -332,5 +332,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_20"),
 	SubResource("entry_21"),
 	SubResource("entry_22"),
-	SubResource("entry_23")
+	SubResource("entry_23"),
+	SubResource("entry_24")
 ])

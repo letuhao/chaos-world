@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=29 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -33,18 +33,6 @@ id = &"E2_ascension_sentinel_pool_foundation"
 kind = &"table"
 item_id = &""
 table_id = &"loot_E2_ascension_sentinel_pool_foundation"
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_3"]
-script = ExtResource("2_entry")
-id = &"E2_ascension_sentinel_pool_great_ascension"
-kind = &"table"
-item_id = &""
-table_id = &"loot_E2_ascension_sentinel_pool_great_ascension"
 weight = 1.0
 chance = -1.0
 guaranteed = false
@@ -303,6 +291,30 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_25"]
+script = ExtResource("2_entry")
+id = &"E2_ascension_sentinel_domain_25"
+kind = &"item"
+item_id = &"C29_heaven_facetter_sillimanite"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_26"]
+script = ExtResource("2_entry")
+id = &"E2_ascension_sentinel_core_1"
+kind = &"item"
+item_id = &"body_great_ascension_breakthrough_pill"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"common"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E2_ascension_sentinel"
@@ -315,7 +327,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
 	SubResource("entry_2"),
-	SubResource("entry_3"),
 	SubResource("entry_4"),
 	SubResource("entry_5"),
 	SubResource("entry_6"),
@@ -336,5 +347,7 @@ entries = Array[LootEntry]([
 	SubResource("entry_21"),
 	SubResource("entry_22"),
 	SubResource("entry_23"),
-	SubResource("entry_24")
+	SubResource("entry_24"),
+	SubResource("entry_25"),
+	SubResource("entry_26")
 ])

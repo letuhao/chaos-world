@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=30 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=31 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -14,18 +14,6 @@ chance = -1.0
 guaranteed = true
 quantity = 6
 rarity_floor = &"common"
-
-[sub_resource type="Resource" id="entry_1"]
-script = ExtResource("2_entry")
-id = &"E1_foundation_warden_pool_body_integration"
-kind = &"table"
-item_id = &""
-table_id = &"loot_E1_foundation_warden_pool_body_integration"
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_2"]
 script = ExtResource("2_entry")
@@ -327,6 +315,30 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_27"]
+script = ExtResource("2_entry")
+id = &"E1_foundation_warden_domain_27"
+kind = &"item"
+item_id = &"C24_heaven_coulis_breakthrough_chance_max_stamina_aptitude"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_28"]
+script = ExtResource("2_entry")
+id = &"E1_foundation_warden_core_1"
+kind = &"item"
+item_id = &"body_body_integration_breakthrough_pill"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"common"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E1_foundation_warden"
@@ -337,7 +349,6 @@ rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
-	SubResource("entry_1"),
 	SubResource("entry_2"),
 	SubResource("entry_3"),
 	SubResource("entry_4"),
@@ -362,5 +373,7 @@ entries = Array[LootEntry]([
 	SubResource("entry_23"),
 	SubResource("entry_24"),
 	SubResource("entry_25"),
-	SubResource("entry_26")
+	SubResource("entry_26"),
+	SubResource("entry_27"),
+	SubResource("entry_28")
 ])

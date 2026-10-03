@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=26 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -51,6 +51,234 @@ guaranteed = true
 quantity = 6
 rarity_floor = &"legendary"
 
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_4"
+kind = &"item"
+item_id = &"B24_mortal_carline_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_5"
+kind = &"item"
+item_id = &"C24_heaven_coulis_breakthrough_chance_max_stamina_aptitude"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_6"
+kind = &"item"
+item_id = &"E13_immortal_blisterbed_baroque"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_7"
+kind = &"item"
+item_id = &"F20_immortal_epigonus_agility_attack_physical_breakthrough_chance_spirit"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_8"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_8"
+kind = &"item"
+item_id = &"F46_immortal_grainery_attack_speed_breakthrough_chance_fortune"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_9"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_9"
+kind = &"item"
+item_id = &"G24_spirit_hyacinth_cultivation_rate_max_stamina"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_10"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_10"
+kind = &"item"
+item_id = &"I28_spirit_florilegium_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_11"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_11"
+kind = &"item"
+item_id = &"K11_spirit_hide_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_12"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_12"
+kind = &"item"
+item_id = &"O14_immortal_void_magnolia_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_13"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_13"
+kind = &"item"
+item_id = &"R10_mortal_marquee_hint"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_14"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_14"
+kind = &"item"
+item_id = &"T14_immortal_tallow_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_15"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_15"
+kind = &"item"
+item_id = &"V17_divine_anodyne_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_16"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_16"
+kind = &"item"
+item_id = &"X14_divine_armiger_lien"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_17"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_17"
+kind = &"item"
+item_id = &"Y21_divine_rectory_musc"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_18"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_18"
+kind = &"item"
+item_id = &"Z38_spirit_tufa_drass"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_19"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_19"
+kind = &"item"
+item_id = &"crystal_lapis"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_20"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_20"
+kind = &"item"
+item_id = &"lens_storm"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_21"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_21"
+kind = &"item"
+item_id = &"quest_ancient_map"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_22"]
+script = ExtResource("2_entry")
+id = &"qi_transcendent_warden_declared_22"
+kind = &"item"
+item_id = &"treaty_eleventh_clause"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_transcendent_warden"
@@ -63,5 +291,24 @@ entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
 	SubResource("entry_2"),
-	SubResource("entry_3")
+	SubResource("entry_3"),
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7"),
+	SubResource("entry_8"),
+	SubResource("entry_9"),
+	SubResource("entry_10"),
+	SubResource("entry_11"),
+	SubResource("entry_12"),
+	SubResource("entry_13"),
+	SubResource("entry_14"),
+	SubResource("entry_15"),
+	SubResource("entry_16"),
+	SubResource("entry_17"),
+	SubResource("entry_18"),
+	SubResource("entry_19"),
+	SubResource("entry_20"),
+	SubResource("entry_21"),
+	SubResource("entry_22")
 ])

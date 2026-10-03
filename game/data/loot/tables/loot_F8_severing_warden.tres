@@ -39,18 +39,6 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
-[sub_resource type="Resource" id="entry_3"]
-script = ExtResource("2_entry")
-id = &"F8_severing_warden_pool_spirit_severing"
-kind = &"table"
-item_id = &""
-table_id = &"loot_F8_severing_warden_pool_spirit_severing"
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
 [sub_resource type="Resource" id="entry_4"]
 script = ExtResource("2_entry")
 id = &"F8_severing_warden_domain_4"
@@ -303,6 +291,18 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_25"]
+script = ExtResource("2_entry")
+id = &"F8_severing_warden_core_0"
+kind = &"item"
+item_id = &"mind_spirit_severing_channel_elixir"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F8_severing_warden"
@@ -315,7 +315,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
 	SubResource("entry_2"),
-	SubResource("entry_3"),
 	SubResource("entry_4"),
 	SubResource("entry_5"),
 	SubResource("entry_6"),
@@ -336,5 +335,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_21"),
 	SubResource("entry_22"),
 	SubResource("entry_23"),
-	SubResource("entry_24")
+	SubResource("entry_24"),
+	SubResource("entry_25")
 ])

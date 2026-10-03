@@ -27,18 +27,6 @@ guaranteed = true
 quantity = 6
 rarity_floor = &"legendary"
 
-[sub_resource type="Resource" id="entry_2"]
-script = ExtResource("2_entry")
-id = &"mind_dao_fruit_warden_pool_dao_fruit"
-kind = &"table"
-item_id = &""
-table_id = &"loot_mind_dao_fruit_warden_pool_dao_fruit"
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
 [sub_resource type="Resource" id="entry_3"]
 script = ExtResource("2_entry")
 id = &"mind_dao_fruit_warden_pool_nascent_soul"
@@ -291,6 +279,18 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_24"]
+script = ExtResource("2_entry")
+id = &"mind_dao_fruit_warden_core_2"
+kind = &"item"
+item_id = &"mind_dao_fruit_channel_elixir"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"legendary"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_mind_dao_fruit_warden"
@@ -302,7 +302,6 @@ allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
-	SubResource("entry_2"),
 	SubResource("entry_3"),
 	SubResource("entry_4"),
 	SubResource("entry_5"),
@@ -323,5 +322,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_20"),
 	SubResource("entry_21"),
 	SubResource("entry_22"),
-	SubResource("entry_23")
+	SubResource("entry_23"),
+	SubResource("entry_24")
 ])

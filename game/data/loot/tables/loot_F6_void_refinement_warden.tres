@@ -72,6 +72,9 @@ rarity = &""
 rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
-	SubResource("entry_0"),,	SubResource("entry_1"),,	SubResource("entry_2"),,	SubResource("entry_3"),,
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3"),
 	SubResource("entry_4")
 ])

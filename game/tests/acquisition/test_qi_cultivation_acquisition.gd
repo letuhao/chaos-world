@@ -11,27 +11,27 @@ extends TestCase
 ## audits cannot: `tests/modules/qi_cultivation/qi_gate_probe.gd:83` obtains its
 ## items from `Probe.stock`, so they were never acquired at all.
 ##
-## ## The two things this suite cannot prove, and does not pretend to
+## ## The one gap this suite cannot prove away, and the one it now guards
 ##
 ## The body twin (`test_body_cultivation_acquisition.gd`) walks all thirty realms
 ## end to end, because every one of its reagents names a `boss:` source. The qi
-## path has two gaps the catalog tooling is structurally blind to, and both are
-## pinned here rather than asserted away:
+## path has one content gap left, and one class that used to be a second:
 ##
 ## 1. **41 of the qi path's 120 distinct reagents declare no shipped route at
 ##    all** — only `gather` and `quest:<route>`, and `ItemSources.KINDS` marks both
 ##    `shipped: false`. There is no forager for `gather` (it is `REF_FORBIDDEN`, so
 ##    it cannot even name one) and `QuestGrants.pay` records a `quest:` grant
 ##    unspent. **All 30 realms' recovery elixir is unacquirable**, plus 6
-##    breakthrough pills and 5 channel elixirs (DEF-0022, DEF-0023).
-## 2. **15 qi consumables carry a direct `boss:` source, and every one of them is
-##    ROLLED, not `guaranteed`.** A cleared band grants no second run (loot rule
-##    E2), so for the 11 of them that are the ONLY route to their consumable, a
-##    miss is permanent. `tools acquisition validate` cannot see this: `Trial
-##    .catalysts` is built from a recipe REAGENT's `boss:` sources, so a
-##    consumable's own `boss:` source is never judged for guaranteed-ness — and
-##    `tools data audit` only asks whether the boss is hosted, not whether it
-##    pays out.
+##    breakthrough pills and 5 channel elixirs (DEF-0022, DEF-0023, DEF-0188).
+##    Pinned, not asserted away: it cannot widen silently.
+## 2. **The 15 qi consumables that carry a direct `boss:` source are GUARANTEED**
+##    entries of that boss's own table. They were all rolled, which `tools
+##    acquisition validate` could not see because `Trial.catalysts` was built from
+##    a recipe REAGENT's `boss:` sources; for the 11 whose boss drop is the only
+##    route, a cleared band granted no second run (loot rule E2) so the miss was
+##    permanent (DEF-0187). `Trial.catalysts` reads a consumable's own sources
+##    now, so the catalogue gate judges them too and the pin below asserts the
+##    rolled set is empty rather than listing which items are broken.
 ##
 ## So every assertion below is one of two things: a real invariant that holds and
 ## would fail loudly if it broke, or an exact pin on a known gap so the gap cannot
@@ -79,10 +79,12 @@ const PINNED_UNSHIPPED_REAGENTS := 41
 ## GAP 1. How many of the 90 consumables that leaves unacquirable, by role. Keyed
 ## by the seed's own role names so a failure reads as which role lost its route.
 const PINNED_BLOCKED_BY_ROLE := {"breakthrough_item": 6, "recovery_item": 30, "training_item": 5}
-## GAP 2. Every qi consumable a boss drops directly, and every one of them is
-## rolled rather than guaranteed. Pinned by exact id so the list is the finding:
-## any addition or removal trips here and forces this pin to be re-declared.
-const PINNED_ROLLED_CONSUMABLES := [
+## GAP 2, fixed. Every qi consumable a boss drops directly, and every one of them
+## is now a GUARANTEED entry of that boss's own table. Pinned by exact id so the
+## list is still the finding: a new direct drop, or a removal of one, trips here
+## and forces this pin to be re-declared — and the assertion below is that the
+## rolled set is EMPTY, so demoting any of them back to a roll fails outright.
+const BOSS_DROPPED_CONSUMABLES := [
 	"qi_body_integration_breakthrough_pill",
 	"qi_core_formation_channel_elixir",
 	"qi_dao_ancestor_breakthrough_pill",
@@ -256,6 +258,16 @@ func _chain_items() -> Array[String]:
 ## The domain that hosts `boss_id`, as its own boss record declares it.
 func _domain_of(boss_id: String) -> String:
 	return String(LootContent.instance().boss_record(StringName(boss_id))["domain_id"])
+
+
+## Whether `item_id` is one of the realm seeds' three consumables. A direct boss
+## drop of one of these is the GAP 2 class; a reagent is not, because its recipe
+## consumes it however the boss hands it over.
+func _is_consumable(item_id: String) -> bool:
+	for consumable in _consumables():
+		if String((consumable as Dictionary)["item"]) == item_id:
+			return true
+	return false
 
 
 ## Every boss the qi chain names as a drop, sorted.
@@ -687,20 +699,24 @@ func test_every_qi_hunt_domain_carries_one_encounter_that_spawns_what_it_declare
 	assert_eq(bands > hunted, true, "every hunted domain has more than one band")
 
 
-## GAP 2, pinned. A cleared band grants no second run (loot rule E2), so a
-## catalyst that is only *rolled* can leave a player permanently unable to reach
-## the next realm. Every boss-sourced item in the qi chain must therefore be a
-## guaranteed entry of the LOWEST band of the encounter hosting it — the band a
-## walk clears, and the cheapest to clear.
+## GAP 2, now asserted rather than pinned. A cleared band grants no second run
+## (loot rule E2), so a catalyst that is only *rolled* can leave a player
+## permanently unable to reach the next realm. Every boss-sourced item in the qi
+## chain must therefore be a guaranteed entry of the LOWEST band of the encounter
+## hosting it — the band a walk clears, and the cheapest to clear.
 ##
-## Every REAGENT already is. Every CONSUMABLE that a boss drops is not: all 15 are
-## rolled, and for 11 of them that drop is the only route to the consumable, so a
-## miss is permanent. `tools acquisition validate` reports clean because
-## `Trial.catalysts` is built from a reagent's `boss:` sources only.
-func test_every_boss_sourced_qi_reagent_is_guaranteed_and_the_rolled_consumables_pinned() -> void:
+## Every REAGENT already was. The 15 boss-dropped CONSUMABLES were not, and for 11
+## of them that drop is the only route to the consumable, so a miss was permanent
+## (DEF-0187). They are guaranteed entries of the boss's own table now, which is
+## the only placement that removes the roll: a pool is one weighted candidate among
+## many, so guaranteeing an item *inside* a pool still leaves the pool itself to a
+## draw. `tools acquisition validate` sees the same set, because `Trial.catalysts`
+## now reads a consumable's own `boss:` sources and not only its reagents'.
+func test_every_boss_sourced_qi_chain_item_is_guaranteed_at_the_lowest_band() -> void:
 	var content := LootContent.instance()
 	var guaranteed := 0
 	var rolled: Array[String] = []
+	var direct: Array[String] = []
 	for item_id in _chain_items():
 		for boss_id in _bosses_of(item_id):
 			var domain_id := _domain_of(boss_id)
@@ -729,14 +745,24 @@ func test_every_boss_sourced_qi_reagent_is_guaranteed_and_the_rolled_consumables
 				rolled.append(item_id)
 			elif unconditional:
 				guaranteed += 1
+		# A boss dropping one of the realm's own consumables IS the GAP 2 class; a
+		# reagent dropped by a boss is not, because a recipe consumes it either way.
+		if _is_consumable(item_id) and not _bosses_of(item_id).is_empty():
+			direct.append(item_id)
 	rolled.sort()
+	direct.sort()
 	assert_eq(guaranteed > 0, true, "at least one qi catalyst is guaranteed")
 	assert_eq(
+		direct,
+		BOSS_DROPPED_CONSUMABLES as Array[String],
+		"the qi consumables a boss drops directly; every one must be a guaranteed entry"
+	)
+	assert_eq(
 		rolled,
-		PINNED_ROLLED_CONSUMABLES as Array[String],
+		[] as Array[String],
 		(
-			"the qi consumables left to a roll — a cleared band grants no second run, so each"
-			+ " of these is a permanent soft-lock unless it also arrives another way"
+			"nothing in the qi chain is left to a roll — a cleared band grants no second"
+			+ " run, so each of these is a permanent soft-lock"
 		)
 	)
 
@@ -810,11 +836,12 @@ func test_the_only_unreachable_hop_in_the_qi_chain_is_the_unshipped_route_gap() 
 ## what the qi gate audits never exercise because `Probe.stock` grants items
 ## outright.
 ##
-## The 11 consumables that are reachable ONLY as a rolled boss drop are not
-## attempted: they are the soft-lock GAP 2 names, so requiring them here would be
-## asserting the defect away. The 41 the gap leaves unacquirable are named by the
-## test above. Neither is hidden — both are counted, and the three counts must sum
-## to the whole ladder.
+## The 11 consumables that a boss drops but no recipe can make are counted as
+## `drop_only` rather than crafted: their recipe input has no shipping route, so
+## the craft cannot be attempted. They are not a defect — they arrive guaranteed
+## now, which the test above proves — and the 41 the gap leaves unacquirable are
+## named by the test above. Neither is hidden: all three counts must sum to the
+## whole ladder.
 func test_every_craftable_qi_consumable_is_crafted_end_to_end_from_its_trial() -> void:
 	var domains := _hunt_domains()
 	assert_eq(domains.is_empty(), false, "the qi chain names at least one hunt domain")
@@ -874,5 +901,5 @@ func test_every_craftable_qi_consumable_is_crafted_end_to_end_from_its_trial() -
 		"every qi consumable was crafted, dropped, or named as gap-blocked"
 	)
 	assert_eq(crafted, 38, "38 qi consumables are craftable through the shipping program")
-	assert_eq(drop_only, 11, "11 qi consumables are reachable only as a rolled boss drop")
+	assert_eq(drop_only, 11, "11 qi consumables arrive as a boss drop, not as a craft")
 	assert_eq(unacquirable, 41, "41 qi consumables have no shipping route at all")

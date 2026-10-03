@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=30 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -33,18 +33,6 @@ id = &"E4_sea_tide_warden_pool_spirit_condensation"
 kind = &"table"
 item_id = &""
 table_id = &"loot_E4_sea_tide_warden_pool_spirit_condensation"
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_3"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_pool_spirit_sea"
-kind = &"table"
-item_id = &""
-table_id = &"loot_E4_sea_tide_warden_pool_spirit_sea"
 weight = 1.0
 chance = -1.0
 guaranteed = false
@@ -303,6 +291,42 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_25"]
+script = ExtResource("2_entry")
+id = &"E4_sea_tide_warden_domain_25"
+kind = &"item"
+item_id = &"F17_immortal_eleemosynary_agility_aptitude_health_regen_max_qi"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_26"]
+script = ExtResource("2_entry")
+id = &"E4_sea_tide_warden_core_1"
+kind = &"item"
+item_id = &"body_spirit_sea_breakthrough_pill"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
+
+[sub_resource type="Resource" id="entry_27"]
+script = ExtResource("2_entry")
+id = &"E4_sea_tide_warden_core_2"
+kind = &"item"
+item_id = &"body_spirit_sea_channel_elixir"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E4_sea_tide_warden"
@@ -315,7 +339,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
 	SubResource("entry_2"),
-	SubResource("entry_3"),
 	SubResource("entry_4"),
 	SubResource("entry_5"),
 	SubResource("entry_6"),
@@ -336,5 +359,8 @@ entries = Array[LootEntry]([
 	SubResource("entry_21"),
 	SubResource("entry_22"),
 	SubResource("entry_23"),
-	SubResource("entry_24")
+	SubResource("entry_24"),
+	SubResource("entry_25"),
+	SubResource("entry_26"),
+	SubResource("entry_27")
 ])

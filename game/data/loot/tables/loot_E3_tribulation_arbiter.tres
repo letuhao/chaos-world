@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=29 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=30 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -45,18 +45,6 @@ id = &"E3_tribulation_arbiter_pool_nascent_soul"
 kind = &"table"
 item_id = &""
 table_id = &"loot_E3_tribulation_arbiter_pool_nascent_soul"
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_4"]
-script = ExtResource("2_entry")
-id = &"E3_tribulation_arbiter_pool_tribulation"
-kind = &"table"
-item_id = &""
-table_id = &"loot_E3_tribulation_arbiter_pool_tribulation"
 weight = 1.0
 chance = -1.0
 guaranteed = false
@@ -315,6 +303,30 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_26"]
+script = ExtResource("2_entry")
+id = &"E3_tribulation_arbiter_domain_26"
+kind = &"item"
+item_id = &"E13_immortal_blisterbed_baroque"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_27"]
+script = ExtResource("2_entry")
+id = &"E3_tribulation_arbiter_core_0"
+kind = &"item"
+item_id = &"body_tribulation_channel_elixir"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"common"
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E3_tribulation_arbiter"
@@ -328,7 +340,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_1"),
 	SubResource("entry_2"),
 	SubResource("entry_3"),
-	SubResource("entry_4"),
 	SubResource("entry_5"),
 	SubResource("entry_6"),
 	SubResource("entry_7"),
@@ -349,5 +360,7 @@ entries = Array[LootEntry]([
 	SubResource("entry_22"),
 	SubResource("entry_23"),
 	SubResource("entry_24"),
-	SubResource("entry_25")
+	SubResource("entry_25"),
+	SubResource("entry_26"),
+	SubResource("entry_27")
 ])
