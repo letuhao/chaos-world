@@ -109,7 +109,7 @@ func test_every_named_identifier_of_the_mechanism_is_present() -> void:
 ## ONE answer to "how often does this actor survive". The record used to carry a
 ## second, actor-free `endurance()` that no `src/` file called — same slope, same
 ## clamp, and no dao heart, so a screen quoting it would have shown a worse number
-## than the roll actually used. Deleted (ADR 0119); this fails if it comes back.
+## than the roll actually used. Deleted (ADR 0125); this fails if it comes back.
 func test_the_survival_formula_is_single_sourced() -> void:
 	assert_eq(
 		"func endurance(" in _source(TRIBULATION_SRC),

@@ -8,7 +8,7 @@ extends RefCounted
 ## is a mechanic, not a module's business, and a second copy of these five numbers
 ## is a second answer to "how often does this actor survive a tribulation". It is
 ## the ONLY answer: `Tribulation.endurance` was a second one, reachable from no
-## `src/` caller, and is deleted (ADR 0119).
+## `src/` caller, and is deleted (ADR 0125).
 ##
 ## `TribulationFight`'s twin is deleted too: the module now descends waves through
 ## `Tribulation.fight_wave` — the same verb `Breakthrough.face_tribulation` calls —

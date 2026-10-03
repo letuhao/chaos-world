@@ -7,7 +7,7 @@ extends RefCounted
 ## roll. This module owns the one question core cannot answer by itself: WHICH realm
 ## a tribulation is owed. `actor.tribulation` is a single slot, and
 ## `Breakthrough.tribulation_ok` accepts only a record bound to the exact realm being
-## entered, so somebody has to pick one — `Breakthrough.owed_index` (ADR 0119).
+## entered, so somebody has to pick one — `Breakthrough.owed_index` (ADR 0125).
 ##
 ## It does NOT decide anything about a wave. `fight_wave` below is the screen's
 ## entry point and nothing more: it calls `Tribulation.fight_wave`, the same verb
@@ -70,7 +70,7 @@ static func begin(actor: Actor) -> Dictionary:
 ##
 ## It used to call `Breakthrough.advance_tribulation`, which walks the phase machine
 ## WITHOUT charging the toll, and then rolled and resolved the fight itself. That is
-## the defect ADR 0119 records: the same fight cost one comprehension per wave
+## the defect ADR 0125 records: the same fight cost one comprehension per wave
 ## through the breakthrough button and cost NOTHING through this one, so a player
 ## chose a free tribulation by opening a different screen.
 ##

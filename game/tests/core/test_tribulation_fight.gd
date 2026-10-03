@@ -137,7 +137,7 @@ func test_a_lost_fight_can_be_refought() -> void:
 ## Endurance is a share of fights survived at, never a certainty and never a
 ## coin-flip: a gate a player cannot walk through is as broken as no gate at all.
 ## Read through `TribulationEndurance`, the one curve — the record's own
-## actor-free `endurance` was a second answer and is deleted (ADR 0119).
+## actor-free `endurance` was a second answer and is deleted (ADR 0125).
 func test_endurance_is_bounded_at_both_ends() -> void:
 	var actor := _actor_at_r18()
 	for realm in RealmDefaults.ladder().realms():

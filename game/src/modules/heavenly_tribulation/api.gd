@@ -44,7 +44,7 @@ static func begin(actor: Actor) -> Dictionary:
 ## Fight one wave. The wave that brings the record to its last phase also decides
 ## it, so `decided` reports a verdict rather than a phase. It charges the same
 ## `WAVE_TOLL` a breakthrough action charges for the same wave: both routes go
-## through `Tribulation.fight_wave` (ADR 0119).
+## through `Tribulation.fight_wave` (ADR 0125).
 static func fight_wave(actor: Actor) -> Dictionary:
 	return TribulationFight.fight_wave(actor, null)
 

@@ -64,7 +64,7 @@ static func try_advance(
 
 
 ## The lowest ladder index ANY started path still owes a fight for, or -1 when
-## none is owed. THE single derivation of that rule (ADR 0119): it lives in core
+## none is owed. THE single derivation of that rule (ADR 0125): it lives in core
 ## because `TribulationEndurance` must price a fight that has not begun yet and
 ## cannot reach a module, and because the module that drives the fight has to ask
 ## the same question — two copies of "which realm is owed" is a rule that can
@@ -139,7 +139,7 @@ static func begin_tribulation(actor: Actor, next_index: int) -> Tribulation:
 ## then `resolve_tribulation`), which ADR 0061 kept for a caller that already knows
 ## the outcome. It charges no `WAVE_TOLL`, so anything that DESCENDS A FIGHT must
 ## call `Tribulation.fight_wave` instead — `face_tribulation` does, and so does the
-## tribulation screen. This was the defect ADR 0119 records: the screen descended
+## tribulation screen. This was the defect ADR 0125 records: the screen descended
 ## waves through here and the toll a player paid depended on which button they used.
 ## `tests/core/test_tribulation_mechanism.gd` fails the build if any `src/` call
 ## site uses this or `advance_wave` to fight.

@@ -55,7 +55,7 @@ const WAVE_TOLL := 1.0
 ## which is the same defect as no gate at all. These two numbers are the ONLY copy,
 ## and the record itself does not answer the question: `TribulationEndurance` is the
 ## one curve that turns this rating and an actor's dao heart into a share, so a
-## screen and the roll can never quote different odds (ADR 0103, ADR 0119).
+## screen and the roll can never quote different odds (ADR 0103, ADR 0125).
 const MIN_ENDURANCE := 0.15
 const MAX_ENDURANCE := 0.85
 
@@ -143,7 +143,7 @@ func advance_wave() -> void:
 ## ran to its last phase has survived nothing, so the deciding roll is taken there
 ## and nowhere else.
 ##
-## THIS is the tribulation's only wave driver (ADR 0119). `advance_wave` walks the
+## THIS is the tribulation's only wave driver (ADR 0125). `advance_wave` walks the
 ## phase machine for a caller that is not fighting and charges nothing, and both
 ## production fight paths — `Breakthrough.face_tribulation` and the tribulation
 ## screen's `TribulationFight.fight_wave` — come through here, so a wave fought from

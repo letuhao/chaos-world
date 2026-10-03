@@ -1,7 +1,7 @@
 extends TestCase
 
 ## ONE tribulation encounter: one wave driver, one survival formula, one owed-realm
-## rule (ADR 0119).
+## rule (ADR 0125).
 ##
 ## Four implementations had grown for what ADR 0061 described as one thing, and a
 ## player paid a real cost on one path for free on another:
