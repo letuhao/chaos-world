@@ -45,28 +45,32 @@ new stat pipeline, a save field, or a new kind of equipped slot.
   not `fate.oath_of_the_empty_hand`. Fate and destiny ids live in their own catalogs
   (`res://data/destiny/fates`, `res://data/destiny/destinies`) and are resolved only
   through `FateCatalog`, so an id never has to carry its type. Do **not** extend the
-  `quest:` namespace: the 233 `.tres` under `game/data/items/quest/` already declare
-  `sources = [&"quest:main_03"]`-style ids naming quests that do not exist, so a
-  `quest:`-prefixed fate would read as a working reference and silently grant nothing.
+  `quest:` namespace: of the 233 `.tres` under `game/data/items/quest/`, 62 already
+  carry a `quest:<id>` source and 34 distinct ids are named that way — every one of
+  them a quest the catalog does not define. Fate sharing that prefix would read as a
+  working reference and silently grant nothing.
 - **Content is gated, not warned.** `data audit` fails the build on a bad stat id, a
   FLAT modifier on a rate stat, or a dangling cross-reference. Nothing re-reads a
   `.tres` field after load, so without that gate a typo ships a fate that does nothing.
 
 ## Consequences
 
-- The earn call sites are deliberately not implemented here. This module is a write
-  target, not a listener: combat (kills, duels), the breakthrough paths, quest
-  completion and world events each call `DestinyApi.earn_fate()` when they are
-  built, and character creation calls `earn_destiny()` once an origin is authored.
-  Until then `attach()` only normalizes an empty ledger, so the codex screen reads
-  zero and nothing is owed.
+- The earn path is wired, not empty. Quest completion calls `earn_fate` /
+  `earn_destiny` from the one place `QuestApi` marks a quest complete, and world
+  events call both from `EventPrize` under `"event:<event_id>"`. Both source strings
+  name the *source*, never the fate id, so fate keeps its own catalog. Combat (kills,
+  duels) and the cultivation breakthrough paths are still unbuilt and grant nothing.
+- `app/item_workbench_app.gd` calls `DestinyApi.attach(actor)`, so the composition
+  root — not fate — decides when the ledger exists. Birth grants nothing and can
+  never grant anything.
+- A fate-gated quest or event is authored and opens today: `QuestApi` and `EventGate`
+  both read `DestinyApi.gate`, and `EventGate` delegates the three fate verbs verbatim
+  rather than re-evaluating them, so there is exactly one fate evaluator in the repo.
 - A consume/clear fate affordance is refused by this ADR and is recorded as
   deferred, so a future agent finds the decision instead of re-litigating it.
-- A fate-gated quest, story or event cannot be authored yet, because those systems
-  do not exist. The gate is an unused surface until they do, which is the shape
-  ADR 0030 tolerates only while it stays honest: it is public, tested, and every
-  gap is recorded in `docs/deferred.jsonl` with the module that will close it.
 - What ships and is verifiable today: the ledger, the six gate verbs, the earned
-  bonuses, the codex screen, and 17 fates with 5 destinies behind them. What ships
-  empty is the earn path — the codex reads zero for a fresh actor, correctly, because
-  nothing has earned anything yet.
+  bonuses, the codex screen, and 17 fates with 5 destinies behind them.
+- **Remaining seams.** `quest` calls `DestinyApi` but does not declare `destiny` in
+  `tools/arch/registry.json`, and `BARE_REF_UNITS` excludes `modules/*` so the arch
+  gate cannot see the edge; and `FateDef.counters` is authored but never read back.
+  Both are recorded in `docs/deferred.jsonl`.
