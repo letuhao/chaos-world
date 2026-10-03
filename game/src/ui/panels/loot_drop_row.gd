@@ -158,7 +158,12 @@ func _render() -> void:
 	_status_label.text = String(STATUS_TEXT.get(StringName(_state.get("status", "")), ""))
 	_status_label.theme_type_variation = _status_variation()
 	_action_button.text = String(_state.get("action", ""))
-	_action_button.disabled = not bool(_state["action_enabled"])
+	# `.get`, not `[]`: `_ready` renders before any `bind()` has run, so `_state` is
+	# still the empty default and every key here is absent. The two reads above
+	# already tolerate that; this one did not, so a pooled row -- created fresh and
+	# rendered before it is bound -- raised on the very first paint and the reward
+	# list never finished building, leaving the fight's drops uncollectable.
+	_action_button.disabled = not bool(_state.get("action_enabled", false))
 	_fill_effects()
 
 

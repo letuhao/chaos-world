@@ -28,6 +28,16 @@ const FRAMES := 3
 ## production seam being driven, not because the probe should know the screen's guts.
 const ENTER_BUTTON := "%EnterButton"
 const STRIKE_BUTTON := "%StrikeButton"
+## The screen's own domain dropdown. Re-entering the same domain replays the same
+## table every time, so a probe that only ever presses Enter learns one table's
+## contents and then calls the whole corpus un-equippable. Walking this selector
+## is what a player does when one place pays nothing worth wearing.
+const DOMAIN_OPTION := "%DomainOption"
+## The screen's own tier dropdown. A drop's grade scales with the tier it was
+## fought at, and the grade gate refuses anything above the hero's own tier, so
+## fighting the default tier can hand over gear this hero may not wear. A player
+## picks the tier they can equip from; so does the probe.
+const TIER_OPTION := "%TierOption"
 ## The reward list's row control, by node name rather than unique name: the rows are
 ## instantiated from `loot_drop_row.tscn`, so no single owner holds them all.
 const REWARD_LIST := "%RewardList"
@@ -37,6 +47,16 @@ const DROP_ACTION := "DropAction"
 ## the `while`-scanning rules cannot see a recursive call at all. The reward list is
 ## three levels deep, so this is slack rather than a tuned number.
 const MAX_WALK_DEPTH := 12
+## How many pickup controls one fight's reward may offer. The loop that presses
+## them is driven by a live screen, never by a snapshot, so it needs a fixed cap
+## rather than a bound derived from what the screen happens to be showing.
+const MAX_DROPS_PER_REWARD := 8
+## How many bosses the walk may fight before it insists at least one of them paid
+## something the hero can wear. A fight may legitimately pay a consumable or a
+## token, and neither can be equipped, so one boss is not a guarantee of gear. A
+## player keeps hunting; the probe keeps hunting with them. This is a guard
+## against a corpus that pays no gear at all, not a search strategy.
+const MAX_EQUIP_HUNTS := 4
 ## The app's strike deals 25 and the lowest authored boss has 100 vitality, so four
 ## strikes is the whole fight. A cap, never "until it dies" — see `_strike_until_dead`.
 const MAX_STRIKES := 8
@@ -45,6 +65,9 @@ const MAX_STRIKES := 8
 ## player's own sheet shows, so this cannot pass by reaching past the UI into the actor.
 const HOME_ROUTE := &"workbench"
 const CHARACTER_ROUTE := &"character"
+## Where a boss can be fought. Claiming a drop walks back to the workbench, so a
+## second hunt has to come back here before it can press Enter on anything.
+const LOOT_ROUTE := &"loot_encounter"
 const EQUIP_BUTTON := "%EquipButton"
 const ACTION_BAR := "%ActionBar"
 const INVENTORY_PANEL := "%InventoryPanel"
@@ -83,12 +106,32 @@ func _run() -> void:
 	report["rows_at_boot"] = rows_at_boot
 	var nav_report: Dictionary = await _press_nav(app)
 	report["nav"] = nav_report
-	var hunt_report: Dictionary = await _hunt(app)
-	report["hunt"] = hunt_report
-	var claim_report: Dictionary = await _claim(app, rows_at_boot)
-	report["claim"] = claim_report
-	var equip_report: Dictionary = await _equip(app, claim_report.get("def_ids", []))
-	report["equip"] = equip_report
+	# One boss is not a guarantee of gear: a fight may pay a consumable or a token,
+	# and neither can be worn. Keep hunting the way a player would, stopping at the
+	# first drop the hero's own Equip control accepts. A fight that paid nothing
+	# wearable is a corpus fact, so it is reported as such rather than papered over.
+	var hunt_report: Dictionary = {}
+	var claim_report: Dictionary = {}
+	var equip_report: Dictionary = {}
+	for _attempt in MAX_EQUIP_HUNTS:
+		hunt_report = await _hunt(app, _attempt)
+		report["hunt"] = hunt_report
+		if not bool(hunt_report.get("ok", false)):
+			break
+		claim_report = await _claim(app, rows_at_boot)
+		report["claim"] = claim_report
+		if not bool(claim_report.get("ok", false)):
+			continue
+		equip_report = await _equip(app, claim_report.get("def_ids", []))
+		report["equip"] = equip_report
+		if bool(equip_report.get("ok", false)):
+			break
+		# `wearable: false` is the one failure worth another boss: the fight paid
+		# real drops and none of them can be worn. Anything else is a real fault
+		# and repeating it would only multiply the same red.
+		if bool(equip_report.get("wearable", true)):
+			break
+		continue
 	var broken: Array[String] = []
 	if not bool(nav_report.get("ok", false)):
 		broken.append(
@@ -202,10 +245,53 @@ func _why_wrong_landing(
 ## the acquisition rather than that a test handed one over.
 ##
 ## Runs after `_press_nav`, which leaves the game on the loot route.
-func _hunt(app: Node) -> Dictionary:
+## Move the domain selector onto the nth option, the way a player picking from
+## the dropdown does, and return the label now showing.
+func _choose_domain(screen: Node, nth: int) -> String:
+	var option := screen.get_node_or_null(DOMAIN_OPTION) as OptionButton
+	if option == null or option.item_count <= 0:
+		return ""
+	var index := nth % option.item_count
+	option.select(index)
+	option.item_selected.emit(index)
+	return String(option.get_item_text(index))
+
+
+## Travel to the loot surface if the walk is not already there, and confirm there
+## is a live screen to fight from.
+func _ready_to_hunt(app: Node) -> Dictionary:
+	if String(app.call(&"current_route")) != String(LOOT_ROUTE):
+		var travel := await _goto(app, LOOT_ROUTE)
+		if not bool(travel.get("ok", false)):
+			return {"ok": false, "why": travel.get("why", "cannot reach the loot surface")}
 	var screen := _live_screen(app)
 	if screen == null:
 		return {"ok": false, "why": "the app has no live screen reporting state to fight from"}
+	return {"ok": true, "screen": screen}
+
+
+## Move the tier selector onto its lowest option and return the label now showing.
+##
+## Lowest, not "whatever is selected": a drop's grade scales with the tier, and
+## the grade gate refuses anything above the hero's tier, so the default selection
+## can hand over gear this hero is not allowed to wear. Choosing the lowest tier is
+## the choice a starting hero makes, and it is the one that pays winnable gear.
+func _choose_tier(screen: Node) -> String:
+	var option := screen.get_node_or_null(TIER_OPTION) as OptionButton
+	if option == null or option.item_count <= 0:
+		return ""
+	option.select(0)
+	option.item_selected.emit(0)
+	return String(option.get_item_text(0))
+
+
+func _hunt(app: Node, nth: int) -> Dictionary:
+	var ready := await _ready_to_hunt(app)
+	if not bool(ready.get("ok", false)):
+		return {"ok": false, "why": ready.get("why", "cannot reach the loot surface")}
+	var screen := ready.get("screen") as Node
+	var domain := _choose_domain(screen, nth)
+	var tier := _choose_tier(screen)
 	var before := screen.call(&"summary") as Dictionary
 	if bool(before.get("in_domain", false)):
 		return {"ok": false, "why": "a boss was already live before the player entered one"}
@@ -223,6 +309,8 @@ func _hunt(app: Node) -> Dictionary:
 	var after := screen.call(&"summary") as Dictionary
 	return {
 		"ok": true,
+		"domain": domain,
+		"tier": tier,
 		"strikes": int(fight.get("strikes", 0)),
 		"reward_count": int(after.get("reward_count", 0)),
 		"pending_drops": int(after.get("pending_drops", 0)),
@@ -247,9 +335,17 @@ func _claim(app: Node, rows_at_boot: int) -> Dictionary:
 	if blocked != "":
 		return {"ok": false, "why": blocked}
 	var pending_before := int((screen.call(&"summary") as Dictionary).get("pending_drops", 0))
-	_first_drop_action(screen).pressed.emit()
-	await process_frame
-	var pending_after := int((screen.call(&"summary") as Dictionary).get("pending_drops", 0))
+	# What the fight pays is read as each reward slides into view, not once up
+	# front: claiming retires a reward (`LootState._settle` moves it off
+	# `state["rewards"]` once its last drop is taken) and the next one only appears
+	# afterwards, so a single read saw one reward's rows and silently ignored the
+	# gear sitting in the second. `_bag_grew` then navigates back to the workbench,
+	# so reading any of it afterwards raised "call on a previously freed instance".
+	var def_ids: Array[String] = []
+	var collected := await _collect_pending(app, pending_before, def_ids)
+	if not bool(collected.get("ok", false)):
+		return {"ok": false, "why": collected.get("why", "collecting the drop failed")}
+	var pending_after := int(collected.get("pending", 0))
 	var stuck := _why_still_pending(pending_after, pending_before)
 	if stuck != "":
 		return {"ok": false, "why": stuck}
@@ -257,13 +353,6 @@ func _claim(app: Node, rows_at_boot: int) -> Dictionary:
 	if not bool(arrived.get("ok", false)):
 		var lost: String = str(arrived.get("why", "unknown"))
 		return {"ok": false, "why": "the drop was taken but never reached the bag: %s" % lost}
-	# The def ids the reward offered, so the equip half can find what it claimed
-	# rather than hardcoding one: which drop a domain hands out is content, and a
-	# probe that pinned an id would break the day that content changes.
-	var reward := (screen.call(&"summary") as Dictionary).get("reward", {}) as Dictionary
-	var def_ids: Array[String] = []
-	for row in reward.get("rows", []) as Array:
-		def_ids.append(String((row as Dictionary).get("def_id", "")))
 	return {
 		"ok": true,
 		"pending_before": pending_before,
@@ -292,7 +381,15 @@ func _equip(app: Node, def_ids: Array) -> Dictionary:
 		return {"ok": false, "why": "the hero screen publishes no stats to compare against"}
 	var worn := await _wear_one(app, def_ids)
 	if not bool(worn.get("ok", false)):
-		return {"ok": false, "why": worn.get("why", "the claimed drop could not be worn")}
+		# `wearable` must survive the rewrap: it is what tells the hunt loop that
+		# another boss is worth fighting, and dropping it here made every failure
+		# look like a fault, so the walk stopped after the first fight.
+		return {
+			"ok": false,
+			"wearable": bool(worn.get("wearable", false)),
+			"baseline_wearable": String(worn.get("baseline_wearable", "")),
+			"why": worn.get("why", "the claimed drop could not be worn"),
+		}
 	var after := await _published_stats(app)
 	var rose := _stat_that_rose(before, after)
 	if rose == "":
@@ -335,59 +432,127 @@ func _published_stats(app: Node) -> Dictionary:
 	return summary.get("stats", {}) as Dictionary
 
 
-## Select the first claimed drop the bag is holding and press Equip on it.
+## Append the def ids the currently shown reward offers, skipping ones already seen.
+func _record_offered(screen: Node, def_ids: Array[String]) -> void:
+	var reward := (screen.call(&"summary") as Dictionary).get("reward", {}) as Dictionary
+	for row in reward.get("rows", []) as Array:
+		var def_id := String((row as Dictionary).get("def_id", ""))
+		if not def_id.is_empty() and not def_ids.has(def_id):
+			def_ids.append(def_id)
+
+
+## Press the reward list's own pickup control until nothing is pending.
+##
+## The screen is re-resolved on every pass rather than reused, because claiming a
+## drop can repaint or replace it and a stale node is a freed-instance crash
+## dressed up as a missing drop. `ok` is false only when the screen went away
+## mid-collect; having no pressable control left is a normal stop.
+func _collect_pending(app: Node, pending_before: int, def_ids: Array[String]) -> Dictionary:
+	var pending := pending_before
+	for _drop in MAX_DROPS_PER_REWARD:
+		if pending <= 0:
+			return {"ok": true, "pending": pending}
+		var live := _live_screen(app)
+		if live == null:
+			return {"ok": false, "why": "collecting a drop left no live screen to read"}
+		_record_offered(live, def_ids)
+		var action := _first_drop_action(live)
+		if action == null:
+			break
+		action.pressed.emit()
+		await process_frame
+		var again := _live_screen(app)
+		if again == null:
+			return {"ok": false, "why": "collecting a drop left no live screen to read"}
+		pending = int((again.call(&"summary") as Dictionary).get("pending_drops", 0))
+	return {"ok": true, "pending": pending}
+
+
+## The claimed drops the bag is actually holding, in the order the reward offered.
+func _bagged_candidates(screen: Node, def_ids: Array) -> Array[String]:
+	var panel := screen.get_node_or_null(INVENTORY_PANEL)
+	if panel == null:
+		return []
+	var held := (panel.call(&"summary") as Dictionary).get("row_def_ids", []) as Array
+	var bagged: Array[String] = []
+	for candidate in def_ids:
+		var def_id := String(candidate)
+		if held.has(def_id) and not bagged.has(def_id):
+			bagged.append(def_id)
+	return bagged
+
+
+## Select one bag row the way a player clicking it does. False when the bag's row
+## list cannot address that def at all.
+func _select_row(screen: Node, def_id: String) -> bool:
+	var panel := screen.get_node_or_null(INVENTORY_PANEL)
+	if panel == null:
+		return false
+	var ids := (panel.call(&"summary") as Dictionary).get("row_def_ids", []) as Array
+	var list := panel.get_node_or_null(ITEM_LIST) as ItemList
+	var index := ids.find(def_id)
+	if list == null or index < 0 or index >= list.item_count:
+		return false
+	list.select(index)
+	list.item_selected.emit(index)
+	return true
+
+
+## The first bag row the hero's own Equip control accepts, or "" when none is.
+##
+## Diagnostic only, and never a substitute for the real assertion: the gate still
+## demands the DROPPED item be worn. This exists so "the drop cannot be worn" can
+## be told apart from "this probe's Equip lookup is simply wrong" -- a probe that
+## reports an unwearable drop because it pressed a control it never found looks
+## exactly like a content gap. "" is itself the answer that the seam is dead.
+func _baseline_wearable(screen: Node, bar: Node) -> String:
+	var panel := screen.get_node_or_null(INVENTORY_PANEL)
+	if panel == null:
+		return ""
+	var ids := (panel.call(&"summary") as Dictionary).get("row_def_ids", []) as Array
+	for candidate in ids:
+		var def_id := String(candidate)
+		if not _select_row(screen, def_id):
+			continue
+		await process_frame
+		if _press(bar, EQUIP_BUTTON):
+			return def_id
+	return ""
+
+
+## Wear one of the claimed drops, trying each until the hero's own Equip control
+## accepts it.
+##
+## The Equip button being live is the oracle, not a lookup of the item's category
+## in the probe. A button the production action bar disabled is the real answer to
+## "can this be worn", so asking it keeps the probe honest about the shipped
+## wiring instead of duplicating the rule that wiring enforces.
 func _wear_one(app: Node, def_ids: Array) -> Dictionary:
 	if not bool((await _goto(app, HOME_ROUTE)).get("ok", false)):
 		return {"ok": false, "why": "could not return to the bag"}
 	var screen := _live_screen(app)
 	if screen == null:
 		return {"ok": false, "why": "the workbench is not the live screen"}
-	var picked := _pick_claimed(screen, def_ids)
-	if not bool(picked.get("ok", false)):
-		return {"ok": false, "why": picked.get("why", "no claimed drop is in the bag")}
-	# One frame between selecting and pressing, because the Equip control is only
-	# live once the detail panel has repainted for the newly selected row.
-	await process_frame
-	# Equip is resolved from the ACTION BAR's own scope, not the workbench's. A `%`
-	# name resolves against the scene that declared it unique, and EquipButton is
-	# declared unique in `action_bar.tscn` - `action_bar.gd` asks for it from itself
-	# the same way. Asking from the workbench finds nothing, so the press would fail
-	# for a reason that has nothing to do with the loop.
 	var bar := screen.get_node_or_null(ACTION_BAR)
 	if bar == null:
 		return {"ok": false, "why": "the workbench composes no action bar to equip through"}
-	if not _press(bar, EQUIP_BUTTON):
-		return {
-			"ok": false, "why": "Equip is not a live control on '%s'" % picked.get("def_id", "")
-		}
-	return {"ok": true, "def_id": picked.get("def_id", "")}
-
-
-## Select the claimed drop the bag is holding, the way a player clicking a row does.
-func _pick_claimed(screen: Node, def_ids: Array) -> Dictionary:
-	var panel := screen.get_node_or_null(INVENTORY_PANEL)
-	if panel == null:
-		return {"ok": false, "why": "the workbench composes no inventory panel"}
-	var ids := (panel.call(&"summary") as Dictionary).get("row_def_ids", []) as Array
-	var chosen := _first_bagged(ids, def_ids)
-	if chosen == "":
+	var bagged := _bagged_candidates(screen, def_ids)
+	if bagged.is_empty():
 		return {"ok": false, "why": "no claimed drop is in the bag to wear"}
-	var list := panel.get_node_or_null(ITEM_LIST) as ItemList
-	var index := ids.find(chosen)
-	if list == null or index < 0 or index >= list.item_count:
-		return {"ok": false, "why": "the bag's row list cannot select the claimed drop"}
-	list.select(index)
-	list.item_selected.emit(index)
-	return {"ok": true, "def_id": chosen}
-
-
-## The first of `wanted` the bag is actually holding, or "" when it holds none.
-func _first_bagged(held: Array, wanted: Array) -> String:
-	for candidate in wanted:
-		var def_id := String(candidate)
-		if held.has(def_id):
-			return def_id
-	return ""
+	for candidate in bagged:
+		if not _select_row(screen, candidate):
+			return {"ok": false, "why": "the bag's row list cannot select '%s'" % candidate}
+		# One frame between selecting and pressing: the detail panel must repaint
+		# for the newly selected row before the action bar can judge it wearable.
+		await process_frame
+		if _press(bar, EQUIP_BUTTON):
+			return {"ok": true, "def_id": candidate}
+	return {
+		"ok": false,
+		"wearable": false,
+		"baseline_wearable": await _baseline_wearable(screen, bar),
+		"why": "none of the %d drop(s) this fight paid can be worn" % bagged.size(),
+	}
 
 
 ## The first stat key that went UP, or "" when nothing rose. Sorted so the reported
