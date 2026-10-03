@@ -15,3 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {}
 subcategory = &"numeraire"
 grade = &"mortal"
+sources = Array[StringName]([&"starter"])

@@ -158,9 +158,15 @@ SCHEMA_FOR_PREFIX = {
     "destiny/destinies": "destiny",
 }
 BASE_SOURCES = {"gather", "starter"}
-# A numeraire is the economy's unit of account, held as an integer purse
-# (`economy/api.gd` `purse(actor) -> int`), not as an item in an inventory. ADR 0099:
-# it is exempt from the acquisition requirement and must declare no source at all.
+# `subcategory = "numeraire"` marks the economy's unit of account. It is still an ordinary
+# held ItemDef: `economy`, `market` and `custody` read it with `inventory.count`/`has` and
+# pass coin rows into `EconomyExchange.exchange`, which physically moves the stack. ADR 0099
+# once exempted it from the acquisition requirement on the premise that it was an integer
+# balance; that premise was false against the tree it shipped into, the exemption hid an
+# unreachable item, and `data audit` reported the coin as unroutable. ADR 0099 named its own
+# escape hatch for exactly this case and it has now fired, so the exemption is gone: the coin
+# declares a real `starter` route like every other item. The marker itself stays, because it
+# is what tells a designer which currency item is the unit of account rather than a good.
 NUMERAIRE_SUBCATEGORY = "numeraire"
 # Stats whose flat modifier is a fraction rather than a magnitude (ADR 0022).
 FRACTION_FLAT_STATS = {"damage_reduction"}
@@ -292,6 +298,27 @@ RUNTIME_ROUTES: dict[str, Route] = {
         "the composition root lists its id in STARTER_ITEMS",
         (("for item_id in STARTER_ITEMS:",),),
         "app/item_workbench_app.gd",
+    ),
+    # `gather` was the LAST kind with no route, and it was missing a SUBSYSTEM rather
+    # than a wire. `ForageApi.harvest` works a held node through `HoldingsApi.accrue`
+    # and settles the units into a real item through the granter `app/` installs, so the
+    # verb is real and the `shipped` flag in `ItemSources.KINDS` followed it.
+    #
+    # BOTH call-site groups are required and neither is satisfied by the declaring file:
+    # the harvest verb and the grant half are two different concerns in two different
+    # layers, and a route that only had one of them would deliver accruals nobody could
+    # spend. `game/tests` cannot satisfy either group by construction.
+    "gather": Route(
+        "modules/forage/api.gd",
+        ("static func harvest(", "static func set_granter("),
+        "gatherable_item",
+        "an item named in ForageApi.NODE_YIELDS, produced by a node the actor holds",
+        (
+            ("ForageApi.harvest(",),
+            ("ForageApi.set_granter(", "ForageGranary.deliver"),
+        ),
+        "app/economy_boot.gd calls ForageApi.harvest through a screen's action; "
+        "app/economy_boot.gd binds ForageGranary.deliver",
     ),
 }
 # Authored encounter content is what makes a boss reachable: `LootApi.enter_domain`
@@ -722,15 +749,24 @@ def _audit(root: Path) -> list[str]:
 
     for item_id, item in items.items():
         sources = item["arrays"].get("sources", [])
-        # A numeraire is a unit of account, not something a player holds, so there is
-        # no item to acquire (ADR 0099). Declaring a source is itself the finding:
-        # without that half the exemption would park an unreachable item quietly.
-        if item["scalars"].get("subcategory") == NUMERAIRE_SUBCATEGORY:
-            if sources:
-                gaps.append(
-                    f"item {item_id}: a numeraire is a unit of account, not loot; drop its sources"
-                )
-            continue
+        # A numeraire is an ordinary held item here, not an integer balance.
+        #
+        # ADR 0099 originally exempted it from the acquisition requirement on the premise
+        # that "nothing ever puts a coin `ItemDef` in an inventory". That premise was false
+        # against the tree it shipped into: `economy`, `market` and `custody` all read the
+        # coin with `inventory.count`/`inventory.has` and pass coin ROWS into
+        # `EconomyExchange.exchange`, which physically moves the stack. So the exemption
+        # was not describing a unit of account, it was hiding an unreachable item — and
+        # `data audit` duly reported `curr_spirit_coin` as "obtainable in the content graph
+        # but not through any shipping route". ADR 0099 named its own escape hatch:
+        # "If the economy later grows held currency — coins as inventory rather than a
+        # balance — this decision is wrong and must be superseded." It has, so the
+        # exemption goes and the coin acquires a real route like everything else.
+        #
+        # Note the coin must NOT simply declare `gather`: `item_sources.KINDS[gather]` is
+        # `shipped: false`, so a gather source is graph-rooted but still runtime-unreachable.
+        # `starter` is the one route that both roots the graph and is actually granted
+        # (`app/item_workbench_app.gd` STARTER_ITEMS loop), which is why that is the source.
         if not sources:
             gaps.append(f"item {item_id}: has no acquisition source")
             continue
@@ -825,14 +861,7 @@ def _obtainable(items: dict, recipes: dict) -> set[str]:
 def _unobtainable(items: dict, recipes: dict) -> list[str]:
     """Items nothing in the corpus can ever produce or drop (DEF-0036)."""
     obtainable = _obtainable(items, recipes)
-    orphans = sorted(
-        item_id
-        for item_id in set(items) - obtainable
-        # A numeraire is a unit of account rather than something the corpus produces
-        # or drops (ADR 0099), so demanding a route to it asks for a delivery path to
-        # an item no inventory ever holds.
-        if items[item_id]["scalars"].get("subcategory") != NUMERAIRE_SUBCATEGORY
-    )
+    orphans = sorted(set(items) - obtainable)
     if not orphans:
         return []
     listed = ", ".join(orphans[:10])
@@ -1016,6 +1045,33 @@ def _entered_domains() -> dict[str, set[str]]:
         for block in re.findall(r"(?ms)^boss_ids\s*=\s*Array\[StringName\]\(\[(.*?)\]\)", text):
             bosses |= set(re.findall(r'&"([^"]*)"', block))
     return domains
+
+
+def _gatherable_ids() -> set[str]:
+    """Item ids a `gather` source can actually produce, read out of the runtime table.
+
+    `ForageApi.NODE_YIELDS` is the ONLY place in `game/src` that knows what a resource
+    node yields, and it had to be: `ResourceNodeDef` carries no item id and
+    `test_a_node_definition_names_no_item` pins that field list, so there is nowhere else
+    the answer could live. This function reads that one table rather than keeping a second
+    copy here, so a yield authored in the game and a yield counted by this gate cannot
+    drift apart without one of the two reading a different file than it thinks.
+
+    Empty is an honest answer rather than an error: a build with no `forage` module has no
+    gather route at all, and reporting every `gather`-sourced item as undeliverable is
+    exactly what should happen then.
+    """
+    route = RUNTIME_ROUTES.get("gather")
+    if route is None:
+        return set()
+    path = SRC_DIR / route.script
+    if not path.is_file():
+        return set()
+    text = path.read_text(encoding="utf-8", errors="replace")
+    match = re.search(r"(?ms)^const NODE_YIELDS[^\n=]*=\s*\{(.*?)^\}", text)
+    if not match:
+        return set()
+    return set(re.findall(r'&"([^"]+)"', match.group(1)))
 
 
 def _granted_ids() -> set[str]:
@@ -1246,6 +1302,9 @@ def _runtime_roots(
             ):
                 delivered = True
                 break
+            if kind == "gather" and item_id in _gatherable_ids():
+                delivered = True
+                break
             unshipped.append(kind)
         if delivered:
             roots.add(item_id)
@@ -1328,6 +1387,9 @@ def _route_roots_by_kind(
                 ):
                     delivered.add(item_id)
                     break
+                if kind == "gather" and item_id in _gatherable_ids():
+                    delivered.add(item_id)
+                    break
         out[kind] = delivered
         outright |= delivered
     return out, outright
@@ -1382,14 +1444,17 @@ def _runtime_findings(records: dict) -> list[tuple[str, str]]:
     ("no forager, no quest system") was wrong about half of it, so the two are now named
     for what they are:
 
-      - `gather` is a MISSING subsystem. No module turns a world object into an item.
-        `holdings` is custody, not gathering: `ResourceNodeDef` carries no item id at
-        all, `accrue` credits `yield_per_period * periods` abstract units into an
-        obligation line, and `settle` hands those units back to "the caller's own
-        accounting" because "turning a line into items is the economy's call"
-        (`holdings/api.gd`). It has no authored node content and declares no `items`
-        edge. So there is no verb in `game/src` that forages, and `gather` has no
-        route to declare.
+      - `gather` WAS a MISSING subsystem and no longer is. It is recorded here because
+        the shape of the gap is the interesting part and it is the reason the fix had to
+        be shaped the way it was: `holdings` is custody, not gathering. `ResourceNodeDef`
+        carries no item id at all, `accrue` credits `yield_per_period * periods` abstract
+        units into an obligation line, `settle` hands those units back to "the caller's own
+        accounting", and `holdings` declares no `items` edge. So the conversion could not be
+        bolted onto the module that owns nodes. It ships as the `forage` module, which owns
+        the harvest RULE and takes the item half as an injected `Callable` that `app/`
+        binds — because `ItemsApi` is at its twelve-method cap and `Crafting.resolve` is
+        `items` internals only `app/` may name. The route went live only after an item
+        demonstrably arrives.
       - `quest` is an UNWIRED one, and unwired is now MEASURED rather than inferred.
         The module ships and its ledger, gates and once-guard all work, but four
         separate things each block delivery on their own:
@@ -1406,13 +1471,15 @@ def _runtime_findings(records: dict) -> list[tuple[str, str]]:
       - Missing authored content, as before: no encounter hosting the bosses that carry
         their drops.
 
-    `gather` and `quest` therefore carry NO `Route`, and that is the finding rather
-    than an omission. A `Route` is a claim that shipped code delivers the item, and
+    `quest` therefore still carries NO `Route`, and that is the finding rather than an
+    omission. A `Route` is a claim that shipped code delivers the item, and
     `call_sites` is what makes the claim checkable: the declaring verb must be
     invoked from `game/src`, not only from `game/tests`. Declaring `quest` on the
     evidence that "the module exists and its tests pass" is the exact failure this
     gate exists to prevent, and it is the one that raises the count while the item
-    stays unobtainable.
+    stays unobtainable. `gather` is declared, and its `call_sites` are the two groups
+    a delivery actually needs — someone must CALL `ForageApi.harvest` and someone must
+    BIND the granter — so declaring it is a checkable claim rather than a flag flip.
 
     None of that is a data defect inside a subsystem that already ships, so none belongs
     in the gating set; what belongs there is reported, loudly, every run. `data audit
