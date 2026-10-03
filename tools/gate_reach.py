@@ -726,7 +726,6 @@ def _record_verb_is_reachable(relative: str) -> bool:
     names = _module_public_names(module_dir)
     if not names:
         return False
-    pattern = "|".join(re.escape(name) for name in sorted(names))
     for path in sorted(SRC_DIR.rglob("*.gd")):
         candidate = path.relative_to(GAME_DIR).as_posix()
         if str(Path(candidate).parent) == module_dir:
@@ -770,14 +769,8 @@ def _module_public_names(module_dir: str) -> set[str]:
     return names
 
 
-def _to_pascal(stem: str) -> str:
-    """`combat_facts` -> `CombatFacts`. Read from the file when it declares a different
-    `class_name`, because that is the identifier a caller actually writes."""
-    return "".join(part.capitalize() for part in stem.split("_") if part)
-
-
 def _note_reachability(row: Supply, relative: str) -> None:
-    """Upgrade a code-owned site's ceiling to REPEATABLE, but only if it is driven.
+    """Upgrade a code-owned site's ceiling to REPEATABLE, but only if its module is driven.
 
     No guard on the amount expression. My first version skipped a site whose amount was the
     literal `1`, on the reasoning that an authored quantity stands on its own - and that
@@ -790,11 +783,11 @@ def _note_reachability(row: Supply, relative: str) -> None:
     if row.repeatable:
         return
     if not _record_verb_is_reachable(relative):
-        row.sites.append(f"{relative} (UNDECLARED CEILING: verb reached only from itself)")
+        row.sites.append(f"{relative} (UNDECLARED CEILING: module reached only from itself)")
         return
     row.total += REPEATABLE
     row.repeatable = True
-    row.sites.append(f"{relative} (repeatable: verb reached from production code)")
+    row.sites.append(f"{relative} (repeatable: module called from production code)")
 
 
 def _roster_files(dispatched: set[str]) -> list[tuple[str, list[str], int]]:
