@@ -193,14 +193,29 @@ func restore_actor() -> Dictionary:
 	var restored := SaveApi.restore()
 	if not bool(restored.get("ok", false)):
 		# A new game, not an error. The caller builds a fresh hero and the shell plays on.
-		return {"ok": false, "reason": String(restored.get("reason", "no_readable_save")), "recovered": false, "generation": 0}
+		return {
+			"ok": false,
+			"reason": String(restored.get("reason", "no_readable_save")),
+			"recovered": false,
+			"generation": 0
+		}
 	var envelope := restored.get("envelope", {}) as Dictionary
 	var payload := envelope.get("actor", {}) as Dictionary
 	if payload.is_empty():
-		return {"ok": false, "reason": "no_actor_payload", "recovered": bool(restored.get("recovered", false)), "generation": int(envelope.get("generation", 0))}
+		return {
+			"ok": false,
+			"reason": "no_actor_payload",
+			"recovered": bool(restored.get("recovered", false)),
+			"generation": int(envelope.get("generation", 0))
+		}
 	var actor := Actor.from_dict(payload)
 	if actor == null:
-		return {"ok": false, "reason": "actor_unreadable", "recovered": bool(restored.get("recovered", false)), "generation": int(envelope.get("generation", 0))}
+		return {
+			"ok": false,
+			"reason": "actor_unreadable",
+			"recovered": bool(restored.get("recovered", false)),
+			"generation": int(envelope.get("generation", 0))
+		}
 	_actor = actor
 	_recovered_from_save = true
 	# The saved body needs its providers re-mounted and its items deserialized. The payload
@@ -267,6 +282,7 @@ func save_summary() -> Dictionary:
 ## there: body before the element realm refresh, items before set bonus and techniques,
 ## techniques last, destiny before event. Copying the sequence into a second literal would let
 ## the two drift, so there is one list and the fresh build calls it too.
+
 
 func _mount_player_modules(actor: Actor) -> void:
 	SocketApi.attach(actor)
