@@ -331,7 +331,7 @@ func test_the_entry_gate_pins_the_clarity_and_purity_the_roll_reads() -> void:
 		assert_almost_eq(
 			sea.purity,
 			minf(1.0, seed.purity_required),
-			"and on exactly the purity the gate demands" % realm.id,
+			"and on exactly the purity the gate demands at %s" % realm.id,
 			0.0001
 		)
 		pinned += 1
