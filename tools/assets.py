@@ -11,7 +11,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from . import map_assets
+from . import item_asset_generate, map_assets
 from .common import GAME_DIR, REPO_ROOT, ToolError, fail, ok
 
 ITEM_ROOT = GAME_DIR / "data" / "items"
@@ -32,12 +32,15 @@ def register(subparsers) -> None:
     normalize = actions.add_parser("normalize", help="crop and resize a transparent generated PNG")
     normalize.add_argument("--source", required=True, help="generated PNG source path")
     normalize.add_argument("--output", required=True, help="new filename in generated item assets")
+    item_asset_generate.register(actions)
     map_assets.register(actions)
 
 
 def run(args) -> int:
     if args.assets_action == "map":
         return map_assets.run(args)
+    if args.assets_action == "generate":
+        return item_asset_generate.run(args)
     items = _load_items()
     records = _load_index()
     if args.assets_action == "inspect":
@@ -80,7 +83,7 @@ def run(args) -> int:
     return 0
 
 
-def _normalize_image(source: Path, output_name: str) -> None:
+def _normalize_image(source: Path, output_name: str, *, replace: bool = False) -> None:
     source = source.resolve()
     output_dir = GAME_DIR / "assets" / "items" / "generated"
     output_path = (output_dir / output_name).resolve()
@@ -90,7 +93,7 @@ def _normalize_image(source: Path, output_name: str) -> None:
         raise ToolError("output must be a PNG filename without directory components")
     if not output_path.is_relative_to(output_dir.resolve()):
         raise ToolError("output must stay under game/assets/items/generated")
-    if output_path.exists():
+    if output_path.exists() and not replace:
         raise ToolError(f"refusing to overwrite existing asset: {output_path}")
 
     with Image.open(source) as opened:
@@ -105,7 +108,33 @@ def _normalize_image(source: Path, output_name: str) -> None:
     image.thumbnail((232, 232), Image.Resampling.LANCZOS)
     canvas = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
     canvas.alpha_composite(image, ((256 - image.width) // 2, (256 - image.height) // 2))
-    canvas.save(output_path, format="PNG", optimize=True)
+    if replace:
+        temporary_path: Path | None = None
+        try:
+            with tempfile.NamedTemporaryFile(
+                suffix=".png", dir=output_dir, delete=False
+            ) as temporary:
+                temporary_path = Path(temporary.name)
+                canvas.save(temporary, format="PNG", optimize=True)
+            os.replace(temporary_path, output_path)
+        finally:
+            if temporary_path and temporary_path.exists():
+                temporary_path.unlink()
+    else:
+        descriptor = None
+        try:
+            descriptor = os.open(output_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+            with os.fdopen(descriptor, "wb") as output:
+                descriptor = None
+                canvas.save(output, format="PNG", optimize=True)
+        except FileExistsError as exc:
+            raise ToolError(f"refusing to overwrite existing asset: {output_path}") from exc
+        except OSError as exc:
+            output_path.unlink(missing_ok=True)
+            raise ToolError(f"could not save normalized asset: {output_path}: {exc}") from exc
+        finally:
+            if descriptor is not None:
+                os.close(descriptor)
     ok(f"normalized {output_path.relative_to(REPO_ROOT).as_posix()} (256x256, transparent)")
 
 

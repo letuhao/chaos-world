@@ -120,7 +120,20 @@ WORKFLOW = {
 
 def _production_prompt(record: dict, subject: str) -> str:
     framing = ""
-    if record["type"] == "terrain_texture":
+    if record["type"] == "item_icon":
+        match = record.get("match", {})
+        examples = ", ".join(record.get("family_examples", []))
+        framing = (
+            f"Create one isolated {match.get('category', 'cultivation')} "
+            f"{match.get('subcategory', 'item')} inventory icon. "
+            "Use one clear, distinctive silhouette and a compact material-led pattern. "
+            "Choose colors that fit this item's material and meaning; vary hue across item "
+            "families and do not default to jade green. "
+        )
+        if examples:
+            framing += f"Family examples for its theme: {examples}. "
+        framing += "Center the complete object with generous clear padding. "
+    elif record["type"] == "terrain_texture":
         framing = (
             "Fill the full square canvas with one continuous terrain surface seen straight down. "
             "Treat it as a broad, non-repeating area texture, not a tile or framed platform. "
@@ -140,6 +153,18 @@ def _production_prompt(record: dict, subject: str) -> str:
         transparency = "The final image must be fully opaque. "
     else:
         transparency = "The final image must have transparent pixels outside the art. "
+    if record["type"] == "item_icon":
+        return (
+            f"{subject.strip()}\n\n"
+            "Production inventory icon for Chaos World, a 2D cultivation action RPG. "
+            f"Family: {record['id']}. {framing}"
+            "Transparent background. Painterly anime gouache with crisp dark ink contours, "
+            "clear value grouping, luminous material accents, restrained detail, and soft "
+            "upper-left light. Keep the silhouette readable at 32x32 pixels. "
+            "Use a varied palette and a fitting motif; avoid repeating the same crystal, "
+            "jade, cloud, or lotus treatment across families. No text, labels, UI, frame, "
+            "watermark, or unrelated objects."
+        )
     return (
         f"{subject.strip()}\n\n"
         f"Production sprite for Chaos World, a 2D top-down cultivation action RPG. "
@@ -155,7 +180,13 @@ def _production_prompt(record: dict, subject: str) -> str:
     )
 
 
-def generate(record: dict, args) -> tuple[Path, str, int]:
+def generate(
+    record: dict,
+    args,
+    *,
+    output_dir: str = "map-generated",
+    client_id: str = "chaos-world-map",
+) -> tuple[Path, str, int]:
     if not 256 <= args.size <= 2048 or args.size % 16:
         raise ToolError("--size must be a multiple of 16 between 256 and 2048")
     if not 1 <= args.steps <= 64:
@@ -177,7 +208,7 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
         )
     ):
         raise ToolError("alpha thresholds and erosion size must be between 0 and 255")
-    if args.compare_rembg and record["alpha"] != "transparent":
+    if getattr(args, "compare_rembg", False) and record["alpha"] != "transparent":
         raise ToolError("--compare-rembg only applies to transparent map assets")
 
     seed = args.seed if args.seed >= 0 else secrets.randbelow(2**31)
@@ -220,7 +251,7 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
         graph["7"]["inputs"]["images"] = ["6", 0]
 
     comparison_nodes: dict[str, str] = {}
-    if args.compare_rembg:
+    if getattr(args, "compare_rembg", False):
         for index, model in enumerate(REMBG_COMPARE_MODELS):
             if model == args.rembg_model:
                 continue
@@ -253,7 +284,7 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
     output = (
         REPO_ROOT
         / "build"
-        / "map-generated"
+        / output_dir
         / f"{record['id'].replace('.', '_')}-{seed}-{rembg_slug}-{lora_slug}.png"
     )
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -261,7 +292,7 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
         raise ToolError(f"refusing to overwrite generated source: {output}")
 
     comfy_url = args.comfy_url.rstrip("/")
-    response = _post(f"{comfy_url}/prompt", {"prompt": graph, "client_id": "chaos-world-map"})
+    response = _post(f"{comfy_url}/prompt", {"prompt": graph, "client_id": client_id})
     prompt_id = response.get("prompt_id")
     if not prompt_id:
         raise ToolError(f"ComfyUI did not return a prompt_id: {response}")
@@ -286,7 +317,8 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
     data = _get_bytes(f"{comfy_url}/view?{urllib.parse.urlencode(image)}")
     _write_new_file(output, data)
     print(
-        f"[map generate] saved source {output.relative_to(REPO_ROOT).as_posix()} ({len(data)} bytes)"
+        f"[map generate] saved source {output.relative_to(REPO_ROOT).as_posix()} "
+        f"({len(data)} bytes)"
     )
     comparison_paths = {args.rembg_model: output}
     for node_id, model in comparison_nodes.items():
@@ -308,7 +340,8 @@ def generate(record: dict, args) -> tuple[Path, str, int]:
     if comparison_nodes:
         sheet = _write_comparison_sheet(record, seed, lora_slug, comparison_paths)
         print(
-            f"[map generate] wrote remover comparison sheet {sheet.relative_to(REPO_ROOT).as_posix()}"
+            f"[map generate] wrote remover comparison sheet "
+            f"{sheet.relative_to(REPO_ROOT).as_posix()}"
         )
     return output, prompt, seed
 
