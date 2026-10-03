@@ -7,7 +7,7 @@ extends TestCase
 ##
 ## Because the change it covers shipped with none. `SectAct.VERB_SERVE_DUTY` and
 ## `institution_resolver._resolve`'s `serve_duty` arm were committed before any test could
-## reach them, and `MUTATION-S1` proved the consequence: deleting the proposal outright left
+## reach them, and mutation S1 proved the consequence: deleting the proposal outright left
 ## `tools test --suite modules/sect` at **1393 passed, 0 failed**. A verb nobody can observe
 ## is not a verb, it is a comment in a `match` arm — the BL-0123 proof-gap shape, committed
 ## by me. These cases are the receipt.
