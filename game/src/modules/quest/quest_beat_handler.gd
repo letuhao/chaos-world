@@ -1,5 +1,5 @@
 class_name QuestBeatHandler
-extends RefCounted
+extends BeatSink
 
 ## The `quest` module's end of ADR 0114: a beat handler that claims a beat whose
 ## fact an ACTIVE quest is watching, and resolves it by asking the quest module to
@@ -8,13 +8,15 @@ extends RefCounted
 ## ## The `BeatSink` contract
 ##
 ## ADR 0114 puts `BeatSink` in `contracts/beat_sink.gd` with two virtuals:
-## `handles(beat) -> bool` and `resolve(beat) -> Dictionary`, and says a handler
-## **never mutates** — it returns a proposal and the director applies. That file
-## is written by the contracts-layer agent in parallel with this module and
-## **was not present when this module was built** (see the note below), so this
-## class does not `extends BeatSink`. It implements the described shape by the
-## name, which is what the director dispatches against. When the contracts file
-## lands, adding `extends BeatSink` is a one-line change and nothing here moves.
+## `handles(beat, context) -> bool` and `resolve(beat, context) -> Dictionary`,
+## and says a handler **never mutates** — it returns a proposal and the director
+## applies. **This class extends that contract.** It did not when first written,
+## because the contracts file had not landed yet: the handler widened `handles` to
+## take `(beat, actor)` — a beat names nobody, and a fact ledger is per-actor —
+## and a widened signature is not an override of anything, so nothing could be
+## dispatched against it and nothing could be held to the contract tests. The fix
+## was the contract's, not this file's: `context` is now a parameter of
+## `handles`/`resolve`, and the two spellings agree.
 ##
 ## ## Why a quest handler is the right first consumer
 ##
@@ -39,13 +41,14 @@ const BEAT_FACT := "fact"
 
 
 ## Whether this handler owns `beat`: true when the beat's `fact` matches a step
-## of some quest the actor has ACTIVE. A quest that is offered but not accepted,
-## or already completed, does not claim — completion is once, and a completed
-## quest must not be re-driven by later beats.
+## of some quest the actor in `context` has ACTIVE. A quest that is offered but not
+## accepted, or already completed, does not claim — completion is once, and a
+## completed quest must not be re-driven by later beats.
 ##
 ## A null actor claims nothing: an empty ledger has no active quests, and a
 ## handler that claims for "nobody" would resolve every beat in the game.
-func handles(beat, actor: Actor) -> bool:
+func handles(beat: Variant, context: Variant = null) -> bool:
+	var actor := _actor_of(context)
 	if beat == null or actor == null:
 		return false
 	var fact := _fact_of(beat)
@@ -61,14 +64,21 @@ func handles(beat, actor: Actor) -> bool:
 ## director's, from the caller's beat. The distinction is what keeps the ledger
 ## honest: a handler that recorded its own claim could manufacture a fact out of
 ## nothing.
-func resolve(beat, actor: Actor) -> Dictionary:
-	if not handles(beat, actor):
-		return {"ok": false, "reason": "not_handled", "completed": []}
+##
+## Carries the `BeatSink` keys `claimed` and `reason` plus the detail a director
+## reports verbatim: which quests completed and what was paid. A sink that could
+## only say "yes" would leave the director re-deriving the answer from module
+## internals it is forbidden to reach.
+func resolve(beat: Variant, context: Variant = null) -> Dictionary:
+	if not handles(beat, context):
+		return {"claimed": false, "reason": "not_handled", "completed": []}
+	var actor := _actor_of(context)
 	var source := _source_of(beat)
 	var outcome := QuestApi.advance(actor, source)
 	return {
-		"ok": true,
+		"claimed": true,
 		"reason": "",
+		"ok": true,
 		"fact": String(_fact_of(beat)),
 		"source": source,
 		"completed": outcome.get("completed", []),
@@ -88,6 +98,19 @@ func watches(actor: Actor, fact: StringName) -> Array[String]:
 
 
 # --- Internals -------------------------------------------------------------
+
+
+## The actor a beat is about, or null.
+##
+## `BeatSink`'s second argument is a `Variant` because `contracts/` may not name
+## `core` and `Actor` lives there, so the cast happens once here rather than in
+## every override. Anything that is not an `Actor` — including the null a caller
+## passes when there is nobody — reads as "no owner", and a sink with no owner
+## claims nothing.
+func _actor_of(context: Variant) -> Actor:
+	if context is Actor:
+		return context as Actor
+	return null
 
 
 ## The active quest ids watching `fact`. Bounded by the authored quest count —

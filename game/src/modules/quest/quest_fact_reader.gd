@@ -45,17 +45,28 @@ extends RefCounted
 const LEDGER_MODULE_KEY := &"world_facts"
 ## The row shape ADR 0113 fixes: a fact is `{id, count, since}` and nothing else.
 const FACT_COUNT_KEY := "count"
+## The payload key the rows hang under: `{version, facts: {id: {count, since}}}`.
+const FACTS_KEY := "facts"
 
 
 ## How many times `fact` is recorded for `actor`. 0 when the ledger is absent,
 ## unreadable, or has never heard of the fact.
+##
+## The lookup is two levels deep: the payload is `{version, facts: {id: {count,
+## since}}}`, not `{id: {count}}`. It read the payload's own keys, so it asked
+## `ledger.get("<fact id>")` of a dictionary whose only keys are `version` and
+## `facts` — every lookup missed, every step reported 0, and no quest could ever
+## complete from the world's memory. `available()` two functions below already
+## read `ledger.get("facts", ...)`, which is what made the shape unmistakable:
+## one function in this file knew the real layout and the other two did not.
 static func count(actor: Actor, fact: StringName) -> int:
 	if actor == null or fact == &"":
 		return 0
 	var ledger := _ledger(actor)
-	if ledger.is_empty():
+	var facts = ledger.get(FACTS_KEY, null)
+	if not (facts is Dictionary):
 		return 0
-	var found = ledger.get(String(fact), null)
+	var found = (facts as Dictionary).get(String(fact), null)
 	if not (found is Dictionary):
 		return 0
 	return int((found as Dictionary).get(FACT_COUNT_KEY, 0))
@@ -76,7 +87,7 @@ static func available(actor: Actor) -> bool:
 	var ledger := _ledger(actor)
 	if ledger.is_empty():
 		return false
-	return ledger.get("facts", null) is Dictionary
+	return ledger.get(FACTS_KEY, null) is Dictionary
 
 
 # --- Internals -------------------------------------------------------------

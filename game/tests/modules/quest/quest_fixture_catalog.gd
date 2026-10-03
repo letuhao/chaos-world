@@ -27,6 +27,14 @@ const LEDGER_MODULE_KEY := &"world_facts"
 
 
 ## A quest with the given steps authored as `{step_id, fact, need, optional}`.
+##
+## `grants` is copied into a TYPED `Array[Dictionary]` before it is assigned.
+## Assigning the caller's untyped `Array` straight to `QuestDef.grants`
+## (`Array[Dictionary]`) is a runtime type error, and it is a fatal one: it
+## aborts `quest()` before the `return`, so the caller installed a `null`
+## definition and every assertion in the suite answered `unknown_quest`. A
+## fixture that silently returns null looks exactly like a module with no
+## catalog, which is how this hid behind a parse error for so long.
 static func quest(
 	quest_id: StringName,
 	kind: StringName = QuestDef.KIND_AUTHORED,
@@ -43,7 +51,10 @@ static func quest(
 	def.requirement = gate
 	for entry in steps:
 		def.steps.append(step(entry))
-	def.grants = grants
+	var typed: Array[Dictionary] = []
+	for entry in grants:
+		typed.append(entry as Dictionary)
+	def.grants = typed
 	return def
 
 

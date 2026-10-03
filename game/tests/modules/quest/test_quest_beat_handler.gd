@@ -180,9 +180,12 @@ func test_one_beat_completes_every_active_quest_watching_that_fact() -> void:
 	)
 
 
-## A beat may arrive as the `WorldBeat` value object ADR 0114 describes rather
-## than a plain dictionary. The handler reads both spellings, so the contracts
-## agent landing `core/world_beat.gd` changes nothing here.
+## A beat arrives as the `WorldBeat` value object ADR 0114 fixes in
+## `core/world_beat.gd`, or as the plain dictionary the event writer still builds,
+## and the handler reads both spellings. The two halves used to be asserted with a
+## `Vector4` carrying a `fact` meta, which does not parse — a value type has no
+## `set_meta` — so this half of the claim was never actually measured. The real
+## value object is the better fixture anyway: it is what a sink is asked about.
 func test_a_beat_is_read_in_both_the_dictionary_and_the_value_object_shape() -> void:
 	var actor := QuestFixtureCatalog.hero()
 	QuestApi.accept(actor, WATCHED)
@@ -191,8 +194,10 @@ func test_a_beat_is_read_in_both_the_dictionary_and_the_value_object_shape() -> 
 	assert_eq(handler.handles(_beat(FACT), actor), true, "the dictionary shape is read")
 	assert_eq(handler.handles({"fact": FACT}, actor), true, "and so is a bare fact key")
 
-	var shaped := Vector4(0.0, 0.0, 0.0, 0.0)
-	shaped.set_meta(&"fact", FACT)
+	var shaped := WorldBeat.make(&"t_a_fact@1", FACT, 1, "combat")
+	assert_eq(handler.handles(shaped, actor), true, "and the WorldBeat value object is read too")
 	assert_eq(
-		handler.handles(shaped, actor), true, "an object carrying a `fact` property is read too"
+		handler.resolve(shaped, actor)["fact"],
+		String(FACT),
+		"and its source is carried through from the value object, not re-derived"
 	)

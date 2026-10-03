@@ -53,8 +53,15 @@ static func normalize(payload: Dictionary, known_quests: Dictionary = {}) -> Dic
 				# quest accepted before any clock existed has no start time, and
 				# inventing one would be a lie about when the player took it.
 				"started": int((entry as Dictionary).get("started", 0)),
-				"completed": int((entry as Dictionary).get("completed", 0)),
-				"failed": int((entry as Dictionary).get("failed", 0)),
+				# `completed` and `failed` are WHETHER, not WHEN — booleans, not
+				# moments. They were stored as integers and read with `> 0`, which
+				# only works if somebody writes a non-zero moment; the sole caller
+				# passed 0 (the module owns no clock, DEF-0111), so `completed` was
+				# always 0, `is_completed` was always false, and completion was
+				# never once — `advance()` re-paid a quest on every call. Coerced
+				# here so a save holding 1/0 still reads correctly.
+				"completed": _flag((entry as Dictionary).get("completed", false)),
+				"failed": _flag((entry as Dictionary).get("failed", false)),
 			}
 	var offered = payload.get("offered", [])
 	if offered is Array:
@@ -65,9 +72,19 @@ static func normalize(payload: Dictionary, known_quests: Dictionary = {}) -> Dic
 	return out
 
 
-## The entry for `quest_id`, or null when the quest is not tracked.
+## The entry for `quest_id`, or an EMPTY one when the quest is not tracked.
+##
+## An empty dictionary rather than null, because a typed `-> Dictionary` that
+## returns null is a runtime error in GDScript and it is a fatal one: it aborted
+## [method entry] before its caller could test for the absence, so every
+## `is_completed` on an untracked quest raised instead of answering false.
+## "Not tracked" is therefore spelled [code]{}[/code], which is also falsy in
+## every read, so an untracked quest and an entry with no flags agree.
 static func entry(ledger: Dictionary, quest_id: StringName) -> Dictionary:
-	return (ledger.get("active", {}) as Dictionary).get(String(quest_id), null)
+	var found = (ledger.get("active", {}) as Dictionary).get(String(quest_id), null)
+	if found is Dictionary:
+		return found as Dictionary
+	return {}
 
 
 ## Whether `quest_id` has an entry at all, active or finished.
@@ -78,18 +95,12 @@ static func is_tracked(ledger: Dictionary, quest_id: StringName) -> bool:
 ## Whether `quest_id` has been completed. The once-guard reads this and nothing
 ## else, so "already completed" is answerable without re-walking the ledger.
 static func is_completed(ledger: Dictionary, quest_id: StringName) -> bool:
-	var found := entry(ledger, quest_id)
-	if found == null:
-		return false
-	return int(found.get("completed", 0)) > 0
+	return _flag(entry(ledger, quest_id).get("completed", false))
 
 
 ## Whether `quest_id` has been failed.
 static func is_failed(ledger: Dictionary, quest_id: StringName) -> bool:
-	var found := entry(ledger, quest_id)
-	if found == null:
-		return false
-	return int(found.get("failed", 0)) > 0
+	return _flag(entry(ledger, quest_id).get("failed", false))
 
 
 ## Every tracked-but-unfinished quest id, canonically ordered. `active()` in the
@@ -98,7 +109,7 @@ static func active_ids(ledger: Dictionary) -> Array[StringName]:
 	var strings: Array[String] = []
 	for quest_id in (ledger.get("active", {}) as Dictionary).keys():
 		var found := (ledger.get("active", {}) as Dictionary)[quest_id] as Dictionary
-		if int(found.get("completed", 0)) > 0 or int(found.get("failed", 0)) > 0:
+		if _flag(found.get("completed", false)) or _flag(found.get("failed", false)):
 			continue
 		strings.append(String(quest_id))
 	strings.sort()
@@ -113,7 +124,7 @@ static func completed_ids(ledger: Dictionary) -> Array[StringName]:
 	var strings: Array[String] = []
 	for quest_id in (ledger.get("active", {}) as Dictionary).keys():
 		var found := (ledger.get("active", {}) as Dictionary)[quest_id] as Dictionary
-		if int(found.get("completed", 0)) <= 0:
+		if not _flag(found.get("completed", false)):
 			continue
 		strings.append(String(quest_id))
 	strings.sort()
@@ -131,7 +142,7 @@ static func begin(ledger: Dictionary, quest_id: StringName, at: int) -> bool:
 	var key := String(quest_id)
 	if active.has(key):
 		return false
-	active[key] = {"started": at, "completed": 0, "failed": 0}
+	active[key] = {"started": at, "completed": false, "failed": false}
 	return true
 
 
@@ -139,7 +150,12 @@ static func begin(ledger: Dictionary, quest_id: StringName, at: int) -> bool:
 ## writes nothing when the quest is already completed, so no caller can pay a
 ## grant twice no matter how it reached here (ADR 0061's precedent: the reward
 ## is decided once, and the decision lives in one place).
-static func finish(ledger: Dictionary, quest_id: StringName, at: int) -> bool:
+##
+## No `at`: this records WHETHER, and the module owns no clock to say WHEN
+## (DEF-0111). It used to take a moment and was called with `0`, so it wrote
+## `completed = 0` into a field every reader tested with `> 0` — the guard was
+## inert and a quest completed and paid on every single `advance()`.
+static func finish(ledger: Dictionary, quest_id: StringName) -> bool:
 	var active: Dictionary = ledger["active"]
 	var key := String(quest_id)
 	if not active.has(key):
@@ -147,20 +163,33 @@ static func finish(ledger: Dictionary, quest_id: StringName, at: int) -> bool:
 		# entry fabricated here would carry a `started` the player never had.
 		return false
 	var entry: Dictionary = active[key]
-	if int(entry.get("completed", 0)) > 0:
+	if _flag(entry.get("completed", false)):
 		return false
-	entry["completed"] = at
+	entry["completed"] = true
 	return true
 
 
-## Mark `quest_id` failed. Once-guard on the same axis as `finish`.
-static func fail(ledger: Dictionary, quest_id: StringName, at: int) -> bool:
+## Mark `quest_id` failed. Once-guard on the same axis as `finish`, and no `at`
+## for the same reason.
+static func fail(ledger: Dictionary, quest_id: StringName) -> bool:
 	var active: Dictionary = ledger["active"]
 	var key := String(quest_id)
 	if not active.has(key):
 		return false
 	var entry: Dictionary = active[key]
-	if int(entry.get("failed", 0)) > 0 or int(entry.get("completed", 0)) > 0:
+	if _flag(entry.get("failed", false)) or _flag(entry.get("completed", false)):
 		return false
-	entry["failed"] = at
+	entry["failed"] = true
 	return true
+
+
+## One WHETHER flag, coerced. Any truthy stored value means yes, so a save
+## written by the integer era (`1`) and one written by this one (`true`) are the
+## same state — a save is untrusted input and must not be able to state a
+## completion this build cannot see.
+static func _flag(value) -> bool:
+	if value is bool:
+		return value as bool
+	if value is int or value is float:
+		return int(value) != 0
+	return false

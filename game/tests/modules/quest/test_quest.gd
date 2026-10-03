@@ -280,8 +280,12 @@ func test_every_refusal_names_a_reason() -> void:
 	assert_eq(
 		String(QuestApi.complete(actor, UNKNOWN)["reason"]), "unknown_quest", "completing nothing"
 	)
+	# `OPTIONAL`, not a made-up id: the catalog has to DEFINE a quest for the
+	# refusal to be about the quest never being accepted. An id the catalog does
+	# not ship is correctly `unknown_quest`, so the original spelling here was
+	# asserting the wrong refusal and passing only because both were wrong.
 	assert_eq(
-		String(QuestApi.complete(actor, &"t_never_accepted")["reason"]),
+		String(QuestApi.complete(actor, OPTIONAL)["reason"]),
 		"not_active",
 		"completing a quest never accepted"
 	)
@@ -453,48 +457,31 @@ func _ledger_shape(actor: Actor) -> String:
 	return JSON.stringify(QuestApi.summary(actor))
 
 
+## The verbs `QuestApi` publishes to other modules — every function the facade
+## SCRIPT declares, minus the `_`-prefixed helpers.
+##
+## Read off the loaded `GDScript` rather than off `self`: the question is what
+## `quest` exposes, not what this suite happens to be named, and a bare
+## `get_script_method_list()` here asked the wrong object — it is a method on
+## `Script`, not on the `RefCounted` a suite instance is, so this file did not
+## even parse. `get_script_method_list()` on the loaded script returns the
+## script's OWN declarations and not the inherited `Object` surface, which is why
+## the inherited-name whitelist this used to carry is gone. The same call is how
+## `tests/modules/sect/test_sect_founding.gd` reads that facade.
+##
+## `load()` rather than a `class_name` reference because a facade is all static
+## functions and GDScript refuses a non-static call on a class reference. An
+## unreadable facade hands back an empty list, which the surface test above fails
+## on rather than quietly accepts.
 func _public_methods() -> Array[String]:
 	var out: Array[String] = []
-	for method in get_script_method_list():
-		var name := String(method.name)
-		if (
-			name.begins_with("_")
-			or (
-				name
-				in [
-					"new",
-					"free",
-					"get_script",
-					"get_script_method_list",
-					"call",
-					"call_deferred",
-					"callv",
-					"has_method",
-					"set_script",
-					"to_string",
-					"get_class",
-					"is_class",
-					"set_meta",
-					"get_meta",
-					"has_meta",
-					"get_instance_id",
-					"set_deferred",
-					"get_property_list",
-					"get_method_list",
-					"property_can_revert",
-					"property_get_revert",
-					"get",
-					"set",
-					"notification",
-					"get_property_default_value",
-					"emit_signal",
-					"connect",
-					"disconnect",
-					"is_connected",
-					"has_signal",
-				]
-			)
-		):
+	var script: GDScript = load("res://src/modules/quest/api.gd")
+	if script == null:
+		return out
+	for method in script.get_script_method_list():
+		var name := String(method["name"])
+		if name.begins_with("_") or out.has(name):
 			continue
 		out.append(name)
+	out.sort()
 	return out

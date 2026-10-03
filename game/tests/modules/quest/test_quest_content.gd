@@ -66,7 +66,12 @@ func _shipped() -> Array[QuestDef]:
 ## same questions with the same fields, so one reader serves all three.
 func test_the_three_kinds_share_one_shape() -> void:
 	var shipped := _shipped()
-	assert_ne(shipped.is_empty(), false, "the authored quest tree is not empty")
+	# `assert_eq(.., false)`, NOT `assert_ne(.., false)`: `assert_ne(x, false)`
+	# demands x be TRUE, so the original spelling asserted the authored tree was
+	# EMPTY and went red on the day the first five quests landed. A test whose
+	# failure count is a measure of how good the content is has to say so in the
+	# operator, not in the label.
+	assert_eq(shipped.is_empty(), false, "the authored quest tree is not empty")
 
 	var seen_kinds: Array[String] = []
 	for def in shipped:
@@ -173,7 +178,12 @@ func test_every_shipped_fate_grant_names_a_real_fate_without_the_quest_namespace
 		for grant in def.grants:
 			var kind := StringName(grant.get("kind", ""))
 			var id := String(grant.get("id", ""))
-			assert_ne(
+			# `assert_eq(.., false)` for the same reason as above: the label says the
+			# id must NOT be namespaced, and `assert_ne(id.begins_with("quest:"),
+			# false)` demanded the opposite — every correctly-authored fate id failed
+			# its own check. DEF-0107's rule is "no `quest:` prefix on a fate id", so
+			# `false` is the passing value.
+			assert_eq(
 				id.begins_with("quest:"),
 				false,
 				"%s grant '%s' is NOT namespaced as quest:* (DEF-0107)" % [def.id, id]

@@ -41,6 +41,25 @@ extends RefCounted
 ## match its parent's exactly, so typing it here would be what makes the honest
 ## signature impossible to write.
 ##
+## ## Why there is a `context` argument at all
+##
+## A beat is `{id, fact, amount, source}` and names NOBODY. But a fact ledger is
+## per-actor, so "has this already fired" is not a question about a beat — it is a
+## question about a beat *about somebody*. A sink that cannot see who the beat is
+## for cannot answer, which is not a hypothetical: the first sink anyone wrote
+## (`quest/quest_beat_handler.gd`) had to widen `handles` to `(beat, actor)`
+## because of it, and a widened signature does not override this one, so the class
+## could not be extended and went unimplemented instead.
+##
+## `context` is that owner, as a `Variant` for the same reason `beat` is: `Actor`
+## lives in `core` and `contracts/` may not name it. It DEFAULTS to null, which
+## keeps the base class usable as a no-op and keeps a caller that genuinely has no
+## owner from having to invent one — a null context claims nothing, because a beat
+## with no owner has no ledger to be recorded in. The alternative rejected here is
+## binding the actor at construction (`QuestBeatHandler.new(actor)`): it removes
+## the argument but hands every sink a mutable collaborator, so "a sink does not
+## mutate anything" becomes a promise about a class that carries state.
+##
 ## ## The contract, in full
 ##
 ## **PURE.** A sink does not mutate anything: not the beat it was handed, not an
@@ -57,16 +76,23 @@ extends RefCounted
 ## Whether this sink claims `beat`. Called in priority order and the first sink
 ## that answers true owns the outcome — a claim, not a veto: `handles` false
 ## means "not mine", never "this beat is invalid". Read-only by contract.
-func handles(_beat: Variant) -> bool:
+##
+## `context` is the owner of the beat (see the class docstring); null means
+## "nobody", and a sink with nothing to read claims nothing.
+func handles(_beat: Variant, _context: Variant = null) -> bool:
 	return false
 
 
 ## What this sink proposes for `beat`, or nothing.
 ##
-## Returns `{claimed: bool, reason: String}` and nothing else. Deliberately
-## primitives-only: the result travels into logs, UI summaries and
-## `BeatHandler` announcements, and a `Resource`, an `Actor` or a lambda in here
-## would be a save-schema bug no gate can see — the same rule
+## **MUST** carry `{claimed: bool, reason: String}`. It MAY carry further
+## JSON-safe detail keys — `completed`, `paid`, a rejected id — because the
+## director's whole job is to report what the winning sink decided, and a sink
+## that could only say "yes" would force the director to re-derive the answer
+## from module internals it is forbidden to reach. The detail is COPIED into the
+## director's outcome rather than returned as-is, so a sink cannot smuggle a
+## `Resource`, an `Actor` or a callable into a payload that travels into logs and
+## UI summaries. Deliberately primitives-only for the same reason
 ## `DamageProposal.is_primitive_effect` enforces by refusing at construction.
 ##
 ## `claimed: false` is a legitimate answer, not a failure: an unclaimed beat is
@@ -74,5 +100,5 @@ func handles(_beat: Variant) -> bool:
 ## cared. Rejected: returning the effect this sink would have applied, because
 ## applying is the director's job and a sink that could write would be a second
 ## place a fact gets moved.
-func resolve(_beat: Variant) -> Dictionary:
+func resolve(_beat: Variant, _context: Variant = null) -> Dictionary:
 	return {"claimed": false, "reason": ""}

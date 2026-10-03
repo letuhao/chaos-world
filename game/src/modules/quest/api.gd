@@ -398,7 +398,7 @@ static func _required_steps_met(actor: Actor, def: QuestDef) -> bool:
 static func _complete(
 	actor: Actor, ledger: Dictionary, quest_id: StringName, def: QuestDef, source: String
 ) -> Dictionary:
-	if not QuestState.finish(ledger, quest_id, 0):
+	if not QuestState.finish(ledger, quest_id):
 		return {"ok": false, "reason": "already_completed", "paid": [], "unspent": []}
 	# DEF-0107, verbatim: `earn_fate(actor, fate_id, "quest:<quest_id>")`. An
 	# explicit `source` from the caller is appended so an ADR 0114 beat still
@@ -422,8 +422,20 @@ static func _offered_ids(actor: Actor) -> Array[String]:
 	return out
 
 
+## A refusal, optionally carrying another verdict's payload verbatim.
+##
+## `extra` is copied last and may add or overwrite detail keys, but never
+## `reason` and never `ok`: those two are what the refusal IS. `accept` hands
+## this the whole `DestinyApi.gate` verdict, which carries its own `reason`
+## (`"unmet"`), so an unguarded copy silently replaced `gate_unmet` with
+## `unmet` — a caller reading the documented reason got a word from another
+## module's vocabulary instead. Detail (`unmet`) still crosses untouched, which
+## is the whole point of passing the verdict through.
 static func _refuse(reason: String, extra: Dictionary = {}) -> Dictionary:
 	var out := {"ok": false, "reason": reason, "unmet": []}
 	for key in extra.keys():
+		var name := String(key)
+		if name == "reason" or name == "ok":
+			continue
 		out[key] = extra[key]
 	return out
