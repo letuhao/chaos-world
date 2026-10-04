@@ -25,7 +25,10 @@ import tempfile
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from PIL import Image, ImageDraw
+
 from . import (
+    art_fidelity,
     boot,
     claim_guard,
     common,
@@ -42,6 +45,7 @@ from . import (
 from .acquisition import selftest_case  # noqa: F401  registers its cases on import
 from .common import ToolError
 from .cultivation import selftest_case as cultivation_selftest_case  # noqa: F401  same
+from .data_selftest import *  # noqa: F403  same, for the tools/data.py legs
 from .lore.context import character_draft, readiness_gaps, resolve_context
 from .selftest import case, expect, write
 
@@ -4520,4 +4524,141 @@ def _probe_source_is_readable() -> None:
         f"{PROBE_SOURCE} no longer looks like a SceneTree probe. The boot-probe cases "
         f"match on its shape, so if the probe is restructured they must be rewritten "
         f"rather than left to pass vacuously.",
+    )
+
+
+# --- art_fidelity ----------------------------------------------------------
+#
+# Every case asserts BOTH directions. A guard that only fires refuses everything and a guard that
+# never fires is the defect these exist to prevent: `scripts/validate.py:39` in the art program
+# declares the map sprite should be 896x1184, so it PASSES the one image the game would reject,
+# while `audit_images.py` and `validate.py` cannot exit non-zero at all. Fixtures are synthetic PNGs
+# drawn in process, so nothing here depends on the gitignored private art folder.
+
+
+def _flat(
+    size: tuple[int, int] = (256, 320),
+    rgb: tuple[int, int, int] = (0x8A, 0x85, 0x80),
+    alpha: int = 255,
+) -> Image.Image:
+    """A filled RGBA rectangle: one subject, opaque, flat. The `clear` fixture for every check."""
+    return Image.new("RGBA", size, rgb + (alpha,))
+
+
+@case("art_fidelity: TWO subjects FAIL and ONE passes the single-subject check")
+def _art_two_subjects_fail_one_passes() -> None:
+    """The most separable discriminator, asserted closed AND open.
+
+    `BRIEF_CONSTRAINTS` says "One subject only" and six of the twenty-five shipped renders hold two
+    to five figures. Without the second expectation a guard that always complained would satisfy the
+    first, which is the same shape as the `validate.py` defect above.
+    """
+    two = Image.new("RGBA", (256, 320), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(two)
+    # Two DISJOINT blobs on a transparent ground. Drawing the second shape on top of a filled
+    # rectangle would leave them contiguous and count as one subject — which is the mistake this
+    # fixture exists to not make.
+    draw.rectangle((10, 20, 90, 200), fill=(0x8A, 0x85, 0x80, 255))
+    draw.rectangle((160, 20, 240, 200), fill=(0x8A, 0x85, 0x80, 255))
+    expect(
+        bool(art_fidelity.check_single_subject(two)),
+        "two disjoint opaque blobs passed the single-subject check, so a five-figure lineup "
+        "satisfies BRIEF_CONSTRAINTS 'One subject only'",
+    )
+    expect(
+        not art_fidelity.check_single_subject(_flat()),
+        "a single opaque rectangle was reported as more than one subject, so the check cannot "
+        "tell a two-shot from a portrait",
+    )
+
+
+@case("art_fidelity: the AUTHORED palette PASSES it and a foreign colour FAILS it")
+def _art_authored_palette_passes_foreign_colour_fails() -> None:
+    """What makes the limit non-circular.
+
+    The gate's own reference colours must survive the gate. Had the seven authored hexes not, the
+    distance limit came from the art instead of the criteria and the guard measures itself. The
+    second expectation then shows the limit is anchored on the palette rather than vacuous.
+    """
+    palette = Image.new("RGBA", (64, 64))
+    draw = ImageDraw.Draw(palette)
+    for index, rgb in enumerate(art_fidelity.APPROVED_PALETTE.values()):
+        draw.rectangle((index * 8, 0, index * 8 + 7, 63), fill=rgb + (255,))
+    expect(
+        not art_fidelity.check_palette(palette),
+        f"the authored palette itself failed the palette check: "
+        f"{art_fidelity.check_palette(palette)!r}",
+    )
+    foreign = Image.new("RGBA", (64, 64), (0x00, 0x88, 0xCC, 255))
+    expect(
+        bool(art_fidelity.check_palette(foreign)),
+        "a fully saturated teal passed the palette check, so a foreign colour is indistinguishable "
+        "from an authored near-neutral",
+    )
+
+
+@case("art_fidelity: an OPAQUE background FAILS the transparency check")
+def _art_opaque_background_fails() -> None:
+    """The defect `_validate_image` is structurally blind to.
+
+    `tools/unique_characters.py:969` asserts the alpha channel REACHES 0, which ONE transparent
+    pixel satisfies, so a render on an opaque ground passes it.
+    """
+    expect(
+        bool(art_fidelity.check_transparency(_flat())),
+        "a fully opaque image passed the transparency check",
+    )
+    punched = _flat()
+    punched.putpixel((0, 0), (0, 0, 0, 0))
+    expect(
+        bool(art_fidelity.check_transparency(punched)),
+        "one transparent pixel satisfied the transparency check, which is precisely the "
+        "one-pixel hole in `_validate_image`",
+    )
+
+
+@case("art_fidelity: an all-skin frame FAILS the per-kind bound and a cloth frame PASSES")
+def _art_skin_bound_fails_and_passes() -> None:
+    """A BOUND, not a discriminator — every shipped render passes it, and that is correct.
+
+    Its red path has to be synthetic, because no real render in the set violates it.
+    """
+    skin = art_fidelity.APPROVED_PALETTE[art_fidelity.SKIN_KEY]
+    expect(
+        bool(art_fidelity.check_skin_bound(_flat(rgb=skin), "map_sprite")),
+        "a map token that is entirely skin passed a 14% ceiling, so the bound does nothing",
+    )
+    expect(
+        not art_fidelity.check_skin_bound(_flat(), "map_sprite"),
+        "a flat ash-grey frame was reported as over a skin ceiling",
+    )
+
+
+@case("art_fidelity: an UNKNOWN kind skips the skin bound instead of guessing one")
+def _art_unknown_kind_skips_skin_bound() -> None:
+    """A ceiling guessed for a kind nobody authored is a number nobody chose."""
+    expect(
+        not art_fidelity.check_skin_bound(_flat(), ""),
+        "an unknown render kind was still measured against a ceiling",
+    )
+
+
+@case("art_fidelity: the shipped romance render FAILS (skipped when the folder is absent)")
+def _art_shipped_romance_render_fails() -> None:
+    """Evidence, not a guard — and it says so.
+
+    The art lives in a gitignored private checkout, so this SKIPS on a clean clone and a
+    skipped case proves nothing. It is here so that on a machine holding the art, the claim
+    "the known-bad render fails the gate" is checked by something other than a sentence in a
+    commit message. DEF-0256.
+    """
+    path = art_fidelity.ART_ROOT / "ilsa_daily_romance.png"
+    if not path.is_file():
+        print(f"    (skipped: {path.name} absent; the private art folder is gitignored)")
+        return
+    gating, _advisory = art_fidelity.image_findings(path)
+    expect(
+        bool(gating),
+        "ilsa_daily_romance.png PASSED the fidelity gate. DEF-0256 requires it to fail; a gate the "
+        "known-bad art passes is not a gate (INC-0016).",
     )

@@ -31,6 +31,7 @@ def _load(name: str):
 
 acquisition = _load("acquisition")
 arch = _load("arch")
+art_fidelity = _load("art_fidelity")
 assets = _load("assets")
 character_assets = _load("character_assets")
 backlog = _load("backlog")
@@ -80,6 +81,7 @@ COMMANDS = {
     "selftest": selftest,
     "map_theme": map_theme,
     "arch": arch,
+    "art_fidelity": art_fidelity,
     "assets": assets,
     "character_assets": character_assets,
     "unique_characters": unique_characters,
