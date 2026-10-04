@@ -369,6 +369,12 @@ func _need_of(quest_id: StringName, fact: StringName) -> int:
 ##
 ## `WorldAmbient.ROSTER` is a roster of ROWS, not of bare ids, so it is read through
 ## the module's own published `ids()` rather than indexed by hand — a reader that
-## assumed a flat list of ids would be reading someone else's data shape.
+## assumed a flat list of ids would be reading someone else's data shape. That verb
+## publishes `Array[String]`, so the ids are converted rather than retyped: a
+## `String` and a `StringName` name the same fact, and `String()` is the conversion
+## both this module and `WorldFact` use everywhere else.
 func _ambient_facts() -> Array[StringName]:
-	return WorldAmbient.ids()
+	var out: Array[StringName] = []
+	for fact in WorldAmbient.ids():
+		out.append(StringName(fact))
+	return out
