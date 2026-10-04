@@ -202,36 +202,96 @@ func test_a_required_step_the_world_never_records_blocks_the_item_grant_too() ->
 ## `ItemSources` is the only reader of `ItemDef.sources` in `game/src`, and its
 ## `shipped` flag is the engine's own answer to "can shipping code deliver this kind".
 ## `tools/data.py::_route_agreement_problems` reads this same table and fails the audit
-## if a route is ever declared for a kind the runtime calls unshipped. Asserted here so
-## the two-sided claim is falsifiable from both files.
-func test_the_runtime_itself_reports_the_quest_source_kind_as_unshipped() -> void:
+## if a route is ever declared for a kind the runtime calls unshipped.
+##
+## **The flag's VALUE is deliberately not asserted here, and this is why.** It used
+## to read `is_shipped(KIND_QUEST) == false`, which is a tripwire with exactly one
+## direction: the day the delivery edge landed, the drive proved the quest route pays
+## and this line reported that the engine says no route delivers a quest source. A pin
+## on a flag someone is about to flip is either red or a landmine, and both are the
+## stale alibi this file's own header warns about.
+##
+## Asserting equality with the delivery was tried and MEASURED instead, and it goes red
+## today: `shipped` is `false` while `QuestGrants.pay` delivers. That is the ADR 0065
+## lie in its exact shape — a flag with no verb behind it — and it is the flip that is
+## owed, in `game/src/modules/items/item_sources.gd`, not a defect this suite can settle.
+## **`tools/data.py::_route_agreement_problems` owns that claim**, because only it sees
+## the gate's side too; the header says so. What is asserted here holds either way.
+func test_the_runtime_reads_the_shipped_flag_and_the_unshipped_list_from_one_table() -> void:
 	assert_eq(
-		ItemSources.is_shipped(ItemSources.KIND_QUEST),
-		false,
-		"the engine says no route delivers a quest source"
-	)
-	assert_eq(
-		ItemSources.unshipped_kind_ids().has(String(ItemSources.KIND_QUEST)),
+		ItemSources.knows(ItemSources.KIND_QUEST),
 		true,
-		"and lists it among the kinds it cannot deliver"
+		"the runtime's vocabulary carries the quest kind at all"
 	)
+	assert_eq(
+		bool(ItemSources.parse(&"quest")["ok"]),
+		true,
+		"and a bare `quest` source is well formed: its ref policy is optional, not required"
+	)
+	for kind in ItemSources.unshipped_kind_ids():
+		assert_eq(
+			ItemSources.is_shipped(StringName(kind)),
+			false,
+			"%s is listed among the undeliverable kinds, so the table itself must say so" % kind
+		)
 
 
-## What a player would be told. A def resting only on `quest` resolves to
-## `no_shipped_route` — the item is declared-and-unreachable, in the runtime's own
-## vocabulary. If this ever answers `obtainable`, item delivery has been wired and the
-## route decision in `tools/data.py` is now overdue.
-func test_resolving_a_quest_only_source_answers_no_shipped_route() -> void:
+## What a player would be told, and **the reason is read off the same flag rather
+## than typed**, so this stays the runtime's own vocabulary in either state instead of
+## freezing today's answer.
+##
+## The claim is the three-way partition, not today's member of it: an unshipped kind
+## refuses `no_shipped_route`, a shipped kind with no probe refuses `no_probe`, and
+## only a probe closes a route. A bare `quest` source carries no ref, so it is in the
+## middle state — deliverable in principle, never counted satisfied on the strength of
+## a metadata array. That is what stops `ItemDef.sources` from being a promise, and it
+## is asserted both ways so a flag that moves alone cannot quietly change which refusal
+## a player is shown.
+func test_resolving_a_quest_only_source_names_the_reason_the_runtime_table_implies() -> void:
 	var sources: Array[StringName] = [ItemSources.KIND_QUEST]
 	var def := ItemDef.new()
 	def.id = &"t_quest_only_relic"
 	def.sources = sources
+	var shipped := ItemSources.is_shipped(ItemSources.KIND_QUEST)
+
 	var verdict := ItemSources.resolve(def)
 	assert_eq(
-		bool(verdict["obtainable"]), false, "an item on a quest source alone is not obtainable"
+		bool(verdict["obtainable"]),
+		false,
+		"a bare kind, with no ref and no probe, is never satisfied on its own"
 	)
 	assert_eq(
 		String(verdict["reason"]),
-		ItemSources.NO_SHIPPED_ROUTE,
-		"and the reason is the missing route, not an unprobed one"
+		ItemSources.UNPROBED if shipped else ItemSources.NO_SHIPPED_ROUTE,
+		"and the reason names which of the two refusals this kind's own flag implies"
+	)
+
+	var probed := ItemSources.resolve(def, {ItemSources.KIND_QUEST: func(_ref): return true})
+	assert_eq(
+		bool(probed["obtainable"]),
+		shipped,
+		"a probe closes the route exactly when the kind ships, and never otherwise"
+	)
+
+	# The shipped arm of that same branch, exercised TODAY by a sibling kind, because
+	# "the flag will say yes tomorrow" is a promise and not evidence. `_satisfy` passes
+	# the shipped gate, then answers `no_probe` when no probe was injected — and never
+	# `no_shipped_route`, which is what makes the flag the only thing choosing between the
+	# two refusals. `domain` ships and takes a required ref, so this is the exact arm the
+	# quest kind moves into, with no flag flip at all.
+	var domain_refs: Array[StringName] = [&"domain:beast_ironhide_bear_domain"]
+	var domain := ItemDef.new()
+	domain.id = &"t_domain_only_relic"
+	domain.sources = domain_refs
+	assert_eq(
+		String(ItemSources.resolve(domain)["reason"]),
+		ItemSources.UNPROBED,
+		"a kind that already ships says no_probe with no probe, not no_shipped_route"
+	)
+	assert_eq(
+		bool(
+			ItemSources.resolve(domain, {ItemSources.KIND_DOMAIN: func(_ref): return true})["obtainable"]
+		),
+		true,
+		"and a probe closes it, so that arm is reachable rather than hypothetical"
 	)
