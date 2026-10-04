@@ -185,14 +185,37 @@ func provide_table(table: LootTableDef) -> void:
 # --- Band reachability ------------------------------------------------------
 #
 # These live HERE, not on [LootContentRecords], and that placement is load-bearing
-# rather than stylistic: a base cannot name a member a subclass declares, so a base
-# whose body reads `_encounters`, `_encounter_ids`, `load_encounters`,
-# `encounter_ids`, `encounter_by_id`, `table` or `table_ids` does not parse — every
-# one of them is declared on THIS side. Reading them from a base is exactly the
-# `ItemWorkbenchReadout._drill_loop` defect one level up: Godot reported the failure
-# only from the first dependant ("Could not resolve class LootContentTables") and
-# never printed the real error inside this file's base. Every symbol the walks below
-# use is declared above in this same file or inherited from [LootContentRecords].
+# rather than stylistic: a base cannot name anything a subclass declares — neither
+# a field nor a method — so a base whose body reads `_encounters`, `_encounter_ids`,
+# `load_encounters`, `encounter_ids`, `encounter_by_id`, `table` or `table_ids`
+# does not parse, and every one of them is declared on THIS side.
+#
+# Reading them from a base is exactly the `ItemWorkbenchReadout._drill_loop` defect
+# one level up, and it cost two rounds here: the six band walks first, then
+# `orphan_domains`, because the rule covers METHODS as well as fields. Godot
+# reported both only from the first dependant as "Could not resolve class
+# LootContentTables" and never printed a line for the file that was actually
+# broken, so fixing one half left the error byte-identical.
+#
+# Every symbol the walks below use is declared above in this same file or inherited
+# from [LootContentRecords].
+
+
+## Domains a player cannot reach: authored, and with no `LootEncounterDef` to enter.
+##
+## Reported rather than swallowed, so a domain dropped into the corpus without an encounter
+## fails the content gate instead of sitting there invisible.
+func orphan_domains() -> Array[String]:
+	var hosted := {}
+	for encounter_id in encounter_ids():
+		var encounter := encounter_by_id(StringName(encounter_id))
+		if encounter != null:
+			hosted[String(encounter.domain_id)] = true
+	var out: Array[String] = []
+	for domain_id in domain_ids():
+		if not hosted.has(domain_id):
+			out.append(domain_id)
+	return out
 
 
 ## Table ids an authored band binds DIRECTLY, sorted: what [method
