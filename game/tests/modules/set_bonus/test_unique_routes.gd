@@ -91,8 +91,16 @@ func test_the_route_index_never_restates_a_fact_the_item_or_the_sets_already_own
 				false,
 				"%s: the route index must not restate `%s` — its owner does" % [unique_id, column]
 			)
-	# And the owners really do answer all three, so dropping the copies cost nothing
-	# rather than dropping the only declaration.
+	# And the owners really do declare all three, so dropping the copies cost
+	# nothing rather than dropping the only declaration. Only DECLARATION is
+	# checked here: that each fact survives on the definition.
+	#
+	# What the fact MEANS is deliberately not checked here, because it cannot be.
+	# `drop_route` computes `boss_id` from `UniqueItem.route_boss_id(def)` and
+	# `item_subtype` from `def.subcategory` verbatim, so asserting the facade's
+	# output equals either is `f(x) == f(x)`: it passes when the owner is right and
+	# passes just as loudly when the runtime stopped honouring it. That the owner is
+	# a real one is asserted behaviourally in `test_unique_route_owners.gd`.
 	for unique_id in _unique_ids():
 		var def := _definition(unique_id)
 		var route := SetBonusApi.drop_route(unique_id)
@@ -100,16 +108,6 @@ func test_the_route_index_never_restates_a_fact_the_item_or_the_sets_already_own
 			UniqueItem.route_boss_id(def), &"", "%s states its boss on the definition" % unique_id
 		)
 		assert_ne(def.subcategory, &"", "%s states its slot on the definition" % unique_id)
-		assert_eq(
-			String(route["boss_id"]),
-			String(UniqueItem.route_boss_id(def)),
-			"%s: the facade reports the definition's boss" % unique_id
-		)
-		assert_eq(
-			String(route["item_subtype"]),
-			String(def.subcategory),
-			"%s: and its real slot, not a stale column" % unique_id
-		)
 		assert_eq(
 			String(route["set_id"]),
 			_set_of(unique_id),
