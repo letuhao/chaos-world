@@ -1502,6 +1502,56 @@ def _ingest_is_deterministic() -> None:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
 
 
+@case("unique_characters: a tag may NOT overwrite a structural diversity axis")
+def _tag_cannot_replace_a_structural_axis() -> None:
+    """A tag named `path:` used to REPLACE the `identity.path` counter.
+
+    `axes.setdefault(axis, Counter())` meant a character carrying `path:body-path`
+    as a tag handed the structural axis its own vocabulary. `diversity` then
+    reported `path` as six distinct values including `none` and `body-path` - which
+    are not in `VALID_PATHS` at all - while the real paths went uncounted.
+
+    That is worse than a cosmetic mislabel, because the axis read as MORE diverse
+    than it was. A cast of four reported six path values; the truth was three. At
+    1000 characters a swapped axis is a monoculture that reports as diversity, and
+    nothing else in the tool would catch it.
+
+    The structural axes are counted from their own fields and a colliding tag axis
+    is counted under `tag:<name>`, so the collision stays visible.
+    """
+    plain = {
+        "id": "unique-0001",
+        "name": "One",
+        "identity": {"role": "npc", "path": "qi"},
+        "appearance": {"race": "races.emberblood"},
+        "tags": [],
+    }
+    tagged = {
+        **plain,
+        "id": "unique-0002",
+        "tags": ["path:body-path", "path:none"],
+    }
+    axes = dict(unique_characters._diversity_axes([plain, tagged]))
+    path_counts = axes["path"]
+
+    expect(
+        set(path_counts) == {"qi"},
+        f"the structural path axis reads {dict(path_counts)}; a tag named `path:` must not "
+        f"replace it, or the distribution reports values outside VALID_PATHS and a "
+        f"monoculture reads as diversity",
+    )
+    expect(
+        "tag:path" in axes,
+        f"the colliding tag axis vanished instead of being reported: {sorted(axes)}. "
+        f"Renaming it to `tag:path` keeps the collision visible rather than silently "
+        f"swapping one measurement for another",
+    )
+    expect(
+        axes["tag:path"]["body-path"] == 1,
+        f"the tag's own values were not counted under tag:path: {dict(axes.get('tag:path', {}))}",
+    )
+
+
 @case("lore: CONTEXT_HOPS relations are mostly UNREACHABLE inbound, and that is reported")
 def _hop_inbound_asymmetry_is_reported() -> None:
     """The trap that cost several agent waves, asserted so it cannot be rediscovered.

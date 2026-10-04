@@ -436,8 +436,19 @@ def _diversity_axes(records: list[dict]) -> list[tuple[str, Counter]]:
     `role`, `path` and `race` are structural axes every character occupies. Tag
     axes are open-ended by design, so a tag axis with one value across the cast is
     a monoculture signal rather than an error.
+
+    A tag may NOT claim a structural axis name. `setdefault` used to let a tag
+    called `path:body-path` REPLACE the real `identity.path` counter, and the
+    distribution then reported `path=none` and `path=body-path` - values that are
+    not in `VALID_PATHS` at all - while the actual paths went uncounted. The axis
+    read as six distinct values, which is the opposite of what happened.
+
+    Structural axes are counted from their own fields and a colliding tag axis is
+    counted under `tag:<name>` instead, so a collision is visible rather than
+    silently substituting one measurement for another.
     """
     axes: dict[str, Counter] = {"role": Counter(), "path": Counter(), "race": Counter()}
+    structural = {"role", "path", "race"}
     for record in records:
         if not isinstance(record, dict):
             continue
@@ -450,7 +461,8 @@ def _diversity_axes(records: list[dict]) -> list[tuple[str, Counter]]:
         for tag in tags if isinstance(tags, list) else []:
             if isinstance(tag, str) and ":" in tag:
                 axis, value = tag.split(":", 1)
-                axes.setdefault(axis, Counter())[value] += 1
+                key = f"tag:{axis}" if axis in structural else axis
+                axes.setdefault(key, Counter())[value] += 1
     return sorted(axes.items())
 
 
