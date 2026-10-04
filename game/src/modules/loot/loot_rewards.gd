@@ -80,8 +80,10 @@ static func _drop(drop_id: String, plan: Dictionary, rng: RandomNumberGenerator)
 	realized.realm = realm
 	realized.catalog_version = ItemGenerator.CONFIG_VERSION
 	if bool(def.is_rollable()):
-		# The drop rolls for the realm and rarity it fell from, not the ones its
-		# definition was authored at: a late boss's drop rolls at that realm.
+		# The drop rolls for the RARITY it fell from, but for the REALM its definition
+		# was authored at: a band is a statement about difficulty, not about which
+		# realm a drop belongs to (ADR 0166). `contextualize` therefore overrides
+		# rarity only, and `ItemGenerator` reads `def.realm` as the magnitude.
 		var contextual := contextualize(def, realm, rarity)
 		realized = ItemGenerator.generate(contextual, instance_id, rng)
 		realized.def_ref = contextual
@@ -100,15 +102,23 @@ static func _drop(drop_id: String, plan: Dictionary, rng: RandomNumberGenerator)
 	}
 
 
-## A copy of `def` carrying a drop's realm/rarity context. Shared authored content
+## A copy of `def` carrying a drop's rarity context. Shared authored content
 ## is never mutated; when the context already matches, the definition is reused.
+##
+## **Rarity only (ADR 0166).** The realm a drop pays is the one its item is
+## authored at, so `def.realm` is deliberately NOT overridden here: this used to be
+## the single seam that substituted the band for the item behind all 6310
+## mis-paying drops. The band keeps what it legitimately owns — rarity,
+## `rarity_floor`, `quality_steps`, draw count, `quantity`/`quantity_max` — and
+## `ItemGenerator` hands `def.realm` to `OptionCatalog`, so the item is the
+## magnitude authority. `realm` stays a parameter because it is the condition the
+## reuse check needs, and because the resolver still reports the band on a plan.
 static func contextualize(def: ItemDef, realm: StringName, rarity: StringName) -> ItemDef:
 	if def == null:
 		return null
 	if String(def.realm) == String(realm) and String(def.rarity) == String(rarity):
 		return def
 	var copy := def.duplicate() as ItemDef
-	copy.realm = realm
 	copy.rarity = rarity
 	return copy
 

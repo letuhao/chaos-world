@@ -15,8 +15,11 @@ extends Resource
 ## and the resolver reports it rather than substituting anything.
 ##
 ## `realm` and `rarity` are the *default* roll context for drops. A source that
-## declares its own realm/rarity (a boss tier) overrides them, so a drop from a
-## late boss rolls for that boss's realm rather than the definition's.
+## declares its own rarity (a boss tier) overrides rarity, so a drop from a late
+## boss rolls for that boss's rarity rather than the definition's. `realm` is NOT
+## overridden: the rung a drop pays is the one its item is authored at, so a band
+## never sets a drop's magnitude (ADR 0166). The resolver still resolves and
+## reports the realm for the reader; it is a drop's label, not its power.
 
 ## Ceiling on one resolve, so a bounded `loot_bonus` count bonus plus a wide
 ## authored range can never produce an unbounded number of drops.
