@@ -24,6 +24,7 @@ from pathlib import Path
 
 from . import (
     boot,
+    claim_guard,
     common,
     gate_reach,
     godot,
@@ -36,6 +37,7 @@ from . import (
     unique_characters,
 )
 from .acquisition import selftest_case  # noqa: F401  registers its cases on import
+from .common import ToolError
 from .cultivation import selftest_case as cultivation_selftest_case  # noqa: F401  same
 from .lore.context import character_draft, readiness_gaps, resolve_context
 from .selftest import case, expect, write
@@ -3405,3 +3407,306 @@ def _boot_rejects_a_silent_probe() -> None:
         "a probe that printed no BOOTJSON line still exited 0, so a probe that died before "
         "reporting would read as a healthy boot",
     )
+
+
+# --- INC-0023: two live sessions claiming one path. ---
+# --- The collision is a DISPATCH, not an edit, so the GDScript suite cannot see it and the
+# --- ledger has to carry it. Two sessions claimed `game/src/modules/loot/loot_drop_row.gd`
+# --- at once because an empty tool result was misread as a failed launch; nothing was
+# --- written, but the window is the write-write collision INC-0003 exists to prevent.
+# --- Three cases, and the pair below is the one that matters: the same three-session
+# --- ledger is RED when two of them overlap and GREEN when the third is merely stale. A
+# --- guard that cannot tell those two apart is testing nothing.
+
+
+def _claim_verdict(ledger: Path) -> int:
+    """`claim_guard.run`'s exit code for `check` against a fixture ledger.
+
+    The verdict path is `run`, not the internals, so what is asserted is what CI sees. The
+    ledger is passed through `--ledger` rather than by patching `CLAIMS_PATH`, because that
+    is the seam the CLI actually uses and patching the global cannot catch a `run` that
+    forgets to forward it — which is exactly what the first version of this case did, and it
+    measured the repository's own `docs/claims.jsonl` four times while asserting a fixture.
+    """
+    return claim_guard.run(
+        argparse.Namespace(claim_action="check", ledger=str(ledger), fail_on="error")
+    )
+
+
+def _stamp(hours_ago: float) -> str:
+    return (datetime.now(UTC) - timedelta(hours=hours_ago)).isoformat()
+
+
+def _loot_ledger(root: Path, *, second_session_hours_ago: float) -> Path:
+    """INC-0023's three-session ledger, with ONE number deciding whether it is red.
+
+    Below the staleness ceiling the second session is LIVE and holds a file inside the first
+    session's directory: a collision. Above the ceiling the same session is STALE and holds
+    the same path, which is a crashed agent rather than a second owner. Identical sessions,
+    identical paths, identical bytes — only the heartbeat differs — so any verdict
+    difference between the two is the guard separating "two live owners" from "one owner and
+    a dead one", which is the only distinction the gate may make (INC-0017: a question with
+    a permanently-yes answer is not a gate).
+
+    The third session is the neighbour `loot2`, on its own sibling module. It must never
+    overlap: `game/src/modules/loot` is a byte prefix of `game/src/modules/loot2`, so a
+    `str.startswith` comparison reports an unrelated module as a collision and makes every
+    pair of sibling modules unusable.
+    """
+    return write(
+        root / "claims.jsonl",
+        "\n".join(
+            json.dumps(entry)
+            for entry in (
+                {
+                    "session": "loot-A",
+                    "owner": "coordinator",
+                    "paths": ["game/src/modules/loot"],
+                    "heartbeat": _stamp(0.1),
+                },
+                {
+                    "session": "loot-B",
+                    "owner": "coordinator",
+                    "paths": ["game/src/modules/loot/loot_drop_row.gd"],
+                    "heartbeat": _stamp(second_session_hours_ago),
+                },
+                {
+                    "session": "loot2-A",
+                    "owner": "coordinator",
+                    "paths": ["game/src/modules/loot2/loot_state.gd"],
+                    "heartbeat": _stamp(0.2),
+                },
+            )
+        )
+        + "\n",
+    )
+
+
+@case("claim_guard: TWO live sessions over one path FAILS the gate")
+def _overlapping_live_claims_are_red() -> None:
+    """The red path: INC-0023's own ledger, still refused.
+
+    Session A holds the module DIRECTORY and session B holds one FILE inside it, which is
+    the shape a coordinator produces by re-sending a prompt whose path list was spelled the
+    second time as individual files. Asserting the containment direction is the point: a
+    guard that only compared paths for equality would report this clean.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        ledger = _loot_ledger(Path(raw), second_session_hours_ago=0.3)
+        code = _claim_verdict(ledger)
+        found = claim_guard.conflicts(claim_guard.read_claims(ledger))
+
+    expect(
+        code != 0,
+        "two live sessions holding game/src/modules/loot and a file inside it exited 0. That "
+        "is INC-0023 verbatim: the dispatch returned an empty body, the coordinator resent "
+        "the identical prompt, and two agents owned the same two files until one was stood "
+        "down. A gate that reports ok there is the ADR 0066 quiet lie with an exit code "
+        "attached",
+    )
+    expect(
+        len(found) == 1,
+        f"the overlapping pair was not reported as one conflict; got {found}. The whole guard "
+        "is this comparison, and `loot-B` must be named against `loot-A` so somebody can "
+        "stand one of them down",
+    )
+    expect(
+        found and {"loot-A", "loot-B"} == {found[0].left.session, found[0].right.session},
+        f"the conflict named {found and found[0].describe()!r} instead of the two colliding "
+        "sessions. `loot2-A` holds a sibling module and must not appear in the pair",
+    )
+    expect(
+        found and "game/src/modules/loot/loot_drop_row.gd" in found[0].shared,
+        f"the finding named {found and found[0].shared!r} rather than the file both sessions "
+        "are fighting over, so the reader has to re-derive the collision",
+    )
+    expect(
+        found and "game/src/modules/loot" in found[0].shared,
+        f"the finding named only one side of the overlap ({found and found[0].shared!r}). A "
+        "directory claim and the file claimed inside it are one collision written two ways, "
+        "and the reader standing one session down needs to see both spellings",
+    )
+
+
+@case("claim_guard: two DISJOINT claims plus one STALE claim PASS the gate")
+def _disjoint_and_stale_claims_are_green() -> None:
+    """The green side of the same ledger, and the INC-0017 half.
+
+    Two sessions on unrelated modules are the normal state of a shared tree with ~20 live
+    agents; failing on them would make every dispatch a collision. The second claim here is
+    past `STALE_AFTER` and holds a path the first session ALREADY held — so the staleness
+    rule is the only thing standing between this ledger and red. A stale claim is REPORTED
+    and not counted: a session that died without releasing its paths must not pin this gate
+    red forever, because a gate that cannot go green is a gate the first agent to meet it
+    downgrades or deletes.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        ledger = _loot_ledger(
+            Path(raw),
+            second_session_hours_ago=claim_guard.STALE_AFTER.total_seconds() / 3600 + 1,
+        )
+        code = _claim_verdict(ledger)
+        live, stale = claim_guard.split_stale(claim_guard.read_claims(ledger))
+
+    expect(
+        code == 0,
+        "a ledger whose only overlap involves a STALE claim still exited non-zero. A claim "
+        "nobody can clear pins the gate red forever: that is INC-0017, where my own "
+        "mutation_history guard asked whether a probe was EVER committed and made tools check "
+        "unsatisfiable, and the fix was to gate on current state instead",
+    )
+    expect(
+        [claim.session for claim in stale] == ["loot-B"],
+        f"the over-age claim was not reported stale (stale={stale}, live={live}); it is the "
+        "crashed agent, not a second owner, and reporting it as a conflict sends a reader to "
+        "stand down a session that stopped answering hours ago",
+    )
+    expect(
+        sorted(claim.session for claim in live) == ["loot-A", "loot2-A"],
+        f"the two live claims were not the survivors of split_stale: live={live}",
+    )
+    expect(
+        not claim_guard.conflicts(live),
+        "the two surviving live claims overlap, so a stale claim was masking a real collision "
+        "instead of being the only thing keeping the gate green",
+    )
+    expect(
+        not claim_guard.overlaps("game/src/modules/loot", "game/src/modules/loot2"),
+        "a byte prefix was accepted as an overlap: `loot2` is a DIFFERENT module, and a naive "
+        "startswith here makes every pair of sibling modules a write-write collision",
+    )
+    expect(
+        claim_guard.overlaps("game/src/modules/loot", "game/src/modules/loot/loot_drop_row.gd"),
+        "a directory claim no longer covers a file claimed inside it, which is the half of "
+        "the comparison INC-0023 actually turned on",
+    )
+
+
+@case("claim_guard: a claim that cannot be read FAISES rather than reporting a clean ledger")
+def _unreadable_ledger_is_not_clean() -> None:
+    """The INC-0013 half, in the one place this guard can still be too generous.
+
+    Every function here returns an empty result when something goes wrong, so an unreadable
+    ledger is indistinguishable from an empty one — and an empty one is green. A torn write
+    on a shared tree, or a heartbeat someone typed as a date, would therefore read as "no
+    two sessions claim the same path", which is the guard reporting `ok` because it looked
+    at nothing.
+
+    Only the MESSAGE changes with the shape; the exit code does not. `ToolError` is turned
+    into `fail(...)` and exit 1 by `tools/__main__.main`, which is the non-zero CI depends on
+    and the same wiring `incident._validate` and `deferred._validate` already rely on.
+
+    The three fixtures are read INSIDE the temporary directory: read one after the block
+    closes and the name resolves to nothing, which this case asserted as a clean ledger on
+    the first run — a guard test that passes because its fixture vanished.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        torn = write(root / "torn.jsonl", '{"session": "a", "paths": ["x"], "heartbeat": ')
+        dateless = write(
+            root / "dateless.jsonl",
+            json.dumps({"session": "a", "paths": ["game/src"], "heartbeat": "2026-10-04"}) + "\n",
+        )
+        naked = write(root / "naked.jsonl", json.dumps({"session": "a", "paths": []}) + "\n")
+        hollow = write(
+            root / "hollow.jsonl",
+            json.dumps({"session": "a", "paths": "game/src/modules/loot", "heartbeat": _stamp(0.1)})
+            + "\n",
+        )
+
+        for name, ledger, shape in (
+            ("a torn write", torn, "invalid JSON"),
+            ("a heartbeat with no time", dateless, "not ISO 8601"),
+            # A line with NO `paths` key is caught by the missing-field check, and so is an
+            # EMPTY list — both falsy, both reported as "missing", which is the same defect to
+            # a reader. A `paths` value that is present but not a list is the input that
+            # reaches the type check, so each of the three pins a different line of the parse.
+            ("a claim with no paths key", naked, "missing ['paths', 'heartbeat']"),
+            ("a claim whose paths is a bare string", hollow, "is a list"),
+        ):
+            try:
+                _claim_verdict(ledger)
+            except ToolError as exc:
+                expect(
+                    shape in str(exc),
+                    f"{name} was refused for the wrong reason: {exc}. The message has to say "
+                    "what is wrong with the line, not just that something is",
+                )
+            else:
+                expect(
+                    False,
+                    f"{name} was reported as a clean ledger. A claim the guard cannot parse is "
+                    "a claim it cannot see, and seeing no claims is green",
+                )
+
+
+@case("claim_guard: claiming an already-held path FAILS, and releasing makes it clean")
+def _claim_then_release_is_the_repair() -> None:
+    """The round trip, which is the only repair an operator has.
+
+    A finding nobody can clear is a gate that eventually gets deleted. So the second
+    dispatch has to have somewhere to go: `claim` records and reports the overlap,
+    `release` takes the line back out, and `check` goes green on the SAME ledger. Without
+    this, the honest response to a red gate is editing JSON by hand in a file twenty agents
+    are writing at once.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        ledger = Path(raw) / "claims.jsonl"
+        first = argparse.Namespace(
+            claim_action="claim",
+            session="loot-A",
+            paths="game/src/modules/loot",
+            ledger=str(ledger),
+        )
+        expect(
+            claim_guard.run(first) == 0,
+            "the first claim of a path was refused. Nothing holds it, so this is a false red, "
+            "and a false red on the first dispatch teaches every agent to ignore the guard",
+        )
+        bump = argparse.Namespace(
+            claim_action="claim",
+            session="loot-A",
+            paths="game/src/modules/loot/loot_drop_row.gd",
+            ledger=str(ledger),
+        )
+        expect(
+            claim_guard.run(bump) == 0,
+            "one session naming its own directory AND a file inside it was refused. That is "
+            "one holder being precise about its own work, not two holders colliding",
+        )
+        steal = argparse.Namespace(
+            claim_action="claim",
+            session="loot-B",
+            paths="game/src/modules/loot/loot_drop_row.gd",
+            ledger=str(ledger),
+        )
+        expect(
+            claim_guard.run(steal) != 0,
+            "a second session claimed an already live-held path and was told nothing. The gate "
+            "catches the same overlap later, but the ledger recording it silently is what made "
+            "the coordinator's second dispatch invisible in the first place",
+        )
+        expect(
+            _claim_verdict(ledger) != 0,
+            "the ledger holds an overlap and `check` exited 0, so the collision INC-0023 "
+            "describes would ship through the gate",
+        )
+
+        drop = argparse.Namespace(
+            claim_action="release",
+            session="loot-B",
+            paths="",
+            ledger=str(ledger),
+        )
+        claim_guard.run(drop)
+        expect(
+            _claim_verdict(ledger) == 0,
+            "standing the second session down and releasing its paths did not make the gate "
+            "green. That is the only repair an operator has, and a gate whose repair is "
+            "impossible gets deleted on its first trip (INC-0017)",
+        )
+        expect(
+            "loot-A" in ledger.read_text(encoding="utf-8"),
+            "releasing one session took the OTHER session's live claim with it. On a shared "
+            "tree that hands the paths back while the real owner is still working on them",
+        )

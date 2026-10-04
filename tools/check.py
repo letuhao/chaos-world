@@ -139,6 +139,16 @@ PREAMBLE_STEPS: tuple[tuple[str, list[str]], ...] = (
     # it belongs in the hoisted phase rather than after the first stage a routine edit can
     # red-flag. Engine-free and sub-second.
     ("godot_bypass", []),
+    # Two live sessions claiming one path (INC-0023): a subagent call returned an EMPTY
+    # tool result, the coordinator read that as a failed launch and re-sent the identical
+    # prompt, so two agents held the same two files until one was stood down. Unlike
+    # INC-0003 this shape is OBSERVABLE rather than reviewable, so it is worth a gate:
+    # docs/claims.jsonl is the committed ledger, and two live sessions overlapping on any
+    # path fails. Stale claims are reported and NOT fatal - a claim nobody can clear pins
+    # the gate red forever, which is INC-0017 and how guards get deleted (see
+    # STALE_AFTER in tools/claim_guard.py for why 8h). Reads one small file, launches
+    # nothing, so it belongs in the hoisted phase with the other machine-safety guards.
+    ("claim_guard", ["check"]),
 )
 
 

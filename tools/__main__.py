@@ -36,6 +36,7 @@ character_assets = _load("character_assets")
 backlog = _load("backlog")
 boot = _load("boot")
 check = _load("check")
+claim_guard = _load("claim_guard")
 cultivation = _load("cultivation")
 data = _load("data")
 deferred = _load("deferred")
@@ -85,6 +86,7 @@ COMMANDS = {
     "test": test,
     "boot": boot,
     "check": check,
+    "claim_guard": claim_guard,
     "run": run,
     "export": export,
     "ui": ui,

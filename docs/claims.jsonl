@@ -1,0 +1,8 @@
+{"session": "INC-0023-guard", "paths": ["tools/claim_guard.py", "docs/claims.jsonl"], "heartbeat": "2026-10-04T03:55:00+00:00"}
+{"session": "character-wave-6", "paths": ["game/assets/characters/unique-index-wave-6.jsonl"], "heartbeat": "2026-10-04T03:57:34.674637+00:00"}
+{"session": "character-wave-7", "paths": ["game/assets/characters/unique-index-wave-7.jsonl"], "heartbeat": "2026-10-04T03:58:50.913203+00:00"}
+{"session": "character-wave-8", "paths": ["game/assets/characters/unique-index-wave-8.jsonl"], "heartbeat": "2026-10-04T03:58:58.690763+00:00"}
+{"session": "qi-wave3-enrol", "paths": ["game/src/modules/qi_cultivation", "game/src/modules/world", "game/src/app/actor_factory.gd", "game/src/modules/domain/domain_spawner.gd", "game/src/app/domain_boot.gd", "game/tests/app/test_domain_inhabitant_qi_synchronized.gd"], "heartbeat": "2026-10-04T04:09:34.814466+00:00"}
+{"session": "qi-wave3-proof", "paths": ["game/tests/acquisition", "tools/cultivation"], "heartbeat": "2026-10-04T04:00:31.586426+00:00"}
+{"session": "ses_efb0d8c14ffewTxeclbFMW7vua", "paths": ["game/src/modules/set_bonus", "game/tests/modules/set_bonus"], "heartbeat": "2026-10-04T04:02:13.896272+00:00"}
+{"session": "facade-verb-triage", "paths": ["game/tests/modules/status/test_status_clear_combat_scope.gd"], "heartbeat": "2026-10-04T04:09:25.282126+00:00"}
