@@ -19,7 +19,7 @@ from __future__ import annotations
 import json
 
 from ..common import ToolError, fail, info, ok
-from . import ingest
+from . import adversarial, ingest
 from .analysis import (
     causal_chain,
     hubs_and_leaves,
@@ -56,6 +56,19 @@ def register(subparsers) -> None:
     actions.add_parser("gaps", help="deterministic work queue: what is missing and why")
     actions.add_parser("audit", help="contradictions, duplicates and isolation")
     actions.add_parser("labels", help="imported entities that share a display name")
+    adversary = actions.add_parser(
+        "challenge",
+        help="adversarial audit: questions the bible cannot answer about itself",
+    )
+    adversary.add_argument(
+        "--only",
+        choices=(
+            "unsourced numbers",
+            "universal claims",
+            "orphaned authority",
+            "cross-batch tensions",
+        ),
+    )
     actions.add_parser("coverage", help="per-domain depth and diversity, worst first")
     queue = actions.add_parser(
         "queue", help="the ranked work queue: which specific record to fix, and why"
@@ -169,6 +182,8 @@ def run(args) -> int:
         return _gaps(bible, args)
     if action == "audit":
         return _audit(bible)
+    if action == "challenge":
+        return _challenge(bible, args)
     if action == "labels":
         findings = shared_labels(bible)
         if not findings:
@@ -230,6 +245,39 @@ def run(args) -> int:
         fail(f"readiness chain {args.chain!r} breaks at: {', '.join(missing)}")
         return 1
     raise ToolError(f"unknown lore action {action}")
+
+
+def _challenge(bible, args) -> int:
+    """Adversarial pass. Never fatal, by design.
+
+    Every check here produces a QUESTION rather than a defect, because none of them
+    can be resolved by reading the record again: an unsourced number might be an
+    invention or might be a figure no authored field happens to state, and only a
+    writer knows. Exiting non-zero would put a permanently-red command in the gate
+    and teach everyone to skip it.
+    """
+    findings = adversarial.audit(bible)
+    if args.only:
+        findings = {args.only: findings[args.only]}
+    total = 0
+    for name, rows in findings.items():
+        info(f"{name}: {len(rows)}")
+        for row in rows[:12]:
+            info(f"    {row}")
+        if len(rows) > 12:
+            info(f"    ... and {len(rows) - 12} more")
+        total += len(rows)
+    info("")
+    info("batch contributions:")
+    for author, row in adversarial.batch_report(bible).items():
+        info(
+            f"  {author:<20} {row['entities']:>4} entities  {row['edges']:>4} edges  "
+            f"domains: {', '.join(row['domains']) or '-'}"
+        )
+    info("")
+    info(f"{total} question(s). These are not defects: they are claims the bible cannot")
+    info("verify about itself, and each needs a writer or an adversarial agent.")
+    return 0
 
 
 def _coverage(bible) -> int:

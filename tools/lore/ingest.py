@@ -27,7 +27,7 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
-from ..common import GAME_DIR, REPO_ROOT, info, ok, warn
+from ..common import GAME_DIR, REPO_ROOT, ToolError, info, ok, warn
 from .model import SUMMARY_MAX, bible_dir, edges_dir
 
 
@@ -57,6 +57,28 @@ def _game_dir() -> Path:
     """
     return Path(GAME_DIR)
 
+
+# Authored content whose game id is NOT unique across the files it lives in.
+#
+# The three cultivation ladders are parallel by design: `qi_cultivation/realms/`,
+# `mind_cultivation/realms/` and `body_cultivation/realms/` all contain
+# `core_formation.tres`, `great_luo.tres`, `dao_fruit.tres` and 27 more with the
+# SAME game id. `setdefault` in `build_import` keeps the first, so importing them
+# as-is would have written 30 records and silently discarded 60 - two thirds of
+# every ladder - with no validation error, because the surviving records are
+# individually well-formed. The namespacing prefix is per-source-path, so the
+# lore id becomes `cultivation.qi_core_formation`, which is also the more honest
+# name: these are three DIFFERENT gates that happen to be called the same thing.
+#
+# Discovered by measuring rather than assuming, after the first draft of the
+# extension reported "162 cultivation entities" with no indication that 60 of them
+# were about to vanish.
+PATH_PREFIX: dict[str, str] = {
+    "data/qi_cultivation/realms": "qi",
+    "data/mind_cultivation/realms": "mind",
+    "data/body_cultivation/realms": "body",
+    "data/body_cultivation/acupoints": "",
+}
 
 SCHEMA_VERSION = 1
 
@@ -91,6 +113,36 @@ GAME_SOURCES: dict[str, dict] = {
     "nation": {"domain": "civilizations", "kind": "nation", "path": "data/nation"},
     "bosses": {"domain": "people", "kind": "named-figure", "path": "data/bosses"},
     "domains": {"domain": "geography", "kind": "domain", "path": "data/domains"},
+    # The cultivation system is the largest body of authored content the first
+    # importer pass missed: 52 techniques plus three 30-realm ladders, none of
+    # which reached the bible. `lore context` therefore could not resolve a single
+    # cultivation question for a character, which is the objective's own test of
+    # whether a character can be placed in the world.
+    "techniques": {"domain": "cultivation", "kind": "technique", "path": "data/techniques"},
+    "qi_cultivation/realms": {
+        "domain": "cultivation",
+        "kind": "realm",
+        "path": "data/qi_cultivation/realms",
+        "id_prefix": "qi",
+    },
+    "mind_cultivation/realms": {
+        "domain": "cultivation",
+        "kind": "realm",
+        "path": "data/mind_cultivation/realms",
+        "id_prefix": "mind",
+    },
+    "body_cultivation/realms": {
+        "domain": "cultivation",
+        "kind": "realm",
+        "path": "data/body_cultivation/realms",
+        "id_prefix": "body",
+    },
+    "body_cultivation/acupoints": {
+        "domain": "cultivation",
+        "kind": "acupoint",
+        "path": "data/body_cultivation/acupoints",
+    },
+    "meridians": {"domain": "cultivation", "kind": "meridian", "path": "data/meridians"},
 }
 
 # Scalars lifted out of a `.tres` into `attributes`. Kept as a literal allowlist so
@@ -197,7 +249,7 @@ def _summary_for(kind: str, display_name: str, description: str) -> tuple[str, s
     return f"{head} (full text in lore/prose/{kind}s/{_slugify(display_name)}.md)", "authored"
 
 
-def _collect_source(spec: dict) -> list[dict]:
+def _collect_source(spec: dict, key: str) -> list[dict]:
     directory = _game_dir() / spec["path"]
     if not directory.is_dir():
         return []
@@ -221,10 +273,13 @@ def _collect_source(spec: dict) -> list[dict]:
             value = _scalar(text, field)
             if value is not None:
                 attrs[field] = value
+        prefix = spec.get("id_prefix", "")
+        slug = f"{prefix}_{_slugify(game_id)}" if prefix else _slugify(game_id)
         rows.append(
             {
-                "lore_id": f"{spec['domain']}.{_slugify(game_id)}",
+                "lore_id": f"{spec['domain']}.{slug}",
                 "game_id": game_id,
+                "source": key,
                 "display_name": display_name.strip(),
                 "description": description,
                 "type": spec["kind"],
@@ -283,14 +338,26 @@ def _edges_for(row: dict, spec: dict, known: set[str]) -> list[dict]:
         add("located_in", f"geography.{_slugify(attrs['domain_id'])}")
     if kind == "dao-philosophy" and isinstance(attrs.get("home_tier"), str):
         add("native_to", f"cosmology.{_slugify(attrs['home_tier'])}")
+    if kind == "realm":
+        # The three ladders are parallel and share realm NAMES: `body_integration`
+        # exists in qi, mind and body with different gates and different costs. The
+        # importer namespaces by slug alone, so without the path prefix `setdefault`
+        # would keep the first of each triple and silently delete sixty of the
+        # ninety realms - a loss with no validation failure, because the surviving
+        # ids are well-formed. The prefix is the path, not the display name.
+        add("part_of", f"cultivation.{_slugify(spec['path'].split('/')[0])}_path")
+    if kind == "technique":
+        path_id = attrs.get("path")
+        if isinstance(path_id, str) and path_id.strip():
+            add("part_of", f"cultivation.{_slugify(path_id)}_path")
     return edges
 
 
 def build_import() -> tuple[dict[str, list[dict]], list[dict], Counter]:
     """Pure: produce the would-be bible from the authored data. No writes."""
     rows: list[dict] = []
-    for spec in GAME_SOURCES.values():
-        rows.extend(_collect_source(spec))
+    for key, spec in GAME_SOURCES.items():
+        rows.extend(_collect_source(spec, key))
 
     # Deduplicate lore ids deterministically; a collision is reported by validate
     # as a duplicate rather than silently dropped here.
@@ -303,7 +370,31 @@ def build_import() -> tuple[dict[str, list[dict]], list[dict], Counter]:
     # authored id it came from and the duplicate check compares those instead of
     # the label. See `audit.duplicate_display_names` for the report-only variant.
     by_id: dict[str, dict] = {}
+    # `setdefault` here would silently DROP a record whenever two sources claim the
+    # same lore id, and the loss leaves no trace: the surviving ids are individually
+    # well-formed, so `validate` stays green and the count just comes out lower than
+    # expected. The three cultivation ladders share every realm NAME - `qi_refining`,
+    # `great_luo`, `dao_fruit` and 28 more each exist in all three - so this fired
+    # for real and dropped sixty of ninety realms.
+    #
+    # A collision is a naming defect in the source map, not something to paper over
+    # with a merge order. Fail with both claimants named, so the fix is obvious.
+    claims: dict[str, list[str]] = {}
     for row in sorted(rows, key=lambda item: item["lore_id"]):
+        claims.setdefault(row["lore_id"], []).append(row["source"])
+    collisions = {key: sorted(set(value)) for key, value in claims.items() if len(set(value)) > 1}
+    if collisions:
+        detail = "; ".join(
+            f"{key} claimed by {', '.join(sources)}"
+            for key, sources in sorted(collisions.items())[:6]
+        )
+        raise ToolError(
+            f"{len(collisions)} lore id collision(s) in the import map: {detail}. "
+            "Two authored sources produce the same lore id; give them distinct slugs "
+            "rather than letting one silently win"
+        )
+    by_id = {key: rows[0] for key, rows in ((row["lore_id"], [row]) for row in rows)}
+    for row in rows:
         by_id.setdefault(row["lore_id"], row)
     known = set(by_id)
 

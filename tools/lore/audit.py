@@ -348,6 +348,56 @@ def isolated_entities(bible: Bible, *, limit: int = 40) -> list[str]:
 # --- coverage, diversity and gaps -------------------------------------------
 
 
+def ungrounded(bible: Bible) -> list[str]:
+    """Entities whose subject matter requires a place, with no place recorded.
+
+    A race with no `native_to` geography, or a culture with no `located_in`, is a
+    fact with no setting. It cannot ground a character - `lore context` walks
+    outward from a species to find a homeland, and finds nothing - and it is
+    invisible to every other check, because a species record with a superb summary
+    and eight edges to other species validates perfectly while answering none of
+    the questions a writer asks about it.
+
+    Reported, never fatal: this is a hole to close, not a malformed line. The
+    distinction that matters is that it is CHECKABLE, so a batch that fixes it can
+    be shown to have fixed it.
+    """
+    requirements = {
+        "races": ("native_to", "originated_from", "located_in"),
+        "cultures": ("located_in", "native_to", "part_of"),
+        "ecology": ("located_in", "native_to"),
+        "organizations": ("located_in", "headquartered_in"),
+    }
+    findings: list[str] = []
+    for domain, (place_rel, *alternatives) in sorted(requirements.items()):
+        acceptable = {place_rel, *alternatives}
+        for entity in sorted(bible.by_domain().get(domain, []), key=lambda item: item["id"]):
+            if entity.get("external_ref"):
+                continue
+            entity_id = entity["id"]
+            places = set()
+            for rel, other, _edge in bible.out_edges.get(entity_id, ()):
+                if rel in acceptable:
+                    places.add(bible.entities.get(other, {}).get("domain"))
+            # An incoming edge from a place counts: a settlement that houses a
+            # culture has grounded it just as concretely as the reverse edge.
+            for rel, other, _edge in bible.in_edges.get(entity_id, ()):
+                if bible.registry.inverse(rel) in acceptable:
+                    places.add(bible.entities.get(other, {}).get("domain"))
+            if "geography" not in places and "cosmology" not in places:
+                noun = {
+                    "races": "race",
+                    "cultures": "culture",
+                    "ecology": "habitat",
+                    "organizations": "seat",
+                }[domain]
+                findings.append(
+                    f"{entity_id}: no {noun} is recorded anywhere - it exists "
+                    "in the bible but not in the world"
+                )
+    return findings
+
+
 def domain_coverage(bible: Bible) -> dict[str, dict]:
     coverage: dict[str, dict] = {}
     grouped = bible.by_domain()
@@ -473,16 +523,19 @@ def audit(bible: Bible) -> list[str]:
 def audit_notes(bible: Bible) -> list[str]:
     """Reported by `validate` but never fatal.
 
-    Isolation and shared labels are both true statements about the bible's current
-    state rather than faults in a line somebody wrote: an island is something the
-    next wave connects, and two imported entities sharing a label is authored
-    content the game itself ships. Failing on them would make `validate` red from
-    the first commit and teach everyone to route around it, which is how the guards
-    in this repo stopped being read.
+    Isolation, shared labels and ungrounded records are all true statements about the
+    bible's current state rather than faults in a line somebody wrote: an island is
+    something the next wave connects, two imported entities sharing a label is
+    authored content the game itself ships, and a species with no homeland is a
+    hole rather than an error. Failing on them would make `validate` red from the
+    first commit and teach everyone to route around it, which is how the guards in
+    this repo stopped being read.
     """
-    return [f"isolation: {issue}" for issue in isolated_entities(bible)] + [
-        f"shared-label: {issue}" for issue in shared_labels(bible)
-    ]
+    return (
+        [f"isolation: {issue}" for issue in isolated_entities(bible)]
+        + [f"shared-label: {issue}" for issue in shared_labels(bible)]
+        + [f"ungrounded: {issue}" for issue in ungrounded(bible)]
+    )
 
 
 def require(condition: bool, message: str) -> None:
