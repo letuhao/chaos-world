@@ -1535,6 +1535,170 @@ def _path_correction_plan(records: list[dict]) -> list[str]:
     return lines
 
 
+def _backfill_command(records: list[dict], args) -> int:
+    """Add a newly-required prompt slot to records that predate it.
+
+    `PROMPT_SLOTS` grew a `daily_life` slot and a `canon` record hard-fails without
+    it, so every record authored before the slot landed failed `check` at once. The
+    alternative to this subcommand is hundreds of agents each writing a script outside
+    `tools/` to add one shot to their own shard, which is the pattern that produced
+    three separate normalisation bugs this month.
+
+    What is derived per record, and what is not:
+
+      scene        built from the record's own `home` and `faction` - 37 and 83
+                   distinct values across the cast - so the SCENE differs per
+                   character, drawn from authored data. NOT from `role_in_story`: an
+                   earlier version pasted that field in and the bible's editorial voice
+                   leaked into the art prompt, and "The setting's null reference" is
+                   not a place a person can be photographed in.
+      pose         from the record's `appearance.presentation`, 240 distinct values.
+      framing      the first entry of a small rotation this record does not already
+                   use, so the per-slot distinctness rule cannot fire.
+      expression   one of a small rotation, keyed on a stable hash of the id.
+
+    The honest limitation: framing and expression are TEMPLATED - eight framings across
+    240 records means near-duplicates there, and only the scene and pose carry
+    per-character content. That is stated rather than hidden, because a backfill
+    claiming full distinctness would be a lie, and the alternative is hundreds of
+    agents.
+    """
+    slot = str(args.slot)
+    if slot not in PROMPT_SLOTS:
+        raise ToolError(f"{slot!r} is not a prompt slot; choose one of {PROMPT_SLOTS}")
+    if slot in SET_SLOT_MINIMUMS:
+        raise ToolError(
+            f"{slot} is a SET slot holding {SET_SLOT_MINIMUMS[slot]} shots, not a "
+            f"single prompt; backfilling it is a different operation"
+        )
+    kind = SLOT_KIND[slot]
+
+    framings = (
+        "medium three-quarter at working distance, the ordinary hour doing most of the frame",
+        "waist-up at rest between tasks, hands occupied, nothing performed",
+        "wide from a doorway, the figure mid-routine and unaware of being looked at",
+        "over-the-shoulder into the middle distance, the figure small and unposed",
+        "level and close, a private moment with no second party in it",
+        "high and slightly behind, looking down at work already in progress",
+        "low and wide, the figure against the working light rather than posed to it",
+        "side-on at the edge of frame, half the picture given to the task itself",
+    )
+    expressions = (
+        "unguarded and mid-thought, no one to perform for",
+        "absorbed, the expression of someone counting",
+        "wry and brief, the ordinary face of an ordinary day",
+        "tired and specific, the tiredness of a repeated task rather than of age",
+        "attentive to something out of frame, the interest real and unstated",
+        "flat with fatigue, nothing being concealed and nothing being said",
+        "quietly pleased at a small competent thing",
+        "neutral and available, the face of someone waiting on a result",
+    )
+
+    catalog = readable_catalog()
+    targets = [
+        record
+        for record in catalog
+        if isinstance(record, dict)
+        and record.get("status") == "canon"
+        and not any(
+            (shot or {}).get("slot") == slot
+            for shot in ((record.get("art") or {}).get("shots") or [])
+        )
+    ]
+    if args.limit:
+        targets = targets[: int(args.limit)]
+    if not targets:
+        ok(f"every canon record already fills the {slot} slot; nothing to backfill")
+        return 0
+
+    # Group by the shard that OWNS each record. Ownership is read from disk, so a
+    # record is only ever written back to the file it already lives in.
+    shard_ids: dict[Path, list[str]] = {}
+    for record in targets:
+        shard_ids.setdefault(_owning_shard(str(record.get("id"))), []).append(str(record.get("id")))
+
+    written = 0
+    for shard, ids in sorted(shard_ids.items(), key=lambda item: str(item[0])):
+        ids = sorted(ids)
+        payload = []
+        for character_id in ids:
+            record = next(r for r in targets if r.get("id") == character_id)
+            identity = record.get("identity") or {}
+            appearance = record.get("appearance") or {}
+            index = sum(ord(ch) for ch in character_id)
+            home = str(identity.get("home") or "the settlement")
+            faction = str(identity.get("faction") or "no institution")
+
+            # First rotation entry this record does not already use. A fixed offset
+            # collided with an existing slot's framing in one record out of three, and
+            # that fails `check`.
+            used = {
+                str((shot or {}).get("framing"))
+                for shot in (record.get("art") or {}).get("shots") or []
+            }
+            framing = next(
+                (f for f in framings if f not in used),
+                framings[index % len(framings)],
+            )
+
+            payload.append(
+                {
+                    "id": f"{slot.replace('_', '-')}-{character_id.rsplit('-', 1)[-1]}",
+                    "slot": slot,
+                    "kind": kind,
+                    "canvas": [1536, 1024],
+                    "scene": (
+                        f"{home}, in the ordinary hour of {faction}: the day's "
+                        f"unremarkable work, mid-task and arranged for no one"
+                    ),
+                    "pose": (
+                        f"at the middle of the task, "
+                        f"{appearance.get('presentation') or 'unposed'}, the work "
+                        f"proceeding whether or not it is observed"
+                    ),
+                    "expression": expressions[index % len(expressions)],
+                    "framing": framing,
+                    "status": "planned",
+                }
+            )
+
+        # Write ONLY this shard's records. The first version filtered on the set of
+        # ALL targets rather than this shard's ids, so each shard received all 236
+        # records instead of its own: 254 ids ended up in 36 shards at once, every id
+        # 36 times over, and the catalog gate failed on a duplicate id for the whole
+        # program. The payload is built in `sorted(ids)` order, so zipping against the
+        # same list keeps each shot with its own record.
+        owned = set(ids)
+        merged = [record for record in catalog if record.get("id") in owned]
+        by_character = {str(record.get("id")): record for record in merged}
+        if len(by_character) != len(owned):
+            raise ToolError(
+                f"{_display_path(shard)}: expected {len(owned)} record(s) to update, "
+                f"found {len(by_character)}. Refusing to write rather than guess which "
+                f"record a shot belongs to."
+            )
+        for character_id, shot in zip(ids, payload, strict=True):
+            by_character[character_id].setdefault("art", {}).setdefault("shots", []).append(shot)
+        _atomic_write(merged, shard)
+        written += len(payload)
+        ok(f"{_display_path(shard)}: added the {slot} slot to {len(payload)} record(s)")
+
+    remaining = [
+        record.get("id")
+        for record in readable_catalog()
+        if isinstance(record, dict)
+        and record.get("status") == "canon"
+        and not any(
+            (shot or {}).get("slot") == slot
+            for shot in ((record.get("art") or {}).get("shots") or [])
+        )
+    ]
+    print(f"\nbackfilled {written} record(s); {len(remaining)} canon record(s) still lack {slot}")
+    if remaining and not args.limit:
+        print("  a non-zero remainder after a full run means a record was not written")
+    return 0
+
+
 def _diversity_command(records: list[dict], args) -> int:
     """The read-only view of cast composition, and the number that steers a wave.
 
@@ -1912,6 +2076,21 @@ def register(subparsers) -> None:
     )
 
     actions.add_parser("report", help="summarize the named cast and its shot coverage")
+    backfill = actions.add_parser(
+        "backfill",
+        help="add a newly-required prompt slot to canon records that predate it",
+    )
+    backfill.add_argument(
+        "--slot",
+        required=True,
+        help="the prompt slot to add, e.g. daily_life",
+    )
+    backfill.add_argument(
+        "--limit",
+        type=int,
+        default=0,
+        help="stop after this many records (0 = all); for a dry run on a few",
+    )
     species_pick = actions.add_parser(
         "species",
         help="list species that may legally carry a given cultivation path, least-used first",
@@ -2009,6 +2188,8 @@ def run(args) -> int:
         return _report(readable_catalog())
     if action == "species":
         return _species_command(readable_catalog(), args)
+    if action == "backfill":
+        return _backfill_command(readable_catalog(), args)
     records = _load_index()
     if action == "next":
         return _next(records, args.count, args.kind)
