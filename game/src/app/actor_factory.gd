@@ -249,12 +249,17 @@ static func spawn_npc(
 	if npc_def != null and npc_def.realm_id != &"":
 		realm = npc_def.realm_id
 	actor.set_path(PathState.new(QiPath.PATH_ID, realm))
-	QiCultivationApi.attach(actor)
-	# LAST, because the enrolment above is what gives `apply_realm_modifiers` a realm to
-	# read. Without it a boss born at Foundation Establishment keeps its R1 element
-	# multiplier, and the elemental term — now the status potency term too (ADR 0088) —
-	# is realm-FLAT on exactly the units that were authored high.
-	_refresh_element_realm(actor)
+	# Through the shared attach verb, never a bare `QiCultivationApi.attach`. `attach`
+	# mints the reservoir at a flat 100.0 and the dantian at the actor's (unset)
+	# base capacity, so calling it alone left every npc at seed defaults: an EMPTY
+	# meridian network, a `lower` tier and a pool ceiling nothing to do with its realm.
+	# `_attach_qi` is where `QiTraining.synchronize` reconciles all four to the realm —
+	# BL-0696. It also refreshes the element realm LAST, which is why there is no
+	# `_refresh_element_realm` call here any more: without that refresh a boss born at
+	# Foundation Establishment keeps its R1 element multiplier, and the elemental term —
+	# now the status potency term too (ADR 0088) — is realm-FLAT on exactly the units
+	# that were authored high.
+	_attach_qi(actor)
 	return actor
 
 
