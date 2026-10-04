@@ -15,7 +15,15 @@ extends RefCounted
 ## lowercase ids `ItemDef.activation()` returns; `ui/` may not name the items
 ## module's `ItemActivation` constants, so they are spelled out here and the
 ## mismatch is caught by the `not_usable` path rather than by a silent success.
-const USABLE_ACTIVATIONS: Array[StringName] = [&"consumed", &"learned", &"property"]
+##
+## `property` is NOT in this list, and its absence is the whole point of the note.
+## `ItemUse.spend_gate` refuses every PROPERTY activation before any effect
+## resolves, so a KEY item's Use control could only ever come back refused. This
+## list used to carry it, which left the button lit on an item the facade declines
+## — a mirror that had drifted from the thing it mirrors, with nothing to notice
+## (BL-0601). A mirror is worth nothing unless something compares it to the
+## original, so `tests/ui/test_item_action_rules_mirror.gd` now does.
+const USABLE_ACTIVATIONS: Array[StringName] = [&"consumed", &"learned"]
 
 const REASON_NONE := ""
 const REASON_NO_SELECTION := "no_selection"
