@@ -147,19 +147,32 @@ func test_three_origins_are_offered_each_with_the_real_gate_answer() -> void:
 			bool(view.get("available", false)),
 			"%s: available and unmet are the same answer, read off one gate" % id
 		)
-		# `seen` is sorted before it is compared, because what this test is about is
-		# MEMBERSHIP: which ids are in the origin group. The authored order in
-		# `ORIGINS` is the order an author writes them down in, not the order
-		# `FateCatalog._sorted_keys` publishes — and that ordering is deliberate
-		# (string value, so a codex cannot reorder between reads). Comparing the
-		# author's order against the catalog's order would assert that two unrelated
-		# conventions agree.
+		# ## Why this compares as a SET, and why the flow was NOT re-sorted
 		#
-		# The order is not left untested, it is asserted against its own source: the
-		# flow publishes the CATALOG's order, and a second read is identical, so the
-		# codex cannot show three rows in a different sequence on a second visit.
+		# Two orders exist. `ORIGINS` is the order an author writes three arrivals
+		# down in (`game/data/destiny/destinies/`); the list read above is
+		# `FateCatalog.destinies_in_group`, a CATALOG order by STRING value, chosen
+		# deliberately so a codex cannot reorder between two reads. They answer
+		# different questions - one is narrative, the other determinism - so
+		# asserting they agree asserts two unrelated truths happen to line up, and
+		# breaks the day an author renames a file.
+		#
+		# So both sides are sorted here and the flow keeps the catalog's order.
+		# `candidates()` already iterates `DestinyApi.summary`'s `destinies`
+		# dictionary and then sorts BY ID, which is the same permutation
+		# `destinies_in_group` produces; a second narrative sort on top would be
+		# redundant with the determinism rule already in force, and would make this
+		# test pass only while the author's list happened to match a string sort.
+		# Narrative order is therefore not something any code path in this slice
+		# may re-sort toward - see `CharacterCreationFlow.origin_ids`.
+		#
+		# A set assertion leaves ORDER untested, so order is asserted below against
+		# its own source twice: the published list EQUALS the catalog's own order,
+		# and two reads of `candidates()` are identical.
 		seen.sort()
-	assert_eq(seen, ORIGINS.duplicate(), "and they are exactly the origin group")
+	var authored := ORIGINS.duplicate()
+	authored.sort()
+	assert_eq(seen, authored, "and they are exactly the origin group, as a SET")
 	var from_catalog := []
 	for origin_id in CharacterCreationFlow.new().origin_ids():
 		from_catalog.append(String(origin_id))
