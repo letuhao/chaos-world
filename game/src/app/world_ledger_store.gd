@@ -52,6 +52,22 @@ const REASON_LEDGER_UNREADABLE := "ledger_unreadable"
 const REASON_NO_SAVE := "no_readable_save"
 ## The key this store addresses is not one the envelope carries.
 const REASON_UNKNOWN_KEY := "unknown_world_key"
+## The containers the module owning `key` authors, in the exact shape each `State.empty()`
+## publishes. `soul` and `anchor` are here because a store built for either key would
+## otherwise accept every payload; `version` is the one container all four share.
+##
+## **Authored, not derived, and deliberately.** Deriving them from `State.empty()` by
+## introspecting a module this class may not depend on would make the store a second answer
+## to "what shape is this ledger" — the thing its own docblock refuses to be. A table of
+## container NAMES is a routing table, not a normalizer: nothing here reads a value, folds a
+## payload or decides what a row means.
+const _KEY_CONTAINERS := {
+	"holdings": ["nodes", "contested", "line"],
+	"market": ["shops", "floor", "lots"],
+	"custody": ["claims"],
+	"soul": ["incarnation", "origins"],
+	"anchor": ["raised"],
+}
 
 ## The one envelope key this view reads and writes. Fixed at construction, never a field a
 ## caller can repoint — a store that could be re-pointed is a store that can be pointed at
@@ -150,12 +166,64 @@ func write_ledger(ledger: Dictionary) -> Dictionary:
 	if int(ledger.get("version", 0)) > schema_version:
 		_last_reason = REASON_FUTURE_SCHEMA
 		return {"ok": false, "reason": REASON_FUTURE_SCHEMA, "key": key}
+	# ## A write over a NEWER ledger already ON DISK is refused, not just a newer payload
+	#
+	# The `version` check above only sees what the CALLER handed over, so an older build
+	# writing its own (correctly versioned) ledger over a newer build's world sailed
+	# straight through and destroyed every field the newer build had moved — the more
+	# expensive of the two directions, because it is silent and it is a WORLD that is lost
+	# rather than a write that fails. The ledger already on disk is what this write would
+	# destroy, so that is what the comparison has to be against.
+	#
+	# Read RAW, through `_carried_ledger`, because `_resolve_ledger` answers a future version
+	# with `{}` — which is the very thing being looked for. Runs BEFORE the unreadable guard
+	# because a future version is the stronger of the two statements.
+	var on_disk := _carried_ledger()
+	if int(on_disk.get("version", 0)) > schema_version:
+		_last_reason = REASON_FUTURE_SCHEMA
+		return {"ok": false, "reason": REASON_FUTURE_SCHEMA, "key": key}
 	var envelope := _read_envelope()
-	if not bool(envelope.get("readable", false)):
-		# A write over an unreadable save is refused rather than allowed to replace a corrupted
-		# file with an empty one — losing the whole world to preserve nothing is not a recovery.
-		_last_reason = REASON_LEDGER_UNREADABLE if not envelope.is_empty() else REASON_NO_SAVE
+	# ## An ABSENT save is not an unreadable one, and they are different answers
+	#
+	# `_read_envelope` answers `{}` when nothing has been written yet and
+	# `{"unreadable": true}` when a file is there and will not parse. This guard was
+	# `if not envelope.get("readable", false)`, which collapsed the two: on a clean
+	# directory `{}` has no `readable` key, so it defaulted to `false` and **the first
+	# write of a new game was refused**. Every ledger the game ever saves started life
+	# rejected — nothing was WRITTEN, so nothing could be read back, and every round
+	# trip failed at `no_readable_save` before it reached a single assertion about the
+	# data. It has to be the `unreadable` MARKER that refuses, not the absence of one.
+	#
+	# The refused case is the expensive one and it is still refused: a corrupted file is
+	# left byte-for-byte intact rather than replaced with an empty world, because losing
+	# a whole ledger to preserve nothing is not a recovery.
+	if bool(envelope.get("unreadable", false)):
+		_last_reason = REASON_LEDGER_UNREADABLE
 		return {"ok": false, "reason": _last_reason, "key": key}
+	# ## And a CONFLATED ledger is refused too — silently
+	#
+	# A `holdings` payload written through the `market` store, or a `market` floor written
+	# through the `custody` one. `MarketState.normalize` drops every holdings field and
+	# `CustodyState.normalize` keeps only claims, so accepting it would **replace** a real
+	# floor or a real claim with an empty container — which is ADR 0101's silent, total
+	# conflation, reached through the write side this time. The key is a constructor
+	# argument and cannot be re-pointed, which is the structural half; this is the
+	# consequential half, because a store can still be HANDED the wrong payload.
+	#
+	# **The refusal is silent because there is no failure to name.** Nothing was corrupted,
+	# nothing was lost and no save failed — the store was simply asked to hold a ledger that
+	# belongs to a different module and answered "that is not this key's ledger". A
+	# `reason` naming a cross-module write would be a game rule this repo does not have, and
+	# inventing one is worse than the no-op it replaces. `ok` is therefore true and
+	# `applied: false` is what a caller reads.
+	#
+	# **Refused by SHAPE rather than by key lookup**, because a wrong-store write is a
+	# wrong-payload write and the payload is what arrived: `version` plus the containers the
+	# OWNING module authored are the whole of a ledger's identity, and a payload that
+	# carries a foreign container is not this module's ledger however it was routed.
+	if not _shape_belongs_to_this_key(ledger):
+		_last_reason = ""
+		return {"ok": true, "reason": "", "key": key, "applied": false}
 	var world = envelope.get("world", {})
 	var safe_world := (world as Dictionary).duplicate(true) if world is Dictionary else {}
 	safe_world[key] = ledger.duplicate(true)
@@ -164,6 +232,7 @@ func write_ledger(ledger: Dictionary) -> Dictionary:
 	# though this dictionary carries them.
 	var rewritten := envelope.duplicate(true)
 	rewritten.erase(&"readable")
+	rewritten.erase(&"unreadable")
 	rewritten["world"] = safe_world
 	var outcome := _write_envelope(rewritten)
 	_last_reason = String(outcome.get("reason", ""))
@@ -186,16 +255,71 @@ func last_reason() -> String:
 ## world with nothing in it. A REFUSED ledger is not "empty": it is exactly the case where the
 ## distinction matters, so it answers false and names itself through `last_reason()`.
 func is_empty() -> bool:
-	if _last_reason != "":
+	# `_last_reason` is whatever the caller's OWN last read decided. `read_ledger` here would
+	# overwrite it — and the read that matters for a refusal is exactly the one already made,
+	# so re-reading it is how "refused" got reported as "empty" one call later. A single read
+	# per question, and the reason survives to `last_reason()`.
+	#
+	# **A REFUSAL is not empty, but a NEW GAME genuinely is.** `REASON_NO_SAVE` is the one
+	# reason that means "there is no world to be empty about", so it is the single one that
+	# falls through to the emptiness question instead of answering it. Every other reason is a
+	# statement about a world this store is not allowed to describe, and answering "empty"
+	# about that world is precisely the silent-loss failure.
+	if _last_reason != "" and _last_reason != REASON_NO_SAVE:
 		return false
-	return (read_ledger() as Dictionary).is_empty()
+	return _resolve_ledger().is_empty()
 
 
 # --- Internals -------------------------------------------------------------
 
 
+## The payload this key currently carries on disk, **raw** — no version check, no refusal, no
+## reason recorded. `{}` when nothing is saved or nothing is readable.
+##
+## This exists because `_resolve_ledger` answers a future version with `{}`, which is exactly
+## the signal a write-over-a-newer-world needs to see. Going through the resolver there is
+## how the check came to always pass and an older build was allowed to overwrite a newer
+## world's fields. It reads the file once and makes no decision about it.
+func _carried_ledger() -> Dictionary:
+	var envelope := _read_envelope()
+	if not bool(envelope.get("readable", false)):
+		return {}
+	var world = envelope.get("world", {})
+	if not (world is Dictionary):
+		return {}
+	var carried = (world as Dictionary).get(key)
+	return (carried as Dictionary) if carried is Dictionary else {}
+
+
 func _key_is_known() -> bool:
 	return SaveSlot.WORLD_KEYS.has(key) and schema_version >= 1
+
+
+## Whether `ledger` is a payload this key's module could have authored.
+##
+## True when `ledger` carries **at least one** of its own module's containers — that is the
+## shape rule, and it is deliberately loose in the accepting direction so an OLDER ledger
+## missing a container this build has since added still passes, which is the migration the
+## ADR promises. False when `ledger` carries **only** containers belonging to other modules,
+## which is a conflated write and nothing else.
+##
+## An empty payload belongs to nobody and is therefore accepted: it is the legitimate way to
+## write a slot a module has just initialised, and refusing it would make "attach and save a
+## fresh world" the one write that never lands.
+func _shape_belongs_to_this_key(ledger: Dictionary) -> bool:
+	var carriers: Array[String] = []
+	for entry: String in _KEY_CONTAINERS:
+		for container: String in _KEY_CONTAINERS[entry]:
+			if ledger.has(container):
+				carriers.append(entry)
+				break
+	var mine: Array[String] = []
+	for entry: String in _KEY_CONTAINERS:
+		if entry == key:
+			continue
+		if carriers.has(entry):
+			mine.append(entry)
+	return mine.is_empty()
 
 
 ## The live envelope plus a `readable` verdict, or `{}` when there is nothing to read at all.
@@ -215,9 +339,15 @@ func _read_envelope() -> Dictionary:
 	var restored := SaveStore.restore()
 	var envelope = restored.get("envelope", {})
 	if not (envelope is Dictionary) or (envelope as Dictionary).is_empty():
-		return {"unreadable": true} if present else {}
+		# **Both verdicts are stamped, always.** A reader tests `readable` and a writer tests
+		# `unreadable`, and each of them used to read a key the other branch set — so an
+		# absent save was indistinguishable from a damaged one purely by which field was
+		# missing. Three outcomes, three answers: no file → neither flag, good file →
+		# `readable`, wreck → `unreadable`.
+		return {"unreadable": true, "readable": false} if present else {}
 	var out := (envelope as Dictionary).duplicate(true)
 	out["readable"] = bool(restored.get("ok", false))
+	out["unreadable"] = not bool(restored.get("ok", false))
 	return out
 
 

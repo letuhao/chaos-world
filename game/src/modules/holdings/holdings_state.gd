@@ -67,6 +67,19 @@ static func normalize(data: Variant) -> Dictionary:
 	if not data is Dictionary:
 		return out
 	var source := data as Dictionary
+	# ## A version from a NEWER build is carried through, not stamped down
+	#
+	# `empty()` above stamped THIS build's number, and normalize used to leave it there — so
+	# a ledger authored at a higher `SCHEMA_VERSION` was silently re-stamped as this build's
+	# own. The newer build's ledger then read as compatible here, and the next autosave wrote
+	# it back missing whatever the newer build had moved. Carrying the number is what lets
+	# `WorldLedgerStore` refuse it by name instead (`future_schema`).
+	#
+	# Only the FUTURE half travels: an older version is re-normalized onto the current shape,
+	# which is the whole migration story and belongs here rather than at the store.
+	var stamped := int(source.get("version", 0))
+	if stamped > SCHEMA_VERSION:
+		out["version"] = stamped
 	var nodes = source.get("nodes", {})
 	if nodes is Dictionary:
 		for node_id in (nodes as Dictionary).keys():

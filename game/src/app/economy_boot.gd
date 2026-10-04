@@ -301,12 +301,43 @@ static func _install_shops() -> bool:
 ## singleton, which `contracts/` may do because it is the leaf layer, and which
 ## `AuctionReadModel`'s own docstring already relies on.
 ##
-## **True means every connect was ALREADY in place**, so a caller can tell a fresh wiring
-## from a no-op re-install after a load. `actor` is recorded so a lot naming the player can
-## resolve to a live body; a party this process holds no body for is skipped by name in
-## `AuctionLedger`, never dropped.
+## **True means every connect is IN PLACE**, which is what this boot needs, and it is not the
+## question `AuctionStanding.install` answers.
+##
+## `AuctionStanding.install` returns whether every connect was **already** in place —
+## deliberately, so a caller can tell a fresh wiring from a no-op re-install after a load. That
+## answer is `false` on the very first boot, because the connects did not previously exist, and
+## this boot was reading it as "the seam is not installed". So the one boot that actually did
+## the wiring reported `seam_not_installed` and only a *second* boot reported success — the
+## exact inverse of what the flag means. The question a boot asks is "is it wired NOW", so
+## that is what is asked, of the bus, by the same `is_connected` check the subscriber's own
+## guards use.
+##
+## **Unchanged from this:** every connect is still `is_connected`-guarded inside
+## `AuctionStanding.install`, so a caller that re-installs a thousand times still holds exactly
+## one handler per signal. `actor` is recorded there so a lot naming the player can resolve to
+## a live body; a party this process holds no body for is skipped by name in `AuctionLedger`,
+## never dropped.
 static func _install_standing(actor: Actor) -> bool:
-	return AuctionStanding.install(actor)
+	AuctionStanding.install(actor)
+	return _standing_is_connected()
+
+
+## Whether all four auction signals have a subscriber attached right now.
+##
+## `AuctionEvents.shared()` is the process-wide bus and `is_connected` is the check the
+## subscriber's own guards use, so this is the same question asked of the bus rather than
+## answered by a return value that describes the CALL rather than the RESULT. The four are
+## named rather than counted, so a signal added without a subscriber is a seam that reports
+## false instead of a fourth signal nobody has to remember to list.
+static func _standing_is_connected() -> bool:
+	var bus := AuctionEvents.shared()
+	return (
+		bus.bid_placed.is_connected(AuctionStanding.on_bid_placed)
+		and bus.outbid_in_auction.is_connected(AuctionStanding.on_outbid)
+		and bus.defaulted_on_a_bid.is_connected(AuctionStanding.on_defaulted)
+		and bus.won_auction.is_connected(AuctionStanding.on_won)
+	)
 
 
 ## Mint a live body for a subject def id, through `ActorFactory.spawn_npc`.
