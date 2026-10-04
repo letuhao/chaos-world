@@ -1,38 +1,44 @@
-"""Which rung of the magnitude ladder a drop actually pays, and whether it is owed.
+"""Which rung of the magnitude ladder a drop's PLACEMENT pays, and whether it is owed.
 
-A `LootEntry` realizes at a realm the RESOLVER computes, never at the realm its
-item is authored for. `LootResolver._plan` takes `context.realm` whenever it is set
-and only falls back to `LootTableDef.realm`; the context is the band
-(`LootRewards.make_context(tier.realm, ...)`), and `LootResolver._child_context`
-lets a nested table override the band only where that table declares a `realm` of
-its own. So the rung a drop pays is
+**This module measures PLACEMENT, not the runtime.** `payments()` derives a paid rung
+by walking authored placement down the nesting chain from the band (`_walk`: `realm =
+table_realm(...) or realm`) and never reads `loot_rewards.gd`. Every number it
+prints is a statement about where entries SIT, and none is a statement about what a
+player receives.
 
-    the band realm, overridden by each table's own `realm` from the outside in.
+**ADR 0166's decision 1 has landed, so the runtime already pays the item's own rung.**
+`LootRewards.contextualize` overrides rarity only and keeps `def.realm`, and
+`ItemGenerator` hands `def.realm` to `OptionCatalog`, so a band no longer caps
+magnitude at all. Every entry counted below is therefore a **placement census entry,
+not a mis-paid drop**, and `--scope all` is permanently red on a number this module
+cannot move. It is a census, not a work queue — and the count is not stable either,
+because a content wave rewrites the tables it walks, so read `report` for the live
+figure rather than any number written here. BL-0704 (the "unbuilt programme") and
+BL-0765 (the "red gate, three findings") both rested on this number and are now
+closed as superseded by ADR 0166.
 
-`item_magnitude_scale.json` is ONE per-realm table shared by every ladder
-(ADR 0050: item magnitudes are not actor stats and deliberately differ), so the rung
-a reagent owes is the `realm` on its own `ItemDef` and nothing else. Three places in
-the repo already say so in prose, and this module is the executable form of all
-three:
+What guards the landed decision is SOURCE, not a corpus scan, because once the change
+is in, a corpus scan is trivially satisfied and before it, the same scan is red for
+reasons that say nothing about the decision:
 
-- `tools/acquisition/design.py`: "the band is a statement about difficulty, not
-  about which realm a drop belongs to, so moving the realm between bands would
-  mis-scale the loot", and a boss's loot is "grouped by the realm its items roll
-  at, so one iron relic in a primordial trial still rolls at an iron magnitude".
-- `tools/acquisition/chain.py:band_realm`: "a wrong-high fallback hands out loot
-  scaled above its authored magnitude".
-- `game/src/modules/loot/loot_rewards.gd`: "the drop rolls for the realm and rarity
-  it fell from, not the ones its definition was authored at".
+- `game/tests/modules/loot/test_loot_band_magnitude_ruling.gd` reads the source and
+  pins the one-seam claim, `def.realm` as the magnitude, the resolver still reporting
+  the band, and a CEILING on shipped pool tables so the rejected migration fails the
+  build instead of quietly truncating 279 of 333 tables.
+- `game/tests/modules/loot/test_loot_drop_pays_own_rung.gd` asserts the VALUE: a
+  foreign band context leaves the item at its own rung, on the realized drop.
 
-That last line is why this is a PLACEMENT defect and not a scale defect. The
-resolver's rule is right and `item_magnitude_scale.json` is right; what is wrong is
-a **direct** entry sitting on a band whose realm is not its item's own. A direct
-entry has no table of its own to override the band, so it pays the band's rung: that
-is BL-0645, whose named instance `mind_core_formation_mind_herb` paid `dao_ancestor`
-(3.8x) where it owes `core_formation` (1.2x). A foreign-realm reagent is supposed to
-sit in a nested pool that declares its own realm — the shape
-`tools/acquisition/seed.py` `_boss_entries` already emits for every foreign-realm
-catalyst, and the shape 30 shipped `_pool_*` tables already carry.
+Both run in `tools test`, and `tools/check.py:113` runs `tools test`, so the mechanism
+is already guarded inside the gate this module is one step of. ADR 0166's "Tool change
+to build (**not built here**)" — `check --scope magnitude` — is therefore redundant
+with a guard that runs, and is deliberately not built here; see [method check].
+
+`item_magnitude_scale.json` is ONE per-realm table shared by every ladder (ADR 0050:
+item magnitudes are not actor stats and deliberately differ), so the rung a reagent
+owes is the `realm` on its own `ItemDef` and nothing else. That is still what
+[method mispaid] compares placement against, and it is why a direct entry on a
+foreign band is the shape to look for: a direct entry has no table of its own to
+override the band, which is BL-0645.
 
 A second finding is measured here and kept deliberately separate, because the two
 were reported as one and are not: an item whose `realm` names a rung the scale table
@@ -40,31 +46,18 @@ has no row for is BL-0437's `qi_condensation` failure — a **missing key**, the
 opposite failure from a wrong-rung payment, and one `options.load_scale` aborts on
 before any of this runs. It is [method off_ladder], not [method mispaid].
 
-## What was measured, not assumed
-
-The gate ([method gated]) found **53** mis-paying guaranteed reagents where BL-0645
-named 13: its 13 Mind herbs plus **40 qi-ladder herbs and cores** in the identical
-shape, which its own audit never reached because it walked the Mind ladder only. Both
-halves are fixed here, because a gate that reports 13 of 53 is not a gate.
-
-The class itself is far larger than either ladder's reagents: `report` measures 6,310
-of 8,083 reachable direct entries paying a rung that is not their item's own, of which
-6,245 are domain relics. That residual is BL-0704, is *measured and printed* by
-`report`, and is deliberately not in the gate — see [method gated] for why it cannot
-be fixed the same way.
-
 ## Actions
 
-- `report` - every direct entry, what it pays, what it owes, and which domain pays.
+- `report` - every direct entry, what its placement pays, what its item owes, and
+  which domain binds it.
 - `check`  - non-zero when any exists inside `--scope` (`gate` by default, `all` for
-  the whole corpus, which is red today on BL-0704's residual). The class guard.
-- `fix`    - move the foreign-realm direct entries into the pool that declares their
-  realm, as text surgery on the two files. Never a full re-emit: `emit.Entry` writes
-  no `chance` and no `quantity_max`, so regenerating a 24-entry boss table to move
-  one entry would silently normalize the other twenty-three.
+  the whole corpus, which is red today and cannot be greened from this file).
+- `fix`    - **REFUSED, unconditionally.** The placement migration it implemented is
+  the alternative ADR 0166 rejected. See [method fix] for the four measured blockers
+  and for why the refusal is a hard stop rather than a flag.
 - `repair` - bring an `entries` array back to a loadable shape. `check` also asserts
-  that shape ([method structural]), because `fix` splices refs and a defect the fixer
-  can introduce has to be one the fixer can also see.
+  that shape ([method structural]), because `fix` used to splice refs and a defect it
+  could introduce has to be one it could also see.
 """
 
 from __future__ import annotations
@@ -73,7 +66,6 @@ import re
 import time
 from dataclasses import dataclass
 
-from ..acquisition import design, emit
 from ..acquisition.chain import Graph, resource_scalar, scalar
 from ..acquisition.loot import MAX_NESTING_DEPTH
 from ..common import REPO_ROOT, ToolError, fail, info, ok
@@ -371,60 +363,7 @@ def gated(graph: Graph, scale: dict[str, float]) -> list[Payment]:
     ]
 
 
-# --- the fix ------------------------------------------------------------------
-
-
-def pool_id_for(table_id: str, realm_id: str) -> str:
-    """The pool a foreign-realm entry moves into, on the generator's own id scheme.
-
-    `design.pool_id` is keyed on a BOSS id, and the table being fixed is usually
-    `loot_<boss_id>` but is not always: a folded encounter's `loot_route_*` table
-    survives as a boss's bound table. Deriving from the table id keeps both on the
-    scheme `tools/acquisition/seed.py` recognises, so a re-seed reproduces the fix
-    instead of treating the pool as a hand decision.
-    """
-    prefix = design.TABLE_PREFIX
-    stem = table_id[len(prefix) :] if table_id.startswith(prefix) else table_id
-    return f"{prefix}{stem}{design.POOL_SUFFIX}{realm_id}"
-
-
-def _remove_entry(text: str, wanted_id: str) -> str:
-    """Excise one entry's block and its `SubResource` ref, and nothing else.
-
-    The ref's comma is OPTIONAL, because the last element of the array carries none and
-    a removal that missed that case left a dangling ref the [method structural] guard
-    caught on 1 of the 53 tables this fix wrote.
-
-    The remaining blocks keep their authored `entry_N` numbers, so a gap is left where
-    the removed one was. Godot keys a `SubResource` ref by that string, so a gap is
-    load-bearing-free: renumbering would rewrite every later ref and turn a one-entry
-    fix into a whole-file diff.
-    """
-    target = next((block for resource_id, block in _blocks(text) if resource_id == wanted_id), "")
-    if not target:
-        raise ToolError(f"no entry block {wanted_id} to remove")
-    out = text.replace(target, "", 1)
-    return re.sub(
-        rf'^\tSubResource\("{re.escape(wanted_id)}"\),?\r?\n',
-        "",
-        out,
-        count=1,
-        flags=re.M,
-    )
-
-
-def _add_entry(text: str, entry: emit.Entry, resource_id: str) -> str:
-    """Append one entry's block before `[resource]` and its ref at the array's end.
-
-    Appended rather than inserted: `LootResolver` pays guaranteed entries before the
-    weighted draw, so an appended guaranteed entry cannot reorder a single draw, and
-    the diff stays one added block plus one added line.
-    """
-    main = _MAIN_HEAD.search(text)
-    if main is None:
-        raise ToolError("no [resource] block to insert an entry before")
-    at = main.start()
-    return _normalise_entries_array(text[:at] + entry.body(resource_id) + text[at:])
+# --- the refused fix ----------------------------------------------------------
 
 
 _ENTRIES_ARRAY = re.compile(r"(?s)entries = Array\[LootEntry\]\(\[\r?\n(?P<body>.*?)\r?\n\]\)")
@@ -581,175 +520,66 @@ def repair() -> int:
     return check()
 
 
-def _bump_load_steps(text: str, removed: int, added: int) -> str:
-    """Keep `load_steps` equal to 3 + the entry count, as the shipped tables write it.
-
-    `emit.table` writes `3 + len(entries)` for two `ext_resource` lines and one per
-    entry, so a removal plus an addition is a wash. Kept honest rather than assumed:
-    Godot reads the header as a progress hint, and a stale one is a lie in the file a
-    reviewer reads.
-    """
-    head = re.search(r"load_steps=(\d+)", text)
-    if head is None:
-        return text
-    total = max(1, int(head.group(1)) + added - removed)
-    return text[: head.start(1)] + str(total) + text[head.end(1) :]
-
-
 def fix(*, scope: str = "gate") -> int:
-    """Move every foreign-realm direct entry into a pool that declares its realm.
+    """REFUSED, unconditionally. The migration this action performed was rejected.
 
-    The guarantee moves with it, which is the whole reason the entry may move: a
-    guaranteed entry inside a pool is unconditional only when the nesting entry above
-    it is guaranteed too, so the parent entry is written with exactly the flag the
-    moved entries carried. A realm whose moved entries disagree about that flag is
-    **refused**, because no single pool can preserve both — a rolled parent would
-    demote a guaranteed reagent (BL-0645's original DEF-0187 class) and a guaranteed
-    parent would promote a rolled one, and either would change acquisition silently.
+    ADR 0166 decided a drop realizes at its item's authored rung, and that ruling
+    **landed**: `LootRewards.contextualize` overrides rarity only and keeps
+    `def.realm`, and `ItemGenerator` hands `def.realm` to `OptionCatalog`. So the
+    defect this function existed to correct no longer exists at runtime, and what
+    it did instead was to PLACE the rolled residual into one realm pool per owed
+    realm. ADR 0166 rejects that route on four measured blockers, any one
+    disqualifying (`docs/adr/0166-*.md`, "Why placement was rejected"):
+
+    - it truncates: median 13 pools per table, max 25, so **279 of 333** tables lose
+      entries behind `MAX_PLANS_PER_RESOLVE = 12` and **318** exceed
+      `MAX_DROPS_PER_RESOLVE = 8` — a silent drop, worse than a visible mis-payment;
+    - it soft-locks: **2679** residual entries are inputs to shipped recipes and **13**
+      are ruled `mind_sea_catalyst`, and loot rule E2 grants no second run, so any
+      miss is the DEF-0187 / DEF-0199 permanent-miss class against a realm gate;
+    - it is not acquisition-neutral: a rolled entry goes from 1 of `N` candidates to
+      1 of `N` pools times 1 of `M`;
+    - it needs ~4380 pools against the 1083 already shipped.
+
+    **The refusal is unconditional on purpose — no flag, no scope, no confirmation.**
+    A gate is one typo away from re-enabling a rejected migration, so there is no gate
+    here. The migration body and its four helpers were **deleted** rather than left
+    unreachable behind this raise, because dead code one edit away from the guard is
+    the same hazard with extra steps. Nothing is lost: the generator owns
+    realm-correct placement for its own output (`tools/acquisition/seed.py:412`
+    `_boss_entries` buckets every item by its own realm and emits a realm pool per
+    bucket), `repair` still owns the array shape, and git history holds the body if a
+    future ADR reopens the question.
+
+    `scope` is retained only so [method run]'s dispatch signature is unchanged. It
+    selects nothing and reaches nothing.
     """
-    graph = Graph()
-    scale = load_scale()
-    found = mispaid(graph, scale) if scope == "all" else gated(graph, scale)
-    if not found:
-        ok("no foreign-realm direct entry to move")
-        return 0
-    by_table: dict[str, list[Payment]] = {}
-    for payment in found:
-        by_table.setdefault(payment.table_id, []).append(payment)
-    # Group by (realm, guarantee) BEFORE touching a file, so an unfixable grouping
-    # fails with the tree untouched rather than half-rewritten.
-    for table_id, group in sorted(by_table.items()):
-        pools: dict[str, set[bool]] = {}
-        for payment in group:
-            pools.setdefault(payment.item_realm, set()).add(payment.guaranteed)
-        for realm_id, flags in sorted(pools.items()):
-            if len(flags) > 1:
-                raise ToolError(
-                    f"{table_id}: {realm_id} entries disagree about `guaranteed` "
-                    f"({sorted(flags)}); one pool cannot preserve both, so nothing was "
-                    "written"
-                )
-            if table_id.endswith(f"{design.POOL_SUFFIX}{realm_id}"):
-                raise ToolError(f"{table_id} is already the {realm_id} pool; nothing to move")
-    written = 0
-    moved_entries = 0
-    for table_id in sorted(by_table):
-        group = by_table[table_id]
-        wanted: dict[str, list[Payment]] = {}
-        for payment in group:
-            wanted.setdefault(payment.item_realm, []).append(payment)
-        path = TABLE_DIR / f"{table_id}.tres"
-        text = _read(path)
-        removed = 0
-        added = 0
-        for realm_id in sorted(wanted):
-            pool_id = pool_id_for(table_id, realm_id)
-            _refuse_unreproducible(graph, pool_id)
-            existing = entries(graph, pool_id)
-            kept = [
-                entry
-                for entry in existing
-                if entry.item_id not in {payment.item_id for payment in wanted[realm_id]}
-            ]
-            pool_entries = [emit.Entry(entry.entry_id, **emit_fields(entry)) for entry in kept]
-            for payment in sorted(wanted[realm_id], key=lambda item: item.entry_id):
-                pool_entries.append(
-                    emit.Entry(
-                        payment.entry_id,
-                        item_id=payment.item_id,
-                        guaranteed=payment.guaranteed,
-                        quantity=payment.quantity,
-                        rarity_floor=payment.rarity_floor,
-                    )
-                )
-                record = next(
-                    entry
-                    for entry in entries(graph, table_id)
-                    if entry.entry_id == payment.entry_id
-                )
-                text = _remove_entry(text, record.resource_id)
-                removed += 1
-                moved_entries += 1
-            pool_path = TABLE_DIR / f"{pool_id}.tres"
-            _write(
-                pool_path,
-                emit.table(
-                    pool_id,
-                    f"{_display(graph, table_id)} ({realm_id})",
-                    pool_entries,
-                    realm=realm_id,
-                ),
-            )
-            # The nesting entry carries the moved entries' own guarantee, because a
-            # guaranteed entry inside a pool is unconditional only if the step above
-            # it is too (`tools/acquisition/loot.py`).
-            nesting_id = f"pool_{realm_id}"
-            text = _add_entry(
-                text,
-                emit.Entry(nesting_id, table_id=pool_id, guaranteed=wanted[realm_id][0].guaranteed),
-                f"entry_{nesting_id}",
-            )
-            added += 1
-            written += 1
-        text = _bump_load_steps(text, removed, added)
-        _write(path, text)
-        written += 1
-    ok(
-        f"moved {moved_entries} foreign-realm direct entries across "
-        f"{len(by_table)} table(s) and wrote {written} file(s)"
+    raise ToolError(
+        "loot-magnitude fix is REFUSED and always will be until an ADR reopens it. The "
+        "placement migration it performed was rejected by ADR 0166, which instead ruled "
+        "that a drop pays its item's own rung — and that ruling has landed in source "
+        "(LootRewards.contextualize no longer overrides def.realm, and ItemGenerator "
+        "reads def.realm as the magnitude), so there is nothing left to move. Running "
+        "the migration would have truncated 279 of 333 tables behind "
+        "MAX_PLANS_PER_RESOLVE = 12, soft-locked 2679 recipe inputs, changed a rolled "
+        "entry from 1-of-N to 1-of-N-pools-times-1-of-M, and needed ~4380 pools against "
+        "1083 shipped. See docs/adr/0166-a-drop-pays-its-item-s-own-rung-*.md. To measure "
+        "instead, run: uv run python -m tools cultivation loot-magnitude report "
+        "(placement census, NOT what a player receives — see this module's docstring)."
     )
-    return check(scope=scope)
-
-
-def _refuse_unreproducible(graph: Graph, pool_id: str) -> None:
-    """Refuse to re-emit a pool whose entries `emit.table` cannot reproduce.
-
-    `emit.Entry` writes `weight = 1.0` and the `NO_CHANCE` sentinel and nothing else,
-    so merging into a pool that carries a real `weight` or a real `chance` would
-    silently normalize it. That pool is a different design than the one this fix
-    writes, and rewriting it is its owner's decision, not this fix's.
-    """
-    record = graph.loot_tables.get(pool_id)
-    if record is None:
-        return
-    text = graph.read(record)
-    if "chance = -1.0" not in text:
-        raise ToolError(f"{pool_id} declares a real `chance`; refusing to re-emit it")
-    for line in text.splitlines():
-        weight = line.split("=", 1)[1].strip() if line.startswith("weight = ") else ""
-        if weight and weight != "1.0":
-            raise ToolError(f"{pool_id} declares weight {weight}; refusing to re-emit it")
-
-
-def emit_fields(entry: Entry) -> dict:
-    """`emit.Entry` keywords for an entry read back off disk.
-
-    `weight` and `chance` are absent from `emit.Entry` because every entry
-    `emit.table` writes is weight 1.0 with the `NO_CHANCE` sentinel; an entry that
-    says otherwise is not reproduced by re-emission and must not be.
-    """
-    if entry.table_id:
-        return {"table_id": entry.table_id, "guaranteed": entry.guaranteed}
-    return {
-        "item_id": entry.item_id,
-        "guaranteed": entry.guaranteed,
-        "quantity": entry.quantity,
-        "quantity_max": entry.quantity_max,
-        "rarity_floor": entry.rarity_floor,
-    }
-
-
-def _display(graph: Graph, table_id: str) -> str:
-    """`LootTableDef.display_name`, or the id when the file omits it."""
-    record = graph.loot_tables.get(table_id)
-    return resource_scalar(graph.read(record), "display_name") or table_id
 
 
 # --- commands -----------------------------------------------------------------
 
 
 def report() -> int:
-    """Print what every direct entry pays against what it owes, and what the gate owns."""
+    """Print what every direct entry's PLACEMENT pays against what its item owes.
+
+    **This is a placement census, not a defect list.** Since ADR 0166 landed, a drop
+    realizes at its item's own rung regardless of the band it sits on, so the
+    mis-payment count below is a count of entries PLACED on a foreign band. Nothing
+    here is a queue, and `fix` refuses to act on it. See this module's docstring.
+    """
     graph = Graph()
     scale = load_scale()
     total = payments(graph)
@@ -762,7 +592,9 @@ def report() -> int:
     info(f"tables on disk: {len(graph.loot_tables)}, of which unbound: {len(unbound(graph))}")
     info(f"direct entries reachable from a band: {len(total)}")
     info(
-        f"paying a rung other than their own: {len(found)}\n"
+        f"PLACED on a rung other than their own: {len(found)}  "
+        "(a drop still realizes at its own rung since ADR 0166 — this is placement, "
+        "not payment, and `fix` refuses to move any of it)\n"
         f"  gate: guaranteed reagent        {len(gate):>5}\n"
         f"  residual: rolled reagent        {len(rolled):>5}  "
         "(cannot move without changing acquisition)\n"
@@ -792,13 +624,30 @@ def _row(payment: Payment, scale: dict[str, float]) -> None:
 
 
 def check(*, scope: str = "gate") -> int:
-    """Fail on any payment at a rung other than the item's own, inside `scope`.
+    """Fail on any PLACEMENT at a rung other than the item's own, inside `scope`.
 
-    `scope="gate"` covers the guaranteed reagents ([method gated]) — the class
-    BL-0645 is an instance of, and the only one that can move without changing
-    acquisition. `scope="all"` covers every direct entry and is red today on the
-    residual [method report] names; it exists so the next agent measures that residual
-    against a command rather than against this docstring.
+    `scope="gate"` covers the guaranteed reagents ([method gated]) — BL-0645's class.
+    It is **empty and measured so** (0 of 8084 today), which is the point of measuring
+    it: a gate that cannot report 13 of 53 is not a gate. `scope="all"` covers every
+    direct entry.
+
+    **`--scope all` is permanently red and this function cannot green it.** It measures
+    placement, not the runtime, and ADR 0166's ruling — which HAS landed — is that the
+    runtime ignores the band for magnitude. So its 6307 are entries that sit on a
+    foreign band and receive their own rung, not 6307 mis-payments. Do not read this
+    scope's output as a queue, and do not "fix" it by moving entries: [method fix]
+    refuses precisely that migration, on four measured blockers.
+
+    ADR 0166's unbuilt `check --scope magnitude` is **not** built here on purpose. Its
+    three rules are all already implemented, in GDScript, by
+    `game/tests/modules/loot/test_loot_band_magnitude_ruling.gd` (rules a/b/c, reading
+    source) and `game/tests/modules/loot/test_loot_drop_pays_own_rung.gd` (the value,
+    end to end). Both run in `tools test`, which `tools/check.py:113` runs, so the
+    mechanism is already inside the gate. A second Python copy of one rule is a second
+    thing to drift, and `--scope` here accepts only `{gate, all}`, so adding it would
+    also mean editing `tools/cultivation/__init__.py`.
+
+    Exit codes and findings are unchanged by any of the above. Nothing is suppressed.
     """
     graph = Graph()
     scale = load_scale()
@@ -808,11 +657,12 @@ def check(*, scope: str = "gate") -> int:
         paid = scale[payment.paid_realm]
         owed = scale[payment.item_realm]
         problems.append(
-            f"{payment.table_id}.{payment.entry_id} pays {payment.item_id} at "
+            f"{payment.table_id}.{payment.entry_id} PLACES {payment.item_id} at "
             f"{payment.paid_realm} ({paid:.2f}x) where the item is authored "
             f"{payment.item_realm} ({owed:.2f}x): {payment.domain_id} binds it on a "
             "band it does not own, and a direct entry has no realm of its own to "
-            "override the band"
+            "override the band. Since ADR 0166 the drop realizes at the item's own "
+            "rung anyway (this is a placement census, not a mis-payment)"
         )
     for item_id, realm_id in off_ladder(graph, scale):
         problems.append(f"{item_id}: authored realm '{realm_id}' has no magnitude scale row")
@@ -822,14 +672,20 @@ def check(*, scope: str = "gate") -> int:
     if problems:
         return 1
     ok(
-        f"every direct loot entry in scope '{scope}' pays its item's own rung "
+        f"every direct loot entry in scope '{scope}' is placed on its item's own rung "
         f"({len(payments(graph))} entries measured, {len(scale)} scale rows)"
     )
     return 0
 
 
 def run(action: str, scope: str = "gate") -> int:
-    """Dispatch one action. `action` is constrained by the parser, not here."""
+    """Dispatch one action. `action` is constrained by the parser, not here.
+
+    `fix` is dispatched rather than dropped from the parser choices on purpose: a
+    refused action that explains WHY it was refused is worth more to the next agent
+    than an argparse "invalid choice", and [method fix] raises before it reads a
+    single file.
+    """
     if action == "report":
         return report()
     if action == "fix":
