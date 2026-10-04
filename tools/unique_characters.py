@@ -602,6 +602,7 @@ def _concentration_warnings(records: list[dict]) -> list[str]:
 def _validate(records: list[dict], *, check_files: bool) -> list[str]:
     issues: list[str] = []
     stat_ids = _authored_stat_ids()
+    lore_entries = _lore_entries()
     if not stat_ids:
         issues.append(f"cannot read the authored stat vocabulary from {STAT_DEFS}")
     seen: set[str] = set()
@@ -669,6 +670,20 @@ def _validate(records: list[dict], *, check_files: bool) -> list[str]:
             # time is later than the only moment it is cheap to fix.
             for gap in _prompt_set_gaps(art):
                 issues.append(f"{label}: cannot be canon while {gap}")
+            # A bloodline is a concentration carried by a body, not a body. Ten
+            # characters named one in `appearance.race` and named no species anywhere,
+            # so they had no lifespan, no senses and no anatomy - and `check` passed,
+            # because a non-empty string is a valid race. Ten characters is not a
+            # labelling slip; it is a shape the schema could not see.
+            if lore_entries is not None:
+                bloodlines = bloodline_races(lore_entries)
+                race_id = str(appearance.get("race", "")).strip()
+                if race_id in bloodlines and not _names_a_species(record, lore_entries, bloodlines):
+                    issues.append(
+                        f"{label}: cannot be canon while appearance.race is {race_id!r}, "
+                        f"which is a bloodline rather than a species, and no species is "
+                        f"named anywhere in the record. Say which body carries the line."
+                    )
 
     # Duplicates are checked across the whole catalog rather than per record,
     # because the defect is a RELATIONSHIP between two rows and neither row can
@@ -904,8 +919,72 @@ def _validate_image(path: str, canvas: list, label: str) -> list[str]:
     return []
 
 
+def _lore_entries() -> dict | None:
+    """The Lore Bible's entities, or None when it cannot be read.
+
+    The bloodline rule needs the bible, and `check` runs in `tools check` where a
+    missing or broken bible must not become a character-catalog failure - that would
+    couple two independent gates. A None here disables the rule rather than guessing.
+    """
+    try:
+        from .lore.model import load_bible
+    except ImportError:
+        return None
+    try:
+        return load_bible().entities
+    except Exception:  # noqa: BLE001 - any read failure means "cannot check"
+        return None
+
+
 def _text(value: object) -> bool:
     return isinstance(value, str) and bool(value.strip())
+
+
+# The Lore Bible's `races` domain carries `type` values that are NOT all species:
+# `bloodline` is a concentration carried by a body, and the authored records say so
+# explicitly - hearthborn is "averaged with whatever else the household took in...
+# most actors hold some", tideculled "crosses races freely - the cull was a political
+# act, never an anatomical one". So a bloodline in `appearance.race` names a
+# DESCENT, not a body, and a character whose only racial statement is a bloodline has
+# no lifespan, no senses and no anatomy anywhere in the catalog.
+#
+# Ten characters were written that way and every one of them passed `check`, because a
+# non-empty string is a valid `appearance.race`. The rule that catches it is not
+# "the race must exist" - it is "the record must say what BODY this is".
+BLOODLINE_RACE_TYPES = frozenset({"bloodline"})
+
+
+def bloodline_races(entries: dict) -> set[str]:
+    """Race ids that are a DESCENT rather than a body, read from the bible.
+
+    Derived rather than hardcoded: the set of concentrations grows, and a hardcoded
+    list goes stale the way every other hardcoded id list in this program has.
+    """
+    return {
+        race_id
+        for race_id, entity in entries.items()
+        if isinstance(entity, dict)
+        and entity.get("domain") == "races"
+        and entity.get("type") in BLOODLINE_RACE_TYPES
+    }
+
+
+def _names_a_species(record: dict, entries: dict, bloodlines: set[str]) -> bool:
+    """True when the record names any race that is a body rather than a descent.
+
+    Searches the whole record, not just `appearance.race`, because an author who wrote
+    "a tidecaller by way of the tideborn line" HAS grounded the character and should
+    not be made to move the fact into a different field to satisfy a linter.
+    """
+    blob = json.dumps(record, ensure_ascii=False).lower()
+    for race_id, entity in entries.items():
+        if race_id in bloodlines or not isinstance(entity, dict):
+            continue
+        if entity.get("domain") != "races":
+            continue
+        if race_id.split(".")[-1].lower() in blob:
+            return True
+    return False
 
 
 # --- the art brief ---------------------------------------------------------

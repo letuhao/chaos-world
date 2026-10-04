@@ -1503,6 +1503,124 @@ def _ingest_is_deterministic() -> None:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
 
 
+@case("unique_characters: a bloodline is a DESCENT, so canon needs a species named")
+def _bloodline_race_requires_a_species() -> None:
+    """Ten characters named a bloodline as their race and no species anywhere.
+
+    The bible's `races` domain is not homogeneous: `type` runs species, hybrid, clade,
+    symbiote, ectospecies and `bloodline`. A bloodline is a CONCENTRATION carried by a
+    body, and the authored records say so in their own words - hearthborn is "averaged
+    with whatever else the household took in", tideculled "crosses races freely - the
+    cull was a political act, never an anatomical one".
+
+    So `appearance.race: races.tideborn` names a descent. A character whose only racial
+    statement is that has no lifespan, no senses and no anatomy anywhere in the
+    catalog, and `check` passed every one of them because a non-empty string is a valid
+    race. Six characters are affected.
+
+    The rule searches the WHOLE record, not just `appearance.race`. An author who wrote
+    "a stonebound by way of the emberborn line" has grounded the character and must not
+    be forced to relocate the fact into another field to satisfy a linter - four
+    characters do exactly that and pass.
+
+    The bloodline set is read from the bible rather than hardcoded: the concentrations
+    grow, and a hardcoded list is exactly the kind of thing that goes stale here.
+    """
+    entries = unique_characters._lore_entries()
+    expect(entries is not None, "the Lore Bible could not be read, so the rule is untested")
+    if entries is None:
+        return
+
+    bloodlines = unique_characters.bloodline_races(entries)
+    expect(
+        bool(bloodlines),
+        "no race in the bible has type `bloodline`, so the descent rule has nothing to "
+        "fire on. Either the taxonomy changed or this case is stale",
+    )
+
+    def record(character_id: str, race: str, lore: str, age: str = "forty") -> dict:
+        return {
+            "id": character_id,
+            "name": character_id,
+            "status": "canon",
+            "identity": {"role": "npc", "path": "qi", "faction": "", "home": "", "realm": ""},
+            "appearance": {key: "" for key in unique_characters.APPEARANCE_KEYS}
+            | {"race": race, "age": age},
+            "tags": [],
+            "canon": {
+                "role_in_story": "",
+                "first_appearance": "",
+                "lore": lore,
+                "history": [],
+                "personality": {
+                    k: [] if isinstance(v, list) else v
+                    for k, v in (
+                        ("summary", ""),
+                        ("traits", []),
+                        ("mannerisms", []),
+                        ("motivations", []),
+                        ("flaws", []),
+                        ("voice", ""),
+                        ("taboos", []),
+                    )
+                },
+                "relationships": [],
+            },
+            "reference_stats": {
+                "summary": "",
+                "strengths": [],
+                "weaknesses": [],
+                "combat_read": "",
+                "notes": "",
+            },
+            "art": {"style": "s", "palette_notes": "", "shots": []},
+            "published_as": {"portrait_id": "", "def_path": ""},
+        }
+
+    a_bloodline = sorted(bloodlines)[0]
+    a_species = next(
+        race_id
+        for race_id, entity in entries.items()
+        if isinstance(entity, dict)
+        and entity.get("domain") == "races"
+        and entity.get("type") not in unique_characters.BLOODLINE_RACE_TYPES
+    )
+    species_name = a_species.split(".")[-1]
+
+    ungrounded = record(
+        "unique-0001",
+        a_bloodline,
+        "Carries the line. The household kept it carefully for generations.",
+    )
+    issues = [
+        issue
+        for issue in unique_characters._validate([ungrounded], check_files=False)
+        if "bloodline" in issue
+    ]
+    expect(
+        bool(issues),
+        "a character whose only race is a bloodline passed validation, so it has no "
+        "species anywhere and therefore no lifespan, senses or anatomy",
+    )
+
+    grounded = record(
+        "unique-0002",
+        a_bloodline,
+        f"A {species_name} by way of the line, and the record says so plainly.",
+    )
+    clean = [
+        issue
+        for issue in unique_characters._validate([grounded], check_files=False)
+        if "bloodline" in issue
+    ]
+    expect(
+        not clean,
+        f"a character that names the species carrying the line was still refused: {clean}. "
+        f"The search must cover the whole record, or an author is forced to move the fact "
+        f"into a different field to satisfy a linter",
+    )
+
+
 @case("unique_characters: one agent's torn shard must not block ANOTHER agent's add")
 def _torn_shard_does_not_block_writers() -> None:
     """The failure that made agents hand-write rows, which caused the next torn shard.
