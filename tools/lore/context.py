@@ -64,7 +64,23 @@ MAX_CONTEXT_ENTITIES = 120
 
 
 def _incident(bible: Bible, entity_id: str, rels: tuple[str, ...]) -> list[tuple[str, str, str]]:
-    """(rel, other_id, other_domain) for matching incident edges, both directions."""
+    """(rel, other_id, other_domain) for matching incident edges, both directions.
+
+    The inbound branch is the subtle half, and it is a trap worth stating plainly
+    because it has cost several agent waves: `CONTEXT_HOPS` names 20 relations and
+    18 of their registry inverses are NOT among them. Only `conflicts_with` and
+    `trades_with` are symmetric, so only those two work inbound by name.
+
+    So `people.d2_iron_monarch member_of organizations.saltledger` is invisible
+    from `organizations.saltledger`: the edge exists, the endpoint resolves, and
+    `validate` is green - but the walk needs `inverse(member_of)` == `has_member`
+    to be in the hop list, and it is not. Measured over the registry: 18 of 20
+    accepted relations have an unnamed inverse.
+
+    The consequence for authoring: to be reachable FROM a domain, an edge must
+    point OUT of that domain using a relation the hop list names. Pointing into it
+    is not enough. `_hop_reachable_relations` reports which relations that is.
+    """
     found: list[tuple[str, str, str]] = []
     for rel, other, _edge in bible.out_edges.get(entity_id, ()):
         if rel in rels:
@@ -76,6 +92,21 @@ def _incident(bible: Bible, entity_id: str, rels: tuple[str, ...]) -> list[tuple
             domain = bible.entities.get(other, {}).get("domain", "?")
             found.append((inverse, other, domain))
     return sorted(set(found))
+
+
+def _hop_reachable_relations(bible: Bible, domain: str) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    """(relations that work outbound from `domain`, ones that work inbound).
+
+    Outbound is simply the hop list. Inbound is the subset of it whose REGISTRY
+    INVERSE is also in the hop list, which is what `_incident` will follow when it
+    arrives at `domain` from the other side.
+
+    Exposed so a briefing can state the reachable relations instead of leaving an
+    agent to discover the asymmetry by writing edges that silently do nothing.
+    """
+    entry = next((rels for name, rels, _p in CONTEXT_HOPS if name == domain), ())
+    inbound = tuple(rel for rel in entry if (bible.registry.inverse(rel) or rel) in entry)
+    return entry, inbound
 
 
 def resolve_context(bible: Bible, start_id: str, *, depth: int = 2) -> dict:

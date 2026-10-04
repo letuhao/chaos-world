@@ -1502,6 +1502,63 @@ def _ingest_is_deterministic() -> None:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
 
 
+@case("lore: CONTEXT_HOPS relations are mostly UNREACHABLE inbound, and that is reported")
+def _hop_inbound_asymmetry_is_reported() -> None:
+    """The trap that cost several agent waves, asserted so it cannot be rediscovered.
+
+    `_incident` follows an outbound edge whose relation is in the hop list, or an
+    INBOUND edge whose registry inverse is in it. `CONTEXT_HOPS` names 20 relations
+    and 18 of their inverses are not among them - only `conflicts_with` and
+    `trades_with` are symmetric. So for `people` and `families`, ZERO inbound
+    relations work.
+
+    The consequence is that `people.X member_of organizations.Y` is invisible when
+    walking from `organizations.Y`: the edge exists, its endpoints resolve, and
+    `validate` is green, but the walk cannot follow it. An agent can write a
+    hundred such edges and move nothing, which is exactly what happened - one
+    families shard took degree from 0.0 to 11.8 with all 41 families still
+    unreachable.
+
+    The second expectation is the counterweight: the report must not claim more
+    than the registry supports. If it asserted every domain had some inbound
+    relation, it would be reassuring and wrong.
+    """
+    bible = lore.model.load_bible()
+    registry = bible.registry
+    accepted = {rel for _domain, rels, _purpose in lore.context.CONTEXT_HOPS for rel in rels}
+
+    asymmetric = []
+    for rel in sorted(accepted):
+        inverse = registry.inverse(rel)
+        if inverse and inverse not in accepted:
+            asymmetric.append((rel, inverse))
+    expect(
+        len(asymmetric) >= 15,
+        f"only {len(asymmetric)} of {len(accepted)} accepted relations have an unnamed "
+        f"inverse; the inbound trap this asserts is a property of the registry, and if it "
+        f"has been fixed this case must be revisited rather than deleted",
+    )
+
+    for domain in ("people", "families"):
+        _outbound, inbound = lore.context._hop_reachable_relations(bible, domain)
+        expect(
+            inbound == (),
+            f"{domain} now reports inbound relations {inbound!r}; if the hop list was "
+            f"widened this assertion is stale, and until someone checks which is true, "
+            f"briefs will keep telling agents the wrong direction",
+        )
+
+    # The counterweight: a domain whose relations ARE symmetric must report them,
+    # so the helper is not simply returning () for everything.
+    _out, conflicts_inbound = lore.context._hop_reachable_relations(bible, "conflicts")
+    expect(
+        "conflicts_with" in conflicts_inbound,
+        f"conflicts reports inbound {conflicts_inbound!r}, but conflicts_with is its own "
+        f"inverse so it must work from both sides. A helper that returned () everywhere "
+        f"would pass the two assertions above while describing nothing",
+    )
+
+
 @case("lore: character context names the domains it could not reach")
 def _context_reports_gaps() -> None:
     """The half that matters most, because a silent omission is worse than a gap.
