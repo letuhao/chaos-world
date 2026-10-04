@@ -21,22 +21,24 @@ extends RefCounted
 ## `BreakthroughCondition` and `ProgressionModel`, so it is a precedent and not an
 ## invention.
 ##
-## ## The split is by SUBJECT, and the fields follow the bodies that use them
+## ## The split is by SUBJECT, and the bodies follow their dependencies
 ##
 ## This side owns `_bosses`, `_boss_index`, `_boss_index_built`, `_domains` and
-## `_seeded_domains`. [LootContentTables] owns `_tables`, `_table_ids`,
-## `_encounters`, `_encounter_ids` and `_definitions`.
+## `_seeded_domains`, and every method left here reads only these fields or
+## [constant BOSS_DIR] / [constant DOMAIN_DIR]. [LootContentTables] owns `_tables`,
+## `_table_ids`, `_encounters`, `_encounter_ids` and `_definitions`.
 ##
-## `orphan_domains` is the one method left HERE that reads the other side, and it
-## does so through METHODS — `encounter_ids()` and `encounter_by_id()` — never
-## through a field. That is deliberate: GDScript resolves a base against its own
-## table, so a base whose body names `_encounters` or calls `load_encounters()`
-## does not parse, because a subclass's declarations are invisible to it. Godot
-## then reports that only from the first dependant as "Could not resolve class
-## LootContentTables" and never prints this file's real error. The band-reachability
-## walks that cannot be written against methods alone (`bound_table_ids` needs the
-## `_encounters` / `_encounter_ids` index directly) therefore live on
-## [LootContentTables], next to the fields they read.
+## ## Why NOTHING here reads the encounter or table index
+##
+## GDScript resolves a base class against its own table, so a base cannot name ANY
+## declaration a subclass makes — a field, a method or a constant. A base whose body
+## reads `_encounters`, or calls `load_encounters()`, `table()` or
+## `domain_ids()`, does not parse. Godot does not print this file's error: it
+## reports the consequence from the first dependant as "Could not resolve class
+## LootContentTables" and nothing else, which is why the defect walks one class at
+## a time down the chain. METHODS are covered by the rule exactly as fields are, so
+## `orphan_domains()` moved down with the band-reachability walks even though it
+## calls rather than reads.
 ##
 ## The shared private helpers — `_text_field`, `_string_list`,
 ## `_tres_files`, `_read_record`, `_boss_profile`, `_boss_affliction` — live HERE, and
@@ -179,23 +181,6 @@ func provide_domain(domain_id: StringName) -> void:
 		return
 	_seeded_domains.append(key)
 	_seeded_domains.sort()
-
-
-## Domains a player cannot reach: authored, and with no `LootEncounterDef` to enter.
-##
-## Reported rather than swallowed, so a domain dropped into the corpus without an encounter
-## fails the content gate instead of sitting there invisible.
-func orphan_domains() -> Array[String]:
-	var hosted := {}
-	for encounter_id in encounter_ids():
-		var encounter := encounter_by_id(StringName(encounter_id))
-		if encounter != null:
-			hosted[String(encounter.domain_id)] = true
-	var out: Array[String] = []
-	for domain_id in domain_ids():
-		if not hosted.has(domain_id):
-			out.append(domain_id)
-	return out
 
 
 # --- Record reads -----------------------------------------------------------
