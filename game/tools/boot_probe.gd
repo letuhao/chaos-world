@@ -713,14 +713,21 @@ func _try_each_drop(screen: Node, bar: Node, bagged: Array[String]) -> Dictionar
 	# Equip control works and these drops are simply unwearable CONTENT; if nothing
 	# equips, the control itself is dead and every drop is a red herring. Collecting
 	# the fact without printing it is how "can be worn" stayed a guess.
+	#
+	# It also names the ids. "Can be worn" is a claim about CONTENT, and a claim about
+	# content is only checkable against the content: naming them lets whoever reads
+	# this ask whether those ids are in the tables that stock wearable gear, instead
+	# of re-deriving the sweep. Without them the message says the drop is unwearable
+	# and never says WHICH drop.
 	return {
 		"ok": false,
 		"wearable": false,
 		"baseline_wearable": baseline,
+		"unwearable_def_ids": bagged,
 		"why":
 		(
-			"none of the %d drop(s) this fight paid can be worn; a starter equips: %s"
-			% [bagged.size(), baseline]
+			"none of the %d drop(s) this fight paid can be worn (%s); a starter equips: %s"
+			% [bagged.size(), ", ".join(bagged), baseline]
 		),
 	}
 
