@@ -35,18 +35,16 @@ from .common import fail, ok
 
 CASES: list[tuple[str, Callable[[], None]]] = []
 
-## Validators in `tools/` that have no red-path case yet.
-##
-## INC-0016: adding a validator here means adding its red path, because "it passes
-## on today's tree" is what `check` already does and proves nothing. This is the
-## receipt for the ones that have not paid that cost yet, so the gap is stated
-## rather than implied — the previous wording claimed *every* guard was covered
-## while `boot` was not, which is a guard overstating its own coverage.
+## Every validator in `tools/` now has a red-path case (BL-0635 closed the last
+## one). The receipt stays as a tuple rather than a claim in prose so that adding a
+## validator without adding its red path is a visible, named gap instead of a lie
+## nobody reads: the previous wording asserted *every* guard was covered while `boot`
+## was not, which is a guard overstating its own coverage.
 ##
 ## Named explicitly rather than derived from the command table: deciding which
 ## subcommands are guards is itself a fact, and deriving a second copy of it here
 ## is the ADR 0066 failure mode.
-UNCOVERED_GUARDS: tuple[str, ...] = ("boot",)
+UNCOVERED_GUARDS: tuple[str, ...] = ()
 
 
 def _gap_note() -> str:
