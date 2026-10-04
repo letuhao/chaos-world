@@ -456,7 +456,18 @@ func _claim(app: Node, rows_at_boot: int) -> Dictionary:
 	var pending_after := int(collected.get("pending", 0))
 	var stuck := _why_still_pending(pending_after, pending_before)
 	if stuck != "":
-		return {"ok": false, "why": stuck}
+		# Name what each press was REFUSED for. `pending` alone cannot tell five
+		# named refusals apart, so a flat count sends whoever reads this hunting
+		# a cause the evidence already carries.
+		return {
+			"ok": false,
+			"why":
+			(
+				"%s; each press published: %s"
+				% [stuck, ", ".join(collected.get("refusals", []) as Array)]
+			),
+			"refusals": collected.get("refusals", []),
+		}
 	var arrived := await _bag_grew(app, rows_at_boot)
 	if not bool(arrived.get("ok", false)):
 		var lost: String = str(arrived.get("why", "unknown"))
@@ -468,6 +479,7 @@ func _claim(app: Node, rows_at_boot: int) -> Dictionary:
 		"rows_at_boot": rows_at_boot,
 		"rows_now": int(arrived.get("rows", 0)),
 		"def_ids": def_ids,
+		"refusals": collected.get("refusals", []),
 	}
 
 
@@ -557,9 +569,17 @@ func _record_offered(screen: Node, def_ids: Array[String]) -> void:
 ## mid-collect; having no pressable control left is a normal stop.
 func _collect_pending(app: Node, pending_before: int, def_ids: Array[String]) -> Dictionary:
 	var pending := pending_before
+	## One entry per press, naming the refusal the screen published for it.
+	## `pending_drops` alone cannot separate the ways a pickup fails to move a
+	## number: `LootState.pickup` has five named refusals (ERR_CLAIM_SPENT,
+	## ERR_UNKNOWN_REWARD, ERR_UNKNOWN_DROP, ERR_DROP_CLAIMED, ERR_DROP_STASHED)
+	## plus the inventory-full pair, and a flat `pending` is the same reading for
+	## all of them. Bounded by MAX_DROPS_PER_REWARD like the walk above, so a
+	## screen that refuses every press still terminates.
+	var refusals: Array[String] = []
 	for _drop in MAX_DROPS_PER_REWARD:
 		if pending <= 0:
-			return {"ok": true, "pending": pending}
+			return {"ok": true, "pending": pending, "refusals": refusals}
 		var live := _live_screen(app)
 		if live == null:
 			return {"ok": false, "why": "collecting a drop left no live screen to read"}
@@ -572,8 +592,25 @@ func _collect_pending(app: Node, pending_before: int, def_ids: Array[String]) ->
 		var again := _live_screen(app)
 		if again == null:
 			return {"ok": false, "why": "collecting a drop left no live screen to read"}
-		pending = int((again.call(&"summary") as Dictionary).get("pending_drops", 0))
-	return {"ok": true, "pending": pending}
+		var shown := again.call(&"summary") as Dictionary
+		pending = int(shown.get("pending_drops", 0))
+		refusals.append(_refusal_of(shown))
+	return {"ok": true, "pending": pending, "refusals": refusals}
+
+
+## What the screen says the last pickup did, in one short token.
+##
+## Deliberately NOT a default of "claimed": a probe that invents a success reads green
+## on a screen that refused every press, which is the one answer this exists to rule
+## out. When the screen publishes no outcome the token is `no_outcome_reported`, so an
+## absent field is visible as an absence instead of passing as a pass.
+func _refusal_of(shown: Dictionary) -> String:
+	var reason := String(shown.get("last_reason", ""))
+	if not reason.is_empty():
+		return reason
+	if not bool(shown.get("last_ok", false)):
+		return "refused_without_a_reason"
+	return "no_outcome_reported"
 
 
 ## The claimed drops the bag is actually holding, in the order the reward offered.
