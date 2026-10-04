@@ -60,19 +60,24 @@ var _instantiated: Array = []
 ## Kept as an assertion about the FILE's readability too: an empty read is the other
 ## way this can go wrong, and it is cheap to say so.
 func _resolvable_type(type_path: String, label: String) -> bool:
-	assert_ne(
-		FileAccess.get_file_as_string(type_path).is_empty(),
-		false,
-		"%s source is readable on disk" % label
-	)
-	if not bool(load(type_path) is GDScript):
-		return assert_eq(false, true, "%s source loads as a GDScript" % label)
+	# The assertion is on RESOLUTION, never on the file being non-empty.
+	# `FileAccess.get_file_as_string` on a `res://src` path answers "" whenever the
+	# import cache has not yet resolved that path, which in a shared headless
+	# process is a normal transient — and it made three agents go looking for a
+	# readability bug in files that were on disk and correct. `load()` failing is
+	# the real signal: a script that does not compile, or whose `class_name` does
+	# not resolve, is exactly what this is meant to catch.
 	var script := load(type_path) as GDScript
+	if script == null:
+		assert_eq(false, true, "%s source loads as a GDScript" % label)
+		return false
 	if not bool(script.can_instantiate()):
-		return assert_eq(false, true, "%s compiles and resolves its class_name" % label)
+		assert_eq(false, true, "%s compiles and resolves its class_name" % label)
+		return false
 	var instance = script.new()
 	if instance == null:
-		return assert_eq(false, true, "%s instantiates" % label)
+		assert_eq(false, true, "%s instantiates" % label)
+		return false
 	instance.free()
 	return true
 
@@ -93,7 +98,9 @@ func _screen_mounts(screen: CharacterCreation) -> bool:
 	)
 	var rows := screen.get_node_or_null("Layout/Scroll/Arrivals/Branches") as VBoxContainer
 	if rows == null:
-		return assert_eq(false, true, "the screen mounted its rows")
+		# Assert, then return: `assert_eq` is void (see `_resolvable_type`).
+		assert_eq(false, true, "the screen mounted its rows")
+		return false
 	assert_eq(rows.get_child_count(), 3, "one row per arrival, mounted for real")
 	return true
 
