@@ -1127,7 +1127,21 @@ func _why_fight_did_not_pay(screen: Node, fight: Dictionary) -> String:
 ## (AGENTS.md, the runaway rule). Returns -1 when the cap was hit.
 func _strike_until_dead(screen: Node) -> Dictionary:
 	var strikes := 0
-	while _strike_offered(screen):
+	# What the reward list already held BEFORE this fight. A player stops at the first
+	# kill; looping on `enabled.strike` alone does not, because
+	# `LootState._advance` spawns the NEXT boss on a defeat, so the screen offers a
+	# strike again and the loop walks the whole band until the run clears — by which
+	# time the reward minted on the first kill is settled and there is no boss left to
+	# pay. That is what tools boot was reporting.
+	#
+	# The stop condition is a reward THIS FIGHT minted, which is why the baseline is
+	# read first rather than testing `reward_count > 0`. A later cell can enter with a
+	# reward already on screen; testing for presence exits that cell's loop at ZERO
+	# strikes, nothing is fought, nothing is minted, and the claim half waits on a
+	# pending count that can never rise — which is how the previous attempt at this
+	# guard made the probe print no report at all.
+	var minted_before := _reward_count(screen)
+	while _strike_offered(screen) and _reward_count(screen) <= minted_before:
 		if strikes >= MAX_STRIKES:
 			return {
 				"strikes": strikes,
@@ -1145,6 +1159,16 @@ func _strike_until_dead(screen: Node) -> Dictionary:
 		strikes += 1
 		await process_frame
 	return {"strikes": strikes, "why": ""}
+
+
+## How many rewards the screen is currently publishing.
+##
+## Read from the screen's own `summary()` for the reason `_strike_offered` gives: the
+## screen declares what a player may do, and a probe that reaches past the declaration
+## is asking a widget to decide the rules. `loot_encounter.gd` publishes this as
+## `rewards.size()`.
+func _reward_count(screen: Node) -> int:
+	return int((screen.call(&"summary") as Dictionary).get("reward_count", 0))
 
 
 ## Whether the screen itself says a strike is available.
