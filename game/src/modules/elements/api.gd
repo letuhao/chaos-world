@@ -51,13 +51,50 @@ static func default_rules() -> ElementRules:
 ## itself: [method apply_realm_modifiers] removes only the `(RealmScaling.SOURCE,
 ## element_power_<e>)` pairs and rewrites them. Re-attaching the realm half is free.
 ##
-## The consequence the ADR records honestly: attach once, and after a breakthrough call
-## `RealmScaling.apply(actor)` (which clears the source tag wholesale) or
-## [method apply_realm_modifiers] -- never `attach` again to "refresh" it.
+## The realm half is therefore free to rewrite whenever the ladder moves: after a
+## breakthrough call `RealmScaling.apply(actor)` (which clears the source tag wholesale) or
+## [method apply_realm_modifiers].
+##
+## ## `attach` is IDEMPOTENT, and that is what makes it the verb a restore path must use
+##
+## [method attach] mounts the provider only if the actor has none, then refreshes the realm
+## half either way. So "attach" and "refresh" are the same call, which is the only shape a
+## SHARED attach list can have: `ItemWorkbenchApp._attach_body_modules` is reached by a fresh
+## build, a restore and a body swap, and the first of those already has the provider from
+## `ActorFactory.build` while the other two never do.
+##
+## It was not idempotent until a restore proved why it had to be. `restore_actor` called
+## [method apply_realm_modifiers] alone, on the reading that the realm half was all that was
+## missing — it was not, because `Actor.from_dict` restores components and **never a
+## `StatProvider`**. The omission was invisible in the most misleading way available:
+## `ActorStats._recompute` backs every modifier bucket at `0.0`, so the realm MULT still
+## published `element_power_<e>` onto `derived_all()` for a provider that was not there, while
+## `element_resistance_<e>` -- which no modifier ever names -- was simply absent, and
+## `derived(element_power_<e>)` read `0.0` whatever affinity the body held. A returning
+## player had no elemental power and no elemental resistance at all, on the one channel
+## ADR 0069 calls realm-INVARIANT and ADR 0088 makes status potency read.
+##
+## The guard is the same one [code]FertilityApi.attach[/code] uses, and for the same reason:
+## `ActorStats.add_provider` appends unguarded, so a second copy would double every
+## contribution. What changed is only that the verb no longer punishes a caller for asking
+## twice.
 static func attach(actor: Actor, rules: ElementRules = null) -> void:
+	if actor == null:
+		return
 	var resolved := rules if rules != null else default_rules()
-	actor.stats.add_provider(ElementProvider.new(resolved))
+	if not _has_provider(actor):
+		actor.stats.add_provider(ElementProvider.new(resolved))
 	apply_realm_modifiers(actor, resolved)
+
+
+## Whether this actor already carries an [ElementProvider], read by script identity rather
+## than by position: a provider's RULES are its own, so "the first one" is not a fact about
+## the module and "an [ElementProvider]" is.
+static func _has_provider(actor: Actor) -> bool:
+	for entry in actor.stats._providers:
+		if entry.get_script() == ElementProvider:
+			return true
+	return false
 
 
 ## Write (or rewrite) the realm MULT on every `element_power_<e>` this rules set knows.

@@ -27,6 +27,32 @@ const MIN_STEP := 1.0
 func setup() -> void:
 	if SeamHarness.live != null:
 		SeamHarness.live.teardown()
+	_clear_save_slot()
+
+
+## Delete the REAL save slot, so every test below boots a FRESH hero.
+##
+## `SeamHarness.clear_save()` removes `user://item_workbench_state.json` — the workbench
+## screen's own file — and not `SavePaths.PRIMARY` / `SavePaths.BACKUP`, which is what
+## `SaveApi.restore()` actually reads through `SaveStore`. So whether this suite exercised
+## the fresh-boot branch or the restore branch depended on whether some earlier run in the
+## machine's history had persisted a slot: a green suite could be asserting about a
+## returning player while claiming to be asserting about a new one.
+##
+## Which is exactly how `test_elements_state_is_live_on_the_shipped_hero` came to be red
+## for a reason nobody wrote down. `restore_actor` re-mounted every module that CONTRIBUTES
+## to a restored hero except the element provider, so a restored body derived no elemental
+## power and no elemental resistance at all — five missing `element_resistance_<e>` keys
+## and one dead power value, with `element_power_<e>` still present because
+## `ActorStats._recompute` backs every modifier bucket at `0.0`.
+##
+## The restore branch is not hidden to stay hidden: the restored case below persists
+## a slot and drives it deliberately.
+## below persists a slot and drives it deliberately.
+func _clear_save_slot() -> void:
+	for path in [SavePaths.PRIMARY, SavePaths.BACKUP, SavePaths.TEMP]:
+		if FileAccess.file_exists(path):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 
 
 func _boot() -> SeamHarness:
@@ -248,10 +274,30 @@ func test_the_navigation_bar_offers_the_body_route_and_is_wired_to_the_app() -> 
 	# Results line. `button.pressed` is the Signal, and that is what carries the
 	# connection list.
 	assert_ne(button.pressed.get_connections().size(), 0, "with a handler attached")
+	# "One move away" is the claim, and it is asserted as the CLAIM rather than as the
+	# route boot happened to pick. ADR 0130 made `character_creation` a route the
+	# composition root opens at boot for a player who has no hero yet, so pinning
+	# `ScreenRoutes.ROOT_ID` here asserted a boot decision that is not this file's to make
+	# — and it went red for that reason while the wiring above it, which is the part that
+	# decides whether a player can reach Body at all, stayed exactly as strong. What must
+	# hold is: boot landed somewhere the route table NAMES (the shell mounted a screen it
+	# can leave), and it is not already the body route (so Body really is a move).
+	#
+	# The repo's own idiom for exactly this is `test_screen_reachability.gd`'s
+	# "the game does not boot on the route this button opens".
+	var booted_at := String(harness.app.call(&"current_route"))
 	assert_eq(
-		String(harness.app.call(&"current_route")),
-		String(ScreenRoutes.ROOT_ID),
-		"and the app boots on the home route, so the body route is a move away"
+		ScreenRoutes.index_of(StringName(booted_at)) >= 0,
+		true,
+		"and boot landed on a route the table names (%s), so the shell can be left" % booted_at
+	)
+	assert_ne(booted_at, String(BODY_ROUTE), "and not already on Body, so Body is a move away")
+	# …and the move is the app's single navigation door, which every other case here drives.
+	assert_eq(
+		bool(harness.navigate(BODY_ROUTE).get("ok", false)), true, "and that one move opens it"
+	)
+	assert_eq(
+		String(harness.app.call(&"current_route")), String(BODY_ROUTE), "leaving the player on Body"
 	)
 
 
@@ -317,30 +363,84 @@ func test_elements_state_is_live_on_the_shipped_hero() -> void:
 	var harness := _boot()
 	if harness.boot_error != "":
 		return
-	var actor := harness.actor
-	# `derived_all()` carries every key a provider contributes, so the element ids
-	# being present at all is the provider being attached -- a plain `derived()`
-	# read would be 0.0 for an unattrained element either way.
+	# A FRESH boot, deliberately: `setup` removed the real slot, so this case can only be
+	# green if `ActorFactory.build` mounted the element provider. The restore branch runs a
+	# different list of verbs and is its own case below.
+	assert_eq(
+		bool(harness.app.call(&"restored_from_save")),
+		false,
+		"this case boots a fresh hero, not one restored from a slot"
+	)
+	_assert_element_channel(harness.actor, "the fresh shipped hero")
+
+
+## THE RESTORE BRANCH, and the class guard for the defect this suite was red for.
+##
+## `restore_actor` re-mounts every module that CONTRIBUTES to a restored hero's stats, and
+## it omitted the element provider: it called `ElementsApi.apply_realm_modifiers`, which
+## writes the realm `MULT` onto `element_power_<e>` and touches nothing else, while core
+## never serializes a `StatProvider`. So a returning player's body carried no elemental
+## power and no elemental resistance at all, and the surface LOOKED half-alive, because
+## `ActorStats._recompute` backs every modifier bucket at `0.0`, so a realm multiplier
+## mounted on nothing still publishes `element_power_<e>`, while `element_resistance_<e>`,
+## which no modifier ever names, simply was not there.
+##
+## Nothing about that was visible from a fresh boot, from `Actor.new`, or from any module
+## suite: `ActorFactory.build` mounts the provider, and the only path that skips it is the
+## one a save takes. So it is driven here on purpose: persist a slot through the shipped
+## writer, boot again, and assert the same channel on the body that comes back.
+func test_a_restored_shipped_hero_carries_the_same_element_ids() -> void:
+	var first := _boot()
+	if first.boot_error != "":
+		return
+	assert_eq(
+		bool(SaveApi.persist(first.actor).get("ok", false)),
+		true,
+		"the shipped writer persists a slot for the next boot to read"
+	)
+	# `SeamHarness.mount_new` tears the previous mount down; the slot on disk survives it,
+	# because `clear_save` only removes the workbench screen's own file.
+	var restored := SeamHarness.mount_new()
+	assert_eq(restored.boot_error, "", "and the app boots again over that slot")
+	if restored.boot_error != "":
+		return
+	assert_eq(
+		bool(restored.app.call(&"restored_from_save")),
+		true,
+		"the second boot really took the restore branch, or this case proves nothing"
+	)
+	_assert_element_channel(restored.actor, "the restored shipped hero")
+
+
+## What "the element channel is live" means, asserted identically on either boot path.
+##
+## `derived_all()` carries every key a provider contributes, so the ids being present at
+## all is the provider being attached -- a plain `derived()` read would be `0.0` for an
+## untrained element either way. `element_resistance_<e>` is the id that matters most here:
+## it is the one no realm modifier names, so it is the one that cannot be accidentally
+## reproduced by the `0.0` modifier backing that made the power half look healthy.
+func _assert_element_channel(actor: Actor, label: String) -> void:
 	var surface := actor.stats.derived_all()
 	for element in ElementStats.BASE_ELEMENTS:
 		assert_eq(
 			surface.has(String(ElementStats.power_id(element))),
 			true,
-			"the element provider contributes element_power_%s" % element
+			"the element provider contributes element_power_%s on %s" % [element, label]
 		)
 		assert_eq(
 			surface.has(String(ElementStats.resistance_id(element))),
 			true,
-			"and element_resistance_%s" % element
+			"and element_resistance_%s on %s" % [element, label]
 		)
 	# And it is a live value, not a stale key: give the hero an affinity the way a
-	# cross-training unlock would, and the power stat follows it.
+	# cross-training unlock would, and the power stat follows it. On the restore branch
+	# this is the assertion that failed while every key assertion above it passed.
 	actor.set_affinity(ElementStats.FIRE, 2.0)
 	actor.mark_stats_dirty()
 	assert_eq(
 		actor.stats.derived(ElementStats.power_id(ElementStats.FIRE)) > 0.0,
 		true,
-		"an affinity in an element becomes elemental power on the shipped hero"
+		"an affinity in an element becomes elemental power on %s" % label
 	)
 	# The realm multiplier ADR 0069 exists for is only written when a path exists;
 	# the body path is what gives the element channel a realm to scale by.
@@ -358,8 +458,15 @@ func test_the_shipped_hero_carries_every_module_the_slice_offers() -> void:
 	assert_ne(actor.component(&"body_cultivation_provider"), null, "body cultivation")
 	assert_ne(actor.resource(DualCultivationStats.ESSENCE), null, "dual cultivation")
 	assert_eq(actor.stats.derived(FertilityStats.CONCEPTION_CHANCE) > 0.0, true, "fertility")
+	# `>= 0.0` was the old form of this line and it could never fail: `ActorStats.derived`
+	# answers `0.0` for an id the actor does not carry, so every absent stat passed it. That
+	# is how the missing `element_resistance_<e>` channel survived a suite that claimed to
+	# read every module the slice offers. The KEY has to be on the surface, which is the
+	# only statement here that can distinguish a mounted provider from an absent one.
 	assert_eq(
-		actor.stats.derived(ElementStats.resistance_id(ElementStats.WOOD)) >= 0.0, true, "elements"
+		actor.stats.derived_all().has(String(ElementStats.resistance_id(ElementStats.WOOD))),
+		true,
+		"elements"
 	)
 	assert_ne(ItemsApi.inventory(actor), null, "items")
 	assert_ne(actor.component(&"socket_ledger"), null, "socket")
