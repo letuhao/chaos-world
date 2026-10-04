@@ -60,7 +60,6 @@ const R_ALREADY_SPARED := "already_spared"
 ## rather than a player outcome, and REPORTED rather than guessed around.
 const R_NO_RESOLVER := "no_resolver"
 
-
 ## The installed seam. Process-wide, exactly as `CombatBoot._resolver` is, because the
 ## press is a body method with nowhere to keep one: a body that only spared opponents while
 ## it happened to remember a callable would be a mercy that silently stopped existing on
@@ -101,7 +100,7 @@ static func available(winner: Actor, loser: Actor) -> Dictionary:
 	if winner == null or loser == null:
 		return {"ok": false, "reason": R_NO_ACTOR}
 	if winner == loser:
-		return {"ok": false, "reason": R_SAME_SACTOR}
+		return {"ok": false, "reason": R_SAME_ACTOR}
 	if not bool(CombatDuelHit.alive(loser)["ok"]):
 		return {"ok": false, "reason": R_LOSER_SLAIN}
 	var duel := CombatDuel.normalize(loser.get_module_data(CombatDuel.MODULE_KEY))
