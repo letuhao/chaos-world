@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F19_divine_epergne_agility_aptitude_poise_spirit"
 display_name = "Divine Epergne Agility Aptitude Poise Spirit"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"
 fixed_modifiers = Array[Dictionary]([

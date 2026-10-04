@@ -16,7 +16,17 @@ extends PanelContainer
 ## choice (ADR 0053).
 ##
 ## The row owns every format it shows — the pool name, the "empty" wording, the
-## suspension mark, the cooldown line — so a screen never renders a number.
+## suspension mark, the cooldown line, and the `No target` aimless state — so a screen
+## never renders a number.
+##
+## ## Why the cast button is gated on a target and not only on readiness
+##
+## `has_target` is fed down by the screen and is a fact about the ROOM, not about this
+## technique. It is kept out of `can_cast` and lives beside it as `can_fire`, because a
+## castable slot with nobody to fire at is a state a player must be able to read rather
+## than have collapsed into "not castable" — and because the cast button is the press,
+## an enabled button whose only outcome is the screen's `no_target` refusal is the exact
+## dead-verb shape this page stopped shipping.
 ##
 ## Contract: `summary()` is the testable surface. `{}` when the row carries nothing.
 
@@ -27,6 +37,7 @@ const EMPTY_TEXT := "Empty"
 const SUSPENDED_TEXT := "SUSPENDED"
 const POOL_UNKNOWN := "untyped"
 const READY_TEXT := "Ready"
+const NO_TARGET_TEXT := "No target"
 
 var _view: Dictionary = {}
 var _head: String = ""
@@ -80,7 +91,14 @@ func summary() -> Dictionary:
 		"suspended": bool(_view.get("suspended", false)),
 		"can_unequip": bool(_view.get("filled", false)),
 		"active": _castable(),
+		# Deliberately NOT folded into `can_cast`. Those are two different facts about two
+		# different owners: `can_cast` is this technique's own business (bound, active, off
+		# cooldown) and `has_target` is the screen's. Folding them would make a row unable
+		# to say "this one is ready, and there is nobody to fire it at", which is the
+		# sentence the target affordance exists to state.
+		"has_target": bool(_view.get("has_target", false)),
 		"can_cast": _castable() and not _cooling(),
+		"can_fire": _castable() and not _cooling() and _has_target(),
 		"cooldown_remaining": _cooldown(),
 		"ready": _readiness,
 		"head": _head,
@@ -162,7 +180,11 @@ func _render() -> void:
 		_unequip_button.disabled = not bool(_view.get("filled", false))
 	if _cast_button != null:
 		_cast_button.visible = _castable()
-		_cast_button.disabled = not bool(summary().get("can_cast", false))
+		# Gated on `can_fire`, not `can_cast`: without a target the press would only ever
+		# produce the screen's `no_target` refusal, and an enabled button that can only be
+		# refused is worse than no button. The technique stays VISIBLE and keeps its row —
+		# it is bound and ready, and the reason it cannot be thrown is one line above.
+		_cast_button.disabled = not bool(summary().get("can_fire", false))
 		if _castable():
 			_cast_button.tooltip_text = _readiness
 
@@ -171,19 +193,31 @@ func _render() -> void:
 ## out — `activate` refuses it, so a countdown would promise a cast that can never
 ## happen. The rounding is the panel's: a screen passes the raw remainder down.
 ##
+## `No target` outranks both, because it is the one answer that is not about this
+## technique at all: the technique is bound, active and rested, and there is simply
+## nothing to fire it AT. Printing `Ready` there would advertise a press whose only
+## outcome is the screen's `no_target` refusal.
+##
 ## `_view` is not read here; the cooldown is read from this row's own `_view` so the
 ## label and the button it enables cannot disagree. The parameter stays because the caller
 ## passes the row's view to every sibling renderer.
 func _ready_text(_view: Dictionary) -> String:
 	if not _castable():
 		return ""
+	if not _has_target():
+		return NO_TARGET_TEXT
 	var left := _cooldown()
 	if left <= 0.0:
 		return READY_TEXT
 	return "%s in %ds" % [READY_TEXT, int(ceil(left))]
 
 
+## Off cooldown is only readiness when there is somewhere to land the blow, so a
+## cooling row reads as resting and a targetless row reads as aimless — three states,
+## never two, and never one number meaning two things.
 func _ready_variation() -> StringName:
+	if not _has_target():
+		return &"WarnLabel"
 	return &"EffectLabel" if _cooldown() <= 0.0 else &"WarnLabel"
 
 
@@ -195,6 +229,13 @@ func _cooldown() -> float:
 
 func _cooling() -> bool:
 	return _cooldown() > 0.0
+
+
+## Whether the screen had somewhere to aim when it fed this row. Read off the SAME
+## `_view` the label and the button read, so the three cannot disagree about whether a
+## press would land.
+func _has_target() -> bool:
+	return bool(_view.get("has_target", false))
 
 
 func _castable() -> bool:
@@ -264,9 +305,11 @@ func _on_unequip() -> void:
 
 
 func _on_cast() -> void:
-	# The button is already gated on `can_cast`, but the signal is a public one and a
-	# caller may emit it directly; re-checking here keeps a cooldown unreachable from
-	# this row whatever the caller does.
-	if not can_cast() or technique_id().is_empty():
+	# The button is already gated on `can_fire`, but the signal is a public one and a
+	# caller may emit it directly; re-checking here keeps both a cooldown AND a missing
+	# target unreachable from this row whatever the caller does. A targetless press is
+	# dropped here rather than forwarded, so the screen's `no_target` refusal stays the
+	# answer to an actual cast attempt rather than the answer to every stray click.
+	if not bool(summary().get("can_fire", false)) or technique_id().is_empty():
 		return
 	cast_requested.emit(technique_id())

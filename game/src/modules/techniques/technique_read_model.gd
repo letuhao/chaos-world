@@ -81,7 +81,20 @@ static func inspect(
 		return {}
 	var entry := codex.entry(def.id)
 	var rung := 0 if entry == null else entry.mastery_rung
-	return {
+	# What a learn would cost this actor, and whether they can pay it BEFORE the
+	# manual is consumed. ADR 0160 made `learn` charge the technique's own path's
+	# `progress` all-or-nothing, so both the price and the shortfall are knowable in
+	# advance. Publishing only `learn_price` left a player learning the cost by
+	# spending the book and then being refused.
+	#
+	# The shortfall is the SAME list `TechniquesApi._short` produces on the learn path.
+	# A screen computing its own affordability would restate the module's rule in
+	# `ui/`, and the two would disagree the moment either moved. `can_pay_known` says
+	# the answer is real: a SHARED technique is never charged, so "you can pay" is
+	# true for a reason no price should be shown against.
+	var owed := _owed(actor, def)
+	var short := _short(actor, owed)
+	var view := {
 		"id": String(def.id),
 		"display_name": def.display_name,
 		"description": def.description,
@@ -119,11 +132,52 @@ static func inspect(
 		"mastery": mastery_view(def, rung),
 		"mastery_ladder": ladder_view(def),
 		"effects": effect_view(def, entry),
+		# The printed text against this copy's ANNOTATIONS (ADR 0196): what the
+		# sheet says and what this copy says. `marginal` is empty for an active
+		# technique and for a row carrying no margin, which is why a panel shows the
+		# authored column alone rather than a difference nobody can compute.
+		"authored_effects": effect_view(def, null),
+		"marginal": effect_view(def, entry, true),
 		"learn_unmet": learn_unmet,
 		"equip_unmet": equip_unmet,
 		"claimable_slots":
 		_strings(slot_table.claimable(TechniquePolicy.tier_of(actor.realm()), def)),
+		"can_pay": short.is_empty(),
+		"can_pay_known": not owed.is_empty() or def.is_shared(),
+		"learn_short": short,
 	}
+	return view
+
+
+## What `learn` would charge, as `{path_id: price}`. Empty for a SHARED technique
+## (`shared` is not a `PathState` id) or a free one — which is exactly when
+## affordability is not a question, so `can_pay_known` is what distinguishes
+## "you can afford it" from "there is nothing to afford".
+static func _owed(actor: Actor, def: TechniqueDef) -> Dictionary:
+	if actor == null or def == null or def.is_shared():
+		return {}
+	var price := TechniqueGate.learn_price_for(actor, def)
+	if price <= 0.0:
+		return {}
+	var paths: Array[StringName] = def.path_ids()
+	if paths.is_empty() or not PathState.ALL.has(paths[0]):
+		return {}
+	return {paths[0]: price}
+
+
+## Every pool this study cannot pay, with what it owed and what it held — the shape
+## `TechniquesApi.learn` refuses on, published so a panel can say "you need 100,
+## you have 40" rather than only "not affordable".
+static func _short(actor: Actor, owed: Dictionary) -> Array:
+	var out: Array = []
+	for path_id in owed.keys():
+		var state := actor.path(path_id)
+		var held := 0.0 if state == null else state.progress
+		var required := float(owed[path_id])
+		if held + 0.0001 >= required:
+			continue
+		out.append({"resource": String(path_id), "required": required, "current": held})
+	return out
 
 
 ## One rung's multipliers, clamped to what the def actually authorises. `{rung,
@@ -150,10 +204,30 @@ static func ladder_view(def: TechniqueDef) -> Array[Dictionary]:
 	return out
 
 
-## The normalized effects a technique contributes, as primitives. `realized` says
-## whether the row came from rolled data or from the authored passive options.
-static func effect_view(def: TechniqueDef, entry: CodexEntry) -> Array[Dictionary]:
-	var effects := def.effects() if entry == null else entry.effects_for(def)
+## The normalized effects a technique contributes, as primitives, with the value the
+## ACTOR has. `realized` says whether the row came from this copy's annotations or
+## from the authored passive options.
+##
+## `marginal_only` asks for the ANNOTATIONS alone — the `true` arm of
+## `CodexEntry.effects_for`, unscaled — so a panel can print the sheet and the
+## margin as two columns instead of asking the reader to subtract one from the
+## other. The values are deliberately NOT rung-scaled here: a rung is what the
+## actor has done with the manual since, which is a different question from what
+## this copy of it says.
+static func effect_view(
+	def: TechniqueDef, entry: CodexEntry, marginal_only: bool = false
+) -> Array[Dictionary]:
+	var effects: Array[Dictionary] = []
+	if entry == null or (marginal_only and entry.realized.is_empty()):
+		# `marginal_only` with nothing realized IS the authored sheet, so the
+		# authored read is the honest answer rather than an empty row nobody can
+		# fill.
+		effects = def.effects() if not marginal_only else []
+	elif marginal_only:
+		for effect in entry.realized:
+			effects.append(effect)
+	else:
+		effects = entry.effects_for(def)
 	var out: Array[Dictionary] = []
 	for effect in effects:
 		(
@@ -167,6 +241,7 @@ static func effect_view(def: TechniqueDef, entry: CodexEntry) -> Array[Dictionar
 					"op": String(effect.get("op", "FLAT")),
 					"unit": String(effect.get("unit", "magnitude")),
 					"value": float(effect.get("value", 0.0)),
+					"channel": String(effect.get("channel", "")),
 				}
 			)
 		)
@@ -215,6 +290,9 @@ static func entry_view(
 		"suspended": upkeep.is_suspended(entry.technique_id),
 		"rung": entry.mastery_rung,
 		"rung_count": 0 if def == null else def.mastery_rungs,
+		# Whether this copy carries annotations at all, so a codex LIST can mark the
+		# rows worth opening without projecting every technique's effects.
+		"annotated": not entry.realized.is_empty(),
 		"slot": slot_key,
 	}
 

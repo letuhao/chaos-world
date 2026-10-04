@@ -58,6 +58,7 @@ def _slugify(text: str) -> str:
 # guard could not see that: `path.exists()` only refuses when the SLUG collides too, and
 # two different titles never produce the same slug - so both files landed and the number
 # was shared. 0183 and 0189 were both shared on disk before this was fixed.
+# Both have since been renumbered (0183 -> 0194, 0189 -> 0196).
 #
 # There is no lock in `tools/common.py`, so uniqueness is established by REPAIR rather
 # than by prevention: write with an exclusive create, then RE-READ the directory and, if

@@ -21,11 +21,17 @@ from tools.common import ToolError, fail, ok
 MUTATIONS: tuple[tuple[str, str, str], ...] = (
     (
         "a_missing_scalar",
-        '"loot_ceiling": 1.0,',
-        "",
+        '"guardian_effectiveness": 1.0,\n"tribulation_preparation_credit": 1.0\n}',
+        '"guardian_effectiveness": 1.0\n}',
     ),
     (
-        "a_sixth_column",
+        "a_resurrected_loot_ceiling",
+        '"guardian_effectiveness": 1.0,\n"tribulation_preparation_credit": 1.0\n}',
+        '"guardian_effectiveness": 1.0,\n"loot_ceiling": 0.9,\n'
+        '"tribulation_preparation_credit": 1.0\n}',
+    ),
+    (
+        "a_fifth_column",
         '"tribulation_preparation_credit": 1.0\n},',
         '"tribulation_preparation_credit": 1.0,\n"loot_yield": 1.2\n},',
     ),
@@ -37,9 +43,9 @@ MUTATIONS: tuple[tuple[str, str, str], ...] = (
     (
         "a_drifted_neutral_row",
         '"soul_damage_share": 1.0,\n"death_loss_cap": 1.0,\n"guardian_effectiveness": 1.0,\n'
-        '"loot_ceiling": 1.0,\n"tribulation_preparation_credit": 1.0\n},\n&"hard"',
+        '"tribulation_preparation_credit": 1.0\n},\n&"hard"',
         '"soul_damage_share": 0.95,\n"death_loss_cap": 1.0,\n"guardian_effectiveness": 1.0,\n'
-        '"loot_ceiling": 1.0,\n"tribulation_preparation_credit": 1.0\n},\n&"hard"',
+        '"tribulation_preparation_credit": 1.0\n},\n&"hard"',
     ),
     (
         "an_unordered_ladder",

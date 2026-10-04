@@ -133,12 +133,26 @@ static func is_bound() -> bool:
 ## technique would be worse than one that refused. Id equality is KEPT as the second,
 ## exact path, so a hand-authored pair that already agrees needs no authoring.
 ##
-## `instance` is accepted and UNREAD. It travels through so the seam's signature is
-## the one `items` already has in hand (`ItemUse._apply_learned` receives both), and
-## so a future rolled-technique design has a parameter to fill rather than a
-## signature to change. It is deliberately not consulted today: a codex entry stores
+## `instance` is accepted and UNREAD, and that is a decision rather than an
+## omission.
+##
+## It travels through so the seam's signature is the one `items` already has in
+## hand (`ItemUse._apply_learned` receives both). The manual's annotations are NOT
+## drawn from it, and this is the whole design: a codex row already stores realized
+## annotations (`CodexEntry.realized`, ADR 0196), so a second copy of a carrier
+## would need to hand those over — and `ItemUse` strips the instance on use, so
+## reading it would make the margin a property of the CARRIER rather than of the
+## copy the actor now holds. A manual that drops two different rolled copies in
+## two readers' hands would be a bug, not a feature.
+##
+## What the instance IS good for is provenance: it is the record of what the
+## carrier itself rolled, which the module never reads and this seam declines to
+## translate into a technique. Study is one codex row, and the annotations on it are
+## drawn by `TechniquesApi.learn` from the def.
+##
+## It is deliberately not consulted today: a codex entry stores
 ## realized data only when learning realized any (`CodexEntry.realized`), and this
-## seam realizes nothing — see the `_realized` note below.
+## seam passes nothing into it.
 ##
 ## ## Refusals, all of which change NOTHING
 ##

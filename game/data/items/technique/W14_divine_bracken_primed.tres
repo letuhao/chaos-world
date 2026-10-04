@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"W14_divine_bracken_primed"
 display_name = "Divine Bracken Primed"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([

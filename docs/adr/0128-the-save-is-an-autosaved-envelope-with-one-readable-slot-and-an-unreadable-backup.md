@@ -63,6 +63,21 @@ surface is deliberately almost empty.**
   that is pinned.** No filesystem rule exists in `tools/arch` — the detector regex matches
   `res://` only — so the fact is converted into a checked invariant by a test rather than left
   as a convention about one file.
+- **One carve-out, named rather than left as a contradiction.** The workbench keeps a
+  player-facing Save and Load (`ui/screens/item_workbench.gd` `act_save` / `act_load`) bound to
+  `app/item_workbench_body.gd`'s `_save_state` / `_load_state`, which write
+  `user://item_workbench_state.json` carrying `ItemsApi.serialize(actor)` alone. **This is not
+  the envelope and cannot touch it**: `SaveApi.persist` has exactly two call sites, both in the
+  composition root (the period clock and the death branch), so the player can neither cause nor
+  suppress an envelope write — that half of "the player chooses nothing" holds as shipped.
+
+  What it does mean is that a player sees two controls called Save and Load with two different
+  meanings, so "the player chooses nothing" is true of the RUN and not of the BAG. That is the
+  honest reading, stated here rather than left for an audit to discover as a contradiction: the
+  item-only store is a convenience for a single subsystem, the envelope is the run, and
+  re-pointing the buttons at the envelope would hand the player exactly the manual
+  save-and-restore this ADR forbids. Closing the pair is a decision about the workbench, not
+  about the save, and it is recorded as BL-0714 rather than done here.
 
 ## Consequences
 

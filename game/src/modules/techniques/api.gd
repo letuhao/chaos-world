@@ -132,7 +132,26 @@ static func slots(actor: Actor) -> TechniqueSlots:
 ## affordability is checked before any progress is deducted, and a shortfall is
 ## a refusal that names what was owed and what was held — so a learn that fails
 ## writes NOTHING (DEF-0206).
-static func learn(actor: Actor, def: TechniqueDef, rung: int = 0) -> Dictionary:
+##
+## ## This is where a manual's MARGIN is drawn, and why here
+##
+## A manual's text is authored and fixed; what varies between copies is the
+## annotation in the margin (`TechniqueMarginalia`, ADR 0196). It is drawn here, at
+## the learn, and nowhere else — for the same reason learning is charged here and
+## not in the caller: it is the one moment the copy enters an actor's hands, and it
+## is the one moment the codex row is written. Drawing it at CRAFT time would put
+## it on a carrier that may never be studied; drawing it at REBUILD time would make
+## the contribution of an equipped technique depend on how many times it had been
+## rebuilt.
+##
+## `rng` is a SEED SOURCE, not a stream, in the shape ADR 0191 fixed for a
+## breakthrough attempt: an optional generator whose `seed` is read, so a test
+## chooses the copy it gets by seeding and the choice survives the save. One draw
+## per rollable option, in authored order. Production passes none and takes the
+## engine's entropy once.
+static func learn(
+	actor: Actor, def: TechniqueDef, rung: int = 0, rng: RandomNumberGenerator = null
+) -> Dictionary:
 	var refused := _refuse(actor, def)
 	if not refused.is_empty():
 		return refused
@@ -151,7 +170,13 @@ static func learn(actor: Actor, def: TechniqueDef, rung: int = 0) -> Dictionary:
 		var state := actor.path(path_id)
 		state.progress = maxf(0.0, state.progress - float(owed[path_id]))
 	var codex := codex(actor)
-	codex.learn(def.id, rung)
+	# Drawn BEFORE `learn` writes, and only ever for a row that has none: the
+	# margin is a property of the copy the actor is holding, so a second copy of
+	# the same manual re-teaches the technique without re-drawing its numbers.
+	var margin: Array[Dictionary] = []
+	if not codex.row(def.id).has("realized"):
+		margin = TechniqueMarginalia.draw(def, rng)
+	codex.learn(def.id, rung, margin)
 	_commit(actor)
 	return {
 		"ok": true,
@@ -159,6 +184,7 @@ static func learn(actor: Actor, def: TechniqueDef, rung: int = 0) -> Dictionary:
 		"rung": int(codex.row(def.id).get("rung", 0)),
 		"learn_price": price,
 		"paid": _numbers(owed),
+		"margin": _margin_view(codex.row(def.id)),
 	}
 
 
@@ -477,4 +503,17 @@ static func _numbers(owed: Dictionary) -> Dictionary:
 	var out := {}
 	for path_id in owed.keys():
 		out[String(path_id)] = float(owed[path_id])
+	return out
+
+
+## A codex row's margin as `{option_id: value}` primitives, for the learn outcome
+## and for a caller that wants to compare two copies without reaching into the
+## codex. Primitives only, like every other dictionary this facade returns.
+static func _margin_view(row: Dictionary) -> Dictionary:
+	var out := {}
+	for effect in row.get("realized", []):
+		var option_id := String((effect as Dictionary).get("option_id", ""))
+		if option_id.is_empty():
+			continue
+		out[option_id] = float((effect as Dictionary).get("value", 0.0))
 	return out

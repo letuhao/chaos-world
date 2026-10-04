@@ -382,6 +382,252 @@ def _qi_findings(
         setattr(ladder, name, saved)
 
 
+# The three qi guards that read the RUNTIME, not the corpus (ADR 0194 / ADR 0195):
+# a catalyst nothing consumes, a catalyst promoted into a gate, and a `cultivate`
+# that is either free again or charges the one resource it is the sole source of.
+#
+# Each row is `(label, [(file, target, replacement), ...], finding prefix)`, plus
+# an optional `items` suffix to drop from the known-item set. The files are a
+# throwaway module fixture OUTSIDE the repo, so a probe can never mutate shipped
+# data (INC-0007).
+QI_PRICE_PROBES: tuple[tuple, ...] = (
+    # A catalyst field no verb spends: the exact orphan ADR 0096 deleted, and the
+    # one shape that let DEF-0040's 120 items sit craftable and pointless.
+    (
+        "dantian_catalyst consumed by nothing",
+        [("training.gd", "seed.dantian_catalyst", "seed.meridian_catalyst")],
+        "qi_catalyst_unconsumed",
+    ),
+    # The same for the other half of the restored family.
+    (
+        "meridian_catalyst consumed by nothing",
+        [("training.gd", "seed.meridian_catalyst", "seed.dantian_catalyst")],
+        "qi_catalyst_unconsumed",
+    ),
+    # ADR 0096's objection, made executable: a mandatory item in a gate position.
+    (
+        "a gate reads the dantian catalyst",
+        [
+            (
+                "condition.gd",
+                "return dantian.quality >= seed.dantian_quality_required",
+                "return dantian.quality >= seed.dantian_quality_required and _ITEMS.has_item(actor, seed.dantian_catalyst)",
+            )
+        ],
+        "qi_catalyst_gated",
+    ),
+    # A seed that stops authoring the family at all.
+    (
+        "seed drops its dantian_catalyst",
+        [("st_two.tres", 'dantian_catalyst = &"st_two_dantian_catalyst"', "")],
+        "qi_catalyst_unauthored",
+    ),
+    # An authored id that resolves nowhere, so the verb that spends it refuses.
+    # Every line the guard reads is still correct here: only the CONTENT changed,
+    # which is why the probe carries the drop rather than an edit.
+    (
+        "dantian_catalyst resolves in no item",
+        [],
+        "qi_catalyst_item_missing",
+        "st_two_dantian_catalyst",
+    ),
+    # ADR 0180's ruling restored by accident: the sitting is free again.
+    (
+        "cultivate stops calling its price",
+        [("training.gd", "_buy_overflow_quality(actor, dantian, seed)", "_unpriced(actor)")],
+        "qi_cultivate_unpriced",
+    ),
+    # The deadlock shape itself: the only verb that raises the reservoir also
+    # lowers it, so it charges the resource it is the sole source of.
+    (
+        "cultivate drains the reservoir it fills",
+        [
+            (
+                "training.gd",
+                "\tdantian.fill(actor, gain)",
+                "\tdantian.fill(actor, gain)\n\tdantian.drain(actor, 1.0)",
+            ),
+            ("transaction.gd", "pool.current = 0.0", "pool.current = pool.current"),
+        ],
+        "qi_price_self_deadlock",
+    ),
+)
+
+
+def _fixture_training_source() -> str:
+    """A throwaway `QiTraining`, shaped like the runtime's two priced verbs.
+
+    It carries the shapes the guards read and nothing else: a `cultivate` that
+    fills the reservoir and delegates its price to a private helper, a
+    `train_off_gate_channel` that spends the other catalyst, and no gate read.
+    """
+    return "\n".join(
+        [
+            "class_name QiTraining",
+            "extends RefCounted",
+            "",
+            'const _ITEMS := preload("res://src/modules/items/api.gd")',
+            "",
+            "",
+            "static func cultivate(actor: Actor, amount: float) -> bool:",
+            "\tvar dantian := QiAccess.dantian(actor)",
+            "\tvar gain := amount",
+            "\tvar overflow := 0.0",
+            "\tdantian.fill(actor, gain)",
+            "\tif overflow > 0.0:",
+            "\t\t_buy_overflow_quality(actor, dantian, seed)",
+            "\treturn true",
+            "",
+            "",
+            "static func _buy_overflow_quality(actor: Actor, dantian: Dantian, seed: QiRealmSeed) -> bool:",
+            "\tif not _ITEMS.has_item(actor, seed.dantian_catalyst):",
+            "\t\treturn false",
+            "\tif not _ITEMS.consume_item(actor, seed.dantian_catalyst):",
+            "\t\treturn false",
+            "\tdantian.set_quality(dantian.quality + 0.05)",
+            "\treturn true",
+            "",
+            "",
+            "static func train_off_gate_channel(actor: Actor, meridian_id: StringName) -> bool:",
+            '\tvar seed := QiRealmSeed.for_realm(&"st_one")',
+            "\tif not _ITEMS.consume_item(actor, seed.meridian_catalyst):",
+            "\t\treturn false",
+            "\treturn true",
+            "",
+        ]
+    )
+
+
+def _fixture_transaction_source() -> str:
+    """A throwaway transaction whose one qi write is the ascent's emptying."""
+    return "\n".join(
+        [
+            "class_name QiBreakthroughTransaction",
+            "extends RefCounted",
+            "",
+            "",
+            "static func execute(actor: Actor) -> bool:",
+            "\tvar pool := actor.resource(QiStats.QI)",
+            "\tpool.current = 0.0",
+            "\treturn true",
+            "",
+        ]
+    )
+
+
+def _fixture_condition_source() -> str:
+    """A throwaway gate that reads state and no consumable beyond the pill."""
+    return "\n".join(
+        [
+            "class_name QiBreakthroughCondition",
+            "extends BreakthroughCondition",
+            "",
+            "",
+            "func _dantian_ready(actor: Actor, seed: QiRealmSeed, dantian: Dantian) -> bool:",
+            "\tif dantian.injured:",
+            "\t\treturn false",
+            "\treturn dantian.quality >= seed.dantian_quality_required",
+            "",
+        ]
+    )
+
+
+def _qi_price_probes() -> list[str]:
+    """Prove every runtime-reading qi guard fires, on a fixture invented for it.
+
+    Returns the labels of the rules that did not fire, so `run` fails the gate. A
+    green guard is not a tested guard (INC-0016), and these three read live
+    content — a guard asserting against content that has been fixed dies quietly.
+    """
+    realm_dir, meridian_source, rows, items = _stage_qi_fixture()
+    root = realm_dir.parent
+    # The ladder fixture's seeds carry the catalyst fields, and every realm owns
+    # all five item ids, so the baseline below is genuinely clean.
+    for path in realm_dir.glob("*.tres"):
+        text = path.read_text(encoding="utf-8")
+        realm_id = path.stem
+        path.write_text(
+            text.replace(
+                f'recovery_item = &"{realm_id}_recovery_elixir"',
+                (
+                    f'recovery_item = &"{realm_id}_recovery_elixir"\n'
+                    f'dantian_catalyst = &"{realm_id}_dantian_catalyst"\n'
+                    f'meridian_catalyst = &"{realm_id}_meridian_catalyst"'
+                ),
+            ),
+            encoding="utf-8",
+        )
+    items.update(f"{row[0]}_dantian_catalyst" for row in FIXTURE_REALMS)
+    items.update(f"{row[0]}_meridian_catalyst" for row in FIXTURE_REALMS)
+    sources = {
+        "training.gd": _fixture_training_source(),
+        "transaction.gd": _fixture_transaction_source(),
+        "condition.gd": _fixture_condition_source(),
+    }
+    for name, text in sources.items():
+        (root / name).write_text(text, encoding="utf-8")
+
+    uncaught: list[str] = []
+    try:
+        baseline = _qi_price_findings(realm_dir, root, rows, items)
+        if baseline:
+            raise ToolError(
+                "the synthetic qi module does not start clean, so its mutations would prove"
+                f" nothing: {'; '.join(baseline)}"
+            )
+        info("baseline: the synthetic qi module reports zero findings")
+
+        # Bounded by the probe table's own length, and every pass restores every
+        # file first, so no mutation can be masked by its predecessor (INC-0002).
+        pristine = {name: text for name, text in sources.items()} | {
+            path.name: path.read_text(encoding="utf-8") for path in realm_dir.glob("*.tres")
+        }
+        for row in QI_PRICE_PROBES:
+            label, edits, prefix = row[0], row[1], row[2]
+            drop_item = row[3] if len(row) > 3 else None
+            for name, text in pristine.items():
+                _fixture_path(root, realm_dir, name).write_text(text, encoding="utf-8")
+            known = set(items)
+            if drop_item is not None:
+                known.discard(drop_item)
+            for name, target, replacement in edits:
+                path = _fixture_path(root, realm_dir, name)
+                text = path.read_text(encoding="utf-8")
+                if target not in text:
+                    raise ToolError(f"{label}: the fixture holds no {target!r}")
+                path.write_text(text.replace(target, replacement), encoding="utf-8")
+            findings = _qi_price_findings(realm_dir, root, rows, known)
+            caught = [f for f in findings if prefix in f]
+            if caught:
+                info(f"caught  {label}: {caught[0][:140]}")
+            else:
+                uncaught.append(f"{label} (expected `{prefix}`)")
+                info(f"MISSED  {label}: nothing matched `{prefix}`")
+    finally:
+        shutil.rmtree(root.parent, ignore_errors=True)
+    return uncaught
+
+
+def _fixture_path(root: Path, realm_dir: Path, name: str) -> Path:
+    """Where a probe's edit lands: a seed inside the ladder, a module file beside it.
+
+    One resolution for both, so a probe row that names a seed cannot quietly write
+    a same-named file next to the seeds and prove nothing.
+    """
+    return realm_dir / name if name.endswith(".tres") else root / name
+
+
+def _qi_price_findings(realm_dir: Path, root: Path, rows: list, items: set[str]) -> list[str]:
+    """Both new guards over the fixture, with every input aimed at it."""
+    return audit.qi_catalyst_findings(
+        rows,
+        realm_dir=realm_dir,
+        items=items,
+        training=root / "training.gd",
+        condition=root / "condition.gd",
+    ) + audit.qi_price_findings(training=root / "training.gd", transaction=root / "transaction.gd")
+
+
 def run() -> int:
     realms = {realm_id for realm_id, _name, _tier in ladder_realms()}
     for realm_id, _scalar, _value, _prefix in MUTATIONS:
@@ -420,10 +666,11 @@ def run() -> int:
         shutil.rmtree(staged.parent, ignore_errors=True)
 
     uncaught += _qi_ladder_probes()
+    uncaught += _qi_price_probes()
     if uncaught:
         raise ToolError("a balance guard did not fire: " + "; ".join(uncaught))
     ok(
-        f"all {len(MUTATIONS) + len(QI_GATE_PROBES)} balance guards fire on the mutation that"
-        " breaks them"
+        f"all {len(MUTATIONS) + len(QI_GATE_PROBES) + len(QI_PRICE_PROBES)} balance guards fire on"
+        " the mutation that breaks them"
     )
     return 0

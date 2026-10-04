@@ -15,8 +15,8 @@ extends PanelContainer
 ## ADR 0129 forbids naming a preset after an ordinal, a tier or a realm, so there
 ## is no "this one is the hard one" fact to author here. The row therefore prints
 ## the SCALARS and lets a player read the consequence: a harder row has a larger
-## soul-damage share and a larger death-loss cap, and nothing else in the row is
-## tuned by difficulty.
+## soul-damage share and a larger death-loss cap, a weaker guardian and less credit
+## for tribulation preparation, and nothing else in the row is tuned by difficulty.
 ##
 ## ## The button is a REQUEST
 ##
@@ -88,7 +88,6 @@ func summary() -> Dictionary:
 		"soul_damage_share": float(_view.get(LEAD_SCALAR, 1.0)),
 		"death_loss_cap": float(_view.get("death_loss_cap", 1.0)),
 		"guardian_effectiveness": float(_view.get("guardian_effectiveness", 1.0)),
-		"loot_ceiling": float(_view.get("loot_ceiling", 1.0)),
 		"tribulation_preparation_credit": float(_view.get("tribulation_preparation_credit", 1.0)),
 		"scalar_count": _view.size() - 1,
 		"can_select": can_select(),

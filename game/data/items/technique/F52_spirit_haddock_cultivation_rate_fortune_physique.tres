@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F52_spirit_haddock_cultivation_rate_fortune_physique"
 display_name = "Spirit Haddock Cultivation rate Fortune Physique"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sovereign"
 fixed_modifiers = Array[Dictionary]([

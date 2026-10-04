@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"qi_dao_fruit_guardian_spirit_unity_0"
+kind = &"item"
+item_id = &"incense_shield"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"qi_dao_fruit_guardian_spirit_unity_1"
+kind = &"item"
+item_id = &"tablet_gold"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_qi_dao_fruit_guardian_pool_spirit_unity"
+display_name = "Dao Fruit Guardian salvage (spirit_unity)"
+realm = &"spirit_unity"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1")
+])

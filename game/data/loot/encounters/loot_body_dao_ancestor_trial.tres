@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"dao_ancestor"
 rarity = &"common"
-vitality = 264.0
+vitality = 713100.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_dao_ancestor_guardian", "table_id": &"loot_route_body_dao_ancestor_guardian"},
 	{"boss_id": &"E10_dao_warden", "table_id": &"loot_E10_dao_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"dao_ancestor"
 rarity = &"rare"
-vitality = 422.4
+vitality = 1140960.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_dao_ancestor_guardian", "table_id": &"loot_route_body_dao_ancestor_guardian"},
 	{"boss_id": &"E10_dao_warden", "table_id": &"loot_E10_dao_warden"},

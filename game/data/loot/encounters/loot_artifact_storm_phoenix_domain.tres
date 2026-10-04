@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"spirit_transformation"
 rarity = &"common"
-vitality = 80.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"artifact_storm_phoenix", "table_id": &"loot_artifact_storm_phoenix"},
 	{"boss_id": &"d1_storm_phoenix_ember", "table_id": &"loot_d1_storm_phoenix_ember"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"spirit_transformation"
 rarity = &"rare"
-vitality = 128.0
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"artifact_storm_phoenix", "table_id": &"loot_artifact_storm_phoenix"},
 	{"boss_id": &"d1_storm_phoenix_ember", "table_id": &"loot_d1_storm_phoenix_ember"},

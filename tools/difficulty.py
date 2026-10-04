@@ -10,8 +10,13 @@ What difficulty is allowed to move is the whole of ADR 0129: **a fraction of wha
 already holds, never a magnitude the game computes.** That is why the scalar set is CLOSED.
 This repo has three power-shaped tables already and a written rule that a fourth needs an ADR,
 because reading one number as two is what produced the realm power ladder in the first place.
-A sixth column here would be a fourth table wearing a difficulty label, so `check` fails on
+A fifth column here would be a fourth table wearing a difficulty label, so `check` fails on
 it rather than trusting a future author to remember.
+
+The set SHRANK from five to four (BL-0779). `loot_ceiling` was authored in every preset and
+read by nothing, and a `LootTier` is ORDINAL — selected by an authored index, paying a per-band
+reward and an authored vitality — so scaling one by a difficulty is ADR 0050's category error
+one layer down. A column with no honest consumer is removed, not left authored.
 
 `check` asserts **shape**, never a recipe, for the reason `realm_power.check` does: a guard
 that re-derived the numbers would make the recipe the source of truth and the file a cache.
@@ -36,7 +41,6 @@ SCALARS = (
     "soul_damage_share",
     "death_loss_cap",
     "guardian_effectiveness",
-    "loot_ceiling",
     "tribulation_preparation_credit",
 )
 

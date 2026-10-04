@@ -7,6 +7,7 @@ No Godot runtime required.
 
 from __future__ import annotations
 
+import functools
 import json
 import re
 from pathlib import Path
@@ -36,6 +37,30 @@ DESTINY_PROJECTION = SRC_DIR / "modules" / "destiny" / "destiny_projection.gd"
 ## the wiring question is whether the id can move at all, and a `need: 0` gate is
 ## already refused by `DestinyGate._counter` at runtime.
 _COUNTER_GATE = re.compile(r'"verb":\s*&"counter".{0,200}?"id":\s*&"([^"]*)"', re.S)
+## The seventh gate verb, `{verb: &"tagged", id: &"<tag>", ...}`, and the same
+## `{0,200}?` window as the counter above so both readers accept the same
+## spellings and the same field orderings of an authored gate row.
+_TAGGED_GATE = re.compile(r'"verb":\s*&"tagged".{0,200}?"id":\s*&"([^"]*)"', re.S)
+## A `none_of` composite. The match stops AT the `[` that opens its `of` list and
+## the closing bracket is found by counting, so an entry holding its own nested
+## list cannot end the scan early. Non-greedy on the verb, so a composite is
+## matched at its own opening row; `of` is always authored before `verb` in a
+## `.tres` block, and `EventGate`/`DestinyGate` read exactly one row per composite,
+## so the row that opens the match IS the row the runtime refuses if it is
+## malformed.
+_NONE_OF_OPEN = re.compile(r'"verb":\s*&"none_of".{0,200}?"of":\s*\[', re.S)
+# `FateDef` declares the fate/destiny vocabulary the runtime reads, so both live
+# together here: the closed `TAGS` list (ADR 0196, fate tag vocabulary) and where
+# the tree puts it.
+FATE_DEF = SRC_DIR / "modules" / "destiny" / "fate_def.gd"
+## Authored races, keyed by the `id` `RaceCatalog` keys them by. Read from the
+## SAME root the arrivals gate against, so `data audit --root <dir>` resolves a
+## `race_id` in the tree it was pointed at rather than in the repository.
+RACES_RELATIVE = ("races",)
+# The authored id of every race `RaceCatalog._ensure_loaded` would keep: a `.tres`
+# in the races tree whose `script_class` is not `RaceDef` is skipped by the
+# catalog, so counting it here would resolve a `race_id` the runtime cannot.
+RACE_SCRIPT_CLASS = 'script_class="RaceDef"'
 
 CATEGORIES = {
     "material",
@@ -138,35 +163,77 @@ SCHEMA = {
         "dicts": [],
         "scalars": ["group", "visibility"],
     },
+    # A soul arrival is a `SoulDef`: a body and a list of fates the soul is owed.
+    # It got a schema rather than no audit because ADR 0190 gave `marks` a real
+    # grant path, and a grant naming an id the fate catalog cannot resolve is
+    # ADR 0135's exact shape — a reference that reads as working and grants
+    # nothing. Every shipped arrival authors marks, and before this entry the
+    # whole tree was invisible to `data audit`.
+    "soul": {
+        "id": "id",
+        "arrays": ["marks"],
+        "dicts": [],
+        "scalars": ["race_id", "order"],
+    },
 }
-TYPE_BY_FOLDER = {
-    "items": "item",
-    "recipes": "recipe",
-    "bosses": "boss",
-    "domains": "domain",
-    # A feature module owns its own item namespace, so the audit gates it with
-    # exactly the same rules as `data/items` rather than exempting it (ADR 0008).
-    "socket": "item",
-    "sets/items": "item",
-    "loot/tables": "loot_table",
-    "loot": "loot_tier",
-    "destiny/fates": "fate",
-    "destiny/destinies": "destiny",
+# --- Content-family declaration (ADR 0184) -----------------------------------
+# The folder -> schema walk is keyed off `tools/arch/families.json`, never off a
+# hardcoded list: a mod adding `game/data/<prefix>/` content is a new family, and
+# an unknown family must fail loudly rather than be silently skipped. Each
+# family declares its `data_dir` (folder prefix under game/data) and `def_class`
+# (the Resource script class); the schema is derived from the def_class, so a
+# family with no detailed schema is still recognised rather than undeclared.
+from .arch.rules import load_families as _load_families  # noqa: E402, PLC0415
+
+_FAMILIES: dict[str, dict] = _load_families()
+# data_dir -> family name. A data_dir holding several families (techniques holds
+# both TechniqueDef and TechniqueMagnitudeTable) maps to the first declared; the
+# walk disambiguates by the file's own script_class when it needs a schema.
+_DIR_TO_FAMILY: dict[str, str] = {}
+for _name, _info in _FAMILIES.items():
+    _DIR_TO_FAMILY.setdefault(_info["data_dir"], _name)
+_FAMILY_TO_DEFCLASS: dict[str, str | None] = {
+    _name: _info.get("def_class") for _name, _info in _FAMILIES.items()
 }
-# Folder prefix -> the schema that parses it. Several prefixes share one schema:
-# a feature module's item namespace is gated by exactly the `items` rules.
-SCHEMA_FOR_PREFIX = {
-    "items": "items",
-    "socket": "items",
-    "sets/items": "items",
-    "loot/tables": "loot_table",
-    "loot": "loot_tier",
-    "recipes": "recipes",
-    "bosses": "bosses",
-    "domains": "domains",
-    "destiny/fates": "fate",
-    "destiny/destinies": "destiny",
+# def_class -> (type_name, schema_name). A def_class with no entry has no detailed
+# schema: the family is recognised by the walk but not loaded into records.
+_DEFCLASS_TO_SCHEMA: dict[str, str] = {
+    "ItemDef": "items",
+    "LootTableDef": "loot_table",
+    "LootTierDef": "loot_tier",
+    "RecipeDef": "recipes",
+    "BossDef": "bosses",
+    "DomainDef": "domains",
+    "FateDef": "fate",
+    "DestinyDef": "destiny",
+    "SoulDef": "soul",
 }
+_DEFCLASS_TO_TYPE: dict[str, str] = {
+    "ItemDef": "item",
+    "LootTableDef": "loot_table",
+    "LootTierDef": "loot_tier",
+    "RecipeDef": "recipe",
+    "BossDef": "boss",
+    "DomainDef": "domain",
+    "FateDef": "fate",
+    "DestinyDef": "destiny",
+    "SoulDef": "soul",
+}
+DECLARED_DIRS: frozenset[str] = frozenset(_DIR_TO_FAMILY)
+# Derived from the declaration: data_dir -> type_name / schema_name, for the
+# families that have a detailed schema. Kept under the historical names so the
+# rest of this file (and `tools/data_selftest.py`) reads the same vocabulary.
+TYPE_BY_FOLDER: dict[str, str] = {}
+SCHEMA_FOR_PREFIX: dict[str, str] = {}
+for _dir, _family in _DIR_TO_FAMILY.items():
+    _dc = _FAMILY_TO_DEFCLASS.get(_family)
+    if _dc is None:
+        continue
+    _schema = _DEFCLASS_TO_SCHEMA.get(_dc)
+    if _schema is None:
+        continue
+    TYPE_BY_FOLDER[_dir] = _DEFCLASS_TO_TYPE[_dc]
+    SCHEMA_FOR_PREFIX[_dir] = _schema
 BASE_SOURCES = {"gather", "starter"}
 # `subcategory = "numeraire"` marks the economy's unit of account. It is still an ordinary
 # held ItemDef: `economy`, `market` and `custody` read it with `inventory.count`/`has` and
@@ -569,32 +636,43 @@ def _extract_roll_spec(text: str) -> dict:
 
 
 def _folder_key(rel: Path) -> str | None:
-    """Registered folder prefix for a content file, shallowest match first.
+    """Declared folder prefix for a content file, deepest match first.
 
     A module may nest its items one level down (`sets/items/...`), so the whole
     prefix is tried before falling back to the top-level folder alone. Returns
-    the key used by both `TYPE_BY_FOLDER` and `SCHEMA`.
+    the data_dir of the matching declared family, or None when the file's folder
+    is not a declared content family (ADR 0184).
     """
     for depth in range(len(rel.parts) - 1, 0, -1):
         key = "/".join(rel.parts[:depth])
-        if key in TYPE_BY_FOLDER:
+        if key in DECLARED_DIRS:
             return key
     return None
 
 
-def _load(root: Path) -> tuple[dict, list[str]]:
-    records: dict = {name: {} for name in {*TYPE_BY_FOLDER.values(), *SCHEMA_FOR_PREFIX.values()}}
+def _load(root: Path) -> tuple[dict, list[str], list[str]]:
+    records: dict = {name: {} for name in {*TYPE_BY_FOLDER.values()}}
     malformed: list[str] = []
+    undeclared: list[str] = []
     if not root.is_dir():
-        return records, malformed
+        return records, malformed, undeclared
     for path in sorted(root.rglob("*.tres")):
         rel = path.relative_to(root)
         folder = _folder_key(rel)
         if folder is None:
+            # An undeclared content family: the folder is not in the registry, so
+            # no gate can vouch for it. Named, never silently skipped (ADR 0184).
+            undeclared.append(rel.parts[0] if rel.parts else rel.as_posix())
             continue
-        type_name = TYPE_BY_FOLDER[folder]
+        family = _DIR_TO_FAMILY[folder]
+        def_class = _FAMILY_TO_DEFCLASS.get(family)
+        schema_name = _DEFCLASS_TO_SCHEMA.get(def_class) if def_class else None
+        if schema_name is None:
+            # A declared family with no detailed schema: recognised, not loaded.
+            continue
+        type_name = _DEFCLASS_TO_TYPE[def_class]
         text = path.read_text(encoding="utf-8", errors="replace")
-        schema = SCHEMA[SCHEMA_FOR_PREFIX[folder]]
+        schema = SCHEMA[schema_name]
         record_id = _extract_scalar(text, schema["id"])
         if not record_id:
             malformed.append(rel.as_posix())
@@ -633,8 +711,18 @@ def _load(root: Path) -> tuple[dict, list[str]]:
         previous = records[type_name].get(record_id)
         if previous is not None:
             record["duplicate_of"] = previous["path"]
+            # The loser is about to be DISCARDED, and with it every defect it
+            # carried: `_soul_findings` walks `records`, so an arrival whose mark
+            # named no FateDef went unreported the moment a second file reused
+            # its id. The audit then names the race and the duplicate but never
+            # the dangling mark, and the author cannot act on a finding nobody
+            # was told. Carry the loser's checked fields onto the winner so one
+            # walk still sees both.
+            record.setdefault("superseded", []).append(
+                {"path": previous["path"], "arrays": previous.get("arrays", {})}
+            )
         records[type_name][record_id] = record
-    return records, malformed
+    return records, malformed, undeclared
 
 
 def _find_recipe_cycle(recipes: dict) -> list[str] | None:
@@ -670,7 +758,7 @@ def _find_recipe_cycle(recipes: dict) -> list[str] | None:
 
 
 def _audit(root: Path) -> list[str]:
-    records, malformed = _load(root)
+    records, malformed, undeclared = _load(root)
     items = records.get("item", {})
     recipes = records.get("recipe", {})
     bosses = records.get("boss", {})
@@ -681,7 +769,13 @@ def _audit(root: Path) -> list[str]:
     # carrying both). The gate has to read whichever one is populated, or every
     # table-hosted boss would report each of its drops as a false gap.
     authored_drops = _authored_boss_drops(records)
-    gaps = [f"{path}: missing id" for path in malformed]
+    # An undeclared content family is a hard error: the folder is not in the
+    # registry, so no gate can vouch for it. Named, never silently skipped.
+    gaps = [
+        f"undeclared content family {prefix} — declare it in the registry or move it"
+        for prefix in sorted(set(undeclared))
+    ]
+    gaps += [f"{path}: missing id" for path in malformed]
 
     for type_name in sorted(records):
         for record_id, record in sorted(records[type_name].items()):
@@ -1796,18 +1890,323 @@ def _authored_counter_gates(root: Path | None = None) -> list[tuple[str, str]]:
     return out
 
 
+## `FateDef.TAGS`, READ OUT of the shipped class rather than restated here.
+##
+## Same rule as `_counter_facts()` above and for the same reason: an author may NOT
+## coin a tag (ADR 0196, fate tag vocabulary), so the vocabulary is one declaration
+## on one class and a second literal in this file would be ADR 0066 — two lists of
+## tags with nothing keeping them in agreement, which is how 488 items once fitted
+## every slot at once. A tag added to `FateDef.TAGS` is gated the moment it lands,
+## with no edit here; a tag REMOVED there turns every fate carrying it red on the
+## next run, which is the point.
+##
+## `None` from the reader means the vocabulary is UNKNOWN, which is deliberately
+## NOT the same as "no tag is legal": it tells the caller to refuse rather than
+## wave every authored tag through, so a renamed or moved file degrades to a red
+## audit instead of a gate that silently checks nothing.
+def _read_fate_tags(source: Path) -> tuple[str, ...] | None:
+    """The `&"..."` members of `FateDef.TAGS` in `source`, or `None` if unreadable.
+
+    `None` for a file that is not there as well as for a file whose `const TAGS`
+    moved: both mean the vocabulary is unknown. Returning `()` for a missing file
+    would read as "no tag is legal" and turn a correct tree red the first time the
+    class is renamed — the same bug in the other direction is a reader returning
+    `()` for a present file, which is a gate that reports ok on a tree it never
+    checked. An explicitly declared empty list stays `()`: that is a real
+    vocabulary in which no tag is legal, which is a different finding with a
+    different repair.
+    """
+    if not source.is_file():
+        return None
+    text = source.read_text(encoding="utf-8", errors="replace")
+    block = re.search(r"(?ms)^const TAGS\b[^=]*=\s*\[(.*?)^\]", text)
+    if not block:
+        return None
+    return tuple(re.findall(r'&"([^"]*)"', block.group(1)))
+
+
+## Memoised on the PATH it read, never on the module constant: a bare global memo
+## answers with whatever the first caller happened to load, so pointing the reader
+## at a different `FateDef` would keep returning the old vocabulary — a cache
+## disagreeing with its own source, which is the failure this whole leg is about.
+@functools.cache
+def _fate_tags_in(source: Path) -> tuple[str, ...] | None:
+    return _read_fate_tags(source)
+
+
+def _fate_tags() -> set[str] | None:
+    tags = _fate_tags_in(FATE_DEF)
+    return None if tags is None else set(tags)
+
+
+def _authored_tagged_gates(root: Path | None = None) -> list[tuple[str, str]]:
+    """Every `(file, tag)` a shipped `.tres` gates on, across the WHOLE tree.
+
+    The seventh verb's census, and deliberately the same walk as
+    `_authored_counter_gates`: a gate requirement is authored on quests, events and
+    destinies alike and no one catalog exposes them all, so a scan limited to
+    `game/data/destiny/` would under-report the census and pass it for the WRONG
+    REASON — "no coined tags" instead of "no tags at all". Honoured `root` and all,
+    for the reason its docstring gives.
+    """
+    base = Path(root) if root is not None else DATA_ROOT
+    if not base.is_dir():
+        return []
+    out: list[tuple[str, str]] = []
+    for path in sorted(base.rglob("*.tres")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for tag in _TAGGED_GATE.findall(text):
+            out.append((path.relative_to(base).as_posix(), tag))
+    return out
+
+
+def _none_of_tagged_gates(root: Path | None = None) -> list[tuple[str, str]]:
+    r"""Every `(file, tag)` a `tagged` row is nested inside a `none_of` composite.
+
+    Raw, because the regex fragment quoted below is a literal `\[`/`\]` pair and a
+    non-raw docstring reads that as an invalid escape sequence: a `SyntaxWarning`
+    today and a `SyntaxError` on the next Python that tightens it. A docstring must
+    not be able to fail a build over prose.
+
+    The composer's brackets are COUNTED rather than matched by a bounded wildcard,
+    which is the only way a sibling `of` entry holding its own nested list is read
+    at all: an `all_of` child written as `{verb: &"all_of", of: Array[Dictionary]([])}`
+    puts a `]` inside the outer list, so a non-greedy `"of": \[(.*?)\]` stops there
+    and every `tagged` row after that sibling is read as a bare top-level gate —
+    which is precisely how a one-way door stops being reported as one. The scan is
+    a `for` over a fixed string, never a `while` over a container it grows, so it
+    terminates on any input.
+
+    Overlapping `_TAGGED_GATE` rather than parsing nested dictionaries is
+    deliberate: the census cannot then drift from `_authored_tagged_gates`, because
+    the same shape decides what counts as a `tagged` row in both.
+    """
+    base = Path(root) if root is not None else DATA_ROOT
+    if not base.is_dir():
+        return []
+    out: list[tuple[str, str]] = []
+    for path in sorted(base.rglob("*.tres")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        where = path.relative_to(base).as_posix()
+        for start in _NONE_OF_OPEN.finditer(text):
+            for tag in _children_of(text, start.end()):
+                out.append((where, tag))
+    return out
+
+
+def _children_of(text: str, start: int) -> list[str]:
+    """The `&"..."` values a composite's `of` list holds, from the `[` at `start`.
+
+    Brace and bracket depth decide what is inside the list rather than "wherever
+    the next `]` is", because an `of` entry may hold its own `of` list. Bounded on
+    the text itself: the loop walks a fixed `range` and either breaks when the
+    list closes or runs out of file, so it terminates on any input.
+    """
+    depth = 1
+    end = len(text)
+    for offset in range(start, len(text)):
+        char = text[offset]
+        if char in "[{":
+            depth += 1
+        elif char in "]}":
+            depth -= 1
+            if depth == 0:
+                end = offset
+                break
+    return _TAGGED_GATE.findall(text[start:end])
+
+
+## **A fate whose `tags` name anything outside `FateDef.TAGS` FAILS the audit.**
+##
+## The closed vocabulary is the feature (ADR 0196, fate tag vocabulary): a tag is a
+## KIND of deed, and an author who invents one gets a gate nothing can ever open.
+## Nothing re-reads `tags` after load, so without this the coined lineage ships in
+## a `.tres` that every other check calls clean — and the first sign of it is a
+## `tagged` gate refusing `unknown_tag` in front of a player, which is a content bug
+## reported as a content refusal.
+def _tag_findings(fates: dict) -> list[str]:
+    tags = _fate_tags()
+    if tags is None:
+        return [
+            f"{FATE_DEF.name}: FateDef.TAGS could not be read, so the closed lineage "
+            "vocabulary is unknown and no authored fate can be checked against it. "
+            "Refusing rather than passing every tag (ADR 0196)."
+        ]
+    gaps: list[str] = []
+    for fate_id, fate in sorted(fates.items()):
+        for tag in fate["arrays"].get("tags", []):
+            if tag not in tags:
+                gaps.append(
+                    f"{fate['path']}: fate '{fate_id}' carries tag '{tag}', which is not "
+                    f"one of the FateDef.TAGS lineage vocabulary ({', '.join(sorted(tags))}); "
+                    "an author may not coin one, and a gate on it can never open (ADR 0196)"
+                )
+    return gaps
+
+
+## **A `tagged` GATE naming an out-of-vocabulary tag FAILS the audit**, for the same
+## reason a `counter` gate on an unwired id does and unlike an unwired declaration:
+## the gate is a promise to the player that a door opens, and this one is a
+## permanent lie — `DestinyGate._tagged` refuses `unknown_tag`, and the refusal is
+## never an `unmet`, so there is nothing the player could ever go and earn.
+def _tag_gate_findings(root: Path | None = None) -> list[str]:
+    tags = _fate_tags()
+    if tags is None:
+        return _tag_findings({})
+    return [
+        f"{where}: a `tagged` gate names '{tag}', which is not one of the FateDef.TAGS "
+        "lineage vocabulary; nothing carries a coined tag, so the gate can never open "
+        "and the runtime refuses it `unknown_tag` rather than reporting it unmet (ADR 0196)"
+        for where, tag in _authored_tagged_gates(root)
+        if tag not in tags
+    ]
+
+
+## A `tagged` row inside a `none_of` composite is a ONE-WAY DOOR, and is a NOTE.
+##
+## A `none_of` composite is satisfied while NONE of its children hold, so this row
+## reads true for a player carrying no fate of that lineage — and stays true for
+## one carrying every fate there is, because fate is never removed and no gate
+## consumes a tag (ADR 0065). The author has therefore written a condition that can
+## only ever close further, never open, and there is no repair: the only fix is to
+## delete the row, which is an authoring decision and not a typo.
+##
+## Never a failure, and that is the same severity split `_counter_findings` /
+## `_counter_notes` draw. A gate closes a door and the player pays for it, so a
+## door that cannot open is a defect; this is a legitimate if unusual composition
+## — "until you are marked" is a real thing to author — and failing a build over it
+## would be red for a tree behaving correctly, which is how a gate loses its
+## readers. Named per row rather than counted, so the list cannot grow quietly.
+def _tag_notes(root: Path | None = None) -> list[str]:
+    doors = _none_of_tagged_gates(root)
+    if not doors:
+        return []
+    listed = ", ".join(f"{where} ('{tag}')" for where, tag in doors)
+    return [
+        f"{len(doors)} `tagged` gate(s) sit inside a `none_of` composite and are therefore "
+        f"one-way doors: {listed}. Nothing removes a fate and no gate consumes a tag "
+        "(ADR 0065), so each of these can only ever CLOSE further and never open. That is a "
+        "legal composition — 'until you are marked' is a real thing to author — but it is "
+        "reported, because the condition cannot be relaxed later and an author should see "
+        "the door they wrote."
+    ]
+
+
+def _authored_race_ids(root: Path | None = None) -> set[str]:
+    """Every authored race id `RaceCatalog` would keep, from the same root as the audit.
+
+    Keyed by the `.tres`'s own `id` because that is what `RaceApi.set_race` and
+    `CharacterCreationFlow.build_forced` resolve a `SoulDef.race_id` against, and
+    filtered on `script_class="RaceDef"` because `RaceCatalog._ensure_loaded`
+    skips anything else in that directory — counting a skipped file here would let
+    a `race_id` through that the runtime cannot resolve.
+    """
+    base = Path(root) if root is not None else DATA_ROOT
+    races = base.joinpath(*RACES_RELATIVE)
+    if not races.is_dir():
+        return set()
+    out: set[str] = set()
+    for path in sorted(races.glob("*.tres")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if RACE_SCRIPT_CLASS not in text:
+            continue
+        race_id = _extract_scalar(text, "id")
+        if race_id:
+            out.add(race_id)
+    return out
+
+
+## **Soul arrivals have no other audit, so these three are the whole gate.**
+##
+## `game/data/soul/arrivals/` was invisible to `data audit` before the `soul`
+## schema entry: `TYPE_BY_FOLDER` had no key for it, so `_folder_key` returned
+## `None` and `_load` skipped every file without reading it. ADR 0190 gave
+## `SoulDef.marks` a real grant path, and with nothing here an author could ship
+## all three defects at once and every gate in the repo would say the tree is
+## clean. Measured on the tree this landed against: 3 arrivals, 0 findings.
+def _soul_findings(records: dict, root: Path | None = None) -> list[str]:
+    arrivals = records.get("soul", {})
+    if not arrivals:
+        return []
+    # Resolved against the tree the audit was given, not the module constant, and
+    # against THE FATE CATALOG `data audit` already built — `FateCatalog` keys
+    # `res://data/destiny/fates/*.tres` by the same `id` this loader extracts, so
+    # the set is the one the runtime would answer with. A second reader here would
+    # be two answers to "which fate ids exist", which is ADR 0066.
+    fates = set(records.get("fate", {}))
+    races = _authored_race_ids(root)
+    gaps: list[str] = []
+    for arrival_id, arrival in sorted(arrivals.items()):
+        # A duplicated id discards the loser, and `_load` carries the loser's
+        # checked fields on `superseded` so a defect it carried is still
+        # reported. Without this the walk below only ever saw the winner, and an
+        # arrival whose mark named no FateDef went unnamed the moment a second
+        # file reused its id — the audit said "duplicate" and said nothing about
+        # the mark, which is the half an author needs.
+        superseded = [
+            {
+                "path": entry["path"],
+                "arrays": entry.get("arrays", {}),
+                "scalars": {},
+            }
+            for entry in arrival.get("superseded", [])
+        ]
+        for variant in [arrival, *superseded]:
+            where = variant["path"]
+            for mark in variant["arrays"].get("marks", []):
+                if mark not in fates:
+                    gaps.append(
+                        f"{where}: arrival '{arrival_id}' marks '{mark}', which no authored "
+                        "FateDef defines; earn_fate refuses an unknown id exactly as it "
+                        "refuses an already-held one, so the mark grants nothing and says "
+                        "nothing (ADR 0135, ADR 0190). A mark that grants nothing is worse "
+                        "than an absent one."
+                    )
+        # `SoulCatalog._ensure_loaded` writes `_arrivals[String(def.id)] = def`,
+        # so a repeated id is a silent last-wins: one arrival is unreachable and
+        # nothing anywhere says so. The gate walks its own tree in sorted order,
+        # so naming "also in <other>" is deterministic rather than scan-order.
+        # Reported ONCE for the winner, not per variant — reporting it per variant
+        # named the winner as a duplicate of itself.
+        if arrival.get("duplicate_of"):
+            gaps.append(
+                f"{arrival['path']}: duplicate arrival id '{arrival_id}' also in "
+                f"{arrival['duplicate_of']}; SoulCatalog keeps the last one it loads and "
+                "the other arrival is unreachable with no error anywhere"
+            )
+        race_id = arrival["scalars"].get("race_id", "")
+        if not race_id:
+            gaps.append(f"{arrival['path']}: arrival '{arrival_id}' names no race_id")
+        elif race_id not in races:
+            gaps.append(
+                f"{arrival['path']}: arrival '{arrival_id}' arrives in race '{race_id}', "
+                "which no authored RaceDef defines; CharacterCreationFlow builds no body and "
+                "a returning soul has none to arrive in"
+            )
+    return gaps
+
+
 def _destiny_findings(records: dict, root: Path | None = None) -> tuple[list[str], list[str]]:
-    """Defects in fate/destiny content, and authoring notes worth surfacing.
+    """Defects in fate/destiny/soul content, and authoring notes worth surfacing.
 
     A `.tres` stat id is never re-read after load: an unknown key produces a
     modifier nobody can attribute, and a FLAT on a rate stat multiplies a 0..1
     baseline into something enormous. Neither raises, so this gate is the only
     place they can be caught. Cross-references are checked here too, because a
     `grants_fates` entry naming a deleted fate silently grants nothing.
+
+    **The early return is deliberately NOT taken on the soul tree alone.** An
+    earlier reader would guard this leg with `if not fates and not destinies`, and
+    `data audit --root <dir>` pointed at a tree holding arrivals and no fates would
+    then silently check nothing — the same "passes for the wrong reason" shape the
+    whole-tree walks above exist to prevent. Soul content references the fate
+    catalog, so a tree of arrivals with no fates is precisely the one whose marks
+    are all dangling, and it is the case most worth failing.
     """
     fates = records.get("fate", {})
     destinies = records.get("destiny", {})
-    if not fates and not destinies:
+    arrivals = records.get("soul", {})
+    if not fates and not destinies and not arrivals:
         return [], []
     gaps: list[str] = []
     valid = _valid_stats()
@@ -1903,6 +2302,10 @@ def _destiny_findings(records: dict, root: Path | None = None) -> tuple[list[str
         )
     gaps.extend(_counter_findings(root))
     notes.extend(_counter_notes(fates, root))
+    gaps.extend(_tag_findings(fates))
+    gaps.extend(_tag_gate_findings(root))
+    notes.extend(_tag_notes(root))
+    gaps.extend(_soul_findings(records, root))
     return gaps, notes
 
 
@@ -2264,7 +2667,7 @@ def _entry_band_gap_note() -> str:
 
 def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
     gaps = _audit(root)
-    records, _ = _load(root)
+    records, _, _ = _load(root)
     gaps.extend(msg for level, msg in _loot_findings(records) if level == "error")
     # Fate/destiny content is gated rather than warned: these defects are inside
     # a subsystem that already ships, so a typo would silently ship a fate that
@@ -2347,7 +2750,7 @@ def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
 
 
 def _report_command(root: Path) -> int:
-    records, _ = _load(root)
+    records, _, _ = _load(root)
     for type_name in ("item", "recipe", "boss", "domain"):
         entries = records.get(type_name, {})
         info(f"{type_name}: {len(entries)}")
@@ -2784,7 +3187,7 @@ def _collect_findings(items: dict) -> list[tuple[str, str]]:
 
 def _distribution_command(root: Path, fail_on: str) -> int:
     _load_realms()
-    records, malformed = _load(root)
+    records, malformed, _ = _load(root)
     items = records.get("item", {})
     total = len(items)
 

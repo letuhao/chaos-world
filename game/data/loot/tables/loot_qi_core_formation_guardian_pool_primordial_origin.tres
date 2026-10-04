@@ -5,24 +5,24 @@
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"qi_core_formation_guardian_domain_19"
+id = &"qi_core_formation_guardian_primordial_origin_0"
 kind = &"item"
 item_id = &"qi_primordial_origin_cultivation_herb"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &""
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
 
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_core_formation_guardian_pool_primordial_origin"
-display_name = "Core Formation Guardian (primordial_origin)"
+display_name = "Core Formation Guardian salvage (primordial_origin)"
 realm = &"primordial_origin"
 rarity = &""
-rolls = 0
+rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
-	SubResource("entry_0"),
+	SubResource("entry_0")
 ])

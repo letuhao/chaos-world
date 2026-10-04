@@ -16,6 +16,13 @@ extends RefCounted
 ## The shortest interval a technique may author. Anything below this would settle
 ## every frame regardless of what it asked for, so a zero or negative `upkeep_interval`
 ## degrades to "not every frame" instead of "every frame".
+##
+## **A floor on AUTHORED DATA, not a cadence** (ADR 0173's `MIN_INTERVAL` row). It is
+## read as `maxf(def.upkeep_interval, MIN_INTERVAL)` against a `TechniqueDef` whose own
+## default is `60.0` seconds, so it guards a `.tres` edit rather than measuring the
+## world. No `TimeLadder` magnitude is one second, and deriving one would move upkeep
+## balance instead of retiming the clock — so this number stays authored and is reported
+## to the single-source guard as a deliberate remaining hit rather than hidden from it.
 const MIN_INTERVAL := 1.0
 
 ## technique_id -> true when suspended. Absent means active.

@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"foundation"
 rarity = &"common"
-vitality = 48.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"crown_iron_monarch", "table_id": &"loot_crown_iron_monarch"},
 	{"boss_id": &"d2_iron_monarch", "table_id": &"loot_d2_iron_monarch"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"foundation"
 rarity = &"rare"
-vitality = 76.8
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"crown_iron_monarch", "table_id": &"loot_crown_iron_monarch"},
 	{"boss_id": &"d2_iron_monarch", "table_id": &"loot_d2_iron_monarch"},

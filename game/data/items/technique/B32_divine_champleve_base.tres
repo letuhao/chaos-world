@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"B32_divine_champleve_base"
 display_name = "Divine Champleve base"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"
 fixed_modifiers = Array[Dictionary]([

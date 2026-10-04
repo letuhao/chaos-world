@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F50_immortal_grouch_penetration_physique_stamina_regen"
 display_name = "Immortal Grouch Penetration Physique Stamina regen"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_immortal"
 fixed_modifiers = Array[Dictionary]([

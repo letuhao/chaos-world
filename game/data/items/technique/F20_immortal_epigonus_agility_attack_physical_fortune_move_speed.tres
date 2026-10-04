@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F20_immortal_epigonus_agility_attack_physical_fortune_move_speed"
 display_name = "Immortal Epigonus Agility Attack physical Fortune Move speed"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"immortal_sovereign"
 fixed_modifiers = Array[Dictionary]([

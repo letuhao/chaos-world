@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F20_earth_ephemeris_agility_attack_physical_breakthrough_chance_loot_bonus"
 display_name = "Earth Ephemeris Agility Attack physical Breakthrough chance Loot bonus"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_ascension"
 fixed_modifiers = Array[Dictionary]([

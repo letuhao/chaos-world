@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F19_mortal_entozoon_agility_aptitude_poise_will"
 display_name = "Mortal Entozoon Agility Aptitude Poise Will"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"nascent_soul"
 fixed_modifiers = Array[Dictionary]([

@@ -269,7 +269,7 @@ def plan_derivation(root: Path, roots: tuple[str, ...]) -> tuple[dict[Path, dict
     from .options import DEFAULT_CATALOG, _load_jsonl  # noqa: PLC0415
 
     data._load_realms()
-    records, _ = data._load(root)
+    records, _, _ = data._load(root)
     catalog = {r["id"]: r for r in _load_jsonl(DEFAULT_CATALOG)}
     cohorts: dict[tuple, list[tuple[str, float]]] = {}
     item_by_id = {record["id"]: record for record in records.get("item", {}).values()}

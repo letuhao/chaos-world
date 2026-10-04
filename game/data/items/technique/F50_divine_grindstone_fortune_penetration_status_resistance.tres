@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F50_divine_grindstone_fortune_penetration_status_resistance"
 display_name = "Divine Grindstone Fortune Penetration Status resistance"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

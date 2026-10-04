@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"B31_divine_cavesson_primed"
 display_name = "Divine Cavesson Primed"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"B18_mortal_camerlengo_perfected"
 display_name = "Mortal Camerlengo Perfected Talisman"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"
 fixed_modifiers = Array[Dictionary]([

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F20_divine_ephemeris_agility_attack_physical_breakthrough_chance_health_regen"
 display_name = "Divine Ephemeris Agility Attack physical Breakthrough chance Health regen"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

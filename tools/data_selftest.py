@@ -1,4 +1,4 @@
-"""Red-path self-tests for the `data audit` legs that gate ADR 0189 and ADR 0190.
+"""Red-path self-tests for the `data audit` legs that gate ADR 0196 and ADR 0190.
 
 Separate from `tools/data.py` because a validator is shipped code and a test of it
 is not: `data.py` is imported by `tools check` on every run, and importing it must
@@ -110,7 +110,7 @@ def _race(race_id: str) -> str:
     )
 
 
-# A coined lineage, and the name ADR 0189 itself uses for one. `defensive` is the
+# A coined lineage, and the name ADR 0196 itself uses for one. `defensive` is the
 # engine-shaped token `FateDef.TAGS` explicitly excludes, so it is out of
 # vocabulary by the shipped source's own account rather than by this file's.
 COINED_TAG = "defensive"
@@ -221,7 +221,7 @@ def _verdict(root: Path) -> tuple[int, str]:
     return code, buffer.getvalue()
 
 
-# --- Gate 1: the closed fate-tag vocabulary (ADR 0189) ------------------------
+# --- Gate 1: the closed fate-tag vocabulary (ADR 0196) ------------------------
 
 
 @case("data audit: a fate carrying a coined tag FAILS, and carrying none is clean")
@@ -284,7 +284,7 @@ def _removing_a_vocabulary_member_turns_the_fate_red() -> None:
         len(verdicts["oath"]) == 1 and "duel" in verdicts["oath"][0],
         f"removing `duel` from the vocabulary did not turn the fate carrying it red: "
         f"{verdicts['oath']!r}. Either the gate holds its own copy of the tags, or it reads "
-        "a vocabulary fixture it was not pointed at — and ADR 0189 makes adding a tag a "
+        "a vocabulary fixture it was not pointed at — and ADR 0196 makes adding a tag a "
         "change to the closed vocabulary, not an edit in the gate",
     )
 

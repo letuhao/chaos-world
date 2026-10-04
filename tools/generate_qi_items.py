@@ -155,7 +155,7 @@ def make_item_tres(item_id, display_name, category, subcategory, grade, sources,
         '[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]',
         "",
         "[resource]",
-        'script = Ext_resource("1_item")',
+        'script = ExtResource("1_item")',
         f'id = &"{item_id}"',
         f'display_name = "{display_name}"',
         f'category = &"{category}"',
@@ -176,7 +176,7 @@ def make_recipe_tres(recipe_id, display_name, station, inputs, outputs):
 [ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
 
 [resource]
-script = Ext_resource("1_recipe")
+script = ExtResource("1_recipe")
 id = &"{recipe_id}"
 display_name = "{display_name}"
 station = &"{station}"
@@ -192,7 +192,7 @@ def make_boss_tres(boss_id, display_name, domain_id, loot):
 [ext_resource type="Script" path="res://src/modules/world/boss_def.gd" id="1_boss"]
 
 [resource]
-script = Ext_resource("1_boss")
+script = ExtResource("1_boss")
 id = &"{boss_id}"
 display_name = "{display_name}"
 domain_id = &"{domain_id}"
@@ -207,7 +207,7 @@ def make_domain_tres(domain_id, display_name, boss_ids):
 [ext_resource type="Script" path="res://src/modules/world/domain_def.gd" id="1_domain"]
 
 [resource]
-script = Ext_resource("1_domain")
+script = ExtResource("1_domain")
 id = &"{domain_id}"
 display_name = "{display_name}"
 boss_ids = Array[StringName]([{bosses_str}])
@@ -215,6 +215,14 @@ boss_ids = Array[StringName]([{bosses_str}])
 
 
 def main():
+    """Emit the qi corpus: five items and three recipes per realm.
+
+    Every write is `if not exists`, so a run is additive only. Measured, not
+    assumed: the boss (`qi_<realm>_guardian`) and domain (`qi_<realm>_domain`)
+    families this script also writes are ALREADY on disk, so a full run creates
+    nothing there. ADR 0096 suspected this script had drifted from the corpus; it
+    has not — both families ship.
+    """
     # Create directories if needed
     for d in ["consumable", "material"]:
         (ITEMS_DIR / d).mkdir(parents=True, exist_ok=True)
@@ -260,7 +268,12 @@ def main():
             )
             print(f"  Created {pill_id}")
 
-        # 2. Dantian catalyst
+        # 2. Dantian catalyst: the PRICE of a `cultivate` sitting whose circulation
+        # overflows a reservoir the gate already demands be full. It converts the
+        # refused qi into dantian quality PAST the next realm's floor, which is roll
+        # certainty `cultivate` cannot reach — it stops refining at that floor
+        # (ADR 0195). No gate reads it, which is what ADR 0096 required and what
+        # `tools/cultivation/audit.py` now enforces.
         cat_path = ITEMS_DIR / "consumable" / f"{catalyst_id}.tres"
         if not cat_path.exists():
             cat_path.write_text(
@@ -271,13 +284,19 @@ def main():
                     "tonic",
                     grade,
                     f'[&"craft:{catalyst_id}_recipe"]',
-                    f"Dantian strengthening catalyst for {realm_name}.",
+                    (
+                        f"Spent on a {realm_name} sitting that overflows a full dantian. The"
+                        " overflow becomes dantian quality past the next realm's floor, and"
+                        " every gate is met without one."
+                    ),
                 ),
                 encoding="utf-8",
             )
             print(f"  Created {catalyst_id}")
 
-        # 3. Meridian elixir
+        # 3. Meridian catalyst: pays for one step on a channel the next realm's
+        # gate does NOT name, so the channel elixir stays the gate's own price
+        # (ADR 0194).
         elixir_path = ITEMS_DIR / "consumable" / f"{elixir_id}.tres"
         if not elixir_path.exists():
             elixir_path.write_text(
@@ -288,7 +307,10 @@ def main():
                     "elixir",
                     grade,
                     f'[&"craft:{elixir_id}_recipe"]',
-                    f"Meridian training elixir for {realm_name}.",
+                    (
+                        f"Spent to train one {realm_name} meridian the next gate never names,"
+                        " for the flow and reservoir width it grants. No gate asks for it."
+                    ),
                 ),
                 encoding="utf-8",
             )

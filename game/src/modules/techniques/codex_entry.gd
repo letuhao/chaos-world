@@ -141,11 +141,27 @@ func _scaled(effect: Dictionary, power: float) -> Dictionary:
 
 
 ## Whether an effect resizes a pool MAXIMUM, which the realm ladder and the
-## authored capacity already govern. Named rather than inferred from a type, because
-## the corpus types every capacity option as `stat`.
+## authored capacity already govern.
+##
+## ## The twin of `TechniqueMarginalia.is_capacity_effect`
+##
+## Two refusals on one quantity from opposite directions — a rung may not scale a
+## capacity, and a copy's margin may not band one — and they are written twice
+## because they answer different questions at different moments. That is a tie, so
+## `test_technique_marginalia.gd` walks every `cult_*` option in the shipped
+## catalog and asserts the pair agree: a comment is not a tie, a test is.
+##
+## Keyed on the word `capacity`, because that is the corpus's word for it — and on
+## the `max_` family, which is the OTHER word. A suffix test on `_maximum` alone
+## caught `max_qi` and `max_stamina` and let three real capacities through:
+## `dantian_capacity` (re-sealed every `synchronize` by `qi_cultivation/training.gd`
+## from the next realm's authored value), `essence_capacity`, and
+## `carry_capacity`. Each would scale by 1.749 at rung 4 — the exact double-count
+## ADR 0160 refuses. Matching the concept is the only rule that survives content the
+## predicate has never seen; a name list is a list that is out of date the moment
+## someone adds a pool.
 static func _is_capacity(target_id) -> bool:
-	var id := String(target_id)
-	return id.begins_with("max_") or id.ends_with("_maximum")
+	return TechniqueMarginalia.is_capacity_effect(target_id)
 
 
 ## Raise this entry's rung to `rung`. Returns true only when the rung actually

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"P8_heaven_bobbin_base"
 display_name = "Heaven Bobbin Base"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"heaven_immortal"
 fixed_modifiers = Array[Dictionary]([

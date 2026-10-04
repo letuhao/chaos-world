@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"treaty_second_clause"
 display_name = "Treaty: Second Clause"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_ascension"
 fixed_modifiers = Array[Dictionary]([

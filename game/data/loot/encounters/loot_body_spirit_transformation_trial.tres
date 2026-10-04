@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"spirit_transformation"
 rarity = &"common"
-vitality = 72.0
+vitality = 2943.8
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_spirit_transformation_guardian", "table_id": &"loot_body_spirit_transformation_guardian"},
 	{"boss_id": &"E2_spirit_transformation_warden", "table_id": &"loot_E2_spirit_transformation_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"spirit_transformation"
 rarity = &"rare"
-vitality = 115.2
+vitality = 4710.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_spirit_transformation_guardian", "table_id": &"loot_body_spirit_transformation_guardian"},
 	{"boss_id": &"E2_spirit_transformation_warden", "table_id": &"loot_E2_spirit_transformation_warden"},

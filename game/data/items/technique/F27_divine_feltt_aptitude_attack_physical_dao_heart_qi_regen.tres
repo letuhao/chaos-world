@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F27_divine_feltt_aptitude_attack_physical_dao_heart_qi_regen"
 display_name = "Divine Feltt Aptitude Attack physical Dao heart Qi regen"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([

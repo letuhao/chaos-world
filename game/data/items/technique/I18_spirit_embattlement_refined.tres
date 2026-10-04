@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"I18_spirit_embattlement_refined"
 display_name = "Spirit Embattlement Refined"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sovereign"
 fixed_modifiers = Array[Dictionary]([
