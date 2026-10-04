@@ -107,6 +107,15 @@ STAMP = r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:[+-]\d{2}:\d{2}|Z)"
 #: docstring for the measurement this number comes from. Stale is `warn`, not `fail`.
 STALE_AFTER = timedelta(hours=8)
 
+#: A claim may declare itself ORPHANED, which is what a coordinator writes when a
+#: dispatch returned a body with no sessionID and it cannot tell whether the session
+#: started (INC-0033). Such a claim is reported, not failed: it is a true statement
+#: about an unresolvable situation, and failing it would be failing a claim for
+#: confessing. What it must not be is SILENT -- an orphaned claim looks identical to a
+#: healthy one to every other reader, which is how one blocked `modules/items` for
+#: hours without ever being reported.
+ORPHANED = "orphaned"
+
 #: How many overlapping pairs to print before summarising the rest. With ~20 live agents a
 #: full cross-product is a wall of text nobody reads, and the first agent to read a wall
 #: of text reads none of it.
@@ -116,11 +125,16 @@ MAX_REPORTED = 12
 @dataclass(frozen=True)
 class Claim:
     """One session's ledger line: the id it is known by, the paths it owns, and when it
-    last said it still owned them."""
+    last said it still owned them.
+
+    `orphaned` records that the coordinator could not confirm the dispatch landed. It is
+    an optional field so a ledger written before it existed still validates.
+    """
 
     session: str
     paths: tuple[str, ...]
     heartbeat: datetime
+    orphaned: bool = False
 
     def age(self, now: datetime) -> timedelta:
         return now - self.heartbeat
@@ -262,7 +276,23 @@ def _parse(line: str, number: int, path: Path) -> Claim | None:
     if heartbeat.tzinfo is None:
         raise ToolError(f"{path.name}:{number}: {session} heartbeat has no UTC offset")
 
-    return Claim(session=session, paths=paths, heartbeat=heartbeat.astimezone(UTC))
+    # Optional and defaulted, so a ledger written before `orphaned` existed still
+    # validates. A non-boolean value is refused rather than coerced, because
+    # `bool("false")` is True and a claim that says false and reads as orphaned is
+    # the exact confusion this field exists to remove.
+    raw_orphaned = entry.get("orphaned", False)
+    if not isinstance(raw_orphaned, bool):
+        raise ToolError(
+            f"{path.name}:{number}: {session} has orphaned={raw_orphaned!r}, which is not a "
+            "boolean. Write true or false, or omit the field."
+        )
+
+    return Claim(
+        session=session,
+        paths=paths,
+        heartbeat=heartbeat.astimezone(UTC),
+        orphaned=raw_orphaned,
+    )
 
 
 def conflicts(claims: list[Claim]) -> list[Overlap]:
@@ -319,6 +349,11 @@ def write_claims(claims: list[Claim], path: Path | None = None) -> Path:
                 "session": claim.session,
                 "paths": list(claim.paths),
                 "heartbeat": claim.heartbeat.isoformat(),
+                # Only written when set, so the common line stays the three fields
+                # every reader already parses. Omitting a false marker rather than
+                # writing `false` keeps a healthy claim from growing a field that
+                # says nothing.
+                **({"orphaned": True} if claim.orphaned else {}),
             },
             ensure_ascii=False,
         )
@@ -362,6 +397,15 @@ def register(subparsers: argparse._SubParsersAction) -> None:
         "--paths", required=True, help="repo-relative paths, comma or space separated"
     )
     claim.add_argument(
+        "--orphaned",
+        action="store_true",
+        help=(
+            "mark that the dispatch returned no sessionID and its outcome is unknown "
+            "(INC-0033). Reported by `check` so the claim cannot look healthy to the "
+            "next agent while no session stands behind it"
+        ),
+    )
+    claim.add_argument(
         "--ledger",
         default=None,
         help="write this ledger instead of docs/claims.jsonl (used by the self-tests)",
@@ -387,7 +431,8 @@ def register(subparsers: argparse._SubParsersAction) -> None:
 def _describe_claim(claim: Claim, now: datetime) -> str:
     age = claim.age(now)
     hours = age.total_seconds() / 3600
-    return f"  {claim.session}  {hours:+.1f}h  {', '.join(claim.paths)}"
+    marker = "  [ORPHANED]" if claim.orphaned else ""
+    return f"  {claim.session}{marker}  {hours:+.1f}h  {', '.join(claim.paths)}"
 
 
 def _run_check(args: argparse.Namespace) -> int:
@@ -407,11 +452,28 @@ def _run_check(args: argparse.Namespace) -> int:
         for claim in stale:
             warn(_describe_claim(claim, now))
 
+    # An orphaned claim is reported on EVERY run and is never fatal, for the same
+    # reason staleness is not: it is a true statement about an unresolved dispatch, and
+    # failing it would be failing a claim for confessing. What it must not be is
+    # silent, because an orphaned claim is indistinguishable from a healthy one to
+    # every other reader — that is how `root-bl0110` held `modules/items` while no
+    # session stood behind it (INC-0033).
+    orphans = [claim for claim in live if claim.orphaned]
+    for claim in orphans:
+        warn(
+            f"{claim.session} is ORPHANED — its dispatch returned no sessionID and no "
+            f"session is known to hold {', '.join(claim.paths)}. Confirm before touching "
+            "those paths: if a session did start, they are a write-write collision; if "
+            "not, the claim is blocking the next agent. Resolve by releasing it "
+            f"(`tools claim_guard release --session {claim.session}`) once you know."
+        )
+
     if not found:
+        suffix = f", {len(orphans)} orphaned" if orphans else ""
         ok(
             f"no two live sessions claim overlapping paths "
             f"({len(live)} live claim(s) over {sum(len(c.paths) for c in live)} path(s), "
-            f"{len(stale)} stale — INC-0023)"
+            f"{len(stale)} stale{suffix} — INC-0023)"
         )
         return 0
 
@@ -446,16 +508,27 @@ def _run_claim(args: argparse.Namespace) -> int:
 
     claims = read_claims(path)
     now = _now()
+    orphaned = bool(getattr(args, "orphaned", False))
     mine = next((claim for claim in claims if claim.session == args.session), None)
     if mine is None:
-        claims.append(Claim(session=args.session, paths=tuple(wanted), heartbeat=now))
+        claims.append(
+            Claim(
+                session=args.session,
+                paths=tuple(wanted),
+                heartbeat=now,
+                orphaned=orphaned,
+            )
+        )
         action = "recorded"
     else:
         # Union, not replace: claiming one more file must not silently release the rest.
+        # `orphaned` ORs rather than replaces, so a refresh cannot quietly clear the
+        # marker while the ambiguity is still unresolved.
         claims[claims.index(mine)] = Claim(
             session=args.session,
             paths=tuple(dict.fromkeys(mine.paths + tuple(wanted))),
             heartbeat=now,
+            orphaned=mine.orphaned or orphaned,
         )
         action = "refreshed"
 

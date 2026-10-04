@@ -3751,6 +3751,88 @@ def _unreadable_ledger_is_not_clean() -> None:
                 )
 
 
+@case("claim_guard: an ORPHANED claim is REPORTED, and never fails the gate")
+def _orphaned_claim_is_reported_not_fatal() -> None:
+    """INC-0033: a dispatch returned no sessionID, so the claim has no session behind it.
+
+    Reported and NOT fatal, for the same reason staleness is not (INC-0017): it is
+    an honest statement about an unresolved dispatch, and failing a claim for
+    confessing would train agents to leave the field off. Silent would be the
+    real defect — an orphaned claim is indistinguishable from a healthy one to
+    every other reader, which is how `root-bl0110` held `modules/items` while no
+    session stood behind it.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        ledger = Path(raw) / "claims.jsonl"
+        args = argparse.Namespace(
+            claim_action="claim",
+            session="root-bl0110",
+            paths="game/src/modules/items",
+            orphaned=True,
+            ledger=str(ledger),
+        )
+        expect(
+            claim_guard.run(args) == 0,
+            "marking a claim orphaned failed the claim itself. The marker is a "
+            "confession about a dispatch, not a collision, so it must not be fatal",
+        )
+        stored = claim_guard.read_claims(ledger)
+        expect(
+            len(stored) == 1 and stored[0].orphaned is True,
+            f"the marker did not survive the write, so the claim reads healthy again: {stored}",
+        )
+        expect(
+            _claim_verdict(ledger) == 0,
+            "an orphaned claim pinned the gate red forever. Nothing in the tree can "
+            "answer whether that session started, so it must not be a gate",
+        )
+
+        # A refresh must not silently resolve the ambiguity.
+        again = argparse.Namespace(
+            claim_action="claim",
+            session="root-bl0110",
+            paths="game/tests/modules/items",
+            orphaned=False,
+            ledger=str(ledger),
+        )
+        claim_guard.run(again)
+        stored = claim_guard.read_claims(ledger)
+        expect(
+            stored and stored[0].orphaned is True,
+            "claiming one more path cleared the orphan marker. Nobody established whether "
+            "the session exists, so a refresh must not claim to know",
+        )
+
+
+@case("claim_guard: a ledger written before `orphaned` still parses")
+def _legacy_ledger_without_orphaned_parses() -> None:
+    """The field is optional on purpose: every claim written before it existed has
+    three fields, and refusing those would break the live ledger."""
+    with tempfile.TemporaryDirectory() as raw:
+        ledger = Path(raw) / "claims.jsonl"
+        ledger.write_text(
+            json.dumps(
+                {
+                    "session": "legacy",
+                    "paths": ["tools/godot.py"],
+                    "heartbeat": datetime.now(UTC).isoformat(),
+                }
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        claims = claim_guard.read_claims(ledger)
+        expect(
+            len(claims) == 1,
+            "a three-field ledger written before `orphaned` existed failed to parse",
+        )
+        expect(
+            claims and claims[0].orphaned is False,
+            "a claim that never mentioned `orphaned` reads as orphaned. Defaulting to "
+            "True would flood every run with invented orphans",
+        )
+
+
 @case("claim_guard: claiming an already-held path FAILS, and releasing makes it clean")
 def _claim_then_release_is_the_repair() -> None:
     """The round trip, which is the only repair an operator has.
