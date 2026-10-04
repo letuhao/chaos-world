@@ -135,6 +135,29 @@ func _claim_node(actor: Actor) -> Dictionary:
 	return HoldingsApi.claim(actor, NODE, _owner(&"warden"))
 
 
+## The one read-model row carrying `lot_id`, or `{}` when the read model carries no such lot.
+##
+## ## The bound is SNAPSHOT before the loop, not a `while`
+##
+## `MarketApi.summary` publishes `lots` as an `Array` (`AuctionReadModel.lots`), so a lookup
+## has to walk it. The length is taken once, up front, and the walk is an indexed `for` over
+## that snapshot: a bound read before the loop cannot change under the loop, so this can never
+## be the unbounded walk the repo forbids. `MAX_LOTS` is `MarketApi.MAX_OPEN_LOTS` plus every
+## lot that may sit settled alongside the open ones, so it is a ceiling on the data and not a
+## truncation of it — a real read model smaller than that is a read model with a bug, and
+## truncating it here would hide exactly that.
+const MAX_LOTS := 64
+
+
+func _lot_row(rows: Array, lot_id: StringName) -> Dictionary:
+	var bound := mini(rows.size(), MAX_LOTS)
+	for index in bound:
+		var row: Variant = rows[index]
+		if row is Dictionary and String((row as Dictionary).get("lot_id", "")) == String(lot_id):
+			return row as Dictionary
+	return {}
+
+
 func _open_claim(actor: Actor) -> Dictionary:
 	return CustodyApi.capture(actor, SUBJECT, &"npc", _owner(&"warden"), &"custody", 4)
 
@@ -146,6 +169,17 @@ func test_a_claimed_node_a_listed_lot_and_a_held_claim_all_survive_a_save_and_re
 	# THE feature. Before this, each of these lived in a bare `var _ledger: Dictionary` and
 	# was gone the moment the process ended, with `SaveApi` faithfully writing
 	# `world["holdings"] = {}` for a key nothing ever read back.
+	#
+	# ## Why the floor is declared, and why it is this number
+	#
+	# This case used to ABORT half-way through on `Invalid cast: could not convert value to
+	# 'Dictionary'` — `MarketApi.summary(actor)["lots"]` is an **Array** of read-model rows
+	# (`AuctionReadModel.lots`), not a dictionary keyed by lot id, so the cast raised and
+	# every assertion after this line never ran while the runner still counted the case as
+	# neither passed nor failed. An aborted case is the exact hole this suite is about, so
+	# the fix is not only the cast: the floor below makes an abort a Loud FAILURE, which is
+	# the only version of "this test ran" that survives the next bad cast.
+	expect_assertions(9)
 	_install_node()
 	_install_durable()
 	var actor := _actor(&"hero")
@@ -174,9 +208,17 @@ func test_a_claimed_node_a_listed_lot_and_a_held_claim_all_survive_a_save_and_re
 
 	var nodes := HoldingsApi.summary(actor)["nodes"] as Dictionary
 	assert_eq(String((nodes[NODE] as Dictionary)["owner"]["id"]), "warden", "the HOLDER survived")
-	var lot: Dictionary = (MarketApi.summary(actor)["lots"] as Dictionary)[String(lot_id)]
-	assert_ne(lot.is_empty(), true, "the LOT survived")
-	assert_eq(String(lot["seller_id"]), "auction_house", "and it is still the seller's lot")
+	# `MarketApi.summary(actor)["lots"]` is `AuctionReadModel.lots(state)` — an **Array** of
+	# flat read-model rows, sorted by lot id — not a Dictionary keyed by lot id. The
+	# `as Dictionary` this line used to carry therefore RAISED, and the four assertions after
+	# it never executed. The row is found by SCANNING the array it is actually given, which
+	# is also the only way to say "the lot came back through the READ MODEL", which is what
+	# this case is about: a row the store kept but the read model dropped is still a loss.
+	var rows: Array = MarketApi.summary(actor)["lots"] as Array
+	var lot := _lot_row(rows, lot_id)
+	assert_ne(lot.is_empty(), true, "the LOT survived: %d lot(s) in the read model" % rows.size())
+	assert_eq(String(lot.get("seller_id", "")), "auction_house", "and it is still the seller's lot")
+	assert_eq(String(lot.get("status", "")), "open", "and it is still open for bidding")
 	var claims := CustodyApi.summary(actor)["claims"] as Dictionary
 	var claim: Dictionary = claims[claim_id]
 	assert_ne(claim.is_empty(), true, "the CLAIM survived")
@@ -377,6 +419,20 @@ func test_a_holdings_ledger_written_through_the_market_store_does_not_corrupt_th
 	# The conflation the audit found the three ledgers once at risk of: one object, and
 	# `MarketState.normalize` drops every holdings field (no `floor`, no `lots`, no `claims`).
 	# A per-key store makes the write a no-op on the wrong container instead.
+	#
+	# ## Why `applied` is now asserted, and asserted as `has` and THEN as `false`
+	#
+	# This case used to assert ONLY that the floor survived, and it ABORTED before reaching
+	# even that: `(reread.get("nodes") as Dictionary)` casts `null` -- the key is ABSENT,
+	# which is the GOOD answer -- to a Dictionary and raises. An aborted case is not a
+	# passing case, so the three floor assertions above it never ran either.
+	#
+	# Two halves now, because neither half of the guard was load-bearing on its own. The
+	# mutation the audit ran -- guard rewritten to answer `applied: true` and fall through to
+	# the write -- is invisible to a surviving-floor assertion, and a guard DELETED outright is
+	# invisible to `get("applied", false)` alone because the key would simply be absent.
+	# `has("applied")` catches the deletion; `applied == false` catches the lie.
+	expect_assertions(7)
 	_install_durable()
 	var actor := _actor(&"hero")
 	var market_store := WorldLedgerStore.new("market", MarketState.SCHEMA_VERSION)
@@ -394,27 +450,41 @@ func test_a_holdings_ledger_written_through_the_market_store_does_not_corrupt_th
 		)
 	)
 	# Written through the MARKET store on purpose: the mistake this guards.
-	market_store.write_ledger(holdings_ledger)
+	var outcome := market_store.write_ledger(holdings_ledger)
+	# ## The refusal is a SILENT no-op by design, so `applied` is the only observable
+	#
+	# `world_ledger_store.gd` documents why: there is no failure to name -- nothing was
+	# corrupted, nothing was lost and no save failed -- so `ok` is TRUE and a caller reads
+	# `applied`. Asserting `ok == false` would be asserting a rule this repo does not have,
+	# and would pass for a store that failed for the wrong reason entirely.
+	assert_eq(
+		outcome.has("applied"),
+		true,
+		"a cross-key write says in its RETURN VALUE that it was not applied: %s" % outcome
+	)
+	assert_eq(
+		bool(outcome.get("applied", true)),
+		false,
+		"and the conflated payload was refused rather than written under the market key"
+	)
 
 	var reread := WorldLedgerStore.new("market", MarketState.SCHEMA_VERSION).read_ledger()
 	var rows: Array = (reread["floor"] as Dictionary).get("square", [])
 	assert_eq(rows.size(), 1, "the FLOOR is intact")
 	assert_eq(String((rows[0] as Dictionary)["def_id"]), "spare", "and still holds the drop")
 	assert_ne((reread["lots"] as Dictionary).get("lot_1"), null, "and the open lot survives")
-	assert_eq((reread.get("nodes") as Dictionary).get(NODE), null, "no holdings key was written")
+	# `.has`, never a cast of `.get(...)`. An absent container is the PASS, and
+	# `null as Dictionary` is exactly what raised here -- so ask about it, do not convert it.
+	assert_eq(reread.has("nodes"), false, "no holdings container was written under the market key")
 	# The other two read nothing from it, and hold nothing.
+	var holdings_read := (
+		WorldLedgerStore.new("holdings", HoldingsState.SCHEMA_VERSION).read_ledger()
+	)
+	var holdings_nodes: Dictionary = holdings_read.get("nodes", {}) as Dictionary
 	assert_eq(
-		(
-			(
-				WorldLedgerStore.new("holdings", HoldingsState.SCHEMA_VERSION).read_ledger().get(
-					"nodes"
-				)
-				as Dictionary
-			)
-			. size()
-		),
-		0,
-		"holdings is untouched by a market-key write"
+		holdings_nodes.get(NODE),
+		null,
+		"holdings is untouched by a market-key write, which never reached its own slot"
 	)
 
 
@@ -422,6 +492,14 @@ func test_a_market_ledger_written_through_the_custody_store_cannot_invent_a_clai
 	# The same rule from the other side and the other pair, because one direction is not
 	# evidence for the other: custody's ledger has a `claims` container and nothing else, so a
 	# floor dropped into it is a drop nobody can ever see.
+	#
+	# The same repair as the market case above and for the same reason: `read_ledger()` on an
+	# empty slot answers `{}`, `.get("floor")` is therefore `null`, and `null as Dictionary`
+	# raised -- hiding the two assertions before it. `applied` is asserted here too: the other
+	# DIRECTION is a second witness rather than a restatement, because the guard's routing
+	# table is keyed by container NAME and either half of `_KEY_CONTAINERS` could be the one
+	# that stops answering.
+	expect_assertions(6)
 	var custody_store := WorldLedgerStore.new("custody", CustodyState.SCHEMA_VERSION)
 	var claim := CustodyState.empty()
 	claim["claims"]["custody_a#0"] = {
@@ -438,7 +516,9 @@ func test_a_market_ledger_written_through_the_custody_store_cannot_invent_a_clai
 
 	var floor := MarketState.empty()
 	floor["floor"]["square"] = [{"drop_id": "drop_0", "def_id": "stowaway", "quantity": 1}]
-	custody_store.write_ledger(MarketState.normalize(floor))
+	var outcome := custody_store.write_ledger(MarketState.normalize(floor))
+	assert_eq(outcome.has("applied"), true, "the cross-key write reports itself: %s" % outcome)
+	assert_eq(bool(outcome.get("applied", true)), false, "and reports that it did NOT apply")
 
 	var reread := WorldLedgerStore.new("custody", CustodyState.SCHEMA_VERSION).read_ledger()
 	assert_eq((reread["claims"] as Dictionary).size(), 1, "the claim is intact")
@@ -447,19 +527,71 @@ func test_a_market_ledger_written_through_the_custody_store_cannot_invent_a_clai
 		"held_one",
 		"and still names the captive it always named"
 	)
-	assert_eq(reread.get("floor"), null, "no market container was written into custody")
+	assert_eq(reread.has("floor"), false, "no market container was written into custody")
+	var market_read := WorldLedgerStore.new("market", MarketState.SCHEMA_VERSION).read_ledger()
 	assert_eq(
-		(
-			(
-				WorldLedgerStore.new("market", MarketState.SCHEMA_VERSION).read_ledger().get(
-					"floor"
-				)
-				as Dictionary
-			)
-			. size()
-		),
+		(market_read.get("floor", {}) as Dictionary).size(),
 		0,
 		"and the market floor is untouched by a custody-key write"
+	)
+
+
+func test_a_conflated_payload_written_through_the_market_store_does_not_erase_the_floor() -> void:
+	# THE mutation witness, and the third direction: a payload that carries BOTH the foreign
+	# container and this key's own.
+	#
+	# ## Why this case exists when the two above already assert `applied == false`
+	#
+	# Because those two observe the guard's REFUSAL, and a refusal is only half the failure.
+	# The audit's mutation made the guard "fall through and APPLY it", which destroys the very
+	# floor the two cases then read back — yet they stayed GREEN, because a fresh
+	# `MarketState.empty()` written by `write_ledger`'s own tail still carries `floor` and
+	# `lots` keys, so "the floor is intact" and "the floor was replaced by an empty one" are
+	# the same observable here. **Loss is invisible to a survival assertion.** So the shape
+	# of the damage is asserted directly: a cross-key write that DOES apply replaces the slot,
+	# and the only way to see that is to hand the payload this key's own container as well, so
+	# a guard that answers `true` and falls through writes a floor that is demonstrably the
+	# payload's and no longer the store's.
+	#
+	# `MarketState.normalize` keeps `nodes` when the payload carries it, so a fall-through
+	# writes a market slot holding a holdings node and a floor the caller chose — which is
+	# ADR 0101's conflation, in the exact direction that costs a world.
+	expect_assertions(4)
+	var market_store := WorldLedgerStore.new("market", MarketState.SCHEMA_VERSION)
+	var floor := MarketState.empty()
+	floor["floor"]["square"] = [{"drop_id": "drop_0", "def_id": "the_real_one", "quantity": 9}]
+	market_store.write_ledger(MarketState.normalize(floor))
+
+	# The mistake this guards: a holdings payload, normalized by its OWN module, handed to the
+	# market store. It carries `nodes` (foreign to market) AND `shops`/`floor`/`lots` (its
+	# OWN containers), which is precisely the payload `_shape_belongs_to_this_key` answers
+	# "not this key's" about.
+	var conflated := HoldingsState.normalize({"nodes": {NODE: {"owner": {}}}})
+	conflated["floor"] = {
+		"square": [{"drop_id": "drop_9", "def_id": "the_wrong_one", "quantity": 1}]
+	}
+	conflated["lots"] = {}
+	conflated["shops"] = {}
+	assert_ne(
+		conflated.has("nodes"), false, "the payload really is conflated: it carries holdings' own"
+	)
+
+	var outcome := market_store.write_ledger(conflated)
+	assert_eq(
+		bool(outcome.get("applied", true)), false, "and the store refused it, by name of fact"
+	)
+
+	var reread := WorldLedgerStore.new("market", MarketState.SCHEMA_VERSION).read_ledger()
+	assert_eq(
+		reread.has("nodes"),
+		false,
+		"a fall-through write would have put a holdings container under the market key"
+	)
+	var rows: Array = (reread["floor"] as Dictionary).get("square", [])
+	assert_eq(
+		String((rows[0] as Dictionary)["def_id"]) if rows.size() == 1 else "",
+		"the_real_one",
+		"and the floor is still the store's own floor, not the payload's"
 	)
 
 
