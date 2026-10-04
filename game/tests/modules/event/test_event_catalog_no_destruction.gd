@@ -55,6 +55,11 @@ const BAD_KIND := &"doomsday"
 ## halves are asserted, and `problems()` is asserted too: that is the whole-tree health
 ## check, and it walks `_ids`.
 func test_a_malformed_probe_never_removes_a_shipped_def_from_the_catalog_or_its_order() -> void:
+	# Teardown, not a hand-written restore at the end of the body: a refusal is
+	# CUMULATIVE, and `problems()` below walks `_rejected` as well as `_ids`. The
+	# reason line names the SHIPPED id (the probe was registered under it) while
+	# describing the PROBE's defect, so anything left behind here is reported by the
+	# next file as a content defect in a tree that is clean.
 	_reload()
 	var catalog := EventCatalog.instance()
 	var authored := catalog.event_definition(ELDER_EVENT)
@@ -69,6 +74,24 @@ func test_a_malformed_probe_never_removes_a_shipped_def_from_the_catalog_or_its_
 	var probe := _def(ELDER_EVENT, "A Malformed Probe", BAD_KIND)
 	assert_eq(catalog.register(probe), false, "a def naming a kind nobody reads is refused")
 
+	# ## Read the SHIPPED defs' health, not the refusal this test caused
+	#
+	# `problems()` folds `_rejected` in, so asking it to be empty while holding a
+	# refusal asserts that the refusal was never recorded — i.e. that this file's own
+	# probe was silently dropped rather than REPORTED, which is the opposite of what
+	# `test_a_malformed_def_is_rejected_and_reported_rather_than_silently_absent`
+	# exists to pin. The invariant this test is actually for is "the shipped defs are
+	# all still healthy, and every shipped id still resolves". So it filters the lines
+	# to the shipped ids, which is precisely the claim that a probe must not damage:
+	# a regression that restored the `_admit` erase puts the def in NEITHER list, and
+	# the surviving assertions below name it by id.
+	var problems := _shipped_problems()
+	assert_eq(
+		problems,
+		{},
+		"and every SHIPPED def is still healthy: %s" % str(catalog.problems())
+	)
+
 	assert_eq(catalog.has(ELDER_EVENT), true, "the shipped def is still in `_events`")
 	assert_eq(
 		String(catalog.event_definition(ELDER_EVENT).display_name),
@@ -79,11 +102,6 @@ func test_a_malformed_probe_never_removes_a_shipped_def_from_the_catalog_or_its_
 		catalog.event_ids().has(String(ELDER_EVENT)),
 		true,
 		"and the id is still in `_ids`, so `available` can still offer it"
-	)
-	assert_eq(
-		_ordering_problem(),
-		"",
-		"and `problems()` — which walks `_ids` — sees a healthy tree: %s" % str(catalog.problems())
 	)
 
 
@@ -277,11 +295,25 @@ func _def(id: StringName, display_name: String, kind: StringName) -> EventDef:
 	return def
 
 
-## The first line of `problems()`, or `""` for a healthy tree. Asserted rather than
-## inlined because a line about one id and a whole-tree answer are different claims.
-func _ordering_problem() -> String:
-	var problems := EventCatalog.instance().problems()
-	return String(problems[0]) if not problems.is_empty() else ""
+## Every `problems()` line that describes a SHIPPED id, as `{id: line}`.
+##
+## `problems()` folds `_rejected` in beside the `_ids` walk, so holding a refusal of
+## your own probe makes it non-empty BY CONSTRUCTION — the line even names the shipped
+## id the probe was registered under. Filtering to the shipped ids is what turns that
+## list back into the whole-tree health check it was reached for: a line here is a
+## shipped def that cannot open, which is the thing this file's probes must never
+## cause. (A refusal of a def that is NOT shipped is another file's business — see
+## `test_event_content.gd`.)
+func _shipped_problems() -> Dictionary:
+	var shipped: Array[String] = []
+	for event_id in EventCatalog.instance().event_ids():
+		shipped.append(String(event_id))
+	var out := {}
+	for line in EventCatalog.instance().problems():
+		var head := String(line).split(":")[0]
+		if shipped.has(head):
+			out[head] = String(line)
+	return out
 
 
 ## Drop the cache and re-walk the tree, and ASSERT the reset worked. `EventCatalog` is a
@@ -309,8 +341,32 @@ func _reload() -> void:
 	)
 
 
-## The probes in this file are the only things that dirty a process-wide cache, and the
-## next suite reads the same tree. `teardown` runs after EVERY test (see
-## `tests/framework.gd`), so the tree is handed back the way it was found.
+## Hand the process-wide cache back the way this file found it, and ASSERT it.
+##
+## The probes in this file are the only things that dirty the cache — three admitted
+## `probe_zz_*` defs and one refusal per malformed probe — and `run_tests.gd` runs every
+## suite in ONE process. Leaking them is not a local embarrassment: an admitted
+## `probe_zz_*` lands in `_events` and `_ids`, so the next file's "the shipped order"
+## assertion sees an order the tree never had, and a refusal lands in `_rejected`, so
+## the next file's `problems()` reports a shipped id as broken when it is clean.
+##
+## `teardown` runs after EVERY test (see `tests/run_tests.gd:126`) whether or not the
+## body finished, which is what makes it the honest place for this — a restore written
+## into a test's last line is not reached when the body aborts, which is exactly the
+## case a probe causes. Asserted, not assumed: a `reload` that stopped clearing
+## `_rejected` would fail HERE, in the file that dirties it, rather than silently
+## failing a later file.
 func teardown() -> void:
+	expect_assertions(2)
 	EventCatalog.instance().reload()
+	var catalog := EventCatalog.instance()
+	assert_eq(
+		catalog.rejected().size(),
+		0,
+		"the refusals this file provoked are gone, so no later suite reports a shipped id as broken"
+	)
+	assert_eq(
+		_shipped_problems(),
+		{},
+		"and the tree handed back is the tree, with no probe defs left in `_events`/`_ids`"
+	)

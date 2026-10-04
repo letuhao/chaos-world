@@ -145,17 +145,25 @@ func test_a_malformed_def_is_rejected_and_reported_rather_than_silently_absent()
 		if String(entry["id"]) == "an_event_with_a_kind_nobody_reads":
 			named = true
 	assert_eq(named, true, "and it is reported with its reason: %s" % reported)
-	# The catalog is a process-wide singleton and `rejected()` is cumulative, so this
-	# refusal leaks into every later assertion about the shipped tree — in THIS suite
-	# and in any suite that runs after it. Restored here rather than in `teardown`
-	# because only this test dirties it, and a `teardown` reload would re-walk the
-	# content tree on every test in the file.
+
+
+## Hand the process-wide cache back the way this file found it.
+##
+## This test's probe is refused, and a refusal is CUMULATIVE: the entry
+## `the_favour_of_elder_wei: rejected (... names kind 'doomsday' ... <registered>)`
+## lands in `_rejected` and `problems()` walks `_rejected`, so it describes every later
+## read of the shipped tree — in this file and in any file that runs after it. The line
+## names the SHIPPED id because the probe was registered under a shipped id, which is
+## what makes it read like a content defect in a tree that is clean.
+##
+## This used to be restored inline at the end of the test body, on the grounds that
+## "only this test dirties it". That was the wrong axis: the dirt is harmless until a
+## LATER file reads the tree, and an inline restore cannot run if the body aborts. The
+## runner calls `teardown` after EVERY test whether or not the body finished
+## (`tests/run_tests.gd:126`), so that is where the reset belongs, and it is why the
+## probe itself is kept.
+func teardown() -> void:
 	EventCatalog.instance().reload()
-	assert_eq(
-		EventCatalog.instance().rejected().size(),
-		0,
-		"and the shipped tree is clean again once this test is done with it"
-	)
 
 
 # --- Plumbing ---------------------------------------------------------------

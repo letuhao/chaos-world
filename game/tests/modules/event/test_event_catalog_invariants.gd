@@ -156,7 +156,7 @@ func test_a_refused_duplicate_is_reported_without_claiming_the_shipped_def_was_r
 func test_event_ids_are_ordered_by_string_value_and_not_by_load_order() -> void:
 	_reload()
 	var ids := EventCatalog.instance().event_ids()
-	assert_ne(ids.size() > 1, true, "the tree has more than one event, so an order exists")
+	assert_eq(ids.size() > 1, true, "the tree has more than one event, so an order exists")
 
 	var as_strings: Array[String] = []
 	for event_id in ids:
@@ -191,3 +191,24 @@ func _reload() -> void:
 		true,
 		"the shipped tree really was re-read before this test's probe"
 	)
+
+
+## Hand the process-wide cache back the way this file found it.
+##
+## `EventCatalog.instance()` is a process-wide singleton and `tests/run_tests.gd`
+## runs every suite in ONE process, so a probe this file registers outlives the test
+## that built it unless something puts it back. `_reload` clears the cache at the
+## START of the tests that need a clean tree, but the last test in a file has no
+## later test to do it for it, and the leak that leaves is exactly the one that
+## breaks a DIFFERENT suite: a `probe_zz_*` def admitted for an ordering assertion is
+## still in `_events`/`_ids` when the next file reads the shipped order, and a
+## malformed probe's refusal is still in `_rejected` when the next file reads
+## `problems()` — where the reason line names the SHIPPED id it was registered under
+## and so reads like a content defect in a tree that is clean.
+##
+## So the reset lives in `teardown`, which `run_tests.gd:126` calls after EVERY test,
+## and this file's probes survive only for the length of the assertion that needed
+## them. The probes are NOT deleted: they are what proves a malformed def is refused
+## without erasing the shipped one.
+func teardown() -> void:
+	EventCatalog.instance().reload()
