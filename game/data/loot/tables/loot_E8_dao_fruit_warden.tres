@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=29 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=30 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -315,6 +315,18 @@ guaranteed = true
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_26"]
+script = ExtResource("2_entry")
+id = &"E8_dao_fruit_warden_mortal_gear"
+kind = &"item"
+item_id = &"B13_mortal_calado_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E8_dao_fruit_warden"
@@ -350,4 +362,5 @@ entries = Array[LootEntry]([
 	SubResource("entry_24"),
 	SubResource("entry_25"),
 	SubResource("entry_pool_spirit_palace"),
+	SubResource("entry_26")
 ])

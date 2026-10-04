@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=30 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=31 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -327,6 +327,18 @@ guaranteed = true
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_27"]
+script = ExtResource("2_entry")
+id = &"E7_earth_warden_mortal_gear"
+kind = &"item"
+item_id = &"L4_ash_effigy_string_ward"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E7_earth_warden"
@@ -363,4 +375,5 @@ entries = Array[LootEntry]([
 	SubResource("entry_25"),
 	SubResource("entry_26"),
 	SubResource("entry_pool_spirit_domain"),
+	SubResource("entry_27")
 ])

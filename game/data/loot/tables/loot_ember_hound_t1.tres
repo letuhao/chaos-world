@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -47,6 +47,18 @@ guaranteed = false
 quantity = 1
 rarity_floor = &"magic"
 
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"ember_hound_t1_mortal_gear"
+kind = &"item"
+item_id = &"F14_mortal_ebb_agility_aptitude_crit_damage_qi_absorption"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_ember_hound_t1"
@@ -60,5 +72,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
 	SubResource("entry_2"),
-	SubResource("entry_3")
+	SubResource("entry_3"),
+	SubResource("entry_4")
 ])

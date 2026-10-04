@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -51,6 +51,18 @@ guaranteed = true
 quantity = 6
 rarity_floor = &"common"
 
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"F4_coreformation_warden_mortal_gear"
+kind = &"item"
+item_id = &"R23_mortal_pollard_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F4_coreformation_warden"
@@ -63,5 +75,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_1"),
 	SubResource("entry_2"),
 	SubResource("entry_3"),
-	SubResource("entry_4")
+	SubResource("entry_4"),
+	SubResource("entry_5")
 ])

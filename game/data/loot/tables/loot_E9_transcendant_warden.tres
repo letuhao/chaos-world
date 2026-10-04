@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=28 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=29 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -303,6 +303,18 @@ guaranteed = true
 quantity = 6
 rarity_floor = &"legendary"
 
+[sub_resource type="Resource" id="entry_26"]
+script = ExtResource("2_entry")
+id = &"E9_transcendant_warden_mortal_gear"
+kind = &"item"
+item_id = &"U1_mortal_sedge_armlet"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E9_transcendant_warden"
@@ -336,5 +348,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_22"),
 	SubResource("entry_23"),
 	SubResource("entry_24"),
-	SubResource("entry_25")
+	SubResource("entry_25"),
+	SubResource("entry_26")
 ])

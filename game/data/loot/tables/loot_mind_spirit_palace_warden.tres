@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=27 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=28 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -291,6 +291,18 @@ guaranteed = true
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_25"]
+script = ExtResource("2_entry")
+id = &"mind_spirit_palace_warden_mortal_gear"
+kind = &"item"
+item_id = &"F40_mortal_gaslight_cooldown_reduction_move_speed_qi_absorption"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_mind_spirit_palace_warden"
@@ -324,4 +336,5 @@ entries = Array[LootEntry]([
 	SubResource("entry_23"),
 	SubResource("entry_24"),
 	SubResource("entry_pool_golden_immortal"),
+	SubResource("entry_25")
 ])
