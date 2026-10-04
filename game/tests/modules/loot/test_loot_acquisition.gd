@@ -129,12 +129,17 @@ func test_picking_a_row_up_delivers_the_realized_drop_intact() -> void:
 		int(listed["pending_count"]) - 1,
 		"one drop fewer waiting"
 	)
-	# Read the row back from the screen: `rows` is a snapshot taken before the pickup,
-	# so it cannot show that the list repainted itself.
+	# Read the row back from the screen by its drop id, never by position: `rows` is a
+	# snapshot taken before the pickup, and the list now shows the drops it can still act
+	# on first, so the drop just taken is no longer at the top. Position would pin the
+	# order rather than the fact.
+	var taken := _row_named(view, String(row["drop_id"]))
+	assert_ne(taken.is_empty(), true, "the taken drop is still listed")
+	assert_eq(bool(taken.get("claimed", false)), true, "and the row reads as taken")
 	assert_eq(
-		bool((view.summary()["reward"] as Dictionary)["rows"][0]["claimed"]),
-		true,
-		"and the row reads as taken"
+		bool(taken.get("action_enabled", false)),
+		false,
+		"with a dead control, because taking it twice is refused"
 	)
 
 	# The inventory must hold that realization, not a re-roll: same affixes, same
@@ -383,3 +388,12 @@ func _claimed_ids(actor: Actor) -> Array:
 	var ids: Array = (state["claimed"] as Dictionary).keys()
 	ids.sort_custom(func(a, b): return String(a) < String(b))
 	return ids
+
+
+## The listed reward's row for `drop_id`, or `{}`. Keyed, never indexed: the list orders
+## what it can act on first, so a row's position says nothing about which drop it is.
+func _row_named(view: LootEncounterScreen, drop_id: String) -> Dictionary:
+	for row in (view.summary().get("reward", {}) as Dictionary).get("rows", []) as Array:
+		if String((row as Dictionary).get("drop_id", "")) == drop_id:
+			return row as Dictionary
+	return {}

@@ -328,7 +328,15 @@ func test_the_world_drop_container_is_bounded() -> void:
 	var drop: Dictionary = (reward["drops"] as Array)[0]
 	var result := LootApi.pickup(actor, token, String(drop["drop_id"]))
 	assert_eq(String(result["status"]), "refused", "a full container refuses the overflow")
-	assert_eq(String(result["reason"]), LootState.ERR_INVENTORY_FULL, "with the cause")
+	# `world_drops_full`, not `inventory_full`: nothing was parked, so the reason a
+	# reader is handed has to name the container that has no room. The two ids are
+	# separate sentences in the reward list's own wording table.
+	assert_eq(String(result["reason"]), LootState.ERR_WORLD_FULL, "naming what is actually full")
+	assert_ne(
+		String(result["reason"]),
+		LootState.ERR_INVENTORY_FULL,
+		"so this refusal is never reported as one that left the drop in the world"
+	)
 	assert_eq(bool(result["world_drops_full"]), true, "and says why")
 	assert_eq(
 		int(LootApi.reward(actor, token)["reward"]["drop_count"]),

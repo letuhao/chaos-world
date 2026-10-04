@@ -572,10 +572,16 @@ static func _overflow(
 	if stashes.size() >= WORLD_DROP_CAPACITY:
 		# Bounded container is full: the pickup is refused outright. Nothing is
 		# discarded, no claim is spent, and the drop stays pickable in the reward.
+		#
+		# `ERR_WORLD_FULL`, not `ERR_INVENTORY_FULL`: nothing was parked, so the
+		# overflow sentence -- "the drop is in the world and can be reclaimed" -- is
+		# false here, and `ERR_WORLD_FULL` already has wording of its own that a
+		# reader can act on. Two refusals that name the same reason are one refusal
+		# with a wrong label on one of them.
 		return {
 			"ok": false,
 			"status": "refused",
-			"reason": ERR_INVENTORY_FULL,
+			"reason": ERR_WORLD_FULL,
 			"world_drops_full": true,
 			"encounter_id": encounter,
 			"drop_id": drop_id,

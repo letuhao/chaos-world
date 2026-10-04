@@ -7,16 +7,25 @@ extends TestCase
 ## full container refuses the pickup outright — which means the drop has to still be
 ## there afterwards, and taking it must still work once room is made.
 
-var _rig: LootScreenRig = null
-
 ## Bound on the drain loop: enough passes for the world container to empty and be re-parked,
 ## and short enough that a control which stops moving anything fails the test instead of
 ## running it out.
 const DRAIN_PASSES := 20
 
+var _rig: LootScreenRig = null
+
 
 func setup() -> void:
 	_rig = LootScreenRig.new()
+
+
+## Free whatever the rig minted. Every test here mounts a screen, and the runner shares
+## one process across every suite, so an unfreed one stays resident for the rest of the
+## run. Idempotent, so it is safe after a test that returned early.
+func teardown() -> void:
+	if _rig != null:
+		_rig.release()
+		_rig = null
 
 
 ## One slot, already spent, and a drop that needs one: the pickup overflows to the
@@ -179,7 +188,12 @@ func test_a_full_world_container_refuses_without_discarding_or_spending() -> voi
 	var drops_before := int(_rig.listed_reward(view)["row_count"])
 	_rig.pick_up_row(view, owed[0] as int)
 	var refused := view.summary()
-	assert_eq(String(refused["message"]), "Rejected: inventory_full", "the pickup is refused")
+	# `world_drops_full`, not `inventory_full`: nothing was parked here, and the
+	# overflow sentence tells the player the drop IS in the world. One reason id for
+	# both refusals is how a container-full refusal came to read as a parked drop.
+	assert_eq(
+		String(refused["message"]), "Rejected: world_drops_full", "the pickup is refused by name"
+	)
 	assert_eq(String(refused["tone"]), "error", "with the error tone, so it reads as a refusal")
 	assert_eq(
 		int(refused["world_drop_count"]),
@@ -210,6 +224,75 @@ func test_a_full_world_container_refuses_without_discarding_or_spending() -> voi
 	)
 
 
+## The two "make room" outcomes are DIFFERENT facts and are named differently, at the
+## facade rather than only in the panel's wording.
+##
+## A full bag with room in the world container PARKS the drop: it is in the world, the
+## claim is untouched, and reclaim is the way back. A full bag with a full container
+## REFUSES it: nothing is parked, so the drop is nowhere, and the only way forward is to
+## empty the bag. One reason id for both reported the second as the first, so the
+## sentence the player read claimed the drop was safely in the world when it was not —
+## and `ERR_WORLD_FULL`, which the panel already words for exactly this case, was
+## emitted by nothing at all.
+func test_a_parked_drop_and_a_refused_drop_are_named_differently() -> void:
+	var parking := _rig.hero(1)
+	_fill_inventory(parking)
+	var parked_view := _rig.screen(parking)
+	_rig.enter_domain(parked_view, LootScreenRig.EMBER_DOMAIN, LootScreenRig.EMBER_TIER)
+	_rig.defeat_boss(parked_view)
+	var parked := _first_pickup(parking, parked_view)
+	assert_eq(
+		String(parked.get("status", "")), LootState.OK_OVERFLOW, "a roomy container parks the drop"
+	)
+	assert_eq(
+		String(parked.get("reason", "")),
+		LootState.ERR_INVENTORY_FULL,
+		"and names the bag, because the bag is what has no room"
+	)
+	assert_eq(
+		int(_rig.listed_reward(parked_view)["stashed_count"]),
+		1,
+		"so the drop really is in the world"
+	)
+
+	var jammed := _rig.hero(1)
+	_fill_inventory(jammed)
+	_fill_world_container(jammed)
+	var jammed_view := _rig.screen(jammed)
+	_rig.enter_domain(jammed_view, LootScreenRig.EMBER_DOMAIN, LootScreenRig.EMBER_TIER)
+	_rig.defeat_boss(jammed_view)
+	var refused := _first_pickup(jammed, jammed_view)
+	assert_eq(String(refused.get("status", "")), "refused", "a full container refuses instead")
+	assert_eq(
+		String(refused.get("reason", "")),
+		LootState.ERR_WORLD_FULL,
+		"and names the container, because nothing was parked"
+	)
+	assert_eq(
+		int(_rig.listed_reward(jammed_view)["stashed_count"]),
+		0,
+		"so the drop is nowhere, and the reason may not claim otherwise"
+	)
+	assert_eq(int(jammed_view.summary()["pending_drops"]) > 0, true, "and it is still owed")
+
+
+## `LootApi.pickup` for the first drop of whatever the screen currently lists, read
+## through the facade rather than through the panel, because the reason id is what a
+## reader is given and the panel only words it.
+func _first_pickup(actor: Actor, view: LootEncounterScreen) -> Dictionary:
+	var reward := view.summary().get("reward", {}) as Dictionary
+	var rows := reward.get("rows", []) as Array
+	var index := 0
+	# Bounded by the row count, which is read once: the body does not add rows, so this
+	# terminates on the first claimable one and names the condition it stopped on.
+	while index < rows.size():
+		var row := rows[index] as Dictionary
+		if bool(row.get("claimable", false)):
+			return LootApi.pickup(actor, String(reward["encounter_id"]), String(row["drop_id"]))
+		index += 1
+	return {"ok": false, "reason": "no claimable row was listed"}
+
+
 ## Park `WORLD_DROP_CAPACITY` drops in the world container as a legal prior state —
 ## the same shape a player reaches by overflowing a long series of earlier fights.
 ## This writes module state directly because there is no play that fills the container
@@ -234,10 +317,25 @@ func _fill_world_container(actor: Actor) -> void:
 
 
 ## Spend every inventory slot, so every pickup has to overflow.
+##
+## It fills to `capacity` rather than adding one item, because "the bag is full" is the
+## whole premise of this suite and the hero's capacity is a rig argument: a helper that
+## spends one slot is only correct at capacity 1, and a reader who reached for the rig's
+## default would get a pickup that SUCCEEDS and a suite that quietly stops testing
+## overflow. The item is non-stackable, so one `add` spends exactly one slot.
 func _fill_inventory(actor: Actor) -> void:
 	var inventory := ItemsApi.inventory(actor)
 	var def := Crafting.resolve(&"armor_iron_helm")
-	if def != null:
+	if def == null or inventory == null:
+		return
+	# The bound is `capacity`, read ONCE before the loop, and `spent` is advanced
+	# unconditionally: a bag the item stops fitting into then ends the walk at the bound
+	# rather than filling forever. Re-reading `used_slots()` each pass is the shape that
+	# grows with the thing it tests.
+	var slots := inventory.capacity
+	var spent := 0
+	while spent < slots:
+		spent += 1
 		inventory.add(def, 1)
 
 

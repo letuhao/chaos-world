@@ -265,3 +265,118 @@ func test_focus_lands_on_a_live_action() -> void:
 	list.show_reward(_reward([_drop("a")], 1), true)
 	list.focus_initial()
 	assert_eq(bool(list.summary()["take_all_enabled"]), true, "there is a live action to land on")
+
+
+## A drop the world has already settled must not carry a live control.
+##
+## The screen's gate (`can_pick_up`) answers "can this actor take anything at all", and it
+## was the ONLY thing that decided whether a row's button was enabled. So a payload's
+## first row kept a live `Pick up` after the very first press had taken that drop, and
+## every later press was refused `drop_already_claimed` with an enabled button and no
+## sentence explaining it. A control that cannot act must read as dead.
+func test_a_drop_that_cannot_be_taken_carries_a_dead_control() -> void:
+	var list := _list()
+	var parked := _drop("p", 1, false, true)
+	list.show_reward(_reward([_drop("a"), _drop("t", 1, true), parked], 1), true)
+	var rows := list.summary()["rows"] as Array
+	# One row per drop still: nothing is hidden and nothing is discarded.
+	assert_eq(int(list.summary()["row_count"]), 3, "every drop of the payload is still listed")
+	assert_eq(
+		str(list.summary()["row_keys"]), '["a", "t", "p"]', "settled rows follow the live one"
+	)
+	for row in rows:
+		var entry := row as Dictionary
+		var live := String(entry["drop_id"]) == "a"
+		assert_eq(
+			bool(entry["action_enabled"]),
+			live,
+			"'%s' carries a %s control" % [String(entry["drop_id"]), "live" if live else "dead"]
+		)
+	assert_eq(
+		String((rows[0] as Dictionary)["status"]),
+		"pending",
+		"and the row the list opens on is one that is still waiting"
+	)
+
+
+## The same rule in the other mode: a parked drop is reclaimable from the world drop
+## container, and that is the only place it is.
+func test_a_parked_drop_is_live_in_the_stash_list_and_dead_in_the_reward_list() -> void:
+	var list := _list()
+	var parked := _drop("p", 2)
+	parked["stashed"] = true
+	parked["claimable"] = false
+	parked["stash_id"] = "p"
+	list.show_reward(_reward([parked], 0), true)
+	assert_eq(
+		bool(((list.summary()["rows"] as Array)[0] as Dictionary)["action_enabled"]),
+		false,
+		"the reward list cannot take a parked drop back"
+	)
+	list.show_stashes([parked], true)
+	var reclaim := (list.summary()["rows"] as Array)[0] as Dictionary
+	assert_eq(str(reclaim["action"]), "Reclaim", "the stash list offers the action that works")
+	assert_eq(
+		bool(reclaim["action_enabled"]),
+		true,
+		"and it is live, because the world drop container is where it is addressed"
+	)
+	# And once reclaimed the row is dead there too, rather than offering it again.
+	var settled := _drop("p", 2)
+	settled["stashed"] = false
+	settled["claimed"] = true
+	settled["stash_id"] = "p"
+	list.show_stashes([settled], true)
+	assert_eq(
+		bool(((list.summary()["rows"] as Array)[0] as Dictionary)["action_enabled"]),
+		false,
+		"a reclaimed drop is not offered again"
+	)
+
+
+## Pressing the TOP control repeatedly drains the payload, which is what a player does
+## and what the boot probe does. It could not: the first press took the top row's drop,
+## the rebuild put that same now-taken drop back on top, and presses two onward were all
+## refused, so the pending count fell by exactly one and then stopped moving.
+func test_pressing_the_top_control_drains_the_payload() -> void:
+	var list := _list()
+	var pressed: Array = []
+	list.row_action_requested.connect(func(drop_id: String) -> void: pressed.append(drop_id))
+	var ids := ["a", "b", "c"]
+	var taken := [false, false, false]
+	# The screen, stood in for: the press marks that drop taken and the list repaints,
+	# which is what `act_pickup` does through `refresh()`.
+	#
+	# Bounded by `ids.size()`, read once before the loop -- the body never appends to
+	# `ids`, so the walk terminates, and the disabled assertion inside it names the
+	# failure: a control that goes dead on a drop nobody has taken fails on its first
+	# pass rather than running the bound out.
+	var passes := 0
+	while passes < ids.size():
+		passes += 1
+		list.show_reward(_reward(_drops(ids, taken), ids.size() - _taken_count(taken)), true)
+		var action := _row_node(list, 0).get_node_or_null("%DropAction") as Button
+		assert_eq(action.disabled, false, "pass %d: the top control is live" % passes)
+		action.pressed.emit()
+		assert_eq(pressed.size(), passes, "pass %d: and the press reached the screen" % passes)
+		taken[ids.find(String(pressed[pressed.size() - 1]))] = true
+	list.show_reward(_reward(_drops(ids, taken), 0), true)
+	assert_eq(str(pressed), '["a", "b", "c"]', "every press took the drop that was on top")
+	assert_eq(int(list.summary()["pending_count"]), 0, "so nothing is left waiting")
+
+
+## One drop per id, `taken[index]` deciding whether that drop is already claimed.
+func _drops(ids: Array, taken: Array) -> Array:
+	var out: Array = []
+	for index in ids.size():
+		out.append(_drop(String(ids[index]), 1, bool(taken[index])))
+	return out
+
+
+## How many of `taken` are set.
+func _taken_count(taken: Array) -> int:
+	var count := 0
+	for flag in taken:
+		if bool(flag):
+			count += 1
+	return count

@@ -222,14 +222,57 @@ func _build(entries: Array, action_label: String, enabled: bool, take_all: bool)
 	_take_all_enabled = take_all
 	if _rows_box == null:
 		return
+	# The bound is `ordered.size()`, read fresh each pass, and `ordered` holds exactly
+	# what `entries` held -- nothing in the body appends to it, so this terminates.
+	var ordered := _ordered(entries)
 	var index := 0
-	while index < entries.size():
+	while index < ordered.size():
 		var row := _pooled_row(index)
+		var entry := ordered[index] as Dictionary
 		row.visible = true
-		row.show_drop(entries[index] as Dictionary, action_label, enabled)
+		row.show_drop(entry, action_label, enabled and _row_can_act(entry))
 		_rows.append(row)
 		index += 1
 	_hide_from(index)
+
+
+## Whether THIS list's action can do anything to THIS drop.
+##
+## `enabled` is the screen's global gate -- an actor, a bag, a container -- and it says
+## nothing about the drop itself. Two kinds of drop were already settled and both were
+## rendered with a LIVE control: one the world has taken (`claimed`, refused
+## `drop_already_claimed` on any press) and one parked in the world (`stashed`, refused
+## `drop_stashed_in_world` from the reward list, because taking it back is the stash
+## list's action).
+##
+## That is what made a reward undrainable. A payload carries a row per drop for its
+## whole life, so after the FIRST `Pick up` the first row was the drop just taken and
+## was still enabled: a player pressing the top control -- and any gate pressing the top
+## control -- got a refusal and a pending count that never moved, with nothing on screen
+## saying why. A claimed drop is dead in both modes; a parked one is dead everywhere but
+## the stash list.
+func _row_can_act(row: Dictionary) -> bool:
+	if bool(row.get("claimed", false)):
+		return false
+	return bool(row.get("stashed", false)) == (_mode == &"stashed")
+
+
+## The entries in the order this list shows them: the ones it can act on first, then the
+## rest, each group keeping the order it arrived in.
+##
+## Ordering is presentation and the panel owns it. Nothing is hidden and no row is
+## dropped -- a taken drop is still listed, still reads `Taken`, and now carries a dead
+## control -- but a list that OPENS with rows nobody can act on puts its first control on
+## a refusal, which is the same defect one row further down.
+func _ordered(entries: Array) -> Array:
+	var live: Array = []
+	var settled: Array = []
+	for entry in entries:
+		if _row_can_act(entry as Dictionary):
+			live.append(entry)
+		else:
+			settled.append(entry)
+	return live + settled
 
 
 ## The row at `index`, instantiating and wiring one only if the pool is short. The
