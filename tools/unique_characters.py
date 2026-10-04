@@ -652,6 +652,8 @@ def _validate(records: list[dict], *, check_files: bool) -> list[str]:
             art = record.get("art") if isinstance(record.get("art"), dict) else {}
             appearance = record.get("appearance")
             appearance = appearance if isinstance(appearance, dict) else {}
+            identity = record.get("identity")
+            identity = identity if isinstance(identity, dict) else {}
             for field, value in (
                 ("canon.lore", canon.get("lore")),
                 ("canon.personality.summary", personality.get("summary")),
@@ -683,6 +685,25 @@ def _validate(records: list[dict], *, check_files: bool) -> list[str]:
                         f"{label}: cannot be canon while appearance.race is {race_id!r}, "
                         f"which is a bloodline rather than a species, and no species is "
                         f"named anywhere in the record. Say which body carries the line."
+                    )
+            # A species can CLOSE a cultivation path, and a character cannot carry one
+            # their own body makes impossible. Fifteen species do: commonborn closes
+            # mind, rootmarch closes body, unwritten and wake close all three, and
+            # `no-cultivation` closes everything without saying so in an attribute.
+            #
+            # Two characters were carrying a path their own lore forbids, and both
+            # said so in their own prose - unique-0023 wrote "a rootmarch has no
+            # heart-kidney channel and never gets past the fourth realm" while
+            # carrying `path: body`. The record was self-refuting and `check` was
+            # silent, because nothing compared the two fields.
+            if lore_entries is not None:
+                closed = species_closed_paths(lore_entries).get(race_id)
+                if closed and str(identity.get("path", "")).strip() in closed:
+                    issues.append(
+                        f"{label}: cannot be canon while identity.path is "
+                        f"{identity.get('path')!r}, which {race_id} closes "
+                        f"({', '.join(sorted(closed))}). The species record is the "
+                        f"authority on what its body can do."
                     )
 
     # Duplicates are checked across the whole catalog rather than per record,
@@ -952,6 +973,36 @@ def _text(value: object) -> bool:
 # non-empty string is a valid `appearance.race`. The rule that catches it is not
 # "the race must exist" - it is "the record must say what BODY this is".
 BLOODLINE_RACE_TYPES = frozenset({"bloodline"})
+
+
+def species_closed_paths(entries: dict) -> dict[str, set[str]]:
+    """Which cultivation paths each species makes impossible, read from the bible.
+
+    Derived, not hardcoded, for the same reason `bloodline_races` is. Two sources,
+    because the bible uses both and a rule that read only one would miss half the
+    species:
+
+    - `attributes.closed_paths` on the race record.
+    - the `no-cultivation` TAG, on species that close everything without saying so in
+      an attribute. `races.echoless` is "qi-bearing in none of them"; nothing in its
+      attributes says so.
+
+    `_cultivation` is stripped because the bible writes `mind_cultivation` while a
+    character's `identity.path` is `mind`. The comparison is otherwise between two
+    different vocabularies and would never match.
+    """
+    closed: dict[str, set[str]] = {}
+    for race_id, entity in entries.items():
+        if not isinstance(entity, dict) or entity.get("domain") != "races":
+            continue
+        paths = entity.get("attributes", {}).get("closed_paths") or []
+        names = {str(path).replace("_cultivation", "") for path in paths}
+        tags = entity.get("tags") or []
+        if "no-cultivation" in tags:
+            names |= {"qi", "body", "mind"}
+        if names:
+            closed[race_id] = names
+    return closed
 
 
 def bloodline_races(entries: dict) -> set[str]:

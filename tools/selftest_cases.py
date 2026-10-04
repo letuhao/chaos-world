@@ -32,6 +32,7 @@ from . import (
     lore,
     map_theme,
     mutation_history,
+    mutation_history_cmd,
     unique_characters,
 )
 from .acquisition import selftest_case  # noqa: F401  registers its cases on import
@@ -713,6 +714,297 @@ def _carried_surfaces_the_index() -> None:
             found[0].path == PROBE_PATH,
             f"the index finding named the wrong path: {found[0].describe()}",
         )
+
+
+# --- The index's SECOND shape: an UNMERGED path. `git grep --cached` cannot see it ---
+
+
+def _unmerged_in(root: Path) -> list:
+    """Read `root`'s unmerged index entries instead of the repository's."""
+    original = mutation_history.REPO
+    mutation_history.REPO = root
+    try:
+        return mutation_history.conflicted()
+    finally:
+        mutation_history.REPO = original
+
+
+def _unmerged_repo(root: Path, *, probe_on_theirs: bool) -> tuple[Path, Path]:
+    """A repository whose index holds a REJECTED MERGE, optionally carrying a probe.
+
+    The shape, built rather than simulated: one file, edited on both branches, merged, rejected.
+    `git ls-files -u` then records stages 1/2/3 and the path stays unmerged until somebody runs
+    `git add`. With `probe_on_theirs` the marker is in stage 3 - the side an author is about to
+    keep, and the one a commit would write.
+
+    The conflict is forced by BOTH branches rewriting the file's last line, which is what makes
+    git reject the merge rather than auto-merge it. That was found the hard way: an earlier
+    fixture edited a line in the middle and appended below it, git merged that without complaint,
+    the path never went unmerged, and the case passed for the wrong reason. The trailing line is
+    what makes the two sides genuinely incompatible.
+
+    Every stage is read rather than just "theirs", which is why the fixture is built with the
+    probe on ONE side: a guard that only ever looked at stage 1 (the base) or only at stage 2
+    would report nothing here, and the clean-direction case below cannot tell those apart.
+
+    `git merge` is run WITHOUT `check`: exit 1 is the REJECTED merge this fixture exists to
+    produce, so asserting it succeeded would assert the opposite of the state being tested. The
+    caller checks `git status --porcelain` for `UU` instead, which is the property that matters -
+    and checking the outcome rather than the exit code is what stops this fixture from passing
+    when git silently auto-merges instead of rejecting.
+    """
+    _git(root, "init", "-q", "-b", "main")
+    _git(root, "config", "user.email", "selftest@local")
+    _git(root, "config", "user.name", "selftest")
+    thing = write(root / PROBE_PATH, _CLEAN_PROBE_FILE)
+    _git(root, "add", "-A")
+    _git(root, "commit", "-qm", "base")
+    _git(root, "checkout", "-q", "-b", "feature")
+    write(
+        thing, _CLEAN_PROBE_FILE + (PROBE_TRAILING_CODE + "\n" if probe_on_theirs else "# edit\n")
+    )
+    _git(root, "add", "-A")
+    _git(root, "commit", "-qm", "feature")
+    _git(root, "checkout", "-q", "main")
+    write(thing, _CLEAN_PROBE_FILE.replace("true", "false"))
+    _git(root, "add", "-A")
+    _git(root, "commit", "-qm", "main edits the same region")
+    subprocess.run(  # noqa: S603 - fixed argv, no shell
+        ("git", "merge", "feature"),
+        cwd=str(root),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return root, thing
+
+
+@case("mutation_history: a probe in an UNMERGED index entry is found")
+def _unmerged_probe_is_found() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root, thing = _unmerged_repo(Path(raw), probe_on_theirs=True)
+
+        # The fixture has to BE the state it claims, and the working tree is part of that claim.
+        # A rejected merge leaves CONFLICT MARKERS in the file, which means the probe is
+        # visible on disk here too - so this case does NOT isolate the index. What it isolates
+        # is asserted directly instead: the probe must be in stage 3, and `git grep --cached`
+        # must miss it. That is the reader-level statement of the gap, and it holds whatever the
+        # conflict-marker worktree looks like on any git version.
+        expect(
+            "UU" in _git(root, "status", "--porcelain").stdout,
+            "the fixture did not reach an unmerged state, so it does not test the stage reader",
+        )
+        staged = subprocess.run(  # noqa: S603 - fixed argv, no shell
+            ("git", "show", f":3:{PROBE_PATH}"),
+            cwd=str(root),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        expect(
+            PROBE_TRAILING_CODE in staged.stdout,
+            "the probe is not in stage 3, so the fixture does not hold what it claims",
+        )
+        # `git grep --cached` is the reader that DOES exist, and it sees nothing here. If that
+        # ever starts working, this fixture stops being a gap and the reader can be simplified -
+        # asserted so the reason this code exists stays true rather than assumed.
+        grep = subprocess.run(  # noqa: S603 - fixed argv, no shell
+            (
+                "git",
+                "grep",
+                "--cached",
+                "-n",
+                "-I",
+                "-E",
+                mutation_history.MARKER,
+                "--",
+                *mutation_history.GUARDED,
+            ),
+            cwd=str(root),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        expect(
+            grep.returncode != 0 or not grep.stdout.strip(),
+            f"`git grep --cached` now reports unmerged paths ({grep.returncode}/"
+            f"{grep.stdout!r}), so the stage reader is redundant; confirm before deleting it",
+        )
+        # The stage-0 reader on its own - `staged()` also returns the conflict findings now, and
+        # this assertion is about ISOLATION, so it asks about the stage-0 half specifically.
+        stage_zero = [p for p in _staged_in(root) if p.ref == mutation_history.INDEX_REF]
+        expect(
+            not stage_zero,
+            f"the stage-0 reader found the probe too ({[p.describe() for p in stage_zero]}), so "
+            "this case is no longer isolated to the stage reader",
+        )
+
+        found = _unmerged_in(root)
+
+        expect(
+            bool(found),
+            "an index holding an unmerged path whose 'theirs' side is a probe reported clean. "
+            "A rejected merge is the ORDINARY state of ~20 agents working at once, `git grep "
+            "--cached` walks stage 0 only, and a path left unmerged has no stage 0 - so a probe "
+            "one `git add` away from a commit is invisible to every other reader here",
+        )
+        expect(
+            all(probe.path == PROBE_PATH for probe in found),
+            f"the wrong line was reported: {[probe.describe() for probe in found]}",
+        )
+        expect(
+            any("stage=3" in probe.ref for probe in found),
+            f"the finding did not say WHICH stage held it: "
+            f"{[probe.describe() for probe in found]}. 'ours' and 'theirs' are different "
+            "repairs, and a report that cannot tell them apart sends the reader to guess",
+        )
+
+
+@case("mutation_history: an unmerged index holding NO probe is clean")
+def _unmerged_without_a_probe_is_clean() -> None:
+    # The false-positive direction, and the case the reader is most at risk of: it reads three
+    # blobs per conflict and reports the first marker-shaped line in any of them. A guard that
+    # reported every conflict would fail this.
+    #
+    # The PROSE lines are staged too, deliberately, for the reason
+    # `_prose_is_not_carried_and_code_still_is` holds both in one tip: a fixture holding only
+    # clean conflict content passes under a classifier with no filter installed, and only
+    # holding both can tell the two readings apart. Staging the prose resolves it as a normal
+    # stage-0 entry - the prose file is a NEW file git can add, which leaves the conflicted path
+    # the only unmerged one.
+    with tempfile.TemporaryDirectory() as raw:
+        root = _unmerged_repo(Path(raw), probe_on_theirs=False)[0]
+        write(
+            root / PROSE_PATH,
+            "extends TestCase\n\n\nfunc it() -> void:\n\tassert(true)\n"
+            + "\n".join(PROSE_ABOUT_MUTATIONS)
+            + "\n",
+        )
+        # ONLY the prose path is staged. `git add -A` would also stage the conflicted file,
+        # which RESOLVES it, and then there is no unmerged index left to test - which is
+        # exactly what the first version of this fixture did, and it silently tested nothing.
+        _git(root, "add", "--", PROSE_PATH)
+        merged = _git(root, "status", "--porcelain").stdout
+        expect("UU" in merged, f"the fixture resolved itself, so it tests nothing: {merged!r}")
+
+        found = _unmerged_in(root)
+
+        expect(
+            not found,
+            f"an unmerged index holding no probe was reported as dirty: "
+            f"{[probe.describe() for probe in found]}. A conflict is not a finding, and a guard "
+            "that fires on every merge in a 20-agent repo gets deleted on its first trip",
+        )
+        expect(
+            not _staged_in(root),
+            f"the staged reader flagged the prose file: "
+            f"{[p.describe() for p in _staged_in(root)]}. The documentation cut has to hold in "
+            "the index layer too, or a committed file's own prose becomes a permanent red",
+        )
+
+
+@case("mutation_history: an UNREADABLE index fails `readable()`, so it cannot read as clean")
+def _unreadable_index_is_not_readable() -> None:
+    # The anti-vacuity term, pointed at the layer that lacked one. `_git` maps every non-zero
+    # exit code to "", so "git grep matched nothing" and "git grep fell over" are the same value;
+    # before this, `readable()` only asked `rev-parse --git-dir`, which stays perfectly happy
+    # about a corrupt index.
+    #
+    # The fixture carries a probe on the `feature` REF as well as in the unmerged index, so the
+    # damage is visible: a corrupt index silences the INDEX layer completely while the ref
+    # layer keeps reporting. Before this, `readable()` said True and `check` would have reported
+    # "1 probe carried by refs/heads/feature" - a true statement that quietly omits the one
+    # about to be committed.
+    with tempfile.TemporaryDirectory() as raw:
+        root = _unmerged_repo(Path(raw), probe_on_theirs=True)[0]
+        original = mutation_history.REPO
+        mutation_history.REPO = root
+        try:
+            expect(
+                mutation_history.readable(),
+                "fixture did not start readable, so a False below would prove nothing",
+            )
+            expect(
+                bool(mutation_history.staged()) or bool(mutation_history.conflicted()),
+                "fixture started with a silent index layer, so it does not exercise the failure",
+            )
+            junk = Path(raw) / "corrupt-index"
+            junk.write_bytes(b"DIRC this is not an index" + bytes(64))
+            os.environ["GIT_INDEX_FILE"] = str(junk)
+            try:
+                expect(
+                    not mutation_history.readable(),
+                    "a corrupt index still reads as `readable()`, so `tools check` reports only "
+                    "what the REFS carry and silently drops every staged finding - a guard that "
+                    "says ok because it looked at nothing is not a guard",
+                )
+                expect(
+                    mutation_history.staged() == [] and mutation_history.conflicted() == [],
+                    "the index layer is still reporting through a corrupt index, so this fixture "
+                    "is not the failure it claims to be",
+                )
+                expect(
+                    any("refs/heads/feature" == ref for ref in mutation_history.shipped_refs()),
+                    "the ref half is broken too, so this fixture cannot isolate the index layer: "
+                    f"shipped_refs()={mutation_history.shipped_refs()}",
+                )
+            finally:
+                os.environ.pop("GIT_INDEX_FILE", None)
+        finally:
+            mutation_history.REPO = original
+
+
+@case("mutation_history: an INDEX finding is never reported as a shipped ref tip")
+def _index_findings_are_not_reported_as_refs() -> None:
+    # The reporting half, and the reason `_is_shipped_ref` exists. Every finding used to print
+    # under one "carried by a shipped ref tip" headline, which told the reader an index finding
+    # had ALREADY been committed - the opposite of what it is. It is the finding with the
+    # cheapest repair (stage the fixed line), and the one a reader would skip past.
+    for label, want_ref in (
+        (mutation_history.INDEX_REF, False),
+        (mutation_history.CONFLICT_LABEL.format(stage=3), False),
+        ("refs/heads/main", True),
+        ("refs/remotes/origin/main", True),
+        ("HEAD", True),
+    ):
+        expect(
+            mutation_history_cmd._is_shipped_ref(label) is want_ref,
+            f"the layer classifier called {label!r} a shipped ref = "
+            f"{mutation_history_cmd._is_shipped_ref(label)}, wanted {want_ref}. A finding "
+            "reported as already-committed sends the reader looking in history for something that "
+            "has not been written yet",
+        )
+
+
+@case("mutation_history: a conflicted index is readable, so the gate does not refuse it")
+def _conflicted_index_is_still_readable() -> None:
+    # The anti-vacuity term must not over-reach into "a conflict is a failure". `git ls-files`
+    # exits 0 on an unmerged index, so `readable()` stays True and `check` reports the PROBE
+    # rather than refusing the repository - which is the only useful verdict.
+    with tempfile.TemporaryDirectory() as raw:
+        root = _unmerged_repo(Path(raw), probe_on_theirs=True)[0]
+        original = mutation_history.REPO
+        mutation_history.REPO = root
+        try:
+            expect(
+                mutation_history.readable(),
+                "an unmerged index read as unreadable, so `check` would refuse the repository "
+                "instead of reporting the probe sitting in it",
+            )
+            expect(
+                bool(
+                    [
+                        p
+                        for p in mutation_history.carried()
+                        if p.ref.startswith(mutation_history.INDEX_REF)
+                    ]
+                ),
+                "the probe in a conflicted index did not reach `carried()`, which is the only "
+                "entry point `tools check` uses - a reader nothing calls is a function, not a "
+                "guard",
+            )
+        finally:
+            mutation_history.REPO = original
 
 
 # --- ADR 0138: reference_stats is prose, and the guard has to mean that precisely ---
@@ -1502,6 +1794,127 @@ def _ingest_is_deterministic() -> None:
             break
     else:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
+
+
+@case("unique_characters: a species that CLOSES a path cannot carry it")
+def _closed_path_cannot_be_carried() -> None:
+    """Two characters were self-refuting and `check` was silent about both.
+
+    `unique-0023` wrote "a rootmarch has no heart-kidney channel and never gets past
+    the fourth realm" and carried `path: body`. `races.rootmarch` closes body.
+    `unique-0058` carried `path: mind` on `races.lanternfolk`, which closes mind.
+    Nothing compared the two fields, so a record could state a fact and contradict it
+    in the next breath and validate perfectly.
+
+    Fifteen species close a path. Two of those closures are not in `attributes` at all
+    and come only from the `no-cultivation` TAG - `races.echoless` is "qi-bearing in
+    none of them" and `races.wake` "cannot cultivate", with nothing in their attributes
+    saying so. A rule reading only the attribute would miss them and would then look
+    like it had verified path legality.
+
+    The counterweight matters as much as the rule: a species that closes nothing must
+    be permitted on every path, or the guard would refuse the entire cast. Both
+    directions are asserted, and the no-cultivation path is asserted separately
+    because it is the one the attribute alone would miss.
+    """
+    entries = unique_characters._lore_entries()
+    expect(entries is not None, "the Lore Bible could not be read, so the rule is untested")
+    if entries is None:
+        return
+
+    closed = unique_characters.species_closed_paths(entries)
+    expect(
+        len(closed) >= 10,
+        f"only {len(closed)} species close a cultivation path. If the taxonomy changed "
+        f"this case is stale; if it did not, the rule is reading the wrong field",
+    )
+
+    for race_id, paths in closed.items():
+        entity = entries[race_id]
+        tags = entity.get("tags") or []
+        if "no-cultivation" in tags:
+            expect(
+                {"qi", "body", "mind"} <= paths,
+                f"{race_id} is tagged no-cultivation but closes only {sorted(paths)}. "
+                f"The tag is the ONLY source for some species, so a rule reading just "
+                f"attributes would pass this and report full coverage",
+            )
+            break
+    else:
+        expect(False, "no species carries the no-cultivation tag, so that path is untested")
+
+    def record(character_id: str, race: str, path: str) -> dict:
+        return {
+            "id": character_id,
+            "name": character_id,
+            "status": "canon",
+            "identity": {
+                "role": "npc",
+                "path": path,
+                "faction": "",
+                "home": "",
+                "realm": "",
+            },
+            "appearance": {key: "" for key in unique_characters.APPEARANCE_KEYS} | {"race": race},
+            "tags": [],
+            "canon": {
+                "role_in_story": "a role",
+                "first_appearance": "an appearance",
+                "lore": "some lore",
+                "history": [],
+                "personality": {
+                    "summary": "s",
+                    "traits": [],
+                    "mannerisms": [],
+                    "motivations": [],
+                    "flaws": [],
+                    "voice": "v",
+                    "taboos": [],
+                },
+                "relationships": [],
+            },
+            "reference_stats": {
+                "summary": "s",
+                "strengths": [],
+                "weaknesses": [],
+                "combat_read": "",
+                "notes": "",
+            },
+            "art": {"style": "s", "palette_notes": "", "shots": []},
+            "published_as": {"portrait_id": "", "def_path": ""},
+        }
+
+    restrictive = next(race_id for race_id, paths in sorted(closed.items()) if "qi" in paths)
+    blocked = unique_characters._validate(
+        [record("unique-0001", restrictive, "qi")], check_files=False
+    )
+    expect(
+        any("closes" in issue for issue in blocked),
+        f"{restrictive} closes the qi path but a qi character on it validated cleanly, so "
+        f"the rule is not reading the bible's own closure",
+    )
+
+    # The counterweight. A species that closes nothing must be allowed everywhere, or
+    # the guard would refuse most of a legitimate cast.
+    open_species = next(
+        race_id
+        for race_id, entity in sorted(entries.items())
+        if isinstance(entity, dict) and entity.get("domain") == "races" and race_id not in closed
+    )
+    for candidate in sorted(unique_characters.VALID_PATHS):
+        issues = [
+            issue
+            for issue in unique_characters._validate(
+                [record(f"unique-{candidate}", open_species, candidate)], check_files=False
+            )
+            if "closes" in issue
+        ]
+        expect(
+            not issues,
+            f"{open_species} closes no path but was refused on {candidate}: {issues}. A "
+            f"guard that refuses a legal pairing is worse than none, because agents "
+            f"learn to work around it",
+        )
 
 
 @case("unique_characters: a bloodline is a DESCENT, so canon needs a species named")
