@@ -104,6 +104,14 @@ SLOT_KIND = {
 # brief names six. These are PROMPT counts, not rendered images — generation is
 # `unique_characters next`, which stays optional per shot.
 SET_SLOT_MINIMUMS = {"expression_set": 9, "pose_set": 6}
+
+# Which field distinguishes one member of a set from the next. It is not
+# `expression` for both, and assuming it was is the bug this table exists to
+# prevent: a pose set is nine shots differing in `pose`, and counting it on
+# `expression` would demand nine distinct emotions from a character being asked
+# for nine stances — a requirement no author can satisfy without writing the
+# emotion field as a restatement of the pose.
+SET_SLOT_MEMBER_FIELD = {"expression_set": "expression", "pose_set": "pose"}
 SHOT_STATUS = {"planned", "generated", "approved"}
 DEFAULT_CANVAS = [1024, 1024]
 CANVAS_MAX = 4096
@@ -560,16 +568,12 @@ def _validate_shot(shot: object, label: str, check_files: bool, seen: set[str]) 
 def _prompt_set_gaps(art: object) -> list[str]:
     """Which required prompts this character's shot list does not supply.
 
-    Two shapes of gap, and both are silent without this. A slot nobody filled is
-    the obvious one. The second is a `*_set` slot holding several shots that all
-    say the same thing: nine `expression_set` entries reading "neutral" is a
-    prompt set by shot count and a single picture by content, and a count-only
-    check calls it complete. So a set is counted on the DISTINCT expression text,
-    which is the thing that actually differs between two members.
-
-    Shot ids are deliberately not the identity here. Two members of a set are
-    free-form slugs chosen by the author (`expr-anger`, `expr-anger-bitter`), so
-    keying on them would report a duplicated emotion as two members.
+    A shot list satisfying every required prompt is counted on the DISTINCT
+    text that makes two members of a set different: `expression` for
+    `expression_set`, `pose` for `pose_set` (`SET_SLOT_MEMBER_FIELD`). Nine pose
+    shots differing in stance are nine prompts; nine pose shots sharing one
+    stance are one prompt written nine times, which is the shape an agent
+    produces when it satisfies a count instead of writing nine stances.
     """
     shots = art.get("shots") if isinstance(art, dict) else None
     if not isinstance(shots, list):
@@ -581,9 +585,9 @@ def _prompt_set_gaps(art: object) -> list[str]:
         slot = shot.get("slot")
         if not isinstance(slot, str):
             continue
-        expression = shot.get("expression")
-        member = expression.strip().lower() if isinstance(expression, str) else ""
-        by_slot.setdefault(slot, set()).add(member)
+        field = SET_SLOT_MEMBER_FIELD.get(slot, "expression")
+        value = shot.get(field)
+        by_slot.setdefault(slot, set()).add(value.strip().lower() if isinstance(value, str) else "")
     gaps = []
     for slot in PROMPT_SLOTS:
         members = by_slot.get(slot)
@@ -591,8 +595,11 @@ def _prompt_set_gaps(art: object) -> list[str]:
             gaps.append(f"no shot fills the {slot!r} prompt")
             continue
         needed = SET_SLOT_MINIMUMS.get(slot)
-        if needed is not None and len(members) < needed:
-            gaps.append(f"{slot!r} holds {len(members)} distinct expression(s), needs {needed}")
+        if needed is None:
+            continue
+        field = SET_SLOT_MEMBER_FIELD.get(slot, "expression")
+        if len(members) < needed:
+            gaps.append(f"{slot!r} holds {len(members)} distinct {field}(s), needs {needed}")
     return gaps
 
 

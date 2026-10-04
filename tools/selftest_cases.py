@@ -595,13 +595,13 @@ def _prompt_gaps(shots: list[dict]) -> list[str]:
     return unique_characters._prompt_set_gaps({"shots": shots})
 
 
-def _shot(slot: str, expression: str = "", **overrides) -> dict:
+def _shot(slot: str, expression: str = "", pose: str = "standing, weight settled", **overrides):
     """One structurally valid shot filling `slot`, for prompt-set fixtures."""
     shot = {
         "id": f"{slot}-1",
         "kind": unique_characters.SLOT_KIND.get(slot, "portrait"),
         "slot": slot,
-        "pose": "standing, weight settled",
+        "pose": pose,
         "framing": "waist up",
         "expression": expression,
         "scene": "",
@@ -619,12 +619,19 @@ def _complete_shots() -> list[dict]:
     not silently turn this fixture red. The failing direction is the other case:
     removing one from the tool must leave this green and the removal case red, or
     the guard has been loosened rather than exercised.
+
+    Each member varies on the field that actually distinguishes it for that set,
+    read from `SET_SLOT_MEMBER_FIELD`. Writing `expression` for both sets is the
+    mistake this fixture is built to avoid.
     """
     shots = []
     for slot in unique_characters.PROMPT_SLOTS:
         needed = unique_characters.SET_SLOT_MINIMUMS.get(slot, 1)
+        field = unique_characters.SET_SLOT_MEMBER_FIELD.get(slot, "expression")
         for index in range(needed):
-            shots.append(_shot(slot, expression=f"emotion {index}", id=f"{slot}-{index}"))
+            shot = _shot(slot, id=f"{slot}-{index}")
+            shot[field] = f"{field} {index}"
+            shots.append(shot)
     return shots
 
 
@@ -693,6 +700,43 @@ def _complete_prompt_set_is_clean() -> None:
         not _prompt_gaps(_complete_shots()),
         f"a shot list covering every required prompt was still reported incomplete: "
         f"{_prompt_gaps(_complete_shots())!r}",
+    )
+
+
+@case("unique_characters: a pose_set is counted on POSE, not on expression")
+def _pose_set_is_counted_on_pose() -> None:
+    """The two sets do not share a distinguishing field, and assuming they do is
+    a requirement no author can meet.
+
+    `expression_set` is nine shots differing in `expression`; `pose_set` is nine
+    shots differing in `pose`. A guard that counts both on `expression` demands
+    nine distinct emotions from a character being asked for nine stances, which
+    pushes an author to restate the stance in the emotion field - a prompt set
+    that satisfies the count while saying the same thing twice.
+
+    The second expectation is the direction that matters: nine poses sharing one
+    `expression` must still be a complete pose_set, because nothing about the
+    stances is missing. A guard that failed that would be requiring the emotion
+    field as a duplicate of the pose.
+    """
+    needed = unique_characters.SET_SLOT_MINIMUMS["pose_set"]
+    varying_pose = [
+        _shot("pose_set", pose=f"stance {index}", expression="composed", id=f"pose-{index}")
+        for index in range(needed)
+    ]
+    expect(
+        not _prompt_gaps(varying_pose),
+        f"nine shots differing in pose were rejected, so pose_set is being counted on "
+        f"the wrong field: {_prompt_gaps(varying_pose)!r}",
+    )
+    shared_pose = [
+        _shot("pose_set", pose="stance 0", expression=f"emotion {index}", id=f"pose-{index}")
+        for index in range(needed)
+    ]
+    expect(
+        _prompt_gaps(shared_pose) != _prompt_gaps(varying_pose),
+        "nine shots sharing one pose were accepted, so pose_set can be satisfied by "
+        "one stance described nine times",
     )
 
 

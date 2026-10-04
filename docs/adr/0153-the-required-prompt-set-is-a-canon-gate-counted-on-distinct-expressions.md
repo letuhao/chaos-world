@@ -39,11 +39,21 @@ no map token is one the exploration map cannot place. A gate that only reported
 at render time is later than the moment it is cheap to fix.
 
 `expression_set` and `pose_set` are SETS, and a set is counted on the **distinct
-expression text**, not on the number of shots. Nine expression shots that all read
-"composed" is a prompt set by cardinality and a single picture by content — the
-exact shape an agent produces when it satisfies a count instead of writing nine
-emotions. Shot ids are not the identity either: members are free-form slugs, so
-`expr-anger` and `expr-anger-bitter` are one emotion described twice.
+text that makes two of its members different** — `SET_SLOT_MEMBER_FIELD`, which
+is `expression` for the expression set and `pose` for the pose set.
+
+Not the number of shots. Nine expression shots that all read "composed" is a
+prompt set by cardinality and a single picture by content — the exact shape an
+agent produces when it satisfies a count instead of writing nine emotions.
+
+The two sets are counted on different fields on purpose. Counting `pose_set` on
+`expression` — the obvious way to write one loop over both — demands nine
+distinct emotions from a character being asked for nine stances, which no author
+can satisfy except by restating the stance in the emotion field. A prompt set
+that passes while saying the same thing twice is worse than one that fails,
+because it looks complete. Shot ids are not the identity either: members are
+free-form slugs, so `expr-anger` and `expr-anger-bitter` are one emotion
+described twice.
 
 The minimums are 9 and 6 because the art brief enumerates nine emotions and six
 poses, not because those are round. Raising one is a spec change.
@@ -65,5 +75,6 @@ record, so a portrait and a concept sheet cannot disagree about who they are.
   `unique_characters next`, so the gate raises the cost of authoring text and not
   the cost of generating images.
 - `tools/selftest_cases.py` asserts the gate goes RED, including the duplicated
-  expression fixture. That case is the only thing distinguishing a set guard from
-  a count guard (INC-0016).
+  expression fixture and the pose-counted-on-pose fixture. Those cases are the
+  only things distinguishing a set guard from a count guard, and a pose guard from
+  an expression guard (INC-0016).
