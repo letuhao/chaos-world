@@ -4,3 +4,4 @@
 {"session": "ses_efb0d8c14ffewTxeclbFMW7vua", "paths": ["game/src/modules/set_bonus", "game/tests/modules/set_bonus"], "heartbeat": "2026-10-04T04:02:13.896272+00:00"}
 {"session": "facade-verb-triage", "paths": ["game/tests/modules/status/test_status_clear_combat_scope.gd"], "heartbeat": "2026-10-04T04:09:25.282126+00:00"}
 {"session": "character-wave-9", "paths": ["game/assets/characters/unique-index-wave-9.jsonl"], "heartbeat": "2026-10-04T04:19:13.638219+00:00"}
+{"session": "character-wave-10", "paths": ["game/assets/characters/unique-index-wave-10.jsonl"], "heartbeat": "2026-10-04T04:28:36.109257+00:00"}
