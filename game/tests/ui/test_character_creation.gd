@@ -468,9 +468,31 @@ func test_summary_is_primitives_only_and_empty_with_no_hero() -> void:
 func test_summary_is_primitives_only_after_a_commit() -> void:
 	var screen := _screen()
 	screen.refresh_candidates()
-	screen.act_commit(&"the_one_who_stayed")
+	# The verdict is asserted FIRST and verbatim. `summary()` is four frames from the
+	# thing that can actually go wrong, so an empty summary on its own named nothing —
+	# it could have been a refusal from the creation layer, a dead seam, or a screen
+	# that never bound. Reading the layer's own answer puts the reason in the failure
+	# message instead of leaving it to be guessed at.
+	var outcome := screen.act_commit(&"the_one_who_stayed")
+	assert_eq(
+		bool(outcome.get("ok", false)),
+		true,
+		"the arrival commits: %s" % String(outcome.get("reason", ""))
+	)
+	assert_eq(String(outcome.get("choice", "")), "the_one_who_stayed", "and it is the answered one")
 	var view := screen.summary()
-	assert_ne(view.is_empty(), false, "a committed arrival is reported")
+	# ## Why this is `assert_ne(..., true)` and not `assert_ne(..., false)`
+	#
+	# `assert_ne(actual, unexpected)` fails when the two are EQUAL, so the second
+	# argument is the value this must NOT be. `assert_ne(view.is_empty(), false)`
+	# therefore demanded `view.is_empty() == true` — it asserted the summary was
+	# EMPTY, the exact opposite of its own label, and it failed on a screen that had
+	# correctly reported the committed arrival. The failure line said "expected not
+	# false, got false", which reads like an empty summary only if you assume the
+	# author had the argument order right; `framework.gd` writes the ACTUAL value out
+	# as `got`, so `got false` here means the view was NOT empty and the assertion was
+	# the thing that was wrong. `true` is the value "is empty" must not be.
+	assert_ne(view.is_empty(), true, "a committed arrival is reported")
 	assert_eq(String(view.get("committed_origin", "")), "the_one_who_stayed", "the answer is named")
 	assert_eq(String(view.get("race", "")), "stoneborn", "and the body it arrived in")
 	for entry in view.get("branches", []) as Array:
@@ -532,7 +554,9 @@ func test_the_rows_show_the_body_and_the_paths_it_closes() -> void:
 	# row order changed.
 	var origin_id := StringName(String(view.get("id", "")))
 	var built := CharacterCreationFlow.new().build(origin_id)
-	assert_eq(bool(built.get("ok", false)), true, "the arrival builds: %s" % String(view.get("id", "")))
+	assert_eq(
+		bool(built.get("ok", false)), true, "the arrival builds: %s" % String(view.get("id", ""))
+	)
 	var hero := built.get("actor", null) as Actor
 	assert_ne(hero, null, "and mints a hero to ask")
 	var def := RaceApi.race_definition(hero)
