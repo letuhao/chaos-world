@@ -386,5 +386,27 @@ extends Resource
 ## A shipped, sane instance. Used by tests and by any caller with no `.tres` in hand,
 ## and it is the one place these numbers are written in GDScript — so a caller who
 ## wants to rebalance edits the `.tres`, not this.
+##
+## ## Why this hands back a FRESH duplicate, and why that is load-bearing
+##
+## `load()` on a `.tres` returns the RESOURCE CACHE's instance, so every caller in the
+## process shared ONE `CombatTuning`. A test that wanted "the shipped tuning with one field
+## overridden" had exactly two options — write the field on `shipped()` and retune every
+## later reader in the process, or duplicate first. Three suites found the write-through
+## path first (see `_broad_mult_copy` in `test_body_damage_aim.gd`, which used to write
+## `broad_mult` straight onto `shipped()` and left the shared instance at `-2.0` for
+## every suite after it), and the damage was silent and order-dependent: `broad_sites`
+## clamps `broad_mult` into `[0, 1]`, so `-2.0` reads `0.0` and every `broad` strike
+## produced a zero-multiplier site — a sweep that dealt no wound at all, reported by
+## `test_effect_apply.gd` as "the two channels the fixture opened explicitly are among
+## them: expected true, got false" and by `test_body_damage_wounds.gd` as an empty
+## `settled[]` indexed at `[0]`.
+##
+## Returning `duplicate(true)` makes the hazard UNREACHABLE rather than merely documented:
+## a caller that writes to what it got can only damage its own copy, and a caller that
+## forgets to duplicate still gets the shipped numbers. The one cost is that the resource
+## is copied per call, which is irrelevant on a path that is already `load()`-bound and is
+## the price of making a global balance file unwritable-by-accident.
 static func shipped() -> CombatTuning:
-	return load("res://src/modules/combat_engine/combat_damage.tres") as CombatTuning
+	var cached := load("res://src/modules/combat_engine/combat_damage.tres") as CombatTuning
+	return cached.duplicate(true) as CombatTuning if cached != null else null

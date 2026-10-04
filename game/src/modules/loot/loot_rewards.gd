@@ -251,6 +251,7 @@ static func active_view(active: Dictionary) -> Dictionary:
 			"penetration": 0.0,
 			"evasion": 0.0,
 			"damage_reduction": 0.0,
+			"affliction": "",
 		}
 	var vitality := float(active.get("vitality", 0.0))
 	var vitality_max := maxf(1.0, float(active.get("vitality_max", 1.0)))
@@ -282,5 +283,9 @@ static func active_view(active: Dictionary) -> Dictionary:
 		"penetration": float(active.get("penetration", 0.0)),
 		"evasion": float(active.get("evasion", 0.0)),
 		"damage_reduction": float(active.get("damage_reduction", 0.0)),
+		# The `StatusDef.id` this boss inflicts on the player, frozen with the boss for
+		# the same reason as the profile above it. Empty for a creature authored to
+		# afflict nothing, which is the ordinary case and not a missing field.
+		"affliction": String(active.get("affliction", "")),
 		"defeated": bool(active.get("defeated", false)),
 	}

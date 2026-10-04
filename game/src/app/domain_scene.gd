@@ -8,6 +8,23 @@ extends Node2D
 ## engine-agnostic (domain_map.gd:4-8) precisely because the engine lives over here rather
 ## than inside the data.
 ##
+## ## WHO BUILDS THIS IN PRODUCTION
+##
+## [method realize], via `DomainBoot.realize_world` — which the composition root installs as
+## a `Callable` seam (`DomainBoot.set_world_observer`) and `DomainBoot.enter_domain` fires
+## the moment a run exists. It builds this scene, parents it under the mounted domain SCREEN
+## so the floor is a node in the live tree and not a description of one, places one inhabitant
+## body per minted `Actor` at `DomainSpawner.placement`, adds a `PlayerAdapter` bounded to
+## [method map_bounds], and is undone by [method release_world] on `leave_domain`, on a route
+## change, and in `ItemWorkbenchApp.teardown()`.
+##
+## That is the whole production path. **What is NOT built: an avatar that MOVES.**
+## `PlayerAdapter` is placed and bounded, and `move_to` / `step_movement` work headlessly,
+## but nothing in the shipped program drives its `_physics_process` from a real frame and no
+## screen exposes a movement control. A player can ENTER a domain and SEE its floor, its
+## walls and the creatures standing on it, but cannot yet walk across it. That is the
+## remaining half, recorded here rather than implied by this file's existence.
+##
 ## ## Why this is a new class and not a `WorldEntry`
 ##
 ## `world_entry.gd` is pinned as a source shape by `tests/arch_rules/test_arch_rules.gd:111`
@@ -99,6 +116,27 @@ const NAVIGATION_NODE := "Navigation"
 const SPAWNS_NODE := "Spawns"
 const EXITS_NODE := "Exits"
 const ZONES_NODE := "Zones"
+
+## The realized world, by name. [method realize] builds a `Node2D` under a parent the CALLER
+## chose, so the composition root owns the node that draws the world and the world goes away
+## with it; these four names are how anyone finds it afterwards. Declared among the other
+## constants rather than beside the world section because `class-definitions-order` puts every
+## `const` before every `func`.
+const WORLD_NODE := "DomainWorld"
+const WORLD_SCENE_NODE := "DomainScene"
+const WORLD_PLAYER_NODE := "DomainPlayer"
+const WORLD_INHABITANTS_NODE := "DomainInhabitants"
+
+## Every node a realized world creates, so [method release_world] frees the subtree by NAME
+## rather than by walking it — bounded, and self-describing: anything under the world that is
+## not in this list was created by somebody else and is reported as `stranded`. An engine
+## element type (`StringName`), never a repo type, which is what keeps this off the `app/`
+## state-table heuristic.
+const WORLD_BORN: Array[StringName] = [
+	WORLD_PLAYER_NODE,
+	WORLD_INHABITANTS_NODE,
+	WORLD_SCENE_NODE,
+]
 
 ## Every position is a tile's CENTRE, never its corner. `Rect2i.get_center()` is the same
 ## convention (domain_paths.gd:163), and a marker half a tile from where its room is drawn
@@ -857,3 +895,212 @@ static func _box_of(value: Array) -> Rect2i:
 	if value.size() != 4:
 		return Rect2i()
 	return Rect2i(int(value[0]), int(value[1]), int(value[2]), int(value[3]))
+
+
+# ── the realized world. Built here, parented by the caller, freed by the caller ──
+#
+# Everything below is `static` on `DomainScene` rather than on `DomainBoot`, because it is
+# the ENGINE side of a `DomainMap` and this is the engine file. `DomainScene` already owns
+# "where is this map in pixels" — `tile_center`, `pixel_rect`, `map_bounds`,
+# `entry_position`. A world that had to ask a different class where its own tiles are has
+# split one question in two, and the two halves could disagree about which tile a corridor
+# ends on. Everything below reads the geometry through THIS class's methods.
+#
+# It is also here so the run's STATE stays out of `app/`: `tools/arch/rules.py`'s
+# `app_state_signals` fires on two of {persistence, tick-loop, state-table} in a file under
+# `app/`, and `DomainBoot` already carries `persistence` (`_active_map` reads
+# `get_module_data`). The roster arrives here as an ARGUMENT, so this file has no
+# `module_data` call, no `Array` member and no tick — it cannot become a second thing that
+# knows what is standing where.
+#
+# **No `_ready`, no `await`, no deferred work.** The headless runner drives every test from
+# `SceneTree._initialize()`, which returns before the first frame, so `_ready()` is never
+# delivered to a node parented to `root`. [method realize] builds in `_init()`, the adapter
+# is configured by EXPLICIT setters, and nothing waits for a frame.
+
+
+## REALIZE `map` as a walkable world under `parent` — the production call that makes this
+## class reachable at all. Three things, in order: a `DomainScene` built from the map
+## itself; ONE body per inhabitant in `inhabitants`, at the position
+## [method DomainSpawner.placement] ALREADY recorded on that `Actor`; and a `PlayerAdapter`
+## at the entry centre, bounded to the drawn cells by [method map_bounds].
+##
+## ## Why the placements are REUSED and never re-derived
+##
+## The spawner resolved each slot and wrote it into `actor.module_data`, which round-trips
+## through `Actor.to_dict()`. Reading it back is what makes the drawn world and the saved
+## world the same world; a second placement rule would produce two answers that agree until
+## a load, and then only one of them.
+##
+## `parent` is the caller's to choose, and that is the point: the composition root parents
+## the world under the node that DRAWS it, so the node showing a domain owns its floor and
+## nothing else holds a reference that could outlive it.
+##
+## Refuses `no_parent`, `no_map` and `no_actor` BY NAME and writes NOTHING before all three
+## resolve, so a refusal leaves the caller's tree exactly as it found it. A second call frees
+## the previous world first ([method release_world]), so re-entering cannot stack a second
+## set of floor tiles under a second set of inhabitants.
+static func realize(parent: Node, map: DomainMap, player: Actor, inhabitants: Array) -> Dictionary:
+	if parent == null:
+		return {"ok": false, "reason": "no_parent"}
+	if map == null:
+		return {"ok": false, "reason": "no_map"}
+	if player == null:
+		return {"ok": false, "reason": "no_actor"}
+	release_world(parent)
+	var world := Node2D.new()
+	world.name = WORLD_NODE
+	parent.add_child(world)
+	var scene := DomainScene.new(map)
+	scene.name = WORLD_SCENE_NODE
+	world.add_child(scene)
+	var bodies := place_inhabitants(world, inhabitants)
+	place_player(world, player, scene)
+	return {
+		"ok": true,
+		"reason": "",
+		"world": world,
+		"scene": scene,
+		"player": world.get_node_or_null(NodePath(WORLD_PLAYER_NODE)) as PlayerAdapter,
+		"bounds": scene.map_bounds(),
+		"entry": [scene.entry_position().x, scene.entry_position().y],
+		"inhabitants_placed": bodies,
+	}
+
+
+## One body per inhabitant in `inhabitants`, at the placement the spawner recorded on it,
+## carrying that same `Actor` plus the room and role the spawner stamped.
+##
+## A bare `Node2D` and not a sprite, a `CharacterBody2D` or a physics body: what a caller
+## needs is a node that EXISTS at the recorded point and names who stands there, and a body
+## that could be collided or damaged would be a second inhabitant simulation — a shape the
+## `domain` module owns and this file does not.
+static func place_inhabitants(world: Node2D, inhabitants: Array) -> int:
+	if world == null or inhabitants.is_empty():
+		return 0
+	var holder := world.get_node_or_null(NodePath(WORLD_INHABITANTS_NODE)) as Node2D
+	if holder == null:
+		holder = Node2D.new()
+		holder.name = WORLD_INHABITANTS_NODE
+		world.add_child(holder)
+	var placed := 0
+	for inhabitant in inhabitants:
+		var actor := inhabitant as Actor
+		if actor == null:
+			continue
+		var body := Node2D.new()
+		body.name = "Inhabitant_%s" % String(actor.id)
+		body.position = DomainSpawner.placement(actor)
+		body.set_meta(&"actor", actor)
+		body.set_meta(&"room_id", String(DomainSpawner.room_of(actor)))
+		body.set_meta(&"role", String(DomainSpawner.role_of(actor)))
+		holder.add_child(body)
+		placed += 1
+	return placed
+
+
+## Put a `PlayerAdapter` for `player` into `world` at the entry centre, bounded to the
+## cells the floor actually drew.
+##
+## `set_map_bounds` is the seam [method map_bounds] exists for, applied through the EXPLICIT
+## setter rather than by relying on `_ready()` — which the runner never delivers to a node
+## under `root`, so an adapter that bound itself there would stand up in a running game and
+## never in a test. There is no camera here (nothing scrolls), so `_ready()` has nothing to
+## do these setters do not. Idempotent: an adapter already standing is returned, not doubled.
+static func place_player(world: Node2D, player: Actor, scene: DomainScene) -> PlayerAdapter:
+	if world == null or player == null:
+		return null
+	var existing := world.get_node_or_null(NodePath(WORLD_PLAYER_NODE)) as PlayerAdapter
+	if existing != null:
+		return existing
+	var body := PlayerAdapter.new(player)
+	body.name = WORLD_PLAYER_NODE
+	world.add_child(body)
+	if scene != null:
+		body.set_map_bounds(scene.map_bounds())
+		body.global_position = scene.entry_position()
+	return body
+
+
+## FREE the realized world under `parent`. Idempotent, and a no-op when nothing was ever
+## realized, so a `teardown()` may call it without asking first.
+##
+## `remove_child()` then `free()`, NEVER `queue_free()`: the runner never processes a frame,
+## so a deferred free leaks for the life of the process — the shape that took a run to 67 GB
+## and forced a power-cycle (INC-0004/0005), and what
+## `tests/arch_rules/test_no_deferred_free.gd` rejects in `res://src`. Every node created
+## here is named in [constant WORLD_BORN], so the free is bounded AND self-describing: the
+## root goes last, and `stranded` reports any child that was NOT in that list.
+static func release_world(parent: Node) -> Dictionary:
+	if parent == null:
+		return {"ok": false, "reason": "no_parent", "freed": 0}
+	var world := parent.get_node_or_null(NodePath(WORLD_NODE))
+	if world == null:
+		return {"ok": true, "reason": "", "freed": 0, "present": false}
+	var freed := 0
+	for child_name in WORLD_BORN:
+		var child := world.get_node_or_null(NodePath(child_name))
+		if child == null:
+			continue
+		world.remove_child(child)
+		child.free()
+		freed += 1
+	var stranded := world.get_child_count()
+	parent.remove_child(world)
+	world.free()
+	return {"ok": true, "reason": "", "freed": freed, "stranded": stranded, "present": true}
+
+
+## Whether a world is currently realized under `parent` — the one question a caller and a
+## test both ask, asked of the name this file publishes rather than of a tree walk neither
+## can describe.
+static func world_realized(parent: Node) -> bool:
+	return parent != null and parent.get_node_or_null(NodePath(WORLD_NODE)) != null
+
+
+## The realized world's read model, primitives only: what is drawn, who is standing in it,
+## where, and whether a player is in it. Every value is coerced because a `summary()` holding
+## a `Node2D` or a `Rect2` is a testable surface that quietly stops being testable.
+##
+## `{}` when nothing is realized — the repo's does-not-exist vocabulary, so "no world" can
+## never read like "a world with no inhabitants in it".
+static func world_summary(parent: Node) -> Dictionary:
+	if not world_realized(parent):
+		return {}
+	var world := parent.get_node_or_null(NodePath(WORLD_NODE))
+	if world == null:
+		return {}
+	var scene := world.get_node_or_null(NodePath(WORLD_SCENE_NODE)) as DomainScene
+	var player := world.get_node_or_null(NodePath(WORLD_PLAYER_NODE)) as PlayerAdapter
+	var bodies := 0
+	var placed: Array = []
+	var holder := world.get_node_or_null(NodePath(WORLD_INHABITANTS_NODE))
+	if holder != null:
+		for body in holder.get_children():
+			if not body is Node2D:
+				continue
+			bodies += 1
+			var point := (body as Node2D).position
+			placed.append([point.x, point.y])
+	var bounds := Rect2()
+	var entry := Vector2.ZERO
+	if scene != null:
+		bounds = scene.map_bounds()
+		entry = scene.entry_position()
+	var stand := Vector2.ZERO
+	if player != null:
+		stand = player.global_position
+	return {
+		"realized": true,
+		"floor_cells": scene.floor_layer().get_used_cells().size() if scene != null else 0,
+		"wall_cells": scene.wall_layer().get_used_cells().size() if scene != null else 0,
+		"spawn_markers": scene.spawn_markers().size() if scene != null else 0,
+		"zone_areas": scene.zone_areas().size() if scene != null else 0,
+		"has_navigation": scene != null and scene.navigation_region() != null,
+		"bounds": [bounds.position.x, bounds.position.y, bounds.size.x, bounds.size.y],
+		"entry": [entry.x, entry.y],
+		"has_player": player != null,
+		"player_position": [stand.x, stand.y],
+		"inhabitant_bodies": bodies,
+		"inhabitant_positions": placed,
+	}

@@ -14,9 +14,36 @@ extends RefCounted
 ## ## The division of labour
 ##
 ## `loot` owns the encounter: whose vitality is spent, the once-only reward, the run
-## lifecycle. This owns the resolution: how much a blow is worth and what the boss answers
-## with. So `combat` depends on `loot` through its facade, and `loot` knows nothing of
-## `combat` — the edge runs one way and `tools arch` enforces it.
+## lifecycle, AND the status the boss's creature afflicts (authored on its `BossDef`,
+## paid by `LootState.strike`, which is this verb's own call into it). This owns the
+## resolution: how much a blow is worth and what the boss answers with. So `combat`
+## depends on `loot` through its facade, and `loot` knows nothing of `combat` — the edge
+## runs one way and `tools arch` enforces it.
+##
+## ## Why the status rides the ATTACKER, and why that is not a workaround
+##
+## The boss is NOT an `Actor` — it is a `Dictionary` in `actor.module_data`
+## (`loot_state.gd:523-547`), with frozen attack/defense/vitality and no stats to resist
+## with and no `add_status` to be written on. `StatusApi.apply(actor, …)` therefore cannot
+## be pointed at it at all, and inventing a boss `Actor` to hold one debuff would be a
+## second combatant the whole encounter model does not have. So a landed blow's status
+## rides the player, which is what ADR 0105 calls for and what makes the player a SUBJECT
+## of a status for the first time — a fight whose own blow can slow, burn or root the hand
+## that threw it.
+##
+## ## Why the boss's OWN status also rides the player
+##
+## For the same reason and by the same route: the only `Actor` in an encounter is the
+## player, so it is the only thing a status can be written on. What is different is WHO
+## chooses the def. ADR 0105's rule is that the ATTACKER'S element chooses it, and that
+## answer can only ever be an `on_landed_blow` id — one per element, so the second half of
+## every element's pair (`fire_pyre`, `metal_sunder`, `water_deluge`, `ice_shatter`,
+## `lightning_surge`, `wind_spread`, `dark_wane`) had no producer at all, and the two
+## amplifiers among them left the whole amplifier channel inert in production. A boss is
+## the one creature in the game with an authored identity and no element, so its authored
+## `BossDef.affliction` is what names the def: `_boss_affliction_numbers` pays it with the
+## same ADR 0087 gate and ADR 0088 potency the landed blow uses, and `loot` does the apply.
+##
 ##
 ## ## Every exchange is a share, never a magnitude
 ##
@@ -85,8 +112,17 @@ static func exchange(actor: Actor, seed_value: int = 0) -> Dictionary:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = (seed_value * 2654435761 + absi(hash(String(active["encounter_id"])))) & 0x7FFFFFFF
 	var blow := CombatDamage.resolve_hit(offense(actor), _boss_guard(active), rng)
+	# The two ADR 0087/0088 numbers the BOSS's own affliction is paid with, resolved
+	# through the same two spine calls and in the same order as `_status_on_landing` uses
+	# for the player's own blow, so the two statuses an exchange can inflict are gated by
+	# one formula and neither is a second opinion about what chance means.
+	var afflictions := _boss_affliction_numbers(actor, active)
 	var struck := LootApi.strike(
-		actor, float(blow["share"]) * float(active["vitality_max"]), seed_value
+		actor,
+		float(blow["share"]) * float(active["vitality_max"]),
+		seed_value,
+		float(afflictions["chance"]),
+		float(afflictions["potency"])
 	)
 	var after := LootApi.summary(actor).get("active", {}) as Dictionary
 	var result := {
@@ -100,12 +136,20 @@ static func exchange(actor: Actor, seed_value: int = 0) -> Dictionary:
 		"power": float(blow["power"]),
 		"mitigation": float(blow["mitigation"]),
 		"status": {"applied": false, "id": "", "potency": 0.0},
+		# What the boss this blow met inflicts, under the same shape as the landed-blow
+		# `status` above. Primitives only, so a screen renders both without naming either
+		# module.
+		"affliction": {"applied": false, "id": "", "reason": ""},
 		"boss": after,
 		"player": player(actor),
 	}
 	if not bool(result["ok"]):
 		return result
 	result["status"] = _status_on_landing(actor, active, result, rng)
+	# Read off the STRIKE, not recomputed: `LootApi.strike` already ran the producer
+	# against the boss that was struck, and on a defeat that boss is gone — so the
+	# recomputation would either be the next creature's affliction or empty.
+	result["affliction"] = struck.get("affliction", result["affliction"])
 	if not _still_standing(active, after):
 		result["outcome"] = OUTCOME_BOSS_DEFEATED
 		return result
@@ -354,6 +398,52 @@ static func _element_of(actor: Actor) -> StringName:
 			best = candidate
 			best_value = value
 	return best
+
+
+## ADR 0087's gate and ADR 0088's potency for the status the BOSS inflicts, as
+## `{chance, potency}`.
+##
+## ## Why this is the same pair `_status_on_landing` computes, and not a second formula
+##
+## Both statuses an exchange can inflict are gated by ONE resist formula and ONE elemental
+## term, resolved from the same `CombatEngineApi.tuning()` and the same `StatusApply`
+## arithmetic. A boss's affliction that computed its own chance would be a second opinion
+## about what `status_resistance` means, and `elemental_resistance_<e>` would silently mean
+## two things on one exchange.
+##
+## ## Why the ELEMENT is the boss's AFFLICTION element, not the player's affinity
+##
+## ADR 0088's term is the INFLECTING creature's `element_power_<e>`, and the inflicting
+## creature here is the boss. The boss is a `Dictionary` with no `Actor` to read a stat
+## off, and ADR 0088's floor (`status_potency_floor`) is exactly the documented answer for
+## a source with no elemental affinity yet — so the number this returns is the floor until
+## a boss ever carries elemental power of its own, which is the same known dependency the
+## landed-blow path already names (`exchange.gd:317-323`). It is read, not invented.
+##
+## ## Why an empty id costs nothing
+##
+## A boss nobody authored an affliction for reads `chance 0.0`, which is ADR 0087's CLOSED
+## gate and spends no draw. The refusal is decided before any arithmetic, so the common
+## case — the whole corpus as it stood before this field existed — pays nothing.
+static func _boss_affliction_numbers(actor: Actor, active: Dictionary) -> Dictionary:
+	var status_id := StringName(active.get("affliction", ""))
+	if actor == null or status_id == &"":
+		return {"chance": 0.0, "potency": 0.0}
+	var def := StatusApi.definition(status_id)
+	if def == null or not def.is_combat_scope():
+		return {"chance": 0.0, "potency": 0.0}
+	var tuning := CombatEngineApi.tuning()
+	var element := def.element
+	return {
+		"chance":
+		StatusApply.apply_chance(
+			STATUS_CHANCE,
+			actor,
+			tuning,
+			StatusApply.elemental_resist(actor, actor, tuning, element)
+		),
+		"potency": StatusApply.potency_of(actor, tuning, element),
+	}
 
 
 ## The boss's answer, spent on the player's health, and the loss that ends a run.

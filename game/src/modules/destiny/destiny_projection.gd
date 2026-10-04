@@ -252,6 +252,22 @@ static func on_beat_written(actor: Actor, fact: StringName, amount: int = 1) -> 
 	return on_fact_recorded(actor, fact, amount)
 
 
+## READ the counter `fact` names, WITHOUT moving it. For a caller that wants to
+## report what a beat did: the write already went through `WorldFact.record` and
+## fired the subscriber, so the value here is the running total AFTER that move.
+##
+## The pairing with [method on_fact_recorded] is the whole point: one MOVES, one
+## READS. A caller holding a report shape must never reach for the mover, because a
+## counter is monotonic and never refundable (ADR 0065) — a second call for one
+## occurrence is invisible AND irreversible. `&""` reads 0.
+static func counter_after(actor: Actor, fact: StringName) -> int:
+	var counter_id := counter_for_fact(fact)
+	if actor == null or counter_id == &"":
+		return 0
+	var ledger := DestinyState.normalize(actor.get_module_data(DestinyState.MODULE_KEY))
+	return DestinyState.counter_value(ledger, counter_id)
+
+
 ## Apply the whole ledger to `actor`. Idempotent by construction: every fate
 ## contribution is stripped first, then rebuilt. Calling this after no change is
 ## free of consequence — it produces the same modifier stack.

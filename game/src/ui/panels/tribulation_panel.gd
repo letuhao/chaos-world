@@ -16,7 +16,18 @@ var _kind_label: Label = null
 var _wave_label: Label = null
 var _rating_label: Label = null
 var _verdict_label: Label = null
+var _blessing_label: Label = null
 var _state: Dictionary = {}
+## The permanent blessing the LAST decided fight paid, as the facade's own primitives.
+## Held as fields and formatted only in `_render_blessing` so the dict a caller handed
+## in is the dict `summary()` reports — a panel that rendered a string nobody can read
+## back is a reward line a test cannot assert on.
+var _blessing: Dictionary = {}
+
+## Shown when a fight was survived and paid nothing. A blank line would read as a row
+## the panel forgot to fill, and "the absence is stated" is the same rule the loot
+## readout's `NO_STATUSES` follows.
+const NO_BLESSING := "No blessing earned"
 
 
 func _ready() -> void:
@@ -30,6 +41,39 @@ func set_state(state: Dictionary) -> void:
 	_bind_nodes()
 	_state = state
 	_render()
+
+
+## Render the blessing a decided fight paid, `TribulationBlessing.award`'s own answer:
+## `{ok, id, ...}` or a named refusal. Called only on a DECIDED result — the key is
+## absent while a fight is still in the air, so a caller with nothing to report must pass
+## nothing rather than invent an empty dict (which this would read as "paid nothing").
+##
+## ## Why this is a SEPARATE verb and not another `set_state` key
+##
+## The blessing is not part of `state()`: `TribulationFight.state` reads the record, and
+## a record does not carry what was paid for it — the award is once-guarded on the actor
+## (`TribulationBlessing.REWARDED_KEY`), so a second read of the same decided record
+## answers `already_rewarded` and a player who re-opens this screen would see their
+## blessing replaced by a refusal. The action result is the one place the award is
+## observable exactly once, and this panel renders it from there.
+func show_blessing(blessing: Dictionary) -> void:
+	_bind_nodes()
+	_blessing = blessing if blessing != null else {}
+	_render()
+
+
+## The blessing this panel last rendered, as primitives. `{}` when nothing was handed in
+## — which is NOT the same as a refusal, and `paid` tells the two apart.
+func blessing_summary() -> Dictionary:
+	_bind_nodes()
+	if _blessing.is_empty():
+		return {}
+	return {
+		"paid": bool(_blessing.get("ok", false)),
+		"id": String(_blessing.get("id", "")),
+		"reason": String(_blessing.get("reason", "")),
+		"label": blessing_text(),
+	}
 
 
 ## The fight this row shows, as primitives. This is the shape tests assert.
@@ -53,6 +97,7 @@ func summary() -> Dictionary:
 		"gate_open": bool(_state.get("gate_open", false)),
 		"active": bool(_state.get("active", false)),
 		"decided": bool(_state.get("decided", false)),
+		"blessing": blessing_summary(),
 	}
 
 
@@ -66,6 +111,7 @@ func _bind_nodes() -> void:
 	_wave_label = get_node_or_null("%WaveLabel") as Label
 	_rating_label = get_node_or_null("%RatingLabel") as Label
 	_verdict_label = get_node_or_null("%VerdictLabel") as Label
+	_blessing_label = get_node_or_null("%BlessingLabel") as Label
 
 
 func _render() -> void:
@@ -78,6 +124,7 @@ func _render() -> void:
 		_wave_label.text = ""
 		_rating_label.text = ""
 		_verdict_label.text = ""
+		_blessing_label.text = ""
 		return
 	_target_label.theme_type_variation = &"SectionTitle"
 	_target_label.text = (
@@ -95,11 +142,55 @@ func _render() -> void:
 		% [float(_state.get("difficulty", 0.0)), int(float(_state.get("chance", 0.0)) * 100.0)]
 	)
 	_render_verdict()
+	_render_blessing()
 
 
-## The one line that answers "what happened", and it is the line a player reads
-## after the fight resolves. A gate that is shut and a fight that was never
-## fought read differently on purpose.
+## The reward line: what the survived fight PAID, in words a player can act on.
+##
+## ## Why it exists at all (F-7)
+##
+## `TribulationFight.fight_wave` returns a `blessing` key on every decided result and the
+## screen branched only on `ok` / `decided` / `survived`, so the player read "Survived the
+## tribulation" and never learned which permanent status they had just earned. A permanent
+## blessing is the fight's reward — the one thing the whole ladder was for — and a reward
+## the player cannot name is a reward they cannot notice they are carrying.
+##
+## ## Why the name is turned into words rather than looked up
+##
+## `ui/` may not name `StatusDef` (the facade rule), so the authored `text` is unreachable
+## from here; the id is turned into words by replacing its underscores, exactly as the
+## loot panel's `_status_name` does. Showing the id beats hiding an effect the panel
+## cannot name, and `blessing_summary()` publishes the raw id so a test can assert on it
+## without parsing the sentence.
+##
+## A refusal is rendered as its REASON rather than as an absence: the named refusals are
+## ordinary answers (`no_cultivation_blessing_for_element` — metal and water ship no
+## blessing today), and a silent line would read as "the game forgot to pay me" rather
+## than "this trial type pays nothing".
+func _render_blessing() -> void:
+	if _blessing_label == null:
+		return
+	if _blessing.is_empty():
+		_blessing_label.theme_type_variation = &"MetaLabel"
+		_blessing_label.text = ""
+		return
+	_blessing_label.theme_type_variation = (
+		&"OkLabel" if bool(_blessing.get("ok", false)) else &"WarnLabel"
+	)
+	_blessing_label.text = blessing_text()
+
+
+## The blessing line as the player reads it. Safe to call before `_render()`.
+func blessing_text() -> String:
+	if _blessing.is_empty():
+		return ""
+	var status_id := String(_blessing.get("id", ""))
+	if bool(_blessing.get("ok", false)) and not status_id.is_empty():
+		return "Blessing earned: %s" % status_id.replace("_", " ")
+	var reason := String(_blessing.get("reason", ""))
+	return NO_BLESSING if reason.is_empty() else "No blessing · %s" % reason
+
+
 func _render_verdict() -> void:
 	var outcome := String(_state.get("outcome", ""))
 	match outcome:

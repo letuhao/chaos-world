@@ -123,7 +123,7 @@ func _qi_attempt(actor: Actor, _rng: RandomNumberGenerator = null) -> bool:
 ## The body's durable two-phase lifecycle: spend the pill and persist the attempt, then
 ## roll it on a later call so the trial can span a save. Returning both halves is what
 ## makes this the DURABLE path rather than another spelling of the one-press one.
-func _body_two_phase(actor: Actor, rng: RandomNumberGenerator) -> bool:
+func _body_two_phase(actor: Actor, _rng: RandomNumberGenerator) -> bool:
 	if BodyCultivationApi.begin_breakthrough(actor).is_empty():
 		return false
 	return BodyCultivationApi.resolve_breakthrough(actor)
@@ -131,7 +131,7 @@ func _body_two_phase(actor: Actor, rng: RandomNumberGenerator) -> bool:
 
 ## The body's one-press verb, for completeness: the test above is worthless if the
 ## one-press path is the only thing that works.
-func _body_one_press(actor: Actor, rng: RandomNumberGenerator) -> bool:
+func _body_one_press(actor: Actor, _rng: RandomNumberGenerator) -> bool:
 	return BodyCultivationApi.attempt_breakthrough(actor)
 
 

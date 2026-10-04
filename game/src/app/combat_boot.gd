@@ -18,7 +18,19 @@ extends RefCounted
 ## `ActorFactory.with_mind_cultivation` now both run in production (BL-0523), so a
 ## root-built actor CAN carry an `acupoints` set or a `sea_of_consciousness`. It binds
 ## all three now, gated on the inputs being present — see [method bind_mechanisms] for
-## the rule and for why the both-paths case resolves to qi rather than to a coin flip.
+## the rule and for why the both-paths case resolves to qi there.
+##
+## ## And a second answer to the same question, because the first is not the one asked
+##
+## The binding is per ACTOR, and the shipped player is enrolled on THREE paths, so the
+## binding is qi for every player actor and body and mind can never fire at all — not
+## rarely, never. That is not a defect in the binding rule; it is the rule answering a
+## different question. **Which mechanism is BOUND when nothing says otherwise** is an
+## actor question, and qi is the right answer to it. **Which mechanism is THIS HIT
+## worth** is a question about the ATTACKING TECHNIQUE, and `TechniqueDef.path` already
+## answers it on every authored `.tres`. So [method mechanism_for_hit] is that second
+## answer, [method resolve_hit] uses it, and [method install] wires it beside the
+## binding. ADR 0154.
 ##
 ## ## Why this file exists
 ##
@@ -62,11 +74,26 @@ const _MIND_MECHANISM := &"MindDamage"
 ## `true` on both reads rather than the object, so a caller is never handed a module type
 ## it has to downcast — the same primitives-only rule every other facade answer follows.
 const _BOUND := true
+## The component key `BodyCultivationApi.attach_acupoints` writes and
+## `BodyLocation.ACUPOINTS_KEY` reads. Spelled here rather than reached into the body
+## module's own `_`-private constant, because a private constant is a private detail —
+## and this file now asks the SAME question twice (does this actor have a location axis?)
+## in `_mechanism_for` and in the per-hit gate, so it must have one spelling.
+const _ACUPOINTS_COMPONENT := &"acupoints"
 
 ## The injected attack callable: `func(attacker: Actor, defender: Actor, seed_value: int)
 ## -> Variant`. Null means no adapter can land a blow, which [method strike] reports by
 ## name rather than swallowing.
 static var _resolver: Callable = Callable()
+
+## The injected per-hit callable: `func(attacker: Actor, target: Actor, technique:
+## Variant, tuning: CombatTuning, rng: Variant) -> CombatOutcome`. The SECOND seam, and
+## it exists because the first one cannot reach the mechanism: `strike` answers the
+## encounter layer's exchange and has no `TechniqueDef` to select by, while the authored
+## inputs (`element_share`, `aim_meridian`) travel only on a `ctx_builder`. Same static-
+## by-convention shape as [member _resolver] and for the same reason — the hit is
+## initiated by something that has no place to hang state, exactly as `attack` is.
+static var _hit_resolver: Callable = Callable()
 
 
 ## Bind the mechanism `actor`'s own inputs support, and its wound ledger, and report what
@@ -105,15 +132,21 @@ static var _resolver: Callable = Callable()
 ## player actor in case 3: qi is the fallback, and `element_share` is the only mechanism
 ## whose input the element provider every actor has.
 ##
-## **The BOTH-paths case is deliberate, and qi is the answer.** `MechanismSlot` stores one
-## mechanism, so a dual-cultivator must pick, and the pick cannot be data — nothing in the
-## authored content says which of two paths a blow belongs to. qi is the only pick that is
-## correct for a mixed build rather than arbitrarily wrong for half of it: it always has
-## its input (the element provider `ActorFactory.build` mounts for everyone), and qi
-## explicitly never raises immunity (BRIEF 2.2), so it cannot dominate a build that has
-## spent nothing on `ATTACK_SPIRITUAL`. Any richer rule needs an ADR: "an actor on two
-## paths fights by the path it last trained" is a decision, not a derivation, and this file
-## reports it rather than inventing it.
+## ## The BOTH-paths case is deliberate, and qi is the answer at INSTALL time
+##
+## `MechanismSlot` stores one mechanism, so a dual-cultivator must pick, and the pick
+## cannot be data — nothing in the authored content says which of two paths a blow
+## belongs to. qi is the only pick that is correct for a mixed build rather than
+## arbitrarily wrong for half of it: it always has its input (the element provider
+## `ActorFactory.build` mounts for everyone), and qi explicitly never raises immunity
+## (BRIEF 2.2), so it cannot dominate a build that has spent nothing on
+## `ATTACK_SPIRITUAL`. This remains the right answer for "which mechanism is bound when
+## nobody says otherwise". It was NOT the right answer for "which mechanism is this hit
+## worth", and the docblock used to say so without saying anything that fixed it:
+## `ItemWorkbenchApp._build_actor` and `CharacterCreationFlow._body` enrol THREE paths,
+## so `has_body == has_mind` was true for every player actor and the binding below was
+## `QiDamage` for all of them, forever. **ADR 0154** is that fix: the per-hit question
+## is answered by [method mechanism_for_hit], off the ATTACKING TECHNIQUE's path.
 ##
 ## ## Idempotent by contract, not by luck
 ##
@@ -121,7 +154,7 @@ static var _resolver: Callable = Callable()
 ## save load is the intended usage. Re-binding after a save load is also how an actor that
 ## gained a path gets the right mechanism: `ActorFactory` enrols AFTER `ActorFactory.build`
 ## returns, so the order `ItemWorkbenchApp` uses (`build` -> three enrolments ->
-## `CombatBoot.bind_mechanisms`) is the only order in which the components exist by the
+## `CombatBoot.install`) is the only order in which the components exist by the
 ## time this reads them. The report says what it did rather than leaving a caller to guess.
 static func bind_mechanisms(actor: Actor) -> Dictionary:
 	if actor == null:
@@ -137,21 +170,7 @@ static func bind_mechanisms(actor: Actor) -> Dictionary:
 	var chosen := _mechanism_for(actor)
 	# The one place that knows the concrete mechanisms. `app/` is the composition root
 	# and the only layer allowed to name a concrete type; the module itself never does.
-	var mechanism: DamageMechanism = null
-	match chosen:
-		_BODY_MECHANISM:
-			mechanism = BodyDamage.new()
-		_MIND_MECHANISM:
-			var mind := MindDamage.new()
-			# The sea, INJECTED rather than left to the mechanism's own component lookup:
-			# binding it once here is what makes `CombatBoot` the composition root for the
-			# mind path the way `ElementsApi.attach` is the root for qi. A null sea reads
-			# `structural_capacity 0.0` and the erosion is visibly inert, and the guard
-			# below is what stops an actor without one getting here at all.
-			mind.sea = MindCultivationApi.sea(actor)
-			mechanism = mind
-		_:
-			mechanism = QiDamage.new()
+	var mechanism: DamageMechanism = _instance(chosen, actor)
 	CombatEngineApi.bind_mechanism(actor, mechanism)
 	# The wound ledger, bound HERE rather than lazily at the first wound, because it is
 	# the other half of the same wiring and it is the only thing that can restore a save:
@@ -183,6 +202,26 @@ static func bind_mechanisms(actor: Actor) -> Dictionary:
 	}
 
 
+## A fresh mechanism for `chosen`, configured for `actor`. One place that names the
+## three concrete types, shared by the install-time binding above and the per-hit
+## selection below so the two can never disagree about what a name MEANS.
+static func _instance(chosen: StringName, actor: Actor) -> DamageMechanism:
+	match chosen:
+		_BODY_MECHANISM:
+			return BodyDamage.new()
+		_MIND_MECHANISM:
+			var mind := MindDamage.new()
+			# The sea, INJECTED rather than left to the mechanism's own component lookup:
+			# binding it once here is what makes `CombatBoot` the composition root for the
+			# mind path the way `ElementsApi.attach` is the root for qi. A null sea reads
+			# `structural_capacity 0.0` and the erosion is visibly inert, and the gate in
+			# `_mechanism_for` is what stops an actor without one getting here at all.
+			mind.sea = MindCultivationApi.sea(actor)
+			return mind
+		_:
+			return QiDamage.new()
+
+
 ## The mechanism `actor`'s own components support, or `&""` for the qi fallback. Split out
 ## as one pure read so the rule above is stated once and the binding above is the only
 ## place a concrete type is named — which is what keeps this file's rule auditable.
@@ -190,8 +229,19 @@ static func bind_mechanisms(actor: Actor) -> Dictionary:
 ## Reads components, not paths, FIRST: a path flag says what was enrolled, a component
 ## says what the mechanism will actually find, and only the second one can make S4 read
 ## zeros.
+##
+## ## This is the INSTALLED mechanism, and it is deliberately the neutral one
+##
+## `MechanismSlot` holds one mechanism per actor and `CombatSpine.resolve_hit` reads it
+## off the ATTACKER at S4, so this is the answer to "which mechanism will run if nobody
+## says otherwise" — never "which mechanism is this hit worth". The hit-level answer is
+## [method mechanism_for_hit], and [method install] binds BOTH: the slot so the spine's
+## loud read can never assert on an actor this root built, and the per-hit resolver so a
+## body technique on a tri-path actor still lands at a meridian (ADR 0154).
 static func _mechanism_for(actor: Actor) -> StringName:
-	var has_body := actor.component(&"acupoints") != null and actor.path(PathState.BODY) != null
+	var has_body := (
+		actor.component(_ACUPOINTS_COMPONENT) != null and actor.path(PathState.BODY) != null
+	)
 	var has_mind := (
 		actor.component(MindCultivationApi.SEA_COMPONENT) != null
 		and actor.path(PathState.MIND) != null
@@ -201,6 +251,146 @@ static func _mechanism_for(actor: Actor) -> StringName:
 	if has_body == has_mind:
 		return _DEFAULT_MECHANISM
 	return _BODY_MECHANISM if has_body else _MIND_MECHANISM
+
+
+## The mechanism THIS HIT is resolved through, which is the ATTACKING TECHNIQUE's path
+## rather than the attacker's enrolment (ADR 0154).
+##
+## ## Why the technique, and why not the actor
+##
+## The enrolment-based rule above is not wrong, it is just answering a different
+## question, and it answers the wrong one in production for a reason that no fix to it
+## can reach: `ItemWorkbenchApp._build_actor` and `CharacterCreationFlow._body` both
+## enrol the player on all three paths, so `has_body == has_mind` is true on EVERY
+## player actor and every one of them fell to `_QI`. Body and mind could not fire in the
+## shipped app at all — not rarely, NEVER — which makes the three-mechanism program
+## unreachable regardless of how correct the mechanisms are. Narrowing the enrolment to
+## one path would "fix" that by deleting the dual-cultivator the game ships, and the
+## audit's own framing ("select by the attacking technique's path") is the one that
+## needs no new authored data: `TechniqueDef.path` already exists and is populated on
+## every `.tres` under `game/data/techniques/`.
+##
+## ## The gate is still the attacker's INPUTS, not its enrolment
+##
+## Selection asks two questions in order and both must answer yes:
+##
+##   1. does the technique ASK for this mechanism? — `TechniqueDef.path`;
+##   2. can this attacker actually PRODUCE it? — it carries the input that mechanism
+##      reads: an `acupoints` component for body, a `sea_of_consciousness` for mind.
+##
+## Question 2 is what makes this safe rather than merely different. `BodyDamage` and
+## `MindDamage` read the DEFENDER's acupoints and sea and the ATTACKER's
+## `ATTACK_PHYSICAL` / `MENTAL_ATTACK`; an actor with none of those reads `0.0` at S4 and
+## every hit collapses to the chip floor. So the per-hit switch refuses a mechanism whose
+## inputs this attacker does not carry and falls back to the INSTALLED mechanism — which
+## is the one `bind_mechanisms` chose because those inputs were present.
+##
+## **The gate reads COMPONENTS, not the currently-bound mechanism, and that is not a
+## restatement.** Reading `MechanismSlot.peek(attacker)` here would make the rule
+## self-defeating and silently so: the shipped player's bound mechanism is qi precisely
+## BECAUSE it carries both other sets, so "can this attacker run `BodyDamage`?" answered
+## "is my bound mechanism `BodyDamage`?" answers NO on every player actor and the rule
+## rejects body for exactly the actors it exists to enable — a tautology that reads as a
+## working guard and is not one. The components are the fact; the slot is a cache of a
+## decision made elsewhere.
+##
+## Selection is therefore strictly a WIDENING of the reachable set: a body technique on a
+## tri-path actor now reaches `BodyDamage`, and nothing that worked before can stop
+## working — an actor lacking the inputs falls back to the installed mechanism, which is
+## the old behaviour verbatim.
+##
+## ## A DUAL technique and a SHARED one
+##
+## Neither names one path, and the rule must not invent a coin flip for them. A DUAL
+## technique's own docblock says it "commits BOTH" paths (ADR 0059), so it is asked of
+## both mechanisms and takes the first the attacker can actually run — enumerated in the
+## authored order (`qi_cultivation+body_cultivation` prefers qi), which is deterministic
+## and is the author's stated ordering rather than one this file invented. A SHARED
+## technique names no path at all and gates on `TechniqueGate.best_ordinal`, so it has
+## no mechanism to ask for: it takes the INSTALLED one, which is exactly the qi fallback
+## a pathless technique wants and is what every `shared_*.tres` shipped before.
+##
+## ## Reads are `Variant`-based and unbound reads never throw
+##
+## `TechniqueDef` lives in `modules/techniques/` and the concrete mechanisms are named
+## here because `app/` is the composition root, but a null technique or an actor with no
+## bound mechanism is an ordinary state, not a failure: `_bound` uses `MechanismSlot.peek`
+## — the NON-loud read — because `MechanismSlot.of` asserts, and this runs per hit on
+## whatever the caller handed in. Nothing here can raise.
+static func mechanism_for_hit(attacker: Actor, technique: Variant) -> StringName:
+	var bound := _bound(attacker)
+	if technique == null or not (technique is Object):
+		return bound
+	var asked := _mechanisms_for_technique(technique)
+	for candidate in asked:
+		if _runs_for(candidate, attacker):
+			return candidate
+	return bound
+
+
+## Whether `attacker` carries the input that mechanism `candidate` reads. The input
+## gate of [method mechanism_for_hit], and the component is the fact rather than the
+## currently-bound mechanism — see that method's own docblock for why reading the slot
+## here would be a tautology that disabled body on every player actor.
+##
+## qi is NOT gated, and that asymmetry is deliberate rather than an oversight. Its inputs
+## are STATS (`ATTACK_SPIRITUAL`, `element_power_<e>`) read through `ctx.attacker_value`,
+## and `ElementsApi.attach` registers the element side as a STAT PROVIDER on
+## `actor.stats` — not as a component — so there is no component to test and a gate
+## written against one would be permanently false and would reject every qi hit. Every
+## `Actor` carries an `ActorStats`, so the honest statement is that qi has no component
+## input to be missing, and the fallback below handles the rest.
+static func _runs_for(candidate: StringName, attacker: Actor) -> bool:
+	if attacker == null:
+		return false
+	match candidate:
+		_BODY_MECHANISM:
+			return attacker.component(_ACUPOINTS_COMPONENT) != null
+		_MIND_MECHANISM:
+			return MindCultivationApi.sea(attacker) != null
+		_DEFAULT_MECHANISM:
+			return true
+		_:
+			return false
+
+
+## The mechanisms `technique` asks for, in authored order. `TechniqueDef.path_ids()`
+## already parses the DUAL `"a+b"` spelling (ADR 0059), so nothing here re-derives it
+## and a fourth path added there is answerable here without an edit to this file.
+static func _mechanisms_for_technique(technique: Object) -> Array[StringName]:
+	if technique.has_method(&"path_ids"):
+		var ids: Variant = technique.call(&"path_ids")
+		if ids is Array:
+			return _mechanisms_for_paths(ids as Array)
+		return [_DEFAULT_MECHANISM]
+	# A def that cannot answer its own paths is a def the seam cannot read, and qi is
+	# the one mechanism whose inputs every root-built actor is guaranteed to carry.
+	return [_DEFAULT_MECHANISM]
+
+
+static func _mechanisms_for_paths(paths: Array) -> Array[StringName]:
+	var out: Array[StringName] = []
+	for path_id in paths:
+		var mechanism := StringName(path_id) if path_id is StringName or path_id is String else &""
+		match mechanism:
+			PathState.BODY:
+				out.append(_BODY_MECHANISM)
+			PathState.MIND:
+				out.append(_MIND_MECHANISM)
+			PathState.QI:
+				out.append(_DEFAULT_MECHANISM)
+	return out if not out.is_empty() else [_DEFAULT_MECHANISM] as Array[StringName]
+
+
+## The name of the mechanism `attacker` currently carries, or the qi fallback when it
+## carries none. The NON-loud read on purpose — see [method mechanism_for_hit].
+static func _bound(attacker: Actor) -> StringName:
+	var mechanism := MechanismSlot.peek(attacker)
+	if mechanism is BodyDamage:
+		return _BODY_MECHANISM
+	if mechanism is MindDamage:
+		return _MIND_MECHANISM
+	return _DEFAULT_MECHANISM
 
 
 ## Install the callable `PlayerAdapter.attack` lands its blow through, and report the
@@ -213,8 +403,25 @@ static func set_attack_resolver(resolver: Callable) -> Dictionary:
 
 ## Whether a resolver is installed, so a caller can say "no target" and "no spine" as two
 ## different messages rather than one empty descriptor.
+##
+## ## The `or` that used to be here, and why it is `and`
+##
+## This read `_resolver.is_null() or _resolver.is_valid()`, and a `Callable` answers
+## `is_valid() == false` when it is null OR when it names something that no longer
+## exists — so the disjunction was `true` in BOTH cases and the function answered
+## "yes, a resolver is installed" before a single one had been. `PlayerAdapter.attack`
+## reads this as its only gate, so the gate was open: it warned about a missing
+## resolver on a process that had never installed one and then walked straight into
+## `strike`, which refused with `no_resolver` and the blow was silently dropped.
+## `CombatBoot.strike` has the same dead check, which is how the refusal was invisible
+## from the outside: two guards that could not both fail loudly.
+##
+## The correct question is one conjunct: is there a callable that is both non-null and
+## valid? `_resolver.is_valid()` already implies non-null, so it is the whole answer —
+## and it is the SAME read `set_attack_resolver` reports as `ok`, so a caller can trust
+## that the install that reported success is the one this confirms.
 static func has_attack_resolver() -> bool:
-	return _resolver.is_null() or _resolver.is_valid()
+	return _resolver.is_valid()
 
 
 ## One blow through the installed resolver. `{ok, reason, result}`: the refusal is named
@@ -230,13 +437,18 @@ static func strike(attacker: Actor, defender: Actor, seed_value: int = 0) -> Dic
 	return {"ok": true, "reason": "", "result": answer}
 
 
-## Everything a booted combat stack needs for one actor, in the order that order matters:
-## the mechanism first (so `CombatSpine.resolve_hit` cannot assert on it), then the
-## resolver (so `PlayerAdapter.attack` has something to call). Idempotent, so it is the
-## intended usage on boot AND after a save load — and the save-load case is the one that
-## can CHANGE the answer, because a load is where an actor may gain the acupoint set or
-## the sea it lacked when it was first bound. `mechanism` is the name actually bound, so a
-## caller reads which of the three it got rather than assuming the qi default.
+## ## Everything a booted combat stack needs for one actor, in the order that order
+## matters: the mechanism first (so `CombatSpine.resolve_hit` cannot assert on it), then
+## the resolver (so `PlayerAdapter.attack` has something to call), then the per-hit
+## resolver (so a body technique on a tri-path actor lands at a meridian).
+##
+## Idempotent, so it is the intended usage on boot AND after a save load — and the
+## save-load case is the one that can CHANGE the answer, because a load is where an actor
+## may gain the acupoint set or the sea it lacked when it was first bound. `mechanism` is
+## the name actually bound, so a caller reads which of the three it got rather than
+## assuming the qi default — and `hit` is the INSTALLED name, which on a tri-path player
+## is `QiDamage` while the hits that player throws are resolved by [method
+## resolve_hit]. Those are two different questions and the report now names both.
 static func install(actor: Actor) -> Dictionary:
 	if actor == null:
 		return {
@@ -245,15 +457,207 @@ static func install(actor: Actor) -> Dictionary:
 			"mechanism": "",
 			"wounds": false,
 			"resolver": false,
+			"hit_resolver": false,
 			"reason": "no_actor"
 		}
 	var bound: Dictionary = bind_mechanisms(actor)
 	var resolver: Dictionary = set_attack_resolver(Callable(CombatApi, "hit"))
+	var hits: Dictionary = set_hit_resolver(Callable(CombatBoot, "resolve_hit"))
 	return {
-		"ok": bool(bound["ok"]) and bool(resolver["ok"]),
+		"ok": bool(bound["ok"]) and bool(resolver["ok"]) and bool(hits["ok"]),
 		"bound": bool(bound["bound"]),
 		"mechanism": bound["mechanism"],
 		"wounds": bool(bound["wounds"]),
 		"resolver": bool(resolver["ok"]),
+		"hit_resolver": bool(hits["ok"]),
 		"reason": "",
 	}
+
+
+## Install the per-hit resolver, and report the install. An empty Callable clears the
+## binding, exactly as [method set_attack_resolver] does — so an uninstall is a decision
+## a test can make and undo rather than a process-wide thing it has to survive.
+static func set_hit_resolver(resolver: Callable) -> Dictionary:
+	_hit_resolver = resolver
+	return {
+		"ok": _hit_resolver.is_valid(),
+		"reason": "" if _hit_resolver.is_valid() else "no_hit_resolver"
+	}
+
+
+## Whether a per-hit resolver is installed, the twin of [method has_attack_resolver] for
+## the second seam. [method resolve_hit] falls back to the engine's own facade call when
+## this is false, so an uninstall is a degradation rather than a crash.
+static func has_hit_resolver() -> bool:
+	return _hit_resolver.is_valid()
+
+
+## One hit resolved the way the SHIPPED app resolves one, through the same entry point
+## `ItemWorkbenchApp._resolve_technique_hit` uses.
+##
+## ## Why this exists at all
+##
+## `CombatSpine.resolve_hit`'s `ctx_builder` parameter defaults to an empty `Callable`,
+## and the only production caller passed five arguments — `(attacker, target, technique,
+## tuning, null)` — so `ctx_builder` was always empty in production. That is not a
+## default, it is a hole with two symptoms:
+##
+##   - `QiDamage.builder` / `BodyDamage.builder` / `MindDamage.builder` were never called
+##     from `src/` at all, so `ctx.data` carried NONE of the authored inputs;
+##   - `element_share` therefore always read `0.0`, fell to `default_element_share` from
+##     the `.tres`, and the per-technique share every one of the 55 authored `.tres`
+##     files sets was INERT. `aim_meridian` had the same fate, and a `named` body aim
+##     resolved as `random` because `_mode_of` reads the authored id from `ctx.data`.
+##
+## The three `builder` statics exist for exactly this call and take the authored def as a
+## `Variant` precisely so a composition root can hand them one without the mechanism
+## acquiring a compile-time edge to `modules/techniques/`. This is that call.
+##
+## ## It selects the mechanism AND carries the context, in one pass
+##
+## Both halves belong together: which mechanism runs and what it reads are the same
+## question. `QiDamage.builder` is meaningless under `BodyDamage` and vice versa, so
+## building the context for the INSTALLED mechanism while resolving through the SELECTED
+## one would ship a body hit carrying `element_share`. The two are chosen from the same
+## [method mechanism_for_hit] answer, which is what makes them impossible to desync.
+##
+## ## The scoped swap, and why the spine does not learn about it
+##
+## `CombatSpine.resolve_hit` reads the mechanism off `MechanismSlot.of(attacker)` at S4
+## and has no parameter for "unless the caller says otherwise" — deliberately, because
+## that parameter would put a per-path concept into the one file in the module that must
+## never name one. So the selection is made by TEMPORARILY binding the selected mechanism
+## to the attacker and restoring the previous one in the same function. The alternative
+## was editing `combat_engine/spine.gd`, which is not this task's file and is shared.
+##
+## The swap is restore-on-return rather than restore-on-success on purpose: a mechanism
+## that returns null or throws must not leave the attacker bound to a body mechanism it
+## was not built with. `CombatOutcome` is a `RefCounted` and the bind is one dictionary
+## write, so the cost is bounded and the scope is a single call — never a frame.
+##
+## ## The `CombatEngineApi` fallback is deliberate, not a stub
+##
+## With no per-hit resolver installed this still returns a real `CombatOutcome` through
+## the module's own facade, so a caller that has not booted the composition root gets the
+## old behaviour rather than a null. That is what lets the engine's 5500-odd tests keep
+## binding through `MechanismSlot.bind` directly and prove the spine without any of this.
+static func resolve_hit(
+	attacker: Actor,
+	target: Actor,
+	technique: Variant,
+	tuning: CombatTuning = null,
+	rng: Variant = null
+) -> CombatOutcome:
+	var resolved := tuning if tuning != null else CombatEngineApi.tuning()
+	var selected := mechanism_for_hit(attacker, technique)
+	var previous := MechanismSlot.peek(attacker)
+	if previous == null:
+		return CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng)
+	if has_hit_resolver():
+		CombatEngineApi.bind_mechanism(attacker, _instance(selected, attacker))
+		var ctx := ctx_builder_for(attacker, target, technique, selected)
+		var outcome := CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng, ctx)
+		CombatEngineApi.bind_mechanism(attacker, previous)
+		return outcome
+	CombatEngineApi.bind_mechanism(attacker, _instance(selected, attacker))
+	var plain := CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng)
+	CombatEngineApi.bind_mechanism(attacker, previous)
+	return plain
+
+
+## The `ctx_builder` for one hit: the builder for the `selected` mechanism [method
+## mechanism_for_hit] chose, carrying the authored inputs that mechanism reads.
+##
+## `selected` is a PARAMETER rather than recomputed here, and that is the point of the
+## whole file: one answer drives both which mechanism runs at S4 and what `ctx.data`
+## carries, so the two cannot be selected from different rules and drift. A caller that
+## wants the builder alone may pass `&""` and get the selection for [code]attacker[/code]
+## and [code]technique[/code]; [method resolve_hit] never does, because it has already
+## paid for the selection.
+##
+## ## Why the INJECTED side, and never a rule of its own
+##
+## Each `builder` already decides what its own mechanism needs — `QiDamage` carries
+## `element` + `element_share` + the rules table, `BodyDamage` carries `aim_meridian` +
+## the aim mode + the tuning, `MindDamage` carries the kind. This method's whole
+## judgement is WHICH builder, and it re-implements none of theirs. A fourth mechanism
+## is one `match` arm here and one `builder` in its own module.
+##
+## ## `target` is a parameter, not derived from `attacker`
+##
+## The spine's `ctx_builder` receives only the `AttackContext`, so everything not
+## derivable from it has to be bound at BUILD time — which is why this takes the target
+## rather than reading it off the attacker. Body and qi read the defender's acupoints,
+## affinities and resistances straight off `ctx`; mind needs the defender's SEA as an
+## object, and there is no accessor for that on the context, so it is captured here.
+##
+## ## Why `ElementsApi.default_rules()` is passed for qi
+##
+## Without a rules table `QiDamage._matchup_of` answers `NEUTRAL` (1.0) for every
+## strike, so the five-elements matchup graph — the whole reason qi has a resistance
+## axis at all — is dead in production. `ElementsApi.default_rules()` is the module's own
+## memoised table, and this is `app/` naming a facade, which is the one thing a
+## composition root is for. It is passed but NOT bound to the mechanism, so
+## `_rules_of`'s per-attack injection stays the first route and a caller that wants a
+## different table for one hit still can.
+##
+## ## The mind sea is read off the DEFENDER
+##
+## `MindDamage.builder`'s `p_sea` is the defender's sea: `structural_capacity` is the
+## denominator of the erosion (ADR 0071), so injecting the ATTACKER's sea would divide a
+## strike by the wrong sea. A target with no sea leaves it null and the mechanism reports
+## `sea_bound == false` rather than inventing one — inert and visible, which is the
+## degradation `mind_damage.gd` hole 2 documents.
+##
+## ## The erosion KIND is the technique's, and hardcoding it here killed two of three
+##
+## This read `MindDamage.Kind.DISRUPT` on a literal, so every mind strike in the game
+## was a plain disrupt no matter what it was. That is not a weak default, it is a
+## dead program: `_illusion_resistance_of` returns `0.0` for anything but `OBSCURE`, so
+## the whole illusion branch of `_mitigation_of` never ran and `ILLUSION_RESISTANCE` was
+## a stat no attack ever read; and `_awareness_delta_of` returns `0.0` for anything but
+## `ATTEND`, so the AWARENESS reserve ADR 0152 gave a writer was never spent by an
+## attack. `mind_illusion_lattice.tres` is authored as an illusion — its own tags say
+## `illusion` — and resolved as a plain disrupt.
+##
+## The authored intent now rides [member TechniqueDef.mind_kind], and it is read as
+## `get()` on a `Variant` exactly as `BodyDamage.builder` reads `aim_meridian` and
+## `QiDamage.builder` reads `element_share`. Three reasons for that shape over a typed
+## read: this file already treats a technique as untrusted (`mechanism_for_hit` checks
+## `technique is Object` before asking it anything), a def authored before the field
+## existed answers `&""`, and `MindDamage._kind_of` already resolves `&""` to `DISRUPT`.
+## So an unauthored `.tres` behaves byte-identically to the day this call was written.
+static func ctx_builder_for(
+	attacker: Actor, target: Actor, technique: Variant, selected: StringName = &""
+) -> Callable:
+	var chosen := selected if selected != &"" else mechanism_for_hit(attacker, technique)
+	match chosen:
+		_BODY_MECHANISM:
+			return BodyDamage.builder(technique, null, &"", CombatEngineApi.tuning())
+		_MIND_MECHANISM:
+			return MindDamage.builder(_mind_kind_of(technique), MindCultivationApi.sea(target))
+		_:
+			return QiDamage.builder(ElementsApi.default_rules(), technique)
+
+
+## The erosion kind `technique` authors, or `DISRUPT` when it authors none.
+##
+## Returned as a `Variant`, not a `StringName`, because the two arms are different TYPES
+## on purpose and GDScript will not let a declared `StringName` return hold either:
+## `MindDamage.Kind.DISRUPT` is an enum ordinal — an `int` — not a name. Both arms are
+## what `MindDamage.builder`'s `p_kind: Variant` already accepts and what
+## [method MindDamage._kind_of] already resolves, a name and an ordinal through the same
+## branch.
+##
+## The `Variant` read of the def is deliberate and is the same one `QiDamage.builder` and
+## `BodyDamage.builder` already make: this is `app/` handing a `combat_engine` builder an
+## authored content type it may not have a compile-time edge to, and a def that is null,
+## is not an object, or predates the field must all degrade to the plain strike rather
+## than crash a combat tick. The NAME travels unresolved — `_kind_of` is the only function
+## that reads the vocabulary, so there is one place a kind can be added.
+static func _mind_kind_of(technique: Variant) -> Variant:
+	if technique is Object:
+		var authored: Variant = (technique as Object).get(&"mind_kind")
+		if authored is StringName or authored is String:
+			return StringName(authored)
+	return MindDamage.Kind.DISRUPT

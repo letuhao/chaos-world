@@ -52,22 +52,31 @@ extends RefCounted
 ## here walks another module's payload, so a save written by a newer version of one
 ## cannot break this resolution.
 ##
-## ## What is NOT wired up, stated plainly
+## ## Who writes the three tag keys, and when
 ##
-## **Nothing in production writes the three tag keys.** Measured over
-## `game/src/**/*.gd`: `env_gear_tags`, `env_technique_tags` and `env_pill_tags` are
-## named in exactly two places — this file's constants and its own test, which writes
-## them by hand to stand in for the owning module. No `items`, `techniques` or
-## `ui/` code publishes them. So `LEVER_GEAR`, `LEVER_TECHNIQUE` and `LEVER_PILL` are
-## RESOLVABLE and REACHABLE but not yet REACHABLE FROM PLAY: they fire only when a
-## caller has put the tags there itself. `LEVER_AFFINITY` is the one lever that fires
-## on its own, because a spirit root is already on the actor.
+## They were, for a long while, named here and written by NOTHING — three live caps
+## (`GEAR_CAP`, `TECHNIQUE_CAP`, `PILL_CAP`) over lists that were always empty, so a
+## cultivator wearing an authored fire ward got zero mitigation while the screen still
+## printed "answered by: gear, pill, affinity". That was a read model advertising
+## counterplay the game could not deliver.
 ##
-## The seam is still worth its three keys — it is what a future `items` publish has to
-## write into, and the repo prefers a named slot over an ad-hoc payload walk. But it is
-## a CONTRACT, not a live feature, and this paragraph is here so nobody reads a green
-## test over `test_gear_reduces_the_amount_when_affinity_is_not_published` and
-## concludes a ward in the inventory already works.
+## They are now WRITTEN BY `DomainBoot.publish_ward_tags`, called from `enter_domain`
+## and from every `visit_room`. It reads what the actor actually carries through the
+## `items` and `techniques` FACADES and writes flat element tag lists into the three
+## keys below. `domain` cannot do this itself: it declares `core` + `contracts` only
+## (`tools/arch/registry.json`), so the owning modules are reached from `app/`, which is
+## the composition root and may depend on anything.
+##
+## The tags are ELEMENTS (`&"fire"`, `&"ice"`, …) because that is the join key this
+## module already asks a zone for: `EnvironmentZoneDef.tags` is the "elements this zone
+## is hostile to" list, so a wardrobe or a satchel answers the same question a spirit
+## root does. Nothing here walks a sibling's payload — each key is still read as
+## `{"tags": [...]}` and nothing more, so a save written by a newer version of `items`
+## or `techniques` cannot break this resolution.
+##
+## `LEVER_AFFINITY` still needs no key: a spirit root is on the actor from character
+## creation. It remains the only lever that fires with NOTHING carried, which is the
+## point — it is the one counterplay a player cannot lose by dropping their gear.
 
 # ── the three cultivation paths, and nothing else branches on them ────────────
 
@@ -295,15 +304,22 @@ const MAX_MAGNITUDE := 2.0
 ## Marker slots an owning module publishes the tags this field reads under. `domain`
 ## reads exactly these three keys and no others.
 ##
-## ## UNPUBLISHED: nothing writes these in production
+## ## PUBLISHED: `DomainBoot.publish_ward_tags` writes these
 ##
-## Measured over `game/src/**/*.gd`, these three ids appear nowhere except the
-## constants below and `tests/modules/domain/test_environment_field.gd`, which writes
-## them itself. So `GEAR_CAP`, `TECHNIQUE_CAP` and `PILL_CAP` are live caps that a
-## correctly-published tag list would honour, and the levers are reachable only by a
-## caller that has already published. `LEVER_AFFINITY` needs no key — a spirit root is
-## on the actor from character creation — which is why it is the only lever that fires
-## in a real run. See the class docblock.
+## `enter_domain` and every `visit_room` call it, so `GEAR_CAP`, `TECHNIQUE_CAP` and
+## `PILL_CAP` now gate a real list rather than an empty one. The payload is
+## `{"tags": [StringName, ...]}` and NOTHING else — `domain` never walks the owning
+## module's payload, which is what keeps a save written by a newer `items` or
+## `techniques` from breaking this resolution.
+##
+## The list holds ELEMENTS, because `EnvironmentZoneDef.tags` is already the "elements
+## this zone is hostile to" list and a piece of gear or a consumable is published
+## against that same vocabulary. A test may still write any string here: the lever asks
+## only "is this list non-empty", so a hand-written key keeps working exactly as it did.
+##
+## `LEVER_AFFINITY` needs no key — a spirit root is on the actor from character
+## creation — which is why it is the only lever that fires with nothing carried.
+## See the class docblock for why these live in `app/` rather than in this file.
 const GEAR_TAGS_KEY := &"env_gear_tags"
 const TECHNIQUE_TAGS_KEY := &"env_technique_tags"
 const PILL_TAGS_KEY := &"env_pill_tags"

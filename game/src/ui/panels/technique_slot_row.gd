@@ -170,7 +170,11 @@ func _render() -> void:
 ## `Ready`, or `Ready in 7s`. Absent for a passive, which has no cooldown to wait
 ## out — `activate` refuses it, so a countdown would promise a cast that can never
 ## happen. The rounding is the panel's: a screen passes the raw remainder down.
-func _ready_text(view: Dictionary) -> String:
+##
+## `_view` is not read here; the cooldown is read from this row's own `_view` so the
+## label and the button it enables cannot disagree. The parameter stays because the caller
+## passes the row's view to every sibling renderer.
+func _ready_text(_view: Dictionary) -> String:
 	if not _castable():
 		return ""
 	var left := _cooldown()

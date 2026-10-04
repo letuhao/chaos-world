@@ -30,6 +30,7 @@ extends TestCase
 ##      point 2 cannot be passing because the guard was loosened.
 
 const MANUALS_ROOT := "res://data/items/technique"
+const DEFS_ROOT := "res://data/techniques/"
 
 ## One real pair, asserted by name so a swap of two rows fails rather than passing
 ## on "some manual taught something". `sigil_still_water` is a Mortal `mind`
@@ -67,6 +68,13 @@ func _hero(realm_id: StringName = &"qi_refining") -> Actor:
 	actor.add_resource(ResourcePool.new(&"stamina", 100.0))
 	for path_id in PathState.ALL:
 		actor.set_path(PathState.new(path_id, realm_id))
+		# ADR 0140: learning charges the technique's OWN path's `progress`. The defs
+		# exercised here are mind and body techniques, so EVERY path needs the budget
+		# — funding only one leaves the others at 0 and the study is refused
+		# `insufficient_progress`, which is the gate working, not a fixture failure.
+		# The budget is a fixture, not a balance claim; the price itself is asserted
+		# in `test_technique_study_cost.gd`.
+		actor.path(path_id).progress = 100000.0
 	ItemsApi.attach(actor)
 	TechniquesApi.attach(actor)
 	return actor
@@ -229,12 +237,32 @@ func test_a_learned_real_technique_can_then_be_equipped_and_contributes() -> voi
 # --- The mapping itself -------------------------------------------------------
 
 
+## Only the defs that came from the SHIPPED content tree.
+##
+## `TechniqueCatalog` is a process-wide singleton, and `run_tests.gd` runs every suite
+## in one process — so `technique_ids()` also returns the synthetic defs other suites
+## registered (`active_suite_7`, `delivery_suite_from_8`, `test_passive_control`, …).
+## Asserting over those asserts against a test's own fixture, which is the same
+## blindness DEF-0203 came from. A def is AUTHORED when it was loaded from
+## `res://data/techniques/` rather than registered in code, which is exactly what
+## `resource_path` tells us.
+func _authored_ids() -> Array[StringName]:
+	var out: Array[StringName] = []
+	for technique_id in TechniqueCatalog.instance().technique_ids():
+		var def := TechniqueCatalog.instance().definition(technique_id)
+		if def == null or def.resource_path.is_empty():
+			continue
+		if def.resource_path.begins_with(DEFS_ROOT):
+			out.append(technique_id)
+	return out
+
+
 func test_every_authored_def_names_a_manual_that_exists_and_is_a_technique() -> void:
 	# Completeness, over the WHOLE shipped tree and not the probe pair: a def that
 	# names no manual is unobtainable, which is the exact DEF-0203 condition and the
 	# one no test could see because every test supplied its own def.
 	var catalog := TechniqueCatalog.instance()
-	var ids := catalog.technique_ids()
+	var ids := _authored_ids()
 	assert_eq(ids.is_empty(), false, "the catalog holds the shipped defs")
 	var missing: Array[String] = []
 	var wrong_category: Array[String] = []
@@ -271,7 +299,7 @@ func test_no_two_defs_claim_the_same_manual() -> void:
 	var catalog := TechniqueCatalog.instance()
 	var claimed := {}
 	var clashes: Array[String] = []
-	for technique_id in catalog.technique_ids():
+	for technique_id in _authored_ids():
 		var def := catalog.definition(technique_id)
 		if def.delivered_by == &"":
 			continue
@@ -295,7 +323,7 @@ func test_the_mapped_manuals_are_the_hand_authored_ones_not_the_generated_filler
 	# it does not need re-measuring when the corpus grows.
 	var catalog := TechniqueCatalog.instance()
 	var generated: Array[String] = []
-	for technique_id in catalog.technique_ids():
+	for technique_id in _authored_ids():
 		var manual_id := catalog.definition(technique_id).delivered_by
 		if manual_id == &"":
 			continue
@@ -319,7 +347,7 @@ func test_the_delivered_manuals_are_reachable_through_a_shipped_source_route() -
 	var catalog := TechniqueCatalog.instance()
 	var stranded: Array[String] = []
 	var spendable := 0
-	for technique_id in catalog.technique_ids():
+	for technique_id in _authored_ids():
 		var manual_id := catalog.definition(technique_id).delivered_by
 		if manual_id == &"":
 			continue

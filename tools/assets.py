@@ -605,7 +605,8 @@ def _print_visual_trait_distribution(items: dict[str, dict[str, str]], records: 
         total_items = len(category_items[category])
         coverage = ", ".join(
             f"{axis} {len(category_axis_families.get((category, axis), set()))}/{total_families}"
-            f" families, {len(category_axis_items.get((category, axis), set()))}/{total_items} seeds"
+            f" families,"
+            f" {len(category_axis_items.get((category, axis), set()))}/{total_items} seeds"
             for axis in axes
         )
         print(f"      {category}: {coverage}")

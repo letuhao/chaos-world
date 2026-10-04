@@ -83,6 +83,21 @@ static func shipped() -> NationTuning:
 	return load("res://src/modules/nation/nation_tuning.tres") as NationTuning
 
 
+## The shipped tuning, or `null` when the build does not ship one.
+##
+## `load()` returns `null` for a `.tres` that cannot be read, and every field of
+## this struct defaults to `0`, so a caller that treated that null as a tuning would
+## read "a defeat costs nothing, and a side breaks at zero exhaustion". That second
+## one is not a harmless default: exhaustion is compared with `>=`, so a break of
+## zero declares EVERY side exhausted the moment it loses once, and every standoff
+## in the build refuses its first verdict. A caller wanting the tuning rather than
+## an answer should use `catalog.tuning()` — which resolves to `shipped_or_zero` —
+## so that the missing case is the safe one rather than the surprising one.
+static func shipped_or_zero() -> NationTuning:
+	var tuning := shipped()
+	return tuning if tuning != null else NationTuning.new()
+
+
 ## One tier row, or `0.0` for a tier this file does not author. A missing row is
 ## an obviously wrong answer rather than a plausible one, which is the same
 ## discipline `CombatTuning`'s degenerate defaults follow.

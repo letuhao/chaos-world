@@ -5,6 +5,11 @@
 [resource]
 script = ExtResource("1_boss")
 id = &"d5_thunder_crane"
-display_name = "Thunder Crane Lesser"
+display_name = "Thunder Crane"
 domain_id = &"scroll_thunder_crane_domain"
 loot = Array[StringName]([])
+## The bolt finds the seams: what it passed through, the spirit guard and the instinct to
+## slip aside do not close behind it. The lightning pair's sunder half — `lightning_arc`,
+## the escalating burn, is what the player's own blow inflicts, so this creature opens the
+## defence instead of the health pool.
+affliction = &"lightning_surge"

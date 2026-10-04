@@ -233,12 +233,16 @@ func test_the_screen_reports_what_the_facade_reports_and_not_a_private_copy() ->
 		int(view["discovered_count"]), int(reported["discovered"]), "discovery is the facade's"
 	)
 	assert_eq(
-		String(view["map"]["domain_id"]), String(reported["map"]["domain_id"]), "and so is the map"
+		String(String(view["map"]["domain_id"])),
+		String(String(reported["map"]["domain_id"])),
+		"and so is the map"
 	)
+	# `int()` and NOT `String()`: `room_count` is a number, and GDScript's `String`
+	# constructor does not accept an int argument — `String(Variant_int)` raises
+	# "Invalid call 'String' constructor" and aborts the whole test, so the comparison
+	# below it never ran. `int()` compares the two numbers, which is the claim.
 	assert_eq(
-		String(view["map"]["room_count"]),
-		String(reported["map"]["room_count"]),
-		"including its shape"
+		int(view["map"]["room_count"]), int(reported["map"]["room_count"]), "including its shape"
 	)
 	# The floor plan is `DomainMinimap`'s payload WHOLE, which is what makes this screen
 	# and the headless driver read one dictionary. Compared by JSON, because the claim is
@@ -476,6 +480,92 @@ func test_a_refused_treasure_names_the_gate_and_consumes_nothing() -> void:
 	)
 
 
+## Each fixture kind must enable EXACTLY ONE verb, and that verb must be the one the
+## screen's own handler calls. Pinned as DATA rather than exercised through a press,
+## because the failure it guards against is invisible from a press: the gate compares
+## the authored `kind` against the SEAM's action id, and when the two vocabularies
+## disagree every gate reads false at once — so every fixture verb is refused by the
+## screen before it can reach the module, and the ledger it should have written stays
+## empty. A trap then never fires, and the refusal a player sees names a gate that does
+## not exist (`authors_no_status_id`, `unknown_node`, `missing_key`).
+func test_each_fixture_kind_enables_exactly_the_one_verb_that_acts_on_it() -> void:
+	var expected := {
+		"trap": &"arm_fixture",
+		"puzzle": &"attempt_fixture",
+		"treasure": &"claim_fixture",
+	}
+	for kind in expected:
+		assert_eq(
+			DomainExploreScreen.FIXTURE_VERB.get(String(kind), &""),
+			expected[kind],
+			(
+				"a '%s' is acted on by the '%s' seam verb, not by a shorter button id"
+				% [kind, expected[kind]]
+			)
+		)
+	# And the values are the ids the bridge actually publishes, not the button row's:
+	# `DomainBridge` is the vocabulary `_can_fixture` is handed, so a value outside
+	# `_action_ids()` can never be matched by any gate.
+	var wired: Array = DomainBoot.bridge().summary()["actions"]
+	for kind in expected:
+		assert_ne(
+			wired.has(String(expected[kind])),
+			false,
+			"'%s' names a verb the seam really carries" % kind
+		)
+
+
+## The screen's `Enter` must enter SOMETHING for every authored template, whatever the
+## seed the generator happens to partition well.
+##
+## This is the regression for a button that silently did nothing: `DomainGenerator`
+## REFUSES a partition below the template's `min_rooms`, `generate_and_enter` turns
+## that into `generation_refused`, and a screen that passed one fixed seed surfaced it
+## to the player as an inert press. The screen now advances through a bounded set of
+## derived seeds — so this asserts the OUTCOME over the whole authored catalogue, which
+## is the claim that matters and which no single-seed assertion can make.
+func test_every_authored_template_is_enterable_through_the_screens_own_verb() -> void:
+	var templates: Array = DomainApi.templates()
+	assert_ne(templates.is_empty(), true, "the authored catalogue is not empty")
+	for entry in templates:
+		var template_id := StringName(String(entry["template_id"]))
+		var hero := _hero()
+		var screen := _screen(hero)
+		if screen == null:
+			return
+		# Aim the screen at THIS template, so the claim covers the catalogue rather
+		# than only whichever template happens to be selected first.
+		_select_template(screen, template_id)
+		assert_eq(
+			screen.act_enter(),
+			true,
+			(
+				"'%s' is enterable from the Enter button" % String(template_id)
+				+ ": "
+				+ str(screen.summary()["message"])
+			)
+		)
+		assert_eq(
+			DomainApi.map_summary(hero).is_empty(),
+			false,
+			"and '%s' left a real run on the hero" % String(template_id)
+		)
+
+
+## Point the screen's template selector at `template_id`, as picking it from the
+## dropdown does. `select` on the `OptionButton` is honoured like a click, so the
+## screen's own handler sets the index and nothing reaches into its fields.
+func _select_template(screen: DomainExploreScreen, template_id: StringName) -> void:
+	var option := screen.get_node_or_null("%TemplateOption") as OptionButton
+	if option == null:
+		return
+	for index in option.item_count:
+		if String(option.get_item_text(index)).ends_with("(%s)" % String(template_id)):
+			option.select(index)
+			screen.call("_on_template_selected", index)
+			return
+
+
 ## A trap that has already fired refuses a second time, by name. A trap firing twice in
 ## one run is a rule the module enforces and this screen must not route around.
 func test_a_trap_that_has_fired_is_refused_a_second_time() -> void:
@@ -554,11 +644,18 @@ func test_leaving_keeps_the_discovered_set() -> void:
 		return
 	var actor := screen.actor()
 	var before: Array = DomainApi.discovered(actor)
-	assert_ne(before.is_empty(), false, "entering discovered at least the entry")
-	assert_eq(screen.act_leave(), true, "left the run")
+	# `assert_eq(x.is_empty(), false)`, NOT `assert_ne(x.is_empty(), false)`: on two
+	# booleans `assert_ne` is the same comparison written to look different, and
+	# `false != false` is false — so the "discovered is non-empty" check silently
+	# demanded the opposite of what it says. `discovered` seeds the entry on enter
+	# (DomainApi.enter), so one room is the correct floor, not zero.
 	assert_eq(
-		DomainApi.discovered(actor), before, "and the map still remembers where the player has been"
+		before.is_empty(),
+		false,
+		"entering discovered at least the entry: PROBE=" + str(screen.summary())
 	)
+	assert_eq(screen.act_leave(), true, "left the run")
+	assert_eq(DomainApi.discovered(actor), before, "and leaving discards the run, not the memory")
 
 
 ## A hero with an actor but no bridge must offer NOTHING rather than offering buttons

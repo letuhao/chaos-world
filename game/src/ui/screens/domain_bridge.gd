@@ -33,29 +33,6 @@ extends RefCounted
 ## available" rather than as a failure — which is how a screen disables an action
 ## instead of pretending it worked.
 
-## `DomainApi.templates()` -> Array[Dictionary]: the authored domain catalogue, so a
-## screen can list what exists without generating anything.
-var list_templates: Callable
-## `DomainBoot.read_model(actor)` -> Dictionary: what is authored, and what is active.
-var read_active: Callable
-## `DomainBoot.enter_domain(actor, template_id, seed_value)` -> Dictionary: the one
-## production entry point into a domain.
-var enter: Callable
-## `DomainBoot.leave_domain(actor)` -> Dictionary: end the run, keep the discoveries.
-var leave: Callable
-## `DomainBoot.visit_room(actor, room_id, weather)` -> Dictionary: record a room reached.
-var visit: Callable
-## `DomainBoot.minimap(actor)` -> Dictionary: `DomainMinimap.render`, as primitives.
-var minimap: Callable
-## `DomainBoot.rooms(actor)` -> Array[Dictionary]: the room list, with kinds and tags.
-var rooms: Callable
-## `DomainFixtures.arm(actor, room_id, fixture_id, delta)` -> Dictionary: a trap's telegraph.
-var arm_fixture: Callable
-## `DomainFixtures.attempt(actor, room_id, fixture_id, node_id)` -> Dictionary: a puzzle node.
-var attempt_fixture: Callable
-## `DomainFixtures.claim(actor, room_id, fixture_id)` -> Dictionary: open a treasure.
-var claim_fixture: Callable
-
 ## The stable seed this program's own buttons use. A SEED, not a roll: the screen
 ## generates a domain, so two runs of the same button should be the same domain, and a
 ## random seed would make "what is in there" unreadable between two visits.
@@ -87,6 +64,29 @@ const REASON_TEXT := {
 	"authors_no_damage_share": "That trap authors no damage share",
 	"authors_nothing_to_grant": "That fixture authors nothing to grant",
 }
+
+## `DomainApi.templates()` -> Array[Dictionary]: the authored domain catalogue, so a
+## screen can list what exists without generating anything.
+var list_templates: Callable
+## `DomainBoot.read_model(actor)` -> Dictionary: what is authored, and what is active.
+var read_active: Callable
+## `DomainBoot.enter_domain(actor, template_id, seed_value)` -> Dictionary: the one
+## production entry point into a domain.
+var enter: Callable
+## `DomainBoot.leave_domain(actor)` -> Dictionary: end the run, keep the discoveries.
+var leave: Callable
+## `DomainBoot.visit_room(actor, room_id, weather)` -> Dictionary: record a room reached.
+var visit: Callable
+## `DomainBoot.minimap(actor)` -> Dictionary: `DomainMinimap.render`, as primitives.
+var minimap: Callable
+## `DomainBoot.rooms(actor)` -> Array[Dictionary]: the room list, with kinds and tags.
+var rooms: Callable
+## `DomainFixtures.arm(actor, room_id, fixture_id, delta)` -> Dictionary: a trap's telegraph.
+var arm_fixture: Callable
+## `DomainFixtures.attempt(actor, room_id, fixture_id, node_id)` -> Dictionary: a puzzle node.
+var attempt_fixture: Callable
+## `DomainFixtures.claim(actor, room_id, fixture_id)` -> Dictionary: open a treasure.
+var claim_fixture: Callable
 
 
 ## The player-facing sentence for a reason id. Falls back to the id itself, because a

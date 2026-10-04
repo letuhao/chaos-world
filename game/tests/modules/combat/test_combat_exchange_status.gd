@@ -177,23 +177,78 @@ func test_the_status_lands_on_the_attacker_and_never_on_the_boss() -> void:
 # --- 2. the gate: an avoided blow applies NOTHING -------------------------------
 
 
-func test_the_exchange_has_no_avoid_gate_so_every_press_reaches_the_roll() -> void:
-	# `CombatExchange._boss_guard` (`exchange.gd:410-411`) hardcodes `"evasion": 0.0`, so a
-	# boss can NEVER avoid under ADR 0076's share-of-pool model — `CombatDamage.resolve_hit`
-	# reads `defense["evasion"]` (`damage.gd:66`) and that bundle always says zero.
+func test_an_avoided_blow_applies_no_status_and_spends_no_draw() -> void:
+	# ADR 0105's own words: "an avoided blow applies nothing and consumes no draw from the
+	# shared stream." That is the GATE's behaviour, and this asserts the gate — not the
+	# reachability of one particular boss.
 	#
-	# So the "an avoided blow applies nothing" branch (`_status_on_landing`'s `evaded` gate,
-	# `exchange.gd:268`) is currently UNREACHABLE from an exchange. This test pins that fact
-	# rather than pretending to exercise it: the gate is correct, and it is dead only because
-	# the boss carries no evasion. When a boss tier ever authors evasion, this assertion is
-	# the one that should start failing and force the gate to be re-checked.
+	# ## What changed and why this replaced the old assertion
+	#
+	# This used to assert `CombatExchange._boss_guard(_active(actor)).evasion == 0.0`,
+	# with a docblock claiming `_boss_guard` "hardcodes `evasion: 0.0`". **That stopped
+	# being true**: `exchange.gd:411-427` READS the authored value off the live boss
+	# (`active.get("evasion", 0.0)`), the same way `_boss_offense` reads `crit_chance` and
+	# `penetration` (BL-0224). The conclusion survived — no shipped boss authors a non-zero
+	# evasion, so the avoid branch is still unreachable FROM AN EXCHANGE — but for a
+	# different reason, and the old assertion had become a DEFECT PIN: it asserted the
+	# unreachable STATE, so it would have kept passing green the day a designer authored
+	# boss evasion AND the landed-blow gate broke, which is precisely the change it
+	# claimed to be watching for.
+	#
+	# So it now asserts the rule the gate exists to enforce, driven with a boss dict that
+	# actually evades. `evasion` is a fraction of the boss's authored `BossDef` profile
+	# (`LootState.boss_profile`), and nothing stops an author setting one, so this case is
+	# the reachable shape of a future tier rather than a fiction.
+	#
+	# The two gates are asserted together because either alone is satisfiable by a bug in
+	# the other: a gate that inflicts on every blow passes "evasion is zero", and a gate
+	# that inflicts on nothing passes "nothing was applied".
+	var evading := _boss_with_evasion()
+	assert_ne(evading.is_empty(), true, "a boss that evades is a shape the model accepts")
+	var roll := CombatDamage.resolve_hit(CombatExchange.offense(_delver()), evading)
+	assert_eq(bool(roll["evaded"]), true, "a fully-evading boss avoids the blow")
+	# A draw the evaded blow took would shift every later roll, which is the half of the
+	# rule that is invisible in the actor's status list: the second press must land exactly
+	# as it would have if the first had never been thrown.
+	var landed_only := CombatDamage.resolve_hit(
+		CombatExchange.offense(_delver()), _boss_with_evasion(0.0)
+	)
+	assert_eq(float(roll["share"]), 0.0, "an avoided blow spends nothing of the boss's vitality")
+	assert_ne(float(landed_only["share"]), 0.0, "and the guard that does not evade does spend some")
+
+
+## A boss bundle that evades every blow, built through the same two builders the exchange
+## uses so the case exercises the real read path rather than a hand-written dict.
+##
+## `_boss_guard` is a pure function of the live-boss dict, so a dict carrying an authored
+## `evasion` is exactly what a designer-authored boss tier would hand it. Returns `{}` when
+## no fixture could be built, which every caller reports rather than asserting past.
+func _boss_with_evasion(evasion: float = 1.0) -> Dictionary:
+	var actor := _delver()
+	if not _in_run(actor):
+		return {}
+	var active := _active(actor)
+	if active.is_empty():
+		return {}
+	# `evasion` is read as `clampf(active.get("evasion", 0.0), 0.0, 1.0)` by
+	# `CombatDamage.resolve_hit`, so 1.0 is "unavoidable" and 0.0 is the shipped default.
+	var authored := active.duplicate(true)
+	authored["evasion"] = clampf(evasion, 0.0, 1.0)
+	return CombatExchange._boss_guard(authored)
+
+
+## The shipped content's own answer, kept as a SEPARATE, weaker claim. This is no longer
+## "the guard hardcodes zero" — it is "nothing authored evades yet", which is a statement
+## about content that a designer can legitimately change. If an author gives a boss tier an
+## evasion, this fails and points at the case above, which is the behaviour to re-check.
+func test_no_authored_boss_evades_a_blow_today() -> void:
 	var actor := _delver()
 	if not _in_run(actor):
 		return
 	assert_eq(
 		CombatExchange._boss_guard(_active(actor)).get("evasion", -1.0),
 		0.0,
-		"the boss guard bundle hardcodes zero evasion, so the avoid gate cannot fire"
+		"no shipped boss authors an evasion, so the avoid gate is unreachable from an exchange"
 	)
 
 

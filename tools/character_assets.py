@@ -258,7 +258,8 @@ ASSET_SPECS = {
         "aspect_ratio": "2:3 (Portrait Photo)",
         "framing": (
             "one complete standing character from a normal eye-level camera, front-facing or "
-            "gentle three-quarter view, facing the viewer, feet visible, clear readable silhouette, "
+            "gentle three-quarter view, facing the viewer, feet visible,"
+            " clear readable silhouette, "
             "centered with a bottom-center ground pivot"
         ),
     },
@@ -292,7 +293,8 @@ CHARACTER_NEGATIVE = (
     "text, letters, watermark, border, UI, extra people, duplicate face, pose sheet, "
     "character lineup, triptych, collage, turnaround sheet, repeated character, missing limbs, "
     "photorealism, 3D render, noisy texture, sexualized pose, erotic framing, fetish clothing, "
-    "explicit sexual content, nudity, exposed genitals, nipples, sexualized child, sexualized minor, "
+    "explicit sexual content, nudity, exposed genitals, nipples,"
+    " sexualized child, sexualized minor, "
     "graphic injury, gore, exposed bone, "
     "multiple characters, two figures, three figures, side-by-side characters, cloned character, "
     "split panel"
@@ -1191,14 +1193,22 @@ def _prompt(
         "unaffiliated": "an independent traveler, with practical wear and no sect insignia",
     }[traits["path"]]
     setting = {
-        "cultivation-world": "a cultivation world with practical layered robes, sect craft, and restrained qi motifs",
-        "modern-city": "a contemporary city with modern street, work, or formal fashion and urban materials",
-        "modern-rural": "a contemporary rural community with practical modern clothes and everyday tools",
-        "modern-coastal": "a contemporary coastal community with modern casual and weather-ready clothing",
-        "spirit-realm": "a spirit realm with luminous natural forms and clothing suited to its environment",
-        "immortal-court": "an immortal court with ceremonial fashion, refined materials, and distinctive insignia",
-        "frontier-world": "a frontier world with travel-ready layers, durable gear, and locally made details",
-        "future-city": "a future city with functional contemporary silhouettes and subtle advanced materials",
+        "cultivation-world": "a cultivation world with practical layered robes, sect craft,"
+        " and restrained qi motifs",
+        "modern-city": "a contemporary city with modern street, work, or formal fashion"
+        " and urban materials",
+        "modern-rural": "a contemporary rural community with practical modern clothes"
+        " and everyday tools",
+        "modern-coastal": "a contemporary coastal community with modern casual"
+        " and weather-ready clothing",
+        "spirit-realm": "a spirit realm with luminous natural forms and clothing"
+        " suited to its environment",
+        "immortal-court": "an immortal court with ceremonial fashion, refined materials,"
+        " and distinctive insignia",
+        "frontier-world": "a frontier world with travel-ready layers, durable gear,"
+        " and locally made details",
+        "future-city": "a future city with functional contemporary silhouettes"
+        " and subtle advanced materials",
     }[traits["setting"]]
     attire = {
         "traveling-robe": "traveling robe",
@@ -1223,8 +1233,10 @@ def _prompt(
     }[traits["attire"]]
     disability = {
         "none": "no visible disability marker",
-        "wheelchair-user": "a wheelchair user, naturally seated in a clearly visible, practical wheelchair",
-        "mobility-cane-user": "a mobility-cane user, standing naturally with the cane clearly visible",
+        "wheelchair-user": "a wheelchair user, naturally seated in a clearly visible,"
+        " practical wheelchair",
+        "mobility-cane-user": "a mobility-cane user, standing naturally with the cane"
+        " clearly visible",
         "white-cane-user": "a white-cane user, holding the cane naturally and confidently",
         "prosthetic-arm": "a character with a visible functional prosthetic arm",
         "prosthetic-leg": "a character with a visible functional prosthetic leg",
@@ -1254,7 +1266,8 @@ def _prompt(
     pose = pose_variant[1] if pose_variant else "relaxed shoulders and a composed portrait pose"
     extra = f" Character-specific detail: {detail.strip()}." if detail.strip() else ""
     gaze = (
-        " Portrait gaze: head upright, chin parallel to the ground, both eyes open, pupils centered, "
+        " Portrait gaze: head upright, chin parallel to the ground, both eyes open,"
+        " pupils centered, "
         "gaze level and directly into the camera; neutral relaxed expression."
         if slot == "dialogue_portrait"
         else " Sprite gaze: head upright and level, face toward the camera, eyes directed straight "
@@ -1274,8 +1287,10 @@ def _prompt(
         f"Cultivation and cultural visual cue: {path}.{extra} "
         f"One isolated figure, centered in one pose and one view. Character-specific pose: {pose}. "
         "2D game character illustration in painterly anime style, matte gouache, fine "
-        "dark ink contours, broad readable value planes, material-led color, restrained metallic "
-        "accents, soft upper-left light. Preserve the profile's face, age, presentation, disability "
+        "dark ink contours, broad readable value planes, material-led color,"
+        " restrained metallic "
+        "accents, soft upper-left light. Preserve the profile's face, age, presentation,"
+        " disability "
         "representation, setting, palette, and costume. "
         "Plain white background."
     )

@@ -33,6 +33,17 @@ const _BARE_SECT_NAMES := [
 ## The directory the rule governs. Every `.gd` under it is read, never a chosen list,
 ## so a new file cannot opt out of the scan by not being on it.
 const MODULE_ROOT := "res://src/modules/nation"
+## The fewest assertions any test in this suite can make: every behavioural case
+## drives a verb and then checks at least one thing it decided, and one checks two.
+## Declared in `setup()` so the runner can tell a body that ran to the end from one
+## that died part way through and reported green for it — which is exactly what
+## four of the assertions below used to do, on keys a module verb had never
+## published.
+const MIN_ASSERTIONS := 1
+
+
+func setup() -> void:
+	expect_assertions(MIN_ASSERTIONS)
 
 
 func _actor() -> Actor:
@@ -192,8 +203,62 @@ func test_exhaustion_beyond_the_break_yields_a_withdrawal_that_moves_no_ground()
 	(ledger["standoffs"] as Dictionary)[standoff_id] = standoff
 	actor.set_module_data(NationState.MODULE_KEY, NationState.normalize(ledger))
 	var verdict: Dictionary = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
-	assert_eq(String(verdict["outcome"]), "withdrawal", "a broken side withdraws")
+	assert_eq(bool(verdict["outcome"] == "withdrawal"), true, "a broken side withdraws")
 	assert_eq(String(verdict["territory_transferred"]), "", "and a withdrawal moves NO territory")
+
+
+func test_a_broken_side_is_refused_a_verdict_before_its_quota_is_met() -> void:
+	# The rule the module DOCUMENTED for its whole life and never wrote: a side whose
+	# losses reach `war_break` may no longer fight. It used to be counted against the
+	# quota anyway, so a tribunal — quota of one — declared the broken side the
+	# winner in a single verdict, and the refusal nobody could find was the proof.
+	var open := _open_standoff({"mode": "siege", "transfer": "recognition", "standing": {}})
+	var actor: Actor = open["actor"]
+	var standoff_id: String = open["standoff_id"]
+	var ledger := NationApi.state(actor)
+	var standoff: Dictionary = (ledger["standoffs"] as Dictionary)[standoff_id]
+	var sides: Dictionary = standoff["sides"]
+	var side: Dictionary = sides["court_of_the_star"]
+	side["exhaustion"] = NationCatalog.instance().tuning().war_break + 1.0
+	sides["court_of_the_star"] = side
+	standoff["sides"] = sides
+	(ledger["standoffs"] as Dictionary)[standoff_id] = standoff
+	actor.set_module_data(NationState.MODULE_KEY, NationState.normalize(ledger))
+	var refused: Dictionary = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
+	assert_eq(bool(refused.get("ok", true)), false, "a broken side is refused a verdict")
+	assert_eq(String(refused.get("reason", "")), "side_exhausted", "with the authored reason")
+	assert_eq(String(refused.get("exhausted_id", "")), "court_of_the_star", "and it says who")
+	assert_eq(bool(refused.get("closed", true)), false, "and the standoff is still open")
+	var after: Dictionary = NationApi.state(actor)["standoffs"][standoff_id]
+	assert_eq(
+		int(((after["sides"] as Dictionary)["polity_a"])["won"]),
+		0,
+		"and the refused verdict counted against nobody"
+	)
+
+
+func test_every_verdict_carries_the_same_keys_whatever_the_war_decided() -> void:
+	# The shape a resolution reports is not a payload that grows a key as the war
+	# ends further along: a caller reads `closed`, `outcome` and `standing_gained` on
+	# the FIRST verdict, the one that CLOSES it and the one after that, and a missing
+	# key on any of them is a module that cannot be read.
+	var open := _open_standoff()
+	var actor: Actor = open["actor"]
+	var standoff_id: String = open["standoff_id"]
+	var open_verdict: Dictionary = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
+	for step in range(NationApi.QUOTAS["contest"] - 1):
+		open_verdict = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
+	var closed_verdict: Dictionary = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
+	var again: Dictionary = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
+	for key in ["closed", "outcome", "standing_gained", "territory_transferred"]:
+		assert_eq(
+			open_verdict.has(key), true, "an open standoff publishes '%s', not an absent key" % key
+		)
+		assert_eq(closed_verdict.has(key), true, "and a closing verdict publishes '%s'" % key)
+		assert_eq(again.has(key), true, "and so does one arriving after the war is closed")
+	assert_eq(bool(open_verdict["closed"]), false, "the first verdict closes nothing")
+	assert_eq(bool(closed_verdict["closed"]), true, "the quota decides when it closes")
+	assert_eq(bool(again["closed"]), true, "and a closed standoff stays closed")
 
 
 func test_a_resolved_standoff_transfers_the_claimed_ground_to_the_winner() -> void:

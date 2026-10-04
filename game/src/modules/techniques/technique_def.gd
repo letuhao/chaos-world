@@ -142,6 +142,43 @@ extends Resource
 ## make (an area strike is decided by what the attack is hitting, not by its `.tres`).
 @export var aim_meridian: StringName = &""
 
+## Which mind EROSION this technique performs (ADR 0071). Additive to the two above and
+## for the same reason: a def lives in its owning module (ADR 0056), so the mind path's
+## one authored intent is an export here rather than a change to a `contracts/` type
+## nobody outside this module may extend.
+##
+## ## The three kinds, and why the field is a `StringName` and not an enum
+##
+## `disrupt` is turbulence alone, `obscure` additionally reads the defender's
+## `ILLUSION_RESISTANCE`, and `attend` drains the AWARENESS reserve that coherence is
+## computed from. They are not balance tiers: `obscure` is not stronger than `disrupt`,
+## it is a DIFFERENT defender that answers it, which is why the mechanism branches on
+## them rather than scaling them.
+##
+## A `StringName` because the authoring surface is a `.tres` an author types into, and
+## this module must not acquire a compile-time edge to `combat_engine` to name its enum
+## — the same reason `element` is a `StringName` naming an `ElementDef` id rather than
+## an `ElementDef`.
+##
+## There is deliberately no `match` turning this into an ordinal. `MindDamage._kind_of`
+## already accepts a NAME or an ordinal and answers `disrupt` for anything it does not
+## recognise, so the name travels on `ctx.data` unresolved and that ONE function is the
+## only place the vocabulary is read. A second copy of the three-way decision here would
+## be a second place for a rebalance to miss, and the two would disagree the day a kind
+## was added to one and not the other.
+##
+## ## `&""` is DISRUPT, and that default is load-bearing
+##
+## The 46 authored `.tres` under `game/data/techniques/` that are not mind techniques
+## have no business carrying a mind intent, and a field that defaulted to anything but
+## empty would claim one for all of them. So `&""` — the value every unauthored `.tres`
+## already has — means "no authored intent", and the mechanism reads it as `disrupt`.
+## Every technique that existed before this field resolves exactly as it did before,
+## which is the only honest default available: the alternative is making an omission
+## mean something stronger than the plain strike, and a mind hit that quietly stopped
+## reading `ILLUSION_RESISTANCE` would be a balance change nobody authored.
+@export var mind_kind: StringName = &""
+
 ## `ItemDef.fixed_modifiers` verbatim: `[{option_id, value}, ...]`, resolved
 ## through `OptionCatalog.fixed_effect` (ADR 0054). Capped at two options, which
 ## is what keeps a codex page a comparison rather than a table of numbers.
@@ -164,7 +201,11 @@ func is_passive() -> bool:
 ## the slot allocator both read, so neither has to re-parse `path`.
 func path_ids() -> Array[StringName]:
 	if path == TechniquePolicy.SHARED:
-		return [TechniquePolicy.SHARED]
+		# Built through the typed array: an array literal is untyped `Array`, and
+		# returning one where `Array[StringName]` is declared is a runtime type
+		# error, not a compile-time one.
+		var shared: Array[StringName] = [TechniquePolicy.SHARED]
+		return shared
 	if path.find(TechniquePolicy.DUAL_SEPARATOR) >= 0:
 		var out: Array[StringName] = []
 		for part in path.split(TechniquePolicy.DUAL_SEPARATOR):
@@ -175,7 +216,15 @@ func path_ids() -> Array[StringName]:
 	# membership, and the order matters: returning `[path]` for an UNKNOWN path
 	# (rather than for a known one) made every legitimate technique claim no slot
 	# at all, which surfaced as `no_free_slot` on a fresh actor with seven slots.
-	return [] if not PathState.ALL.has(path) else [path]
+	#
+	# Built through a typed local, never the `[path]` literal: an array literal is an
+	# untyped `Array`, and returning one where `Array[StringName]` is declared throws
+	# AT RUNTIME. That is invisible until a caller assigns the result to a typed
+	# local, so it read as "learn is free" rather than as a type error.
+	if not PathState.ALL.has(path):
+		return []
+	var only: Array[StringName] = [path]
+	return only
 
 
 ## Whether this technique takes a universal slot rather than a path slot. Only a

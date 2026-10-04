@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://src/ui/screens/sect_screen.gd" id="1"]
 [ext_resource type="PackedScene" path="res://src/ui/panels/sect_claim_row.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://src/ui/panels/nation_office_row.tscn" id="3"]
 [ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="4"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/action_set.tscn" id="5"]
 
 [node name="SectScreen" type="Control"]
 anchors_preset = 15
@@ -69,3 +70,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MetaLabel"
 text = ""
+
+[node name="Actions" parent="Layout" instance=ExtResource("5")]
+unique_name_in_owner = true
+layout_mode = 2

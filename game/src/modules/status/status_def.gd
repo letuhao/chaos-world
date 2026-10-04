@@ -137,7 +137,8 @@ const OPS: Array[StringName] = [&"flat", &"percent"]
 ##
 ## - `evasion`      = `minf(0.6, agility * 0.0015)`           needs agility 400; authored 1..15
 ## - `status_resistance` = `minf(0.8, will * 0.003)`          needs will 250;    authored -2..24
-## - `cooldown_reduction` = `minf(0.4, comprehension * 0.002)` needs comprehension 500; authored 0..18
+## - `cooldown_reduction` = `minf(0.4, comprehension * 0.002)`
+##   needs comprehension 500; authored 0..18
 ## - `qi_cost_reduction` = `minf(0.5, aptitude * 0.001)`      needs aptitude 500; authored 1..13
 ## - `damage_reduction`  = `0.0`                              needs nothing
 ##

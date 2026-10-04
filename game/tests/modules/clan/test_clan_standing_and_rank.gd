@@ -78,7 +78,23 @@ func test_moving_standing_for_an_actor_with_no_clan_moves_nothing() -> void:
 	ClanApi.attach(actor)
 	assert_eq(ClanApi.move_standing(actor, 50), 0, "nothing to move")
 	assert_eq(ClanApi.standing_of(actor), 0, "and nothing was written")
-	assert_eq(ClanApi.move_standing(null, 50), 0, "a null actor is safe")
+
+
+## The null half of the case above, as its own function on purpose.
+##
+## `move_standing` DEREFERENCES `actor` — `actor.set_module_data(...)` and
+## `ClanProjection.apply(actor, ...)` both take it — and `_ledger(null)` returns the
+## empty ledger, so the missing guard was invisible until the line that uses it. The
+## assertion was already here on line 81, at the END of the function above, and it was
+## never a failing one: a runtime error aborts the test function it happens in and
+## returns to the runner, so the `assert_eq` after it simply did not execute, and the
+## suite printed the assertions up to that point and reported green. Split out, the
+## verb either answers 0 for nobody or raises on the first call, and the case above
+## keeps asserting that too — this is the assertion that can now actually fail.
+func test_a_null_actor_has_no_standing_to_move_and_is_answered_not_raised() -> void:
+	for delta in [50, -50, 0]:
+		assert_eq(ClanApi.move_standing(null, delta), 0, "a null actor is safe at delta %d" % delta)
+	assert_eq(ClanApi.state(null), ClanState.empty(), "and nothing was written for it")
 
 
 func test_standing_survives_a_projection_rebuild_unchanged() -> void:

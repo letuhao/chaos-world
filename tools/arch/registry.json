@@ -139,7 +139,8 @@
       "deps": [
         "contracts",
         "core",
-        "items"
+        "items",
+        "status"
       ]
     },
     "market": {

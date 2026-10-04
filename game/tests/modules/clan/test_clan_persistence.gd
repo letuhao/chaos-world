@@ -172,6 +172,72 @@ func test_an_unreadable_ledger_is_diagnosed_as_empty_rather_than_partially_appli
 		assert_eq(String(state["rank"]), "", "including any position the payload named")
 
 
+## `ClanState.normalize` is called DIRECTLY here, and that is the point of the case.
+##
+## ## Why it cannot go through `ClanApi.attach` any more
+##
+## The loop above already covers `attach`, but only for the payloads it can survive.
+## `{"clan": 42}` and `{"clan": ..., "rank": 17}` used to abort the attach outright: the
+## id was read with a `String(...)` CAST (`clan_state.gd:90` / `:96` before the fix),
+## and `String(42)` raises in GDScript rather than yielding `"42"`. A runtime error
+## aborts the function it happens in and returns to the caller, so `ClanApi.attach`
+## died half way through — before `set_module_data`, before the projection — and the
+## runner printed `SCRIPT ERROR:` while the test still went on to assert against the
+## UNTOUCHED corrupt payload it had just written. It read as a pass for the wrong
+## reason, and the four remaining payloads in that loop were never reached: a
+## `for` array is walked by index, so an abort on element 0 skips elements 1 to 5.
+##
+## So this case names the guarantee the module's own docstring makes — a payload that
+## cannot be read is diagnosed as empty, NEVER partially applied — and reads `normalize`
+## directly, where a raised coercion cannot skip the next payload. Every id-shaped
+## field is offered wrong-typed, in every place one can arrive: the two the top-level
+## `clan`/`rank` keys use, the two `normalize` reads through `_applied_record`, and
+## `applied` itself as a non-map.
+func test_a_wrong_typed_id_field_is_refused_rather_than_coerced_or_raised() -> void:
+	for payload in [
+		{"clan": 42},
+		{"clan": 42.0},
+		{"clan": {}},
+		{"clan": []},
+		{"clan": true},
+		{"clan": String(HOUSE), "rank": 17},
+		{"clan": String(HOUSE), "rank": {"head": true}},
+		{"clan": String(HOUSE), "applied": {"clan": 7}},
+		{"clan": String(HOUSE), "applied": {"clan": String(HOUSE), "rank": 17}},
+		{"applied": {"clan": 7}},
+		{"applied": {"clan": 42.0, "rank": ""}},
+		{"applied": "not a dictionary"},
+		{"applied": 42},
+	]:
+		var out := ClanState.normalize(payload, {String(HOUSE): true})
+		assert_eq(String(out["clan"]), "", "no membership invented by %s" % [payload])
+		assert_eq(String(out["rank"]), "", "no position either, for %s" % [payload])
+		assert_eq(int(out["standing"]), 0, "and no standing, for %s" % [payload])
+		assert_eq(
+			ClanState.applied(out) as Dictionary,
+			{},
+			"and the applied record is dropped whole, not half-read, for %s" % [payload]
+		)
+
+
+## The complement of the case above, and the reason `_text` is a type test and not
+## `str()`: a GOOD payload still round trips through the very same coercion, so the
+## refusal above cannot be an artefact of a helper that rejects everything.
+func test_a_readable_id_still_passes_the_same_coercion() -> void:
+	var out := ClanState.normalize(
+		{"clan": String(HOUSE), "rank": "inner", "standing": 12}, {String(HOUSE): true}
+	)
+	assert_eq(String(out["clan"]), String(HOUSE), "a String clan id is kept")
+	assert_eq(String(out["rank"]), "inner", "and so is a String position")
+	assert_eq(int(out["standing"]), 12, "with the earned standing beside them")
+	# A `StringName` is text too, and an authored id may arrive as one.
+	assert_eq(
+		String(ClanState.normalize({"clan": HOUSE}, {String(HOUSE): true})["clan"]),
+		String(HOUSE),
+		"a StringName clan id is kept as well"
+	)
+
+
 func test_a_fresh_actor_belongs_to_no_clan_and_claims_nothing() -> void:
 	var actor := Actor.new(&"nobody")
 	ClanApi.attach(actor)

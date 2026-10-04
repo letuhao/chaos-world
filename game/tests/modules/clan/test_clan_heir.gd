@@ -206,7 +206,8 @@ func test_the_registration_fact_is_the_acts_alone_and_nothing_ambient_reports_it
 	# roster is the one producer that would turn "you were entered in the register" into
 	# news the world says about itself, which is the gate's demand echoed back — and it
 	# would falsify
-	# `tests/app/test_world_ambient_facts.gd::test_a_fact_the_world_never_reports_is_still_outstanding`.
+	# `tests/app/test_world_ambient_facts.gd`'s
+	# `test_a_fact_the_world_never_reports_is_still_outstanding`.
 	assert_eq(
 		WorldAmbient.ROSTER.has({"fact": ClanFacts.FACT_HEIR_REGISTERED}),
 		false,
@@ -235,7 +236,16 @@ func test_exactly_two_files_name_the_id_and_only_one_of_them_writes_it() -> void
 	for path in _gdscript_files("res://src"):
 		if _names_in_code(path, ClanFacts.FACT_HEIR_REGISTERED):
 			naming.append(path)
-			if FileAccess.get_file_as_string(path).contains("WorldFact.record"):
+			# `_reaches_the_writer`, NOT a raw `body.contains(...)`. The two differ on a
+			# file whose only mention of `WorldFact.record` is PROSE, and that is exactly
+			# the second of the two files: `destiny_projection.gd` discusses the
+			# chokepoint in six `##` sentences (`destiny_projection.gd:81`, `:112`,
+			# `:125`, `:130`, `:245`, `:256`) and calls it from none of them. A raw scan
+			# therefore credited the fate-mapping table with a second producer, the
+			# count reached 2, and the one assertion that keeps ADR 0137's "not ambient,
+			# never will be" honest had stopped being able to fail. The same defect as
+			# `_names_in_code`, one helper over.
+			if _reaches_the_writer(path):
 				reaching += 1
 	naming.sort()
 	assert_eq(reaching, 1, "exactly one of them reaches the ledger's one writer")
@@ -260,6 +270,24 @@ func test_exactly_two_files_name_the_id_and_only_one_of_them_writes_it() -> void
 func _names_in_code(path: String, id: StringName) -> bool:
 	for line in FileAccess.get_file_as_string(path).split("\n"):
 		if line.split("#")[0].contains(String(id)):
+			return true
+	return false
+
+
+## Whether `path` CALLS `WorldFact.record` rather than merely writing the words down.
+##
+## Same comment half stripped, line by line, as `_names_in_code` above — and for the
+## same reason. `test_sect_no_power.gd`'s `_calls` is the precedent and already does it:
+## a module names the verbs it refuses inside its own class docs, so a raw
+## `body.contains(needle)` scan reads the code beside those sentences as clean while
+## the prose trips it. The invariant here is about what a file EXECUTES, so `##` lines
+## are dropped before the scan.
+func _reaches_the_writer(path: String) -> bool:
+	for line in FileAccess.get_file_as_string(path).split("\n"):
+		var code := line.strip_edges()
+		if code.begins_with("#"):
+			continue
+		if code.contains("WorldFact.record"):
 			return true
 	return false
 

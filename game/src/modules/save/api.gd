@@ -44,6 +44,11 @@ const SLOT := &"primary"
 ## `tests/app/test_status_clock.gd`.
 static var clock: SaveClock = SaveClock.new()
 
+## The stores the composition root installed, keyed by world name. NOT a static the world
+## modules read directly: it exists so `publish_world` can reach each one, and an entry with no
+## store is skipped rather than fabricated.
+static var _stores: Dictionary = {}
+
 
 ## Write the current world as the next generation of the live slot.
 ##
@@ -150,11 +155,6 @@ static func reset_clock() -> void:
 
 
 # --- Internals -------------------------------------------------------------
-
-## The stores the composition root installed, keyed by world name. NOT a static the world
-## modules read directly: it exists so `publish_world` can reach each one, and an entry with no
-## store is skipped rather than fabricated.
-static var _stores: Dictionary = {}
 
 
 ## Read every installed store into one world dictionary. The soul is read even when the actor

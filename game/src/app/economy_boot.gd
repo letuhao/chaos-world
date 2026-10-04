@@ -55,8 +55,9 @@ const _BOUND := true
 
 ## Install every economy-module seam and report what each one did.
 ##
-## `{ok, bound, attached, store, resolver, minter, granter, reason}` — one call, one answer,
-## and no caller has to reach into a module to find out whether it is wired.
+## `{ok, bound, attached, store, resolver, minter, granter, shops, standing, reason}` — one
+## call, one answer, and no caller has to reach into a module to find out whether it is
+## wired.
 ##
 ## ## The attach order is the order the modules depend on each other
 ##
@@ -83,6 +84,8 @@ static func install(actor: Actor) -> Dictionary:
 			"resolver": false,
 			"minter": false,
 			"granter": false,
+			"shops": false,
+			"standing": false,
 			"reason": "no_actor",
 		}
 	EconomyApi.attach(actor)
@@ -96,15 +99,32 @@ static func install(actor: Actor) -> Dictionary:
 	var resolver: bool = _install_resolver()
 	var minter: bool = _install_minter()
 	var granter: bool = _install_granter()
+	# **Content and the subscriber come last**, and both are `app/`-only for the same
+	# reason the resolver is here: neither `market` nor `social` may name the other, and
+	# `app/` is the one layer allowed to know both. `ShopCatalog` reads the five authored
+	# `ShopDef` files nothing else read (DEF-0218) and `AuctionStanding` is the subscriber
+	# ADR 0102 promises for the four auction signals (DEF-0217). Both are idempotent — a
+	# lazy one-shot scan and a set of `is_connected`-guarded connects — so a boot and a
+	# re-install after a save load cost a directory walk's absence rather than a rescan and
+	# a duplicated handler.
+	var shops: bool = _install_shops()
+	var standing: bool = _install_standing(actor)
 	return {
-		"ok": store and resolver and minter and granter,
+		"ok": store and resolver and minter and granter and shops and standing,
 		"bound": _BOUND,
 		"attached": ["economy", "market", "holdings", "custody"],
 		"store": store,
 		"resolver": resolver,
 		"minter": minter,
 		"granter": granter,
-		"reason": "" if (store and resolver and minter and granter) else "seam_not_installed",
+		"shops": shops,
+		"standing": standing,
+		"reason":
+		(
+			""
+			if (store and resolver and minter and granter and shops and standing)
+			else "seam_not_installed"
+		),
 	}
 
 
@@ -208,6 +228,60 @@ static func _install_minter() -> bool:
 static func _install_granter() -> bool:
 	ForageApi.set_granter(ForageGranary.deliver)
 	return ForageApi.has_granter()
+
+
+## Read the authored shop content — the fifth seam, and the only one that is CONTENT.
+##
+## ## Why a boot line at all, when the catalog is lazy
+##
+## `ShopCatalog._ensure_loaded` scans on first read, exactly as `SectCatalog` and
+## `ResourceNodeCatalog` do, so nothing here is required for the scan to happen. What the
+## line **does** is make the boot the first reader, which is the difference between a shop
+## being found when a player walks into a market row and being found when some panel
+## happens to read a catalog first. `NpcBoot.install` states the same reason in full:
+## "the cast is CONTENT, and it is read here … so a new cast member is a `.tres` and never
+## a code edit".
+##
+## ## And it is what makes DEF-0218's inventory honest
+##
+## Five `ShopDef` files shipped and **nothing in `game/src` read the directory** — only
+## `tests/modules/market/test_economy_content.gd` did, so no shop could ever be found at
+## runtime. `NpcCatalog`'s own docstring records the identical failure for npcs (BL-0626:
+## "`NpcApi.spawn` refused every id … and a player could meet nobody"), and this is the
+## same line in the same place for the same reason.
+##
+## **The scan is not run here.** `shop_ids()` is the read, and it walks the tree once. A
+## boot that counted the files itself would be a second scan and a second answer.
+static func _install_shops() -> bool:
+	ShopCatalog.instance().shop_ids()
+	return true
+
+
+## Connect the auction event contract to its social bridge — the sixth seam, and the one
+## that closes ADR 0102's promise that the four auction signals reach `SocialApi.apply_cause`
+## through `app/` (DEF-0217).
+##
+## ## Why this is here and not inside `market`
+##
+## `market` declares `["contracts", "core", "economy", "items"]` and may not name `social`;
+## ADR 0093's inversion says the observer registers with the subject and the module names
+## no consumer. `NpcBoot._install_event_seams` is the identical precedent, and this is the
+## same function with a different bus — including the bare static `Callable` rather than a
+## lambda, for the access-violation reason `install` documents.
+##
+## ## And why `MarketApi` grew no `events()` accessor
+##
+## It publishes exactly `rules.MAX_FACADE_PUBLIC_METHODS` public methods, so a thirteenth
+## fails `tools arch`. `AuctionEvents.shared()` is the door instead — the contract owns the
+## singleton, which `contracts/` may do because it is the leaf layer, and which
+## `AuctionReadModel`'s own docstring already relies on.
+##
+## **True means every connect was ALREADY in place**, so a caller can tell a fresh wiring
+## from a no-op re-install after a load. `actor` is recorded so a lot naming the player can
+## resolve to a live body; a party this process holds no body for is skipped by name in
+## `AuctionLedger`, never dropped.
+static func _install_standing(actor: Actor) -> bool:
+	return AuctionStanding.install(actor)
 
 
 ## Mint a live body for a subject def id, through `ActorFactory.spawn_npc`.

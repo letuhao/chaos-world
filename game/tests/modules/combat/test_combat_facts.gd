@@ -250,7 +250,8 @@ func test_reading_the_spare_state_never_records_it() -> void:
 func test_no_duel_fact_is_named_outside_the_one_fact_file_or_the_fate_mapping() -> void:
 	# These ids are the ACT's. A world roster that reported them would be the quest's
 	# demand echoed back, and would falsify
-	# `tests/app/test_world_ambient_facts.gd::test_a_fact_the_world_never_reports_is_still_outstanding`.
+	# `tests/app/test_world_ambient_facts.gd`'s
+	# `test_a_fact_the_world_never_reports_is_still_outstanding`.
 	#
 	# `modules/destiny/destiny_projection.gd`'s `COUNTER_FACTS` also names them, and that
 	# table LOOKS like a producer and is not one (ADR 0137), so the expected set is exactly

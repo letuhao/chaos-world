@@ -1,5 +1,5 @@
 class_name ItemWorkbenchApp
-extends Control
+extends ItemWorkbenchPlay
 
 ## Composition root for the playable slice (ADR 0002, 0027, 0033).
 ##
@@ -14,6 +14,33 @@ extends Control
 ## another screen, and by a headless probe that presses the same control a player
 ## presses. A screen the route table does not name cannot be reached at all, so
 ## "shipped" and "reachable" cannot drift apart.
+##
+## ## The split into two files
+##
+## This file is the SHELL: boot, the screen stack, the navigation bar, and the
+## per-actor attach list. `ItemWorkbenchPlay` is the PLAY half it inherits — the
+## actor itself and the four clocks that answer for it (world period, anchor
+## repair, death poll, autosave).
+##
+## **Inheritance, not delegation, and that is the whole reason it works.** Every verb
+## on the play half is called on the mounted root — a screen asks the root to advance
+## a period, a probe asks it for the world, a suite asks it who the actor is — so a
+## delegation would leave every one of those callers naming a method that is not there.
+## As a base script the root still answers all of them, and `get_script_method_list()`
+## on it reports the inherited declarations too, so `tests/app/test_screen_reachability.gd`
+## still sees the whole door surface. **No public method was moved off this class or
+## renamed**, and no signature changed: the split is invisible to every caller.
+##
+## Two suites read this file as TEXT, so what stayed here is what they slice on:
+## `tests/app/test_status_clock.gd` requires `StatusLoop.new(` and a `_process(` signature
+## to appear HERE and nowhere else under `res://src` (one tick caller is ADR 0106's claim),
+## and `tests/modules/save/test_cultivation_boot_round_trip.gd` slices this file between the
+## `restore_actor` and `restored_from_save` declarations. Both still hold.
+##
+## **The declaration names above are written WITHOUT their `func ` prefix on purpose.**
+## That suite finds its slice with `source.find("func restore_actor")`, so naming them here
+## in prose would put the FIRST match above the real declarations and hand the slice a
+## docblock instead of the restore body — the assertion would then read the wrong code.
 
 const SAVE_PATH := "user://item_workbench_state.json"
 ## Enough real content to exercise every activation channel on first run.
@@ -48,36 +75,57 @@ const ROUTE_SET_BONUS := &"set_bonus"
 ## reads "Domains — none authored".
 const ROUTE_DOMAIN := &"domain_explore"
 
+## The world fact id a completed birth records, in `WorldFact`'s own flat namespace and
+## with NO prefix (ADR 0113: a prefixed id "reads as a working reference and silently
+## grants nothing"). Recorded against the CHILD, so it rides the child's own save
+## payload rather than the mother's status — which is the only reason a birth can leave a
+## trace at all, given ADR 0089 keeps statuses out of `Actor.to_dict`.
+##
+## **It grants nothing.** A fact is a thing that happened, not a thing that pays out; the
+## counter it moves would be a destination in `destiny`, and no fate in this build is
+## authored against it. That is deliberate — a blank fact is still answerable, and it is
+## the honest answer for "a birth happened" until content decides what a birth is FOR.
+const BIRTH_FACT := &"child_born"
+
 ## The cast standing in the settlement the slice opens on. Every id is an authored
 ## `.tres` under `res://data/npc/cast`, never a literal def, so a reader can open the
 ## file and see the person (ADR 0074). Sized under `NpcApi.MAX_ROOM_POPULATION` on
 ## purpose: it is a starting settlement, not a full population.
 const STARTING_CAST: Array[StringName] = [&"gate_keeper_bo", &"smith_bearcutter", &"drifter"]
 
-## What [code]NpcBoot.populate_room[/code] answered at boot: how many bodies stood up
-## and who they are. Held so a probe can read the cast without reaching past `app/` —
-## the live instances themselves stay in `npc`'s own registry, which is where ADR 0092
-## says a room's occupants live.
-var _npc_settlement: Dictionary = {}
-
-var _actor: Actor = null
+## `_actor`, `_world`, `_death`, `_death_armed`, `_last_death` and `_npc_settlement`
+## are NOT re-declared here: they belong to the inherited play half, and a redeclaration
+## would SHADOW the base's copy, so `_ready` below would assign a field the play half's
+## `poll_death` / `advance_world` / `soul_summary` never read — a split that looks
+## mechanical and silently runs on two different actors.
 ## The composition root's status clock (ADR 0106). It holds no state of its own —
 ## only the actor it ticks — so wiring it here is what ADR 0056 means by "app/ wires".
 var _status_loop: StatusLoop = null
-## The world's clock and the ONE place a beat reaches a sink (ADR 0117, DEF-0111).
-## A director with no production instance is the same defect as a facade with no
-## callers: `add_sink` / `offer` were tested and a player could never reach them.
-var _world: WorldPulse = null
-## The death resolver (ADR 0130). Polled from [method _process] like every other clock here,
-## because a module may not declare its own frame driver (DEF-0111) and a FOURTH `_process`
-## fails `tests/app/test_status_clock.gd`.
-var _death: SoulDeath = null
-## The actor id the death poll is currently watching. Armed on adoption and re-armed on a body
-## swap, so a poll never fires twice for the same body and never fires for a replaced one.
-var _death_armed: String = ""
-## The last resolved death, as primitives, so `summary()` can report what happened without a
-## screen re-deriving it.
-var _last_death: Dictionary = {}
+## Every child a birth has produced, keyed by the child's OWN actor id, each row a
+## primitive: `{actor_id, race, parent_id, lineages}`.
+##
+## ## Why a Dictionary and never an `Array[Actor]`
+##
+## `tools/arch`'s `APP_CONTENT_ARRAY_RE` reads a member `Array[Actor]` as the
+## `state-table` signal, and this file already carries `tick-loop` from `_process`, so a
+## member array would cross `APP_STATE_MIN_SIGNALS` and FAIL the boundary check. That is
+## the check being right rather than fussy: a table of living bodies IS feature state,
+## and `app/` wires. So this holds only what a panel and a probe can READ, and the
+## lineages it reports are read back off the child through the modules that own them —
+## this file keeps no copy of a race or a purity.
+##
+## ## Why `app/` holds it at all (BL-0748)
+##
+## There is no registry in this repo for a person the content tree did not author.
+## `NpcApi.spawn` REFUSES an id the catalog does not ship (`api.gd:157`), so a newborn
+## with no authored `NpcDef` cannot enter the roster through the facade — and inventing a
+## def for one would be authoring content to work around a wiring bug. This is therefore
+## the SMALLEST CORRECT SEAM: the one composition-root-owned table that already exists for
+## exactly this shape of question (`_npc_settlement`, `_last_death`), holding no authority
+## over anything. What a newborn SHOULD be — a named individual in a settlement, an heir in
+## a household, a settler with a place — is a content and schema decision and is filed for
+## the orchestrator rather than invented here.
+var _born: Dictionary = {}
 ## The boot-time arrival program (ADR 0130). Opens the SAME nav route the bar uses, and only
 ## when no hero exists yet — a returning player with a restored body boots straight to the
 ## workbench.
@@ -180,7 +228,9 @@ func _ready() -> void:
 	# other attachment has already made complete (ADR 0106).
 	_status_loop = StatusLoop.new(_actor)
 	# The world's clock, after the actor and wired to a director of its OWN: it is not
-	# a module and shares no ledger with the status clock.
+	# a module and shares no ledger with the status clock. Built on the INHERITED
+	# `_world`, which the play half's `advance_world` / `world_summary` read — a local
+	# copy here would leave the screen advancing a clock the root does not hold.
 	_world = WorldPulse.new(_actor, BeatDirector.new())
 	# The event module's beats go through the director, and this is the seam that makes
 	# that true. `EventBeatWriter` records the ledger itself, so re-offering from
@@ -331,12 +381,6 @@ func restored_from_save() -> bool:
 	return _recovered_from_save
 
 
-## The save's own condition, as primitives, so a status line can report that saving happened
-## without asking permission and without naming the backup.
-func save_summary() -> Dictionary:
-	return SaveApi.summary()
-
-
 ## Mount every module a hero carries, over an actor that already exists.
 ##
 ## ## Why this is a separate method and not part of `_build_actor`
@@ -420,6 +464,34 @@ func _attach_body_modules(actor: Actor) -> void:
 	SocketApi.attach(actor)
 	LootApi.attach(actor)
 	DifficultyApi.attach(actor)
+	# ## `race` and `bloodline` — the two lineage attaches that were MISSING here
+	#
+	# `Actor.from_dict` restores `module_data`, so `race_state` and `bloodline_state`
+	# survive into the payload and the LEDGER is intact on a restore — `RaceGate` even
+	# carries a catalog fallback for an unprojected body, which is why every GATE kept
+	# answering across a save/load and the defect stayed invisible. The PROJECTION did
+	# not survive: `Actor.from_dict` restores components and NEVER a `StatProvider`, and
+	# the stat modifiers, the base-attribute grants, the affinities and the trait mirrors
+	# a race and an awakened lineage contribute are rebuilt only by the attach. Nothing on
+	# this list called it, so after ONE reload a stoneborn lost its +15% `max_health` and a
+	# tideborn at 0.72 read awake while `bloodline_power` answered 0.0 — with no error
+	# anywhere, because every reader that mattered was reading the ledger (BL-0746).
+	#
+	# Why the fresh branch did not hide this: `ActorFactory.build` attaches sect and clan,
+	# and `CharacterCreationFlow._body` attaches `race` on the CREATION branch only. A
+	# restored actor reaches neither, so the defect persisted on the only path a returning
+	# player walks. Both attach calls belong HERE for the reason `ClanApi.attach` is
+	# reachable through the composition root: this is the one list all three callers — the
+	# fresh build, the restore and a rebirth — share, so a restore cannot skip it.
+	#
+	# Both are idempotent BY CONSTRUCTION rather than by luck: `RaceProjection.apply` and
+	# `BloodlineProjection.apply` each strip their own prior contribution (the ledger
+	# records what was granted, so the strip is exact) and rebuild from the ledger. So
+	# running them on a fresh actor that `CharacterCreationFlow` already raced is net-zero,
+	# and running them twice is the same state as once. FIRST on this list because every
+	# ledger below can read a body plan, and `FertilityApi`'s gestation step does.
+	RaceApi.attach(actor)
+	BloodlineApi.attach(actor)
 	# `attach`, not the bare refresh: `Actor.from_dict` restores components and NEVER a
 	# `StatProvider`, so a restore or a body swap arrives with no provider and the realm MULT
 	# would land on nothing. `attach` mounts it when absent and refreshes either way.
@@ -441,6 +513,14 @@ func _attach_body_modules(actor: Actor) -> void:
 	DomainBoot.install()
 	CombatBoot.install(actor)
 	_bind_technique_seams()
+	# The economy program: four modules (`economy`, `market`, `holdings`, `custody`, `forage`)
+	# and FIVE injected seams. Every one of them defaults to refusing or to an actor-scoped
+	# mirror, so without this line the whole program is present, tested, and unreachable —
+	# a rival cannot see a held resource node, a bidder cannot see a listed lot, and a
+	# custody subject cannot be minted. `EconomyBoot.install` is idempotent like every other
+	# line on this list. Placed AFTER `_bind_technique_seams` so the last thing installed is
+	# the most recently written, which makes a failure here the newest thing a reader sees.
+	EconomyBoot.install(actor)
 
 
 ## The one tick caller in the game (ADR 0106, read against ADR 0089).
@@ -470,7 +550,24 @@ func _process(delta: float) -> void:
 	# whole UI. `StatusLoop.tick` refuses that same case by name.
 	if _status_loop == null or delta <= 0.0:
 		return
-	_status_loop.tick(delta)
+	# ## The tick's REPORT is read, not discarded (BL-0716, BL-0748)
+	#
+	# This line used to be `_status_loop.tick(delta)` with the whole dictionary thrown
+	# away, and `FertilityApi.advance` returns the child it minted under `born`. So a
+	# birth was COMPUTED and DROPPED: the child existed only inside
+	# `PregnancyStatus.offspring`, which `advance` erases at the end of the postpartum
+	# stage about ten seconds later — and ADR 0089 means it could never ride a save
+	# either, because statuses are session-only. A child was built correctly (race
+	# resolved, per-lineage purity blended, the factory spine installed by BL-0280) and
+	# then ceased to exist. Nothing read the key: grepping `born` across `game/src` found
+	# exactly one hit, the write.
+	#
+	# Reading it here is what makes the birth OBSERVABLE, and `_register_birth` below is
+	# what makes the child EXIST. It is this frame because this is the only tick caller
+	# (ADR 0106) and a second clock for births is the ADR 0089 defect one layer down.
+	var tick := _status_loop.tick(delta)
+	for child in tick.get("born", []) as Array:
+		_register_birth(child as Actor)
 	# The WORLD's clock, same frame, same delta: a world that aged on a different
 	# cadence from a status is a world whose pace nobody could reason about (ADR 0089,
 	# one layer up). `WorldPulse` turns seconds into whole periods, no clock of its own.
@@ -483,135 +580,66 @@ func _process(delta: float) -> void:
 	poll_save(delta)
 
 
-## Advance the world by exactly `periods` whole periods, with no elapsed time — the
-## player-facing half of the tick. `EventApi.advance` refuses `periods <= 0` by
-## design (ADR 0085), so nothing accrues without a caller saying how much.
-func advance_world(periods: int) -> Dictionary:
-	return (
-		{"ok": false, "reason": "no_world"} if _world == null else _world.advance_periods(periods)
-	)
-
-
-## Advance the world by exactly ONE period. **The verb a screen's "wait a season"
-## button and a headless probe both call**, so neither has to know the cadence or
-## pass an argument a driver would hand over as a string.
+## Give a newborn a home, or say out loud that it has none.
 ##
-## ## An anchor repairs HERE, because this is the period boundary
+## ## What this does, in order, and why each step is here
 ##
-## `AnchorApi.repair` takes explicit `periods` precisely because nothing may own a clock
-## (DEF-0111), and this is the caller that owns one. **Wiring it anywhere else would leave the
-## building feature a set of headless verbs**: the hearth would exist, be raisable, and never
-## heal anybody in play. The repair is REPORTED rather than swallowed, because a player who
-## waits a season at a hearth and sees nothing happen cannot tell a bug from a feature that
-## never fired.
-func advance_one_period() -> Dictionary:
-	var outcome := advance_world(1)
-	outcome["anchor_repair"] = _repair_at_anchor()
-	return outcome
-
-
-## Raise `anchor_id` where this actor stands, and report what it cost.
+## 1. **Record the fact.** `WorldFact.record` is the repo's ONE monotone ledger of "a
+##    thing happened" (ADR 0113) and it is the one of those places the child can reach
+##    TODAY and survive a save: it writes into the parent's `module_data["world_facts"]`,
+##    which `Actor.to_dict` round-trips. This is also the only step that gives the birth a
+##    durable identity — the count is monotone, so the fact of the first child is
+##    answerable from `since` long after the status that carried the actor is gone.
+## 2. **Record the lineage, read back through the modules that own it.** The row is
+##    primitives assembled by CALLING `RaceApi` and `BloodlineApi` on the child, never by
+##    copying a value `fertility` computed — so a projection this root could not see is
+##    visible rather than assumed, and `app/` stores no second copy of either ledger.
+## 3. **Refuse a child that is not a child.** `resolve_offspring` mints through an
+##    injected builder and `push_error`s when that builder returns null, so a null here is
+##    a wiring fault. It is reported and NOT recorded: a ledger that claims a birth no
+##    body happened for is worse than one that says nothing.
 ##
-## **The door a construction screen and a probe both call**, so neither has to know the
-## authored cost shape. Refusals are the module's own (`cannot_afford`, `already_raised`,
-## `realm_floor`), passed through verbatim rather than re-worded.
-func raise_anchor(anchor_id: StringName) -> Dictionary:
-	return AnchorApi.raise_anchor(_actor, anchor_id, String(_actor.id))
-
-
-## Select the difficulty this run is played under, and report the scalars it now answers with.
+## ## Why the roster is deliberately NOT reached for
 ##
-## **The door a settings screen and a probe both call.** Persisting the id rather than the
-## resolved numbers is what keeps an old save meaningful after a retune (ADR 0129).
-func select_difficulty(difficulty_id: StringName) -> Dictionary:
-	var outcome := DifficultyApi.select(_actor, difficulty_id)
-	if not bool(outcome["ok"]):
-		return outcome
-	return {
-		"ok": true,
-		"reason": "",
-		"difficulty_id": String(difficulty_id),
-		"scalars": DifficultyApi.scalars(_actor),
+## `NpcApi.spawn` refuses an id `NpcCatalog` does not ship, and a newborn has no authored
+## `NpcDef` — minting one would be authoring content to cover a wiring bug, and the roster
+## entry would then be a claim about content this fix does not own. `WorldStage.register_npc`
+## is the other candidate and is worse: it is a LIVE-IN-ROOM index that `leave()` empties,
+## so a child registered there would vanish on the next travel — the same ten-second
+## window this defect is about, moved rather than closed. Both are filed for the
+## orchestrator instead, with the seam stated above.
+##
+## Returns `{ok, reason, actor_id}` so a probe and a caller can name what happened rather
+## than infer it from a table's size. Private on purpose: the composition root is the only
+## layer that may name `Actor` and a module's birth, and a public verb here would need a
+## caller `src/` does not have.
+func _register_birth(child: Actor) -> Dictionary:
+	if child == null:
+		return {"ok": false, "reason": "no_child", "actor_id": ""}
+	var actor_id := String(child.id)
+	# `resolve_offspring` names the child `"<mother>_offspring"`, so a second birth in the
+	# same run would collide on this key and silently overwrite the first. Keying by the
+	# id alone would drop a child; keying by the sequence never can, and the id is carried
+	# in the row so a reader can still tell who was who.
+	var key := "%s#%d" % [actor_id, _born.size()]
+	# The purity map is read through the facade rather than from the status, for the reason
+	# the class docstring gives: absence is zero concentration, not a missing key, so this
+	# loop sees exactly the lineages the child's own ledger carries.
+	var lineages := {}
+	for lineage_id in BloodlineApi.awake(child):
+		lineages[String(lineage_id)] = BloodlineApi.purity_of(child, lineage_id)
+	_born[key] = {
+		"actor_id": actor_id,
+		"race": String(RaceApi.race_of(child)),
+		"faction": String(child.faction),
+		"parent_id": "" if _actor == null else String(_actor.id),
+		"lineages": lineages,
+		"sequence": _born.size(),
 	}
-
-
-## Repair the soul from whatever raised anchor stands, for `periods` whole periods.
-func _repair_at_anchor(periods: int = 1) -> Dictionary:
-	if _actor == null:
-		return {"ok": false, "reason": "no_actor", "restored": 0}
-	return AnchorApi.repair(_actor, periods)
-
-
-## The world's own view of itself, published beside [method summary] so a probe can
-## tell a dead director from a quiet one without reaching into the pulse.
-func world_summary() -> Dictionary:
-	return {} if _world == null else _world.summary()
-
-
-## Resolve a death for the current body, once.
-##
-## **Armed on the actor id, so one body dies once.** A poll that fired on every frame would
-## charge the soul repeatedly for a single wound, and re-arming after a body swap is the only
-## reason a rebirth can happen at all. Called from [method _process] and directly by tests and
-## probes, so the rule is testable without driving frames.
-##
-## A body with no lives left stays in place rather than being swapped for null: there is nowhere
-## to swap TO, and a null actor would take every screen with it.
-func poll_death() -> Dictionary:
-	if _death == null or _actor == null:
-		return {}
-	if _death_armed != String(_actor.id):
-		_death_armed = String(_actor.id)
-		return {}
-	if not _death.is_dead(_actor):
-		return {}
-	_last_death = _death.resolve(_actor)
-	# Re-arm whatever stands now, so a guardian death does not re-fire next frame and a rebirth
-	# arms the NEW body rather than the one that fell.
-	_death_armed = String(_actor.id)
-	# A death is a thing that happened to the world, so it is saved immediately rather than
-	# waiting for the next boundary: the run state that matters most is the state at death.
-	SaveApi.persist(_actor, String(DifficultyApi.current_id(_actor)))
-	return _last_death
-
-
-## The last resolved death, as primitives. `{}` before anything has died.
-func last_death() -> Dictionary:
-	return _last_death.duplicate(true)
-
-
-## Write the save if the clock says one is due.
-##
-## **The player never decides when this happens.** The clock counts whole periods and the save
-## lands on a boundary they never see, which is the requirement rather than a limitation
-## (ADR 0128). Called from [method _process] with the engine's delta; no module reads a clock.
-func poll_save(delta: float) -> Dictionary:
-	if not SaveApi.clock.pull(delta):
-		return {}
-	return SaveApi.persist(_actor, String(DifficultyApi.current_id(_actor)))
-
-
-## Mint a fresh body for `arrival_id` — the composition root's half of a rebirth.
-##
-## The body is built through the SAME arrival table character creation uses, so a returning
-## soul arrives the way a first one does and there is one rule for "how does a hero arrive"
-## rather than two. Refuses an arrival the catalog does not define rather than minting a hero
-## nothing can explain.
-func mint_body(arrival_id: String, incarnation: int) -> Dictionary:
-	var arrival := StringName(arrival_id)
-	if SoulCatalog.instance().arrival_definition(arrival) == null:
-		return {"ok": false, "reason": "unknown_arrival"}
-	return CharacterCreationFlow.build_forced(arrival, incarnation)
-
-
-## The actor this root is currently holding, or null before boot builds one.
-##
-## **Public because a rebirth makes the actor MOVE.** A screen bound to the body that fell is
-## reading a dead hero, and the only way for it to follow is to ask the root rather than cache
-## what it was handed. The alternative — every screen re-reading on a signal — is a second
-## mechanism for the one fact the root already owns.
-func actor() -> Actor:
-	return _actor
+	# LAST, so a fact is never recorded for a row that was not written. Monotone, so a
+	# re-registration cannot double-count — `WorldFact.record` is the ledger's only verb.
+	WorldFact.record(child, BIRTH_FACT, 1)
+	return {"ok": true, "reason": "", "actor_id": actor_id}
 
 
 ## Make `body` the current actor, re-binding everything that held the old one.
@@ -678,33 +706,10 @@ func creation_summary() -> Dictionary:
 	return {} if _creation == null else _creation.summary()
 
 
-## The soul, the difficulty, the anchors and the save, as primitives, so a probe can assert the
-## wiring without reaching into a module.
-func soul_summary() -> Dictionary:
-	return {
-		"soul": SoulApi.soul(_actor),
-		"difficulty": String(DifficultyApi.current_id(_actor)),
-		"anchors": AnchorApi.summary(_actor),
-		"last_death": _last_death,
-		"save": SaveApi.summary(),
-	}
-
-
 ## The route table this root publishes, so the navigation bar, a probe and a
 ## test all read the same list. Primitives only.
 func routes() -> Array[Dictionary]:
 	return ScreenRoutes.summary()
-
-
-## Who is standing in the settlement this root stocked at boot (BL-0626).
-##
-## Published for the same reason `routes()` is: a probe or a test must be able to
-## READ what the boot did without reaching into `npc`'s registry or re-deriving the
-## cast list. The answer is `populate_room`'s own dictionary verbatim — a count, the
-## location id, and one read-model row per npc — so nothing here can disagree with
-## what was actually minted.
-func npc_presence() -> Dictionary:
-	return _npc_settlement.duplicate(true)
 
 
 ## Open `route_id` and make it the live screen. The single navigation mechanism:
@@ -881,7 +886,7 @@ func _bind_technique_seams() -> void:
 ## damage" for a technique that works perfectly. A caller that wants the roll
 ## injects its own rng through the same seam.
 ##
-## ## Why `CombatBoot.ctx_builder_for` and not a bare `breakdown` (ADR 0154)
+## ## Why `CombatBoot.resolve_hit` and not a bare `breakdown` (ADR 0154)
 ##
 ## This passed FIVE arguments, so `CombatSpine.resolve_hit`'s sixth — `ctx_builder` —
 ## was an empty `Callable` on every production hit. That is not a default, it is a hole:
@@ -891,18 +896,42 @@ func _bind_technique_seams() -> void:
 ## `.tres`, and the per-technique share that all 55 authored `.tres` files set was
 ## INERT; `aim_meridian` never arrived, so a `named` body aim resolved as `random`.
 ##
-## `ctx_builder_for` is the composition root's whole job on this line: it picks the
-## `builder` for the mechanism THIS technique selects, and hands that builder the
-## authored def and the elements module's rule table. It is a `Callable` like any other
-## injection, so the seam `CombatSpine` was designed around is finally used and the
-## spine still learns nothing about what a qi or a body hit is.
+## Adding `ctx_builder_for` here closed that half and left the worse half open. Picking
+## the BUILDER is not picking the MECHANISM: this call still went straight to
+## `CombatEngineApi.breakdown`, and the spine reads the mechanism off
+## `MechanismSlot.of(attacker)` at S4 (`spine.gd:112`). On the shipped player that slot
+## is `QiDamage` — `_build_actor` enrols THREE paths, `has_body == has_mind`, so
+## `CombatBoot.bind_mechanisms` takes its both-paths case on purpose — so a BODY
+## technique fired from this screen ran `QiDamage` and `aim_meridian` rode along in
+## `ctx.data` to be read by nothing. **That is what ADR 0161 recorded**: body and mind
+## could not fire at all, not rarely, never.
 ##
-## `breakdown` is the descriptor form and is the right return: `TechniqueCasting
-## ._resolve` accepts a `Dictionary` verbatim and this is exactly one.
+## `CombatBoot.resolve_hit` is the one function that does BOTH halves from a single
+## answer: `mechanism_for_hit` names the mechanism, that same name picks the
+## `ctx_builder`, the mechanism is bound to the attacker for the scope of the call, and
+## the previous binding is restored on return. Which mechanism runs and what it reads
+## therefore cannot be selected by two rules and drift — and `combat_engine/spine.gd`
+## still learns nothing about what a qi, a body or a mind hit is.
+##
+## ## Why THIS method and not reading `_hit_resolver` from the casting path
+##
+## `CombatBoot.install` already installs `Callable(CombatBoot, "resolve_hit")` as the
+## per-hit seam, and it is the injectable form of the call below, so the alternative —
+## `TechniqueCasting` invoking `_hit_resolver` — would need a second, parallel route for
+## the SAME decision and would leave this method as a second answer to "how does one hit
+## resolve", which is how the two halves came to disagree in the first place. Calling
+## the static keeps ONE production route to the mechanism switch and makes it a direct
+## expression of it: delete the call below and every hit reverts to the installed
+## mechanism, visibly.
+##
+## `to_dict` is the descriptor form `CombatEngineApi.breakdown` returned — the very
+## object it delegates to, `CombatOutcome.to_dict` (`api.gd:115`) — and it is the right
+## return because `TechniqueCasting._resolve` accepts a `Dictionary` verbatim.
 func _resolve_technique_hit(attacker: Actor, target: Actor, technique: TechniqueDef) -> Dictionary:
-	var ctx := CombatBoot.ctx_builder_for(attacker, target, technique)
-	return CombatEngineApi.breakdown(
-		attacker, target, technique, CombatEngineApi.tuning(), null, ctx
+	return (
+		CombatBoot
+		. resolve_hit(attacker, target, technique, CombatEngineApi.tuning(), null)
+		. to_dict()
 	)
 
 
@@ -951,6 +980,12 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 		ROUTE_LOOT:
 			screen.call("setup", _actor)
 			screen.call("bind_bridge", _loot_bridge())
+			# ADR 0089's combat-exit purge. `StatusLoop` is an `app/` type and `app` is
+			# a `PRIVATE_UNIT`, so the screen cannot reach it — this is the one legal door,
+			# the same shape the quest screen's accept seam uses. The root HOLDS the loop,
+			# so the purge and the per-frame tick are the SAME wire over the SAME actor
+			# and cannot disagree about which body is being cleaned.
+			screen.call("bind_combat_exit", Callable(self, "_purge_combat_scope"))
 		ROUTE_SOCKET:
 			screen.call("setup", _actor)
 			_forge.bind(screen)
@@ -996,8 +1031,96 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# `_world_bridge` are for their screens.
 			screen.call("setup", _actor)
 			screen.call("bind_bridge", DomainBoot.bridge())
+			# **And the world is REALIZED as soon as a run exists.** See
+			# [method _realize_domain_world] and `DomainBoot.set_world_observer`: this
+			# arm installs the observer once, `enter_domain` fires it, and the world is
+			# parented under the screen the stack is showing — which is this one. The
+			# call below is the other half: it catches a run that was already entered
+			# before this route was opened, and is a documented no-op otherwise.
+			_install_domain_world_observer()
+			_realize_domain_world()
 		_:
 			screen.call("setup", _actor)
+
+
+## Install the seam `DomainBoot.enter_domain` fires once a run exists. Idempotent, and
+## installed beside `DomainBoot.install()` on the attach list because that is the ONE
+## place `app/` installs domain seams.
+##
+## ## Why a `Callable` and not a reference
+##
+## `enter_domain` is a STATIC on `DomainBoot`, and the thing that has to stand the world up
+## in the tree is the composition root — which is an INSTANCE. The repo already solved
+## exactly this shape twice: `NpcApi.set_minter` and `CustodyApi.set_resolver` both take a
+## `Callable` for the same reason, and `DomainSpawner.set_minter` forbids the alternative
+## outright — a typed lambda whose body calls another script's static function killed the
+## process on the shell's first frame (see `DomainBoot.install`). So this is
+## `Callable(self, "_realize_domain_world")`, a bare method reference with no closure and
+## no typed lambda.
+func _install_domain_world_observer() -> void:
+	DomainBoot.set_world_observer(Callable(self, "_realize_domain_world"))
+
+
+## REALIZE the entered domain as a walkable world under the mounted domain screen, and
+## answer what happened — or, called with `release`, FREE the world again.
+##
+## ## Why the screen is the parent
+##
+## The world has to be a `Node2D` somewhere it is actually DRAWN, and the domain screen is
+## the only node in the tree that exists for the duration of a domain visit. Parenting it
+## there means the ownership is the node that shows it: `ScreenStack.pop_to_root()` frees
+## the screen, and the floor tiles, the walls, the navigation region, the inhabitants and
+## the player go with it — no second owner to forget to clean up, which is the leak shape
+## `tests/arch_rules/test_no_deferred_free.gd` records.
+##
+## ## Why nothing here is remembered
+##
+## The handle is NOT kept as a field. `teardown()` and the stack's own free find the world
+## by the name `DomainBoot` publishes, so there is no second reference that can outlive the
+## node — and no member on this root for `tools/arch`'s `app/` state rule to read.
+##
+## ## Why this takes a `StringName`
+##
+## `DomainBoot` reaches the parent back through this same seam, because it may not name a
+## `ui/` type and guessing a second lookup would be a second thing that can disagree about
+## where the world went. So one callable does both halves, and `release` is its other arm.
+func _realize_domain_world(action: StringName = &"realize") -> Dictionary:
+	var screen := _live_screen()
+	if action == &"release":
+		return {} if screen == null else DomainBoot.release_world(screen)
+	var hero := _actor
+	if hero == null:
+		return {"ok": false, "reason": "no_actor"}
+	if screen == null or String(screen.name) != ScreenRoutes.node_of(ROUTE_DOMAIN):
+		# The run exists but nothing is showing the domain. REPORTED rather than drawn
+		# somewhere the player cannot see: a world parented to an unrelated screen is a
+		# world that outlives the visit that created it.
+		return {"ok": false, "reason": "no_surface"}
+	return DomainBoot.realize_world(screen, hero)
+
+
+## The realized domain world, as primitives, or `{}` when nothing is realized. Published
+## on the same contract as `routes()` and `summary()`: a probe asserts the wiring through
+## a verb, never by reaching into a private field.
+func domain_world_summary() -> Dictionary:
+	var screen := _live_screen()
+	if screen == null:
+		return {}
+	return DomainBoot.world_summary(screen)
+
+
+## Free everything this root built that is not a node the stack owns. Idempotent, and
+## safe to call after an aborted test — the headless runner shares ONE process across every
+## suite, so a leak here is a leak everywhere.
+##
+## The world is detached and freed with `remove_child()` then `free()`, never
+## `queue_free()`: the runner drives tests from `SceneTree._initialize()` and never
+## processes a frame, so a deferred free leaks for the life of the process. That is the
+## shape that took a run to 67 GB resident (INC-0004/INC-0005).
+func teardown() -> void:
+	var screen := _live_screen()
+	if screen != null:
+		DomainBoot.release_world(screen)
 
 
 ## The loot program's public surface, as plain callables. The UI program may only
@@ -1015,6 +1138,36 @@ func _loot_bridge() -> LootBridge:
 	bridge.reclaim = Callable(LootApi, "reclaim")
 	bridge.read_state = Callable(LootApi, "summary")
 	return bridge
+
+
+## ADR 0089's combat-exit purge, handed to the loot screen as a `Callable`.
+##
+## ## Why the composition root is the one that may call it
+##
+## `StatusLoop.exit_combat` is `app/`, and `app` is a `PRIVATE_UNIT`
+## (`tools/arch/rules.py:35`), so `ui/` may name neither the type nor the verb. This is
+## the same seam ADR 0143 gives the quest screen's accept verb, and it is called from the
+## `ROUTE_LOOT` arm above at every mount.
+##
+## ## Why it resolves the loop HERE rather than capturing it
+##
+## `adopt_actor` REPLACES `_status_loop` on every rebirth (ADR 0130). A callable bound to
+## the first loop object would keep purging a body that no longer exists, while the player
+## played a reborn one and carried the burn past every fight — the F-6 defect still
+## present under a new name. Reading the field per call is what makes the seam survive a
+## body swap.
+##
+## ## Why an absent loop is a no-op, not a crash
+##
+## The root mounts the loot route from `_ready`, which builds `_status_loop` before
+## `_mount_home`, so this is unreachable in the shipped boot. It is refused BY NAME rather
+## than assumed, because the alternative is a screen that cannot leave a fight at all if
+## the wiring is ever reordered — and walking away from a boss must never depend on a
+## bookkeeping step.
+func _purge_combat_scope() -> Array[String]:
+	if _status_loop == null:
+		return []
+	return _status_loop.exit_combat()
 
 
 ## The world's clock, as plain callables — the same shape as `_loot_bridge` and for the

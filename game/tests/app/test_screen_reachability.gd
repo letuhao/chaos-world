@@ -24,8 +24,9 @@ const HUB_METHODS := [&"routes", &"navigate_to", &"current_route"]
 const PROGRAM_ROOTS := ["res://src", "res://scenes"]
 ## Dot-free on purpose: `String.get_extension()` returns `"gd"`, never `".gd"`. A dotted
 ## literal here silently skipped every file in every root (BL-0650), and the guard that
-## read nothing reported its own blindness as a finding. `test_the_program_scan_actually_reads_files`
-## is the liveness term that makes that shape impossible to re-introduce silently.
+## read nothing reported its own blindness as a finding.
+## `test_the_program_scan_actually_reads_files` is the liveness term that makes that
+## shape impossible to re-introduce silently.
 const SUFFIXES := ["gd", "tscn"]
 ## The composition root's own script: where a door into the screen stack lives.
 const APP_SCRIPT := "res://src/app/item_workbench_app.gd"

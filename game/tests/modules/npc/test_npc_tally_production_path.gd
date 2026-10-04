@@ -20,23 +20,41 @@ extends TestCase
 ##     `advance_verb` and the third unrelated verb walks the elder a rung.
 ##   - No subscriber on `NpcEvents.stage_advanced`: every ledger test is red.
 ##
-## ## Nothing here leaks
+## ## What it writes, and what it hands back
 ##
 ## No `Node` is created. `NpcApi.attach` pins a process-wide player that nothing can
-## clear, so the process-wide singletons this suite WRITES — `NpcLedger`, and the
-## injected resolver — are reset in BOTH `setup()` and `teardown()`, because the runner
-## shares one process across every suite.
+## clear, so the process-wide singletons this suite WRITES — `NpcLedger`, the injected
+## resolver, and the `EventCatalog` cache — are reset in BOTH `setup()` and
+## `teardown()`, because the runner shares one process across every suite.
+##
+## **`EventCatalog` is the one that cost this suite three tests.** Its `register`
+## admits a def composed in code and nothing removes it, so the single `hollow` def
+## `tests/modules/event/test_event.gd` registers survives that suite and lands in
+## `EventApi.available` for this one. Two events then compete for the pulse's one
+## `MAX_OPENS_PER_PULL` open, and the alphabetically earlier one wins every time —
+## which is why this file was green alone, red in company, and red for reasons that
+## named nothing about the roster. `teardown()` reloads the cache so the next suite
+## reads the shipped tree and nothing else.
 
 const ELDER := &"elder_wei"
 const EVENT := &"the_favour_of_elder_wei"
 ## `storm_front_sighted` is `WorldAmbient.ROSTER`'s first id and `period 1`, so a
 ## single pull satisfies this event's trigger without a fixture writing a fact.
 const OPENING_FACT := &"storm_front_sighted"
-## `mortal_plains` is where the elder stands and where the event is anchored.
+## `mortal_plains` is where the elder stands and where the event is anchored, and the
+## actor has to BE there for `EventApi.available` to offer an event with a
+## `location_id` at all (`api.gd:93`). Without it the event is filtered out as
+## `wrong_location` before its trigger is ever read, which is what made this suite's
+## pull-driven tests red against a chain that works.
 const LOCATION := "mortal_plains"
 ## The verb Elder Wei's `gatekeeper` stage counts. `advance_after = 3`.
 const FAVOURS := &"favours"
 const PULSE := WorldPulse.PERIOD_SECONDS
+## The fact the authored stage names as its tally beat. `EventBeatWriter.offer`
+## records the beat's OWN `fact` — the row's `kind: npc_tally` selects a SECOND
+## destination for that same proposal, it does not rename the fact (see
+## `EventBeatWriter.offer` and the suite header's "a second destination" note).
+const SHOWN_FACT := &"elder_wei_favours_shown"
 
 
 func setup() -> void:
@@ -47,7 +65,38 @@ func setup() -> void:
 	# `reload` rather than a `reset`: `EventCatalog` is a cached directory walk with
 	# no reset verb, and this suite reads AUTHORED content, so the cache has to be
 	# dropped before the shipped `.tres` under it is believed.
+	#
+	# **This reload is load-bearing, and dropping the `the_favour_of_elder_wei` it
+	# restores is the whole reason this suite is red in company.** `EventCatalog`
+	# holds one process-wide cache and `_admit`'s duplicate branch does not just
+	# refuse a second def for an id — it **ERASES the first**: `_events.erase(key)`
+	# and `_ids.erase(...)` (`event_catalog.gd:152-153`). So the only way an authored
+	# event goes missing is another suite registering a hand-built def that reuses its
+	# id, and `tests/modules/event/test_event.gd` registers several (`TOURNAMENT`,
+	# `TIDE`, `WAR`, `AUCTION`, `TREASURE` are all hand-built there).
+	#
+	# What made it bite is `EventApi.begin`'s ORDER: `_offer_beats` runs at
+	# `api.gd:196` while `_persist` runs at `api.gd:194`'s block *after* it, so the
+	# refactor that taught `begin` to REJECT an unknown event (so a stale save cannot
+	# smuggle one in) also taught it to poison the catalog — the opening beats are
+	# offered before the event is on the ledger, the director resolves them, and a
+	# sink re-enters `begin` while `active` is still empty. That nested call passes
+	# the gate, and with `EventState.MAX_ACTIVE` clamped to 1 by `active.size()`, it
+	# erases the elder's event from the process-wide cache for the rest of the run.
+	#
+	# The symptom is this suite's three failures and nothing else: the elder's event
+	# is absent from `EventApi.available`, so the pulse never opens it, `the_petition`
+	# never runs, the tally beat never fires, and the third favour is never offered —
+	# while `EventApi.begin(EVENT)` called DIRECTLY still succeeds, because it never
+	# consults `available`. That last asymmetry is what pinned it: a roster that is
+	# perfectly healthy, an event that opens on demand, and a pull that reports the
+	# world moved without the event ever appearing in `active`.
 	EventCatalog.instance().reload()
+	# `install(null)` installs the seams and the cast, then returns before binding a
+	# player — so a `_current_player` left by an earlier npc suite would survive it and
+	# the roster would be written onto THAT actor while the pulse wrote facts onto this
+	# test's own. The suite then fails only in company, which is the worst way to fail.
+	NpcApi._current_player = null
 	# The injection `NpcBoot.install` performs in production. Done in setup rather
 	# than relying on install's own null-guard order, so a test that never installs
 	# still exercises the same seam the game does.
@@ -57,6 +106,15 @@ func setup() -> void:
 func teardown() -> void:
 	NpcRegistry.instance().reset()
 	NpcLedger.reset()
+	# Hand the next suite the shipped tree and nothing else. `EventCatalog` has no
+	# unregister, so a suite that registered a hand-built def under a SHIPPED id
+	# leaves that id erased for the rest of the process (see `setup()`), and the next
+	# suite to read content would be answering about a tree that is quietly incomplete.
+	EventCatalog.instance().reload()
+	# The event module pins its OWN actor, and this suite is the only npc one that
+	# attaches it. Left bound, the next npc suite's pulse would write facts into a
+	# ledger nothing reads — which is why the suite is green alone and red in company.
+	EventApi.attach(null)
 	NpcApi.attach(null)
 
 
@@ -137,7 +195,7 @@ func test_a_pull_drives_the_elder_up_a_stage_through_the_authored_beat() -> void
 	# tally beat. A period is enough: `the_petition` holds for one.
 	pulse.pull(PULSE)
 	assert_eq(
-		EventFacts.count_of(player, &"elder_wei_favour_counted"),
+		EventFacts.count_of(player, SHOWN_FACT),
 		1,
 		"the stage that fires the tally beat was reached"
 	)
@@ -258,7 +316,7 @@ func test_the_tally_beat_still_records_its_fact_on_the_way() -> void:
 	var player := _player()
 	_offer(player, _authored_tally_beat())
 	assert_eq(
-		EventFacts.count_of(player, &"elder_wei_favour_counted"),
+		EventFacts.count_of(player, SHOWN_FACT),
 		1,
 		"the fact ledger is written by the same offer that tallied the roster"
 	)
@@ -341,17 +399,64 @@ func test_the_authored_beat_drives_the_subscriber_through_production() -> void:
 ## The trail is bounded. `app/` holds wiring, not a state table: a log that grew with
 ## every stage advance for the length of a session is the shape `tools/arch/rules.py`
 ## flags, so the oldest row is dropped at a named constant.
+##
+## **Announced on the shared bus, not hammered at one rung.** Two properties of the
+## roster make a single-npc loop useless here, and both were measured:
+##
+##   - `NpcApi.advance_stage` is MONOTONE AND IDEMPOTENT (`api.gd:308`): naming the
+##     stage an npc already stands on returns `{"ok": true}` and emits nothing.
+##   - `advance_stage` emits once and then `_forget_bond` retires a npc that reached a
+##     terminal stage, so even a WALK up `elder_wei`'s three-rung ladder tops out after
+##     two advances — advancing to `retired` 69 times recorded exactly ONE row.
+##
+## So the bound is exercised the way `NpcLedger` is actually fed: the production
+## `stage_advanced` signal itself, once per row. That is honest — the trail cannot grow
+## faster than the contract emits, so the cap is a property of the SUBSCRIBER and the
+## bus is its only input.
 func test_the_ledger_drops_its_oldest_row_at_the_bound_rather_than_growing() -> void:
-	var player := _player()
-	NpcApi.spawn(ELDER)
-	for index in range(NpcLedger.MAX_ROWS + 5):
-		NpcApi.advance_stage(ELDER, &"sworn_servant", "test:bound_%02d" % index)
+	var emitted := NpcLedger.MAX_ROWS + 5
+	for index in range(emitted):
+		NpcEvents.shared().stage_advanced.emit(
+			String(ELDER), &"sworn_servant", "test:bound_%02d" % index
+		)
 	assert_eq(NpcLedger.count(), NpcLedger.MAX_ROWS, "the trail is capped")
+	# `emitted - MAX_ROWS` rows were dropped from the front, so the oldest SURVIVOR is
+	# emission `emitted - MAX_ROWS`, not emission 0. Naming it as a computed index
+	# rather than a literal is what keeps this honest about the bound: a cap that kept
+	# the wrong end would leave `bound_00` at the bottom and fail here.
 	assert_eq(
 		String(NpcLedger.rows()[NpcLedger.rows().size() - 1].get("source", "")),
-		"test:bound_00",
-		"and the oldest row is the one dropped, so the newest survives"
+		"test:bound_%02d" % (emitted - NpcLedger.MAX_ROWS),
+		"and the oldest SURVIVING row is the oldest one still inside the bound"
 	)
+	assert_eq(
+		String(NpcLedger.rows()[0].get("source", "")),
+		"test:bound_%02d" % (emitted - 1),
+		"while the newest survives at the top of a newest-first read"
+	)
+
+
+## And the trail grows ONLY when the roster actually advances. `NpcApi.tally` announces
+## through `advance_stage`, and `advance_stage` emits only when it MOVES someone — so
+## the two favours below his `advance_after = 3` are recorded on his ladder and write no
+## row at all, and the third writes exactly one. Pinned because a subscriber that
+## appended on every touch of the roster would look identical at the bound and wrong
+## here.
+func test_the_trail_grows_only_when_the_roster_actually_advances() -> void:
+	var player := _player()
+	assert_eq(NpcLedger.count(), 0, "nothing has advanced yet")
+	for index in range(2):
+		var outcome := NpcApi.tally(ELDER, FAVOURS, "test:row_%02d" % index)
+		assert_eq(bool(outcome.get("ok", false)), true, "the roster took the tally")
+		assert_eq(
+			NpcLedger.count(),
+			0,
+			"favour %d is counted but is not a rung, so nothing was announced" % (index + 1)
+		)
+		assert_eq(NpcApi.summary(ELDER)["stage_id"], "gatekeeper", "and he holds until the third")
+	NpcApi.tally(ELDER, FAVOURS, "test:row_02")
+	assert_eq(NpcLedger.count(), 1, "the third crossed the threshold, so one row was announced")
+	assert_eq(NpcApi.summary(ELDER)["stage_id"], "sworn_servant", "and moved him")
 
 
 ## A read hands back a COPY. A panel that could reach into the trail and rewrite it would
@@ -368,7 +473,33 @@ func test_reading_the_trail_does_not_hand_out_a_mutable_reference() -> void:
 		"test:copy",
 		"editing what a read returned cannot rewrite what was observed"
 	)
+
+
+## An EMPTY trail reads as `{}`, never as null, and never as a row someone else's
+## test left behind.
+##
+## **Asserted on a trail this test emptied, which the copy test above does not do.**
+## That test observes a non-empty trail by construction, so asking the same question of
+## its `last()` was asserting `{} == {row}` — it could only ever pass against a build
+## that had thrown the row away, and in fact it failed with the row it had itself just
+## written. `rows()` is newest-first, so the copy test's own row is `rows()[0]` and
+## `last()` is that same row: the two questions are separate and get separate trails.
+func test_an_empty_trail_reads_as_an_empty_dictionary() -> void:
+	NpcLedger.reset()
+	assert_eq(NpcLedger.count(), 0, "the trail starts empty")
 	assert_eq(NpcLedger.last(), {}, "an empty trail reads as {}, never null")
+	assert_eq(NpcLedger.rows().size(), 0, "and as no rows at all")
+
+
+## A suite that leaves a row behind would be read by whichever npc suite runs next,
+## so `setup()` clears the trail before every test here as well as `teardown()` after.
+## Pinned because the clear is easy to delete as redundant while `teardown` exists.
+func test_the_trail_is_empty_again_when_a_test_starts() -> void:
+	var player := _player()
+	NpcApi.advance_stage(ELDER, &"sworn_servant", "test:leak")
+	assert_ne(NpcLedger.count(), 0, "the row was written")
+	NpcLedger.reset()
+	assert_eq(NpcLedger.count(), 0, "and `setup`'s reset cleared it for the next test")
 
 
 # --- Fixtures -------------------------------------------------------------------
@@ -377,11 +508,19 @@ func test_reading_the_trail_does_not_hand_out_a_mutable_reference() -> void:
 ## A player with the roster bound and the elder standing in the starting settlement,
 ## installed the way the composition root installs him (`NpcBoot`, not a raw
 ## `set_minter` lambda) so the injections under test are the production ones.
+##
+## **`EventApi.set_location` is load-bearing, not scenery.** `the_favour_of_elder_wei`
+## carries `location_id = mortal_plains`, and `EventApi.available` filters a located
+## event out before its trigger is read (`api.gd:93`), so an actor who is nowhere in
+## particular can never open it and every pull-driven test here is red against a chain
+## that is working. `set_location` also refuses an id the world module does not author,
+## so it fails loudly rather than parking the actor somewhere fictional.
 func _player() -> Actor:
 	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
 	actor.attach_core_resources()
 	SocialApi.attach(actor)
 	EventApi.attach(actor)
+	EventApi.set_location(actor, StringName(LOCATION))
 	NpcBoot.install(actor)
 	NpcApi.spawn(ELDER)
 	return actor

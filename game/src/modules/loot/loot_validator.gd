@@ -14,6 +14,7 @@ extends RefCounted
 ##  - `chance` stays inside 0.0..1.0 and a guaranteed entry declares none;
 ##  - quantity and draw ranges are satisfiable (`min <= max`, both non-negative);
 ##  - a table that declares `allow_empty = false` can actually produce something;
+##  - every authored domain is hosted by an encounter, so none is invisible;
 ##  - realm ids are canonical ladder ids and rarity ids are known;
 ##  - every boss of an encounter is bound exactly once per tier, and its band
 ##    names a table that resolves;
@@ -21,7 +22,9 @@ extends RefCounted
 ##    content audit's own boss<->domain consistency holds for this content too;
 ##  - a boss never has two loot authorities: an authored binding and a populated
 ##    legacy `BossDef.loot` array at the same time is an error;
-##  - a unique-route item is reachable only from the boss it names.
+##  - a unique-route item is reachable only from the boss it names;
+##  - every authored table is payable: bound by some band, or nested inside one that
+##    is. A table no defeat can resolve ships items no player can obtain (BL-0136).
 
 const SCOPE_ALL := ""
 const SCOPE_TABLES := "tables"
@@ -34,17 +37,71 @@ const SCOPE_DOMAINS := "domains"
 static func validate(scope: String = SCOPE_ALL) -> Array[String]:
 	var problems: Array[String] = []
 	if scope == SCOPE_ALL or scope == SCOPE_TABLES:
-		var content := LootContent.instance()
+		var content: LootContent = LootContent.instance()
 		var tables: Array = []
 		for table_id in content.table_ids():
 			var table := content.table(StringName(table_id))
 			if table != null:
 				tables.append(table)
 		problems.append_array(validate_tables(tables))
+		# Part of the table pass rather than its own scope: a table no band pays is a
+		# table problem, and `validate("tables")` is the scope a caller reaches for when
+		# it suspects the table corpus. It needs the encounters to answer at all, which
+		# the shared index already holds.
+		problems.append_array(validate_bindings(content))
 	if scope == SCOPE_ALL or scope == SCOPE_ENCOUNTERS:
 		problems.append_array(validate_encounters(LootContent.instance()))
 	if scope == SCOPE_ALL or scope == SCOPE_DOMAINS:
 		problems.append_array(validate_domains(LootContent.instance()))
+	return problems
+
+
+## Every authored table no authored band can pay, named with the item ids that only
+## it carried.
+##
+## ## Why this is a content problem and not a formatting nit
+##
+## A defeat resolves exactly one table: the one the band binds for the boss it spawned
+## ([method LootContent.table_for_boss]). So a table no band binds, directly or nested,
+## is content the game ships that nothing can resolve — and every item it lists is an
+## item a player can never obtain, however well-formed the file is.
+##
+## BL-0136 filed this as "~1500 drops appear in no authored encounter". Re-measured on
+## this tree it was ZERO drops: a content wave had bound the corpus since. Eight tables
+## still paid nothing, and nothing in the tree said so, so what this guards is the
+## class, not the eight.
+##
+## The stranded item list is the part that tells an author what to do. A table whose
+## items are all paid elsewhere is dead weight and can go; one carrying an item nothing
+## else pays is a soft-lock and has to be bound instead. Today every stray table is the
+## first kind, which is why removing them is the fix and not binding them.
+static func validate_bindings(content: LootContent) -> Array[String]:
+	var problems: Array[String] = []
+	var payable: Dictionary = {}
+	for item_id in content.band_reachable_item_ids():
+		payable[String(item_id)] = true
+	for table_id in content.unbanded_tables():
+		var stranded: Array[String] = []
+		for item_id in content.table(StringName(table_id)).reachable_item_ids():
+			var key := String(item_id)
+			if not payable.has(key) and not stranded.has(key):
+				stranded.append(key)
+		stranded.sort()
+		var tail := ""
+		if not stranded.is_empty():
+			tail = (
+				"; and no band pays for its %d item(s): %s" % [stranded.size(), ", ".join(stranded)]
+			)
+		problems.append(
+			(
+				(
+					"table %s: no authored band binds it and no table nests it, so no defeat can"
+					% table_id
+				)
+				+ " resolve it and its items are unobtainable"
+				+ tail
+			)
+		)
 	return problems
 
 

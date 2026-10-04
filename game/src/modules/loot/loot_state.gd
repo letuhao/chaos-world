@@ -258,7 +258,29 @@ static func _cleared(domain_id: String, band: String, tier_index: int, run: int)
 ## Apply `damage` to the active boss, and defeat it when its authored vitality is
 ## spent. Rule E1 lives here: a boss that is already defeated — or whose reward
 ## already exists — returns the same payload instead of minting another.
-static func strike(state: Dictionary, actor: Actor, damage: float, seed_value: int) -> Dictionary:
+##
+## ## Why the boss's own AFFLICTION rides here
+##
+## This is the primitive every landed blow goes through, and it is the only `loot` verb
+## `CombatExchange.exchange` calls on a press (`exchange.gd:88`), so it is the one place a
+## boss can reach the player with something other than a share of health. The infliction
+## is read off the boss **that was struck** — captured before the pool is spent, because a
+## defeating blow advances the band and the next boss must not inherit the answer meant
+## for the one that fell.
+##
+## `afflict_chance` and `afflict_magnitude` are the CALLER's ADR 0087/0088 numbers and
+## default to an open gate at `1.0` so `LootApi.strike` — which every existing caller
+## uses with three arguments — inflicts with the status module's own default potency. A
+## defeated boss inflicts nothing: the fight is over and ADR 0089's purge clears COMBAT
+## scope on the exit.
+static func strike(
+	state: Dictionary,
+	actor: Actor,
+	damage: float,
+	seed_value: int,
+	afflict_chance: float = 1.0,
+	afflict_magnitude: float = 1.0
+) -> Dictionary:
 	var active: Dictionary = state.get("active", {})
 	if active.is_empty():
 		return {"ok": false, "reason": ERR_NOT_IN_DOMAIN}
@@ -277,6 +299,9 @@ static func strike(state: Dictionary, actor: Actor, damage: float, seed_value: i
 			"vitality": float(active.get("vitality", 0.0)),
 			"vitality_max": float(active.get("vitality_max", 0.0)),
 		}
+	# BEFORE the pool is spent: the band advances on a defeat (rule E3) and a new boss
+	# carries its own affliction, which is not what this blow met.
+	var affliction := LootAffliction.inflict(actor, active, afflict_chance, afflict_magnitude)
 	active["vitality"] = maxf(0.0, float(active["vitality"]) - damage)
 	state["active"] = active
 	if float(active["vitality"]) > 0.0:
@@ -286,8 +311,9 @@ static func strike(state: Dictionary, actor: Actor, damage: float, seed_value: i
 			"encounter_id": encounter,
 			"vitality": float(active["vitality"]),
 			"vitality_max": float(active["vitality_max"]),
+			"affliction": affliction,
 		}
-	return _defeat(state, actor, seed_value)
+	return _defeat(state, actor, seed_value, affliction)
 
 
 static func _duplicate(state: Dictionary, encounter: String) -> Dictionary:
@@ -311,7 +337,9 @@ static func _duplicate(state: Dictionary, encounter: String) -> Dictionary:
 	}
 
 
-static func _defeat(state: Dictionary, actor: Actor, seed_value: int) -> Dictionary:
+static func _defeat(
+	state: Dictionary, actor: Actor, seed_value: int, affliction: Dictionary
+) -> Dictionary:
 	var active: Dictionary = state["active"]
 	var encounter := String(active.get("encounter_id", ""))
 	active["defeated"] = true
@@ -367,6 +395,10 @@ static func _defeat(state: Dictionary, actor: Actor, seed_value: int) -> Diction
 		"drop_count": drops.size(),
 		"warnings": resolved["warnings"],
 		"reward": LootRewards.view(payload),
+		# What the boss that FELL inflicted, carried through `_advance` because the
+		# `active` key now describes the NEXT boss. A caller showing "what that fight
+		# did to you" must not have to have read the state before this call.
+		"affliction": affliction,
 		"active": LootRewards.active_view(state["active"]),
 	}
 
@@ -643,8 +675,25 @@ static func _spawn(
 		"penetration": profile["penetration"],
 		"evasion": profile["evasion"],
 		"damage_reduction": profile["damage_reduction"],
+		# ...and so is the status it afflicts on the player, for the same reason. A boss
+		# whose creature is fire-blown changes nothing about the terms of a run already in
+		# flight, and a resumed fight must not be re-priced by a content edit either. Frozen
+		# with everything else it goes through `active_view`, so the combat module reads it
+		# through this module's facade like every other number about the boss.
+		"affliction": boss_affliction(boss_id),
 		"defeated": false,
 	}
+
+
+## The `StatusDef.id` a spawned boss afflicts on the player, or `""` when it names none.
+##
+## Read off the boss's authored record and no further: a boss nobody authored an
+## affliction for inflicts nothing, which is the behaviour every boss had before the field
+## existed. Whether the id names a real, COMBAT-scope def is NOT decided here — that is
+## `LootAffliction`'s refusal to report, so this module keeps holding an authored string
+## and `status` keeps owning whether it means anything.
+static func boss_affliction(boss_id: StringName) -> String:
+	return String(LootContent.instance().boss_record(boss_id).get("affliction", ""))
 
 
 ## The striking profile a spawned boss fights with: the authored numbers off its

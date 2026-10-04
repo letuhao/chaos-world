@@ -171,7 +171,7 @@ static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
 		return recover(actor, meridian_id)
 	if (
 		at_channel_cap(channel, seed)
-		and not _needs_point_training(acupoint_set, meridian_id, seed.quality_target)
+		and not needs_point_training(acupoint_set, meridian_id, seed.quality_target)
 	):
 		return false
 	acupoint_set.busy = true
@@ -198,6 +198,33 @@ static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
 	return true
 
 
+## The channels `strengthen_next` would offer, in the order it offers them: the ones
+## this realm introduces, then the ones the next realm requires. Deduplicated,
+## because a seed's `channel_training` and `required_meridians` name the same
+## channels at most realms and a walk that visits each twice buys nothing.
+##
+## ONE DEFINITION, TWO READERS: the facade walks this to train, and
+## `BodyRefusal.strengthen_unavailable` asks the same list which candidate would
+## refuse. Two lists would let the screen report a cause the verb never hit, which is
+## worse than the unnamed `false` this replaced (ADR 0150). Empty when there is
+## nothing to train: no body path, or no authored seed.
+static func strengthen_candidates(actor: Actor) -> Array[StringName]:
+	var out: Array[StringName] = []
+	var state := actor.path(BodyPath.PATH_ID) if actor != null else null
+	if state == null:
+		return out
+	var seed := BodyRealmSeed.for_realm(state.rank_id)
+	if seed == null:
+		return out
+	for meridian_id in seed.channel_training:
+		if not out.has(meridian_id):
+			out.append(meridian_id)
+	for meridian_id in seed.required_meridians:
+		if not out.has(meridian_id):
+			out.append(meridian_id)
+	return out
+
+
 static func at_channel_cap(channel: MeridianState, seed: BodyRealmSeed) -> bool:
 	# A channel at its refinement ceiling has nothing left to gain from training.
 	# Named because the answer is a RULE the realm seed and the channel state
@@ -206,7 +233,12 @@ static func at_channel_cap(channel: MeridianState, seed: BodyRealmSeed) -> bool:
 	return channel.state == &"strengthened" and channel.refinement >= seed.refinement_cap
 
 
-static func _needs_point_training(
+## Whether this channel's huyệt still have training left in them. A channel at its
+## refinement cap can still be worth a press while one of its huyệt is jammed or
+## below `target`, so this is the other half of the cap question — and it is public
+## because `BodyRefusal` asks the same question to name a refusal, rather than
+## re-implementing it and being wrong in a second direction.
+static func needs_point_training(
 	points: AcupointSet, channel_id: StringName, target: float
 ) -> bool:
 	for definition in AcupointDefaults.definitions():

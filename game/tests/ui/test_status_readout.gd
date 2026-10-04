@@ -209,6 +209,130 @@ func test_the_readout_clears_when_the_status_is_gone() -> void:
 	)
 
 
+# --- 2b. ADR 0089's PURGE is reached from the shipped game (F-6) ------------------
+#
+# `StatusLoop.exit_combat` is the ONLY route to `StatusApi.clear_combat_scope`, and it
+# measured ZERO callers in `game/src`: a COMBAT-scope debuff — `fire_immolation` is
+# authored at 16 s — outlived the fight that inflicted it, so a player walked out of a
+# fight still burning for its full duration. ADR 0106 deferred the wiring to "the same
+# change that makes the readout visible"; the readout shipped and this did not.
+#
+# ## Why the caller cannot be a facade call
+#
+# `exit_combat` is `app/status_loop.gd`, and `app` is a `PRIVATE_UNIT`
+# (`tools/arch/rules.py:35`), so `ui/` may name neither the type nor the verb. The
+# composition root injects it as a `Callable` (`ItemWorkbenchApp._bind_route_screen`'s
+# `ROUTE_LOOT` arm → `LootEncounterScreen.bind_combat_exit`), the same door ADR 0143
+# gives the quest screen. These cases drive THAT seam, not `StatusLoop.exit_combat`, so
+# deleting the wiring fails here even though every other case in this file stays green.
+
+## One COMBAT-scope id and one CULTIVATION-scope id, both authored, so the assertion is
+## about the SCOPE and not about which ids happen to ship. `fire_immolation` is the one
+## the audit names (COMBAT, 16 s); `wood_bloom` is `duration = -1.0` CULTIVATION, the
+## permanent blessing ADR 0089's purge rule exists to spare.
+const COMBAT_STATUS := &"fire_immolation"
+const CULTIVATION_STATUS := &"wood_bloom"
+
+
+## The screen plus the composition root's own purge wire over the same actor, which is
+## the pair `_bind_route_screen` builds for the loot route.
+func _wired_screen(actor: Actor) -> LootEncounterScreen:
+	var screen := _screen(actor)
+	screen.call("bind_combat_exit", Callable(_root_loop(actor), "exit_combat"))
+	return screen
+
+
+## A `StatusLoop` over `actor`, matching the root's field. Built here rather than
+## borrowed so the case names the exact wiring it is asserting.
+func _root_loop(actor: Actor) -> StatusLoop:
+	return StatusLoop.new(actor)
+
+
+## THE claim: a player who ends a fight stops carrying the debuff that fight inflicted.
+##
+## Driven through the screen verb a player presses, not through the purge: a suite that
+## calls `exit_combat` directly stays green the day the composition root stops injecting
+## it, which is the whole shape of F-6.
+func test_ending_a_fight_purges_the_debuff_that_fight_inflicted() -> void:
+	var rig := _rig()
+	var actor := rig["actor"] as Actor
+	var screen := _wired_screen(actor)
+	# Applied the way a blow applies one — through the facade, not by hand — because the
+	# defect is about the status a real fight leaves behind, not about a rigged one.
+	StatusApi.apply(actor, COMBAT_STATUS, 2.0)
+	assert_eq(actor.has_status(COMBAT_STATUS), true, "the burn is live before the fight ends")
+	screen.refresh()
+	assert_eq(
+		String(screen.summary()["status_label"]).contains("fire immolation"),
+		true,
+		"and the player can see they are burning"
+	)
+
+	assert_eq(screen.act_leave(), true, "the player leaves the domain")
+
+	assert_eq(actor.has_status(COMBAT_STATUS), false, "the burn is gone the moment combat ends")
+	assert_eq(
+		String(screen.summary()["last_cleared"]).find("fire_immolation") >= 0,
+		true,
+		"and the purge NAMES what it removed, so the screen can report it"
+	)
+	screen.refresh()
+	assert_eq(
+		String(screen.summary()["status_label"]),
+		LootBossPanel.NO_STATUSES,
+		"the readout repaints to match — no stale row the player learns to ignore"
+	)
+
+
+## The half of ADR 0089 that makes the purge a scope purge and not a cleanse: a
+## CULTIVATION gift is NEVER touched by combat state. Without this the fix above would
+## also silently delete a permanent tribulation blessing every time a player walked out
+## of a fight, which is the same defect wearing the other hat.
+func test_ending_a_fight_never_touches_a_cultivation_blessing() -> void:
+	var rig := _rig()
+	var actor := rig["actor"] as Actor
+	var screen := _wired_screen(actor)
+	var granted := StatusApi.apply_cultivation(actor, CULTIVATION_STATUS, 1.0)
+	assert_eq(bool(granted["ok"]), true, "the permanent blessing applies")
+	StatusApi.apply(actor, COMBAT_STATUS, 2.0)
+	assert_eq(screen.act_leave(), true, "the player leaves the domain")
+
+	assert_eq(actor.has_status(COMBAT_STATUS), false, "the COMBAT burn was purged")
+	assert_eq(actor.has_status(CULTIVATION_STATUS), true, "and the CULTIVATION gift survived it")
+	assert_eq(
+		(screen.summary()["last_cleared"] as Array).has("wood_bloom"),
+		false,
+		"and was never named as cleared — the purge is scoped, not a cleanse (ADR 0107)"
+	)
+
+
+## The positive control: the purge is WIRED, so the two cases above are measuring a
+## purge that ran rather than one that silently did nothing. Without this, an unwired
+## seam and a correctly scoped one are indistinguishable from the assertions above —
+## the COMBAT case would fail rather than pass vacuously, so this is belt and braces.
+func test_the_screen_reports_whether_its_combat_exit_purge_is_wired() -> void:
+	var rig := _rig()
+	var actor := rig["actor"] as Actor
+	assert_eq(_screen(actor).combat_exit_wired(), false, "a bare screen has no purge seam at all")
+	var wired := _wired_screen(actor)
+	assert_eq(wired.combat_exit_wired(), true, "the composition root's arm binds it")
+	assert_eq(bool(wired.summary()["combat_exit_wired"]), true, "and summary() publishes that")
+
+
+## An unwired seam must not turn "leave the fight" into a refusal. The screen still
+## leaves the domain; what it cannot do is purge, and that is a missing bookkeeping step
+## rather than something the player is stopped for.
+func test_an_unwired_purge_still_lets_the_player_leave_the_fight() -> void:
+	var actor := (_rig()["actor"]) as Actor
+	var screen := _screen(actor)
+	assert_eq(screen.combat_exit_wired(), false, "no seam was bound")
+	assert_eq(screen.act_leave(), false, "leaving a domain nobody entered is still refused")
+	# With a fight actually entered, the refusal has to become the action.
+	screen.act_enter()
+	assert_eq(screen.combat_exit_wired(), false, "still no seam after entering")
+	assert_eq(screen.act_leave(), true, "and leaving still works")
+
+
 func test_a_screen_with_no_actor_reports_nothing_at_all() -> void:
 	# The screen contract, unchanged by the readout: `{}` with no actor, so a test never
 	# reads a half-initialised screen as a real view.

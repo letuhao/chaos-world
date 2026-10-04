@@ -17,6 +17,11 @@ display_name = "Pilgrim Camp"
 script = ExtResource("1_template")
 template_id = &"ember_grotto"
 display_name = "Ember Grotto"
+# Domain-level weather (ADR 0075). Read by `DomainBoot._template_weather` and refused
+# through `DomainMap.accepts_weather` unless it is in `DomainMap.WEATHERS`. Every zone
+# this template's pool authors that names `fire` in its own tags runs one band hotter
+# than it was authored; zones that name no element are untouched.
+weather = &"ember_heat"
 extent = Vector2i(72, 48)
 min_leaf = 7
 max_depth = 5

@@ -20,6 +20,12 @@ extends PanelContainer
 ## Contract: `summary()` is the testable surface, with the child panel's summary
 ## nested under `vitals`, `growth` and `ascent`. Headless tests assert it instead
 ## of pixels.
+##
+## **A REFUSAL IS RENDERED, NEVER INFERRED (ADR 0150).** Every message below is either a fact
+## this screen observed or a `label` the module published on `panel_state`'s `unavailable` /
+## `attempt_outcome`. This file used to decide the prices itself by walking `core`'s meridian
+## network, which is how a hero with a torn channel and no elixir was told nothing was damaged
+## while the gate line above said the opposite.
 
 signal world_map_requested
 
@@ -79,7 +85,7 @@ func _tone_variation() -> StringName:
 func summary() -> Dictionary:
 	if _actor == null:
 		return {}
-	var view := BodyCultivationApi.panel_state(_actor)
+	var view := _view()
 	if view.is_empty():
 		return {}
 	view["vitals"] = _vitals.summary() if _vitals != null else {}
@@ -101,7 +107,7 @@ func refresh() -> void:
 	if _growth == null:
 		push_error("BodyCultivationPanel: scene is missing %GrowthPanel")
 		return
-	var live := BodyCultivationApi.panel_state(_actor) if _actor != null else {}
+	var live := _view()
 	_vitals.set_state(live)
 	# The stat surface is core's, read the same way the character sheet reads it, so
 	# the two can never disagree about what the body is worth. Handing it over whole
@@ -113,6 +119,9 @@ func refresh() -> void:
 	_cultivate_button.disabled = live.is_empty()
 	_meditate_button.disabled = live.is_empty()
 	_strengthen_button.disabled = live.is_empty()
+	# Recover and strengthen stay LIVE when the module says they cannot act, because the
+	# refusal IS the message a player needs: disabling a control on a named refusal is the
+	# tribulation screen's defect (ADR 0150), and it would make every refusal here unreachable.
 	_recover_button.disabled = live.is_empty()
 	_breakthrough_button.disabled = not ready
 	_ascend_button.disabled = not _ascend_offered(live)
@@ -290,7 +299,7 @@ func on_stack_input(_event: InputEvent) -> bool:
 
 func focus_initial() -> void:
 	_bind_nodes()
-	var view := BodyCultivationApi.panel_state(_actor) if _actor != null else {}
+	var view := _view()
 	var live := not view.is_empty()
 	# Cultivate is always the first thing a body cultivator does; breakthrough is
 	# only reachable once everything else is prepared, and an owed ascent is the
@@ -311,9 +320,10 @@ func focus_initial() -> void:
 func act_cultivate() -> void:
 	if _actor == null:
 		return
+	var before := _view()
 	var moved := BodyCultivationApi.cultivate(_actor, float(_steps().get("cultivate", 25.0)))
 	set_message(
-		"Cultivated the body" if moved else "The body will not take more",
+		"Cultivated the body" if moved else _refusal(before, "cultivate"),
 		TONE_OK if moved else TONE_ERROR
 	)
 	refresh()
@@ -329,47 +339,39 @@ func act_meditate() -> void:
 	refresh()
 
 
-## One channel step, at the realm's `strengthening_item` — or the repair of a torn
-## channel, which is priced by the realm's `recovery_item` (ADR 0141).
+## One channel step, at the realm's `strengthening_item` — or the repair of a torn channel,
+## which is priced by the realm's `recovery_item` (ADR 0141).
 ##
-## The refusal names the PRICE, and which price it is depends on the state of the
-## channel the facade would have trained: `strengthen` hands a burned channel to
-## `recover`, so a hero holding only the channel elixir and standing on a torn
-## channel is refused for the OTHER elixir, and "No channel elixir to spend" is
-## the one answer that cannot be true (ADR 0150).
-##
-## A refusal with nothing burned still collapses two causes — the elixir missing,
-## or every candidate channel already at its cap — because `strengthen_next`
-## reports one bool over a walk this screen cannot see. That residual is
-## recorded, not papered over: separating it needs the candidate list and the cap
-## on the read model, and this facade is already at `rules.MAX_FACADE_PUBLIC_METHODS`.
+## The refusal is the module's own clause, joined. This screen used to decide the PRICE
+## itself: it walked `core`'s meridian network counting torn channels and picked a sentence
+## from the count, which meant the price lived in the UI program and the two could disagree —
+## and a capped channel read as a missing elixir, because a `false` cannot say which of the
+## three causes fired (ADR 0150, ADR 0034).
 func act_strengthen() -> bool:
 	if _actor == null:
 		return false
+	var before := _view()
 	var trained := BodyCultivationApi.strengthen_next(_actor)
 	set_message(
-		"Channel trained" if trained else _strengthen_refusal(), TONE_OK if trained else TONE_ERROR
+		"Channel trained" if trained else _refusal(before, "strengthen"),
+		TONE_OK if trained else TONE_ERROR
 	)
 	refresh()
 	return trained
 
 
-## Why a refused `strengthen_next` refused. The elixir's ID is authored in the
-## realm seed, which is a module internal this screen may not read (ADR 0043), so
-## the price is named by its ROLE — the word the authored content and its
-## acquisition are indexed by — never by an id restated here.
-func _strengthen_refusal() -> String:
-	return "Recovery elixir absent" if _burned_channels() > 0 else "No channel elixir to spend"
-
-
 func act_breakthrough() -> bool:
 	if _actor == null:
 		return false
+	# Read BEFORE the press, and that ordering is load-bearing: a breakthrough rolls, and a
+	# roll mutates. Read afterwards, the report would describe the roll's outcome as though it
+	# had blocked the attempt, and a deviation's own aftermath would come back as its cause.
+	var before := _view()
 	var advanced := BodyCultivationApi.attempt_breakthrough(_actor)
 	if advanced:
 		set_message("Broke through", TONE_OK)
 	else:
-		set_message("The attempt deviated; recover and try again", TONE_ERROR)
+		set_message(_breakthrough_refusal(before), TONE_ERROR)
 	refresh()
 	return advanced
 
@@ -384,7 +386,7 @@ func act_breakthrough() -> bool:
 func act_ascend() -> bool:
 	if _actor == null:
 		return false
-	var before := BodyCultivationApi.panel_state(_actor).get("ascent", {}) as Dictionary
+	var before := _view().get("ascent", {}) as Dictionary
 	if not bool(before.get("required", false)):
 		set_message("No ascent is owed yet", TONE_ERROR)
 		refresh()
@@ -398,66 +400,62 @@ func act_ascend() -> bool:
 	return stepped
 
 
-## Repair a deviation: frees a jammed huyệt or heals a torn channel using the
-## realm's recovery item. False means nothing was damaged, or the item was absent.
+## Repair a deviation: frees a jammed huyệt or heals a torn channel using the realm's recovery
+## item.
+##
+## The two causes are DISJOINT BY CONSTRUCTION in the module's report, which is what this screen
+## used to assume and could not know: `KIND_NO_DAMAGE` is published only when no wound is
+## pending, and the elixir's price only when one is. So the same sentence is printed only where
+## it is true — which is the whole of the fix.
 func act_recover() -> bool:
 	if _actor == null:
 		return false
+	var before := _view()
 	var repaired := BodyCultivationApi.recover_next(_actor)
 	set_message(
-		"Repaired" if repaired else _recovery_refusal(), TONE_OK if repaired else TONE_ERROR
+		"Repaired" if repaired else _refusal(before, "recover"), TONE_OK if repaired else TONE_ERROR
 	)
 	refresh()
 	return repaired
 
 
-## What a refused recovery means, read from the facade's own report rather than
-## inferred from the `false` alone (ADR 0150, which names this screen as the worst
-## instance of the collapse).
-##
-## The two things a refusal can mean are forced apart here. A jam or a tear is a
-## wound the recovery elixir would close, so a refusal with one present has exactly
-## one remaining cause — the elixir. A refusal with none is "look elsewhere".
-## Collapsing both into "Nothing damaged to repair" told a hero with a jammed huyệt
-## and no recovery elixir that nothing was damaged, while the same screen's
-## `unmet` line, rendered from the same `panel_state`, said the opposite — the
-## screen contradicting itself on the fail-recoverably leg of the gate.
-func _recovery_refusal() -> String:
-	return "Recovery elixir absent" if _damage_pending() else "No damage to repair"
+## Why a refused action refused, from the names the module published. The module owns the
+## wording; this joins it and adds nothing, so a screen cannot report a cause the module never
+## named. **A `false` WITH AN EMPTY LIST IS A FINDING, NOT A MESSAGE TO INVENT** (ADR 0150), so
+## the join may answer "". `tests/modules/body_cultivation/test_refusal_naming.gd` is the guard
+## that such a state is unreachable — the check that would have caught this screen's own lie.
+func _refusal(view: Dictionary, verb: String) -> String:
+	var parts: Array[String] = []
+	var clauses: Array = (view.get("unavailable", {}) as Dictionary).get(verb, [])
+	for clause in clauses:
+		var label := String((clause as Dictionary).get("label", ""))
+		if not label.is_empty() and not parts.has(label):
+			parts.append(label)
+	return "; ".join(parts)
 
 
-## Whether the facade reports a wound the recovery elixir exists to close: a jammed
-## huyệt, or any torn channel.
-##
-## `blocked` is the facade's own count. The channel flag is not on `panel_state`'s
-## channel strings — they carry `id:state/refinement` with no injury marker, unlike
-## qi's — so it is read from `core`, which `ui/` may use directly (ADR 0041).
-## `get_all_meridians` is the network's own survey, bounded by the meridians this
-## actor has unlocked, so the walk cannot outlast its own list.
-func _damage_pending() -> bool:
-	if _actor == null:
-		return false
-	if int(BodyCultivationApi.panel_state(_actor).get("blocked", 0)) > 0:
-		return true
-	return _burned_channels() > 0
+## Why a refused breakthrough refused. TWO QUESTIONS, TWO READS, and neither is a guess:
+## what BLOCKED the press (the pre-press report — the roll is not knowable before it happens,
+## so nothing blocking it means the roll ran), and what the roll BECAME (the record, published
+## as `attempt_outcome`, because a deviation and a cancellation are different debts — one owes
+## a wound to repair, the other owes nothing because nothing was ever rolled — and every
+## refusal used to read as a deviation).
+func _breakthrough_refusal(before: Dictionary) -> String:
+	var named := _refusal(before, "breakthrough")
+	if not named.is_empty():
+		return named
+	var outcome: Dictionary = _view().get("attempt_outcome", {})
+	return String(outcome.get("reason", ""))
 
 
-## How many channels on this actor are torn. Only channels actually on the network
-## are reported by `get_all_meridians`, so a meridian this realm has not unlocked
-## never counts as a wound the player was told they owed an elixir for.
-func _burned_channels() -> int:
-	var burned := 0
-	if _actor == null:
-		return burned
-	for channel in _actor.meridians.get_all_meridians():
-		if channel.is_injured():
-			burned += 1
-	return burned
+## The facade's read model for this screen's actor. One definition, so the pre-press read a
+## refusal is reported from and the repaint after it cannot disagree about what they saw.
+func _view() -> Dictionary:
+	return BodyCultivationApi.panel_state(_actor) if _actor != null else {}
 
 
 func _steps() -> Dictionary:
-	var view := BodyCultivationApi.panel_state(_actor) if _actor != null else {}
-	return view.get("steps", {})
+	return _view().get("steps", {})
 
 
 ## Which actions the screen offers, given the facade view the screen is rendering.

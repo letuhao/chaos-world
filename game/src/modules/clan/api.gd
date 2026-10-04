@@ -140,7 +140,17 @@ static func rank_of(actor: Actor) -> StringName:
 ## pays them lands later (ADR 0064). It returns 0, having changed nothing, for an
 ## actor who belongs to no clan: standing is earned inside a house, so there is nothing
 ## to move.
+##
+## **A null actor is safe, and the guard is this module's house rule rather than a
+## special case.** `join`, `leave`, `attach`, `state` and `summary` all refuse a null
+## actor by name, so this verb returning `0` without touching the ledger is the
+## ordinary reading, not a gap. It was not: `_ledger(null)` already returns the empty
+## ledger, so the missing `if` looked harmless — but the line below dereferences
+## `actor`, and a caller asking "what would this cost them" about nobody gets a
+## runtime error instead of a number. Every sibling verb above checks.
 static func move_standing(actor: Actor, delta: int) -> int:
+	if actor == null:
+		return 0
 	var ledger := ClanState.with_standing(_ledger(actor), delta)
 	actor.set_module_data(MODULE_KEY, ledger)
 	ClanProjection.apply(actor, ledger)

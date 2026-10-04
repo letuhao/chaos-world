@@ -9,8 +9,9 @@ extends "res://tests/modules/combat_engine/mind_damage_fixture.gd"
 ##    qi (ADR 0069) and body (ADR 0070). The erosion is applied to the sea by the TEST
 ##    through the proposal the spine carried, because the spine computes effects and does
 ##    not write them -- see that test's own note for why.
-## 2. `amount` is `0.0` through BOTH seam stages -- so S6's crit multiplies nothing, S8's
-##    chip floor is bypassed by the zero, and S9's shield absorbs nothing.
+## 2. `amount` is `0.0` through BOTH seam stages -- so S6's crit multiplies nothing and
+##    S9's shield absorbs nothing. S8's chip floor is NOT bypassed: it floors on S1's
+##    `base`, so a landed mind strike still pays `min_chip_abs` (ADR 0162).
 ## 3. Health moves ONLY through rupture bleed, and only ABOVE `RUPTURE_THRESHOLD`.
 ## 4. The 40% defence floor is STRUCTURAL: it holds at ANY `mental_defense`, including
 ##    1e9, and no value of any stat reaches "no damage".
@@ -42,27 +43,30 @@ extends "res://tests/modules/combat_engine/mind_damage_fixture.gd"
 ## The erosion number is asserted POSITIVE first, so a future regression reads as "the mechanism
 ## produced nothing" rather than as four separate failures about a sea that never moved.
 ##
-## ## What S8's chip floor does to a mind hit, asserted rather than assumed
+## ## What S8's chip floor does to a mind hit, and why that is the design (ADR 0162)
 ##
-## This used to claim `outcome.amount == 0.0` "and the spine's amount is 0.0" through the
-## spine. It does not. `CombatSpine.resolve_hit` S8 is
+## `CombatSpine.resolve_hit` S8 is
 ## `outcome.amount = maxf(outcome.amount, chip_floor(outcome.base, tuning))`, and
-## `outcome.base` is S1's `technique.magnitude * RealmRate.factor` — NOT the mechanism's
-## proposal. The floor is therefore a floor on the TECHNIQUE, not on the mechanism's answer,
-## and it lifts a zero-amount hit to the same `maxf(min_chip_abs, base * min_chip_share)`
-## every qi and body hit gets. At the shipped `1.0` / `0.01` and this fixture's magnitude
-## `100.0`, that is exactly `1.0` — one health point, spent from a defender's pool.
+## `outcome.base` is S1's `technique.magnitude * RealmRate.factor` -- NOT the mechanism's
+## proposal. So the floor is a floor on the TECHNIQUE, and a landed mind strike spends
+## `maxf(min_chip_abs, base * min_chip_share)`. At the shipped `1.0` / `0.01` and this
+## fixture's magnitude `100.0` that is exactly `1.0` -- one health point.
 ##
-## So "mind NEVER subtracts health" is true of `CombatSpine._spend` — S9 computes
-## `spendable = outcome.amount` and the sign flip at S9 is the only way health moves — and it
-## is FALSE of `resolve_hit`'s returned amount. Mind's health-free property lives in
-## `tick_rupture` and nothing else, and this test now says exactly that instead of asserting
-## a zero the spine never produces.
+## **This is intended, and it is the documented exception**, not a contradiction left in
+## the code. ADR 0071's mechanism half is exactly right: `resolve` returns `0.0`, S9's sign
+## flip is the only way health moves, and mind never spends a SHARE of its own erosion.
+## ADR 0162 records the other half. Two reasons the floor cannot be exempt for a
+## zero-amount, effect-carrying proposal:
 ##
-## Mind is a WEAKENING path, not an immune one: a mind strike costs the loser's sea tier and
-## a minute of disarm, and then still chips a point of health on its way past. That is a
-## coherent design, but it is a design decision and not a consequence of `amount == 0.0`, so
-## it is flagged in the report rather than left to be discovered.
+## 1. It would erase a physical blow. `BodyDamage`'s one legal refusal IS
+##    `subtotal == 0.0` (`body_damage.gd:263`), and it still carries its per-site wound
+##    rows -- so a `0.0 + effects` exemption would let a defender's armour delete the hit
+##    entirely, which is the immunity ADR 0068 exists to make unreachable.
+## 2. The floor has to survive S7, which floors `base` precisely because flooring the
+##    post-S7 amount would restore nothing.
+##
+## So "mind never subtracts health" reads, amended, as: **mind never subtracts a share of
+## its own erosion, and pays the same chip floor every other landed hit pays.**
 func test_mind_damage_moves_turbulence_and_never_health() -> void:
 	var attacker := _attacker()
 	var defender := _defender(0.0, 0.0)
@@ -93,7 +97,7 @@ func test_mind_damage_moves_turbulence_and_never_health() -> void:
 	assert_almost_eq(
 		float(outcome.proposal.amount), 0.0, "and the proposal the spine carries is 0.0"
 	)
-	# S8 then floors on the TECHNIQUE, not on that zero.
+	# S8 floors on the TECHNIQUE, not on that zero -- ADR 0162's documented exception.
 	assert_almost_eq(
 		float(outcome.amount),
 		CombatSpine.chip_floor(CombatSpine.base_damage(attacker, _technique()), _tuning),
@@ -108,10 +112,42 @@ func test_mind_damage_moves_turbulence_and_never_health() -> void:
 	assert_eq(before_health, HEALTH, "the pool was full before the hit, as pinned")
 
 
+## ADR 0162 pins the exception itself: a mind hit spends exactly the shipped chip floor and
+## not one point more, whatever the magnitude of the technique that carried it. Asserted
+## against `CombatSpine.chip_floor` (the shipped number, not a restated literal) and
+## against `min_chip_abs`, because at this fixture's magnitude `100.0` the SHARE term
+## (`0.01`) binds at `1.0` and equals the absolute floor -- so this assertion cannot tell
+## the two apart and says so rather than pretending to.
+func test_the_chip_floor_is_the_documented_exception_a_mind_hit_pays() -> void:
+	var attacker := _attacker()
+	var defender := _defender(0.0, 0.0)
+	var health := defender.resource(&"health") as ResourcePool
+	var before_health := health.current
+
+	var outcome := _hit(attacker, defender, MindDamage.Kind.DISRUPT)
+	var floor := CombatSpine.chip_floor(outcome.base, _tuning)
+
+	# The mechanism declined: no magnitude at either seam stage.
+	assert_almost_eq(float(outcome.proposal.amount), 0.0, "resolve contributed no amount")
+	# The exception is bounded and exactly the floor -- not zero, and not more than the
+	# floor. A mind hit is a WEAKENING path, not an immune one (ADR 0162).
+	assert_almost_eq(
+		float(outcome.amount), floor, "the landed mind hit pays exactly the shipped chip floor"
+	)
+	assert_ne(outcome.amount, 0.0, "ADR 0162: the floor is NOT bypassed by the mechanism's zero")
+	assert_almost_eq(floor, _tuning.min_chip_abs, "and at this magnitude the absolute term binds")
+	# And it is a fixed, tiny share of the strike's own magnitude -- never erosion-scaled.
+	assert_eq(
+		before_health - health.current,
+		floor,
+		"the pool moved by the floor alone, never by a share of what the hit cost the sea"
+	)
+
+
 ## `amount` is `0.0` at BOTH seam stages. S4 produces no magnitude and S5 cannot create
-## one, which is what makes S8's chip floor bypassed by the zero and S9's shield absorb
-## nothing -- the ADR's own consequence, asserted at the seam rather than argued from
-## `spine.gd`.
+## one, which is what makes S6's crit multiply nothing and S9's shield absorb nothing. S8's
+## chip floor is the documented exception and reads S1's `base` rather than this zero
+## (ADR 0162) -- asserted on the spine's own `CombatOutcome` in the test above.
 func test_the_amount_is_zero_at_both_seam_stages() -> void:
 	var mechanism := MindDamage.new()
 	var ctx := _context(MindDamage.Kind.DISRUPT, _attacker(), _defender(0.0, 0.0))

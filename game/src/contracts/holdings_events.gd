@@ -47,4 +47,15 @@ signal prize_applied(
 ## A refusal that wrote nothing. Carries the named reason so a panel renders the rule it was
 ## given rather than inventing one (ADR 0084), and so an action failing is observable rather
 ## than silent.
+##
+## **The one signal here that announces something did NOT become true**, and that is the
+## whole point of it rather than an exception to the contract. Every other signal announces a
+## fact already written; this one announces that a rule fired and the ledger is unchanged.
+## The two are independent facts about one refusal, and a caller needs both: the returned
+## dictionary carries `ok: false`, and this signal carries WHICH rule refused and ON WHICH
+## NODE. A consumer must therefore not read this as a veto — nothing is undone, and nothing
+## needs undoing, because the atomicity guarantee is that a refused verb wrote nothing.
+##
+## Emitted from `HoldingsApi._refuse`, which is the single place every refusal on that
+## facade is built — so no call site can forget to announce, and a panel can never miss one.
 signal holding_refused(actor_id: String, node_id: StringName, reason: String)

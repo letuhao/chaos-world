@@ -99,7 +99,7 @@ static func set_resolver(resolver: Callable) -> void:
 static func claim(actor: Actor, node_id: StringName, owner: Dictionary) -> Dictionary:
 	var state := _state(actor)
 	if not ResourceNodeCatalog.instance().has_definition(node_id):
-		return _refuse(HoldingsState.UNKNOWN_NODE, state)
+		return _refuse(actor, node_id, HoldingsState.UNKNOWN_NODE, state)
 	if not HoldingsState.knows(state, node_id):
 		# A node the ledger has never seen is recorded as vacant rather than invented: the
 		# node exists, its value does not (ADR 0083). Its CONDITION is the exception, and it
@@ -120,10 +120,10 @@ static func claim(actor: Actor, node_id: StringName, owner: Dictionary) -> Dicti
 		return _challenge(actor, state, node_id, owner)
 	var resolved := _resolve(owner)
 	if not bool(resolved["ok"]):
-		return _refuse(String(resolved["reason"]), state)
+		return _refuse(actor, node_id, String(resolved["reason"]), state)
 	var def := ResourceNodeCatalog.instance().definition(node_id)
 	if not _meets_floor(def, owner):
-		return _refuse(HoldingsState.CLAIM_BELOW_FLOOR, state)
+		return _refuse(actor, node_id, HoldingsState.CLAIM_BELOW_FLOOR, state)
 	_ensure_entry(state, node_id)
 	state["nodes"][String(node_id)]["owner"] = owner.duplicate(true)
 	_charge_claim_cost(state, def, owner)
@@ -138,12 +138,12 @@ static func claim(actor: Actor, node_id: StringName, owner: Dictionary) -> Dicti
 static func release(actor: Actor, node_id: StringName, owner: Dictionary) -> Dictionary:
 	var state := _state(actor)
 	if not HoldingsState.knows(state, node_id):
-		return _refuse(HoldingsState.UNKNOWN_NODE, state)
+		return _refuse(actor, node_id, HoldingsState.UNKNOWN_NODE, state)
 	var held := HoldingsState.holder(state, node_id)
 	if OwnerRef.is_vacant(held) or held.is_empty():
-		return _refuse(HoldingsState.NO_HOLDER, state)
+		return _refuse(actor, node_id, HoldingsState.NO_HOLDER, state)
 	if String((held as Dictionary).get("id", "")) != String(owner.get("id", "")):
-		return _refuse(HoldingsState.HOLDER_MISMATCH, state)
+		return _refuse(actor, node_id, HoldingsState.HOLDER_MISMATCH, state)
 	# Written as the explicit VACANT marker rather than `{}`. ADR 0083's three states are
 	# load-bearing: `{}` means "not a node at all", and using it for a released node makes an
 	# unclaimed vein indistinguishable from a vein that does not exist — which is exactly
@@ -164,19 +164,19 @@ static func accrue(
 ) -> Dictionary:
 	var state := _state(actor)
 	if periods <= 0:
-		return _refuse(HoldingsState.NO_PERIODS, state)
+		return _refuse(actor, node_id, HoldingsState.NO_PERIODS, state)
 	if not ResourceNodeCatalog.instance().has_definition(node_id):
-		return _refuse(HoldingsState.UNKNOWN_NODE, state)
+		return _refuse(actor, node_id, HoldingsState.UNKNOWN_NODE, state)
 	var held := HoldingsState.holder(state, node_id)
 	if OwnerRef.is_vacant(held) or held.is_empty():
-		return _refuse(HoldingsState.NO_HOLDER, state)
+		return _refuse(actor, node_id, HoldingsState.NO_HOLDER, state)
 	if String((held as Dictionary).get("id", "")) != String(owner.get("id", "")):
-		return _refuse(HoldingsState.HOLDER_MISMATCH, state)
+		return _refuse(actor, node_id, HoldingsState.HOLDER_MISMATCH, state)
 	var def := ResourceNodeCatalog.instance().definition(node_id)
 	var entry := state["nodes"][String(node_id)] as Dictionary
 	if int(entry.get("resting", 0)) > 0:
 		entry["resting"] = maxi(0, int(entry.get("resting", 0)) - 1)
-		return _refuse(HoldingsState.NODE_RESTING, state)
+		return _refuse(actor, node_id, HoldingsState.NODE_RESTING, state)
 	var yield_units := def.yield_per_period * periods
 	# Depletion spends CONDITION, not the accrued line: a node that produced this period
 	# still produced it. Upkeep is charged whatever the yield, which is what makes an
@@ -186,7 +186,7 @@ static func accrue(
 		var spent := mini(left, periods)
 		entry["condition"] = left - spent
 		if left <= 0:
-			return _refuse(HoldingsState.DEPLETED, state)
+			return _refuse(actor, node_id, HoldingsState.DEPLETED, state)
 	var gained := HoldingsState.accrue(state, node_id, yield_units)
 	_charge_upkeep(state, def, periods, owner)
 	_save(actor, state)
@@ -209,10 +209,10 @@ static func accrue(
 static func settle(actor: Actor, node_id: StringName, units: int) -> Dictionary:
 	var state := _state(actor)
 	if units <= 0:
-		return _refuse(HoldingsState.NO_PERIODS, state)
+		return _refuse(actor, node_id, HoldingsState.NO_PERIODS, state)
 	var settled := HoldingsState.settle(state, node_id, units)
 	if settled <= 0:
-		return _refuse(HoldingsState.NO_PERIODS, state)
+		return _refuse(actor, node_id, HoldingsState.NO_PERIODS, state)
 	_save(actor, state)
 	return {
 		"ok": true,
@@ -233,7 +233,7 @@ static func apply_prize(actor: Actor, node_id: StringName, prize: Dictionary) ->
 	var state := _state(actor)
 	var contest := HoldingsState.contest(state, node_id)
 	if contest.is_empty():
-		return _refuse(HoldingsState.UNKNOWN_NODE, state)
+		return _refuse(actor, node_id, HoldingsState.UNKNOWN_NODE, state)
 	var kind := StringName(prize.get("prize", &""))
 	match kind:
 		&"ownership":
@@ -252,7 +252,7 @@ static func apply_prize(actor: Actor, node_id: StringName, prize: Dictionary) ->
 				_owe_tribute(state, line_key, def, periods, owed)
 		_:
 			HoldingsState.resolve_contest(state, node_id)
-			return _refuse("unknown_prize", state)
+			return _refuse(actor, node_id, "unknown_prize", state)
 	HoldingsState.resolve_contest(state, node_id)
 	_save(actor, state)
 	# **This is the conflict-to-story seam.** A decided standoff announces the prize it paid
@@ -333,12 +333,12 @@ static func _challenge(
 ) -> Dictionary:
 	var resolved := _resolve(owner)
 	if not bool(resolved["ok"]):
-		return _refuse(String(resolved["reason"]), state)
+		return _refuse(actor, node_id, String(resolved["reason"]), state)
 	if (state["contested"] as Dictionary).size() >= MAX_CONTESTED:
-		return _refuse(HoldingsState.ALREADY_CONTESTED, state)
+		return _refuse(actor, node_id, HoldingsState.ALREADY_CONTESTED, state)
 	var opened := HoldingsState.contest_node(state, node_id, &"conflict_%s" % node_id, owner)
 	if not bool(opened["ok"]):
-		return _refuse(String(opened["reason"]), state)
+		return _refuse(actor, node_id, String(opened["reason"]), state)
 	_save(actor, state)
 	# The holder is byte-identical across this write — that is ADR 0085's invariant, and the
 	# signal says so explicitly so a consumer cannot read a challenge as a conquest.
@@ -463,5 +463,30 @@ static func _save(actor: Actor, state: Dictionary) -> void:
 		actor.set_module_data(MODULE_KEY, normalized)
 
 
-static func _refuse(reason: String, state: Dictionary) -> Dictionary:
+## ## The ONE place every refusal leaves this facade, and it ANNOUNCES (DEF-0221)
+##
+## Every verb below ends here rather than building its own dictionary, so the refusal
+## ANSWER and the refusal ANNOUNCEMENT cannot be two code paths that drift. That is why
+## `actor` and `node_id` became parameters: the identity a refusal announces is part of the
+## refusal, and threading it explicitly means no module-level state can be stale when the
+## emission fires.
+##
+## **The announcement is not the opposite of "a refusal wrote nothing" — it is beside it.**
+## `holdings_events.gd` declares `holding_refused(actor_id, node_id, reason)` and says
+## exactly why: "carries the named reason so a panel renders the rule it was given rather
+## than inventing one (ADR 0084), and so an action failing is observable rather than
+## silent". A rule that fired and changed no ledger is still a game rule firing: the player
+## who was refused a vein needs the reason rendered, and a caller that polls `summary()`
+## cannot tell a refusal from a verb nobody called.
+##
+## **The signal says a refusal, and it names one.** Every OTHER signal on this contract
+## announces a fact already written and a consumer must never read one as a veto; this one
+## announces that nothing was. So the two facts a caller needs are independent and both are
+## carried: the returned dictionary says `ok: false` (no ledger write) and the signal says
+## WHICH rule refused and ON WHICH NODE. Emitting here means no call site can forget to.
+static func _refuse(
+	actor: Actor, node_id: StringName, reason: String, state: Dictionary
+) -> Dictionary:
+	if actor != null:
+		events().holding_refused.emit(String(actor.id), node_id, reason)
 	return {"ok": false, "reason": reason, "contested": false, "holder": {}, "state": state}

@@ -335,7 +335,11 @@ func test_broad_hits_every_unlocked_meridian_at_the_sweep_multiplier() -> void:
 		_parts(attacker, target, BodyLocation.MODE_NAMED, first_id), first_id
 	)
 	assert_eq(
-		sum_of_multipliers > float(one_at_best["multiplier"]) / _tuning.broad_mult,
+		# `parts["sites"]` rows ALREADY carry the `broad_mult` factor (each site's `multiplier`
+		# is `point x channel x broad`), so the sweep's total is compared against the single
+		# strike's multiplier DIRECTLY. Dividing by `broad_mult` again counted the factor
+		# twice and asserted something the mechanism never promised.
+		sum_of_multipliers > float(one_at_best["multiplier"]),
 		true,
 		"a sweep at BROAD_MULT out-scales one strike at the SAME site"
 	)
@@ -355,9 +359,7 @@ func test_an_out_of_range_broad_multiplier_never_makes_a_sweep_the_best_hit() ->
 	var target := _defender()
 	for value in [0.0, 4.0, 1.0e9, -2.0]:
 		var mech := BodyDamage.new()
-		var copy := CombatTuning.shipped()
-		copy.broad_mult = value
-		mech.tuning = copy
+		mech.tuning = _with_broad_mult(value)
 		var swept := mech.breakdown(
 			_context(attacker, target, _technique(100.0, &""), BodyLocation.MODE_BROAD)
 		)
@@ -377,6 +379,26 @@ func test_an_out_of_range_broad_multiplier_never_makes_a_sweep_the_best_hit() ->
 				)
 			)
 		assert_eq(is_finite(float(swept["total"])), true, "BROAD_MULT %s stays finite" % str(value))
+
+
+## A COPY of the shipped tuning with `broad_mult` replaced, so the out-of-range case is
+## "the shipped balance with one author mistake" and not a fresh `CombatTuning.new()` whose
+## every bound is `0.0` (which would let the assertions pass for the wrong reason).
+##
+## `duplicate(true)`, and this helper EXISTS rather than an inline write on
+## `CombatTuning.shipped()`. That inline write is what shipped: `load()` returns the
+## resource CACHE's instance, so `copy.broad_mult = value` on it wrote the LAST loop value
+## (`-2.0`) straight into the shared `combat_damage.tres` instance for the rest of the
+## process. `broad_sites` clamps `broad_mult` into `[0, 1]`, so every later suite read
+## `0.0` and every `broad` strike produced a zero-multiplier site — a sweep that deals no
+## wound, which surfaced two suites away as a `settled[]` that was empty and a broad-sweep
+## assertion that the two opened channels were missing. `CombatTuning.shipped()` now also
+## hands back a fresh duplicate so the mistake can no longer escape this helper; this is
+## the belt to that braces.
+func _with_broad_mult(value: float) -> CombatTuning:
+	var copy := CombatTuning.shipped().duplicate(true) as CombatTuning
+	copy.broad_mult = value
+	return copy
 
 
 ## `TechniqueDef.aim_meridian` is ADR 0070's ONE new authored field, additive and

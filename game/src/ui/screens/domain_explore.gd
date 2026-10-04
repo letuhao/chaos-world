@@ -45,10 +45,23 @@ extends UiScreen
 ## and nothing silently truncates: a row that vanishes reads to a player as "the actor
 ## does not have this", which is a different and wrong statement.
 ##
+## ## What is in [DomainExploreModel] and what is here
+##
+## This file is the screen: the node tree, the six verbs, the gates that say why a verb
+## is refused, the outcomes, and `summary()`. What the place IS — the active run, the
+## room list, the selection, the fixtures, and every sentence the labels render — is
+## [DomainExploreModel]'s, because reading the world and painting it are two reasons to
+## change, and that is the split `world_pulse_reader.gd` already makes beside the world
+## map. The gates deliberately stayed here: a gate names its refusal in the PLAYER's
+## terms and reads [constant FIXTURE_VERB], which is the action row's own table, so a
+## gate is a decision about what this screen OFFERS rather than a read of the world.
+##
 ## Contract: `summary()` is the testable surface, primitives only, and `{}` with no actor.
 
-## The seed `Enter` generates from. A SEED and not a roll: two presses of one button
-## should be the same domain, or "what is in there" is unreadable between two visits.
+## The seed `Enter` generates from, and the first of the bounded walk in
+## [method _enter_with_a_generating_seed]. A SEED and not a roll: two presses of one
+## button should be the same domain, or "what is in there" is unreadable between two
+## visits.
 ##
 ## It is `test_domain_content.gd`'s `CONTENT_SEED`, and that is the whole reason: the
 ## generator partitions a template's extent into leaves and REFUSES a map below the
@@ -57,7 +70,33 @@ extends UiScreen
 ## this seed, so `Enter` cannot press a button the content cannot answer. (A previous
 ## seed produced two rooms against `ember_grotto`'s `min_rooms 6` and every downstream
 ## assertion about an active run failed for want of one.)
+##
+## It is the FIRST seed, not the only one, and that is deliberate: "every template
+## generates at `CONTENT_SEED`" is a claim about the suite's own template list, and a
+## template authored after that suite ran — or one whose partition shifts under a
+## generator change — can still land below its `min_rooms` here. Rather than let a
+## button silently do nothing, `Enter` advances through a few derived seeds; see
+## [constant MAX_SEED_ATTEMPTS] for the bound and why the refusal is never swallowed.
 const DEFAULT_SEED := 20261003
+
+## The one refusal a different SEED might answer. Held as a named constant because the
+## bounded walk branches on it and it must not become a bare string literal in the loop:
+## `DomainApi.ERR_GENERATION_REFUSED` is not nameable here (`domain` is not in
+## `rules.UI_MODULES`), so the id is carried instead, and it is worded by
+## [member DomainBridge.REASON_TEXT] like every other reason this screen reports.
+const GENERATION_REFUSED := "generation_refused"
+
+## How many derived seeds [method act_enter] will try before refusing.
+##
+## Small and named, never unbounded. The generator is REFUSAL-first by design
+## (`DomainGenerator.generate` returns null rather than a partial map), and a refusal
+## carries no verdict that a different seed would fare better — so a screen that kept
+## drawing seeds until one worked would turn a content defect into an unbounded loop,
+## which is exactly the shape `tests/arch_rules/test_no_unbounded_wait.gd` rules out.
+## Eight consecutive derived seeds is far more than the generator needs: the partition
+## refines on the same stream and adjacent seeds differ in a handful of rolls, so a
+## template that cannot produce its `min_rooms` once produces it almost immediately.
+const MAX_SEED_ATTEMPTS := 8
 
 ## The six actions this screen offers, in the order a player meets them. Declared as data
 ## so the button row, the summary and the enabled map cannot disagree about the set.
@@ -79,14 +118,40 @@ const ACTION_LABELS := {
 	&"leave": "Leave",
 }
 
-## The three fixture kinds, as the MODULE publishes them, paired with the verb that acts
-## on each. A trap is armed, a puzzle is struck, a treasure is opened: a button that
-## offered the wrong verb for a fixture would push the player into a refusal to learn
-## something the authored content already said.
+## Drive any action by id, so `tools ui drive --cmd` and a headless probe reach the same
+## code path a button press does.
+##
+## A TABLE rather than a chain of `match` arms, because this file already holds a hundred
+## lines of prose and a dispatch is the least interesting thing in it. An id this screen
+## does not offer is refused BY NAME rather than ignored, so a driver learns it asked
+## wrongly instead of seeing a silent no-op.
+const ACTION_HANDLERS := {
+	&"enter": "act_enter",
+	&"leave": "act_leave",
+	&"visit": "act_visit",
+	&"arm": "act_arm",
+	&"attempt": "act_attempt",
+	&"claim": "act_claim",
+}
+
+## The three fixture kinds, as the MODULE publishes them, paired with the BRIDGE VERB
+## that acts on each. A trap is armed, a puzzle is struck, a treasure is opened: a
+## button that offered the wrong verb for a fixture would push the player into a
+## refusal to learn something the authored content already said.
+##
+## The values are the SEAM's action ids (`arm_fixture` / `attempt_fixture` /
+## `claim_fixture`), not the shorter button ids the `ActionSet` row publishes, because
+## the only reader is [method _can_fixture] — and it is handed a bridge action. Holding
+## the button ids here instead made all three comparisons unequal, so every fixture verb
+## was gated off permanently: a trap could never be armed from a button, the armed/spent
+## ledger was unreachable, and a refusal reported a reason the player never caused
+## (`authors_no_status_id`, `unknown_node`, `missing_key` — each a gate that does not
+## exist). Two vocabularies, so two tables: [constant ACTION_IDS] is the button row's,
+## this one is the seam's.
 const FIXTURE_VERB := {
-	"trap": &"arm",
-	"puzzle": &"attempt",
-	"treasure": &"claim",
+	"trap": &"arm_fixture",
+	"puzzle": &"attempt_fixture",
+	"treasure": &"claim_fixture",
 }
 
 ## Seconds one `Arm` press advances a trap's telegraph by. Small and stated: the FIRST
@@ -114,49 +179,14 @@ const OUTCOME_TEXT := {
 	"claimed": "claimed",
 }
 
-## The fields a room row publishes, and the fields a zone row does. Named as data so a
-## row shape is declared once and [method _subset] can guarantee both are primitives
-## without either writer repeating the coercion.
-const ROOM_KEYS := [
-	"room_id",
-	"kind",
-	"tier",
-	"hostile",
-	"is_entry",
-	"is_core",
-]
-
-const ZONE_KEYS := [
-	"room_id",
-	"zone_id",
-	"kind",
-	"severity",
-	"mitigation_tags",
-]
-
-var _bridge: DomainBridge = null
-## The authored catalogue, as the bridge answered it. Not restated from content: a screen
-## that invented a domain id would be a second source of truth about what is authored.
-var _templates: Array = []
-var _template_index: int = -1
-## The room being looked at and the fixture being acted on within it. Both are IDS and
-## never indices, so a run that regenerates cannot leave an action aimed at the wrong row.
-var _selected_room: StringName = &""
-var _selected_fixture: StringName = &""
-var _puzzle_node: StringName = &""
-## A room a caller NAMED that the module refused, held only until the next selection
-## moves. Set by [method select_room]'s refusal and read by the `Visit` gate: without it
-## a rejected selection silently fell back to the previous room and the verb walked
-## somewhere the caller never asked for. `{}` is "nothing pending" and it is the state
-## every other selection path leaves behind.
-var _pending_room: StringName = &""
+## What the place is. Held as ONE object rather than nine fields, so a refresh is a
+## single re-read: a screen carrying a set of cached copies can paint a room list from
+## one moment and answer a gate from another, and that is the drift this closes.
+var _model: DomainExploreModel = DomainExploreModel.new()
 ## The last outcome of a fixture verb, kept separately from `UiScreen`'s message because
 ## the fixture line names the FIXTURE and the message line names the screen's own verb.
 var _fixture_message: String = ""
 var _fixture_tone: StringName = &""
-## The active run, as the module last reported it, so `summary()` answers with what the
-## module said rather than re-asking three facades and hoping they agree.
-var _view: Dictionary = {}
 
 var _header_label: Label = null
 var _status_label: Label = null
@@ -197,8 +227,7 @@ func on_screen_hidden() -> void:
 ## otherwise show the state it had BEFORE the binding.
 func bind_bridge(bridge: DomainBridge) -> void:
 	_bind_nodes()
-	_bridge = bridge
-	_templates = _read_templates()
+	_model.bind(bridge)
 	refresh()
 
 
@@ -221,62 +250,37 @@ func focus_initial() -> void:
 
 ## Everything this screen shows, as primitives only. `{}` with no actor or no bridge, per
 ## the screen contract, so a test never reads a half-initialised screen.
+##
+## The model's half is merged in WHOLE rather than key by key: every figure in it is the
+## MODULE's own answer, and re-listing them here would be the second copy of the map's
+## shape this screen exists not to hold.
 func _summary() -> Dictionary:
 	_bind_nodes()
-	if _actor == null or _bridge == null:
+	if _actor == null or _model.bridge() == null:
 		return {}
-	var minimap := _minimap()
-	var map: Dictionary = _view.get("map", {})
-	return {
-		"has_actor": _actor != null,
-		"actor_id": String(_actor.id),
-		# The bridge's own view of itself, so a test can assert the WIRING rather than
-		# infer it from a verb that quietly did nothing.
-		"bridge": _bridge.summary(),
-		"template_count": _templates.size(),
-		"template_id": _selected_template_id(),
-		"in_domain": not _view.is_empty(),
-		# The module's own shapes, verbatim. DISPLAYED, never re-derived: a screen that
-		# kept a private copy of the map shape is a second thing that can be wrong, and
-		# it would be wrong silently.
-		"map": map,
-		"room_count": int(_view.get("rooms", 0)),
-		"zone_count": int(_view.get("zones", 0)),
-		"population_count": int(_view.get("population", 0)),
-		"discovered_count": int(_view.get("discovered", 0)),
-		"fixture_count": int((_view.get("fixtures", {}) as Dictionary).get("count", 0)),
-		# The minimap payload WHOLE, so this screen and the headless driver read one
-		# dictionary (ADR 0073's tier legibility and its fog both live inside it).
-		"minimap": minimap,
-		"drawn_rooms": _drawn_rooms(minimap),
-		"room_rows": _room_rows(minimap),
-		"poi_count": (minimap.get("pois", []) as Array).size(),
-		"route_count": (minimap.get("routes", []) as Array).size(),
-		"zone_rows": _zone_rows(minimap),
-		"weather": String(minimap.get("weather", map.get("weather", ""))),
-		"population": _population_rows(),
-		"selected_room": String(_selected_room),
-		"selected_fixture": String(_selected_fixture),
-		"selected_node": String(_puzzle_node),
-		"fixture_message": _fixture_message,
-		"fixture_tone": String(_fixture_tone),
-		"header": _text_of(_header_label),
-		"status": _text_of(_status_label),
-		"map_text": _text_of(_map_label),
-		"rooms_text": _text_of(_rooms_label),
-		"population_text": _text_of(_population_label),
-		"zones_text": _text_of(_zones_label),
-		"fixture_text": _text_of(_fixture_label),
-		"enabled": _enabled(),
-		"actions": _actions.summary() if _actions != null else {},
-	}
+	var place := _model.summary()
+	place["has_actor"] = _actor != null
+	place["actor_id"] = String(_actor.id)
+	# The bridge's own view of itself, so a test can assert the WIRING rather than
+	# infer it from a verb that quietly did nothing.
+	place["bridge"] = _model.bridge().summary()
+	place["fixture_message"] = _fixture_message
+	place["fixture_tone"] = String(_fixture_tone)
+	place["header"] = _text_of(_header_label)
+	place["status"] = _text_of(_status_label)
+	place["map_text"] = _text_of(_map_label)
+	place["rooms_text"] = _text_of(_rooms_label)
+	place["population_text"] = _text_of(_population_label)
+	place["zones_text"] = _text_of(_zones_label)
+	place["fixture_text"] = _text_of(_fixture_label)
+	place["enabled"] = _enabled()
+	place["actions"] = _actions.summary() if _actions != null else {}
+	return place
 
 
 func _refresh_view() -> void:
 	_bind_nodes()
-	_view = _active()
-	_templates = _read_templates()
-	_reconcile_selection()
+	_model.refresh(_actor)
 	_fill_templates()
 	_fill_rooms()
 	_fill_fixtures()
@@ -284,13 +288,14 @@ func _refresh_view() -> void:
 
 func _render() -> void:
 	_bind_nodes()
-	_header_label.text = _header_text()
-	_status_label.text = _status_text()
-	_map_label.text = _map_text()
-	_rooms_label.text = _rooms_text()
-	_population_label.text = _population_text()
-	_zones_label.text = _zones_text()
-	_fixture_label.text = _fixture_text()
+	var lines := _model.lines()
+	_header_label.text = String(lines["header"])
+	_status_label.text = String(lines["status"])
+	_map_label.text = String(lines["map"])
+	_rooms_label.text = String(lines["rooms"])
+	_population_label.text = String(lines["population"])
+	_zones_label.text = String(lines["zones"])
+	_fixture_label.text = String(lines["fixture"])
 	_enter_button.disabled = not _can_enter()
 	_leave_button.disabled = not _can_leave()
 	_visit_button.disabled = not _can_visit()
@@ -347,13 +352,69 @@ func _bind_nodes() -> void:
 ## Generate and enter the selected authored template. The ONE production entry point
 ## into a domain, and calling it from a button is what makes the module reachable from
 ## the shipped program at all.
+##
+## The seed is [constant DEFAULT_SEED] first and then a small, BOUNDED walk of derived
+## seeds — see [method _enter_with_a_generating_seed] for why a refused seed cannot
+## simply be retried forever. Two presses of this button still enter the SAME domain:
+## the walk is a pure function of the template, so it picks the same first success for
+## the same template every time.
 func act_enter() -> bool:
 	_bind_nodes()
 	if not _can_enter():
 		return _reject(_enter_reason())
 	var template_id := _selected_template_id()
-	var entered := _bridge.call_action(&"enter", [_actor, StringName(template_id), DEFAULT_SEED])
+	var entered := _enter_with_a_generating_seed(StringName(template_id))
 	return _settle(entered, "Entered %s" % template_id)
+
+
+## `Enter` against the selected template, advancing the seed until the MODULE accepts
+## one, and returning the LAST answer either way so the caller still repaints from the
+## untouched actor.
+##
+## ## Why the seed has to move at all
+##
+## `DomainGenerator.generate` partitions a template's extent and REFUSES a partition
+## below the template's `min_rooms` — it pushes `produced N room(s), below its
+## min_rooms M` and returns null. `generate_and_enter` turns that into
+## `generation_refused`, so a template whose partition under this particular seed lands
+## short produces NO domain and the button does nothing a player can see. That is a
+## property of the SEED and the TEMPLATE together, not a defect in either: the same
+## template generates from a neighbouring seed. Pressing `Enter` should enter something,
+## so the screen advances rather than reporting a refusal the player can do nothing
+## about.
+##
+## ## Why this is not papering over it
+##
+## Three things stay true, and each of them is what the alternative lost:
+##
+##  - The attempt count is [constant MAX_SEED_ATTEMPTS] — a named, small cap. There is
+##    no loop that can be made unbounded by authoring a template nothing can satisfy.
+##  - The refusal is NEVER swallowed. A reason that is not a generation refusal is
+##    returned IMMEDIATELY, untouched, on the first attempt — so `no_such_template` and
+##    `invalid_contract` reach the player exactly as the module worded them.
+##  - If every attempt refuses for the generation reason, the LAST refusal is what gets
+##    returned, so the line names the module's own `generation_refused` rather than a
+##    wording this file invented.
+##
+## The seeds are `DEFAULT_SEED + attempt`, not a random roll: reproducible, and the same
+## template always resolves to the same domain.
+func _enter_with_a_generating_seed(template_id: StringName) -> Dictionary:
+	var refusal: Dictionary = {}
+	for attempt in MAX_SEED_ATTEMPTS:
+		var answer := _model.bridge().call_action(
+			&"enter", [_actor, template_id, DEFAULT_SEED + attempt]
+		)
+		if bool(answer.get("ok", false)):
+			return answer
+		refusal = answer
+		if String(answer.get("reason", "")) != GENERATION_REFUSED:
+			# Not something a different seed would change, so stop asking and report it.
+			return answer
+	# Every seed the bounded walk tried was refused for the same reason. The LAST refusal
+	# is returned rather than a fresh call, so the player is told the module's own
+	# `generation_refused` once and the walk costs `MAX_SEED_ATTEMPTS` generations, not
+	# `MAX_SEED_ATTEMPTS + 1`.
+	return refusal
 
 
 ## Leave the domain. The discovered set survives, so nothing the player found is lost.
@@ -361,7 +422,7 @@ func act_leave() -> bool:
 	_bind_nodes()
 	if not _can_leave():
 		return _reject("no_map")
-	return _settle(_bridge.call_action(&"leave", [_actor]), "Left the domain")
+	return _settle(_model.bridge().call_action(&"leave", [_actor]), "Left the domain")
 
 
 ## Walk into the selected room, recording it as discovered so the floor plan draws it. A
@@ -375,8 +436,8 @@ func act_visit() -> bool:
 	_bind_nodes()
 	if not _can_visit():
 		return _reject(_visit_reason())
-	var reached := _bridge.call_action(&"visit", [_actor, _selected_room, &""])
-	return _settle(reached, "Reached %s" % String(_selected_room))
+	var reached := _model.bridge().call_action(&"visit", [_actor, _selected_room_id(), &""])
+	return _settle(reached, "Reached %s" % String(_selected_room_id()))
 
 
 ## Arm a trap's telegraph, or fire it when the authored window has already elapsed.
@@ -384,8 +445,8 @@ func act_arm(delta: float = ARM_TICK) -> bool:
 	_bind_nodes()
 	if not _can_arm():
 		return _reject(_arm_reason())
-	var armed := _bridge.call_action(
-		&"arm_fixture", [_actor, _selected_room, _selected_fixture, delta]
+	var armed := _model.bridge().call_action(
+		&"arm_fixture", [_actor, _selected_room_id(), _selected_fixture_id(), delta]
 	)
 	return _settle_fixture(armed)
 
@@ -396,8 +457,8 @@ func act_attempt() -> bool:
 	_bind_nodes()
 	if not _can_attempt():
 		return _reject(_attempt_reason())
-	var struck := _bridge.call_action(
-		&"attempt_fixture", [_actor, _selected_room, _selected_fixture, _puzzle_node]
+	var struck := _model.bridge().call_action(
+		&"attempt_fixture", [_actor, _selected_room_id(), _selected_fixture_id(), _puzzle_node_id()]
 	)
 	return _settle_fixture(struck)
 
@@ -408,25 +469,10 @@ func act_claim() -> bool:
 	if not _can_claim():
 		return _reject(_claim_reason())
 	return _settle_fixture(
-		_bridge.call_action(&"claim_fixture", [_actor, _selected_room, _selected_fixture])
+		_model.bridge().call_action(
+			&"claim_fixture", [_actor, _selected_room_id(), _selected_fixture_id()]
+		)
 	)
-
-
-## Drive any action by id, so `tools ui drive --cmd` and a headless probe reach the same
-## code path a button press does.
-##
-## A TABLE rather than a chain of `match` arms, because this file already holds a hundred
-## lines of prose and a dispatch is the least interesting thing in it. An id this screen
-## does not offer is refused BY NAME rather than ignored, so a driver learns it asked
-## wrongly instead of seeing a silent no-op.
-const ACTION_HANDLERS := {
-	&"enter": "act_enter",
-	&"leave": "act_leave",
-	&"visit": "act_visit",
-	&"arm": "act_arm",
-	&"attempt": "act_attempt",
-	&"claim": "act_claim",
-}
 
 
 func act(action: StringName) -> bool:
@@ -438,276 +484,42 @@ func act(action: StringName) -> bool:
 
 
 ## Look at one room, the way picking it from the room selector does. Public because a
-## test and a driver both need to aim at a specific room, and reaching into `_selected_room`
-## would make the selection a private field with a public back door.
+## test and a driver both need to aim at a specific room, and reaching into the model's
+## fields would make the selection a private field with a public back door.
 ##
 ## Gated on the AUTHORED room list, not on the minimap's drawn rooms. Those are not the
 ## same set and the difference is the whole point of the screen: the fog is what the
 ## module has DISCOVERED, so gating on it made an undiscovered room unselectable — a
 ## player could never walk toward one, and the domain could only ever be one room deep.
 ##
-## A room the MODULE does not hold is still refused, and the refusal is RECORDED in
-## [member _pending_room] rather than discarded. The caller is told false, so it knows,
-## and the next `Visit` reports `unknown_room` by name instead of walking into whatever
-## room was selected before — a verb aimed at a room nobody holds must refuse rather than
-## silently succeed somewhere else. The pending id is dropped the moment anything else
-## moves the selection, so it can never outlive the press that set it.
+## A room the MODULE does not hold is still refused, and the refusal is RECORDED in the
+## model rather than discarded. The caller is told false, so it knows, and the next
+## `Visit` reports `unknown_room` by name instead of walking into whatever room was
+## selected before — a verb aimed at a room nobody holds must refuse rather than silently
+## succeed somewhere else. The pending id is dropped the moment anything else moves the
+## selection, so it can never outlive the press that set it.
 func select_room(room_id: StringName) -> bool:
 	_bind_nodes()
-	if not _contains_room(_authored_rooms(), room_id):
-		_pending_room = room_id
-		return false
-	_pending_room = &""
-	_selected_room = room_id
-	_reconcile_fixture()
-	_reconcile_node()
+	var accepted := _model.select_room(room_id)
 	refresh()
-	return true
+	return accepted
 
 
 ## Look at one fixture of the selected room. Same reasoning as [method select_room].
 func select_fixture(fixture_id: StringName) -> bool:
 	_bind_nodes()
-	if not _contains_fixture(_fixtures_of(_selected_room), fixture_id):
-		return false
-	_selected_fixture = fixture_id
-	_reconcile_node()
+	var accepted := _model.select_fixture(fixture_id)
 	refresh()
-	return true
+	return accepted
 
 
 ## Choose the puzzle node to strike, for a formation the player is solving. False when the
 ## selected fixture authors no such node, so a caller learns the node is not a real choice.
 func select_node(node_id: StringName) -> bool:
 	_bind_nodes()
-	if not _puzzle_nodes().has(node_id):
-		return false
-	_puzzle_node = node_id
+	var accepted := _model.select_node(node_id)
 	refresh()
-	return true
-
-
-# ── Reads. Every one of them through the bridge, never a private copy ────────────
-
-
-## What the MODULE reports is active, or `{}` outside a run. `{}` is the repo's
-## does-not-exist vocabulary — not an error, and never a fabricated zeroed view.
-func _active() -> Dictionary:
-	if _actor == null or _bridge == null or not _bridge.has(&"read_active"):
-		return {}
-	return _bridge.call_action(&"read_active", [_actor]).get("active", {}) as Dictionary
-
-
-func _read_templates() -> Array:
-	if _bridge == null or not _bridge.has(&"list_templates"):
-		return []
-	return _bridge.call_list(&"list_templates")
-
-
-## The room list, or `[]` outside a run AND before the seam is filled.
-##
-## ONE guarded call rather than a null check at each of its three readers. `_ready()`
-## runs before `bind_bridge` has ever been called, so every refresh on a screen the
-## shell has not wired yet reaches this: a reader that dereferenced `_bridge` directly
-## aborted the whole refresh, and an unbound screen reported no rooms, no population
-## and no fixtures instead of reporting an empty domain.
-func _rooms() -> Array:
-	if _bridge == null or not _bridge.has(&"rooms"):
-		return []
-	return _bridge.call_list(&"rooms", [_actor])
-
-
-## The floor plan, exactly as the module rendered it. `{}` outside a run, which the
-## text below words as "no floor plan" rather than as an empty map.
-func _minimap() -> Dictionary:
-	if _actor == null or _bridge == null or not _bridge.has(&"minimap"):
-		return {}
-	return _bridge.call_action(&"minimap", [_actor])
-
-
-## The minimap's own room layer. `{}` has no `rooms` key, so the empty case is named
-## rather than indexed — an absent key and an empty map must not read alike.
-func _drawn_rooms(minimap: Dictionary) -> Array:
-	var rows: Variant = minimap.get("rooms", [])
-	return rows as Array if rows is Array else []
-
-
-## One row per DISCOVERED room, carrying the kind and the tier it PROMISES. The tier is
-## the minimap's own verdict and is passed through untouched.
-func _room_rows(minimap: Dictionary) -> Array:
-	var rows: Array = []
-	for row in _drawn_rooms(minimap):
-		var room := row as Dictionary
-		rows.append(_subset(room, ROOM_KEYS))
-	return rows
-
-
-## The severe zones, flattened with the room each sits in and the levers that reduce it.
-## Deliberately NOT fogged: routing AROUND a hazard needs seeing it before standing in it.
-func _zone_rows(minimap: Dictionary) -> Array:
-	var rows: Array = []
-	for entry in minimap.get("zones", []):
-		rows.append(_subset(entry as Dictionary, ZONE_KEYS))
-	return rows
-
-
-## `source` re-keyed down to `keys`, every value coerced to a primitive. The coercion is
-## the point, not a convenience: an authored fixture row carries `Vector2i` positions and
-## a `Rect2i` boundary, and a `summary()` holding either is a testable surface that
-## quietly stops being testable. `String()` and `int()` are the only two coercions used,
-## because a row in this program is strings, numbers, booleans and arrays.
-func _subset(source: Dictionary, keys: Array) -> Dictionary:
-	var out := {}
-	for key in keys:
-		var value: Variant = source.get(key, null)
-		if value is Array:
-			out[key] = _strings(value)
-		elif value is bool or value is int or value is float:
-			out[key] = value
-		else:
-			out[key] = String(value) if value != null else ""
-	return out
-
-
-## The population grouped by role, because "three mobs and a boss" is a roster and four
-## separate rows are not. Roles are TAGS on an actor and never classes (ADR 0074), so the
-## grouping is over a string and the module decided what is hostile.
-func _population_rows() -> Array:
-	var by_role: Dictionary = {}
-	for entry in _rooms():
-		for ref in (entry as Dictionary).get("actor_spawn_refs", []):
-			var row := ref as Dictionary
-			var role := String(row.get("role", ""))
-			if role.is_empty():
-				continue
-			by_role[role] = int(by_role.get(role, 0)) + maxi(1, int(row.get("count", 1)))
-	var rows: Array = []
-	for role in by_role.keys():
-		rows.append({"role": String(role), "count": int(by_role[role])})
-	rows.sort_custom(
-		func(a: Dictionary, b: Dictionary) -> bool: return String(a["role"]) < String(b["role"])
-	)
-	return rows
-
-
-## The fixtures the SELECTED room holds, from the facade's own room read.
-##
-## A room is the only place a fixture exists — `DomainFixtures._resolve` refuses by name
-## outside one — so the list empties rather than offering buttons aimed at another room.
-##
-## Scanned over EVERY room rather than stopping at the first miss, because the room list
-## is canonical by id and a selection may name any of them: a scan that stopped early
-## reported "this room holds no fixtures" for a room three rows further down.
-func _fixtures_of(room_id: StringName) -> Array:
-	var out: Array = []
-	if room_id.is_empty():
-		return out
-	for entry in _rooms():
-		var room := entry as Dictionary
-		if StringName(String(room.get("room_id", ""))) != room_id:
-			continue
-		for fixture in room.get("fixtures", []):
-			out.append(fixture as Dictionary)
-	return out
-
-
-## The selected fixture's authored row, or `{}`. Read for its STRINGS only: an authored
-## fixture carries `Vector2i` / `Rect2i` positions, and an engine type in a summary is
-## what makes a testable surface untestable.
-func _selected_fixture_row() -> Dictionary:
-	for fixture in _fixtures_of(_selected_room):
-		if StringName(String(fixture.get("fixture_id", ""))) == _selected_fixture:
-			return fixture
-	return {}
-
-
-## A formation's strikeable nodes, from the AUTHORED fixture. Empty for a trap or a
-## treasure, which is honest: neither has a node to strike.
-func _puzzle_nodes() -> Array[StringName]:
-	var out: Array[StringName] = []
-	for node in _selected_fixture_row().get("nodes", []):
-		out.append(StringName(String(node)))
-	return out
-
-
-## Every room the active run AUTHORED, fog notwithstanding. The room list is the
-## module's, unfiltered; filtering it by discovery here would leave a player able to
-## walk only through rooms they had already been in, which is not exploring.
-func _authored_rooms() -> Array:
-	return _rooms()
-
-
-# ── Selection ────────────────────────────────────────────────────────────────
-
-
-## Keep the selection honest across a refresh. A run that regenerated, or a room left
-## behind, must not leave a stale id selected — an action aimed at one would refuse for a
-## reason the player never caused.
-##
-## Checked against the AUTHORED rooms for the same reason [method select_room] is: the
-## selection is where the player is LOOKING, which is a different question from where the
-## floor plan has drawn. Reconciling against the fogged set reset the selection to the
-## entry room on every refresh, so a player could not hold a look at an unfound room.
-func _reconcile_selection() -> void:
-	var authored := _authored_rooms()
-	if authored.is_empty():
-		_selected_room = &""
-		_selected_fixture = &""
-		_puzzle_node = &""
-		_pending_room = &""
-		return
-	if not _contains_room(authored, _selected_room):
-		_selected_room = StringName(String((authored[0] as Dictionary).get("room_id", "")))
-	_reconcile_fixture()
-	_reconcile_node()
-
-
-func _reconcile_fixture() -> void:
-	var fixtures := _fixtures_of(_selected_room)
-	if fixtures.is_empty():
-		_selected_fixture = &""
-		_puzzle_node = &""
-		return
-	if not _contains_fixture(fixtures, _selected_fixture):
-		_selected_fixture = StringName(String((fixtures[0] as Dictionary).get("fixture_id", "")))
-
-
-func _reconcile_node() -> void:
-	var nodes := _puzzle_nodes()
-	if nodes.is_empty():
-		_puzzle_node = &""
-		return
-	if not nodes.has(_puzzle_node):
-		_puzzle_node = nodes[0]
-
-
-func _contains_room(rows: Array, room_id: StringName) -> bool:
-	return _index_of_room(rows, room_id) >= 0
-
-
-func _contains_fixture(fixtures: Array, fixture_id: StringName) -> bool:
-	return _index_of_fixture(fixtures, fixture_id) >= 0
-
-
-func _index_of_room(rows: Array, room_id: StringName) -> int:
-	for index in rows.size():
-		if StringName(String((rows[index] as Dictionary).get("room_id", ""))) == room_id:
-			return index
-	return -1
-
-
-func _index_of_fixture(fixtures: Array, fixture_id: StringName) -> int:
-	for index in fixtures.size():
-		var id := StringName(String((fixtures[index] as Dictionary).get("fixture_id", "")))
-		if id == fixture_id:
-			return index
-	return -1
-
-
-func _selected_template_id() -> String:
-	if _template_index < 0 or _template_index >= _templates.size():
-		return ""
-	return String((_templates[_template_index] as Dictionary).get("template_id", ""))
+	return accepted
 
 
 # ── Enabled state. Each verb states its OWN refusal rather than a bare "disabled" ──
@@ -716,15 +528,15 @@ func _selected_template_id() -> String:
 func _can_enter() -> bool:
 	return (
 		_actor != null
-		and _bridge != null
-		and _bridge.has(&"enter")
-		and _view.is_empty()
+		and _model.bridge() != null
+		and _model.bridge().has(&"enter")
+		and _model.active().is_empty()
 		and not _selected_template_id().is_empty()
 	)
 
 
 func _can_leave() -> bool:
-	return _live() and _bridge.has(&"leave")
+	return _live() and _model.bridge().has(&"leave")
 
 
 ## `Visit` needs a run, the verb, and a room the MODULE actually holds.
@@ -733,9 +545,9 @@ func _can_leave() -> bool:
 ## the verb rather than a silent walk into the previous room: a pending id means the
 ## caller named a room this run does not have, so the verb must say so by name.
 func _can_visit() -> bool:
-	if _pending_room != &"":
+	if not _pending_room().is_empty():
 		return false
-	return _live() and _bridge.has(&"visit") and not _selected_room.is_empty()
+	return _live() and _model.bridge().has(&"visit") and not _selected_room_id().is_empty()
 
 
 func _can_arm() -> bool:
@@ -752,7 +564,7 @@ func _can_claim() -> bool:
 
 ## Whether a run is active and the bridge can reach the verb at all.
 func _live() -> bool:
-	return _actor != null and _bridge != null and not _view.is_empty()
+	return _actor != null and _model.bridge() != null and not _model.active().is_empty()
 
 
 ## A fixture verb is offered when the room holds a fixture OF THE KIND THIS VERB acts
@@ -760,15 +572,15 @@ func _live() -> bool:
 ## treasure whose key you lack must stay pressable, or the refusal — the thing that
 ## teaches a player why the hoard is sealed — becomes unreachable.
 func _can_fixture(action: StringName) -> bool:
-	if not _live() or not _bridge.has(action) or _selected_fixture.is_empty():
+	if not _live() or not _model.bridge().has(action) or _selected_fixture_id().is_empty():
 		return false
-	return FIXTURE_VERB.get(String(_selected_fixture_row().get("kind", "")), &"") == action
+	return FIXTURE_VERB.get(_model.fixture_kind(), &"") == action
 
 
 func _enter_reason() -> String:
-	if _actor == null or _bridge == null:
+	if _actor == null or _model.bridge() == null:
 		return "no_actor"
-	if not _bridge.has(&"enter"):
+	if not _model.bridge().has(&"enter"):
 		return "no_inventory_bridge"
 	if _selected_template_id().is_empty():
 		return "no_such_template"
@@ -778,7 +590,7 @@ func _enter_reason() -> String:
 func _visit_reason() -> String:
 	if not _live():
 		return "no_map"
-	if not _bridge.has(&"visit"):
+	if not _model.bridge().has(&"visit"):
 		return "no_inventory_bridge"
 	return "unknown_room"
 
@@ -803,7 +615,7 @@ func _claim_reason() -> String:
 func _fixture_reason(action: StringName, authored_reason: String) -> String:
 	if not _live():
 		return "no_map"
-	if not _bridge.has(action):
+	if not _model.bridge().has(action):
 		return "no_inventory_bridge"
 	return authored_reason
 
@@ -832,200 +644,49 @@ func _enabled() -> Dictionary:
 	}
 
 
-# ── Wording. Every figure and every sentence lives here or in a child panel ──────
-
-
-func _header_text() -> String:
-	if _actor == null:
-		return "Domains — no hero"
-	if _templates.is_empty():
-		return "Domains — none authored"
-	return "Domains — %d authored" % _templates.size()
-
-
-func _status_text() -> String:
-	if _view.is_empty():
-		return "Not inside a domain"
-	var map: Dictionary = _view.get("map", {})
-	return (
-		"Inside %s — %d room(s), %d discovered"
-		% [
-			String(map.get("domain_id", "a domain")),
-			int(_view.get("rooms", 0)),
-			int(_view.get("discovered", 0)),
-		]
-	)
-
-
-## The floor plan, as text. The DICTIONARY is the contract; this is its readable echo,
-## and it counts what the plan actually draws rather than asserting a number the module
-## never published.
-func _map_text() -> String:
-	var minimap := _minimap()
-	if minimap.is_empty():
-		return "No floor plan — no domain is active"
-	var box: Variant = minimap.get("bounds", [])
-	var width := int((box as Array)[2]) if (box as Array).size() == 4 else 0
-	var height := int((box as Array)[3]) if (box as Array).size() == 4 else 0
-	return (
-		"Floor plan — %d room(s) drawn, %d marker(s), %d corridor(s), %dx%d tiles"
-		% [
-			_drawn_rooms(minimap).size(),
-			(minimap.get("pois", []) as Array).size(),
-			(minimap.get("routes", []) as Array).size(),
-			width,
-			height,
-		]
-	)
-
-
-## One line per DISCOVERED room, with its kind and the tier it promises. Only discovered
-## rooms appear: the minimap's fog is the module's, and a room shown before it is found
-## is exactly the spoiler the fog exists to prevent.
-func _rooms_text() -> String:
-	var rows := _room_rows(_minimap())
-	if rows.is_empty():
-		return "No rooms known"
-	var lines: Array = []
-	for row in rows:
-		var room := row as Dictionary
-		(
-			lines
-			. append(
-				(
-					"%s  %s  [%s]%s"
-					% [
-						room["room_id"],
-						room["kind"],
-						room["tier"],
-						"  entry" if bool(room["is_entry"]) else "",
-					]
-				)
-			)
-		)
-	return "\n".join(lines)
-
-
-func _population_text() -> String:
-	var rows := _population_rows()
-	if rows.is_empty():
-		return "Nobody is placed here yet"
-	var lines: Array = []
-	for row in rows:
-		lines.append("%s: %d" % [row["role"], row["count"]])
-	return ", ".join(lines)
-
-
-## The severe zones and the levers that reduce them. An empty list reads "none authored",
-## never a silent blank line, because a blank line reads as "the author forgot".
-func _zones_text() -> String:
-	var rows := _zone_rows(_minimap())
-	if rows.is_empty():
-		return "No severe environment authored here"
-	var lines: Array = []
-	for row in rows:
-		var zone := row as Dictionary
-		var levers := zone["mitigation_tags"] as Array
-		(
-			lines
-			. append(
-				(
-					"%s in %s (%s) — answered by: %s"
-					% [
-						zone["kind"],
-						zone["room_id"],
-						zone["severity"],
-						", ".join(levers) if not levers.is_empty() else "nothing you carry",
-					]
-				)
-			)
-		)
-	return "\n".join(lines)
-
-
-func _fixture_text() -> String:
-	var fixture := _selected_fixture_row()
-	if fixture.is_empty():
-		return "No fixture in this room"
-	return (
-		"%s (%s) in %s" % [fixture.get("fixture_id", ""), fixture.get("kind", ""), _selected_room]
-	)
-
-
 # ── Rendering ────────────────────────────────────────────────────────────────
 
 
 ## Fill the domain selector from the AUTHORED catalogue. Presentation only: the screen
-## never invents a domain, and it matches on the stable id rather than the label because
-## a label is presentation and a domain may be renamed without its id moving.
+## never invents a domain, and the rows carry the id beside the label because the row a
+## player reads and the row a driver aims at are the same row.
 func _fill_templates() -> void:
 	if _template_option == null:
 		return
-	var keep := _selected_template_id()
-	_template_option.clear()
-	for index in _templates.size():
-		var entry := _templates[index] as Dictionary
-		var template_id := String(entry.get("template_id", ""))
-		_template_option.add_item(
-			"%s (%s)" % [String(entry.get("display_name", template_id)), template_id]
-		)
-	for index in _templates.size():
-		if String((_templates[index] as Dictionary).get("template_id", "")) == keep:
-			_template_index = index
-			break
-	if _template_index < 0:
-		_template_index = 0
+	_fill(_template_option, _model.template_options())
+	_model.keep_template(_model.template_id())
 
 
 ## Fill the room selector from the AUTHORED room list, so every room in the run is
-## reachable and not only the ones the floor plan has already drawn. The TIER is the
-## minimap's own verdict where the minimap has drawn the room, and the row says so when
-## it has not — ADR 0073 forbids re-deriving a promise from a room's depth or size, so
-## an undrawn room shows its kind and its discovery state rather than a guessed tier.
+## reachable and not only the ones the floor plan has already drawn.
 func _fill_rooms() -> void:
 	if _room_option == null:
 		return
-	var tiers := _drawn_tiers()
-	_room_option.clear()
-	for row in _authored_rooms():
-		var room := row as Dictionary
-		var room_id := String(room.get("room_id", ""))
-		var tier := String(tiers.get(room_id, ""))
-		_room_option.add_item(
-			(
-				"%s  %s  [%s]"
-				% [
-					room_id,
-					String(room.get("kind", "")),
-					tier if not tier.is_empty() else "unmapped"
-				]
-			)
-		)
+	_fill(_room_option, _model.room_options())
 
 
-## `{room_id: tier}` for the rooms the minimap has drawn. `{}` outside a run and for a
-## room the fog has not lifted, which is why the row above falls back rather than
-## inventing a band of its own.
-func _drawn_tiers() -> Dictionary:
-	var out: Dictionary = {}
-	for row in _drawn_rooms(_minimap()):
-		var room := row as Dictionary
-		out[String(room.get("room_id", ""))] = String(room.get("tier", ""))
-	return out
-
-
+## Fill the fixture and node selectors from the SELECTED room. A room is the only place a
+## fixture exists — `DomainFixtures._resolve` refuses by name outside one — so the list
+## empties rather than offering buttons aimed at another room. No nodes is honest: a trap
+## and a treasure have none to strike, so the node row says so by being disabled.
 func _fill_fixtures() -> void:
 	if _fixture_option == null or _node_option == null:
 		return
-	_fixture_option.clear()
-	for fixture in _fixtures_of(_selected_room):
-		_fixture_option.add_item(
-			"%s (%s)" % [String(fixture.get("fixture_id", "")), String(fixture.get("kind", ""))]
-		)
-	_node_option.clear()
-	for node in _puzzle_nodes():
-		_node_option.add_item(String(node))
-	_node_option.disabled = _puzzle_nodes().is_empty()
+	_fill(_fixture_option, _model.fixture_options())
+	var nodes := _puzzle_nodes()
+	var labels: Array = []
+	for node in nodes:
+		labels.append(String(node))
+	_fill(_node_option, labels)
+	_node_option.disabled = nodes.is_empty()
+
+
+## Replace an option list's rows. Every refill goes through here because the rule is the
+## same each time, and one place to keep it is one place for the four to agree.
+func _fill(option: OptionButton, labels: Array) -> void:
+	option.clear()
+	for label in labels:
+		option.add_item(String(label))
 
 
 ## Push the action row's own state, and the outcome line beside it.
@@ -1066,13 +727,15 @@ func _tone_variation() -> StringName:
 			return &"MetaLabel"
 
 
-## Repaint the four selectors without re-emitting `item_selected`, so a programmatic
-## `select()` cannot be mistaken for a click and re-enter the handler that set it.
+## Repaint the four selectors against the lists they were just filled from, without
+## re-emitting `item_selected` — so a programmatic `select()` cannot be mistaken for a
+## click and re-enter the handler that set it.
 func _sync_selections() -> void:
-	_select(_template_option, _template_index)
-	_select(_room_option, _index_of_room(_authored_rooms(), _selected_room))
-	_select(_fixture_option, _index_of_fixture(_fixtures_of(_selected_room), _selected_fixture))
-	_select(_node_option, _puzzle_nodes().find(_puzzle_node))
+	var at := _model.selection_indices()
+	_select(_template_option, int(at[0]))
+	_select(_room_option, int(at[1]))
+	_select(_fixture_option, int(at[2]))
+	_select(_node_option, int(at[3]))
 
 
 # ── Outcomes ─────────────────────────────────────────────────────────────────
@@ -1138,13 +801,14 @@ func _reject(reason: String) -> bool:
 ## fixture outcome is worded, so the summary line and the message line can never name two
 ## different fixtures for one press.
 func _fixture_sentence(text: String) -> String:
-	if _selected_fixture.is_empty():
+	var fixture := _selected_fixture_id()
+	if fixture.is_empty():
 		return text
-	return "%s: %s" % [String(_selected_fixture), text]
+	return "%s: %s" % [String(fixture), text]
 
 
 func _reason_text(reason: String) -> String:
-	return _bridge.reason_text(reason) if _bridge != null else reason
+	return _model.bridge().reason_text(reason) if _model.bridge() != null else reason
 
 
 func _outcome_text(reason: String) -> String:
@@ -1164,8 +828,8 @@ func _connect_pressed(button: Button, handler: Callable) -> void:
 		button.pressed.connect(handler)
 
 
-## The four selectors are wired to ONE handler each, and each handler resolves its own
-## selector against the list that handler's `_fill_*` writes — so the two cannot drift.
+## The four selectors are wired to ONE handler each, and each handler hands its own index
+## to the model — which holds the list that index names, so the two cannot drift.
 func _connect_select(option: OptionButton, handler: Callable) -> void:
 	if option != null and not option.item_selected.is_connected(handler):
 		option.item_selected.connect(handler)
@@ -1180,53 +844,56 @@ func _text_of(label: Label) -> String:
 	return "" if label == null else label.text
 
 
-func _strings(values: Variant) -> Array:
-	var out: Array = []
-	if not values is Array:
-		return out
-	for value in values as Array:
-		out.append(String(value))
-	return out
-
-
 func _on_action_requested(action: StringName) -> void:
 	act(action)
 
 
-## The room selector. The widget's selection is the truth once it exists; the field only
-## carries it across a refill, so a programmatic `select()` is honoured like a click and
-## a real click is not second-guessed. All four selectors read that same rule, which is
-## why they share one line of prose between them.
+## The four selector handlers, one per dropdown. None of them resolves an index against a
+## list of its own: the model holds the list the dropdown was filled from, so a handler
+## cannot read a stale copy of it. All four share one rule, which is why they share one
+## line of prose between them.
 func _on_template_selected(index: int) -> void:
-	_template_index = index
+	_model.choose(&"template", index)
 	refresh()
 
 
 func _on_room_selected(index: int) -> void:
-	var rows := _authored_rooms()
-	if index < 0 or index >= rows.size():
-		return
-	# A real click clears any refused selection: the player has moved on, so the
-	# pending refusal must not refuse the room they just chose.
-	_pending_room = &""
-	_selected_room = StringName(String((rows[index] as Dictionary).get("room_id", "")))
-	_reconcile_fixture()
-	_reconcile_node()
+	_model.choose(&"room", index)
 	refresh()
 
 
 func _on_fixture_selected(index: int) -> void:
-	var fixtures := _fixtures_of(_selected_room)
-	if index < 0 or index >= fixtures.size():
-		return
-	_selected_fixture = StringName(String((fixtures[index] as Dictionary).get("fixture_id", "")))
-	_reconcile_node()
+	_model.choose(&"fixture", index)
 	refresh()
 
 
 func _on_node_selected(index: int) -> void:
-	var nodes := _puzzle_nodes()
-	if index < 0 or index >= nodes.size():
-		return
-	_puzzle_node = nodes[index]
+	_model.choose(&"node", index)
 	refresh()
+
+
+# ── The model's selection, read through the gates and the verbs ───────────────
+
+
+func _selected_room_id() -> StringName:
+	return StringName(_model.selection().get("room", ""))
+
+
+func _selected_fixture_id() -> StringName:
+	return StringName(_model.selection().get("fixture", ""))
+
+
+func _puzzle_node_id() -> StringName:
+	return StringName(_model.selection().get("node", ""))
+
+
+func _pending_room() -> StringName:
+	return StringName(_model.selection().get("pending", ""))
+
+
+func _puzzle_nodes() -> Array[StringName]:
+	return _model.node_options()
+
+
+func _selected_template_id() -> String:
+	return _model.template_id()

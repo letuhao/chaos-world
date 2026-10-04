@@ -65,6 +65,8 @@ static func acupoints(actor: Actor) -> Array[Acupoint]:
 ## none. A panel renders "an attempt is committed" from it and offers resolve
 ## rather than a fresh breakthrough, without reading a module internal.
 static func panel_state(actor: Actor) -> Dictionary:
+	if actor == null:
+		return {}
 	var state := actor.path(BodyPath.PATH_ID)
 	if state == null:
 		return {}
@@ -99,6 +101,37 @@ static func panel_state(actor: Actor) -> Dictionary:
 		# may call directly (ADR 0041), so nothing here grows the facade.
 		"tier_gates": _tier_gates(actor, _target_index(preview)),
 		"ascent": _ascent_state(actor, _target_index(preview)),
+		# **A REFUSAL A PLAYER CAN REACH IS NAMED DATA (ADR 0150).** `unavailable`
+		# names why each verb cannot act, and `attempt_outcome` names what the last
+		# roll became. Neither costs a facade method: this file is at
+		# `rules.MAX_FACADE_PUBLIC_METHODS` and a 13th verb fails `tools arch`, which
+		# is why the fix is here on the read model rather than in a new signature.
+		"unavailable": _unavailable(actor, preview),
+		"attempt_outcome": BodyRefusal.attempt_outcome(actor),
+	}
+
+
+## Why each player-facing verb cannot act right now, keyed by verb, as
+## `{kind, id, required, actual, label}` entries — the shape `RaceGate.unmet()`
+## already produces.
+##
+## **KEYED BY VERB, NOT ONE FLAT LIST**, and the reason is a bug class rather than a
+## preference: a screen handed a flat list has to remember to filter it, and a screen
+## that forgets shows one verb's price on another verb's button — which is precisely
+## the defect ADR 0150 describes, one step removed.
+##
+## A non-empty entry is a complaint a player can act on, and this facade spends
+## nothing: `_start` already guarantees a refusal costs the actor nothing by landing
+## before the pill is spent. The guarantees a consumer may rely on are stated on
+## `BodyRefusal`: a `false` ALWAYS has a name here, while a name does not always
+## mean the verb will refuse (the strengthen report is a union over a walk).
+static func _unavailable(actor: Actor, preview: Dictionary) -> Dictionary:
+	return {
+		BodyRefusal.VERB_CULTIVATE: BodyRefusal.cultivate_unavailable(actor),
+		BodyRefusal.VERB_RECOVER: BodyRefusal.recover_unavailable(actor),
+		BodyRefusal.VERB_STRENGTHEN: BodyRefusal.strengthen_unavailable(actor),
+		BodyRefusal.VERB_BREAKTHROUGH:
+		BodyRefusal.breakthrough_unavailable(actor, preview.get("unmet", [])),
 	}
 
 
@@ -160,18 +193,14 @@ static func meditate(actor: Actor, amount: float) -> bool:
 
 ## Train the next channel that still has work: first the channels the current
 ## realm introduces, then the ones the next realm requires. Returns false when
-## nothing is left to train or the realm's elixir is missing.
+## nothing is left to train or the price is missing — which price depends on the
+## channel's state, because a burn is repaired at the recovery elixir's price
+## (ADR 0141) and trained at the channel elixir's.
+##
+## The report says which, and which candidate is which is ONE list:
+## `BodyTraining.strengthen_candidates` (ADR 0150).
 static func strengthen_next(actor: Actor) -> bool:
-	var state := actor.path(BodyPath.PATH_ID)
-	if state == null:
-		return false
-	var seed := BodyRealmSeed.for_realm(state.rank_id)
-	if seed == null:
-		return false
-	var candidates: Array[StringName] = []
-	candidates.append_array(seed.channel_training)
-	candidates.append_array(seed.required_meridians)
-	for meridian_id in candidates:
+	for meridian_id in BodyTraining.strengthen_candidates(actor):
 		if BodyTraining.strengthen(actor, meridian_id):
 			return true
 	return false
@@ -222,9 +251,14 @@ static func resolve_breakthrough(actor: Actor) -> bool:
 ## facade does NOT ask `RaceGate` itself: the refusal lives in
 ## `BodyAdvancement.start_attempt`, which both halves of the durable lifecycle and this
 ## one-press call all make, so `begin_breakthrough` is gated by the same check rather
-## than by a second copy of it that could fall out of step. The refusal carries
-## `RaceGate`'s own `{kind, id, required, actual, label}` entries, so the screen names the
-## closed path or the ceiling rather than reporting a bare false.
+## than by a second copy of it that could fall out of step.
+##
+## The refusal is PUBLISHED rather than returned, and it does carry `RaceGate`'s own
+## `{kind, id, required, actual, label}` entries verbatim: `panel_state`'s
+## `unavailable.breakthrough` is built from `RaceGate.path_unmet` and
+## `realm_ceiling_unmet` directly, so a screen quotes the same sentence the race gate
+## shows anywhere else. This docstring previously claimed the RETURN carried them, which
+## it never did — they reach a screen only through the read model (ADR 0150).
 static func attempt_breakthrough(actor: Actor) -> bool:
 	return BodyAdvancement.try_breakthrough(actor, null)
 
@@ -233,18 +267,15 @@ static func attempt_breakthrough(actor: Actor) -> bool:
 ## names its own channel), then an injured channel. Consumes the realm's
 ## recovery item. Returns true when a repair happened, so a panel can tell a
 ## real recovery from a no-op.
+##
+## The refusal is PUBLISHED, not returned: `panel_state`'s `unavailable.recover`
+## names whether there was nothing to repair or the elixir is missing, so a screen
+## never has to infer it (ADR 0150). The walk itself is
+## `BodyRefusal.recovery_candidates`, the same list that report asks — one
+## definition, so the two cannot drift.
 static func recover_next(actor: Actor) -> bool:
-	var points: AcupointSet = actor.component(_ACUPOINTS_ID)
-	if points != null:
-		for point in points.points:
-			if not point.blocked:
-				continue
-			var meridian_id := AcupointDefaults.meridian_of(point.id)
-			if meridian_id != &"" and BodyTraining.recover(actor, meridian_id):
-				return true
-	for def in MeridianDefaults.all():
-		var channel := actor.meridians.get_meridian(def.id)
-		if channel != null and channel.is_injured() and BodyTraining.recover(actor, def.id):
+	for meridian_id in BodyRefusal.recovery_candidates(actor):
+		if BodyTraining.recover(actor, meridian_id):
 			return true
 	return false
 

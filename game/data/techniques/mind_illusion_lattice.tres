@@ -20,4 +20,5 @@ stamina_cost = 8.0
 cooldown = 24.0
 mastery_rungs = 5
 magnitude = 1.5
+mind_kind = &"obscure"
 

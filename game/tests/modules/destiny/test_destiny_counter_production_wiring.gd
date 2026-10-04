@@ -32,6 +32,20 @@ extends TestCase
 ## does each production writer move its counter", which is the half that was broken
 ## even when a bridge existed.
 
+## ## The census moved out, and this file is now the writer half of a pair
+##
+## `test_destiny_counter_mapping_census.gd` holds what used to be the third section
+## below — "the mapping is authored, auditable, and matches the real tree" — because
+## it reads the CONTENT TREE and the mapping TABLE rather than a counter, and a
+## broken `.tres` fails there rather than here. Everything this file still asserts is
+## about a production writer moving a counter or refusing to move one, which is the
+## half the two earlier versions of this file got wrong.
+##
+## The fixtures and readers both halves drive live in
+## `destiny_counter_wiring_support.gd`, so there is one answer to "what does the
+## shipped fate tree declare" rather than two that could drift.
+const Support := preload("res://tests/modules/destiny/destiny_counter_wiring_support.gd")
+
 ## The fact a duel writes. Authored in `what_the_rotation_cost.tres` (quest step 2)
 ## and read by `first_blood_duel.tres` (`counters = [&"duels_won", &"kills"]`).
 const DUELS := &"duels_won"
@@ -61,23 +75,131 @@ const BLOW_CAP := 200
 ## reader could find (ADR 0067).
 const SEED := 20_260_904
 
-## The three authored rows with no producer anywhere in `game/src` and no authored
-## event beat. Named here so the census below cannot quietly grow a fourth while
-## still passing, and so the failure text says which rows are dead rather than only
-## how many.
-const UNPRODUCED := [&"bound_name_called", &"mountain_circled_once", &"vigil_broken"]
+## ## The bridge is installed per-test by [method setup], not assumed
+##
+## Every assertion below reads a fate counter, so every one of them is only true
+## while a subscriber is listening. `DestinyApi.record` had zero callers in `src/`,
+## so with nothing installed the whole file reads 0 — the "16 failures, all of
+## them `got 0`" shape that reads like sixteen broken producers rather than one
+## missing install.
+##
+## The install is asserted rather than assumed, because a `Callable` install can
+## no-op without any error: `WorldFact.subscribe` refuses a duplicate, and a
+## callable that resolved to nothing would be accepted just as quietly. The
+## failure label names the WIRING instead of leaving sixteen zeros to be
+## explained, which is the only thing this setup exists to do.
+##
+## ## Why this is a baseline DELTA and never an absolute count
+##
+## `WorldFact._subscribers` is a `static var`, so the slot is process-wide state
+## this suite does not own: a sibling suite may legitimately hold a subscriber of
+## its own while this file's `setup()` runs. Asserting `subscriber_count() == 0`
+## would therefore be asserting that no other suite exists. So the count is a
+## DELTA — "the slot holds exactly what it held when this test began, plus the
+## one subscriber this suite installed" — which is the invariant a shared
+## singleton can actually be observed under, and which fails on a real leak while
+## staying quiet about a neighbour's honest subscriber.
+var _baseline_subscribers: int = 0
+
+## The support file's readers, bound on the LIVE instance in `setup()`.
+##
+## They are forwarders rather than direct calls, and bound rather than declared as
+## `var f := func(): ...`, because `tests/run_tests.gd` builds a template instance
+## and then COPIES its properties onto a second instance. A `Callable` created on
+## the template stays bound to the template when it is copied, so a reader declared
+## that way would answer out of a half-built object. Binding on the live instance
+## inside `setup()` — which the runner calls before every `test_*` — is the one
+## place where every read below is guaranteed to be bound.
+var _hero_impl: Callable
+var _fighter_impl: Callable
+var _counter_impl: Callable
+var _world_impl: Callable
+var _clan_member_impl: Callable
+var _sect_member_impl: Callable
+var _install_sect_impl: Callable
+var _fight_to_a_kill_impl: Callable
+var _gate_impl: Callable
+var _total_moved_impl: Callable
 
 
-## The gate under test, authored exactly as a `.tres` would spell it. Data, never
-## code — `DestinyGate` reads it and nothing here constructs a verdict by hand.
-func _gate(counter_id: StringName, need: int) -> Dictionary:
-	return {"verb": &"counter", "id": counter_id, "need": need}
+## Install the bridge for ONE test, and prove it is live.
+##
+## `tests/run_tests.gd` calls this before every `test_*` method, which is exactly
+## the lifetime this process-wide state needs: present while the test drives the
+## writers, gone the moment the test is over. A helper called from inside each
+## test body would be one forgotten call away from leaking, and a leak here is
+## silent — the counters keep moving for whichever suite runs next and that
+## suite's failure names neither.
+func setup() -> void:
+	# Bound BEFORE the bridge goes in, so a fixture that could not be bound fails this
+	# case by name instead of surfacing as a `null` fixture deep inside a test body.
+	_bind_support()
+	_baseline_subscribers = WorldFact.subscriber_count()
+	DestinyProjection.subscribe_to_fact_ledger()
+	assert_eq(
+		WorldFact.has_subscriber(Callable(DestinyProjection, "on_fact_recorded")),
+		true,
+		(
+			"the fact->counter bridge is LIVE for this test: every counter below is read "
+			+ "through it, so a false here names the wiring rather than sixteen zeros"
+		)
+	)
 
 
+## Leave the process exactly as this suite found it.
+##
+## Only the bridge THIS suite installed is removed, by identity — never
+## `WorldFact.clear_subscribers()`, which is process-wide and would trade this
+## suite's leak for whatever suite ran next.
+##
+## The assertion is a DELTA back to the count `setup()` recorded, not `0`, for
+## the reason its own comment gives: a sibling suite may hold a subscriber here
+## and that is not this suite's business. What this suite owes the process is
+## exactly "as I found it", and a suite that broke that would show up as a
+## baseline that no longer matches — which is a failure naming the leak, not a
+## failure pointing at an innocent neighbour.
+func teardown() -> void:
+	DestinyProjection.unsubscribe_from_fact_ledger()
+	assert_eq(
+		WorldFact.subscriber_count(),
+		_baseline_subscribers,
+		(
+			"the bridge is REMOVED again and the slot is back to the count this test found: "
+			+ "the runner shares one process, and a subscriber left behind moves counters "
+			+ "for every later suite"
+		)
+	)
+
+
+## ## The shared fixtures and readers are ONE file, reached through a `const`
+##
+## `destiny_counter_wiring_support.gd` holds every fixture and reader below, because
+## `test_destiny_counter_mapping_census.gd` drives the same readers and a second copy
+## of "what does the shipped fate tree declare" is a second answer to a question both
+## halves of this pair are making the same claim about. Nothing was lost in the move:
+## each definition's docstring — which is where the reason it exists is written — went
+## with it, and the names the cases already call did not change.
+
+
+## Bind every forwarder above against THIS instance. The census binds its own seven
+## readers out of the same support file, the same way, for the same reason.
+func _bind_support() -> void:
+	_hero_impl = Support._hero
+	_fighter_impl = Support._fighter
+	_counter_impl = Support._counter
+	_world_impl = Support._world
+	_clan_member_impl = Support._clan_member
+	_sect_member_impl = Support._sect_member
+	_install_sect_impl = Support._install_sect
+	_fight_to_a_kill_impl = Support._fight_to_a_kill
+	_gate_impl = Support._gate
+	_total_moved_impl = Support._total_moved
+
+
+## A hero with a destiny ledger attached, for the cases that assert on the NEGATIVE —
+## a counter that must not move — where the fixture needs no resources.
 func _hero() -> Actor:
-	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0, Stat.SPIRIT: 8.0})
-	DestinyApi.attach(actor)
-	return actor
+	return _hero_impl.call()
 
 
 ## A body a duel can actually be fought over: pools attached, so a blow has something
@@ -85,83 +207,7 @@ func _hero() -> Actor:
 ## cannot be damaged, so a duel could never be decided — the reason
 ## `tests/modules/combat/test_combat_facts.gd` builds the same thing.
 func _fighter(id: StringName, physique: float = 10.0) -> Actor:
-	var actor := Actor.new(id, {Stat.PHYSIQUE: physique, Stat.SPIRIT: 8.0})
-	actor.attach_core_resources()
-	DestinyApi.attach(actor)
-	return actor
-
-
-## The counters the shipped fate tree declares, keyed by id. Each fate that declares
-## one keeps its OWN key rather than the last writer's, so a value here says which
-## `.tres` asked for it.
-func _declared_counters() -> Dictionary:
-	var declared: Dictionary = {}
-	for fate_id in FateCatalog.instance().fate_ids():
-		var def := FateCatalog.instance().fate_definition(fate_id)
-		if def == null:
-			continue
-		for counter_id in def.counters:
-			declared[String(counter_id)] = String(fate_id)
-	return declared
-
-
-## Every counter id the bridge can move, sorted, read from the table itself rather
-## than restated — a copy here would let a deleted row stay green.
-func _wired_ids() -> Array[String]:
-	var out: Array[String] = []
-	for row in DestinyProjection.COUNTER_FACTS:
-		out.append(String((row as Dictionary).get("counter", "")))
-	out.sort()
-	return out
-
-
-## Every fact id the SHIPPED content tree authors as a beat: an event's opening beats
-## and every stage's `on_enter` rows, plus every quest step's watched fact.
-##
-## A quest step is a DEMAND rather than a producer and is included deliberately: a
-## fact named by a quest and produced by nothing is the shape "a gate that can never
-## open" takes, and this census is about whether the shipped tree can record it at
-## all. Read from the real catalogs rather than from this file's memory of them.
-func _authored_fact_ids() -> Dictionary:
-	var known: Dictionary = {}
-	for quest_id in QuestCatalog.instance().quest_ids():
-		var def := QuestCatalog.instance().definition(quest_id)
-		if def == null:
-			continue
-		for fact in def.watched_facts():
-			known[String(fact)] = true
-	for event_id in EventCatalog.instance().event_ids():
-		var event_def := EventCatalog.instance().event_definition(event_id)
-		if event_def == null:
-			continue
-		for beat in event_def.opening_beats():
-			known[String(beat.get("fact", ""))] = true
-		for stage in event_def.stages:
-			if stage == null:
-				continue
-			for beat in stage.on_enter:
-				known[String(beat.get("fact", ""))] = true
-	known[String(WorldPulse.PERIOD_FACT)] = true
-	return known
-
-
-## The module-owned fact producers ADR 0137 added, as `{"fact": StringName,
-## "writer": String}`. Every id read off the owning module's own `const`, so a rename
-## in a module changes this answer without a line here changing — which is the
-## difference between a census and a claim.
-##
-## **This list IS the answer to "which writer makes this fact happen".** It is
-## asserted in full against the shipped writer set below, so a module that gains a
-## producer cannot be invisible to this suite.
-func _module_owned_facts() -> Array[Dictionary]:
-	return [
-		{"fact": CombatFacts.FACT_DUELS_WON, "writer": "combat/CombatFacts"},
-		{"fact": CombatFacts.FACT_THIRD_MAN_SPARED, "writer": "combat/CombatFacts"},
-		{"fact": ClanFacts.FACT_HEIR_REGISTERED, "writer": "clan/ClanFacts"},
-		{"fact": SectFacts.FACT_POST_HELD, "writer": "sect/SectFacts"},
-		{"fact": SectFacts.FACT_OATHS_DISCHARGED, "writer": "sect/SectFacts"},
-		{"fact": CharacterCreationFlow.FACT_ID, "writer": "app/CharacterCreationFlow"},
-	]
+	return _fighter_impl.call(id, physique)
 
 
 ## The recorded value of one counter, read off the ledger [method DestinyApi.state]
@@ -170,8 +216,7 @@ func _module_owned_facts() -> Array[Dictionary]:
 ## public verb with no caller in `game/src` at all, so what it answered was already
 ## one dictionary key away from every one of its twenty read sites.
 func _counter(actor: Actor, counter_id: StringName) -> int:
-	var ledger := DestinyApi.state(actor)
-	return int((ledger["counters"] as Dictionary).get(String(counter_id), 0))
+	return _counter_impl.call(actor, counter_id)
 
 
 ## The composition root's production chain, assembled the way
@@ -179,7 +224,7 @@ func _counter(actor: Actor, counter_id: StringName) -> int:
 ## which registers the sinks. Used only by the two world-tick cases; every other case
 ## here drives a module's own verb, because that is what the game does.
 func _world(actor: Actor) -> WorldPulse:
-	return WorldPulse.new(actor, BeatDirector.new())
+	return _world_impl.call(actor)
 
 
 ## A clan member with a bloodline the fixture house admits, which is what
@@ -187,64 +232,22 @@ func _world(actor: Actor) -> WorldPulse:
 ## `clan` module's own suite uses for a member, because admission is the only thing
 ## standing between this fixture and the fact.
 func _clan_member() -> Actor:
-	var actor := (
-		Actor
-		. new(
-			&"member",
-			{
-				Stat.PHYSIQUE: 10.0,
-				Stat.WILL: 5.0,
-				Stat.SPIRIT: 4.0,
-				Stat.AGILITY: 6.0,
-				Stat.COMPREHENSION: 3.0,
-				Stat.APTITUDE: 3.0,
-			}
-		)
-	)
-	DestinyApi.attach(actor)
-	ClanApi.attach(actor)
-	BloodlineApi.attach(actor)
-	BloodlineApi.set_purity(actor, &"hearthborn", 0.5)
-	ClanApi.join(actor, HOUSE)
-	return actor
+	return _clan_member_impl.call()
 
 
 ## A sworn member of the fixture sect. `DestinyApi.attach` runs first because the
-## counter this suite reads is written into the same actor's ledger, and a
-## `DestinyApi` that lazily attaches on first write would answer the same either way
-## — attached explicitly so the fixture is complete before the act under test.
+## counter a case reads is written into the same actor's ledger, and a `DestinyApi`
+## that lazily attaches on first write would answer the same either way — attached
+## explicitly so the fixture is complete before the act under test.
 func _sect_member() -> Actor:
-	var actor := Actor.new(&"keeper", {Stat.PHYSIQUE: 10.0, Stat.COMPREHENSION: 8.0})
-	actor.add_resource(ResourcePool.new(&"health", 100.0))
-	DestinyApi.attach(actor)
-	SectApi.attach(actor)
-	return actor
+	return _sect_member_impl.call()
 
 
-## The fixture sect: a plain member, one seat with a standing floor, and one room so
-## a second office exists. Installed rather than built per test, so a case that only
-## cares about the fact does not have to know the board's shape.
+## The fixture sect: TWO PLAIN members, one seat with a standing floor, and one room
+## so a second office exists. Installed rather than built per test, so a case that
+## only cares about the fact does not have to know the board's shape.
 func _install_sect() -> void:
-	(
-		SectFixtureCatalog
-		. install(
-			[
-				(
-					SectFixtureCatalog
-					. sect(
-						HOUSE,
-						[
-							SectFixtureCatalog.bare_position(&"t_member"),
-							SectFixtureCatalog.seat(STEWARD, 60),
-							SectFixtureCatalog.wide_position(&"t_archivist", 2, 40),
-						],
-						100,
-						0
-					)
-				)
-			]
-		)
-	)
+	_install_sect_impl.call()
 
 
 ## Swing until one of the two is down, or until `BLOW_CAP` blows have been spent. The
@@ -252,13 +255,20 @@ func _install_sect() -> void:
 ## the shape `tests/arch_rules/test_no_unbounded_wait.gd` accepts; returning `false`
 ## names the stall rather than looping forever.
 func _fight_to_a_kill(actor: Actor, opponent: Actor) -> bool:
-	for blow in BLOW_CAP:
-		var result := CombatApi.hit(actor, opponent, SEED + blow)
-		if String(result["reason"]) != "":
-			return false
-		if bool(result["defender_slain"]):
-			return true
-	return false
+	return _fight_to_a_kill_impl.call(actor, opponent)
+
+
+## The gate under test, authored exactly as a `.tres` would spell it. Data, never
+## code — `DestinyGate` reads it and nothing here constructs a verdict by hand.
+func _gate(counter_id: StringName, need: int) -> Dictionary:
+	return _gate_impl.call(counter_id, need)
+
+
+## The SUM of every counter this actor's ledger holds, across every authored id. Used
+## by the creation case to assert that NOTHING moved — a per-id check would pass just
+## as well on a hero who had earned nothing, which is the assertion it already makes.
+func _total_moved(actor: Actor) -> int:
+	return _total_moved_impl.call(actor)
 
 
 # --- The writer exists, on the real path ------------------------------------
@@ -384,6 +394,16 @@ func test_seating_someone_through_the_real_sect_verb_moves_the_sworn_counter() -
 	var promoted := SectApi.promote(actor, STEWARD)
 
 	assert_eq(bool(promoted["ok"]), true, "the promotion landed")
+	# The seating is a TRANSITION and `SectApi.promote` says so before it records, so a
+	# promotion that was really a re-confirmation writes nothing and would leave this
+	# fact — and the counter below it — at 0. Asserted from the module's own read verb
+	# rather than left to inference, because that transition guard is the one thing
+	# standing between a real seating and a silent no-op on this path.
+	assert_eq(
+		SectState.position(SectApi.state(actor)),
+		STEWARD,
+		"and it was a real seating rather than a re-confirmation of the office already held"
+	)
 	assert_eq(WorldFact.count(actor, SectFacts.FACT_POST_HELD), 1, "a post was held, once")
 	assert_eq(
 		_counter(actor, OATHS),
@@ -719,304 +739,3 @@ func test_a_counter_gate_composes_with_the_other_verbs() -> void:
 
 	assert_eq(_fight_to_a_kill(actor, _fighter(&"ward_1")), true, "the second was decided")
 	assert_eq(bool(DestinyApi.gate(actor, gate)["ok"]), true, "and the second duel opens it")
-
-
-# --- The mapping is authored, auditable, and matches the real tree -----------
-
-
-## The table is an EXPLICIT map, never a fuzzy name match. Every row is checked
-## against the real shipped `FateDef` that reads it, over the real catalog rather
-## than a copy, so deleting a row here cannot quietly retire a fate.
-##
-## **This asserts the coverage that is TRUE, not coverage that is hoped for.** No
-## shipped `.tres` uses the `counter` gate verb, so zero counters need a writer
-## today — the census, not a silent pass and not a failing assertion. The moment
-## somebody authors `{verb: &"counter", ...}`, this goes RED naming the ids with no
-## writer, which is the check the gap needed all along: a fate's `counters` entry
-## cannot quietly become a promise nothing keeps.
-##
-## Widened to assert total coverage once every authored counter has a producer.
-func test_every_wired_counter_is_declared_by_a_shipped_fate() -> void:
-	var declared := _declared_counters()
-	assert_eq(
-		declared.is_empty(),
-		false,
-		"the shipped fate tree declares counters; this suite must read it, not assume"
-	)
-	var unwired: Array[String] = []
-	for counter_id in declared.keys():
-		# `counter_for_fact` answers FACT -> counter, so asking it with a COUNTER id
-		# is a category error that happens to be truthy for `duels_won` alone (the one
-		# id that is spelled the same on both sides). Read the table directly instead,
-		# so an id is "wired" only because a row really moves it.
-		if not _wired_ids().has(String(counter_id)):
-			unwired.append(String(counter_id))
-	unwired.sort()
-	var wired := _wired_ids()
-	var gates := _authored_counter_gate_ids()
-	if gates.is_empty():
-		# The census, stated rather than assumed: nothing in content stands on a
-		# counter yet, so an unwired id is not yet a broken promise. Both halves are
-		# asserted so the suite can never go green by being wrong about either.
-		assert_eq(gates, [], "no shipped .tres anywhere in the content tree gates on `counter`")
-		assert_eq(
-			unwired.size() + wired.size(),
-			declared.size(),
-			(
-				(
-					"%d of %d FateDef.counters are wired (%s); the %d unwired are reported "
-					% [wired.size(), declared.size(), str(wired), unwired.size()]
-				)
-				+ "here because nothing gates on them yet"
-			)
-		)
-		return
-	var ungated: Array[String] = []
-	for counter_id in unwired:
-		if not gates.has(counter_id):
-			ungated.append(counter_id)
-	assert_eq(
-		ungated,
-		[],
-		(
-			"a shipped .tres gates on `counter`, so every FateDef.counters id it could "
-			+ "gate on needs a fact that moves it"
-		)
-	)
-
-
-## Every fact on the left is a fact the shipped tree can actually record: an authored
-## event beat, a fact a quest's own demand names, a composition-root beat, or one of
-## the five module-owned producers ADR 0137 added.
-##
-## ## What this claims about the three dead rows
-##
-## It claims the HONEST thing, which is a census rather than a flat pass: the shipped
-## content tree authors no beat for `vigil_broken`, `bound_name_called` or
-## `mountain_circled_once`, and nothing in `game/src` produces them either. Those
-## three stay dead and this suite says so BY NAME, because a test that went green
-## while they were dead — and listed them as expected — is the inverted proof this
-## file was rewritten to delete.
-##
-## Inventing a producer for them is NOT this file's work and would be wrong: the
-## quests that ask for them are other modules' content, and an authored counter only
-## a test could reach is the exact shape DEF-0105/DEF-0106 record.
-func test_every_wired_fact_is_authored_content_or_a_named_module_producer() -> void:
-	var reachable := _authored_fact_ids()
-	for entry in _module_owned_facts():
-		reachable[String((entry as Dictionary).get("fact", ""))] = true
-
-	var orphans: Array[String] = []
-	for row in DestinyProjection.COUNTER_FACTS:
-		var fact := String((row as Dictionary).get("fact", ""))
-		if not reachable.has(fact):
-			orphans.append(fact)
-	orphans.sort()
-	assert_eq(
-		orphans,
-		[],
-		(
-			(
-				"these rows name facts nothing in the shipped tree can record: %s. Authoring "
-				% str(orphans)
-			)
-			+ "their producers is other modules' work (DEF-0105/DEF-0106) and a test must not "
-			+ "stand in for it — add the producer and this goes green by itself."
-		)
-	)
-
-
-## The dead rows are named HERE, exactly, so the census above cannot quietly grow a
-## fourth while still passing. If this list ever shrinks, the assertion that shrank it
-## says why; if it is deleted wholesale, the next author inherits a suite that claims
-## full coverage and does not have it.
-func test_the_unproduced_rows_are_named_so_the_census_cannot_grow_quietly() -> void:
-	var unreachable := _unproduced_facts()
-	unreachable.sort()
-
-	assert_eq(
-		unreachable,
-		[
-			String(UNPRODUCED[0]),
-			String(UNPRODUCED[1]),
-			String(UNPRODUCED[2]),
-		],
-		(
-			(
-				"exactly three authored rows have no producer in `game/src` and no authored "
-				+ (
-					"beat: %s. They read 0 forever and stay that way until the owning module "
-					% str(unreachable)
-				)
-			)
-			+ "writes them (DEF-0105/DEF-0106). When one lands, delete it from UNPRODUCED in "
-			+ "the same change that adds the producer — this suite is a census, not a wish."
-		)
-	)
-
-
-## Every id this suite treats as module-owned really is named in the shipped module
-## that claims to produce it, in a line of CODE. Read from the files rather than
-## restated, because the two have already drifted once — `what_the_rotation_cost.tres`
-## once watched `vigil_broken` and now watches `sect_post_held`, and a suite that
-## believed the docstring rather than the tree would still have been green.
-func test_the_module_owned_producer_list_is_read_from_the_modules_that_claim_it() -> void:
-	var expected := {
-		"res://src/modules/combat/combat_facts.gd":
-		[String(CombatFacts.FACT_DUELS_WON), String(CombatFacts.FACT_THIRD_MAN_SPARED)],
-		"res://src/modules/clan/clan_facts.gd": [String(ClanFacts.FACT_HEIR_REGISTERED)],
-		"res://src/modules/sect/sect_facts.gd":
-		[String(SectFacts.FACT_POST_HELD), String(SectFacts.FACT_OATHS_DISCHARGED)],
-		"res://src/app/character_creation_flow.gd": [String(CharacterCreationFlow.FACT_ID)]
-	}
-	var listed: Array[String] = []
-	for entry in _module_owned_facts():
-		listed.append(String((entry as Dictionary).get("writer", "")))
-	listed.sort()
-
-	for path in expected.keys():
-		var body := FileAccess.get_file_as_string(path)
-		assert_ne(body, "", "%s ships, so this is not a silent skip" % path)
-		for fact in expected[path] as Array:
-			assert_eq(
-				_names_in_code(body, String(fact)),
-				true,
-				(
-					"%s names '%s' in a line of code, so the census is reading a real producer"
-					% [path, String(fact)]
-				)
-			)
-	assert_eq(
-		listed,
-		[
-			"app/CharacterCreationFlow",
-			"clan/ClanFacts",
-			"combat/CombatFacts",
-			"combat/CombatFacts",
-			"sect/SectFacts",
-			"sect/SectFacts"
-		],
-		"and every module-owned producer is listed here, so a new one cannot be invisible"
-	)
-
-
-## One fact moves ONE counter, and every row says both names. A `counter` value that
-## no fate reads would be a number nothing gates on; a second counter on one fact
-## would make the first one a sum of unrelated deeds.
-func test_every_row_names_a_fact_and_exactly_one_counter() -> void:
-	var facts: Dictionary = {}
-	for row in DestinyProjection.COUNTER_FACTS:
-		var entry := row as Dictionary
-		var fact := String(entry.get("fact", ""))
-		var counter_id := StringName(entry.get("counter", &""))
-		assert_ne(fact, "", "a mapping row names the fact it answers to")
-		assert_ne(String(counter_id), "", "'%s' names the counter it moves" % fact)
-		assert_eq(facts.has(fact), false, "'%s' is mapped exactly once" % fact)
-		facts[fact] = String(counter_id)
-
-
-## Every counter a shipped `FateDef` names is one the bridge can move. The converse
-## census is `test_every_wired_counter_is_declared_by_a_shipped_fate`; this direction
-## is the one that catches a typo in the TABLE, which would otherwise move a number
-## nothing gates on.
-func test_every_wired_counter_is_one_the_shipped_tree_declares() -> void:
-	var declared := _declared_counters()
-	var unknown: Array[String] = []
-	for counter_id in _wired_ids():
-		if not declared.has(counter_id):
-			unknown.append(counter_id)
-	assert_eq(unknown, [], "no row moves a counter no fate reads")
-
-
-## Every counter id any SHIPPED `.tres` anywhere in the content tree names in a
-## `counter` gate requirement — walked from RAW FILE TEXT rather than from a catalog,
-## because no catalog exposes every requirement field and a scan that missed a type
-## would under-report the census and pass it for the wrong reason.
-##
-## Empty today, and **that is exactly the fact the census turns on**: the `counter`
-## verb is unused in content, so no authored gate is yet standing on a counter that
-## cannot move. Read live, so it becomes non-empty by itself the moment somebody
-## authors one — which is what turns DEF-0121 from a comment into a failure.
-func _authored_counter_gate_ids() -> Array[String]:
-	var found: Array[String] = []
-	for path in _data_files():
-		var body := FileAccess.get_file_as_string(path)
-		var cursor := 0
-		while true:
-			cursor = body.find('"verb": &"counter"', cursor)
-			if cursor < 0:
-				break
-			cursor += 1
-			var id_at := body.find('"id": &"', cursor)
-			if id_at < 0 or id_at - cursor > 200:
-				continue
-			var quote := id_at + 9
-			found.append(body.substr(quote, body.find('"', quote) - quote))
-	found.sort()
-	return found
-
-
-## Every `.tres` in the shipped content tree, so the census above is over the whole
-## corpus and not over one module's idea of it.
-func _data_files() -> Array[String]:
-	var out: Array[String] = []
-	_walk_data("res://data", out)
-	out.sort()
-	return out
-
-
-func _walk_data(dir_path: String, out: Array[String]) -> void:
-	var dir := DirAccess.open(dir_path)
-	if dir == null:
-		return
-	dir.list_dir_begin()
-	var name := dir.get_next()
-	while name != "":
-		if name.begins_with("."):
-			name = dir.get_next()
-			continue
-		var full := dir_path.path_join(name)
-		if dir.current_is_dir():
-			_walk_data(full, out)
-		elif name.ends_with(".tres"):
-			out.append(full)
-		name = dir.get_next()
-	dir.list_dir_end()
-
-
-## Every mapped fact the shipped tree can NEITHER author as a beat NOR read out of a
-## module producer, sorted. The list [constant UNPRODUCED] claims to BE this, and the
-## two are compared to each other rather than to a hard-coded literal — so the claim
-## lives in one place and the census is computed.
-func _unproduced_facts() -> Array[String]:
-	var reachable := _authored_fact_ids()
-	for entry in _module_owned_facts():
-		reachable[String((entry as Dictionary).get("fact", ""))] = true
-	var out: Array[String] = []
-	for row in DestinyProjection.COUNTER_FACTS:
-		var fact := String((row as Dictionary).get("fact", ""))
-		if not reachable.has(fact):
-			out.append(fact)
-	out.sort()
-	return out
-
-
-## Whether `body` names `id` in a line of CODE. One line at a time with the comment
-## half stripped, the way every rule in `tests/arch_rules` reads source, so a file
-## that merely DISCUSSES an id is not counted as naming it.
-func _names_in_code(body: String, id: String) -> bool:
-	for line in body.split("\n"):
-		if line.split("#")[0].contains(id):
-			return true
-	return false
-
-
-## The SUM of every counter this actor's ledger holds, across every authored id. Used
-## by the creation case to assert that NOTHING moved — a per-id check would pass just
-## as well on a hero who had earned nothing, which is the assertion it already makes.
-func _total_moved(actor: Actor) -> int:
-	var total := 0
-	var counters := DestinyApi.state(actor)["counters"] as Dictionary
-	for counter_id in counters.keys():
-		total += int(counters[counter_id])
-	return total

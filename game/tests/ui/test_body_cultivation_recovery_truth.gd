@@ -154,8 +154,18 @@ func test_a_refused_recovery_with_nothing_wrong_names_no_price() -> void:
 ## with an empty pack, and the denial sentence must not appear in any of them.
 ## Enumerated by `for` over a fixed list this suite writes out — the loop appends
 ## nothing and tests no size of its own.
+##
+## **THE `healthy` CASE IS NOT IN THIS LIST, AND THAT IS THE POINT.** This
+## assertion used to sweep `healthy` in with the rest and demanded the denial
+## sentence never appeared at all — which is only satisfiable by refusing to say it
+## even when it is TRUE. Now that the module publishes the cause (ADR 0150), the
+## denial is published exactly where it holds, so the sweep became an assertion that
+## the screen lies in the one state where it does not.
+##
+## `test_the_panel_says_nothing_is_damaged_when_nothing_is_damaged` covers `healthy`
+## from the other side: the same sentence, asserted as the truth it now is.
 func test_the_denial_sentence_is_unreachable_in_every_state_a_player_can_be_in() -> void:
-	var states := [&"healthy", &"torn_channel", &"jammed_huyet", &"tear_and_jam"]
+	var states := [&"torn_channel", &"jammed_huyet", &"tear_and_jam"]
 	for state in states:
 		var panel := _screen()
 		var actor := _actor()
@@ -171,15 +181,25 @@ func test_the_denial_sentence_is_unreachable_in_every_state_a_player_can_be_in()
 				_jam_a_huyet(actor, meridian_id)
 		assert_eq(panel.act_recover(), false, "%s refuses an empty pack" % state)
 		assert_eq(_message(panel) == DENIAL, false, "%s must not be told %s" % [state, DENIAL])
-		if state != &"healthy":
-			# A refused press spends nothing and closes nothing: measured on the wound,
-			# not only on the message, because a refusal that quietly repaired would be
-			# a different defect wearing the same screen.
-			var left: int = BodyCultivationApi.panel_state(actor).get("blocked", 0)
-			var still_wrong := left > 0
-			still_wrong = still_wrong or actor.meridians.get_meridian(meridian_id).is_injured()
-			assert_eq(still_wrong, true, "%s is untouched by the refusal" % state)
+		# A refused press spends nothing and closes nothing: measured on the wound,
+		# not only on the message, because a refusal that quietly repaired would be
+		# a different defect wearing the same screen.
+		var left: int = BodyCultivationApi.panel_state(actor).get("blocked", 0)
+		var still_wrong := left > 0
+		still_wrong = still_wrong or actor.meridians.get_meridian(meridian_id).is_injured()
+		assert_eq(still_wrong, true, "%s is untouched by the refusal" % state)
 		panel.free()
+
+
+## The other branch, asserted as a FACT rather than as an absence: with nothing
+## damaged, the sentence the defect used for every cause is the true one, and it is
+## what the screen says. Without this the fix could pass by never naming anything.
+func test_the_panel_says_nothing_is_damaged_when_nothing_is_damaged() -> void:
+	var panel := _screen()
+	panel.setup(_actor())
+	assert_eq(panel.act_recover(), false, "nothing is damaged")
+	assert_eq(_message(panel), DENIAL, "so the screen says so, in those words")
+	panel.free()
 
 
 ## And the true branch is still reachable and still true: once the wound is closed and

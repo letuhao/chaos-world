@@ -46,10 +46,25 @@ is `ui/screens/loot_encounter.gd`, and `status` is added to `rules.UI_MODULES`.*
   (`app/actor_factory.gd:67`) is the shape that fixes it, and when a boss becomes an
   `Actor` the same `StatusLoop.tick` call covers it with no change here. Declining a boss
   status now is a consequence of ADR 0076, not a new decision.
-- **`exit_combat()` already exists and needs no caller yet.** `StatusLoop.exit_combat`
-  (`app/status_loop.gd:66`) purges COMBAT-scope statuses per ADR 0089; the loot screen's
-  `act_leave` is where it belongs once a player can hold one, and it is wired in the same
-  change that makes the readout visible.
+- **`exit_combat()` is wired on the loot screen's combat exit, as a `Callable` the root
+  injects.** `StatusLoop.exit_combat` (`app/status_loop.gd`) purges COMBAT-scope statuses
+  per ADR 0089. This clause originally deferred the call: "`exit_combat()` already exists
+  and needs no caller yet … it is wired in the same change that makes the readout visible."
+  **That change shipped the readout and not the purge**, so the purge kept zero
+  production callers — `fire_immolation` is authored at 16 s, and a player walked out of a
+  fight still burning for its full authored duration. It is now called from
+  `LootEncounterScreen` on every combat end it can observe: a decided exchange (win or
+  loss) and the Leave press.
+  - **A `Callable`, not a facade call and not a `LootBridge` slot.** `app` is a
+    `PRIVATE_UNIT` (`tools/arch/rules.py:35`), so `ui/` may name neither `StatusLoop` nor
+    the verb. `ItemWorkbenchApp._bind_route_screen`'s `ROUTE_LOOT` arm injects it —
+    `LootEncounterScreen.bind_combat_exit`, the same door ADR 0143 gives the quest
+    screen's accept verb. It resolves `_status_loop` **per call** rather than capturing
+    it, because `adopt_actor` replaces that field on every rebirth and a captured callable
+    would purge a body that no longer exists.
+  - **The purge is scoped, never a cleanse.** CULTIVATION scope is untouched, which is
+    what keeps a permanent tribulation blessing from being deleted every time a player
+    walks out of a fight (ADR 0107).
 - **The readout is `StatusApi.summary(actor)`, rendered by the loot screen's existing
   fight panel.** `summary` (`modules/status/api.gd:163`) is already primitives-only per
   AGENTS.md's screen contract, and `LootEncounterScreen` already owns the fight readout
@@ -57,10 +72,12 @@ is `ui/screens/loot_encounter.gd`, and `status` is added to `rules.UI_MODULES`.*
   `loot_encounter.gd:370`. The screen passes the dict to the panel and the panel owns every
   `%d`; no number formatting is added to a screen (AGENTS.md:151).
 - **`status` is added to `rules.UI_MODULES` with no module deps.** This is the real
-  constraint and it is a one-line change: `status` is registered in `registry.json` but was
-  **absent** from `UI_MODULES`, so any `ui/` file naming `StatusApi` today fails
-  `enforce.py:160-163`. It is granted with `[]` because a readout is a pure read of the
-  facade and the status module reads no other module.
+  constraint and it is a one-line change. *(Amended: the grant landed with this ADR's
+  change and is now present at `rules.py:127` — the historical note below recorded the
+  state at decision time, when `status` was registered in `registry.json` but absent from
+  `UI_MODULES`, so any `ui/` file naming `StatusApi` failed `enforce.py:160-163`.)* It is
+  granted with `[]` because a readout is a pure read of the facade and the status module
+  reads no other module.
 - **The composition root, not `ui/`, is the caller.** `ui/` is a pure consumer
   (AGENTS.md:146) and a `_process` there would be a second clock. The rule that survives
   this ADR is one sentence: **one tick caller, in `app/`, passing an explicit `delta`.**

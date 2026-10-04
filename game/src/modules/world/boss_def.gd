@@ -35,6 +35,28 @@ extends Resource
 ## corpus: what a boss drops is bound on `LootTier.boss_tables` (ADR 0033), and
 ## `LootContent.table_for_boss` is the single authority between them.
 @export var loot: Array[StringName] = []
+## ## `affliction` is the status this boss INFLICTS on the player, by id
+##
+## ## Why a BOSS carries it rather than an element
+##
+## ADR 0105 asks `status_for_element` for "the status a blow of this element inflicts" and
+## the answer is one id per element, so the second half of every element's PAIR is
+## unreachable by construction: `fire_immolation` and `fire_pyre` are both fire, and
+## only the one that claims `on_landed_blow` can ever be named. Seven authored defs were
+## dead that way. An element cannot break the tie either — the boss is a `Dictionary` in
+## `actor.module_data` (`loot_state.gd:613-647`), with no `affinities` to read a
+## strongest-affinity from and no `Actor` to answer with. So the boss states the id
+## outright, which is the same move `on_landed_blow` itself makes: the choice between two
+## defs on one element is a designer's, not a tie-break's.
+##
+## ## What it is NOT
+##
+## Not an element, not a chance, and not a magnitude. It is one `StatusDef.id` in the
+## closed authored catalogue, and it says nothing about whether it lands — the chance and
+## the potency are ADR 0087's and ADR 0088's and are read by the caller, exactly as they
+## are for a player's own blow. `&""` (the default) means this creature afflicts nothing,
+## which is the behaviour every boss had before this field existed.
+@export var affliction: StringName = &""
 ## Chance the boss's answer lands as a crit. 0 means it never does.
 @export var crit_chance: float = 0.0
 ## Crit multiplier, with a 1.5 baseline like the player's own. 1.0 means a crit is no

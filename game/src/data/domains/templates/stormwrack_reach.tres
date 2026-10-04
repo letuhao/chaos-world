@@ -26,6 +26,12 @@ display_name = "Drowned Vault"
 script = ExtResource("1_template")
 template_id = &"stormwrack_reach"
 display_name = "Stormwrack Reach"
+# Domain-level weather (ADR 0075). Read by `DomainBoot._template_weather` and refused
+# through `DomainMap.accepts_weather` unless it is in `DomainMap.WEATHERS`. This pool
+# authors a `lightning` zone (storm_gallery) AND a `cold`/`ice`/`water` zone (tide_vault),
+# so this weather moves exactly the first and leaves the drowned vault alone: the bias
+# is element-keyed, never "everything is worse".
+weather = &"storm_gale"
 extent = Vector2i(128, 96)
 min_leaf = 8
 max_depth = 6

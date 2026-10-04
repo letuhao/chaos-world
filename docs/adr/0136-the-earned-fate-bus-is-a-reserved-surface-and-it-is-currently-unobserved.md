@@ -1,7 +1,8 @@
 # 0136 The earned-fate bus is a reserved surface, and it is currently unobserved
 
-- Status: **Superseded in part 2026-10-03 by ADR 0137** — the "unobserved" claim was false
-  when written. Kept as the trace; read ADR 0137 for the current contract.
+- Status: **Superseded in part 2026-10-03 by ADR 0149** — the "unobserved" claim was false
+  when written: `destiny_screen.gd` subscribes to `fate_earned` and `destiny_earned`. Kept as
+  the trace; read ADR 0149 for the current contract.
 - Date: 2026-10-03
 - Depends on: ADR 0134 (the consumer surface), ADR 0093 (signals announce, never request)
 - Corrects: ADR 0065's reasoning about `WorldEvents` as a precedent

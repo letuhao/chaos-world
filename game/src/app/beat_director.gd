@@ -149,29 +149,23 @@ func offer(actor: Actor, beat) -> Dictionary:
 		outcome = winner.resolve(claim, actor)
 		claimed = bool(outcome.get("claimed", true))
 
-	# ## The `destiny` bridge — the last step, after everything above
+	# ## The `destiny` bridge — READ-ONLY from here
 	#
-	# `destiny`'s gate verb `counter` reads `DestinyApi.counter`, and until this
-	# dispatch existed nothing in the shipped tree ever wrote one: all nine authored
-	# counter ids sat at 0 forever, so `{verb: &"counter", id: &"duels_won", need: 3}`
-	# in a `.tres` could never open (DEF-0121, DEF-0181).
+	# A mapped fate counter now moves where a FACT IS WRITTEN, not here. The write
+	# above already went through `WorldFact.record`, which fires the subscriber
+	# `DestinyProjection.subscribe_to_fact_ledger()` installs at the composition
+	# root (ADR 0149) — so by this point the counter has moved, exactly once.
 	#
-	# **Here, and nowhere else, for two reasons.**
-	# 1. *One writer.* `beat_director.gd:122` is the ONE place a beat is made
-	#    true in production — `WorldPulse.offer` reaches it, and `WorldPulse.offer`
-	#    is the only offer point in `app/` (class docstring). Dispatching here gives
-	#    the `counter` verb a writer without a second dispatcher, which is ADR
-	#    0114's named failure under a different name.
-	# 2. *After the sinks, never instead of one.* A sink is PURE and the director
-	#    applies (ADR 0117); a beat is still recorded whether or not a handler cared.
-	#    The counter moves after the winner holds its own report, so a beat belonging
-	#    to the quest or the event module is not diverted, and the report below still
-	#    names `claimed_by`.
+	# **This block used to move it a second time and was removed.** Two calls for one
+	# occurrence is a double-count, and a counter is monotonic and never refundable
+	# (ADR 0065), so the error was invisible *and* irreversible. It hid because
+	# the director's own reasoning ("here, and nowhere else") outlived the design
+	# that justified it: the chokepoint moved to the ledger when every writer turned
+	# out to bypass this function.
 	#
-	# `DestinyProjection.on_fact_recorded` is a pure lookup followed by one call to
-	# `DestinyApi.record` — the facade's own monotone verb. It weakens nothing,
-	# lowers nothing, and adds no frame driver.
-	var counter := DestinyProjection.on_fact_recorded(actor, claim.fact, claim.amount)
+	# What stays is a READ of the counter for the report. A read cannot double-count,
+	# and the report keeps ONE shape whether or not a fate read this beat.
+	var counter := DestinyProjection.counter_after(actor, claim.fact)
 	return _report(
 		recorded,
 		"",

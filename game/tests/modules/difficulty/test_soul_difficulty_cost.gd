@@ -15,12 +15,12 @@ extends TestCase
 ## forbidden table. A numerically-identical private copy would stay green under every value
 ## assertion, which is the ADR 0116 finding.
 
-var _actor: Actor
-var _store: SoulWorldLedger
-
 const SOUL_SOURCE := "res://src/modules/soul/api.gd"
 const DIFFICULTY_SOURCE := "res://src/modules/difficulty/api.gd"
 const SOUL_STATE_SOURCE := "res://src/modules/soul/soul_state.gd"
+
+var _actor: Actor
+var _store: SoulWorldLedger
 
 
 func setup() -> void:

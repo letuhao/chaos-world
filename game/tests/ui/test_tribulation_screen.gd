@@ -16,6 +16,12 @@ extends TestCase
 
 const SCREEN := "res://src/ui/screens/tribulation_screen.tscn"
 const PANEL := "res://src/ui/panels/tribulation_panel.tscn"
+const PANEL_SCRIPT := "res://src/ui/panels/tribulation_panel.gd"
+
+## The trial type the blessing producer pays on. `TribulationBlessing.REWARD_TABLE`
+## maps `ELEMENTAL -> earth`, and `earth_bulwark` is the earth CULTIVATION-scope def, so
+## this type is the one that pays a status rather than a named refusal.
+const PAYING_TRIAL := Tribulation.ELEMENTAL
 
 # --- Fixtures -------------------------------------------------------------------
 
@@ -370,3 +376,215 @@ func test_a_keypress_cannot_forfeit_the_fight() -> void:
 	assert_eq(screen.on_stack_input(null), false, "the stack keeps ui_cancel")
 	assert_ne(screen.actor().tribulation, null, "and the fight is still in the air")
 	screen.free()
+
+
+# --- F-7: a survived tribulation NAMES the blessing it paid -----------------------
+#
+# `TribulationFight.fight_wave` returns a `blessing` key on every DECIDED result
+# (`TribulationBlessing.award`'s answer), and `TribulationScreen._report` branched only
+# on `ok` / `decided` / `survived`. The player read "Survived the tribulation" and never
+# learned which permanent status they had just earned — a permanent blessing is the fight's
+# whole reward, and one the player cannot name is one they cannot notice they carry.
+#
+# ## Why the verdict is forced rather than rolled
+#
+# `HeavenlyTribulationApi.fight_wave` passes `rng = null`, so a fight fought through the
+# BUTTON is a coin flip and a test asserting "a blessing renders" would be a flake. The
+# fixture therefore decides the fight through the module's OWN verb with a seeded rng
+# (`TribulationFight.fight_to_verdict(actor, rng)`, exactly as
+# `tests/modules/status/test_status_cultivation_reach.gd` does) and hands that production
+# result to the screen's production render path. What is under test is the RENDER, not
+# the roll — `test_the_screen_takes_a_player_through_the_fight` above already pins that a
+# player can reach a verdict at all, and deliberately asserts neither outcome.
+#
+# ## Why the type is rewritten AFTER `begin`
+#
+# `Tribulation.start` prices the fight from `rate(actor)`, which reads
+# `TYPE_PRESSURE[type]`; a type set before `start` would price the record against a
+# pressure it is then not fought at. Setting it afterwards makes the `REWARD_TABLE` row
+# (`ELEMENTAL -> earth`) resolve on the record the award actually reads.
+
+
+## Begin the owed fight and type it so the blessing producer pays a status.
+func _begin_paying(actor: Actor) -> bool:
+	var started := TribulationFight.begin(actor)
+	if not bool(started.get("ok", false)):
+		return false
+	actor.tribulation.type = PAYING_TRIAL
+	return true
+
+
+## A generator whose first draw decides the whole fight by BOUND rather than by hope.
+##
+## `TribulationEndurance.endurance` CLAMPS into `[MIN_ENDURANCE, MAX_ENDURANCE]`, so a
+## draw below the floor survives whatever the fight did and a draw at or above the ceiling
+## always fails. The search is bounded by `for seed in 4096` and always terminates; it is
+## found by search rather than hand-seeded so neither outcome can be a coincidence of one
+## particular number.
+##
+## The seed is REWOUND before it is returned, because the search has to DRAW to know the
+## seed is decisive and that draw advances the generator — returning it as it stood would
+## make the fight's own first `randf()` a different value from the one that was accepted.
+func _decisive_rng(survives: bool) -> RandomNumberGenerator:
+	var threshold := (
+		TribulationEndurance.MIN_ENDURANCE if survives else TribulationEndurance.MAX_ENDURANCE
+	)
+	var rng := RandomNumberGenerator.new()
+	for seed_value in range(1, 4096):
+		rng.seed = seed_value
+		if (rng.randf() >= threshold) == (not survives):
+			rng.seed = seed_value
+			return rng
+	rng.seed = 1
+	return rng
+
+
+## Fight `hero` to a SURVIVED verdict through the module's own verb, so the result is a
+## real production answer carrying a real `blessing`. `{}` when the fight could not be
+## made to resolve, which every caller reports rather than asserting past.
+func _survived_result(hero: Actor) -> Dictionary:
+	if not _begin_paying(hero):
+		return {}
+	var result := TribulationFight.fight_to_verdict(hero, _decisive_rng(true))
+	if not bool(result.get("ok", false)) or not bool(result.get("survived", false)):
+		return {}
+	return result
+
+
+## THE deliverable for F-7: a survived tribulation that paid a blessing RENDERS that
+## blessing's id, on the panel's reward row and on the screen's own outcome line.
+func test_a_survived_tribulation_names_the_blessing_it_paid() -> void:
+	var hero := _hero()
+	var result := _survived_result(hero)
+	if result.is_empty():
+		return
+	var granted := result["blessing"] as Dictionary
+	assert_eq(bool(granted["ok"]), true, "the fight really paid a blessing: %s" % str(granted))
+	var status_id := String(granted["id"])
+	assert_ne(status_id.is_empty(), true, "and the award names the status it applied")
+
+	var screen := _screen()
+	if screen == null:
+		return
+	screen.setup(hero)
+	# The production render path: exactly what `_report` does after a decided result.
+	screen.call("_show_blessing", result)
+	screen.call("refresh")
+
+	var panel := (screen.summary() as Dictionary)["tribulation"] as Dictionary
+	var blessing := panel["blessing"] as Dictionary
+	assert_eq(bool(blessing["paid"]), true, "the panel reports the blessing as paid")
+	assert_eq(String(blessing["id"]), status_id, "under the id the award applied")
+	# The NAME, which is what the player reads: underscores turned into words, never a
+	# raw id. This is the F-7 claim — before this change nothing rendered the id at all.
+	assert_eq(
+		String(blessing["label"]).contains(status_id.replace("_", " ")),
+		true,
+		"and the reward row names it in words"
+	)
+	assert_eq(
+		String(blessing["label"]).contains("_"),
+		false,
+		"with no untranslated underscores left in the sentence"
+	)
+	# And on the outcome line, so a player who only reads the message still hears it.
+	assert_eq(
+		String(screen.summary()["message"]).contains(status_id.replace("_", " ")),
+		true,
+		"the screen's own outcome line names it too"
+	)
+	screen.free()
+
+
+## A LOST fight pays nothing, so the row must say THAT rather than leaving the last
+## reward a player saw still on screen — a stale reward line is worse than no line, and
+## this is the branch where a player would otherwise believe they had earned a permanent
+## blessing they did not get.
+func test_a_lost_fight_renders_no_blessing_and_names_why() -> void:
+	var hero := _hero()
+	if not _begin_paying(hero):
+		return
+	var result := TribulationFight.fight_to_verdict(hero, _decisive_rng(false))
+	if not bool(result.get("ok", false)) or bool(result.get("survived", false)):
+		return
+	var granted := result["blessing"] as Dictionary
+	assert_eq(bool(granted["ok"]), false, "a broken tribulation pays nothing: %s" % str(granted))
+
+	var screen := _screen()
+	if screen == null:
+		return
+	screen.setup(hero)
+	screen.call("_show_blessing", result)
+	screen.call("refresh")
+
+	var panel := (screen.summary() as Dictionary)["tribulation"] as Dictionary
+	var blessing := panel["blessing"] as Dictionary
+	assert_eq(bool(blessing["paid"]), false, "the row reports nothing was paid")
+	assert_eq(String(blessing["id"]), "", "and names no status")
+	# The refusal is RENDERED, not swallowed: `not_a_survivor` is an ordinary answer, and
+	# a silent row would read as "the game forgot to pay me" rather than "you were beaten".
+	assert_eq(
+		String(blessing["label"]).contains(String(granted["reason"])),
+		true,
+		"and states the reason the fight paid nothing"
+	)
+	screen.free()
+
+
+## The scene must really carry the node. Checked on the node BLOCK rather than with a
+## whole-file search, because a `unique_name_in_owner` on some other label would satisfy
+## one — this is F-7's WORK C question asked of the panel that now renders the reward.
+func test_the_panel_scene_declares_the_blessing_label_it_renders_into() -> void:
+	var scene := FileAccess.get_file_as_string("res://src/ui/panels/tribulation_panel.tscn")
+	var block := _node_block(scene, "BlessingLabel")
+	assert_ne(block.is_empty(), true, "the panel scene declares a BlessingLabel")
+	assert_eq(
+		block.contains("unique_name_in_owner = true"),
+		true,
+		"marked unique, so %BlessingLabel resolves"
+	)
+	# A container child, never an absolute position (AGENTS.md's layout rule).
+	for banned in ["position = ", "offset_", "anchor_", "grow_horizontal"]:
+		assert_eq(block.contains(banned), false, "the blessing label carries no %s" % banned)
+
+
+## The UI standard this change had to obey, asserted on the panel that renders it: no
+## `@onready`, resolution in `_bind_nodes`, and no `theme_override` anywhere. A one-shot
+## binding in `_ready()` would make the reward row untestable headlessly, which is how
+## this class of defect reached the screen in the first place.
+func test_the_panel_resolves_its_blessing_label_lazily_and_through_the_theme() -> void:
+	var source := FileAccess.get_file_as_string(PANEL_SCRIPT)
+	assert_eq(_code_only(PANEL_SCRIPT).contains("@onready"), false, "no @onready in ui/")
+	assert_eq(source.contains("func _bind_nodes()"), true, "nodes resolve in _bind_nodes()")
+	assert_eq(
+		source.contains("theme_override"), false, "style belongs to the one theme, not the panel"
+	)
+
+
+# --- Plumbing -------------------------------------------------------------------
+
+
+## The `[node ...]` block for `node_name`, reassembled across lines.
+func _node_block(scene: String, node_name: String) -> String:
+	var block := ""
+	for raw in scene.split("\n"):
+		if block.is_empty():
+			if raw.begins_with("[node ") and ('"%s"' % node_name) in raw:
+				block = raw
+			continue
+		if raw.begins_with("["):
+			break
+		block += "\n" + raw
+	return block
+
+
+## `path`'s text with comments removed, so a scan reads code and not prose. The panel
+## documents WHY it holds no `@onready`, and a doc comment is not a regression.
+func _code_only(path: String) -> String:
+	var out: Array[String] = []
+	for raw in FileAccess.get_file_as_string(path).split("\n"):
+		if raw.strip_edges().begins_with("#"):
+			continue
+		var hash := raw.find("#")
+		out.append(raw.substr(0, hash) if hash >= 0 else raw)
+	return "\n".join(out)

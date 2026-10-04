@@ -40,6 +40,14 @@ func setup() -> void:
 		func(_a, _n, prize, holder, winner):
 			_seen.append({"kind": "prize", "prize": prize, "holder": holder, "winner": winner})
 	)
+	# **The refusal signal is the one that announces nothing became true**, so it is
+	# connected into the SAME `_seen` array as the five that announce a write. That is the
+	# point of the assertions below: a consumer receiving both kinds from one bus is the
+	# shape the contract describes, not a contradiction of it.
+	HoldingsApi.events().holding_refused.connect(
+		func(a, n, reason):
+			_seen.append({"kind": "refused", "actor": a, "node": String(n), "reason": reason})
+	)
 
 
 ## Release everything this suite installed on a process-wide singleton.
@@ -169,10 +177,116 @@ func test_a_recognition_prize_announces_an_empty_holder_not_an_abandoned_node() 
 	assert_eq(String(_seen[0]["holder"]), "warden", "and the holder is UNCHANGED, not empty")
 
 
-func test_a_refused_verb_announces_nothing() -> void:
-	# A refusal writes nothing and announces nothing: an event that fired on a refusal would
-	# tell a consumer a fact became true when it did not.
+## ## A refusal ANNOUNCES, and this test was flipped deliberately (DEF-0221)
+##
+## This used to assert the opposite — "a refused verb announces nothing" — and the
+## docstring encoded a real argument: "an event that fired on a refusal would tell a
+## consumer a fact became true when it did not."
+##
+## That argument is sound AND it describes a different signal. `holdings_events.gd` declares
+## SIX signals; five announce a fact already written and this one is the sixth, declared
+## with the explicit docstring "**A refusal that wrote nothing.** Carries the named reason so
+## a panel renders the rule it was given rather than inventing one (ADR 0084), and so an
+## action failing is observable rather than silent." So the contract always intended a
+## refusal to be announced — the signal was declared for exactly this and then never
+## emitted, which is DEF-0221.
+##
+## **The concern is answered by the signal's own shape, not by silence.** It is NAMED
+## `holding_refused` and it carries `reason`, so a consumer receives "the rule
+## `unknown_node` fired" and cannot read it as "a node is now held". The two facts are
+## independent and both are asserted below: the ledger is UNCHANGED, and the refusal is
+## ANNOUNCED. A caller that polls `summary()` cannot otherwise tell a refused verb from a
+## verb nobody called, and a player who was refused a vein has no way to learn which rule
+## refused them.
+func test_a_refused_verb_announces_the_rule_and_writes_nothing() -> void:
 	var before := _seen.size()
+	var before_nodes := int(HoldingsApi.summary(_actor)["node_count"])
 	var refused := HoldingsApi.claim(_actor, &"no_such_vein", _owner(&"warden"))
 	assert_eq(bool(refused["ok"]), false, "the claim refused")
-	assert_eq(_seen.size(), before, "and announced nothing")
+	# **The announcement.** The reason is the signal's whole payload, so it is asserted by
+	# value: a panel renders this string and must not have to invent it.
+	assert_eq(_seen.size(), before + 1, "and announced exactly one refusal")
+	assert_eq(String(_seen[0]["kind"]), "refused", "a refusal was announced")
+	assert_eq(String(_seen[0]["reason"]), HoldingsState.UNKNOWN_NODE, "naming the rule")
+	assert_eq(String(_seen[0]["node"]), "no_such_vein", "and the node it was refused on")
+	# **And the independent half.** A refusal writes nothing — that is unchanged, and it is
+	# what makes the announcement a *refusal* announcement rather than a write.
+	assert_eq(
+		int(HoldingsApi.summary(_actor)["node_count"]),
+		before_nodes,
+		"and the ledger is byte-identical: nothing was written"
+	)
+
+
+## A refusal from EVERY verb is announced, and names the node it was about. `_refuse` is the
+## single place a refusal on this facade is built, so one test over the four public verbs is
+## what proves no call site can quietly skip the emission — which is the shape of the bug
+## this signal had.
+##
+## **The four calls run BEFORE `_seen.clear()` on purpose.** The bus is synchronous, so a
+## refusal recorded into a list that is cleared immediately afterwards is a row nobody ever
+## reads; collecting first and clearing once is the only order in which the count is "the
+## refusals THIS test produced".
+func test_every_refusing_verb_announces_and_names_its_node() -> void:
+	var cases: Array = [
+		{"name": "claim_unknown", "want": HoldingsState.UNKNOWN_NODE, "node": "no_such_vein"},
+		{
+			"name": "release_unknown",
+			"want": HoldingsState.UNKNOWN_NODE,
+			"node": "no_such_vein",
+		},
+		{"name": "accrue_no_periods", "want": HoldingsState.NO_PERIODS, "node": "vein_test"},
+		{"name": "settle_no_periods", "want": HoldingsState.NO_PERIODS, "node": "vein_test"},
+	]
+	_seen.clear()
+	var results: Array = [
+		HoldingsApi.claim(_actor, &"no_such_vein", _owner(&"warden")),
+		HoldingsApi.release(_actor, &"no_such_vein", _owner(&"warden")),
+		HoldingsApi.accrue(_actor, &"vein_test", _owner(&"warden"), 0),
+		HoldingsApi.settle(_actor, &"vein_test", 0),
+	]
+	for index in cases.size():
+		var row := cases[index] as Dictionary
+		assert_eq(
+			String(results[index]["reason"]),
+			String(row["want"]),
+			"'%s' refuses with the rule it is named for" % String(row["name"])
+		)
+	# Four refusals, and NOTHING else — a refusal emits `holding_refused` only, so any
+	# `claimed`/`accrued` row here would mean a refused verb announced a write as well.
+	assert_eq(_seen.size(), cases.size(), "each verb announced exactly one refusal")
+	for row in _seen:
+		assert_eq(String(row["kind"]), "refused", "and only a refusal was announced")
+		assert_eq(String(row["actor"]), "holder", "naming the actor it was refused on")
+		assert_ne(String(row["reason"]), "", "and the rule it was refused by")
+	for index in cases.size():
+		assert_eq(
+			String(_seen[index]["node"]),
+			String((cases[index] as Dictionary)["node"]),
+			"'%s' announced the node it was about" % String((cases[index] as Dictionary)["name"])
+		)
+
+
+## A refusal on a node this build DOES ship, against a holder that is not the one holding
+## it. This is the case a panel actually renders, and it is the one that proves the
+## announced node is the authored id rather than a catalog lookup miss — `unknown_node` on
+## `vein_test` would have been a different rule entirely.
+func test_a_refusal_on_an_authored_node_names_the_node_and_the_holder_rule() -> void:
+	HoldingsApi.claim(_actor, &"vein_test", _owner(&"warden"))
+	_seen.clear()
+	# The node is authored, the ledger knows it, and somebody DOES hold it — so the only
+	# thing that can refuse is the ownership check, which is the rule a panel renders as
+	# "that is not yours to give up".
+	var released := HoldingsApi.release(_actor, &"vein_test", _owner(&"impostor"))
+	assert_eq(
+		String(released["reason"]), HoldingsState.HOLDER_MISMATCH, "a foreign release refuses"
+	)
+	assert_eq(String(_seen[0]["kind"]), "refused", "and it announced a refusal")
+	assert_eq(String(_seen[0]["reason"]), HoldingsState.HOLDER_MISMATCH, "naming the holder rule")
+	assert_eq(String(_seen[0]["node"]), "vein_test", "and the authored node it was about")
+	# And the ledger is untouched by the refusal — the independent half again.
+	assert_eq(
+		String((HoldingsApi.summary(_actor)["nodes"]["vein_test"] as Dictionary)["owner"]["id"]),
+		"warden",
+		"and the holder is UNCHANGED: a refusal wrote nothing"
+	)

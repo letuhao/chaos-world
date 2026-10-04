@@ -50,6 +50,13 @@ const DELIVERY := &"technique_delivery"
 
 const STATE_KEY := &"technique_state"
 
+## Affordability is compared with a tolerance, so a path holding exactly the price
+## pays rather than being short by one float ULP. The same epsilon
+## `TechniqueCasting.EPSILON` uses for the same reason, kept here rather than
+## reached across the module so the study charge and the cast cost cannot drift
+## apart on a rounding difference.
+const EPSILON := 0.000001
+
 ## Published so a panel reports the module's numbers instead of hardcoding its own
 ## (AGENTS.md: no number formatting in a screen, step amounts live in the facade).
 const LEARN_BASE := TechniqueScales.LEARN_BASE
@@ -95,18 +102,45 @@ static func slots(actor: Actor) -> TechniqueSlots:
 	return actor.component(SLOTS_COMPONENT) as TechniqueSlots
 
 
-## Learn `def`, or refuse with the gameplay cause. Learning is permanent and costs
-## nothing by itself: the caller pays `learn_price` out of the progress it owns, and
-## a refused learn writes nothing at all. Re-learning a technique already at a
-## higher rung never lowers it — a duplicate manual is not a mastery loss.
+## Learn `def`, or refuse with the gameplay cause. Learning is permanent and is
+## paid for out of cultivation progress the actor owns. Re-learning a technique
+## already at a higher rung never lowers it — a duplicate manual is not a
+## mastery loss.
+##
+## It is NOT free. ADR 0055 prices study at `LEARN_BASE * LEARN_STEP^ordinal *
+## MAG_GRADE` and this method charges exactly that out of the PREFERRED PATH'S
+## PROGRESS (see ADR 0140). The price is computed before the codex is touched,
+## affordability is checked before any progress is deducted, and a shortfall is
+## a refusal that names what was owed and what was held — so a learn that fails
+## writes NOTHING (DEF-0206).
 static func learn(actor: Actor, def: TechniqueDef, rung: int = 0) -> Dictionary:
 	var refused := _refuse(actor, def)
 	if not refused.is_empty():
 		return refused
+	var price := TechniqueGate.learn_price_for(actor, def)
+	# All-or-nothing: every gate the charge crosses is checked BEFORE a single
+	# unit of progress moves, which is the shape `EquipmentUpkeep._pay` and
+	# `TechniqueCasting.activate` already use. Learning is permanent, so a charge
+	# that failed halfway would take progress for a technique nobody gained.
+	var owed := _study_charge(actor, def)
+	if not _short(actor, owed).is_empty():
+		var broke := _refused("insufficient_progress", def.id)
+		broke["short"] = _short(actor, owed)
+		broke["learn_price"] = price
+		return broke
+	for path_id in owed.keys():
+		var state := actor.path(path_id)
+		state.progress = maxf(0.0, state.progress - float(owed[path_id]))
 	var codex := codex(actor)
 	codex.learn(def.id, rung)
 	_commit(actor)
-	return {"ok": true, "id": String(def.id), "rung": int(codex.row(def.id).get("rung", 0))}
+	return {
+		"ok": true,
+		"id": String(def.id),
+		"rung": int(codex.row(def.id).get("rung", 0)),
+		"learn_price": price,
+		"paid": _numbers(owed),
+	}
 
 
 ## Equip a known technique into the first free slot its own path allows: a SHARED
@@ -265,6 +299,78 @@ static func technique_state(actor: Actor) -> Dictionary:
 # --- Internals -------------------------------------------------------------
 
 
+## The pool the study is charged to: the technique's own path's accumulated
+## `PathState.progress`, and nothing else (ADR 0140).
+##
+## ## Why PROGRESS and not qi
+##
+## `qi` is a `ResourcePool` and would have been the obvious pool, but a technique's
+## qi cost IS its cast cost, and qi refills from the reservoir on its own schedule.
+## Charging study out of it would price ACQUISITION in the same currency as
+## EXECUTION, which makes "may I afford to learn this" a question about combat
+## timing rather than about cultivation. It would also be the one cost in the game
+## an actor can avoid entirely by never casting, which is precisely the actor a
+## study cost is aimed at.
+##
+## ## Why PROGRESS and not comprehension or insight
+##
+## `Stat.COMPREHENSION` is a BASE ATTRIBUTE, not a pool. It is gated by
+## `QiBreakthroughCondition`, `BodyBreakthroughCondition` and `MindAdvancement`,
+## it feeds `Stat.INSIGHT_GAIN` (the RATE comprehension itself grows at),
+## `TribulationEndurance` and the ascension ladder. Draining it is not a
+## transaction; it is a set of gates silently moving backwards, in three modules
+## this one may not reach. So it is never charged.
+##
+## `Stat.INSIGHT_GAIN` is a derived RATE, not a stock: writing to it would
+## overwrite a composition rather than spend a quantity.
+##
+## `PathState.progress` is the one quantity in the game that is BOTH spendable and
+## about cultivation. It accumulates from training and is compared against
+## `RealmSeed.progress_required` by every path's breakthrough condition. That is
+## exactly the promise ADR 0055 made when it sized `LEARN_STEP = 1.03` against
+## qi's `progress_required` floor of `29/28`: study is cheaper than a
+## breakthrough and never runs ahead of one. Naming `progress` as the payer is
+## what makes that published ladder MEAN something instead of being a number on a
+## screen nobody pays.
+##
+## ## Which path pays
+##
+## The technique's OWN path, read the same way the slot allocator reads it: a
+## DUAL technique's first path, and a SHARED technique's `shared` marker — which
+## is never a `PathState` id and is therefore never charged at all, the same way
+## it never takes a path slot (ADR 0053).
+static func _study_charge(actor: Actor, def: TechniqueDef) -> Dictionary:
+	if actor == null or def == null:
+		return {}
+	var price := TechniqueGate.learn_price_for(actor, def)
+	if price <= 0.0:
+		return {}
+	# Typed explicitly rather than `:=`. `def.path_ids()` is declared
+	# `Array[StringName]`, and inferring the local from it re-boxes the value as an
+	# untyped `Array`, which throws "Trying to assign an array of type Array to a
+	# variable of type Array[StringName]" at RUNTIME — after the price is already
+	# computed, so a learn silently paid nothing. Announcing the type keeps the
+	# element type through the assignment.
+	var paths: Array[StringName] = def.path_ids()
+	if paths.is_empty() or not PathState.ALL.has(paths[0]):
+		return {}
+	return {paths[0]: price}
+
+
+## Every pool this study cannot pay, with what it owed and what it held. Checked
+## whole BEFORE anything moves, which is what makes a refused learn write nothing.
+static func _short(actor: Actor, owed: Dictionary) -> Array:
+	var out: Array = []
+	for path_id in owed.keys():
+		var state := actor.path(path_id)
+		var held := 0.0 if state == null else state.progress
+		var required := float(owed[path_id])
+		if held + EPSILON >= required:
+			continue
+		out.append({"resource": String(path_id), "required": required, "current": held})
+	return out
+
+
 ## Every gate a learn must pass, as one refusal. Empty means learnable.
 static func _refuse(actor: Actor, def: TechniqueDef) -> Dictionary:
 	if actor == null or def == null:
@@ -341,4 +447,15 @@ static func _strings(values: Array[StringName]) -> Array:
 	var out: Array = []
 	for value in values:
 		out.append(String(value))
+	return out
+
+
+## A `{StringName: float}` charge flattened to `{String: float}`, so a read model
+## or a panel receives primitives. `StringName` keys survive a save envelope as
+## their printed form rather than as themselves, so a caller that serialized the
+## outcome would report a charge against nothing.
+static func _numbers(owed: Dictionary) -> Dictionary:
+	var out := {}
+	for path_id in owed.keys():
+		out[String(path_id)] = float(owed[path_id])
 	return out

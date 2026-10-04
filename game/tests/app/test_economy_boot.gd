@@ -23,7 +23,16 @@ extends TestCase
 ## graph alive until the engine shuts down, and ObjectDB then reports leaked instances at
 ## exit with every assertion green — a suite that passes and still fails the run.
 
-const SUBJECT := &"guard_captain"
+## A REAL authored NpcDef, not an invented id.
+##
+## `EconomyBoot._subject_minter` is `ActorFactory.spawn_npc(NpcCatalog.instance().definition(id))`,
+## so a subject id that resolves to nothing yields a null def and the minter returns null —
+## which reads as "the subject never stood up" rather than as "the fixture named a ghost".
+## The authored cast under `game/data/npc/` is `drifter`, `elder_wei`, `gate_keeper_bo` and
+## `smith_bearcutter`; this uses one of them so the seam is proven against content a player
+## could actually meet. A custody claim about somebody who does not exist is not a custody
+## test, it is a fixture that agrees with itself.
+const SUBJECT := &"smith_bearcutter"
 const SECT := &"iron_vine"
 const COIN := &"curr_spirit_coin"
 

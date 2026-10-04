@@ -98,12 +98,31 @@ func known_ids() -> Dictionary:
 
 
 ## The shipped tuning. Loaded from the `.tres`, never built in code, so a rebalance
-## is a data edit (ADR 0067).
+## is a data edit (ADR 0067). **Never `null`**: a `.tres` that cannot be read
+## resolves to a zeroed tuning rather than to `null`, so that no caller has to
+## handle the absence and every one of them pays the same thing it would have paid
+## with no tuning at all.
 func tuning() -> NationTuning:
 	_ensure_loaded()
 	if _tuning == null:
-		_tuning = NationTuning.shipped()
+		_tuning = NationTuning.shipped_or_zero()
 	return _tuning
+
+
+## The exhaustion at which a side may fight no more, as `NationState` compares it.
+##
+## `war_break` is read here rather than at each call site because of the direction a
+## missing value fails in: exhaustion is compared with `>=`, so a break of `0`
+## declares every side exhausted the moment it loses one verdict, and a break that
+## is itself `null` is a runtime error in the middle of a war. A break of `0` is
+## also the default of an authored field, and "nobody ever breaks" is a legitimate
+## thing to author — so it is kept, as the unreachable value it is, by resolving a
+## non-positive break to a step below the step exhaustion actually arrives in. The
+## result is the one reading that is safe to act on: **no side breaks unless the
+## build says one may.**
+func war_break() -> float:
+	var authored := tuning().war_break
+	return authored if authored > 0.0 else -1.0
 
 
 func _ensure_loaded() -> void:

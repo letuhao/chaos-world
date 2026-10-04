@@ -29,3 +29,9 @@ unique_name_in_owner = true
 theme_type_variation = &"MetaLabel"
 autowrap_mode = 2
 text = ""
+
+[node name="BlessingLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = ""

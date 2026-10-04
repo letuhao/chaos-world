@@ -82,22 +82,6 @@ const SCHEMA_VERSION := 1
 ## `actor.module_data` key (ADR 0027's pattern, the key `DestinyState` uses).
 const MODULE_KEY := &"world_facts"
 
-## Which recorded fact this row is. A bare id in ONE flat namespace: no
-## `quest:` prefix, mirroring ADR 0065's refusal to let an id join a namespace
-## that would "read as a working reference and silently grant nothing".
-var id: StringName = &""
-## How many times it has happened. Rises only, and never falls.
-##
-## Named `total`, not `count`, and the reason is mechanical rather than stylistic:
-## ADR 0113 freezes the ledger verb as `WorldFact.count(actor, id)`, and GDScript
-## refuses a class that holds a member variable and a method of one name, so the
-## member yields. The stored row key stays `"count"` — `DestinyGate`, the event
-## module's `has_fact` and `QuestFactReader` all read it by that name — so the
-## rename is invisible to every reader and the freeze is not.
-var total: int = 0
-## The count this fact took when it was first recorded. Written once.
-var since: int = 0
-
 # --- The post-write hook ------------------------------------------------------
 
 ## The subscribers [method record] tells after a successful write, in install order.
@@ -114,6 +98,22 @@ var since: int = 0
 ## entry, and a counter moved once per recorded occurrence is the property this slot
 ## exists to make true.
 static var _subscribers: Array[Callable] = []
+
+## Which recorded fact this row is. A bare id in ONE flat namespace: no
+## `quest:` prefix, mirroring ADR 0065's refusal to let an id join a namespace
+## that would "read as a working reference and silently grant nothing".
+var id: StringName = &""
+## How many times it has happened. Rises only, and never falls.
+##
+## Named `total`, not `count`, and the reason is mechanical rather than stylistic:
+## ADR 0113 freezes the ledger verb as `WorldFact.count(actor, id)`, and GDScript
+## refuses a class that holds a member variable and a method of one name, so the
+## member yields. The stored row key stays `"count"` — `DestinyGate`, the event
+## module's `has_fact` and `QuestFactReader` all read it by that name — so the
+## rename is invisible to every reader and the freeze is not.
+var total: int = 0
+## The count this fact took when it was first recorded. Written once.
+var since: int = 0
 
 
 ## Tell `subscriber` after every successful [method record].

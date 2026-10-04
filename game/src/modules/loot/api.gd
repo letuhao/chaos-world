@@ -17,6 +17,10 @@ extends RefCounted
 ##    the pickup is refused and the drop stays retrievable in the reward.
 ##  - Boss difficulty and drop context are authored data
 ##    ([LootTier]), never derived from the player's gear.
+##  - The `status` id a boss INFLICTS on the player is authored on its `BossDef` and is
+##    paid by [method strike] through [method LootAffliction.inflict], not through a second
+##    read model. A boss with no authored affliction inflicts nothing, which is the
+##    ordinary answer and the behaviour the whole corpus had before the field existed.
 
 
 ## Attach the loot state to an actor: restores and normalizes what a prior
@@ -94,11 +98,34 @@ static func enter_domain(
 ## `CombatExchange.exchange` is what a player presses, because a blow is a resolution
 ## against the actor's own combat numbers rather than a caller's constant (ADR 0076). The
 ## composition root points the loot bridge's `strike` at the exchange, not here.
-static func strike(actor: Actor, damage: float, seed_value: int = 0) -> Dictionary:
+##
+## ## Why the boss INFLICTS here, and why it costs no verb
+##
+## Every landed blow goes through this call (`exchange.gd:88`), so this is the one place a
+## boss reaches the player with something other than a share of health — and the one place
+## a producer could be a producer rather than a verb nothing calls. It costs no new public
+## method because the two ADR 0087/0088 numbers it needs are ARGUMENTS with defaults:
+## `CombatExchange.exchange` supplies the resist-resolved `chance` and the elemental
+## potency, and every existing three-argument caller gets an open gate at the status
+## module's own default potency, which is what the game did before the field existed.
+##
+## The `affliction` key on a landed or defeated answer is what the struck boss inflicted —
+## `{applied, id, reason}`, the same shape `CombatExchange`'s landed-blow report uses, so
+## a screen renders one without knowing which module produced it. Absent from a refusal
+## (there was no blow) and from a duplicate (there is no boss to answer).
+static func strike(
+	actor: Actor,
+	damage: float,
+	seed_value: int = 0,
+	afflict_chance: float = 1.0,
+	afflict_magnitude: float = 1.0
+) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor"}
 	var state := _state(actor)
-	var result := LootState.strike(state, actor, damage, seed_value)
+	var result := LootState.strike(
+		state, actor, damage, seed_value, afflict_chance, afflict_magnitude
+	)
 	_save(actor, state)
 	return result
 

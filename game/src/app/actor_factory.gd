@@ -23,6 +23,21 @@ static func build(id: StringName, base: Dictionary = {}) -> Actor:
 	# stat at all, because a clan grants recognition and never power — so wiring it
 	# cannot hand a new actor an edge.
 	ClanApi.attach(actor)
+	# Nation is the tier ABOVE both (ADR 0083): a polity outlives the people who hold
+	# its offices, and it is the one tier whose `attach` also mints a state component —
+	# `NationApi._mirror` writes `NationStateComponent` onto the actor — so an actor
+	# without it has no board for `institution_resolver.gd:179-180` to gate the period
+	# settler on, and that gate reads a `founded` that `attach` cannot answer. Same
+	# reasoning as the two above, for the same reason it is safe: **attaching is not
+	# living under a polity.** It normalizes an empty ledger, mirrors it and rebuilds the
+	# bounded PERCENT recognition — and recognition from an empty board is zero, so
+	# wiring it cannot hand a new actor an edge. Only `found` / `join` puts a hero UNDER
+	# a nation, exactly as only `join` / `found` puts one under a sect or a clan.
+	#
+	# It was missing while `SectApi.attach` and `ClanApi.attach` were both here, so the
+	# nation screen rendered "You live under no nation" for every player and the nation's
+	# period settler was gated behind an always-false check.
+	NationApi.attach(actor)
 	# Elements, and WHY here rather than beside the items attach in the player root:
 	# `element_power_<e>` is the magnitude channel ADR 0088 makes status potency read,
 	# and ADR 0069 names it the realm-INVARIANT elemental term. A provider that only
@@ -55,7 +70,118 @@ static func build(id: StringName, base: Dictionary = {}) -> Actor:
 	actor.stats.add_provider(InsideWorldProvider.new())
 	actor.stats.add_provider(WorldCreationProvider.new())
 	actor.stats.add_provider(AscensionProvider.new())
+	_attach_founding_fund(actor)
 	return actor
+
+
+## ## The sect founding fund: a pool mounted for EVERY actor, and a purse bridge
+##
+## ## Why the pool is mounted here and not by the verb that spends it
+##
+## `SectFounding.funds` reads `actor.resource(&"sect_founding_funds")` and returns
+## **0.0 for an actor with no such pool** — which is not an error, it is the ordinary
+## answer. So the pool has to EXIST on the actor or `SectApi.found` can never succeed:
+## `found` compares `funds(actor)` against the authored `founding_cost.outstanding`
+## (900 for `iron_vine`, 400 for `jade_court`) and refuses `founding_cost_unmet` with
+## nothing written. Before this line the pool was created in exactly one place — a test
+## helper — so `found` was dead in play and only green in the suite. A pool the player
+## cannot fill is a price nobody can pay, and BL-0174 prices an institution's existence
+## ON PURPOSE, so the price being unreachable deleted the feature rather than
+## debalancing it.
+##
+## ## Why it is EMPTY on mount, and the bridge is a separate verb
+##
+## `ResourcePool.new(id, 0.0)` is mounted deliberately at **zero**: `ResourcePool._init`
+## sets `current = maximum`, so a non-zero maximum here would GRANT the authored price
+## to every hero in the game, which is exactly the free founding BL-0174 rules out.
+## Mounting at zero makes "you have funded nothing" a real, readable zero instead of a
+## missing key — ADR 0058's "no X yet is a value, not a hole", applied to money.
+##
+## ## Why the bridge is NOT done here
+##
+## The authored cost is `{"currency": "silver", ...}` and the game's only priced money
+## is `EconomyApi`'s numéraire (`curr_spirit_coin`, priced at exactly 1 — ADR 0094), which
+## is an INVENTORY ITEM and not a `ResourcePool`. Those are two currencies, and nothing
+## in `sect` may convert between them: `sect_founding.gd:26-30` says the module "never
+## charges an inventory and never settles a debt... Anything past that price belongs to
+## the economy verb that will own it", and `sect` declares no `items` or `economy`
+## dependency on purpose. So the conversion is [method fund_sect_from_purse] below —
+## an EXPLICIT, caller-driven act, in the one layer that is allowed to know both
+## vocabularies (ADR 0002, dependency inversion). Nothing here ticks, so it cannot
+## become a faucet: a player converts their own coins, and the sect's own price is what
+## they convert.
+##
+## Idempotent in the same way every other attach here is: it mounts the pool only when
+## the actor has none, so a restored actor keeps its saved balance rather than having it
+## overwritten by a fresh zero.
+static func _attach_founding_fund(actor: Actor) -> void:
+	if actor == null or actor.resource(SectFounding.FUNDING_POOL) != null:
+		return
+	actor.add_resource(ResourcePool.new(SectFounding.FUNDING_POOL, 0.0))
+
+
+## Move `coins` worth of the economy's numéraire into the sect founding fund, and
+## report what actually landed.
+##
+## ## This is the acquisition path BL-0174's price was waiting for
+##
+## Returns `{ok, moved, purse, funds, reason}`. It is a ONE-WAY conversion at the
+## numéraire's own authored price of exactly 1 (`EconomyValuation.NUMERAIRE_WORTH`), so
+## a coin in is one unit of founding fund out and no exchange rate is invented here —
+## the rate is the economy's, and `EconomyApi.validate` asserts the numéraire prices at 1
+## rather than this file restating it.
+##
+## ## It is ATOMIC, and that is a property of control flow rather than a discipline
+##
+## The purse is measured and the fund is grown FIRST; only a non-zero `moved` draws the
+## coins. So a refusal — no actor, no coin, nothing priced — leaves BOTH ledgers exactly
+## as found, the same guarantee every `SectApi` refusal makes (ADR 0044). A partial
+## conversion cannot leave the two ledgers disagreeing about what was paid.
+##
+## ## Why it is a public verb on the factory rather than an `attach` side effect
+##
+## An `attach` that CONVERTED money would make every factory-built actor — every npc,
+## every mob, every test — spend its purse into a pool nobody can read. A conversion is
+## an act with a cost, so it stays an act a caller asks for.
+static func fund_sect_from_purse(actor: Actor, coins: int) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "moved": 0, "purse": 0, "funds": 0.0, "reason": "no_actor"}
+	if coins <= 0:
+		return {
+			"ok": false,
+			"moved": 0,
+			"purse": EconomyApi.purse(actor),
+			"funds": SectFounding.funds(actor),
+			"reason": "no_coins",
+		}
+	_attach_founding_fund(actor)
+	var purse := EconomyApi.purse(actor)
+	var moved := mini(coins, purse)
+	if moved <= 0:
+		return {
+			"ok": false,
+			"moved": 0,
+			"purse": purse,
+			"funds": SectFounding.funds(actor),
+			"reason": "insufficient_funds",
+		}
+	var fund := actor.resource(SectFounding.FUNDING_POOL) as ResourcePool
+	# `ResourcePool.change` clamps to `maximum`, and the pool is mounted at 0.0, so the
+	# cap is lifted to the new balance before the change rather than after: growing the
+	# pool first and charging second means the fund can never be silently truncated by a
+	# cap nobody authored.
+	fund.set_maximum(fund.maximum + float(moved))
+	fund.change(float(moved))
+	EconomyApi.trade(
+		actor, null, [{"def_id": String(EconomyValuation.numeraire_id()), "quantity": moved}], []
+	)
+	return {
+		"ok": true,
+		"moved": moved,
+		"purse": EconomyApi.purse(actor),
+		"funds": SectFounding.funds(actor),
+		"reason": "",
+	}
 
 
 static func with_dual_cultivation(actor: Actor) -> Actor:
@@ -275,10 +401,11 @@ static func spawn_npc(
 ## mini-boss and a mob differ by magnitude and by tag, never by which script they extend.
 ##
 ## The signature is `(inhabitant_id, base)` because that is exactly what
-## `domain_spawner.gd:220` passes. The cultivation path is attached by `DomainSpawner`
-## itself when the def declares it cultivates: enrolling every creature on a path would
-## make a rat a qi cultivator, so "does this creature cultivate" is an AUTHORED decision
-## and never a default.
+## `domain_spawner.gd:220` passes, and nothing else: this is a CONSTRUCTOR and it enrols
+## nobody. `DomainSpawner` mints first and only then asks `def.cultivates`, so a species
+## that cultivates is enrolled by [method enrol_inhabitant_qi] immediately afterwards, over
+## the actor this returned — attaching here unconditionally would make a rat a qi
+## cultivator, and "does this creature cultivate" stays an AUTHORED decision on the def.
 static func spawn_inhabitant(
 	inhabitant_id: StringName = &"inhabitant", base: Dictionary = {}
 ) -> Actor:
@@ -290,3 +417,33 @@ static func spawn_inhabitant(
 	# `apply_realm_modifiers` has a realm to read.
 	_refresh_element_realm(actor)
 	return actor
+
+
+## Enrol an ALREADY-MINTED domain inhabitant on the qi path at `realm_id`, and mount the rig
+## behind the path.
+##
+## ## Why this is a second public verb and not a branch inside `spawn_inhabitant`
+## ## A path and the machinery that mounts it are two different questions, asked at two
+## different moments: `DomainSpawner` has to mint before it can read `def.cultivates`, and
+## only then does it know a realm. `spawn_inhabitant` cannot attach on its own without
+## either attaching to every species on earth or attaching before any path exists — which is
+## nothing `QiTraining.synchronize` can reconcile. So the constructor stays a constructor
+## and this answers the second question.
+##
+## ## Why the mount is `_attach_qi` and not a bare `QiCultivationApi.attach`
+## `attach` mints the reservoir at a flat 100.0 and the dantian at the actor's unset base
+## capacity, so calling it alone leaves a rival with an EMPTY meridian network, a `lower`
+## tier and a pool ceiling unrelated to its realm — BL-0753's sibling BL-0696, which was
+## the same bug on `spawn_npc`. `_attach_qi` is where `QiTraining.synchronize` reconciles
+## all four to the realm, and it refreshes the element realm LAST so a boss born at
+## Foundation Establishment keeps neither its R1 element multiplier nor the elemental term.
+##
+## Exactly one attach per actor: `spawn` calls the enroller once per instance and this is
+## the only caller of the seam. That matters because `QiCultivationApi.attach` appends a
+## `QiProvider` UNGUARDED (`api.gd:32`) — the one step that is NOT idempotent, where
+## `QiTraining.synchronize` and `attach_dantian` both are.
+static func enrol_inhabitant_qi(actor: Actor, realm_id: StringName) -> void:
+	if actor == null or realm_id.is_empty():
+		return
+	actor.set_path(PathState.new(QiPath.PATH_ID, realm_id))
+	_attach_qi(actor)

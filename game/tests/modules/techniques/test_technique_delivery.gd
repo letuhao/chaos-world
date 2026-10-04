@@ -52,6 +52,13 @@ func _hero(qi: float = 500.0) -> Actor:
 	actor.add_resource(ResourcePool.new(&"qi", qi))
 	actor.add_resource(ResourcePool.new(&"stamina", 100.0))
 	actor.set_path(PathState.new(PathState.QI, MORTAL))
+	# ADR 0140: learning charges the technique's OWN path's `progress`, and every
+	# technique studied below is a qi one — so the budget lands on `QI` specifically.
+	# `PathState.ALL[0]` is BODY, which this fixture never sets, so writing there
+	# left the qi path at 0 and every study was refused `insufficient_progress`.
+	# The budget is a fixture, not a balance claim; the price itself is asserted in
+	# `test_technique_study_cost.gd`.
+	actor.path(PathState.QI).progress = 100000.0
 	ItemsApi.attach(actor)
 	TechniquesApi.attach(actor)
 	return actor

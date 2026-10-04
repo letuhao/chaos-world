@@ -56,6 +56,18 @@ extends RefCounted
 ## this file reads or writes it: the tally goes through the injected facade verb.
 const NPC_ROSTER_KEY := &"npc_state"
 
+## The `on_enter` entry kinds a beat may carry.
+##
+## `fact` is the whole vocabulary's default and the only one ADR 0114's ledger needs.
+## `npc_tally` is a second destination for the SAME proposal rather than a second
+## beat type: a stage may say "the world remembers this, AND the herald heard it",
+## and both are one claim about one occurrence. A kind outside this set is DROPPED
+## and reported in `skipped` — a mis-authored beat fails loudly rather than silently
+## recording nothing.
+const KIND_FACT := &"fact"
+const KIND_NPC_TALLY := &"npc_tally"
+const KINDS: Array[StringName] = [KIND_FACT, KIND_NPC_TALLY]
+
 ## The injected tally verb: `Callable(NpcApi, "tally")`, installed by
 ## `NpcBoot.install` from the composition root. Null until `app/` runs, which is a
 ## loud refusal (`no_tally_resolver`) rather than a silent skip — an authored
@@ -99,19 +111,6 @@ static func set_tally_resolver(resolver: Callable) -> void:
 ## from both sides.
 static func set_offer_resolver(resolver: Callable) -> void:
 	_offer_resolver = resolver
-
-
-## The `on_enter` entry kinds a beat may carry.
-##
-## `fact` is the whole vocabulary's default and the only one ADR 0114's ledger needs.
-## `npc_tally` is a second destination for the SAME proposal rather than a second
-## beat type: a stage may say "the world remembers this, AND the herald heard it",
-## and both are one claim about one occurrence. A kind outside this set is DROPPED
-## and reported in `skipped` — a mis-authored beat fails loudly rather than silently
-## recording nothing.
-const KIND_FACT := &"fact"
-const KIND_NPC_TALLY := &"npc_tally"
-const KINDS: Array[StringName] = [KIND_FACT, KIND_NPC_TALLY]
 
 
 ## Offer one beat and apply it. Returns the outcome, so a caller can see whether the

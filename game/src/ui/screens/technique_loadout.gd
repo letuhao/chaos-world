@@ -179,7 +179,7 @@ func act_cast(technique_id: StringName, target: Actor = null) -> Dictionary:
 		set_message("Casting is not available", TONE_ERROR)
 		refresh()
 		return {}
-	var fired := casting.activate(_actor, technique_id, target)
+	var fired: Dictionary = casting.activate(_actor, technique_id, target)
 	if bool(fired.get("ok", false)):
 		set_message("Fired %s" % String(technique_id), TONE_OK)
 	else:

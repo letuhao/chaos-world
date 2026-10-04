@@ -103,6 +103,41 @@ const R_QUOTA_NOT_MET := "verdict_quota_not_met"
 const R_UNKNOWN_WINNER := "unknown_winner"
 const R_EXHAUSTED := "side_exhausted"
 
+## ## How a standoff ends
+##
+## A closed standoff names exactly one of these, and every other answer it gives is
+## an `OUTCOME_OPEN`. They are words, not states: a war does not become resolved
+## by being counted to a quota in the ledger, it becomes resolved when a caller is
+## told it was, which is why there are three names and one `closed` flag rather
+## than four flags.
+const OUTCOME_OPEN := ""
+## The declared quota was met and the declared prize was paid, including the
+## transfer. The only outcome that moves ground (ADR 0085).
+const OUTCOME_RESOLVED := "resolved"
+## A side broke before the quota and stopped fighting. The surrender cost is paid
+## and **no ground moves** — the sharpest sentence in ADR 0085.
+const OUTCOME_WITHDRAWAL := "withdrawal"
+## The war was closed without a winner: the quota was not met and no side broke.
+## Nobody is paid and nothing moves, because inventing a victory is the one thing
+## this module may not do.
+const OUTCOME_STALEMATE := "stalemate"
+const OUTCOMES: Array[StringName] = [OUTCOME_RESOLVED, OUTCOME_WITHDRAWAL, OUTCOME_STALEMATE]
+
+## The keys a resolution reports, in one place, because they are read by every
+## caller of `resolve_conflict` on every stage of a war and a payload that changes
+## shape with the stage cannot be read.
+const VERDICT_KEYS: Array[String] = [
+	"standoff_id",
+	"closed",
+	"outcome",
+	"winner_id",
+	"loser_id",
+	"verdicts",
+	"standing_gained",
+	"standing_lost",
+	"territory_transferred",
+]
+
 
 ## The stat source id one nation contributes under.
 static func source_for(nation_id: StringName) -> StringName:
@@ -325,6 +360,65 @@ static func is_verb(verb: String) -> bool:
 ## Whether `mode` is one of the declared standoff modes.
 static func is_mode(mode: String) -> bool:
 	return MODES.has(StringName(mode))
+
+
+## ## The ONE shape a resolution reports
+##
+## Every key of `VERDICT_KEYS`, present whatever the war has decided so far, with
+## the value this stage means. A verdict is read in three stages — it arrived and
+## the war is still being fought, it closed the war, or it arrived after the war
+## was already closed — and a caller must ask the same questions of all three. It
+## used to be handed a different key set for each, so `closed` and `outcome` were
+## absent from everything but the last, and `standing_gained` was absent from
+## everything but the second and third. Reading either of them was a runtime error
+## rather than an answer, which is how four assertions in `test_nation_conflict.gd`
+## came to abort their bodies while their suite reported green.
+##
+## `detail` carries what the CALLER knows that the standoff cannot: the id it asked
+## about, and the standing a settlement just paid. It wins the merge, because those
+## are its own facts. Everything else is this stage's answer, which is why a caller
+## that only ever reads this cannot be surprised by an absent key.
+static func verdict_view(
+	standoff: Dictionary, closed: bool, outcome: String, detail: Dictionary = {}
+) -> Dictionary:
+	var loser := String(detail.get("loser_id", ""))
+	var stored: Dictionary = standoff.get("sides", {}) as Dictionary
+	var view := {
+		"closed": closed,
+		"outcome": outcome,
+		"winner_id": String(detail.get("winner_id", "")),
+		"loser_id": loser,
+		"verdicts": int((stored[loser] as Dictionary).get("lost", 0)) if loser != "" else 0,
+		# Nothing is paid and nothing moves until a war actually ends, which is what
+		# an open war means and what a stalemate means once it has.
+		"standing_gained": 0,
+		"standing_lost": 0,
+		"territory_transferred": String(detail.get("territory_transferred", "")),
+	}
+	view.merge(detail, true)
+	return view
+
+
+## Whether the injected verdict ends this war NOW rather than on its declared quota,
+## and under what name. `OUTCOME_OPEN` means the quota decides, which is ordinary.
+##
+## Only a LOSING side that is already broken ends a war early, as a `withdrawal`: it
+## did not win the war it is standing in, and it cannot be paid a victory it did not
+## take. A caller naming an outcome for a war the quota has not decided gets a
+## `stalemate` instead — closed, unpaid, no ground moved — because a quota is a
+## declaration both sides agreed to, and letting one of them rewrite it at resolution
+## is how a declaration stops being one.
+static func forced_close(
+	standoff: Dictionary, loser: String, forced: String, break_at: float
+) -> String:
+	if loser == "":
+		return OUTCOME_STALEMATE
+	var exhausted := float((standoff.get("sides", {}) as Dictionary)[loser].get("exhaustion", 0.0))
+	if exhausted >= break_at:
+		return OUTCOME_WITHDRAWAL
+	if forced != "":
+		return OUTCOME_STALEMATE
+	return OUTCOME_OPEN
 
 
 static func _known(key: String, known_ids: Dictionary) -> bool:

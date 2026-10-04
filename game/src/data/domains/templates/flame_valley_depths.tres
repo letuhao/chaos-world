@@ -25,6 +25,11 @@ display_name = "Sealed Furnace"
 script = ExtResource("1_template")
 template_id = &"flame_valley_depths"
 display_name = "Flame Valley Depths"
+# Domain-level weather (ADR 0075). Read by `DomainBoot._template_weather` and refused
+# through `DomainMap.accepts_weather` unless it is in `DomainMap.WEATHERS`. This pool
+# authors a `fire` zone, so the authored band is the FLOOR and this weather is what
+# pushes it to its effective band — one step, never past BAND_ANNIHILATING.
+weather = &"ashfall"
 extent = Vector2i(96, 64)
 min_leaf = 7
 max_depth = 5

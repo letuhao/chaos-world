@@ -23,12 +23,26 @@ extends RefCounted
 ## Restoring a caller is DEF-0111's shape: an explicit `periods`/frame delta from
 ## whoever owns time, never a wall clock read in here.
 ##
+## ## The one accumulator, and why this is still wiring
+##
+## "holds no state of its own" was true while it only aged statuses. It now also runs
+## the three combat ticks, one of which (`MindDamage.tick_collapse`) reads a continuous
+## timer whose accumulator ADR 0071 puts in the CALLER — this module may not add a field
+## to a component it does not own. So this file holds exactly one mutable number,
+## [member _collapse_held], and it holds it for a module rather than owning a feature
+## system: there is no cooldown table, no slot array, no persistence key, and
+## `APP_STATE_MARKERS` still sees one signal rather than the two it needs to flag. A
+## timer someone else owns and resets belongs on the wire; a rule that changes with the
+## data belongs in the module that owns the data.
+##
 ## ## Session-only
 ##
 ## Nothing here persists. ADR 0089: statuses never enter `Actor.to_dict()`, so a save
-## carries no status and loading an older save is unaffected. The schema has since moved
-## on for other reasons (ADR 0140, wounds); that is not this loop's doing and does not
-## reach it.
+## carries no status and loading an older save is unaffected. The collapse accumulator
+## is in the same position for the same reason — it is derived from sea state every
+## frame, never written to a payload, and a loaded actor starts its window from the sea
+## it actually carries. The schema has since moved on for other reasons (ADR 0140,
+## wounds); that is not this loop's doing and does not reach it.
 
 ## Seconds of real time per gestation DAY. `FertilityApi.advance` measures its step in
 ## days — it divides by an authored `gestation_days` — so the frame delta is converted
@@ -37,7 +51,20 @@ extends RefCounted
 ## frames, and that relation should be checkable by reading one line.
 const SECONDS_PER_GESTATION_DAY := 1.0
 
+## Seconds above `RUPTURE_THRESHOLD` a sea must hold CONTINUOUSLY full turbulence before
+## `MindDamage.tick_collapse` demotes it. This loop is the CALLER that owns the
+## accumulator (ADR 0071: the mechanism may not add a field to a component it does not
+## own), so the timer lives here. `&""` actor carries no sea, and a sea that changes
+## under `attach` starts the window over -- a timer that survived a target swap would be
+## a collapse credited to a sea that never held the turbulence.
+const MAX_COLLAPSE_HELD := 3600.0
+
 var _actor: Actor
+
+## How long the actor's sea has been held at full turbulence, in seconds. The collapse
+## timer, and the ONLY piece of mutable state this loop owns. It is a bounded float, not
+## a table, and it is reset whenever no sea is present so it cannot grow without limit.
+var _collapse_held: float = 0.0
 
 
 func _init(actor: Actor = null) -> void:
@@ -46,8 +73,13 @@ func _init(actor: Actor = null) -> void:
 
 ## Adopt an actor after construction, for a caller that built the loop first. The
 ## loop stays a pure wire either way.
+##
+## The collapse accumulator resets on every adopt, for the reason [constant
+## MAX_COLLAPSE_HELD] names: the held seconds belong to the sea that earned them, and a
+## new actor carries a sea that has held nothing.
 func attach(actor: Actor) -> void:
 	_actor = actor
+	_collapse_held = 0.0
 
 
 func actor() -> Actor:
@@ -81,16 +113,88 @@ func actor() -> Actor:
 ## 30-day pregnancy last tens of thousands of frames. The conversion is named here
 ## rather than hidden inside the module, because this loop is the only place that knows
 ## what a frame is worth.
+##
+## ## The three COMBAT TICKS ride here, and why this loop is the only place they can
+##
+## `CombatSpine` has a stage for a HIT and none of the three below: `BodyDamage.decay`
+## (ADR 0070's decay half), `MindDamage.tick_rupture` (ADR 0071's ONLY health cost on
+## the mind path) and `MindDamage.tick_collapse` (ADR 0071's headline — the loser is
+## disarmed for a minute, not killed). All three measured ZERO production callers in
+## `game/src`, and `CombatBoot`'s own docblock says so and names this loop as the place
+## they belong. Two systems aging on two clocks would be two systems whose timing nobody
+## could reason about, so they take the same `delta` on the same frame as the statuses.
+##
+## `CombatBoot` cannot host them: `APP_STATE_MARKERS` (`tools/arch/rules.py:180`) rejects
+## a stateful system in `app/`, and a combat tick with an accumulator is state. This loop
+## already owns the one accumulator ADR 0071 needs.
+##
+## ## The guards, because these run EVERY frame FOREVER
+##
+## `delta` is normalised ONCE here, at the top, and every tick below is handed the same
+## `step`: a non-finite or negative frame is `0.0`. All three callees already guard their
+## own inputs, but each returns the value it was handed in at least one key, and one of
+## them (`held`) is ADDED to across ticks — a frame carrying `INF` would poison an
+## accumulator nothing downstream can repair. One guard here is the only place that has
+## to be right.
+##
+## The growth hazards, stated rather than assumed:
+##
+##   - `decay` can only move severity DOWN (`maxf(floor, before - rate*step)`), and the
+##     ledger holds at most one entry per meridian, so a per-frame call cannot grow it.
+##   - `tick_rupture` spends `minf(loss, maximum)` out of a pool that clamps to
+##     `[0, maximum]`, so it cannot drive health below zero however long it runs.
+##   - `tick_collapse` resets `held` to `0.0` on every outcome that fires — a collapse, a
+##     sea with no successor, a calmed sea — so the only growth path is a window the
+##     tuning never reaches. [constant MAX_COLLAPSE_HELD] is the belt to that pair of
+##     braces: an hour of full turbulence is far past `RUPTURE_COLLAPSE_TIME 3.0`, and a
+##     frame that then resumes the window is the same answer a reset gives.
+##
+## None of the three CREATES state. Decay reads the ledger `CombatBoot.bind_mechanisms`
+## bound and reports `{}` for an actor that has none; rupture and collapse read the sea
+## through `MindCultivationApi.sea` and decline a null. An actor that has never been hit
+## therefore pays three dictionary reads a frame and gains nothing, which is the point:
+## the ticks exist for a fight, not to manufacture one.
 func tick(delta: float) -> Dictionary:
 	if _actor == null:
+		_collapse_held = 0.0
 		return {"ok": false, "reason": "no_actor", "ticked": 0, "damage": 0.0, "expired": 0}
-	var result := StatusApi.tick_statuses(_actor, delta)
-	result["bonds"] = NpcBoot.tick(_actor, delta)
+	var step := delta if is_finite(delta) else 0.0
+	var result := StatusApi.tick_statuses(_actor, step)
+	result["bonds"] = NpcBoot.tick(_actor, step)
 	# The ids whose suspension state flipped, so a caller can react to a suspension
 	# without re-reading the whole loadout.
-	result["technique_suspensions"] = _strings(TechniquesApi.settle_upkeep(_actor, delta))
-	result["born"] = FertilityApi.advance(_actor, delta * SECONDS_PER_GESTATION_DAY)
+	result["technique_suspensions"] = _strings(TechniquesApi.settle_upkeep(_actor, step))
+	result["born"] = FertilityApi.advance(_actor, step * SECONDS_PER_GESTATION_DAY)
+	_tick_combat(step, result)
 	return result
+
+
+## The three combat ticks, reported under their own keys so a readout and a test read
+## the same names the modules already publish. Split out from [method tick] so `tick`
+## stays the wire it is and the combat half is readable on its own.
+func _tick_combat(step: float, result: Dictionary) -> void:
+	var wounds := CombatEngineApi.wounds_of(_actor)
+	result["wound_decay"] = BodyDamage.decay(wounds, step, CombatEngineApi.tuning())
+	var sea: Variant = MindCultivationApi.sea(_actor)
+	result["rupture"] = MindDamage.new().tick_rupture(sea, _actor, step)
+	# The accumulator is THIS loop's, and it is reset to whatever the module answered --
+	# which is `0.0` for a calmed sea, a demoted sea and a sea with no successor, and
+	# therefore cannot carry an earlier fight's seconds into a later one.
+	var collapse := MindDamage.tick_collapse(sea, _actor, step, _collapse_held)
+	_collapse_held = minf(
+		maxf(0.0, float(collapse.get(MindDamage.KEY_HELD, 0.0))), MAX_COLLAPSE_HELD
+	)
+	result["collapse"] = collapse
+	if bool(collapse.get(MindDamage.KEY_COLLAPSED, false)):
+		# A demotion is the one combat event a caller cannot reconstruct by re-reading
+		# the sea afterwards: the tier that was lost is in this frame's report or in
+		# no frame at all. Surfaced under its own key rather than buried in `collapse`
+		# so a UI is not obliged to know the module's result shape to notice it.
+		result["mind_collapse"] = {
+			"from_tier": String(collapse.get(MindDamage.KEY_FROM_TIER, "")),
+			"to_tier": String(collapse.get(MindDamage.KEY_TO_TIER, "")),
+			"deviation": String(collapse.get(&"deviation", "")),
+		}
 
 
 func _strings(values: Array) -> Array:

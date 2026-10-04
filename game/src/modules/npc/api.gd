@@ -35,6 +35,10 @@ const ROLE_BOSS := &"boss"
 const ROLE_NPC := &"npc"
 const ROLE_RIVAL := &"rival_cultivator"
 
+## The `social` facade, preloaded. Reached for ONE verb — `forget` — and the dependency is
+## declared: `npc` lists `social` in `tools/arch/registry.json`.
+const SOCIAL_FACADE := preload("res://src/modules/social/api.gd")
+
 static var _events: NpcEvents = null
 
 ## The player actor the roster hangs off, or null when `attach` has never run. Private
@@ -44,10 +48,6 @@ static var _current_player: Actor = null
 ## The injected actor constructor. Set by `set_minter`; never a concrete actor type, so
 ## `npc/` cannot name one.
 static var _minter: Callable = Callable()
-
-## The `social` facade, preloaded. Reached for ONE verb — `forget` — and the dependency is
-## declared: `npc` lists `social` in `tools/arch/registry.json`.
-const SOCIAL_FACADE := preload("res://src/modules/social/api.gd")
 
 
 ## The event contract, for a consumer to subscribe to. On the facade and not behind a

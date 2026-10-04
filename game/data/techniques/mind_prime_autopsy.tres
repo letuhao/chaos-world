@@ -21,4 +21,5 @@ cooldown = 36.0
 mastery_rungs = 5
 magnitude = 4.0
 element_share = 1.0
+mind_kind = &"attend"
 

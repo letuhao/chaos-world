@@ -81,6 +81,17 @@ const TIER_TWO_CLAIMED: Array[StringName] = [
 	&"wind_gust",
 ]
 
+## The vocabulary a `.tres` must NOT grow. ADR 0087's gate, ADR 0088's potency, and the
+## three names a second magnitude vocabulary would arrive under. Pinned as a constant
+## rather than inlined so the list is one thing to read.
+const FORBIDDEN_FIELDS: Array[String] = [
+	"chance",
+	"status_chance",
+	"magnitude",
+	"power",
+	"potency",
+]
+
 # --- the mapping answers what the `.tres` authored -----------------------------
 
 
@@ -414,18 +425,6 @@ func test_a_def_authored_without_the_selector_still_loads_and_never_rides_a_blow
 		"and wood keeps answering with the status that did claim it"
 	)
 	_cleanup(legacy.id)
-
-
-## The vocabulary a `.tres` must NOT grow. ADR 0087's gate, ADR 0088's potency, and the
-## three names a second magnitude vocabulary would arrive under. Pinned as a constant
-## rather than inlined so the list is one thing to read.
-const FORBIDDEN_FIELDS: Array[String] = [
-	"chance",
-	"status_chance",
-	"magnitude",
-	"power",
-	"potency",
-]
 
 
 func test_the_selector_is_not_a_magnitude_and_the_defs_still_carry_no_computed_power() -> void:

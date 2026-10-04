@@ -242,13 +242,44 @@ func test_the_ledger_round_trips_through_its_raw_dict() -> void:
 ##
 ## Severity is measured off the S4 SUBTOTAL, never the post-S8 amount, so the chip floor can
 ## never mint a wound out of a strike the flat subtraction already refused.
+##
+## ## Why the ledger is BOUND here and the test still calls the direct route
+##
+## This test used to run against a target with NO ledger and assert that
+## `mechanism.apply_wounds` returned one settled row. That only ever passed because
+## `apply_wounds` built a `BodyWounds.new()` per call, wrote the wound into it and dropped
+## it — the exact defect ADR 0070's accumulating ledger exists to kill. Once `apply_wounds`
+## was fixed to settle onto the ledger `CombatEngineApi.wounds_of` names, it returns `[]` for
+## a target with none, which is the documented degradation ("a body nobody bound a ledger to
+## is a body nobody can save one for"), and this suite reported `one wound settled:
+## expected 1, got 0` with an `Out of bounds get index '0'` two lines later on `settled[0]`.
+##
+## So the target is bound HERE — which is what the composition root does, and what
+## `test_effect_apply.gd` already does for the same subject. Nothing is weakened: the
+## assertion is unchanged in strength, it is measured against a body that actually has
+## somewhere to settle, and the direct route below is exercised on a SECOND, INDEPENDENT
+## proposal so the two writers can never double-count one payload.
 func test_a_landed_hit_carries_its_wound_as_an_effect_after_health() -> void:
 	var attacker := _attacker()
 	var target := _defender(["lung"], {"lung": MeridianState.OPEN})
+	var ledger := CombatEngineApi.attach_wounds(target, _tuning)
 	var technique := _technique(100.0, &"lung")
 	var mechanism := BodyDamage.new()
 	mechanism.tuning = _tuning
 	MechanismSlot.bind(attacker, mechanism)
+	# The S4 subtotal is read from the mechanism's OWN breakdown BEFORE the hit is
+	# resolved, and that ordering is load-bearing rather than incidental: the wound this
+	# hit lands crosses `WOUND_THRESHOLD`, `damage_meridian` injures the channel, and an
+	# INJURED channel raises the multiplier it takes damage at (`injured_mult_step`). So
+	# re-reading `breakdown` after the hit answers a different question and reports a
+	# LARGER figure than the one the effect was built from. Same computation, same inputs,
+	# taken at the moment the effect was produced.
+	var subtotal_before := float(
+		(
+			mechanism
+			. breakdown(_context(attacker, target, technique, BodyLocation.MODE_NAMED))["subtotal"]
+		)
+	)
 	var health_before := target.resource(&"health").current
 	var outcome := CombatSpine.resolve_hit(
 		attacker,
@@ -274,25 +305,47 @@ func test_a_landed_hit_carries_its_wound_as_an_effect_after_health() -> void:
 	)
 	assert_almost_eq(
 		float(effect[BodyWounds.KEY_SEVERITY]),
-		float(
-			(
-				mechanism
-				. breakdown(_context(attacker, target, technique, BodyLocation.MODE_NAMED))["subtotal"]
-			)
-		),
+		subtotal_before,
 		"severity is measured off the S4 SUBTOTAL, not the post-reduction amount",
 		0.0001
 	)
-	# Nothing has been settled yet: the wound lands after health, by the caller.
-	assert_eq(
-		target.meridians.get_meridian(&"lung").injured, false, "the channel is not yet injured"
+	# And the SPINE settled it: the eleven stages applied this proposal's `effects[]` onto
+	# the bound ledger, so the caller had nothing to remember. The severity landed is the
+	# effect's own damage over the integrity pool, which is the only figure a wound is
+	# expressed in (ADR 0070).
+	var landed := ledger.severity_of(&"lung")
+	assert_almost_eq(
+		landed,
+		float(effect[BodyWounds.KEY_SEVERITY]) / _integrity_maximum(target),
+		"the landed severity is the effect's damage over the integrity maximum",
+		0.0001
 	)
-	var settled := mechanism.apply_wounds(target, outcome.proposal, _tuning)
+	assert_eq(
+		target.meridians.get_meridian(&"lung").injured,
+		true,
+		"so it crossed WOUND_THRESHOLD and the EXISTING damage_meridian ran"
+	)
+	# The DIRECT route, on a SECOND proposal resolved BY HAND — the same object `resolve`
+	# hands out, so the difference between `landed` and the total is a genuine second
+	# settlement rather than the applier and `apply_wounds` both paying for one payload.
+	#
+	# The second proposal's OWN severity is used, not the first's, because the channel is
+	# now INJURED and an injured channel takes MORE damage (`injured_mult_step`). That is
+	# the same reason `subtotal_before` had to be read early: the wound a hit lands changes
+	# what the next hit there is worth, which is ADR 0070's wound economy working, and a
+	# test that re-used the first figure would be asserting that two different hits agreed.
+	var second := mechanism.resolve(_context(attacker, target, technique, BodyLocation.MODE_NAMED))
+	var second_own: float = (
+		float(second.effect_of(BodyWounds.EFFECT_KIND)[BodyWounds.KEY_SEVERITY])
+		/ _integrity_maximum(target)
+	)
+	var settled := mechanism.apply_wounds(target, second, _tuning)
 	assert_eq(int(settled.size()), 1, "one wound settled")
 	assert_almost_eq(
 		float(settled[0][BodyWounds.KEY_TOTAL]),
-		float(effect[BodyWounds.KEY_SEVERITY]) / _integrity_maximum(target),
-		"and its severity is the damage over the integrity maximum"
+		landed + second_own,
+		"and it sits ON TOP of the landed one -- the direct route is the SAME ledger",
+		0.0001
 	)
 	# A broad hit carries ONE effect per struck channel, all on distinct meridians, and
 	# the caller settles all of them — which is the assertion that S4 and S5 cannot

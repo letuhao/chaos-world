@@ -43,7 +43,69 @@ func _install_defaults() -> void:
 	_add(&"betrayed_oath", {"standing": -12.0, "trust": -0.4, "tags": [&"oath", &"harm"]})
 	_add(&"slandered", {"standing": -4.0, "trust": -0.12, "tags": [&"harm"]})
 	_add_intimacy()
+	_add_auction()
 	_install_institutional()
+
+
+## ## The auction causes: three acts at a sale, authored so `app/` has something to apply
+##
+## ADR 0102 promises the four auction signals "reach `SocialApi.apply_cause` with an
+## authored cause id" — and `apply_cause` refuses `unknown_cause` for an id this catalog
+## does not ship. Before these existed the bridge had nothing to apply, which is DEF-0217's
+## other half: a subscriber that would refuse on every event is not a subscriber.
+##
+## ## Three causes for four signals, and the fourth is deliberately absent
+##
+## `bid_placed` gets **none**. Placing a bid is an act a player repeats freely, so a cause
+## for it would be a per-click standing faucet against every counterparty in the auction —
+## and `SocialBondClass.FRIEND_DISTINCT_CAUSES` counts distinct KINDS, so a bid cause in
+## its own kind would make the whole ladder buyable from a merchant. The signal is recorded
+## by `AuctionLedger` and credited nothing. That is ADR 0093's rule that an event announces
+## a fact and the consumer decides what it is worth, taken literally.
+##
+## ## They share ONE kind, and that is the anti-farm rule doing its job
+##
+## All three carry `kind: market`, so a bidder who wins, outbids and defaults at a hundred
+## auctions has still recorded **one kind of act**, and `SocialBondClass` tops that bond at
+## an acquaintance however large the total. A friendship has to rest on two different acts,
+## and no amount of shopping is a second one. The tag is `market` rather than `auction` so
+## an author who later adds a plain trade can gate the whole commerce tier on one tag.
+##
+## ## The magnitudes are single figures, sized against the ladder
+##
+## `FRIEND_AT` is 6.0, so `won_auction` at 3.0 is one sale short of a friendship — and it
+## CANNOT get there alone, because one kind is one kind. `defaulted_on_a_bid` is the harsh
+## one at -6.0: a broken bid is a promise made in public and not kept, which is worse than
+## `robbed` (-6.0) on a merchant and worse than `attacked_unprovoked` (-8.0) only in that
+## it costs no blood. `outbid_in_auction` is small and transient (-1.5, no `persistent`):
+## being outbid at a sale is ordinary commerce, and a big persistent negative would make
+## winning an auction from someone a grudge instead of a rivalry.
+##
+## `won_auction` IS persistent — the coins have moved and the goods are delivered, so the
+## sale is a fact the world keeps (ADR 0102 fires it only after both purses have settled).
+func _add_auction() -> void:
+	_add(
+		&"won_auction",
+		{
+			"standing": 3.0,
+			"trust": 0.05,
+			"persistent": true,
+			"kind": &"market",
+			"tags": [&"market", &"auction", &"deed"],
+		}
+	)
+	_add(
+		&"outbid_in_auction", {"standing": -1.5, "kind": &"market", "tags": [&"market", &"auction"]}
+	)
+	_add(
+		&"defaulted_on_a_bid",
+		{
+			"standing": -6.0,
+			"trust": -0.1,
+			"kind": &"market",
+			"tags": [&"market", &"auction", &"harm"],
+		}
+	)
 
 
 ## ## `bound_in_intimacy`: the one cause that writes a PERSON'S standing for an act

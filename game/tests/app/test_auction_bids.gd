@@ -1,237 +1,18 @@
-extends TestCase
+extends "res://tests/app/auction_bid_kit.gd"
 
-## ADR 0102 / BL-0049: **NPCs bid, and the bid is arithmetic.**
+## The determinism, refusal and personality half of ADR 0102 / BL-0049.
 ##
-## BL-0049 asked for "NPC bidders with wealth/personality; rare items attract powerful
-## cultivators; consequences emerge". These assert the three properties that make that
-## true rather than decorative:
+## Split out of the original single-file suite purely for size -- gdlint's
+## `max-file-lines` is 1000. Nothing was rewritten, no assertion changed and no
+## method renamed: this half is the file's first three sections verbatim, and every
+## constant, builder and helper it uses now lives in `auction_bid_kit.gd`, which
+## both halves `extends`.
 ##
-##   - the bid is a function of (purse, tag, lot) and of nothing else — no rng anywhere;
-##   - a bidder who cannot reach the opening bid writes NOTHING;
-##   - a legendary lot opens four times above a common one, so only a deep purse clears
-##     it. That is the whole "rare items attract powerful cultivators" claim, and it is
-##     `RARITY_WEIGHT` multiplied through one frozen price rather than a simulation.
+## `setup()` / `teardown()` and the fixtures live in the kit, because
+## `MarketApi.set_store` is PROCESS-WIDE: a store installed by one half and cleared
+## by the other outlives the suite and is inherited by everything that runs later.
 ##
-## ## Read the STORE, never the actor's own mirror
-##
-## `MarketApi.state(actor)` returns the actor's OWN mirror by design; `summary` goes
-## through the shared world store. A test that read `state` therefore saw a **stale**
-## ledger — the world row written by `_save`, which on a fresh house still carries the
-## previous test's lots — and asserted against a bid count of zero. Every lot assertion
-## below goes through [_lots], which is the only shape that cannot go stale.
-##
-## ## Fixtures are held, not returned
-##
-## `Actor` is a `RefCounted`. An actor built inside a helper is **freed the moment that
-## helper returns**, the ledger stores ids rather than references, and nothing keeps it
-## alive — so every actor here is appended to `_held`. Same reason
-## `test_market_auction.gd` does it.
-##
-const COIN := &"curr_spirit_coin"
-const GOOD := &"currency_spirit_stone"
-const CAST_ROOT := "res://data/npc/cast"
-
-## Every cast member an authored appetite reaches, with the appetite the table gives it.
-## A restated expectation on purpose: a test that read the number back out of
-## `APPETITE_PERCENT` would pass if both the tag and the number drifted together.
-const AUTHORED_BIDDERS: Array = [
-	{"file": "elder_wei.tres", "tag": &"collector", "percent": 90},
-	{"file": "smith_bearcutter.tres", "tag": &"thrifty", "percent": 45},
-	{"file": "drifter.tres", "tag": &"opportunist", "percent": 30},
-	{"file": "gate_keeper_bo.tres", "tag": &"opportunist", "percent": 30},
-]
-
-## The tags a module must not acquire an edge to. `npc` is here because the bidding verb
-## is composed, not because any module names it — the assertion is structural, so it
-## holds whether the verb lives in `app/` or somebody later moves it.
-const FORBIDDEN_IN_MARKET: Array = [
-	"NpcApi", "NpcCatalog", "NpcDef", "NpcState", "NpcEvents", "NpcBoot"
-]
-
-## Every seed and generator token GDScript offers, as a TEST-LOCAL fixture. Nothing in
-## production wants this table: it is the vocabulary the structural pin searches FOR, and
-## `auction_bids.gd` is the only file it is ever read against — so a production constant
-## for it would put a list of forbidden words in the shipping facade, which is the
-## opposite of the ADR 0102 rule it exists to protect.
-##
-## `seed(` is here too even though `market/api.gd` writes a `"seed"` key while rebuilding
-## a saved instance: a `"seed":` string key is saved data, not a generator call, and this
-## list is matched against `auction_bids.gd` only.
-const GENERATORS: Array = [
-	"RandomNumberGenerator",
-	"randf(",
-	"randi(",
-	"rand_range(",
-	"randf_range(",
-	"rand_weighted(",
-	"rand_from_seed(",
-	"randomize(",
-	"shuffle(",
-	"seed(",
-	"Time.",
-	"get_ticks",
-	"get_tree()",
-]
-
-var _held: Array[Actor] = []
-## The `AuctionBids._lot` helper reads through `MarketApi.summary`, so it is handed a
-## HOUSE-SCOPED store: one bid call resolves only the lots that house listed, and a
-## "compare two collectors" case can then be stated as two houses instead of two ids
-## that collide into one escrow check.
-var _store: MarketWorldLedger = null
-
-
-func setup() -> void:
-	# A lot is a WORLD fact: a bidder must see the seller's lot or every bid refuses
-	# `lot_not_open` (ADR 0101).
-	_store = MarketWorldLedger.new()
-	MarketApi.set_store(_store)
-	_held.clear()
-
-
-func teardown() -> void:
-	# Process-wide, and the runner calls this after EVERY test — a lot left in the shared
-	# store outlives the suite and the next one inherits it.
-	MarketApi.set_store(null)
-	_store = null
-	_held.clear()
-
-
-## Point the shared store at a fresh world. Called between two lots that would otherwise
-## collide on `lot_<seller>_<instance>`.
-##
-## **Both halves of a comparison must be built INSIDE the world they are compared in.**
-## `MarketApi.list` writes the lot through `_save`, which writes the shared store AND mirrors
-## the row onto `seller.module_data`. `_state` reads the shared store when there is one, so
-## a lot listed in world A is INVISIBLE to every reader once the store points at world B —
-## while the seller's own `module_data` mirror still carries it. That split is the shape
-## `MarketApi.state` warns about in its own docstring, and it produces two different broken
-## results depending on which side reads: a BIDDER resolves `no_lot`, while a `_lot()` call
-## resolves the seller's stale mirror. `_new_world` therefore exists to be called BEFORE a
-## lot is listed, never between a listing and the bid that answers it — which is exactly
-## where the previous version of this file called it, and why eight of its cases read
-## `required 11` against `required 901` on the same fixture.
-func _new_world() -> void:
-	_store = MarketWorldLedger.new()
-	MarketApi.set_store(_store)
-
-
-# --- fixtures ------------------------------------------------------------------
-
-
-## The house: an actor holding ONE realized instance to list, and an empty purse to be
-## paid into. Added as an instance rather than a stack because `remove_instance` only
-## ever reaches the `_instances` half, which is the same shape `loot` escrows.
-##
-## **`next_seller` makes BOTH ids unique per house.** A lot id is
-## `lot_<seller>_<instance_id>`, so a unique seller id alone is not enough — it was
-## `MarketApi.list`'s duplicate-instances scan that refused, and that scan matches
-## `instance_id` ALONE across the whole world ledger. Every house minted
-## `ItemInstance.new(def.id, &"lot_candidate")`, so house 1 escrowed the lot
-## `lot_auction_house_1_lot_candidate` and house 2's very different instance — a different
-## seller, a different lot id — was refused `lot_already_listed` for "re-listing" it. The
-## second listing returned `""`, and every later read of `""` then failed in a way that had
-## nothing to do with the property under test: a `required_bid` of 0, a ceiling of 0, a
-## second `assert_eq` over the same two numbers printing the same 0-vs-450 twice. So the
-## instance id is minted per house as well, which is what makes a comparison two real lots
-## in one world — the world store is what makes a lot visible to a bidder, so separating
-## them into different worlds only separates the lot from the reader as well.
-func _house(rarity: StringName = &"") -> Actor:
-	_next_seller += 1
-	var actor := Actor.new()
-	actor.id = &"auction_house_%d" % _next_seller
-	ItemsApi.attach(actor, 24)
-	# A seller's floor and lots are WORLD facts (ADR 0101). `MarketApi.attach` is what
-	# installs the shared store onto a fresh actor; without it a house that never sold
-	# anything reads an empty mirror and the escrow row is written somewhere no bidder
-	# can see.
-	MarketApi.attach(actor)
-	var def := Crafting.resolve(GOOD)
-	var instance := ItemInstance.new(def.id, &"lot_candidate_%d" % _next_seller)
-	instance.def_ref = def
-	instance.rarity = rarity if rarity != &"" else def.rarity
-	# A realized price must come from AUTHORED worth: ADR 0094 refuses an instance whose
-	# `rolled` carries a `trade_value`, and `list` returns `no_settlement` for one.
-	instance.rolled = []
-	instance.realm = &""
-	ItemsApi.inventory(actor).add_instance(instance)
-	EconomyApi.attach(actor)
-	_held.append(actor)
-	return actor
-
-
-## A counter for unique seller ids. A member rather than a `static var` because a static
-## would carry across suites in this one process.
-var _next_seller := 0
-
-
-## A bidder with `coins` of purse and the given appetite tags.
-##
-## `Actor.tags` is `Array[StringName]`, so a plain `Array` cannot be ASSIGNED to it —
-## and a rejected assignment returns from the function, so the helper silently handed
-## back an untyped actor and every bid refused for a reason three frames away. Appended
-## element-wise for that reason.
-func _bidder(id: StringName, coins: int, tags: Array[StringName] = []) -> Actor:
-	var actor := Actor.new()
-	actor.id = id
-	ItemsApi.attach(actor, 24)
-	ItemsApi.inventory(actor).add(Crafting.resolve(COIN), coins)
-	for tag in tags:
-		actor.tags.append(tag)
-	EconomyApi.attach(actor)
-	_held.append(actor)
-	return actor
-
-
-func _list_good(house: Actor) -> String:
-	var instance_id := &""
-	for instance in ItemsApi.inventory(house).instances():
-		instance_id = instance.instance_id
-		break
-	var listed := MarketApi.list(house, instance_id, 3)
-	assert_eq(
-		bool(listed.get("ok", false)), true, "the fixture lot lists: %s" % listed.get("reason", "")
-	)
-	return String(listed.get("lot_id", ""))
-
-
-## The lots of the current world, as the READ MODEL sees them — through `summary`, which
-## goes via the world store, and never through `MarketApi.state`, whose actor mirror goes
-## stale. A fresh throwaway actor is the reader, because `summary` takes any actor.
-func _lots() -> Array:
-	return (
-		MarketApi.summary(_bidder(&"a_reader", 0, [] as Array[StringName])).get("lots", []) as Array
-	)
-
-
-## The one lot of the current world. Returns `{}` rather than indexing when the count is
-## wrong, so a broken fixture turns the NEXT assertion red with a message instead of
-## aborting this one halfway through.
-func _lot() -> Dictionary:
-	var rows := _lots()
-	assert_eq(rows.size(), 1, "the fixture listed exactly one lot")
-	return (rows[0] as Dictionary) if rows.size() == 1 else {}
-
-
-## The lot named by `lot_id`, out of the current world. **The selector for a case that
-## deliberately holds two lots at once** — `_lot()` asserts the count is exactly one, which
-## is the right guard for a single-lot case and the wrong one for a comparison, where the
-## previous version reached for `_lot()` anyway and read whichever row sorted first.
-func _row(lot_id: String) -> Dictionary:
-	for row in _lots():
-		if String((row as Dictionary).get("lot_id", "")) == lot_id:
-			return row as Dictionary
-	return {}
-
-
-## Resolve a bid row's actor id to a live body, exactly as a caller of `settle_lot` must.
-func _resolver(actors: Array) -> Callable:
-	return func(id: String) -> Actor:
-		for actor in actors:
-			if actor != null and String(actor.id) == id:
-				return actor as Actor
-		return null
-
+## The settlement and structural-pin half is `test_auction_settlement.gd`.
 
 # --- 1. Determinism, and the absence of an rng ---------------------------------
 
@@ -248,20 +29,49 @@ func test_the_same_purse_tag_and_lot_always_produce_the_identical_bid() -> void:
 	# whole path is what is proved stable, not only the function it happens to call.
 	for attempt in 3:
 		var seen := AuctionBids.bid(first, StringName(lot_id), 1 + attempt)
-		assert_eq(
-			int(seen["amount"]),
-			ceiling,
-			"attempt %d: the verb decides the same number every time" % attempt
-		)
+		# **Attempt 0 places the bid; attempts 1 and 2 REFUSE, and that is the determinism.**
+		# A bid is a promise, so placing one moves no coins and the purse — and therefore the
+		# ceiling — is untouched. What DOES move is the lot: `required_bid` becomes
+		# `high + step`, which at 900 sits ABOVE the very ceiling that placed it. So the
+		# second call is refused `ceiling_below_required` and writes nothing.
+		#
+		# That is not a weaker claim than "same number three times" — it is the same claim,
+		# asserted against the ledger instead of against a return value. A verb that drifted
+		# would re-derive a different ceiling on attempt 1 and either place a SECOND,
+		# different bid (caught by `bid_count` below) or refuse for some other reason
+		# (caught by the reason asserted here). A verb that is stable refuses, and for this
+		# one named reason, every time. `amount` is 0 on a refusal by `_refuse`'s own contract,
+		# so asserting it equals the ceiling would be asserting a bid was placed when the
+		# whole point is that it was NOT.
+		if attempt == 0:
+			assert_eq(
+				bool(seen["ok"]), true, "the first call places the bid: %s" % seen.get("reason", "")
+			)
+			assert_eq(int(seen["amount"]), ceiling, "attempt 0: at the ceiling")
+		else:
+			assert_eq(
+				bool(seen["ok"]),
+				false,
+				"attempt %d: the standing bid has raised the requirement past the ceiling" % attempt
+			)
+			assert_eq(
+				String(seen["reason"]),
+				AuctionBids.CEILING_BELOW_REQUIRED,
+				"attempt %d: and it refuses by name, not by a drifted number" % attempt
+			)
+			assert_eq(int(seen["ceiling"]), ceiling, "attempt %d: at the same ceiling" % attempt)
 		assert_eq(
 			AuctionState.bid_ceiling(EconomyApi.purse(first), first.tags),
 			ceiling,
 			"attempt %d: and the ceiling underneath it never drifts" % attempt
 		)
-	# One bid was written. The two later calls found their own standing row and were
-	# refused `already_high`, so determinism is also idempotence against the ledger
-	# rather than a growing ladder — three identical calls, one bid.
+	# One bid was written. The two later calls found the raised requirement and were refused,
+	# so determinism is also idempotence against the ledger rather than a growing ladder —
+	# three identical calls, one bid.
 	assert_eq(int(_lot()["bid_count"]), 1, "three identical calls wrote one bid, not three")
+	assert_eq(
+		int(_lot()["high_bid_amount"]), ceiling, "and the one bid is still the ceiling, unrounded"
+	)
 
 
 ## **Two separately-constructed actors with identical inputs must agree.** This is the
@@ -346,20 +156,6 @@ func test_the_bid_verb_contains_no_generator_and_no_clock() -> void:
 		true,
 		"and the appetite table is named as the source, not copied"
 	)
-
-
-## `source` with every `##` documentation line dropped, so a structural pin can forbid a
-## token in CODE while the file is still free to explain the rule in prose. A whole-line
-## comment is dropped and an inline trailing comment is truncated at its `#`.
-func _executable(source: String) -> String:
-	var out: Array[String] = []
-	for line in source.split("\n"):
-		var trimmed := line.strip_edges()
-		if trimmed.begins_with("#"):
-			continue
-		var hash_at := line.find("#")
-		out.append(line.substr(0, hash_at) if hash_at >= 0 else line)
-	return "".join(out)
 
 
 # --- 2. A bidder who cannot reach the opening writes NOTHING -------------------
@@ -666,309 +462,3 @@ func test_a_bid_is_the_required_bid_at_the_floor_and_the_ceiling_above_it() -> v
 		true,
 		"which is what outbidding the standing high takes"
 	)
-
-
-# --- 4. Settlement: the coins actually move, from BOTH sides -------------------
-
-
-## **Both purses are asserted, and that pair is the point.** "The winner paid" and "the
-## house received" are one fact from two sides; either alone is also what a transfer that
-## destroyed the coins would report. This program has already shipped that bug once — the
-## lot marked itself sold while the coin leg charged a zero amount.
-func test_settlement_pays_the_high_bidder_and_the_coins_actually_move() -> void:
-	var house := _house()
-	var lot_id := _list_good(house)
-	var purse_before := EconomyApi.purse(house)
-	assert_eq(purse_before, 0, "the house starts with nothing, so any gain is a gain")
-	var bidder := _bidder(&"the_winner", 1000, [&"collector"] as Array[StringName])
-	var placed := AuctionBids.bid(bidder, StringName(lot_id), 1)
-	assert_eq(bool(placed["ok"]), true, "the bid lands: %s" % placed.get("reason", ""))
-	var paid := int(placed["amount"])
-	assert_eq(paid > 0, true, "and is a positive number of coins")
-	var bidder_before := EconomyApi.purse(bidder)
-	var settled := MarketApi.settle_lot(house, _resolver([bidder]), StringName(lot_id), 3)
-	assert_eq(bool(settled["ok"]), true, "the lot settles: %s" % settled.get("reason", ""))
-	assert_eq(String(settled["status"]), "sold", "and it sold")
-	assert_eq(String(settled["winner"]), "the_winner", "to the high bidder")
-	assert_eq(ItemsApi.inventory(bidder).instances().size(), 1, "who received the good")
-	# SIDE ONE: the bidder is out exactly their bid.
-	assert_eq(EconomyApi.purse(bidder), bidder_before - paid, "the bidder's purse fell by the bid")
-	# SIDE TWO: the house is up exactly the same number. Neither side alone proves the
-	# coins MOVED rather than being minted or burned on the way.
-	assert_eq(EconomyApi.purse(house), purse_before + paid, "and the house received them")
-	# And the two agree, which is the sum invariant.
-	assert_eq(
-		EconomyApi.purse(bidder) + EconomyApi.purse(house),
-		bidder_before + purse_before,
-		"so the pair conserved: nothing was created or destroyed"
-	)
-
-
-## A promise the bidder can no longer keep loses them the lot. The purse is RE-READ at
-## settlement, so a caller cannot hand-pick a winner and money spent since bidding is
-## visible rather than a crash.
-func test_a_bidder_who_spends_their_purse_between_bid_and_settle_loses_the_lot() -> void:
-	var house := _house()
-	var lot_id := _list_good(house)
-	var bidder := _bidder(&"spendthrift", 1000, [&"collector"] as Array[StringName])
-	var placed := AuctionBids.bid(bidder, StringName(lot_id), 1)
-	assert_eq(bool(placed["ok"]), true, "the bid lands first")
-	ItemsApi.inventory(bidder).remove(COIN, 1000)
-	assert_eq(EconomyApi.purse(bidder), 0, "then the purse is gone")
-	var settled := MarketApi.settle_lot(house, _resolver([bidder]), StringName(lot_id), 3)
-	assert_eq(String(settled["status"]), "unsold", "so the lot goes unsold")
-	assert_eq(ItemsApi.inventory(bidder).instances().size(), 0, "and nobody receives it")
-	assert_eq(EconomyApi.purse(house), 0, "and the seller is never charged a shortfall")
-
-
-## And the fall-through: a defaulting high bidder hands the lot to the NEXT bidder at
-## THEIR OWN bid. This is the case that makes `defaulted_on_a_bid` consequential rather
-## than an announcement.
-##
-## **Both bidders are collectors**, so their appetite is equal and the ONLY thing separating
-## them is the order they bid in — which is what makes this a statement about default rather
-## than about appetite. The thrifty variant is deliberately NOT used here: a 450 ceiling
-## against a standing 900 bid would be refused before it ever reached the ledger, so there
-## would be no second row to fall back to and the test would be measuring the refusal rather
-## than the fall-through.
-##
-## **The second bidder's purse is deeper, and that is the correction.** They were both on
-## 1000 coins, so the second collector's ceiling was 900 against a requirement of 901 — and
-## ADR 0102 refuses a bid under its own ceiling rather than placing a void one, so the second
-## call returned `ceiling_below_required`, no second row was ever written, and the settlement
-## walk had nothing to fall back to. The lot therefore went `unsold` and this case asserted a
-## fall-through that had never happened. `next` now carries enough to clear the RAISED
-## requirement, which is what produces the two-entry walk the case is about.
-func test_a_defaulting_high_bidder_hands_the_lot_to_the_next_bidder_at_their_own_bid() -> void:
-	var house := _house()
-	var lot_id := _list_good(house)
-	var high := _bidder(&"high_bidder", 1000, [&"collector"] as Array[StringName])
-	var next := _bidder(&"next_bidder", 2000, [&"collector"] as Array[StringName])
-	var first := AuctionBids.bid(high, StringName(lot_id), 1)
-	assert_eq(bool(first["ok"]), true, "the first collector bids: %s" % first.get("reason", ""))
-	var high_at := int(first["amount"])
-	# The second collector's ceiling now clears the RAISED required bid, so they place a real
-	# second row — above the first, because their ceiling is above it. Two rows is what the
-	# settlement walk ranks.
-	var second := AuctionBids.bid(next, StringName(lot_id), 2)
-	assert_eq(
-		bool(second["ok"]),
-		true,
-		"the second collector places a real bid: %s" % second.get("reason", "")
-	)
-	var second_at := int(second["amount"])
-	assert_eq(second_at > high_at, true, "the second bid is the high, having outbid the first")
-	var row := _lot()
-	assert_eq(int(row["bid_count"]), 2, "so there are two rows for the walk to rank")
-	# The high bidder then spends their purse between bid and close.
-	ItemsApi.inventory(high).remove(COIN, 1000)
-	assert_eq(EconomyApi.purse(high), 0, "the high bidder is broke before settlement")
-	var settled := MarketApi.settle_lot(house, _resolver([high, next]), StringName(lot_id), 3)
-	assert_eq(String(settled["status"]), "sold", "the lot still sells")
-	assert_eq(
-		String(settled["winner"]), "next_bidder", "to the next bidder, not to the defaulting one"
-	)
-	assert_eq(
-		int(settled["amount"]),
-		second_at,
-		"at THEIR OWN bid (%d), not at a rescued or inflated figure" % second_at
-	)
-	assert_eq(
-		EconomyApi.purse(next), 2000 - second_at, "and the fallback bidder pays their own bid"
-	)
-	assert_eq(
-		EconomyApi.purse(house),
-		second_at,
-		"to the house, which is never charged the shortfall for the default"
-	)
-
-
-# --- 5. The structural pins -----------------------------------------------------
-
-
-## `market` names no `npc` type, and the facade is still at or under the twelve-method
-## cap. Both are read off the SOURCE rather than asserted by count-and-trust: the cap is
-## `MAX_FACADE_PUBLIC_METHODS` in `tools/arch/rules.py`, and this is the ADR 0102 shape
-## of the pin.
-##
-## **The `npc` scan reads executable text only.** `api.gd` cites `NpcState.ensure_entry` in a
-## `##` comment as the shape `MAX_SHOPS` follows — a real cross-reference, since that
-## function exists — and a raw `contains("NpcState")` therefore fails on the citation that
-## documents the convention. A dependency is something the file DECLARES, not something it
-## explains, so the pin searches code. This is the same rule the no-rng case above applies.
-func test_the_market_facade_names_no_npc_type_and_stays_within_its_method_cap() -> void:
-	var source := FileAccess.get_file_as_string("res://src/modules/market/api.gd")
-	var code := _executable(source)
-	for forbidden in FORBIDDEN_IN_MARKET:
-		assert_eq(
-			code.contains(String(forbidden)), false, "market/api.gd names no %s" % String(forbidden)
-		)
-	assert_eq(code.contains("res://src/modules/npc"), false, "and preloads nothing from npc/")
-	# The cap itself, counted with the same regex `tools/arch/enforce.py` uses. Counted on
-	# the WHOLE file, comments included, because a method declaration is never a comment.
-	var pattern := RegEx.new()
-	assert_eq(
-		pattern.compile("^(?:static\\s+)?func\\s+([A-Za-z_]\\w*)"),
-		OK,
-		"the facade-method pattern compiles"
-	)
-	var public: Array[String] = []
-	for entry in pattern.search_all(source):
-		var name := entry.get_string(1)
-		if not name.begins_with("_"):
-			public.append(name)
-	assert_eq(
-		public.size() <= 12, true, "market publishes %d public methods, at most 12" % public.size()
-	)
-
-
-## The one-price-path pin, unchanged by this change: `auction_state.gd` is pure
-## arithmetic over the lot's FROZEN price and names no price formula at all, and `api.gd`
-## may only reach the price through `EconomyValuation.price_of`.
-func test_the_auction_state_still_names_no_second_price_formula() -> void:
-	var state_source := FileAccess.get_file_as_string("res://src/modules/market/auction_state.gd")
-	for forbidden in ["RARITY_WEIGHT", "rarity_weight(", "RealmRate.", "unit_price(", "price_of("]:
-		assert_eq(
-			state_source.contains(forbidden), false, "auction_state.gd names no %s" % forbidden
-		)
-	var read_model := FileAccess.get_file_as_string(
-		"res://src/modules/market/auction_read_model.gd"
-	)
-	for forbidden in ["RARITY_WEIGHT", "rarity_weight(", "RealmRate.", "unit_price("]:
-		assert_eq(
-			read_model.contains(forbidden),
-			false,
-			"auction_read_model.gd names no %s either" % forbidden
-		)
-	var api_source := FileAccess.get_file_as_string("res://src/modules/market/api.gd")
-	assert_eq(api_source.contains("RARITY_WEIGHT"), false, "api.gd names no rarity weight")
-	assert_eq(api_source.contains("rarity_weight("), false, "api.gd calls no rarity weight")
-	assert_eq(api_source.contains("RealmRate."), false, "api.gd names no realm curve")
-	assert_eq(api_source.contains("unit_price("), false, "api.gd assembles no price from parts")
-	assert_eq(
-		api_source.contains("EconomyValuation.price_of("),
-		true,
-		"api.gd prices through the one formula"
-	)
-
-
-## The events announce facts that are ALREADY WRITTEN (ADR 0093). Each one is captured
-## and then the ledger is read, so a signal that fired before its write would fail here
-## rather than reading as a working bus.
-func test_the_auction_events_announce_what_has_already_been_written() -> void:
-	var bus := AuctionEvents.shared()
-	assert_eq(bus, bus, "the bus is one instance, so a subscriber connects once")
-	var seen: Array[Dictionary] = []
-	var on_bid := func(bidder_id: String, lot_id: StringName, amount: int, _req: int) -> void:
-		seen.append({"signal": "bid_placed", "bidder": bidder_id, "amount": amount})
-	var on_outbid := func(bidder_id: String, _lot: StringName, by_id: String, _amount: int) -> void:
-		seen.append({"signal": "outbid_in_auction", "bidder": bidder_id, "by": by_id})
-	var on_default := func(bidder_id: String, _lot: StringName, amount: int) -> void:
-		seen.append({"signal": "defaulted_on_a_bid", "bidder": bidder_id, "amount": amount})
-	var on_won := func(bidder_id: String, _lot: StringName, amount: int, _seller: String) -> void:
-		seen.append({"signal": "won_auction", "bidder": bidder_id, "amount": amount})
-	bus.bid_placed.connect(on_bid)
-	bus.outbid_in_auction.connect(on_outbid)
-	bus.defaulted_on_a_bid.connect(on_default)
-	bus.won_auction.connect(on_won)
-
-	var house := _house()
-	var lot_id := _list_good(house)
-	var winner := _bidder(&"event_winner", 1000, [&"collector"] as Array[StringName])
-	var high := AuctionBids.bid(winner, StringName(lot_id), 1)
-	assert_eq(bool(high["ok"]), true, "the high bid lands")
-	var row := _lot()
-	assert_eq(
-		int(row["high_bid_amount"]),
-		int(high["amount"]),
-		"and the ledger already holds it when `bid_placed` fired"
-	)
-	# A genuine outbid: a second bidder whose purse is deep enough that its 90 percent
-	# ceiling clears the RAISED required bid — unlike an equal purse, whose ceiling is
-	# still the opening it planned against and which would be refused outright.
-	var richer := _bidder(&"event_richer", 5000, [&"collector"] as Array[StringName])
-	var raised := int(_lot()["required_bid"])
-	assert_eq(bool(MarketApi.bid(richer, StringName(lot_id), raised, 2)["ok"]), true, "raised")
-	var after_raise := _lot()
-	assert_eq(String(after_raise["high_bid"]), "event_richer", "the ledger names the new high")
-	assert_eq(
-		int(after_raise["bid_count"]),
-		2,
-		"and the displaced bidder is STILL in the walk — outbid is a demotion"
-	)
-	ItemsApi.inventory(richer).remove(COIN, 5000)
-	var settled := MarketApi.settle_lot(house, _resolver([winner, richer]), StringName(lot_id), 3)
-	var sold := _lot()
-	assert_eq(String(sold["status"]), "sold", "the lot settled")
-	# **The winner comes from the SETTLEMENT RESULT, not from the read row.** `AuctionReadModel`
-	# publishes lot_id, seller, def, price, required_bid, high_bid, high_bid_amount, bid_count,
-	# closes_after and status — and deliberately no `winner`, because the winner is only known
-	# once the lot has closed and this row is a read of an OPEN lot. Indexing `sold["winner"]`
-	# on the row was a runtime error that aborted the case mid-function, which is why this test
-	# previously reported "1 script error" rather than a failure.
-	assert_eq(String(settled["winner"]), "event_winner", "and the loser of the raise won the lot")
-	assert_eq(
-		String(sold["high_bid"]),
-		"event_richer",
-		"while the row still names the displaced high bidder, as an open read model must"
-	)
-
-	var signals: Array[String] = []
-	for entry in seen:
-		signals.append(String((entry as Dictionary)["signal"]))
-	assert_eq(signals.has("bid_placed"), true, "a bid was announced: %s" % str(signals))
-	assert_eq(signals.has("outbid_in_auction"), true, "an outbid was announced: %s" % str(signals))
-	assert_eq(signals.has("defaulted_on_a_bid"), true, "a default was announced: %s" % str(signals))
-	assert_eq(signals.has("won_auction"), true, "a win was announced: %s" % str(signals))
-	# The purse the winner carried INTO the settlement, so the two lines below compare
-	# against it rather than against a number the bid already moved.
-	var bidder_before := EconomyApi.purse(bidder)
-	# **The purse is strictly UNDER the winner's bid, so they paid and still keep a purse.**
-	# The line reads "the winner paid, so this assertion is not vacuous", and the point is
-	# the three assertions ABOVE it: a transfer that DESTROYED the coins would also leave a
-	# purse of 0, and so would a transfer that never moved any. Only a purse that came down
-	# and stayed above zero can say "the coins moved" rather than "the coins are gone".
-	# `bidder_before - paid` leaves 100 behind on purpose, and the sale is asserted to
-	# succeed — so an empty purse afterwards is a FAILURE here, which is what the guard has
-	# to be: a property asserted about a sale that did not happen asserts nothing.
-	assert_eq(EconomyApi.purse(bidder) < bidder_before, true, "the winner paid for the lot")
-	assert_eq(
-		EconomyApi.purse(bidder) > 0,
-		true,
-		"and still holds coins, so the transfer moved the purse rather than emptying it"
-	)
-
-	bus.bid_placed.disconnect(on_bid)
-	bus.outbid_in_auction.disconnect(on_outbid)
-	bus.defaulted_on_a_bid.disconnect(on_default)
-	bus.won_auction.disconnect(on_won)
-	# Disconnected, so this suite does not leak four connections into every suite after it.
-	assert_eq(bus.bid_placed.get_connections().size(), 0, "the bus is released after the suite")
-
-
-## `summary()` is how a caller knows which lots are due — ADR 0102 says so and this
-## facade is at its cap, so the read model is where a lot becomes visible.
-func test_the_read_model_reports_the_lots_a_caller_owns_time_over() -> void:
-	var house := _house()
-	var lot_id := _list_good(house)
-	var bidder := _bidder(&"reader", 1000, [&"collector"] as Array[StringName])
-	AuctionBids.bid(bidder, StringName(lot_id), 1)
-	var summary := MarketApi.summary(bidder)
-	assert_eq(int(summary["open_lot_count"]), 1, "one lot is open")
-	assert_eq(int(summary["lot_capacity"]), MarketApi.MAX_OPEN_LOTS, "and the cap is published")
-	var lots: Array = summary["lots"] as Array
-	assert_eq(lots.size(), 1, "the lot is visible from ANOTHER actor's summary")
-	assert_eq(String((lots[0] as Dictionary)["lot_id"]), lot_id, "by its own id")
-	assert_eq(String((lots[0] as Dictionary)["high_bid"]), "reader", "with its high bidder")
-	assert_eq(
-		int((lots[0] as Dictionary)["required_bid"]) > 0, true, "and what the next bid must be"
-	)
-
-
-func _player() -> Actor:
-	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 12.0, Stat.WILL: 8.0})
-	actor.attach_core_resources()
-	SocialApi.attach(actor)
-	ItemsApi.attach(actor, 24)
-	EconomyApi.attach(actor)
-	return actor

@@ -1,0 +1,231 @@
+class_name ItemWorkbenchPlay
+extends Control
+
+## The composition root's PLAY half: the actor it holds and the four clocks that
+## answer for it — the world period, the anchor repair, the death poll and the
+## autosave.
+##
+## ## Why this is a base script and not a `ItemWorkbenchApp` method
+##
+## Extracted from `item_workbench_app.gd` because that file passed the thousand-line
+## ceiling and the twenty-public-method cap, and because these are not the SHELL's
+## job. The shell's job is mounting a screen and answering "where is the player" —
+## [method ItemWorkbenchApp.navigate_to], [method ItemWorkbenchApp.summary] and the
+## route table. This half is what a body IS: who it is, what period it has advanced
+## to, what it costs to stand next to a hearth, and what happens when it dies. Two
+## reasons to change, so two files (AGENTS.md, "one module = one reason to change").
+##
+## ## Why inheritance and not delegation
+##
+## **The public surface is the contract, and it does not move.** Every verb below is
+## called on the mounted root by a screen, a probe or a suite — `advance_world`,
+## `poll_death`, `actor()`, `raise_anchor` — so moving one to another object would
+## leave a caller naming a method that is not there. A base class keeps all of them
+## ON the same instance: `ItemWorkbenchApp` still answers every one of them, and
+## `get_script_method_list()` on it reports the inherited declarations too, so
+## `tests/app/test_screen_reachability.gd` still sees the whole door surface.
+##
+## ## What the split is NOT allowed to break
+##
+## Two suites read `item_workbench_app.gd` as TEXT and would go red for the right
+## reason if the wiring they check moved here:
+##
+##   - `tests/app/test_status_clock.gd` requires `StatusLoop.new(` and `func _process(`
+##     to appear in `item_workbench_app.gd` and NOWHERE ELSE under `res://src`, because
+##     one tick caller is ADR 0106's whole claim. Neither is below.
+##   - `tests/modules/save/test_cultivation_boot_round_trip.gd` slices that same file
+##     between `func restore_actor` and `func restored_from_save`, so both stay in it.
+##
+## `_ready`, `_process`, `restore_actor`, `_build_actor` and `adopt_actor` therefore
+## all stayed in the shell. What moved is what they call, and nothing they call calls
+## back into the shell — so there is no cycle for a reader to follow in either
+## direction.
+##
+## ## No clock of its own, and no `while`
+##
+## Every accrual here takes the elapsed time or the period count from the caller that
+## owns it (DEF-0111); nothing reads `Time.get_ticks_*`, which is what
+## `tests/app/test_status_clock.gd` asserts. There is no loop in this file at all, so
+## `tests/arch_rules/test_no_unbounded_wait.gd` has nothing to rule on.
+
+var _actor: Actor = null
+## What [code]NpcBoot.populate_room[/code] answered at boot: how many bodies stood up
+## and who they are. Held so a probe can read the cast without reaching past `app/` —
+## the live instances themselves stay in `npc`'s own registry, which is where ADR 0092
+## says a room's occupants live.
+var _npc_settlement: Dictionary = {}
+## The world's clock and the ONE place a beat reaches a sink (ADR 0117, DEF-0111).
+## A director with no production instance is the same defect as a facade with no
+## callers: `add_sink` / `offer` were tested and a player could never reach them.
+var _world: WorldPulse = null
+## The death resolver (ADR 0130). Polled from [method ItemWorkbenchApp._process] like
+## every other clock here, because a module may not declare its own frame driver
+## (DEF-0111) and a FOURTH `_process` fails `tests/app/test_status_clock.gd`.
+var _death: SoulDeath = null
+## The actor id the death poll is currently watching. Armed on adoption and re-armed on a body
+## swap, so a poll never fires twice for the same body and never fires for a replaced one.
+var _death_armed: String = ""
+## The last resolved death, as primitives, so `summary()` can report what happened without a
+## screen re-deriving it.
+var _last_death: Dictionary = {}
+
+
+## Advance the world by exactly `periods` whole periods, with no elapsed time — the
+## player-facing half of the tick. `EventApi.advance` refuses `periods <= 0` by
+## design (ADR 0085), so nothing accrues without a caller saying how much.
+func advance_world(periods: int) -> Dictionary:
+	return (
+		{"ok": false, "reason": "no_world"} if _world == null else _world.advance_periods(periods)
+	)
+
+
+## Advance the world by exactly ONE period. **The verb a screen's "wait a season"
+## button and a headless probe both call**, so neither has to know the cadence or
+## pass an argument a driver would hand over as a string.
+##
+## ## An anchor repairs HERE, because this is the period boundary
+##
+## `AnchorApi.repair` takes explicit `periods` precisely because nothing may own a clock
+## (DEF-0111), and this is the caller that owns one. **Wiring it anywhere else would leave the
+## building feature a set of headless verbs**: the hearth would exist, be raisable, and never
+## heal anybody in play. The repair is REPORTED rather than swallowed, because a player who
+## waits a season at a hearth and sees nothing happen cannot tell a bug from a feature that
+## never fired.
+func advance_one_period() -> Dictionary:
+	var outcome := advance_world(1)
+	outcome["anchor_repair"] = _repair_at_anchor()
+	return outcome
+
+
+## Raise `anchor_id` where this actor stands, and report what it cost.
+##
+## **The door a construction screen and a probe both call**, so neither has to know the
+## authored cost shape. Refusals are the module's own (`cannot_afford`, `already_raised`,
+## `realm_floor`), passed through verbatim rather than re-worded.
+func raise_anchor(anchor_id: StringName) -> Dictionary:
+	return AnchorApi.raise_anchor(_actor, anchor_id, String(_actor.id))
+
+
+## Select the difficulty this run is played under, and report the scalars it now answers with.
+##
+## **The door a settings screen and a probe both call.** Persisting the id rather than the
+## resolved numbers is what keeps an old save meaningful after a retune (ADR 0129).
+func select_difficulty(difficulty_id: StringName) -> Dictionary:
+	var outcome := DifficultyApi.select(_actor, difficulty_id)
+	if not bool(outcome["ok"]):
+		return outcome
+	return {
+		"ok": true,
+		"reason": "",
+		"difficulty_id": String(difficulty_id),
+		"scalars": DifficultyApi.scalars(_actor),
+	}
+
+
+## Repair the soul from whatever raised anchor stands, for `periods` whole periods.
+func _repair_at_anchor(periods: int = 1) -> Dictionary:
+	if _actor == null:
+		return {"ok": false, "reason": "no_actor", "restored": 0}
+	return AnchorApi.repair(_actor, periods)
+
+
+## The world's own view of itself, published beside [method ItemWorkbenchApp.summary] so a
+## probe can tell a dead director from a quiet one without reaching into the pulse.
+func world_summary() -> Dictionary:
+	return {} if _world == null else _world.summary()
+
+
+## Resolve a death for the current body, once.
+##
+## **Armed on the actor id, so one body dies once.** A poll that fired on every frame would
+## charge the soul repeatedly for a single wound, and re-arming after a body swap is the only
+## reason a rebirth can happen at all. Called from [method ItemWorkbenchApp._process] and
+## directly by tests and probes, so the rule is testable without driving frames.
+##
+## A body with no lives left stays in place rather than being swapped for null: there is nowhere
+## to swap TO, and a null actor would take every screen with it.
+func poll_death() -> Dictionary:
+	if _death == null or _actor == null:
+		return {}
+	if _death_armed != String(_actor.id):
+		_death_armed = String(_actor.id)
+		return {}
+	if not _death.is_dead(_actor):
+		return {}
+	_last_death = _death.resolve(_actor)
+	# Re-arm whatever stands now, so a guardian death does not re-fire next frame and a rebirth
+	# arms the NEW body rather than the one that fell.
+	_death_armed = String(_actor.id)
+	# A death is a thing that happened to the world, so it is saved immediately rather than
+	# waiting for the next boundary: the run state that matters most is the state at death.
+	SaveApi.persist(_actor, String(DifficultyApi.current_id(_actor)))
+	return _last_death
+
+
+## The last resolved death, as primitives. `{}` before anything has died.
+func last_death() -> Dictionary:
+	return _last_death.duplicate(true)
+
+
+## Write the save if the clock says one is due.
+##
+## **The player never decides when this happens.** The clock counts whole periods and the save
+## lands on a boundary they never see, which is the requirement rather than a limitation
+## (ADR 0128). Called from [method ItemWorkbenchApp._process] with the engine's delta; no
+## module reads a clock.
+func poll_save(delta: float) -> Dictionary:
+	if not SaveApi.clock.pull(delta):
+		return {}
+	return SaveApi.persist(_actor, String(DifficultyApi.current_id(_actor)))
+
+
+## Mint a fresh body for `arrival_id` — the composition root's half of a rebirth.
+##
+## The body is built through the SAME arrival table character creation uses, so a returning
+## soul arrives the way a first one does and there is one rule for "how does a hero arrive"
+## rather than two. Refuses an arrival the catalog does not define rather than minting a hero
+## nothing can explain.
+func mint_body(arrival_id: String, incarnation: int) -> Dictionary:
+	var arrival := StringName(arrival_id)
+	if SoulCatalog.instance().arrival_definition(arrival) == null:
+		return {"ok": false, "reason": "unknown_arrival"}
+	return CharacterCreationFlow.build_forced(arrival, incarnation)
+
+
+## The actor this root is currently holding, or null before boot builds one.
+##
+## **Public because a rebirth makes the actor MOVE.** A screen bound to the body that fell is
+## reading a dead hero, and the only way for it to follow is to ask the root rather than cache
+## what it was handed. The alternative — every screen re-reading on a signal — is a second
+## mechanism for the one fact the root already owns.
+func actor() -> Actor:
+	return _actor
+
+
+## The save's own condition, as primitives, so a status line can report that saving happened
+## without asking permission and without naming the backup.
+func save_summary() -> Dictionary:
+	return SaveApi.summary()
+
+
+## The soul, the difficulty, the anchors and the save, as primitives, so a probe can assert the
+## wiring without reaching into a module.
+func soul_summary() -> Dictionary:
+	return {
+		"soul": SoulApi.soul(_actor),
+		"difficulty": String(DifficultyApi.current_id(_actor)),
+		"anchors": AnchorApi.summary(_actor),
+		"last_death": _last_death,
+		"save": SaveApi.summary(),
+	}
+
+
+## Who is standing in the settlement this root stocked at boot (BL-0626).
+##
+## Published for the same reason `routes()` is: a probe or a test must be able to
+## READ what the boot did without reaching into `npc`'s registry or re-deriving the
+## cast list. The answer is `populate_room`'s own dictionary verbatim — a count, the
+## location id, and one read-model row per npc — so nothing here can disagree with
+## what was actually minted.
+func npc_presence() -> Dictionary:
+	return _npc_settlement.duplicate(true)

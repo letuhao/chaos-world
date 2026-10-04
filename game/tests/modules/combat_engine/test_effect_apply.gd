@@ -280,10 +280,11 @@ func test_a_mind_hit_raises_turbulence_and_lowers_clarity_on_the_real_sea() -> v
 		clampf(CLARITY_BEFORE + float(effect[MindDamage.KEY_CLARITY]), 0.0, 1.0),
 		"by exactly the effect's clarity delta -- set_clarity, as a VALUE not a delta"
 	)
-	# Mind never subtracts a SHARE of its own erosion (ADR 0071): the amount is `0.0`, so
-	# what S8 floors the blow to is `chip_floor(S1's base)` and nothing more — the same
-	# 1.0 every other landed hit pays, asserted as that floor rather than as `0.0` because
-	# S8 reads `outcome.base` and not the mechanism's zero (`test_mind_damage.gd:96-102`).
+	# Mind never subtracts a SHARE of its own erosion (ADR 0071, amended by ADR 0162): the
+	# amount is `0.0`, so what S8 floors the blow to is `chip_floor(S1's base)` and nothing
+	# more -- the same chip every other landed hit pays, and the one documented exception to
+	# ADR 0071's headline claim. Asserted as that floor rather than as `0.0` because S8
+	# reads `outcome.base` and not the mechanism's zero (`test_mind_damage.gd`).
 	assert_eq(outcome.proposed_amount(), 0.0, "a mind hit carries no amount at all")
 	assert_almost_eq(
 		float(outcome.amount),
@@ -440,9 +441,9 @@ func test_a_target_with_no_sea_skips_the_erosion_and_still_takes_the_hit() -> vo
 	var outcome := _mind_hit(attacker, bare)
 	assert_eq(outcome.missed, false, "the hit landed")
 	# A mind amount is `0.0`, so the ONLY health a mind hit may cost is S8's chip floor on
-	# S1's base — the same `1.0` any landed hit pays. Asserting it as that floor rather than
-	# as `0.0` is what "takes the hit normally" means here: the erosion was skipped, not the
-	# blow (`test_mind_damage.gd:96-102` is the same claim on the mechanism's half).
+	# S1's base -- the same chip any landed hit pays, and the documented exception ADR 0071
+	# was amended to record (ADR 0162). Asserting it as that floor rather than as `0.0` is
+	# what "takes the hit normally" means here: the erosion was skipped, not the blow.
 	assert_almost_eq(
 		float(outcome.amount),
 		CombatSpine.chip_floor(CombatSpine.base_damage(attacker, _mind_technique()), _tuning),
@@ -687,7 +688,7 @@ func _bind_body(attacker: Actor) -> BodyDamage:
 ## carrying the bound ledger on the context. A null `rng` lands every attack and never crits,
 ## so what each row reads is the arithmetic and not a roll.
 func _strike(
-	attacker: Actor, target: Actor, technique: TechniqueDef, mechanism: BodyDamage
+	attacker: Actor, target: Actor, technique: TechniqueDef, _mechanism: BodyDamage
 ) -> CombatOutcome:
 	return CombatSpine.resolve_hit(
 		attacker,

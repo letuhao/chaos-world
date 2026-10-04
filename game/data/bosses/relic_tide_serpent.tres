@@ -8,3 +8,7 @@ id = &"relic_tide_serpent"
 display_name = "Tide Serpent"
 domain_id = &"relic_tide_serpent_domain"
 loot = Array[StringName]([])
+## One heavy wave lands at once and spends its whole force the moment it arrives. The
+## water pair's burst half (`water_chill` is the slow the player's own blow inflicts), and
+## authored `spends_on_apply`, so it damages exactly once and leaves no modifier behind.
+affliction = &"water_deluge"

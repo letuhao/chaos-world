@@ -7,7 +7,7 @@
 script = ExtResource("2_tier")
 tier = 1
 label = "Gate"
-realm = &"spirit_manifestation"
+realm = &"foundation"
 rarity = &"common"
 vitality = 136.0
 boss_tables = Array[Dictionary]([
@@ -19,7 +19,7 @@ boss_tables = Array[Dictionary]([
 script = ExtResource("2_tier")
 tier = 2
 label = "Depths"
-realm = &"spirit_manifestation"
+realm = &"foundation"
 rarity = &"rare"
 vitality = 217.6
 boss_tables = Array[Dictionary]([

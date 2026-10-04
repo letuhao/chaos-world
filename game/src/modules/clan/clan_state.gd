@@ -77,6 +77,9 @@ static func is_own_source(source: StringName) -> bool:
 ## unreadable field therefore discards itself rather than poisoning the whole record —
 ## but an unreadable `standing` discards the whole record, because a member with an
 ## unreadable standing but a live rank would be a coherent-looking lie.
+##
+## **Every id arrives through `_text`, never a raw `String(...)` cast** — see that
+## helper for why the cast is the wrong tool on a save payload.
 static func normalize(payload: Dictionary, known_clans: Dictionary = {}) -> Dictionary:
 	var out := {
 		"version": SCHEMA_VERSION,
@@ -87,13 +90,13 @@ static func normalize(payload: Dictionary, known_clans: Dictionary = {}) -> Dict
 	}
 	if payload.is_empty():
 		return out
-	var clan_id := String(payload.get("clan", ""))
+	var clan_id := _text(payload.get("clan", ""), "")
 	if clan_id != "" and (known_clans.is_empty() or known_clans.has(clan_id)):
 		out["clan"] = clan_id
 		# A rank is only meaningful alongside the clan it was granted by, so it is
 		# filtered by the same test. A member with no clan holds no position: this is
 		# the normal state, not a gap to be filled in.
-		var rank := String(payload.get("rank", ""))
+		var rank := _text(payload.get("rank", ""), "")
 		if rank != "" and out["clan"] == clan_id:
 			out["rank"] = rank
 	# Standing was earned INSIDE a house, so it only exists while the membership does.
@@ -201,9 +204,33 @@ static func applied(ledger: Dictionary) -> Dictionary:
 	return ledger.get("applied", {}) as Dictionary
 
 
+# --- Internals ---------------------------------------------------------------
+
+
+## The one text coercion in this module: `value` when it really is text (a `String` or
+## a `StringName`), otherwise `fallback`. **This is `sect_state.gd`'s `_text`, carried
+## over unchanged** (see `sect_state.gd:446-449` for why the raw cast is not safe on a
+## save payload).
+##
+## A `String(...)` CAST is the wrong tool here, and it is not a style preference.
+## `String(42.0)` raises at runtime in GDScript rather than yielding `"42.0"`, so a
+## corrupt save whose `clan` arrived as a number would abort the whole
+## `ClanApi.attach` — which is the exact opposite of the module's own documented rule
+## above, that a payload which cannot be read is diagnosed as empty. The reader would
+## get a script error and no actor at all instead of an unaffiliated actor, and the
+## failure would look like a crash in the composition root rather than a bad field in
+## one save slot. `str()` does not raise, but it would turn a corrupt field into a
+## plausible-looking id that the known-clan filter then has to reject by accident;
+## an explicit type test that falls back is refusal, not coincidence.
+static func _text(value: Variant, fallback: String) -> String:
+	if value is String or value is StringName:
+		return String(value)
+	return fallback
+
+
 static func _applied_record(record: Dictionary) -> Dictionary:
-	var clan_id := String(record.get("clan", ""))
+	var clan_id := _text(record.get("clan", ""), "")
 	if clan_id == "":
 		return {}
-	var rank := String(record.get("rank", ""))
+	var rank := _text(record.get("rank", ""), "")
 	return {"clan": clan_id, "rank": rank}

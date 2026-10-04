@@ -5,6 +5,12 @@
 - Supersedes in part: ADR 0136 (the bus is observed, not reserved)
 - Depends on: ADR 0065 (earn-only), ADR 0134 (the consumer surface), ADR 0093 (signals announce)
 
+> **ADR 0148 carries this same decision and is the canonical copy.** Two agents filed it
+> independently while a third was editing `docs/adr/`, and the numbering tool handed out two
+> numbers for one decision. Neither file is deleted — an ADR is immutable once accepted, and
+> an agent may already have read either. ADR 0149 is kept as an exact duplicate so a reader
+> who lands on either number finds the same decision.
+
 ## Context
 
 ADR 0136 decided the earned-fate bus was "deliberately reserved and currently unobserved,

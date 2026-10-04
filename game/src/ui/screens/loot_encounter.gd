@@ -26,6 +26,17 @@ extends UiScreen
 ## itself would own a number format the panel is supposed to own, and the readout would
 ## then have two places to change.
 ##
+## ## And the COMBAT-EXIT PURGE is a seam from `app/`, not a call from here
+##
+## ADR 0089 also says COMBAT-scope statuses are cleared when combat ends. The verb that
+## does it is `StatusLoop.exit_combat`, which lives in `app/` — a `PRIVATE_UNIT`
+## (`tools/arch/rules.py:35`), so this program may hold neither the type nor the call.
+## The composition root therefore injects it as a `Callable`, exactly as it injects the
+## quest screen's commit seam ([QuestScreen.bind_quests]): this screen names no `app/`
+## type and reaches the purge through the one legal door. Unwired, the screen still
+## leaves the domain and reports it; the burn simply outlives the fight, which is the
+## defect [method bind_combat_exit] exists to close.
+##
 ## Widgets live in `loot_encounter.tscn`; the four `ScreenStack` hooks are inherited
 ## from [UiScreen] and are safe to call at any time.
 ##
@@ -57,6 +68,24 @@ var _stash_list: LootRewardList = null
 ## The last action's own verdict, published as primitives by `summary()`.
 var _last_ok: bool = false
 var _last_reason: String = ""
+## The COMBAT-EXIT PURGE, injected by the composition root (ADR 0089). `StatusLoop` is an
+## `app/` type and `app` is a `PRIVATE_UNIT`, so the screen cannot call it — but ADR 0089's
+## purge is a rule about WHEN a fight is over, and this screen is where the game knows
+## that. Called as `purge() -> Array[String]`, answering the ids it cleared.
+##
+## ## Why it is a Callable rather than a `LootBridge` slot
+##
+## The bridge is the `loot` module's injected face: every slot on it is a `LootApi` verb,
+## and the loot module must never learn the composition root exists. The purge is
+## `app/`'s — it is `StatusLoop`, over the status facade — so putting it there would make
+## the loot bridge carry a verb no loot screen may call and every loot bridge would have
+## to fill. One seam, one owner: this screen's own, the same shape `QuestScreen`'s
+## `bind_quests` uses for the one `app/`-owned verb a quest screen commits through.
+var _combat_exit: Callable = Callable()
+## The ids the last combat-exit purge cleared, as primitives. Published by `summary()`
+## so a reader can tell a fight that ended and burned nothing from a purge that was
+## never wired — on screen those two are the same empty line.
+var _last_cleared: Array[String] = []
 
 
 ## Inject the gameplay side. Safe to call again; the domains are re-read.
@@ -73,6 +102,46 @@ func bind_bridge(bridge: LootBridge) -> void:
 	_domains = _read_domains()
 	_refresh_domains()
 	refresh()
+
+
+## Inject the combat-exit purge, the ONE verb of ADR 0089 this screen cannot reach itself.
+##
+## Called as `purge() -> Array[String]`, answering the COMBAT-scope ids it cleared. The
+## composition root passes `StatusLoop.exit_combat`, which is the same wire it ticks, so
+## the purge and the clock can never disagree about which actor is live.
+##
+## Repaints, for the reason [method bind_bridge] does: a screen bound after a purge would
+## otherwise keep painting the debuff it just lost until the player pressed something.
+func bind_combat_exit(purge: Callable) -> void:
+	_combat_exit = purge
+	_bind_nodes()
+	refresh()
+
+
+## Whether the purge is wired. Published in `summary()` so a probe can tell "the fight
+## ended and nothing needed purging" from "nothing ever called the purge" — the two look
+## identical on screen otherwise.
+func combat_exit_wired() -> bool:
+	return _combat_exit.is_valid()
+
+
+## Run the combat-exit purge and report what it cleared. A no-op when the seam is
+## unwired, because the screen still leaves the domain — an unwired purge is a missing
+## bookkeeping step, never a refusal to let a player walk away from a fight.
+##
+## Returns the ids the purge cleared, so a caller can report them rather than re-read
+## the actor and guess. `summary()["last_cleared"]` publishes the same list.
+func _purge_combat_scope() -> Array[String]:
+	if not _combat_exit.is_valid():
+		_last_cleared = []
+		return _last_cleared
+	var result = _combat_exit.call()
+	var cleared: Array[String] = []
+	if result is Array:
+		for status_id in result as Array:
+			cleared.append(String(status_id))
+	_last_cleared = cleared
+	return cleared
 
 
 func _ready() -> void:
@@ -153,6 +222,14 @@ func act_enter() -> bool:
 
 
 ## Exchange one blow with the live boss.
+##
+## A decisive answer ENDS the fight, and ADR 0089 says a fight that is over clears the
+## COMBAT-scope statuses it inflicted. Both verdicts therefore purge before they report:
+## `fire_immolation` is authored at 16 s, so a player who wins and walks out still
+## burning for a quarter of a minute is reading a status that outlived the fight it came
+## from — the exact defect the purge exists to close. The purge runs on the DECISIVE
+## answer only, never on an exchange that is still going, because a burn is supposed to
+## survive until the fight is over.
 func act_strike() -> bool:
 	_bind_nodes()
 	if _actor == null:
@@ -165,6 +242,12 @@ func act_strike() -> bool:
 	if outcome == CombatApi.OUTCOME_PLAYER_LOST:
 		return _lost()
 	if outcome == CombatApi.OUTCOME_BOSS_DEFEATED:
+		# Rule E3 spawns the next boss on a defeat, so "the fight is over" is not
+		# literally true of a run — but the EXCHANGE is decided, and the burn this boss
+		# inflicted is the one a player walks away still carrying. Purging on the verdict
+		# rather than on `not in_domain` is what keeps a tier of five bosses from leaving
+		# five stacked burns on a body that just won one.
+		_purge_combat_scope()
 		set_message("The boss falls.", TONE_OK)
 		refresh()
 		return true
@@ -174,19 +257,38 @@ func act_strike() -> bool:
 ## A lost run is not a refusal: the player did everything right and the boss was better.
 ## The panel shows their restored health and the loss they just took, so these words only
 ## have to name what happened.
+##
+## The purge runs here for the same reason it runs on a win: the fight is over in both
+## directions, and a run that was lost with a burn still ticking would bleed the player to
+## death AFTER the fight that killed them had already been decided.
 func _lost() -> bool:
+	_purge_combat_scope()
 	set_message("You fall. The run is lost.", TONE_ERROR)
 	refresh()
 	return true
 
 
 ## Leave the domain. Unclaimed rewards are kept, so this never loses anything.
+##
+## Walking out of a live fight is the most ordinary combat exit there is, and it is the
+## one a player takes by accident: the Leave button is right there beside the strike
+## button. ADR 0089's purge rides it for the same reason it rides a verdict, because the
+## burn was inflicted BY THE FIGHT and the fight is over the moment the player stops
+## trading blows.
+##
+## The purge is NOT gated on the bridge's own verdict: it runs whenever the press leaves
+## the domain, and a refused leave (`not_in_domain` — there was no fight to end) purges
+## nothing because the actor carries nothing in scope by then anyway. Coupling it to the
+## result would mean a screen deciding when the game is "really" over, which is the rule
+## this screen must not own.
 func act_leave() -> bool:
 	_bind_nodes()
 	if _bridge == null or not _bridge.has(&"leave"):
 		return _reject("no_loot_module")
 	var result := _bridge.call_action(&"leave", [_actor])
 	_settle(result)
+	if bool(result.get("ok", false)):
+		_purge_combat_scope()
 	return _accepted(result)
 
 
@@ -329,7 +431,23 @@ func _summary() -> Dictionary:
 		# there any more -- the refusals that all read as "nothing was collected".
 		"last_reason": _last_reason,
 		"last_ok": _last_ok,
+		# ADR 0089's purge, as primitives. `combat_exit_wired` is published beside it
+		# because "the last fight cleared nothing" and "no purge has ever been called"
+		# are the same empty list, and only one of them is a defect.
+		"combat_exit_wired": combat_exit_wired(),
+		"last_cleared": _cleared_ids(),
 	}
+
+
+## The ids the last combat-exit purge cleared, as an untyped `Array` of `String`.
+## `summary()` publishes primitives only (AGENTS.md), and a typed `Array[String]` is
+## still a plain Array in the dictionary — this copy exists so the contract reads the same
+## shape a test indexes as `last_cleared`.
+func _cleared_ids() -> Array:
+	var out: Array = []
+	for status_id in _last_cleared:
+		out.append(String(status_id))
+	return out
 
 
 func _refresh_view() -> void:
