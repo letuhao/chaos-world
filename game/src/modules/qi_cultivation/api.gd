@@ -46,13 +46,24 @@ static func panel_state(actor: Actor) -> Dictionary:
 	var dantian := QiAccess.dantian(actor)
 	var pool := actor.resource(QI)
 	var preview := QiBreakthroughTransaction.preview(actor)
-	# The channels this realm's own gate needs, and the state and depth they must
-	# reach. Publishing them here means a screen can offer the training action
-	# without reaching for the realm seed, which is a module internal (ADR 0043).
+	# The channels the gate this actor is trying to ENTER needs, and the state and
+	# depth they must reach. Publishing them here means a screen can offer the
+	# training action without reaching for the realm seed, which is a module
+	# internal (ADR 0043).
+	#
+	# The gate is the NEXT realm's, because that is the one
+	# `QiBreakthroughCondition` enforces (`breakthrough_condition.gd:10-11`) and the
+	# one `target`, `can_attempt` and `unmet` in THIS SAME dictionary already
+	# describe. It used to read the standing realm's own seed, which made this block
+	# the only part of the read model describing a gate nothing checks — and the
+	# screen acted on it, skipping every channel the standing realm's state already
+	# satisfied. From the first realm whose demand is pure depth the button therefore
+	# reported nothing owed while the real gate wanted another elixir, one realm's
+	# worth of demand below the truth at every tier (ADR 0158's HANDOFF, closed).
 	var required_channels: Array = []
 	var required_state := ""
 	var required_depth := 0
-	var gate := QiRealmSeed.for_realm(state.rank_id)
+	var gate := _gate_for_next_realm(state)
 	if gate != null:
 		required_state = String(gate.required_channel_state)
 		required_depth = gate.required_channel_refinement
@@ -89,10 +100,108 @@ static func panel_state(actor: Actor) -> Dictionary:
 		"required_channels": required_channels,
 		"required_channel_state": required_state,
 		"required_channel_depth": required_depth,
+		# What a training press would refuse, as DATA (ADR 0150): how many channels
+		# the gate still wants, and the ROLE of the elixir that pays for them. A
+		# screen that counted either had to reassemble `channel_met` out of the
+		# ingredients above, which is the ADR 0044 preview/action divergence ADR 0158
+		# rejected — and a reassembled gate is how this path lost its depth half
+		# once already.
+		"owed_channels": _owed_channels(actor, gate),
+		"training_price": _training_price(actor, gate),
+		# The Transcendent ascent, published so a screen can offer the action its
+		# gate owes. DATA and not a verb: the walk itself is `WorldAnchor.ascend`, a
+		# core entry point `ui/` may call directly (ADR 0041), so nothing here grows
+		# the facade — the same split body and mind already publish it under.
+		"ascent": _ascent_state(actor, _target_index(preview)),
 		"can_attempt": bool(preview.get("can_attempt", false)),
 		"chance": float(preview.get("chance", 0.0)),
 		"unmet": preview.get("unmet_conditions", []),
 		"costs": preview.get("costs", {}),
+	}
+
+
+## The seed of the realm this actor is trying to ENTER, or null at the top of the
+## ladder. Every gate reported by `panel_state` reads this one seed, so the state,
+## the depth, the channel list, the owed count and the price cannot describe two
+## different realms.
+static func _gate_for_next_realm(state: PathState) -> QiRealmSeed:
+	var next_realm := RealmDefaults.ladder().next(state.rank_id)
+	return null if next_realm == null else QiRealmSeed.for_realm(next_realm.id)
+
+
+## The channels a training press may reach: the gate's own four first, then the rest
+## of the network, so the button still does something once the gate's are done.
+##
+## The gate's own channels come first because they are the ones the gate asks for;
+## the tail exists so a spare elixir has somewhere to go. Two bounded `for`es over
+## fixed content (`required_meridians`, `MeridianDefaults.all()`) appending into a
+## list neither grows: no loop here tests a size of its own.
+static func _training_candidates(gate: QiRealmSeed) -> Array[StringName]:
+	var out: Array[StringName] = []
+	if gate != null:
+		for meridian_id in gate.required_meridians:
+			if not out.has(meridian_id):
+				out.append(meridian_id)
+	for definition in MeridianDefaults.all():
+		if not out.has(definition.id):
+			out.append(definition.id)
+	return out
+
+
+## How many of those channels the gate still wants: state OR depth, read through
+## `channel_met` — the one definition of the gate (ADR 0044/0158).
+static func _owed_channels(actor: Actor, gate: QiRealmSeed) -> int:
+	if gate == null:
+		return 0
+	var owed := 0
+	for meridian_id in _training_candidates(gate):
+		var channel := actor.meridians.get_meridian(meridian_id)
+		if channel != null and not gate.channel_met(channel):
+			owed += 1
+	return owed
+
+
+## Which elixir pays for the first channel still owed, by ROLE and never by id (the
+## ids are authored per realm in the seed, a module internal no screen may read).
+## `training_item` walks a healthy channel; `recovery_item` closes a burned one,
+## because `train_channel` hands a burn to `recover` — so the burn is the
+## discriminator (ADR 0141). Empty when nothing is owed.
+static func _training_price(actor: Actor, gate: QiRealmSeed) -> StringName:
+	if gate == null:
+		return &""
+	for meridian_id in _training_candidates(gate):
+		var channel := actor.meridians.get_meridian(meridian_id)
+		if channel == null or gate.channel_met(channel):
+			continue
+		return &"recovery_elixir" if channel.is_injured() else &"channel_elixir"
+	return &""
+
+
+## Ladder index of the realm this actor is trying to enter, or -1 when the ladder
+## has none ahead of it. Read off the preview so the ascent report and the unmet
+## list can never name two different targets.
+static func _target_index(preview: Dictionary) -> int:
+	var target := String(preview.get("target_realm", ""))
+	if target.is_empty():
+		return -1
+	return RealmDefaults.ladder().index_of(StringName(target))
+
+
+## How much of the Transcendent ascent this actor has left to walk, in the shape a
+## screen renders a progress bar from. `required` is "is the ascent this actor's
+## gate at all", which `ascension_ok` answers — true for every target at or below
+## `WorldAnchor.COMMIT_MICRO`, so nothing here is conditional on the tier.
+## `outstanding` is `WorldAnchor.ascension_unmet` verbatim (ADR 0034).
+static func _ascent_state(actor: Actor, target_index: int) -> Dictionary:
+	var remaining := 0
+	if actor.ascension != null:
+		remaining = actor.ascension.steps_remaining()
+	return {
+		"required": target_index > 0 and not Breakthrough.ascension_ok(actor, target_index),
+		"steps": remaining,
+		"steps_total": AscensionState.ASCENT_STEPS,
+		"met": Breakthrough.ascension_ok(actor, target_index),
+		"outstanding": WorldAnchor.ascension_unmet(actor),
 	}
 
 

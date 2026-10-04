@@ -43,6 +43,7 @@ func _summary() -> Dictionary:
 		"dantian_quality": live.get("dantian_quality", 0.0),
 		"dantian_injured": live.get("dantian_injured", false),
 		"channels": _channel_entries(live),
+		"ascent": _ascent_view(live),
 		"can_act": live.get("can_attempt", false),
 		"chance": live.get("chance", 0.0),
 		"unmet": live.get("unmet", []),
@@ -176,6 +177,7 @@ func _refresh_view() -> void:
 						&"meditate",
 						&"train_channel",
 						&"recover",
+						&"ascend",
 						&"breakthrough",
 					],
 					"labels":
@@ -184,6 +186,7 @@ func _refresh_view() -> void:
 						"meditate": "Meditate",
 						"train_channel": "Train Channel",
 						"recover": "Recover",
+						"ascend": "Walk Ascent",
 						"breakthrough": "Breakthrough",
 					},
 					"enabled":
@@ -192,6 +195,7 @@ func _refresh_view() -> void:
 						"meditate": not live.is_empty(),
 						"train_channel": not live.is_empty() and has_gate,
 						"recover": not live.is_empty(),
+						"ascend": _ascend_offered(live),
 						"breakthrough": ready,
 					},
 					"primary": &"breakthrough",
@@ -276,39 +280,119 @@ func act_breakthrough() -> bool:
 	return advanced
 
 
-## Train the first channel that is not yet at the realm's required state. The gate
-## demands specific channels reach that state and `cultivate` never touches
-## meridians, so without this button the qi path cannot advance (ADR 0043). The
-## gate is read from the facade, never from the realm seed: that is a module
+## Train the first channel that still owes the gate — state OR depth — and name the
+## one it trained.
+##
+## SELECTION IS THE FACADE'S, not this screen's. It used to walk the channels here
+## and skip on `channel.meets(required_channel_state)`, which is state-only BY
+## DESIGN (`MeridianState.meets` is a rank comparison plus the injury flag), so from
+## the first realm whose demand is pure depth every channel was skipped, every press
+## did nothing, and `QiTraining.refine_meridian` was never reached: the depth half of
+## the gate was reachable in tests and dead in play (ADR 0158). `train_next_channel`
+## is the one verb that answers "which channel is next", and it reads `channel_met`,
+## so this screen cannot hold a second opinion about the gate (ADR 0044).
+##
+## The gate is read from the facade, never from the realm seed: that is a module
 ## internal, and every facade here is already at its method cap.
+##
+## The refusal names the PRICE (ADR 0150): the old terminal message told a player who
+## had merely spent their elixirs that there was no channel left to train, and that
+## is the one answer that cannot be true — the press got here because a channel still
+## owes the gate. `owed_channels` / `training_price` are read BEFORE the call, because
+## `train_channel` on a burn hands it to `recover` and repairs the channel, so a burn
+## read afterwards would answer a question about a different actor state (ADR 0141).
+## They are published rather than recomputed here because counting them means walking
+## `channel_met`, and a reassembled gate is the ADR 0044 defect this loop already was.
 func act_train_next_channel() -> bool:
 	if _actor == null:
 		return false
 	var live := QiCultivationApi.panel_state(_actor)
-	var target_state := String(live.get("required_channel_state", ""))
-	if target_state.is_empty():
+	if String(live.get("required_channel_state", "")).is_empty():
 		set_message("No qi realm profile", TONE_ERROR)
 		refresh()
 		return false
-	var candidates: Array[StringName] = []
-	for meridian_id in live.get("required_channels", []):
-		candidates.append(StringName(meridian_id))
-	# The gate names four channels but twenty exist; falling back to the rest keeps
-	# the button useful once the required ones are done.
-	for definition in MeridianDefaults.all():
-		if not candidates.has(definition.id):
-			candidates.append(definition.id)
-	for meridian_id in candidates:
-		var channel := _actor.meridians.get_meridian(meridian_id)
-		if channel == null or channel.meets(target_state):
-			continue
-		if QiCultivationApi.train_channel(_actor, meridian_id):
-			set_message("Trained %s" % meridian_id, TONE_OK)
-			refresh()
-			return true
-	set_message("No channel left to train", TONE_ERROR)
+	var owed := int(live.get("owed_channels", 0))
+	var price := String(live.get("training_price", ""))
+	var trained := QiCultivationApi.train_next_channel(_actor)
+	if not trained.is_empty():
+		set_message("Trained %s" % trained, TONE_OK)
+		refresh()
+		return true
+	if owed <= 0:
+		set_message("No channel left to train", TONE_ERROR)
+	else:
+		# The elixir's ID is authored in the realm seed, which is a module internal
+		# this screen may not read (ADR 0043), so the price is named by its ROLE --
+		# the word the authored content and its acquisition are indexed by -- and not
+		# by an id restated here and free to drift out of step with the seeds.
+		set_message("%s absent; %d channel(s) still owed" % [_price_role(price), owed], TONE_ERROR)
 	refresh()
 	return false
+
+
+## The facade names the elixir by role; the sentence is the screen's to word.
+func _price_role(role: String) -> String:
+	return "recovery elixir" if role == "recovery_elixir" else "channel elixir"
+
+
+# --- The ascent ----------------------------------------------------------------
+#
+# Read from the facade's `ascent` block, which is DATA and not a verb: the ascent
+# itself is `WorldAnchor.ascend`, a core entry point `ui/` may call directly
+# (ADR 0041), so nothing here grows the qi facade. Body and mind publish the same
+# block under the same keys and walk it the same way, so the three screens cannot
+# disagree about when the control is live — or about whether the ascent is reachable
+# at all, which on this path it was not: the verb existed, was proven, and had no
+# caller here, so `ascension_ok` stayed shut and R29 and R30 were unreachable by play
+# (BL-0693).
+
+
+## A player may walk the ascent only while one is owed AND unfinished — the same
+## conjunction body and mind apply, so the three screens cannot disagree. Below the
+## Transcendent tier `required` is false, so the control is never a dead button.
+func _ascend_offered(live: Dictionary) -> bool:
+	if live.is_empty():
+		return false
+	var ascent: Dictionary = live.get("ascent", {})
+	return bool(ascent.get("required", false)) and int(ascent.get("steps", 0)) > 0
+
+
+## The ascent as this screen reports it, under the key body publishes it under so one
+## question is answered one way across all three screens. `outstanding` is core's own
+## sentence verbatim rather than a restatement of the rule it names (ADR 0034).
+func _ascent_view(live: Dictionary) -> Dictionary:
+	var ascent: Dictionary = live.get("ascent", {})
+	return {
+		"required": bool(ascent.get("required", false)),
+		"steps": int(ascent.get("steps", 0)),
+		"steps_total": int(ascent.get("steps_total", 0)),
+		"met": bool(ascent.get("met", false)),
+		"outstanding": String(ascent.get("outstanding", "")),
+		"offered": _ascend_offered(live),
+	}
+
+
+## Walk ONE step of the Transcendent ascent.
+##
+## The only action here that is not a facade call, and deliberately so: the ascent
+## belongs to no single path — every path carries the same `AscensionState` — so no
+## facade serves it (ADR 0041). Its gate is read from the facade's `ascent` block
+## rather than re-derived here, so this screen can never open a gate
+## `Breakthrough.ascension_ok` would refuse.
+func act_ascend() -> bool:
+	if _actor == null:
+		return false
+	if not _ascend_offered(QiCultivationApi.panel_state(_actor)):
+		set_message("No ascent is owed yet", TONE_ERROR)
+		refresh()
+		return false
+	var stepped := WorldAnchor.ascend(_actor)
+	set_message(
+		"Walked a step of the ascent" if stepped else "The ascent will not open",
+		TONE_OK if stepped else TONE_ERROR
+	)
+	refresh()
+	return stepped
 
 
 ## Heal a dantian scar or a burned channel with the realm's recovery item. A
@@ -318,19 +402,64 @@ func act_recover() -> bool:
 		return false
 	var repaired := QiCultivationApi.recover_next(_actor)
 	set_message(
-		"Repaired" if repaired else "Nothing damaged to repair", TONE_OK if repaired else TONE_ERROR
+		"Repaired" if repaired else _recovery_refusal(), TONE_OK if repaired else TONE_ERROR
 	)
 	refresh()
 	return repaired
 
 
+## What a refused recovery means, read from the facade's own injury flags rather
+## than inferred from the `false` alone (ADR 0150).
+##
+## The two things a refusal can mean are forced apart here. A scar or a burn is a
+## wound the recovery elixir would close, so a refusal with one present has
+## exactly one remaining cause — the elixir. A refusal with none is "look
+## elsewhere". Collapsing both into one sentence told a hero with a torn channel
+## and no recovery elixir that there was "Nothing damaged to repair", which is the
+## one answer that cannot be true.
+func _recovery_refusal() -> String:
+	# The two causes are forced apart. A wound IS pending and no elixir was carried,
+	# so the answer is "no elixir" — actionable. Nothing is pending, so the answer is
+	# "nothing to repair" — the actor should look elsewhere. Collapsing them into one
+	# sentence told a hero with a torn channel and no elixir that there was "Nothing
+	# damaged to repair", which is the one answer that cannot be true.
+	return "No recovery elixir carried" if _damage_pending() else "Nothing damaged to repair"
+
+
+## Whether the facade reports a wound the recovery elixir exists to close: the
+## dantian scar, or any burned channel.
+##
+## Read through `panel_state` rather than the network, because the flags are DATA
+## and a screen guessing at them would be the ADR 0034 restatement this program
+## exists to avoid. `panel_state` lists only channels already on the network, so a
+## meridian this realm has not unlocked contributes nothing — the filter Mind's
+## own reader needs has no counterpart here.
+func _damage_pending() -> bool:
+	if _actor == null:
+		return false
+	var live := QiCultivationApi.panel_state(_actor)
+	if live.is_empty():
+		return false
+	if bool(live.get("dantian_injured", false)):
+		return true
+	for entry in _channel_entries(live):
+		if bool(entry.get("injured", false)):
+			return true
+	return false
+
+
 ## Cultivate is what a qi cultivator does first, and breakthrough is only
-## reachable once the gate is met.
+## reachable once the gate is met. An owed ascent is the only thing left to do once
+## the tier gate has opened it, so it takes the landing spot — the same precedence
+## body and mind give it.
 func focus_initial() -> void:
 	_bind_nodes()
+	var live := QiCultivationApi.panel_state(_actor) if _actor != null else {}
 	var target := _button_name(&"cultivate") if _actor != null else ""
 	if target.is_empty():
 		target = _button_name(&"meditate")
+	if _ascend_offered(live):
+		target = _button_name(&"ascend")
 	_focus_target = target
 	var button := _find_button(target)
 	if button != null and button.is_inside_tree():
@@ -399,6 +528,8 @@ func _on_action(action: StringName) -> void:
 			act_train_next_channel()
 		&"recover":
 			act_recover()
+		&"ascend":
+			act_ascend()
 		_:
 			act_breakthrough()
 
