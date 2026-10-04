@@ -452,6 +452,118 @@ def _agent_local_refs_do_not_gate() -> None:
         )
 
 
+# --- The documentation cut. The gate was permanently red on FALSE POSITIVES: three shipped
+# --- lines that NAME a mutation id in the middle of a sentence, while the tree was correct.
+
+#: Transcribed from game/tests/modules/mind_cultivation/test_mind_stat_reachability.gd, which
+#: is where the gate actually went red. Every one is a whole-line comment naming a mutation
+#: that was applied and reverted; none is a probe.
+PROSE_ABOUT_MUTATIONS: tuple[str, ...] = (
+    "## assertion about the mechanism still passes. MUTATION-B (the defence published",
+    "## regression MUTATION-A below reproduces.",
+    "\t# and leaves the defence this module published. MUTATION-A (meridian_power",
+)
+
+#: A probe as BL-0615 wrote it: real code, then the marker. The one line that must stay red.
+PROBE_TRAILING_CODE = "\tif not is_bound() and false:  # MUTATION-M6"
+
+PROBE_PATH = "game/src/modules/techniques/technique_delivery.gd"
+PROSE_PATH = "game/tests/modules/mind_cultivation/test_mind_stat_reachability.gd"
+
+
+def _tip_holding(root: Path, *files: tuple[str, str]) -> Path:
+    """A repository whose ONE commit holds exactly `files`, each `(repo path, content)`."""
+    _git(root, "init", "-q")
+    _git(root, "config", "user.email", "selftest@local")
+    _git(root, "config", "user.name", "selftest")
+    for path, text in files:
+        write(root / path, text)
+    _git(root, "add", "-A")
+    _git(root, "commit", "-qm", "fixture")
+    return root
+
+
+@case("mutation_history: a marker trailing CODE is live; prose naming one is not")
+def _prose_is_not_carried_and_code_still_is() -> None:
+    """The red path for the documentation cut, and both halves in ONE tip on purpose.
+
+    A fixture holding only the prose passes under a guard with no filter at all - it reports
+    nothing and there is no claim left to fail. A fixture holding only the probe passes under
+    a filter that dropped every line. Only a tip holding both can tell the two readings apart,
+    and only the real cut returns exactly one finding.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = _tip_holding(
+            Path(raw),
+            (PROBE_PATH, f"func is_bound() -> bool:\n\treturn true\n{PROBE_TRAILING_CODE}\n"),
+            (PROSE_PATH, "\n".join(PROSE_ABOUT_MUTATIONS) + "\n"),
+        )
+        found = _carried_in(root)
+
+        expect(
+            len(found) == 1,
+            f"a tip holding one live probe and three prose lines returned {len(found)} "
+            f"finding(s): {[probe.describe() for probe in found]}. The gate must separate a "
+            "marker trailing code from a sentence that NAMES a mutation: one report is the "
+            "guard working, and any other count is a filter that was never installed",
+        )
+        expect(
+            found[0].path == PROBE_PATH,
+            f"the wrong line was reported: {found[0].describe()}",
+        )
+
+
+@case("mutation_history: a marker that IS its comment's first content is still live")
+def _labelled_probe_comment_is_live() -> None:
+    """The half of the cut a blanket comment exemption would over-reach.
+
+    `is_documentation` reads "no code in front of the marker" as documentation, so the
+    obvious failure is exempting every comment: the incident's own `#MUTATION-M1` and the
+    tree guard's `# MUTATION-M4 removed` would both read as prose. These are the shapes an
+    agent actually writes, because a probe's comment exists to be found by grepping it -
+    which is why the marker comes FIRST.
+
+    `var x := 1  # MUTATION-M4` is here too, and it is the case that makes this a cut rather
+    than a comment exemption: a comment before the marker, and code before the comment.
+    """
+    for line in (
+        "#MUTATION-SELFTEST",
+        "# MUTATION-SELFTEST",
+        "## MUTATION-SELFTEST",
+        "###   MUTATION PROBE",
+        "// MUTATION-SELFTEST",
+        "\t# XXX MUTAT",
+        "var x := 1  # MUTATION-SELFTEST",
+        PROBE_TRAILING_CODE,
+    ):
+        expect(
+            mutation_history._live_marker(line) is not None,
+            f"a live probe shape was read as documentation: {line!r}. The filter exempts a "
+            "comment that TALKS ABOUT a mutation; a comment that IS the probe stays red",
+        )
+
+    for line in ("MUTATION-SELFTEST", "\t\tMUTATION-SELFTEST", "\t\tMUTATION PROBE"):
+        expect(
+            mutation_history._live_marker(line) is None,
+            f"a bare marker with nothing but whitespace before it was read as a live probe: "
+            f"{line!r}. In GDScript that offset is the first line of a multi-line string, and "
+            "a tombstone string is documentation - pinning it keeps the cut from growing a "
+            "second, looser reading later",
+        )
+
+
+@case("mutation_history: each shipped prose line is documentation, on its own")
+def _shipped_prose_lines_are_documentation() -> None:
+    for line in PROSE_ABOUT_MUTATIONS:
+        expect(
+            mutation_history._live_marker(line) is None,
+            f"a shipped line that NAMES a mutation was read as a live probe: {line!r}. The "
+            "gate was red on these while the tree was correct, which is the state-not-history "
+            "failure arriving by the other door - a permanently-red gate is a gate people "
+            "learn to ignore, and the next agent to hit it deletes it",
+        )
+
+
 # --- ADR 0138: reference_stats is prose, and the guard has to mean that precisely ---
 
 
@@ -465,6 +577,147 @@ def _stat_findings(block: object) -> list[str]:
     """
     return unique_characters._no_stat_numbers(
         block, "reference_stats", unique_characters._authored_stat_ids()
+    )
+
+
+# --- the nine required prompts: a canon claim that the art set is complete ---
+
+
+def _prompt_gaps(shots: list[dict]) -> list[str]:
+    """Run the prompt-set guard against a shot list, with the REAL vocabulary.
+
+    The slot list and the set minimums are read from the module rather than
+    restated here, for the reason `_stat_findings` reads `contracts/stat.gd`: a
+    fixture that supplies the value under test cannot tell a working guard from
+    a loosened one. Copying the nine slots into this file would let someone
+    delete a slot from `PROMPT_SLOTS` and leave the whole suite green.
+    """
+    return unique_characters._prompt_set_gaps({"shots": shots})
+
+
+def _shot(slot: str, expression: str = "", **overrides) -> dict:
+    """One structurally valid shot filling `slot`, for prompt-set fixtures."""
+    shot = {
+        "id": f"{slot}-1",
+        "kind": unique_characters.SLOT_KIND.get(slot, "portrait"),
+        "slot": slot,
+        "pose": "standing, weight settled",
+        "framing": "waist up",
+        "expression": expression,
+        "scene": "",
+        "status": "planned",
+        "canvas": [1024, 1024],
+    }
+    shot.update(overrides)
+    return shot
+
+
+def _complete_shots() -> list[dict]:
+    """A shot list satisfying every required prompt, derived from the tool.
+
+    Built from `PROMPT_SLOTS` and `SET_SLOT_MINIMUMS` so that ADDING a slot does
+    not silently turn this fixture red. The failing direction is the other case:
+    removing one from the tool must leave this green and the removal case red, or
+    the guard has been loosened rather than exercised.
+    """
+    shots = []
+    for slot in unique_characters.PROMPT_SLOTS:
+        needed = unique_characters.SET_SLOT_MINIMUMS.get(slot, 1)
+        for index in range(needed):
+            shots.append(_shot(slot, expression=f"emotion {index}", id=f"{slot}-{index}"))
+    return shots
+
+
+@case("unique_characters: a canon character with no shots FAILS every required prompt")
+def _empty_prompt_set_fails() -> None:
+    """The obvious hole, asserted closed.
+
+    `unique_characters add` writes a draft with an empty shot list, so "no art
+    planned" is a state the catalog reaches by its normal first step. Only the
+    canon gate stands between that and a character asserted to be fully
+    specified, and this is that gate seen from the empty side.
+    """
+    gaps = _prompt_gaps([])
+    expect(
+        len(gaps) == len(unique_characters.PROMPT_SLOTS),
+        f"an empty shot list reported {len(gaps)} prompt gaps for "
+        f"{len(unique_characters.PROMPT_SLOTS)} required prompts, so a canon character "
+        f"with no art at all would pass the promotion gate",
+    )
+
+
+@case("unique_characters: nine copies of ONE expression do not satisfy expression_set")
+def _duplicated_expressions_do_not_satisfy_a_set() -> None:
+    """The fixture that tells a set guard from a count guard.
+
+    `SET_SLOT_MINIMUMS` is a count, so the obvious implementation is
+    `len(shots_in_slot) >= minimum` — and that implementation passes this
+    fixture, which is exactly why this fixture exists. Nine expression shots that
+    all read "composed" is a prompt set by cardinality and a single picture by
+    content, and it is the shape an agent produces when it satisfies a count
+    instead of writing nine emotions. Mutating `_prompt_set_gaps` to count shots
+    rather than distinct expression text has to turn THIS case red.
+    """
+    needed = unique_characters.SET_SLOT_MINIMUMS["expression_set"]
+    duplicated = [
+        _shot("expression_set", expression="composed", id=f"expr-{index}")
+        for index in range(needed)
+    ]
+    distinct = [
+        _shot("expression_set", expression=f"emotion {index}", id=f"expr-{index}")
+        for index in range(needed)
+    ]
+    expect(
+        _prompt_gaps(duplicated) != _prompt_gaps(distinct),
+        "duplicating one expression across the set changed nothing, so the guard "
+        "counts shots rather than distinct emotions and `expression_set` can be "
+        "satisfied by one picture described nine times",
+    )
+    expect(
+        any("expression_set" in gap for gap in _prompt_gaps(duplicated)),
+        f"the duplicated set was reported as a problem somewhere other than "
+        f"expression_set: {_prompt_gaps(duplicated)!r}, so the author is told to "
+        f"fix a slot that is already correct",
+    )
+
+
+@case("unique_characters: a complete nine-prompt set is clean")
+def _complete_prompt_set_is_clean() -> None:
+    """The counterweight to the two cases above.
+
+    A guard that refuses everything satisfies both red paths. This is what
+    distinguishes "the guard rejects a bad prompt set" from "the guard rejects a
+    prompt set", and it is the half of the pair a green-only test would omit.
+    """
+    expect(
+        not _prompt_gaps(_complete_shots()),
+        f"a shot list covering every required prompt was still reported incomplete: "
+        f"{_prompt_gaps(_complete_shots())!r}",
+    )
+
+
+@case("unique_characters: a prompt slot rendered by the wrong kind FAILS")
+def _slot_kind_mismatch_fails() -> None:
+    """The slot is a claim about the render graph, so it is checked, not noted.
+
+    The failure this catches is a `map_sprite` slot holding a 1024px waist-up
+    portrait: the catalog validates, the count is right, and the small-scale
+    exploration representation the brief requires is simply absent. The second
+    expectation is the fixture that matters — a correctly paired slot produces
+    no such finding, so mutating the check into "always complain" fails here.
+    """
+    wrong = unique_characters._validate_shot(
+        _shot("map_sprite", kind="portrait"), "shot[0]", False, set()
+    )
+    right = unique_characters._validate_shot(_shot("map_sprite"), "shot[0]", False, set())
+    expect(
+        any("renders as kind" in issue for issue in wrong),
+        f"a map_sprite slot routed to the portrait graph passed validation: {wrong!r}",
+    )
+    expect(
+        not any("renders as kind" in issue for issue in right),
+        f"the correct slot/kind pairing was reported as a mismatch: {right!r}, so the "
+        f"check cannot tell a wrong route from a right one",
     )
 
 

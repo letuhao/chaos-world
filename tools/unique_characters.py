@@ -58,11 +58,52 @@ VALID_ROLES = {"pc", "npc", "boss"}
 VALID_PATHS = {"qi", "body", "mind", "unaffiliated"}
 
 # The routing vocabulary for the future backend: kind picks the ComfyUI
-# workflow, and the three kinds need different ones (a turnaround sheet and a
-# scene illustration are not the same graph). Shots stay free-form WITHIN a
-# kind, which is what lets one character carry five portraits and still fit the
+# workflow, and the kinds need different ones (a turnaround sheet and a scene
+# illustration are not the same graph). Shots stay free-form WITHIN a kind,
+# which is what lets one character carry nine portraits and still fit the
 # schema. Adding a kind is a one-line change here and nothing else.
-SHOT_KINDS = ("concept", "portrait", "dialogue")
+#
+# `kind` answers HOW to render. `slot` answers WHY the shot exists, and it is
+# the only one of the two with a required minimum: a catalog whose kinds are all
+# correct but whose slots are absent still renders nine pictures of the same
+# person, which passes every kind check here and is useless to a downstream
+# generator told to produce a map token. Five kinds cover the nine required
+# prompts because an expression sheet and a dialogue portrait are the same graph
+# at different framings — the split is by render graph, not by prompt count.
+SHOT_KINDS = ("map_sprite", "concept", "portrait", "dialogue", "scene")
+
+PROMPT_SLOTS = (
+    "map_sprite",
+    "dialogue_portrait",
+    "character_portrait",
+    "concept_art",
+    "environmental_concept",
+    "combat_concept",
+    "relationship_scene",
+    "expression_set",
+    "pose_set",
+)
+
+# The kind each single-shot slot is rendered as. A slot drawn by the wrong graph
+# is a mislabelled prompt, so this is a FAIL rather than a note: otherwise a
+# `map_sprite` slot quietly holds a 1024px waist-up portrait and the small-scale
+# exploration representation the brief asks for is simply absent from the catalog.
+SLOT_KIND = {
+    "map_sprite": "map_sprite",
+    "dialogue_portrait": "dialogue",
+    "character_portrait": "portrait",
+    "concept_art": "concept",
+    "environmental_concept": "concept",
+    "combat_concept": "concept",
+    "relationship_scene": "scene",
+}
+
+# Slots holding a SET rather than one picture. The minimum is the count the art
+# brief enumerates, not a round number, so raising it is a spec change rather
+# than a taste change: the expression brief names nine emotions and the pose
+# brief names six. These are PROMPT counts, not rendered images — generation is
+# `unique_characters next`, which stays optional per shot.
+SET_SLOT_MINIMUMS = {"expression_set": 9, "pose_set": 6}
 SHOT_STATUS = {"planned", "generated", "approved"}
 DEFAULT_CANVAS = [1024, 1024]
 CANVAS_MAX = 4096
@@ -335,6 +376,13 @@ def _validate(records: list[dict], *, check_files: bool) -> list[str]:
             for key in APPEARANCE_KEYS:
                 if not _text(appearance.get(key)):
                     issues.append(f"{label}: cannot be canon while appearance.{key} is empty")
+            # The prompt set is part of the promotion gate rather than a separate
+            # command, because `canon` is the claim that this character is fully
+            # specified. A canon character missing its map token is a character
+            # the exploration map cannot place, and finding that out at render
+            # time is later than the only moment it is cheap to fix.
+            for gap in _prompt_set_gaps(art):
+                issues.append(f"{label}: cannot be canon while {gap}")
     return issues
 
 
@@ -464,6 +512,17 @@ def _validate_shot(shot: object, label: str, check_files: bool, seen: set[str]) 
         seen.add(shot_id)
     if shot.get("kind") not in SHOT_KINDS:
         issues.append(f"{label}: kind {shot.get('kind')!r} must be one of {', '.join(SHOT_KINDS)}")
+    # Required on every shot, draft included: a shot that does not say which
+    # required prompt it fills cannot be counted toward the prompt set, so
+    # allowing it here would make the canon gate below count shots it cannot
+    # attribute.
+    slot = shot.get("slot")
+    if slot not in PROMPT_SLOTS:
+        issues.append(f"{label}: slot {slot!r} must be one of {', '.join(PROMPT_SLOTS)}")
+    elif slot in SLOT_KIND and shot.get("kind") != SLOT_KIND[slot]:
+        issues.append(
+            f"{label}: slot {slot!r} renders as kind {SLOT_KIND[slot]!r}, not {shot.get('kind')!r}"
+        )
     for field in ("pose", "framing"):
         if not _text(shot.get(field)):
             issues.append(f"{label}: {field} is empty; the art brief is built from it")
@@ -496,6 +555,45 @@ def _validate_shot(shot: object, label: str, check_files: bool, seen: set[str]) 
     if check_files:
         issues.extend(_validate_image(path, canvas, f"{label} ({shot_id})"))
     return issues
+
+
+def _prompt_set_gaps(art: object) -> list[str]:
+    """Which required prompts this character's shot list does not supply.
+
+    Two shapes of gap, and both are silent without this. A slot nobody filled is
+    the obvious one. The second is a `*_set` slot holding several shots that all
+    say the same thing: nine `expression_set` entries reading "neutral" is a
+    prompt set by shot count and a single picture by content, and a count-only
+    check calls it complete. So a set is counted on the DISTINCT expression text,
+    which is the thing that actually differs between two members.
+
+    Shot ids are deliberately not the identity here. Two members of a set are
+    free-form slugs chosen by the author (`expr-anger`, `expr-anger-bitter`), so
+    keying on them would report a duplicated emotion as two members.
+    """
+    shots = art.get("shots") if isinstance(art, dict) else None
+    if not isinstance(shots, list):
+        return ["art.shots is not a list, so no prompt set can be read"]
+    by_slot: dict[str, set[str]] = {}
+    for shot in shots:
+        if not isinstance(shot, dict):
+            continue
+        slot = shot.get("slot")
+        if not isinstance(slot, str):
+            continue
+        expression = shot.get("expression")
+        member = expression.strip().lower() if isinstance(expression, str) else ""
+        by_slot.setdefault(slot, set()).add(member)
+    gaps = []
+    for slot in PROMPT_SLOTS:
+        members = by_slot.get(slot)
+        if not members:
+            gaps.append(f"no shot fills the {slot!r} prompt")
+            continue
+        needed = SET_SLOT_MINIMUMS.get(slot)
+        if needed is not None and len(members) < needed:
+            gaps.append(f"{slot!r} holds {len(members)} distinct expression(s), needs {needed}")
+    return gaps
 
 
 def _validate_image(path: str, canvas: list, label: str) -> list[str]:
@@ -537,9 +635,11 @@ def _brief(record: dict, shot: dict) -> str:
         f"{record.get('id')} {record.get('name')}"
         + (f" ({', '.join(record['aliases'])})" if record.get("aliases") else ""),
         f"style: {record.get('art', {}).get('style') or 'UNSET'}",
-        f"shot: {shot.get('id')} | kind {shot.get('kind')} | canvas {shot.get('canvas')}",
+        f"shot: {shot.get('id')} | slot {shot.get('slot')} | kind {shot.get('kind')}"
+        f" | canvas {shot.get('canvas')}",
         "",
-        "SUBJECT",
+        "SUBJECT (identity anchors: these MUST read identically in every prompt "
+        "for this character; only pose, expression, framing and scene vary)",
         "; ".join(f"{key}: {appearance[key]}" for key in APPEARANCE_KEYS if appearance.get(key)),
         "",
         f"POSE: {shot.get('pose', '')}",
@@ -678,6 +778,20 @@ def _report(records: list[dict]) -> int:
         if isinstance(record.get("art", {}), dict)
     )
     print(f"characters with no shot planned: {planned_none}")
+
+    # Per-character prompt-set coverage. `report` is the read-only view, so this
+    # is where an author sees which of the nine required prompts a draft is
+    # missing BEFORE `check` refuses to promote it — a gate that only reports at
+    # promotion time tells you the answer after you have already done the work.
+    incomplete = 0
+    for record in records:
+        gaps = _prompt_set_gaps(record.get("art"))
+        if gaps:
+            incomplete += 1
+            print(f"  {record.get('id')}: {len(gaps)} prompt gap(s)")
+            for gap in gaps:
+                print(f"    - {gap}")
+    print(f"characters missing part of the required prompt set: {incomplete}")
 
     if issues:
         print(f"audit findings: {len(issues)} (run `unique_characters check` for details)")
