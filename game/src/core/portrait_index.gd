@@ -101,7 +101,15 @@ func portrait_path(character_id: StringName) -> String:
 ## which face a race has.
 func character_for_race(race_id: StringName) -> StringName:
 	_ensure_loaded()
-	var matches: Array[StringName] = _by_race.get(String(race_id), []) as Array[StringName]
+	# Built explicitly for the same reason the WRITE side at :219 is: `[] as Array[StringName]` on
+	# the default yields an UNTYPED array and the cast raises. That was fixed where rows are
+	# indexed and missed here, where they are read — so asking for a race with NO index row (which
+	# is every authored race, since `character-index.jsonl` tags races as free text like `race:human`
+	# and none of the five) aborted `PortraitResolver.resolve` outright, defeating the totality
+	# ADR 0131 requires. A lookup that finds nothing must return nothing, not raise.
+	var matches: Array[StringName] = []
+	for existing in _by_race.get(String(race_id), []) as Array:
+		matches.append(StringName(existing))
 	if matches.is_empty():
 		return &""
 	return matches[0]

@@ -21,6 +21,14 @@ var _actor: Actor
 func setup() -> void:
 	_actor = Actor.new()
 	_actor.id = &"portrait_bearer"
+	# Declared HERE, not in a test body: `run_tests.gd:95` reads `_test_expected` straight after
+	# `setup()` and `_test_begin()` resets it to 0 before every body, so a per-test call is a no-op
+	# that reads like protection. Floor 1 is the floor that catches the shape that actually happens -
+	# a body that dies before its first assert records neither a pass nor a failure, so the suite
+	# reports 0 failed having skipped its own proof. That is worse than a red, because a red is at
+	# least honest. Three tests here were silently aborting on a type-cast in
+	# `PortraitIndex.character_for_race` and the suite still printed "146 passed".
+	expect_assertions(1)
 
 
 # --- Resolution -------------------------------------------------------------
