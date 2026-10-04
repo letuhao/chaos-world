@@ -27,6 +27,11 @@ const TESTS_ROOT := "res://tests"
 ## here and never restored. Asserted to be inside the scan's own file list, so
 ## "res://src is covered" is a fact this suite checks rather than a claim it makes.
 const INCIDENT_FILE := "res://src/core/breakthrough.gd"
+## A shipped file that legitimately NAMES a mutation id mid-sentence, in three places.
+## Read rather than transcribed, so the claim tracks the real file; the exact three
+## line shapes are pinned by hand in the prose test below so it survives either half
+## being changed.
+const SHIPPED_PROSE := "res://tests/modules/mind_cultivation/test_mind_stat_reachability.gd"
 ## Findings are named one by one up to here, then only counted. A tree with hundreds
 ## of markers must not walk `TestCase.MAX_FAILURES` and `OS.crash` the process — the
 ## count assertion below still fails, and the first dozen still say where to look.
@@ -34,6 +39,13 @@ const MAX_REPORTED := 12
 ## A named count so an emptied or truncated table is a failure rather than a scan
 ## that has quietly stopped matching anything.
 const SHAPE_COUNT := 5
+## Line numbers in `_fixture_lines` that are PROBES, and line numbers that are prose.
+## Both are asserted by name, and together they are the whole proof: the two sets are
+## disjoint, cover every shaped line in the fixture, and a guard that dropped
+## everything would fail the first while a guard with no filter would fail the second.
+const FIXTURE_LIVE: Array = [3, 4, 5, 7]
+const FIXTURE_DOCUMENTATION: Array = [6, 8, 9]
+const FIXTURE_SHAPES := 7
 
 ## One or more spaces or tabs. The gap is what keeps the numbered banner in
 ## `tests/app/test_mutation_guards.gd` — shipped prose, not a probe — from reading as
@@ -55,19 +67,25 @@ const ALNUM := 1
 ##    shipped joins those three.
 ##  - root plus `PROBE`: two uppercase words. `MUTATING_VERBS` in the sect and nation
 ##    screens is a different word, and that file's numbered banner has a number.
-##  - `#` or `//` plus the root: the token immediately after a comment introducer, so
-##    prose about mutation passes, and so does the bare `MUTATE` in `spine.gd`.
+##  - `#` or `//` plus the root: a comment introducer and the token right after it.
 ##  - `XXX` plus `MUTAT`: the mutation-testing tombstone. A run of capital X is never
 ##    English.
 ##
 ## Case-sensitive on purpose, and load-bearing rather than fussy: the tree says
 ## "mutation" in lowercase prose on 172 lines, and every one has to survive this.
 ##
-## The tokens are assembled from fragments so this file cannot trip its own scan.
-## `test_the_guard_does_not_flag_its_own_source` holds that line: a guard nobody can
-## write down is a guard nobody can extend, and spelling a token out in a clarifying
-## comment fails the build on the guard instead of on a probe. Not hypothetical — it
-## happened to this file while the guard was being built.
+## FINDING A SHAPE IS NOT THE SAME AS IT BEING A PROBE, and that is where the prose
+## filter lives — in `_is_documentation`, not in this table. Three lines in
+## `test_mind_stat_reachability.gd` name a mutation id mid-sentence and matched these
+## shapes verbatim, which left this guard permanently red on false positives: the tree
+## was correct and the gate was wrong, which is how a gate gets deleted.
+##
+## `mutation_history.py` is the ref-tip half of this same guard and draws the identical
+## cut in `is_documentation`. The tokens are assembled from fragments so this file
+## cannot trip its own scan. `test_the_guard_does_not_flag_its_own_source` holds that
+## line: a guard nobody can write down is a guard nobody can extend, and spelling a
+## token out in a clarifying comment fails the build on the guard instead of on a
+## probe. Not hypothetical — it happened to this file while the guard was being built.
 const MARKER := "MUTAT" + "ION"
 const SHAPES: Array = [
 	[MARKER, "-", ALNUM],
@@ -112,40 +130,133 @@ func test_the_detector_recognises_every_shape_it_forbids() -> void:
 	# One sample per shape, built FROM the shape, so the table and its own proof
 	# cannot drift apart. This is the anti-vacuity check: a shape the matcher cannot
 	# find is a failure here rather than a shape nobody has ever seen fire.
+	#
+	# DETECTION, deliberately, not liveness: three of the five samples are a bare
+	# marker at the start of a line, and the cut in `_is_documentation` correctly
+	# calls those documentation. Asserting liveness here instead would either force
+	# the cut to lie or hide that the detector still sees them, and both are worse
+	# than asking the two questions in two places.
 	assert_eq(SHAPES.size(), SHAPE_COUNT, "the shape table is the size it claims")
 	for shape in SHAPES:
 		var sample := _sample_for(shape)
-		var hits := _markers_in(sample)
+		var hits := _shape_hits(sample)
 		assert_eq(hits.size(), 1, "the shape that forbids `%s` also finds it" % sample)
 		if hits.size() == 1:
 			assert_eq(int(hits[0]["line"]), 1, "and reports the line it is written on")
 
 
 func test_the_incident_s_own_marker_shape_is_what_fires() -> void:
-	# The one marker this guard exists for, written every way it could plausibly
-	# have been written: behind a comment mark, bare in code, with nothing after the
-	# id, and behind a doc-comment. The bare form is the case that matters — the
+	# The one marker this guard exists for, written every way it could plausibly have
+	# been written: behind a comment mark, bare in code, with nothing after the id,
+	# and behind a doc-comment. The bare form is the case that first mattered — the
 	# first cut of the shape table demanded a whitespace run AFTER the hyphen, so it
 	# matched none of these and the guard was clean against the very marker it was
 	# built from. Deriving every positive sample from the shape table is what hid
 	# that: the table and its own proof agreed with each other, and both were wrong
 	# about the incident. So the incident is pinned here by hand as well.
-	for sample in [
+	#
+	# Every one of them is DETECTED. The bare ones are then declined as liveness, for
+	# one reason that is specific to GDScript: a bare marker token in code position is
+	# a parse error, so a line carrying one is a multi-line string, and a tombstone
+	# string is a tombstone. That is also why `mutation_history.py` agrees.
+	var live := [
 		"#" + MARKER + "-M1 core commit removed",
+		"## " + MARKER + "-M1",
+		"#     " + MARKER + "-M1",
+		"var x := 1  # " + MARKER + "-M4 removed",
+	]
+	var declined := [
 		MARKER + "-M1 core commit removed",
 		MARKER + "-M1",
 		MARKER + "-2",
-		"## " + MARKER,
-		"#     " + MARKER,
-		"var x := 1  # " + MARKER + "-M4 removed",
+	]
+	for sample in live + declined:
+		assert_eq(_shape_hits(sample).size(), 1, "`%s` is detected" % sample)
+	for sample in live:
+		assert_eq(_markers_in(sample).size(), 1, "`%s` is still LIVE" % sample)
+	for sample in declined:
+		assert_eq(_markers_in(sample).size(), 0, "`%s` is documentation, not a probe" % sample)
+
+
+func test_a_marker_behind_real_code_is_still_a_probe() -> void:
+	# The case a blanket comment exemption loses, and losing it is worse than the
+	# false positive being fixed: the marker IS in a comment, and the line still has
+	# to be red. Pinned on its own so the cut cannot be widened to "ignore comments"
+	# and still pass — a mid-sentence marker on a code line, a marker inside a string
+	# literal, and a marker after a keyword all reach the reader through a comment
+	# introducer, and all three are live.
+	for sample in [
+		"var x := 1  # " + MARKER + "-M6",
+		"var x := 1  # deletes " + MARKER + "-M6",
+		'var note := "' + MARKER + '-M6 is the id"',
+		"if not is_bound() and false:  # " + MARKER + "-M6",
 	]:
-		assert_eq(_markers_in(sample).size(), 1, "`%s` is the incident's own shape" % sample)
+		assert_eq(_shape_hits(sample).size(), 1, "`%s` is detected" % sample)
+		assert_eq(_markers_in(sample).size(), 1, "`%s` is LIVE" % sample)
+
+
+func test_prose_that_names_a_mutation_is_documentation() -> void:
+	# The three shapes that made this guard permanently red, transcribed by hand from
+	# `test_mind_stat_reachability.gd` so the claim survives that file being edited,
+	# plus the two bare forms. The marker is spliced in from `MARKER`, which is what
+	# keeps THIS file out of its own scan while still asserting on the real text.
+	for sample in [
+		"## assertion about the mechanism still passes. " + MARKER + "-B (the defence published",
+		"## regression " + MARKER + "-A below reproduces.",
+		"\t# and leaves the defence this module published. " + MARKER + "-A (meridian_power",
+		"# the regression " + MARKER + "-A below reproduces.",
+		"\t" + MARKER + "-6 core commit removed",
+	]:
+		assert_eq(_shape_hits(sample).size(), 1, "`%s` is detected" % sample)
+		assert_eq(_markers_in(sample).size(), 0, "`%s` is documentation" % sample)
+
+
+func test_the_shipped_file_naming_mutations_is_read_clean() -> void:
+	# The permanent version of the prose test: the real file, read, asserted to hold a
+	# shaped line so this cannot pass vacuously, and asserted to hold no LIVE one.
+	var text := FileAccess.get_file_as_string(SHIPPED_PROSE)
+	assert_ne(text.is_empty(), true, "the shipped prose file is readable")
+	assert_eq(
+		_shape_hits(text).is_empty(),
+		false,
+		"it still holds marker-shaped line(s) to be judged: %s" % _describe(_shape_hits(text))
+	)
+	var live := _markers_in(text)
+	assert_eq(live.size(), 0, "every shaped line in it is prose: %s" % _describe(live))
+
+
+func test_one_fixture_holding_a_probe_and_its_prose_splits_them() -> void:
+	# The proof, in one file: a probe AND the prose that names one. A probe-only fixture
+	# passes a filter that drops everything; a prose-only fixture passes a guard with
+	# no filter. Neither can pass this.
+	var fixture := _fixture_text()
+	# The OLD behaviour, measured rather than claimed: adjacency-blind, so the prose is
+	# in the count. This is the assertion a blanket drop fails, because a drop reports
+	# fewer shapes, not zero live ones.
+	assert_eq(
+		_shape_hits(fixture).size(),
+		FIXTURE_SHAPES,
+		"detection finds all %d shapes in the fixture" % FIXTURE_SHAPES
+	)
+	var live := _line_numbers(_markers_in(fixture))
+	assert_eq(live, FIXTURE_LIVE, "only the probes stay live, and they stay found")
+	for number in FIXTURE_DOCUMENTATION:
+		assert_eq(live.has(number), false, "line %d is documentation" % number)
+	# Disjoint and total: no line is claimed twice and none is unaccounted for, so a
+	# cut that quietly reclassified a probe as prose would fail the first assertion.
+	assert_eq(
+		live.size() + FIXTURE_DOCUMENTATION.size(),
+		FIXTURE_SHAPES,
+		"every shaped line in the fixture is accounted for by one set or the other"
+	)
 
 
 func test_the_shapes_decline_the_prose_the_shipped_tree_actually_contains() -> void:
 	# Transcribed verbatim from files that really do use the word, so each near-miss
 	# is pinned beside the shape that could have taken it. All four are lower case or
 	# differently punctuated, which is the whole reason the table is case-sensitive.
+	# None of these matches a shape at all, which is a different defence from the cut
+	# in `_is_documentation` and worth keeping separate.
 	for sample in [
 		"# --- MUTATION 1: a rolled value that ignores the seed ----",
 		"## the mutations that **survived**, which are the findings",
@@ -178,11 +289,13 @@ func test_the_guard_does_not_flag_its_own_source() -> void:
 	# full would trip its own scan and fail the build on the guard rather than on a
 	# probe. The fragments in `MARKER` make that impossible to do by accident; this
 	# is what holds it, and it fires the moment a comment is "clarified" by writing
-	# the token out.
+	# the token out. Asserted on DETECTION, because this file also carries the shape
+	# samples as strings and those must be seen to be worth anything.
 	var text := FileAccess.get_file_as_string((get_script() as Script).resource_path)
 	assert_ne(text.is_empty(), true, "the guard can read its own source")
-	var hits := _markers_in(text)
+	var hits := _shape_hits(text)
 	assert_eq(hits.size(), 0, "the guard's own source is clean: %s" % _describe(hits))
+	assert_eq(_markers_in(text).size(), 0, "and holds no live marker either")
 
 
 func test_every_shape_needs_a_literal_the_whole_file_gate_looks_for() -> void:
@@ -203,8 +316,27 @@ func test_every_shape_needs_a_literal_the_whole_file_gate_looks_for() -> void:
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
 
-## Every marker in `text`, as `{"line": int, "text": String}`, in file order.
+## Every LIVE marker in `text`, as `{"line": int, "text": String}`, in file order. What
+## the scan gates on, so this is where the documentation cut is applied. Detection and
+## liveness are kept apart on purpose: a filter that drops everything passes a
+## detector-only check, and a detector with no filter cannot be tested against prose.
 func _markers_in(text: String) -> Array[Dictionary]:
+	var live: Array[Dictionary] = []
+	var lines := text.split("\n")
+	for hit in _shape_hits(text):
+		var line := String(lines[int(hit["line"]) - 1])
+		if _is_documentation(line, int(hit["root"])):
+			continue
+		live.append({"line": int(hit["line"]), "text": String(hit["text"])})
+	return live
+
+
+## Every SHAPE match in `text`, adjacency-blind, as
+## `{"line": int, "at": int, "root": int, "text": String}`. This is the DETECTOR: what
+## a line holds, before the question of whether it is talking about a mutation or
+## leaving one behind. `root` is where the marker TOKEN starts, which is not where the
+## match starts for the two comment shapes.
+func _shape_hits(text: String) -> Array[Dictionary]:
 	var hits: Array[Dictionary] = []
 	var lines := text.split("\n")
 	for number in lines.size():
@@ -220,11 +352,115 @@ func _markers_in(text: String) -> Array[Dictionary]:
 		while at < line.length():
 			var end := _shape_end(line, at)
 			if end > at:
-				hits.append({"line": number + 1, "text": line.substr(at, end - at)})
+				var matched := line.substr(at, end - at)
+				var hit := {
+					"line": number + 1,
+					"at": at,
+					"root": _root_offset(matched, at),
+					"text": matched,
+				}
+				hits.append(hit)
 				at = end
 			else:
 				at += 1
 	return hits
+
+
+## True when the marker TOKEN at `root` is prose that NAMES a mutation rather than a
+## probe. Three cases, and each is one branch, mirroring
+## `mutation_history.is_documentation` so the two halves of this guard cannot drift:
+##
+##  - nothing but whitespace in front of it: documentation. In GDScript that position
+##    is a multi-line string, because a bare marker in code position is a parse error,
+##    and a tombstone string is a tombstone.
+##  - code in front of it: a live probe, whatever else the line also holds. This is the
+##    case a blanket "ignore comments" exemption loses.
+##  - a comment introducer then COMMENT TEXT: documentation, because the comment is
+##    talking ABOUT a mutation. The introducer then nothing but the marker is a probe
+##    LABELLED, and stays live.
+##
+## The reasoning is positional on purpose: there is no lexical difference between a
+## probe marker and a sentence that mentions one — the same token serves both — so only
+## the marker's place in the line can separate them. Adjacency is what a probe author
+## actually writes, because a probe comment exists to be found by grepping it, so the
+## marker goes first.
+##
+## Line-bounded by construction and branch-complete: the only slice is the prefix up to
+## the marker and every path returns, so there is no loop here to bound. `_hash_run` is
+## the one loop and it is bounded by `before.length()`.
+func _is_documentation(line: String, root: int) -> bool:
+	var before := line.substr(0, root).strip_edges()
+	if before.is_empty():
+		return true
+	if not (before.begins_with("//") or before.begins_with("#")):
+		return false
+	# `##` and `###` are one introducer repeated, so skip the whole run, then the gap.
+	var opener := 2 if before.begins_with("//") else _hash_run(before)
+	# Comment text in front of the marker means the comment is TALKING ABOUT one.
+	return not before.substr(opener).strip_edges().is_empty()
+
+
+## The length of the leading run of `#`, bounded by `before.length()`: the introducer
+## count on a line like `### marker`. Deliberately not a count of every `#` in the
+## prefix, which would skip past the comment text and call prose a probe — the exact
+## false positive this whole cut exists to remove.
+func _hash_run(before: String) -> int:
+	var count := 0
+	while count < before.length() and before[count] == "#":
+		count += 1
+	return count
+
+
+## Where the marker TOKEN starts, not where the match starts. The two comment shapes
+## carry the introducer (a hash, or a pair of slashes) and then the token, so a match
+## begins at the introducer and every commented marker would read as documentation -
+## the guard's own `#MARKER-M1` sample and the shipped probes alike. The tombstone
+## shape carries no full marker token, so a miss means the match already begins at the
+## marker. Same helper, same answer, as `mutation_history._root_offset`.
+func _root_offset(matched: String, at: int) -> int:
+	var inside := matched.find(MARKER)
+	return at if inside < 0 else at + inside
+
+
+## The fixture as one file's worth of lines: a live probe on most of them and the
+## shipped prose that names one on the rest. The marker is spliced in from `MARKER`, so
+## the probe half exists at RUN TIME and this source stays clean enough for its own
+## scan — the same trick `MARKER` itself is built with. Line numbers are the verdicts,
+## in `FIXTURE_LIVE` and `FIXTURE_DOCUMENTATION`.
+func _fixture_lines() -> Array[String]:
+	return [
+		"extends RefCounted",
+		"",
+		"var kept := 1  # " + MARKER + "-M6 deleted the commit",
+		"# " + MARKER + "-M6 removed the commit",
+		"#" + MARKER + "-M6",
+		"# the regression " + MARKER + "-A below reproduces.",
+		'var note := "' + MARKER + '-M6 is the id"',
+		"# the assertion about the mechanism still passes. " + MARKER + "-B (the defence",
+		"\t" + MARKER + "-6 core commit removed",
+	]
+
+
+## The fixture joined into one file's text. The bound is snapshotted BEFORE the loop:
+## `lines.size()` is read once here rather than per pass, so nothing the body does can
+## move it.
+func _fixture_text() -> String:
+	var lines := _fixture_lines()
+	var text := ""
+	for number in lines.size():
+		if number > 0:
+			text += "\n"
+		text += lines[number]
+	return text
+
+
+## The line numbers of `hits`, for a failure that has to name WHICH lines and not only
+## how many. Bounded by `hits.size()`, which is finite by construction.
+func _line_numbers(hits: Array[Dictionary]) -> Array:
+	var numbers: Array = []
+	for hit in hits:
+		numbers.append(int(hit["line"]))
+	return numbers
 
 
 ## One marker line built from a shape, so the table and its proof cannot drift.
