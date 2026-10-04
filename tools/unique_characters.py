@@ -929,6 +929,19 @@ def _brief(record: dict, shot: dict) -> str:
 # --- actions ---------------------------------------------------------------
 
 
+def _display_path(path: Path) -> str:
+    """Repo-relative when possible, absolute otherwise.
+
+    `relative_to(REPO_ROOT)` raises for a catalog outside the repo, which turned a
+    confirmation message into a crash. A self-test pointing the catalog at a temp
+    directory hit it, and a real user with the project on a second drive would too.
+    """
+    try:
+        return path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def _shard_path(name: str) -> Path:
     """The file one writer owns, validated as a shard name.
 
@@ -965,10 +978,18 @@ def _add(args) -> int:
     if issues:
         raise ToolError(f"refusing to write an invalid record: {issues[0]}")
     shard = getattr(args, "shard", None)
-    _atomic_write([record], _shard_path(shard) if shard else None)
+    target = _shard_path(shard) if shard else None
+    _atomic_write([record], target)
+    # Name the file that actually received the record. It used to print the primary
+    # index unconditionally, so a sharded write reported a path it did not write -
+    # and an agent verifying its own work would look in the wrong file, or conclude
+    # its record was lost. A tool that misreports its own output path is the same
+    # hazard class as the one sharding fixed: a confident message about the wrong
+    # thing.
+    written = target or INDEX_PATH
     ok(
         f"added {args.character_id} as a draft at "
-        f"{INDEX_PATH.relative_to(REPO_ROOT).as_posix()}; fill appearance, then canon, "
+        f"{_display_path(written)}; fill appearance, then canon, "
         "then set status to canon"
     )
     return 0

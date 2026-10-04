@@ -1503,6 +1503,65 @@ def _ingest_is_deterministic() -> None:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
 
 
+@case("unique_characters: `add` reports the file it WROTE, not the primary index")
+def _add_reports_the_real_output_path() -> None:
+    """A sharded write reported the wrong file, so an author could not verify its work.
+
+    `add` printed `INDEX_PATH` unconditionally. With `--shard wave-1` the record
+    went to `unique-index-wave-1.jsonl` and the confirmation named
+    `unique-index.jsonl`. An agent checking where its character landed would look
+    in the wrong file and conclude the record was lost - which is the exact
+    reasoning that leads someone to re-add it and create a duplicate.
+
+    A tool that misreports its own output path is the same hazard class as the
+    clobber it was introduced alongside: a confident message about the wrong thing.
+
+    The assertion reads the message off a real sharded add, and also pins the
+    catalog-outside-the-repo case, because `relative_to(REPO_ROOT)` raises there and
+    turned this very message into a crash.
+    """
+    original = unique_characters.INDEX_PATH
+    original_root = unique_characters.REPO_ROOT
+    with tempfile.TemporaryDirectory() as raw:
+        unique_characters.INDEX_PATH = pathlib.Path(raw).resolve() / "unique-index.jsonl"
+        try:
+
+            class _Args:
+                character_id = "unique-0001"
+                name = "Probe"
+                role = "npc"
+                path = "qi"
+                style = ""
+                shard = "wave-99"
+
+            messages: list[str] = []
+            original_ok = unique_characters.ok
+            try:
+                unique_characters.ok = messages.append
+                unique_characters._add(_Args())
+            finally:
+                unique_characters.ok = original_ok
+
+            written = {path.name for path in pathlib.Path(raw).iterdir()}
+            expect(
+                written == {"unique-index-wave-99.jsonl"},
+                f"the sharded add wrote {sorted(written)}; expected only the shard",
+            )
+            expect(
+                bool(messages) and "unique-index-wave-99.jsonl" in messages[0],
+                f"the confirmation did not name the shard that received the record: "
+                f"{messages!r}. An agent verifying its own write would look in the wrong "
+                f"file and conclude the character was lost",
+            )
+            expect(
+                bool(messages) and not messages[0].endswith("unique-index.jsonl; fill"),
+                f"the confirmation named the primary index for a sharded write: {messages!r}",
+            )
+        finally:
+            unique_characters.INDEX_PATH = original
+            unique_characters.REPO_ROOT = original_root
+
+
 @case("unique_characters: a concurrent writer CANNOT delete another agent's characters")
 def _concurrent_write_cannot_clobber() -> None:
     """The hazard that would have destroyed most of a 1000-character cast.
