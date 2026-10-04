@@ -70,6 +70,31 @@ This model has a strong bias toward **pale, high-key, cream-white values**. In o
 
 The working pattern is: state the value range, then say the pale highlight `covers only a small fraction of the object`. Reuse it verbatim rather than reinventing it per icon.
 
+### State a surface as bare, never as blank-and-flat
+
+Paper-shaped subjects come back with **legible baked-in lettering**, which `docs/art-direction.md` forbids, and "no text" cannot stop it because the negative is inert. Say the surface is bare and empty instead — that is a positive instruction the sampler can use.
+
+But do not add "flat" or "plain and unmarked". Doing so overcorrected: four of eight rolled scrolls became **bare rectangles with no object at all**, because "flat" overrode the silhouette. Keep the shape words dominant and the blankness subordinate:
+
+```text
+The rolled and folded surfaces are bare and blank: smooth blank paper with a
+clean empty face and clean blank margins, carrying no lettering and no symbols.
+```
+
+### Vary the object, not just the colour
+
+Two palettes and two shapes per subcategory is not variety. A run of 15 broth groups produced 15 near-identical corked bottles, and a run of 8 decrees produced 4 identical scrolls plus 4 broken flat rectangles. Check the shape, not the hue.
+
+When rotating a subject list, **stride it by a number coprime to its length**. A fixed stride of 3 over 6 subjects only ever reaches indices 0 and 3, so the rotation silently does nothing:
+
+```python
+count = len(variants)
+stride = next(s for s in (5, 3, 2) if s < count and math.gcd(s, count) == 1)
+variant = (per_subject[key] * stride) % count
+```
+
+Most subcategories having only two subjects is the real ceiling on variety. `assets_sweep` widens `consumable/decree` to six as the worked example; the rest are still at two, so expect repetition outside the subcategories that have been widened.
+
 ### Padding in the source is irrelevant; only edge-cropping matters
 
 `_normalize_image` crops to the alpha bounding box, fits the result to 232px, and centres it on the 256 canvas (`tools/assets.py:118-124`). So generous source margins are thrown away, and judging a render by its margins measures the wrong thing.
@@ -91,7 +116,7 @@ The generated prompt is recorded verbatim in the index, so a record's `prompt` f
 - Inspect each generated PNG at game icon size for silhouette/readability, prompt match, palette variety, accidental text/glyphs, artifacts, and cutout quality. Regenerate weak outputs before proceeding.
 - After each batch run `uv run python -m tools assets audit` and `uv run python -m tools data distribution`; verify every intended seed resolves to the correct indexed family and trait counts reflect the intended diversity.
 - Keep generated files under `game/assets/items/generated/`. The CLI writes the asset index; do not hand-edit it while a generation is running, because the CLI reloads it after rendering to preserve concurrent edits.
-- `assets report` counts families, but `assets report --diversity` reports the **unique image file** count against the 2,000 floor in `MIN_UNIQUE_IMAGE_TARGET` (`tools/assets.py`). Measure unique files, not families or seeds. As of 2026-10-05: 673 families, **560 unique files**, 1,440 remaining.
+- `assets report` counts families, but `assets report --diversity` reports the **unique image file** count against the 2,000 floor in `MIN_UNIQUE_IMAGE_TARGET` (`tools/assets.py`). Measure unique files, not families or seeds. As of 2026-10-05: 773 families, **660 unique files**, 1,340 remaining, with 75 ladders and 1,151 groups still to split.
 
 ## Reaching 2,000: split ladders, do not paint per seed
 
@@ -99,21 +124,32 @@ The generated prompt is recorded verbatim in the index, so a record's `prompt` f
 
 The corpus is built from five-stage grade ladders — `X_base`, `X_refined`, `X_aged`, `X_primed`, `X_perfected` — which are five seeds of **one object type**. `docs/art-direction.md:16` covers grade variants with one image, so each whole ladder takes a single icon, and the seeds move off the broad category/subcategory family onto a specific `id_prefix` rule that outranks it. One render converts five seeds from "shares a generic image" to "has its own image".
 
-The relabelled `consumable/*` block alone held 117 such ladders. `build/sweep_ladders.py` automates the split:
+The relabelled `consumable/*` block alone held 117 such ladders.
+`uv run python -m tools assets-sweep ladders|groups` automates both splits:
 
 ```text
-uv run python build/sweep_ladders.py --dry-run --limit 12    # preview
-uv run python build/sweep_ladders.py --limit 12              # render
+uv run python -m tools assets-sweep ladders --dry-run --limit 12   # preview
+uv run python -m tools assets-sweep ladders --limit 12             # render
+uv run python -m tools assets-sweep groups  --limit 16             # the 2,000 route
 ```
 
-It discovers every ladder whose seeds all still sit on the broad family, derives a family id and subject from the seed's own `display_name`, picks one of twelve hue-spread palettes by a **stable hash of the prefix** (so a re-run reproduces the same art), and skips any family already in the index, which makes an interrupted run safe to repeat. Renders take ~25 s each, so a 12-ladder run is about 5 minutes; the whole block is roughly an hour. Re-run it until it reports nothing left.
+**`ladders` alone cannot reach 2,000.** 8,020 seeds over five-seed ladders caps
+at **1,604 families**, because a five-seed group can never average below five
+seeds per family, and 2,000 needs 4.0. `groups` is what clears the floor: it
+handles chains of 6+ seeds whose members are *distinct items* rather than grade
+variants, grouped by the token after the grade. `U6_divine_withe_fillet` and
+`U6_earth_withe_fillet` are one object at two grades and share art;
+`U6_divine_withe_grail` is a different object and gets its own. That is ~1,150
+further families.
 
-Only one of the twelve palettes is green, which keeps jade under the art-direction ceiling of two per eight. Review each batch before committing — the sweeper will happily produce fourteen competent but samey icons if you let it run unreviewed.
+Both actions shell out to `assets generate`, so the shared UNET, the RMBG cutout,
+the 256 install and the index write stay on the audited path. Both are resumable:
+a family already in the index is skipped. Renders take ~27 s, so a 16-group run is
+about 8 minutes.
 
-**A stable hash is not a diversity guarantee.** Run 2 drew fourteen ladders and the three `draft` books came out close to indistinguishable, as did several scrolls, because the hash picks subject and palette per prefix and a batch that draws many ladders from *one* subcategory lands on the same variant repeatedly. Across a run of ~14 the hash will collide; variance has to be forced rather than hoped for. Either cap a batch to ~4 ladders per subcategory, or index the palette and subject by position in the batch instead of by hash. Both were left undone here — the icons are usable and distinct enough to read, but a reviewer should expect the next block to need the same treatment.
-- Commit only the skill-owned/generated paths for the completed slice. Never stage unrelated asset-index edits.
+Only one of the twelve palettes is green, which keeps jade under the
+art-direction ceiling of two per eight. **Review each batch before committing.**
 
-## The library is not visually uniform
 
 Icons were produced across several models and styles, so a fresh icon will not match its neighbours:
 
