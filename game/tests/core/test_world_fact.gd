@@ -102,19 +102,33 @@ func test_since_is_written_once_and_never_advances() -> void:
 ## absence of a verb.
 func test_the_api_surface_has_no_verb_that_lowers_a_count() -> void:
 	var mutators: Array[String] = []
-	# Read the class's OWN script methods, not the whole Object surface:
-	# `remove_meta` and `remove_user_signal` are inherited from Object, and
-	# "WorldFact has no remove verb" was never a claim about every GDScript
-	# class. Filtering to this script is what makes the assertion honest.
-	for method in WorldFact.new().get_script().get_script_method_list():
-		var name := String(method["name"])
+	# Scoped to the methods THIS FILE declares, by reading its source rather than
+	# the loaded class. Both wider readings lie: the whole `Object` surface
+	# carries `remove_meta` and `clear_subscribers`, and
+	# `get_script_method_list()` on the loaded script carries the same inherited
+	# names. Reading the declarations is also the stricter half: it cannot be
+	# satisfied by a method inherited from anywhere.
+	#
+	# The verbs are matched as MUTATORS, and the test is for a verb that LOWERS
+	# A COUNT. The blunt readings all lie in one direction or the other: a bare
+	# "clear" prefix also catches `clear_subscribers`, and a bare "count"
+	# substring also catches `count` and `subscriber_count`, which are the READ
+	# verbs the whole API is built on. So the count-bearing names are matched as
+	# verbs that ASSIGN or REMOVE one, never one that reports one.
+	for line in FileAccess.get_file_as_string("res://src/core/world_fact.gd").split("\n"):
+		var text := String(line).strip_edges()
+		if not text.begins_with("static func ") and not text.begins_with("func "):
+			continue
+		var name := text.substr(0, text.find("("))
 		var lowered := name.contains("spend") or name.contains("consume")
 		lowered = lowered or name.contains("revoke") or name.contains("remove")
-		lowered = lowered or name.contains("clear") or name.contains("reset")
-		lowered = lowered or name.contains("set_count") or name.contains("decay")
+		lowered = lowered or name.contains("reset") or name.contains("decay")
+		lowered = lowered or name.contains("set_count") or name.contains("clear_count")
+		lowered = lowered or name.contains("count_down") or name.contains("decrement")
+		lowered = lowered or name.contains("forget") or name.contains("unrecord")
 		if lowered:
 			mutators.append(name)
-	assert_eq(mutators, [], "WorldFact exposes no verb that could lower a count")
+	assert_eq(mutators, [], "WorldFact declares no verb that could lower a count")
 
 
 # --- A refused record mutates NOTHING ----------------------------------------
