@@ -425,7 +425,11 @@ func act_recover() -> bool:
 ## the join may answer "". `tests/modules/body_cultivation/test_refusal_naming.gd` is the guard
 ## that such a state is unreachable — the check that would have caught this screen's own lie.
 func _refusal(view: Dictionary, verb: String) -> String:
-	var parts: Array[String] = []
+	# `PackedStringArray`, not `Array`: `String.join` takes the packed type, and an
+	# `Array` argument converts to it at the call while a TYPED `Array[String]` does not
+	# — which returned "" for every refusal on screen, in silence, with no error. A join
+	# that quietly produces nothing is the same defect as the one this screen just lost.
+	var parts := PackedStringArray()
 	var clauses: Array = (view.get("unavailable", {}) as Dictionary).get(verb, [])
 	for clause in clauses:
 		var label := String((clause as Dictionary).get("label", ""))

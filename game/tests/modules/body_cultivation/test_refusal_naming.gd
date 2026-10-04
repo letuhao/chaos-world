@@ -224,7 +224,14 @@ func test_a_verb_that_succeeds_may_still_publish_a_complaint() -> void:
 	assert_ne(elixir, null, "authored item %s exists" % seed.strengthening_item)
 	ItemsApi.inventory(actor).add(elixir, 400)
 	var candidates := BodyTraining.strengthen_candidates(actor)
-	assert_ne(candidates.is_empty(), false, "this realm offers channels")
+	assert_eq(
+		candidates.is_empty(),
+		false,
+		(
+			"this realm offers channels (rank=%s seed=%s candidates=%s)"
+			% [actor.path(PATH).rank_id, _seed(actor), candidates]
+		)
+	)
 	# Cap every candidate but the last, and put the last one step below its cap so it is
 	# trainable. `range` over a size this loop does not grow.
 	for index in range(maxi(0, candidates.size() - 1)):
@@ -254,7 +261,14 @@ func test_a_verb_that_succeeds_may_still_publish_a_complaint() -> void:
 func test_the_strengthen_report_only_names_channels_the_verb_walks() -> void:
 	var actor := _hero()
 	var candidates := BodyTraining.strengthen_candidates(actor)
-	assert_ne(candidates.is_empty(), false, "this realm offers channels")
+	assert_eq(
+		candidates.is_empty(),
+		false,
+		(
+			"this realm offers channels (rank=%s seed=%s candidates=%s)"
+			% [actor.path(PATH).rank_id, _seed(actor), candidates]
+		)
+	)
 	for entry in _unavailable(actor, "strengthen"):
 		var clause := entry as Dictionary
 		var kind := String(clause.get("kind", ""))

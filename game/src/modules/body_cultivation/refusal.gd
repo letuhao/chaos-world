@@ -348,17 +348,22 @@ static func _outcome_reason(record: BodyAttempt) -> String:
 
 
 ## The clause shape every entry shares, and the one `RaceGate` already produces.
+##
+## `required`/`actual` are the house slots. A refusal is always a requirement that does
+## not hold, so both are constants here rather than per-clause data: nothing about a
+## refusal is a threshold a screen could compare against. The literal carries NO interior
+## comment — a comment between two entries of a multi-line dictionary literal is the one
+## place a stray token can cost a reader a key without any error, and `label` is the key
+## every screen renders.
 static func _clause(kind: String, id: StringName, label: String) -> Dictionary:
-	return {
+	var clause := {
 		"kind": kind,
 		"id": String(id),
-		# `required`/`actual` are the house slots. A refusal is always a requirement
-		# that does not hold, so both are constants here rather than per-clause data:
-		# nothing about a refusal is a threshold a screen could compare against.
 		"required": true,
 		"actual": false,
 		"label": label,
 	}
+	return clause
 
 
 static func _add_seed_clause(out: Array[Dictionary], realm_id: StringName) -> void:

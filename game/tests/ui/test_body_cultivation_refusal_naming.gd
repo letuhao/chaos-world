@@ -3,11 +3,10 @@ extends TestCase
 ## The body screen renders the refusal the MODULE named, and never infers one
 ## (ADR 0150).
 ##
-## This is the layer `tests/modules/body_cultivation/test_refusal_naming.gd` cannot
-## reach: that file proves a `false` always has a name, and this one proves the name
-## is what a player actually reads. They are separate because the defect had two halves
-## — a module that did not publish the cause, and a screen that authored a sentence
-## instead of asking.
+## This is the layer `tests/modules/body_cultivation/test_refusal_naming.gd` cannot reach:
+## that file proves a `false` always has a name, and this one proves the name is what a
+## player actually reads. They are separate because the defect had two halves — a module that
+## did not publish the cause, and a screen that authored a sentence instead of asking.
 ##
 ## ## What was wrong, in the screen's own words
 ##
@@ -15,18 +14,18 @@ extends TestCase
 ## "Repaired" if repaired else "Nothing damaged to repair"
 ## ```
 ##
-## So a hero with a torn channel and no recovery elixir was told nothing was damaged,
-## while the gate line above — rendered from the SAME `panel_state` — said
-## `Damaged channels need repair: lung`. The screen contradicted itself on the
-## fail-recoverably leg of the acceptance gate and named the real cause nowhere.
+## So a hero with a torn channel and no recovery elixir was told nothing was damaged, while
+## the gate line above — rendered from the SAME `panel_state` — said `Damaged channels need
+## repair: lung`. The screen contradicted itself on the fail-recoverably leg of the acceptance
+## gate and named the real cause nowhere.
 ##
 ## ## What is asserted here is the CONTRACT, not the prose
 ##
-## A test pinning one exact sentence would fail the moment a correct refusal was
-## reworded, and a reword is not the defect. So the message must CARRY the label the
-## module published for that verb, and it must not deny a wound the module reports.
-## Both invariants go red when a screen-authored sentence is restored, and both stay
-## green through a reword.
+## A test pinning one exact sentence would fail the moment a correct refusal was reworded, and
+## a reword is not the defect. So the message must CARRY the label the module published for
+## that verb, read back off the read model so no test restates the wording it is checking.
+## Both invariants go red when a screen-authored sentence is restored, and both stay green
+## through a reword.
 
 const SCREEN := "res://src/ui/screens/body_cultivation_panel.tscn"
 const PATH := BodyPath.PATH_ID
@@ -90,12 +89,9 @@ func _refused(panel: BodyCultivationPanel) -> bool:
 ## Every label the module published for `verb`, joined the way the screen joins them, read
 ## from the read model so no test restates the wording it is checking.
 func _published(actor: Actor, verb: String) -> String:
-	var clauses: Array = (
-		(BodyCultivationApi.panel_state(actor).get("unavailable", {}) as Dictionary).get(verb, [])
-	)
 	var labels: Array = []
-	for clause in clauses:
-		labels.append(String((clause as Dictionary).get("label", "")))
+	for clause in _clauses(actor, verb):
+		labels.append(String(clause.get("label", "")))
 	return "; ".join(labels)
 
 
@@ -114,24 +110,29 @@ func _press(panel: BodyCultivationPanel, verb: String) -> String:
 ## The clause KINDS the module published for `verb`, as one comma-joined string, so a
 ## failure can print what the read model actually said instead of only that it said nothing.
 func _kinds(actor: Actor, verb: String) -> String:
-	var clauses: Array = (
-		(BodyCultivationApi.panel_state(actor).get("unavailable", {}) as Dictionary).get(verb, [])
-	)
 	var out: Array = []
-	for clause in clauses:
-		out.append(String((clause as Dictionary).get("kind", "")))
+	for clause in _clauses(actor, verb):
+		out.append(String(clause.get("kind", "")))
 	return ",".join(out)
+
+
+## The RAW clause entries for `verb`, so a failing assertion can print the data itself
+## rather than only a summary of it. A test that reports "it said nothing" without saying
+## what it DID say costs a whole run to diagnose.
+func _clauses(actor: Actor, verb: String) -> Array:
+	return (BodyCultivationApi.panel_state(actor).get("unavailable", {}) as Dictionary).get(
+		verb, []
+	)
 
 
 ## A hero prepared to the brink of its next realm with an EMPTY PACK, except for the pill a
 ## breakthrough is priced by. The pack is emptied because `BodyPlayFixture.prepare` stocks each
 ## elixir just before spending one and leaves both behind, so a case about a MISSING price would
-## otherwise inherit it and never see the refusal it is testing.
+## inherit it and never see the refusal it is testing.
 ##
 ## The pill is the ONE price the target realm owns, so it comes from the fixture's `seed_for`
-## (which answers the next realm); every other price in this file comes from `_seed`, which
-## answers the realm the actor is standing in, because that is the realm `strengthen` and
-## `recover` charge.
+## (next realm); every other price here comes from `_seed`, the realm the actor stands in,
+## because that is the realm `strengthen` and `recover` charge.
 func _prepared(with_pill: bool = true) -> Actor:
 	var actor := _play.actor()
 	_play.prepare(actor)
@@ -169,16 +170,12 @@ func test_every_refusal_message_is_exactly_what_the_module_published() -> void:
 		panel.setup(actor)
 		_damage(actor, state)
 		var expected := _published(actor, "recover")
-		assert_ne(
+		assert_eq(
 			expected.is_empty(),
 			false,
 			(
-				"%s: the module published nothing (kinds=%s, blocked=%d)"
-				% [
-					state,
-					_kinds(actor, "recover"),
-					int(BodyCultivationApi.panel_state(actor).get("blocked", 0))
-				]
+				"%s: the module published nothing (clauses=%s joined=%s)"
+				% [state, _clauses(actor, "recover"), expected]
 			)
 		)
 		panel.act_recover()
@@ -200,7 +197,7 @@ func test_the_other_refused_verbs_are_published_too() -> void:
 		var expected := _published(actor, verb)
 		_press(panel, verb)
 		if _refused(panel):
-			assert_ne(expected.is_empty(), false, "%s: the module names something" % verb)
+			assert_eq(expected.is_empty(), false, "%s: the module names something" % verb)
 			assert_eq(_message(panel), expected, "%s: the screen repeats the name" % verb)
 		panel.free()
 
@@ -380,7 +377,7 @@ func test_a_rolled_breakthrough_reports_the_records_own_verdict() -> void:
 	var reason := String(
 		BodyCultivationApi.panel_state(actor).get("attempt_outcome", {}).get("reason", "")
 	)
-	assert_ne(
+	assert_eq(
 		reason.is_empty(),
 		false,
 		(
@@ -392,7 +389,7 @@ func test_a_rolled_breakthrough_reports_the_records_own_verdict() -> void:
 	# from the read model, so the same press would report it.
 	panel.act_breakthrough()
 	var said := _message(panel)
-	assert_ne(said.is_empty(), false, "the press is still explained (%s)" % said)
+	assert_eq(said.is_empty(), false, "the press is still explained (%s)" % said)
 	panel.free()
 
 
@@ -415,7 +412,7 @@ func test_no_refusal_is_left_unnamed() -> void:
 			else:
 				_press(panel, verb)
 			if _refused(panel):
-				assert_ne(
+				assert_eq(
 					_message(panel).is_empty(),
 					false,
 					"%s/%s: refused in silence (kinds=%s)" % [state, verb, _kinds(actor, verb)]
