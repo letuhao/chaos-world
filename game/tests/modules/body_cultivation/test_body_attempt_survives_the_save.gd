@@ -18,13 +18,20 @@ extends TestCase
 ##
 ## ## Why the seed is CHOSEN rather than hoped for
 ##
-## `begin_breakthrough` / `resolve_breakthrough` take no generator, so they commit and
-## roll against seed 0. Asserting "the hero advanced" on that is a coin flip dressed as
-## a test. The cases below that need a determinate outcome therefore commit through
-## `BodyAdvancement.start_attempt` with a seed chosen to win — which is strictly the
-## stronger claim, because it proves the save carried the ROLL (`rng_state`) and not
-## merely the fact that an attempt existed. The facade's own pair is exercised on the
-## invariants that hold for either outcome.
+## The cases below that need a DETERMINATE outcome commit through
+## `BodyAdvancement.start_attempt` with a seed chosen to win or to lose, because the
+## facade deliberately supplies no generator (see `BodyAttemptRoll`): the commit
+## draws the attempt's seed and the resolve replays the record's. That is strictly the
+## stronger claim — it proves the save carried the ROLL (`rng_state`) and not merely
+## the fact that an attempt existed.
+##
+## It used to be the other way round. This file asserted only "the invariants that
+## hold whichever way the roll fell, because the facade takes no generator and a test
+## that assumed a victory would be testing seed 0" — and seed 0 WON on every realm on
+## the ladder, so the suite was green through a roll that could not fail, and the
+## deviation leg of the program was unreachable. `test_body_breakthrough_roll.gd` now
+## carries the outcome claims; this file carries the envelope claims, and the one
+## facade case below pins both halves together rather than picking a side.
 
 var _play: BodyPlayFixture
 var _born: Array = []
@@ -65,7 +72,7 @@ func test_an_attempt_committed_before_a_save_is_the_one_resolved_after_it() -> v
 	var committed := BodyCultivationApi.begin_breakthrough(hero)
 	assert_eq(committed.is_empty(), false, "the facade commits an attempt")
 	var attempt_id := String(committed.get("attempt", ""))
-	assert_ne(attempt_id.is_empty(), false, "which carries an attempt id")
+	assert_eq(attempt_id.is_empty(), false, "which carries an attempt id")
 	assert_eq(
 		BodyCultivationApi.begin_breakthrough(hero).is_empty(),
 		true,
@@ -78,7 +85,7 @@ func test_an_attempt_committed_before_a_save_is_the_one_resolved_after_it() -> v
 		return
 
 	var restored := BodyAdvancement.active_attempt(reloaded)
-	assert_ne(restored == null, true, "the attempt is in flight after the reload")
+	assert_ne(restored, null, "the attempt is in flight after the reload")
 	if restored == null:
 		return
 	assert_eq(
@@ -110,7 +117,7 @@ func test_the_saved_roll_is_the_roll_that_resolves_it() -> void:
 	var winning := _seed_beating(chance)
 	assert_ne(winning, 0, "a winning seed exists for this chance")
 	var started := BodyAdvancement.start_attempt(hero, _rng(winning))
-	assert_ne(started == null, true, "the attempt committed")
+	assert_ne(started, null, "the attempt committed")
 	if started == null:
 		return
 	var target := String(started.target_rank)
@@ -140,7 +147,7 @@ func test_the_award_is_not_paid_twice_across_a_second_save() -> void:
 	var winning := _seed_beating(chance)
 	assert_ne(winning, 0, "a winning seed exists for this chance")
 	var started := BodyAdvancement.start_attempt(hero, _rng(winning))
-	assert_ne(started == null, true, "the attempt committed")
+	assert_ne(started, null, "the attempt committed")
 	if started == null:
 		return
 	var reloaded := _reload_through_the_save(hero)
@@ -151,7 +158,7 @@ func test_the_award_is_not_paid_twice_across_a_second_save() -> void:
 	var fibres := reloaded.stats.get_base(&"muscle_fiber")
 	var rank := String(reloaded.path(BodyPath.PATH_ID).rank_id)
 	# An award really landed, or "unchanged" below would be trivially true.
-	assert_ne(fibres > 0.0, true, "a reward key was paid (%s)" % fibres)
+	assert_ne(fibres, 0.0, "a reward key was paid (%s)" % fibres)
 
 	# A SECOND save, taken after the award, is the case that pays twice if the flag
 	# does not travel. One save of an ungranted record is not this test.
@@ -177,7 +184,7 @@ func test_the_pill_is_spent_once_and_is_not_spent_again_on_reload() -> void:
 	var seed := _play.seed_for(hero)
 	assert_ne(seed, null, "the target realm authors a pill")
 	var before := _pill_count(hero, seed.breakthrough_item)
-	assert_ne(before > 0, true, "the hero holds the pill a breakthrough is priced by")
+	assert_ne(before, 0, "the hero holds the pill a breakthrough is priced by")
 	var committed := BodyCultivationApi.begin_breakthrough(hero)
 	assert_eq(committed.is_empty(), false, "the attempt commits")
 	assert_eq(_pill_count(hero, seed.breakthrough_item), before - 1, "and spends exactly one")
@@ -234,8 +241,14 @@ func test_the_read_model_reports_the_committed_attempt_after_the_save() -> void:
 
 ## **Acceptance criterion 3.** The single-call verb still works for a player who never
 ## quits: one press, one terminal record, at most one realm gained, exactly one pill
-## spent. Asserted on the invariants that hold whichever way the roll fell, because the
-## facade takes no generator and a test that assumed a victory would be testing seed 0.
+## spent.
+##
+## The hero MOVED exactly when the press reported an advance — and which way that was
+## is not chosen here. The verdict is read back out of the record the press left and
+## compared with the roll that record's own seed produces, so this asserts the verb is
+## wired to its committed roll instead of asserting a coin flip. Before the fix that
+## comparison was impossible to write: the facade's seed was 0, the draw 0.202272, and
+## the answer was a deviation every time.
 func test_the_single_call_verb_still_ends_its_attempt() -> void:
 	var hero := _prepared()
 	var seed := _play.seed_for(hero)
@@ -243,18 +256,22 @@ func test_the_single_call_verb_still_ends_its_attempt() -> void:
 	var rank := String(hero.path(BodyPath.PATH_ID).rank_id)
 	var advanced := BodyCultivationApi.attempt_breakthrough(hero)
 	var stored := BodyAdvancement.attempt(hero)
-	assert_ne(stored == null, true, "a prepared hero's press wrote an attempt record")
+	assert_ne(stored, null, "a prepared hero's press wrote an attempt record")
 	if stored == null:
 		return
 	assert_eq(stored.is_active(), false, "and it is terminal the moment the call returns")
 	assert_eq(stored.is_resolved(), true, "so it reached a verdict, not a cancellation-by-omission")
 	assert_eq(_pill_count(hero, seed.breakthrough_item), pills - 1, "for exactly one pill")
-	# The report and the world agree, whichever way the roll fell. Written as a pairing
-	# rather than two assertions so neither half can pass while the other fails.
+	var chance := float(stored.preparation.get("chance", 0.0))
+	assert_eq(
+		BodyAttemptRoll.replay(stored.rng_state).randf() < chance,
+		advanced,
+		"the hero moved a realm exactly when its own stored roll says it must have"
+	)
 	assert_eq(
 		String(hero.path(BodyPath.PATH_ID).rank_id) != rank,
 		advanced,
-		"the hero moved a realm exactly when the press reported an advance"
+		"and the report and the world agree, whichever way the roll fell"
 	)
 
 
@@ -279,7 +296,7 @@ func test_a_refused_press_while_an_attempt_is_committed_costs_no_comprehension()
 	var ladder := RealmDefaults.ladder()
 	if ladder.size() <= below:
 		return
-	var standing := ladder.realm(below)
+	var standing := ladder.realms()[below]
 	var hero := _play.climb_to(&"qi_refining", standing.id)
 	_born.append(hero)
 	assert_eq(
@@ -287,7 +304,7 @@ func test_a_refused_press_while_an_attempt_is_committed_costs_no_comprehension()
 		String(standing.id),
 		"climbed to %s, whose next realm owes a tribulation" % standing.id
 	)
-	assert_ne(_play.prepare(hero) == null, false, "and prepared for it, winning the fight it owes")
+	assert_ne(_play.prepare(hero), null, "and prepared for it, winning the fight it owes")
 	assert_eq(
 		BodyCultivationApi.begin_breakthrough(hero).is_empty(),
 		false,
@@ -377,7 +394,7 @@ func _pill_count(actor: Actor, def_id: StringName) -> int:
 ## failure this whole feature exists to remove, so it is the one thing asserted here.
 func _assert_resolved(reloaded: Actor) -> void:
 	var stored := BodyAdvancement.attempt(reloaded)
-	assert_ne(stored == null, true, "a record is on the actor after the resolve")
+	assert_ne(stored, null, "a record is on the actor after the resolve")
 	if stored == null:
 		return
 	assert_eq(stored.is_active(), false, "and it is terminal: no attempt left in flight")

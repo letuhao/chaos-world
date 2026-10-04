@@ -161,7 +161,9 @@ func test_an_attempt_already_at_its_target_is_cancelled_not_treated_as_granted()
 	assert_eq(stale.outcome_granted, false, "still not granted")
 
 	var physique := actor.stats.get_base(Stat.PHYSIQUE)
-	assert_eq(BodyAdvancement.resolve_attempt(actor, _rng(8)), false, "no award")
+	# No generator: the stale branch ends the record before any roll, so this
+	# asserts the guard rather than the outcome the committed seed would give.
+	assert_eq(BodyAdvancement.resolve_attempt(actor), false, "no award")
 	assert_eq(
 		actor.stats.get_base(Stat.PHYSIQUE), physique, "the award was NOT granted a second time"
 	)
@@ -200,7 +202,9 @@ func test_a_flagged_attempt_short_circuits_before_any_work() -> void:
 
 	started.outcome_granted = true
 	actor.set_module_data(BodyAdvancement.ATTEMPT_KEY, started.to_dict())
-	assert_eq(BodyAdvancement.resolve_attempt(actor, _rng(12)), true, "granted, as flagged")
+	# The flag short-circuits above the roll, so the attempt's own seed — which
+	# would win — is never consulted: the answer comes from the flag alone.
+	assert_eq(BodyAdvancement.resolve_attempt(actor), true, "granted, as flagged")
 	assert_eq(actor.stats.get_base(Stat.PHYSIQUE), physique, "nothing actually granted")
 	assert_eq(
 		actor.path(BodyPath.PATH_ID).rank_id,

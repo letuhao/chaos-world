@@ -242,9 +242,16 @@ func _attempt_budget(chance: float) -> int:
 
 
 ## Roll until the actor is standing in the next realm, or give up.
+##
+## A fresh seed per attempt: the attempt stores the seed it resolves against and
+## `resolve_attempt` reads it back with no generator of its own, so handing every
+## attempt the same generator replays one roll for the whole budget. The next seed
+## comes off the stream the pinned initial seed fixed, so the traversal is still
+## deterministic run to run.
 func _breakthrough(actor: Actor, rng: RandomNumberGenerator) -> bool:
 	var budget := _attempt_budget(float(BodyAdvancement.preview(actor)["chance"]))
 	for _attempt in budget:
+		rng.seed = rng.randi()
 		if BodyAdvancement.try_breakthrough(actor, rng):
 			return true
 		# A deviation wounded the body: recover through public actions and retry.

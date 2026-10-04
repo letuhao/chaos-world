@@ -20,12 +20,6 @@ func _actor() -> Actor:
 	return actor
 
 
-func _rng(seed_value: int) -> RandomNumberGenerator:
-	var rng := RandomNumberGenerator.new()
-	rng.seed = seed_value
-	return rng
-
-
 func _stock(actor: Actor, def_id: StringName, quantity: int = 1) -> void:
 	# Assert, do not assume: a missing inventory aborts the caller mid-assertion
 	# and the test is then reported as passing.
@@ -142,7 +136,8 @@ func test_preview_names_the_attempt_in_flight() -> void:
 	var preview := BodyAdvancement.preview(actor)
 	assert_eq(preview["attempt"], String(committed.attempt_id), "the preview names it")
 	# A resolved attempt is no longer in flight and must stop being advertised.
-	BodyAdvancement.resolve_attempt(actor, _rng(3))
+	# Which way the stored roll fell is irrelevant here and is not asserted.
+	BodyAdvancement.resolve_attempt(actor)
 	assert_eq(BodyAdvancement.preview(actor)["attempt"], "", "resolved: nothing in flight")
 
 
@@ -215,16 +210,17 @@ func test_only_one_attempt_is_active_at_a_time() -> void:
 ## refused with no way out.
 func test_a_terminal_record_does_not_lock_out_the_next_attempt() -> void:
 	var actor := _actor()
-	var seed := _prepare(actor)
 	var resolved := false
-	for attempt_index in 32:
+	# Bounded by the seed space, not by hope: the lowest `chance_base` on the
+	# ladder is 0.2580, so 32 independent draws all losing is 0.742^32 ~= 1e-10.
+	for _attempt_index in 32:
 		var prepared := _prepare(actor)
 		if prepared == null:
 			break
 		_stock(actor, prepared.breakthrough_item, 1)
 		if BodyAdvancement.start_attempt(actor) == null:
 			break
-		if BodyAdvancement.resolve_attempt(actor, _rng(attempt_index + 1)):
+		if BodyAdvancement.resolve_attempt(actor):
 			resolved = true
 			break
 	assert_eq(resolved, true, "an attempt resolved")
@@ -258,17 +254,22 @@ func test_resolve_without_an_attempt_is_a_noop() -> void:
 	assert_eq(BodyAdvancement.resolve_attempt(_actor()), false, "nothing to resolve")
 
 
-## Resolve under a seeded RNG until one attempt succeeds; preparation between
-## attempts is the recovery a deviation requires.
+## Commit and resolve until one attempt succeeds; preparation between attempts is
+## the recovery a deviation requires.
+##
+## No generator, so each attempt draws its own seed — which is the point: this is
+## the shipped lifecycle, and it is only reachable at all because a real press can
+## now win. Bounded by the seed space: at the lowest authored `chance_base` (0.2580)
+## 32 independent draws all losing is 0.742^32 ~= 1e-10.
 func _resolve_until_success(actor: Actor, attempts: int = 32) -> bool:
-	for attempt in attempts:
+	for _attempt_index in attempts:
 		var seed := _prepare(actor)
 		if seed == null:
 			return false
 		_stock(actor, seed.breakthrough_item, 1)
 		if BodyAdvancement.start_attempt(actor) == null:
 			return false
-		if BodyAdvancement.resolve_attempt(actor, _rng(attempt + 1)):
+		if BodyAdvancement.resolve_attempt(actor):
 			return true
 	return false
 
@@ -296,7 +297,9 @@ func test_failed_attempt_is_recoverable() -> void:
 	var actor := _actor()
 	var deviated := false
 	var damaged_channel: StringName = &""
-	for attempt in 64:
+	# Bounded by the seed space: at the best authored `chance_base` (0.4900) 64
+	# independent draws all winning is 0.4900^64 ~= 1e-20.
+	for _attempt_index in 64:
 		var seed := _prepare(actor)
 		if seed == null:
 			break
@@ -304,7 +307,7 @@ func test_failed_attempt_is_recoverable() -> void:
 		if BodyAdvancement.start_attempt(actor) == null:
 			break
 		var before := actor.path(BodyPath.PATH_ID).rank_id
-		if BodyAdvancement.resolve_attempt(actor, _rng(attempt + 1)):
+		if BodyAdvancement.resolve_attempt(actor):
 			assert_eq(actor.path(BodyPath.PATH_ID).rank_id != before, true, "a success advances")
 			continue
 		deviated = true
@@ -339,7 +342,7 @@ func test_resolve_aborts_when_the_stored_target_no_longer_matches() -> void:
 	assert_ne(committed == null, true, "attempt started")
 	# Something else moved the actor on; the stale attempt must not fire.
 	actor.path(BodyPath.PATH_ID).rank_id = &"core_formation"
-	var record := BodyAdvancement.resolve_attempt(actor, _rng(1))
+	var record := BodyAdvancement.resolve_attempt(actor)
 	assert_eq(record, false, "stale attempt aborted")
 	var stored := BodyAdvancement.attempt(actor)
 	assert_ne(stored == null, true, "the stale record is kept, not cleared")
@@ -403,7 +406,7 @@ func test_resolve_cancels_when_the_tier_gate_shut_under_the_attempt() -> void:
 	var physique := actor.stats.get_base(Stat.PHYSIQUE)
 	var progress := actor.path(BodyPath.PATH_ID).progress
 	var blocked: int = (actor.component(&"acupoints") as AcupointSet).blocked_count()
-	assert_eq(BodyAdvancement.resolve_attempt(actor, _rng(1)), false, "the shut gate refuses")
+	assert_eq(BodyAdvancement.resolve_attempt(actor), false, "the shut gate refuses")
 	assert_eq(actor.stats.get_base(Stat.PHYSIQUE), physique, "no award")
 	assert_almost_eq(actor.path(BodyPath.PATH_ID).progress, progress, "progress untouched", 0.0001)
 	assert_eq(

@@ -24,6 +24,7 @@ const MAX_MEDITATE_STEPS := 8192  # deepest authored insight floor at the slowes
 const MAX_RECOVERY_STEPS := 64  # one wound per channel, per meridian
 const MAX_TRIBULATION_WAVES := 64  # waves the authored tribulation can spend
 const MAX_ATTEMPTS := 96  # rolls at the authored floor chance before giving up
+const MAX_ASCENT_STEPS := 8  # steps to the Transcendent caps, plus slack
 
 ## Bodies share one inventory, and a full 30-realm run keeps a pill plus an
 ## elixir stack per realm, so the default slot count runs dry mid-ladder.
@@ -221,23 +222,39 @@ func meditate_to(actor: Actor, insight_required: float) -> void:
 
 ## Satisfy the tier gates the target realm adds.
 ##
-## Everything except the tribulation is COMMITTED by the breakthrough itself
-## (ADR 0032, and `WorldAnchor.commit` finishes the ascension when the
-## Transcendent tier lands), so there is nothing to walk here — writing an
-## inside world, a created world, or an ascension record is exactly what made
-## R19-R30 unreachable in play. The tribulation is the one prerequisite the
-## actor has to fight, and it is fought through the production entry points.
+## Everything except the tribulation and the ascent is COMMITTED by the breakthrough
+## itself (ADR 0032, and `WorldAnchor.commit` finishes the ascension when the
+## Transcendent tier lands), so there is nothing to grow here — writing an inside
+## world, a created world, or an ascension record is exactly what made R19-R30
+## unreachable in play. The tribulation is the one prerequisite the actor has to fight,
+## and it is fought through the production entry points; the ascent is the one
+## prerequisite it has to WALK.
+##
+## The ascent used to be missing here, on the strength of "the commit finishes it",
+## which is what `test_full_traversal.gd` already found the hard way: ADR 0021 requires
+## it COMPLETE before the next realm, so without this walk R28-R30 were unreachable
+## through anything that used this fixture. `WorldAnchor.ascend` is core's own entry
+## point (ADR 0041) — the ascent belongs to no single path, so no facade serves it.
 func satisfy_tier_gates(actor: Actor, target: RealmDef) -> void:
-	if target.index < Breakthrough.IMMORTAL_REALM_THRESHOLD:
-		return
-	if Breakthrough.tribulation_ok(actor, target.index):
-		return
-	if Breakthrough.begin_tribulation(actor, target.index) == null:
-		return
-	var waves := 0
-	while waves < MAX_TRIBULATION_WAVES and Breakthrough.advance_tribulation(actor):
-		waves += 1
-	Breakthrough.resolve_tribulation(actor, true)
+	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD:
+		if not Breakthrough.tribulation_ok(actor, target.index):
+			if Breakthrough.begin_tribulation(actor, target.index) != null:
+				var waves := 0
+				while waves < MAX_TRIBULATION_WAVES and Breakthrough.advance_tribulation(actor):
+					waves += 1
+				Breakthrough.resolve_tribulation(actor, true)
+	_walk_ascent(actor, target)
+
+
+## Bounded by `MAX_ASCENT_STEPS`, which names an ascent that will not finish, not a
+## budget to spend: `WorldAnchor.ascend` refuses on the step past the caps, so its own
+## `false` is the loop's real exit and raising this would only slow a loud failure.
+func _walk_ascent(actor: Actor, target: RealmDef) -> void:
+	var steps := 0
+	while steps < MAX_ASCENT_STEPS and not Breakthrough.ascension_ok(actor, target.index):
+		steps += 1
+		if not WorldAnchor.ascend(actor):
+			return
 
 
 ## Bring the actor to the brink of the next realm using only public actions.
@@ -313,8 +330,16 @@ func unrequired_point(actor: Actor, seed: BodyRealmSeed) -> StringName:
 
 ## Roll until the actor is standing in the next realm. Every failed attempt is
 ## followed by the recovery a deviation requires, which is what a player does.
+##
+## **A FRESH SEED PER ATTEMPT, and that is load-bearing rather than tidy.** An
+## attempt stores the seed it will resolve against and `resolve_attempt` reads it
+## back with no generator of its own, so a loop that hands the SAME generator to
+## every attempt replays one roll until its budget runs out. `rng.seed = rng.randi()`
+## takes the next seed off the stream the pinned initial seed already fixed, so the
+## walk stays deterministic run to run while every attempt is a fresh trial.
 func breakthrough(actor: Actor, rng: RandomNumberGenerator) -> bool:
 	for _attempt in MAX_ATTEMPTS:
+		rng.seed = rng.randi()
 		if BodyAdvancement.try_breakthrough(actor, rng):
 			return true
 		if seed_for(actor) == null:

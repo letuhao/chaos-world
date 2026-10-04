@@ -219,8 +219,15 @@ static func strengthen_next(actor: Actor) -> bool:
 ## spent. An empty view here is also what a closed path or a ceiling above the
 ## realm being entered looks like — the refusal costs the actor nothing, because
 ## it happens before any cost is paid.
+##
+## **No generator, BY DESIGN, and it is what makes the two halves one trial.**
+## The facade takes none because the record is where the randomness lives: the
+## commit draws a seed, stores it in `rng_state`, and the resolve replays that one
+## number. Passing nothing here is not a gap in the interface — a second door for
+## randomness into a durable decision is what let a save-spanning attempt resolve
+## differently than the attempt the player committed.
 static func begin_breakthrough(actor: Actor) -> Dictionary:
-	var committed := BodyAdvancement.start_attempt(actor, null)
+	var committed := BodyAdvancement.start_attempt(actor)
 	if committed == null:
 		return {}
 	return {
@@ -237,8 +244,12 @@ static func begin_breakthrough(actor: Actor) -> Dictionary:
 ## when the award was granted, so calling it again reports the same answer instead
 ## of paying twice. A stale attempt — one whose target realm no longer follows
 ## the actor, or whose tier gate a reload left shut — ends without a deviation.
+##
+## The roll comes out of the record's own seed, which is why this takes no
+## generator: a reload resolves the attempt the player committed rather than a new
+## trial against whatever the huyệt look like now.
 static func resolve_breakthrough(actor: Actor) -> bool:
-	return BodyAdvancement.resolve_attempt(actor, null)
+	return BodyAdvancement.resolve_attempt(actor)
 
 
 ## Roll the breakthrough attempt in one press. A deviation is recoverable;
@@ -259,8 +270,12 @@ static func resolve_breakthrough(actor: Actor) -> bool:
 ## `realm_ceiling_unmet` directly, so a screen quotes the same sentence the race gate
 ## shows anywhere else. This docstring previously claimed the RETURN carried them, which
 ## it never did — they reach a screen only through the read model (ADR 0150).
+##
+## No generator here either, for the same reason as the two halves: the commit
+## draws the attempt's seed and the resolve reads it back out of the record, so a
+## player's press is a real independent trial that still survives a save.
 static func attempt_breakthrough(actor: Actor) -> bool:
-	return BodyAdvancement.try_breakthrough(actor, null)
+	return BodyAdvancement.try_breakthrough(actor)
 
 
 ## Close the first wound a recovery item can heal: a blocked huyệt first (it

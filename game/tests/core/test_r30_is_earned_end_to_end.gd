@@ -63,6 +63,13 @@ const LADDER_GUARD := 64
 const WAVE_GUARD := 24
 const ASCENT_GUARD := 16
 
+## Presses one rung of the BODY walk may spend. A press that is refused by the
+## tribulation gate has descended a wave; a press that commits either wins the
+## breakthrough or deviates and owes a recovery. So one rung costs a fight's waves plus
+## a run of rolls at the authored floor chance (0.2580), where `MAX_ATTEMPTS = 96`
+## all losing is 0.742^96 ~= 4e-13. This is sized above both, not tuned to either.
+const BODY_PRESS_GUARD := 128
+
 ## The two pinned rolls. `TribulationEndurance.MIN_ENDURANCE` is the floor every
 ## possible rating clamps to and `MAX_ENDURANCE` the ceiling, so a draw below the
 ## floor survives ANY fight and a draw at or above the ceiling loses ANY fight. The
@@ -469,3 +476,99 @@ func _clauses_about(unmet: Array, subject: String) -> Array[String]:
 		if String(clause).to_lower().contains(subject):
 			found.append(String(clause))
 	return found
+
+
+# --- The body path's own leg ---------------------------------------------------
+#
+# THE GAP THIS FILE HAD, and it was not "the body is unproven" — `test_full_traversal.gd`
+# walks all 30 realms through `BodyAdvancement.try_breakthrough`. It was that the walk
+# above, the one cited as the terminal-realm leg, drives `Breakthrough` DIRECTLY and so
+# proves core's ladder is satisfiable rather than that the body's verb is: it never
+# calls `BodyTraining.cultivate`, never satisfies `BodyBreakthroughCondition`, and
+# never presses `BodyCultivationApi.attempt_breakthrough` at all.
+#
+# That verb was the broken one. It supplies no generator, so before DEF-0250 every
+# press committed seed 0, drew 0.202272, and sat BELOW every realm's chance band — so
+# every press was a certain success, never a trial. This walk was therefore reachable
+# but never actually rolled anything, and the file above was green throughout: nothing
+# in it could tell a real crossing from a rigged one.
+#
+# So this is the same claim the file above makes, made through the body path: every
+# gate earned, the training paid for, and the realm entered by pressing the verb a
+# player presses. It adds to what is above and weakens none of it.
+
+
+## R1 -> R30 on the body's own breakthrough verb, with no generator anywhere.
+##
+## Nothing here is waived. The tribulation is fought through
+## `Breakthrough.face_tribulation` on the file's pinned surviving seed — the same
+## device the three cases above use, and the same guarantee, which `_seed_side` checks
+## rather than this file hoping for. The training is `BodyPlayFixture.prepare`, which
+## only ever calls `cultivate`, `meditate`, `strengthen` and `recover`, so
+## `BodyBreakthroughCondition` is satisfied the way it is satisfied in play.
+func test_the_body_path_reaches_r30_through_its_own_breakthrough_verb() -> void:
+	var play := BodyPlayFixture.new()
+	var hero := play.actor(&"qi_refining")
+	# One rung per iteration and the ladder is 30 long, so the cap is the whole climb
+	# plus slack. Its body check names the rung that would not converge.
+	var visited: Array[StringName] = [hero.path(BodyPath.PATH_ID).rank_id]
+	var pressed_total := 0
+	var rungs := 0
+	while rungs < LADDER_GUARD:
+		rungs += 1
+		var index := _next_index(hero)
+		if index < 0:
+			break
+		var before := hero.path(BodyPath.PATH_ID).rank_id
+		# The fight, through the same entry the commit makes on every attempt.
+		_fought_once(hero, index, _roll_winning())
+		var presses := 0
+		var advanced := false
+		# Bounded by `BODY_PRESS_GUARD`: a press spends either a wave of the fight or
+		# the breakthrough's own roll, and 96 rolls at the lowest authored chance
+		# landing the same way is 0.742^96 ~= 4e-13.
+		while presses < BODY_PRESS_GUARD and not advanced:
+			presses += 1
+			if play.prepare(hero) == null:
+				break
+			# THE VERB. No rng argument exists for it, so its roll comes from the seed
+			# its own commit drew, which is the whole point of this case.
+			advanced = BodyCultivationApi.attempt_breakthrough(hero)
+			if not advanced:
+				# What a player does after a refusal or a deviation: repair, refill,
+				# train, press again.
+				play.recover_damage(hero)
+		pressed_total += presses
+		if not advanced:
+			break
+		var after: StringName = hero.path(BodyPath.PATH_ID).rank_id
+		visited.append(after)
+		assert_eq(
+			after,
+			_realm_id(index),
+			(
+				"rung %d: a press reported an advance and the rank moved %s -> %s (index %d)"
+				% [rungs, before, after, index]
+			)
+		)
+	assert_eq(
+		String(hero.path(BodyPath.PATH_ID).rank_id),
+		String(_realm_id(TERMINAL)),
+		"the body path stands at the terminal realm, reached by pressing its own verb"
+	)
+	assert_eq(visited.size(), 30, "and visited all 30 realms, none of them written by hand")
+	assert_eq(
+		RealmDefaults.ladder().next(_realm_id(TERMINAL)),
+		null,
+		"which is the end of the ladder, and no realm was added by a test to get there"
+	)
+	assert_eq(
+		pressed_total > 29,
+		true,
+		"spending %d presses over 29 rungs, so the roll really was rolled" % pressed_total
+	)
+	# Not asserted: that a deviation occurred. Over 29 rungs the chance that every roll
+	# came out the winning way is far below any bound worth writing, and a case that
+	# needs luck to prove a loop works is a case that would flake. `test_body_
+	# breakthrough_roll.gd` measures the two-sided distribution instead.
+	hero.resources.clear()

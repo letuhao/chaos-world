@@ -48,6 +48,18 @@ var costs_paid: bool = false
 var preparation: Dictionary = {}
 var trial_complete: bool = false
 var outcome_granted: bool = false
+## The seed the roll is taken from, drawn once at commit and replayed at resolve
+## (`BodyAttemptRoll`). This is the number a save has to carry for a
+## save-spanning attempt to resolve as it was paid for rather than as the body
+## happens to look on reload.
+##
+## It is never 0 in a record this build wrote: seed 0's first draw is 0.202272,
+## below every `chance_base` on the ladder, so it WON every attempt on every realm —
+## which is what this field used to hold whenever the caller passed no generator, and
+## it made every body breakthrough a certain success with the deviation loop
+## unreachable. 0 survives here only as the default of a fresh record and in payloads
+## written before that fix; `BodyAttemptRoll.replay` reproduces those exactly rather
+## than re-rolling an attempt the player already committed.
 var rng_state: int = 0
 ## Per-actor attempt counter. Makes the id stable and reproducible instead of
 ## wall-clock derived, so a save reload still names the same attempt — the old
