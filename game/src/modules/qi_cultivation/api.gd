@@ -107,6 +107,12 @@ static func panel_state(actor: Actor) -> Dictionary:
 		# once already.
 		"owed_channels": _owed_channels(actor, gate),
 		"training_price": _training_price(actor, gate),
+		# The catalyst's depth step, offered as DATA beside the gate's own price for
+		# the same reason: a screen that recomputed either would reassemble the
+		# verb's preconditions, which is the ADR 0044/0158 divergence this path has
+		# already paid for once (ADR 0201, ADR 0202).
+		"deepen_channels": _deepen_candidates(actor, state),
+		"deepen_price": _deepen_price(state),
 		# The Transcendent ascent, published so a screen can offer the action its
 		# gate owes. DATA and not a verb: the walk itself is `WorldAnchor.ascend`, a
 		# core entry point `ui/` may call directly (ADR 0041), so nothing here grows
@@ -183,6 +189,53 @@ static func _training_price(actor: Actor, gate: QiRealmSeed) -> StringName:
 			continue
 		return &"recovery_elixir" if channel.is_injured() else &"channel_elixir"
 	return &""
+
+
+## The channels `deepen_past_cap` would accept right now: the gate's own candidate
+## list, narrowed by the catalyst step's preconditions. Published so a screen offers
+## the action its gate owes instead of leaving a published verb with no caller
+## (ADR 0201, ADR 0202).
+##
+## The CHANNELS come from the next realm's gate seed and the CAP from the STANDING
+## realm's, because that is the split `QiTraining.deepen_past_cap` itself reads: it
+## prices `QiRealmSeed.for_realm(state.rank_id)` while taking an explicit
+## `meridian_id`. Reading one seed for both would offer work the verb refuses.
+##
+## The four refusals are the verb's, in its order: no catalyst authored for the
+## standing realm, a burned channel (which is `recover`'s priced job, ADR 0141), a
+## channel that is not yet STRENGTHENED (only one carries depth at all), and a
+## channel still BELOW the cap — where the elixir is the price and this verb would be
+## a cheaper route to a gate.
+##
+## `for` over a fixed array appending into a list it does not test the size of, so no
+## loop here grows its own bound (INC-0002).
+static func _deepen_candidates(actor: Actor, state: PathState) -> Array[StringName]:
+	var out: Array[StringName] = []
+	var seed := QiRealmSeed.for_realm(state.rank_id)
+	if seed == null or seed.meridian_catalyst == &"":
+		return out
+	for meridian_id in _training_candidates(_gate_for_next_realm(state)):
+		var channel := actor.meridians.get_meridian(meridian_id)
+		if channel == null or channel.is_injured():
+			continue
+		if channel.state != MeridianState.STRENGTHENED:
+			continue
+		if channel.refinement < seed.channel_refinement_cap:
+			continue
+		out.append(meridian_id)
+	return out
+
+
+## The ROLE that pays for the catalyst step, by role and never by id — the ids are
+## authored per realm in the seed, a module internal no screen may read (ADR 0043).
+## Empty when the standing realm authors no catalyst, which is the answer a screen
+## needs: there is nothing to offer, and saying so beats naming a price that is not
+## for sale.
+static func _deepen_price(state: PathState) -> StringName:
+	var seed := QiRealmSeed.for_realm(state.rank_id)
+	if seed == null or seed.meridian_catalyst == &"":
+		return &""
+	return &"meridian_catalyst"
 
 
 ## Ladder index of the realm this actor is trying to enter, or -1 when the ladder

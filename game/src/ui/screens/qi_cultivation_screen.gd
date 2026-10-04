@@ -42,6 +42,9 @@ func _summary() -> Dictionary:
 		"dantian_quality": live.get("dantian_quality", 0.0),
 		"dantian_injured": live.get("dantian_injured", false),
 		"channels": _channel_entries(live),
+		# The catalyst step, so a test can drive the verb and read what it offered —
+		# the testable surface this screen's contract is written against.
+		"deepen_channels": live.get("deepen_channels", []),
 		"ascent": _ascent_view(live),
 		"can_act": live.get("can_attempt", false),
 		"chance": live.get("chance", 0.0),
@@ -336,6 +339,40 @@ func _price_role(role: String) -> String:
 	return "recovery elixir" if role == "recovery_elixir" else "channel elixir"
 
 
+## Spend the standing realm's catalyst on one step of depth PAST its cap.
+##
+## The CANDIDATE is the facade's, never this screen's: `deepen_channels` is the list
+## `deepen_past_cap` would accept, so nothing here re-derives the verb's
+## preconditions. A screen that filtered channels itself would be the ADR 0044/0158
+## preview/action divergence again — the defect that once left this path's depth half
+## reachable in tests and dead in play (ADR 0201, ADR 0202).
+func act_deepen_past_cap() -> bool:
+	if _actor == null:
+		return false
+	var live := QiCultivationApi.panel_state(_actor)
+	var candidates: Array = live.get("deepen_channels", [])
+	if candidates.is_empty():
+		set_message("No channel is past its depth cap", TONE_ERROR)
+		refresh()
+		return false
+	var deepened := QiCultivationApi.deepen_past_cap(_actor, StringName(candidates[0]))
+	if deepened:
+		set_message("Deepened %s past its cap" % String(candidates[0]), TONE_OK)
+	else:
+		# The work exists but the price does not, so the sentence names the PRICE and
+		# not the work — ADR 0150's rule, the same one `act_train_next_channel` uses.
+		set_message("%s absent" % _catalyst_role(live), TONE_ERROR)
+	refresh()
+	return deepened
+
+
+## The catalyst's role, named by the facade and worded here, exactly as
+## `_price_role` words the elixirs. Empty when the standing realm authors none.
+func _catalyst_role(live: Dictionary) -> String:
+	var role := String(live.get("deepen_price", ""))
+	return "" if role.is_empty() else "meridian catalyst"
+
+
 # --- The ascent ----------------------------------------------------------------
 #
 # Read from the facade's `ascent` block, which is DATA and not a verb: the ascent
@@ -527,6 +564,8 @@ func _on_action(action: StringName) -> void:
 			act_meditate()
 		&"train_channel":
 			act_train_next_channel()
+		&"deepen_past_cap":
+			act_deepen_past_cap()
 		&"recover":
 			act_recover()
 		&"ascend":
