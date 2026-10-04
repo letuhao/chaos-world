@@ -9,22 +9,28 @@ extends TestCase
 ##
 ## The three `*RealmProfile` classes that used to be three private curves are
 ## GONE (ADR 0116 retired them): `core/realm_rate.gd` is the one implementation
-## and all three paths call it directly. This file exists to make that state
-## impossible to undo quietly:
+## and every path that reads a realm calls it directly. This file exists to make
+## that state impossible to undo quietly:
 ##
 ##   - no module may AUTHOR a rate. `const RATE_STEP` and `const NEUTRAL` may not
-##     appear anywhere in the three cultivation modules, and `pow(` is banned in
-##     the same pass, because a path that re-derived the curve would be
-##     numerically identical today and free to drift tomorrow.
+##     appear anywhere in a path module, and `pow(` is banned in the same pass,
+##     because a path that re-derived the curve would be numerically identical
+##     today and free to drift tomorrow.
 ##   - no `*RealmProfile` class may be reintroduced by copying an old file back.
-##   - all three paths must be seen READING the shared curve, so a path cannot
-##     quietly go back to a local implementation under another name.
+##   - every path must be seen READING the shared curve, so a path cannot quietly
+##     go back to a local implementation under another name.
 ##
 ## A value comparison cannot do any of that. The guard that shipped before this
 ## one read `RealmRate.factor` three times and compared the results — `x == x` —
 ## so it passed unchanged with all three paths back on private curves. That is
 ## why these checks read SOURCE rather than numbers: a numerically-identical
 ## fourth copy stays green under every value assertion ever written here.
+##
+## The fourth copy was then found anyway, in `dual_cultivation`, written as an
+## inline `1.0 + ordinal * 0.05` rather than a `const` or a `pow` — so it slipped
+## past all three pins above as well, and the call-site table is the check that
+## finally saw it. A new shape needs a new pin; that is the standing cost of a
+## numeric copy surviving as an idiom rather than as a copy.
 ##
 ## The rest is carried coverage: the rate rises strictly at every realm; the span
 ## is a consequence of the authored step rather than a pasted number and stays a
@@ -38,9 +44,23 @@ const FIRST := &"qi_refining"
 const LAST := &"primordial_origin"
 const UNKNOWN := &"not_a_realm"
 
-## The three cultivation modules, by the directory that holds their seed ladder.
-## Enumerated so a FOURTH path cannot join without a decision.
-const PATH_DIRS := ["body_cultivation", "qi_cultivation", "mind_cultivation"]
+## Every module that reads a realm off the shared ladder, by the directory that
+## holds it. Enumerated so a FOURTH path cannot join without a decision.
+##
+## `dual_cultivation` is here for a found reason, not for symmetry: its provider
+## held a private `1.0 + ladder_ordinal * 0.05` and published the ordinal as
+## `SUCCUBUS_DOMINION`. It was invisible to every pin below — no `const RATE_STEP`,
+## no `pow(`, no `*RealmProfile`, so all of them shipped green over a fourth curve
+## whose span (2.45x at R30) was past the under-2x ceiling a rate is held to. It
+## now reads `RealmRate.factor` like the other three.
+const PATH_DIRS := ["body_cultivation", "qi_cultivation", "mind_cultivation", "dual_cultivation"]
+
+## The subset that also AUTHOR a per-realm work budget under
+## `res://data/<dir>/realms/`. Not every reader is an author: `dual_cultivation`
+## advances on the shared ladder and owns no seeds of its own, so the budget bound
+## below has nothing to read for it and would fail on a null `load` rather than on
+## a wrong number.
+const SEED_PATH_DIRS := ["body_cultivation", "qi_cultivation", "mind_cultivation"]
 
 ## The authored per-realm training budget, read from the realm seeds. `work_required` on
 ## the body seed is DERIVED from this field (DEF-0130) and pinned equal to it by
@@ -170,6 +190,13 @@ func test_every_path_reads_the_shared_curve() -> void:
 ## cannot quietly route around the shared curve — a path whose `cultivate` stops
 ## reading it, or whose `_realm_factor` does, is a path that has stopped being
 ## priced in realm rate at all.
+##
+## `dual_cultivation/provider.gd` is the fourth row and it is the one this file
+## exists for. It shipped a private `1.0 + ladder_ordinal * 0.05` in place of this
+## call: no `RATE_STEP`, no `pow(`, no `*RealmProfile`, so the three structural pins
+## above all read green over it. The pinned call site is the assertion that sees
+## that shape — it is the only check here that fails when a provider computes its
+## own per-realm multiplier instead of reading the shared one.
 func test_the_training_and_provider_call_sites_read_the_shared_curve() -> void:
 	var expected := {
 		"qi_cultivation/training.gd": "RealmRate.factor(state.rank_id)",
@@ -178,6 +205,7 @@ func test_the_training_and_provider_call_sites_read_the_shared_curve() -> void:
 		"body_cultivation/provider.gd": "RealmRate.factor(state.rank_id)",
 		"mind_cultivation/training.gd": "RealmRate.factor(state.rank_id)",
 		"mind_cultivation/provider.gd": "RealmRate.factor(state.rank_id)",
+		"dual_cultivation/provider.gd": "RealmRate.factor(state.rank_id)",
 	}
 	for relative in expected:
 		var source := FileAccess.get_file_as_string("res://src/modules/%s" % relative)
@@ -187,7 +215,7 @@ func test_the_training_and_provider_call_sites_read_the_shared_curve() -> void:
 			true,
 			"%s prices through the shared rate" % relative
 		)
-	assert_eq(expected.size(), 6, "and all six call sites are covered")
+	assert_eq(expected.size(), 7, "and all seven call sites are covered")
 
 
 ## The three `*RealmProfile` classes are gone and stay gone. Copying an old
@@ -252,6 +280,59 @@ func test_no_cultivation_module_derives_a_curve_of_its_own() -> void:
 			)
 
 
+## The pin that finally GENERALISES, and the one to read first.
+##
+## A provider's only legitimate use of the shared ladder is `RealmRate.factor(rank_id)`.
+## Anything else it reaches for is a per-realm number it computed for itself. This is
+## the shape `dual_cultivation` had — `1.0 + RealmDefaults.ladder().index_of(rank_id) *
+## 0.05` — and every pin above missed it, because the ordinal was an inline literal
+## on an inline slope: no `RATE_STEP`, no `pow(`, no `*RealmProfile`, and the module
+## carried no other rate to be inconsistent with. So the check that generalises is
+## not "is there another copy of this curve" but "does a provider reach past
+## `RealmRate` for a realm at all".
+##
+## Scoped to `provider.gd` on purpose, because the ladder index is a legitimate
+## answer to a TRAVERSAL question: `ladder().next(rank_id)`, an acupoint unlock
+## index, a breakthrough target. Those live in `advancement.gd`, `refusal.gd`, the
+## seed classes and the `api.gd` facades, and this pin must not reach them. Only a
+## provider turns a realm into a multiplier, so only a provider is held to this.
+##
+## Comments are stripped before the read: a docblock is allowed to name
+## `RealmRate` and the ladder while explaining why it does not reach for one, and a
+## guard that failed on the explanation would teach the next agent to write a worse
+## one.
+func test_no_path_provider_computes_a_rate_from_the_ladder_itself() -> void:
+	for path_dir in PATH_DIRS:
+		var path := "res://src/modules/%s/provider.gd" % path_dir
+		var source := FileAccess.get_file_as_string(path)
+		assert_ne(source, "", "%s is readable" % path)
+		assert_eq(
+			_code_only(source).contains("RealmDefaults.ladder()"),
+			false,
+			(
+				(
+					"%s reads the shared ladder — a provider's only per-realm factor is "
+					+ "RealmRate.factor(rank_id), so a ladder read here is a rate of its own"
+				)
+				% path
+			)
+		)
+
+
+## Source with every `#` comment line removed. Only whole-line comments: GDScript's
+## `#` inside a string is not a comment, and pretending to parse it would make this
+## guard a second parser to keep correct. This is a source-shape guard, and a
+## multi-line string that hid a ladder read is a review finding, not a blind spot
+## worth a parser here.
+func _code_only(source: String) -> String:
+	var kept: Array[String] = []
+	for line in source.split("\n"):
+		var stripped := String(line).strip_edges()
+		if not stripped.begins_with("#"):
+			kept.append(stripped)
+	return "\n".join(kept)
+
+
 ## Every `class_name` a source file declares, as written.
 func _class_names(source: String) -> Array[String]:
 	return _declarations(source, "class_name")
@@ -307,7 +388,7 @@ func _module_source(path_dir: String) -> String:
 func test_the_rate_step_fits_inside_the_smallest_authored_work_step() -> void:
 	var smallest := INF
 	var tightest := ""
-	for path_dir in PATH_DIRS:
+	for path_dir in SEED_PATH_DIRS:
 		var budgets := _authored_budgets(path_dir)
 		assert_eq(budgets.size(), 30, "%s authored a budget for every realm" % path_dir)
 		if budgets.size() < 3:
