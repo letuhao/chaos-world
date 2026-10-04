@@ -21,12 +21,24 @@ extends RefCounted
 ## `BreakthroughCondition` and `ProgressionModel`, so it is a precedent and not an
 ## invention.
 ##
-## ## The split is by SUBJECT, and every cache field lives on exactly one side
+## ## The split is by SUBJECT, and the fields follow the bodies that use them
 ##
 ## This side owns `_bosses`, `_boss_index`, `_boss_index_built`, `_domains` and
-## `_seeded_domains`. [LootContent] keeps `_tables`, `_table_ids`, `_encounters`,
-## `_encounter_ids` and `_definitions`. Neither file reads the other's fields, so the two
-## cannot half-see an index. The shared private helpers — `_text_field`, `_string_list`,
+## `_seeded_domains`. [LootContentTables] owns `_tables`, `_table_ids`,
+## `_encounters`, `_encounter_ids` and `_definitions`.
+##
+## `orphan_domains` is the one method left HERE that reads the other side, and it
+## does so through METHODS — `encounter_ids()` and `encounter_by_id()` — never
+## through a field. That is deliberate: GDScript resolves a base against its own
+## table, so a base whose body names `_encounters` or calls `load_encounters()`
+## does not parse, because a subclass's declarations are invisible to it. Godot
+## then reports that only from the first dependant as "Could not resolve class
+## LootContentTables" and never prints this file's real error. The band-reachability
+## walks that cannot be written against methods alone (`bound_table_ids` needs the
+## `_encounters` / `_encounter_ids` index directly) therefore live on
+## [LootContentTables], next to the fields they read.
+##
+## The shared private helpers — `_text_field`, `_string_list`,
 ## `_tres_files`, `_read_record`, `_boss_profile`, `_boss_affliction` — live HERE, and
 ## [LootContent] inherits them: one copy, and the indexer's own content reads go through
 ## exactly the helper they always did.
@@ -184,136 +196,6 @@ func orphan_domains() -> Array[String]:
 		if not hosted.has(domain_id):
 			out.append(domain_id)
 	return out
-
-
-## Table ids an authored band binds DIRECTLY, sorted: what [method
-## LootContent.table_for_boss] hands the resolver for a boss the band spawns.
-##
-## A band is one authored tier of one encounter, so this walks exactly the bindings
-## [method LootContent.table_for_boss] can read. It does not ask whether the binding's boss
-## is one the encounter spawns — that is [method LootValidator]'s business to report, and a
-## binding the encounter does not list is a defect in its own right rather than a
-## reason to hide the table here.
-func bound_table_ids() -> Array[String]:
-	load_encounters()
-	var out: Array[String] = []
-	for encounter_id in _encounter_ids:
-		var encounter := _encounters[encounter_id] as LootEncounterDef
-		if encounter == null:
-			continue
-		for tier in encounter.tiers:
-			if tier == null:
-				continue
-			for table_id in tier.table_ids():
-				if table_id != &"" and not out.has(String(table_id)):
-					out.append(String(table_id))
-	out.sort()
-	return out
-
-
-## Every table a defeat can resolve: those a band binds, plus everything nested
-## inside them.
-##
-## This is the whole reachable surface of the table corpus, and the boundary that
-## makes [method unbanded_tables] meaningful — a table outside it is authored content
-## nothing in the game can pay (BL-0136). The ceiling is [constant
-## MAX_NESTING_DEPTH], the same depth [method LootResolver] resolves to: past it a
-## chain is already dropped with a `nesting_depth_exceeded` warning, so counting it
-## reachable here would overstate what a player can obtain.
-func band_bound_tables() -> Array[String]:
-	var seen: Dictionary = {}
-	for root in bound_table_ids():
-		_collect(root, seen, 0)
-	var out: Array[String] = []
-	for table_id in seen.keys():
-		out.append(String(table_id))
-	out.sort()
-	return out
-
-
-## Authored tables no authored band can pay, sorted.
-##
-## ## The defect this reports
-##
-## A table in this list is content the game ships and nothing can resolve: no tier
-## binds it and no table nests it, so `LootContent.table_for_boss` never returns it
-## and every item it carries is an item a player can never obtain. That is the
-## table-shaped half of [method orphan_domains] — the domain is unreachable content
-## with no route to it, and so is a table — and BL-0136 filed it when the corpus held
-## eight of them.
-##
-## Reported rather than swallowed: the count is small enough that a content wave can
-## finish the corpus, but nothing about authoring a table warns an author that no band
-## will ever pay for it.
-func unbanded_tables() -> Array[String]:
-	var paid := {}
-	for table_id in band_bound_tables():
-		paid[table_id] = true
-	var out: Array[String] = []
-	for table_id in table_ids():
-		if not paid.has(table_id):
-			out.append(table_id)
-	return out
-
-
-## Every item id a defeat can deliver: the union over the band-bound closure.
-##
-## Keyed by id and accumulated through a table-visited set, so the walk is bounded by
-## the table count rather than by the path count — the same reason [method _collect]
-## carries one.
-func band_reachable_item_ids() -> Array[StringName]:
-	var out: Dictionary = {}
-	for table_id in band_bound_tables():
-		_collect_items(StringName(table_id), out, 0, {})
-	var ids: Array[StringName] = []
-	for item_id in out.keys():
-		ids.append(StringName(item_id))
-	ids.sort()
-	return ids
-
-
-## The encounter and table index this half reads through. A [LootContent] IS this
-## class, so the inherited `table`, `table_ids`, `encounter_ids`, `encounter_by_id` and
-## `load_encounters` above resolve on `self` exactly as they did before the split — the
-## walk bodies below are the originals, unchanged, and a test that seeds a scratch
-## `LootContent.new()` reads that scratch index.
-
-
-## The walk behind [method band_bound_tables]: depth-first, `seen` keeping it to one
-## visit per table so a cycle cannot make it recurse without end. `depth` is bounded by
-## [constant MAX_NESTING_DEPTH], so the walk ends even if `seen` were emptied.
-func _collect(table_id: String, seen: Dictionary, depth: int) -> void:
-	if depth > MAX_NESTING_DEPTH or seen.has(table_id):
-		return
-	var found := table(StringName(table_id))
-	if found == null:
-		return
-	seen[table_id] = true
-	for entry in found.entries:
-		if entry != null and entry.is_nested() and entry.table_id != &"":
-			_collect(String(entry.table_id), seen, depth + 1)
-
-
-## [method band_reachable_item_ids]'s walk. `chain` is the path being walked, so a
-## reference back onto it stops rather than descending; `depth` is the second ceiling
-## for a chain that is long rather than cyclic.
-func _collect_items(table_id: StringName, out: Dictionary, depth: int, chain: Dictionary) -> void:
-	var key := String(table_id)
-	if depth > MAX_NESTING_DEPTH or chain.has(key):
-		return
-	var found := table(table_id)
-	if found == null:
-		return
-	var next_chain := chain.duplicate()
-	next_chain[key] = true
-	for entry in found.entries:
-		if entry == null:
-			continue
-		if entry.is_nested():
-			if entry.table_id != &"":
-				_collect_items(entry.table_id, out, depth + 1, next_chain)
-		elif entry.item_id != &"" and not out.has(String(entry.item_id)):
-			out[String(entry.item_id)] = true
 
 
 # --- Record reads -----------------------------------------------------------
