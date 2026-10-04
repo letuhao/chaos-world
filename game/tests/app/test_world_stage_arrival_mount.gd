@@ -57,11 +57,18 @@ func teardown() -> void:
 ## The mounted root's OWN creation program, read out of the commit callable the live arrival
 ## screen was bound with — never a freshly constructed one, which would prove a program can
 ## build a hero rather than that the shipped boot can.
+##
+## Narrowed through `is Callable` rather than `get(...) as Callable`: a screen that was
+## never bound holds a DEFAULT-CONSTRUCTED `Callable`, and casting to `Callable` is a hard
+## error on exactly the value this check exists to detect.
 func _program() -> CharacterCreationProgram:
 	var live := _harness.live_screen()
 	if live == null:
 		return null
-	var commit_callable: Callable = live.get(&"_commit_requested") as Callable
+	var bound: Variant = live.get(&"_commit_requested")
+	if not bound is Callable:
+		return null
+	var commit_callable := bound as Callable
 	if not commit_callable.is_valid():
 		return null
 	return commit_callable.get_object() as CharacterCreationProgram
@@ -84,7 +91,9 @@ func _committed() -> PlayerAdapter:
 		return null
 	var committed := program.commit(_first_origin())
 	assert_eq(
-		bool(committed.get("ok", false)), true, "the arrival committed: %s" % committed.get("reason", "")
+		bool(committed.get("ok", false)),
+		true,
+		"the arrival committed: %s" % committed.get("reason", "")
 	)
 	if not bool(committed.get("ok", false)):
 		return null
@@ -140,8 +149,12 @@ func test_a_press_on_a_real_target_is_answered() -> void:
 	# exists. Whatever the answer, it is NOT `no_handler`: that refusal means no seam was
 	# installed at all, which is a different defect from this one.
 	var answer := stage.interact("quest_board")
-	assert_ne(String(answer.get("reason", "")), "no_handler", "the press reached an installed handler")
-	assert_eq(String(answer.get("target", "")), "quest_board", "and the answer names what was pressed")
+	assert_ne(
+		String(answer.get("reason", "")), "no_handler", "the press reached an installed handler"
+	)
+	assert_eq(
+		String(answer.get("target", "")), "quest_board", "and the answer names what was pressed"
+	)
 
 
 # --- the RED half -------------------------------------------------------------
@@ -164,7 +177,11 @@ func test_without_the_parent_the_same_arrival_is_inert() -> void:
 	var stage := WorldStage.new()
 	var body := PlayerAdapter.new(actor)
 	var answer := stage.mount(body, &"mortal_plains")
-	assert_eq(bool(answer.get("ok", false)), true, "and the mount STILL reports ok — that is the trap")
+	assert_eq(
+		bool(answer.get("ok", false)), true, "and the mount STILL reports ok — that is the trap"
+	)
 	assert_eq(body.get_parent(), null, "the body is still parentless")
-	assert_eq(int(body.summary()["interactable_count"]), 0, "so it holds nothing a press could reach")
+	assert_eq(
+		int(body.summary()["interactable_count"]), 0, "so it holds nothing a press could reach"
+	)
 	body.free()
