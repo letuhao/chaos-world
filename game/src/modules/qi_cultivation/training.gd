@@ -151,6 +151,9 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 	var channel := actor.meridians.get_meridian(meridian_id)
 	if state == null or channel == null:
 		return false
+	# Ahead of the seed read and ahead of any consume: a burn has its own price.
+	if channel.is_injured():
+		return recover(actor, meridian_id)
 	var seed := QiRealmSeed.for_realm(state.rank_id)
 	# Decide before spending: a channel with nothing left to learn at this realm's
 	# cap must refuse, or the elixir is burned for no progress at all.
@@ -160,19 +163,16 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 		return false
 	if not _ITEMS.consume_item(actor, seed.training_item):
 		return false
-	if channel.injured:
-		actor.meridians.repair_meridian(meridian_id)
-	else:
-		match channel.state:
-			MeridianState.CLOSED:
-				actor.meridians.open_meridian(meridian_id)
-			MeridianState.OPEN:
-				actor.meridians.expand_meridian(meridian_id)
-			MeridianState.EXPANDED:
-				actor.meridians.strengthen_meridian(meridian_id)
-			_:
-				# Already strengthened: the elixir deepens it toward the seed cap.
-				actor.meridians.refine_meridian(meridian_id, seed.channel_refinement_cap)
+	match channel.state:
+		MeridianState.CLOSED:
+			actor.meridians.open_meridian(meridian_id)
+		MeridianState.OPEN:
+			actor.meridians.expand_meridian(meridian_id)
+		MeridianState.EXPANDED:
+			actor.meridians.strengthen_meridian(meridian_id)
+		_:
+			# Already strengthened: the elixir deepens it toward the seed cap.
+			actor.meridians.refine_meridian(meridian_id, seed.channel_refinement_cap)
 	synchronize(actor)
 	return true
 

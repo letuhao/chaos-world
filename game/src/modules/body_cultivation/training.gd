@@ -131,6 +131,29 @@ static func recover(actor: Actor, meridian_id: StringName) -> bool:
 	return true
 
 
+## Train one channel toward this realm's cap, paying the realm's
+## `strengthening_item` — OR, when the channel is burned, hand the burn to
+## `recover` and pay the realm's `recovery_item` instead (ADR 0141).
+##
+## A BURNED CHANNEL IS NOT TRAINED, IT IS REPAIRED, AND THE REPAIR HAS ITS OWN
+## PRICE. Every realm authors both roles: `strengthening_item` walks the ladder,
+## `recovery_item` undoes what a deviation left behind, which is the torn channel
+## AND the huyệt jammed on it (ADR 0031). Charging the channel elixir for the
+## repair left `recover` — and `recover_next`, the facade verb added for exactly
+## this wound — with no route a player could afford, so the authored third role
+## was demanded by nothing and the missing verb went unnoticed: a torn channel
+## WAS repairable through the facade, just by spending the wrong item.
+##
+## Delegated rather than reimplemented, so there is one repair at one price: a
+## second copy of the consume here is exactly how the two prices drifted apart
+## the first time. `recover`'s all-or-nothing rule comes with it, and so does the
+## blockage the same deviation jammed on this channel — the old injury branch
+## repaired the channel and left the jam standing.
+##
+## The cost of delegating, stated rather than hidden: the repair press no longer
+## trains the huyệt bound to this channel and no longer marks the realm's training
+## milestone. A repair is not a training step. The very next press on the
+## now-healthy channel does both, and the wound itself was `recover`'s to close.
 static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
 	var acupoint_set: AcupointSet = actor.component(&"acupoints")
 	var state := actor.path(BodyPath.PATH_ID)
@@ -143,6 +166,9 @@ static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
 	var channel := actor.meridians.get_meridian(meridian_id)
 	if seed == null or channel == null:
 		return false
+	# Ahead of the consume: a burn has its own price (ADR 0141).
+	if channel.is_injured():
+		return recover(actor, meridian_id)
 	if (
 		at_channel_cap(channel, seed)
 		and not _needs_point_training(acupoint_set, meridian_id, seed.quality_target)
@@ -152,18 +178,15 @@ static func strengthen(actor: Actor, meridian_id: StringName) -> bool:
 	if not _ITEMS.consume_item(actor, seed.strengthening_item):
 		acupoint_set.busy = false
 		return false
-	if channel.injured:
-		actor.meridians.repair_meridian(meridian_id)
-	else:
-		match channel.state:
-			&"closed":
-				actor.meridians.open_meridian(meridian_id)
-			&"open":
-				actor.meridians.expand_meridian(meridian_id)
-			&"expanded":
-				actor.meridians.strengthen_meridian(meridian_id)
-			&"strengthened":
-				actor.meridians.refine_meridian(meridian_id, seed.refinement_cap)
+	match channel.state:
+		&"closed":
+			actor.meridians.open_meridian(meridian_id)
+		&"open":
+			actor.meridians.expand_meridian(meridian_id)
+		&"expanded":
+			actor.meridians.strengthen_meridian(meridian_id)
+		&"strengthened":
+			actor.meridians.refine_meridian(meridian_id, seed.refinement_cap)
 	_train_points(acupoint_set, meridian_id, seed.quality_target)
 	synchronize(actor)
 	acupoint_set.busy = false

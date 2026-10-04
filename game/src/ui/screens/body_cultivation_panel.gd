@@ -329,16 +329,37 @@ func act_meditate() -> void:
 	refresh()
 
 
+## One channel step, at the realm's `strengthening_item` — or the repair of a torn
+## channel, which is priced by the realm's `recovery_item` (ADR 0141).
+##
+## The refusal names the PRICE, and which price it is depends on the state of the
+## channel the facade would have trained: `strengthen` hands a burned channel to
+## `recover`, so a hero holding only the channel elixir and standing on a torn
+## channel is refused for the OTHER elixir, and "No channel elixir to spend" is
+## the one answer that cannot be true (ADR 0150).
+##
+## A refusal with nothing burned still collapses two causes — the elixir missing,
+## or every candidate channel already at its cap — because `strengthen_next`
+## reports one bool over a walk this screen cannot see. That residual is
+## recorded, not papered over: separating it needs the candidate list and the cap
+## on the read model, and this facade is already at `rules.MAX_FACADE_PUBLIC_METHODS`.
 func act_strengthen() -> bool:
 	if _actor == null:
 		return false
 	var trained := BodyCultivationApi.strengthen_next(_actor)
 	set_message(
-		"Channel trained" if trained else "No channel elixir to spend",
-		TONE_OK if trained else TONE_ERROR
+		"Channel trained" if trained else _strengthen_refusal(), TONE_OK if trained else TONE_ERROR
 	)
 	refresh()
 	return trained
+
+
+## Why a refused `strengthen_next` refused. The elixir's ID is authored in the
+## realm seed, which is a module internal this screen may not read (ADR 0043), so
+## the price is named by its ROLE — the word the authored content and its
+## acquisition are indexed by — never by an id restated here.
+func _strengthen_refusal() -> String:
+	return "Recovery elixir absent" if _burned_channels() > 0 else "No channel elixir to spend"
 
 
 func act_breakthrough() -> bool:
@@ -377,17 +398,61 @@ func act_ascend() -> bool:
 	return stepped
 
 
-## Repair a deviation: clears a jammed huyệt or heals a torn channel using the
+## Repair a deviation: frees a jammed huyệt or heals a torn channel using the
 ## realm's recovery item. False means nothing was damaged, or the item was absent.
 func act_recover() -> bool:
 	if _actor == null:
 		return false
 	var repaired := BodyCultivationApi.recover_next(_actor)
 	set_message(
-		"Repaired" if repaired else "Nothing damaged to repair", TONE_OK if repaired else TONE_ERROR
+		"Repaired" if repaired else _recovery_refusal(), TONE_OK if repaired else TONE_ERROR
 	)
 	refresh()
 	return repaired
+
+
+## What a refused recovery means, read from the facade's own report rather than
+## inferred from the `false` alone (ADR 0150, which names this screen as the worst
+## instance of the collapse).
+##
+## The two things a refusal can mean are forced apart here. A jam or a tear is a
+## wound the recovery elixir would close, so a refusal with one present has exactly
+## one remaining cause — the elixir. A refusal with none is "look elsewhere".
+## Collapsing both into "Nothing damaged to repair" told a hero with a jammed huyệt
+## and no recovery elixir that nothing was damaged, while the same screen's
+## `unmet` line, rendered from the same `panel_state`, said the opposite — the
+## screen contradicting itself on the fail-recoverably leg of the gate.
+func _recovery_refusal() -> String:
+	return "Recovery elixir absent" if _damage_pending() else "No damage to repair"
+
+
+## Whether the facade reports a wound the recovery elixir exists to close: a jammed
+## huyệt, or any torn channel.
+##
+## `blocked` is the facade's own count. The channel flag is not on `panel_state`'s
+## channel strings — they carry `id:state/refinement` with no injury marker, unlike
+## qi's — so it is read from `core`, which `ui/` may use directly (ADR 0041).
+## `get_all_meridians` is the network's own survey, bounded by the meridians this
+## actor has unlocked, so the walk cannot outlast its own list.
+func _damage_pending() -> bool:
+	if _actor == null:
+		return false
+	if int(BodyCultivationApi.panel_state(_actor).get("blocked", 0)) > 0:
+		return true
+	return _burned_channels() > 0
+
+
+## How many channels on this actor are torn. Only channels actually on the network
+## are reported by `get_all_meridians`, so a meridian this realm has not unlocked
+## never counts as a wound the player was told they owed an elixir for.
+func _burned_channels() -> int:
+	var burned := 0
+	if _actor == null:
+		return burned
+	for channel in _actor.meridians.get_all_meridians():
+		if channel.is_injured():
+			burned += 1
+	return burned
 
 
 func _steps() -> Dictionary:
