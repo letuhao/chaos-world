@@ -216,6 +216,56 @@ def _load_index() -> list[dict]:
     return records
 
 
+def _shard_is_complete(path: Path) -> bool:
+    """True when every line in a shard parses.
+
+    A shard being written by an agent that bypassed `unique_characters add` is
+    observable half-finished: an observed case grew 72KB -> 117KB over four minutes
+    with a torn line at the end, and every other agent on the program was blocked by
+    it. `_atomic_write` alone does not prevent that - it only guarantees files IT
+    writes are never partial - so a reader needs a way to tell "this shard is
+    mid-write" from "this shard is broken".
+
+    It does not prove a shard is finished either. That is what the canon gate and the
+    duplicate check are for; this only distinguishes a torn tail from a good catalog.
+    """
+    try:
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                json.loads(line)
+    except json.JSONDecodeError:
+        return False
+    return True
+
+
+def readable_catalog() -> list[dict]:
+    """Every character from every shard that currently parses.
+
+    For concurrent readers ONLY: an agent adding characters must not be able to block
+    every other agent by writing a shard directly instead of through the tool. A
+    shard with a torn line is skipped rather than raised, and `check` still reports it
+    so a permanently broken shard is visible instead of quietly invisible.
+
+    Never use this to write. `_load_index` is the strict reader, and a write built on
+    a partial view would drop the rows it could not see - which is the exact clobber
+    the shard flag exists to prevent.
+    """
+    records: list[dict] = []
+    for path in _catalog_paths():
+        if not _shard_is_complete(path):
+            continue
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(record, dict):
+                records.append(record)
+    return records
+
+
 def _atomic_write(records: list[dict], path: Path | None = None) -> None:
     """Write `records` to one shard, MERGING with whatever is already in it.
 
@@ -1454,11 +1504,26 @@ def run(args) -> int:
         # Tolerates an absent catalog on purpose: `check` runs in `tools check`,
         # and a gate that fails because nobody has authored a character yet would
         # be a gate nobody trusts. An empty catalog is a true statement, not a fault.
-        return _check([] if not INDEX_PATH.is_file() else _load_index())
+        #
+        # `readable_catalog` rather than `_load_index` because a shard another agent
+        # is mid-write on must not turn every read command into an error. A torn
+        # shard is REPORTED below rather than silently ignored, so a permanently
+        # broken one still surfaces.
+        if not _catalog_paths():
+            return _check([])
+        torn = [path.name for path in _catalog_paths() if not _shard_is_complete(path)]
+        result = _check(readable_catalog())
+        for name in torn:
+            fail(
+                f"{name}: not every line parses, so it was skipped. An agent writing "
+                f"this shard directly instead of through `unique_characters add --shard` "
+                f"produces a torn file that blocks every reader."
+            )
+        return 1 if torn else result
     if action == "diversity":
-        return _diversity_command([] if not INDEX_PATH.is_file() else _load_index(), args)
+        return _diversity_command(readable_catalog(), args)
     if action == "report":
-        return _report([] if not INDEX_PATH.is_file() else _load_index())
+        return _report(readable_catalog())
     records = _load_index()
     if action == "next":
         return _next(records, args.count, args.kind)

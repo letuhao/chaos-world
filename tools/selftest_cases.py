@@ -1503,6 +1503,64 @@ def _ingest_is_deterministic() -> None:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
 
 
+@case("unique_characters: a TORN shard blocks writers but never blocks readers")
+def _torn_shard_is_skipped_not_fatal() -> None:
+    """A half-written shard blocked three agents for four minutes before this.
+
+    An agent writing a shard directly, instead of through `unique_characters add`,
+    produces a file whose last line is incomplete. `_atomic_write` does not prevent
+    this - it only guarantees files IT writes are never partial - and the observed
+    case was a shard growing 72KB -> 117KB while every reader raised
+    `invalid JSON`.
+
+    The two requirements pull opposite ways and both are asserted here. A concurrent
+    READER must proceed, or one agent's typing blocks everyone. A broken shard must
+    still be REPORTED, or the fix turns a loud defect into an invisible one - which is
+    why `check` names the torn file rather than skipping it quietly.
+
+    `_load_index` stays strict. A write built on a partial view would drop the rows
+    it could not see, which is the clobber the shard flag exists to prevent.
+    """
+    original = unique_characters.INDEX_PATH
+    with tempfile.TemporaryDirectory() as raw:
+        root = pathlib.Path(raw).resolve()
+        unique_characters.INDEX_PATH = root / "unique-index.jsonl"
+        try:
+            good = unique_characters._shard_path("good")
+            torn = unique_characters._shard_path("torn")
+            unique_characters._atomic_write([{"id": "unique-0001", "name": "ok"}], good)
+            with torn.open("w", encoding="utf-8", newline="\n") as handle:
+                handle.write('{"id":"unique-0002","name":"partial')
+
+            expect(
+                unique_characters._shard_is_complete(good)
+                and not unique_characters._shard_is_complete(torn),
+                "a torn shard must be detectable, or `readable_catalog` cannot skip it",
+            )
+
+            readable = unique_characters.readable_catalog()
+            expect(
+                [r["id"] for r in readable] == ["unique-0001"],
+                f"a torn shard changed what a concurrent reader sees: "
+                f"{[r['id'] for r in readable]}. One agent's in-progress write must not "
+                f"block every other agent",
+            )
+
+            raised = False
+            try:
+                unique_characters._load_index()
+            except Exception:
+                raised = True
+            expect(
+                raised,
+                "_load_index accepted a torn shard. It is the strict reader used by "
+                "writers, and a write built on a partial view drops the rows it could "
+                "not see - the exact clobber sharding exists to prevent",
+            )
+        finally:
+            unique_characters.INDEX_PATH = original
+
+
 @case("unique_characters: `add` reports the file it WROTE, not the primary index")
 def _add_reports_the_real_output_path() -> None:
     """A sharded write reported the wrong file, so an author could not verify its work.
