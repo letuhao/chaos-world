@@ -133,6 +133,63 @@ func test_consumables_and_manuals_still_offer_the_use_button() -> void:
 
 ## The shipped list is exactly the channels `apply` acts on, spelled out so a reader
 ## can check it against the dispatcher in one glance rather than by running anything.
+## The claim-to-equip chain, which is criterion 3's equip half and which NOTHING in the repo
+## proves. Every equip proof so far is a proof about the STARTER KIT: `test_item_pipeline`
+## equips `armor_iron_helm`, which is in the bag before the fight, so "receive a boss drop ->
+## equip it" has never actually been asserted for an item that arrived by claim.
+##
+## What this pins is the CHAIN, because each link was a separate suspect while BL-0725 was
+## open and every link turned out to be sound:
+##   - a claimed equipment drop lands as an INSTANCE, not a stack. ADR 0007 splits the two
+##     representations, and `Inventory.find_instance` scans only `_instances`, so a stack
+##     would be invisible to the equip gate even while the bag row listed it.
+##   - the row the panel builds carries the instance's own `def_id`, which is what
+##     `equip_shape_reason` matches on.
+##   - `equip_block_reason` returns empty for such a row, so the control is OFFERED - the
+##     refusal vocabulary is the gate, and an empty reason is the whole difference between a
+##     live Equip and a grey one.
+##   - the facade equips it and the item's authored modifier reaches the effective stat.
+func test_a_claimed_drop_is_offered_equipped_and_raises_a_stat() -> void:
+	var actor := _hero()
+	var def := _def_of(ItemCategory.EQUIPMENT, &"probe_claimed_drop")
+	# A wearable subtype and one authored fixed modifier, so the slot routing and the stat
+	# delta are both real rather than incidental.
+	def.subcategory = &"armor"
+	var mods: Array[Dictionary] = [{"option_id": &"core_defense_physical", "value": 7.0}]
+	def.fixed_modifiers = mods
+	# The acquisition a claim performs: mint a realized instance and land it in the bag.
+	# `ItemsApi.generate` routes a non-stackable def through `inv.add_instance`, which is the
+	# same call `LootRewards` makes when it pays out (loot_rewards.gd:172).
+	var instance := ItemsApi.generate(actor, def, 20261005)
+	assert_ne(instance, null, "the drop mints a realized instance rather than a stack")
+	assert_eq(
+		ItemsApi.inventory(actor).find_instance(def.id) != null,
+		true,
+		(
+			"and lands where the equip gate can see it: `find_instance` scans only _instances, so "
+			+ "a drop that arrived as a stack would be listed in the bag and refused as not "
+			+ "carried at the same time"
+		),
+	)
+	var row := {"def": def, "def_id": def.id}
+	assert_eq(
+		String(ItemActionRules.equip_block_reason(actor, row)),
+		"",
+		(
+			"Equip is OFFERED for a claimed equipment drop - the block reason IS the gate, and an "
+			+ "empty reason is the entire difference between a live Equip and a grey one"
+		),
+	)
+	var before := actor.stats.derived(Stat.DEFENSE_PHYSICAL)
+	assert_eq(ItemsApi.equip_item(actor, &"armor", def), true, "and the facade equips it")
+	assert_ne(ItemsApi.equipment(actor).equipped(&"armor"), null, "the armor slot holds the drop")
+	assert_eq(
+		actor.stats.derived(Stat.DEFENSE_PHYSICAL) > before,
+		true,
+		"and the drop's own authored defense reaches the actor's effective stat",
+	)
+
+
 func test_the_usable_list_is_the_two_consuming_channels() -> void:
 	assert_eq(
 		ItemActionRules.USABLE_ACTIVATIONS,
