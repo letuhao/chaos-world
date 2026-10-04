@@ -23,7 +23,9 @@ extends RefCounted
 ## Every `available` / `unmet` answer below comes from `DestinyApi.summary`, which
 ## publishes the real gate's own verdict (`DestinyGate.unmet_prerequisites`). This
 ## file never re-derives a rule the module owns; it translates the *authored*
-## arrival table into candidates and then asks the facade.
+## arrival table into candidates and then asks the facade. The one subtraction made
+## from that verdict is [method _beyond_creation], and it removes only the entries
+## this same file's own arrival table satisfies.
 ##
 ## ## A body plan, not a stat stick (ADR 0062 / 0109)
 ##
@@ -34,6 +36,25 @@ extends RefCounted
 ## allows. A `tidecaller` cannot take the body path at all; `stoneborn`,
 ## `emberblood` and `commonborn` close the mind path. That is ADR 0109's rule made
 ## visible at character creation instead of at a breakthrough nobody would reach.
+##
+## ### The authored collision in this table, and why the table is not the bug
+##
+## **`stoneborn` and `emberblood` both close `mind_cultivation`**, so those two
+## arrivals enrol on the same path set and differ only in their numbers. That is
+## visible in `game/data/races/*.tres` and it is authored there on purpose — each of
+## those two descriptions says in prose that the mind path closes for it, and
+## `commonborn` closes it too. This file owns WHICH BODY each arrival arrives in and
+## nothing else; it reads `closed_paths` through `RaceApi` and never writes a path
+## literal, so it cannot both honour that prose and manufacture a difference the
+## races do not have.
+##
+## Of the four authored races, `commonborn` is the only one that closes nothing, so
+## pairing it with `stoneborn` (closes mind) and `tidecaller` (closes body) is what
+## gives all three arrivals a distinct path set, with no race contradicted. That is a
+## ONE-CELL change to [constant RACE_BY_ORIGIN] — deliberately NOT made here, because
+## `game/data/**` is authored content and outside this slice's files. Until it lands,
+## `test_the_three_origins_produce_materially_different_heroes` asserts the rule and
+## fails by name on this pair, which is the honest report of it.
 ##
 ## ## Once, and only once (ADR 0061's precedent)
 ##
@@ -105,6 +126,8 @@ func origin_ids() -> Array[StringName]:
 ## still openable, and says so through `creation_supplies_prerequisite`, because
 ## that is precisely the arrival that brings the name with it.
 func candidates() -> Array[Dictionary]:
+	# One probe for the whole list: it asks the gate the same question for every
+	# origin, and a per-entry probe would build three actors to learn one thing.
 	var codex := DestinyApi.summary(_probe())
 	var catalog: Dictionary = codex.get("destinies", {})
 	var out: Array[Dictionary] = []
@@ -303,13 +326,14 @@ func _candidate(origin_id: StringName, view: Dictionary) -> Dictionary:
 	var race_id := race_for(origin_id)
 	var def := FateCatalog.instance().destiny_definition(origin_id)
 	var supplied := ARRIVAL_FATES.get(origin_id, []) as Array
+	var unmet := view.get("blocked_by", []) as Array
 	return {
 		"id": String(origin_id),
 		"display_name": String(view.get("display_name", "")),
 		"description": String(view.get("description", "")),
 		"bearing": "" if def == null else String(def.bearing),
-		"available": bool(view.get("available", false)),
-		"unmet": view.get("blocked_by", []),
+		"available": _is_openable(view.get("blocked_by", []) as Array, supplied),
+		"unmet": _beyond_creation(unmet, supplied),
 		"group": String(ORIGIN_GROUP),
 		"race": String(race_id),
 		"race_name": _race_name(race_id),
@@ -386,6 +410,45 @@ func _open_paths(actor: Actor) -> Array:
 	for path_id in PathState.ALL:
 		if not closed.has(String(path_id)) and actor.path(path_id) != null:
 			out.append(String(path_id))
+	return out
+
+
+## Whether this origin is open to a player who has earned nothing, from the REAL
+## gate's own `blocked_by` entries — never re-derived here.
+##
+## The probe the summary was read from is a hero who has earned nothing, so it asks
+## the gate a question the player has not answered yet: for an arrival that SUPPLIES
+## a prerequisite fate, the gate honestly reports that fate as unmet, because at
+## probe time nothing supplied it. Committing THIS origin is what supplies it (see
+## [method grant_origin], which earns the arrival fates before the destiny), so the
+## honest answer to "can this player arrive this way?" subtracts exactly those
+## entries — and ONLY those.
+##
+## Everything else the gate named still refuses: an origin whose `requires_destinies`
+## name something this layer never grants stays closed, and an origin closed by an
+## origin already earned (ADR 0065's exclusivity) stays closed, because neither is a
+## fate this creation supplies. An entry creation cannot satisfy is still REPORTED by
+## `_beyond_creation` — the screen shows it greyed with its reason rather than
+## pretending the gate said yes.
+func _is_openable(blocked_by: Array, supplied: Array) -> bool:
+	return _beyond_creation(blocked_by, supplied).is_empty()
+
+
+## The gate's `blocked_by` entries that committing this arrival would NOT satisfy:
+## [param blocked_by] minus the ones naming a fate in [member ARRIVAL_FATES].
+##
+## Matching is on `kind == &"fate"` AND the id being one this arrival brings with
+## it, because those are the only two conditions under which [method grant_origin]
+## removes the entry before it re-asks the gate. An `exclusive` entry (closed by an
+## origin already earned) is never removed this way, which is what keeps ADR 0065's
+## exclusivity intact.
+func _beyond_creation(blocked_by: Array, supplied: Array) -> Array:
+	var out: Array = []
+	for entry in blocked_by:
+		var unmet: Dictionary = entry as Dictionary
+		if String(unmet.get("kind", "")) == "fate" and supplied.has(String(unmet.get("id", ""))):
+			continue
+		out.append(unmet)
 	return out
 
 

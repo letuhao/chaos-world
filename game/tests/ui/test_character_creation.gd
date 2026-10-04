@@ -36,6 +36,68 @@ const ORIGINS := [
 var _instantiated: Array = []
 
 
+## Whether Godot can actually open `path` from inside a test.
+##
+## ## Why these assertions are placed HERE and not in the source-read guards
+##
+## The structural guards below read shipped source and assert it is non-empty. That
+## reads a plain FILE on disk, and it is true or false the moment the test runs —
+## which makes it useless as a guard against the one thing it looks like it guards.
+## A `class_name` that resolves is a property of Godot's SCRIPT CLASS CACHE, which a
+## headless `--import` rebuilds: a screen that fails to compile resolves as `null`
+## here, every node path inside it is unreachable, the scene instantiates with no
+## children, and then `summary()` is `{}` because there was never a header to bind,
+## not because the commit refused.
+##
+## So the guards now ask two questions at the one moment the cache is loaded and
+## live: can the type be RESOLVED, and can the SCENE really mount its own nodes? A
+## real defect (a broken script, a renamed node, a missing `%ConfirmButton`) fails
+## HERE, by name, in the test that owns the screen — instead of surfacing four
+## frames later as `asked == 0` or "a committed arrival is reported", which read like
+## gameplay bugs and sent the last two agents into the creation flow to fix code
+## that was already correct.
+##
+## Kept as an assertion about the FILE's readability too: an empty read is the other
+## way this can go wrong, and it is cheap to say so.
+func _resolvable_type(type_path: String, label: String) -> bool:
+	assert_ne(
+		FileAccess.get_file_as_string(type_path).is_empty(),
+		false,
+		"%s source is readable on disk" % label
+	)
+	if not bool(load(type_path) is GDScript):
+		return assert_eq(false, true, "%s source loads as a GDScript" % label)
+	var script := load(type_path) as GDScript
+	if not bool(script.can_instantiate()):
+		return assert_eq(false, true, "%s compiles and resolves its class_name" % label)
+	var instance = script.new()
+	if instance == null:
+		return assert_eq(false, true, "%s instantiates" % label)
+	instance.free()
+	return true
+
+
+## This screen's nodes really exist once mounted. A scene whose script failed to
+## compile mounts as an empty node and every path under it reads `null`, which is
+## the difference between "the commit refused" and "there is no screen".
+func _screen_mounts(screen: CharacterCreation) -> bool:
+	assert_ne(
+		screen.get_node_or_null("Layout/Scroll/Arrivals/Branches") as VBoxContainer,
+		null,
+		"the creation screen mounts its branch container"
+	)
+	assert_ne(
+		screen.get_node_or_null("%CreationHeader") as Label,
+		null,
+		"and its header, so the screen actually bound"
+	)
+	var rows := screen.get_node_or_null("Layout/Scroll/Arrivals/Branches") as VBoxContainer
+	if rows == null:
+		return assert_eq(false, true, "the screen mounted its rows")
+	assert_eq(rows.get_child_count(), 3, "one row per arrival, mounted for real")
+	return true
+
+
 func setup() -> void:
 	_instantiated = []
 
@@ -59,10 +121,12 @@ func test_three_origins_are_offered_each_with_the_real_gate_answer() -> void:
 	var listed := CharacterCreationFlow.new().candidates()
 	assert_eq(listed.size(), ORIGINS.size(), "the three ways of arriving are offered")
 	var seen: Array = []
+	var published: Array = []
 	for entry in listed:
 		var view: Dictionary = entry
 		var id := String(view.get("id", ""))
 		seen.append(id)
+		published.append(id)
 		assert_eq(ORIGINS.has(id), true, "%s is one of the origin group" % id)
 		assert_ne(String(view.get("display_name", "")), "", "%s is named" % id)
 		assert_ne(String(view.get("description", "")), "", "%s describes itself" % id)
@@ -76,8 +140,31 @@ func test_three_origins_are_offered_each_with_the_real_gate_answer() -> void:
 			bool(view.get("available", false)),
 			"%s: available and unmet are the same answer, read off one gate" % id
 		)
-	seen.sort()
+		# `seen` is sorted before it is compared, because what this test is about is
+		# MEMBERSHIP: which ids are in the origin group. The authored order in
+		# `ORIGINS` is the order an author writes them down in, not the order
+		# `FateCatalog._sorted_keys` publishes — and that ordering is deliberate
+		# (string value, so a codex cannot reorder between reads). Comparing the
+		# author's order against the catalog's order would assert that two unrelated
+		# conventions agree.
+		#
+		# The order is not left untested, it is asserted against its own source: the
+		# flow publishes the CATALOG's order, and a second read is identical, so the
+		# codex cannot show three rows in a different sequence on a second visit.
+		seen.sort()
 	assert_eq(seen, ORIGINS.duplicate(), "and they are exactly the origin group")
+	var from_catalog := []
+	for origin_id in CharacterCreationFlow.new().origin_ids():
+		from_catalog.append(String(origin_id))
+	assert_eq(
+		published,
+		from_catalog,
+		"and they are published in the catalog's own order, not a second convention"
+	)
+	var reread := []
+	for entry in CharacterCreationFlow.new().candidates():
+		reread.append(String((entry as Dictionary).get("id", "")))
+	assert_eq(reread, published, "which does not reorder between two reads")
 
 
 ## A base hero with nothing earned, for asking the gate a question a player can
@@ -236,6 +323,33 @@ func test_the_three_origins_produce_materially_different_heroes() -> void:
 	assert_eq(_distinct_values(races), 3, "each arrival arrives in a DIFFERENT body")
 	assert_eq(_distinct_values(bases), 3, "each hero's base stats DIFFER")
 	assert_eq(_distinct_values(paths), 3, "each hero's enrolled paths DIFFER")
+	# ## Why a COUNT is not enough, and what "materially different" actually means
+	#
+	# Distinct base attributes and distinct race ids both passed while two of the
+	# three heroes enrolled on the SAME cultivation paths — emberblood and stoneborn
+	# both close `mind_cultivation`, so they read as identical to every gate the
+	# breakthrough seam consults (ADR 0109). A count hides that: the colliding pair
+	# still leaves three distinct strings somewhere in the list, one of which is the
+	# third origin doing all the work.
+	#
+	# So what is asserted is that no two arrivals land in bodies closing the same
+	# path. That is the property ADR 0062/0109 is actually about — a body plan gates
+	# the breakthrough it forbids, so two bodies that forbid the same thing are the
+	# same character to the gate, whatever their stats say. Read from the flow's own
+	# table so the pair that differs cannot drift away from the arrivals themselves.
+	var closed_by_origin := {}
+	for origin_id in ORIGINS:
+		var created := CharacterCreationFlow.new().build(StringName(origin_id))
+		closed_by_origin[origin_id] = ("|".join(created.get("closed_paths", []) as Array))
+	var closed_seen: Array = []
+	for origin_id in ORIGINS:
+		var closed_for := String(closed_by_origin[origin_id])
+		assert_eq(
+			closed_seen.has(closed_for),
+			false,
+			"%s must not close exactly what another origin closes (ADR 0109)" % origin_id
+		)
+		closed_seen.append(closed_for)
 
 
 func test_the_race_gates_a_path_it_forbids() -> void:
@@ -306,6 +420,12 @@ func test_an_id_with_no_arrival_is_refused_rather_than_minted_raceless() -> void
 func _screen() -> CharacterCreation:
 	var screen := (load(SCREEN) as PackedScene).instantiate() as CharacterCreation
 	_instantiated.append(screen)
+	# The scene is mounted and its own nodes exist BEFORE any assertion about what it
+	# reports. Without this, a screen that failed to compile — a stale class cache
+	# after someone else edited one of its neighbours — instantiates as an empty node,
+	# `_bind_nodes` finds no header, `bind_creation` renders nothing, and every later
+	# assertion in this file fails as though the creation layer had refused.
+	assert_eq(_screen_mounts(screen), true, "the screen mounted for real")
 	screen.bind_creation(CharacterCreationFlow.new().candidates(), _commit)
 	return screen
 
@@ -415,16 +535,10 @@ func test_the_confirm_button_commits_through_the_flow() -> void:
 ## they do not. Searching the raw text would fail on the prose documenting the
 ## rule, which is the opposite of what this guard is for.
 func test_no_fate_picker_exists_anywhere_on_the_creation_screen() -> void:
-	# Readability is asserted on the RAW file: `_code_only` legitimately returns an
-	# empty string for a file that is all comments, so "the code half is non-empty"
-	# would be an assertion about how heavily this project documents itself, which
-	# is not what this guard is for. The verb scan below uses the CODE half.
-	assert_ne(
-		FileAccess.get_file_as_string(SCREEN_SOURCE).is_empty(),
-		false,
-		"the creation screen's source is readable"
-	)
-	assert_ne(FileAccess.get_file_as_string(ROW_SCENE).is_empty(), false, "and its row's")
+	# Resolvable TYPE and mounted SCENE, not "the file is not empty" — see
+	# [method _resolvable_type] for why the cache, not the file, is what fails here.
+	assert_eq(_resolvable_type(SCREEN_SOURCE, "the creation screen"), true, "the screen compiles")
+	assert_eq(_resolvable_type(ROW_SCENE, "its row"), true, "and the row compiles")
 	var source := _code_only(SCREEN_SOURCE)
 	var row_source := _code_only(ROW_SCENE)
 	for verb in ["earn_fate", "earn_destiny", "fate_definition", "fate_ids"]:
@@ -456,13 +570,10 @@ func test_no_fate_picker_exists_anywhere_on_the_creation_screen() -> void:
 ## The codex must still be a codex. Adding a commit button to the read-only screen
 ## would be the same picker wearing a different screen's clothes.
 func test_the_codex_gained_no_commit_verb() -> void:
-	# Raw file for readability, code half for the verb scan — same reason as the
-	# creation screen guard above.
-	assert_ne(
-		FileAccess.get_file_as_string(CODEX_SOURCE).is_empty(),
-		false,
-		"the codex's source is readable"
-	)
+	# Resolvable type, not "the file is not empty" — same reason as the creation
+	# screen guard above, and the codex is the more fragile of the two: it is the
+	# read-only screen, so a compile failure there is silent.
+	assert_eq(_resolvable_type(CODEX_SOURCE, "the codex"), true, "the codex compiles")
 	var codex := _code_only(CODEX_SOURCE)
 	for verb in ["act_commit", "committed", "earn_fate", "earn_destiny"]:
 		assert_eq(
