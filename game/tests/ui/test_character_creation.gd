@@ -415,10 +415,18 @@ func test_the_confirm_button_commits_through_the_flow() -> void:
 ## they do not. Searching the raw text would fail on the prose documenting the
 ## rule, which is the opposite of what this guard is for.
 func test_no_fate_picker_exists_anywhere_on_the_creation_screen() -> void:
+	# Readability is asserted on the RAW file: `_code_only` legitimately returns an
+	# empty string for a file that is all comments, so "the code half is non-empty"
+	# would be an assertion about how heavily this project documents itself, which
+	# is not what this guard is for. The verb scan below uses the CODE half.
+	assert_ne(
+		FileAccess.get_file_as_string(SCREEN_SOURCE).is_empty(),
+		false,
+		"the creation screen's source is readable"
+	)
+	assert_ne(FileAccess.get_file_as_string(ROW_SCENE).is_empty(), false, "and its row's")
 	var source := _code_only(SCREEN_SOURCE)
-	assert_ne(source.is_empty(), false, "the creation screen's source is readable")
 	var row_source := _code_only(ROW_SCENE)
-	assert_ne(row_source.is_empty(), false, "and its row's")
 	for verb in ["earn_fate", "earn_destiny", "fate_definition", "fate_ids"]:
 		assert_eq(
 			source.contains(verb),
@@ -448,8 +456,14 @@ func test_no_fate_picker_exists_anywhere_on_the_creation_screen() -> void:
 ## The codex must still be a codex. Adding a commit button to the read-only screen
 ## would be the same picker wearing a different screen's clothes.
 func test_the_codex_gained_no_commit_verb() -> void:
+	# Raw file for readability, code half for the verb scan — same reason as the
+	# creation screen guard above.
+	assert_ne(
+		FileAccess.get_file_as_string(CODEX_SOURCE).is_empty(),
+		false,
+		"the codex's source is readable"
+	)
 	var codex := _code_only(CODEX_SOURCE)
-	assert_ne(codex.is_empty(), false, "the codex's source is readable")
 	for verb in ["act_commit", "committed", "earn_fate", "earn_destiny"]:
 		assert_eq(
 			codex.contains(verb),
