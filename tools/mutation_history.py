@@ -89,8 +89,8 @@ the tree reads clean, and the index still carries the probe - only `--cached` te
 So `staged()` reads the INDEX (`git grep --cached`) and never touches disk.
 
 It classifies with the SAME `_live_marker` the ref half uses. That is not tidiness: a second marker
-grammar is a second opinion, and the two layers would then disagree about what a probe is, which
-is the one failure this module's design exists to prevent. A staged probe and prose that NAMES one
+grammar is a second opinion, and the two layers would then disagree about what a probe is, which is
+the one failure this module's design exists to prevent. A staged probe and prose that NAMES one
 are separated by exactly the cut `is_documentation` draws, so the false positives that once pinned
 this gate permanently red cannot arrive through the new door either.
 
@@ -98,6 +98,25 @@ this gate permanently red cannot arrive through the new door either.
 to become history and the ones a truncated report must not drop. When HEAD already carries a
 probe the index matches it and both report it: two facts, not one. A guard that suppressed the
 second because the first had fired would be a guard that stopped counting.
+
+## The index has a second shape, and `git grep` cannot see either
+
+INC-0024 as first reported asked only for the `git grep --cached` reader. Two states are still
+unreachable through it, both verified against real git rather than reasoned about:
+
+- **An UNMERGED path.** `git grep --cached` descends the stage-0 entries, and an unmerged path has
+  none - after a rejected merge git holds stages 1/2/3 and leaves the path unmerged until somebody
+  runs `git add`. `git grep --cached` returns rc=1 and empty stdout for such a repository, so
+  `_git` hands back `""` and the guard reports clean. `git show :3:<path>` returns the probe
+  verbatim in the same repository. In a repo with ~20 agents merging concurrently this is not a
+  corner case; it is the ordinary state of an in-progress merge. `conflicted()` reads those
+  stages directly, one `git show` per path and stage, and only when a conflict exists at all.
+- **An index git cannot walk.** A corrupt index file, or a `GIT_INDEX_FILE` pointing at nothing,
+  makes every index read exit non-zero while `rev-parse --git-dir` stays perfectly happy. Since
+  `_git` maps every non-zero rc to `""`, that is indistinguishable from a clean index. `readable()`
+  therefore asks a SECOND question - `git ls-files` over the guarded roots - so "the index was
+  walked" is asserted rather than assumed. It is the same anti-vacuity term as before, pointed at
+  the layer that was missing it.
 
 ## What this deliberately does NOT catch
 
@@ -188,6 +207,18 @@ AGENT_LOCAL_NAMESPACES: tuple[str, ...] = (
 #: only; nothing classifies on it.
 INDEX_REF = "INDEX"
 
+#: The three stages git records for an unmerged path: 1 base, 2 ours, 3 theirs. ALL of them
+#: are read. The probe INC-0024 left sat in stage 3 - the side an author is about to keep - and
+#: reading only one side would have missed it, so the loop is over the whole tuple rather than
+#: over "the side git would auto-resolve".
+CONFLICT_STAGES: tuple[int, ...] = (1, 2, 3)
+
+#: How a conflicting-index finding labels itself in `CarriedMarker.ref`, so it can never be
+#: confused with the literal `INDEX` above or with a real ref. Display only, like `INDEX_REF`;
+#: nothing classifies on it. `stage=N` is the fact a reader needs: "theirs" and "ours" are
+#: different repairs, and a report that cannot tell them apart sends the reader to guess.
+CONFLICT_LABEL = "INDEX(conflict stage={stage})"
+
 #: The comment introducers GDScript uses. `##`, `###` and `#!` are the same one repeated, so
 #: a run of `#` is skipped rather than compared against a single character.
 COMMENT_OPENERS: tuple[str, ...] = ("//", "#")
@@ -257,8 +288,53 @@ def readable() -> bool:
     without this a broken or missing repository reads as "no probes found" - a guard that
     reports `ok` because it looked at nothing, which is the failure mode this repo keeps
     producing. `check` fails when this is False.
+
+    ## Why it asks a SECOND question, which is the INC-0024 fix
+
+    `rev-parse --git-dir` only proves the directory is a repository. It says nothing about the
+    INDEX, and the index is what the staged half gates on: a corrupt or unreadable index file,
+    or a `GIT_INDEX_FILE` pointing somewhere gone, leaves `rev-parse` perfectly happy and makes
+    `git grep --cached` exit non-zero. `_git` returns `""` for any non-zero rc, so that failure
+    arrives as "no probes found" - a green guard that read nothing, which is the exact class of
+    bug this function exists to catch.
+
+    So the index is interrogated directly, and the check is `ls-files`, not a probe marker:
+    `git ls-files` exits 0 on a readable index whether or not a path is named, so a True here
+    means "the index was walked", and it costs one fast subprocess over file NAMES, never a blob.
+    A PATHSPEC is passed deliberately: it scopes the walk to the guarded roots, so the check
+    stays proportional to the half of the tree this module actually claims to read.
     """
-    return _git("rev-parse", "--git-dir").strip() != ""
+    if _git("rev-parse", "--git-dir").strip() == "":
+        return False
+    # `-u` is deliberately NOT asked for: a conflicted index exits 0 and is still readable,
+    # and `conflicted()` is what reads it. A non-zero rc here means git could not walk the index
+    # at all, which is the failure this must not report as clean.
+    return _git_rc("ls-files", "-z", "--", *GUARDED) == 0
+
+
+def _git_rc(*args: str) -> int | None:
+    """The exit code of a git command, or None when git could not be run at all.
+
+    The companion `_git()` cannot provide this: it collapses every non-zero code into `""`, so
+    "git grep matched nothing" and "git grep fell over" are the same value. This exists so one
+    specific question - *did git actually answer?* - can be asked without giving up `""` as the
+    everywhere-else answer that keeps this module from raising a traceback out of a gate.
+
+    A None (git missing, or timed out) is deliberately NOT 0. Every caller compares against 0,
+    so an unrunnable git fails the check rather than passing it.
+    """
+    try:
+        done = subprocess.run(
+            ("git", *args),
+            cwd=REPO,
+            capture_output=True,
+            text=True,
+            timeout=300,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    return done.returncode
 
 
 def shipped_refs() -> list[str]:
@@ -297,13 +373,127 @@ def staged() -> list[CarriedMarker]:
     `_live_marker` is the ref half's classifier, not a second grammar, so the index and the tips
     cannot drift apart about what counts as a probe. `carried()` calls this, so a staged probe
     fails `tools check` before it is ever committed.
+
+    `conflicted()` is consulted too, and the two answer DIFFERENT questions. `git grep --cached`
+    walks the stage-0 entries, so an unmerged path - which has none - is invisible to it, and it
+    exits non-zero when one is present rather than printing the other stages. See that function
+    for the state that makes this reachable.
     """
     found: list[CarriedMarker] = []
     for path, number, text in _staged_lines():
         hit = _live_marker(text)
         if hit is not None:
             found.append(CarriedMarker(INDEX_REF, path, number, hit.group(0), text))
+    found.extend(conflicted())
     return found
+
+
+def conflicted() -> list[CarriedMarker]:
+    """Every LIVE marker in an UNMERGED index entry. The blind spot in `git grep --cached`.
+
+    ## Why this state is reachable at all, and why it is the same incident
+
+    A conflicted merge is how two agents' work gets combined, and this repo runs ~20 at once.
+    `git grep --cached` walks the STAGE-0 entries of the index, and an unmerged path has none:
+    after a rejected merge git records stages 1/2/3 (base/ours/theirs) and leaves the path
+    unmerged until it is resolved and `git add`ed. So the one content an index holds for that
+    path - and the only content `git commit` can write for it - is invisible to the reader
+    above, which also exits NON-ZERO when such a path is present rather than printing the
+    other stages.
+
+    That is a marker about to be committed that every reader reports clean, and it is
+    INC-0024 with the extra step of a merge: agent A's mutation, agent B's branch, `git merge`,
+    a rejected merge, and the probe sitting in stage 3 until somebody runs `git add`. Verified
+    against real git: `git grep --cached` returns rc=1 and empty stdout, while `git show
+    :3:<path>` returns the probe verbatim.
+
+    ## Reading it is `git show :<stage>:<path>`, because there is no tree to walk
+
+    There is no ref and no stage-0 tree here, so `git grep` has nothing to descend into. The
+    index stages are named objects and `git show` reads any of them directly - the same call
+    `sweep()` already uses to read a commit's blob, so there is one reader and not two.
+
+    Every stage is read, not just stage 2 or 3. A conflict marker is not the only way to reach
+    this state, and "ours" is a real answer to "what will this commit write" - reading only
+    the side an author is about to keep would leave the other stage unguarded on the next
+    conflict.
+
+    ## Classified with the SAME `_live_marker`, like every other reader here, and applied ONE
+    ## LINE AT A TIME. A second grammar is a second opinion, and two layers disagreeing about
+    ## what a probe is the one failure this module exists to prevent. The line split is not
+    ## incidental: `GAP` is a space-or-tab class rather than a whitespace class precisely so
+    ## no shape can match a token at the end of one line against one at the start of the next,
+    ## and handing `_live_marker` a whole blob would hand it the newlines it is built never
+    ## to see. `CONFLICT_LABEL` carries the stage into `describe()`, so a reader can see
+    ## WHICH side held it.
+
+    ## Bounded, and bounded on purpose
+
+    One subprocess per unmerged path and stage, and only for paths under `GUARDED`. The loop
+    is bounded by the listing, which is finite, and it only runs at all when a conflict exists
+    - the common case of a clean index does none of this, which is what keeps `tools check`
+    cheap.
+    """
+    found: list[CarriedMarker] = []
+    for path in _unmerged_paths():
+        for stage in CONFLICT_STAGES:
+            for number, line in enumerate(_blob_at_index(stage, path).splitlines(), start=1):
+                hit = _live_marker(line)
+                if hit is not None:
+                    found.append(
+                        CarriedMarker(
+                            CONFLICT_LABEL.format(stage=stage),
+                            path,
+                            number,
+                            hit.group(0),
+                            line,
+                        )
+                    )
+    return found
+
+
+def _unmerged_paths() -> list[str]:
+    """Every guarded path the index holds UNMERGED, forward-slashed whatever the platform wrote.
+
+    `git ls-files -u` prints one FULL RECORD per stage - `mode SP sha SP stage TAB path` - so the
+    path is the field after the TAB, and `--name-only` is NOT an option here: git rejects that
+    combination outright (exit 129, no output). Both facts were established against real git, not
+    by reading, because getting them wrong is silent rather than loud - `git show :<stage>:<path>`
+    against a malformed path returns `""` with no error, so a parser that kept the whole record
+    would find nothing and report the conflict as clean.
+
+    The split is on the LAST tab, which is what `rsplit(..., 1)` gives. A tab inside a filename is
+    legal on POSIX but not on Windows, and a path with one would otherwise be truncated at the
+    wrong field; taking the last tab is correct for git's own format, where the path is defined to
+    be everything after the single tab that follows the stage digit.
+
+    `-u` prints stage 1/2/3 as three rows, so a path arrives up to three times. The set is what
+    keeps each path to three `git show` calls instead of nine, and `sorted` makes the findings
+    order stable across runs so a report does not reshuffle between two identical states.
+
+    `_paths_in` deliberately does NOT apply: it filters on a `.gd` suffix and a
+    `game/src/`/`game/tests/` prefix, which is the right shape for a commit's touched files and
+    the wrong shape for a listing that arrived already scoped to `GUARDED`.
+    """
+    listed = _git("ls-files", "-u", "-z", "--", *GUARDED)
+    paths = set()
+    for record in listed.split("\0"):
+        record = record.strip()
+        if not record or "\t" not in record:
+            continue
+        path = record.rsplit("\t", 1)[1].replace("\\", "/")
+        if path:
+            paths.add(path)
+    return sorted(paths)
+
+
+def _blob_at_index(stage: int, path: str) -> str:
+    """The content of the index entry at `stage` for `path`.
+
+    `git show :<stage>:<path>` - the stage-0 form `:path` is what the staged reader's `git grep`
+    already covers, and naming the stage is what makes an unmerged entry readable at all.
+    """
+    return _git("show", f":{stage}:{path}")
 
 
 def carried() -> list[CarriedMarker]:
