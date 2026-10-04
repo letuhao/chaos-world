@@ -9,6 +9,11 @@
 {"session": "qi-w2-force", "paths": ["tools/cultivation/seed.py", "tools/cultivation/seed_systems.py"], "heartbeat": "2026-10-04T16:23:54.795879+00:00"}
 {"session": "body-audit-2", "paths": ["game/tests/audits"], "heartbeat": "2026-10-04T16:40:58.870609+00:00"}
 {"session": "w8-mods", "paths": ["game/tests/fixtures/mods/third_party_data", "game/tests/fixtures/mods/first_party_module", "game/tests/modules/mods/test_example_mods.gd"], "heartbeat": "2026-10-04T17:02:55.954075+00:00"}
-{"session": "opencode-item-ward-assets", "paths": ["game/assets/asset-index.jsonl", "game/assets/items/generated"], "heartbeat": "2026-10-04T17:24:30.659183+00:00"}
 {"session": "w3-fix", "paths": ["game/src/core/catalog_overlay.gd"], "heartbeat": "2026-10-04T17:44:02.304711+00:00"}
 {"session": "qi-w3-headunblock", "paths": ["game/src/modules/qi_cultivation/api.gd", "game/src/modules/qi_cultivation/advancement.gd", "game/tests/modules/destiny/test_destiny_earn_sources_cultivation.gd", "game/src/ui/screens/qi_cultivation_screen.gd"], "heartbeat": "2026-10-04T18:03:40.490272+00:00"}
+{"session": "wave18-a", "paths": ["game/assets/characters/unique-index-wave18-a.jsonl", "game/assets/characters/unique-index-wave-18a.jsonl"], "heartbeat": "2026-10-04T18:54:55.465967+00:00"}
+{"session": "wave18-b", "paths": ["game/assets/characters/unique-index-wave18-b.jsonl"], "heartbeat": "2026-10-04T18:48:46.276299+00:00"}
+{"session": "wave18-c", "paths": ["game/assets/characters/unique-index-wave18-c.jsonl", "game/assets/characters/unique-index-wave-18c.jsonl"], "heartbeat": "2026-10-04T18:52:21.386019+00:00"}
+{"session": "wave18-d", "paths": ["game/assets/characters/unique-index-wave18-d.jsonl", "game/assets/characters/unique-index-wave-18d.jsonl"], "heartbeat": "2026-10-04T18:53:12.948600+00:00"}
+{"session": "wave18-e", "paths": ["game/assets/characters/unique-index-wave18-e.jsonl", "game/assets/characters/unique-index-wave-18e.jsonl"], "heartbeat": "2026-10-04T18:54:04.024454+00:00"}
+{"session": "opencode-item-sweep", "paths": ["game/assets/asset-index.jsonl"], "heartbeat": "2026-10-04T18:51:05.869195+00:00"}
