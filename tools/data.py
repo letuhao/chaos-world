@@ -2322,16 +2322,16 @@ def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
         fail(f"data audit failed: {len(gaps)} gap(s)")
         return 1
     for level, message in runtime:
-        if level == "info":
-            # A measurement, not a gap: the per-route delivery breakdown states a
-            # fact about the corpus and raises nothing. Only `warn` is promoted by
-            # `--fail-on-unreachable` and only `warn` counts toward the summary
-            # line, so an informational readout can never fail a build.
-            info(message)
-        elif fail_on_unreachable:
-            fail(message)
-        else:
-            warn(message)
+        if level != "info":
+            # `info` was already emitted above, BEFORE the early return, so that a
+            # content gap cannot withhold the per-route breakdown. Emitting it again
+            # here printed every informational line twice whenever `gaps` was empty,
+            # which is the common case — so the common case is the one that looks
+            # duplicated. Only the non-info levels still have work to do here.
+            if fail_on_unreachable:
+                fail(message)
+            else:
+                warn(message)
     gaps_left = [message for level, message in runtime if level != "info"]
     if fail_on_unreachable and gaps_left:
         fail(f"data audit failed: {len(gaps_left)} runtime-availability gap(s)")
