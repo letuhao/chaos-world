@@ -6,18 +6,21 @@ extends RefCounted
 ## physiological commitment a tier demands, not a second reservoir.
 ##
 ## A tier COMMITS an anchor and the boundaries after it GATE on it. The gate is
-## deliberately NOT satisfied by the commit: a commit creates the world and passes
-## its trial, while a gate additionally demands the anchor REINFORCED, which is the
-## resonance milestone (`MindTraining.strengthen_anchor`) and costs the realm's
-## channel elixir. Two separate acts, so a demanded stage can be false: an actor
-## that has entered the tier which commits an anchor has not yet earned the right to
-## leave the next one.
+## deliberately NOT satisfied by the commit: a commit creates the world, while a gate
+## additionally demands the anchor REINFORCED, which is the resonance milestone
+## (`MindTraining.strengthen_anchor`) and costs the realm's channel elixir. Two
+## separate acts, so a demanded stage can be false: an actor that has entered the tier
+## which commits an anchor has not yet earned the right to leave the next one.
 ##
-## Before that rule the commit called `pass_anchor_trial()` and the demanded stage
-## asked for that flag alone, so the commit satisfied the very gate that permitted
-## it and five high-tier boundaries were permanently open — R20, R23 and R26 (the
-## trial) and R29/R30 (a Micro world that `app` hands out at the first realm already
+## Before that rule the commit satisfied the very gate that permitted it and five
+## high-tier boundaries were permanently open — R20, R23 and R26 (the trial) and
+## R29/R30 (a Micro world that `app` hands out at the first realm already
 ## satisfies). The advertised difficulty did not exist.
+##
+## The TRIAL that clause named is gone (ADR 0172). Both commits stamped the trial
+## flag on the line after creating the anchor, so `anchor_created` implied it and the
+## conjunct no code could fail. Reinforcement is the one paid clause, and it is paid
+## with a verb; the trial was paid by nothing and gated nothing.
 ##
 ##   R19  commits the Seed inside world   (demands nothing)
 ##   R20  demands the Seed anchor reinforced
@@ -123,11 +126,11 @@ static func describe_stage(stage: StringName) -> String:
 		STAGE_NONE:
 			return "No prior anchor required"
 		STAGE_SEED_ANCHOR:
-			return "Seed World anchor created, trialled and reinforced"
+			return "Seed World anchor created and reinforced"
 		STAGE_POCKET_ANCHOR:
-			return "Pocket World anchor created, trialled and reinforced"
+			return "Pocket World anchor created and reinforced"
 		STAGE_INNER_ANCHOR:
-			return "Inner World anchor created, trialled and reinforced"
+			return "Inner World anchor created and reinforced"
 		STAGE_MICRO_WORLD:
 			return "A Micro World built by a breakthrough, and the Inner World anchor reinforced"
 		_:
@@ -150,14 +153,13 @@ static func commit(actor: Actor, target_index: int) -> void:
 			_commit_created_world(actor, WorldState.GREAT, target_index)
 
 
-## Create the inside world this breakthrough produces. It creates the anchor and
-## passes its trial; it never REINFORCES it, which is the one clause of a demanded
-## stage the commit cannot satisfy for the actor (`_inside_ok`).
+## Create the inside world this breakthrough produces. It creates the anchor; it never
+## REINFORCES it, which is the one clause of a demanded stage the commit cannot
+## satisfy for the actor (`_inside_ok`).
 static func _commit_inside_world(actor: Actor, tier: StringName) -> void:
 	if actor.inside_world == null or actor.inside_world.tier != tier:
 		actor.inside_world = InsideWorld.new(tier)
 	actor.inside_world.create_anchor()
-	actor.inside_world.pass_anchor_trial()
 
 
 ## Build the created world a Transcendent breakthrough produces. The LAW it imprints
@@ -191,14 +193,18 @@ static func _finish_ascent(actor: Actor) -> void:
 	actor.ascension.improve_dao(AscensionState.MAX_DAO_LEVEL)
 
 
-## An inside world counts once the tier that created it was committed, trialled AND
+## An inside world counts once the tier that created it was committed AND
 ## reinforced. A world that merely exists does not: `anchor_strengthened` is what
 ## `MindTraining.strengthen_anchor` pays for and what no commit grants.
+##
+## Every conjunct here is falsifiable by a state a player can legally reach, which is
+## the property the removed trial conjunct failed: `anchor_created` implied the trial
+## flag, so that term could not be false and constrained nothing (ADR 0172).
 static func _inside_ok(actor: Actor, tier: StringName) -> bool:
 	var world := actor.inside_world
 	if world == null or world.tier != tier:
 		return false
-	if not world.anchor_created or not world.anchor_trial_passed:
+	if not world.anchor_created:
 		return false
 	if not world.anchor_strengthened:
 		return false
@@ -228,8 +234,6 @@ static func _inside_shortfall(actor: Actor, tier: StringName) -> String:
 		return "%s anchor not committed (the actor holds a %s world)" % [label, world.tier]
 	if not world.anchor_created:
 		return "%s anchor not created" % label
-	if not world.anchor_trial_passed:
-		return "%s anchor trial not passed" % label
 	if not world.anchor_strengthened:
 		return "%s anchor not reinforced (spend the realm's channel elixir)" % label
 	return "%s anchor unstable" % label

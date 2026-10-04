@@ -74,9 +74,11 @@ const ABILITY_BY_COMMIT := {
 const NO_ASCENT := "No ascent begun"
 
 ## Ceiling on the stability raises a construction step takes. It names the failure
-## it catches — an inside world whose stability cannot reach the `is_stable`
+## it catches — a CREATED world whose stability cannot reach the `is_stable`
 ## threshold — and is never the reason a milestone commits: 0.1 a step clears any
-## shortfall a fresh world can have, so the bound is headroom, not a budget.
+## shortfall a fresh world can have, so the bound is headroom, not a budget. Only
+## the created world needs it; an INSIDE world's constructor default is already at
+## the threshold and nothing lowers it (ADR 0172).
 const STABILITY_GUARD := 6
 
 
@@ -166,15 +168,7 @@ static func _commit_inside_world(actor: Actor, tier: StringName, law_id: StringN
 		actor.inside_world.expand_size(float(SIZE_BY_TIER[tier]) - actor.inside_world.size)
 	actor.inside_world.add_law(law_id, LAW_STRENGTH)
 	actor.inside_world.create_anchor()
-	actor.inside_world.pass_anchor_trial()
-	# `is_stable` needs stability >= 0.5; a fresh Seed starts at 0.5 and a world
-	# raised by hand starts lower, so raise until the milestone counts as stable.
-	var guard := 0
-	while actor.inside_world.stability < 0.5 and guard < STABILITY_GUARD:
-		guard += 1
-		actor.inside_world.improve_stability(0.1)
-	# The commit creates the anchor, trialls it and stabilises the world. It must NOT
-	# reinforce it.
+	# The commit creates the anchor. It must NOT reinforce it.
 	#
 	# Reinforcement is the one clause a commit may never grant, because it is what the
 	# NEXT realm's gate demands: `MindAnchor._inside_ok` requires `anchor_strengthened`,

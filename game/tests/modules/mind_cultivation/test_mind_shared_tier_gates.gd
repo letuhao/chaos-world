@@ -126,9 +126,9 @@ func test_the_two_schedules_disagree_in_opposite_directions_on_one_actor() -> vo
 		"and the flag itself is unset, so this is the clause and not a side effect"
 	)
 	assert_eq(
-		shared_commit.inside_world.anchor_trial_passed,
+		shared_commit.inside_world.anchor_created,
 		true,
-		"though the commit did create and trial it"
+		"though the commit did create the anchor the milestone is paid against"
 	)
 
 	var bare := Probe.fresh_actor(Probe.realm_at(MindAnchor.COMMIT_POCKET - 1).id)

@@ -17,7 +17,6 @@ var qi_density: float = 1.0
 var time_flow: float = 1.0
 var laws: Dictionary = {}
 var anchor_created: bool = false
-var anchor_trial_passed: bool = false
 var anchor_strengthened: bool = false
 
 
@@ -65,20 +64,10 @@ func create_anchor() -> void:
 	anchor_created = true
 
 
-## Mark the anchor trial as passed.
-func pass_anchor_trial() -> void:
-	anchor_trial_passed = true
-
-
 ## Strengthen the anchor's storage/stability.
 func strengthen_anchor() -> void:
 	anchor_strengthened = true
 	improve_stability(0.1)
-
-
-## Check if the anchor is ready for the next tier.
-func anchor_ready() -> bool:
-	return anchor_created and anchor_trial_passed and anchor_strengthened
 
 
 ## Serialize to dictionary.
@@ -94,7 +83,6 @@ func to_dict() -> Dictionary:
 		"time_flow": time_flow,
 		"laws": laws_out,
 		"anchor_created": anchor_created,
-		"anchor_trial_passed": anchor_trial_passed,
 		"anchor_strengthened": anchor_strengthened,
 	}
 
@@ -111,6 +99,12 @@ static func from_dict(data: Dictionary) -> InsideWorld:
 	for key in data.get("laws", {}).keys():
 		world.laws[StringName(key)] = float(data["laws"][key])
 	world.anchor_created = bool(data.get("anchor_created", false))
-	world.anchor_trial_passed = bool(data.get("anchor_trial_passed", false))
 	world.anchor_strengthened = bool(data.get("anchor_strengthened", false))
+	# A payload written before ADR 0172 still carries the retired trial key, and it
+	# loads: this reader ignores a field it does not name, which is the same rule
+	# `Actor.from_dict` states for every key its schema dropped. No
+	# `Actor.SCHEMA_VERSION` bump either — a bump is for a slot this version GAINED
+	# (ADR 0140), and refusing every existing save to protect a flag nothing could
+	# act on would be worse than the loss it prevents. The key is named in ADR 0172
+	# and in tests/core/test_no_anchor_trial.gd, which both assert the removal.
 	return world
