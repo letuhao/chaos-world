@@ -46,6 +46,169 @@ extends ItemWorkbenchBody
 ## the whole claim of the readout is that what the engine computes is what a player
 ## sees.
 
+## The names a press may carry to mean "show me the quest board", mapped to the quest
+## id each one offers. Both are CONTENT names, so a new board is one `.tres` and one
+## row here rather than a new branch in the handler — and a name absent from this
+## dictionary is refused by name rather than silently doing nothing.
+##
+## **`quest_board` is an authored inhabited type**, which is what makes it a real press
+## target rather than an invented one; `quest` is the same idea spelled as a route. An
+## UNKNOWN author may publish no quest at all, so an empty board is a correct answer and
+## not a gap. This is a HAND-OVER of what the module offers, never a second offer rule.
+##
+## ## Why it is declared HERE and not in the shell
+##
+## [method _interact_in_the_world] below is its ONLY reader in the tree, and a base class
+## cannot name a member its subclass declares — so a vocabulary sitting in
+## `item_workbench_app.gd` is a vocabulary this file cannot see. It rides with the reader
+## for the same reason `READOUT_MAGNITUDE` and `READOUT_SHARE` sit on
+## [ItemWorkbenchBody] rather than in the shell: the constants move WITH their bodies,
+## and nothing outside this chain reads either spelling.
+const _QUEST_BOARD_ALIASES: Dictionary = {
+	&"quest_board": &"the_terms_you_drafted",
+	&"quest": &"the_terms_you_drafted",
+}
+
+## The quest program a press is answered out of. Held here, and RE-POINTED by the shell:
+## `item_workbench_app.gd` assigns it in `_ready` and again in `adopt_actor` on a rebirth,
+## which is the whole life of the field — nothing else constructs one.
+##
+## ## Why the declaration is HERE and not in the shell, and why the shell must drop its own
+##
+## [method _interact_in_the_world] below is this field's only reader, and a BASE class
+## cannot name a member its SUBCLASS declares. While the declaration sat only in
+## `item_workbench_app.gd`, this reference did not resolve, `ItemWorkbenchReadout` failed
+## to compile, and `item_workbench_app.gd:2`'s `extends ItemWorkbenchReadout` then reported
+## the far less actionable `Could not resolve class "ItemWorkbenchReadout"` with the real
+## error swallowed as a dependency-load failure. **The BASE half is the one that keeps
+## `_quests`, and that was measured both ways:** declaring it in the SHELL as well is a
+## hard `already exists in parent class` parse error, and removing it here while the
+## shell's copy remained gives `Identifier "_quests" not declared in the current scope`
+## at both use sites, because a BASE class cannot see a member its SUBCLASS declares.
+## The two failures are mirror images and only one direction compiles. It is declared once
+## below, with the rest of this file's fields.
+
+## The path the readout's swing currently fires, or `&""` for
+## [constant READOUT_DEFAULT_PATH]. Set through [method set_readout_path]; never persisted,
+## because a bare swing leaves no record — the same reason `_readout_technique` is rebuilt
+## per blow. Empty is the shipped default rather than a third state: "nobody chose" and
+## "chose body" resolve to the same swing, and collapsing them means a selector can be
+## driven to any position without a fourth case.
+var _readout_selected_path: StringName = &""
+
+## The drill's OWN status clock, and the body it is bound to (ADR 0195).
+##
+## ## Why the pair sits beside the drill rather than on the shell that has the frame
+##
+## [method ItemWorkbenchBody.clear_cast_target] already drops the drill on a rebirth, and
+## a clock left pointed at a body that no longer exists is the half-swapped failure that
+## method exists to prevent — so the aim and its clock are ONE fact, and only the half
+## that caches the drill can drop it. The shell owns `_process` and calls
+## [method tick_readout_drill]; nothing else may, which is what keeps ADR 0106's ONE tick
+## caller true (`tests/app/test_status_clock.gd` pins the frame drivers, unchanged).
+##
+## ## Why a second INSTANCE rather than a second parameter
+##
+## `StatusLoop` is `RefCounted` with one `_actor` and one bounded accumulator. Rebuilding
+## `_status_loop` per frame would reset the HERO's collapse window every frame, and a
+## multi-actor loop would be a redesign of the wire ADR 0106 exists to keep singular. Two
+## instances is the smallest change that leaves the hero's loop untouched.
+##
+## ## No arch cost here
+##
+## `tools/arch`'s `APP_STATE_MARKERS` reads `set_module_data` / `get_module_data` and a
+## `func tick` DECLARATION. This file has the first and not the second — one signal, and
+## the rule needs two (`APP_STATE_MIN_SIGNALS`) — so holding the loop here does not make
+## `app/` a feature system. The alternative, declaring `tick` here, would have put a
+## SECOND one beside the shell's own and tripped exactly that.
+## `_drill_loop` and `_drill_body` are DECLARED in `item_workbench_body.gd`, the half that
+## WRITES them (`body.gd:577-578`). A base cannot resolve a subclass member, so declaring
+## them in this subclass made `body.gd` fail to parse, which made THIS class unresolvable,
+## which made `item_workbench_app.gd` report nothing but `Could not resolve class
+## "ItemWorkbenchReadout"` — one declaration, and every suite in the repo went red (INC-0020).
+## The rule, stated once: **a declaration belongs in the LOWEST link of the chain that
+## touches it.** `_quests` follows the same rule one screen down.
+## The ONE caller of `QuestApi.accept` (BL-0663). The composition root MINTS and
+## re-points this; this file is what READS it, so the declaration belongs here and
+## the shell must not redeclare it — a member in both halves is a hard
+## `already exists in parent class` parse error, and one parse error takes down
+## every suite process-wide (INC-0020). A subclass ASSIGNING an inherited member
+## is legal, so the field keeps its whole life across the split.
+var _quests: QuestProgram = null
+
+
+## Point the drill's clock at the drill [method ItemWorkbenchBody._readout_target]
+## currently holds, building it if there is none.
+##
+## ## Why the shell calls THIS rather than constructing the loop itself
+##
+## The shell is at its thousand-line ceiling and names `StatusLoop` for the hero only;
+## splitting the drill's half of the feature across two files would have split one
+## invariant — "the drill and its clock are dropped together" — across the boundary that
+## invariant exists to cross.
+##
+## **Idempotent per body, and cheap when nothing changed:** a reader who walks back to
+## the readout must find the SAME loop holding the SAME collapse window rather than a
+## fresh one that restarted the demotion clock under them. Called at the route mount so
+## the clock is armed before the first frame that can strike, and from
+## [method tick_readout_drill] when the drill has been reminted under it.
+func bind_readout_drill() -> StatusLoop:
+	var drill := _readout_target()
+	if drill == null:
+		return null
+	if _drill_loop != null and _drill_body == drill:
+		return _drill_loop
+	# A NEW loop, not an `attach` onto the old one: the collapse window belongs to the
+	# sea that earned it, so carrying one body's held seconds onto another's is exactly
+	# the credit `StatusLoop.attach` resets the accumulator to prevent.
+	_drill_loop = StatusLoop.new(drill)
+	_drill_body = drill
+	return _drill_loop
+
+
+## Age the drill by `delta` seconds. The ONLY caller is
+## [method ItemWorkbenchApp._process], which hands this the engine's own frame delta
+## (ADR 0089) — so the drill ages on the same clock as the hero and never reads a wall
+## time of its own.
+##
+## ## What this makes observable that was not
+##
+## `StatusLoop.tick` runs the three COMBAT ticks, and nothing was running them on the
+## drill — so ADR 0070's wound DECAY and ADR 0071's rupture bleed and sea COLLAPSE
+## could not happen on the one body a player can actually strike. Severity therefore only
+## ever rose, and `MindDamage.tick_collapse`'s three-second demotion window could never
+## advance on anything reachable: the wound arc and the mind collapse were theory while
+## every suite driving the tick functions directly stayed green — the defect class
+## `tests/app/test_status_loop_combat_ticks.gd` exists to catch.
+##
+## ## The growth guards, and why this may run FOREVER
+##
+## Nothing had to be invented for it: the guards were already written for "every frame,
+## forever" and this is that frame. `decay` moves severity DOWN only and the ledger holds
+## one row per meridian. `tick_rupture` spends `minf(loss, maximum)` out of a pool
+## clamped to `[0, maximum]`, so it cannot drive a body negative however long it runs —
+## which matters HERE specifically, because the drill is the body that bleeds and an
+## unbounded tick would show as a drill walking to zero on its own. `tick_collapse`
+## resets `held` on every outcome that fires and `StatusLoop.MAX_COLLAPSE_HELD` clamps the
+## accumulator. None of the three CREATES state, and a body nobody struck pays a few
+## dictionary reads a frame and gains nothing — which is the point: these ticks exist for
+## a fight, not to manufacture one.
+##
+## The report is deliberately DISCARDED. The hero's tick is read for `born`
+## (`_register_birth`), but the readout renders the LEDGER, not a tick dictionary, and a
+## collapse is not a number that panel has a place for; the sea's tier and the channel's
+## severity are both already on the page.
+func tick_readout_drill(delta: float) -> void:
+	# A null on either half is the drill being GONE rather than half-swapped, because
+	# `clear_cast_target` drops the pair together — and reading the body off the same
+	# cache means a reminted drill is never left un-aged.
+	var drill := _readout_target()
+	if _drill_loop == null or _drill_body == null or _drill_body != drill:
+		bind_readout_drill()
+		if _drill_loop == null:
+			return
+	_drill_loop.tick(delta)
+
 
 ## One drill body, with the three mechanism inputs the shipped player already has. It
 ## is a body-cultivation actor because that is the one carrying an `acupoints` set, so a
@@ -73,9 +236,29 @@ extends ItemWorkbenchBody
 ## install — `bind_mechanisms` reads `acupoints` / `sea_of_consciousness` to choose a
 ## mechanism, and installing first measures every path's inputs as absent. `install` is
 ## idempotent, so a route re-entry cannot erase a wound earned on the previous visit.
+##
+## ## The sea, and why it is on BOTH ends
+##
+## `CombatBoot._runs_for` answers "may this attacker run `MindDamage`?" with
+## `MindCultivationApi.sea(attacker) != null` (`combat_boot.gd:377`), so the ATTACKER needs
+## a sea for the mind path to be reachable at all — and `MindDamage` divides by the
+## DEFENDER's `structural_capacity`, so the drill needs one too or the erosion is
+## `0.0 / 0.0`. Without both, `act_cycle_path` to mind silently fell back to the
+## installed mechanism and the erosion row could never render, which is the same shape the
+## wound row was in. `MindTraining.synchronize` sizes the sea off base attributes, so it
+## runs after the enrolment — the same order `_reattach_components` uses.
+##
+## `unlock_for_realm` is what makes [constant READOUT_MERIDIAN] a real channel: ADR 0070
+## is explicit that a `named` aim at a meridian this body has never unlocked is NOT struck
+## at all, so a freshly enrolled body is a sheet of twenty closed channels and the aim
+## would resolve to the empty site.
 func _build_readout_target() -> Actor:
 	var drill := ActorFactory.spawn_inhabitant(&"readout_drills")
 	ActorFactory.with_body_cultivation(drill)
+	drill.meridians.unlock_for_realm(&"qi_refining")
+	ActorFactory.with_mind_cultivation(drill)
+	MindCultivationApi.attach_sea(drill)
+	MindTraining.synchronize(drill)
 	CombatBoot.install(drill)
 	return drill
 
@@ -106,16 +289,96 @@ func _readout_blow(attacker: Actor, defender: Actor) -> Dictionary:
 	return outcome.to_dict()
 
 
-## The bare swing the readout fires: the qi path, so the mechanism is the one the
-## installed actor carries, and a magnitude high enough that a wound is reachable in a
-## handful of strikes rather than in a session. It is rebuilt per blow and never
-## persisted, for the same reason `CombatBoot._swing_def` is: a swing leaves no record.
+## The bare swing the readout fires, on the path `_readout_path` selects.
+##
+## ## Why BODY is the default, and why the old qi claim was false
+##
+## This used to hardcode `PathState.QI` and justify it with "a magnitude high enough
+## that a wound is reachable". **That was false and the code could not make it true:**
+## `QiDamage` emits NO `effects[]` at all (only `BodyDamage` calls `add_effect`), so a qi
+## blow reaches no wound however large the magnitude, and the panel's `_wound_line` /
+## `necrotic` wording was unreachable through the shipped app forever. A single hardcoded
+## qi swing also cannot show the THIRD mechanism: with no sea on the drill,
+## `CombatBoot._runs_for` gates `MindDamage` out (`combat_boot.gd:377` requires
+## `MindCultivationApi.sea(attacker) != null`) and the erosion row was unreachable too.
+##
+## BODY is the default because it is the one path whose outputs are WRITTEN: it emits one
+## `body.wound` effect per struck site (ADR 0070), so the wound row — the half of this
+## surface that outlives the blow — actually renders. `aim_meridian` is set because
+## ADR 0070 is explicit that a `named` aim at a meridian the target has not unlocked is
+## NOT struck at all; `_build_readout_target` unlocks all twenty, so the aim resolves to
+## a real channel. `element_share` is kept because `PathState.QI` still reaches the same
+## function and the qi path is one verb away.
+##
+## It is rebuilt per blow and never persisted, for the same reason `CombatBoot._swing_def`
+## is: a swing leaves no record.
 func _readout_technique() -> TechniqueDef:
 	var def := TechniqueDef.new()
-	def.path = PathState.QI
+	var asked := _readout_path()
+	def.path = asked if asked != &"" else READOUT_DEFAULT_PATH
 	def.magnitude = READOUT_MAGNITUDE
 	def.element_share = READOUT_SHARE
+	if def.path == PathState.BODY:
+		def.aim_meridian = READOUT_MERIDIAN
+	elif def.path == PathState.QI:
+		def.element = READOUT_ELEMENT
 	return def
+
+
+## The path the readout fires, or `&""` for [constant READOUT_DEFAULT_PATH]. Set through
+## [method set_readout_path] by the composition root when the screen's selector asks for a
+## different mechanism; empty — the shipped default — is what a reader who never touches
+## the selector gets.
+func _readout_path() -> StringName:
+	return _readout_selected_path
+
+
+## The path the readout's swing fires RIGHT NOW, as the primitive the screen publishes.
+## Always a concrete path id rather than the stored empty default, because a screen that
+## published `""` for its own default would be reporting its internals; the resolution
+## happens here, once, through the same `_readout_technique` the blow uses.
+func readout_path() -> StringName:
+	var asked := _readout_path()
+	return asked if asked != &"" else READOUT_DEFAULT_PATH
+
+
+## Every path the readout can fire, in the order the screen's cycle walks them.
+## `PathState.ALL` rather than a second list, so a fourth path added there is answerable
+## here without an edit — the same reason `CombatBoot._mechanisms_for_paths` does not
+## restate the three.
+func readout_paths() -> Array[StringName]:
+	return PathState.ALL
+
+
+## The screen's READ half of the selector seam: no argument answers [method readout_path],
+## and the `&"paths"` argument answers [method readout_paths]. One callable rather than
+## two because the armed path and the offered list must come from ONE owner — a screen
+## that compared two could only discover they disagree by showing a path the root would
+## never arm.
+func _readout_armed(question: Variant = &"") -> Variant:
+	if StringName(question) == &"paths":
+		var out: Array[StringName] = readout_paths()
+		return out
+	return readout_path()
+
+
+## ## The third seam, and why the screen owns the CHOICE
+##
+## The readout's job is to make all three mechanisms visible, and ONE hardcoded swing
+## cannot: qi emits no effects, and mind is gated out without a sea. So the screen is
+## handed a third callable, `func(path: StringName) -> bool`, and the root answers it by
+## recording the path it was asked for. The screen holds NO technique and NO rule — it
+## still cannot name `TechniqueDef` (ADR 0161's facade edge) — it only says which of the
+## three it wants, and the SAME `_readout_technique()` that `_readout_blow` fires answers
+## `mechanism_for_hit` in `_readout_context`, so the mechanism line and the blow cannot
+## disagree.
+func set_readout_path(path: Variant) -> bool:
+	var wanted := StringName(path) if path is StringName or path is String else &""
+	if wanted != &"" and not PathState.ALL.has(wanted):
+		_readout_selected_path = &""
+		return false
+	_readout_selected_path = wanted
+	return wanted != &""
 
 
 ## The readout's companion read: `{band, actor, mechanism}`, all primitives.
@@ -163,7 +426,7 @@ func _readout_context() -> Dictionary:
 ## THE BOOT WIRE. Why a press OFFERS rather than ACCEPTS, why nothing navigates,
 ## and why the program is read through the field rather than captured are stated at
 ## `WorldStage.has_interaction_handler`; the vocabulary a press may carry is
-## `_QUEST_BOARD_ALIASES`.
+## [constant _QUEST_BOARD_ALIASES].
 func _install_interaction_handler() -> void:
 	WorldStage.set_interaction_handler(Callable(self, "_interact_in_the_world"))
 
