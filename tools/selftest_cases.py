@@ -1798,6 +1798,102 @@ def _ingest_is_deterministic() -> None:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
 
 
+@case("unique_characters: refusing a duplicate id says WHERE and WHY, not just that")
+def _duplicate_refusal_is_actionable() -> None:
+    """A bare "already exists" is what sent four agents to hand-edit files they did
+    not own.
+
+    Splitting one wave across several agents means a continuation agent inherits
+    shell rows it cannot fill: `add` refuses the id, and the only thing it was told
+    is that the file belongs to someone else. Four agents independently decided to
+    delete their own shell lines by hand and leave the deletion uncommitted, which
+    is a write-write collision wearing the disguise of careful behaviour - and the
+    one who was most careful about it still had to be verified before I committed
+    it, because I did not author it.
+
+    Two shapes need different words. A live canon record is a genuine duplicate:
+    the fix is a fresh id, and it must never be overwritten. A draft shell is a
+    split-wave situation where `check` fails on the repeated id for the WHOLE
+    catalog until exactly one of the two rows goes, and the reader needs the file
+    name to act on it at all.
+
+    So the refusal must name the file, and must not tell an agent to rewrite a file
+    that is not its own.
+    """
+
+    class Args:
+        character_id = "unique-0171"
+        name = "Probe"
+        role = "npc"
+        path = "qi"
+        style = ""
+        shard = "probe-selftest"
+
+    # A canon record: the message must name the file and forbid an overwrite.
+    try:
+        unique_characters._add(Args())
+    except unique_characters.ToolError as exc:
+        message = str(exc)
+    else:
+        expect(False, "adding an id that already exists as canon did not raise")
+        return
+    expect(
+        "unique-index-" in message,
+        f"the duplicate refusal does not name the file holding the record: {message!r}. "
+        f"An agent cannot act on a conflict it is not told where it is",
+    )
+    expect(
+        "canon" in message and "never overwritten" in message,
+        f"the duplicate refusal does not say the existing record is canon and "
+        f"untouchable: {message!r}",
+    )
+
+    # A draft shell: the message must name the file AND say the catalog as a whole
+    # fails, because that is the part no agent can infer from the message alone.
+    shell_id = ""
+    for path in sorted((unique_characters.INDEX_PATH.parent).glob("unique-index*.jsonl")):
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if row.get("status") != "canon":
+                shell_id = row["id"]
+                break
+        if shell_id:
+            break
+    if not shell_id:
+        expect(
+            False,
+            "no draft shell exists anywhere in the catalog, so the split-wave refusal "
+            "message has no fixture. Add a draft row before deleting the last one - the "
+            "whole split-a-wave-across-agents workflow depends on this branch",
+        )
+        return
+
+    args = Args()
+    args.character_id = shell_id
+    try:
+        unique_characters._add(args)
+    except unique_characters.ToolError as exc:
+        shell_message = str(exc)
+    else:
+        expect(False, f"adding existing draft shell {shell_id} did not raise")
+        return
+    expect(
+        "unique-index-" in shell_message and shell_id in shell_message,
+        f"the shell refusal does not identify the file holding the shell: {shell_message!r}",
+    )
+    expect(
+        "catalog" in shell_message,
+        f"the shell refusal does not say the failure is catalog-wide: "
+        f"{shell_message!r}. An agent told only that its own id is taken will assume "
+        f"a local problem, and the gate stays red for everyone behind it",
+    )
+
+
 @case("unique_characters: the path gate demands EQUALITY, and reports the exact quota")
 def _path_gate_demands_equality() -> None:
     """Four paths each at or under 25% sum to 100%, so the gate cannot be cleared by

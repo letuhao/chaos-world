@@ -1200,8 +1200,29 @@ def _add(args) -> int:
     # cost is that this agent's own duplicate check is slightly weaker while another
     # shard is torn, which is the right way round: `check` still fails loudly.
     records = readable_catalog()
-    if any(record.get("id") == args.character_id for record in records):
-        raise ToolError(f"{args.character_id} already exists")
+    clash = next((r for r in records if r.get("id") == args.character_id), None)
+    if clash is not None:
+        # Name the file and whether the row is a live record or an empty shell,
+        # because the bare message "already exists" sent four continuation agents
+        # editing a file they did not own - each removed its own shell rows by
+        # hand and left the deletion uncommitted, which is a write-write
+        # collision wearing a helpful disguise. The situation is knowable and
+        # cheap to report, so report it.
+        owner = _display_path(_owning_shard(args.character_id))
+        if clash.get("status") == "canon":
+            raise ToolError(
+                f"{args.character_id} already exists as a canon character in {owner}. "
+                f"Pick a fresh id; a canon record is never overwritten by `add`."
+            )
+        raise ToolError(
+            f"{args.character_id} already exists as a {clash.get('status', 'draft')} "
+            f"row in {owner}, which is not the shard you are writing to. A canon "
+            f"record and its shell cannot both exist - `check` fails on a repeated "
+            f"id across shards, and that fails the WHOLE catalog, not just this "
+            f"character. Either fill the shell where it lives, or delete that one "
+            f"line from {owner} and add here. Do not rewrite the file: `add` is not "
+            f"the only writer of it."
+        )
     record = _blank_character(args.character_id, args.name, args.role, args.path, args.style)
     issues = _validate([*records, record], check_files=False)
     if issues:
