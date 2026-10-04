@@ -136,8 +136,17 @@ FIXTURE_REALMS: tuple[tuple[str, str, int, str, int, int, tuple[str, ...]], ...]
 FIXTURE_MERIDIANS: tuple[tuple[str, int], ...] = (("st_a", 0), ("st_b", 0), ("st_deep", 9))
 # realm id -> (state line, depth line, cap line, channels line) as authored.
 # The item roles are derived, not stored: every fixture realm owns three ids.
+#
+# The two sentinels below stand for the runtime PREMISES rather than for a seed to
+# break, and they live in the probe table so a row dropped here cannot silently take
+# its assertion with it (INC-0016). Each points `ladder` at a file that no longer
+# declares what the guard reads.
+PREMISE_STATE = "premise:meridian-state"
+PREMISE_TIERS = "premise:meridian-defaults"
 QI_GATE_PROBES: tuple[tuple[str, str, str, str], ...] = (
     # (realm id, line to replace, replacement, the finding that must fire)
+    # A `realm id` that is one of the two sentinels above names a runtime PREMISE
+    # to point at an empty file instead of a seed to break.
     # THE defect's own shape: one step of depth past what the realm below can
     # train. st_three's own cap is 3, so this trips the BOUNDARY rule alone and
     # not the own-cap one — the two are separate guards for separate causes.
@@ -212,7 +221,11 @@ QI_GATE_PROBES: tuple[tuple[str, str, str, str], ...] = (
     # An unreadable runtime premise must be LOUD. A silent 0.0 here would leave the
     # ladder ungraded while `validate` reported clean, which is the false green
     # this whole file exists to refuse.
-    ("", "", "", "gate_ladder_premise_unreadable"),
+    (PREMISE_STATE, "", "", "gate_ladder_premise_unreadable"),
+    # BL-0755: the tiers now come from `MeridianDefaults._build()`, the list
+    # `unlock_for_realm` iterates. A source that no longer holds them must say so
+    # rather than grade an empty ladder, which reads as "no channel is unknown".
+    (PREMISE_TIERS, "", "", "gate_ladder_premise_unreadable"),
 )
 
 
@@ -242,34 +255,52 @@ def _fixture_seed(row: tuple) -> str:
     )
 
 
+def _fixture_meridian_source(meridians) -> str:
+    """A throwaway `MeridianDefaults`, shaped exactly like the runtime's `_build()`.
+
+    The guard grades the tiers the RUNTIME holds, so the fixture stands in for `_build()`
+    rather than for `game/data/meridians` — the authored `.tres` the game never loads,
+    which is the whole of BL-0755. A probe that needs a channel the actor cannot hold
+    still needs a tier to be read from, and the only honest place to read one from is
+    the source the guard now grades.
+    """
+    rows = "\n".join(
+        (
+            f'\tdefs.append(_make(&"{meridian_id}", "{meridian_id}", '
+            f"PRIMARY, {tier}, 0.05, 0.10, 0.05))"
+        )
+        for meridian_id, tier in meridians
+    )
+    return "\n".join(
+        [
+            "class_name MeridianDefaults",
+            "extends RefCounted",
+            "",
+            'const PRIMARY := &"primary"',
+            "",
+            "static func _build() -> Array[MeridianDef]:",
+            "\tvar defs: Array[MeridianDef] = []",
+            rows,
+            "\treturn defs",
+            "",
+        ]
+    )
+
+
 def _stage_qi_fixture() -> tuple[Path, Path, list, set[str]]:
-    """A throwaway four-realm ladder: `(realm_dir, meridian_dir, ladder, items)`."""
+    """A throwaway four-realm ladder: `(realm_dir, meridian_source, ladder, items)`."""
     root = Path(tempfile.mkdtemp(prefix="chaos_world_qi_gate_"))
     realm_dir = root / "qi" / "realms"
-    meridian_dir = root / "meridians"
     realm_dir.mkdir(parents=True)
-    meridian_dir.mkdir(parents=True)
+    meridian_source = root / "meridian_defaults.gd"
     items: set[str] = set()
     for row in FIXTURE_REALMS:
         realm_id = row[0]
         (realm_dir / f"{realm_id}.tres").write_text(_fixture_seed(row), encoding="utf-8")
         items.update(f"{realm_id}_{role}" for role in ("pill", "channel_elixir", "recovery_elixir"))
-    for meridian_id, tier in FIXTURE_MERIDIANS:
-        (meridian_dir / f"{meridian_id}.tres").write_text(
-            "\n".join(
-                [
-                    '[gd_resource type="Resource" script_class="MeridianDef" format=3]',
-                    "",
-                    "[resource]",
-                    f'id = &"{meridian_id}"',
-                    f"tier = {tier}",
-                    "",
-                ]
-            ),
-            encoding="utf-8",
-        )
+    meridian_source.write_text(_fixture_meridian_source(FIXTURE_MERIDIANS), encoding="utf-8")
     ladder_rows = [(realm_id, name, tier) for realm_id, name, tier, *_rest in FIXTURE_REALMS]
-    return realm_dir, meridian_dir, ladder_rows, items
+    return realm_dir, meridian_source, ladder_rows, items
 
 
 def _qi_ladder_probes() -> list[str]:
@@ -277,11 +308,11 @@ def _qi_ladder_probes() -> list[str]:
 
     Returns the labels of the rules that did not fire, so `run` fails the gate.
     """
-    realm_dir, meridian_dir, rows, items = _stage_qi_fixture()
+    realm_dir, meridian_source, rows, items = _stage_qi_fixture()
     uncaught: list[str] = []
     try:
         baseline = audit.qi_gate_ladder_findings(
-            rows, realm_dir=realm_dir, meridian_dir=meridian_dir, items=items
+            rows, realm_dir=realm_dir, meridian_source=meridian_source, items=items
         )
         if baseline:
             raise ToolError(
@@ -298,7 +329,7 @@ def _qi_ladder_probes() -> list[str]:
         for realm_id, target, replacement, prefix in QI_GATE_PROBES:
             for name, text in pristine.items():
                 (realm_dir / name).write_text(text, encoding="utf-8")
-            if realm_id:
+            if realm_id not in (PREMISE_STATE, PREMISE_TIERS):
                 seed = realm_dir / f"{realm_id}.tres"
                 text = seed.read_text(encoding="utf-8")
                 if text.count(target) != 1:
@@ -306,7 +337,7 @@ def _qi_ladder_probes() -> list[str]:
                         f"{realm_id}: the fixture does not contain exactly one {target!r}"
                     )
                 seed.write_text(text.replace(target, replacement), encoding="utf-8")
-            findings = _qi_findings(realm_dir, meridian_dir, rows, items, premise=not realm_id)
+            findings = _qi_findings(realm_dir, meridian_source, rows, items, premise=realm_id)
             caught = [f for f in findings if prefix in f]
             label = f"{realm_id or 'premise'} -> {prefix}"
             if caught:
@@ -321,32 +352,34 @@ def _qi_ladder_probes() -> list[str]:
 
 def _qi_findings(
     realm_dir: Path,
-    meridian_dir: Path,
+    meridian_source: Path,
     rows: list,
     items: set[str],
-    premise: bool = False,
+    premise: str = "",
 ) -> list[str]:
     """`qi_gate_ladder_findings` over the fixture, with every input aimed at it.
 
-    The one probe with no seed to break redirects `MERIDIAN_STATE` at a file
-    without the rung order instead, which is how the unreadable-premise path is
-    exercised: a guard whose premise cannot be read must say so rather than grade
-    nothing.
+    A probe naming a PREMISE has no seed to break, so it points `ladder` at a file
+    without the declaration that guard reads. That is how the unreadable-premise path
+    is exercised: a guard whose premise cannot be read must say so rather than grade
+    nothing — and an empty tier map grades as "no channel is unknown", which is a
+    green so complete it hides the ladder (BL-0755).
     """
-    if not premise:
+    if premise not in (PREMISE_STATE, PREMISE_TIERS):
         return audit.qi_gate_ladder_findings(
-            rows, realm_dir=realm_dir, meridian_dir=meridian_dir, items=items
+            rows, realm_dir=realm_dir, meridian_source=meridian_source, items=items
         )
-    unreadable = realm_dir.parent / "no_rungs.gd"
+    unreadable = realm_dir.parent / "no_declaration.gd"
     unreadable.write_text("# the premise this guard needs is not here\n", encoding="utf-8")
-    saved = ladder.MERIDIAN_STATE
-    ladder.MERIDIAN_STATE = unreadable
+    name = "MERIDIAN_STATE" if premise == PREMISE_STATE else "MERIDIAN_DEFAULTS"
+    saved = getattr(ladder, name)
+    setattr(ladder, name, unreadable)
     try:
-        return audit.qi_gate_ladder_findings(
-            rows, realm_dir=realm_dir, meridian_dir=meridian_dir, items=items
-        )
+        # No `meridian_source`: the module global IS the premise under test, and
+        # passing the fixture's own source would answer a question nobody asked.
+        return audit.qi_gate_ladder_findings(rows, realm_dir=realm_dir, items=items)
     finally:
-        ladder.MERIDIAN_STATE = saved
+        setattr(ladder, name, saved)
 
 
 def run() -> int:

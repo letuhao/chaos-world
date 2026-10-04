@@ -8,17 +8,19 @@ extends TestCase
 ## defect this suite exists to catch (ADR 0007, ADR 0033). The qi gate audits
 ## cannot: `qi_gate_probe.gd:83` uses `Probe.stock`, so nothing was acquired.
 ##
-## ## The ladder is obtainable. It is not yet obtainable EVERY time.
+## ## The ladder is obtainable. It is obtainable EVERY time.
 ##
 ## 1. **Obtainable — 210 of 210 chain items.** All 90 consumables resolve to an
 ##    `ItemDef`, a recipe that outputs it and inputs that resolve, and every hop
 ##    CLOSES. Nothing rests only on `gather`/`quest`, both `shipped: false`. That
 ##    was DEF-0188's finding and it no longer holds: `6f141711` gave those 41
 ##    materials a real `domain:` route with a bound table, so the pin is 0.
-## 2. **Obtainable on EVERY clear — 49 of 90.** A cleared band grants no second run
-##    (loot rule E2), so "a table can yield this" is not enough: the item must
-##    arrive where every hop is `guaranteed`. 41 are left to a roll — 30 recovery
-##    elixirs, 6 breakthrough pills, 5 channel elixirs, all 30 realms (DEF-0199).
+## 2. **Obtainable on EVERY clear — 90 of 90.** A cleared band grants no second run
+##    (loot rule E2), so "a table can yield this" is not enough: every hop must be
+##    `guaranteed`, INCLUDING the hop into a nested pool. A guaranteed entry inside a
+##    ROLLED pool is still rolled — the pool is one weighted candidate among many — so
+##    that over-claimed by one draw, and it was DEF-0199's last 41: 30 recovery
+##    elixirs, 6 breakthrough pills and 5 channel elixirs, all 30 realms. Closed.
 ##
 ## That is why `_reaches` takes an `unconditional` flag, and why every loop below is
 ## bounded and names the condition that failed to converge.
@@ -44,84 +46,103 @@ const UNSHIPPED_MARKER := "every route is unshipped"
 
 const PINNED_UNSHIPPED_REAGENTS := 0
 ## Pinned: how many of the 90 consumables rule E2 leaves to a roll, keyed by the seed's
-## own role names. Growth regresses; shrinkage is progress and trips this pin.
+## own role names. All three are 0. Keyed, not totalled, on purpose: an aggregate would
+## let one realm regress while another improved and leave the pin green.
 
-const PINNED_ROLLED_BY_ROLE := {"breakthrough_item": 6, "training_item": 5, "recovery_item": 30}
-## DEF-0199, pinned by exact id: the consumables a single clear can miss, sorted.
-const PINNED_ROLLED_CONSUMABLES := [
-	"qi_body_integration_recovery_elixir",
-	"qi_core_formation_breakthrough_pill",
-	"qi_core_formation_recovery_elixir",
-	"qi_dao_ancestor_recovery_elixir",
-	"qi_dao_fruit_recovery_elixir",
-	"qi_earth_immortal_channel_elixir",
-	"qi_earth_immortal_recovery_elixir",
-	"qi_foundation_recovery_elixir",
-	"qi_golden_immortal_breakthrough_pill",
-	"qi_golden_immortal_recovery_elixir",
-	"qi_great_ascension_channel_elixir",
-	"qi_great_ascension_recovery_elixir",
-	"qi_great_luo_recovery_elixir",
-	"qi_heaven_immortal_recovery_elixir",
-	"qi_immortal_sovereign_recovery_elixir",
-	"qi_mystic_immortal_recovery_elixir",
-	"qi_nascent_soul_channel_elixir",
-	"qi_nascent_soul_recovery_elixir",
-	"qi_primordial_immortal_recovery_elixir",
-	"qi_primordial_origin_recovery_elixir",
-	"qi_qi_refining_recovery_elixir",
-	"qi_spirit_ascension_breakthrough_pill",
-	"qi_spirit_ascension_recovery_elixir",
-	"qi_spirit_condensation_breakthrough_pill",
-	"qi_spirit_condensation_recovery_elixir",
-	"qi_spirit_domain_recovery_elixir",
-	"qi_spirit_manifestation_recovery_elixir",
-	"qi_spirit_palace_channel_elixir",
-	"qi_spirit_palace_recovery_elixir",
-	"qi_spirit_sea_recovery_elixir",
-	"qi_spirit_severing_recovery_elixir",
-	"qi_spirit_sovereign_channel_elixir",
-	"qi_spirit_sovereign_recovery_elixir",
-	"qi_spirit_transformation_breakthrough_pill",
-	"qi_spirit_transformation_recovery_elixir",
-	"qi_spirit_unity_recovery_elixir",
-	"qi_transcendent_recovery_elixir",
-	"qi_tribulation_recovery_elixir",
-	"qi_true_immortal_recovery_elixir",
-	"qi_void_refinement_breakthrough_pill",
-	"qi_void_refinement_recovery_elixir",
-]
-## DEF-0199, pinned by exact id: the boss-dropped qi REAGENTS guaranteed only inside a
-## ROLLED pool, the `qi_<realm>_guardian_core` family, asserted so a fix trips the pin.
-
-const PINNED_ROLLED_REAGENTS := [
+const PINNED_ROLLED_BY_ROLE := {"breakthrough_item": 0, "training_item": 0, "recovery_item": 0}
+## The qi REAGENTS a boss hands over DIRECTLY, by exact id and sorted. It is a SET pin,
+## not a count, and it earns that in both directions: a reagent deleted from its table
+## drops out of the set and the pin goes red, and a reagent newly given a `boss:` route
+## joins the set and the pin goes red. A pin of "0 reagents are left to a roll" would
+## watch either event walk past in silence.
+const PINNED_BOSS_DROPPED_REAGENTS: Array[String] = [
 	"qi_body_integration_guardian_core",
+	"qi_body_integration_qi_herb",
+	"qi_body_integration_warden_core",
 	"qi_core_formation_guardian_core",
+	"qi_core_formation_warden_core",
 	"qi_dao_ancestor_guardian_core",
+	"qi_dao_ancestor_qi_herb",
+	"qi_dao_ancestor_warden_core",
 	"qi_dao_fruit_guardian_core",
+	"qi_dao_fruit_qi_herb",
+	"qi_dao_fruit_warden_core",
+	"qi_earth_immortal_guardian_core",
+	"qi_earth_immortal_warden_core",
 	"qi_foundation_guardian_core",
+	"qi_foundation_qi_herb",
+	"qi_foundation_warden_core",
 	"qi_golden_immortal_guardian_core",
+	"qi_golden_immortal_warden_core",
 	"qi_great_ascension_guardian_core",
+	"qi_great_ascension_warden_core",
 	"qi_great_luo_guardian_core",
+	"qi_great_luo_qi_herb",
+	"qi_great_luo_warden_core",
 	"qi_heaven_immortal_guardian_core",
+	"qi_heaven_immortal_qi_herb",
+	"qi_heaven_immortal_warden_core",
 	"qi_immortal_sovereign_guardian_core",
+	"qi_immortal_sovereign_qi_herb",
+	"qi_immortal_sovereign_warden_core",
 	"qi_mystic_immortal_guardian_core",
+	"qi_mystic_immortal_qi_herb",
+	"qi_mystic_immortal_warden_core",
+	"qi_nascent_soul_guardian_core",
+	"qi_nascent_soul_warden_core",
 	"qi_primordial_immortal_guardian_core",
+	"qi_primordial_immortal_qi_herb",
+	"qi_primordial_immortal_warden_core",
 	"qi_primordial_origin_guardian_core",
+	"qi_primordial_origin_qi_herb",
+	"qi_primordial_origin_warden_core",
+	"qi_qi_refining_guardian_core",
+	"qi_qi_refining_qi_herb",
+	"qi_qi_refining_warden_core",
 	"qi_spirit_ascension_guardian_core",
+	"qi_spirit_ascension_warden_core",
+	"qi_spirit_condensation_guardian_core",
+	"qi_spirit_condensation_warden_core",
 	"qi_spirit_domain_guardian_core",
+	"qi_spirit_domain_qi_herb",
+	"qi_spirit_domain_warden_core",
 	"qi_spirit_manifestation_guardian_core",
+	"qi_spirit_manifestation_qi_herb",
+	"qi_spirit_manifestation_warden_core",
 	"qi_spirit_palace_guardian_core",
+	"qi_spirit_palace_warden_core",
 	"qi_spirit_sea_guardian_core",
+	"qi_spirit_sea_qi_herb",
+	"qi_spirit_sea_warden_core",
 	"qi_spirit_severing_guardian_core",
+	"qi_spirit_severing_qi_herb",
+	"qi_spirit_severing_warden_core",
 	"qi_spirit_sovereign_guardian_core",
+	"qi_spirit_sovereign_warden_core",
 	"qi_spirit_transformation_guardian_core",
+	"qi_spirit_transformation_warden_core",
 	"qi_spirit_unity_guardian_core",
+	"qi_spirit_unity_qi_herb",
+	"qi_spirit_unity_warden_core",
 	"qi_transcendent_guardian_core",
+	"qi_transcendent_qi_herb",
+	"qi_transcendent_warden_core",
 	"qi_tribulation_guardian_core",
+	"qi_tribulation_qi_herb",
+	"qi_tribulation_warden_core",
 	"qi_true_immortal_guardian_core",
+	"qi_true_immortal_qi_herb",
+	"qi_true_immortal_warden_core",
 	"qi_void_refinement_guardian_core",
+	"qi_void_refinement_warden_core",
 ]
+## How many `(reagent, boss, lowest-band table)` triples that set spans — 79, one per
+## reagent, every one a different boss's own table. The second half of the same
+## guarantee: `rolled == []` proves no listed reagent is ROLLED, which is also what a
+## boss that stopped dropping one entirely looks like. The count is what distinguishes
+## "delivered unconditionally" from "not delivered at all".
+
+const PINNED_REAGENT_DELIVERIES := 79
 
 const BOSS_DROPPED_CONSUMABLES := [
 	"qi_body_integration_breakthrough_pill",
@@ -741,16 +762,20 @@ func test_every_qi_chain_domain_carries_one_encounter_that_spawns_what_it_declar
 ## DEF-0187, asserted rather than pinned. A cleared band grants no second run (loot
 ## rule E2), so a consumable a boss drops DIRECTLY must be a guaranteed entry of that
 ## boss's own lowest-band table. All 15 are now, which is what `ddc9229d` did, so the
-## CONSUMABLE rolled set is asserted EMPTY. A REAGENT is judged separately: a recipe
-## consumes it however the boss hands it over, so a rolled reagent is DEF-0199 rather
-## than a repeat of DEF-0187, and is pinned by id instead.
+## CONSUMABLE rolled set is asserted EMPTY. A REAGENT is judged separately, and by the
+## stronger route below: a recipe consumes it however the boss hands it over, so this
+## test only reports which boss-dropped reagents exist, and
+## `test_every_boss_dropped_qi_reagent_is_paid_unconditionally_on_every_clear` proves
+## every one of them arrives. Asserting an empty set here would still be true if a
+## boss stopped dropping the reagent at all, which is why this file pins the SET and
+## that test pins the deliveries.
 
 
 func test_every_boss_dropped_qi_consumable_is_guaranteed_at_the_lowest_band() -> void:
 	var content := LootContent.instance()
 	var guaranteed := 0
 	var rolled: Array[String] = []
-	var rolled_reagents: Array[String] = []
+	var dropped_reagents: Array[String] = []
 	var direct: Array[String] = []
 	for item_id in _chain_items():
 		var is_pill := _is_consumable(item_id)
@@ -778,17 +803,16 @@ func test_every_boss_dropped_qi_consumable_is_guaranteed_at_the_lowest_band() ->
 			assert_eq(
 				reaches, true, "%s is droppable by %s at band %d" % [item_id, boss_id, lowest]
 			)
-			if reaches and not unconditional:
-				if is_pill:
-					rolled.append(item_id)
-				else:
-					rolled_reagents.append(item_id)
-			elif unconditional:
+			if unconditional:
 				guaranteed += 1
+			if not is_pill and not dropped_reagents.has(item_id):
+				dropped_reagents.append(item_id)
+			if reaches and not unconditional and is_pill:
+				rolled.append(item_id)
 		if is_pill and not boss_ids.is_empty():
 			direct.append(item_id)
 	rolled.sort()
-	rolled_reagents.sort()
+	dropped_reagents.sort()
 	direct.sort()
 	assert_eq(guaranteed > 0, true, "at least one qi catalyst is guaranteed")
 	assert_eq(
@@ -805,11 +829,11 @@ func test_every_boss_dropped_qi_consumable_is_guaranteed_at_the_lowest_band() ->
 		)
 	)
 	assert_eq(
-		rolled_reagents,
-		PINNED_ROLLED_REAGENTS as Array[String],
+		dropped_reagents,
+		PINNED_BOSS_DROPPED_REAGENTS,
 		(
-			"the boss-dropped qi reagents still left to a roll — each is guaranteed inside a"
-			+ " ROLLED pool, so the draw that reaches the pool decides it, not the entry"
+			"exactly these qi reagents are handed over by a boss; a set pin, so a table that"
+			+ " stops naming one and a table that starts naming one both go red"
 		)
 	)
 
@@ -871,15 +895,30 @@ func _has_shipped_route(item_id: String) -> bool:
 	return false
 
 
-## DEF-0199, pinned. Every hop closes, so the only thing left between a player and
-## a consumable is whether ONE clear delivers it. 41 do not, and rule E2 grants no retry.
+## DEF-0199, asserted in its STRONG direction. Every hop closes, so the only thing
+## left between a player and a consumable is whether ONE clear delivers it — and rule
+## E2 grants no retry. It was 41; it is 0.
+##
+## The roll-only set is asserted as a SET against `[]`, never as a count, because the
+## failure message is the evidence: one regressed consumable prints its own id, so the
+## message names the offender instead of saying "41 != 0". The per-role dictionary is
+## kept for a different reason — an aggregate total would let one realm regress while
+## another improved. The realm-coverage assertion is replaced rather than inverted:
+## "every realm has a gap" was true only while the gap existed, so its negation now
+## carries the claim — every realm's three consumables are certain.
 
 
-func test_the_qi_consumables_rule_e2_leaves_to_a_roll_are_pinned() -> void:
+func test_every_qi_consumable_is_obtainable_on_every_single_clear() -> void:
 	var rolled: Array[String] = []
 	var by_role: Dictionary = {}
 	for role in CONSUMABLE_ROLES:
 		by_role[role] = 0
+	var realms_with_a_gap: Array[String] = []
+	for realm_id in _realms():
+		var plan := _realm_plan(realm_id)
+		var gapped := plan["rolled"] as Array[String]
+		if not gapped.is_empty():
+			realms_with_a_gap.append(realm_id)
 	for consumable in _consumables():
 		var entry := consumable as Dictionary
 		var item_id := String(entry["item"])
@@ -893,13 +932,70 @@ func test_the_qi_consumables_rule_e2_leaves_to_a_roll_are_pinned() -> void:
 	)
 	assert_eq(
 		rolled,
-		PINNED_ROLLED_CONSUMABLES as Array[String],
-		"exactly these qi consumables are obtainable only on a roll"
+		[] as Array[String],
+		(
+			"exactly which qi consumables are obtainable only on a roll — a cleared band"
+			+ " grants no second run, so every id named here is a permanent soft-lock"
+		)
 	)
 	assert_eq(
-		rolled.size(),
-		REALM_COUNT,
-		"every qi realm has at least one consumable a single clear can miss"
+		realms_with_a_gap,
+		[] as Array[String],
+		(
+			"every qi realm's three consumables are acquirable on every clear; these realms"
+			+ " still name at least one a single clear can miss"
+		)
+	)
+
+
+## DEF-0199's second half, and the assertion that keeps the first honest. "No reagent
+## is left to a roll" is also what a boss that stopped dropping one entirely looks
+## like, so this walks every `(reagent, boss, lowest-band table)` triple the chain
+## names and requires each one to be REACHED UNCONDITIONALLY — every hop `guaranteed`,
+## the hop into a nested pool included. A pool is one weighted candidate among many on
+## its parent's table, so a `guaranteed = true` entry under a rolled pool is still
+## rolled; 26 `qi_<realm>_guardian_core` reagents read as safe for exactly that reason
+## until the parent entries were fixed.
+##
+## The pinned COUNT is what separates "delivered" from "not delivered": the set pin
+## elsewhere catches a table that stops naming a reagent, this catches nothing at all
+## being delivered, and neither alone can tell those apart from a working route.
+func test_every_boss_dropped_qi_reagent_is_paid_unconditionally_on_every_clear() -> void:
+	var content := LootContent.instance()
+	var triples := 0
+	for item_id in _chain_items():
+		if _is_consumable(item_id):
+			continue
+		for boss_id in _refs_of(item_id, ItemSources.KIND_BOSS):
+			var domain_id := _domain_of(boss_id)
+			if domain_id.is_empty():
+				continue
+			var encounter := content.encounter_for_domain(StringName(domain_id))
+			if encounter == null or not (encounter.boss_ids as Array).has(StringName(boss_id)):
+				continue
+			var lowest := _first_tier(domain_id)
+			for tier in encounter.tiers:
+				if tier == null or tier.tier != lowest:
+					continue
+				var table_id := String(tier.table_for(StringName(boss_id)))
+				if table_id.is_empty():
+					continue
+				triples += 1
+				assert_eq(
+					_reaches(content, table_id, item_id, true),
+					true,
+					(
+						(
+							"%s must be a guaranteed entry of %s at band %d — every hop included,"
+							% [item_id, table_id, lowest]
+						)
+						+ " a cleared band grants no second run"
+					)
+				)
+	assert_eq(
+		triples,
+		PINNED_REAGENT_DELIVERIES,
+		"the number of (qi reagent, boss, lowest-band table) deliveries the chain names"
 	)
 
 
@@ -911,11 +1007,11 @@ func test_the_qi_consumables_rule_e2_leaves_to_a_roll_are_pinned() -> void:
 ## outright.
 ##
 ## Two ways to hold a certain consumable, both counted: 15 are guaranteed DIRECT
-## drops already in the bag, the rest are crafted. A guaranteed drop is never
+## drops already in the bag, the other 75 are crafted. A guaranteed drop is never
 ## re-crafted, because its recipe can name a rolled reagent, so insisting on the craft
-## would assert something no player needs to do. The pinned 41 are counted, not
-## acquired: they are obtainable, but not on demand, and asserting they arrive would
-## make the test depend on the hunt seed.
+## would assert something no player needs to do. Nothing is left to the roll any more,
+## so there is no longer a class of consumable that is merely counted rather than
+## acquired — which is why this no longer depends on the hunt seed for its total.
 
 
 func test_every_certain_qi_consumable_is_held_end_to_end_from_its_own_domains() -> void:
@@ -964,12 +1060,19 @@ func test_every_certain_qi_consumable_is_held_end_to_end_from_its_own_domains() 
 	assert_eq(
 		crafted + dropped + rolled,
 		REALM_COUNT * CONSUMABLE_ROLES.size(),
-		"every qi consumable was crafted, dropped, or is named as the pinned roll gap"
+		"every qi consumable was crafted, dropped, or is named as the roll gap"
 	)
-	assert_eq(crafted + dropped, 49, "49 qi consumables are acquirable on every single clear")
+	# Derived, not typed: 30 realms x 3 roles is the whole ladder, so a typo in this
+	# number cannot be what keeps the assertion honest — the three below cannot all hold
+	# unless every one of the 90 arrived.
+	assert_eq(
+		crafted + dropped,
+		REALM_COUNT * CONSUMABLE_ROLES.size(),
+		"all 90 qi consumables are acquirable on every single clear"
+	)
 	assert_eq(
 		dropped,
 		BOSS_DROPPED_CONSUMABLES.size(),
 		"the boss-dropped consumables arrive as guaranteed drops, not as crafts"
 	)
-	assert_eq(rolled, 41, "41 qi consumables arrive only when the roll favours the player")
+	assert_eq(rolled, 0, "no qi consumable arrives only when the roll favours the player")

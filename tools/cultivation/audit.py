@@ -222,6 +222,14 @@ def validate() -> list[str]:
     findings.extend(_gate_soundness_findings(ladder, seeds))
     findings.extend(_qi_gate_soundness_findings(ladder))
     findings.extend(qi_gate_ladder_findings(ladder))
+    # The authored meridian corpus is checked against the list the runtime plays, not
+    # used to grade anything. Both readings agree today, and that agreement is the
+    # hazard: nothing else would notice the moment one of them moved (BL-0755).
+    findings.extend(
+        meridian_tier_divergence_findings(
+            ladder_module.meridian_tiers(), _meridian_tiers(MERIDIAN_DIR)
+        )
+    )
     return findings
 
 
@@ -365,7 +373,13 @@ def _successors(ladder: list) -> dict[str, str]:
 
 
 def _meridian_tiers(directory) -> dict[str, int]:
-    """Meridian id -> the realm index that unlocks it (`MeridianNetwork.unlock_for_realm`)."""
+    """The AUTHORED corpus: `game/data/meridians/*.tres` id -> `tier`.
+
+    Not what the runtime plays. `MeridianNetwork.unlock_for_realm` reads
+    `MeridianDefaults.all()`, and nothing loads these files (BL-0755), so this is read
+    only as the OTHER HALF of `meridian_tier_divergence_findings` — the copy that must
+    not drift from the source. Grading gates with it was grading dead data.
+    """
     tiers: dict[str, int] = {}
     root = Path(directory)
     if not root.is_dir():
@@ -377,10 +391,51 @@ def _meridian_tiers(directory) -> dict[str, int]:
     return tiers
 
 
+def meridian_tier_divergence_findings(
+    runtime_tiers: dict[str, int] | None, corpus_tiers: dict[str, int]
+) -> list[str]:
+    """Every meridian where the RUNTIME and the authored `.tres` corpus disagree.
+
+    Both exist and only one plays. `unlock_for_realm` walks `MeridianDefaults.all()`,
+    so `_build()` decides whether a channel is ever in the actor's hands, and the
+    twenty `.tres` under `game/data/meridians` are read by nothing. They agree today,
+    which is the whole hazard: a retune of `_build()` would have moved the gates while
+    every finding graded the untouched copy stayed green. Two findings for one defect is
+    two fixes, so membership and tier are reported together under one prefix and the
+    message names which side the game actually honours.
+    """
+    if runtime_tiers is None:
+        return []
+    findings: list[str] = []
+    for meridian_id in sorted(set(runtime_tiers) | set(corpus_tiers)):
+        played = runtime_tiers.get(meridian_id)
+        authored = corpus_tiers.get(meridian_id)
+        if played is None:
+            findings.append(
+                f"qi_meridian_tier_diverges: {meridian_id} is authored in"
+                f" {MERIDIAN_DIR}/{meridian_id}.tres at tier {authored}, but"
+                " MeridianDefaults._build() does not define it, so it unlocks for nobody"
+            )
+        elif authored is None:
+            findings.append(
+                f"qi_meridian_tier_diverges: {meridian_id} unlocks at tier {played} in"
+                f" MeridianDefaults._build(), but {MERIDIAN_DIR}/{meridian_id}.tres is absent"
+                " from the authored corpus"
+            )
+        elif played != authored:
+            findings.append(
+                f"qi_meridian_tier_diverges: {meridian_id} unlocks at tier {played} in"
+                f" MeridianDefaults._build() and tier {authored} in"
+                f" {MERIDIAN_DIR}/{meridian_id}.tres; the runtime's number is the one that"
+                " plays, so the authored copy is already dead data"
+            )
+    return findings
+
+
 def qi_gate_ladder_findings(
     ladder: list,
     realm_dir=None,
-    meridian_dir=None,
+    meridian_source=None,
     items: set[str] | None = None,
 ) -> list[str]:
     """Every qi boundary must be walkable by pressing verbs, and worth pressing.
@@ -428,16 +483,22 @@ def qi_gate_ladder_findings(
     findings: list[str] = []
     ranks = ladder_module.channel_state_ranks()
     arrival = ladder_module.fresh_channel()
-    if ranks is None or arrival is None:
+    # The tiers come from `MeridianDefaults._build()`, the list `unlock_for_realm`
+    # actually iterates. `game/data/meridians` is the AUTHORED copy and nothing loads
+    # it, so grading with it graded a corpus the player never receives (BL-0755);
+    # `meridian_tier_divergence_findings` is what keeps the two from drifting.
+    tiers = ladder_module.meridian_tiers(meridian_source)
+    if ranks is None or arrival is None or tiers is None:
         return [
-            "gate_ladder_premise_unreadable: cannot read MeridianState's rung order or the"
-            f" state a fresh channel arrives in ({_label(ladder_module.MERIDIAN_STATE)},"
-            f" {_label(ladder_module.MERIDIAN_NETWORK)}), so the qi gate ladder was not"
+            "gate_ladder_premise_unreadable: cannot read MeridianState's rung order, the state"
+            " a fresh channel arrives in, or MeridianDefaults' unlock tiers"
+            f" ({_label(ladder_module.MERIDIAN_STATE)},"
+            f" {_label(ladder_module.MERIDIAN_NETWORK)},"
+            f" {_label(ladder_module.MERIDIAN_DEFAULTS)}), so the qi gate ladder was not"
             " checked"
         ]
     fresh_state, fresh_depth = arrival
     seeds_dir = Path(QI_REALM_DIR if realm_dir is None else realm_dir)
-    tiers = _meridian_tiers(MERIDIAN_DIR if meridian_dir is None else meridian_dir)
     known_items = _ids("items", "consumable") if items is None else items
     position = {realm_id: index for index, (realm_id, _n, _t) in enumerate(ladder)}
 

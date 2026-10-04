@@ -47,6 +47,14 @@ ACUPOINT_DEFAULTS = REPO_ROOT / "game/src/modules/body_cultivation/acupoint_defa
 MERIDIAN_STATE = REPO_ROOT / "game/src/core/meridian_state.gd"
 # Read for `_state_from_def` only: the state every unlocked channel is minted in.
 MERIDIAN_NETWORK = REPO_ROOT / "game/src/core/meridian_network.gd"
+# `MeridianNetwork.unlock_for_realm` iterates `MeridianDefaults.all()` and opens every
+# `def.tier <= realm_index`. That is the ONLY source of a meridian the runtime holds:
+# nothing in `game/src` or `game/tests` reads `res://data/meridians`, so the twenty
+# authored `.tres` there are dead data the player never loads. The tiers must therefore
+# be read from `_build()`, where they are hardcoded. Reading the `.tres` instead graded
+# a corpus the game does not use: the two agree today, so every gate finding was green,
+# and a retune of `_build()` would have left it green AND wrong (BL-0755).
+MERIDIAN_DEFAULTS = REPO_ROOT / "game/src/core/meridian_defaults.gd"
 
 # --- The quality ladder ------------------------------------------------------
 # Q(R) is the CEILING: `BodyTraining.cultivate` refines quality toward it and never
@@ -164,6 +172,40 @@ def fresh_channel() -> tuple[str, int] | None:
     if not factory or "MeridianState.new()" not in factory.group(0):
         return None
     return state.group(1), int(depth.group(1))
+
+
+def meridian_tiers(path=None) -> dict[str, int] | None:
+    """`MeridianDefaults._build()` as `{meridian id: unlock tier}`, or None if unreadable.
+
+    READ, never re-derived from `game/data/meridians`: `unlock_for_realm` walks
+    `MeridianDefaults.all()`, so that list is the corpus the gate ladder is graded
+    against, and the twenty `.tres` beside it are authored-but-unloaded (BL-0755).
+
+    Every `_make` call in `_build()` must parse. Counting rather than trusting the
+    regex is what makes a retune loud instead of silent: a fourth positional argument
+    or a differently-shaped call yields FEWER ids, and a guard that quietly graded 19 of
+    20 meridians would drop the twentieth's gates without a word. None says "this file
+    no longer holds the premise", which is the truth.
+    """
+    target = MERIDIAN_DEFAULTS if path is None else path
+    if not target.is_file():
+        return None
+    text = target.read_text(encoding="utf-8", errors="replace")
+    builder = re.search(r"(?ms)^static func _build\(.*?^\s*return\s+\w+\s*$", text)
+    if not builder:
+        return None
+    body = builder.group(0)
+    # `_make(id, display_name, type, tier, capacity, flow, power)` — tier is the fourth
+    # positional argument, and only `defs.append(_make(` names a definition.
+    rows = re.findall(r"_make\(\s*&\"([^\"]+)\"\s*,\s*\"[^\"]*\"\s*,\s*\w+\s*,\s*(-?\d+)\s*,", body)
+    if not rows or len(rows) != body.count("_make("):
+        return None
+    tiers: dict[str, int] = {}
+    for meridian_id, tier in rows:
+        if meridian_id in tiers:
+            return None
+        tiers[meridian_id] = int(tier)
+    return tiers
 
 
 # --- Ladders -----------------------------------------------------------------
