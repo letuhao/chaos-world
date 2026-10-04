@@ -30,6 +30,10 @@ const REASON_WRONG_SLOT := "wrong_slot_for_subtype"
 ## a slot the rule never offered and send a caller looking for a fix that does
 ## not exist.
 const REASON_UNWEARABLE := "unwearable_subtype"
+## The actor's bag holds no instance of the definition being equipped. Spelled the same
+## as `ItemsApi.use_item`'s refusal for the same situation, so one vocabulary covers both
+## verbs rather than two near-synonyms a screen would have to special-case.
+const REASON_NOT_CARRIED := "not_carried"
 
 var _last_refusal: String = ""
 
@@ -190,6 +194,18 @@ func _policy_refusal(
 ## Record why an equip was refused and report the failure. One helper so every
 ## refusal sets the reason; a bare `return false` would leave it stale.
 func _refuse(reason: String) -> bool:
+	_last_refusal = reason
+	return false
+
+
+## Record a refusal decided BEFORE [method equip] was reached, and report the failure.
+##
+## `ItemsApi.equip_item` resolves the definition against the actor's own inventory and
+## can refuse before any slot, subtype or grade ruling is consulted. Those returns left
+## `last_refusal()` empty, so a caller reading it after a `false` could not tell "you do
+## not have that item" from "that item cannot be worn" — which is the one distinction
+## that accessor exists to make. An unnamed refusal is a bug report, not a contract.
+func note_refusal(reason: String) -> bool:
 	_last_refusal = reason
 	return false
 

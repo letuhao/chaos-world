@@ -226,6 +226,32 @@ func test_equipping_armor_into_the_weapon_slot_is_refused_by_the_authored_ruling
 	assert_eq(ItemsApi.equipment(actor).equipped(Equipment.ARMOR), null, "the armor slot is empty")
 
 
+## INPUT STATE: a definition the bag holds NO INSTANCE of. Two ways to reach it, and
+## they are the same refusal: a def that was never carried, and a def that was carried
+## only as a STACK. `equip_item` resolves the item with `find_instance`
+## (`api.gd:77`), which finds unstacked rows only — so a stackable probe and an absent
+## probe take the identical path.
+##
+## Asserted because this refusal used to be UNNAMED: the verb returned a bare `false`
+## before `Equipment.equip` was ever reached, so `last_refusal()` stayed empty and a
+## caller could not tell "you are not carrying that" from "that cannot be worn". Those
+## are different problems with different fixes, and an unnamed refusal is a bug report.
+func test_equipping_something_the_bag_does_not_hold_is_refused_and_named() -> void:
+	var actor := _hero()
+	var ghost := _def(&"probe_ghost", ItemCategory.EQUIPMENT, ItemSubtype.ARMOR)
+	# Deliberately never carried.
+	assert_eq(
+		ItemsApi.equip_item(actor, Equipment.ARMOR, ghost),
+		false,
+		"a definition the bag holds no instance of cannot be equipped"
+	)
+	assert_eq(
+		ItemsApi.equipment(actor).last_refusal(),
+		R_NOT_CARRIED,
+		"and the refusal is NAMED rather than a bare false with no reason recorded"
+	)
+
+
 ## INPUT STATE: a CONSUMABLE chosen for equip. The second shape of a structural
 ## refusal, asserted separately because it is decided before the slot ruling is
 ## consulted — a test that only checked "it did not equip" would pass on either.

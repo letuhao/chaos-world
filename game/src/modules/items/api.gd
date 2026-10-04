@@ -73,10 +73,14 @@ static func equip_item(actor: Actor, slot: StringName, def: ItemDef) -> bool:
 	var inv := inventory(actor)
 	var eq := equipment(actor)
 	if inv == null or eq == null or def == null:
-		return false
+		return false if eq == null else eq.note_refusal(Equipment.REASON_NOT_CARRIED)
 	var instance := inv.find_instance(def.id)
 	if instance == null:
-		return false
+		# Named rather than a bare `false`. Every other refusal out of this verb records
+		# why, and a caller reading `last_refusal()` after an empty one cannot tell
+		# "you are not carrying that" from "that cannot be worn" — which are different
+		# problems with different fixes, and the first is the one a player causes.
+		return eq.note_refusal(Equipment.REASON_NOT_CARRIED)
 	# Validate before removing so a rejected equip leaves inventory intact.
 	var current := eq.equipped(slot)
 	var current_def := eq.definition(slot)
