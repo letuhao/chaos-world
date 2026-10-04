@@ -268,6 +268,14 @@ static func stand_in_the_tree(
 	parent.add_child(entry)
 	entry.add_child(body)
 	body.name = STAGE_BODY_NODE
+	# PUBLISH, or the body is standing in the tree and the stage still says it has
+	# none. `_mounted_player` is what `player()` returns and what `summary()` reports,
+	# and this function handed the body back in its answer without recording it — so
+	# a committed arrival produced a body that existed, was parented, and was
+	# invisible to every reader. Assigning here is the one line that makes the whole
+	# arrival reachable: the interact list, the stage summary and the release path
+	# all read this field.
+	_mounted_player = body
 	return {"ok": true, "reason": "", "entry": entry, "player": body, "reused": false}
 
 
