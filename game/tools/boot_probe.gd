@@ -598,19 +598,23 @@ func _collect_pending(app: Node, pending_before: int, def_ids: Array[String]) ->
 	return {"ok": true, "pending": pending, "refusals": refusals}
 
 
-## What the screen says the last pickup did, in one short token.
+## What the screen published about the pickup it just handled, in one short token.
 ##
-## Deliberately NOT a default of "claimed": a probe that invents a success reads green
-## on a screen that refused every press, which is the one answer this exists to rule
-## out. When the screen publishes no outcome the token is `no_outcome_reported`, so an
-## absent field is visible as an absence instead of passing as a pass.
+## Reads `reward.message` and `reward.tone`, the fields the reward list ACTUALLY
+## publishes (loot_reward_list.gd:171-172) after `act_pickup` calls
+## `report_outcome(drop_id, reason, tone)` on every press (loot_encounter.gd:164).
+##
+## Deliberately NOT a default of success: a probe that invents a pass reads green on a
+## screen that refused every press, which is the one answer this exists to rule out. An
+## outcome nobody published reads as `no_outcome_reported`, so an absence is visible as
+## an absence instead of passing as a pass.
 func _refusal_of(shown: Dictionary) -> String:
-	var reason := String(shown.get("last_reason", ""))
-	if not reason.is_empty():
-		return reason
-	if not bool(shown.get("last_ok", false)):
-		return "refused_without_a_reason"
-	return "no_outcome_reported"
+	var reward := shown.get("reward", {}) as Dictionary
+	var said := String(reward.get("message", "")).strip_edges()
+	var tone := String(reward.get("tone", "")).strip_edges()
+	if said.is_empty() and tone.is_empty():
+		return "no_outcome_reported"
+	return said if tone.is_empty() else "%s (%s)" % [said, tone]
 
 
 ## The claimed drops the bag is actually holding, in the order the reward offered.
