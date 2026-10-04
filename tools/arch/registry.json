@@ -196,6 +196,7 @@
       "deps": [
         "contracts",
         "core",
+        "destiny",
         "items"
       ]
     },
