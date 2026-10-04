@@ -1,19 +1,13 @@
-{"session": "character-wave-8", "paths": ["game/assets/characters/unique-index-wave-8.jsonl"], "heartbeat": "2026-10-04T03:58:58.690763+00:00"}
 {"session": "ses_efb0d8c14ffewTxeclbFMW7vua", "paths": ["game/src/modules/set_bonus", "game/tests/modules/set_bonus"], "heartbeat": "2026-10-04T04:02:13.896272+00:00"}
 {"session": "facade-verb-triage", "paths": ["game/tests/modules/status/test_status_clear_combat_scope.gd"], "heartbeat": "2026-10-04T04:09:25.282126+00:00"}
-{"session": "character-wave-9", "paths": ["game/assets/characters/unique-index-wave-9.jsonl"], "heartbeat": "2026-10-04T04:19:13.638219+00:00"}
 {"session": "mind-b0675", "paths": ["game/src/contracts/stat.gd"], "heartbeat": "2026-10-04T05:34:50.688598+00:00"}
 {"session": "mind-anchortrial", "paths": ["game/src/modules/mind_cultivation/anchor.gd", "game/src/core/inside_world.gd", "game/src/core/world_anchor.gd"], "heartbeat": "2026-10-04T05:36:00.322346+00:00"}
 {"session": "mind-loot-ruling-166", "paths": ["game/tests/modules/loot/test_loot_band_magnitude_ruling.gd", "docs/adr/0166-a-drop-pays-its-item-s-own-rung-so-a-rolled-relic-does-not-move-and-the-band-stops-paying-magnitude.md"], "heartbeat": "2026-10-04T06:08:16.431879+00:00"}
 {"session": "mind-bl0765", "paths": ["game/data/loot"], "heartbeat": "2026-10-04T06:29:58.285618+00:00"}
-{"session": "timeprog-actions", "paths": ["docs/adr/0167-every-player-action-costs-world-time-and-the-world-stage-follows-the-action.md"], "heartbeat": "2026-10-04T06:34:32.036829+00:00"}
-{"session": "timeprog-ladder", "paths": ["docs/adr/0168-an-action-costs-time-and-a-coarse-tick-is-a-bucket-the-consumer-folds-never-a-step-it-replays.md"], "heartbeat": "2026-10-04T06:34:32.465694+00:00"}
-{"session": "timeprog-life", "paths": ["docs/adr/0169-a-lifespan-is-a-realm-tier-magnitude-and-a-world-time-flow-is-a-rate-and-the-two-are-never-the-same-number.md", "docs/adr/0170-a-world-advances-in-stages-and-a-stage-marks-stale-what-it-did-not-reconcile.md"], "heartbeat": "2026-10-04T06:34:39.744365+00:00"}
-{"session": "wave11-a", "paths": ["game/assets/characters/unique-index-wave-11a.jsonl"], "heartbeat": "2026-10-04T06:40:21.266951+00:00"}
-{"session": "wave11-b", "paths": ["game/assets/characters/unique-index-wave-11b.jsonl"], "heartbeat": "2026-10-04T06:39:24.340478+00:00"}
-{"session": "wave11-d", "paths": ["game/assets/characters/unique-index-wave-11d.jsonl"], "heartbeat": "2026-10-04T06:41:26.915947+00:00"}
 {"session": "wave12-a", "paths": ["game/assets/characters/unique-index-wave12-a.jsonl"], "heartbeat": "2026-10-04T07:15:29.749273+00:00"}
 {"session": "wave12-b", "paths": ["game/assets/characters/unique-index-wave12-b.jsonl"], "heartbeat": "2026-10-04T07:16:35.953021+00:00"}
-{"session": "wave12-c", "paths": ["game/assets/characters/unique-index-wave12-c.jsonl"], "heartbeat": "2026-10-04T07:16:59.398614+00:00"}
 {"session": "wave12-d", "paths": ["game/assets/characters/unique-index-wave12-d.jsonl"], "heartbeat": "2026-10-04T07:15:32.598780+00:00"}
-{"session": "qi-wave4-design", "paths": ["game/src/modules/qi_cultivation", "game/data/qi_cultivation"], "heartbeat": "2026-10-04T07:16:02.158841+00:00"}
+{"session": "qi-wave4-design", "paths": ["game/src/modules/qi_cultivation", "game/data/qi_cultivation", "tools/cultivation/audit.py", "game/tests/app/test_domain_inhabitant_qi_synchronized.gd", "game/src/ui/screens/qi_cultivation_screen.gd", "game/tests/modules/qi_cultivation", "game/tests/app/test_npc_qi_synchronized.gd"], "heartbeat": "2026-10-04T07:24:22.854234+00:00"}
+{"session": "timeprog-ssot", "paths": ["docs/adr/0173-the-clock-is-one-single-source-of-truth-an-elapsed-span-has-a-fixed-event-budget-and-a-place-advances-when-observed.md", "docs/adr/0168-an-action-costs-time-and-a-coarse-tick-is-a-bucket-the-consumer-folds-never-a-step-it-replays.md", "docs/adr/0167-every-player-action-costs-world-time-and-the-world-stage-follows-the-action.md", "docs/adr/0170-a-world-advances-in-stages-and-a-stage-marks-stale-what-it-did-not-reconcile.md"], "heartbeat": "2026-10-04T07:33:28.455143+00:00"}
+{"session": "wave13-a", "paths": ["game/assets/characters/unique-index-wave-9.jsonl"], "heartbeat": "2026-10-04T07:38:45.094150+00:00"}
+{"session": "wave13-b", "paths": ["game/assets/characters/unique-index-wave-13b.jsonl"], "heartbeat": "2026-10-04T07:39:04.354851+00:00"}
