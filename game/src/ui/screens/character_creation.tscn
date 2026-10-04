@@ -59,7 +59,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"PrimaryButton"
-text = "Begin"
+text = "Arrive this way"
 disabled = true
 
 [node name="FooterLabel" type="Label" parent="Layout"]

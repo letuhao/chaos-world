@@ -44,6 +44,10 @@ const COMMITTED_FOOTER := "The other two are closed. Fates still have to be earn
 ## The ScreenStack hooks consume nothing on a screen that has already committed:
 ## `ui_cancel` is left free for the stack to pop, exactly as on every read-only one.
 const COMMIT_OK := "committed"
+## What `%ConfirmButton` is, once it has been wired. A live control that does nothing is
+## worse than none: it reads as the door and refuses to open.
+const CONFIRM_TEXT := "Arrive this way"
+const CONFIRM_OFFER := "Choose an arrival below"
 
 var _candidates: Array[Dictionary] = []
 var _result: Dictionary = {}
@@ -166,6 +170,15 @@ func _refresh_view() -> void:
 
 
 ## Repaint this screen's own labels. Each row repaints itself.
+##
+## ## The footer button is enabled off the ROWS, and that is what makes it honest
+##
+## `_confirm_button.disabled` used to be driven by `committed` alone, so it sat greyed out
+## with nothing in the file connected to its `pressed` — a live control the player could
+## focus and press that did nothing at all. It is now the commit path for the arrival
+## [method focus_initial] already names as "the thing a player would act on": it commits
+## THAT row through [method act_commit], which is the same verb a row's own button calls, so
+## there is still one earn in this screen rather than two.
 func _render() -> void:
 	if _header == null:
 		return
@@ -173,7 +186,21 @@ func _render() -> void:
 	_header.text = COMMITTED_TEXT if committed else HEADER_TEXT
 	_footer.text = COMMITTED_FOOTER if committed else OPEN_FOOTER
 	if _confirm_button != null:
-		_confirm_button.disabled = committed
+		_confirm_button.disabled = committed or _focused_origin().is_empty()
+		_confirm_button.text = CONFIRM_OFFER if committed else CONFIRM_TEXT
+
+
+## The arrival this screen's own commit button would commit: the FIRST row that may still
+## be committed, in the order the catalog published them.
+##
+## This is the same order [method focus_initial] already picks the landing spot from, and
+## it is asked of the ROWS rather than of `_candidates`, so it answers the rows' own gate
+## (`CreationBranchRow.can_commit`) and cannot disagree with what the player can see.
+func _focused_origin() -> StringName:
+	for row in _branch_rows:
+		if bool(row.call(&"can_commit")):
+			return StringName(row.call(&"origin_id"))
+	return &""
 
 
 # --- ScreenStack hooks ------------------------------------------------------
@@ -211,6 +238,11 @@ func _bind_nodes() -> void:
 	_branch_box = get_node_or_null("Layout/Scroll/Arrivals/Branches") as VBoxContainer
 	_confirm_button = get_node_or_null("%ConfirmButton") as Button
 	_bound = _header != null and _branch_box != null
+	# Guarded, because `_bind_nodes` returns early on the second call but the button itself
+	# could still be re-resolved by a reparent, and an unguarded `connect` fires the handler
+	# once per press times however many times it was wired (AGENTS.md).
+	if _confirm_button != null and not _confirm_button.pressed.is_connected(_on_confirm_pressed):
+		_confirm_button.pressed.connect(_on_confirm_pressed)
 	if not _bound:
 		return
 	_branch_rows = _rows_in(_branch_box, BRANCH_SCENE, "Branch", BRANCH_ROWS)
@@ -240,6 +272,19 @@ func _rows_in(box: VBoxContainer, scene_path: String, prefix: String, extra: int
 
 
 func _on_committed(origin_id: StringName) -> void:
+	act_commit(origin_id)
+
+
+## `%ConfirmButton`'s press. Commits the arrival the screen already points the keyboard at.
+##
+## It routes through [method act_commit] rather than emitting anything, so pressing it and
+## pressing a row's own button take the SAME path and there is one earn here rather than two.
+## `_focused_origin` re-reads the rows at press time rather than caching an id, so a press
+## after a re-render commits what the screen is actually showing.
+func _on_confirm_pressed() -> void:
+	var origin_id := _focused_origin()
+	if origin_id.is_empty():
+		return
 	act_commit(origin_id)
 
 
