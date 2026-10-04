@@ -22,12 +22,26 @@ extends RefCounted
 ##
 ## ## The constructor seam (ADR 0002)
 ##
-## `set_minter` injects the actor constructor. This module declares `core` + `contracts` only
+## `set_minter` injects TWO contacts, because a path and the machinery that mounts it are two
+## different questions and only `app/` can answer the second one.
+##
+## `minter` is the actor constructor. This module declares `core` + `contracts` only
 ## (`tools/arch/registry.json`), so it cannot itself reach `qi_cultivation`'s facade to enrol a
 ## cultivation path with the player's full provider set — and it must not widen its own
 ## dependency list to do it. So `app/` installs a minter that assembles the actor through
 ## `ActorFactory`, which is the same spine the player is built from, and the default below is
 ## the core-only half of it. `NpcApi.set_minter` is the same seam for the same reason.
+##
+## `enroller` is the CULTIVATION half: `Callable(actor: Actor, realm_id: StringName) -> void`.
+## `_enrol_cultivator` is the one place that asks whether a species cultivates — the def's
+## authored `cultivates` — and it can only answer `actor.set_path(...)`, which is a label.
+## `QiTraining.synchronize` is what sizes the dantian, unlocks the meridians and caps the
+## reservoir to the realm, and it lives in a module this one may not name. BL-0753: for its
+## whole life `_enrol_cultivator` wrote a `PathState` and nothing else, so six of the nine
+## shipped species were realm-scaled rivals who could not cultivate, break through, or even
+## preview. `app/` answers this contact with the same `_attach_qi` verb every other qi entry
+## point uses, so there is exactly one place that mounts a qi rig. `DomainFixtures.set_minter`
+## takes its two contacts the same way.
 
 ## The `actor.module_data` key placement and role provenance persist under. It is ordinary
 ## module data, so it round-trips through `Actor.to_dict()` / `from_dict()` — there is no
@@ -43,14 +57,24 @@ const HOSTILE_TAG := &"hostile"
 ## the disk. One step over is refused by name.
 const MAX_COUNT_PER_REF := 64
 
-## The constructor. `Callable(id: StringName, base: Dictionary) -> Actor`; `app/` passes an
-## adapter over `ActorFactory` so an inhabitant gets the identical provider set the player gets.
+## The contacts `app/` installs, and what each is for. `minter` is
+## `Callable(id: StringName, base: Dictionary) -> Actor`; `app/` passes a static over
+## `ActorFactory` so an inhabitant gets the identical provider set the player gets.
+## `enroller` is `Callable(actor: Actor, realm_id: StringName) -> void` and is what turns a
+## `PathState` into a cultivator; a null one leaves the core-only `set_path` default, which
+## is a labelled rival and nothing more (BL-0753). `app/` answers it with
+## `ActorFactory.enrol_inhabitant_qi`, which routes to the same `_attach_qi` as every other
+## qi entry point, so there is no second way to mount a qi rig.
 static var _minter: Callable = Callable()
+static var _enroller: Callable = Callable()
 
 
-## Install the actor constructor. Idempotent; a null injection restores the default core spine.
-static func set_minter(minter: Callable) -> void:
+## Install the actor constructor and the cultivation enroller. Both optional: a null
+## `minter` restores the default core spine and a null `enroller` restores the core-only
+## enrolment. Idempotent.
+static func set_minter(minter: Callable, enroller: Callable = Callable()) -> void:
 	_minter = minter
+	_enroller = enroller
 
 
 ## Mint one inhabitant.
@@ -258,11 +282,30 @@ static func _stamp(actor: Actor, def: InhabitantDef, role: StringName) -> void:
 		actor.tags.append(HOSTILE_TAG)
 
 
-## A real `PathState` at the def's realm, with the same providers an actor built through
-## `ActorFactory` gets. This is the whole difference between a rival cultivator and a mob with
-## a name: it can cultivate, break through and be saved mid-cultivation, because it is enrolled
-## rather than dressed up.
+## A real `PathState` at the def's realm, WITH the machinery behind it. This is the whole
+## difference between a rival cultivator and a mob with a name: it can cultivate, break
+## through and be saved mid-cultivation, because it is enrolled rather than dressed up.
+##
+## ## Why the enroller is asked for the realm and not the def
+##
+## It runs AFTER `_mint` (see `spawn`), so `app/` never sees the def — only this call's
+## two arguments — and a def is not a thing this module may hand across the seam. `realm_id`
+## is the whole of what mounting a path means, and it is the one thing `_enrol_cultivator`
+## reads off the def. `spawn` calls this exactly once per instance, so `attach` runs once
+## per actor — which it must, because `QiCultivationApi.attach` appends its provider
+## unguarded.
+##
+## ## The default below is the label, and that is the point
+## Without an enroller this is a `PathState` and nothing else: no dantian, no qi provider, no
+## `QiTraining.synchronize`, no meridian unlock — so `QiTraining.cultivate` and
+## `QiBreakthroughCondition.can_breakthrough` both refuse and `preview` answers `no_dantian`.
+## That is the core-only spine this module is allowed to build by itself, and it is why
+## `RealmScaling.apply` below reading a realm no actor can use is a defect to report rather
+## than a shape to keep. `app/` installs the enroller and the difference closes.
 static func _enrol_cultivator(actor: Actor, def: InhabitantDef) -> void:
+	if not _enroller.is_null():
+		_enroller.call(actor, def.realm_id)
+		return
 	actor.set_path(PathState.new(PathState.QI, def.realm_id))
 
 
