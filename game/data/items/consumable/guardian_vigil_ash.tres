@@ -11,7 +11,7 @@ category = &"consumable"
 rarity = &"rare"
 realm = &"qi_refining"
 fixed_modifiers = Array[Dictionary]([
-	{"option_id": &"restore_health", "value": 40.0},
+	{"option_id": &"restore_health", "value": 12.0},
 ])
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"

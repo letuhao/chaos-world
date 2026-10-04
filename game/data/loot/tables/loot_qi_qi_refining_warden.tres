@@ -277,6 +277,23 @@ weight = 1.0
 chance = -1.0
 guaranteed = false
 quantity = 1
+
+## The consumable guardian (ADR 0130): the ONE item that lets a death cost the bag
+## instead of the soul. Attached to the BOSS's own table rather than to a
+## `pool_<realm>` sub-table, because `loot_qi_qi_refining_trial.tres` pays this boss the
+## table id `loot_qi_qi_refining_warden` -- the pool tables it also references are
+## resolved by the draw, not by the encounter, and putting a guaranteed item in one
+## left `tools data audit` reporting 'boss does not drop it'.
+[sub_resource type="Resource" id="entry_guardian_vigil_ash"]
+script = ExtResource("2_entry")
+id = &"qi_qi_refining_warden_guardian_vigil_ash"
+kind = &"item"
+item_id = &"guardian_vigil_ash"
+table_id = &""
+weight = 1.0
+chance = 0.05
+guaranteed = false
+quantity = 1
 rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_pool_spirit_transformation"]
