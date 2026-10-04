@@ -76,7 +76,19 @@ func _init() -> void:
 ## duplicate_module, bad_api_path, and a self-dependency. Unknown deps
 ## and multi-member cycles are graph faults and surface in order(),
 ## because a forward reference is the first half of a legal chain.
-func register(name: String, api_gd_path: String, deps: PackedStringArray) -> Dictionary:
+##
+## When `provides` contains "cultivation_path", the module's seeds are
+## validated against the cultivation-path contract (ADR 0184): one seed
+## per realm on the shared ladder, each carrying the required fields.
+## `seed_dir` overrides the default seed directory
+## (`res://data/<name>/realms/`); it is resolved relative to `res://`.
+func register(
+	name: String,
+	api_gd_path: String,
+	deps: PackedStringArray,
+	provides: Array[String] = [],
+	seed_dir: String = ""
+) -> Dictionary:
 	if _rows.has(name):
 		return _error("duplicate_module", "'%s' is already registered" % name)
 	if not FileAccess.file_exists(api_gd_path):
@@ -87,9 +99,43 @@ func register(name: String, api_gd_path: String, deps: PackedStringArray) -> Dic
 	for dep in clean:
 		if dep == name:
 			return _error("dependency_cycle", "dependency_cycle: %s" % name)
-	_rows[name] = {"api": api_gd_path, "deps": clean}
+	if provides.has("cultivation_path"):
+		var seed_findings := _validate_cultivation_seeds(name, seed_dir)
+		if not seed_findings.is_empty():
+			return _error("invalid_cultivation_seeds", "; ".join(seed_findings))
+	_rows[name] = {"api": api_gd_path, "deps": clean, "provides": provides}
 	_registered.append(name)
 	return {"ok": true, "reason": "", "detail": ""}
+
+
+## Validate that a cultivation-path module's seeds carry the required
+## fields. Scans the seed directory for `.tres` files and validates each
+## one found. Does NOT require every realm on the ladder to have a seed —
+## that is the content audit's concern (`tools/cultivation/audit.py`), not
+## the registry's. The registry's job is to refuse a seed whose SCHEMA is
+## invalid, so a mod with a partial ladder can still register.
+## Bounded by the directory's own file count: each file is visited once,
+## and no body appends to the container it is walking (INC-0002).
+func _validate_cultivation_seeds(module_name: String, seed_dir: String) -> Array[String]:
+	var findings: Array[String] = []
+	var dir := seed_dir if seed_dir != "" else "res://data/%s/realms/" % module_name
+	var paths: Array[String] = []
+	for path in ContentScan.files_under(dir, "tres"):
+		paths.append(path)
+	if paths.is_empty():
+		findings.append("no seeds found in %s; a cultivation path must provide at least one" % dir)
+		return findings
+	for path in paths:
+		var seed = load(path)
+		if seed == null:
+			findings.append("seed at %s failed to load" % path)
+			continue
+		var realm_id := String(seed.get("id"))
+		if realm_id == "":
+			realm_id = "(unknown)"
+		for finding in CultivationPathContract.validate_seed(seed):
+			findings.append("%s: %s" % [realm_id, finding])
+	return findings
 
 
 ## The api_gd path a caller should load for `name`, "" when unknown.

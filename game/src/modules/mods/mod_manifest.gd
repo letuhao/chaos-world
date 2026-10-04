@@ -251,8 +251,33 @@ static func _parse_modules(value, source_path: String) -> Array:
 		var deps := _parse_string_array(entry.get("deps", []), "modules.deps", source_path)
 		if not deps[0]:
 			return [false, deps[1]]
-		out.append(
-			{"name": String(entry["name"]), "api_gd": String(entry["api_gd"]), "deps": deps[1]}
+		var provides := _parse_string_array(
+			entry.get("provides", []), "modules.provides", source_path
+		)
+		if not provides[0]:
+			return [false, provides[1]]
+		var seed_dir := ""
+		if entry.has("seed_dir"):
+			if typeof(entry["seed_dir"]) != TYPE_STRING:
+				return [
+					false,
+					_fail(
+						"bad_modules",
+						"%s: a 'modules' entry 'seed_dir' must be a string" % source_path
+					),
+				]
+			seed_dir = String(entry["seed_dir"])
+		(
+			out
+			. append(
+				{
+					"name": String(entry["name"]),
+					"api_gd": String(entry["api_gd"]),
+					"deps": deps[1],
+					"provides": provides[1],
+					"seed_dir": seed_dir,
+				}
+			)
 		)
 	return [true, out]
 

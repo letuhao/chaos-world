@@ -194,7 +194,13 @@ static func _stamp_context(mod: Dictionary, registry: ModuleRegistry) -> Registr
 	for row in mod["content_roots"]:
 		ctx.add_content_root(row["family"], row["dir"])
 	for module in mod["modules"]:
-		ctx.register_module(module["name"], module["api_gd"], module["deps"])
+		ctx.register_module(
+			module["name"],
+			module["api_gd"],
+			module["deps"],
+			module.get("provides", []),
+			module.get("seed_dir", "")
+		)
 	for hook in mod["attach_hooks"]:
 		ctx.add_attach_hook(hook["phase"], Callable())
 	for screen in mod["screens"]:

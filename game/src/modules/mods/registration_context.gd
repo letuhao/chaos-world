@@ -75,10 +75,18 @@ func add_content_root(family: String, dir: String) -> Array[Dictionary]:
 
 
 ## Register one module facade: the `api.gd` a sibling module may reference,
-## with the module ids it depends on. Forwards to the shared ModuleRegistry and
+## with the module ids it depends on. `provides` declares what the module
+## offers (e.g. ["cultivation_path"]); `seed_dir` overrides the default seed
+## directory for a cultivation path. Forwards to the shared ModuleRegistry and
 ## records the declaration with the registry's verdict.
-func register_module(name: String, api_gd_path: String, deps: Array) -> Array[Dictionary]:
-	var verdict := _registry.register(name, api_gd_path, deps)
+func register_module(
+	name: String,
+	api_gd_path: String,
+	deps: Array,
+	provides: Array[String] = [],
+	seed_dir: String = ""
+) -> Array[Dictionary]:
+	var verdict := _registry.register(name, api_gd_path, deps, provides, seed_dir)
 	(
 		modules
 		. append(
@@ -86,6 +94,8 @@ func register_module(name: String, api_gd_path: String, deps: Array) -> Array[Di
 				"name": name,
 				"api_gd": api_gd_path,
 				"deps": deps,
+				"provides": provides,
+				"seed_dir": seed_dir,
 				"ok": verdict.get("ok", false),
 				"reason": verdict.get("reason", ""),
 			}
