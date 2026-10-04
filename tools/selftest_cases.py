@@ -1798,6 +1798,117 @@ def _ingest_is_deterministic() -> None:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
 
 
+@case("unique_characters: the diversity gate measures CANON, not in-flight shells")
+def _diversity_ignores_draft_shells() -> None:
+    """A wave in flight made the gate name the wrong path as the monoculture.
+
+    `unique_characters add` fills `role` and `path` from the command line and leaves
+    race, appearance and all 22 shots empty. Those shells are work tickets, not
+    characters, but the distribution counted them. On a live tree with 25 shells in
+    progress the two readings disagreed about which axis was actually at fault:
+
+      including drafts:  unaffiliated 41/150 (27%)   <- blamed the wrong path
+      canon only:        qi 34/125, mind 33/125, body 32/125
+
+    That is worse than a noisy number. The gate exists to steer the NEXT wave, and
+    sending it to fix `unaffiliated` when `unaffiliated` was at 24% of the real cast
+    would have made three paths worse.
+
+    The counterweight is asserted in the same case. `--include-drafts` must still
+    report the shells, because a wave checking whether it has spread its own work
+    before filling it needs to see them - and a gate that cannot be inspected is a
+    gate that gets ignored.
+    """
+
+    def row(character_id: str, status: str, path: str, race: str = "races.emberblood") -> dict:
+        return {
+            "id": character_id,
+            "name": character_id,
+            "status": status,
+            "identity": {"role": "npc", "path": path, "faction": "", "home": "", "realm": ""},
+            "appearance": {"race": race} if race else {"race": ""},
+            "tags": [],
+        }
+
+    # A canon cast evenly spread on BOTH guarded axes, plus shells all pointing one
+    # way on each. A gate that counted the shells would call this a monoculture; the
+    # canon cast has none. Spreading only `path` is not enough - an earlier version of
+    # this fixture kept every canon row on one race, so the gate correctly fired and
+    # the failure was the fixture's, not the rule's.
+    races = [
+        "races.emberblood",
+        "races.cairnborn",
+        "races.stonebound",
+        "races.marshfolk",
+        "races.tidecaller",
+        "races.lanternfolk",
+        "races.saltfolk",
+        "races.longwinter",
+    ]
+    canon = [
+        row(
+            f"unique-{i:04d}",
+            "canon",
+            ["qi", "body", "mind", "unaffiliated"][i % 4],
+            race=races[i % len(races)],
+        )
+        for i in range(8)
+    ]
+    shells = [row(f"unique-1{i:03d}", "draft", "unaffiliated", race="") for i in range(4)]
+    everything = [*canon, *shells]
+
+    class _Args:
+        fail_on_warn = False
+        include_drafts = False
+
+    captured: list[str] = []
+    original = unique_characters.fail
+    try:
+        unique_characters.fail = captured.append
+        unique_characters._diversity_command(everything, _Args())
+    finally:
+        unique_characters.fail = original
+
+    expect(
+        not captured,
+        f"four draft shells out of twelve were enough to make the gate report a "
+        f"monoculture: {captured}. A shell carries no authored choice and must not "
+        f"move the distribution",
+    )
+
+    canon_warnings = unique_characters._concentration_warnings(
+        unique_characters._canon_rows(everything)
+    )
+    expect(
+        canon_warnings == [],
+        f"the canon cast alone is evenly spread but reports {canon_warnings}; the "
+        f"filter must exclude shells without corrupting the measurement",
+    )
+
+    # The counterweight: the whole file is still inspectable.
+    class _WithDrafts(_Args):
+        include_drafts = True
+
+    with_drafts: list[str] = []
+    original = unique_characters.fail
+    try:
+        unique_characters.fail = with_drafts.append
+        unique_characters._diversity_command(everything, _WithDrafts())
+    finally:
+        unique_characters.fail = original
+    expect(
+        bool(with_drafts),
+        "--include-drafts reported no monoculture on a file whose shells are all one "
+        f"path: {with_drafts}. A gate that cannot be inspected is a gate that gets ignored",
+    )
+
+    expect(
+        len(unique_characters._canon_rows(everything)) == len(canon),
+        f"_canon_rows returned {len(unique_characters._canon_rows(everything))} rows for "
+        f"{len(canon)} canon characters; the filter is dropping finished work",
+    )
+
+
 @case("unique_characters: a species that CLOSES a path cannot carry it")
 def _closed_path_cannot_be_carried() -> None:
     """Two characters were self-refuting and `check` was silent about both.

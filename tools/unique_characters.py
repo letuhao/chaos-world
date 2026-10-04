@@ -1340,6 +1340,18 @@ def _check(records: list[dict]) -> int:
     return 0
 
 
+def _canon_rows(records: list[dict]) -> list[dict]:
+    """The canon cast, which is the only part of the file carrying authored choices.
+
+    A `draft` row is a shell: `unique_characters add` fills `role` and `path` from the
+    command line and leaves race, appearance and every shot empty. It is a work
+    ticket, not a character, and it must not move a distribution.
+    """
+    return [
+        record for record in records if isinstance(record, dict) and record.get("status") == "canon"
+    ]
+
+
 def _diversity_command(records: list[dict], args) -> int:
     """The read-only view of cast composition, and the number that steers a wave.
 
@@ -1349,16 +1361,35 @@ def _diversity_command(records: list[dict], args) -> int:
     only `--fail-on-warn` turns it into an exit code - which is what a release gate
     should ask for and what an authoring agent should not have to satisfy while
     filling its first ten characters.
+
+    MEASURES CANON ONLY, by default. A draft shell carries no authored choice yet -
+    `add` fills `role` and `path` from the command line and leaves race, appearance and
+    all 22 shots empty - so counting it makes a wave in flight flap the gate. Measured
+    on a live tree with 25 shells in progress, the two readings named DIFFERENT paths
+    as the monoculture: drafts blamed `unaffiliated` at 41/150 while the canon cast
+    actually had qi, mind and body each over. A gate that names the wrong axis sends
+    the next wave to fix a path that was never the problem.
+
+    `--include-drafts` shows the whole file, for the case where the drafts ARE the
+    subject - checking that a wave has spread its shells before it fills them.
     """
-    total = sum(1 for record in records if isinstance(record, dict))
+    include_drafts = getattr(args, "include_drafts", False)
+    canon = _canon_rows(records)
+    rows = records if include_drafts else canon
+    total = sum(1 for record in rows if isinstance(record, dict))
+    drafts = len(records) - len(canon)
     if total == 0:
-        info("no unique characters yet; nothing to distribute")
+        info("no canon characters yet; nothing to distribute")
         return 0
-    print(f"cast size: {total}")
-    for axis, counts in _diversity_axes(records):
+    if include_drafts:
+        label = f"cast size: {total} ({len(canon)} canon, {drafts} draft)"
+    else:
+        label = f"cast size: {total} canon" + (f" ({drafts} draft excluded)" if drafts else "")
+    print(label)
+    for axis, counts in _diversity_axes(rows):
         top = ", ".join(f"{value}={count}" for value, count in counts.most_common(6))
         print(f"  {axis}: {len(counts)} distinct | {top}")
-    warnings = _concentration_warnings(records)
+    warnings = _concentration_warnings(rows)
     if not warnings:
         ok(f"no structural axis is a monoculture (share limit {DIVERSITY_MAX_SHARE:.0%})")
         return 0
@@ -1641,6 +1672,14 @@ def register(subparsers) -> None:
         "--fail-on-warn",
         action="store_true",
         help="exit non-zero when a structural axis is a monoculture",
+    )
+    diversity.add_argument(
+        "--include-drafts",
+        action="store_true",
+        help=(
+            "count in-flight draft shells as well as canon. Off by default because a "
+            "draft carries no authored choice and would move the distribution"
+        ),
     )
 
     nxt = actions.add_parser("next", help="prioritize ungenerated shots")
