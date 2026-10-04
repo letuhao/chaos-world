@@ -185,7 +185,8 @@
     "quest": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "items"
       ]
     },
     "quick_use": {
