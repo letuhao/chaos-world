@@ -9,6 +9,12 @@ const HERB := "res://data/items/material/spirit_herb.tres"
 const ORE := "res://data/items/material/jade_ore.tres"
 
 
+func teardown() -> void:
+	# The overlay stack is process-wide static state; reset it so no other suite
+	# inherits this one's wiring.
+	Crafting.set_overlay_roots([])
+
+
 func _stocked_inventory() -> Inventory:
 	var inventory := Inventory.new()
 	inventory.add(load(HERB), 1)
@@ -68,3 +74,48 @@ func test_craft_fails_without_every_input() -> void:
 	var crafting := Crafting.new(recipe.station)
 	assert_eq(crafting.craft(recipe, inventory), false, "missing an input")
 	assert_eq(inventory.count(&"jade_pill"), 0, "nothing added")
+
+
+## The overlay pilot (ADR 0184 §5): with the base roots only, the merge must
+## find exactly the ids the legacy scan finds — the byte-identical guarantee
+## that lets a mod append or override without changing default behavior.
+
+
+func test_overlay_merge_with_base_roots_matches_the_legacy_scan() -> void:
+	Crafting.set_overlay_roots([])
+	var merged := Crafting.overlay_merge()
+	assert_eq(bool(merged.get("ok", false)), true, "the base stack merges")
+	var merged_ids: Array[String] = []
+	for entry in merged["merged"]:
+		merged_ids.append(String(entry["id"]))
+	var scanned_ids: Array[String] = []
+	for root in Crafting.ITEM_ROOTS:
+		for path in ContentScan.files_under(root):
+			scanned_ids.append(path.get_file().trim_suffix(".tres"))
+	merged_ids.sort()
+	scanned_ids.sort()
+	assert_eq(
+		merged_ids, scanned_ids, "the overlay merge finds exactly the ids the legacy scan finds"
+	)
+
+
+func test_explicit_base_only_stack_merges_the_authored_items() -> void:
+	var base_only: Array = []
+	for root in Crafting.ITEM_ROOTS:
+		base_only.append({"dir": root, "owner": "base", "declared_overrides": []})
+	Crafting.set_overlay_roots(base_only)
+	var merged := Crafting.overlay_merge()
+	assert_eq(bool(merged.get("ok", false)), true, "an explicit base-only stack merges")
+	assert_eq(int(merged["merged"].size()) > 0, true, "and finds the authored items")
+	Crafting.set_overlay_roots([])
+
+
+func test_resolve_overlay_agrees_with_resolve_on_real_items() -> void:
+	Crafting.set_overlay_roots([])
+	var via_overlay := Crafting.resolve_overlay(&"spirit_herb")
+	assert_eq(via_overlay == null, false, "the overlay resolves a real item")
+	if via_overlay == null:
+		return
+	assert_eq(via_overlay.id, &"spirit_herb", "with its id intact")
+	assert_eq(Crafting.resolve(&"spirit_herb") == null, false, "the legacy scan resolves it too")
+	assert_eq(Crafting.resolve_overlay(&"no_such_item_exists"), null, "an unknown id is null")

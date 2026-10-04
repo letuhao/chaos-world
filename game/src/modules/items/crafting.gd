@@ -21,6 +21,12 @@ const ITEM_ROOTS: Array[String] = [
 	"res://data/socket",
 ]
 
+## Overlay stack for the item family (ADR 0184 §5). Empty means "not wired
+## yet": `resolve` keeps its exact pre-overlay scan and nothing here runs. The
+## default stack is the authored ITEM_ROOTS as base-owned rows with no declared
+## overrides, which merges to the same id set the scan finds — the pilot's
+## byte-identical guarantee, pinned in this module's test suite.
+static var _overlay_stack: Array = []
 var _station: StringName = &""
 var _time_required: float = 0.0
 
@@ -126,6 +132,44 @@ static func _scan(root: String, item_id: StringName) -> Array[String]:
 		if path.get_file() == wanted:
 			out.append(path)
 	return out
+
+
+## Set the family's overlay stack: ordered rows of `{dir, owner,
+## declared_overrides}`. Later rows overlay earlier ones; an id collision needs
+## a declared override on the LATER root or the merge fails loudly.
+static func set_overlay_roots(stack: Array) -> void:
+	_overlay_stack = stack
+
+
+## The stack `overlay_merge` walks: the configured one, or the authored roots.
+static func overlay_roots() -> Array:
+	if _overlay_stack.is_empty():
+		var rows: Array = []
+		for root in ITEM_ROOTS:
+			rows.append({"dir": root, "owner": "base", "declared_overrides": []})
+		return rows
+	return _overlay_stack
+
+
+## Merge the family's overlay stack into one id-keyed catalog (ADR 0184).
+## Returns CatalogOverlay.merge's dictionary unchanged: `{ok, reason, detail,
+## merged, paths, owners}`.
+static func overlay_merge() -> Dictionary:
+	return CatalogOverlay.merge(overlay_roots(), "ItemDef")
+
+
+## Resolve one ItemDef through the overlay merge. Null when the id is absent;
+## a stack with an undeclared collision pushes the merge's named detail and
+## returns null — never a silent overwrite.
+static func resolve_overlay(item_id: StringName) -> ItemDef:
+	var merged := overlay_merge()
+	if not bool(merged.get("ok", false)):
+		push_error("Crafting: %s" % String(merged.get("detail", "")))
+		return null
+	var path := String(merged["paths"].get(String(item_id), ""))
+	if path == "":
+		return null
+	return load(path) as ItemDef
 
 
 static func load_item(item_id: StringName) -> ItemDef:
