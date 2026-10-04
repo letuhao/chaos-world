@@ -177,6 +177,11 @@ var _stack: ScreenStack = null
 var _restore_stage: WorldStage = null
 var _restore_body: PlayerAdapter = null
 
+## Mod event subscriptions stored for the events bus (ADR 0184). The bus
+## integration is not yet wired — the subscription shape is unclear, so they
+## are stored here for a later wave to consume.
+var _mod_subscriptions: Array = []
+
 # --- mount_and_attach ----------------------------------------------------
 ## Mount every module a hero carries, over an actor that already exists.
 ##
@@ -326,6 +331,53 @@ func _attach_body_modules(actor: Actor) -> void:
 	for row in registrations.get("attach_hooks", []):
 		pipeline.add_hook(StringName(row.get("phase", "")), row.get("callable", Callable()))
 	pipeline.run(actor)
+	# Wire content roots into catalogs (ADR 0184 §5).
+	_wire_content_roots(registrations.get("content_roots", {}))
+	# Attach mod modules after all base phases (ADR 0184).
+	_attach_mod_modules(pipeline, actor, registrations.get("modules", {}))
+	# Store subscriptions for the events bus (ADR 0184).
+	_wire_subscriptions(registrations.get("subscriptions", []))
+
+
+## Push content roots to their family catalogs (ADR 0184 §5). Items use the
+## existing Crafting pilot; quest and event catalogs have set_overlay_roots.
+## Families without overlay support are skipped — never a boot failure.
+func _wire_content_roots(content_roots: Dictionary) -> void:
+	for family in content_roots:
+		var stack: Array = content_roots[family]
+		match String(family):
+			&"items":
+				Crafting.set_overlay_roots(stack)
+			&"quest":
+				QuestCatalog.set_overlay_roots(stack)
+			&"event":
+				EventCatalog.set_overlay_roots(stack)
+			_:
+				# Family not yet wired — skip, don't break boot.
+				pass
+
+
+## Attach mod modules after all base phases (ADR 0184). Each module name is
+## looked up in the registry for its api path, then attached through the
+## pipeline. Bounded by the module count — one pass, no loops.
+func _attach_mod_modules(pipeline: AttachPipeline, actor: Actor, modules: Dictionary) -> void:
+	if not bool(modules.get("ok", false)):
+		return
+	var registry: ModuleRegistry = modules.get("registry", null)
+	if registry == null:
+		return
+	for name in modules.get("order", []):
+		var module_name := String(name)
+		var api_path := registry.api_path_of(module_name)
+		if api_path != "":
+			pipeline.attach_module(module_name, api_path, actor)
+
+
+## Store mod event subscriptions for the events bus (ADR 0184). The bus
+## integration is not yet wired — the subscription shape is unclear, so they
+## are stored here for a later wave to consume.
+func _wire_subscriptions(subscriptions: Array) -> void:
+	_mod_subscriptions = subscriptions
 
 
 # --- build_actor ---------------------------------------------------------
@@ -430,12 +482,18 @@ func stand_restored_in_the_world(body: Actor) -> Dictionary:
 			"location_id": "",
 			"world_told": false,
 		}
-	# Lazily, ONCE per root (the fields above). `PlayerAdapter` is never parented — `mount`
-	# only calls `set_map_bounds` and assigns `global_position`, both legal unparented.
+	# Lazily, ONCE per root (the fields above), and PARENTED before the mount — `mount`
+	# only calls `set_map_bounds` and assigns `global_position`, both legal unparented,
+	# but `_world_entry()` is not: it answers null for a parentless body, so an
+	# unparented mount reported `ok` with no interactables, no authored spawn and no
+	# `_unhandled_input`. `WorldStage.stand_in_the_tree` is the `DomainWorld.place_player`
+	# shape — construct, name, `add_child` under an authored `WorldEntry` — and is
+	# idempotent, so a second arrival reuses the standing body instead of doubling it.
 	if _restore_stage == null:
 		_restore_stage = WorldStage.new()
 	if _restore_body == null:
 		_restore_body = PlayerAdapter.new(body)
+	WorldStage.stand_in_the_tree(_restore_body)
 	var answer := _restore_stage.mount(_restore_body, location_id)
 	answer["world_told"] = bool(answer.get("world_told", false))
 	answer["located"] = bool(answer.get("ok", false))

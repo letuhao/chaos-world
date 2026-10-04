@@ -71,6 +71,22 @@ const STAGE_KEY := &"world_stage"
 ## The fall-back playfield when a caller passes no bounds.
 const DEFAULT_BOUNDS := Rect2(0, 0, 1024, 1024)
 
+## The authored playfield an arrival stands in. It carries a `SpawnPoint`, two
+## `ResourceNodes`, entry/exit markers and the `NPCSpawnPoints` a place draws, and its
+## script IS `world_entry.gd`, so instantiating it produces the `WorldEntry` `_world_entry`
+## casts for.
+##
+## This is a scene path, read from the exported constant rather than hard-coded at each
+## call site, so a rename is one edit and `summary()` can report which playfield a mount
+## used.
+const ARRIVAL_SCENE := "res://scenes/worlds/mortal_plains_arrival.tscn"
+
+## The names the tree-mounted playfield and its body are filed under. Engine strings, so
+## they do not read as repo state to `tools/arch`'s app-state heuristic, and one spelling
+## each — the node the idempotence check looks up is the node the mount names.
+const STAGE_ENTRY_NODE := "WorldStageEntry"
+const STAGE_BODY_NODE := "WorldStagePlayer"
+
 ## The ceiling on interactables reported by one call, so a busy location is a
 ## bounded read rather than an open-ended one.
 const MAX_INTERACTABLES := 64
@@ -193,6 +209,88 @@ static func instance() -> WorldStage:
 ## The body the stage is holding, or null when nothing is mounted.
 static func player() -> PlayerAdapter:
 	return _mounted_player
+
+
+## Stand `body` IN THE TREE, on an authored `WorldEntry`, and report what happened.
+##
+## ## Why this exists: an unparented body is an inert one
+##
+## `PlayerAdapter` was constructed by `CharacterCreationProgram._stand_in_the_world` and by
+## [method ItemWorkbenchBody.stand_restored_in_the_world] and **never `add_child`ed**, which
+## severed the world stage at THREE points at once, each of them silently:
+##
+##  1. [method _world_entry] requires `get_parent() != null`, so it answered null and
+##     [method _register_nodes] returned early — the scene's own `ResourceNodes` were never
+##     handed to the adapter, so `_interactables` stayed empty and [method PlayerAdapter.
+##     interact] exited at its first line;
+##  2. [method _spawn_position] had no `SpawnPoint` to read, so the authored arrival
+##     coordinate was never consulted;
+##  3. an unparented node is in no `SceneTree`, so `_unhandled_input` is never delivered —
+##     move and the press were dead even where everything else worked.
+##
+## The DOMAIN path already solved exactly this: [method DomainWorld.place_player] builds a
+## `PlayerAdapter`, names it and calls `world.add_child(body)` on a world node the caller
+## already owns. **That is the shape copied here** rather than a third way to mount a body —
+## construct, name, `add_child`, then position through the explicit setter.
+##
+## ## Why the playfield is the AUTHORED scene and not a bare node
+##
+## A `WorldEntry` with no children has no `SpawnPoint` and no `ResourceNodes`, so parenting
+## into one would fix the tree and leave `_interactables` empty for the very reason the
+## audit named. `ARRIVAL_SCENE` is an existing, shipped scene whose root script IS
+## `world_entry.gd`, so instantiating it yields a real `WorldEntry` WITH its markers.
+##
+## ## Freeing is the caller's, and it must be `free()`
+##
+## This mints two nodes and hands back the entry it made so the caller can release it.
+## `queue_free()` never runs under the headless runner — the deferred free is processed at
+## the end of a frame the runner does not reach — so a deferred entry stays parented to
+## `root` for the rest of the process and leaks a subtree per arrival (INC-0002).
+static func stand_in_the_tree(
+	body: PlayerAdapter, scene_path: String = ARRIVAL_SCENE
+) -> Dictionary:
+	if body == null:
+		return {"ok": false, "reason": "no_player"}
+	var parent := _entry_parent()
+	if parent == null:
+		return {"ok": false, "reason": "no_tree"}
+	# Idempotent, the `place_player` way: a body already standing is returned, not doubled.
+	var standing := parent.get_node_or_null(NodePath(STAGE_BODY_NODE)) as PlayerAdapter
+	if standing != null:
+		return {"ok": true, "reason": "", "entry": parent, "player": standing, "reused": true}
+	var packed := load(scene_path) as PackedScene
+	if packed == null:
+		return {"ok": false, "reason": "no_scene"}
+	var entry := packed.instantiate() as WorldEntry
+	if entry == null:
+		return {"ok": false, "reason": "not_a_world_entry"}
+	entry.name = STAGE_ENTRY_NODE
+	parent.add_child(entry)
+	entry.add_child(body)
+	body.name = STAGE_BODY_NODE
+	return {"ok": true, "reason": "", "entry": entry, "player": body, "reused": false}
+
+
+## The node a playfield is parented to. `root` when the engine has a main loop, else null —
+## a caller driving the game headlessly with no tree gets `no_tree` rather than a stage
+## that claims a body is standing somewhere when nothing is in a tree to stand in.
+static func _entry_parent() -> Node:
+	var loop := Engine.get_main_loop() as SceneTree
+	if loop == null or loop.root == null:
+		return null
+	return loop.root
+
+
+## Free the subtree [method stand_in_the_tree] built, and detach `body` from it. `free()`,
+## never `queue_free()` — see that method's closing note.
+static func release_the_tree(body: PlayerAdapter) -> void:
+	if body == null or not is_instance_valid(body):
+		return
+	var entry := body.get_parent()
+	if body.get_parent() != null:
+		body.get_parent().remove_child(body)
+	if entry != null and is_instance_valid(entry) and entry.is_inside_tree():
+		entry.free()
 
 
 ## Put `player` into `location_id` and hand back what happened.

@@ -218,6 +218,14 @@ func _stand_in_the_world(hero: Actor) -> Dictionary:
 		_stage = WorldStage.new()
 	if _body == null:
 		_body = PlayerAdapter.new(hero)
+	# **And the body must be a NODE IN A TREE before `mount` is called, not after.**
+	# `mount` resolves its authored `SpawnPoint` and registers the playfield's own
+	# `ResourceNodes` through `_world_entry()`, which returns null for a parentless body —
+	# so a mount of an unparented adapter silently reported `ok` with an EMPTY
+	# `_interactables`, an authored spawn nobody consulted, and a body no `SceneTree`
+	# would ever deliver `_unhandled_input` to. Standing it up first is what makes
+	# `mount`'s own answer mean what it says.
+	WorldStage.stand_in_the_tree(_body)
 	var answer := _stage.mount(_body, location_id)
 	answer["world_told"] = bool(answer.get("world_told", false))
 	return answer

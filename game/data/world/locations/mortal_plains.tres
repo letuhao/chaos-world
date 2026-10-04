@@ -9,5 +9,5 @@ display_name = "Mortal Plains"
 tier = &"mortal_world"
 faction_id = &"body_dao"
 resources = Array[StringName]([&"iron_ore", &"herb_common"])
-inhabitant_types = Array[StringName]([&"beast"])
+inhabitant_types = Array[StringName]([&"beast", &"quest_board"])
 danger_level = 2
