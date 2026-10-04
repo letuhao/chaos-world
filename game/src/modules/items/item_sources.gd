@@ -94,7 +94,7 @@ const KINDS: Dictionary = {
 	KIND_BOSS: {"ref": REF_REQUIRED, "shipped": true},
 	KIND_DOMAIN: {"ref": REF_REQUIRED, "shipped": true},
 	KIND_STARTER: {"ref": REF_FORBIDDEN, "shipped": true},
-	KIND_QUEST: {"ref": REF_OPTIONAL, "shipped": false},
+	KIND_QUEST: {"ref": REF_OPTIONAL, "shipped": true},
 	KIND_GATHER: {"ref": REF_FORBIDDEN, "shipped": true},
 }
 

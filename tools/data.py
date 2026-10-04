@@ -300,6 +300,26 @@ RUNTIME_ROUTES: dict[str, Route] = {
         (('Callable(LootApi, "enter_domain")', 'call_action(&"enter"'),),
         "app/item_workbench_app.gd binds it; ui/screens/loot_encounter.gd calls it",
     ),
+    # `quest` is the one route that was unshipped for a structural reason rather than a
+    # missing one: `QuestGrants.pay` recorded an `item` grant as unspent because `quest`
+    # did not declare an `items` dependency, so it could not legally call `ItemsApi`. That
+    # dependency landed (d56c8daf) and `pay` now delivers through `ItemsApi.generate`,
+    # so the route is live. The citation is the same shape as every other entry: a
+    # production file, the verbs that reach it, the call sites, and the surface.
+    # The gate requires every call-site group to be invoked from OUTSIDE the declaring
+    # module (`_route_module_dir`), because a module cannot vouch for itself — so the
+    # citation names the two places production actually reaches the quest program, not
+    # `QuestApi.advance`, which only `QuestBeatHandler` calls from inside quest.
+    # `app/world_pulse.gd:195` registers the beat sink that drives the paying verb, and
+    # `app/quest_program.gd:126` is the one production caller of `QuestApi.accept`.
+    "quest": Route(
+        "modules/quest/api.gd",
+        ("static func advance(", "static func complete("),
+        "granted_item",
+        "an authored QuestDef's grants list names this item id under kind 'item'",
+        (("QuestBeatHandler.new()", "QuestApi.accept("),),
+        "app/world_pulse.gd registers the beat sink; ui/screens/quest_screen.gd shows the board",
+    ),
     # The only grant of a starter item is the composition root's own list.
     "starter": Route(
         "app/item_workbench_app.gd",
@@ -1084,6 +1104,39 @@ def _gatherable_ids() -> set[str]:
     return set(re.findall(r'&"([^"]+)"', match.group(1)))
 
 
+def _quest_granted_ids() -> set[str]:
+    """Item ids an authored quest actually grants, read out of the quest content tree.
+
+    The `quest` route became live when `QuestGrants.pay` delivered an `item` grant
+    through `ItemsApi.generate` instead of recording it unspent. That makes this gate's
+    question the same shape as every other route: not "does a verb exist" but "is this
+    item in the set the route can actually hand over".
+
+    So the set is read from the authored `grants` lists rather than kept here, for the
+    reason `_gatherable_ids` gives: a yield authored in the game and a yield counted by
+    this gate must not be able to drift by reading two different files. A quest that
+    grants an item is the only thing that makes `quest:<id>` resolvable, so authoring
+    one is the only way an item joins this set — which is exactly the shape the 442
+    dangling refs need before they stop being dangling.
+
+    Empty is an honest answer: with no authored quest granting an item, no item is
+    quest-deliverable, and the gate says so rather than assuming the route is vacuous.
+    """
+    granted: set[str] = set()
+    # `QUEST_DIR` rather than a path of my own: it is the same directory
+    # `_authored_quest_ids()` resolves `quest:<id>` against, and a membership check
+    # reading a different tree than the reference check would let an item count as
+    # quest-deliverable while its `quest:<id>` still reads as dangling.
+    if not QUEST_DIR.is_dir():
+        return granted
+    for path in sorted(QUEST_DIR.glob("*.tres")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for kind, item_id in re.findall(r'"kind":\s*&"([^"]+)",\s*"id":\s*&"([^"]+)"', text):
+            if kind == "item":
+                granted.add(item_id)
+    return granted
+
+
 def _granted_ids() -> set[str]:
     """Item ids the composition root hands a fresh actor.
 
@@ -1315,6 +1368,12 @@ def _runtime_roots(
             if kind == "gather" and item_id in _gatherable_ids():
                 delivered = True
                 break
+            if kind == "quest" and item_id in _quest_granted_ids():
+                # A bare `quest` names no quest, so nothing can be read off it and it
+                # stays unshipped. A `quest:<id>` counts only when an authored quest
+                # grants that item: membership evidence, not a verb's existence.
+                delivered = True
+                break
             unshipped.append(kind)
         if delivered:
             roots.add(item_id)
@@ -1398,6 +1457,9 @@ def _route_roots_by_kind(
                     delivered.add(item_id)
                     break
                 if kind == "gather" and item_id in _gatherable_ids():
+                    delivered.add(item_id)
+                    break
+                if kind == "quest" and item_id in _quest_granted_ids():
                     delivered.add(item_id)
                     break
         out[kind] = delivered
