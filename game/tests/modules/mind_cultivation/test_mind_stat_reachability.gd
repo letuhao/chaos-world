@@ -85,6 +85,15 @@ const ADR_0071_NUMBERS := [
 ## `get_power_bonus` counts STRENGTHENED, and that is the whole point.
 const CHANNEL_STEPS := 3
 
+## Facade sittings allowed for the awareness re-arm in the case below. ADR 0152's refill is
+## ten facade sittings (`AWARENESS_RATE 0.01` x `CULTIVATE_STEP 10.0`), so this is ~2.4x the
+## honest answer: loose enough that float noise cannot fail it, tight enough that a refill
+## restoring pool-units rather than a share of the maximum (~1000 sittings) cannot pass.
+##
+## A CONSTANT, read before the loop that walks it. The loop is a `for` over this and breaks
+## on arrival, so nothing in it can grow the bound it is measured against.
+const AWARENESS_FUND_BOUND := 24
+
 
 ## A file's CODE, with every whole-line `#` comment removed. Local rather than
 ## `Probe.module_code` because that helper is hardcoded to this module's own
@@ -424,47 +433,104 @@ func test_a_collapsing_sea_disarms_the_loser_through_the_published_stat() -> voi
 	)
 
 
-## ## The one term that is NOT live, stated rather than left to rot
+## ## The awareness terms, LIVE — the tripwire inverted (ADR 0152, was
+## `test_the_awareness_terms_are_inert_and_that_is_pinned`)
 ##
-## `mind_focus_chance` and `mind_avoidance` each carry an `awareness_ratio` term,
-## and ADR 0071's `coherence` is built from the same reserve. Nothing in
-## `res://src` ever WRITES the `awareness` pool: `attach` creates it
-## (`api.gd:209`), `MindDamage` drains it as a reported delta, and no verb, item
-## or technique grants it. So `awareness_ratio` is a constant `0.0`, ADR 0071's
-## `COHERENCE_DAMP` is inert, and the erosion Kind `ATTEND` drains nothing.
+## This case used to pin the opposite of what it now pins. It asserted that nothing in
+## `res://src` ever WRITES the `awareness` pool, that `awareness_ratio` was therefore a
+## constant `0.0`, and that `coherence` was consequently `1.0` at any build. All three
+## were true (BL-0651) and all three were the defect: the shipped `coherence_damp = 0.5`
+## halved nothing, ADR 0071:20's "1.0 -> 0.5 at full awareness" was unreachable, and
+## erosion `Kind.ATTEND` drained nothing. A resource authored, gated, drained and damped
+## by, and never moved.
 ##
-## That is a real unwired gap and it is NOT this module's to close -- the writer
-## belongs to `training.gd`, and what should fund awareness (ADR 0013 calls it
-## "perceptual acuity, affects detection/crit/dodge"; ADR 0071 calls it "the
-## depleting AWARENESS reserve") is a design question needing its own ADR. This
-## assertion exists so the gap is a FACT the build knows about rather than a
-## silence, and so the day a writer appears it goes red and someone checks
-## whether ADR 0071's "1.0 -> 0.5 at full awareness" now holds.
-func test_the_awareness_terms_are_inert_and_that_is_pinned() -> void:
-	var actor := _actor()
-	MindCultivationApi.cultivate(actor)
-	var pool: Variant = actor.resource(MindCultivationApi.AWARENESS)
+## Its own docblock designated that failure as the handoff — "the day a writer appears it
+## goes red and someone checks whether ADR 0071's '1.0 -> 0.5 at full awareness' now
+## holds". A writer appeared (ADR 0152: `MindTraining.cultivate` re-arms the reserve, as
+## `QiTraining.cultivate` re-arms `QiStats.QI`), so the answer is yes and the pin inverts.
+##
+## ## What the tripwire is NOW
+##
+## The absence assertion is KEPT, at its original strength, aimed at the direction that
+## actually broke: `coherence` is no longer pinned at `1.0`, and `coherence_damp` is no
+## longer unreachable. Both are asserted as DIFFERENCES between two actors that differ in
+## exactly one thing — how many facade sittings they have had — so they hold whatever the
+## shipped damp is and fail if the reserve stops funding the lever. `test_awareness_reserve.gd`
+## owns the mechanism itself (refill, bounded re-arm, the `ATTEND` spend, realm
+## independence); this case owns the reachability claim in the enumeration's own file,
+## because an `awareness_ratio` that reads `0.0` is the enumerated term going dead.
+func test_the_awareness_terms_are_live_and_that_is_pinned() -> void:
+	var unfunded := _actor()
+	MindCultivationApi.cultivate(unfunded)
+	var pool: Variant = unfunded.resource(MindCultivationApi.AWARENESS)
 	assert_ne(pool, null, "the awareness reserve exists")
 	if pool == null:
 		return
-	assert_almost_eq(float(pool.get("current")), 0.0, "and nothing in src ever grants any")
-	# The reserve is SCALED and empty, not unscaled. That distinction matters:
-	# an absent pool would make every awareness term read 0.0 through the
-	# degradation branch instead, and the two are different failures -- one is a
-	# reserve nobody funds, the other is a reserve that does not exist.
+	# The reserve is SCALED, and that is still the distinction worth keeping: an absent pool
+	# would make every awareness term read 0.0 through the degradation branch instead, and
+	# the two are different failures -- one is a reserve nobody funds, the other is a
+	# reserve that does not exist.
 	assert_eq(
 		float(pool.get("maximum")) > 0.0,
 		true,
-		"the reserve has a scale, so the zero above is an empty reserve not an absent one"
+		"the reserve has a scale, so every ratio below is a reserve and not an absent read"
 	)
-	var parts := _bound_parts(actor)
-	assert_almost_eq(
-		float(parts.get("awareness_ratio", -1.0)),
-		0.0,
-		"every awareness-derived term therefore reads zero"
+	# THE TRIPWIRE, part 1: one facade sitting moves the pool off zero. A tree where the
+	# writer is gone answers 0.0 here and nowhere else in this file.
+	assert_eq(
+		float(pool.get("current")) > 0.0,
+		true,
+		"one sitting of cultivation funds the reserve, so awareness_ratio is no longer a constant"
+	)
+	# THE TRIPWIRE, part 2: `coherence` is no longer pinned at 1.0. Read at BOTH points of
+	# the same one-variable difference, and asserted as a strict inequality so it fails for a
+	# reserve that funds the pool without funding the lever.
+	var held := _actor()
+	var held_pool: Variant = held.resource(MindCultivationApi.AWARENESS)
+	if held_pool != null:
+		# Snapshot the bound as a CONSTANT before the loop and walk it with a `for`: the
+		# loop never reads a size it grows, so it cannot chase the pool it is filling.
+		for _sitting in AWARENESS_FUND_BOUND:
+			if float(held_pool.get("current")) >= float(held_pool.get("maximum")):
+				break
+			MindCultivationApi.cultivate(held)
+	# Bound ONCE per actor and read every number off that one breakdown:
+	# `_bound_parts` calls `CombatBoot.bind_mechanisms`, so calling it four times per actor
+	# would bind four times, and a measurement that mutates its own fixture is not a
+	# measurement.
+	var unfunded_parts := _bound_parts(unfunded)
+	var held_parts := _bound_parts(held)
+	var unfunded_ratio := float(unfunded_parts.get("awareness_ratio", -1.0))
+	var held_ratio := float(held_parts.get("awareness_ratio", -1.0))
+	assert_eq(unfunded_ratio < 1.0, true, "an under-funded reserve is not already full")
+	assert_eq(held_ratio > unfunded_ratio, true, "sittings raised the ratio the lever reads")
+	var damp := float(CombatTuning.shipped().coherence_damp)
+	var unfunded_coherence := float(unfunded_parts.get("coherence", -1.0))
+	var held_coherence := float(held_parts.get("coherence", -1.0))
+	assert_eq(
+		unfunded_coherence < 1.0,
+		true,
+		"so coherence is no longer PINNED at 1.0, which is what an unwritten reserve produced"
+	)
+	assert_eq(
+		held_coherence < unfunded_coherence,
+		true,
+		"and a funded one pays less of the strike: ADR 0071's COHERENCE_DAMP is live"
 	)
 	assert_almost_eq(
-		float(parts.get("coherence", 0.0)),
-		1.0,
-		"so ADR 0071's COHERENCE_DAMP is currently a no-op, at any coherence build"
+		held_coherence,
+		1.0 - damp * clampf(held_ratio, 0.0, 1.0),
+		"by exactly the shipped damp times the ratio it reads",
+		0.0001
+	)
+	# And the erosion follows it, because erosion is linear in coherence: this is the
+	# consequence a player pays, stated here so a lever that moves coherence without moving
+	# the strike cannot pass.
+	var unfunded_erosion := float(unfunded_parts.get("erosion", 0.0))
+	var held_erosion := float(held_parts.get("erosion", 1.0))
+	assert_eq(unfunded_erosion > 0.0, true, "and an unfunded reserve still takes a real erosion")
+	assert_eq(
+		held_erosion < unfunded_erosion,
+		true,
+		"so the funded reserve lands a smaller share of the sea"
 	)

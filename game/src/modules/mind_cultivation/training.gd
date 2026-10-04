@@ -14,6 +14,10 @@ const _ITEMS := preload("res://src/modules/items/api.gd")
 ## see `_grant_insight`.
 const INSIGHT_RATE := 0.05
 
+## Share of the AWARENESS reserve's own MAXIMUM restored per unit of cultivation
+## work. Dimensionless and realm-independent on purpose -- see `_restore_awareness`.
+const AWARENESS_RATE := 0.01
+
 
 static func synchronize(actor: Actor) -> void:
 	var state := actor.path(MindPath.PATH_ID)
@@ -67,10 +71,64 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 	# Deep meditation sharpens clarity and purity toward the seed's targets.
 	sea.set_clarity(minf(seed.clarity_required, sea.clarity + gain / 1000.0))
 	sea.set_purity(minf(seed.purity_required, sea.purity + gain / 1200.0))
+	# One sitting also re-arms the depleting AWARENESS reserve (ADR 0152). `change`
+	# clamps, so a reserve already full keeps the surplus exactly as the sea does.
+	_restore_awareness(actor, amount)
 	state.progress += gain
 	_grant_insight(actor, gain)
 	actor.mark_stats_dirty()
 	return true
+
+
+## Re-arm the AWARENESS reserve, the depleting defensive lever ADR 0071:35 names
+## first of four. `MindDamage` reads it as `awareness_ratio` and spends it twice:
+## `coh = 1 - COHERENCE_DAMP * awareness_ratio` (`mind_damage.gd:532`, so 1.0 -> 0.5
+## at a full reserve) and an `ATTEND` erosion's `awareness_delta`
+## (`mind_damage.gd:585`, applied at `effect_apply.gd:182`).
+##
+## Nothing wrote it. `MindCultivationApi.attach` mints the pool EMPTY
+## (`api.gd:210`, `full = false`) and no verb, item or technique ever granted it, so
+## the ratio was a constant `0.0`: `coh` was `1.0` at every build, the shipped
+## `coherence_damp = 0.5` halved nothing, and erosion Kind `ATTEND` drained nothing
+## (BL-0651). A resource authored, gated, drained and damped by, and never moved.
+##
+## ## Why a sitting, and why ADR 0013 and ADR 0071 never actually disagreed
+##
+## ADR 0013:13 lists `awareness` as a `ResourcePool` beside `mind_power` and calls it
+## perceptual acuity; ADR 0071:35 calls it "the depleting AWARENESS reserve". Those are
+## two halves of ONE shape, and the repo already ships the shape: `QiStats.QI` is
+## minted full (`qi_cultivation/api.gd:152`), spent per cast
+## (`technique_casting.gd:355`) and restored by the path's own sitting
+## (`qi_cultivation/training.gd:49`). A depleting reserve that a period boundary
+## refills. So the finding was "the refill is missing", not "two ADRs conflict", and
+## this file is where the missing half belonged -- the facade is at its 12-method cap
+## (`rules.MAX_FACADE_PUBLIC_METHODS`) and needs no new verb for a refill.
+##
+## Cultivation is also the only candidate that is free, repeatable and already
+## mandatory: the mind entry gate demands a filled sea (`sea_fill_required`), so a
+## player who never sits cannot reach the next realm, and this makes the reserve a
+## reward for the sitting they must make anyway. `meditate` is lever (2) and is refused
+## when there is no turbulence to calm, `recover` prices a deviation's wounds with
+## `recovery_item`, and `strengthen_sea` is a one-shot milestone -- none of them can
+## re-arm a reserve that a clean duel emptied.
+##
+## ## Why a share of the MAXIMUM and never `gain`
+##
+## `awareness_ratio` is what every reader consumes, so the refill is a fraction of the
+## reserve's own scale. `gain` carries `RealmRate.factor` and the meridian flow bonus
+## (training.gd:69), and scaling a bounded 0..1 ratio by either would make a deep realm
+## hold the lever permanently while R1 fights bare -- a second magnitude curve on a
+## quantity ADR 0071 promises only in ratio form (AGENTS.md's rate-is-never-a-magnitude
+## rule, the same one `tests/core/test_realm_rate.gd` enforces by reading source).
+## The maximum stays the flat 100.0 `api.gd:216` authors at creation; a per-realm
+## reserve scale would be a new power-shaped number and belongs in `MindRealmSeed`.
+static func _restore_awareness(actor: Actor, amount: float) -> void:
+	if amount <= 0.0:
+		return
+	var pool := actor.resource(MindStats.AWARENESS)
+	if pool == null or pool.maximum <= 0.0:
+		return
+	pool.change(amount * AWARENESS_RATE * pool.maximum)
 
 
 ## Insight is the Mind path's only comprehension source, and cultivation work is
