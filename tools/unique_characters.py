@@ -1352,6 +1352,64 @@ def _canon_rows(records: list[dict]) -> list[dict]:
     ]
 
 
+def _path_correction_plan(records: list[dict]) -> list[str]:
+    """What a wave must author to bring `path` back under the share limit.
+
+    The limit looks like a share to stay under and is not one. Four paths, each
+    required to be at or under 25% of the cast, SUM TO 100% - so if any one is
+    below 25% the others must exceed it. The only clearing state is therefore
+    PERFECT EQUALITY, which means the cast total must be divisible by four and
+    every path must reach exactly total/4.
+
+    That turns a quota into an exact count rather than a ratio, and it makes it
+    perishable: computed for one cast size it is wrong the moment anything else
+    lands. Three separate waves were briefed with a "balance it" instruction that
+    cannot work, because an even addition preserves shares rather than correcting
+    them, and one was briefed with a stale ratio that had been correct an hour
+    earlier.
+
+    Returns human-readable lines naming the exact counts to author.
+    """
+    counts = Counter(
+        str((record.get("identity") or {}).get("path", "unset"))
+        for record in records
+        if isinstance(record, dict)
+    )
+    values = {path: counts.get(path, 0) for path in sorted(VALID_PATHS)}
+    if not any(values.values()):
+        return []
+    total = sum(values.values())
+    warnings = _concentration_warnings(records)
+    if not warnings:
+        return []
+    lines = [
+        f"path correction needed. Four paths each at or under {DIVERSITY_MAX_SHARE:.0%} "
+        f"sum to 100%, so the only clearing state is PERFECT EQUALITY: the cast total "
+        f"must be divisible by 4 and every path must reach total/4. An even wave cannot "
+        f"do it - it preserves shares rather than correcting them.",
+        f"  current ({total}): " + ", ".join(f"{path}={value}" for path, value in values.items()),
+    ]
+    for candidate in range(total, total + 400):
+        if candidate % 4:
+            continue
+        target = candidate // 4
+        quota = {path: target - value for path, value in values.items()}
+        if any(value < 0 for value in quota.values()):
+            continue
+        added = sum(quota.values())
+        lines.append(
+            f"  author {added} character(s) to reach {candidate}: "
+            + ", ".join(f"{path}+{value}" for path, value in quota.items() if value)
+            + (f" ({added} total)" if added else "")
+        )
+        lines.append(
+            "  recompute this immediately before the next wave - it is an exact count "
+            "against a moving cast, not a ratio to hold"
+        )
+        break
+    return lines
+
+
 def _diversity_command(records: list[dict], args) -> int:
     """The read-only view of cast composition, and the number that steers a wave.
 
@@ -1395,6 +1453,8 @@ def _diversity_command(records: list[dict], args) -> int:
         return 0
     for warning in warnings:
         fail(f"monoculture: {warning}")
+    for line in _path_correction_plan(rows):
+        print(f"  {line}")
     return 1 if getattr(args, "fail_on_warn", False) else 0
 
 

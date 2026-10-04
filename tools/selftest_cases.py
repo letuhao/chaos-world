@@ -1798,6 +1798,105 @@ def _ingest_is_deterministic() -> None:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
 
 
+@case("unique_characters: the path gate demands EQUALITY, and reports the exact quota")
+def _path_gate_demands_equality() -> None:
+    """Four paths each at or under 25% sum to 100%, so the gate cannot be cleared by
+    staying under - only by being exactly even.
+
+    That is arithmetic, and it is the thing every wave brief has got wrong. Three
+    were briefed "balance it", which cannot work: an even addition preserves shares
+    rather than correcting them, so a balanced wave converges toward the limit
+    without ever crossing it. One was briefed a stale ratio that had been correct an
+    hour earlier. An exhaustive search over wave sizes 4..60 with no early exit found
+    NO allocation that cleared the gate at the then-current skew, which is only
+    explicable once the equality constraint is applied.
+
+    So `diversity` now reports the rule and the exact counts rather than leaving
+    each author to re-derive it. The test asserts the arithmetic property - that
+    the plan is reachable, that its total is divisible by four, and that every path
+    lands on the same number - rather than a hardcoded quota, because the quota is
+    against a cast that moves.
+
+    The counterweight: a clean cast must produce NO plan at all. A tool that always
+    prints a correction trains authors to ignore it.
+    """
+
+    def row(character_id: str, path: str, race: str = "") -> dict:
+        return {
+            "id": character_id,
+            "name": character_id,
+            "status": "canon",
+            "identity": {"role": "npc", "path": path, "faction": "", "home": "", "realm": ""},
+            "appearance": {"race": race},
+            "tags": [],
+        }
+
+    # Distinct races, because `race` is a guarded axis too and a fixture with one
+    # race across the whole cast is genuinely monocultured - an earlier version of
+    # this test hit that and read it as the path planner being wrong.
+    races = [
+        "races.emberblood",
+        "races.cairnborn",
+        "races.stonebound",
+        "races.marshfolk",
+        "races.tidecaller",
+        "races.lanternfolk",
+        "races.saltfolk",
+        "races.longwinter",
+    ]
+
+    skewed = [
+        *[row(f"unique-{i:04d}", "qi") for i in range(38)],
+        *[row(f"unique-1{i:03d}", "mind") for i in range(36)],
+        *[row(f"unique-2{i:03d}", "body") for i in range(36)],
+        *[row(f"unique-3{i:03d}", "unaffiliated") for i in range(36)],
+    ]
+    plan = unique_characters._path_correction_plan(skewed)
+    expect(bool(plan), "a badly skewed cast produced no correction plan")
+    if not plan:
+        return
+
+    joined = " ".join(plan)
+    expect(
+        "PERFECT EQUALITY" in joined and "divisible by 4" in joined,
+        f"the plan does not state the rule that makes it work: {plan!r}. Without it an "
+        f"author reads a ratio, and a ratio is what three waves already got wrong",
+    )
+
+    # The plan must actually clear: apply it and check every path lands on total/4.
+    counts = {"qi": 38, "mind": 36, "body": 36, "unaffiliated": 36}
+    import re
+
+    for path_name in counts:
+        match = re.search(rf"{path_name}\+(\d+)", joined)
+        if match:
+            counts[path_name] += int(match.group(1))
+    total = sum(counts.values())
+    expect(
+        len(set(counts.values())) == 1,
+        f"the reported plan leaves the four paths unequal: {counts}. Four values each at "
+        f"or under 25% summing to 100% must all be exactly 25%, so an unequal plan "
+        f"cannot clear the gate",
+    )
+    expect(
+        total % 4 == 0,
+        f"the plan lands on {total}, which is not divisible by four, so no path can "
+        f"equal total/4 and the gate still fires",
+    )
+
+    # Counterweight: an even cast needs no correction at all.
+    even = [
+        row(f"unique-{i:04d}", p, races[i % len(races)])
+        for i, p in enumerate(["qi", "mind", "body", "unaffiliated"] * 5)
+    ]
+    expect(
+        unique_characters._path_correction_plan(even) == [],
+        f"an evenly spread cast was still given a correction plan: "
+        f"{unique_characters._path_correction_plan(even)!r}. A tool that always prints "
+        f"one trains authors to skip it",
+    )
+
+
 @case("unique_characters: the diversity gate measures CANON, not in-flight shells")
 def _diversity_ignores_draft_shells() -> None:
     """A wave in flight made the gate name the wrong path as the monoculture.
