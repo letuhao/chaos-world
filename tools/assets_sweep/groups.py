@@ -25,6 +25,7 @@ module only decides which seeds share an icon and what to ask for.
 from __future__ import annotations
 
 import collections
+import math
 import re
 import subprocess
 import time
@@ -47,11 +48,62 @@ GRADES = {
     "transcendent",
 }
 
+# Subjects whose silhouette IS a writable surface. Without this the model writes
+# on them, because "no text" is discarded by the graph. Matched as a substring of
+# the subject string rather than by exact equality, so rewording a subject does
+# not silently drop the instruction.
+#
+# The hints name the SURFACE, not any word that happens to contain a letter:
+# "sheet" alone matched a horn SHARD and "band" alone matched a woven fiber band,
+# so both are spelled as the full noun phrase.
+WRITABLE_HINTS = (
+    "paper",
+    "parchment",
+    "sheet",
+    "writ",
+    "letter",
+    "notice",
+    "page",
+    "scroll",
+    "text",
+    "decree",
+    "treaty",
+    "ledger",
+    "book",
+    "codex",
+    "folio",
+    "manual",
+    "grimoire",
+    "talisman",
+    "message",
+    "chart",
+    "map",
+    "written",
+    "printed",
+    "ruled",
+)
+
 FRAMING = (
     "The complete object sits wholly inside the frame with wide empty margins on "
     "all four sides, a clear band of empty space all around it, nothing touching "
     "any edge. Painterly anime gouache, crisp dark ink contour, soft upper-left "
     "light, one clear identifying detail, readable silhouette at 32x32."
+)
+
+# The Krea2 graph zeroes negative conditioning, so "no text" is discarded and a
+# paper-shaped subject reliably tempts the model into writing on it: two of six
+# inspected decrees came back with legible lettering, which art-direction
+# forbids. Exclusion does not work here, so the surface is stated as empty.
+#
+# Phrase this as the SURFACE being bare, never as the OBJECT being flat. A first
+# attempt said "plain and unmarked" and the sampler flattened four of eight rolled
+# scrolls into bare rectangles with no object at all: "flat" overrode the
+# silhouette. Keeping the shape words dominant and the blankness subordinate is
+# what makes both survive.
+BLANK_SURFACE = (
+    "The rolled and folded surfaces are bare and blank: smooth blank paper with "
+    "a clean empty face and clean blank margins, carrying no lettering and no "
+    "symbols."
 )
 
 
@@ -148,18 +200,28 @@ def run(args) -> int:
         # are singletons (1160 of 1194), so each one is the only member of its own
         # item and has to be distinguishable from its neighbours, not just valid.
         variants = SUBJECTS[subject_key]
-        stride = 3 if len(variants) % 3 else 1
-        variant = (per_subject[subject_key] * stride) % len(variants)
+        # Step through the subject list by a stride COPRIME to its length, so every
+        # subject is reached before any repeats. A fixed stride of 3 over six
+        # entries only ever hits 0 and 3, so eight consecutive draws produced two
+        # distinct shapes - the same repetition as no rotation at all. Deriving the
+        # stride from the length is what makes a subcategory with more subjects
+        # actually use them.
+        count = len(variants)
+        stride = next(s for s in (5, 3, 2) if s < count and math.gcd(s, count) == 1)
+        variant = (per_subject[subject_key] * stride) % count
         per_subject[subject_key] += 1
         subject = variants[variant]
         slug = subject_key.split("/")[1].replace("_", "-")
         tag = re.sub(r"[^a-z0-9-]+", "-", f"{slug}-{tail}").strip("-")
+        # Subjects whose whole point is a writable surface get the blank-surface
+        # instruction; a solid object does not need it.
+        writable = any(hint in subject for hint in WRITABLE_HINTS)
         prompt = (
             f"Exactly one single {subject}, one object only, seen from DIRECTLY "
             f"ABOVE so that no ground plane appears beside it. {VALUE_WORDS[value]} "
             f"Predominantly {palette}; the pale highlight covers only a small "
             f"fraction of the object and the colour stays within that palette. "
-            f"{FRAMING}"
+            f"{BLANK_SURFACE if writable else ''} {FRAMING}"
         )
         command = [
             "uv",

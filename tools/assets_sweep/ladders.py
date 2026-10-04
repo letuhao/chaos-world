@@ -21,6 +21,7 @@ continues; a single bad theme word must not abandon 116 good ladders.
 from __future__ import annotations
 
 import collections
+import math
 import re
 import subprocess
 import time
@@ -225,9 +226,12 @@ def run(args) -> int:
     per_sub = collections.Counter()
     for index, (family_id, sub, _prefix, seeds) in enumerate(todo):
         palette, value = PALETTES[index % len(PALETTES)]
-        variant = per_sub[sub] % len(SUBJECTS[sub])
+        variants = SUBJECTS[sub]
+        count = len(variants)
+        stride = next(s for s in (5, 3, 2) if s < count and math.gcd(s, count) == 1)
+        variant = (per_sub[sub] * stride) % count
         per_sub[sub] += 1
-        subject = SUBJECTS[sub][variant]
+        subject = variants[variant]
         tag = re.sub(r"[^a-z0-9-]+", "-", family_id.rsplit("-", 1)[-1]).strip("-")
         seed = args.seed_base + index
         prompt = (

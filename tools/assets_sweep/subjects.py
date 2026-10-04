@@ -186,7 +186,14 @@ SUBJECTS: dict[str, list[str]] = {
     ],
     "consumable/decree": [
         "one rolled decree scroll tied with a cord and a large wax seal",
-        "one broad decree sheet with dense ruling and a torn lower edge",
+        "one broad decree sheet, a wide rectangle of stiff paper with a torn edge",
+        "a decree tablet standing upright, a thin slab of dark stone with a "
+        "carved border and a cord hole",
+        "a folded decree in an envelope, a wide packet of stiff paper with one "
+        "string tie and a wax drop",
+        "a hanging decree strip, a long narrow paper tag with a hole at the top "
+        "and a cord through it",
+        "a rolled decree bound as a set, three narrow paper rolls lashed together with one cord",
     ],
     "consumable/syrup": [
         "one stoppered syrup vial, a narrow-necked bottle with dark residue",
