@@ -18,6 +18,13 @@ STEPS: tuple[tuple[str, list[str]], ...] = (
     ("incident", ["validate"]),
     ("backlog", ["validate"]),
     ("data", ["audit"]),
+    # Does a guaranteed loot entry pay at the rung its own item was authored at?
+    # `LootTier` declares ONE realm and the band supplies the rest, so an entry
+    # bound by a trial whose band belongs to another ladder hands out loot scaled
+    # above or below what was authored - 53 reagents were mis-paying, and every
+    # one of them is a required craft input, so the craft chain priced itself
+    # wrong. Engine-free, so it runs with the other content gates.
+    ("cultivation", ["loot-magnitude", "check"]),
     # Can the authored world satisfy the gate it declares? A content census over
     # game/data, judged against the total every authored beat offers. Two event
     # stages asked for `need: 2` on a fact one beat supplies, and `EventApi.advance`
