@@ -223,65 +223,89 @@ func test_the_autosave_fires_on_a_period_boundary_and_not_before() -> void:
 	# "The player cannot decide when they save" is enforced by the schedule living in whole
 	# periods the player never sees. A save can only land on a boundary.
 	#
-	# **Each pull is one WHOLE PERIOD of world time, not one call.** The schedule is a count
-	# of periods, so the input has to be period-sized. The previous version of this test
-	# passed `1.0` seconds twelve times and passed — because `pull` counted CALLS and
-	# ignored its argument, so the "12 periods" it asserted were twelve invocations at 60fps,
-	# about 0.2 seconds. Feeding it real period-sized deltas is what makes the assertion
-	# mean what the comment says it means.
+	# **The verb takes a COUNT, not seconds** (ADR 0179): the autosave was the last wall-clock
+	# holdout among the accrual verbs, so `advance` is handed whole periods by the caller that
+	# owns time and this module no longer knows how long a period is at all.
 	var clock := SaveClock.new()
-	var period := SaveClock.PERIOD_SECONDS
 	for i in range(SaveClock.AUTOSAVE_PERIODS - 1):
-		assert_eq(clock.pull(period), false, "not yet (period %d)" % (i + 1))
-	assert_eq(clock.pull(period), true, "the boundary fires")
-	assert_eq(clock.pull(period), false, "and the next one is a full period away")
+		assert_eq(clock.advance(1), false, "not yet (period %d)" % (i + 1))
+	assert_eq(clock.advance(1), true, "the boundary fires")
+	assert_eq(clock.advance(1), false, "and the next one is a full period away")
 
 
-func test_a_sub_period_pull_does_not_advance_the_schedule() -> void:
-	# The regression guard for the call-count bug. A frame's delta is a fraction of a period,
-	# so a schedule that counted calls fired every 12 FRAMES — twelve disk writes a second —
-	# while reporting twelve periods. This asserts the two are genuinely different things:
-	# `AUTOSAVE_PERIODS` frames at 60fps are `AUTOSAVE_PERIODS / 60` of ONE period, so the
-	# boundary cannot fire no matter how many frames pass.
+func test_a_count_of_periods_is_fired_by_in_one_call_just_as_by_twelve() -> void:
+	# The schedule is arithmetic on a count, so a caller that moved six periods at once pays
+	# the same boundary as one that moved six in a row. Nothing here counts CALLS.
+	var whole := SaveClock.new()
+	for _i in range(SaveClock.AUTOSAVE_PERIODS - 1):
+		assert_eq(whole.advance(1), false, "eleven periods is not the boundary")
+	assert_eq(whole.advance(1), true, "and the twelfth fires it")
+
+	var lumped := SaveClock.new()
+	assert_eq(lumped.advance(SaveClock.AUTOSAVE_PERIODS), true, "one call, the whole count")
+	assert_eq(lumped.saves(), 0, "recorded only by record_saved, never by the boundary itself")
+
+
+func test_a_save_lands_only_on_a_boundary_because_the_clock_owns_no_ratio() -> void:
+	# The regression guard for the call-count bug, restated for the verb that replaced it.
+	# **There is no `PERIOD_SECONDS` on `SaveClock` any more**, so "a frame's worth of
+	# something" is not expressible as input: the verb's only argument is a whole-period count,
+	# and a fraction cannot be passed at all. At 60fps the old schedule fired every 12 FRAMES
+	# — about 0.2 seconds, twelve disk writes a second — while reporting twelve periods.
+	assert_eq(
+		_save_clock_source().contains("const PERIOD_SECONDS"),
+		false,
+		"the clock declares no seconds-per-period ratio: the SSOT owns it and nothing reads it here"
+	)
+	assert_eq(
+		_save_clock_source().contains("func advance(periods: int)"),
+		true,
+		"and its one verb takes an explicit whole-period count"
+	)
+
+
+func test_surplus_periods_are_dropped_rather_than_banked() -> void:
+	# ADR 0179 / `world_pulse.gd:90-94`: a banked surplus is a backlog that pays out at a rate
+	# nobody chose. Thirteen periods in one call resets the counter rather than leaving one
+	# period owed, so the NEXT save is a full schedule away and not one period after this one.
 	var clock := SaveClock.new()
-	for _i in range(SaveClock.AUTOSAVE_PERIODS):
-		var fired := clock.pull(1.0 / 60.0)
-		assert_eq(fired, false, "12 frames is 0.2s, which is not a whole period")
-	# The time really did accumulate: 12 frames is 0.2s, so 119 whole periods of the
-	# schedule still need 23,880s of real time and 0.2s is nowhere near one. Prove the
-	# accumulator works by feeding the real periods the schedule is counting.
-	var periods_needed := SaveClock.AUTOSAVE_PERIODS - 1
-	for _i in range(periods_needed):
-		assert_eq(clock.pull(SaveClock.PERIOD_SECONDS), false, "still short (period %d)" % (_i + 2))
-	assert_eq(clock.pull(SaveClock.PERIOD_SECONDS), true, "the carried 0.2s counts toward it")
+	assert_eq(clock.advance(SaveClock.AUTOSAVE_PERIODS + 1), true, "the boundary is crossed")
+	assert_eq(clock.advance(1), false, "and the surplus is gone, not owed")
+	# One period is counted above, so ten more reach eleven and the twelfth fires — a banked
+	# surplus would have made the next `advance(1)` land on the boundary instead.
+	for i in range(SaveClock.AUTOSAVE_PERIODS - 2):
+		assert_eq(clock.advance(1), false, "a fresh full schedule (period %d of 11)" % (i + 2))
+	assert_eq(clock.advance(1), true, "which fires on its own boundary")
 
 
-func test_a_zero_or_negative_pull_is_not_elapsed_time() -> void:
-	# A frame that elapsed nothing is not an autosave boundary and not an error. Before the
-	# fix this was the one input that could still fire the schedule (`delta > 0.0` was the
-	# only gate on the resetting branch), so a clock polled with a zero delta saved anyway.
+func test_a_zero_or_negative_count_is_not_elapsed_time() -> void:
+	# A caller that moved no periods is not an autosave boundary and not an error. Before the
+	# period-driven change this was the one input that could still fire the schedule
+	# (`delta > 0.0` was the only gate on the resetting branch).
 	var clock := SaveClock.new()
 	for _i in range(SaveClock.AUTOSAVE_PERIODS + 4):
-		assert_eq(clock.pull(0.0), false, "zero is not time")
-		assert_eq(clock.pull(-1.0), false, "negative is not time")
-	assert_eq(clock.pull(SaveClock.PERIOD_SECONDS), false, "only one period has really passed")
+		assert_eq(clock.advance(0), false, "zero is not time")
+		assert_eq(clock.advance(-1), false, "negative is not time")
+	assert_eq(clock.advance(1), false, "only one period has really passed")
 
 
-func test_reset_clears_the_carried_remainder() -> void:
-	# A new game must not inherit a fraction of the PREVIOUS body's time, or its first
-	# autosave lands early. `_elapsed` is the buffer that division leaves behind, and it is
-	# session state exactly like the counter beside it.
+func test_reset_clears_the_schedule_so_a_new_game_inherits_nothing() -> void:
+	# A fresh run must not start a period short of its first autosave. The counter is session
+	# state, and `reset` is what a new game calls.
 	var clock := SaveClock.new()
-	clock.pull(SaveClock.PERIOD_SECONDS * 0.75)
+	clock.advance(SaveClock.AUTOSAVE_PERIODS - 1)
+	clock.record_saved()
 	clock.reset()
-	assert_eq(clock.pull(SaveClock.PERIOD_SECONDS * 0.5), false, "a fresh clock starts empty")
-	assert_eq(clock.saves(), 0, "and records nothing until it fires")
+	assert_eq(clock.saves(), 0, "a fresh clock records nothing until it fires")
+	for i in range(SaveClock.AUTOSAVE_PERIODS - 1):
+		assert_eq(clock.advance(1), false, "a fresh clock starts empty (period %d)" % (i + 1))
+	assert_eq(clock.advance(1), true, "and fires on its own first full schedule")
 
 
-func test_the_clock_never_reads_a_wall_clock_or_declares_a_frame_driver() -> void:
-	# DEF-0111, and the reason the schedule is a counter: a wall-clock deadline inside persisted
-	# state is a recorded defect here. `tools arch` cannot see a module's clock, so this reads
-	# the source.
+func test_the_schedule_keeps_no_wall_clock_no_ratio_and_no_frame_driver() -> void:
+	# DEF-0111 and ADR 0179, and the reason the schedule is a counter: a wall-clock deadline
+	# inside persisted state is a recorded defect here. `tools arch` cannot see a module's
+	# clock, so this reads the source.
 	#
 	# **COMMENTS ARE STRIPPED FIRST, and that is the whole point.** Each of these forbidden
 	# tokens is named in the module's own docstring — `save_clock.gd` explains that it must not
@@ -295,6 +319,58 @@ func test_the_clock_never_reads_a_wall_clock_or_declares_a_frame_driver() -> voi
 		var source := _code_only(FileAccess.get_file_as_string(path))
 		for forbidden in ["Time.get_ticks", "_process", "_physics_process", "get_tree("]:
 			assert_eq(source.contains(forbidden), false, "%s declares no %s" % [path, forbidden])
+
+
+## The save module's CODE, with whole-line `##` comments removed, so the boundary guard reads the
+## declarations rather than the prose that explains them.
+func _save_clock_source() -> String:
+	return _code_only(FileAccess.get_file_as_string("res://src/modules/save/save_clock.gd"))
+
+
+func test_no_shipped_caller_drives_the_autosave_from_a_frame_delta() -> void:
+	# ADR 0179, and the rule the whole decision exists to serve: an accrual verb takes an
+	# explicit count from the caller that owns time. `poll_save` used to be handed the engine's
+	# `delta` from the one `_process`, which is the defect's last remaining seam — fix the
+	# clock and a frame callback still hands the save a duration.
+	#
+	# Read CODE, not raw text: `poll_save`'s own docstring names the frame delta it no longer
+	# takes, so an unstripped scan would fail on the explanation.
+	var offenders: Array[String] = []
+	for path in _source_files("res://src"):
+		var source := _code_only(FileAccess.get_file_as_string(path))
+		for line in source.split("\n"):
+			var code := String(line)
+			if code.contains("poll_save(delta)") or code.contains("clock.pull("):
+				offenders.append("%s: %s" % [path.get_file(), code.strip_edges()])
+	assert_eq(
+		offenders,
+		[],
+		(
+			"the autosave is period-driven: nothing may hand it seconds (ADR 0179). Found: "
+			+ str(offenders)
+		)
+	)
+
+
+func test_the_autosave_is_fed_by_the_world_fold_and_nothing_else() -> void:
+	# The periods have to come from SOMEWHERE, and the honest place is the explicit path that
+	# already computes whole periods (`WorldPulse.advance_periods`). Pinned structurally
+	# because a second accrual path is exactly what ADR 0173's rule refuses: `advance_world`
+	# calls `poll_save`, and `poll_save` is the only thing that asks the schedule anything.
+	var play := _code_only(FileAccess.get_file_as_string("res://src/app/item_workbench_play.gd"))
+	assert_eq(
+		play.contains("func poll_save(periods: int)"), true, "the verb takes a whole-period count"
+	)
+	assert_eq(
+		play.contains("SaveApi.clock.advance(periods)"),
+		true,
+		"and hands it to the schedule as periods rather than converting anything"
+	)
+	assert_eq(
+		play.contains("poll_save(_advanced_by(outcome))"),
+		true,
+		"and is fed by the world fold's own report, which knows how many periods it moved"
+	)
 
 
 # --- The design rule: no backup affordance --------------------------------------
