@@ -105,8 +105,19 @@ def discover() -> list[tuple[str, str, str, list[str]]]:
         subject_key = f"{category}/{subcategory}"
         if subject_key not in SUBJECTS:
             continue
-        # Already split when the seeds no longer all share one family.
-        if len({winners.get(seed) for seed in seeds}) != 1:
+        # Skip when these seeds no longer all share one family: already split.
+        resolved = {winners.get(seed) for seed in seeds}
+        if len(resolved) != 1:
+            continue
+        # Skip when that family is already a SPECIFIC rule, not the broad
+        # category/subcategory one. A seed can be claimed by a narrower family
+        # that another sweep run created - `consumable-edelweiss-dao-broth` had
+        # claimed the F15 poise seed - and the new family would then lose the
+        # resolve, so the CLI rejects it as "does not win its selected matches".
+        # Comparing against the broad id alone missed those and the run failed
+        # on every attempt.
+        broad = f"{category}-{subcategory.replace('_', '-')}-family"
+        if resolved != {broad}:
             continue
         label = names.get(sorted(seeds)[0], tail)
         slug = re.sub(r"[^a-z0-9]+", "-", label.lower()).strip("-")
