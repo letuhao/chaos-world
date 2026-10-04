@@ -21,14 +21,6 @@ extends RefCounted
 ## a diluted bloodline is a legitimate and interesting character: the clan recognises
 ## them, the lineage does not empower them. **That gap is the point of the module.**
 ##
-## ## Membership moves REGARD, the same way `sect` and `nation` do
-##
-## Joining and leaving apply an AUTHORED institutional cause to the bond between the
-## actor and the house's id, through `social` (ADR 0091, BL-0200). That is the whole of
-## the advantage a house confers: an opinion the world holds about you there, with a
-## cause ledger behind it so a save can explain it. It is a recognition, and it is the
-## third leg of one mechanism `sect` and `nation` already had two legs of.
-##
 ## ## Standing and rank are two numbers, and rank is not derived from standing
 ##
 ## `move_standing` can move earned standing UP **and DOWN** — it is the only standing
@@ -50,34 +42,6 @@ extends RefCounted
 const _PROVIDER_COMPONENT := &"clan_provider"
 ## `actor.module_data` key the versioned ledger is persisted under (ADR 0027).
 const MODULE_KEY := ClanState.MODULE_KEY
-
-## ## `social`, reached as exactly one `res://` edge
-##
-## Membership moves the world's opinion of the actor at a house (ADR 0091), and `clan`
-## owns no regard number of its own — a float written here would be a SECOND copy of
-## one fact, which `AGENTS.md` calls out by name as the ADR 0066 failure mode. So it
-## asks `social` to apply an authored cause and `social` owns the arithmetic, the cause
-## ledger and the projection into `SocialState.regard`.
-##
-## ## Why `SOCIAL_FACADE` and never a bare `SocialApi`
-##
-## `BARE_REF_UNITS` is `{ui, app, contracts}` — `modules/*` is excluded, so a bare
-## class reference out of `modules/clan/` would report ZERO violations and a
-## `clan -> social` cycle would be invisible to `_find_cycle` (ADR 0083). The `preload`
-## below is the single `res://` edge the resolver DOES read, and
-## `test_clan_social_edge.gd` greps the whole module for a bare `Social[A-Z]` class
-## name outside it, so the invisible cycle cannot be written quietly.
-const SOCIAL_FACADE := preload("res://src/modules/social/api.gd")
-
-## ## The authored causes membership moves regard BY
-##
-## Ids in `social`'s catalog, reached as plain strings through the preload above — the
-## same shape `SectApi.CAUSE_SWORN` and `NationApi.CAUSE_LIVED` use. Naming them here
-## rather than spelling literals at the call sites is what lets a test assert the
-## shipped catalog really does carry them, which is what turns `_regard`'s silence into
-## a red test rather than an invisible one.
-const CAUSE_SWORN := &"sworn_to_a_clan"
-const CAUSE_LEFT := &"left_a_clan"
 
 
 ## Attach the module to `actor`. Restores any ledger a prior `Actor.from_dict` carried,
@@ -112,16 +76,6 @@ static func attach(actor: Actor) -> void:
 ##
 ## A new member starts at the clan's entry rank and at the standing passed in (0 by
 ## default): joining is not earning. Nothing about joining makes the actor stronger.
-##
-## ## And it moves REGARD, and nothing else
-##
-## The admission is an authored institutional cause applied to the bond between this
-## actor and this house's id, so the world now holds a named opinion about the actor
-## there and a save can explain it. It does **not** touch `standing` — a new member is
-## recognised, not respected, which is the two-part split ADR 0064 is built on — and
-## the cause is applied at `scale` = the member's recognition factor, which is ADR
-## 0064's hinge: a carrier of the founder's line is known to their house as what they
-## are, and an admitted diluted member is recognised without being weightier for it.
 static func join(actor: Actor, clan_id: StringName, standing: int = 0) -> Dictionary:
 	if actor == null:
 		return ClanGate.evaluate(null, {"verb": &"is_clan", "id": String(clan_id)})
@@ -129,38 +83,13 @@ static func join(actor: Actor, clan_id: StringName, standing: int = 0) -> Dictio
 	if not unmet.is_empty():
 		return {"ok": false, "reason": "unmet", "unmet": unmet}
 	var def := ClanCatalog.instance().clan_definition(clan_id)
-	# The member's ledger as it stood BEFORE the admission. Read here because the
-	# succession question below is asked of the newcomer the house is admitting, and
-	# after the write every field of it is the entry rank — so it has to be captured
-	# while it is still the answer to "who was this before they joined".
-	var ledger_before := _ledger(actor)
-	var ledger := ClanState.with_membership(ledger_before, clan_id, standing)
+	var ledger := ClanState.with_membership(_ledger(actor), clan_id, standing)
 	# The entry rank comes from the definition rather than a literal, so a clan that
 	# publishes a different ladder still admits into its own bottom rung.
 	if def != null:
 		ledger["rank"] = String(def.entry_rank())
 	actor.set_module_data(MODULE_KEY, ledger)
 	ClanProjection.apply(actor, ledger)
-	_regard(actor, clan_id, CAUSE_SWORN, ClanGate.recognition_scale(actor))
-	# THE SUCCESSION DECISION, made by the house on the admission it just granted.
-	#
-	# `ClanHeir.register` shipped with zero production callers, so `household_heir_registered`
-	# was a gate four authored quests watch and nothing in the game could clear. The moment
-	# that genuinely belongs to it is the one above: a clan is a LINEAGE across generations
-	# (ADR 0064/0083), so admitting a member is the house stating where its line goes next —
-	# and the first admission into a house that publishes `heir` is what names the successor.
-	#
-	# Decided BEFORE the write above, against the member's ledger as it stood when the house
-	# refused them nothing: `would_register_as_heir` answers `not_a_member` for a newcomer,
-	# so a `join` that lands on a house with no `heir` rung records no fact at all. The verb
-	# refuses by name in every other case, so this line cannot double-register and cannot
-	# fire on a member who already holds the rung.
-	#
-	# It is `ClanHeir`, NOT a thirteenth `ClanApi` method — the facade is at
-	# `rules.MAX_FACADE_PUBLIC_METHODS` and ADR 0083's answer to a full facade is a component
-	# named beside it, which is what `ClanGate` and `ClanHeir` already are.
-	if bool(ClanHeir.would_register_as_heir(ledger_before)["heir"]):
-		ClanHeir.register(actor)
 	return {"ok": true, "reason": "", "unmet": []}
 
 
@@ -170,13 +99,6 @@ static func join(actor: Actor, clan_id: StringName, standing: int = 0) -> Dictio
 ## leaving is how a house loses its claim. A disgraced member is the case ADR 0064 is
 ## built around, and it is reached by losing standing first and leaving after, not by
 ## keeping a number with no clan attached to it.
-##
-## ## It moves REGARD down, by a DIFFERENT cause from `join`
-##
-## `CAUSE_LEFT` is a different act from being cast out and has to read as one, exactly
-## as it does on `SectApi.leave` (ADR 0083: leaving is always permitted and always
-## costs, and the cost is the standing). `ClanApi` publishes no expulsion verb, so
-## there is no expelling counterpart here and no cause that a call site cannot reach.
 static func leave(actor: Actor) -> bool:
 	if actor == null:
 		return false
@@ -187,7 +109,6 @@ static func leave(actor: Actor) -> bool:
 	# which mirrors to remove from what is still on the actor, so overwriting
 	# `module_data` before that strip would strand the `clan:<id>` and
 	# `clan_rank:<rank>` traits with nothing left to take them back off.
-	_regard(actor, ClanState.clan_id(ledger), CAUSE_LEFT)
 	ClanProjection.strip(actor)
 	actor.set_module_data(MODULE_KEY, ClanState.empty())
 	ClanProjection.apply(actor, ClanState.empty())
@@ -239,9 +160,9 @@ static func move_standing(actor: Actor, delta: int) -> int:
 ## Whether gated content may open for `actor`.
 ##
 ## `requirement` is authored data, never code. It is either an empty dictionary —
-## ungated, always open — or a `{verb: ..., ...}` map naming exactly one of the eight
-## gate verbs (`is_clan`, `has_rank`, `standing_at_least`, `recognised_at_least`,
-## `has_trait`, `all_of`, `any_of`, `none_of`).
+## ungated, always open — or a `{verb: ..., ...}` map naming exactly one of the seven
+## gate verbs (`is_clan`, `has_rank`, `standing_at_least`, `has_trait`, `all_of`,
+## `any_of`, `none_of`).
 ##
 ## Returns `{ok: bool, reason: String, unmet: Array[Dictionary]}` where each unmet entry
 ## is `{kind, id, required, actual, label}` — the same shape `ItemRequirement.unmet()`
@@ -273,8 +194,6 @@ static func summary(actor: Actor) -> Dictionary:
 		"rank_index": -1,
 		"rank_count": 0,
 		"standing": 0,
-		"recognition": 0.0,
-		"recognition_scale": 1.0,
 		"band_rank": "",
 		"band_count": 0,
 		"outranks_standing": false,
@@ -312,14 +231,6 @@ static func summary(actor: Actor) -> Dictionary:
 		out["patronage"] = _terms(def.patronage)
 		out["duty"] = _terms(def.duty)
 		out["rivals"] = _strings(def.rival_clans)
-	# ADR 0064's hinge, published beside the raw standing it re-reads, so a screen can
-	# show a member "recognised at 30 of 40" and WHY the two differ — the factor is the
-	# member's own concentration in this house's founding line, and it is the same number
-	# `social` was handed when the admission was recorded. Outside the `def != null` block
-	# on purpose: a member of content the catalog no longer ships still has the ledger,
-	# and the reading is still the honest one.
-	out["recognition"] = ClanGate.recognised_of(actor)
-	out["recognition_scale"] = ClanGate.recognition_scale(actor)
 	# Every authored clan is listed whatever the actor is, so a screen can compare houses
 	# and read who is hostile to whom without a second call; `held` is the only thing
 	# that differs. `admission_unmet` is deliberately NOT called here — it is a gate,
@@ -358,51 +269,6 @@ static func admission_unmet(actor: Actor, clan_id: StringName) -> Array[Dictiona
 
 
 # --- Internals ---------------------------------------------------------------
-
-
-## Ask `social` to move the world's opinion of `actor` at `clan_id` by one AUTHORED
-## cause (ADR 0091). `social` owns the arithmetic, the cause ledger and the projection
-## into `SocialState.regard`; this module holds no regard number of its own.
-##
-## ## The scale is ADR 0064's hinge, and it is a READ of purity
-##
-## `SocialApi.apply_cause`'s fourth argument attenuates a cause without authoring a
-## second id, and this is what it is for: a house recognises its members in proportion
-## to how much of the founder's line they actually carry. So a carrier is recorded at
-## full weight, a diluted member at less, and a member of a house that claims no
-## founding line at the `UNSCALED` floor — the act happened, so it is recorded at all.
-##
-## ## `leave` passes NO scale, and that is deliberate
-##
-## `join` is weighed by the hinge; leaving is not. The departure is an act in its own
-## right, and its cost must not be a function of the lineage of a membership that is
-## over — a diluted member walking out of a house is still walking out of it. It is
-## also the cheaper of the two paths: `leave` clears the ledger before the cause is
-## applied, so `ClanGate.recognition_scale` would read 1.0 for the member anyway, and
-## spelling the default out keeps the two calls saying what they mean rather than
-## relying on the order of two lines in one function. `test_clan_regard_bridge.gd`
-## asserts the weight this leaves behind, so a later change here is a red test.
-##
-## **This scales a recognition and never a stat.** `apply_cause` writes a `SocialBond`
-## axis; the character sheet is not touched anywhere on this path, which is what keeps
-## ADR 0064's rule — a clan grants recognition, never power — a property of the code
-## rather than a promise in a docstring. `test_clan_grants_no_power.gd` reads the
-## derived combat stats across a join to hold it.
-##
-## ## Silence is a refusal, not a swallowed error
-##
-## `apply_cause` refuses an unknown cause rather than moving nothing quietly, and it
-## may legitimately refuse: an actor with no social state at all, or a `clan_id` that
-## is empty. Neither is a state this module can fix and neither should abort a
-## membership change — so the result is ignored here, and the property that makes it
-## safe is that **every call site is past its own refusals**, so a refusal can only
-## mean the cause catalog does not ship this id. `test_clan_regard_bridge.gd` asserts
-## the shipped catalog does, which turns that silent path into a failed test rather
-## than an invisible one.
-static func _regard(actor: Actor, clan_id: StringName, cause_id: StringName, scale := 1.0) -> void:
-	if actor == null or clan_id == &"":
-		return
-	SOCIAL_FACADE.apply_cause(actor, clan_id, cause_id, scale)
 
 
 static func _known_clans() -> Dictionary:

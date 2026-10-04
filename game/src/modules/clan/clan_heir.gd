@@ -33,22 +33,6 @@ extends RefCounted
 ## would make a house's succession policy a function of array order. So the term is
 ## named once here and the registration is REFUSED against a house that does not publish
 ## it — a house with no `heir` rung never gets a fact saying one exists.
-##
-## ## Who calls this, and why it is the ADMISSION and not a succession screen
-##
-## This verb shipped with **zero production callers**, so `household_heir_registered` —
-## watched by four authored quests and a destiny counter — was a gate nothing in the
-## game could clear. There is no succession screen in this program, no screen named by
-## an ADR, and `ClanApi` is at its twelve-method cap, so a new "nominate an heir" button
-## was never available to be wired.
-##
-## The moment that DOES exist, and that ADR 0064/0083 already owns, is **admission**: a
-## clan is born to a line, so the house that admits a member is making a statement about
-## where that line goes next, and the first admission of a house that publishes `heir` is
-## the one that names the next generation. `ClanApi.join` therefore calls this, and calls
-## it ONLY on the admission that actually lands — never on a refusal, never on a re-join,
-## and never on a member who already holds the rung. That is a succession decision made by
-## the one actor that owns it: the house.
 
 ## The rank a registered heir holds. Named once; see the class note on why it is not
 ## derived from the ladder.
@@ -65,32 +49,6 @@ const R_NO_HEIR_RANK := "no_heir_rank"
 ## The member is already in the register. A second registration is the same one written
 ## twice, and the ledger is monotone.
 const R_ALREADY_HEIR := "already_heir"
-
-
-## ## Would admitting `actor` to `clan_id` name them heir? Answered BEFORE the admission
-##
-## The read half of the join-time succession decision, split out so the decision is made
-## once and can be tested without performing it: `ClanApi.join` asks this against the
-## member's ledger as it stands **before** the write, because after the write the rank is
-## already the entry rank and the question is unanswerable.
-##
-## Returns `{heir, reason}`:
-## - `heir` false with `not_a_member` — nobody has been admitted yet, so nothing to name.
-## - `heir` false with `no_heir_rank` — this house publishes no `heir` rung, so admitting
-##   anybody can never name a successor here. This is the gate that keeps the fact honest:
-##   a house with no such office never gets a fact claiming one exists.
-## - `heir` false with `already_heir` — the rung is already held, so a second admission is
-##   not a second succession.
-## - `heir` true — this admission names the next generation, and `register` will run.
-static func would_register_as_heir(ledger: Dictionary) -> Dictionary:
-	if not ClanState.is_member(ledger):
-		return {"heir": false, "reason": R_NOT_A_MEMBER}
-	var def := ClanCatalog.instance().clan_definition(ClanState.clan_id(ledger))
-	if def == null or not def.has_rank(HEIR_RANK):
-		return {"heir": false, "reason": R_NO_HEIR_RANK}
-	if ClanState.rank(ledger) == HEIR_RANK:
-		return {"heir": false, "reason": R_ALREADY_HEIR}
-	return {"heir": true, "reason": ""}
 
 
 ## Enter `actor` in their own house's register as its heir. Returns
