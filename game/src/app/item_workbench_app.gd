@@ -148,10 +148,14 @@ func _ready() -> void:
 	# readable slot answers a refusal, which is a new game rather than an error.
 	if not bool(restore_actor().get("ok", false)):
 		_actor = _build_actor()
-	# The per-actor modules, mounted over whichever body now stands. One list, called from both
-	# the fresh build and the restore, because two copies of an order that is load-bearing is
-	# two places for it to drift.
-	_mount_player_modules(_actor)
+	# NO second `_mount_player_modules` here. Both branches already mount: `restore_actor`
+	# calls it at the end of its own body, and `_build_actor` reaches the same list through
+	# `_attach_body_modules`. Calling it a third time is not "safe by construction" —
+	# `ItemsApi.attach` REPLACES the inventory, so on the fresh branch this discarded the
+	# four STARTER_ITEMS `_build_actor` had just granted and handed a new player an EMPTY
+	# bag. Measured, not inferred: `tools boot` reported `rows_at_boot: 0` and the claim
+	# half's `rows_now: 2`, on a run with no save file present, so the fresh branch is the
+	# one that ran. The list is still the single source of order; it is simply reached once.
 	# The death resolver, injected rather than constructed here so it names no `app/` type and
 	# stays a plain value object a test can drive. It holds no state and declares no
 	# `_process`: THIS function polls it, which is what keeps the tree at exactly three frame
@@ -182,17 +186,33 @@ func _ready() -> void:
 	# The boot-time arrival program. It opens the SAME route the nav bar uses rather than
 	# pushing a second copy of the scene: two doors to one screen means a screen the route
 	# table does not know about, which is what 	est_screen_reachability exists to catch.
-	_creation = CharacterCreationProgram.new(_stack, CharacterCreationFlow.new(), navigate_to)
+	#
+	# `adopt_actor` goes in as the FOURTH argument, and that is the whole of the creation
+	# wiring: a committed origin has to become the body the player then plays. Without it the
+	# screen promised an exclusivity and the player got the generic boot hero. Injected rather
+	# than named because `app/` is a `PRIVATE_UNIT` (`tools/arch/rules.py`) and this program
+	# must not reach into the root it is part of — the same seam `SoulDeath` takes a rebirth
+	# through.
+	_creation = CharacterCreationProgram.new(
+		_stack, CharacterCreationFlow.new(), navigate_to, adopt_actor
+	)
+	# **A hero restored from a save is adopted into the program, so the boot gate below can ask
+	# the right question.** The gate used to be `not _creation.has_hero()`, and on a restored
+	# boot `_created` is null — nothing had told the program about the hero already in hand — so
+	# `has_hero()` was false and a returning player was dropped back onto the arrival screen
+	# with a restored body already running. `restored_from_save()` existed for exactly this and
+	# had no caller; `CharacterCreationProgram.adopt` exists for exactly this and had no
+	# caller. Both are now on the line they were written for.
+	_creation.adopt(_actor)
 	if not _mount_home():
 		return
 	if _nav != null and not _nav.route_requested.is_connected(_on_route_requested):
 		_nav.route_requested.connect(_on_route_requested)
-	# Boot OPENS creation when no hero has been created yet. This is the one
-	# production caller `open_creation` had: the docstring above it claimed a
-	# shipped title flow would call it, and none existed, so the door was only
-	# ever openable from a test. A hero that already exists boots straight to the
-	# workbench, which is the returning-player path and is why the check is here
-	# rather than unconditional.
+	# Boot OPENS creation only for a player with NO hero — neither created nor restored. This is
+	# the one production caller `open_creation` had: the docstring above it claimed a shipped
+	# title flow would call it, and none existed, so the door was only ever openable from a
+	# test. The condition is the hero, not the file: a new game gets the arrival screen, and a
+	# returning player boots straight to the workbench.
 	if not _creation.has_hero():
 		open_creation()
 
@@ -265,19 +285,14 @@ func restore_actor() -> Dictionary:
 	# absent -- an ungated restore hands a body a Sea of Consciousness it was never
 	# enrolled in (BL-0523).
 	ActorFactory.restore_cultivation(actor)
-	DualCultivationApi.attach(actor)
-	FertilityApi.attach(actor)
-	ElementsApi.apply_realm_modifiers(actor)
-	ItemsApi.attach(actor)
-	SetBonusApi.attach(actor)
-	TechniquesApi.attach(actor)
 	# The per-actor mounts, so this method is self-contained: a caller that drives a
 	# restore directly gets a body as complete as a fresh one. `_ready` calls the same
 	# list again for the fresh branch, and that second call is safe by construction --
 	# every verb in the list normalizes an existing ledger rather than appending, so
 	# mounting twice is the same state as mounting once. `ItemsApi.attach` is the one
-	# that is NOT safe twice (it replaces the inventory), which is why it lives on the
-	# branch above and not in this list.
+	# that is NOT safe twice (it replaces the inventory), which is why
+	# `_attach_body_modules` replaces it and the payload's `item_state` is what a second
+	# mount restores -- exactly the branch this save took.
 	_mount_player_modules(actor)
 	return {
 		"ok": true,
@@ -290,6 +305,13 @@ func restore_actor() -> Dictionary:
 
 ## Whether the live actor came from a save rather than from creation. A boot flow asks this to
 ## decide whether to offer character creation at all.
+##
+## **This had zero callers, and the gate that replaced it was wrong.** The boot line asked
+## `_creation.has_hero()` instead, which on a restored boot was false because nothing had told
+## the program about the body already in hand — so a returning player was sent back through
+## arrival. Boot now adopts the live actor into the program above, which makes `has_hero()`
+## the answer to "does this player have a hero at all", and this accessor remains the direct
+## read for a probe that wants to know which of the two produced it.
 func restored_from_save() -> bool:
 	return _recovered_from_save
 
@@ -311,22 +333,94 @@ func save_summary() -> Dictionary:
 ## set-bonus projection, and nothing reports an error: every screen that reads them answers
 ## empty. That is the shape DEF-0151 records for a module that is "built and unwired".
 ##
-## ## Why the order is unchanged
+## ## Why it is now a one-line forward rather than its own list
 ##
-## It is `_build_actor`'s order, verbatim, because the order is load-bearing and documented
-## there: body before the element realm refresh, items before set bonus and techniques,
-## techniques last, destiny before event. Copying the sequence into a second literal would let
-## the two drift, so there is one list and the fresh build calls it too.
+## This method used to hold the first seven attaches and let `_build_actor` hold the rest,
+## which is how a reborn body ended up reading eight ledgers nobody had re-attached. The
+## whole sequence — this list, the cultivation tail and the technique seams — lives in
+## [method _attach_body_modules] and is stated there in one place. This wrapper survives as
+## the name the restore and `_ready` already call.
 
 
 func _mount_player_modules(actor: Actor) -> void:
+	_attach_body_modules(actor)
+
+
+## ## THE ONE attach list. Read this before adding a module to a hero.
+##
+## Every per-actor binding this root owns happens here, in one sequence, and the three
+## callers that need a complete hero — [method _build_actor] (fresh boot), [method
+## restore_actor] (a saved body) and [method adopt_actor] (a reborn body) — all reach it
+## through this one method. That is the whole fix, and it is structural rather than
+## cosmetic: the audit found EIGHT bindings (`SocialApi`, `DestinyApi`, `EventApi`,
+## `QuestApi`, `NpcBoot.install`, `CombatBoot.install`, `_bind_technique_seams` and
+## `ElementsApi.apply_realm_modifiers`) present in `_build_actor`'s tail and absent from
+## `adopt_actor`, so every rebirth left the Fate screen reading an empty ledger, the world
+## map empty of open events, quests not progressing, npc bonds gone and the element realm
+## multiplier degressed to R1 (ADR 0069's recorded failure). A duplicated list cannot fail
+## that way: there is no second list to forget a line in.
+##
+## ## The ORDER is load-bearing and is preserved exactly as `_build_actor` documents it
+##
+##   1. `elements` — `attach`, which mounts the provider only when the actor has none and
+##      refreshes the realm half either way. `ActorFactory.build` mounts it for a fresh body
+##      and `Actor.from_dict` restores no provider at all, so this list is the one place that
+##      can be right for both (ADR 0069). It reads the paths, so it runs after every
+##      enrolment has written one.
+##   2. `dual_cultivation`, then `fertility` — fertility adds to bases dual cultivation owns.
+##   3. `items` — body training spends the realm's elixirs through the inventory.
+##   4. `set_bonus` — derived from equipment, so it must never run before items.
+##   5. `techniques` LAST — it resolves authored options through the items vocabulary (ADR 0056).
+##   6. `social`, `destiny`, `event`, `quest` — ledgers. Destiny before event, because an
+##      event's prize is a `DestinyApi.earn_fate` and that must land in a key that exists.
+##   7. `npc` — injects the npc constructor and binds the roster to THIS actor.
+##   8. `combat`, then the technique seams — a seam is only correct once the module it wires
+##      is complete, and `TechniquesApi.attach` is what makes the codex exist for
+##      `TechniqueDelivery` to write into.
+##
+## ## What is deliberately ABSENT, and why (ADR 0130)
+##
+## `ItemsApi`, `SetBonusApi` and `TechniquesApi` are on the list — a body that cannot hold
+## an inventory has no kit, and `ItemsApi.attach` REPLACES the inventory, so a reborn body
+## must be given an empty one rather than left without a bag at all. What does NOT cross a
+## rebirth is the CONTENT: the arrival ledger is empty for a new body, the technique codex
+## is rebuilt empty, and the set-bonus projection is re-derived from an empty equipment
+## table. That is the design, not an omission — ADR 0130 says inventory and kit do not
+## cross a rebirth, and a "fix" that copied the old body's stacks across would violate it.
+##
+## `_npc_settlement` is deliberately NOT restocked here. A reborn body re-binds the roster and
+## the constructor but stands in no room, because `STARTING_CAST` is a boot-time fact about
+## the settlement the slice OPENS on, not a property of a body.
+
+
+func _attach_body_modules(actor: Actor) -> void:
+	if actor == null:
+		return
+	# The world-scoped ledgers first, and in the SAME order the old `_mount_player_modules`
+	# used: a soul and an anchor live in an injected store rather than on the actor (ADR 0127,
+	# ADR 0146), so this is a READ of that store — which `_ready` has already published by
+	# the time any of the three callers below reaches this method.
+	SoulApi.attach(actor)
+	AnchorApi.attach(actor)
 	SocketApi.attach(actor)
 	LootApi.attach(actor)
 	DifficultyApi.attach(actor)
-	SoulApi.attach(actor)
-	AnchorApi.attach(actor)
+	# `attach`, not the bare refresh: `Actor.from_dict` restores components and NEVER a
+	# `StatProvider`, so a restore or a body swap arrives with no provider and the realm MULT
+	# would land on nothing. `attach` mounts it when absent and refreshes either way.
+	ElementsApi.attach(actor)
+	DualCultivationApi.attach(actor)
+	FertilityApi.attach(actor)
+	ItemsApi.attach(actor)
+	SetBonusApi.attach(actor)
+	TechniquesApi.attach(actor)
 	SocialApi.attach(actor)
 	DestinyApi.attach(actor)
+	EventApi.attach(actor)
+	QuestApi.attach(actor)
+	NpcBoot.install(actor)
+	CombatBoot.install(actor)
+	_bind_technique_seams()
 
 
 ## The one tick caller in the game (ADR 0106, read against ADR 0089).
@@ -490,12 +584,6 @@ func mint_body(arrival_id: String, incarnation: int) -> Dictionary:
 	return CharacterCreationFlow.build_forced(arrival, incarnation)
 
 
-## Make `body` the current actor, re-binding everything that held the old one.
-##
-## **A half-swapped body is the failure this exists to prevent**: the game would read two
-## different actors — a screen on the old one, the soul on the new — and no assertion fails,
-## because both are individually valid. Every holder is re-pointed here, in one place, so a
-## future binding cannot be forgotten silently.
 ## The actor this root is currently holding, or null before boot builds one.
 ##
 ## **Public because a rebirth makes the actor MOVE.** A screen bound to the body that fell is
@@ -506,15 +594,37 @@ func actor() -> Actor:
 	return _actor
 
 
+## Make `body` the current actor, re-binding everything that held the old one.
+##
+## ## A half-swapped body is the failure this exists to prevent
+##
+## The game would read two different actors — a screen on the old one, the soul on the new —
+## and no assertion fails, because both are individually valid.
+##
+## ## The re-binding is `_attach_body_modules`, not a list of its own
+##
+## **This method used to re-attach only seven modules and stop**, which is how a reborn body
+## ended up with an empty destiny ledger, an empty world-event ledger, no quest ledger, no npc
+## roster bound to it, no combat mechanism, no technique seams and a realm-flat element
+## multiplier — ADR 0069's recorded failure, happening after every single rebirth. The
+## docstring here claimed "every holder is re-pointed, so a future binding cannot be forgotten
+## silently", and nothing made that true: the list it claimed to describe existed only as this
+## method's body. There is now no list here to forget a line in.
+##
+## ## What a reborn body does NOT get, and why (ADR 0130)
+##
+## The old body's inventory, kit, technique codex and set bonuses do not cross the rebirth.
+## `_attach_body_modules` mounts the modules those live on — an EMPTY bag, an EMPTY codex, a
+## re-derived set projection — because a body with no bag at all has no kit to lose, and
+## `ElementsApi.apply_realm_modifiers` must still run so the new body's realm is not R1-flat.
+## The world-scoped things the soul, the anchors, the world fact ledger and the institutional
+## claims are untouched by any of this: a death costs the soul and never the world.
 func adopt_actor(body: Actor) -> void:
 	if body == null:
 		return
 	_actor = body
-	SocketApi.attach(body)
-	LootApi.attach(body)
-	DifficultyApi.attach(body)
-	SoulApi.attach(body)
-	AnchorApi.attach(body)
+	# The ONE attach list, shared verbatim with the fresh build and the restore.
+	_attach_body_modules(body)
 	_status_loop = StatusLoop.new(body)
 	_world = WorldPulse.new(body, BeatDirector.new())
 	# Both seams are re-pointed at the NEW body rather than left on the old one. The
@@ -639,29 +749,29 @@ func refresh_socket_screen() -> void:
 ## A fresh hero with every path the shipped slice offers, the core resource
 ## pools, and a starting kit drawn from the shipped content tree.
 ##
-## The attach order is load-bearing and is the only place it exists:
+## ## What this method owns, and what it no longer does
+##
+## **This used to hold the attach order itself, and that was the defect.** `restore_actor`
+## and `adopt_actor` each re-typed their own shorter version of it, which is how EIGHT
+## bindings came to exist in a body swap and nowhere else. The whole sequence is now
+## [method _attach_body_modules], and this method reaches it exactly as the other two do —
+## so a module added to a hero is added once, for a fresh body, a saved body and a reborn
+## body alike.
+##
+## What stays here is what is genuinely ABOUT a first hero and about nothing else:
 ##   1. `build` — core pools and the sect ledger, which grants recognition and
 ##      never power (ADR 0084), so wiring it cannot hand a new actor an edge;
-##   2. the body path — it enrols the actor, and the element realm refresh below reads
-##      the highest realm off the actor's paths to write each element's realm
-##      multiplier. Refreshing the element realm before a path exists writes nothing,
-##      which is exactly the silent realm degression ADR 0069 records;
-##   3. dual cultivation, then fertility — fertility adds to the fertility and
-##      potency bases dual cultivation owns, so it must follow it;
-##   4. the element realm half, because it reads the paths step 2 wrote. The PROVIDER
-##      itself is mounted by `ActorFactory.build` — step 1 — so this is
-##      `apply_realm_modifiers` and never `attach`, or the stat is contributed twice;
-##   5. items, because body training spends the realm's elixirs through the
-##      inventory and an action must never find no bag to spend from;
-##   6. techniques LAST, because the technique module resolves its authored
-##      options through the items module's `OptionCatalog` and applies them
-##      through `ItemEffects` — the items vocabulary has to exist first (ADR 0056).
-##   7. social state, then the npc boot. Social belongs to EVERY actor, the player
-##      included (ADR 0091) — attaching it here rather than only inside the npc
-##      constructor is what makes the symmetry real: one ledger type answers for
-##      the player and for every inhabitant. `NpcBoot.install` then injects the npc
-##      constructor and binds the roster to this actor (ADR 0092); without it
-##      `NpcApi.spawn` can only ever return null.
+##   2. the three cultivation enrolments. The element realm refresh inside the attach
+##      list reads the highest realm off these paths to write each element's multiplier;
+##      refreshing it before a path exists writes nothing, which is exactly the silent
+##      realm degression ADR 0069 records. So the enrolments come FIRST and the
+##      refresh after, and the refresh reaches the provider through `attach`, which mounts
+##      it only when the body has none;
+##   3. the starting kit, which is the one thing a reborn or restored body does NOT get.
+##      A new arrival begins with a bag; a reborn one gets an empty one, per ADR 0130.
+##
+## `_build_actor` is deliberately NOT re-run on a body swap — `adopt_actor` is the whole of
+## that, and re-running this method would mint a second hero and stock a second kit.
 func _build_actor() -> Actor:
 	var actor := ActorFactory.build(
 		&"player", {Stat.PHYSIQUE: 12.0, Stat.SPIRIT: 8.0, Stat.APTITUDE: 6.0}
@@ -672,52 +782,8 @@ func _build_actor() -> Actor:
 	# both screens mount bound to an actor they cannot read otherwise.
 	ActorFactory.with_qi_cultivation(actor)
 	ActorFactory.with_mind_cultivation(actor)
-	DualCultivationApi.attach(actor)
-	# A species is a `race` module term for an inhabitant; the hero has none, so
-	# the species contribution is skipped rather than invented.
-	FertilityApi.attach(actor)
-	# The element provider is mounted by `ActorFactory.build`, so the player already
-	# carries it; this line REFRESHES the realm half and must never re-attach. It sits
-	# after step 2 for exactly that reason — see `ActorFactory._refresh_element_realm`
-	# and ADR 0069's "attach once" rule. A second `attach` here would stack a second
-	# `ElementProvider` (`ActorStats.add_provider` appends unguarded), and then
-	# `element_power_<e>` — the channel ADR 0088 makes status potency read — would be
-	# computed twice, silently doubling an npc's debuff on every landed blow.
-	ElementsApi.apply_realm_modifiers(actor)
-	ItemsApi.attach(actor)
-	# After `ItemsApi.attach`, as its own docstring requires: set bonus reads the
-	# items vocabulary, so it must never run first.
-	SetBonusApi.attach(actor)
-	# Techniques LAST: they read the items vocabulary written above, never the
-	# other way round (ADR 0056 — app/ wires the module, the module owns it).
-	TechniquesApi.attach(actor)
-	SocialApi.attach(actor)
-	# Fate is earned, never chosen, so birth only normalizes an EMPTY ledger and
-	# grants nothing: this is the composition-root entry point that makes the
-	# ledger exist before any earn call site writes to it. Without it the module
-	# is unwired — `DestinyApi._ledger` lazily self-attaches on first write, so
-	# the codex screen reads zero for an actor that was never attached, and a
-	# quest or event grant lands in a key nothing initialized (ADR 0065).
-	DestinyApi.attach(actor)
-	# The world ledger, attached here for the same reason `DestinyApi.attach` above:
-	# ADR 0117 named `EventApi` a facade with ZERO production callers, so nothing
-	# owned the moment ADR 0114 requires an owner of. Attaching normalizes an EMPTY
-	# ledger and grants nothing, and it is the one place the attach order exists, so a
-	# world event's prize — a `DestinyApi.earn_fate` through `EventPrize` — lands in a
-	# key that already exists. After `DestinyApi.attach`, because that is what it
-	# creates. It does NOT start anything: `EventApi.advance` still has no production
-	# caller and must not gain one until a caller owns a PERIOD COUNT (ADR 0085's
-	# pull-based tick, DEF-0111) — recorded in `docs/deferred.jsonl`.
-	EventApi.attach(actor)
-	# Quests, for the same reason: `QuestBeatHandler` is a registered sink, and a
-	# handler reading an un-attached ledger sees no active quest and claims nothing.
-	QuestApi.attach(actor)
-	# The npc boot, and the LAST thing the actor is handed: it injects the npc
-	# constructor, reads the authored cast off disk (`NpcCatalog.load_authored`) and
-	# binds the roster to this actor (ADR 0092, BL-0626). Without the read, `spawn`
-	# refuses every id it is handed and a player meets nobody; without the install,
-	# the read alone buys a catalog nothing can mint from.
-	NpcBoot.install(actor)
+	# Every remaining module, in the one order the whole composition root shares.
+	_attach_body_modules(actor)
 	# …and stock the place the player starts in, through the ONE room entry point
 	# (`populate_room`), so the cast is standing in a location rather than merely
 	# reachable. `NpcApi.populate`'s own cap bounds the room, and `replace_first`
@@ -725,18 +791,9 @@ func _build_actor() -> Actor:
 	# starting settlement, NOT a room system: no arrival re-stocks anywhere, because
 	# nothing in this repo models a room or an arrival yet (see the report on
 	# BL-0626). A place gets a cast when an author wires one, and until then the boot
-	# path stands one up where the player already is.
+	# path stands one up where the player already is. It runs AFTER
+	# `_attach_body_modules` because `populate_room` re-runs `NpcBoot.install` itself.
 	_npc_settlement = NpcBoot.populate_room(actor, STARTING_CAST, NpcApi.ROLE_NPC, &"mortal_plains")
-	# `install`, not `bind_mechanisms`: the mechanism alone left `PlayerAdapter.attack`
-	# with no resolver to land a blow through, so no blow ever landed and the two
-	# `combat` ledger facts (`duels_won`, `third_man_spared`) had no production
-	# writer. `install` is `bind_mechanisms` plus `set_attack_resolver` and is
-	# idempotent, so this is the one boot line that makes the seam live.
-	CombatBoot.install(actor)
-	# After every attach above: a seam is only correct if the module it wires is
-	# already complete, and `TechniquesApi.attach` is what makes the codex exist for
-	# `TechniqueDelivery` to write into.
-	_bind_technique_seams()
 	var inventory := ItemsApi.inventory(actor)
 	for item_id in STARTER_ITEMS:
 		var def := _resolve(item_id)
@@ -803,10 +860,29 @@ func _bind_technique_seams() -> void:
 ## damage" for a technique that works perfectly. A caller that wants the roll
 ## injects its own rng through the same seam.
 ##
+## ## Why `CombatBoot.ctx_builder_for` and not a bare `breakdown` (ADR 0154)
+##
+## This passed FIVE arguments, so `CombatSpine.resolve_hit`'s sixth — `ctx_builder` —
+## was an empty `Callable` on every production hit. That is not a default, it is a hole:
+## `QiDamage.builder` / `BodyDamage.builder` / `MindDamage.builder` were never called
+## from `src/` at all, so `ctx.data` carried none of the authored inputs. `element_share`
+## therefore read `0.0` on every strike, fell to `default_element_share` from the
+## `.tres`, and the per-technique share that all 55 authored `.tres` files set was
+## INERT; `aim_meridian` never arrived, so a `named` body aim resolved as `random`.
+##
+## `ctx_builder_for` is the composition root's whole job on this line: it picks the
+## `builder` for the mechanism THIS technique selects, and hands that builder the
+## authored def and the elements module's rule table. It is a `Callable` like any other
+## injection, so the seam `CombatSpine` was designed around is finally used and the
+## spine still learns nothing about what a qi or a body hit is.
+##
 ## `breakdown` is the descriptor form and is the right return: `TechniqueCasting
 ## ._resolve` accepts a `Dictionary` verbatim and this is exactly one.
 func _resolve_technique_hit(attacker: Actor, target: Actor, technique: TechniqueDef) -> Dictionary:
-	return CombatEngineApi.breakdown(attacker, target, technique, CombatEngineApi.tuning(), null)
+	var ctx := CombatBoot.ctx_builder_for(attacker, target, technique)
+	return CombatEngineApi.breakdown(
+		attacker, target, technique, CombatEngineApi.tuning(), null, ctx
+	)
 
 
 ## Push the one route the shell mounts at boot and never pops, so `ui_cancel`
