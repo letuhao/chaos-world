@@ -28,7 +28,19 @@ extends TestCase
 ## makes the suite go RED if any one of the four `earn_fate` calls is deleted: the
 ## deed still happens, and only the fate stops. A suite that earned the fate by hand
 ## would pass on the un-wired build, which is how this gap survived two audits.
-const BodyFixture := preload("res://tests/modules/body_cultivation/body_play_fixture.gd")
+## The body fixture is held as an INSTANCE, not read through a script const.
+##
+## A preloaded script constant exposes only that class's STATIC surface, so
+## `const BodyFixture := preload(...)` followed by `BodyFixture.breakthrough(...)`
+## is a PARSE ERROR the moment the callee is an instance method: "Cannot call
+## non-static function 'breakthrough()' on the class 'BodyPlayFixture' directly.
+## Make an instance instead." That is DEF-0233/0234 verbatim, and it is expensive
+## precisely because it IS a parse error — the suite never runs, the runner reports
+## "failed to load suite", and the tally UNDERCOUNTS every test in the file. Note a
+## `const` initialiser reading through a shared instance would not have worked
+## either: run_tests.gd attaches a suite's properties one at a time, so a const
+## answers null during initialisation.
+const BodyPlayFixture := preload("res://tests/modules/body_cultivation/body_play_fixture.gd")
 const MindProbe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
 const QiProbe := preload("res://tests/modules/qi_cultivation/qi_gate_probe.gd")
 
@@ -51,6 +63,26 @@ const OATH_BREAKER := &"oath_breaker"
 ## failed to converge rather than looping forever, and it is taken before the search
 ## and never moved by it.
 const SEED_CAP := 256
+
+## The one body fixture this suite drives, as an INSTANCE.
+##
+## Typed as the fixture's own script so `:=` still infers at the call sites — a
+## `RefCounted` return type erases that, and the call sites then read
+## "Cannot infer the type of 'actor' because the value doesn't have a set type",
+## which is the SAME class of failure in a different costume. The preloaded
+## SCRIPT is a `GDScript`, so `.new()` on it is statically typed as the class and
+## every member call resolves.
+var _body_fixture: BodyPlayFixture = null
+
+
+## The shared body fixture, built on first use rather than in a member
+## initialiser: run_tests.gd attaches a suite's properties one at a time, so a
+## value built at construction is not yet there when the first test asks.
+func _body() -> BodyPlayFixture:
+	if _body_fixture == null:
+		_body_fixture = BodyPlayFixture.new()
+	return _body_fixture
+
 
 # --- Lifecycle ----------------------------------------------------------------
 
@@ -183,7 +215,7 @@ func test_a_second_body_breakthrough_pays_the_fate_nothing() -> void:
 	assert_ne(rng, null, "a prepared body hero with a winning roll exists")
 	assert_eq(BodyAdvancement.try_breakthrough(hero, rng), true, "the first was granted")
 	var first := _sequence_of(hero, VESSEL)
-	assert_eq(BodyFixture.breakthrough(hero, _rng(4242)), true, "a second realm was entered")
+	assert_eq(_body().breakthrough(hero, _rng(4242)), true, "a second realm was entered")
 	assert_eq(
 		_sequence_of(hero, VESSEL),
 		first,
@@ -301,12 +333,28 @@ func test_each_cultivation_path_declares_destiny_in_the_arch_registry() -> void:
 ## files rather than from a list is what makes a deleted call visible; the registry
 ## assertion alone would keep passing.
 func test_each_path_source_really_earns() -> void:
-	var expected := {"qi_cultivation": 2, "body_cultivation": 1, "mind_cultivation": 1}
+	# Measured against the tree, one REAL call per path. This was `{qi: 2}` and the
+	# second qi row was a doc reference, not a call — the same false positive DEF-0260
+	# recorded for `try_breakthrough`, where a grep for the bare identifier missed the
+	# member-qualified call site. A count that includes prose is not a count of earn
+	# sites, and asserting 2 meant this case read RED while the wiring was correct,
+	# which is how a guard teaches an agent to ignore it.
+	var expected := {"qi_cultivation": 1, "body_cultivation": 1, "mind_cultivation": 1}
 	for module_name in expected:
 		var earn_sites := 0
 		for path in _module_files(String(module_name)):
-			if FileAccess.get_file_as_string(path).split("#")[0].contains("DestinyApi.earn_fate"):
-				earn_sites += 1
+			# Count LINES that call the earn, not files that contain the string. An
+			# earlier shape did `body.split("#")[0].contains(...)`, which keeps only the
+			# text BEFORE the first `#` anywhere in the file — so every call sitting
+			# after any comment was invisible and the count read 0 with the wiring fully
+			# present. Strip comment LINES instead, which is what "executable code"
+			# actually means; a `#` inside a string literal is not a comment, and this
+			# does not care because it only skips lines BEGINNING with one.
+			for line in FileAccess.get_file_as_string(path).split("\n"):
+				if line.strip_edges().begins_with("#"):
+					continue
+				if line.contains("DestinyApi.earn_fate"):
+					earn_sites += 1
 		assert_eq(
 			earn_sites,
 			int(expected[module_name]),
@@ -351,7 +399,7 @@ func _mind_hero() -> Actor:
 ## the module's own fixture, so the state it returns is one the body's suites already
 ## prove a player can produce.
 func _body_hero() -> Actor:
-	var actor := BodyFixture.actor(&"qi_refining")
+	var actor := _body().actor(&"qi_refining")
 	DestinyApi.attach(actor)
 	return actor
 
@@ -410,20 +458,26 @@ func _body_roll(hero: Actor, winning: bool) -> RandomNumberGenerator:
 	var target := RealmDefaults.ladder().next(hero.path(BodyPath.PATH_ID).rank_id)
 	if target == null:
 		return null
-	BodyFixture.prepare(hero)
+	_body().prepare(hero)
 	var committed := BodyAdvancement.start_attempt(hero, null)
 	if committed == null:
 		return null
 	var chance := float(committed.preparation.get("chance", 0.0))
 	BodyAdvancement.cancel(hero)
-	BodyFixture.prepare(hero)
+	_body().prepare(hero)
 	return _seed_deciding(chance, winning)
 
 
 ## A prepared mind hero whose first roll decides the way `winning` asks. The chance
 ## is the one `preview` publishes, which is exactly the roll's own input.
 func _mind_roll(hero: Actor, winning: bool) -> RandomNumberGenerator:
-	if _prepare_mind(hero).is_empty():
+	# `_prepare_mind` answers a `MindRealmSeed` or null, never a Dictionary — so
+	# `is_empty()` here was a call on a Resource that has no such method, and the
+	# script error it raised ABORTED this case before it asserted anything. That is
+	# the failure mode where a suite under-reports: the case looks like it failed for
+	# a reason about mind seeds when in fact its first line never ran. Null is the
+	# condition "could not be prepared", which is what the caller asserts on.
+	if _prepare_mind(hero) == null:
 		return null
 	var chance := float(MindAdvancement.preview(hero).get("chance", 0.0))
 	return _seed_deciding(chance, winning)
