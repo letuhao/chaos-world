@@ -31,9 +31,20 @@ const ROW_NODE := "QuestRow"
 const ACCEPT_NODE := "%AcceptButton"
 ## Depth ceiling for the row walk: rows live three levels below the screen.
 const MAX_TREE_WALK := 12
+## The ledger's one writer, spelled so this file's own docblocks cannot match it.
+const _LEDGER_WRITER := "World" + "Fact.record"
+## `const NAME := &"id"` — the code-owned spelling the census reads. Pinned as a named
+## shape so the rule this case asks about is written down once, the way
+## `tests/arch_rules/test_fact_ledger_writers.gd` pins it for its own reader.
+const _FACT_CONST := '\\s*const\\s+([A-Z0-9_]+)\\s*:?=\\s*&["]([a-z0-9_]+)["]'
 
 var _harness: SeamHarness = null
 var _opened: Array[StringName] = []
+## The `res://data` fact-id census, built on first use by the gate-soundness case and
+## then held. The walk reads every `.tres` under the data tree, which is far too much
+## work to repeat once per quest step; `null` means "not walked yet" and an EMPTY
+## dictionary would be indistinguishable from a data tree with no authored facts.
+var _authored_facts: Dictionary = null
 
 
 func setup() -> void:
@@ -238,24 +249,30 @@ func test_a_gated_quest_is_withheld_until_its_gate_is_met() -> void:
 ## root's own route, ONE PRESSED BUTTON, and the module's own ledger is asked
 ## whether a quest is now in flight.
 ##
-## Nothing in this function calls `QuestApi.accept`. It navigates the route, makes
-## the boot hookup the composition root owes this screen, walks to the row the
-## module offers, and presses that row's real Button.
+## Nothing in this function calls `QuestApi.accept`. It navigates the route, presses
+## the real Button on the row the module offers, and asks the module.
 ##
-## ## What the hookup is, and why it is not a fake
+## ## There is NO fallback here, and deleting one is what this case is for
 ##
-## The composition root must hand the journal its commit verb in
-## `_bind_route_screen` (`QuestProgram.QUEST_ROUTE` -> `_quests.open(screen)`).
-## `item_workbench_app.gd` is owned by another agent and is off-limits here, so
-## this suite performs that one boot hookup itself, through the program's PUBLIC
-## `open()`, and only when the root has not already made it. That is the real
-## program, the real screen, the real bridge and the real module: `open()` hands
-## the screen `Callable(QuestProgram, "accept")` and nothing else. Break any link
-## in that chain and this fails on `QuestApi.active(hero)`.
+## This suite used to do this:
 ##
-## When the root DOES make the hookup itself, the idempotent guard makes this a
-## no-op and the same assertion still holds — so this case goes red on a broken
-## bridge and stays green on a working one, whichever side owns the wiring.
+## [codeblock]
+## if not bool((live.summary() as Dictionary)["accept_seam"]):
+##     var program := QuestProgram.new(harness.actor)
+##     program.open(live)
+## [/codeblock]
+##
+## — constructing its own `QuestProgram` and binding the seam whenever the composition
+## root had not. That made the whole case UNHEALABLE: delete
+## `item_workbench_app.gd`'s entire `ROUTE_QUEST` arm and every accept assertion in
+## this file stayed green, because the test re-created the very thing under test.
+## `tests/app/test_arrival_world_mount.gd` names this file as the anti-pattern it was
+## written against.
+##
+## So the seam is now ASSERTED rather than supplied. If `ROUTE_QUEST`'s arm stops
+## calling `_quests.bind(screen)`, `accept_seam` is false, the press finds no enabled
+## button, and this case goes red on the module's own ledger — which is the only place
+## the claim was ever true.
 func test_the_production_path_takes_a_quest_on() -> void:
 	var harness := _boot()
 	if harness == null:
@@ -268,14 +285,20 @@ func test_the_production_path_takes_a_quest_on() -> void:
 	assert_ne(live, null, "the route shows a QuestScreen")
 	if live == null:
 		return
-	if not bool((live.summary() as Dictionary)["accept_seam"]):
-		# The root has not made the boot hookup yet; make the one it owes.
-		var program := QuestProgram.new(harness.actor)
-		var opened := program.open(live)
-		assert_eq(bool(opened["ok"]), true, "the program binds the seam: %s" % opened["reason"])
-		assert_eq(
-			bool((live.summary() as Dictionary)["accept_seam"]), true, "and the screen has it"
+	# THE ROOT'S CONTRIBUTION, asserted on its own. This is the line that used to be
+	# made for the test when it was missing.
+	assert_eq(
+		bool((live.summary() as Dictionary)["accept_seam"]),
+		true,
+		(
+			(
+				"the composition root mounted the journal with no accept seam bound. Its "
+				+ "ROUTE_QUEST arm in _bind_route_screen must call _quests.bind(screen); this "
+			)
+			+ "suite will not bind it for the root, because a test that heals the break it "
+			+ "detects proves nothing."
 		)
+	)
 
 	var hero := harness.actor
 	# Ask the MODULE what is on offer, not the screen: the test picks a target from
@@ -320,8 +343,14 @@ func test_the_second_press_on_the_same_quest_is_refused() -> void:
 	assert_ne(live, null, "the route shows a QuestScreen")
 	if live == null:
 		return
-	if not bool((live.summary() as Dictionary)["accept_seam"]):
-		QuestProgram.new(harness.actor).open(live)
+	# No fallback, for the reason the case above states: this one used to call
+	# `QuestProgram.new(harness.actor).open(live)` under the same condition, so the
+	# root's contribution was untested in exactly the run that would have caught it.
+	assert_eq(
+		bool((live.summary() as Dictionary)["accept_seam"]),
+		true,
+		"the composition root bound the commit verb; this suite will not bind it itself"
+	)
 	var hero := harness.actor
 	var targets := QuestApi.offered(hero)
 	assert_ne(targets.is_empty(), true, "the hero has a quest to be offered")
@@ -374,37 +403,219 @@ func test_an_unwired_journal_refuses_rather_than_doing_nothing_quietly() -> void
 ## state. A gate no fact can ever make true is a content defect (ADR 0137), not a
 ## UI problem, so it is reported here rather than papered over.
 ##
-## The steps are facts `sect`, `clan` and `combat` actually write — `sect_post_held`
-## and `oaths_discharged` from `SectApi`, `household_heir_registered` from
-## `ClanApi.register_heir`, `duels_won` / `third_man_spared` from `CombatApi` — so
-## a reached quest's steps are answerable by play rather than by a counter nothing
-## owns.
+## ## What this asked before, and why it was not the question
+##
+## It hardcoded
+## [codeblock]
+## var writes := {
+##     &"sect_post_held": true, &"oaths_discharged": true,
+##     &"household_heir_registered": true, &"duels_won": true, &"third_man_spared": true,
+## }
+## [/codeblock]
+##
+## — five literals the AUTHOR typed — and asked "is this name on my list". That is a
+## claim about a list, not about the game: it is satisfied by any build in which the
+## five producers were DELETED, and it cannot notice a sixth producer. It went green
+## over four unsatisfiable quests.
+##
+## ## What it asks now: DOES A PRODUCTION CALLER RECORD THIS FACT
+##
+## A fact reaches `world_spawn`/quest progress through exactly one ledger
+## (`WorldFact.record`), and `tests/arch_rules/test_fact_ledger_writers.gd` pins the
+## exhaustive set of files allowed to call it. So "some production caller records it"
+## is decidable from SOURCE: the fact's own id, the const that declares it, and the
+## files that reach the writer — with a real call behind the const, so a decoration
+## cannot pass for a producer. A fact nobody ever writes is still reported RED, which
+## is the case the hand-typed list could not reach.
+##
+## The scan walks `res://src` only and deliberately does NOT read `res://tests`: a test
+## writing the ledger is building its own fixture, not the game's. A step on a fact
+## produced ONLY by a test is exactly the unsatisfiable-in-play defect this is for.
 func test_every_offered_quests_steps_watch_a_fact_the_world_records() -> void:
 	var hero := _hero()
-	var writes := {
-		&"sect_post_held": true,
-		&"oaths_discharged": true,
-		&"household_heir_registered": true,
-		&"duels_won": true,
-		&"third_man_spared": true,
-	}
+	var producers := _fact_producers()
+	assert_ne(
+		producers.is_empty(),
+		true,
+		(
+			(
+				"the scan found no production producer at all, so this case cannot tell a "
+				+ "recorded fact from an unrecorded one. Either the writer's call signature "
+			)
+			+ "moved or the walk is broken; a vacuously clean run is worse than a red one."
+		)
+	)
 	var watched := 0
+	var unwritten := 0
 	for view in QuestApi.offered(hero):
 		for step in QuestApi.steps(hero, StringName(String(view["id"]))):
-			var fact := StringName(String((step as Dictionary)["fact"]))
-			assert_eq(
-				writes.has(fact),
+			var fact := String((step as Dictionary)["fact"])
+			var source := producers.get(fact, {})
+			unwritten += 1
+			assert_ne(
+				source.is_empty(),
 				true,
 				(
 					(
-						"%s watches '%s', and nothing in src/ ever records it — a quest whose "
+						"%s watches '%s', and no file under res://src calls the fact ledger's "
 						% [view["id"], fact]
 					)
-					+ "steps can never be satisfied (ADR 0137)"
+					+ ("one writer with that id's const as its argument — so nothing in the ")
+					+ ("shipped game can ever record it and the quest's steps can never be ")
+					+ "satisfied (ADR 0137)"
 				)
 			)
+			if not source.is_empty():
+				assert_ne(
+					String(source.get("calls", "")),
+					"",
+					"%s's producer declares the const but never passes it to the writer" % fact
+				)
 			watched += 1
 	assert_ne(watched, 0, "the scan saw steps, so a clean run is a real result")
+	assert_eq(unwritten, watched, "every watched step was checked against a real call site")
+
+
+## Every fact id a PRODUCTION caller can record, as `{fact_id: {declares, calls}}`.
+##
+## ## The three things a producer must have, and why each is checked separately
+##
+##   1. the writer is really CALLED in that file — the fact id has to be reachable
+##      from a call rather than sitting in an unused const, which is the same half
+##      `test_every_code_owned_writer_declares_its_id_where_the_census_reads_it` proves
+##      for the single-const case.
+##   2. the fact's id is DECLARED — `const FACT_X := &"sect_post_held"` in the same
+##      file, or `fact = &"id"` authored in a `.tres`. The census
+##      (`tools/gate_reach.py`) reads only these two spellings, so an id reaching the
+##      writer any other way is a producer nothing can see.
+##   3. an authored id exists under `res://data`, so a row cannot be satisfied by a
+##      `.tres` path nobody shipped.
+##
+## `calls` is a COUNT of call sites (or of authored `.tres`), never a hand-typed truth,
+## so this can go RED when a producer is removed — which the literal list it replaced
+## could not do.
+func _fact_producers() -> Dictionary:
+	var out: Dictionary = {}
+	for path in _gdscript_files("res://src"):
+		var text := FileAccess.get_file_as_string(path)
+		var calls := _writer_calls(text)
+		if calls == 0:
+			continue
+		# `calls` is the count of real call SITES, not a flag: a const that sits in a
+		# file with no call is a decoration and must not read as a producer.
+		for declared in _declared_fact_ids(text):
+			out[declared["fact"]] = {"declares": declared["declares"], "calls": str(calls)}
+	for authored in _authored_fact_ids():
+		if out.has(authored):
+			continue
+		var hits := _authored_fact_count(authored)
+		if int(hits) > 0:
+			out[authored] = {"declares": "authored .tres under res://data", "calls": hits}
+	return out
+
+
+## How many real call sites of the ledger's one writer `text` carries, with comment
+## halves stripped a line at a time — so this file's own docblock, which discusses the
+## writer, cannot make a decoration look like a producer.
+func _writer_calls(text: String) -> int:
+	var calls := 0
+	for raw in text.split("\n"):
+		var code: String = (raw as String).split("#")[0]
+		if code.contains(_LEDGER_WRITER) and code.contains("("):
+			calls += 1
+	return calls
+
+
+## Every `const NAME := &"id"` in `text`, as `{"fact": String, "declares": String}`.
+## The comment half is stripped a line at a time, and the line must OPEN with `const`,
+## so prose about a const — and an indented mention inside a docblock — is not one.
+func _declared_fact_ids(text: String) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	var pattern := RegEx.new()
+	if pattern.compile(_FACT_CONST) != OK:
+		return out
+	for raw in text.split("\n"):
+		var code: String = (raw as String).split("#")[0]
+		if not code.strip_edges().begins_with("const"):
+			continue
+		var found := pattern.search(code)
+		if found == null:
+			continue
+		out.append({"fact": found.get_string(2), "declares": code.strip_edges()})
+	return out
+
+
+## Every `fact = &"id"` authored under `res://data`, which is how a `.tres` beat hands
+## its id to `EventBeatWriter` — the one producer shape that names its id in content
+## rather than in a same-file const. Read ONCE and cached: the walk is a directory
+## census over the whole data tree and this case may ask it several times.
+func _authored_fact_ids() -> Dictionary:
+	if _authored_facts != null:
+		return _authored_facts
+	_authored_facts = {}
+	for path in _data_files("res://data", "fact = &"):
+		var at := path.rfind("fact = &")
+		var rest: String = path.substr(at + 9, path.length())
+		var close := rest.find('"')
+		if close < 0:
+			continue
+		_authored_facts[rest.substr(0, close)] = true
+	return _authored_facts
+
+
+## How many files under `res://data` name this fact, so `calls` is a real count of
+## AUTHORED producers rather than a made-up integer.
+func _authored_fact_count(fact: String) -> String:
+	var hits := 0
+	for path in _data_files("res://data", "fact = &"):
+		var at := path.rfind("fact = &")
+		var rest: String = path.substr(at + 9, path.length())
+		var close := rest.find('"')
+		if close > 0 and rest.substr(0, close) == fact:
+			hits += 1
+	return str(hits)
+
+
+## Every file under `root` whose text carries `needle`, recursively.
+func _data_files(root: String, needle: String) -> Array[String]:
+	var found: Array[String] = []
+	var dir := DirAccess.open(root)
+	if dir == null:
+		return found
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while entry != "":
+		if not entry.begins_with("."):
+			var path := root.path_join(entry)
+			if dir.current_is_dir():
+				found.append_array(_data_files(path, needle))
+			elif FileAccess.get_file_as_string(path).contains(needle):
+				found.append(path)
+		entry = dir.get_next()
+	dir.list_dir_end()
+	return found
+
+
+## Every `.gd` under `root`, recursively. `while` over `DirAccess` is the one shape
+## `test_no_unbounded_wait.gd` accepts as terminating, and a `for` over the collected
+## list is what every other rule in this repository performs.
+func _gdscript_files(root: String) -> Array[String]:
+	var found: Array[String] = []
+	var dir := DirAccess.open(root)
+	if dir == null:
+		return found
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while entry != "":
+		if not entry.begins_with("."):
+			var path := root.path_join(entry)
+			if dir.current_is_dir():
+				found.append_array(_gdscript_files(path))
+			elif entry.ends_with(".gd"):
+				found.append(path)
+		entry = dir.get_next()
+	dir.list_dir_end()
+	return found
 
 
 ## The other half of non-triviality: an OFFERED quest must not be something the

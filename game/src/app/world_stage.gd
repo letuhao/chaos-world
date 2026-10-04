@@ -75,6 +75,11 @@ const DEFAULT_BOUNDS := Rect2(0, 0, 1024, 1024)
 ## bounded read rather than an open-ended one.
 const MAX_INTERACTABLES := 64
 
+## The ceiling on the routed-press log. Bounded for the same reason
+## `MAX_INTERACTABLES` bounds the row list: an unbounded history on a composition-root
+## object is a leak, and a press per frame would make a run grow by the frame rate.
+const MAX_INTERACTIONS_LOGGED := 8
+
 static var _handler: Callable = Callable()
 ## The stage `app/` installed, and the most recently mounted body. Both exist so
 ## a signal-driven consumer — `WorldMapScreen`'s `location_selected` — can reach
@@ -98,6 +103,48 @@ var _actor: Actor = null
 ## because the two ways this can fail are different: no seam installed is a wiring
 ## gap, while a named refusal is the event module saying `unknown_location`.
 var _published: Dictionary = {"ok": false, "reason": "not_published"}
+## Every press this stage has ROUTED, oldest first and bounded by
+## `MAX_INTERACTIONS_LOGGED`. Kept rather than a single last-answer so a probe can see
+## that TWO presses produced TWO answers — the N-times symptom an unguarded
+## `interacted` connection causes (AGENTS.md) is invisible against one slot.
+var _interactions: Array[Dictionary] = []
+
+
+## ## The interaction seam's own health, and what the ONE production caller decided
+##
+## For a probe that has to tell "the composition root installed nothing" from "the
+## composition root installed something that refuses". Reads the INSTALLED seam, not
+## `_interactions` — a stage that has not been pressed yet and a stage whose press was
+## refused are two different facts and must not answer the same way.
+##
+## The seam had **no production caller at all**, so every press in the shipped game
+## answered `no_handler`: a body in a place that could still do nothing, which is the
+## same defect one layer below the arrival that is now fixed. `app/` installs the one
+## handler, and four rules govern what it is allowed to do — they are recorded here
+## because this is the file that owns the contract, and `app/` is at its size ceiling:
+##
+## 1. **A press OFFERS; it never ACCEPTS.** ADR 0113: the owner of the moment acts,
+##    never a poller. The moment is the press, and changing what a player is OFFERED
+##    is the one thing a press may honestly do — taking a commitment for them is not.
+##    `QuestApi.accept` is a commitment with a once-guard, so it stays reachable only
+##    where the player's own button is (`ROUTE_QUEST`'s arm).
+## 2. **A press NAVIGATES nothing.** Pushing a journal would take the player off the
+##    place they pressed in. The answer is returned and published on this stage's own
+##    `summary()` — the read model the UI contract is built on — so whatever the player
+##    is already looking at can show it.
+## 3. **A press RECORDS.** Every exit is filed by `_remember`, refusals included. A
+##    press whose answer nobody can read is the inert body this section exists to
+##    close, so the log is what makes a press observable at all.
+## 4. **The handler is reached through a FIELD, never captured.** `adopt_actor`
+##    replaces the composition root's quest program on every rebirth (ADR 0130); a
+##    lambda capturing the program captures it BY VALUE and would keep offering the
+##    fallen hero's board to a reborn player.
+##
+## An unread target is still a real answer — `interactables()` rows are authored
+## resource and inhabitant TYPES, so most presses are not a board at all and are
+## refused by name (`not_a_quest_board`) rather than by silence.
+static func has_interaction_handler() -> bool:
+	return _handler.is_valid()
 
 
 ## Install the interaction seam. `app/` passes a callable taking
@@ -271,6 +318,10 @@ func leave() -> Dictionary:
 	_interactables = []
 	_nodes = []
 	_spawned_npcs = []
+	# The routed-press log goes with the body: these presses belong to the actor that
+	# stood here, and leaving it holding a REBORN hero's answer would be the
+	# half-swapped-body failure `adopt_actor` already guards against one layer up.
+	_interactions = []
 	_player = null
 	_actor = null
 	_location_id = &""
@@ -316,6 +367,13 @@ func interactables() -> Array[Dictionary]:
 
 ## The stage's read model, primitives only. This is the UI/test contract: a panel
 ## and a headless test read the same dictionary, and neither touches a node.
+##
+## `last_interaction` is how a press becomes OBSERVABLE without the stage pushing a
+## route at anybody: `app/` installs a handler that decides what a press means and the
+## stage keeps its answer here, where whatever the player is already looking at can
+## read it. `[]` means no press has been routed yet — which is also exactly what a
+## `no_handler` refusal leaves behind, so the presence of a press is told from the
+## COUNT and not from the key.
 func summary() -> Dictionary:
 	return {
 		"mounted": _player != null,
@@ -333,6 +391,7 @@ func summary() -> Dictionary:
 		"location_publisher_installed": _location_publisher.is_valid(),
 		"world_told": bool(_published.get("ok", false)),
 		"world_told_reason": String(_published.get("reason", "")),
+		"last_interaction": _last_interaction.duplicate(),
 	}
 
 
@@ -344,19 +403,51 @@ func summary() -> Dictionary:
 ##
 ## With no handler installed this is a `no_handler` refusal and nothing more. It
 ## deliberately does NOT import `quest` or `event` to find work for itself.
+##
+## **Every exit is RECORDED, including the refusals.** A press whose answer nobody can
+## read is the inert body the audit found: `app/` installed no handler and every press
+## answered `no_handler` with no surface carrying the fact. The log is what makes a
+## press observable at all, and it is bounded so a long session cannot grow it without
+## limit.
 func interact(target_name: String) -> Dictionary:
 	if _actor == null:
-		return {"ok": false, "reason": "no_actor"}
+		return _remember({"ok": false, "reason": "no_actor", "target": target_name})
 	if _player != null:
 		_player.global_position = _clamp_body(_player.global_position)
 	if target_name == "":
-		return {"ok": false, "reason": "no_target"}
+		return _remember({"ok": false, "reason": "no_target", "target": target_name})
 	if not _handler.is_valid():
-		return {"ok": false, "reason": "no_handler", "target": target_name}
+		return _remember({"ok": false, "reason": "no_handler", "target": target_name})
 	var answer: Variant = _handler.call(_actor, _location_id, target_name)
 	if not answer is Dictionary:
-		return {"ok": false, "reason": "handler_returned_nothing", "target": target_name}
-	return answer as Dictionary
+		return _remember({"ok": false, "reason": "handler_returned_nothing", "target": target_name})
+	return _remember(answer as Dictionary)
+
+
+## File one routed press and hand it straight back, so no exit path can forget.
+## Stamps the place and the target alongside whatever the handler said: the handler's
+## own answer is authored by `app/` and carries neither, and a log that cannot say
+## WHERE a press happened cannot tell two different places apart.
+func _remember(answer: Dictionary) -> Dictionary:
+	var row := answer.duplicate()
+	row["location_id"] = String(row.get("location_id", _location_id))
+	row["target"] = String(row.get("target", ""))
+	_interactions.append(row)
+	while _interactions.size() > MAX_INTERACTIONS_LOGGED:
+		_interactions.pop_front()
+	return row
+
+
+## The last press the stage routed, or `{}` when none has been. Duplicated because
+## this is the UI contract and a caller mutating the stage's own log would be a way to
+## rewrite a record it never made.
+func last_interaction() -> Dictionary:
+	return {} if _interactions.is_empty() else (_interactions[-1] as Dictionary).duplicate()
+
+
+## Every press the stage routed, oldest first. Duplicated for the same reason.
+func interactions() -> Array[Dictionary]:
+	return _interactions.duplicate()
 
 
 # --- internals ---------------------------------------------------------------

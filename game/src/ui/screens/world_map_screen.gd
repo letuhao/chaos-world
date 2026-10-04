@@ -404,10 +404,20 @@ func _edges_summary() -> Array[Dictionary]:
 # --- Input ------------------------------------------------------------------
 
 
+## A node was pressed: remember the choice, show it, and say where it went.
+##
+## **The repaint after the emit is load-bearing and was missing.** `location_selected`
+## had no production consumer, so nothing below ever changed this screen and the
+## omission was invisible; now that the composition root mounts the stage at the chosen
+## place, the map would otherwise keep highlighting the node it HAPPENED to pick while
+## the hero stood somewhere else — a map that lies about where the player is. The
+## repaint is therefore unconditional rather than only on success: a refused journey
+## must leave no highlight either, and the stage answers a refusal by naming it.
 func _on_node_pressed(location_id: StringName) -> void:
 	_selected_location = location_id
 	_update_info_panel()
 	location_selected.emit(location_id)
+	refresh()
 
 
 func _on_node_hovered(location_id: StringName) -> void:
