@@ -468,10 +468,32 @@ def image_findings(path: Path, kind: str = "") -> tuple[list[str], list[str]]:
 
 
 def installed_images() -> list[Path]:
-    """Every rendered character PNG, or `[]` when the private folder is absent."""
+    """Every rendered character PNG under the art folder, or `[]` when it is absent.
+
+    **Recursive, and that is load-bearing.** The renders were reorganised into
+    subfolders (`outputs/scenes/` holds three scene plates, `outputs/face_angles/` ten face
+    studies), and a flat `glob("*.png")` silently skipped every one of them: the gate reported
+    "13 of 22" while 13 files sat unopened in subfolders, and nothing in the output said so. It
+    still exited 1 — the failures it did see were enough — so this did not hide a red gate, it hid
+    WHICH images were judged: `ilsa_combat_concept.png` is 0% transparent and was never measured.
+    A gate that under-reports its own denominator is the same failure as the hardcoded `ART_ROOT`
+    one commit earlier, in the other direction: it is not lying about the verdict, it is lying
+    about the coverage, and coverage is what tells a reader whether to trust the verdict.
+
+    Sorted so two runs cannot disagree about which images were measured, and walked through
+    `iterdir` rather than `rglob` so the set of visited directories is visible in this function
+    rather than hidden in a glob implementation. Bounded by the tree's own contents; it never
+    appends to what it walks.
+    """
     if not ART_ROOT.is_dir():
         return []
-    return sorted(ART_ROOT.glob("*.png"))
+    found: list[Path] = []
+    for entry in sorted(ART_ROOT.iterdir(), key=lambda item: item.name):
+        if entry.is_dir():
+            found.extend(sorted(entry.glob("*.png"), key=lambda item: item.name))
+        elif entry.suffix == ".png":
+            found.append(entry)
+    return found
 
 
 # --- CLI --------------------------------------------------------------------

@@ -79,6 +79,14 @@ CANVAS_BY_SLOT: dict[str, list[int]] = {
 ## `character_portrait` outranks `dialogue_portrait` because it is the polished primary.
 PRIMARY_SLOT_ORDER = ("character_portrait", "dialogue_portrait")
 
+## Slots whose members are ALTERNATIVES of one another, not layers of one image (ADR 0237).
+## Compositing nine expressions onto a portrait puts nine faces on it; they are reached through
+## `PortraitCatalog.for_variant` instead. Mirrors `SET_SLOT_MINIMUMS` in
+## `tools/unique_characters.py` rather than re-deriving it, because a set slot named in one table
+## and missing from the other is
+## exactly the second-source-of-truth failure this module's docstring exists to prevent.
+SET_SLOTS = frozenset({"expression_set", "pose_set"})
+
 ## A lore id is namespaced (`races.tidecaller`), a game id is not (`tidecaller`). The catalog speaks
 ##: the first dialect throughout, so every join to game content strips the namespace — and where
 ## that fails, the sync says so instead of shipping an unresolvable reference.
@@ -120,6 +128,29 @@ def rendered_name(prefix: str, shot_id: str) -> str:
     return f"{prefix}_{str(shot_id).replace('-', '_')}.png"
 
 
+def render_index(folder: Path) -> dict[str, Path]:
+    """Every rendered PNG under `folder`, keyed by FILE NAME, walking one level of subfolder.
+
+    Subfolders are load-bearing: the scene plates live in `outputs/scenes/` and the face studies in
+    `outputs/face_angles/`, so a flat lookup reports "no render at ilsa_combat_concept.png" for a
+    file that exists — the same coverage gap `art_fidelity.installed_images` had. Keyed by name
+    because the shot rule addresses files by name, and `sorted` on both levels so two runs cannot
+    disagree about which of two same-named files won. Bounded by the tree's own contents.
+    """
+    found: dict[str, Path] = {}
+    if not folder.is_dir():
+        return found
+    candidates: list[Path] = sorted(folder.glob("*.png"), key=lambda item: item.name)
+    for entry in sorted(folder.iterdir(), key=lambda item: item.name):
+        if entry.is_dir():
+            candidates.extend(sorted(entry.glob("*.png"), key=lambda item: item.name))
+    for path in candidates:
+        # First wins, and `candidates` is sorted, so the shallow file beats a same-named nested one
+        # deterministically rather than by filesystem order.
+        found.setdefault(path.name, path)
+    return found
+
+
 def install_canvas(slot: str, shot: dict) -> list[int]:
     """The geometry a shot must MATCH to install, or `[]` when nothing can be said.
 
@@ -158,6 +189,7 @@ def discover_renders(record: dict) -> list[dict]:
     art = record.get("art") or {}
     prefix = render_prefix(str(record.get("name", "")))
     folder = art_fidelity.art_root()
+    on_disk = render_index(folder)
     verdicts: list[dict] = []
     # `for` over the authored shot list, bounded by its length; it is never appended to.
     for shot in art.get("shots") or []:
@@ -165,7 +197,8 @@ def discover_renders(record: dict) -> list[dict]:
             continue
         shot_id = str(shot.get("id", ""))
         slot = str(shot.get("slot", ""))
-        found = folder / rendered_name(prefix, shot_id)
+        name = rendered_name(prefix, shot_id)
+        found = on_disk.get(name, folder / name)
         want = install_canvas(slot, shot)
         entry = {
             "shot_id": shot_id,
@@ -249,10 +282,20 @@ def install_plan(record: dict) -> tuple[list[dict], list[str]]:
     """
     character_id = str(record.get("id", ""))
     refusals: list[str] = []
-    installable = [entry for entry in discover_renders(record) if entry["verdict"] == "install"]
-    for entry in discover_renders(record):
+    verdicts = discover_renders(record)
+    installable: list[dict] = []
+    for entry in verdicts:
         if entry["verdict"] != "install":
             refusals.append(f"{entry['shot_id']}: {entry['reason']}")
+        elif entry["slot"] in SET_SLOTS:
+            # Named, never silently dropped: a set member is reachable as a VARIANT (ADR 0237), and
+            # an author who cannot see that concludes the render was lost.
+            refusals.append(
+                f"{entry['shot_id']}: a {entry['slot']} member is a variant chosen by key, not a "
+                "layer composited into the portrait (ADR 0237)"
+            )
+        else:
+            installable.append(entry)
 
     by_slot: dict[str, list[dict]] = {}
     for entry in installable:

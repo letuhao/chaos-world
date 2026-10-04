@@ -4764,25 +4764,57 @@ def _art_unknown_kind_skips_skin_bound() -> None:
     )
 
 
-@case("art_fidelity: the shipped romance render FAILS (skipped when the folder is absent)")
-def _art_shipped_romance_render_fails() -> None:
-    """Evidence, not a guard — and it says so.
+@case("art_fidelity: the gate READS the shipped corpus, including subfolders")
+def _art_gate_reads_the_shipped_corpus() -> None:
+    """Coverage evidence, not the guard — and it says so.
 
-    The art lives in a gitignored private checkout, so this SKIPS on a clean clone and a
-    skipped case proves nothing. It is here so that on a machine holding the art, the claim
-    "the known-bad render fails the gate" is checked by something other than a sentence in a
-    commit message. DEF-0256.
+    This case used to assert that `ilsa_daily_romance.png` fails, because that render
+    contradicted the authored criteria on six points (DEF-0256). **The art was regenerated on
+    2026-10-05 and that render now passes**, so pinning the filename would have turned a true
+    statement into a false one the moment the art improved. The trace of what it caught stays in
+    DEF-0256 and in commit 81f541ff.
+
+    What is asserted now is the property that survives regeneration and that no other case covers:
+    the gate OPENS every shipped file, including the ones in `outputs/scenes/` and
+    `outputs/face_angles/`. A flat glob reported "13 of 22" while 13 files sat unopened in
+    subfolders — still exiting 1, so it hid WHICH images were judged rather than the verdict, and
+    `ilsa_combat_concept.png` being 0% transparent went unmeasured. Coverage is what tells a
+    reader whether to trust a verdict.
+
+    Whether any file FAILS is deliberately not asserted: `art_fidelity` is intentionally kept out
+    of `tools check` (ADR 0193), so a case that reddened when the art program delivered clean art
+    would make the build permanently red over an improvement. The gate's BITE is proven
+    deterministically by the synthetic palette, transparency and single-subject cases above, each
+    verified to go RED with its constant neutered.
     """
-    path = art_fidelity.ART_ROOT / "ilsa_daily_romance.png"
-    if not path.is_file():
-        print(f"    (skipped: {path.name} absent; the private art folder is gitignored)")
+    images = art_fidelity.installed_images()
+    if not images:
+        print("    (skipped: no rendered art; the private art folder is gitignored)")
         return
-    gating, _advisory = art_fidelity.image_findings(path)
+    # Enumerate the subfolder renders INDEPENDENTLY of installed_images(), then assert none is
+    # missing from what the gate read. Asserting only `len(images) >= flat glob count` is
+    # tautological — 22 >= 22 holds whether or not the walk recurses — which is how a guard ends
+    # up green while proving nothing (INC-0016). This form goes RED the moment the recursion is
+    # removed, because `missed` becomes the 13 files sitting in outputs/scenes and
+    # outputs/face_angles. Two bounded `for` walks over directory listings; neither appends to what
+    # it iterates.
+    covered = {path.name for path in images}
+    missed: list[str] = []
+    for entry in sorted(art_fidelity.ART_ROOT.iterdir(), key=lambda item: item.name):
+        if not entry.is_dir():
+            continue
+        for nested in sorted(entry.glob("*.png"), key=lambda item: item.name):
+            if nested.name not in covered:
+                missed.append(f"{entry.name}/{nested.name}")
     expect(
-        bool(gating),
-        "ilsa_daily_romance.png PASSED the fidelity gate. DEF-0256 requires it to fail; a gate the "
-        "known-bad art passes is not a gate (INC-0016).",
+        not missed,
+        f"the fidelity gate skipped {len(missed)} render(s) sitting in subfolders: {missed}. A "
+        "coverage gap hides which images were judged even when the verdict is right.",
     )
+    failing = [path.name for path in images if art_fidelity.image_findings(path)[0]]
+    print(f"    ({len(images)} shipped image(s) read; {len(failing)} carry a gating finding)")
+    for name in failing:
+        print(f"      gate fires: {name}")
 
 
 @case("character_bundle_sync: verify REPORTS a published_as claim with no file behind it")
@@ -4838,8 +4870,8 @@ def _sync_verify_reports_a_false_claim() -> None:
 
 @case("art_fidelity: art_root RESOLVES the folder instead of trusting one hardcoded path")
 def _art_art_root_resolves_a_moved_folder() -> None:
-    """Both directions, because a resolver that always returns the first candidate is indistinguishable
-    from a hardcoded path when the first candidate happens to exist.
+    """Both directions, because a resolver that always returns the first candidate cannot be told
+    apart from a hardcoded path when the first candidate happens to exist.
 
     The regression this pins is real: the private checkout was renamed `unique-characters/` ->
     `unique/` in place, `ART_ROOT` still pointed at the old name, and `check` exited 0 printing
