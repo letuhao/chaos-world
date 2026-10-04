@@ -1,59 +1,55 @@
 class_name ItemWorkbenchApp
-extends ItemWorkbenchBody
+extends ItemWorkbenchReadout
 
 ## Composition root for the playable slice (ADR 0002, 0027, 0033).
 ##
-## The only place that knows concrete module types and the attach order. It
-## builds one actor, mounts the screen stack the scene already declares, and
-## injects file-backed persistence — the UI program itself never names a module
-## type or touches the filesystem.
+## The only place that knows concrete module types and the attach order. It builds one
+## actor, mounts the screen stack the scene already declares, and injects file-backed
+## persistence — the UI program never names a module type or touches the filesystem.
 ##
-## Every surface a player can reach is named by `ScreenRoutes`, and this root is
-## the only thing that mounts one: `navigate_to(route_id)` is the single
-## navigation mechanism, called by the navigation bar, by a screen that asks for
-## another screen, and by a headless probe that presses the same control a player
-## presses. A screen the route table does not name cannot be reached at all, so
-## "shipped" and "reachable" cannot drift apart.
+## Every surface a player can reach is named by `ScreenRoutes`, and this root is the
+## only thing that mounts one: `navigate_to(route_id)` is the single navigation
+## mechanism, called by the bar, by a screen that asks for another screen, and by a
+## headless probe that presses the control a player presses. A screen the route table
+## does not name cannot be reached at all, so "shipped" and "reachable" cannot drift.
 ##
-## ## The split into THREE files
+## ## The split into FOUR files
 ##
-## This file is the SHELL: boot, the save round trip, the screen stack, the
-## navigation bar, and the route-to-screen binding. It inherits TWO halves, and each
-## exists because this file passed the thousand-line ceiling once already and would
-## have passed it again:
+## This file is the SHELL: boot, the save round trip, the screen stack, the navigation
+## bar, and the route-to-screen binding. It inherits THREE halves, each extracted
+## because this file passed the thousand-line ceiling and would have passed it again:
 ##
-##   - `ItemWorkbenchPlay` is the PLAY half — the actor itself and the four clocks
-##     that answer for it (world period, anchor repair, death poll, autosave).
-##   - `ItemWorkbenchBody` is the BODY half, one level further in — the attach list,
-##     the fresh-hero build, the hit and readout seams, and the read bridges a screen
-##     is handed for the hero.
+##   - `ItemWorkbenchReadout` — the drill body a reader strikes, the one blow it
+##     resolves, and the combat context row beside it.
+##   - `ItemWorkbenchBody` — the attach list, the fresh-hero build, the hit and readout
+##     seams, and the read bridges a screen is handed for the hero.
+##   - `ItemWorkbenchPlay` — the actor itself and the four clocks that answer for it.
 ##
 ## **Every addition is charged against that ceiling.** Two wires added here — the
-## interaction seam and travel — took this file back over 1000 lines, so each one
-## carries its rule here and its RATIONALE in the file that owns the contract
-## (`WorldStage.has_interaction_handler`), rather than repeating it at the call site.
+## interaction seam and travel — took this file back over 1000 lines, so each carries
+## its rule here and its RATIONALE in the file that owns the contract
+## (`WorldStage.has_interaction_handler`), not again at the call site.
 ##
-## **Inheritance, not delegation, and that is the whole reason it works.** Every verb
-## on either half is called on the mounted root — a screen asks the root to advance
-## a period, a probe asks it for the world, a suite asks it who the actor is — so a
-## delegation would leave every one of those callers naming a method that is not there.
-## As base scripts the root still answers all of them, and `get_script_method_list()`
-## on it reports the inherited declarations too, so `tests/app/test_screen_reachability.gd`
-## still sees the whole door surface. **No public method was moved off this class or
-## renamed**, and no signature changed: the split is invisible to every caller.
+## **Inheritance, not delegation, and that is the whole reason it works.** Every verb on
+## any half is called on the mounted root — a screen asks the root to advance a period,
+## a probe asks it for the world — so a delegation would leave every caller naming a
+## method that is not there. As base scripts the root still answers all of them, and
+## `get_script_method_list()` reports inherited declarations too, so
+## `tests/app/test_screen_reachability.gd` still sees the whole door surface. **No
+## public method was moved off this class or renamed**, and no signature changed.
 ##
-## Two suites read this file as TEXT, so what stayed here is what they slice on:
-## `tests/app/test_status_clock.gd` requires `StatusLoop.new(` and a `_process(` signature
-## to appear HERE and nowhere else under `res://src` (one tick caller is ADR 0106's claim),
-## and `tests/modules/save/test_cultivation_boot_round_trip.gd` slices this file between the
-## `restore_actor` and `restored_from_save` declarations. Both still hold. So did the
-## third: `tests/arch_rules/test_fact_ledger_writers.gd` pins the exact set of files that
-## call the fact ledger's one writer, and this root is the eighth — which is why
-## `adopt_actor` and `_register_birth` stayed rather than moving with the attach list.
-## The declaration names above are written WITHOUT their `func ` prefix on purpose:
-## that suite finds its slice with `source.find("func restore_actor")`, so naming them
-## in prose would put the FIRST match above the real declarations and hand the slice a
-## docblock instead of the restore body.
+## Three suites read files in this chain as TEXT, so what stayed in the SHELL is what
+## they slice on: `tests/app/test_status_clock.gd` requires `StatusLoop.new(` and a
+## `_process(` signature HERE and nowhere else under `res://src` (one tick caller is
+## ADR 0106's claim), and `tests/modules/save/test_cultivation_boot_round_trip.gd`
+## slices this file between the `restore_actor` and `restored_from_save` declarations.
+## Both still hold. So did the third: `tests/arch_rules/test_fact_ledger_writers.gd`
+## pins the exact set of files calling the fact ledger's one writer, and this root is
+## the eighth — which is why `adopt_actor` and `_register_birth` stayed rather than
+## moving with the attach list. Both restore declarations are named above WITHOUT
+## their `func ` prefix on purpose: that suite finds its slice with a `source.find` of
+## that literal, and naming them in prose would put the FIRST match above the real
+## declarations.
 
 ## The routes whose screen needs more than `setup(actor)`. Every other route is a
 ## `UiScreen`, which is bound by the default arm below.
@@ -894,109 +890,6 @@ func _purge_combat_scope() -> Array[String]:
 	return _status_loop.exit_combat()
 
 
-## One drill body, with the three mechanism inputs the shipped player already has. It
-## is a body-cultivation actor because that is the one carrying an `acupoints` set, so a
-## body technique resolves at a meridian against it rather than reporting "no location
-## axis" — the readout's whole claim is that what the engine computes is what a player
-## sees, and an input-less target would show less than production does.
-##
-## ## Why `CombatBoot.install` is here and not one layer up
-##
-## The enrolment above is only the HALF of what the body needs to be struck. `install` is
-## what calls `CombatEngineApi.attach_wounds`, and that call is the ONLY production writer
-## of the `body_wounds` component — so without it `CombatEngineApi.wounds_of` answers
-## null, `CombatReadoutScreen._wounds_payload` returns `{}`, and
-## `CombatReadoutPanel.wounds_text` printed `No meridian carries a wound.` FOREVER, on a
-## body that took every hit the reader ever threw at it. `effects[]` is not the wound:
-## the row on the panel comes from the LEDGER, and nothing settles the ledger but the
-## applier reading a bound one.
-##
-## The cache in `item_workbench_body.gd:_readout_target` exists precisely so a wound can
-## ACCUMULATE — "a reader who re-enters the route strikes the same body twice and can
-## watch a wound accumulate". It cannot accumulate without the ledger bound here, so this
-## call is what makes that comment true rather than aspirational.
-##
-## Order matters and is the one `ui_driver.gd:197-201` documents: enrol the paths, THEN
-## install — `bind_mechanisms` reads `acupoints` / `sea_of_consciousness` to choose a
-## mechanism, and installing first measures every path's inputs as absent. `install` is
-## idempotent, so a route re-entry cannot erase a wound earned on the previous visit.
-func _build_readout_target() -> Actor:
-	var drill := ActorFactory.spawn_inhabitant(&"readout_drills")
-	ActorFactory.with_body_cultivation(drill)
-	CombatBoot.install(drill)
-	return drill
-
-
-## Resolve one blow for the readout and hand back `CombatOutcome.to_dict()` VERBATIM.
-##
-## ## Why it is the production entry point and not a private one
-##
-## `CombatBoot.resolve_hit` is what `_resolve_technique_hit` already calls, so this is
-## the same decision the shipped app makes about which mechanism runs and what `ctx.data`
-## carries (ADR 0161). A readout that resolved through a different route would be a
-## second opinion about the engine rather than a view of it.
-##
-## The technique is a BARE SWING built by `CombatBoot` for exactly this purpose — there
-## is no authored "readout strike", and inventing one in `game/data/techniques/` would
-## be authoring content the design does not have. It follows the hero's realm, so the
-## numbers on the readout move when the hero's realm moves.
-##
-## `rng` is null on purpose: a null generator means nothing random happens and every
-## attack lands, which is what a readout wants. A screen that reported "0 damage" for a
-## miss would teach the reader that a whiff and a gut-punch are the same event.
-func _readout_blow(attacker: Actor, defender: Actor) -> Dictionary:
-	if attacker == null or defender == null:
-		return {}
-	var outcome := CombatBoot.resolve_hit(
-		attacker, defender, _readout_technique(), CombatEngineApi.tuning(), null
-	)
-	return outcome.to_dict()
-
-
-## The bare swing the readout fires: the qi path, so the mechanism is the one the
-## installed actor carries, and a magnitude high enough that a wound is reachable in a
-## handful of strikes rather than in a session. It is rebuilt per blow and never
-## persisted, for the same reason `CombatBoot._swing_def` is: a swing leaves no record.
-func _readout_technique() -> TechniqueDef:
-	var def := TechniqueDef.new()
-	def.path = PathState.QI
-	def.magnitude = READOUT_MAGNITUDE
-	def.element_share = READOUT_SHARE
-	return def
-
-
-## The readout's companion read: `{band, actor, mechanism}`, all primitives.
-##
-## ## Why this is ONE callable and not three
-##
-## `CombatOutcome.to_dict()` decomposes ONE resolved blow. It deliberately carries
-## nothing about the roll that was NOT taken, nothing about the attacker, and nothing
-## about which mechanism produced the number — those are three different questions from
-## three different owners. The prior shape of this wiring took a `strike` callable and a
-## `context` callable separately, which put two seams on the same screen for two halves
-## of one answer and left the screen unable to say which mechanism fired.
-##
-## `app/` is the only layer that can answer all three: it names `CombatEngineApi` for
-## the band and the stat line, and `CombatBoot.mechanism_for_hit` for the third, because
-## **the mechanism is the one fact the READOUT cannot derive** — it is chosen per hit by
-## the technique's path, and re-asking it here through a second route would be a second
-## opinion about the engine's own decision. It is deliberately the SAME named question
-## `_readout_blow` answers internally, so the line a reader sees is the line the blow ran.
-##
-## ## The band is a SEPARATE roll, and that is the point
-##
-## `CombatEngineApi.band` rolls again with no generator, so this reports what WOULD be
-## drawn rather than what WAS consumed by the blow above. Folding it into `to_dict()`
-## would have made the readout claim the engine produced a number it did not — which is
-## why it stays its own row and the panel labels it for what it is.
-func _readout_context() -> Dictionary:
-	return {
-		"band": CombatEngineApi.band(_actor, _readout_target(), CombatEngineApi.tuning(), null),
-		"actor": CombatEngineApi.summary(_actor),
-		"mechanism": CombatBoot.mechanism_for_hit(_actor, _readout_technique()),
-	}
-
-
 ## The navigation bar asks; this root decides. One request in, one screen out.
 func _on_route_requested(route_id: StringName) -> void:
 	navigate_to(route_id)
@@ -1049,7 +942,7 @@ func _interact_in_the_world(
 		return {"ok": false, "reason": "no_actor", "target": target_name}
 	if _quests == null:
 		return {"ok": false, "reason": "no_quest_program", "target": target_name}
-	var board := _QUEST_BOARD_ALIASES.get(target_name, "")
+	var board := String(_QUEST_BOARD_ALIASES.get(target_name, ""))
 	if board.is_empty():
 		return {"ok": false, "reason": "not_a_quest_board", "target": target_name}
 	# Read the CURRENT ledger rather than a figure remembered at boot: a press is a

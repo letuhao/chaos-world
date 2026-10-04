@@ -47,6 +47,10 @@ extends Control
 ## owns it (DEF-0111); nothing reads `Time.get_ticks_*`, which is what
 ## `tests/app/test_status_clock.gd` asserts. There is no loop in this file at all, so
 ## `tests/arch_rules/test_no_unbounded_wait.gd` has nothing to rule on.
+##
+## The autosave takes PERIODS, not seconds (ADR 0179): it is an accrual verb like every
+## other one here, so it rides the same explicit count as the world fold rather than a
+## frame delta of its own.
 
 var _actor: Actor = null
 ## What [code]NpcBoot.populate_room[/code] answered at boot: how many bodies stood up
@@ -68,15 +72,39 @@ var _death_armed: String = ""
 ## The last resolved death, as primitives, so `summary()` can report what happened without a
 ## screen re-deriving it.
 var _last_death: Dictionary = {}
+## The world fold's running period total as of the last [method advance_world], so the autosave
+## is told what MOVED rather than what was asked for — `WorldPulse` clamps a long skip
+## (ADR 0179).
+var _periods_seen: int = 0
 
 
 ## Advance the world by exactly `periods` whole periods, with no elapsed time — the
 ## player-facing half of the tick. `EventApi.advance` refuses `periods <= 0` by
 ## design (ADR 0085), so nothing accrues without a caller saying how much.
+##
+## ## The autosave rides the SAME count, on the SAME path
+##
+## `WorldPulse` clamps to `MAX_PERIODS_PER_PULL`, and the save must be told what the WORLD
+## actually advanced rather than what was asked for: a caller asking for 8 into a clamp of 8
+## agrees, but a caller asking for more than the clamp took has moved fewer periods than it
+## paid for. The report's `periods` is the world fold's own running TOTAL, so the delta
+## against the last one seen is exactly what moved.
 func advance_world(periods: int) -> Dictionary:
-	return (
-		{"ok": false, "reason": "no_world"} if _world == null else _world.advance_periods(periods)
-	)
+	if _world == null:
+		return {"ok": false, "reason": "no_world"}
+	var outcome := _world.advance_periods(periods) as Dictionary
+	poll_save(_advanced_by(outcome))
+	return outcome
+
+
+## How many whole periods this advance moved the world by, read from the report the world fold
+## returns. A report whose total did not RISE moved nothing — which is the case after a body
+## swap, because `adopt_actor` builds a fresh `WorldPulse` whose total starts at zero.
+func _advanced_by(outcome: Dictionary) -> int:
+	var total := int(outcome.get("periods", 0))
+	var moved := maxi(0, total - _periods_seen)
+	_periods_seen = total
+	return moved
 
 
 ## Advance the world by exactly ONE period. **The verb a screen's "wait a season"
@@ -171,10 +199,14 @@ func last_death() -> Dictionary:
 ##
 ## **The player never decides when this happens.** The clock counts whole periods and the save
 ## lands on a boundary they never see, which is the requirement rather than a limitation
-## (ADR 0128). Called from [method ItemWorkbenchApp._process] with the engine's delta; no
-## module reads a clock.
-func poll_save(delta: float) -> Dictionary:
-	if not SaveApi.clock.pull(delta):
+## (ADR 0128).
+##
+## **`periods` is a COUNT handed down, never seconds** (ADR 0179). The engine's frame delta is
+## not an input here: the autosave was the last wall-clock holdout among the accrual verbs, and
+## it is gone. A sub-period delta cannot fire the schedule because the schedule has no idea how
+## long a period is — only how many have passed.
+func poll_save(periods: int) -> Dictionary:
+	if not SaveApi.clock.advance(periods):
 		return {}
 	return SaveApi.persist(_actor, String(DifficultyApi.current_id(_actor)))
 
