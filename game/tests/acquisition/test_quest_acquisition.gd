@@ -1,14 +1,10 @@
 extends TestCase
 
-## **`quest` is not an acquisition route, and this suite is the proof rather than the
+## **`quest` IS an acquisition route, and this suite is the proof rather than the
 ## claim.**
 ##
-## 3076 items declare a `quest` source and `tools/data.py` declares no route for the
-## kind, so `data audit` reports them as graph-obtainable and unreachable. The standing
-## reason used to be "the quest system does not exist". **That is wrong, and the wrong
-## reason is worse than no reason**, because it invites a content fix for a code gap.
-## The quest module ships and works; what it cannot do is hand over an item. Driven
-## end to end here, once, so the verdict is reproducible:
+## 3076 items declare a `quest` source. The chain that delivers one is driven end to
+## end here, so the verdict is reproducible:
 ##
 ##   accept     `QuestApi.accept` takes the quest — the catalog and gate both answer.
 ##   satisfy    `WorldFact.record` puts the fact in the shared ledger and
@@ -20,19 +16,32 @@ extends TestCase
 ##              writes a boolean now, so the once-guard is live. (ADR 0117's second
 ##              fix: it wrote `completed = 0` into a field read with `> 0`, so quests
 ##              re-paid on every call.)
-##   deliver    **nothing.** `QuestGrants.pay` records the item grant as unspent with
-##              `no_inventory_dependency`, because `quest` declares no `items`
-##              dependency and the module refuses to take an undeclared edge. The
-##              actor's inventory is untouched.
+##   deliver    **the item.** `quest` declares `items` in
+##              `tools/arch/registry.json`, so `QuestGrants.pay` resolves the granted
+##              id and `ItemsApi.generate` realizes it into the actor's bag. `paid`
+##              means "in the bag".
 ##
-## The last step is the one `ItemDef.sources` cannot tell you, which is why
-## `tools/data.py` trusts nothing here. If item delivery is ever wired, the fourth
-## assertion below goes red and the route decision has to be revisited in the same
-## change — that is what keeps this file from becoming a stale alibi.
+## Delivery and REFUSAL are both asserted, and the only thing that separates them is
+## which id the quest owes. That is the shape this file has to keep: a delivery test
+## with no refusal beside it proves nothing about what a player is told when the grant
+## cannot be honoured, and a refusal test with no delivery beside it cannot tell a
+## working route from a well-worded one.
+##
+## **What this file cannot tell you, by construction.** `data audit` measures the
+## route from `tools/data.py`, which reads content and shipping code — never this
+## suite. So a green run here is necessary for the route and not sufficient for it,
+## and the audit is the half that has to agree.
 
 const FACT := &"t_the_road_walked"
 const PAYING := &"t_paying_road"
+## An id NO content file declares, so the grant it names is refused. Named as a
+## constant because it is the refusal half of this file's claim, not a fixture
+## detail: an unresolvable reference must come back named.
 const SEALED := &"t_a_sealed_letter"
+## A REAL authored `ItemDef` (`res://data/items/equipment/armor_iron_helm.tres`),
+## so the same drive with this id delivers instead of refusing. The only
+## difference between the two verdicts is which id the quest owes.
+const REAL_ITEM := &"armor_iron_helm"
 
 
 func setup() -> void:
@@ -46,7 +55,10 @@ func teardown() -> void:
 	DestinyFixtureCatalog.teardown()
 
 
-func _quest() -> QuestDef:
+## The paying quest. `item_id` is the ONLY thing that varies between this file's two
+## verdicts, so it is a parameter rather than a constant baked into the fixture:
+## a fixture that hardcoded a real def would make the refusal half unreachable.
+func _quest(item_id: StringName = SEALED) -> QuestDef:
 	return (
 		QuestFixtureCatalog
 		. quest(
@@ -56,7 +68,7 @@ func _quest() -> QuestDef:
 			[{"step_id": &"walked", "fact": FACT, "need": 1}],
 			[
 				QuestFixtureCatalog.grant(QuestDef.GRANT_FATE, &"t_witnessed"),
-				QuestFixtureCatalog.grant(QuestDef.GRANT_ITEM, SEALED),
+				QuestFixtureCatalog.grant(QuestDef.GRANT_ITEM, item_id),
 			]
 		)
 	)
@@ -112,9 +124,33 @@ func test_the_completion_is_once_guarded_across_repeated_advances() -> void:
 # --- The step that does not happen --------------------------------------------
 
 
-## **The verdict.** A quest that completes owes its item grant and delivers nothing:
-## the grant comes back unspent, naming the reason, and the inventory is byte-identical.
-func test_a_completed_quest_delivers_no_item_and_names_why() -> void:
+## **The verdict.** A quest that completes owes its item grant and DELIVERS it:
+## the grant comes back PAID and the item is in the actor's bag.
+##
+## `RealItem` is a real authored `ItemDef`, so this case and the refusal case below
+## differ only in the id the quest owes — which is what makes the pair a test of
+## delivery rather than of two different fixtures.
+func test_a_completed_quest_delivers_its_item_grant_into_the_bag() -> void:
+	var actor := _hero()
+	QuestFixtureCatalog.install([_quest(REAL_ITEM)])
+	QuestApi.accept(actor, PAYING)
+	QuestFixtureCatalog.record(actor, FACT, 1)
+	var outcome := QuestApi.advance(actor, "combat")
+
+	assert_eq((outcome["unspent"] as Array).size(), 0, "nothing is left owed, so the grant landed")
+	assert_eq(
+		String((outcome["paid"] as Array)[1]["id"]),
+		String(REAL_ITEM),
+		"and the report names the item it owed as paid"
+	)
+	assert_eq(ItemsApi.has_item(actor, REAL_ITEM), true, "which is in the actor's inventory")
+
+
+## **The refusal half, and it is half the contract.** A grant naming a definition
+## that does not resolve comes back UNSPENT with the cause named — the quest
+## completed and owed something the content tree does not have, and saying so is
+## the whole point. Inverting the verdict above must not invert this away.
+func test_a_grant_naming_a_definition_that_does_not_resolve_is_unspent_and_named() -> void:
 	var actor := _hero()
 	QuestApi.accept(actor, PAYING)
 	QuestFixtureCatalog.record(actor, FACT, 1)
@@ -125,15 +161,16 @@ func test_a_completed_quest_delivers_no_item_and_names_why() -> void:
 	assert_eq(String(unspent[0]["id"]), String(SEALED), "and it names the item it owes")
 	assert_eq(
 		String(unspent[0]["reason"]),
-		"no_inventory_dependency",
-		"`QuestGrants.pay` refuses the edge rather than taking an undeclared one"
+		QuestGrants.ITEM_UNKNOWN,
+		"naming the missing definition, which is a content bug rather than a missing edge"
 	)
 
 
-## The same drive, observed on the inventory instead of on the return value — the two
+## The refusal observed on the inventory instead of on the return value — the two
 ## halves of the claim, because a verdict dictionary is the module's own account of
-## itself and an untouched inventory is what the player would see.
-func test_a_completed_quest_leaves_the_actor_inventory_untouched() -> void:
+## itself and an untouched inventory is what the player would see. A refused grant
+## is INERT: there is no path from a refusal to a real item.
+func test_a_refused_grant_leaves_the_actor_inventory_untouched() -> void:
 	var actor := _hero()
 	var inventory := ItemsApi.inventory(actor)
 	assert_eq(inventory.used_slots(), 0, "the bag starts empty")

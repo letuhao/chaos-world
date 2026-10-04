@@ -499,10 +499,23 @@ func _press_accept(screen: Node, quest_id: String) -> bool:
 	return false
 
 
+## Find the one node a row calls `%AcceptButton`.
+##
+## **No readiness gate here, and that is the whole fix.** `SeamHarness._mount`
+## parents the app under a `root` that is not inside the tree and then drives
+## `_ready()` BY HAND (`app.call("_ready")`), so the engine's own readiness flag is
+## never set on the app or anything under it — `is_node_ready()` is false for every
+## node in a mounted app, permanently, for every test in the repo. This walk used to
+## gate its unique-name lookup on that flag and then recurse, and the recursion hit
+## the same gate on every child, so it found nothing at all. `_press_accept` therefore
+## returned false, which reads as a DEAD CONTROL: two accept tests reported that a
+## mounted journal's real Button could not be pressed, and the four assertions after
+## it reported the quest was never taken on. `get_node_or_null` is safe on a node
+## that never got `_ready()`, so the gate bought nothing and cost the claim.
 func _find_unique(node: Node, unique_name: String) -> Node:
 	if node == null:
 		return null
-	if node.is_node_ready() and node.get_node_or_null(unique_name) != null:
+	if node.get_node_or_null(unique_name) != null:
 		return node.get_node_or_null(unique_name)
 	for child in node.get_children():
 		var found := _find_unique(child, unique_name)

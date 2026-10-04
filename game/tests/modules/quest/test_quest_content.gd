@@ -128,14 +128,33 @@ func test_every_shipped_quest_has_a_unique_non_empty_id() -> void:
 # --- Gates are data, and reference real content ---------------------------
 
 
-## The gate is authored DATA, never code, and it names real fate/destiny ids. A
-## gate on a destiny that does not exist refuses closed forever, which is the
-## DEF-0110 "silently unlocks content" failure in reverse: content that can never
-## open.
-func test_every_shipped_gate_names_a_real_fate_or_destiny_id() -> void:
+## The gate is authored DATA, never code, and it names real content. A gate on a
+## destiny that does not exist refuses closed forever, which is the DEF-0110
+## "silently unlocks content" failure in reverse: content that can never open.
+##
+## **The vocabulary is wider than fate and destiny, and this test used to say it
+## was not.** `required_gate_ids()` deliberately flattens EVERY `{verb, id}` pair,
+## through `all_of`/`any_of`/`none_of`, so a panel can render "what is holding this
+## back" without re-deriving the grammar — which means a `counter` gate's id comes
+## back here too. A counter is read by `DestinyApi` out of the actor's ledger, not
+## out of the catalog, so `FateCatalog` legitimately never carries it, and the
+## original assertion failed on `the_tally_of_a_man_who_kept_count` — which gates
+## `all_of[has_fate: first_blood_duel, counter: duels_won]`, and `first_blood_duel`
+## DECLARES `duels_won` in its own `counters` list.
+##
+## So the valid set is fates, destinies, and every counter a `FateDef` declares.
+## That last group is read from the catalog rather than typed here, because
+## `FateDef.counters` exists precisely so the answerable-gate list lives in content
+## instead of in a hardcoded id list in code.
+func test_every_shipped_gate_names_a_real_fate_destiny_or_declared_counter_id() -> void:
 	var real_fates: Dictionary = {}
 	for fate_id in FateCatalog.instance().fate_ids():
 		real_fates[String(fate_id)] = true
+		var def := FateCatalog.instance().fate_definition(fate_id)
+		if def == null:
+			continue
+		for counter_id in def.counters:
+			real_fates[String(counter_id)] = true
 	var real_destinies: Dictionary = {}
 	for destiny_id in FateCatalog.instance().destiny_ids():
 		real_destinies[String(destiny_id)] = true
@@ -147,7 +166,7 @@ func test_every_shipped_gate_names_a_real_fate_or_destiny_id() -> void:
 			assert_eq(
 				real_fates.has(gate_id) or real_destinies.has(gate_id),
 				true,
-				"%s gates on '%s', which the fate/destiny catalog defines" % [def.id, gate_id]
+				"%s gates on '%s', which no FateDef or DestinyDef declares" % [def.id, gate_id]
 			)
 	assert_ne(gated, 0, "at least one shipped quest is gated, so the seam is exercised")
 

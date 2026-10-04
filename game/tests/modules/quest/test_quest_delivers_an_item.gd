@@ -222,7 +222,11 @@ func test_earning_the_authored_destiny_is_what_unlocks_the_quest_and_the_item() 
 
 	assert_eq(DestinyApi.has_destiny(actor, SHIPPED_GATE_DESTINY), true, "now it does")
 	assert_eq(bool(QuestApi.accept(actor, SHIPPED_QUEST)["ok"]), true, "so the quest opens")
-	_drive(SHIPPED_QUEST, SHIPPED_FACT, actor)
+	# Already accepted on purpose — the accept IS what this test is about — so the
+	# drive is told not to repeat it. A second `accept` on the same actor is refused
+	# `already_active`, which is the once-guard working correctly; asking `_drive` to
+	# accept again would make this suite assert against the module it is testing.
+	_drive(SHIPPED_QUEST, SHIPPED_FACT, actor, false)
 	assert_eq(ItemsApi.has_item(actor, SHIPPED_ITEM), true, "and the item lands")
 
 
@@ -352,28 +356,35 @@ func test_every_grant_a_completed_quest_owes_is_accounted_for_either_way() -> vo
 	)
 
 
-## One grant is delivered exactly once, however many times the fact arrives. The
-## once-guard is the quest module's, and delivery inherits it: paying twice would mint
-## a second copy of an item out of nothing.
+## One grant is delivered exactly once, however many times the fact arrives.
+##
+## **Two guards stand in front of the second payout, and this asks about both,
+## because they are different claims.** The sink's `handles` is a predicate over
+## ACTIVE quests, so a completed quest is not even CLAIMED by a later beat and the
+## director's report carries no `detail` to read a payout out of. That is the
+## outer guard. The module's own once-guard is behind it, and it is reachable only
+## by asking `advance` directly — which is exactly what an earlier draft of this
+## test got wrong: it read `detail["completed"]` off an unclaimed report, which
+## aborted the body mid-function.
 func test_a_repeated_beat_delivers_the_item_only_once() -> void:
 	QuestFixtureCatalog.install([_fixture(REAL_ITEM)])
 	var actor := _hero()
 	_drive(FIXTURE_QUEST, FIXTURE_FACT, actor)
-	# A SECOND occurrence of the same fact, offered to the same sink: `WorldFact` is
-	# monotone over `fact`, so the ledger count rises and only the quest's once-guard
-	# can stop a second payout.
-	var again := _drive(FIXTURE_QUEST, FIXTURE_FACT, actor, false)
+	assert_eq(ItemsApi.has_item(actor, REAL_ITEM), true, "the first beat delivered it")
 
+	# A SECOND occurrence of the same fact, offered to the same sink: `WorldFact` is
+	# monotone over `fact`, so the ledger count rises and the step is still satisfied.
+	var again := _drive(FIXTURE_QUEST, FIXTURE_FACT, actor, false)
+	assert_eq(bool(again["claimed"]), false, "the sink does not claim a beat for a finished quest")
 	assert_eq(
-		((again["detail"] as Dictionary)["completed"] as Array).size(),
-		0,
-		"nothing completed a second time"
+		QuestFixtureCatalog.held(actor, FIXTURE_FACT),
+		2,
+		"and the fact really did arrive twice, so nothing above was a coincidence"
 	)
-	assert_eq(
-		((again["detail"] as Dictionary)["paid"] as Array).size(),
-		0,
-		"and nothing was paid a second time"
-	)
+
+	var second := QuestApi.advance(actor, "combat")
+	assert_eq((second["completed"] as Array).size(), 0, "nothing completed a second time")
+	assert_eq((second["paid"] as Array).size(), 0, "and nothing was paid a second time")
 	assert_eq(ItemsApi.inventory(actor).used_slots(), 1, "and the item was not delivered twice")
 
 

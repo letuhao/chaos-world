@@ -25,6 +25,12 @@ const FATE := &"t_witnessed"
 const PAY_FATE := &"t_paid_fate"
 const PAY_DESTINY := &"t_paid_destiny"
 
+## A REAL authored `ItemDef` (`res://data/items/equipment/armor_iron_helm.tres`,
+## `stackable = false`), so an `item` grant naming it has something real to
+## deliver. A made-up id would make the delivered case indistinguishable from the
+## refused one.
+const REAL_ITEM := &"armor_iron_helm"
+
 
 func setup() -> void:
 	(
@@ -307,9 +313,15 @@ func test_a_fate_grant_is_earned_with_the_prescribed_source_string() -> void:
 	assert_eq(String(entry["source"]), "quest:%s" % PAYING, "DEF-0107's source string, verbatim")
 
 
-## An `item` grant is RECORDED as unspent, never delivered: `ItemsApi` is not a
-## quest dependency and this module does not declare one.
-func test_an_item_grant_is_recorded_as_unspent_not_delivered() -> void:
+## An `item` grant naming an id no content file declares is RECORDED as unspent,
+## never delivered, and it names the cause. **This is the refusal half, and it is
+## what the delivered case is measured against:** `paid` means "in the bag", so a
+## grant that resolves is paid (below) and one that does not is `unknown_item`
+## rather than a grant quietly written down.
+##
+## The id is deliberately one nothing authors: the point is that an unresolvable
+## reference is refused by name instead of becoming the ADR 0065 lie.
+func test_an_item_grant_naming_no_real_definition_is_recorded_as_unspent_with_its_reason() -> void:
 	var paying := QuestFixtureCatalog.quest(
 		&"t_item_paying",
 		QuestDef.KIND_AUTHORED,
@@ -319,19 +331,54 @@ func test_an_item_grant_is_recorded_as_unspent_not_delivered() -> void:
 	)
 	QuestFixtureCatalog.install([paying])
 	var actor := QuestFixtureCatalog.hero()
+	ItemsApi.attach(actor)
 	QuestApi.accept(actor, &"t_item_paying")
 	QuestFixtureCatalog.record(actor, FACT_A, 1)
 
 	var outcome := QuestApi.advance(actor, "combat")
-	assert_eq(
-		(outcome["paid"] as Array).is_empty(), true, "an item grant pays nothing this module can do"
-	)
+	assert_eq((outcome["paid"] as Array).is_empty(), true, "an unresolvable grant id pays nothing")
 	assert_eq((outcome["unspent"] as Array).size(), 1, "but it is recorded as owed")
 	assert_eq(
 		String((outcome["unspent"] as Array)[0]["reason"]),
-		"no_inventory_dependency",
-		"and says why it was not delivered"
+		QuestGrants.ITEM_UNKNOWN,
+		"and names the missing definition rather than a dependency the module does have"
 	)
+	assert_eq(ItemsApi.inventory(actor).used_slots(), 0, "so the bag is untouched")
+
+
+## The delivered half, through the same facade verb. `items` IS a declared quest
+## dependency (`tools/arch/registry.json`), so a grant naming a real authored
+## `ItemDef` is realized into the actor's bag and reported as PAID. This used to
+## be the opposite assertion — an `item` grant paid nothing this module could do
+## — which was true only while the edge was undeclared.
+##
+## `REAL_ITEM` is read from content, not invented here, and it is a
+## `stackable = false` armor, so a resolution that silently returned null would
+## fail on the bag as well as on `paid`.
+func test_an_item_grant_naming_a_real_definition_is_delivered_into_the_bag() -> void:
+	var paying := QuestFixtureCatalog.quest(
+		&"t_item_delivering",
+		QuestDef.KIND_AUTHORED,
+		{},
+		[{"step_id": &"d", "fact": FACT_A, "need": 1}],
+		[QuestFixtureCatalog.grant(QuestDef.GRANT_ITEM, REAL_ITEM)]
+	)
+	QuestFixtureCatalog.install([paying])
+	var actor := QuestFixtureCatalog.hero()
+	ItemsApi.attach(actor)
+	assert_eq(ItemsApi.has_item(actor, REAL_ITEM), false, "the bag starts without it")
+
+	QuestApi.accept(actor, &"t_item_delivering")
+	QuestFixtureCatalog.record(actor, FACT_A, 1)
+	var outcome := QuestApi.advance(actor, "combat")
+
+	assert_eq((outcome["unspent"] as Array).size(), 0, "nothing was left owed")
+	assert_eq(
+		String((outcome["paid"] as Array)[0]["kind"]),
+		String(QuestDef.GRANT_ITEM),
+		"and the item grant is the one reported as paid"
+	)
+	assert_eq(ItemsApi.has_item(actor, REAL_ITEM), true, "so the grant is in the bag")
 
 
 ## A grant id carrying a reserved namespace is REFUSED. `quest:*` is the exact
