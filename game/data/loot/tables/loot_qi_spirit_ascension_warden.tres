@@ -483,18 +483,6 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
-[sub_resource type="Resource" id="entry_40"]
-script = ExtResource("2_entry")
-id = &"qi_spirit_ascension_warden_declared_40"
-kind = &"item"
-item_id = &"mind_spirit_unity_mind_herb"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &"magic"
-
 [sub_resource type="Resource" id="entry_41"]
 script = ExtResource("2_entry")
 id = &"qi_spirit_ascension_warden_declared_41"
@@ -516,6 +504,18 @@ table_id = &""
 weight = 1.0
 chance = -1.0
 guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_pool_spirit_unity"]
+script = ExtResource("2_entry")
+id = &"pool_spirit_unity"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_spirit_ascension_warden_pool_spirit_unity"
+weight = 1.0
+chance = -1.0
+guaranteed = true
 quantity = 1
 rarity_floor = &""
 
@@ -568,7 +568,7 @@ entries = Array[LootEntry]([
 	SubResource("entry_37"),
 	SubResource("entry_38"),
 	SubResource("entry_39"),
-	SubResource("entry_40"),
 	SubResource("entry_41"),
-	SubResource("entry_42")
+	SubResource("entry_42"),
+	SubResource("entry_pool_spirit_unity"),
 ])

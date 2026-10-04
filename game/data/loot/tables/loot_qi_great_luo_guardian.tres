@@ -219,18 +219,6 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
-[sub_resource type="Resource" id="entry_18"]
-script = ExtResource("2_entry")
-id = &"qi_great_luo_guardian_domain_18"
-kind = &"item"
-item_id = &"qi_spirit_manifestation_cultivation_herb"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &""
-
 [sub_resource type="Resource" id="entry_19"]
 script = ExtResource("2_entry")
 id = &"qi_great_luo_guardian_domain_19"
@@ -240,6 +228,18 @@ table_id = &""
 weight = 1.0
 chance = -1.0
 guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_pool_spirit_manifestation"]
+script = ExtResource("2_entry")
+id = &"pool_spirit_manifestation"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_guardian_pool_spirit_manifestation"
+weight = 1.0
+chance = -1.0
+guaranteed = true
 quantity = 1
 rarity_floor = &""
 
@@ -270,6 +270,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_15"),
 	SubResource("entry_16"),
 	SubResource("entry_17"),
-	SubResource("entry_18"),
-	SubResource("entry_19")
+	SubResource("entry_19"),
+	SubResource("entry_pool_spirit_manifestation"),
 ])

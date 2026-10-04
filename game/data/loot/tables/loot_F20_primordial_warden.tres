@@ -291,17 +291,17 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
-[sub_resource type="Resource" id="entry_24"]
+[sub_resource type="Resource" id="entry_pool_spirit_unity"]
 script = ExtResource("2_entry")
-id = &"F20_primordial_warden_domain_24"
-kind = &"item"
-item_id = &"mind_spirit_unity_mind_herb"
-table_id = &""
+id = &"pool_spirit_unity"
+kind = &"table"
+item_id = &""
+table_id = &"loot_F20_primordial_warden_pool_spirit_unity"
 weight = 1.0
 chance = -1.0
 guaranteed = true
-quantity = 6
-rarity_floor = &"magic"
+quantity = 1
+rarity_floor = &""
 
 [resource]
 script = ExtResource("1_table")
@@ -336,5 +336,5 @@ entries = Array[LootEntry]([
 	SubResource("entry_21"),
 	SubResource("entry_22"),
 	SubResource("entry_23"),
-	SubResource("entry_24")
+	SubResource("entry_pool_spirit_unity"),
 ])

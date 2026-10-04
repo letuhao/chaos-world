@@ -267,18 +267,6 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
-[sub_resource type="Resource" id="entry_22"]
-script = ExtResource("2_entry")
-id = &"E7_earth_warden_domain_22"
-kind = &"item"
-item_id = &"mind_spirit_domain_mind_herb"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &"magic"
-
 [sub_resource type="Resource" id="entry_23"]
 script = ExtResource("2_entry")
 id = &"E7_earth_warden_domain_23"
@@ -327,6 +315,18 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_pool_spirit_domain"]
+script = ExtResource("2_entry")
+id = &"pool_spirit_domain"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E7_earth_warden_pool_spirit_domain"
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E7_earth_warden"
@@ -358,9 +358,9 @@ entries = Array[LootEntry]([
 	SubResource("entry_19"),
 	SubResource("entry_20"),
 	SubResource("entry_21"),
-	SubResource("entry_22"),
 	SubResource("entry_23"),
 	SubResource("entry_24"),
 	SubResource("entry_25"),
-	SubResource("entry_26")
+	SubResource("entry_26"),
+	SubResource("entry_pool_spirit_domain"),
 ])

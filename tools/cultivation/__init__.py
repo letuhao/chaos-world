@@ -17,7 +17,22 @@ def register(subparsers) -> None:
             "report",
             "prompt",
             "mutate",
+            "loot-magnitude",
         ],
+    )
+    parser.add_argument(
+        "loot_magnitude_action",
+        nargs="?",
+        default="check",
+        choices=["report", "check", "fix", "repair"],
+        help="loot-magnitude: print the rung each drop pays, guard it, or fix it",
+    )
+    parser.add_argument(
+        "--scope",
+        default="gate",
+        choices=["gate", "all"],
+        help="loot-magnitude only: which entries gate. 'gate' is the guaranteed "
+        "reagents (BL-0645's class); 'all' is every direct entry",
     )
 
 
@@ -36,6 +51,10 @@ def run(args) -> int:
         return mutate.run()
     if args.action == "seed-systems":
         return seed_systems.run()
+    if args.action == "loot-magnitude":
+        from . import loot_magnitude
+
+        return loot_magnitude.run(args.loot_magnitude_action, scope=args.scope)
     if args.action == "report":
         from . import report
 
