@@ -65,6 +65,9 @@ const MAX_DROPS_PER_REWARD := 8
 ## entry band rather than sliding along a diagonal, which is what let eight
 ## fights be read as the whole game (BL-0625, retracted). Wide enough to reach a
 ## table that stocks gear, capped so a corpus that pays nothing cannot spin.
+## This budget and the bag's 24 slots are ONE number, not two: raising it while the
+## sweep banks every drop is what filled the bag with the probe's own hoarding and
+## made every later pickup report `inventory_full` (see `_pin_starting_bag`).
 const MAX_EQUIP_HUNTS := 24
 ## How many DOMAIN CELLS the sweep may visit before it gives up on reaching
 ## MAX_EQUIP_HUNTS real fights. Most of the corpus is above a starting hero's
@@ -89,6 +92,13 @@ const EQUIP_BUTTON := "%EquipButton"
 const ACTION_BAR := "%ActionBar"
 const INVENTORY_PANEL := "%InventoryPanel"
 const ITEM_LIST := "%ItemList"
+## The workbench's own Save and Load controls, and the words the action bar
+## publishes for them. The sweep needs them because the bag is a FINITE resource
+## the search spends: see `_pin_starting_bag`.
+const SAVE_BUTTON := "%SaveButton"
+const LOAD_BUTTON := "%LoadButton"
+const SAVED_WORDING := "Saved"
+const LOADED_WORDING := "Loaded"
 
 
 ## One sweep cell: the domain and tier this attempt chose. A helper rather than
@@ -128,6 +138,14 @@ func _run() -> void:
 	var report := _inspect(path, app)
 	var rows_at_boot := _bag_rows(app)
 	report["rows_at_boot"] = rows_at_boot
+	# Pin the starting bag BEFORE the first hunt, through the workbench's own Save
+	# control. Every cell restores it, so the sweep's budget is independent of the
+	# bag's 24 slots: without this the search banks one or two drops per fight and
+	# fills the bag with its own hoarding by about the twelfth cell, and every later
+	# pickup overflows into the world container instead of reaching the bag. That is
+	# the probe measuring its own setup, and it is what this pair of steps removes.
+	var pin_report: Dictionary = await _pin_starting_bag(app, rows_at_boot)
+	report["pin"] = pin_report
 	var nav_report: Dictionary = await _press_nav(app)
 	report["nav"] = nav_report
 	# One boss is not a guarantee of gear: a fight may pay a consumable or a token,
@@ -150,6 +168,24 @@ func _run() -> void:
 		attempts = attempt + 1
 		if fights >= MAX_EQUIP_HUNTS:
 			break
+		if attempt > 0:
+			# One restore per cell, before the fight rather than after the failure:
+			# it costs the same either way and it keeps the bag out of the hunt
+			# entirely, so a cell can never be starved by the one before it.
+			var restored := await _restore_starting_bag(app, rows_at_boot)
+			if not bool(restored.get("ok", false)):
+				report["restore"] = restored
+				(
+					sweep
+					. append(
+						{
+							"domain": "",
+							"tier": "",
+							"restore": restored.get("why", "the bag could not be restored"),
+						}
+					)
+				)
+				break
 		var where: Dictionary = {}
 		hunt_report = await _hunt(app, attempt, where)
 		report["hunt"] = hunt_report
@@ -211,6 +247,13 @@ func _run() -> void:
 	report["refused"] = refused
 	report["sweep"] = sweep
 	var broken: Array[String] = []
+	if not bool(pin_report.get("ok", false)):
+		# Named rather than folded into the claim: a bag the probe cannot pin is a
+		# sweep whose every later cell would be measured against a bag it built
+		# itself, so the search's answer would be about the probe.
+		broken.append(
+			"its bag cannot be pinned: %s" % pin_report.get("why", "Save is not a live control")
+		)
 	if not bool(nav_report.get("ok", false)):
 		broken.append(
 			"its navigation is dead: %s" % nav_report.get("why", "a nav button did nothing")
@@ -448,7 +491,9 @@ func _hunt(app: Node, nth: int, where: Dictionary) -> Dictionary:
 ## and requires the bag to be larger than it was at boot.
 ##
 ## `rows_at_boot` was captured before the hunt, so this compares against what the
-## player actually started with rather than against a hardcoded starter count.
+## player actually started with rather than against a hardcoded starter count --
+## and `_restore_starting_bag` is what keeps that true for every cell after the
+## first, so the number is the cell's own baseline and not one an earlier cell beat.
 func _claim(app: Node, rows_at_boot: int) -> Dictionary:
 	var screen := _live_screen(app)
 	if screen == null:
@@ -836,6 +881,13 @@ func _why_still_pending(after: int, before: int) -> String:
 
 
 ## Walk back to the workbench by its own nav button and report the bag it shows.
+##
+## The comparison is against `rows_at_boot`, which is only a per-cell measurement
+## because `_restore_starting_bag` puts the bag back before every cell. Measured
+## against the count captured once at boot it went vacuous after the first fight --
+## the bag was already larger, so "the drop was taken but never reached the bag"
+## could not fire again, and a pickup that overflowed into the world container was
+## reported as a claim that worked.
 func _bag_grew(app: Node, rows_at_boot: int) -> Dictionary:
 	var nav := app.get_node_or_null("%NavBar")
 	if nav == null:
@@ -876,6 +928,108 @@ func _bag_rows(app: Node) -> int:
 	if not (summary is Dictionary):
 		return -1
 	return int((summary as Dictionary).get("row_count", -1))
+
+
+## Snapshot the bag the player starts with, through the workbench's own Save control.
+##
+## The sweep fights up to MAX_EQUIP_HUNTS bosses and banks every drop it claims, and
+## the bag is 24 slots with NO production verb that takes an unwanted item back out:
+## the workbench offers use, equip, unequip, generate, save and load, and none of
+## them discards. So a sweep that simply accumulates spends a resource it cannot
+## refill, and the gate ends up measuring its own setup. Measured on the shipped
+## tree: 4 rows at boot, 19 after nine cells, one or two drops banked per cell --
+## so roughly the twelfth cell overflows into `LootState`'s six-slot world container
+## and every later pickup reports `inventory_full` while the probe reports a game
+## fault it caused. Pinning the starting bag once and restoring it before each cell
+## is what a player does with Save and Load, and it is also what makes
+## `rows_at_boot` a per-cell baseline again instead of a number cell one already beat.
+func _pin_starting_bag(app: Node, rows_at_boot: int) -> Dictionary:
+	var pinned := await _press_persistence(app, SAVE_BUTTON, SAVED_WORDING)
+	if not bool(pinned.get("ok", false)):
+		return pinned
+	var rows := int(pinned.get("rows", -1))
+	if rows != rows_at_boot:
+		return {
+			"ok": false,
+			"why": "the bag listed %d rows when pinned and %d before it" % [rows, rows_at_boot],
+		}
+	return pinned
+
+
+## Put the bag back to the rows the player started with, through the workbench's own
+## Load control. Returns not-ok rather than continuing on a bag the search has
+## partly spent: every later assertion would then be measured against a bag state
+## this probe built, which is the failure this whole pair of functions exists to stop.
+func _restore_starting_bag(app: Node, rows_at_boot: int) -> Dictionary:
+	var loaded := await _press_persistence(app, LOAD_BUTTON, LOADED_WORDING)
+	if not bool(loaded.get("ok", false)):
+		return loaded
+	var rows := int(loaded.get("rows", -1))
+	if rows != rows_at_boot:
+		return {
+			"ok": false,
+			"why":
+			(
+				(
+					"loading the pinned bag left %d rows, not the %d the player starts with;"
+					+ " the sweep would be measuring a bag it built itself"
+				)
+				% [rows, rows_at_boot]
+			),
+		}
+	return {"ok": true, "rows": rows}
+
+
+## Drive Save or Load on the workbench and report the bag afterwards.
+##
+## Both controls sit behind a live action bar, and the bar publishes every action
+## disabled until a row is selected, so this selects one first -- the way a player
+## clicking the list does. The proof that the control did something is the wording
+## the action bar itself publishes for the outcome ("Saved 4 item slot(s)"), not a
+## probe-side guess: a refused save reports "Rejected: save_failed: ..." instead,
+## which is a different answer and must read as one.
+func _press_persistence(app: Node, button_name: String, wording: String) -> Dictionary:
+	var verb := wording.to_lower()
+	if not bool((await _goto(app, HOME_ROUTE)).get("ok", false)):
+		return {"ok": false, "why": "could not reach the bag to %s" % verb}
+	var screen := _live_screen(app)
+	if screen == null:
+		return {"ok": false, "why": "the workbench is not the live screen"}
+	var bar := screen.get_node_or_null(ACTION_BAR)
+	if bar == null:
+		return {"ok": false, "why": "the workbench composes no action bar to %s through" % verb}
+	if not _select_first_row(screen):
+		return {
+			"ok": false,
+			"why":
+			(
+				(
+					"the bag lists no row to select, so the action bar publishes every"
+					+ " action disabled and %s is unreachable"
+				)
+				% verb
+			),
+		}
+	if not _press(bar, button_name):
+		return {"ok": false, "why": "the action bar's %s control is not a live control" % wording}
+	await process_frame
+	var said := String((screen.call(&"summary") as Dictionary).get("message", "")).strip_edges()
+	if not said.begins_with(wording):
+		return {"ok": false, "why": "the screen published '%s', not %s" % [said, wording]}
+	return {"ok": true, "rows": _bag_rows(app), "said": said}
+
+
+## Select the first row the bag lists. Bounded by nothing because it reads one
+## element of a live list rather than scanning it, and the bar cannot offer an
+## action until something is selected.
+func _select_first_row(screen: Node) -> bool:
+	var panel := screen.get_node_or_null(INVENTORY_PANEL)
+	if panel == null:
+		return false
+	var ids := (panel.call(&"summary") as Dictionary).get("row_def_ids", []) as Array
+	if ids.is_empty():
+		return false
+	return _select_row(screen, String(ids[0]))
 
 
 ## The reward list's first row control, or null when the reward has no rows.
