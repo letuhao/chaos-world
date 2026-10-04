@@ -484,18 +484,21 @@ func test_summary_is_primitives_only_after_a_commit() -> void:
 ## answer a second time without asking.
 func test_the_screen_asks_the_creation_layer_rather_than_deciding() -> void:
 	var screen := _screen()
-	var asked := 0
+	# An Array, not an int, because a GDScript lambda captures by VALUE: `asked`
+	# inside the closure would increment a COPY and the assertion below would read 0
+	# forever, which reads exactly like "the press never reached the layer".
+	var asked: Array[int] = [0]
 	screen.bind_creation(
 		CharacterCreationFlow.new().candidates(),
 		func(origin_id: StringName) -> Dictionary:
-			asked += 1
+			asked[0] += 1
 			return CharacterCreationFlow.new().build(origin_id)
 	)
 	screen.act_commit(&"the_one_who_returned")
-	assert_eq(asked, 1, "the press reached the creation layer")
+	assert_eq(asked[0], 1, "the press reached the creation layer")
 	var first := screen.committed_origin()
-	screen.act_commit(&"the_one_who_stayed")
-	assert_eq(asked, 2, "a second press asks again rather than answering locally")
+	screen.act_commit(&"the_one_who_returned")
+	assert_eq(asked[0], 2, "a second press asks again rather than answering locally")
 	assert_eq(first, "the_one_who_returned", "and the screen reports what the layer granted")
 
 
