@@ -162,9 +162,7 @@ func test_the_systemic_quest_is_never_offered_so_only_a_recorded_fact_can_finish
 	for row in QuestApi.offered(actor) as Array[Dictionary]:
 		offered.append(String(row["id"]))
 	assert_eq(
-		offered.has(String(QUEST)),
-		false,
-		"nothing in the game hands this quest to the player"
+		offered.has(String(QUEST)), false, "nothing in the game hands this quest to the player"
 	)
 
 	# Not accepted either, so only the dispatch could ever finish it.
@@ -195,16 +193,10 @@ func test_a_three_step_authored_quest_completes_across_three_owning_modules() ->
 	assert_eq(bool(accepted["ok"]), true, "the gated quest opens for a hero holding its destiny")
 
 	SectFacts.record_post_held(actor)
-	assert_eq(
-		_completed(actor).has(String(MULTI)),
-		false,
-		"one of three steps is not a completion"
-	)
+	assert_eq(_completed(actor).has(String(MULTI)), false, "one of three steps is not a completion")
 	SectFacts.record_oaths_discharged(actor, 3)
 	assert_eq(
-		_completed(actor).has(String(MULTI)),
-		false,
-		"two of three steps is still not a completion"
+		_completed(actor).has(String(MULTI)), false, "two of three steps is still not a completion"
 	)
 	# The `clan` half. `ClanFacts` records the fact the moment a registration lands;
 	# the house that lands it is not modelled in this suite, so the OWNING MODULE's
@@ -316,7 +308,7 @@ func test_every_authored_step_fact_is_watched_by_the_production_dispatch() -> vo
 			false,
 			"'%s' is offered by the pulse alone and is not an authored step fact" % String(fact)
 		)
-	for fact in WorldAmbient.ROSTER:
+	for fact in _ambient_facts():
 		assert_eq(
 			_watched_set(from_content).has(String(fact)),
 			false,
@@ -371,3 +363,12 @@ func _need_of(quest_id: StringName, fact: StringName) -> int:
 		return 1
 	var step := def.step_for_fact(fact)
 	return 1 if step == null else step.required_count()
+
+
+## The ambient fact ids the world's own news offers, as ids.
+##
+## `WorldAmbient.ROSTER` is a roster of ROWS, not of bare ids, so it is read through
+## the module's own published `ids()` rather than indexed by hand — a reader that
+## assumed a flat list of ids would be reading someone else's data shape.
+func _ambient_facts() -> Array[StringName]:
+	return WorldAmbient.ids()
