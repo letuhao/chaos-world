@@ -1612,15 +1612,23 @@ def _path_correction_plan(records: list[dict]) -> list[str]:
 
 
 def _backfill_command(records: list[dict], args) -> int:
-    """Add a newly-required prompt slot to records that predate it.
+    """Add a newly-required SINGLE prompt slot to records that predate it.
 
-    `PROMPT_SLOTS` grew a `daily_life` slot and a `canon` record hard-fails without
-    it, so every record authored before the slot landed failed `check` at once. The
-    alternative to this subcommand is hundreds of agents each writing a script outside
-    `tools/` to add one shot to their own shard, which is the pattern that produced
-    three separate normalisation bugs this month.
+    For a slot that becomes required and every pre-existing record fails `check` at
+    once. The alternative to this subcommand is hundreds of agents each writing a script
+    outside `tools/` to add one shot to their own shard, which is the pattern that
+    produced three separate normalisation bugs this month.
 
-    What is derived per record, and what is not:
+    SET SLOTS ARE REFUSED, and `daily_life` is now one. It began as a single required
+    shot, this tool filled 236 records with one, and then it became a SET slot with a
+    minimum of four counted on `daypart` - a closed vocabulary of exactly four labels,
+    so every complete family uses all four by construction and per-character
+    distinctness on that axis is impossible rather than merely unmet. Those 236 records
+    were rewritten as complete daypart families by hand. Refusing is the right answer
+    here: a backfill cannot invent four distinct moments a day from a home and a
+    faction, and the only honest version of one is an agent.
+
+    What is derived per record, for a single slot, and what is not:
 
       scene        built from the record's own `home` and `faction`. NOT from
                    `role_in_story`: an earlier version pasted that field in and the
@@ -1634,19 +1642,14 @@ def _backfill_command(records: list[dict], args) -> int:
     The honest limitation, measured rather than asserted. Run over the 236 records this
     actually backfilled:
 
-      180 distinct scene texts, so 56 records share one with at least one other
-      and the most repeated appears 5 times
+      180 distinct scene texts, so 56 records shared one with at least one other
+      and the most repeated appeared 5 times
       37 distinct homes, 83 distinct factions, 180 distinct home+faction pairs
 
-    So the scene is per-character only to the extent that home and faction are. Adding
-    `appearance.race` (29 distinct) to the scene would raise the combinations sharply and
-    is the obvious next improvement; it is not here because rewriting 236 already-written
-    prompts for a field nobody has rendered yet is a poor trade against the alternative
-    of hundreds of agents.
-
-    Framing and expression are outright TEMPLATED - eight framings across 236 records
-    means near-duplicates there. None of this is hidden behind a claim of distinctness,
-    because a backfill that claimed full distinctness would be a lie.
+    So the scene was per-character only to the extent that home and faction are. Framing
+    and expression were outright TEMPLATED - eight framings across 236 records means
+    near-duplicates. None of this is hidden behind a claim of distinctness, because a
+    backfill that claimed full distinctness would be a lie.
     """
     slot = str(args.slot)
     if slot not in PROMPT_SLOTS:
