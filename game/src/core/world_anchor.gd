@@ -79,6 +79,11 @@ const NO_ASCENT := "No ascent begun"
 ## shortfall a fresh world can have, so the bound is headroom, not a budget. Only
 ## the created world needs it; an INSIDE world's constructor default is already at
 ## the threshold and nothing lowers it (ADR 0172).
+##
+## That same fact is why `InsideWorld.strengthen_anchor` no longer raises stability:
+## its 0.1 never reached `Tribulation.PREPARATION_FLOOR` through
+## `Tribulation._arena_quality` (BL-0830). Do not restore it as headroom — it was not
+## headroom, it was a second number nothing could fail on.
 const STABILITY_GUARD := 6
 
 

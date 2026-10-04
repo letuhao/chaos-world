@@ -317,6 +317,30 @@ func test_preparation_is_capped_at_the_authored_floor() -> void:
 	)
 
 
+## The `environment` leg is the inside world's stability, and paying the anchor moves it
+## by NOTHING. Both halves are invisible to the tests above, which is how a raise nothing
+## could read shipped as a reward (BL-0830): `test_preparation_lowers_the_rating` opens
+## every channel AND raises stability, so its `formation` of 1.0 alone already pins the
+## reduction at `PREPARATION_FLOOR`, and an `_arena_quality` returning `0.0` would leave it
+## green. Both aids are therefore held OFF the cap here — `formation` stays 0.0 and both
+## worlds sit BELOW 0.5, the only window where an aid is worth its own value. 0.4 is the
+## mutation witness: one raise short of the floor, so restoring `improve_stability(0.1)`
+## pushes the sounded world to 0.5 and saturates the reduction.
+func test_the_environment_leg_is_read_below_the_floor() -> void:
+	var actor := _actor_at_r18()
+	actor.inside_world = InsideWorld.new(InsideWorld.SEED, 1.0, 0.0)
+	actor.inside_world.strengthen_anchor()
+	var bare := Tribulation.new(Tribulation.LIGHTNING)
+	bare.start(actor, &"earth_immortal")
+	actor.inside_world.improve_stability(0.4)
+	var sounded := Tribulation.new(Tribulation.LIGHTNING)
+	sounded.start(actor, &"earth_immortal")
+	assert_eq(float(bare.preparation["formation"]), 0.0, "no channel developed")
+	assert_eq(float(bare.preparation["environment"]), 0.0, "paying the anchor moves no stability")
+	assert_eq(float(sounded.preparation["environment"]), 0.4, "a sounded world IS the arena")
+	assert_eq(sounded.difficulty < bare.difficulty, true, "and it is spent, not merely reported")
+
+
 ## The measured aid is part of the fight's price, so a resumed fight is the same
 ## fight: a save between waves must not soften it or harden it.
 func test_preparation_and_its_rating_survive_a_save() -> void:

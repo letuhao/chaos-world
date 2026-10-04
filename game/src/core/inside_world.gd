@@ -64,10 +64,17 @@ func create_anchor() -> void:
 	anchor_created = true
 
 
-## Strengthen the anchor's storage/stability.
+## Pay the anchor's reinforcement milestone: the flag, and nothing else.
+##
+## It also used to raise stability by 0.1. Its one reader is
+## `Tribulation._arena_quality`, and `Tribulation._preparation_reduction` caps that aid
+## at `PREPARATION_FLOOR` (0.5) — which a world constructed at 0.5 already reaches, so
+## `minf(formation + 0.5, 0.5) == minf(formation + 0.6, 0.5)` for every input and the
+## raise moved `rate()` by zero (BL-0830). `MindAnchor._inside_ok` reads stability as its
+## own conjunct, so no gate lost a term either. `tests/core/test_tribulation_fight.gd`
+## pins the zero.
 func strengthen_anchor() -> void:
 	anchor_strengthened = true
-	improve_stability(0.1)
 
 
 ## Serialize to dictionary.

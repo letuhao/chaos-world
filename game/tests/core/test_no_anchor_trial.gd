@@ -136,10 +136,11 @@ func test_a_payload_written_by_this_build_round_trips() -> void:
 	world.add_law(&"fire", 0.8)
 	world.add_law(&"earth", 0.6)
 	world.create_anchor()
-	# 0.8 in, so the milestone's own +0.1 lands on the 0.9 asserted below — the
-	# round trip is taken through the production verbs, not by writing the flag.
+	# 0.8 in, and the milestone must leave it EXACTLY there: `strengthen_anchor` pays the
+	# flag, not a number (BL-0830), so this pins that it raises nothing. The round trip
+	# is taken through the production verbs, not by writing the flag.
 	world.strengthen_anchor()
-	assert_eq(world.stability, 0.9, "and the milestone moved stability as it always has")
+	assert_eq(world.stability, 0.8, "and the milestone moved no stability at all")
 	var data := world.to_dict()
 	assert_eq(
 		data.has("anchor_trial_passed"),
@@ -151,7 +152,7 @@ func test_a_payload_written_by_this_build_round_trips() -> void:
 	var restored := InsideWorld.from_dict(data)
 	assert_eq(restored.tier, InsideWorld.INNER, "tier survives")
 	assert_eq(restored.size, 50.0, "size survives")
-	assert_eq(restored.stability, 0.9, "stability survives")
+	assert_eq(restored.stability, 0.8, "stability survives")
 	assert_eq(restored.qi_density, 3.0, "qi_density survives")
 	assert_eq(restored.time_flow, 5.0, "time_flow survives")
 	assert_eq(restored.get_law(&"fire"), 0.8, "one law survives")
@@ -392,9 +393,9 @@ func test_no_production_writer_can_destabilise_an_inside_world() -> void:
 ## CONJUNCTS exist, not which verbs reach them — and a forged state is the only way
 ## to isolate one term while the others hold.
 ##
-## `stability` is assigned LAST and unconditionally: `strengthen_anchor` raises it
-## by 0.1 on the way through, so setting it first would let the milestone decide the
-## probe's own stability input and silently move the "unstable" row.
+## `stability` is assigned LAST and unconditionally, so the probe's own stability input
+## is the number asked for and not a leftover of the verbs run above. (`strengthen_anchor`
+## used to raise it by 0.1 on the way through; it sets no stability at all since BL-0830.)
 func _actor_with(tier: StringName, created: bool, strengthened: bool, stability: float) -> Actor:
 	var actor := Actor.new(&"trial_hero", {})
 	var world := InsideWorld.new(tier)
