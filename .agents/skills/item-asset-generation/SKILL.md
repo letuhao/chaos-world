@@ -108,7 +108,9 @@ uv run python build/sweep_ladders.py --limit 12              # render
 
 It discovers every ladder whose seeds all still sit on the broad family, derives a family id and subject from the seed's own `display_name`, picks one of twelve hue-spread palettes by a **stable hash of the prefix** (so a re-run reproduces the same art), and skips any family already in the index, which makes an interrupted run safe to repeat. Renders take ~25 s each, so a 12-ladder run is about 5 minutes; the whole block is roughly an hour. Re-run it until it reports nothing left.
 
-Only one of the twelve palettes is green, which keeps jade under the art-direction ceiling of two per eight. Review each batch before committing — the sweeper will happily produce twelve competent but samey icons if you let it run unreviewed.
+Only one of the twelve palettes is green, which keeps jade under the art-direction ceiling of two per eight. Review each batch before committing — the sweeper will happily produce fourteen competent but samey icons if you let it run unreviewed.
+
+**A stable hash is not a diversity guarantee.** Run 2 drew fourteen ladders and the three `draft` books came out close to indistinguishable, as did several scrolls, because the hash picks subject and palette per prefix and a batch that draws many ladders from *one* subcategory lands on the same variant repeatedly. Across a run of ~14 the hash will collide; variance has to be forced rather than hoped for. Either cap a batch to ~4 ladders per subcategory, or index the palette and subject by position in the batch instead of by hash. Both were left undone here — the icons are usable and distinct enough to read, but a reviewer should expect the next block to need the same treatment.
 - Commit only the skill-owned/generated paths for the completed slice. Never stage unrelated asset-index edits.
 
 ## The library is not visually uniform
