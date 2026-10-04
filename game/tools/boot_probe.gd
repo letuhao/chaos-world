@@ -709,10 +709,17 @@ func _wear_one(app: Node, def_ids: Array, claim_note: String = "") -> Dictionary
 		# listing it. Reporting a bare "not in the bag" throws away the one fact that
 		# separates them, which is how a full bag read as a missing drop: this
 		# function cannot see `claim`, so the caller passes what it already collected.
+		# `baseline_wearable` is ASKED, not asserted. Returning "" here would be a lie
+		# the sweep then believed: the hunt loop breaks on an empty baseline as its
+		# signal that the Equip control is dead, so an undelivered drop would
+		# masquerade as a dead control and end the sweep on a full bag. The bag can
+		# still hold rows this fight did not drop - the four starters - so the question
+		# "does anything equip at all" is answerable even when these drops are absent.
+		var baseline := await _baseline_wearable(screen, bar)
 		return {
 			"ok": false,
 			"wearable": false,
-			"baseline_wearable": "",
+			"baseline_wearable": baseline,
 			"why":
 			(
 				"no claimed drop is in the bag to wear (%s); pickups reported: %s"
