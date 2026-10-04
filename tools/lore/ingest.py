@@ -444,14 +444,55 @@ def build_import() -> tuple[dict[str, list[dict]], list[dict], Counter]:
 # agent set from `stub` to `authored` must survive, and an authored field the game
 # later adds must still land - so attributes are merged key by key instead, and
 # `lore_depth` is protected explicitly below.
+#
+# `provenance` is also not here, and for a worse reason. It is the only record of
+# WHO wrote a record and WHY, so assigning it destroys exactly the part a later
+# agent needs: `author` and the `abstract-pattern:` basis entries. A re-import
+# used to overwrite it while still reporting `agent-authored records preserved`,
+# because the prose did survive - only the reasoning was gone, which is the half
+# nobody reads back. It is MERGED by `_merge_provenance`, never assigned.
 AGENT_OWNED_FIELDS = frozenset({"summary", "tags", "name", "type", "lore_ref"})
+
+# Not importer-owned for reporting purposes either: after the merge above, a
+# preserved record's provenance legitimately differs from a fresh import's, and
+# counting that as "overwritten" would report every agent's work as a refresh.
+_IMPORTER_REFRESHED = frozenset({"provenance", "attributes"})
 
 _FORCE = False
 
 
+def _merge_provenance(prior: object, fresh: dict) -> dict:
+    """Union the importer's provenance block with whatever an agent recorded.
+
+    The importer owns `schema_version` and nothing else here. An agent's `author`
+    outranks the importer's, `created` stays the date the record was actually
+    authored, and basis entries are unioned rather than replaced - a re-import
+    that no longer sees the game file an entry came from must not delete the
+    record that it did.
+    """
+    if not isinstance(prior, dict) or not prior:
+        return fresh
+    merged = dict(prior)
+    merged["schema_version"] = fresh.get("schema_version", SCHEMA_VERSION)
+    if not merged.get("author"):
+        merged["author"] = fresh.get("author")
+    if not merged.get("created"):
+        merged["created"] = fresh.get("created")
+    basis = list(prior["basis"]) if isinstance(prior.get("basis"), list) else []
+    for entry in fresh.get("basis", []):
+        if entry not in basis:
+            basis.append(entry)
+    merged["basis"] = basis
+    return merged
+
+
 def _import_view(record: dict) -> dict:
     """The fields the importer owns, for reporting what a refresh did."""
-    return {key: value for key, value in record.items() if key not in AGENT_OWNED_FIELDS}
+    return {
+        key: value
+        for key, value in record.items()
+        if key not in AGENT_OWNED_FIELDS and key not in _IMPORTER_REFRESHED
+    }
 
 
 def write_import(force: bool = False) -> int:
@@ -469,10 +510,18 @@ def write_import(force: bool = False) -> int:
         path = _bible_dir() / f"{domain}.jsonl"
         existing: list[dict] = []
         if path.is_file():
+            # EVERY existing line is a merge candidate, including one this tool
+            # wrote. It used to skip lines containing `"tools lore ingest"` so a
+            # re-run replaced rather than duplicated them - but that is a
+            # substring test over a whole JSON blob, so any record an agent had
+            # EXTENDED (`author` still the importer, plus `extended_by`) matched
+            # it and was dropped from `existing`, which meant it was replaced
+            # wholesale and the extension was lost. De-duplication is what the
+            # `merged` dict keyed by id already does, correctly.
             existing = [
                 json.loads(line)
                 for line in path.read_text(encoding="utf-8").splitlines()
-                if line.strip() and not _is_import_line(line)
+                if line.strip()
             ]
         # Merge policy: an imported record REFRESHES only what the authored tree
         # is the source of, and never overwrites work an agent has done on top.
@@ -512,6 +561,9 @@ def write_import(force: bool = False) -> int:
                             merged_attrs["lore_depth"] = prior_depth
                     current["attributes"] = merged_attrs
                     continue
+                if field == "provenance":
+                    current["provenance"] = _merge_provenance(current.get(field), value)
+                    continue
                 if current.get(field) != value:
                     current[field] = value
             merged[record["id"]] = current
@@ -545,7 +597,7 @@ def write_import(force: bool = False) -> int:
         1
         for path in sorted(_bible_dir().glob("*.jsonl"))
         for line in path.read_text(encoding="utf-8").splitlines()
-        if line.strip() and not _is_import_line(line)
+        if line.strip() and _carries_agent_work(json.loads(line))
     )
     ok(
         f"game ingest complete: {written} entities, {len(edges)} edges, "
@@ -553,8 +605,8 @@ def write_import(force: bool = False) -> int:
     )
     if preserved:
         info(
-            f"  {preserved} agent-authored record(s) preserved; this run refreshed only "
-            "the fields the game data owns"
+            f"  {preserved} record(s) carry agent-authored provenance and were merged, "
+            "not replaced; this run refreshed only the fields the game data owns"
         )
     if force:
         warn(
@@ -564,9 +616,24 @@ def write_import(force: bool = False) -> int:
     return 0
 
 
-def _is_import_line(line: str) -> bool:
-    """True when a line came from this tool, so a re-run replaces rather than duplicates."""
-    return '"tools lore ingest"' in line
+def _carries_agent_work(record: dict) -> bool:
+    """True when a record holds provenance this tool did not write.
+
+    Measured by PARSING the record, because the previous version counted with a
+    substring test over the raw JSON line and reported a number that had nothing
+    to do with what the merge preserved. An agent's signal is an `author` that is
+    not this tool, an `extended_by` stamp, or a basis entry more specific than the
+    `authored-game-data` marker the importer always writes.
+    """
+    provenance = record.get("provenance")
+    if not isinstance(provenance, dict):
+        return False
+    if provenance.get("author") != "tools lore ingest":
+        return True
+    if provenance.get("extended_by"):
+        return True
+    basis = provenance.get("basis")
+    return isinstance(basis, list) and any(entry != "authored-game-data" for entry in basis)
 
 
 def register(subparsers) -> None:

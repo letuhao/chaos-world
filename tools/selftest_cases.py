@@ -13,6 +13,7 @@ quiet lie with a non-zero exit code attached.
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import subprocess
@@ -21,6 +22,8 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from . import (
+    boot,
+    common,
     gate_reach,
     godot,
     godot_bypass,
@@ -1370,6 +1373,249 @@ def _ingest_preserves_agent_work() -> None:
     )
 
 
+@case("lore: re-ingest MERGES provenance instead of reassigning it")
+def _reingest_merges_provenance() -> None:
+    """The merge tested summary, lore_depth and the game scalars, and never provenance.
+
+    The fixture for the case above has always contained `"provenance": {"author":
+    "an-agent"}` and has never asserted on it - so the field that actually broke
+    was sitting in the test unwritten, which is the whole of INC-0016. Prose
+    survived a re-import while `author`, `created` and the `abstract-pattern:`
+    basis entries were overwritten, and the command still printed "agent-authored
+    records preserved". The half that records WHO wrote a record and WHY was the
+    half being eaten, and it is the half every later agent reads.
+
+    Two shapes are asserted, because they fail differently:
+
+    - an agent AUTHORED the record, so `author` must survive over the importer's.
+    - the IMPORTER authored it and an agent later EXTENDED it, so `author` is
+      still the importer but `extended_by` must survive. That second shape is the
+      one the substring dedup killed: `_is_import_line` tested the raw line for
+      `"tools lore ingest"`, so any record mentioning the importer anywhere was
+      dropped from `existing` and replaced wholesale, taking the extension with
+      it. An agent extending an imported record is the NORMAL way this bible
+      grows, so the common case was the broken one.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        original = lore.model.REPO_ROOT
+        original_game = lore.ingest.GAME_DIR
+        original_repo = lore.ingest.REPO_ROOT
+        original_lore = lore.model.LORE_ROOT
+        lore.model.REPO_ROOT = root
+        lore.ingest.REPO_ROOT = root
+        lore.ingest.GAME_DIR = root / "game"
+        lore.model.LORE_ROOT = root / "lore"
+        try:
+            game = root / "game" / "data" / "races"
+            game.mkdir(parents=True)
+            (game / "emberblood.tres").write_text(
+                '[gd_resource type="Resource" script_class="RaceDef" format=3]\n\n[resource]\n'
+                'id = &"emberblood"\n'
+                'display_name = "Emberblood"\n'
+                'description = "A body that runs hot."\n'
+                "realm_ceiling = 8\n",
+                encoding="utf-8",
+            )
+            (game / "ashwalker.tres").write_text(
+                '[gd_resource type="Resource" script_class="RaceDef" format=3]\n\n[resource]\n'
+                'id = &"ashwalker"\n'
+                'display_name = "Ashwalker"\n'
+                'description = "Grey-skinned and patient."\n'
+                "realm_ceiling = 5\n",
+                encoding="utf-8",
+            )
+            bible_dir = root / "lore" / "bible"
+            bible_dir.mkdir(parents=True)
+            domains, _edges, _counts = lore.ingest.build_import()
+            authored = {
+                "id": "races.emberblood",
+                "domain": "races",
+                "type": "race",
+                "name": "Emberblood",
+                "summary": "AGENT AUTHORED PROSE.",
+                "tags": ["agent-written"],
+                "status": "active",
+                "provenance": {
+                    "author": "w1-races",
+                    "created": "2026-01-01",
+                    "basis": [
+                        "authored-game-data:game/data/races/emberblood.tres",
+                        "abstract-pattern:a-reading-needs-the-smallest-budget-that-holds-it",
+                    ],
+                },
+                "attributes": {"lore_depth": "authored"},
+            }
+            extended = {
+                "id": "races.ashwalker",
+                "domain": "races",
+                "type": "race",
+                "name": "Ashwalker",
+                "summary": "IMPORT PROSE, later enriched.",
+                "tags": ["race"],
+                "status": "active",
+                "provenance": {
+                    "author": "tools lore ingest",
+                    "created": "2026-01-01",
+                    "basis": ["authored-game-data"],
+                    "schema_version": lore.ingest.SCHEMA_VERSION,
+                    "extended_by": "w1-races",
+                },
+                "attributes": {"lore_depth": "stub"},
+            }
+            for domain, records in domains.items():
+                merged = {r["id"]: r for r in records}
+                if "races.emberblood" in merged:
+                    merged["races.emberblood"] = authored
+                if "races.ashwalker" in merged:
+                    merged["races.ashwalker"] = extended
+                (bible_dir / f"{domain}.jsonl").write_text(
+                    "".join(
+                        json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n"
+                        for r in sorted(merged.values(), key=lambda item: item["id"])
+                    ),
+                    encoding="utf-8",
+                )
+            lore.ingest.write_import(force=False)
+            rows = {
+                r["id"]: r
+                for r in (
+                    json.loads(line)
+                    for line in (bible_dir / "races.jsonl").read_text(encoding="utf-8").splitlines()
+                    if line.strip()
+                )
+            }
+            got_authored = rows["races.emberblood"]["provenance"]
+            got_extended = rows["races.ashwalker"]["provenance"]
+        finally:
+            lore.model.REPO_ROOT = original
+            lore.ingest.GAME_DIR = original_game
+            lore.ingest.REPO_ROOT = original_repo
+            lore.model.LORE_ROOT = original_lore
+
+    expect(
+        got_authored.get("author") == "w1-races",
+        f"re-ingest replaced an agent's provenance author with "
+        f"{got_authored.get('author')!r}. Prose survives the merge and authorship does "
+        f"not, so the bible keeps WHAT was written and loses WHY - and the run still "
+        f"reported agent-authored records preserved",
+    )
+    expect(
+        got_authored.get("created") == "2026-01-01",
+        f"re-ingest restamped an agent-authored record's created date as "
+        f"{got_authored.get('created')!r}, erasing when the reasoning was written",
+    )
+    expect(
+        "abstract-pattern:a-reading-needs-the-smallest-budget-that-holds-it"
+        in (got_authored.get("basis") or []),
+        f"re-ingest dropped the abstract-pattern basis entry: {got_authored.get('basis')!r}. "
+        f"That entry is the only record of the reasoning behind the entry, and no other "
+        f"field holds it",
+    )
+    expect(
+        got_extended.get("extended_by") == "w1-races",
+        f"re-ingest dropped extended_by from a record it had authored and an agent had "
+        f"extended: {got_extended!r}. This is the common growth path - an agent enriching "
+        f"an imported record - and a substring test for the importer's author string "
+        f"classified exactly those records as replaceable",
+    )
+
+
+@case("lore: re-ingest still refreshes a record NO agent has touched")
+def _reingest_still_refreshes_untouched() -> None:
+    """The counterweight to the case above.
+
+    "Preserve the agent's work" is satisfiable by never overwriting anything, and
+    that fix would pass the provenance case while silently breaking the coupling
+    this index exists to keep honest: a `.tres` edited in the game must reach the
+    bible. A guard test whose fixture cannot distinguish preserving from disabling
+    tests nothing about the preserving (INC-0016), so this asserts the importer
+    still does its one job.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        original = lore.model.REPO_ROOT
+        original_game = lore.ingest.GAME_DIR
+        original_repo = lore.ingest.REPO_ROOT
+        original_lore = lore.model.LORE_ROOT
+        lore.model.REPO_ROOT = root
+        lore.ingest.REPO_ROOT = root
+        lore.ingest.GAME_DIR = root / "game"
+        lore.model.LORE_ROOT = root / "lore"
+        try:
+            game = root / "game" / "data" / "races"
+            game.mkdir(parents=True)
+            (game / "emberblood.tres").write_text(
+                '[gd_resource type="Resource" script_class="RaceDef" format=3]\n\n[resource]\n'
+                'id = &"emberblood"\n'
+                'display_name = "Emberblood"\n'
+                'description = "A body that runs hot."\n'
+                "realm_ceiling = 8\n",
+                encoding="utf-8",
+            )
+            bible_dir = root / "lore" / "bible"
+            bible_dir.mkdir(parents=True)
+            domains, _edges, _counts = lore.ingest.build_import()
+            for domain, records in domains.items():
+                (bible_dir / f"{domain}.jsonl").write_text(
+                    "".join(
+                        json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n"
+                        for r in sorted(records, key=lambda item: item["id"])
+                    ),
+                    encoding="utf-8",
+                )
+            lore.ingest.write_import(force=False)
+            first_pass = {
+                r["id"]: r
+                for r in (
+                    json.loads(line)
+                    for line in (bible_dir / "races.jsonl").read_text(encoding="utf-8").splitlines()
+                    if line.strip()
+                )
+            }
+            # The depth the IMPORT produced, not a guess: this fixture's .tres
+            # carries a real description, so the honest invariant is "a record no
+            # agent touched comes back unchanged", not a hardcoded "stub".
+            imported_depth = first_pass["races.emberblood"]["attributes"]["lore_depth"]
+            lore.ingest.write_import(force=False)
+            rows = {
+                r["id"]: r
+                for r in (
+                    json.loads(line)
+                    for line in (bible_dir / "races.jsonl").read_text(encoding="utf-8").splitlines()
+                    if line.strip()
+                )
+            }
+            untouched = rows["races.emberblood"]
+            untouched_depth = untouched["attributes"]["lore_depth"]
+            untouched_provenance = dict(untouched["provenance"])
+        finally:
+            lore.model.REPO_ROOT = original
+            lore.ingest.GAME_DIR = original_game
+            lore.ingest.REPO_ROOT = original_repo
+            lore.model.LORE_ROOT = original_lore
+
+    expect(
+        untouched["attributes"]["realm_ceiling"] == 8,
+        f"an untouched imported record lost its game-owned scalar: "
+        f"{untouched['attributes']['realm_ceiling']!r}. If re-ingest stopped refreshing "
+        f"game-owned fields it would satisfy the preservation case while letting the "
+        f"bible drift from the authored .tres with nothing reporting it",
+    )
+    expect(
+        untouched_depth == imported_depth,
+        f"an untouched record's lore_depth drifted from {imported_depth!r} to "
+        f"{untouched_depth!r} across a re-ingest, so the importer is now rewriting "
+        f"curation on records no agent has touched",
+    )
+    expect(
+        untouched_provenance.get("schema_version") == lore.ingest.SCHEMA_VERSION,
+        f"the importer stopped stamping its own schema_version: {untouched_provenance!r}. "
+        f"schema_version is the one provenance field the importer owns, so losing it "
+        f"means the merge stopped merging rather than preserving",
+    )
+
+
 @case("lore: --force IS destructive, and says so")
 def _force_is_destructive() -> None:
     """The opt-out has to actually opt out, or the safe default is the only path.
@@ -1795,4 +2041,95 @@ def _resolver_and_naming_prose_are_not_findings() -> None:
         "a document shipping a runnable `godot --headless` line was accepted. Prose that "
         "names the rule is allowed; prose that hands over the bypass is the same hazard "
         "in a different file extension",
+    )
+
+
+# --- BL-0635: `boot` was the last gate with no case proving it goes RED.
+# ---
+# --- `tools boot` is the only check that can see a fault which fires once the engine
+# --- actually delivers frames, so a loosened `boot` is the most expensive kind of quiet
+# --- lie in the gate. It went uncovered because every earlier attempt asserted that a
+# --- BROKEN world is rejected, and `boot` is red on the shipped tree for a content
+# --- reason — so such an assertion would have passed for the wrong reason and proved
+# --- nothing. These two cases break the two halves against a fixture world that reports
+# --- success and does nothing, which is the shape no shipped tree has and therefore the
+# --- only fixture where a red verdict can only mean the guard works.
+
+
+def _boot_verdict(probe_stdout: str, engine_exit: int = 0) -> int:
+    """`boot.run`'s exit code against a fixture project, with the engine replaced.
+
+    Three things the verdict reads are redirected, and all three matter.
+    `boot.GAME_DIR` is what `main_scene()` opens; `common.GAME_DIR` is what
+    `game_exists()` checks, and it is a SEPARATE binding — patching only the first
+    leaves the fixture passing because the real project happens to exist, which is the
+    wrong-tree bug `gate_reach` already paid for. `run_godot` is the only thing that
+    starts the engine.
+
+    The stub answers by ARGUMENT, not by call order: `--quit-after` is phase one and
+    `-s` is phase two. Deciding that way means the fixture cannot accidentally encode
+    "the engine was launched" as the thing under test.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        game = root / "game"
+        write(
+            game / "project.godot",
+            '[application]\n\nrun/main_scene="res://scenes/main.tscn"\n',
+        )
+        original_dir = boot.GAME_DIR
+        original_common = common.GAME_DIR
+        original_run = boot.godot.run_godot
+        boot.GAME_DIR = game
+        common.GAME_DIR = game
+
+        def _stub(argv, **_kwargs):
+            probe = any(arg.startswith("-s") for arg in argv)
+            return subprocess.CompletedProcess(
+                argv,
+                engine_exit,
+                stdout=(probe_stdout if probe else ""),
+                stderr="",
+            )
+
+        boot.godot.run_godot = _stub
+        try:
+            return boot.run(argparse.Namespace(frames=boot.BOOT_FRAMES))
+        finally:
+            boot.GAME_DIR = original_dir
+            common.GAME_DIR = original_common
+            boot.godot.run_godot = original_run
+
+
+@case("boot: a probe that reports an empty shell FAILS the gate")
+def _boot_rejects_an_empty_shell() -> None:
+    """The half that is not about crashing: surviving is not arriving.
+
+    `ItemWorkbenchApp._ready` returns quietly when it cannot find `%ScreenStack`, and a
+    blank window still exits 0 — the exact failure BL-0359's neighbourhood looked like.
+    A probe that says `ok: false` must therefore make the gate exit non-zero, or the one
+    check that can see a boot come up empty would report success on an empty boot.
+    """
+    code = _boot_verdict('BOOTJSON {"ok": false, "why": "the shell mounted no screen"}\n')
+    expect(
+        code != 0,
+        "a probe reporting an empty shell still exited 0, so `tools boot` would report a "
+        "game that launches to a blank window as healthy",
+    )
+
+
+@case("boot: a probe that prints NO report at all FAILS the gate")
+def _boot_rejects_a_silent_probe() -> None:
+    """The other direction: silence is not a pass.
+
+    A probe that crashed before `_emit`, or whose line lost its prefix, produces no
+    `BOOTJSON`. Reading that as "no complaints" is the failure mode where a gate goes
+    green because the thing it measures stopped running — the guard reports `ok` on a
+    tree it should have rejected, which is the ADR 0066 quiet lie.
+    """
+    code = _boot_verdict("")
+    expect(
+        code != 0,
+        "a probe that printed no BOOTJSON line still exited 0, so a probe that died before "
+        "reporting would read as a healthy boot",
     )
