@@ -36,6 +36,35 @@ BUILD_DIR = REPO_ROOT / "build"
 # stale ones are swept.
 LOG_DIR = BUILD_DIR / "logs"
 
+# Where `user://` resolves for every run this launcher starts.
+#
+# `user://` follows the OS roaming profile, so without this the game's save lives
+# at %APPDATA%/Godot/app_userdata/<project>/ and is SHARED by every task that boots
+# the app (tools boot, tools run, tools ui) and by every run before it. The app
+# restores from it when present (ItemWorkbenchApp._ready -> restore_actor), so a
+# gate run's starting bag, equipment and outstanding loot were whatever the last
+# run left behind. A gate whose verdict depends on untracked state outside the repo
+# is not reproducible - BL-0743.
+#
+# There is deliberately NO `--user-data-dir` flag here: Godot 4.7 has no such
+# option, and its CLI reference warns that "unknown command line arguments have no
+# effect whatsoever", so passing one would look applied and relocate nothing.
+# The environment is the lever that exists. On Windows `user://` derives from
+# %APPDATA%; elsewhere it derives from the XDG data dir.
+USER_DATA_DIR = BUILD_DIR / "godot-user"
+
+
+def hermetic_env() -> dict[str, str]:
+    """The child environment, with `user://` redirected inside the gitignored tree."""
+    USER_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    env = dict(os.environ)
+    if os.name == "nt":
+        env["APPDATA"] = str(USER_DATA_DIR)
+    else:
+        env["XDG_DATA_HOME"] = str(USER_DATA_DIR)
+    return env
+
+
 # Distinguishes runs that share a PID and a wall-clock second. Not theoretical:
 # `tools test` invokes the engine twice in one process (the import step, then the
 # suite), and a warm-cache import can finish inside the same second the suite
@@ -501,6 +530,7 @@ def _run_godot_locked(
             text=True,
             stdout=stream_out,
             stderr=stream_err,
+            env=hermetic_env(),
         )
     except OSError as exc:
         if stream_out:

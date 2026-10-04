@@ -186,10 +186,15 @@ static func repair(actor: Actor, periods: int) -> Dictionary:
 	}
 
 
-## Whether a raised anchor would shelter `actor` from a further death's cost. A shelter does not
-## repair what is lost; it stops the next death taking any more, which is a different promise and
-## therefore a different id.
-static func shelters(actor: Actor) -> Dictionary:
+## Whether a raised anchor would shelter the actor from a further death's cost. A shelter
+## does not repair what is lost; it stops the next death taking any more, which is a
+## different promise and therefore a different id.
+##
+## The anchor is read from the shared ledger rather than from the actor, so `_actor` names
+## a caller-supplied argument the verb does not need. It stays in the signature because
+## every other verb on this facade answers per actor and a screen that reached for
+## `summary` and `shelters` would otherwise have to remember which one takes what.
+static func shelters(_actor: Actor) -> Dictionary:
 	var ledger := _state()
 	for anchor_id in AnchorState.raised_ids(ledger):
 		var def := AnchorCatalog.instance().anchor_definition(anchor_id)
@@ -199,12 +204,18 @@ static func shelters(actor: Actor) -> Dictionary:
 
 
 ## Whether `anchor_id` stands raised in this world.
-static func is_raised(actor: Actor, anchor_id: StringName) -> bool:
+##
+## `_actor` is accepted for the same reason [method shelters] accepts one: the answer comes
+## from the world ledger, but the facade answers per actor everywhere else.
+static func is_raised(_actor: Actor, anchor_id: StringName) -> bool:
 	return AnchorState.is_raised(_state(), anchor_id)
 
 
 ## The ledger exactly as the save carries it.
-static func state(actor: Actor) -> Dictionary:
+##
+## `_actor` is accepted for the same reason [method shelters] accepts one: the ledger is
+## the world's, but this facade answers per actor everywhere else.
+static func state(_actor: Actor) -> Dictionary:
 	return _state()
 
 

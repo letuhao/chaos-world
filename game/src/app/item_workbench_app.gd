@@ -423,7 +423,7 @@ func _attach_body_modules(actor: Actor) -> void:
 	# `attach`, not the bare refresh: `Actor.from_dict` restores components and NEVER a
 	# `StatProvider`, so a restore or a body swap arrives with no provider and the realm MULT
 	# would land on nothing. `attach` mounts it when absent and refreshes either way.
-	ElementsApi.apply_realm_modifiers(actor)  # MUTATION-EL-RESTORE-MOUNT
+	ElementsApi.attach(actor)
 	DualCultivationApi.attach(actor)
 	FertilityApi.attach(actor)
 	ItemsApi.attach(actor)

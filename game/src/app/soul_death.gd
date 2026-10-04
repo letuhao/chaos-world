@@ -25,10 +25,46 @@ extends RefCounted
 ## 3. **A new body arrives into the arrival the GATE chose.** This class cannot name an
 ##    arrival; asking `SoulGate` is the whole of its authority, because a caller that could
 ##    choose would be the picker ADR 0065 forbids.
+## 4. **A death that costs the soul is a WORLD FACT, recorded once** under
+##    [constant FACT_ID]. The guardian branch returns above this step and records nothing —
+##    a body the player kept was never buried, and a "deaths so far" fact that counted a
+##    spent item is a count nothing can reconcile with the world. The ledger is carried onto
+##    the re-embodied body, because `module_data` has the actor's lifetime and the new body is
+##    minted empty.
 
 ## The authored base cost of a death before difficulty scales it. A constant here and not on
 ## the arrival, because a death costs what it costs regardless of which arrival is next.
 const BASE_DEATH_COST := 20
+
+## A soul died and the body was re-embodied: a world fact (ADR 0130 §Decision).
+##
+## Spelled EXACTLY `FACT_ID`, because that is the name `tools/gate_reach.py`'s
+## `code_owned_supply` resolves a code-owned producer by, and `tests/arch_rules/
+## test_fact_ledger_writers.gd` asserts this exact spelling for every file in
+## `CODE_OWNED_WRITERS`. A renamed const is not a rename: it is a producer the census
+## stops counting, and a `.tres` demanding `soul_died` would then be reported dead while
+## the game supplies it.
+##
+## A flat id in `WorldFact`'s ONE namespace and no prefix, per ADR 0113/ADR 0137: a
+## prefixed id "reads as a working reference and silently grants nothing". It is never
+## assembled at run time — `code_owned_supply` counts neither, so the id has to be this
+## literal in this file.
+const FACT_ID := &"soul_died"
+
+## Whether this exact body has already had its death written by this class.
+##
+## **A body-keyed marker, and the reason it is not the ledger's own count:** the ledger is
+## shared with every other fact and it is CARRIED onto a re-embodied body that has not died
+## yet, so `count >= 1` there means "this soul has died before", not "this body has died".
+## Reading the count as the once-rule would refuse the new body's first death because it
+## inherited the old body's history, and a soul could die once and never again. The marker is
+## keyed by instance id, so it is about THIS body and only this body.
+##
+## In-memory only, deliberately. It is not save state: the thing it protects against is a
+## repeated poll for a body that is still standing dead, and a body that died before a save is
+## gone — the restored run polls a body that has not died yet, which is a first death and must
+## be recorded.
+static var _died_bodies: Dictionary = {}
 
 ## The composition root's arrival builder. Injected rather than called directly so this class
 ## names no `app/` type and stays a plain value object a test can drive.
@@ -45,10 +81,15 @@ func _init(mint_body: Callable = Callable(), rebind: Callable = Callable()) -> v
 
 ## Resolve a death for `actor`. The ONE entry point; every other method here is its step.
 ##
-## Returns `{ok, reason, died, guardian, damage, soul, arrival, body_id, incarnated}`. `ok` is
-## true whenever a death was resolved — a death the player survived via a guardian is a
-## resolved death, not a refusal — and `reason` names what happened so a screen can say it
-## without inferring an outcome from a message.
+## Returns `{ok, reason, died, guardian, damage, soul, arrival, body_id, incarnated, fact,
+## fact_count}`. `ok` is true whenever a death was resolved — a death the player survived via a
+## guardian is a resolved death, not a refusal — and `reason` names what happened so a screen
+## can say it without inferring an outcome from a message.
+##
+## **A guardian death is not a death.** It returns early, ABOVE the fact write, because the
+## body never fell: the item was spent and the player keeps the body they had. Counting it
+## would make "how many times has this soul died" answer higher than the number of bodies
+## the world buried, and the quest step asking that question is the reason the fact exists.
 func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 	if actor == null:
 		return _refuse("no_actor")
@@ -67,6 +108,8 @@ func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 			"arrival": "",
 			"body_id": String(actor.id),
 			"incarnated": false,
+			"fact": "",
+			"fact_count": WorldFact.count(actor, FACT_ID),
 		}
 	# No guardian: the soul pays. Difficulty supplies the FRACTION; this class supplies the
 	# amount, which is why a difficulty row can never decide how much a death costs.
@@ -76,7 +119,10 @@ func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 	var verdict := SoulApi.verdict(actor)
 	if not bool(verdict.get("ok", false)):
 		# Out of lives: the soul ledger says so and there is no body to hand back. The soul keeps
-		# its damage — a run that ends is still a run that happened.
+		# its damage — a run that ended is still a run that happened, so it IS a death and it IS
+		# recorded. Nothing re-embodies, but a soul that ran out of lives died on the last body
+		# it had, and a quest asking how many deaths a soul has earned must hear about it.
+		var spent := _record_death(actor)
 		return {
 			"ok": true,
 			"reason": "soul_spent",
@@ -87,8 +133,82 @@ func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 			"arrival": String(arrival),
 			"body_id": "",
 			"incarnated": false,
+			"fact": String(FACT_ID),
+			"fact_count": spent,
 		}
 	return _rebody(actor, arrival, damaged)
+
+
+## Record that this soul died, ONCE, into the world fact ledger (ADR 0130 §Decision). Returns
+## the ledger's count for [constant FACT_ID] afterwards.
+##
+## ## Why this is not a bare [code]WorldFact.record[/code]
+##
+## `app/item_workbench_app.gd::poll_death` re-arms on the actor id, so the shipped poll does not
+## fire twice for one body — but that is the CALLER's once-rule, and a ledger that is monotone
+## has no verb to take an accidental second accrual back (ADR 0113). A second `resolve` for a
+## body that already died would therefore be permanent and unfalsifiable from the ledger's side.
+## So the once-rule lives HERE, at the writer: a death already recorded against this body is
+## counted, not re-recorded. The proof is the state of the world, not a caller's bookkeeping.
+##
+## ## Why the write lands on BOTH the falling body and the one it becomes
+##
+## `world_facts` lives at `actor.module_data["world_facts"]` (ADR 0113), which has the
+## actor's lifetime — the same trap ADR 0127 names for the soul ledger. **Measured, not
+## assumed**: a probe recorded a fact on a body, minted the rebirth body through the real
+## `CharacterCreationFlow.build_forced`, and read it back — `before_swap=1`,
+## `after_swap_on_new_body=0`. A reborn body arrives with an EMPTY ledger, so a write to the
+## old body alone is erased by the very re-embodiment this fact describes, and the next
+## death would count 1 forever.
+##
+## So the ledger is carried across the swap explicitly, and the carried copy is what the new
+## body reports. It is not a second ledger: [method _carry_facts] moves the same rows rather
+## than tracking anything of its own, and it is a no-op when the falling body holds none.
+##
+## **The carry moves the ledger, not the marker.** `_died_bodies` is keyed by instance id and is
+## deliberately NOT carried: the new body has not died, so it must be free to record its own
+## first death, and the carried `soul_died` count is the history that accumulates underneath it.
+static func _record_death(actor: Actor) -> int:
+	if actor == null:
+		return 0
+	if _death_already_recorded(actor):
+		return WorldFact.count(actor, FACT_ID)
+	_died_bodies[actor.get_instance_id()] = true
+	var written := WorldFact.record(actor, FACT_ID, 1)
+	return int(written.get("count", 0))
+
+
+## Whether this exact body has already had its death written by this class.
+##
+## **A body-keyed marker, and the reason it is not the ledger's own count:** the ledger is
+## shared with every other fact and it is CARRIED onto a re-embodied body that has not died
+## yet, so `count >= 1` there means "this soul has died before", not "this body has died".
+## Reading the count as the once-rule would refuse the new body's first death because it
+## inherited the old body's history, and a soul could die once and never again. The marker is
+## keyed by instance id, so it is about THIS body and only this body.
+##
+## In-memory only, deliberately. It is not save state: the thing it protects against is a
+## repeated poll for a body that is still standing dead, and a body that died before a save is
+## gone — the restored run polls a body that has not died yet, which is a first death and must
+## be recorded.
+static func _death_already_recorded(actor: Actor) -> bool:
+	return bool(_died_bodies.get(actor.get_instance_id(), false))
+
+
+## Copy the world fact ledger from `from` onto `to`, so a re-embodied soul's history survives
+## the body swap. Idempotent: carrying an empty ledger writes nothing.
+##
+## **A duplicate guard, not a merge.** Two bodies each carrying `soul_died: 1` and a sum that
+## adds them would report 2 deaths for 1, and `WorldFact`'s ledger is monotone with no verb to
+## lower a count (ADR 0113), so a wrong count here is permanent. The rows are taken as the
+## source of truth, never added to.
+static func _carry_facts(from: Actor, to: Actor) -> void:
+	if from == null or to == null:
+		return
+	var ledger: Dictionary = from.get_module_data(WorldFact.MODULE_KEY)
+	if ledger.is_empty():
+		return
+	to.set_module_data(WorldFact.MODULE_KEY, ledger.duplicate(true))
 
 
 ## Whether `actor` is currently dead, read as `health <= 0.0`.
@@ -146,6 +266,8 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 			"arrival": String(arrival),
 			"body_id": "",
 			"incarnated": false,
+			"fact": String(FACT_ID),
+			"fact_count": _record_death(actor),
 		}
 	var minted := _mint_body.call(String(arrival), next_incarnation) as Dictionary
 	if not bool(minted.get("ok", false)):
@@ -159,9 +281,17 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 			"arrival": String(arrival),
 			"body_id": "",
 			"incarnated": false,
+			"fact": String(FACT_ID),
+			"fact_count": _record_death(actor),
 		}
 	var body := minted.get("actor", null) as Actor
 	var body_id := "" if body == null else String(body.id)
+	# BEFORE the rebind, and on the body that fell. `WorldFact.record` needs an actor whose
+	# ledger it can write, and the new body is minted EMPTY — so the write happens against the
+	# falling body and the carry below moves it. See `_record_death`.
+	var death_count := _record_death(actor)
+	if body != null:
+		_carry_facts(actor, body)
 	var reborn := SoulApi.reincarnate(actor, body_id)
 	if body != null and _rebind.is_valid():
 		# Every screen, roster and attached module follows the body. A half-swapped body is the
@@ -177,6 +307,8 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 		"arrival": String(reborn.get("arrival", arrival)),
 		"body_id": body_id,
 		"incarnated": bool(reborn.get("ok", false)),
+		"fact": String(FACT_ID),
+		"fact_count": death_count,
 	}
 
 
@@ -191,4 +323,6 @@ func _refuse(reason: String) -> Dictionary:
 		"arrival": "",
 		"body_id": "",
 		"incarnated": false,
+		"fact": "",
+		"fact_count": 0,
 	}

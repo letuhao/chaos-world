@@ -212,12 +212,27 @@ func test_the_next_arrival_is_deterministic_so_two_souls_die_identically() -> vo
 func test_the_arrival_is_the_gate_answer_and_not_a_caller_named_one() -> void:
 	# `reincarnate` takes only a body id. A caller that could name its own arrival is the
 	# picker ADR 0065 forbids, so the arrival is read from the gate, never from the caller.
-	# The gate answers the FIRST UNEARNED arrival, which is why the expected value is read
-	# BEFORE the rebirth consumes it — asking afterwards would ask about the next life.
+	#
+	# **The gate is asked again AFTER the write.** Asserting only `out["arrival"]` echoes the
+	# value the same call just wrote and proves nothing: a gate that returned the SAME arrival
+	# forever would pass it. This case therefore re-evaluates the gate afterwards, which is
+	# what makes it fail when a death fails to mark its arrival spent — the ladder test in
+	# `test_soul_arrival_ladder` carries the whole-ladder form of the same invariant.
 	var expected := String(SoulApi.next_arrival(_actor))
 	var out := SoulApi.reincarnate(_actor, &"body_two")
 	assert_eq(String(out["arrival"]), expected, "the gate chose it")
 	assert_ne(String(out["arrival"]), "", "an arrival was recorded even though none was requested")
+	# Re-asked, not echoed: this is the assertion the old case was missing.
+	assert_ne(
+		String(SoulApi.next_arrival(_actor)),
+		expected,
+		"and the arrival just spent is not the one owed next"
+	)
+	assert_eq(
+		(SoulApi.state(_actor)["origins"] as Array).has(expected),
+		true,
+		"the ledger is the receipt: it holds the arrival that was spent"
+	)
 
 
 # --- The verdict ------------------------------------------------------------

@@ -17,4 +17,4 @@ roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"talisman"
 grade = &"immortal"
 tags = Array[StringName]([&"guardian"])
-sources = Array[StringName]([&"boss", &"domain:qi_spirit_ascension_trial"])
+sources = Array[StringName]([&"boss:qi_qi_refining_warden"])

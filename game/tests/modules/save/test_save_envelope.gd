@@ -16,6 +16,12 @@ extends TestCase
 ## first, so a previous run's generation cannot make an assertion about "the first save" pass
 ## or fail for the wrong reason.
 
+## The floor [method _source_files]'s walk must clear before "no shipped caller reached the
+## backup" is a verdict rather than an empty list. Measured 2026-10-04 at 487 `.gd` under
+## `res://src`; the floor is deliberately well below that rather than equal to it, so deleting
+## modules does not redden a guard while a walk covering a fraction of the tree still does.
+const SOURCE_FILE_FLOOR := 200
+
 var _actor: Actor
 var _store: SoulWorldLedger
 
@@ -250,8 +256,24 @@ func test_no_shipped_caller_can_name_the_backup_slot() -> void:
 	# an intention. `SaveStore` is allow-listed because its private fallback is the recovery
 	# path this rule exists to keep unreachable from a player affordance.
 	var allow_listed: Array[String] = ["save_store.gd"]
+	var sources := _source_files("res://src")
+	# **The population assertion belongs IN this guard, not beside it.** An empty walk would
+	# otherwise report `offenders == []` — byte-identical to a tree with no backup affordance,
+	# and therefore an all-clear that no player action could ever turn red. This is the guard
+	# that was vacuous for exactly this reason: `_source_files` walked `.tres` files, so its
+	# `.gd` filter discarded every file it found. "Found nothing" is only a verdict once
+	# "found something" is asserted, and asserting it here is what stops the two drifting apart.
+	assert_eq(
+		sources.size() > 0,
+		true,
+		(
+			"the backup guard walked zero .gd files under res://src, so `offenders == []` "
+			+ "is an empty list, not a clean tree. `ContentScan.files_under` defaults its "
+			+ "suffix to `.tres` — pass `.gd` EXPLICITLY in `_source_files`."
+		)
+	)
 	var offenders: Array[String] = []
-	for path in _source_files("res://src"):
+	for path in sources:
 		var file_name := path.get_file()
 		if allow_listed.has(file_name):
 			continue
@@ -307,12 +329,77 @@ func test_the_authored_world_keys_are_the_four_ledgers_that_outlive_an_actor() -
 
 
 ## Every `.gd` under `root`, capped by `ContentScan` so a junction cannot return nothing.
+##
+## **The suffix is passed EXPLICITLY and that is the whole point of this helper existing.**
+## `ContentScan.files_under` defaults its suffix to `.tres` — authored content, the one thing a
+## source scan never wants — so a call that omits it walks the `.tres` files, and the `.gd`
+## filter below then discards every single one it found. This helper read ZERO of the 487
+## GDScript files in `res://src` while reading as a guard over all of them: a mutation probe
+## that added a `restore_backup_verb()` caller to `app/item_workbench_app.gd` left the suite at
+## 61 passed, 0 failed. The sibling guard in `criterion/test_failure_branches_reachable.gd`
+## passes `".gd"` explicitly and is sound; this is that precedent copied.
+##
+## The suffix therefore may NOT be dropped here, and `test_the_backup_guard_actually_reads_the
+## source_tree` is the assertion that makes forgetting it a failure rather than an all-clear.
 func _source_files(root: String) -> Array[String]:
 	var out: Array[String] = []
-	for path in ContentScan.files_under(root):
+	for path in ContentScan.files_under(root, ".gd"):
 		if path.get_file().ends_with(".gd"):
 			out.append(path)
 	return out
+
+
+## The population assertion the backup guard needs and did not have.
+##
+## **A guard that silently inspects nothing is the failure class this repo records as "a guard
+## nobody has seen fire is not a guard"** — and that is exactly what `test_no_shipped_caller_can
+## _name_the_backup_slot` was. It asserted `offenders == []` over an empty file list, which is
+## the same answer a tree with no backup affordance gives, so the mutation probe passed it. This
+## turns an empty walk into a FAILURE: the scan must find real GDScript before its "found none"
+## verdict means anything.
+##
+## Two floors rather than one, because they catch different failures: `> 0` catches the walk
+## returning nothing at all, and the named floor catches the walk silently covering a fraction of
+## the tree — a suffix typo, a depth cap hit early, a root that moved — which is a guard that
+## reads as an all-clear for every file it no longer sees.
+func test_the_backup_guard_actually_reads_the_source_tree() -> void:
+	var found := _source_files("res://src")
+	assert_eq(
+		found.size() > 0,
+		true,
+		(
+			(
+				"the backup guard's walk returned zero .gd files. `ContentScan.files_under` "
+				+ "defaults its suffix to `.tres`, so the scan is inspecting authored content and "
+				+ "the `.gd` filter discards every file it finds — `test_no_shipped_caller_can_"
+			)
+			+ (
+				"name_the_backup_slot` is reporting all-clear over an empty list, not over the "
+				+ "source tree."
+			)
+		)
+	)
+	assert_eq(
+		found.size() >= SOURCE_FILE_FLOOR,
+		true,
+		(
+			(
+				"the backup guard read %d .gd files under res://src, below the floor of %d "
+				% [found.size(), SOURCE_FILE_FLOOR]
+			)
+			+ (
+				"measured 2026-10-04 at 487. A guard covering a fraction of the tree cannot "
+				+ "report a clean one."
+			)
+		)
+	)
+	# And the walk must be reaching the file the audit mutated, so "it read a plausible number"
+	# is not satisfied by a walk that stops two directories in.
+	assert_eq(
+		found.has("res://src/app/item_workbench_app.gd"),
+		true,
+		"the walk reaches the composition root, which is where the backup caller was injected"
+	)
 
 
 ## `source` with every GDScript comment line removed, so a structural guard reads CODE and never

@@ -58,11 +58,17 @@ const SRC_ROOT := "res://src"
 ##     than one fact cannot honour it. Their const-to-call wiring is asserted in
 ##     `tests/modules/{sect,clan,combat}` instead, and the census does not care which of
 ##     the two spellings a writer uses.
+##   - `soul_death.gd` is the seventh: ADR 0130 §Decision records a soul's death as a
+##     world fact with a code-owned id, and it owns exactly ONE fact, so the single
+##     `const FACT_ID` spelling is available to it and it is a code-owned producer in the
+##     strict sense. It is listed in BOTH lists for that reason, which is what the
+##     `CODE_OWNED_WRITERS` contract test below checks.
 ## A name NOT in this list is not an oversight to fix by adding a name: it is a
 ## producer the census cannot see until it is taught to read it, in the same change.
 const KNOWN_WRITERS: Array[String] = [
 	"res://src/app/beat_director.gd",
 	"res://src/app/character_creation_flow.gd",
+	"res://src/app/soul_death.gd",
 	"res://src/modules/clan/clan_facts.gd",
 	"res://src/modules/combat/combat_facts.gd",
 	"res://src/modules/event/event_beat_writer.gd",
@@ -72,7 +78,9 @@ const KNOWN_WRITERS: Array[String] = [
 ## read out of GDScript rather than out of content. Asserted by test so that moving a
 ## `const` into another file, or writing the id inline instead, is a deliberate act
 ## with a failure attached rather than a silent change to the census's model.
-const CODE_OWNED_WRITERS: Array[String] = ["res://src/app/character_creation_flow.gd"]
+const CODE_OWNED_WRITERS: Array[String] = [
+	"res://src/app/character_creation_flow.gd", "res://src/app/soul_death.gd"
+]
 ## The call this rule is about. Assembled from fragments so the literal-guard test
 ## below, which searches for it, cannot match this file's own spelling of it.
 const CALL := "World" + "Fact.record"
