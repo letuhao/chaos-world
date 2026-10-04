@@ -265,10 +265,14 @@ func test_every_authored_quest_lands_in_exactly_one_of_three_states() -> void:
 			completed += 1
 			continue
 		assert_eq(String(outcome["reason"]), "steps_unmet", "%s refused on its steps" % quest_id)
+		# `_refuse` returns `{"ok", "reason", "unmet"}` and NO `paid`/`unspent`
+		# keys: a refusal is inert, so the absence of the keys IS the assertion.
+		# Reading them anyway aborted the whole loop mid-quest and reported no
+		# failure at all (INC-0023): the four quests below this line never ran.
 		assert_eq(
-			(outcome["paid"] as Array).size() + (outcome["unspent"] as Array).size(),
-			0,
-			"%s refused, so it paid nothing at all" % quest_id
+			outcome.has("paid") or outcome.has("unspent"),
+			false,
+			"%s refused, so it carries no payout of any kind" % quest_id
 		)
 		refused_steps += 1
 	assert_eq(
