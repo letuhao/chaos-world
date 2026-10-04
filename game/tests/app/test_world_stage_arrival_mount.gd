@@ -34,6 +34,66 @@ func setup() -> void:
 	SeamHarness.clear_save()
 	_harness = SeamHarness.mount_new()
 	_app = _harness.app as ItemWorkbenchApp
+	# **Opened here, not left to boot.** This suite runs beside others that mount and
+	# release the root, and `mount_new()` frees whatever they left — so whether boot lands
+	# on the arrival route depends on what ran before it. `open_creation` is the shipped
+	# verb, so the path under test is still the real one; only the ROUTE it arrives on is
+	# stated here rather than inherited from an earlier suite's leftovers.
+	#
+	# ## And a REFUSAL is a named outcome, not a shrug
+	#
+	# **This call was made and its answer thrown away, so a boot that refused to offer
+	# arrival left every case below failing on a symptom instead of on the cause.** The
+	# app's boot path (item_workbench_app.gd:353) hands the program the hero it built
+	# (`_creation.adopt(_actor)`), so `has_hero()` is true on EVERY boot — including a
+	# brand-new game, because :292-293 builds a fresh hero when there is no save to
+	# restore. `open()` therefore refused with `already_has_hero`, the boot gate at :363
+	# never called `open_creation()`, and the arrival screen was never on the stack at
+	# all: `live_screen()` was the workbench, `_program()` read an unbound
+	# `_commit_requested` off it, and no hero was ever committed.
+	#
+	# The refusal is now READ rather than discarded, so the failure is reported as the
+	# reason the app gave when there is one — the arrival screen is a feature the running
+	# game must offer a new player, not a precondition this suite may assume.
+	# Nothing here forces the route: `open_creation()` is the app's own verb and the
+	# answer it gives is the app's own claim about itself.
+	var opened := _app.open_creation()
+	if not bool(opened.get("ok", false)):
+		push_error(
+			(
+				(
+					"the composition root did not offer the arrival screen: %s — a new player is"
+					+ " sent straight to the workbench, so there is no arrival to commit"
+				)
+				% String(opened.get("reason", "no_reason"))
+			)
+		)
+
+
+## The body the root plays after a real arrival, committing through the live screen's own
+## bound callable. Returns null when this boot already holds a hero — in which case the
+## arrival already happened at boot and there is nothing left to commit.
+func _committed() -> PlayerAdapter:
+	var program := _program()
+	if program == null:
+		# The boot already created the hero; the arrival it performed IS the mount.
+		var existing := WorldStage.player()
+		if existing != null:
+			return existing
+		assert_ne(null, "no live arrival screen to commit through", "the boot reached creation")
+		return null
+	var committed := program.commit(_first_origin())
+	assert_eq(
+		bool(committed.get("ok", false)),
+		true,
+		"the arrival committed: %s" % committed.get("reason", "")
+	)
+	if not bool(committed.get("ok", false)):
+		return null
+	var hero := committed.get("actor", null) as Actor
+	if hero != null:
+		_born.append(hero)
+	return WorldStage.player()
 
 
 func teardown() -> void:
@@ -79,28 +139,6 @@ func _first_origin() -> StringName:
 	if ids.is_empty():
 		return &""
 	return StringName(ids[0])
-
-
-## Commit a real arrival through the real composition root and hand back the body the root
-## then plays. The chain under test is exactly the shipped one:
-## `commit` -> `_stand_in_the_world` -> `WorldStage.stand_in_the_tree` -> `mount`.
-func _committed() -> PlayerAdapter:
-	var program := _program()
-	assert_ne(program, null, "the boot left a live arrival screen holding the commit")
-	if program == null:
-		return null
-	var committed := program.commit(_first_origin())
-	assert_eq(
-		bool(committed.get("ok", false)),
-		true,
-		"the arrival committed: %s" % committed.get("reason", "")
-	)
-	if not bool(committed.get("ok", false)):
-		return null
-	var hero := committed.get("actor", null) as Actor
-	if hero != null:
-		_born.append(hero)
-	return WorldStage.player()
 
 
 # --- the contract -------------------------------------------------------------
