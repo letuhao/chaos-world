@@ -66,6 +66,14 @@ const MAX_DROPS_PER_REWARD := 8
 ## fights be read as the whole game (BL-0625, retracted). Wide enough to reach a
 ## table that stocks gear, capped so a corpus that pays nothing cannot spin.
 const MAX_EQUIP_HUNTS := 24
+## How many DOMAIN CELLS the sweep may visit before it gives up on reaching
+## MAX_EQUIP_HUNTS real fights. Most of the corpus is above a starting hero's
+## realm and refuses entry correctly, so attempts and fights are different
+## budgets: bounding the walk by attempts starved it of actual fights, because
+## the refusals consumed the cap. This outer bound is what makes the loop
+## terminate at all -- `MAX_EQUIP_HUNTS` alone would not, since a corpus that
+## refuses everything would walk it forever.
+const MAX_SWEEP_CELLS := 160
 ## The app's strike deals 25 and the lowest authored boss has 100 vitality, so four
 ## strikes is the whole fight. A cap, never "until it dies" — see `_strike_until_dead`.
 const MAX_STRIKES := 8
@@ -81,6 +89,13 @@ const EQUIP_BUTTON := "%EquipButton"
 const ACTION_BAR := "%ActionBar"
 const INVENTORY_PANEL := "%InventoryPanel"
 const ITEM_LIST := "%ItemList"
+
+
+## One sweep cell: the domain and tier this attempt chose. A helper rather than
+## an inline literal because the loop built the same dictionary twice and gdformat
+## reflowed both copies into a parenthesised call.
+func _cell(where: Dictionary) -> Dictionary:
+	return {"domain": where.get("domain", ""), "tier": where.get("tier", "")}
 
 
 func _initialize() -> void:
@@ -123,59 +138,63 @@ func _run() -> void:
 	var claim_report: Dictionary = {}
 	var equip_report: Dictionary = {}
 	var attempts := 0
+	var fights := 0
+	var refused := 0
 	var sweep: Array[Dictionary] = []
-	for attempt in MAX_EQUIP_HUNTS:
+	# The verdict is built from the BEST cell, not the last one. A refusal on the
+	# final cell used to make the whole probe report "its hunt mints nothing" even
+	# when earlier cells fought, claimed and equipped cleanly, which is how a
+	# working loop gets reported as a dead one.
+	var best: Dictionary = {}
+	for attempt in MAX_SWEEP_CELLS:
 		attempts = attempt + 1
+		if fights >= MAX_EQUIP_HUNTS:
+			break
 		var where: Dictionary = {}
 		hunt_report = await _hunt(app, attempt, where)
 		report["hunt"] = hunt_report
-		# A domain that mints nothing is one dead cell of the grid, not a verdict
-		# on the corpus. Stopping there would let a single unpayable table answer
-		# the question the whole sweep exists to ask.
-		if not bool(hunt_report.get("ok", false)):
-			(
-				sweep
-				. append(
-					{
-						"domain": where.get("domain", ""),
-						"tier": where.get("tier", ""),
-						"hunt": hunt_report.get("why", "minted nothing"),
-					}
-				)
-			)
+		var cell := _cell(where)
+		# A domain the hero is not strong enough for is a GATE WORKING, not a
+		# defect, and it is not a fight either. Counted apart from the hunt budget
+		# so a corpus that is mostly out of reach cannot starve the sweep of real
+		# fights before the cap is reached.
+		if bool(hunt_report.get("refused", false)):
+			refused += 1
+			cell["refused"] = hunt_report.get("why", "the domain refused entry")
+			sweep.append(cell)
 			continue
+		if not bool(hunt_report.get("ok", false)):
+			cell["hunt"] = hunt_report.get("why", "minted nothing")
+			sweep.append(cell)
+			continue
+		fights += 1
 		claim_report = await _claim(app, rows_at_boot)
 		report["claim"] = claim_report
+		cell["def_ids"] = claim_report.get("def_ids", [])
 		if not bool(claim_report.get("ok", false)):
-			(
-				sweep
-				. append(
-					{
-						"domain": where.get("domain", ""),
-						"tier": where.get("tier", ""),
-						"claim": claim_report.get("why", "nothing claimed"),
-					}
-				)
-			)
+			cell["claim"] = claim_report.get("why", "nothing claimed")
+			sweep.append(cell)
 			continue
 		equip_report = await _equip(app, claim_report.get("def_ids", []))
 		report["equip"] = equip_report
-		var cell := {
-			"domain": where.get("domain", ""),
-			"tier": where.get("tier", ""),
-			"def_ids": claim_report.get("def_ids", []),
-		}
-		if not bool(equip_report.get("ok", false)):
-			cell["equip"] = equip_report.get("why", "could not be worn")
-		sweep.append(cell)
 		if bool(equip_report.get("ok", false)):
+			cell["worn"] = equip_report.get("def_id", "")
+			cell["stat"] = equip_report.get("stat", "")
+			best = {"hunt": hunt_report, "claim": claim_report, "equip": equip_report}
+			sweep.append(cell)
 			break
-		# `wearable: false` is the one failure worth another boss: the fight paid
-		# real drops and none of them can be worn. Anything else is a real fault
-		# and repeating it would only multiply the same red.
-		if bool(equip_report.get("wearable", true)):
+		cell["equip"] = equip_report.get("why", "could not be worn")
+		sweep.append(cell)
+		if not bool(equip_report.get("wearable", false)):
+			# A fault rather than bad luck: repeating it would multiply one red.
 			break
-	report["hunts"] = attempts
+	if not best.is_empty():
+		hunt_report = best["hunt"] as Dictionary
+		claim_report = best["claim"] as Dictionary
+		equip_report = best["equip"] as Dictionary
+	report["hunts"] = fights
+	report["cells"] = attempts
+	report["refused"] = refused
 	report["sweep"] = sweep
 	var broken: Array[String] = []
 	if not bool(nav_report.get("ok", false)):
@@ -377,8 +396,19 @@ func _hunt(app: Node, nth: int, where: Dictionary) -> Dictionary:
 		return {"ok": false, "why": "Enter domain is not a live control"}
 	await process_frame
 	if not bool((screen.call(&"summary") as Dictionary).get("in_domain", false)):
+		# Enter is offered for ANY selected domain - the screen's `_enabled` never
+		# consults the realm gate - so the button being live says nothing about
+		# whether the entry was accepted. Most of the corpus is above this hero's
+		# realm and is correctly refused, and reporting that as "no boss spawned"
+		# would read a working gate as a broken pipeline, which is the exact
+		# mistake BL-0625 was. Name what the screen published instead.
+		var gate := String((screen.call(&"summary") as Dictionary).get("gate", ""))
+		if gate.is_empty():
+			gate = "the screen published no reason"
 		return {
-			"ok": false, "why": "entering the domain left no boss live, so nothing can be fought"
+			"ok": false,
+			"refused": true,
+			"why": "the domain was refused, not entered: %s" % gate,
 		}
 	var fight := await _strike_until_dead(screen)
 	var why := _why_fight_did_not_pay(screen, fight)
@@ -621,6 +651,13 @@ func _wear_one(app: Node, def_ids: Array) -> Dictionary:
 	var bagged := _bagged_candidates(screen, def_ids)
 	if bagged.is_empty():
 		return {"ok": false, "why": "no claimed drop is in the bag to wear"}
+	return await _try_each_drop(screen, bar, bagged)
+
+
+## Try each bagged drop until the hero's own Equip control accepts one. Split out
+## of `_wear_one` so neither half sits at gdlint's six-return ceiling, which is
+## what forced the two together in the first place.
+func _try_each_drop(screen: Node, bar: Node, bagged: Array[String]) -> Dictionary:
 	for candidate in bagged:
 		if not _select_row(screen, candidate):
 			return {"ok": false, "why": "the bag's row list cannot select '%s'" % candidate}
