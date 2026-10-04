@@ -93,12 +93,71 @@ var _periods_seen: int = 0
 ## The report's `periods` is the world fold's own running TOTAL, so the delta against the
 ## last one seen is exactly what moved — which is how a chunked long skip (ADR 0173) reports
 ## the whole span it paid for rather than one ceiling's worth of it.
+##
+## **Every advance this file makes passes through here**, including the chunked ones, so a
+## caller never has to ask which of the two shapes it is about to drive.
 func advance_world(periods: int) -> Dictionary:
 	if _world == null:
 		return {"ok": false, "reason": "no_world"}
 	var outcome := _world.advance_periods(periods) as Dictionary
 	poll_save(_advanced_by(outcome))
 	return outcome
+
+
+## ## The retreat verb: a SEASON-SCALE action that costs world time (ADR 0167)
+##
+## **The chosen length IS the cost.** `periods` is what the player asked to sit for, and
+## it is paid through [method advance_world], which chunk-plans it against the fold's own
+## `MAX_PERIODS_PER_PULL` and REFUSES a span the plan cannot cover. Nothing here truncates:
+## a refused plan returns `{"ok": false}` with the fold's own reason and `paid == 0`, which
+## is the loud half of ADR 0173's "It never truncates" (`AGENTS.md:56`).
+##
+## **Gain is proportional to periods PAID, not periods DECLARED** — the ADR 0167 half that
+## makes a meditation interruptible. `paid` comes from the fold's own `moved`, read
+## against the total before this call, so it is a measurement and not a restatement of
+## the ask; `unpaid` is therefore `declared - paid`, and a fully-paid retreat reports zero
+## of it. A caller that previews a cost and then pays a different one can read both.
+##
+## **No `periods` reaches a module facade here.** ADR 0167 decides that a cultivation verb's
+## `amount` stays a qi amount (`modules/qi_cultivation/training.gd:42`) and this file is
+## the caller that owns time, so a retreat's per-period work is whatever the caller asks
+## for once per PAID period — not an argument this method grows to pass.
+##
+## `magnitudes` is [code]TimeLadder.magnitudes_crossed[/code] read over the PAID span, so
+## a coarser cost is reported in the clock's own authored units rather than in a second
+## set of numbers invented here (ADR 0173: the ladder is the one calendar).
+func retreat(periods: int) -> Dictionary:
+	var before := 0 if _world == null else int(_world.summary().get("periods", 0))
+	var outcome := advance_world(periods) as Dictionary
+	var paid := _advanced_by_reading(outcome, before)
+	return (
+		outcome
+		. duplicate(true)
+		. merged(
+			{
+				"declared": maxi(0, periods),
+				"paid": paid,
+				"unpaid": maxi(0, maxi(0, periods) - paid),
+				"magnitudes": TimeLadder.magnitudes_crossed(paid),
+			}
+		)
+	)
+
+
+## How many whole periods `outcome` moved the fold by, measured against the total read
+## BEFORE the call.
+##
+## ## Why not the report's `periods`
+##
+## That key is the fold's running TOTAL, and [method advance_world] already consumes that
+## delta for the autosave (ADR 0179) — reading it a second time here would see
+## `_periods_seen` already advanced and report zero. So the pre-call total is captured by
+## the caller and this is the difference between the two, which is the same measurement
+## [method _advanced_by] makes, taken from the other side.
+func _advanced_by_reading(outcome: Dictionary, before: int) -> int:
+	if not bool(outcome.get("ok", false)):
+		return 0
+	return maxi(0, int(outcome.get("periods", 0)) - before)
 
 
 ## How many whole periods this advance moved the world by, read from the report the world fold

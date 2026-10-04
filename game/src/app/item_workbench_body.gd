@@ -33,8 +33,11 @@ extends ItemWorkbenchPlay
 ##     claim), and `tests/modules/save/test_cultivation_boot_round_trip.gd` slices that
 ##     file between `func restore_actor` and `func restored_from_save`. Both still hold.
 ##   - `adopt_actor` stayed in the shell because it re-points `_forge` and `_quests` and
-##     calls `_live_screen()`, all of which are the shell's own screen wiring. Splitting
-##     it would have meant moving the screen stack into this file.
+##     calls `_live_screen()`. `_forge` and `_quests` are the shell's own wiring;
+##     `_live_screen()` and `_stack` have since moved DOWN here, because this file's
+##     `clear_cast_target` needs both and a base cannot read a subclass's (INC-0020).
+##     Reading them from the shell is the legal direction, so `adopt_actor` itself did
+##     not have to move.
 ##   - `_register_birth` stayed, and `tests/arch_rules/test_fact_ledger_writers.gd` is
 ##     why: it pins the exact set of files that call `WorldFact.record`, and this root is
 ##     the eighth. A birth moved here would silently under-count the content census.
@@ -72,10 +75,31 @@ const STARTER_ITEMS: Array[StringName] = [
 ## sitting and the necrosis row this surface exists to render would always read "no
 ## meridian carries a wound". A demo swing is not a balance change: it is a different
 ## `TechniqueDef` that nothing in production casts.
+##
+## ## This is only reachable because the readout fires BODY, not qi
+##
+## The magnitude was never the thing standing between this surface and a wound: `QiDamage`
+## emits no `effects[]` at all, so a qi blow wounds NOTHING at any magnitude and
+## `CombatReadoutPanel._wound_line` was unreachable through the shipped app. Raising it
+## would not have fixed that. `_readout_technique` in `item_workbench_readout.gd` now
+## asks for the body path, and THIS is the magnitude that puts a wound in the ledger.
 const READOUT_MAGNITUDE := 12.0
 ## The shipped default elemental share, restated as a plain number because `ui/` may not
 ## read `CombatTuning` and `app/` should not reach into the `.tres` for one field.
 const READOUT_SHARE := 0.8
+## The path the readout fires when nobody has chosen one. BODY, and the reason is the
+## docblock above: it is the only mechanism that WRITES an effect (`body.wound` per struck
+## site, ADR 0070), so it is the only one of the three whose readout row can render at all.
+const READOUT_DEFAULT_PATH := PathState.BODY
+## The meridian the readout's body swing aims at. `&"lung"` is a real meridian — three
+## shipped `acupoints/minor_*.tres` name it — so this is not an invented aim id, and
+## `_build_readout_target` unlocks all twenty channels, which ADR 0070 requires before a
+## `named` aim is struck at all.
+const READOUT_MERIDIAN := &"lung"
+## The element the readout's qi swing carries, so `element_power_fire` is the term the
+## elemental-share row is about rather than a second zero. Fixture arithmetic, same as
+## [constant READOUT_MAGNITUDE]; it never reaches `game/data`.
+const READOUT_ELEMENT := ElementStats.FIRE
 
 # --- starting_cast -------------------------------------------------------
 ## **`elder_wei` is in this list, not decoration.** He is the only `story` tier individual,
@@ -98,12 +122,60 @@ const STARTING_CAST: Array[StringName] = [
 ## UI program reads the slot back through; the two must name one file, and they do.
 const SAVE_PATH := "user://item_workbench_state.json"
 
+## The domain surface. `screen_routes.gd` registers it with a nav key, so a player opens the
+## screen — and with no arm in `_bind_route_screen` the screen mounted UNBRIDGED, which is
+## worse than a missing route: `summary()` answers `{}`, every verb is dead and the header
+## reads "Domains — none authored".
+##
+## DECLARED HERE, not in `item_workbench_app.gd`, because `_realize_domain_world` below
+## reads it from a BASE of the shell that declares it, and a base cannot resolve a
+## subclass constant (the same rule as the `READOUT_*` block above). The shell's
+## `_bind_route_screen` still matches on it from a subclass, which is legal.
+const ROUTE_DOMAIN := &"domain_explore"
+
 # --- readout_field -------------------------------------------------------
 ## The combat readout's drill body, minted once and kept (ADR 0174). Cached so a reader
 ## who re-enters the route strikes the SAME body and can watch a wound accumulate,
 ## which is the whole point of a wound being observable at all. Null until the readout
 ## route is bound, so an app that never opens the page mints no inhabitant.
 var _readout_drills: Actor = null
+
+## The drill's own `StatusLoop` and the body it runs on — DECLARED HERE because this is the
+## lowest link of the chain that touches them: `body.gd` writes both (below, in the unbind
+## path) and `item_workbench_readout.gd` reads them in `bind_readout_drill` /
+## `tick_readout_drill`. They were declared in that subclass, which made THIS file fail to
+## parse and took down every suite process-wide (INC-0020).
+var _drill_loop: StatusLoop = null
+var _drill_body: Actor = null
+
+## The screen stack the scene declares. Resolved by unique name in the shell's `_ready`;
+## the root never builds a second one, because two stacks means two answers to "which
+## screen is live".
+##
+## DECLARED HERE, not in `item_workbench_app.gd`: `clear_cast_target` below walks its
+## children to unbind EVERY page, not only the live one, so this base needs the handle and
+## a base cannot resolve a subclass field (INC-0020). The shell keeps ASSIGNING it, which
+## is the same legal shape as `_quests`.
+var _stack: ScreenStack = null
+
+## The playfield a RESTORED body is stood into, and the body standing in it (ADR 0192).
+## ONE stage and ONE adapter per root, in fields rather than a list: `WorldStage._current`
+## and `._mounted_player` are STATIC, so a stage built per restore leaves the newest in
+## `_current` and the previous adapter orphaned — the half-swapped world
+## `CharacterCreationProgram._stand_in_the_world` refuses to create. A boot takes exactly
+## one of the two branches, so each may keep its own. Singular fields, never
+## `Array[WorldStage]`: `tools/arch`'s `APP_CONTENT_ARRAY_RE` reads a member array as the
+## `state-table` signal, and the shell this file feeds carries `tick-loop`, so a list here
+## would cross `APP_STATE_MIN_SIGNALS` for the whole unit.
+##
+## DECLARED HERE, not in `item_workbench_app.gd`: the only method that touches this pair
+## is [method stand_restored_in_the_world] below, so this file is the lowest link of the
+## chain that reaches them and a base cannot resolve a subclass field (INC-0020). The
+## shell still calls it, under its own private name `_stand_restored_in_the_world`,
+## because `restore_actor` reads the pair out of the ANSWER rather than the stage — and a
+## subclass calling an inherited method is the legal direction.
+var _restore_stage: WorldStage = null
+var _restore_body: PlayerAdapter = null
 
 # --- mount_and_attach ----------------------------------------------------
 ## Mount every module a hero carries, over an actor that already exists.
@@ -305,6 +377,63 @@ func _build_actor() -> Actor:
 	return actor
 
 
+# --- restore_placement ---------------------------------------------------
+## Stand `body` in the place its save CARRIES, and report what happened (ADR 0192).
+##
+## `WorldStage.new()` had exactly ONE hit in `game/src` — creation's `_stand_in_the_world`
+## — so a RESTORED hero was rebuilt, fully mounted, and left standing NOWHERE. The event
+## ledger's copy of the place stayed `EventApi.NOWHERE` (`""`) and `EventApi.available`'s
+## location filter (`event/api.gd:93`) dropped every authored event before its trigger was
+## read: `EventPrize.apply` was unreachable for EVERY returning player.
+##
+## **The place is READ, never DRAWN.** It comes from `WorldSpawnApi.current(body)` — the
+## durable `world_spawn_state` ledger, which survives `Actor.to_dict`/`from_dict` because
+## core writes every `module_data` key except two named ones (`core/actor.gd:301-307`) and
+## restores all of them (`:397-398`). `WorldSpawnApi.random` is NEVER called here: a draw
+## increments `visits` and rewrites `source`/`seed`/`display_name` on that ledger
+## (`world_spawn_state.gd:145-158`), so "restore" would TELEPORT a returning player and
+## persist the teleport as where they left off. Any diff bringing `random` in IS the bug.
+##
+## **The STAGE publishes; this never does.** `app/` installs `Callable(EventApi,
+## "set_location")` and the stage fires it, so `app/` never writes `event`'s ledger and
+## `event/` is never edited (ADR 0117). **An unlocatable body is REFUSED BY NAME, before
+## any publish** — publishing `""` is legal, so a naive version writes a row, reports
+## `ok`, and the bug looks fixed while `available()` stays empty all session.
+##
+## ## Why this is here and not in the shell's own `restore_actor`
+##
+## `restore_actor` STAYS in `item_workbench_app.gd`, because
+## `tests/modules/save/test_cultivation_boot_round_trip.gd` slices this chain's shell
+## between `func restore_actor` and `func restored_from_save` as TEXT. This method is
+## neither of those two, so nothing reads its address; what it owns is a playfield and an
+## adapter — the two fields above — and a declaration belongs in the lowest link of the
+## chain that touches it. The shell calls it through its own private name
+## `_stand_restored_in_the_world` and keeps its old signature, so the round trip is
+## untouched either way.
+func stand_restored_in_the_world(body: Actor) -> Dictionary:
+	if body == null:
+		return {"ok": false, "reason": "no_actor", "location_id": "", "world_told": false}
+	var location_id := StringName(WorldSpawnApi.current(body).get("location_id", ""))
+	if location_id == &"":
+		return {
+			"ok": false,
+			"reason": "not_located",
+			"located": false,
+			"location_id": "",
+			"world_told": false,
+		}
+	# Lazily, ONCE per root (the fields above). `PlayerAdapter` is never parented — `mount`
+	# only calls `set_map_bounds` and assigns `global_position`, both legal unparented.
+	if _restore_stage == null:
+		_restore_stage = WorldStage.new()
+	if _restore_body == null:
+		_restore_body = PlayerAdapter.new(body)
+	var answer := _restore_stage.mount(_restore_body, location_id)
+	answer["world_told"] = bool(answer.get("world_told", false))
+	answer["located"] = bool(answer.get("ok", false))
+	return answer
+
+
 # --- technique_seams -----------------------------------------------------
 ## Bind the two seams the techniques module needs from OUTSIDE its own directory.
 ##
@@ -444,6 +573,76 @@ func _loot_bridge() -> LootBridge:
 
 
 # --- readout_methods -----------------------------------------------------
+
+
+## One drill body, with the three mechanism inputs the shipped player already has. It
+## is a body-cultivation actor because that is the one carrying an `acupoints` set, so a
+## body technique resolves at a meridian against it rather than reporting "no location
+## axis" — the readout's whole claim is that what the engine computes is what a player
+## sees, and an input-less target would show less than production does.
+##
+## ## Why this function LIVES HERE and not in `item_workbench_readout.gd`
+##
+## Its only caller is `_readout_target` below, and this file is the lowest link of the
+## chain that reaches it — declaring it in the readout made this BASE fail to parse and
+## took every suite down process-wide (INC-0020).
+##
+## It is deliberately NOT inverted into a push from the readout, because the base's need
+## for a drill is NOT gated on the readout having bound one. `ROUTE_TECHNIQUE_LOADOUT`
+## aims the cast page through `_bind_target_screen` -> `_cast_target` -> here, and
+## `refresh_cast_target` re-aims after a rebirth — neither opens `ROUTE_COMBAT_READOUT`,
+## and `bind_readout_drill()` is called only inside that route's arm. A push would leave
+## the cast page un-aimed until the reader happened to visit the combat readout, which is
+## the ADR 0185 bug (`act_cast` refusing for free, `TechniqueCasting.activate` never
+## reached) arriving again through a different door.
+##
+## ## Why `CombatBoot.install` is here and not one layer up
+##
+## The enrolment above is only the HALF of what the body needs to be struck. `install` is
+## what calls `CombatEngineApi.attach_wounds`, and that call is the ONLY production writer
+## of the `body_wounds` component — so without it `CombatEngineApi.wounds_of` answers
+## null, `CombatReadoutScreen._wounds_payload` returns `{}`, and
+## `CombatReadoutPanel.wounds_text` printed `No meridian carries a wound.` FOREVER, on a
+## body that took every hit the reader ever threw at it. `effects[]` is not the wound:
+## the row on the panel comes from the LEDGER, and nothing settles the ledger but the
+## applier reading a bound one.
+##
+## The cache in `_readout_target` below exists precisely so a wound can
+## ACCUMULATE — "a reader who re-enters the route strikes the same body twice and can
+## watch a wound accumulate". It cannot accumulate without the ledger bound here, so this
+## call is what makes that comment true rather than aspirational.
+##
+## Order matters and is the one `ui_driver.gd:197-201` documents: enrol the paths, THEN
+## install — `bind_mechanisms` reads `acupoints` / `sea_of_consciousness` to choose a
+## mechanism, and installing first measures every path's inputs as absent. `install` is
+## idempotent, so a route re-entry cannot erase a wound earned on the previous visit.
+##
+## ## The sea, and why it is on BOTH ends
+##
+## `CombatBoot._runs_for` answers "may this attacker run `MindDamage`?" with
+## `MindCultivationApi.sea(attacker) != null` (`combat_boot.gd:377`), so the ATTACKER needs
+## a sea for the mind path to be reachable at all — and `MindDamage` divides by the
+## DEFENDER's `structural_capacity`, so the drill needs one too or the erosion is
+## `0.0 / 0.0`. Without both, `act_cycle_path` to mind silently fell back to the
+## installed mechanism and the erosion row could never render, which is the same shape the
+## wound row was in. `MindTraining.synchronize` sizes the sea off base attributes, so it
+## runs after the enrolment — the same order `_reattach_components` uses.
+##
+## `unlock_for_realm` is what makes [constant READOUT_MERIDIAN] a real channel: ADR 0070
+## is explicit that a `named` aim at a meridian this body has never unlocked is NOT struck
+## at all, so a freshly enrolled body is a sheet of twenty closed channels and the aim
+## would resolve to the empty site.
+func _build_readout_target() -> Actor:
+	var drill := ActorFactory.spawn_inhabitant(&"readout_drills")
+	ActorFactory.with_body_cultivation(drill)
+	drill.meridians.unlock_for_realm(&"qi_refining")
+	ActorFactory.with_mind_cultivation(drill)
+	MindCultivationApi.attach_sea(drill)
+	MindTraining.synchronize(drill)
+	CombatBoot.install(drill)
+	return drill
+
+
 ## The combat readout's drill body (ADR 0174).
 ##
 ## ## Why a drill body exists at all, and why it is not a new mechanic
@@ -509,6 +708,17 @@ func _bind_target_screen(screen: Control, target: Variant = null) -> Dictionary:
 	return {"ok": true, "reason": "", "target": "" if aimed == null else String(aimed.id)}
 
 
+## The screen currently on top of the stack, or null when nothing is mounted.
+##
+## DECLARED HERE rather than in `item_workbench_app.gd` because the cast-target lifecycle
+## below is this file's and it asks this question four times: the base cannot resolve a
+## subclass method. The shell's own callers (`adopt_actor`, `routes`, `summary`,
+## `_announce_route`, the world-map handlers) read it from a subclass, which is legal and
+## needs no change.
+func _live_screen() -> Control:
+	return null if _stack == null else _stack.call("current") as Control
+
+
 ## Re-bind the mounted cast page at the current foe. Called on a rebirth, where the
 ## hero changed underneath the screen; a no-op on every other route, so it is safe to
 ## call unconditionally.
@@ -548,6 +758,13 @@ func clear_cast_target() -> Dictionary:
 	# taken is never the body a later encounter aims at — and it drops the readout's
 	# cache too, because both pages aim at that same one body.
 	_readout_drills = null
+	# **And its CLOCK goes with it (ADR 0195).** A `StatusLoop` left pointed at the
+	# dropped body would tick a foe no player is shown, and the collapse window it holds
+	# would be credited to whatever body was minted next — the exact carry-over
+	# `StatusLoop.attach` resets the accumulator to avoid. The pair is the aim, so it is
+	# dropped as the aim is.
+	_drill_loop = null
+	_drill_body = null
 	return {"ok": true, "cleared": cleared, "target": ""}
 
 

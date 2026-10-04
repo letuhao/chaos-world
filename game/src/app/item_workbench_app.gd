@@ -62,11 +62,7 @@ const ROUTE_WORLD_MAP := &"world_map"
 const ROUTE_CRAFTING := &"crafting"
 const ROUTE_WORKBENCH := &"workbench"
 const ROUTE_SET_BONUS := &"set_bonus"
-## The domain surface. `screen_routes.gd` registers it with a nav key, so a player opens the
-## screen — and with no arm in `_bind_route_screen` the screen mounted UNBRIDGED, which is
-## worse than a missing route: `summary()` answers `{}`, every verb is dead and the header
-## reads "Domains — none authored".
-const ROUTE_DOMAIN := &"domain_explore"
+
 ## The soul and hearth page. `soul` and `save` are not (and for `save` must never be)
 ## reachable from `ui/`, so its four verbs arrive as Callables in `_bind_route_screen`
 ## rather than as facades the screen calls by name.
@@ -140,22 +136,17 @@ var _creation: CharacterCreationProgram = null
 ## Whether the live actor came from a save rather than from creation. A boot flow reads this
 ## through [method restored_from_save] to decide whether to offer arrival at all.
 var _recovered_from_save: bool = false
-## The playfield a RESTORED body is stood into, and the body standing in it (ADR 0192).
-## ONE stage and ONE adapter per root, in fields rather than a list: `WorldStage._current`
-## and `._mounted_player` are STATIC, so a stage built per restore leaves the newest in
-## `_current` and the previous adapter orphaned — the half-swapped world
-## `CharacterCreationProgram._stand_in_the_world` refuses to create. A boot takes exactly
-## one of the two branches, so each may keep its own. Singular fields, never
-## `Array[WorldStage]`: `tools/arch`'s `APP_CONTENT_ARRAY_RE` reads a member array as the
-## `state-table` signal and this file already carries `tick-loop`, so one fails
-## `APP_STATE_MIN_SIGNALS`.
-var _restore_stage: WorldStage = null
-var _restore_body: PlayerAdapter = null
-
-## The stack and the bar the scene declares. Resolved by unique name; the root
-## never builds a second one, because two stacks means two answers to "which
-## screen is live".
-var _stack: ScreenStack = null
+## `_restore_stage` and `_restore_body` are NOT declared here: they keep ONE stage and
+## ONE adapter per root for the restored-body playfield (ADR 0192), and the one method
+## that touches both is the body half's `stand_restored_in_the_world` — which this shell
+## still calls by the private name `_stand_restored_in_the_world` from `restore_actor`,
+## so the save round trip reads unchanged. Declared down there because a BASE cannot
+## resolve a subclass field (INC-0020), and this file's own text reads `restore_actor`
+## and `restored_from_save` as one slice.
+##
+## The nav bar the scene declares, resolved by unique name in `_ready`. It stayed here
+## while `_stack` moved down to the body half: nothing in an inherited half reads the bar,
+## because the bar is presentation over a route only this shell sets.
 var _nav: NavBar = null
 ## The pinned home screen at the bottom of the stack, and the one screen pushed
 ## over it. Both are cleared the moment the stack drops them, so a stale handle
@@ -169,7 +160,15 @@ var _forge: SocketForgeProgram = null
 ## screen can be bound to it on every mount; the screen itself may not name the
 ## program (`ui/` holds no `app/` type) and may not name the module without the
 ## facade, so this is the bridge ADR 0143 prescribes.
-var _quests: QuestProgram = null
+##
+## ## `_quests` is DECLARED in `item_workbench_readout.gd`, which is what READS it
+##
+## `[method ItemWorkbenchReadout._interact_in_the_world]` is a BASE-half method, and a base
+## cannot resolve a subclass member: declaring the field here as well is a hard `already
+## exists in parent class` parse error, and one parse error takes down every suite
+## process-wide (INC-0020). This shell only ASSIGNS it — in `_ready` and again in
+## [method adopt_actor] — and a subclass assigning an inherited member is legal, so the
+## field keeps its whole life across the split.
 var _route: StringName = &""
 
 
@@ -420,48 +419,13 @@ func restored_from_save() -> bool:
 
 
 ## Stand `body` in the place its save CARRIES, and report what happened (ADR 0192).
-##
-## `WorldStage.new()` had exactly ONE hit in `game/src` — creation's `_stand_in_the_world`
-## — so a RESTORED hero was rebuilt, fully mounted, and left standing NOWHERE. The event
-## ledger's copy of the place stayed `EventApi.NOWHERE` (`""`) and `EventApi.available`'s
-## location filter (`event/api.gd:93`) dropped every authored event before its trigger was
-## read: `EventPrize.apply` was unreachable for EVERY returning player.
-##
-## **The place is READ, never DRAWN.** It comes from `WorldSpawnApi.current(body)` — the
-## durable `world_spawn_state` ledger, which survives `Actor.to_dict`/`from_dict` because
-## core writes every `module_data` key except two named ones (`core/actor.gd:301-307`) and
-## restores all of them (`:397-398`). `WorldSpawnApi.random` is NEVER called here: a draw
-## increments `visits` and rewrites `source`/`seed`/`display_name` on that ledger
-## (`world_spawn_state.gd:145-158`), so "restore" would TELEPORT a returning player and
-## persist the teleport as where they left off. Any diff bringing `random` in IS the bug.
-##
-## **The STAGE publishes; this never does.** `app/` installs `Callable(EventApi,
-## "set_location")` and the stage fires it, so `app/` never writes `event`'s ledger and
-## `event/` is never edited (ADR 0117). **An unlocatable body is REFUSED BY NAME, before
-## any publish** — publishing `""` is legal, so a naive version writes a row, reports
-## `ok`, and the bug looks fixed while `available()` stays empty all session.
+## The implementation is the body half's, beside the fields that keep ONE stage and ONE
+## adapter per root; a subclass calling an inherited private method is legal, and the
+## whole of the reasoning — why the place is READ rather than drawn, and why an
+## unlocatable body is refused by name before any publish — moved with it to
+## `_stand_restored_in_the_world` in `item_workbench_body.gd`.
 func _stand_restored_in_the_world(body: Actor) -> Dictionary:
-	if body == null:
-		return {"ok": false, "reason": "no_actor", "location_id": "", "world_told": false}
-	var location_id := StringName(WorldSpawnApi.current(body).get("location_id", ""))
-	if location_id == &"":
-		return {
-			"ok": false,
-			"reason": "not_located",
-			"located": false,
-			"location_id": "",
-			"world_told": false,
-		}
-	# Lazily, ONCE per root (the fields above). `PlayerAdapter` is never parented — `mount`
-	# only calls `set_map_bounds` and assigns `global_position`, both legal unparented.
-	if _restore_stage == null:
-		_restore_stage = WorldStage.new()
-	if _restore_body == null:
-		_restore_body = PlayerAdapter.new(body)
-	var answer := _restore_stage.mount(_restore_body, location_id)
-	answer["world_told"] = bool(answer.get("world_told", false))
-	answer["located"] = bool(answer.get("ok", false))
-	return answer
+	return stand_restored_in_the_world(body)
 
 
 ## The one tick caller in the game (ADR 0106, read against ADR 0089).
@@ -519,6 +483,13 @@ func _process(delta: float) -> void:
 	var tick := _status_loop.tick(delta)
 	for child in tick.get("born", []) as Array:
 		_register_birth(child as Actor)
+	# The DRILL rides the same frame and the same delta (ADR 0195). Its whole
+	# implementation is the readout half's, beside the body it ages — which is why the
+	# call is made here rather than through a one-line forwarder of its own: this file is
+	# at the thousand-line ceiling, a second frame-adjacent wrapper costs eight lines to
+	# say nothing, and `tick_readout_drill` is inherited so the root answers it by name
+	# either way. Still exactly ONE tick caller.
+	tick_readout_drill(delta)
 	# No world pull and no autosave here, and neither was a rounding error in a frame
 	# driver: the world has no real-time clock at all (ADR 0167, ADR 0173), so there is
 	# nothing for a delta to convert, and the autosave counts PERIODS and rides the
@@ -862,6 +833,25 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 				_readout_target(),
 				Callable(self, "_readout_context")
 			)
+			# ADR 0195: the drill's OWN clock, declared on the readout half beside
+			# the body it ages. Without it nothing ticked the drill — the three combat
+			# ticks rode `_status_loop`, which holds the HERO — so severity on the drill
+			# could only rise and no collapse window could advance on anything a player
+			# strikes.
+			bind_readout_drill()
+			# The TECHNIQUE SELECTOR, guarded by `has_method` for the reason
+			# `_bind_target_screen` guards its own: a screen without the seam degrades to
+			# its own `no_select_seam` refusal, which the reader can see and act on,
+			# rather than this arm aborting with the route half-bound and no message.
+			# It exists because one fixed technique cannot show three mechanisms — qi's
+			# `QiDamage` writes no `effects[]` at all and `MindDamage` is gated out
+			# without a sea, so the wound and erosion rows were both unreachable.
+			if screen.has_method("bind_technique"):
+				screen.call(
+					"bind_technique",
+					Callable(self, "set_readout_path"),
+					Callable(self, "_readout_armed")
+				)
 		ROUTE_TECHNIQUE_LOADOUT:
 			# ADR 0185. THE ARM THAT MAKES THE CAST PROGRAM REACHABLE. `bind_target`
 			# is the ADR 0143 seam, exactly as `bind_strike` above is, and it had no
@@ -980,7 +970,3 @@ func _on_world_location_selected(location_id: StringName) -> void:
 func _announce_route() -> void:
 	if _nav != null:
 		_nav.set_active(_route)
-
-
-func _live_screen() -> Control:
-	return null if _stack == null else _stack.call("current") as Control

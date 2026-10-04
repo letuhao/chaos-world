@@ -210,59 +210,6 @@ func tick_readout_drill(delta: float) -> void:
 	_drill_loop.tick(delta)
 
 
-## One drill body, with the three mechanism inputs the shipped player already has. It
-## is a body-cultivation actor because that is the one carrying an `acupoints` set, so a
-## body technique resolves at a meridian against it rather than reporting "no location
-## axis" — the readout's whole claim is that what the engine computes is what a player
-## sees, and an input-less target would show less than production does.
-##
-## ## Why `CombatBoot.install` is here and not one layer up
-##
-## The enrolment above is only the HALF of what the body needs to be struck. `install` is
-## what calls `CombatEngineApi.attach_wounds`, and that call is the ONLY production writer
-## of the `body_wounds` component — so without it `CombatEngineApi.wounds_of` answers
-## null, `CombatReadoutScreen._wounds_payload` returns `{}`, and
-## `CombatReadoutPanel.wounds_text` printed `No meridian carries a wound.` FOREVER, on a
-## body that took every hit the reader ever threw at it. `effects[]` is not the wound:
-## the row on the panel comes from the LEDGER, and nothing settles the ledger but the
-## applier reading a bound one.
-##
-## The cache in `item_workbench_body.gd:_readout_target` exists precisely so a wound can
-## ACCUMULATE — "a reader who re-enters the route strikes the same body twice and can
-## watch a wound accumulate". It cannot accumulate without the ledger bound here, so this
-## call is what makes that comment true rather than aspirational.
-##
-## Order matters and is the one `ui_driver.gd:197-201` documents: enrol the paths, THEN
-## install — `bind_mechanisms` reads `acupoints` / `sea_of_consciousness` to choose a
-## mechanism, and installing first measures every path's inputs as absent. `install` is
-## idempotent, so a route re-entry cannot erase a wound earned on the previous visit.
-##
-## ## The sea, and why it is on BOTH ends
-##
-## `CombatBoot._runs_for` answers "may this attacker run `MindDamage`?" with
-## `MindCultivationApi.sea(attacker) != null` (`combat_boot.gd:377`), so the ATTACKER needs
-## a sea for the mind path to be reachable at all — and `MindDamage` divides by the
-## DEFENDER's `structural_capacity`, so the drill needs one too or the erosion is
-## `0.0 / 0.0`. Without both, `act_cycle_path` to mind silently fell back to the
-## installed mechanism and the erosion row could never render, which is the same shape the
-## wound row was in. `MindTraining.synchronize` sizes the sea off base attributes, so it
-## runs after the enrolment — the same order `_reattach_components` uses.
-##
-## `unlock_for_realm` is what makes [constant READOUT_MERIDIAN] a real channel: ADR 0070
-## is explicit that a `named` aim at a meridian this body has never unlocked is NOT struck
-## at all, so a freshly enrolled body is a sheet of twenty closed channels and the aim
-## would resolve to the empty site.
-func _build_readout_target() -> Actor:
-	var drill := ActorFactory.spawn_inhabitant(&"readout_drills")
-	ActorFactory.with_body_cultivation(drill)
-	drill.meridians.unlock_for_realm(&"qi_refining")
-	ActorFactory.with_mind_cultivation(drill)
-	MindCultivationApi.attach_sea(drill)
-	MindTraining.synchronize(drill)
-	CombatBoot.install(drill)
-	return drill
-
-
 ## Resolve one blow for the readout and hand back `CombatOutcome.to_dict()` VERBATIM.
 ##
 ## ## Why it is the production entry point and not a private one
