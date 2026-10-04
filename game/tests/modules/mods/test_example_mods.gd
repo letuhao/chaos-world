@@ -113,7 +113,9 @@ func test_catalog_merge_produces_new_ids() -> void:
 		item_merge["paths"].has("W8_fixture_ember_charm"), true, "new item id in merged catalog"
 	)
 	var world: Array = reg["content_roots"]["world"]
-	var world_merge := CatalogOverlay.merge(world, "WorldLocationDef")
+	# WorldLocationDef ids live in `location_id`, not `id` — the merge must be
+	# told which field holds the id or every def is skipped as having no id.
+	var world_merge := CatalogOverlay.merge(world, "WorldLocationDef", "location_id")
 	assert_eq(bool(world_merge["ok"]), true, "world merge clean")
 	assert_eq(
 		world_merge["paths"].has("W8_fixture_scorched_hollow"),
@@ -123,6 +125,8 @@ func test_catalog_merge_produces_new_ids() -> void:
 
 
 func test_an_undeclared_override_collision_errors() -> void:
+	# WorldLocationDef, not ItemDef: the collision proof must not depend on the
+	# items script chain, so an unrelated break there cannot abort this test.
 	var temp_dir := "user://w8_collision_%d" % Time.get_ticks_usec()
 	_temp_dirs.append(temp_dir)
 	DirAccess.make_dir_recursive_absolute(temp_dir)
@@ -131,23 +135,31 @@ func test_an_undeclared_override_collision_errors() -> void:
 		f
 		. store_string(
 			(
-				'[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]\n'
-				+ '\n[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]\n'
-				+ '\n[resource]\nscript = ExtResource("1_item")\n'
-				+ 'id = &"W8_fixture_ember_charm"\ndisplay_name = "Collision Item"\n'
+				'[gd_resource type="Resource" script_class="WorldLocationDef" load_steps=2 format=3]\n'
+				+ '\n[ext_resource type="Script" path="res://src/modules/world/world_location_def.gd" id="1"]\n'
+				+ '\n[resource]\nscript = ExtResource("1")\n'
+				+ 'location_id = &"W8_fixture_scorched_hollow"\ndisplay_name = "Collision Hollow"\n'
 			)
 		)
 	)
 	f.close()
 	var stack: Array[Dictionary] = [
 		{
-			"dir": THIRD_PARTY_DIR + "/items",
+			"dir": THIRD_PARTY_DIR + "/world",
 			"owner": "w8_third_party_data",
 			"declared_overrides": [],
+			"id_field": "location_id",
 		},
-		{"dir": temp_dir, "owner": "collision_mod", "declared_overrides": []},
+		{
+			"dir": temp_dir,
+			"owner": "collision_mod",
+			"declared_overrides": [],
+			"id_field": "location_id",
+		},
 	]
-	var out := CatalogOverlay.merge(stack, "ItemDef")
+	var out := CatalogOverlay.merge(stack, "WorldLocationDef", "location_id")
 	assert_eq(bool(out["ok"]), false, "collision refused")
 	assert_eq(out["reason"], "undeclared_override", "named cause")
-	assert_eq(String(out["detail"]).contains("W8_fixture_ember_charm"), true, "colliding id named")
+	assert_eq(
+		String(out["detail"]).contains("W8_fixture_scorched_hollow"), true, "colliding id named"
+	)
