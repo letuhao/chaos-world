@@ -225,10 +225,27 @@ func is_dead(actor: Actor) -> bool:
 ## Restore `actor` to full health, spent through `change` so the pool's `changed` signal still
 ## fires and every stat cache watching it invalidates. Assigning `current` would leave a
 ## screen showing a dead actor's numbers.
+##
+## ## `guardian_effectiveness` is read here, and only here
+##
+## The third ADR 0129 scalar. A harder preset makes the guardian a WEAKER rescue — it restores
+## the pool to that fraction of full rather than all of it — which is the only reading that makes
+## it a difficulty rather than a duplicate of `soul_damage_share`. It was authored and read by
+## nothing until here, and a column no consumer reads is a preset that changes nothing a player
+## can observe.
+##
+## **Floored at the pool's regen requirement, not at zero**: a guardian that leaves a body at 1
+## health is a death deferred, not a death avoided, and the poll would fire again on the next
+## frame with no guardian left to spend.
 func _heal(actor: Actor) -> void:
 	var pool := actor.resource(&"health")
-	if pool != null:
-		pool.change(pool.maximum - pool.current)
+	if pool == null:
+		return
+	var share := float(DifficultyApi.scalars(actor).get("guardian_effectiveness", 1.0))
+	var target := minf(pool.maximum, maxf(pool.maximum * share, 1.0))
+	if target <= pool.current:
+		return
+	pool.change(target - pool.current)
 
 
 ## What this death costs the soul, from the authored base and difficulty's share, clamped by

@@ -49,6 +49,16 @@ fractions of what the player already holds. It never multiplies anything the gam
 - **`difficulty` depends on nothing, and consumers pull from it.** The inversion is the ADR
   0093 rule: the observer registers with the subject, so `soul` declares the edge and calls
   the facade, and `difficulty` never names `soul`.
+- **A scalar with no consumer is removed, not left authored.** An audit measured it: only
+  `soul_damage_share` and `death_loss_cap` were read anywhere, so selecting a preset changed
+  exactly one number in the game and three columns were theatre.
+  `guardian_effectiveness` now has one consumer — `_heal` restores the pool to that fraction of
+  full rather than all of it, so a harder preset makes the guardian a weaker rescue, which is
+  the only reading that makes it a difficulty rather than a duplicate of `soul_damage_share`.
+  `loot_ceiling` and `tribulation_preparation_credit` have no honest consumer yet: scaling a
+  drop tier or a tribulation's preparation credit needs a decision about what those are
+  measured against, and inventing one here would be a second guess about a power-shaped
+  number. Both are recorded in the backlog and neither is read by code.
 - **Combat reads nothing.** Nothing in an exchange or a damage formula has a place a
   difficulty id belongs, and the place it would be tempted into — the damage share — is on the
   forbidden list below. `tools/arch` cannot see a code-only cycle between two modules, so a
