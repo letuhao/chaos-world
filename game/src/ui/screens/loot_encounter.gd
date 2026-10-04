@@ -29,7 +29,11 @@ extends UiScreen
 ## Widgets live in `loot_encounter.tscn`; the four `ScreenStack` hooks are inherited
 ## from [UiScreen] and are safe to call at any time.
 ##
-## Contract: `summary()` is the testable surface.
+## Contract: `summary()` is the testable surface, and it REPUBLISHES first. Reading this
+## screen brings its panels up to date with the world before it answers, because the loot
+## state is reachable from outside this screen -- a probe, a boot sweep, a loaded save --
+## and a report assembled from a stale panel beside a live facade number is a screen
+## describing two different worlds at once. See [method summary].
 
 const STRIKE_SEED := 20260902
 
@@ -50,6 +54,9 @@ var _bonus_label: Label = null
 var _boss_panel: LootBossPanel = null
 var _reward_list: LootRewardList = null
 var _stash_list: LootRewardList = null
+## The last action's own verdict, published as primitives by `summary()`.
+var _last_ok: bool = false
+var _last_reason: String = ""
 
 
 ## Inject the gameplay side. Safe to call again; the domains are re-read.
@@ -96,6 +103,37 @@ func focus_initial() -> void:
 
 func on_stack_input(_event: InputEvent) -> bool:
 	return false
+
+
+## Everything this screen shows, republished first.
+##
+## `summary()` used to describe a view that could be OLDER than the world, because it
+## assembled one dictionary out of two sources with two ages. The live figures --
+## `pending_drops`, `claimed_encounters`, `world_drop_count`, the `active` block -- were
+## read from the facade on every call, while `reward`, `stashed`, the boss readout and
+## every label came from whatever the panels rendered LAST. Nothing reconciled them, so
+## they disagreed whenever the world changed by a path this screen did not take: a
+## pickup called straight on the loot facade by a probe, a boot sweep or a test, or a
+## save loaded over the top. No press, so no republish, so the screen reported its own
+## before-picture.
+##
+## That is not cosmetic. A full bag overflows a drop into the world, which sets the
+## drop's own `stashed` flag, and a screen still showing the pre-overflow panel read
+## `world_drop_count: 1` beside a reward list whose `stashed_count` was 0 -- the drop
+## presented as both in the world and still waiting to be taken, with the row's control
+## live and a press that could only be refused.
+##
+## Republishing on the read makes the reported view current by construction, for every
+## observer rather than only the ones who happen to press a control. It repaints the
+## widgets through the same call, so the picture and the report cannot diverge, and the
+## panels keep sole ownership of how a row is presented (AGENTS.md).
+##
+## This is deliberately not `summary()` computing the rows itself: a report that reads
+## the facade directly would tell the truth while the widgets kept lying, which fixes the
+## observer and not the screen.
+func summary() -> Dictionary:
+	refresh()
+	return super()
 
 
 # --- Actions. Each calls the facade through the bridge and reports what came back
@@ -153,6 +191,22 @@ func act_leave() -> bool:
 
 
 ## Pick up one drop. A full inventory is reported, not swallowed.
+##
+## ## Why the row has to belong to the listed reward
+##
+## `act_take_all` refuses a `stale_reward`, and this used not to: it read the encounter
+## off the list and handed the press straight to the facade, so a press naming a drop the
+## list was not showing reached the state layer and came back `unknown_drop` -- a refusal
+## with no owner, four calls deep from the control that caused it.
+##
+## The rows are POOLED, so a press can name a drop from a payload that has already been
+## retired: `_build` re-renders the rows in use and hides the surplus, and a hidden row
+## keeps the `drop_id` it was last given. A reader that resolves a control by name rather
+## than by what is on screen -- a probe, a scripted walk -- finds those first. Refusing
+## here is the same decision `act_take_all` already makes, in the layer that owns the
+## routing: the screen listed one reward, so a drop outside it is not this screen's to
+## take. `row_keys` is the list's own answer to "what am I showing", so the guard asks the
+## panel rather than re-deriving row membership from the facade.
 func act_pickup(drop_id: String) -> bool:
 	_bind_nodes()
 	if _bridge == null or not _bridge.has(&"pickup"):
@@ -160,6 +214,8 @@ func act_pickup(drop_id: String) -> bool:
 	var encounter_id := _reward_list.encounter_id()
 	if encounter_id.is_empty():
 		return _reject("no_reward_selected")
+	if not _shown_drops().has(drop_id):
+		return _reject("stale_reward")
 	var result := _bridge.call_action(&"pickup", [_actor, encounter_id, drop_id])
 	_reward_list.report_outcome(drop_id, _reason_of(result), _tone_of(result))
 	_settle(result)
@@ -265,6 +321,14 @@ func _summary() -> Dictionary:
 		"boss": boss,
 		"reward": shown,
 		"stashed": stashed,
+		# The last action's verdict as primitives, not as a sentence. `message` is the
+		# screen's own wording and the panels word their own lines separately, so a reader
+		# asking WHY a pickup did nothing had three strings to correlate and no way to
+		# branch on the answer. These two are the facade's reason id and its `ok`, so one
+		# run can tell a full bag from a full world container from a drop that is not
+		# there any more -- the refusals that all read as "nothing was collected".
+		"last_reason": _last_reason,
+		"last_ok": _last_ok,
 	}
 
 
@@ -491,7 +555,13 @@ func _header_text() -> String:
 
 ## A refusal repaints from the untouched actor, so nothing on screen can drift away
 ## from the world state.
+##
+## The refusal records itself as the latest verdict, so a press that never reached the
+## facade still leaves `last_reason` naming what stopped it rather than leaving the
+## previous action's verdict standing as the answer.
 func _reject(reason: String) -> bool:
+	_last_ok = false
+	_last_reason = reason
 	set_message("Rejected: %s" % reason, TONE_ERROR)
 	refresh()
 	return false
@@ -507,8 +577,20 @@ func _accepted(result: Dictionary) -> bool:
 
 ## Every action ends by re-reading the world and repainting; the outcome wording is
 ## owned by the panels.
-func _settle(_result: Dictionary) -> void:
+##
+## The result is recorded on the way through, because this is the one place every action
+## passes: a refusal raised before the facade was ever called -- a stale row, a control
+## with nothing to act on -- records itself in `_reject` instead, so `last_reason` names
+## the most recent decision whichever layer made it.
+func _settle(result: Dictionary) -> void:
+	_last_ok = bool(result.get("ok", false))
+	_last_reason = String(result.get("reason", ""))
 	refresh()
+
+
+## The drop ids the reward list is showing right now, as its own row keys.
+func _shown_drops() -> Array:
+	return _reward_list.summary().get("row_keys", []) as Array
 
 
 func _reason_of(result: Dictionary) -> String:
