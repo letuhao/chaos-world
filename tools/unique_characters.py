@@ -82,6 +82,7 @@ PROMPT_SLOTS = (
     "relationship_scene",
     "expression_set",
     "pose_set",
+    "daily_life",
 )
 
 # The kind each single-shot slot is rendered as. A slot drawn by the wrong graph
@@ -96,6 +97,10 @@ SLOT_KIND = {
     "environmental_concept": "concept",
     "combat_concept": "concept",
     "relationship_scene": "scene",
+    # One character in an ordinary private moment. NOT the romance slot: a two-character
+    # occasion is `relationship_scene`, and honouring the word "daily" in a filename would give
+    # one idea two spellings (ADR 0205).
+    "daily_life": "scene",
 }
 
 # Slots holding a SET rather than one picture. The minimum is the count the art
@@ -1546,22 +1551,31 @@ def _backfill_command(records: list[dict], args) -> int:
 
     What is derived per record, and what is not:
 
-      scene        built from the record's own `home` and `faction` - 37 and 83
-                   distinct values across the cast - so the SCENE differs per
-                   character, drawn from authored data. NOT from `role_in_story`: an
-                   earlier version pasted that field in and the bible's editorial voice
-                   leaked into the art prompt, and "The setting's null reference" is
-                   not a place a person can be photographed in.
+      scene        built from the record's own `home` and `faction`. NOT from
+                   `role_in_story`: an earlier version pasted that field in and the
+                   bible's editorial voice leaked into the art prompt, and "The setting's
+                   null reference" is not a place a person can be photographed in.
       pose         from the record's `appearance.presentation`, 240 distinct values.
       framing      the first entry of a small rotation this record does not already
                    use, so the per-slot distinctness rule cannot fire.
       expression   one of a small rotation, keyed on a stable hash of the id.
 
-    The honest limitation: framing and expression are TEMPLATED - eight framings across
-    240 records means near-duplicates there, and only the scene and pose carry
-    per-character content. That is stated rather than hidden, because a backfill
-    claiming full distinctness would be a lie, and the alternative is hundreds of
-    agents.
+    The honest limitation, measured rather than asserted. Run over the 236 records this
+    actually backfilled:
+
+      180 distinct scene texts, so 56 records share one with at least one other
+      and the most repeated appears 5 times
+      37 distinct homes, 83 distinct factions, 180 distinct home+faction pairs
+
+    So the scene is per-character only to the extent that home and faction are. Adding
+    `appearance.race` (29 distinct) to the scene would raise the combinations sharply and
+    is the obvious next improvement; it is not here because rewriting 236 already-written
+    prompts for a field nobody has rendered yet is a poor trade against the alternative
+    of hundreds of agents.
+
+    Framing and expression are outright TEMPLATED - eight framings across 236 records
+    means near-duplicates there. None of this is hidden behind a claim of distinctness,
+    because a backfill that claimed full distinctness would be a lie.
     """
     slot = str(args.slot)
     if slot not in PROMPT_SLOTS:
