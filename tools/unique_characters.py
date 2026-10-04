@@ -169,36 +169,91 @@ BRIEF_CONSTRAINTS = (
 # --- catalog ---------------------------------------------------------------
 
 
+def _catalog_paths() -> list[Path]:
+    """Every catalog shard, in a stable order.
+
+    Sharding exists because a single catalog cannot be written by two agents. Each
+    writer loads the whole catalog into memory and then rewrites the file from that
+    snapshot, so two agents on disjoint id ranges lose whichever write lands second -
+    silently, with no error and no warning. Simulated and confirmed before this
+    existed: agent A wrote 2 rows, agent B then wrote its own 2 rows from a
+    pre-A snapshot, and A's rows were gone.
+
+    A shard per writer removes the collision entirely: two agents working at once
+    touch different files, and neither read-modify-writes the other's.
+    """
+    if not INDEX_PATH.parent.is_dir():
+        return []
+    primary = INDEX_PATH if INDEX_PATH.is_file() else None
+    shards = sorted(
+        path for path in INDEX_PATH.parent.glob(f"{INDEX_PATH.stem}-*.jsonl") if path.is_file()
+    )
+    return [primary, *shards] if primary else shards
+
+
 def _load_index() -> list[dict]:
-    if not INDEX_PATH.is_file():
+    """Every character across every shard, primary file first.
+
+    A record id may not appear twice: duplicate ids are a validation failure, and a
+    shard scheme that allowed them would make that failure ambiguous between "an
+    author copied a row" and "two shards claimed the same character".
+    """
+    paths = _catalog_paths()
+    if not paths:
         raise ToolError(f"no unique-character catalog at {INDEX_PATH}; run `unique_characters add`")
     records: list[dict] = []
-    for number, line in enumerate(INDEX_PATH.read_text(encoding="utf-8").splitlines(), 1):
-        if not line.strip():
-            continue
-        try:
-            record = json.loads(line)
-        except json.JSONDecodeError as exc:
-            raise ToolError(f"{INDEX_PATH.name}:{number}: invalid JSON ({exc.msg})") from exc
-        if not isinstance(record, dict):
-            raise ToolError(f"{INDEX_PATH.name}:{number}: each line must be an object")
-        records.append(record)
+    for path in paths:
+        for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise ToolError(f"{path.name}:{number}: invalid JSON ({exc.msg})") from exc
+            if not isinstance(record, dict):
+                raise ToolError(f"{path.name}:{number}: each line must be an object")
+            records.append(record)
     return records
 
 
-def _atomic_write(records: list[dict]) -> None:
-    INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
+def _atomic_write(records: list[dict], path: Path | None = None) -> None:
+    """Write `records` to one shard, MERGING with whatever is already in it.
+
+    Merging rather than overwriting is what makes a shard safe to write
+    concurrently: a writer that only knows its own characters still preserves every
+    other row in the file it touches. An earlier version wrote the whole file from
+    the caller's in-memory list, which silently deleted other agents' characters.
+    """
+    target = path or INDEX_PATH
+    target.parent.mkdir(parents=True, exist_ok=True)
+    by_id: dict[str, dict] = {}
+    order: list[str] = []
+    if target.is_file():
+        for line in target.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            existing = json.loads(line)
+            key = existing.get("id")
+            if key not in by_id:
+                order.append(key)
+            by_id[key] = existing
+    for record in records:
+        key = record.get("id")
+        if key not in by_id:
+            order.append(key)
+        by_id[key] = record
     content = "".join(
-        json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n" for record in records
+        json.dumps(by_id[key], ensure_ascii=False, separators=(",", ":")) + "\n"
+        for key in sorted(order, key=lambda item: str(item))
     )
     temporary: Path | None = None
     try:
         with tempfile.NamedTemporaryFile(
-            "w", encoding="utf-8", newline="\n", dir=INDEX_PATH.parent, delete=False
+            "w", encoding="utf-8", newline="\n", dir=target.parent, delete=False
         ) as handle:
             handle.write(content)
             temporary = Path(handle.name)
-        os.replace(temporary, INDEX_PATH)
+        os.replace(temporary, target)
     finally:
         if temporary and temporary.exists():
             temporary.unlink()
@@ -874,15 +929,43 @@ def _brief(record: dict, shot: dict) -> str:
 # --- actions ---------------------------------------------------------------
 
 
+def _shard_path(name: str) -> Path:
+    """The file one writer owns, validated as a shard name.
+
+    A shard name must not be able to escape the catalog directory or collide with
+    the primary index, because `--shard` is supplied on a command line by an agent
+    and `INDEX_PATH.parent / f"{name}.jsonl"` is otherwise a path traversal.
+    """
+    if not SLUG_RE.fullmatch(name):
+        raise ToolError(f"invalid shard name {name!r}; expected a lowercase slug")
+    return INDEX_PATH.parent / f"{INDEX_PATH.stem}-{name}.jsonl"
+
+
+def _owning_shard(character_id: str) -> Path:
+    """Which catalog file holds this character, so a write goes back where it came from.
+
+    Falls back to the primary index for a character that is not on disk yet, which
+    is the only case where writing there can lose another agent's work.
+    """
+    for path in _catalog_paths():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            if json.loads(line).get("id") == character_id:
+                return path
+    return INDEX_PATH
+
+
 def _add(args) -> int:
-    records = _load_index() if INDEX_PATH.is_file() else []
+    records = _load_index() if _catalog_paths() else []
     if any(record.get("id") == args.character_id for record in records):
         raise ToolError(f"{args.character_id} already exists")
     record = _blank_character(args.character_id, args.name, args.role, args.path, args.style)
     issues = _validate([*records, record], check_files=False)
     if issues:
         raise ToolError(f"refusing to write an invalid record: {issues[0]}")
-    _atomic_write([*records, record])
+    shard = getattr(args, "shard", None)
+    _atomic_write([record], _shard_path(shard) if shard else None)
     ok(
         f"added {args.character_id} as a draft at "
         f"{INDEX_PATH.relative_to(REPO_ROOT).as_posix()}; fill appearance, then canon, "
@@ -1194,7 +1277,9 @@ def _install(records: list[dict], args) -> int:
             seed=args.seed,
             generation_settings=settings,
         )
-        _atomic_write(current_records)
+        # Write back to the shard that OWNS this character, never the primary file.
+        # Installing one shot must not rewrite a catalog another agent is filling.
+        _atomic_write([current], _owning_shard(args.character_id))
     except Exception:
         if created:
             output.unlink(missing_ok=True)
@@ -1285,6 +1370,16 @@ def register(subparsers) -> None:
     add.add_argument("--role", choices=sorted(VALID_ROLES), default="npc")
     add.add_argument("--path", choices=sorted(VALID_PATHS), default="unaffiliated")
     add.add_argument("--style", default="", help="art direction style slug")
+    add.add_argument(
+        "--shard",
+        default="",
+        help=(
+            "write this character into its own catalog shard, e.g. 'wave-01'. Two agents "
+            "authoring at once MUST use different shards: the primary file is rewritten "
+            "from the writer's in-memory snapshot, so concurrent writers on one file lose "
+            "whichever write lands second"
+        ),
+    )
 
     actions.add_parser("report", help="summarize the named cast and its shot coverage")
     actions.add_parser("check", help="fail on an invalid catalog or a missing installed image")

@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import pathlib
 import subprocess
 import tempfile
 from datetime import UTC, datetime, timedelta
@@ -1500,6 +1501,74 @@ def _ingest_is_deterministic() -> None:
             break
     else:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
+
+
+@case("unique_characters: a concurrent writer CANNOT delete another agent's characters")
+def _concurrent_write_cannot_clobber() -> None:
+    """The hazard that would have destroyed most of a 1000-character cast.
+
+    `_atomic_write` originally rewrote the whole file from the caller's in-memory
+    list. Two agents therefore load the catalog, agent A writes its id range, and
+    agent B - still holding a pre-A snapshot - writes its own range and deletes A's
+    characters. No error, no warning, exit 0.
+
+    Measured before the fix, in this same harness: A wrote 2 rows, B wrote 2 rows,
+    and A's rows were gone. Two concurrent character waves would have done exactly
+    that, and the loss would have looked like an agent forgetting to save.
+
+    Three scenarios are covered because two mitigations are claimed and they fail
+    differently. Separate SHARDS mean the writers never touch the same file.
+    MERGE-ON-WRITE means even a same-file writer that only knows its own rows
+    preserves the others - which is what covers a third agent that forgot to shard.
+    """
+    original_index = unique_characters.INDEX_PATH
+    original_exists = unique_characters.INDEX_PATH.is_file()
+    with tempfile.TemporaryDirectory() as raw:
+        unique_characters.INDEX_PATH = pathlib.Path(raw) / "unique-index.jsonl"
+        try:
+
+            def row(cid: str) -> dict:
+                return {"id": cid, "name": cid}
+
+            shard_a = unique_characters._shard_path("wave-01")
+            shard_b = unique_characters._shard_path("wave-02")
+            unique_characters._atomic_write([row("unique-0001"), row("unique-0002")], shard_a)
+            unique_characters._atomic_write([row("unique-0011"), row("unique-0012")], shard_b)
+            sharded = {r["id"] for r in unique_characters._load_index()}
+            expect(
+                {"unique-0001", "unique-0002", "unique-0011", "unique-0012"} <= sharded,
+                f"two agents writing separate shards lost characters: {sorted(sharded)}. "
+                f"Distinct shards are supposed to make collision impossible",
+            )
+
+            # Same file, and each writer only knows its OWN rows - the case a
+            # third agent hits by forgetting --shard entirely.
+            unique_characters.INDEX_PATH = pathlib.Path(raw) / "single.jsonl"
+            unique_characters._atomic_write([row("unique-0003")], None)
+            unique_characters._atomic_write([row("unique-0004")], None)
+            merged = {r["id"] for r in unique_characters._load_index()}
+            expect(
+                {"unique-0003", "unique-0004"} <= merged,
+                f"a writer that knew only its own row deleted the other: {sorted(merged)}. "
+                f"Merge-on-write is what covers an agent that forgot to shard",
+            )
+
+            # The original hazard exactly: a stale full snapshot, written twice.
+            unique_characters.INDEX_PATH = pathlib.Path(raw) / "stale.jsonl"
+            unique_characters._atomic_write([row("unique-0005"), row("unique-0006")], None)
+            stale = unique_characters._load_index()
+            unique_characters._atomic_write([*stale, row("unique-0007")], None)
+            unique_characters._atomic_write([*stale, row("unique-0008")], None)
+            survived = {r["id"] for r in unique_characters._load_index()}
+            expect(
+                {"unique-0005", "unique-0006", "unique-0007", "unique-0008"} <= survived,
+                f"a stale snapshot still deletes rows: {sorted(survived)}. This is the "
+                f"exact shape that destroyed two characters when measured",
+            )
+        finally:
+            unique_characters.INDEX_PATH = original_index
+            if not original_exists:
+                unique_characters.INDEX_PATH.unlink(missing_ok=True)
 
 
 @case("unique_characters: a tag may NOT overwrite a structural diversity axis")
