@@ -130,9 +130,17 @@ def run(args) -> int:
     per_subject = collections.Counter()
     for index, (family_id, subject_key, tail, seeds) in enumerate(todo):
         palette, value = PALETTES[index % len(PALETTES)]
-        variant = per_subject[subject_key] % len(SUBJECTS[subject_key])
+        # Walk the subject list per subcategory, but stride by a co-prime of its
+        # length so a run that draws many groups from ONE subcategory still lands
+        # on different objects. Two subjects per subcategory was not enough: a run
+        # of 15 broth groups produced 15 near-identical corked bottles. Most groups
+        # are singletons (1160 of 1194), so each one is the only member of its own
+        # item and has to be distinguishable from its neighbours, not just valid.
+        variants = SUBJECTS[subject_key]
+        stride = 3 if len(variants) % 3 else 1
+        variant = (per_subject[subject_key] * stride) % len(variants)
         per_subject[subject_key] += 1
-        subject = SUBJECTS[subject_key][variant]
+        subject = variants[variant]
         slug = subject_key.split("/")[1].replace("_", "-")
         tag = re.sub(r"[^a-z0-9-]+", "-", f"{slug}-{tail}").strip("-")
         prompt = (

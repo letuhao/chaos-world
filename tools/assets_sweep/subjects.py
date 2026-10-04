@@ -203,6 +203,12 @@ SUBJECTS: dict[str, list[str]] = {
     "consumable/broth": [
         "one broth flask, a round-bellied glass vessel with a tied cork",
         "one lidded broth bowl, a deep clay bowl under a plain domed lid",
+        "one stoppered broth bottle, tall and narrow with a wax seal",
+        "one ceramic broth pot, a wide stoneware jar with a rope handle",
+        "one double broth gourd, two joined bulbs with one small stopper",
+        "one broth horn, a curved drinking vessel with a narrow spout",
+        "one shallow broth dish, a wide low bowl with a rolled rim",
+        "one broth tankard, a heavy lidded cup with one arched handle",
     ],
     "consumable/draught": [
         "one corked draught bottle, tall and straight-sided",
