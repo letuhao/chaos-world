@@ -4785,6 +4785,57 @@ def _art_shipped_romance_render_fails() -> None:
     )
 
 
+@case("character_bundle_sync: verify REPORTS a published_as claim with no file behind it")
+def _sync_verify_reports_a_false_claim() -> None:
+    """A claim is only a guard if it fires on a real one.
+
+    DEF-0293: 18 records carried `published_as.def_path` for a portrait that was not on disk, and
+    nothing read the field back, so a false claim could outlive the file it claimed indefinitely.
+    The case builds a claim that points at a path guaranteed not to exist and asserts the guard
+    names it — in BOTH directions, because a `verify` that reported nothing at all would satisfy a
+    one-sided "did it find the defect" check while checking nothing.
+    """
+    import tools.character_bundle_sync as sync
+
+    catalog = sync.unique_characters.readable_catalog()
+    ghost = {
+        "id": "selftest-ghost",
+        "published_as": {
+            "portrait_id": "selftest-ghost",
+            "def_path": "res://assets/characters/unique/selftest-ghost/portrait.png",
+        },
+    }
+    missing_path = sync.GAME_DIR / "assets/characters/unique/selftest-ghost/portrait.png"
+    if missing_path.is_file():
+        expect(
+            False,
+            f"{missing_path} EXISTS, so this case cannot prove the guard fires on an absent file",
+        )
+        return
+    original = sync.unique_characters.readable_catalog
+    try:
+        sync.unique_characters.readable_catalog = lambda: [ghost]
+        defects, _advisories = sync.verify(set())
+    finally:
+        sync.unique_characters.readable_catalog = original
+    joined = " | ".join(defects)
+    expect(
+        any("selftest-ghost" in defect for defect in defects),
+        f"verify did not name the false claim; it reported {joined!r}",
+    )
+    expect(
+        any("not on disk" in defect for defect in defects),
+        f"verify named the claim but not WHY it is false; it reported {joined!r}",
+    )
+    # And the real catalog still reports its own 18, so the guard is live and not merely reachable.
+    real_defects, _real_advisories = sync.verify(set())
+    expect(
+        bool(real_defects),
+        f"verify reported no defect against the live catalog; it found {len(catalog)} records and "
+        "the guard is measuring nothing",
+    )
+
+
 @case("art_fidelity: art_root RESOLVES the folder instead of trusting one hardcoded path")
 def _art_art_root_resolves_a_moved_folder() -> None:
     """Both directions, because a resolver that always returns the first candidate is indistinguishable

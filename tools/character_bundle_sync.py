@@ -447,6 +447,75 @@ def _atomic_write(path: Path, text: str) -> None:
             temporary.unlink()
 
 
+def verify(published: set[str]) -> tuple[list[str], list[str]]:
+    """(defects, advisories) for the boundary between the catalog and the authored resources.
+
+    Two kinds of finding, deliberately not merged:
+
+    * **defect** — a `published_as.def_path` that is not on disk. `published_as` is documented at
+      `tools/unique_characters.py:17-20` as the only field pointing at game content, and it "stays
+      empty until a deliberate sync step writes an authored resource". A non-empty value is
+      therefore a CLAIM that a resource exists, and a claim with no file behind it is false. This
+      is true on every machine, so it is a defect everywhere.
+    * **advisory** — an authored `layer_paths` entry whose PNG is absent. The art lives in a
+      gitignored folder, so this is correct on a clean clone and only a problem where the art was
+      meant to be present. Reported, never fatal, because a gate that cannot pass in CI is a gate
+      nobody reads.
+
+    `published` is the set of authored ids found on disk, so an orphan resource is detectable: a
+    `.tres` with no catalog record behind it is content nothing can select.
+    """
+    defects: list[str] = []
+    advisories: list[str] = []
+    catalog = unique_characters.readable_catalog()
+    claimed: set[str] = set()
+
+    for record in catalog:
+        if not isinstance(record, dict):
+            continue
+        published_as = record.get("published_as") or {}
+        def_path = str(published_as.get("def_path", ""))
+        if def_path == "":
+            continue
+        claimed.add(str(record.get("id", "")))
+        if not def_path.startswith("res://"):
+            defects.append(f"{record.get('id')}: def_path '{def_path}' is not a res:// path")
+            continue
+        local = GAME_DIR / def_path.removeprefix("res://")
+        if not local.is_file():
+            defects.append(
+                f"{record.get('id')}: published_as claims {def_path}, which is not on disk"
+            )
+
+    # Every authored PortraitDef the game will load, read as TEXT because this process has no Godot
+    # runtime. `for` over a sorted listing: the result is a set, and it must not depend on
+    # directory order.
+    for path in sorted(PORTRAIT_ROOT.glob("*.tres")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        found = re.search(r'^id = &"([^"]+)"', text, re.MULTILINE)
+        if found is None:
+            defects.append(f"{path.name}: no id, so nothing can select it")
+            continue
+        portrait_id = found.group(1)
+        if portrait_id not in published:
+            defects.append(
+                f"{path.name}: id '{portrait_id}' has no PortraitDef the catalog vouches for"
+            )
+        layer_match = re.search(
+            r"^layer_paths = Array\[String\]\(\[([^\]]*)\]\)", text, re.MULTILINE
+        )
+        if layer_match is None:
+            continue
+        for layer in re.findall(r'"([^"]+)"', layer_match.group(1)):
+            local = GAME_DIR / layer.removeprefix("res://")
+            if not local.is_file():
+                advisories.append(f"{portrait_id}: layer {layer} is not on disk")
+
+    for portrait_id in sorted(published - claimed):
+        advisories.append(f"{portrait_id}: authored but no catalog record claims it")
+    return (defects, advisories)
+
+
 def register(subparsers) -> None:
     parser = subparsers.add_parser(
         "character_bundle_sync",
@@ -471,6 +540,9 @@ def register(subparsers) -> None:
         "--allow-gaps",
         action="store_true",
         help="report a layer that could not be installed without failing the publish",
+    )
+    actions.add_parser(
+        "verify", help="check every published_as claim against the authored resources; fails"
     )
     report = actions.add_parser(
         "report", help="per-character readiness across the cast; never fails"
@@ -511,6 +583,30 @@ def run(args) -> int:
             fail("no character is ready to publish")
             return 1
         ok("character bundle sync report complete")
+        return 0
+
+    if action == "verify":
+        published = {
+            found.group(1)
+            for found in (
+                re.search(
+                    r'^id = &"([^"]+)"',
+                    path.read_text(encoding="utf-8", errors="replace"),
+                    re.MULTILINE,
+                )
+                for path in sorted(PORTRAIT_ROOT.glob("*.tres"))
+            )
+            if found is not None
+        }
+        defects, advisories = verify(published)
+        for advisory in advisories:
+            info(f"advisory: {advisory}")
+        for defect in defects:
+            fail(f"defect: {defect}")
+        if defects:
+            fail(f"{len(defects)} defect(s); a published_as claim with no file behind it is false")
+            return 1
+        ok(f"verified {len(published)} authored portrait(s); {len(advisories)} advisory(ies)")
         return 0
 
     character_id = args.character_id
