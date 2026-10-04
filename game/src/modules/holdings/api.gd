@@ -303,6 +303,11 @@ static func summary(actor: Actor) -> Dictionary:
 		"contested_count": (state["contested"] as Dictionary).size(),
 		"catalog": ResourceNodeCatalog.instance().views(),
 		"resolver_installed": _resolver.is_valid(),
+		# ADR 0165: the criterion the audit found absent — a caller must be able to tell "no
+		# store is wired" from "a store is holding an empty world", which before this were the
+		# same answer. `MarketApi.summary` deliberately publishes no seam booleans and is proved
+		# by behaviour instead, so this mirrors `CustodyApi` rather than inventing a new key.
+		"store_installed": _store != null,
 	}
 
 

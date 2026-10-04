@@ -26,9 +26,46 @@ const SLOT_CAPACITY := 512
 ## The session file. An LLM drives the game over many invocations, so the actor
 ## has to survive between them or no progress is ever observable.
 const SESSION_PATH := "user://ui_cli_session.json"
+## The readout's demo swing, priced so one press wounds without necrosing.
+##
+## ## Why the magnitude is `0.05` and it is a BODY swing now
+##
+## `BodyWounds.add` divides a strike's damage by the target's `body_integrity.maximum`,
+## and `BodyDamage` prices a hit as `magnitude x ATTACK_PHYSICAL x <point multiplier>` —
+## so the magnitude is multiplied by the thrower's own offense stat rather than being the
+## damage. The harness hero is built `{PHYSIQUE: 20, COMPREHENSION: 10}`, so
+## `ATTACK_PHYSICAL` reads `40.0` and one blow at `0.05` carries a severity of `0.2`.
+##
+## At the old `12.0` that was 600 damage, a severity of `6.0`, and **necrosis on the
+## first press** — a permanent, irreversible loss (ADR 0070), which makes the wound arc
+## this surface exists to show unreadable after one click. `0.05` is the middle of the
+## band: one blow wounds (`WOUND_THRESHOLD` `0.05`), several accumulate visibly, and
+## necrosis arrives after about six — which is the arc, in order, rather than all at
+## once. Every figure here is fixture arithmetic and none of it reaches `game/data`.
+const DRILL_MAGNITUDE := 0.05
+const DRILL_SHARE := 0.8
+## The meridian the demo swing is aimed at.
+##
+## `body_cultivation`, not `qi_cultivation`, and that is the difference between a readout
+## that prints a row and one that cannot: `QiDamage` emits no `effects[]` and its whole
+## floor is the S8 chip, so every qi blow on a real `commonborn` reads `S4 proposed 0.00`
+## and `S6 amount 1.00` — the chip floor doing all the work and the mechanism doing none.
+## `BodyDamage` emits one `body.wound` effect per struck site (ADR 0070), so a body
+## technique is the ONLY way this surface can render a wound, and a wound row is half
+## of what the panel exists for.
+##
+## `&"lung"` is a real meridian — `game/data/body_cultivation/acupoints/minor_0.tres`,
+## `minor_12.tres` and `minor_24.tres` all name it — so this is not an invented aim id.
+## See the report for the authored-data consequence: no shipped `.tres` sets
+## `aim_meridian`, so in production every body technique still resolves `random`.
+const DRILL_MERIDIAN := &"lung"
 
 var _screen: Node = null
 var _actor: Actor = null
+## The combat readout's drill body, built once in `_bind_read_models` and kept for the
+## life of the run. A wound is a fact about a body that persists, so a fresh body per
+## invocation would make the wound row unreadable.
+var _drills: Actor = null
 var _failures: Array[String] = []
 
 
@@ -94,10 +131,82 @@ func _bootstrap_actor(argv: PackedStringArray) -> void:
 ## was the instrument. Mirrors `ItemWorkbenchApp._bind_route_screen`, which is the
 ## production site for the same wiring.
 func _bind_read_models() -> void:
-	if _actor == null or not _screen.has_method("bind_bridge"):
+	if _actor == null:
 		return
-	LootApi.attach(_actor)
-	_screen.call("bind_bridge", _loot_bridge())
+	if _screen.has_method("bind_bridge"):
+		LootApi.attach(_actor)
+		_screen.call("bind_bridge", _loot_bridge())
+	if _screen.has_method("bind_strike"):
+		_drills = _build_drills()
+		# The same composition-root verbs the app uses, in the same order: enrol the
+		# paths, THEN install. `CombatBoot.bind_mechanisms` reads `acupoints` /
+		# `sea_of_consciousness` off the actor to choose a mechanism, and
+		# `ActorFactory` enrols only after `build` returns — so installing first
+		# measures every path's inputs as absent.
+		ActorFactory.with_body_cultivation(_actor)
+		ActorFactory.with_qi_cultivation(_actor)
+		CombatBoot.install(_actor)
+		CombatBoot.install(_drills)
+		_screen.call(
+			"bind_strike",
+			Callable(self, "_drill_blow"),
+			_drills,
+			Callable(self, "_drill_context")
+		)
+
+
+## The drill body the readout strikes, built through the SAME composition-root verbs
+## `ItemWorkbenchApp._build_readout_target` uses (ADR 0174): `spawn_inhabitant` plus a
+## body enrolment, so the target carries an `acupoints` set and a wound ledger and a
+## body technique lands at a real meridian. It lives here for the reason `_loot_bridge`
+## does — a screen cannot mint an `Actor`, because `app/` is a `PRIVATE_UNIT`.
+##
+## Built ONCE and kept: a fresh body per invocation would make the wound ledger
+## unreadable, because a wound is a fact about a body that persists.
+func _build_drills() -> Actor:
+	var drill := ActorFactory.spawn_inhabitant(&"readout_drills")
+	ActorFactory.with_body_cultivation(drill)
+	return drill
+
+
+## One blow for the readout, resolved through the SAME production entry point
+## `ItemWorkbenchApp._readout_blow` calls — `CombatBoot.resolve_hit` — with a null rng
+## so nothing random happens and every blow lands. A demo swing on the BODY path at a
+## magnitude priced so one press wounds without necrosing — see [constant
+## DRILL_MAGNITUDE].
+func _drill_blow(attacker: Actor, defender: Actor) -> Dictionary:
+	if attacker == null or defender == null:
+		return {}
+	var def := _drill_def()
+	return CombatBoot.resolve_hit(attacker, defender, def, CombatEngineApi.tuning(), null).to_dict()
+
+
+## The readout's companion read: `{band, actor, mechanism}`, all primitives — the same
+## shape `ItemWorkbenchApp._readout_context` hands the same screen, and for the same
+## reason: the band roll and the stat line are separate facade reads and the mechanism is
+## `CombatBoot`'s own per-hit answer, and none of the three is a field of `to_dict()`.
+##
+## Re-asking `mechanism_for_hit` here rather than stashing what the strike chose is
+## deliberate: it is the SAME named question with the SAME inputs, so the two answers
+## cannot disagree, and a screen that received the mechanism as a fourth field on the
+## outcome payload would be trusting a value the engine never wrote.
+func _drill_context() -> Dictionary:
+	return {
+		"band": CombatEngineApi.band(_actor, _drills, CombatEngineApi.tuning(), null),
+		"actor": CombatEngineApi.summary(_actor),
+		"mechanism": CombatBoot.mechanism_for_hit(_actor, _drill_def()),
+	}
+
+
+## The drill swing's authored inputs, built once for the life of the run so the strike
+## and the context read literally the same def.
+func _drill_def() -> TechniqueDef:
+	var def := TechniqueDef.new()
+	def.path = PathState.BODY
+	def.magnitude = DRILL_MAGNITUDE
+	def.element_share = DRILL_SHARE
+	def.aim_meridian = DRILL_MERIDIAN
+	return def
 
 
 func _loot_bridge() -> LootBridge:
@@ -298,15 +407,19 @@ func _run_action(command: String) -> void:
 	if command.begins_with("commit:"):
 		_run_commit(command.substr(7))
 		return
-	if not command.begins_with("act_"):
-		_emit({"event": "error", "command": command, "error": "unknown command"})
-		_failures.append(command)
-		return
-	if not _screen.has_method(command):
+	# `strike` is `act_strike()`, `cultivate` is `act_cultivate()`. The CLI takes the
+	# BARE VERB because that is the name every screen already publishes in its
+	# `summary().enabled` table — `enabled.strike` is `strike`, not `act_strike`,
+	# across every screen in `ui/screens/` — so a verb a screen declares it can
+	# perform must be the same word the terminal drives, or the readout advertises a
+	# verb no command line can reach. A screen exposing `act_strike` therefore
+	# answers `--cmd strike`, which is what a caller reading its own summary expects.
+	var action := command if command.begins_with("act_") else "act_" + command
+	if not _screen.has_method(action):
 		_emit({"event": "error", "command": command, "error": "no such action"})
 		_failures.append(command)
 		return
-	var result: Variant = _screen.call(command)
+	var result: Variant = _screen.call(action)
 	_emit({"event": "action", "command": command, "result": _jsonable(result)})
 
 

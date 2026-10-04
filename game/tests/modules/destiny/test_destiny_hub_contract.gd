@@ -507,18 +507,26 @@ func test_every_read_verb_is_safe_on_a_null_actor() -> void:
 func test_a_null_actor_earns_nothing_rather_than_crashing() -> void:
 	var earned = DestinyApi.earn_fate(null, OATH_BREAKER, "combat")
 	assert_eq(earned.has("fates"), true, "earn_fate(null) still returns a ledger")
-	# `earn_fate(null)` MUTATES the empty ledger it built and then reaches
-	# `_persist(null, ...)`, which aborts on `actor.set_module_data`. So the ledger
-	# it hands back is `{"oath_breaker": {"source": "combat", "sequence": 1}}` — an
-	# earn recorded against a hero that does not exist. That is a PRODUCTION
-	# defect (the null guard `record()` got at api.gd:118 was never given to
-	# `earn_fate`/`earn_destiny`), and it is also the exact shape the next
-	# assertion would have hidden, so the null case is asked FIRST and on its own.
+	# The reason this is safe is the guard at `api.gd:61`, not an accident of this
+	# suite. `earn_fate` computes its ledger against `DestinyState.empty()` for a null
+	# actor, returns it IMMEDIATELY, and therefore never reaches the mutation at
+	# api.gd:68 nor `_persist(null, ...)` at api.gd:73 — and `_persist` is the thing that
+	# would abort, because it writes through `actor.set_module_data`. The guard is
+	# deliberately above the mutation rather than inside `_persist`: refusing at the
+	# write would mean doing the work first and throwing it away, and would leave
+	# `earn_destiny` (api.gd:90, same shape) to be guarded separately.
 	#
-	# This suite does NOT own `src/modules/destiny`, so the defect is reported
-	# rather than patched, and the remaining null-actor assertions are asked about
-	# an actor that is never actually written to — where they test the READ
-	# contract, which is what they were written for.
+	# **This comment used to claim the opposite, and was wrong.** It said
+	# `earn_fate(null)` "MUTATES the empty ledger it built and then reaches
+	# `_persist(null, ...)`, which aborts on `actor.set_module_data`", and called that a
+	# PRODUCTION defect awaiting a patch. No such crash exists and none ever reached a
+	# player: the guard is at api.gd:61, `earn_destiny` has the same one at api.gd:90,
+	# and `record()`'s null refusal that the old comment blamed for being "never given"
+	# is at api.gd:128. The assertions below were right before and are right now; only
+	# the diagnosis was not. It is kept in this form because an agent auditing
+	# `_persist` for a crash that cannot happen will spend an hour proving it cannot,
+	# and because "a null actor earns nothing" is a CONTRACT somebody chose to state,
+	# not a lucky ordering.
 	assert_eq(
 		DestinyApi.has_fate(null, OATH_BREAKER),
 		false,

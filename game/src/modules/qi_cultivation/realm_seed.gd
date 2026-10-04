@@ -22,7 +22,6 @@ static var _cache: Dictionary = {}
 @export var comprehension_required: float = 10.0
 @export var dantian_quality_required: float = 0.5
 @export var dantian_fill_required: float = 1.0
-@export var dantian_tier: StringName = &"lower"
 @export var required_meridians: Array[StringName] = []
 @export var required_channel_state: StringName = MeridianState.OPEN
 ## Training depth each required channel must carry to enter this realm, counted on

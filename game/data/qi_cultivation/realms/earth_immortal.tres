@@ -12,7 +12,6 @@ progress_required = 1800.0
 comprehension_required = 44.0
 dantian_quality_required = 0.67
 dantian_fill_required = 1.0
-dantian_tier = &"upper"
 required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
 required_channel_state = &"strengthened"
 required_channel_refinement = 15

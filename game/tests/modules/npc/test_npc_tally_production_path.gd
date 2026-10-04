@@ -56,6 +56,12 @@ const PULSE := WorldPulse.PERIOD_SECONDS
 ## `EventBeatWriter.offer` and the suite header's "a second destination" note).
 const SHOWN_FACT := &"elder_wei_favours_shown"
 
+## How many whole pulls [method _pull_until_open] may spend before it gives up. Two is
+## what the shipped content needs (one for the ambient trigger, one for the elder's
+## event to win the next single-open budget); this is headroom, and the loop is a
+## `for` over it rather than a `while` on the ledger.
+const PULL_BUDGET := 4
+
 
 func setup() -> void:
 	NpcRegistry.instance().reset()
@@ -179,19 +185,33 @@ func test_an_npc_tally_beat_names_both_the_npc_and_the_verb() -> void:
 func test_a_pull_drives_the_elder_up_a_stage_through_the_authored_beat() -> void:
 	var player := _player()
 	var pulse := WorldPulse.new(player, BeatDirector.new())
-	# One pull: the ambient news lands (`storm_front_sighted` at period 1), and
-	# `EventApi.begin` opens the event on the same pull because the trigger is
-	# re-checked there, not trusted from `available`.
-	var first := pulse.pull(PULSE)
+	# **The elder's event is not the ONLY event the first pull can open, and that is
+	# measured rather than assumed.** `mortal_plains` ships two events behind the SAME
+	# ambient trigger (`storm_front_sighted`): `beast_tide_of_the_mortal_plains`, which
+	# sorts first, and this one. `MAX_OPENS_PER_PULL` is 1, so the pull that first
+	# satisfies the shared trigger is also the pull `beast_tide` wins, and this event
+	# opens on the NEXT one. That is `WorldPulse._open_available`'s stated budget, not a
+	# defect: the second event stays `available` and is opened on a later pull.
+	#
+	# The old fixture opened the event DIRECTLY via `EventApi.begin`, which is why this
+	# suite was green. That bypassed `available` entirely — and `available` is the
+	# ordered, budgeted list a pull actually walks, so a direct `begin` proved the
+	# ladder worked while proving nothing about the pulse.
+	var opened := _pull_until_open(player, pulse, EVENT, &"elder_wei_petition_opened")
 	assert_eq(
 		EventFacts.count_of(player, &"elder_wei_petition_opened"),
 		1,
 		"the event opened from content, so its opening beat fired"
 	)
 	assert_eq(NpcApi.summary(ELDER)["stage_id"], "gatekeeper", "and he starts where he starts")
-	assert_eq(first["opened"], 1, "the pulse opened one event")
+	assert_eq(int(opened["opened"]), 1, "the pull that opened it opened exactly one event")
+	assert_eq(
+		EventState.is_active(EventApi.state(player), EVENT),
+		true,
+		"and it is on the event ledger, open under its authored id"
+	)
 
-	# The second pull walks `the_petition` -> `the_favour`, whose `on_enter` carries the
+	# The next pull walks `the_petition` -> `the_favour`, whose `on_enter` carries the
 	# tally beat. A period is enough: `the_petition` holds for one.
 	pulse.pull(PULSE)
 	assert_eq(
@@ -382,7 +402,10 @@ func test_a_stage_advance_emits_and_the_subscriber_observes_it() -> void:
 func test_the_authored_beat_drives_the_subscriber_through_production() -> void:
 	var player := _player()
 	var pulse := WorldPulse.new(player, BeatDirector.new())
-	pulse.pull(PULSE)
+	# Same two-competing-events budget as the pull test above: the elder's event opens
+	# on the pull AFTER the one that lands the shared ambient trigger, so the fixture
+	# pulls until it is open and the stage-walk below then costs one pull per stage.
+	_pull_until_open(player, pulse, EVENT, &"elder_wei_petition_opened")
 	pulse.pull(PULSE)
 	_tally_through_the_writer(player, 1)
 	_tally_through_the_writer(player, 1)
@@ -550,6 +573,38 @@ func _offer(player: Actor, beat: Dictionary) -> Dictionary:
 	proposal["actor_id"] = String(player.id)
 	proposal["id"] = EventFacts.occurrence_id(fact_id, EventFacts.count_of(player, fact_id) + 1)
 	return EventBeatWriter.offer(player, proposal, EventFacts.count_of(player, fact_id) + 1)
+
+
+## Pull the world until `event_id` is OPEN, and return the report of the pull that
+## opened it. Bounded by [constant PULL_BUDGET] and never a `while` on a state value:
+## `tests/arch_rules/test_no_unbounded_wait.gd` rules on those, and a wait whose exit
+## condition a bug can stop satisfying is INC-0001's shape. Two is what the shipped
+## content needs and [constant PULL_BUDGET] is headroom, not a requirement.
+##
+## **Why this exists at all, and why the old two-pull fixture was wrong.** The pull
+## budget is real and deliberate: `WorldPulse.MAX_OPENS_PER_PULL` is 1, and the
+## shipped tree puts TWO events at `mortal_plains` behind the SAME ambient trigger
+## (`storm_front_sighted` at period 1). `EventApi.available` walks the catalog in
+## STRING order, so `beast_tide_of_the_mortal_plains` — which sorts before
+## `the_favour_of_elder_wei` — is the one the first pull opens. The elder's event is
+## still `available` on that same pull, and `_open_available` asks `EventApi.begin`
+## about it and then stops, because the ONE open it is allowed has been spent. It
+## opens on the next pull. Nothing is refused wrongly; the budget is spent on OPENINGS,
+## which is the behaviour `_open_available`'s own docstring documents.
+##
+## A fixture that assumed "one pull opens my event" was asserting a property of a
+## one-event world. This suite went red the moment the content tree grew a second
+## event at the elder's location — which is a CONTENT change, not a defect, and the
+## suite must not read a second authored event as a broken ladder.
+func _pull_until_open(
+	player: Actor, pulse: WorldPulse, event_id: StringName, fact_id: StringName
+) -> Dictionary:
+	var report: Dictionary = {}
+	for _pull in range(PULL_BUDGET):
+		if EventState.is_active(EventApi.state(player), event_id):
+			break
+		report = pulse.pull(PULSE)
+	return report
 
 
 ## One more favour, on the production writer. Named so a failure says which step of the

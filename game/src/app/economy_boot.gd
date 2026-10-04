@@ -145,11 +145,36 @@ static func install(actor: Actor) -> Dictionary:
 ## back is an empty one. The failure is silent, total and invisible in a single-actor test,
 ## which is exactly how ADR 0101 found the original bug. They are three objects because
 ## three modules own three ledgers; `app/` wires them together, it does not merge them.
+##
+## ## And a save-backed store wins when the save owns the key (ADR 0165)
+##
+## The in-memory ledger below is correct for a test and **was the shipped path**, so a claimed
+## vein, a listed lot and an open custody claim all died at quit — `SaveApi._snapshot_world`
+## wrote `world["holdings"] = {}` for a key nothing ever read back. So a key the save already
+## owns gets the `WorldLedgerStore` the root installs, and only a key nothing is saving falls
+## back to the in-memory seam.
+##
+## **That is why every existing suite is unaffected: none of them install a save store for
+## these three keys**, so `store_for` answers null and the seam below is what they get, exactly
+## as before. The rule is "does the save own this key", not "is a test running", so a suite
+## that ever DOES install one gets the durable behaviour rather than a silent divergence.
 static func _install_stores() -> bool:
-	HoldingsApi.set_store(WorldLedger.new())
-	MarketApi.set_store(MarketWorldLedger.new())
-	CustodyApi.set_store(CustodyWorldLedger.new())
+	HoldingsApi.set_store(_store_for("holdings", WorldLedger.new, HoldingsState.SCHEMA_VERSION))
+	MarketApi.set_store(_store_for("market", MarketWorldLedger.new, MarketState.SCHEMA_VERSION))
+	CustodyApi.set_store(_store_for("custody", CustodyWorldLedger.new, CustodyState.SCHEMA_VERSION))
 	return true
+
+
+## The save's own store for `key` when it has one, and the in-memory `seam` otherwise.
+##
+## `seam` is passed as a CONSTRUCTOR Callable rather than an instance so the fallback object is
+## only built on the branch that needs it — a suite with no save store never mints a durable
+## ledger it will throw away, and a boot with a save store never builds a seam it will discard.
+static func _store_for(key: String, seam: Callable, _schema_version: int) -> RefCounted:
+	var installed = SaveApi.store_for(key)
+	if installed != null and installed.has_method(&"read_ledger"):
+		return installed
+	return seam.call() as RefCounted
 
 
 ## ## One resolver, two consumers, because the contract is identical

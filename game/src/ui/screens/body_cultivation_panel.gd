@@ -26,6 +26,12 @@ extends PanelContainer
 ## `attempt_outcome`. This file used to decide the prices itself by walking `core`'s meridian
 ## network, which is how a hero with a torn channel and no elixir was told nothing was damaged
 ## while the gate line above said the opposite.
+##
+## **THE BREAKTHROUGH IS TWO PRESSES, AND THE SECOND ONE SURVIVES A QUIT.** This control
+## commits a durable attempt and then resolves it, which is the facade's documented lifecycle
+## and the only shape in which an attempt a player committed can outlive the session that
+## committed it. ADR 0150 recorded the durable half as unwired and left the fork open; it is
+## taken here, and the reasoning lives on `act_breakthrough`.
 
 signal world_map_requested
 
@@ -48,6 +54,11 @@ var _message_label: Label = null
 var _message: String = ""
 var _tone: StringName = &""
 var _focus_target: String = ""
+## The label the SCENE authored for the breakthrough button, captured so the resolve
+## affordance can hand it back. The scene owns the wording; this screen only borrows
+## the same control for the other half of one lifecycle, and hardcoding a second
+## string here would let the two drift from the scene nobody can compile against.
+var _breakthrough_label: String = ""
 
 
 func _ready() -> void:
@@ -123,10 +134,59 @@ func refresh() -> void:
 	# refusal IS the message a player needs: disabling a control on a named refusal is the
 	# tribulation screen's defect (ADR 0150), and it would make every refusal here unreachable.
 	_recover_button.disabled = live.is_empty()
-	_breakthrough_button.disabled = not ready
+	_render_attempt_button(live, ready)
 	_ascend_button.disabled = not _ascend_offered(live)
 	_render_ascent(live)
 	_render_tier_gates(live)
+
+
+## THE DURABLE ATTEMPT AFFORDANCE (ADR 0150 §Consequences, recorded as a finding there).
+##
+## One control, two jobs, chosen by the module's own answer rather than by anything this
+## screen decides: while `panel_state`'s `attempt` names an attempt in flight, the button
+## RESOLVES it; with none in flight it offers a fresh attempt and stays gated on `ready`
+## exactly as before.
+##
+## `attempt` is the whole contract, and it is the module's: `BodyAdvancement.preview`
+## documents it as "the active attempt's id, empty when none is in flight". A screen
+## reading a non-empty id is reading a published decision, not re-deriving one — which is
+## the ADR 0034 rule the ascent row already follows. There is deliberately no second
+## `committed` boolean here to drift out of step with it.
+##
+## **Why one button and not two.** The scene declares the widgets (`.tscn`), this screen
+## never builds one, and a second node is a scene edit rather than a screen edit. It is
+## also the better control: the two halves are mutually exclusive by construction — an
+## attempt in flight is exactly what forbids a fresh one, named as
+## `BodyRefusal.KIND_ATTEMPT_IN_FLIGHT` — so a player can never be offered both.
+func _render_attempt_button(view: Dictionary, ready: bool) -> void:
+	if _breakthrough_button == null:
+		return
+	var committed := _attempt_committed(view)
+	if committed:
+		_breakthrough_button.disabled = false
+		_breakthrough_button.text = "Resolve into %s" % _attempt_target(view)
+		return
+	_breakthrough_button.disabled = not ready
+	_breakthrough_button.text = _breakthrough_label
+
+
+## Whether an attempt is committed and awaiting its roll.
+##
+## The facade publishes this as an id on purpose: it is the same value
+## `attempt_outcome.id` carries, so a screen can name the attempt it is resolving and a
+## test can assert the two agree without either being a second source of truth.
+func _attempt_committed(view: Dictionary) -> bool:
+	return not String(view.get("attempt", "")).is_empty()
+
+
+## The realm a committed attempt is fighting for, read off the record the module
+## published. Empty when there is none, which the button only asks for when one is.
+func _attempt_target(view: Dictionary) -> String:
+	var outcome: Dictionary = view.get("attempt_outcome", {})
+	var target := String(outcome.get("target", ""))
+	if not target.is_empty():
+		return target
+	return String(view.get("target", ""))
 
 
 ## Every stat this actor carries, provider contributions included. Core, not a
@@ -307,6 +367,12 @@ func focus_initial() -> void:
 	var name := "CultivateButton" if live else "MeditateButton"
 	if live and _ascend_offered(view):
 		name = "AscendButton"
+	# A committed attempt outranks all of them, and it is the same control either way:
+	# the button resolves what is already spent, so focus lands there rather than on a
+	# verb the module would refuse. Naming it through `_button`'s fall-through keeps one
+	# control, one name, instead of a second name for a widget that only changes label.
+	if _attempt_committed(view):
+		name = "BreakthroughButton"
 	_focus_target = name
 	var target := _button(name)
 	if target != null and target.is_inside_tree():
@@ -360,20 +426,86 @@ func act_strengthen() -> bool:
 	return trained
 
 
+## The breakthrough control, which resolves a committed attempt and otherwise commits
+## a fresh one.
+##
+## **TWO HALVES, TWO CALLS, TWO ANSWERS, and the return cannot mean one thing.** It
+## reports whether the hero ADVANCED, so a commit answers `false` while having succeeded
+## — which is why the commit reports its own tone rather than falling into the refusal
+## branch below. Conflating them is what made "an attempt was committed" indistinguishable
+## from "the press was refused", and a player who cannot tell those apart cannot tell
+## whether their pill was spent.
+##
+## Read BEFORE the press, and that ordering is load-bearing for the resolve half too: a
+## resolve rolls, and a roll mutates. Read afterwards, the report would describe the roll's
+## outcome as though it had blocked the attempt, and a deviation's own aftermath would
+## come back as its cause.
 func act_breakthrough() -> bool:
 	if _actor == null:
 		return false
-	# Read BEFORE the press, and that ordering is load-bearing: a breakthrough rolls, and a
-	# roll mutates. Read afterwards, the report would describe the roll's outcome as though it
-	# had blocked the attempt, and a deviation's own aftermath would come back as its cause.
 	var before := _view()
-	var advanced := BodyCultivationApi.attempt_breakthrough(_actor)
-	if advanced:
+	if _attempt_committed(before):
+		return _resolve_attempt()
+	return _commit_attempt(before)
+
+
+## The first half: spend the realm pill and leave a durable record. Reports the module's
+## committed view, so the sentence names the realm actually fought for rather than one
+## this screen re-derives from the ladder.
+func _commit_attempt(before: Dictionary) -> bool:
+	var committed := BodyCultivationApi.begin_breakthrough(_actor)
+	if committed.is_empty():
+		set_message(_breakthrough_refusal(before), TONE_ERROR)
+		refresh()
+		return false
+	set_message(
+		(
+			"An attempt into %s is committed; resolve it when you are ready"
+			% String(committed.get("target", ""))
+		),
+		TONE_OK
+	)
+	refresh()
+	return false
+
+
+## The second half: roll the committed attempt, on whichever session it rides out on.
+##
+## No pre-press read is needed here, and that asymmetry is the point: a resolve is only
+## offered once something is committed, so nothing could have blocked the press, and the
+## only thing that can report the outcome is the record the roll just wrote.
+##
+## The `false` is that record's own verdict, published as `attempt_outcome`, exactly as
+## the one-press verb reports it — a deviation owes a wound to repair and a cancellation
+## owes nothing, and a `false` that read as "deviated" for both is the defect ADR 0150
+## removed from the sibling press.
+func _resolve_attempt() -> bool:
+	var granted := BodyCultivationApi.resolve_breakthrough(_actor)
+	if granted:
 		set_message("Broke through", TONE_OK)
 	else:
-		set_message(_breakthrough_refusal(before), TONE_ERROR)
+		set_message(_resolve_refusal(), TONE_ERROR)
 	refresh()
-	return advanced
+	return granted
+
+
+## Why a resolve did not grant.
+##
+## **THE RECORD ONLY, AND READING `unavailable` HERE IS A LIE.** `unavailable.breakthrough`
+## is non-empty for exactly as long as an attempt is in flight — its first clause is
+## `KIND_ATTEMPT_IN_FLIGHT`, "resolve it first" — and this press IS the resolve. Joining
+## that list would therefore always produce a sentence, and the wrong one: a hero whose
+## trial deviated would be told to resolve an attempt that has just been resolved. A
+## refusal that always has an answer is how the fourth-cause collapse ADR 0150 removed
+## came back.
+##
+## Nothing blocked the press — the panel only offers resolve once something is committed —
+## so every `false` here was decided by the roll, which is not knowable before it happens.
+## The record is the only thing that can name it, which is why `attempt_outcome` exists as
+## a separate key from `unavailable` rather than folded into it.
+func _resolve_refusal() -> String:
+	var outcome: Dictionary = _view().get("attempt_outcome", {})
+	return String(outcome.get("reason", ""))
 
 
 ## Walk ONE step of the Transcendent ascent.
@@ -464,14 +596,22 @@ func _steps() -> Dictionary:
 
 ## Which actions the screen offers, given the facade view the screen is rendering.
 ## Breakthrough needs the gate; the training verbs need only an actor.
+##
+## `breakthrough` and `resolve` are MUTUALLY EXCLUSIVE and are reported separately, so a
+## test can tell "a fresh attempt is offered" from "an attempt is waiting to be rolled".
+## Keying the first on `ready` alone would report both true at once — a hero stays
+## prepared while its attempt is committed — which is the state the affordance exists to
+## make visible rather than hide behind an unchanged button.
 func _action_state(view: Dictionary) -> Dictionary:
 	var live := not view.is_empty()
+	var committed := _attempt_committed(view)
 	return {
 		"cultivate": live,
 		"meditate": live,
 		"strengthen": live,
 		"recover": live,
-		"breakthrough": bool(view.get("ready", false)),
+		"breakthrough": bool(view.get("ready", false)) and not committed,
+		"resolve": committed,
 		"ascend": _ascend_offered(view),
 	}
 
@@ -494,6 +634,8 @@ func _bind_nodes() -> void:
 	_strengthen_button = get_node_or_null("%StrengthenButton") as Button
 	_recover_button = get_node_or_null("%RecoverButton") as Button
 	_breakthrough_button = get_node_or_null("%BreakthroughButton") as Button
+	if _breakthrough_button != null:
+		_breakthrough_label = _breakthrough_button.text
 	_ascend_button = get_node_or_null("%AscendButton") as Button
 	_world_map_button = get_node_or_null("%WorldMapButton") as Button
 	_cultivate_button.pressed.connect(act_cultivate)

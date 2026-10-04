@@ -12,7 +12,7 @@ import re
 from pathlib import Path
 from typing import NamedTuple
 
-from . import item_migrate, options
+from . import gate_reach, item_migrate, options
 from .common import REPO_ROOT, SRC_DIR, ToolError, fail, info, ok, warn
 from .options import (
     CATEGORY_ACTIVATION,
@@ -27,6 +27,15 @@ from .options import (
 DATA_ROOT = REPO_ROOT / "game" / "data"
 STAT_DEFS = REPO_ROOT / "game" / "src" / "contracts" / "stat.gd"
 ACTOR_STATS = REPO_ROOT / "game" / "src" / "core" / "actor_stats.gd"
+# The authored fact -> counter map. Read as TEXT rather than duplicated here: a
+# second copy of this vocabulary in the gate is ADR 0066's failure mode, and a
+# deleted row would leave the audit validating gates against counters nothing
+# moves. Same idiom as `_valid_stats()` below, for the same reason.
+DESTINY_PROJECTION = SRC_DIR / "modules" / "destiny" / "destiny_projection.gd"
+## `{verb: &"counter", id: &"<id>", ...}` anywhere in a `.tres`. No `need` is parsed:
+## the wiring question is whether the id can move at all, and a `need: 0` gate is
+## already refused by `DestinyGate._counter` at runtime.
+_COUNTER_GATE = re.compile(r'"verb":\s*&"counter".{0,200}?"id":\s*&"([^"]*)"', re.S)
 
 CATEGORIES = {
     "material",
@@ -1617,7 +1626,88 @@ def _runtime_summary(records: dict) -> tuple[int, int, int]:
     return len(items), graph, runtime
 
 
-def _destiny_findings(records: dict) -> tuple[list[str], list[str]]:
+def _counter_facts() -> dict[str, set[str]]:
+    """`COUNTER_FACTS` read out of the shipped projection: counter id -> its facts.
+
+    Parsed from the `destiny_projection.gd` TEXT rather than kept here, because this
+    file already parses GDScript that way for `Stat` ids (`_valid_stats`) and actor
+    baselines (`_resolve_rate_stats`) — the house answer to "where does the gate learn
+    a vocabulary" is READ the game's own declaration, never restate it. A second
+    literal would be ADR 0066: two declarations of one fact with nothing keeping them
+    in agreement, which is how 488 items once fitted every slot at once.
+
+    Returns `{}` when the constant is absent or unreadable, so a moved or renamed
+    file degrades to "no counter is wired" and every `counter` gate then fails loudly
+    rather than the audit silently passing a gate it never really checked.
+    """
+    if not DESTINY_PROJECTION.is_file():
+        return {}
+    text = DESTINY_PROJECTION.read_text(encoding="utf-8", errors="replace")
+    block = re.search(r"(?ms)^const COUNTER_FACTS[^=]*=\s*\[(.*?)^\]", text)
+    if not block:
+        return {}
+    out: dict[str, set[str]] = {}
+    for fact, counter in re.findall(
+        r'"fact":\s*&"([^"]*)",\s*"counter":\s*&"([^"]*)"', block.group(1)
+    ):
+        out.setdefault(counter, set()).add(fact)
+    return out
+
+
+def _unproduced_counter_facts(counter_facts: dict[str, set[str]]) -> dict[str, str]:
+    """Facts a `COUNTER_FACTS` row names that no shipped producer can record.
+
+    Returned as fact -> counter so the warning can name both halves.
+
+    **The producer census is `gate_reach.census()`, not a second scan.** That module
+    already answers "which facts can the shipped tree actually write", and it answers
+    it the hard way: a producer is usually a `const NAME := &"id"` fed to
+    `WorldFact.record` from the SAME file, which no regex over `.tres` text and no
+    id-shaped grep over `res://src` can resolve. Writing my own would have retired
+    this warning for the wrong reason the moment it shipped — every module-owned fact
+    reads as unproduced, because the writer spells its id as a const NAME.
+
+    Deliberately a WARNING and not a failure: the rows that answer here are a
+    recorded gap in OTHER modules' content (DEF-0105/DEF-0106), so hard-failing would
+    be red for a correct tree. It is named per-id rather than counted, because a
+    count that stays at three while a fourth orphan appears is the quiet growth this
+    exists to stop.
+    """
+    supply, _demands, _unread, _scanned = gate_reach.census()
+    out: dict[str, str] = {}
+    for counter, facts in sorted(counter_facts.items()):
+        for fact in sorted(facts):
+            if fact not in supply:
+                out[fact] = counter
+    return out
+
+
+def _authored_counter_gates(root: Path | None = None) -> list[tuple[str, str]]:
+    """Every `(file, counter_id)` a shipped `.tres` gates on, across the WHOLE tree.
+
+    Walked from raw file text over the content tree rather than from the destiny
+    catalog, because a gate requirement is authored on quests, events and destiny
+    alike and no one catalog exposes them all — a scan that covered only
+    `game/data/destiny/` would under-report the census and pass it for the wrong
+    reason. This is the same walk `destiny_counter_wiring_support.gd` performs.
+
+    Takes the same `root` the audit was given rather than the module constant, so
+    `data audit --root <dir>` audits the tree it was pointed at. Defaulting to the
+    constant would make the flag half-honoured: a caller pointing the gate at a copy
+    would get the real tree's answer and believe it about the copy.
+    """
+    base = Path(root) if root is not None else DATA_ROOT
+    if not base.is_dir():
+        return []
+    out: list[tuple[str, str]] = []
+    for path in sorted(base.rglob("*.tres")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for counter_id in _COUNTER_GATE.findall(text):
+            out.append((path.relative_to(base).as_posix(), counter_id))
+    return out
+
+
+def _destiny_findings(records: dict, root: Path | None = None) -> tuple[list[str], list[str]]:
     """Defects in fate/destiny content, and authoring notes worth surfacing.
 
     A `.tres` stat id is never re-read after load: an unknown key produces a
@@ -1637,6 +1727,15 @@ def _destiny_findings(records: dict) -> tuple[list[str], list[str]]:
     visibility = {"revealed", "hidden", "teaser"}
     narrative: list[str] = []
     notes: list[str] = []
+    # Every authored alias, so a `requires_destinies` entry naming one is a
+    # SATISFIABLE prerequisite rather than a dangling reference. See the note on
+    # the cross-reference loop below for why this has to be the declared aliases and
+    # not merely "any id in the tree".
+    aliases = {
+        alias
+        for destiny in destinies.values()
+        for alias in destiny["arrays"].get("gate_aliases", [])
+    }
 
     for fate_id, fate in sorted(fates.items()):
         where = fate["path"]
@@ -1675,7 +1774,14 @@ def _destiny_findings(records: dict) -> tuple[list[str], list[str]]:
         for field, known in (
             ("grants_fates", set(fates)),
             ("requires_fates", set(fates)),
-            ("requires_destinies", set(destinies)),
+            # An alias is a legitimate `requires_destinies` target and NOT a defect:
+            # `DestinyDef.gate_aliases` exists so story can be authored before the
+            # destiny it answers for exists, and `DestinyGate.earnable` resolves one
+            # in both directions through `holds_destiny`. Checking the field against
+            # the set of `.tres` records alone made this gate FAIL the one
+            # prerequisite the feature exists to permit — the audit and the runtime
+            # disagreeing about whether a content author may write something.
+            ("requires_destinies", set(destinies) | aliases),
         ):
             for ref in destiny["arrays"].get(field, []):
                 if ref not in known:
@@ -1706,7 +1812,99 @@ def _destiny_findings(records: dict) -> tuple[list[str], list[str]]:
             f"{len(narrative)} fate(s) carry no stat and exist only to gate story: "
             f"{', '.join(narrative)}"
         )
+    gaps.extend(_counter_findings(root))
+    notes.extend(_counter_notes(fates, root))
     return gaps, notes
+
+
+## `COUNTER_FACTS` read once per run: two checks need the same answer, and a repeated
+## parse of one file is two chances to disagree with itself.
+_COUNTER_FACTS_CACHE: dict[str, set[str]] | None = None
+
+
+def _wired_counters() -> dict[str, set[str]]:
+    global _COUNTER_FACTS_CACHE  # noqa: PLW0603
+    if _COUNTER_FACTS_CACHE is None:
+        _COUNTER_FACTS_CACHE = _counter_facts()
+    return _COUNTER_FACTS_CACHE
+
+
+## **A `counter` GATE naming an id with no `COUNTER_FACTS` row FAILS the audit.**
+##
+## This is the check ADR 0149 owed. A counter id is moved only by the bridge
+## `DestinyProjection.subscribe_to_fact_ledger` installs, and only for the ids one row
+## of `COUNTER_FACTS` names. An id with no row is therefore not "a gate that is hard
+## to open" — it is a gate NOTHING can open, and `DestinyGate._counter` reports it as
+## an ordinary unmet forever, with no cause a reader could act on. A misspelling is
+## indistinguishable from work-in-progress at runtime, which is why this has to be
+## caught here: the field is read once, at evaluation, and never validated.
+##
+## The id is read from `.tres` TEXT because a gate requirement is authored on quests,
+## events and destinies alike and no single catalog exposes them all.
+def _counter_findings(root: Path | None = None) -> list[str]:
+    gaps: list[str] = []
+    wired = _wired_counters()
+    for where, counter_id in _authored_counter_gates(root):
+        if counter_id not in wired:
+            gaps.append(
+                f"{where}: a `counter` gate names '{counter_id}', which no "
+                f"DestinyProjection.COUNTER_FACTS row produces; nothing can ever move "
+                f"it, so the gate reads unmet forever (ADR 0149)"
+            )
+    return gaps
+
+
+## The counter CENSUS, as notes. A `FateDef.counters` id with no row is here rather
+## than in `_counter_findings`, and the reason is that the two checks are not the same
+## check.
+##
+## A `counter` GATE is a promise to the player: content authors it expecting a door to
+## open, and an id with no row is a permanent lie with no cause at runtime.
+## `FateDef.counters` is read by NO production code (DEF-0168), so declaring an
+## unwired counter costs a player nothing today — the fate still projects and still
+## grants its modifiers. Failing the build over that would be red for a tree behaving
+## correctly, which is how a gate loses its readers.
+##
+## Measured, not assumed: on the current tree exactly one declared id is unwired —
+## `breakthroughs`, named by `reborn_in_a_lesser_vessel` and
+## `remembered_by_the_mountain`, with no producer anywhere in `game/src`.
+def _counter_notes(fates: dict, root: Path | None = None) -> list[str]:
+    wired = _wired_counters()
+    if not wired:
+        return []
+    notes: list[str] = []
+    unproduced = _unproduced_counter_facts(wired)
+    if unproduced:
+        listed = ", ".join(
+            f"{fact} (counter '{counter}')" for fact, counter in sorted(unproduced.items())
+        )
+        standing = (
+            "No shipped .tres gates on `counter` yet, so none of these cost a player a door."
+            if not _authored_counter_gates(root)
+            else "Shipped gates DO stand on counters, so an unproduced fact is a closed "
+            "door rather than a dormant row."
+        )
+        notes.append(
+            f"{len(unproduced)} COUNTER_FACTS row(s) name a fact no shipped producer can "
+            f"record: {listed}. {standing} Authoring the producer is the owning module's "
+            f"work (DEF-0105/DEF-0106); this list is a census, so a fourth orphan cannot "
+            f"arrive quietly."
+        )
+    declared: dict[str, list[str]] = {}
+    for fate_id, fate in sorted(fates.items()):
+        for counter_id in fate["arrays"].get("counters", []):
+            declared.setdefault(counter_id, []).append(fate_id)
+    unwired = sorted(set(declared) - set(wired))
+    if unwired:
+        detail = "; ".join(f"'{cid}' by {', '.join(declared[cid])}" for cid in unwired)
+        notes.append(
+            f"{len(unwired)} FateDef.counters id(s) no COUNTER_FACTS row produces: {detail}. "
+            f"DEF-0168: `FateDef.counters` is read by no production code, so these declare "
+            f"documentation rather than a promise, and a gate can never name them until the "
+            f"row ships. This is why it warns where a `counter` gate fails: nothing a player "
+            f"can reach is closed by a declaration nothing reads."
+        )
+    return notes
 
 
 SLOT_TABLE = DATA_ROOT / "items" / "equipment_slots.json"
@@ -1907,7 +2105,7 @@ def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
     # grants nothing (bad stat id) or one that multiplies instead of adding
     # (FLAT on a rate stat). Nothing re-reads the field after load, so the audit
     # is the only place the mistake can still be caught.
-    gaps.extend(_destiny_findings(records)[0])
+    gaps.extend(_destiny_findings(records, root)[0])
     # Report out-of-window fixed values here too. `data distribution` computes
     # them, but a green audit that silently omits thousands of illegal authored
     # values is worse than a red one: the count has to be impossible to miss.
@@ -1926,7 +2124,7 @@ def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
             f"scale."
         )
     runtime = _runtime_findings(records)
-    for note in _destiny_findings(records)[1]:
+    for note in _destiny_findings(records, root)[1]:
         warn(note)
     # The entry band a starting hero can enter is a different population from the
     # corpus, and it is the one the primary loop is graded on: fight, drop, equip.

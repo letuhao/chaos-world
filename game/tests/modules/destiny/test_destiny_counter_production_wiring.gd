@@ -75,6 +75,15 @@ const BLOW_CAP := 200
 ## reader could find (ADR 0067).
 const SEED := 20_260_904
 
+## **A preloaded script cannot hand out its instance members.** `Support` is a
+## script constant, and `Support._hero` does not resolve: a script object exposes
+## the class's STATIC surface, so an instance method reached through one answers
+## "cannot find member". The shared readers are therefore bound from ONE instance
+## held by the suite. A `const` initialiser would be worse: the runner attaches
+## the suite's properties one at a time, so reading through one during
+## initialisation answers `null` and the failure reads like a missing fixture.
+static var _support: RefCounted = null
+
 ## ## The bridge is installed per-test by [method setup], not assumed
 ##
 ## Every assertion below reads a fate counter, so every one of them is only true
@@ -181,19 +190,26 @@ func teardown() -> void:
 ## with it, and the names the cases already call did not change.
 
 
+func _shared() -> RefCounted:
+	if _support == null:
+		_support = Support.new()
+	return _support
+
+
 ## Bind every forwarder above against THIS instance. The census binds its own seven
 ## readers out of the same support file, the same way, for the same reason.
 func _bind_support() -> void:
-	_hero_impl = Support._hero
-	_fighter_impl = Support._fighter
-	_counter_impl = Support._counter
-	_world_impl = Support._world
-	_clan_member_impl = Support._clan_member
-	_sect_member_impl = Support._sect_member
-	_install_sect_impl = Support._install_sect
-	_fight_to_a_kill_impl = Support._fight_to_a_kill
-	_gate_impl = Support._gate
-	_total_moved_impl = Support._total_moved
+	var shared: RefCounted = _shared()
+	_hero_impl = shared._hero
+	_fighter_impl = shared._fighter
+	_counter_impl = shared._counter
+	_world_impl = shared._world
+	_clan_member_impl = shared._clan_member
+	_sect_member_impl = shared._sect_member
+	_install_sect_impl = shared._install_sect
+	_fight_to_a_kill_impl = shared._fight_to_a_kill
+	_gate_impl = shared._gate
+	_total_moved_impl = shared._total_moved
 
 
 ## A hero with a destiny ledger attached, for the cases that assert on the NEGATIVE —
@@ -382,10 +398,15 @@ func test_a_refused_registration_moves_no_counter() -> void:
 
 
 ## `sect`'s producer, driven through `SectApi.promote` — a seating, not a fact call.
-## `sect_post_held` maps to `oaths_sworn` rather than `oaths_broken` (see
-## `COUNTER_FACTS`): an office that was actually held is a sworn house, and a counter
-## that rose for both would answer a gate the player has not earned.
-func test_seating_someone_through_the_real_sect_verb_moves_the_sworn_counter() -> void:
+##
+## `sect_post_held` is deliberately UNMAPPED in `COUNTER_FACTS`. An office that was
+## actually held is not a sworn house in the same sense `oaths_sworn` counts: it is
+## one person's seat, and a fate reading a counter that every promotion moves would
+## answer a gate on a promotion the player never earned. So this case asserts the
+## NEGATIVE, and it is the case that would catch a future author mapping that fact
+## by name similarity: if someone adds `sect_post_held -> oaths_sworn` because the
+## words look related, this goes red and names the row.
+func test_a_seating_moves_no_counter_because_its_fact_is_deliberately_unmapped() -> void:
 	_install_sect()
 	var actor := _sect_member()
 	SectApi.join(actor, HOUSE)
@@ -396,9 +417,9 @@ func test_seating_someone_through_the_real_sect_verb_moves_the_sworn_counter() -
 	assert_eq(bool(promoted["ok"]), true, "the promotion landed")
 	# The seating is a TRANSITION and `SectApi.promote` says so before it records, so a
 	# promotion that was really a re-confirmation writes nothing and would leave this
-	# fact — and the counter below it — at 0. Asserted from the module's own read verb
-	# rather than left to inference, because that transition guard is the one thing
-	# standing between a real seating and a silent no-op on this path.
+	# fact at 0. Asserted from the module's own read verb rather than left to inference,
+	# because that transition guard is the one thing standing between a real seating
+	# and a silent no-op on this path.
 	assert_eq(
 		SectState.position(SectApi.state(actor)),
 		STEWARD,
@@ -406,9 +427,17 @@ func test_seating_someone_through_the_real_sect_verb_moves_the_sworn_counter() -
 	)
 	assert_eq(WorldFact.count(actor, SectFacts.FACT_POST_HELD), 1, "a post was held, once")
 	assert_eq(
+		DestinyProjection.counter_for_fact(SectFacts.FACT_POST_HELD),
+		&"",
+		"and COUNTER_FACTS deliberately maps no counter to that fact"
+	)
+	assert_eq(
 		_counter(actor, OATHS),
-		1,
-		"and the counter a seated officer moves, with the ledger's own amount"
+		0,
+		(
+			"so the sworn-house counter does NOT move on a seating: it counts registered"
+			+ " heirs, which is a different and irreversible claim"
+		)
 	)
 
 

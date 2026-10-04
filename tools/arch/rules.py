@@ -136,6 +136,42 @@ UI_MODULES: dict[str, list[str]] = {
     # from `QuestProgram` (ADR 0143's bridge), and that file is the only thing in
     # `src/` that calls `QuestApi.accept`.
     "quest": [],
+    # The soul and hearth surface (ADR 0127 / 0129 / 0146). Two grants, and the
+    # split between them is the design rather than an accident:
+    #   - `difficulty` reads no sibling module and stores nothing a screen must
+    #     re-derive: `views()` is already a primitives-only preset table and
+    #     `select` is the one setter, so a settings surface reads the table and
+    #     writes the id and owes no rule. Empty, for the same reason `race`,
+    #     `custody` and `quest` are empty.
+    #   - `anchor` needs `items` for exactly the reason `loot` does: `cost_of`
+    #     publishes an item requirement and the row must print what is still
+    #     missing, so the raise is gated on the bag the player actually holds.
+    # Neither grant reaches `soul` and neither reaches `save`: the soul and the
+    # save arrive the ADR 0143 way, as Callables the composition root hands over,
+    # so `ui/` gains no edge into a module that must not be read by name. The save
+    # in particular is NOT grantable: ADR 0128 makes its player-facing surface a
+    # status line, and `test_no_shipped_caller_can_name_the_backup_slot` is the
+    # guard that keeps "the player cannot choose to load the backup" a rule.
+    "difficulty": [],
+    "anchor": ["items"],
+    # The combat readout (ADR 0174). `CombatOutcome.to_dict()` is the engine's own
+    # primitives-only read model (ADR 0038) and nothing in `ui/` consumed it: a wound,
+    # a necrosis, a sea demotion, a reflected hit, a crit and a parry were all
+    # invisible to a player because the engine computed them and no screen rendered
+    # them. This grant is the same shape as `status` (ADR 0106) and for the same
+    # reason: the read model already exists and is already primitives-only, so a
+    # readout panel adds no edge it would need. Granted with NO module dependency --
+    # `combat_engine` declares `core` and `contracts` in registry.json and reads no
+    # sibling module, so `ui/` gains nothing it could not already reach.
+    #
+    # **The grant is for the READ side only, and the engine's own facade is the whole
+    # of it.** `ui/` may call `CombatEngineApi.breakdown`/`summary`/`band` and nothing
+    # else: naming `CombatSpine`, `CombatOutcome`, `MechanismSlot` or any mechanism
+    # from `ui/` is still a facade-rule violation, because only `api.gd` is a facade.
+    # That is the same limit `techniques` carries and the reason it carries it --
+    # a screen that can name a mechanism can reach anything else it likes through the
+    # same import.
+    "combat_engine": [],
 }
 
 # Dependencies granted to a newly scaffolded module.

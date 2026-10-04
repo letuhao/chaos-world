@@ -70,7 +70,11 @@ func _tiered_map() -> DomainMap:
 	core.actor_spawn_refs = [_spawn("b1", "boss")] as Array[Dictionary]
 	map.add_room(core)
 	map.entry_room = &"entry"
-	map.weather = &"dry_wind"
+	# `storm_gale`, a real id in `DomainMap.WEATHERS` (domain_map.gd:52). The invented
+	# `dry_wind` this case used is OUTSIDE that closed set, so it is dropped on the way
+	# through `DomainMap.from_dict` and the map reports no weather at all — which made this
+	# case fail for a reason that had nothing to do with what it is about.
+	map.weather = &"storm_gale"
 	return map
 
 
@@ -357,16 +361,16 @@ func test_a_zone_is_visible_before_the_room_is_found() -> void:
 
 func test_weather_is_surfaced_in_the_read_model() -> void:
 	var map := _tiered_map()
-	assert_eq(map.weather, &"dry_wind", "the map carries the bias")
+	assert_eq(map.weather, &"storm_gale", "the map carries the bias")
 	var payload := DomainMinimap.render(_actor_in(map), map)
-	assert_eq(payload["weather"], "dry_wind", "and the minimap reports it")
+	assert_eq(payload["weather"], "storm_gale", "and the minimap reports it")
 	# `visit_room` records the bias through the facade; the minimap must show the
 	# RECORDED one, not a stale map object.
 	var actor := _actor_in(map)
 	DomainApi.visit_room(actor, &"vault", &"ashfall")
 	assert_eq(
 		DomainMinimap.render(actor, DomainMap.from_dict(map.to_dict()))["weather"],
-		"dry_wind",
+		"storm_gale",
 		"a map the minimap is handed is the map it reports, never a guess"
 	)
 

@@ -22,6 +22,13 @@ const PANEL_SCRIPT := "res://src/ui/panels/loot_boss_panel.gd"
 ## the clock, so a headless test passes its own rather than reading `Time` (ADR 0089).
 const FRAME := 1.0 / 60.0
 
+## One COMBAT-scope id and one CULTIVATION-scope id, both authored, so the assertion is
+## about the SCOPE and not about which ids happen to ship. `fire_immolation` is the one
+## the audit names (COMBAT, 16 s); `wood_bloom` is `duration = -1.0` CULTIVATION, the
+## permanent blessing ADR 0089's purge rule exists to spare.
+const COMBAT_STATUS := &"fire_immolation"
+const CULTIVATION_STATUS := &"wood_bloom"
+
 ## Every screen this suite instantiated. The runner shares one process across every
 ## suite, so an unfreed screen stays resident for the rest of the run — and this is
 ## the heaviest screen in the program. Freed centrally because the call sites are
@@ -225,13 +232,6 @@ func test_the_readout_clears_when_the_status_is_gone() -> void:
 # `ROUTE_LOOT` arm → `LootEncounterScreen.bind_combat_exit`), the same door ADR 0143
 # gives the quest screen. These cases drive THAT seam, not `StatusLoop.exit_combat`, so
 # deleting the wiring fails here even though every other case in this file stays green.
-
-## One COMBAT-scope id and one CULTIVATION-scope id, both authored, so the assertion is
-## about the SCOPE and not about which ids happen to ship. `fire_immolation` is the one
-## the audit names (COMBAT, 16 s); `wood_bloom` is `duration = -1.0` CULTIVATION, the
-## permanent blessing ADR 0089's purge rule exists to spare.
-const COMBAT_STATUS := &"fire_immolation"
-const CULTIVATION_STATUS := &"wood_bloom"
 
 
 ## The screen plus the composition root's own purge wire over the same actor, which is

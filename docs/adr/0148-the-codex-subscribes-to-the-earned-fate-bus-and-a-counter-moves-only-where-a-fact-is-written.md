@@ -13,6 +13,24 @@
 > finding either will find the same decision. The ADR-numbering race is itself recorded on
 > DEF-0113; the lesson generalises to *any* machine-allocated number in a shared tree.
 
+> **Corrected in place, 2026-10-05: the writer enumeration below was incomplete.** It read
+> "every real producer (`CombatFacts`, `ClanFacts`, `SectFacts`, `EventBeatWriter`,
+> `CharacterCreationFlow`)" — **five**, and it presented itself as exhaustive. `app/soul_death.gd`
+> (ADR 0130's `soul_died`, added by a later change) and `app/item_workbench_app.gd` (the birth's
+> `child_born`) are also writers. **The count is EIGHT**:
+> `BeatDirector`, `CombatFacts`, `ClanFacts`, `SectFacts`, `EventBeatWriter`,
+> `CharacterCreationFlow`, `SoulDeath`, `ItemWorkbenchApp`. Measured 2026-10-05:
+> `tests/arch_rules/test_fact_ledger_writers.gd` walks `res://src`, finds eight files whose
+> CODE calls `WorldFact.record`, and asserts exact array equality against its
+> `KNOWN_WRITERS`. **The decision below is unchanged and is not what was wrong** — the chokepoint
+> is still `WorldFact.record`, still for the reason given, and a hook installed in `core` is
+> still reached by every one of the eight. What was wrong is the enumeration, and the reason it
+> matters is recorded in this ADR's own closing section: an incomplete list here read as an
+> exhaustive one, which is the same "negative claim that was never executed" error this file
+> was filed about. `ItemWorkbenchApp` is worth naming explicitly because it is a composition
+> root rather than a domain module — a reader who assumed writers are domain modules would not
+> have gone looking there, which is precisely why it was missed.
+
 ## Context
 
 ADR 0136 decided the earned-fate bus was "deliberately reserved and currently unobserved,
@@ -26,7 +44,8 @@ The same audit found the mirror-image error on the counter side. Work had claime
 dispatch existed, and **0 of the 8 rows could fire**: `BeatDirector.offer` has one production
 caller, and it offers only `PERIOD_FACT` and `WorldAmbient` roster facts — neither of which
 appears in `COUNTER_FACTS`. Every real producer (`CombatFacts`, `ClanFacts`, `SectFacts`,
-`EventBeatWriter`, `CharacterCreationFlow`) calls `WorldFact.record` directly.
+`EventBeatWriter`, `CharacterCreationFlow`, `SoulDeath`, `ItemWorkbenchApp`) calls
+`WorldFact.record` directly.
 
 ## Decision
 
@@ -38,7 +57,9 @@ appears in `COUNTER_FACTS`. Every real producer (`CombatFacts`, `ClanFacts`, `Se
 - **A counter moves where a FACT IS WRITTEN, not where a beat is dispatched.**
   `WorldFact.record` is the single verb that writes the fact ledger — its own docstring says
   so — and every producer reaches it. It is therefore the only chokepoint at which a counter
-  can move for all of them without a second dispatcher.
+  can move for all of them without a second dispatcher. **All eight** of them, per the
+  correction above; the enumeration is pinned by `tests/arch_rules/test_fact_ledger_writers.gd`
+  rather than restated here, which is why that test's `KNOWN_WRITERS` is the list to read.
 - **`core/` publishes a hook slot; `app/` installs the destiny dispatch into it.** The hook
   must not make `core/` name `destiny`: `core/` may not depend on `modules/`, and `tools arch`
   enforces it. The direction stays `app/` → `destiny`.

@@ -67,6 +67,12 @@ const ROLE := &"shop"
 ## log or a ledger key.
 const ID_PREFIX := "shop_"
 
+## The live counters, keyed by shop id. A `static var` because the realized merchant IS
+## world state — the goods it has already sold are gone — and `rules.py` excludes
+## `static var` from the app-state heuristics by construction, the same shape
+## `NpcLedger._rows` documents.
+static var _counters: Dictionary = {}
+
 
 ## The live merchant for `shop_id`, realized from its authored def on first ask and reused
 ## after that. Returns `null` when the id names no authored shop.
@@ -325,8 +331,40 @@ static func _can_afford(def: ShopDef, player: Actor) -> bool:
 			continue
 		cheapest = coins if cheapest == 0 else mini(cheapest, coins)
 	return cheapest > 0 and purse >= cheapest
+
+
+## One priced row per AUTHORED stock entry, valued the same way [method MarketTransfer.price]
+## values the very rows it is handed.
+##
+## ## Why this is not a second price formula
+##
+## The unit is `EconomyValuation.price_of` — the ONE price — and the coins are
+## `MarketSpread.sell_total` / `buy_total`, which is the ONE spread. Both are read through
+## the module facades rather than recomputed, so funding, affordance and settlement cannot
+## disagree: the number a shop is funded with is the number a panel greys a row out against.
+##
+## ## The instance is REALIZED, and that is load-bearing
+##
+## A stock row is only ever realized once per def id, from `ShopDef.stock_seed`, so the
+## price here is the price of the item that is actually ON the shelf — rolled options and
+## rarity included. An authored row valued against a hand-built common instance would quote
+## a rolled relic at the price of a pebble, and the panel would grey out a purchase the
+## verb then happily settles.
+##
+## ## The loop bound is SNAPSHOTTED before it starts
+##
+## `_fund` and `_stock` both fill the bag this reads nothing from, and a loop that tests a
+## container it is itself growing does not terminate (INC-0002) — so `def.stock.size()` is
+## read once, before the first row.
+static func priced_rows(def: ShopDef, shop_is_seller: bool) -> Array[Dictionary]:
+	if def == null:
+		return [] as Array[Dictionary]
 	var out: Array[Dictionary] = []
-	for row in def.stock:
+	var authored: int = def.stock.size()
+	for index in authored:
+		if index >= def.stock.size():
+			break
+		var row: Dictionary = def.stock[index]
 		if not row is Dictionary:
 			continue
 		var def_id := StringName(row.get("def_id", ""))
@@ -336,10 +374,9 @@ static func _can_afford(def: ShopDef, player: Actor) -> bool:
 		var item_def := Crafting.resolve(def_id)
 		if item_def == null:
 			continue
-		var instance := ItemInstance.new(item_def.id, &"shop_row")
-		instance.def_ref = item_def
-		instance.rarity = ItemRarity.sanitize(item_def.rarity)
-		instance.realm = item_def.realm
+		var instance := _realize(item_def, ShopDef.stock_seed(def.shop_id, def_id))
+		if instance == null:
+			continue
 		var unit := EconomyValuation.price_of(instance)
 		(
 			out
@@ -350,18 +387,11 @@ static func _can_afford(def: ShopDef, player: Actor) -> bool:
 					"unit_price": unit,
 					"coins":
 					(
-						MarketSpread.buy_total(unit, quantity)
-						if not selling
-						else MarketSpread.sell_total(unit, quantity)
+						MarketSpread.sell_total(unit, quantity)
+						if shop_is_seller
+						else MarketSpread.buy_total(unit, quantity)
 					),
 				}
 			)
 		)
 	return out
-
-
-## The live counters, keyed by shop id. A `static var` because the realized merchant IS
-## world state — the goods it has already sold are gone — and `rules.py` excludes
-## `static var` from the app-state heuristics by construction, the same shape
-## `NpcLedger._rows` documents.
-static var _counters: Dictionary = {}

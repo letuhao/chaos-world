@@ -1,17 +1,26 @@
 class_name Dantian
 extends RefCounted
 
-## Qi storage vessel (ADR 0014). Owns structural tier, trained stage, quality,
-## and recoverable injury. Current/capacity live in the actor's `qi` ResourcePool
-## (single reservoir) — this component reads and mutates that pool directly.
+## Qi storage vessel (ADR 0014). Owns quality and recoverable injury, plus the
+## structural capacity a realm's seed sizes it to. Current/capacity live in the
+## actor's `qi` ResourcePool (single reservoir) — this component reads and mutates
+## that pool directly.
+##
+## There is deliberately NO tier, and no `LOWER`/`MIDDLE`/`UPPER`: the three-band
+## ladder was authored on all 30 seeds, written by `synchronize` from the STANDING
+## realm, published on `panel_state` and rendered as a row name — while nothing ever
+## read it. Two measurements closed it. First, the bands are a restatement of the
+## ladder's own tiers (9 Mortal / 9 Spirit / 12 above), so `dantian_tier` carried no
+## information the realm line did not already print. Second, and decisively, the
+## ladder is NOT monotone across the band edges: `tribulation(lower) ->
+## spirit_condensation(middle)` and `spirit_ascension(middle) -> earth_immortal
+## (upper)` are two boundaries where a tier floor could never be met, because the
+## only writer is `synchronize` reading the realm the actor is standing in — so
+## gating on it would have walled off exactly the two band crossings and left the
+## other 27 free (ADR 0165).
 
 signal changed
 
-const LOWER := &"lower"
-const MIDDLE := &"middle"
-const UPPER := &"upper"
-
-var tier: StringName = LOWER
 var quality: float = 0.5
 var injured: bool = false
 ## Structural capacity from training/profile (not equipment-inflated).
@@ -72,12 +81,6 @@ func heal() -> void:
 	_emit_changed()
 
 
-func set_tier(new_tier: StringName) -> void:
-	if tier != new_tier:
-		tier = new_tier
-		_emit_changed()
-
-
 func set_quality(value: float) -> void:
 	var clamped := clampf(value, 0.0, 1.0)
 	if quality != clamped:
@@ -97,7 +100,6 @@ func _emit_changed() -> void:
 
 func to_dict() -> Dictionary:
 	return {
-		"tier": String(tier),
 		"quality": quality,
 		"injured": injured,
 		"structural_capacity": structural_capacity,
@@ -106,7 +108,6 @@ func to_dict() -> Dictionary:
 
 static func from_dict(data: Dictionary) -> Dantian:
 	var dantian := Dantian.new()
-	dantian.tier = StringName(data.get("tier", LOWER))
 	dantian.quality = float(data.get("quality", 0.5))
 	dantian.injured = bool(data.get("injured", false))
 	dantian.structural_capacity = float(data.get("structural_capacity", 100.0))

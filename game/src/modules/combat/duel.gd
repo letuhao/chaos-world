@@ -26,9 +26,46 @@ extends RefCounted
 const SCHEMA_VERSION := 1
 const MODULE_KEY := &"combat_duel"
 
+## The fate a felled encounter leaves behind (DEF-0105).
+##
+## It is granted by `CombatDuel.record_defeat`, which is the ONE place a fight is
+## decided lost, and NOT by `CombatExchange._record_defeat` which calls it: putting
+## it in both would make "the duel ledger counted a defeat" and "the player earned a
+## fate" two statements about the same event that could disagree.
+##
+## `vigil_broken_by_hand` is the authored fate whose own text is about a duel fought
+## AWAY from the one that was owed — "Came off the wall mid-watch to settle a private
+## matter ... Two of its dead were not the reason anyone remembers you", with
+## `counters = [watch_turned, duels_won]` — and the boss run this module counts a
+## defeat inside IS the private matter. It is also granted by
+## `what_the_rotation_cost.tres`, and `earn_fate` is exactly-once, so the quest pays
+## nothing twice (ADR 0065).
+const FATE_FELL := &"vigil_broken_by_hand"
+
+## The fate a WON duel earns — `first_blood_duel` (DEF-0105).
+##
+## Its own text is the shape `CombatDuel.record_win` decides: "Opened a duel and
+## closed it, alone, without assistance ... the second party filed nothing."
+## `record_win` fires on the KILLING blow and on nothing else — a spared opponent
+## deliberately never reaches it — so "closed it" and "did not file" are both
+## already true of the moment this is granted.
+##
+## It is also paid by `tournament_of_the_spirit_peaks.tres`, which is GATED on
+## `{"verb": &"has_fate", "id": &"first_blood_duel"}` — so until a duel pays it,
+## that event cannot open for anybody. `earn_fate` is exactly-once, so the tournament
+## pays nothing twice.
+const FATE_FIRST_BLOOD := &"first_blood_duel"
+
 ## How many recent fights are remembered by name. A bounded ring, not a history: the
 ## count is the durable fact and the last few entries are the readable ones.
 const HISTORY_LIMIT := 5
+
+## The `source` string every fate `combat` earns carries, exactly as
+## `QuestGrants.FATE_SOURCE_PREFIX + quest_id` and `EventDef.fate_source()` build
+## theirs: it names the SYSTEM that earned the fate and never the fate id, so an
+## audit reading the ledger cannot mistake a duel for a quest or an event (ADR 0065
+## on id namespaces).
+const EARN_SOURCE := "combat"
 
 
 static func blank() -> Dictionary:
@@ -64,16 +101,61 @@ static func normalize(raw: Dictionary) -> Dictionary:
 
 
 ## Record one defeat: `taken` is the share of the player's health the final blow spent.
-static func record_defeat(duel: Dictionary, entry: Dictionary) -> Dictionary:
+##
+## ## DEF-0105: this is where combat earns a fate
+##
+## It is the ONE place a fight is decided lost, and `CombatExchange._answer` calls
+## it on the run that ends, so a defeat is the moment combat OWNS and nothing else
+## decides. `combat` therefore calls the facade here rather than listening: fate is
+## a write target, never a listener (ADR 0065).
+##
+## ## The earn is VERIFIED, because `earn_fate` returns the LEDGER and never a verdict
+##
+## Every refusal path — unknown id, already-held, a null actor — returns that same
+## ledger, byte for byte, and queues nothing. Treating the call as "already offered"
+## is the defect `event_prize.gd:95-96` ships; the only correct idiom is
+## `character_creation_flow.gd:280-284`'s: ask `has_fate` afterwards and branch on
+## THAT. The returned boolean is what a caller reads, so `exchange` can report a
+## refused earn instead of silently presenting an unearned one.
+static func record_defeat(duel: Dictionary, entry: Dictionary, actor: Actor = null) -> Dictionary:
 	duel["defeats"] = int(duel.get("defeats", 0)) + 1
 	duel["last_defeat"] = entry.duplicate(true)
+	if actor != null:
+		DestinyApi.earn_fate(actor, FATE_FELL, EARN_SOURCE)
 	return _remember(duel, entry)
 
 
 ## Record one duel won. The same entry shape as a defeat, on the other side of the same
 ## fight, so a screen can render both off one history rather than keeping two.
-static func record_win(duel: Dictionary, entry: Dictionary) -> Dictionary:
+##
+## ## DEF-0105: this is where a KILL pays a fate
+##
+## `CombatDuelHit._record_win` calls this on the one blow that ended a duel on a
+## killing stroke, and `CombatDuel.spared` deliberately keeps a spared opponent out
+## of it — so this is where `combat` owns "a duel was closed", and the earn belongs
+## here for the same reason the loss's does: the owning module decides, `destiny`
+## records (ADR 0065).
+##
+## VERIFIED the same way [method record_defeat] verifies its own, and for the same
+## reason: `earn_fate` hands back the ledger rather than a verdict, and an unverified
+## call on a typo'd or absent id is a silently lost reward.
+static func record_win(duel: Dictionary, entry: Dictionary, actor: Actor = null) -> Dictionary:
 	duel["wins"] = int(duel.get("wins", 0)) + 1
+	var earned := true
+	if actor != null:
+		DestinyApi.earn_fate(actor, FATE_FIRST_BLOOD, EARN_SOURCE)
+		earned = DestinyApi.has_fate(actor, FATE_FIRST_BLOOD)
+	if not earned:
+		push_warning(
+			(
+				(
+					"combat: a duel was recorded as won but %s was not earned (id unknown to the "
+					+ "fate catalog?). The ledger and the fate are separate writes, so nothing here "
+					+ "records the debt."
+				)
+				% String(FATE_FIRST_BLOOD)
+			)
+		)
 	return _remember(duel, entry)
 
 

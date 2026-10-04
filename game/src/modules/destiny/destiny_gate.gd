@@ -21,6 +21,15 @@ extends RefCounted
 ## anything that is not itself a requirement. Refuse-with-cause is the house
 ## rule: content that is malformed must fail loudly and locally, never open a
 ## door it cannot read.
+##
+## **One alias rule, every place a destiny is asked about.** `holds_destiny()`
+## below is the single resolver, and EVERY read of the question routes through it:
+## the `has_destiny` verb, `earnable()`, and `unmet_prerequisites()`. This is not
+## tidiness — it is the only way an authored id and its declaring destiny can be
+## one answer rather than two, because the moment one call site reads the raw
+## ledger key instead, that call site stops believing in `gate_aliases` and the
+## feature silently stops existing for exactly the author it was written for.
+## `DestinyApi.has_destiny` asks this same method rather than keeping a copy.
 
 
 ## The full verdict, always this shape:
@@ -57,11 +66,21 @@ static func evaluate(actor: Actor, requirement: Dictionary) -> Dictionary:
 ##
 ## Used by `DestinyApi.earn_destiny`, so the rule lives in exactly one place and
 ## the facade does not re-implement it.
+##
+## **`requires_destinies` is read through [method holds_destiny], not through
+## [method DestinyState.has_destiny].** The two are different questions, and only
+## one of them is the one a prerequisite means. `has_destiny` is a raw key lookup:
+## it answers "is this exact string a key", which is the right question for a ledger
+## write and the wrong one for an authored requirement. A prerequisite is a NAMESAKED
+## thing story may name, and [member DestinyDef.gate_aliases] exists precisely so
+## story can name a destiny before it exists — so the alias is the case this
+## requirement was written for, and reading it raw made it the one kind of
+## prerequisite that could never be satisfied.
 static func earnable(ledger: Dictionary, def: DestinyDef) -> bool:
 	if def == null:
 		return false
 	for destiny_id in def.requires_destinies:
-		if not DestinyState.has_destiny(ledger, destiny_id):
+		if not holds_destiny(ledger, destiny_id):
 			return false
 	for fate_id in def.requires_fates:
 		if not DestinyState.has_fate(ledger, fate_id):
@@ -77,12 +96,24 @@ static func earnable(ledger: Dictionary, def: DestinyDef) -> bool:
 ## Every prerequisite `def` names that the actor does not yet hold, as
 ## `{kind, id, required, actual, label}` entries. Empty means earnable, so a UI
 ## can show why a destiny has not arrived without re-deriving the rule.
+##
+## **`requires_destinies` is asked through [method holds_destiny] here for the same
+## reason [method earnable] asks it there**: an alias and the destiny that declares
+## it are one answer, so this list and `earnable()` can never disagree about whether
+## a prerequisite is outstanding. A panel reading this to explain a locked destiny
+## used to report an alias permanently unmet while `earnable()` — once it was fixed —
+## opened the gate, and the two statements would have been flatly contradictory.
+##
+## The `id` reported is the one AUTHOR WROTE, not the resolved definition: the entry
+## is rendered back to whoever wrote the requirement, and echoing
+## `the_one_who_returned` at an author who typed `the_returned` names a destiny they
+## never mentioned and does not tell them what to go and earn.
 static func unmet_prerequisites(ledger: Dictionary, def: DestinyDef) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	if def == null:
 		return out
 	for destiny_id in def.requires_destinies:
-		if not DestinyState.has_destiny(ledger, destiny_id):
+		if not holds_destiny(ledger, destiny_id):
 			(
 				out
 				. append(

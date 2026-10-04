@@ -175,7 +175,14 @@ func tick(delta: float) -> Dictionary:
 func _tick_combat(step: float, result: Dictionary) -> void:
 	var wounds := CombatEngineApi.wounds_of(_actor)
 	result["wound_decay"] = BodyDamage.decay(wounds, step, CombatEngineApi.tuning())
+	# The sea is bound ONCE and handed to both mind ticks, so the two halves cannot
+	# disagree about which sea the frame was about.
 	var sea: Variant = MindCultivationApi.sea(_actor)
+	# `tick_rupture` is the one mind entry point declared WITHOUT `static` while
+	# `tick_collapse` and `apply_deviation` both are, so it is the only one of the
+	# three that cannot be spelled `MindDamage.tick_rupture(...)` and is reached
+	# through an instance instead. Same call, same frame, same clock as the two below
+	# -- the asymmetry is the mechanism's declaration, not this wire's.
 	result["rupture"] = MindDamage.new().tick_rupture(sea, _actor, step)
 	# The accumulator is THIS loop's, and it is reset to whatever the module answered --
 	# which is `0.0` for a calmed sea, a demoted sea and a sea with no successor, and

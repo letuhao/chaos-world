@@ -208,6 +208,39 @@ const ROUTES: Array[Dictionary] = [
 		"key": "j",
 		"root": false,
 	},
+	{
+		# The combat readout (ADR 0174). `CombatOutcome.to_dict()` is the engine's own
+		# primitives-only read model and no screen consumed it, so every stage of the
+		# spine and every mechanism was computed and invisible. This is the surface
+		# that renders one resolved blow to the last stage. The strike and its target
+		# arrive as Callables from the composition root — the ADR 0143 seam — because
+		# `ui/` may neither mint an `Actor` nor name a `TechniqueDef`.
+		"id": &"combat_readout",
+		"node": "CombatReadoutScreen",
+		"label": "Blow",
+		"hint": "Strike once and read every stage the damage spine ran.",
+		"scene": "res://src/ui/screens/combat_readout.tscn",
+		"key": "r",
+		"root": false,
+	},
+	{
+		# The soul and hearth page (ADR 0127 / 0129 / 0146 / 0128). `soul`,
+		# `difficulty`, `anchor` and `save` shipped their verbs, their content and
+		# their suites, and nothing in the shipped program ever rendered any of
+		# them: the soul was a number in an injected store, the difficulty a row
+		# in a table, the hearth a set of headless verbs and the save's status a
+		# `summary()` with no reader. This is the surface that reaches all four.
+		# It is ONE page and not four because they are one player's condition, and
+		# because the save half has no verb at all — ADR 0128 leaves it a status
+		# line, so a route of its own could never justify itself.
+		"id": &"soul_hearth",
+		"node": "SoulHearthScreen",
+		"label": "Soul",
+		"hint": "The soul's condition, the difficulty, the anchors and the save.",
+		"scene": "res://src/ui/screens/soul_hearth_screen.tscn",
+		"key": "s",
+		"root": false,
+	},
 ]
 
 

@@ -10,7 +10,7 @@ extends RefCounted
 ## key. **Resolution is by id, never by filename**, so renaming a file does not
 ## retire an event that authored it.
 ##
-## ## A rejected def is REPORTED, never silently absent
+## ## A refused def is REPORTED, and it DESTROYS NOTHING
 ##
 ## An event whose `problems()` are non-empty is not entered into the catalog and is
 ## listed by [method rejected] with its reason. An event that loads and can never
@@ -18,11 +18,18 @@ extends RefCounted
 ## refusal that is visible is a content bug the author finds; a silent skip is a
 ## content bug nobody finds.
 ##
+## **Refusing a def is a decision about THAT def, and about nothing else.** This cache
+## is one per process and every reader in the game shares it, so a `register` that
+## refused by ERASING whatever already held the id handed any caller — a test's
+## hand-built probe more often than not — the power to delete shipped content for
+## the rest of the run. Both refusal branches leave `_events` alone and say so in
+## [method rejected]; the id already in the cache is the one that stays. BL-0747.
+##
 ## ## Nothing here rolls a die
 ##
-## The catalog is deterministic — files walked in sorted order, ids returned sorted
-## — because "which event is available" is a question about the ledger and the
-## content tree, never about filesystem order.
+## The catalog is deterministic — files walked in sorted order, ids returned in
+## STRING order — because "which event is available" is a question about the ledger
+## and the content tree, never about filesystem or resource load order.
 
 const EVENTS_ROOT := "res://data/event/events"
 const EVENT_SCRIPT_CLASS := "EventDef"
@@ -149,16 +156,44 @@ func _admit(def: EventDef, origin: String) -> bool:
 	var found := def.problems()
 	if not found.is_empty():
 		_rejected[key] = "%s (%s)" % [String(found[0]), origin]
-		_events.erase(key)
-		_ids.erase(StringName(key))
+		# **The first def for this id is LEFT ALONE.** A malformed def is refused and
+		# REPORTED, never traded against whatever is already registered under the id
+		# it claims. It used to `_events.erase(key)` and `_ids.erase(...)` here as
+		# well, which made `register` a way to DELETE shipped content from a cache
+		# every other caller in the process reads: a hand-built probe carrying a typo
+		# (an unknown `kind`, a missing `display_name`) reused a catalogued id and
+		# removed it for the rest of the run. A refusal is a decision about the def
+		# being offered, and nothing else — see `_registered` below for the rule that
+		# makes the duplicate branch obey the same thing.
 		return false
 	if _events.has(key):
 		_rejected[key] = "duplicate id, also defined at %s" % origin
 		return false
 	_events[key] = def
 	_ids.append(def.id)
-	_ids.sort()
+	_ids = _sorted_ids(_ids)
 	return true
+
+
+## `event_ids` canonically ordered BY STRING VALUE.
+##
+## `Array[StringName].sort()` is not specified to order by the interned string, and
+## the ids are interned — measured (BL-0747): the same eight shipped `.tres` files came
+## back in a DIFFERENT order from two loads of the same tree, because the order
+## followed resource load order rather than the alphabet. Every consumer of this list
+## is a decision (`EventApi.available` walks it in order, and the pulse opens the
+## first), so an order that drifts with load order is a world that opens a different
+## event from one run to the next. `EventState.active_ids` already sorts this way and
+## says why; this is the same comparison, applied to the catalog.
+func _sorted_ids(ids: Array[StringName]) -> Array[StringName]:
+	var strings: Array[String] = []
+	for event_id in ids:
+		strings.append(String(event_id))
+	strings.sort()
+	var out: Array[StringName] = []
+	for event_id in strings:
+		out.append(StringName(event_id))
+	return out
 
 
 ## Deterministic iteration over a dictionary's keys: `rejected()` must report in a

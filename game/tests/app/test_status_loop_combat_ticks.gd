@@ -48,6 +48,18 @@ const COLLAPSE_TIME := 3.0
 const TIER_SHALLOW := &"shallow"
 const TIER_DEEP := &"deep"
 
+## Every `.gd` under `root`, recursively, excluding the editor's own `addons/` and the
+## files that DEFINE the three ticks rather than call them.
+##
+## `DECLARATIONS` is excluded from the scan for the reason the row's docblock names: a
+## mechanism names all three of its own entry points in its own docblocks, and a
+## first-match-wins search over sorted paths would resolve every needle there and report
+## the module as the caller — a row that cannot fail. The exclusion is deliberately
+## spelled as a known, finite list rather than a blanket skip of `modules/combat_engine/`,
+## so a SECOND mechanism that started carrying a fourth tick would still be scanned and
+## could still fail the allowlist above.
+const DECLARATIONS := ["res://src/modules/combat_engine/mind_damage.gd"]
+
 # --- the actor, built the way PRODUCTION builds it ---------------------------
 
 
@@ -81,15 +93,32 @@ func _hero_base() -> Dictionary:
 	}
 
 
-## Wound `meridian` down to `severity` through the module's OWN writer, so the ledger
-## carries it the way a landed body hit would. `BodyWounds.add` is the only route
-## `apply_all` uses, so this is the same state a hit produces.
-func _wound(booted: Dictionary, meridian: StringName, severity: float) -> void:
-	var ledger := CombatEngineApi.wounds_of(booted["actor"] as Actor)
+## Wound `meridian` down to `share` of the body's integrity through the module's OWN
+## writer, so the ledger carries it the way a landed body hit would. `BodyWounds.add` is
+## the only route `apply_all` uses, so this is the same state a hit produces.
+##
+## `share` is a SEVERITY (ADR 0070's `severity += damage / body_integrity.maximum`), and
+## `BodyWounds.add`'s third argument is DAMAGE, not severity -- `body_damage_fixture.gd`'s
+## `_severity_for` is exactly this conversion, `share * integrity_maximum`, and is why
+## `test_body_damage_wounds.gd` reaches NECROSIS. Passing a raw `0.30` here instead
+## writes `0.30 / 100.0 == 0.005` on a created hero's pool: a real, correctly-measured
+## gash that is fifty times too shallow to be a wound at all, so every row below
+## measured a ledger that had nothing on it.
+func _wound(booted: Dictionary, meridian: StringName, share: float) -> void:
+	var actor: Actor = booted["actor"]
+	var ledger := CombatEngineApi.wounds_of(actor)
 	assert_ne(ledger, null, "the composition root bound a wound ledger")
 	if ledger == null:
 		return
-	ledger.add(booted["actor"], meridian, severity, CombatEngineApi.tuning())
+	ledger.add(actor, meridian, share * _integrity_maximum(actor), CombatEngineApi.tuning())
+
+
+## The pool [method BodyWounds.add] divides by -- its `maximum`, never its `current`, so a
+## hurt body does not make every fresh gash cheaper. `0.0` for a body with no integrity
+## pool, which is the honest answer and not a division by zero.
+func _integrity_maximum(actor: Actor) -> float:
+	var pool: ResourcePool = actor.resource(BodyStats.BODY_INTEGRITY)
+	return 0.0 if pool == null else pool.maximum
 
 
 ## The ledger's severity for one meridian, read back off the table so an assertion
@@ -157,6 +186,19 @@ func test_a_necrotic_meridian_stops_at_its_floor_instead_of_healing() -> void:
 		after >= floor - 0.0001,
 		true,
 		"and five seconds of decay never carried it back across necrosis downward"
+	)
+	# The permanence is the STATE and not only the number, so it is asserted on the two
+	# things `BodyWounds` says a necrotic channel has lost, read off the BOUND ledger the
+	# tick decays rather than a fixture's copy of it.
+	assert_eq(
+		bool(ledger.necrotic.get("lung", false)),
+		true,
+		"and the necrosis FLAG survived every tick -- decay floors, it never un-necroses"
+	)
+	assert_eq(
+		bool(ledger.is_wounded(&"lung")),
+		true,
+		"so the channel is still a wound and only the ADR 0031 recovery item clears it"
 	)
 
 
@@ -244,15 +286,33 @@ func test_sustained_max_turbulence_collapses_the_sea_and_disarms() -> void:
 ## `game/src` for the CALL SITES instead, which is the only evidence that can go stale
 ## silently in the other direction.
 ##
-## The scan looks for the three names in `src/`, not for `StatusLoop.tick` specifically,
-## because the property is "the tick has a production caller", not "this file calls it".
-## A second caller in `app/` would be a second COMBAT CLOCK (the ADR 0106 failure), so
-## the allowlist is asserted too: `status_loop.gd` is the only legal site, and it is
-## itself reachable only from `item_workbench_app.gd`'s `_process`.
+## ## The three CALL SPELLINGS, which are not all the same, and why that is not pedantry
+##
+## `mind_damage.gd` declares `tick_rupture` WITHOUT `static` and `tick_collapse` WITH it
+## (the asymmetry `mind_damage_fixture.gd:316` documents). So production has only two legal
+## ways to reach them and the needles below are the two ways:
+##
+##   - a static entry point is spelled `Class.method(` — `MindDamage.tick_collapse(`;
+##   - the non-static one is spelled `Class.new().method(` — `MindDamage.new().tick_rupture(`.
+##
+## The needles are the WHOLE qualified name, which is what distinguishes a CALL from the
+## mechanism's own `func tick_rupture(` DECLARATION and from a docblock that merely names
+## the method — and `_code_only` strips comments, so prose cannot satisfy a needle at all.
+## An earlier version of this row searched for `MindDamage.tick_rupture`, which no
+## production file can contain: GDScript rejects `Class.method()` for a non-static method,
+## so demanding that spelling was demanding a call the language forbids. The row was
+## unsatisfiable, not the wire.
+##
+## `mind_damage.gd` also carries `MindDamage.decay` in prose (which `_code_only` removes)
+## and declares all three methods, so it is EXCLUDED by [constant DECLARATIONS]. Without
+## that exclusion the first-match-wins table over sorted paths would resolve every needle
+## inside the mechanism's own file — `app/` sorts before `modules/`, so `status_loop.gd`
+## would lose that race too — and the row would pass on the module's declarations rather
+## than on anything that calls them, which is the exact shape of bug it exists to catch.
 func test_every_combat_tick_has_a_production_caller() -> void:
 	var expected := {
 		"BodyDamage.decay": "ADR 0070's wound decay had no caller, so necrosis never healed",
-		"MindDamage.tick_rupture": "ADR 0071's only mind health cost never ran",
+		"MindDamage.new().tick_rupture": "ADR 0071's only mind health cost never ran",
 		"MindDamage.tick_collapse": "ADR 0071's collapse, and apply_deviation with it",
 	}
 	var found: Dictionary = {}
@@ -267,12 +327,15 @@ func test_every_combat_tick_has_a_production_caller() -> void:
 			"",
 			"%s is called from production -- %s" % [String(needle), String(expected[needle])]
 		)
-	# The clock: exactly one caller of `StatusLoop.tick`, and it is the frame driver.
-	assert_eq(
-		found.get("BodyDamage.decay", ""),
-		"src/app/status_loop.gd",
-		"and all three ride the composition root's ONE time wire, not a second clock"
-	)
+	# The clock: every one of the three rode `status_loop.gd`, and the mechanism's own file
+	# is not a call site. A second caller anywhere in `app/` would be a second COMBAT CLOCK
+	# (the ADR 0106 failure), so the allowlist is asserted rather than hoped for.
+	for needle in expected:
+		assert_eq(
+			found.get(needle, ""),
+			"src/app/status_loop.gd",
+			"%s rides the composition root's ONE time wire, not a second clock" % String(needle)
+		)
 	# And the accumulator that makes the collapse a TIMER rather than a per-frame dice
 	# roll is held by that same wire, because ADR 0071 puts it in the caller.
 	var loop_code := _code_only("res://src/app/status_loop.gd")
@@ -298,7 +361,6 @@ func _code_only(path: String) -> String:
 	return "\n".join(out)
 
 
-## Every `.gd` under `root`, recursively, excluding the editor's own `addons/`.
 func _gdscript_files(root: String) -> Array[String]:
 	var found: Array[String] = []
 	var dir := DirAccess.open(root)
@@ -312,7 +374,7 @@ func _gdscript_files(root: String) -> Array[String]:
 			if dir.current_is_dir():
 				if entry != "addons":
 					found.append_array(_gdscript_files(path))
-			elif entry.ends_with(".gd"):
+			elif entry.ends_with(".gd") and not DECLARATIONS.has(path):
 				found.append(path)
 		entry = dir.get_next()
 	dir.list_dir_end()

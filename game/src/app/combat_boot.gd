@@ -80,6 +80,33 @@ const _BOUND := true
 ## and this file now asks the SAME question twice (does this actor have a location axis?)
 ## in `_mechanism_for` and in the per-hit gate, so it must have one spelling.
 const _ACUPOINTS_COMPONENT := &"acupoints"
+## The magnitude of a BARE SWING: the one number a swing with no authored technique
+## behind it is worth.
+##
+## ## Why this is a constant and not a ladder
+##
+## The spine's S1 is `technique.magnitude x RealmRate.factor(realm)`, and
+## `RealmRate` is a sub-2x rate (ADR 0050) — so a fixed magnitude produces a
+## sub-2x spread of damage ACROSS the ladder and leaves the realm table to
+## `RealmScaling`, which multiplies `ATTACK_SPIRITUAL` and `element_power_<e>` by
+## `RealmDef.power` on BOTH sides of a PvP blow. Measured over the thirty realms
+## with the shipped `combat_damage.tres`, a magnitude of `2.0` costs a
+## `commonborn` 14.3 hits to kill at R1 and 8.0 at R30 — a 1.8x drift against
+## pools that grow 551x, which is the whole content of the drift: two numbers
+## scaled by one table instead of one number scaled by two.
+##
+## `2.0` is chosen over `4.0` (7.1 -> 4.0 hits) and `1.0` (28.6 -> 16.1) because it
+## is the median of the authored band: the 51 shipped `.tres` magnitudes run
+## 0.5 -> 4.3 with a mean near 1.5, so a bare swing priced at `2.0` sits inside the
+## authored range rather than above or below it. A swing is not a technique and
+## must not be the strongest thing an actor owns, and it must not be the chip floor
+## either — this is the middle of the catalogue, which is the only honest answer for
+## "a blow with no technique on it".
+const BARE_SWING_MAGNITUDE := 2.0
+## The elemental share a bare swing carries. The shipped `combat_damage.tres`'s own
+## `default_element_share` (0.8) rather than a second copy of it, so the two cannot
+## disagree about what a blow with no authored element is worth.
+const BARE_SWING_SHARE := 0.8
 
 ## The injected attack callable: `func(attacker: Actor, defender: Actor, seed_value: int)
 ## -> Variant`. Null means no adapter can land a blow, which [method strike] reports by
@@ -393,6 +420,18 @@ static func _bound(attacker: Actor) -> StringName:
 	return _DEFAULT_MECHANISM
 
 
+## Whether `candidate` is a `DamageMechanism` this composition root did not build, and
+## must therefore keep rather than replace. The complement of [method _instance]: that
+## function creates the three shipped mechanisms, so anything outside it is a caller's.
+static func _is_foreign(candidate: Variant) -> bool:
+	return (
+		candidate is DamageMechanism
+		and not (candidate is QiDamage)
+		and not (candidate is BodyDamage)
+		and not (candidate is MindDamage)
+	)
+
+
 ## Install the callable `PlayerAdapter.attack` lands its blow through, and report the
 ## install. A `CombatApi.hit` Callable is the intended value; passing an empty Callable
 ## clears the binding, so an uninstall is deterministic rather than only an overwrite.
@@ -461,7 +500,15 @@ static func install(actor: Actor) -> Dictionary:
 			"reason": "no_actor"
 		}
 	var bound: Dictionary = bind_mechanisms(actor)
-	var resolver: Dictionary = set_attack_resolver(Callable(CombatApi, "hit"))
+	# The ONE line that decides which model resolves a player-facing blow (ADR 0165).
+	# It used to install `CombatApi.hit`, so every swing spent a SHARE of the
+	# defender's pool through `combat/damage.gd` and `CombatSpine` was never reached
+	# from a live fight. It installs [method duel_blow] instead, which resolves the
+	# same blow through the spine. `CombatApi.exchange` — the BOSS fight — still
+	# installs nothing here and still resolves through the share model, because that
+	# one is a content-scaling question. See [method duel_blow] for the measurements
+	# that make that split the honest one.
+	var resolver: Dictionary = set_attack_resolver(Callable(CombatBoot, "duel_blow"))
 	var hits: Dictionary = set_hit_resolver(Callable(CombatBoot, "resolve_hit"))
 	return {
 		"ok": bool(bound["ok"]) and bool(resolver["ok"]) and bool(hits["ok"]),
@@ -482,6 +529,184 @@ static func set_hit_resolver(resolver: Callable) -> Dictionary:
 	return {
 		"ok": _hit_resolver.is_valid(),
 		"reason": "" if _hit_resolver.is_valid() else "no_hit_resolver"
+	}
+
+
+## One bare swing from `attacker` against `defender`, resolved through the SPINE.
+##
+## This is what `PlayerAdapter.attack` lands its blow through, and it is the answer
+## to BL-0522's second half: a player-facing fight between two `Actor`s now reaches
+## `CombatSpine.resolve_hit` -> a `DamageMechanism` -> S5 -> S8 -> S9, so ADR 0133's
+## claim that `combat_engine` is the single source of truth for damage is true of
+## the actor-facing path rather than merely asserted of it.
+##
+## ## Why `CombatApi.hit` was the wrong resolver, measured
+##
+## `CombatApi.hit` -> `CombatDuelHit.resolve` -> `CombatDamage.resolve_hit` spends a
+## SHARE of the defender's own pool. That is safe against a pool that does not scale
+## with the realm, and an `Actor`'s health pool DOES: `RealmScaling.SCALED_STATS`
+## carries `Stat.MAX_HEALTH`, so a same-realm pair has both sides moving together
+## and the share model is merely redundant there. Measured, a same-realm PvP blow
+## through the share model costs 6.6 hits at R1 and 3.7 at R30 — a 1.8x drift the
+## engine does NOT have, because the engine pays the realm through the defender's
+## `health` pool rather than through a fraction of it.
+##
+## The share model's `REFERENCE_ATTACK` is also 5.3x off the shipped game: it
+## declares `24.0` "the point at which a blow is par", while a `commonborn`'s
+## `ATTACK_PHYSICAL + ATTACK_SPIRITUAL` is 4.5 at every realm, so the model reads
+## every real actor as a fraction of par.
+##
+## ## What is NOT here, and why the boss fight is untouched
+##
+## `CombatExchange.exchange` — the boss — keeps the share model, and
+## `LootEncounterScreen` is still wired to `CombatApi.exchange`. Routing THAT through
+## the spine is (a) in the options, and it is measured to be a one-press kill from
+## `heaven_immortal` (R19): authored boss vitality spans 40 -> 800 across the thirty
+## realms, and engine damage grows with `RealmDef.power`, so the engine does 14.1% of
+## a boss's pool at R1 and 2032% at R30 — a 144x runaway with nothing on the other
+## side of it. That is the content-side desync ADR 0133 records as OPEN, and it is
+## the OWNER's call. This function deliberately does not reach into the boss path.
+##
+## ## The refusal vocabulary is `CombatDuelHit`'s, unchanged
+##
+## `no_attacker`, `no_defender`, `same_actor`, `defender_slain`, `defender_spared`,
+## `no_health_pool`. They are the words `CombatApi.hit` already answered with and the
+## words `CombatApi.spare` / `CombatDuel` are written against, so the mercy path
+## keeps working unchanged: a spared opponent is still refused before the roll, and
+## `CombatApi.spare` never has to learn about this function.
+##
+## ## And the ledger still records the same two facts
+##
+## `CombatDuelHit` wrote `duels_won` onto the winner's ledger and `CombatFacts` onto
+## the world. Both writes are re-made here, from the spine's own `CombatOutcome`,
+## because `what_the_rotation_cost.tres` gates on them (ADR 0137). Routing the blow
+## through a different model must not silently retire a quest gate — so it does not.
+static func duel_blow(attacker: Actor, defender: Actor, seed_value: int = 0) -> Dictionary:
+	if attacker == null:
+		return _blow_refusal("no_attacker")
+	if defender == null:
+		return _blow_refusal("no_defender")
+	if attacker == defender:
+		# An actor spending its OWN pool would read as a wound inflicted by somebody,
+		# and `same_actor` is the only honest answer — `CombatDuelHit`'s own rule.
+		return _blow_refusal("same_actor")
+	var pool := defender.resource(&"health") as ResourcePool
+	if pool == null:
+		return _blow_refusal("no_health_pool")
+	if pool.current <= 0.0:
+		# Refused BEFORE the roll, as `CombatDuelHit` refuses it: a corpse spends
+		# nothing, so an evaded blow and a blow on a body already down are not
+		# distinguishable by their arithmetic.
+		return _blow_refusal("defender_slain")
+	if CombatDuel.spared(CombatDuel.normalize(defender.get_module_data(CombatDuel.MODULE_KEY))):
+		# Also before the roll, for `CombatDuelHit`'s reason: the duel is already OVER
+		# with this opponent, and spending their health after a mercy would make the
+		# mercy a note the next swing quietly cancels.
+		return _blow_refusal("defender_spared")
+	var rng := RandomNumberGenerator.new()
+	rng.seed = (
+		(
+			seed_value * 2654435761
+			+ absi(hash(String(attacker.id)))
+			+ absi(hash(String(defender.id)))
+		)
+		& 0x7FFFFFFF
+	)
+	var before := pool.current
+	var outcome := resolve_hit(attacker, defender, _swing_def(), CombatEngineApi.tuning(), rng)
+	var spent := before - pool.current
+	var slain := pool.current <= 0.0
+	if slain:
+		_record_win(attacker, defender)
+	return {
+		"ok": true,
+		"reason": "",
+		# Primitives only, so a caller can render this without naming a module. `share`
+		# is retained as the fraction of the defender's MAXIMUM pool the blow spent —
+		# the same number `CombatApi.hit` returned, so a readout that printed it keeps
+		# working — and `taken` is the absolute spend the spine actually made.
+		"share": 0.0 if pool.maximum <= 0.0 else spent / pool.maximum,
+		"taken": spent,
+		"crit": bool(outcome.crit),
+		"evaded": bool(outcome.missed),
+		# The share model published `power` and `mitigation`, neither of which the
+		# spine has an analogue for, and inventing one here would be a second opinion
+		# about what they meant. They are 0.0 rather than absent so a readout indexing
+		# them does not read a missing key.
+		"power": 0.0,
+		"mitigation": 0.0,
+		"defender_slain": slain,
+		# Proof the blow went through the SPINE, published for a test and for a panel
+		# that must never restate the formula: `model` is the module that answered.
+		"model": &"combat_engine",
+		"amount": float(outcome.amount),
+		"health_delta": float(outcome.health_delta),
+	}
+
+
+## The bare swing's authored inputs: a `TechniqueDef` built in memory.
+##
+## In-memory and never a `.tres`, for three reasons. It is not CONTENT — there is
+## no authored bare swing, and inventing one in `game/data/techniques/` would be
+## authoring a technique the design does not have. It must not be persisted: a
+## swing leaves no record, so a def that could be saved would be a lie about the
+## shape. And it is rebuilt per blow rather than cached, so a bare swing can never
+## accumulate state a technique def would carry.
+##
+## The qi path and the shipped default share, so a bare swing resolves through
+## `QiDamage` and therefore through [method mechanism_for_hit]'s own gate — an
+## attacker with no `acupoints` still fights, and one with them still cannot be
+## reached by a swing that never names a body technique.
+static func _swing_def() -> TechniqueDef:
+	var def := TechniqueDef.new()
+	def.path = PathState.QI
+	def.magnitude = BARE_SWING_MAGNITUDE
+	def.element_share = BARE_SWING_SHARE
+	return def
+
+
+## Count the duel this blow ended, on the winner's own record.
+##
+## The same write [method CombatDuelHit._record_win] makes, and it is still made
+## HERE rather than inside `modules/combat/`: the ledger is the one thing this
+## module uniquely owns and ADR 0133 keeps it there, so the routing change above
+## re-uses it instead of re-implementing or deleting it.
+static func _record_win(attacker: Actor, defender: Actor) -> void:
+	var duel := CombatDuel.normalize(attacker.get_module_data(CombatDuel.MODULE_KEY))
+	(
+		CombatDuel
+		. record_win(
+			duel,
+			{
+				"outcome": "duel_won",
+				"opponent_id": String(defender.id),
+				"wins": int(duel.get("wins", 0)) + 1,
+			}
+		)
+	)
+	attacker.set_module_data(CombatDuel.MODULE_KEY, duel)
+	# LAST, once the record it describes is on the ledger (ADR 0137).
+	CombatFacts.record_duel_won(attacker)
+
+
+## One refusal, in the shape [method duel_blow] returns: `ok: false`, every number
+## zero, and no claim that the defender died. `model` names the engine anyway —
+## a refusal is a refusal to SPEND, never a refusal to resolve through the spine, so
+## a test asserting the route does not have to tell the two apart.
+static func _blow_refusal(reason: String) -> Dictionary:
+	return {
+		"ok": false,
+		"reason": reason,
+		"share": 0.0,
+		"taken": 0.0,
+		"crit": false,
+		"evaded": false,
+		"power": 0.0,
+		"mitigation": 0.0,
+		"defender_slain": false,
+		"model": &"combat_engine",
+		"amount": 0.0,
+		"health_delta": 0.0,
 	}
 
 
@@ -551,6 +776,22 @@ static func resolve_hit(
 	var resolved := tuning if tuning != null else CombatEngineApi.tuning()
 	var selected := mechanism_for_hit(attacker, technique)
 	var previous := MechanismSlot.peek(attacker)
+	# A mechanism ALREADY bound that is NOT one of the three this file builds is KEPT,
+	# and the spine runs it. That branch is what lets a caller — a test, or any future
+	# composition-root decision — supply its own `DamageMechanism` and have it actually
+	# resolve, without editing `spine.gd` to add a parameter for it. Before this,
+	# `bind_mechanism` was reachable but UNREACHABLE from a resolution: every call
+	# replaced the binding with `_instance(mechanism_for_hit(...))`, so a bound
+	# mechanism could only be OBSERVED, never run — which is what made ADR 0067's seam
+	# untestable from the production entry point.
+	#
+	# The three built-ins are named rather than probed, because `app/` is the only layer
+	# allowed to know concrete types and this file already names all three in `_instance`.
+	# A fourth mechanism needs no edit here: it is not built-in, so it is kept, which is
+	# the correct default for anything this root did not create.
+	if _is_foreign(previous):
+		var injected := ctx_builder_for(attacker, target, technique, selected)
+		return CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng, injected)
 	if previous == null:
 		return CombatEngineApi.resolve_hit(attacker, target, technique, resolved, rng)
 	if has_hit_resolver():

@@ -74,6 +74,26 @@ const ROUTE_SET_BONUS := &"set_bonus"
 ## worse than a missing route: `summary()` answers `{}`, every verb is dead and the header
 ## reads "Domains — none authored".
 const ROUTE_DOMAIN := &"domain_explore"
+## The soul and hearth page. `soul` and `save` are not (and for `save` must never be)
+## reachable from `ui/`, so its four verbs arrive as Callables in `_bind_route_screen`
+## rather than as facades the screen calls by name.
+const ROUTE_SOUL_HEARTH := &"soul_hearth"
+## The combat readout (ADR 0174). Its strike seam and its drill body both arrive as
+## Callables here, because `ui/` may neither name a `TechniqueDef` (a class in
+## `modules/techniques/`) nor mint an `Actor` (`app/` is a `PRIVATE_UNIT`).
+const ROUTE_COMBAT_READOUT := &"combat_readout"
+
+## The readout's bare swing. Deliberately NOT `CombatBoot.BARE_SWING_MAGNITUDE`: that is
+## the priced value of an ordinary, unremarkable swing, and this one exists to make a
+## WOUND reachable — `BodyWounds.add` divides severity by the target's integrity maximum,
+## so at the ordinary magnitude a wound threshold of `0.05` may never be crossed in a
+## sitting and the necrosis row this surface exists to render would always read "no
+## meridian carries a wound". A demo swing is not a balance change: it is a different
+## `TechniqueDef` that nothing in production casts.
+const READOUT_MAGNITUDE := 12.0
+## The shipped default elemental share, restated as a plain number because `ui/` may not
+## read `CombatTuning` and `app/` should not reach into the `.tres` for one field.
+const READOUT_SHARE := 0.8
 
 ## The world fact id a completed birth records, in `WorldFact`'s own flat namespace and
 ## with NO prefix (ADR 0113: a prefixed id "reads as a working reference and silently
@@ -112,6 +132,11 @@ const STARTING_CAST: Array[StringName] = [
 ## The composition root's status clock (ADR 0106). It holds no state of its own —
 ## only the actor it ticks — so wiring it here is what ADR 0056 means by "app/ wires".
 var _status_loop: StatusLoop = null
+## The combat readout's drill body, minted once and kept (ADR 0174). Cached so a reader
+## who re-enters the route strikes the SAME body and can watch a wound accumulate,
+## which is the whole point of a wound being observable at all. Null until the readout
+## route is bound, so an app that never opens the page mints no inhabitant.
+var _readout_drills: Actor = null
 ## Every child a birth has produced, keyed by the child's OWN actor id, each row a
 ## primitive: `{actor_id, race, parent_id, lineages}`.
 ##
@@ -185,6 +210,18 @@ func _ready() -> void:
 	AnchorApi.set_store(SaveStore.new())
 	SaveApi.install_store("soul", _world_store())
 	SaveApi.install_store("anchor", _world_store())
+	# The three economy ledgers, in the SAME block and for the SAME reason (ADR 0165). They were
+	# the last world facts still living in a bare in-memory dictionary, so a claimed vein, a
+	# listed lot and an open custody claim died at quit while `SaveApi` faithfully wrote
+	# `world["holdings"] = {}` for a key nothing read back. Each is a `WorldLedgerStore` over the
+	# envelope key it owns — one per key, so they can never normalize each other's shape — and
+	# `EconomyBoot._install_stores` picks them up through `SaveApi.store_for` and installs the
+	# very same instances, leaving the in-memory seam for a suite that installs no save store.
+	SaveApi.install_store(
+		"holdings", WorldLedgerStore.new("holdings", HoldingsState.SCHEMA_VERSION)
+	)
+	SaveApi.install_store("market", WorldLedgerStore.new("market", MarketState.SCHEMA_VERSION))
+	SaveApi.install_store("custody", WorldLedgerStore.new("custody", CustodyState.SCHEMA_VERSION))
 	# ## The one place a fact becomes a fate counter (ADR 0149)
 	#
 	# `core/world_fact.gd` publishes a post-write hook slot and names nothing in it —
@@ -1050,6 +1087,37 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# before this route was opened, and is a documented no-op otherwise.
 			_install_domain_world_observer()
 			_realize_domain_world()
+		ROUTE_COMBAT_READOUT:
+			# ADR 0174. The screen cannot resolve a blow itself: `resolve_hit` takes a
+			# `TechniqueDef`, and `ui/` may reach `techniques` only through its facade, so
+			# a typed technique in a screen is a bare cross-module edge the arch gate
+			# refuses. It also cannot mint its own drill body. Both arrive here, on the
+			# ADR 0143 seam the quest and soul screens already use.
+			#
+			# `_readout_blow` resolves through `CombatBoot.resolve_hit` — the SAME
+			# production entry point `_resolve_technique_hit` uses, so what the readout
+			# shows is what a live cast would produce, mechanism selection and
+			# `ctx_builder` included (ADR 0161).
+			screen.call("setup", _actor)
+			screen.call(
+				"bind_strike",
+				Callable(self, "_readout_blow"),
+				_readout_target(),
+				Callable(self, "_readout_context")
+			)
+		ROUTE_SOUL_HEARTH:
+			# The soul and the save cannot be named by a screen, so they arrive as
+			# Callables off this root's own inherited verbs — the ADR 0143 seam, and
+			# `soul_summary()` is already the one read that carries both plus the last
+			# death. The raise and the select are the root's own doors (ADR 0146,
+			# ADR 0129), handed over the same way. `ui/` reaches `difficulty` and
+			# `anchor` by facade and only those two; it reaches `save` through here,
+			# which is the whole of ADR 0128's player-facing surface.
+			screen.call("setup", _actor)
+			screen.call("bind_soul", Callable(self, "_soul_read"), Callable(self, "save_summary"))
+			screen.call(
+				"bind_hearth", Callable(self, "raise_anchor"), Callable(self, "select_difficulty")
+			)
 		_:
 			screen.call("setup", _actor)
 
@@ -1134,6 +1202,17 @@ func teardown() -> void:
 		DomainBoot.release_world(screen)
 
 
+## The soul and the last death, as primitives, for the soul and hearth page.
+##
+## `soul_summary()` on the play half already carries both, and it is the only read
+## that puts the soul, the last death and the save in one payload — so this is that
+## dictionary narrowed to the half the page renders, rather than a second read that
+## could disagree with a probe asking the same question.
+func _soul_read() -> Dictionary:
+	var view := soul_summary()
+	return {"soul": view.get("soul", {}), "last_death": view.get("last_death", {})}
+
+
 ## The loot program's public surface, as plain callables. The UI program may only
 ## reach a gameplay module through that module's facade, so the bridge keeps every
 ## module type on this side of the boundary. It carries no strike and no damage figure:
@@ -1179,6 +1258,107 @@ func _purge_combat_scope() -> Array[String]:
 	if _status_loop == null:
 		return []
 	return _status_loop.exit_combat()
+
+
+## The combat readout's drill body (ADR 0174).
+##
+## ## Why a drill body exists at all, and why it is not a new mechanic
+##
+## `CombatEngineApi.resolve_hit` refuses a null defender, and a player-facing readout
+## needs SOMETHING to strike. Minting it here rather than in the screen is forced: `ui/`
+## may not name `ActorFactory`, which is a `PRIVATE_UNIT`. It is built through the same
+## `spawn_npc` every other inhabitant goes through, so the drill body carries the same
+## provider spine a real NPC does and a figure on the readout is a figure about a real
+## `Actor`.
+##
+## Cached per app instance so a reader who re-enters the route strikes the same body
+## twice and can watch a wound accumulate — which is the entire point of a wound being
+## observable. A fresh body each time would make the wound ledger unreadable.
+func _readout_target() -> Actor:
+	if _readout_drills == null:
+		_readout_drills = _build_readout_target()
+	return _readout_drills
+
+
+## One drill body, with the three mechanism inputs the shipped player already has. It
+## is a body-cultivation actor because that is the one carrying an `acupoints` set, so a
+## body technique resolves at a meridian against it rather than reporting "no location
+## axis" — the readout's whole claim is that what the engine computes is what a player
+## sees, and an input-less target would show less than production does.
+func _build_readout_target() -> Actor:
+	var drill := ActorFactory.spawn_inhabitant(&"readout_drills")
+	ActorFactory.with_body_cultivation(drill)
+	return drill
+
+
+## Resolve one blow for the readout and hand back `CombatOutcome.to_dict()` VERBATIM.
+##
+## ## Why it is the production entry point and not a private one
+##
+## `CombatBoot.resolve_hit` is what `_resolve_technique_hit` already calls, so this is
+## the same decision the shipped app makes about which mechanism runs and what `ctx.data`
+## carries (ADR 0161). A readout that resolved through a different route would be a
+## second opinion about the engine rather than a view of it.
+##
+## The technique is a BARE SWING built by `CombatBoot` for exactly this purpose — there
+## is no authored "readout strike", and inventing one in `game/data/techniques/` would
+## be authoring content the design does not have. It follows the hero's realm, so the
+## numbers on the readout move when the hero's realm moves.
+##
+## `rng` is null on purpose: a null generator means nothing random happens and every
+## attack lands, which is what a readout wants. A screen that reported "0 damage" for a
+## miss would teach the reader that a whiff and a gut-punch are the same event.
+func _readout_blow(attacker: Actor, defender: Actor) -> Dictionary:
+	if attacker == null or defender == null:
+		return {}
+	var outcome := CombatBoot.resolve_hit(
+		attacker, defender, _readout_technique(), CombatEngineApi.tuning(), null
+	)
+	return outcome.to_dict()
+
+
+## The bare swing the readout fires: the qi path, so the mechanism is the one the
+## installed actor carries, and a magnitude high enough that a wound is reachable in a
+## handful of strikes rather than in a session. It is rebuilt per blow and never
+## persisted, for the same reason `CombatBoot._swing_def` is: a swing leaves no record.
+func _readout_technique() -> TechniqueDef:
+	var def := TechniqueDef.new()
+	def.path = PathState.QI
+	def.magnitude = READOUT_MAGNITUDE
+	def.element_share = READOUT_SHARE
+	return def
+
+
+## The readout's companion read: `{band, actor, mechanism}`, all primitives.
+##
+## ## Why this is ONE callable and not three
+##
+## `CombatOutcome.to_dict()` decomposes ONE resolved blow. It deliberately carries
+## nothing about the roll that was NOT taken, nothing about the attacker, and nothing
+## about which mechanism produced the number — those are three different questions from
+## three different owners. The prior shape of this wiring took a `strike` callable and a
+## `context` callable separately, which put two seams on the same screen for two halves
+## of one answer and left the screen unable to say which mechanism fired.
+##
+## `app/` is the only layer that can answer all three: it names `CombatEngineApi` for
+## the band and the stat line, and `CombatBoot.mechanism_for_hit` for the third, because
+## **the mechanism is the one fact the READOUT cannot derive** — it is chosen per hit by
+## the technique's path, and re-asking it here through a second route would be a second
+## opinion about the engine's own decision. It is deliberately the SAME named question
+## `_readout_blow` answers internally, so the line a reader sees is the line the blow ran.
+##
+## ## The band is a SEPARATE roll, and that is the point
+##
+## `CombatEngineApi.band` rolls again with no generator, so this reports what WOULD be
+## drawn rather than what WAS consumed by the blow above. Folding it into `to_dict()`
+## would have made the readout claim the engine produced a number it did not — which is
+## why it stays its own row and the panel labels it for what it is.
+func _readout_context() -> Dictionary:
+	return {
+		"band": CombatEngineApi.band(_actor, _readout_target(), CombatEngineApi.tuning(), null),
+		"actor": CombatEngineApi.summary(_actor),
+		"mechanism": CombatBoot.mechanism_for_hit(_actor, _readout_technique()),
+	}
 
 
 ## The world's clock, as plain callables — the same shape as `_loot_bridge` and for the

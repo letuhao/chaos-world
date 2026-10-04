@@ -50,10 +50,22 @@ func test_seed_items_exist_in_content() -> void:
 			assert_eq(ResourceLoader.exists(path), true, "item %s exists" % item_id)
 
 
-func test_storage_tier_advances_with_realm() -> void:
-	assert_eq(QiRealmSeed.for_realm(&"qi_refining").dantian_tier, &"lower", "Mortal is lower")
-	assert_eq(QiRealmSeed.for_realm(&"spirit_sea").dantian_tier, &"middle", "Spirit is middle")
-	assert_eq(QiRealmSeed.for_realm(&"earth_immortal").dantian_tier, &"upper", "Immortal is upper")
+## ADR 0165 deleted `dantian_tier`, so this is the half of that ruling the data can
+## carry: no qi seed declares a dantian tier any more. A re-added field with no gate
+## reading it is the exact defect DEF-0228 recorded, and the module guard
+## (`test_qi_ruling_q1_no_dantian_tier.gd`) is what fails the build on one.
+func test_no_seed_declares_a_dantian_tier() -> void:
+	for realm in RealmDefaults.ladder().realms():
+		var seed := QiRealmSeed.for_realm(realm.id)
+		if seed == null:
+			continue
+		var path := "res://data/qi_cultivation/realms/%s.tres" % realm.id
+		var text := FileAccess.get_file_as_string(path)
+		assert_eq(
+			text.contains("dantian_tier"),
+			false,
+			"%s declares dantian_tier, a ladder nothing gates on (ADR 0165)" % realm.id
+		)
 
 
 ## ADR 0036's reachability rule, on the data: a seed describes the realm being

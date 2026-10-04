@@ -104,10 +104,18 @@ static func enter_domain(
 ## Every landed blow goes through this call (`exchange.gd:88`), so this is the one place a
 ## boss reaches the player with something other than a share of health — and the one place
 ## a producer could be a producer rather than a verb nothing calls. It costs no new public
-## method because the two ADR 0087/0088 numbers it needs are ARGUMENTS with defaults:
-## `CombatExchange.exchange` supplies the resist-resolved `chance` and the elemental
-## potency, and every existing three-argument caller gets an open gate at the status
-## module's own default potency, which is what the game did before the field existed.
+## method because the gate and the potency are ARGUMENTS with defaults:
+##
+## - `afflict_gate_open` is ADR 0087's gate as a ROLLED VERDICT, not a chance. `loot` has
+##   no `combat_engine` edge and therefore cannot resolve a chance or roll one, so
+##   `CombatExchange.exchange` derives the seeded substream and rolls before it calls this.
+##   `false` is the closed gate (ADR 0087), refused by name in
+##   [constant LootAffliction.CLOSED_GATE] without spending a draw anywhere.
+## - `afflict_magnitude` is ADR 0088's `element_power_<e>` potency, likewise the caller's.
+##
+## Every existing three-argument caller gets `afflict_gate_open = true` — an OPEN gate at
+## the status module's own default potency, which is exactly what the game did before the
+## field existed — so this change is invisible to all of them.
 ##
 ## The `affliction` key on a landed or defeated answer is what the struck boss inflicted —
 ## `{applied, id, reason}`, the same shape `CombatExchange`'s landed-blow report uses, so
@@ -117,14 +125,14 @@ static func strike(
 	actor: Actor,
 	damage: float,
 	seed_value: int = 0,
-	afflict_chance: float = 1.0,
+	afflict_gate_open: bool = true,
 	afflict_magnitude: float = 1.0
 ) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor"}
 	var state := _state(actor)
 	var result := LootState.strike(
-		state, actor, damage, seed_value, afflict_chance, afflict_magnitude
+		state, actor, damage, seed_value, afflict_gate_open, afflict_magnitude
 	)
 	_save(actor, state)
 	return result

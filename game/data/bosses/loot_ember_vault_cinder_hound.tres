@@ -8,10 +8,10 @@ id = &"loot_ember_vault_cinder_hound"
 display_name = "Ember Vault Cinder Hound"
 domain_id = &"loot_ember_vault_domain"
 loot = Array[StringName]([])
-## A burning thing makes the air around it burn harder. `fire_pyre` is the amplifier half
-## of the fire pair (`fire_immolation` is what the player's own blow inflicts), and it is
-## the one the amplifier channel could not reach before this: `_amplifier_gain` counts
-## amplifiers ON THE ACTOR, so with no producer nothing ever put one there.
+; A burning thing makes the air around it burn harder. `fire_pyre` is the amplifier half
+; of the fire pair (`fire_immolation` is what the player's own blow inflicts), and it is
+; the one the amplifier channel could not reach before this: `_amplifier_gain` counts
+; amplifiers ON THE ACTOR, so with no producer nothing ever put one there.
 affliction = &"fire_pyre"
 crit_chance = 0.15
 crit_damage = 1.75

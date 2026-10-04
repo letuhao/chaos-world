@@ -419,6 +419,24 @@ static func _fate_view(def: FateDef, held: bool) -> Dictionary:
 	}
 
 
+## A codex row for one destiny branch.
+##
+## **`teaser` is published, and it is published UNCONDITIONALLY** — the same
+## contract `_fate_view` states one function above. It used not to be published
+## at all, and the row read `DestinyBranchRow._teaser()`'s
+## `_view.get("teaser", "")` fell through to `description` on every destiny
+## forever. That fall-through was masked, not harmless: for an unheld hidden
+## branch `description` happens to BE the teaser (see below), so the dead read
+## looked like it worked. It breaks the first time a hidden destiny is authored
+## with an EMPTY `teaser` — `description` then is `""` too and the row renders a
+## blank card for a branch it is supposed to hint at.
+##
+## The masking is deliberate and is NOT a reason to leave the key out:
+## `description` carries the real copy once revealed and the teaser while locked,
+## so the two fields answer different questions at different moments. A key that
+## means "the description as it should read right now" cannot also be the source
+## of the teaser for the moment when the description is withheld. The row reads
+## the real field; the facade publishes the raw one.
 static func _destiny_view(def: DestinyDef, held: bool) -> Dictionary:
 	var reveal := held or def.visibility == DestinyDef.REVEALED
 	return {
@@ -428,6 +446,10 @@ static func _destiny_view(def: DestinyDef, held: bool) -> Dictionary:
 		"group": String(def.group),
 		"display_name": String(def.display_name) if reveal else "",
 		"description": String(def.description) if reveal else String(def.teaser),
+		# Not gated on `reveal`. A revealed or held branch's teaser is simply its
+		# own hint at what earning it promised, and `_fate_view` publishes it the
+		# same way, so the two codex rows agree on what a view carries.
+		"teaser": String(def.teaser),
 		"bearing": String(def.bearing) if held else "",
 		"grants_fate_count": def.grants_fates.size(),
 	}

@@ -37,8 +37,8 @@ static func attach(actor: Actor) -> void:
 
 
 ## Everything a qi panel renders, in one read. Empty when the actor is not on
-## the qi path. The dantian contributes only structural state (tier, quality,
-## injury); its current/capacity live in the actor's single `qi` ResourcePool.
+## the qi path. The dantian contributes only structural state (quality, injury);
+## its current/capacity live in the actor's single `qi` ResourcePool.
 static func panel_state(actor: Actor) -> Dictionary:
 	var state := actor.path(QiPath.PATH_ID)
 	if state == null:
@@ -93,7 +93,6 @@ static func panel_state(actor: Actor) -> Dictionary:
 		"progress": float(state.progress),
 		"qi": 0.0 if pool == null else pool.current,
 		"qi_maximum": 0.0 if pool == null else pool.maximum,
-		"dantian_tier": "" if dantian == null else String(dantian.tier),
 		"dantian_quality": 0.0 if dantian == null else dantian.quality,
 		"dantian_injured": dantian != null and dantian.injured,
 		"channels": channels,
@@ -129,22 +128,31 @@ static func _gate_for_next_realm(state: PathState) -> QiRealmSeed:
 	return null if next_realm == null else QiRealmSeed.for_realm(next_realm.id)
 
 
-## The channels a training press may reach: the gate's own four first, then the rest
-## of the network, so the button still does something once the gate's are done.
+## The channels a training press may reach: EXACTLY the ones the gate names, and
+## no others.
 ##
-## The gate's own channels come first because they are the ones the gate asks for;
-## the tail exists so a spare elixir has somewhere to go. Two bounded `for`es over
-## fixed content (`required_meridians`, `MeridianDefaults.all()`) appending into a
-## list neither grows: no loop here tests a size of its own.
+## One candidate list, shared with the verb. `QiTraining.train_next_channel` walks
+## `gate.required_meridians` and nothing else, so a second, wider list here made
+## `owed_channels` and `training_price` describe work the verb would never attempt:
+## the tail it appended was a restatement of `MeridianDefaults.all()`, which
+## `training.gd` refuses on purpose — a spare elixir spent deepening a channel the
+## gate never asked for is charged at the realm's price for work the gate does not
+## want (ADR 0095's rule that a gate must mean what it says).
+##
+## The two sets coincide at every one of the 29 boundaries today, so this is the
+## latent half of BL-0757 closed rather than a behaviour change. It was not
+## harmless: the day a seed named fewer channels than the standing realm unlocks,
+## the screen would have printed "channel elixir absent; N channel(s) still owed"
+## for a press that owes nothing — the one answer ADR 0150 rejects. A bounded
+## `for` over the gate's own fixed array appending into a list it does not test the
+## size of: no loop here grows its own bound (INC-0002).
 static func _training_candidates(gate: QiRealmSeed) -> Array[StringName]:
 	var out: Array[StringName] = []
-	if gate != null:
-		for meridian_id in gate.required_meridians:
-			if not out.has(meridian_id):
-				out.append(meridian_id)
-	for definition in MeridianDefaults.all():
-		if not out.has(definition.id):
-			out.append(definition.id)
+	if gate == null:
+		return out
+	for meridian_id in gate.required_meridians:
+		if not out.has(meridian_id):
+			out.append(meridian_id)
 	return out
 
 

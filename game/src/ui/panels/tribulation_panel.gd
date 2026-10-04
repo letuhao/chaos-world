@@ -11,6 +11,11 @@ extends PanelContainer
 ##
 ## Contract: `summary()` returns primitives only, and `{}` for an empty state.
 
+## Shown when a fight was survived and paid nothing. A blank line would read as a row
+## the panel forgot to fill, and "the absence is stated" is the same rule the loot
+## readout's `NO_STATUSES` follows.
+const NO_BLESSING := "No blessing earned"
+
 var _target_label: Label = null
 var _kind_label: Label = null
 var _wave_label: Label = null
@@ -23,11 +28,6 @@ var _state: Dictionary = {}
 ## in is the dict `summary()` reports — a panel that rendered a string nobody can read
 ## back is a reward line a test cannot assert on.
 var _blessing: Dictionary = {}
-
-## Shown when a fight was survived and paid nothing. A blank line would read as a row
-## the panel forgot to fill, and "the absence is stated" is the same rule the loot
-## readout's `NO_STATUSES` follows.
-const NO_BLESSING := "No blessing earned"
 
 
 func _ready() -> void:

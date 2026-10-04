@@ -21,20 +21,46 @@ extends RefCounted
 ## period has elapsed, which is what makes the schedule invisible rather than arbitrary.
 const AUTOSAVE_PERIODS := 12
 
+## Seconds of world time in one period. **This is the SSOT's ratio and it is declared here
+## only until the clock migration moves it** (ADR 0171): `app/world_pulse.gd` holds
+## `PERIOD_SECONDS := 120.0` for the world clock, and this file held a copy that was never
+## read, so the two could not drift because neither was used.
+##
+## Read through [method pull] and never inlined, because the bug this replaces was a
+## schedule that counted CALLS. `pull(delta)` incremented `_periods` by one per invocation
+## and discarded `delta` entirely, so at 60fps the autosave fired every 12 frames — about
+## 0.2 seconds — while its own docstring promised "whole periods" and `AUTOSAVE_PERIODS`
+## said 12. A clock that writes to disk, twelve times a second, on the user's machine.
+const PERIOD_SECONDS := 120.0
+
 var _periods: int = 0
+var _elapsed: float = 0.0
 var _dirty: bool = false
 var _saves: int = 0
 
 
 ## Turn elapsed seconds into whole periods and report whether a save is due.
 ##
-## Returns true at most once per `AUTOSAVE_PERIODS`, and resets the counter so the next one is
-## a full period away rather than the remainder of this one.
+## **Arithmetic, not a call count.** A period count is a division of the accumulated
+## seconds by [constant PERIOD_SECONDS], and the remainder is carried — this file is a
+## clock, not the world clock, so banking the remainder here is correct: it is the same
+## conversion buffer `WorldPulse._elapsed` is (`app/world_pulse.gd:127-129`), and the
+## world's own rule that surplus is DROPPED applies to the world fold, not to a converter
+## whose job is to be exact.
+##
+## Returns true at most once per `AUTOSAVE_PERIODS`, and resets the counter so the next
+## one is a full period away rather than the remainder of this one.
 func pull(delta: float) -> bool:
-	if delta > 0.0:
-		_periods += 1
-		if _periods < AUTOSAVE_PERIODS:
-			return false
+	if delta <= 0.0:
+		return false
+	_elapsed += delta
+	var periods := int(_elapsed / PERIOD_SECONDS)
+	if periods <= 0:
+		return false
+	_elapsed -= float(periods) * PERIOD_SECONDS
+	_periods += periods
+	if _periods < AUTOSAVE_PERIODS:
+		return false
 	_periods = 0
 	return true
 
@@ -63,8 +89,10 @@ func saves() -> int:
 
 
 ## Forget everything. Used when a new game starts, so a fresh run does not inherit a previous
-## one's schedule.
+## one's schedule — including the carried remainder, which is a fraction of a period of the
+## PREVIOUS body's time and would otherwise fire the first autosave of the new game early.
 func reset() -> void:
 	_periods = 0
+	_elapsed = 0.0
 	_dirty = false
 	_saves = 0

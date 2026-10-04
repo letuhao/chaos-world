@@ -268,17 +268,37 @@ static func _cleared(domain_id: String, band: String, tier_index: int, run: int)
 ## defeating blow advances the band and the next boss must not inherit the answer meant
 ## for the one that fell.
 ##
-## `afflict_chance` and `afflict_magnitude` are the CALLER's ADR 0087/0088 numbers and
-## default to an open gate at `1.0` so `LootApi.strike` — which every existing caller
-## uses with three arguments — inflicts with the status module's own default potency. A
-## defeated boss inflicts nothing: the fight is over and ADR 0089's purge clears COMBAT
+## `afflict_gate_open` and `afflict_magnitude` are the CALLER's ADR 0087/0088 answers and
+## default to an OPEN gate at the status module's own default potency, so `LootApi.strike`
+## — which every existing caller uses with three arguments — is unchanged by the gate.
+##
+## ## Why the gate arrives as a VERDICT and not as a probability
+##
+## Measured before this edit: `afflict_chance` was a `float` compared against `0.0` inside
+## [method LootAffliction.inflict] and then NEVER USED. No rng, no roll, anywhere on the
+## affliction path — so every authored boss affliction landed on the first blow that
+## connected, and the `Stat.STATUS_RESISTANCE` `combat` had already resolved for it (at
+## `exchange.gd`'s `_boss_affliction_numbers`) had no visible effect on anything.
+##
+## `loot` cannot fix that itself. The registry entry is `[contracts, core, items, status]`:
+## there is no `loot -> combat_engine` edge, so this module has no `CombatTuning`, no
+## `StatusApply.status_seed` and no way to derive the substream ADR 0087's roll needs. The
+## gate therefore arrives ALREADY ROLLED by `CombatExchange.exchange`, which owns a seeded
+## exchange stream and derives its own per-blow substream from it. This module passes the
+## verdict straight through and never sees a probability.
+##
+## That is also why the roll cannot recurse or double-spend: the verdict is a `bool` on the
+## call stack, so there is no cursor here to advance and no `chain_depth` for a re-entrant
+## call to read twice. `false` is ADR 0087's CLOSED gate and is refused by name.
+##
+## A defeated boss inflicts nothing: the fight is over and ADR 0089's purge clears COMBAT
 ## scope on the exit.
 static func strike(
 	state: Dictionary,
 	actor: Actor,
 	damage: float,
 	seed_value: int,
-	afflict_chance: float = 1.0,
+	afflict_gate_open: bool = true,
 	afflict_magnitude: float = 1.0
 ) -> Dictionary:
 	var active: Dictionary = state.get("active", {})
@@ -301,7 +321,7 @@ static func strike(
 		}
 	# BEFORE the pool is spent: the band advances on a defeat (rule E3) and a new boss
 	# carries its own affliction, which is not what this blow met.
-	var affliction := LootAffliction.inflict(actor, active, afflict_chance, afflict_magnitude)
+	var affliction := LootAffliction.inflict(actor, active, afflict_gate_open, afflict_magnitude)
 	active["vitality"] = maxf(0.0, float(active["vitality"]) - damage)
 	state["active"] = active
 	if float(active["vitality"]) > 0.0:

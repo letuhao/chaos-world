@@ -21,7 +21,6 @@ static func synchronize(actor: Actor) -> void:
 	dantian.set_structural_capacity(
 		seed.dantian_capacity * (1.0 + actor.meridians.get_capacity_bonus())
 	)
-	dantian.set_tier(seed.dantian_tier)
 	var pool := actor.resource(QiStats.QI)
 	if pool != null:
 		pool.set_maximum(dantian.effective_capacity())

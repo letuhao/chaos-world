@@ -81,8 +81,19 @@ static var bus: DestinyEvents = null
 ## The writer is the beat substrate, not a new one. `WorldFact.record` is the ONE
 ## verb that writes the fact ledger — its own docstring says so — and every shipped
 ## producer reaches it: [code]BeatDirector.offer[/code], [code]CombatFacts[/code],
-## [code]ClanFacts[/code], [code]SectFacts[/code], [code]event/EventBeatWriter[/code]
-## and [code]app/CharacterCreationFlow[/code]. This module SUBSCRIBES to that verb,
+## [code]ClanFacts[/code], [code]SectFacts[/code], [code]event/EventBeatWriter[/code],
+## [code]app/CharacterCreationFlow[/code], [code]app/SoulDeath[/code] and
+## [code]app/ItemWorkbenchApp[/code]. **Eight writers**, and the number is asserted
+## rather than counted by hand: `tests/arch_rules/test_fact_ledger_writers.gd` walks
+## `res://src` and compares that set to its `KNOWN_WRITERS` by exact equality, so this
+## paragraph and the test cannot disagree for more than one cycle without something
+## going red. They DID disagree — this list said six for several cycles while the test
+## said eight, because ADR 0130's `soul_died` and the birth's `child_born` each shipped
+## after the enumeration was written. Two of the eight write facts NO fate in
+## [constant COUNTER_FACTS] reads, and that is the correct answer for a blank fact: a
+## fact is a thing that happened, not a thing that pays out, and it still costs one
+## dispatch to arrive here and be refused.
+## This module SUBSCRIBES to that verb,
 ## so the bridge adds ZERO frame drivers and ZERO parallel event systems: it is a
 ## pure function from a fact that was recorded to a counter that moves.
 ##
@@ -122,7 +133,7 @@ static var bus: DestinyEvents = null
 ## director has exactly ONE production caller, [code]app/WorldPulse.offer[/code],
 ## which offers the period fact and the four [code]app/WorldAmbient[/code] roster
 ## facts — and not one of them appears in [constant COUNTER_FACTS]. Meanwhile all
-## six real producers call `WorldFact.record` directly and bypassed the dispatch
+## eight real producers call `WorldFact.record` directly and bypassed the dispatch
 ## entirely, so the suite driving the director's own path was green while every
 ## authored counter sat at 0. Green machinery, no wiring: the defect class ADR 0149
 ## is about.
@@ -138,7 +149,7 @@ static var bus: DestinyEvents = null
 ##
 ## The subscription is one entry in a list [code]core/world_fact.gd[/code] walks,
 ## and [code]record[/code] is called once per occurrence by every writer — so
-## there is exactly one dispatch per fact, whichever of the six writers made it. The
+## there is exactly one dispatch per fact, whichever of the eight writers made it. The
 ## director's own former call is the one thing that could double this, and it is
 ## gone: `app/beat_director.gd` must delete it (see the note on
 ## [method subscribe_to_fact_ledger]).

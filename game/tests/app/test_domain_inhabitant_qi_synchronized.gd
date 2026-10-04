@@ -23,9 +23,9 @@ extends TestCase
 ## `spirit_transformation` (the Flame Dragon, the highest realm any shipped cultivator
 ## names) is the realm every assertion is made at, because it disagrees with the
 ## defaults a bare `attach` leaves: `dantian_capacity = 200.0` against the reservoir's
-## flat `100.0`, and a full tier of meridian unlocks against an empty network. Its
-## `dantian_tier` is `lower`, which the component default also is, so tier cannot
-## discriminate here — capacity, pool ceiling, meridian count and the preview can.
+## flat `100.0`, and a full tier of meridian unlocks against an empty network. The
+## dantian's structural tier was deleted (ADR 0165), so capacity, pool ceiling,
+## meridian count and the preview are what discriminate here.
 
 const INHABITANT_DIR := "res://src/data/domains/inhabitants"
 const REALM := &"spirit_transformation"
@@ -98,7 +98,6 @@ func test_a_shipped_cultivating_species_carries_a_qi_rig() -> void:
 		expected_capacity,
 		"the dantian is sized by synchronize from the realm seed, not from the base stat"
 	)
-	assert_eq(dantian.tier, seed.dantian_tier, "and carries the realm's dantian tier")
 	# `training.gd:27` caps the reservoir at the dantian's effective capacity, so a
 	# dantian sized right with a pool left at `attach`'s flat 100.0 is still a path that
 	# cannot hold what its vessel can.

@@ -75,6 +75,15 @@ const OUTBID_CAUSE := &"outbid_in_auction"
 const DEFAULTED_CAUSE := &"defaulted_on_a_bid"
 const WON_CAUSE := &"won_auction"
 
+## The player actor `install` was handed, or null before any install. Held so an auction
+## event fired between boots still has a subject to write the bond on.
+static var _player: Actor = null
+
+## That player's id, so a lot naming `&"hero"` resolves to the live body. An id, not the
+## actor, is what the auction ledger carries — "a bid is a PROMISE and promises outlive the
+## room" (ADR 0102).
+static var _player_id: String = ""
+
 
 ## Every cause id this bridge can apply, sorted — the vocabulary a content audit reads to
 ## answer "is anything unwired here", and what `tests/app/test_auction_standing.gd` pins
@@ -124,7 +133,7 @@ static func install(player: Actor = null) -> bool:
 ## A bid was recorded. **Announced into the trail and credited nothing** — see
 ## `BID_CAUSE`'s note on why a repeatable click is not an act of standing.
 static func on_bid_placed(
-	bidder_id: String, lot_id: StringName, amount: int, required: int
+	bidder_id: String, lot_id: StringName, amount: int, _required: int
 ) -> void:
 	AuctionLedger.record(
 		"bid_placed", {"bidder": bidder_id, "lot_id": String(lot_id), "amount": amount}
@@ -226,16 +235,6 @@ static func _body(actor_id: String) -> Actor:
 	if resident != null:
 		return resident
 	return null
-
-
-## The player actor `install` was handed, or null before any install. Held so an auction
-## event fired between boots still has a subject to write the bond on.
-static var _player: Actor = null
-
-## That player's id, so a lot naming `&"hero"` resolves to the live body. An id, not the
-## actor, is what the auction ledger carries — "a bid is a PROMISE and promises outlive the
-## room" (ADR 0102).
-static var _player_id: String = ""
 
 
 ## Whether `actor_id` names a body this process can reach. **A read with no side effect**, so

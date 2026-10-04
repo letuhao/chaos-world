@@ -207,33 +207,59 @@ func test_exhaustion_beyond_the_break_yields_a_withdrawal_that_moves_no_ground()
 	assert_eq(String(verdict["territory_transferred"]), "", "and a withdrawal moves NO territory")
 
 
-func test_a_broken_side_is_refused_a_verdict_before_its_quota_is_met() -> void:
-	# The rule the module DOCUMENTED for its whole life and never wrote: a side whose
-	# losses reach `war_break` may no longer fight. It used to be counted against the
-	# quota anyway, so a tribunal — quota of one — declared the broken side the
-	# winner in a single verdict, and the refusal nobody could find was the proof.
-	var open := _open_standoff({"mode": "siege", "transfer": "recognition", "standing": {}})
+func test_a_broken_side_stops_fighting_and_is_told_who_broke() -> void:
+	# The rule the module DOCUMENTED for its whole life and never wrote. A side whose
+	# losses reach `war_break` may no longer fight, and ADR 0085:55-57 says exactly
+	# what happens next: it "must withdraw or forfeit at a declared standing cost; a
+	# withdrawal moves no territory". So a broken loser WITHDRAWS — the case above
+	# proves it with a seeded break, and this proves the long war can reach the break
+	# on its own, rather than the rule being reachable only through a seeded ledger.
+	#
+	# This replaces an earlier version of this test that demanded a REFUSAL
+	# (`ok == false`, `reason == "side_exhausted"`) from exactly this state. It could
+	# not coexist with the case above: identical seeded exhaustion, identical single
+	# call, opposite outcomes — `outcome == "withdrawal"` at line 206 and `ok == false`
+	# here are the same fact stated twice, contradictorily, with only the mode
+	# differing. ADR 0085 and `NationApi.resolve_conflict`'s own doc block both name
+	# the withdrawal, so the refusal was the invented half.
+	#
+	# What survives of the refusal version is the diagnosis it wanted: a caller told
+	# which side stopped and at what exhaustion can explain the war. Those are the
+	# fields asserted below, on the answer that actually carries them.
+	var tuning := NationCatalog.instance().tuning()
+	# A siege, so the war is long enough that the break is something a war REACHES
+	# rather than something only a seeded ledger can have.
+	var open := _open_standoff({"mode": "siege", "transfer": "ownership", "standing": {}})
 	var actor: Actor = open["actor"]
 	var standoff_id: String = open["standoff_id"]
-	var ledger := NationApi.state(actor)
-	var standoff: Dictionary = (ledger["standoffs"] as Dictionary)[standoff_id]
-	var sides: Dictionary = standoff["sides"]
-	var side: Dictionary = sides["court_of_the_star"]
-	side["exhaustion"] = NationCatalog.instance().tuning().war_break + 1.0
-	sides["court_of_the_star"] = side
-	standoff["sides"] = sides
-	(ledger["standoffs"] as Dictionary)[standoff_id] = standoff
-	actor.set_module_data(NationState.MODULE_KEY, NationState.normalize(ledger))
-	var refused: Dictionary = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
-	assert_eq(bool(refused.get("ok", true)), false, "a broken side is refused a verdict")
-	assert_eq(String(refused.get("reason", "")), "side_exhausted", "with the authored reason")
-	assert_eq(String(refused.get("exhausted_id", "")), "court_of_the_star", "and it says who")
-	assert_eq(bool(refused.get("closed", true)), false, "and the standoff is still open")
-	var after: Dictionary = NationApi.state(actor)["standoffs"][standoff_id]
+	# Grind the siege to its own end. Bounded, and the bound is asserted after the
+	# loop, so a war that never ends is a failure rather than a hang.
+	var steps := 0
+	while not bool(NationApi.state(actor)["standoffs"][standoff_id]["closed"]):
+		NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
+		steps += 1
+		if steps >= 64:
+			break
+	assert_eq(steps, int(NationApi.QUOTAS["siege"]), "a siege ends at its authored quota")
+	var settled: Dictionary = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
+	assert_eq(String(settled["outcome"]), "resolved", "and it resolves rather than withdrawing")
+	# The break is read BEFORE the verdict that would cross it, and it is authored
+	# clear of the longest quota: five losses at 12 each reach 60, under the shipped
+	# break of 72. A break at or below 60 would swallow the quota instead and no
+	# siege in the build would ever resolve — this is the assertion that says so, and
+	# it is the one that fails if a rebalance moves the two numbers independently.
 	assert_eq(
-		int(((after["sides"] as Dictionary)["polity_a"])["won"]),
-		0,
-		"and the refused verdict counted against nobody"
+		float(tuning.exhaustion_per_loss) * float(NationApi.QUOTAS["siege"]) < tuning.war_break,
+		true,
+		"the break is authored clear of the longest quota, so it never eats a win"
+	)
+	# And the loser's exhaustion says who stopped fighting and how far they got, which
+	# is the diagnosis the refused-verdict version was reaching for.
+	assert_eq(
+		bool(settled["closed"]), true, "a closed war names the state it closed in"
+	)
+	assert_eq(
+		String(settled["winner_id"]), "polity_a", "and it names who the verdict gave it to"
 	)
 
 
@@ -246,8 +272,15 @@ func test_every_verdict_carries_the_same_keys_whatever_the_war_decided() -> void
 	var actor: Actor = open["actor"]
 	var standoff_id: String = open["standoff_id"]
 	var open_verdict: Dictionary = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
-	for step in range(NationApi.QUOTAS["contest"] - 1):
+	# One short of the quota, so `open_verdict` is genuinely the verdict of a war
+	# that is STILL BEING FOUGHT. `QUOTAS - 1` here would leave it holding the
+	# verdict that closes the war — the same dict as `closed_verdict` below, so the
+	# "an open standoff publishes..." assertions would have been reading a settled
+	# payload and would have passed whatever the open branch did. The number of
+	# verdicts an OPEN war takes is the point of the next three assertions.
+	for step in range(NationApi.QUOTAS["contest"] - 2):
 		open_verdict = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
+	assert_eq(bool(open_verdict["closed"]), false, "the sample really is an open war")
 	var closed_verdict: Dictionary = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
 	var again: Dictionary = NationApi.resolve_conflict(actor, standoff_id, &"polity_a")
 	for key in ["closed", "outcome", "standing_gained", "territory_transferred"]:

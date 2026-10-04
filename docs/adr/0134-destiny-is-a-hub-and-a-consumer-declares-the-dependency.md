@@ -33,7 +33,7 @@ rather than growing the facade. Grouped by what a call is allowed to do:
 | `destinies` | `(actor) -> Array[StringName]` | read | Held ids, ordered by STRING value (not by earn order — read `state()["destinies"][id]["sequence"]` for that). |
 | `fates` | `(actor) -> Array[StringName]` | read | Same shape: held only, ordered by string. |
 | `state` | `(actor) -> Dictionary` | read | The versioned ledger **exactly as core persists it** — the save payload. Never reach into `actor.module_data` instead. |
-| `summary` | `(actor) -> Dictionary` | read | Primitives only; one call answers a codex screen. **Catalog-driven, not player-driven**: `summary()["fates"]` and `["destinies"]` carry held AND unheld rows, so filter on each row's `held`, and note `fate_count` is the HELD count and will not equal `["fates"].size()`. `available` / `blocked_by` exist only on UNHELD destinies — use `.get()`. A `teaser`-visibility fate is absent entirely, so absence means "not disclosed", not "not earned". |
+| `summary` | `(actor) -> Dictionary` | read | Primitives only; one call answers a codex screen. **Catalog-driven, not player-driven**: `summary()["fates"]` and `["destinies"]` carry held AND unheld rows, so filter on each row's `held`, and note `fate_count` is the HELD count and will not equal `["fates"].size()`. `available` / `blocked_by` exist only on UNHELD destinies — use `.get()`. A `teaser`-visibility fate is absent entirely, so absence means "not disclosed", not "not earned". **Both row kinds carry `teaser`, and both publish it UNGATED** — added 2026-10-04, because `DestinyBranchRow._teaser()` read a key `_destiny_view` never wrote and only appeared to work because an unheld hidden row's `description` happens to equal its teaser. Read `teaser` for the hint; read `description` for the copy as it should read right now (which is the teaser while the entry is locked, and the real description once revealed or held). The two are NOT interchangeable and a `.get("teaser", description)` fallback will keep hiding the hole until a hidden row ships an empty teaser. |
 | `gate` | `(actor, requirement) -> Dictionary` | evaluate | `{}` → ungated/open. Otherwise one of six authored verbs. Always `{ok, reason, unmet}`; `ok` is the whole answer. Refuses closed and names itself on an unknown verb or a malformed requirement. Emits `gate_failed` on **every** refusal, including every poll — treat it as telemetry, never a player-facing notice. `reason` is an open set: `""`, `"unmet"`, `"malformed"`, `"unknown_verb"` (plus `"delegated"` if you route through `EventGate`). On a refusal `unmet[0].id` is empty. |
 | `attach` | `(actor) -> void` | lifecycle | Normalizes the ledger, rebuilds the stat projection and the `Actor.traits` mirror. Idempotent. Grants nothing. |
 
@@ -104,21 +104,37 @@ Consequences an agent must carry: an undeclared edge is how a module **cycle** s
 a `destiny` dep is a one-line registry edit, never a weakening of a rule; and a consumer that
 edits `tools/arch/**` at all is outside its ownership — the registry entry is the deliverable.
 
-### 3. The earn-source matrix (measured 2026-10-03)
+### 3. The earn-source matrix (re-measured 2026-10-04)
+
+**Re-measured against `game/src`, not carried forward.** The 2026-10-03 snapshot below was
+wrong in the same direction on two rows — both under-credited a source that had already shipped.
+`Select-String -Path game/src -Recurse -Pattern 'DestinyApi\.earn_' | Select-String -NotMatch '^\s*#'`
+counted over non-comment lines; the two corrections are each traceable to a named line.
 
 | Source | Call site | Owns the call? | Declares `destiny`? | Live in play? |
 |---|---|---|---|---|
-| Quest completion | `quest_grants.gd:62,67` via `QuestApi._complete` | `quest` | **no** (DEF-0167) | no — `QuestApi.accept` has no production caller; no quest is ever accepted (DEF-0183) |
-| World event prize | `event_prize.gd:95,100` via `EventPrize.apply` | `event` | yes | no — `EventApi.set_location` has no production caller, so the ledger stays at `NOWHERE` and `available()` filters all 7 authored events (DEF-0183) |
-| Character creation (origin) | `character_creation_flow.gd:198,201` | `app/` | n/a (app may depend on anything) | no — the screen is shipped but unrouted (DEF-0186) |
-| Combat (kills, duels) | — | `combat` | no | **not built.** Decision points exist: `exchange.gd:428 _record_defeat`, `duel.gd:42 record_defeat`. Neither calls destiny (DEF-0105). |
+| Quest completion | `quest_grants.gd:62,67` via `QuestApi._complete` | `quest` | **no** (DEF-0167) | **yes, for a fresh hero.** `QuestApi.accept` now has exactly one production caller: `quest_program.gd:126` (`QuestProgram.accept`), bound to the quest journal at `item_workbench_app.gd:1003-1010` under `ROUTE_QUEST`. A quest IS acceptable, and completing one pays its `DestinyApi` grants. |
+| World event prize | `event_prize.gd:95,100` via `EventPrize.apply` | `event` | yes | **split — fresh boot yes, restored save no.** A fresh hero is placed by `CharacterCreationProgram.commit` → `_stand_in_the_world` → `WorldStage.new()` (`character_creation_program.gd:176,218`) → `WorldStage.mount` → the publisher the root installed at `item_workbench_app.gd:259`, which writes `EventApi.set_location`. A **restored** save never goes through that path: `WorldStage.new()` has no other call site in `game/src`, so `restore_actor` (`item_workbench_app.gd:323`) leaves the ledger at `EventApi.NOWHERE` and `EventApi.available` filters every authored event on `location_id` (`event/api.gd:93`) before its trigger is read. A returning player cannot open an event, so `EventPrize.apply` stays unreachable *for them* (DEF-0183). |
+| Character creation (origin) | `character_creation_flow.gd:257,260` | `app/` | n/a (app may depend on anything) | **yes** — shipped AND routed. `CharacterCreationProgram` is constructed by the composition root (`item_workbench_app.gd:272`), `character_creation` is a `ScreenRoutes` entry (`screen_routes.gd:119`), and boot opens it for a hero-less player (`item_workbench_app.gd:292-293` → `open_creation`). Committing grants `earn_fate` and `earn_destiny` for the chosen origin. Both halves of this row were stale: the screen is neither unrouted (DEF-0186) nor unearned. |
+| Counters (`record`) | `destiny_projection.gd:235` via `DestinyProjection.on_fact_recorded` | `destiny` | n/a (it *is* the module) | **live.** This row was stale in the strongest possible way: it claimed *"no call site anywhere in `game/src`"*, which was false. The module subscribes to `WorldFact.record`'s post-write hook (ADR 0148) and the composition root installs that bridge at `item_workbench_app.gd:208`, before anything can record. Every recorded occurrence of one of the eight facts in `DestinyProjection.COUNTER_FACTS` now moves its counter. This answers the WIRING half of DEF-0168 / DEF-0181 — a `{verb: counter}` gate can now open — but their CONTENT halves are a separate matter and are not closed by this (DEF-0181 also records six fates with no earn path at all, and `breakthroughs` still has no fact). |
+| Combat (kills, duels) | — | `combat` | no | **not built.** Decision points exist: `exchange.gd:428 _record_defeat`, `duel.gd:42 record_defeat`. Neither calls destiny (DEF-0105). Note `combat/CombatFacts` *does* record `duels_won` — into the **fact** ledger, where the counter bridge picks it up. The distinction matters: the earn path is dead, the counter path is not. |
 | Cultivation breakthrough | — | `qi` / `body` / `mind` | no | **not built.** `qi_cultivation/advancement.gd:25`, `body_cultivation/api.gd:211`. No oath `FateDef` is authored for the paths (DEF-0106). |
-| Counters (`record`) | — | whoever owns the moment | — | **no call site anywhere in `game/src`.** 16 of 17 fates author `counters` (9 distinct ids), every `{verb: counter}` gate is permanently false (DEF-0168, DEF-0181). |
-| Item / unique equip | — | undecided | — | **not built**; the relationship is decided by ADR 0135, not implemented. |
+| Item / unique equip | — | undecided | — | **not built**; the relationship is decided by ADR 0135, not implemented (DEF-0194). |
 
-**Only three sources exist, and none of them can fire.** The module is internally correct and
-entirely unobservable in play. That is the honest state, and it is the reason more internal
-work would be wasted.
+**Two earn sources are live in play today; one more is half-live, and two are not built at
+all.** `quest` and `character creation` fire on a fresh boot. The event prize is the same shape
+as quest with a restore hole in it — the call exists and is reachable on one of the two boot
+paths, which is why a fresh-boot probe and a loaded-game probe disagree and both are honest.
+Combat and the three cultivation paths have no earn call at all; only their *facts* exist, and
+those move counters. **Counters are a fourth thing entirely** and the table used to fold them in
+as if they were an earn source: they are not earned by a deed, they are derived from one, which
+is why "live in play" answers for them without any player-facing verb at all.
+
+**What this matrix cannot yet answer: whether a load is reachable.** Nothing in this build mounts
+a `WorldStage` for a restored body, so "live in play" has two different answers for the same row
+depending on which boot produced the hero. That is the defect DEF-0183 now records as a split
+rather than as a flat "nothing fires", and it is why a single green-boot probe is not evidence
+about the event ladder.
 
 ### 4. A refused earn records nothing
 
@@ -142,7 +158,15 @@ that assumes a refused earn is remembered will build a consumer that silently ne
 - Adding a *consumer* is: declare the dep in `registry.json`, call the facade, add a test.
   Adding an *earn source* is: decide the moment in the owning module, call `earn_*` there.
 - The earn matrix is a snapshot; it goes stale silently. Re-measure with
-  `Select-String -Path game/src -Recurse -Pattern 'DestinyApi\.earn_'` rather than trusting it.
+  `Select-String -Path game/src -Recurse -Pattern 'DestinyApi\.earn_' | Select-String -NotMatch '^\s*#'`
+  rather than trusting it. **It went stale twice on this exact tree, in the same direction, in
+  one day**: three rows claimed a source was dead when it had already shipped. A stale matrix
+  here does not read as stale — it reads as a finding, and this repo's ledger is where such
+  findings get recorded. Verify the negative before writing it down.
 - Still owed to whoever wires the next source: the `quest` registry entry (a one-line edit),
-  and `QuestApi.accept` / `EventApi.set_location` production callers, without which the earn
-  path has nothing to fire from.
+  which is the one item from the original list that is still entirely open.
+- **And the one that is half open:** `EventApi.set_location` fires for a hero created this
+  session, and not for one restored from a save. Nothing mounts a `WorldStage` on the restore
+  path, so the event ladder — and every fate and destiny paid through it — is unreachable for
+  a returning player. Closing it is a `restore_actor` change, not a destiny one: mount the
+  stage for a restored body, or publish the place the save already carries.

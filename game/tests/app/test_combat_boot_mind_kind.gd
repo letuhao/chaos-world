@@ -73,6 +73,25 @@ const HERO_BASE := {
 	Stat.PHYSIQUE: 10.0,
 }
 
+## The same pair with the DEFENDER's `mental_defense` driven to `0.0`, which is the only
+## way to make `_mitigation_of`'s `maxf` observable.
+##
+## ## Why a fixture has to do this at all
+##
+## `illusion_resistance` and `mental_defense` are BOTH derived from `mental_clarity` and
+## `will`, and `mental_defense` grows roughly four times faster, so on any actor this
+## `HERO_BASE` describes the saturating term `d/(d+base)` is already above
+## `ILLUSION_RESISTANCE`. The `maxf` then cannot move — which is correct engine
+## behaviour, and precisely why ADR 0071's "an illusion-resistance build and a clarity
+## build are DIFFERENT defenders" needs a build that actually specialises.
+##
+## Zeroing `mental_defense` is the mechanical way to reach one. It is a DERIVED stat, so
+## it cannot be set through a base attribute, and `ActorStats` applies a `FLAT` modifier
+## as an OFFSET on the provider's contribution — so the modifier's value is measured, not
+## restated, exactly as `mind_damage_fixture.gd:_pin_defense` documents. `FLAT` because a
+## `PERCENT` on a derived rate would evaluate against its own baseline (BRIEF 1.8).
+const LOW_DEFENSE_SOURCE := &"mind_kind_probe_defense"
+
 # --- the actors production builds -----------------------------------------------
 
 
@@ -94,26 +113,6 @@ func _pair() -> Dictionary:
 			"with the capacity that is the erosion's denominator"
 		)
 	return {"attacker": attacker, "defender": defender}
-
-
-## The same pair with the DEFENDER's `mental_defense` driven to `0.0`, which is the only
-## way to make `_mitigation_of`'s `maxf` observable.
-##
-## ## Why a fixture has to do this at all
-##
-## `illusion_resistance` and `mental_defense` are BOTH derived from `mental_clarity` and
-## `will`, and `mental_defense` grows roughly four times faster, so on any actor this
-## `HERO_BASE` describes the saturating term `d/(d+base)` is already above
-## `ILLUSION_RESISTANCE`. The `maxf` then cannot move — which is correct engine
-## behaviour, and precisely why ADR 0071's "an illusion-resistance build and a clarity
-## build are DIFFERENT defenders" needs a build that actually specialises.
-##
-## Zeroing `mental_defense` is the mechanical way to reach one. It is a DERIVED stat, so
-## it cannot be set through a base attribute, and `ActorStats` applies a `FLAT` modifier
-## as an OFFSET on the provider's contribution — so the modifier's value is measured, not
-## restated, exactly as `mind_damage_fixture.gd:_pin_defense` documents. `FLAT` because a
-## `PERCENT` on a derived rate would evaluate against its own baseline (BRIEF 1.8).
-const LOW_DEFENSE_SOURCE := &"mind_kind_probe_defense"
 
 
 ## The pair whose saturating term sits BELOW the defender's illusion resistance, so the

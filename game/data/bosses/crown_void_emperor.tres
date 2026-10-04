@@ -8,7 +8,7 @@ id = &"crown_void_emperor"
 display_name = "Void Emperor"
 domain_id = &"crown_void_emperor_domain"
 loot = Array[StringName]([])
-## The light goes out of a fight: strike, sea and timing all thin at once. The dark pair's
-## sunder half — `dark_corrosion`, the escalating acid, is what the player's own blow
-## inflicts, so this creature takes the body apart rather than bleeding it.
+; The light goes out of a fight: strike, sea and timing all thin at once. The dark pair's
+; sunder half — `dark_corrosion`, the escalating acid, is what the player's own blow
+; inflicts, so this creature takes the body apart rather than bleeding it.
 affliction = &"dark_wane"

@@ -182,7 +182,14 @@ const OUTCOME_TEXT := {
 ## What the place is. Held as ONE object rather than nine fields, so a refresh is a
 ## single re-read: a screen carrying a set of cached copies can paint a room list from
 ## one moment and answer a gate from another, and that is the drift this closes.
-var _model: DomainExploreModel = DomainExploreModel.new()
+##
+## Built LAZILY by [method _read_model], never in this initializer. An initializer runs
+## during instantiation and names a global class, so it resolved on load order rather than
+## on this screen: an uncompiled script answers as a bare `GDScript` with no `new`, the
+## initializer left `_model` null, and every refresh raised `in base 'Nil'`. Every reader
+## goes through a null-tolerant accessor, so a model that could not be built reads as
+## "nothing to show" — the shape an unbound bridge already has — rather than raising.
+var _model: DomainExploreModel = null
 ## The last outcome of a fixture verb, kept separately from `UiScreen`'s message because
 ## the fixture line names the FIXTURE and the message line names the screen's own verb.
 var _fixture_message: String = ""
@@ -227,7 +234,10 @@ func on_screen_hidden() -> void:
 ## otherwise show the state it had BEFORE the binding.
 func bind_bridge(bridge: DomainBridge) -> void:
 	_bind_nodes()
-	_model.bind(bridge)
+	var model := _read_model()
+	if model == null:
+		return
+	model.bind(bridge)
 	refresh()
 
 
@@ -256,14 +266,16 @@ func focus_initial() -> void:
 ## shape this screen exists not to hold.
 func _summary() -> Dictionary:
 	_bind_nodes()
-	if _actor == null or _model.bridge() == null:
+	var model := _read_model()
+	var seam := _bridge()
+	if _actor == null or seam == null or model == null:
 		return {}
-	var place := _model.summary()
+	var place := model.summary()
 	place["has_actor"] = _actor != null
 	place["actor_id"] = String(_actor.id)
 	# The bridge's own view of itself, so a test can assert the WIRING rather than
 	# infer it from a verb that quietly did nothing.
-	place["bridge"] = _model.bridge().summary()
+	place["bridge"] = seam.summary()
 	place["fixture_message"] = _fixture_message
 	place["fixture_tone"] = String(_fixture_tone)
 	place["header"] = _text_of(_header_label)
@@ -280,7 +292,10 @@ func _summary() -> Dictionary:
 
 func _refresh_view() -> void:
 	_bind_nodes()
-	_model.refresh(_actor)
+	var model := _read_model()
+	if model == null:
+		return
+	model.refresh(_actor)
 	_fill_templates()
 	_fill_rooms()
 	_fill_fixtures()
@@ -288,14 +303,15 @@ func _refresh_view() -> void:
 
 func _render() -> void:
 	_bind_nodes()
-	var lines := _model.lines()
-	_header_label.text = String(lines["header"])
-	_status_label.text = String(lines["status"])
-	_map_label.text = String(lines["map"])
-	_rooms_label.text = String(lines["rooms"])
-	_population_label.text = String(lines["population"])
-	_zones_label.text = String(lines["zones"])
-	_fixture_label.text = String(lines["fixture"])
+	var model := _read_model()
+	var lines := model.lines() if model != null else {}
+	_header_label.text = String(lines.get("header", "Domains — no hero"))
+	_status_label.text = String(lines.get("status", "Not inside a domain"))
+	_map_label.text = String(lines.get("map", "No floor plan — no domain is active"))
+	_rooms_label.text = String(lines.get("rooms", "No rooms known"))
+	_population_label.text = String(lines.get("population", "Nobody is placed here yet"))
+	_zones_label.text = String(lines.get("zones", "No severe environment authored here"))
+	_fixture_label.text = String(lines.get("fixture", "No fixture in this room"))
 	_enter_button.disabled = not _can_enter()
 	_leave_button.disabled = not _can_leave()
 	_visit_button.disabled = not _can_visit()
@@ -305,6 +321,60 @@ func _render() -> void:
 	_publish_actions()
 	_publish_message()
 	_sync_selections()
+
+
+## The model, built on first read and held after that. The `null` test is the guard, so
+## the mint happens exactly once per screen and never on a repaint.
+func _read_model() -> DomainExploreModel:
+	if _model == null:
+		_model = DomainExploreModel.new()
+	return _model
+
+
+## Every READ of the model goes through one of the helpers below, and each answers the
+## empty vocabulary for a null model rather than raising — the shape the repo already
+## uses for an absent bridge, where "nothing to show" is not a crash. The check belongs
+## here, once per read, rather than in every caller; `_read_model()` itself is the one
+## call that can still answer null.
+func _bridge() -> DomainBridge:
+	var model := _read_model()
+	return model.bridge() if model != null else null
+
+
+func _view() -> Dictionary:
+	var model := _read_model()
+	return model.active() if model != null else {}
+
+
+func _selection() -> Dictionary:
+	var model := _read_model()
+	return model.selection() if model != null else {}
+
+
+func _template_id() -> String:
+	var model := _read_model()
+	return model.template_id() if model != null else ""
+
+
+func _fixture_kind() -> String:
+	var model := _read_model()
+	return model.fixture_kind() if model != null else ""
+
+
+func _node_options() -> Array[StringName]:
+	var model := _read_model()
+	if model == null:
+		var none: Array[StringName] = []
+		return none
+	return model.node_options()
+
+
+## Hand a selector's index to the model, which holds the list that index names. A
+## selection with no model to record it in is dropped, and the handler repaints anyway.
+func _choose(selector: StringName, index: int) -> void:
+	var model := _read_model()
+	if model != null:
+		model.choose(selector, index)
 
 
 ## Resolve scene nodes, then connect every signal ONCE. Guarded like every other connect
@@ -399,11 +469,15 @@ func act_enter() -> bool:
 ## The seeds are `DEFAULT_SEED + attempt`, not a random roll: reproducible, and the same
 ## template always resolves to the same domain.
 func _enter_with_a_generating_seed(template_id: StringName) -> Dictionary:
+	# Reached only through [method act_enter], which has already answered `_can_enter()`
+	# — so the seam is non-null by construction. Read through the accessor anyway, so a
+	# future caller reaching the walk without the gate gets a refusal, not a crash.
+	var seam := _bridge()
+	if seam == null:
+		return {"ok": false, "reason": "no_inventory_bridge"}
 	var refusal: Dictionary = {}
 	for attempt in MAX_SEED_ATTEMPTS:
-		var answer := _model.bridge().call_action(
-			&"enter", [_actor, template_id, DEFAULT_SEED + attempt]
-		)
+		var answer := seam.call_action(&"enter", [_actor, template_id, DEFAULT_SEED + attempt])
 		if bool(answer.get("ok", false)):
 			return answer
 		refusal = answer
@@ -422,7 +496,7 @@ func act_leave() -> bool:
 	_bind_nodes()
 	if not _can_leave():
 		return _reject("no_map")
-	return _settle(_model.bridge().call_action(&"leave", [_actor]), "Left the domain")
+	return _settle(_bridge().call_action(&"leave", [_actor]), "Left the domain")
 
 
 ## Walk into the selected room, recording it as discovered so the floor plan draws it. A
@@ -436,7 +510,7 @@ func act_visit() -> bool:
 	_bind_nodes()
 	if not _can_visit():
 		return _reject(_visit_reason())
-	var reached := _model.bridge().call_action(&"visit", [_actor, _selected_room_id(), &""])
+	var reached := _bridge().call_action(&"visit", [_actor, _selected_room_id(), &""])
 	return _settle(reached, "Reached %s" % String(_selected_room_id()))
 
 
@@ -445,7 +519,7 @@ func act_arm(delta: float = ARM_TICK) -> bool:
 	_bind_nodes()
 	if not _can_arm():
 		return _reject(_arm_reason())
-	var armed := _model.bridge().call_action(
+	var armed := _bridge().call_action(
 		&"arm_fixture", [_actor, _selected_room_id(), _selected_fixture_id(), delta]
 	)
 	return _settle_fixture(armed)
@@ -457,7 +531,7 @@ func act_attempt() -> bool:
 	_bind_nodes()
 	if not _can_attempt():
 		return _reject(_attempt_reason())
-	var struck := _model.bridge().call_action(
+	var struck := _bridge().call_action(
 		&"attempt_fixture", [_actor, _selected_room_id(), _selected_fixture_id(), _puzzle_node_id()]
 	)
 	return _settle_fixture(struck)
@@ -469,7 +543,7 @@ func act_claim() -> bool:
 	if not _can_claim():
 		return _reject(_claim_reason())
 	return _settle_fixture(
-		_model.bridge().call_action(
+		_bridge().call_action(
 			&"claim_fixture", [_actor, _selected_room_id(), _selected_fixture_id()]
 		)
 	)
@@ -500,7 +574,8 @@ func act(action: StringName) -> bool:
 ## selection, so it can never outlive the press that set it.
 func select_room(room_id: StringName) -> bool:
 	_bind_nodes()
-	var accepted := _model.select_room(room_id)
+	var model := _read_model()
+	var accepted := model != null and model.select_room(room_id)
 	refresh()
 	return accepted
 
@@ -508,7 +583,8 @@ func select_room(room_id: StringName) -> bool:
 ## Look at one fixture of the selected room. Same reasoning as [method select_room].
 func select_fixture(fixture_id: StringName) -> bool:
 	_bind_nodes()
-	var accepted := _model.select_fixture(fixture_id)
+	var model := _read_model()
+	var accepted := model != null and model.select_fixture(fixture_id)
 	refresh()
 	return accepted
 
@@ -517,7 +593,8 @@ func select_fixture(fixture_id: StringName) -> bool:
 ## selected fixture authors no such node, so a caller learns the node is not a real choice.
 func select_node(node_id: StringName) -> bool:
 	_bind_nodes()
-	var accepted := _model.select_node(node_id)
+	var model := _read_model()
+	var accepted := model != null and model.select_node(node_id)
 	refresh()
 	return accepted
 
@@ -526,17 +603,19 @@ func select_node(node_id: StringName) -> bool:
 
 
 func _can_enter() -> bool:
+	var seam := _bridge()
 	return (
 		_actor != null
-		and _model.bridge() != null
-		and _model.bridge().has(&"enter")
-		and _model.active().is_empty()
-		and not _selected_template_id().is_empty()
+		and seam != null
+		and seam.has(&"enter")
+		and _view().is_empty()
+		and not _template_id().is_empty()
 	)
 
 
 func _can_leave() -> bool:
-	return _live() and _model.bridge().has(&"leave")
+	var seam := _bridge()
+	return _live() and seam != null and seam.has(&"leave")
 
 
 ## `Visit` needs a run, the verb, and a room the MODULE actually holds.
@@ -547,7 +626,8 @@ func _can_leave() -> bool:
 func _can_visit() -> bool:
 	if not _pending_room().is_empty():
 		return false
-	return _live() and _model.bridge().has(&"visit") and not _selected_room_id().is_empty()
+	var seam := _bridge()
+	return _live() and seam != null and seam.has(&"visit") and not _selected_room_id().is_empty()
 
 
 func _can_arm() -> bool:
@@ -564,7 +644,7 @@ func _can_claim() -> bool:
 
 ## Whether a run is active and the bridge can reach the verb at all.
 func _live() -> bool:
-	return _actor != null and _model.bridge() != null and not _model.active().is_empty()
+	return _actor != null and _bridge() != null and not _view().is_empty()
 
 
 ## A fixture verb is offered when the room holds a fixture OF THE KIND THIS VERB acts
@@ -572,17 +652,21 @@ func _live() -> bool:
 ## treasure whose key you lack must stay pressable, or the refusal — the thing that
 ## teaches a player why the hoard is sealed — becomes unreachable.
 func _can_fixture(action: StringName) -> bool:
-	if not _live() or not _model.bridge().has(action) or _selected_fixture_id().is_empty():
+	var seam := _bridge()
+	if not _live() or seam == null or not seam.has(action):
 		return false
-	return FIXTURE_VERB.get(_model.fixture_kind(), &"") == action
+	if _selected_fixture_id().is_empty():
+		return false
+	return FIXTURE_VERB.get(_fixture_kind(), &"") == action
 
 
 func _enter_reason() -> String:
-	if _actor == null or _model.bridge() == null:
+	var seam := _bridge()
+	if _actor == null or seam == null:
 		return "no_actor"
-	if not _model.bridge().has(&"enter"):
+	if not seam.has(&"enter"):
 		return "no_inventory_bridge"
-	if _selected_template_id().is_empty():
+	if _template_id().is_empty():
 		return "no_such_template"
 	return "no_map"
 
@@ -590,7 +674,8 @@ func _enter_reason() -> String:
 func _visit_reason() -> String:
 	if not _live():
 		return "no_map"
-	if not _model.bridge().has(&"visit"):
+	var seam := _bridge()
+	if seam == null or not seam.has(&"visit"):
 		return "no_inventory_bridge"
 	return "unknown_room"
 
@@ -615,7 +700,8 @@ func _claim_reason() -> String:
 func _fixture_reason(action: StringName, authored_reason: String) -> String:
 	if not _live():
 		return "no_map"
-	if not _model.bridge().has(action):
+	var seam := _bridge()
+	if seam == null or not seam.has(action):
 		return "no_inventory_bridge"
 	return authored_reason
 
@@ -653,8 +739,12 @@ func _enabled() -> Dictionary:
 func _fill_templates() -> void:
 	if _template_option == null:
 		return
-	_fill(_template_option, _model.template_options())
-	_model.keep_template(_model.template_id())
+	var model := _read_model()
+	if model == null:
+		_fill(_template_option, [])
+		return
+	_fill(_template_option, model.template_options())
+	model.keep_template(model.template_id())
 
 
 ## Fill the room selector from the AUTHORED room list, so every room in the run is
@@ -662,7 +752,8 @@ func _fill_templates() -> void:
 func _fill_rooms() -> void:
 	if _room_option == null:
 		return
-	_fill(_room_option, _model.room_options())
+	var model := _read_model()
+	_fill(_room_option, model.room_options() if model != null else [])
 
 
 ## Fill the fixture and node selectors from the SELECTED room. A room is the only place a
@@ -672,7 +763,8 @@ func _fill_rooms() -> void:
 func _fill_fixtures() -> void:
 	if _fixture_option == null or _node_option == null:
 		return
-	_fill(_fixture_option, _model.fixture_options())
+	var model := _read_model()
+	_fill(_fixture_option, model.fixture_options() if model != null else [])
 	var nodes := _puzzle_nodes()
 	var labels: Array = []
 	for node in nodes:
@@ -731,7 +823,10 @@ func _tone_variation() -> StringName:
 ## re-emitting `item_selected` — so a programmatic `select()` cannot be mistaken for a
 ## click and re-enter the handler that set it.
 func _sync_selections() -> void:
-	var at := _model.selection_indices()
+	var model := _read_model()
+	if model == null:
+		return
+	var at := model.selection_indices()
 	_select(_template_option, int(at[0]))
 	_select(_room_option, int(at[1]))
 	_select(_fixture_option, int(at[2]))
@@ -808,7 +903,8 @@ func _fixture_sentence(text: String) -> String:
 
 
 func _reason_text(reason: String) -> String:
-	return _model.bridge().reason_text(reason) if _model.bridge() != null else reason
+	var seam := _bridge()
+	return seam.reason_text(reason) if seam != null else reason
 
 
 func _outcome_text(reason: String) -> String:
@@ -853,22 +949,22 @@ func _on_action_requested(action: StringName) -> void:
 ## cannot read a stale copy of it. All four share one rule, which is why they share one
 ## line of prose between them.
 func _on_template_selected(index: int) -> void:
-	_model.choose(&"template", index)
+	_choose(&"template", index)
 	refresh()
 
 
 func _on_room_selected(index: int) -> void:
-	_model.choose(&"room", index)
+	_choose(&"room", index)
 	refresh()
 
 
 func _on_fixture_selected(index: int) -> void:
-	_model.choose(&"fixture", index)
+	_choose(&"fixture", index)
 	refresh()
 
 
 func _on_node_selected(index: int) -> void:
-	_model.choose(&"node", index)
+	_choose(&"node", index)
 	refresh()
 
 
@@ -876,24 +972,24 @@ func _on_node_selected(index: int) -> void:
 
 
 func _selected_room_id() -> StringName:
-	return StringName(_model.selection().get("room", ""))
+	return StringName(_selection().get("room", ""))
 
 
 func _selected_fixture_id() -> StringName:
-	return StringName(_model.selection().get("fixture", ""))
+	return StringName(_selection().get("fixture", ""))
 
 
 func _puzzle_node_id() -> StringName:
-	return StringName(_model.selection().get("node", ""))
+	return StringName(_selection().get("node", ""))
 
 
 func _pending_room() -> StringName:
-	return StringName(_model.selection().get("pending", ""))
+	return StringName(_selection().get("pending", ""))
 
 
 func _puzzle_nodes() -> Array[StringName]:
-	return _model.node_options()
+	return _node_options()
 
 
 func _selected_template_id() -> String:
-	return _model.template_id()
+	return _template_id()

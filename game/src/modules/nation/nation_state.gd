@@ -402,15 +402,24 @@ static func verdict_view(
 ## Whether the injected verdict ends this war NOW rather than on its declared quota,
 ## and under what name. `OUTCOME_OPEN` means the quota decides, which is ordinary.
 ##
-## Only a LOSING side that is already broken ends a war early, as a `withdrawal`: it
-## did not win the war it is standing in, and it cannot be paid a victory it did not
-## take. A caller naming an outcome for a war the quota has not decided gets a
-## `stalemate` instead — closed, unpaid, no ground moved — because a quota is a
-## declaration both sides agreed to, and letting one of them rewrite it at resolution
-## is how a declaration stops being one.
+## `quota_met` is the caller's answer to "did this verdict satisfy the declared
+## quota", and it is asked FIRST, because the quota is what both sides agreed to
+## and a counter is not. A war that reached its quota RESOLVES: ADR 0085's table
+## says a `contest` is "combat, three times", and that third verdict is a win,
+## not a surrender — the fact that the loser happens to cross `war_break` on the
+## same verdict is two rules meeting, not a tie.
+##
+## Only a war the quota has NOT decided consults the break, and only a LOSING side
+## that is already broken ends it early, as a `withdrawal`: it did not win the war
+## it is standing in, and it cannot be paid a victory it did not take. A caller
+## naming an outcome for a war the quota has not decided gets a `stalemate`
+## instead — closed, unpaid, no ground moved — because letting one of two sides
+## rewrite a declared quota at resolution is how a declaration stops being one.
 static func forced_close(
-	standoff: Dictionary, loser: String, forced: String, break_at: float
+	standoff: Dictionary, loser: String, forced: String, break_at: float, quota_met: bool
 ) -> String:
+	if quota_met:
+		return OUTCOME_OPEN
 	if loser == "":
 		return OUTCOME_STALEMATE
 	var exhausted := float((standoff.get("sides", {}) as Dictionary)[loser].get("exhaustion", 0.0))
@@ -470,10 +479,22 @@ static func _standoff_entry(entry: Dictionary) -> Dictionary:
 	var out := {
 		"standoff_id": String(entry.get("standoff_id", "")),
 		"other_id": String(entry.get("other_id", "")),
+		## The side that DECLARED this standoff, which is not always the ledger's own
+		## `nation_id` — an actor may carry a nation's ledger under a different id than
+		## the polity it found. Settlement pays the declaring side, so dropping this on
+		## a round-trip would make a saved war pay nobody. Defaulted to `""`, and read as
+		## "the ledger's own side" when absent, so an OLD save keeps settling.
+		"home_id": String(entry.get("home_id", "")),
 		"territory_id": String(entry.get("territory_id", "")),
 		"mode": String(entry.get("mode", "")),
 		"quota": maxi(1, int(entry.get("quota", 1))),
 		"winner_id": String(entry.get("winner_id", "")),
+		## What the closing call actually landed, so a verdict arriving after the war
+		## is closed reports the war's own settlement instead of `0`. Both default to
+		## `0`, which is the truth for a standoff closed before these existed and for
+		## one whose settlement was paid to another ledger.
+		"standing_gained": maxi(0, int(entry.get("standing_gained", 0))),
+		"standing_lost": maxi(0, int(entry.get("standing_lost", 0))),
 		"outcome": String(entry.get("outcome", "")),
 		"closed": bool(entry.get("closed", false)),
 		"declared_sequence": int(entry.get("declared_sequence", 0)),

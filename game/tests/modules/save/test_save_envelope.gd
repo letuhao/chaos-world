@@ -222,11 +222,60 @@ func test_recovery_reports_that_it_recovered_rather_than_saying_nothing() -> voi
 func test_the_autosave_fires_on_a_period_boundary_and_not_before() -> void:
 	# "The player cannot decide when they save" is enforced by the schedule living in whole
 	# periods the player never sees. A save can only land on a boundary.
+	#
+	# **Each pull is one WHOLE PERIOD of world time, not one call.** The schedule is a count
+	# of periods, so the input has to be period-sized. The previous version of this test
+	# passed `1.0` seconds twelve times and passed — because `pull` counted CALLS and
+	# ignored its argument, so the "12 periods" it asserted were twelve invocations at 60fps,
+	# about 0.2 seconds. Feeding it real period-sized deltas is what makes the assertion
+	# mean what the comment says it means.
 	var clock := SaveClock.new()
-	for _i in range(SaveClock.AUTOSAVE_PERIODS - 1):
-		assert_eq(clock.pull(1.0), false, "not yet")
-	assert_eq(clock.pull(1.0), true, "the boundary fires")
-	assert_eq(clock.pull(1.0), false, "and the next one is a full period away")
+	var period := SaveClock.PERIOD_SECONDS
+	for i in range(SaveClock.AUTOSAVE_PERIODS - 1):
+		assert_eq(clock.pull(period), false, "not yet (period %d)" % (i + 1))
+	assert_eq(clock.pull(period), true, "the boundary fires")
+	assert_eq(clock.pull(period), false, "and the next one is a full period away")
+
+
+func test_a_sub_period_pull_does_not_advance_the_schedule() -> void:
+	# The regression guard for the call-count bug. A frame's delta is a fraction of a period,
+	# so a schedule that counted calls fired every 12 FRAMES — twelve disk writes a second —
+	# while reporting twelve periods. This asserts the two are genuinely different things:
+	# `AUTOSAVE_PERIODS` frames at 60fps are `AUTOSAVE_PERIODS / 60` of ONE period, so the
+	# boundary cannot fire no matter how many frames pass.
+	var clock := SaveClock.new()
+	for _i in range(SaveClock.AUTOSAVE_PERIODS):
+		var fired := clock.pull(1.0 / 60.0)
+		assert_eq(fired, false, "12 frames is 0.2s, which is not a whole period")
+	# The time really did accumulate: 12 frames is 0.2s, so 119 whole periods of the
+	# schedule still need 23,880s of real time and 0.2s is nowhere near one. Prove the
+	# accumulator works by feeding the real periods the schedule is counting.
+	var periods_needed := SaveClock.AUTOSAVE_PERIODS - 1
+	for _i in range(periods_needed):
+		assert_eq(clock.pull(SaveClock.PERIOD_SECONDS), false, "still short (period %d)" % (_i + 2))
+	assert_eq(clock.pull(SaveClock.PERIOD_SECONDS), true, "the carried 0.2s counts toward it")
+
+
+func test_a_zero_or_negative_pull_is_not_elapsed_time() -> void:
+	# A frame that elapsed nothing is not an autosave boundary and not an error. Before the
+	# fix this was the one input that could still fire the schedule (`delta > 0.0` was the
+	# only gate on the resetting branch), so a clock polled with a zero delta saved anyway.
+	var clock := SaveClock.new()
+	for _i in range(SaveClock.AUTOSAVE_PERIODS + 4):
+		assert_eq(clock.pull(0.0), false, "zero is not time")
+		assert_eq(clock.pull(-1.0), false, "negative is not time")
+	assert_eq(clock.pull(SaveClock.PERIOD_SECONDS), false, "only one period has really passed")
+
+
+func test_reset_clears_the_carried_remainder() -> void:
+	# A new game must not inherit a fraction of the PREVIOUS body's time, or its first
+	# autosave lands early. `_elapsed` is the buffer that division leaves behind, and it is
+	# session state exactly like the counter beside it.
+	var clock := SaveClock.new()
+	clock.pull(SaveClock.PERIOD_SECONDS * 0.75)
+	clock.reset()
+	assert_eq(clock.pull(SaveClock.PERIOD_SECONDS * 0.5), false, "a fresh clock starts empty")
+	assert_eq(clock.saves(), 0, "and records nothing until it fires")
 
 
 func test_the_clock_never_reads_a_wall_clock_or_declares_a_frame_driver() -> void:

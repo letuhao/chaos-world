@@ -400,15 +400,30 @@ static func declare_war(
 ##
 ## ## Exhaustion decides whether a side may KEEP FIGHTING, never who owns ground
 ##
-## A side whose losses reach `war_break` is refused further verdicts
-## (`side_exhausted`) while the war is still open, and a forced `withdrawal` pays
-## the declared standing costs and **moves no territory**.
+## A side ALREADY broken when a verdict arrives is refused it (`side_exhausted`)
+## while the war is still open, and a loser that breaks ON the verdict that meets
+## the quota is paid as a withdrawal: the surrender cost, and **no territory**.
 ##
 ## The refusal was documented here for the whole life of the module and never
-## written: the break was read only at `_close`, so a broken side was counted
+## written: the break was read only at close, so a broken side was counted
 ## against the quota anyway and a tribunal resolved in a single verdict declared it
 ## the winner. The document and the code disagreed, which is how a caller reading
 ## `side_exhausted` never found it.
+##
+## ## The break is read BEFORE the verdict, and that ordering is the whole rule
+##
+## `war_break` sits exactly one `contest` quota above zero exhaustion in the
+## shipped tuning (3 losses x 12 == the break of 36), so the two rules meet on one
+## verdict and the order they are evaluated in decides the war. Read after the
+## tally, the break swallows the quota: a three-round contest refuses its own
+## third verdict, a five-round siege refuses its third, fourth and fifth, and no
+## standoff in the build ever resolves. Read before it, the third verdict IS the
+## resolution and the break only ever decides what happens to a war that did not
+## reach its quota.
+##
+## A withdrawal therefore means exactly what ADR 0085 says it means — a side that
+## did not win the war it was standing in stops fighting, pays, and moves no
+## ground — and never "a counter happened to cross a threshold first".
 ##
 ## ## The rules of a war that ends before its quota
 ##
@@ -419,6 +434,16 @@ static func declare_war(
 ## `stalemate`: the prize unpaid, no ground moved, the standoff closed and left to
 ## be dealt with by a tribunal. Inventing a victory there is the one thing this
 ## module must not do.
+##
+## ## Every answer publishes the same keys, the refusals included
+##
+## `closed`, `outcome`, `standing_gained` and `territory_transferred` are present
+## on an open standoff, on the verdict that closes it, on one arriving after it
+## closed, AND on a `side_exhausted` refusal. The last is the one that matters
+## most, because it is the answer a caller least expects to be a verdict at all:
+## `ok: false` is the refusal, and the keys beside it are how the caller finds out
+## what state the war was left in rather than writing `.get("outcome", "")` to
+## survive the branch.
 static func resolve_conflict(
 	actor: Actor, standoff_id: StringName, winner_id: StringName, close_outcome: String = ""
 ) -> Dictionary:
@@ -445,51 +470,72 @@ static func resolve_conflict(
 			loser = String(side_id)
 	var winner_side: Dictionary = (sides[winner] as Dictionary).duplicate(true)
 	var loser_side: Dictionary = (sides[loser] as Dictionary).duplicate(true)
+	var break_at := _catalog().war_break()
+	# ## The break is read BEFORE this verdict is written into it
+	#
+	# The shipped tuning puts a `contest` quota of three losses exactly on the break
+	# (3 x 12 == 36), so a break judged AFTER the tally refuses the very verdict that
+	# satisfies the quota. That is the whole war decided by a counter: ADR 0085's
+	# table says a `contest` is "combat, three times", and that third verdict IS the
+	# resolution. So the question is never "how broken is the loser now" but "was it
+	# ALREADY broken when this verdict arrived" — the verdict that carries it over the
+	# line is the last one it fights, and that verdict is this one.
+	var carried := int(loser_side.get("lost", 0)) + 1
+	if (
+		(loser == "" or float(loser_side.get("exhaustion", 0.0)) >= break_at)
+		and carried < int(standoff.get("quota", 1))
+	):
+		# A broken side may no longer fight, and this verdict is refused BEFORE any
+		# tally is written, so the refusal leaves the standoff exactly as the break
+		# found it — which is the whole point of reading the break first. The refusal
+		# names both sides, because "the war is over for somebody" is only legible if
+		# the caller is told who stopped fighting, and it publishes the SAME verdict
+		# keys as every other answer: a caller holding a refusal cannot tell an
+		# unrun branch from a missing one, so it must not have to.
+		return (
+			NationState
+			. refuse(
+				NationState.R_EXHAUSTED,
+				(
+					NationState
+					. verdict_view(
+						standoff,
+						false,
+						NationState.OUTCOME_OPEN,
+						{
+							"standoff_id": String(standoff_id),
+							"winner_id": winner,
+							"loser_id": loser,
+							"exhausted_id": loser if loser != "" else winner,
+							"war_break": break_at,
+							"exhaustion": float(loser_side.get("exhaustion", 0.0)),
+						}
+					)
+				)
+			)
+		)
 	winner_side["won"] = int(winner_side.get("won", 0)) + 1
-	loser_side["lost"] = int(loser_side.get("lost", 0)) + 1
+	loser_side["lost"] = carried
 	loser_side["exhaustion"] = maxf(
 		0.0, float(loser_side.get("exhaustion", 0.0)) + _tuning().exhaustion_per_loss
 	)
 	sides[winner] = winner_side
 	sides[loser] = loser_side
 	standoff["sides"] = sides
-	# Whether the verdict closes the war, and under what name. An OPEN war only
-	# ever closes as a withdrawal or a stalemate — never as a resolution, so the
-	# quota below stays the one thing that can hand out a victory.
-	var forced := NationState.forced_close(standoff, loser, close_outcome, _catalog().war_break())
-	if not bool(standoff.get("closed", false)):
-		# A broken side may no longer fight. This is refused BEFORE the tally is
-		# written, so the verdict that broke it is the last one it takes part in and
-		# the refusal leaves the standoff exactly as the break found it. The refusal
-		# names both sides, because "the war is over for somebody" is only legible
-		# if the caller is told who stopped fighting.
-		if loser == "" or float(loser_side.get("exhaustion", 0.0)) >= _catalog().war_break():
-			return (
-				NationState
-				. refuse(
-					NationState.R_EXHAUSTED,
-					{
-						"standoff_id": String(standoff_id),
-						"winner_id": winner,
-						"loser_id": loser,
-						"exhausted_id": loser if loser != "" else winner,
-						"war_break": _catalog().war_break(),
-						"exhaustion": float(loser_side.get("exhaustion", 0.0)),
-					}
-				)
-			)
-		(ledger["standoffs"] as Dictionary)[String(standoff_id)] = standoff
-		NationResolve._persist(actor, ledger)
-		return _unpaid_verdict(
-			ledger, standoff_id, standoff, false, {"winner_id": winner, "loser_id": loser}
-		)
 	# One verdict is ONE exchange, and both sides' counters are two VIEWS of that one
 	# event: the winner's `won` and the loser's `lost` always move together. Adding
 	# them counts every verdict twice, which halves the effective quota — a siege
 	# authored at five closes on the third call. The tally is the loser's `lost`
 	# because every exchange has exactly one loser, so that counter is the count.
-	var total := int(loser_side["lost"])
-	if total < int(standoff.get("quota", 1)):
+	var total := carried
+	var quota := int(standoff.get("quota", 1))
+	# Whether this verdict closes the war, and under what name. The quota is asked
+	# FIRST and wins outright: a war that reached the number both sides declared
+	# resolved, and the break — which in the shipped tuning sits exactly one contest
+	# quota away — cannot turn that verdict into a surrender. An OPEN war only ever
+	# closes as a withdrawal or a stalemate, never as a resolution.
+	var forced := NationState.forced_close(standoff, loser, close_outcome, break_at, total >= quota)
+	if total < quota:
 		(ledger["standoffs"] as Dictionary)[String(standoff_id)] = standoff
 		NationResolve._persist(actor, ledger)
 		return _unpaid_verdict(

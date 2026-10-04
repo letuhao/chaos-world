@@ -19,6 +19,7 @@
       "deps": [
         "contracts",
         "core",
+        "destiny",
         "items",
         "race"
       ]
@@ -35,6 +36,7 @@
       "deps": [
         "contracts",
         "core",
+        "destiny",
         "loot",
         "status"
       ]
@@ -155,6 +157,7 @@
       "deps": [
         "contracts",
         "core",
+        "destiny",
         "items",
         "race"
       ]
@@ -178,6 +181,7 @@
       "deps": [
         "contracts",
         "core",
+        "destiny",
         "items",
         "race"
       ]

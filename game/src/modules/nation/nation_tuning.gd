@@ -56,6 +56,16 @@ extends Resource
 ## The exhaustion at which a side must withdraw or forfeit. Reaching it is a
 ## REFUSAL to keep fighting, never an award of ground: a withdrawal moves no
 ## territory (ADR 0085), so the declaration and the counter cannot decide a war.
+##
+## **It must be strictly above what the LONGEST authored quota can reach.** At 12
+## per loss the quotas are 3 / 5 / 1, so a break of 36 lands exactly on a
+## contest's third verdict and a siege's third — and two rules then collide on
+## one exchange: the quota that both sides declared, and a counter. That shipped at
+## 36, and the result was that no standoff in the build ever resolved: a contest
+## and a siege both withdrew on the verdict that was supposed to win them, and
+## `test_nation_conflict.gd` could not tell that from a module that was simply
+## broken. 72 is two contest quotas, and comfortably above a siege's five. A
+## rebalance that moves `exhaustion_per_loss` must move this with it.
 @export var war_break: float = 0.0
 ## Standing the winning side gains when a standoff closes.
 @export var standing_on_win: int = 0

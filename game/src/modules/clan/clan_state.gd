@@ -71,12 +71,18 @@ static func is_own_source(source: StringName) -> bool:
 ## naming content that no longer ships is dropped rather than persisted, so a save from
 ## a wider content build cannot smuggle in a clan the current build does not define.
 ##
-## A payload that cannot be read is diagnosed as empty, never partially applied. Half a
-## ledger is worse than none: the projection strips what the ledger says it applied, so
-## a half-read ledger would strip the wrong mirrors and leave the rest stranded. An
-## unreadable field therefore discards itself rather than poisoning the whole record —
-## but an unreadable `standing` discards the whole record, because a member with an
-## unreadable standing but a live rank would be a coherent-looking lie.
+## A payload that cannot be read is diagnosed as empty, never partially applied.
+## Half a ledger is worse than none: the projection strips what the ledger says it
+## applied, so a half-read ledger would strip the wrong mirrors and leave the rest
+## stranded.
+##
+## So a **wrong-typed id field discards the WHOLE record** rather than just itself —
+## `clan`, `rank`, or an id inside `applied`. The docstring's "an unreadable field
+## discards itself" is the weaker rule and is what shipped: `{"clan": "t_house",
+## "rank": 17}` kept the membership and dropped only the rank, which reads as a
+## member who holds a house but no post — a plausible lie the caller cannot detect.
+## An absent field is different and normal: a member who holds no rank simply has
+## none, and that is not corruption.
 ##
 ## **Every id arrives through `_text`, never a raw `String(...)` cast** — see that
 ## helper for why the cast is the wrong tool on a save payload.
@@ -90,6 +96,15 @@ static func normalize(payload: Dictionary, known_clans: Dictionary = {}) -> Dict
 	}
 	if payload.is_empty():
 		return out
+	# An ABSENT field is normal. A present field of the wrong TYPE is corruption, and
+	# `_text` cannot tell the two apart on its own — so each is checked here, and a
+	# hit discards the record rather than coercing a guess out of the bytes.
+	for key in ["clan", "rank"]:
+		if payload.has(key) and not _is_text(payload[key]):
+			return empty()
+	var applied = payload.get("applied", {})
+	if payload.has("applied") and not (applied is Dictionary):
+		return empty()
 	var clan_id := _text(payload.get("clan", ""), "")
 	if clan_id != "" and (known_clans.is_empty() or known_clans.has(clan_id)):
 		out["clan"] = clan_id
@@ -101,17 +116,40 @@ static func normalize(payload: Dictionary, known_clans: Dictionary = {}) -> Dict
 			out["rank"] = rank
 	# Standing was earned INSIDE a house, so it only exists while the membership does.
 	# Reading it independently would leave an actor with no clan holding the standing
-	# of a house the build no longer ships — recognition with nothing recognising them,
-	# and the one number a later reputation layer would read as legitimate.
+	# of a house the build no longer ships — recognition with nothing recognising them.
 	var standing = payload.get("standing", 0)
-	if out["clan"] != "" and (standing is float or standing is int):
+	if out["clan"] != "":
+		if not (standing is float or standing is int):
+			return empty()
 		out["standing"] = maxi(0, int(standing))
-	var applied = payload.get("applied", {})
 	if applied is Dictionary:
+		if _applied_corrupt(applied as Dictionary):
+			# Same rule as the fields above, one level down: an `applied` record
+			# holding a wrong-typed id means the projection's own bookkeeping is
+			# damaged, and a membership built on top of it would strip the wrong
+			# mirrors. `{}` for the record is indistinguishable from "applied
+			# nothing", so the record itself must be the thing that refuses.
+			return empty()
 		var record := _applied_record(applied as Dictionary)
 		if not record.is_empty():
 			out["applied"] = record
 	return out
+
+
+## Whether `record` holds a wrong-typed id, as opposed to merely naming none. An
+## absent id is a projection that applied nothing; a wrong-typed one is damage.
+static func _applied_corrupt(record: Dictionary) -> bool:
+	for key in ["clan", "rank"]:
+		if record.has(key) and not _is_text(record[key]):
+			return true
+	return false
+
+
+## Whether `value` is genuinely text — a `String` or a `StringName`. Paired with
+## `_text`, which answers the same question by converting; this one only asks, so
+## `normalize` can tell a corrupt field from an absent one.
+static func _is_text(value: Variant) -> bool:
+	return value is String or value is StringName
 
 
 ## The empty ledger: no clan, no position, no standing. The state a fresh actor is in
@@ -121,14 +159,19 @@ static func empty() -> Dictionary:
 
 
 ## The clan `ledger` names, or `&""` when it names none.
+##
+## Through `_text`, never a raw `String(...)` cast: `String(42.0)` RAISES in
+## GDScript rather than yielding `"42.0"`, so a corrupt save would abort `attach`
+## instead of reading as the unaffiliated member it actually is. That is the whole
+## reason `_text` exists — see its own note below.
 static func clan_id(ledger: Dictionary) -> StringName:
-	return StringName(String(ledger.get("clan", "")))
+	return StringName(_text(ledger.get("clan", ""), ""))
 
 
 ## The position `ledger` records, or `&""`. Read from the ledger, never recomputed from
-## `standing` — see the class note.
+## `standing` — see the class note. Through `_text` for the same reason as `clan_id`.
 static func rank(ledger: Dictionary) -> StringName:
-	return StringName(String(ledger.get("rank", "")))
+	return StringName(_text(ledger.get("rank", ""), ""))
 
 
 ## The earned standing `ledger` records. Symmetric with obligations: it can rise and it
@@ -228,7 +271,19 @@ static func _text(value: Variant, fallback: String) -> String:
 	return fallback
 
 
+## The projection's record of what it last applied, read back so a rebuild can
+## strip exactly that and nothing else.
+##
+## **A wrong-typed id inside `applied` discards the whole record**, by the same rule
+## as the top-level fields: `_text` falls back to `""`, and a record that quietly
+## becomes half-empty is worse than none, because the caller cannot tell "this
+## projection applied nothing" from "this record was corrupt" — and the first is
+## true while the second is what happened. Returning `{}` for both is the honest
+## answer only if `normalize` also refuses, which it does.
 static func _applied_record(record: Dictionary) -> Dictionary:
+	for key in ["clan", "rank"]:
+		if record.has(key) and not _is_text(record[key]):
+			return {}
 	var clan_id := _text(record.get("clan", ""), "")
 	if clan_id == "":
 		return {}

@@ -29,6 +29,28 @@ const ATTEMPT_KEY := &"body_attempt"
 const QUALITY_TO_CHANCE := 0.5
 const MIN_CHANCE := 0.05
 
+## The fate a body breakthrough earns (DEF-0106).
+##
+## `reborn_in_a_lesser_vessel`, chosen from the fate's OWN text: "Came back after a
+## failure at the barrier in a body the sect records as a downgrade. The technique
+## survived." A body breakthrough IS crossing the barrier and being re-seated, and
+## the `seed.rewards` loop a few lines below is the stat award this very grant
+## accompanies — so the fate and the numbers describe one event rather than two.
+##
+## It is the one fate `the_chosen_instrument` names in its own `requires_fates`, and
+## `character_creation_flow.ARRIVAL_FATES` already supplies it at creation for that
+## origin. So `earn_fate` being exactly-once is load-bearing here rather than merely
+## tidy: creation and this path can both reach the same player, and ADR 0065's rule
+## that a second earn pays nothing is what stops the arrival table from paying a
+## destiny's own prerequisite twice.
+const FATE_BARRIER := &"reborn_in_a_lesser_vessel"
+
+## The `source` string this path's earn carries, in the shape `QuestGrants
+## .FATE_SOURCE_PREFIX + quest_id` and `EventDef.fate_source()` both build: it names
+## the SYSTEM that earned the fate and the decision point, never the fate id itself
+## (ADR 0065 on id namespaces).
+const EARN_SOURCE := "body_breakthrough"
+
 
 ## The single chance formula. It reads the target realm's authored
 ## `chance_base`/`chance_cap` and the actor's average acupoint quality.
@@ -153,14 +175,28 @@ static func start_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> Bo
 static func _start(actor: Actor, rng: RandomNumberGenerator) -> BodyAttempt:
 	if not _body_allows(actor):
 		return null
+	# A REFUSAL COSTS NOTHING, SO THE LOCKOUT IS CHECKED BEFORE THE TOLL.
+	# `face_tribulation` descends a wave and `Tribulation.fight_wave` charges
+	# `WAVE_TOLL` (1.0 COMPREHENSION, and comprehension is this path's own entry
+	# gate), so a press refused for the lockout must not have descended one first.
+	#
+	# **LATENT, NOT OBSERVED.** No shipped path reaches the pair today: an attempt is
+	# only committed once `can_breakthrough` has already passed the tribulation clause,
+	# and nothing on the body screen can un-win a tribulation, so the gate is open
+	# whenever the lockout fires and `face_tribulation` is a no-op. The tribulation
+	# screen can leave it shut — `Breakthrough.cancel_tribulation` is the core entry
+	# point for exactly that — and a player who commits an attempt and then walks away
+	# from a fight would reach it. This is a PRECONDITION rather than a tidy-up:
+	# `BodyRefusal` publishes "a refusal costs the actor nothing, because it happens
+	# before any cost is paid", and here that stops depending on the gate being open.
+	if active_attempt(actor) != null:
+		return null
 	# Face the tribulation owed for this path's next realm BEFORE validating anything
 	# (ADR 0061), so R19-R30 are reachable by play rather than only by a test. Every
 	# entry into an attempt runs through here — `start_attempt` and the one-shot
 	# `try_breakthrough` — so the wave is charged once per committed attempt. The
 	# return is discarded on purpose: a wave never opens the gate.
 	Breakthrough.face_tribulation(actor, BodyPath.PATH_ID, rng)
-	if active_attempt(actor) != null:
-		return null
 	var state := actor.path(BodyPath.PATH_ID)
 	if state == null:
 		return null
@@ -279,6 +315,34 @@ static func resolve_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> 
 	# Entering a high tier *commits* the milestone it produces; the next tier
 	# gates on it (ADR 0018-0021).
 	WorldAnchor.commit(actor, target.index)
+	# ## DEF-0106: the path OWNS this decision, so the path earns the fate
+	#
+	# This `return true` is the decision that a breakthrough happened. `body_cultivation`
+	# decides it, so it calls the facade here — the same rule `combat` follows at
+	# `CombatDuel.record_defeat` and `character_creation_flow.gd` follows at
+	# `grant_origin`. Fate is a write target, never a listener (ADR 0065).
+	#
+	# It sits on the GRANTED branch, after `try_advance_gated` has already said yes:
+	# a refused advance returns three lines earlier, so nothing can earn a fate for a
+	# breakthrough that never happened. It sits before `_end(actor, committed, true)`
+	# so the fate's stat modifiers are re-projected onto a body whose realm has
+	# already advanced, not onto the one it is leaving.
+	#
+	# `earn_fate` returns the LEDGER, never a verdict, and every refusal path is
+	# byte-identical in shape and queues nothing (ADR 0134) — so the earn is
+	# VERIFIED with `has_fate` rather than trusted, which is what
+	# `character_creation_flow.gd:280-284` does and `event_prize.gd:95-96` does not.
+	DestinyApi.earn_fate(actor, FATE_BARRIER, EARN_SOURCE)
+	if not DestinyApi.has_fate(actor, FATE_BARRIER):
+		push_warning(
+			(
+				(
+					"body_cultivation: a breakthrough was granted but %s was not earned (id unknown "
+					+ "to the fate catalog?). Nothing records the debt and nothing retries it."
+				)
+				% String(FATE_BARRIER)
+			)
+		)
 	_end(actor, committed, true)
 	return true
 

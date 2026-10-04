@@ -30,17 +30,25 @@ const SCRIPT_PATH := "res://src/ui/screens/sect_screen.gd"
 ## screen needs into `summary()` rather than growing the facade past its 12-method cap.
 const FACADE := "SectApi"
 const ONLY_FACADE_CALL := "SectApi.summary"
-## Every mutating verb `sect` publishes. A read-only screen that reached one would turn
-## an inquisition into a two-click accident (ADR 0064: expulsion costs the expeller more).
-const MUTATING_VERBS := [
-	"join",
-	"found",
-	"leave",
-	"move_standing",
-	"promote",
-	"advance_succession",
-	"teach",
-]
+## The verbs this screen is a CORRECT place to reach from a button: the ones a
+## player performs on their own membership. `join` and `leave` are the ordinary
+## case; `promote` is reached because a council acts through the same screen and an
+## authored authority decides it.
+##
+## The mutating verbs deliberately NOT here are the ones a button must never offer:
+## - `found` — founding prices an institution and consumes a funding pool, which is
+##   a progression beat, not a menu click.
+## - `teach` — a lesson spends the TEACHER's fit (BL-0188). Putting it two clicks
+##   from a player makes a mentor a resource faucet, which is the exact failure the
+##   cost was added to prevent.
+## - `move_standing` — the institution moves a member's standing, never the member.
+## - `advance_succession` — a walk advances by whole authored stages, never by a
+##   keypress (ADR 0084's pacing).
+const SCREEN_ACTIONS := ["join", "leave", "promote"]
+## Every mutating verb `sect` publishes, read-only for this file's purposes: the
+## check below is that the screen reaches the ACTIONS and is not expected to reach
+## the rest. Kept as documentation of what exists and why.
+const MODULE_ONLY_VERBS := ["found", "teach", "move_standing", "advance_succession"]
 ## The verbs a screen legitimately reads, besides `summary`. Reaching one of these from
 ## `ui/` would widen the facade instead of using the fold ADR 0083 already made.
 const OTHER_FACADE_VERBS := ["attach", "gate", "state"]
@@ -233,10 +241,21 @@ func test_an_unaffiliated_hero_is_still_offered_the_whole_catalog() -> void:
 # --- Purity: one facade method, and nothing else from the module -------------
 
 
-func test_the_screen_calls_exactly_one_facade_method_and_no_other_module_name() -> void:
+func test_the_screen_reads_one_facade_method_but_may_act_through_the_verbs() -> void:
 	# `tools arch` checks the MODULE side of the boundary. This checks the UI side, by
-	# reading the shipped source: one `SectApi.summary(` call, and no other identifier
-	# from `sect` anywhere in the file.
+	# reading the shipped source.
+	#
+	# ## What changed, and why this test was wrong rather than the screen
+	#
+	# This used to assert the screen calls NO mutating verb. That encoded a real design
+	# at the time — a read-only codex — and an independent audit found it was why a
+	# player could look at a sect and never join one: thirteen mutating verbs with zero
+	# production callers. The screen now HAS to act, so the rule inverted: exactly one
+	# facade READ (`summary`, the refresh path) and every mutation through an explicit
+	# verb, because that is what makes each action attributable and refusable.
+	#
+	# The two halves that still matter are unchanged and are the ones below: no second
+	# read method, and no interior file.
 	var source := FileAccess.get_file_as_string(SCRIPT_PATH)
 	assert_ne(source.is_empty(), true, "%s is readable" % SCRIPT_PATH)
 	assert_eq(
@@ -249,12 +268,24 @@ func test_the_screen_calls_exactly_one_facade_method_and_no_other_module_name() 
 		true,
 		"%s names the facade at all, so the check above cannot pass vacuously" % SCRIPT_PATH
 	)
-	for verb in MUTATING_VERBS:
+	# Every action this screen offers must be CALLED, not merely present: a button a
+	# player can press that does nothing is the defect the audit found.
+	for verb in SCREEN_ACTIONS:
+		assert_eq(
+			source.contains("%s.%s(" % [FACADE, verb]),
+			true,
+			"%s calls the action %s" % [SCRIPT_PATH, verb]
+		)
+	# And the ones it must NOT reach, with the reason each is a menu-click hazard
+	# rather than a screen action.
+	for verb in MODULE_ONLY_VERBS:
 		assert_eq(
 			source.contains("%s.%s(" % [FACADE, verb]),
 			false,
-			"%s never calls the mutating verb %s" % [SCRIPT_PATH, verb]
+			"%s does not offer %s from a button" % [SCRIPT_PATH, verb]
 		)
+	# And a mutation must never be smuggled in behind a second READ method, which is
+	# how a "just one more accessor" quietly becomes a second write path.
 	for verb in OTHER_FACADE_VERBS:
 		assert_eq(
 			source.contains("%s.%s(" % [FACADE, verb]),

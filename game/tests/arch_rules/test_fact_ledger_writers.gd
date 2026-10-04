@@ -24,9 +24,13 @@ extends TestCase
 ## lower a `need` that was fine. A census with no ceiling on its own input is a
 ## validator that reads as an all-clear, which is the ADR 0066 shape with a checksum.
 ##
-## IT IS NOT VACUOUS, and the proof is that it fired: `character_creation_flow.gd`
-## appeared as a third writer while this file was being written. The list is what made
-## it visible instead of letting the census under-count it silently.
+## IT IS NOT VACUOUS, and the proof is that it fired THREE times: `character_creation_flow.gd`
+## appeared as a third writer while this file was being written, and a filtered
+## `--suite destiny` run cannot see either of the other two because neither file lives
+## under `res://src/modules/destiny`. The list is what made each visible instead of
+## letting the census under-count it silently, and it fired a third time in the wrong
+## direction: the eighth writer (`app/item_workbench_app.gd`) shipped and was NOT
+## appended, so the set assertion went RED while every other suite stayed green.
 ##
 ## WHAT IT DOES NOT CATCH, stated because overclaiming is worse than the hazard:
 ##   - An id assembled at run time (`"killed_" + species`). A literal is refused and a
@@ -63,11 +67,29 @@ const SRC_ROOT := "res://src"
 ##     `const FACT_ID` spelling is available to it and it is a code-owned producer in the
 ##     strict sense. It is listed in BOTH lists for that reason, which is what the
 ##     `CODE_OWNED_WRITERS` contract test below checks.
+##   - `item_workbench_app.gd` is the eighth, and it is here for a reason the author
+##     already wrote down: a completed birth records `child_born` against the CHILD
+##     (ADR 0089 keeps statuses out of `Actor.to_dict`, so the child's own save payload is
+##     the only place a birth can leave a trace). Its own docstring says the fact grants
+##     nothing and that "the counter it moves would be a destination in `destiny`" - which
+##     is a statement about what the fact is not attached to, NOT a statement that it is
+##     not a producer. Writing it is what makes the fact answerable, which is what
+##     `WorldFact` requires of a row: it is KNOWN to exist, and it has no fate reading it
+##     yet. Omitting it is exactly the silent under-count this file exists to stop.
+## ## THE COUNT IS EIGHT AND THE PROSE IN `core/world_fact.gd` AND
+## ## `destiny_projection.gd` HAD SAID SIX. Both were wrong the same way: ADR 0130's
+## ## soul-death fact and this birth fact both shipped after the enumeration was written,
+## ## and each landed in a `KNOWN_WRITERS` entry without its row being appended above.
+## ## The hazard is not a stale number in a docstring - it is that the TEST and the PROSE
+## ## were asserting two different producer sets, so a reader who believed the prose would
+## ## have believed two shipped producers did not exist. The enumeration is pinned here and
+## ## nowhere else on purpose: one list, asserted, is the only shape that cannot drift.
 ## A name NOT in this list is not an oversight to fix by adding a name: it is a
 ## producer the census cannot see until it is taught to read it, in the same change.
 const KNOWN_WRITERS: Array[String] = [
 	"res://src/app/beat_director.gd",
 	"res://src/app/character_creation_flow.gd",
+	"res://src/app/item_workbench_app.gd",
 	"res://src/app/soul_death.gd",
 	"res://src/modules/clan/clan_facts.gd",
 	"res://src/modules/combat/combat_facts.gd",

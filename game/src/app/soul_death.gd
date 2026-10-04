@@ -28,9 +28,14 @@ extends RefCounted
 ## 4. **A death that costs the soul is a WORLD FACT, recorded once** under
 ##    [constant FACT_ID]. The guardian branch returns above this step and records nothing —
 ##    a body the player kept was never buried, and a "deaths so far" fact that counted a
-##    spent item is a count nothing can reconcile with the world. The ledger is carried onto
-##    the re-embodied body, because `module_data` has the actor's lifetime and the new body is
-##    minted empty.
+##    spent item is a count nothing can reconcile with the world.
+## 5. **The ledgers RIDE the body swap, because the soul is what owns them** (ADR 0181).
+##    `module_data` has the actor's lifetime and the new body is minted empty, so
+##    [method _carry_facts] moves the `world_facts` rows across and [method _carry_destiny]
+##    moves the `destiny_state` rows across beside it — moved, never summed, and before
+##    `_rebind` so the composition root's `DestinyApi.attach` re-derives every projection
+##    from what is already there. Nothing is re-earned and nothing is reset: a fate earned by
+##    a person was earned by the soul, and the next body is wearing the same ledger.
 
 ## The authored base cost of a death before difficulty scales it. A constant here and not on
 ## the arrival, because a death costs what it costs regardless of which arrival is next.
@@ -50,6 +55,28 @@ const BASE_DEATH_COST := 20
 ## assembled at run time — `code_owned_supply` counts neither, so the id has to be this
 ## literal in this file.
 const FACT_ID := &"soul_died"
+
+## The one append-only marker key, naming the body this ledger was carried FROM.
+##
+## ## Why it is ADVISORY and not authoritative
+##
+## It answers the one question a copy cannot: "has this body ALREADY been given its parent's
+## ledger?". Without it, a save taken after a death and restored on the next one re-copies a
+## ledger onto a body that already had it — harmless today, because the copy is idempotent by
+## the duplicate guard above, and the very next field added to the ledger could stop being. The
+## flag itself is never load-bearing: the copy is correct with or without it, so nothing here may
+## ever branch on it to decide whether a fate exists. It is a receipt, not a rule.
+##
+## It is written THROUGH `set_module_data`, whose payload is a `Dictionary` like every other
+## value in `module_data` — core types the map that way, so a bare scalar would not compile —
+## and `Actor.to_dict` copies the whole `String`-keyed dictionary verbatim, so it rides ADR
+## 0027's existing mechanism and needs no `Actor` field, no migration and no envelope version.
+const CARRIED_FROM_KEY := &"soul_fate_carried_from"
+
+## The marker's one row. A wrapper rather than a bare string because `module_data` is
+## `Dictionary[StringName, Dictionary]` — `Actor.set_module_data`'s second parameter is typed, so
+## the value has to be a dictionary whatever this key means.
+const CARRIED_FROM_FIELD := "from"
 
 ## Whether this exact body has already had its death written by this class.
 ##
@@ -211,6 +238,52 @@ static func _carry_facts(from: Actor, to: Actor) -> void:
 	to.set_module_data(WorldFact.MODULE_KEY, ledger.duplicate(true))
 
 
+## Copy the whole DESTINY ledger from `from` onto `to`, so the fates, destinies, counters and
+## history a soul earned belong to the soul and not to the body plan it happened to be wearing
+## (ADR 0181). Placed beside [method _carry_facts] and not inside it, because the two ledgers are
+## separate keys with separate owners and a merge would be a second ledger rather than a carry.
+##
+## ## Why this is a carry and not a re-derive
+##
+## A fate counter is a DERIVATION of the fact ledger — `WorldFact.record` fires
+## `DestinyProjection.on_fact_recorded`, which is the only thing that has ever moved a counter
+## (`destiny_projection.gd`) — and `DestinyApi.record` is monotone with no verb to lower a count.
+## So after the swap the two memories disagree for good: `WorldFact.count(body, "duels_won")` reads
+## what `_carry_facts` moved, and `DestinyApi.state(body)["counters"]["duels_won"]` reads 0,
+## permanently. Re-deriving the counters from the carried facts on the new body was rejected by
+## ADR 0181: it would need exactly the lowering verb ADR 0065 forbids.
+##
+## ## Moved, never summed — the same guard, the same argument
+##
+## Two bodies each holding `duels_won: 3` and a sum that added them would report six for three,
+## and both ledgers are monotone with no refund (ADR 0065, ADR 0113), so a wrong count here is
+## permanent. The rows are taken from the falling body as the source of truth and never added
+## to. No projections are hand-copied either: the carry only has to put the rows on the new actor
+## BEFORE `_rebind`, and the composition root's own `DestinyApi.attach(actor)` normalizes the
+## ledger and re-derives every modifier and `destiny:` trait from it — a second stat composer
+## here is the ADR 0065 failure mode in reverse.
+##
+## A no-op on an empty ledger, so a hero who earned nothing has nothing written and a birth is
+## not turned into a rebirth by this line existing.
+static func _carry_destiny(from: Actor, to: Actor) -> void:
+	if from == null or to == null:
+		return
+	var ledger: Dictionary = from.get_module_data(DestinyState.MODULE_KEY)
+	if ledger.is_empty():
+		return
+	to.set_module_data(DestinyState.MODULE_KEY, ledger.duplicate(true))
+	_note_carried_from(to, from)
+
+
+## Record on `to` which body its destiny ledger came from. Called by [method _carry_destiny]
+## and nowhere else, and it never touches the ledger — a marker that could rewrite what it
+## annotates would stop being a marker.
+static func _note_carried_from(to: Actor, from: Actor) -> void:
+	if to == null or from == null:
+		return
+	to.set_module_data(CARRIED_FROM_KEY, {CARRIED_FROM_FIELD: String(from.id)})
+
+
 ## Whether `actor` is currently dead, read as `health <= 0.0`.
 ##
 ## The predicate the poll asks, kept here so the ONE definition of "dead" lives beside the ONE
@@ -309,6 +382,14 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 	var death_count := _record_death(actor)
 	if body != null:
 		_carry_facts(actor, body)
+		# Beside the fact carry, above the rebind, and for the same reason it is not below it:
+		# the new body must HOLD its parent's ledger before it is adopted, because the adopt
+		# callback is what runs the composition root's module list and `DestinyApi.attach`
+		# normalizes and re-projects from whatever is already on the actor. Carrying afterwards
+		# would land the rows on a body whose projection had already been built from an empty
+		# ledger, and the codex would render an oath whose numbers never reached the stat stack.
+		# ADR 0181: fate belongs to the soul, and this is the line that makes it so.
+		_carry_destiny(actor, body)
 	var reborn := SoulApi.reincarnate(actor, body_id)
 	if body != null and _rebind.is_valid():
 		# Every screen, roster and attached module follows the body. A half-swapped body is the

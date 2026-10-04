@@ -94,10 +94,25 @@ const PERIOD_SECONDS := 120.0
 ## a backlog that pays out later at a rate nobody chose.
 const MAX_PERIODS_PER_PULL := 8
 
-## The most events one advance may open. One, deliberately: an event is a story beat
+## The most events one advance may OPEN. One, deliberately: an event is a story beat
 ## a player is meant to notice, and opening four in one frame is four beats nobody
 ## saw. The rest are still `available` on the next advance.
+##
+## **This is a budget on openings, not on ATTEMPTS** — see `_open_available`, which is
+## where the distinction is load-bearing.
 const MAX_OPENS_PER_PULL := 1
+
+## The most events one advance may ASK `EventApi.begin` about, in the worst case this
+## loop can actually reach.
+##
+## **The bounded-wait rule, and this is what it is here for.** `tools arch`'s
+## `test_no_unbounded_wait` accepts a `for` only when it walks something the engine
+## bounds for it (`Array.size()`), so the loop cannot be driven by a list `max_opens`
+## would have to grow. That makes the SCAN cost proportional to how many events the
+## world allows — which is the authored tree, and the tree is bounded by content
+## rather than by this file — and the count above bounds only the part of it that
+## opens something.
+const MAX_OPEN_ATTEMPTS_PER_PULL := 16
 
 ## The fact a whole elapsed period accrues to. A flat id in `WorldFact`'s namespace,
 ## exactly as ADR 0113 requires — no prefix, because a prefixed id "reads as a
@@ -382,14 +397,54 @@ func _offer_ambient(horizon: int) -> void:
 ## the order `EventApi.available` gives them. `begin` is the authority on whether an
 ## event may open and re-checks the trigger itself, so asking here cannot open a
 ## locked event — it only decides how many the composition root spends a moment on.
+##
+## **A REFUSAL DOES NOT SPEND THE BUDGET, and that is the whole point of this method.**
+##
+## It used to break out of the loop as soon as `out.size()` reached the budget —
+## `out` being the list of events this pull SUCCESSFULLY opened. So an event that
+## `begin` declined — for any of its five named reasons, and in particular the
+## `too_many_active_events` cap that fires as soon as anything else is open — consumed
+## a slot in the budget that had not been spent, and everything after it in
+## `available` went unasked. **The loop's budget then belonged to the world's refusals
+## rather than to the world's openings.**
+##
+## Measured (BL-0747): `MAX_OPENS_PER_PULL` is 1, and the shipped tree puts two
+## events at `mortal_plains` behind the same ambient trigger. The pull that first
+## satisfies that trigger opens `beast_tide_of_the_mortal_plains`, spends its single
+## open, and stops — so `the_favour_of_elder_wei`, whose trigger was satisfied on that
+## very same pull, is not asked about. It is still `available`, and the NEXT pull opens
+## it. Nothing was refused wrongly; a *refusal* is no longer charged to the budget.
+##
+## **What this does NOT promise, and where two agents were misled:** it does not
+## promise that ONE pull opens every event the world allows, nor that the budget
+## spares a particular event. It promises only that the budget is spent on OPENINGS —
+## a refused candidate no longer consumes the one open. Which event wins a pull's single
+## open is decided by `available`'s order, and that order is the catalog's STRING order
+## (BL-0747, `_sorted_ids`), so with two events at one location behind one trigger the
+## alphabetically first takes the pull and the second waits for the next one. That is a
+## content-tree fact, not a bug: a caller that wants its event open must pull until it
+## is, which is what `tests/modules/npc/test_npc_tally_production_path.gd`'s
+## `_pull_until_open` does after this note cost two agents a wrong diagnosis.
+##
+## So the budget is now spent on OPENINGS: `begin` is still asked about every event
+## `available` offers, in order, and the loop stops when this pull has opened
+## [constant MAX_OPENS_PER_PULL]. The two budgets are separate on purpose — the second
+## one is not a player-facing one at all, it exists so the scan cannot become
+## unbounded work on a content tree with thousands of events, and it is not reached
+## by the shipped eight.
 func _open_available() -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	if _actor == null:
 		return out
-	for row in EventApi.available(_actor):
-		if out.size() >= MAX_OPENS_PER_PULL:
+	var candidates := EventApi.available(_actor)
+	var attempts := 0
+	for index in candidates.size():
+		if out.size() >= MAX_OPENS_PER_PULL or attempts >= MAX_OPEN_ATTEMPTS_PER_PULL:
 			break
-		var opened := EventApi.begin(_actor, StringName(row.get("event_id", "")), _periods)
+		attempts += 1
+		var opened := EventApi.begin(
+			_actor, StringName((candidates[index] as Dictionary).get("event_id", "")), _periods
+		)
 		if bool(opened.get("ok", false)):
 			out.append(opened)
 	return out

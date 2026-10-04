@@ -48,16 +48,21 @@ extends RefCounted
 ## answered with that creature's authored affliction, which is what "a boss can act"
 ## (BL-0224) means taken one step past crit and pierce.
 ##
-## ## Why the CHANCE and the POTENCY are arguments
+## ## Why the GATE and the POTENCY are arguments, and the gate is a VERDICT
 ##
 ## Both are the CALLER's, exactly as they are on `StatusApi.apply_cultivation` — "magnitude
-## stays the CALLER'S potency — the same contract `apply` has, one layer up". `chance` is
-## ADR 0087's gate resolved through the multiplicative resist formula, and potency is ADR
-## 0088's `element_power_<e>` term. Both live in `combat_engine`, and reading either here
-## would be a second cross-module edge (`loot -> combat_engine`) to reach one function, for
-## a number this module has no use for. A value at or below `0.0` on `chance` is the CLOSED
-## gate, which spends no draw at all, so it is answered here rather than at a roll that
-## will not happen.
+## stays the CALLER'S potency — the same contract `apply` has, one layer up". The potency is
+## ADR 0088's `element_power_<e>` term, and the gate is ADR 0087's, which lives in
+## `combat_engine`; reading either here would be a second cross-module edge
+## (`loot -> combat_engine`) to reach one function, for a number this module has no use for.
+##
+## The gate arrives as a boolean rather than as a probability, and that is the load-bearing
+## part: a probability handed to `loot` is a number this module cannot roll, so it compared
+## it to zero and discarded it — no rng anywhere, and ADR 0087's resist formula computed
+## two modules up went to waste. A verdict is something `loot` can act on. The roll stays
+## in `CombatExchange`, which owns the seeded exchange stream and derives the per-blow
+## substream from it exactly as `_status_on_landing` does for the player's own landed blow.
+## See [method inflict] for the full reasoning.
 ##
 ## ## Why COMBAT scope is required, and refused by name
 ##
@@ -110,8 +115,32 @@ static func affliction_of(active: Dictionary) -> StringName:
 
 ## Inflict `active`'s boss authored affliction on `actor`. Returns the [constant APPLIED]
 ## report, never null and never a half-applied status.
+##
+## ## Why `gate_open` is a VERDICT and this function holds no rng
+##
+## This signature used to take `chance: float` and compare it to `0.0` — and then never
+## used it again. Nothing on the affliction path held a generator: no roll, ever. So
+## `CombatExchange._boss_affliction_numbers` resolved ADR 0087's whole multiplicative
+## resist formula (`status_resistance`, `elemental_resistance_<e>`, `status_min_apply`),
+## passed the number down two modules, and it was thrown away. Every authored boss
+## affliction landed on the first blow that connected, 100% of the time, and the whole
+## amplifier channel this file exists to revive was landing at a rate no build could resist.
+##
+## The roll cannot be added here. `loot`'s registry entry is
+## `[contracts, core, items, status]` — no `loot -> combat_engine` edge — so this module
+## has no `CombatTuning` and no `StatusApply.status_seed`, and inventing a bare
+## `randf()` would be both non-deterministic and a SECOND place that owns "when is a roll
+## free", free to disagree with `_status_on_landing`'s rule. The edge runs `combat -> loot`,
+## so the roll is rolled UPSTREAM: `CombatExchange.exchange` derives the seeded substream
+## from its own exchange generator and rolls `chance` before it calls `LootApi.strike`, and
+## what arrives here is the ANSWER. This function therefore keeps no rng, keeps no chance
+## arithmetic, and cannot be asked to re-roll — the one property that makes the two paths
+## agree on when a draw is free.
+##
+## `gate_open = false` is ADR 0087's CLOSED gate (a resolved chance of `0.0`, or a roll that
+## came up against it) and is refused by name before any work is done.
 static func inflict(
-	actor: Actor, active: Dictionary, chance: float = 1.0, magnitude: float = 1.0
+	actor: Actor, active: Dictionary, gate_open: bool = true, magnitude: float = 1.0
 ) -> Dictionary:
 	var none := {APPLIED: false, &"id": "", &"reason": ""}
 	if actor == null:
@@ -126,9 +155,9 @@ static func inflict(
 		# See the docblock: a permanent blessing reached through a boss would outlive the
 		# fight, because ADR 0089's purge clears COMBAT scope and only COMBAT scope.
 		return _refused(none, NOT_COMBAT_SCOPE, status_id)
-	# ADR 0087's closed gate, answered before the apply so a refused gate spends no more
-	# work than it does draws.
-	if chance <= 0.0:
+	# ADR 0087's closed gate. Refused BEFORE the apply — and, upstream, before a single
+	# draw was taken: a closed gate costs no work and no randomness on either path.
+	if not gate_open:
 		return _refused(none, CLOSED_GATE, status_id)
 	var applied := StatusApi.apply(actor, status_id, magnitude)
 	return {
@@ -142,6 +171,19 @@ static func _refused(
 	none: Dictionary, reason: StringName, status_id: StringName = &""
 ) -> Dictionary:
 	var out: Dictionary = none.duplicate()
+	# The refusal goes under `&"reason"`, the key the APPLIED path above fills when
+	# `StatusApi.apply` itself refuses and the key `LootApi.strike` documents the whole
+	# report with (`{applied, id, reason}`, `api.gd`). It was written under `REFUSED`
+	# instead, which put a fourth key on a three-key contract that nothing indexes: every
+	# reader asked `reason` and saw `""`, so `UNKNOWN_STATUS`, `NOT_COMBAT_SCOPE` and
+	# `CLOSED_GATE` were each indistinguishable from a boss that authored nothing at all —
+	# exactly the distinction this file exists to preserve (see "Every refusal is NAMED").
+	# The three named facts are restored here, on the key they were always meant to be on.
+	out[&"reason"] = String(reason)
+	# `REFUSED` is kept alongside it, and is what `NO_ACTOR` is for: it marks the report as
+	# a refusal rather than an ordinary answer, so the vocabulary has one name for the whole
+	# class. A shipped report therefore carries `{applied, id, reason, refused}` — still
+	# primitives only (ADR 0038), so a screen renders it without naming this module.
 	out[REFUSED] = String(reason)
 	out[&"id"] = String(status_id)
 	return out

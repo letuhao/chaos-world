@@ -99,6 +99,18 @@ static func install_store(key: String, store: RefCounted) -> Dictionary:
 	return {"ok": true, "reason": "", "key": key}
 
 
+## The store registered for `key`, or `null` when none is.
+##
+## **Published so the composition root's economy boot can install THE SAME instance into a
+## module facade** (ADR 0165). One envelope key with two `WorldLedgerStore` instances is not a
+## second world — both re-read the file — but it is two objects that can drift, and the boot has
+## to decide between a save-backed store and the in-memory seam with ONE rule. Asking here is
+## that rule: a key the save owns is installed save-backed, and every other key gets the seam,
+## which is why a suite that installs the in-memory ledgers keeps them.
+static func store_for(key: String) -> RefCounted:
+	return _stores.get(key)
+
+
 ## Restore the persisted world into the installed stores. Called BEFORE any `Actor.from_dict`,
 ## so a body built from a restored save finds a world already in place rather than an empty one.
 ##

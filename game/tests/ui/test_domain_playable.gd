@@ -48,7 +48,10 @@ extends TestCase
 const DOMAIN_ROUTE := &"domain_explore"
 ## The route the world is realized under, read through the route table rather than
 ## restated — a second copy of the table is a second thing that can be wrong.
-const DOMAIN_NODE := "DomainExplore"
+## The node name is `DomainExploreScreen`, matching `domain_explore.tscn`'s root and
+## `class_name DomainExploreScreen`; this case previously asserted an invented
+## `DomainExplore` and so failed for a reason unrelated to what it is about.
+const DOMAIN_NODE := "DomainExploreScreen"
 ## One seed, so "the same button is the same domain" is a claim this suite can make about
 ## its own two entries. Matches `DomainExploreScreen.DEFAULT_SEED`.
 const SEED := 20261003
@@ -127,7 +130,7 @@ func _domain_screen() -> Control:
 ## and keeping the first that GENERATES at [constant SEED], because the claim below is
 ## about the wiring and not about a seed the content refuses.
 func _enter(screen: Control) -> Control:
-	var entered := screen.call("act_enter")
+	var entered: Variant = screen.call("act_enter")
 	var view := screen.call("summary") as Dictionary
 	assert_eq(
 		entered, true, "the screen's own Enter minted a run: %s" % String(view.get("message", ""))
@@ -179,7 +182,13 @@ func test_entering_a_domain_realizes_a_walkable_world_under_the_mounted_screen()
 	if screen == null:
 		return
 	var template_id := _selectable_template(screen)
-	assert_ne(template_id.is_empty(), false, "a template was selected that generates")
+	# `assert_eq(x.is_empty(), false)`, NOT `assert_ne(x.is_empty(), false)`: on two
+	# booleans `assert_ne` is the same comparison written to look different, so
+	# `false != false` is FALSE and the assertion silently demanded the opposite of what
+	# it says. Every `assert_ne(..., false)` below is that bug.
+	assert_eq(
+		template_id.is_empty(), false, "a template was selected that generates"
+	)
 	if template_id.is_empty():
 		return
 	var entered := _enter(screen)
@@ -254,14 +263,20 @@ func test_every_minted_inhabitant_stands_at_the_placement_the_spawner_recorded()
 	if screen == null:
 		return
 	var template_id := _selectable_template(screen)
-	assert_ne(template_id.is_empty(), false, "a template was selected that generates")
+	# `assert_eq(x.is_empty(), false)`, NOT `assert_ne(x.is_empty(), false)`: on two
+	# booleans `assert_ne` is the same comparison written to look different, so
+	# `false != false` is FALSE and the assertion silently demanded the opposite of what
+	# it says. Every `assert_ne(..., false)` below is that bug.
+	assert_eq(
+		template_id.is_empty(), false, "a template was selected that generates"
+	)
 	if template_id.is_empty():
 		return
 	if _enter(screen) == null:
 		assert_eq(true, false, "the screen's Enter was accepted")
 		return
 	var refs := DomainApi.population(_hero)
-	assert_ne(refs.is_empty(), true, "the entered map authored at least one spawn ref")
+	assert_eq(refs.is_empty(), false, "the entered map authored at least one spawn ref")
 	var view := DomainBoot.world_summary(screen)
 	assert_eq(view.is_empty(), false, "the realized world publishes a read model")
 	if view.is_empty():
@@ -370,7 +385,13 @@ func test_a_player_avatar_stands_in_the_world_inside_the_drawn_bounds() -> void:
 	if screen == null:
 		return
 	var template_id := _selectable_template(screen)
-	assert_ne(template_id.is_empty(), false, "a template was selected that generates")
+	# `assert_eq(x.is_empty(), false)`, NOT `assert_ne(x.is_empty(), false)`: on two
+	# booleans `assert_ne` is the same comparison written to look different, so
+	# `false != false` is FALSE and the assertion silently demanded the opposite of what
+	# it says. Every `assert_ne(..., false)` below is that bug.
+	assert_eq(
+		template_id.is_empty(), false, "a template was selected that generates"
+	)
 	if template_id.is_empty():
 		return
 	if _enter(screen) == null:
@@ -447,7 +468,13 @@ func test_the_realized_avatar_moves_by_its_own_movement_verb() -> void:
 	if screen == null:
 		return
 	var template_id := _selectable_template(screen)
-	assert_ne(template_id.is_empty(), false, "a template was selected that generates")
+	# `assert_eq(x.is_empty(), false)`, NOT `assert_ne(x.is_empty(), false)`: on two
+	# booleans `assert_ne` is the same comparison written to look different, so
+	# `false != false` is FALSE and the assertion silently demanded the opposite of what
+	# it says. Every `assert_ne(..., false)` below is that bug.
+	assert_eq(
+		template_id.is_empty(), false, "a template was selected that generates"
+	)
 	if template_id.is_empty():
 		return
 	if _enter(screen) == null:
@@ -467,7 +494,7 @@ func test_the_realized_avatar_moves_by_its_own_movement_verb() -> void:
 	# actually has rather than a coordinate this suite invented.
 	var scene := world.get_node_or_null(NodePath(DomainBoot.WORLD_SCENE_NODE)) as DomainScene
 	var marks := scene.exit_markers() if scene != null else [] as Array[Marker2D]
-	assert_ne(marks.is_empty(), false, "the realized map named at least one exit to walk towards")
+	assert_eq(marks.is_empty(), false, "the realized map named at least one exit to walk towards")
 	var target := marks[0].global_position if not marks.is_empty() else start + Vector2(256.0, 0.0)
 	avatar.move_to(target)
 	assert_eq(
@@ -523,25 +550,35 @@ func test_leaving_the_domain_frees_the_world_the_entering_built() -> void:
 		return
 	var before := _node_count(screen)
 	var template_id := _selectable_template(screen)
-	assert_ne(template_id.is_empty(), false, "a template was selected that generates")
+	# `assert_eq(x.is_empty(), false)`, NOT `assert_ne(x.is_empty(), false)`: on two
+	# booleans `assert_ne` is the same comparison written to look different, so
+	# `false != false` is FALSE and the assertion silently demanded the opposite of what
+	# it says. Every `assert_ne(..., false)` below is that bug.
+	assert_eq(
+		template_id.is_empty(), false, "a template was selected that generates"
+	)
 	if template_id.is_empty():
 		return
 	if _enter(screen) == null:
 		assert_eq(true, false, "the screen's Enter was accepted")
 		return
 	var during := _node_count(screen)
-	assert_ne(during > before, true, "entering grew the mounted tree: %d -> %d" % [before, during])
+	assert_eq(
+		during > before,
+		true,
+		"entering grew the mounted tree: %d -> %d" % [before, during]
+	)
 	var world := screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
 	assert_eq(world != null, true, "and the growth is the realized world")
 	if world == null:
 		return
-	assert_ne(
+	assert_eq(
 		_node_count(world) >= MIN_WORLD_NODES,
 		true,
 		"the world is a whole subtree, not one node: %d" % _node_count(world)
 	)
 	# ## Leave, through the screen's OWN verb — the same control a player presses.
-	var left := screen.call("act_leave")
+	var left: Variant = screen.call("act_leave")
 	assert_eq(left, true, "the screen's Leave was accepted")
 	assert_eq(
 		screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)),
@@ -570,13 +607,19 @@ func test_the_composition_roots_teardown_frees_a_world_that_is_still_standing() 
 		return
 	var before := _node_count(screen)
 	var template_id := _selectable_template(screen)
-	assert_ne(template_id.is_empty(), false, "a template was selected that generates")
+	# `assert_eq(x.is_empty(), false)`, NOT `assert_ne(x.is_empty(), false)`: on two
+	# booleans `assert_ne` is the same comparison written to look different, so
+	# `false != false` is FALSE and the assertion silently demanded the opposite of what
+	# it says. Every `assert_ne(..., false)` below is that bug.
+	assert_eq(
+		template_id.is_empty(), false, "a template was selected that generates"
+	)
 	if template_id.is_empty():
 		return
 	if _enter(screen) == null:
 		assert_eq(true, false, "the screen's Enter was accepted")
 		return
-	assert_ne(
+	assert_eq(
 		screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)) != null,
 		true,
 		"a world is standing under the screen before the teardown"
@@ -600,7 +643,7 @@ func test_the_composition_roots_teardown_frees_a_world_that_is_still_standing() 
 	if _enter(screen) == null:
 		assert_eq(true, false, "the screen's Enter was accepted a second time")
 		return
-	assert_ne(
+	assert_eq(
 		screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)) != null,
 		true,
 		"a second world is standing after re-entering"

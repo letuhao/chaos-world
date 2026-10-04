@@ -52,6 +52,13 @@ static func unpaid_verdict(
 	if settled:
 		view["winner_id"] = winner
 		view["outcome"] = String(standoff.get("outcome", NationState.OUTCOME_OPEN))
+		# What the war's OWN settlement landed, read back rather than replayed. A
+		# second call must not pay a second time, and reporting `0` would make a
+		# settled war read as one that paid nobody — so the amounts the closing call
+		# recorded are the answer here. A standoff closed before this field existed
+		# reports `0`, which is the truth for it.
+		view["standing_gained"] = int(standoff.get("standing_gained", 0))
+		view["standing_lost"] = int(standoff.get("standing_lost", 0))
 		# The ground the winner holds, read from the ledger rather than replayed, so
 		# the answer is about who holds it NOW.
 		var territory_id := String(standoff.get("territory_id", ""))
@@ -100,8 +107,8 @@ static func close(
 		# A broken side pays the surrender cost and moves nothing. The WINNER is
 		# paid nothing either: the war was not won, it was stopped.
 		loser_cost = absi(int(deltas.get(loser, int(tuning.standing_on_surrender))))
-	var gained := _pay(ledger, winner, winner_gain)
-	var lost := _pay(ledger, loser, -loser_cost)
+	var gained := _pay(ledger, winner, winner_gain, String(standoff.get("home_id", "")))
+	var lost := _pay(ledger, loser, -loser_cost, String(standoff.get("home_id", "")))
 	var transferred := ""
 	if (
 		outcome == NationState.OUTCOME_RESOLVED
@@ -114,6 +121,14 @@ static func close(
 	standoff["winner_id"] = winner
 	standoff["outcome"] = outcome
 	standoff["closed"] = true
+	# What this settlement ACTUALLY landed, kept on the standoff. A verdict that
+	# arrives after the war is closed must report the war's own settlement rather
+	# than zero — the caller is asking what that war paid, and replaying the tally
+	# to answer it is how a second call would look like a second payout. Reading it
+	# back is the same discipline `territory_transferred` already uses: the ground
+	# the winner holds NOW, not a fresh claim over it.
+	standoff["standing_gained"] = gained
+	standoff["standing_lost"] = lost
 	(ledger["standoffs"] as Dictionary)[String(standoff_id)] = standoff
 	_advance(ledger)
 	_record(ledger, outcome, StringName(winner), loser)
@@ -169,8 +184,20 @@ static func _transfer(ledger: Dictionary, standoff: Dictionary, winner: String) 
 ## Move one side's standing and return the amount that actually landed, clamped at
 ## zero. A defeat lowers a number and never dissolves an institution (ADR 0085), and
 ## a polity this actor does not speak for pays nothing.
-static func _pay(ledger: Dictionary, nation_id: String, delta: int) -> int:
-	if nation_id == "" or String(ledger.get("nation_id", "")) != nation_id:
+##
+## "Speaks for" is two ids, not one. `nation_id` is the POLITY the ledger belongs to,
+## and `standoff.home_id` is the side that DECLARED the standoff — the actor's own id,
+## which `declare_war` writes into the pair (`api.gd:370`). Those are not always the
+## same string, and the declaring side is by construction the side this actor was
+## speaking for, so refusing its payout would silently drop the declared prize
+## whenever a caller founded a nation under a different name than the actor carrying
+## it. The guard exists to stop a RIVAL's standing moving this ledger, and a rival
+## is neither of these two.
+static func _pay(ledger: Dictionary, nation_id: String, delta: int, home_id: String = "") -> int:
+	if nation_id == "":
+		return 0
+	var mine := String(ledger.get("nation_id", ""))
+	if nation_id != mine and (home_id == "" or nation_id != home_id):
 		return 0
 	var before := int(ledger["standing"])
 	ledger["standing"] = clampi(before + delta, 0, int(ledger["standing_cap"]))

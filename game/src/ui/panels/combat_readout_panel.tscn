@@ -1,0 +1,67 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/ui/panels/combat_readout_panel.gd" id="1"]
+[ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
+
+[node name="CombatReadoutPanel" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")
+
+[node name="Rows" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="VerdictLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = ""
+
+[node name="StagesLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = ""
+
+[node name="Separator" type="HSeparator" parent="Rows"]
+layout_mode = 2
+
+[node name="EffectsTitle" type="Label" parent="Rows"]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "What it left behind"
+
+[node name="EffectsLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"EffectLabel"
+autowrap_mode = 2
+text = ""
+
+[node name="WoundsLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = ""
+
+[node name="Separator2" type="HSeparator" parent="Rows"]
+layout_mode = 2
+
+[node name="ActorTitle" type="Label" parent="Rows"]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "The thrower"
+
+[node name="ActorLabel" type="Label" parent="Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = ""

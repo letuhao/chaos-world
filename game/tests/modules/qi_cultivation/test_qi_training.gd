@@ -184,11 +184,18 @@ func test_train_channel_rejects_unknown_channel() -> void:
 	assert_eq(QiTraining.train_channel(actor, &"not_a_meridian"), false, "unknown channel")
 
 
+## The recovery elixir is stocked, not the channel elixir: `train_channel` hands a
+## burn to `recover` (`training.gd:155-156`), which is priced by `recovery_item`
+## (ADR 0141). This test stocked `training_item` and so asserted that the channel
+## elixir alone repairs a burn — the exact defect ADR 0141 recorded and deleted,
+## still asserted here. `test_qi_repair_pricing.gd:110-120` asserts the opposite of
+## what this said, so the two suites contradicted each other and only the pricing
+## suite was right.
 func test_train_channel_repairs_an_injured_channel() -> void:
 	var actor := _actor()
 	var seed := QiRealmSeed.for_realm(&"qi_refining")
 	actor.meridians.damage_meridian(&"lung")
-	_stock(actor, seed.training_item)
+	_stock(actor, seed.recovery_item)
 	assert_eq(QiTraining.train_channel(actor, &"lung"), true, "repaired")
 	assert_eq(actor.meridians.get_meridian(&"lung").is_injured(), false, "no longer injured")
 

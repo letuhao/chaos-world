@@ -55,18 +55,27 @@ static func summary(
 
 
 ## Who is here right now, tracked and untracked in one read. `summaries` is the already
-## built list, so this owns only the envelope and the truncation flag.
+## built list, so this owns only the envelope, the location filter and the truncation flag.
+##
+## **A non-empty `location_id` FILTERS.** It used to be echoed straight into the result, so
+## the read model labelled its answer with a place it had never checked — a caller asking
+## "who is in `spirit_peaks`" was handed everyone, captioned as spirit_peaks. An empty id
+## means "everywhere", which is what a boot-time settlement wants.
 static func presence(
-	location_id: StringName, keys: Array[StringName], summaries: Array
+	location_id: StringName, _keys: Array[StringName], summaries: Array
 ) -> Dictionary:
-	var total := keys.size()
-	var limit := mini(total, MAX_PRESENCE_READ)
 	var kept: Array = []
-	for index in range(limit):
+	for index in range(summaries.size()):
+		if summaries[index].get("location_id", String(location_id)) != String(location_id):
+			continue
 		kept.append(summaries[index])
+	var total := kept.size()
+	if total > MAX_PRESENCE_READ:
+		total = MAX_PRESENCE_READ
+		kept = kept.slice(0, MAX_PRESENCE_READ)
 	return {
 		"location_id": String(location_id),
 		"count": kept.size(),
-		"truncated": total > limit,
+		"truncated": kept.size() < summaries.size(),
 		"npcs": kept,
 	}

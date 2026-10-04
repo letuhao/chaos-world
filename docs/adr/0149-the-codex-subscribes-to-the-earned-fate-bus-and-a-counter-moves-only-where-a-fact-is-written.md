@@ -11,6 +11,22 @@
 > an agent may already have read either. ADR 0149 is kept as an exact duplicate so a reader
 > who lands on either number finds the same decision.
 
+> **Corrected in place, 2026-10-05: the writer enumeration below was incomplete.** It read
+> "the director, `CombatFacts`, `ClanFacts`, `SectFacts`, `EventBeatWriter`, and
+> `CharacterCreationFlow`" — **six**, and it presented itself as exhaustive.
+> `app/soul_death.gd` (ADR 0130's `soul_died`) and `app/item_workbench_app.gd` (the birth's
+> `child_born`) are also writers. **The count is EIGHT**: `BeatDirector`, `CombatFacts`,
+> `ClanFacts`, `SectFacts`, `EventBeatWriter`, `CharacterCreationFlow`, `SoulDeath`,
+> `ItemWorkbenchApp`. Measured 2026-10-05: `tests/arch_rules/test_fact_ledger_writers.gd`
+> walks `res://src`, finds eight files whose CODE calls `WorldFact.record`, and asserts exact
+> array equality against its `KNOWN_WRITERS`. **The decision below is unchanged and is not what
+> was wrong** — the chokepoint is still `WorldFact.record`, for the reason given, and a hook
+> installed in `core` is still reached by every one of the eight. `ItemWorkbenchApp` is worth
+> naming explicitly because it is a composition root rather than a domain module: a reader who
+> assumed writers are domain modules would not have looked there. The same correction is
+> recorded in the canonical copy, ADR 0148, since this file is kept as its exact duplicate and
+> the two must not drift apart again.
+
 ## Context
 
 ADR 0136 decided the earned-fate bus was "deliberately reserved and currently unobserved,
@@ -37,8 +53,11 @@ calls `WorldFact.record` directly.
 - **A counter moves where a FACT IS WRITTEN, not where a beat is dispatched.**
   `WorldFact.record` is the single verb that writes the fact ledger — its own docstring says
   so — and every producer reaches it: the director, `CombatFacts`, `ClanFacts`, `SectFacts`,
-  `EventBeatWriter`, and `CharacterCreationFlow`. That is therefore the only chokepoint at
-  which a counter can be moved for every writer without a second dispatcher.
+  `EventBeatWriter`, `CharacterCreationFlow`, `SoulDeath` and `ItemWorkbenchApp`. **Eight**,
+  per the correction above; the enumeration is pinned by
+  `tests/arch_rules/test_fact_ledger_writers.gd` rather than restated here. That is therefore
+  the only chokepoint at which a counter can be moved for every writer without a second
+  dispatcher.
 - **`core/` publishes a hook slot; `app/` installs the destiny dispatch into it.** The hook
   must not make `core/` name `destiny` — `core/` may not depend on `modules/` at all, and
   `tools arch` enforces it. The dependency direction stays `app/` → `destiny`.

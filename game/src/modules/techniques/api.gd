@@ -48,6 +48,25 @@ const CASTING_COMPONENT := &"technique_casting"
 ## ```
 const DELIVERY := &"technique_delivery"
 
+## The ACTIVATION READBACK: what one landed cast actually moved, as primitives.
+##
+## NOT a facade method either, for the same reason as the two above — the cap is 12
+## and this module publishes 12. It is reached as a named type, which is what keeps
+## the readback a CONSTANT rather than a thirteenth verb:
+##
+## ```
+## var before := TechniqueCastView.snapshot(caster, foe)
+## var turn := TechniqueCastView.of(casting.activate(caster, def, foe), before, caster, foe)
+## ```
+##
+## It exists because `activate`'s `damage` is the spine's descriptor and the spine's
+## descriptor is fourteen fields about the SPINE. A turn that paid qi, spent a
+## cooldown, eroded a sea and wounded a meridian is four facts in four systems, and a
+## mind technique's damage is deliberately not in `amount` at all (ADR 0071 with ADR
+## 0162), so a caller reading the damage fields alone concludes it did nothing.
+## DEF-0097.
+const CAST_VIEW := "technique_cast_view"
+
 const STATE_KEY := &"technique_state"
 
 ## Affordability is compared with a tolerance, so a path holding exactly the price

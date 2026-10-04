@@ -33,6 +33,12 @@ const BUILD_TAG := "build:"
 ## portrait, so reading the wrong slot would give a player a full-body map sprite where a face
 ## belongs.
 const PORTRAIT_SLOT := "dialogue_portrait"
+## A slot is INSTALLED at either status, and only at one of the two.
+## `tools character_assets install` writes `approved` on the spot (`character_assets.py:1396`)
+## while this filter accepted `generated` alone, so every portrait the shipped `approve` command
+## produced fell through to the placeholder and the catalog reported art that resolved to nothing.
+## One set, read by the reader AND the audit: a second copy of this list is how the two drift again.
+const INSTALLED_STATUSES: Array[String] = ["generated", "approved"]
 
 static var shared: PortraitIndex = null
 static var _index_root: String = ""
@@ -85,7 +91,7 @@ func portrait_path(character_id: StringName) -> String:
 	var art = assets.get(PORTRAIT_SLOT)
 	if not (art is Dictionary):
 		return ""
-	if String((art as Dictionary).get("status", "")) != "generated":
+	if not String((art as Dictionary).get("status", "")) in INSTALLED_STATUSES:
 		return ""
 	return String((art as Dictionary).get("path", ""))
 
@@ -151,7 +157,7 @@ func validate() -> Array[String]:
 			problems.append("character %s has no %s slot" % [character_id, PORTRAIT_SLOT])
 			continue
 		var entry := art as Dictionary
-		if String(entry.get("status", "")) != "generated":
+		if not String(entry.get("status", "")) in INSTALLED_STATUSES:
 			problems.append("character %s portrait is %s" % [character_id, entry.get("status", "")])
 			continue
 		var path := String(entry.get("path", ""))

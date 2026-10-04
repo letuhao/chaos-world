@@ -1243,6 +1243,23 @@ def _prompt(
         "hearing-aid-user": "a character with visible hearing aids",
         "limb-difference": "a character with a visible limb difference, shown matter-of-factly",
     }[traits["disability"]]
+    if slot == "dialogue_portrait":
+        disability = {
+            "none": "no visible disability marker",
+            "wheelchair-user": "the same wheelchair user, with the wheelchair outside this"
+            " head-and-shoulders frame",
+            "mobility-cane-user": "the same mobility-cane user, with the cane outside this"
+            " head-and-shoulders frame",
+            "white-cane-user": "the same white-cane user, with the cane outside this"
+            " head-and-shoulders frame",
+            "prosthetic-arm": "the same character with a functional prosthetic arm, outside"
+            " this head-and-shoulders crop",
+            "prosthetic-leg": "the same character with a functional prosthetic leg, outside"
+            " this head-and-shoulders crop",
+            "hearing-aid-user": "a character visibly wearing hearing aids",
+            "limb-difference": "the same character with a limb difference; keep the portrait"
+            " focused on their face and shoulders",
+        }[traits["disability"]]
     injury = {
         "none": "no visible injury",
         "healing-bandage": "a few clean bandages showing a minor healing injury",
@@ -1273,11 +1290,17 @@ def _prompt(
         else " Sprite gaze: head upright and level, face toward the camera, eyes directed straight "
         "at the viewer from eye height; keep the face and full silhouette readable."
     )
-    wardrobe = (
-        f"Wardrobe: {attire}, adapted to the {traits['setting']} setting. Adults may wear "
-        "fashionable revealing outfits or swimwear, but clothing remains opaque and nonsexual. "
-        "Children and teenagers wear age-appropriate non-revealing clothes."
-    )
+    wardrobe = f"Wardrobe: {attire}, adapted to the {traits['setting']} setting. "
+    if age_group in {"child", "teen"}:
+        wardrobe += (
+            "Use age-appropriate non-revealing clothing with a closed high neckline, opaque "
+            "fabric, and the chest and shoulders fully covered."
+        )
+    else:
+        wardrobe += (
+            "Adults may wear fashionable revealing outfits or swimwear, but clothing remains "
+            "opaque and nonsexual."
+        )
     return (
         f"One character, identity {record['id']}: {age}; {presentation}; {body_shape}; {race}. "
         f"{framing}.{gaze} "

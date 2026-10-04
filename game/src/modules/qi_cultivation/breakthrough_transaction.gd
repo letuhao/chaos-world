@@ -168,24 +168,6 @@ static func execute(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	return true
 
 
-## Attempt to cancel a committed breakthrough. This counts as a failed attempt
-## with disclosed recoverable consequences. It cannot refund/reroll into a free
-## second attempt.
-static func cancel(actor: Actor) -> bool:
-	var state := actor.path(QiPath.PATH_ID)
-	if state == null:
-		return false
-	var target := RealmDefaults.ladder().next(state.rank_id)
-	if target == null:
-		return false
-	var seed := QiRealmSeed.for_realm(target.id)
-	var dantian := QiAccess.dantian(actor)
-	if seed == null or dantian == null:
-		return false
-	_deviate(actor, state, seed, dantian, null)
-	return true
-
-
 # --- Internals ---------------------------------------------------------------
 
 

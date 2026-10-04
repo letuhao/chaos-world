@@ -88,7 +88,7 @@ func bind(bridge: DomainBridge) -> void:
 ## the gates read are the same read rather than two that can disagree.
 func refresh(actor: Actor) -> void:
 	_actor = actor
-	_view = _active()
+	_view = _read_active()
 	_templates = _read_templates()
 	_reconcile_selection()
 
@@ -372,6 +372,27 @@ func _read_templates() -> Array:
 	if _bridge == null or not _bridge.has(&"list_templates"):
 		return []
 	return _bridge.call_list(&"list_templates")
+
+
+## What the MODULE reports is active, or `{}` outside a run.
+##
+## Unwraps the `active` key the seam publishes rather than storing the whole envelope:
+## the model's `_view` is the run itself, and every reader below — `summary()`'s counts,
+## `active()`, `_status_text()` — wants the run and not `{has_actor, templates, active}`.
+## Guarded like the reads beside it, because `_ready()` runs before `bind_bridge` has
+## ever been called and a screen the shell has not wired yet reaches this.
+##
+## This is the read the refactor renamed and then left calling as `_active()`, a
+## function that has never existed in this file: the parse error it raised made this
+## script register as a bare `GDScript` with no `new`, which is what left `_model` null
+## on every live screen and turned each refresh into `Nonexistent function ... in base
+## 'Nil'`. The name is `read_`-prefixed to sit beside `_read_templates`, its twin in
+## this same section.
+func _read_active() -> Dictionary:
+	if _bridge == null or not _bridge.has(&"read_active"):
+		return {}
+	var envelope := _bridge.call_action(&"read_active", [_actor])
+	return envelope.get("active", {}) as Dictionary
 
 
 ## The floor plan, exactly as the module rendered it. `{}` outside a run, which the

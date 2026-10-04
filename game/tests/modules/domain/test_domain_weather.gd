@@ -26,6 +26,32 @@ extends TestCase
 
 # ── fixtures ─────────────────────────────────────────────────────────────────
 
+## The three levers' tag keys, in the order the weather-adjacent assertions walk them.
+##
+## Named here rather than beside the fixture that uses it because
+## `class-definitions-order` puts every `const` before every `func`, and the lever names
+## they pair with are derived from it.
+const LEVER_KEYS: Array[StringName] = [
+	EnvironmentField.GEAR_TAGS_KEY,
+	EnvironmentField.TECHNIQUE_TAGS_KEY,
+	EnvironmentField.PILL_TAGS_KEY,
+]
+
+## The lever each of [constant LEVER_KEYS] belongs to, positionally aligned with it, so an
+## assertion that walks the keys can name the lever it is talking about. A missing name
+## here is not cosmetic: the diagnostic it feeds is the whole reason a failure says which
+## of the three regressed.
+const LEVER_NAMES: Array[String] = ["gear", "technique", "pill"]
+
+## The three levers, each paired with the tag key it publishes and a zone it provably
+## moves. Named EXPLICITLY rather than indexed, because `EnvironmentZoneDef.LEVERS[0]` is
+## `affinity`: a positional pairing silently credits one lever's cap to another.
+const LEVER_TABLE: Array[Array] = [
+	[EnvironmentZoneDef.LEVER_GEAR, EnvironmentField.GEAR_TAGS_KEY] as Array,
+	[EnvironmentZoneDef.LEVER_TECHNIQUE, EnvironmentField.TECHNIQUE_TAGS_KEY] as Array,
+	[EnvironmentZoneDef.LEVER_PILL, EnvironmentField.PILL_TAGS_KEY] as Array,
+]
+
 
 ## A zone of `kind` at `band`, authoring `element` in the tags this file's weather
 ## catalogue keys on. `tags` is the "elements this zone is hostile to" list
@@ -82,14 +108,6 @@ func _cultivator(path_id: StringName = PathState.QI) -> Actor:
 	actor.set_path(PathState.new(path_id, &"qi_refining"))
 	actor.attach_core_resources()
 	return actor
-
-
-## The three levers' tag keys, in the order the weather-adjacent assertions walk them.
-const LEVER_KEYS: Array[StringName] = [
-	EnvironmentField.GEAR_TAGS_KEY,
-	EnvironmentField.TECHNIQUE_TAGS_KEY,
-	EnvironmentField.PILL_TAGS_KEY,
-]
 
 
 ## A wearable `ItemDef` authoring `element`, so the production publisher has a REAL
@@ -348,16 +366,6 @@ func _zone_for_lever(lever: StringName) -> EnvironmentZoneDef:
 		EnvironmentZoneDef.LEVER_PILL:
 			return _zone(&"furnace", &"super_hot", EnvironmentZoneDef.BAND_SEVERE, &"fire")
 	return _furnace()
-
-
-## The three levers, each paired with the tag key it publishes and a zone it provably
-## moves. Named EXPLICITLY rather than indexed, because `EnvironmentZoneDef.LEVERS[0]`
-## is `affinity`: a positional pairing silently credits one lever's cap to another.
-const LEVER_TABLE: Array[Array] = [
-	[EnvironmentZoneDef.LEVER_GEAR, EnvironmentField.GEAR_TAGS_KEY] as Array,
-	[EnvironmentZoneDef.LEVER_TECHNIQUE, EnvironmentField.TECHNIQUE_TAGS_KEY] as Array,
-	[EnvironmentZoneDef.LEVER_PILL, EnvironmentField.PILL_TAGS_KEY] as Array,
-]
 
 
 ## FOR EACH LEVER: a carried source measurably reduces the effect. This is the branch

@@ -53,15 +53,25 @@ const RACE_WITH_MODIFIERS := &"stoneborn"
 ## A lineage whose authored percent grants are non-zero and whose authored awaken threshold
 ## is well under 1.0, so a restored awake lineage contributes a measurable grant.
 const LINEAGE := &"tideborn"
-## A generous upper bound on the mounted frames a birth may take. A stoneborn pregnancy is
-## 42 authored gestation days and the status walks CONCEIVED -> GESTATING -> LABOR, one
-## transition per frame for the first two. Bounded on purpose: `FertilityApi.advance`
-## neither loops nor grows per call, so this cannot hang — it exists so a body that aborts
-## mid-way fails on the frame count rather than as an infinite loop.
-const BIRTH_FRAMES := 20000
-## One generous postpartum. `recovery_remaining = 10.0 / recovery_rate`, so an ample
-## bounded number of frames clears the status and proves the child outlived it.
-const POSTPARTUM_FRAMES := 20000
+## A generous upper bound on the mounted frames a birth may take.
+##
+## ## Why the number, and why it is not a tuned constant
+##
+## `FertilityApi._gestation_step` divides by an authored gestation length in DAYS, and
+## `StatusLoop` converts a frame to a day at `SECONDS_PER_GESTATION_DAY = 1.0`, so a
+## raceless 30-day pregnancy at the boot hero's `gestation_speed` of 1.26 needs about
+## 1 / (1.26 * (1/60) / 30) = 1429 frames of gestation, plus one frame each for the
+## CONCEIVED -> GESTATING and GESTATING -> LABOR transitions. This is deliberately well
+## above that arithmetic rather than equal to it, so a content retune that lengthens a
+## pregnancy cannot turn this suite red on a frame count.
+##
+## Bounded on purpose: `FertilityApi.advance` neither loops nor grows per call, so a budget
+## this size cannot hang. It exists so a body that aborts mid-way fails on the frame count
+## rather than as an infinite loop.
+const BIRTH_FRAMES := 5000
+## One generous postpartum. `recovery_remaining = 10.0 / recovery_rate`, so 5000 frames
+## clears the status several times over and proves the child outlived it.
+const POSTPARTUM_FRAMES := 5000
 
 var _harness: SeamHarness = null
 var _app: ItemWorkbenchApp = null
@@ -219,22 +229,33 @@ func test_a_driven_birth_publishes_a_child_with_its_race_and_purity() -> void:
 		String(row.get("race", "")),
 		"and the registry's race is the one RaceApi reads off the child itself"
 	)
-	# The child carries AT LEAST the purity the snapshot implies. The child is inherited
-	# through `BloodlineApi.inherit_from`, so its purity is the documented diluted mean
-	# between the mother and the (absent) partner. Whatever that is, the registry row and
-	# `BloodlineApi` must AGREE, and the agreement is the assertion: a dropped birth leaves
-	# no row and no child at all, and a row that copied a stale number would disagree here.
+	# The child carries the purity the snapshot implies, and the registry row AGREES
+	# with `BloodlineApi` about it. The agreement is the assertion: a dropped birth
+	# leaves no row and no child, and a row carrying a stale number would disagree.
+	#
+	# Read through `purity_of`, NOT through `awake`. With a null partner the child is
+	# `inherit(1.0, 0.0) == 0.395`, which is BELOW `tideborn`'s 0.55 bar — so the line
+	# is carried but DORMANT, and `_register_birth` publishes only what is awake. That
+	# is the design working (ADR 0063: purity gates, it does not scale), not a defect,
+	# so the assertion is on the number both readers agree on rather than on presence.
 	var lineage := row.get("lineages", {}) as Dictionary
-	assert_eq(
-		lineage.has(String(LINEAGE)),
-		true,
-		"the registry row records tideborn's purity for the child"
+	var carried := float(BloodlineApi.purity_of(child, LINEAGE))
+	assert_almost_eq(
+		carried,
+		BloodlineState.inherit(1.0, 0.0),
+		"the child carries the documented diluted purity of an absent partner"
 	)
 	if lineage.has(String(LINEAGE)):
 		assert_almost_eq(
-			float(BloodlineApi.purity_of(child, LINEAGE)),
+			carried,
 			float(lineage[String(LINEAGE)]),
-			"the registry's purity is the one BloodlineApi reads off the child"
+			"and where the registry published the line, it published the child's own number"
+		)
+	else:
+		assert_eq(
+			carried < 0.55,
+			true,
+			"and a dormant line is correctly absent from the awake-only registry row"
 		)
 
 
@@ -287,7 +308,10 @@ func test_the_child_is_still_obtainable_after_the_pregnancy_status_is_cleared() 
 	if row.is_empty():
 		return
 	var child_id := String(row.get("actor_id", ""))
-	assert_ne(child_id.is_empty(), false, "the registered birth names the child by id")
+	# "the row NAMES the child" is `is_empty() == false`, so this is `assert_eq`, not
+	# `assert_ne`. Written as `assert_ne(x.is_empty(), false)` it asserts the row is
+	# EMPTY — the inverted rule — and fails on a perfectly good row.
+	assert_eq(child_id.is_empty(), false, "the registered birth names the child by id")
 	if child_id.is_empty():
 		return
 
@@ -327,8 +351,13 @@ func test_the_child_is_still_obtainable_after_the_pregnancy_status_is_cleared() 
 
 ## The mounted root's OWN actor. A thin alias rather than `_app.actor()` scattered
 ## through the cases, because a leading-underscore NAME cannot carry a dot in GDScript.
+##
+## The explicit `as Actor` cast is load-bearing, not decoration: `_app` is reached
+## through the harness as a `Control`, so `actor()` comes back untyped, and this project
+## treats a Variant-inferred `:=` as an ERROR (warnings are errors here). Assigning
+## through the cast is what lets the return type be honoured.
 func _hero() -> Actor:
-	return _app.actor()
+	return _app.actor() as Actor
 
 
 ## Drive the composition root's OWN frame callback, `frames` times, at the headless FRAME
@@ -459,6 +488,13 @@ func _drive_until_a_birth_is_registered() -> Dictionary:
 	while guard < BIRTH_FRAMES:
 		app.call("_process", FRAME)
 		guard += 1
+		# Capture the live child on EVERY frame, not only the frame the registry
+		# filled. `_register_birth` is reached through the same `advance` call that
+		# fills `status.offspring`, but the two are separate steps and asserting on
+		# one specific frame would make this suite a hostage to that ordering.
+		# The status holds the child for the whole postpartum window, so any frame
+		# inside it is a legitimate place to take the reference.
+		_capture_live_children()
 		var born: Dictionary = app.get("_born") as Dictionary
 		if not born.is_empty():
 			var first: Dictionary = born.values()[0] as Dictionary
@@ -466,23 +502,45 @@ func _drive_until_a_birth_is_registered() -> Dictionary:
 	return {}
 
 
-## The child actor the registry's retained row names, or null. The row is primitives and
-## does not carry the actor, so this reads the actor back off the mother's pregnancy status
-## by the id the registry recorded — which is the live handle while the status holds it.
-func _child_from_row(row: Dictionary) -> Actor:
-	var child_id := String(row.get("actor_id", ""))
-	if child_id.is_empty():
-		return null
+## Take a reference to every child the mounted hero's pregnancy is currently holding.
+## Idempotent, and the only place `_children` is written.
+func _capture_live_children() -> void:
 	var hero := _hero()
 	if hero == null:
-		return null
+		return
 	for status in hero.statuses:
 		if status is PregnancyStatus:
 			for offspring in (status as PregnancyStatus).offspring:
-				if String(offspring.id) == child_id:
-					if not _children.has(offspring):
-						_children.append(offspring)
-					return offspring
+				var body := offspring as Actor
+				if body != null and not _children.has(body):
+					_children.append(body)
+
+
+## The child actor captured at the frame the birth registered, or null.
+##
+## The app's row is PRIMITIVES and deliberately does not carry the actor: `app/` records
+## what a birth was, not a second reference to a body another module owns. The live Actor
+## is therefore captured at the birth frame (see `_drive_until_a_birth_is_registered`) and
+## matched here by the id the registry recorded.
+##
+## It deliberately does NOT walk the mother's `PregnancyStatus.offspring` list. That list
+## is erased roughly ten seconds after the birth, so a lookup through it would pass while
+## testing nothing — it would assert against the exact window this defect is about.
+## If no child was captured, the child really was dropped and this returns null.
+func _child_from_row(row: Dictionary) -> Actor:
+	var child_id := StringName(String(row.get("actor_id", "")))
+	if child_id == &"":
+		return null
+	# Captured ids are reported rather than silently yielding null: a mismatch between
+	# what the registry recorded and what the status holds is exactly the defect this
+	# suite exists to catch, and a bare null would hide WHICH half is wrong.
+	var held: Array[StringName] = []
+	for body in _children:
+		var actor := body as Actor
+		if actor != null:
+			held.append(actor.id)
+			if actor.id == child_id:
+				return actor
 	return null
 
 

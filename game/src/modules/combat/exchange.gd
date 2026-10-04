@@ -57,24 +57,42 @@ const OUTCOME_BOSS_DEFEATED := "boss_defeated"
 ## The boss outlasted the player and the run is over.
 const OUTCOME_PLAYER_LOST := "player_lost"
 
-## ADR 0105's substitute for ADR 0087's per-technique `status_chance`.
+## ADR 0105's substitute for ADR 0087's per-technique `status_chance`: the base gate
+## chance, before ADR 0087's resist terms are subtracted, for BOTH statuses an exchange
+## can inflict — the player's own landed blow and the boss's authored affliction.
 ##
-## ## Why this is a CONSTANT here and not an authored number
+## ## Why it is NOT on `CombatTuning`, and why that is a real limitation, not a shrug
 ##
-## ADR 0087's gate is authored ON A TECHNIQUE, and ADR 0105 refuses a `TechniqueDef`
-## field for it (the element is the carrier, and `techniques` is at its 12-method cap).
-## That refusal removes the only place the number could be authored without adding a
-## balance surface ADR 0105 did not decide — so the base chance lives here, as one
-## named, documented value in the module that spends it. It is NOT a second magnitude
-## vocabulary: ADR 0087's resist formula and ADR 0088's `element_power_<e>` potency are
-## both still the only arithmetic, read from `StatusApply` unchanged.
+## AGENTS.md says the balance surface is DATA, and `CombatTuning` is this repo's balance
+## surface — so the honest home for this number is a `status_gate_chance` `@export` beside
+## `status_min_apply` / `status_potency_scale`. That field does not exist, and this wave's
+## charter forbids editing `modules/combat_engine/**` (another agent owns it), so the
+## number stays a documented constant HERE. That is a KNOWN debt with a one-line fix: add
+## `@export var status_gate_chance: float = 0.0` to `CombatTuning`, author it in
+## `combat_damage.tres` at `1.0`, and make this read
+## `CombatEngineApi.tuning().status_gate_chance` — the call site below is already shaped for
+## exactly that substitution, and `STATUS_GATE_CHANCE` becomes the bare-schema fallback.
+## Until then it is NOT a literal in logic: it is one named constant, every read of it is in
+## this file, and it is documented as the dial.
 ##
-## At `1.0` the gate is saturated, so the resist terms decide the roll on their own and
-## this constant moves nothing yet — which is deliberate. It is the ONE dial a balance pass
-## turns, and turning it cannot require editing ten `.tres` or a technique catalogue.
-## Should a future ADR give the gate a home in content, this constant is the single line
-## to delete, because every read of it is here.
-const STATUS_CHANCE := 1.0
+## ## Why `1.0` is still the shipped value, and what `1.0` does and does not mean
+##
+## `1.0` does NOT mean "resistance is ignored". `StatusApply.apply_chance` is
+## `clampf(gate * (1 - STATUS_RESISTANCE) * (1 - elem_resist), status_min_apply, 1.0)`, so
+## a gate of `1.0` hands the whole decision to the two resist terms and the roll below —
+## which is the correct reading, and it is what ADR 0087's formula is FOR. What `1.0` DOES
+## mean is that the BASE rate is unconditional: lowering it to `0.6` makes a resisted actor's
+## landed status *and* a boss's affliction both rarer in proportion, without touching
+## `status_min_apply` (the floor that keeps an open gate from reaching zero) or either
+## `magnitude_cap`. A balance pass wants that dial and this constant is it.
+##
+## The shipped rate is deliberately unchanged from what was measured. The defect was never
+## that `1.0` is a bad number; it was that the boss's path DISCARDED the resolved chance
+## instead of rolling it (`LootAffliction.inflict` compared `chance` to zero and then never
+## used it), so every boss affliction landed 100% of the time regardless of
+## `status_resistance`. Both paths now roll, identically, so `1.0` finally means what it
+## always said — and a rebalance is this one line, not ten `.tres` and not a catalogue.
+const STATUS_GATE_CHANCE := 1.0
 
 
 ## Run one exchange against the live boss.
@@ -115,13 +133,15 @@ static func exchange(actor: Actor, seed_value: int = 0) -> Dictionary:
 	# The two ADR 0087/0088 numbers the BOSS's own affliction is paid with, resolved
 	# through the same two spine calls and in the same order as `_status_on_landing` uses
 	# for the player's own blow, so the two statuses an exchange can inflict are gated by
-	# one formula and neither is a second opinion about what chance means.
-	var afflictions := _boss_affliction_numbers(actor, active)
+	# one formula and neither is a second opinion about what chance means. `gate_open` is
+	# the ROLLED verdict, not the chance: `loot` cannot roll it (no `combat_engine` edge),
+	# so the gate travels down as an answer.
+	var afflictions := _boss_affliction_numbers(actor, active, rng, float(blow["share"]))
 	var struck := LootApi.strike(
 		actor,
 		float(blow["share"]) * float(active["vitality_max"]),
 		seed_value,
-		float(afflictions["chance"]),
+		bool(afflictions["gate_open"]),
 		float(afflictions["potency"])
 	)
 	var after := LootApi.summary(actor).get("active", {}) as Dictionary
@@ -315,7 +335,10 @@ static func _status_on_landing(
 		return none
 	var tuning := CombatEngineApi.tuning()
 	var chance := StatusApply.apply_chance(
-		STATUS_CHANCE, actor, tuning, StatusApply.elemental_resist(actor, actor, tuning, element)
+		STATUS_GATE_CHANCE,
+		actor,
+		tuning,
+		StatusApply.elemental_resist(actor, actor, tuning, element)
 	)
 	var status_id := StatusApi.status_for_element(element, chance)
 	if status_id == &"":
@@ -400,49 +423,105 @@ static func _element_of(actor: Actor) -> StringName:
 	return best
 
 
-## ADR 0087's gate and ADR 0088's potency for the status the BOSS inflicts, as
-## `{chance, potency}`.
+## ADR 0087's gate and ADR 0088's potency for the status the BOSS inflicts, resolved and
+## ROLLED as `{chance, potency, gate_open}`.
 ##
-## ## Why this is the same pair `_status_on_landing` computes, and not a second formula
+## ## Why this ROLLS, and why the roll lives HERE rather than in `LootAffliction`
 ##
-## Both statuses an exchange can inflict are gated by ONE resist formula and ONE elemental
-## term, resolved from the same `CombatEngineApi.tuning()` and the same `StatusApply`
-## arithmetic. A boss's affliction that computed its own chance would be a second opinion
-## about what `status_resistance` means, and `elemental_resistance_<e>` would silently mean
-## two things on one exchange.
+## Measured before this edit: this function returned a `chance` that
+## `LootAffliction.inflict` compared against `0.0` and then DISCARDED — no rng, no roll,
+## anywhere on the affliction path — so every authored boss affliction landed on the first
+## blow that connected, and `Stat.STATUS_RESISTANCE` (computed right here, passed down two
+## modules, and thrown away) had no visible effect on anything. The gate was theatre.
 ##
-## ## Why the ELEMENT is the boss's AFFLICTION element, not the player's affinity
+## The roll cannot live in `loot`. `loot`'s registry entry is
+## `[contracts, core, items, status]` — it does NOT depend on `combat_engine` — and giving
+## it the substream would mean a `loot -> combat_engine` edge, a second place that owns ADR
+## 0087's `status_seed` shape, and the two paths would then be free to disagree about when a
+## roll is free. So the roll happens here, in the module that already owns a seeded
+## substream for exactly this purpose, and the RESULT travels down `LootApi.strike` as a
+## VERDICT rather than as a probability. `loot` keeps no rng, keeps no chance arithmetic,
+## and cannot be asked to re-roll.
 ##
-## ADR 0088's term is the INFLECTING creature's `element_power_<e>`, and the inflicting
-## creature here is the boss. The boss is a `Dictionary` with no `Actor` to read a stat
-## off, and ADR 0088's floor (`status_potency_floor`) is exactly the documented answer for
-## a source with no elemental affinity yet — so the number this returns is the floor until
-## a boss ever carries elemental power of its own, which is the same known dependency the
-## landed-blow path already names (`exchange.gd:317-323`). It is read, not invented.
+## ## The SUBSTREAM, mirrored from `_status_on_landing` line for line
 ##
-## ## Why an empty id costs nothing
+## The discipline is the player's own landed-blow path's, unchanged:
 ##
-## A boss nobody authored an affliction for reads `chance 0.0`, which is ADR 0087's CLOSED
-## gate and spends no draw. The refusal is decided before any arithmetic, so the common
-## case — the whole corpus as it stood before this field existed — pays nothing.
-static func _boss_affliction_numbers(actor: Actor, active: Dictionary) -> Dictionary:
+## ```
+## var stream := RandomNumberGenerator.new()
+## var seed_value := StatusApply.status_seed(rng.seed, actor, actor, active, salt)
+## stream.seed = seed_value        # `state` is RAW PCG, never assigned
+## if chance < 1.0 and not stream.randf() < chance:
+##     return closed
+## ```
+##
+## Three properties are load-bearing and all three are inherited, not reinvented:
+##
+## - `stream.seed = seed_value` ONLY. `RandomNumberGenerator.state` is the RAW PCG state,
+##   not a seed; assigning it discards the mixing `seed` performs. That bug was already
+##   found and fixed once here (see `_status_on_landing`), and re-introducing it in a second
+##   function is exactly how it comes back.
+## - `rng.seed` is the shared EXCHANGE stream, which `_answer` also draws from. Taking a
+##   draw off it would re-roll the boss's return stroke — adding a status would change the
+##   damage the boss deals. The status stream is DERIVED from it, never consumed from it, so
+##   the affliction cannot perturb the blow that triggered it.
+## - A saturated chance consumes NO draw, matching `_status_on_landing`, `StatusApply` and
+##   `CombatBand.roll`: the stream is derived, so nothing here can shift a later blow either
+##   way, but the rule is kept identically in both functions so the two paths cannot drift
+##   on when a roll is free.
+##
+## ## Why the salt is the boss's SHARE, not the landed-blow counter
+##
+## `_status_on_landing` salts on `_hit_index(actor)`, which it increments itself, because a
+## landed blow must not replay the previous blow's answer. The affliction has no counter of
+## its own to bump — `loot` owns the boss's lifecycle and `combat` must not write into it —
+## so the SALT is instead the share the blow actually dealt, scaled to an integer. Two
+## properties fall out of that choice and both are wanted:
+##
+##   - `chain_depth` / recursion cannot bite. The salt is a pure function of a blow that is
+##     already resolved, so a re-entrant call re-DERIVES rather than consumes: no shared
+##     cursor advances and no depth counter can be read twice.
+##   - Two blows that dealt the same share re-roll the same verdict (determinism), and two
+##     blows that dealt different shares almost never do (the replay bug). The share spans
+##     `CombatDamage`'s clamped `[MIN_SHARE, 1.0]` and is a function of the attack roll
+##     alone, which is what makes it a per-blow value rather than a per-fight constant.
+##
+##   The scaling is used for the SALT ONLY and never for the comparison: the roll itself is
+##   `stream.randf() < chance` against the full-precision `chance`, so two blows in the same
+##   hundredth bucket are answered by one draw but not by one PROBABILITY.
+static func _boss_affliction_numbers(
+	actor: Actor, active: Dictionary, rng: RandomNumberGenerator, share: float
+) -> Dictionary:
+	var none := {"chance": 0.0, "potency": 0.0, "gate_open": false}
 	var status_id := StringName(active.get("affliction", ""))
 	if actor == null or status_id == &"":
-		return {"chance": 0.0, "potency": 0.0}
+		return none
 	var def := StatusApi.definition(status_id)
 	if def == null or not def.is_combat_scope():
-		return {"chance": 0.0, "potency": 0.0}
+		return none
 	var tuning := CombatEngineApi.tuning()
 	var element := def.element
+	var chance := StatusApply.apply_chance(
+		STATUS_GATE_CHANCE,
+		actor,
+		tuning,
+		StatusApply.elemental_resist(actor, actor, tuning, element)
+	)
+	# The CLOSED gate, answered BEFORE the stream is derived: an already-closed chance spends
+	# no draw, here or anywhere else, so it is refused rather than rolled against.
+	if chance <= 0.0:
+		return none
+	var salt := int(clampf(share, 0.0, 1.0) * 100.0)
+	var stream := RandomNumberGenerator.new()
+	stream.seed = StatusApply.status_seed(rng.seed, actor, actor, active, salt)
+	# The gate itself. Same expression and same short-circuit as `_status_on_landing`, so
+	# the two paths answer one question the same way and a saturated gate is free in both.
+	if chance < 1.0 and not stream.randf() < chance:
+		return {"chance": chance, "potency": 0.0, "gate_open": false}
 	return {
-		"chance":
-		StatusApply.apply_chance(
-			STATUS_CHANCE,
-			actor,
-			tuning,
-			StatusApply.elemental_resist(actor, actor, tuning, element)
-		),
+		"chance": chance,
 		"potency": StatusApply.potency_of(actor, tuning, element),
+		"gate_open": true,
 	}
 
 
@@ -541,10 +620,36 @@ static func _record_defeat(actor: Actor, active: Dictionary, share: float) -> vo
 				"encounter_id": String(active.get("encounter_id", "")),
 				"tier": int(active.get("tier", 0)),
 				"share": share,
-			}
+			},
+			actor
 		)
 	)
 	actor.set_module_data(CombatDuel.MODULE_KEY, duel)
+	# ## DEF-0105: the earn is VERIFIED here, and this is the only read of it
+	#
+	# `CombatDuel.record_defeat` calls `DestinyApi.earn_fate`, and `earn_fate`
+	# returns the LEDGER — not a verdict. A refused earn (unknown id, already held,
+	# a null actor) returns that identical ledger and QUEUES nothing (ADR 0134), so
+	# the call on its own cannot say the fate arrived. `has_fate` is the only
+	# honest answer, and asking it here rather than trusting the call is precisely
+	# what `event_prize.gd:95-96` does not do.
+	#
+	# A miss is REPORTED and nothing else: an earn that silently failed would leave
+	# a player who earned a consequence with no consequence, which is the UNWIRED
+	# failure this whole seam is being closed to remove. A refused earn is an
+	# ordinary outcome, so it is not an error — `push_warning` is the engine
+	# telling a developer the wiring is wrong, and never a player-facing notice.
+	if not DestinyApi.has_fate(actor, CombatDuel.FATE_FELL):
+		push_warning(
+			(
+				(
+					"combat: a duel was recorded as lost but %s was not earned (id unknown to the "
+					+ "fate catalog?). The ledger and the fate are separate writes, so nothing here "
+					+ "records the debt."
+				)
+				% String(CombatDuel.FATE_FELL)
+			)
+		)
 	# Carried out, not killed: the run is over and the player walks out of the domain at
 	# full vitality. Spent through `change` rather than by assigning `current`, so the
 	# pool's `changed` signal still fires and every stat cache watching it invalidates.

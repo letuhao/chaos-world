@@ -9,15 +9,15 @@ extends TestCase
 ##
 ## Why it hid. `qi_refining` — the ladder's first realm and `spawn_npc`'s own
 ## default `rank_id` — happens to AGREE with the defaults: its seed authors
-## `dantian_capacity = 100.0`, `dantian_tier = "lower"`, and
+## `dantian_capacity = 100.0`, and
 ## `QiCultivationApi._ensure_resources` mounts the reservoir at
 ## `ResourcePool.new(QI, 100.0)`. So a fixture that mints at the default realm
 ## cannot tell a synchronized actor from an unsynchronized one. Every assertion
 ## here is therefore made at a realm where the two differ.
 ##
 ## What `synchronize` owns, and what these assert: meridian unlocks
-## (`meridian_network.unlock_for_realm`), the dantian's structural capacity and
-## tier from the realm seed, and the reservoir ceiling
+## (`meridian_network.unlock_for_realm`), the dantian's structural capacity from
+## the realm seed, and the reservoir ceiling
 ## (`training.gd:10-28`).
 ##
 ## ## `channel_refinement_cap` is NOT one of the four
@@ -68,11 +68,6 @@ func test_npc_qi_state_follows_the_realm_it_was_minted_at() -> void:
 		dantian.structural_capacity,
 		expected_capacity,
 		"the dantian is sized by synchronize from the realm seed, not from the base stat"
-	)
-	assert_eq(
-		dantian.tier,
-		seed.dantian_tier,
-		"and carries the realm's dantian tier, not the component default"
 	)
 	# `synchronize:27` caps the reservoir at the dantian's effective capacity, so a
 	# dantian sized right with a pool left at its own default is still a path that
@@ -145,7 +140,7 @@ func test_npc_channel_refinement_cap_is_the_realm_cap_on_read() -> void:
 
 ## `spawn_npc` is a constructor and may be called twice on the same subject, so
 ## the synchronize it now performs must be idempotent. `synchronize` overwrites
-## capacity, tier and the pool ceiling and only ADDS a missing meridian
+## capacity and the pool ceiling and only ADDS a missing meridian
 ## (`meridian_network.gd:34`), so a second call is a no-op — asserted, because
 ## `ActorStats.add_provider` appends UNGUARDED and a future edit that made
 ## synchronize additive would stack a second copy silently.

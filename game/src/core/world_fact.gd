@@ -55,10 +55,26 @@ extends RefCounted
 ##
 ## [method record] is the only verb in the repository that writes this ledger, and
 ## every producer reaches it: `app/BeatDirector`, `combat/CombatFacts`,
-## `clan/ClanFacts`, `sect/SectFacts`, `event/EventBeatWriter` and
-## `app/CharacterCreationFlow`. A subscriber that wants to know "this happened"
-## therefore has exactly two honest shapes: call [method record] itself and hope
-## every writer went through it, or be told. The hook slot below is the being-told.
+## `clan/ClanFacts`, `sect/SectFacts`, `event/EventBeatWriter`,
+## `app/CharacterCreationFlow`, `app/SoulDeath` and `app/ItemWorkbenchApp`. A
+## subscriber that wants to know "this happened" therefore has exactly two honest
+## shapes: call [method record] itself and hope every writer went through it, or be
+## told. The hook slot below is the being-told.
+##
+## **That list is EIGHT writers and the count is asserted, not asserted here.**
+## `tests/arch_rules/test_fact_ledger_writers.gd` walks `res://src`, finds every
+## file whose CODE calls this verb and compares that set to `KNOWN_WRITERS` by exact
+## array equality. This docstring said SIX for several cycles while the test said
+## EIGHT, and the two shipped facts it had dropped — ADR 0130's `soul_died` and the
+## birth's `child_born` — were both real writers. **Prose and test disagreeing about
+## a producer set is the hazard, not the stale numeral**: a reader who believed this
+## paragraph would have believed two producers did not exist. When a writer is added,
+## the list above is corrected in the SAME change, or it is not corrected at all.
+## `app/ItemWorkbenchApp` is the eighth and is worth naming as a shape: it is a
+## composition root, not a domain module, and it records `child_born` on the CHILD
+## (ADR 0089 keeps statuses out of `Actor.to_dict`), which is the only reason a birth
+## leaves a trace at all. "It grants nothing" is true and does not make it a non-writer:
+## a blank fact is still a fact, and answering it costs nothing.
 ##
 ## **Dispatching somewhere else cannot work, and this is the measurement.**
 ## `BeatDirector.offer` looks like the choke point — it is the one place a beat is
@@ -66,8 +82,8 @@ extends RefCounted
 ## `app/WorldPulse.offer`, and that caller offers only the period fact and the four
 ## `app/WorldAmbient` roster facts. A dispatch there moves a counter for none of the
 ## facts a module actually records, which is the whole defect: the machinery was
-## green and unwired (ADR 0149). A subscriber installed here is reached by all six
-## writers, including the five that bypass the director by design.
+## green and unwired (ADR 0149). A subscriber installed here is reached by all EIGHT
+## writers, including the six that bypass the director by design.
 ##
 ## **This file names no subscriber and no module.** `tools arch` holds `core/` to
 ## `LAYER_DEPS["core"] == {"core", "contracts"}`, so a `destiny` reference here —

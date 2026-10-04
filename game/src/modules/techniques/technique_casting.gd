@@ -73,6 +73,28 @@ const VERSION := 1
 ## ready rather than a defensive stat.
 const REDUCTION_CAP := 0.4
 
+## `QiStats.TECHNIQUE_COST_REDUCTION`'s own clamp — the 0.5
+## `modules/qi_cultivation/provider.gd` clamps its contribution under, and the same
+## 0.5 core derives `Stat.QI_COST_REDUCTION` under.
+##
+## A SEPARATE constant from `REDUCTION_CAP` rather than a shared one, and the
+## difference is authored rather than accidental: the cooldown's ceiling is 0.4
+## because a longer one is a defensive stat approaching immunity (ADR 0068), while
+## this one is a PRICE and its whole job is to stop a cast being able to pay
+## negative qi. Reusing 0.4 would have quietly made a qi reduction authored between
+## 0.4 and 0.5 read as 0.4 — a rate that exists, is authored, and would be
+## discarded by a constant borrowed from a different quantity.
+const COST_REDUCTION_CAP := 0.5
+
+## `QiStats.TECHNIQUE_COST_REDUCTION` — the qi module's published rate, spelled
+## here as data rather than as a class reference so this module declares no edge
+## into one it does not depend on. See [method cost_reduction_of].
+const TECHNIQUE_COST_REDUCTION_ID := &"technique_cost_reduction"
+
+## `QiStats.TECHNIQUE_POWER` — the qi module's published multiplier, spelled on
+## the same terms and for the same reason as the cost id above.
+const TECHNIQUE_POWER_ID := &"technique_power"
+
 ## Affordability is compared with a tolerance so a pool holding exactly the cost pays
 ## rather than being short by one float ULP.
 const EPSILON := 0.000001
@@ -269,10 +291,65 @@ func duration_for(actor: Actor, def: TechniqueDef) -> float:
 	return authored * float(multipliers["cooldown"]) * (1.0 - reduction_of(actor))
 
 
-## The qi one activation costs, at ADR 0055's per-rung `QI_COST_STEP` (0.94^n).
-## Stamina is NOT scaled: ADR 0055 publishes a qi-cost column and no stamina column,
-## so there is no rung multiplier for it and inventing one here would be a second
-## ladder disagreeing with the ADR.
+## The actor's TECHNIQUE cost reduction, clamped. `QiStats.TECHNIQUE_COST_REDUCTION`
+## is published by `QiProvider` as `clamp(qi_control * 0.002, 0.0, 0.5)` — a 0..1
+## SHARE, the same shape as the `Stat.COOLDOWN_REDUCTION` above, which is why the
+## two share a cap constant and a read shape rather than each inventing one.
+##
+## ## Why the clamp is re-applied here when the provider already clamps
+##
+## The provider clamps its OWN contribution. `ActorStats` composes the modifier
+## stack ON TOP of that (ADR 0026), and a FLAT modifier is added after the cap —
+## which is precisely the ADR 0039 content error, and precisely why the shipped
+## `cult_technique_cost_reduction` option declares `op: PERCENT`. Re-clamping is
+## what makes a bad author still pay a real, bounded price instead of a negative
+## one: at a reduction of 1.0 the cast is FREE, and past it the cost floors at
+## zero rather than paying the actor qi.
+##
+## ## Why this id and not core's `Stat.QI_COST_REDUCTION`
+##
+## Both exist and both are 0..1 shares, and reading the wrong one is a silent
+## no-op: core's baseline is `minf(0.5, aptitude * 0.001)`, and reaching any of
+## it needs aptitude 500 while every authored stat tops out an order of magnitude
+## below that, so core's reads `0.0` for EVERY actor this game can build (see
+## `Stat.RATE_STATS`'s own docstring and ADR 0022). The qi provider's is the one
+## a cultivation actually moves, and the one the authored option targets.
+##
+## ## Why the id is a LOCAL STRING and not `QiStats.TECHNIQUE_COST_REDUCTION`
+##
+## Naming that constant would put a compile-time edge from this module into
+## `qi_cultivation`, which `registry.json` does not list among this module's
+## deps. The discipline `CombatTuning` already uses for exactly this problem is
+## adopted here: a module-owned stat id is a STRING in the consuming module,
+## spelled once, because the VALUE is data and the vocabulary belongs to whoever
+## published it. `test_technique_provider_stats.gd` asserts each literal equals
+## its `QiStats` constant, so the two spellings cannot drift — the string costs
+## no edge and the test is what makes it safe. The alternative, widening
+## `registry.json` and taking a dependency on a module at its own facade cap for
+## two id constants, buys nothing.
+static func cost_reduction_of(actor: Actor) -> float:
+	if actor == null or actor.stats == null:
+		return 0.0
+	return clampf(actor.stats.derived(TECHNIQUE_COST_REDUCTION_ID), 0.0, COST_REDUCTION_CAP)
+
+
+## The qi one activation costs, at ADR 0055's per-rung `QI_COST_STEP` (0.94^n),
+## times one minus the actor's technique cost reduction.
+##
+## Stamina is NOT scaled: ADR 0055 publishes a qi-cost column and no stamina
+## column, so there is no rung multiplier for it and inventing one here would be
+## a second ladder disagreeing with the ADR. Nor is stamina reduced — a reduction
+## is authored against qi, and applying it to a second pool would be a discount
+## nobody wrote.
+##
+## ## The ORDER of the two multipliers, and why it is this one
+##
+## The rung's `qi_cost` comes FIRST and the reduction LAST, exactly as
+## [method duration_for] puts the rung's cooldown before the cooldown reduction.
+## The reason is that the reduction is the only unbounded-of-the-two term: it is
+## driven by a stat a player allocates, while the rung ladder is ADR 0055's own
+## bounded column. Reading it first would let a reduction near the cap discount
+## the discounted cost, so two such casts would compound toward free.
 func qi_cost_for(actor: Actor, def: TechniqueDef) -> float:
 	if actor == null or def == null:
 		return 0.0
@@ -280,7 +357,65 @@ func qi_cost_for(actor: Actor, def: TechniqueDef) -> float:
 	if authored <= 0.0:
 		return 0.0
 	var multipliers := TechniqueScales.multipliers_at(_rung_of(actor, def), def.mastery_rungs)
-	return authored * float(multipliers["qi_cost"])
+	return authored * float(multipliers["qi_cost"]) * (1.0 - cost_reduction_of(actor))
+
+
+## ## The actor's raw published `technique_power` — and why NOTHING here multiplies
+## by it yet
+##
+## The read exists; the spend deliberately does not, and that is DEF-0101's honest
+## answer for this stat. The boundary is the reason, not an omission.
+##
+## `CombatSpine.base_damage` (`combat_engine/spine.gd:194-200`) is the only place
+## in the game that turns a technique into a number a hit is built on, and it
+## reads `technique.magnitude`:
+##
+## ```
+## var base := technique.magnitude
+## base *= RealmRate.factor(attacker.realm())
+## ```
+##
+## It already holds BOTH the attacker and the technique, so it is the correct
+## owner of a "technique power" multiplier — and `combat_engine` is not this
+## module's to edit, nor a dep `registry.json` declares, so this module cannot
+## reach it.
+##
+## The tempting wrong answer, which stays inside this lane, is to hand the
+## resolver a copy of `def` with its magnitude pre-scaled. It is refused for a
+## reason that is observable rather than stylistic: `CombatBoot.resolve_hit` is
+## called DIRECTLY by `app/` and by other modules for hits that never pass
+## through `TechniqueCasting.activate`. A stat applied only on the technique
+## route is a stat that is on for one route and off for the same actor's next
+## technique-driven hit from any other — the same "one stat, two answers" hazard
+## DEF-0101 describes, arriving from the other direction.
+##
+## ## And it must NOT become a second multiplier inside this module either
+##
+## ADR 0160 already scales a PASSIVE's authored stat values by
+## `TechniqueScales.multipliers_at(rung)["power"]`. Scaling an ACTIVE's magnitude
+## by a provider stat as well puts two multipliers on the base of one hit whose
+## subjects differ only in which technique granted what — precisely the shape of
+## the capacity-channel double-count ADR 0160 refuses.
+##
+## So this publishes the number under the name that says what it is, and no
+## quantity in this module is scaled by it. `test_technique_provider_stats.gd`
+## pins the reader census that keeps the gap visible rather than forgotten.
+##
+## ## What the stat IS, precisely
+##
+## The provider contributes `(1.0 + qi_affinity * 0.05) * RealmRate.factor`, so
+## the value is `1.0` for an actor with no affinity, never below it, and it
+## carries a realm-rate term. It is therefore a MULTIPLIER already — 1.0 meaning
+## "unchanged" — not a 0..1 share. That is why the shipped `cult_technique_power`
+## option declares `op: PERCENT` (ADR 0039 licenses PERCENT on a 1.0-baseline
+## multiplier and forbids FLAT, which would ADD to a factor) and why a consumer
+## must multiply by it DIRECTLY rather than treating it as `1 + value`. Reading it
+## as `1 + value` would double every technique's damage for an actor with no qi
+## affinity at all.
+static func power_rate(actor: Actor) -> float:
+	if actor == null or actor.stats == null:
+		return 0.0
+	return maxf(0.0, actor.stats.derived(TECHNIQUE_POWER_ID))
 
 
 ## Every pool this activation drains and how much, so the afford check and the pay

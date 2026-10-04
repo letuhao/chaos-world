@@ -39,7 +39,6 @@ func _summary() -> Dictionary:
 		"progress": live.get("progress", 0.0),
 		"qi": live.get("qi", 0.0),
 		"qi_maximum": live.get("qi_maximum", 0.0),
-		"dantian_tier": live.get("dantian_tier", ""),
 		"dantian_quality": live.get("dantian_quality", 0.0),
 		"dantian_injured": live.get("dantian_injured", false),
 		"channels": _channel_entries(live),
@@ -148,12 +147,14 @@ func _feed_children(live: Dictionary) -> void:
 		)
 
 
-## The dantian row names its tier and says so when the core is scarred. An injury
-## is a hard breakthrough blocker, and `recover` is the action that clears it, so
-## the row has to say both.
+## The dantian row says when the core is scarred. An injury is a hard
+## breakthrough blocker, and `recover` is the action that clears it, so the row has
+## to say so.
+##
+## It used to name the dantian's tier here, over a `dantian_tier` key the facade
+## published for a ladder nothing read and the realm line already prints (ADR 0165).
 func _dantian_label(live: Dictionary) -> String:
-	var tier := String(live.get("dantian_tier", ""))
-	var name := "Dantian quality" if tier.is_empty() else "Dantian %s" % tier
+	var name := "Dantian quality"
 	if bool(live.get("dantian_injured", false)):
 		name += " SCARRED"
 	return name

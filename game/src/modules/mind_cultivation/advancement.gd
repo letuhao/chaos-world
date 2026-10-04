@@ -38,6 +38,28 @@ const MAX_CHANCE := 0.95
 ## never reach the clamp at any realm.
 const CLARITY_TO_CHANCE := 0.5
 
+## The fate a mind breakthrough earns (DEF-0106).
+##
+## `remembered_by_the_mountain`, chosen from the fate's OWN text: "Walked into a
+## forbidden ridge and came back with the ridge's name in your mouth. Nobody has
+## asked where you learned it. You have not offered." The mind path is the one that
+## goes furthest past the limits of what it was given — a sea of consciousness
+## sharpened until a channel holds a realm it had no business holding — so the
+## returned knowledge nobody can account for IS what this path's success produces.
+## Its `counters = [breakthroughs]` names a counter no shipped producer drives
+## (DEF-0121), which is the second reason the fate rather than the counter is the
+## honest earn here.
+##
+## It is also paid by `the_riven_peak_disaster.tres` and `the_returned_instrument
+## .tres`; `earn_fate` is exactly-once, so those pay nothing twice (ADR 0065).
+const FATE_BARRIER := &"remembered_by_the_mountain"
+
+## The `source` string this path's earn carries, in the shape `QuestGrants
+## .FATE_SOURCE_PREFIX + quest_id` and `EventDef.fate_source()` both build: it names
+## the SYSTEM that earned the fate and the decision point, never the fate id itself
+## (ADR 0065 on id namespaces).
+const EARN_SOURCE := "mind_breakthrough"
+
 # --- Read side ---------------------------------------------------------------
 
 ## The clause an attempt already in flight adds to `conditions`, published so a
@@ -473,6 +495,36 @@ static func resolve_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> 
 	# a survivor; it does not manufacture one.
 	if target.index >= Breakthrough.IMMORTAL_REALM_THRESHOLD:
 		MindAnchor.commit(actor, target.index)
+	# ## DEF-0106: the path OWNS this decision, so the path earns the fate
+	#
+	# This `return true` is the decision that a breakthrough happened, and
+	# `mind_cultivation` is what decided it — so the facade is called HERE, not one
+	# layer up. `app/mind_cultivation_ui.gd` calls `try_breakthrough` directly and
+	# skips the facade entirely, so an earn placed on `MindCultivationApi` would be
+	# an earn the Breakthrough button walks past. That is the same reason the ADR
+	# 0109 gate lives at this layer and not above it, and the same rule
+	# `combat` follows at `CombatDuel.record_defeat`: fate is a write target, never
+	# a listener (ADR 0065).
+	#
+	# It sits on the GRANTED branch — a refused `try_advance_gated` returned four
+	# lines above — and before `_end(actor, committed, true)`, so the fate's
+	# modifiers are projected onto a mind that has already entered the realm.
+	#
+	# `earn_fate` returns the LEDGER, never a verdict, and every refusal path is
+	# byte-identical in shape and queues nothing (ADR 0134) — so the earn is
+	# VERIFIED with `has_fate` rather than trusted, which is what
+	# `character_creation_flow.gd:280-284` does and `event_prize.gd:95-96` does not.
+	DestinyApi.earn_fate(actor, FATE_BARRIER, EARN_SOURCE)
+	if not DestinyApi.has_fate(actor, FATE_BARRIER):
+		push_warning(
+			(
+				(
+					"mind_cultivation: a breakthrough was granted but %s was not earned (id unknown "
+					+ "to the fate catalog?). Nothing records the debt and nothing retries it."
+				)
+				% String(FATE_BARRIER)
+			)
+		)
 	_end(actor, committed, true)
 	return true
 

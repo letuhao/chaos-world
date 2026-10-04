@@ -66,6 +66,36 @@ const WORLD_BORN: Array[StringName] = [
 	WORLD_SCENE_NODE,
 ]
 
+## The element vocabulary the environment layer speaks. CLOSED, and it is exactly the
+## set `EnvironmentField.HOSTILE_ELEMENTS` keys on, because a tag outside that set
+## cannot answer any zone and publishing it would inflate the list for nothing.
+##
+## Declared HERE rather than beside the ward-tag publisher below because
+## `class-definitions-order` puts every `const` before every `func`, and a const declared
+## mid-file is an ordering error rather than a local convenience.
+const ELEMENT_TAGS: Array[StringName] = [
+	&"fire",
+	&"ice",
+	&"water",
+	&"lightning",
+	&"metal",
+	&"wood",
+	&"dark",
+	&"light",
+	&"earth",
+	&"wind",
+]
+
+## The consumable subtypes a mitigation can be carried as. Authored vocabulary
+## (`ItemSubtype`), named here rather than rebuilt, so a new consumable subtype is one
+## edit in the items module rather than a second list to drift.
+const CONSUMABLE_SUBTYPES: Array[StringName] = [
+	ItemSubtype.PILL,
+	ItemSubtype.ELIXIR,
+	ItemSubtype.TALISMAN,
+	ItemSubtype.FOOD,
+]
+
 ## The run being populated: its laid-out rects, keyed by room id as a `String` — exactly
 ## what `DomainPaths.layout` publishes, which is the ONE layout in the repo
 ## (`domain_paths.gd:182`) — and the map itself.
@@ -407,7 +437,13 @@ static func _scalar(text: String, name: String) -> String:
 	if found == null:
 		return ""
 	var value := found.get_string(1).strip_edges()
-	for quote in ['&"', '"']:
+	# `StringName` literals in a `.tres` are written `&"name"`, so the `&` sits OUTSIDE
+	# the quotes. Stripping only the quotes left `&ashfall`, which never compared equal
+	# to `ashfall` — which is why an authored weather read back as "no weather" and every
+	# zone in the domain silently ran at its authored band.
+	if value.begins_with("&"):
+		value = value.substr(1).strip_edges()
+	for quote in ['"', "'"]:
 		if value.length() > 1 and value.begins_with(quote) and value.ends_with(quote):
 			return value.substr(1, value.length() - 2)
 	return value
@@ -543,17 +579,6 @@ static func _is_consumable(def: ItemDef) -> bool:
 	return CONSUMABLE_SUBTYPES.has(def.subcategory)
 
 
-## The consumable subtypes a mitigation can be carried as. Authored vocabulary
-## (`ItemSubtype`), named here rather than rebuilt, so a new consumable subtype is one
-## edit in the items module rather than a second list to drift.
-const CONSUMABLE_SUBTYPES: Array[StringName] = [
-	ItemSubtype.PILL,
-	ItemSubtype.ELIXIR,
-	ItemSubtype.TALISMAN,
-	ItemSubtype.FOOD,
-]
-
-
 ## Add every element-shaped tag in `tags` to `out`, de-duplicated and canonically
 ## ordered at the end. A bounded `for` over authored content; no `while`.
 static func _add_elements(out: Array[StringName], tags: Array[StringName]) -> void:
@@ -562,22 +587,6 @@ static func _add_elements(out: Array[StringName], tags: Array[StringName]) -> vo
 		if ELEMENT_TAGS.has(element) and not out.has(element):
 			out.append(element)
 
-
-## The element vocabulary the environment layer speaks. CLOSED, and it is exactly the
-## set `EnvironmentField.HOSTILE_ELEMENTS` keys on, because a tag outside that set
-## cannot answer any zone and publishing it would inflate the list for nothing.
-const ELEMENT_TAGS: Array[StringName] = [
-	&"fire",
-	&"ice",
-	&"water",
-	&"lightning",
-	&"metal",
-	&"wood",
-	&"dark",
-	&"light",
-	&"earth",
-	&"wind",
-]
 
 # ── the population and the environment. Both are wiring, neither is a rule ──────
 
@@ -840,7 +849,7 @@ static func _active_map(player: Actor) -> DomainMap:
 # Everything that touches a `Node2D`, a tile or an adapter is `DomainScene`'s, because
 # `DomainScene` already owns "where is this map in pixels". The four verbs below are thin
 # forwarders: they resolve which run is active and which bodies the spawner minted — the two
-# facts only this file can know — and hand them to [method DomainScene.realize] as
+# facts only this file can know — and hand them to [method DomainScene.realize_world] as
 # ARGUMENTS. Nothing is read back out of a node, so no gameplay value ever round-trips
 # through the scene tree.
 #
@@ -848,8 +857,8 @@ static func _active_map(player: Actor) -> DomainMap:
 #
 # The headless runner drives every test from `SceneTree._initialize()`, which returns before
 # the first frame: `_ready()` is never delivered to a node parented to `root`. Everything
-# below therefore happens inside the caller's frame — `DomainScene.realize` builds in
-# `_init()`, the player adapter is configured by explicit setters rather than by `_ready()`,
+# below therefore happens inside the caller's frame — `DomainScene` builds in `_init()`,
+# the player adapter is configured by explicit setters rather than by `_ready()`,
 # and nothing here waits for a frame to elapse.
 
 
@@ -862,7 +871,7 @@ static func _active_map(player: Actor) -> DomainMap:
 static func realize_world(parent: Node, player: Actor) -> Dictionary:
 	if _run == null:
 		return {"ok": false, "reason": "no_map"}
-	return DomainScene.realize(parent, _run, player, _last_inhabitants())
+	return DomainScene.realize_world(parent, _run, player, _last_inhabitants())
 
 
 ## FREE the realized world under `parent`. Idempotent, and a no-op when nothing was ever
@@ -881,6 +890,58 @@ static func world_realized(parent: Node) -> bool:
 ## The realized world's read model, primitives only, or `{}` when nothing is realized.
 static func world_summary(parent: Node) -> Dictionary:
 	return DomainScene.world_summary(parent)
+
+
+## TELL the installed observer that a run now exists, and answer what it did with it.
+##
+## ## Why the seam is optional and its refusal is REPORTED
+##
+## The world is a VIEW of a run, not a condition of one. A caller that entered a run with
+## nothing listening still has a real map, a real roster and real hazards — so this returns
+## `{"ok": false, "reason": "no_observer"}` rather than refusing the run, and the reason is
+## NAMED so a caller can tell "nobody is listening" from "the listener refused". That
+## distinction is the whole reason this returns a dictionary instead of a bool: an
+## unobserved run is a legitimate state (every headless probe that drives `enter_domain`
+## directly gets one) and it must be distinguishable from a failure.
+##
+## `_world_observer` is a `Callable`, never a reference, because `enter_domain` is a STATIC
+## on this file and the node that can parent a `Node2D` is the composition ROOT, which is an
+## instance. `NpcApi.set_minter` and `CustodyApi.set_resolver` are the same seam one layer
+## down; this is the same seam a layer up.
+##
+## The observer's own answer is passed back UNTOUCHED, because a listener that reports
+## `no_surface` (the run exists but nothing is showing the domain) has said something the
+## composition root needs to see and this file cannot improve on it.
+static func _announce_run() -> Dictionary:
+	if not _world_observer.is_valid():
+		return {"ok": false, "reason": "no_observer"}
+	return _world_observer.call(&"realize") as Dictionary
+
+
+## TELL the installed observer that the run has ended, and answer what it freed.
+##
+## Called BEFORE `_run` / `_layout` / `_roster` are cleared, so a listener that still wants
+## the floor's geometry can still reach the map this run realized from. Clearing first
+## would hand the teardown a map that has already stopped existing.
+##
+## The observer is NOT installed-over here: leaving a stale observer would let a run entered
+## later be realized under a screen the composition root has since navigated away from.
+## `set_world_observer` is what replaces it, and `_install_domain_world_observer` calls it
+## on every mount of the domain route.
+##
+## Same optional-seam contract as [method _announce_run]: no observer is
+## `{"ok": true, "freed": 0}` — "nothing was realized" is the honest answer for a run
+## entered through a headless probe rather than through the screen, and it is reported as a
+## success because nothing had to be undone.
+static func _tear_down_run() -> Dictionary:
+	if not _world_observer.is_valid():
+		return {"ok": true, "reason": "no_observer", "freed": 0}
+	var answer: Dictionary = _world_observer.call(&"release") as Dictionary
+	if answer.is_empty():
+		# The listener had no screen standing a world under. That is a no-op rather than a
+		# failure, and a fabricated `freed` count would be a number nobody could check.
+		return {"ok": true, "reason": "no_surface", "freed": 0}
+	return answer
 
 
 ## Every inhabitant the LAST `enter_domain` minted, as `Actor`s.

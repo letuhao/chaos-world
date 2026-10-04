@@ -29,6 +29,18 @@ ADR 0074 also separated a species (`WorldInhabitantDef` — a bear, owned by `wo
 - **`StatusLoop.tick` also ages bonds**, beside the statuses it already ticks. A relationship fading on a different clock from a status expiring is timing nobody can reason about, and `StatusLoop` is already the root's only time wire (ADR 0089). No second `_process` was invented.
 - Authored cast ships as `.tres` under `game/data/npc/cast/`: a three-stage story elder ending in a terminal stage, a two-stage major smith, a transient drifter and a minor gatekeeper — so both tracked and untracked tiers are exercised by real content, not only by fixtures.
 
+## What Elder Wei's ladder means in play
+
+The three-stage story elder is the ladder's worked example, so what it *does* in a run is part of this decision rather than a content detail.
+
+**Each rung counts one verb, and a verb is a thing the world announces — never a thing a module increments.** `gatekeeper` counts `favours`, `sworn_servant` counts `oaths_sworn`, and each verb arrives only from an authored `npc_tally` beat in `data/event/events/`. `advance_verb` is therefore a *content contract with the roster*: a stage names a word, and some authored beat must exist that says it. A stage naming a verb nothing produces is a dead rung — reachable by no save, by no player, and by no test that drives production rather than calling `NpcApi.tally` itself. That is exactly how the elder sat one rung short: `oaths_sworn` existed only as a **destiny counter id** on a different ledger, and a counter id is not a tally verb. The two vocabularies share a spelling and nothing else.
+
+**Retirement is a consequence of the second rung, not a separate one.** `retired` carries no `advance_after`, so the only way to reach it is to fill `sworn_servant`'s `advance_after = 5`. A ladder whose top rung needs its own verb has two producers to author and two chances to author one of them wrongly; making the terminal rung *derived* means "he retired" is a fact about how much he trusts you, which is the story the elder is written for, and it fails loudly at the second rung instead of quietly at the last.
+
+**The consequence this accepts:** a stage is only as real as the beats that name its verb, and `tools arch` cannot see that. The check is a test that reads the shipped tree — `tests/modules/npc/test_elder_ladder_production.gd` drives `WorldPulse.pull` → `EventApi` → `EventBeatWriter` → `NpcApi.tally` and refuses to call `tally` itself, because a suite that called it directly would pass against a build in which no player action reaches the elder at all. A ladder is content agreeing with content, and the only honest auditor for that is a test that reads both halves off disk.
+
+**Cost this ADR accepts:** one rung costs one authored event stage. Elder Wei's is now three stages rather than two, and the third is the cheapest possible beat — one fact, no prize — because the roster, not the event, decides what it means.
+
 ## Consequences
 
 - Four tiers of npc cost a def and a stage ladder, not a code change. A new creature is data, exactly as ADR 0074 promised.

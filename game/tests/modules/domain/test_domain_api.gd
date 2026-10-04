@@ -326,8 +326,12 @@ func test_weather_is_recorded_and_never_a_zone_of_its_own() -> void:
 	var actor := _actor()
 	DomainApi.enter(actor, _map(), &"ember_hollow")
 	var before := DomainApi.environment_zones(actor).size()
-	DomainApi.visit_room(actor, &"hall", &"dry_wind")
-	assert_eq(DomainApi.map_summary(actor).get("weather"), "dry_wind", "weather is recorded")
+	# `ashfall`, not the invented `dry_wind` this case used to pass: `WEATHERS` is a CLOSED
+	# set (domain_map.gd:52) and an id outside it is refused by
+	# `DomainMap.accepts_weather` rather than quietly treated as calm — so a test naming a
+	# weather this build does not know is asserting the wrong thing.
+	DomainApi.visit_room(actor, &"hall", &"ashfall")
+	assert_eq(DomainApi.map_summary(actor).get("weather"), "ashfall", "weather is recorded")
 	assert_eq(
 		DomainApi.environment_zones(actor).size(),
 		before,

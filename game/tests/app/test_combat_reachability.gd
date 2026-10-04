@@ -31,6 +31,12 @@ extends TestCase
 
 const ELEMENT := &"fire"
 
+## `CombatCatalog` is process-wide, so a suite that registered the same id twice would
+## have its second def silently replace the first. A serial keeps every fixture id in
+## this file unique, exactly as `test_technique_active.gd` does.
+static var _technique_serial: int = 0
+var _harness: SeamHarness = null
+
 # --- The shipped player --------------------------------------------------------
 
 
@@ -708,10 +714,3 @@ func _effects_of_kind(damage: Dictionary, kind: StringName) -> Array:
 		):
 			out.append(entry)
 	return out
-
-
-## `CombatCatalog` is process-wide, so a suite that registered the same id twice would
-## have its second def silently replace the first. A serial keeps every fixture id in
-## this file unique, exactly as `test_technique_active.gd` does.
-static var _technique_serial: int = 0
-var _harness: SeamHarness = null

@@ -78,12 +78,10 @@ func test_heal_restores_capacity() -> void:
 
 func test_serialization_round_trip() -> void:
 	var dantian := Dantian.new()
-	dantian.tier = Dantian.MIDDLE
 	dantian.set_structural_capacity(200.0)
 	dantian.set_quality(0.8)
 	dantian.damage()
 	var restored := Dantian.from_dict(dantian.to_dict())
-	assert_eq(restored.tier, Dantian.MIDDLE, "tier round trip")
 	assert_almost_eq(restored.structural_capacity, 200.0, "capacity round trip")
 	assert_almost_eq(restored.quality, 0.8, "quality round trip")
 	assert_eq(restored.injured, true, "injured round trip")

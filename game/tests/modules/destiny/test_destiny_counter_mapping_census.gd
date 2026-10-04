@@ -58,6 +58,16 @@ const Support := preload("res://tests/modules/destiny/destiny_counter_wiring_sup
 ## holds the two in agreement.
 const UNPRODUCED := [&"bound_name_called", &"mountain_circled_once", &"vigil_broken"]
 
+## **A preloaded script cannot hand out its instance members.** `Support` is a
+## script constant, and `Support._declared_counters` does not resolve: a script
+## object exposes the class's STATIC surface, so an instance method reached
+## through one answers "cannot find member". The shared readers are therefore
+## bound from ONE instance, created here and held by the suite. A `const`
+## initialiser would be worse: the runner attaches the suite's properties one at
+## a time, so reading through one during initialisation answers `null` and the
+## failure reads like a missing row instead of a missing instance.
+static var _support: RefCounted = null
+
 ## The baseline this suite's own `teardown()` is measured against, read HERE rather
 ## than asserted to be zero. See the header.
 var _baseline_subscribers: int = 0
@@ -127,6 +137,12 @@ func teardown() -> void:
 	)
 
 
+func _shared() -> RefCounted:
+	if _support == null:
+		_support = Support.new()
+	return _support
+
+
 ## Bind one forwarding [Callable] per shared reader, against the LIVE instance.
 ##
 ## Not a loop and not a dictionary: the forwarders are named members because a
@@ -134,13 +150,14 @@ func teardown() -> void:
 ## it, and a table keyed by name would hide that behind a lookup that fails somewhere
 ## else. Seven assignments, each of which fails loudly and locally.
 func _bind_support() -> void:
-	_declared_counters = Support._declared_counters
-	_wired_ids = Support._wired_ids
-	_authored_fact_ids = Support._authored_fact_ids
-	_module_owned_facts = Support._module_owned_facts
-	_unproduced_facts = Support._unproduced_facts
-	_authored_counter_gate_ids = Support._authored_counter_gate_ids
-	_names_in_code = Support._names_in_code
+	var shared: RefCounted = _shared()
+	_declared_counters = shared._declared_counters
+	_wired_ids = shared._wired_ids
+	_authored_fact_ids = shared._authored_fact_ids
+	_module_owned_facts = shared._module_owned_facts
+	_unproduced_facts = shared._unproduced_facts
+	_authored_counter_gate_ids = shared._authored_counter_gate_ids
+	_names_in_code = shared._names_in_code
 
 
 # --- The mapping is authored, auditable, and matches the real tree -----------
@@ -159,7 +176,7 @@ func _bind_support() -> void:
 ##
 ## Widened to assert total coverage once every authored counter has a producer.
 func test_every_wired_counter_is_declared_by_a_shipped_fate() -> void:
-	var declared := _declared_counters.call()
+	var declared: Dictionary = _declared_counters.call()
 	assert_eq(
 		declared.is_empty(),
 		false,
@@ -174,8 +191,8 @@ func test_every_wired_counter_is_declared_by_a_shipped_fate() -> void:
 		if not _wired_ids.call().has(String(counter_id)):
 			unwired.append(String(counter_id))
 	unwired.sort()
-	var wired := _wired_ids.call()
-	var gates := _authored_counter_gate_ids.call()
+	var wired: Array = _wired_ids.call()
+	var gates: Array = _authored_counter_gate_ids.call()
 	if gates.is_empty():
 		# The census, stated rather than assumed: nothing in content stands on a
 		# counter yet, so an unwired id is not yet a broken promise. Both halves are
@@ -224,7 +241,7 @@ func test_every_wired_counter_is_declared_by_a_shipped_fate() -> void:
 ## quests that ask for them are other modules' content, and an authored counter only
 ## a test could reach is the exact shape DEF-0105/DEF-0106 record.
 func test_every_wired_fact_is_authored_content_or_a_named_module_producer() -> void:
-	var reachable := _authored_fact_ids.call()
+	var reachable: Dictionary = _authored_fact_ids.call()
 	for entry in _module_owned_facts.call():
 		reachable[String((entry as Dictionary).get("fact", ""))] = true
 
@@ -234,16 +251,25 @@ func test_every_wired_fact_is_authored_content_or_a_named_module_producer() -> v
 		if not reachable.has(fact):
 			orphans.append(fact)
 	orphans.sort()
+	# The census is NAMED, not zero. Three rows deliberately name a fact whose
+	# producer belongs to another module and does not exist yet (DEF-0105/DEF-0106),
+	# so a hard `orphans == []` would be red for a correct tree and would have to be
+	# weakened every time one of them was understood better. Asserting the exact
+	# named list is STRICTER than asserting it is empty: a FOURTH orphan fails here,
+	# and so does one of the three gaining a producer and being forgotten.
+	var named: Array[String] = _unproduced_facts.call()
 	assert_eq(
 		orphans,
-		[],
+		named,
 		(
-			(
-				"these rows name facts nothing in the shipped tree can record: %s. Authoring "
+			"these rows name facts nothing in the shipped tree can record, and the list is"
+			+ (
+				" exactly the named census: %s. Authoring their producers is other modules'"
 				% str(orphans)
 			)
-			+ "their producers is other modules' work (DEF-0105/DEF-0106) and a test must not "
-			+ "stand in for it — add the producer and this goes green by itself."
+			+ " work (DEF-0105/DEF-0106) and a test must not stand in for it — add the"
+			+ " producer and this goes green by itself. If a row is MISSING from the census,"
+			+ " it means a producer shipped and the named list must drop it."
 		)
 	)
 
@@ -253,7 +279,7 @@ func test_every_wired_fact_is_authored_content_or_a_named_module_producer() -> v
 ## says why; if it is deleted wholesale, the next author inherits a suite that claims
 ## full coverage and does not have it.
 func test_the_unproduced_rows_are_named_so_the_census_cannot_grow_quietly() -> void:
-	var unreachable := _unproduced_facts.call()
+	var unreachable: Array = _unproduced_facts.call()
 	unreachable.sort()
 
 	assert_eq(
@@ -342,7 +368,7 @@ func test_every_row_names_a_fact_and_exactly_one_counter() -> void:
 ## is the one that catches a typo in the TABLE, which would otherwise move a number
 ## nothing gates on.
 func test_every_wired_counter_is_one_the_shipped_tree_declares() -> void:
-	var declared := _declared_counters.call()
+	var declared: Dictionary = _declared_counters.call()
 	var unknown: Array[String] = []
 	for counter_id in _wired_ids.call():
 		if not declared.has(counter_id):
