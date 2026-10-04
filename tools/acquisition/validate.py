@@ -403,17 +403,31 @@ def _catalyst_problems(
     return []
 
 
+def _declared_prefixes() -> tuple[str, ...]:
+    """Top-level folder prefixes of every declared content family (ADR 0184).
+
+    Read from `tools/arch/families.json`, never hardcoded: a mod adding a new
+    content family declares it there and the acquisition loader check follows,
+    instead of a second copy of which folders the graph walks.
+    """
+    from ..arch.rules import load_families  # noqa: PLC0415
+
+    families = load_families()
+    prefixes: set[str] = set()
+    for info in families.values():
+        data_dir = info.get("data_dir")
+        if data_dir:
+            prefixes.add(data_dir.split("/")[0])
+    return tuple(sorted(prefixes))
+
+
 def _loader_problems(graph: Graph) -> list[str]:
     """A `.tres` the corpus loader could not name is a silent hole in the answer.
 
     Every downstream answer would be quietly smaller without it, so it is named
     rather than counted away.
     """
-    relevant = sorted(
-        name
-        for name in graph.malformed
-        if name.startswith(("items", "recipes", "bosses", "domains", "loot"))
-    )
+    relevant = sorted(name for name in graph.malformed if name.startswith(_declared_prefixes()))
     if not relevant:
         return []
     listed = ", ".join(relevant[:5])

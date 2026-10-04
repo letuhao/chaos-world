@@ -20,6 +20,7 @@ import json
 from pathlib import Path
 
 REGISTRY_PATH = Path(__file__).resolve().parent / "registry.json"
+FAMILIES_PATH = Path(__file__).resolve().parent / "families.json"
 
 FACADE_FILENAME = "api.gd"
 
@@ -240,6 +241,19 @@ def load_registry() -> dict[str, list[str]]:
     data = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
     modules = data.get("modules", {})
     return {name: list(entry.get("deps", [])) for name, entry in modules.items()}
+
+
+def load_families() -> dict[str, dict]:
+    """The content-family declaration (ADR 0184): family -> {data_dir, def_class, module, path?}.
+
+    Read, never hand-edited into a second copy: the gates that walk `game/data/`
+    key off this file so an unknown content family fails loudly instead of being
+    silently skipped. A family with no entry here is undeclared content.
+    """
+    if not FAMILIES_PATH.is_file():
+        return {}
+    data = json.loads(FAMILIES_PATH.read_text(encoding="utf-8"))
+    return data.get("families", {})
 
 
 def save_registry(modules: dict[str, list[str]]) -> None:

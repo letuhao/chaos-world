@@ -32,12 +32,43 @@ from pathlib import Path
 
 from ..common import REPO_ROOT, ToolError
 from . import ladder as ladder_module
-from .report import DERIVED_FIELDS, REALM_DIR, chance_range, load, load_seed
+from .report import DERIVED_FIELDS, chance_range, load, load_seed
 from .seed import realms as ladder_realms
 
 DATA = REPO_ROOT / "game" / "data"
-QI_REALM_DIR = DATA / "qi_cultivation" / "realms"
-MERIDIAN_DIR = DATA / "meridians"
+
+
+def _family_dir(family_name: str) -> Path:
+    """The data_dir of a declared content family (ADR 0184).
+
+    Read from `tools/arch/families.json`, never hardcoded: a mod adding a new
+    cultivation path declares its seed family there, and the validation follows
+    the declaration rather than a second copy of where each path lives.
+    """
+    from ..arch.rules import load_families  # noqa: PLC0415
+
+    families = load_families()
+    if family_name not in families:
+        raise ToolError(
+            f"content family '{family_name}' is not declared in tools/arch/families.json"
+        )
+    return DATA / families[family_name]["data_dir"]
+
+
+def _family_ids(family_name: str) -> set[str]:
+    """Every `.tres` stem under a declared family's data_dir."""
+    root = _family_dir(family_name)
+    if not root.is_dir():
+        return set()
+    return {path.stem for path in root.glob("*.tres")}
+
+
+# The three cultivation seed directories, read from the family declaration
+# (ADR 0184) rather than hardcoded, so a mod adding a new path declares it in
+# `tools/arch/families.json` and the validation follows.
+REALM_DIR = _family_dir("body_realms")
+QI_REALM_DIR = _family_dir("qi_realms")
+MERIDIAN_DIR = _family_dir("meridians")
 # The one runtime file whose arithmetic the gate-soundness checks mirror. It is
 # read, never edited: the tool's model of the runtime is only allowed to be as
 # good as its evidence.
@@ -97,10 +128,10 @@ def validate() -> list[str]:
     """
     findings: list[str] = []
     ladder = ladder_realms()
-    meridians = _ids("meridians")
-    acupoints = _ids("body_cultivation", "acupoints")
+    meridians = _family_ids("meridians")
+    acupoints = _family_ids("body_acupoints")
     items = _ids("items", "consumable") | _ids("items", "material")
-    recipes = _ids("recipes")
+    recipes = _family_ids("recipes")
 
     if len(ladder) != 30:
         findings.append(f"ladder has {len(ladder)} realms, expected 30")
@@ -115,6 +146,21 @@ def validate() -> list[str]:
         seeds.append(load(realm_id) if path.is_file() else {})
         if not path.is_file():
             findings.append(f"no realm seed for {realm_id}")
+
+    # Generic seed-family check: every declared cultivation path must have a
+    # seed for every realm on the ladder. Runs for ANY declared path, not just
+    # body and qi, so a mod adding a new path is covered the moment it declares
+    # the family (ADR 0184). Body and qi are checked again below with their own
+    # path-specific logic; this is the generic floor that needs no path knowledge.
+    from ..arch.rules import load_families  # noqa: PLC0415
+
+    for _info in load_families().values():
+        if "path" not in _info or _info["path"] in ("body", "qi"):
+            continue
+        _dir = DATA / _info["data_dir"]
+        for realm_id, _name2, _tier in ladder:
+            if not (_dir / f"{realm_id}.tres").is_file():
+                findings.append(f"{_info['path']}: no realm seed for {realm_id}")
 
     for index, (realm_id, _name, _tier) in enumerate(ladder):
         seed = seeds[index]

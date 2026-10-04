@@ -69,18 +69,26 @@ VALID_TARGET_TYPES = {"stat", "resource", "property"}
 # category activates through a channel listed here, so every registered option
 # has a real consumer instead of being decorative.
 VALID_ACTIVATIONS = {"equipped", "consumed", "learned", "crafted", "property"}
+
+
 # `property` targets name a numeric item property owned by the items module.
 # craft_potency/craft_yield are read by Crafting; key_reach/quest_potency/
 # trade_value are read through ItemsApi by the encounter, reward and loot
 # surfaces that consume them (ADR 0028). No property is registered without a
 # named consumer.
-VALID_PROPERTIES = {
-    "craft_potency",
-    "craft_yield",
-    "key_reach",
-    "quest_potency",
-    "trade_value",
-}
+#
+# The list is declared on the `items` family in `tools/arch/families.json`
+# (ADR 0184), not hardcoded here: a mod adding a new item property declares it
+# there and the gate follows, instead of a second copy drifting out of agreement.
+def _family_targets(family_name: str) -> list[str]:
+    """The valid option targets a declared family contributes (ADR 0184)."""
+    from .arch.rules import load_families  # noqa: PLC0415
+
+    families = load_families()
+    return list(families.get(family_name, {}).get("targets", []))
+
+
+VALID_PROPERTIES: set[str] = set(_family_targets("items"))
 # Resource targets are either one-shot restoration of the current value or a
 # persistent capacity/regeneration change (ADR 0025).
 VALID_RESOURCE_SCOPES = {"current", "maximum", "regen"}
@@ -366,7 +374,9 @@ def _implemented_targets() -> dict[str, set[str]]:
     elements_src = (game / "src" / "modules" / "elements" / "stats.gd").read_text(encoding="utf-8")
     for const in re.findall(r"const ([A-Z_0-9]+) := &\"([a-z_0-9]+)\"", elements_src):
         provider.add(const[1])
-    for prefix in ("element_mastery_", "element_power_", "element_resistance_"):
+    # Element stat prefixes are declared on the `elements` family (ADR 0184),
+    # not hardcoded here, so a mod adding an element axis declares it there.
+    for prefix in _family_targets("elements"):
         element_prefixes.append(prefix)
     elements: set[str] = set()
     for prefix in element_prefixes:
