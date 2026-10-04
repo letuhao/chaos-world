@@ -448,8 +448,11 @@ def _agent_local_refs_do_not_gate() -> None:
         _git(root, "update-ref", "refs/recovery/stash-selftest", probe_commit)
         _git(root, "update-ref", "refs/heads/master", base)
 
+        # The index is excluded from that claim on purpose, and reporting it is CORRECT: moving
+        # HEAD back to the base commit left the probe staged against nothing shipped, which is
+        # precisely the one-commit-from-history state the index half exists to catch.
         expect(
-            not _carried_in(root),
+            not [p for p in _carried_in(root) if p.ref != mutation_history.INDEX_REF],
             "a machine-local recovery ref gated the build, so the verdict depends on invisible "
             "local state and differs between this machine and every clone",
         )
@@ -503,16 +506,23 @@ def _prose_is_not_carried_and_code_still_is() -> None:
         )
         found = _carried_in(root)
 
+        # One finding per LAYER, not one overall. This fixture COMMITS the probe, so the index
+        # holds the same live line and both readers report it - two facts about one tree, not a
+        # duplicate. Collapsing them to one would leave the index's cut untested here, and two
+        # layers classifying one line differently is the drift this module's design rules out.
+        staged = [p for p in found if p.ref == mutation_history.INDEX_REF]
+        tips = [p for p in found if p.ref != mutation_history.INDEX_REF]
         expect(
-            len(found) == 1,
-            f"a tip holding one live probe and three prose lines returned {len(found)} "
-            f"finding(s): {[probe.describe() for probe in found]}. The gate must separate a "
-            "marker trailing code from a sentence that NAMES a mutation: one report is the "
-            "guard working, and any other count is a filter that was never installed",
+            len(staged) == 1 and len(tips) == 1,
+            f"a tip holding one live probe and three prose lines returned {len(staged)} index "
+            f"and {len(tips)} tip finding(s): {[probe.describe() for probe in found]}. The gate "
+            "must separate a marker trailing code from a sentence that NAMES a mutation, in BOTH "
+            "layers: one report per layer is the guard working, and any other count is a filter "
+            "that was never installed",
         )
         expect(
-            found[0].path == PROBE_PATH,
-            f"the wrong line was reported: {found[0].describe()}",
+            all(probe.path == PROBE_PATH for probe in found),
+            f"the wrong line was reported: {[probe.describe() for probe in found]}",
         )
 
 
@@ -564,6 +574,142 @@ def _shipped_prose_lines_are_documentation() -> None:
             "gate was red on these while the tree was correct, which is the state-not-history "
             "failure arriving by the other door - a permanently-red gate is a gate people "
             "learn to ignore, and the next agent to hit it deletes it",
+        )
+
+
+# --- The INDEX. One commit from history, and invisible to every reader that opens the file ---
+
+
+def _staged_in(root: Path) -> list:
+    """Read `root`'s git index instead of the repository's."""
+    original = mutation_history.REPO
+    mutation_history.REPO = root
+    try:
+        return mutation_history.staged()
+    finally:
+        mutation_history.REPO = original
+
+
+_CLEAN_PROBE_FILE = "func is_bound() -> bool:\n\treturn true\n"
+_CLEAN_PROSE_FILE = "## the defence this module published is asserted below.\n"
+
+
+def _staged_probe_repo(root: Path) -> Path:
+    """A repository whose INDEX holds a live probe while its worktree and every tip are clean.
+
+    The incident's shape, reproduced step for step rather than approximated: commit a clean file,
+    write the probe over it, `git add` it the way a second agent's routine staging did, then put
+    the clean text back in the FILE ONLY. That is what a fix-forward revert leaves behind - the
+    staged copy keeps the probe, `git status` reads `MM` where the author's own edit predicted `M`,
+    and `git diff` shows the fix, so the tree looks repaired to every worktree reader.
+
+    A probe file and a prose file are both staged dirty on purpose, for the same reason
+    `_prose_is_not_carried_and_code_still_is` holds both in one tip: a fixture holding only the
+    probe passes under a classifier with no filter installed, and only holding both can tell the
+    two readings apart.
+    """
+    _git(root, "init", "-q")
+    _git(root, "config", "user.email", "selftest@local")
+    _git(root, "config", "user.name", "selftest")
+    write(root / PROBE_PATH, _CLEAN_PROBE_FILE)
+    write(root / PROSE_PATH, _CLEAN_PROSE_FILE)
+    _git(root, "add", "-A")
+    _git(root, "commit", "-qm", "base")
+    write(root / PROBE_PATH, _CLEAN_PROBE_FILE + PROBE_TRAILING_CODE + "\n")
+    write(root / PROSE_PATH, "\n".join(PROSE_ABOUT_MUTATIONS) + "\n")
+    _git(root, "add", "-A")
+    write(root / PROBE_PATH, _CLEAN_PROBE_FILE)
+    write(root / PROSE_PATH, _CLEAN_PROSE_FILE)
+    return root
+
+
+@case("mutation_history: a probe STAGED in the index is found while the worktree is clean")
+def _staged_probe_is_found() -> None:
+    with tempfile.TemporaryDirectory() as raw:
+        root = _staged_probe_repo(Path(raw))
+
+        found = _staged_in(root)
+        expect(
+            len(found) == 1,
+            f"an index holding one live probe and three prose lines returned {len(found)} "
+            f"finding(s): {[probe.describe() for probe in found]}. The index must be read "
+            "through the same documentation cut as the ref half, or the false positives that "
+            "once pinned this gate red arrive through the new door instead",
+        )
+        expect(
+            found[0].path == PROBE_PATH,
+            f"the wrong staged line was reported: {found[0].describe()}",
+        )
+        # The fixture has to be the state it claims, or a green result proves nothing.
+        expect(
+            PROBE_TRAILING_CODE not in (root / PROBE_PATH).read_text(encoding="utf-8"),
+            "the fixture left the probe in the WORKING TREE, so this case would be passing on "
+            "the ref half's work or on any reader that opens the file",
+        )
+        expect(
+            "MM" in _git(root, "status", "--porcelain").stdout,
+            "the fixture did not reach the `MM` state the incident was caught in, so it is not "
+            "the shape the index reader exists for",
+        )
+        expect(
+            not [p for p in _carried_in(root) if p.ref != mutation_history.INDEX_REF],
+            "a tip carried the probe, so this case does not isolate the index layer",
+        )
+
+
+@case("mutation_history: restaging the repair clears the INDEX, and the gate can go green")
+def _repaired_index_is_clean() -> None:
+    """The same fixture in the other direction, and the property that makes the layer usable.
+
+    A guard that can never pass is worth less than none, so the repair has to be demonstrable -
+    and here the repair is a second `git add`, which is the whole trap: the file was already
+    correct in the first case and the index still carried the probe.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = _staged_probe_repo(Path(raw))
+        expect(
+            bool(_staged_in(root)),
+            "fixture did not start dirty, so a clean verdict below would prove nothing",
+        )
+
+        _git(root, "add", "-A")
+
+        expect(
+            not _staged_in(root),
+            "an index restaged from a repaired worktree still reads as dirty, so the gate is "
+            "permanently red and a guard that can never pass is one people learn to ignore",
+        )
+        expect(
+            not _carried_in(root),
+            "`carried()` does not clear when the index is repaired, so `tools check` never goes "
+            "green and the guard gets deleted on its first trip",
+        )
+        expect(
+            not _sweep_in(root),
+            "the probe was committed at some point, so the index half is not strictly earlier "
+            "than the ref half and the cheap failure to catch was never the cheap one",
+        )
+
+
+@case("mutation_history: an index finding is surfaced by `carried()`, which is what check gates")
+def _carried_surfaces_the_index() -> None:
+    # The wiring, and the reason `staged()` is not a separate command. A classifier nothing
+    # calls is a function, not a guard: `tools check` reaches this module through `carried()`
+    # and nowhere else, so a staged probe has to appear there or it never fails a build.
+    with tempfile.TemporaryDirectory() as raw:
+        root = _staged_probe_repo(Path(raw))
+
+        found = [p for p in _carried_in(root) if p.ref == mutation_history.INDEX_REF]
+
+        expect(
+            len(found) == 1,
+            f"`carried()` reported {len(found)} index finding(s); a staged probe must fail "
+            f"`mutation_history check` before it is committed, not after. Findings: "
+            f"{[probe.describe() for probe in _carried_in(root)]}",
+        )
+        expect(
+            found[0].path == PROBE_PATH,
+            f"the index finding named the wrong path: {found[0].describe()}",
         )
 
 

@@ -1,4 +1,5 @@
-"""Fail when a mutation probe is CARRIED BY A SHIPPED REF, which the tree guard cannot see.
+"""Fail when a mutation probe is CARRIED BY A SHIPPED REF or STAGED IN THE INDEX, which the
+tree guard cannot see.
 
 `game/tests/arch_rules/test_no_stranded_mutation.gd` reads `res://src` and `res://tests` off
 disk, so a probe that reached a commit is undetectable by it: the checkout is clean, the
@@ -72,6 +73,31 @@ one after it.
 `sweep()` keeps using `_marker_in()`, which is adjacency-blind on purpose: `report` is
 forensic, so naming every line that ever held a marker is what makes it useful for locating
 the commit, and it never gates.
+
+## The INDEX, because a fix-forward revert repairs the worktree and leaves the index wrong
+
+The ref half above is one commit too late: it goes red once the probe is IN history, when the
+cheapest fix is no longer deleting the line that is about to ship. On 2026-10-04 that window was
+one commit wide and real - `MUTATION-LOOTWORLDFULL` sat in the index of
+`game/src/modules/loot/loot_state.gd`, staged by a second agent's `git add` while the probe was
+still live, and the file read `MM` where its author's own edit predicted `M`. It was caught by
+reading `git diff --cached`, not by any guard.
+
+Reading the worktree harder does not close that window, which is the trap. A fix-forward revert
+writes the correct line to the file and leaves the staged copy alone, so `git diff` shows the fix,
+the tree reads clean, and the index still carries the probe - only `--cached` tells the two apart.
+So `staged()` reads the INDEX (`git grep --cached`) and never touches disk.
+
+It classifies with the SAME `_live_marker` the ref half uses. That is not tidiness: a second marker
+grammar is a second opinion, and the two layers would then disagree about what a probe is, which
+is the one failure this module's design exists to prevent. A staged probe and prose that NAMES one
+are separated by exactly the cut `is_documentation` draws, so the false positives that once pinned
+this gate permanently red cannot arrive through the new door either.
+
+`carried()` puts the index findings FIRST, ahead of every tip, because those are the ones about
+to become history and the ones a truncated report must not drop. When HEAD already carries a
+probe the index matches it and both report it: two facts, not one. A guard that suppressed the
+second because the first had fired would be a guard that stopped counting.
 
 ## What this deliberately does NOT catch
 
@@ -154,6 +180,13 @@ AGENT_LOCAL_NAMESPACES: tuple[str, ...] = (
     "refs/original/",
     "refs/filter-repo/",
 )
+
+#: The label an index finding carries in `CarriedMarker.ref`. Not a ref and never resolved as
+#: one - it exists so `describe()` prints `INDEX:game/src/...:42` and the reader can tell at a
+#: glance that the content is staged rather than shipped. The real `git grep` prefix for the
+#: index is empty, so this is the one place the two readers differ and it is a display concern
+#: only; nothing classifies on it.
+INDEX_REF = "INDEX"
 
 #: The comment introducers GDScript uses. `##`, `###` and `#!` are the same one repeated, so
 #: a run of `#` is skipped rather than compared against a single character.
@@ -253,17 +286,41 @@ def skipped_ref_namespaces() -> list[str]:
     return found
 
 
-def carried() -> list[CarriedMarker]:
-    """Every LIVE marker carried by a shipped ref's TIP. This is what `check` gates on.
+def staged() -> list[CarriedMarker]:
+    """Every LIVE marker held by the git INDEX under `GUARDED`. One commit from history.
 
-    One `git grep` per tip: git walks that tree and returns only the lines holding a root
-    literal, so nothing here reads thousands of blobs one subprocess at a time, and the
-    whole two-root sweep of `main` costs ~140ms. The line is then filtered through
-    `_live_marker`, which is what keeps the guard's own documentation, the tree's ~172 lines
-    of lower-case prose about mutation testing, and the shipped prose that NAMES a mutation
-    id mid-sentence out of the findings.
+    Read with `git grep --cached`, so the answer depends on the staged blobs and not on the
+    working tree - which is the entire point (see the module docstring): after a fix-forward
+    revert the file on disk is correct and the staged copy is still the probe, so every reader
+    that opens the file reports clean and this one does not.
+
+    `_live_marker` is the ref half's classifier, not a second grammar, so the index and the tips
+    cannot drift apart about what counts as a probe. `carried()` calls this, so a staged probe
+    fails `tools check` before it is ever committed.
     """
     found: list[CarriedMarker] = []
+    for path, number, text in _staged_lines():
+        hit = _live_marker(text)
+        if hit is not None:
+            found.append(CarriedMarker(INDEX_REF, path, number, hit.group(0), text))
+    return found
+
+
+def carried() -> list[CarriedMarker]:
+    """Every LIVE marker the repository is holding: the INDEX first, then each shipped ref's TIP.
+
+    This is what `check` gates on. Both halves matter and they are not the same question: a tip
+    carrying a probe is already history (BL-0615), and an index carrying one is the commit that
+    has not been made yet (2026-10-04, `MUTATION-LOOTWORLDFULL`) - the cheaper failure to catch
+    and the only one a ref-tip read misses.
+
+    One `git grep` per tip and one over the index: git walks that tree and returns only the lines
+    holding a root literal, so nothing here reads thousands of blobs one subprocess at a time.
+    The line is then filtered through `_live_marker`, which is what keeps the guard's own
+    documentation, the tree's lower-case prose about mutation testing, and the shipped prose that
+    NAMES a mutation id mid-sentence out of the findings.
+    """
+    found = staged()
     for ref in shipped_refs():
         for path, number, text in _candidate_lines(ref):
             hit = _live_marker(text)
@@ -318,21 +375,36 @@ def _root_offset(hit: re.Match[str]) -> int:
 
 def _candidate_lines(ref: str) -> list[tuple[str, int, str]]:
     """`(path, line, text)` for every pre-filter hit in `ref`'s tree under `GUARDED`."""
-    raw = _git(
-        "grep",
-        "-n",
-        "-I",
-        "-E",
-        *_pattern_args(),
-        ref,
-        "--",
-        *GUARDED,
+    return _parse_hits(
+        _git("grep", "-n", "-I", "-E", *_pattern_args(), ref, "--", *GUARDED),
+        f"{ref}:",
     )
-    prefix = f"{ref}:"
+
+
+def _staged_lines() -> list[tuple[str, int, str]]:
+    """`(path, line, text)` for every pre-filter hit in the INDEX under `GUARDED`.
+
+    `--cached` reads the staged blobs, so this does not care what is on disk. That is not a
+    performance note, it is the property `staged()` is built on: the incident this closes had a
+    CORRECT file on disk and the probe in the index, so a worktree reader sees nothing.
+
+    No tree argument, hence an empty output prefix: `git grep --cached` prints `path:line:text`
+    where the ref reader prints `ref:path:line:text`. The parse below takes that prefix as an
+    argument, so there is one parser rather than two and the columns cannot drift apart.
+    """
+    return _parse_hits(
+        _git("grep", "--cached", "-n", "-I", "-E", *_pattern_args(), "--", *GUARDED),
+        "",
+    )
+
+
+def _parse_hits(raw: str, prefix: str) -> list[tuple[str, int, str]]:
+    """`git grep` output as `(path, line, text)`, skipping `prefix` and anything malformed."""
     hits: list[tuple[str, int, str]] = []
     for entry in raw.splitlines():
-        # `<ref>:<path>:<line>:<text>`. The ref prefix is stripped by LENGTH rather than
-        # split, so a path or a marker containing a colon cannot shift the columns.
+        # `<ref>:<path>:<line>:<text>`, with `<ref>` absent for the index. The prefix is
+        # stripped by LENGTH rather than split, so a path or a marker containing a colon cannot
+        # shift the columns.
         if not entry.startswith(prefix):
             continue
         rest = entry[len(prefix) :]
