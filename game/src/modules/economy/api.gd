@@ -63,15 +63,88 @@ static func trade(
 
 ## What `offer` is worth right now, without moving anything. The `preview()` the split dev
 ## cycle requires: the UI builds only against this.
-static func quote(actor: Actor, offer: Array, partner_id: StringName = &"") -> Dictionary:
-	if actor == null:
+##
+## ## `quote` is the ONE row reader, not just one more reader
+##
+## Every place that must turn `{def_id, quantity}` rows into priced numbers comes through
+## here, because a second row loop is a second price path with extra steps (ADR 0094). The
+## counterfactual is what this replaced: a shop's shelf, the purse it is minted with and its
+## affordability check each walked `def.stock` themselves and each re-decided what a row is —
+## which row is carried, which is bound, which has a rolled worth — so the number a panel
+## greyed a row out against was produced by code that never met the settlement path.
+##
+## `ShopCounter` reads its whole priced shelf through here and `MarketTransfer.price` builds
+## a trade's two legs through the same helper, so funding, affordance, preview and settlement
+## agree by construction rather than by three people reading the same ADR carefully.
+##
+## `owner_id` is the actor whose `bound_to` a row is checked against, and `&""` applies no
+## tradeability rule — a preview shows the whole offer, a transfer is judged for a named
+## owner. Threading it is what lets ONE reader serve both without either growing a branch.
+##
+## A row may also name the exact `instance` it means, the same convention
+## `EconomyExchange._plan` reads as `instance_id` and for the same reason: a realized roll
+## priced by def id is a different item than the one on the shelf. A `null` actor is allowed
+## exactly when every row carries its own realized instance — that is how a merchant prices
+## its authored stock before anybody holds it — and a row naming no instance then counts as
+## unpriced rather than being silently skipped.
+##
+## ## This prices BASE only, and that is a boundary, not a gap
+##
+## The coins a shop charges live in `MarketSpread` (ADR 0100) and `economy` may not name
+## `market`. So `quote` returns the base numbers and `MarketTransfer.quote` — which is in
+## `market` and may — layers the one spread on top. A margin is never a second price.
+static func quote(
+	actor: Actor, offer: Array, partner_id: StringName = &"", owner_id: StringName = &""
+) -> Dictionary:
+	var inventory: Variant = null if actor == null else ItemsApi.inventory(actor)
+	if actor != null and inventory == null:
 		return {}
-	var inventory := ItemsApi.inventory(actor)
-	if inventory == null:
-		return {}
-	var rows: Array = []
+	var judged := owner_id != &""
+	var priced := _price_rows(inventory, offer, owner_id if judged else null)
+	var rows: Array = (priced["rows"] as Array).duplicate(true)
 	var total := 0
 	var unpriced := 0
+	var uncarried := 0
+	for row in rows:
+		total += int(row["line_price"])
+		if bool(row["rolled_worth"]):
+			unpriced += 1
+		if not bool(row["carried"]):
+			uncarried += 1
+	return {
+		"actor_id": String(actor.id) if actor != null else "",
+		"partner_id": String(partner_id),
+		"owner_id": String(owner_id),
+		"judged": judged,
+		"rows": rows,
+		"row_count": rows.size(),
+		"total": total,
+		"unpriced": unpriced,
+		"uncarried": uncarried,
+		"untradeable": int(priced["untradeable"]),
+		"rolled_worth": int(priced["rolled_worth"]),
+		"ok": bool(priced["ok"]),
+		"numeraire": String(EconomyValuation.numeraire_id()),
+		"numeraire_price": EconomyValuation.numeraire_price(),
+	}
+
+
+## Turn `{def_id, quantity}` rows into priced rows. The ONE row reader: [method quote] and
+## `MarketTransfer.price` both come here.
+##
+## `inventory` may be `null` when each row carries its own realized `instance`. `owner_id` is
+## the actor whose `bound_to` a row is checked against, or `null` to apply no tradeability
+## rule at all. A preview shows a row the caller cannot carry; a transfer refuses the whole
+## leg for it, so the refusals are COUNTED rather than thrown and each caller decides what to
+## do with them. `ok` is therefore "every row is priced, carried and tradeable" — the answer
+## a settler needs and the answer a preview merely reports.
+static func _price_rows(inventory: Variant, offer: Array, owner_id: Variant) -> Dictionary:
+	var rows: Array = []
+	var unpriced := 0
+	var uncarried := 0
+	var untradeable := 0
+	var rolled := 0
+	var total := 0
 	for row in offer:
 		if not row is Dictionary:
 			continue
@@ -79,11 +152,32 @@ static func quote(actor: Actor, offer: Array, partner_id: StringName = &"") -> D
 		var quantity := int(row.get("quantity", 0))
 		if def_id == &"" or quantity <= 0:
 			continue
-		var instance := inventory.sample(def_id)
+		var instance: ItemInstance = row.get("instance")
+		if instance == null and inventory != null:
+			instance = (inventory as Inventory).sample(def_id)
 		if instance == null:
+			# An unresolvable row is a refusal for a settler and a missing number for a
+			# preview, so it is counted rather than dropped: skipping it silently would let
+			# `ok` read true over an offer nothing at all was found in.
 			unpriced += 1
 			continue
+		var carried := inventory != null and (inventory as Inventory).has(def_id, quantity)
+		if not carried:
+			uncarried += 1
+		var tradeable := true
+		var has_rolled := false
+		if owner_id != null:
+			# ADR 0094: a rolled worth is an rng draw, so it is refused by name rather than
+			# priced. `MarketTransfer.price` needs this to refuse; a preview needs it to label.
+			has_rolled = EconomyValuation.has_rolled_worth(instance)
+			if has_rolled:
+				rolled += 1
+				tradeable = false
+			elif instance.bound_to != &"" and instance.bound_to != StringName(owner_id):
+				untradeable += 1
+				tradeable = false
 		var unit := EconomyValuation.price_of(instance)
+		total += unit * quantity
 		(
 			rows
 			. append(
@@ -92,20 +186,20 @@ static func quote(actor: Actor, offer: Array, partner_id: StringName = &"") -> D
 					"quantity": quantity,
 					"unit_price": unit,
 					"line_price": unit * quantity,
-					"carried": inventory.has(def_id, quantity),
+					"carried": carried,
+					"tradeable": tradeable,
+					"rolled_worth": has_rolled,
 				}
 			)
 		)
-		total += unit * quantity
 	return {
-		"actor_id": String(actor.id),
-		"partner_id": String(partner_id),
 		"rows": rows,
-		"row_count": rows.size(),
 		"total": total,
 		"unpriced": unpriced,
-		"numeraire": String(EconomyValuation.numeraire_id()),
-		"numeraire_price": EconomyValuation.numeraire_price(),
+		"uncarried": uncarried,
+		"untradeable": untradeable,
+		"rolled_worth": rolled,
+		"ok": unpriced == 0 and uncarried == 0 and untradeable == 0 and rolled == 0,
 	}
 
 

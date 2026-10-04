@@ -11,6 +11,16 @@ extends RefCounted
 ## inflation ADR 0094 closed for base worth. So a lot carries the realized payload and the
 ## frozen price, and **escrows by removal** at list time.
 ##
+## ## The ledger skeleton is NOT restated here
+##
+## `empty()` is deliberately a bare `{"lots": {}}` and there is no second `normalize` to go
+## with it. The market module owns ONE `module_data` key holding shops, the floor and the
+## lots, so an `AuctionState.normalize` that merged `lots` into whatever `MarketState` already
+## produced was a second normalizer over a payload another function already owned: it took an
+## already-normalized ledger and returned a DIFFERENT, version-less one, and nothing ever
+## called it. `MarketState.normalize` folds `lots` itself, which is where the single
+## skeleton and the single merge now live (DEF-0222).
+##
 ## ## String keys throughout
 ##
 ## `Actor.to_dict` converts only the OUTER `module_data` key, so an inner `StringName` reaches
@@ -40,27 +50,12 @@ const APPETITE_PERCENT := {
 const DEFAULT_APPETITE_PERCENT := 30
 
 
-## The auction ledger's OWN skeleton: lots only.
-##
-## Deliberately not a full ledger. The market module owns ONE `module_data` key holding shops,
-## the floor and the lots, so a second `empty()` that invented its own top-level keys would be
-## a second skeleton fighting the first over one payload. `normalize` therefore MERGES only the
-## `lots` container into whatever `MarketState` already produced — and it starts from that, so
-## the shared skeleton is still authored in exactly one place.
+## The auction ledger's OWN slice: lots only. Deliberately NOT a whole ledger — the market
+## module owns ONE `module_data` key holding shops, the floor and the lots, so an `empty()`
+## that invented its own top-level keys would be a second skeleton fighting the first over one
+## payload. `MarketState.normalize` folds this container in.
 static func empty() -> Dictionary:
 	return {"lots": {}}
-
-
-## Merge the `lots` container into an already-normalized market ledger.
-static func normalize(market_state: Dictionary) -> Dictionary:
-	var out := empty()
-	var lots = market_state.get("lots", {})
-	if lots is Dictionary:
-		for lot_id in (lots as Dictionary).keys():
-			var lot = (lots as Dictionary)[lot_id]
-			if lot is Dictionary:
-				out["lots"][String(lot_id)] = (lot as Dictionary).duplicate(true)
-	return out
 
 
 ## The lot at `lot_id`, or `{}`.

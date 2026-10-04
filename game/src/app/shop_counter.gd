@@ -146,8 +146,17 @@ static func count() -> int:
 ## ## It reads through the two facades and never a third
 ##
 ## `MarketApi.summary` for the spread and the floor, `ShopDef.to_dict` for the authored
-## policy. Nothing here prices anything, so this file names no weight, no realm curve and
-## no unit price — the `AuctionReadModel` rule.
+## policy. Nothing here prices anything: every number on the shelf comes from
+## [method priced_rows], which is the same reader `MarketTransfer.price` settles through. So
+## this file names no weight, no realm curve and no unit price — the `AuctionReadModel` rule.
+##
+## ## `shelf` is what makes `EconomyApi.quote` reachable
+##
+## The priced shelf was computed for `funding` and `_can_afford` and then thrown away, so the
+## preview that priced it published nothing a panel could read. It is published now: a shop
+## screen shows `coins` per row, and that number is the one `MarketApi.buy` will charge,
+## because both read the same function. A preview nobody can reach is a paid-for feature no
+## one bought (DEF-0219).
 static func summary(shop_id: StringName) -> Dictionary:
 	var def := ShopCatalog.instance().definition(shop_id)
 	if def == null:
@@ -163,6 +172,9 @@ static func summary(shop_id: StringName) -> Dictionary:
 	stock.sort_custom(
 		func(a: Dictionary, b: Dictionary) -> bool: return String(a["def_id"]) < String(b["def_id"])
 	)
+	# The shelf is priced the way the shop SELLS, because that is the direction a player at
+	# this counter trades in: `coins` is the charge, and `_can_afford` compares a purse to it.
+	var shelf := priced_rows(def, true)
 	return {
 		"shop_id": String(def.shop_id),
 		"ok": true,
@@ -172,6 +184,8 @@ static func summary(shop_id: StringName) -> Dictionary:
 		"definition": def.to_dict(),
 		"stock": stock,
 		"stock_count": stock.size(),
+		"shelf": shelf,
+		"shelf_count": shelf.size(),
 		"purse": EconomyApi.purse(actor),
 		"funding": _funding_coins(def),
 		"spread": MarketSpread.view(),
@@ -336,30 +350,53 @@ static func _can_afford(def: ShopDef, player: Actor) -> bool:
 ## One priced row per AUTHORED stock entry, valued the same way [method MarketTransfer.price]
 ## values the very rows it is handed.
 ##
-## ## Why this is not a second price formula
+## ## Why this is a DELEGATE and not a second reader
 ##
-## The unit is `EconomyValuation.price_of` — the ONE price — and the coins are
-## `MarketSpread.sell_total` / `buy_total`, which is the ONE spread. Both are read through
-## the module facades rather than recomputed, so funding, affordance and settlement cannot
-## disagree: the number a shop is funded with is the number a panel greys a row out against.
+## This used to walk `def.stock` itself: resolve the def, realize an instance from
+## `ShopDef.stock_seed`, call `EconomyValuation.price_of`, then re-derive the coins from
+## `MarketSpread`. Every one of those numbers was right, and it was still a second pricing
+## path — one that would have drifted the moment a row rule changed, because nothing made the
+## shelf and the settlement agree. They agree now because this asks `MarketTransfer.quote`
+## for them, and `MarketTransfer.price` asks the same function to plan a trade's two legs.
+## The shelf, the funding purse, the affordability check and the settlement are one reader.
 ##
-## ## The instance is REALIZED, and that is load-bearing
-##
-## A stock row is only ever realized once per def id, from `ShopDef.stock_seed`, so the
-## price here is the price of the item that is actually ON the shelf — rolled options and
-## rarity included. An authored row valued against a hand-built common instance would quote
-## a rolled relic at the price of a pebble, and the panel would grey out a purchase the
-## verb then happily settles.
+## A stock row is only ever realized once per def id, from `ShopDef.stock_seed`, so the price
+## here is the price of the item that is actually ON the shelf — rolled options and rarity
+## included. An authored row valued against a hand-built common instance would quote a rolled
+## relic at the price of a pebble, and the panel would grey out a purchase the verb then
+## happily settles. Each row therefore carries its realized instance into `quote` rather than
+## a bare def id, which is also why this does NOT read the minted counter: reading the counter
+## would make `realize` depend on its own funding, since `_fund` prices this shelf.
+static func priced_rows(def: ShopDef, shop_is_seller: bool) -> Array[Dictionary]:
+	var quoted := MarketTransfer.quote(null, null, _stock_rows(def), shop_is_seller, &"")
+	var out: Array[Dictionary] = []
+	for row in quoted["rows"] as Array:
+		(
+			out
+			. append(
+				{
+					"def_id": StringName(row["def_id"]),
+					"quantity": int(row["quantity"]),
+					"unit_price": int(row["unit_price"]),
+					"coins": int(row["coins"]),
+				}
+			)
+		)
+	return out
+
+
+## The authored stock as priced rows, each carrying the ONE realized instance it is worth.
+## A row that resolves to no `ItemDef` is dropped here and reported by `_stock`, which is the
+## function that shouts about a short shelf; `quote` is not the place for a content warning.
 ##
 ## ## The loop bound is SNAPSHOTTED before it starts
 ##
-## `_fund` and `_stock` both fill the bag this reads nothing from, and a loop that tests a
-## container it is itself growing does not terminate (INC-0002) — so `def.stock.size()` is
-## read once, before the first row.
-static func priced_rows(def: ShopDef, shop_is_seller: bool) -> Array[Dictionary]:
+## `_stock` and `_fund` both fill bags, and a loop that tests a container it is itself growing
+## does not terminate (INC-0002) — so `def.stock.size()` is read once, before the first row.
+static func _stock_rows(def: ShopDef) -> Array:
+	var out: Array = []
 	if def == null:
-		return [] as Array[Dictionary]
-	var out: Array[Dictionary] = []
+		return out
 	var authored: int = def.stock.size()
 	for index in authored:
 		if index >= def.stock.size():
@@ -377,21 +414,5 @@ static func priced_rows(def: ShopDef, shop_is_seller: bool) -> Array[Dictionary]
 		var instance := _realize(item_def, ShopDef.stock_seed(def.shop_id, def_id))
 		if instance == null:
 			continue
-		var unit := EconomyValuation.price_of(instance)
-		(
-			out
-			. append(
-				{
-					"def_id": def_id,
-					"quantity": quantity,
-					"unit_price": unit,
-					"coins":
-					(
-						MarketSpread.sell_total(unit, quantity)
-						if shop_is_seller
-						else MarketSpread.buy_total(unit, quantity)
-					),
-				}
-			)
-		)
+		out.append({"def_id": def_id, "quantity": quantity, "instance": instance})
 	return out

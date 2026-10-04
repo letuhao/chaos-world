@@ -22,7 +22,7 @@ func setup() -> void:
 # --- 1. S1 before S2 -----------------------------------------------------------
 
 
-func test_the_rate_gate_scales_magnitude_and_never_the_landed_chance() -> void:
+func test_the_ladder_gate_scales_magnitude_and_never_the_landed_chance() -> void:
 	# The same defender, the same band, two attackers on different realms. A landed
 	# chance that moved with the realm would be the second dial.
 	var defender := CombatTestKit.actor(&"target")
@@ -48,7 +48,7 @@ func test_the_rate_gate_scales_magnitude_and_never_the_landed_chance() -> void:
 	assert_eq(_p_hit(defender, weak), _p_hit(defender, strong), "landed chance is realm-free")
 
 
-func test_the_mechanism_sees_the_rate_gated_base_and_never_the_raw_magnitude() -> void:
+func test_the_mechanism_sees_the_ladder_gated_base_and_never_the_raw_magnitude() -> void:
 	var mechanism := CombatTestKit.FixedMechanism.new()
 	mechanism.amount = 10.0
 	var attacker := _attacker_at(&"attacker", &"spirit_sea")
@@ -61,9 +61,27 @@ func test_the_mechanism_sees_the_rate_gated_base_and_never_the_raw_magnitude() -
 	CombatSpine.resolve_hit(
 		attacker, target, CombatTestKit.technique(100.0), _tuning, CombatTestKit.rng()
 	)
-	var realm := RealmRate.factor(attacker.realm())
+	# The technique's OWNING ladder, keyed by realm id (ADR 0055, ADR 0182), which is what
+	# S1 reads. This used to read `RealmRate.factor` — the TRAINING rate — and asserted
+	# `100.0 * rate`; the rate is a rate of a different quantity, so the ADR 0055 ladder was
+	# priced at nothing and a deep technique reached 1.7758x instead of 2.7667x. The expected
+	# value is therefore DERIVED through the table rather than pasted.
+	var realm := TechniqueMagnitudeTable.factor(attacker.realm())
 	assert_almost_eq(mechanism.seen_base, 100.0 * realm, "S1's output, not the authored magnitude")
 	assert_ne(mechanism.seen_base, 100.0, "the realm gate really did move it")
+	# The teeth: the ladder is not the training rate wearing a new name, and not the raw
+	# magnitude either. At `spirit_sea` the authored table reads 1.4203596 where
+	# `RealmRate` reads `1.02^10 = 1.1950939`, so a regression back to the rate — or to
+	# `pow(TECHNIQUE_STEP, ordinal)`, the index-derived substitute that also used to sit
+	# here — fails here instead of agreeing with whatever S1 happens to print.
+	assert_ne(
+		mechanism.seen_base,
+		100.0 * RealmRate.factor(attacker.realm()),
+		(
+			"S1 is gated by the technique ladder, not by the training rate (realm %s)"
+			% attacker.realm()
+		)
+	)
 
 
 func test_an_unknown_realm_leaves_the_base_at_the_authored_magnitude() -> void:
@@ -72,7 +90,7 @@ func test_an_unknown_realm_leaves_the_base_at_the_authored_magnitude() -> void:
 	assert_almost_eq(
 		CombatSpine.base_damage(attacker, CombatTestKit.technique(100.0)),
 		100.0,
-		"`RealmRate.NEUTRAL` for an id off the ladder"
+		"the ladder's neutral for an id off the ladder"
 	)
 
 
