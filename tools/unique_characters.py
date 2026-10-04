@@ -103,12 +103,55 @@ SLOT_KIND = {
     "daily_life": "scene",
 }
 
+# `daypart` is a CLOSED presentation axis and never carries a duration, a count or a period
+# reference (ADR 0178). It selects which rows a panel shows, which is why a presentational axis
+# cannot drift from the clock: there is no magnitude to drift. Deriving it from `periods` is owed
+# to ADR 0173's `TimeLadder` and is deliberately NOT done here, because a `PERIODS_PER_DAY`
+# constant authored in an asset tool would be a third time constant beside `world_pulse.gd:88` and
+# `save_clock.gd:34`. Named `daypart` rather than `phase` because `core/tribulation.gd:89` already
+# declares `var phase: StringName` in the global class_name namespace.
+DAYPARTS = ("dawn", "day", "dusk", "night")
+
+# The presentation clause each daypart contributes to a daily scene. Written per daypart rather
+# than rotated, because four shots that differ ONLY in a `daypart` field are four copies of one
+# prompt wearing four labels — and the scene is what a generator actually reads.
+DAYPART_SCENE = {
+    "dawn": "at first light, before the day's work has properly begun",
+    "day": "in the middle of the working day, at its least remarkable",
+    "dusk": "at the day's end, the light going and the work nearly done",
+    "night": "after dark, by whatever light the work can be done by",
+}
+
+# Framing and expression pools for the daily family. Eight each, so a four-shot family never has
+# to reuse one within a record, and `check`'s per-record distinctness rule cannot fire on a slot
+# that never had a member field before this.
+_DAILY_FRAMINGS = (
+    "medium three-quarter at working distance, the ordinary hour doing most of the frame",
+    "waist-up at rest between tasks, hands occupied, nothing performed",
+    "wide from a doorway, the figure mid-routine and unaware of being looked at",
+    "over-the-shoulder into the middle distance, the figure small and unposed",
+    "level and close, a private moment with no second party in it",
+    "high and slightly behind, looking down at work already in progress",
+    "low and wide, the figure against the working light rather than posed to it",
+    "side-on at the edge of frame, half the picture given to the task itself",
+)
+_DAILY_EXPRESSIONS = (
+    "unguarded and mid-thought, no one to perform for",
+    "absorbed, the expression of someone counting",
+    "wry and brief, the ordinary face of an ordinary day",
+    "tired and specific, the tiredness of a repeated task rather than of age",
+    "attentive to something out of frame, the interest real and unstated",
+    "flat with fatigue, nothing being concealed and nothing being said",
+    "quietly pleased at a small competent thing",
+    "neutral and available, the face of someone waiting on a result",
+)
+
 # Slots holding a SET rather than one picture. The minimum is the count the art
 # brief enumerates, not a round number, so raising it is a spec change rather
 # than a taste change: the expression brief names nine emotions and the pose
 # brief names six. These are PROMPT counts, not rendered images — generation is
 # `unique_characters next`, which stays optional per shot.
-SET_SLOT_MINIMUMS = {"expression_set": 9, "pose_set": 6}
+SET_SLOT_MINIMUMS = {"expression_set": 9, "pose_set": 6, "daily_life": 4}
 
 # Which field distinguishes one member of a set from the next. It is not
 # `expression` for both, and assuming it was is the bug this table exists to
@@ -116,7 +159,19 @@ SET_SLOT_MINIMUMS = {"expression_set": 9, "pose_set": 6}
 # `expression` would demand nine distinct emotions from a character being asked
 # for nine stances — a requirement no author can satisfy without writing the
 # emotion field as a restatement of the pose.
-SET_SLOT_MEMBER_FIELD = {"expression_set": "expression", "pose_set": "pose"}
+SET_SLOT_MEMBER_FIELD = {
+    "expression_set": "expression",
+    "pose_set": "pose",
+    # Counted on `daypart`, NOT on `expression` or `scene`: a daily family is four MOMENTS, and
+    # four shots reading the same daypart are one moment four times. The minimum equals
+    # len(DAYPARTS) so a COMPLETE family covers the whole closed vocabulary — a family missing
+    # `night` is not a family, it is three quarters of one.
+    "daily_life": "daypart",
+}
+# Fail a canon record rather than a draft when a shot claims a daypart outside the closed set: a
+# daypart is a presentation LOOKUP, so an unrecognised value is a row no panel can ever select, and
+# silently accepting one hides a typo in the exact field the vocabulary exists to constrain.
+_DAYPART_REQUIRED = "a daily_life shot must name a daypart"
 SHOT_STATUS = {"planned", "generated", "approved"}
 DEFAULT_CANVAS = [1024, 1024]
 CANVAS_MAX = 4096
@@ -952,6 +1007,22 @@ def _prompt_set_gaps(art: object) -> list[str]:
         if not members:
             gaps.append(f"no shot fills the {slot!r} prompt")
             continue
+        # Checked HERE and not in `_validate_shot` because this is the CANON gate: ADR 0178 states a
+        # schedule row is validated at canon and "a draft may carry" a gap. Enforcing it per shot
+        # refused two drafts mid-authoring, which is the opposite of what a draft is for.
+        if slot == "daily_life":
+            stray = sorted(
+                str((shot or {}).get("daypart"))
+                for shot in (art.get("shots") or [])
+                if isinstance(shot, dict)
+                and (shot or {}).get("slot") == slot
+                and str((shot or {}).get("daypart")) not in DAYPARTS
+            )
+            if stray:
+                gaps.append(
+                    f"{_DAYPART_REQUIRED}; canon carries {sorted(set(str(m) for m in stray))} "
+                    f"(one of {list(DAYPARTS)})"
+                )
         needed = SET_SLOT_MINIMUMS.get(slot)
         if needed is None:
             continue
@@ -1713,6 +1784,151 @@ def _backfill_command(records: list[dict], args) -> int:
     return 0
 
 
+def _daily_family_command(records: list[dict], args) -> int:
+    """Give every canon record a COMPLETE `daily_life` family: one shot per `daypart`.
+
+    Separate from `backfill`, which refuses set slots on purpose (`:1583-1587`): a set slot needs
+    `SET_SLOT_MINIMUMS[slot]` members that differ on `SET_SLOT_MEMBER_FIELD[slot]`, which is a
+    different shape from "one prompt this record is missing".
+
+    **Replaces** the single `daily_life` shot `backfill` wrote rather than adding beside it. That
+    shot has no `daypart`, so once `daily_life` became a set slot counted on `daypart` it could
+    neither satisfy nor coexist with the minimum — leaving it would mean a record carrying five
+    daily shots of which four counted.
+
+    Idempotent: a record already holding one shot per daypart is left untouched, so re-running
+    after a content edit does not renumber ids. The bound is the catalog length, read before the
+    loop; nothing here grows the list it walks.
+    """
+    needed = SET_SLOT_MINIMUMS["daily_life"]
+    if needed != len(DAYPARTS):
+        raise ToolError(
+            f"the daily family minimum ({needed}) no longer equals the daypart vocabulary "
+            f"({len(DAYPARTS)}); one of the two tables is stale"
+        )
+
+    catalog = readable_catalog()
+    targets = []
+    for record in catalog:
+        if not isinstance(record, dict) or record.get("status") != "canon":
+            continue
+        shots = (record.get("art") or {}).get("shots") or []
+        daily = [
+            shot
+            for shot in shots
+            if isinstance(shot, dict) and (shot or {}).get("slot") == "daily_life"
+        ]
+        present = {str((shot or {}).get("daypart")) for shot in daily}
+        # A record needs writing when the family is incomplete OR when any daily shot carries a
+        # daypart outside the closed set. Testing only `present != DAYPARTS` misses a record that
+        # holds all four PLUS a stray: `present` is complete, so the record looks done, while
+        # `check` still refuses the stray. Two records reached exactly that state from a concurrent
+        # author adding a daypart-less `daily_life` shot. The stray is dropped, because the family
+        # writer replaces every daily shot rather than appending to them.
+        if present != set(DAYPARTS) or any(
+            str((shot or {}).get("daypart")) not in DAYPARTS for shot in daily
+        ):
+            targets.append(record)
+    if args.limit:
+        targets = targets[: int(args.limit)]
+    if not targets:
+        ok(f"every canon record already carries all {needed} dayparts; nothing to write")
+        return 0
+
+    shard_ids: dict[Path, list[str]] = {}
+    for record in targets:
+        shard_ids.setdefault(_owning_shard(str(record.get("id"))), []).append(str(record.get("id")))
+
+    written = 0
+    for shard, ids in sorted(shard_ids.items(), key=lambda item: str(item[0])):
+        ids = sorted(ids)
+        owned = set(ids)
+        merged = [record for record in catalog if record.get("id") in owned]
+        by_character = {str(record.get("id")): record for record in merged}
+        if len(by_character) != len(owned):
+            raise ToolError(
+                f"{_display_path(shard)}: expected {len(owned)} record(s) to update, "
+                f"found {len(by_character)}. Refusing to write rather than guess which "
+                "record a shot belongs to."
+            )
+        for character_id in ids:
+            record = by_character[character_id]
+            identity = record.get("identity") or {}
+            appearance = record.get("appearance") or {}
+            art = record.setdefault("art", {})
+            shots = art.setdefault("shots", [])
+            index = sum(ord(ch) for ch in character_id)
+            home = str(identity.get("home") or "the settlement")
+            faction = str(identity.get("faction") or "no institution")
+            used = {str(shot.get("framing")) for shot in shots if isinstance(shot, dict)}
+
+            family = []
+            for offset, daypart in enumerate(DAYPARTS):
+                framing = _first_unused_framing(_DAILY_FRAMINGS, used, index + offset)
+                used.add(framing)
+                family.append(
+                    {
+                        "id": f"daily-life-{character_id.rsplit('-', 1)[-1]}-{daypart}",
+                        "slot": "daily_life",
+                        "kind": SLOT_KIND["daily_life"],
+                        "canvas": [1536, 1024],
+                        # The daypart changes the SCENE, not just a field. Four shots differing only
+                        # in `daypart` are one prompt wearing four labels, and the scene is what a
+                        # generator actually reads.
+                        "scene": (
+                            f"{home}, {DAYPART_SCENE[daypart]}: the ordinary work of "
+                            f"{faction}, mid-task and arranged for no one"
+                        ),
+                        "pose": (
+                            f"at the middle of the task, "
+                            f"{appearance.get('presentation') or 'unposed'}, the work "
+                            "proceeding whether or not it is observed"
+                        ),
+                        "expression": _DAILY_EXPRESSIONS[
+                            (index + offset) % len(_DAILY_EXPRESSIONS)
+                        ],
+                        "framing": framing,
+                        "daypart": daypart,
+                        "status": "planned",
+                    }
+                )
+            art["shots"] = [
+                shot
+                for shot in shots
+                if not (isinstance(shot, dict) and shot.get("slot") == "daily_life")
+            ] + family
+            written += len(family)
+        _atomic_write(merged, shard)
+        ok(f"{_display_path(shard)}: wrote the {needed}-daypart family for {len(ids)} record(s)")
+
+    incomplete = [
+        str(record.get("id"))
+        for record in readable_catalog()
+        if isinstance(record, dict)
+        and record.get("status") == "canon"
+        and {
+            str((shot or {}).get("daypart"))
+            for shot in ((record.get("art") or {}).get("shots") or [])
+            if isinstance(shot, dict) and (shot or {}).get("slot") == "daily_life"
+        }
+        != set(DAYPARTS)
+    ]
+    print(f"\nwrote {written} daily shot(s) across {len(targets)} record(s)")
+    if incomplete and not args.limit:
+        print(f"  {len(incomplete)} canon record(s) still lack a complete family: {incomplete[:6]}")
+    return 0
+
+
+def _first_unused_framing(pool: tuple[str, ...], used: set[str], index: int) -> str:
+    """The first framing in `pool` this record does not already use, else a stable pick.
+
+    A fixed offset collided with another slot's framing in one record out of three and failed
+    `check`, so the pool is searched before falling back. The `next(...)` walks `pool`, which is a
+    module constant, so the scan is bounded by its length.
+    """
+    return next((item for item in pool if item not in used), pool[index % len(pool)])
+
+
 def _diversity_command(records: list[dict], args) -> int:
     """The read-only view of cast composition, and the number that steers a wave.
 
@@ -2105,6 +2321,16 @@ def register(subparsers) -> None:
         default=0,
         help="stop after this many records (0 = all); for a dry run on a few",
     )
+    daily = actions.add_parser(
+        "daily-family",
+        help="write one daily_life shot per daypart on every canon record (ADR 0178)",
+    )
+    daily.add_argument(
+        "--limit",
+        type=int,
+        default=0,
+        help="stop after this many records (0 = all); for a dry run on a few",
+    )
     species_pick = actions.add_parser(
         "species",
         help="list species that may legally carry a given cultivation path, least-used first",
@@ -2204,6 +2430,8 @@ def run(args) -> int:
         return _species_command(readable_catalog(), args)
     if action == "backfill":
         return _backfill_command(readable_catalog(), args)
+    if action == "daily-family":
+        return _daily_family_command(readable_catalog(), args)
     records = _load_index()
     if action == "next":
         return _next(records, args.count, args.kind)

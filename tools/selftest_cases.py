@@ -2157,6 +2157,50 @@ def _atomic_write_preserves_style_and_rows() -> None:
     )
 
 
+@case("unique_characters: a daily_life family is counted on DISTINCT daypart, not on shot count")
+def _daily_family_counts_distinct_dayparts() -> None:
+    """Both directions on all four shapes, because the failure this closes is a COUNT that passes.
+
+    Four `daily_life` shots that all read `dawn` are one moment rendered four times. A minimum
+    counted on shots would see four and be satisfied; counted on distinct `daypart` it sees one and
+    fails, which is the whole point of `SET_SLOT_MEMBER_FIELD['daily_life'] = 'daypart'` (ADR 0178).
+    The same reasoning that put `expression` on `expression_set` and `pose` on `pose_set`.
+
+    The fourth shape is the one this implementation actually got wrong first: a record holding all
+    four dayparts PLUS a stray daypart-less shot satisfies any `present != DAYPARTS` completeness
+    test, so the writer skipped it while `check` still refused it.
+    """
+
+    def _gaps(dayparts: list) -> list[str]:
+        art = {"shots": [{"id": "s", "slot": "daily_life", "daypart": d} for d in dayparts]}
+        return [gap for gap in unique_characters._prompt_set_gaps(art) if "daily_life" in gap]
+
+    expect(
+        _gaps(["dawn", "day", "dusk", "night"]) == [],
+        f"a COMPLETE daily family was refused: {_gaps(['dawn', 'day', 'dusk', 'night'])}",
+    )
+    expect(
+        bool(_gaps(["dawn", "dawn", "dawn", "dawn"])),
+        "FOUR shots all reading the same daypart PASSED. Counted on shots instead of distinct "
+        "dayparts, which is the defect this case exists to prevent (ADR 0178).",
+    )
+    expect(
+        bool(_gaps(["dawn", "day", "dusk"])),
+        "three of four dayparts PASSED; the minimum must equal the vocabulary size",
+    )
+    expect(
+        bool(_gaps(["dawn", "day", "dusk", "night", None])),
+        "a complete family carrying a stray daypart-less shot PASSED; the stray is a canon GAP",
+    )
+    # The minimum must stay pinned to the vocabulary, or a family could be 'complete' while
+    # omitting a daypart the closed set defines.
+    expect(
+        unique_characters.SET_SLOT_MINIMUMS["daily_life"] == len(unique_characters.DAYPARTS),
+        f"the daily minimum ({unique_characters.SET_SLOT_MINIMUMS['daily_life']}) no longer equals "
+        f"the daypart vocabulary ({len(unique_characters.DAYPARTS)})",
+    )
+
+
 @case("unique_characters: backfill writes each record to ONE shard and never duplicates it")
 def _backfill_writes_one_shard() -> None:
     """The first `backfill` wrote every target record into EVERY shard.
