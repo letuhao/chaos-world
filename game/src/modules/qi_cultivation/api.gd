@@ -230,8 +230,26 @@ static func cultivate(actor: Actor, amount: float) -> bool:
 ## the closed path or the ceiling it hit, which is the ADR 0034 rule that a gate and
 ## its preview must be the same wording. It is a precondition and never a modifier: a
 ## race can stop a breakthrough, never make one easier.
+##
+## ## DEF-0106: this is the qi path's SECOND earn site, and it is not optional
+##
+## `ui/screens/qi_cultivation_screen.gd:275` calls THIS verb, not
+## `QiAdvancement.try_breakthrough` — the same shape as `mind_cultivation_ui.gd`
+## calling `MindAdvancement` directly, and the same reason the ADR 0109 gate above is
+## stated to live in the transaction. So a fate earn living only on `QiAdvancement`
+## would leave the player's own Breakthrough button earning nothing, which is the
+## UNWIRED failure this entry exists to close rather than a second copy of one.
+##
+## It calls `QiAdvancement`'s earn rather than restating it, because the fate id and
+## its source string are `QiAdvancement`'s to publish (DEF-0105's rule about a source
+## naming the system, not the fate, has one home per path) and `earn_fate` is
+## exactly-once, so the two sites cannot pay the same breakthrough twice even if a
+## caller reaches both.
 static func attempt_breakthrough(actor: Actor) -> bool:
-	return QiBreakthroughTransaction.execute(actor, null)
+	if not QiBreakthroughTransaction.execute(actor, null):
+		return false
+	QiAdvancement.earn_breakthrough_oath(actor)
+	return true
 
 
 ## Raise comprehension. The only route to a realm's `comprehension_required`
@@ -248,6 +266,19 @@ static func meditate(actor: Actor, amount: float) -> bool:
 ## left to learn at this realm's cap.
 static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 	return QiTraining.train_channel(actor, meridian_id)
+
+
+## One step of depth PAST the standing realm's `channel_refinement_cap`, spending the
+## realm's `meridian_catalyst` instead of its channel elixir.
+##
+## A ninth public method, against a cap of 12. It is a separate verb rather than a mode
+## flag on `train_channel` because the two prices are different CURRENCIES for
+## different work — an elixir walks the gate, a catalyst buys the one step past the cap
+## that no elixir can reach — and one verb with two currencies would make a press's cost
+## depend on the channel's depth, which the caller can read, rather than on its own
+## intent. ADR 0201, ADR 0202.
+static func deepen_past_cap(actor: Actor, meridian_id: StringName) -> bool:
+	return QiTraining.deepen_past_cap(actor, meridian_id)
 
 
 ## Train the first channel that still owes the NEXT realm's gate — state or depth

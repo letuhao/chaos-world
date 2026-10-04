@@ -24,7 +24,7 @@ extends RefCounted
 ## committed attempt and owe NO deviation; this one inflicted one unconditionally,
 ## with no roll and no pill spent. A verb named `cancel_attempt` that halves your
 ## progress, scars your dantian and burns a channel is the one answer a player
-## cannot act on correctly, so it is gone rather than published (ADR 0165).
+## cannot act on correctly, so it is gone rather than published (ADR 0180).
 
 ## The fate a qi breakthrough earns (DEF-0106).
 ##
@@ -77,35 +77,55 @@ static func preview(actor: Actor) -> Dictionary:
 ## nothing twice.
 ##
 ## The two bodies are the same three lines on purpose and are NOT deduplicated into
-## a helper: `QiBreakthroughTransaction.execute` is itself a public entry point
-## (`QiAdvancement.preview`/`chance` are the module's own published surface, and
-## ADR 0095 records that the transaction is called directly by the path's own
-## suites and by `tools`). Deduping the two sites would leave that third caller
-## earning nothing, which is the UNWIRED failure this seam exists to close. A third
-## future caller of the transaction must add a site beside these two, and
-## `test_destiny_earn_sources_cultivation.gd` asserts this pair is the one that
-## fired.
+## one shared call the transaction could own: `QiBreakthroughTransaction.execute` is
+## itself a public entry point (ADR 0095 records that the module's own suites and
+## `tools` call it directly), and a gate placed inside it would be the module
+## reaching into a class that documents itself as a pure transaction. So each entry
+## point calls [method earn_breakthrough_oath] itself, and
+## `test_destiny_earn_sources_cultivation.gd` drives both to hold that pair shut.
 static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	if not QiBreakthroughTransaction.execute(actor, rng):
 		return false
-	DestinyApi.earn_fate(actor, FATE_BARRIER, EARN_SOURCE)
-	# `earn_fate` hands back the LEDGER, never a verdict, and every refusal path is
-	# byte-identical in shape — unknown id, already held, null actor — and queues
-	# nothing (ADR 0134). So the earn is VERIFIED with `has_fate` rather than
-	# trusted, which is what `character_creation_flow.gd:280-284` does and what
-	# `event_prize.gd:95-96` does not. A miss is an unknown catalog id, so it is a
-	# developer's `push_warning` and never a player-facing notice.
-	if not DestinyApi.has_fate(actor, FATE_BARRIER):
-		push_warning(
-			(
-				(
-					"qi_cultivation: a breakthrough was granted but %s was not earned (id unknown "
-					+ "to the fate catalog?). Nothing records the debt and nothing retries it."
-				)
-				% String(FATE_BARRIER)
-			)
-		)
+	earn_breakthrough_oath(actor)
 	return true
+
+
+## Earn this path's breakthrough fate for `actor`, and VERIFY it. The one place the
+## id, the source string and the verification live, so both entry points pay
+## identically — `QiAdvancement.try_breakthrough` above and
+## `QiCultivationApi.attempt_breakthrough`, which the qi screen presses.
+##
+## ## Why the verification IS the body
+##
+## `DestinyApi.earn_fate` returns the LEDGER, never a verdict, and every refusal
+## path is byte-identical in shape — an unknown id, an already-held entry, a null
+## actor all hand back the same unchanged ledger. Nothing is queued and nothing
+## retries (ADR 0134), so a call trusted as "already offered" silently never fires.
+## `has_fate` afterwards is the only honest answer: the idiom
+## `character_creation_flow.gd:280-284` takes and `event_prize.gd:95-96` does not.
+##
+## The returned boolean says which happened. Nothing above branches on it — a
+## breakthrough is not rolled back because its narrative receipt failed, and the
+## refusal is an authoring bug rather than a player-facing outcome — but it makes the
+## seam assertable without reaching into the ledger from a test.
+static func earn_breakthrough_oath(actor: Actor) -> bool:
+	if actor == null:
+		return false
+	DestinyApi.earn_fate(actor, FATE_BARRIER, EARN_SOURCE)
+	if DestinyApi.has_fate(actor, FATE_BARRIER):
+		return true
+	# A miss means the id is not in the catalog, so this is a developer's warning and
+	# never a player-facing notice.
+	push_warning(
+		(
+			(
+				"qi_cultivation: a breakthrough was granted but %s was not earned (id unknown "
+				+ "to the fate catalog?). Nothing records the debt and nothing retries it."
+			)
+			% String(FATE_BARRIER)
+		)
+	)
+	return false
 
 
 ## The chance this attempt would roll. Reads the dantian and nothing else, because
