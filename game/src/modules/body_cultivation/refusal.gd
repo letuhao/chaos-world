@@ -220,6 +220,19 @@ static func strengthen_unavailable(actor: Actor) -> Array[Dictionary]:
 			)
 			continue
 		var channel := actor.meridians.get_meridian(meridian_id)
+		# `_on_this_body` above proves the SEED names a channel this tier opens, which is
+		# a rank claim and not a dictionary one: `Dictionary.get` answers null for an id
+		# the network does not hold, so a seed naming a channel no tier materialised
+		# reaches `is_injured()` on null. Named rather than skipped, same as KIND_CHANNEL_
+		# UNKNOWN above - a missing channel is an authoring gap, not an absent clause.
+		if channel == null:
+			_add(
+				out,
+				KIND_CHANNEL_UNKNOWN,
+				meridian_id,
+				"No %s channel is on this body" % meridian_id
+			)
+			continue
 		if channel.is_injured():
 			wants_recovery = true
 			continue
