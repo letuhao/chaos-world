@@ -1,4 +1,3 @@
-{"session": "character-wave-6", "paths": ["game/assets/characters/unique-index-wave-6.jsonl"], "heartbeat": "2026-10-04T03:57:34.674637+00:00"}
 {"session": "character-wave-8", "paths": ["game/assets/characters/unique-index-wave-8.jsonl"], "heartbeat": "2026-10-04T03:58:58.690763+00:00"}
 {"session": "qi-wave3-enrol", "paths": ["game/src/modules/qi_cultivation", "game/src/modules/world", "game/src/app/actor_factory.gd", "game/src/modules/domain/domain_spawner.gd", "game/src/app/domain_boot.gd", "game/tests/app/test_domain_inhabitant_qi_synchronized.gd"], "heartbeat": "2026-10-04T04:09:34.814466+00:00"}
 {"session": "qi-wave3-proof", "paths": ["game/tests/acquisition", "tools/cultivation"], "heartbeat": "2026-10-04T04:00:31.586426+00:00"}
