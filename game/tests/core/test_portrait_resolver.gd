@@ -278,6 +278,38 @@ func test_a_published_portrait_declares_one_value_per_variant_axis() -> void:
 	)
 
 
+func test_a_rendered_expression_is_reachable_as_a_variant() -> void:
+	# The variant mechanism was previously proven only by a hand-written `stage:retired` fixture,
+	# which left the real question open: can a character's ACTUAL rendered art be selected? This is
+	# that question, asked with the exact text `tools/character_bundle_sync` publishes as the trait,
+	# because `declares_variant` matches the whole `axis:value` string.
+	expect_assertions(3)
+	var expression := "flat professional focus, eyes on the reading and not on whoever is holding it"
+	var view := PortraitResolver.resolve(_actor, &"echoless", "expression:%s" % expression)
+	assert_eq(
+		String(view["portrait_id"]),
+		"unique-0001__expression-02",
+		"the rendered expression answered, not the base portrait"
+	)
+	assert_eq(bool(view["variant_found"]), true, "and it says so")
+	assert_eq(
+		String(view["layer_paths"][0]),
+		"res://assets/characters/unique/unique-0001/ilsa_expression_02.png",
+		"drawing the expression render itself, not the base composited under it"
+	)
+
+
+func test_an_unrendered_expression_falls_back_rather_than_guessing() -> void:
+	# The negative half, and the one that matters most: a request for art that does not exist must
+	# return the base face with `variant_found: false`, never a near-miss member.
+	expect_assertions(2)
+	var view := PortraitResolver.resolve(
+		_actor, &"echoless", "expression:flat professional focus, eyes elsewhere"
+	)
+	assert_eq(String(view["portrait_id"]), "unique-0001", "the base portrait still answers")
+	assert_eq(bool(view["variant_found"]), false, "and the missing variant is reported")
+
+
 # --- Portraits grant nothing ---------------------------------------------------
 
 

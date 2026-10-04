@@ -268,12 +268,13 @@ def _tag_value(tags: list, pattern: re.Pattern[str]) -> str:
     return ""
 
 
-def install_plan(record: dict) -> tuple[list[dict], list[str]]:
-    """(layers, refusals) — the renders that can install, and why the rest cannot.
+def install_plan(record: dict) -> tuple[list[dict], list[dict], list[str]]:
+    """(layers, variants, refusals) — what installs, what becomes a variant, and what cannot.
 
     A layer is `{shot_id, slot, source, target}` where `source` is a file on disk and `target` is
-    the `res://` path it will occupy once installed. A refusal names the shot and the reason,
-    because "nothing synced" with no reason is the failure this whole program exists to end.
+    the `res://` path it will occupy once installed. A variant is the same shape plus `axis` and
+    `value`, the `axis:value` pair a caller requests (ADR 0237). A refusal names the shot and the
+    reason, because "nothing synced" with no reason is the failure this whole program exists to end.
 
     Ordered back to front: [method PRIMARY_SLOT_ORDER] first, then the remaining slots in sorted
     order, then each slot's shots in authored order. [method PortraitPanel] composites later layers
@@ -284,18 +285,18 @@ def install_plan(record: dict) -> tuple[list[dict], list[str]]:
     refusals: list[str] = []
     verdicts = discover_renders(record)
     installable: list[dict] = []
+    variants: list[dict] = []
     for entry in verdicts:
         if entry["verdict"] != "install":
             refusals.append(f"{entry['shot_id']}: {entry['reason']}")
-        elif entry["slot"] in SET_SLOTS:
-            # Named, never silently dropped: a set member is reachable as a VARIANT (ADR 0237), and
-            # an author who cannot see that concludes the render was lost.
-            refusals.append(
-                f"{entry['shot_id']}: a {entry['slot']} member is a variant chosen by key, not a "
-                "layer composited into the portrait (ADR 0237)"
-            )
-        else:
-            installable.append(entry)
+            continue
+        if entry["slot"] in SET_SLOTS:
+            # NOT a refusal: a set member is published, as its own variant portrait (ADR 0237).
+            # Listing it beside the genuinely-blocked shots and calling both "not installable"
+            # contradicted itself on every run — the render was right there in the variant list.
+            variants.append(dict(entry))
+            continue
+        installable.append(entry)
 
     by_slot: dict[str, list[dict]] = {}
     for entry in installable:
@@ -315,6 +316,9 @@ def install_plan(record: dict) -> tuple[list[dict], list[str]]:
         # already sits in this folder WITH its Godot `.import` beside it, so naming the layer
         # `map-sprite.png` would duplicate a 51 MB folder's worth of art to express the same shot —
         # and a re-import of the copy for no reason.
+        layers: list[dict] = []
+    for entry in ordered:
+        shot_id = str(entry["shot_id"])
         source: Path = entry["source"]
         target = f"{_PATH_PREFIX}{character_id}/{source.name}"
         layers.append(
@@ -326,7 +330,73 @@ def install_plan(record: dict) -> tuple[list[dict], list[str]]:
                 "local": GAME_DIR / target.removeprefix("res://"),
             }
         )
-    return (layers, refusals)
+    # Variants reuse the base layer's install path rule, so a member lands beside the portrait it
+    # alternates with rather than in a folder of its own.
+    for entry in variants:
+        shot_id = str(entry["shot_id"])
+        source = entry["source"]
+        target = f"{_PATH_PREFIX}{character_id}/{source.name}"
+        entry["target"] = target
+        entry["local"] = GAME_DIR / target.removeprefix("res://")
+    return (layers, variants, refusals)
+
+
+def build_variant_defs(record: dict, variants: list[dict]) -> list[tuple[str, str, list[str]]]:
+    """`(filename, body, refusals)` per set member — one authored variant portrait each.
+
+    A variant portrait's `layer_paths` is **the member alone**, never the base plus the member. The
+    member is a complete standalone render at its own canvas (1248x1664 for Ilsa's expressions)
+    while the base portrait is 384x512, and `PortraitPanel` skips a layer whose size differs from
+    the first one and names it rather than scaling it. Compositing them would therefore produce a
+    variant that silently draws only its base — technically complete, visually the default face.
+
+    The declared trait is the member field's own text, so a caller requests
+    `expression:<the exact expression>` and `declares_variant` matches it WHOLE (ADR 0177). Read
+    from `unique_characters.SET_SLOT_MEMBER_FIELD` rather than a local copy: the axis a set is
+    counted on is already decided there, and a second table would let the two disagree about which
+    field makes a member distinct.
+    """
+    refusals: list[str] = []
+    out: list[tuple[str, str, list[str]]] = []
+    character_id = str(record.get("id", ""))
+    member_fields = unique_characters.SET_SLOT_MEMBER_FIELD
+    for entry in variants:
+        slot = str(entry["slot"])
+        axis = member_fields.get(slot)
+        if axis is None:
+            refusals.append(f"{entry['shot_id']}: no member field is declared for {slot}")
+            continue
+        shot = _shot_by_id(record, str(entry["shot_id"]))
+        value = str((shot or {}).get(axis, "")).strip()
+        if value == "":
+            refusals.append(f"{entry['shot_id']}: carries no {axis}, so it names no variant")
+            continue
+        display = str(record.get("name", character_id))
+        lines = [
+            '[gd_resource type="Resource" script_class="PortraitDef" load_steps=2 format=3]',
+            "",
+            '[ext_resource type="Script" path="res://src/core/portrait_def.gd" id="1_portrait"]',
+            "",
+            "[resource]",
+            'script = ExtResource("1_portrait")',
+            f'id = &"{character_id}__{entry["shot_id"]}"',
+            f'display_name = "{display}, {axis}"',
+            f'race_id = &"{bare_id(str((record.get("appearance") or {}).get("race", "")))}"',
+            f'visual_traits = Array[StringName]([&"{axis}:{value}"])',
+            f'layer_paths = Array[String](["{entry["target"]}"])',
+            'palette_key = &""',
+            "",
+        ]
+        out.append((f"{character_id}__{entry['shot_id']}.tres", "\n".join(lines), refusals))
+    return out
+
+
+def _shot_by_id(record: dict, shot_id: str) -> dict | None:
+    """The one shot with this id, or None. Bounded by the authored shot list."""
+    for shot in (record.get("art") or {}).get("shots") or []:
+        if isinstance(shot, dict) and str(shot.get("id", "")) == shot_id:
+            return shot
+    return None
 
 
 def build_def(
@@ -608,7 +678,7 @@ def run(args) -> int:
         for record in catalog:
             if not isinstance(record, dict):
                 continue
-            layers, refusals = install_plan(record)
+            layers, variants, refusals = install_plan(record)
             installable_shots += len(layers)
             blocked_shots += len(refusals)
             body, _refusals, _notes = build_def(record, races, layers)
@@ -618,10 +688,13 @@ def run(args) -> int:
                 ready += 1
                 print(
                     f"  [ready]   {record.get('id')}: {len(layers)} layer(s) installable, "
-                    f"{len(refusals)} shot(s) blocked"
+                    f"{len(variants)} variant(s), {len(refusals)} shot(s) blocked"
                 )
         print(f"ready to publish: {ready} of {len(catalog)}")
-        print(f"shots: {installable_shots} installable, {blocked_shots} blocked")
+        print(
+            f"shots: {installable_shots} installable as layers, "
+            f"{blocked_shots} blocked or published as variants"
+        )
         if getattr(args, "fail_on", None) == "error" and ready == 0:
             fail("no character is ready to publish")
             return 1
@@ -660,17 +733,21 @@ def run(args) -> int:
     if record is None:
         fail(f"{character_id} is not in the readable catalog")
         return 1
-    layers, shot_refusals = install_plan(record)
+    layers, variants, shot_refusals = install_plan(record)
     body, refusals, notes = build_def(record, races, layers)
+    variant_defs = build_variant_defs(record, variants) if layers else []
 
     if action == "plan":
         print(
-            f"--- would install {len(layers)} layer(s), then write "
-            f"{PORTRAIT_ROOT / (character_id + '.tres')} ---"
+            f"--- would install {len(layers)} layer(s) and publish {len(variant_defs)} "
+            f"variant portrait(s), then write {PORTRAIT_ROOT / (character_id + '.tres')} ---"
         )
         for layer in layers:
             print(f"  layer: {layer['source'].name} -> {layer['target']}  ({layer['slot']})")
         print(body)
+        for name, variant_body, _r in variant_defs:
+            print(f"--- variant portrait {name} ---")
+            print(variant_body)
         for refusal in shot_refusals:
             print(f"  shot not installable: {refusal}")
         for note in notes:
@@ -694,18 +771,27 @@ def run(args) -> int:
         )
         return 1
 
-    skipped = install_layers(layers, force=bool(getattr(args, "allow_gaps", False)))
+    skipped = install_layers(layers + variants, force=bool(getattr(args, "allow_gaps", False)))
     for line in skipped:
         fail(f"{character_id}: {line}")
     for refusal in shot_refusals:
         # A blocked shot is reported on every run, never only with a flag: it is a content gap, and
         # a gap that is only visible with --allow-gaps is a gap nobody fixes.
         info(f"{character_id}: shot not installable: {refusal}")
+    for variant in variants:
+        info(
+            f"{character_id}: {variant['shot_id']} published as a VARIANT portrait on "
+            f"{variant['slot']}, not composited as a layer (ADR 0237)"
+        )
     for note in notes:
         info(f"{character_id}: {note}")
 
     target = PORTRAIT_ROOT / f"{character_id}.tres"
     _atomic_write(target, body)
+    for name, variant_body, _variant_refusals in variant_defs:
+        _atomic_write(PORTRAIT_ROOT / name, variant_body)
+    if variant_defs:
+        ok(f"published {len(variant_defs)} variant portrait(s) keyed on their member field")
     ok(f"published {target} with {len(layers)} layer(s) from {character_id}")
     if skipped:
         fail(f"{character_id}: published with {len(skipped)} layer(s) NOT installed")
