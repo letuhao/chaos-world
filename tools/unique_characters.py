@@ -321,6 +321,167 @@ def _no_stat_numbers(block: object, label: str, stat_ids: set[str]) -> list[str]
     return findings
 
 
+# Two characters are the same character when their prose is the same prose. Names
+# are free-form and agents rename constantly, so the signal is the TEXT and not
+# the label - but the comparison is exact token Jaccard rather than a model,
+# because a validator that can be argued with is not a validator.
+#
+# 0.80 is the duplicate line and 0.55 the shallow-variant line, and the variant
+# check ALSO requires an identical structural slot. That second condition is what
+# makes the threshold safe: two unrelated characters may well write similar
+# sentences about the same world, but two characters in the same role, on the same
+# path, of the same race, in the same faction, saying the same thing, is the
+# monoculture this catalog exists to avoid - whatever they are called.
+DUPLICATE_JACCARD = 0.80
+VARIANT_JACCARD = 0.55
+
+# Reported, never failed: a cast that is mostly unaffiliated has not been given a
+# cultivation system, it has been left one out. The number only means something at
+# scale, and a gate that fires on a ten-character catalog is a gate nobody reads.
+DIVERSITY_MAX_SHARE = 0.25
+
+# Fields carrying WHO a character is, as opposed to how they are drawn. Appearance
+# is deliberately excluded: two characters with the same build are not duplicates.
+IDENTITY_FIELDS = ("role_in_story", "lore", "first_appearance")
+
+_WORD_RE = re.compile(r"[a-z0-9]+")
+
+
+def _tokens(text: object) -> frozenset[str]:
+    if not isinstance(text, str):
+        return frozenset()
+    return frozenset(_WORD_RE.findall(text.lower()))
+
+
+def _jaccard(left: frozenset[str], right: frozenset[str]) -> float:
+    if not left or not right:
+        return 0.0
+    intersection = len(left & right)
+    if intersection == 0:
+        return 0.0
+    return intersection / len(left | right)
+
+
+def _identity_text(record: dict) -> str:
+    canon = record.get("canon") if isinstance(record.get("canon"), dict) else {}
+    parts = [canon.get(field) for field in IDENTITY_FIELDS]
+    return " ".join(part for part in parts if isinstance(part, str) and part.strip())
+
+
+def _slot(record: dict) -> tuple[str, str, str, str]:
+    """The structural position a character occupies - what a variant would keep."""
+    identity = record.get("identity") if isinstance(record.get("identity"), dict) else {}
+    appearance = record.get("appearance") if isinstance(record.get("appearance"), dict) else {}
+    return (
+        str(identity.get("role", "")),
+        str(identity.get("path", "")),
+        str(appearance.get("race", "")),
+        str(identity.get("faction", "")),
+    )
+
+
+def _duplicate_findings(records: list[dict]) -> list[str]:
+    """Duplicates and shallow variants, found by prose rather than by name.
+
+    O(n^2) over precomputed token sets, and that is deliberate at the 1000-record
+    target: pairwise is EXACT, and a candidate prefilter would trade a known
+    false-negative rate for speed this does not need. The failure a prefilter
+    introduces is invisible and specific - two agents who independently write the
+    same character, which is precisely the case worth catching.
+
+    A draft with an empty identity text is skipped rather than compared. Two empty
+    texts score 0.0 by the guard in `_jaccard`, so skipping them is an
+    optimisation and not a hole.
+    """
+    findings: list[str] = []
+    prepared: list[tuple[str, tuple[str, str, str, str], frozenset[str]]] = []
+    seen_names: dict[str, str] = {}
+
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        character_id = str(record.get("id", "?"))
+        name = record.get("name")
+        if isinstance(name, str) and name.strip():
+            key = name.strip().lower()
+            if key in seen_names and seen_names[key] != character_id:
+                findings.append(
+                    f"{character_id}: name {name.strip()!r} is already used by {seen_names[key]}"
+                )
+            else:
+                seen_names[key] = character_id
+        text = _tokens(_identity_text(record))
+        if text:
+            prepared.append((character_id, _slot(record), text))
+
+    for index, (left_id, left_slot, left_tokens) in enumerate(prepared):
+        for right_id, right_slot, right_tokens in prepared[index + 1 :]:
+            score = _jaccard(left_tokens, right_tokens)
+            if score >= DUPLICATE_JACCARD:
+                findings.append(
+                    f"{right_id}: duplicate of {left_id} ({score:.0%} identical background text)"
+                )
+            elif score >= VARIANT_JACCARD and left_slot == right_slot:
+                findings.append(
+                    f"{right_id}: shallow variant of {left_id} "
+                    f"({score:.0%} identical background in the same "
+                    f"role/path/race/faction slot)"
+                )
+    return findings
+
+
+def _diversity_axes(records: list[dict]) -> list[tuple[str, Counter]]:
+    """Distributions worth watching, as (axis, counts) pairs.
+
+    `role`, `path` and `race` are structural axes every character occupies. Tag
+    axes are open-ended by design, so a tag axis with one value across the cast is
+    a monoculture signal rather than an error.
+    """
+    axes: dict[str, Counter] = {"role": Counter(), "path": Counter(), "race": Counter()}
+    for record in records:
+        if not isinstance(record, dict):
+            continue
+        identity = record.get("identity") if isinstance(record.get("identity"), dict) else {}
+        appearance = record.get("appearance") if isinstance(record.get("appearance"), dict) else {}
+        axes["role"][str(identity.get("role", "unset"))] += 1
+        axes["path"][str(identity.get("path", "unset"))] += 1
+        axes["race"][str(appearance.get("race") or "unset").strip() or "unset"] += 1
+        tags = record.get("tags")
+        for tag in tags if isinstance(tags, list) else []:
+            if isinstance(tag, str) and ":" in tag:
+                axis, value = tag.split(":", 1)
+                axes.setdefault(axis, Counter())[value] += 1
+    return sorted(axes.items())
+
+
+# Scoped to the OPEN-ENDED axes. `role` has three values (pc, npc, boss), so in
+# any small cast one value must repeat and exceed a 25% share by arithmetic alone:
+# four records give 2/4 = 50%. Guarding `role` would fire on every catalog under
+# roughly eight characters and teach authors to invent meaningless roles to
+# silence a linter. `path` and `race` grow with the setting, so concentration on
+# either is a real signal about the world rather than about the sample size.
+DIVERSITY_GUARDED_AXES = ("path", "race")
+
+
+def _concentration_warnings(records: list[dict]) -> list[str]:
+    """Axes where one value has swallowed the cast. Reported, never failed."""
+    total = sum(1 for record in records if isinstance(record, dict))
+    if total < 2:
+        return []
+    warnings = []
+    for axis, counts in _diversity_axes(records):
+        if axis not in DIVERSITY_GUARDED_AXES:
+            continue
+        for value, count in counts.most_common():
+            if count / total > DIVERSITY_MAX_SHARE:
+                warnings.append(
+                    f"{axis}={value} is {count}/{total} "
+                    f"({count / total:.0%}) of the cast, over the "
+                    f"{DIVERSITY_MAX_SHARE:.0%} share; a monoculture on a structural axis"
+                )
+    return warnings
+
+
 def _validate(records: list[dict], *, check_files: bool) -> list[str]:
     issues: list[str] = []
     stat_ids = _authored_stat_ids()
@@ -391,6 +552,12 @@ def _validate(records: list[dict], *, check_files: bool) -> list[str]:
             # time is later than the only moment it is cheap to fix.
             for gap in _prompt_set_gaps(art):
                 issues.append(f"{label}: cannot be canon while {gap}")
+
+    # Duplicates are checked across the whole catalog rather than per record,
+    # because the defect is a RELATIONSHIP between two rows and neither row can
+    # see it. A character unique in isolation and the third copy of one idea is
+    # only discoverable pairwise.
+    issues.extend(_duplicate_findings(records))
     return issues
 
 
@@ -828,6 +995,33 @@ def _check(records: list[dict]) -> int:
     return 0
 
 
+def _diversity_command(records: list[dict], args) -> int:
+    """The read-only view of cast composition, and the number that steers a wave.
+
+    Deliberately separate from `check`. A duplicate is a defect and fails; a
+    monoculture is a fact about the cast that is only wrong at a given size, and a
+    small catalog legitimately looks concentrated. So the warning always prints and
+    only `--fail-on-warn` turns it into an exit code - which is what a release gate
+    should ask for and what an authoring agent should not have to satisfy while
+    filling its first ten characters.
+    """
+    total = sum(1 for record in records if isinstance(record, dict))
+    if total == 0:
+        info("no unique characters yet; nothing to distribute")
+        return 0
+    print(f"cast size: {total}")
+    for axis, counts in _diversity_axes(records):
+        top = ", ".join(f"{value}={count}" for value, count in counts.most_common(6))
+        print(f"  {axis}: {len(counts)} distinct | {top}")
+    warnings = _concentration_warnings(records)
+    if not warnings:
+        ok(f"no structural axis is a monoculture (share limit {DIVERSITY_MAX_SHARE:.0%})")
+        return 0
+    for warning in warnings:
+        fail(f"monoculture: {warning}")
+    return 1 if getattr(args, "fail_on_warn", False) else 0
+
+
 def _next(records: list[dict], count: int, kind_filter: str | None) -> int:
     if count < 1:
         raise ToolError("--count must be at least 1")
@@ -1082,6 +1276,15 @@ def register(subparsers) -> None:
 
     actions.add_parser("report", help="summarize the named cast and its shot coverage")
     actions.add_parser("check", help="fail on an invalid catalog or a missing installed image")
+    diversity = actions.add_parser(
+        "diversity",
+        help="distribution of the cast across structural axes, and monoculture warnings",
+    )
+    diversity.add_argument(
+        "--fail-on-warn",
+        action="store_true",
+        help="exit non-zero when a structural axis is a monoculture",
+    )
 
     nxt = actions.add_parser("next", help="prioritize ungenerated shots")
     nxt.add_argument("--count", type=int, default=12)
@@ -1124,6 +1327,8 @@ def run(args) -> int:
         # and a gate that fails because nobody has authored a character yet would
         # be a gate nobody trusts. An empty catalog is a true statement, not a fault.
         return _check([] if not INDEX_PATH.is_file() else _load_index())
+    if action == "diversity":
+        return _diversity_command([] if not INDEX_PATH.is_file() else _load_index(), args)
     if action == "report":
         return _report([] if not INDEX_PATH.is_file() else _load_index())
     records = _load_index()

@@ -774,6 +774,213 @@ def _slot_kind_mismatch_fails() -> None:
     )
 
 
+def _cast_record(
+    character_id: str,
+    name: str,
+    lore: str,
+    *,
+    role: str = "npc",
+    path: str = "qi",
+    race: str = "emberblood",
+    faction: str = "nine_seats",
+) -> dict:
+    """A minimal record carrying only the fields the duplicate audit reads."""
+    return {
+        "id": character_id,
+        "name": name,
+        "identity": {"role": role, "path": path, "faction": faction},
+        "appearance": {"race": race},
+        "canon": {"role_in_story": "", "lore": lore, "first_appearance": ""},
+    }
+
+
+@case("unique_characters: an identical background is refused as a duplicate")
+def _identical_backgrounds_are_duplicates() -> None:
+    """The core defect, asserted closed.
+
+    Two agents independently authoring "a qi disciple of the Nine Seats Court from
+    the ashfall belt" produce different names, different appearance fields and
+    different art, and pass every per-record check. The defect is a RELATIONSHIP
+    between two rows, so it is only discoverable pairwise - which is why it lives
+    in `_validate` over the whole catalog rather than in a per-record check.
+    """
+    prose = (
+        "A qi disciple of the Nine Seats Court who trains in the ashfall belt to outrun "
+        "a contract her clan cannot pay."
+    )
+    findings = unique_characters._duplicate_findings(
+        [
+            _cast_record("unique-0001", "Ashkeeper", prose),
+            _cast_record("unique-0002", "Ninefold", prose),
+        ]
+    )
+    expect(
+        any("duplicate of" in finding for finding in findings),
+        f"two characters with byte-identical background text were accepted as distinct: "
+        f"{findings!r}. Renaming is the cheapest way to look original and it defeats "
+        f"every per-record check, which is why uniqueness is judged on prose",
+    )
+
+
+@case("unique_characters: a same-slot near-copy is refused as a shallow variant")
+def _same_slot_near_copies_are_variants() -> None:
+    """The 0.55 line, and the condition that makes it safe.
+
+    Two characters may legitimately write similar sentences about the same world.
+    What makes it a monoculture is the SLOT as well: same role, same cultivation
+    path, same race, same faction, saying substantially the same thing. Drop the
+    slot condition and this guard would refuse a cast of neighbours, friends and
+    rivals in the same city - which is the shape a good cast actually has.
+    """
+    base = (
+        "A qi disciple of the Nine Seats Court who trains in the ashfall belt to outrun "
+        "a contract her clan cannot pay, and files the shortfall every season."
+    )
+    # Candidate A measures 0.71: inside the BAND (0.55-0.80), not above it. A
+    # one-word swap scored 0.92 and hit the duplicate line, passing this case for
+    # the wrong reason; a fully rewritten background scored 0.12 and fell under the
+    # threshold. Same frame, same situation, same vocabulary of obligation and
+    # shortfall, different sentence structure. That overlap IS the defect being
+    # guarded - two agents independently reaching for the same situation - and it
+    # is why the variant line needs a same-slot condition to be safe at all.
+    near = (
+        "A qi disciple of the Nine Seats Court trains in the ashfall belt, and each "
+        "season files the shortfall of a contract her clan signed and cannot honour."
+    )
+    same_slot = unique_characters._duplicate_findings(
+        [
+            _cast_record("unique-0001", "Ashkeeper", base),
+            _cast_record("unique-0002", "Ninefold", near),
+        ]
+    )
+    other_slot = unique_characters._duplicate_findings(
+        [
+            _cast_record("unique-0001", "Ashkeeper", base),
+            _cast_record(
+                "unique-0003", "Ferrous", near, path="body", race="ashwalker", faction="iron_ring"
+            ),
+        ]
+    )
+    expect(
+        any("shallow variant" in finding for finding in same_slot),
+        f"two near-identical characters in the same structural slot were accepted: "
+        f"{same_slot!r}. Same role, path, race and faction with the same story IS the "
+        f"monoculture the catalog exists to prevent, whatever they are called",
+    )
+    expect(
+        not any("shallow variant" in finding for finding in other_slot),
+        f"the same prose in a DIFFERENT slot was refused: {other_slot!r}. Without the "
+        f"slot condition this guard would fail any cast of people who share a city",
+    )
+
+
+@case("unique_characters: reuse of a NAME is refused even when the prose differs")
+def _duplicate_names_are_refused() -> None:
+    """Name collision is a separate defect from duplicate prose.
+
+    A name is the one field a player reads, so two characters sharing it is a
+    defect even when the backgrounds are unrelated - and it is invisible to the
+    Jaccard check, which is why it is checked separately.
+    """
+    findings = unique_characters._duplicate_findings(
+        [
+            _cast_record("unique-0001", "The Warden", "A smith on the terrace ring."),
+            _cast_record("unique-0002", "The Warden", "A ferryman on the saltpan basin."),
+        ]
+    )
+    expect(
+        any("already used by" in finding for finding in findings),
+        f"two characters share the name 'The Warden' with unrelated backgrounds: "
+        f"{findings!r}. The name is the field a reader sees, and no two of them may "
+        f"share it",
+    )
+
+
+@case("unique_characters: a monoculture on a structural axis is REPORTED")
+def _monoculture_is_reported() -> None:
+    """A concentration is a fact about the cast, not a defect in a row.
+
+    It is reported and never failed by default, because a ten-character catalog is
+    legitimately concentrated and a gate that fires there would be ignored. The
+    counterweight matters as much as the warning: distinct characters on the same
+    path are a perfectly good cast, and a guard that fired on them would be
+    teaching authors to invent pointless variety.
+    """
+    records = [
+        _cast_record(
+            f"unique-{index:04d}",
+            f"Name{index}",
+            f"A distinct account number {index} of salt wages, ferry fares and a "
+            f"gate that closes at dusk.",
+        )
+        for index in range(1, 5)
+    ]
+    warnings = unique_characters._concentration_warnings(records)
+    expect(
+        any("race=emberblood" in warning for warning in warnings),
+        f"four characters of one race out of four produced no monoculture warning: "
+        f"{warnings!r}. At 1000 records a structural axis can absorb a whole cast "
+        f"silently, and this is the only signal that says so",
+    )
+    # The counterweight has to be unconcentrated on EVERY structural axis, including
+    # `role`. Four NPCs is the normal shape of a small cast, so leaving role=npc at
+    # 4/4 tests nothing - and failing it would push an author toward inventing
+    # pointless variety to satisfy a linter. The threshold is a share, so a four
+    # character cast needs at most one character per value on each axis.
+    spread = [
+        _cast_record(
+            "unique-0001",
+            "One",
+            "A smith who lost her hand and files it into a tool she cannot stop mending.",
+            role="pc",
+            path="qi",
+            race="emberblood",
+        ),
+        _cast_record(
+            "unique-0002",
+            "Two",
+            "A ferryman whose boat never came back and whose fare is still collected.",
+            role="boss",
+            path="body",
+            race="ashwalker",
+        ),
+        _cast_record(
+            "unique-0003",
+            "Three",
+            "A window-washer on the terrace ring who answers only to the weather.",
+            role="npc",
+            path="mind",
+            race="cairnborn",
+        ),
+        _cast_record(
+            "unique-0004",
+            "Four",
+            "A scribe who falsified a deed to keep a mill alive through one winter.",
+            role="pc",
+            path="unaffiliated",
+            race="lanternfolk",
+        ),
+    ]
+    # `role` cannot be unconcentrated in a four-record cast: the vocabulary has
+    # three values, so one repeats and one value reaches 2/4 = 50%. That is
+    # arithmetic, not a defect, and it is why the guard is scoped to `path` and
+    # `race` - the two axes whose vocabularies are open-ended. Firing on `role`
+    # would fail every small cast and push authors toward meaningless roles.
+    expect(
+        not [w for w in unique_characters._concentration_warnings(spread) if "role=" in w],
+        f"role concentration was reported as a monoculture: "
+        f"{unique_characters._concentration_warnings(spread)!r}. `role` has three values "
+        f"and a four-record cast must repeat one, so this guard would fire on every "
+        f"small catalog and teach authors to invent roles to silence a linter",
+    )
+    expect(
+        not unique_characters._concentration_warnings(spread),
+        f"a cast spread across every path and race was still reported as a "
+        f"monoculture: {unique_characters._concentration_warnings(spread)!r}. The "
+        f"open-ended axes are the ones that carry structural meaning",
+    )
+
+
 @case("loop_guard: INC-0021's exact command is REFUSED")
 def _inc_0021_command_is_refused() -> None:
     """The verbatim shape that burned 11.6 GB, asserted still caught.
