@@ -269,6 +269,16 @@ def run(args) -> int:
         for item_id in seeds:
             cmd += ["--match-item", item_id]
 
+        # An install with no index record is left by a run killed between the two
+        # writes, and would otherwise fail this family forever with
+        # "refusing to overwrite", so clear it and let the render redo both.
+        if assets.clear_unreferenced_install(family_id):
+            print(
+                f"[{index + 1}/{len(todo)}] {family_id} cleared an unreferenced "
+                "install from an interrupted run",
+                flush=True,
+            )
+
         started = time.monotonic()
         result = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True)
         if result.returncode != 0:

@@ -211,6 +211,31 @@ static func player() -> PlayerAdapter:
 	return _mounted_player
 
 
+## Take a body that [method stand_in_the_tree] has ALREADY parented, and read the
+## playfield through it.
+##
+## `stand_in_the_tree` is static and cannot touch an instance field, so the body it
+## parents would sit in the tree with this stage still holding nothing — and every
+## verb that needs a playfield (`_world_entry`, `_register_nodes`, `interactables`,
+## `interact`, `summary`) reads the INSTANCE field, not the static one. This is the
+## handover, and it is deliberately narrow: it takes a body that is already parented
+## under a real `WorldEntry`, so it registers nodes and does nothing else. A caller
+## with a bare body must still go through `mount`.
+func adopt_body(body: PlayerAdapter) -> Dictionary:
+	if body == null:
+		return {"ok": false, "reason": "no_player"}
+	if body.get_parent() == null:
+		return {"ok": false, "reason": "parentless"}
+	if _player == body:
+		# Already ours. Re-registering would duplicate every interactable, and the
+		# arrival path can call this more than once across a boot and a rebirth.
+		return {"ok": true, "reason": "", "reused": true, "nodes": _nodes.size()}
+	_player = body
+	_nodes.clear()
+	_register_nodes()
+	return {"ok": true, "reason": "", "reused": false, "nodes": _nodes.size()}
+
+
 ## Stand `body` IN THE TREE, on an authored `WorldEntry`, and report what happened.
 ##
 ## ## Why this exists: an unparented body is an inert one
@@ -276,6 +301,14 @@ static func stand_in_the_tree(
 	# arrival reachable: the interact list, the stage summary and the release path
 	# all read this field.
 	_mounted_player = body
+	# And hand it to the LIVE stage, which is a second field. `_player` is what
+	# `_register_nodes`, `_world_entry`, `interactables` and `interact` read, and
+	# `stand_in_the_tree` is a STATIC that ran without the instance being told —
+	# so the body was parented, published, and still invisible to the code that
+	# turns a playfield into something pressable. Two fields holding one fact is
+	# the shape that made this look fixed while nothing was.
+	if _current != null:
+		_current.adopt_body(body)
 	return {"ok": true, "reason": "", "entry": entry, "player": body, "reused": false}
 
 

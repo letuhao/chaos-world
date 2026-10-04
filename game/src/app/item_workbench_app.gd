@@ -350,7 +350,15 @@ func _ready() -> void:
 	# with a restored body already running. `restored_from_save()` existed for exactly this and
 	# had no caller; `CharacterCreationProgram.adopt` exists for exactly this and had no
 	# caller. Both are now on the line they were written for.
-	_creation.adopt(_actor)
+	#
+	# **Guarded by `restored_from_save()`, because unguarded it inverted the fix.** A brand-new
+	# boot builds a hero at `_build_actor()` a few lines earlier, so `_actor` is non-null
+	# either way — adopting unconditionally made `has_hero()` true on EVERY boot, the gate
+	# below became unreachable, and a new player was sent straight to the workbench with no
+	# arrival, no origin and no body. The comment above describes the half that was fixed;
+	# this condition is the half that made it true.
+	if restored_from_save():
+		_creation.adopt(_actor)
 	if not _mount_home():
 		return
 	if _nav != null and not _nav.route_requested.is_connected(_on_route_requested):

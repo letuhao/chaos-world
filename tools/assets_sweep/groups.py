@@ -251,6 +251,13 @@ def run(args) -> int:
         for item_id in seeds:
             command += ["--match-item", item_id]
 
+        if assets.clear_unreferenced_install(family_id):
+            print(
+                f"[{index + 1}/{len(todo)}] {family_id} cleared an unreferenced "
+                "install from an interrupted run",
+                flush=True,
+            )
+
         started = time.monotonic()
         result = subprocess.run(command, cwd=REPO, capture_output=True, text=True)
         if result.returncode != 0:

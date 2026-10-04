@@ -17,6 +17,7 @@ from .common import GAME_DIR, REPO_ROOT, ToolError, fail, ok
 
 ITEM_ROOT = GAME_DIR / "data" / "items"
 INDEX_PATH = GAME_DIR / "assets" / "asset-index.jsonl"
+GENERATED_DIR = GAME_DIR / "assets" / "items" / "generated"
 MATCH_FIELDS = {"category", "subcategory", "id_prefix", "id_regex"}
 VISUAL_TRAIT_RE = re.compile(r"^[a-z][a-z0-9_-]*:[a-z][a-z0-9_-]*$")
 SINGLE_VALUE_TRAIT_AXES = {"form", "palette", "presentation"}
@@ -319,6 +320,39 @@ def _read_links(
     return linked, issues
 
 
+def clear_unreferenced_install(family_id: str) -> bool:
+    """Delete `family_id`'s installed PNG only when NO record references it.
+
+    `assets generate` installs the file and writes the index record as two
+    separate steps. A run killed between them - a server restart, a lost
+    ComfyUI connection - leaves a PNG nothing references, and the next
+    attempt fails with "refusing to overwrite". One interruption then costs
+    the family permanently, and the failure it reports names a file rather
+    than the stale state that caused it.
+
+    Deleting the orphan is what makes a sweep resumable: the family is
+    re-rendered from the same deterministic seed and installs together with
+    its record.
+
+    The reference check is the load-bearing part and cannot be skipped. The
+    caller's work list says the family is unbuilt, but that is this process's
+    own belief; the INDEX is the truth about what is in use. Checking the
+    list instead of the index deletes real art - it removed item-robe-form,
+    a referenced 63 KB icon, before this check existed.
+    """
+    install = GENERATED_DIR / f"{family_id}.png"
+    if not install.is_file():
+        return False
+    if any(
+        record["path"] == f"res://assets/items/generated/{family_id}.png"
+        for record in _load_index()
+    ):
+        return False
+    install.unlink()
+    Path(f"{install}.import").unlink(missing_ok=True)
+    return True
+
+
 def _orphan_images(records: list[dict]) -> list[str]:
     """Report generated PNGs that no family references.
 
@@ -330,17 +364,14 @@ def _orphan_images(records: list[dict]) -> list[str]:
     below blocked their own sweep silently while `assets audit` stayed green.
     """
     referenced = {record["path"].removeprefix("res://") for record in records}
-    directory = GAME_DIR / "assets" / "items" / "generated"
-    if not directory.is_dir():
+    if not GENERATED_DIR.is_dir():
         return []
     orphans = sorted(
         path.name
-        for path in directory.glob("*.png")
+        for path in GENERATED_DIR.glob("*.png")
         if path.relative_to(GAME_DIR).as_posix() not in referenced
     )
-    return [
-        f"generated image is not referenced by any asset family: {name}" for name in orphans
-    ]
+    return [f"generated image is not referenced by any asset family: {name}" for name in orphans]
 
 
 def _write_links(records: list[dict], winners: dict[str, str]) -> None:
