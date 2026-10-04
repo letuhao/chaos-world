@@ -52,6 +52,24 @@ State every exclusion as a positive instruction instead:
 
 A render asked for "one bell" with `No jade green` in the prompt came back with **two bells and a teal glow**, because neither instruction reached the sampler. The same render re-rolled with positive framing came back correct.
 
+### You cannot prompt absence into this model
+
+Two consequences that cost real re-rolls:
+
+- **Cast shadows survive any wording.** A tablet prompted with "floating free in empty space with clear empty space beneath it and no ground plane and no shadow cast below it" came back *with* a grey ground slab under it. Positive phrasing about something's *absence* is just more words to the sampler. Change the **camera** instead: `lying FLAT and viewed from DIRECTLY ABOVE` makes a ground plane geometrically impossible, and it fixed the shadow on the re-roll.
+- **Teal/cyan intrudes on roughly half of all renders**, requested or not, including on prompts that name a palette and add "the colour stays strictly within that palette". It is not reliably promptable away. Check every render for it and decide per icon rather than assuming the palette landed.
+
+### Force the value structure or you get cream
+
+This model has a strong bias toward **pale, high-key, cream-white values**. In one batch of eight, three icons that asked for charcoal/ash, deep crimson, and slate/violet all came back pale and washed out. All three were fixed on the first re-roll by naming the value range outright:
+
+| Ask | Get |
+|---|---|
+| `charcoal, ash and cold ivory palette` | white and silver |
+| `Predominantly charcoal... the whole object sits in the dark half of the value range and only the raised edges catch a thin highlight` | dark charcoal book |
+
+The working pattern is: state the value range, then say the pale highlight `covers only a small fraction of the object`. Reuse it verbatim rather than reinventing it per icon.
+
 ### Padding in the source is irrelevant; only edge-cropping matters
 
 `_normalize_image` crops to the alpha bounding box, fits the result to 232px, and centres it on the 256 canvas (`tools/assets.py:118-124`). So generous source margins are thrown away, and judging a render by its margins measures the wrong thing.
@@ -73,7 +91,24 @@ The generated prompt is recorded verbatim in the index, so a record's `prompt` f
 - Inspect each generated PNG at game icon size for silhouette/readability, prompt match, palette variety, accidental text/glyphs, artifacts, and cutout quality. Regenerate weak outputs before proceeding.
 - After each batch run `uv run python -m tools assets audit` and `uv run python -m tools data distribution`; verify every intended seed resolves to the correct indexed family and trait counts reflect the intended diversity.
 - Keep generated files under `game/assets/items/generated/`. The CLI writes the asset index; do not hand-edit it while a generation is running, because the CLI reloads it after rendering to preserve concurrent edits.
-- `assets report` counts families, but `assets report --diversity` reports the **unique image file** count against the 2,000 floor in `MIN_UNIQUE_IMAGE_TARGET` (`tools/assets.py`). Measure unique files, not families or seeds. As of 2026-10-04: 638 families, **535 unique files**, 1,465 remaining.
+- `assets report` counts families, but `assets report --diversity` reports the **unique image file** count against the 2,000 floor in `MIN_UNIQUE_IMAGE_TARGET` (`tools/assets.py`). Measure unique files, not families or seeds. As of 2026-10-05: 673 families, **560 unique files**, 1,440 remaining.
+
+## Reaching 2,000: split ladders, do not paint per seed
+
+8,020 seeds are covered by 673 families, so the average family covers 12 seeds. The floor is **2,000 files**, which means the average has to fall to about 4. Adding families for *new* content cannot get there; the headroom is in **splitting the families that already exist**.
+
+The corpus is built from five-stage grade ladders — `X_base`, `X_refined`, `X_aged`, `X_primed`, `X_perfected` — which are five seeds of **one object type**. `docs/art-direction.md:16` covers grade variants with one image, so each whole ladder takes a single icon, and the seeds move off the broad category/subcategory family onto a specific `id_prefix` rule that outranks it. One render converts five seeds from "shares a generic image" to "has its own image".
+
+The relabelled `consumable/*` block alone held 117 such ladders. `build/sweep_ladders.py` automates the split:
+
+```text
+uv run python build/sweep_ladders.py --dry-run --limit 12    # preview
+uv run python build/sweep_ladders.py --limit 12              # render
+```
+
+It discovers every ladder whose seeds all still sit on the broad family, derives a family id and subject from the seed's own `display_name`, picks one of twelve hue-spread palettes by a **stable hash of the prefix** (so a re-run reproduces the same art), and skips any family already in the index, which makes an interrupted run safe to repeat. Renders take ~25 s each, so a 12-ladder run is about 5 minutes; the whole block is roughly an hour. Re-run it until it reports nothing left.
+
+Only one of the twelve palettes is green, which keeps jade under the art-direction ceiling of two per eight. Review each batch before committing — the sweeper will happily produce twelve competent but samey icons if you let it run unreviewed.
 - Commit only the skill-owned/generated paths for the completed slice. Never stage unrelated asset-index edits.
 
 ## The library is not visually uniform
