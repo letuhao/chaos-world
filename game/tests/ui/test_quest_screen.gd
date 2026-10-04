@@ -42,9 +42,11 @@ var _harness: SeamHarness = null
 var _opened: Array[StringName] = []
 ## The `res://data` fact-id census, built on first use by the gate-soundness case and
 ## then held. The walk reads every `.tres` under the data tree, which is far too much
-## work to repeat once per quest step; `null` means "not walked yet" and an EMPTY
-## dictionary would be indistinguishable from a data tree with no authored facts.
-var _authored_facts: Dictionary = null
+## work to repeat once per quest step, so the result is memoised — and the memo is
+## `Variant`, not `Dictionary`, because `null` is the honest "not walked yet" answer and
+## a `Dictionary` may not hold null (ADR 0038's contract is on what a screen REPORTS, not
+## on what a test may park in a field).
+var _authored_facts: Variant = null
 
 
 func setup() -> void:
@@ -450,7 +452,7 @@ func test_every_offered_quests_steps_watch_a_fact_the_world_records() -> void:
 	for view in QuestApi.offered(hero):
 		for step in QuestApi.steps(hero, StringName(String(view["id"]))):
 			var fact := String((step as Dictionary)["fact"])
-			var source := producers.get(fact, {})
+			var source: Dictionary = producers.get(fact, {})
 			unwritten += 1
 			assert_ne(
 				source.is_empty(),
