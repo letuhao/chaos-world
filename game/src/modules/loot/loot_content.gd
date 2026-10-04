@@ -20,6 +20,15 @@ extends RefCounted
 ## content where both are populated for the same boss — so the two can never
 ## disagree. Boss and domain records are read through `Object.get`, so this module
 ## compiles against no `world` type and declares no dependency on it.
+##
+## ## What is payable, and what is merely authored
+##
+## [method band_bound_tables] is the boundary between the two. A defeat resolves
+## exactly one table — the one a band binds for the boss it spawned — so that table's
+## closure is every drop a player can receive, and [method unbanded_tables] is the rest
+## of the corpus: authored, shipped, and unresolvable. Both domains and tables can be
+## authored with no route to them, so both are reported rather than assumed (BL-0338,
+## BL-0136).
 
 const TABLE_DIR := "res://data/loot/tables/"
 const ENCOUNTER_DIR := "res://data/loot/encounters/"
@@ -37,6 +46,10 @@ const PROFILE_FIELDS: Array[String] = [
 	"evasion",
 	"damage_reduction",
 ]
+## The authored `BossDef.affliction` field, read by the same generic `Object.get` pass as
+## the profile and for the same reason: a named string rather than a `BossDef` reference,
+## so `loot` still compiles against no `world` type and `tools arch` still sees no edge.
+const AFFLICTION_FIELD := "affliction"
 ## Depth ceiling for nested table references.
 const MAX_NESTING_DEPTH := 4
 
@@ -180,6 +193,18 @@ func provide(item_id: StringName, def: ItemDef) -> void:
 	_definitions[String(item_id)] = def
 
 
+## Seed the table index with a table the caller already holds, exactly as
+## [method provide] does for an item and [method provide_boss] does for a boss.
+##
+## [method unbanded_tables] answers "is this table payable?", so proving it can say
+## no needs a table the corpus authors and no band binds — and authoring one into
+## `res://data/loot/tables/` to find out is exactly the sort of change that must not
+## be made to test a claim. Seed on an instance that is not [method instance] when
+## the seed is test-only, so the shared index every other caller reads is left alone.
+func provide_table(table: LootTableDef) -> void:
+	_remember_table(table)
+
+
 ## Seed the boss index with a record the caller already holds, exactly as
 ## [method provide] does for an item.
 ##
@@ -193,6 +218,24 @@ func provide_boss(boss_id: StringName, record: Dictionary) -> void:
 	if boss_id == &"" or not bool(record.get("found", false)):
 		return
 	_bosses[String(boss_id)] = record
+
+
+## Drop a boss [method provide_boss] added, and answer whether it was there.
+##
+## The inverse exists because the runner shares one process across every suite: a
+## probe seeded into this shared singleton outlives the test that wrote it, and
+## test_loot_payable_tables.gd audits the SHIPPED corpus -- so a probe left behind
+## lands in its "no authored table is unpayable" answer and reddens a suite that
+## has nothing to do with the one that seeded it. A caller that must use the
+## singleton (because the read under test goes through it) pairs its `provide`
+## with a `forget` in the same test.
+##
+## Idempotent, like [method provide_boss] refuses a duplicate: removing what is not
+## there is not an error.
+func forget_boss(boss_id: StringName) -> bool:
+	if boss_id == &"":
+		return false
+	return _bosses.erase(String(boss_id))
 
 
 # --- The single boss -> table authority -------------------------------------
@@ -267,11 +310,13 @@ func has_authored_table(boss_id: StringName) -> bool:
 # --- Boss / domain content records ------------------------------------------
 
 
-## `{found, id, domain_id, loot, profile}` for a boss, read without naming its resource
-## type. `loot` is the legacy flat item-id list. `profile` is the boss's authored striking
-## profile — the numbers that decide HOW it fights, as opposed to the band vitality that
-## decides how hard it is to kill (ADR 0076). Read generically, because the alternative
-## is a `loot -> world` reference this module deliberately does not have.
+## `{found, id, domain_id, loot, profile, affliction}` for a boss, read without naming its
+## resource type. `loot` is the legacy flat item-id list. `profile` is the boss's authored
+## striking profile — the numbers that decide HOW it fights, as opposed to the band vitality
+## that decides how hard it is to kill (ADR 0076). `affliction` is the `StatusDef.id` it
+## inflicts on the player, `""` for a creature authored to afflict nothing. Read
+## generically, because the alternative is a `loot -> world` reference this module
+## deliberately does not have.
 func boss_record(boss_id: StringName) -> Dictionary:
 	var key := String(boss_id)
 	if _bosses.has(key):
@@ -355,6 +400,131 @@ func orphan_domains() -> Array[String]:
 	return out
 
 
+# --- Payable content --------------------------------------------------------
+
+
+## Table ids an authored band binds DIRECTLY, sorted: what [method table_for_boss]
+## hands the resolver for a boss the band spawns.
+##
+## A band is one authored tier of one encounter, so this walks exactly the bindings
+## [method table_for_boss] can read. It does not ask whether the binding's boss is one
+## the encounter spawns — that is [method LootValidator]'s business to report, and a
+## binding the encounter does not list is a defect in its own right rather than a
+## reason to hide the table here.
+func bound_table_ids() -> Array[String]:
+	load_encounters()
+	var out: Array[String] = []
+	for encounter_id in _encounter_ids:
+		var encounter := _encounters[encounter_id] as LootEncounterDef
+		if encounter == null:
+			continue
+		for tier in encounter.tiers:
+			if tier == null:
+				continue
+			for table_id in tier.table_ids():
+				if table_id != &"" and not out.has(String(table_id)):
+					out.append(String(table_id))
+	out.sort()
+	return out
+
+
+## Every table a defeat can resolve: those a band binds, plus everything nested
+## inside them.
+##
+## This is the whole reachable surface of the table corpus, and the boundary that
+## makes [method unbanded_tables] meaningful — a table outside it is authored content
+## nothing in the game can pay (BL-0136). The ceiling is [constant
+## MAX_NESTING_DEPTH], the same depth [method LootResolver] resolves to: past it a
+## chain is already dropped with a `nesting_depth_exceeded` warning, so counting it
+## reachable here would overstate what a player can obtain.
+func band_bound_tables() -> Array[String]:
+	var seen: Dictionary = {}
+	for root in bound_table_ids():
+		_collect(root, seen, 0)
+	var out: Array[String] = []
+	for table_id in seen.keys():
+		out.append(String(table_id))
+	out.sort()
+	return out
+
+
+## Authored tables no authored band can pay, sorted.
+##
+## ## The defect this reports
+##
+## A table in this list is content the game ships and nothing can resolve: no tier
+## binds it and no table nests it, so `LootContent.table_for_boss` never returns it
+## and every item it carries is an item a player can never obtain. That is the
+## table-shaped half of [method orphan_domains] — the domain is unreachable content
+## with no route to it, and so is a table — and BL-0136 filed it when the corpus held
+## eight of them.
+##
+## Reported rather than swallowed: the count is small enough that a content wave can
+## finish the corpus, but nothing about authoring a table warns an author that no band
+## will ever pay for it.
+func unbanded_tables() -> Array[String]:
+	var paid := {}
+	for table_id in band_bound_tables():
+		paid[table_id] = true
+	var out: Array[String] = []
+	for table_id in table_ids():
+		if not paid.has(table_id):
+			out.append(table_id)
+	return out
+
+
+## Every item id a defeat can deliver: the union over the band-bound closure.
+##
+## Keyed by id and accumulated through a table-visited set, so the walk is bounded by
+## the table count rather than by the path count — the same reason [method _collect]
+## carries one.
+func band_reachable_item_ids() -> Array[StringName]:
+	var out: Dictionary = {}
+	for table_id in band_bound_tables():
+		_collect_items(StringName(table_id), out, 0, {})
+	var ids: Array[StringName] = []
+	for item_id in out.keys():
+		ids.append(StringName(item_id))
+	ids.sort()
+	return ids
+
+
+## The walk behind [method band_bound_tables]: depth-first, `seen` keeping it to one
+## visit per table so a cycle cannot make it recurse without end.
+func _collect(table_id: String, seen: Dictionary, depth: int) -> void:
+	if depth > MAX_NESTING_DEPTH or seen.has(table_id):
+		return
+	var found := table(StringName(table_id))
+	if found == null:
+		return
+	seen[table_id] = true
+	for entry in found.entries:
+		if entry != null and entry.is_nested() and entry.table_id != &"":
+			_collect(String(entry.table_id), seen, depth + 1)
+
+
+## [method band_reachable_item_ids]'s walk. `chain` is the path being walked, so a
+## reference back onto it stops rather than descending; `depth` is the second ceiling
+## for a chain that is long rather than cyclic.
+func _collect_items(table_id: StringName, out: Dictionary, depth: int, chain: Dictionary) -> void:
+	var key := String(table_id)
+	if depth > MAX_NESTING_DEPTH or chain.has(key):
+		return
+	var found := table(table_id)
+	if found == null:
+		return
+	var next_chain := chain.duplicate()
+	next_chain[key] = true
+	for entry in found.entries:
+		if entry == null:
+			continue
+		if entry.is_nested():
+			if entry.table_id != &"":
+				_collect_items(entry.table_id, out, depth + 1, next_chain)
+		elif entry.item_id != &"" and not out.has(String(entry.item_id)):
+			out[String(entry.item_id)] = true
+
+
 func _read_record(directory: String, key: String) -> Dictionary:
 	var path := key
 	if not directory.is_empty():
@@ -366,6 +536,7 @@ func _read_record(directory: String, key: String) -> Dictionary:
 		"boss_ids": [],
 		"loot": [],
 		"profile": {},
+		"affliction": "",
 	}
 	if not ResourceLoader.exists(path):
 		return missing
@@ -382,7 +553,25 @@ func _read_record(directory: String, key: String) -> Dictionary:
 		# `BossDef` without a profile yields an empty one rather than a zeroed one full of
 		# keys that were never authored. `LootState` decides what an empty profile means.
 		"profile": _boss_profile(resource),
+		# Same shape for the affliction: a record that declares none reads as `""`, which
+		# is the whole corpus as it stood before this field existed, so adding it changed
+		# no boss's behaviour until a `.tres` named an id.
+		"affliction": _boss_affliction(resource),
 	}
+
+
+## The `StatusDef.id` a boss record inflicts on the player, or `""` when it names none.
+##
+## An `Object.get` read for the reason [method _boss_profile] is one, and the same
+## `Variant` discipline applies: `StringName` and `String` both read cleanly, and a
+## resource with no such field answers `null` rather than the string "Null". Nothing is
+## validated here — whether the id names a real def is `LootAffliction`'s question, and
+## refusing it there keeps this module free of any `status` vocabulary it would then have
+## to keep in step with.
+static func _boss_affliction(resource: Resource) -> String:
+	if resource == null:
+		return ""
+	return _text_field(resource, AFFLICTION_FIELD)
 
 
 ## The authored striking profile of a boss record, or `{}` when the record declares none.

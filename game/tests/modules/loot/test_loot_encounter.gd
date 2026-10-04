@@ -652,9 +652,17 @@ func test_the_boss_loot_authority_is_single_and_legacy_is_projected() -> void:
 
 	# A boss authored before loot tables carried a flat item list. It is projected
 	# deterministically, once, into an implicit table.
+	# A PRIVATE corpus, not `LootContent.instance()`. The runner shares one process
+	# across every suite, so seeding the shared singleton here left a probe boss in
+	# it for the rest of the run -- and test_loot_payable_tables.gd audits the
+	# SHIPPED corpus, so a probe leaked into its "no authored table is unpayable"
+	# answer and reddened four assertions in a suite that had nothing to do with
+	# this one. A fixture that mutates a singleton is a fixture that edits its
+	# neighbours' results.
+	var scratch := LootContent.new()
 	var legacy_boss := &"probe_projected_loot_bear"
 	(
-		content
+		scratch
 		. provide_boss(
 			legacy_boss,
 			{
@@ -666,11 +674,11 @@ func test_the_boss_loot_authority_is_single_and_legacy_is_projected() -> void:
 			}
 		)
 	)
-	var record := content.boss_record(legacy_boss)
+	var record := scratch.boss_record(legacy_boss)
 	assert_eq(bool(record["found"]), true, "the legacy boss content resolves")
 	assert_eq((record["loot"] as Array).is_empty(), false, "and carries a legacy loot list")
-	assert_eq(bool(content.has_authored_table(legacy_boss)), false, "no authored table claims it")
-	var projected := content.table_for_boss(legacy_boss, 0)
+	assert_eq(bool(scratch.has_authored_table(legacy_boss)), false, "no authored table claims it")
+	var projected := scratch.table_for_boss(legacy_boss, 0)
 	assert_ne(projected, null, "the legacy list projects into a table")
 	assert_eq(
 		String(projected.id), "legacy:probe_projected_loot_bear", "under a declared legacy id"
@@ -680,14 +688,14 @@ func test_the_boss_loot_authority_is_single_and_legacy_is_projected() -> void:
 	for entry in projected.entries:
 		assert_almost_eq(entry.weight, 1.0, "a projection is uniform")
 	assert_eq(
-		String(content.table_for_boss(legacy_boss, 0).id),
+		String(scratch.table_for_boss(legacy_boss, 0).id),
 		String(projected.id),
 		"and the projection is stable across calls"
 	)
 	for item_id in projected.reachable_item_ids():
 		assert_ne(content.definition(item_id), null, "%s resolves" % String(item_id))
 	# An empty legacy list really produces nothing.
-	var empty := content.project_legacy(&"loot_probe_empty_boss", [] as Array[StringName])
+	var empty := scratch.project_legacy(&"loot_probe_empty_boss", [] as Array[StringName])
 	assert_eq(empty.entries.is_empty(), true, "no entries")
 	assert_eq(bool(empty.allow_empty), true, "declared as a no-drop table")
 

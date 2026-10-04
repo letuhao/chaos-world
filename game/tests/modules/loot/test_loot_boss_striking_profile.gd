@@ -35,6 +35,16 @@ const SEED := 20260902
 const PLAYER_GUARD := {"defense": 18.0, "damage_reduction": 0.0, "evasion": 0.0}
 const PLAYER_OFFENSE := {"attack": 24.0, "crit_chance": 0.0, "crit_damage": 1.5, "penetration": 0.0}
 
+## The shared boss record the freeze test is about to overwrite, kept so `teardown` can put it
+## back.
+##
+## `LootContent`'s boss index is a process-wide singleton and the runner drives every suite
+## from ONE process, so a record replaced here outlives this suite. An earlier version of the
+## freeze test left the dragon carrying `domain_id ""` and `boss_ids []`, and three later
+## suites reported it — which is why the restore lives in `teardown` and not at the end of the
+## test body: a test that aborts mid-way would skip a cleanup at its own end.
+var _saved_dragon: Dictionary = {}
+
 
 func _hero(gear: float = 0.0) -> Actor:
 	var actor := Actor.new(&"delver", {Stat.PHYSIQUE: 10.0, Stat.SPIRIT: 8.0})
@@ -71,17 +81,6 @@ func _facing_warden() -> Actor:
 		"the ember vault opens"
 	)
 	return actor
-
-
-## The shared boss record the freeze test is about to overwrite, kept so `teardown` can put it
-## back.
-##
-## `LootContent`'s boss index is a process-wide singleton and the runner drives every suite
-## from ONE process, so a record replaced here outlives this suite. An earlier version of the
-## freeze test left the dragon carrying `domain_id ""` and `boss_ids []`, and three later
-## suites reported it — which is why the restore lives in `teardown` and not at the end of the
-## test body: a test that aborts mid-way would skip a cleanup at its own end.
-var _saved_dragon: Dictionary = {}
 
 
 func teardown() -> void:
@@ -507,14 +506,19 @@ func test_the_profile_is_frozen_with_the_boss_not_re_read_per_exchange() -> void
 ## at the read, so an absurd authored value is brought into range rather than poisoning the
 ## model — and, critically, an exchange against it still terminates on a bounded share.
 func test_an_absurd_authored_profile_is_clamped_into_the_model_s_range() -> void:
+	# The singleton IS the subject here: `LootState.boss_profile` reads it, so a
+	# private corpus would make the assertion vacuous. Seeded and then REMOVED in
+	# the same test, because the runner shares one process and a probe left in the
+	# singleton lands in test_loot_payable_tables.gd's shipped-corpus census.
+	var absurd := &"probe_absurd_profile_boss"
 	(
 		LootContent
 		. instance()
 		. provide_boss(
-			&"probe_absurd_profile_boss",
+			absurd,
 			{
 				"found": true,
-				"id": "probe_absurd_profile_boss",
+				"id": String(absurd),
 				"domain_id": "",
 				"boss_ids": [],
 				"loot": [],
@@ -555,6 +559,18 @@ func test_an_absurd_authored_profile_is_clamped_into_the_model_s_range() -> void
 		float(hit["share"]) >= CombatDamage.MIN_SHARE, true, "an exchange still spends something"
 	)
 	assert_eq(float(hit["share"]) <= 1.0, true, "and never more than the whole pool")
+	# Taken back out HERE, not in a teardown. The runner shares one process, and a
+	# probe left in the singleton reaches test_loot_payable_tables.gd, which censuses
+	# the SHIPPED corpus and would report the probe boss as an unpayable table.
+	assert_eq(LootContent.instance().forget_boss(absurd), true, "the probe is taken back out")
+	# `boss_record`, not `boss_profile`: the profile clamps authored values into a
+	# shape, so it answers with defaults for a boss nobody authored and cannot report
+	# the absence this assertion is about.
+	assert_eq(
+		bool(LootContent.instance().boss_record(absurd).get("found", false)),
+		false,
+		"so no later suite can see the probe"
+	)
 
 
 ## Persistence: the profile is part of the spawned boss, so it survives a save/load like
