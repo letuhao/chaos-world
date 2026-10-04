@@ -1,5 +1,5 @@
 class_name ItemWorkbenchApp
-extends ItemWorkbenchReadout
+extends ItemWorkbenchFight
 
 ## Composition root for the playable slice (ADR 0002, 0027, 0033).
 ##
