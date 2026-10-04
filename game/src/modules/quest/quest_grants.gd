@@ -93,15 +93,31 @@ static func pay(actor: Actor, def: QuestDef, quest_id: StringName) -> Dictionary
 			continue
 		match kind:
 			QuestDef.GRANT_FATE:
-				DestinyApi.earn_fate(
-					actor, StringName(entry["id"]), FATE_SOURCE_PREFIX + String(quest_id)
-				)
-				paid.append(entry)
+				# ADR 0134 §1a: earn, then VERIFY. `earn_fate` answers the ledger, never
+				# a verdict — a null actor, an id the catalog does not ship, and an
+				# already-held id are byte-identical returns — so appending to `paid`
+				# unconditionally claimed a grant this quest never made. An author who
+				# typed `oath_breakr` would have completed the quest, seen the reward
+				# listed, and received nothing. The item branch below already had this
+				# shape; these two did not, which is why an item typo was visible and a
+				# fate typo was not.
+				var fate_id := StringName(entry["id"])
+				DestinyApi.earn_fate(actor, fate_id, FATE_SOURCE_PREFIX + String(quest_id))
+				if DestinyApi.has_fate(actor, fate_id):
+					paid.append(entry)
+				else:
+					unspent.append(_with_reason(entry, "fate_not_granted"))
 			QuestDef.GRANT_DESTINY:
-				DestinyApi.earn_destiny(
-					actor, StringName(entry["id"]), FATE_SOURCE_PREFIX + String(quest_id)
-				)
-				paid.append(entry)
+				var destiny_id := StringName(entry["id"])
+				DestinyApi.earn_destiny(actor, destiny_id, FATE_SOURCE_PREFIX + String(quest_id))
+				# A destiny can be refused by a gate, a prerequisite or a closed group, so
+				# the same verification applies — and here it matters more, because a
+				# refused destiny is the one case where a player would otherwise be told
+				# a quest paid out and be owed nothing for it.
+				if DestinyApi.has_destiny(actor, destiny_id):
+					paid.append(entry)
+				else:
+					unspent.append(_with_reason(entry, "destiny_not_granted"))
 			QuestDef.GRANT_ITEM:
 				var delivered := _deliver(actor, entry, quest_id)
 				if bool(delivered["ok"]):

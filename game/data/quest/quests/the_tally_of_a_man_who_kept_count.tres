@@ -17,6 +17,6 @@ display_name = "The Tally of a Man Who Kept Count"
 description = "The sect's rotation clerk kept a book of every duel decided on the pass, and the book has a column for the ones that ended without a killing blow. A name in that column is not a victory and not a defeat; it is the only entry the clerk could not file under either, and clerks do not forget a line they cannot classify. Nobody assigned you this. The book has three decided duels in your hand and two opponents still standing, and it is waiting to see whether the two cancel."
 kind = &"authored"
 tier = 3
-requirement = {"verb": &"all_of", "of": [{"verb": &"has_fate", "id": &"first_blood_duel"}, {"verb": &"counter", "id": &"duels_won", "need": 3}]}
+requirement = {"verb": &"all_of", "of": [{"verb": &"tagged", "id": &"duel"}, {"verb": &"counter", "id": &"duels_won", "need": 3}]}
 steps = Array[ExtResource("2_step")]([SubResource("QuestStep_the_spared_two")])
 grants = Array[Dictionary]([{"kind": &"fate", "id": &"oath_of_the_empty_hand", "amount": 1}])

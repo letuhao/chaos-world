@@ -92,12 +92,34 @@ static func _apply_row(actor: Actor, def: EventDef, row: Dictionary) -> Dictiona
 		# DEF-0108's exact string. `earn_fate` is exactly-once itself, so calling it
 		# twice with the same id is harmless — but `EventState.paid` is what stops the
 		# second CALL from happening at all.
+		#
+		# **Then VERIFY, which is ADR 0134 §1a and this file's own former anti-pattern.**
+		# `earn_fate` answers the LEDGER, never a verdict, on every refusal path — a null
+		# actor, an id the catalog does not ship, and an already-held id are byte-identical
+		# returns with no `ok` — so a line that reported success without re-reading the
+		# ledger claimed a prize it never paid. An author who typed `first_blood_duell`
+		# would have had the event resolve, the row recorded as paid, and nothing granted,
+		# with no error anywhere. The refusal names itself rather than swallowing the id.
 		DestinyApi.earn_fate(actor, id, def.fate_source())
+		if not DestinyApi.has_fate(actor, id):
+			return {
+				"ok": false, "reason": "fate_not_granted", "kind": String(kind), "id": String(id)
+			}
 		return {"ok": true, "kind": String(kind), "id": String(id), "amount": amount}
 	if kind == EventDef.PAY_DESTINY:
 		if id == &"":
 			return {"ok": false, "reason": "pay_names_no_id", "kind": String(kind)}
 		DestinyApi.earn_destiny(actor, id, def.fate_source())
+		# Same rule as the fate above, and for the same reason: a gate, a group closure
+		# or a prerequisite can refuse a destiny, and a prize that reports success it did
+		# not achieve is a content bug the player pays for by never seeing the reward.
+		if not DestinyApi.has_destiny(actor, id):
+			return {
+				"ok": false,
+				"reason": "destiny_not_granted",
+				"kind": String(kind),
+				"id": String(id),
+			}
 		return {"ok": true, "kind": String(kind), "id": String(id), "amount": amount}
 	if kind == EventDef.PAY_NATION_STANDING:
 		if id == &"":

@@ -159,16 +159,86 @@ func test_every_shipped_gate_names_a_real_fate_destiny_or_declared_counter_id() 
 	for destiny_id in FateCatalog.instance().destiny_ids():
 		real_destinies[String(destiny_id)] = true
 
+	# `required_gate_ids` answers every id a quest's gates NAME, and a `tagged`
+	# gate names a TAG, not a fate — so without the vocabulary here the first
+	# shipped `tagged` gate read as "no FateDef declares 'duel'" and failed a
+	# perfectly correct quest. The vocabulary is `FateDef.TAGS`, the closed list
+	# ADR 0189 defines, and this is the runtime half of the check tools/data.py
+	# makes at author time.
+	var real_tags: Dictionary = {}
+	for tag in FateDef.TAGS:
+		real_tags[String(tag)] = true
+
 	var gated := 0
 	for def in _shipped():
 		for gate_id in def.required_gate_ids():
 			gated += 1
 			assert_eq(
-				real_fates.has(gate_id) or real_destinies.has(gate_id),
+				real_fates.has(gate_id) or real_destinies.has(gate_id) or real_tags.has(gate_id),
 				true,
 				"%s gates on '%s', which no FateDef or DestinyDef declares" % [def.id, gate_id]
 			)
 	assert_ne(gated, 0, "at least one shipped quest is gated, so the seam is exercised")
+
+
+## A `tagged` gate is only meaningful if some fate ACTUALLY carries that tag. A
+## vocabulary member no fate wears is a gate nothing can ever open — the ADR 0189
+## failure mode — and it is invisible to the id check above, because the tag IS a
+## declared id in `FateDef.TAGS`. This is the runtime twin of the Python audit's
+## `_tag_findings`.
+func test_every_shipped_tag_gate_names_a_tag_some_fate_carries() -> void:
+	var carried: Dictionary = {}
+	for fate_id in FateCatalog.instance().fate_ids():
+		var def := FateCatalog.instance().fate_definition(fate_id)
+		if def == null:
+			continue
+		for tag in def.tags:
+			carried[String(tag)] = true
+
+	var tagged_gates := 0
+	for def in _shipped():
+		for gate in _tagged_rows(def.requirement):
+			tagged_gates += 1
+			var tag_id := String(gate.get("id", ""))
+			assert_eq(
+				carried.has(tag_id),
+				true,
+				(
+					(
+						"%s gates on tag '%s', which no shipped fate carries - a gate that "
+						+ "nothing can ever open"
+					)
+					% [def.id, tag_id]
+				)
+			)
+	assert_ne(
+		tagged_gates,
+		0,
+		"at least one shipped quest uses the `tagged` verb, so ADR 0189 is reachable"
+	)
+
+
+## Every `tagged` row inside a requirement, composites descended.
+##
+## Bounded by the AUTHORED nesting exactly as `QuestDef._collect_gate_ids` is: a
+## composite names its own children, so the depth is what the author wrote and a
+## malformed cycle is refused upstream rather than walked here. `out` is passed in
+## and appended to, so a caller cannot be surprised by a fresh array each call.
+func _tagged_rows(node, out: Array = []) -> Array:
+	if not (node is Dictionary):
+		return out
+	var entry := node as Dictionary
+	var verb := StringName(entry.get("verb", ""))
+	if verb == &"all_of" or verb == &"any_of" or verb == &"none_of":
+		var children = entry.get("of", [])
+		if not (children is Array):
+			return out
+		for index in range((children as Array).size()):
+			_tagged_rows((children as Array)[index], out)
+		return out
+	if verb == &"tagged":
+		out.append(entry)
+	return out
 
 
 ## ADR 0113 / DEF-0110, exercised by shipped content: at least one quest is
