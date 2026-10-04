@@ -33,6 +33,7 @@ acquisition = _load("acquisition")
 arch = _load("arch")
 art_fidelity = _load("art_fidelity")
 assets = _load("assets")
+assets_sweep = _load("assets_sweep")
 character_assets = _load("character_assets")
 character_bundle_sync = _load("character_bundle_sync")
 backlog = _load("backlog")
@@ -86,6 +87,7 @@ COMMANDS = {
     "arch": arch,
     "art_fidelity": art_fidelity,
     "assets": assets,
+    "assets-sweep": assets_sweep,
     "character_assets": character_assets,
     "character_bundle_sync": character_bundle_sync,
     "unique_characters": unique_characters,
