@@ -1226,7 +1226,25 @@ def _add(args) -> int:
     record = _blank_character(args.character_id, args.name, args.role, args.path, args.style)
     issues = _validate([*records, record], check_files=False)
     if issues:
-        raise ToolError(f"refusing to write an invalid record: {issues[0]}")
+        # Separate the new record's own defects from someone else's. Validating the
+        # whole catalog means ONE bad record refuses every OTHER agent's `add`, which
+        # is what a bloodline in another shard's `appearance.race` did here: four
+        # agents were told "refusing to write an invalid record" about a record they
+        # had never seen and could not fix. Name the offending id and say plainly
+        # that it is not the record being written.
+        mine = [issue for issue in issues if args.character_id in issue]
+        if mine:
+            raise ToolError(f"refusing to write an invalid record: {mine[0]}")
+        first = issues[0]
+        offender = first.split(":", 1)[0]
+        raise ToolError(
+            f"refusing to add {args.character_id}: the catalog is already invalid "
+            f"because of {len(issues)} issue(s) in OTHER records, the first being "
+            f"{first}. That record is not yours and `add` will refuse for every "
+            f"character until its owner fixes it, so this is not a problem with "
+            f"{args.character_id}. Wait for {offender}, or write your own record "
+            f"through the same atomic writer `add` uses and let `check` confirm it."
+        )
     shard = getattr(args, "shard", None)
     target = _shard_path(shard) if shard else None
     _atomic_write([record], target)
@@ -1538,6 +1556,70 @@ def _next(records: list[dict], count: int, kind_filter: str | None) -> int:
     return 0
 
 
+def _species_command(records: list[dict], args) -> int:
+    """Suggest species that may legally carry a path, least-used first.
+
+    Picking species by hand is where a wave goes wrong, and it went wrong twice in
+    one round here. Ranking candidates by "zero members in the cast" looks like it
+    spreads the load and does the exact opposite: a bloodline can never appear in
+    `appearance.race` because the guard rejects it, so every bloodline scores zero
+    by construction. Ranking by that measure selects bloodlines first. Four of five
+    species chosen that way were bloodlines, and a fifth agent got one.
+
+    So the two filters that matter are applied here rather than left to recall:
+    the species must not BE a bloodline, and it must not close the requested path,
+    both read from the same functions the catalog guard itself uses. Ranked by cast
+    count, so the suggestion genuinely spreads the load.
+
+    Prints the candidate list and the reason each is legal, so a wave brief can be
+    written from this output instead of from a probe that skipped a filter.
+    """
+    entries = _lore_entries()
+    bloodlines = bloodline_races(entries)
+    closed = species_closed_paths(entries)
+    counts = Counter(
+        str((record.get("appearance") or {}).get("race", "unset"))
+        for record in records
+        if isinstance(record, dict) and record.get("status") == "canon"
+    )
+
+    wanted = str(args.path)
+    candidates = []
+    for race_id in sorted(entries):
+        entity = entries[race_id]
+        if not isinstance(entity, dict) or entity.get("domain") != "races":
+            continue
+        if race_id in bloodlines:
+            continue
+        blocks = closed.get(race_id, set())
+        if wanted != "unaffiliated" and wanted in blocks:
+            continue
+        candidates.append((counts.get(race_id, 0), race_id, blocks))
+    candidates.sort()
+
+    want = max(1, int(args.count))
+    shown = candidates[:want]
+    if not shown:
+        print(f"no species may carry path={wanted}; every race record closes it or is a bloodline")
+        return 1
+
+    total = sum(counts.values())
+    print(
+        f"species legal for path={wanted}, least-used first "
+        f"({len(shown)} of {len(candidates)} over a canon cast of {total}):"
+    )
+    for used, race_id, blocks in shown:
+        share = f"{used / total:.1%}" if total else "0.0%"
+        closes = ", ".join(sorted(blocks)) if blocks else "nothing"
+        summary = str(entries[race_id].get("summary", ""))[:76]
+        print(
+            f"  {used:>3}x {share:>6}  {race_id:<26} type={entries[race_id].get('type', '?'):<16}"
+        )
+        print(f"        closes {closes}; {summary}")
+    print("\nverify each with `lore show <id>` and read attributes.closed_paths before writing.")
+    return 0
+
+
 def _plan(records: list[dict], args) -> int:
     record = _character(records, args.character_id)
     shot = _shot(record, args.shot_id)
@@ -1744,6 +1826,22 @@ def register(subparsers) -> None:
     )
 
     actions.add_parser("report", help="summarize the named cast and its shot coverage")
+    species_pick = actions.add_parser(
+        "species",
+        help="list species that may legally carry a given cultivation path, least-used first",
+    )
+    species_pick.add_argument(
+        "--path",
+        choices=sorted(VALID_PATHS),
+        required=True,
+        help="the cultivation path the character will carry",
+    )
+    species_pick.add_argument(
+        "--count",
+        type=int,
+        default=10,
+        help="how many species to suggest (default 10)",
+    )
     actions.add_parser("check", help="fail on an invalid catalog or a missing installed image")
     diversity = actions.add_parser(
         "diversity",
@@ -1823,6 +1921,8 @@ def run(args) -> int:
         return _diversity_command(readable_catalog(), args)
     if action == "report":
         return _report(readable_catalog())
+    if action == "species":
+        return _species_command(readable_catalog(), args)
     records = _load_index()
     if action == "next":
         return _next(records, args.count, args.kind)

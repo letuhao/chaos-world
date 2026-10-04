@@ -14,6 +14,8 @@ quiet lie with a non-zero exit code attached.
 from __future__ import annotations
 
 import argparse
+import contextlib
+import io
 import json
 import os
 import pathlib
@@ -1796,6 +1798,93 @@ def _ingest_is_deterministic() -> None:
             break
     else:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
+
+
+@case("unique_characters: `species` never offers a bloodline or a closed path")
+def _species_command_filters_correctly() -> None:
+    """Picking a species by hand went wrong on five of twenty-three characters in a
+    single wave, and the cause was a heuristic that is wrong by construction.
+
+    Candidates were ranked by "zero members in the cast", which reads like it
+    spreads the load and does the opposite: a bloodline can never appear in
+    `appearance.race` because the catalog guard rejects it there, so every
+    bloodline scores zero no matter what the cast does. Ranking by that measure
+    selects bloodlines first. All four species chosen for one agent were
+    bloodlines, and a fifth agent got one more.
+
+    The guard caught it, which is why it was a wrong brief and not a broken record.
+    But a guard that fires after four agents are dispatched is a late warning, so
+    the two filters are now applied by the tool: not a bloodline, and not a species
+    that closes the requested path.
+
+    The assertions are deliberately paired. A test that only checks "no bloodline
+    leaks" passes trivially against a filter that returns nothing at all, so the
+    counterweight counts: `unaffiliated` is legal for every species, so it must
+    list exactly (race records - bloodlines) and no fewer. That is what makes a
+    no-op filter fail.
+    """
+    entries = unique_characters._lore_entries()
+    bloodlines = unique_characters.bloodline_races(entries)
+    closed = unique_characters.species_closed_paths(entries)
+
+    expect(
+        len(bloodlines) >= 1,
+        "the bible contains no bloodline races, so this test cannot detect the "
+        "defect it was written for: the whole failure was bloodlines scoring zero "
+        "cast members by construction",
+    )
+
+    class Args:
+        def __init__(self, path: str, count: int) -> None:
+            self.path = path
+            self.count = count
+
+    catalog = unique_characters.readable_catalog()
+    for path in sorted(unique_characters.VALID_PATHS):
+        buffer = io.StringIO()
+        with contextlib.redirect_stdout(buffer):
+            unique_characters._species_command(catalog, Args(path, 999))
+        text = buffer.getvalue()
+        named = [
+            token.split()[0]
+            for token in text.splitlines()
+            if token.strip()[:1].isdigit() and "races." in token
+        ]
+        expect(named, f"path={path} listed no species at all")
+        leaked = [race for race in named if race in bloodlines]
+        expect(
+            not leaked,
+            f"path={path} offered bloodlines, which can never be an "
+            f"appearance.race value: {leaked}",
+        )
+        illegal = [
+            race for race in named if path != "unaffiliated" and path in closed.get(race, set())
+        ]
+        expect(
+            not illegal,
+            f"path={path} offered species that close it: {illegal}. A brief written "
+            f"from this output produces a record the gate rejects",
+        )
+
+    # Counterweight: unaffiliated is legal for every species, so it must list ALL of
+    # them. A filter that excludes everything passes every assertion above.
+    race_records = [
+        rid
+        for rid in entries
+        if isinstance(entries[rid], dict) and entries[rid].get("domain") == "races"
+    ]
+    expected = len([rid for rid in race_records if rid not in bloodlines])
+    buffer = io.StringIO()
+    with contextlib.redirect_stdout(buffer):
+        unique_characters._species_command(catalog, Args("unaffiliated", 999))
+    listed = buffer.getvalue().count("type=")
+    expect(
+        listed == expected,
+        f"path=unaffiliated listed {listed} species, expected {expected} "
+        f"({len(race_records)} race records minus {len(bloodlines)} bloodlines). "
+        f"Anything fewer means the filter is dropping legal species too, and the "
+        f"no-leak assertions above would have passed it",
+    )
 
 
 @case("unique_characters: refusing a duplicate id says WHERE and WHY, not just that")
