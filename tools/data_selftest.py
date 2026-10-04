@@ -773,3 +773,58 @@ def _arrivals_without_fates_are_audited() -> None:
             "dangling by construction, so an early return keyed on the fate catalog makes "
             "the audit pass for the wrong reason",
         )
+
+
+@case("data audit: an UNDECLARED content family FAILS, and a declared one is clean")
+def _undeclared_family_fails_and_a_declared_one_passes() -> None:
+    """ADR 0184's registry cut: an unknown folder is a hard error, never a skip.
+
+    A mod adding `game/data/<prefix>/` content is a new family, and a folder the
+    registry does not name has no gate to vouch for it — so it must fail loudly
+    rather than be silently skipped (ADR 0184 decision 9). The red half builds a
+    folder the registry does not declare and asserts the audit names it; the
+    green half runs the SAME tree minus that folder and asserts the finding is
+    gone, so a check that reported every folder (or none) cannot pass.
+    """
+    prefix = "no_such_family_for_this_gate"
+    expect(
+        prefix not in data_tool.DECLARED_DIRS,
+        f"{prefix!r} is now a declared content family, so this fixture no longer tests "
+        "the undeclared path — pick a new name",
+    )
+    # A real declared tree (fate + race + arrival) already proven clean by
+    # `_soul_leg_fails_the_audit_exit_code`, so the green half is a real tree and
+    # not a vacuous pass.
+    clean = _arrival_fixture((), fate_id="ok_fate")
+    # The red half: same tree plus one file in a folder the registry does not
+    # declare. The content is irrelevant — `_load` skips the file before parsing
+    # it — but it must exist for the walk to find it.
+    broken = dict(clean)
+    broken[f"{prefix}/stray.tres"] = '[gd_resource type="Resource" format=3]\n\n[resource]\n'
+    with _fixture((), broken) as (root, tool):
+        code, output = _verdict(root)
+        expect(
+            code == 1,
+            f"`data audit` exited {code} over an undeclared content family {prefix!r}. "
+            f"Output:\n{output}",
+        )
+        expect(
+            prefix in output,
+            f"the failing audit never named the undeclared family, so an author cannot "
+            f"act on it:\n{output}",
+        )
+        expect(
+            "undeclared content family" in output,
+            f"the finding did not say WHY the folder is a problem:\n{output}",
+        )
+    with _fixture((), clean) as (root, tool):
+        code, output = _verdict(root)
+        expect(
+            code == 0,
+            f"`data audit` exited {code} over a tree holding only declared content. "
+            f"The undeclared finding must be gone:\n{output}",
+        )
+        expect(
+            "undeclared content family" not in output,
+            f"a declared-only tree still reported an undeclared family:\n{output}",
+        )
