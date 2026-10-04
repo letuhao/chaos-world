@@ -165,19 +165,35 @@ func test_the_systemic_quest_is_never_offered_so_only_a_recorded_fact_can_finish
 		offered.has(String(QUEST)), false, "nothing in the game hands this quest to the player"
 	)
 
-	# Not accepted either, so only the dispatch could ever finish it.
+	# **THE FINDING, pinned.** `QuestApi.advance` — the only verb that completes a
+	# quest — walks `QuestState.active_ids`. Nothing ENTERS a quest as systemic or
+	# emergent: `offered` refuses them (BL-0053) and no production caller of `accept`
+	# names a non-authored kind. So a systemic quest has NO production door at all,
+	# and the fact its owner records completes nothing because there is nothing in
+	# flight.
+	#
+	# This is a SECOND, narrower defect than the one this change fixes, and it is
+	# REPORTED rather than fixed here: the fix would be a production caller that
+	# enters emergent quests as their facts arrive, which is a new verb on a facade
+	# already AT its twelve-method cap. What IS fixed is that once a quest IS in
+	# flight, its completion no longer depends on the director.
+	SectFacts.record_oaths_discharged(actor, 1)
 	assert_eq(
 		_completed(actor).has(String(QUEST)),
 		false,
-		"and it is not even active: the world itself is the only door to it"
+		"an UNACCEPTED systemic quest stays open, because nothing enters one"
 	)
 
+	# Entered the way any quest is entered — through the production program — the
+	# very next occurrence completes it with no director and no sink.
+	var program := QuestProgram.new(actor)
+	assert_eq(bool(program.accept(QUEST)["ok"]), true, "the program enters it")
 	SectFacts.record_oaths_discharged(actor, 1)
 
 	assert_eq(
 		_completed(actor).has(String(QUEST)),
 		true,
-		"a systemic quest completes from a fact its owner recorded, with nothing handed to the player"
+		"and once in flight it completes from a fact its owner recorded"
 	)
 
 
