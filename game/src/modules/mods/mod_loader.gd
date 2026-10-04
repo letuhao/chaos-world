@@ -93,16 +93,20 @@ static func load_order(roots: Array) -> Dictionary:
 	var order: Array[String] = []
 	for mod in ordered:
 		order.append(String(mod["id"]))
+	# One shared registry per boot: every mod's `register_module` forwards into
+	# it, so `ModRuntime.finalize` can order the whole pass from a single graph.
+	var registry := ModuleRegistry.new()
 	var contexts: Array = []
 	for mod in ordered:
-		contexts.append(_stamp_context(mod))
+		contexts.append(_stamp_context(mod, registry))
 	return {
 		"ok": true,
 		"reason": "",
 		"detail": "",
 		"order": order,
 		"mods": ordered,
-		"contexts": contexts
+		"contexts": contexts,
+		"registry": registry
 	}
 
 
@@ -180,10 +184,13 @@ static func _validate_and_depth(mods: Array[Dictionary]) -> Dictionary:
 
 
 ## One mod's declarations, played through the five seams into a fresh
-## context. Attach hooks carry an EMPTY Callable here: the manifest declares
-## the phase, the mod's own entry point binds the real function in W3+.
-static func _stamp_context(mod: Dictionary) -> RegistrationContext:
-	var ctx := RegistrationContext.new(mod["id"])
+## context. The ctx is stamped with its mod_id, its manifest (so the seams can
+## read the declared overrides) and the shared registry (so `register_module`
+## forwards into the one graph the boot orders from). Attach hooks carry an
+## EMPTY Callable here: the manifest declares the phase, the mod's own entry
+## point binds the real function in W3+.
+static func _stamp_context(mod: Dictionary, registry: ModuleRegistry) -> RegistrationContext:
+	var ctx := RegistrationContext.new(mod["id"], mod, registry)
 	for row in mod["content_roots"]:
 		ctx.add_content_root(row["family"], row["dir"])
 	for module in mod["modules"]:

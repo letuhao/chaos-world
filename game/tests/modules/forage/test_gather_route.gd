@@ -31,6 +31,10 @@ extends TestCase
 ## across every suite and calls `teardown` after EVERY test, so each of these is released
 ## per-test rather than per-suite: a catalog left installed would hand this suite's fixtures
 ## to whichever suite runs next.
+##
+## [constant PLAIN_PATH] is process-wide too, in the only sense that matters: it is a FILE on
+## disk under `res://data`, and it is taken back down in the same `teardown`. See
+## [_plain_stackable] for why it has to be a file at all.
 
 ## A node at the shallowest authored band, worked by an actor at that band.
 const SHALLOW_REALM := &"foundation"
@@ -74,8 +78,27 @@ func setup() -> void:
 	HoldingsApi.set_resolver(func(_kind: String, _id: String) -> Dictionary: return {"ok": true})
 	HoldingsApi.set_store(WorldLedger.new())
 	ForageApi.set_granter(ForageGranary.deliver)
-	ForageApi.set_yields(FIXTURE_YIELDS)
+	# BEFORE `_yields()`, which resolves the measured good's id: the granter only answers
+	# `known` for an id `Crafting.resolve` can find ON DISK, so the file has to be there
+	# before the yield table that names it is built.
+	_ensure_plain_good()
+	ForageApi.set_yields(_yields())
 	_actor = _miner(&"t_miner", SHALLOW_REALM)
+
+
+## The yield table, extended with one entry per PLAIN fixture node so the probe measurements
+## can be taken against a good whose stacks merge. See [method _plain_stackable] for why the
+## authored charm cannot serve there.
+##
+## The extra entry is rebuilt per `setup` rather than cached, so a plain good found on the
+## last run cannot survive into this one. The GOOD it names is resolved from disk, so this
+## runs AFTER the file is in place — see [method _ensure_plain_good].
+func _yields() -> Dictionary:
+	var out: Dictionary = FIXTURE_YIELDS.duplicate(true)
+	var good := _plain_stackable()
+	if good != null:
+		out[String(PLAIN_NODE)] = [String(good.id)]
+	return out
 
 
 func teardown() -> void:
@@ -91,17 +114,280 @@ func teardown() -> void:
 	HoldingsApi.set_resolver(Callable())
 	HoldingsApi.set_store(null)
 	ResourceNodeCatalog.instance().reset()
+	# The measured good is the ONE fixture here that lives on disk, so it is the one that
+	# can outlive the process. Taken down before the runner hands the engine to the next
+	# suite, so no later run — and no `tools data` audit between runs — ever sees it.
+	_remove_plain_good()
 
 
 ## A miner: an inventory for the goods, holdings for the custody, and a body path so
 ## `actor.realm()` has a rung to stand on.
-func _miner(id: StringName, realm: StringName) -> Actor:
+##
+## `capacity` is passed to `ItemsApi.attach` rather than defaulted, because the probe's
+## behaviour is a function of ROOM and a 24-slot bag cannot be shown to be short without
+## stacking 2 376 units. A bag of 1 or 2 slots makes the shortfall the size of the harvest,
+## which is the thing under test.
+func _miner(id: StringName, realm: StringName, capacity: int = ItemsApi.DEFAULT_CAPACITY) -> Actor:
 	var actor := Actor.new(id, {Stat.PHYSIQUE: 10.0})
-	ItemsApi.attach(actor)
+	ItemsApi.attach(actor, capacity)
 	HoldingsApi.attach(actor)
 	actor.set_path(PathState.new(PathState.BODY, realm))
 	_held.append(actor)
 	return actor
+
+
+## Fill `actor`'s bag with `inventory.capacity` DISTINCT authored STACKS, and return how many
+## units landed.
+##
+## ## Why stacks, and why distinct ones
+##
+## `Inventory._add_batch` refuses a new stack on `if _stacks.size() >= capacity` -- it counts
+## `_stacks` ALONE. Distinct definitions are therefore what fills a bag for this purpose: one
+## stack each, so a bag of `capacity` distinct defs has `capacity` stacks. Re-adding the SAME
+## def merges into the open stack instead (up to `max_stack`), which is exactly the behaviour
+## that made an earlier version of this fixture leave the bag short.
+##
+## ## Why the bound is snapshotted before the walk
+##
+## `capacity` is read ONCE, before the walk, and never re-read: a bound taken before a loop
+## cannot change under it, so this can never be the unbounded walk the repo forbids. The walk
+## also stops early at `is_full()`, and [constant FILL_BATCH] caps it as well, so a content
+## tree with fewer distinct defs than a large capacity produces a LOUD failure at the calling
+## case's own `is_full()` assertion rather than a quietly under-filled bag -- a bag that is not
+## full makes the refusal it is testing unfalsifiable.
+const FILL_BATCH := 48
+
+## The node the plain-good measurements are taken on. Six per period: a prime-adjacent number
+## that divides neither 99 nor 256 neatly, so the period count has to be CEILING and the grant
+## has to be asserted as `periods * 6` rather than as a round figure.
+const PLAIN_NODE := &"t_plain"
+## Units the [constant PLAIN_NODE] yields per period.
+const PLAIN_YIELD := 6
+
+
+func _fill_bag(actor: Actor) -> int:
+	var inventory := ItemsApi.inventory(actor)
+	var bound := maxi(1, mini(inventory.capacity, FILL_BATCH))
+	var defs := _distinct_stackables(bound)
+	var placed := 0
+	for index in defs.size():
+		if inventory.add(defs[index], 1) == 0:
+			placed += 1
+		if inventory.is_full():
+			break
+	return placed
+
+
+## Up to `limit` authored, DISTINCT `ItemDef`s, in a stable order, optionally narrowed to the
+## PLAIN ones.
+##
+## ## Why `roll_spec` is filtered when `plain` is asked for
+##
+## This is the deepest of the three fixture mistakes this section went through, and the reason
+## is worth recording because it is invisible from the outside. `Inventory._add_batch` merges
+## a batch only when `batch.signature() == prototype.signature()`, and for a def carrying a
+## `roll_spec` the prototype is a FRESHLY REALIZED roll. So:
+##
+##   * a bag holding such a good has NO growable stack at all -- every add opens a new one; and
+##   * a request of `2 * max_stack` gets NOTHING into such a bag that is already full of stacks,
+##     because a second stack cannot be opened.
+##
+## The sharp edge is the one that matters for a probe: a roll-bearing good's room is measured
+## in WHOLE STACKS, so the only answers reachable are "all of it" and "none of it", and the
+## interesting middle -- a partial grant -- needs a PLAIN, roll-free, high-`max_stack` good.
+## `plain = true` is what supplies one, and the flags it selects on are asserted by
+## [method _assert_plain], so a content change that rolls one of them fails loudly.
+##
+## Read from `Crafting.ITEM_ROOTS` -- the one list every item resolver in the repo reads -- and
+## de-duplicated by `id`, because `ContentScan.files_under` walks three roots and one id can be
+## authored under more than one. `limit` is the caller's bound and is passed in rather than
+## defaulted, so no loop below needs a bound of its own.
+func _distinct_stackables(limit: int, plain: bool = false) -> Array[ItemDef]:
+	var out: Array[ItemDef] = []
+	var seen: Dictionary = {}
+	for root in Crafting.ITEM_ROOTS:
+		for path in ContentScan.files_under(root):
+			if out.size() >= limit:
+				return out
+			var def := load(path) as ItemDef
+			if def == null or def.id == &"" or not def.stackable or seen.has(String(def.id)):
+				continue
+			if plain and not def.roll_spec.is_empty():
+				continue
+			seen[String(def.id)] = true
+			out.append(def)
+	return out
+
+
+## The stack ceiling every probe measurement below is taken against.
+##
+## ## Why the measured good cannot be [constant FIXTURE_ITEM]
+##
+## `trinket_iron_charm` carries `roll_spec = {count = 1, contexts = [...]}` and every authored
+## `fixed_modifier` rolls an option, so its realized rolls are ALMOST NEVER equal and its
+## stacks never merge. It is the right good for "does an item demonstrably reach the bag" and
+## the wrong good for every room measurement here. Measured on this tree: 20 000 realizations
+## produced no signature collision, so "almost never" is "never" as far as a test is concerned.
+const MEASURED_MAX_STACK := 64
+
+## A def with exactly the shape the probe measurements need: stackable, no roll spec (so two
+## adds merge and open room is reachable at all), and a KNOWN, MODEST stack ceiling.
+##
+## ## Why this has to be a FILE, and why it is not authored content
+##
+## The granter resolves an item id through `Crafting.resolve`, which finds defs by PATH:
+## `ResourceLoader.exists(root/category/id.tres)`, then a `ContentScan` sweep of
+## [constant Crafting.ITEM_ROOTS] matching the filename. It reads the tree — there is no
+## in-memory registry to insert into, no `install` seam on any item catalog, and
+## `ItemsApi` is at its twelve-method cap so one could not be added. A def that exists only
+## as a variable is therefore invisible to it, and both routes through `ForageGranary`
+## answer `unknown_item` and `no_yield_content` before a single unit is measured — which is
+## exactly the five failures this fixture had to be fixed to remove.
+##
+## So the good is written to disk for the duration of ONE test and taken down again in
+## `teardown`. It is emphatically not content:
+##
+##   * its id is `t_measured_good`, in this suite's `t_` fixture vocabulary and under NO
+##     category, `grade`, `realm` or naming convention any authored item follows;
+##   * it declares NO `sources`, so it is not obtainable from anything and no content gate
+##     can claim it as a delivery target;
+##   * it is removed after every test, so a full-suite run never ends with it present.
+##
+## ## Why `misc`, the one folder it sits in
+##
+## `_category_of` guesses a category from the id's first letter and falls back to
+## [constant ItemCategory.MISC], so `res://data/items/misc` is the folder
+## `Crafting.resolve`'s fast path would have looked in anyway. Putting it in a new folder
+## would have made it an UNDECLARED content family, which `tools data` reports by name.
+##
+## ## Why it is written out in full rather than duplicated from an authored def
+##
+## The three fields that matter — `max_stack = 64`, `roll_spec = {}`, an empty
+## `fixed_modifiers` — are the three the whole measurement turns on, so writing them out
+## makes the fixture's shape readable in one place and impossible to lose to a content
+## change. [_assert_plain] then pins exactly those three on the def that came BACK off
+## disk, so a file that failed to parse into the intended shape fails the test loudly.
+## The id the written fixture is given. Spelled once, so the write, the path and the
+## assertions cannot disagree about what the file is called. A `t_`-prefixed name in the
+## suite's fixture vocabulary, under no authored naming convention.
+const PLAIN_ID := "t_measured_good"
+## Where the fixture is written, and where `teardown` takes it down. The `misc` folder is
+## where `_category_of` falls back to, so `Crafting.resolve`'s fast path finds it directly.
+const PLAIN_PATH := "res://data/items/misc/t_measured_good.tres"
+## The measured good, read back off disk. Never a hand-built object — see
+## [method _plain_stackable].
+var _plain: Array[ItemDef] = []
+
+
+## The measured good, as `ForageGranary` will resolve it, or null when it is not there.
+##
+## Re-read from disk rather than handed back as a local object, and that is the load-bearing
+## detail: the granter resolves its OWN `ItemDef` by id, so a measurement taken against one
+## instance while the code under test was handed a different one would be measuring the
+## fixture rather than the granter. Reading it back means the object under test and the
+## object measured are the one `Crafting.resolve` would hand a player.
+func _plain_stackable() -> ItemDef:
+	if not _plain.is_empty():
+		return _plain[0]
+	_ensure_plain_good()
+	return _plain[0] if not _plain.is_empty() else null
+
+
+## Put the measured good on disk and cache the def read back out of it.
+##
+## Returns nothing and reports nothing on purpose: every caller that needs the value reads
+## it through [method _plain_stackable], so a write that failed surfaces as a null there
+## and the calling case's own `assert_ne(good, null, ...)` names it with the case that
+## needed it.
+##
+## An already-present file is removed first rather than overwritten, so the path never
+## points at a resource `Crafting.resolve`'s fast path has already cached under the same
+## name from an earlier run.
+func _ensure_plain_good() -> void:
+	if not _plain.is_empty():
+		return
+	if FileAccess.file_exists(PLAIN_PATH):
+		DirAccess.remove_absolute(PLAIN_PATH)
+	var file := FileAccess.open(PLAIN_PATH, FileAccess.WRITE)
+	if file == null:
+		return
+	file.store_string(_plain_text())
+	file.close()
+	_plain.clear()
+	_plain.append(load(PLAIN_PATH) as ItemDef)
+
+
+## The fixture's body, written by hand rather than `ResourceSaver.save`d.
+##
+## Hand-written so it is byte-comparable to an authored `.tres` and so every field marking
+## it as a fixture is visible — nothing is hidden that `ResourceSaver` would have added.
+## `roll_spec = {}` and the empty `fixed_modifiers` are the load-bearing omissions: they are
+## what let two adds of this good MERGE, which is the only way a partial grant is reachable.
+## An EMPTY `sources` is what makes it a fixture rather than content — the good is obtainable
+## from nothing, so no gate can count it as reachable or flag it as a dangling target.
+func _plain_text() -> String:
+	return (
+		'[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]\n'
+		+ "\n"
+		+ '[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]\n'
+		+ "\n"
+		+ "[resource]\n"
+		+ 'script = ExtResource("1_item")\n'
+		+ 'id = &"%s"\n' % PLAIN_ID
+		+ 'display_name = "Measured Good"\n'
+		+ 'category = &"misc"\n'
+		+ 'rarity = &"common"\n'
+		+ 'realm = &""\n'
+		+ "stackable = true\n"
+		+ "max_stack = %d\n" % MEASURED_MAX_STACK
+		+ "roll_spec = {}\n"
+		+ "fixed_modifiers = Array[Dictionary]([])\n"
+		+ 'subcategory = &""\n'
+		+ 'grade = &"mortal"\n'
+		+ "sources = Array[StringName]([])\n"
+	)
+
+
+## Take the fixture down. Idempotent, and a missing file is not a failure: `teardown` runs
+## after EVERY test whether or not the test under it needed the good, so the file is usually
+## already gone.
+##
+## The in-memory cache is cleared with it, deliberately. `Crafting.resolve` hands back a
+## `load`ed resource, so a cached def would outlive its file and answer the NEXT test's "is
+## this item known" question about an item nothing on disk agrees exists. Dropping the cache
+## sends every lookup back through `resolve`, which is the behaviour under test.
+func _remove_plain_good() -> void:
+	_plain.clear()
+	if FileAccess.file_exists(PLAIN_PATH):
+		DirAccess.remove_absolute(PLAIN_PATH)
+
+
+## The two properties every probe measurement below depends on, asserted once so a content
+## change cannot quietly turn a measurement into something else.
+##
+## `max_stack` is asserted EQUAL to [constant MEASURED_MAX_STACK], and equality is the point
+## here rather than a hostage to content: the fixture AUTHORED this value, so nothing in the
+## content tree can move it. It was previously asserted as a floor, which was right when the
+## good was FOUND in the tree — `curr_spirit_coin` carries `max_stack = 9999` (ADR 0094
+## requires it), stacks, and has no roll spec, so a content change would silently have
+## re-pointed every "the shortfall fits INSIDE one stack" measurement at a 9999-unit stack,
+## where no shortfall of the size these tests build is reachable at all. The fixture owns its
+## shape now, so the floor became the exact value it always needed to be.
+func _assert_plain(def: ItemDef) -> void:
+	assert_eq(def.stackable, true, "setup: the measured good stacks")
+	assert_eq(
+		def.roll_spec.is_empty(),
+		true,
+		"setup: and carries no roll spec, so two adds of it CAN merge and room is reachable"
+	)
+	assert_eq(
+		def.max_stack,
+		MEASURED_MAX_STACK,
+		(
+			"setup: and holds exactly %d units, so a shortfall is measured against a KNOWN stack"
+			% MEASURED_MAX_STACK
+		)
+	)
 
 
 ## A node def with a real yield and a real upkeep, so the verbs below exercise a def rather
@@ -124,6 +410,16 @@ func _node(
 			}
 		)
 	)
+
+
+## Install an arbitrary node. A test that measures the granter's probe needs a node yielding
+## a SPECIFIC good, and the fixture table points at the charm, so the node cannot be one of
+## the four `setup` installs. Same singleton seam, so `setup` re-installing the whole catalog
+## before every test keeps it from leaking into the next one.
+func _install_node(
+	node_id: StringName, realm: StringName, yield_units: int, upkeep: int, depletion: int
+) -> void:
+	ResourceNodeCatalog.instance().install([_node(node_id, realm, yield_units, upkeep, depletion)])
 
 
 func _owner(actor: Actor) -> Dictionary:
@@ -187,6 +483,243 @@ func test_an_actor_above_the_node_realm_is_still_permitted() -> void:
 
 
 # --- the delivery --------------------------------------------------------------
+
+
+## THE probe, and the one hole in this suite until now.
+##
+## ## What was missing, and why every case above missed it
+##
+## Every case in this section forages into an EMPTY bag, where the probe's answer and "yes,
+## all of it fits" are the same number. Nothing here ever made `ForageGranary._fits` report
+## LESS than what was asked, so the function could be rewritten to `return maxi(0, quantity)`
+## -- a probe that ALWAYS promises delivery -- and all 99 cases across the two gather suites
+## stayed green. The claim in the docblock ("so a full bag accrues nothing") was asserted by
+## nothing; this section is what asserts it.
+##
+## ## Why these fixtures block the bag with STACKS
+##
+## ## A bag is only "full" to `_add_batch` when its STACKS are full, and that is not the same
+## ## question `used_slots()` answers. `Inventory._add_batch` refuses a new stack on
+## ## `if _stacks.size() >= capacity`, counting `_stacks` ALONE -- while `_add_instances`
+## ## refuses on `used_slots() < capacity`, which also counts instances. So a bag whose slots
+## ## are all taken by non-stackable `ItemInstance`s still accepts stack after stack.
+## ##
+## ## Two earlier attempts at this fixture were wrong in exactly that way: both filled the bag
+## ## with non-stackable goods, the bag reported `is_full() == true`, and the probe then
+## ## cheerfully appended a fresh stack past capacity. So the blockers here are all
+## ## `ItemStack`s, which is what `_add_batch` actually counts.
+##
+## ## And the yielded good is a 99-max STACKABLE, which is the only shape that makes the
+## ## probe's answer exact. A stack already at `max_stack` cannot be grown by a merge, so the
+## ## only room left in a bag holding one is a free SLOT -- and how much of the request fits
+## ## then depends on how many slots are left, which is a number this section measures rather
+## ## than assumes.
+func test_a_full_bag_refuses_the_harvest_and_accrues_nothing() -> void:
+	var packed := _miner(&"t_packer", SHALLOW_REALM, 1)
+	_fill_bag(packed)
+	assert_eq(
+		ItemsApi.inventory(packed).is_full(),
+		true,
+		(
+			"setup: the bag is full (%d of %d slots)"
+			% [ItemsApi.inventory(packed).used_slots(), ItemsApi.inventory(packed).capacity]
+		)
+	)
+
+	_claim(packed, &"t_vein")
+	var result := ForageAction.gather(packed, &"t_vein", 1)
+	# ## The refusal, and WHICH constant it is
+	#
+	# `ForageApi.GRANT_REFUSED`, reached by the `int(room["granted"]) <= 0` guard -- and that is
+	# the correct answer, not a quirk of my reading. `ForageGranary.deliver` wraps its
+	# `BAG_FULL` probe answer in `_answer(ok = true, ...)`, so the granter reports "nothing
+	# fits" as a SUCCESSFUL read of a full bag, and `harvest` is the module that turns "zero
+	# would fit" into a refusal. `ForageGranary.BAG_FULL` is therefore NOT reachable through
+	# this path; asserting it would have asserted a branch that cannot execute. What is asserted
+	# is the id the route really produces, and asserting it by name rather than only
+	# `ok == false` means a forager that refused EVERYTHING could not pass.
+	assert_eq(bool(result["ok"]), false, "a bag with no room is not foraged: %s" % result["reason"])
+	assert_eq(
+		String(result["reason"]),
+		ForageApi.GRANT_REFUSED,
+		"named `grant_refused`: the probe answered zero and the route refused on it"
+	)
+	assert_eq(
+		int(result["granted"]),
+		0,
+		"and the caller is told the harvest delivered NOTHING rather than a short count"
+	)
+	# ## The atomicity itself: the bag is consulted BEFORE `accrue`, so nothing was charged
+	#
+	# This is the sentence the docblock makes. Without it a bag-full harvest could still credit
+	# the node and bill its upkeep, and the player would pay for a delivery that could not
+	# happen -- which is the entire reason `harvest` probes before it mutates anything.
+	var line: Dictionary = HoldingsApi.state(packed)["line"] as Dictionary
+	assert_eq(int(line.get("t_vein", 0)), 0, "no yield is accrued onto the node's line")
+	assert_eq(
+		int(line.get("actor:upkeep:%s" % String(packed.id), 0)),
+		0,
+		"and no upkeep is charged, so a refused harvest costs the holder nothing"
+	)
+
+
+## The probe's NUMBER, which is the half `harvest` short-circuits past on a full bag.
+##
+## ## Why this is a separate case from the refusal above
+##
+## Because `harvest` returns at `granted <= 0` before it ever reads a positive count, so the
+## case above proves the probe's "refuse" half and nothing else. The answer asserted here is
+## non-zero AND strictly less than the request, so it is an assertion on the VALUE: a probe
+## that refused everything and a probe that promised everything both fail it, and the mutation
+## under test (`return maxi(0, quantity)`) fails it by answering the whole request.
+func test_the_probe_reports_how_many_units_actually_fit_rather_than_how_many_were_asked_for(
+) -> void:
+	var good := _plain_stackable()
+	assert_ne(good, null, "setup: the measured good is on disk, where Crafting.resolve can find it")
+	_assert_plain(good)
+	var stack_size := good.max_stack
+	var request := stack_size + 1
+
+	# ## The fixture: a ONE-STACK bag already holding one of the measured good
+	#
+	# Capacity 1, so no second stack can ever be opened. One unit is in the bag, so the open
+	# stack has `stack_size - 1` of room, and asking for `stack_size + 1` merges `stack_size - 1`
+	# into it and leaves 2 with nowhere to go. The measured answer is `stack_size - 1`: large,
+	# exact, and strictly less than the request, which is the only shape that tests the VALUE.
+	var tight := _miner(&"t_tight", SHALLOW_REALM, 1)
+	var inventory := ItemsApi.inventory(tight)
+	assert_eq(inventory.add(good, 1), 0, "setup: one unit landed")
+	assert_eq(inventory.used_slots(), 1, "setup: one stack")
+	assert_eq(inventory.is_full(), true, "setup: and the bag is full of STACKS")
+
+	var measured := ForageGranary.deliver(tight, good.id, request, true)
+	assert_eq(
+		bool(measured["ok"]),
+		true,
+		"the probe answers rather than refusing: %s" % measured.get("reason", "")
+	)
+	assert_eq(
+		int(measured["granted"]),
+		stack_size - 1,
+		"and it MEASURED %d of the %d asked for" % [stack_size - 1, request]
+	)
+	assert_eq(
+		int(measured["granted"]) < request,
+		true,
+		"the shortfall is a number strictly less than the request, which is the claim"
+	)
+	# The probe is a pure read, which is the other half of the atomicity and the reason
+	# `snapshot()` exists at all.
+	assert_eq(
+		inventory.used_slots(),
+		1,
+		"and it moved nothing: a snapshot the probe adds onto cannot reach the live bag"
+	)
+	assert_eq(inventory.count(good.id), 1, "including the stack it measured against")
+	# And the ZERO answer on a bag with no room at all, which no partial fixture can give.
+	var blocked := _miner(&"t_blocked", SHALLOW_REALM, 1)
+	_fill_bag(blocked)
+	var none := ForageGranary.deliver(blocked, StringName(FIXTURE_ITEM), 2, true)
+	assert_eq(bool(none["ok"]), true, "a bag with no room is still a question the probe answers")
+	assert_eq(
+		int(none["granted"]),
+		0,
+		"and it answers ZERO: a probe that always promises delivery is not a probe"
+	)
+
+
+## The route refuses a SHORT harvest, names it, and reports the short count.
+##
+## ## Why the shortfall has to live INSIDE one stack
+##
+## `harvest` PROBES with `yield_per_period` and GRANTS `yield_per_period * periods`. For the
+## grant to come up short it must exceed the room the probe found, and with the measured good
+## in a one-stack bag that room is exactly one stack. So the grant asked for is one unit beyond
+## it, the probe answers the stack, and the grant delivers the stack and leaves the rest behind.
+## The node yields 6 per period, so eleven periods is 66 units against a 63-unit room: three
+## over. Eleven is not a trick -- it is the same verb with a bigger count, and the exact counts
+## are derived from `stack_size` below rather than written in.
+##
+## ## Why `grant_short` and not `grant_refused`
+##
+## `ok == false` in both branches, and only the NAME separates "the granter took nothing" from
+## "the granter took part of it". A caller rendering "your bag was full" against a harvest
+## that delivered 63 of 66 is showing a false fact, so the constant is asserted by value.
+func test_a_harvest_the_bag_cannot_hold_whole_is_named_grant_short_with_the_real_count() -> void:
+	var good := _plain_stackable()
+	assert_ne(good, null, "setup: the measured good is on disk, where Crafting.resolve can find it")
+	_assert_plain(good)
+	var stack_size := good.max_stack
+	# A node whose yield does not divide the stack size evenly leaves an awkward remainder, so
+	# the period count is CEILING and the grant is `6 * that` -- assertably more than the room,
+	# and checked rather than assumed.
+	var periods := (stack_size + 5) / 6
+	var asked := periods * 6
+	assert_eq(
+		asked > stack_size,
+		true,
+		(
+			"setup: the grant asked for %d exceeds the %d a one-stack bag can take"
+			% [asked, stack_size]
+		)
+	)
+
+	var half := _miner(&"t_half", SHALLOW_REALM, 1)
+	# One unit in the bag, so the open stack has `stack_size - 1` of room: the probe answers
+	# `stack_size - 1` and the grant of `asked` delivers `stack_size - 1` and leaves the rest.
+	assert_eq(ItemsApi.inventory(half).add(good, 1), 0, "setup: one unit landed")
+
+	# The node has to yield `good`, so it is installed here rather than reusing a fixture whose
+	# yield table points at the charm. Installing a node is the same seam `setup` uses.
+	#
+	# The realm is SHALLOW, matching the miner above: a `DEEP_REALM` node is correctly
+	# refused `realm_below_gate` before the bag is ever consulted, so measuring a shortfall
+	# against it measures the gate instead of the granter.
+	_install_node(PLAIN_NODE, SHALLOW_REALM, 6, 0, 0)
+	_claim(half, PLAIN_NODE)
+	var result := ForageAction.gather(half, PLAIN_NODE, periods)
+	assert_eq(
+		bool(result["ok"]),
+		false,
+		(
+			"a harvest the bag cannot hold whole is a refusal, not a partial success: %s"
+			% result["reason"]
+		)
+	)
+	assert_eq(
+		String(result["reason"]),
+		ForageApi.GRANT_SHORT,
+		(
+			"named `grant_short` rather than `grant_refused`: part of it DID arrive (granted=%d of %d, item=%s)"
+			% [int(result["granted"]), asked, String(result["item_id"])]
+		)
+	)
+	# The granter moved a real number of units and `granted` reports it, so a caller can render
+	# "98 of 102 delivered" rather than a bare refusal. Asserted because the mutation this suite
+	# was written against makes exactly this number WRONG.
+	assert_eq(
+		int(result["granted"]),
+		stack_size - 1,
+		(
+			"and the short count is the measured one: %d of the %d really did land"
+			% [stack_size - 1, asked]
+		)
+	)
+	# The line is settled BEFORE the grant, so the ledger must not still be holding the units
+	# nobody received -- the reason a short delivery has to be named rather than banked.
+	# Keyed on PLAIN_NODE: this used to read "t_plain", a literal that happened to match the
+	# node the fixture installed, so it stayed correct by coincidence while the node id moved.
+	var line: Dictionary = HoldingsApi.state(half)["line"] as Dictionary
+	assert_eq(
+		int(line.get(String(PLAIN_NODE), 0)),
+		0,
+		"and the accrued line was settled, so the ledger and the bag cannot both claim them"
+	)
+	assert_eq(
+		ItemsApi.has_item(half, good.id, stack_size - 1),
+		true,
+		"while the bag really did receive the units that fit"
+	)
 
 
 ## THE end-to-end claim of this suite: foraging a held node credits

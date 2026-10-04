@@ -260,9 +260,36 @@ func add_batch(batch: ItemStack) -> int:
 
 
 ## A detached copy used to plan a transaction before mutating anything.
+##
+## ## Why the stacks and instances are COPIED, not shared
+##
+## `ItemStack` and `ItemInstance` are `RefCounted`, so `duplicate()` on these arrays copies
+## the CONTAINER and shares every element: `copy._stacks[0]` is the very same object as
+## `_stacks[0]`. Adding onto a snapshot then grew the live bag. `_add_batch` merges by
+## mutating `batch.quantity += moved` in place, so a probe that planned to add 63 units into
+## a stack holding 1 wrote 64 into the player's inventory before `deliver` ever decided
+## whether the grant should happen at all -- which is exactly the mutation a probe exists to
+## prevent. `_add_instances` only appends, which is why the leak was invisible until a
+## MERGE was needed.
+##
+## Every caller of `snapshot()` plans against it and then mutates the original instead
+## ([method ForageGranary._fits], [method Crafting._fits], `EconomyExchange`), so the copy has
+## to be a copy in fact rather than in name. Each element is rebuilt through its own
+## `from_dict`/`from_instance` pair, which is also what keeps the shared `def_ref` a shared
+## REFERENCE to immutable content rather than a copy of it.
 func snapshot() -> Inventory:
 	var copy := Inventory.new(capacity)
-	copy._stacks = _stacks.duplicate()
-	copy._instances = _instances.duplicate()
+	var stacks: Array[ItemStack] = []
+	for batch in _stacks:
+		var detached := ItemStack.from_dict(batch.to_dict())
+		detached.def_ref = batch.def_ref
+		stacks.append(detached)
+	copy._stacks = stacks
+	var instances: Array[ItemInstance] = []
+	for instance in _instances:
+		var detached := ItemInstance.from_dict(instance.to_dict())
+		detached.def_ref = instance.def_ref
+		instances.append(detached)
+	copy._instances = instances
 	copy._next_id = _next_id
 	return copy

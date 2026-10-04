@@ -80,6 +80,12 @@ static func deliver(actor: Actor, item_id: StringName, quantity: int, probe: boo
 	var leftover := inventory.add(def, quantity)
 	if leftover <= 0:
 		return _answer(true, "", quantity, true)
+	# The count is `quantity - leftover`, NOT zero, and that is the whole point of measuring
+	# the leftover at all. `ForageApi.harvest` reads `granted` and names a partial delivery
+	# `grant_short` rather than `grant_refused`, so a caller can render "63 of 66 arrived"
+	# instead of a bare refusal -- and it can only tell the two apart if the granter says
+	# which one happened. Reporting zero here would make every short harvest indistinguishable
+	# from one that delivered nothing.
 	return _answer(false, BAG_FULL, maxi(0, quantity - leftover), true)
 
 

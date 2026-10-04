@@ -226,9 +226,18 @@ static func harvest(
 	if not bool(settled["ok"]):
 		return _refuse(node_id, String(settled["reason"]))
 	var granted := _call_granter(actor, item_id, units, false)
-	if not bool(granted["ok"]) or int(granted["granted"]) != units:
-		var out := _refuse(node_id, GRANT_REFUSED if not bool(granted["ok"]) else GRANT_SHORT)
-		out["granted"] = maxi(0, int(granted["granted"]))
+	# Two SEPARATE questions, and the granter's own docstring is what draws the line. With
+	# `probe = false` [method ForageGranary.deliver] answers `ok = false` with the count it
+	# DID move whenever the bag could not take the whole request — that is its
+	# `BAG_FULL` answer, and `ok` there means "not everything landed", not "nothing did".
+	# Deciding `grant_short` from `ok` alone therefore made a harvest that delivered 63 of 66
+	# indistinguishable from one that delivered nothing, and lost the short count the caller
+	# renders. So the count decides which id is named, and `ok` is only consulted when the
+	# count is zero — where it carries the only information left, a named reason.
+	var moved := int(granted["granted"])
+	if moved != units or (moved <= 0 and not bool(granted["ok"])):
+		var out := _refuse(node_id, GRANT_REFUSED if moved <= 0 else GRANT_SHORT)
+		out["granted"] = maxi(0, moved)
 		return out
 	return {
 		"ok": true,

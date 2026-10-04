@@ -8,11 +8,15 @@ var _root: String = ""
 
 
 func setup() -> void:
+	# The seams forward to the static ScreenRegistry, so each test starts from an
+	# empty route table — a duplicate id across tests would push_error.
+	ScreenRegistry.clear()
 	_root = "user://w2_mod_ctx_%d" % Time.get_ticks_usec()
 	DirAccess.make_dir_recursive_absolute(_root)
 
 
 func teardown() -> void:
+	ScreenRegistry.clear()
 	_remove_tree(_root)
 	_root = ""
 
@@ -53,7 +57,8 @@ func test_the_five_seams_record_and_return_their_list() -> void:
 	assert_eq(ctx.subscribe(["period"]).size(), 1, "subscription recorded")
 	var rec := ctx.registrations()
 	assert_eq(rec["mod_id"], "demo", "mod id on the record")
-	assert_eq(String(rec["content_roots"][0]["family"]), "items", "root row")
+	assert_eq(String(rec["content_roots"]["items"][0]["dir"]), "res://data/items", "root row")
+	assert_eq(String(rec["content_roots"]["items"][0]["owner"]), "demo", "root owner is the mod")
 	assert_eq(String(rec["modules"][0]["api_gd"]), "res://demo/api.gd", "module row")
 	assert_eq(String(rec["attach_hooks"][0]["phase"]), "economy", "hook row")
 	assert_eq(String(rec["screens"][0]["label"]), "Demo", "screen row")

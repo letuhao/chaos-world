@@ -126,8 +126,12 @@ func test_a_refused_route_never_counts_as_satisfied_next_to_a_working_one() -> v
 	assert_eq(int(result["satisfied"]), 1, "exactly one route works")
 	assert_eq(
 		String(_route_of(result, "gather")["reason"]),
-		ItemSources.NO_SHIPPED_ROUTE,
-		"the gather route still reports why it cannot",
+		ItemSources.UNPROBED,
+		(
+			"the gather route is shipped but unprobed here, so it says `no_probe` rather than "
+			+ "`no_shipped_route` — the two need different fixes, and now that a forager exists "
+			+ "the honest remaining gap is the missing probe"
+		)
 	)
 
 
@@ -163,23 +167,53 @@ func test_a_kind_that_must_not_name_a_target_and_does_is_refused() -> void:
 	assert_eq(String(route["reason"]), ItemSources.UNEXPECTED_REF, "named as unexpected")
 
 
-func test_a_gather_route_reports_that_no_shipping_code_delivers_it() -> void:
-	# `gather` has no forager. The reader must say that rather than report the
-	# route as merely unresolved, because the two need different fixes.
+func test_a_gather_route_reports_that_shipping_code_now_delivers_it() -> void:
+	# ## This test INVERTED, and the reason it existed is the reason it flipped
+	#
+	# It used to assert `gather` was UNSHIPPED — "`gather` has no forager ... because the
+	# two need different fixes". That was true, and it was the reason the route stayed
+	# unflipped: a route cannot honestly be marked shipped while the reader says nothing
+	# delivers it. The `forage` module now provides the verb (DEF-0201), `economy_boot`
+	# installs `ForageGranary.deliver` as its granter, and `ItemSources.KIND_GATHER` is
+	# `shipped: true` — so the reader must now AGREE, and this test is what makes that
+	# agreement load-bearing rather than a flag someone flipped.
+	#
+	# The critical half is the one a flag alone cannot satisfy: **a probe that cannot
+	# actually reach a node still reports the route as unsatisfied.** `shipped: true` is a
+	# claim about the program's shape; the probe is the evidence. Both are asserted, so
+	# neither can pass alone.
 	var def := ItemDef.new()
 	def.id = &"thing"
 	def.sources = [&"gather"]
-	var probe := _content_probe()
-	# Even a probe that would happily answer true cannot make a gather deliver.
-	var result := ItemSources.resolve(def, probe)
-	assert_eq(result["obtainable"], false, "gather is not deliverable")
-	assert_eq(String(result["reason"]), ItemSources.NO_SHIPPED_ROUTE, "named as no route")
-	assert_eq(ItemSources.is_shipped(ItemSources.KIND_GATHER), false, "gather is unshipped")
+	# Two DIFFERENT negative probes, because the reader distinguishes them and conflating
+	# them would hide that: one that answers false is PROBED and unsatisfied
+	# (`route_unsatisfied`); one with no gather entry at all is UNPROBED (`no_probe`). Neither
+	# may report obtainable, and the distinction is the point — the first needs a deliverable,
+	# the second needs an injection.
+	assert_eq(
+		String(ItemSources.resolve(def, _unsatisfying_probe())["reason"]),
+		ItemSources.UNSATISFIED,
+		"a probe that reaches nothing reports the route unsatisfied"
+	)
+	var result := ItemSources.resolve(def, _content_probe())
+	assert_eq(result["obtainable"], false, "and a def with no working route is not deliverable")
+	assert_eq(
+		String(result["reason"]),
+		ItemSources.UNPROBED,
+		"named as no probe, which is the honest reason and not 'no route'"
+	)
+	# With a probe that CAN reach a node, the same def is obtainable — which is only true
+	# because the route is genuinely shipped. `_content_probe` deliberately has NO gather entry
+	# (it mirrors the composition root's own injections, which predate foraging), so the
+	# satisfying probe supplies one: that a route only needs a probe asking the right question.
+	var delivered := ItemSources.resolve(def, _satisfying_probe())
+	assert_eq(delivered["obtainable"], true, "a satisfied probe makes the shipped route deliver")
+	assert_eq(ItemSources.is_shipped(ItemSources.KIND_GATHER), true, "gather is shipped")
 	assert_eq(ItemSources.is_shipped(ItemSources.KIND_BOSS), true, "boss is shipped")
-	assert_ne(
+	assert_eq(
 		String(ItemSources.KIND_GATHER) in ItemSources.unshipped_kind_ids(),
 		false,
-		"gather is listed"
+		"and gather is no longer listed among the unshipped kinds"
 	)
 	assert_ne(
 		String(ItemSources.KIND_BOSS) in ItemSources.unshipped_kind_ids(), true, "boss is not"
@@ -237,6 +271,37 @@ func _content_probe() -> Dictionary:
 		ItemSources.KIND_BOSS: boss,
 		ItemSources.KIND_DOMAIN: domain,
 		ItemSources.KIND_STARTER: func(_ref: String) -> bool: return false,
+	}
+
+
+## A probe that answers `false` for everything it is asked.
+##
+## This is the half that proves `gather` being `shipped: true` is not just a flipped flag.
+## `is_shipped` is a CLAIM about `game/src`; the probe is the EVIDENCE that shipping code can
+## actually deliver. With a probe that reaches nothing, the same `def` must still report
+## `obtainable: false` — otherwise `shipped: true` would be indistinguishable from a route
+## nothing implements, which is the failure `item_sources.gd`'s own `NO_SHIPPED_ROUTE` note
+## warns about ("a `shipped` flag with no callable verb is a claim the audit cannot detect").
+func _unsatisfying_probe() -> Dictionary:
+	return {
+		ItemSources.KIND_CRAFT: func(_ref: String) -> bool: return false,
+		ItemSources.KIND_BOSS: func(_ref: String) -> bool: return false,
+		ItemSources.KIND_DOMAIN: func(_ref: String) -> bool: return false,
+		ItemSources.KIND_STARTER: func(_ref: String) -> bool: return false,
+		ItemSources.KIND_GATHER: func(_ref: String) -> bool: return false,
+	}
+
+
+## A probe that answers `true` for everything — the delivery-side counterpart, so the
+## inverted gather test can show the SAME def becoming obtainable purely because the route is
+## genuinely shipped.
+func _satisfying_probe() -> Dictionary:
+	return {
+		ItemSources.KIND_CRAFT: func(_ref: String) -> bool: return true,
+		ItemSources.KIND_BOSS: func(_ref: String) -> bool: return true,
+		ItemSources.KIND_DOMAIN: func(_ref: String) -> bool: return true,
+		ItemSources.KIND_STARTER: func(_ref: String) -> bool: return true,
+		ItemSources.KIND_GATHER: func(_ref: String) -> bool: return true,
 	}
 
 

@@ -5,9 +5,12 @@ extends Node
 ##
 ## This node sits in `ItemWorkbenchApp.tscn` as a child of the app root, and
 ## children ready before their parent: so the load order is computed BEFORE
-## `ItemWorkbenchApp._ready` runs any of its own wiring. That is the W2
-## contract — compute, record, store `ctx`; do NOT staple registrations into
-## boot yet (W3+).
+## `ItemWorkbenchApp._ready` runs any of its own wiring. W3 wiring: after the
+## loader computes the order and stamps one RegistrationContext per mod, this
+## step folds every ctx through `ModRuntime.finalize` into `active_registrations`
+## — the per-family content roots, the module attach order, the screen routes
+## and the attach hooks the app pushes into catalogs, the ScreenRegistry and the
+## AttachPipeline.
 ##
 ## ## Failure policy
 ##
@@ -30,11 +33,13 @@ const EXTERNAL_ROOT := "user://mods"
 ## belongs to one instance; the composition root owns that instance.
 static var active_order: Array = []
 static var active_contexts: Array = []
+static var active_registrations: Dictionary = {}
 
 ## Instance mirror of the pass, for the tests that drive `run()` without the
 ## scene. Primitives only in `status`.
 var order: Array[String] = []
 var contexts: Array = []
+var registrations: Dictionary = {}
 var status: Dictionary = {}
 
 
@@ -54,11 +59,17 @@ func run() -> Dictionary:
 		contexts = status.get("contexts", [])
 		ModBoot.active_order = order.duplicate()
 		ModBoot.active_contexts = contexts
+		# Fold every ctx through the shared registry into the runtime
+		# registrations the app pushes into catalogs, screens and hooks.
+		registrations = ModRuntime.finalize(contexts, status.get("registry"))
+		ModBoot.active_registrations = registrations
 	else:
 		order = []
 		contexts = []
+		registrations = {}
 		ModBoot.active_order = []
 		ModBoot.active_contexts = []
+		ModBoot.active_registrations = {}
 		push_error("ModBoot: %s — %s" % [status.get("reason", ""), status.get("detail", "")])
 	return status
 
