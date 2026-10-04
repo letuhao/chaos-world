@@ -40,7 +40,7 @@ const SEED := 424242
 
 
 func teardown() -> void:
-	CombatBoot.set_spare_resolver(Callable())
+	CombatMercy.install(Callable())
 
 
 func _fighter(actor_id: StringName) -> Actor:
@@ -185,10 +185,10 @@ func test_the_press_is_refused_on_a_corpse_and_on_an_already_spared_opponent() -
 func test_an_unbound_mercy_seam_refuses_by_name_and_records_nothing() -> void:
 	var hero := _fighter(&"challenger")
 	var ward := _fighter(&"ward")
-	CombatBoot.set_spare_resolver(Callable())
-	assert_eq(CombatBoot.has_spare_resolver(), false, "nothing is installed")
+	CombatMercy.install(Callable())
+	assert_eq(CombatMercy.installed(), false, "nothing is installed")
 
-	var refused := CombatBoot.spare(hero, ward)
+	var refused := CombatMercy.commit(hero, ward)
 
 	assert_eq(bool(refused["ok"]), false, "the seam is not installed")
 	assert_eq(String(refused["reason"]), "no_resolver", "so it says so by name")

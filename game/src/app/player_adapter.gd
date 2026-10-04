@@ -167,8 +167,8 @@ func interact() -> void:
 	# silent no-op.
 	if _state == State.COMBAT:
 		var duellist := _defender_of(target)
-		if duellist != null and _actor != null and CombatBoot.has_spare_resolver():
-			var shown: Variant = CombatBoot.spare(_actor, duellist)
+		if duellist != null and _actor != null and CombatMercy.installed():
+			var shown: Variant = CombatMercy.commit(_actor, duellist)
 			var answered: Dictionary = shown if shown is Dictionary else {}
 			if not bool(answered.get("ok", false)):
 				push_warning(
