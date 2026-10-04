@@ -183,6 +183,10 @@ SUBJECTS: dict[str, list[str]] = {
     "consumable/salve": [
         "one wide salve jar, a squat clay pot with a wedged cork",
         "one shallow salve tin, a round metal box with a pressed lid",
+        "a salve pot with a strap, a small pot with a leather carrying loop",
+        "a salve block in a stone cup, a rounded lump sitting in a cup",
+        "a salve jar on a saucer, a tall narrow pot beside its lid",
+        "a salve horn, a curved container with a wide open mouth and a plug",
     ],
     "consumable/decree": [
         "one rolled decree scroll tied with a cord and a large wax seal",
@@ -198,14 +202,26 @@ SUBJECTS: dict[str, list[str]] = {
     "consumable/syrup": [
         "one stoppered syrup vial, a narrow-necked bottle with dark residue",
         "one squat syrup jar, a round-bellied vessel with a waxed cap",
+        "a syrup flask with a long neck, a slim glass tube with a cork",
+        "a syrup pot with a ladle, a wide jar with a small cup resting in it",
+        "a syrup bottle in a wicker sleeve, a glass bottle wrapped in rushes",
+        "a double syrup bottle, two small joined bulbs with one stopper",
     ],
     "consumable/ferment": [
         "one ferment jar, a wide-mouthed clay vessel under a tied cloth",
         "one sealed ferment crock, a bulbous pot with a wax seal",
+        "a ferment keg on its side, a small barrel with two iron hoops",
+        "a stoppered demijohn, a big-bellied glass vessel with a long neck",
+        "a ferment in a gourd, a round bottle with a cork and a cord",
+        "a lidded ferment pail, a tapered metal pail with a swing handle",
     ],
     "consumable/grease": [
         "one open grease pot, a shallow clay dish of smooth pale solid",
         "one stoppered grease jar, a ribbed glass jar with thick residue",
+        "a grease cake on a leaf, a thick round puck resting on a broad leaf",
+        "a grease pot with a wide lid, a squat jar with an overlapping cover",
+        "a grease tin with a rim, a shallow metal dish with a rolled edge",
+        "a grease block in a wooden box, a wrapped square packed in a crate",
     ],
     "consumable/broth": [
         "one broth flask, a round-bellied glass vessel with a tied cork",
@@ -244,14 +260,26 @@ SUBJECTS: dict[str, list[str]] = {
     "consumable/formula": [
         "one carved stone tablet with a deeply incised circular seal",
         "one bound formula folio, thin and upright with a plain clasp",
+        "a formula written on a hanging slate tag, a narrow pierced stone strip",
+        "a formula on a wax tablet, a thick round wax disc scored with one ring",
+        "a rolled formula chart lashed with cord, a narrow paper cylinder",
+        "a formula kept in a lacquer case, a small hinged box with one clasp",
     ],
     "consumable/draft": [
         "one open codex lying flat, covers spread around a blank page block",
         "one closed folio upright on its fore edge, square spine",
+        "a draft open on a stand, a book propped upright on a small ledge",
+        "a draft with loose leaves, a book with one page turned out flat",
+        "a rolled draft tied open, a cylinder with one sheet hanging loose",
+        "a slim pocket draft, a small book with a thumb notch and a thin spine",
     ],
     "consumable/treaty": [
         "one folded treaty sheet bound by cord and closed with a wax seal",
         "one treaty tablet, thin dark stone with an engraved border",
+        "a treaty scroll in a tube, a rolled paper inside a plain cylinder",
+        "two treaty sheets tied together, a pair of documents with one cord",
+        "a treaty sheet weighted by a seal, a broad page with a stone on it",
+        "a treaty hung as a banner, a long sheet from a thin wooden rod",
     ],
     "consumable/scroll": [
         "one wide scroll partly unrolled, a broad sheet from a roller",
@@ -280,14 +308,26 @@ SUBJECTS: dict[str, list[str]] = {
     "equipment/greaves": [
         "one pair of greaves, two symmetrical plates strapped at the calf",
         "one greave, a shaped shin plate with a plain knee cup",
+        "a greave with a high boot, a plated greave laced over a tall boot",
+        "greaves laid side by side, two plates resting flat and parallel",
+        "one greave strapped across, a plate with two crossing leather straps",
+        "a greave with a feathered edge, a plate cut into a wing-like rim",
     ],
     "equipment/bandolier": [
         "one bandolier strap, a wide sash of hide with small sewn pockets",
         "one bandolier belt, plain and studded with a hanging strap",
+        "a crossed bandolier, two straps crossing at the chest",
+        "a bandolier with a single large pouch, one strap and one deep pocket",
+        "a studded shoulder harness, one broad strap with rows of rivets",
+        "a coiled bandolier, the strap wound into a flat spiral",
     ],
     "equipment/lens": [
         "one lens, a thick glass disc in a brass rim with a side mount",
         "one lens in a folding case, a disc seated in a hinged cover",
+        "a lens on a swivel arm, a disc in a bracket that pivots at one side",
+        "a stack of lenses, three discs of different sizes piled together",
+        "a lens in a wooden frame, a round disc set in a plain square holder",
+        "a handheld lens with a handle, a small disc on a short turned grip",
     ],
     "equipment/accessory": [
         "one pendant on a plain cord, a small shaped hanging charm",
