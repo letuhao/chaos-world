@@ -89,6 +89,9 @@ func bind(screen: Control) -> Dictionary:
 		_screen = null
 		return {"ok": false, "reason": "not_a_quest_screen"}
 	screen.call("bind_quests", Callable(self, "accept"))
+	# No refresh here: `bind_quests` already repaints, because the screen is
+	# mounted BEFORE the bind and would otherwise hold a live seam over zero
+	# rows. One repaint, in the one place that knows when it is needed.
 	return {"ok": true, "reason": ""}
 
 
@@ -105,6 +108,7 @@ func open(screen: Control = null) -> Dictionary:
 		return {"ok": false, "reason": String(bound.get("reason", "not_mounted")), "offered": 0}
 	if _actor == null:
 		return {"ok": false, "reason": "no_actor", "offered": 0}
+	# `bind` already refreshed the screen; do not refresh again here.
 	return {"ok": true, "reason": "", "offered": QuestApi.offered(_actor).size()}
 
 

@@ -169,6 +169,17 @@ func _summary() -> Dictionary:
 
 ## Repaint from the module. Each row repaints itself, and this screen renders
 ## no number: `QuestRow` owns every `%d/%d`, every tier and every joined list.
+##
+## PUBLIC, and named `refresh` because three call sites already say so: the
+## screen's own `bind_quests` and `act_accept`, and `QuestProgram.bind`. The
+## repaint body is `_refresh_view`; this is the name the bridge calls, so it is
+## the name that exists. A screen that repaints only under a private name is one
+## nobody outside can ask to repaint, which is how a live seam ends up paired
+## with stale rows.
+func refresh() -> void:
+	_refresh_view()
+
+
 func _refresh_view() -> void:
 	_bind_nodes()
 	if not _bound:
