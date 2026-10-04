@@ -608,14 +608,25 @@ static func _pay(
 	if EventState.has_paid(ledger, event_id):
 		# Already paid. Report it and change nothing: a second resolution must not
 		# produce a second prize.
+		#
+		# `ok` and `reason` are present because EVERY other exit from this verb
+		# carries them, and a caller that reads `outcome["ok"]` on this branch got
+		# null and could not tell a successful no-op from a malformed answer. The
+		# shape of a refusal is the house rule (ADR 0065's refuse-with-cause), so
+		# the shape of a successful no-op is its mirror: same keys, no cause.
 		return {
+			"ok": true,
+			"reason": "",
 			"event_id": String(event_id),
 			"kind": String(def.kind),
+			"period": period,
 			"resolved_period": EventState.resolved_period(ledger, event_id),
 			"closed": true,
 			"paid": true,
 			"already_paid": true,
 			"granted": [],
+			"refused": [],
+			"fate_source": "",
 		}
 	var prize := EventPrize.apply(actor, def, period)
 	(ledger["paid"] as Dictionary)[String(event_id)] = {
