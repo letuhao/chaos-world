@@ -351,9 +351,25 @@ func test_interact_refuses_before_anything_is_mounted() -> void:
 
 func test_the_stage_does_not_import_quest_or_event() -> void:
 	# The seam exists precisely because those modules may not be loaded.
-	var script := FileAccess.get_file_as_string("res://src/app/world_stage.gd")
-	assert_eq(script.contains("QuestApi"), false, "no quest edge from the composition root")
-	assert_eq(script.contains("EventApi"), false, "no event edge from the composition root")
+	#
+	# The search runs over CODE, never over the file as written: the stage's
+	# docstrings NAME `EventApi` repeatedly, in order to document that `app/`
+	# injects it and the stage itself never names it. Searching the raw text
+	# fails on the very prose stating the rule — and it would also PASS a stage
+	# that really did hard-wire the call, because a docstring alone satisfies a
+	# substring search. ADR 0143 is the decision this guards: a bridge of
+	# Callables, never a module import.
+	var code := ""
+	for raw in FileAccess.get_file_as_string("res://src/app/world_stage.gd").split("\n"):
+		var line := String(raw)
+		if line.strip_edges().begins_with("#"):
+			continue
+		var hash_at := line.find("#")
+		if hash_at >= 0:
+			line = line.substr(0, hash_at)
+		code += line + "\n"
+	assert_eq(code.contains("QuestApi"), false, "no quest edge from the composition root")
+	assert_eq(code.contains("EventApi"), false, "no event edge from the composition root")
 
 
 # --- enter / leave / summary -------------------------------------------------
