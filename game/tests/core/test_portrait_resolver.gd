@@ -141,6 +141,78 @@ func test_the_resolver_is_answered_from_authored_resources_only() -> void:
 	)
 
 
+# --- Variants (ADR 0177) ------------------------------------------------------
+
+
+func test_an_unrequested_variant_leaves_the_face_exactly_as_it_was() -> void:
+	# The default must be untouched. A variant is an enhancement and never a requirement, because
+	# resolution is total (ADR 0131) and a missing variant must not leave an actor faceless.
+	var plain := PortraitResolver.resolve(_actor, &"tidecaller")
+	var asked := PortraitResolver.resolve(_actor, &"tidecaller", "")
+	assert_eq(String(asked["portrait_id"]), String(plain["portrait_id"]), "same portrait")
+	assert_eq(
+		(asked["layer_paths"] as Array).size(),
+		(plain["layer_paths"] as Array).size(),
+		"same layers"
+	)
+	assert_eq(bool(asked["variant_found"]), false, "nothing was asked for, so nothing was found")
+	assert_eq(String(asked["variant"]), "", "and the request is published as empty")
+
+
+func test_a_declared_variant_is_selected_over_the_base_face() -> void:
+	var view := PortraitResolver.resolve(_actor, &"tidecaller", "stage:retired")
+	assert_eq(String(view["portrait_id"]), "tidecaller_stage_retired", "the variant answered")
+	assert_eq(bool(view["variant_found"]), true, "and it says so")
+	assert_eq(String(view["source"]), "race", "without inventing a fourth source word")
+
+
+func test_an_undeclared_variant_falls_back_and_says_it_did() -> void:
+	# The important half. A variant nobody authored must NOT resolve to a null or to a silent
+	# substitution: the actor keeps a face, and the view names the gap.
+	var view := PortraitResolver.resolve(_actor, &"tidecaller", "stage:ascended")
+	assert_eq(String(view["portrait_id"]), "tidecaller", "the base face still answers")
+	assert_eq(bool(view["is_placeholder"]), false, "and it is not the fallback")
+	assert_eq(bool(view["variant_found"]), false, "but the missing variant is reported")
+	assert_eq(String(view["variant"]), "stage:ascended", "naming what was asked for")
+
+
+func test_a_variant_is_never_taken_from_another_body_plan() -> void:
+	# `stage:retired` is authored for the tidecaller. Asking the emberblood for it must not hand
+	# over a tidecaller's face, which is the cross-race leak this lookup exists to prevent.
+	var view := PortraitResolver.resolve(_actor, &"emberblood", "stage:retired")
+	assert_ne(String(view["portrait_id"]), "tidecaller_stage_retired", "no cross-race variant")
+	assert_eq(String(view["portrait_id"]), "emberblood", "the emberblood keeps its own face")
+
+
+func test_two_portraits_declaring_one_variant_is_reported() -> void:
+	# `for_variant` takes the first in sorted id order, so a duplicate is shadowed with no error
+	# anywhere unless something says so.
+	assert_eq(
+		PortraitResolver.validate().has(
+			"portrait: tidecaller_stage_retired and X both declare variant"
+		),
+		false,
+		"no duplicate variant is authored today"
+	)
+	# And the rule is live: asking for the variant is what makes it reachable at all.
+	assert_ne(
+		PortraitCatalog.instance().for_variant(&"tidecaller", "stage:retired"),
+		null,
+		"the authored variant is reachable"
+	)
+	assert_eq(
+		PortraitCatalog.instance().for_variant(&"tidecaller", "stage:ascended"),
+		null,
+		"an unauthored variant is null rather than a guess"
+	)
+
+
+func test_the_placeholder_is_never_answered_as_a_variant() -> void:
+	var view := PortraitResolver.resolve(_actor, &"no_such_race", "stage:retired")
+	assert_eq(bool(view["is_placeholder"]), true, "an unknown race still falls back")
+	assert_eq(bool(view["variant_found"]), false, "the fallback is not a variant")
+
+
 # --- Portraits grant nothing ---------------------------------------------------
 
 

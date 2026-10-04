@@ -70,3 +70,23 @@ func trait_value(axis_name: String) -> String:
 		if trait_name.begins_with(prefix):
 			return trait_name.substr(prefix.length())
 	return ""
+
+
+## Whether this definition IS the requested variant (ADR 0177).
+##
+## A variant is an `axis:value` entry in [member visual_traits] and nothing else — no new field, no
+## new vocabulary, and the same `axis:value` grammar `tools/assets.py:21` validates for item art.
+## A variant portrait is therefore a SIBLING def that declares the trait: same `race_id`, same
+## `palette_key`, different `layer_paths`. "The same body plan read differently per occasion" is
+## then authored as one resource per occasion rather than as a switch inside one.
+##
+## Matched WHOLE (`stage:retired`), never by axis alone. Matching on the axis would make every
+## `form:` portrait a candidate for every `form:` request, which is how a def ends up standing in
+## for a variant it was never drawn as.
+func declares_variant(variant: String) -> bool:
+	if variant.is_empty():
+		return false
+	for trait_id in visual_traits:
+		if String(trait_id) == variant:
+			return true
+	return false

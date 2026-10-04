@@ -58,6 +58,33 @@ func for_race(race_id: StringName) -> PortraitDef:
 	return null
 
 
+## The first portrait that DECLARES `variant` (an `axis:value` string), or null.
+##
+## A race-scoped variant is preferred over an unscoped one, and both are taken in sorted id order,
+## so two actors asking for the same variant never get different faces between two runs — the same
+## determinism rule [method for_race] follows.
+##
+## `race_id` may be `""` to ask for a variant that is not body-plan specific (a `beat:` keyed on a
+## fact id, say). A variant portrait for a DIFFERENT race is never returned: a `stage:` portrait for
+## the tidecaller is not a face for the emberblood.
+func for_variant(race_id: StringName, variant: String) -> PortraitDef:
+	_ensure_loaded()
+	if variant.is_empty():
+		return null
+	var unscoped: PortraitDef = null
+	for portrait_id in ids():
+		var def := _portraits[portrait_id] as PortraitDef
+		if def == null or def.is_placeholder():
+			continue
+		if not def.declares_variant(variant):
+			continue
+		if race_id != &"" and def.race_id == race_id:
+			return def
+		if def.race_id.is_empty() and unscoped == null:
+			unscoped = def
+	return unscoped
+
+
 ## The fallback face. Null only when the content tree failed to load, which `PortraitResolver`
 ## treats as a wiring fault rather than as a portrait.
 func placeholder() -> PortraitDef:
