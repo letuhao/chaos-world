@@ -724,17 +724,23 @@ def _pose_set_is_counted_on_pose() -> None:
         _shot("pose_set", pose=f"stance {index}", expression="composed", id=f"pose-{index}")
         for index in range(needed)
     ]
+    # Scoped to the one slot, because this fixture fills no other slot and the
+    # other eight are SUPPOSED to report. Asserting `_prompt_gaps(varying_pose)`
+    # is empty would test the whole prompt set while claiming to test one slot,
+    # and would fail for correct behaviour.
+    pose_gaps = [gap for gap in _prompt_gaps(varying_pose) if "pose_set" in gap]
     expect(
-        not _prompt_gaps(varying_pose),
+        not pose_gaps,
         f"nine shots differing in pose were rejected, so pose_set is being counted on "
-        f"the wrong field: {_prompt_gaps(varying_pose)!r}",
+        f"the wrong field: {pose_gaps!r}",
     )
     shared_pose = [
         _shot("pose_set", pose="stance 0", expression=f"emotion {index}", id=f"pose-{index}")
         for index in range(needed)
     ]
+    shared_gaps = [gap for gap in _prompt_gaps(shared_pose) if "pose_set" in gap]
     expect(
-        _prompt_gaps(shared_pose) != _prompt_gaps(varying_pose),
+        bool(shared_gaps),
         "nine shots sharing one pose were accepted, so pose_set can be satisfied by "
         "one stance described nine times",
     )
