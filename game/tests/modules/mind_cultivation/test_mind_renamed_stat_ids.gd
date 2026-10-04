@@ -127,6 +127,21 @@ func test_core_still_owns_the_two_concepts_under_its_own_names() -> void:
 ## concern -- the twins differed in name -- but it is the one part of the rule that
 ## generalises to ids nobody has thought of yet, and it costs one pass over a list
 ## core owns and the module therefore cannot drift from.
+##
+## ## Why this compares `BASE_ATTRIBUTES` and not `BASE_ATTRIBUTES + RATE_STATS`
+##
+## It used to compare against both, and inferring ownership from `RATE_STATS` was wrong
+## twice over. Membership there is a claim about an id's SHAPE, not about who owns it:
+## BL-0675 registered `mind_focus_chance`, `mind_avoidance` and `illusion_resistance`
+## there because a FLAT on a fraction must be refused and that array is the only list
+## both content gates read. An id being listed there says nothing about who derives it,
+## so the comparison below would have failed on ids that are perfectly the module's own.
+##
+## Ownership is therefore PROBED, which is what `test_combat_stats_shape.gd:116` had to
+## do for the same reason and after the same class of false green (BL-0362: the old
+## combat guard compared `Stat.BASE_ATTRIBUTES + Stat.RATE_STATS`, core's derived ids are
+## in NEITHER list, and the collision passed). A list can only ever report what someone
+## remembered to put in it; an `ActorStats` read reports what the engine derives.
 func test_no_mind_stat_id_is_also_a_core_stat_id() -> void:
 	var mine := [
 		MindStats.PERCEPTION,
@@ -142,15 +157,42 @@ func test_no_mind_stat_id_is_also_a_core_stat_id() -> void:
 	# Both sides asserted non-empty before the loop: an empty `mine` would make
 	# every membership test below trivially true, which is the vacuous guard again.
 	assert_eq(mine.size() >= 8, true, "the mind stat surface this checks is not empty")
-	var core_ids: Array = []
-	for stat_id in Stat.BASE_ATTRIBUTES:
-		core_ids.append(stat_id)
-	for stat_id in Stat.RATE_STATS:
-		core_ids.append(stat_id)
-	assert_eq(core_ids.size() >= 10, true, "core's rate and base id lists are not empty")
+	assert_eq(
+		Stat.BASE_ATTRIBUTES.size() >= 7,
+		true,
+		"core's base attribute list this compares against is not empty"
+	)
 	for stat_id in mine:
 		assert_eq(
-			core_ids.has(stat_id),
+			Stat.BASE_ATTRIBUTES.has(stat_id),
 			false,
-			"%s is a second declaration of a core stat id" % String(stat_id)
+			"%s is not one of core's declared base attributes" % String(stat_id)
 		)
+	# The probe. Every base attribute is set generously and no provider is attached, so a
+	# core-derived id reads non-zero and a module-owned one reads exactly 0.0 (backed at
+	# `0.0` by `core/actor_stats.gd:187-189`). If core ever starts deriving one of these
+	# strings, this fails; a list comparison could not tell.
+	var generous := {}
+	for stat_id in Stat.BASE_ATTRIBUTES:
+		generous[stat_id] = 100.0
+	var probe := Actor.new(&"probe", generous)
+	for stat_id in mine:
+		assert_almost_eq(
+			probe.stats.derived(stat_id),
+			0.0,
+			(
+				(
+					"%s is derived by nothing, so no other owner can reach it -- a non-zero "
+					% String(stat_id)
+				)
+				+ "here means core or another provider already owns this string"
+			)
+		)
+	# The negative control, so the probe is falsifiable rather than vacuous: the same actor
+	# DOES derive a non-zero for a core id that names a real derived stat, which is
+	# precisely what the loop above is comparing against.
+	assert_ne(
+		probe.stats.derived(Stat.CRIT_CHANCE),
+		0.0,
+		"core's own CRIT_CHANCE is non-zero on this probe"
+	)

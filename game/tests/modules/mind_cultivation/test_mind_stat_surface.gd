@@ -105,18 +105,45 @@ func test_no_sea_component_means_no_contribution() -> void:
 ## plus a realm-rate term, on a quantity `MindTraining._grant_insight` reads
 ## `Stat.INSIGHT_GAIN` for. One dial per quantity, or a gate gets priced twice
 ## through two numbers that will drift.
+##
+## ## Probed, not listed
+##
+## This used to build `shared` from `Stat.RATE_STATS` and assert no published key was in
+## it. That inferred OWNERSHIP from a list whose membership is a claim about SHAPE: BL-0675
+## registered `mind_focus_chance`, `mind_avoidance` and `illusion_resistance` there — they
+## are genuinely rates, and a FLAT on one must be refused — so the guard would have failed
+## on this module's own ids. `test_mind_renamed_stat_ids.gd` had the same inference and
+## the same repair; `test_combat_stats_shape.gd:116` is where the probe idiom came from,
+## after BL-0362 recorded that the list comparison had passed a real `penetration`
+## collision because core's derived ids are in no list at all.
 func test_the_module_publishes_no_second_dial_on_a_shared_rate() -> void:
-	var shared: Array[StringName] = []
-	for rate_id in Stat.RATE_STATS:
-		shared.append(rate_id)
 	var actor := _actor()
 	var emitted: Dictionary = MindProvider.new().contribute(actor.stats._context)
+	assert_ne(emitted.size(), 0, "the provider published something to judge")
+	# No provider is attached to `probe`, and every base attribute is generous, so a
+	# core-derived id reads non-zero while a module-owned one reads exactly 0.0.
+	var generous := {}
+	for stat_id in Stat.BASE_ATTRIBUTES:
+		generous[stat_id] = 100.0
+	var probe := Actor.new(&"probe", generous)
 	for key in emitted:
-		assert_eq(
-			shared.has(key),
-			false,
-			"%s is a second dial on core's rate of the same name" % String(key)
+		assert_almost_eq(
+			probe.stats.derived(key),
+			0.0,
+			(
+				(
+					"%s is derived by nothing, so no other owner can reach it -- a non-zero "
+					% String(key)
+				)
+				+ "here means core or another provider already owns this string"
+			)
 		)
+	# The negative control, so the probe is falsifiable rather than vacuous.
+	assert_ne(
+		probe.stats.derived(Stat.CRIT_CHANCE),
+		0.0,
+		"core's own CRIT_CHANCE is non-zero on this probe"
+	)
 
 
 ## The two locals BL-0154 named, plus the one it missed: `Stat.SPIRIT` was read
