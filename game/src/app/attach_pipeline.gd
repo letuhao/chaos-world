@@ -53,6 +53,16 @@ func add_hook(phase_name: StringName, hook: Callable, before: bool = false) -> b
 	return false
 
 
+## The declared phase names, in order. Read-only: the sequence is the contract a
+## mod's attach hook is staked to (ADR 0184 §6), so the composition root's wiring
+## is assertable without running a boot.
+func phase_names() -> Array[StringName]:
+	var out: Array[StringName] = []
+	for phase in _phases:
+		out.append(StringName(phase["name"]))
+	return out
+
+
 ## Run every phase in declared order: each phase's before-hooks, the phase
 ## itself, then its after-hooks. Bounded by the phase count — one pass over
 ## `_phases`, no re-entry.

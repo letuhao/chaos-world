@@ -202,7 +202,91 @@ func _mount_player_modules(actor: Actor) -> void:
 	_attach_body_modules(actor)
 
 
-## ## THE ONE attach list. Read this before adding a module to a hero.
+## The attach steps as pipeline phases, in the EXACT order the hardcoded list
+## produced: one phase per attach call, each `run` the call itself wrapped so the
+## pipeline can invoke it with the actor. The phase NAME is the contract — a mod's
+## attach hook is staked to it (ADR 0184 §6) — so the names are module ids, never
+## positions.
+##
+## ## Why the order is load-bearing
+##
+##   - `soul`, `anchor`, `socket`, `loot`, `difficulty` FIRST: a soul and an anchor
+##     live in an injected store rather than on the actor (ADR 0127, ADR 0146), so
+##     these are READS of that store — which `_ready` has already published by the
+##     time any of the three callers reaches this list.
+##   - `race`, `bloodline` next: `Actor.from_dict` restores `module_data` but NEVER
+##     a `StatProvider`, so the stat modifiers, base-attribute grants, affinities and
+##     trait mirrors a race and an awakened lineage contribute are rebuilt only by the
+##     attach. Nothing on the old list called it, so after ONE reload a stoneborn lost
+##     its +15% `max_health` and a tideborn at 0.72 read awake while `bloodline_power`
+##     answered 0.0 — with no error anywhere, because every reader that mattered was
+##     reading the ledger (BL-0746). Both are idempotent BY CONSTRUCTION (each strips
+##     its own prior contribution, then rebuilds from the ledger), so a fresh body the
+##     creation flow already raced is net-zero. Early because every ledger below can
+##     read a body plan, and `FertilityApi`'s gestation step does.
+##   - `elements` after the enrolments: `attach` reads the highest realm off the
+##     cultivation paths to write each element's multiplier, so refreshing it before
+##     a path exists writes nothing — the silent realm degression ADR 0069 records.
+##     `attach`, not the bare refresh: `Actor.from_dict` restores no provider at all,
+##     and `attach` mounts it when absent and refreshes either way.
+##   - `dual_cultivation` then `fertility` — fertility adds to bases dual cultivation owns.
+##   - `items` before `set_bonus` — the projection is derived from equipment, so it must
+##     never run before items.
+##   - `techniques` after the items family — it resolves authored options through the
+##     items vocabulary (ADR 0056).
+##   - `social`, `destiny`, `event`, `quest` — ledgers. Destiny before event, because
+##     an event's prize is a `DestinyApi.earn_fate` and that must land in a key that
+##     exists.
+##   - `npc` — injects the npc constructor and binds the roster to THIS actor.
+##   - `domain` — the idempotent twin. `DomainBoot.install` injects `DomainSpawner`'s
+##     actor constructor and the two items contacts `DomainFixtures` needs; both
+##     default to refusing, so without this line a domain answers `no_inventory_bridge`
+##     to every treasure and `spawn` can only return null.
+##   - `combat`, then `technique_seams` — a seam is only correct once the module it
+##     wires is complete, and `TechniquesApi.attach` is what makes the codex exist for
+##     `TechniqueDelivery` to write into.
+##   - `economy` LAST — the last thing installed is the most recently written, which
+##     makes a failure here the newest thing a reader sees.
+func _attach_steps() -> Array[Dictionary]:
+	return [
+		{"name": &"soul", "run": func(a): SoulApi.attach(a)},
+		{"name": &"anchor", "run": func(a): AnchorApi.attach(a)},
+		{"name": &"socket", "run": func(a): SocketApi.attach(a)},
+		{"name": &"loot", "run": func(a): LootApi.attach(a)},
+		{"name": &"difficulty", "run": func(a): DifficultyApi.attach(a)},
+		{"name": &"race", "run": func(a): RaceApi.attach(a)},
+		{"name": &"bloodline", "run": func(a): BloodlineApi.attach(a)},
+		{"name": &"elements", "run": func(a): ElementsApi.attach(a)},
+		{"name": &"dual_cultivation", "run": func(a): DualCultivationApi.attach(a)},
+		{"name": &"fertility", "run": func(a): FertilityApi.attach(a)},
+		{"name": &"items", "run": func(a): ItemsApi.attach(a)},
+		{"name": &"set_bonus", "run": func(a): SetBonusApi.attach(a)},
+		{"name": &"techniques", "run": func(a): TechniquesApi.attach(a)},
+		{"name": &"social", "run": func(a): SocialApi.attach(a)},
+		{"name": &"destiny", "run": func(a): DestinyApi.attach(a)},
+		{"name": &"event", "run": func(a): EventApi.attach(a)},
+		{"name": &"quest", "run": func(a): QuestApi.attach(a)},
+		{"name": &"npc", "run": func(a): NpcBoot.install(a)},
+		{"name": &"domain", "run": func(_a): DomainBoot.install()},
+		{"name": &"combat", "run": func(a): CombatBoot.install(a)},
+		{"name": &"technique_seams", "run": func(_a): _bind_technique_seams()},
+		{"name": &"economy", "run": func(a): EconomyBoot.install(a)},
+	]
+
+
+## Build the boot's attach pipeline: one phase per attach step, in the order
+## [method _attach_steps] declares. The pipeline holds no game state — only the order
+## and the hook slots — so `app/`'s state scanners read it as wiring (ADR 0002). Hooks
+## are added by the caller, AFTER the phases exist, so a hook staked to an unknown
+## phase meets the pipeline's loud refusal rather than a silent skip.
+func _attach_pipeline() -> AttachPipeline:
+	var pipeline := AttachPipeline.new()
+	for step in _attach_steps():
+		pipeline.add_phase(step["name"], step["run"])
+	return pipeline
+
+
+## ## THE ONE attach list, now run through the pipeline (ADR 0184)
 ##
 ## Every per-actor binding this root owns happens here, in one sequence, and the three
 ## callers that need a complete hero — [method _build_actor] (fresh boot), [method
@@ -215,24 +299,6 @@ func _mount_player_modules(actor: Actor) -> void:
 ## map empty of open events, quests not progressing, npc bonds gone and the element realm
 ## multiplier degressed to R1 (ADR 0069's recorded failure). A duplicated list cannot fail
 ## that way: there is no second list to forget a line in.
-##
-## ## The ORDER is load-bearing and is preserved exactly as `_build_actor` documents it
-##
-##   1. `elements` — `attach`, which mounts the provider only when the actor has none and
-##      refreshes the realm half either way. `ActorFactory.build` mounts it for a fresh body
-##      and `Actor.from_dict` restores no provider at all, so this list is the one place that
-##      can be right for both (ADR 0069). It reads the paths, so it runs after every
-##      enrolment has written one.
-##   2. `dual_cultivation`, then `fertility` — fertility adds to bases dual cultivation owns.
-##   3. `items` — body training spends the realm's elixirs through the inventory.
-##   4. `set_bonus` — derived from equipment, so it must never run before items.
-##   5. `techniques` LAST — it resolves authored options through the items vocabulary (ADR 0056).
-##   6. `social`, `destiny`, `event`, `quest` — ledgers. Destiny before event, because an
-##      event's prize is a `DestinyApi.earn_fate` and that must land in a key that exists.
-##   7. `npc` — injects the npc constructor and binds the roster to THIS actor.
-##   8. `combat`, then the technique seams — a seam is only correct once the module it wires
-##      is complete, and `TechniquesApi.attach` is what makes the codex exist for
-##      `TechniqueDelivery` to write into.
 ##
 ## ## What is deliberately ABSENT, and why (ADR 0130)
 ##
@@ -247,77 +313,19 @@ func _mount_player_modules(actor: Actor) -> void:
 ## `_npc_settlement` is deliberately NOT restocked here. A reborn body re-binds the roster and
 ## the constructor but stands in no room, because `STARTING_CAST` is a boot-time fact about
 ## the settlement the slice OPENS on, not a property of a body.
-
-
 func _attach_body_modules(actor: Actor) -> void:
 	if actor == null:
 		return
-	# The world-scoped ledgers first, and in the SAME order the old `_mount_player_modules`
-	# used: a soul and an anchor live in an injected store rather than on the actor (ADR 0127,
-	# ADR 0146), so this is a READ of that store — which `_ready` has already published by
-	# the time any of the three callers below reaches this method.
-	SoulApi.attach(actor)
-	AnchorApi.attach(actor)
-	SocketApi.attach(actor)
-	LootApi.attach(actor)
-	DifficultyApi.attach(actor)
-	# ## `race` and `bloodline` — the two lineage attaches that were MISSING here
-	#
-	# `Actor.from_dict` restores `module_data`, so `race_state` and `bloodline_state`
-	# survive into the payload and the LEDGER is intact on a restore — `RaceGate` even
-	# carries a catalog fallback for an unprojected body, which is why every GATE kept
-	# answering across a save/load and the defect stayed invisible. The PROJECTION did
-	# not survive: `Actor.from_dict` restores components and NEVER a `StatProvider`, and
-	# the stat modifiers, the base-attribute grants, the affinities and the trait mirrors
-	# a race and an awakened lineage contribute are rebuilt only by the attach. Nothing on
-	# this list called it, so after ONE reload a stoneborn lost its +15% `max_health` and a
-	# tideborn at 0.72 read awake while `bloodline_power` answered 0.0 — with no error
-	# anywhere, because every reader that mattered was reading the ledger (BL-0746).
-	#
-	# Why the fresh branch did not hide this: `ActorFactory.build` attaches sect and clan,
-	# and `CharacterCreationFlow._body` attaches `race` on the CREATION branch only. A
-	# restored actor reaches neither, so the defect persisted on the only path a returning
-	# player walks. Both attach calls belong HERE for the reason `ClanApi.attach` is
-	# reachable through the composition root: this is the one list all three callers — the
-	# fresh build, the restore and a rebirth — share, so a restore cannot skip it.
-	#
-	# Both are idempotent BY CONSTRUCTION rather than by luck: `RaceProjection.apply` and
-	# `BloodlineProjection.apply` each strip their own prior contribution (the ledger
-	# records what was granted, so the strip is exact) and rebuild from the ledger. So
-	# running them on a fresh actor that `CharacterCreationFlow` already raced is net-zero,
-	# and running them twice is the same state as once. FIRST on this list because every
-	# ledger below can read a body plan, and `FertilityApi`'s gestation step does.
-	RaceApi.attach(actor)
-	BloodlineApi.attach(actor)
-	# `attach`, not the bare refresh: `Actor.from_dict` restores components and NEVER a
-	# `StatProvider`, so a restore or a body swap arrives with no provider and the realm MULT
-	# would land on nothing. `attach` mounts it when absent and refreshes either way.
-	ElementsApi.attach(actor)
-	DualCultivationApi.attach(actor)
-	FertilityApi.attach(actor)
-	ItemsApi.attach(actor)
-	SetBonusApi.attach(actor)
-	TechniquesApi.attach(actor)
-	SocialApi.attach(actor)
-	DestinyApi.attach(actor)
-	EventApi.attach(actor)
-	QuestApi.attach(actor)
-	NpcBoot.install(actor)
-	# The domain twin, idempotent like every line on this list. `DomainBoot.install`
-	# injects `DomainSpawner`'s actor constructor and the two items contacts
-	# `DomainFixtures` needs; both default to refusing, so without this line a domain
-	# answers `no_inventory_bridge` to every treasure and `spawn` can only return null.
-	DomainBoot.install()
-	CombatBoot.install(actor)
-	_bind_technique_seams()
-	# The economy program: four modules (`economy`, `market`, `holdings`, `custody`, `forage`)
-	# and FIVE injected seams. Every one of them defaults to refusing or to an actor-scoped
-	# mirror, so without this line the whole program is present, tested, and unreachable —
-	# a rival cannot see a held resource node, a bidder cannot see a listed lot, and a
-	# custody subject cannot be minted. `EconomyBoot.install` is idempotent like every other
-	# line on this list. Placed AFTER `_bind_technique_seams` so the last thing installed is
-	# the most recently written, which makes a failure here the newest thing a reader sees.
-	EconomyBoot.install(actor)
+	var pipeline := _attach_pipeline()
+	# The mod hooks (ADR 0184): every manifest attach hook staked to a phase name
+	# is registered here, after the phases exist, so an unknown phase is the
+	# pipeline's loud refusal, not a silent skip. An empty `Callable()` stub is
+	# skipped by the pipeline, so a mod that has not bound its hook yet cannot
+	# break a boot.
+	var registrations := ModBoot.active_registrations
+	for row in registrations.get("attach_hooks", []):
+		pipeline.add_hook(StringName(row.get("phase", "")), row.get("callable", Callable()))
+	pipeline.run(actor)
 
 
 # --- build_actor ---------------------------------------------------------
