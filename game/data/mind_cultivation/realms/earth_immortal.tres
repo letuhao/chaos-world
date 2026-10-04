@@ -10,7 +10,7 @@ training_item = &"mind_earth_immortal_channel_elixir"
 sea_catalyst = &"mind_earth_immortal_sea_catalyst"
 recovery_item = &"mind_earth_immortal_recovery_elixir"
 progress_required = 6609.0
-comprehension_required = 766.0
+comprehension_required = 549.0
 clarity_required = 0.67
 purity_required = 0.72
 sea_fill_required = 1.0
@@ -19,7 +19,7 @@ required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach",
 required_channel_state = &"strengthened"
 channel_refinement_cap = 19
 sea_capacity = 550.0
-insight_required = 383.0
+insight_required = 275.0
 rewards = {
 "will": 2.0
 }

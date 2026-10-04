@@ -10,7 +10,7 @@ training_item = &"mind_qi_refining_channel_elixir"
 sea_catalyst = &"mind_qi_refining_sea_catalyst"
 recovery_item = &"mind_qi_refining_recovery_elixir"
 progress_required = 100.0
-comprehension_required = 10.0
+comprehension_required = 28.0
 clarity_required = 0.40
 purity_required = 0.45
 sea_fill_required = 1.0
@@ -19,7 +19,7 @@ required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach",
 required_channel_state = &"strengthened"
 channel_refinement_cap = 1
 sea_capacity = 100.0
-insight_required = 5.0
+insight_required = 14.0
 rewards = {
 "will": 2.0
 }

@@ -34,6 +34,19 @@ extends TestCase
 ##     one is gone on purpose. See `test_body_physique_required_clears_the_...`
 ##     for why the coupling was never a balance rule and why keeping it would
 ##     have re-broken DEF-0104.
+##   - `body.insight_required == mind.comprehension_required` is GONE for the
+##     same reason. The mind gate moved onto the actor power ladder
+##     (`core/mind_comprehension_scale.gd`), so the two numbers now answer
+##     different questions; see `test_body_insight_required_still_matches_its_own_ladder`.
+##
+## The mind comprehension gate is the one case where the SSOT is NOT a Python
+## expression any more. It was `10 + 6i + 2i^2` in the ladder ORDINAL — a private
+## quadratic disagreeing with `core/realm_power_table.tres` (1.00 -> 551.46) by up
+## to 22.2x, i.e. a second power curve for a binding entry gate (the ADR 0116 shape).
+## `MindComprehensionScale.required(realm_id)` is now the ladder answer and these
+## tests delegate to it. `tools/cultivation/seed_systems.py:124` still carries the
+## quadratic; it skips existing files, so it cannot rewrite a shipped seed, and it
+## belongs to another live session. Tracked in `docs/deferred.jsonl`.
 
 ## The authored body labour budget, in labour units per realm (R1..R30).
 ## Read from the shipped seeds, not from `P**0.55`: the power table tops out at
@@ -131,9 +144,15 @@ func qi_dantian_quality_generator(index: int) -> float:
 
 
 func mind_comprehension_generator(index: int) -> float:
-	# seed_systems.mind_comprehension: 10 + 6i + 2i^2
-	var i := float(index)
-	return 10.0 + 6.0 * i + 2.0 * i * i
+	# RETIRED: this transcribed `seed_systems.mind_comprehension: 10 + 6i + 2i^2`,
+	# a private quadratic in the ladder ORDINAL that disagreed with
+	# `core/realm_power_table.tres` (1.00 -> 551.46) by up to 22.2x — a second power
+	# curve for a binding entry gate. The ladder now governs it, so the SSOT is
+	# `core/mind_comprehension_scale.gd` and the tests below delegate to it instead
+	# of transcribing an expression. The Python generator at
+	# `tools/cultivation/seed_systems.py:124` still carries the quadratic and is
+	# owned by another live session; tracked in `docs/deferred.jsonl`.
+	return MindComprehensionScale.required(RealmDefaults.ladder().realms()[index].id)
 
 
 func mind_progress_generator(index: int) -> float:
@@ -285,10 +304,13 @@ func test_mind_progress_required_matches_generator() -> void:
 
 
 func test_mind_comprehension_required_matches_generator() -> void:
+	# The shipped seed IS the ladder answer, to the last decimal. `required()` returns
+	# `round(SCALE * power)` and the `.tres` carries that same nearest integer, so
+	# this is an equality rather than a tolerance: a hand-edited literal fails here.
 	var realms := RealmDefaults.ladder().realms()
 	for index in range(realms.size()):
 		var seed := MindRealmSeed.for_realm(realms[index].id)
-		assert_almost_eq(
+		assert_eq(
 			seed.comprehension_required,
 			mind_comprehension_generator(index),
 			"mind R%d comprehension_required" % (index + 1)
@@ -296,13 +318,14 @@ func test_mind_comprehension_required_matches_generator() -> void:
 
 
 func test_mind_insight_is_half_of_comprehension() -> void:
-	# mind.insight_required is exactly 0.5x the comprehension sequence.
+	# mind.insight_required is exactly 0.5x the gate, and it stays a DERIVATION of it
+	# rather than a second hand-typed ladder (BL-0146 carries deleting the field).
 	var realms := RealmDefaults.ladder().realms()
 	for index in range(realms.size()):
 		var seed := MindRealmSeed.for_realm(realms[index].id)
-		assert_almost_eq(
+		assert_eq(
 			seed.insight_required,
-			mind_comprehension_generator(index) * 0.5,
+			MindComprehensionScale.insight_floor(realms[index].id),
 			"mind R%d insight_required" % (index + 1)
 		)
 
@@ -354,18 +377,28 @@ func test_body_progress_required_tracks_work_required() -> void:
 		)
 
 
-func test_body_insight_required_is_the_shared_comprehension_sequence() -> void:
-	# body.insight_required == mind.comprehension_required == 10 + 6i + 2i^2.
+func test_body_insight_required_still_matches_its_own_ladder() -> void:
+	# `body.insight_required == mind.comprehension_required == 10 + 6i + 2i^2` was
+	# asserted here as a SHARED sequence. It is GONE, on purpose, and the same
+	# reasoning DEF-0130 applied to `body.physique_required == qi.comprehension_required`
+	# applies here: the equality was a coincidence of authoring that coincided
+	# numerically at HEAD, not a balance rule. The two paths ask different questions
+	# of the same number — the mind path prices mental study for its entry gate,
+	# while the body's `insight_required` is both the body's own entry gate
+	# (`body_cultivation/breakthrough_condition.gd:45`) AND a term in its breakthrough
+	# CHANCE (`advancement.gd:62`: `0.1 + 0.01 * insight_required`). Re-pinning them
+	# equal would mean dragging a second path's gate and its dice onto the mind
+	# path's ladder, which is a balance ruling nobody made.
+	#
+	# What remains is the coverage that was real: the body's own ladder is unchanged,
+	# so it is still pinned to its own generator expression. The mind side is now
+	# pinned to the ladder in `test_mind_comprehension_required_matches_generator`.
 	var realms := RealmDefaults.ladder().realms()
 	for index in range(realms.size()):
 		var body_seed := BodyRealmSeed.for_realm(realms[index].id)
-		var mind_seed := MindRealmSeed.for_realm(realms[index].id)
-		var expected := mind_comprehension_generator(index)
+		var expected := 10.0 + 6.0 * float(index) + 2.0 * float(index) * float(index)
 		assert_almost_eq(
 			body_seed.insight_required, expected, "body R%d insight_required" % (index + 1)
-		)
-		assert_almost_eq(
-			mind_seed.comprehension_required, expected, "mind R%d comprehension" % (index + 1)
 		)
 
 

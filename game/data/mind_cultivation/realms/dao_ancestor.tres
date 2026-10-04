@@ -10,7 +10,7 @@ training_item = &"mind_dao_ancestor_channel_elixir"
 sea_catalyst = &"mind_dao_ancestor_sea_catalyst"
 recovery_item = &"mind_dao_ancestor_recovery_elixir"
 progress_required = 12542.0
-comprehension_required = 1746.0
+comprehension_required = 10628.0
 clarity_required = 0.82
 purity_required = 0.87
 sea_fill_required = 1.0
@@ -19,7 +19,7 @@ required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach",
 required_channel_state = &"strengthened"
 channel_refinement_cap = 29
 sea_capacity = 800.0
-insight_required = 873.0
+insight_required = 5314.0
 rewards = {
 "will": 2.0
 }
