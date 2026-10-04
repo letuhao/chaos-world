@@ -2078,6 +2078,36 @@ def _entry_band_table_ids() -> set[str]:
     return wanted
 
 
+def _entry_band_table_entries() -> dict[str, list[str]]:
+    """Every entry-band table id mapped to the item ids it can roll.
+
+    Extracted from `_entry_band_gear_rate` so the per-table view and the per-entry
+    totals read the SAME scan. Two scans would be a second copy of "which tables are in
+    the entry band", and that is precisely the class of drift this audit exists to
+    catch: a table counted in one and not the other reports a rate that no single
+    corpus produces.
+
+    The table's own id is its LAST `id` in the file — every sub_resource entry carries
+    one before it, so a first-match regex resolves an ENTRY id and matches nothing.
+    """
+    wanted = _entry_band_table_ids()
+    entries: dict[str, list[str]] = {}
+    table_dir = DATA_ROOT / "loot" / "tables"
+    if not wanted or not table_dir.is_dir():
+        return entries
+    scanned = 0
+    for path in sorted(table_dir.glob("*.tres")):
+        if scanned >= GEAR_SCAN_TABLE_CAP:
+            break
+        scanned += 1
+        text = path.read_text(encoding="utf-8", errors="replace")
+        ids = re.findall(r'(?m)^id\s*=\s*&"([^"]*)"', text)
+        for key in {ids[-1] if ids else path.stem, path.stem}:
+            if key in wanted:
+                entries[key] = re.findall(r'(?m)^item_id\s*=\s*&"([^"]*)"', text)
+    return entries
+
+
 def _entry_band_gear_rate() -> tuple[int, int, int, str | None]:
     """(wearable entries, mortal wearable entries, total entries, a named offender).
 
@@ -2087,33 +2117,14 @@ def _entry_band_gear_rate() -> tuple[int, int, int, str | None]:
     being rolled IS its share of the table.
     """
     grades, _subs = _wearable_by_grade()
-    if not grades:
+    tables = _entry_band_table_entries()
+    if not grades or not tables:
         return 0, 0, 0, None
     wanted = _entry_band_table_ids()
-    if not wanted:
-        return 0, 0, 0, None
-    tables: dict[str, list[str]] = {}
-    scanned = 0
-    table_dir = DATA_ROOT / "loot" / "tables"
-    if not table_dir.is_dir():
-        return 0, 0, 0, None
-    for path in sorted(table_dir.glob("*.tres")):
-        if scanned >= GEAR_SCAN_TABLE_CAP:
-            break
-        scanned += 1
-        text = path.read_text(encoding="utf-8", errors="replace")
-        # The LAST `id` in the file is the table's own; every sub_resource entry
-        # carries one before it, so a first-match regex resolves an ENTRY id and
-        # silently matches nothing.
-        ids = re.findall(r'(?m)^id\s*=\s*&"([^"]*)"', text)
-        for key in {ids[-1] if ids else path.stem, path.stem}:
-            if key in wanted:
-                tables[key] = re.findall(r'(?m)^item_id\s*=\s*&"([^"]*)"', text)
     wearable = mortal = total = 0
     offender: str | None = None
     for table_id in sorted(wanted):
-        entries = tables.get(table_id, [])
-        for entry in entries:
+        for entry in tables.get(table_id, []):
             total += 1
             grade = grades.get(entry)
             if grade is None:
@@ -2124,6 +2135,29 @@ def _entry_band_gear_rate() -> tuple[int, int, int, str | None]:
             elif offender is None:
                 offender = entry
     return wearable, mortal, total, offender
+
+
+def _entry_band_gap() -> tuple[int, int, str | None]:
+    """(entry-band tables paying NO mortal wearable gear, the pool that could fix
+    them, a named table that needs it).
+
+    The per-entry rate says a hero rarely gets wearable gear; this says which TABLES are
+    the reason, which is the difference between a number to think about and a list to
+    edit. It is also the measurement that makes the fix checkable: a guaranteed entry is
+    worth authoring exactly when a table has no mortal wearable entry to roll, and the
+    pool size says whether there is anything to guarantee without inventing an item.
+    """
+    grades, _subs = _wearable_by_grade()
+    tables = _entry_band_table_entries()
+    if not grades or not tables:
+        return 0, 0, None
+    needing: list[str] = []
+    for table_id in sorted(tables):
+        if any(grades.get(entry) == MORTAL_GRADE for entry in tables[table_id]):
+            continue
+        needing.append(table_id)
+    pool = sum(1 for grade in grades.values() if grade == MORTAL_GRADE)
+    return len(needing), pool, needing[0] if needing else None
 
 
 def _entry_band_gear_findings() -> tuple[list[str], list[str]]:
@@ -2153,9 +2187,28 @@ def _entry_band_gear_findings() -> tuple[list[str], list[str]]:
             + (f"; e.g. {offender}" if offender else "")
             + ". Cheapest honest fix is a guaranteed grade=mortal wearable entry per "
             "entry-band table (LootEntry.guaranteed already exists and the entry band "
-            "never uses it); raising a probe's patience fixes nothing"
+            "never uses it); raising a probe's patience fixes nothing" + _entry_band_gap_note()
         ]
     return [], [f"{detail} (ok)"]
+
+
+def _entry_band_gap_note() -> str:
+    """The actionable half of the entry-band warning: which tables, and from what pool.
+
+    Without this the warning states a rate and leaves the fix to whoever re-derives it,
+    which is how a measured 2.25 percent sat behind "a balance decision" for several
+    turns. The fix is not a judgement once the tables and the pool are named.
+    """
+    needing, pool, example = _entry_band_gap()
+    if needing == 0:
+        return ""
+    return (
+        f". {needing} entry-band table(s) roll no grade={MORTAL_GRADE} wearable item at"
+        f" all (e.g. {example}), and {pool} such item(s) exist to guarantee from, so"
+        " the fix is authoring, not inventing: guarantee one per table"
+        " (LootResolver resolves guaranteed entries first and unconditionally at"
+        " loot_resolver.gd:83-86, so the count bonus can neither add nor remove one)"
+    )
 
 
 def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
