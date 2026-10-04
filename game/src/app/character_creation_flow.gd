@@ -79,10 +79,18 @@ const FACT_ID := &"character_created"
 ## Which body each origin arrives in. Authored here rather than in content because
 ## there is no authored field that links a `DestinyDef` to a `RaceDef`; it is the
 ## one arrival table this layer owns.
+##
+## **The three bodies restrict three DIFFERENT path sets, and that is the point.**
+## `stoneborn` and `tidecaller` each close one path outright, and
+## `emberblood_touched` closes NEITHER — so each origin is a materially different
+## character rather than one hero wearing three labels. Mapping the third origin
+## onto `emberblood` did not: `stoneborn` and `emberblood` both close
+## `mind_cultivation`, so two origins restricted the same path and a player
+## choosing between them was choosing a name, not a career.
 const RACE_BY_ORIGIN := {
 	&"the_one_who_stayed": &"stoneborn",
 	&"the_one_who_returned": &"tidecaller",
-	&"the_chosen_instrument": &"emberblood",
+	&"the_chosen_instrument": &"emberblood_touched",
 }
 
 ## Fates an origin supplies to its own arrival, granted BEFORE the destiny is
