@@ -61,12 +61,26 @@ func _prepare(actor: Actor) -> QiRealmSeed:
 # --- Synchronize -----------------------------------------------------------
 
 
-func test_synchronize_sets_capacity_tier_and_unlocks() -> void:
+## ADR 0180 deleted the dantian's three-band tier, so this no longer asserts one.
+##
+## It USED to read `dantian.tier` on the second line. That was not prose rot: it was
+## a live read of a deleted field, and GDScript raises "Invalid access to property
+## or key 'tier'" on it, which ABORTS the function — so the capacity assertion below
+## never executed and the runner only reported it as a script error, not a failure.
+## The suite still printed `0 failed`. (Found while clearing BL-0787: the deleted
+## field was gone from `src/` and still read from `tests/`.)
+func test_synchronize_sets_capacity_and_unlocks() -> void:
 	var actor := _actor()
 	var dantian := QiAccess.dantian(actor)
 	assert_eq(dantian != null, true, "dantian attached")
-	assert_eq(dantian.tier, &"lower", "Mortal uses the lower dantian")
 	assert_almost_eq(dantian.structural_capacity, 100.0, "capacity from the seed")
+	# The half the old name promised and the old body never checked: `synchronize`
+	# unlocks the standing realm's channels, so the network is not empty afterwards.
+	assert_ne(
+		actor.meridians.get_all_meridians().size(),
+		0,
+		"and the standing realm's channels are unlocked, which the old name claimed"
+	)
 
 
 func test_synchronize_scales_capacity_with_meridian_bonus() -> void:

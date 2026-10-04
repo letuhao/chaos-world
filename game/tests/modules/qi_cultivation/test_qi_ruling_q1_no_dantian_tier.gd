@@ -92,6 +92,98 @@ func test_the_runtime_carries_no_dantian_tier() -> void:
 	)
 
 
+## `QiStats` is the module's declaration of what the dantian contributes, and it was
+## the one file in the module this suite never opened.
+##
+## A `DANTIAN_TIER` constant there would be the exact ADR 0180 shape — a published
+## label nothing reads — and it would survive every other assertion here, because
+## `Dantian` would still carry no `tier` and no seed would still declare one. The
+## check is on CODE lines, so this file's own prose stays free to name the field.
+func test_qi_stats_declares_no_dantian_tier_constant() -> void:
+	var reader := RegEx.new()
+	reader.compile("DANTIAN_TIER")
+	var text := FileAccess.get_file_as_string("res://src/modules/qi_cultivation/stats.gd")
+	var offender := ""
+	for line in text.split("\n"):
+		if line.strip_edges().begins_with("#"):
+			continue
+		if reader.search(line) != null:
+			offender = line.strip_edges()
+			break
+	assert_eq(
+		offender.is_empty(),
+		true,
+		"QiStats declares a dantian tier (%s): a label nothing reads (ADR 0180)" % offender
+	)
+	# And the capacity it does contribute is still declared, so the guard above
+	# cannot pass on a `stats.gd` that lost the qi surface entirely.
+	assert_eq(
+		text.contains("const DANTIAN_CAPACITY"),
+		true,
+		"capacity is still declared, so the check above is reading a real surface"
+	)
+
+
+## The qi TESTS must not READ the field either, which is where it actually survived.
+##
+## The runtime greps above cover `src/`, and they were all green while
+## `tests/modules/qi_cultivation/test_qi_training.gd` still read it. That read is
+## the dangerous shape, not prose: GDScript raises "Invalid access to property or key
+## 'tier'" on it and ABORTS the enclosing function, so the assertions after it never
+## run, the aborted test reports no failure, and the suite prints `0 failed` while a
+## test silently verifies nothing.
+##
+## ## Why this greps CODE LINES ONLY
+##
+## The defect is an EXECUTED read, so comment lines are stripped before the match.
+## Otherwise the guard fires on any sentence documenting the ruling — including the
+## one in the file it had just fixed, which is how this test first ran and caught its
+## own documentation. Prose must stay free to say what was deleted and why:
+## `dantian.gd:9-20` and the `historic` map below depend on it.
+##
+## The match is CASE-SENSITIVE so this file's own assertion text (`Dantian.tier is
+## back`, in the test above) does not trip it, and this file is excluded anyway as the
+## ruling's record.
+func test_no_qi_test_reads_a_dantian_tier() -> void:
+	var dir := DirAccess.open("res://tests/modules/qi_cultivation")
+	assert_ne(dir, null, "the qi test tree is readable")
+	if dir == null:
+		return
+	var reader := RegEx.new()
+	reader.compile("dantian\\s*\\.\\s*tier")
+	var scanned := 0
+	# Bounded by the directory's own entry count and the body appends nothing, so
+	# nothing here grows its own bound (INC-0002).
+	for file_name in dir.get_files():
+		if not file_name.ends_with(".gd"):
+			continue
+		if file_name == "test_qi_ruling_q1_no_dantian_tier.gd":
+			continue
+		var text := FileAccess.get_file_as_string(
+			"res://tests/modules/qi_cultivation/%s" % file_name
+		)
+		var offender := ""
+		for line in text.split("\n"):
+			if line.strip_edges().begins_with("#"):
+				continue
+			if reader.search(line) != null:
+				offender = line.strip_edges()
+				break
+		assert_eq(
+			offender.is_empty(),
+			true,
+			(
+				(
+					"%s READS the deleted dantian tier (%s): a live read aborts the function so "
+					+ "every assertion after it is silently skipped (ADR 0180)"
+				)
+				% [file_name, offender]
+			)
+		)
+		scanned += 1
+	assert_eq(scanned > 4, true, "and it graded the qi suites, not a sample (%d)" % scanned)
+
+
 ## WHY deletion, restated as a measurement over the corpus rather than an argument.
 ##
 ## If the bands were monotone, a tier floor would have been a real gate and this

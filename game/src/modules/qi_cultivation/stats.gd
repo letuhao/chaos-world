@@ -4,8 +4,11 @@ extends RefCounted
 ## Stat and resource ids owned by the `qi_cultivation` module (ADR 0011).
 
 # Resources
-## One active qi reservoir. The dantian owns structural tier, quality, and injury
-## only; a second qi axis was removed rather than left as a constant no-op.
+## One active qi reservoir. The dantian owns structural CAPACITY, quality and injury
+## only; a second qi axis was removed rather than left as a constant no-op, and so
+## was the three-band tier ADR 0180 deleted — it named no gate and `Dantian` carries
+## no such member, so this comment once claiming a "structural tier" described a
+## field that does not exist.
 const QI := &"qi"
 
 # Base attributes

@@ -107,7 +107,26 @@ func test_a_shipped_cultivating_species_carries_a_qi_rig() -> void:
 		"the qi reservoir is capped to the dantian synchronize sized"
 	)
 	assert_eq(_qi_providers(actor), 1, "and exactly one qi provider, not an appended pair")
-	assert_ne(QiAccess.provider(actor), null, "which is the provider the qi stats are read through")
+	# Was `assert_ne(QiAccess.provider(actor), null)`, which was VACUOUS:
+	# `QiAccess.provider` ended with `return QiProvider.new()` when no provider was
+	# registered, so it handed back an UNATTACHED provider contributing nothing and
+	# `!= null` was unconditionally true. It asserted that a fallback existed
+	# (BL-0787), and it is gone with the fallback (access.gd).
+	#
+	# The replacement bites on the same claim — "the qi stats are read through a
+	# REGISTERED provider" — by asking the composer instead of the accessor.
+	#
+	# It asserts KEY PRESENCE, not a value, and that is deliberate:
+	# `ActorStats._ensure_providers` writes every key a provider contributes into
+	# `_provider_cache` even when the value is 0.0, and clears the whole cache when
+	# no provider is registered. So the key is present iff a registered `QiProvider`
+	# contributed it, whatever this actor's authored base stats happen to be — and an
+	# unattached `QiProvider.new()`, contributing nothing, would leave it absent.
+	assert_eq(
+		actor.stats.derived_all().has(QiStats.QI_SENSE_RANGE),
+		true,
+		"and the qi stats are read through that REGISTERED provider, not a throwaway"
+	)
 
 
 ## The unlocks, counted from `unlock_for_realm`'s OWN rule (`tier <= realm index`) rather
