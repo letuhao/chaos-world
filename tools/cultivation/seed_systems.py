@@ -11,7 +11,8 @@ from __future__ import annotations
 import re
 
 from .. import data
-from ..common import REPO_ROOT, ok
+from ..common import REPO_ROOT
+from . import seed_write
 
 ROOT = REPO_ROOT / "game" / "data"
 TIER_GRADE = ("mortal", "spirit", "immortal", "divine")
@@ -134,20 +135,20 @@ def resource(class_name: str, script: str, lines: list[str]) -> str:
     )
 
 
-def run() -> int:
+def build_files() -> dict[str, str]:
+    """The COMPLETE intended corpus, as `relative path -> bytes`. Writes nothing.
+
+    Building the whole map before touching the disk is what makes drift
+    detectable; `seed_write.plan` does the comparing.
+    """
     files: dict[str, str] = {}
     for key, spec in SYSTEMS.items():
         _seed_system(files, key, spec)
-    created = 0
-    for relative, content in sorted(files.items()):
-        path = ROOT / relative
-        if path.exists():
-            continue
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(content, encoding="utf-8")
-        created += 1
-    ok(f"created {created} qi/mind cultivation resources; existing resources preserved")
-    return 0
+    return files
+
+
+def run(*, force: bool = False, dry_run: bool = False) -> int:
+    return seed_write.apply(build_files(), ROOT, label="qi/mind seed", force=force, dry_run=dry_run)
 
 
 def _seed_system(files: dict[str, str], key: str, spec: dict) -> None:

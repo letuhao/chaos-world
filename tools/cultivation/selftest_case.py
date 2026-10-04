@@ -37,6 +37,7 @@ from ..selftest import case, expect
 from . import audit
 from . import ladder as ladder_module
 from .mutate import _stage_qi_fixture
+from .seed_write_selftest import *  # noqa: F403  registers the DEF-0033 drift cases
 
 # The fixture this module owns. Asserting the shape keeps a fixture that drifts
 # into reporting findings from turning these cases into a tautology: if the

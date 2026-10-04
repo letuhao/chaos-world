@@ -14,7 +14,8 @@ import re
 from decimal import ROUND_HALF_UP, Decimal
 
 from .. import data
-from ..common import REPO_ROOT, ToolError, ok
+from ..common import REPO_ROOT, ToolError
+from . import seed_write
 from .ladder import (
     PHYSIQUE_REWARD,
     chance_base,
@@ -152,7 +153,12 @@ def resource(class_name: str, script: str, lines: list[str]) -> str:
     )
 
 
-def run() -> int:
+def build_files() -> dict[str, str]:
+    """The COMPLETE intended corpus, as `relative path -> bytes`. Writes nothing.
+
+    Building the whole map before touching the disk is what makes drift
+    detectable; `seed_write.plan` does the comparing.
+    """
     # The physique floor is derived from what the ladder grants for itself, and the
     # milestone bonus is a runtime constant. Reading it here means the bootstrap and
     # `BodyProgress` cannot price the floor against different numbers.
@@ -390,13 +396,10 @@ def run() -> int:
                 f"boss_ids = {data._array_literal([boss])}",
             ],
         )
-    created = 0
-    for relative, content in sorted(files.items()):
-        path = ROOT / relative
-        if path.exists():
-            continue
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(content, encoding="utf-8")
-        created += 1
-    ok(f"created {created} cultivation resources; existing authored resources preserved")
-    return 0
+    return files
+
+
+def run(*, force: bool = False, dry_run: bool = False) -> int:
+    return seed_write.apply(
+        build_files(), ROOT, label="cultivation seed", force=force, dry_run=dry_run
+    )
