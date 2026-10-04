@@ -322,10 +322,14 @@ def build_def(
     if race_id == "":
         notes.append("appearance.race is unset, so the portrait is reachable only by a chosen id")
     elif race_id not in races:
-        # Named, never guessed. Five races ship and the catalog spans far more lore species.
+        # `PortraitCatalog.for_race` matches `def.race_id == race_id` with NO membership check, so
+        # this portrait IS resolvable by race id. What is missing is upstream: `RaceApi.race_of` can
+        # only ever return one of the five authored races, so nothing in normal play asks for
+        # `echoless` and the face is reached only when an actor CHOOSES this portrait by id.
         notes.append(
-            f"race '{race_id}' is not a RaceDef the content tree defines, so `for_race` will "
-            "never pick this portrait; it is reachable only when an actor chooses it"
+            f"race '{race_id}' is not a RaceDef the content tree defines, so `RaceApi.race_of` can "
+            "never yield it and `for_race` is never reached with it; the portrait is reachable only "
+            "when an actor chooses this portrait id"
         )
 
     # A theme KEY or nothing: `portrait_def.gd:40-42`. Prose palette is not a key.

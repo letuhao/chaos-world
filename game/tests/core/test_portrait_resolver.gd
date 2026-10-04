@@ -213,6 +213,63 @@ func test_the_placeholder_is_never_answered_as_a_variant() -> void:
 	assert_eq(bool(view["variant_found"]), false, "the fallback is not a variant")
 
 
+# --- A published named-cast portrait reaches the game --------------------------
+
+
+func test_a_published_character_portrait_resolves_with_every_layer() -> void:
+	# The end of the whole program: a rendered PNG declared with a correct per-shot canvas, synced
+	# into an authored resource, read back by the catalog the game loads. If this fails, the art is
+	# files nothing can map to.
+	#
+	# Asserted on the RESOURCE and its layer LIST, never on the PNG files being present: the art
+	# lives in a gitignored folder, so an existence check would fail on a clean clone for a reason
+	# that has nothing to do with the wiring under test. The panel reports a missing file itself.
+	var def := PortraitCatalog.instance().portrait_definition(&"unique-0001")
+	assert_ne(def, null, "the published portrait is not in the catalog")
+	assert_eq(String(def.display_name), "Ilsa Renn", "authored display name survived the sync")
+	var layers := def.layer_paths
+	assert_eq(layers.size(), 2, "both installable shots are declared as layers")
+	assert_eq(
+		String(layers[0]),
+		"res://assets/characters/unique/unique-0001/ilsa_dialogue_portrait.png",
+		"the dialogue portrait is the BASE layer, so the face is underneath"
+	)
+	assert_true(
+		String(layers[1]).ends_with("ilsa_map_sprite.png"),
+		"the map token composites over the face, not under it"
+	)
+
+
+func test_a_published_portrait_resolves_for_an_actor_that_chooses_it() -> void:
+	# `for_race` is not the only way in: `unique-0001`'s race (`echoless`) is not an authored
+	# RaceDef, so `RaceApi.race_of` can never produce it and the chosen-id step is what makes this
+	# portrait reachable at all. A resource nothing can select is a resource nothing draws.
+	PortraitResolver.choose(_actor, &"unique-0001")
+	var view := PortraitResolver.resolve(_actor, &"tidecaller")
+	assert_eq(String(view["portrait_id"]), "unique-0001", "the chosen portrait answered")
+	assert_eq(String(view["source"]), "chosen", "and it says which step answered")
+	assert_eq((view["layer_paths"] as Array).size(), 2, "with both layers to composite")
+
+
+func test_a_published_portrait_declares_one_value_per_variant_axis() -> void:
+	# Two values on one axis is not a richer trait set. `trait_value` returns the first match and
+	# ADR 0177 matches a variant WHOLE, so a second value on the same axis lets one portrait answer
+	# for two variants it was never drawn as.
+	var def := PortraitCatalog.instance().portrait_definition(&"unique-0001")
+	assert_ne(def, null, "the published portrait is in the catalog")
+	var axes: Dictionary = {}
+	for trait_id in def.visual_traits:
+		var axis := String(trait_id).split(":")[0]
+		assert_false(
+			axes.has(axis),
+			(
+				"axis '%s' appears twice in %s; a variant request is ambiguous"
+				% [axis, def.visual_traits]
+			)
+		)
+		axes[axis] = true
+
+
 # --- Portraits grant nothing ---------------------------------------------------
 
 

@@ -74,12 +74,36 @@ from PIL import Image
 
 from .common import GAME_DIR, ToolError, fail, info, ok
 
-#: Where rendered character art lives — a gitignored sibling checkout of
+#: Where rendered character art lives — a gitignored checkout of
 #: https://github.com/letuhao/chaos-world-content.git, so it is usually ABSENT. Every entry point
 #: reports that rather than failing: an absent private art folder must not make a public gate red,
 #: for the same reason `_lore_entries()` returns None to disable a rule instead of guessing
 #: (`tools/unique_characters.py:943-957`).
-ART_ROOT = GAME_DIR / "assets" / "characters" / "unique-characters" / "outputs"
+#:
+#: TWO candidates, resolved in order, because the private checkout has been renamed in place and a
+#: single hardcoded path made this gate silently check NOTHING: `unique-characters/` became
+#: `unique/` on 2026-10-04, and `check` exited 0 with "nothing to check" against 25 files that were
+#: sitting one directory away. A gate that reports success because it looked in the wrong place is
+#: worse than no gate — it is a gate that has stopped reading. Resolve the folder, never assume it.
+ART_ROOT_CANDIDATES = (
+    GAME_DIR / "assets" / "characters" / "unique" / "outputs",
+    GAME_DIR / "assets" / "characters" / "unique-characters" / "outputs",
+)
+
+
+def art_root() -> Path:
+    """The first candidate folder that actually holds rendered art, else the first candidate.
+
+    Reported by path in every message so a reader can see WHICH folder was checked rather than
+    having to trust that some folder was.
+    """
+    for candidate in ART_ROOT_CANDIDATES:
+        if candidate.is_dir():
+            return candidate
+    return ART_ROOT_CANDIDATES[0]
+
+
+ART_ROOT = art_root()
 
 #: AUTHORED, copied from `ART_CRITERIA.md:32-38` and `context/unique-0001-ilsa-renn.md:56-62`.
 #: Duplicated HERE deliberately: the source sits in a gitignored folder, so a threshold
