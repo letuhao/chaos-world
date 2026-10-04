@@ -18,6 +18,25 @@ static var _cache: Dictionary = {}
 ## dantian scar and the burned channel. A deviation must stay recoverable
 ## through content, not only through a lucky next roll (ADR 0031).
 @export var recovery_item: StringName = &""
+## Two OPTIONAL catalyst roles, restored over ADR 0096's deletion (ADR 0194).
+##
+## Neither is a GATE. `QiBreakthroughCondition` reads progress, comprehension,
+## quality, fill, the pill and the channels — never a catalyst — so nothing here
+## can make a realm unreachable, which is exactly the objection ADR 0096 raised
+## and the reason it deleted the family. Both buy headroom past a gate:
+##
+## - `dantian_catalyst` is the PRICE of a `cultivate` sitting whose circulation
+##   overflows the reservoir, and the overflow becomes quality past the next
+##   realm's own floor — roll certainty the free verb cannot reach, because
+##   `cultivate` stops refining at that floor.
+## - `meridian_catalyst` pays for one step on a channel the next realm's gate
+##   does NOT name, which no gate asks for and no elixir is spent on.
+##
+## `QiTraining.cultivate` and `QiTraining.train_off_gate_channel` are the only
+## two readers; `tools/cultivation/audit.py` fails a catalyst that no gate
+## refuses AND a catalyst no verb consumes.
+@export var dantian_catalyst: StringName = &""
+@export var meridian_catalyst: StringName = &""
 @export var progress_required: float = 100.0
 @export var comprehension_required: float = 10.0
 @export var dantian_quality_required: float = 0.5

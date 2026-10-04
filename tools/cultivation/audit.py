@@ -120,6 +120,199 @@ def ceiling_resolves_next_realm(path=None) -> bool:
     return "next_seed.dantian_quality_required" in source and "ladder.next(" in source
 
 
+# --- The catalyst family and the price of a sitting (ADR 0194 / ADR 0195) -------
+#
+# Three failure shapes, all of which shipped once and none of which a value
+# assertion can see:
+#   - a catalyst nothing consumes (ADR 0096 deleted 90 such items; ADR 0194
+#     restored 60 of them, and only a READER makes that restoration honest);
+#   - a catalyst promoted into a GATE, which is the exact reason ADR 0096 deleted
+#     the family: a mandatory item in a gate position removes the player's only
+#     lever and replaces "did I cultivate well" with "do I hold the item";
+#   - a verb that charges the one resource it is the sole source of, which
+#     deadlocks the path (ADR 0180's rejection of a qi-priced `cultivate`).
+#
+# All three are read from CODE LINES ONLY: comment lines are stripped first, or a
+# guard would fire on the documentation explaining them (ADR 0188).
+QI_CATALYST_ROLES = ("dantian_catalyst", "meridian_catalyst")
+QI_CONDITION = REPO_ROOT / "game/src/modules/qi_cultivation/breakthrough_condition.gd"
+QI_TRANSACTION = REPO_ROOT / "game/src/modules/qi_cultivation/breakthrough_transaction.gd"
+# A verb that raises the qi reservoir, and one that lowers it. These are the two
+# shapes the module actually uses; `dantian.fill`/`dantic.drain` delegate to
+# `pool.change`, so the pool calls live in `dantian.gd`, which is not scanned.
+_QI_WRITES = re.compile(r"dantian\.fill\(|pool\.add\(|pool\.change\(\s*(?!-)")
+_QI_DRAINS = re.compile(r"dantian\.drain\(|pool\.current\s*-|pool\.current\s*=\s*0")
+_FUNC = re.compile(r"(?m)^(?:static )?func\s+([A-Za-z0-9_]+)\s*\(")
+
+
+def _code_lines(text: str) -> str:
+    """`text` without its comment-only lines (ADR 0188's rule for every guard)."""
+    return "\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#"))
+
+
+def _verbs(text: str) -> dict[str, str]:
+    """`{name: body}` for every function declaration in `text`, comments stripped.
+
+    A body runs to the next declaration or the end of the file, so a guard reads
+    one verb and never the module's prose about it.
+    """
+    source = _code_lines(text)
+    starts = [(match.start(), match.group(1)) for match in _FUNC.finditer(source)]
+    bodies: dict[str, str] = {}
+    for index, (offset, name) in enumerate(starts):
+        end = starts[index + 1][0] if index + 1 < len(starts) else len(source)
+        bodies.setdefault(name, source[offset:end])
+    return bodies
+
+
+def _read(path) -> str:
+    if path is None or not Path(path).is_file():
+        return ""
+    return Path(path).read_text(encoding="utf-8", errors="replace")
+
+
+def qi_catalyst_findings(
+    ladder: list,
+    realm_dir=None,
+    items: set[str] | None = None,
+    training=None,
+    condition=None,
+) -> list[str]:
+    """Every catalyst must resolve, be consumed, and stay OUT of every gate.
+
+    The restoration is only honest if all three hold. ADR 0096 deleted 90 items
+    because nothing consumed them and because the obvious fix — a fourth gate role
+    — was worse than the disease. So a catalyst no verb spends is the orphan ADR
+    0096 removed, and a catalyst the GATE reads is the tax it refused to author.
+    Both are content-graph facts only code can answer: those ids resolved in
+    `items/consumable` the whole time the family was orphaned.
+
+    Every input is injectable so `mutate.py` can aim the whole guard at a fixture.
+    """
+    findings: list[str] = []
+    seeds_dir = Path(QI_REALM_DIR if realm_dir is None else realm_dir)
+    known_items = _ids("items", "consumable") if items is None else items
+    training_source = _read(QI_TRAINING if training is None else training)
+    condition_source = _read(QI_CONDITION if condition is None else condition)
+    if not training_source:
+        findings.append(
+            "qi_catalyst_premise_unreadable: cannot read "
+            f"{_label(QI_TRAINING)}, so no catalyst's consumer could be found and an"
+            " unconsumed family would read as clean"
+        )
+        return findings
+
+    # Which roles does a verb actually SPEND? Both halves must sit in one body: the
+    # field name alone would match prose, and `consume_item` alone would match a
+    # different verb's price.
+    verbs = _verbs(training_source)
+    spent = {
+        role
+        for role in QI_CATALYST_ROLES
+        if any(f"seed.{role}" in body and "consume_item" in body for body in verbs.values())
+    }
+
+    for realm_id, _name, _tier in ladder:
+        path = seeds_dir / f"{realm_id}.tres"
+        if not path.is_file():
+            continue
+        scalars = load_seed(path)["scalars"]
+        for role in QI_CATALYST_ROLES:
+            item = str(scalars.get(role, ""))
+            if not item:
+                findings.append(
+                    f"qi_catalyst_unauthored: {realm_id}: {role} is (unauthored), so this realm"
+                    " offers no way to reach what the family exists for"
+                )
+                continue
+            if item not in known_items:
+                findings.append(
+                    f"qi_catalyst_item_missing: {realm_id}: {role} is {item!r} and does not"
+                    " resolve in items/consumable, so the verb that would spend it is refused"
+                    " before it does anything"
+                )
+            if role not in spent:
+                findings.append(
+                    f"qi_catalyst_unconsumed: {realm_id}: {role} ({item}) is authored and"
+                    " resolvable, but no verb in QiTraining consumes it, so the family is the"
+                    " orphan ADR 0096 deleted and ADR 0194 restored"
+                )
+
+    # The anti-0096 assertion. A gate is the ONLY place a mandatory item removes
+    # the player's only lever, so the whole gate is read as CODE and a catalyst role
+    # named anywhere inside it is the finding.
+    for name, body in _verbs(condition_source).items():
+        for role in QI_CATALYST_ROLES:
+            if role in body:
+                findings.append(
+                    f"qi_catalyst_gated: QiBreakthroughCondition.{name} reads {role}, which puts"
+                    " a mandatory consumable in a gate position: the player's only lever becomes"
+                    " holding the item rather than cultivating well (ADR 0096)"
+                )
+    return findings
+
+
+def qi_price_findings(training=None, transaction=None) -> list[str]:
+    """`cultivate` must cost something, and must never cost the reservoir.
+
+    Two shapes, one price:
+
+    - **Unpriced.** ADR 0180 ruled `cultivate` free and made that the ruling's
+      guard; the owner overruled it, so the guard now asserts the opposite. A verb
+      that spends no seed consumable is the finding.
+    - **Self-deadlocking.** `cultivate` is the SOLE writer of `QiStats.QI`:
+      `Actor._sync_core_resources` sizes regen for health and stamina only
+      (`actor.gd:153`), nothing ticks `ResourcePool.regen`, and every ascent zeroes
+      the pool (`breakthrough_transaction.gd:154`). So a verb that both raises and
+      lowers the reservoir is a verb charging the one resource it produces, and the
+      gate that demands a FULL reservoir can never be paid for. The test is
+      structural — every qi writer is also a qi drainer — because no value
+      assertion can see that shape.
+
+    Reads code lines only, and takes both sources as arguments so `mutate.py` can
+    aim them at a fixture.
+    """
+    findings: list[str] = []
+    training_source = _read(QI_TRAINING if training is None else training)
+    transaction_source = _read(QI_TRANSACTION if transaction is None else transaction)
+    if not training_source:
+        findings.append(
+            "qi_price_premise_unreadable: cannot read "
+            f"{_label(QI_TRAINING)}, so the price of a sitting was not checked"
+        )
+        return findings
+
+    verbs = {**_verbs(training_source), **_verbs(transaction_source)}
+    cultivate = verbs.get("cultivate", "")
+    # The price may be spent directly or by a PRIVATE helper the verb calls, and
+    # both are the verb's price: `cultivate` delegates the overflow to
+    # `_buy_overflow_quality` so the all-or-nothing rule lives in one place. One
+    # level deep, and only into `_`-prefixed verbs, so the guard cannot be
+    # satisfied by an unrelated public method that happens to spend something.
+    called = re.findall(r"\b(_[A-Za-z0-9_]+)\s*\(", cultivate)
+    priced = cultivate + "".join(verbs.get(name, "") for name in set(called))
+    if "consume_item" not in priced or not any(
+        f"seed.{role}" in priced for role in QI_CATALYST_ROLES
+    ):
+        findings.append(
+            "qi_cultivate_unpriced: QiTraining.cultivate spends no seed consumable, so a sitting"
+            " is free again and the ladder's only standing work is unbounded (ADR 0195)"
+        )
+
+    writers = {name for name, body in verbs.items() if _QI_WRITES.search(body)}
+    drainers = {name for name, body in verbs.items() if _QI_DRAINS.search(body)}
+    if drainers and writers <= drainers:
+        offenders = ", ".join(sorted(writers & drainers)) or ", ".join(sorted(drainers))
+        findings.append(
+            f"qi_price_self_deadlock: {offenders} both raise and lower the qi reservoir, and no"
+            " verb in the module is left that only raises it, so the verb is the sole source of"
+            " the resource it charges. Every realm demands dantian_fill_required == 1.0, so a"
+            " reservoir spent filling one can never pay for the sitting that refills it"
+            " (ADR 0180, ADR 0195)"
+        )
+    return findings
+
+
 def validate() -> list[str]:
     """Every finding in the body-cultivation content contract.
 
@@ -268,6 +461,8 @@ def validate() -> list[str]:
     findings.extend(_gate_soundness_findings(ladder, seeds))
     findings.extend(_qi_gate_soundness_findings(ladder))
     findings.extend(qi_gate_ladder_findings(ladder))
+    findings.extend(qi_catalyst_findings(ladder))
+    findings.extend(qi_price_findings())
     # The authored meridian corpus is checked against the list the runtime plays, not
     # used to grade anything. Both readings agree today, and that agreement is the
     # hazard: nothing else would notice the moment one of them moved (BL-0755).

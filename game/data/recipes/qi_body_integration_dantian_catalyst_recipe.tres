@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"qi_body_integration_dantian_catalyst_recipe"
+display_name = "Qi Body Integration Dantian Catalyst Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"qi_body_integration_guardian_core", &"qi_body_integration_cultivation_herb"])
+outputs = Array[StringName]([&"qi_body_integration_dantian_catalyst"])
