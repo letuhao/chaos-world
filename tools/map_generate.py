@@ -18,7 +18,10 @@ from .common import REPO_ROOT, ToolError
 
 DEFAULT_CHECKPOINT = "Flux1S/originByN0utis_originFluxAnimeV1.safetensors"
 DEFAULT_LORA = "flux/gokaygokayFlux-2D-Game-Assets-LoRA.safetensors"
-KREA2_MODEL = "krea2/raySemiReal_krea2TurboV1Nsfw.safetensors"
+# One resident model only: this PC has a single GPU and cannot hold two Krea2 UNETs
+# at once, so item generation shares the character workflow's model
+# (moodyKrea2Minimal_v40_api_v2.json node 761) instead of loading a second one.
+KREA2_MODEL = "krea2/vxpKrea2Nsfw_beta4AnimeINT8.safetensors"
 KREA2_CLIP = "qwen3vl_4b_fp8_scaled.safetensors"
 KREA2_VAE = "qwen_image_vae.safetensors"
 KREA2_LORAS = (
