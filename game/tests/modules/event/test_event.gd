@@ -207,8 +207,12 @@ func test_a_location_the_event_is_not_tied_to_hides_it() -> void:
 	assert_eq(String(refused.get("reason", "")), EventState.R_WRONG_LOCATION, "and only there")
 
 
-func test_an_ungated_event_is_available_anywhere_and_says_so() -> void:
-	# The disaster authors an EMPTY trigger, because nobody schedules a disaster.
+func test_a_gated_event_is_hidden_until_the_world_says_why() -> void:
+	# **The riven peak is NOT ungated.** It used to author `trigger = {}`, which every
+	# bare actor already passes — audit criterion 6b: a guard nobody can fail is
+	# theatre. It now waits on `storm_front_sighted`, which `WorldAmbient.ROSTER`
+	# really produces (`app/world_ambient.gd`, period 1). ADR 0065: a gate is DATA and
+	# must be satisfiable — neither a theatre nor a tombstone.
 	var actor := _actor(&"mortal_plains")
 	assert_eq(
 		_available_ids(actor).has(String(DISASTER)),
@@ -219,8 +223,16 @@ func test_an_ungated_event_is_available_anywhere_and_says_so() -> void:
 	assert_eq(bool(moved.get("ok", false)), true, "the actor moves")
 	assert_eq(
 		_available_ids(actor).has(String(DISASTER)),
+		false,
+		"and an unmet gate hides it even where it can happen"
+	)
+	# **The world says a front arrived** — the roster's own producer, not a test-only
+	# fact — and the same gate that held it back now lets it through.
+	_remember(actor, &"storm_front_sighted")
+	assert_eq(
+		_available_ids(actor).has(String(DISASTER)),
 		true,
-		"and an ungated event opens with no summons behind it"
+		"and a precondition the world really produces is what opens it"
 	)
 
 
@@ -358,9 +370,12 @@ func test_a_zero_period_stage_resolves_at_the_next_pull_and_not_before() -> void
 	# The auction's `hammer` is the final stage and authors `duration_periods = 0`,
 	# so it settles on the pull that reaches it.
 	var actor := _actor(&"immortal_court")
-	# The auction's own trigger, not the fact its first stage records: `begin` opens
-	# on the SUMMONS and the stage beats fire afterwards.
-	_remember(actor, &"court_invitation_received")
+	# **The auction's gate is `has_fate first_blood_duel`, satisfied the way the world
+	# satisfies it** — through `DestinyApi.earn_fate`, the verb
+	# `tournament_of_the_spirit_peaks.tres` pays it by. It used to record a
+	# `court_invitation_received` fact, an id **no writer in `game/src` produces**, so
+	# ADR 0065's rule was violated by the FIXTURE, not the content.
+	DestinyApi.earn_fate(actor, &"first_blood_duel", "test:tournament")
 	var opened := EventApi.begin(actor, AUCTION)
 	assert_eq(bool(opened.get("ok", false)), true, "the auction opened: %s" % opened)
 	assert_eq(_stage_id(actor, AUCTION), "lots_read", "on its first stage")
@@ -378,14 +393,35 @@ func test_a_zero_period_stage_resolves_at_the_next_pull_and_not_before() -> void
 
 
 func test_an_event_that_authors_no_stage_is_refused_by_name() -> void:
-	# A one-shot event (the rare treasure) authors no ladder at all. Opening it is
-	# refused rather than opening a stage that does not exist — so `stages` being
-	# optional in content does not make it optional in behaviour.
+	# The ladder-less shape is built and registered here rather than shipped as a
+	# `.tres`; the header above says why. The gate is one no actor can satisfy, so the
+	# fixture never perturbs another test's `available` list.
 	var actor := _actor(&"transcendent_realm")
-	var refused := EventApi.begin(actor, TREASURE)
+	var hollow := EventDef.new()
+	hollow.id = &"an_event_that_authors_no_stage"
+	hollow.display_name = "An Event That Authors No Stage"
+	hollow.kind = EventDef.KIND_RARE_TREASURE
+	hollow.location_id = &"transcendent_realm"
+	hollow.trigger = {"verb": &"fact", "id": &"no_world_produces_this_fact", "need": 1}
+	assert_eq(EventCatalog.instance().register(hollow), true, "the hollow def is well formed")
+	assert_eq(
+		_available_ids(actor).has(String(hollow.id)),
+		false,
+		"and never in `available`, so registering it cannot perturb another test"
+	)
+	var refused := EventApi.begin(actor, &"an_event_that_authors_no_stage")
 	assert_eq(bool(refused.get("ok", false)), false, "an event with no stages cannot open")
-	assert_eq(String(refused.get("reason", "")), EventState.R_NO_STAGES, "with a named reason")
+	assert_eq(
+		String(refused.get("reason", "")),
+		EventState.R_NO_STAGES,
+		"with a named reason, and NOT `trigger_unmet` — the ladder is read first"
+	)
 	assert_eq(int(EventApi.summary(actor)["active_count"]), 0, "and nothing was opened")
+	# **And the shipped treasure, which authors its one stage, still OPENS.** If the
+	# refusal above passed only because the ref was closed, this line would go red.
+	var opened := EventApi.begin(actor, TREASURE)
+	assert_eq(bool(opened.get("ok", false)), true, "the one-stage event opens: %s" % opened)
+	assert_eq(_stage_id(actor, TREASURE), "read", "on the single stage it authors")
 
 
 func test_the_rare_treasure_refuses_itself_a_second_time_through_none_of() -> void:
@@ -462,6 +498,10 @@ func test_the_once_guard_is_read_from_the_ledger_not_from_a_flag_in_the_caller()
 		"the once-guard reads `resolved`, which is set in the same write"
 	)
 
+
+# **Whether the guard FIRES is `test_event_once_guard.gd`** — `advance` erases the
+# active row in the same write that populates `paid`, so `has_paid`'s early-return
+# has no reachable caller through this path.
 
 # --- 5. The director owns no conflict arithmetic ----------------------------
 
