@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"gather", &"quest:A40_route", &"domain:loot_ember_vault_domain"])
+sources = Array[StringName]([&"gather", &"domain:loot_ember_vault_domain"])

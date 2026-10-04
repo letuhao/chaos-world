@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"spirit"
-sources = Array[StringName]([&"quest:decree_second_edict", &"boss:F12_sovereign_warden"])
+sources = Array[StringName]([&"boss:F12_sovereign_warden"])

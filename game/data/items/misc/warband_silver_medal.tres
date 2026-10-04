@@ -16,4 +16,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"trophy"
 grade = &"earth"
-sources = Array[StringName]([&"quest:warband_silver_medal", &"domain:qi_spirit_severing_trial"])
+sources = Array[StringName]([&"domain:qi_spirit_severing_trial"])

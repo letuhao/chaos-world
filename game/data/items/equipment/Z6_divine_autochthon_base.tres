@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:Z6_divine_autochthon_base_recipe", &"quest:Z6_divine_autochthon_line", &"domain:qi_spirit_manifestation_trial"])
+sources = Array[StringName]([&"craft:Z6_divine_autochthon_base_recipe", &"domain:qi_spirit_manifestation_trial"])

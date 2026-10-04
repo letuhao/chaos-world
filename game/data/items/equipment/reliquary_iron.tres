@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"gather", &"quest:A40_route", &"domain:succubus_mortal_domain"])
+sources = Array[StringName]([&"gather", &"domain:succubus_mortal_domain"])

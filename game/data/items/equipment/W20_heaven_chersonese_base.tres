@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:W20_heaven_chersonese_base_recipe", &"quest:W20_heaven_chersonese_line", &"domain:body_spirit_transformation_trial"])
+sources = Array[StringName]([&"craft:W20_heaven_chersonese_base_recipe", &"domain:body_spirit_transformation_trial"])

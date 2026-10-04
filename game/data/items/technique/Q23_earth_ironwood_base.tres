@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"earth"
-sources = Array[StringName]([&"craft:Q23_earth_ironwood_base_recipe", &"quest:Q23_earth_ironwood_line", &"domain:succubus_transcendent_domain"])
+sources = Array[StringName]([&"craft:Q23_earth_ironwood_base_recipe", &"domain:succubus_transcendent_domain"])

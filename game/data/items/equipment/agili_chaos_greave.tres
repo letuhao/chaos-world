@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"gather", &"quest:W23_route", &"domain:qi_transcendent_trial"])
+sources = Array[StringName]([&"gather", &"domain:qi_transcendent_trial"])

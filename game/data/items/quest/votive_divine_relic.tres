@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"relic"
 grade = &"divine"
-sources = Array[StringName]([&"quest:votive_of_the_divine", &"domain:body_spirit_sea_trial"])
+sources = Array[StringName]([&"domain:body_spirit_sea_trial"])

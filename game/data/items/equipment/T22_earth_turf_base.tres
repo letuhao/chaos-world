@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:T22_earth_turf_base_recipe", &"quest:T22_earth_turf_line", &"domain:body_spirit_manifestation_trial"])
+sources = Array[StringName]([&"craft:T22_earth_turf_base_recipe", &"domain:body_spirit_manifestation_trial"])

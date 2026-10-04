@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"quest:oath_of_thunder", &"boss:manual_thunder_ape"])
+sources = Array[StringName]([&"boss:manual_thunder_ape"])

@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"quest:oath_of_blood", &"domain:qi_core_formation_trial", &"domain:amulet_storm_phoenix_domain"])
+sources = Array[StringName]([&"domain:qi_core_formation_trial", &"domain:amulet_storm_phoenix_domain"])

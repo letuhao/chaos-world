@@ -16,4 +16,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"trophy"
 grade = &"spirit"
-sources = Array[StringName]([&"quest:warband_iron_standard", &"domain:qi_spirit_condensation_trial", &"domain:mind_void_refinement_trial"])
+sources = Array[StringName]([&"domain:qi_spirit_condensation_trial", &"domain:mind_void_refinement_trial"])

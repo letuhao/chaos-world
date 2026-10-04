@@ -16,4 +16,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"ledger"
 grade = &"heaven"
-sources = Array[StringName]([&"quest:ledger_of_silver", &"domain:qi_spirit_sovereign_trial"])
+sources = Array[StringName]([&"domain:qi_spirit_sovereign_trial"])

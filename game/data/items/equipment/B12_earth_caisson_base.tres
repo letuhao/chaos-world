@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:B12_earth_caisson_base_recipe", &"quest:B12_earth_caisson_line", &"domain:mind_spirit_transformation_trial"])
+sources = Array[StringName]([&"craft:B12_earth_caisson_base_recipe", &"domain:mind_spirit_transformation_trial"])

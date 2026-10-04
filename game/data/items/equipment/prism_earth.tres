@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"gather", &"quest:A40_route", &"domain:flame_valley"])
+sources = Array[StringName]([&"gather", &"domain:flame_valley"])

@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:I29_spirit_flote_base_recipe", &"quest:I29_spirit_flote_line", &"domain:qi_true_immortal_trial"])
+sources = Array[StringName]([&"craft:I29_spirit_flote_base_recipe", &"domain:qi_true_immortal_trial"])

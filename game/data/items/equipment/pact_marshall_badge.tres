@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"quest:pact_of_the_marshall", &"domain:body_spirit_transformation_trial"])
+sources = Array[StringName]([&"domain:body_spirit_transformation_trial"])

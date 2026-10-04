@@ -16,4 +16,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"seal"
 grade = &"heaven"
-sources = Array[StringName]([&"quest:dungeon_04", &"domain:qi_true_immortal_trial"])
+sources = Array[StringName]([&"domain:qi_true_immortal_trial"])

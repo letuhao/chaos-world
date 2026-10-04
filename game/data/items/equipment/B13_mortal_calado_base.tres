@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:B13_mortal_calado_base_recipe", &"quest:B13_mortal_calado_line", &"domain:mind_void_refinement_trial"])
+sources = Array[StringName]([&"craft:B13_mortal_calado_base_recipe", &"domain:mind_void_refinement_trial"])

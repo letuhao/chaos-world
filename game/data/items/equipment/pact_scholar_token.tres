@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"quest:pact_of_the_scholar", &"domain:body_tribulation_trial"])
+sources = Array[StringName]([&"domain:body_tribulation_trial"])

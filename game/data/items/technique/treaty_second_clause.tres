@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"spirit"
-sources = Array[StringName]([&"quest:treaty_second_clause"])
+sources = Array[StringName]([&"craft:treaty_second_clause_recipe"])

@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"powder"
 grade = &"mortal"
-sources = Array[StringName]([&"craft:Z24_mortal_blight_base_recipe", &"quest:Z24_mortal_blight_line", &"domain:beast_venom_serpent_domain"])
+sources = Array[StringName]([&"craft:Z24_mortal_blight_base_recipe", &"domain:beast_venom_serpent_domain"])

@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"treaty"
 grade = &"mortal"
-sources = Array[StringName]([&"quest:treaty_first_clause", &"domain:qi_true_immortal_trial"])
+sources = Array[StringName]([&"domain:qi_true_immortal_trial"])

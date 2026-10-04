@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"grimoire"
 grade = &"spirit"
-sources = Array[StringName]([&"craft:A23_spirit_bluecap_base_recipe", &"quest:A23_spirit_bluecap_line", &"domain:qi_body_integration_trial"])
+sources = Array[StringName]([&"craft:A23_spirit_bluecap_base_recipe", &"domain:qi_body_integration_trial"])

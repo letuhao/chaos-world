@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"greaves"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:V26_heaven_armistice_base_recipe", &"quest:V26_heaven_armistice_line", &"domain:body_tribulation_trial"])
+sources = Array[StringName]([&"craft:V26_heaven_armistice_base_recipe", &"domain:body_tribulation_trial"])

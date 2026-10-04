@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"lens"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:B16_mortal_calliope_base_recipe", &"quest:B16_mortal_calliope_line", &"domain:qi_dao_ancestor_trial"])
+sources = Array[StringName]([&"craft:B16_mortal_calliope_base_recipe", &"domain:qi_dao_ancestor_trial"])

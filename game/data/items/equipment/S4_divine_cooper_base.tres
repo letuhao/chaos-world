@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:S4_divine_cooper_base_recipe", &"quest:S4_divine_cooper_line", &"domain:qi_body_integration_domain"])
+sources = Array[StringName]([&"craft:S4_divine_cooper_base_recipe", &"domain:qi_body_integration_domain"])

@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"craft:S14_earth_turner_base_recipe", &"quest:S14_earth_turner_line", &"domain:marine_frost_mantaray_domain"])
+sources = Array[StringName]([&"craft:S14_earth_turner_base_recipe", &"domain:marine_frost_mantaray_domain"])

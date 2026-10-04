@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"armor"
 stackable = false
 grade = &"earth"
-sources = Array[StringName]([&"gather", &"quest:A40_route", &"domain:monster_venom_scorpion_domain"])
+sources = Array[StringName]([&"gather", &"domain:monster_venom_scorpion_domain"])

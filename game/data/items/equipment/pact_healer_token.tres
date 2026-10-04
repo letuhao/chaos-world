@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"quest:pact_of_the_healer", &"domain:body_spirit_sovereign_trial"])
+sources = Array[StringName]([&"domain:body_spirit_sovereign_trial"])

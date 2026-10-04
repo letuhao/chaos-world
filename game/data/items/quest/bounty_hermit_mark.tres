@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"bounty"
 grade = &"heaven"
-sources = Array[StringName]([&"quest:bounty_frost_hermit", &"domain:scroll_thunder_crane_domain"])
+sources = Array[StringName]([&"domain:scroll_thunder_crane_domain"])

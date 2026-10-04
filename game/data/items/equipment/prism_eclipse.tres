@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"gather", &"quest:W24_route", &"domain:manual_iron_tortoise_domain"])
+sources = Array[StringName]([&"gather", &"domain:manual_iron_tortoise_domain"])

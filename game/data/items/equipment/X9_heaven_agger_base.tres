@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:X9_heaven_agger_base_recipe", &"quest:X9_heaven_agger_line", &"domain:tome_abyssal_serpent_domain"])
+sources = Array[StringName]([&"craft:X9_heaven_agger_base_recipe", &"domain:tome_abyssal_serpent_domain"])

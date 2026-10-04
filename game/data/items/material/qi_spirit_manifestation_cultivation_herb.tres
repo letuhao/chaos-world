@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"spirit"
-sources = Array[StringName]([&"gather", &"quest:A40_route", &"domain:qi_great_luo_domain"])
+sources = Array[StringName]([&"gather", &"domain:qi_great_luo_domain"])
 description = "Cultivation herb for Spirit Manifestation. Gathered from the wild."

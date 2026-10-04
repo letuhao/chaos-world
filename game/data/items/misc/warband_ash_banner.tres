@@ -16,4 +16,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"trophy"
 grade = &"earth"
-sources = Array[StringName]([&"quest:warband_ash_banner", &"domain:body_dao_fruit_trial"])
+sources = Array[StringName]([&"domain:body_dao_fruit_trial"])

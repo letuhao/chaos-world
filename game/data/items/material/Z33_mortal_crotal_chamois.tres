@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"hide"
 grade = &"mortal"
-sources = Array[StringName]([&"gather", &"quest:A35_route", &"domain:mind_immortal_sovereign_trial"])
+sources = Array[StringName]([&"gather", &"domain:mind_immortal_sovereign_trial"])

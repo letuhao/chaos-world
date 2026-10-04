@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"quest:oath_of_the_beginner", &"boss:mind_spirit_transformation_warden", &"boss:F5_ascension_warden"])
+sources = Array[StringName]([&"boss:mind_spirit_transformation_warden", &"boss:F5_ascension_warden"])

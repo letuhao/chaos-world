@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"quest:oath_of_the_primordial", &"boss:qi_dao_ancestor_warden"])
+sources = Array[StringName]([&"boss:qi_dao_ancestor_warden"])

@@ -16,4 +16,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"bandolier"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"craft:I5_mortal_drayage_base_recipe", &"quest:I5_mortal_drayage_line", &"domain:beast_venom_serpent_domain"])
+sources = Array[StringName]([&"craft:I5_mortal_drayage_base_recipe", &"domain:beast_venom_serpent_domain"])

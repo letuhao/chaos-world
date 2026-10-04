@@ -16,4 +16,4 @@ roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"heaven"
-sources = Array[StringName]([&"craft:U18_heaven_zinnia_base_recipe", &"quest:U18_heaven_zinnia_line", &"domain:scroll_frost_serpent_domain"])
+sources = Array[StringName]([&"craft:U18_heaven_zinnia_base_recipe", &"domain:scroll_frost_serpent_domain"])

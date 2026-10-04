@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"artifact"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"quest:oath_of_the_endless", &"boss:F15_sovereign_arbiter"])
+sources = Array[StringName]([&"boss:F15_sovereign_arbiter"])

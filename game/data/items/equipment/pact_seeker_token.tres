@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"accessory"
 stackable = false
 grade = &"immortal"
-sources = Array[StringName]([&"quest:pact_of_the_seeker", &"domain:body_void_refinement_trial"])
+sources = Array[StringName]([&"domain:body_void_refinement_trial"])

@@ -17,4 +17,4 @@ roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
 subcategory = &"weapon"
 stackable = false
 grade = &"mortal"
-sources = Array[StringName]([&"gather", &"quest:A36_route", &"domain:monster_stone_golem_domain"])
+sources = Array[StringName]([&"gather", &"domain:monster_stone_golem_domain"])

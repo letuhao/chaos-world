@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather", &"quest:A40_route", &"domain:mind_spirit_transformation_trial"])
+sources = Array[StringName]([&"gather", &"domain:mind_spirit_transformation_trial"])
 description = "Cultivation herb for Great Ascension. Gathered from the wild."

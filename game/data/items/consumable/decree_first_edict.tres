@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"decree"
 grade = &"mortal"
-sources = Array[StringName]([&"quest:decree_first_edict", &"boss:F3_tribulation_warden", &"boss:F5_ascension_warden"])
+sources = Array[StringName]([&"boss:F3_tribulation_warden", &"boss:F5_ascension_warden"])

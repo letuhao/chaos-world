@@ -15,5 +15,5 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"herb"
 grade = &"mortal"
-sources = Array[StringName]([&"gather", &"quest:A40_route", &"domain:mind_spirit_unity_trial"])
+sources = Array[StringName]([&"gather", &"domain:mind_spirit_unity_trial"])
 description = "Gathered reagent for the realm's elixir."

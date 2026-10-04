@@ -16,4 +16,4 @@ roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"spirit"
-sources = Array[StringName]([&"craft:R21_spirit_pike_base_recipe", &"quest:R21_spirit_pike_line", &"domain:mind_earth_immortal_trial"])
+sources = Array[StringName]([&"craft:R21_spirit_pike_base_recipe", &"domain:mind_earth_immortal_trial"])

@@ -15,4 +15,4 @@ fixed_modifiers = Array[Dictionary]([
 roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
 subcategory = &"jade_slip"
 grade = &"heaven"
-sources = Array[StringName]([&"craft:T19_heaven_trawl_base_recipe", &"quest:T19_heaven_trawl_line", &"domain:succubus_earth_domain"])
+sources = Array[StringName]([&"craft:T19_heaven_trawl_base_recipe", &"domain:succubus_earth_domain"])

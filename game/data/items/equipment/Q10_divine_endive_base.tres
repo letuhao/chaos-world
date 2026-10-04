@@ -16,4 +16,4 @@ roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
 subcategory = &"orb"
 stackable = false
 grade = &"divine"
-sources = Array[StringName]([&"craft:Q10_divine_endive_base_recipe", &"quest:Q10_divine_endive_line"])
+sources = Array[StringName]([&"craft:Q10_divine_endive_base_recipe"])
