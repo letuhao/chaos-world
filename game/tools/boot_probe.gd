@@ -924,13 +924,23 @@ func _why_fight_did_not_pay(screen: Node, fight: Dictionary) -> String:
 	if bool(after.get("in_domain", false)):
 		return "%d strikes landed and the boss is still alive" % strikes
 	if int(after.get("reward_count", 0)) < 1:
-		# Name the boss. Every authored tier carries a non-empty `boss_tables`, so
-		# a boss that dies paying nothing is not missing data -- it is a boss the
-		# tier's table list does not cover, and the id is what makes that checkable.
-		return (
-			"the boss '%s' died and minted no reward at all"
-			% String(after.get("boss_id", "<unnamed>"))
-		)
+		# A cleared band is NOT a fault, and reading it as one is what made this
+		# message lie. LootState._advance spawns the next boss on defeat and, when
+		# `_first_undefeated_from` returns -1, calls `_clear` - so once every boss in
+		# the band is dead the screen publishes an EMPTY `boss_id` because `active` is
+		# gone. A two-boss band killed by a two-strike sweep therefore lands here with
+		# `boss_id` of "", which the old wording reported as "the boss '' died and
+		# minted no reward at all" - a fault against content that is perfectly correct.
+		# The empty id IS the signal, so read it as the signal.
+		var boss := String(after.get("boss_id", ""))
+		if boss.is_empty():
+			return (
+				"every boss in this band was defeated and the run cleared, so there is"
+				+ " no boss left to pay - the loop worked, not the content"
+			)
+		# A NAMED boss that dies paying nothing is a real gap: the tier binds it to a
+		# table, so either the table resolved to nothing or its route refused the roll.
+		return "the boss '%s' died and minted no reward at all" % boss
 	if int(after.get("pending_drops", 0)) < 1:
 		return "the reward lists drops but none are pending to claim"
 	return ""
