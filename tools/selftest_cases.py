@@ -1617,8 +1617,34 @@ def _bloodline_race_requires_a_species() -> None:
     expect(
         not clean,
         f"a character that names the species carrying the line was still refused: {clean}. "
-        f"The search must cover the whole record, or an author is forced to move the fact "
-        f"into a different field to satisfy a linter",
+        f"The search must cover the narrative fields, or an author is forced to move the "
+        f"fact into a different field to satisfy a linter",
+    )
+
+    # A MENTION is not a claim. Three real characters were passing for the wrong
+    # reason: one linked `races.stonebound` as a relationship (which says connected,
+    # not identical), one linked `races.echoless` deliberately as its mirror-opposite,
+    # and one carried the tag `gift:unwritten-ledger` while its race field named a
+    # bloodline. A substring search over the whole record accepts all three.
+    incidental = record(
+        "unique-0003",
+        a_bloodline,
+        "Carries the line. Her whole training is a discipline of not writing.",
+    )
+    incidental["tags"] = [f"gift:{species_name}-ledger"]
+    incidental["canon"]["relationships"] = [
+        {"to": f"races.{species_name}", "kind": "knows_about", "note": "a connection"}
+    ]
+    leaked = [
+        issue
+        for issue in unique_characters._validate([incidental], check_files=False)
+        if "bloodline" in issue
+    ]
+    expect(
+        bool(leaked),
+        "a character passed on a species name that appeared only in a tag and a "
+        "relationship, neither of which asserts what the character IS. A mention is "
+        "not a claim, and a guard that accepts one lets a record stay unspecified",
     )
 
 

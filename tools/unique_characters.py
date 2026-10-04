@@ -970,19 +970,57 @@ def bloodline_races(entries: dict) -> set[str]:
 
 
 def _names_a_species(record: dict, entries: dict, bloodlines: set[str]) -> bool:
-    """True when the record names any race that is a body rather than a descent.
+    """True when the record ASSERTS a species, rather than merely mentioning one.
 
-    Searches the whole record, not just `appearance.race`, because an author who wrote
-    "a tidecaller by way of the tideborn line" HAS grounded the character and should
-    not be made to move the fact into a different field to satisfy a linter.
+    Searches `appearance` and the narrative fields for a race that is a body rather
+    than a descent. Two things this deliberately does NOT accept, both found by
+    reading records that had been passing:
+
+    - a relationship pointing at a species. `unique-0026` names `races.stonebound` as
+      a relationship and passed, but a relationship says the character is CONNECTED to
+      that species, not that it IS one. `unique-0074` linked `races.echoless` as
+      "the_mirror_failure" - deliberately the opposite body - and passed.
+    - a bare word in a tag or a ledger's prose. `unique-0080` carried the tag
+      `gift:unwritten-ledger` and passed, on a character whose own race field named a
+      bloodline.
+
+    A substring search over the whole record, which is what this was first, accepts
+    all three. Four characters were passing incidentally when this was tightened.
     """
-    blob = json.dumps(record, ensure_ascii=False).lower()
+    fields: list[str] = []
+    appearance = record.get("appearance")
+    if isinstance(appearance, dict):
+        fields.extend(str(value) for value in appearance.values())
+    canon = record.get("canon")
+    if isinstance(canon, dict):
+        for key in ("role_in_story", "first_appearance", "lore"):
+            value = canon.get(key)
+            if isinstance(value, str):
+                fields.append(value)
+        history = canon.get("history")
+        if isinstance(history, list):
+            fields.extend(item for item in history if isinstance(item, str))
+        personality = canon.get("personality")
+        if isinstance(personality, dict):
+            summary = personality.get("summary")
+            if isinstance(summary, str):
+                fields.append(summary)
+            for key in ("traits", "mannerisms", "motivations", "flaws"):
+                values = personality.get(key)
+                if isinstance(values, list):
+                    fields.extend(item for item in values if isinstance(item, str))
+    blob = " ".join(fields).lower()
+    if not blob:
+        return False
     for race_id, entity in entries.items():
         if race_id in bloodlines or not isinstance(entity, dict):
             continue
         if entity.get("domain") != "races":
             continue
-        if race_id.split(".")[-1].lower() in blob:
+        name = race_id.split(".")[-1].lower()
+        # A whole-token match, so `unwritten-ledger` does not assert `races.unwritten`
+        # and `stone` does not assert `races.stonebound`.
+        if re.search(rf"\b{re.escape(name)}\b", blob):
             return True
     return False
 
