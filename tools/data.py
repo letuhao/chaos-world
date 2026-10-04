@@ -7,6 +7,7 @@ No Godot runtime required.
 
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 from typing import NamedTuple
@@ -1708,6 +1709,195 @@ def _destiny_findings(records: dict) -> tuple[list[str], list[str]]:
     return gaps, notes
 
 
+SLOT_TABLE = DATA_ROOT / "items" / "equipment_slots.json"
+# The grade a freshly built hero may wear. `ItemGrade.required_tier` maps a grade to
+# the realm tier that may equip it, and `Equipment._meets_requirements`
+# (game/src/modules/items/equipment.gd:251-256) refuses anything higher than the
+# actor's own tier. A new hero is built at the ladder's first realm, so MORTAL is the
+# only grade it can wear and every other grade is gear it cannot put on.
+MORTAL_GRADE = "mortal"
+# Bounds on the scan below. The corpus is read once per run and these are ceilings,
+# not targets: a corpus that grew past them is truncated loudly rather than silently
+# answering with a partial rate (AGENTS.md: a loop needs a real guard that names the
+# condition which failed to converge).
+GEAR_SCAN_FILE_CAP = 40000
+GEAR_SCAN_TABLE_CAP = 8000
+GEAR_SCAN_ENCOUNTER_CAP = 4000
+GEAR_SCAN_TIER_CAP = 80000
+
+
+def _wearable_by_grade() -> tuple[dict[str, str], dict[str, str]]:
+    """item id -> grade, and item id -> subcategory, for wearable equipment only.
+
+    "Wearable" is read from the game's OWN ruling rather than a list kept here.
+    `ItemSlots.is_wearable` answers it from the authored table
+    (`game/data/items/equipment_slots.json`), and `is_ruled` distinguishes a subtype
+    the table says nothing about from one it declares unwearable. A second copy of
+    that vocabulary in this file would be the ADR 0066 failure mode: two
+    declarations of one fact with nothing keeping them in agreement, which is how
+    488 items once fitted every slot at once.
+    """
+    table: dict = {}
+    if SLOT_TABLE.is_file():
+        try:
+            raw = json.loads(SLOT_TABLE.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            raw = {}
+        if isinstance(raw, dict):
+            table = raw
+    by_subtype = table.get("by_subtype", {}) if isinstance(table, dict) else {}
+    unwearable = table.get("unwearable", {}) if isinstance(table, dict) else {}
+    grades: dict[str, str] = {}
+    subs: dict[str, str] = {}
+    scanned = 0
+    for item_path in sorted((DATA_ROOT / "items").rglob("*.tres")):
+        if scanned >= GEAR_SCAN_FILE_CAP:
+            warn(
+                f"entry-band gear scan stopped at {GEAR_SCAN_FILE_CAP} item files; "
+                f"the rate below is a partial answer, not the corpus"
+            )
+            break
+        scanned += 1
+        text = item_path.read_text(encoding="utf-8", errors="replace")
+        if not re.search(r'(?m)^category\s*=\s*&"equipment"', text):
+            continue
+        subtype = re.search(r'(?m)^subcategory\s*=\s*&"([^"]*)"', text)
+        item_id = re.search(r'(?m)^id\s*=\s*&"([^"]*)"', text)
+        if not subtype or not item_id:
+            continue
+        name = subtype.group(1)
+        # A GUARD, not a measurement input, and the distinction is measured rather
+        # than assumed: mutating either half of this condition leaves the reported
+        # rate unchanged, because the entry band contains none of the eight ruled
+        # subtypes' excluded cases — no `gem` (the only unwearable the table
+        # declares) and no unruled subtype anywhere. So this line cannot change the
+        # number today. It stays because BL-0346 is exactly the shape it forecloses:
+        # an unruled subtype falls back to "fits every slot", and the day one reaches
+        # a fight table this becomes load-bearing. Do not read a green mutation here
+        # as proof the filter works — it is untested by construction, and the honest
+        # description is that it has nothing to exclude yet.
+        if name in unwearable or name not in by_subtype:
+            continue
+        grade = re.search(r'(?m)^grade\s*=\s*&"([^"]*)"', text)
+        grades[item_id.group(1)] = grade.group(1) if grade else ""
+        subs[item_id.group(1)] = name
+    return grades, subs
+
+
+def _entry_band_table_ids() -> set[str]:
+    """Table ids reachable from the LOWEST tier of each authored encounter.
+
+    The lowest tier is the band a freshly built hero can enter: the realm gate on
+    `LootApi.enter_domain` refuses everything above it, so a fight at a higher tier
+    is not a fight a new player can have. Sampling every table in the corpus instead
+    measures a population the starting hero never rolls from, which is how a median
+    of 33% gear share was read off tables whose median entry count is 1.
+    """
+    if not ENCOUNTER_DIR.is_dir():
+        return set()
+    wanted: set[str] = set()
+    seen = 0
+    tiers = 0
+    for path in sorted(ENCOUNTER_DIR.glob("*.tres")):
+        if seen >= GEAR_SCAN_ENCOUNTER_CAP:
+            break
+        seen += 1
+        text = path.read_text(encoding="utf-8", errors="replace")
+        numbers = [int(n) for n in re.findall(r"(?m)^tier\s*=\s*(\d+)\s*$", text)]
+        if not numbers:
+            continue
+        lowest = min(numbers)
+        for block in re.split(r'\[sub_resource type="Resource"', text):
+            tiers += 1
+            if tiers > GEAR_SCAN_TIER_CAP:
+                break
+            match = re.search(r"(?m)^tier\s*=\s*(\d+)\s*$", block)
+            if not match or int(match.group(1)) != lowest:
+                continue
+            wanted |= set(re.findall(r'"table_id":\s*&"([^"]*)"', block))
+    return wanted
+
+
+def _entry_band_gear_rate() -> tuple[int, int, int, str | None]:
+    """(wearable entries, mortal wearable entries, total entries, a named offender).
+
+    One rolled entry is the unit, because `LootTableDef.rolls` is how many entries a
+    table spends per resolve. Every entry in the entry band is counted, weighted by
+    nothing: the corpus authors `weight = 1.0` throughout, so an entry's chance of
+    being rolled IS its share of the table.
+    """
+    grades, _subs = _wearable_by_grade()
+    if not grades:
+        return 0, 0, 0, None
+    wanted = _entry_band_table_ids()
+    if not wanted:
+        return 0, 0, 0, None
+    tables: dict[str, list[str]] = {}
+    scanned = 0
+    table_dir = DATA_ROOT / "loot" / "tables"
+    if not table_dir.is_dir():
+        return 0, 0, 0, None
+    for path in sorted(table_dir.glob("*.tres")):
+        if scanned >= GEAR_SCAN_TABLE_CAP:
+            break
+        scanned += 1
+        text = path.read_text(encoding="utf-8", errors="replace")
+        # The LAST `id` in the file is the table's own; every sub_resource entry
+        # carries one before it, so a first-match regex resolves an ENTRY id and
+        # silently matches nothing.
+        ids = re.findall(r'(?m)^id\s*=\s*&"([^"]*)"', text)
+        for key in {ids[-1] if ids else path.stem, path.stem}:
+            if key in wanted:
+                tables[key] = re.findall(r'(?m)^item_id\s*=\s*&"([^"]*)"', text)
+    wearable = mortal = total = 0
+    offender: str | None = None
+    for table_id in sorted(wanted):
+        entries = tables.get(table_id, [])
+        for entry in entries:
+            total += 1
+            grade = grades.get(entry)
+            if grade is None:
+                continue
+            wearable += 1
+            if grade == MORTAL_GRADE:
+                mortal += 1
+            elif offender is None:
+                offender = entry
+    return wearable, mortal, total, offender
+
+
+def _entry_band_gear_findings() -> tuple[list[str], list[str]]:
+    """(errors, warnings) for gear a starting hero can actually put on."""
+    wearable, mortal, total, offender = _entry_band_gear_rate()
+    if total == 0:
+        return [], []
+    share = mortal / total
+    detail = (
+        f"a starting hero's entry band offers wearable gear on {mortal} of {total} "
+        f"rolled entries ({share * 100:.2f}%; {wearable} entries are wearable gear "
+        f"at some grade, so {wearable - mortal} are gear the grade gate refuses)"
+    )
+    # Below this, the primary loop's reward is not reachable in a play session: at
+    # 1% per roll two rolls pay gear about once every fifty fights. The threshold is
+    # a judgement about the product, not about the corpus, so it warns rather than
+    # fails -- but it warns LOUDLY, because `data audit` reporting 7983/7983
+    # obtainable while the loop's own reward is a 1-in-99 event is the kind of green
+    # that hides the thing it should be grading.
+    if share < 0.10:
+        return [], [
+            f"{detail}. BL-0625: Equipment._meets_requirements "
+            f"(game/src/modules/items/equipment.gd:251-256) refuses any item whose "
+            f"grade outranks the actor's realm tier, and a new hero is {MORTAL_GRADE}, "
+            f"so {wearable - mortal} of the {wearable} wearable entries in the band "
+            f"cannot be worn by the hero who earned them"
+            + (f"; e.g. {offender}" if offender else "")
+            + ". Cheapest honest fix is a guaranteed grade=mortal wearable entry per "
+            "entry-band table (LootEntry.guaranteed already exists and the entry band "
+            "never uses it); raising a probe's patience fixes nothing"
+        ]
+    return [], [f"{detail} (ok)"]
+
+
 def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
     gaps = _audit(root)
     records, _ = _load(root)
@@ -1738,6 +1928,12 @@ def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
     runtime = _runtime_findings(records)
     for note in _destiny_findings(records)[1]:
         warn(note)
+    # The entry band a starting hero can enter is a different population from the
+    # corpus, and it is the one the primary loop is graded on: fight, drop, equip.
+    # A green acquisition total says every item is reachable by SOME route; it says
+    # nothing about whether the route a new player can take ever pays gear.
+    for message in _entry_band_gear_findings()[1]:
+        warn(message)
     # The measurement prints BEFORE the verdict and nothing returns early above
     # it. A content gap used to `return 1` before this readout, so one bad
     # `sources` entry silently erased the deliverable count -- the single number
