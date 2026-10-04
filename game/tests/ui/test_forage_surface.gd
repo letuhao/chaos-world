@@ -57,7 +57,6 @@ const SHALLOW_NODE := &"foundation_yew_stand"
 const DEEP_NODE := &"core_formation_burrow"
 
 var _actor: Actor = null
-var _screen: ForageScreen = null
 
 
 func setup() -> void:
@@ -68,6 +67,18 @@ func setup() -> void:
 	EconomyBoot.install(null)
 	_actor = _hero()
 	EconomyBoot.install(_actor)
+	# **Then** a FRESH world ledger, and this is not belt-and-braces.
+	# `EconomyBoot._store_for` asks `SaveApi.store_for("holdings")` first and falls back to
+	# an in-memory `WorldLedger` only when nothing has registered one — and a suite that
+	# registered a DURABLE store earlier in the same process left its ledger ON DISK. The
+	# runner shares one process across every suite, so under `--suite ui` that disk holds
+	# another suite's claims, `HoldingsApi._state` reads them through `read_ledger`, and a
+	# node this file needs vacant arrives held: the claim comes back `contested` and this
+	# suite measures somebody else's ledger. `WorldLedger.new()` is the same isolation
+	# `tests/modules/holdings/test_holdings_claim.gd` uses, and it is a SHARED world
+	# ledger on purpose — a holder must be visible to a rival, or the custody cases below
+	# would pass against a per-actor ledger that can never disagree with itself.
+	HoldingsApi.set_store(WorldLedger.new())
 
 
 func teardown() -> void:
@@ -87,6 +98,21 @@ func _hero() -> Actor:
 	HoldingsApi.attach(actor)
 	actor.set_path(PathState.new(PathState.BODY, SHALLOW_REALM))
 	return actor
+
+
+## A node this hero can ACTUALLY take: vacant, on a band its realm permits, and with no
+## authored `claim_floor`. `HoldingsApi.claim` refuses `claim_below_floor` for a node that
+## declares one, because `_meets_floor` reads the OWNER ref's standing — a figure the
+## holdings module does not own and a bare `{kind, id}` ref can only ever report as 0. So
+## the claimable node is read off the facade rather than typed in: picking any deep node
+## would make every case in this file measure the floor rule instead of the surface.
+func _claimable_node() -> String:
+	for row in ForageApi.views(_actor):
+		var view: Dictionary = row as Dictionary
+		if bool(view.get("vacant", false)) and bool(view.get("permits", false)):
+			if int(view.get("claim_floor", 0)) <= 0:
+				return String(view.get("node_id", ""))
+	return ""
 
 
 ## A fresh, unbound screen. Every case frees what it is handed, because the runner shares
@@ -194,10 +220,25 @@ func test_the_summary_reports_the_custody_and_the_harvest_it_just_did() -> void:
 ## The route is REACHABLE, not merely shippable. A screen the composition root never
 ## mounts is reachable by nothing but this file, which is the shape the audit found.
 func test_the_gather_route_is_published_and_bound_to_a_key() -> void:
+	# The table names a route by SCENE, and its own seam back from a path to an id is
+	# `id_for_scene` — there is no `route_for_scene`. Asserting the loadable scene the
+	# table points at, plus the id that owns it, is the same claim read the way the shell
+	# reads it: the shell loads `ScreenRoutes.scene_of(id)` and refuses anything else.
 	assert_eq(
-		String(ScreenRoutes.route_for_scene(String(SCREEN_SCENE.resource_path))),
-		String(ROUTE),
-		"the route table mounts this screen"
+		ScreenRoutes.id_for_scene(String(SCREEN_SCENE.resource_path)),
+		ROUTE,
+		"the route table mounts this scene, and names it by id"
+	)
+	assert_eq(ScreenRoutes.has(ROUTE), true, "and the id is in the table")
+	assert_eq(
+		ScreenRoutes.scene_of(ROUTE),
+		String(SCREEN_SCENE.resource_path),
+		"and the route and the loaded scene are the same file, in both directions"
+	)
+	assert_eq(
+		SCREEN_SCENE.can_instantiate(),
+		true,
+		"so the path the table names is a scene that actually loads"
 	)
 	var action := ScreenRoutes.action_of(ROUTE)
 	assert_eq(InputMap.has_action(action), true, "and the action is declared in project.godot")
@@ -212,7 +253,12 @@ func test_the_gather_route_is_published_and_bound_to_a_key() -> void:
 ## binding arm calls `bind_harvest`, so an unbound screen would refuse `no_harvest_seam`
 ## forever and every other case in this file would be measuring a seam nobody injected.
 func test_the_binding_arm_names_the_harvest_seam_the_screen_cannot_reach_itself() -> void:
-	var source := FileAccess.get_file_as_string("res://src/app/item_workbench_app.gd")
+	# Read CODE, not the file: `item_workbench_app.gd` documents this route at length in a
+	# docstring that names `bind_harvest` and `ForageAction.gather` too, so a raw text
+	# scan of this file is asserting the comment rather than the wiring. Every scan in
+	# this file goes through `_code_only`, for the same reason `test_ui_conventions`
+	# strips comments before looking for `@onready`.
+	var source := _code_only("res://src/app/item_workbench_app.gd")
 	assert_ne(source.is_empty(), true, "the composition root's source is readable")
 	assert_eq(
 		source.count("bind_harvest"),
@@ -227,9 +273,9 @@ func test_the_binding_arm_names_the_harvest_seam_the_screen_cannot_reach_itself(
 	# And the screen may not name it: `app/` is a `PRIVATE_UNIT`, so the seam is the only
 	# door. Asserted from the screen's own source because that is the boundary this file
 	# is the proof of.
-	var screen_source := FileAccess.get_file_as_string(SCRIPT_PATH)
+	var screen_code := _code_only(SCRIPT_PATH)
 	assert_eq(
-		screen_source.contains("ForageAction"),
+		screen_code.contains("ForageAction"),
 		false,
 		"the screen names no `app/` type, so the harvest can only arrive as a Callable"
 	)
@@ -246,14 +292,18 @@ func test_the_binding_arm_names_the_harvest_seam_the_screen_cannot_reach_itself(
 ## claim a panel makes without ever calling the verb.
 func test_a_node_nobody_holds_is_not_workable_and_gathering_it_refuses_no_holder() -> void:
 	var screen := _bound()
+	# The held node is the shallow one, and the OTHER node is a second one this hero can
+	# take — so the only thing separating the two is custody, never the realm gate.
+	var held := String(SHALLOW_NODE)
 	assert_eq(
 		ForageAction.workable(_actor, SHALLOW_NODE),
 		false,
 		"an unheld node is not workable, whatever else is true of it"
 	)
-	screen.act_claim(String(SHALLOW_NODE))
-	var other := _vacant_node()
+	screen.act_claim(held)
+	var other := _claimable_node()
 	assert_ne(other, "", "setup: the corpus authors a node nobody holds")
+	assert_ne(other, held, "setup: and a second one this hero is on the band of")
 
 	screen.select_node(other)
 	assert_eq(
@@ -419,7 +469,7 @@ func test_the_stack_hooks_exist_and_cancel_is_left_to_the_stack() -> void:
 ## readable rather than a guess.
 func test_accept_claims_then_works_the_picked_node_in_the_orders_the_mechanic_requires() -> void:
 	var screen := _bound()
-	var node_id := _vacant_node()
+	var node_id := _claimable_node()
 	assert_ne(node_id, "", "setup: the corpus authors a node nobody holds")
 	screen.select_node(node_id)
 
@@ -504,8 +554,10 @@ func test_the_row_panel_prints_the_figures_and_the_screen_formats_none() -> void
 	var shown := row.summary()
 	assert_ne(shown, {}, "an authored node fills it")
 	var rates := String(shown["rates_line"])
+	# `str`, not `String(int)`: Godot 4.7 has no `String` constructor taking an int, and
+	# the figure has to be the one the row printed, so it is rendered the same way here.
 	assert_ne(
-		rates.find(String(int(shown["yield_per_period"]))),
+		rates.find(str(int(shown["yield_per_period"]))),
 		-1,
 		"the row prints the authored yield, which the def authored rather than the screen"
 	)
@@ -553,32 +605,34 @@ func test_the_row_keeps_the_three_custody_states_apart() -> void:
 ## The screen names NO module interior and no `app/` type. `tools arch` checks the module
 ## side of that boundary; this checks the UI side, by reading the shipped source.
 func test_the_screen_names_two_facades_and_nothing_else_from_either_module() -> void:
-	var screen_source := FileAccess.get_file_as_string(SCRIPT_PATH)
+	# `_code_only`, not the raw file: both scripts DOCUMENT the modules they are barred
+	# from — `ResourceNodeRow`'s own class note names `ForageApi`, and the screen's names
+	# `HoldingsState` in prose about the vocabulary it is handed. Scanning the file would
+	# assert the comment and fail on the very boundary it was written to prove.
+	var screen_code := _code_only(SCRIPT_PATH)
 	assert_eq(
-		screen_source.count("HoldingsApi.claim("),
-		1,
-		"the screen calls `claim` by name, exactly once"
+		screen_code.count("HoldingsApi.claim("), 1, "the screen calls `claim` by name, exactly once"
 	)
-	assert_eq(screen_source.count("HoldingsApi.release("), 1, "and `release` by name, exactly once")
+	assert_eq(screen_code.count("HoldingsApi.release("), 1, "and `release` by name, exactly once")
 	assert_eq(
-		screen_source.count("ForageApi.views("), 1, "and reads the forage facade once per refresh"
+		screen_code.count("ForageApi.views("), 1, "and reads the forage facade once per refresh"
 	)
 	for interior in ["HoldingsState", "ResourceNodeDef", "ResourceNodeCatalog", "WorldLedger"]:
 		assert_eq(
-			screen_source.contains(interior),
+			screen_code.contains(interior),
 			false,
 			"the screen names %s; ui/ may only reach the facade" % interior
 		)
 	assert_eq(
-		screen_source.contains("res://src/modules/"),
+		screen_code.contains("res://src/modules/"),
 		false,
 		"and paths into no module; a panel calls the facade by bare name"
 	)
 	# The panel holds the same line: it is a row of the same data.
-	var panel_source := FileAccess.get_file_as_string(PANEL_SCRIPT_PATH)
+	var panel_code := _code_only(PANEL_SCRIPT_PATH)
 	for interior in ["HoldingsApi", "ForageApi", "HoldingsState", "ResourceNodeDef"]:
 		assert_eq(
-			panel_source.contains(interior),
+			panel_code.contains(interior),
 			false,
 			"the row names %s either; it renders a dictionary and reaches nothing" % interior
 		)
@@ -587,22 +641,71 @@ func test_the_screen_names_two_facades_and_nothing_else_from_either_module() -> 
 ## The panel must resolve its widgets lazily, never in `@onready`, or a headless run that
 ## drives it with no scene tree binds nothing and renders nothing — which is the failure
 ## `test_ui_conventions.gd` exists to catch tree-wide and this file exists to make local.
+##
+## Read as code, for the reason the scan above gives: this panel's docstrings mention
+## `@onready` and `ForageApi` in the very sentences that forbid them.
 func test_the_row_binds_its_nodes_lazily_and_builds_no_widgets_in_ready() -> void:
-	var source := FileAccess.get_file_as_string(PANEL_SCRIPT_PATH)
-	assert_eq(source.contains("@onready"), false, "no @onready in a panel")
-	assert_eq(source.contains("func _bind_nodes()"), true, "it binds in _bind_nodes()")
-	assert_eq(source.contains(".new()"), false, "and mints no widget, which a scene mounts")
+	var code := _code_only(PANEL_SCRIPT_PATH)
+	assert_eq(code.contains("@onready"), false, "no @onready in a panel")
+	assert_eq(code.contains("func _bind_nodes()"), true, "it binds in _bind_nodes()")
+	assert_eq(code.contains(".new()"), false, "and mints no widget, which a scene mounts")
+
+
+## The last three bans, read off the SHIPPED screen: no `queue_free()` (a deferred free
+## never runs under a runner driven from `SceneTree._initialize()`, so it leaks a screen's
+## whole row pool for the life of the process), no `theme_override_*`, and no number
+## formatting of its own. Each is the rule a reviewer would otherwise have to re-read the
+## whole file to check.
+##
+## ## Why the formatting scan looks at ASSIGNMENT targets and not at `%d`
+##
+## The rule is "no number formatting in a screen — the panel owns `%d/%d`, decimals and
+## widths", and what it protects is the FIGURES A PLAYER READS. The screen may still name
+## a count it does not display: it grows its row pool with `row.name = "Node%d"`, and a
+## node's name in the scene tree is not an authored figure on a card. So the scan looks
+## for `%d`/`%.1f` in the same expression as an assignment to something a `Label` reads —
+## `text`, `rates_line`, `meta` — which is the only place a formatted number reaches a
+## player. Written as it is, the first version of this case failed red on the screen's own
+## pool naming, which is the scan measuring the wrong thing rather than the screen breaking
+## a rule.
+func test_the_screen_breaks_none_of_the_three_bans_the_ui_standard_states() -> void:
+	var code := _code_only(SCRIPT_PATH)
+	assert_eq(code.contains("queue_free"), false, "no queue_free(): the runner never defers")
+	assert_eq(code.contains("theme_override_"), false, "no theme_override_*: the theme owns style")
+	assert_eq(code.contains(".free()"), false, "and nothing is freed at all from a screen")
+	for sink in [".text =", "rates_line", "_meta =", "_custody =", "_head ="]:
+		for format in ["%d", "%.1f", "%.2f"]:
+			var line := ""
+			for candidate in code.split("\n"):
+				if candidate.contains(sink) and candidate.contains(format):
+					line = candidate
+					break
+			assert_eq(
+				line.is_empty(),
+				true,
+				"no formatted figure reaches a label: %s" % sink + (" (%s)" % format)
+			)
+	# The pool grows; it never mints a control the scene did not mount. `RowBudget` and
+	# `ActionSet` are the two things a screen legitimately grows and delegates to.
+	assert_eq(code.count("instantiate()"), 2, "it grows rows and only rows")
 
 
 # --- plumbing ----------------------------------------------------------------
 
 
-## A node this build authors that nobody holds, read off the facade's own table rather
-## than typed in. Returns `""` rather than guessing when every node is held, so the
-## calling case fails with a message instead of silently foraging somebody else's ground.
-func _vacant_node() -> String:
-	var rows := ForageApi.views(_actor)
-	for row in rows:
-		if bool((row as Dictionary).get("vacant", false)):
-			return String((row as Dictionary).get("node_id", ""))
-	return ""
+## The shipped source of `path` with every comment removed.
+##
+## A `#` line, and everything from an inline `#` to end of line, is prose. Asserting on
+## prose is worse than useless here: this suite's whole subject is a boundary BETWEEN what
+## a script says about a module and what it calls, and a docstring naming a banned symbol
+## would turn a real boundary check into a typo detector. Same shape as
+## `tests/ui/test_ui_conventions.gd:_strip_comments`.
+func _code_only(path: String) -> String:
+	var out: Array[String] = []
+	for line in FileAccess.get_file_as_string(path).split("\n"):
+		var trimmed := line.strip_edges()
+		if trimmed.begins_with("#"):
+			continue
+		var hash := line.find("#")
+		out.append(line.substr(0, hash) if hash >= 0 else line)
+	return "\n".join(out)

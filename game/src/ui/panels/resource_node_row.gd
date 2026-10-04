@@ -75,7 +75,9 @@ func show_node(view: Dictionary) -> void:
 		_render()
 		return
 	_view = view.duplicate(true)
-	_head = String(_view.get("display_name", "")) or String(_view.get("node_id", ""))
+	_head = String(_view.get("display_name", ""))
+	if _head == "":
+		_head = String(_view.get("node_id", ""))
 	if _head == "":
 		_head = UNKNOWN_TEXT
 	_custody = _custody_text()
