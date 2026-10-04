@@ -1187,6 +1187,32 @@ def _owning_shard(character_id: str) -> Path:
     return INDEX_PATH
 
 
+def _is_empty_shell(record: dict) -> bool:
+    """True when a draft row carries no authored content worth preserving.
+
+    A shell has an id, a name and a path, and nothing else: no lore, no history, no
+    relationships, no shots. Two earlier waves left twenty of these behind when
+    their agents finished without filling them.
+
+    This is the predicate that lets `add` fill an inherited shell instead of
+    refusing it. It is deliberately strict - anything with authored prose counts as
+    content, because overwriting authored work to satisfy a test is the one failure
+    mode here that loses bytes permanently.
+    """
+    if record.get("status") == "canon":
+        return False
+    canon = record.get("canon") or {}
+    art = record.get("art") or {}
+    authored = (
+        len(str(canon.get("lore", ""))) > 0
+        or len(str(canon.get("role_in_story", ""))) > 0
+        or bool(canon.get("history"))
+        or bool(canon.get("relationships"))
+        or bool(art.get("shots"))
+    )
+    return not authored
+
+
 def _add(args) -> int:
     # Validate against the READABLE catalog, not the strict one. An agent that wrote
     # its shard by hand left a torn line, and because `_add` validated the whole
@@ -1214,15 +1240,42 @@ def _add(args) -> int:
                 f"{args.character_id} already exists as a canon character in {owner}. "
                 f"Pick a fresh id; a canon record is never overwritten by `add`."
             )
-        raise ToolError(
-            f"{args.character_id} already exists as a {clash.get('status', 'draft')} "
-            f"row in {owner}, which is not the shard you are writing to. A canon "
-            f"record and its shell cannot both exist - `check` fails on a repeated "
-            f"id across shards, and that fails the WHOLE catalog, not just this "
-            f"character. Either fill the shell where it lives, or delete that one "
-            f"line from {owner} and add here. Do not rewrite the file: `add` is not "
-            f"the only writer of it."
+        if not _is_empty_shell(clash):
+            raise ToolError(
+                f"{args.character_id} already exists as a {clash.get('status', 'draft')} "
+                f"row in {owner} AND carries authored content, so filling it would "
+                f"overwrite written work. Read it, then either extend that record or "
+                f"pick a fresh id."
+            )
+        # An EMPTY shell is safe to fill, and filling it IN PLACE is the correct move.
+        # Splitting a wave across agents means a continuation agent inherits rows it
+        # cannot author through `add`, and for four agents in a row the only available
+        # answer was to hand-edit a file they did not own, delete their own lines from
+        # it, and leave the deletion uncommitted for the orchestrator. Twenty such
+        # shells survive from two waves whose agents finished without filling them.
+        #
+        # Promoting in place keeps the id, name and path already allocated there and
+        # writes to the shell's OWN shard, so no agent ever needs another agent's file
+        # again. A canon record still refuses, and a draft carrying authored prose
+        # still refuses, because overwriting written work is the one failure here
+        # that loses bytes permanently.
+        record = _blank_character(args.character_id, args.name, args.role, args.path, args.style)
+        # Validate with the shell REPLACED, not with the new record appended: the
+        # shell is about to be overwritten, so keeping both validates a duplicate id
+        # that will never exist on disk.
+        replaced = [record if item.get("id") == args.character_id else item for item in records]
+        issues = _validate(replaced, check_files=False)
+        mine = [issue for issue in issues if args.character_id in issue]
+        if mine:
+            raise ToolError(f"refusing to write an invalid record: {mine[0]}")
+        owner = _owning_shard(args.character_id)
+        _atomic_write([record], owner)
+        ok(
+            f"filled the empty shell {args.character_id} in place at "
+            f"{_display_path(owner)}; the id, name and path were already allocated "
+            f"there, and no other shard was touched"
         )
+        return 0
     record = _blank_character(args.character_id, args.name, args.role, args.path, args.style)
     issues = _validate([*records, record], check_files=False)
     if issues:

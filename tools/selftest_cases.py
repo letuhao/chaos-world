@@ -19,6 +19,7 @@ import io
 import json
 import os
 import pathlib
+import re
 import subprocess
 import tempfile
 from datetime import UTC, datetime, timedelta
@@ -1884,6 +1885,82 @@ def _species_command_filters_correctly() -> None:
         f"({len(race_records)} race records minus {len(bloodlines)} bloodlines). "
         f"Anything fewer means the filter is dropping legal species too, and the "
         f"no-leak assertions above would have passed it",
+    )
+
+
+@case("unique_characters: `add` FILLS an empty shell in place, and refuses real content")
+def _add_fills_empty_shell() -> None:
+    """The shell could not be filled, and that shaped four agents' behaviour wrongly.
+
+    Splitting a wave across agents means a continuation agent inherits shell rows
+    it cannot author, because `add` refused an id that already existed and the shell
+    lived in a file it had been told it did not own. Four agents in a row resolved
+    that the same way: hand-edit the other agent's file, delete their own lines,
+    leave the deletion uncommitted for the orchestrator to verify and commit. That
+    is a write-write collision wearing the disguise of careful behaviour, and it
+    left twenty shells behind from two waves whose agents finished without filling
+    them.
+
+    So `add` now promotes an EMPTY shell in place, writing to the shell's own shard.
+    The id, name and path already allocated there survive, and no agent needs
+    another agent's file again.
+
+    The safety property is what matters most and is asserted first: anything
+    carrying authored content must still REFUSE. Overwriting written prose is the
+    one failure mode here that loses bytes permanently, so the predicate is
+    deliberately strict - lore, role_in_story, history, relationships or a single
+    shot is enough to make a draft untouchable.
+    """
+    shell = {
+        "id": "unique-9001",
+        "name": "Shell",
+        "status": "draft",
+        "identity": {"role": "npc", "path": "qi"},
+        "appearance": {},
+        "tags": [],
+    }
+    authored = dict(shell, canon={"lore": "x" * 300, "history": [{}, {}, {}]})
+    part_authored = dict(shell, art={"shots": [{"id": "s"}]})
+
+    expect(
+        unique_characters._is_empty_shell(shell),
+        "a draft with no lore, no history, no relationships and no shots was not "
+        "recognised as an empty shell, so `add` cannot fill inherited rows",
+    )
+    expect(
+        not unique_characters._is_empty_shell(authored),
+        "a draft carrying authored lore was treated as an empty shell. Filling it "
+        "would delete written prose permanently",
+    )
+    expect(
+        not unique_characters._is_empty_shell(part_authored),
+        "a draft carrying a single shot was treated as empty. One shot is authored "
+        "content and is enough to make a row untouchable",
+    )
+    expect(
+        not unique_characters._is_empty_shell(dict(shell, status="canon")),
+        "a canon record was treated as an empty shell. A canon record is never "
+        "overwritten by `add`, whatever else it contains",
+    )
+
+    # A draft that is merely incomplete - a name and a path, no prose - is still a
+    # shell, and that is the exact shape waves 8 and 9 left behind.
+    named_only = {
+        "id": "unique-9002",
+        "name": "Wren Aldis",
+        "status": "draft",
+        "identity": {"role": "npc", "path": "unaffiliated"},
+        "appearance": {"race": "races.marshfolk"},
+        "tags": ["role:register-keeper"],
+        "canon": {"personality": {"traits": ["a", "b"]}},
+        "art": {"shots": []},
+    }
+    expect(
+        unique_characters._is_empty_shell(named_only),
+        "a draft with a name, a race and a personality block but no lore, history, "
+        "relationships or shots was treated as authored. This is precisely the shape "
+        "the abandoned shells have, and treating them as content would leave them "
+        "unfillable forever",
     )
 
 
@@ -4187,3 +4264,85 @@ def _claim_then_release_is_the_repair() -> None:
             "releasing one session took the OTHER session's live claim with it. On a shared "
             "tree that hands the paths back while the real owner is still working on them",
         )
+
+
+# --- The boot PROBE has no red path: `_boot_verdict` stubs the engine, so it tests
+# --- boot.run's verdict parsing and never loads game/tools/boot_probe.gd. Nothing else
+# --- in the gate reads the probe either - arch inspects game/src boundaries, and
+# --- boot.py consumes the probe's OUTPUT. `UNCOVERED_GUARDS = ()` therefore claims
+# --- coverage it does not have, and that claim is not academic: four consecutive
+# --- probe-logic bugs shipped green through this exact gap, every one a control-flow
+# --- decision reading a value the probe had never MEASURED.
+# ---
+# --- The condition below is pure data, so it needs no engine: a sweep report that
+# --- never set `baseline_wearable` must not read as "the Equip control accepted
+# --- nothing". Absence of a measurement is not a measurement of absence.
+PROBE_SOURCE = common.REPO_ROOT / "game" / "tools" / "boot_probe.gd"
+
+
+@case("boot probe: a sweep report that never MEASURED the baseline is not a dead seam")
+def _unmeasured_baseline_is_not_a_dead_seam() -> None:
+    """The break condition must key on the key's PRESENCE, not on its value alone.
+
+    Read as a source check rather than a behaviour check, and the reason is worth
+    stating: the condition lives in GDScript, which the Python self-test cannot
+    execute. Asserting on the SOURCE is the strongest thing available here, and it
+    is what catches the regression - the alternative is a GDScript unit, which would
+    need the engine this suite exists to avoid.
+    """
+    source = PROBE_SOURCE.read_text(encoding="utf-8")
+
+    # The break must be guarded by `.has(` on the key. A bare
+    # `get("baseline_wearable", "").is_empty()` is the bug: it reads absent as empty.
+    # Matched loosely on purpose - the point is that `has(` and `and` both appear
+    # between the key test and the emptiness test, not which helper is called.
+    guarded = re.search(
+        r'\.has\(\s*"baseline_wearable"\s*\)\s*and',
+        source,
+    )
+    expect(
+        guarded is not None,
+        "the sweep's break on a dead Equip control no longer requires "
+        "'baseline_wearable' to be PRESENT. Reading an absent key as an empty one "
+        "makes an unmeasured report indistinguishable from a measured 'nothing "
+        "equips', which is how a full bag and a successful equip each reported the "
+        "seam as dead (BL-0736, third instance).",
+    )
+
+    # And the emptiness test itself must live in one named place, so the distinction
+    # cannot be re-inlined away at a call site.
+    expect(
+        "func _seam_is_dead(" in source,
+        "the emptiness test is inlined again instead of living in _seam_is_dead, so "
+        "the presence check and the emptiness check can drift apart at the call site.",
+    )
+
+    # Both measurement sites must ASK rather than assert. A `""` literal returned for
+    # an undelivered drop is the first instance of this bug class.
+    asks = source.count("await _baseline_wearable(")
+    expect(
+        asks >= 2,
+        f"the probe asks _baseline_wearable in {asks} place(s); both the "
+        f"undelivered-drop path and the tried-and-rejected path must measure it. A "
+        f'path that returns a literal "" reports an answer nobody measured.',
+    )
+
+
+@case("boot probe: the probe source is reachable from the self-test at all")
+def _probe_source_is_readable() -> None:
+    """The case above is worthless if it silently reads nothing.
+
+    A guard that passes because its fixture vanished is the failure mode this whole
+    file exists to prevent, so the fixture's own existence is asserted.
+    """
+    expect(
+        PROBE_SOURCE.is_file(),
+        f"{PROBE_SOURCE} is missing, so the boot-probe cases would pass by reading "
+        f"nothing at all. That is a guard reporting ok on a tree it should reject.",
+    )
+    expect(
+        "extends SceneTree" in PROBE_SOURCE.read_text(encoding="utf-8"),
+        f"{PROBE_SOURCE} no longer looks like a SceneTree probe. The boot-probe cases "
+        f"match on its shape, so if the probe is restructured they must be rewritten "
+        f"rather than left to pass vacuously.",
+    )
