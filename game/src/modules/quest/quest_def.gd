@@ -35,9 +35,9 @@ const KINDS: Array[StringName] = [KIND_AUTHORED, KIND_SYSTEMIC, KIND_EMERGENT]
 ##   `fate`    — paid through `DestinyApi.earn_fate`. Fate ids are plain ids in
 ##               fate's OWN catalog and are never authored as `quest:*`.
 ##   `destiny` — paid through `DestinyApi.earn_destiny`, same rule.
-##   `item`    — an id for a future inventory delivery. ItemsApi is NOT a quest
-##               dependency, so this module RECORDS the grant as unspent rather
-##               than calling across a module it does not depend on.
+##   `item`    — an authored `ItemDef` id, delivered into the bag through
+##               `ItemsApi.generate` by `QuestGrants.pay`. A grant the game cannot
+##               deliver is recorded as unspent WITH ITS REASON, never dropped.
 const GRANT_FATE := &"fate"
 const GRANT_DESTINY := &"destiny"
 const GRANT_ITEM := &"item"
