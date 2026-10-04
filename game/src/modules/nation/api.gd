@@ -57,6 +57,16 @@ const SECT_FACADE := preload("res://src/modules/sect/api.gd")
 ## `modules/nation/` would report ZERO violations (ADR 0083).
 const SOCIAL_FACADE := preload("res://src/modules/social/api.gd")
 
+## ## The ONE shape a resolution reports
+##
+## Every path out of `resolve_conflict` returns the same keys, whatever the war
+## decided — `NationState.verdict_view` is where they are spelled, and the three
+## callers below are the three stages. A caller asking `closed`, `outcome` or
+## `standing_gained` of a verdict must never get an absent key back: a missing key
+## on a payload that otherwise exists cannot be told from a broken module, and
+## that is not hypothetical — four assertions in `test_nation_conflict.gd` read
+## exactly those keys, the bodies aborted on them, and the suite still went green.
+
 ## The actor component holding the live projection state.
 const STATE_COMPONENT := &"nation_state"
 ## `actor.module_data` key the versioned ledger is persisted under (ADR 0027).
@@ -114,8 +124,11 @@ static func attach(actor: Actor) -> void:
 		return
 	var ledger := _ledger(actor)
 	actor.set_module_data(MODULE_KEY, ledger)
-	_mirror(actor, ledger)
-	_project(actor, ledger)
+	# `NationResolve` owns these two since they moved out of this facade; calling
+	# them bare is a compile error that takes down EVERY suite, not only the ones
+	# with a nation dependency (INC-0027).
+	NationResolve._mirror(actor, ledger)
+	NationResolve._project(actor, ledger)
 
 
 ## Found the nation `actor` lives under, and seat its authored board. Founding a
@@ -148,7 +161,7 @@ static func found(actor: Actor, nation_id: StringName, founder_id: String = "") 
 	# copy of it. It does NOT move `standing`: that is what the nation thinks of
 	# the polity, and founding is a beginning rather than an earned reputation.
 	_regard(actor, nation_id, CAUSE_LIVED)
-	_persist(actor, ledger)
+	NationResolve._persist(actor, ledger)
 	var bus := NationProjection.events()
 	bus.nation_founded.emit(String(actor.id), nation_id, founder_id)
 	for office_id in def.vacant_office_ids():
@@ -186,7 +199,7 @@ static func claim_territory(actor: Actor, territory_id: StringName) -> Dictionar
 		return NationState.refuse(
 			NationState.R_ALREADY_HELD, {"territory_id": String(territory_id)}
 		)
-	var floor := catalog.tuning().claim_floor_for(def.tier_index)
+	var floor := _tuning().claim_floor_for(def.tier_index)
 	var standing := int(ledger["standing"])
 	if standing < floor:
 		return NationState.refuse(NationState.R_CLAIM_FLOOR, {"standing": standing, "floor": floor})
@@ -194,7 +207,7 @@ static func claim_territory(actor: Actor, territory_id: StringName) -> Dictionar
 		_take(ledger, territory_id, def)
 		_advance(ledger)
 		_record(ledger, "claimed", territory_id, "")
-		_persist(actor, ledger)
+		NationResolve._persist(actor, ledger)
 		NationProjection.events().territory_claimed.emit(String(actor.id), territory_id, self_id)
 		return _ok(ledger, {"territory_id": String(territory_id), "holder_id": self_id})
 	# Ground somebody holds: write a challenger, open one standoff, and leave
@@ -205,7 +218,7 @@ static func claim_territory(actor: Actor, territory_id: StringName) -> Dictionar
 	_declare_prize(ledger, id, _contested_prize(self_id, holder))
 	_advance(ledger)
 	_record(ledger, "challenged", territory_id, holder)
-	_persist(actor, ledger)
+	NationResolve._persist(actor, ledger)
 	NationProjection.events().war_declared.emit(
 		String(actor.id), id, StringName(holder), String(NationState.CONTEST)
 	)
@@ -228,7 +241,7 @@ static func release_territory(actor: Actor, territory_id: StringName) -> Diction
 	(ledger["claims"] as Dictionary).erase(String(territory_id))
 	_advance(ledger)
 	_record(ledger, "released", territory_id, holder)
-	_persist(actor, ledger)
+	NationResolve._persist(actor, ledger)
 	NationProjection.events().territory_released.emit(String(actor.id), territory_id, holder)
 	return _ok(ledger, {"territory_id": String(territory_id)})
 
@@ -289,7 +302,7 @@ static func accrue_territory(actor: Actor, periods: int) -> Dictionary:
 	var moved := int(ledger["standing"]) - before
 	_advance(ledger)
 	_record(ledger, "accrued", StringName(ledger["nation_id"]), "%d periods" % periods)
-	_persist(actor, ledger)
+	NationResolve._persist(actor, ledger)
 	NationProjection.events().territory_accrued.emit(
 		String(actor.id), settled, periods, int(ledger["standing"])
 	)
@@ -334,7 +347,7 @@ static func set_stance(actor: Actor, other_id: StringName, verb: StringName) -> 
 		"sequence": int(ledger["sequence"]),
 	}
 	_record(ledger, "stance", other_id, text)
-	_persist(actor, ledger)
+	NationResolve._persist(actor, ledger)
 	NationProjection.events().stance_changed.emit(self_id, key, other_id, text)
 	return _ok(ledger, {"pair_key": key, "verb": text})
 
@@ -376,7 +389,7 @@ static func declare_war(
 	_declare_prize(ledger, id, prize)
 	_advance(ledger)
 	_record(ledger, "declared", StringName(id), transfer)
-	_persist(actor, ledger)
+	NationResolve._persist(actor, ledger)
 	NationProjection.events().war_declared.emit(self_id, id, other_id, mode)
 	return _ok(ledger, {"standoff_id": id, "mode": mode, "quota": int(QUOTAS.get(mode, 3))})
 
@@ -385,9 +398,27 @@ static func declare_war(
 ## ran, a tournament result, a tribunal's ruling — and pay the DECLARED prize once
 ## the quota is met. **Never a fight**: no damage, no stat, no `rng` (ADR 0085).
 ##
-## Exhaustion decides whether a side may KEEP FIGHTING, never who owns ground: a
-## side whose losses reach `war_break` is refused further verdicts, and a forced
-## `withdrawal` pays the declared standing costs and **moves no territory**.
+## ## Exhaustion decides whether a side may KEEP FIGHTING, never who owns ground
+##
+## A side whose losses reach `war_break` is refused further verdicts
+## (`side_exhausted`) while the war is still open, and a forced `withdrawal` pays
+## the declared standing costs and **moves no territory**.
+##
+## The refusal was documented here for the whole life of the module and never
+## written: the break was read only at `_close`, so a broken side was counted
+## against the quota anyway and a tribunal resolved in a single verdict declared it
+## the winner. The document and the code disagreed, which is how a caller reading
+## `side_exhausted` never found it.
+##
+## ## The rules of a war that ends before its quota
+##
+## The one unambiguous case is a LOSING side that is already broken: nobody won it,
+## so it withdraws, the declared standing moves as a withdrawal does, and no ground
+## moves (ADR 0085). Nothing else ends a war early — a declared winner is never
+## refused for being the winner — so every other forced outcome lands as a
+## `stalemate`: the prize unpaid, no ground moved, the standoff closed and left to
+## be dealt with by a tribunal. Inventing a victory there is the one thing this
+## module must not do.
 static func resolve_conflict(
 	actor: Actor, standoff_id: StringName, winner_id: StringName, close_outcome: String = ""
 ) -> Dictionary:
@@ -401,7 +432,7 @@ static func resolve_conflict(
 		)
 	var standoff: Dictionary = (entry as Dictionary).duplicate(true)
 	if bool(standoff.get("closed", false)):
-		return _ok(ledger, {"standoff_id": String(standoff_id), "closed": true})
+		return _unpaid_verdict(ledger, standoff_id, standoff, true)
 	var winner := String(winner_id)
 	var sides: Dictionary = standoff["sides"]
 	if not sides.has(winner):
@@ -422,6 +453,36 @@ static func resolve_conflict(
 	sides[winner] = winner_side
 	sides[loser] = loser_side
 	standoff["sides"] = sides
+	# Whether the verdict closes the war, and under what name. An OPEN war only
+	# ever closes as a withdrawal or a stalemate — never as a resolution, so the
+	# quota below stays the one thing that can hand out a victory.
+	var forced := NationState.forced_close(standoff, loser, close_outcome, _catalog().war_break())
+	if not bool(standoff.get("closed", false)):
+		# A broken side may no longer fight. This is refused BEFORE the tally is
+		# written, so the verdict that broke it is the last one it takes part in and
+		# the refusal leaves the standoff exactly as the break found it. The refusal
+		# names both sides, because "the war is over for somebody" is only legible
+		# if the caller is told who stopped fighting.
+		if loser == "" or float(loser_side.get("exhaustion", 0.0)) >= _catalog().war_break():
+			return (
+				NationState
+				. refuse(
+					NationState.R_EXHAUSTED,
+					{
+						"standoff_id": String(standoff_id),
+						"winner_id": winner,
+						"loser_id": loser,
+						"exhausted_id": loser if loser != "" else winner,
+						"war_break": _catalog().war_break(),
+						"exhaustion": float(loser_side.get("exhaustion", 0.0)),
+					}
+				)
+			)
+		(ledger["standoffs"] as Dictionary)[String(standoff_id)] = standoff
+		NationResolve._persist(actor, ledger)
+		return _unpaid_verdict(
+			ledger, standoff_id, standoff, false, {"winner_id": winner, "loser_id": loser}
+		)
 	# One verdict is ONE exchange, and both sides' counters are two VIEWS of that one
 	# event: the winner's `won` and the loser's `lost` always move together. Adding
 	# them counts every verdict twice, which halves the effective quota — a siege
@@ -430,9 +491,11 @@ static func resolve_conflict(
 	var total := int(loser_side["lost"])
 	if total < int(standoff.get("quota", 1)):
 		(ledger["standoffs"] as Dictionary)[String(standoff_id)] = standoff
-		_persist(actor, ledger)
-		return _ok(ledger, {"standoff_id": String(standoff_id), "verdicts": total, "closed": false})
-	return _close(actor, ledger, standoff_id, standoff, winner, loser, close_outcome)
+		NationResolve._persist(actor, ledger)
+		return _unpaid_verdict(
+			ledger, standoff_id, standoff, false, {"winner_id": winner, "loser_id": loser}
+		)
+	return NationResolve.close(actor, ledger, standoff_id, standoff, winner, loser, forced, _regard)
 
 
 ## What this polity would do on `periods` elapsing, at `tier` — the proposal, not
@@ -536,7 +599,14 @@ static func summary(actor: Actor) -> Dictionary:
 	return out
 
 
-# --- Internals ---------------------------------------------------------------
+static func _unpaid_verdict(
+	ledger: Dictionary,
+	standoff_id: StringName,
+	standoff: Dictionary,
+	settled: bool,
+	detail: Dictionary = {}
+) -> Dictionary:
+	return NationResolve.unpaid_verdict(ledger, standoff_id, standoff, settled, detail)
 
 
 ## ## The ONE place this module moves `regard`, and it moves nothing else
@@ -579,7 +649,7 @@ static func _leave(actor: Actor) -> Dictionary:
 	_regard(actor, NationState.nation_id(ledger), CAUSE_LEFT)
 	var cleared := NationState.normalize({})
 	cleared["history"] = (ledger["history"] as Array).duplicate(true)
-	_persist(actor, cleared)
+	NationResolve._persist(actor, cleared)
 	return _ok(cleared)
 
 
@@ -590,7 +660,7 @@ static func _expel(actor: Actor) -> Dictionary:
 	_regard(actor, NationState.nation_id(ledger), CAUSE_EXPELLED)
 	var cleared := NationState.normalize({})
 	cleared["history"] = (ledger["history"] as Array).duplicate(true)
-	_persist(actor, cleared)
+	NationResolve._persist(actor, cleared)
 	return _ok(cleared)
 
 
@@ -631,7 +701,7 @@ static func _hold_office(actor: Actor, office_id: StringName, holder_id: String)
 	_advance(ledger)
 	_record(ledger, "seated", office_id, holder_id)
 	_regard(actor, NationState.nation_id(ledger), CAUSE_HELD_OFFICE)
-	_persist(actor, ledger)
+	NationResolve._persist(actor, ledger)
 	var bus := NationProjection.events()
 	bus.office_filled.emit(
 		String(actor.id), office_id, String(holder_id), NationState.nation_id(ledger)
@@ -643,6 +713,19 @@ static func _catalog() -> NationCatalog:
 	return NationCatalog.instance()
 
 
+## The shipped tuning, or `null` when the build does not ship one.
+##
+## `load()` returns `null` for a `.tres` that cannot be read, and every field of
+## `NationTuning` defaults to `0`, so a caller that treated that null as a tuning
+## would read "a defeat costs nothing, and a side breaks at zero exhaustion". The
+## second is not a harmless default: exhaustion is compared with `>=`, so a break of
+## zero declares EVERY side exhausted the moment it loses once, and every standoff
+## in the build refuses its first verdict. It happened here exactly that way. So the
+## absence is resolved where the tuning is resolved — `NationCatalog.tuning()` hands
+## back a zeroed struct rather than null, and the break is read through
+## `NationCatalog.war_break()`, which keeps a non-positive break as "nobody ever
+## breaks" rather than as "everybody is already broken". `shipped()` stays as the
+## load it was, for a caller that genuinely wants to know.
 static func _tuning() -> NationTuning:
 	return _catalog().tuning()
 
@@ -745,103 +828,6 @@ static func _contested_prize(challenger: String, holder: String) -> Dictionary:
 	}
 
 
-## Close a standoff and pay its DECLARED prize. The only arithmetic here is
-## `tally + transfer` (ADR 0085): a withdrawal moves NO territory, so the
-## declaration and the counter cannot decide a war between them.
-static func _close(
-	actor: Actor,
-	ledger: Dictionary,
-	standoff_id: StringName,
-	standoff: Dictionary,
-	winner: String,
-	loser: String,
-	forced: String
-) -> Dictionary:
-	var tuning := _tuning()
-	var deltas: Dictionary = (standoff["prize"] as Dictionary).get("standing", {})
-	var loser_side: Dictionary = (standoff["sides"] as Dictionary)[loser]
-	var winner_gain := int(deltas.get(winner, int(tuning.standing_on_win)))
-	var loser_cost := absi(int(deltas.get(loser, -int(tuning.standing_on_loss))))
-	var outcome := "resolved"
-	if forced != "":
-		outcome = forced
-	elif float(loser_side.get("exhaustion", 0.0)) >= tuning.war_break:
-		# Exhaustion decides whether a side may KEEP FIGHTING, never who owns
-		# ground. A broken side pays and moves nothing.
-		outcome = "withdrawal"
-	if outcome != "resolved":
-		winner_gain = int(deltas.get(winner, 0))
-		loser_cost = absi(int(deltas.get(loser, int(tuning.standing_on_surrender))))
-	var gained := _pay(ledger, winner, winner_gain)
-	var lost := _pay(ledger, loser, -loser_cost)
-	var transferred := ""
-	if (
-		outcome == "resolved"
-		and (
-			String((standoff["prize"] as Dictionary).get("transfer", ""))
-			== String(NationState.OWNERSHIP)
-		)
-	):
-		transferred = _transfer(ledger, standoff, winner)
-	standoff["winner_id"] = winner
-	standoff["outcome"] = outcome
-	standoff["closed"] = true
-	(ledger["standoffs"] as Dictionary)[String(standoff_id)] = standoff
-	_advance(ledger)
-	_record(ledger, outcome, StringName(winner), loser)
-	# A closed war is the one deed a nation records publicly about its own people, and
-	# it is what `fought_for_a_nation` is authored for. **Only the standing side gets
-	# it**: a war fought and lost is not a credential, and a cause applied to both
-	# sides would make the prize a participation trophy. A withdrawal is excluded too
-	# — the polity did not fight, it ran.
-	if outcome == "resolved" and winner == String(ledger.get("nation_id", "")):
-		_regard(actor, NationState.nation_id(ledger), CAUSE_FOUGHT)
-	_persist(actor, ledger)
-	NationProjection.events().conflict_resolved.emit(
-		String(actor.id), String(standoff_id), winner, outcome
-	)
-	return _ok(
-		ledger,
-		{
-			"standoff_id": String(standoff_id),
-			"outcome": outcome,
-			"winner_id": winner,
-			"loser_id": loser,
-			"standing_gained": gained,
-			"standing_lost": lost,
-			"territory_transferred": transferred,
-		}
-	)
-
-
-## Move a whole claim to `winner` and return the territory id, or `""` when there
-## was nothing to transfer. The claim row MOVES rather than merging: a territory
-## has exactly one holder, and two polities' rows for the same ground would be the
-## one-sided ownership a single canonical row exists to prevent.
-static func _transfer(ledger: Dictionary, standoff: Dictionary, winner: String) -> String:
-	var territory_id := String(standoff.get("territory_id", ""))
-	var entry = (ledger["claims"] as Dictionary).get(territory_id, null)
-	if territory_id == "" or not (entry is Dictionary):
-		return ""
-	var moved: Dictionary = (entry as Dictionary).duplicate(true)
-	moved["holder_id"] = winner
-	moved["held_since"] = int(ledger.get("sequence", 0))
-	moved["challenger_id"] = ""
-	(ledger["claims"] as Dictionary)[territory_id] = moved
-	return territory_id
-
-
-## Move one side's standing and return the amount that actually landed, clamped at
-## zero. A defeat lowers a number and never dissolves an institution (ADR 0085), and
-## a polity this actor does not speak for pays nothing.
-static func _pay(ledger: Dictionary, nation_id: String, delta: int) -> int:
-	if nation_id == "" or String(ledger.get("nation_id", "")) != nation_id:
-		return 0
-	var before := int(ledger["standing"])
-	ledger["standing"] = clampi(before + delta, 0, int(ledger["standing_cap"]))
-	return int(ledger["standing"]) - before
-
-
 static func _advance(ledger: Dictionary) -> void:
 	ledger["sequence"] = NationState.next_sequence(ledger)
 
@@ -853,42 +839,6 @@ static func _record(ledger: Dictionary, kind: String, id: StringName, detail: St
 	history.append(
 		{"kind": kind, "id": String(id), "detail": detail, "sequence": int(ledger["sequence"])}
 	)
-
-
-## Persist, rebuild the bounded PERCENT recognition, and keep the component in
-## step. The three effects are one operation because a ledger without a projection
-## is the one state a player cannot recover from.
-static func _persist(actor: Actor, ledger: Dictionary) -> void:
-	actor.set_module_data(MODULE_KEY, ledger)
-	_mirror(actor, ledger)
-	_project(actor, ledger)
-
-
-## Keep the `actor.components` mirror in step with the persisted payload.
-##
-## The mirror is a `RefCounted` holder rather than the dictionary itself because
-## `Actor.set_component` takes a `RefCounted` and the ledger is a plain
-## `Dictionary`. The ledger in `module_data` stays the single source of truth —
-## core persists it verbatim and never names a nation type — so the mirror is
-## only what a caller reads without going through the facade.
-static func _mirror(actor: Actor, ledger: Dictionary) -> void:
-	var mirror := actor.component(STATE_COMPONENT) as NationStateComponent
-	if mirror == null:
-		mirror = NationStateComponent.new()
-		actor.set_component(STATE_COMPONENT, mirror)
-	mirror.write(ledger)
-
-
-static func _project(actor: Actor, ledger: Dictionary) -> void:
-	var catalog := _catalog()
-	var nation_id := NationState.nation_id(ledger)
-	var granted := NationProjection.apply(
-		actor, ledger, catalog.office_definitions(nation_id), nation_id
-	)
-	var next := NationState.normalize(ledger, catalog.known_ids())
-	next["applied_percent"] = granted
-	actor.set_module_data(MODULE_KEY, next)
-	_mirror(actor, next)
 
 
 static func _string_list(values: Array[StringName]) -> Array:
@@ -917,7 +867,7 @@ static func _claim_view(
 		"yield_accrued": int(entry.get("yield_accrued", 0)),
 		"location_count": 0 if def == null else def.location_ids.size(),
 		"has_seat": def != null and def.has_seat(),
-		"upkeep": catalog.tuning().upkeep_for(tier),
+		"upkeep": _tuning().upkeep_for(tier),
 	}
 
 
