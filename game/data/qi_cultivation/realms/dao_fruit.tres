@@ -3,7 +3,6 @@
 [ext_resource type="Script" path="res://src/modules/qi_cultivation/realm_seed.gd" id="1"]
 
 [resource]
-dantian_tier = &"upper"
 script = ExtResource("1")
 id = &"dao_fruit"
 breakthrough_item = &"qi_dao_fruit_breakthrough_pill"
@@ -21,4 +20,3 @@ dantian_capacity = 725.0
 rewards = {
 "spirit": 2.0
 }
-
