@@ -1144,16 +1144,43 @@ def _granted_ids() -> set[str]:
     membership evidence, not a reason to crash, and a gate that raises when a
     route is removed cannot measure the removal. With no route there is no path
     to read and the honest answer is "nothing is granted".
+
+    And when the DECLARATION is not in the file the route names, `app/` is searched
+    for it rather than the answer being reported as "nothing is granted". The route's
+    `script` is a citation of where the constant USED to live, and the composition root
+    reorganising is routine: moving `STARTER_ITEMS` into a new base class
+    (`app/item_workbench_body.gd`) left the old file mentioning it only in a comment, so
+    this function returned an empty set, the starter route was reported as delivering
+    nothing, and one item was reported unobtainable through any shipping route. All of
+    that was FALSE, and it was false because a hardcoded path is a second copy of "where
+    this lives" — the exact thing a gate must never hold.
+
+    The search is bounded by a cap and only ever reads files under `app/`, which is a
+    small directory, so it cannot become a scan of the tree.
     """
     route = RUNTIME_ROUTES.get("starter")
     if route is None:
         return set()
-    path = SRC_DIR / route.script
-    if not path.is_file():
-        return set()
-    text = path.read_text(encoding="utf-8", errors="replace")
-    match = re.search(r"(?ms)^const STARTER_ITEMS[^=]*=\s*\[(.*?)\]", text)
-    return set(re.findall(r'&"([^"]*)"', match.group(1))) if match else set()
+    pattern = re.compile(r"(?ms)^const STARTER_ITEMS[^=]*=\s*\[(.*?)\]")
+    candidates: list[Path] = []
+    named = SRC_DIR / route.script
+    if named.is_file():
+        candidates.append(named)
+    app_dir = SRC_DIR / "app"
+    scanned = 0
+    if app_dir.is_dir():
+        for path in sorted(app_dir.glob("*.gd")):
+            if scanned >= STARTER_SCAN_FILE_CAP:
+                break
+            scanned += 1
+            if path not in candidates:
+                candidates.append(path)
+    for path in candidates:
+        text = path.read_text(encoding="utf-8", errors="replace")
+        match = pattern.search(text)
+        if match:
+            return set(re.findall(r'&"([^"]*)"', match.group(1)))
+    return set()
 
 
 def _authored_quest_ids() -> set[str]:
@@ -1982,6 +2009,8 @@ MORTAL_GRADE = "mortal"
 # condition which failed to converge).
 GEAR_SCAN_FILE_CAP = 40000
 GEAR_SCAN_TABLE_CAP = 8000
+# Bounded read of pp/ when locating a declaration the starter route names by path.
+STARTER_SCAN_FILE_CAP = 200
 GEAR_SCAN_ENCOUNTER_CAP = 4000
 GEAR_SCAN_TIER_CAP = 80000
 
@@ -2160,36 +2189,58 @@ def _entry_band_gap() -> tuple[int, int, str | None]:
     return len(needing), pool, needing[0] if needing else None
 
 
-def _entry_band_gear_findings() -> tuple[list[str], list[str]]:
-    """(errors, warnings) for gear a starting hero can actually put on."""
+def _entry_band_gear_findings() -> list[tuple[str, str]]:
+    """(errors, warnings) for gear a starting hero can actually put on.
+
+    The WARNING keys on whether an entry-band table can pay a hero gear AT ALL, not on
+    the share of rolled entries that are wearable. Those are different questions and
+    conflating them made this warn about a fixed defect: `LootEntry.guaranteed` is
+    resolved FIRST and UNCONDITIONALLY (`loot_resolver.gd:83-86`), so a table with one
+    pays it on every resolve regardless of the weighted draw — while the per-entry rate
+    only counts the weighted pool. Guaranteeing one entry in all 197 tables that lacked
+    one took the rate from 2.25% to only 4.65% while making every one of those tables
+    pay gear every time. A gate that keeps warning about a resolved defect is a gate
+    people learn to skip, which is worse than no gate.
+
+    So the rate stays reported as a measurement, and the warning is reserved for the
+    property that actually describes the loop: a band where some table can never pay the
+    hero anything they can wear.
+    """
     wearable, mortal, total, offender = _entry_band_gear_rate()
     if total == 0:
-        return [], []
+        return []
     share = mortal / total
     detail = (
         f"a starting hero's entry band offers wearable gear on {mortal} of {total} "
         f"rolled entries ({share * 100:.2f}%; {wearable} entries are wearable gear "
         f"at some grade, so {wearable - mortal} are gear the grade gate refuses)"
     )
-    # Below this, the primary loop's reward is not reachable in a play session: at
-    # 1% per roll two rolls pay gear about once every fifty fights. The threshold is
-    # a judgement about the product, not about the corpus, so it warns rather than
-    # fails -- but it warns LOUDLY, because `data audit` reporting 7983/7983
-    # obtainable while the loop's own reward is a 1-in-99 event is the kind of green
-    # that hides the thing it should be grading.
-    if share < 0.10:
-        return [], [
+    needing, _pool, _example = _entry_band_gap()
+    if needing == 0:
+        return [
+            (
+                "info",
+                f"{detail} (ok: every entry-band table can pay gear a {MORTAL_GRADE} "
+                "hero can wear, because a guaranteed entry resolves before the "
+                "weighted draw)",
+            )
+        ]
+    # A table that rolls no mortal wearable item cannot pay the loop's reward on any
+    # resolve, so this is a statement about the corpus rather than about a rate. It
+    # warns rather than fails because the threshold is a judgement about the product.
+    return [
+        (
+            "warn",
             f"{detail}. BL-0625: Equipment._meets_requirements "
             f"(game/src/modules/items/equipment.gd:251-256) refuses any item whose "
-            f"grade outranks the actor's realm tier, and a new hero is {MORTAL_GRADE}, "
-            f"so {wearable - mortal} of the {wearable} wearable entries in the band "
-            f"cannot be worn by the hero who earned them"
+            f"grade outranks the actor's realm tier, and a new hero is {MORTAL_GRADE}"
             + (f"; e.g. {offender}" if offender else "")
             + ". Cheapest honest fix is a guaranteed grade=mortal wearable entry per "
-            "entry-band table (LootEntry.guaranteed already exists and the entry band "
-            "never uses it); raising a probe's patience fixes nothing" + _entry_band_gap_note()
-        ]
-    return [], [f"{detail} (ok)"]
+            "entry-band table (LootEntry.guaranteed resolves first and unconditionally, "
+            "so the count bonus can neither add nor remove one); raising a probe's "
+            "patience fixes nothing" + _entry_band_gap_note(),
+        )
+    ]
 
 
 def _entry_band_gap_note() -> str:
@@ -2245,8 +2296,8 @@ def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
     # corpus, and it is the one the primary loop is graded on: fight, drop, equip.
     # A green acquisition total says every item is reachable by SOME route; it says
     # nothing about whether the route a new player can take ever pays gear.
-    for message in _entry_band_gear_findings()[1]:
-        warn(message)
+    for level, message in _entry_band_gear_findings():
+        info(message) if level == "info" else warn(message)
     # The measurement prints BEFORE the verdict and nothing returns early above
     # it. A content gap used to `return 1` before this readout, so one bad
     # `sources` entry silently erased the deliverable count -- the single number
