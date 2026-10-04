@@ -176,6 +176,58 @@ func test_loading_twice_replaces_socket_state_instead_of_appending() -> void:
 	)
 
 
+## A payload that is NOT empty but is missing sections must still load.
+##
+## `SocketLedger.migrate` defends against exactly this in two places — it substitutes an
+## empty dictionary for any section that is absent or is not a Dictionary, and then runs
+## the per-section migrations over the result. Nothing tested that defence. The suite had
+## a case for a payload with NO socket state at all and a case for a current payload, and
+## the shape in between — `parents` present, `channels` and `requests` absent — was
+## untested, so removing the substitution left all 828 socket assertions green.
+##
+## It was found by mutation rather than by reading, which is the only reason it is here.
+## The failure mode it guards is a hard error on a real save, not a wrong number, so it
+## shows up as a crash rather than a red assertion and reads like a flake if you meet it
+## first.
+##
+## Two mutations were tried, and the difference between them is the point. Deleting the
+## substitution CRASHES inside the per-section migration that follows it, so nothing here
+## runs and the harness's SCRIPT ERROR scan is what turns the tree red. Substituting a
+## wrong non-empty section does not crash, and that is the one an assertion has to catch
+## — it is the mutation this test is proven against.
+func test_a_partial_payload_missing_sections_still_loads() -> void:
+	var actor := _actor()
+	var built := _build_a_fully_dressed_host(actor)
+	var host: ItemInstance = built["host"]
+
+	var payload := actor.to_dict()
+	var state: Dictionary = payload["module_data"][SocketLedger.STATE_KEY]
+	assert_ne(state.has("channels"), false, "the fixture really did persist channels")
+	state.erase("channels")
+	state.erase("requests")
+
+	var loaded := Actor.from_dict(payload)
+	ItemsApi.attach(loaded)
+	SocketApi.attach(loaded)
+	var restored := SocketApi.socket_state(loaded)
+
+	assert_eq(
+		restored["channels"],
+		{},
+		"a payload missing its channels section loaded without substituting an empty one",
+	)
+	assert_eq(
+		restored["requests"],
+		{},
+		"a payload missing its requests section loaded without substituting an empty one",
+	)
+	assert_eq(
+		restored["parents"][String(host.instance_id)]["slots"].size(),
+		1,
+		"and the section that WAS present still round-tripped its slot",
+	)
+
+
 func _modifier_delta(effects: Array) -> int:
 	return (
 		ItemEffects.stat_modifiers(effects, &"probe").size()
