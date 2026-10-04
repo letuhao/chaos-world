@@ -80,6 +80,15 @@ const ROUTE_TECHNIQUE_LOADOUT := &"technique_loadout"
 ## the route that reaches both, and the arm in `_bind_route_screen` is the one
 ## line that injects `ForageAction.gather` as the seam the screen cannot name.
 const ROUTE_FORAGE := &"forage"
+## The shop surface (ADR 0100 / DEF-0218). A PURE CONSUMER like the readout: the
+## priced read model AND the verbs both require an `app/` type the screen may not
+## name, so all three arrive as Callables here and the screen calls the read model
+## `MarketApi` by bare name for its purse alone.
+const ROUTE_MARKET := &"market"
+## The auction surface (ADR 0102). HALF a consumer: `MarketApi.list` takes only the
+## bound actor and two plain ids, so the screen escrows by name; the BID is
+## `AuctionBids.bid`, an `app/` type, so only that one arrives as a Callable.
+const ROUTE_AUCTION := &"auction"
 ## The fight page (ADR 0197). A PURE CONSUMER like the readout: all five verbs arrive on
 ## the ADR 0143 seam. The route was DECLARED in `screen_routes.gd` with no arm here, so
 ## the page refused `no_fight_seam` forever.
@@ -248,6 +257,25 @@ func _ready() -> void:
 	# going back for it. `subscribe` refuses a duplicate, so a second boot of this root
 	# cannot install two bridges and double every counter from here on.
 	DestinyProjection.subscribe_to_fact_ledger()
+	# ## The other half of the same fix (ADR 0149): a quest completes where a FACT is written
+	#
+	# `quest` subscribes to the same hook slot, for the same reason and with the same
+	# measurement behind it. `QuestApi.advance` — the only verb that completes a quest —
+	# had exactly ONE production caller, `BeatDirector`, whose only production offer
+	# point is `WorldPulse.offer`: `world_period_elapsed` plus the four
+	# `WorldAmbient` roster facts. **No authored quest step watches any of those five.**
+	# Every authored step watches `sect_post_held`, `oaths_discharged`,
+	# `household_heir_registered`, `third_man_spared` or `duels_won` — all written by
+	# module writers that bypass the director by design (ADR 0137) — so a player could
+	# satisfy every step of a quest in play and it never completed. Every quest in
+	# `data/quest/quests/` was unfinishable.
+	#
+	# Beside the destiny line and BEFORE anything can record a fact, for the reasons
+	# above it: the ledger is the one chokepoint all eight writers reach, the director
+	# is not, and a subscriber installed after a record has already missed that
+	# occurrence — permanently, the ledger being monotone. `subscribe` refuses a
+	# duplicate, so a second boot of this root installs no second bridge.
+	QuestFactProjection.subscribe_to_fact_ledger()
 	# A newborn is minted through a Callable rather than built inline, because
 	# `fertility` may not name `app/` (BL-0280). Without this the child is a bare
 	# `Actor.new()` with no health pool, so it cannot be damaged or healed. Installed
@@ -930,6 +958,54 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# documents.
 			screen.call("setup", _actor)
 			screen.call("bind_harvest", Callable(ForageAction, "gather"))
+		ROUTE_MARKET:
+			# The shop surface (ADR 0100 / DEF-0218). `ShopCounter.at_location`
+			# publishes the priced shelf and the `can_buy` a shop panel needs, and
+			# called itself "the door a caller actually walks through" while nothing
+			# in the shipped program ever did. `ShopCounter` is `app/`, and `app` is
+			# the only entry in `rules.PRIVATE_UNITS`, so the screen may neither name
+			# the type nor read through it.
+			#
+			# The VERBS are the stronger reason. `MarketApi.buy(shop_actor, player,
+			# rows)` and `sell(shop_def, shop_actor, player, rows)` both take a shop
+			# `Actor`, and the only thing that can mint one is `ShopCounter.counter`,
+			# which caches per shop id precisely so the goods LEAVE the merchant. A
+			# screen that minted its own counter would hand every caller a full
+			# shelf and make the spread testable but the game nonsense — and a
+			# screen may not mint an `Actor` at all, since `ActorFactory` is `app/`.
+			# So `_market_buy` / `_market_sell` below resolve the counter and forward
+			# by SHOP ID, which is the one identifier both sides can hold.
+			#
+			# `MarketApi` itself needs no seam: `market` is declared in
+			# `rules.UI_MODULES`, so the screen reads its purse by bare name exactly as
+			# `ForageScreen` reads `HoldingsApi.claim`.
+			screen.call("setup", _actor)
+			screen.call("at_location", _market_location())
+			screen.call(
+				"bind_market",
+				Callable(ShopCounter, "at_location"),
+				Callable(self, "_market_buy"),
+				Callable(self, "_market_sell")
+			)
+		ROUTE_AUCTION:
+			# The auction surface (ADR 0102). `AuctionReadModel` published a
+			# primitives-only row for every lot in the world — `required_bid`,
+			# `high_bid`, `high_bid_amount` — and no screen read any of it, so who
+			# was winning an auction was computed and invisible.
+			#
+			# **This route is HALF a consumer, and the half is the point.** The ESCROW
+			# (`MarketApi.list`) takes only the bound actor and two plain ids, so the
+			# screen calls it by bare name — `market` is a declared `UI_MODULES` grant,
+			# the same reach `ForageScreen` has on `HoldingsApi.claim`. The BID is
+			# `AuctionBids.bid`, an `app/` type this screen may not name, and it is
+			# also the ONLY place the bid decision exists: it derives
+			# `AuctionState.bid_ceiling(purse, tags)` from the bidder's appetite tag
+			# and refuses `auction_ceiling_below_required` for a shallow purse. A
+			# screen that re-derived any of that would be a second price path
+			# (ADR 0094), so the verb arrives whole and the player chooses WHETHER to
+			# bid rather than typing an amount.
+			screen.call("setup", _actor)
+			screen.call("bind_auction", Callable(AuctionBids, "bid"))
 		_:
 			screen.call("setup", _actor)
 
@@ -976,6 +1052,68 @@ func _purge_combat_scope() -> Array[String]:
 	if _status_loop == null:
 		return []
 	return _status_loop.exit_combat()
+
+
+## The market row the hero is standing in, as a shop `location_id`.
+##
+## ## Why the root answers this rather than the screen
+##
+## `ShopDef.location_id` is authored content that differentiates a travelling merchant
+## without a second price formula, and `ShopCatalog.at_location` is the ONE answer to
+## "which shops are in this room". The id itself lives on `WorldSpawnApi.current`,
+## which is `world_spawn/api.gd` — and `world_spawn` is NOT in `rules.UI_MODULES`, so
+## a screen may not ask. The composition root asks it on the screen's behalf and hands
+## over a plain `StringName`, which is all the screen ever needed.
+##
+## ## An unlocated hero reads as NO location, not a guess
+##
+## `WorldSpawnApi.current` publishes `located: false` for a body nobody has moved, and
+## "nowhere in particular" is a representable state rather than a failure. A defaulted
+## location here would be the caravan-trades-everywhere defect ADR 0100 names, so the
+## honest answer is an empty id and the screen renders an empty market row.
+func _market_location() -> StringName:
+	if _actor == null:
+		return &""
+	var here := WorldSpawnApi.current(_actor)
+	if not bool(here.get("located", false)):
+		return &""
+	return StringName(here.get("location_id", ""))
+
+
+## Buy `rows` from the shop named by `shop_id`, on behalf of `player`.
+##
+## ## Why the shop id crosses the seam and the `Actor` does not
+##
+## `MarketApi.buy(shop_actor, player, rows)` needs a merchant `Actor`, and only
+## `ShopCounter.counter` can mint one — it resolves the authored def, realizes the
+## def's own seeded stock, funds the purse from that stock's worth, and CACHES the
+## result per shop id so the goods a merchant has already sold stay sold. A screen
+## cannot mint an `Actor` (`ActorFactory` is `app/`) and must not build its own
+## counter, so the root resolves the cached merchant here and the screen only ever
+## holds the id a content author wrote.
+##
+## The screen does the pricing, and so does the settlement: it picks a line off the
+## shelf `ShopCounter.summary` already priced, and `MarketApi.buy` prices that same row
+## through the same `MarketTransfer.quote`. What the panel showed is what the verb
+## charges, by construction rather than by agreement.
+func _market_buy(shop_id: StringName, player: Actor, rows: Array) -> Dictionary:
+	var counter := ShopCounter.counter(shop_id)
+	if counter == null:
+		return {"ok": false, "reason": ShopCounter.UNKNOWN_SHOP, "coins": 0}
+	return MarketApi.buy(counter, player, rows)
+
+
+## Sell `rows` to the shop named by `shop_id`, on behalf of `player`.
+##
+## `MarketApi.sell` additionally takes the `ShopDef` so it can enforce the authored
+## `buys` list and refuse `shop_will_not_buy` — which is how a black market is authored
+## rather than priced. The root resolves the def from the same catalog the counter came
+## from, so the two halves can never disagree about which shop was meant.
+func _market_sell(shop_id: StringName, player: Actor, rows: Array) -> Dictionary:
+	var counter := ShopCounter.counter(shop_id)
+	if counter == null:
+		return {"ok": false, "reason": ShopCounter.UNKNOWN_SHOP, "coins": 0}
+	return MarketApi.sell(ShopCatalog.instance().definition(shop_id), counter, player, rows)
 
 
 ## The navigation bar asks; this root decides. One request in, one screen out.
