@@ -524,11 +524,43 @@ func test_the_rows_show_the_body_and_the_paths_it_closes() -> void:
 	var view: Dictionary = (branch as CreationBranchRow).summary()
 	assert_eq(ORIGINS.has(String(view.get("id", ""))), true, "and it is an arrival")
 	assert_ne(String(view.get("race_name", "")), "", "the row names the body")
+	# The paths a body CLOSES are read from that body's own `RaceDef`, so this is
+	# the body's truth rather than a re-derivation of it. The hero is built for
+	# THIS row's origin and asked, which means the assertion follows the CONTENT:
+	# the row whose body closes nothing passes with an empty list, instead of the
+	# test hard-coding which arrival that happens to be - which broke the moment the
+	# row order changed.
+	var origin_id := StringName(String(view.get("id", "")))
+	var built := CharacterCreationFlow.new().build(origin_id)
+	assert_eq(bool(built.get("ok", false)), true, "the arrival builds: %s" % String(view.get("id", "")))
+	var hero := built.get("actor", null) as Actor
+	assert_ne(hero, null, "and mints a hero to ask")
+	var def := RaceApi.race_definition(hero)
+	assert_ne(def, null, "whose body is authored")
+	var closed: Array = []
+	for path_id in (def as RaceDef).closed_paths:
+		closed.append(String(path_id))
+	closed.sort()
+	var reported: Array = (view.get("closed_paths", []) as Array).duplicate()
+	reported.sort()
 	assert_eq(
-		(view.get("closed_paths", []) as Array).is_empty(), false, "and the paths that body closes"
+		reported,
+		closed,
+		"%s reports the paths its %s body closes" % [origin_id, String(view.get("race_name", ""))]
 	)
-	assert_eq(String(view.get("body_line", "")).contains("body"), true, "shown as a line")
-	assert_eq(String(view.get("paths_line", "")).contains("cannot cultivate"), true, "so is that")
+	# And the row says so in prose, whatever the answer is: a body that closes
+	# nothing must not claim it "cannot cultivate" anything.
+	var paths_line := String(view.get("paths_line", ""))
+	if closed.is_empty():
+		assert_eq(
+			paths_line.contains("cannot cultivate"),
+			false,
+			"%s closes nothing, so its line must not forbid" % origin_id
+		)
+	else:
+		assert_eq(
+			paths_line.contains("cannot cultivate"), true, "%s names what it forbids" % origin_id
+		)
 
 
 func test_the_confirm_button_commits_through_the_flow() -> void:
