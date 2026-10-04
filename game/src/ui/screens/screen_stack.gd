@@ -50,6 +50,27 @@ func push(screen: Control) -> Control:
 	return screen
 
 
+## Mount the screen registered under `id` (ADR 0184's `register_screen` seam):
+## resolve the scene path through [ScreenRegistry], load and instantiate it exactly
+## as a route scene is mounted, and push it. Returns the screen, or null with a
+## named `push_error` when the id is unknown or its scene will not load — a
+## screen that cannot mount is a reported refusal, never a silent hole.
+func push_registered(id: String) -> Control:
+	var scene_path := ScreenRegistry.path_of(id)
+	if scene_path.is_empty():
+		push_error("ScreenStack: no screen registered under '%s'" % id)
+		return null
+	var packed := load(scene_path) as PackedScene
+	if packed == null:
+		push_error("ScreenStack: screen '%s' has no scene at %s" % [id, scene_path])
+		return null
+	var screen := packed.instantiate() as Control
+	if screen == null:
+		push_error("ScreenStack: screen '%s' instantiates to no Control" % id)
+		return null
+	return push(screen)
+
+
 ## Drop the top screen and hand the live slot back to the one below it. Returns
 ## the removed screen, or null when the stack was already empty.
 ##
