@@ -315,7 +315,32 @@ def _read_links(
         issues.append(f"item {item_id}: missing asset link")
     for item_id in sorted(linked.keys() - winners.keys()):
         issues.append(f"item {item_id}: linked without a unique matching rule")
+    issues.extend(_orphan_images(records))
     return linked, issues
+
+
+def _orphan_images(records: list[dict]) -> list[str]:
+    """Report generated PNGs that no family references.
+
+    The rest of the audit walks records -> items, so it never looks at the
+    generated directory and a file nothing points at is invisible to it. An
+    interrupted generation leaves exactly that: the PNG is installed and then
+    the index write never happens. `assets generate` then refuses to
+    overwrite it and the family can never be created, so the two orphans
+    below blocked their own sweep silently while `assets audit` stayed green.
+    """
+    referenced = {record["path"].removeprefix("res://") for record in records}
+    directory = GAME_DIR / "assets" / "items" / "generated"
+    if not directory.is_dir():
+        return []
+    orphans = sorted(
+        path.name
+        for path in directory.glob("*.png")
+        if path.relative_to(GAME_DIR).as_posix() not in referenced
+    )
+    return [
+        f"generated image is not referenced by any asset family: {name}" for name in orphans
+    ]
 
 
 def _write_links(records: list[dict], winners: dict[str, str]) -> None:
