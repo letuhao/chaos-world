@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 ; Playable entry point and the game's only composition root. The shell is a
 ; navigation bar over a screen stack; every screen itself comes from the route table
@@ -12,6 +12,7 @@
 [ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/nav/nav_bar.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://src/ui/screens/screen_stack.tscn" id="4"]
+[ext_resource type="Script" path="res://src/app/mod_boot.gd" id="5"]
 
 [node name="ItemWorkbenchApp" type="Control"]
 layout_mode = 3
@@ -22,6 +23,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2")
 script = ExtResource("1")
+
+; Early mod step (ADR 0184): children ready before the root, so the load order
+; is computed and the ctx stored before the shell wires anything of its own.
+[node name="ModBoot" type="Node" parent="."]
+script = ExtResource("5")
 
 [node name="Layout" type="MarginContainer" parent="."]
 layout_mode = 1

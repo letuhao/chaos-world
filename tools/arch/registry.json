@@ -162,6 +162,12 @@
         "race"
       ]
     },
+    "mods": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
     "nation": {
       "deps": [
         "contracts",

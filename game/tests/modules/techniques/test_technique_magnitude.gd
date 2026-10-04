@@ -35,6 +35,14 @@ const TECHNIQUE_STEP := 1.035714
 
 const LADDER := preload("res://data/techniques/technique_magnitude_table.tres")
 
+## The three sources the runtime-read cases below read. Spelled out literally rather than
+## assembled from a unit name, because this file is a suite outside `src/` and the arch
+## gate's `res://` rule binds `ui/`: a moved file must be a failing assertion, not a
+## silently skipped scan.
+const SPINE := "res://src/modules/combat_engine/spine.gd"
+const READ_MODEL := "res://src/modules/techniques/technique_read_model.gd"
+const SCALES := "res://src/modules/techniques/technique_scales.gd"
+
 
 func _entry(realm_id: StringName) -> float:
 	return float(LADDER.values.get(realm_id, -1.0))
@@ -137,3 +145,142 @@ func test_it_stays_an_order_of_magnitude_below_the_actor_power_table() -> void:
 func test_an_unknown_realm_is_neutral() -> void:
 	for realm_id in [&"", &"not_a_realm"]:
 		assert_almost_eq(LADDER.magnitude_for(realm_id), 1.0, "neutral at %s" % realm_id)
+
+
+# --- The runtime reads the table ----------------------------------------------
+##
+## Everything above asserts the DATA, and none of it could have caught the defect these
+## cases close, because the defect was not a wrong number. `CombatSpine.base_damage` gated
+## a technique magnitude with `RealmRate.factor` -- the TRAINING rate -- while
+## `TechniqueReadModel.magnitude_now` computed `pow(TECHNIQUE_STEP, ordinal)`, and the
+## authored ladder was opened by NOTHING in `res://src`. Both wrong readings agree with the
+## table to 2.5e-6 (R30: 1.775845 and 2.766659 against an authored 2.7666560), so every value
+## assertion in this file passed while combat and the UI each priced a technique
+## differently. That is "a green guard is not a tested guard" (INC-0016) in its purest
+## form: only the STRUCTURAL fact is assertable here, so only that is asserted.
+
+
+## Both surfaces that price a technique name the table's own lookup. Read from SOURCE,
+## not from behaviour, because a uniform bypass -- both sides wrong the same way -- is
+## invisible to any comparison between them and agrees with the table to six figures.
+func test_the_hit_and_the_display_both_name_the_authored_table() -> void:
+	for path in [SPINE, READ_MODEL]:
+		var source := _code_only(path)
+		assert_ne(source, "", "%s is readable" % path)
+		assert_eq(
+			source.contains("TechniqueMagnitudeTable.factor"),
+			true,
+			(
+				("%s reads the authored ladder by realm id rather than computing one from a" % path)
+				+ " ordinal or a rate"
+			)
+		)
+
+
+## The rate does not come back as a technique's realm axis. This is the second half of
+## the same guard and the reason it is not one assertion: naming the table is satisfied
+## by a call that sits NEXT TO a `RealmRate.factor` multiply, and the defect was a rate
+## standing in for the ladder, so both shapes have to be named.
+func test_the_training_rate_is_not_a_technique_magnitude_anywhere() -> void:
+	var spine := _code_only(SPINE)
+	assert_ne(spine, "", "spine.gd is readable")
+	assert_eq(
+		spine.contains("RealmRate.factor"),
+		false,
+		"the spine prices a technique through its own ladder, never the training rate"
+	)
+
+
+## The closed form is gone from the module, not merely unused. A surviving
+## `magnitude_at` is a second read path with no caller today and a caller tomorrow,
+## and it is the exact shape that let the bug hide: a number that matches the table to
+## 2.5e-6 is indistinguishable from the table to every value assertion.
+func test_the_closed_form_is_gone_from_the_module() -> void:
+	var scales := _code_only(SCALES)
+	assert_ne(scales, "", "technique_scales.gd is readable")
+	assert_eq(
+		scales.contains("func magnitude_at"),
+		false,
+		"no ordinal-indexed magnitude survives beside the authored one"
+	)
+	assert_eq(
+		scales.contains("pow(TECHNIQUE_STEP"),
+		false,
+		"and the step is never a runtime curve: it authored the table, it does not replace it"
+	)
+
+
+## The call is LOAD-BEARING, not merely present. A `factor` that quietly answered 1.0
+## would satisfy the three structural cases above and make every deep technique a
+## mortal one, so the number the spine builds must move with the realm it reads.
+func test_the_spine_prices_a_deep_technique_through_the_ladder() -> void:
+	var early := _actor_at(&"qi_refining")
+	var late := _actor_at(&"primordial_origin")
+	var def := _def_at(2.0)
+	var early_base := CombatSpine.base_damage(early, def)
+	var late_base := CombatSpine.base_damage(late, def)
+	assert_almost_eq(early_base, 2.0, "R1 pays the authored magnitude unscaled", 0.0001)
+	assert_almost_eq(
+		late_base,
+		2.0 * LADDER.magnitude_for(&"primordial_origin"),
+		"R30 pays the authored ladder's top rung",
+		0.001
+	)
+	assert_eq(late_base > early_base, true, "and depth is worth something")
+
+
+## The displayed number and the hit base are the same number. The structural cases above
+## cannot see a ONE-SIDED drift -- a panel fixed to `actor.realm()` while the spine reads
+## something else, or the reverse -- because they only ask whether each names the table.
+## This asks the question a player would ask: is the figure on screen the figure that
+## was swung.
+func test_the_displayed_magnitude_is_the_number_the_hit_is_built_from() -> void:
+	var realms := RealmDefaults.ladder().realms()
+	var checked := 0
+	for index in range(0, realms.size()):
+		var realm_id: StringName = realms[index].id
+		var actor := _actor_at(realm_id)
+		var def := _def_at(2.0)
+		var shown := float(TechniquesApi.inspect(actor, def)["magnitude_now"])
+		var swung := CombatSpine.base_damage(actor, def)
+		assert_almost_eq(shown, swung, "at %s the panel and the blow agree" % realm_id, 0.0001)
+		assert_almost_eq(
+			swung,
+			2.0 * LADDER.magnitude_for(realm_id),
+			"at %s the blow reads the authored rung" % realm_id,
+			0.0001
+		)
+		checked += 1
+	assert_eq(checked, 30, "every realm on the ladder was walked")
+
+
+## A source file with every comment line dropped. The docblocks on these files QUOTE the
+## bug -- `spine.gd` names `RealmRate.factor` to say it no longer calls it, and
+## `technique_scales.gd` names `pow(TECHNIQUE_STEP` to say it no longer computes it -- so a
+## raw text scan reports the documentation of the fix as the fix's return. Every structural
+## case below matches CODE only. Bounded by `split("\n")`, which is the whole file.
+func _code_only(path: String) -> String:
+	var lines := FileAccess.get_file_as_string(path).split("\n")
+	var kept: Array[String] = []
+	for line in lines:
+		if not line.strip_edges().begins_with("#"):
+			kept.append(line)
+	return "\n".join(kept)
+
+
+func _actor_at(realm_id: StringName) -> Actor:
+	var actor := Actor.new(&"ladder_probe")
+	actor.set_path(PathState.new(PathState.QI, realm_id))
+	TechniquesApi.attach(actor)
+	return actor
+
+
+func _def_at(magnitude: float) -> TechniqueDef:
+	var def := TechniqueDef.new()
+	def.id = &"ladder_probe_def"
+	def.display_name = "Probe"
+	def.grade = ItemGrade.MORTAL
+	def.active = false
+	def.path = PathState.QI
+	def.magnitude = magnitude
+	return def

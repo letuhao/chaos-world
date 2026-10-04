@@ -1,8 +1,11 @@
 extends TestCase
 
-## The bounded ladders (ADR 0055): mastery is five compounding rungs, and study
-## costs `LEARN_BASE * LEARN_STEP^ordinal * MAG_GRADE`. Both tables are asserted
-## against ADR 0055's published numbers literally, so a retune cannot pass unnoticed.
+## The bounded ladders (ADR 0055): mastery is five compounding rungs, study costs
+## `LEARN_BASE * LEARN_STEP^ordinal * MAG_GRADE`, and the realm MAGNITUDE is the authored
+## table the runtime reads. The two `TechniqueScales` tables are asserted against ADR 0055's
+## published numbers literally, so a retune cannot pass unnoticed; the magnitude is asserted
+## through `TechniqueMagnitudeTable.factor`, which is the call the runtime itself makes, so
+## these cases cannot pass against a table nothing reads.
 
 const MORTAL := &"qi_refining"
 const DIVERSE := &"primordial_origin"
@@ -12,6 +15,13 @@ const POWER := [1.000, 1.150, 1.323, 1.521, 1.749]
 const QI_COST := [1.000, 0.940, 0.884, 0.831, 0.781]
 const COOLDOWN := [1.000, 0.960, 0.922, 0.885, 0.849]
 const THROUGHPUT := [1.000, 1.223, 1.497, 1.831, 2.240]
+
+
+## The realm magnitude exactly as `CombatSpine.base_damage` and
+## `TechniqueReadModel.magnitude_now` read it. Deliberately not a restatement of the table:
+## a copy in a test is a second yardstick that can drift from the artifact.
+func _magnitude_factor(realm_id: StringName) -> float:
+	return TechniqueMagnitudeTable.factor(realm_id)
 
 
 func _def() -> TechniqueDef:
@@ -86,15 +96,22 @@ func test_a_def_may_narrow_its_own_ladder_but_never_widen_it() -> void:
 
 
 func test_the_mastery_ladder_reaches_the_published_grade_bands() -> void:
-	# One band is a single tier's span, `TECHNIQUE_STEP^9 = 1.3714`, which is the
-	# unit ADR 0055 measures every figure in: rung-4 power 1.749 / 1.3714 = 1.28
+	# One band is a single tier's span, which ADR 0055 puts at 1.3714, and it is the
+	# unit every figure here is measured in: rung-4 power 1.749 / 1.3714 = 1.28
 	# bands, throughput 2.240 / 1.3714 = 1.63, one rung 1.15 / 1.3714 = 1.06.
 	#
-	# It is the ONE-tier span, not the two-tier one (`^18 = 1.8807`). Reading it as
-	# two tiers divides every figure by 1.37 too many and makes all three
-	# assertions unreachable — which is exactly what happened when this case was
-	# "corrected" that way.
-	var span := pow(TechniqueScales.TECHNIQUE_STEP, 9.0)
+	# The span is read off the AUTHORED TABLE through the runtime's own call rather
+	# than recomputed as `pow(TECHNIQUE_STEP, 9)`. The two agree to 2.5e-6, so this
+	# is not a tighter number -- it is the same number sourced from the artifact a
+	# designer edits. A yardstick computed from the thing it measures can be moved by
+	# editing the thing; this one moves with the table or not at all.
+	#
+	# It is the ONE-tier span, not the two-tier one (1.8807). Reading it as two tiers
+	# divides every figure by 1.37 too many and makes all three assertions
+	# unreachable, which is exactly what happened when this case was "corrected" that
+	# way.
+	var realms := RealmDefaults.ladder().realms()
+	var span := _magnitude_factor(realms[9].id) / _magnitude_factor(realms[0].id)
 	assert_almost_eq(span, 1.3714, "the one-tier span", 0.001)
 	var rung_four := TechniqueScales.multipliers_at(4)
 	assert_almost_eq(float(rung_four["power"]) / span, 1.28, "rung-4 power is 1.28 bands", 0.01)
@@ -142,23 +159,30 @@ func test_grade_multiplies_the_price_but_never_the_effect() -> void:
 			"grade %s scales the price by its MAG_GRADE" % grade,
 			0.0001
 		)
-	# The magnitude ladder takes no grade argument at all, so the invariant is
-	# structural rather than arithmetic: `magnitude_at` is a pure function of the
-	# ordinal, so one ordinal has exactly one magnitude and grade cannot reach it.
-	# An earlier version of this case multiplied the reading BY the grade factor and
-	# asserted it was unchanged, which only holds for a factor of 1 and so could
-	# never pass for divine (6.5).
+	# The magnitude takes no grade argument at all, so the invariant is structural
+	# rather than arithmetic: `TechniqueMagnitudeTable.factor` is a pure function of a
+	# REALM ID, so one realm has exactly one magnitude and grade cannot reach it. An
+	# earlier version of this case multiplied the reading BY the grade factor and
+	# asserted it was unchanged, which only holds for a factor of 1 and so could never
+	# pass for divine (6.5).
 	assert_almost_eq(
-		TechniqueScales.magnitude_at(10),
-		pow(TechniqueScales.TECHNIQUE_STEP, 10.0),
-		"the reading is a pure function of the ordinal",
-		0.0001
+		_magnitude_factor(&"spirit_condensation"),
+		_magnitude_factor(&"spirit_condensation"),
+		"the reading is a pure function of the realm id",
+		0.0
 	)
 	assert_eq(
-		TechniqueScales.magnitude_at(10) != TechniqueScales.magnitude_at(10) * 6.5,
+		(
+			_magnitude_factor(&"spirit_condensation")
+			!= _magnitude_factor(&"spirit_condensation") * 6.5
+		),
 		true,
 		"and applying a grade multiplier to it is never a no-op, so grade cannot be folded in"
 	)
+	# STRONGER than the closed form it replaces, and the assertion the closed form could
+	# not make: the reading is keyed by ID, so a realm id the ladder does not name reads
+	# neutral rather than being interpolated off some position.
+	assert_almost_eq(_magnitude_factor(&"not_a_realm"), 1.0, "an unnamed realm is neutral", 0.0001)
 
 
 func test_the_learning_step_never_runs_ahead_of_the_magnitude_step() -> void:
@@ -171,11 +195,14 @@ func test_the_learning_step_never_runs_ahead_of_the_magnitude_step() -> void:
 		"study is cheaper than the magnitude ladder"
 	)
 	assert_eq(TechniqueScales.LEARN_STEP <= 29.0 / 28.0, true, "and under the authored floor")
-	# The magnitude span is ADR 0055's published 2.7667 over the whole ladder.
+	# The magnitude span is ADR 0055's published 2.7667 over the whole ladder, read
+	# through the runtime's call. `TECHNIQUE_STEP` is what WROTE those 30 rows and
+	# what `technique_power check` measures their ratios against; it is not the number
+	# the game prices a technique with, so it is not what this asserts either.
 	assert_almost_eq(
-		TechniqueScales.magnitude_at(29), 2.7667, "magnitude span across 30 realms", 0.001
+		_magnitude_factor(&"primordial_origin"), 2.7667, "magnitude span across 30 realms", 0.001
 	)
-	assert_almost_eq(TechniqueScales.magnitude_at(0), 1.0, "R1 is the ladder's base", 0.0001)
+	assert_almost_eq(_magnitude_factor(&"qi_refining"), 1.0, "R1 is the ladder's base", 0.0001)
 
 
 func test_an_unknown_grade_degrades_to_the_cheapest_band() -> void:

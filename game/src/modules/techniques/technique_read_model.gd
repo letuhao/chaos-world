@@ -100,8 +100,13 @@ static func inspect(
 		# A technique that authored none reads `0.0` -- "use the default" -- which
 		# is a different statement from `element == ""`.
 		"element_share": def.element_share,
-		"magnitude_now":
-		def.magnitude * TechniqueScales.magnitude_at(TechniqueGate.best_ordinal(actor)),
+		# The SAME call `CombatSpine.base_damage` prices a hit with, on the SAME realm id,
+		# so the number on screen is the number the blow is built from. It read
+		# `TechniqueGate.best_ordinal(actor)` -- the highest cultivation path -- which the hit
+		# never did: the two disagreed for any actor whose paths diverged, and on top of that
+		# they read two different ladders. Which realm a SHARED technique follows is owed its
+		# own decision; this stops the two surfaces disagreeing in the meantime.
+		"magnitude_now": def.magnitude * TechniqueMagnitudeTable.factor(actor.realm()),
 		"qi_cost": def.qi_cost,
 		"stamina_cost": def.stamina_cost,
 		"cooldown": def.cooldown,

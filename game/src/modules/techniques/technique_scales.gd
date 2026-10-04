@@ -1,20 +1,33 @@
 class_name TechniqueScales
 extends RefCounted
 
-## A technique's bounded ladders and multipliers (ADR 0055).
+## A technique's ladders and multipliers, EXCEPT its realm magnitude (ADR 0055).
 ##
-## Three numbers live here and nowhere else, because the failure mode this file
-## exists to prevent is two files each restating a curve.
+## ## The realm magnitude is not in this file, and that is the point
 ##
-## `magnitude_at` is a third per-realm table, deliberate alongside the other two
-## (see AGENTS.md): it is neither an actor's strength (`realm_power_table.tres`,
-## 1.0 -> 551x) nor a relative item upgrade
-## (`item_magnitude_scale.json`, 1.0 -> 3.9x). A technique is a bonus riding on
+## It is AUTHORED DATA keyed by realm id -- `data/techniques/technique_magnitude_table.tres`,
+## read through `TechniqueMagnitudeTable.factor` (`core/technique_magnitude_table.gd`). The
+## runtime reads it: `CombatSpine.base_damage` prices every hit through it and
+## `TechniqueReadModel.magnitude_now` displays from it, so the two cannot disagree.
+##
+## `magnitude_at(index)` used to stand in here as `pow(TECHNIQUE_STEP, index)`, and both
+## surfaces called it, so the approved ladder was opened by nothing in `res://src`. It agreed
+## with the table to 2.5e-6, so every value assertion in the repo stayed green while combat
+## and the UI read two different ladders -- the "a green guard is not a tested guard" shape.
+## The step below is AUTHORING INPUT; it is not a runtime substitute for the table.
+##
+## The table is a THIRD per-realm table, deliberate alongside the other two (see AGENTS.md):
+## it is neither an actor's strength (`realm_power_table.tres`, 1.0 -> 551x) nor a relative
+## item upgrade (`item_magnitude_scale.json`, 1.0 -> 3.9x). A technique is a bonus riding on
 ## top of both, so it sits two orders of magnitude below the actor table.
 
 ## The geometric magnitude step, equal to qi's own measured per-realm work-budget
 ## floor (29/28 = 1.035714). Geometric, not linear: a constant ratio is what
 ## satisfies the floor everywhere once it satisfies it at the deep end.
+##
+## It wrote the 30 rows of `technique_magnitude_table.tres` and it is the ceiling
+## `technique_power check` measures every consecutive ratio against, which is the whole of
+## what it is for. No runtime computes a magnitude from it.
 const TECHNIQUE_STEP := 1.035714
 
 ## Per-mastery-rung multipliers. Compounding, so rung `n` is `step^n`. A rung
@@ -45,14 +58,6 @@ const MAG_GRADE := {
 ## The number of rungs ADR 0055 defines. A def may author a lower `mastery_rungs`,
 ## never a sixth: the multipliers are constants, not data.
 const MAX_RUNGS := 5
-
-
-## Magnitude multiplier at realm ordinal `index` (0 at Qi Refining), R1 at 1.0.
-## Span `TECHNIQUE_STEP^29 = 2.7667`; per tier `^9 = 1.3714`.
-static func magnitude_at(index: int) -> float:
-	if index <= 0:
-		return 1.0
-	return pow(TECHNIQUE_STEP, float(index))
 
 
 ## Grade multiplier, defaulting to mortal so malformed content degrades to the
