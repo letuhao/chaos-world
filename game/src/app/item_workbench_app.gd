@@ -91,7 +91,18 @@ const BIRTH_FACT := &"child_born"
 ## `.tres` under `res://data/npc/cast`, never a literal def, so a reader can open the
 ## file and see the person (ADR 0074). Sized under `NpcApi.MAX_ROOM_POPULATION` on
 ## purpose: it is a starting settlement, not a full population.
-const STARTING_CAST: Array[StringName] = [&"gate_keeper_bo", &"smith_bearcutter", &"drifter"]
+##
+## **`elder_wei` is in this list, not decoration.** He is the only `story` tier individual,
+## the only cast member whose ladder carries `advance_after`, and the only target of the
+## authored `npc_tally` beat in `the_favour_of_elder_wei.tres` — so with him absent the
+## whole stage-advance mechanic is correct, tested, and unreachable in play: the tally
+## returns `unknown_npc` because nobody ever met him.
+const STARTING_CAST: Array[StringName] = [
+	&"elder_wei",
+	&"gate_keeper_bo",
+	&"smith_bearcutter",
+	&"drifter",
+]
 
 ## `_actor`, `_world`, `_death`, `_death_armed`, `_last_death` and `_npc_settlement`
 ## are NOT re-declared here: they belong to the inherited play half, and a redeclaration
