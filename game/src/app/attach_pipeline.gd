@@ -81,3 +81,39 @@ func _fire(hooks: Array, actor) -> void:
 		var callable := hook as Callable
 		if callable.is_valid():
 			callable.call(actor)
+
+
+## Attach one registered mod module by loading its api script and calling
+## `attach(actor)` when the script declares it. Returns a result dictionary:
+## `{ok, name, reason, detail}`. A module whose api script is missing or has
+## no `attach` is skipped (not an error) — the base modules are already
+## attached by the pipeline phases, so a mod module that adds nothing is
+## legal. Bounded: one load, one call, no loops.
+func attach_module(name: String, api_path: String, actor) -> Dictionary:
+	if api_path == "":
+		return {"ok": false, "name": name, "reason": "no_api_path", "detail": ""}
+	if not FileAccess.file_exists(api_path):
+		return {
+			"ok": false,
+			"name": name,
+			"reason": "api_not_found",
+			"detail": api_path,
+		}
+	var script := load(api_path)
+	if script == null:
+		return {
+			"ok": false,
+			"name": name,
+			"reason": "load_failed",
+			"detail": api_path,
+		}
+	var api: Object = script.new()
+	if api == null or not api.has_method("attach"):
+		return {
+			"ok": true,
+			"name": name,
+			"reason": "no_attach",
+			"detail": "",
+		}
+	api.attach(actor)
+	return {"ok": true, "name": name, "reason": "", "detail": ""}

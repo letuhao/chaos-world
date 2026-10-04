@@ -55,4 +55,5 @@ static func finalize(contexts: Array, registry: ModuleRegistry) -> Dictionary:
 		"modules": registry.order(),
 		"screens": screens,
 		"attach_hooks": attach_hooks,
+		"registry": registry,
 	}

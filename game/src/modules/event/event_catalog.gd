@@ -36,10 +36,31 @@ const EVENT_SCRIPT_CLASS := "EventDef"
 
 static var shared: EventCatalog = null
 
+## Overlay stack for the event family (ADR 0184 §5). Empty means "not wired
+## yet": `_ensure_loaded` scans only the authored EVENTS_ROOT. When set, the
+## overlay roots are scanned AFTER the base root so mod content is visible.
+static var _overlay_stack: Array = []
+
 var _events: Dictionary = {}
 var _ids: Array[StringName] = []
 var _rejected: Dictionary = {}
 var _loaded: bool = false
+
+
+## Set the family's overlay stack: ordered rows of `{dir, owner,
+## declared_overrides}`. Later rows overlay earlier ones.
+static func set_overlay_roots(stack: Array) -> void:
+	_overlay_stack = stack
+
+
+## The directories to scan: base root first, then overlay roots in order.
+func _scan_roots() -> Array[String]:
+	var out: Array[String] = [EVENTS_ROOT]
+	for row in _overlay_stack:
+		var dir := String(row.get("dir", ""))
+		if dir != "":
+			out.append(dir)
+	return out
 
 
 static func instance() -> EventCatalog:
@@ -129,17 +150,18 @@ func _ensure_loaded() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	for path in _scan(EVENTS_ROOT):
-		if not path.get_file().ends_with(".tres"):
-			continue
-		if not FileAccess.get_file_as_string(path).contains(
-			'script_class="%s"' % EVENT_SCRIPT_CLASS
-		):
-			continue
-		var def := load(path) as EventDef
-		if def == null or def.id == &"":
-			continue
-		_admit(def, path)
+	for root in _scan_roots():
+		for path in _scan(root):
+			if not path.get_file().ends_with(".tres"):
+				continue
+			if not FileAccess.get_file_as_string(path).contains(
+				'script_class="%s"' % EVENT_SCRIPT_CLASS
+			):
+				continue
+			var def := load(path) as EventDef
+			if def == null or def.id == &"":
+				continue
+			_admit(def, path)
 
 
 ## Accept a def only if it is well-formed. `register` is the escape hatch for a
