@@ -14,6 +14,6 @@ patronage = {"instruction": "Technique taught by name, by a teacher the house as
 duty = {"secrecy": "What is taught in the house is not written down and not repeated.", "no_office": "Hold no public office while you hold an inner position or above.", "sanction": "A member who speaks outside the house answers to the house, not to a court."}
 rival_clans = Array[StringName]([&"ironpact"])
 tags = Array[StringName]([&"scholarly", &"lineage"])
-min_purity = 0.62
+min_purity = 0.45
 required_race = &""
 min_realm = 0

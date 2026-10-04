@@ -152,10 +152,152 @@ func test_every_clan_is_founded_on_a_bloodline_this_build_ships() -> void:
 func test_the_admission_bars_are_ordered_so_the_houses_select_differently() -> void:
 	# Every bar must be reachable by the arithmetic ADR 0063 publishes, or the content
 	# is dead: `inherit(1.0, 1.0) == 0.745`, so a bar above that can never be cleared.
+	#
+	# This is SATISFIABILITY, and on its own it is not enough: `quiethouse` shipped a
+	# bar of 0.62, which clears this ceiling, and was still sealed in practice. The
+	# next test asks the harder question.
 	var ceiling := BloodlineState.first_generation_ceiling()
 	for clan_id in ClanApi.clan_ids():
 		var def := _def(clan_id)
 		assert_ne(def.min_purity > ceiling, true, "'%s' is admissible at all" % String(clan_id))
+
+
+# --- PRACTICAL reachability: the check whose absence let 0.62 ship -----------
+
+
+## The concentration an ORDINARY parent pair produces at generation 2, derived from the
+## shipped arithmetic rather than typed in here, so a retune of `BloodlineState`
+## cannot leave this file asserting against a stale figure.
+##
+## The ordinary line is: a founder's generation-1 child — the highest concentration
+## inheritance can ever produce, `inherit(1.0, 1.0)` — paired with a spouse who
+## carries `TIER_COMMON`, which is what any long-settled household plausibly holds.
+## That pairing is a decision a player can actually make on purpose. It is NOT a
+## first-generation pure pairing, which no world reproduces on demand and which one
+## lucky generation exhausts.
+##
+## On today's constants: `inherit(0.745, 0.42) == 0.45275`.
+func _ordinary_generation_two() -> float:
+	return BloodlineState.inherit(
+		BloodlineState.first_generation_ceiling(), BloodlineApi.TIER_COMMON
+	)
+
+
+func test_every_admission_bar_is_reachable_from_an_ordinary_line() -> void:
+	# The defect this file could not see: `quiethouse` demanded 0.62 of `voidborn`,
+	# which is *satisfiable* — two pure parents yield 0.745 — and unreachable in
+	# practice. Generation 2 of that same pure line is already 0.5665, and one
+	# ordinary partner pulls it to 0.45275, so the house was admissible only on the
+	# single lucky generation that produced it. One of three houses, sealed.
+	#
+	# A gate that is satisfiable in principle and unreachable in practice is the worst
+	# kind, because it passes every satisfiability test ever written. So every bar is
+	# measured against a lineage an ordinary world actually produces.
+	var ordinary := _ordinary_generation_two()
+	assert_eq(
+		ordinary > 0.0 and ordinary <= BloodlineState.first_generation_ceiling(),
+		true,
+		"the ordinary generation-2 figure (%.5f) is a real concentration" % ordinary
+	)
+	for clan_id in ClanApi.clan_ids():
+		var def := _def(clan_id)
+		assert_eq(
+			def.min_purity <= ordinary,
+			true,
+			(
+				"'%s' demands %.2f of %s, but an ordinary line reaches only %.5f"
+				% [clan_id, def.min_purity, def.founding_bloodline, ordinary]
+			)
+		)
+
+
+# The figure above is a transcription of the arithmetic unless the shipped resolver
+# also produces it. Derive it end to end from two real parents, so a drift between the
+# constant and `BloodlineResolver` fails here. `quiethouse` is named because it is the
+# house the defect was found on and publishes the strictest bar; the arithmetic itself
+# is lineage-independent.
+func test_the_ordinary_figure_is_the_one_the_shipped_resolver_produces() -> void:
+	# Parent A carries the founder line at the ONE-GENERATION CEILING, which is what
+	# a first-generation child of two pure ancestors actually holds -- not 1.0, which
+	# only the ancestors themselves hold. Parent B is the ordinary spouse. This is the
+	# same pairing `_ordinary_generation_two` states, run through real actors.
+	var lineage := &"voidborn"
+	var parent_a := Actor.new(&"founder")
+	var parent_b := Actor.new(&"outsider")
+	BloodlineApi.attach(parent_a)
+	BloodlineApi.attach(parent_b)
+	BloodlineApi.set_purity(parent_a, lineage, BloodlineState.first_generation_ceiling())
+	BloodlineApi.set_purity(parent_b, lineage, BloodlineApi.TIER_COMMON)
+	var resolved := float(BloodlineApi.resolve_inherited(parent_a, parent_b)[lineage])
+	assert_almost_eq(resolved, _ordinary_generation_two(), "the resolver agrees", 0.00001)
+	# And the point of the whole exercise, stated against real actors rather than a
+	# transcribed constant: an ordinary second generation is NOT a founding-tier
+	# carrier. That is why `quiethouse` could not be left at 0.62 -- no realistic
+	# line reaches it, however the arithmetic is written.
+	assert_eq(
+		resolved < BloodlineApi.TIER_FOUNDING,
+		true,
+		"an ordinary generation-2 line (%.5f) sits below the founding tier" % resolved
+	)
+
+
+func test_no_authored_house_admits_an_actor_who_carries_no_lineage() -> void:
+	# The other half of the bar: reachable is not the same as trivial. An actor who
+	# holds nothing must still be refused by every house, so lowering a bar to make
+	# it reachable cannot have quietly opened a door to everybody.
+	for clan_id in ClanApi.clan_ids():
+		var def := _def(clan_id)
+		var bare := Actor.new(&"bare", {Stat.PHYSIQUE: 10.0})
+		ClanApi.attach(bare)
+		# The module IS attached, so this is an ordinary actor carrying nothing —
+		# absence is zero concentration, not a missing ledger.
+		BloodlineApi.attach(bare)
+		var refusals := 0
+		for entry in ClanApi.admission_unmet(bare, clan_id):
+			if String((entry as Dictionary)["kind"]) == String(ClanGate.KIND_PURITY):
+				refusals += 1
+		assert_eq(refusals, 1, "'%s' refuses a bare actor, about purity" % String(clan_id))
+		assert_eq(
+			def.min_purity > 0.0,
+			true,
+			"'%s' still publishes a bar worth refusing over" % String(clan_id)
+		)
+		assert_eq(
+			bool(ClanApi.join(bare, clan_id)["ok"]),
+			false,
+			"'%s' admits nobody who carries nothing" % String(clan_id)
+		)
+
+
+func test_a_house_never_asks_for_more_of_its_founder_line_than_that_line_holds() -> void:
+	# Coherence between the two authored numbers. Joining a house must not require a
+	# concentration its own founder line cannot be carrying at its own bar: the member
+	# would have to be above the threshold at which the line is even awake, which is
+	# "awake AND still rising", and in practice means first generation only.
+	# `quiethouse` shipped 0.62 against `voidborn`'s 0.72 and failed exactly this.
+	for clan_id in ClanApi.clan_ids():
+		var def := _def(clan_id)
+		var founder := BloodlineCatalog.instance().bloodline_definition(def.founding_bloodline)
+		assert_ne(founder, null, "'%s' names a lineage this build ships" % String(clan_id))
+		assert_eq(
+			def.min_purity <= founder.awaken_threshold,
+			true,
+			(
+				"'%s' asks %.2f of %s, above its own %.2f bar — awake and still rising"
+				% [clan_id, def.min_purity, def.founding_bloodline, founder.awaken_threshold]
+			)
+		)
+		# End to end: a carrier sitting exactly on the founder line's own bar is a
+		# member of the house founded on that line.
+		var member := Actor.new(&"member")
+		ClanApi.attach(member)
+		BloodlineApi.attach(member)
+		BloodlineApi.set_purity(member, def.founding_bloodline, founder.awaken_threshold)
+		assert_eq(
+			ClanApi.admission_unmet(member, clan_id).is_empty(),
+			true,
+			"'%s' admits a carrier at its founder line's own bar" % String(clan_id)
+		)
 
 
 func test_no_clan_requires_a_body_plan_no_race_in_this_build_ships() -> void:
