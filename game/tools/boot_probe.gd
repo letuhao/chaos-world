@@ -707,11 +707,21 @@ func _try_each_drop(screen: Node, bar: Node, bagged: Array[String]) -> Dictionar
 		await process_frame
 		if _press(bar, EQUIP_BUTTON):
 			return {"ok": true, "def_id": candidate}
+	var baseline := await _baseline_wearable(screen, bar)
+	# The message carries `baseline_wearable` because that ONE fact separates two
+	# defects that look identical from here: if a starter item already equips, the
+	# Equip control works and these drops are simply unwearable CONTENT; if nothing
+	# equips, the control itself is dead and every drop is a red herring. Collecting
+	# the fact without printing it is how "can be worn" stayed a guess.
 	return {
 		"ok": false,
 		"wearable": false,
-		"baseline_wearable": await _baseline_wearable(screen, bar),
-		"why": "none of the %d drop(s) this fight paid can be worn" % bagged.size(),
+		"baseline_wearable": baseline,
+		"why":
+		(
+			"none of the %d drop(s) this fight paid can be worn; a starter equips: %s"
+			% [bagged.size(), baseline]
+		),
 	}
 
 
