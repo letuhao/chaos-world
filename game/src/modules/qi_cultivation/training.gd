@@ -120,12 +120,32 @@ static func meditate(actor: Actor, amount: float) -> bool:
 ## One elixir: climb the channel one state, or one step of depth once it is
 ## already strengthened, and spend the realm's `training_item`.
 ##
-## A channel that is injured is repaired instead of trained, because `meets`
-## fails on the injury flag alone. A channel with nothing left to learn at this
-## realm's `channel_refinement_cap` is REFUSED before the item is spent: the cap
-## is the only thing bounding depth, so an elixir consumed past it is an elixir
-## burned for nothing, and a path whose training verb silently eats its own
-## currency is a path whose gate stops meaning what it says (ADR 0095).
+## A BURNED CHANNEL IS NOT TRAINED, IT IS REPAIRED — AND THE REPAIR IS PRICED BY
+## `recovery_item`, not by the channel elixir (ADR 0141, which established the
+## shape on the mind path; qi is the same ladder). Every realm authors both
+## roles: `training_item` walks the ladder, `recovery_item` undoes what a qi
+## deviation left behind, which is the scarred dantian AND the burned channel
+## (ADR 0031). So the burn is handed to `recover` rather than paid for here.
+##
+## That is what makes `recovery_item` load-bearing on this path. Charging the
+## channel elixir for the repair left `recover` — and `recover_next`, the facade
+## verb added for exactly this wound — with no route a player could afford, so
+## thirty authored recovery elixirs were demanded by nothing, and the missing
+## verb went unnoticed: a burned channel WAS repairable through the facade, just
+## by spending the wrong item.
+##
+## Delegated rather than reimplemented, so there is one repair at one price: a
+## second copy of the consume here is exactly how the two prices drifted apart
+## the first time. `recover`'s all-or-nothing rule comes with it — nothing is
+## spent unless there is something to repair — as does the dantian scar the same
+## deviation left behind being healed alongside the channel, which cannot lose
+## ground.
+##
+## A channel with nothing left to learn at this realm's `channel_refinement_cap`
+## is REFUSED before the item is spent: the cap is the only thing bounding depth,
+## so an elixir consumed past it is an elixir burned for nothing, and a path whose
+## training verb silently eats its own currency is a path whose gate stops meaning
+## what it says (ADR 0095).
 static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 	var state := actor.path(QiPath.PATH_ID)
 	var channel := actor.meridians.get_meridian(meridian_id)
@@ -155,6 +175,51 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 				actor.meridians.refine_meridian(meridian_id, seed.channel_refinement_cap)
 	synchronize(actor)
 	return true
+
+
+## The first channel that still owes the gate of the realm AHEAD, trained one step
+## through `train_channel`; `&""` when nothing is owed or no elixir is in hand.
+##
+## `&""` rather than a bool so a screen can name the channel it trained without
+## repeating this walk, and so "nothing owed" is distinguishable from "owed, but
+## you cannot pay".
+##
+## The gate read here is the NEXT realm's seed, because that is the one
+## `QiBreakthroughCondition` enforces — the standing realm's own gate is already
+## behind the actor. What the walk may spend is bounded by the standing realm's
+## cap, and `test_the_channel_demand_never_falls_and_the_cap_rises_every_realm`
+## is what keeps the next realm's demand inside it.
+static func train_next_channel(actor: Actor) -> StringName:
+	var state := actor.path(QiPath.PATH_ID)
+	if state == null:
+		return &""
+	var next_realm := RealmDefaults.ladder().next(state.rank_id)
+	if next_realm == null:
+		return &""
+	var gate := QiRealmSeed.for_realm(next_realm.id)
+	if gate == null:
+		return &""
+	# Only the channels the gate NAMES are candidates. The body holds twenty and
+	# the gate names four, and a verb that deepened the other sixteen would charge
+	# the realm's elixir for work the gate never asked for — the walk would cost
+	# five times its budget and the screen could not tell why. A player who wants
+	# to spend a spare elixir on the rest of the body already has `train_channel`.
+	# `for` over the gate's own list, so the walk cannot outlast its candidates.
+	for meridian_id in gate.required_meridians:
+		if not _owes_the_gate(actor, meridian_id, gate):
+			continue
+		if can_train_channel(actor, meridian_id) and train_channel(actor, meridian_id):
+			return meridian_id
+	return &""
+
+
+## Whether `meridian_id` still owes the gate anything: the whole predicate, depth
+## included. `QiRealmSeed.channel_met` is the one definition of that gate
+## (ADR 0044), so a selection rule that spelled it out again here would be free to
+## drift from the condition that enforces it — which is precisely the defect this
+## replaces, where the rule read a state-only `meets()` and stopped.
+static func _owes_the_gate(actor: Actor, meridian_id: StringName, gate: QiRealmSeed) -> bool:
+	return not gate.channel_met(actor.meridians.get_meridian(meridian_id))
 
 
 ## Whether `meridian_id` has anything left to learn while standing in this realm:

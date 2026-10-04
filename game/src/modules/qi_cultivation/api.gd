@@ -133,6 +133,18 @@ static func train_channel(actor: Actor, meridian_id: StringName) -> bool:
 	return QiTraining.train_channel(actor, meridian_id)
 
 
+## Train the first channel that still owes the NEXT realm's gate — state or depth
+## — and return its id, or `&""` when nothing is owed or no elixir is in hand.
+##
+## Why this is a verb and not two published predicates: a caller that picked its
+## own channel had to reassemble `QiRealmSeed.channel_met` from `panel_state`'s
+## ingredients, and a reassembled gate is the ADR 0044 defect — a preview and the
+## action it previews disagreeing — which this path already paid for once. A
+## screen owns presentation, not which channel is next.
+static func train_next_channel(actor: Actor) -> StringName:
+	return QiTraining.train_next_channel(actor)
+
+
 ## Close the first wound a recovery item can heal: the dantian scar, then the
 ## burned channel. Consumes the realm's `recovery_item` (ADR 0031).
 static func recover_next(actor: Actor) -> bool:
