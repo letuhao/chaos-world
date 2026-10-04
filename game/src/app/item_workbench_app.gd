@@ -33,11 +33,20 @@ const STARTER_ITEMS: Array[StringName] = [
 ## `UiScreen`, which is bound by the default arm below.
 const ROUTE_LOOT := &"loot_encounter"
 const ROUTE_SOCKET := &"socket_forge"
+## The quest journal (BL-0663/BL-0664). `QuestApi.accept` had zero production
+## callers, so no player could ever be on a quest; this route plus `_quests` is
+## what makes a quest something a player can SEE and take.
+const ROUTE_QUEST := &"quest"
 const ROUTE_BODY := &"body_cultivation"
 const ROUTE_WORLD_MAP := &"world_map"
 const ROUTE_CRAFTING := &"crafting"
 const ROUTE_WORKBENCH := &"workbench"
 const ROUTE_SET_BONUS := &"set_bonus"
+## The domain surface. `screen_routes.gd` registers it with a nav key, so a player opens the
+## screen — and with no arm in `_bind_route_screen` the screen mounted UNBRIDGED, which is
+## worse than a missing route: `summary()` answers `{}`, every verb is dead and the header
+## reads "Domains — none authored".
+const ROUTE_DOMAIN := &"domain_explore"
 
 ## The cast standing in the settlement the slice opens on. Every id is an authored
 ## `.tres` under `res://data/npc/cast`, never a literal def, so a reader can open the
@@ -90,6 +99,11 @@ var _feature_screen: Control = null
 ## The socket forge's gameplay half. It owns the forge's round trip, so a screen
 ## the stack has since freed is a no-op rather than a crash.
 var _forge: SocketForgeProgram = null
+## The ONE caller of `QuestApi.accept` (BL-0663). Held by the root so the quest
+## screen can be bound to it on every mount; the screen itself may not name the
+## program (`ui/` holds no `app/` type) and may not name the module without the
+## facade, so this is the bridge ADR 0143 prescribes.
+var _quests: QuestProgram = null
 var _route: StringName = &""
 
 
@@ -183,6 +197,7 @@ func _ready() -> void:
 	# player mounts a body on already has it.
 	WorldStage.set_location_publisher(Callable(EventApi, "set_location"))
 	_forge = SocketForgeProgram.new(_actor)
+	_quests = QuestProgram.new(_actor)
 	# The boot-time arrival program. It opens the SAME route the nav bar uses rather than
 	# pushing a second copy of the scene: two doors to one screen means a screen the route
 	# table does not know about, which is what 	est_screen_reachability exists to catch.
@@ -408,7 +423,7 @@ func _attach_body_modules(actor: Actor) -> void:
 	# `attach`, not the bare refresh: `Actor.from_dict` restores components and NEVER a
 	# `StatProvider`, so a restore or a body swap arrives with no provider and the realm MULT
 	# would land on nothing. `attach` mounts it when absent and refreshes either way.
-	ElementsApi.attach(actor)
+	ElementsApi.apply_realm_modifiers(actor)  # MUTATION-EL-RESTORE-MOUNT
 	DualCultivationApi.attach(actor)
 	FertilityApi.attach(actor)
 	ItemsApi.attach(actor)
@@ -419,6 +434,11 @@ func _attach_body_modules(actor: Actor) -> void:
 	EventApi.attach(actor)
 	QuestApi.attach(actor)
 	NpcBoot.install(actor)
+	# The domain twin, idempotent like every line on this list. `DomainBoot.install`
+	# injects `DomainSpawner`'s actor constructor and the two items contacts
+	# `DomainFixtures` needs; both default to refusing, so without this line a domain
+	# answers `no_inventory_bridge` to every treasure and `spawn` can only return null.
+	DomainBoot.install()
 	CombatBoot.install(actor)
 	_bind_technique_seams()
 
@@ -635,6 +655,7 @@ func adopt_actor(body: Actor) -> void:
 	EventBeatWriter.set_offer_resolver(Callable(_world, "offer_event_beat"))
 	WorldStage.set_location_publisher(Callable(EventApi, "set_location"))
 	_forge = SocketForgeProgram.new(body)
+	_quests = QuestProgram.new(body)
 	_death_armed = ""
 	_last_death = {}
 	if _live_screen() != null:
@@ -933,6 +954,14 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 		ROUTE_SOCKET:
 			screen.call("setup", _actor)
 			_forge.bind(screen)
+		ROUTE_QUEST:
+			# The quest journal is the ONE screen that needs the accept seam bound
+			# or its rows are dead controls: `act_accept` refuses `no_quest_seam`
+			# rather than quietly doing nothing. `QuestProgram` is the single caller
+			# of `QuestApi.accept` (BL-0663), so this arm is the whole reason a
+			# player can take a quest at all.
+			screen.call("setup", _actor)
+			_quests.bind(screen)
 		ROUTE_CRAFTING:
 			# Recipes are pushed in, never discovered by `ui/`: `ItemsApi` publishes
 			# no catalog, so which recipes are listed is a composition-root call
@@ -960,6 +989,13 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 		ROUTE_WORLD_MAP:
 			screen.call("setup", _actor)
 			screen.call("bind_world", _world_bridge())
+		ROUTE_DOMAIN:
+			# The domain screen is a PURE CONSUMER: `domain` is not in `rules.UI_MODULES`
+			# and `app/` is a private unit, so it may name neither `DomainApi` nor
+			# `DomainBoot`. `DomainBoot.bridge()` is the seam, as `_loot_bridge` and
+			# `_world_bridge` are for their screens.
+			screen.call("setup", _actor)
+			screen.call("bind_bridge", DomainBoot.bridge())
 		_:
 			screen.call("setup", _actor)
 
