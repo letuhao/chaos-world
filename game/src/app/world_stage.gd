@@ -391,7 +391,7 @@ func summary() -> Dictionary:
 		"location_publisher_installed": _location_publisher.is_valid(),
 		"world_told": bool(_published.get("ok", false)),
 		"world_told_reason": String(_published.get("reason", "")),
-		"last_interaction": _last_interaction.duplicate(),
+		"last_interaction": last_interaction(),
 	}
 
 
