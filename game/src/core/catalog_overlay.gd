@@ -44,10 +44,17 @@ static func merge(stack: Array, script_class: String, id_field: String = "id") -
 				continue
 			if not FileAccess.get_file_as_string(path).contains('script_class="%s"' % script_class):
 				continue
-			var def: Resource = load(path)
-			if def == null:
+			# A failed load can return a non-Resource (raw file text) when the
+			# global class cache is incomplete; only a Resource has `get`.
+			var def = load(path)
+			if not (def is Resource):
 				continue
-			var id := String(def.get(row_id_field))
+			# A def whose id property is absent (e.g. WorldLocationDef read with
+			# the default id_field) has no id to merge; skip before String().
+			var raw_id = def.get(row_id_field)
+			if raw_id == null:
+				continue
+			var id := String(raw_id)
 			if id.is_empty():
 				continue
 			if positions.has(id):
