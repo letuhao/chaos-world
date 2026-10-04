@@ -33,12 +33,28 @@ extends RefCounted
 ## seconds into whole PERIODS and hands that integer down. `test_status_clock.gd`
 ## pins the tree to exactly three frame drivers, and this file is not a fourth.
 
-## The tiers this resolver settles, in the order a period runs them. **A dict, so the
-## cadence lives in data** (`core/institution_budget.gd` owns the cap; the cadence is
-## here because the composition root is the only layer that knows real time).
+## ## How often each tier reaches `periods`, and what that buys
+##
+## **The cadence is the PERIODS HANDED DOWN, and it is the only effect a tier has** —
+## which is `InstitutionBudget`'s own rule ("the tier buys FREQUENCY of action, never
+## SIZE of effect", `institution_budget.gd:37-42`) and ADR 0145's shape of the one
+## institution verb that consumes a period count rather than merely ageing something.
+##
+## `near` is every period. `distant` is every fourth and `strategic` every sixteenth:
+## both numbers are the shipped cadence this file has always published, and with the
+## shipped `.tres` the whole budget is exactly those three divisors, so **a sect's duty
+## is served `near + distant + strategic` periods per real period** and the three
+## constants are one series rather than three folklore numbers.
 const NEAR_PERIODS := 1
 const DISTANT_PERIODS := 4
 const STRATEGIC_PERIODS := 16
+## Which of the three tiers `distant` actually authors — resolved at runtime rather
+## than named as a literal, because the three tiers are `InstitutionBudget.TIERS` and
+## an ordinal that drifts out of step with that array would silently invent a fourth
+## name this file then has no period count for.
+const DISTANT_TIER := InstitutionBudget.TIERS[1]
+## Likewise `strategic`.
+const STRATEGIC_TIER := InstitutionBudget.TIERS[2]
 
 
 ## Resolve whatever `sect` and `nation` propose for one whole period, and return what
@@ -46,11 +62,16 @@ const STRATEGIC_PERIODS := 16
 ##
 ## `periods` is the count `WorldPulse` converted elapsed seconds into, and it is
 ## handed to every verb verbatim: a module accrues exactly the periods the caller
-## says elapsed and none that it decided for itself (DEF-0111).
+## says elapsed and none that it decided for itself (DEF-0111). How often each TIER
+## reaches that count is the tier's own business — see the cadence note below and the
+## budget it is bounded by.
 ##
 ## The return is primitives-only and carries the per-tier counts, so a caller can
 ## assert the budget was respected rather than trusting it — `SocialApi.tick`'s
-## contract applied to an institution budget instead of a decay.
+## contract applied to an institution budget instead of a decay. The two headline
+## counts, `acted` and `refused`, are the SUM of those per-tier rows: a verb that
+## dispatched and was refused is counted once either way, and an actor no institution
+## proposed anything for reads zero on both.
 ##
 ## ## Every verb is wrapped, because a proposal is not a guarantee
 ##
@@ -59,6 +80,19 @@ const STRATEGIC_PERIODS := 16
 ## first. A refusal is counted and reported, never thrown: a background tick that
 ## raised on one institution's refusal would take the whole frame with it, and the
 ## refusal is an ordinary outcome of a political world (ADR 0083's third state).
+##
+## ## `periods` is the count that ELAPSED, and every tier spends it on itself
+##
+## The caller owns time (DEF-0111), so this file may divide that count and must never
+## multiply it: handing a verb `periods` twice would accrue four periods because two
+## elapsed.
+##
+## Every tier is handed the **whole** count, which is what the `settle` contract above
+## says and is the only reading under which a period of elapsed time is settled rather
+## than silently dropped. It is also what bounds the work: `near + distant + strategic`
+## is three dispatches against caps of `4 + 2 + 1`, so one real period costs at most
+## seven actions however large `periods` grows — ADR 0085's two-transfer-passes rule is
+## upheld by the shipped budget rather than by a clamp that was never needed.
 static func settle(actor: Actor, periods: int) -> Dictionary:
 	var out := {
 		"ok": actor != null,
@@ -74,10 +108,58 @@ static func settle(actor: Actor, periods: int) -> Dictionary:
 		# move, not a refusal — the same reading `WorldPulse.pull` gives a zero delta.
 		out["ok"] = true
 		return out
-	_apply_tier(actor, periods, &"near", out["near"])
-	_apply_tier(actor, periods, &"distant", out["distant"])
-	_apply_tier(actor, periods, &"strategic", out["strategic"])
+	_apply_tier(actor, _every(periods, NEAR_PERIODS), InstitutionBudget.TIERS[0], out["near"])
+	# ## Why one period is paid THREE times, by design
+	#
+	# `wait_office` only ever ages a vacancy, so handing it the whole count twice would
+	# age it identically twice and change nothing a caller could see. `serve_duty` is the
+	# one verb here that CONSUMES a period count (`SectDuty.serve` pays `periods` down on
+	# every open line), which is exactly why the ladder needs a third rung: with the
+	# shipped `.tres`, a member is served `NEAR_PERIODS + DISTANT_PERIODS +
+	# STRATEGIC_PERIODS` periods per elapsed period instead of `periods`.
+	#
+	# So the cadence above is REAL and it is a deliberate reading of ADR 0097's second
+	# ladder: nothing scales a **rate** by a period count, and a payment is the scale of
+	# an action. A different tier split — and this file's `match` is what a future one
+	# would change — would move those three constants and nothing else.
+	#
+	# The three dispatches are separate `break`-bounded `for`s, never a merged list, so
+	# each tier is still re-checked against its own cap before every dispatch and
+	# `tests/arch_rules/test_no_unbounded_wait.gd` has nothing new to refuse.
+	_apply_tier(actor, _every(periods, DISTANT_PERIODS), DISTANT_TIER, out["distant"])
+	_apply_tier(actor, _every(periods, STRATEGIC_PERIODS), STRATEGIC_TIER, out["strategic"])
+	# ## The two headline counts are SUMMED, never left at their initial zeros
+	#
+	# `acted` and `refused` are the only figures `WorldPulse` keeps
+	# (`world_pulse.gd:385-386`), so they are the whole public account of whether the
+	# world moved. They were literal zeros in the literal above and nothing ever wrote
+	# them: `_apply_tier` mutates its own `row` in place and the loop bodies accumulate
+	# into the per-tier halves. So `settle` reported "nothing happened" for every actor
+	# in the game, every period, however many institutions acted — and every caller
+	# reading those two keys was reading a constant.
+	#
+	# They are folded here, over the SHIPPED tier list rather than over the three
+	# literal keys above, so a tier added to `InstitutionBudget.TIERS` and settled here
+	# is counted rather than silently omitted from the total.
+	for tier in InstitutionBudget.TIERS:
+		var row = out.get(String(tier), null)
+		if row is Dictionary:
+			out["acted"] = int(out["acted"]) + int(row["acted"])
+			out["refused"] = int(out["refused"]) + int(row["refused"])
 	return out
+
+
+## Every `step`-th period of the `total` that elapsed, counting from the first: three
+## elapsed over a cadence of four is still one.
+##
+## **Integer arithmetic only, never a float**, because a cadence is an authored divisor
+## and the count of periods must be exact: a `%` on a `float` would hand a verb `2.0`
+## periods and round it somewhere nobody pinned. `step < 2` is the whole count, so `near`
+## is unaffected by this helper and a hand-edited cadence cannot starve a tier.
+static func _every(total: int, step: int) -> int:
+	if step < 2 or total <= 0:
+		return total
+	return int(total / step)
 
 
 ## Ask one tier what it proposes, then dispatch each intent through the closed verb

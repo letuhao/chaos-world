@@ -35,10 +35,46 @@ extends RefCounted
 ## calling it on boot and again after a load is the intended usage, not a mistake.
 
 
+## ## It also closes the EVENT SEAM, because the composition root is where inversions live
+##
+## Two injections, both the `set_minter` shape ADR 0002 describes:
+##
+## 1. **`EventBeatWriter.set_tally_resolver(Callable(NpcApi, "tally"))`.** An authored
+##    `npc_tally` beat used to be written into `module_data["npc_state"]` by the event
+##    module itself — a second writer for a table `NpcApi.tally` owns, so the
+##    `advance_verb` check and the `MAX_TALLY_KEYS` cap applied to one path and not the
+##    other. `event/` cannot name `NpcApi` (it declares `npc`, and reaching through a
+##    facade from another module's writer is the coupling ADR 0093 exists to prevent),
+##    so the composition root injects the verb and `event/` names no npc type at all.
+##    **Unconditional**, unlike `install`'s null-player return below: the writer's
+##    `push_error` on a missing resolver is the loud failure BL-0658 needs.
+## 2. **A subscriber on `NpcApi.events().stage_advanced`.** ADR 0093 promises "a
+##    subscriber connects from its own boot function, which `app/` calls" — and until
+##    this line, SEVEN signals had ZERO subscribers, so a promise in a docstring was
+##    the whole of the contract. The sink is [method NpcLedger.record] below: an
+##    in-memory audit trail of who moved and what drove them, and the first thing that
+##    proves the bus is live.
+static func _install_event_seams() -> void:
+	# The direct Callable, not a lambda that forwards to it: `NpcApi.tally` is a
+	# STATIC verb and a typed lambda over it is the shape that once killed the shell
+	# on its first frame (see `install`'s note on `ActorFactory.spawn_npc`).
+	EventBeatWriter.set_tally_resolver(Callable(NpcApi, "tally"))
+	# ADR 0093 line 21, verbatim in shape. `is_connected` first because `install` is
+	# idempotent and a load may re-run it: a second connect to the same Callable is an
+	# error, not a second ledger.
+	var events := NpcApi.events()
+	if not events.stage_advanced.is_connected(NpcLedger.advanced):
+		events.stage_advanced.connect(NpcLedger.advanced)
+
+
 ## Install the constructor, read the authored cast, and bind the roster to `player`.
 ## Safe to call again after a load: the catalog read is idempotent and `attach` rebuilds
 ## the live registry and re-announces the restored cast.
 static func install(player: Actor) -> void:
+	# The event seams FIRST and unconditionally. They name no actor and bind no roster,
+	# so they cannot half-install anything — and a beat that arrives before a player is
+	# attached would otherwise be refused with nothing installed to fix it.
+	_install_event_seams()
 	# Content first, and unconditionally — see the section note above. `load_authored`
 	# short-circuits on its second call, so a boot and a later re-install cost one scan.
 	NpcCatalog.instance().load_authored()

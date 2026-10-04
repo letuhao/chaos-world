@@ -3,17 +3,16 @@ extends Resource
 
 ## One authored quest — the SINGLE shape behind BL-0053's three kinds.
 ##
-## `kind` selects where the quest comes from, not what it is:
-##   `authored` — a person wrote this one, it opens on its gate and pays a fate.
-##   `systemic` — the simulation generated it; its steps are the facts the world
-##   already records, so it completes by living rather than by being handed out.
-##   `emergent` — it appears from interacting systems; its steps are facts no
-##   single author authored.
+## `kind` selects where the quest comes from, and it is read by exactly ONE rule:
+## `QuestApi.offered` hands the player an `authored` quest and does not hand them a
+## `systemic` or `emergent` one, because those two complete by living rather than by
+## being offered. See that method for why the distinction is the rule and not a label.
 ##
-## **All three are this class.** A kind that needed its own Resource would be
-## three vocabularies for one idea, and the reader (a ledger count) would have to
-## be written three times. `kind` is data so an event or a script can pick a
-## subset without the loader growing a second type.
+## **What `kind` is NOT.** It does not change how a gate is read, how a step is
+## counted, or what a quest pays — all three kinds are this class, all three are
+## evaluated by the same `DestinyApi.gate` and the same `WorldFactLedger`. A kind that
+## needed its own Resource would be three vocabularies for one idea, and the reader (a
+## ledger count) would have to be written three times.
 ##
 ## **A requirement is DATA, never GDScript** (ADR 0065/0066). It is read through
 ## `DestinyApi.gate`, the six-verb evaluator, so a new gated quest is a content
@@ -23,8 +22,9 @@ extends Resource
 ## **This module never writes the ledger.** Quests read the world's memory; the
 ## systems that own the moment write it (ADR 0113).
 
-## The closed set of kinds. A def naming anything else is a content bug, and
-## `kind_valid()` exists so a test can say so instead of a save discovering it.
+## The closed set of kinds, as an AUTHORING vocabulary. `QuestApi.offered` is the
+## one reader; `kind_valid()` exists so a test can say a `.tres` named something
+## outside the set instead of a save discovering it.
 const KIND_AUTHORED := &"authored"
 const KIND_SYSTEMIC := &"systemic"
 const KIND_EMERGENT := &"emergent"

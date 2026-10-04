@@ -47,10 +47,15 @@ func test_the_formula_is_re_derived_from_the_actors_own_reads() -> void:
 	var target := _defender(["lung"], {"lung": MeridianState.OPEN})
 	var parts := _parts(attacker, target, BodyLocation.MODE_NAMED, &"lung")
 
-	var gross := attack_of(attacker)
+	var attack := attack_of(attacker)
 	var defense := defence_of(target)
 	var channel := target.meridians.get_meridian(&"lung")
 	var expected_armour := defense * _tuning.meridian_armour_step * float(channel.state_rank())
+	# `attack` alone is NOT the gross: the damage unit is `magnitude x ATTACK_PHYSICAL`,
+	# so the floor is a share of the PRODUCT. The magnitude is read off the mechanism's own
+	# published row rather than a literal, so a technique authored at a different
+	# magnitude moves this lane with it.
+	var gross := float(parts["magnitude"]) * attack
 	var expected_floor := gross * _tuning.min_penetration_ratio
 	# ## What the lane is measured AGAINST, and what the tissue term really is
 	#
@@ -87,14 +92,26 @@ func test_the_formula_is_re_derived_from_the_actors_own_reads() -> void:
 	# an alias of `Stat.DEFENSE_PHYSICAL`. So a body-path defender reads core's
 	# `physique * 1.5` PLUS `(bone * 1.5 + vitality * 1.0) * shaped`, and an assertion
 	# that quoted `15.0` was asserting about an actor `_defender` never builds.
-	assert_almost_eq(gross, PHYSIQUE * 2.0, "ATTACK_PHYSICAL is physique x 2")
+	assert_almost_eq(attack, PHYSIQUE * 2.0, "ATTACK_PHYSICAL is physique x 2")
 	assert_eq(
 		defense > DEFENDER_PHYSIQUE * 1.5,
 		true,
 		"and a body-path defender reads core's physique x 1.5 PLUS the provider's bonus"
 	)
 
-	assert_almost_eq(float(parts["gross"]), gross, "S4 gross is the attacker's own number")
+	# The gross is S1's magnitude TIMES the attack stat, not the attack stat alone — the
+	# same product `QiDamage` forms, and the term whose absence was the cross-mechanism
+	# defect. Pinned against `parts["magnitude"]` rather than a literal so a technique
+	# authored at a different magnitude moves this assertion with it.
+	#
+	# The OLD expectation was `parts["magnitude"] * gross`, which applied the magnitude a
+	# SECOND time on top of the local `gross` that already IS `magnitude x attack` — so it
+	# encoded `magnitude^2 x attack` and read 200000.0 against a real gross of 2000.0.
+	# `gross` is the local derived above as `parts["magnitude"] * attack`, so comparing the
+	# mechanism's own row against it asserts the product identity without double-counting.
+	assert_almost_eq(
+		float(parts["gross"]), gross, "S4 gross is S1's magnitude TIMES the attacker's own number"
+	)
 	assert_almost_eq(float(parts["floor"]), expected_floor, "the floor is a share of the GROSS")
 	assert_almost_eq(
 		float(parts["tissue"]),

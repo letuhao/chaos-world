@@ -145,10 +145,13 @@ func _prepared_hero(rank: StringName = &"qi_refining") -> Actor:
 		actor.meridians.open_meridian(meridian_id)
 		actor.meridians.expand_meridian(meridian_id)
 		actor.meridians.strengthen_meridian(meridian_id)
+		# Bound FIRST, then the side-effecting call: 	est_no_unbounded_wait reads the
+		# counter's position in the condition to see what terminates the loop, and a
+		# call that mutates the actor ahead of the bound hides that from it.
 		var refine := 0
 		while (
-			actor.meridians.refine_meridian(meridian_id, seed.required_refinement)
-			and refine < REFINE_GUARD
+			refine < REFINE_GUARD
+			and actor.meridians.refine_meridian(meridian_id, seed.required_refinement)
 		):
 			refine += 1
 	var points: AcupointSet = actor.component(&"acupoints")

@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"passive_osteomantic_frame"
+delivered_by = &"grimoire_iron"
 display_name = "Osteomantic Frame"
 description = "A loading routine for the long bones. Denser skeleton and better muscle fibre; a practitioner who trains this hits harder and still does not cast qi."
 tags = Array[StringName]([&"passive", &"body", &"skeleton"])

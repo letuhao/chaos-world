@@ -178,6 +178,21 @@ const ROUTES: Array[Dictionary] = [
 		"key": "t",
 		"root": false,
 	},
+	{
+		# The domain surface (BL-0220 / BL-0394). The `domain` module shipped ten
+		# green suites with nothing in the shipped program ever reaching it, so the
+		# Hunt route could write a loot dict and never produce a map. This is the route
+		# that reaches it instead: the screen generates an authored template, enters
+		# the run, and draws its floor plan from `DomainMinimap` — the same read model
+		# the headless driver renders, so the two cannot disagree.
+		"id": &"domain_explore",
+		"node": "DomainExploreScreen",
+		"label": "Explore",
+		"hint": "Enter a domain and walk its rooms, traps, puzzles and hoards.",
+		"scene": "res://src/ui/screens/domain_explore.tscn",
+		"key": "d",
+		"root": false,
+	},
 ]
 
 

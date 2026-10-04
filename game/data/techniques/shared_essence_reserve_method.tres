@@ -10,6 +10,7 @@ min_realm_index = 9
 [resource]
 script = ExtResource("1_def")
 id = &"shared_essence_reserve_method"
+delivered_by = &"grimoire_jade"
 display_name = "Essence Reserve Method"
 description = "Teaches both halves of the body to bank what they take in rather than spending it at once. Deeper essence and faster recovery, bought with a universal slot."
 tags = Array[StringName]([&"passive", &"shared", &"universal_slot", &"reserve"])

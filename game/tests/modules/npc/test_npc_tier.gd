@@ -233,7 +233,11 @@ func test_retiring_one_npc_leaves_every_other_bond_alone() -> void:
 	NpcApi.spawn(ELDER)
 	NpcApi.advance_stage(ELDER, &"elder_taught", "story")
 	assert_eq(SocialApi.social_state(player).bond(ELDER), null, "the retired one is gone")
-	assert_ne(SocialApi.social_state(player).bond(SMITH), null, "the smith is still a stranger-turned-friend")
+	assert_ne(
+		SocialApi.social_state(player).bond(SMITH),
+		null,
+		"the smith is still a stranger-turned-friend"
+	)
 	assert_eq(SocialApi.summary(player)["bond_count"], 1, "and exactly one bond remains")
 
 

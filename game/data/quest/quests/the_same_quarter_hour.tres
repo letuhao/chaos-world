@@ -6,22 +6,22 @@
 [sub_resource type="Resource" id="QuestStep_oath_sworn"]
 script = ExtResource("2_step")
 step_id = &"oath_sworn"
-fact = &"oath_sworn_before_you"
+fact = &"oaths_discharged"
 need = 1
-display_name = "Stand where an oath is sworn"
+display_name = "Stand where a sworn term is brought to zero"
 
 [sub_resource type="Resource" id="QuestStep_oath_broken"]
 script = ExtResource("2_step")
 step_id = &"oath_broken"
-fact = &"oath_broken_before_you"
-need = 1
-display_name = "Still be standing there when it is broken"
+fact = &"oaths_discharged"
+need = 2
+display_name = "Still be standing there when the second one clears"
 
 [resource]
 script = ExtResource("1_quest")
 id = &"the_same_quarter_hour"
 display_name = "The Same Quarter Hour"
-description = "An oath was sworn in front of you and broken in front of you, and both happened inside one quarter hour. The sect keeps the second entry and no file on the first, which is not the same as saying it did not see the first. Nobody asked you to be in the room. You were in the room."
+description = "A term was sworn in front of you and broken in front of you, and both happened inside one quarter hour. The sect keeps the second entry and no file on the first, which is not the same as saying it did not see the first. Nobody asked you to be in the room. You were in the room."
 kind = &"authored"
 tier = 2
 requirement = {}

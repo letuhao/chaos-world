@@ -3,19 +3,43 @@ extends DamageMechanism
 
 ## Body damage is FLAT SUBTRACTION AT A MERIDIAN, and it can REFUSE a strike (ADR 0070).
 ##
-## ## The formula, verbatim
+## The formula, verbatim
 ##
 ## ```
-## gross        = attacker ATTACK_PHYSICAL
-## meridian     = resolve_location(...)           # 20 meridians, not 60 acupoints
+## gross        = ctx.magnitude * attacker ATTACK_PHYSICAL
+## meridian     = resolve_location(...)          # 20 meridians, not 60 acupoints
 ## point        = the acupoint within it
 ## channel      = target.meridians.get_meridian(meridian_id)
 ## resistance   = DEFENSE_PHYSICAL * MERIDIAN_ARMOUR_STEP * channel.state_rank()
 ##              + tissue_defence(meridian_id, target)
-## penetration  = maxf(gross - resistance, gross * MIN_PENETRATION_RATIO)     # 0.10
+## penetration  = maxf(gross - resistance, gross * MIN_PENETRATION_RATIO)   # 0.10
 ## mitigated    = penetration * point_multiplier(point) * channel_multiplier(channel)
 ## damage       = mitigated * (1 - DAMAGE_REDUCTION)
 ## ```
+##
+## ## `ctx.magnitude` is IN the gross, and it was missing
+##
+## ADR 0070's prose writes `gross = attacker ATTACK_PHYSICAL`, which was what shipped, and
+## that line was WRONG — not in taste, in arithmetic. `AttackContext.magnitude` is S1's
+## OUTPUT (ADR 0067): the technique's authored magnitude through the realm rate gate. It is
+## the one term `QiDamage` multiplies EVERY one of its shares by, and it is the only thing
+## that connects a technique's authored numbers to the damage the player sees; body read
+## none of it. Two consequences, both measured:
+##
+## - The unit of damage is `technique magnitude x attack stat` for every mechanism that
+##   touches health, and body alone priced a hit in bare attack-stat points. A body
+##   technique at `magnitude 100` was worth the same as one authored at `1`.
+## - `QiDamage` takes the realm power TWICE — once through `RealmScaling`'s MULT on
+##   `ATTACK_SPIRITUAL`, once through `ElementsApi`'s MULT on `element_power_<e>` — while
+##   body took it once, on a fixture build of `20.0` that a real actor's authored physique
+##   would put an order of magnitude above. `test_cross_mechanism_balance.gd` measured that
+##   asymmetry at 363x at R1 widening to 590x at R30: a gap that GROWS WITH THE LADDER,
+##   which is the signature of two mechanisms scaling against different powers rather than
+##   a tuning difference.
+##
+## Restored here rather than by dividing qi down, for the reason the shape of the fix is a
+## product and not a correction factor: the missing TERM is the defect. No constant was
+## invented and `combat_damage.tres` is untouched.
 ##
 ## and for `broad`, once per unlocked meridian, summed at `BROAD_MULT` — ADR 0070's "hits
 ## every unlocked meridian at `BROAD_MULT`", implemented as one sum rather than twenty
@@ -142,7 +166,17 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 	if ctx == null:
 		return _empty_parts()
 	var tuning := _tuning_of(ctx)
-	var gross := maxf(0.0, _finite(ctx.attacker_value(Stat.ATTACK_PHYSICAL)))
+	# `ctx.magnitude` is S1's OUTPUT (ADR 0067): the technique's authored magnitude through
+	# the realm RATE gate, and the ONE term `QiDamage` multiplies every one of its shares
+	# by. Dropping it is what left body paying the realm's `RealmDef.power` in full on a
+	# FIXTURE build of `20.0` while qi's real actor paid it twice — on its attack stat
+	# AND on a magnitude that never went through the realm MULT at all — which measured
+	# as a 363x -> 590x gap that widened with the ladder instead of the flat 100x two
+	# mechanisms reading two different stat magnitudes would show. The unit of damage is
+	# `technique magnitude x attack stat`, not "the attack stat on its own"; see the
+	# module docblock.
+	var magnitude := maxf(0.0, _finite(ctx.magnitude))
+	var gross := magnitude * maxf(0.0, _finite(ctx.attacker_value(Stat.ATTACK_PHYSICAL)))
 	var tissue := _tissue_of(ctx, tuning)
 	var sites := _sites_of(ctx, tuning)
 	# ONE penetration figure for the whole hit: `resistance` is a single sum, and a
@@ -210,6 +244,7 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 	return {
 		"mode": BodyLocation.mode_name(_mode_of(ctx)),
 		"gated": not sites.is_empty(),
+		"magnitude": magnitude,
 		"gross": gross,
 		"defense_physical": maxf(0.0, _finite(ctx.target_value(Stat.DEFENSE_PHYSICAL))),
 		"armour_step": maxf(0.0, _finite(tuning.meridian_armour_step)),
@@ -266,12 +301,26 @@ static func builder(
 ## `DamageProposal`'s `effects[]` AFTER health (ADR 0067), which is the only ordering under
 ## which a wound may land: `contracts/location_resolver.gd`'s own `apply_wound` writes
 ## nothing on purpose, for exactly this reason.
+##
+## It settles onto the ledger BOUND on `target`, and that is the whole fix. This function
+## built a `BodyWounds.new()` per call, so every wound it wrote landed on a fresh ledger
+## that was then dropped: the accumulating ledger ADR 0070 is named for could never
+## accumulate at all, and two calls could not disagree about what the target carried because
+## neither could see the other. Wounds now live where `CombatEngineApi.wounds_of` says they
+## live, which is the same component key `Actor._wounds_dict` serialises.
+##
+## A target with NO ledger bound is a supported state, not a failure, and it writes nothing
+## rather than quietly growing one nobody can save: `CombatBoot.bind_mechanisms` binds the
+## ledger, and a save that deliberately carries no wounds slot restores none.
 func apply_wounds(
 	target: Variant, proposal: DamageProposal, tuning: CombatTuning
 ) -> Array[Dictionary]:
 	if target == null or proposal == null:
 		return []
-	return BodyWounds.new().apply_all(target, proposal.effects, tuning)
+	var ledger := CombatEngineApi.wounds_of(target as Actor)
+	if ledger == null:
+		return []
+	return ledger.apply_all(target, proposal.effects, tuning)
 
 
 ## Decay `wounds` by `delta` seconds. Separate from [method apply_wounds] because it is a
@@ -418,13 +467,6 @@ func _weights_of(tuning: CombatTuning) -> Variant:
 	return (table as Dictionary)[best_name]
 
 
-## The attacker's strength at this point, and the ONE place a body hit is measured. Never
-## `ctx.base`: that is the technique's magnitude through the realm RATE gate (ADR 0067),
-## and a body build's power is its body.
-func _gross_of(ctx: AttackContext) -> float:
-	return maxf(0.0, _finite(ctx.attacker_value(Stat.ATTACK_PHYSICAL)))
-
-
 ## The aim mode for this hit: the per-hit override on `ctx.data`, else what the authored
 ## id implies. An unrecognised mode reads as `random`, never as an ungated strike.
 func _mode_of(ctx: AttackContext) -> StringName:
@@ -495,6 +537,7 @@ static func _empty_parts() -> Dictionary:
 	return {
 		"mode": String(BodyLocation.MODE_RANDOM),
 		"gated": false,
+		"magnitude": 0.0,
 		"gross": 0.0,
 		"defense_physical": 0.0,
 		"armour_step": 0.0,

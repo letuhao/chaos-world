@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"mind_glare_of_warding"
+delivered_by = &"sigil_sky_ward"
 display_name = "Glare of Warding"
 description = "Returns an attacker's own attention back along the line it arrived on. Half light, so it is strong against dark and indifferent to everything else."
 tags = Array[StringName]([&"technique", &"mind", &"light", &"counter"])

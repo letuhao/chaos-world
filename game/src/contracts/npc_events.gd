@@ -33,7 +33,6 @@ signal npc_restored(npc_id: String, tier: StringName, stage_id: StringName, trac
 ## A consumer answered a decision the npc module asked. `kind` names the question.
 signal decision_answered(npc_id: String, kind: StringName, decision: Dictionary)
 
-
 ## ## The one bus, and why it lives HERE rather than behind `NpcApi.events()`
 ##
 ## `NpcApi.events()` is still how a SUBSCRIBER reaches the contract — the accessor ADR 0093

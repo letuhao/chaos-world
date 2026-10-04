@@ -6,15 +6,15 @@
 [sub_resource type="Resource" id="QuestStep_emberblood_vigil"]
 script = ExtResource("2_step")
 step_id = &"furnace_lit"
-fact = &"emberblood_furnace_lit"
+fact = &"oaths_discharged"
 need = 1
-display_name = "Light the furnace once and hold it past your own lifespan"
+display_name = "Burn one sworn term out on the mountain that is waiting for you"
 
 [resource]
 script = ExtResource("1_quest")
 id = &"the_short_road"
 display_name = "The Short Road"
-description = "An Emberbody refines faster than anything else on this mountain and dies before the ledger admits it. The sect keeps a book of bodies that burned out on schedule; this is what it wants written at the end of one."
+description = "An Emberbody refines faster than anything else on this mountain and dies before the ledger admits it. The sect keeps a book of bodies that burned out on schedule; this is what it wants written at the end of one — and the only line anybody can write in that book is a term of service brought to zero."
 kind = &"systemic"
 tier = 2
 requirement = {}

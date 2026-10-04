@@ -51,6 +51,33 @@ extends RefCounted
 ## "days survived" fact therefore needs a clock this file refuses to have; the
 ## ADR records that as deferred rather than quietly inventing one.
 
+## ## One writer, and therefore ONE place a consequence can hang off a fact
+##
+## [method record] is the only verb in the repository that writes this ledger, and
+## every producer reaches it: `app/BeatDirector`, `combat/CombatFacts`,
+## `clan/ClanFacts`, `sect/SectFacts`, `event/EventBeatWriter` and
+## `app/CharacterCreationFlow`. A subscriber that wants to know "this happened"
+## therefore has exactly two honest shapes: call [method record] itself and hope
+## every writer went through it, or be told. The hook slot below is the being-told.
+##
+## **Dispatching somewhere else cannot work, and this is the measurement.**
+## `BeatDirector.offer` looks like the choke point — it is the one place a beat is
+## resolved (ADR 0114) — but it has exactly ONE production caller,
+## `app/WorldPulse.offer`, and that caller offers only the period fact and the four
+## `app/WorldAmbient` roster facts. A dispatch there moves a counter for none of the
+## facts a module actually records, which is the whole defect: the machinery was
+## green and unwired (ADR 0149). A subscriber installed here is reached by all six
+## writers, including the five that bypass the director by design.
+##
+## **This file names no subscriber and no module.** `tools arch` holds `core/` to
+## `LAYER_DEPS["core"] == {"core", "contracts"}`, so a `destiny` reference here —
+## `res://` path, `extends`, or bare class name — would be a boundary violation, and
+## `BARE_REF_UNITS` deliberately excludes `core/`, so a bare name would not even be
+## seen as an edge. The slot is a `Callable` and the composition root fills it
+## (`app/item_workbench_app.gd`), which keeps the edge `app/` -> `destiny` and never
+## `core/` -> `destiny`. Rejected: a `res://` preload with a lazy resolve, which is
+## the same dependency wearing a disguise.
+
 const SCHEMA_VERSION := 1
 ## `actor.module_data` key (ADR 0027's pattern, the key `DestinyState` uses).
 const MODULE_KEY := &"world_facts"
@@ -70,6 +97,76 @@ var id: StringName = &""
 var total: int = 0
 ## The count this fact took when it was first recorded. Written once.
 var since: int = 0
+
+# --- The post-write hook ------------------------------------------------------
+
+## The subscribers [method record] tells after a successful write, in install order.
+##
+## **A list, not one slot.** A single `static var` is last-install-wins, which is
+## invisible: a second consumer — or a test that installs its own — overwrites the
+## first with no error and no report, and the bug reads as "the hook did not fire".
+## A list makes every install observable, makes removal answerable by identity, and
+## lets a subscriber leave the process exactly as it found it, which matters here
+## because `tests/run_tests.gd` runs every suite in ONE process.
+##
+## **Iterated over a COPY.** A subscriber is allowed to subscribe, unsubscribe or
+## fail; mutating the array a `for` is walking is the shape that skips or repeats an
+## entry, and a counter moved once per recorded occurrence is the property this slot
+## exists to make true.
+static var _subscribers: Array[Callable] = []
+
+
+## Tell `subscriber` after every successful [method record].
+##
+## `subscriber` is called as `subscriber.call(actor, id, amount)`: the three facts a
+## consequence needs, and nothing else. It is NOT handed `record`'s report — a
+## subscriber that learned the report could start answering "did it write" from a
+## dictionary rather than from [method count], which is the one read path.
+##
+## A null or already-installed `subscriber` is refused, because a duplicate is a
+## second handler answering one occurrence — the same rule `BeatDirector.add_sink`
+## states, and for the same reason.
+static func subscribe(subscriber: Callable) -> bool:
+	if subscriber.is_null() or _subscribers.has(subscriber):
+		return false
+	_subscribers.append(subscriber)
+	return true
+
+
+## Remove `subscriber` and answer whether it was there. The inverse of
+## [method subscribe], and idempotent: removing what is not installed is not an error.
+static func unsubscribe(subscriber: Callable) -> bool:
+	# `Array.erase()` returns void in Godot 4, so the answer comes from a membership
+	# test taken BEFORE the removal rather than from its return value -- which also
+	# makes "was it there" independent of erase's signature.
+	if subscriber.is_null() or not _subscribers.has(subscriber):
+		return false
+	_subscribers.erase(subscriber)
+	return true
+
+
+## Whether `subscriber` is installed. A read rather than a compare against
+## [method subscribe]'s return value, so a caller holding no reference to the
+## `Callable` it installed earlier can still ask.
+static func has_subscriber(subscriber: Callable) -> bool:
+	return not subscriber.is_null() and _subscribers.has(subscriber)
+
+
+## How many subscribers are installed. Published for a probe and for a suite to
+## assert on: a hook that is installed for nobody looks identical to one that fires
+## for nobody, and this is the difference.
+static func subscriber_count() -> int:
+	return _subscribers.size()
+
+
+## Drop every subscriber, and answer how many were dropped. For a process that
+## tears the wiring down rather than running a game forever; a normal caller
+## unsubscribes what it installed.
+static func clear_subscribers() -> int:
+	var dropped := _subscribers.size()
+	_subscribers.clear()
+	return dropped
+
 
 # --- The ledger ---------------------------------------------------------------
 
@@ -206,6 +303,20 @@ static func has(actor: Actor, id: StringName, need: int = 1) -> bool:
 ## result is an announcement about a remembered thing and travels into logs and
 ## UI summaries. Rejected: a silent `void`, because a refusal a caller cannot
 ## read is a bug reported three stages later as "the quest never completed".
+##
+## ## Subscribers are told AFTER the write, and only on `ok: true`
+##
+## Every refusal returns above, before the ledger is touched and before a single
+## subscriber is called: a claim that was refused moved nothing, so a consequence
+## derived from it must move nothing either. And the notification is the LAST
+## thing this verb does, so a subscriber reads the ledger through [method count]
+## and sees the occurrence already in it — the same reason `BeatDirector` records
+## before it consults a sink (ADR 0114).
+##
+## **A subscriber is told, not asked to decide.** It returns nothing that this verb
+## reads: the ledger write is the whole answer to "did it happen", and a
+## consequence that could veto, retry or reverse it would be a second writer wearing
+## a notification's clothes.
 static func record(actor: Actor, id: StringName, amount: int = 1) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor"}
@@ -228,7 +339,33 @@ static func record(actor: Actor, id: StringName, amount: int = 1) -> Dictionary:
 	var since := total if previous <= 0 else first_since
 	rows[key] = {"count": total, "since": since}
 	actor.set_module_data(MODULE_KEY, ledger)
-	return {"ok": true, "reason": "", "id": key, "count": total, "since": since}
+	var report := {"ok": true, "reason": "", "id": key, "count": total, "since": since}
+	_notify_recorded(actor, id, amount)
+	return report
+
+
+## Tell every installed subscriber that `id` happened `amount` more times.
+##
+## Private because a caller must not announce an occurrence it did not record: the
+## ONLY legal way to reach it is [method record]'s tail, which is what makes "one
+## occurrence moves a consequence exactly once" a property of the code rather than
+## of every caller's discipline.
+##
+## **The zero-subscriber case returns immediately.** It is the overwhelmingly
+## common one — most facts no fate, quest or event reads — so the common case must
+## not allocate a copy of the subscriber list to discover there is nobody to call.
+static func _notify_recorded(actor: Actor, id: StringName, amount: int) -> void:
+	if _subscribers.is_empty():
+		return
+	for subscriber in _subscribers.duplicate():
+		# An entry an EARLIER subscriber's own callback removed is SKIPPED rather than
+		# called. That is the one way this loop could otherwise double-fire a
+		# consequence: iterating a copy taken before the callback ran, an entry that
+		# is no longer installed would still be called from the copy. Re-reading
+		# membership per entry closes it at the cost of one array scan per subscriber.
+		if not _subscribers.has(subscriber):
+			continue
+		subscriber.call(actor, id, amount)
 
 
 ## The row for `id` as a value object, or an empty one naming nothing when it

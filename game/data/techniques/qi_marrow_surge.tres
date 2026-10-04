@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"qi_marrow_surge"
+delivered_by = &"draft_iron_page"
 display_name = "Marrow Surge"
 description = "Forces qi down the opened channels all at once instead of spending it evenly. Raw output, no element, so nothing resists it and nothing amplifies it either."
 tags = Array[StringName]([&"technique", &"burst", &"no_element"])

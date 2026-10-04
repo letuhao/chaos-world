@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"dual_body_mind_steel_recollection"
+delivered_by = &"treaty_fifteenth_clause"
 display_name = "Steel Recollection"
 description = "The body repeats a movement the mind still remembers exactly. Purely raw output and no elemental term at all, so nothing resists it; the price is that both paths must already be at the Immortal floor."
 tags = Array[StringName]([&"technique", &"dual", &"body_mind", &"recall", &"no_element"])

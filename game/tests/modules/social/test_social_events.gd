@@ -66,7 +66,9 @@ func test_applying_a_cause_announces_the_bond_it_moved() -> void:
 	var actor := _actor()
 	SocialApi.apply_cause(actor, MERCHANT, &"gifted_item")
 	assert_eq(_seen.size(), 1, "one bond changed, so one announcement")
-	assert_eq(String(_seen[0]["partner"]), String(MERCHANT), "naming the partner whose regard moved")
+	assert_eq(
+		String(_seen[0]["partner"]), String(MERCHANT), "naming the partner whose regard moved"
+	)
 	assert_eq(String(_seen[0]["cause"]), "gifted_item", "and naming the authored cause that did it")
 
 
@@ -160,8 +162,8 @@ func test_a_subscriber_that_connected_through_the_facade_hears_the_social_module
 	# in the game silently stops hearing bonds — a bug with no other symptom.
 	_disconnect_all()
 	var heard: Array[StringName] = []
-	NpcApi.events().bond_changed.connect(
-		func(_npc_id, cause_id): heard.append(cause_id)
-	)
+	NpcApi.events().bond_changed.connect(func(_npc_id, cause_id): heard.append(cause_id))
 	SocialApi.apply_cause(_actor(), MERCHANT, &"gifted_item")
-	assert_eq(heard, [&"gifted_item"] as Array[StringName], "the facade-connected subscriber heard it")
+	assert_eq(
+		heard, [&"gifted_item"] as Array[StringName], "the facade-connected subscriber heard it"
+	)

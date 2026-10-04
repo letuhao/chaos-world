@@ -87,6 +87,19 @@ static func resolve_hit(
 	return CombatSpine.resolve_hit(attacker, target, technique, tuning, rng, ctx_builder)
 
 
+## ADR 0067's `effects[]` step on its own: settle one landed hit's mechanism-owned state
+## writes against `target`, and report `{applied, skipped, ignored}`.
+##
+## The spine already calls this, last, on every landed hit — so a caller reaches this
+## facade only to settle a proposal it resolved some other way (a DOT tick, a scripted
+## cutscene blow, a replay). Calling it on a proposal the spine has already settled would
+## double-count the wound, which is why the damage-bearing route is not exposed here.
+static func apply_effects(
+	target: Actor, effects: Variant, tuning: CombatTuning = null
+) -> Dictionary:
+	return CombatEffectApply.apply(target, effects, tuning)
+
+
 ## The same hit decomposed, primitives only, so a readout panel never restates the
 ## formula. Delegates to [method CombatOutcome.to_dict]; `{}` when `actor` is null.
 ## This is the ADR 0038 / 0043 screen contract: a screen passes these to a panel and

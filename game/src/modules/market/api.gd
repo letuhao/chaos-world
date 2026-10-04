@@ -67,6 +67,27 @@ const MARKET_FULL := "market_full"
 ## order, and the setter is the only thing that writes it.
 static var _store: RefCounted = null
 
+## The auction event bus. **Private and reached through [method _bus] rather than a
+## public `events()` accessor**, because this facade already publishes exactly
+## `MAX_FACADE_PUBLIC_METHODS` verbs and a thirteenth fails `tools arch` (ADR 0093).
+## `AuctionEvents.shared()` is the subscriber's door and hands back the same instance.
+static var _events: AuctionEvents = null
+
+
+## The shared bus this module emits through. One instance for the whole process, so a
+## consumer that connected to `AuctionEvents.shared()` hears every lot and never has to
+## re-connect per actor.
+##
+## **Named `_bus` rather than `events()` on purpose.** Two reasons, and the second is the
+## one that bit: a static var and a static func cannot share a name, and `_events` held
+## both here — so `MarketApi` failed to PARSE and every dependant reported "could not
+## resolve class MarketApi" rather than the one line that caused it. Underscore-prefixed
+## so it costs nothing against the cap either way.
+static func _bus() -> AuctionEvents:
+	if _events == null:
+		_events = AuctionEvents.shared()
+	return _events
+
 
 ## Attach the module to `actor`: restore and normalize whatever a prior `Actor.from_dict`
 ## carried. Idempotent, and safe on an actor who has traded nothing.
@@ -267,8 +288,14 @@ static func settle(actor: Actor, location_id: StringName, periods: int) -> Dicti
 	return {"ok": true, "reason": "", "expired": expired, "remaining": kept.size()}
 
 
-## The read model: every shop remembered, the floor at every location, and the spread a
-## panel labels itself with. `{}` when there is no actor.
+## The read model: every shop remembered, the floor at every location, every open lot,
+## and the spread a panel labels itself with. `{}` when there is no actor.
+##
+## **`lots` is here because ADR 0102's settlement loop needs it and this facade is at its
+## cap**: the ADR says "summary() reports which lots are due; the caller loops and calls
+## settle(seller, lot_id, winner, periods)", and a thirteenth accessor would fail
+## `tools arch`. `AuctionReadModel` shapes each row as primitives and answers the two
+## questions the caller actually has — `required_bid` and whether it is still `open`.
 static func summary(actor: Actor) -> Dictionary:
 	if actor == null:
 		return {}
@@ -286,7 +313,19 @@ static func summary(actor: Actor) -> Dictionary:
 		"floor": state["floor"],
 		"drop_count": drops,
 		"floor_capacity_per_location": MAX_FLOOR_PER_LOCATION,
+		"lots": AuctionReadModel.lots(state),
+		"open_lot_count": _open_lots(state).size(),
+		"lot_capacity": MAX_OPEN_LOTS,
 	}
+
+
+## The ids of every lot still open, which is the set a caller owns time over.
+static func _open_lots(state: Dictionary) -> Array:
+	var out: Array = []
+	for row in AuctionReadModel.lots(state):
+		if String((row as Dictionary).get("status", "")) == "open":
+			out.append(String((row as Dictionary)["lot_id"]))
+	return out
 
 
 ## The ledger exactly as core persists it, so a caller never reaches into `module_data`.
@@ -399,6 +438,10 @@ static func bid(bidder: Actor, lot_id: StringName, amount: int, bid_period: int 
 	if String(bids.get(String(bidder.id), {}).get("bid_id", "")) != "":
 		return _refuse(ALREADY_HIGH)
 	var bid_id := "bid_%s_%d" % [String(bidder.id), bid_period]
+	# The high bidder BEFORE this write, because `outbid_in_auction` has to name who was
+	# displaced — and the announcement is emitted after the write, so a consumer that
+	# reads the ledger sees the new high rather than the old one.
+	var displaced := String(lot.get("high_bid", ""))
 	bids[String(bidder.id)] = {
 		"bid_id": bid_id,
 		"actor_id": String(bidder.id),
@@ -409,6 +452,13 @@ static func bid(bidder: Actor, lot_id: StringName, amount: int, bid_period: int 
 	lot["high_bid_amount"] = amount
 	lot["high_bid"] = String(bidder.id)
 	_save(bidder, state)
+	_bus().bid_placed.emit(String(bidder.id), lot_id, amount, required)
+	if displaced != "" and displaced != String(bidder.id):
+		# **The displaced bidder is NOT removed from the lot.** They stay in the settlement
+		# walk at their OWN bid, which is what makes an outbid a demotion rather than an
+		# eviction — and the event says so, because a consumer that read this as a removal
+		# would tell a player they had been struck from a sale they are still in.
+		_bus().outbid_in_auction.emit(displaced, lot_id, String(bidder.id), amount)
 	return {
 		"ok": true, "reason": "", "lot_id": String(lot_id), "amount": amount, "required": required
 	}
@@ -458,6 +508,11 @@ static func settle_lot(
 		if EconomyApi.purse(bidder) < int(row["amount"]):
 			# Money left between bid and close. Named, visible, consequential: the lot falls
 			# to the next bidder at THEIR OWN bid, never to the seller charged a shortfall.
+			# Announced per defaulting bidder rather than once at the end, because a lot with
+			# three broken promises has three facts and a single "someone defaulted" would
+			# not say which. The emission happens BEFORE the next bidder is tried, so a
+			# consumer reading the ledger sees the promise still recorded and unfulfilled.
+			_bus().defaulted_on_a_bid.emit(String(row["actor_id"]), lot_id, int(row["amount"]))
 			continue
 		# **Deliver BEFORE marking the lot sold, and set the amount it will charge BEFORE
 		# delivering.** The delivery charges `winning_amount`, so it must already be written or
@@ -474,6 +529,11 @@ static func settle_lot(
 		lot["winner"] = String(row["actor_id"])
 		state["lots"][String(lot_id)] = lot
 		_save(winner_actor, state)
+		# AFTER the save, and after the coins have moved: a subscriber that answers by
+		# reading the two purses sees a settled transfer rather than a half-written one.
+		_bus().won_auction.emit(
+			String(row["actor_id"]), lot_id, int(row["amount"]), String(lot.get("seller_id", ""))
+		)
 		return {
 			"ok": true,
 			"reason": "",

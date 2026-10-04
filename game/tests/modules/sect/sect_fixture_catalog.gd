@@ -265,7 +265,18 @@ static func rival_sect() -> SectDef:
 ## duration of one test.
 static func install(defs: Array[SectDef] = []) -> void:
 	var catalog := SectCatalog.new()
-	var fallback: Array[SectDef] = [default_sect()] if defs.is_empty() else defs
+	# Built by append rather than by a ternary, for the reason
+	# `install_doctrine` gives: `[default_sect()]` infers a plain `Array`, and
+	# assigning that to a typed `Array[SectDef]` raises at RUNTIME rather than
+	# warning. That throw happens before the catalog is installed, so it silently
+	# discards the requested content and every case in the suite then asserts
+	# against the SHIPPED `.tres` tree instead — which reads as a content problem
+	# rather than as the fixture never taking.
+	var fallback: Array[SectDef] = []
+	if defs.is_empty():
+		fallback.append(default_sect())
+	else:
+		fallback.append_array(defs)
 	for def in fallback:
 		catalog._sects[String(def.id)] = def
 		for position_id in def.position_ids():

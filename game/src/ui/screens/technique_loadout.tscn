@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://src/ui/screens/technique_loadout.gd" id="1"]
 [ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
 [ext_resource type="PackedScene" path="res://src/ui/panels/technique_slot_row.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/technique_equip_picker.tscn" id="4"]
 
 [node name="TechniqueLoadoutScreen" type="Control"]
 anchors_preset = 15
@@ -61,3 +62,8 @@ unique_name_in_owner = true
 [node name="Slot5" parent="Layout/Scroll/Loadout/Slots" instance=ExtResource("3")]
 
 [node name="Slot6" parent="Layout/Scroll/Loadout/Slots" instance=ExtResource("3")]
+
+[node name="Divider" type="HSeparator" parent="Layout"]
+
+[node name="EquipPicker" parent="Layout" instance=ExtResource("4")]
+unique_name_in_owner = true

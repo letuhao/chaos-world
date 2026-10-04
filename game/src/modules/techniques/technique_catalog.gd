@@ -18,6 +18,10 @@ const TECHNIQUE_SCRIPT_CLASS := "TechniqueDef"
 static var shared: TechniqueCatalog = null
 
 var _definitions: Dictionary = {}
+## item id -> the technique id delivered by it, from every def's `delivered_by`.
+## Built with the definitions and never on its own, so the two maps cannot describe
+## different content (DEF-0203).
+var _deliveries: Dictionary = {}
 var _loaded: bool = false
 
 
@@ -34,6 +38,8 @@ func register(def: TechniqueDef) -> void:
 	if def == null or def.id == &"":
 		return
 	_definitions[String(def.id)] = def
+	if def.delivered_by != &"":
+		_deliveries[String(def.delivered_by)] = def.id
 
 
 ## Every known technique id, canonically ordered.
@@ -61,8 +67,29 @@ func definition(technique_id: StringName) -> TechniqueDef:
 	if ResourceLoader.exists(direct):
 		def = load(direct) as TechniqueDef
 	if def != null:
-		_definitions[id] = def
+		_adopt(def)
 	return def
+
+
+## The technique a manual `item_id` delivers, or null.
+##
+## [method TechniqueDef.delivered_by] is the authored answer, so this is an EXPLICIT
+## claim rather than a name match: the only way a manual resolves is a def that says
+## it teaches it. An id no def claims returns null and the caller refuses
+## `unknown_technique`, which is the guard DEF-0203 exists to keep — a second way to
+## be FOUND, never a second way to be GUESSED.
+func delivers(item_id: StringName) -> TechniqueDef:
+	if item_id == &"":
+		return null
+	_ensure_loaded()
+	var technique_id: StringName = StringName(_deliveries.get(String(item_id), ""))
+	if technique_id != &"":
+		return definition(technique_id)
+	# A manual whose id IS a technique id still resolves, so a hand-authored pair
+	# that already agrees needs no `delivered_by` and no migration. The reverse —
+	# a def whose id is never a manual — is deliberately not a fallback: a
+	# technique nobody can find would be a loadout row nothing can occupy.
+	return definition(item_id)
 
 
 func has(technique_id: StringName) -> bool:
@@ -84,6 +111,16 @@ func _ensure_loaded() -> void:
 		if not entry.begins_with(".") and entry.ends_with(".tres"):
 			var def := load("%s/%s" % [TECHNIQUES_ROOT, entry]) as TechniqueDef
 			if def != null and def.id != &"":
-				_definitions[String(def.id)] = def
+				_adopt(def)
 		entry = dir.get_next()
 	dir.list_dir_end()
+
+
+## Take one definition into BOTH maps. Every path into the catalog goes through here
+## — the directory scan and the lazy per-id load — because a def indexed without its
+## `delivered_by` would be findable by id and unreachable by manual, which is exactly
+## the half-built state DEF-0203 describes.
+func _adopt(def: TechniqueDef) -> void:
+	_definitions[String(def.id)] = def
+	if def.delivered_by != &"":
+		_deliveries[String(def.delivered_by)] = def.id

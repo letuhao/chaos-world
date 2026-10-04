@@ -26,6 +26,13 @@ func _install_defaults() -> void:
 	_add(&"protected_from_death", {"standing": 6.0, "trust": 0.12, "persistent": true})
 	_add(&"taught_technique", {"standing": 3.0, "trust": 0.06, "persistent": true})
 	_add(&"honoured_a_debt", {"standing": 3.0, "trust": 0.08, "persistent": true})
+	# `shared_brotherhood` is the ONLY cause in the shipped catalog that names a class,
+	# and it is the only one that can reach `sworn` — the top of the ladder. Two things
+	# keep that from being a shortcut to the end of the ladder, and neither is this file's
+	# job: `SocialBond.apply` records the promise on the bond, and `SocialBondClass.classify`
+	# honours it only once the axes have earned a confidant. A brotherhood sworn by a pair
+	# the world has not seen trust in is recorded and not granted — which is the whole
+	# reason `promotes_to` is a ceiling and not an outcome (BL-0659).
 	_add(
 		&"shared_brotherhood",
 		{"standing": 5.0, "trust": 0.15, "persistent": true, "promotes_to": SocialBondClass.SWORN}
@@ -193,12 +200,25 @@ func _add(cause_id: StringName, fields: Dictionary) -> void:
 	cause.id = cause_id
 	cause.persistent = bool(fields.get("persistent", false))
 	cause.institutional = bool(fields.get("institutional", false))
+	# The kind the anti-farm rule counts. Falls back to the first authored tag so a
+	# gift-tier cause and a combat-tier cause never land in the same bucket.
+	cause.kind = StringName(fields.get("kind", _first_tag(fields)))
 	cause.standing = float(fields.get("standing", 0.0))
 	cause.trust = float(fields.get("trust", 0.0))
 	for tag in fields.get("tags", []):
 		cause.tags.append(StringName(tag))
 	cause.promotes_to = StringName(fields.get("promotes_to", ""))
 	_causes[String(cause_id)] = cause
+
+
+## The first authored tag, used as the cause's `kind` when none is named. The shipped
+## causes already tag themselves `gift` / `combat` / `oath` / `harm`, which is exactly the
+## axis the anti-farm rule wants, so deriving from it costs no new authoring.
+func _first_tag(fields: Dictionary) -> String:
+	var tags: Array = fields.get("tags", [])
+	if tags.is_empty():
+		return ""
+	return String(tags[0])
 
 
 func cause_definition(cause_id: StringName) -> SocialCauseDef:

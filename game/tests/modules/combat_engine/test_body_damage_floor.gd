@@ -49,7 +49,11 @@ extends "res://tests/modules/combat_engine/body_damage_fixture.gd"
 ## neither. Each is commented where it is asserted.
 func test_min_penetration_ratio_floors_and_the_multiplier_still_deals_damage() -> void:
 	var attacker := _attacker()
-	var gross := attacker.stats.derived(Stat.ATTACK_PHYSICAL)
+	# The gross is `magnitude x ATTACK_PHYSICAL` — the product, not the bare stat. The
+	# floor is a share of the gross, so an identity pinned against the stat alone would
+	# be asserting about a figure the mechanism does not price the floor off.
+	var parts_of_gross := _parts(attacker, _walled(0.0), BodyLocation.MODE_NAMED, &"lung")
+	var gross := float(parts_of_gross["magnitude"]) * attacker.stats.derived(Stat.ATTACK_PHYSICAL)
 	var floor := gross * _tuning.min_penetration_ratio
 
 	for points in [0.0, 10.0, 100.0, 1.0e3, 1.0e6, 1.0e9, 1.0e30, INF]:
@@ -250,13 +254,13 @@ func test_more_defence_hurts_monotonically_and_saturates_rather_than_vanishing()
 	)
 
 
-## Each point of `DEFENSE_PHYSICAL` is worth exactly `meridian_armour_step *
-## state_rank` of penetration, until the floor takes the question away.
+## Each rung of `DEFENSE_PHYSICAL` costs exactly `meridian_armour_step *
+## state_rank` of armour PER POINT it added, until the floor takes the question away.
 ##
 ## ## The step is measured on PENETRATION, and each rung against the rung below it
 ##
-## Two things were wrong with the original form, and the duplicate-tissue fix made both
-## visible at once.
+## Three things were wrong with the original form, and the duplicate-tissue fix made all
+## three visible at once.
 ##
 ## (1) It differenced `total`, which is `penetration x` the struck huyệt's multiplier.
 ## Every `_walled()` builds a FRESH actor, and a fresh `named` aim resolves whichever
@@ -264,22 +268,29 @@ func test_more_defence_hurts_monotonically_and_saturates_rather_than_vanishing()
 ## two multipliers as well as the armour. (2) It differenced every row against the
 ## `armour 0.0` row, which only worked while that origin was floored and could therefore
 ## never be a measurement row — so the baseline was a floor-clipped number and the first
-## unfloored row was asked for a full step it had only half taken.
+## unfloored row was asked for a full step it had only half taken. (3) It took the
+## expected step from `defence_of(<an actor with no wall>)`, which is brief 0a's trap in
+## its purest form: `_armour` authors a FLAT modifier and a body-path defender carries a
+## `BodyProvider`, so `ActorStats` composes the provider's baseline with the modifier
+## stack (ADR 0026) and the derived stat does NOT move by the authored amount. A test
+## cannot assert "one point of defence" against a number that is not one point of
+## defence.
 ##
-## Neither was observable while the bug stood, because the doubled tissue put EVERY row
-## of `0..8` inside the floor. The assertion body was dead code: the suite counted green
-## assertions for a claim it was not making. Halving the armour moved the floor's grip,
-## index `1` came out of the floored regime, and the latent bug surfaced as a failure
-## rather than as a regression in the mechanism.
+## None of the three was observable while the bug stood, because the doubled tissue put
+## EVERY row of `0..8` inside the floor. The assertion body was DEAD CODE: the suite
+## counted green assertions for a claim it was not making. Halving the armour moved the
+## floor's grip, index `1` came out of the floored regime, and the latent fault surfaced
+## as a failure rather than as a regression in the mechanism.
 ##
-## So the loop carries its own predecessor, measures PENETRATION (which is upstream of
-## every multiplier, so it is the ladder and only the ladder), and reads the regime off
-## the rows instead of assuming it. The origin is asserted against the regime it is
-## actually in.
+## So the loop carries its own predecessor, measures PENETRATION (upstream of every
+## multiplier, so it is the ladder and only the ladder), differences the PUBLISHED
+## `defense_physical` between the rungs rather than assuming the authored amount, and
+## reads the regime off the rows instead of assuming it. `origin` is asserted against the
+## regime it is in. `armour_step` and `channel_rank` are read off the row under test, so
+## a rebalance of the `.tres` moves this with it.
 func test_each_point_of_defence_is_worth_one_armour_step_until_the_floor_binds() -> void:
 	var attacker := _attacker()
 	var state := MeridianState.OPEN
-	var step := float(target_rank(state)) * _tuning.meridian_armour_step
 	var origin := _parts(attacker, _walled(0.0, state), BodyLocation.MODE_NAMED, &"lung")
 	if float(origin["penetration"]) > float(origin["floor"]):
 		assert_almost_eq(
@@ -289,17 +300,32 @@ func test_each_point_of_defence_is_worth_one_armour_step_until_the_floor_binds()
 		)
 	var previous_penetration := float(origin["penetration"])
 	var previous_total := float(origin["total"])
+	var previous_defence := float(origin["defense_physical"])
 	for index in range(1, 9):
 		var parts := _parts(
 			attacker, _walled(float(index), state), BodyLocation.MODE_NAMED, &"lung"
 		)
 		var penetration := float(parts["penetration"])
 		if penetration > float(parts["floor"]):
+			# The armour term is `DEFENSE_PHYSICAL x meridian_armour_step x
+			# state_rank`, so the penetration drops by whatever ARMOUR the extra defence
+			# bought. The expectation therefore differences the PUBLISHED
+			# `defense_physical` between the rung below and this one and applies the
+			# shipped step to THAT. `_armour` authors a FLAT `index` and a body-path
+			# defender carries a `BodyProvider`, so `ActorStats` composes the provider's
+			# baseline with the modifier stack (ADR 0026) and the derived stat does not
+			# move by the authored amount — assuming it did was the original fault.
+			# `armour_step` and `channel_rank` are read off the row under test, so a
+			# rebalance of the `.tres` moves this with it.
+			var step := (
+				(float(parts["defense_physical"]) - previous_defence)
+				* float(parts["armour_step"])
+				* float(parts["channel_rank"])
+			)
 			assert_almost_eq(
 				previous_penetration - penetration,
 				step,
-				"%d points of DEFENSE_PHYSICAL removes exactly %f of penetration"
-				% [index, step],
+				"%d points of DEFENSE_PHYSICAL removes exactly %f of penetration" % [index, step],
 				0.001
 			)
 		assert_eq(
@@ -309,6 +335,7 @@ func test_each_point_of_defence_is_worth_one_armour_step_until_the_floor_binds()
 		)
 		previous_penetration = penetration
 		previous_total = float(parts["total"])
+		previous_defence = float(parts["defense_physical"])
 
 
 # --- helpers -------------------------------------------------------------------

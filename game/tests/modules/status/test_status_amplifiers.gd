@@ -84,13 +84,15 @@ const FRAME := 0.25
 ## body would let the first window's escalation inflate the second.
 func test_a_burn_beside_a_pyre_and_a_second_burn_spends_more_than_the_same_burn_alone() -> void:
 	var alone := _burn_spend(_actor(), MAGNITUDE, false)
-	var pyred := _pulse_spend_of(_dressed([PYRE, SIBLING, BURN]), BURN)
+	var pyred := _burn_pulse_spend(_dressed([PYRE, SIBLING, BURN]))
 	assert_almost_eq(alone, _unamplified_spend(), "the control spends the authored share", 1e-6)
 	assert_eq(
 		pyred > alone,
 		true,
-		("a pyre must spend MORE once it has a burn to feed: alone %s, pyred %s (delta %s)"
-		% [alone, pyred, pyred - alone])
+		(
+			"a pyre must spend MORE once it has a burn to feed: alone %s, pyred %s (delta %s)"
+			% [alone, pyred, pyred - alone]
+		)
 	)
 	# Not merely "more" — the authored `sibling_gain` over one feeding sibling, which is
 	# what makes this a failure to wire the channel rather than a rounding disagreement.
@@ -189,8 +191,8 @@ func test_two_amplifiers_add_their_authored_gains_and_the_channel_still_saturate
 	var none := _burn_spend(_actor(), MAGNITUDE, false)
 	var one_actor := _dressed([PYRE, SIBLING, BURN])
 	var both_actor := _dressed([PYRE, WIND, SIBLING, BURN])
-	var pyre_only := _pulse_spend_of(one_actor, BURN)
-	var both := _pulse_spend_of(both_actor, BURN)
+	var pyre_only := _burn_pulse_spend(one_actor)
+	var both := _burn_pulse_spend(both_actor)
 	# The AGGREGATE does collect both authored gains, which is the half that used to be
 	# unreachable — `sibling_gain` read off the pulsing def could never report a sum.
 	assert_almost_eq(
@@ -229,7 +231,7 @@ func test_two_amplifiers_add_their_authored_gains_and_the_channel_still_saturate
 	# spend is excluded by reading the BURN's pulse, so this is the burn's delta alone.
 	assert_almost_eq(
 		both,
-		_pulse_spend_of(_dressed([PYRE, WIND, BURN, SIBLING]), BURN),
+		_burn_pulse_spend(_dressed([PYRE, WIND, BURN, SIBLING])),
 		"a second feeding sibling is clamped at the same cap",
 		1e-6
 	)
@@ -241,12 +243,14 @@ func test_two_amplifiers_add_their_authored_gains_and_the_channel_still_saturate
 ## amplifiers are not aliases of one another.
 func test_wind_spread_amplifies_a_sibling_the_same_way_the_pyre_does() -> void:
 	var none := _burn_spend(_actor(), MAGNITUDE, false)
-	var winded := _pulse_spend_of(_dressed([WIND, SIBLING, BURN]), BURN)
+	var winded := _burn_pulse_spend(_dressed([WIND, SIBLING, BURN]))
 	assert_eq(
 		winded > none,
 		true,
-		("wind_spread is an amplifier: alone %s, winded %s (delta %s)"
-		% [none, winded, winded - none])
+		(
+			"wind_spread is an amplifier: alone %s, winded %s (delta %s)"
+			% [none, winded, winded - none]
+		)
 	)
 	assert_almost_eq(
 		winded - none,
@@ -324,23 +328,39 @@ func test_any_spending_status_is_a_sibling_and_an_amplifier_is_not() -> void:
 		0,
 		"and with nothing beside it the burn has none, which is the other half of the pair"
 	)
-	var one := _pulse_spend_of(paired, BURN)
+	var one := _burn_pulse_spend(paired)
 	assert_eq(
-		one > _pulse_spend_of(lone, BURN),
-		true,
-		"a second spending status must widen the channel"
+		one > _burn_pulse_spend(lone), true, "a second spending status must widen the channel"
 	)
+	# The channel is `1 + min(gain * siblings, cap)` on the WHOLE pulse magnitude, so
+	# one sibling multiplies by `(1 + gain)`, not by `gain`. Writing `alone * gain`
+	# asserted a marginal increase against a multiplicative curve.
+	#
+	## ## Why this used to read 0.056 against an expected 0.058240
+	##
+	## `alone` is `_burn_spend`, which DRIVES A WINDOW, so the burn's runtime it leaves
+	## behind has `ticks_elapsed == 1` and is already ESCALATED — `2.0 * (1 + 0.12/3) =
+	## 2.08`, a spend of `0.041600`. This pair used to read `_pulse_spend_of(paired, BURN)`
+	## on an actor no window had ever run, so the burn it read had `ticks_elapsed == 0`: the
+	## escalation branch multiplied by `1 + 0.12 * 0 / 3 = 1.0`, and the spend came out
+	## `2.0 * 1.4 * 0.02 = 0.056`. The expectation `alone * (1 + gain) = 0.0416 * 1.4 =
+	## 0.058240` was RIGHT and the measured figure was the un-escalated one — the two sides
+	## of the comparison were at different points on the escalation curve, which is exactly
+	## the error this file's own `_pulse_spend_of` docblock warns about.
+	##
+	## So the fixture is corrected, not the number: `_burn_pulse_spend` ticks the actor and
+	## THEN reads, which puts both sides of the comparison at the same escalation index and
+	## pins the shipped pulse rather than a figure derived from an un-ticked record.
 	assert_almost_eq(
-		one - alone,
-		alone * _pyre_gain(),
-		"and the burn spends gain x one sibling",
-		1e-6
+		one, alone * (1.0 + _pyre_gain()), "and one sibling multiplies the burn by (1 + gain)", 1e-6
 	)
 	# The pool delta is both spends, and it is exactly that: no bleed cost is credited to
-	# the burn and none is lost.
+	# the burn and none is lost. Read from ONE actor — building a second with `_dressed`
+	# gave it its own escalation index, so the two sides were never comparable.
+	var dressed_actor := _dressed([PYRE, SIBLING, BURN])
 	assert_almost_eq(
-		_spend_over_one_pulse(_dressed([PYRE, SIBLING, BURN])),
-		_pulse_spend_of(paired, BURN) + _pulse_spend_of(paired, SIBLING),
+		_spend_over_one_pulse(dressed_actor),
+		_pulse_spend_of(dressed_actor, BURN) + _pulse_spend_of(dressed_actor, SIBLING),
 		"the actor's health loss is the burn's spend plus the bleed's, and nothing else",
 		1e-6
 	)
@@ -505,7 +525,7 @@ func _burn_spend(actor: Actor, magnitude: float, with_amp: bool, beside: Array =
 	return _spend_over_one_pulse(actor)
 
 
-## ONE status's own spend over one window, read off its live runtime record once the tick
+## ONE status's own spend over one window, read off its live runtime record AFTER the tick
 ## has run. This is the isolation a case needs when a second health-spending status shares
 ## the actor: the pool delta is then the SUM of both spends, and reading the pool where a
 ## case means "the burn's delta" credits the burn with the sibling's cost.
@@ -513,6 +533,19 @@ func _burn_spend(actor: Actor, magnitude: float, with_amp: bool, beside: Array =
 ## It reads exactly what `_pulse` read — the same sibling count, the same aggregated gain,
 ## the same channel cap — so asserting it against the measured pool delta is what pins the
 ## tick loop to the channel rather than merely restating the curve.
+##
+## ## Why it is NOT a read of the actor's pool
+##
+## The window has to be driven before the read. `tick_statuses` spends from
+## `actor.resource(...)` directly, so the only way to learn what a status COST is to
+## measure the pool across a tick — and measuring it means having already run the tick.
+## Reading before the tick answers `ticks_elapsed == 0`, which for an escalating burn is
+## the UN-escalated magnitude: the figure came out `0.0464` against a measured `0.048`, a
+## shortfall of exactly `0.0016` — `0.12 * 0.02 * 2.0`, one escalation step of share.
+##
+## So a caller drives the window itself and reads afterwards, and the un-amplified control
+## is taken from an actor that has ALSO been ticked. Comparing an escalated spend against an
+## un-ticked one is the same error wearing a different hat.
 func _pulse_spend_of(actor: Actor, status_id: StringName) -> float:
 	var runtime := _runtime_of(actor, status_id)
 	if runtime == null or runtime.def == null:
@@ -526,11 +559,12 @@ func _pulse_spend_of(actor: Actor, status_id: StringName) -> float:
 	return magnitude * float(runtime.def.payload.get("share_per_pulse", 0.0))
 
 
-## A window long enough for exactly one of `status_id`'s pulses, returned as the spend
-## that status made. Used only where the actor spends one pool; `_pulse_spend_of` is the
-## isolating reader for everything else.
-func _spend_of_one_pulse(actor: Actor, status_id: StringName) -> float:
-	return _pulse_spend_of(actor, status_id)
+## Drive one window on `actor` and return what the BURN itself spent in it. The isolation
+## primitive every multi-status case in this file is written against: the pool delta is
+## both statuses' spends, this is only the burn's share of them.
+func _burn_pulse_spend(actor: Actor) -> float:
+	_spend_over_one_pulse(actor)
+	return _pulse_spend_of(actor, BURN)
 
 
 func _spend_over_one_pulse(actor: Actor) -> float:

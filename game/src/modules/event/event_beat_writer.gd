@@ -23,20 +23,83 @@ extends RefCounted
 ## `core` is a declared dependency of `event` in `tools/arch/registry.json`, so the
 ## edge is declared rather than inferred.
 ##
-## ## The npc roster key is named by CONSTANT, never reached through a sibling
+## ## The beat is RECORDED and then RESOLVED by one director (DEF-0171)
 ##
-## The roster's key is `NpcState.MODULE_KEY`, read by name rather than through a
-## bare `NpcState` reference. `BARE_REF_UNITS` excludes `modules/*`, so a bare
-## `NpcState` here would report ZERO boundary violations and a cycle written that
-## way would be invisible to `_find_cycle` — the exact hazard ADR 0083 documents. A
-## constant cannot hide an edge: it is one string, greppable, and it has no type
-## behind it for a cycle to travel through. `WorldFact` is the opposite case and is
-## the right one: `core` is a layer every module depends on, so the bare reference
-## declares nothing surprising.
+## A beat used to stop at this file: `WorldFact.record` wrote the ledger and nothing
+## asked what it meant, so `EventBeatSink` — registered by `app/world_pulse.gd` and
+## never consulted for an authored event's own fact — was decoration, and ADR 0117's
+## "recorded *then resolved* by one director" was half true. A module may not reach a
+## director (ADR 0093), so the beat is pushed **up** to the composition root through
+## an injected `Callable` ([method set_offer_resolver], the `NpcApi.set_minter`
+## inversion), and `WorldPulse.offer_event_beat` hands it to the one director. The
+## write is DELEGATED rather than duplicated: exactly one `WorldFact.record` runs per
+## beat on either path, which is why re-offering these beats from `WorldPulse` would
+## double-count and this file does not ask it to.
+##
+## ## The npc roster is reached through the FACADE, injected by `app/`
+##
+## This writer used to reach into `actor.module_data["npc_state"]` and write the
+## tally table itself — a SECOND writer for a table `NpcApi.tally` owns. Two writers
+## means the verb check (`advance_verb`) and the `MAX_TALLY_KEYS` cap apply to one
+## path and not the other, and the two can disagree about the same save. `NpcApi` is
+## at its twelve-method facade cap, so the seam is not a new verb but an injected
+## resolver, exactly the `set_minter` inversion ADR 0002 describes: `app/` installs
+## `Callable(NpcApi, "tally")` and `event/` names no npc type at all.
+##
+## The constant below is kept only as the reason a null injection is refused rather
+## than as a key this file writes. A `NpcState` bare reference here would report
+## ZERO boundary violations (`BARE_REF_UNITS` excludes `modules/*`) and a cycle
+## written that way would be invisible to `_find_cycle` — the exact hazard ADR 0083
+## documents.
 
-## The roster key `NpcApi` persists under, read by name rather than through a bare
-## `NpcState` reference (see the class note on why a bare one would be invisible).
+## The roster key `NpcApi` persists under, named for diagnostics only. Nothing in
+## this file reads or writes it: the tally goes through the injected facade verb.
 const NPC_ROSTER_KEY := &"npc_state"
+
+## The injected tally verb: `Callable(NpcApi, "tally")`, installed by
+## `NpcBoot.install` from the composition root. Null until `app/` runs, which is a
+## loud refusal (`no_tally_resolver`) rather than a silent skip — an authored
+## `npc_tally` beat that quietly tallies nothing is BL-0658 again.
+static var _tally_resolver: Callable = Callable()
+
+## The injected OFFERER: `app/` passes `Callable(WorldPulse, "offer_event_beat")`
+## so an authored `on_enter` beat is RECORDED AND THEN RESOLVED by the one director
+## (ADR 0117 line 46). Null until `app/` runs, and the fallback below is the module
+## recording on its own — which is the honest half-truth: a composition root that
+## exists resolves the beat, and one that does not still records the fact.
+static var _offer_resolver: Callable = Callable()
+
+
+## Inject the roster's tally verb. `app/` passes `Callable(NpcApi, "tally")`.
+##
+## Following the `set_minter` precedent: the module never names `NpcApi`, and a
+## missing injection fails loudly at the call site instead of dereferencing nothing.
+static func set_tally_resolver(resolver: Callable) -> void:
+	_tally_resolver = resolver
+
+
+## Inject the director's offerer. `app/` passes `Callable(WorldPulse,
+## "offer_event_beat")`.
+##
+## ## Why this exists at all (DEF-0171)
+##
+## `EventBeatSink` is registered by `WorldPulse.bind_director` and was **never
+## consulted for an authored event beat**, because this writer went straight to
+## `WorldFact.record`. So ADR 0117's "recorded *then resolved* by one director" was
+## half-true: the recording half was real and the resolving half was not, and a
+## quest step watching an event's own fact stayed outstanding forever.
+##
+## ## Why the fallback is NOT a silent skip
+##
+## With no offerer installed this file still records, because a fact that happened
+## is true whether or not a handler cared (ADR 0114). What it cannot do is resolve,
+## and the report says so: `offered` is `false`, so a caller can tell "recorded and
+## nobody claimed it" from "nobody was listening at all". The module's own suites
+## keep passing without a composition root, which is what makes the seam testable
+## from both sides.
+static func set_offer_resolver(resolver: Callable) -> void:
+	_offer_resolver = resolver
+
 
 ## The `on_enter` entry kinds a beat may carry.
 ##
@@ -69,21 +132,46 @@ static func offer(actor: Actor, beat: Dictionary, occurrence: int) -> Dictionary
 		return {"ok": false, "reason": "unknown_beat_kind", "kind": String(kind), "skipped": 1}
 
 	var beat_id := EventFacts.occurrence_id(fact_id, occurrence)
-	# **The ONE write path into the fact ledger.** `WorldFact.record` reads the
-	# stored row before adding to it and normalises on the way out, so a beat cannot
-	# truncate another system's `since` and cannot invent a second row shape.
-	var written := WorldFact.record(actor, fact_id, amount)
+	# ## THE ORDER IS THE WHOLE POINT (ADR 0117 line 46: record, then resolve)
+	#
+	# The ledger write below is DELEGATED to the injected offerer when one is
+	# installed, and the offerer hands the beat to `BeatDirector.offer` — which
+	# **records it and then resolves it in that order**, because a sink's proposal is
+	# computed AGAINST the ledger: resolving first decides a crossing gate against a
+	# count that does not yet include this beat, and the quest step completes a period
+	# late or never. ADR 0117 measured that reversal; it is not a preference.
+	#
+	# So there is exactly ONE `WorldFact.record` per beat on either path, which is the
+	# whole reason the seam is a delegation and not an extra call. This is the shape
+	# [code]WorldPulse.offer[/code] already has for every other beat in the game —
+	# offer it, and the director both records and resolves — which is why the event
+	# module's beats were the last ones still bypassing it.
+	#
+	# With no offerer the write below is the whole job: a fact that happened is true
+	# whether or not a handler cared (ADR 0114). The report then marks the beat
+	# un-resolved, so "recorded and nobody listened" stays distinguishable from
+	# "recorded and a sink answered".
+	var written := _record(actor, fact_id, amount, beat_id, String(beat.get("source", "")))
 	if not bool(written.get("ok", false)):
-		# Unreachable through `offer`'s own checks above, and REFUSED rather than
-		# assumed: a ledger that would not take the beat is reported, not bypassed.
+		# A ledger that would not take the beat is REFUSED rather than assumed away,
+		# and the refusal is returned verbatim so the caller can name it.
 		return {"ok": false, "reason": String(written.get("reason", "")), "skipped": 1}
 
 	var tallied := false
+	var tally_reason := ""
 	if kind == KIND_NPC_TALLY:
-		tallied = _tally_npc(
-			actor, StringName(beat.get("npc_id", "")), StringName(beat.get("verb", ""))
+		tally_reason = _tally_npc(
+			actor,
+			StringName(beat.get("npc_id", "")),
+			StringName(beat.get("verb", "")),
+			String(beat.get("source", ""))
 		)
+		tallied = tally_reason == ""
 
+	var resolved := bool(written.get("claimed", false))
+	var resolve_reason := (
+		"" if bool(written.get("ok", false)) else String(written.get("reason", ""))
+	)
 	return {
 		"ok": true,
 		"beat_id": String(beat_id),
@@ -92,39 +180,79 @@ static func offer(actor: Actor, beat: Dictionary, occurrence: int) -> Dictionary
 		"fact_id": String(fact_id),
 		"count": int(written.get("count", 0)),
 		"npc_tallied": tallied,
+		# Always present, "" on a success: one report shape means a caller can read
+		# WHY a beat tallied nothing without having to re-derive it.
+		"npc_tally_reason": tally_reason,
+		# ## The dispatch half, in the same shape.
+		#
+		# `offered` says the director was reached; `claimed` says a sink took it. A
+		# false `offered` with a false `claimed` is a COMPOSITION ROOT THAT IS NOT
+		# THERE, which is a different diagnosis from a beat nobody wanted — and that
+		# difference is exactly what DEF-0171's "half true" looked like from outside.
+		"offered": bool(written.get("recorded", false)),
+		"claimed": resolved,
+		"claimed_by": String(written.get("claimed_by", "")),
+		"resolve_reason": resolve_reason,
 	}
 
 
-## Route an `npc_tally` beat into the roster's tally table, which is `NpcApi.tally`'s
-## storage. The ROSTER is the write target; the stage advance that `tally` would also
-## cause belongs to `NpcApi`, not to an event director — an event that silently walked
-## a herald's story ladder would be ADR 0114's "three dispatchers" failure with a
-## different name. Returns whether the row was written.
+## Record this occurrence — OR route it to the injected offerer, which records it
+## and resolves it in one step.
 ##
-## The key is `tally`, not `counters`, because `NpcRosterEntry.to_dict` writes that
-## exact key and a beat writing any other one would be a counter nothing ever reads.
-## String keys throughout, for the reason on `NpcRosterEntry._string_keyed`: a
-## `StringName` key survives a JSON hop as itself, while a save written by another
-## tool would stringify it and then fail to find the verb again.
-static func _tally_npc(actor: Actor, npc_id: StringName, verb: StringName) -> bool:
+## **Exactly one `WorldFact.record` runs per beat, whichever branch this takes**, and
+## that is the whole reason the seam is a delegation and not an extra call. An
+## offerer installed means the DIRECTOR is the recorder (ADR 0117 line 44: "a beat
+## is recorded exactly once whether or not a sink claimed it"); no offerer means this
+## writer is the only thing between an authored `on_enter` and the world's memory,
+## so it records and the report marks the beat un-resolved.
+##
+## Both branches answer the same keys, so nothing above branches on which one ran.
+static func _record(
+	actor: Actor, fact_id: StringName, amount: int, beat_id: StringName, source: String
+) -> Dictionary:
+	if _offer_resolver.is_valid():
+		var offered: Variant = _offer_resolver.call(actor, fact_id, amount, beat_id, source)
+		if offered is Dictionary:
+			return offered as Dictionary
+		return {"ok": false, "reason": "offer_resolver_returned_nothing"}
+	return WorldFact.record(actor, fact_id, amount)
+
+
+## Route an `npc_tally` beat into the roster's TALLY TABLE THROUGH THE FACADE.
+##
+## **This used to write `module_data["npc_state"]` directly, and that was the defect
+## BL-0658 names.** The roster's tally is `NpcApi.tally`'s storage and `NpcApi.tally`
+## is its only writer: it is the path that checks `advance_verb` (so an unrelated
+## verb cannot walk a story npc up their ladder), enforces `NpcRosterEntry
+## .MAX_TALLY_KEYS`, and is the one that advances the stage. A second writer skips
+## all three, so an authored beat and a direct call could leave the same save saying
+## two different things. Now the beat is a proposal and the facade applies it — which
+## is also ADR 0114's rule ("a handler never mutates") applied to the roster.
+##
+## `source` is handed through so a save says which system earned the advance, in
+## ADR 0114's own vocabulary (`event:<id>`, from `EventDef.fate_source`).
+##
+## Returns "" on success and a named reason otherwise, so a refusal is visible on
+## the report rather than a beat that quietly tallied nothing.
+static func _tally_npc(
+	actor: Actor, npc_id: StringName, verb: StringName, source: String
+) -> String:
 	if actor == null or npc_id == &"" or verb == &"":
-		return false
-	var roster = actor.get_module_data(NPC_ROSTER_KEY)
-	if not (roster is Dictionary):
-		return false
-	var entries = (roster as Dictionary).get("entries", {})
-	if not (entries is Dictionary):
-		return false
-	var entry = (entries as Dictionary).get(String(npc_id), null)
-	if not (entry is Dictionary):
-		return false
-	var tally = (entry as Dictionary).get("tally", {})
-	if not (tally is Dictionary):
-		tally = {}
-	var key := String(verb)
-	tally[key] = int((tally as Dictionary).get(key, 0)) + 1
-	(entry as Dictionary)["tally"] = tally
-	(entries as Dictionary)[String(npc_id)] = entry
-	(roster as Dictionary)["entries"] = entries
-	actor.set_module_data(NPC_ROSTER_KEY, (roster as Dictionary).duplicate(true))
-	return true
+		return "incomplete_tally_beat"
+	if _tally_resolver.is_null():
+		push_error(
+			(
+				(
+					"EventBeatWriter: an npc_tally beat named '%s' but no tally resolver is installed;"
+					% String(npc_id)
+				)
+				+ " call EventBeatWriter.set_tally_resolver from app/ (NpcBoot.install does)"
+			)
+		)
+		return "no_tally_resolver"
+	var outcome: Variant = _tally_resolver.call(npc_id, verb, source)
+	if not (outcome is Dictionary):
+		return "tally_resolver_returned_nothing"
+	if bool((outcome as Dictionary).get("ok", false)):
+		return ""
+	return String((outcome as Dictionary).get("reason", "tally_refused"))

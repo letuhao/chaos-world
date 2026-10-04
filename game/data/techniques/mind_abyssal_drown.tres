@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"mind_abyssal_drown"
+delivered_by = &"tome_abyssal_serpent_fang"
 display_name = "Abyssal Drown"
 description = "Floods a mind's own recall until it cannot separate a real memory from a planted one. Two thirds water, so fire burns the flood out and an empty mind drowns in nothing."
 tags = Array[StringName]([&"technique", &"mind", &"water", &"control"])

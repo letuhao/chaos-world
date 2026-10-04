@@ -87,12 +87,36 @@ static func catalog() -> Dictionary:
 ## An already-accepted quest is NOT re-offered: `offered` is the first screen a
 ## player sees, and a quest they are already running on it is noise. A completed
 ## one never returns, which is what makes the once-guard visible from outside.
+##
+## ## `kind` is the OFFER rule, and this is where it is read
+##
+## This is the one place `QuestDef.kind` decides anything, and until it existed the
+## field was the ADR 0065 lie in its purest form: a three-valued label with three
+## call sites and **zero** readers, which read as a working reference and granted
+## nothing. BL-0053 names three origins, so the three origins get three offers:
+##
+##   `authored`  — a person wrote this one, somebody HANDS it to you. Offered on
+##                  its gate, exactly as before.
+##   `systemic`  — "the simulation generated it; its steps are the facts the world
+##                  already records, so it completes by living rather than by being
+##                  handed out" (that docstring's own words). Nobody hands you a
+##                  record of what already happened, so it is NOT offered here.
+##   `emergent`  — "it appears from interacting systems" — the same shape: it is
+##                  entered by [method advance] as its facts arrive, not listed on
+##                  an offer board.
+##
+## The exclusion is the only asymmetry and it is deliberately narrow: a non-`authored`
+## quest still ACCEPTS, still advances, still completes and still pays. It simply is
+## not a thing an NPC puts in front of the player, which is what makes `kind` a fact
+## about origin rather than a second name for `requirement`.
 static func offered(actor: Actor) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	var ledger := _ledger(actor)
 	for quest_id in QuestCatalog.instance().quest_ids():
 		var def := QuestCatalog.instance().definition(quest_id)
 		if def == null:
+			continue
+		if def.kind != KIND_AUTHORED:
 			continue
 		if QuestState.is_tracked(ledger, quest_id):
 			continue

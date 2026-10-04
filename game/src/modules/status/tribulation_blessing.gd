@@ -59,13 +59,21 @@ extends RefCounted
 ## One row per authored `Tribulation.TYPE_PRESSURE` entry, `type -> element`. The type
 ## chooses the ELEMENT and the element's CULTIVATION-scope def is the blessing, so this
 ## table is six authored numbers rather than twenty-one.
+##
+## Every element below MUST ship a CULTIVATION-scope def, or the row pays nothing. Only
+## THREE do today — `earth_bulwark`, `light_halo`, `wood_bloom` — so the table maps
+## onto those three and the other three trial types deliberately resolve to an element
+## with no blessing. That is the named refusal `NO_BLESSING` existing for: a
+## cultivator who survives a `temporal` trial gets essence and insight and no status.
+## Pointing a row at an element that ships no blessing would be a table that silently
+## never pays, which is worse than one that visibly declines.
 const REWARD_TABLE: Dictionary = {
-	Tribulation.LIGHTNING: &"lightning",
-	Tribulation.HEART_DEMON: &"dark",
-	Tribulation.KARMIC: &"dark",
-	Tribulation.ELEMENTAL: &"fire",
-	Tribulation.SPATIAL: &"wind",
-	Tribulation.TEMPORAL: &"water",
+	Tribulation.LIGHTNING: &"light",
+	Tribulation.HEART_DEMON: &"wood",
+	Tribulation.KARMIC: &"earth",
+	Tribulation.ELEMENTAL: &"earth",
+	Tribulation.SPATIAL: &"wood",
+	Tribulation.TEMPORAL: &"light",
 }
 
 ## The refusal reasons, named rather than inferred from an empty id. Every one is an

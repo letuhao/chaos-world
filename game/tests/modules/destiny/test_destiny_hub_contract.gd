@@ -66,6 +66,17 @@ const TEASER_FATE := &"heaven_s_warning_unread"
 ## authors it.
 const REAL_FATE_GATE := {"verb": &"has_fate", "id": "oath_breaker"}
 
+## The leaf types `summary()` is allowed to publish. Named once so the walk at the
+## foot of this file reads as a rule rather than a type list, and so a second
+## suite can assert the same contract without restating it.
+const PRIMITIVE_TYPES: Array[int] = [
+	TYPE_BOOL,
+	TYPE_INT,
+	TYPE_FLOAT,
+	TYPE_STRING,
+	TYPE_STRING_NAME,
+]
+
 
 func setup() -> void:
 	# Nothing is installed. `FateCatalog.shared` is whatever the process held,
@@ -634,23 +645,28 @@ func _string_list(source: Array[StringName]) -> Array:
 ## shape. Keys are now required to be `String` or `StringName` — still no Object,
 ## Array or Dictionary hiding in a key, which is what the rule is for.
 func _primitives_only(value: Variant, depth: int = 0) -> bool:
+	# One return, because a `match` with an early return per arm is seven returns
+	# and the repo's linter counts them. The walk is the same either way: a leaf
+	# is a primitive, a container is only as good as everything inside it, and a
+	# cycle or a deep nest is a refusal rather than a stack overflow.
 	if depth > 8:
 		return false
-	match typeof(value):
-		TYPE_BOOL, TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_STRING_NAME:
-			return true
-		TYPE_DICTIONARY:
-			for key in (value as Dictionary).keys():
-				if (
-					not (key is String or key is StringName)
-					or not _primitives_only((value as Dictionary)[key], depth + 1)
-				):
-					return false
-			return true
-		TYPE_ARRAY:
-			for entry in value as Array:
-				if not _primitives_only(entry, depth + 1):
-					return false
-			return true
-		_:
+	var kind := typeof(value)
+	if kind in PRIMITIVE_TYPES:
+		return true
+	var children: Array = []
+	if kind == TYPE_DICTIONARY:
+		for key in (value as Dictionary).keys():
+			# Keys are held to the same standard as values: an Object or a container
+			# hiding in a key is the thing the rule exists to catch.
+			if not (key is String or key is StringName):
+				return false
+			children.append((value as Dictionary)[key])
+	elif kind == TYPE_ARRAY:
+		children.assign(value as Array)
+	else:
+		return false
+	for child in children:
+		if not _primitives_only(child, depth + 1):
 			return false
+	return true

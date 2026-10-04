@@ -30,14 +30,14 @@ extends RefCounted
 ## on for other reasons (ADR 0140, wounds); that is not this loop's doing and does not
 ## reach it.
 
-var _actor: Actor
-
 ## Seconds of real time per gestation DAY. `FertilityApi.advance` measures its step in
 ## days — it divides by an authored `gestation_days` — so the frame delta is converted
 ## here, where a frame is the thing that has seconds. Authored as a constant rather than
 ## inlined so the cadence is greppable: a pregnancy of N days must last N * this many
 ## frames, and that relation should be checkable by reading one line.
 const SECONDS_PER_GESTATION_DAY := 1.0
+
+var _actor: Actor
 
 
 func _init(actor: Actor = null) -> void:

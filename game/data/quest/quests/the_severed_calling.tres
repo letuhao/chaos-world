@@ -6,22 +6,22 @@
 [sub_resource type="Resource" id="QuestStep_severed_road"]
 script = ExtResource("2_step")
 step_id = &"severed_road"
-fact = &"the_road_severed"
+fact = &"sect_post_held"
 need = 1
-display_name = "Walk a road you have already cut"
+display_name = "Hold the office whose work you already severed"
 
 [sub_resource type="Resource" id="QuestStep_name_called"]
 script = ExtResource("2_step")
 step_id = &"name_called"
-fact = &"bound_name_called"
+fact = &"household_heir_registered"
 need = 1
-display_name = "Be called by a name that binds"
+display_name = "Answer to a name written into a register that binds"
 
 [resource]
 script = ExtResource("1_quest")
 id = &"the_severed_calling"
 display_name = "The Severed Calling"
-description = "The cutting and the calling are two separate ledgers in the world, and this quest opens only where BOTH have already been written. Neither alone is enough — the sect does not hand out a bound name to someone who has not first lost the road."
+description = "The office and the register are two separate ledgers in the world, and this quest opens only where BOTH have already been written. Neither alone is enough — the sect does not write your name into a house that has not first seen you hold something."
 kind = &"systemic"
 tier = 4
 requirement = {"verb": &"all_of", "of": [{"verb": &"has_destiny", "id": &"the_severed"}, {"verb": &"has_fate", "id": &"oath_breaker"}]}

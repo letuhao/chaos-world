@@ -56,17 +56,29 @@ extends RefCounted
 ##   cannot spend one frame opening all of them.
 ## - **It does not resolve a conflict.** A verdict arrives from combat or a ruling
 ##   (ADR 0085), never from a clock.
-## - **It does not re-offer the event module's own beats.** `event/EventBeatWriter`
-##   records its stage `on_enter` facts itself, so offering them here as well would
-##   write one occurrence twice. They are COUNTED and reported under
-##   `module_recorded_facts` instead — visible, never silently dropped, never
-##   double-counted.
+## - **It does not re-offer the event module's own beats.** An event's authored
+##   `on_enter` facts reach the director by the seam below, not from here: it is
+##   the OWNER OF THE MOMENT that records such a beat, and re-offering a fact the
+##   module already wrote would write one occurrence twice because the ledger is
+##   monotone. They are COUNTED and reported under `module_recorded_facts` instead
+##   — visible, never silently dropped, never double-counted.
 ##
 ## ## The one offer point
 ##
 ## [method offer] is the ONLY place in `app/` that hands a beat to the director.
 ## A second dispatcher is ADR 0114's failure under a different name, so a moment that
 ## wants a beat calls this and nothing else.
+##
+## ## The event module's seam, and why it comes back here
+##
+## [method offer_event_beat] is the reverse door: `event/EventBeatWriter` is handed
+## a `Callable` pointing at it (`EventBeatWriter.set_offer_resolver`, the
+## `NpcApi.set_minter` inversion). A module may not reach a director, so the beat
+## cannot be offered downward — it is pushed UP to the composition root, which
+## records it FIRST and then consults its sinks, in ADR 0117's order. Before this
+## existed `EventBeatSink` was registered at [method bind_director] and never
+## consulted for an authored event beat (DEF-0171), and `EventBeatSink` stopped
+## being decoration.
 
 ## Seconds of elapsed time in one world period. The ONE authored cadence: retune
 ## the world's pace by editing this number and nothing else, because no module holds
@@ -270,6 +282,37 @@ func summary() -> Dictionary:
 		"active_events": int(world.get("active_count", 0)),
 		"available_events": (world.get("available", []) as Array).size(),
 	}
+
+
+## Offer one AUTHORED EVENT beat through the director, and report what it decided.
+##
+## This is the reverse seam DEF-0171 names: `event/EventBeatWriter` writes the fact
+## ledger itself, so its beat cannot also be re-offered from `_advance` (a monotone
+## ledger would count one occurrence twice). The fix is not a second offer of the
+## same fact but an offer of the SAME OCCURRENCE through the one director — and the
+## director records BEFORE it resolves (ADR 0117 line 46), because a sink proposes
+## against the ledger and resolving first would decide a crossing stage against a
+## count that does not yet include this beat.
+##
+## `beat_id` is the occurrence id the caller already minted (`EventFacts
+## .occurrence_id`), carried verbatim: "once" is the caller's to name (ADR 0114).
+## The caller — the event module, which owns that moment — routes through [method
+## offer], so the direction of the edge is the composition root's alone.
+##
+## The `npc_tally` destination is NOT handled here: the director may not reach a
+## module's internals (ADR 0093), so the writer tallies the roster after this
+## returns. That second destination is a module concern, not a beat-dispatch one.
+func offer_event_beat(
+	actor: Actor, fact: StringName, amount: int, beat_id: StringName, source: String
+) -> Dictionary:
+	if _actor == null or _director == null:
+		return {"ok": false, "reason": "no_owner", "claimed": false, "claimed_by": ""}
+	var claim := WorldBeat.make(beat_id, fact, maxi(1, amount), source)
+	var report := _director.offer(actor, claim)
+	_offered += 1
+	if bool(report.get("claimed", false)):
+		_claimed += 1
+	return report
 
 
 # --- Internals -------------------------------------------------------------

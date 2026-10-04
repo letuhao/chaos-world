@@ -78,7 +78,12 @@ func _good(id: StringName) -> StatusDef:
 
 
 func test_the_baseline_def_is_accepted_so_the_negatives_mean_something() -> void:
-	var def := _good(&"probe_accept")
+	# `_tracked`, so `setup()` can `_forget` it. Without it this probe stayed in the
+	# process-wide `StatusCatalog` singleton and the full suite ended holding 21 ids
+	# instead of the twenty the game ships, with `fire_immolation` left sitting in
+	# `_rejected` beside it (DEF-0212). No assertion caught it; a designer reading the
+	# catalogue after a run would.
+	var def := _tracked(_good(&"probe_accept"))
 	assert_eq(def.problems(), [], "the baseline def has no problem")
 	assert_eq(StatusCatalog.instance().register(def), true, "and the loader admits it")
 

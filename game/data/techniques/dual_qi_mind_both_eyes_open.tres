@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"dual_qi_mind_both_eyes_open"
+delivered_by = &"treaty_seventeenth_clause"
 display_name = "Both Eyes Open"
 description = "Trains the practitioner to notice the body's warning and the mind's misreading in the same instant. Perception and mental clarity, on the one cadence only a dual path has."
 tags = Array[StringName]([&"passive", &"dual", &"qi_mind", &"sense"])

@@ -113,13 +113,25 @@ static func is_bound() -> bool:
 ##
 ## ## How an item names the technique it delivers
 ##
-## The item id IS the technique id. Not a mapping table, not a lookup by display
-## name, not a guess from shared words: the id is the identity, and
-## `TechniqueCatalog.definition` resolves it by id because ADR 0056 makes the
-## authored `id` field the save key. A manual whose id no definition claims is
-## refused `unknown_technique` rather than resolved to something adjacent, because
-## a study that silently taught the wrong technique would be worse than one that
-## refused.
+## A `TechniqueDef` names the manual that delivers it — [member
+## TechniqueDef.delivered_by] — and the seam resolves that claim. The reverse is not
+## used: a manual carries no technique vocabulary, because `items` must not grow one
+## and an item is a carrier rather than a teacher.
+##
+## The previous rule was `item.id == technique.id`, and it was exact and
+## unfalsifiable: it shipped 1363 manuals against 51 definitions with an
+## intersection of ZERO (DEF-0203), so every study refused `unknown_technique` and
+## every definition was unobtainable — while the whole suite stayed green, because
+## every test registered its own def under its own synthetic manual's id. An identity
+## between two independently authored vocabularies is not a contract anyone reviewed;
+## it is a collision 51 rows would have to stumble into. The authored field is the
+## same claim, stated where it can be read, diffed and reviewed.
+##
+## **This is not a widened match.** There is no name rule, no tag rule and no family
+## rule: an id no def claims still resolves to nothing and is still refused
+## `unknown_technique` by name, because a study that silently taught the wrong
+## technique would be worse than one that refused. Id equality is KEPT as the second,
+## exact path, so a hand-authored pair that already agrees needs no authoring.
 ##
 ## `instance` is accepted and UNREAD. It travels through so the seam's signature is
 ## the one `items` already has in hand (`ItemUse._apply_learned` receives both), and
@@ -134,7 +146,8 @@ static func is_bound() -> bool:
 ##     load-bearing guard: the seam refuses to guess, so an equipment row or a
 ##     consumable routed here can never become a codex entry.
 ##   - `no_seam`             — nothing is bound, so there is no learner to call.
-##   - `unknown_technique`   — no `TechniqueDef` claims this item's id.
+##   - `unknown_technique`   — no `TechniqueDef` claims this manual: neither by
+##     `delivered_by` nor by an id that matches its own.
 ##   - anything `TechniquesApi.learn` itself refuses (`unknown_definition`,
 ##     `realm_unmet`) is returned VERBATIM, so the gate's own `unmet` list reaches
 ##     the caller rather than being flattened into a bare reason.
@@ -147,9 +160,9 @@ static func study(actor: Actor, item_def, instance = null) -> Dictionary:
 	var def_id := StringName(_field(item_def, "id"))
 	if def_id == &"" or StringName(_field(item_def, "category")) != ItemCategory.TECHNIQUE:
 		return {"ok": false, "reason": "not_a_technique", "id": String(def_id)}
-	if not is_bound() and false:  # MUTATION-M6
+	if not is_bound():
 		return {"ok": false, "reason": "no_seam", "id": String(def_id)}
-	var technique := TechniqueCatalog.instance().definition(def_id)
+	var technique := TechniqueCatalog.instance().delivers(def_id)
 	if technique == null:
 		return {"ok": false, "reason": "unknown_technique", "id": String(def_id)}
 	# TWO arguments, not three. `bind_learner` takes `(actor, id, rung = 0)` and

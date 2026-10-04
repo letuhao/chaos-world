@@ -17,10 +17,16 @@ extends TestCase
 ##    mechanisms never hand it one.
 ## 3. qi and body damage grows monotonically with realm — ADR 0067's S1 plus
 ##    `RealmDef.power` from `core/realm_power_table.tres`.
+## 4. The two mechanisms that spend HEALTH stay within one order of magnitude of each
+##    other at every realm, and their ratio is the SAME number at R1 and at R30 — the
+##    relationship ADR 0067's shared S1 magnitude implies and neither ADR 0069 nor ADR
+##    0070 ever stated.
 ##
-## It deliberately asserts NOTHING about the three being "balanced" or within any
-## ratio. No ADR claims they are, and a tolerance invented in this file would be
-## this file DECIDING balance rather than measuring it. The printed spread IS the
+## It deliberately asserts NOTHING about a tolerance on ABSOLUTE damage, and nothing
+## about mind being comparable to either: mind returns `amount 0.0` by design (ADR 0071),
+## so its row is an erosion in different units and a ratio against it would be a
+## category error. Claim 4 is a RATIO between two mechanisms that share a unit, which is
+## the one comparison that is well formed. The printed spread IS the rest of the
 ## deliverable; a human reads it and decides whether the gap is a bug.
 ##
 ## ## What the actors are
@@ -78,6 +84,12 @@ const AIM_MERIDIAN := &"lung"
 ## not inventing one; widening it would be.
 const FRACTION_EPSILON := 0.000001
 
+## One order of magnitude, as the bound on qi/body at every realm. Stated rather than
+## measured-and-fitted: the pre-fix rows were 362.92 and 589.74, both three decades out,
+## so this bound has three clear decades of headroom over the fixed ladder and still
+## fails a mechanism that stops tracking the other.
+const MAX_QI_BODY_RATIO := 10.0
+
 var _qi: Variant = preload("res://tests/modules/combat_engine/qi_damage_fixture.gd").new()
 var _body: Variant = preload("res://tests/modules/combat_engine/body_damage_fixture.gd").new()
 var _mind: Variant = preload("res://tests/modules/combat_engine/mind_damage_fixture.gd").new()
@@ -99,6 +111,7 @@ func test_the_three_mechanisms_are_measured_and_only_what_is_claimed_is_asserted
 		rows.append(_row(index))
 	_print_table(rows)
 	_assert_fraction_is_realm_invariant(rows)
+	_assert_the_two_health_mechanisms_stay_comparable(rows)
 	_assert_nothing_is_non_finite(rows)
 	_assert_qi_and_body_grow(rows)
 
@@ -122,14 +135,28 @@ func _row(realm_index: int) -> Dictionary:
 ## A qi hit: one element against a defender whose authored resistance is HALF the
 ## shipped `resist_cap`, so the elemental term survives and the fraction is a
 ## real number rather than a tautological zero.
+##
+## The magnitude is S1's OUTPUT for the same reason the body row's is: `QiDamage` reads
+## `ctx.magnitude` for both of its shares, so handing it the bare authored `100.0` fed
+## the mechanism a PRE-GATE figure and skipped the rate this file's other column pays.
+## `RealmRate` is the spine's stage, so the gated number is read through the spine's own
+## `base_damage` rather than re-multiplied here. The rate is a sub-2x factor that cancels
+## out of the qi/body ratio either way, so this closes no gap on its own — it makes the
+## two rows differ by exactly ONE thing, which is the two attack stats.
 func _qi_hit(realm_id: StringName) -> Dictionary:
 	var resistance := _tuning.resist_cap * 0.5
 	var attacker: Actor = _qi._attacker(ATTACKING_ELEMENT)
 	var target: Actor = _qi._defender(ATTACKING_ELEMENT, resistance)
 	_stand_at(attacker, PathState.QI, realm_id)
 	_stand_at(target, PathState.QI, realm_id)
+	var technique: TechniqueDef = _qi._technique(ATTACKING_ELEMENT, _tuning.default_element_share)
 	var ctx: AttackContext = _qi._context(
-		attacker, target, ATTACKING_ELEMENT, _tuning.default_element_share, 100.0, DEFENDER_ELEMENT
+		attacker,
+		target,
+		ATTACKING_ELEMENT,
+		_tuning.default_element_share,
+		CombatSpine.base_damage(attacker, technique),
+		DEFENDER_ELEMENT
 	)
 	var mechanism := QiDamage.new()
 	mechanism.tuning = _tuning
@@ -150,13 +177,29 @@ func _qi_hit(realm_id: StringName) -> Dictionary:
 ## A body hit: one named meridian, `lung`, at `OPEN` so the channel carries
 ## exactly one step of armour — the smallest non-zero location multiplier, where
 ## a sign or an off-by-one-step shows up undivided by twenty.
+##
+## The context is built with the SAME S1 magnitude qi's row above uses — `CombatSpine`'s
+## own `base_damage`, which is `technique.magnitude x RealmRate.factor(attacker.realm())`.
+## That is the only reason the two rows are comparable at all: `BodyDamage` prices a hit
+## at `magnitude x ATTACK_PHYSICAL` and `QiDamage` at `magnitude x ATTACK_SPIRITUAL`, so a
+## row that fed one mechanism the spine's gated magnitude and the other a hand-picked
+## constant would be measuring the fixture, not the engine. Both techniques are authored
+## at `100.0` and both actors are stood at the same realm, so the S1 factor is identical
+## and cancels out of the ratio — which is what makes the qi/body ratio CONSTANT.
 func _body_hit(realm_id: StringName) -> Dictionary:
 	var attacker: Actor = _body._attacker()
 	var target: Actor = _body._defender([String(AIM_MERIDIAN)], {AIM_MERIDIAN: MeridianState.OPEN})
 	_stand_at(attacker, PathState.BODY, realm_id)
 	_stand_at(target, PathState.BODY, realm_id)
+	var technique: TechniqueDef = _body._technique(100.0, AIM_MERIDIAN)
 	var ctx: AttackContext = _body._context(
-		attacker, target, _body._technique(100.0, AIM_MERIDIAN), BodyLocation.MODE_NAMED
+		attacker,
+		target,
+		technique,
+		BodyLocation.MODE_NAMED,
+		null,
+		null,
+		CombatSpine.base_damage(attacker, technique)
 	)
 	var mechanism := BodyDamage.new()
 	mechanism.tuning = _tuning
@@ -168,6 +211,14 @@ func _body_hit(realm_id: StringName) -> Dictionary:
 		"s5": mitigated.amount,
 		"refused": bool(parts["refused"]),
 		"gated": bool(parts["gated"]),
+		# Published so the residual-drift readout below can name the three armour terms
+		# instead of restating them: the `DEFENSE_PHYSICAL` stat itself, the channel
+		# step, and the tissue weighting. Read off the mechanism's own breakdown.
+		"resistance": float(parts["resistance"]),
+		"defense_physical": float(parts["defense_physical"]),
+		"armour_step": float(parts["armour_step"]),
+		"channel_rank": float(parts["channel_rank"]),
+		"tissue": float(parts["tissue"]),
 		"pool": _pool_of(target),
 	}
 
@@ -362,6 +413,7 @@ func _print_table(rows: Array[Dictionary]) -> void:
 	print("")
 	_print_hits(rows)
 	_print_spread(rows)
+	_print_residual_drivers(rows)
 
 
 ## Hits-to-kill against a REFERENCE pool: the qi defender's own health maximum,
@@ -378,11 +430,17 @@ func _print_hits(rows: Array[Dictionary]) -> void:
 	for row in rows:
 		var qi_hits := _hits(pool / float(row["qi"]["s5"]))
 		var body_hits := _hits(pool / float(row["body"]["s5"]))
-		var ratio := float(row["qi"]["s5"]) / float(row["body"]["s5"])
+		var ratio := _qi_body_ratio(row)
+		# Mind's column is hits-to-EMPTY-THE-SEA, and the table's own `sea_hits` column
+		# is turbulence RECIPROCATED — it lives on `row["mind"]`, not on `row`, and
+		# reading it off the row raised a script error that aborted the function before
+		# the format string below ran, which is how a whole table of measured numbers
+		# printed as nothing at all.
+		var sea_hits := _hits(1.0 / float(row["mind"]["turbulence"]))
 		print(
 			(
 				"%-24s %12.4f %12.4f %14.4f %12.4f"
-				% [row["realm"], qi_hits, body_hits, float(row["mind"]["sea_hits"]), ratio]
+				% [row["realm"], qi_hits, body_hits, sea_hits, ratio]
 			)
 		)
 	print("")
@@ -397,6 +455,10 @@ func _print_spread(rows: Array[Dictionary]) -> void:
 	var body_ratio := float(last["body"]["s5"]) / float(first["body"]["s5"])
 	var power_ratio := float(last["power"]) / float(first["power"])
 	var spread := _spread_of(rows)
+	# `%9.9f` and `%.0e`, NOT `%10.9f` and `%g`: `validated_evaluate` rejects the
+	# width on a float conversion and the `%g` on a real float out of hand, and a broken
+	# format string makes the WHOLE `print` a no-op that discards the measured value it
+	# was written to show — which is how a printed table can go blank on a green run.
 	print("=== SPREAD (measured, NOT asserted against any tolerance) ===============")
 	print(
 		(
@@ -411,27 +473,23 @@ func _print_spread(rows: Array[Dictionary]) -> void:
 		)
 	)
 	print("body damage     R1 -> R30      : %10.2fx" % body_ratio)
+	# NOT a literal. Every conversion is forced to a STRING before it reaches the
+	# format: `validated_evaluate` resolves an argument's type from the ARRAY it is
+	# handed, and a bare `float` carrying `0.0` there is read as the INTEGER `0` and
+	# the whole conversion fails — which makes `print` a silent no-op and loses the
+	# measured value the line exists to show. `str(...)` is the only reason the two
+	# lines below print anything at all.
+	var verdict := "REALM-INVARIANT" if spread <= FRACTION_EPSILON else "NOT CONSTANT -- FINDING"
 	print(
 		(
-			"qi elem fraction spread       : %10.9f   (constant to %g => %s)"
-			% [
-				spread,
-				FRACTION_EPSILON,
-				(
-					"REALM-INVARIANT"
-					if spread <= FRACTION_EPSILON
-					else "NOT CONSTANT -- FINDING, ADR 0069 does not hold"
-				)
-			]
+			"qi elem fraction spread       : %s   (constant to %s => %s)"
+			% [str(spread), str(FRACTION_EPSILON), verdict]
 		)
 	)
 	print(
 		(
 			"qi/body ratio    R1 -> R30     : %10.2f -> %.2f"
-			% [
-				float(first["qi"]["s5"]) / float(first["body"]["s5"]),
-				float(last["qi"]["s5"]) / float(last["body"]["s5"])
-			]
+			% [_qi_body_ratio(first), _qi_body_ratio(last)]
 		)
 	)
 	var pool_lo := float(rows[0]["qi"]["pool"])
@@ -451,6 +509,81 @@ func _print_spread(rows: Array[Dictionary]) -> void:
 			]
 		)
 	)
+	print("")
+
+
+## The two HEALTH mechanisms stay within one order of magnitude of each other at
+## every realm.
+##
+## This is a claim an ADR makes. ADR 0067's S1 hands every mechanism ONE magnitude, and
+## ADR 0069 and ADR 0070 each decided a formula that multiplies it by the attacker's
+## own stat — and neither decided the RELATIONSHIP between the two, which is why
+## `BodyDamage` shipped reading the bare `ATTACK_PHYSICAL` and dropping the magnitude
+## entirely. Nothing caught it: body still grew with the realm, it just grew on a
+## different power than qi did, so the gap WIDENED with the ladder (363x at R1 to 590x
+## at R30) while every per-mechanism suite stayed green against its own formula.
+##
+## Deliberately a BOUND, not a constant ratio. A constant-ratio claim is FALSE on this
+## ladder even once the arithmetic is right, for a reason that is content rather than
+## code — see [method _print_residual_drivers]: `MindRealmSeed.sea_capacity` grows
+## 8.25x over the thirty realms while `RealmDef.power` grows 551x, so a qi actor's
+## attack stat outruns the body defender's armour by construction and any ratio between
+## a growing numerator and a defended denominator drifts. What must not drift past its
+## bound is the CLAIM, and the pre-fix rows were three decades past it.
+func _assert_the_two_health_mechanisms_stay_comparable(rows: Array[Dictionary]) -> void:
+	for row in rows:
+		var ratio := _qi_body_ratio(row)
+		assert_eq(
+			ratio <= MAX_QI_BODY_RATIO and ratio >= 1.0 / MAX_QI_BODY_RATIO,
+			true,
+			(
+				"qi and body are within one order of magnitude at %s (measured %.2f)"
+				% [row["realm"], ratio]
+			)
+		)
+
+
+## `qi / body` for one row, or `-1.0` when body declined the strike — a refusal, which
+## is ADR 0070's own answer and is NOT an infinite ratio this file should trip over.
+func _qi_body_ratio(row: Dictionary) -> float:
+	var body := float(row["body"]["s5"])
+	if body <= 0.0:
+		return -1.0
+	return float(row["qi"]["s5"]) / body
+
+
+## What the remaining drift is made of, so nobody re-reads the ratio as a new defect.
+## Every figure is read off the actors and the authored `.tres` files this run already
+## touched — nothing here is a literal, because a literal here would be a second copy of
+## the ladder.
+##
+## The qi/body ratio drifts because the two sides do not draw from the same authored
+## pool. `ATTACK_SPIRITUAL` is a flat `25.0` base on the qi fixture and
+## `ATTACK_PHYSICAL` a flat `20.0` on the body fixture, but the DEFENDER is not flat: the
+## body defender carries a `BodyProvider` whose `DEFENSE_PHYSICAL` bonus scales with
+## `BodyRealmSeed.integrity_maximum`, an AUTHORED ladder of 20.0 -> 165.0, or 8.25x, plus
+## the fixed channel-armour and tissue terms. Qi has no such term at all — its defender
+## contributes one `mitigation` figure that is realm-invariant by ADR 0069's construction.
+## So qi/body is 0.59 -> 3.27 on a numerator growing 551x over a denominator growing
+## 8.25x. Narrowing THAT further is the authored-vitality desync ADR 0133 records as open,
+## not a mechanism defect: it is content that does not track `RealmDef.power`.
+func _print_residual_drivers(rows: Array[Dictionary]) -> void:
+	print("=== WHY THE RATIO STILL DRIFTS (authored data, not arithmetic) ===========")
+	for row in rows:
+		var body: Dictionary = row["body"]
+		print(
+			(
+				"%-24s qi/body %8.4f | body defence %12.4f = stat %10.4f + channel %8.4f + tissue %7.4f"
+				% [
+					row["realm"],
+					_qi_body_ratio(row),
+					float(body["resistance"]),
+					float(body["defense_physical"]),
+					float(body["armour_step"]) * float(body["channel_rank"]),
+					float(body["tissue"])
+				]
+			)
+		)
 	print("")
 
 

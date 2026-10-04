@@ -10,6 +10,7 @@ min_realm_index = 18
 [resource]
 script = ExtResource("1_def")
 id = &"shared_bone_mending_splint"
+delivered_by = &"manual_stone_crane_feather"
 display_name = "Bone Mending Splint"
 description = "Splints and knits a fracture between one breath and the next. Pure restoration; the qi goes into the mend and none of it comes back as a strike."
 tags = Array[StringName]([&"technique", &"shared", &"universal_slot", &"utility", &"no_element"])

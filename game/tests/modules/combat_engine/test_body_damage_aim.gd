@@ -142,28 +142,60 @@ func test_named_aim_uses_the_authored_meridian_and_nothing_else() -> void:
 		)
 	var open_parts := _parts(attacker, target, BodyLocation.MODE_NAMED, &"lung")
 	var closed_parts := _parts(attacker, target, BodyLocation.MODE_NAMED, &"spleen")
-	# Not `penetration`, but the DAMAGE the two aims produce, plus the subtraction that
-	# produces it. `lung` is open and `spleen` is closed on the same body, so the two
-	# differ in exactly ONE input: the armour term `DEFENSE_PHYSICAL * step *
-	# state_rank()`, one full step for `lung` and zero for `spleen`. The PENETRATION
-	# cannot carry that claim — at the shipped `0.35` step this defender's armour (14.0 of
-	# 20.0 gross) is past both `min_penetration_ratio` and the ratio that leaves 10% above
-	# the floor, so both strikes are floored at `2.0` and answer identically by design.
-	# That is ADR 0070's load-bearing floor doing its job, not the ladder being ignored;
-	# `test_channel_rank_prices_the_armour_and_a_closed_channel_prices_none` in
-	# `test_body_damage.gd` is where the ladder is read at a size that is not floored.
-	# The DAMAGE carries it: `lung`'s multiplier carries the open step and `spleen`'s does
-	# not, so a strictly harder place deals strictly less.
-	assert_eq(
-		float(closed_parts["total"]) > float(open_parts["total"]),
-		true,
-		"an open channel is a harder place than a closed one"
-	)
-	assert_eq(
+	# ## What this lane is measured against, and what changed when the magnitude landed
+	#
+	# `lung` is OPEN and `spleen` is CLOSED on the same body, so the two aims differ in
+	# exactly ONE input: the channel's `state_rank()`, 1 against 0. ADR 0070 prices that
+	# rank in TWO places, with OPPOSITE intent, and BOTH ship:
+	#
+	# ```
+	# resistance = DEFENSE_PHYSICAL x meridian_armour_step x rank   # harder to hit
+	# multiplier = 1 + channel_mult_step x rank                     # a BIGGER target
+	# ```
+	#
+	# `combat_tuning.gd` says so in as many words on `channel_mult_step`: "Deliberately the
+	# other side of `meridian_armour_step` and NOT the same sign: training a channel makes
+	# it a bigger target as well as a harder one."
+	#
+	# The OLD expectation here was the bare ordering `closed total > open total`, derived
+	# in the PRE-MAGNITUDE regime. Back then the gross was the bare `ATTACK_PHYSICAL` of
+	# `20.0` and one armour step of `14.0` was 70% of it, so the ADDITIVE armour term
+	# dominated outright and a trained channel really did deal strictly less. Restoring
+	# `ctx.magnitude` into the gross — the cross-mechanism fix — made the gross `2000.0`,
+	# at which that same `14.0` is 0.7% of it and the MULTIPLICATIVE `channel_mult_step` of
+	# `0.15` dominates instead.
+	#
+	# The rank term did NOT collapse: it is still worth exactly one armour step and exactly
+	# one multiplier step, and both are asserted below off the actors' own reads. What
+	# changed is only which of two deliberately-opposed terms dominates, and a TOTAL
+	# ordering is a CROSSOVER between them whose side is set by the authored technique
+	# magnitude. So the total is no longer asserted as a bare ordering. It is asserted as
+	# the IDENTITY that makes the crossover legible — each aim re-derived from its OWN
+	# published penetration and multiplier rows — which is a strictly stronger claim: a
+	# sign error in either rank term, or a difference between the two aims that the rank
+	# term does not fully explain, fails here.
+	var open_site := _site_of(open_parts, &"lung")
+	var closed_site := _site_of(closed_parts, &"spleen")
+	assert_eq(float(open_parts["channel_rank"]), 1.0, "lung is open, so rank 1")
+	assert_eq(float(closed_parts["channel_rank"]), 0.0, "and spleen is closed, so rank 0")
+	assert_almost_eq(
 		float(closed_parts["resistance"]),
 		float(open_parts["resistance"]) - defence_of(target) * _tuning.meridian_armour_step,
 		"and the difference between them is exactly one step of channel armour"
 	)
+	assert_almost_eq(
+		float(open_site["channel_multiplier"]) - float(closed_site["channel_multiplier"]),
+		_tuning.channel_mult_step * float(open_parts["channel_rank"]),
+		"the OTHER half of the same rank: one step of channel multiplier, the bigger target"
+	)
+	for row: Array in [[open_parts, open_site, "lung"], [closed_parts, closed_site, "spleen"]]:
+		var case: Dictionary = row[0]
+		var site: Dictionary = row[1]
+		assert_almost_eq(
+			float(case["total"]),
+			float(case["penetration"]) * float(site["multiplier"]) * float(case["mitigated"]),
+			"%s: the total is that aim's OWN penetration x multiplier, nothing else" % row[2]
+		)
 
 	var absent := _parts(attacker, target, BodyLocation.MODE_NAMED, &"bladder")
 	assert_eq(int(absent["sites"].size()), 0, "no site on an unopened meridian")
@@ -175,15 +207,44 @@ func test_named_aim_uses_the_authored_meridian_and_nothing_else() -> void:
 	# `BodyDamage.breakdown` answers a hit with no site at the STRUCK figure once, at the
 	# neutral `1.0`: the same "no location axis" branch
 	# `test_a_body_with_no_meridians_is_ungated_and_still_takes_the_hit` exercises. So the
-	# hit is UNGATED — the flat subtraction with no channel armour at all, which is a
-	# strictly softer place than any unlocked channel. Asserted RELATIONALLY, because
-	# "strictly softer" is the property and an absolute `0.0` is not: an unopened channel
-	# has no `state_rank`, so it is priced with no armour whatsoever.
+	# hit is UNGATED — the flat subtraction with no channel armour at all.
+	#
+	# The OLD expectation was the bare ordering `absent total > open total`, i.e. "unopened
+	# deals strictly MORE than the OPEN `lung` beside it". It was derived in the
+	# PRE-MAGNITUDE regime, where the gross was the bare `ATTACK_PHYSICAL` of `20.0` and
+	# the `14.0` armour difference between the two was 70% of it, so the additive channel
+	# armour dominated outright. Restoring `ctx.magnitude` into the gross made it `2000.0`,
+	# at which `lung`'s OPEN channel multiplier (`channel_mult_step`, `0.15`) hands back
+	# more than the open channel's armour ever took and the bare ordering inverts.
+	#
+	# That ordering against `lung` is therefore NOT a property of "soft": it is a CROSSOVER
+	# between two deliberately-opposed rank terms whose side is set by the authored
+	# magnitude (see the closed-vs-open lane above). What "priced with no armour at all"
+	# DOES mean structurally is asserted here directly, off the mechanism's own rows and
+	# with no cross-meridian ordering at all: an unopened channel carries no channel rank,
+	# so the WHOLE of the ladder's contribution to its `resistance` is `0.0` and what
+	# remains is the tissue term alone. It then pays the STRUCK penetration at the neutral
+	# `1.0` — the smallest location multiplier any struck channel can carry — which is what
+	# "the flattest possible place on the body" means arithmetically.
 	assert_eq(bool(absent["refused"]), false, "so it is NOT the one refusal ADR 0070 allows")
-	assert_eq(
-		float(absent["total"]) > float(open_parts["total"]),
-		true,
-		"and an unopened channel is SOFTER than the open one beside it"
+	assert_eq(float(absent["channel_rank"]), 0.0, "and it carries no channel rank")
+	assert_almost_eq(
+		float(absent["resistance"]),
+		float(absent["tissue"]),
+		"no channel armour at all: resistance is the tissue weighting, and nothing else"
+	)
+	# Its total is the struck figure at the neutral `1.0` — the price of landing on a
+	# channel that does not exist is the flat subtraction with NO multiplier bolted on.
+	# Asserted as the identity rather than a bare ordering, so it survives any magnitude.
+	assert_almost_eq(
+		float(absent["total"]),
+		float(absent["penetration"]) * float(absent["mitigated"]),
+		"priced at the neutral 1.0: the struck penetration, no location multiplier"
+	)
+	assert_almost_eq(
+		float(absent["penetration"]),
+		maxf(float(absent["gross"]) - float(absent["resistance"]), float(absent["floor"])),
+		"and it is the same gross, less its tissue-only resistance, floored"
 	)
 	assert_eq(
 		float(_parts(attacker, target, BodyLocation.MODE_NAMED, &"not_a_meridian")["total"]),
@@ -235,7 +296,10 @@ func test_broad_hits_every_unlocked_meridian_at_the_sweep_multiplier() -> void:
 		expected += float(site["damage"])
 	assert_almost_eq(float(parts["subtotal"]), expected, "S4 is the SUM over the sites")
 
-	var gross := attacker.stats.derived(Stat.ATTACK_PHYSICAL)
+	# The gross is `magnitude x ATTACK_PHYSICAL`, so the floor the sweep is checked
+	# against is a share of the PRODUCT. The multiplier is scope-invariant (the same for
+	# every case at the same magnitude), so `magnitude` is read once off the sweep itself.
+	var gross := float(parts["magnitude"]) * attacker.stats.derived(Stat.ATTACK_PHYSICAL)
 	var walled_actor := _defender()
 	_armour(walled_actor, 1.0e9)
 	var walled := _parts(attacker, walled_actor, BodyLocation.MODE_BROAD)
@@ -407,7 +471,7 @@ func test_a_body_with_no_meridians_is_ungated_and_still_takes_the_hit() -> void:
 	# gross, less the armour above, floored. Asserted as its own arithmetic rather than
 	# as "tissue alone subtracted", so the number is derived from the actor's live reads
 	# and cannot drift with a `DEFENSE_PHYSICAL` rebalance.
-	var gross := attack_of(attacker)
+	var gross := float(parts["magnitude"]) * attack_of(attacker)
 	assert_almost_eq(
 		float(parts["total"]),
 		maxf(gross - float(parts["resistance"]), gross * _tuning.min_penetration_ratio),

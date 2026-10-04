@@ -416,16 +416,78 @@ func test_a_def_authored_without_the_selector_still_loads_and_never_rides_a_blow
 	_cleanup(legacy.id)
 
 
+## The vocabulary a `.tres` must NOT grow. ADR 0087's gate, ADR 0088's potency, and the
+## three names a second magnitude vocabulary would arrive under. Pinned as a constant
+## rather than inlined so the list is one thing to read.
+const FORBIDDEN_FIELDS: Array[String] = [
+	"chance",
+	"status_chance",
+	"magnitude",
+	"power",
+	"potency",
+]
+
+
 func test_the_selector_is_not_a_magnitude_and_the_defs_still_carry_no_computed_power() -> void:
 	# ADR 0088's "no second magnitude vocabulary", extended to the selector. The mapping is a
 	# boolean; potency stays `element_power_<e>` and the gate stays the caller's, so no def
 	# pins a number a rebalance would have to edit twenty times.
-	for status_id in StatusApi.status_ids():
+	#
+	# ## Why the body asserted nothing
+	#
+	# It filtered `get_property_list()` down to `["chance", "magnitude", ...]` and asserted
+	# only INSIDE that branch. On the shipped tree the filter matches NOTHING — no
+	# `StatusDef` exports a field with any of those names, which is the claim being made —
+	# so the loop ran to completion and recorded no assertion at all. A test that can only
+	# fail when its own premise is already false proves nothing; the check below therefore
+	# asserts the ABSENCE for every def, whether or not the filter matched.
+	var published: Array[StringName] = StatusApi.status_ids()
+	# The positive control: the catalogue is real and non-empty, so an empty sweep cannot
+	# pass for "twenty defs each carry no such field".
+	assert_eq(published.size() > 0, true, "the catalogue publishes defs to inspect")
+	for status_id in published:
 		var def := StatusApi.definition(status_id)
-		for field in def.get_property_list():
-			var name := String(field.get("name", ""))
-			if name in ["chance", "status_chance", "magnitude", "power", "potency"]:
-				assert_eq(false, true, "%s authors no such field (%s)" % [String(status_id), name])
+		var authored := _authored_field_names(def)
+		for field in FORBIDDEN_FIELDS:
+			assert_eq(
+				authored.has(field),
+				false,
+				(
+					"%s authors no %s field: potency is the caller's term and the gate is the attack's"
+					% [String(status_id), field]
+				)
+			)
+	# And the ONE magnitude-shaped field a def DOES own, asserted as the ceiling rather
+	# than as a power: `magnitude_cap` is a bound a designer owns, and it is the only
+	# exported numeric the status vocabulary admits. It is named here so a future `.tres`
+	# that pins an actual power under a new name is caught by the field list above rather
+	# than by this one.
+	assert_eq(
+		_has_property(StatusApi.definition(published[0]), "magnitude_cap"),
+		true,
+		"magnitude_cap is the only exported magnitude-shaped field"
+	)
+
+
+## The names of `def`'s EXPORTED properties. `get_property_list()` also reports usage
+## categories and built-in `script`/`resource_*` entries, so the list is narrowed to the
+## `PROPERTY_USAGE_STORAGE` script variables — which is exactly the set a `.tres` can
+## author.
+func _authored_field_names(def: StatusDef) -> Array[String]:
+	var out: Array[String] = []
+	if def == null:
+		return out
+	for field in def.get_property_list():
+		if int(field.get("usage", 0)) & PROPERTY_USAGE_STORAGE == 0:
+			continue
+		if String(field.get("class_name", "")) == "Dictionary":
+			continue
+		out.append(String(field.get("name", "")))
+	return out
+
+
+func _has_property(def: StatusDef, field: String) -> bool:
+	return _authored_field_names(def).has(field)
 
 
 # --- internals ------------------------------------------------------------------

@@ -28,20 +28,62 @@ rather than growing the facade. Grouped by what a call is allowed to do:
 | `earn_destiny` | `(actor, destiny_id, source := "") -> Dictionary` | mutate | Exactly-once; exclusive within `group`; carries `grants_fates`. Prereq or group unmet → unchanged ledger. |
 | `record` | `(actor, counter_id, amount := 1) -> int` | mutate | Rising only; a negative or zero amount moves nothing. Returns the value *after* the delta. |
 | `has_fate` | `(actor, fate_id) -> bool` | read | `false` for a null actor. Never a content lookup — the ledger only. |
-| `has_destiny` | `(actor, destiny_id) -> bool` | read | Answers true for an authored `gate_aliases` id, in both directions. |
-| `counter` | `(actor, counter_id) -> int` | read | `0` when never recorded. |
-| `destinies` | `(actor) -> Array[StringName]` | read | Canonically ordered ids, no names, no reasons. |
-| `fates` | `(actor) -> Array[StringName]` | read | Same shape. |
+| `has_destiny` | `(actor, destiny_id) -> bool` | read | Answers true for an authored `gate_aliases` id, **in both directions — on the READ path only**. `earn_destiny` does NOT resolve an alias: it looks the id up as a definition and refuses silently if there is none, because a pure narrative alias ships no `.tres`. Earn the DECLARING id, never the alias. A contested alias (two destinies claiming one) resolves to nothing rather than to whichever the scan reached first, and nothing audits for that collision. |
+| `events` | `() -> DestinyEvents` | read | The signal bus. **Replaces `counter`, which was retired at the cap** — read a counter through `state(actor)["counters"][counter_id]`. This table was corrected 2026-10-03; it previously listed `counter`, which no longer exists and which a consumer calling would fail to parse. |
+| `destinies` | `(actor) -> Array[StringName]` | read | Held ids, ordered by STRING value (not by earn order — read `state()["destinies"][id]["sequence"]` for that). |
+| `fates` | `(actor) -> Array[StringName]` | read | Same shape: held only, ordered by string. |
 | `state` | `(actor) -> Dictionary` | read | The versioned ledger **exactly as core persists it** — the save payload. Never reach into `actor.module_data` instead. |
-| `summary` | `(actor) -> Dictionary` | read | Primitives only; one call answers a codex screen, including `available` / `blocked_by` for unheld destinies. |
-| `gate` | `(actor, requirement) -> Dictionary` | evaluate | `{}` → ungated/open. Otherwise one of six authored verbs. Always `{ok, reason, unmet}`. Refuses closed and names itself on an unknown verb or a malformed requirement. Emits `gate_failed` on refusal. |
+| `summary` | `(actor) -> Dictionary` | read | Primitives only; one call answers a codex screen. **Catalog-driven, not player-driven**: `summary()["fates"]` and `["destinies"]` carry held AND unheld rows, so filter on each row's `held`, and note `fate_count` is the HELD count and will not equal `["fates"].size()`. `available` / `blocked_by` exist only on UNHELD destinies — use `.get()`. A `teaser`-visibility fate is absent entirely, so absence means "not disclosed", not "not earned". |
+| `gate` | `(actor, requirement) -> Dictionary` | evaluate | `{}` → ungated/open. Otherwise one of six authored verbs. Always `{ok, reason, unmet}`; `ok` is the whole answer. Refuses closed and names itself on an unknown verb or a malformed requirement. Emits `gate_failed` on **every** refusal, including every poll — treat it as telemetry, never a player-facing notice. `reason` is an open set: `""`, `"unmet"`, `"malformed"`, `"unknown_verb"` (plus `"delegated"` if you route through `EventGate`). On a refusal `unmet[0].id` is empty. |
 | `attach` | `(actor) -> void` | lifecycle | Normalizes the ledger, rebuilds the stat projection and the `Actor.traits` mirror. Idempotent. Grants nothing. |
 
 **Write verbs belong to the owner of the moment, never to `destiny`.** `destiny` never calls
 back into the system that earned a fate: it is a write target, not a listener (ADR 0065). A
-consumer that wants to *react* to an earn observes `DestinyProjection.events()` (ADR 0136);
+consumer that wants to *react* to an earn observes `DestinyApi.events()` (ADR 0136/ADR 0149);
 a consumer that wants to *cause* one calls `earn_*` at the place it already decided the thing
 happened.
+
+### 1a. An earn returns the LEDGER, never a verdict — so verify it
+
+**The single most expensive thing a consumer can get wrong here.** Every refusal path in
+`earn_fate` / `earn_destiny` returns the ledger *unchanged*: a null actor, an already-held
+entry, an unknown id, an unmet prerequisite and a closed exclusivity group are byte-identical
+in shape, and none carries an `ok`. A refused earn also **queues nothing** — there is no pending
+flag and no retry — so a consumer that treats the call as "already offered" never gets the
+entry.
+
+The only correct idiom, taken from `character_creation_flow.gd:260-262`:
+
+```gdscript
+DestinyApi.earn_destiny(actor, choice_id, SOURCE)
+if not DestinyApi.has_destiny(actor, choice_id):
+    return _grant_refusal("gate_unmet", _unmet_for(actor, choice_id))
+```
+
+Do **not** copy `EventPrize._apply_row` (`event_prize.gd:95-96`), which returns `ok: true`
+immediately after the call with no verification — a typo'd or unknown fate id is a silent
+no-op reward.
+
+Two related shapes: `record` with a non-positive amount writes nothing and returns the
+unchanged total, which is indistinguishable from a real read; and `earn_destiny` both
+`requires_fates` and `grants_fates` may name the same id, so a destiny can refuse on a fate it
+would otherwise have carried (real case: `the_chosen_instrument` requires
+`reborn_in_a_lesser_vessel` without granting it).
+
+### 1b. Two authoring hazards that cost another branch permanently
+
+- **The facade is at its cap.** Twelve public methods against
+  `MAX_FACADE_PUBLIC_METHODS = 12` (`tools/arch/rules.py`). A thirteenth fails `tools arch` —
+  loudly, but the message tells *you* to split *your* interface when the remedy is to fold the
+  read into `summary()` here. Do not edit `tools/arch/**` to raise the cap.
+- **Do not author a destiny into `group = &"origin"`.** That group holds three shipped
+  destinies and is not inert: `character_creation_flow.gd` filters on it to build the
+  character-creation picker, so a fourth member appears in that picker whether you intended it
+  or not — and is then silently ungrantable there, because `_is_origin` also requires a
+  `RACE_BY_ORIGIN` entry. `data audit` only *warns* on a multi-member group. Use a new group name.
+
+Also: `data audit` does not validate `gate_aliases` at all, so an alias naming no destiny, or
+one two destinies both claim, passes the build and then resolves to nothing.
 
 ### 2. A consumer MUST declare `destiny` in `tools/arch/registry.json`
 

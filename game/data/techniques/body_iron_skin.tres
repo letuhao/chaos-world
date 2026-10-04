@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"body_iron_skin"
+delivered_by = &"manual_iron_tortoise_stance"
 display_name = "Iron Skin"
 description = "Drives qi into the fascia until the skin stops being soft. Barely elemental, so it reads as blunt force taken rather than a strike dealt."
 tags = Array[StringName]([&"technique", &"body", &"guard"])

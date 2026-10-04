@@ -18,6 +18,37 @@ extends Resource
 @export var description: String = ""
 @export var tags: Array[StringName] = []
 
+## The `ItemDef.id` of the MANUAL that delivers this technique, or `&""`.
+##
+## ## Why a field and not id equality
+##
+## The delivery seam once resolved `item.id == technique.id`. That is exact and
+## unfalsifiable, and it shipped 1363 manuals against 51 definitions with an
+## intersection of ZERO (DEF-0203), so the whole technique program was
+## unreachable while every test stayed green: each test registered its own
+## matching def. Identity by name required the two vocabularies to collide, and
+## nothing reviewed that collision — it is a coincidence 51 rows would have to
+## stumble into.
+##
+## So the technique NAMES its own manual and the seam reads that. The direction
+## matters: the def is the thing that has to be reachable, and a technique knows
+## exactly one book teaches it. The manual does not name the technique, because
+## an item is a *carrier* — the same volume could plausibly teach more than one
+## thing later, and `items` must not grow a technique vocabulary to say so.
+##
+## ## The guard is not weakened by this
+##
+## A manual no def claims still resolves to nothing, so `study` still refuses
+## `unknown_technique`. This field adds a second way to be found; it does not
+## add a second way to be guessed. There is deliberately NO name-match, tag-match
+## or family rule here, and adding one would be worse than the original defect:
+## resolving a manual to an *adjacent* technique teaches the player the wrong
+## technique silently, which is what the seam refuses by name.
+##
+## Empty means "no authored manual delivers this yet", which is a content gap
+## the content suite names rather than something the seam works around.
+@export var delivered_by: StringName = &""
+
 ## Grade sets the realm floor through `required_tier()`; rarity budgets options
 ## and never power (ADR 0055: a grade is a floor, not a scale).
 @export var grade: StringName = ItemGrade.MORTAL

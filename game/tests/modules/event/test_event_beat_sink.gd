@@ -233,12 +233,37 @@ func test_a_beat_the_directors_record_reported_by_resolve_unblocks_the_next_stag
 
 ## A CLOSED event stops being watched. A resolved event's ladder is finished, and a
 ## sink that kept naming it would report stages the world has already walked past.
+##
+## **FOUR periods, not three, and the arithmetic is the ADR's, not a convenience.**
+## `advance`'s contract (`event/api.gd`, `advance`) is: a stage holds for
+## `duration_periods` WHOLE periods and the NEXT pull is what moves it, because a
+## `duration_periods = 0` stage must mean "hold for no time at all" and be
+## distinguishable from an authored `1`. The tide's authored ladder is
+## `[moving(1), on_the_plain(1), dispersed(0)]`, so:
+##
+##   p1 - `moving` holds (held 1 <= 1)
+##   p2 - `moving` moves; `on_the_plain` opens, its beats fire, held resets
+##   p3 - `on_the_plain` holds (held 1 <= 1)
+##   p4 - `on_the_plain` moves; `dispersed` (the final stage) opens and RESOLVES
+##
+## Four pulls, because the final stage's `duration_periods = 0` is resolved on the
+## pull that REACHES it — the same arithmetic
+## `test_a_zero_period_stage_resolves_at_the_next_pull_and_not_before` (`test_event.gd`)
+## pins for the auction. Three pulls stop one short: `dispersed` never opens, the
+## event is still `active`, and this suite would have been asserting its own
+## fixture rather than its claim.
+##
+## The count is DERIVED from the def below, not typed as `4`, so a re-authored ladder
+## cannot leave this suite walking a number the content no longer means.
 func test_a_resolved_event_is_no_longer_watched() -> void:
 	var actor := _actor()
 	EventApi.begin(actor, TIDE)
-	# Three pulls walks moving -> on_the_plain -> dispersed, and the final stage
-	# resolves the event and pays it.
-	EventApi.advance(actor, 3)
+	# One pull per authored stage to REACH it, plus one to resolve the last one.
+	var def := EventCatalog.instance().event_definition(TIDE)
+	assert_ne(def, null, "the tide this suite drives is in the catalog")
+	assert_eq(def.stage_at(0).duration_periods, 1, "and its ladder is the authored one")
+	assert_eq(def.stage_count(), 3, "moving -> on_the_plain -> dispersed")
+	EventApi.advance(actor, def.stage_count() + 1)
 	assert_eq(
 		EventApi.active(actor).size(),
 		0,

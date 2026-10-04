@@ -45,7 +45,6 @@ static var _current_player: Actor = null
 ## `npc/` cannot name one.
 static var _minter: Callable = Callable()
 
-
 ## The `social` facade, preloaded. Reached for ONE verb — `forget` — and the dependency is
 ## declared: `npc` lists `social` in `tools/arch/registry.json`.
 const SOCIAL_FACADE := preload("res://src/modules/social/api.gd")

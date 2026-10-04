@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"dual_qi_mind_shared_pulse"
+delivered_by = &"formula_quiet"
 display_name = "Shared Pulse"
 description = "Runs one circuit from the dantian up through the mind and back, so each half feeds the other. Unelemental, so there is no matchup to read, and both paths must be at the floor before it can be learned."
 tags = Array[StringName]([&"technique", &"dual", &"qi_mind", &"unelemental", &"no_element"])

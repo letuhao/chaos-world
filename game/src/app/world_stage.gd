@@ -29,6 +29,32 @@ extends RefCounted
 ## Interaction routes through an INJECTED `Callable` — `set_interaction_handler`,
 ## the `NpcApi.set_minter` seam verbatim — so this file never imports `quest` or
 ## `event`, which may not be loaded. `app/` decides what an interaction means.
+##
+## ## The place reaches the event module through a Callable, not a reference
+##
+## **The durable location this stage owns is the ONE thing every module needs to
+## agree on, and `mount`/`enter` are the only moments that change it.** Before the
+## seam below, `WorldSpawnApi.selected` wrote `world_spawn`'s ledger and nothing
+## told `event`, so `EventApi.available`'s location filter compared the ledger's
+## `location_id` — permanently `EventApi.NOWHERE` — against each authored def's
+## `location_id`, and **every one of the shipped events was filtered out before its
+## trigger was ever read** (DEF-0183: "no world event can open in the running
+## game"). The defect was not a missing filter; it was a missing NOTIFICATION.
+##
+## `set_location_publisher` is `NpcApi.set_minter` / `CustodyApi.set_resolver`
+## again, one layer up: `app/` installs `Callable(EventApi, "set_location")` and
+## this file names no event type at all — which is what keeps
+## `test_the_stage_does_not_import_quest_or_event` (`test_world_stage.gd:352`)
+## true. The publisher is OPTIONAL and its refusal is REPORTED, never swallowed:
+## a stage mounted before the seam was installed must still mount, and the mount
+## report says whether the world learned where the player is.
+##
+## ## The event ledger's copy is a DERIVED read, not a second source of truth
+##
+## `world_spawn`'s ledger is the durable place. `EventApi.set_location` writes the
+## event module's own copy because `event` cannot depend on `world_spawn` (its
+## declared deps are contracts/core/destiny/nation/npc/world), so this is the
+## inversion ADR 0002 describes: the owner of the moment pushes, nobody polls.
 
 ## Where an interactable row came from, so a panel can render it differently.
 const SOURCE_AUTHORED := "authored"
@@ -55,6 +81,10 @@ static var _handler: Callable = Callable()
 ## a mount without `ui/` referencing `app/`, which the boundary rules forbid.
 static var _current: WorldStage = null
 static var _mounted_player: PlayerAdapter = null
+## Tell the event module where the player is. Installed by `app/` as
+## `Callable(EventApi, "set_location")`; a null one means "nothing is listening",
+## which is REPORTED on the mount rather than guessed around.
+static var _location_publisher: Callable = Callable()
 
 var _bounds: Rect2 = DEFAULT_BOUNDS
 var _location_id: StringName = &""
@@ -63,6 +93,11 @@ var _nodes: Array[Node2D] = []
 var _spawned_npcs: Array[Actor] = []
 var _player: PlayerAdapter = null
 var _actor: Actor = null
+## What the LAST publish to the world module answered, kept so `summary()` can
+## report the seam's health without re-calling it. A dictionary, not a bool,
+## because the two ways this can fail are different: no seam installed is a wiring
+## gap, while a named refusal is the event module saying `unknown_location`.
+var _published: Dictionary = {"ok": false, "reason": "not_published"}
 
 
 ## Install the interaction seam. `app/` passes a callable taking
@@ -72,8 +107,32 @@ var _actor: Actor = null
 ## dictionary — it simply answers `no_handler`. That is the `HoldingsApi._resolve`
 ## posture: a null injection fails loudly with a named reason rather than
 ## dereferencing nothing (ADR 0002).
+##
+## **The handler is installed at boot, not per mount**, so `interact()` has a
+## consumer from the first press rather than only after a travel. Installing it in
+## `mount` instead would leave a body that arrived by the composition root's own
+## call one press short of doing anything — the same "wired, but the only caller
+## is a test" shape this file exists to close.
 static func set_interaction_handler(handler: Callable) -> void:
 	_handler = handler
+
+
+## Install the seam that tells the EVENT module where the player is.
+## `app/` passes `Callable(EventApi, "set_location")`; the callable is
+## `func(actor: Actor, location_id: StringName) -> Dictionary`.
+##
+## Passing an empty `Callable` clears the binding, so a test (or a boot order that
+## deliberately runs without the event module) can uninstall it deterministically
+## rather than only overwrite it — the `CombatBoot.set_attack_resolver` shape.
+static func set_location_publisher(publisher: Callable) -> void:
+	_location_publisher = publisher
+
+
+## Whether the world is being told where the player is. Published on `summary()`
+## so a probe can tell "the seam is missing" from "the seam is installed and the
+## event module refused the place".
+static func has_location_publisher() -> bool:
+	return _location_publisher.is_valid()
 
 
 ## The stage `app/` installed, or null. A consumer that only has a location id
@@ -116,6 +175,12 @@ func mount(
 	_actor = actor
 	_nodes = []
 	_spawned_npcs = []
+	# **The player standing somewhere IS the moment the world learns where they
+	# are.** Published before anything reads the ledger, and never conditionally:
+	# an event that could not have opened at the old place may open at the new one
+	# on this very mount, so publishing after `_rebuild_rows` would report an
+	# interactable list built against a stale location.
+	_published = _publish_location(actor, location_id)
 	_current = self
 	_mounted_player = player
 	_player.set_map_bounds(_bounds)
@@ -135,6 +200,8 @@ func mount(
 		"location_name": String(placed.get("display_name", "")),
 		"spawn": _position_of(_player.global_position),
 		"interactable_count": _interactables.size(),
+		"world_told": _published["ok"],
+		"world_told_reason": String(_published.get("reason", "")),
 	}
 
 
@@ -179,6 +246,10 @@ func enter(actor: Actor) -> Dictionary:
 	_location_id = StringName(here["location_id"])
 	_nodes = []
 	_spawned_npcs = []
+	# The same publish `mount` does, and for the same reason: `enter` is the
+	# headless half of a mount and a caller driving the game with no scene tree
+	# must reach exactly the same events as one with a body.
+	_published = _publish_location(actor, _location_id)
 	_rebuild_rows()
 	return {
 		"ok": true,
@@ -187,6 +258,8 @@ func enter(actor: Actor) -> Dictionary:
 		"location_name": String(here["display_name"]),
 		"spawn": _position_of(_spawn_position()),
 		"interactable_count": _interactables.size(),
+		"world_told": _published["ok"],
+		"world_told_reason": String(_published.get("reason", "")),
 	}
 
 
@@ -257,6 +330,9 @@ func summary() -> Dictionary:
 		"node_count": _nodes.size(),
 		"npc_count": _spawned_npcs.size(),
 		"handler_installed": _handler.is_valid(),
+		"location_publisher_installed": _location_publisher.is_valid(),
+		"world_told": bool(_published.get("ok", false)),
+		"world_told_reason": String(_published.get("reason", "")),
 	}
 
 
@@ -284,6 +360,36 @@ func interact(target_name: String) -> Dictionary:
 
 
 # --- internals ---------------------------------------------------------------
+
+
+## THE PUBLISH. Tell the world module where the player now is, through the
+## injected seam, and never past it.
+##
+## **This is the one line that makes the event ladder reachable.** `available()`
+## filters each authored def by `location_id` against the ledger's own copy, so
+## without this call the ledger stays at `EventApi.NOWHERE` and all seven shipped
+## events are filtered out before their trigger is read — the DEF-0183 defect,
+## which passed every test because the tests called `EventApi.set_location`
+## themselves.
+##
+## Refuses by name rather than throwing: no seam installed is `no_publisher` (a
+## wiring gap a probe can see), and a publisher that answers with something other
+## than a dictionary is `publisher_returned_nothing`, the exact posture
+## `interact()` takes on its handler four lines below. A refused publish does NOT
+## undo the mount: the player really did travel, and `world_spawn`'s ledger is
+## the durable truth. It reports itself so the gap is diagnosable rather than
+## silent.
+func _publish_location(actor: Actor, location_id: StringName) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	if not _location_publisher.is_valid():
+		return {"ok": false, "reason": "no_publisher"}
+	var answered: Variant = _location_publisher.call(actor, location_id)
+	if not answered is Dictionary:
+		return {"ok": false, "reason": "publisher_returned_nothing"}
+	var out: Dictionary = (answered as Dictionary).duplicate()
+	out["reason"] = String(out.get("reason", ""))
+	return out
 
 
 ## THE CLAMP. The rect is the player's world; a body inside it is what

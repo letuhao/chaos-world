@@ -178,6 +178,14 @@ func _technique(magnitude: float = 100.0, aim_meridian: StringName = &"") -> Tec
 ## A context shaped as `CombatSpine._context` shapes one, carrying this mechanism's own
 ## three inputs through the seam's extension point.
 ##
+## `p_magnitude` is S1's OUTPUT and the spine's `base` / `magnitude` pair, passed in as
+## the ALREADY rate-gated figure so this helper never re-derives a rate — `RealmRate` is
+## the spine's stage and a fixture that multiplied by it would be a second S1 the suite
+## could not tell from the real one. It is NOT defaulted to `0.0`: an omitted magnitude
+## left every body suite measuring a mechanism whose gross was `0.0 x ATTACK_PHYSICAL`,
+## which is why the gross identity assertions below were written against the bare stat.
+## Pass the RATE-GATED magnitude and the context is indistinguishable from the spine's.
+##
 ## `mode` is the per-HIT aim choice (`BodyDamage.AIM_MODE_KEY`), which is deliberately
 ## not `TechniqueDef.aim_meridian`: one authored id means `named` and its absence means
 ## `random`, while `broad` is a per-hit choice the author cannot make.
@@ -187,9 +195,15 @@ func _context(
 	technique: TechniqueDef,
 	mode: StringName = &"",
 	wounds: BodyWounds = null,
-	tuning: CombatTuning = null
+	tuning: CombatTuning = null,
+	p_magnitude: float = NAN
 ) -> AttackContext:
-	var ctx := AttackContext.new(attacker, target, technique, tuning if tuning != null else _tuning)
+	var magnitude := p_magnitude
+	if not is_finite(magnitude):
+		magnitude = CombatSpine.base_damage(attacker, technique)
+	var ctx := AttackContext.new(
+		attacker, target, technique, tuning if tuning != null else _tuning, magnitude
+	)
 	if technique != null and technique.aim_meridian != &"":
 		ctx.set_data(BodyDamage.AIM_MERIDIAN_KEY, technique.aim_meridian)
 	if mode != &"":

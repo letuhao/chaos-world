@@ -22,6 +22,33 @@ KREA2_MODEL = "krea2/raySemiReal_krea2TurboV1Nsfw.safetensors"
 KREA2_CLIP = "qwen3vl_4b_fp8_scaled.safetensors"
 KREA2_VAE = "qwen_image_vae.safetensors"
 KREA2_LORAS = (
+    (
+        "929",
+        "krea2/pose/More Dynamic Poses - Krea2_000002500.safetensors",
+        "dynamic_pose",
+        0.0,
+    ),
+    (
+        "930",
+        "krea2/pose/v67PoseFraming_v1.safetensors",
+        "pose_framing",
+        0.0,
+    ),
+    ("924", "krea2/zuoten_c1-st6000.safetensors", "zuoten", 0.0),
+    (
+        "925",
+        "krea2/Luminous_Impasto__Style__krea2_3348804_epoch_10.safetensors",
+        "luminous_impasto",
+        0.0,
+    ),
+    (
+        "926",
+        "krea2/meion_artist_Krea2_lora_v1_000001000_3106706.safetensors",
+        "meion_artist",
+        0.0,
+    ),
+    ("927", "krea2/dancai-krea2_000007000.safetensors", "dancai", 0.0),
+    ("928", "krea2/PANNIXING-KREA-V2 (1).safetensors", "pannixing", 0.0),
     ("885", "krea2/AddMicroDetails_Krea2_v1.safetensors", "micro_details", 0.0),
     (
         "883",
@@ -34,7 +61,7 @@ KREA2_LORAS = (
         "887",
         "krea2/meion_krea2_style_v7.0_c1-st4000.safetensors",
         "meion_style",
-        1.0,
+        0.0,
     ),
     (
         "888",
@@ -55,7 +82,7 @@ KREA2_LORAS = (
         "908",
         "krea2/Krea2_Ephemeral_Elegance_000007000.safetensors",
         "ephemeral_elegance",
-        1.0,
+        0.0,
     ),
     ("911", "krea2/MJCN_Style_000005000.safetensors", "mjcn_style", 0.0),
     ("910", "krea2/2ment_c1-st5000.safetensors", "2ment", 0.0),
@@ -67,6 +94,26 @@ KREA2_LORAS = (
         "granblue_detail",
         0.0,
     ),
+    ("922", "krea2/Liviel Style V1.safetensors", "liviel_style", 0.0),
+    ("921", "krea2/NurenNuren_v1.safetensors", "nurennuren", 0.0),
+    ("918", "krea2/inspiredRizdraws_v1.safetensors", "inspired_rizdraws", 0.0),
+    ("917", "krea2/Scottie__Krea2.safetensors", "scottie", 0.0),
+    ("914", "krea2/krea2-LR-FG.safetensors", "krea2_lr_fg", 0.0),
+    ("923", "krea2/template-e160.safetensors", "template_e160", 0.0),
+    (
+        "920",
+        "krea2/Mixed_Manhwa_Style_krea2.safetensors",
+        "mixed_manhwa",
+        0.0,
+    ),
+    (
+        "919",
+        "krea2/Misty Iridescence · Dreamy Soft Light Anime Style.safetensors",
+        "misty_iridescence",
+        0.0,
+    ),
+    ("916", "krea2/DBX Anime Style V1.safetensors", "dbx_anime_style", 0.0),
+    ("915", "krea2/GachaStyleKrea2FINAL.safetensors", "gacha_style", 0.0),
 )
 KREA2_REMBG_MODEL = "RMBG-2.0"
 DEFAULT_NEGATIVE = (
@@ -182,7 +229,7 @@ KREA2_ITEM_WORKFLOW = {
             "start_at_step": 0,
             "end_at_step": 8,
             "return_with_leftover_noise": "enable",
-            "model": ["913", 0],
+            "model": ["915", 0],
             "positive": ["627", 0],
             "negative": ["763", 0],
             "latent_image": ["698", 0],
@@ -233,6 +280,13 @@ KREA2_ITEM_WORKFLOW = {
 
 _KREA2_LORA_PARENTS = (
     "761",
+    "929",
+    "930",
+    "924",
+    "925",
+    "926",
+    "927",
+    "928",
     "885",
     "883",
     "884",
@@ -247,6 +301,16 @@ _KREA2_LORA_PARENTS = (
     "910",
     "909",
     "912",
+    "913",
+    "922",
+    "921",
+    "918",
+    "917",
+    "914",
+    "923",
+    "920",
+    "919",
+    "916",
 )
 for (node_id, lora_name, _key, default_strength), parent in zip(
     KREA2_LORAS, _KREA2_LORA_PARENTS, strict=True

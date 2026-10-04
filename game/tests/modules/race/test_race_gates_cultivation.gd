@@ -114,7 +114,9 @@ func _content_closes(race_id: StringName, path_id: StringName) -> bool:
 
 
 ## The qi's production entry point, taken by its facade and by `QiAdvancement`.
-func _qi_attempt(actor: Actor, rng: RandomNumberGenerator) -> bool:
+## `rng` is accepted so every lane helper has the same shape and a caller can pass a
+## seeded generator; this lane's facade verb draws nothing itself, so it is unused here.
+func _qi_attempt(actor: Actor, _rng: RandomNumberGenerator = null) -> bool:
 	return QiCultivationApi.attempt_breakthrough(actor)
 
 

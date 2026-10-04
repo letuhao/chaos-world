@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"mind_illusion_lattice"
+delivered_by = &"codex_storm_phoenix_wing"
 display_name = "Illusion Lattice"
 description = "Builds a lattice of false readings and leaves it standing around the practitioner. Unelemental, sustained, and priced by clarity rather than by qi."
 tags = Array[StringName]([&"technique", &"mind", &"illusion", &"no_element"])

@@ -49,6 +49,10 @@ func has_definition(quest_id: StringName) -> bool:
 
 ## Every quest of one kind, canonically ordered. `""` returns an empty array: an
 ## empty kind is a content bug, not "all kinds".
+##
+## The authoring-side reader of `QuestDef.kind`. The runtime reader is
+## `QuestApi.offered`, which offers only `authored` quests; this is the query a
+## panel or a tooling script uses to ask what the tree holds of each origin.
 func defs_of_kind(kind: StringName) -> Array[QuestDef]:
 	var out: Array[QuestDef] = []
 	for quest_id in quest_ids():

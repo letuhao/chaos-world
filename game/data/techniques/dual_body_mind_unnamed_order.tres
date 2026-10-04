@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"dual_body_mind_unnamed_order"
+delivered_by = &"treaty_final_clause"
 display_name = "Unnamed Order"
 description = "A lineage of posture drill kept for three hundred years because nobody could name why it worked. Muscle fibre and mental defence, the only dual passive that pays a raw structural option beside a defensive one, and it needs both paths at the top of the ladder to learn."
 tags = Array[StringName]([&"passive", &"dual", &"body_mind", &"legendary"])

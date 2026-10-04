@@ -25,8 +25,8 @@ func _player() -> Actor:
 	var actor := Actor.new(&"hero", {Stat.PHYSIQUE: 10.0})
 	actor.attach_core_resources()
 	SocialApi.attach(actor)
-	NpcApi.set_minter(func(_def: NpcDef, _role: StringName = &"npc") -> Actor:
-		return Actor.new(&"npc")
+	NpcApi.set_minter(
+		func(_def: NpcDef, _role: StringName = &"npc") -> Actor: return Actor.new(&"npc")
 	)
 	NpcApi.attach(actor)
 	return actor
@@ -56,9 +56,7 @@ func test_the_elder_starts_at_a_stage_that_has_one() -> void:
 	var first := elder.stage(elder.starting_stage_id())
 	assert_ne(first, null, "he has a starting stage")
 	assert_ne(
-		first.advance_after,
-		0,
-		"and his FIRST stage is the one a tally can move, not a dead rung"
+		first.advance_after, 0, "and his FIRST stage is the one a tally can move, not a dead rung"
 	)
 
 

@@ -581,44 +581,91 @@ func test_build_forceds_content_guards_have_nothing_to_fire_on() -> void:
 	assert_eq(unknown.get("actor", null), null, "and mints no body")
 
 
-## **THE LEG-1 FINDING.** The creation screen is not in the route table, so no
-## player can open it. `ScreenRoutes` documents itself as "a screen that is not
-## listed is unreachable", and `bind_creation` — the one method that gives the
-## screen its arrivals and its commit callable — has no caller anywhere in
-## `res://src`.
+## **THE LEG-1 REACHABILITY HALF.** The enrol leg has a screen, a route, and a seam.
 ##
-## **THE LEG-1 FINDING.** The creation screen IS routed, so a player can open it —
-## and it is mounted with no seam. `bind_creation` is the one method that hands the
-## screen its arrivals and its commit callable, and nothing in `res://src` calls it.
-## `_bind_route_screen` has no arm for this route, so the screen falls through to the
-## `default` `setup(actor)` and is given neither.
+## This was the file's biggest finding and it was TRUE when first written: the screen
+## shipped unrouted, `bind_creation` had no caller in `res://src`, and a passing suite
+## covered a screen no player could open — the shape `CharacterCreationProgram`'s own
+## docstring records. A concurrent agent routed the screen and landed the program that
+## wires the seam. The assertions below are the re-measurement, kept because BL-0619 is
+## the whole lesson: a tracked finding decays silently, so the state that makes it FALSE
+## is itself asserted.
 ##
-## So the enrol leg's surface exists, a player can reach it, and it can only say no:
-## every commit refuses `no_creation_seam` and the screen lists no arrivals to answer
-## in the first place.
-func test_the_creation_screen_is_routed_but_never_given_a_seam() -> void:
+## What is still true, and what the classification below relies on: nothing in
+## `res://src` mounts a creation screen WITHOUT its seam, so `no_creation_seam` guards a
+## wiring mistake rather than anything a player can hit.
+func test_the_creation_screen_is_routed_and_given_a_seam() -> void:
 	assert_eq(
 		ScreenRoutes.id_for_scene(CREATION_SCENE),
 		&"character_creation",
-		"the creation screen IS routed, so a player can open it"
+		"the creation screen is routed, so a player can open it"
 	)
-	var wired := 0
+	var wiring := ""
+	var callers := 0
 	for path: String in ContentScan.files_under("res://src", ".gd"):
-		if FileAccess.get_file_as_string(path).contains(".bind_creation("):
-			wired += 1
+		# A screen's own definition is not a caller of its own method.
+		if path.ends_with("ui/screens/character_creation.gd"):
+			continue
+		if FileAccess.get_file_as_string(path).contains("bind_creation"):
+			callers += 1
+			wiring = path
 	assert_eq(
-		wired,
-		0,
-		(
-			"nothing in res://src calls bind_creation, so the mounted screen is given no arrivals "
-			+ "and no commit callable, and every commit on it refuses no_creation_seam"
-		)
+		callers,
+		1,
+		"and exactly one production caller hands the screen its arrivals and commit callable"
+	)
+	assert_eq(
+		wiring,
+		"res://src/app/character_creation_program.gd",
+		"and it is the composition root's creation program"
 	)
 
 
-## `no_creation_seam` is REACHED, therefore, on the screen as a player gets it: the
-## arrivals a fresh flow would publish are not in play, so this drives the commit
-## alone. It refuses by name, which is the one thing it does right.
+## The enrol leg's own program adds five more named refusals on top of the flow's
+## three. Each is driven and classified here, because a new `{ok:false, reason}` on a
+## six-leg entry point is exactly what this file exists to account for — and a
+## concurrent agent added five while it was being written.
+##
+## Four are TEST-ONLY: they fire on a program constructed without its stack, flow or
+## route opener, which is a wiring mistake and not a player's situation.
+## `already_has_hero` is a RETURNING-PLAYER guard and is unreachable through the only
+## production caller, which opens creation precisely when no hero exists. It is the one
+## refusal here that would start mattering if the nav bar's route button were ever made
+## to go through the program rather than straight to the route.
+func test_the_creation_programs_own_refusals_are_named_and_classified() -> void:
+	var unmounted := CharacterCreationProgram.new()
+	var no_stack := unmounted.open()
+	assert_eq(_refused(no_stack), true, "a program with no stack refuses to open")
+	assert_eq(_reason(no_stack), "not_mounted", "and says the program is not mounted")
+	var no_flow := unmounted.commit(&"the_one_who_stayed")
+	assert_eq(_refused(no_flow), true, "and refuses to commit")
+	assert_eq(_reason(no_flow), "not_mounted", "with the same reason")
+
+	# The next two refusals sit BEHIND the mounted check, so reaching them needs a
+	# stack — which is why a program built as `new(null, flow)` still answers
+	# `not_mounted` and not the more specific reason. A test that constructed it the
+	# obvious way would assert the wrong string and pass for the wrong reason.
+	var stack := ScreenStack.new()
+	var flow_only := CharacterCreationProgram.new(stack, CharacterCreationFlow.new())
+	assert_eq(
+		_reason(flow_only.open()),
+		"no_route_opener",
+		"TEST-ONLY: a mounted program with no route opener names the missing piece"
+	)
+	var returning := CharacterCreationProgram.new(stack, CharacterCreationFlow.new())
+	returning.adopt(Actor.new(&"returning"))
+	assert_eq(returning.has_hero(), true, "a program given a hero holds one")
+	assert_eq(
+		_reason(returning.open()),
+		"already_has_hero",
+		"TEST-ONLY TODAY: a returning player is refused creation by name"
+	)
+	stack.free()
+
+
+## `no_creation_seam` is TEST-ONLY, therefore: a screen no production caller mounts
+## unbound. It refuses by name, which is the one thing it does right — and the reason
+## it is classed this way is asserted above, not assumed.
 func test_a_creation_screen_with_no_seam_refuses_every_commit_by_name() -> void:
 	var packed := load(CREATION_SCENE) as PackedScene
 	assert_ne(packed, null, "the creation scene loads")
@@ -675,8 +722,8 @@ func test_every_named_refusal_on_the_six_legs_is_classified_by_being_caused() ->
 		false,
 		"DEAD: nothing can make begin refuse 'the tribulation would not begin'"
 	)
-	# --- Leg 1, enrol: the screen is reachable but unwired, so one refusal is a
-	# player's and the rest are TEST-ONLY ---
+	# --- Leg 1, enrol: wired, so one refusal is a player's and the rest are TEST-ONLY ---
+
 	assert_eq(
 		_reason(CharacterCreationFlow.new().build(&"the_oath_bound")),
 		R_UNKNOWN_ORIGIN,
@@ -687,7 +734,7 @@ func test_every_named_refusal_on_the_six_legs_is_classified_by_being_caused() ->
 	assert_eq(
 		_reason(flow.build(&"the_one_who_returned")),
 		R_ALREADY_CREATED,
-		"TEST-ONLY: already_created needs a second commit on one flow"
+		"PLAYER-REACHABLE: a second press on another arrival row names already_created"
 	)
 	var hero := CharacterCreationFlow.new().build(&"the_one_who_stayed").get("actor", null) as Actor
 	assert_eq(
@@ -709,7 +756,7 @@ func test_every_named_refusal_on_the_six_legs_is_classified_by_being_caused() ->
 	assert_eq(
 		_reason(screen.act_commit(&"the_one_who_stayed")),
 		R_NO_SEAM,
-		"PLAYER-REACHABLE: the routed, never-wired screen refuses every commit by name"
+		"TEST-ONLY: the wired screen never refuses this; only an unbound mount does"
 	)
 	screen.free()
 

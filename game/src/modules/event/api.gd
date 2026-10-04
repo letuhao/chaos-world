@@ -330,11 +330,35 @@ static func advance(actor: Actor, periods: int) -> Dictionary:
 			entry["periods_held"] = 0
 			(ledger["active"] as Dictionary)[String(event_id)] = entry
 			var beats := _offer_beats(actor, ledger, def, following.on_enter)
-			WorldEventBus.upkeep_paid(
-				String(actor.id),
-				float(following.duration_periods),
-				EventPrize.STABILITY_COST_PER_PERIOD
+			# **The settlement happens, and only then is it announced.**
+			# `world_upkeep_paid` used to fire here with two numbers and no write behind
+			# them, because `EventPrize.settle_period` — the only thing in the repository
+			# that reaches `WorldApi.trigger_conflict` — had ZERO callers. A signal that
+			# announces a settlement which never happens is the VACUOUS class, and the
+			# function's own docstring already says what it is for. So the call is here,
+			# and the announce follows its answer: the bus now reports something that
+			# actually moved the world, or says nothing at all.
+			#
+			# **The severity is the stage's whole authored duration times the per-period
+			# rate, both read from the module's own constants.** `EventPrize
+			# .STABILITY_COST_PER_PERIOD` is the rate the world's own `trigger_conflict`
+			# multiplies, so this is what one stage costs the world in stability — derived
+			# from the def, never a second magic multiplier declared here.
+			#
+			# **A refusal is a report, never a crash.** `WorldApi.trigger_conflict`
+			# refuses `no_world` on an actor with no created realm, and an event running
+			# on such an actor must still advance (ADR 0085: the ladder is not the
+			# realm's), so nothing is announced when nothing settled and the answer
+			# travels on the report instead.
+			var settled := EventPrize.settle_period(
+				actor, def, float(following.duration_periods) * EventPrize.STABILITY_COST_PER_PERIOD
 			)
+			if bool(settled.get("ok", false)):
+				WorldEventBus.upkeep_paid(
+					String(actor.id),
+					float(following.duration_periods),
+					EventPrize.STABILITY_COST_PER_PERIOD
+				)
 			WorldEventBus.evolved(String(actor.id), stage_id, next_id)
 			(
 				advanced
@@ -345,6 +369,10 @@ static func advance(actor: Actor, periods: int) -> Dictionary:
 						"stage_id": String(next_id),
 						"period": at,
 						"beats": beats["applied"],
+						# Carried so a panel can say the world paid for this rather than
+						# inferring it from the absence of a refusal.
+						"upkeep_settled": bool(settled.get("ok", false)),
+						"upkeep_reason": String(settled.get("reason", "")),
 					}
 				)
 			)

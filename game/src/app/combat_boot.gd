@@ -69,8 +69,8 @@ const _BOUND := true
 static var _resolver: Callable = Callable()
 
 
-## Bind the mechanism `actor`'s own inputs support, and report what that binding did.
-## `{ok, bound, mechanism, already_bound, reason}`.
+## Bind the mechanism `actor`'s own inputs support, and its wound ledger, and report what
+## that binding did. `{ok, bound, mechanism, already_bound, wounds, reason}`.
 ##
 ## ## The rule, and why it is a rule about INPUTS rather than about paths
 ##
@@ -130,6 +130,7 @@ static func bind_mechanisms(actor: Actor) -> Dictionary:
 			"bound": false,
 			"mechanism": "",
 			"already_bound": false,
+			"wounds": false,
 			"reason": "no_actor"
 		}
 	var already: bool = CombatEngineApi.has_mechanism(actor)
@@ -152,6 +153,19 @@ static func bind_mechanisms(actor: Actor) -> Dictionary:
 		_:
 			mechanism = QiDamage.new()
 	CombatEngineApi.bind_mechanism(actor, mechanism)
+	# The wound ledger, bound HERE rather than lazily at the first wound, because it is
+	# the other half of the same wiring and it is the only thing that can restore a save:
+	# `attach_wounds` consumes the raw `body_wounds` payload `Actor._restore_versioned`
+	# stashed, and `bind_mechanisms` is the call the documented save-load path makes a
+	# second time. Binding it at the FIRST hit instead would settle the first wound onto a
+	# fresh ledger and then restore the old one over the top on the next load.
+	#
+	# The tuning is the shipped `.tres` and not a null, for the reason
+	# `CombatEngineApi.attach_wounds` documents: a ledger whose every threshold read as
+	# `0.0` wounds on the first gash and sits on the necrosis floor immediately. This is
+	# idempotent like the mechanism binding above it — an actor that already carries a
+	# ledger keeps it, so a re-boot can never erase wounds earned this session.
+	var wounds := CombatEngineApi.attach_wounds(actor, CombatEngineApi.tuning())
 	var bound: bool = CombatEngineApi.has_mechanism(actor)
 	# `bound` is asserted AND reported so one read answers for both: a second read is a
 	# second chance for the two to disagree.
@@ -164,6 +178,7 @@ static func bind_mechanisms(actor: Actor) -> Dictionary:
 		"bound": _BOUND,
 		"mechanism": chosen,
 		"already_bound": already,
+		"wounds": wounds != null,
 		"reason": "",
 	}
 
@@ -225,7 +240,12 @@ static func strike(attacker: Actor, defender: Actor, seed_value: int = 0) -> Dic
 static func install(actor: Actor) -> Dictionary:
 	if actor == null:
 		return {
-			"ok": false, "bound": false, "mechanism": "", "resolver": false, "reason": "no_actor"
+			"ok": false,
+			"bound": false,
+			"mechanism": "",
+			"wounds": false,
+			"resolver": false,
+			"reason": "no_actor"
 		}
 	var bound: Dictionary = bind_mechanisms(actor)
 	var resolver: Dictionary = set_attack_resolver(Callable(CombatApi, "hit"))
@@ -233,6 +253,7 @@ static func install(actor: Actor) -> Dictionary:
 		"ok": bool(bound["ok"]) and bool(resolver["ok"]),
 		"bound": bool(bound["bound"]),
 		"mechanism": bound["mechanism"],
+		"wounds": bool(bound["wounds"]),
 		"resolver": bool(resolver["ok"]),
 		"reason": "",
 	}

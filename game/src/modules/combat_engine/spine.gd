@@ -2,7 +2,9 @@ class_name CombatSpine
 extends RefCounted
 
 ## The one damage pipeline every hit passes through (ADR 0067). Eleven stages, in
-## order, unchangeable without an ADR. Nine are SHARED; S4 and S5 are the seam.
+## order, unchangeable without an ADR. Nine are SHARED; S4 and S5 are the seam. ADR
+## 0067's `effects[]` step follows them, in `CombatEffectApply`, and is not a numbered
+## stage: it is the path's own state writes, applied after health.
 ##
 ## ## The four load-bearing orderings
 ##
@@ -174,6 +176,13 @@ static func resolve_hit(
 			hit_index
 		)
 	)
+	# --- ADR 0067's `effects[]` step, LAST of all: after health (S9), after reflect
+	# (S10), after leech (S11) and after status (S12). Every mechanism computes its own
+	# state writes and NOTHING applied them, so a body hit left no wound and a mind
+	# erosion was discarded -- see `effect_apply.gd`. Kept here rather than inside
+	# `_spend` so the "effects land after the HP write" ordering is asserted at the ONE
+	# call site that decides it, beside S12 rather than four branches deep.
+	CombatEffectApply.apply(target, CombatProposalReader.effects_of(proposal), tuning)
 	return outcome
 
 

@@ -1,16 +1,36 @@
 class_name TechniqueLoadoutScreen
 extends UiScreen
 
-## The technique loadout: the limited, path-typed slots, what occupies each, and
-## the way to release one. A pure consumer of the `techniques` facade — it reads
-## `TechniquesApi.summary` and calls `TechniquesApi.unequip`, and names nothing
-## else in the module.
+## The technique loadout: the limited, path-typed slots, what occupies each, the
+## way to release one, the way to BIND one, and — for a slot holding an active
+## technique — the way to fire it. A pure consumer of the `techniques` module: it
+## reads `TechniquesApi.summary`/`inspect`, calls `TechniquesApi.unequip` and
+## `TechniquesApi.equip`, and reaches the cast through the component the facade
+## NAMES rather than through a thirteenth facade method (ADR 0056).
 ##
 ## This is the other half of ADR 0053. The codex is unbounded and read-only; this
 ## page is 7 to 10 slots against an unbounded codex, and that gap is the design
-## space. So the slot budget is the first thing the page states, and the only
-## action here is a release: losing a slot returns the entry to the codex with its
-## rung, and no code path here can delete a technique.
+## space. So the slot budget is the first thing the page states, and BOTH decisions
+## that need a slot live here — a release returns the entry to the codex with its
+## rung, and a binding claims the first free slot its own path allows. No code path
+## here can delete a technique.
+##
+## ## Why the cast reaches a component and not a facade verb
+##
+## `TechniquesApi` is at `MAX_FACADE_PUBLIC_METHODS` and publishes 12. `activate` is
+## published the way `TechniqueUpkeep` is — as a component id named by a constant on
+## the facade, so this screen calls `TechniquesApi.CASTING_COMPONENT` and never adds
+## a 13th method:
+##
+## ```
+## var casting := _actor.component(TechniquesApi.CASTING_COMPONENT) as TechniqueCasting
+## var fired := casting.activate(_actor, technique_id, target)
+## ```
+##
+## The damage pipeline is INJECTED and the composition root already binds it
+## (`item_workbench_app.gd:_bind_technique_seams`), so this call passes no resolver
+## and the installed one is used. With no target the cast still fires and still pays;
+## it simply resolves an empty descriptor, which is the module's own rule.
 ##
 ## Contract: `summary()` is the testable surface, with each slot's own summary
 ## nested under `slots`. `{}` with no actor.
@@ -29,10 +49,27 @@ const NO_ACTOR_TEXT := "No hero bound."
 ## The path pools the budget row is stated in, in the facade's own order.
 const POOLS := [PathState.QI, PathState.BODY, PathState.MIND, &"universal"]
 
+## The module's own refusal reasons, worded for a player. `activate` and `equip` both
+## publish a stable `reason` string; naming each one is how the UI can report a
+## refusal HONESTLY instead of restating it as one generic failure. Unknown reasons
+## fall back to [refusal_text]'s default rather than printing machine vocabulary.
+const REFUSALS := {
+	&"realm_unmet": "Your realm does not reach it yet",
+	&"not_learned": "Not learned yet",
+	&"no_free_slot": "No free slot in its pool",
+	&"not_equipped": "Not bound right now",
+	&"not_active": "That one is a passive, not an action",
+	&"on_cooldown": "Still cooling down",
+	&"insufficient_resources": "Not enough qi or stamina",
+	&"unknown_definition": "No such technique",
+}
+const REFUSAL_DEFAULT := "Refused"
+
 var _live: Dictionary = {}
 var _header: Label = null
 var _budget: Label = null
 var _slot_box: VBoxContainer = null
+var _picker: TechniqueEquipPicker = null
 var _slot_rows: Array = []
 var _bound: bool = false
 
@@ -56,11 +93,15 @@ func _summary() -> Dictionary:
 		"slot_free": int(_live.get("slot_free", 0)),
 		"suspended": _strings(_live.get("suspended", [])),
 		"equipped_ids": _strings(_live.get("equipped_ids", [])),
+		"castable_ids": _castable_ids(slots),
+		"ready_ids": _keys_of(slots, "can_cast"),
 		"budget_line": _budget_line(),
 		"slots": slots,
 		"filled_slots": _keys_where(slots, "filled", true),
 		"free_slots": _keys_where(slots, "filled", false),
 		"pools": _pools(),
+		"offers": _offer_summary(),
+		"offered_ids": _offered_ids(),
 		"row_count": _slot_rows.size(),
 	}
 
@@ -85,6 +126,28 @@ func _render() -> void:
 # --- Actions, callable headlessly as well as by the buttons ----------------
 
 
+## Bind a learned technique into the first free slot its own path allows. A refused
+## bind changes nothing at all — the reason is the module's, and it is reported
+## rather than restated.
+func act_equip(technique_id: StringName) -> bool:
+	if _actor == null or technique_id.is_empty():
+		set_message("No hero bound", TONE_ERROR)
+		refresh()
+		return false
+	var bound := TechniquesApi.equip(_actor, technique_id)
+	var ok := bool(bound.get("ok", false))
+	var slots := bound.get("slots", []) as Array
+	if ok:
+		set_message("Bound %s to %s" % [String(technique_id), ", ".join(_strings(slots))], TONE_OK)
+	else:
+		set_message(
+			"%s: %s" % [String(technique_id), refusal_text(String(bound.get("reason", "")))],
+			TONE_ERROR
+		)
+	refresh()
+	return ok
+
+
 ## Release one technique's slots. Free, and non-destructive: the entry stays in
 ## the codex with its rung, so this is a build choice and never a loss.
 func act_unequip(technique_id: StringName) -> bool:
@@ -92,24 +155,60 @@ func act_unequip(technique_id: StringName) -> bool:
 		return false
 	var released := TechniquesApi.unequip(_actor, technique_id)
 	var ok := bool(released.get("ok", false))
-	set_message(
-		("Released %s to the codex" % String(technique_id)) if ok else "Not equipped",
-		TONE_OK if ok else TONE_ERROR
-	)
+	if ok:
+		set_message("Released %s to the codex" % String(technique_id), TONE_OK)
+	else:
+		set_message("Not equipped", TONE_ERROR)
 	refresh()
 	return ok
+
+
+## Fire a bound active technique through the resolver the composition root installed.
+##
+## `target` is optional and is the only thing this screen cannot decide: `activate`
+## pays and starts the cooldown whether or not a target is supplied, and resolves an
+## empty damage descriptor when there is none. That is the module's rule, so this
+## screen passes `null` rather than inventing a target it does not own.
+func act_cast(technique_id: StringName, target: Actor = null) -> Dictionary:
+	if _actor == null or technique_id.is_empty():
+		set_message("No hero bound", TONE_ERROR)
+		refresh()
+		return {}
+	var casting := _casting()
+	if casting == null:
+		set_message("Casting is not available", TONE_ERROR)
+		refresh()
+		return {}
+	var fired := casting.activate(_actor, technique_id, target)
+	if bool(fired.get("ok", false)):
+		set_message("Fired %s" % String(technique_id), TONE_OK)
+	else:
+		set_message(
+			"%s: %s" % [String(technique_id), refusal_text(String(fired.get("reason", "")))],
+			TONE_ERROR
+		)
+	refresh()
+	return fired
 
 
 # --- ScreenStack hooks ------------------------------------------------------
 
 
-## The landing spot is the first release button on a filled slot — the first thing
-## a player can actually do here. Recorded first, because a node outside a viewport
-## has nothing to focus yet.
+## The landing spot is the first thing a player can actually DO here: a cast when
+## some slot holds a ready active technique, otherwise the first release button on a
+## filled slot. Recorded first, because a node outside a viewport has nothing to
+## focus yet.
 func focus_initial() -> void:
 	_bind_nodes()
 	for row in _slot_rows:
-		if bool(row.call(&"summary").get("can_unequip", false)):
+		var view: Dictionary = row.call(&"summary")
+		if bool(view.get("can_cast", false)):
+			_focus_target = String(row.name)
+			if row.is_inside_tree():
+				row.call(&"focus_initial")
+			return
+	for row in _slot_rows:
+		if bool((row.call(&"summary") as Dictionary).get("can_unequip", false)):
 			_focus_target = String(row.name)
 			if row.is_inside_tree():
 				row.call(&"focus_initial")
@@ -125,14 +224,28 @@ func _bind_nodes() -> void:
 	_header = get_node_or_null("%LoadoutHeader") as Label
 	_budget = get_node_or_null("%BudgetLabel") as Label
 	_slot_box = get_node_or_null("Layout/Scroll/Loadout/Slots") as VBoxContainer
+	_picker = get_node_or_null("%EquipPicker") as TechniqueEquipPicker
 	_bound = _header != null and _slot_box != null
 	if not _bound:
 		return
 	_slot_rows = _rows_in(_slot_box, SLOT_ROWS)
 	for row in _slot_rows:
-		var signal_ref: Signal = row.get(&"unequip_requested")
-		if not signal_ref.is_connected(_on_unequip):
-			signal_ref.connect(_on_unequip)
+		_connect_row(row)
+	if _picker != null:
+		var signal_ref: Signal = _picker.get(&"equip_requested")
+		if not signal_ref.is_connected(_on_equip):
+			signal_ref.connect(_on_equip)
+
+
+## Every `.connect()` is guarded: a screen the shell re-pushes, or a row the pool
+## grows, would otherwise accumulate a handler and fire an equip once per binding.
+func _connect_row(row: TechniqueSlotRow) -> void:
+	var release: Signal = row.get(&"unequip_requested")
+	if not release.is_connected(_on_unequip):
+		release.connect(_on_unequip)
+	var cast: Signal = row.get(&"cast_requested")
+	if not cast.is_connected(_on_cast):
+		cast.connect(_on_cast)
 
 
 ## The rows the scene declares, in order, then the ones grown at runtime.
@@ -158,6 +271,37 @@ func _on_unequip(technique_id: StringName) -> void:
 	act_unequip(technique_id)
 
 
+func _on_equip(technique_id: StringName) -> void:
+	act_equip(technique_id)
+
+
+func _on_cast(technique_id: StringName) -> void:
+	act_cast(technique_id)
+
+
+## The casting component the facade NAMES, attached on demand by `summary`/`slots`.
+## Reaching it through the constant rather than a thirteenth facade method is the
+## whole of ADR 0056's constraint, and it is why this screen needs no module change.
+##
+## **The return type is `RefCounted`, not `TechniqueCasting`.** `ui/` may reach the
+## module only through `api.gd`, and a typed reference names a module-owned class —
+## which the arch gate reads as a bare reference and refuses, because a screen that
+## can name `TechniqueCasting` can also reach anything else it likes through the
+## same import. So the component is read by its facade-declared component id and
+## called through the one method the module intends to expose on it. The facade is
+## already at its twelve-method cap, so there is nowhere else for this to live.
+func _casting() -> RefCounted:
+	if _actor == null:
+		return null
+	return _actor.component(TechniquesApi.CASTING_COMPONENT)
+
+
+## The module's reason, in words a player can act on. An unrecognised reason falls
+## back rather than printing machine vocabulary at them.
+func refusal_text(reason: String) -> String:
+	return String(REFUSALS.get(StringName(reason), REFUSAL_DEFAULT))
+
+
 # --- Filling ----------------------------------------------------------------
 
 
@@ -173,18 +317,37 @@ func _read_and_feed() -> void:
 		var view: Dictionary = {}
 		if index < views.size():
 			view = (views[index] as Dictionary).duplicate(true)
+			_cast_view(view)
 		_slot_rows[index].call(&"show_slot", view)
 		index += 1
+	# The offer is read off the SAME snapshot the slots came from, by the panel that
+	# owns the bind affordance. The screen hands over one dictionary and formats
+	# nothing.
+	if _picker != null:
+		_picker.call(&"show_snapshot", _live, _actor)
 
 
 func _grow(needed: int) -> void:
 	while _slot_rows.size() < maxi(0, needed):
 		_slot_box.add_child(_new_row(_slot_rows.size()))
 		var row: TechniqueSlotRow = _slot_box.get_child(_slot_box.get_child_count() - 1)
-		var signal_ref: Signal = row.get(&"unequip_requested")
-		if not signal_ref.is_connected(_on_unequip):
-			signal_ref.connect(_on_unequip)
+		_connect_row(row)
 		_slot_rows.append(row)
+
+
+## Extend one slot view with the two fields only the cast side answers: whether the
+## technique it holds is ACTIVE (`inspect`), and what its cooldown still owes (the
+## casting component). Raw values — the row owns the wording and the rounding.
+func _cast_view(view: Dictionary) -> void:
+	if not bool(view.get("filled", false)):
+		return
+	var technique_id := StringName(String(view.get("technique_id", "")))
+	if technique_id.is_empty():
+		return
+	var detail := TechniquesApi.inspect(_actor, technique_id)
+	view["active"] = bool(detail.get("active", false))
+	var casting := _casting()
+	view["cooldown_remaining"] = casting.remaining(technique_id) if casting != null else 0.0
 
 
 # --- Reporting --------------------------------------------------------------
@@ -225,6 +388,21 @@ func _pools() -> Dictionary:
 	return out
 
 
+func _offer_summary() -> Array:
+	if _picker == null:
+		return []
+	var view: Dictionary = _picker.call(&"summary")
+	return view.get("rows", []) as Array
+
+
+func _offered_ids() -> Array:
+	return _ids_of(_offer_summary(), "offered")
+
+
+func _castable_ids(slots: Array) -> Array:
+	return _ids_of(slots, "active")
+
+
 func _row_summaries() -> Array:
 	var out: Array = []
 	for row in _slot_rows:
@@ -234,12 +412,29 @@ func _row_summaries() -> Array:
 	return out
 
 
+func _ids_of(views: Array, flag: String) -> Array:
+	var out: Array = []
+	for entry in views:
+		if bool((entry as Dictionary).get(flag, false)):
+			out.append(String((entry as Dictionary).get("id", "")))
+	return out
+
+
 func _keys_where(views: Array, flag: String, want: bool = false) -> Array:
 	var out: Array = []
 	for entry in views:
 		var view: Dictionary = entry
 		if bool(view.get(flag, false)) == want:
 			out.append(String(view.get("slot", "")))
+	return out
+
+
+func _keys_of(views: Array, flag: String) -> Array:
+	var out: Array = []
+	for entry in views:
+		var view: Dictionary = entry
+		if bool(view.get(flag, false)):
+			out.append(String(view.get("technique_id", "")))
 	return out
 
 

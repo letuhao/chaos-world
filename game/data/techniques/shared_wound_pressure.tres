@@ -10,6 +10,7 @@ min_realm_index = 17
 [resource]
 script = ExtResource("1_def")
 id = &"shared_wound_pressure"
+delivered_by = &"dao_still_heart"
 display_name = "Wound Pressure Points"
 description = "Sets qi into an injury to slow the bleed instead of treating it. Does almost no damage and keeps a badly hurt practitioner conscious, which is its whole use."
 tags = Array[StringName]([&"technique", &"shared", &"universal_slot", &"utility", &"no_element"])

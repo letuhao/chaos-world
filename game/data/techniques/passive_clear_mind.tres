@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"passive_clear_mind"
+delivered_by = &"sigil_clear_mind"
 display_name = "Clear Mind Sitting"
 description = "A daily sitting that empties the head before the day starts. Mental clarity and a sharper read on the room; it is the cheapest passive in the codex."
 tags = Array[StringName]([&"passive", &"mind", &"clarity"])

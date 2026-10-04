@@ -372,7 +372,9 @@ func test_a_bond_earned_and_saved_reaches_the_save_path_without_a_manual_flush()
 	# its floor of zero completely. Asserting the floor rather than a half-decayed fraction
 	# is deliberate: it is the honest answer for this cause and it proves the trust AXIS
 	# round-tripped too, which a standing-only assertion would not.
-	assert_almost_eq(bond.trust, 0.0, "and the trust axis, which decays 30x faster, is spent", 0.001)
+	assert_almost_eq(
+		bond.trust, 0.0, "and the trust axis, which decays 30x faster, is spent", 0.001
+	)
 	assert_almost_eq(bond.age, 24.0 * 60.0 * 60.0 * 30.0, "and the age the tick recorded", 0.001)
 	assert_eq(bond.distinct_causes(), 1, "the cause ledger is the thing a class derives from")
 	assert_eq(

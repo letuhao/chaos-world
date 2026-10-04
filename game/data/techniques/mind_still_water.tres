@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"mind_still_water"
+delivered_by = &"sigil_still_water"
 display_name = "Still Water"
 description = "Flattens the surface of the mind so an incoming impression has nothing to break against. Almost no element, because it does no damage to anybody."
 tags = Array[StringName]([&"technique", &"mind", &"shield", &"no_element"])

@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"qi_serpent_rain"
+delivered_by = &"scroll_frost_serpent_fang"
 display_name = "Serpent Rain"
 description = "Condenses falling moisture into a field of downward strokes. Three quarters elemental: strong against fire, thin against anything that drinks."
 tags = Array[StringName]([&"technique", &"water", &"area"])

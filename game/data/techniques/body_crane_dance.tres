@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"body_crane_dance"
+delivered_by = &"manual_stone_crane_dance"
 display_name = "Crane Dance Step"
 description = "Seven weight shifts a breath apart, each one still balanced. Mostly raw mechanics with the wind qi woven through, so it is a footwork art first and an element second."
 tags = Array[StringName]([&"technique", &"body", &"wind", &"reposition"])

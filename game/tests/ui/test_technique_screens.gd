@@ -17,6 +17,10 @@ var _screen: UiScreen = null
 
 
 func teardown() -> void:
+	# The damage seam is a PROCESS-WIDE binding, and `run_tests.gd` calls `teardown`
+	# after every test precisely because one leaks into the next suite otherwise. An
+	# empty Callable clears it deterministically.
+	TechniqueCasting.set_resolver(Callable())
 	# `_mount` already frees the previous screen before installing the next one, so
 	# by the time teardown runs `_screen` may be a stale reference to something the
 	# runner has collected. Guarding on `is_instance_valid` alone is not enough:
@@ -80,6 +84,41 @@ func _technique(
 	def.mastery_rungs = 4
 	TechniqueCatalog.instance().register(def)
 	return def
+
+
+## An active technique on `path_id`, so the cast verb has something to fire. The
+## return type is stated because an untyped return leaves `TechniqueDef.new()`
+## un-inferrable at every call site, which this project treats as an error.
+func _active(technique_id: StringName, qi_cost: float = 0.0, cooldown: float = 0.0) -> TechniqueDef:
+	var def := TechniqueDef.new()
+	def.id = technique_id
+	def.display_name = "Strike %s" % String(technique_id)
+	def.grade = ItemGrade.MORTAL
+	def.active = true
+	def.path = PathState.QI
+	def.qi_cost = qi_cost
+	def.cooldown = cooldown
+	def.mastery_rungs = 4
+	TechniqueCatalog.instance().register(def)
+	return def
+
+
+## The casting table the facade NAMES, reached exactly as the screen reaches it —
+## through `TechniquesApi.CASTING_COMPONENT` and no thirteenth facade method.
+func _casting(actor: Actor) -> TechniqueCasting:
+	return actor.component(TechniquesApi.CASTING_COMPONENT) as TechniqueCasting
+
+
+## The shape the composition root binds the damage seam to, installed so a cast
+## resolves a real descriptor instead of an empty one.
+class _Resolver:
+	extends RefCounted
+
+	var calls: int = 0
+
+	func resolve(_attacker: Actor, target: Actor, def: TechniqueDef) -> Dictionary:
+		calls += 1
+		return {"amount": 12.0, "target": String(target.id), "id": String(def.id)}
 
 
 # --- The empty-summary contract ---------------------------------------------
@@ -239,6 +278,169 @@ func test_a_filled_slot_offers_a_release_and_an_empty_one_does_not() -> void:
 		if bool((slot as Dictionary)["can_unequip"]):
 			can_release += 1
 	assert_eq(can_release, 1, "only the bound slot can be released")
+
+
+# --- Binding a learned technique ---------------------------------------------
+
+
+func test_a_learned_unbound_technique_is_offered_and_can_be_bound() -> void:
+	var actor := _actor()
+	var def := _technique(&"qi_to_bind", PathState.QI)
+	TechniquesApi.codex(actor).learn(def.id)
+	var loadout := _loadout()
+	loadout.setup(actor)
+
+	# The picker offers it, and says it can be bound — which is the affordance the
+	# codex deliberately does not have (ADR 0053).
+	var offers: Array = loadout.summary()["offers"]
+	assert_eq(offers.size(), 1, "the learned technique is offered")
+	assert_eq(String((offers[0] as Dictionary)["id"]), String(def.id), "and names itself")
+	assert_eq(bool((offers[0] as Dictionary)["can_equip"]), true, "and can be bound")
+	assert_eq(loadout.call(&"act_equip", def.id), true, "the bind went through the facade")
+
+	var view := loadout.summary()
+	assert_eq(int(view["equipped_count"]), 1, "a slot now holds it")
+	# The offer survives the bind rather than vanishing from the list: a player needs
+	# to see it is ALREADY bound, and the picker says so in its own words.
+	assert_eq(bool((view["offers"][0] as Dictionary)["equipped"]), true, "marked bound")
+	assert_eq(
+		bool((view["offers"][0] as Dictionary)["can_equip"]), false, "and no longer offerable"
+	)
+	assert_eq(String(view["tone"]), "ok", "the bind is reported")
+
+
+func test_binding_a_slotless_technique_is_refused_and_reported_honestly() -> void:
+	var actor := _actor()
+	# Fill every qi slot but the body and mind pools, so one qi technique has nowhere
+	# to land: `claimable` returns [] and the facade refuses `no_free_slot`.
+	var def := _technique(&"qi_nowhere", PathState.QI)
+	TechniquesApi.codex(actor).learn(def.id)
+	for index in 3:
+		var filler := _technique(StringName("qi_filler_%d" % index), PathState.QI)
+		TechniquesApi.codex(actor).learn(filler.id)
+		TechniquesApi.equip(actor, filler)
+	var loadout := _loadout()
+	loadout.setup(actor)
+
+	assert_eq(loadout.call(&"act_equip", def.id), false, "the bind is refused")
+	var view := loadout.summary()
+	assert_eq(String(view["tone"]), "error", "the refusal is reported")
+	# The player is told WHY in words, not left with a bare failure — and the module's
+	# own reason is never printed as machine vocabulary at them.
+	assert_eq(String(view["message"]), "qi_nowhere: No free slot in its pool", "said why")
+	assert_eq(int(view["equipped_count"]), 3, "and nothing else was touched")
+
+
+func test_the_codex_still_publishes_no_binding_action() -> void:
+	# ADR 0053's separation survives the addition of the verb: a BINDING is a slot
+	# decision, so it lives on the loadout and the codex stays read-only.
+	var codex := _codex()
+	for action in ["equip", "act_equip", "unequip", "act_unequip", "cast", "act_cast"]:
+		assert_eq(codex.has_method(action), false, "the codex publishes no '%s'" % action)
+
+
+# --- Firing an active technique ----------------------------------------------
+
+
+func test_a_bound_active_technique_offers_a_cast_and_fires_through_the_resolver() -> void:
+	var actor := _actor()
+	var def := _active(&"qi_strike", 40.0, 10.0)
+	TechniquesApi.codex(actor).learn(def.id)
+	TechniquesApi.equip(actor, def)
+	var loadout := _loadout()
+	loadout.setup(actor)
+
+	# The slot offers the verb, and reports it ready before anything is spent.
+	var slots: Array = loadout.summary()["slots"]
+	var firing := 0
+	for slot in slots:
+		if bool((slot as Dictionary)["can_cast"]):
+			firing += 1
+	assert_eq(firing, 1, "exactly the active slot can be fired")
+
+	# The composition root's binding is what production uses; install the same shape so
+	# the cast resolves a real descriptor instead of an empty one.
+	var resolver := _Resolver.new()
+	var target := Actor.new(&"training_dummy", {})
+	TechniqueCasting.set_resolver(Callable(resolver, "resolve"))
+	var qi_before := actor.resource(&"qi").current
+
+	var fired: Dictionary = loadout.call(&"act_cast", def.id, target)
+	assert_eq(bool(fired["ok"]), true, "the cast fired")
+	assert_eq(resolver.calls, 1, "and resolved through the installed seam")
+	assert_eq(bool(fired["resolved"]), true, "with a real descriptor")
+	# `activate` pays the qi and starts the cooldown; the screen neither skips the
+	# payment nor restates the number.
+	assert_ne(actor.resource(&"qi").current, qi_before, "the cast paid what it owed")
+	assert_eq(_casting(actor).is_ready(def.id), false, "and started the cooldown")
+
+	var view := loadout.summary()
+	assert_eq(String(view["tone"]), "ok", "the cast is reported")
+	# And the slot now says so in the row's own words, rather than offering the button
+	# as if it were still ready.
+	var after: Array = view["slots"]
+	var cooling := 0
+	for slot in after:
+		if String((slot as Dictionary)["ready"]).begins_with("Ready in"):
+			cooling += 1
+	assert_eq(cooling, 1, "the fired slot now shows a countdown")
+	TechniqueCasting.set_resolver(Callable())
+
+
+func test_casting_a_technique_on_cooldown_is_refused_and_says_why() -> void:
+	var actor := _actor()
+	var def := _active(&"qi_twice", 0.0, 30.0)
+	TechniquesApi.codex(actor).learn(def.id)
+	TechniquesApi.equip(actor, def)
+	var loadout := _loadout()
+	loadout.setup(actor)
+	TechniqueCasting.set_resolver(Callable(_Resolver.new(), "resolve"))
+	var target := Actor.new(&"training_dummy", {})
+
+	assert_eq(bool((loadout.call(&"act_cast", def.id, target) as Dictionary)["ok"]), true, "first")
+	var second: Dictionary = loadout.call(&"act_cast", def.id, target)
+	assert_eq(bool(second["ok"]), false, "the second is refused")
+	assert_eq(String(second["reason"]), "on_cooldown", "for the module's own reason")
+	var view := loadout.summary()
+	assert_eq(String(view["message"]), "qi_twice: Still cooling down", "said in words")
+	TechniqueCasting.set_resolver(Callable())
+
+
+func test_casting_a_passive_is_refused_and_says_why() -> void:
+	var actor := _actor()
+	var def := _technique(&"qi_passive_cast", PathState.QI)
+	TechniquesApi.codex(actor).learn(def.id)
+	TechniquesApi.equip(actor, def)
+	var loadout := _loadout()
+	loadout.setup(actor)
+
+	# The button is not even offered: a passive is ADR 0054's contribution, not an
+	# action, so a row advertising a cast it can only refuse would be a lie.
+	var slots: Array = loadout.summary()["slots"]
+	for slot in slots:
+		if bool((slot as Dictionary)["filled"]):
+			assert_eq(bool((slot as Dictionary)["can_cast"]), false, "no cast offered")
+
+	# Calling it anyway is refused honestly rather than crashing or silently succeeding.
+	var fired: Dictionary = loadout.call(&"act_cast", def.id)
+	assert_eq(bool(fired["ok"]), false, "a passive cannot be fired")
+	assert_eq(
+		String(loadout.summary()["message"]),
+		"qi_passive_cast: That one is a passive, not an action",
+		"said why"
+	)
+
+
+func test_the_facade_is_still_twelve_and_no_thirteenth_verb_was_added() -> void:
+	# The cast had to be reachable without growing the facade, so it is reached the way
+	# `TechniqueUpkeep` is: as a component the facade NAMES.
+	var published: Array[String] = []
+	for method in TechniquesApi.new().get_script().get_script_method_list():
+		var method_name := String(method.get("name", ""))
+		if not method_name.begins_with("_") and not published.has(method_name):
+			published.append(method_name)
+	assert_eq(published.size(), 12, "exactly twelve public methods, found %d" % published.size())
+	assert_eq(published.has("cast"), false, "and no thirteenth cast verb")
 
 
 # --- The ScreenStack contract -----------------------------------------------

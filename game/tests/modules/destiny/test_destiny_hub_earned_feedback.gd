@@ -53,6 +53,16 @@ const HIDDEN := &"the_third_man_spared"
 ## literally named one.
 const ACTIONABLE := ["Button", "OptionButton", "pressed.", "gui_input", "toggle_mode"]
 
+## The leaf types a codex snapshot may publish. Named once so the walk at the
+## foot of this file reads as a rule rather than a type list.
+const PRIMITIVE_TYPES: Array[int] = [
+	TYPE_BOOL,
+	TYPE_INT,
+	TYPE_FLOAT,
+	TYPE_STRING,
+	TYPE_STRING_NAME,
+]
+
 ## Screens this suite instantiated, freed in `teardown()`.
 ##
 ## A screen connects to a PROCESS-WIDE bus in `_bind_nodes()`. Freeing the node
@@ -559,20 +569,26 @@ func _executable_code(path: String) -> String:
 ## already two levels past the view. Raising it past a value that would really nest
 ## that far would be widening the budget for nothing.
 func _primitives_only(value: Variant, depth: int = 0) -> bool:
+	# One return rather than one per `match` arm — the repo's linter counts
+	# returns, and a seven-return helper for a five-type question is noise. Same
+	# walk: a leaf is a primitive, a container is only as good as its contents,
+	# and a deep nest is a refusal rather than a stack overflow.
 	if depth > 5:
 		return false
-	match typeof(value):
-		TYPE_BOOL, TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_STRING_NAME:
-			return true
-		TYPE_DICTIONARY:
-			for key in (value as Dictionary).keys():
-				if not _primitives_only((value as Dictionary)[key], depth + 1):
-					return false
-			return true
-		TYPE_ARRAY:
-			for entry in value as Array:
-				if not _primitives_only(entry, depth + 1):
-					return false
-			return true
-		_:
+	var kind := typeof(value)
+	if kind in PRIMITIVE_TYPES:
+		return true
+	var children: Array = []
+	if kind == TYPE_DICTIONARY:
+		for key in (value as Dictionary).keys():
+			if not (key is String or key is StringName):
+				return false
+			children.append((value as Dictionary)[key])
+	elif kind == TYPE_ARRAY:
+		children.assign(value as Array)
+	else:
+		return false
+	for child in children:
+		if not _primitives_only(child, depth + 1):
 			return false
+	return true

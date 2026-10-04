@@ -5,9 +5,11 @@ extends Resource
 ## the only writer of a bond, so "why do these two dislike each other" is answerable
 ## from data instead of inferred from a delta.
 ##
-## **A cause writes axes; it never writes the class.** The class is a pure function of
-## the axes (see `SocialBondClass.classify`), so no authored number can hand an actor a
-## sworn bond, and gift-spamming a merchant cannot buy a friend.
+## **A cause writes axes; it never writes the class on its own.** The class is a pure
+## function of the axes (see `SocialBondClass.classify`), so gift-spamming a merchant
+## cannot buy a friend. A cause MAY additionally name the top of the ladder it is
+## entitled to (`promotes_to`), but that is a ceiling the axes still have to reach — which
+## is what stops an act from granting the very rank it promises.
 
 ## The authored cause id. The one writer of a bond's axes.
 @export var id: StringName = &""
@@ -17,6 +19,11 @@ extends Resource
 @export var persistent: bool = false
 
 ## Tags an author can gate content on, e.g. `&"combat"`, `&"gift"`, `&"oath"`.
+##
+## `kind` is the one the anti-farm rule reads: two causes of the SAME kind — two gifts, two
+## fights — are one kind of act repeated, and a friendship has to survive at least two
+## DIFFERENT kinds. See `SocialBondClass.FRIEND_DISTINCT_KINDS`.
+@export var kind: StringName = &""
 @export var tags: Array[StringName] = []
 
 ## Axis deltas. A cause that moved both standing and respect is authored deliberately —
@@ -40,5 +47,7 @@ extends Resource
 @export var institutional: bool = false
 
 ## The class this cause can promote to, or `&""`. Promotion additionally requires the
-## class's own thresholds, so naming a class sets the ceiling, never the outcome.
+## class's own thresholds, so naming a class sets the ceiling, never the outcome:
+## `SocialBond.apply` records it on the bond and `SocialBondClass.classify` returns it only
+## when the axes have already earned `SocialBondClass.PROMOTION_MIN_CLASS`.
 @export var promotes_to: StringName = &""

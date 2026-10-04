@@ -47,7 +47,9 @@ const DESTINY_EARNED_NOTICE := "A destiny settles, and it cannot be undone:"
 ## carries an `actor_id`, not an `Actor`, so a second hero earning a fate while
 ## this page is open is a real possibility and is counted rather than painted
 ## onto the wrong ledger.
-const FOREIGN_EARN_NOTE := "An earn announced for another hero is counted, never painted onto this ledger."
+const FOREIGN_EARN_NOTE := (
+	"An earn announced for another hero is counted, never painted" + " onto this ledger."
+)
 
 var _codex: Dictionary = {}
 var _header: Label = null

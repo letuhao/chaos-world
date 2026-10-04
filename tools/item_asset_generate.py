@@ -172,11 +172,7 @@ def run(args) -> int:
     current["generation_settings"] = {
         "profile": args.profile,
         "checkpoint": args.checkpoint,
-        "lora": (
-            "Krea2 v2 workflow LoRAs"
-            if args.profile == "krea2"
-            else args.lora
-        ),
+        "lora": ("Krea2 v2 workflow LoRAs" if args.profile == "krea2" else args.lora),
         "lora_strength": args.lora_strength,
         "lora_strengths": (
             {

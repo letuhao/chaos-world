@@ -55,7 +55,7 @@ static func evaluate(state: SocialState, requirement: Dictionary) -> Dictionary:
 		VERB_ALL_OF:
 			return _aggregate(state, requirement, VERB_ALL_OF, true, false)
 		VERB_ANY_OF:
-			return _aggregate(state, requirement, VERB_ANY_OF, false, true)
+			return _aggregate(state, requirement, VERB_ANY_OF, false, false)
 		VERB_NONE_OF:
 			return _aggregate(state, requirement, VERB_NONE_OF, true, true)
 	return {
@@ -127,21 +127,32 @@ static func _caused_by(state: SocialState, requirement: Dictionary) -> Dictionar
 static func _aggregate(
 	state: SocialState, requirement: Dictionary, verb: StringName, all_must: bool, invert: bool
 ) -> Dictionary:
-	var parts: Array = requirement.get("requirements", [])
+	# The children live under `"of"` — the convention every other gate in the repo uses
+	# (`race`, `clan`, `sect`, `event`, `bloodline`, `destiny`, `quest`). This module alone
+	# read `"requirements"`, so an authored `{"verb": &"all_of", "of": [...]}` arrived with
+	# an empty child list and `_pass()`ed: **a gate that opened itself because it could not
+	# read its own content.** Both keys are accepted so content written either way is safe,
+	# but `"of"` is the documented one.
+	var parts: Array = requirement.get("of", requirement.get("requirements", []))
 	if parts.is_empty():
 		return _pass()
 	var unmet: Array[Dictionary] = []
+	var failed := 0
 	for part in parts:
 		var result := evaluate(state, part)
 		if not result.get("ok", false):
+			# Count CHILDREN that failed, not unmet REASONS: a child may contribute
+			# several, and comparing a reason count against a child count made `any_of`
+			# refuse whenever one child passed but failed with two reasons.
+			failed += 1
 			for entry in result.get("unmet", []):
 				unmet.append(entry)
 	# `none_of` is the odd one out: it opens only when every child is unmet.
-	var ok := unmet.is_empty()
+	var ok := failed == 0
 	if invert:
-		ok = unmet.size() == parts.size()
+		ok = failed == parts.size()
 	elif not all_must:
-		ok = unmet.size() < parts.size()
+		ok = failed < parts.size()
 	if ok:
 		return _pass()
 	return {"ok": false, "reason": String(verb), "unmet": unmet}

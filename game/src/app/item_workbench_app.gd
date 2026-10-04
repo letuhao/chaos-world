@@ -112,6 +112,27 @@ func _ready() -> void:
 	AnchorApi.set_store(SaveStore.new())
 	SaveApi.install_store("soul", _world_store())
 	SaveApi.install_store("anchor", _world_store())
+	# ## The one place a fact becomes a fate counter (ADR 0149)
+	#
+	# `core/world_fact.gd` publishes a post-write hook slot and names nothing in it —
+	# `tools arch` holds `core/` to `{"core", "contracts"}`, so the subscriber has to be
+	# installed from out here, the composition root. This is that line, and it is the ONLY
+	# one: every fact in the game is written by `WorldFact.record`, so a hook installed here
+	# is reached by the director, `CombatFacts`, `ClanFacts`, `SectFacts`,
+	# `EventBeatWriter` and `CharacterCreationFlow` alike.
+	#
+	# It used to be dispatched from `BeatDirector.offer` instead, which is the composition
+	# root's beat path and looked like the right seam. It is not: the director's only
+	# production caller is `WorldPulse.offer`, and that offers the period fact and the four
+	# ambient roster facts — none of which any fate reads. All six real producers called
+	# `WorldFact.record` directly and bypassed it, so 0 of the 8 authored pairs could ever
+	# fire while every suite driving the director's path stayed green.
+	#
+	# BEFORE anything can record a fact, because a subscriber installed after the first
+	# record has already missed that occurrence, and the ledger is monotone: there is no
+	# going back for it. `subscribe` refuses a duplicate, so a second boot of this root
+	# cannot install two bridges and double every counter from here on.
+	DestinyProjection.subscribe_to_fact_ledger()
 	# A newborn is minted through a Callable rather than built inline, because
 	# `fertility` may not name `app/` (BL-0280). Without this the child is a bare
 	# `Actor.new()` with no health pool, so it cannot be damaged or healed. Installed
@@ -143,6 +164,20 @@ func _ready() -> void:
 	# The world's clock, after the actor and wired to a director of its OWN: it is not
 	# a module and shares no ledger with the status clock.
 	_world = WorldPulse.new(_actor, BeatDirector.new())
+	# The event module's beats go through the director, and this is the seam that makes
+	# that true. `EventBeatWriter` records the ledger itself, so re-offering from
+	# `WorldPulse` would double-count a monotone fact (ADR 0117 line 51); routing the
+	# event module's OWN offer instead is the only ordering that is both once and
+	# resolved. `Callable`, not a reference, for the reason `NpcApi.set_minter` gives.
+	EventBeatWriter.set_offer_resolver(Callable(_world, "offer_event_beat"))
+	# The durable place reaches the event module from the one place that OWNS the
+	# moment of arrival (`WorldStage.mount` / `enter`), through an injected callable.
+	# Without this line `EventApi.available` filtered every authored event out on
+	# `location_id` before reading a trigger, so no world event could open in play
+	# (DEF-0183). Installed HERE rather than in `_build_actor` so a restored body and
+	# a reborn one are both covered, and before `_mount_home` so the first screen a
+	# player mounts a body on already has it.
+	WorldStage.set_location_publisher(Callable(EventApi, "set_location"))
 	_forge = SocketForgeProgram.new(_actor)
 	# The boot-time arrival program. It opens the SAME route the nav bar uses rather than
 	# pushing a second copy of the scene: two doors to one screen means a screen the route
@@ -482,6 +517,13 @@ func adopt_actor(body: Actor) -> void:
 	AnchorApi.attach(body)
 	_status_loop = StatusLoop.new(body)
 	_world = WorldPulse.new(body, BeatDirector.new())
+	# Both seams are re-pointed at the NEW body rather than left on the old one. The
+	# offer resolver names a `WorldPulse`, and `_ready` just replaced that object; a
+	# seam left pointing at the first one would offer the reborn hero's beats into a
+	# director still holding the hero who fell — a live call with a dead owner, which
+	# is exactly the half-swapped-body failure this method exists to prevent.
+	EventBeatWriter.set_offer_resolver(Callable(_world, "offer_event_beat"))
+	WorldStage.set_location_publisher(Callable(EventApi, "set_location"))
 	_forge = SocketForgeProgram.new(body)
 	_death_armed = ""
 	_last_death = {}
@@ -685,7 +727,12 @@ func _build_actor() -> Actor:
 	# BL-0626). A place gets a cast when an author wires one, and until then the boot
 	# path stands one up where the player already is.
 	_npc_settlement = NpcBoot.populate_room(actor, STARTING_CAST, NpcApi.ROLE_NPC, &"mortal_plains")
-	CombatBoot.bind_mechanisms(actor)
+	# `install`, not `bind_mechanisms`: the mechanism alone left `PlayerAdapter.attack`
+	# with no resolver to land a blow through, so no blow ever landed and the two
+	# `combat` ledger facts (`duels_won`, `third_man_spared`) had no production
+	# writer. `install` is `bind_mechanisms` plus `set_attack_resolver` and is
+	# idempotent, so this is the one boot line that makes the seam live.
+	CombatBoot.install(actor)
 	# After every attach above: a seam is only correct if the module it wires is
 	# already complete, and `TechniquesApi.attach` is what makes the codex exist for
 	# `TechniqueDelivery` to write into.

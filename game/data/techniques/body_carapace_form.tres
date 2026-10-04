@@ -4,6 +4,7 @@
 [resource]
 script = ExtResource("1_def")
 id = &"body_carapace_form"
+delivered_by = &"manual_iron_tortoise_gourd"
 display_name = "Carapace Form"
 description = "Hardens the outer frame until qi runs along it like wire. Half elemental, so the form holds against wood and cracks against fire."
 tags = Array[StringName]([&"technique", &"body", &"metal", &"guard"])

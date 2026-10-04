@@ -6,23 +6,23 @@
 [sub_resource type="Resource" id="QuestStep_terms_written"]
 script = ExtResource("2_step")
 step_id = &"terms_written"
-fact = &"order_terms_written"
+fact = &"sect_post_held"
 need = 1
-display_name = "Write terms whose end date is not yours"
+display_name = "Write the terms of an office whose end date is not yours"
 
 [sub_resource type="Resource" id="QuestStep_witnesses_signed"]
 script = ExtResource("2_step")
 step_id = &"witnesses_signed"
-fact = &"witnesses_signed_the_order"
+fact = &"oaths_discharged"
 need = 3
-display_name = "Stand with three named witnesses while they sign"
+display_name = "Stand with three named witnesses while three terms clear"
 
 [sub_resource type="Resource" id="QuestStep_clerk_resigned"]
 script = ExtResource("2_step")
 step_id = &"clerk_resigned"
-fact = &"clerk_resigned_the_terms"
+fact = &"household_heir_registered"
 need = 1
-display_name = "Watch the clerk who drafted them refuse to countersign"
+display_name = "Watch the register write down a successor instead of a signature"
 
 [resource]
 script = ExtResource("1_quest")
