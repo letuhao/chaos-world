@@ -207,6 +207,26 @@ func _run() -> void:
 		claim_report = await _claim(app, rows_at_boot)
 		report["claim"] = claim_report
 		cell["def_ids"] = claim_report.get("def_ids", [])
+		# A reward collected without a single strike is not a collection. It is a
+		# reward left over from the PREVIOUS cell, which is exactly what a guard
+		# reading `reward_count > 0` produces: the strike loop exits at zero
+		# strikes, no boss dies, no drop is minted, and the claim half waits on a
+		# pending count that can never rise (BL-0854).
+		#
+		# Nothing in the probe checked this, which is how that shape reached the
+		# report at all - and it is the cheapest possible guard against it, because
+		# it costs one comparison and cannot affect the hunt. A player cannot
+		# collect what they did not fight for.
+		if bool(claim_report.get("ok", false)) and int(hunt_report.get("strikes", 0)) <= 0:
+			claim_report = {
+				"ok": false,
+				"why":
+				(
+					"the fight struck nothing and a reward was collected anyway, so the "
+					+ "drop came from an earlier cell rather than from a kill"
+				),
+				"def_ids": [],
+			}
 		if not bool(claim_report.get("ok", false)):
 			cell["claim"] = claim_report.get("why", "nothing claimed")
 			sweep.append(cell)
