@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=26 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -7,9 +7,9 @@
 script = ExtResource("2_entry")
 id = &"mind_nascent_soul_warden_core_0"
 kind = &"item"
-item_id = &"mind_nascent_soul_warden_core"
+item_id = &"mind_nascent_soul_breakthrough_pill"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = true
 quantity = 6
@@ -17,23 +17,35 @@ rarity_floor = &"common"
 
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_pool_great_ascension"
-kind = &"table"
-item_id = &""
-table_id = &"loot_mind_nascent_soul_warden_pool_great_ascension"
-weight = 1.0
+id = &"mind_nascent_soul_warden_core_1"
+kind = &"item"
+item_id = &"mind_nascent_soul_channel_elixir"
+table_id = &""
+weight = 1.
 chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
+guaranteed = true
+quantity = 6
+rarity_floor = &"common"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"mind_nascent_soul_warden_core_2"
+kind = &"item"
+item_id = &"mind_nascent_soul_warden_core"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"common"
 
 [sub_resource type="Resource" id="entry_3"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_3"
-kind = &"item"
-item_id = &"A9_immortal_autunite_refined"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_body_integration"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_body_integration"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -41,11 +53,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_4"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_4"
-kind = &"item"
-item_id = &"C18_mortal_scriptorium_quatrefoil"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_core_formation"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_core_formation"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -53,11 +65,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_5"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_5"
-kind = &"item"
-item_id = &"D5_divine_physique_bulk"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_dao_ancestor"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_dao_ancestor"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -65,11 +77,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_6"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_6"
-kind = &"item"
-item_id = &"F14_spirit_ebb_agility_aptitude_crit_damage_will"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_dao_fruit"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_dao_fruit"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -77,11 +89,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_7"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_7"
-kind = &"item"
-item_id = &"F3_mortal_cuprous_qi_absorption_spirit_attack_speed_will"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_golden_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_golden_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -89,11 +101,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_8"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_8"
-kind = &"item"
-item_id = &"G18_immortal_gomphus_aptitude_agility"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_great_ascension"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_great_ascension"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -101,11 +113,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_9"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_9"
-kind = &"item"
-item_id = &"I13_mortal_ecarte_perfected"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_immortal_sovereign"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_immortal_sovereign"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -113,11 +125,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_10"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_10"
-kind = &"item"
-item_id = &"I9_mortal_dudman_primed"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_mystic_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_mystic_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -125,11 +137,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_11"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_11"
-kind = &"item"
-item_id = &"N11_spirit_kelp_perfected"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_nascent_soul"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_nascent_soul"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -137,11 +149,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_12"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_12"
-kind = &"item"
-item_id = &"Q4_divine_cumin_ailette"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_primordial_origin"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_primordial_origin"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -149,11 +161,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_13"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_13"
-kind = &"item"
-item_id = &"S16_earth_wheelwright_refined"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_qi_refining"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_qi_refining"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -161,11 +173,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_14"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_14"
-kind = &"item"
-item_id = &"V10_mortal_aleph_credence"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_spirit_ascension"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_spirit_ascension"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -173,11 +185,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_15"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_15"
-kind = &"item"
-item_id = &"W7_earth_bedlam_halide"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_spirit_condensation"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_spirit_condensation"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -185,11 +197,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_16"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_16"
-kind = &"item"
-item_id = &"Y15_divine_conclave_cordlet"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_spirit_severing"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_spirit_severing"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -197,11 +209,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_17"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_17"
-kind = &"item"
-item_id = &"Z33_spirit_crotal_suede"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_spirit_sovereign"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_spirit_sovereign"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -209,75 +221,15 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_18"]
 script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_18"
-kind = &"item"
-item_id = &"bracer_leather"
-table_id = &""
-weight = 1.0
+id = &"mind_nascent_soul_warden_pool_void_refinement"
+kind = &"table"
+item_id = &""
+table_id = &"loot_mind_nascent_soul_warden_pool_void_refinement"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
 rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_19"]
-script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_19"
-kind = &"item"
-item_id = &"helm_iron_cap"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_20"]
-script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_20"
-kind = &"item"
-item_id = &"qi_dao_fruit_recovery_elixir"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_21"]
-script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_domain_21"
-kind = &"item"
-item_id = &"staff_celestial"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_22"]
-script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_core_1"
-kind = &"item"
-item_id = &"mind_nascent_soul_breakthrough_pill"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &"common"
-
-[sub_resource type="Resource" id="entry_23"]
-script = ExtResource("2_entry")
-id = &"mind_nascent_soul_warden_core_2"
-kind = &"item"
-item_id = &"mind_nascent_soul_channel_elixir"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &"common"
 
 [resource]
 script = ExtResource("1_table")
@@ -290,6 +242,7 @@ allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
+	SubResource("entry_2"),
 	SubResource("entry_3"),
 	SubResource("entry_4"),
 	SubResource("entry_5"),
@@ -305,10 +258,5 @@ entries = Array[LootEntry]([
 	SubResource("entry_15"),
 	SubResource("entry_16"),
 	SubResource("entry_17"),
-	SubResource("entry_18"),
-	SubResource("entry_19"),
-	SubResource("entry_20"),
-	SubResource("entry_21"),
-	SubResource("entry_22"),
-	SubResource("entry_23")
+	SubResource("entry_18")
 ])

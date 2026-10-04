@@ -256,7 +256,8 @@ def register(parent_parser) -> None:
         help="include only this asset type (repeat to include multiple types)",
     )
     actions.add_parser("audit", help="validate the map asset index")
-    actions.add_parser("preview", help="build a contact sheet of produced map assets")
+    preview = actions.add_parser("preview", help="build a contact sheet of produced map assets")
+    preview.add_argument("--asset-id", help="preview one generated asset and its tile repeat")
     actions.add_parser("migrate", help="add explicit alpha mode to older index entries")
     compose = actions.add_parser(
         "compose", help="compose terrain and sprites from pixel or matrix grid coordinates"
@@ -396,7 +397,7 @@ def run(args) -> int:
         _generate(records, args)
         return 0
     if action == "preview":
-        _preview(records)
+        _preview(records, args.asset_id)
         return 0
     if action == "compose":
         _compose(records, args)
@@ -870,7 +871,7 @@ def _report(records: list[dict], issues: list[str]) -> None:
             print(f"  ... {len(issues) - 30} more")
 
 
-def _preview(records: list[dict]) -> None:
+def _preview(records: list[dict], asset_id: str | None = None) -> None:
     issues = _validate(records)
     if issues:
         raise ToolError(f"cannot preview an invalid map index ({len(issues)} issue(s))")
@@ -878,6 +879,10 @@ def _preview(records: list[dict]) -> None:
         (record for record in records if record.get("status") in {"generated", "approved"}),
         key=lambda record: (record["environment"], record["category"], record["id"]),
     )
+    if asset_id is not None:
+        produced = [record for record in produced if record["id"] == asset_id]
+        if not produced:
+            raise ToolError(f"no generated map asset found for id '{asset_id}'")
     if not produced:
         raise ToolError("no generated map assets are available to preview")
 
@@ -935,11 +940,12 @@ def _preview(records: list[dict]) -> None:
             font=font,
         )
 
-    output_path = REPO_ROOT / "build" / "map-assets-preview.png"
+    output_name = "map-assets-preview-selected.png" if asset_id else "map-assets-preview.png"
+    output_path = REPO_ROOT / "build" / output_name
     output_path.parent.mkdir(parents=True, exist_ok=True)
     sheet.save(output_path, format="PNG", optimize=True)
     ok(f"wrote {output_path.relative_to(REPO_ROOT).as_posix()} ({len(produced)} assets)")
-    _preview_repeated_tiles(produced)
+    _preview_repeated_tiles(produced, selected=asset_id is not None)
 
 
 def _compose(records: list[dict], args) -> None:
@@ -1057,7 +1063,7 @@ def _compose(records: list[dict], args) -> None:
     ok(f"wrote {output_path.relative_to(REPO_ROOT).as_posix()} with {len(placements)} sprites")
 
 
-def _preview_repeated_tiles(produced: list[dict]) -> None:
+def _preview_repeated_tiles(produced: list[dict], selected: bool = False) -> None:
     tiles = [record for record in produced if record.get("type") == "tile"]
     if not tiles:
         return
@@ -1105,7 +1111,8 @@ def _preview_repeated_tiles(produced: list[dict]) -> None:
         )
         draw.text((column * cell_width + 16, label_y), label, fill="white", font=font)
 
-    output_path = REPO_ROOT / "build" / "map-tiles-repeat-preview.png"
+    output_name = "map-tiles-repeat-selected.png" if selected else "map-tiles-repeat-preview.png"
+    output_path = REPO_ROOT / "build" / output_name
     output_path.parent.mkdir(parents=True, exist_ok=True)
     sheet.save(output_path, format="PNG", optimize=True)
     ok(f"wrote {output_path.relative_to(REPO_ROOT).as_posix()} ({len(tiles)} repeated tiles)")

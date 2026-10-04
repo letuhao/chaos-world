@@ -400,15 +400,18 @@ static func declare_war(
 ##
 ## ## Exhaustion decides whether a side may KEEP FIGHTING, never who owns ground
 ##
-## A side ALREADY broken when a verdict arrives is refused it (`side_exhausted`)
-## while the war is still open, and a loser that breaks ON the verdict that meets
-## the quota is paid as a withdrawal: the surrender cost, and **no territory**.
+## A side ALREADY broken when a verdict arrives, and a war that has not yet reached
+## its quota, means that side **withdraws**: the standoff closes, the loser pays the
+## declared surrender cost, the winner takes the prize's declared standing for it,
+## and **no ground moves** (ADR 0085). A loser that breaks ON the verdict that meets
+## the quota still resolves, because that verdict IS the resolution.
 ##
-## The refusal was documented here for the whole life of the module and never
-## written: the break was read only at close, so a broken side was counted
-## against the quota anyway and a tribunal resolved in a single verdict declared it
-## the winner. The document and the code disagreed, which is how a caller reading
-## `side_exhausted` never found it.
+## It used to be refused here instead (`side_exhausted`), and that was the module
+## contradicting itself in two places at once: the refusal left the war OPEN forever,
+## while `NationState.forced_close` classified the identical state as
+## `OUTCOME_WITHDRAWAL` and `NationResolve.close` carried a whole withdrawal branch
+## nothing could reach. The documented rule and the reachable rule were different
+## rules, and the unreachable one was the ADR's.
 ##
 ## ## The break is read BEFORE the verdict, and that ordering is the whole rule
 ##
@@ -427,9 +430,11 @@ static func declare_war(
 ##
 ## ## The rules of a war that ends before its quota
 ##
-## The one unambiguous case is a LOSING side that is already broken: nobody won it,
-## so it withdraws, the declared standing moves as a withdrawal does, and no ground
-## moves (ADR 0085). Nothing else ends a war early — a declared winner is never
+## The one unambiguous case is a LOSING side that is already broken: it did not win
+## the war it was standing in and cannot be paid a victory it did not take, so it
+## withdraws. A withdrawal is still a CLOSED war with a winner — the side that did
+## not break — and the declared prize moves in both directions while **no ground
+## moves** (ADR 0085). Nothing else ends a war early — a declared winner is never
 ## refused for being the winner — so every other forced outcome lands as a
 ## `stalemate`: the prize unpaid, no ground moved, the standoff closed and left to
 ## be dealt with by a tribunal. Inventing a victory there is the one thing this
@@ -439,10 +444,10 @@ static func declare_war(
 ##
 ## `closed`, `outcome`, `standing_gained` and `territory_transferred` are present
 ## on an open standoff, on the verdict that closes it, on one arriving after it
-## closed, AND on a `side_exhausted` refusal. The last is the one that matters
-## most, because it is the answer a caller least expects to be a verdict at all:
-## `ok: false` is the refusal, and the keys beside it are how the caller finds out
-## what state the war was left in rather than writing `.get("outcome", "")` to
+## closed, AND on a refusal such as `unknown_winner`. The last is the one that
+## matters most, because it is the answer a caller least expects to be a verdict at
+## all: `ok: false` is the refusal, and the keys beside it are how the caller finds
+## out what state the war was left in rather than writing `.get("outcome", "")` to
 ## survive the branch.
 static func resolve_conflict(
 	actor: Actor, standoff_id: StringName, winner_id: StringName, close_outcome: String = ""
@@ -474,46 +479,16 @@ static func resolve_conflict(
 	# ## The break is read BEFORE this verdict is written into it
 	#
 	# The shipped tuning puts a `contest` quota of three losses exactly on the break
-	# (3 x 12 == 36), so a break judged AFTER the tally refuses the very verdict that
-	# satisfies the quota. That is the whole war decided by a counter: ADR 0085's
-	# table says a `contest` is "combat, three times", and that third verdict IS the
-	# resolution. So the question is never "how broken is the loser now" but "was it
-	# ALREADY broken when this verdict arrived" — the verdict that carries it over the
-	# line is the last one it fights, and that verdict is this one.
+	# (3 x 12 == 36), so a break judged AFTER the tally would end the war on the very
+	# verdict that satisfies the quota. That is the whole war decided by a counter:
+	# ADR 0085's table says a `contest` is "combat, three times", and that third
+	# verdict IS the resolution. So the question is never "how broken is the loser
+	# now" but "was it ALREADY broken when this verdict arrived" — the verdict that
+	# carries it over the line is the last one it fights, and that verdict is this
+	# one. `forced_close` below reads the pre-verdict exhaustion for exactly this
+	# reason: a side already at the break has nothing left to fight for, so this
+	# verdict closes its war rather than counting toward the quota.
 	var carried := int(loser_side.get("lost", 0)) + 1
-	if (
-		(loser == "" or float(loser_side.get("exhaustion", 0.0)) >= break_at)
-		and carried < int(standoff.get("quota", 1))
-	):
-		# A broken side may no longer fight, and this verdict is refused BEFORE any
-		# tally is written, so the refusal leaves the standoff exactly as the break
-		# found it — which is the whole point of reading the break first. The refusal
-		# names both sides, because "the war is over for somebody" is only legible if
-		# the caller is told who stopped fighting, and it publishes the SAME verdict
-		# keys as every other answer: a caller holding a refusal cannot tell an
-		# unrun branch from a missing one, so it must not have to.
-		return (
-			NationState
-			. refuse(
-				NationState.R_EXHAUSTED,
-				(
-					NationState
-					. verdict_view(
-						standoff,
-						false,
-						NationState.OUTCOME_OPEN,
-						{
-							"standoff_id": String(standoff_id),
-							"winner_id": winner,
-							"loser_id": loser,
-							"exhausted_id": loser if loser != "" else winner,
-							"war_break": break_at,
-							"exhaustion": float(loser_side.get("exhaustion", 0.0)),
-						}
-					)
-				)
-			)
-		)
 	winner_side["won"] = int(winner_side.get("won", 0)) + 1
 	loser_side["lost"] = carried
 	loser_side["exhaustion"] = maxf(
@@ -535,6 +510,16 @@ static func resolve_conflict(
 	# quota away — cannot turn that verdict into a surrender. An OPEN war only ever
 	# closes as a withdrawal or a stalemate, never as a resolution.
 	var forced := NationState.forced_close(standoff, loser, close_outcome, break_at, total >= quota)
+	if forced != "":
+		# `forced_close` classifies every early end — a broken loser WITHDRAWS, and
+		# anything else a caller named closes as a `stalemate` — and both are CLOSED
+		# wars that must settle through `close`, so the declared prize moves and the
+		# standoff stops being fought. It used to fall through to the unpaid path
+		# below, which returned an open war: the loser withdrew on paper and the
+		# standoff stayed open forever, waiting for verdicts nobody could give.
+		return NationResolve.close(
+			actor, ledger, standoff_id, standoff, winner, loser, forced, _regard
+		)
 	if total < quota:
 		(ledger["standoffs"] as Dictionary)[String(standoff_id)] = standoff
 		NationResolve._persist(actor, ledger)
@@ -817,6 +802,16 @@ static func _declare(
 	(ledger["standoffs"] as Dictionary)[id] = {
 		"standoff_id": id,
 		"other_id": side_b,
+		# The side that DECLARED this standoff, which `NationResolve._pay` reads to
+		# decide whose standing a settlement may move. `side_a` IS the declaring side:
+		# `declare_war` passes `String(actor.id)` as it, so this is by construction the
+		# side this actor was speaking for. It is written here rather than defaulted to
+		# `""` because the empty form means "the ledger's own `nation_id`", and those
+		# are not the same string — an actor found a nation under another name, which
+		# `test_resolution_pays_exactly_the_declared_standing_and_nothing_else` does.
+		# Absent, every settlement for such an actor paid nobody and read as a war
+		# that settled for no reason.
+		"home_id": side_a,
 		"territory_id": String(territory_id),
 		"mode": String(mode),
 		"quota": int(QUOTAS.get(mode, 3)),

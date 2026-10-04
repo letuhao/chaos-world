@@ -49,6 +49,28 @@ static func _write_def(dir_path: String, def_id: String) -> String:
 	return path
 
 
+## One fixture def per call, shaped like an authored world-location .tres
+## whose id field is `location_id`, not `id`. Returns the written path, or ""
+## when the write failed.
+static func _write_location_def(dir_path: String, location_id: String) -> String:
+	var path := dir_path.path_join(location_id + ".tres")
+	var text := (
+		'[gd_resource type="Resource" script_class="WorldLocationDef" load_steps=2 format=3]\n'
+		+ "\n"
+		+ '[ext_resource type="Script" path="res://src/modules/world/world_location_def.gd" id="1_loc"]\n'
+		+ "\n"
+		+ "[resource]\n"
+		+ 'script = ExtResource("1_loc")\n'
+		+ 'location_id = &"%s"\n' % location_id
+	)
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		return ""
+	file.store_string(text)
+	file.close()
+	return path
+
+
 static func _row(dir_path: String, owner: String, declared: Array = []) -> Dictionary:
 	return {"dir": dir_path, "owner": owner, "declared_overrides": declared}
 
@@ -284,3 +306,41 @@ func test_merge_is_deterministic() -> void:
 	var first := CatalogOverlay.merge(stack, SCRIPT_CLASS)
 	var second := CatalogOverlay.merge(stack, SCRIPT_CLASS)
 	assert_eq(first, second, "same stack, same merge")
+
+
+func test_a_def_with_a_non_id_id_field_merges_when_id_field_is_passed() -> void:
+	var base := _temp_root.path_join("base")
+	_ensure_dir(base)
+	_write_location_def(base, "forest")
+	_write_location_def(base, "river")
+	var result := CatalogOverlay.merge([_row(base, "base")], "WorldLocationDef", "location_id")
+	assert_eq(bool(result.get("ok", false)), true, "the merge succeeds")
+	assert_eq(_merged_ids(result), ["forest", "river"], "location_id values merge as ids")
+	assert_eq(String(result["owners"]["forest"]), "base", "the owner is recorded per id")
+	assert_eq(
+		String(result["paths"]["forest"]),
+		base.path_join("forest.tres"),
+		"and so is the winning path"
+	)
+
+
+func test_a_def_with_a_non_id_id_field_is_skipped_by_default() -> void:
+	var base := _temp_root.path_join("base")
+	_ensure_dir(base)
+	_write_location_def(base, "forest")
+	var result := CatalogOverlay.merge([_row(base, "base")], "WorldLocationDef")
+	assert_eq(bool(result.get("ok", false)), true, "the merge still succeeds")
+	assert_eq(
+		int(result["merged"].size()), 0, "a def whose id field is not 'id' contributes nothing"
+	)
+
+
+func test_a_row_may_declare_its_own_id_field() -> void:
+	var base := _temp_root.path_join("base")
+	_ensure_dir(base)
+	_write_location_def(base, "forest")
+	var row := _row(base, "base")
+	row["id_field"] = "location_id"
+	var result := CatalogOverlay.merge([row], "WorldLocationDef")
+	assert_eq(bool(result.get("ok", false)), true, "the merge succeeds")
+	assert_eq(_merged_ids(result), ["forest"], "the row's id_field wins over the default")

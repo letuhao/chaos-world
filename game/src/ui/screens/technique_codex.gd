@@ -12,6 +12,16 @@ extends UiScreen
 ## header says so — a codex that offered to equip would collapse the separation the
 ## module exists to keep.
 ##
+## ## It also does not teach (DEF-0244)
+##
+## Learning is the ITEM's verb (ADR 0053: "An `ItemDef` delivers a technique, is
+## consumed, and is gone"), so this screen offers no learn action and `on_stack_input`
+## still consumes nothing. What it DOES do is answer the two questions a hero asks
+## before committing a manual — *what does this cost*, and *can I pay it* — by
+## relaying what `TechniquesApi.inspect` publishes and owning none of the arithmetic.
+## Previewing is not a second door: it changes no state, and the only way to spend
+## the price is still to use the manual.
+##
 ## Contract: `summary()` is the testable surface, with each row's own summary
 ## nested under `entries`. `{}` with no actor.
 
@@ -139,9 +149,10 @@ func _new_row(index: int) -> TechniqueEntryRow:
 
 
 ## The facade snapshot, then one row per codex entry. Each entry is the codex row
-## `summary` already publishes, extended with the two fields only `inspect`
-## answers: the mastery ladder's reach and what the technique would cost to learn.
-## That is the whole codex page — one `inspect` per learned technique, never a
+## `summary` already publishes, extended with the fields only `inspect`
+## answers: the mastery ladder's reach, what the technique would cost to learn,
+## and anything `inspect` says about what stands between this actor and paying
+## it. That is the whole codex page — one `inspect` per learned technique, never a
 ## speculative one, because an unknown id would price something the hero may not
 ## be able to have yet.
 func _read_and_feed() -> void:
@@ -184,6 +195,15 @@ func _entry_view(entry: Dictionary) -> Dictionary:
 	view["learn_price"] = float(detail.get("learn_price", 0.0))
 	view["can_learn"] = (detail.get("learn_unmet", []) as Array).is_empty()
 	view["learn_unmet"] = _blockers(detail.get("learn_unmet", []))
+	# What the hero is short of, and whether they can pay at all. RELAYED, never
+	# derived: ADR 0160's payer rule — which pool a study charges, and that
+	# `shared` is not a pool — is the module's, and a screen that re-derived it
+	# would own a rule behind the facade. So both are copied through only when
+	# `inspect` published them, and their absence means the module has not been
+	# asked, which the row reports as `can_pay_known` false rather than guessing.
+	view["learn_short"] = _shortfall(detail.get("learn_short", []))
+	view["can_pay"] = bool(detail.get("can_pay", false))
+	view["can_pay_known"] = detail.has("can_pay") or detail.has("learn_short")
 	return view
 
 
@@ -197,6 +217,28 @@ func _blockers(unmet: Array) -> Array:
 		var label := String((problem as Dictionary).get("label", ""))
 		if not label.is_empty():
 			out.append(label)
+	return out
+
+
+## The module's shortfall list as primitives — which pool, what it owed, what it
+## held — so a `summary()` consumer never receives a module dictionary it would
+## have to reach back into the module to read.
+func _shortfall(short: Array) -> Array:
+	var out: Array = []
+	for pool in short:
+		if not pool is Dictionary:
+			continue
+		var entry: Dictionary = pool as Dictionary
+		(
+			out
+			. append(
+				{
+					"resource": String(entry.get("resource", "")),
+					"required": float(entry.get("required", 0.0)),
+					"current": float(entry.get("current", 0.0)),
+				}
+			)
+		)
 	return out
 
 

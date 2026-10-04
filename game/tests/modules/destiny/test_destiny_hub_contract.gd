@@ -449,6 +449,160 @@ func test_the_ledger_a_consumer_would_save_survives_the_hop_over_real_content() 
 	)
 
 
+# --- The lineage vocabulary, proved on the REAL tree ---------------------------
+
+
+## ## Every shipped tag is inside [constant FateDef.TAGS].
+##
+## This is the content half of ADR 0196, and it belongs HERE rather than in the
+## fixture suite for the reason this whole file exists: a fixture catalog is a
+## different universe from `res://data/destiny/`. Eleven `.tres` files carried
+## tokens before the change, and eight of them were engine-shaped words
+## (`aggressive`, `heavy`, `killcount`, `marked`, `fast_path`, `resilient`,
+## `defensive`, plus `first`/`solitary`) that no gate may read. A fixture suite
+## gates on `t_`-prefixed ids and would never see one.
+##
+## Fails by NAME per entry rather than as a count, so a retune that drops the
+## vocabulary check's coverage is a visible diff and a fourth bad tag is not a
+## silent growth.
+func test_every_shipped_fate_tag_is_inside_the_closed_vocabulary() -> void:
+	var catalog := FateCatalog.instance()
+	assert_ne(catalog, null, "the real catalog is reachable without a fixture")
+	var tagged: Array[String] = []
+	for fate_id in catalog.fate_ids():
+		var def := catalog.fate_definition(fate_id)
+		if def == null:
+			continue
+		for tag in def.tags:
+			tagged.append(String(tag))
+			assert_eq(
+				FateDef.TAGS.has(tag),
+				true,
+				(
+					(
+						"shipped fate '%s' declares tag '%s', which is not in FateDef.TAGS; a gate on it "
+						% [fate_id, tag]
+					)
+					+ "could never open, so it is a content bug (ADR 0196, fate tag vocabulary)"
+				)
+			)
+	# The premise: a walk that found no tags at all would pass the loop vacuously
+	# and this case would prove nothing about content.
+	assert_eq(
+		tagged.size() > 0,
+		true,
+		"the shipped fate tree declares tags at all, so this check is not vacuous"
+	)
+	# And every tag in the vocabulary is actually CARRIED by something, so a
+	# `{verb:"tagged", id:<tag>}` gate has a door to open on today's tree.
+	for tag in FateDef.TAGS:
+		var carriers: Array[String] = []
+		for fate_id in catalog.fate_ids():
+			var def := catalog.fate_definition(fate_id)
+			if def != null and def.tags.has(tag):
+				carriers.append(String(fate_id))
+		assert_eq(
+			carriers.is_empty(),
+			false,
+			(
+				"the '%s' lineage is carried by at least one shipped fate, so a gate on it can open"
+				% tag
+			)
+		)
+
+
+## ## A REAL shipped question resolves. The feature is not test-only.
+##
+## `oath_breaker` is authored `[oath]` — the exact case the design found, where a
+## shipped gate (`the_severed_calling`) names that one fate where the author
+## clearly wanted the KIND. So this earns the real fate and asks the real
+## question, with no fixture and no synthetic id anywhere: a `tagged` verb that
+## only worked against a fixture catalog would pass
+## `test_destiny_tag_gate.gd` and fail here.
+func test_a_real_shipped_tag_question_resolves_through_the_ledger() -> void:
+	var def := FateCatalog.instance().fate_definition(OATH_BREAKER)
+	assert_ne(def, null, "the shipped tree defines 'oath_breaker'")
+	if def == null:
+		return
+	assert_eq(
+		def.tags.has(&"oath"),
+		true,
+		(
+			"and it carries the 'oath' lineage — this is the gate the content author wanted when "
+			+ "they wrote `has_fate: oath_breaker`"
+		)
+	)
+	var question := {"verb": &"tagged", "id": "oath"}
+	var actor := _hero()
+	var closed := DestinyApi.gate(actor, question)
+	assert_eq(bool(closed["ok"]), false, "the real question is shut before the deed")
+	assert_eq(String(closed["reason"]), "unmet", "and it is an ordinary unmet, not a refusal")
+	var entry = _unmet_entry(closed, 0)
+	assert_eq(String(entry["kind"]), "tag", "the entry names the lineage kind")
+	assert_eq(String(entry["id"]), "oath", "and the tag the author wrote, not a fate id")
+	assert_eq(entry.keys().size(), 5, "with exactly the five keys a consumer renders")
+
+	DestinyApi.earn_fate(actor, OATH_BREAKER, "combat")
+	var open := DestinyApi.gate(actor, question)
+	assert_eq(
+		bool(open["ok"]),
+		true,
+		"earning the real fate opens the real lineage question, aliases and catalog aside"
+	)
+	assert_eq(open["unmet"] as Array, [], "and an open gate has nothing left to report")
+
+
+## ## A hidden fate's published tags are withheld until it is held.
+##
+## `the_third_man_spared` is `hidden` and carries `[mercy, duel]`. Once a
+## `tagged` gate exists, a codex row that published those tags unheld would let a
+## player read "a duel-marked fate exists, and here it is" for a fate the content
+## deliberately withholds — so `_fate_view` publishes `[]`. Asserted here on the
+## REAL hidden fate rather than on a fixture, because the spoiler exists only in
+## shipped content.
+func test_a_real_hidden_fate_publishes_its_tags_only_once_it_is_held() -> void:
+	var actor := _hero()
+	var view := _fate_view(DestinyApi.summary(actor)["fates"] as Dictionary, THIRD_MAN)
+	assert_eq(bool(view["held"]), false, "the premise: the hidden fate is not earned")
+	assert_eq(
+		String(view["display_name"]),
+		"",
+		"and it is unnamed, which is the promise this case extends to its tags"
+	)
+	var authored := FateCatalog.instance().fate_definition(THIRD_MAN)
+	assert_ne(authored, null, "the shipped tree still defines '%s'" % THIRD_MAN)
+	if authored == null:
+		return
+	assert_eq(
+		authored.tags.is_empty(),
+		false,
+		(
+			"the premise of the other half: the hidden fate really does carry tags, so publishing "
+			+ "'[]' is withholding something rather than reporting nothing"
+		)
+	)
+	assert_eq(
+		view["tags"],
+		[] as Array,
+		(
+			"so an unheld HIDDEN fate publishes no tags: a `tagged` gate names any of the seven "
+			+ "lineages, and a published list is a spoiler channel (ADR 0196, fate tag vocabulary)"
+		)
+	)
+
+	DestinyApi.earn_fate(actor, THIRD_MAN, "story")
+	var held_view := _fate_view(DestinyApi.summary(actor)["fates"] as Dictionary, THIRD_MAN)
+	assert_eq(bool(held_view["held"]), true, "earning it reveals it")
+	var expected: Array = []
+	for tag in authored.tags:
+		expected.append(String(tag))
+	assert_eq(
+		held_view["tags"],
+		expected,
+		"and its real tags are published once held, so the codex is not permanently blind to them"
+	)
+
+
 # --- A consumer that calls before it has an actor -----------------------------
 
 

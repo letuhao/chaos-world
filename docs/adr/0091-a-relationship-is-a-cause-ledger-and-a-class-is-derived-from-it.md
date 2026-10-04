@@ -47,3 +47,66 @@ The second problem is symmetry. If the player has a relationship system and npcs
 **The design question, stated so it can be answered rather than re-derived.** *What does a player DO that swearing brotherhood with a specific person requires, and what does refusing cost?* Concretely: is an oath offered at a stage threshold (`sworn_servant` and its `oaths_sworn` counter already imply one for Elder Wei), at an authored quest step, or through a dialogue act? Is refusal passive (nothing happens) or costly (standing, trust, an opportunity)? And is the promise **mutual** — ADR 0091 leaves the mirror to the caller's transaction, so a one-sided `apply_cause` makes the *player's* regard sworn while the elder's is untouched, which is a second question the answer has to settle.
 
 **What this costs while it is open.** Every `SocialApi.gate` authored `at_least: SWORN` is permanently unreachable from play, exactly as it is today. That is recorded here rather than discovered later: the field is correct, the engine path is correct and tested, and the missing piece is a player-facing act nobody has designed. Wiring a cause nothing produces, or removing `shared_brotherhood` and `promotes_to` to stop the dead rung from reading as a bug, would both be worse than saying so.
+
+### Correction (2026-10-05, npc/social ledger reconciliation) — appended, nothing above is edited
+
+**Line 43's "four production `apply_cause` callers" is still four. This section records what
+changed, because the same four sites are cited by BL-0745 and BL-0751 and both had drifted
+into wrong arithmetic on top of a correct site list.**
+
+The count and the sites re-measure clean: `modules/sect/api.gd:820`,
+`modules/nation/api.gd:664`, `modules/fertility/seduction.gd:137` and
+`app/auction_standing.gd:221` are the only production callers, all real code and none a
+comment. (Line 43 names `nation/api.gd` without a line; the call is at `:664`, not the `:563`
+BL-0715 cites.) What is false is what those sites produce, and it is the distinction BL-0751
+got wrong and this section's own "None applies a personal oath" is now ambiguous about:
+
+- Two sites write **institution** bonds: `sect` and `nation`.
+- `fertility/seduction.gd:137` applies `bound_in_intimacy` (**+6.0, personal**) — but it is
+  the **success branch of the very attempt `can_meet` gates**, so it is behind a closed door.
+- `app/auction_standing.gd:221` applies `won_auction` (+3.0), `outbid_in_auction` (−1.5) and
+  `defaulted_on_a_bid` (−6.0) — **personal** bonds between two actors, live in production.
+
+So "none applies a personal oath" is still true and remains the finding; what is wrong is any
+arithmetic built on "production applies only institution ids", which two ledger entries did.
+**The surviving gap is narrower than either stated:** the causes that clear
+`Seduction.REQUIRED_STANDING` (6.0) and are applied to a person have no production call site —
+`gifted_item`, `helped_in_combat`, `spared_in_combat`, `taught_technique`, `honoured_a_debt`,
+`protected_from_death`, `shared_brotherhood`. None of the seven is named by any authored file
+under `game/data`. Auction causes top a bond at an **acquaintance** regardless of total,
+because all three share `kind: market` and `SocialBondClass.FRIEND_DISTINCT_CAUSES = 2` counts
+distinct kinds.
+
+**BL-0745's `blocked` classification is CONFIRMED by this pass, on both halves.**
+`shared_brotherhood` still has no producer outside the catalog and the tests, and the design
+question in line 47 is still unanswered. Nothing in this correction changes it; it is recorded
+so the confirmation is on the ADR rather than only in a ledger row.
+
+### Resolution (2026-10-04) — BL-0745 closed by ADR 0198. Nothing above is edited.
+
+**The repo owner ruled: build it, mutual and consent-based, with a refusal that costs.
+ADR 0198 answers all four questions and `shared_brotherhood` now has a production verb.**
+
+- **The act** is `BrotherhoodOathApp.offer` — put the oath to a named person. A **friend may
+  be asked**; only a **confidant may swear it**, which makes the refusal the default outcome
+  for an early offer rather than a rare branch. The answer is read off the bond through
+  `SocialApi.gate`; no dialogue tree was invented (DEF-0014 stands).
+- **Mutual** is literal: the player's ledger takes `shared_brotherhood` and the npc's takes
+  `accepted_the_oath`, in the same call. Both sides are asserted to read `Sworn`. This is the
+  "the mirror is the caller's transaction" cost above, paid by `BrotherhoodOath`.
+- **Refusal costs** an authored `refused_the_oath` (-4.0 standing, -0.15 trust) on the
+  **player's** bond — two-thirds of `FRIEND_AT`, 30% of `CONFIDANT_TRUST`. `kind: oath`, so
+  refusal cannot be farmed up the ladder. The tests assert the axes actually moved, so
+  removing the charge is red while the return value still says `refused`.
+- **Eligibility** reuses `SocialGate` through the facade at two rungs and refuses with
+  `no_bond` / `not_friend` / `not_confidant` / `already_answered`. **No second gate system**
+  — the BL-0690 lesson about `"of"` vs `"requirements"` applies to every gate here.
+
+**A consent ledger** (`ConsentLedger`) rides the player's `module_data`, recording that an
+offer happened and the cause id charged — **never a standing value**. The bond remains the
+only copy of every number (ADR 0066). **Neither facade grew**: `NpcApi` is at 12/12 and
+`SocialApi` at its cap, so the exchange is a `social/` collaborator reached from an `app/`
+verb, which is where ADR 0091's "the mirror is the caller's transaction" said it had to go.
+
+**The distinct-KIND rule was not weakened to make this work.** `test_a_history_of_nothing_but_oaths_never_reaches_sworn`
+applies six oath causes — all `promotes_to: SWORN` — and the pair still reads `acquaintance`.

@@ -198,7 +198,6 @@ func _body_hit(realm_id: StringName) -> Dictionary:
 		technique,
 		BodyLocation.MODE_NAMED,
 		null,
-		null,
 		CombatSpine.base_damage(attacker, technique)
 	)
 	var mechanism := BodyDamage.new()

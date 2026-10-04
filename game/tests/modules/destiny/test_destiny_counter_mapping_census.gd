@@ -210,16 +210,34 @@ func test_every_wired_counter_is_declared_by_a_shipped_fate() -> void:
 			)
 		)
 		return
+	# Now that content gates on `counter`, the census has teeth: an id that nothing
+	# produces must NOT be one a shipped gate names, or that gate reads 0 forever.
+	# The list is asserted, not assumed empty — `breakthroughs` is declared by two
+	# fates and deliberately unwired (no breakthrough fact exists yet), and that is
+	# only correct while no gate names it. A gate that does name it goes red here.
 	var ungated: Array[String] = []
 	for counter_id in unwired:
 		if not gates.has(counter_id):
 			ungated.append(counter_id)
+	var gated_but_unwired: Array[String] = []
+	for gate_id in gates:
+		if not wired.has(String(gate_id)):
+			gated_but_unwired.append(String(gate_id))
 	assert_eq(
-		ungated,
+		gated_but_unwired,
 		[],
 		(
-			"a shipped .tres gates on `counter`, so every FateDef.counters id it could "
-			+ "gate on needs a fact that moves it"
+			"a shipped .tres gates on a counter no COUNTER_FACTS row moves, so that gate "
+			+ "can never open: %s" % str(gated_but_unwired)
+		)
+	)
+	assert_eq(
+		unwired,
+		["breakthroughs"],
+		(
+			"the unwired ids are exactly the named gap: no breakthrough fact exists yet "
+			+ "(DEF-0106), and no shipped gate may name one. If a producer ships, this "
+			+ "list must shrink; if a gate starts naming one, the assertion above goes red."
 		)
 	)
 

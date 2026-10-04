@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"H15_mortal_impala_evasion_fortune_insight_gain_penetration_physique"
 display_name = "Mortal Impala Evasion Fortune Insight gain Penetration Physique"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"
 fixed_modifiers = Array[Dictionary]([

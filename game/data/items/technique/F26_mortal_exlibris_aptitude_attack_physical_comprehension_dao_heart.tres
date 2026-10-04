@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F26_mortal_exlibris_aptitude_attack_physical_comprehension_dao_heart"
 display_name = "Mortal Exlibris Aptitude Attack physical Comprehension Dao heart"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"
 fixed_modifiers = Array[Dictionary]([

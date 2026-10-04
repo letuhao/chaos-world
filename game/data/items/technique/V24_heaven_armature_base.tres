@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"V24_heaven_armature_base"
 display_name = "Heaven Armature Base"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"primordial_immortal"
 fixed_modifiers = Array[Dictionary]([

@@ -310,9 +310,7 @@ func _entered_r19() -> Actor:
 	var chance := float(MindAdvancement.preview(actor).get("chance", -1.0))
 	var rng := _winning(chance)
 	assert_ne(MindAdvancement.start(actor, rng), null, "the R19 attempt starts")
-	assert_eq(
-		MindAdvancement.resolve_attempt(actor, rng), true, "and the R19 breakthrough resolves"
-	)
+	assert_eq(MindAdvancement.resolve_attempt(actor), true, "and the R19 breakthrough resolves")
 	assert_eq(actor.path(MindPath.PATH_ID).rank_id, _realm_at(r19).id, "so the actor stands in R19")
 	assert_eq(
 		actor.inside_world.tier,
@@ -324,14 +322,15 @@ func _entered_r19() -> Actor:
 
 
 ## The first roll of an rng seeded `candidate` that beats `chance`, searched rather
-## than hoped for. `resolve_attempt` draws once from the generator it is handed, so
-## the seed that wins follows from the chance the module published rather than from
-## a number copied out of a previous run.
+## than hoped for. `resolve_attempt` draws once off a generator rebuilt from the
+## seed the COMMIT stored, so this asks exactly the module's own question: the seed
+## that wins follows from the chance the module published rather than from a number
+## copied out of a previous run. Bounded and RETURNING.
 func _winning(chance: float) -> RandomNumberGenerator:
-	for candidate in range(1, 64):
-		var rng := RandomNumberGenerator.new()
-		rng.seed = candidate
-		if rng.randf() < chance:
+	for candidate in range(MindAttemptRoll.MIN_SEED, 256):
+		if MindAttemptRoll.replay(candidate).randf() < chance:
+			var rng := RandomNumberGenerator.new()
+			rng.seed = candidate
 			return rng
 	return RandomNumberGenerator.new()
 

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F18_divine_enkindle_agility_aptitude_loot_bonus_move_speed"
 display_name = "Divine Enkindle Agility Aptitude Loot bonus Move speed"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([

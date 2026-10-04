@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F52_earth_hauberk_cultivation_rate_penetration_physique"
 display_name = "Earth Hauberk Cultivation rate Penetration Physique"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_unity"
 fixed_modifiers = Array[Dictionary]([

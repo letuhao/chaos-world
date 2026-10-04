@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"body_integration"
 rarity = &"common"
-vitality = 88.0
+vitality = 3693.8
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_body_integration_warden", "table_id": &"loot_mind_body_integration_warden"},
 	{"boss_id": &"F1_integration_warden", "table_id": &"loot_F1_integration_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"body_integration"
 rarity = &"rare"
-vitality = 140.8
+vitality = 5910.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_body_integration_warden", "table_id": &"loot_mind_body_integration_warden"},
 	{"boss_id": &"F1_integration_warden", "table_id": &"loot_F1_integration_warden"},

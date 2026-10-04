@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"L1_iron_sage_breath_rite"
 display_name = "Iron Sage Breath Rite"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"
 fixed_modifiers = Array[Dictionary]([

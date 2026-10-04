@@ -34,3 +34,19 @@ With a baseline of `0.0`, a PERCENT modifier evaluates to `(0.0 + 0.0) * (1 + p)
   - `damage_reduction` (`0.0`) has neither. That is the whole bug.
 - A FLAT `damage_reduction` above 1.0 means more than 100% mitigation. `actor_stats.gd` floors derived stats at 0 but sets no ceiling, so an over-large value is clamped by nothing. The distribution audit's power-curve check is the guard against this, not the schema.
 - `tools data audit` cannot catch this class of bug on its own: it validates the flag against the contract, and the contract was what was wrong. A future stat added to `RATE_STATS` with an identically-zero baseline reintroduces the same silent failure. The cheap guard is to derive `RATE_STATS` membership from the baselines in `actor_stats.gd` rather than restating it by hand.
+
+## Amendment 2026-10-04 (DEF-0262): the attribute-gated four are NOT this defect
+
+This ADR's bullet above says the attribute-gated four "degrade to a no-op for an actor
+whose attribute is 0". That is true, and it was read as a stronger claim than it is: that
+those four read `0.0` for every actor this game builds, so a PERCENT on them is ADR
+0022's bug under four other ids. **Measured, that stronger claim is false.** A shipped
+race's own `will` of `2.0` gives `status_resistance` a baseline of `0.006`, not `0.0`, and
+a PERCENT multiplies that rather than annihilating it.
+
+So the ADR's rule is unchanged and its `damage_reduction` removal stands — that baseline
+really is the constant `0.0`, and 44 items really did grant nothing. What is retracted is
+the reading that carried the same verdict to the four `minf(cap, attribute * k)` ids.
+They stay in `RATE_STATS` on the cap-term argument this ADR already gives, and
+`StatusDef.ZERO_BASELINE_STATS` refuses PERCENT on them as an AUTHORING CONVENTION — one
+rule covering five ids — rather than because the arithmetic makes it inert.

@@ -174,15 +174,10 @@ func _prepared_actor(rank_id: StringName) -> Actor:
 ## began, some seed must produce a deviation — searched deterministically, never
 ## hoped for, exactly as the other attempt tests do.
 func _losing_seed_at(source: StringName) -> int:
-	for candidate in range(1, 64):
-		var probe := _prepared_actor(source)
-		var target_seed := MindRealmSeed.for_realm(RealmDefaults.ladder().next(source).id)
-		_stock(probe, target_seed.breakthrough_item)
-		var rng := RandomNumberGenerator.new()
-		rng.seed = candidate
-		if MindAdvancement.start(probe, rng) == null:
-			continue
-		if not MindAdvancement.resolve_attempt(probe, rng):
+	var probe := _prepared_actor(source)
+	var chance := float(MindAdvancement.preview(probe).get("chance", -1.0))
+	for candidate in range(MindAttemptRoll.MIN_SEED, 256):
+		if MindAttemptRoll.replay(candidate).randf() >= chance:
 			return candidate
 	return 0
 
@@ -206,7 +201,7 @@ func test_a_deviation_is_rollable_where_the_defect_began() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = losing_seed
 	assert_ne(MindAdvancement.start(actor, rng), null, "attempt started")
-	assert_eq(MindAdvancement.resolve_attempt(actor, rng), false, "the trial deviated")
+	assert_eq(MindAdvancement.resolve_attempt(actor), false, "the trial deviated")
 	assert_eq(actor.path(MindPath.PATH_ID).rank_id, source, "the deviation kept the realm")
 	assert_eq(MindCultivationApi.sea(actor).turbulence > 0.0, true, "the deviation clouded the sea")
 	# And the deviation is recoverable here, so the loop closes at this depth.

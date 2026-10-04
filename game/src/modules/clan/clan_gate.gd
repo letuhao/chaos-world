@@ -13,12 +13,16 @@ extends RefCounted
 ##   `{verb: &"is_clan",           id: &"ironpact"}`
 ##   `{verb: &"has_rank",          id: &"core"}`
 ##   `{verb: &"standing_at_least", at: 40}`
+##   `{verb: &"recognised_at_least", at: 30}`
 ##   `{verb: &"has_trait",         id: &"clan:ironpact"}`
 ##   `{verb: &"all_of",            of: [ ...requirements ]}`
 ##   `{verb: &"any_of",            of: [ ...requirements ]}`
 ##   `{verb: &"none_of",           of: [ ...requirements ]}`
 ##
-## A requirement with no verb, or a verb that is not one of the seven, refuses closed
+## `recognised_at_least` is the eighth and is the only one that reads the hinge rather
+## than the ledger's raw numbers — see `recognised_of`.
+##
+## A requirement with no verb, or a verb that is not one of the eight, refuses closed
 ## and names itself. Refuse-with-cause is the house rule: content that is malformed must
 ## fail loudly and locally, never open a door it cannot read.
 
@@ -30,7 +34,40 @@ const KIND_PURITY := &"purity"
 const KIND_REALM := &"realm"
 const KIND_BODY := &"body"
 const KIND_TRAIT := &"trait"
+const KIND_RECOGNITION := &"recognition"
 const KIND_GATE := &"gate"
+
+## ## The hinge: recognition scales with what a member actually IS (ADR 0064)
+##
+## A house's standing multiplier reads the member's purity in the house's founding
+## bloodline, so the recognition a carrier carries is worth more than the recognition
+## an admitted diluted member carries — the clan recognises them both, and the LINEAGE
+## decides how much the recognition is worth. That gap is ADR 0064's whole point:
+## "the clan recognises them, the lineage does not empower them."
+##
+## ## It is a READ MODEL over the ledger, never a stored number and never a stat
+##
+## `recognised_of` is computed from `standing` and the actor's bloodline every time it
+## is asked. Nothing persists it, so a save cannot hold a recognition that disagrees
+## with the lineage the actor currently carries, and a purity change re-scales it on
+## the next read with no migration. It is also NOT a `StatModifier` and NOT published
+## through `ClanProvider`: ADR 0064 says a clan grants recognition and never power, and
+## a stat is exactly the buyable thing that rule forbids. `test_clan_grants_no_power.gd`
+## reads the derived combat stats across a join, and a riser in standing, to hold it.
+##
+## ## The range is `[UNSCALED, 1.0]` and both ends are deliberate
+##
+## 1.0 is a pure carrier. `UNSCALED` is the floor, not zero: a member who carries none
+## of the founder's line has still been admitted and the act still happened, so their
+## recognition is recorded rather than erased — and a gate at `at: 0` is satisfiable by
+## any member, which is what makes `at: 0` mean "is a member" without saying so.
+## Nothing here can exceed 1.0, so the ledger's own `standing` remains the ceiling and
+## a house cannot multiply its way past the number the clan published.
+##
+## A member of a house that claims no founding line reads at `UNSCALED`: with no line
+## to be pure in there is nothing to scale by, and silently reading 1.0 would hand every
+## line-less house the carrier's recognition for free.
+const UNSCALED := 0.25
 
 
 ## The full verdict, always this shape:
@@ -50,6 +87,8 @@ static func evaluate(actor: Actor, requirement: Dictionary) -> Dictionary:
 			return _has_rank(actor, requirement)
 		&"standing_at_least":
 			return _standing_at_least(actor, requirement)
+		&"recognised_at_least":
+			return _recognised_at_least(actor, requirement)
 		&"has_trait":
 			return _has_trait(actor, requirement)
 		&"all_of":
@@ -157,6 +196,70 @@ static func standing_of(actor: Actor) -> int:
 	return ClanState.standing(_ledger(actor))
 
 
+## What the actor's house actually recognises them for: their earned standing as
+## ADR 0064's hinge re-reads it, scaled by the member's purity in the house's founding
+## bloodline.
+##
+## **This is the read `ClanStats.STANDING` never had.** The stat published the raw
+## integer and nothing in the codebase read it, so a clan conferred no advantage a
+## reputation system could compose against. This is the answer a consumer asks instead,
+## and it is COMPUTED rather than stored — see the note on the hinge above.
+##
+## 0 for a non-member, for the same reason `standing_of` is 0: absence is zero
+## recognition, not a missing key. So a gate at `at: 0` is satisfiable by any member —
+## which is what `recognised_at_least` reads, and why it takes the membership arm
+## `standing_at_least` does not. See `_recognised_at_least`.
+static func recognised_of(actor: Actor) -> float:
+	var standing := standing_of(actor)
+	if standing <= 0:
+		return 0.0
+	return float(standing) * recognition_scale(actor)
+
+
+## The factor the hinge scales by: `[UNSCALED, 1.0]`, read from the member's purity in
+## their own house's founding bloodline.
+##
+## Published as its own verb because it is the number `ClanApi._regard` hands
+## `SocialApi.apply_cause` as `scale`, so the standing multiplier is observable from
+## both ends — in the regard `social` projects, and here.
+##
+## **No house** — an actor who belongs to none, or to a house this build no longer ships —
+## reads 1.0 rather than crashing, because there is no house whose opinion is being
+## weighted and no line that could be carried. `ClanApi` only ever asks past its own
+## refusals, so that reading is unreachable on the production path — and it is the safe
+## direction anyway, since the only thing a larger factor ever multiplies is a
+## recognition.
+##
+## **A house that CLAIMS no founding line is a different question** and reads
+## `UNSCALED`, not 1.0. There is nothing to be pure in, so there is nothing to scale by,
+## and reading 1.0 would hand every line-less house the carrier's recognition for free —
+## the one branch where "no opinion" and "perfect opinion" are the same number. The
+## member is still recognised: the act happened, and the floor records it.
+static func recognition_scale(actor: Actor) -> float:
+	if actor == null:
+		return 1.0
+	# ## Two different questions, and they do NOT share a branch
+	#
+	# **No house at all** reads 1.0: there is no house whose opinion is being weighted
+	# and no line that could be carried, so there is nothing to scale and nothing to
+	# scale BY. `ClanApi` only ever asks past its own refusals, so that reading is
+	# unreachable on the production path — and it is the safe direction anyway, since
+	# the only thing a larger factor ever multiplies is a recognition.
+	#
+	# **A house that CLAIMS no founding line** reads `UNSCALED`, not 1.0. There IS a
+	# house, and it has an opinion; there is simply nothing to be pure in, so reading
+	# 1.0 would hand every line-less house the carrier's recognition for free. The
+	# member is still recognised — the act happened, and the floor records it.
+	var clan_id := clan_of(actor)
+	if clan_id == &"":
+		return 1.0
+	var def := ClanCatalog.instance().clan_definition(clan_id)
+	if def == null or def.founding_bloodline == &"":
+		return UNSCALED
+	var purity := BloodlineApi.purity_of(actor, def.founding_bloodline)
+	return UNSCALED + (1.0 - UNSCALED) * clampf(purity, 0.0, 1.0)
+
+
 ## Whether the actor belongs to `clan_id`. False for the empty id, so `is_clan: ""` can
 ## never be satisfied by an actor who is a member of something.
 static func is_member_of(actor: Actor, clan_id: StringName) -> bool:
@@ -200,6 +303,82 @@ static func _standing_at_least(actor: Actor, requirement: Dictionary) -> Diction
 		required,
 		standing,
 		"Requires standing of %d (you hold %d)" % [required, standing]
+	)
+
+
+## ## `recognised_at_least` reads the LEDGER, never a stat — and it is the whole point
+##
+## `standing_at_least` above gates on the raw integer, which is right for the house's
+## own internal ladder. This verb gates on the number ADR 0064 calls the hinge: earned
+## standing re-read through the member's founding-bloodline purity. So content can say
+## "this room is for the people the house actually recognises" and be *right* about a
+## diluted member who has earned a great deal — which is the character ADR 0064 exists
+## to make representable.
+##
+## ## The bar is a FLOAT, unlike `standing_at_least`'s integer
+##
+## Recognition is a scaled figure, so truncating the bar to an int would either round a
+## gate up into a door it should stay shut behind, or hide the multiplier that made the
+## difference. A negative `at` is clamped to zero, which is the same reading
+## `standing_at_least` gives it: a bar below zero is zero, which is satisfiable, and not
+## a content bug.
+##
+## ## It DOES check membership, and only `standing_at_least` does not
+##
+## `recognised_of` answers 0 for a non-member exactly as `standing_of` does — absence is
+## zero, not a missing key — so a bare comparison could not tell a member nobody respects
+## from nobody at all at a bar of zero. This verb therefore takes the membership arm its
+## sibling does not, and that is what makes **`at: 0` mean "belongs to a house"** without
+## content having to say so in two verbs. The docstrings above claim exactly that, and
+## `test_a_zero_bar_means_belongs_to_a_house_and_nothing_further` is what holds them to it.
+##
+## The change is confined to this verb. `standing_at_least` already answered `true` at
+## zero for an actor belonging to no clan, and it stays that way: it gates the house's own
+## internal ladder and has no business testing membership, so widening the oldest verb to
+## fix a new one would be the larger behaviour change for no expressive gain —
+## `all_of {is_clan, standing_at_least 0}` reads as one gate either way, and `is_clan`
+## remains the verb that answers "do they belong".
+##
+## **A stat is buyable, a ledger is not** (ADR 0076, ADR 0062). Nothing in this module
+## publishes recognition as a derived stat, so there is no `ClanStats` id this gate
+## could be reading even if it wanted to: the only inputs are `ClanState.standing` and
+## `BloodlineApi.purity_of`, both of which are ledgers rather than modifier stacks.
+static func _recognised_at_least(actor: Actor, requirement: Dictionary) -> Dictionary:
+	var at = requirement.get("at", null)
+	if not (at is float or at is int):
+		return _refuse("malformed", "A recognised_at_least gate needs a numeric `at`.")
+	var required := maxf(0.0, float(at))
+	var recognised := recognised_of(actor)
+	# ## The membership arm, and what it deliberately does not buy
+	#
+	# `is_clan &""` is false for every actor by construction — `ClanGate.is_member_of`
+	# refuses the empty id on purpose — so a member never fails this and a non-member
+	# never passes it, whatever the bar.
+	#
+	# It buys EXACTLY one thing: that `at: 0` means "belongs to a house". It cannot give
+	# a non-member a recognition, because `recognised_of` still answers 0 for one, so
+	# every bar above zero was already refusing them. And it does not put `is_clan` into
+	# `standing_at_least` — that verb already answers `true` at zero for an actor
+	# belonging to no clan, and that has always been true of it; widening the OLDEST
+	# verb to fix a NEW one would be the larger behaviour change, and it would leave
+	# `all_of {is_clan, standing_at_least 0}` no more expressive than `is_clan` alone.
+	# `is_clan` stays the membership verb and the two compose.
+	if not is_member_of(actor, clan_of(actor)):
+		return _fail(
+			KIND_RECOGNITION,
+			clan_of(actor),
+			required,
+			recognised,
+			"Requires membership of a house, recognised at %.2f (you belong to none)" % required
+		)
+	if recognised >= required:
+		return _pass()
+	return _fail(
+		KIND_RECOGNITION,
+		clan_of(actor),
+		required,
+		recognised,
+		"Requires recognition of %.2f (you hold %.2f)" % [required, recognised]
 	)
 
 

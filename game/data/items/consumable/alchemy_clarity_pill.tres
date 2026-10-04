@@ -14,5 +14,12 @@ fixed_modifiers = Array[Dictionary]([
 ])
 roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
 subcategory = &"pill"
+## The lever this pill answers. Fourteen authored statuses publish `pill` in their
+## `mitigation_tags` (fire_immolation, metal_sever, water_chill, earth_quake, ice_rime,
+## wind_gust, wood_parasite, light_brand, light_halo, wood_bloom, lightning_arc,
+## dark_corrosion and others), and before this field existed nothing in the corpus could
+## name a lever, so `StatusApi.cleanse` had no caller and a player had no answer to a
+## debuff. This is the ADR 0107 trigger firing on real content.
+cleanse_lever = &"pill"
 grade = &"mortal"
 sources = Array[StringName]([&"craft:alchemy_clarity_pill_recipe", &"boss:F2_ascension_warden"])

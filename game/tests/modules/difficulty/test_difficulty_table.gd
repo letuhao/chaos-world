@@ -91,18 +91,46 @@ func test_an_unknown_id_reads_neutral_rather_than_a_zero() -> void:
 	assert_eq(float(row["soul_damage_share"]), 1.0, "an unknown preset is inert, not zero")
 
 
-func test_the_scalar_set_is_closed_so_a_sixth_column_cannot_appear_silently() -> void:
-	# A sixth scalar would be a fourth power curve wearing a difficulty label (ADR 0050).
+func test_the_scalar_set_is_closed_so_a_fifth_column_cannot_appear_silently() -> void:
+	# A fifth scalar would be a fourth power curve wearing a difficulty label (ADR 0050). The
+	# set shrank from five to four (BL-0779): `loot_ceiling` was cut because a `LootTier` is
+	# ORDINAL, and the fourth that remains is wired to `Tribulation` through an injected
+	# Callable so `core` need not name `difficulty`.
 	var expected := [
 		"soul_damage_share",
 		"death_loss_cap",
 		"guardian_effectiveness",
-		"loot_ceiling",
 		"tribulation_preparation_credit",
 	]
-	assert_eq(DifficultyTable.SCALARS.size(), expected.size(), "exactly five scalars")
+	assert_eq(DifficultyTable.SCALARS.size(), expected.size(), "exactly four scalars")
 	for scalar in expected:
 		assert_eq(DifficultyTable.SCALARS.has(scalar), true, "%s is in the set" % scalar)
+	assert_eq(
+		DifficultyTable.SCALARS.has("loot_ceiling"),
+		false,
+		"a cut scalar cannot reappear in the vocabulary"
+	)
+
+
+func test_no_scalar_is_left_authored_with_nothing_reading_it() -> void:
+	# ADR 0129's rule that a scalar with no consumer is REMOVED, not left authored: a column
+	# nobody reads is a preset that changes nothing a player can observe (BL-0779). This reads
+	# the shipped module sources and fails if any scalar in the closed set is named nowhere but
+	# in `difficulty`'s own table — the measurement that classified BL-0779 vacuous.
+	var sources := {
+		"soul_damage_share": "res://src/app/soul_death.gd",
+		"death_loss_cap": "res://src/app/soul_death.gd",
+		"guardian_effectiveness": "res://src/app/soul_death.gd",
+		"tribulation_preparation_credit": "res://src/modules/difficulty/api.gd",
+	}
+	for scalar in DifficultyTable.SCALARS:
+		assert_eq(sources.has(scalar), true, "%s names the file that consumes it" % scalar)
+		var consumer := String(sources[scalar])
+		assert_eq(
+			_code_only(FileAccess.get_file_as_string(consumer)).contains(scalar),
+			true,
+			"%s is read by %s" % [scalar, consumer]
+		)
 
 
 func test_scalars_is_empty_without_an_actor_rather_than_defaulting() -> void:

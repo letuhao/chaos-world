@@ -3,6 +3,31 @@ extends RefCounted
 
 ## S12: status application on a CLEAN landed hit, from a seeded substream (ADR 0087).
 ##
+## ## Called by the spine: ADR 0105 amended 2026-10-04 (DEF-0145 closed)
+##
+## ADR 0087 made this the spine's twelfth stage. ADR 0105 first decided "S12 is
+## retired as the application site, not re-routed; the spine is not built to reach it",
+## and the spine's call was REMOVED — a measured call: no shipped `ctx_builder` wrote
+## [constant REQUEST_KEY], so every landed blow through the stage returned
+## `REFUSE_NO_REQUEST`.
+##
+## **That is no longer true, and this block was the last place still saying it was.**
+## The spine now ships and is reachable from a player's blow
+## (`app/combat_boot.gd:881,947` wraps the shipped `ctx_builder` with a
+## `status_request`), and `CombatSpine.resolve_hit` calls this stage again
+## (`spine.gd:198-200`). The stage is live on BOTH paths: the spine for a blow
+## resolved through it, and `CombatExchange._status_on_landing` /
+## `_boss_affliction_numbers` for the encounter, which keeps its own call.
+##
+## What SURVIVES either way, and is what every production path reads: the arithmetic
+## below. `elemental_resist`, `apply_chance`, `potency_of` and `status_seed` are called
+## in place by `modules/combat/exchange.gd` (`_status_on_landing` for the player's own
+## landed blow, `_boss_affliction_numbers` for the boss's authored affliction) and
+## `modules/loot/loot_affliction.gd`. ADR 0105's own words survive the amendment:
+## "ADR 0087's placement is superseded, not its arithmetic" — the arithmetic was never
+## in question. `modules/status/api.gd`'s `apply`/`clear_combat_scope` are the verbs
+## that write to an actor; [method apply] is the arithmetic-only reader.
+##
 ## ## The formula, verbatim
 ##
 ## ```
@@ -103,6 +128,18 @@ extends RefCounted
 ## `{id, chance, element, scope, duration, potency}`. A STRING dict so this file reads
 ## a content shape it does not own without naming a type another agent is mid-write on
 ## — the same `Variant` discipline `QiDamage` uses for its injected rules.
+##
+## ## Nothing in `game/src` writes this key, and that is measured rather than assumed
+##
+## `app/combat_boot.gd`'s `ctx_builder_for` — the only shipped `ctx_builder` — routes to
+## `QiDamage.builder`, `BodyDamage.builder` or `MindDamage.builder`, and all three set only
+## their own mechanism inputs (`element_share`, `aim_meridian`, `mind_kind` / the sea).
+## `TechniqueDef` authors no status field, and ADR 0105 explicitly declined to add one
+## ("`TechniqueDef` gains NO status field … The element is already the authored carrier").
+## Every `set_data(REQUEST_KEY, …)` in the tree is under `game/tests/` (three sites), so
+## the spine's S12 was UNWIRED rather than rarely-taken: every landed blow through it
+## returned `REFUSE_NO_REQUEST`. That measurement is why the spine's call was deleted
+## (ADR 0105, DEF-0145) instead of being given a second producer.
 const REQUEST_KEY := &"status_request"
 
 ## The result keys of [method apply]. Every value is a primitive, so a readout can
@@ -313,9 +350,18 @@ static func elemental_resist(
 ## naming an element is still answered by that element's resistance. Gating both would
 ## make `STATUS_RESISTANCE` a status-tax instead of a piece of combat vocabulary.
 ##
-## `STATUS_RESISTANCE` is a RATE with a `0.0` baseline and a `0.8` cap
+## `STATUS_RESISTANCE` is a RATE gated on `will` and capped at `0.8`
 ## (`core/actor_stats.gd:162`), so a FLAT modifier is the only form that can move it —
 ## `CombatStats.rate_modifier` builds exactly that shape, and the suite uses it.
+##
+## ## The cap is reachable as a NUMBER, and not reachable as a `will` (DEF-0262)
+##
+## `minf(0.8, will * 0.003)` needs `will >= 250`, and authored `base_will` tops out at
+## `52.9`, so no shipped build arrives there through the attribute. That is the stat's
+## shape and not a defect — `StatusDef.ZERO_BASELINE_STATS` and
+## `tests/modules/status/test_status_refusals.gd` both rest on it — but it does mean the
+## `0.2` floor this formula bottoms out at is reached through a FLAT, not through a
+## build. `tests/modules/combat_engine/test_status_application.gd` drives exactly that.
 static func apply_chance(
 	gate: float,
 	target: Actor,

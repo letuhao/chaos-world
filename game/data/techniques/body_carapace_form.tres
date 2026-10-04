@@ -20,5 +20,5 @@ stamina_cost = 52.0
 cooldown = 18.0
 mastery_rungs = 5
 magnitude = 2.5
-element_share = 0.45
+aim_meridian = &"dai_mai"
 

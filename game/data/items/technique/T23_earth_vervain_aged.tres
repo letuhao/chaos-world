@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"T23_earth_vervain_aged"
 display_name = "Earth Vervain Aged"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_sea"
 fixed_modifiers = Array[Dictionary]([

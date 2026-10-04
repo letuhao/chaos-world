@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G26_immortal_igloo_cooldown_reduction_insight_gain"
 display_name = "Immortal Igloo Cooldown reduction Insight gain"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_immortal"
 fixed_modifiers = Array[Dictionary]([

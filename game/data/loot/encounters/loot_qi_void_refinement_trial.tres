@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"void_refinement"
 rarity = &"common"
-vitality = 80.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_void_refinement_warden", "table_id": &"loot_qi_void_refinement_warden"},
 	{"boss_id": &"F6_void_refinement_warden", "table_id": &"loot_F6_void_refinement_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"void_refinement"
 rarity = &"rare"
-vitality = 128.0
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_void_refinement_warden", "table_id": &"loot_qi_void_refinement_warden"},
 	{"boss_id": &"F6_void_refinement_warden", "table_id": &"loot_F6_void_refinement_warden"},

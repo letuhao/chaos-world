@@ -26,8 +26,10 @@ const FORMAT := "chaos-world.save"
 
 ## The world ledger keys carried beside the actor. `soul` is one of them for ADR 0127's reason:
 ## it is a world fact by the ADR 0101 test — per-actor it would be incorrect the moment a second
-## soul existed.
-const WORLD_KEYS: Array[String] = ["holdings", "market", "custody", "soul", "anchor"]
+## soul existed. `polity` is one for DEF-0119's reason, which is the same test with two subjects:
+## an obligation between two institutions is true of no actor at all, so per-actor it would be a
+## copy each actor could contradict.
+const WORLD_KEYS: Array[String] = ["holdings", "market", "custody", "soul", "anchor", "polity"]
 
 
 ## The empty envelope, before anything is written into it.

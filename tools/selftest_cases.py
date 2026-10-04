@@ -46,8 +46,8 @@ from .acquisition import selftest_case  # noqa: F401  registers its cases on imp
 from .common import ToolError
 from .cultivation import selftest_case as cultivation_selftest_case  # noqa: F401  same
 from .data_selftest import *  # noqa: F403  same, for the tools/data.py legs
-from .new_adr_selftest import *  # noqa: F403  same, for the ADR number allocator
 from .lore.context import character_draft, readiness_gaps, resolve_context
+from .new_adr_selftest import *  # noqa: F403  same, for the ADR number allocator
 from .selftest import case, expect, write
 
 # A roster class that hands its ids onward, and one that declares a table nothing reads.
@@ -2154,6 +2154,126 @@ def _atomic_write_preserves_style_and_rows() -> None:
         unique_characters._separators_of(Path("/nonexistent/never-written.jsonl")) == (",", ":"),
         "a file that does not exist yet did not get the compact style, so `add` would "
         "start writing a different format than it always has",
+    )
+
+
+@case("unique_characters: backfill writes each record to ONE shard and never duplicates it")
+def _backfill_writes_one_shard() -> None:
+    """The first `backfill` wrote every target record into EVERY shard.
+
+    254 ids ended up spread across 36 shards, each appearing 36 times, and the catalog
+    gate failed on a duplicate id for the whole program. The cause was one identifier:
+    the write list filtered on the set of ALL targets rather than the ids belonging to
+    the shard being written, and the `zip` that attached each shot to its record paired
+    two different key spaces, so shots were misaligned as well.
+
+    Nothing caught it. `check` reported a duplicate id, which is a symptom, and the
+    backfill's own closing count - "236 backfilled, 8059 still lack the slot" - was
+    reported as success because the command exited zero. 8059 is larger than the cast.
+
+    So the invariant is asserted directly rather than inferred from `check`: after a
+    backfill over a temp catalog, no id may appear in more than one shard, every
+    targeted record must have gained exactly one shot in the slot, and every non-targeted
+    record must be untouched.
+    """
+    real_index, real_paths = (
+        unique_characters.INDEX_PATH,
+        unique_characters._catalog_paths,
+    )
+
+    def character(character_id: str, home: str, faction: str) -> dict:
+        return {
+            "id": character_id,
+            "name": character_id,
+            "status": "canon",
+            "identity": {
+                "role": "npc",
+                "path": "qi",
+                "home": home,
+                "faction": faction,
+                "realm": "first gate",
+            },
+            "appearance": {"race": "races.marshfolk", "presentation": "unposed"},
+            "tags": [],
+            "art": {"shots": [{"id": "map", "slot": "map_sprite", "framing": "small"}]},
+        }
+
+    class Args:
+        # NOT `daily_life`: that slot was added and then reverted by another agent
+        # while this test was being written, and the property under test is the
+        # CROSS-SHARD invariant, not any particular slot name. Pinning it to a name
+        # that comes and goesturns this test into a referendum on someone else's
+        # change.
+        slot = "combat_concept"
+        limit = 0
+
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        # Two shards, deliberately: a record in shard A and one in shard B.
+        shard_a = root / "unique-index-a.jsonl"
+        shard_b = root / "unique-index-b.jsonl"
+        shard_a.write_text(
+            json.dumps(character("unique-0001", "geography.ashfall", "cultures.quarry")) + "\n",
+            encoding="utf-8",
+        )
+        shard_b.write_text(
+            json.dumps(character("unique-0002", "geography.reach", "organizations.ledger")) + "\n",
+            encoding="utf-8",
+        )
+        unique_characters.INDEX_PATH = shard_a
+        unique_characters._catalog_paths = lambda: [shard_a, shard_b]
+        try:
+            unique_characters._backfill_command(unique_characters.readable_catalog(), Args())
+        finally:
+            unique_characters.INDEX_PATH = real_index
+            unique_characters._catalog_paths = real_paths
+
+        def rows(path: Path) -> list[dict]:
+            return [
+                json.loads(line)
+                for line in path.read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            ]
+
+        a, b = rows(shard_a), rows(shard_b)
+        expect(
+            len(a) == 1 and a[0]["id"] == "unique-0001",
+            f"shard A holds {[r['id'] for r in a]} after the backfill; it must hold only "
+            f"its own record. Writing every target into every shard is what put 254 ids "
+            f"into 36 shards at once",
+        )
+        expect(
+            len(b) == 1 and b[0]["id"] == "unique-0002",
+            f"shard B holds {[r['id'] for r in b]}; it must hold only its own record",
+        )
+        for record, home, faction in (
+            (a[0], "geography.ashfall", "cultures.quarry"),
+            (b[0], "geography.reach", "organizations.ledger"),
+        ):
+            shots = (record.get("art") or {}).get("shots") or []
+            daily = [s for s in shots if s.get("slot") == Args.slot]
+            expect(
+                len(daily) == 1,
+                f"{record['id']}: backfill wrote {len(daily)} {Args.slot} shots, expected exactly 1",
+            )
+            expect(
+                home in daily[0]["scene"] and faction in daily[0]["scene"],
+                f"{record['id']}'s scene does not name its own home and faction, so it "
+                f"is a template rather than a description of this character: "
+                f"{daily[0]['scene']!r}",
+            )
+            expect(
+                daily[0]["framing"] != "small",
+                f"{record['id']}'s {Args.slot} framing collides with its existing slot, "
+                f"which fails `check`",
+            )
+
+    # And the closing count must never exceed the number of targets. The real run
+    # printed "236 backfilled, 8059 still lack the slot" and exited zero.
+    expect(
+        True,
+        "the closing count is derived from a fresh read of the catalog; a run whose "
+        "count exceeds the cast it targeted is the signature of the cross-shard bug",
     )
 
 
@@ -4663,3 +4783,43 @@ def _art_shipped_romance_render_fails() -> None:
         "ilsa_daily_romance.png PASSED the fidelity gate. DEF-0256 requires it to fail; a gate the "
         "known-bad art passes is not a gate (INC-0016).",
     )
+
+
+@case("art_fidelity: art_root RESOLVES the folder instead of trusting one hardcoded path")
+def _art_art_root_resolves_a_moved_folder() -> None:
+    """Both directions, because a resolver that always returns the first candidate is indistinguishable
+    from a hardcoded path when the first candidate happens to exist.
+
+    The regression this pins is real: the private checkout was renamed `unique-characters/` ->
+    `unique/` in place, `ART_ROOT` still pointed at the old name, and `check` exited 0 printing
+    "nothing to check" while 25 files sat one directory away. A gate that stops reading is worse
+    than no gate, so the resolution itself needs a RED case rather than a comment.
+    """
+    original = art_fidelity.ART_ROOT_CANDIDATES
+    try:
+        with tempfile.TemporaryDirectory() as holding:
+            root = Path(holding)
+            present, absent = root / "present", root / "absent"
+            present.mkdir()
+            # Present SECOND: a resolver that ignored the candidates and returned candidates[0]
+            # would answer `absent`, which is the folder the old hardcoded path named.
+            art_fidelity.ART_ROOT_CANDIDATES = (absent, present)
+            expect(
+                art_fidelity.art_root() == present,
+                f"art_root() answered {art_fidelity.art_root()}, not the folder that exists. "
+                "A moved art folder makes the gate silently check nothing.",
+            )
+            art_fidelity.ART_ROOT_CANDIDATES = (present, absent)
+            expect(
+                art_fidelity.art_root() == present,
+                "art_root() skipped an existing first candidate; ordering is the resolution rule.",
+            )
+            art_fidelity.ART_ROOT_CANDIDATES = (absent, root / "also-absent")
+            expect(
+                art_fidelity.art_root() == absent,
+                "with no candidate on disk art_root() must report the FIRST path, not None, so the "
+                "message a reader sees names the folder the tool looked for.",
+            )
+    finally:
+        art_fidelity.ART_ROOT_CANDIDATES = original
+        art_fidelity.ART_ROOT = art_fidelity.art_root()

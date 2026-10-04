@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"O16_divine_relentless_cycle_base"
 display_name = "Divine Relentless Cycle Base"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

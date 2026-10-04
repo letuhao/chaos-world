@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"scroll_stone_colossus_fist"
 display_name = "Stone Colossus Fist"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"body_integration"
 fixed_modifiers = Array[Dictionary]([

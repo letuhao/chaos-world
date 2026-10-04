@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"nascent_soul"
 rarity = &"common"
-vitality = 64.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"monster_stone_golem", "table_id": &"loot_monster_stone_golem"},
 	{"boss_id": &"d3_boulder_golem", "table_id": &"loot_d3_boulder_golem"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"nascent_soul"
 rarity = &"rare"
-vitality = 102.4
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"monster_stone_golem", "table_id": &"loot_monster_stone_golem"},
 	{"boss_id": &"d3_boulder_golem", "table_id": &"loot_d3_boulder_golem"},

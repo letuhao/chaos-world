@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F24_immortal_euphony_agility_attack_spiritual_defense_spiritual_penetration"
 display_name = "Immortal Euphony Agility Attack spiritual Defense spiritual Penetration"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"
 fixed_modifiers = Array[Dictionary]([

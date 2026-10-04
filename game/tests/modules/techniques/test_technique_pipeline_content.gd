@@ -397,34 +397,74 @@ func _manual_exists(item_id: StringName) -> bool:
 	return _manual(item_id) != null
 
 
+## Every manual id that ships under `MANUALS_ROOT`, read from the shipped tree.
+## Bounded by the directory listing rather than by a constant, because the corpus
+## changes and a hard-coded count would be a number nobody re-measures.
+func _authored_manual_ids() -> Array[StringName]:
+	var out: Array[StringName] = []
+	var dir := DirAccess.open(MANUALS_ROOT)
+	if dir == null:
+		return out
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while entry != "":
+		if not dir.current_is_dir() and entry.ends_with(".tres"):
+			out.append(StringName(entry.trim_suffix(".tres")))
+		entry = dir.get_next()
+	dir.list_dir_end()
+	out.sort()
+	return out
+
+
 # --- The guard is NOT weakened -----------------------------------------------
 
 
-func test_an_id_nothing_claims_is_still_refused_unknown_technique() -> void:
+func test_every_technique_item_is_claimed_so_none_can_be_silently_dead() -> void:
 	# Requirement 2, and the half of this file that could have regressed: the seam
-	# now resolves through an authored field, so "the mapping made everything
-	# resolvable" is the failure mode. A generated manual is the exact real-world
-	# case — 1219 of them exist and none of them is claimed — so it is used here
-	# rather than a made-up id.
-	var manual := _manual(&"A10_immortal_axletree_aged")
-	assert_ne(manual, null, "a real generated manual loads")
-	assert_eq(
-		TechniqueCatalog.instance().delivers(_sname(manual.get("id"))),
-		null,
-		"nothing claims it, so nothing resolves it"
-	)
+	# resolves through an authored field, so "the mapping made everything resolvable"
+	# was one failure mode, and "an item sits in the technique channel that nothing
+	# claims" is the other — the exact DEF-0246 shape, where 1312 items were
+	# `category = technique`, carried a real modifier, and delivered nothing, so
+	# `study` refused them and their stat was silently discarded.
+	#
+	# They were reclassified to `consumable` on 2026-10-04, which leaves NO unclaimed
+	# technique-category manual behind. That is the desired end state, and asserting it
+	# is what stops the class from returning: a new manual authored as `technique`
+	# without a `delivered_by` fails HERE, by name, instead of being refused in a
+	# player's hands. There is deliberately no "refused by name" fallback below,
+	# because an unclaimed technique item existing at all is now the failure.
+	var orphans: Array[String] = []
+	for manual_id in _authored_manual_ids():
+		if TechniqueCatalog.instance().delivers(manual_id) != null:
+			continue
+		var manual := _manual(manual_id)
+		if manual == null:
+			continue
+		if _sname(manual.get("category")) == ItemCategory.TECHNIQUE:
+			orphans.append(String(manual_id))
+	assert_eq(orphans.is_empty(), true, "no technique-category item is unclaimed: %s" % [orphans])
+
+
+func test_an_unclaimed_id_is_still_refused_by_the_seam_rather_than_silently_swallowed() -> void:
+	# The seam's own refusal, proven on a synthetic id so it does not depend on any
+	# shipped file staying unclaimed — which, per the case above, is the point: the
+	# corpus is fully claimed by design. Built through the real `use_item` path and
+	# asserted to consume nothing, because a refusal that destroyed the manual would
+	# be the BL-0110 shape this guard exists beside.
+	var orphan := ItemDef.new()
+	orphan.id = &"pipeline_unclaimed_probe"
+	orphan.display_name = "Unclaimed Probe"
+	orphan.category = ItemCategory.TECHNIQUE
+	orphan.grade = ItemGrade.MORTAL
+	assert_eq(TechniqueCatalog.instance().delivers(orphan.id), null, "nothing claims it")
 	var actor := _hero(&"primordial_origin")
-	ItemsApi.inventory(actor).add(manual, 1)
+	ItemsApi.inventory(actor).add(orphan, 1)
 	_wire()
-	var refused := ItemsApi.use_item(actor, &"A10_immortal_axletree_aged")
+	var refused := ItemsApi.use_item(actor, orphan.id)
 	assert_eq(bool(refused.get("ok")), false, "an unclaimed manual is refused even at R30")
 	assert_eq(String(refused.get("reason")), "unknown_technique", "by name, not by a realm floor")
 	assert_eq(TechniquesApi.codex(actor).count(), 0, "and the codex is untouched")
-	assert_eq(
-		ItemsApi.inventory(actor).count(&"A10_immortal_axletree_aged"),
-		1,
-		"a refused study consumes nothing"
-	)
+	assert_eq(ItemsApi.inventory(actor).count(orphan.id), 1, "a refused study consumes nothing")
 
 
 func test_a_manual_near_a_technique_id_in_name_still_resolves_to_nothing() -> void:

@@ -29,7 +29,8 @@
         "bloodline",
         "contracts",
         "core",
-        "race"
+        "race",
+        "social"
       ]
     },
     "combat": {
@@ -69,7 +70,8 @@
     "domain": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "status"
       ]
     },
     "dual_cultivation": {
@@ -134,7 +136,8 @@
     "items": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "status"
       ]
     },
     "loot": {

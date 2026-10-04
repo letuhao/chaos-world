@@ -21,6 +21,10 @@ const SOUL_STATE_SOURCE := "res://src/modules/soul/soul_state.gd"
 
 var _actor: Actor
 var _store: SoulWorldLedger
+## Every body this suite minted, released in `teardown`. A `RefCounted` actor needs no `free()`,
+## but the pools it owns are collected with it, and an un-released one is a leak the runner
+## reports at exit with every assertion green.
+var _minted: Array = []
 
 
 func setup() -> void:
@@ -35,6 +39,7 @@ func setup() -> void:
 func teardown() -> void:
 	_actor = null
 	_store = null
+	_minted.clear()
 	SoulApi.set_store(null)
 
 
@@ -42,17 +47,39 @@ func teardown() -> void:
 
 
 func _death_cost(difficulty_id: StringName, base_cost: int) -> int:
-	## The whole cost rule in one place, written the way a caller must write it: read the
-	## difficulty's SHARE, multiply the authored base cost, then clamp by the cap SCALAR applied
-	## to the base rather than to the result.
+	## The cost rule as the GAME computes it, not a copy of it.
 	##
-	## The cap is `base * death_loss_cap` and NOT `base` — clamping to `base` would cancel the
-	## share outright, which is what made `hard` and `story` both cost exactly the authored
-	## amount in the first run of this suite.
+	## **This suite used to re-derive the rule inline** — read `soul_damage_share`, multiply,
+	## clamp by `death_loss_cap` — which is why it went red when `scalars()` stopped answering
+	## and why it would have stayed green if production had drifted instead. A test that owns a
+	## second copy of the rule tests the copy. `SoulDeath._scaled_cost` is the only writer, so
+	## the fixture drives the real death and reads what it charged.
 	DifficultyApi.select(_actor, difficulty_id)
-	var row := DifficultyApi.scalars(_actor)
-	var scaled := int(float(base_cost) * float(row["soul_damage_share"]))
-	return mini(scaled, int(float(base_cost) * float(row["death_loss_cap"])))
+	var body := _prober()
+	var pool := body.resource(&"health")
+	pool.change(-pool.maximum)
+	var out := SoulDeath.new(_mint, _adopt).resolve(body, base_cost)
+	return int(out.get("damage", 0))
+
+
+## A fresh body carrying a body plan, so `_scaled_cost` and the guardian branch both see a real
+## actor rather than one the resolver refuses.
+func _prober() -> Actor:
+	var body := ActorFactory.build(&"difficulty_cost_prober")
+	RaceApi.attach(body)
+	RaceApi.set_race(body, &"stoneborn")
+	body.attach_core_resources()
+	SoulApi.attach(body)
+	_minted.append(body)
+	return body
+
+
+func _mint(_arrival_id: String, _incarnation: int) -> Dictionary:
+	return {"ok": false, "reason": "no_body_mint"}
+
+
+func _adopt(_body: Actor) -> void:
+	pass
 
 
 func test_the_shipped_default_costs_exactly_the_authored_amount() -> void:

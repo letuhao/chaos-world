@@ -16,6 +16,30 @@ const REVEALED := &"revealed"
 const HIDDEN := &"hidden"
 const TEASER := &"teaser"
 
+## ## The CLOSED lineage vocabulary of [member tags]
+##
+## A tag is a KIND of deed, named so a gate can ask "does this actor carry any
+## fate of that kind" without naming the fate. Seven values, declared here rather
+## than authored per-fate, because an author may NOT coin a lineage: a tag outside
+## this set refuses with `unknown_tag` (ADR 0196, fate tag vocabulary) and is never a plain unmet.
+##
+## Engine-shaped tokens are EXCLUDED on purpose. `defensive`, `aggressive`,
+## `heavy`, `resilient`, `fast_path`, `killcount` and `marked` were all authored on
+## shipped fates, and every one restates what `flat_modifiers` / `percent_modifiers`
+## already say — a gate on "heavy" is stat language leaking into a gate, and two
+## fates whose bonuses were retuned together would silently start agreeing on a
+## lineage. `heaven` duplicates [member category]; `first` and `solitary` are
+## position words the `counter` verb answers better.
+const TAGS: Array[StringName] = [
+	&"oath",
+	&"blood",
+	&"mercy",
+	&"severance",
+	&"desertion",
+	&"rebirth",
+	&"duel",
+]
+
 @export var id: StringName = &""
 @export var display_name: String = ""
 ## Why this fate exists, in the game's own voice. Never engine vocabulary.
@@ -33,8 +57,27 @@ const TEASER := &"teaser"
 ## Named counters this fate reads through the gate verb `counter`. Declaring
 ## them here keeps the gate answerable without a hardcoded id list in code.
 @export var counters: Array[StringName] = []
-## Tags a gate may test with `has_fate` when a fate should answer to several
-## conceptual questions without duplicating definitions.
+## ## The lineages this fate belongs to, read by the `tagged` gate verb
+##
+## Every entry must be inside [constant TAGS] — a closed vocabulary of KINDS of
+## deed, not a free label. An author may not coin one: a gate naming a tag outside
+## the set refuses `unknown_tag` and names it, because a tag nothing carries is a
+## gate that can never open (ADR 0196, fate tag vocabulary).
+##
+## **OR across fates.** `{verb: &"tagged", id: &"oath"}` is satisfied by holding
+## ANY ONE fate carrying `oath`. That is the only defensible reading: tags are
+## unordered with no primary, and a per-fate variant is what `has_fate` already is.
+##
+## **Empty is legal and means "answers to no lineage question."** Six of the
+## seventeen shipped fates carry none, and that is not a defect to fix.
+##
+## **Never exclusive, never ordered, never consumed.** Carrying a tag earns
+## nothing: it grants no stat, opens no reward, and a `tagged` gate only READS this
+## list, so no gate can remove the fate (ADR 0065).
+##
+## **Not [member DestinyDef.group], and never to be unified with it.** A group
+## closes its members against each other forever — earn one and the rest are
+## forfeit. A tag does the opposite: it is a question several fates may answer.
 @export var tags: Array[StringName] = []
 
 

@@ -34,6 +34,7 @@ arch = _load("arch")
 art_fidelity = _load("art_fidelity")
 assets = _load("assets")
 character_assets = _load("character_assets")
+character_bundle_sync = _load("character_bundle_sync")
 backlog = _load("backlog")
 boot = _load("boot")
 check = _load("check")
@@ -43,6 +44,7 @@ data = _load("data")
 deferred = _load("deferred")
 difficulty = _load("difficulty")
 export = _load("export")
+element_coverage = _load("element_coverage")
 fmt = _load("fmt")
 gate_reach = _load("gate_reach")
 godot_bypass = _load("godot_bypass")
@@ -71,6 +73,7 @@ worth_rewrite = _load("worth_rewrite")
 from .common import ToolError, fail  # noqa: E402  (after the task modules load)
 
 COMMANDS = {
+    "element_coverage": element_coverage,
     "fmt": fmt,
     "gate_reach": gate_reach,
     "godot_bypass": godot_bypass,
@@ -84,6 +87,7 @@ COMMANDS = {
     "art_fidelity": art_fidelity,
     "assets": assets,
     "character_assets": character_assets,
+    "character_bundle_sync": character_bundle_sync,
     "unique_characters": unique_characters,
     "test": test,
     "boot": boot,

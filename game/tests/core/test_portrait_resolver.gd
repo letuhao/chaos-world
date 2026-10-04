@@ -234,8 +234,9 @@ func test_a_published_character_portrait_resolves_with_every_layer() -> void:
 		"res://assets/characters/unique/unique-0001/ilsa_dialogue_portrait.png",
 		"the dialogue portrait is the BASE layer, so the face is underneath"
 	)
-	assert_true(
-		String(layers[1]).ends_with("ilsa_map_sprite.png"),
+	assert_eq(
+		String(layers[1]),
+		"res://assets/characters/unique/unique-0001/ilsa_map_sprite.png",
 		"the map token composites over the face, not under it"
 	)
 
@@ -258,16 +259,15 @@ func test_a_published_portrait_declares_one_value_per_variant_axis() -> void:
 	var def := PortraitCatalog.instance().portrait_definition(&"unique-0001")
 	assert_ne(def, null, "the published portrait is in the catalog")
 	var axes: Dictionary = {}
+	var repeated: Array[String] = []
 	for trait_id in def.visual_traits:
 		var axis := String(trait_id).split(":")[0]
-		assert_false(
-			axes.has(axis),
-			(
-				"axis '%s' appears twice in %s; a variant request is ambiguous"
-				% [axis, def.visual_traits]
-			)
-		)
+		if axes.has(axis):
+			repeated.append(axis)
 		axes[axis] = true
+	assert_eq(
+		repeated, [] as Array[String], "an axis repeated on one portrait makes a variant ambiguous"
+	)
 
 
 # --- Portraits grant nothing ---------------------------------------------------

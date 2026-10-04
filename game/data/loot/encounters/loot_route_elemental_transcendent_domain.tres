@@ -9,7 +9,7 @@ tier = 1
 label = "Standing"
 realm = &"transcendent"
 rarity = &"legendary"
-vitality = 500.0
+vitality = 491793.8
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"d3_prism_guardian", "table_id": &"loot_route_d3_prism_guardian"},
 	{"boss_id": &"elemental_transcendent_guardian", "table_id": &"loot_elemental_transcendent_guardian"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"transcendent"
 rarity = &"legendary"
-vitality = 800.0
+vitality = 786870.0
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"d3_prism_guardian", "table_id": &"loot_route_d3_prism_guardian"},
 	{"boss_id": &"elemental_transcendent_guardian", "table_id": &"loot_elemental_transcendent_guardian"},

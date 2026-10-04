@@ -255,12 +255,8 @@ func test_a_broken_side_stops_fighting_and_is_told_who_broke() -> void:
 	)
 	# And the loser's exhaustion says who stopped fighting and how far they got, which
 	# is the diagnosis the refused-verdict version was reaching for.
-	assert_eq(
-		bool(settled["closed"]), true, "a closed war names the state it closed in"
-	)
-	assert_eq(
-		String(settled["winner_id"]), "polity_a", "and it names who the verdict gave it to"
-	)
+	assert_eq(bool(settled["closed"]), true, "a closed war names the state it closed in")
+	assert_eq(String(settled["winner_id"]), "polity_a", "and it names who the verdict gave it to")
 
 
 func test_every_verdict_carries_the_same_keys_whatever_the_war_decided() -> void:

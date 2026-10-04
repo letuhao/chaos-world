@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"L3_iron_tortoise_carapace_form"
 display_name = "Iron Tortoise Carapace Form"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"
 fixed_modifiers = Array[Dictionary]([

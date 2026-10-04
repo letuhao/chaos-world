@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F27_immortal_extempore_aptitude_attack_physical_loot_bonus_qi_cost_reduction"
 display_name = "Immortal Extempore Aptitude Attack physical Loot bonus Qi cost reduction"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"
 fixed_modifiers = Array[Dictionary]([

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G26_divine_idyll_defense_spiritual_insight_gain"
 display_name = "Divine Idyll Defense spiritual Insight gain"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"
 fixed_modifiers = Array[Dictionary]([

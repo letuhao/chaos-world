@@ -12,4 +12,4 @@ tier = 1
 visibility = &"revealed"
 flat_modifiers = {"defense_physical": 5.0, "poise": 8.0}
 counters = Array[StringName]([&"oaths_sworn"])
-tags = Array[StringName]([&"mercy", &"defensive", &"oath"])
+tags = Array[StringName]([&"mercy", &"oath"])

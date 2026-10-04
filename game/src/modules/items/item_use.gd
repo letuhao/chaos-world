@@ -116,6 +116,22 @@ static func _apply_consumed(actor: Actor, def: ItemDef, instance: ItemInstance) 
 		var delta := float(restorations[pool_id])
 		pool.change(delta)
 		applied[String(pool_id)] = delta
+	# ## The cleanse lever, and why it is a REMOVAL and not a restoration
+	#
+	# `def.cleanse_lever` is empty on every other authored item, so this branch is
+	# inert for the whole corpus until a pill names a lever. When it is named, the
+	# spend is `StatusApi.cleanse(actor, lever)`: one lever in, the status module's own
+	# `mitigation_tags` out, and nothing here interprets a percentage or a strength.
+	# That is the whole point of ADR 0086's ONE purge vocabulary — this module says
+	# WHICH lever, and `status` decides what that lever removes.
+	#
+	# It is applied rather than OR-ed with the restorations because a cleanse pill
+	# restoring a pool is a different item, and a caller that asked "did my pill answer
+	# the debuff" reads `cleansed` here and nothing else. A pill carrying BOTH lands
+	# both, which is authored content and is not refused here.
+	var cleansed: Dictionary = {}
+	if def.cleanse_lever != &"":
+		cleansed = StatusApi.cleanse(actor, def.cleanse_lever)
 	# A consumable's stat targets are cultivation seed, not a permanent buff: they
 	# are REPORTED, never applied as a permanent modifier (ADR 0001). So a
 	# consumable whose only content is a base attribute restores nothing and applies
@@ -123,10 +139,24 @@ static func _apply_consumed(actor: Actor, def: ItemDef, instance: ItemInstance) 
 	# decrements the stack and the actor is identical afterwards. The gains ride along
 	# in the refusal so a caller can still show what the item carries.
 	var stat_gains := _base_gains(effects)
-	if applied.is_empty():
-		return {"ok": false, "reason": REASON_NO_EFFECT, "stat_gains": stat_gains}
+	# A cleanse that removed nothing is NOT `ok` either, for the same reason BL-0110 is:
+	# the verb would decrement the stack and the actor would be identical afterwards.
+	# The reason names WHICH lever was spent and how many statuses it answered, so a
+	# caller can tell "you were not afflicted" from "that lever answers nothing on you".
+	if cleansed.get("count", 0) == 0 and applied.is_empty():
+		return {
+			"ok": false,
+			"reason": REASON_NO_EFFECT,
+			"stat_gains": stat_gains,
+			"cleansed": cleansed,
+		}
 	actor.mark_stats_dirty()
-	return {"ok": true, "restores": applied, "stat_gains": stat_gains}
+	return {
+		"ok": true,
+		"restores": applied,
+		"stat_gains": stat_gains,
+		"cleansed": cleansed,
+	}
 
 
 ## Study an item that is a technique MANUAL.

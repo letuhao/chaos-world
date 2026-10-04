@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -7,9 +7,9 @@
 script = ExtResource("2_entry")
 id = &"qi_spirit_condensation_guardian_spirit_unity_0"
 kind = &"item"
-item_id = &"U4_spirit_weald_fillet"
+item_id = &"F44_spirit_gimball_dao_heart_health_regen_spirit"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -17,20 +17,32 @@ rarity_floor = &"magic"
 
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
-id = &"qi_spirit_condensation_guardian_domain_20"
+id = &"qi_spirit_condensation_guardian_spirit_unity_1"
+kind = &"item"
+item_id = &"U4_spirit_weald_fillet"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_condensation_guardian_spirit_unity_2"
 kind = &"item"
 item_id = &"qi_spirit_unity_cultivation_herb"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &""
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
 
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_spirit_condensation_guardian_pool_spirit_unity"
-display_name = "Spirit Condensation Guardian (spirit_unity)"
+display_name = "Spirit Condensation Guardian salvage (spirit_unity)"
 realm = &"spirit_unity"
 rarity = &""
 rolls = 1
@@ -38,4 +50,5 @@ allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
+	SubResource("entry_2")
 ])

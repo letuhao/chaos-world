@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=29 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_pool_dao_ancestor"
+id = &"E10_primordial_sentinel_pool_core_formation"
 kind = &"table"
 item_id = &""
-table_id = &"loot_E10_primordial_sentinel_pool_dao_ancestor"
-weight = 1.0
+table_id = &"loot_E10_primordial_sentinel_pool_core_formation"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -17,11 +17,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_pool_primordial_origin"
+id = &"E10_primordial_sentinel_pool_dao_ancestor"
 kind = &"table"
 item_id = &""
-table_id = &"loot_E10_primordial_sentinel_pool_primordial_origin"
-weight = 1.0
+table_id = &"loot_E10_primordial_sentinel_pool_dao_ancestor"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -29,11 +29,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_2"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_pool_transcendent"
+id = &"E10_primordial_sentinel_pool_earth_immortal"
 kind = &"table"
 item_id = &""
-table_id = &"loot_E10_primordial_sentinel_pool_transcendent"
-weight = 1.0
+table_id = &"loot_E10_primordial_sentinel_pool_earth_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -41,11 +41,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_3"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_3"
-kind = &"item"
-item_id = &"A10_immortal_axletree_base"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_golden_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_golden_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -53,11 +53,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_4"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_4"
-kind = &"item"
-item_id = &"B31_divine_cavesson_base"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_great_ascension"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_great_ascension"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -65,11 +65,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_5"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_5"
-kind = &"item"
-item_id = &"C27_heaven_currier_skinhide"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_heaven_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_heaven_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -77,11 +77,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_6"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_6"
-kind = &"item"
-item_id = &"E15_spirit_pressingfloor_elegite"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_immortal_sovereign"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_immortal_sovereign"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -89,11 +89,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_7"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_7"
-kind = &"item"
-item_id = &"F23_immortal_eschallot_agility_attack_speed_fortune_max_stamina"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_mystic_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_mystic_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -101,11 +101,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_8"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_8"
-kind = &"item"
-item_id = &"F49_immortal_gridiron_breakthrough_chance_cultivation_rate_penetration"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_primordial_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_primordial_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -113,11 +113,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_9"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_9"
-kind = &"item"
-item_id = &"G4_heaven_weave"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_primordial_origin"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_primordial_origin"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -125,11 +125,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_10"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_10"
-kind = &"item"
-item_id = &"I34_spirit_foresail_primed"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_spirit_domain"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_spirit_domain"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -137,11 +137,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_11"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_11"
-kind = &"item"
-item_id = &"K19_earth_blood_aged"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_spirit_palace"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_spirit_palace"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -149,11 +149,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_12"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_12"
-kind = &"item"
-item_id = &"O6_spirit_aspen_refined"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_spirit_severing"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_spirit_severing"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -161,11 +161,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_13"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_13"
-kind = &"item"
-item_id = &"R13_divine_millet_primed"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_spirit_sovereign"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_spirit_sovereign"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -173,11 +173,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_14"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_14"
-kind = &"item"
-item_id = &"T1_spirit_kestrel_lintel"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_spirit_unity"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_spirit_unity"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -185,133 +185,13 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_15"]
 script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_15"
-kind = &"item"
-item_id = &"V24_heaven_armature_primed"
-table_id = &""
-weight = 1.0
+id = &"E10_primordial_sentinel_pool_transcendent"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E10_primordial_sentinel_pool_transcendent"
+weight = 1.
 chance = -1.0
 guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_16"]
-script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_16"
-kind = &"item"
-item_id = &"X17_divine_barony_precept"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_17"]
-script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_17"
-kind = &"item"
-item_id = &"Y6_immortal_adit_perfected"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_18"]
-script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_18"
-kind = &"item"
-item_id = &"Z40_spirit_conglomerate_pillar"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_19"]
-script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_19"
-kind = &"item"
-item_id = &"decree_sixth_edict"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_20"]
-script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_20"
-kind = &"item"
-item_id = &"mind_core_formation_recovery_elixir"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_21"]
-script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_21"
-kind = &"item"
-item_id = &"ring_iron_ore"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_22"]
-script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_22"
-kind = &"item"
-item_id = &"venom_sublime_essence"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_23"]
-script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_23"
-kind = &"item"
-item_id = &"B38_divine_drowlat_spirit_qi_cost_reduction"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_24"]
-script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_domain_24"
-kind = &"item"
-item_id = &"B37_divine_diocese_physique_qi_absorption"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_25"]
-script = ExtResource("2_entry")
-id = &"E10_primordial_sentinel_mortal_gear"
-kind = &"item"
-item_id = &"H12_mortal_absorption_orb"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
 quantity = 1
 rarity_floor = &""
 
@@ -339,15 +219,5 @@ entries = Array[LootEntry]([
 	SubResource("entry_12"),
 	SubResource("entry_13"),
 	SubResource("entry_14"),
-	SubResource("entry_15"),
-	SubResource("entry_16"),
-	SubResource("entry_17"),
-	SubResource("entry_18"),
-	SubResource("entry_19"),
-	SubResource("entry_20"),
-	SubResource("entry_21"),
-	SubResource("entry_22"),
-	SubResource("entry_23"),
-	SubResource("entry_24"),
-	SubResource("entry_25")
+	SubResource("entry_15")
 ])

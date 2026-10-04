@@ -9,10 +9,10 @@ tier = 3
 label = "Squall"
 realm = &"heaven_immortal"
 rarity = &"rare"
-vitality = 320.0
+vitality = 36806.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"loot_storm_crypt_tempest_warden", "table_id": &"loot_storm_warden_t3"},
-	{"boss_id": &"loot_storm_crypt_static_acolyte", "table_id": &"loot_storm_acolyte_t3", "vitality": 260.0}
+	{"boss_id": &"loot_storm_crypt_static_acolyte", "table_id": &"loot_storm_acolyte_t3", "vitality": 29445.0}
 ])
 
 [sub_resource type="Resource" id="tier_1"]
@@ -21,10 +21,10 @@ tier = 4
 label = "Tempest"
 realm = &"great_ascension"
 rarity = &"legendary"
-vitality = 520.0
+vitality = 41437.5
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"loot_storm_crypt_tempest_warden", "table_id": &"loot_storm_warden_t4"},
-	{"boss_id": &"loot_storm_crypt_static_acolyte", "table_id": &"loot_storm_acolyte_t4", "vitality": 420.0}
+	{"boss_id": &"loot_storm_crypt_static_acolyte", "table_id": &"loot_storm_acolyte_t4", "vitality": 33150.0}
 ])
 
 [resource]

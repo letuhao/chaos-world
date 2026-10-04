@@ -11,8 +11,7 @@ roster_band = &"contact"
 tags = Array[StringName]([&"threshold", &"ruined"])
 size = Vector2i(7, 5)
 actor_spawn_refs = Array[Dictionary]([
-	{"ref_id": &"ash_hound", "inhabitant_id": &"cinder_hound", "role": &"mob", "count": 1},
-	{"ref_id": &"ash_pilgrim", "inhabitant_id": &"ember_pilgrim", "role": &"rival_cultivator", "count": 1}
+	{"ref_id": &"ash_hound", "inhabitant_id": &"cinder_hound", "role": &"mob", "count": 1}
 ])
 fixtures = Array[Dictionary]([
 	{"fixture_id": &"ash_gate_vein", "kind": &"trap", "tags": Array[StringName]([&"trap_vein", &"ember", &"threshold"]), "position": Vector2i(3, 2), "bounds": Rect2i(3, 2, 2, 2), "reward_item_id": &"", "reward_count": 0, "key_item_id": &"", "requires_realm": &"", "telegraph_s": 1.2, "damage_share": 0.08, "status_id": &"fire_immolation", "duration_s": 8.0, "mitigation_tags": Array[StringName]([&"gear", &"technique", &"affinity"])}

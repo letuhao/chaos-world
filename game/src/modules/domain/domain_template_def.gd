@@ -65,6 +65,23 @@ extends Resource
 
 @export var max_rooms: int = 24
 
+## **"Every def this template carries is built on every seed, or the seed is REFUSED."**
+##
+## The opt-in half of the reachability claim. Carrying a def in `room_pool` says a
+## player can reach it *somewhere*; it does not say every seed gets there. The
+## generator deals the kit round-robin over the leaves a pin has NOT taken, so a seed
+## whose leaves run out cannot build the tail of the kit at all — and a domain that
+## silently drops one of its authored rooms is the failure this flag exists to refuse.
+##
+## Set it only where the template's own numbers guarantee it, i.e. where
+## `min_rooms >= room_pool.size()` and every pin names a distinct pool def. It is
+## OFF by default: a template with no pool, or with one whose defs exceed
+## `min_rooms`, would refuse every seed and be a domain a player can never enter.
+## `test_domain_template_leaf_budget.gd` asserts both directions — that the shipped
+## templates satisfy the inequality this needs, and that a template breaching it
+## refuses loudly rather than shipping a hole.
+@export var requires_full_kit: bool = false
+
 ## The point the entry leaf is chosen by. A leaf whose INSIDE rect contains this
 ## point, else the lowest-index leaf in canonical order. Authored, never rolled.
 @export var entry_anchor: Vector2i = Vector2i.ZERO

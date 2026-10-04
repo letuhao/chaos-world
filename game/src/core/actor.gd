@@ -19,7 +19,8 @@ signal status_ticked(status_id: StringName, magnitude: float)
 ##   3 — sea, acupoints, body progress (ADR 0028).
 ##   4 — module-owned breakthrough attempt records (ADR 0029).
 ##   5 — the body's wound ledger, so necrosis survives a save (ADR 0140).
-const SCHEMA_VERSION := 5
+##   6 — the save's HANDOFF of the world-scoped polity ledger (DEF-0119).
+const SCHEMA_VERSION := 6
 
 ## Module-owned attempt record. Serialized as a raw dictionary so core never
 ## imports the module's attempt class; the mind_cultivation module rebuilds the
@@ -32,6 +33,38 @@ const ATTEMPT_MODULE_KEY := &"mind_attempt"
 ## than twice. Core never imports `combat_engine`'s type; the module restores its
 ## own typed ledger from this key on attach.
 const WOUNDS_MODULE_KEY := &"body_wounds"
+
+## ## v6's one addition: the save's HANDOFF of the world polity ledger (DEF-0119)
+##
+## The world-scoped ledger itself is NOT here — it rides `envelope.world.polity`, beside
+## the actor, for the reason ADR 0083 gives: an obligation between two institutions is
+## true of no actor, so a copy under `module_data` would be one copy per actor and the
+## second body could contradict the first. What this slot carries is the **stamp**: the
+## save version at which that world slot was written, so a save can be TOLD which world
+## its actor expects rather than assuming one.
+##
+## ## Why the slot exists at all, since the world carries the ledger
+##
+## Two reasons, and both are migration rather than transport:
+##
+## 1. **An old save is not silently the same save.** A payload with no v6 slot was written
+##    by a build that had no world polity ledger; one written with it was. `WorldLedgerMigrate`
+##    reads this stamp to decide whether a `polity` key it finds is one this build's
+##    migration understands or a foreign body's opinion of the world.
+## 2. **The gate is ADDITIVE and TOTAL, exactly as ADR 0037's attempt slot is.** A v5 or
+##    older payload carries no stamp and loads with **no** stamp — not a default that
+##    asserts this save predates the world slot, and not a zero that a caller could read as
+##    "written at generation zero". An absent key is the honest "this build did not write
+##    one", and `_restore_versioned` states it rather than manufacturing it.
+##
+## ## An INTEGER, never a nested world ledger
+##
+## A payload here is JSON-safe by construction and cannot carry an `Actor`, a `Resource`
+## or a `StringName` key — the three things `WorldFact` and `InstitutionClaim` both name as
+## invisible-save-breakers. The world ledger's whole shape lives in
+## `core/world_polity_ledger.gd`, and the slot below is the only thing about it on the
+## actor.
+const POLITY_SLOT_KEY := &"world_polity_version"
 
 ## Resource pools every actor carries, mapped to the derived stat that
 ## expresses their capacity. Core owns health and stamina because it owns the
@@ -300,9 +333,9 @@ func to_dict() -> Dictionary:
 			body_progress_dict[String(realm_id)] = true
 	var module_data_dict: Dictionary = {}
 	for key in module_data.keys():
-		# The two versioned slots have their own payload keys, so they are excluded
-		# here and serialized exactly once (ADR 0029, ADR 0140).
-		if key == ATTEMPT_MODULE_KEY or key == WOUNDS_MODULE_KEY:
+		# The three versioned slots have their own payload keys, so they are excluded
+		# here and serialized exactly once (ADR 0029, ADR 0140, DEF-0119).
+		if key == ATTEMPT_MODULE_KEY or key == WOUNDS_MODULE_KEY or key == POLITY_SLOT_KEY:
 			continue
 		module_data_dict[String(key)] = module_data[key]
 	# Attempt record (active or terminal) serialized as raw data; the module
@@ -322,7 +355,7 @@ func to_dict() -> Dictionary:
 	# defers it to "when a cultivation outcome can read a status across a save". A
 	# live-resolution record in the payload would also put potency, escalation state
 	# and authored def ids into every save (DEF-0059).
-	return {
+	var payload := {
 		"version": SCHEMA_VERSION,
 		"id": String(id),
 		"display_name": display_name,
@@ -348,6 +381,42 @@ func to_dict() -> Dictionary:
 		"world": world_dict,
 		"ascension": ascension_dict,
 	}
+	# ## The v6 stamp rides `module_data`, and it is merged in AFTERWARDS rather than
+	# ## written into the literal above.
+	# A dictionary literal cannot express "this key may not be there", and the key MUST be
+	# absent when this body was never told which world slot its save expects: a zero would
+	# read as "generation zero" to any caller that compares it, and an absent key is the
+	# honest "this build wrote none". So the merge happens once, after the literal, and it
+	# is the only place the key is written — which is why it cannot appear twice.
+	var stamped = module_data.get(POLITY_SLOT_KEY)
+	if stamped is int and int(stamped) >= 0:
+		module_data_dict[String(POLITY_SLOT_KEY)] = int(stamped)
+	return payload
+
+
+## The world-slot stamp this actor carries, or -1 when it carries none. -1 rather than
+## zero because zero is a legal stamp and a caller comparing two stamps must be able to
+## tell "generation zero" from "never told".
+func polity_version() -> int:
+	var stamped = (module_data.get(POLITY_SLOT_KEY) as Dictionary).get("version")
+	return int(stamped) if (stamped is int) and int(stamped) >= 0 else -1
+
+
+## Record the world-slot stamp this actor's save was written at. The only writer, so no
+## second caller can invent a stamp the world slot does not carry.
+##
+## The stamp lives in a DICTIONARY, never as a bare int in `module_data`. `set_module_data`
+## is typed `data: Dictionary`, so writing `module_data[POLITY_SLOT_KEY] = version` put a
+## float into a Dictionary-typed slot — legal at the call site, and then `Actor.from_dict`
+## replayed it through `set_module_data` and raised "Cannot convert argument 2 from float to
+## Dictionary", which aborted `save_envelope` mid-assertion. Every save carrying a polity
+## stamp failed to restore, and the failure surfaced in the SAVE test rather than here.
+func set_polity_version(version: int) -> void:
+	if version < 0:
+		return
+	var slot := module_data.get(POLITY_SLOT_KEY) as Dictionary
+	slot["version"] = version
+	module_data[POLITY_SLOT_KEY] = slot
 
 
 ## Register the item-state serialization hook (ADR 0027). Called by the items module
@@ -394,8 +463,16 @@ static func from_dict(data: Dictionary) -> Actor:
 	if not body_progress_data.is_empty():
 		actor.set_module_data(&"body_progress", body_progress_data.duplicate())
 	# Restore generic module data (raw dictionaries owned by modules).
+	#
+	# Skip a slot that is NOT a Dictionary rather than replaying it. An old save written before
+	# the polity stamp was wrapped carries a bare int under that key, and replaying it raised a
+	# hard type error that aborted the restore mid-function - so a save that had been written
+	# successfully could not be read back. Ignoring a malformed slot costs that module its
+	# default; raising costs the player their run.
 	for key in data.get("module_data", {}).keys():
-		actor.set_module_data(StringName(key), data["module_data"][key])
+		var slot = data["module_data"][key]
+		if slot is Dictionary:
+			actor.set_module_data(StringName(key), slot)
 	# NO status restore, deliberately (ADR 0089): a save carries no `statuses` key and
 	# restoring one would need the schema bump that ADR defers. An older save that does
 	# carry the key is ignored rather than refused — a load never fails on a field this
@@ -443,6 +520,34 @@ static func _restore_versioned(data: Dictionary, actor: Actor, version: int) -> 
 	var wounds_data: Variant = data.get("body_wounds", {})
 	if wounds_data is Dictionary and not (wounds_data as Dictionary).is_empty():
 		actor.set_module_data(WOUNDS_MODULE_KEY, (wounds_data as Dictionary).duplicate(true))
+	# ## v6 added the world-slot STAMP; v5 and older carry none at all.
+	# ## The absence is the migration, and it is TOTAL in both directions:
+	# ##   - an OLD payload (v5 or earlier) has no stamp, so the actor is left with none
+	# ##     and reads -1. It is NOT defaulted to a current-version stamp, because doing
+	# ##     so would assert "this save was written with a world polity ledger" about a
+	# ##     save that never had one — the precise failure ADR 0037 names as "accepting
+	# ##     an older schema never invents state".
+	# ##   - a NEW payload carries an int, which is copied straight back. The stamp is the
+	# ##     ONE thing in this payload that is not the world ledger's content, so restoring
+	# ##     it into `module_data` cannot drag a second copy of the ledger onto the actor:
+	# ##     that is what the no-duplication test asserts.
+	# ## A malformed stamp (a string, a dictionary, a negative) is dropped rather than
+	# ## coerced, so an untrusted save cannot hand a caller a version to compare against.
+	var module_payload: Variant = data.get("module_data", {})
+	var stamp_data: Variant = (
+		(module_payload as Dictionary).get(String(POLITY_SLOT_KEY))
+		if (module_payload is Dictionary)
+		else null
+	)
+	if stamp_data is int and int(stamp_data) >= 0:
+		# Routed through `set_polity_version`, which owns this slot's assignment, rather
+		# than written into `module_data` a second time here. `set_module_data` is typed
+		# `(id, data: Dictionary)` and this stamp is deliberately NOT a dictionary - the
+		# payload carries an int, copied straight back - so passing one was a hard parse
+		# error. GDScript attributes it upward, so the failure surfaced as
+		# `Could not resolve class LootContentTables` and then `DomainFixtures`, both
+		# innocent, then a failed load of everything importing Actor (DEF-0277).
+		actor.set_polity_version(int(stamp_data))
 
 
 ## The wound ledger's raw payload, read through the component the body path binds it

@@ -57,42 +57,44 @@ const OUTCOME_BOSS_DEFEATED := "boss_defeated"
 ## The boss outlasted the player and the run is over.
 const OUTCOME_PLAYER_LOST := "player_lost"
 
+
 ## ADR 0105's substitute for ADR 0087's per-technique `status_chance`: the base gate
 ## chance, before ADR 0087's resist terms are subtracted, for BOTH statuses an exchange
-## can inflict — the player's own landed blow and the boss's authored affliction.
+## can inflict -- the player's own landed blow and the boss's authored affliction.
 ##
-## ## Why it is NOT on `CombatTuning`, and why that is a real limitation, not a shrug
+## ## WHERE THE NUMBER LIVES NOW (DEF-0145), and why it is not a literal here
 ##
-## AGENTS.md says the balance surface is DATA, and `CombatTuning` is this repo's balance
-## surface — so the honest home for this number is a `status_gate_chance` `@export` beside
-## `status_min_apply` / `status_potency_scale`. That field does not exist, and this wave's
-## charter forbids editing `modules/combat_engine/**` (another agent owns it), so the
-## number stays a documented constant HERE. That is a KNOWN debt with a one-line fix: add
-## `@export var status_gate_chance: float = 0.0` to `CombatTuning`, author it in
-## `combat_damage.tres` at `1.0`, and make this read
-## `CombatEngineApi.tuning().status_gate_chance` — the call site below is already shaped for
-## exactly that substitution, and `STATUS_GATE_CHANCE` becomes the bare-schema fallback.
-## Until then it is NOT a literal in logic: it is one named constant, every read of it is in
-## this file, and it is documented as the dial.
+## It used to be `const STATUS_GATE_CHANCE := 1.0` below, with this docblock admitting it
+## was standing in for a `CombatTuning` field that could not be authored because the wave
+## that wrote this file was forbidden from editing `modules/combat_engine/**`. That
+## restriction is gone, so the number is DATA: `CombatTuning.status_gate_chance`, authored
+## at `1.0` in `combat_damage.tres`. [method _status_gate] is the one reader, and both
+## call sites below go through it, so a balance pass edits the `.tres` and nothing else.
 ##
 ## ## Why `1.0` is still the shipped value, and what `1.0` does and does not mean
 ##
-## `1.0` does NOT mean "resistance is ignored". `StatusApply.apply_chance` is
+## THE VALUE IS NOT BEING RETUNED BY THIS MOVE. `1.0` does NOT mean "resistance is
+## ignored". `StatusApply.apply_chance` is
 ## `clampf(gate * (1 - STATUS_RESISTANCE) * (1 - elem_resist), status_min_apply, 1.0)`, so
-## a gate of `1.0` hands the whole decision to the two resist terms and the roll below —
-## which is the correct reading, and it is what ADR 0087's formula is FOR. What `1.0` DOES
-## mean is that the BASE rate is unconditional: lowering it to `0.6` makes a resisted actor's
-## landed status *and* a boss's affliction both rarer in proportion, without touching
-## `status_min_apply` (the floor that keeps an open gate from reaching zero) or either
-## `magnitude_cap`. A balance pass wants that dial and this constant is it.
+## a gate of `1.0` hands the whole decision to the two resist terms and the roll below --
+## which is the correct reading, and it is what ADR 0087's formula is FOR. What `1.0`
+## DOES mean is that the BASE rate is unconditional, so an unresisted actor short-circuits
+## to `chance == 1.0`, spends no draw, and every landed blow inflicts with certainty.
+## Lowering the authored value makes a resisted actor's landed status *and* a boss's
+## affliction both rarer in proportion, without touching `status_min_apply` (the floor
+## that keeps an open gate from reaching zero) or any `magnitude_cap`. That dial now
+## lives in data, and a balance pass is a one-line `.tres` edit rather than a `.gd` one.
 ##
 ## The shipped rate is deliberately unchanged from what was measured. The defect was never
 ## that `1.0` is a bad number; it was that the boss's path DISCARDED the resolved chance
 ## instead of rolling it (`LootAffliction.inflict` compared `chance` to zero and then never
 ## used it), so every boss affliction landed 100% of the time regardless of
 ## `status_resistance`. Both paths now roll, identically, so `1.0` finally means what it
-## always said — and a rebalance is this one line, not ten `.tres` and not a catalogue.
-const STATUS_GATE_CHANCE := 1.0
+## always said.
+static func _status_gate(tuning: CombatTuning) -> float:
+	if tuning == null:
+		return 0.0
+	return clampf(tuning.status_gate_chance, 0.0, 1.0)
 
 
 ## Run one exchange against the live boss.
@@ -335,7 +337,7 @@ static func _status_on_landing(
 		return none
 	var tuning := CombatEngineApi.tuning()
 	var chance := StatusApply.apply_chance(
-		STATUS_GATE_CHANCE,
+		_status_gate(tuning),
 		actor,
 		tuning,
 		StatusApply.elemental_resist(actor, actor, tuning, element)
@@ -502,7 +504,7 @@ static func _boss_affliction_numbers(
 	var tuning := CombatEngineApi.tuning()
 	var element := def.element
 	var chance := StatusApply.apply_chance(
-		STATUS_GATE_CHANCE,
+		_status_gate(tuning),
 		actor,
 		tuning,
 		StatusApply.elemental_resist(actor, actor, tuning, element)

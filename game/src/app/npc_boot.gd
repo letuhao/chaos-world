@@ -48,12 +48,33 @@ extends RefCounted
 ##    so the composition root injects the verb and `event/` names no npc type at all.
 ##    **Unconditional**, unlike `install`'s null-player return below: the writer's
 ##    `push_error` on a missing resolver is the loud failure BL-0658 needs.
-## 2. **A subscriber on `NpcApi.events().stage_advanced`.** ADR 0093 promises "a
-##    subscriber connects from its own boot function, which `app/` calls" — and until
-##    this line, SEVEN signals had ZERO subscribers, so a promise in a docstring was
-##    the whole of the contract. The sink is [method NpcLedger.record] below: an
-##    in-memory audit trail of who moved and what drove them, and the first thing that
-##    proves the bus is live.
+## 2. **Five subscribers on `NpcApi.events()`** — `stage_advanced`, `npc_tracked`,
+##    `npc_restored`, `bond_changed` and `presence_changed`, all landing in
+##    [method NpcLedger]. ADR 0093 promises "a subscriber connects from its own boot
+##    function, which `app/` calls" — and until this line, SEVEN signals had ZERO
+##    subscribers, so a promise in a docstring was the whole of the contract.
+##
+## ## `bond_changed` is reached on the SAME bus, not through `social/api.gd`
+##
+## `social/` owns the bond ledger and may NOT depend on `npc/` (it declares `contracts`
+## and `core`), so it publishes `bond_changed` on `NpcEvents.shared()` — the leaf-layer
+## bus `contracts/npc_events.gd` owns, which is why that accessor exists at all.
+## Connecting through `SocialApi` instead would have been an inversion AND would have
+## needed a thirteenth facade verb.
+##
+## ## Every connect is guarded, and `npc_transient` deliberately is not here
+##
+## `install` is idempotent and a load re-runs it, so each `.connect(` sits behind an
+## `is_connected` check against the exact static Callable: a second connect to the same
+## Callable is an engine error, and a lambda would defeat the guard entirely because
+## `is_connected` compares identity.
+##
+## `npc_transient` is the one signal left unwired. No consumer for it exists anywhere in
+## the tree, so it keeps a written reservation in
+## `tests/modules/npc/test_npc_event_contract.gd` rather than gaining a row-logger here —
+## the `decision_answered` precedent (BL-0793): a blessed seam with no implementor is a
+## rumour of a system that does not exist. `npc/api.gd:195` still emits it, so if a real
+## consumer is ever built the reservation is what that work removes.
 static func _install_event_seams() -> void:
 	# The direct Callable, not a lambda that forwards to it: `NpcApi.tally` is a
 	# STATIC verb and a typed lambda over it is the shape that once killed the shell
@@ -65,6 +86,14 @@ static func _install_event_seams() -> void:
 	var events := NpcApi.events()
 	if not events.stage_advanced.is_connected(NpcLedger.advanced):
 		events.stage_advanced.connect(NpcLedger.advanced)
+	if not events.npc_tracked.is_connected(NpcLedger.tracked):
+		events.npc_tracked.connect(NpcLedger.tracked)
+	if not events.npc_restored.is_connected(NpcLedger.restored):
+		events.npc_restored.connect(NpcLedger.restored)
+	if not events.bond_changed.is_connected(NpcLedger.bond):
+		events.bond_changed.connect(NpcLedger.bond)
+	if not events.presence_changed.is_connected(NpcLedger.presence):
+		events.presence_changed.connect(NpcLedger.presence)
 
 
 ## Install the constructor, read the authored cast, and bind the roster to `player`.
@@ -75,6 +104,18 @@ static func install(player: Actor) -> void:
 	# so they cannot half-install anything — and a beat that arrives before a player is
 	# attached would otherwise be refused with nothing installed to fix it.
 	_install_event_seams()
+	# **And the roster reader, for the same reason (DEF-0261).** `where_is` is the
+	# tracked where-the-player-is fact a panel keys its roster on, and `ui/` may reach
+	# NEITHER `npc` nor `world_spawn` through a facade (neither is in `rules.UI_MODULES`),
+	# so the seam has to be filled here rather than from a route arm. `install` is the one
+	# function that runs on a fresh boot, on a restore AND on a rebirth, so the roster is
+	# live on all three paths and not only the one a route-bind would have covered.
+	#
+	# **The install is idempotent because the reader refuses a duplicate**, exactly the
+	# `WorldFact.subscribe` rule: a second root in the same process must not take the
+	# seam away from the first, or the roster would silently answer for the wrong player.
+	# The refusal is not an error, so the return is deliberately unused here.
+	NpcRosterBridge.install_room_reader(Callable(NpcBoot, "where_is"))
 	# Content first, and unconditionally — see the section note above. `load_authored`
 	# short-circuits on its second call, so a boot and a later re-install cost one scan.
 	NpcCatalog.instance().load_authored()
@@ -117,6 +158,15 @@ static func tick(actor: Actor, delta: float) -> int:
 ## `install` runs first and it DOES clear the live registry, which is the point here: a
 ## room load is entitled to replace the cast, and `populate`'s own `replace_first` then
 ## mints the new one. A read never does this — see `read_model`.
+##
+## ## `location_id` reaches the SPAWN, or `npcs` is empty (BL-0715)
+##
+## It used to reach only the read on the last line, and every row the write produced
+## recorded `location_id: ""` — so the filter dropped all of them and the settlement panel
+## was handed `spawned: 4, npcs: []` while four bodies stood in the room. A `spawned` count
+## beside an empty `npcs` is not a partial answer, it is a self-contradiction, so `spawned`
+## counts exactly the rows the panel can see: every body minted here is stamped with this
+## place, and the two numbers agree.
 static func populate_room(
 	player: Actor,
 	def_ids: Array[StringName],
@@ -124,7 +174,7 @@ static func populate_room(
 	location_id: StringName = &""
 ) -> Dictionary:
 	install(player)
-	var spawned := NpcApi.populate(def_ids, role)
+	var spawned := NpcApi.populate(def_ids, role, true, location_id)
 	return {
 		"spawned": spawned.size(),
 		"location_id": String(location_id),
@@ -132,16 +182,99 @@ static func populate_room(
 	}
 
 
+## ## `where_is` — the TRACKED where-the-player-is fact, and the door a screen keys on
+##
+## ## Why this exists, and why it is NOT [method populate_room]'s answer
+##
+## `populate_room` returns a BOOT-TIME settlement: one room, minted once, never
+## restocked (`item_workbench_body.gd` says so in its own docblock, because
+## `STARTING_CAST` is a fact about the settlement the slice OPENS on rather than a
+## property of a body). A screen that keyed a roster on that dict would show a stale
+## cast as though it were the room the player was standing in — which is worse than
+## showing no roster at all, because a player cannot tell a stale list from a true one.
+##
+## So the composition root keeps the CURRENT room as a first-class, tracked fact and a
+## screen keys on THAT. The two are different facts and this function is the honest one:
+## it reads the durable location ledger (`world_spawn`), which the world map writes when
+## the player travels and the arrival path writes when a hero is born.
+##
+## ## Why it is monotone-safe, and why it is not a `WorldFact` row
+##
+## A `WorldFact` is a thing that HAPPENED and may never be lowered (ADR 0065), and its
+## row stores an integer count — so "which room am I standing in" is not a fact in that
+## ledger's sense. Moving rooms lowers one answer and raises another. The two facts are
+## kept apart on purpose: `WorldFact` counts arrivals, this reports the one place that is
+## current. **No second copy of the location is kept here** — the value is READ from
+## `world_spawn`'s own ledger on every call, so this file cannot drift from it.
+##
+## ## The roster rides this function, so the room and the cast are one answer
+##
+## [method where_is] returns the place AND the presence for that exact place, in one
+## read. A caller cannot pair this location with a cast read somewhere else and get a
+## roster for the wrong room, because there is no way to hold the half and re-read the
+## other half later.
+static func where_is(actor: Actor) -> Dictionary:
+	if actor == null:
+		return {
+			"has_actor": false,
+			"location_id": "",
+			"display_name": "",
+			"located": false,
+			"here": _no_room(),
+		}
+	# `WorldSpawnApi` is the module that OWNS "where is this actor" — it is the durable
+	# ledger, it survives a save, and it is what `WorldStage.mount` writes on a journey.
+	# Re-deriving a room here would be a second answer to one question.
+	var place := WorldSpawnApi.current(actor)
+	var location_id := StringName(String(place.get("location_id", "")))
+	var located := bool(place.get("located", false)) and location_id != &""
+	# **An unlocated hero gets the EMPTY room, never the everywhere answer.** This is the
+	# single most dangerous line in the function: `NpcApi.presence_here("")` means
+	# "everywhere", so passing an empty id here would hand a hero standing nowhere the
+	# cast of every populated room in the settlement — which is precisely the
+	# borrowed-neighbour's-cast defect this feature exists to refuse, wearing a location
+	# filter as a disguise. So the empty-room payload is the answer unless there is a
+	# real place to filter by.
+	var here: Dictionary = (
+		(read_model(actor, location_id) as Dictionary).get("here", _no_room())
+		if located
+		else _no_room()
+	)
+	return {
+		"has_actor": true,
+		"location_id": String(location_id) if located else "",
+		"display_name": String(place.get("display_name", "")),
+		"located": located,
+		"here": here,
+	}
+
+
+## The empty presence payload, spelled once so "a room with nobody in it" and "no room
+## at all" cannot disagree about their shape. A player who walks into an empty place
+## must see an EMPTY roster, never the neighbours' — so this is `count: 0` with an empty
+## `npcs` array and never a borrowed list.
+static func _no_room() -> Dictionary:
+	return {"location_id": "", "count": 0, "truncated": false, "npcs": []}
+
+
 ## The whole npc read model for one screen: who is here, and who the player has met.
 ##
 ## Deliberately does NOT call `install`. This is a read, and `install` -> `attach` clears
 ## the live registry — so a panel polling for state would empty the room it is rendering.
 ## A read binds nothing; it reads whatever the last `install` left in place.
-static func read_model(player: Actor) -> Dictionary:
+##
+## ## `location_id` defaults to everywhere, and that default is the whole point (BL-0715)
+##
+## This used to call `presence_here()` with no argument and no way to ask, which is what
+## let the spawn/read mismatch live: a screen that could only ever ask "who is ANYWHERE"
+## cannot tell "the room is empty" from "the read is filtering the room out". Defaulting
+## to `""` stays legitimate — an everywhere answer is a real question — but it is now a
+## choice at the call site rather than the only shape the verb has. Still no `install`.
+static func read_model(player: Actor, location_id: StringName = &"") -> Dictionary:
 	var roster := NpcApi.state(player)
 	return {
 		"has_actor": player != null,
 		"roster": roster,
-		"here": NpcApi.presence_here(),
+		"here": NpcApi.presence_here(location_id),
 		"bond_with": SocialApi.summary(player),
 	}

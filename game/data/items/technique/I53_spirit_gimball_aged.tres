@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"I53_spirit_gimball_aged"
 display_name = "Spirit Gimball Aged"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_condensation"
 fixed_modifiers = Array[Dictionary]([

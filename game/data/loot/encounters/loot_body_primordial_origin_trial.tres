@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"primordial_origin"
 rarity = &"common"
-vitality = 272.0
+vitality = 1033987.5
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_primordial_origin_guardian", "table_id": &"loot_body_primordial_origin_guardian"},
 	{"boss_id": &"E10_primordial_sentinel", "table_id": &"loot_E10_primordial_sentinel"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"primordial_origin"
 rarity = &"rare"
-vitality = 435.2
+vitality = 1654380.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_primordial_origin_guardian", "table_id": &"loot_body_primordial_origin_guardian"},
 	{"boss_id": &"E10_primordial_sentinel", "table_id": &"loot_E10_primordial_sentinel"},

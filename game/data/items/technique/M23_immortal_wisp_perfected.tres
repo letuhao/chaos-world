@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"M23_immortal_wisp_perfected"
 display_name = "Immortal Wisp Perfected"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"
 fixed_modifiers = Array[Dictionary]([

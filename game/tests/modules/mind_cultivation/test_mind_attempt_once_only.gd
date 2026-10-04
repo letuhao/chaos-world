@@ -75,6 +75,18 @@ func _rng(seed_value: int) -> RandomNumberGenerator:
 	return rng
 
 
+## A seed whose first draw wins `actor`'s published chance, so a case that NEEDS a
+## success can have one deterministically. Arithmetic over `MindAttemptRoll.replay`,
+## which is the generator the resolve itself builds, so this asks exactly the
+## question the module answers. Bounded and RETURNING.
+func _winning(actor: Actor) -> RandomNumberGenerator:
+	var chance := float(MindAdvancement.preview(actor).get("chance", 0.0))
+	for candidate in range(MindAttemptRoll.MIN_SEED, 256):
+		if MindAttemptRoll.replay(candidate).randf() < chance:
+			return _rng(candidate)
+	return _rng(0)
+
+
 ## The strongest form of the rule, and the case that separates it from every
 ## incidental shortcut a future agent might reach for.
 ##
@@ -110,7 +122,7 @@ func test_an_attempt_already_at_its_target_is_cancelled_not_treated_as_granted()
 	assert_eq(stale.is_active(), true, "still an active attempt")
 	assert_eq(stale.outcome_granted, false, "still not granted")
 
-	assert_eq(MindAdvancement.resolve_attempt(actor, _rng(8)), false, "no award")
+	assert_eq(MindAdvancement.resolve_attempt(actor), false, "no award")
 	assert_eq(actor.stats.get_base(Stat.WILL), will, "the award was NOT granted a second time")
 	assert_eq(
 		MindAdvancement.attempt(actor).status,
@@ -149,7 +161,7 @@ func test_a_flagged_attempt_short_circuits_before_any_work() -> void:
 
 	started.outcome_granted = true
 	actor.set_module_data(MindAdvancement.ATTEMPT_KEY, started.to_dict())
-	assert_eq(MindAdvancement.resolve_attempt(actor, _rng(12)), true, "granted, as flagged")
+	assert_eq(MindAdvancement.resolve_attempt(actor), true, "granted, as flagged")
 	assert_eq(actor.stats.get_base(Stat.WILL), will, "nothing actually granted")
 	assert_eq(
 		actor.path(MindPath.PATH_ID).rank_id,
@@ -166,9 +178,14 @@ func test_the_once_only_flag_survives_save_and_load() -> void:
 	var actor := _actor()
 	var seed := _prepare(actor)
 	var will := actor.stats.get_base(Stat.WILL)
-	var rng := _rng(17)
+	# A SEARCHED winning seed, not a typed-in one. With the resolve reading the
+	# record, a hard-coded `17` would make this case a coin flip: the commit would
+	# store 17 and the outcome would be whatever 17 draws. The seed is chosen to
+	# beat the published chance so the property under test — the flag, not the roll
+	# — is the only thing that can decide it.
+	var rng := _winning(actor)
 	assert_ne(MindAdvancement.start(actor, rng), null, "attempt started")
-	assert_eq(MindAdvancement.resolve_attempt(actor, rng), true, "resolved as a success")
+	assert_eq(MindAdvancement.resolve_attempt(actor), true, "resolved as a success")
 	var after_first := actor.stats.get_base(Stat.WILL)
 	assert_eq(after_first > will, true, "the award landed")
 
@@ -176,6 +193,6 @@ func test_the_once_only_flag_survives_save_and_load() -> void:
 	var reloaded := MindAdvancement.attempt(restored)
 	assert_ne(reloaded == null, true, "the record came back")
 	assert_eq(reloaded.outcome_granted, true, "the once-only flag came back with it")
-	assert_eq(MindAdvancement.resolve_attempt(restored, rng), true, "same answer after the reload")
+	assert_eq(MindAdvancement.resolve_attempt(restored), true, "same answer after the reload")
 	assert_eq(restored.stats.get_base(Stat.WILL), after_first, "and still no second award")
 	assert_eq(restored.path(MindPath.PATH_ID).rank_id, seed.id, "still exactly one realm on")

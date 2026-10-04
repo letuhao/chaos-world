@@ -7,6 +7,9 @@ build/
 # Private generated character asset folders. Keep the catalog and tags at the parent path tracked.
 game/assets/characters/*/
 
+# Private content repo (unique characters + exclusive content, not shared)
+game/assets/characters/unique/
+
 # Asset proof-of-concept review folder (local only, never committed)
 poc/
 

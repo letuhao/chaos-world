@@ -18,7 +18,6 @@ const NEUTRAL_SCALARS := {
 	"soul_damage_share": 1.0,
 	"death_loss_cap": 1.0,
 	"guardian_effectiveness": 1.0,
-	"loot_ceiling": 1.0,
 	"tribulation_preparation_credit": 1.0,
 }
 

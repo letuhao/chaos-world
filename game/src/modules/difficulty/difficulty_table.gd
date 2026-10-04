@@ -12,11 +12,18 @@ extends Resource
 ##
 ## ## Why the scalar set is closed
 ##
-## Five scalars, all of them fractions of something the player already holds. A sixth column
+## Four scalars, all of them fractions of something the player already holds. A fifth column
 ## would be a second power curve in disguise, and this repo has three power-shaped tables
-## already with a written rule that adding a fourth needs an ADR. So the set is closed here and
-## `uv run python -m tools difficulty check` fails on a sixth key rather than trusting a future
-## author to remember.
+## already with a written rule that adding a fourth needs an ADR. So the set is closed here
+## and `uv run python -m tools difficulty check` fails on a fifth key rather than trusting a
+## future author to remember.
+##
+## **`loot_ceiling` was the fifth, and it is deleted (BL-0779).** A `LootTier` is ORDINAL: it
+## is selected by an authored `tier_index`, and scaling one by a difficulty is ADR 0050's
+## category error one layer down — reading one number as two. The only fractions in
+## `modules/loot/` are the `loot_bonus` axes, and those already sit under hard per-axis caps
+## that a difficulty may not re-open. A column with no honest consumer is removed, not left
+## authored.
 ##
 ## ## Why the default row is exactly 1.0
 ##
@@ -30,7 +37,6 @@ const SCALARS: Array[String] = [
 	"soul_damage_share",
 	"death_loss_cap",
 	"guardian_effectiveness",
-	"loot_ceiling",
 	"tribulation_preparation_credit",
 ]
 

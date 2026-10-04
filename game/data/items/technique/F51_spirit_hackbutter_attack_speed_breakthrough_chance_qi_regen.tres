@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F51_spirit_hackbutter_attack_speed_breakthrough_chance_qi_regen"
 display_name = "Spirit Hackbutter Attack speed Breakthrough chance Qi regen"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_unity"
 fixed_modifiers = Array[Dictionary]([

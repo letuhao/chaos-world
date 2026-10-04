@@ -32,8 +32,9 @@ extends TestCase
 const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
 
 ## Seeds searched for one that beats the published chance. `resolve_attempt` draws
-## once from the generator it is handed, so the winning seed follows from the chance
-## the module published rather than from a number copied out of an earlier run.
+## once off a generator rebuilt from the seed the COMMIT stored, so the winning seed
+## follows from the chance the module published rather than from a number copied out
+## of an earlier run.
 const SEED_GUARD := 64
 
 ## Steps one meridian may take up the four-state channel ladder: three to reach
@@ -447,7 +448,7 @@ func test_a_gate_that_closes_after_the_attempt_started_costs_no_roll() -> void:
 		false,
 		"so the created-world gate is shut underneath it, on the pre-state chosen here"
 	)
-	assert_eq(MindAdvancement.resolve_attempt(actor, rng), false, "and the resolve refuses")
+	assert_eq(MindAdvancement.resolve_attempt(actor), false, "and the resolve refuses")
 	assert_eq(
 		actor.path(MindPath.PATH_ID).rank_id, Probe.realm_at(SOURCE).id, "the realm is unchanged"
 	)
@@ -611,15 +612,25 @@ func _prepare(actor: Actor, source: RealmDef, target: RealmDef) -> void:
 	Probe.stock(actor, target_seed.breakthrough_item)
 
 
-## The first rng seeded `candidate` whose single draw beats `chance`, searched rather
-## than hoped for.
+## The first seed whose single draw beats `chance`, searched rather than hoped for.
+##
+## Returns a FRESH generator carrying only that seed. This used to return the probe
+## whose first draw the search had already consumed, which happened to be harmless
+## while the commit stored `rng.seed` — but it handed a caller a generator whose
+## stream disagreed with its own seed, which is the exact confusion
+## `MindAttemptRoll` documents. Probing a throwaway makes the trap unrepresentable.
 func _winning(chance: float) -> RandomNumberGenerator:
-	for candidate in range(1, SEED_GUARD):
-		var rng := RandomNumberGenerator.new()
-		rng.seed = candidate
-		if rng.randf() < chance:
-			return rng
-	return RandomNumberGenerator.new()
+	for candidate in range(MindAttemptRoll.MIN_SEED, SEED_GUARD):
+		if MindAttemptRoll.replay(candidate).randf() < chance:
+			return _seeded(candidate)
+	return _seeded(MindAttemptRoll.MIN_SEED)
+
+
+## A generator carrying `seed_value` and nothing else — no draw taken off it yet.
+func _seeded(seed_value: int) -> RandomNumberGenerator:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value
+	return rng
 
 
 ## Core's own predicate for one of the four shared gates, named by the key `preview`

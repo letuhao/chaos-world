@@ -9,21 +9,18 @@ presets = {
 "soul_damage_share": 0.5,
 "death_loss_cap": 1.0,
 "guardian_effectiveness": 1.0,
-"loot_ceiling": 1.0,
 "tribulation_preparation_credit": 1.0
 },
 &"standard": {
 "soul_damage_share": 1.0,
 "death_loss_cap": 1.0,
 "guardian_effectiveness": 1.0,
-"loot_ceiling": 1.0,
 "tribulation_preparation_credit": 1.0
 },
 &"hard": {
 "soul_damage_share": 1.5,
 "death_loss_cap": 1.5,
 "guardian_effectiveness": 0.85,
-"loot_ceiling": 0.9,
 "tribulation_preparation_credit": 0.75
 }
 }

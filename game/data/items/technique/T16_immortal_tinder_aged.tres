@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"T16_immortal_tinder_aged"
 display_name = "Immortal Tinder Aged"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"heaven_immortal"
 fixed_modifiers = Array[Dictionary]([

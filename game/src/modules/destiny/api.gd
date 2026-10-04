@@ -414,7 +414,16 @@ static func _fate_view(def: FateDef, held: bool) -> Dictionary:
 		"teaser": String(def.teaser),
 		"category": String(def.category),
 		"tier": def.tier,
-		"tags": _string_list(def.tags),
+		# **Gated on `reveal`, and that is a published-key contract change (ADR
+		# 0196, fate tag vocabulary).** `tags` used to be published unconditionally. It was harmless
+		# while nothing read them; the moment a `tagged` gate exists, an unheld
+		# hidden fate's tags become a spoiler channel — a codex can say "a gate
+		# needs a duel-marked fate", and a player holding one learns that a
+		# HIDDEN fate carries `duel` without ever earning it. `the_third_man_spared`
+		# is `hidden` and carries `[mercy, duel]`, so this is not hypothetical.
+		# An unheld hidden fate publishes `[]`; its real tags appear once held or
+		# once the content is authored `revealed`.
+		"tags": _string_list(def.tags) if reveal else [],
 		"modifier_count": def.build_modifiers().size(),
 	}
 

@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"qi_refining"
 rarity = &"common"
-vitality = 256.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"succubus_transcendent_guardian", "table_id": &"loot_succubus_transcendent_guardian"},
 	{"boss_id": &"d5_transcendent_radiance", "table_id": &"loot_d5_transcendent_radiance"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"qi_refining"
 rarity = &"rare"
-vitality = 409.6
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"succubus_transcendent_guardian", "table_id": &"loot_succubus_transcendent_guardian"},
 	{"boss_id": &"d5_transcendent_radiance", "table_id": &"loot_d5_transcendent_radiance"},

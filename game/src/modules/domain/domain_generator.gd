@@ -538,19 +538,31 @@ static func _place_structural(
 	#     searches and can coincide, and `_lowest_neighbour` can answer -1. A repeated or
 	#     negative index made `_free_leaf` read a taken-set that was not the set of
 	#     leaves actually reserved.
-	#   - IT LEAVES ROOM FOR THE PINS. An author pin is CONTENT, and this module exists
-	#     so content is not starved by a rule. Arenas are the only discretionary kind
-	#     here, so they are what gives way: when `ember_grotto` seed 46 reserved all eight
-	#     of its leaves, `_free_leaf` answered -1 and the pin was dropped with no
-	#     diagnostic at all -- which is the one outcome the docstring below says must not
-	#     happen. Budget the arenas against the pin count so every pin has a leaf to land
-	#     on, and hard structure (floor/core/gate) never yields, because geometry is the
-	#     part a pin is documented never to overrule.
+	#   - IT LEAVES ROOM FOR THE PINS AND FOR THE REST OF THE KIT. An author pin is
+	#     CONTENT, and this module exists so content is not starved by a rule. Arenas are
+	#     the only discretionary kind here, so they are what gives way: when
+	#     `ember_grotto` seed 46 reserved all eight of its leaves, `_free_leaf` answered
+	#     -1 and the pin was dropped with no diagnostic at all -- which is the one
+	#     outcome the docstring below says must not happen. Budget the arenas against the
+	#     pin count so every pin has a leaf to land on, and hard structure
+	#     (floor/core/gate) never yields, because geometry is the part a pin is
+	#     documented never to overrule.
+	#
+	#     An arena also consumes a DEAL, and a deal is a slot in the rest of the room kit
+	#     (`_deal` -> `_dealt_pool`). Budgeting arenas against the leaves alone is what
+	#     let an arena crowd out authored content: at `ember_grotto` seed 13 five arenas
+	#     left four free leaves for a five-def kit, and `ash_chamber` could not be built
+	#     at all. The budget is therefore the kit's own requirement — one leaf per def
+	#     that no pin has already placed — with the pins' leaves added on top, never
+	#     subtracted: `ARENA_KIT_FLOOR` keeps a template with no pool at all (every leaf
+	#     a pin or a rule) placing exactly the arenas it has.
+	const ARENA_KIT_FLOOR := 0
+	var kit_leaves := maxi(ARENA_KIT_FLOOR, template.room_pool.size() - _pinned_def_count(template))
 	var reserved: Array = []
 	for index in [entry, core, gate]:
 		if index >= 0 and not reserved.has(index):
 			reserved.append(index)
-	var arena_budget := maxi(0, leaves.size() - reserved.size() - template.pins.size())
+	var arena_budget := maxi(0, leaves.size() - reserved.size() - template.pins.size() - kit_leaves)
 	var arenas: Array[int] = []
 	for index in _arena_indices(entry, core, depth):
 		if index != core and arenas.size() < arena_budget and not reserved.has(index):
@@ -566,6 +578,19 @@ static func _place_structural(
 		&"arenas": arenas,
 		&"reserved": reserved,
 	}
+
+
+## How many defs this template PINS — the authored pins that name a pinnable kind and
+## a `room_def`. Read from the template itself, so a leaf budget can never drift from
+## the pin list. Bounded by `template.pins`; `for` over the array, no `while`.
+static func _pinned_def_count(template: DomainTemplateDef) -> int:
+	var count := 0
+	for pin in template.pins:
+		if pin == null or pin.room_def == null or pin.leaf_index < 0:
+			continue
+		if DomainTemplateDef.is_pinnable_kind(pin.kind):
+			count += 1
+	return count
 
 
 ## The entry leaf: the one whose rect CONTAINS `entry_anchor`, else the lowest canonical
@@ -717,7 +742,6 @@ static func _realize(
 		)
 		return null
 	var kinds: Array[StringName] = placements[&"kinds"]
-	var kit := _seeded_shuffle(template.room_pool.duplicate(), rng)
 	# The SAME reserved set `_apply_pins` used, resolved once in `_place_structural`, so
 	# a pin's def and its kind land on the same leaf. Passing different sets is how a
 	# settlement kind ended up on a plain chamber def.
@@ -725,6 +749,20 @@ static func _realize(
 	# The pin's KIND travels with its def, resolved from the same reserved set, so a
 	# relocated settlement is not realized as whatever the rule put on that leaf.
 	var pinned_kinds := _pinned_kinds(template, leaves, placements[&"reserved"])
+	# Deal over what is LEFT of the kit. A pin's def stays in `template.room_pool` —
+	# `_pinned_defs` refuses a pin naming a def the pool does not carry — but a PIN
+	# RESERVES that leaf's own def, so dealing it again as well filled a second room
+	# with the same room and left the kit's tail unbuilt. Measured before the fix:
+	# every one of `ember_grotto`'s 64 seeds dropped exactly one def, because its
+	# single pin sits at leaf 4 and the old `unfilled % pool_size` landed on that def
+	# exactly on the leaves after it. `flame_valley_depths` lost 18 of 64 seeds and
+	# `stormwrack_reach` 6.
+	var dealt_pool := _dealt_pool(template, rng, pinned)
+	# How many leaves the kit gets DEAL, as opposed to how many are filled by a rule
+	# or a pin. This, and not the room count, is what decides whether a kit this size
+	# is fully built — which is why the completeness guard measures it here instead
+	# of guessing a leaf budget from a template it does not own.
+	var deals := leaves.size() - pinned.size()
 	var entry := int(placements[&"entry"])
 	var map := DomainMap.new(template.extent, seed_value)
 	var ids: Array[StringName] = []
@@ -732,7 +770,7 @@ static func _realize(
 		var kind: StringName = kinds[index]
 		var def: RoomDef = pinned.get(index, null)
 		if def == null:
-			def = kit[_deal(index, pinned.size(), kit.size())]
+			def = dealt_pool[_deal(index, pinned.keys(), dealt_pool.size())]
 		var room := _materialize(def, leaves[index], kind, index, pinned_kinds.get(index, &""))
 		ids.append(room.room_id)
 		map.add_room(room)
@@ -743,6 +781,27 @@ static func _realize(
 		_append_exit(map.room(ids[edge.b]), ids[edge.a])
 	_guarantee_connected(map, ids, placements)
 	map.entry_room = ids[entry]
+	if template.requires_full_kit and dealt_pool.size() > deals:
+		# LOUD, AND ONLY WHEN THE TEMPLATE ASKS FOR IT. A kit this size cannot be built
+		# from this seed's free leaves, so returning the map would ship a domain that is
+		# quietly missing a room an author declared mandatory. One `push_error` naming the
+		# template, the seed and both numbers, then null — never a retry, and never a map
+		# with a hole in it (AGENTS.md: a feature that cannot work fails out loud).
+		_fail(
+			template,
+			seed_value,
+			(
+				(
+					"requires_full_kit and can deal %d of its %d pool defs into %d free leaf/leaves "
+					% [deals, dealt_pool.size(), deals]
+				)
+				+ (
+					"(%d pin(s) took %d of them); it builds a domain missing authored rooms"
+					% [pinned.size(), pinned.size()]
+				)
+			)
+		)
+		return null
 	return map
 
 
@@ -795,18 +854,55 @@ static func _guarantee_connected(
 		reachable.append(orphan)
 
 
-## The pool entry for the `index`-th unfilled leaf. The pool is dealt ROUND ROBIN over
-## the leaves in canonical order: the first unfilled leaf takes kit[0], the second
-## kit[1], and the pool wraps. The shuffle happened once, so this is a function of the
-## canonical order and the shuffled kit, not of a second draw per leaf.
-static func _deal(index: int, pinned_count: int, pool_size: int) -> int:
-	# Wraps over the POOL, not the leaf count. A kit of 3 defs filling 24 leaves must
-	# repeat those 3, not index past the end of the array: `index % pool_size` is what
-	# makes round-robin mean round-robin.
-	if pool_size <= 0:
+## The kit this seed actually deals from: the shuffled `room_pool` with every PINNED
+## def removed.
+##
+## A pin is a def placed, not a def set aside — the authored `RoomDef` stays in the
+## shared kit (ADR 0073) and `_pinned_defs` refuses a pin naming a def the pool does
+## not carry, so a pin can never smuggle in content. But that same def is already
+## BUILT on its own leaf, and dealing it round-robin as well filled a second room with
+## it and left the kit's tail unbuilt: `ember_grotto` built `ash_camp` three times and
+## dropped `ash_chamber` on every one of its 64 seeds, because its single pin sits at
+## leaf 4 and the old `unfilled % pool_size` landed on `ash_chamber` exactly on the
+## leaves after it. Removing the def is what makes the kit DEALT to the remaining
+## leaves cover the defs a pin has not already placed.
+static func _dealt_pool(
+	template: DomainTemplateDef, rng: RandomNumberGenerator, pinned: Dictionary
+) -> Array[RoomDef]:
+	var pinned_defs: Array[RoomDef] = []
+	for index in pinned:
+		pinned_defs.append(pinned[index] as RoomDef)
+	var out: Array[RoomDef] = []
+	for room_def in _seeded_shuffle(template.room_pool.duplicate(), rng):
+		if pinned_defs.has(room_def):
+			continue
+		out.append(room_def)
+	return out
+
+
+## The dealt-pool entry for the `index`-th leaf, counted in the leaves a pin has not
+## already filled.
+##
+## The pool is dealt ROUND ROBIN over the leaves in canonical order: the first
+## unfilled leaf takes `dealt[0]`, the second `dealt[1]`, and the pool wraps. The
+## shuffle happened once, so this is a function of the canonical order and the shuffled
+## kit, not of a second draw per leaf.
+##
+## `unfilled_before` is `index` minus the PINNED LEAVES BEFORE IT — the leaves already
+## filled are exactly the ones removed from `dealt`. The previous form was
+## `index - mini(index, pinned_count)`, which subtracted the template's WHOLE pin count
+## from every leaf: with 5 defs, 1 pin and 10 leaves the dealt entries ran `0 0 1 2 3`
+## and `kit[4]` — the def the pin had already placed — was never dealt, while the
+## pinned def was dealt at `unfilled == 1`. Counting the pinned leaves that actually
+## precede `index` makes the round robin cover the pool's tail on any map of any size.
+static func _deal(index: int, pinned_indexes: Array, dealt_size: int) -> int:
+	if dealt_size <= 0:
 		return 0
-	var unfilled_before := index - mini(index, pinned_count)
-	return maxi(0, unfilled_before) % pool_size
+	var filled_before := 0
+	for leaf in pinned_indexes:
+		if (leaf as int) < index:
+			filled_before += 1
+	return maxi(0, index - filled_before) % dealt_size
 
 
 ## The def a leaf's pin fixes, keyed by leaf index.

@@ -35,20 +35,18 @@ const ONLY_FACADE_CALL := "SectApi.summary"
 ## case; `promote` is reached because a council acts through the same screen and an
 ## authored authority decides it.
 ##
-## The mutating verbs deliberately NOT here are the ones a button must never offer:
-## - `found` — founding prices an institution and consumes a funding pool, which is
-##   a progression beat, not a menu click.
-## - `teach` — a lesson spends the TEACHER's fit (BL-0188). Putting it two clicks
-##   from a player makes a mentor a resource faucet, which is the exact failure the
-##   cost was added to prevent.
-## - `move_standing` — the institution moves a member's standing, never the member.
-## - `advance_succession` — a walk advances by whole authored stages, never by a
-##   keypress (ADR 0084's pacing).
-const SCREEN_ACTIONS := ["join", "leave", "promote"]
+## `found` and `teach` joined this list in the reachability fix, and the reason they
+## belong is narrower than "everything else is now a button": both are acts about the
+## PLAYER'S OWN claim and nothing else. `found` is one hero making a house out of
+## their own purse; `teach` is one member instructing another in a school they are both
+## sworn to. Neither touches a third party's standing, a seat anybody else holds, or a
+## split — which is precisely what the three below do, and what makes them
+## "an inquisition a two-click accident" rather than a screen action.
+const SCREEN_ACTIONS := ["join", "leave", "promote", "found", "teach"]
 ## Every mutating verb `sect` publishes, read-only for this file's purposes: the
 ## check below is that the screen reaches the ACTIONS and is not expected to reach
 ## the rest. Kept as documentation of what exists and why.
-const MODULE_ONLY_VERBS := ["found", "teach", "move_standing", "advance_succession"]
+const MODULE_ONLY_VERBS := ["move_standing", "advance_succession", "declare_schism"]
 ## The verbs a screen legitimately reads, besides `summary`. Reaching one of these from
 ## `ui/` would widen the facade instead of using the fold ADR 0083 already made.
 const OTHER_FACADE_VERBS := ["attach", "gate", "state"]

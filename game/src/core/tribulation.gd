@@ -84,6 +84,27 @@ const PREPARATION_AIDS: Array[String] = ["formation", "environment"]
 ## The most preparation may ever buy: a fraction off the rating, never a flat
 ## exemption. Preparation is an input, never a gate.
 const PREPARATION_FLOOR := 0.5
+## The most an injected credit may MULTIPLY the measured aid by. A credit above it buys
+## nothing extra: the `PREPARATION_FLOOR` cap is applied after the credit, so the ceiling on
+## preparation is one number in one place and no credit can raise it.
+const MAX_CREDIT := 2.0
+
+## ## What preparation is WORTH is injected, and `core` may not name who decides
+##
+## ADR 0129's `tribulation_preparation_credit` is a fraction of an authored aid, so it is
+## legal to scale — but this file is `core`, and `LAYER_DEPS` holds `core` to
+## `{"core", "contracts"}`, so it cannot name `difficulty`. This is the seam the repo
+## already uses five times for a value a layer cannot reach (`NpcApi.set_minter`,
+## `TechniqueCasting.set_resolver`, `HoldingsApi.set_store`, `WorldFact.subscribe`): a
+## `static var Callable` the composition root fills, and an UNFILLED one means exactly the
+## credit that was shipped before this existed.
+##
+## Signature `func(actor: Actor) -> float`: the credit is a per-run share, so it takes the
+## body being fought for. Anything unusable is read as `1.0` (see [_credit]) — a difficulty
+## that is absent, non-numeric or non-finite must be inert, never a harder fight nobody
+## chose. The callable may only ever scale the aid a player MEASURED; it cannot touch the
+## rating's authored inputs, the wave count, or the endurance span.
+static var _preparation_credit: Callable = Callable()
 
 var type: StringName = LIGHTNING
 var phase: StringName = WARNING
@@ -99,6 +120,18 @@ var realm_id: StringName = &""
 ## Whether this tribulation has been decided, and how. Persisted, because a
 ## survivor that cannot survive a save would silently re-close its own gate.
 var outcome: StringName = OUTCOME_UNRESOLVED
+
+
+## Install the credit `[method _preparation_reduction]` spends preparation at.
+## Passing an empty Callable clears it, so an uninstall is deterministic.
+static func set_preparation_credit(credit: Callable) -> void:
+	_preparation_credit = credit
+
+
+## Whether a credit is installed, so a caller can tell "no difficulty seam" from "the seam
+## says the fight is unchanged" rather than reading the same silence for both.
+static func has_preparation_credit() -> bool:
+	return not _preparation_credit.is_null() and _preparation_credit.is_valid()
 
 
 func _init(p_type: StringName = LIGHTNING, p_max_waves: int = 3, p_difficulty: float = 1.0) -> void:
@@ -221,7 +254,7 @@ func rate(actor: Actor) -> float:
 		var affinity: float = actor.relationships[partner_id]
 		if affinity < 0.0:
 			rating += absf(affinity) * 0.01
-	return rating * (1.0 - _preparation_reduction())
+	return rating * (1.0 - _preparation_reduction(actor))
 
 
 ## Get the rewards dictionary for a successful tribulation.
@@ -301,12 +334,31 @@ func _measure_preparation(actor: Actor) -> Dictionary:
 
 
 ## How much of the bounded endurance span the recorded aid buys, capped so no
-## preparation can farm the fight away.
-func _preparation_reduction() -> float:
+## preparation can farm the fight away. The injected credit is spent on the MEASURED total
+## and the cap is applied AFTER it, so a credit below one deepens the aid's discount and a
+## credit above one still cannot lift preparation past `PREPARATION_FLOOR` — preparation is
+## an input, never a gate, and that survives the difficulty dial.
+func _preparation_reduction(actor: Actor) -> float:
 	var total := 0.0
 	for aid in PREPARATION_AIDS:
 		total += float(preparation.get(aid, 0.0))
-	return minf(total, PREPARATION_FLOOR)
+	return minf(total * _credit(actor), PREPARATION_FLOOR)
+
+
+## The share this body is credited for its preparation: a fraction, clamped to
+## the authored window `[0, MAX_CREDIT]`. Uninstalled, invalid, non-numeric,
+## out of range or non-finite all read as exactly `1.0`, because every one of those is an
+## absent credit rather than a fight the player did not ask for.
+func _credit(actor: Actor) -> float:
+	if not has_preparation_credit():
+		return 1.0
+	var raw: Variant = _preparation_credit.call(actor)
+	if not (raw is float or raw is int):
+		return 1.0
+	var credit := float(raw)
+	if not is_finite(credit):
+		return 1.0
+	return clampf(credit, 0.0, MAX_CREDIT)
 
 
 ## The share of channels developed PAST merely open. A closed or merely-opened

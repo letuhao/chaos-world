@@ -43,7 +43,33 @@ const SESSION_PATH := "user://ui_cli_session.json"
 ## necrosis arrives after about six — which is the arc, in order, rather than all at
 ## once. Every figure here is fixture arithmetic and none of it reaches `game/data`.
 const DRILL_MAGNITUDE := 0.05
+## The magnitude an AUTHORED technique (`--technique`) is fired at, and the only
+## difference from [constant DRILL_MAGNITUDE].
+##
+## ## Why the two numbers and not one
+##
+## `BodyWounds.add` divides a strike by the target's `body_integrity.maximum`, and the
+## multiplier a `named` aim lands is whatever the AUTHORED meridian's best point reads —
+## not the `lung` figure the synthetic def happens to produce. At `0.05` a `named` aim at
+## a meridian with a weaker point multiplier lands under `WOUND_THRESHOLD` and the
+## readout printed `No meridian carries a wound.`, which reads as "the aim was ignored"
+## when the aim in fact worked: the reader had no way to see the meridian at all. One
+## wound per strike is what makes the meridian legible on the panel, which is the whole
+## point of firing shipped content.
+##
+## Still fixture arithmetic — it never reaches `game/data` — and it multiplies the
+## technique's own `magnitude` nowhere: the harness overwrites `magnitude` with this, so
+## the authored LADDER is not being measured, only the authored aim.
+const DRILL_AUTHORED_MAGNITUDE := 0.2
 const DRILL_SHARE := 0.8
+## The fire affinity the qi drill swings with, so `element_power_fire` is non-zero and
+## ADR 0069's elemental term is visible on the readout rather than reading `0.0` for
+## lack of any affinity at all. Fixture arithmetic, same as `DRILL_MAGNITUDE`.
+const DRILL_AFFINITY := 10.0
+## The fixed seed the demo swing's generator is built from, so a re-run reproduces the
+## same fight rather than printing a different verdict each invocation. Fixture
+## arithmetic, same as [constant DRILL_MAGNITUDE].
+const DRILL_SEED := 20260904
 ## The meridian the demo swing is aimed at.
 ##
 ## `body_cultivation`, not `qi_cultivation`, and that is the difference between a readout
@@ -56,16 +82,24 @@ const DRILL_SHARE := 0.8
 ##
 ## `&"lung"` is a real meridian — `game/data/body_cultivation/acupoints/minor_0.tres`,
 ## `minor_12.tres` and `minor_24.tres` all name it — so this is not an invented aim id.
-## See the report for the authored-data consequence: no shipped `.tres` sets
-## `aim_meridian`, so in production every body technique still resolves `random`.
+## It is applied on the BODY path ONLY, matching production's `_readout_technique`: a
+## `mind` swing carries no body aim id, because no shipped `TechniqueDef` ever does.
 const DRILL_MERIDIAN := &"lung"
 
 var _screen: Node = null
 var _actor: Actor = null
+## The path the drive armed through the screen's selector, or `&""` when the caller used
+## `--path` (or neither). Separate from `_drill_path` so both routes reach `_drill_def`:
+## a `--path mind` drive and a drive that cycled to mind must fire the LITERAL same
+## technique, which is the whole point of aligning the harness to production.
+var _drill_chosen: StringName = &""
 ## The combat readout's drill body, built once in `_bind_read_models` and kept for the
 ## life of the run. A wound is a fact about a body that persists, so a fresh body per
 ## invocation would make the wound row unreadable.
 var _drills: Actor = null
+## The fight this drive is running, for a `--screen` that asked to fight (ADR 0197). Null
+## for every other screen, and `_bind_fight_screen` is the only thing that writes it.
+var _fight: FightLoop = null
 var _failures: Array[String] = []
 
 
@@ -110,7 +144,7 @@ var _loaded_session := false
 func _bootstrap_actor(argv: PackedStringArray) -> void:
 	if not _screen.has_method("setup"):
 		return
-	_actor = Actor.new(ACTOR_ID, {Stat.PHYSIQUE: 20.0, Stat.COMPREHENSION: 10.0})
+	_actor = Actor.new(ACTOR_ID, _base_attributes(_option(argv, "--path")))
 	ItemsApi.attach(_actor, SLOT_CAPACITY)
 	var path_id := _option(argv, "--path")
 	var fresh := argv.has("--fresh")
@@ -120,6 +154,36 @@ func _bootstrap_actor(argv: PackedStringArray) -> void:
 	_attach_path(path_id)
 	_stock_seed_items()
 	_screen.call("setup", _actor)
+
+
+## ## Why the base is PATH-SHAPED and not one literal
+##
+## The hero used to be built `{PHYSIQUE: 20, COMPREHENSION: 10}` — numbers chosen for
+## the BODY drill swing alone (see `DRILL_MAGNITUDE`). So `--path qi` and `--path mind`
+## produced an actor whose `spirit`, `aptitude` and `will` were all `0.0`, which is
+## exactly the allocation that made qi propose nothing: the harness had been measuring
+## the inert case and calling it the mechanism.
+##
+## The qi half now carries `SPIRIT`/`APTITUDE`/`WILL` and the mind half carries
+## `WILL` plus the two `MindStats` attributes `MindProvider` reads, so each drill
+## resolves through the mechanism it was asked for. `--path body` and a pathless
+## invocation keep the original two-attribute build EXACTLY, because that is the
+## severity arithmetic the wound arc is priced against and re-pricing it would move
+## a shipped constant for no reason.
+##
+## These are fixture arithmetic and none of it reaches `game/data`.
+func _base_attributes(path_id: String) -> Dictionary:
+	var base := {Stat.PHYSIQUE: 20.0, Stat.COMPREHENSION: 10.0}
+	match _canonical_path(path_id):
+		String(QiPath.PATH_ID):
+			base[Stat.SPIRIT] = 10.0
+			base[Stat.APTITUDE] = 10.0
+			base[Stat.WILL] = 10.0
+		String(MindPath.PATH_ID):
+			base[Stat.WILL] = 10.0
+			base[MindStats.PERCEPTION] = 10.0
+			base[MindStats.MENTAL_CLARITY] = 10.0
+	return base
 
 
 ## Give a screen whatever read model it asks for by name. Some screens are not a
@@ -145,14 +209,212 @@ func _bind_read_models() -> void:
 		# measures every path's inputs as absent.
 		ActorFactory.with_body_cultivation(_actor)
 		ActorFactory.with_qi_cultivation(_actor)
+		# Mind needs its sea on BOTH ends before `mechanism_for_hit` will let a mind
+		# technique run at all: that gate asks whether the ATTACKER carries a sea, and
+		# `MindDamage` erodes the DEFENDER's. Without the enrolment below, `--path mind`
+		# silently fell back to the installed mechanism and the caller could not tell.
+		ActorFactory.with_mind_cultivation(_actor)
+		MindCultivationApi.attach_sea(_actor)
+		MindCultivationApi.attach_sea(_drills)
+		# `attach_sea` sizes a sea off a BASE attribute nobody allocates, and
+		# `MindDamage` divides by `structural_capacity` — so without this
+		# synchronize the drill's erosion was `0.0 / 0.0 == 0.0` and the mind line read
+		# all zeros for a reason that had nothing to do with the mechanism. The DRILL
+		# body needs the path too, not just the sea: `MindTraining.synchronize` returns
+		# early on a pathless actor, which is what left the sea this mechanism erodes at
+		# a capacity of `0.0` and the erosion with it. This is the same call
+		# `_reattach_components` makes for `--path mind`.
+		ActorFactory.with_mind_cultivation(_drills)
+		MindTraining.synchronize(_actor)
+		MindTraining.synchronize(_drills)
+		# `ElementProvider` derives `element_power_<e>` from AFFINITY, and the qi drill
+		# authors a `fire` element. A hero with no affinity reads `0.0` for it, so the
+		# elemental term — the half of ADR 0069 the readout exists to show — was
+		# `0.0` and only the raw term could carry a number. `ActorFactory.build` mounts
+		# the provider, so this is a write on the actor, never a second attach.
+		if _drill_path() == PathState.QI:
+			_actor.set_affinity(ElementStats.FIRE, DRILL_AFFINITY)
+			_drills.set_affinity(ElementStats.FIRE, DRILL_AFFINITY)
+		# `ElementProvider` is idempotent and `ActorFactory.build` does NOT mount it —
+		# the UI driver builds its hero with `Actor.new`, not through the factory, so
+		# without this line `element_power_<e>` read `0.0` on both ends however much
+		# affinity the actor held, and ADR 0069's elemental term was structurally dead
+		# on the one surface that prints it. Both actors are on no realm, so
+		# `apply_realm_modifiers` writes nothing and this attaches the provider alone.
+		ElementsApi.attach(_actor)
+		ElementsApi.attach(_drills)
 		CombatBoot.install(_actor)
 		CombatBoot.install(_drills)
 		_screen.call(
-			"bind_strike",
-			Callable(self, "_drill_blow"),
-			_drills,
-			Callable(self, "_drill_context")
+			"bind_strike", Callable(self, "_drill_blow"), _drills, Callable(self, "_drill_context")
 		)
+		# The TECHNIQUE SELECTOR, the SAME seam the production route binds and for the
+		# same reason: without it the screen can fire exactly one mechanism, so `--path`
+		# would change the hero and nothing else — the instrument fault `_drill_path`'s
+		# own docblock is about, repeated one layer up. Guarded by `has_method` so a
+		# screen without the seam degrades to its own named refusal rather than aborting
+		# the whole binding, exactly as `_bind_target_screen` guards the cast arm.
+		if _screen.has_method("bind_technique"):
+			_screen.call(
+				"bind_technique", Callable(self, "_drill_select"), Callable(self, "_drill_armed")
+			)
+	if _screen.has_method("bind_fight"):
+		_bind_fight_screen()
+
+
+## The FIGHT seam (ADR 0197), which this driver could not bind and so measured as dead.
+##
+## ## Why this arm exists at all
+##
+## `bind_fight` was absent here, so a `--screen fight_screen.tscn` drive mounted the page,
+## found all five verbs empty, and answered `no_fight_seam` on every press — the exact
+## BL-0320 shape (`_bind_read_models`'s own docblock): a live feature measured as dead
+## because the fault was in the INSTRUMENT, not the feature. The screen's own refusal was
+## honest and the harness could not tell it apart from a game that cannot fight.
+##
+## ## And why the loop is MINTED here
+##
+## `FightLoop` is an `app/` type and this driver is a bare `SceneTree` with no composition
+## root, so there is nothing to borrow a loop from. The harness builds the one the root
+## would have built — `ItemWorkbenchApp` binds `ItemWorkbenchFight`'s verbs, and those
+## are five `Callable`s over a `FightLoop` this file cannot name either. The five verbs
+## below are therefore the SEAM, written out longhand: each one is the same call the root
+## makes, so a fight driven here and a fight driven in the game resolve through the same
+## spine on the same actors.
+##
+## The hero must carry `acupoints` and a sea before `CombatBoot.install` will let a
+## mechanism run at it, and `start_fight` reads the opponent's enrolment to choose the
+## path — so both actors are enrolled here in the same order the root uses: enrol, THEN
+## install.
+func _bind_fight_screen() -> void:
+	if _actor == null:
+		return
+	# The order is the one `ItemWorkbenchBody._build_readout_target` documents and is not
+	# optional: enrol the paths, THEN install, because `CombatBoot.bind_mechanisms` reads
+	# `acupoints` / `sea_of_consciousness` off the actor to CHOOSE a mechanism and
+	# installing first measures every path's inputs as absent. `start_fight` unlocks the
+	# opponent's own twenty channels for the same reason on the other side.
+	ActorFactory.with_body_cultivation(_actor)
+	ActorFactory.with_qi_cultivation(_actor)
+	ActorFactory.with_mind_cultivation(_actor)
+	MindCultivationApi.attach_sea(_actor)
+	MindTraining.synchronize(_actor)
+	# ADR 0070: an aim at a meridian the target never unlocked is not struck at all, so
+	# the HERO is unlocked too and not only the opponent `start_fight` builds.
+	_actor.meridians.unlock_for_realm(&"qi_refining")
+	CombatBoot.install(_actor)
+	_fight = FightLoop.new(_actor)
+	_screen.call("bind_fight", _fight_verbs())
+	_screen.call("bind_combat_exit", Callable(self, "_empty_purge"))
+
+
+## The five ADR 0197 verbs, as `ItemWorkbenchFight.fight_verbs` publishes them.
+##
+## `_fight_exchange` passes **no seed**, exactly as `_fight_exchange` in the root does: a
+## null generator means every strike lands (ADR 0087's S12), so a drive measures the
+## engine's arithmetic rather than a sample of it. A reproducible run is a caller's
+## decision, passed in as the seed it supplies.
+func _fight_verbs() -> Dictionary:
+	return {
+		"begin": _fight_begin,
+		"exchange": _fight_exchange,
+		"age": _fight_age,
+		"disengage": _fight_disengage,
+		"read": _fight_read,
+	}
+
+
+func _fight_begin() -> Dictionary:
+	if _fight == null:
+		return {"ok": false, "reason": "no_fight_loop"}
+	return _fight.start_fight()
+
+
+func _fight_exchange() -> Dictionary:
+	if _fight == null:
+		return {"ok": false, "reason": "no_fight_loop"}
+	return _fight.exchange(0)
+
+
+func _fight_age(seconds: float) -> Dictionary:
+	if _fight == null:
+		return {"ok": false, "reason": "no_fight_loop"}
+	return _fight.age(seconds)
+
+
+func _fight_disengage() -> Dictionary:
+	if _fight == null:
+		return {"ok": false, "reason": "no_fight_loop"}
+	return _fight.disengage()
+
+
+func _fight_read() -> Dictionary:
+	if _fight == null:
+		return {}
+	return _fight.summary()
+
+
+## ADR 0089's combat-exit purge. A no-op here rather than a refusal: the driver holds no
+## `StatusLoop`, so there is no combat-scope status to clear, and a screen that cannot
+## purge must still be able to end a fight.
+func _empty_purge() -> Array[String]:
+	return []
+
+
+## The harness half of the selector seam: arm the path `--path` asked for, refusing
+## anything outside `PathState.ALL` for the reason the production seam does — an unknown
+## id accepted here would silently resolve to the default and a caller would measure the
+## wrong mechanism believing it had chosen one.
+func _drill_select(path: Variant) -> bool:
+	var wanted := StringName(path) if path is StringName or path is String else &""
+	if not PathState.ALL.has(wanted):
+		return false
+	_drill_chosen = wanted
+	return true
+
+
+## The read half: no argument answers the armed path, `&"paths"` answers the whole set.
+## The armed path is re-derived through `_drill_path` when `--path` named one, so a drive
+## with `--path mind` and a drive that cycled to mind fire the LITERAL same def.
+func _drill_armed(question: Variant = &"") -> Variant:
+	if StringName(question) == &"paths":
+		var out: Array[StringName] = PathState.ALL
+		return out
+	return _armed_drill_path()
+
+
+## The path the demo swing is asked to travel.
+##
+## `TechniqueDef.path` is what `CombatBoot.mechanism_for_hit` reads (ADR 0161), and
+## this driver hard-coded `PathState.BODY` on the one surface whose entire job is to
+## read every stage of the spine. So `--path qi` and `--path mind` changed the HERO
+## and changed nothing about the blow: the swing still asked for body, still resolved
+## through `BodyDamage`, and the readout printed a wound row no matter which
+## mechanism the caller came to measure. A flag that does not change the mechanism is
+## an instrument fault wearing a feature's clothes — the same shape BL-0320 was
+## filed for.
+##
+## Empty for an unknown `--path`, which reproduces the old fixed body swing exactly.
+func _drill_path() -> StringName:
+	match _canonical_path(_option(OS.get_cmdline_user_args(), "--path")):
+		String(QiPath.PATH_ID):
+			return PathState.QI
+		String(MindPath.PATH_ID):
+			return PathState.MIND
+		String(BodyPath.PATH_ID):
+			return PathState.BODY
+	return &""
+
+
+## What the swing fires THIS time, resolving the two ways a caller can name a path: the
+## screen's selector (`_drill_chosen`, set by `act_cycle_path` / `act_choose_path`) wins
+## over the `--path` flag, because a verb the caller typed after the flag is the more
+## specific instruction. With neither, it is `--path` alone, so a bare drive behaves
+## exactly as it did before the selector existed.
+func _armed_drill_path() -> StringName:
+	if _drill_chosen != &"":
+		return _drill_chosen
+	return _drill_path()
 
 
 ## The drill body the readout strikes, built through the SAME composition-root verbs
@@ -163,22 +425,52 @@ func _bind_read_models() -> void:
 ##
 ## Built ONCE and kept: a fresh body per invocation would make the wound ledger
 ## unreadable, because a wound is a fact about a body that persists.
+##
+## ## Why `unlock_for_realm` is here and not only the enrolment
+##
+## `ActorFactory.with_body_cultivation` builds the integrity pool, the provider and the
+## meridian NETWORK, but it does not open any channel — a freshly enrolled body is a
+## sheet of twenty closed meridians. ADR 0070 is explicit that a `named` aim at a
+## meridian this body has never unlocked is NOT struck at all ("there is no channel there
+## to subtract from"), so every authored `aim_meridian` resolved to the empty site,
+## `sites[]` was empty, and the readout printed `No meridian carries a wound.` for a
+## technique whose aim was authored and correct. That is the same defect the whole body
+## fixture exists to prevent (`body_damage_fixture.gd:110` makes the same call), and a
+## readout that cannot show a named aim cannot be used to verify one.
+##
+## `qi_refining` is the realm index the shipped meridian defs unlock at tier 0, so all
+## twenty channels exist — a body `random` aim has something to choose between as well.
 func _build_drills() -> Actor:
 	var drill := ActorFactory.spawn_inhabitant(&"readout_drills")
 	ActorFactory.with_body_cultivation(drill)
+	drill.meridians.unlock_for_realm(&"qi_refining")
 	return drill
 
 
 ## One blow for the readout, resolved through the SAME production entry point
-## `ItemWorkbenchApp._readout_blow` calls — `CombatBoot.resolve_hit` — with a null rng
-## so nothing random happens and every blow lands. A demo swing on the BODY path at a
-## magnitude priced so one press wounds without necrosing — see [constant
-## DRILL_MAGNITUDE].
+## `ItemWorkbenchApp._readout_blow` calls — `CombatBoot.resolve_hit` — with a SEEDED
+## generator so the swing is reproducible but still random, which is what a live fight
+## has. A demo swing on the BODY path at a magnitude priced so one press wounds without
+## necrosing — see [constant DRILL_MAGNITUDE].
+##
+## ## Why the generator is SEEDED and not `null`
+##
+## `null` is the right answer for the PRODUCTION readout (`_readout_blow` passes it, so
+## every blow lands and a whiff is never shown). But ADR 0087's S12 refuses a `null`
+## generator outright — "a null `rng` means NO DRAW and NO STATUS, never a `randf()`
+## fallback" — so a null-rung drill reported `status withheld: no rng` for a reason that
+## had nothing to do with the status producer and could not show S12 landing at all. The
+## harness's job is to exercise the spine, and a seeded generator is exactly what a real
+## caller injects, so the drill carries one: every blow still lands (the harness's band
+## passes nothing that can miss at these stats), and the status roll is live. The seed is
+## fixed so a re-run reproduces the same fight.
 func _drill_blow(attacker: Actor, defender: Actor) -> Dictionary:
 	if attacker == null or defender == null:
 		return {}
 	var def := _drill_def()
-	return CombatBoot.resolve_hit(attacker, defender, def, CombatEngineApi.tuning(), null).to_dict()
+	var rng := RandomNumberGenerator.new()
+	rng.seed = DRILL_SEED
+	return CombatBoot.resolve_hit(attacker, defender, def, CombatEngineApi.tuning(), rng).to_dict()
 
 
 ## The readout's companion read: `{band, actor, mechanism}`, all primitives — the same
@@ -200,13 +492,76 @@ func _drill_context() -> Dictionary:
 
 ## The drill swing's authored inputs, built once for the life of the run so the strike
 ## and the context read literally the same def.
+##
+## ## WHY THIS NOW SHAPES ITS FIELDS THE WAY PRODUCTION DOES
+##
+## The production readout (`ItemWorkbenchApp._readout_technique`) fires a `TechniqueDef`
+## whose fields depend on the path: `aim_meridian` on BODY, `element` on QI, nothing extra
+## on MIND. This used to pin `aim_meridian` UNCONDITIONALLY, so `--path mind` measured a
+## def carrying a body aim id into `MindDamage` — a shape the shipped game never builds.
+## A harness that fires a technique production cannot build is measuring a different game,
+## which is the whole defect: `tools ui drive` was answering questions about a fixture.
+## The three per-path writes below are the same three `item_workbench_readout.gd` makes,
+## so a drive and a route now produce the same def for the same `--path`.
+##
+## `--technique <id>` substitutes the SHIPPED `.tres` for this synthetic def, and that
+## substitution is the only way a terminal can measure AUTHORED content. The synthetic
+## def pins `aim_meridian` to [constant DRILL_MERIDIAN] and sets no element, so a drive
+## run without the flag measures the harness's fixture — not one line of the 52 authored
+## `.tres` — and would report a body path that resolves `random` while every shipped
+## technique in fact names a meridian. `aim_meridian`, `element`, `element_share` and
+## `mind_kind` are read as authored, because those are the content under test; only
+## `magnitude` is replaced, and with [constant DRILL_AUTHORED_MAGNITUDE].
 func _drill_def() -> TechniqueDef:
+	var authored := _authored_def()
+	if authored != null:
+		return authored
 	var def := TechniqueDef.new()
-	def.path = PathState.BODY
+	var asked := _armed_drill_path()
+	# A DUAL spelling is what `path_ids()` is for, but this harness asks for ONE path or
+	# none, so an empty answer falls back to the body swing the driver has always made
+	# rather than to a pathless technique that would take the installed mechanism.
+	def.path = asked if asked != &"" else PathState.BODY
 	def.magnitude = DRILL_MAGNITUDE
 	def.element_share = DRILL_SHARE
-	def.aim_meridian = DRILL_MERIDIAN
+	# Mind is the one path whose inputs are not an OFFENCE stat: `MindDamage` reads
+	# `MENTAL_ATTACK` and erodes a sea, it never spends an amount. Without an authored
+	# element the qi swing still resolves (`share` falls back to the tuning default),
+	# but an element makes the readout's elemental term visible, which is the half of
+	# ADR 0069 the panel exists to show.
+	if def.path == PathState.QI:
+		def.element = ElementStats.FIRE
+	elif def.path == PathState.BODY:
+		def.aim_meridian = DRILL_MERIDIAN
 	return def
+
+
+## The shipped `TechniqueDef` `--technique` names, or null when the flag is absent or the
+## id is unknown.
+##
+## Resolved through `TechniqueCatalog` — the SAME content tree the game loads, walked by
+## declared `id` rather than by filename (ADR 0056) — so a drive that names
+## `body_tiger_palm` fires the def a live cast would, and an unknown id is REPORTED
+## rather than silently falling back to the fixture. A silent fallback is the instrument
+## fault this whole flag exists to remove: a harness that quietly measured its own fixture
+## while the caller believed it was measuring shipped content is BL-0320 wearing a
+## feature's clothes.
+##
+## `duplicate(true)` because a `.tres` is a SHARED resource: the catalogue hands back ONE
+## instance per id, and writing `magnitude` onto it would mutate every other reader of
+## that content for the rest of the process. The copy is what the harness edits.
+func _authored_def() -> TechniqueDef:
+	var wanted := _option(OS.get_cmdline_user_args(), "--technique")
+	if wanted.is_empty():
+		return null
+	var def := TechniqueCatalog.instance().definition(StringName(wanted))
+	if def == null:
+		_emit({"event": "error", "command": "technique", "error": "no such technique: " + wanted})
+		_failures.append("technique")
+		return null
+	var copied := def.duplicate(true) as TechniqueDef
+	copied.magnitude = DRILL_AUTHORED_MAGNITUDE
+	return copied
 
 
 func _loot_bridge() -> LootBridge:

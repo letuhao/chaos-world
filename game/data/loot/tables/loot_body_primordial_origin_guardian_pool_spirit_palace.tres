@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"body_primordial_origin_guardian_spirit_palace_0"
+kind = &"item"
+item_id = &"F7_earth_derring_defense_physical_attack_physical_max_stamina_max_health"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"body_primordial_origin_guardian_spirit_palace_1"
+kind = &"item"
+item_id = &"R4_spirit_loam_figurine"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"body_primordial_origin_guardian_spirit_palace_2"
+kind = &"item"
+item_id = &"fortune_jade_charm"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"body_primordial_origin_guardian_spirit_palace_3"
+kind = &"item"
+item_id = &"ore_gold_vein"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_body_primordial_origin_guardian_pool_spirit_palace"
+display_name = "Body of the Dao Guardian salvage (spirit_palace)"
+realm = &"spirit_palace"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3")
+])

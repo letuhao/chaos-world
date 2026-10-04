@@ -44,15 +44,13 @@ content gap becomes invisible.
 
 from __future__ import annotations
 
-import argparse
-import json
 import os
 import re
 import tempfile
 from pathlib import Path
 
 from . import art_fidelity, unique_characters
-from .common import GAME_DIR, ToolError, fail, info, ok
+from .common import GAME_DIR, fail, info, ok
 
 ## Where the authored resources go. `PortraitCatalog.ROOT` is the only place the game reads
 ## portraits from, and it is asserted in `tests/core/test_portrait_resolver.gd`, so a sync that
@@ -119,7 +117,7 @@ def rendered_name(prefix: str, shot_id: str) -> str:
     underscores (`ilsa_expression_01.png`), so the substitution is the whole of the rule. Both sides
     are data, not convention, so a mismatch here is reported rather than guessed around.
     """
-    return "%s_%s.png" % (prefix, str(shot_id).replace("-", "_"))
+    return f"{prefix}_{str(shot_id).replace('-', '_')}.png"
 
 
 def install_canvas(slot: str, shot: dict) -> list[int]:
@@ -328,7 +326,7 @@ def build_def(
         # `echoless` and the face is reached only when an actor CHOOSES this portrait by id.
         notes.append(
             f"race '{race_id}' is not a RaceDef the content tree defines, so `RaceApi.race_of` can "
-            "never yield it and `for_race` is never reached with it; the portrait is reachable only "
+            "never yield it and `for_race` is never reached with it; the face is reachable only "
             "when an actor chooses this portrait id"
         )
 
@@ -375,6 +373,9 @@ def build_def(
                 f"'{bare}'; published the tag, so '{bare}' is not selectable as a variant"
             )
 
+    display = str(record.get("name", character_id)).replace('"', "'")
+    traits = ", ".join(f'&"{trait}"' for trait in sorted(set(visual_traits)))
+    quoted = ", ".join(f'"{path}"' for path in ordered)
     lines = [
         '[gd_resource type="Resource" script_class="PortraitDef" load_steps=2 format=3]',
         "",
@@ -382,13 +383,12 @@ def build_def(
         "",
         "[resource]",
         'script = ExtResource("1_portrait")',
-        'id = &"%s"' % character_id,
-        'display_name = "%s"' % str(record.get("name", character_id)).replace('"', "'"),
-        'race_id = &"%s"' % race_id,
-        "visual_traits = Array[StringName]([%s])"
-        % ", ".join('&"%s"' % trait for trait in sorted(set(visual_traits))),
-        "layer_paths = Array[String]([%s])" % ", ".join('"%s"' % path for path in ordered),
-        'palette_key = &"%s"' % palette_key,
+        f'id = &"{character_id}"',
+        f'display_name = "{display}"',
+        f'race_id = &"{race_id}"',
+        f"visual_traits = Array[StringName]([{traits}])",
+        f"layer_paths = Array[String]([{quoted}])",
+        f'palette_key = &"{palette_key}"',
         "",
     ]
     return ("\n".join(lines), refusals, notes)
@@ -397,7 +397,8 @@ def build_def(
 def install_layers(layers: list[dict], force: bool) -> list[str]:
     """Copy each planned render to its `res://` home, and report what was skipped.
 
-    **Never resizes.** A render is copied byte for byte or not at all: `unique_characters._validate_image`
+    **Never resizes.** A render is copied byte for byte or not at all:
+    `unique_characters._validate_image`
     demands an EXACT canvas match, and silently scaling a 1248x1664 concept plate into a 1024x1024
     square would destroy the composition while making the guard report success. A content author
     re-renders; this tool installs.
@@ -427,7 +428,7 @@ def install_layers(layers: list[dict], force: bool) -> list[str]:
 
 
 def _atomic_write(path: Path, text: str) -> None:
-    """Write via a sibling temporary and `os.replace`, so a reader never sees a half-written `.tres`.
+    """Write via a sibling temporary and `os.replace`, so a reader never sees a half-written one.
 
     The same pattern `tools/unique_characters.py:269-309` and `tools/assets.py:321-341` use. Godot
     imports `.tres` on load, and a truncated one is a parse error rather than a missing portrait.

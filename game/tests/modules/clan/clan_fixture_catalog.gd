@@ -50,6 +50,14 @@ static func housebound(clan_id: StringName, race_id: StringName) -> ClanDef:
 	return def
 
 
+## A clan that claims NO founding line at all. `_base` already publishes
+## `founding_bloodline = &""`; this names the case so a caller reads why it asked for
+## this rather than that one — a house with nothing to scale recognition by, which is
+## the branch `ClanGate.recognition_scale` has to answer honestly.
+static func line_less(clan_id: StringName) -> ClanDef:
+	return _base(clan_id)
+
+
 ## A clan that additionally demands a realm floor, for the realm arm of admission.
 static func ranked(clan_id: StringName, min_realm: int) -> ClanDef:
 	var def := _base(clan_id)

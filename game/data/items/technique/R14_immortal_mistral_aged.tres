@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"R14_immortal_mistral_aged"
 display_name = "Immortal Mistral Aged"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"great_luo"
 fixed_modifiers = Array[Dictionary]([

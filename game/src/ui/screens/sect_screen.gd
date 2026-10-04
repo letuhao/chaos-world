@@ -26,12 +26,33 @@ extends UiScreen
 ##
 ## It rendered thirteen mutating verbs' worth of state and could fire none of them, so
 ## a player could LOOK at a sect and never join, leave or take a seat. It now calls
-## three of them by name — `SectApi.join`, `SectApi.leave`, `SectApi.promote` — through
-## the facade, and nothing else out of the module. The three it calls are the three a
-## member's own hand is responsible for; `found`, `teach`, `declare_schism`,
-## `advance_succession` and `move_standing` are council and world acts, and a button
-## that fired any of them from a member's codex would make an inquisition a two-click
-## accident exactly as the original comment said.
+## five of them by name — `SectApi.join`, `SectApi.leave`, `SectApi.promote`,
+## `SectApi.found` and `SectApi.teach` — through the facade, and nothing else out of the
+## module.
+##
+## ## Why `found` and `teach` are HERE and the three council acts are not
+##
+## The three it called first are the three a member's own hand is responsible for.
+## `found` and `teach` are the two remaining verbs that are acts about the PLAYER'S OWN
+## claim and nothing else: founding is one hero making a house, and a lesson is one
+## member teaching another in a school they are both sworn to. Neither touches a third
+## party's standing, a seat anybody else holds, or a split — so neither is "an
+## inquisition a two-click accident", which is the reason the council and world acts
+## (`move_standing`, `advance_succession`, `declare_schism`) still have no button here.
+##
+## ## The two BEATS a player reaches, and the order they must happen in
+##
+## Founding is priced against `sect_founding_funds`, a pool nothing in the game fills
+## (`ActorFactory.fund_sect_from_purse` had zero callers), so founding is TWO actions
+## and the order is the mechanic: **fund** the price out of the purse, then **found**.
+## Both are one button each rather than one button that quietly converts first, because
+## a silent conversion spends the player's own money and BL-0174 makes the price a real
+## one — the player must press the thing that spends it.
+##
+## Teaching is the third beat: the school's own founder holds the first rung of the
+## ladder (the founding grant in `sect_founding.gd`), so `act_teach` is live for a
+## founder and refused by name for anybody else. The cost is the teacher's `stamina`,
+## so it is a real cost and not a menu click that makes disciples a faucet (BL-0188).
 ##
 ## ## What is NOT refused here, and why
 ##
@@ -91,13 +112,25 @@ const UNKNOWN_POSITION := "unknown_position"
 const NO_SECT_PICKED := "no_sect_picked"
 ## The same for a promotion with no office picked.
 const NO_OFFICE_PICKED := "no_office_picked"
+## `fund` was asked for with no amount, and `teach` with no pupil: the screen's own
+## seam, refused rather than a silent no-op, for the same reason as the two above.
+const NO_AMOUNT := "no_amount"
+const NO_PUPIL := "no_pupil"
+## The funding bridge is not bound, so the conversion the player pressed cannot run.
+## Distinct from `no_amount`: the amount was named and there is nowhere to send it.
+const NO_FUNDING_SEAM := "no_funding_seam"
 ## The action ids this screen publishes, in the order the bar shows them. Declared as
 ## constants rather than built per call so the order a test reads is the order the
-## player sees — four verbs, never a growing set.
+## player sees — seven verbs, never a growing set.
 const ACTION_JOIN := &"join"
 const ACTION_LEAVE := &"leave"
 const ACTION_PROMOTE := &"promote"
 const ACTION_PROMOTE_FORCED := &"promote_forced"
+## Funding is its own press rather than a side effect of founding: BL-0174 makes the
+## price real, so the act that spends the player's money is a control the player sees.
+const ACTION_FUND := &"fund"
+const ACTION_FOUND := &"found"
+const ACTION_TEACH := &"teach"
 
 var _codex: Dictionary = {}
 var _header: Label = null
@@ -114,6 +147,33 @@ var _office_rows: Array = []
 var _selected_sect: String = ""
 ## The office row `act_promote` would seat the hero in. Same rule: `""` picks nothing.
 var _selected_office: String = ""
+## The conversion the player's coins take into the sect founding fund, injected by the
+## composition root as a `Callable(actor, coins) -> Dictionary`.
+##
+## ## Why it is a Callable and not a facade call
+##
+## The fund is `sect`'s own pool (`sect_founding.gd`) and the coins are the economy's
+## numéraire, which is an INVENTORY ITEM. `sect` declares no `items` or `economy`
+## dependency on purpose — `sect_founding.gd` says it "never charges an inventory and
+## never settles a debt" — so the conversion has to live in the one layer allowed to
+## know both vocabularies (`ActorFactory.fund_sect_from_purse`, `actor_factory.gd`), and
+## `ui/` may not name `app/` at all (`rules.PRIVATE_UNITS`). This is ADR 0143's seam and
+## the same one the quest accept and the soul reads use.
+##
+## Empty by default, and `act_fund` refuses `no_funding_seam` rather than pretending
+## to have converted: a screen bound without its bridge says so in the module's own
+## vocabulary instead of reporting a price nobody paid.
+var _fund_from_purse: Callable = Callable()
+## The pupil resolver: `Callable(actor_id: String) -> Actor`, injected by the
+## composition root. `ui/` may not mint an `Actor` nor look one up by id, so the
+## "who can I teach" question has to be answered outside — and it is answered through a
+## bridge rather than a second roster, because the roster is `sect`'s to own, and a
+## screen keeping its own list of members is that list drifting away from the ledger a
+## player is actually playing.
+##
+## Empty by default and `act_teach` refuses `no_pupil` rather than teaching nobody
+## and reporting a lesson.
+var _pupil_resolver: Callable = Callable()
 ## The last verb's verdict, carried through verbatim. `{}` before any action, so a test
 ## reads "no action yet" rather than a refusal that never happened.
 var _last_result: Dictionary = {}
@@ -121,6 +181,17 @@ var _last_result: Dictionary = {}
 ## facade cannot silently erase a refusal the player has not read yet — the row shows
 ## the CLAIM after every successful verb, and only a refusal survives a refresh.
 var _refusal: Dictionary = {}
+## Every read model this screen PUBLISHES that is computed from the facade's snapshot
+## rather than from the widget tree — the claim, the promotion routes, the catalog for
+## comparison, the board's office ids, the authored founding price and the string lists.
+## Built in `_bind_nodes` beside the node binding for the same reason the nodes are:
+## a headless test drives this screen with no scene tree at all, so nothing may be built
+## in `_ready()` and nothing may be assumed to exist because a scene mounted it.
+##
+## Reading the facade and painting it are two reasons to change: a new field the sect
+## facade publishes or a retuned `.tres` touches that file and not this one. Same split
+## `domain_explore_model.gd` makes beside the world map, and for the same reason.
+var _report: SectReportModel = null
 
 
 ## Adopt a facade snapshot for the bound actor (the `summary(actor)` shape).
@@ -135,12 +206,39 @@ func apply_snapshot(snapshot: Dictionary) -> void:
 	_render()
 
 
+## ## Take the two seams `ui/` is not allowed to build for itself
+##
+## `fund_sect_from_purse` lives in `app/actor_factory.gd` and the pupil resolver needs
+## an `Actor`; `ui/` may name neither (`rules.PRIVATE_UNITS` makes `app/` reachable only
+## from `app/`), so both arrive as Callables from the composition root — ADR 0143's
+## bridge, the same one `bind_quests` and `bind_soul` use. **Both are optional**: an
+## unbound screen still renders, still joins, leaves and promotes, and refuses the two
+## beats BY NAME rather than pretending to have run them.
+##
+## Assigned exactly as given (not merged into a default), so binding a deliberate
+## null clears a previously bound bridge — the same rule `item_workbench.setup`'s save
+## and load callables follow, for the same reason.
+func bind_sect_funding(fund_from_purse: Callable, pupil_resolver: Callable = Callable()) -> void:
+	_bind_nodes()
+	_fund_from_purse = fund_from_purse
+	_pupil_resolver = pupil_resolver
+	_refresh_view()
+	_render()
+
+
+## Whether the two seams are bound. Published so a driver or a test can tell "this
+## screen cannot fund" from "this screen has nothing to fund", which are different
+## sentences and both reachable.
+func _funding_seam_bound() -> bool:
+	return _fund_from_purse.is_valid()
+
+
 func _summary() -> Dictionary:
 	_bind_nodes()
 	if _actor == null:
 		return {}
-	var promotions := _promotion_summaries()
-	var sects := _sect_summaries()
+	var promotions := _report.promotion_summaries(_codex)
+	var sects := _report.sect_summaries(_codex)
 	return {
 		"actor": String(_actor.id),
 		# `read_only` is now FALSE, and it is reported rather than deleted: a caller
@@ -158,9 +256,9 @@ func _summary() -> Dictionary:
 		"standing_ratio": float(_codex.get("standing_ratio", 0.0)),
 		"standing_percent": float(_codex.get("standing_percent", 0.0)),
 		"teaches": bool(_codex.get("teaches", false)),
-		"duties": _string_list(_codex.get("duties", [])),
-		"authorities": _string_list(_codex.get("authorities", [])),
-		"claim": _claim_summary(),
+		"duties": _report.string_list(_codex.get("duties", [])),
+		"authorities": _report.string_list(_codex.get("authorities", [])),
+		"claim": _report.claim_summary(_claim_rows),
 		# ADR 0083's three states, reported as three DISTINCT facts rather than
 		# collapsed: the claim, the refusal the last verb returned, and the offered
 		# catalog. A screen that renders all three cannot make them read alike.
@@ -172,6 +270,16 @@ func _summary() -> Dictionary:
 		"can_leave": can_leave(),
 		"can_promote": promotions,
 		"can_promote_count": promotions.size(),
+		# Founding and teaching are player-reachable beats, so the screen publishes
+		# what they would cost and what they need — read off the facade's OWN read model
+		# (`sect_view` carries `founding_cost`; `can_promote` carries `teach_tax`), never
+		# re-derived here. A screen that re-derived a price could disagree with what the
+		# module charges, which is the one thing a priced act must never do.
+		"can_found": can_found(),
+		"can_fund": can_fund(),
+		"can_teach": can_teach(),
+		"founding_cost": _report.founding_cost_view(_codex, _selected_sect),
+		"funds": _funding_seam_bound(),
 		"selected_sect": _selected_sect,
 		"selected_office": _selected_office,
 		"actions": _action_ids(),
@@ -179,7 +287,7 @@ func _summary() -> Dictionary:
 		"sects": sects,
 		"sect_count": sects.size(),
 		"offered_ids": offered_ids(),
-		"office_ids": row_ids(),
+		"office_ids": _report.office_ids(_office_rows),
 	}
 
 
@@ -199,6 +307,49 @@ func can_join() -> bool:
 ## control.
 func can_leave() -> bool:
 	return _actor != null and bool(_codex.get("is_member", false))
+
+
+## Whether a hero may found a sect from here. **Gating the control on only the seam
+## being wired and a sect actually picked**, never on whether the price is already met:
+## the pool is `sect`'s own and the screen cannot read it through the facade, so a
+## screen that greyed the button on affordability would be pre-judging a rule the module
+## owns — and a hero who cannot afford it is told WHY by pressing, which is the
+## `already_sworn` argument `join` already makes.
+func can_found() -> bool:
+	return _actor != null and _selected_sect != ""
+
+
+## Whether the fund button can run. A seam AND an amount: the amount is the whole
+## decision, because converting everything a player presses would be a real loss with
+## no confirmation, and converting nothing is a no-op a player reads as a bug.
+func can_fund() -> bool:
+	return _actor != null and _funding_seam_bound()
+
+
+## Whether this member may run a lesson from here. The FIT gate is deliberately NOT
+## pre-judged: `SectApi.teach` owns `teacher_unfit`, and a screen that hid the button
+## from an unfit teacher would make the one rule the audit found vacuous invisible
+## rather than named. Live for every sworn member; the verdict is what teaches them.
+func can_teach() -> bool:
+	return _actor != null and bool(_codex.get("is_member", false))
+
+
+## The doctrine id the picked sect teaches, or `""`. Read from the facade's own
+## `sect_view`, so `act_found` names the school the CONTENT authored rather than a
+## doctrine the screen chose — two houses may share a doctrine, and picking the wrong
+## one would found a school that does not exist.
+func _doctrine_of(sect_id: String) -> String:
+	var catalog: Dictionary = _codex.get("sects", {}) as Dictionary
+	return String((catalog.get(sect_id, {}) as Dictionary).get("doctrine_id", ""))
+
+
+## The actor `id` names, or null. **Always through the injected resolver**, never a
+## lookup of this screen's own: `ui/` may not mint an `Actor`, and a screen that kept
+## a member list would be a second roster beside the module's own.
+func _pupil(id: String) -> Actor:
+	if id == "" or not _pupil_resolver.is_valid():
+		return null
+	return _pupil_resolver.call(id) as Actor
 
 
 ## Swear the bound actor to the picked sect. Returns `SectApi.join`'s verdict
@@ -248,6 +399,100 @@ func act_promote(office_id: String = "", force: bool = false) -> Dictionary:
 	return _settle(result)
 
 
+## ## Move `coins` of the player's own purse into the sect founding fund
+##
+## ## This is the beat that made founding REACHABLE, and it exists because the price
+## ## was unpayable. `SectApi.found` compares `SectFounding.funds(actor)` against the
+## authored `founding_cost.outstanding`, and the pool was mounted EMPTY on purpose (a
+## non-zero mount would GRANT the authored price to every hero). With no verb to fill
+## it, founding was refused `founding_cost_unmet` for every actor in the game at every
+## price — so the verb that spends the money had to exist somewhere a player presses.
+##
+## ## It is NOT a facade call and the screen cannot make it one
+##
+## The coins are the economy's numéraire and the fund is `sect`'s own pool; `sect`
+## declares no `economy` dependency on purpose and `ui/` may not name `app/`. So the
+## conversion is injected as a `Callable` by the composition root — ADR 0143's seam, the
+## same one the quest accept uses. An unbound screen refuses `no_funding_seam` BY NAME
+## rather than reporting a success nobody can audit.
+##
+## Returns the bridge's own verdict verbatim, so a caller reads what actually landed
+## (`moved`, `purse`, `funds`) rather than a screen-composed summary of it.
+func act_fund(coins: int) -> Dictionary:
+	_bind_nodes()
+	if _actor == null:
+		return _verdict({NO_ACTOR: true})
+	if coins <= 0:
+		return _verdict({NO_AMOUNT: true})
+	if not _fund_from_purse.is_valid():
+		return _verdict({NO_FUNDING_SEAM: true})
+	return _settle(_fund_from_purse.call(_actor, coins) as Dictionary)
+
+
+## Bring the picked sect into being, seating the bound actor in its top office.
+##
+## ## The price is the CALLER's, never overridden
+##
+## There is deliberately no `force`: `sect_founding.gd` prices an institution's
+## existence on purpose and an override would make the price decorative. A hero who
+## has not funded the price is refused `founding_cost_unmet` with both numbers
+## published, and the trail records nothing — the whole ADR 0084 refusal contract.
+##
+## ## `founder_id` is a STRING, never this screen
+##
+## The ledger records the founder as a plain actor-id string, and an `Actor` reference
+## would reach the save untouched with no checker in this repo able to see it.
+func act_found(sect_id: String = "", doctrine_id: String = "") -> Dictionary:
+	_bind_nodes()
+	var wanted := sect_id if sect_id != "" else _selected_sect
+	if _actor == null:
+		return _verdict({NO_ACTOR: true})
+	if wanted == "":
+		return _verdict({NO_SECT_PICKED: true})
+	var doctrine := doctrine_id if doctrine_id != "" else _doctrine_of(wanted)
+	if doctrine == "":
+		# A sect whose doctrine this build does not ship names no school to teach. The
+		# module refuses `unknown_doctrine` for exactly this; asking it to is honest and
+		# keeps the refusal in one vocabulary.
+		return _settle(SectApi.found(_actor, StringName(wanted), &"", ""))
+	var result := SectApi.found(_actor, StringName(wanted), StringName(doctrine), String(_actor.id))
+	return _settle(result)
+
+
+## Teach one period of the sworn sect's doctrine to `student_id`, spending this
+## member's own `stamina` at the office's authored `teach_tax` plus the doctrine's.
+##
+## ## This is the ONLY caller of `SectApi.teach` in the shipped program
+##
+## `teach` was the only writer of `fit` and no verb anywhere called it, so the whole
+## teaching ladder was reachable by no one — `SectApi.teach`'s only callers were tests.
+## The cost stays the cost: one session is charged the teacher's stamina whether it is
+## pressed here or anywhere else, so a button cannot make disciples a faucet (BL-0188).
+##
+## ## The teacher's fit gate is NOT bypassed
+##
+## A founder holds the first rung of the ladder through the founding grant, so this is
+## live for them; anybody else is refused `teacher_unfit` by name. The screen does not
+## pre-judge that — it asks the facade and renders the answer, because a screen that
+## decided the gate itself would be a second copy of a rule the module owns.
+func act_teach(student_id: String, periods: int = 1) -> Dictionary:
+	_bind_nodes()
+	if _actor == null:
+		return _verdict({NO_ACTOR: true})
+	if student_id == "":
+		return _verdict({NO_PUPIL: true})
+	var student := _pupil(student_id)
+	if student == null:
+		# The pupil is resolved by the composition root too (see `_pupil`): `ui/` may not
+		# mint or look up an `Actor` by id, and naming a second roster would be a second
+		# answer to "who is in this sect" that the module owns.
+		return _verdict({NO_PUPIL: true})
+	var doctrine := String(_codex.get("doctrine_id", ""))
+	if doctrine == "":
+		return _settle(SectApi.teach(_actor, student, &"", 1))
+	return _settle(SectApi.teach(_actor, student, StringName(doctrine), maxi(1, periods)))
+
+
 ## Pick the sect `act_join` would swear the hero to. Returns false for an id the
 ## facade's catalog does not carry, so a caller never "selects" a house that does not
 ## exist — and clears the selection rather than leaving a stale one behind.
@@ -277,18 +522,23 @@ func select_office(office_id: String) -> bool:
 	return true
 
 
-## The sect the next `act_join` would use, or `""`.
-func selected_sect() -> String:
+## The sect the next `act_join` would use, or `""`. Private: `summary()` publishes
+## `selected_sect` for a caller, so a second accessor for the same fact is the second
+## thing that can go stale against the pick.
+func _selected_sect_id() -> String:
 	return _selected_sect
 
 
-## The office the next `act_promote` would use, or `""`.
-func selected_office() -> String:
+## The office the next `act_promote` would use, or `""`. Private for the reason
+## [method _selected_sect_id] is.
+func _selected_office_id() -> String:
 	return _selected_office
 
 
-## The last verb's verdict, verbatim. `{}` before any action has been taken.
-func last_result() -> Dictionary:
+## The last verb's verdict, verbatim. `{}` before any action has been taken. Private:
+## `summary()` publishes `last_reason` / `last_ok` / `refused` from this same
+## dictionary, and a duplicate copy is a copy that can be edited by a caller.
+func _last_verdict() -> Dictionary:
 	return _last_result.duplicate(true)
 
 
@@ -296,13 +546,8 @@ func last_result() -> Dictionary:
 ## is offered the whole catalog too — leaving is a `leave`, and re-swearing is the two
 ## in order — so this is the same list whatever the membership is.
 func offered_ids() -> Array:
-	var out: Array = []
-	var catalog: Dictionary = _codex.get("sects", {}) as Dictionary
-	var ids := catalog.keys()
-	ids.sort()
-	for sect_id in ids:
-		out.append(String(sect_id))
-	return out
+	_bind_nodes()
+	return _report.offered_ids(_codex)
 
 
 ## Re-read the facade — the ONE call this screen makes — and hand raw values down.
@@ -407,6 +652,8 @@ func on_screen_hidden() -> void:
 
 
 func _bind_nodes() -> void:
+	if _report == null:
+		_report = SectReportModel.new()
 	if _header != null:
 		return
 	_header = get_node_or_null("%ClaimHeader") as Label
@@ -461,6 +708,9 @@ func _publish_actions() -> void:
 					ACTION_LEAVE: "Leave the sect",
 					ACTION_PROMOTE: "Take the picked office",
 					ACTION_PROMOTE_FORCED: "Take it over the objection",
+					ACTION_FUND: "Fund the founding price",
+					ACTION_FOUND: "Found the picked sect",
+					ACTION_TEACH: "Teach one period",
 				},
 				"enabled": _enabled_actions(),
 				"primary": ACTION_JOIN if can_join() else ACTION_LEAVE,
@@ -476,13 +726,23 @@ func _action_ids() -> Array:
 		String(ACTION_JOIN),
 		String(ACTION_LEAVE),
 		String(ACTION_PROMOTE),
-		String(ACTION_PROMOTE_FORCED)
+		String(ACTION_PROMOTE_FORCED),
+		String(ACTION_FUND),
+		String(ACTION_FOUND),
+		String(ACTION_TEACH)
 	]
 
 
-## Which of the four is live right now. `join` needs a sect picked; `leave` needs a
+## Which of the seven is live right now. `join` needs a sect picked; `leave` needs a
 ## membership; both promotions need an office picked AND a membership, because an
 ## office only exists to somebody who is sworn to the sect that authors it.
+##
+## `fund` and `found` need a hero and a bound bridge / a picked sect, and `teach` needs
+## a membership — **never more than that**. `found` in particular is NOT gated on the
+## price being met: the pool belongs to the module and the screen cannot read it, so a
+## hero who has not funded it presses and is told `founding_cost_unmet` with both
+## numbers. `teach` is NOT gated on the teacher's fit either, for the same reason and
+## the same one `join` is left live for an already-sworn hero.
 func _enabled_actions() -> Dictionary:
 	var member := _actor != null and bool(_codex.get("is_member", false))
 	return {
@@ -490,11 +750,21 @@ func _enabled_actions() -> Dictionary:
 		String(ACTION_LEAVE): member,
 		String(ACTION_PROMOTE): member and _selected_office != "",
 		String(ACTION_PROMOTE_FORCED): member and _selected_office != "",
+		String(ACTION_FUND): can_fund(),
+		String(ACTION_FOUND): can_found(),
+		String(ACTION_TEACH): can_teach(),
 	}
 
 
 ## The button press, routed to the verb. `ActionSet.request` refuses a disabled
 ## action, so this cannot fire a verb the control does not offer.
+##
+## `fund` and `found` take the **authored price** as their amount rather than a number
+## a button author typed: the fund button moves exactly what the picked sect charges to
+## exist, read off the facade's own read model, so a retuned `.tres` changes what the
+## button spends without anyone editing a screen. `teach` takes no pupil here and is
+## refused `no_pupil` — a member to teach is chosen on a roster screen, and a screen
+## that invented one would be teaching a body nobody named.
 func _on_action_requested(action: StringName) -> void:
 	match action:
 		ACTION_JOIN:
@@ -505,6 +775,15 @@ func _on_action_requested(action: StringName) -> void:
 			act_promote()
 		ACTION_PROMOTE_FORCED:
 			act_promote("", true)
+		ACTION_FUND:
+			# The AUTHORED price, read off the facade's own `founding_cost` rather than
+			# from a number this screen kept — the same read `summary()` publishes, so
+			# the button cannot spend a figure the module has since retuned away from.
+			act_fund(int(_report.founding_cost_view(_codex, _selected_sect)["outstanding"]))
+		ACTION_FOUND:
+			act_found()
+		ACTION_TEACH:
+			act_teach("")
 
 
 ## `ui_accept` on the screen: a join when a sect is picked, otherwise a promotion.
@@ -539,7 +818,7 @@ func member() -> bool:
 ## are sworn: "which house may I join" and "which office may I take" are the two
 ## questions this screen asks, and only one of them has an answer at a time.
 func _step(step: int) -> bool:
-	var ids: Array = _offered_ids() if not member() else _office_ids()
+	var ids: Array = offered_ids() if not member() else _office_ids()
 	if ids.is_empty():
 		return false
 	var index := ids.find(_selected_sect if not member() else _selected_office)
@@ -555,28 +834,11 @@ func _step(step: int) -> bool:
 	return true
 
 
-## Every authored sect id, canonically ordered — the list `ui_up` / `ui_down` walk for
-## an unsworn hero.
-func _offered_ids() -> Array:
-	var out: Array = []
-	var catalog: Dictionary = _codex.get("sects", {}) as Dictionary
-	var ids := catalog.keys()
-	ids.sort()
-	for sect_id in ids:
-		out.append(String(sect_id))
-	return out
-
-
 ## Every office id this board is showing, in display order — the list `ui_up` /
 ## `ui_down` walk for a sworn member. Read off the rows rather than off the facade, so
 ## what the player can pick is exactly what they can see.
 func _office_ids() -> Array:
-	var out: Array = []
-	for row in _office_rows:
-		var office_id := String((row as NationOfficeRow).office_id())
-		if office_id != "":
-			out.append(office_id)
-	return out
+	return _report.office_ids(_office_rows)
 
 
 ## A refusal this screen raises ITSELF, in the facade's own `{ok, reason}` shape.
@@ -718,88 +980,14 @@ func _fill_offices() -> void:
 		)
 		index += 1
 
-
 # --- Reporting --------------------------------------------------------------
 
-
-## The member's own claim, nested under its own key. `{}` when nothing rendered, so
-## a caller reads "no claim row" rather than a half-filled shape.
-func _claim_summary() -> Dictionary:
-	if _claim_rows.is_empty():
-		return {}
-	return (_claim_rows[0] as SectClaimRow).summary()
-
-
-## Every promotion route the facade published, as primitives. The screen formats
-## none of it: `reason` is the facade's named string, passed through untouched.
-func _promotion_summaries() -> Array:
-	var out: Array = []
-	var promotion: Dictionary = _codex.get("can_promote", {}) as Dictionary
-	var ids := promotion.keys()
-	ids.sort()
-	for office_id in ids:
-		var view: Dictionary = promotion[office_id]
-		(
-			out
-			. append(
-				{
-					"office_id": String(view.get("id", "")),
-					"display_name": String(view.get("display_name", "")),
-					"standing_floor": int(view.get("standing_floor", 0)),
-					"below_floor": bool(view.get("below_floor", false)),
-					"held": int(view.get("held", 0)),
-					"has_room": bool(view.get("has_room", false)),
-					"reason": String(view.get("reason", "")),
-				}
-			)
-		)
-	return out
-
-
-## Every authored sect the facade listed, as primitives, canonically ordered.
-func _sect_summaries() -> Array:
-	var out: Array = []
-	var sects: Dictionary = _codex.get("sects", {}) as Dictionary
-	var ids := sects.keys()
-	ids.sort()
-	for sect_id in ids:
-		var view: Dictionary = sects[sect_id]
-		(
-			out
-			. append(
-				{
-					"sect_id": String(sect_id),
-					"display_name": String(view.get("display_name", "")),
-					"doctrine_id": String(view.get("doctrine_id", "")),
-					"sworn": String(sect_id) == String(_codex.get("sect_id", "")),
-					"position_count": (view.get("positions", {}) as Dictionary).size(),
-				}
-			)
-		)
-	return out
-
-
-## The office ids the board is showing, in display order.
+## Every read model this screen publishes is [SectReportModel]'s — the claim the row
+## reported, the promotion routes, the catalog for comparison, the board's office ids,
+## the authored founding price and the string lists. They are reads of the facade's
+## snapshot and of the mounted rows, never formatting and never a verb, so they move
+## there whole; the screen keeps the calls thin so the shape `summary()` publishes is
+## still visible in one place.
 ##
-## A SPARE pool row is not an office and is not reported: it renders `{}` and its id
-## reads as `""`, so it is dropped here. That is what makes the reported count equal
-## the sect's AUTHORED board rather than the size of the pool the scene happened to
-## mount — a sect that authors four offices and a screen that reports twelve has
-## invented eight offices, which is the dead-content failure ADR 0063 already
-## shipped once.
-func row_ids() -> Array:
-	var out: Array = []
-	for row in _office_rows:
-		var office_id := String((row as NationOfficeRow).office_id())
-		if office_id != "":
-			out.append(office_id)
-	return out
-
-
-func _string_list(values: Variant) -> Array:
-	var out: Array = []
-	if not (values is Array):
-		return out
-	for value in values as Array:
-		out.append(String(value))
-	return out
+## `row_ids` was public and is now the model's `office_ids`: nothing outside this class
+## called it, and `summary()["office_ids"]` is the surface the suites read.

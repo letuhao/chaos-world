@@ -5,7 +5,7 @@ Chaos World is a Godot 4 **action RPG with cultivation**. Core loop: **combat �
 ## Non-negotiable rules
 - **Python-only tooling.** Every script, task, and automation entrypoint is a Python module run through `uv`. Do **not** add `.bat`, `.ps1`, `.cmd`, or `.sh` files, and never document a shell one-liner as the supported path. **Godot 4.7.x, standard (GDScript) build** — not the .NET/C# build; do not introduce C#. **All commands go through `uv run python -m tools <task>`:** never invoke Godot, `gdformat`, `gdlint`, or the test addon directly from docs or CI.
 - **Boundary truth is code, not prose:** `tools/arch/rules.py` (policy) and `tools/arch/registry.json` (machine-managed state). The checker is authoritative.
-- **English, lean docs.** Every document is in English and as short as it can be — see Documentation rules. **No sexual content:** succubus, dual-cultivation, and fertility are pure gameplay mechanics — never write sexual, explicit, or suggestive prose, descriptions, names, or assets. Keep everything clinical and mechanical.
+- **English, lean docs.** Every document is in English and as short as it can be — see Documentation rules. **Content safety:** this is a cultivation game with attractive, sexy, and romantic characters — that is allowed and expected. What is forbidden is **explicit sexual content**: sexual intercourse, genitalia, exposed nipples/breasts, pornographic or erotica content, sexualized minors, sexual violence, fetish/BDSM content, and scat. Succubus, dual-cultivation, and fertility are clinical gameplay mechanics — never write explicit sexual prose, descriptions, names, or assets. Keep those mechanics non-graphic and mechanical.
 
 ## Layout
 ```

@@ -54,7 +54,7 @@ func teardown() -> void:
 
 func _screen() -> BodyCultivationPanel:
 	var panel := (load(SCREEN) as PackedScene).instantiate() as BodyCultivationPanel
-	assert_ne(panel == null, false, "body_cultivation_panel.tscn roots a BodyCultivationPanel")
+	assert_ne(panel, null, "body_cultivation_panel.tscn roots a BodyCultivationPanel")
 	return panel
 
 
@@ -63,7 +63,7 @@ func _screen() -> BodyCultivationPanel:
 func _prepared() -> Actor:
 	var hero := _play.actor()
 	_born.append(hero)
-	assert_ne(_play.prepare(hero) == null, false, "prepared for the next realm by play")
+	assert_ne(_play.prepare(hero), null, "prepared for the next realm by play")
 	return hero
 
 
@@ -138,10 +138,10 @@ func test_the_first_press_commits_a_durable_attempt_and_says_so() -> void:
 		"ok",
 		"and it is reported as a success, not a refusal"
 	)
-	assert_ne(
+	assert_eq(
 		String(panel.summary().get("message", "")).is_empty(), false, "the press is explained"
 	)
-	assert_ne(_committed_id(hero).is_empty(), false, "the module holds an attempt in flight")
+	assert_eq(_committed_id(hero).is_empty(), false, "the module holds an attempt in flight")
 	assert_eq(_pill_count(hero), pills - 1, "and exactly one pill was spent")
 	panel.free()
 
@@ -155,7 +155,7 @@ func test_a_committed_attempt_is_offered_resolve_instead_of_a_fresh_attempt() ->
 	panel.setup(hero)
 	panel.act_breakthrough()
 	var attempt_id := _committed_id(hero)
-	assert_ne(attempt_id.is_empty(), false, "an attempt is in flight")
+	assert_eq(attempt_id.is_empty(), false, "an attempt is in flight")
 
 	var actions := _actions(panel)
 	assert_eq(bool(actions.get("resolve", false)), true, "so resolve is offered")
@@ -167,7 +167,7 @@ func test_a_committed_attempt_is_offered_resolve_instead_of_a_fresh_attempt() ->
 	# The control a player presses must SAY it resolves, or the offer exists only in a
 	# dictionary. Read back off the button rather than the summary, because the summary
 	# is the contract and the label is the thing a player sees.
-	assert_ne(_button_text(panel).contains("Resolve"), false, "and the button offers resolve")
+	assert_eq(_button_text(panel).contains("Resolve"), true, "and the button offers resolve")
 	panel.free()
 
 
@@ -180,12 +180,12 @@ func test_the_second_press_resolves_the_committed_attempt() -> void:
 	panel.setup(hero)
 	panel.act_breakthrough()
 	var attempt_id := _committed_id(hero)
-	assert_ne(attempt_id.is_empty(), false, "an attempt is in flight")
+	assert_eq(attempt_id.is_empty(), false, "an attempt is in flight")
 
 	panel.act_breakthrough()
 	assert_eq(_committed_id(hero), "", "and the resolve left nothing in flight")
 	var record := BodyAdvancement.attempt(hero)
-	assert_ne(record == null, true, "the record is kept for its verdict")
+	assert_ne(record, null, "the record is kept for its verdict")
 	if record == null:
 		panel.free()
 		return
@@ -194,7 +194,7 @@ func test_the_second_press_resolves_the_committed_attempt() -> void:
 		attempt_id,
 		"and it is the SAME attempt the first press committed"
 	)
-	assert_ne(String(panel.summary().get("message", "")).is_empty(), false, "the roll is reported")
+	assert_eq(String(panel.summary().get("message", "")).is_empty(), false, "the roll is reported")
 	panel.free()
 
 
@@ -213,7 +213,7 @@ func test_the_resolve_offer_is_withdrawn_once_the_attempt_is_resolved() -> void:
 	assert_eq(authored.contains("Resolve"), false, "the scene authored a breakthrough label")
 
 	panel.act_breakthrough()
-	assert_ne(_button_text(panel).contains("Resolve"), false, "which became resolve")
+	assert_eq(_button_text(panel).contains("Resolve"), true, "which became resolve")
 	panel.act_breakthrough()
 	assert_eq(_button_text(panel), authored, "and is handed back once the attempt is done")
 	assert_eq(bool(_actions(panel).get("resolve", true)), false, "so resolve is withdrawn")
@@ -242,19 +242,26 @@ func test_a_refused_commit_is_rendered_as_a_refusal_not_a_commit() -> void:
 	panel.free()
 
 
-## A resolve that does not grant is explained by the RECORD, never by the breach list.
+## A resolve that does not grant is explained by the RECORD, never by the gate line.
 ##
 ## This is the case a plausible-looking implementation gets wrong: `unavailable` is
-## non-empty for exactly as long as an attempt is in flight, so joining it here ALWAYS
-## produces a sentence — "an attempt into X is already committed; resolve it first" — and a
-## hero whose trial just deviated is told to resolve the attempt that has already been
-## resolved. A refusal that always has an answer is how the four-cause collapse ADR 0150
-## removed comes back, wearing the sentence that was supposed to fix it.
+## non-empty after a deviation too — the gates the deviation just broke are published on
+## it — so joining it here ALWAYS produces a sentence, and the wrong one. A hero whose
+## trial deviated is told to repair a channel instead of that their attempt into
+## `foundation` deviated: a different debt, and a lie about what happened. A refusal that
+## always has an answer is how the four-cause collapse ADR 0150 removed comes back,
+## wearing the sentence that was supposed to fix it.
+##
+## Asserted as an EQUALITY against the read model's own verdict, never against a phrase.
+## A first attempt at this compared the message to one substring and a mutation that
+## reports the gate clauses instead of the verdict PASSED it, because the gate clauses
+## are full of real, true, unrelated text — which is exactly why "it does not contain the
+## wrong sentence" is not the same claim as "it is the right sentence".
 ##
 ## The deviation is CHOSEN: the commit goes through `start_attempt` with a seed that loses,
 ## and the press goes through the screen, so the roll is known without the screen knowing
 ## anything about it.
-func test_a_resolve_that_deviates_is_reported_by_the_record_and_not_by_the_lockout() -> void:
+func test_a_resolve_that_deviates_is_reported_by_the_record_and_not_by_the_gate_line() -> void:
 	var panel := _screen()
 	var hero := _prepared()
 	panel.setup(hero)
@@ -267,21 +274,24 @@ func test_a_resolve_that_deviates_is_reported_by_the_record_and_not_by_the_locko
 		true,
 		"an attempt committed against a roll that will lose"
 	)
-	# The clause list that must NOT be the source of this message.
-	var lockout: Array = (
-		(BodyCultivationApi.panel_state(hero).get("unavailable", {}) as Dictionary)
-		. get("breakthrough", [])
-	)
-	assert_ne(lockout.is_empty(), false, "the in-flight lockout is published while committed")
 
 	assert_eq(panel.act_breakthrough(), false, "the screen resolves, and the trial deviates")
-	var said := String(panel.summary().get("message", ""))
-	assert_ne(said.is_empty(), false, "a refused resolve is still explained (%s)" % said)
-	assert_eq(
-		said.contains("already committed"),
-		false,
-		"and it is not the lockout clause the player just satisfied (%s)" % said
+	# The expectation is read off the read model, so no test restates the wording it
+	# checks and a reword of the module's own sentence does not fail here.
+	var verdict := String(
+		(BodyCultivationApi.panel_state(hero).get("attempt_outcome", {}) as Dictionary).get(
+			"reason", ""
+		)
 	)
+	assert_eq(verdict.is_empty(), false, "the record names what the roll became")
+	var said := String(panel.summary().get("message", ""))
+	assert_eq(said, verdict, "and the screen says exactly that, not a gate clause")
+	assert_ne(verdict.contains("deviated"), false, "in words the module owns (%s)" % verdict)
+	# The gate line the temptation reads from is on screen too, saying something else,
+	# so the equality above is not two views of one sentence.
+	var unmet: Array = panel.summary().get("unmet", [])
+	assert_ne(unmet.is_empty(), true, "the gate line is non-empty: a deviation broke it")
+	assert_ne(said, "; ".join(unmet), "and the message is not the gate line")
 	panel.free()
 
 
@@ -321,13 +331,13 @@ func test_a_committed_attempt_rides_out_a_save_and_this_screen_offers_to_resolve
 	panel.setup(hero)
 	assert_eq(panel.act_breakthrough(), false, "the first press commits rather than advances")
 	var attempt_id := _committed_id(hero)
-	assert_ne(attempt_id.is_empty(), false, "an attempt is in flight")
+	assert_eq(attempt_id.is_empty(), false, "an attempt is in flight")
 	panel.free()
 
 	# --- the player quits here ---
 	assert_eq(bool(SaveApi.persist(hero, "standard")["ok"]), true, "the autosave landed")
 	var envelope := SaveStore.restore().get("envelope", {}) as Dictionary
-	assert_ne(envelope.is_empty(), false, "the slot reads back")
+	assert_eq(envelope.is_empty(), false, "the slot reads back")
 	if envelope.is_empty():
 		return
 	var reloaded := Actor.from_dict(envelope.get("actor", {}) as Dictionary)
@@ -347,7 +357,7 @@ func test_a_committed_attempt_rides_out_a_save_and_this_screen_offers_to_resolve
 		"the reloaded screen reports the attempt that rode out on the save"
 	)
 	assert_eq(bool(actions.get("resolve", false)), true, "and offers to resolve it")
-	assert_ne(_button_text(next).contains("Resolve"), false, "the control says so")
+	assert_eq(_button_text(next).contains("Resolve"), true, "the control says so")
 	assert_eq(
 		bool(actions.get("breakthrough", true)),
 		false,

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RealmLifespan" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/realm_lifespan_table.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+multipliers = {
+1: 1.00,
+2: 10.00,
+3: 100.00,
+4: 1000.00
+}

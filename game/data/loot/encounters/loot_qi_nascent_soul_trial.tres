@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"nascent_soul"
 rarity = &"common"
-vitality = 64.0
+vitality = 2625.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_nascent_soul_warden", "table_id": &"loot_qi_nascent_soul_warden"},
 	{"boss_id": &"F5_nascent_soul_warden", "table_id": &"loot_F5_nascent_soul_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"nascent_soul"
 rarity = &"rare"
-vitality = 102.4
+vitality = 4200.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_nascent_soul_warden", "table_id": &"loot_qi_nascent_soul_warden"},
 	{"boss_id": &"F5_nascent_soul_warden", "table_id": &"loot_F5_nascent_soul_warden"},

@@ -57,8 +57,37 @@ const FIXTURE_YIELDS: Dictionary = {
 	"t_vein": [FIXTURE_ITEM],
 }
 
+## The id the written fixture is given. Spelled once, so the write, the path and the
+## assertions cannot disagree about what the file is called. A `t_`-prefixed name in the
+## suite's fixture vocabulary, under no authored naming convention.
+const PLAIN_ID := "t_measured_good"
+## Where the fixture is written, and where `teardown` takes it down. The `misc` folder is
+## where `_category_of` falls back to, so `Crafting.resolve`'s fast path finds it directly.
+const PLAIN_PATH := "res://data/items/misc/t_measured_good.tres"
+
+## The stack ceiling every probe measurement below is taken against.
+##
+## ## Why the measured good cannot be [constant FIXTURE_ITEM]
+##
+## `trinket_iron_charm` carries `roll_spec = {count = 1, contexts = [...]}` and every authored
+## `fixed_modifier` rolls an option, so its realized rolls are ALMOST NEVER equal and its
+## stacks never merge. It is the right good for "does an item demonstrably reach the bag" and
+## the wrong good for every room measurement here. Measured on this tree: 20 000 realizations
+## produced no signature collision, so "almost never" is "never" as far as a test is concerned.
+const MEASURED_MAX_STACK := 64
+
+## The node the plain-good measurements are taken on. Six per period: a prime-adjacent number
+## that divides neither 99 nor 256 neatly, so the period count has to be CEILING and the grant
+## has to be asserted as `periods * 6` rather than as a round figure.
+const PLAIN_NODE := &"t_plain"
+## Units the [constant PLAIN_NODE] yields per period.
+const PLAIN_YIELD := 6
+
 var _actor: Actor
 var _held: Array[Actor] = []
+## The measured good, read back off disk. Never a hand-built object — see
+## [method _plain_stackable].
+var _plain: Array[ItemDef] = []
 
 
 func setup() -> void:
@@ -136,6 +165,12 @@ func _miner(id: StringName, realm: StringName, capacity: int = ItemsApi.DEFAULT_
 	return actor
 
 
+## How many distinct stacks [_fill_bag] will try to place. A CEILING on the walk, not a
+## promise that the content tree has this many: if it does not, the calling case's own
+## `is_full()` assertion fails loudly rather than leaving a bag that is not full, because a bag
+## that is not full makes the refusal it is testing unfalsifiable.
+const FILL_BATCH := 64
+
 ## Fill `actor`'s bag with `inventory.capacity` DISTINCT authored STACKS, and return how many
 ## units landed.
 ##
@@ -155,14 +190,6 @@ func _miner(id: StringName, realm: StringName, capacity: int = ItemsApi.DEFAULT_
 ## tree with fewer distinct defs than a large capacity produces a LOUD failure at the calling
 ## case's own `is_full()` assertion rather than a quietly under-filled bag -- a bag that is not
 ## full makes the refusal it is testing unfalsifiable.
-const FILL_BATCH := 48
-
-## The node the plain-good measurements are taken on. Six per period: a prime-adjacent number
-## that divides neither 99 nor 256 neatly, so the period count has to be CEILING and the grant
-## has to be asserted as `periods * 6` rather than as a round figure.
-const PLAIN_NODE := &"t_plain"
-## Units the [constant PLAIN_NODE] yields per period.
-const PLAIN_YIELD := 6
 
 
 func _fill_bag(actor: Actor) -> int:
@@ -219,17 +246,6 @@ func _distinct_stackables(limit: int, plain: bool = false) -> Array[ItemDef]:
 	return out
 
 
-## The stack ceiling every probe measurement below is taken against.
-##
-## ## Why the measured good cannot be [constant FIXTURE_ITEM]
-##
-## `trinket_iron_charm` carries `roll_spec = {count = 1, contexts = [...]}` and every authored
-## `fixed_modifier` rolls an option, so its realized rolls are ALMOST NEVER equal and its
-## stacks never merge. It is the right good for "does an item demonstrably reach the bag" and
-## the wrong good for every room measurement here. Measured on this tree: 20 000 realizations
-## produced no signature collision, so "almost never" is "never" as far as a test is concerned.
-const MEASURED_MAX_STACK := 64
-
 ## A def with exactly the shape the probe measurements need: stackable, no roll spec (so two
 ## adds merge and open room is reachable at all), and a KNOWN, MODEST stack ceiling.
 ##
@@ -267,16 +283,6 @@ const MEASURED_MAX_STACK := 64
 ## makes the fixture's shape readable in one place and impossible to lose to a content
 ## change. [_assert_plain] then pins exactly those three on the def that came BACK off
 ## disk, so a file that failed to parse into the intended shape fails the test loudly.
-## The id the written fixture is given. Spelled once, so the write, the path and the
-## assertions cannot disagree about what the file is called. A `t_`-prefixed name in the
-## suite's fixture vocabulary, under no authored naming convention.
-const PLAIN_ID := "t_measured_good"
-## Where the fixture is written, and where `teardown` takes it down. The `misc` folder is
-## where `_category_of` falls back to, so `Crafting.resolve`'s fast path finds it directly.
-const PLAIN_PATH := "res://data/items/misc/t_measured_good.tres"
-## The measured good, read back off disk. Never a hand-built object — see
-## [method _plain_stackable].
-var _plain: Array[ItemDef] = []
 
 
 ## The measured good, as `ForageGranary` will resolve it, or null when it is not there.
@@ -690,7 +696,10 @@ func test_a_harvest_the_bag_cannot_hold_whole_is_named_grant_short_with_the_real
 		String(result["reason"]),
 		ForageApi.GRANT_SHORT,
 		(
-			"named `grant_short` rather than `grant_refused`: part of it DID arrive (granted=%d of %d, item=%s)"
+			(
+				"named `grant_short` rather than `grant_refused`: part of it DID arrive "
+				+ "(granted=%d of %d, item=%s)"
+			)
 			% [int(result["granted"]), asked, String(result["item_id"])]
 		)
 	)

@@ -141,6 +141,15 @@ func _technique(kind: StringName, def_id: StringName) -> TechniqueDef:
 	return def
 
 
+## The same technique with an AUTHORED share, which is what a `.tres` looks like. The
+## share rides `TechniqueDef.element_share` — the ONE field every path authors — and
+## `MindDamage` reads it under its own `SHARE_KEY`.
+func _shared_technique(kind: StringName, def_id: StringName, share: float) -> TechniqueDef:
+	var def := _technique(kind, def_id)
+	def.element_share = share
+	return def
+
+
 ## The one `breakdown` row production produces for this attacker, this defender and
 ## this technique — built by `CombatBoot.ctx_builder_for` and run over a real
 ## `AttackContext` shaped the way `CombatSpine._context` shapes one.
@@ -149,11 +158,17 @@ func _technique(kind: StringName, def_id: StringName) -> TechniqueDef:
 ## SPECIALISED defender — one whose saturating defence does not already dominate its
 ## illusion resistance — can build it through the same production path. Everything after
 ## the pair is identical either way.
-func _production_parts(kind: StringName, def_id: StringName, pair: Dictionary = {}) -> Dictionary:
+##
+## `def` is a parameter for the same reason and one step further: a SHIPPED `.tres` has to
+## be driven through this path rather than rebuilt from its two fields, because a fixture
+## that re-authors the field the assertion is about proves nothing about the file.
+func _production_parts(
+	kind: StringName, def_id: StringName, pair: Dictionary = {}, def: Variant = null
+) -> Dictionary:
 	var actors: Dictionary = pair if not pair.is_empty() else _pair()
 	var attacker: Actor = actors["attacker"]
 	var defender: Actor = actors["defender"]
-	var technique := _technique(kind, def_id)
+	var technique := def if def is Object else _technique(kind, def_id)
 	var ctx := AttackContext.new(attacker, defender, technique, CombatEngineApi.tuning(), 100.0)
 	var builder := CombatBoot.ctx_builder_for(attacker, defender, technique)
 	var staged: Variant = builder.call(ctx)
@@ -390,6 +405,83 @@ func test_the_shipped_mind_techniques_carry_their_kinds_in_production() -> void:
 				"%s resolves to the kind its own description claims"
 				% String((entry as Dictionary)["path"]).get_file()
 			)
+		)
+
+
+## The AUTHORED SHARE reaches the mechanism, which is the one input ADR 0071 reads that
+## nothing in `game/src` used to carry.
+##
+## `MindDamage.builder` staged `KIND_KEY` and `SEA_KEY` and nothing else, so `_share_of`
+## read `0.0`, took its `<= 0.0` fallback, and every mind strike in the game resolved at
+## `CombatTuning.default_mind_share` (`1.0`). The two numbers below are the whole of what
+## was lost: `mind_still_water.tres` authors `0.1` and `mind_prime_autopsy.tres` authors
+## `1.0`, so those were the SAME blow and seven authored values were inert.
+##
+## Every row here goes through `CombatBoot.ctx_builder_for`, so this turns red the moment
+## the third argument at `combat_boot.gd:894` is dropped — and it stays green through any
+## edit to the mechanism's arithmetic, because it reads `share` rather than re-deriving it.
+func test_a_mind_technique_resolves_at_its_authored_share_not_the_default() -> void:
+	var pair := _pair()
+	var attacker: Actor = pair["attacker"]
+	var defender: Actor = pair["defender"]
+	var tuning := CombatEngineApi.tuning()
+	var authored := 0.1
+	# Stated rather than assumed: the claim is "the authored value BEATS the default",
+	# and a retune making the two equal would make both rows pass for a reason that is
+	# not the wiring under test.
+	assert_eq(
+		absf(authored - float(tuning.default_mind_share)) > 0.0001,
+		true,
+		"the authored share and the tuning default really are different numbers"
+	)
+	var rows: Array[Dictionary] = []
+	var shares := [authored, float(tuning.default_mind_share)]
+	for index in shares.size():
+		var technique := _shared_technique(DISRUPT, &"share_probe_%d" % index, shares[index])
+		var ctx := AttackContext.new(attacker, defender, technique, tuning, 100.0)
+		var staged: Variant = CombatBoot.ctx_builder_for(attacker, defender, technique).call(ctx)
+		rows.append(MindDamage.new().breakdown(staged as AttackContext))
+
+	assert_almost_eq(
+		float(rows[0]["share"]),
+		authored,
+		"a mind technique resolves at the share its own definition authored"
+	)
+	assert_almost_eq(
+		float(rows[1]["share"]),
+		float(tuning.default_mind_share),
+		"and one that authored none falls to the tuning default"
+	)
+	assert_eq(
+		float(rows[0]["share"]) != float(rows[1]["share"]),
+		true,
+		(
+			"MISSING SEAM: both rows resolved at the same share, so a `.tres` authoring "
+			+ "0.1 and one authoring 1.0 were the same blow — MindDamage.SHARE_KEY was "
+			+ "never written by any production caller"
+		)
+	)
+
+
+## The same claim on the SHIPPED content, because a fixture authors the very field the
+## assertion is about. `mind_still_water.tres` (`0.1`) and `mind_prime_autopsy.tres`
+## (`1.0`) are the pair the gap is named for: before the fix they resolved identically,
+## and a retune of either file turns this red where a fixture would not.
+func test_the_shipped_mind_shares_are_read_through_the_production_builder() -> void:
+	for entry in [
+		{"path": "res://data/techniques/mind_still_water.tres", "share": 0.1},
+		{"path": "res://data/techniques/mind_prime_autopsy.tres", "share": 1.0},
+	]:
+		var path := String((entry as Dictionary)["path"])
+		var def := load(path) as TechniqueDef
+		assert_ne(def, null, "%s loads as a TechniqueDef" % path)
+		if def == null:
+			continue
+		var parts := _production_parts(def.mind_kind, def.id, {}, def)
+		assert_almost_eq(
+			float(parts["share"]),
+			float((entry as Dictionary)["share"]),
+			"%s resolves at the share it authors, not the tuning default" % path.get_file()
 		)
 
 

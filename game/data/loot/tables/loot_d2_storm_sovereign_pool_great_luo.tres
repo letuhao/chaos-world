@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -7,21 +7,21 @@
 script = ExtResource("2_entry")
 id = &"d2_storm_sovereign_great_luo_0"
 kind = &"item"
-item_id = &"regalia_storm_circlet"
+item_id = &"A30_immortal_aromatic_pastille"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
-rarity_floor = &"rare"
+rarity_floor = &"legendary"
 
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
 id = &"d2_storm_sovereign_great_luo_1"
 kind = &"item"
-item_id = &"regalia_storm_sceptre"
+item_id = &"regalia_storm_circlet"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -31,9 +31,21 @@ rarity_floor = &"rare"
 script = ExtResource("2_entry")
 id = &"d2_storm_sovereign_great_luo_2"
 kind = &"item"
+item_id = &"regalia_storm_sceptre"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"d2_storm_sovereign_great_luo_3"
+kind = &"item"
 item_id = &"relic_storm_lens"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -50,5 +62,6 @@ allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
-	SubResource("entry_2")
+	SubResource("entry_2"),
+	SubResource("entry_3")
 ])

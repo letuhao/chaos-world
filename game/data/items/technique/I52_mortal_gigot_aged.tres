@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"I52_mortal_gigot_aged"
 display_name = "Mortal Gigot Aged"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"great_ascension"
 fixed_modifiers = Array[Dictionary]([

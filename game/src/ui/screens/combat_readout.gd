@@ -46,6 +46,12 @@ const REASON_NO_HERO := "no_hero"
 const REASON_NO_STRIKE := "no_strike_seam"
 const REASON_NO_TARGET := "no_target"
 const REASON_REFUSED := "refused"
+## The selector's own two refusals, named apart from the strike's. `no_select_seam` means
+## the composition root wired a strike but no technique selector, so the readout can fire
+## exactly one mechanism and the reader was never offered a choice; `unknown_path` means
+## the root refused the id, which it does for anything outside `PathState.ALL`.
+const REASON_NO_SELECT := "no_select_seam"
+const REASON_BAD_PATH := "unknown_path"
 ## The panel's own line when no blow has been struck is the panel's, not this screen's.
 const NO_HERO := "No hero bound."
 const NO_SEAM := "Nothing on this screen can strike yet, so there is nothing to read."
@@ -59,6 +65,20 @@ var _target_label: Label = null
 ## The injected strike seam: `func(attacker: Actor, defender: Actor) -> Dictionary`
 ## answering a primitives-only payload. Supplied by the composition root.
 var _strike: Callable = Callable()
+## The path selector seam: `func(path: StringName) -> bool`, and a companion
+## `func() -> StringName` answering the path that is currently armed. Supplied by the
+## composition root for the reason the strike seam is: `ui/` may not name `TechniqueDef`,
+## so the CHOICE of technique travels as a path id across a callable and the root owns
+## every `TechniqueDef` field.
+##
+## ## Why the readout needs one at all
+##
+## One hardcoded swing cannot show three mechanisms. `QiDamage` emits no `effects[]`, so a
+## qi blow wounds nothing and the panel's wound row never renders; `MindDamage` is gated
+## out entirely unless the attacker carries a sea. A readout whose only verb fires one
+## fixed technique therefore shows at most one of the three rows it exists to make visible.
+var _select: Callable = Callable()
+var _armed: Callable = Callable()
 ## The drill opponent. Injected beside the strike, for the same reason: `ui/` may not
 ## mint an `Actor`.
 var _target: RefCounted = null
@@ -88,12 +108,68 @@ func _summary() -> Dictionary:
 		"fired": _hits > 0,
 		"last_ok": _last_ok,
 		"last_reason": _last_reason,
+		## The path the next blow will fire, as a `String` so the whole payload stays
+		## primitives JSON can carry verbatim. `""` when no selector was injected — a
+		## screen with one fixed swing reports no path rather than inventing one.
+		"technique_path": String(_armed_path()),
+		"technique_paths": _available_paths(),
 		"readout": _readout.summary() if _readout != null else {},
 		"enabled":
 		{
 			"strike": _strike.is_valid() and _target != null,
+			## Cycling is refused by name rather than hidden: a reader who cannot see why
+			## the path will not change cannot act on it (ADR 0150).
+			"cycle_path": _select.is_valid(),
 		},
 	}
+
+
+## The path the next blow will fire, or `&""` when no selector seam was injected. Asked
+## of the root rather than cached here, so the screen and the blow cannot disagree about
+## which technique is armed — the same reason `_read_context` re-asks `mechanism_for_hit`
+## instead of trusting a field.
+func _armed_path() -> StringName:
+	if not _armed.is_valid():
+		return &""
+	var produced: Variant = _armed.call()
+	if produced is StringName or produced is String:
+		return StringName(produced)
+	return &""
+
+
+## The paths this screen offers, as `String`s for the same primitives-only reason. Asked
+## of the root for the same reason as [method _armed_path]; an unwired screen offers none,
+## which is what makes `enabled.cycle_path` false rather than a cycle into nothing.
+##
+## `[code]paths[/code]` as an ARGUMENT rather than a second callable: the root already owns
+## the pair and answering both from one seam is what stops the armed path and the offered
+## list from coming from two owners that could disagree.
+func _available_paths() -> Array:
+	if not _armed.is_valid():
+		return [] as Array
+	var produced: Variant = _armed.call(&"paths")
+	if produced is Array:
+		return _stringify(produced as Array)
+	return [] as Array
+
+
+func _stringify(values: Array) -> Array:
+	var out: Array = []
+	for value in values:
+		out.append(String(value))
+	return out
+
+
+## Inject the technique selector beside the strike, as a PAIR: `select` arms one path and
+## `armed` answers the current one — or, called with the `&"paths"` argument, the whole set.
+##
+## `select` answers whether the path it was given is one it could arm, so an unknown id is
+## refused by the OWNER rather than accepted by the screen and silently resolving to the
+## default — the same rule [method act_cycle_path] relies on to be honest about refusing.
+func bind_technique(select: Callable, armed: Callable) -> void:
+	_select = select
+	_armed = armed
+	refresh()
 
 
 ## Inject the strike seam, the body it strikes, and the read of what the strike left.
@@ -168,6 +244,60 @@ func act_clear() -> bool:
 	_last_reason = ""
 	_hits = 0
 	_feed()
+	refresh()
+	return true
+
+
+## ## THE SELECTOR. Why a readout that only fires one technique cannot do its job.
+##
+## The panel renders three things the mechanisms write: a wound (`body.wound`, from
+## `BodyDamage`), a necrosis (the wound ledger crossing ADR 0070's threshold) and a sea
+## erosion (`mind.erosion`, from `MindDamage`). A single fixed technique reaches at most
+## one of them, and the one it happened to be fixed to was qi's — which writes NO effects
+## at all, so it reached none. Selecting the technique is therefore not a convenience on
+## this screen; it is what makes the other two rows exist.
+##
+## The cycle walks `PathState.ALL` in order through the root, which owns the list, so
+## `summary().technique_paths` and the walk cannot disagree about how many stops there are.
+## The last blow is NOT cleared on a cycle: the wound ledger and the erosion both outlive
+## the blow that wrote them, and a reader comparing two techniques wants the previous
+## numbers still on screen. Refusing by name when nothing is wired is the ADR 0150 rule.
+func act_cycle_path() -> bool:
+	_bind_nodes()
+	var hero := actor()
+	if hero == null:
+		return _reject(REASON_NO_HERO)
+	if not _select.is_valid():
+		return _reject(REASON_NO_SELECT)
+	var paths := _available_paths()
+	if paths.is_empty():
+		return _reject(REASON_NO_SELECT)
+	var current := String(_armed_path())
+	var at := paths.find(current)
+	var next := String(paths[(at + 1) % paths.size()]) if at >= 0 else String(paths[0])
+	if not bool(_select.call(StringName(next))):
+		return _reject(REASON_BAD_PATH)
+	set_message("Next blow: %s" % next.replace("_", " "), TONE_OK)
+	refresh()
+	return true
+
+
+## Arm one named path, for a caller that would rather say which than step round. Shares
+## `act_cycle_path`'s refusal vocabulary so a reader sees ONE answer to "that did not
+## work" rather than two, and publishes the id it armed so a test can assert the SELECTION
+## landed without striking anything — the two-step property this selector exists to make
+## measurable.
+func act_choose_path(path: String) -> bool:
+	_bind_nodes()
+	var hero := actor()
+	if hero == null:
+		return _reject(REASON_NO_HERO)
+	if not _select.is_valid():
+		return _reject(REASON_NO_SELECT)
+	var wanted := StringName(path)
+	if not bool(_select.call(wanted)):
+		return _reject(REASON_BAD_PATH)
+	set_message("Next blow: %s" % path.replace("_", " "), TONE_OK)
 	refresh()
 	return true
 

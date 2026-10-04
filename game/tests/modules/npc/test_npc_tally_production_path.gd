@@ -204,7 +204,12 @@ func test_a_pull_drives_the_elder_up_a_stage_through_the_authored_beat() -> void
 		"the event opened from content, so its opening beat fired"
 	)
 	assert_eq(NpcApi.summary(ELDER)["stage_id"], "gatekeeper", "and he starts where he starts")
-	assert_eq(int(opened["opened"]), 1, "the pull that opened it opened exactly one event")
+	# `report["opened"]` is the pulse's CUMULATIVE open count, not one pull's, and
+	# `_pull_until_open` may have pulled more than once: `mortal_plains` ships two
+	# events behind the same ambient trigger and the second stays `available` until a
+	# later pull wins it. What the budget actually guarantees is per-pull, and that is
+	# asserted directly by `test_a_single_pull_opens_at_most_one_event`.
+	assert_eq(int(opened["opened"]) >= 1, true, "the pull that opened it opened an event")
 	assert_eq(
 		EventState.is_active(EventApi.state(player), EVENT),
 		true,
@@ -235,6 +240,23 @@ func test_a_pull_drives_the_elder_up_a_stage_through_the_authored_beat() -> void
 		NpcApi.summary(ELDER)["stage_id"],
 		"sworn_servant",
 		"the third favour crosses the threshold his stage authored and he advances"
+	)
+
+
+## **The budget is per-PULL, not cumulative.** `WorldPulse.MAX_OPENS_PER_PULL` is 1 and
+## the shipped tree puts two eligible events behind the shared `storm_front_sighted`
+## trigger, so the second one has to wait for a later pull. Asserting the cumulative
+## total instead of the per-pull count is the mistake that let a budget regression read
+## as a flaky count, so this pins the real invariant.
+func test_a_single_pull_opens_at_most_one_event() -> void:
+	var player := _player()
+	var pulse := WorldPulse.new(player, BeatDirector.new())
+	var before := int(pulse.pull(PULSE)["opened"])
+	var after := int(pulse.pull(PULSE)["opened"])
+	assert_eq(
+		after - before <= WorldPulse.MAX_OPENS_PER_PULL,
+		true,
+		"one pull opens at most the budget, so the second event waits for its own pull"
 	)
 
 
@@ -597,7 +619,7 @@ func _offer(player: Actor, beat: Dictionary) -> Dictionary:
 ## event at the elder's location — which is a CONTENT change, not a defect, and the
 ## suite must not read a second authored event as a broken ladder.
 func _pull_until_open(
-	player: Actor, pulse: WorldPulse, event_id: StringName, fact_id: StringName
+	player: Actor, pulse: WorldPulse, event_id: StringName, _fact_id: StringName
 ) -> Dictionary:
 	var report: Dictionary = {}
 	for _pull in range(PULL_BUDGET):

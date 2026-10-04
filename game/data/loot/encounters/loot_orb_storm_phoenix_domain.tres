@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"foundation"
 rarity = &"common"
-vitality = 184.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"orb_storm_phoenix", "table_id": &"loot_orb_storm_phoenix"},
 	{"boss_id": &"d4_storm_phoenix", "table_id": &"loot_d4_storm_phoenix"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"foundation"
 rarity = &"rare"
-vitality = 294.4
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"orb_storm_phoenix", "table_id": &"loot_orb_storm_phoenix"},
 	{"boss_id": &"d4_storm_phoenix", "table_id": &"loot_d4_storm_phoenix"},

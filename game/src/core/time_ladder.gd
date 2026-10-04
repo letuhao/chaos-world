@@ -62,6 +62,9 @@ extends Resource
 ## `WorldAmbient.ROSTER` stagger at periods 1, 2, 3, 4 (`world_ambient.gd:60-65`), whose
 ## comment at `:44-46` names the cap as the reason one pull cannot open four events.
 ##
+## The BUDGET is that constant; the WORK below it is not one, and conflating them is how
+## `conversion_work` came to measure nothing.
+##
 ## Exceeding it FAILS LOUDLY and never truncates (`AGENTS.md:56`, `:75`): `RowBudget`
 ## truncates a *screen* and reports "N of M" (`core/row_budget.gd:14-16`), the right
 ## trade there. World history has no "N of M", a silently truncated history is worse
@@ -70,10 +73,16 @@ extends Resource
 ## ## Cost
 ##
 ## One advance costs `conversion_work()` — one integer division per authored magnitude
-## plus the budget — and that number is IDENTICAL for one period and for 10^9 years.
-## That is the claim ADR 0168 could not make, and
-## `tests/core/test_time_ladder.gd` asserts the WORK COUNT rather than the answer,
-## because an answer alone cannot distinguish 5 divisions from 10^12 of them.
+## THE SPAN CROSSES, plus the budget — and that number is BOUNDED BY THE AUTHORED ROW
+## COUNT for any span at all. One period crosses none of the five rows and costs the
+## budget alone; 10^9 years crosses four and costs those four divisions on top. Both are
+## single digits, and neither grows with the span. That is the claim ADR 0168 could not
+## make, and `tests/core/test_time_ladder.gd` asserts the WORK COUNT rather than the
+## answer, because an answer alone cannot distinguish 5 divisions from 10^12 of them.
+##
+## **It is bounded, not identical, and the difference is the measurement.** A constant
+## would satisfy "one period and 10^9 years cost the same" too — which is why the test
+## also asks two spans that cross DIFFERENT magnitudes to disagree.
 ##
 ## ## ## No clock, no driver, no loop this file cannot bound
 ##
@@ -103,13 +112,6 @@ extends Resource
 ## table's script preloads nothing. One cached read, `InstitutionBudget.shipped()`'s
 ## shape (`core/institution_budget.gd:63-64`).
 const TABLE_PATH := "res://src/core/time_ladder_table.tres"
-
-## The AUTHORED rows, in the shipped `.tres` and nowhere else. Ordered finest first so
-## `period` — the base the other ratios are measured from — is row zero; the ORDER is
-## what a reader scans, and no function depends on it, because nothing indexes into this
-## array. Keyed by NAME (`ratio_periods` is looked up by magnitude id, never by row),
-## which is the ADR 0050 rule and the anti-shift guarantee above.
-@export var magnitude_rows: Array[Dictionary] = []
 
 ## Seconds of elapsed time in one world period: the BASE RATIO, and the one cadence
 ## number (ADR 0173 "time-shaped constants migrate to it"). 120.0 is the value that
@@ -144,6 +146,13 @@ const BASE := &"period"
 ## zero — a ladder that answers "nothing happened" to everything is the silent-freeze
 ## hazard ADR 0173 (c) names.
 static var _table: TimeLadder = null
+
+## The AUTHORED rows, in the shipped `.tres` and nowhere else. Ordered finest first so
+## `period` — the base the other ratios are measured from — is row zero; the ORDER is
+## what a reader scans, and no function depends on it, because nothing indexes into this
+## array. Keyed by NAME (`ratio_for` looks a magnitude up by id, never by row), which is
+## the ADR 0050 rule and the anti-shift guarantee above.
+@export var magnitude_rows: Array[Dictionary] = []
 
 
 ## Every authored magnitude, finest first, as `{name, ratio_periods}` rows. The LIVE
@@ -199,21 +208,41 @@ static func magnitudes_crossed(span_periods: int) -> Dictionary:
 	return crossed
 
 
-## The WORK one advance of `span_periods` costs: one integer division per authored
-## magnitude, plus the `EVENT_BUDGET` offer slots the span is allowed to spend.
+## The WORK one advance of `span_periods` costs: one division per AUTHORED MAGNITUDE
+## THE SPAN CROSSES, plus the `EVENT_BUDGET` offer slots the span is allowed to spend.
 ##
-## The span is an argument so that the constant can be MEASURED against it rather than
-## asserted in prose: `tests/core/test_time_ladder.gd` calls this for one period and for
-## 10^9 years and requires one answer. Published rather than left private because a
-## bound nothing can query is a claim, and this is the number ADR 0173's Consequences
-## sentence ("a billion-year meditation costs O(magnitudes + C)") actually is.
+## **This is a MEASUREMENT, and it is derived from [method magnitudes_crossed] — never
+## from a constant.** It used to return `magnitudes().size() + EVENT_BUDGET`, which
+## ignored `span_periods` entirely and was unfalsifiable: the test that asked it about
+## one period and about 10^9 years passed against `return 42`. A work count that cannot
+## differ between two inputs is not a measurement of either.
+##
+## A row COUNTS only when the span reaches one WHOLE of it: the fold divides by every
+## authored ratio, but a division that yields zero crossed nothing, and a span crossing
+## fewer magnitudes must cost fewer steps or the number is decorative again. So one
+## period crosses none of `day`/`month`/`year`/`era` and costs the budget alone, while
+## 10^9 years crosses four and costs those four divisions on top. Both are O(magnitudes):
+## the loop walks the authored row array and nothing else, so the count cannot grow with
+## the span however long the span is.
 ##
 ## A non-positive span costs nothing: an advance with no elapsed time converts nothing
 ## and offers nothing, so there is no row to divide and no event to spend.
+##
+## Published rather than left private because a bound nothing can query is a claim, and
+## this is the number ADR 0173's Consequences sentence ("a billion-year meditation costs
+## O(magnitudes + C)") actually is.
 static func conversion_work(span_periods: int) -> int:
 	if span_periods <= 0:
 		return 0
-	return magnitudes().size() + EVENT_BUDGET
+	# ONE fold, then a scan of its own result: the loop walks the dictionary that fold
+	# returned, so the count is the fold's answer read back rather than a second
+	# division per row stacked on top of the one being measured.
+	var crossed := magnitudes_crossed(span_periods)
+	var divisions := 0
+	for name in crossed:
+		if int(crossed[name]) >= 1:
+			divisions += 1
+	return divisions + EVENT_BUDGET
 
 
 ## How many chunks a span is split into, always within `1..MAX_CHUNKS`, and `0` for a
@@ -221,7 +250,7 @@ static func conversion_work(span_periods: int) -> int:
 ##
 ## The chunk size GROWS with the span — the count is `ceil(span / chunk_periods)` clamped
 ## to the cap, so a 10^12-period skip at the per-call chunk of 8 comes back as 64 chunks
-## of ~6.8e10 periods each rather than 5.5e11 chunks of 8 (ADR 0173: "chunk size GROWS
+## of ~1.6e10 periods each rather than 5.5e11 chunks of 8 (ADR 0173: "chunk size GROWS
 ## with the elapsed span, so the chunk count stays small and fixed-ish rather than
 ## proportional"). Clamping the COUNT grows a chunk; it never drops one, so nothing is
 ## truncated and the plan still sums to the whole span.
@@ -253,6 +282,23 @@ static func chunks_for(span_periods: int, chunk_periods: int) -> PackedInt64Arra
 	if span_periods > 0:
 		_fill_chunks(plan, span_periods, chunk_periods)
 	return plan
+
+
+## How many periods `plan` actually covers, by summing it.
+##
+## Published because "a plan covers exactly what the caller paid for, nothing dropped and
+## nothing invented" is otherwise only checkable by re-deriving the allocator, and a
+## guard that re-derives the thing it guards proves nothing. A caller that paid for a
+## span can hand the plan back here and know whether the whole span was allocated.
+##
+## Integer arithmetic over a `PackedInt64Array`, so a 10^12-period plan sums exactly: a
+## `float` accumulator would lose the low digits of a trillion periods, which is the
+## `%`-on-a-float hazard `app/institution_resolver.gd:155-158` names.
+static func covered_periods(plan: PackedInt64Array) -> int:
+	var total := 0
+	for periods in plan:
+		total += periods
+	return total
 
 
 ## Whether `offers` events is over the budget for a span of `span_periods` at `place`,

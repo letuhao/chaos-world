@@ -1,27 +1,27 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=9 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"F12_ascension_warden_pool_spirit_ascension"
-kind = &"table"
-item_id = &""
-table_id = &"loot_F12_ascension_warden_pool_spirit_ascension"
-weight = 1.0
+id = &"F12_ascension_warden_core_0"
+kind = &"item"
+item_id = &"qi_spirit_ascension_channel_elixir"
+table_id = &""
+weight = 1.
 chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
 
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
-id = &"F12_ascension_warden_pool_spirit_condensation"
+id = &"F12_ascension_warden_pool_nascent_soul"
 kind = &"table"
 item_id = &""
-table_id = &"loot_F12_ascension_warden_pool_spirit_condensation"
-weight = 1.0
+table_id = &"loot_F12_ascension_warden_pool_nascent_soul"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -29,11 +29,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_2"]
 script = ExtResource("2_entry")
-id = &"F12_ascension_warden_pool_spirit_palace"
+id = &"F12_ascension_warden_pool_spirit_ascension"
 kind = &"table"
 item_id = &""
-table_id = &"loot_F12_ascension_warden_pool_spirit_palace"
-weight = 1.0
+table_id = &"loot_F12_ascension_warden_pool_spirit_ascension"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -41,37 +41,25 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_3"]
 script = ExtResource("2_entry")
-id = &"F12_ascension_warden_core_0"
-kind = &"item"
-item_id = &"qi_spirit_ascension_channel_elixir"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &"magic"
-
-[sub_resource type="Resource" id="entry_4"]
-script = ExtResource("2_entry")
-id = &"F12_ascension_warden_domain_4"
-kind = &"item"
-item_id = &"H15_spirit_impost_evasion_fortune_penetration_physique_qi_regen"
-table_id = &""
-weight = 1.0
+id = &"F12_ascension_warden_pool_spirit_condensation"
+kind = &"table"
+item_id = &""
+table_id = &"loot_F12_ascension_warden_pool_spirit_condensation"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
 rarity_floor = &""
 
-[sub_resource type="Resource" id="entry_5"]
+[sub_resource type="Resource" id="entry_4"]
 script = ExtResource("2_entry")
-id = &"F12_ascension_warden_mortal_gear"
-kind = &"item"
-item_id = &"R23_mortal_pollard_perfected"
-table_id = &""
-weight = 1.0
+id = &"F12_ascension_warden_pool_spirit_palace"
+kind = &"table"
+item_id = &""
+table_id = &"loot_F12_ascension_warden_pool_spirit_palace"
+weight = 1.
 chance = -1.0
-guaranteed = true
+guaranteed = false
 quantity = 1
 rarity_floor = &""
 
@@ -88,6 +76,5 @@ entries = Array[LootEntry]([
 	SubResource("entry_1"),
 	SubResource("entry_2"),
 	SubResource("entry_3"),
-	SubResource("entry_4"),
-	SubResource("entry_5")
+	SubResource("entry_4")
 ])

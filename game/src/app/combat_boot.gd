@@ -882,7 +882,7 @@ static func ctx_builder_for(
 	var chosen := selected if selected != &"" else mechanism_for_hit(attacker, technique)
 	match chosen:
 		_BODY_MECHANISM:
-			return BodyDamage.builder(technique, null, &"", CombatEngineApi.tuning())
+			return BodyDamage.builder(technique, &"", CombatEngineApi.tuning())
 		_MIND_MECHANISM:
 			return MindDamage.builder(_mind_kind_of(technique), MindCultivationApi.sea(target))
 		_:

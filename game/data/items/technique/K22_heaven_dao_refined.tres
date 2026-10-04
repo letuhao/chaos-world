@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"K22_heaven_dao_refined"
 display_name = "Heaven Dao Refined"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"immortal_sovereign"
 fixed_modifiers = Array[Dictionary]([

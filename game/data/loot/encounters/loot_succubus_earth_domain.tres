@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"qi_refining"
 rarity = &"common"
-vitality = 128.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"succubus_earth_guardian", "table_id": &"loot_succubus_earth_guardian"},
 	{"boss_id": &"d5_earth_bloom", "table_id": &"loot_d5_earth_bloom"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"qi_refining"
 rarity = &"rare"
-vitality = 204.8
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"succubus_earth_guardian", "table_id": &"loot_succubus_earth_guardian"},
 	{"boss_id": &"d5_earth_bloom", "table_id": &"loot_d5_earth_bloom"},

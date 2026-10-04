@@ -74,23 +74,50 @@ const SHIELD_COMPONENT := &"Shield"
 
 
 ## Resolve one hit and apply it. The only mutating function in the spine: S9 spends
-## health, S10 spends it again on the other side, S11 heals, S12 applies a status.
+## health, S10 spends it again on the other side, S11 heals.
 ##
 ## `rng` may be null, in which case nothing random happens and every attack lands —
 ## the shape the rest of the repo already uses (`CombatDamage.resolve_hit`,
-## `LootState`). A caller that wants reproducibility injects one (ADR 0067). A null
-## `rng` also means NO status is applied, never a `randf()` fallback (ADR 0087).
+## `LootState`). A caller that wants reproducibility injects one (ADR 0067).
 ##
 ## `tuning` and `ctx_builder` are INJECTED rather than defaulted to a loaded constant:
 ## the spine is static so it can be called with no scene tree, and a `load()` inside a
 ## stage would make the stages depend on the resource filesystem instead of on their own
 ## arguments. `CombatApi.resolve_hit` supplies both from `combat_damage.tres`.
 ##
-## `hit_index` is the number of this hit in the exchange, used ONLY to salt S12's
-## substream. It is a parameter and not a field some actor carries between fights,
-## exactly as `chain_depth` is: two identical attacks in one fight must not roll the
-## same status, and the index is the only thing that tells them apart. Defaults to `0`,
-## so every existing caller is unaffected.
+## ## S12 is HERE again, and the only thing that changed is the PRODUCER
+##
+## ADR 0087 made status application a twelfth stage of this spine. ADR 0105 superseded
+## that PLACEMENT — "S12 is retired as the application site, not re-routed; the spine is
+## not built to reach it" — and its DEF-0145 amendment therefore deleted the call, on a
+## measured ground rather than a taste one: `StatusApply.apply` reads its authored request
+## off `ctx.data` under `StatusApply.REQUEST_KEY`, no shipped `ctx_builder` wrote that key,
+## and every landed blow through this spine answered `REFUSE_NO_REQUEST`. ADR 0105 called
+## that stage DEAD rather than merely idle.
+##
+## **Both halves of that argument have moved, and the stage comes back with them.** The
+## spine DID ship and the player-facing blow DID start resolving through it —
+## [method CombatBoot.duel_blow] installs this spine as the attack resolver — so the
+## premise "the spine is not built to reach it" is no longer true of the shipped game.
+## And the producer the measurement complained about now exists in production:
+## `CombatBoot.ctx_builder_for` composes ADR 0105's element→status request over whichever
+## mechanism builder won (`combat_boot.gd:_with_status_request`), reading the SAME
+## authored catalogue the status module itself reads through
+## `StatusApi.status_for_element` / `StatusDef.on_landed_blow`. ADR 0105's SHAPE is
+## followed exactly — the carrier is the ELEMENT, `TechniqueDef` gains no status field, and
+## there is one gate rather than two.
+##
+## A producer that did not exist would make this stage dead again, and dead is what it was:
+## it costs a refused dictionary on every landed blow to say "no". That is why the producer
+## has its own test asserting the key is written by a SHIPPED `ctx_builder`
+## (`tests/modules/combat_engine/test_status_producer.gd`) rather than by a test that writes
+## the request itself and therefore proves nothing.
+##
+## ADR 0105's second half stands unchanged: it retired the BOSS exchange as an application
+## site, and `CombatExchange.exchange` keeps its own single call. Nothing below touches
+## that path, and the arithmetic S12 needs (`elemental_resist`, `apply_chance`, `potency_of`,
+## `status_seed`) is still `StatusApply`'s alone — ADR 0105 said "superseded, not its
+## arithmetic", and this is the spine reading that arithmetic rather than restating it.
 static func resolve_hit(
 	attacker: Actor,
 	target: Actor,
@@ -148,55 +175,52 @@ static func resolve_hit(
 	# --- S8: the immunity invariant. AFTER S7, or enough reduction erases a crit. ---
 	outcome.amount = maxf(outcome.amount, chip_floor(outcome.base, tuning))
 	_spend(attacker, target, tuning, outcome, chain_depth)
-	# --- S12: LAST, after S11. Two NEW orderings ride on that placement (ADR 0087):
-	# S9 before S12, so a defender that died of the blow is not burned by it, and
-	# S11 before S12, so a status cannot change `health_regen` mid-leech-packet. All
-	# four of ADR 0067's own orderings are untouched: S12 sits downstream of all of
-	# them, and inherits S2's because `is_clean()` is false for anything a miss, a
-	# parry or a block produced. The stage writes NO health and negates nothing, so
-	# the spine's single sign flip at S9 stays the only one in the engine.
+	# --- ADR 0067's `effects[]` step, LAST of all: after health (S9), after reflect
+	# (S10) and after leech (S11). Every mechanism computes its own state writes and
+	# NOTHING applied them, so a body hit left no wound and a mind erosion was discarded
+	# -- see `effect_apply.gd`. Kept here rather than inside `_spend` so the "effects land
+	# after the HP write" ordering is asserted at the ONE call site that decides it.
+	CombatEffectApply.apply(target, CombatProposalReader.effects_of(proposal), tuning)
+	# --- S12: status application, LAST (ADR 0087). After health (S9), after reflect
+	# (S10), after leech (S11) and after the paths' own `effects[]`, so a defender who
+	# died of the blow is not burned by it and a leeched hit still applies its status.
+	# `StatusApply.apply` gates on `is_clean()` first, so a MISSED / PARRIED / BLOCKED
+	# blow spends nothing here and never reads `ctx.data` at all.
 	#
-	# The context is REBUILT rather than carried: `_spend` returns the outcome and not
-	# the context, and rebuilding is the cheaper of the two by an order of magnitude
-	# against a `ctx_builder` that may do real work. It also keeps `ctx_builder` in
-	# exactly one call site, which is the property that made the extension point
-	# reviewable in the first place.
+	# `ctx` is the context S4 already built — the SAME object the mechanism resolved
+	# against — so the producer's request is read for free. ADR 0087's original cost was
+	# a second context rebuild per hit, and that rebuild was the reason DEF-0145 could
+	# call the stage dead without anyone noticing what else it was paying.
 	StatusApply.record(
 		outcome,
-		StatusApply.apply(
-			attacker,
-			target,
-			tuning,
-			_context(
-				ctx_builder, attacker, target, technique, tuning, outcome.base, true, outcome.crit
-			),
-			outcome,
-			rng,
-			technique,
-			hit_index
-		)
+		StatusApply.apply(attacker, target, tuning, ctx, outcome, rng, technique, hit_index)
 	)
-	# --- ADR 0067's `effects[]` step, LAST of all: after health (S9), after reflect
-	# (S10), after leech (S11) and after status (S12). Every mechanism computes its own
-	# state writes and NOTHING applied them, so a body hit left no wound and a mind
-	# erosion was discarded -- see `effect_apply.gd`. Kept here rather than inside
-	# `_spend` so the "effects land after the HP write" ordering is asserted at the ONE
-	# call site that decides it, beside S12 rather than four branches deep.
-	CombatEffectApply.apply(target, CombatProposalReader.effects_of(proposal), tuning)
 	return outcome
 
 
-## S1 alone: the authored magnitude through the realm rate gate. `RealmRate` is a
-## RATE, not a magnitude (ADR 0050) — it returns `1.02^ordinal < 2.0` over the whole
-## ladder and never reads the realm power table. Exposed on its own so S1 is a
+## S1 alone: the authored magnitude through the technique ladder gate.
+## `TechniqueMagnitudeTable` is the technique's OWNING per-realm table, keyed by realm id
+## (ADR 0055, ADR 0182), and it is read here rather than computed from a realm ordinal.
+##
+## ## Why the rate that used to stand here is gone
+##
+## This read `RealmRate.factor(attacker.realm())` -- the TRAINING rate, `1.02^ordinal`,
+## a bounded rate of a different quantity. A rate may gate a magnitude but is never one
+## (ADR 0182), so the technique ladder ADR 0055 approved was priced at nothing: a deep
+## technique reached 1.7758x at R30 instead of 2.7667x. It is replaced, not multiplied in,
+## because `RealmRate` was standing in for the ladder rather than adding to it, and the two
+## together would count one realm's progress twice.
+##
+## `TechniqueReadModel` prices `magnitude_now` from the SAME call, so what a panel shows and
+## what this builds from cannot be two different ladders. Exposed on its own so S1 is a
 ## two-line test rather than a debate, and so a caller quoting a number quotes the
-## rate-gated one.
+## ladder-gated one.
 static func base_damage(attacker: Actor, technique: TechniqueDef) -> float:
 	if technique == null:
 		return 0.0
 	var base := technique.magnitude
 	if attacker != null:
-		base *= RealmRate.factor(attacker.realm())
+		base *= TechniqueMagnitudeTable.factor(attacker.realm())
 	return maxf(0.0, base)
 
 

@@ -9,7 +9,7 @@ id = &"qi_transcendent_warden_transcendent_0"
 kind = &"item"
 item_id = &"U2_divine_sennit_corslet"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -24,5 +24,5 @@ rarity = &""
 rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
-	SubResource("entry_0"),
+	SubResource("entry_0")
 ])

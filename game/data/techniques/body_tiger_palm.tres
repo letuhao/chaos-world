@@ -20,4 +20,5 @@ stamina_cost = 32.0
 cooldown = 7.0
 mastery_rungs = 5
 magnitude = 1.5
+aim_meridian = &"heart"
 

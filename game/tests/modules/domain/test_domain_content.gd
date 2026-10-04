@@ -72,6 +72,21 @@ const INHABITANT_DIR := "res://src/data/domains/inhabitants"
 ## floor is content nobody opted into.
 const FIXTURE_SHAPE_NOTE := ""
 
+## The rooms the kit author has DELIBERATELY retired, `room_id -> reason`.
+##
+## A retired room is a third legitimate answer to "how may this content be reachable?":
+## authored, carried in a template's `room_pool`, or deleted with a reason. What is not
+## legitimate is the state the kit shipped in — three `.tres` under `rooms/` that no
+## template's `room_pool` and no `pins` names, so `DomainGenerator` could never place
+## them and their treasure, puzzle and trap content was unreachable by any player.
+##
+## **Retiring is only honest while it is written down.** An id that stops being placed
+## and is not named here is indistinguishable from the defect this ledger exists to end,
+## so the list is the guard's other half: a room must be carried OR retired, never
+## merely forgotten. Delete an entry once its `.tres` leaves `rooms/` — a reason for a
+## room that no longer exists is noise that outlives the room.
+const RETIRED_ROOMS: Dictionary = {}
+
 ## One seed across every template: the byte-identity and matrix claims belong to
 ## `test_domain_generator.gd`. This suite asks a different question — does the CONTENT
 ## populate a domain — and one fixed seed answers it for all three templates at once.
@@ -112,31 +127,31 @@ const PUZZLE_KEYS: Array[String] = ["nodes", "sequence", "wrong_status_id"]
 
 ## The contract problems each room is KNOWN to carry, named rather than waived.
 ##
-## `ash_gate` authors exactly one: its roster holds a `cinder_hound` at role `mob`
-## (hostile, `DomainRoles.HOSTILE_ROLES`) AND an `ember_pilgrim` at role
-## `rival_cultivator` (NOT hostile, `DomainRoles.CULTIVATING_ROLES` is the other set),
-## and `_roster_fits_band` (domain_map_contract.gd:130-144) admits only `npc` and
+## **EMPTY, and empty on purpose.** It used to hold `{&"ash_gate": 1}`: `ash_gate`
+## authored a `cinder_hound` at role `mob` (hostile, `DomainRoles.HOSTILE_ROLES`) AND
+## an `ember_pilgrim` at role `rival_cultivator` (not hostile, a different set), and
+## `_roster_fits_band` (`domain_map_contract.gd:130-144`) admits only `npc` and
 ## `rival_cultivator` in `social`, only hostile roles everywhere else, and NO refs at
-## all in `empty`. A `contact` band is `gate`'s default, so the room's authored band is
-## `contact` — and `contact` is the nearest band to the intent ("a threshold fight")
-## that is also the kind's own default.
+## all in `empty`. No band value admitted that roster, so no band value fixed it.
 ##
-## **This roster is unsatisfiable as authored, and no band value fixes it.** A
-## `rival_cultivator` is not a hostile role (`domain_roles.gd:38` puts `MOB`, `MINIBOSS`
-## and `BOSS` in `HOSTILE_ROLES` and leaves `RIVAL_CULTIVATOR` out), so a room holding
-## one fails every hostile band; and the only band admitting a rival, `social`, fails the
-## `mob` sharing the room. The contract is right and the CONTENT is wrong, so the fix
-## belongs in the content, not here:
+## The waiver is retired rather than merely widened, because a waiver is the failure
+## mode this suite exists to detect: an unknown count would let the COUNT hide a
+## second, different problem in the same room. The content now satisfies the contract
+## on its own — `ash_gate` (band `contact`) authors the hostile mob alone, and the
+## pilgrim moved to `ash_camp`, whose band `social` admits a rival cultivator — so a
+## key added here has to be one a reviewer can defend against a real defect.
 ##
-## - either the `ember_pilgrim` ref moves out of `ash_gate` into a room whose band can
-##   hold it alone, or
-## - it takes role `npc`, which `social` admits, or
-## - `_roster_fits_band` gains a per-ROLE presence rule — which is a change to
-##   `domain_map_contract.gd`, a file this content task does not own.
-##
-## Pinned rather than fixed: the owner of the band semantics decides, and until then this
-## room's roster is one unreachable-here problem, asserted by name.
-const KNOWN_DEFECTS := {&"ash_gate": 1}
+## Band semantics remain `domain_map_contract.gd`'s to decide. Should a future author
+## want a room to hold a rival cultivator AND a fight, the answer is a per-ROLE
+## presence rule THERE, not a value waived here.
+const KNOWN_DEFECTS: Dictionary = {}
+
+## The seeds the reachability guard walks. `test_domain_generator.gd` holds its own
+## determinism and contract claims over a 64-seed matrix and this suite reuses that
+## number rather than inventing a second width: the leaf COUNT is what decides whether
+## a pool this size is fully dealt, and a matrix is the only way to see a def crowded
+## out by a single shallow roll. Bounded by `REACHABILITY_SEED_COUNT` itself.
+const REACHABILITY_SEED_COUNT := 64
 
 
 ## Every `while` below is over a directory listing, which `DirAccess.get_next()`
@@ -764,6 +779,124 @@ func test_generated_rooms_carry_their_authored_fixtures() -> void:
 		true,
 		"a generated domain still carries the fixtures its rooms authored (%d on disk)" % authored
 	)
+
+
+# ── 5. every authored room is reachable, or is retired on the record ──────────
+
+
+## **The rule this suite did not have until three rooms were unreachable: a room the
+## kit ships is a room a player can walk into.**
+##
+## The rooms this guards are named, because the defect was invisible and this is the
+## test that would have caught it: `ash_gate` (the threshold trap `ash_gate_vein`),
+## `ash_arena` (the only authored PUZZLE, `ash_arena_formation`, and the trial-band
+## mini-boss) and `ash_heart` (the only authored `treasure_boss_sealed` hoard and the
+## only BOSS roster) were all `.tres` files under `rooms/` that **no template's
+## `room_pool` and no `pins` named**. `DomainGenerator` draws unfilled leaves from the
+## pool and nowhere else (`_deal`), so those three rooms could never be realized —
+## a whole third of the authored treasure, puzzle and trap content that no player
+## could reach and no other domain suite could see, because each of those builds its
+## own map inline and never asks what the shipped kit carries.
+##
+## Membership in a `room_pool` is the reachability claim rather than a coincidence of
+## it, for the reason ADR 0073 states: the pool IS the shared kit, and a generator
+## "picks and places; it does not invent room content". So a def in the pool is placed
+## in any map with enough leaves, and a def outside it is placed by nothing. Carrying
+## the def is therefore the sufficient condition this asserts, and it is checked per
+## template so the failure names WHICH one stopped carrying the room.
+func test_every_authored_room_is_carried_by_a_template_or_retired_with_a_reason() -> void:
+	var carried: Dictionary = {}
+	var by_id: Dictionary = {}
+	for file_name in _tres_files(TEMPLATE_DIR):
+		var template := load("%s/%s" % [TEMPLATE_DIR, file_name]) as DomainTemplateDef
+		assert_ne(template, null, "template '%s' loads" % file_name)
+		if template == null:
+			continue
+		by_id[String(template.template_id)] = template
+		var named: Array[String] = []
+		for room_def in template.room_pool:
+			named.append(String(room_def.room_id))
+		# A pin names a def for a STORY room, and `_pinned_defs` refuses one outside the
+		# pool (`domain_generator.gd:837`) — so it is a second, independent way a room
+		# becomes reachable, and is asserted as such rather than assumed to agree.
+		for pin in template.pins:
+			if pin != null and pin.room_def != null:
+				named.append(String(pin.room_def.room_id))
+		for room_id in named:
+			carried[room_id] = String(template.template_id)
+
+	## Three distinct ways this rule can be broken, and the failure message has to name
+	## which one happened: a room nobody places and nobody retired, a name a template
+	## carries that no `.tres` defines (a dangling `ExtResource`, which the generator
+	## realizes as a hollow room), and a retirement that names a room which does not
+	## exist or gives no reason. Any of those is authoring noise dressed as a decision.
+	var unreachable: Array[String] = []
+	var dangling: Array[String] = []
+	var authored_ids := _authored_room_ids()
+	for room_id in carried:
+		if not authored_ids.has(String(room_id)):
+			dangling.append(
+				(
+					"template '%s' carries '%s', which no room .tres defines"
+					% [String(carried[room_id]), String(room_id)]
+				)
+			)
+	for room_id in authored_ids:
+		if carried.has(String(room_id)) or not RETIRED_ROOMS.has(String(room_id)):
+			continue
+		if String(RETIRED_ROOMS[room_id]).strip_edges().is_empty():
+			dangling.append("RETIRED_ROOMS retires '%s' with no reason" % String(room_id))
+	for room_id in RETIRED_ROOMS:
+		if not authored_ids.has(String(room_id)):
+			dangling.append(
+				"RETIRED_ROOMS names '%s', which no room .tres defines" % String(room_id)
+			)
+	for room in _authored_rooms():
+		var room_id := String(room.room_id)
+		if carried.has(room_id) or RETIRED_ROOMS.has(room_id):
+			continue
+		unreachable.append(
+			(
+				("room '%s' is carried by no template and is not in RETIRED_ROOMS; a " % room_id)
+				+ "player can never reach it"
+			)
+		)
+
+	assert_eq(by_id.is_empty(), false, "the authored template kit is not empty")
+	assert_eq(unreachable.is_empty(), true, "; ".join(unreachable))
+	assert_eq(dangling.is_empty(), true, "; ".join(dangling))
+
+
+## The authored `room_id`s this template carries, through either door — its `room_pool`
+## or a `pins` entry. Bounded by the two arrays; no loop whose bound is derived from
+## anything but the template's own content.
+func _carried_ids(template: DomainTemplateDef) -> Dictionary:
+	var out: Dictionary = {}
+	for room_def in template.room_pool:
+		out[String(room_def.room_id)] = true
+	for pin in template.pins:
+		if pin != null and pin.room_def != null:
+			out[String(pin.room_def.room_id)] = true
+	return out
+
+
+## The authored def ids a generated map actually built, as the part of each namespaced
+## room id before the `#`.
+func _built_def_ids(map: DomainMap) -> Dictionary:
+	var out: Dictionary = {}
+	for room_id in map.room_ids_sorted():
+		out[String(room_id).split("#", false)[0]] = true
+	return out
+
+
+## Every authored `room_id`, read from the shipped rooms rather than named. A second
+## reader of the same tree in this file would be a copy that could drift; this one is
+## the list both the reachability guard and its dangling-reference check ask.
+func _authored_room_ids() -> Dictionary:
+	var out: Dictionary = {}
+	for room in _authored_rooms():
+		out[String(room.room_id)] = true
+	return out
 
 
 # ── helpers ──────────────────────────────────────────────────────────────────

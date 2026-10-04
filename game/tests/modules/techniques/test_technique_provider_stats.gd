@@ -530,10 +530,7 @@ func test_a_mastery_rung_and_the_rate_compose_as_one_product_not_two_cuts() -> v
 	# when `plain` was read. So this pins BOTH halves of the separation: the rung
 	# moves the price, and the passive moved the RATE (above) without touching it.
 	assert_almost_eq(
-		plain,
-		100.0 * (1.0 - PROVIDER_RATE),
-		"and at rung zero the authored price stands",
-		0.0001
+		plain, 100.0 * (1.0 - PROVIDER_RATE), "and at rung zero the authored price stands", 0.0001
 	)
 	assert_eq(
 		TechniquesApi.codex(actor).row(passive.id).get("rung", 0),

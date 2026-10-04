@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"S8_immortal_hosier_refined"
 display_name = "Immortal Hosier Refined"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"great_luo"
 fixed_modifiers = Array[Dictionary]([

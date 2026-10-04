@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_domain_guardian_earth_immortal_0"
+kind = &"item"
+item_id = &"cloak_celestial"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_qi_spirit_domain_guardian_pool_earth_immortal"
+display_name = "Spirit Domain Guardian salvage (earth_immortal)"
+realm = &"earth_immortal"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0")
+])

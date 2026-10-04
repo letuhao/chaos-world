@@ -121,6 +121,56 @@ class _Resolver:
 		return {"amount": 12.0, "target": String(target.id), "id": String(def.id)}
 
 
+## The same seam answering the shape `CombatOutcome.to_dict()` actually returns, so a
+## test asserting `health_delta` is asserting the ENGINE's figure arriving intact rather
+## than a number this suite invented.
+class _OutcomeResolver:
+	extends RefCounted
+
+	var calls: int = 0
+
+	func resolve(_attacker: Actor, target: Actor, def: TechniqueDef) -> Dictionary:
+		calls += 1
+		return {
+			"amount": 18.0,
+			"health_delta": -18.0,
+			"landed": true,
+			"crit": false,
+			"target": String(target.id),
+			"id": String(def.id),
+		}
+
+
+## The mastery rung `inspect` reports for a technique — the read that says whether a
+## cast was counted as a use, and so whether a refused one spent anything.
+func _mastery_of(actor: Actor, technique_id: StringName) -> int:
+	return int(TechniquesApi.inspect(actor, technique_id).get("rung", 0))
+
+
+## Press the row's real cast button, the way a player does, and report whether the row
+## let the press through at all. Going through the BUTTON rather than the signal is
+## deliberate: an unguarded signal would pass a press the row's own gate should have
+## dropped, which is exactly the dead verb this change removed.
+func _press_cast_button(loadout: UiScreen, technique_id: StringName) -> bool:
+	for row in _rows_of(loadout):
+		var view: Dictionary = row.call(&"summary")
+		if String(view.get("technique_id", "")) != String(technique_id):
+			continue
+		var button := row.get_node_or_null("%CastButton") as Button
+		if button == null or not button.visible or button.disabled:
+			return false
+		button.pressed.emit()
+		return true
+	return false
+
+
+## The slot rows the screen is showing, reached through its own `_slot_rows` so a test
+## never re-walks the scene tree the screen already owns.
+func _rows_of(loadout: UiScreen) -> Array:
+	var rows: Array = loadout.get(&"_slot_rows")
+	return rows
+
+
 # --- The empty-summary contract ---------------------------------------------
 
 
@@ -441,6 +491,184 @@ func test_the_facade_is_still_twelve_and_no_thirteenth_verb_was_added() -> void:
 			published.append(method_name)
 	assert_eq(published.size(), 12, "exactly twelve public methods, found %d" % published.size())
 	assert_eq(published.has("cast"), false, "and no thirteenth cast verb")
+
+
+# --- The target is what makes the cast reach the resolver -------------------
+#
+# These four tests are the guard for the defect this file exists to close: a technique
+# fired from the loadout screen paid its qi, spent its cooldown and hit nothing, because
+# `_on_cast` called `act_cast(technique_id)` with NO target and
+# `TechniqueCasting._resolve` answers `{}` for a null one. The damage path was real the
+# whole time — `_resolve_technique_hit` -> `CombatEngineApi.resolve_hit` -> `to_dict()` —
+# it was simply unreachable from the player's action.
+
+
+## A bound ACTIVE technique on `actor`, the shape a cast is fired from. The actor is
+## LAST because it is the context every case here shares, so
+## `_equipped_active(&"qi_strike", 40.0, 10.0, actor)` reads left to right as the qi
+## cost, the cooldown, and whose hero it is.
+func _equipped_active(
+	technique_id: StringName, qi: float, cooldown: float, actor: Actor
+) -> TechniqueDef:
+	var def := _active(technique_id, qi, cooldown)
+	TechniquesApi.codex(actor).learn(def.id)
+	TechniquesApi.equip(actor, def)
+	return def
+
+
+func test_a_cast_fired_from_the_row_reaches_the_resolver_with_the_bound_target() -> void:
+	# The route a PLAYER takes, not a headless call: the row's cast button is pressed and
+	# the screen has to supply the target itself. This is the test the old code failed —
+	# `_on_cast` passed nothing, so the resolver was never reached from the button.
+	var actor := _actor()
+	var def := _equipped_active(&"qi_row_fires", 40.0, 10.0, actor)
+	var loadout := _loadout()
+	loadout.setup(actor)
+	var resolver := _Resolver.new()
+	TechniqueCasting.set_resolver(Callable(resolver, "resolve"))
+	loadout.call(&"bind_target", Actor.new(&"training_dummy", {}))
+
+	assert_eq(bool(loadout.summary()["has_target"]), true, "the target is bound")
+
+	# Press the row's button, the way a player does. The row's own guard is on
+	# `can_fire`, so it forwards only with a target — and the screen supplies it.
+	var pressed := _press_cast_button(loadout, def.id)
+	assert_eq(pressed, true, "the bound target made the row's button live")
+	assert_eq(resolver.calls, 1, "the press reached the damage seam")
+	TechniqueCasting.set_resolver(Callable())
+
+
+## A cast WITH a target reaches the resolver AND the screen reports what it resolved.
+## The outcome is the engine's own `damage` payload — `amount` and `health_delta` are
+## numbers the UI never computes, only relays.
+func test_a_cast_with_a_target_reaches_the_resolver_and_reports_the_outcome() -> void:
+	var actor := _actor()
+	var def := _equipped_active(&"qi_reports", 0.0, 0.0, actor)
+	var loadout := _loadout()
+	loadout.setup(actor)
+	var resolver := _OutcomeResolver.new()
+	TechniqueCasting.set_resolver(Callable(resolver, "resolve"))
+	loadout.call(&"bind_target", Actor.new(&"training_dummy", {}))
+
+	var fired: Dictionary = loadout.call(&"act_cast", def.id)
+	assert_eq(bool(fired["ok"]), true, "the cast fired")
+	assert_eq(resolver.calls, 1, "and resolved through the installed seam once")
+	assert_eq(bool(fired["resolved"]), true, "so it reports a real descriptor")
+
+	# The descriptor reaches the caller verbatim: these are the engine's figures.
+	var damage: Dictionary = fired["damage"]
+	assert_eq(float(damage["health_delta"]), -18.0, "the engine's own health delta")
+	assert_eq(float(damage["amount"]), 18.0, "and the damage it was worth")
+	# And the screen's summary relays it rather than re-deriving it.
+	var view := loadout.summary()
+	assert_eq(float(view["last_health_delta"]), -18.0, "the screen reports that outcome")
+	assert_eq(String(view["last_target"]), "training_dummy", "against the named target")
+	TechniqueCasting.set_resolver(Callable())
+
+
+## THE DEFECT, as a test. A cast with NO target is refused with a named reason naming the
+## missing thing, and it costs NOTHING — no qi spent, no cooldown started, no mastery
+## rung. Before the fix this succeeded, paid and resolved `{}`.
+func test_a_cast_with_no_target_is_refused_by_name_and_costs_nothing() -> void:
+	var actor := _actor()
+	var def := _equipped_active(&"qi_untargeted", 40.0, 10.0, actor)
+	var loadout := _loadout()
+	loadout.setup(actor)
+	var resolver := _Resolver.new()
+	TechniqueCasting.set_resolver(Callable(resolver, "resolve"))
+	# No `bind_target`: nobody is here. The qi and the rung-0 mastery are both read
+	# BEFORE, so "nothing was spent" is an assertion about state and not about a message.
+	var qi_before: float = actor.resource(&"qi").current
+	var rung_before: int = _mastery_of(actor, def.id)
+
+	var refused: Dictionary = loadout.call(&"act_cast", def.id)
+
+	assert_eq(bool(refused["ok"]), false, "the cast did not succeed")
+	assert_eq(String(refused["reason"]), "no_target", "for a named reason")
+	assert_eq(bool(refused["fired"]), false, "and says nothing was fired")
+	assert_eq(bool(refused["resolved"]), false, "and nothing was hit")
+	# The refusal NAMES the missing thing in the player's own words, not a bare false.
+	assert_eq(
+		String(loadout.summary()["message"]),
+		"qi_untargeted: Nothing to aim at, so nothing was fired and nothing was spent.",
+		"said in words a player can act on"
+	)
+	# And it is free. This is the part the old code got wrong: `activate` paid here.
+	assert_eq(actor.resource(&"qi").current, qi_before, "no qi was spent")
+	assert_eq(_casting(actor).is_ready(def.id), true, "no cooldown was started")
+	assert_eq(_mastery_of(actor, def.id), rung_before, "and no rung was granted")
+	assert_eq(resolver.calls, 0, "the damage seam was never even reached")
+	TechniqueCasting.set_resolver(Callable())
+
+
+## `summary()` publishes the target, so the whole thing is assertable on a contract
+## rather than on pixels: with one bound and with none, the two states are told apart
+## without reading a single label.
+func test_the_summary_publishes_the_target_so_the_affordance_is_assertable() -> void:
+	var actor := _actor()
+	var def := _equipped_active(&"qi_affordance", 0.0, 0.0, actor)
+	var loadout := _loadout()
+	loadout.setup(actor)
+
+	var bare: Dictionary = loadout.summary()
+	assert_eq(bool(bare["has_target"]), false, "nobody is here yet")
+	assert_eq(String(bare["target_id"]), "", "and no id is published")
+
+	# A targetless castable row says so instead of advertising a press that can only be
+	# refused, and `can_cast` still reports the technique's OWN business.
+	for slot in bare["slots"]:
+		var view := slot as Dictionary
+		if bool(view["can_cast"]):
+			assert_eq(bool(view["has_target"]), false, "the row knows it has nowhere to aim")
+			assert_eq(bool(view["can_fire"]), false, "so it cannot be thrown")
+			assert_eq(String(view["ready"]), "No target", "and says so in its own words")
+
+	loadout.call(&"bind_target", Actor.new(&"training_dummy", {}))
+	var aimed: Dictionary = loadout.summary()
+	assert_eq(bool(aimed["has_target"]), true, "now there is somewhere to aim")
+	assert_eq(String(aimed["target_id"]), "training_dummy", "and it is published by id")
+	assert_eq(bool(aimed["can_fire"]), true, "so a ready technique can be thrown")
+	for slot in aimed["slots"]:
+		var view := slot as Dictionary
+		if bool(view["can_cast"]):
+			assert_eq(bool(view["can_fire"]), true, "the row's button is live")
+			assert_eq(String(view["ready"]), "Ready", "and reads as ready, not aimless")
+
+	# Unbinding is a decision a caller can make, not only a state to be born into.
+	loadout.call(&"bind_target")
+	assert_eq(bool(loadout.summary()["has_target"]), false, "and it can be taken away again")
+
+
+## The module's own refusals are NOT swallowed by the target gate. A passive is refused
+## as `not_active` in the module's words, because `activate` refuses it for free — where
+## a `no_target` answer would have replaced a precise, fixable refusal with an
+## irrelevant one about the room.
+func test_a_passive_still_gets_the_module_s_own_refusal_not_no_target() -> void:
+	var actor := _actor()
+	var def := _technique(&"qi_passive_untargeted", PathState.QI)
+	TechniquesApi.codex(actor).learn(def.id)
+	TechniquesApi.equip(actor, def)
+	var loadout := _loadout()
+	loadout.setup(actor)
+
+	var refused: Dictionary = loadout.call(&"act_cast", def.id)
+	assert_eq(bool(refused["ok"]), false, "a passive cannot be fired")
+	assert_eq(
+		String(loadout.summary()["message"]),
+		"qi_passive_untargeted: That one is a passive, not an action",
+		"said why, in the module's own words"
+	)
+
+
+## The facade cap is untouched by a target seam: the target is an argument on a SCREEN
+## method, so `TechniquesApi` is still exactly twelve public methods.
+func test_binding_a_target_added_no_facade_method() -> void:
+	var published: Array[String] = []
+	for method in TechniquesApi.new().get_script().get_script_method_list():
+		var method_name := String(method.get("name", ""))
+		if not method_name.begins_with("_") and not published.has(method_name):
+			published.append(method_name)
+	assert_eq(published.size(), 12, "still exactly twelve, found %d" % published.size())
 
 
 # --- The ScreenStack contract -----------------------------------------------

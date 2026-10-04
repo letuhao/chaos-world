@@ -331,6 +331,27 @@ func soul_summary() -> Dictionary:
 	}
 
 
+## ## The CURRENT-room roster, and why it is not the payload below
+##
+## [method npc_presence] is a BOOT-TIME settlement — minted once by
+## [code]NpcBoot.populate_room[/code] into `mortal_plains` and deliberately NOT restocked
+## on a rebirth, because `STARTING_CAST` is a fact about the settlement the slice opens
+## on rather than a property of a body. It stays published for the probe that wants to
+## read what boot did.
+##
+## **A player-facing roster must NOT key on it.** It is minted once and never moves, so a
+## screen painting it shows the same four people for the whole session, in a room the
+## player may have walked out of, with nothing on screen to tell the reader. That is the
+## defect DEF-0261 recorded, and it is why the panel keys on [method npc_roster_bridge]'s
+## location instead. Nothing here feeds the panel.
+##
+## This door exists because `ui/` may reach `npc` and `world_spawn` through NEITHER
+## facade (neither is in `rules.UI_MODULES`) and may not name `app/` at all — the same
+## shape as `_loot_bridge` and `_world_bridge`, for the same reason.
+func npc_roster_bridge() -> NpcRosterBridge:
+	return NpcRosterBridge.shared()
+
+
 ## Who is standing in the settlement this root stocked at boot (BL-0626).
 ##
 ## Published for the same reason `routes()` is: a probe or a test must be able to

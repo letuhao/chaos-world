@@ -24,6 +24,19 @@ const GOOD := &"currency_spirit_stone"
 const SUBJECT := &"smith_bearcutter"
 const NODE := &"vein_ledger"
 
+## The one read-model row carrying `lot_id`, or `{}` when the read model carries no such lot.
+##
+## ## The bound is SNAPSHOT before the loop, not a `while`
+##
+## `MarketApi.summary` publishes `lots` as an `Array` (`AuctionReadModel.lots`), so a lookup
+## has to walk it. The length is taken once, up front, and the walk is an indexed `for` over
+## that snapshot: a bound read before the loop cannot change under the loop, so this can never
+## be the unbounded walk the repo forbids. `MAX_LOTS` is `MarketApi.MAX_OPEN_LOTS` plus every
+## lot that may sit settled alongside the open ones, so it is a ceiling on the data and not a
+## truncation of it — a real read model smaller than that is a read model with a bug, and
+## truncating it here would hide exactly that.
+const MAX_LOTS := 64
+
 ## `Actor` is a `RefCounted`, so an actor minted inside a helper is freed the moment that helper
 ## returns — the ledgers store ids and never references. Every actor is held here for that
 ## reason, which is the same fix `test_market_auction.gd` documents.
@@ -133,20 +146,6 @@ func _first_instance_id(actor: Actor) -> StringName:
 
 func _claim_node(actor: Actor) -> Dictionary:
 	return HoldingsApi.claim(actor, NODE, _owner(&"warden"))
-
-
-## The one read-model row carrying `lot_id`, or `{}` when the read model carries no such lot.
-##
-## ## The bound is SNAPSHOT before the loop, not a `while`
-##
-## `MarketApi.summary` publishes `lots` as an `Array` (`AuctionReadModel.lots`), so a lookup
-## has to walk it. The length is taken once, up front, and the walk is an indexed `for` over
-## that snapshot: a bound read before the loop cannot change under the loop, so this can never
-## be the unbounded walk the repo forbids. `MAX_LOTS` is `MarketApi.MAX_OPEN_LOTS` plus every
-## lot that may sit settled alongside the open ones, so it is a ceiling on the data and not a
-## truncation of it — a real read model smaller than that is a read model with a bug, and
-## truncating it here would hide exactly that.
-const MAX_LOTS := 64
 
 
 func _lot_row(rows: Array, lot_id: StringName) -> Dictionary:

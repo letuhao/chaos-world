@@ -85,13 +85,37 @@ const NO_BLESSING := &"no_cultivation_blessing_for_element"
 const NOT_APPLIED := &"the blessing was refused"
 const ALREADY_REWARDED := &"already_rewarded"
 
-## The `actor.module_data` key that marks a blessing already paid. ADR 0089 rules live
-## STATUSES out of the save payload, and this is not a status: it is a once-guard on the
-## award, in the same module-owned payload slot every other module uses for exactly this
-## (see `CombatDuel.MODULE_KEY`, `RaceState.MODULE_KEY`, `LootState.MODULE_KEY`). Without it
-## a caller that observed the same decided record twice would pay the blessing twice — the
-## ADR 0061 defect, under a new name.
+## Marks a blessing already paid, WITHIN THIS SESSION.
+##
+## ## Why it does NOT ride `actor.module_data` (ADR 0186)
+##
+## It used to, and `module_data` IS serialized (`core/actor.gd:344`) and restored
+## (`core/actor.gd:397-398`) — but `Actor.to_dict()` emits no `statuses` key (ADR 0089), so
+## the guard survived a save the PERMANENT reward it was guarding did not. Save & reload and
+## the actor was `ALREADY_REWARDED` on a blessing it no longer carried, which
+## `core/tribulation.gd:156,193` would never re-open: a permanent reward silently deleted by
+## an autosave and never re-earnable — the ADR 0140 wound defect under a status's name.
+##
+## `module_data` is the right home for a guard over something that ITSELF survives the save.
+## A session-scoped guard is not that, and parking it there made it a persistent fact about a
+## session-only reward. So it is session-only here: within one session a repeated observation of
+## the same decided record still cannot double-pay (this marker plus the record's own `outcome`
+## guard, ADR 0061); across a load the restored SURVIVED outcome is re-payable, which is what
+## "nothing is silently lost" means.
 const REWARDED_KEY := &"tribulation_blessing_paid"
+
+## Session-only once-guard store, keyed by actor instance id.
+##
+## ## Why its OWN table rather than `StatusRuntime._by_actor`
+##
+## `StatusApi._prune` erases every runtime key whose status the actor no longer carries, so a
+## marker parked in the runtime map would be swept the moment the blessing left the actor — the
+## guard would evaporate with the thing it was guarding. This guard's lifetime is the ACTOR's
+## (the session), not a status's, so it needs its own table.
+##
+## `WeakRef`-keyed through the actor's `get_instance_id()` exactly as `StatusRuntime` does, so a
+## discarded actor does not pin itself: the map holds an id and a payload, never the actor.
+static var _rewarded: Dictionary = {}
 
 
 ## Hand the blessing this actor's survived tribulation earned. Returns the
@@ -104,10 +128,10 @@ const REWARDED_KEY := &"tribulation_blessing_paid"
 ## and it is once-guarded. This is NOT that award and does not touch it: core cannot name
 ## `StatusApi` (it declares `core` + `contracts`, and a catalogue id is authored content the
 ## status module owns). So the award is made where a fight is OBSERVED to be decided —
-## `TribulationFight.fight_wave` — and paid at most once because the record's own
-## `outcome` guard means a decided fight cannot be re-decided, plus [constant
-## REWARDED_KEY] marks the actor so a second observation of the same record cannot pay
-## twice.
+## `TribulationFight.fight_wave` — and paid at most once BECAUSE the record's own `outcome`
+## guard means a decided fight cannot be re-decided, plus the session-only [constant
+## REWARDED_KEY] marks the actor so a second observation of the same record cannot pay twice
+## (ADR 0186).
 static func award(actor: Actor) -> Dictionary:
 	if actor == null:
 		return _refused(NO_RECORD)
@@ -115,7 +139,7 @@ static func award(actor: Actor) -> Dictionary:
 		return _refused(NO_RECORD)
 	if not actor.tribulation.survived():
 		return _refused(NO_SURVIVOR)
-	if actor.get_module_data(REWARDED_KEY):
+	if _rewarded_this_session(actor):
 		return _refused(ALREADY_REWARDED)
 	var element := _reward_element(StringName(actor.tribulation.type))
 	if element == &"":
@@ -128,10 +152,38 @@ static func award(actor: Actor) -> Dictionary:
 		applied["reason"] = NOT_APPLIED
 		applied["id"] = status_id
 		return applied
-	# A Dictionary, never a bare String: `set_module_data` is typed
-	# `(id: StringName, data: Dictionary)` and refuses anything else at parse time.
-	actor.set_module_data(REWARDED_KEY, {"status_id": String(status_id)})
+	_mark_rewarded(actor, status_id)
 	return applied
+
+
+## Whether this actor's blessing was already paid, WITHIN THIS SESSION.
+##
+## ## Why the lookup is on the actor and not on the record
+##
+## The guard has to survive the blessing LEAVING the actor — it is what stops a second
+## observation of the same decided record from paying again — so it is keyed by the actor, which
+## outlives any one status on it. A guard keyed by the status id would be erased by the same
+## `_prune` that drops the runtime, and the next observation would pay a second time.
+static func _rewarded_this_session(actor: Actor) -> bool:
+	return _rewarded.has(actor.get_instance_id())
+
+
+## Mark this actor's blessing paid for the rest of the session.
+##
+## `status_id` is recorded so a caller reading the session store can tell WHAT was paid; it is
+## session scratch, never written to a payload, and so never reaches a save (`Actor.to_dict`
+## reaches neither this table nor `StatusRuntime`'s, ADR 0089).
+static func _mark_rewarded(actor: Actor, status_id: StringName) -> void:
+	_rewarded[actor.get_instance_id()] = {"status_id": String(status_id)}
+
+
+## Forget an actor's once-guard. Called by the composition root when an actor leaves the
+## session, exactly as [method StatusRuntime.forget] releases that actor's live records — an
+## actor discarded and re-entered is a NEW session for its rewards, and a stale marker would
+## refuse a blessing the player has not yet earned on the re-entered actor.
+static func forget(actor: Actor) -> void:
+	if actor != null:
+		_rewarded.erase(actor.get_instance_id())
 
 
 ## The authored CULTIVATION-scope status on `element`, or `&""` when it ships none.

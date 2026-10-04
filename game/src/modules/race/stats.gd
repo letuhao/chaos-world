@@ -15,8 +15,11 @@ extends RefCounted
 ## ceiling, so a ceiling-less body reads 0 and an actor's own realm ordinal is
 ## the only number a consumer needs. Bounded by the 30-step shared ladder.
 const REALM_CEILING := &"race_realm_ceiling"
-## Total authored lifespan in days. A number to plan a life around, never a
-## countdown the module runs itself.
+## The EFFECTIVE lifespan in days at the actor's current highest realm: the
+## authored `RaceDef.lifespan` baseline scaled by the tier multiplier from
+## `core/realm_lifespan_table.tres` (ADR 0169). The raw baseline stays readable
+## off `RaceDef` — it is not a second stat. A number to plan a life around, never
+## a countdown the module runs itself.
 const LIFESPAN := &"race_lifespan"
 ## How many of `PathState.ALL` this body can still cultivate: 3 minus the closed
 ## paths. The single legible answer to "what can this character become".

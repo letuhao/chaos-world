@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"C12_heaven_coign_perfected"
 display_name = "Heaven Coign Perfected"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"
 fixed_modifiers = Array[Dictionary]([

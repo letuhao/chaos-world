@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"B20_divine_canzone_aged"
 display_name = "Divine Canzone Aged"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([

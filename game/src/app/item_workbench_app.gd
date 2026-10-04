@@ -71,12 +71,19 @@ const ROUTE_SOUL_HEARTH := &"soul_hearth"
 ## Callables here, because `ui/` may neither name a `TechniqueDef` (a class in
 ## `modules/techniques/`) nor mint an `Actor` (`app/` is a `PRIVATE_UNIT`).
 const ROUTE_COMBAT_READOUT := &"combat_readout"
-## The technique loadout (ADR 0185). `TechniqueLoadoutScreen.bind_target` is the
-## ADR 0143 seam the cast half of the page runs on, and it had ZERO callers outside its
-## own test, so every real press fell through `act_cast`'s `_refuse_no_target`: the page
-## paid nothing, reported "Nothing to aim at", and the whole cast program was unreachable
-## from the game while its suite was green. This route's arm is the injection.
+## The technique loadout (ADR 0185). `bind_target` is the ADR 0143 seam the cast half
+## runs on and had ZERO callers outside its own test, so the whole cast program was
+## unreachable while its suite was green. This route's arm is the injection.
 const ROUTE_TECHNIQUE_LOADOUT := &"technique_loadout"
+## The gather surface (ADR 0097). `HoldingsApi.claim` had no production caller
+## repo-wide, so no node was ever held and the harvest was unreachable; this is
+## the route that reaches both, and the arm in `_bind_route_screen` is the one
+## line that injects `ForageAction.gather` as the seam the screen cannot name.
+const ROUTE_FORAGE := &"forage"
+## The fight page (ADR 0197). A PURE CONSUMER like the readout: all five verbs arrive on
+## the ADR 0143 seam. The route was DECLARED in `screen_routes.gd` with no arm here, so
+## the page refused `no_fight_seam` forever.
+const ROUTE_FIGHT := &"fight"
 
 ## The world fact id a completed birth records, in `WorldFact`'s own flat namespace and
 ## with NO prefix (ADR 0113: a prefixed id "reads as a working reference and silently
@@ -203,6 +210,23 @@ func _ready() -> void:
 	)
 	SaveApi.install_store("market", WorldLedgerStore.new("market", MarketState.SCHEMA_VERSION))
 	SaveApi.install_store("custody", WorldLedgerStore.new("custody", CustodyState.SCHEMA_VERSION))
+	# ## The world-scoped POLITY ledger (DEF-0119), installed in the same block and for the
+	# ## same reason.
+	#
+	# A polity is a thing that outlives the actor who founded it (ADR 0083), so its
+	# ledger cannot live in `actor.module_data` — that is the one persistence root in the
+	# repo and it dies with the body, which is exactly what a debt between two institutions
+	# must not do. `WorldPolityLedger` is the world root; this is its per-key `SaveStore`
+	# view, the same `WorldLedgerStore` shape the three economy ledgers use, over the
+	# `world["polity"]` envelope key.
+	#
+	# **Before `publish_world` below, with the rest.** A world published before its store
+	# is installed is a world nobody reads back — the ledger is believed saved and is not,
+	# which is the silent-loss failure this whole class of fix exists to prevent.
+	SaveApi.install_store(
+		WorldPolityLedger.WORLD_KEY,
+		WorldLedgerStore.new(WorldPolityLedger.WORLD_KEY, WorldPolityLedger.SCHEMA_VERSION)
+	)
 	# ## The one place a fact becomes a fate counter (ADR 0149)
 	#
 	# `core/world_fact.gd` publishes a post-write hook slot and names nothing in it —
@@ -490,6 +514,11 @@ func _process(delta: float) -> void:
 	# say nothing, and `tick_readout_drill` is inherited so the root answers it by name
 	# either way. Still exactly ONE tick caller.
 	tick_readout_drill(delta)
+	# The FIGHT's opponent rides the same frame (ADR 0197). `StatusLoop` holds one actor,
+	# so the opponent cannot ride `_status_loop` without resetting the hero's collapse
+	# window every frame. A second INSTANCE is not a second clock: one more call on the
+	# one frame, handed that frame's delta, no-op with no live fight.
+	tick_fight(delta)
 	# No world pull and no autosave here, and neither was a rounding error in a frame
 	# driver: the world has no real-time clock at all (ADR 0167, ADR 0173), so there is
 	# nothing for a delta to convert, and the autosave counts PERIODS and rides the
@@ -856,21 +885,20 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			# ADR 0185. THE ARM THAT MAKES THE CAST PROGRAM REACHABLE. `bind_target`
 			# is the ADR 0143 seam, exactly as `bind_strike` above is, and it had no
 			# production caller at all: `act_cast` fell through `_refuse_no_target`
-			# on every real press, so the page reported "Nothing to aim at" and the
-			# cast never reached `TechniqueCasting.activate`. One call here, at the
-			# one place a screen is bound to the app, is the whole fix.
+			# on every real press. One call here is the whole fix.
 			#
 			# The target is `_cast_target()`, NOT a second foe concept: it is the ONE
 			# drill body `CombatReadoutScreen` already strikes, handed over by the same
 			# root that minted it. `ui/` may not mint an `Actor` (`app/` is a
-			# `PRIVATE_UNIT`) and may not read a foe roster (`npc` is not in
-			# `rules.UI_MODULES`), so a second one could only be invented here — and two
-			# bodies on one page is a cast that lands somewhere the player was never
-			# shown. Read through `_bind_target_screen` rather than called on `screen`
-			# directly so a screen without the seam degrades to the refusal instead of
-			# aborting this arm.
+			# `PRIVATE_UNIT`) and may not read a foe roster, so a second one could only be
+			# invented here — and two bodies on one page is a cast that lands somewhere the
+			# player was never shown. Read through `_bind_target_screen` so a screen without
+			# the seam degrades to the refusal instead of aborting this arm.
 			screen.call("setup", _actor)
 			_bind_target_screen(screen)
+		ROUTE_FIGHT:
+			screen.call("setup", _actor)
+			bind_fight_screen(screen)
 		ROUTE_SOUL_HEARTH:
 			# The soul and the save cannot be named by a screen, so they arrive as
 			# Callables off this root's own inherited verbs — the ADR 0143 seam, and
@@ -884,6 +912,24 @@ func _bind_route_screen(route_id: StringName, screen: Control) -> void:
 			screen.call(
 				"bind_hearth", Callable(self, "raise_anchor"), Callable(self, "select_difficulty")
 			)
+		ROUTE_FORAGE:
+			# The gather surface (ADR 0097). `HoldingsApi.claim` had NO production
+			# caller repo-wide, so a node was never held and
+			# `ForageAction.workable` could never be true — the harvest verb behind
+			# sixteen authored nodes was reachable by nothing a player could press,
+			# while `tools data audit` reported `gather` live because this file's
+			# sibling `app/forage_action.gd` is a call site a scan can see.
+			#
+			# `claim` and `release` need nothing from here: `holdings` is declared in
+			# `rules.UI_MODULES`, so the screen calls `HoldingsApi` by name. The
+			# HARVEST goes through `ForageAction`, an `app/` type and therefore a
+			# `PRIVATE_UNIT` this screen may not name — so it arrives as a `Callable`,
+			# which is ADR 0143's seam and the same one `ROUTE_QUEST` and
+			# `ROUTE_SOUL_HEARTH` use. Passed as a bare static-function reference and
+			# not a lambda, for the access-violation reason `EconomyBoot._install_granter`
+			# documents.
+			screen.call("setup", _actor)
+			screen.call("bind_harvest", Callable(ForageAction, "gather"))
 		_:
 			screen.call("setup", _actor)
 

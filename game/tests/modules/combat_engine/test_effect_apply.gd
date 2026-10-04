@@ -116,7 +116,7 @@ func test_a_broad_sweep_settles_every_struck_meridian_in_one_step() -> void:
 		_technique(100.0, &""),
 		_tuning,
 		null,
-		BodyDamage.builder(null, ledger, BodyLocation.MODE_BROAD)
+		BodyDamage.builder(null, BodyLocation.MODE_BROAD)
 	)
 	# The struck set is read off the proposal rather than restated, because a `broad` sweep
 	# covers every UNLOCKED meridian and "which twenty" is `BodyLocation`'s answer to give.
@@ -696,7 +696,7 @@ func _strike(
 		technique,
 		_tuning,
 		null,
-		BodyDamage.builder(technique, CombatEngineApi.wounds_of(target), BodyLocation.MODE_NAMED)
+		BodyDamage.builder(technique, BodyLocation.MODE_NAMED)
 	)
 
 

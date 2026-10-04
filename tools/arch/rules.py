@@ -114,6 +114,36 @@ UI_MODULES: dict[str, list[str]] = {
     # through the same catalog seam `app/` wires for `npc`. No module reach is needed, so the
     # grant is empty — the same reason `race` and `destiny` carry none.
     "custody": [],
+    # The gather surface (ADR 0097 + BL-0204). The audit that found the economy
+    # program "wired to itself" also found the two halves of foraging had no
+    # player surface at all: sixteen authored `ResourceNodeDef` `.tres`, a yield
+    # table covering every one of them, `HoldingsApi.claim` and
+    # `ForageApi.harvest` green in every suite -- and `tools data.py` counting
+    # `ForageApi.harvest(` as a production call site because
+    # `app/forage_action.gd` exists, while no screen, no button and no nav route
+    # ever called it. `HoldingsApi.claim` had NO production caller at all, so a
+    # node was never held and `ForageAction.workable` could never be true: the
+    # harvest verb was reachable from nothing.
+    #
+    # Two grants, because the slice has two halves and they read two modules:
+    #   - `holdings` needs NO module dependency. `HoldingsApi.summary(actor)` is
+    #     already the facade's primitives-only read model: every node's holder,
+    #     `vacant`, `condition`, `resting`, `accrued`, `contested`, `kind`,
+    #     `yield_per_period` and `upkeep_per_period`, plus the whole authored
+    #     `catalog` view. A node row needs nothing else, which is the same shape
+    #     `race`, `destiny` and `custody` carry, and it is why no `items` edge is
+    #     granted either: the yield is a ledger line, never items (BL-0191).
+    #   - `forage` needs NO module dependency either. `ForageApi` declares
+    #     `["contracts", "core", "holdings"]` and publishes `yieldable_node_ids`,
+    #     `yields` and `has_granter` -- a read model, not a rule. The one
+    #     MUTATING verb, `harvest`, is reached through `ForageAction.gather`,
+    #     and `ForageAction` is an `app/` type, a `PRIVATE_UNIT`, so the screen
+    #     cannot name it: the harvest is injected as a `Callable` at the route
+    #     mount, exactly as `QuestScreen.bind_quests` takes the quest commit and
+    #     `SoulHearthScreen.bind_soul` takes the save status. That is why this
+    #     grant buys a READ and not a verb.
+    "holdings": [],
+    "forage": [],
     # The heavenly tribulation gates the Immortal tier on the SHARED ladder, so all
     # three paths read the same predicate and a tribulation screen is not a body,
     # qi or mind screen. Granted with no module dependency: the fight is priced off

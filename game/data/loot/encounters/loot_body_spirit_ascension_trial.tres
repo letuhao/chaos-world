@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"spirit_ascension"
 rarity = &"common"
-vitality = 176.0
+vitality = 27881.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_spirit_ascension_guardian", "table_id": &"loot_body_spirit_ascension_guardian"},
 	{"boss_id": &"E6_ascension_warden", "table_id": &"loot_E6_ascension_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"spirit_ascension"
 rarity = &"rare"
-vitality = 281.6
+vitality = 44610.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"body_spirit_ascension_guardian", "table_id": &"loot_body_spirit_ascension_guardian"},
 	{"boss_id": &"E6_ascension_warden", "table_id": &"loot_E6_ascension_warden"},

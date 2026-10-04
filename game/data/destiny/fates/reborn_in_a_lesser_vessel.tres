@@ -12,4 +12,4 @@ tier = 2
 visibility = &"revealed"
 flat_modifiers = {"physique": 2.0, "will": 3.0}
 counters = Array[StringName]([&"breakthroughs"])
-tags = Array[StringName]([&"rebirth", &"resilient"])
+tags = Array[StringName]([&"rebirth"])

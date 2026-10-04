@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=27 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -9,7 +9,7 @@ id = &"qi_great_luo_warden_core_0"
 kind = &"item"
 item_id = &"qi_great_luo_warden_core"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = true
 quantity = 6
@@ -17,11 +17,11 @@ rarity_floor = &"legendary"
 
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_pool_earth_immortal"
+id = &"qi_great_luo_warden_pool_body_integration"
 kind = &"table"
 item_id = &""
-table_id = &"loot_qi_great_luo_warden_pool_earth_immortal"
-weight = 1.0
+table_id = &"loot_qi_great_luo_warden_pool_body_integration"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -29,11 +29,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_2"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_pool_immortal_sovereign"
+id = &"qi_great_luo_warden_pool_dao_ancestor"
 kind = &"table"
 item_id = &""
-table_id = &"loot_qi_great_luo_warden_pool_immortal_sovereign"
-weight = 1.0
+table_id = &"loot_qi_great_luo_warden_pool_dao_ancestor"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -41,11 +41,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_3"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_pool_mystic_immortal"
+id = &"qi_great_luo_warden_pool_dao_fruit"
 kind = &"table"
 item_id = &""
-table_id = &"loot_qi_great_luo_warden_pool_mystic_immortal"
-weight = 1.0
+table_id = &"loot_qi_great_luo_warden_pool_dao_fruit"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -53,11 +53,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_4"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_4"
-kind = &"item"
-item_id = &"B18_mortal_camerlengo_primed"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_earth_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_earth_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -65,11 +65,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_5"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_5"
-kind = &"item"
-item_id = &"C21_earth_coomb_cooldown_reduction_crit_chance_penetration"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_immortal_sovereign"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_immortal_sovereign"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -77,11 +77,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_6"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_6"
-kind = &"item"
-item_id = &"E11_earth_peelery_outerburr"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_mystic_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_mystic_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -89,11 +89,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_7"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_7"
-kind = &"item"
-item_id = &"F18_immortal_ensconce_agility_aptitude_insight_gain_will"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_primordial_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_primordial_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -101,11 +101,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_8"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_8"
-kind = &"item"
-item_id = &"F43_immortal_gibbet_crit_chance_max_stamina_qi_absorption"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_qi_refining"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_qi_refining"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -113,11 +113,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_9"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_9"
-kind = &"item"
-item_id = &"G21_spirit_hophorn_attack_speed_cultivation_rate"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_spirit_condensation"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_spirit_condensation"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -125,11 +125,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_10"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_10"
-kind = &"item"
-item_id = &"I21_spirit_entozoon_base"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_spirit_domain"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_spirit_domain"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -137,11 +137,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_11"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_11"
-kind = &"item"
-item_id = &"J20_heaven_spirit_base"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_spirit_manifestation"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_spirit_manifestation"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -149,11 +149,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_12"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_12"
-kind = &"item"
-item_id = &"N7_spirit_granite_aged"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_spirit_palace"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_spirit_palace"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -161,11 +161,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_13"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_13"
-kind = &"item"
-item_id = &"Q7_immortal_dill_cog"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_spirit_severing"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_spirit_severing"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -173,11 +173,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_14"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_14"
-kind = &"item"
-item_id = &"S7_immortal_glazier_primed"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_spirit_sovereign"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_spirit_sovereign"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -185,109 +185,13 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_15"]
 script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_15"
-kind = &"item"
-item_id = &"V14_earth_anabasis_guilder"
-table_id = &""
-weight = 1.0
+id = &"qi_great_luo_warden_pool_spirit_unity"
+kind = &"table"
+item_id = &""
+table_id = &"loot_qi_great_luo_warden_pool_spirit_unity"
+weight = 1.
 chance = -1.0
 guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_16"]
-script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_16"
-kind = &"item"
-item_id = &"W9_spirit_caltrops_niter"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_17"]
-script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_17"
-kind = &"item"
-item_id = &"Y19_divine_laity_knucklebone"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_18"]
-script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_18"
-kind = &"item"
-item_id = &"Z36_immortal_relict_pericarp"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_19"]
-script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_19"
-kind = &"item"
-item_id = &"charm_heaven_sash"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_20"]
-script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_20"
-kind = &"item"
-item_id = &"jade_star"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_21"]
-script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_21"
-kind = &"item"
-item_id = &"qi_spirit_manifestation_recovery_elixir"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_22"]
-script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_domain_22"
-kind = &"item"
-item_id = &"talisman_mist_herb"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_23"]
-script = ExtResource("2_entry")
-id = &"qi_great_luo_warden_mortal_gear"
-kind = &"item"
-item_id = &"rune_cinder_charm"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
 quantity = 1
 rarity_floor = &""
 
@@ -315,13 +219,5 @@ entries = Array[LootEntry]([
 	SubResource("entry_12"),
 	SubResource("entry_13"),
 	SubResource("entry_14"),
-	SubResource("entry_15"),
-	SubResource("entry_16"),
-	SubResource("entry_17"),
-	SubResource("entry_18"),
-	SubResource("entry_19"),
-	SubResource("entry_20"),
-	SubResource("entry_21"),
-	SubResource("entry_22"),
-	SubResource("entry_23")
+	SubResource("entry_15")
 ])

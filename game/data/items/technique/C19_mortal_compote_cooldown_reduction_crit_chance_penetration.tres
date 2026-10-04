@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"C19_mortal_compote_cooldown_reduction_crit_chance_penetration"
 display_name = "Mortal Compote Cooldown Reduction Crit Chance Penetration"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"nascent_soul"
 fixed_modifiers = Array[Dictionary]([

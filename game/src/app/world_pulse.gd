@@ -28,10 +28,10 @@ extends RefCounted
 ## Nothing here reads `Time.get_ticks*`, declares a frame callback or reaches for
 ## `get_tree()`. [method pull] is handed the elapsed time by the caller that owns
 ## it, so a headless probe, a replay and a frame that hitched all age the world
-## identically. [constant PERIOD_SECONDS] is the ONE authored statement of how long
-## a period is, and it lives here because the composition root is the only layer
-## allowed to know real time — a module that invented a timer would be a second
-## source of truth for when a save happened (ADR 0085, DEF-0111).
+## identically. [constant PERIOD_SECONDS] is how long a period is, and it is NOT
+## authored here any more: it reads `TimeLadder.PERIOD_SECONDS` (ADR 0173), because
+## this layer being the only one allowed to know real time is a reason to CONSUME the
+## ratio, not to own a private copy of it (ADR 0085, DEF-0111).
 ##
 ## ## Why the period is a FACT and not just a counter
 ##
@@ -80,12 +80,12 @@ extends RefCounted
 ## consulted for an authored event beat (DEF-0171), and `EventBeatSink` stopped
 ## being decoration.
 
-## Seconds of elapsed time in one world period. The ONE authored cadence: retune
-## the world's pace by editing this number and nothing else, because no module holds
-## a competing one. Long enough that an event's authored `duration_periods` ladder
-## is walked in whole steps rather than per frame, and short enough that a player
-## sees the world move inside one sitting.
-const PERIOD_SECONDS := 120.0
+## Seconds of elapsed time in one world period. **No longer authored here:** it reads
+## `TimeLadder.PERIOD_SECONDS` (`core/time_ladder.gd:110`), where ADR 0173 moved the
+## one statement of the cadence, so no second copy can sit beside it (ADR 0085, DEF-0111).
+## This keeps the readers' name because `WorldPulse` is the only layer allowed to know
+## real time — a reason to CONSUME the ratio, not to own a private copy of it.
+const PERIOD_SECONDS := TimeLadder.PERIOD_SECONDS
 
 ## The most whole periods one advance may hand down, whatever the elapsed time
 ## says. A hitch, a breakpoint or a slow-motion frame otherwise converts one delta
@@ -161,6 +161,10 @@ var _institution_acted: int = 0
 ## Institution proposals the resolver refused. Counted rather than dropped so a
 ## caller can tell "nothing happened" from "nothing was possible".
 var _institution_refused: int = 0
+## The magnitudes the LAST advance's elapsed span crossed, as
+## `TimeLadder.magnitudes_crossed` published them. Kept as the fold's own answer so
+## `summary()` reports what the clock crossed rather than a second copy of the ladder.
+var _crossed: Dictionary = {}
 
 
 func _init(actor: Actor = null, director: BeatDirector = null) -> void:
@@ -223,7 +227,11 @@ func pull(delta_seconds: float) -> Dictionary:
 		_elapsed = 0.0
 	else:
 		_elapsed -= float(periods) * PERIOD_SECONDS
-	return _advance(periods)
+	# Same verb as [method advance_periods]: a frame's periods are a DECLARED span, so
+	# they are paid in full through the chunk plan or refused — never truncated to the
+	# ceiling here. ADR 0173 refuses a real-time world tick outright, so this path has no
+	# production caller; it exists to keep the two entry points from being two answers.
+	return advance_periods(periods)
 
 
 ## Advance the world by exactly `count` periods, with no elapsed time at all.
@@ -232,10 +240,43 @@ func pull(delta_seconds: float) -> Dictionary:
 ## timer.** A world whose only clock is a frame callback cannot be advanced by a
 ## headless probe, a replay or a "wait a season" button, and the module's pull-based
 ## tick refuses `periods <= 0` precisely so that nothing accrues without a caller
-## saying how much. `count` is clamped to [constant MAX_PERIODS_PER_PULL] for the
-## same reason a hitch is.
+## saying how much.
+##
+## ## A declared span is PAID FOR IN FULL, or refused — never truncated
+##
+## It used to be `clampi(count, 0, MAX_PERIODS_PER_PULL)`: a player declaring a
+## 10^9-year retreat got **8 periods, no error, no interruption and no budget spend**,
+## which ADR 0173 refuses outright ("Exceeding the budget FAILS LOUDLY. It never
+## truncates", `AGENTS.md:56`, `:75`). The ceiling is still there and still bounds ONE
+## advance — it is now [method _advance]'s per-call bound rather than the span's.
+##
+## A span above the ceiling goes through `TimeLadder.chunks_for`, which grows the chunk
+## SIZE with the span so the plan stays inside `MAX_CHUNKS` and sums to exactly `count`
+## (ADR 0173 "Chunking and interruption are bounded"). So 10^9 years is a handful of
+## spends, not 10^9, and not 8 either.
+##
+## **A span the chunk plan cannot cover is REFUSED, not shortened.** `chunks_for` pushes
+## its own error naming the span and the chunk size for the one input it cannot satisfy;
+## an empty plan here is therefore a refusal, and this returns `{ok: false}` rather than
+## advancing a prefix of it — a world quietly advanced by part of what the caller paid
+## for is the defect this replaces.
 func advance_periods(count: int) -> Dictionary:
-	return _advance(clampi(count, 0, MAX_PERIODS_PER_PULL))
+	if count <= 0:
+		return _advance(0)
+	if count <= MAX_PERIODS_PER_PULL:
+		return _advance(count)
+	var plan := TimeLadder.chunks_for(count, MAX_PERIODS_PER_PULL)
+	if plan.is_empty():
+		return _report(false, "unplannable_span")
+	var moved := 0
+	# The plan is `TimeLadder`'s own array, sized and built before this loop and mutated
+	# by neither, which is the shape `test_no_unbounded_wait.gd` accepts.
+	for chunk in plan:
+		var report := _advance(int(chunk), true)
+		moved += int(chunk)
+		if not bool(report.get("ok", false)):
+			return report
+	return _report(true, "").merged({"declared": count, "chunks": plan.size(), "moved": moved})
 
 
 ## Offer one beat to the director and report what it decided. **The only place in
@@ -286,6 +327,10 @@ func summary() -> Dictionary:
 		"module_recorded_facts": _module_recorded,
 		"institution_acted": _institution_acted,
 		"institution_refused": _institution_refused,
+		# The SSOT's own division over the LAST span, published rather than
+		# re-derived by a reader: `tools ui drive` prints it and a test asserts on it,
+		# and a panel that restated the ladder would be a second calendar.
+		"magnitudes": _crossed.duplicate(true),
 		"sinks": [] if _director == null else _director.sink_names(),
 		"period_fact": String(PERIOD_FACT),
 		"period_count": WorldFact.count(_actor, PERIOD_FACT) if _actor != null else 0,
@@ -336,13 +381,27 @@ func offer_event_beat(
 ## The one place a whole advance happens, so [method pull] and
 ## [method advance_periods] cannot drift into two half-versions of the same moment.
 ## Returns a report either way, and never loops.
-func _advance(periods: int) -> Dictionary:
+##
+## `is_spend` marks ONE CHUNK of a planned long skip: a chunk is a single budget spend
+## however many periods it spans (ADR 0173), so its beats are bounded by
+## `EVENT_BUDGET` rather than refused for exceeding it. An ordinary advance is the other
+## shape and is checked against the budget outright.
+func _advance(periods: int, is_spend: bool = false) -> Dictionary:
 	if _actor == null:
 		return _report(false, "no_actor")
 	if _director == null:
 		return _report(false, "no_director")
 	if periods <= 0:
 		return _report(true, "")
+
+	# **The budget is checked FIRST, before anything moves.** An unplanned advance that
+	# asks for more beats than the budget covers is refused HERE, so no event opened, no
+	# institution settled and no period was counted before the refusal — a refusal that
+	# arrives after the world has already advanced reports a world the caller did not get
+	# to keep, which is the truncation ADR 0173 refuses in a slower voice. A PLANNED chunk
+	# is exempt because one chunk IS one budget spend however many periods it spans.
+	if not is_spend and TimeLadder.exceeds_budget(periods, PERIOD_FACT, periods):
+		return _report(false, "over_budget")
 
 	# **Ambient news lands BEFORE the events are consulted**, so a trigger gated on
 	# what the world already remembers is satisfied by news from the same pull that
@@ -356,20 +415,75 @@ func _advance(periods: int) -> Dictionary:
 	# asks for: the module has no clock, and this file has no rules.
 	var pulled := EventApi.advance(_actor, periods)
 	_periods += periods
+	# ## The SSOT's magnitudes reach the institution cadence HERE
+	#
+	# This is the one place an elapsed span is converted into the clock's own authored
+	# units, so it is the one place they may be handed to a consumer: `_settle_institutions`
+	# below already folds a period count into a frequency, and folding the crossed
+	# magnitudes into the SAME cadence is what gives the ladder a reader in production
+	# (`institution_resolver.gd:_magnitude_periods`). A span that crossed nothing beyond
+	# the base row settles on exactly the cadence it always did.
+	_crossed = TimeLadder.magnitudes_crossed(periods)
 	# The institutions get their period on the SAME count as everything else, because
 	# a sect that aged on a different cadence from a nation is two political worlds
 	# whose timing nobody could reason about — ADR 0089's argument, one layer up. The
 	# resolver asks each module what it PROPOSES and dispatches through the closed
 	# verb set; it holds no ledger and adds no frame driver (BL-0198).
-	_settle_institutions(periods)
+	_settle_institutions(periods, _crossed)
 	for row in opened:
 		_module_recorded += _recorded_by_module(row as Dictionary)
 	_module_recorded += _recorded_by_module(pulled)
-	for index in periods:
+	# The budget was already settled at the TOP of this method, before anything moved, so
+	# this call only offers. It still returns a bool because that is the shape a caller
+	# reads, and a false here would mean the budget changed under an advance that had
+	# already been authorised — which the early check makes unreachable by construction.
+	_offer_period_beats(periods, is_spend)
+	return _report(true, "")
+
+
+## Offer the period's own beats for ONE advance — at most `TimeLadder.EVENT_BUDGET`.
+##
+## ## This is the loop ADR 0173 (b) retires, and the budget is what replaced it
+##
+## It was `for index in periods: offer(PERIOD_FACT, 1, PERIOD_SOURCE)` — one beat per
+## period, with a bound that is DATA-DERIVED. `AGENTS.md:52` verbatim: "a data-derived
+## row count is not a fixed count either", and that is the shape of the recorded 67 GB
+## incident. A 10^12-period meditation was 10^12 offers.
+##
+## ## A CHUNK is one budget spend, and it may be LONGER than the budget
+##
+## ADR 0173: "The chunk size GROWS with the elapsed span... One chunk is one budget
+## spend". So a chunk of 6.8e7 periods spends `EVENT_BUDGET` events, not 6.8e7 — the
+## span says what became POSSIBLE, the budget says how much of it HAPPENS. `offered` is
+## therefore `min(periods, EVENT_BUDGET)` and a chunk longer than the budget is not an
+## overspend; it is a complete spend.
+##
+## ## An UNPLANNED advance is one period per beat, and THAT can overspend
+##
+## A caller that skips [method advance_periods]'s plan and asks for more periods than
+## the budget covers is the over-budget case: its beats go through
+## [method TimeLadder.exceeds_budget], which `push_error`s naming the place, the span and
+## the count and returns true, and this returns false so `_advance` refuses. ADR 0173's
+## "It never truncates", and `AGENTS.md:56`: silently emitting `EVENT_BUDGET` and
+## dropping the rest would hide the drop from a player and from the monotone ledger,
+## which cannot un-record it.
+##
+## Either way the offered count never exceeds the periods that elapsed and never exceeds
+## the budget, so a one-period advance still offers exactly one beat and every beat still
+## goes through [method offer] — the ONE offer point (ADR 0117), which is what keeps a
+## quest step watching the period completing by the same chain it always was.
+func _offer_period_beats(periods: int, _is_spend: bool) -> bool:
+	# **No budget check here.** It was here, and it was unreachable twice over: a caller
+	# that skipped the plan could only reach it for `count` in 5..8, and by then `_advance`
+	# had already opened events and settled institutions — so a "refusal" arrived after the
+	# world had moved. The check now lives at the TOP of `_advance`, before anything moves,
+	# which is the only position a refusal can mean anything from.
+	var offered := mini(maxi(0, periods), TimeLadder.EVENT_BUDGET)
+	for index in offered:
 		var report := offer(PERIOD_FACT, 1, PERIOD_SOURCE)
 		if bool(report.get("claimed", false)):
 			_claimed += 1
-	return _report(true, "")
+	return true
 
 
 ## Offer every fact [code]WorldAmbient[/code] says the world has reached and not yet
@@ -478,8 +592,13 @@ func _recorded_by_module(report: Dictionary) -> int:
 ## seven with the shipped `.tres`, and none of it is multiplied by anything. A
 ## proposal the resolver refused is counted rather than dropped, so a caller can tell
 ## "nothing happened" from "nothing was possible".
-func _settle_institutions(periods: int) -> void:
-	var settled := InstitutionResolver.settle(_actor, periods)
+##
+## `crossed` is the SSOT's own `magnitudes_crossed` answer for the span, handed
+## through rather than re-derived here: the resolver folds it into the tier cadence it
+## already owns (`institution_resolver.gd:_magnitude_periods`), and this file adds no
+## calendar of its own.
+func _settle_institutions(periods: int, crossed: Dictionary = {}) -> void:
+	var settled := InstitutionResolver.settle(_actor, periods, crossed)
 	_institution_acted += int(settled.get("acted", 0))
 	_institution_refused += int(settled.get("refused", 0))
 

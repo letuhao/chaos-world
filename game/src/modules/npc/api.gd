@@ -183,7 +183,14 @@ static func spawn(
 	# Every spawned npc becomes live, tracked or not. A transient one is exactly the case
 	# that most needs to be findable: `presence_here` is how a room answers "who is here",
 	# and a settlement of unremembered drifters is invisible if only the roster is listed.
-	NpcRegistry.instance().set_present(NpcRegistry.instance().next_instance_key(npc_id), actor)
+	#
+	# The instance key AND the location go down together: they are minted from the same
+	# call, so a live body with no recorded place is a body a filtered read cannot find
+	# (BL-0715). The registry holds the place for the untracked, which has no roster entry
+	# to remember it in; the entry below holds it for the tracked, across a save.
+	NpcRegistry.instance().set_present(
+		NpcRegistry.instance().next_instance_key(npc_id), actor, location_id
+	)
 	if entry == null:
 		events().npc_transient.emit(String(npc_id))
 	else:
@@ -362,15 +369,28 @@ static func tally(npc_id: StringName, verb: StringName, source: String = &"") ->
 ## `replace_first` releases whoever is already present before minting. Defaulting to
 ## true is the safe direction: a room load that forgets this leaves yesterday's cast
 ## standing in today's room, while a caller that genuinely wants to add passes false.
+##
+## ## `location_id` is threaded to every spawn, and it is not optional bookkeeping
+##
+## It was added because `NpcBoot.populate_room` already took a place and dropped it on
+## the floor, so every row it minted recorded `location_id: ""` and the `presence_here`
+## read on the NEXT LINE filtered all of them out — the boot answered `spawned: 4,
+## npcs: []` for a settlement with four people in it (BL-0715). A filter this sharp is
+## only safe because the write carries the place; that invariant is why this is a
+## parameter on the one verb a room load reaches for rather than something `app/`
+## re-derives per id. `NpcApi.spawn` already took a location for exactly this reason.
 static func populate(
-	def_ids: Array[StringName], role: StringName = ROLE_NPC, replace_first: bool = true
+	def_ids: Array[StringName],
+	role: StringName = ROLE_NPC,
+	replace_first: bool = true,
+	location_id: StringName = &""
 ) -> Array[Actor]:
 	if replace_first:
 		_clear_room()
 	var out: Array[Actor] = []
 	var limit := mini(def_ids.size(), MAX_ROOM_POPULATION)
 	for index in range(limit):
-		var actor := spawn(def_ids[index], role)
+		var actor := spawn(def_ids[index], role, location_id)
 		if actor != null:
 			out.append(actor)
 	return out
@@ -386,17 +406,43 @@ static func _clear_room() -> int:
 ## The read model for one npc: tier, stage, presence and identity as primitives.
 ## Accepts either a stable `npc_id` or a live instance key (`drifter#3`), so
 ## `presence_here` can pass registry keys straight through.
+##
+## `summary` is the OFF-STAGE read too, so the place it publishes is the one the live body
+## was minted for and the roster's remembered "where you last met them" only when there is
+## no live body to ask (BL-0715). `NpcReadModel.summary` says why the two are not the
+## same fact.
 static func summary(npc_id: StringName) -> Dictionary:
 	var player := _player()
 	var def_id := _def_id_of(npc_id)
 	var live := NpcRegistry.instance().present(npc_id)
+	var instance_key := npc_id
 	if live == null:
 		live = _live_of(def_id)
-	if player == null:
-		return {"present": live != null}
-	var entry := _roster(player).entry(def_id)
+		instance_key = _live_key_of(def_id)
+	var roster_entry: NpcRosterEntry = null
+	if player != null:
+		roster_entry = _roster(player).entry(def_id)
 	var def := NpcCatalog.instance().definition(def_id)
-	return NpcReadModel.summary(def_id, entry, def, live != null, _presence_of(entry, live))
+	return NpcReadModel.summary(
+		def_id,
+		roster_entry,
+		def,
+		live != null,
+		_presence_of(roster_entry, live),
+		NpcRegistry.instance().location_of(instance_key)
+	)
+
+
+## The instance key `def_id`'s live body is filed under, or the stable id when none is
+## live. `location_of` is a lookup and not a filter, so a miss answers empty rather than
+## refusing — which is why the fallback is harmless. Bounded by `MAX_PRESENCE_READ` live
+## entries, the same scan `_live_of` already pays, and it stops at the first match.
+static func _live_key_of(def_id: StringName) -> StringName:
+	var registry := NpcRegistry.instance()
+	for key in registry.present_ids():
+		if _is_instance_of(key, def_id):
+			return key
+	return def_id
 
 
 ## Who is here right now, tracked and untracked in one read. Capped by

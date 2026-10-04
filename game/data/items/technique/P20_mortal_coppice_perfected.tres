@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"P20_mortal_coppice_perfected"
 display_name = "Mortal Coppice Perfected"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"nascent_soul"
 fixed_modifiers = Array[Dictionary]([

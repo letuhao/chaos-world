@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -7,9 +7,33 @@
 script = ExtResource("2_entry")
 id = &"d4_venom_scorpion_spirit_unity_0"
 kind = &"item"
+item_id = &"F36_spirit_freckle_attack_speed_attack_spiritual_comprehension_cultivation_rate_defense_spiritual_stamina_regen"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"d4_venom_scorpion_spirit_unity_1"
+kind = &"item"
 item_id = &"L4_venom_scorpion_venom_fang"
 table_id = &""
-weight = 1.0
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"d4_venom_scorpion_spirit_unity_2"
+kind = &"item"
+item_id = &"physique_jade_pauldron"
+table_id = &""
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -24,5 +48,7 @@ rarity = &""
 rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
-	SubResource("entry_0")
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2")
 ])

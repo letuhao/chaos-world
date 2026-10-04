@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"primordial_origin"
 rarity = &"common"
-vitality = 272.0
+vitality = 1033987.5
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_primordial_origin_warden", "table_id": &"loot_mind_primordial_origin_warden"},
 	{"boss_id": &"F19_origin_warden", "table_id": &"loot_F19_origin_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"primordial_origin"
 rarity = &"rare"
-vitality = 435.2
+vitality = 1654380.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_primordial_origin_warden", "table_id": &"loot_mind_primordial_origin_warden"},
 	{"boss_id": &"F19_origin_warden", "table_id": &"loot_F19_origin_warden"},

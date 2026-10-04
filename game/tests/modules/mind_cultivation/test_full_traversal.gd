@@ -154,14 +154,29 @@ func _prepare(actor: Actor) -> Dictionary:
 ## Attempt until the breakthrough resolves. Preparation is redone only after a
 ## failure, because a blocked attempt has no effect at all and a failed one loses
 ## only recoverable state (turbulence, one injured channel).
-func _attempt_until_resolved(actor: Actor, rng: RandomNumberGenerator) -> bool:
+##
+## **A fresh seed per attempt, and `first_seed` so no two attempts on the walk share
+## one.** This walked all 29 boundaries on a single generator seeded 42, which read as
+## a real traversal and was not one: a caller's `rng` is a SEED SOURCE
+## (`MindAttemptRoll`), so every one of those 60 attempts stored seed 42 and replayed
+## the SAME roll. It passed only because that one roll happens to beat every realm's
+## band — a walk whose progress depends on a constant is a walk that stops existing
+## the moment the constant stops suiting, and nothing in the assertions said so.
+func _attempt_until_resolved(actor: Actor, first_seed: int) -> bool:
 	if _prepare(actor).is_empty():
 		return false
 	for attempt in range(60):
-		if MindAdvancement.try_breakthrough(actor, rng):
+		if MindAdvancement.try_breakthrough(actor, _seeded(first_seed + attempt)):
 			return true
 		_prepare(actor)
 	return false
+
+
+## A generator carrying `seed_value` and nothing else — no draw taken off it yet.
+func _seeded(seed_value: int) -> RandomNumberGenerator:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value
+	return rng
 
 
 ## One canonical walk from R1 to R30, cached for reuse across the suite.
@@ -169,8 +184,6 @@ func _walked() -> Actor:
 	if _cached != null:
 		return _cached
 	var actor := _actor()
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 42
 	var steps: Array = []
 	for step in range(TRANSITIONS):
 		var target := RealmDefaults.ladder().next(actor.path(MindPath.PATH_ID).rank_id)
@@ -184,7 +197,7 @@ func _walked() -> Actor:
 			actor.inside_world.tier if actor.inside_world != null else &""
 		)
 		var world_before: StringName = actor.world.tier if actor.world != null else &""
-		var resolved := _attempt_until_resolved(actor, rng)
+		var resolved := _attempt_until_resolved(actor, step * 60 + 1)
 		# The award must land on the actor, not merely advance the path.
 		var awarded := actor.stats.get_base(Stat.WILL) > will_before
 		(

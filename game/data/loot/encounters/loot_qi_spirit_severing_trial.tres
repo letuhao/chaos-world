@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"spirit_severing"
 rarity = &"common"
-vitality = 144.0
+vitality = 12581.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_spirit_severing_warden", "table_id": &"loot_qi_spirit_severing_warden"},
 	{"boss_id": &"F11_severing_warden", "table_id": &"loot_F11_severing_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"spirit_severing"
 rarity = &"rare"
-vitality = 230.4
+vitality = 20130.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_spirit_severing_warden", "table_id": &"loot_qi_spirit_severing_warden"},
 	{"boss_id": &"F11_severing_warden", "table_id": &"loot_F11_severing_warden"},

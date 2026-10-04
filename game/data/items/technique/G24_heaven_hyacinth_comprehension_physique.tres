@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G24_heaven_hyacinth_comprehension_physique"
 display_name = "Heaven Hyacinth Comprehension Physique"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"heaven_immortal"
 fixed_modifiers = Array[Dictionary]([

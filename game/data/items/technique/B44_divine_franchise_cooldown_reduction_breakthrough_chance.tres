@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"B44_divine_franchise_cooldown_reduction_breakthrough_chance"
 display_name = "Divine Franchise Cooldown Reduction Breakthrough Chance"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

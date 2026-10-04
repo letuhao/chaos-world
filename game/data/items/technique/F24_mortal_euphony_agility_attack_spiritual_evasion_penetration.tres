@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F24_mortal_euphony_agility_attack_spiritual_evasion_penetration"
 display_name = "Mortal Euphony Agility Attack spiritual Evasion Penetration"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"
 fixed_modifiers = Array[Dictionary]([

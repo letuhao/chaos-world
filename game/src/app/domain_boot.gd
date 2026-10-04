@@ -1,43 +1,20 @@
 class_name DomainBoot
-extends RefCounted
+extends DomainWards
 
 ## The composition root's domain wiring (ADR 0072-0075). Wiring, not rules: `app/`
 ## injects the constructor; the `domain` module owns what a map, a room and an inhabitant
 ## mean.
 ##
-## ## Why this file exists
+## The domain twin of `NpcBoot`, and it exists for the same reason. An audit measured
+## **13 of 13 domain source files with zero production call sites**: `install` was never
+## called, `spawn_map` never ran and `EnvironmentField.apply` never applied, so the module
+## was a library nothing could reach — a feature nobody can start is decoration, which is
+## the failure ADR 0089 measured for statuses. All three are now on a production path.
 ##
-## The audit measured it: **13 of 13 domain source files had zero production call sites.**
-## `DomainSpawner.spawn` needed a constructor to mint an `Actor` and nothing installed one,
-## so it could only ever return null — a feature nobody can start is decoration, which is
-## the same failure ADR 0089 measured for statuses and ADR 0074 for npcs.
-##
-## This is the domain twin of `NpcBoot`, and it exists for exactly the same reason. It is
-## deliberately wiring-only: no rules, no state of its own, nothing that ticks.
-##
-## ## What this file NOW wires, and what it did not before
-##
-## This file was BUILT and UNWIRED: the audit found `DomainBoot.install` with zero callers,
-## `DomainSpawner.spawn_map` with zero callers and `EnvironmentField.apply` with zero
-## callers, so the whole `domain` module was a library nothing could reach. All three are
-## now on a production path:
-##
-##  - `install` runs from the composition root's ONE attach list, beside `NpcBoot.install`,
-##    so the spawner's minter and the fixtures' inventory bridge exist before any screen
-##    asks (`ItemWorkbenchApp._attach_body_modules`).
-##  - `enter_domain` calls `DomainSpawner.spawn_map` over the map it just entered and
-##    returns the minted `Actor`s, so `population` describes creatures that exist.
-##  - `enter_domain` and `visit_room` call `EnvironmentField.apply` for the zones belonging
-##    to the entry / the room just reached, so a severe environment is something a player
-##    is actually taxed by.
-##
-## Nothing here was a rule that belonged in the module: every rule stays in `domain/`.
-##
-## ## One clock, no clock of its own
-##
-## Nothing here ticks. Severe environments resolve through `EnvironmentField`, which is
-## driven from the same `StatusLoop` tick every other status uses (ADR 0089); a second
-## `_process` would be the stateful-`app/` shape `tools/arch/rules.py` rejects.
+## Deliberately wiring-only: no rules, no state of its own, **nothing that ticks**.
+## Severe environments resolve through `EnvironmentField` on the same `StatusLoop` tick
+## every other status uses (ADR 0089); a second `_process` would be the stateful-`app/`
+## shape `tools/arch/rules.py` rejects.
 
 ## The item property a fixture's key is measured by. Spelled once so the granter seam
 ## below and the loot module's own entry gate cannot drift onto different properties.
@@ -66,35 +43,34 @@ const WORLD_BORN: Array[StringName] = [
 	WORLD_SCENE_NODE,
 ]
 
-## The element vocabulary the environment layer speaks. CLOSED, and it is exactly the
-## set `EnvironmentField.HOSTILE_ELEMENTS` keys on, because a tag outside that set
-## cannot answer any zone and publishing it would inflate the list for nothing.
+## This file passed the thousand-line ceiling, and the section that moved is the one whose
+## own banner drew the cut: "the two facts a domain run needs from outside its own module"
+## — the authored template weather, the wardrobe / codex / bag ward tags, the inhabitant
+## catalogue, and the two closed vocabularies they are filtered by. All of it now lives on
+## `DomainWards`, which this class EXTENDS. **No public method was renamed, no signature
+## changed and no body was re-derived:** `DomainBoot.publish_ward_tags`,
+## `DomainBoot._template_weather` and `DomainBoot._map_accepts` all still answer under the
+## names `tests/modules/domain/test_domain_weather.gd` and `EnvironmentField`'s docblock
+## already use. GDScript cannot alias a static from one script onto another and cannot
+## extend two classes, so inheritance is the only shape that keeps both spellings
+## compiling — the same arrangement `ItemWorkbenchApp` -> `ItemWorkbenchBody` uses, and
+## unlike a delegation it leaves the entry point where the callers found it.
 ##
-## Declared HERE rather than beside the ward-tag publisher below because
-## `class-definitions-order` puts every `const` before every `func`, and a const declared
-## mid-file is an ordering error rather than a local convenience.
-const ELEMENT_TAGS: Array[StringName] = [
-	&"fire",
-	&"ice",
-	&"water",
-	&"lightning",
-	&"metal",
-	&"wood",
-	&"dark",
-	&"light",
-	&"earth",
-	&"wind",
-]
-
-## The consumable subtypes a mitigation can be carried as. Authored vocabulary
-## (`ItemSubtype`), named here rather than rebuilt, so a new consumable subtype is one
-## edit in the items module rather than a second list to drift.
-const CONSUMABLE_SUBTYPES: Array[StringName] = [
-	ItemSubtype.PILL,
-	ItemSubtype.ELIXIR,
-	ItemSubtype.TALISMAN,
-	ItemSubtype.FOOD,
-]
+## The element and consumable vocabularies are declared ONCE, on `DomainWards`, which
+## this class extends — so `DomainBoot.ELEMENT_TAGS` and `DomainBoot.CONSUMABLE_SUBTYPES`
+## still answer under those spellings for every reader that used them.
+##
+## **They were declared on BOTH sides, and that was a parse error, not a mirror.** The
+## mirror existed while the two files were SIBLINGS under `app/`, which cannot read one
+## another's constants. The split that made `DomainWards` this class's BASE removed the
+## reason for it: GDScript rejects a redeclared member outright ("The member
+## `ELEMENT_TAGS` already exists in parent class DomainWards"), so `domain_boot.gd` failed
+## to parse, `DomainBoot` stopped resolving for every file that names it —
+## `item_workbench_body.gd` included — and `ItemWorkbenchBody` with it. One unresolved
+## class cascaded into `ItemWorkbenchApp`, which is what left the `tests/ui` domain suites
+## booting a bare `Control` and the module suite calling a function that was never there.
+## One declaration per name is also what makes the "each side can drift" argument moot:
+## there is no second list to drift from.
 
 ## The run being populated: its laid-out rects, keyed by room id as a `String` — exactly
 ## what `DomainPaths.layout` publishes, which is the ONE layout in the repo
@@ -106,11 +82,20 @@ const CONSUMABLE_SUBTYPES: Array[StringName] = [
 ## `spawn_map` and on every room visit, and cleared on `leave_domain`, so a discarded run
 ## is never read by the next one. `_layout` is `{}` outside a run, which is what makes an
 ## unplaced spawn read as `Vector2.ZERO` rather than as a position in some other domain.
+##
+## ## WHY THEY SURVIVE A `teardown()`, AND WHY THAT IS A LEAK
+##
+## These three outlive every `Node`, so what clears them is neither a free nor a
+## `teardown()`: it is [method reset]. `leave_domain` covers the path a PLAYER takes;
+## `reset` covers the ones where a run ended without the player asking.
 static var _layout: Dictionary = {}
 static var _run: DomainMap = null
-## The bodies [method enter_domain] minted for `_run`, as `actor id -> Actor`. A handle,
-## not a table — see [method _last_inhabitants] for why it is a `Dictionary` and why it
-## lives here at all rather than being re-derived from the map.
+## The bodies [method enter_domain] minted for `_run`, as `instance id -> Actor` — a
+## handle, not a table, and NOT keyed by `actor id`, which is the SPECIES
+## (`spawn_inhabitant` hands `def.inhabitant_id` to `Actor.new` unchanged, so every
+## `cinder_hound` shares one id). Keying by id collapsed a `count: 2` room to ONE entry:
+## that is the 11-authored / 2-drawn figure, and `_last_inhabitants` — the only thing
+## `realize_world` reads — is where it happened while `spawn_map` minted all eleven.
 static var _roster: Dictionary = {}
 
 ## Who stands the realized world up once a run exists. A `Callable`, not a reference, and
@@ -135,6 +120,30 @@ static func set_world_observer(observer: Callable) -> void:
 ## listening" from "the listener refused".
 static func has_world_observer() -> bool:
 	return _world_observer.is_valid()
+
+
+## FORGET the current run: clear `_run`, `_layout` and `_roster`, and answer what was
+## discarded. Idempotent — a second call reports nothing forgotten rather than pretending
+## it cleared something.
+##
+## `leave_domain` is the path a PLAYER takes and is correct there; this is the rest, which
+## is where the leak is. A root torn down mid-run, an aborted test, a save loaded over the
+## top, a second mount in one process — each drops the `Actor` that owned the run while
+## `_run` points on at that hero's discarded map, and nothing frees a static. So the next
+## run starts from the previous run's floor and `realize_world` answers `no_map` while the
+## player is demonstrably inside a domain. `test_domain_playable.teardown()` calls this
+## after the root's own: that frees the TREE, this frees the STATE the tree was drawing.
+##
+## `_world_observer` is deliberately NOT cleared: it is a SEAM, not a run. Dropping it
+## would uninstall a live observer and make the next `enter_domain` report `no_observer`
+## for a run that should have been drawn. `set_world_observer` replaces it, exactly as
+## `_tear_down_run`'s note says. The minter `install` puts in place is a seam too.
+static func reset() -> Dictionary:
+	var forgotten := {"had_run": _run != null, "inhabitants": _roster.size()}
+	_run = null
+	_layout = {}
+	_roster = {}
+	return forgotten
 
 
 ## Install the inhabitant constructor AND the fixtures' two contacts with the items
@@ -362,231 +371,15 @@ static func visit_room(player: Actor, room_id: StringName, weather: StringName =
 
 # ── the two facts a domain run needs from outside its own module ──────────────
 #
-# Both live here because both are CONTACTS with a module `domain` may not depend on.
-# `domain` declares `core` + `contracts` only (tools/arch/registry.json), so it cannot
-# name `items`, `techniques` or a `.tres` template without breaking that edge. `app/` is
-# the composition root and is allowed to depend on anything, so the two reads happen
-# here and are handed to the module as PLAIN DATA — the same reason `install` hands the
-# spawner a `Callable` instead of letting `domain/` name `ActorFactory`.
-
-
-## The weather `template_id` authors, or [constant DomainMap.WEATHER_NONE].
-##
-## ## Why this is a TEXT read and not a field on `DomainTemplateDef`
-##
-## `weather` is authored on the template `.tres` as a plain `weather = &"ashfall"` line,
-## and read back with [method RegEx]. That is deliberate rather than a shortcut:
-## `DomainTemplateDef` is a `Resource` whose exported set is another file's to change,
-## so a field there would mean editing a module file this change does not own. Reading
-## the authored line is also the same discipline `tools/` applies to this corpus — a
-## value that is not a field of the resource is still content, and content is read, not
-## inferred. The `[method _scalar]` helper normalizes Godot's `&"x"` / `"x"` spelling
-## away, which is the same normalization `tools/acquisition/chain.py` performs.
-##
-## Refused by `DomainMap.accepts_weather` before it is returned, so a template naming a
-## weather outside the closed catalogue contributes NO weather rather than a string
-## every zone would silently ignore. `WEATHER_NONE` (no `weather` line at all) is a
-## legitimate authored state, not a failure.
-static func _template_weather(template_id: StringName) -> StringName:
-	for path in _template_files():
-		var text := _read_text(path)
-		if _scalar(text, "template_id") != String(template_id):
-			continue
-		var authored := _scalar(text, "weather")
-		if authored.is_empty():
-			return DomainMap.WEATHER_NONE
-		var id := StringName(authored)
-		return id if _map_accepts(id) else DomainMap.WEATHER_NONE
-	return DomainMap.WEATHER_NONE
-
-
-## Every `templates/*.tres` path, sorted. Bounded `for`/enumeration over a closed
-## content directory; the `while` terminates because `get_next()` returns `""` at the
-## end of the directory, which is the same idiom `DomainApi.templates` itself uses.
-static func _template_files() -> Array[String]:
-	var out: Array[String] = []
-	var dir := DirAccess.open(DomainApi.TEMPLATE_DIR)
-	if dir == null:
-		return out
-	dir.list_dir_begin()
-	var file_name := dir.get_next()
-	while file_name != "":
-		if file_name.ends_with(".tres"):
-			out.append("%s/%s" % [DomainApi.TEMPLATE_DIR, file_name])
-		file_name = dir.get_next()
-	dir.list_dir_end()
-	out.sort()
-	return out
-
-
-static func _read_text(path: String) -> String:
-	if not FileAccess.file_exists(path):
-		return ""
-	return FileAccess.get_file_as_string(path)
-
-
-## The authored value of `name` in a `.tres`, unquoted, or `""` when the file does not
-## declare it. One helper so every authored scalar this file reads is parsed the same
-## way; `RegEx` rather than `String.split` because the value is a `&"..."` literal and
-## its quoting has to come off before the string is compared to an id.
-static func _scalar(text: String, name: String) -> String:
-	var pattern := RegEx.new()
-	if pattern.compile("(?m)^%s\\s*=\\s*(.+?)\\s*$" % name) != OK:
-		return ""
-	var found := pattern.search(text)
-	if found == null:
-		return ""
-	var value := found.get_string(1).strip_edges()
-	# `StringName` literals in a `.tres` are written `&"name"`, so the `&` sits OUTSIDE
-	# the quotes. Stripping only the quotes left `&ashfall`, which never compared equal
-	# to `ashfall` — which is why an authored weather read back as "no weather" and every
-	# zone in the domain silently ran at its authored band.
-	if value.begins_with("&"):
-		value = value.substr(1).strip_edges()
-	for quote in ['"', "'"]:
-		if value.length() > 1 and value.begins_with(quote) and value.ends_with(quote):
-			return value.substr(1, value.length() - 2)
-	return value
-
-
-static func _map_accepts(id: StringName) -> bool:
-	var probe := DomainMap.new()
-	return probe.accepts_weather(id)
-
-
-## Publish what this actor CARRIES into the three `module_data` slots
-## `EnvironmentField` reads, so `GEAR_CAP`, `TECHNIQUE_CAP` and `PILL_CAP` gate a real
-## list instead of a permanently empty one.
-##
-## ## Why this is here and not in `environment_field.gd`
-##
-## `EnvironmentField` reads three tag keys and nothing writes them, which is why a
-## cultivator wearing a fire ward used to get ZERO mitigation while the screen still
-## printed "answered by: gear, pill, affinity". The three caps were live caps over
-## lists that were always empty — a cap that gates nothing.
-##
-## `domain` cannot fix that itself: the tags live in `items` (equipped instances and
-## inventory) and `techniques` (the codex and the loadout), and `domain` is allowed to
-## depend on neither. So this reads them THROUGH THEIR FACADES — `ItemsApi` and
-## `TechniquesApi` — and writes only the tag strings into the three keys this module
-## already owns. No sibling payload shape is depended on: `EnvironmentField` still reads
-## a flat `{"tags": [...]}` list and nothing here walks anybody's internals.
-##
-## ## What the tags MEAN, and why they are element names
-##
-## The three lists carry ELEMENTS (`&"fire"`, `&"ice"`, …), not invented ids. That is
-## the honest join key: `EnvironmentZoneDef.tags` is already the "elements this zone is
-## hostile to" list, so a wardrobe of fire-and-ice gear answers the same question the
-## zone already asks of a spirit root. A consumable named "fire" is a cooling draught;
-## an orb tagged `fire` is a fire ward. Neither needs a registry this module cannot
-## own, and neither can be a silent no-op: if nothing in the corpus carries the
-## element, the list is empty and the lever does not fire, which is correct.
-##
-## Idempotent: every key is overwritten from the actor's CURRENT state rather than
-## appended to, so re-entering a room cannot accumulate stale tags.
-static func publish_ward_tags(player: Actor) -> Dictionary:
-	if player == null:
-		return {"gear": 0, "technique": 0, "pill": 0}
-	# GEAR: what is WORN, not what is owned. A bag full of robes is not a ward, so this
-	# reads `Equipment.all()` — the slots actually occupied.
-	player.set_module_data(EnvironmentField.GEAR_TAGS_KEY, {"tags": _equipped_elements(player)})
-	player.set_module_data(EnvironmentField.TECHNIQUE_TAGS_KEY, {"tags": _learned_elements(player)})
-	player.set_module_data(EnvironmentField.PILL_TAGS_KEY, {"tags": _carried_elements(player)})
-	return {
-		"gear": _size(player, EnvironmentField.GEAR_TAGS_KEY),
-		"technique": _size(player, EnvironmentField.TECHNIQUE_TAGS_KEY),
-		"pill": _size(player, EnvironmentField.PILL_TAGS_KEY),
-	}
-
-
-static func _size(player: Actor, key: StringName) -> int:
-	var tags: Array = player.get_module_data(key).get("tags", [])
-	return tags.size()
-
-
-## Every element carried by what the actor is WEARING, canonical and de-duplicated.
-## Bounded `for` over the five equipment slots and each def's own authored tag list.
-static func _equipped_elements(player: Actor) -> Array[StringName]:
-	var out: Array[StringName] = []
-	var equipment := ItemsApi.equipment(player)
-	if equipment == null:
-		return out
-	# Bounded `for` over `Equipment.SLOTS`, which is the closed five-slot set. Iterating
-	# the slots rather than `all().keys()` keeps the order canonical, so the published
-	# list is a pure function of what is worn rather than of dictionary order.
-	for slot in Equipment.SLOTS:
-		var def := equipment.definition(slot)
-		if def == null:
-			continue
-		_add_elements(out, def.tags)
-	return out
-
-
-## Every element carried by what the actor has LEARNED, through the techniques facade.
-## Read from the codex the facade attaches on demand, so an actor who has never opened
-## the technique screen still answers. Empty when no technique is attached, which is the
-## honest "this actor knows nothing that helps" rather than a fabricated default.
-static func _learned_elements(player: Actor) -> Array[StringName]:
-	var out: Array[StringName] = []
-	var codex := TechniquesApi.codex(player)
-	if codex == null:
-		return out
-	# Bounded `for` over the codex's own entries — authored content, small, and the only
-	# list the techniques module publishes as ids rather than as a read model.
-	for technique_id in _codex_ids(codex):
-		var def := TechniqueCatalog.instance().definition(StringName(technique_id))
-		if def == null:
-			continue
-		_add_elements(out, def.tags)
-	return out
-
-
-static func _codex_ids(codex: TechniqueCodex) -> Array[String]:
-	var out: Array[String] = []
-	# Bounded `for` over the codex's own technique ids — authored content, small, and the
-	# only list the techniques module publishes as ids rather than as a read model.
-	for technique_id in codex.technique_ids():
-		out.append(String(technique_id))
-	return out
-
-
-## Every element carried by what the actor has IN THE BAG as a consumable.
-##
-## INVENTORY, not equipment: a pill is spent, not worn, so it cannot come from
-## `Equipment`. Read through `Inventory.stacks()` and `.instances()` — the two lists
-## that between them hold every carried item — and narrowed to the authored CONSUMABLE
-## subtypes, because an herb in the bag is not a mitigation the player chose to carry.
-static func _carried_elements(player: Actor) -> Array[StringName]:
-	var out: Array[StringName] = []
-	var inventory := ItemsApi.inventory(player)
-	if inventory == null:
-		return out
-	for batch in inventory.stacks():
-		if batch.def_ref == null or not _is_consumable(batch.def_ref):
-			continue
-		_add_elements(out, batch.def_ref.tags)
-	for instance in inventory.instances():
-		var def := Crafting.resolve(instance.def_id)
-		if def == null or not _is_consumable(def):
-			continue
-		_add_elements(out, def.tags)
-	return out
-
-
-## Whether `def` is something a body CONSUMES rather than wears or learns. The
-## authored subtype list, not a name test: a subtype nobody declared is not a pill.
-static func _is_consumable(def: ItemDef) -> bool:
-	return CONSUMABLE_SUBTYPES.has(def.subcategory)
-
-
-## Add every element-shaped tag in `tags` to `out`, de-duplicated and canonically
-## ordered at the end. A bounded `for` over authored content; no `while`.
-static func _add_elements(out: Array[StringName], tags: Array[StringName]) -> void:
-	for tag in tags:
-		var element := StringName(str(tag))
-		if ELEMENT_TAGS.has(element) and not out.has(element):
-			out.append(element)
-
+# Both used to live here and now live on `DomainWards`, which this class EXTENDS, so
+# `DomainBoot.publish_ward_tags`, `DomainBoot._template_weather` and
+# `DomainBoot._map_accepts` keep answering under the names every caller already uses.
+# Both are CONTACTS with a module `domain` may not depend on: `domain` declares `core` +
+# `contracts` only (tools/arch/registry.json), so it cannot name `items`, `techniques` or
+# a `.tres` template without breaking that edge. `app/` is the composition root and is
+# allowed to depend on anything, so the two reads happen in `app/` and are handed to the
+# module as PLAIN DATA — the same reason `install` hands the spawner a `Callable` instead
+# of letting `domain/` name `ActorFactory`.
 
 # ── the population and the environment. Both are wiring, neither is a rule ──────
 
@@ -662,31 +455,6 @@ static func _refs_of(room_id: StringName) -> Array:
 	if room == null:
 		return out
 	out.append_array(room.actor_spawn_refs)
-	return out
-
-
-## Every authored inhabitant, as `inhabitant_id -> InhabitantDef`, read from the same tree
-## the module's own `templates()` reads (`DomainApi.INHABITANT_DIR`). Content is read here
-## rather than restated, so a newly authored `.tres` is a file and never a code edit
-## (ADR 0074) — the same rule `NpcBoot.install`'s `load_authored` follows.
-static func _inhabitant_catalogue() -> Dictionary:
-	var out: Dictionary = {}
-	var dir := DirAccess.open(DomainApi.INHABITANT_DIR)
-	if dir == null:
-		return out
-	var names: Array[String] = []
-	dir.list_dir_begin()
-	var file_name := dir.get_next()
-	while file_name != "":
-		if file_name.ends_with(".tres"):
-			names.append(file_name)
-		file_name = dir.get_next()
-	dir.list_dir_end()
-	names.sort()
-	for name in names:
-		var def := load("%s/%s" % [DomainApi.INHABITANT_DIR, name]) as InhabitantDef
-		if def != null:
-			out[String(def.inhabitant_id)] = def
 	return out
 
 
@@ -824,42 +592,32 @@ static func _active_map(player: Actor) -> DomainMap:
 	return DomainMap.from_dict((state as Dictionary)["map"])
 
 
-# ── the world. Realized here, parented by the caller, freed by the caller ───────
+# ── the world. Built here, parented by the caller, freed by the caller ────────
 #
 # ADR 0072:14 said it plainly — "A domain you cannot walk is a spreadsheet." Before this
 # section `DomainScene` was a complete walkable tile scene whose only caller was its own
 # `_init`, and `DomainSpawner`'s placement record — a real `Vector2` per inhabitant, written
-# into `actor.module_data` by `_place` and read by nobody — was a dead field. So the number
-# in `module_data` described a position that was never drawn.
+# into `actor.module_data` by `_place` and read by nobody — was a dead field.
 #
 # ## WHY THE WORLD IS AN ARGUMENT AND NOT A FIELD
 #
-# `app/` is the composition root and `tools/arch/rules.py` rejects a stateful system in it
-# (`app_state_signals`: two or more of persistence / tick-loop / state-table). This file
-# already carries `persistence` — `_active_map` reads `get_module_data` — so a `tick` or a
-# member state table added here would tip it over the threshold. So there is NO
-# `var _world: Node2D` here. The world is BUILT by [method realize_world], PARENTED by
-# whoever asked for it, and FREED by [method release_world]: the scene tree holds it, which
-# is what a scene tree is for. `item_workbench_app.gd` holds NO handle at all — it finds the
-# world by name under the screen it is showing, so there is no second reference anywhere
-# that can outlive the node.
+# `tools/arch/rules.py` rejects a stateful system in `app/` (`app_state_signals`). This file
+# already carries `persistence`, so there is NO `var _world: Node2D` here: the world is
+# BUILT by [method realize_world], PARENTED by whoever asked, FREED by
+# [method release_world]. `item_workbench_app.gd` holds no handle — it finds the world by
+# name under the screen it is showing, so no second reference can outlive the node.
 #
-# ## WHY THE ENGINE SIDE LIVES IN `domain_scene.gd`
-#
-# Everything that touches a `Node2D`, a tile or an adapter is `DomainScene`'s, because
-# `DomainScene` already owns "where is this map in pixels". The four verbs below are thin
-# forwarders: they resolve which run is active and which bodies the spawner minted — the two
-# facts only this file can know — and hand them to [method DomainScene.realize_world] as
-# ARGUMENTS. Nothing is read back out of a node, so no gameplay value ever round-trips
-# through the scene tree.
+# Everything touching a `Node2D`, a tile or an adapter stays in `DomainScene`, which already
+# owns "where is this map in pixels". The verbs below resolve the two facts only this file
+# knows — which run is active, which bodies were minted — and pass them as ARGUMENTS;
+# nothing is read back out of a node.
 #
 # ## NO `_ready`, NO `await`, NO DEFERRED WORK
 #
-# The headless runner drives every test from `SceneTree._initialize()`, which returns before
-# the first frame: `_ready()` is never delivered to a node parented to `root`. Everything
-# below therefore happens inside the caller's frame — `DomainScene` builds in `_init()`,
-# the player adapter is configured by explicit setters rather than by `_ready()`,
-# and nothing here waits for a frame to elapse.
+# The headless runner drives tests from `SceneTree._initialize()`, which returns before the
+# first frame: `_ready()` is never delivered to a node parented to `root`. So the build
+# happens in the caller's frame — `DomainScene` builds in `_init()` and the adapter is
+# configured by explicit setters.
 
 
 ## REALIZE the active run as a walkable world under `parent`, and answer what happened.
@@ -885,6 +643,17 @@ static func release_world(parent: Node) -> Dictionary:
 ## file does not publish.
 static func world_realized(parent: Node) -> bool:
 	return DomainScene.world_realized(parent)
+
+
+## Whether a run is active right now.
+##
+## The half of "is there a domain" that does NOT depend on a scene tree. `world_realized`
+## answers whether a world is STANDING, which is false for a run entered headlessly or on
+## a screen that realizes nothing — so a caller asking "is the player inside a domain?"
+## and getting `false` from that verb would be told the run does not exist when it does.
+## Reads the same `_run` every other verb here does, so it cannot disagree with them.
+static func has_run() -> bool:
+	return _run != null
 
 
 ## The realized world's read model, primitives only, or `{}` when nothing is realized.
@@ -961,9 +730,9 @@ static func _tear_down_run() -> Dictionary:
 ## `app_state_warnings` fires at two signals. This file already carries `persistence`
 ## (`_active_map` calls `get_module_data`), so an `Array[Actor]` member here would be the
 ## second signal and would turn this composition-root wiring into a flagged stateful
-## system. A `Dictionary` keyed by the run's domain id is a HANDLE — one entry, replaced
-## wholesale on every entry, emptied on leave — not a slot table that the file grows and
-## decays. The walk that reads it is bounded by the authored spawn refs, which
+## system. A `Dictionary` is a HANDLE — one entry, replaced wholesale on every entry,
+## emptied on leave — not a slot table that the file grows and decays. The walk that
+## reads it is bounded by the authored spawn refs, which
 ## `DomainSpawner.MAX_COUNT_PER_REF` already caps at 64 per ref.
 static func _last_inhabitants() -> Array:
 	var out: Array = []
@@ -973,13 +742,37 @@ static func _last_inhabitants() -> Array:
 	return out
 
 
-## Every inhabitant as `id -> Actor`, the one place the roster is written. Split from
-## `_last_inhabitants` so `enter_domain` assigns it in a single statement with the map it
-## belongs to, and a run and its bodies can never disagree about which is which.
+## Every inhabitant as `instance id -> Actor`, the one place the roster is written. Split
+## from `_last_inhabitants` so `enter_domain` assigns it in a single statement with the
+## map it belongs to. **The key is `get_instance_id()`, NOT `String(actor.id)`** — see the
+## note on `_roster`, and [method _forget] for the silence that hid that mistake.
 static func _remember_inhabitants(inhabitants: Array) -> void:
 	var out: Dictionary = {}
 	for inhabitant in inhabitants:
 		var actor := inhabitant as Actor
-		if actor != null:
-			out[String(actor.id)] = actor
+		if actor == null:
+			continue
+		out[actor.get_instance_id()] = actor
 	_roster = out
+	_forget(inhabitants.size())
+
+
+## REPORT the bodies a roster handle did not keep, by name. A handle is lossy the moment
+## its key is not unique, so "how many did this run mint?" can only be answered HERE,
+## where the minted count and the stored size are both in hand. Reported, never repaired:
+## a roster quietly holding fewer bodies than the map authored is exactly the "the roster
+## reads 6 and the world holds 0" failure this program exists to prevent.
+static func _forget(minted: int) -> void:
+	var held := _roster.size()
+	if held == minted:
+		return
+	push_error(
+		(
+			(
+				"DomainBoot: a run minted %d inhabitant(s) and the roster kept %d; %d were dropped "
+				% [minted, held, maxi(0, minted - held)]
+			)
+			+ " rather than realized. A world drawing fewer creatures than the map authored is a "
+			+ "silent shortfall, so it is named here."
+		)
+	)

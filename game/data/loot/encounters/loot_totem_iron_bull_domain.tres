@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"nascent_soul"
 rarity = &"common"
-vitality = 144.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"totem_iron_bull", "table_id": &"loot_totem_iron_bull"},
 	{"boss_id": &"d6_iron_bull", "table_id": &"loot_d6_iron_bull"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"nascent_soul"
 rarity = &"rare"
-vitality = 230.4
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"totem_iron_bull", "table_id": &"loot_totem_iron_bull"},
 	{"boss_id": &"d6_iron_bull", "table_id": &"loot_d6_iron_bull"},

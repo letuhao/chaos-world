@@ -129,11 +129,31 @@ func _domain_screen() -> Control:
 ## The template is chosen by probing the authored catalogue through the production bridge
 ## and keeping the first that GENERATES at [constant SEED], because the claim below is
 ## about the wiring and not about a seed the content refuses.
+##
+## ## What the failure line reports, and why
+##
+## `message` is the screen's OWN line — `UiScreen.summary()` publishes `_message` under
+## it, and `DomainExploreScreen._reject` writes the refused verb's reason into it. Reading
+## it (rather than `fixture_message`, which carries the same sentence plus a fixture
+## prefix) keeps this assertion about the ENTER verb.
+##
+## When `Enter` is refused the screen prefixes the currently-selected fixture onto the
+## line, because `_reject` is shared with the fixture verbs and a room can hold three of
+## them. That prefix is the screen behaving as documented, NOT a stale message: the
+## refusal behind it is the real story. So the line below also prints `enabled`, which is
+## where `no_map` becomes legible — `_can_enter()` requires an empty active view, so
+## `enter: false` while the screen looks otherwise-ready means a run from somewhere else
+## is still recorded, which is a stale-run defect rather than a content one.
 func _enter(screen: Control) -> Control:
 	var entered: Variant = screen.call("act_enter")
 	var view := screen.call("summary") as Dictionary
 	assert_eq(
-		entered, true, "the screen's own Enter minted a run: %s" % String(view.get("message", ""))
+		entered,
+		true,
+		(
+			"the screen's own Enter minted a run: %s (enabled: %s)"
+			% [String(view.get("message", "")), str(view.get("enabled", {}))]
+		)
 	)
 	return screen if entered == true else null
 
@@ -186,9 +206,7 @@ func test_entering_a_domain_realizes_a_walkable_world_under_the_mounted_screen()
 	# booleans `assert_ne` is the same comparison written to look different, so
 	# `false != false` is FALSE and the assertion silently demanded the opposite of what
 	# it says. Every `assert_ne(..., false)` below is that bug.
-	assert_eq(
-		template_id.is_empty(), false, "a template was selected that generates"
-	)
+	assert_eq(template_id.is_empty(), false, "a template was selected that generates")
 	if template_id.is_empty():
 		return
 	var entered := _enter(screen)
@@ -267,9 +285,7 @@ func test_every_minted_inhabitant_stands_at_the_placement_the_spawner_recorded()
 	# booleans `assert_ne` is the same comparison written to look different, so
 	# `false != false` is FALSE and the assertion silently demanded the opposite of what
 	# it says. Every `assert_ne(..., false)` below is that bug.
-	assert_eq(
-		template_id.is_empty(), false, "a template was selected that generates"
-	)
+	assert_eq(template_id.is_empty(), false, "a template was selected that generates")
 	if template_id.is_empty():
 		return
 	if _enter(screen) == null:
@@ -389,9 +405,7 @@ func test_a_player_avatar_stands_in_the_world_inside_the_drawn_bounds() -> void:
 	# booleans `assert_ne` is the same comparison written to look different, so
 	# `false != false` is FALSE and the assertion silently demanded the opposite of what
 	# it says. Every `assert_ne(..., false)` below is that bug.
-	assert_eq(
-		template_id.is_empty(), false, "a template was selected that generates"
-	)
+	assert_eq(template_id.is_empty(), false, "a template was selected that generates")
 	if template_id.is_empty():
 		return
 	if _enter(screen) == null:
@@ -472,9 +486,7 @@ func test_the_realized_avatar_moves_by_its_own_movement_verb() -> void:
 	# booleans `assert_ne` is the same comparison written to look different, so
 	# `false != false` is FALSE and the assertion silently demanded the opposite of what
 	# it says. Every `assert_ne(..., false)` below is that bug.
-	assert_eq(
-		template_id.is_empty(), false, "a template was selected that generates"
-	)
+	assert_eq(template_id.is_empty(), false, "a template was selected that generates")
 	if template_id.is_empty():
 		return
 	if _enter(screen) == null:
@@ -554,20 +566,14 @@ func test_leaving_the_domain_frees_the_world_the_entering_built() -> void:
 	# booleans `assert_ne` is the same comparison written to look different, so
 	# `false != false` is FALSE and the assertion silently demanded the opposite of what
 	# it says. Every `assert_ne(..., false)` below is that bug.
-	assert_eq(
-		template_id.is_empty(), false, "a template was selected that generates"
-	)
+	assert_eq(template_id.is_empty(), false, "a template was selected that generates")
 	if template_id.is_empty():
 		return
 	if _enter(screen) == null:
 		assert_eq(true, false, "the screen's Enter was accepted")
 		return
 	var during := _node_count(screen)
-	assert_eq(
-		during > before,
-		true,
-		"entering grew the mounted tree: %d -> %d" % [before, during]
-	)
+	assert_eq(during > before, true, "entering grew the mounted tree: %d -> %d" % [before, during])
 	var world := screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE))
 	assert_eq(world != null, true, "and the growth is the realized world")
 	if world == null:
@@ -611,9 +617,7 @@ func test_the_composition_roots_teardown_frees_a_world_that_is_still_standing() 
 	# booleans `assert_ne` is the same comparison written to look different, so
 	# `false != false` is FALSE and the assertion silently demanded the opposite of what
 	# it says. Every `assert_ne(..., false)` below is that bug.
-	assert_eq(
-		template_id.is_empty(), false, "a template was selected that generates"
-	)
+	assert_eq(template_id.is_empty(), false, "a template was selected that generates")
 	if template_id.is_empty():
 		return
 	if _enter(screen) == null:
@@ -640,6 +644,27 @@ func test_the_composition_roots_teardown_frees_a_world_that_is_still_standing() 
 	# ## Navigating away frees it too — the world is a child of the screen, so the stack's
 	# OWN free takes it with no second owner to forget. Driven through the real
 	# `navigate_to`, so this is the path a player takes rather than a private call.
+	#
+	# ## LEAVE BEFORE RE-ENTERING, and that is the whole fix
+	#
+	# The root's `teardown()` above freed the WORLD — a `Node2D` — and left the RUN alone:
+	# the hero is still inside the domain, so `DomainExploreScreen._can_enter()` is false
+	# (`_view()` is not empty) and a second `Enter` is refused `no_map` BY DESIGN. The old
+	# body pressed `Enter` there and read that refusal as a failure, which made this test
+	# depend on a run the previous test happened to leave behind — the order coupling that
+	# produced `the screen's Enter was accepted a second time: expected false, got true`.
+	#
+	# `Leave` is the verb a player presses to come out of a domain, so this is the real
+	# sequence and not a private reset: leaving, then entering again, is exactly what the
+	# button row offers and exactly what a player does. The assertion after it is the one
+	# that matters — a world standing again after a clean leave-and-enter.
+	var left: Variant = screen.call("act_leave")
+	assert_eq(left, true, "the screen's Leave was accepted between the two enters")
+	assert_eq(
+		DomainBoot.has_run(),
+		false,
+		"and the run it recorded is gone: a run that outlives the Leave is a stale run"
+	)
 	if _enter(screen) == null:
 		assert_eq(true, false, "the screen's Enter was accepted a second time")
 		return
@@ -647,6 +672,11 @@ func test_the_composition_roots_teardown_frees_a_world_that_is_still_standing() 
 		screen.get_node_or_null(NodePath(DomainBoot.WORLD_NODE)) != null,
 		true,
 		"a second world is standing after re-entering"
+	)
+	assert_eq(
+		DomainBoot.has_run(),
+		true,
+		"and the run is recorded again: the second Enter really started a second run"
 	)
 	var moved := _harness.navigate(ScreenRoutes.ROOT_ID)
 	assert_eq(
@@ -687,6 +717,22 @@ func _node_count(node: Node, depth: int = 0) -> int:
 ## life of the process; that is the shape that took `tests/ui` to 67 GB). The mounted root
 ## is torn down through the harness, which owns it, and the root's own `teardown()` runs
 ## first so a world standing under the screen is freed before the screen goes.
+##
+## ## Why `DomainBoot.reset()` is called HERE and not left to the root
+##
+## The runner shares ONE process across every suite, so anything static outlives every
+## test. `DomainBoot` keeps the run in exactly that shape: `_run`, `_layout` and `_roster`
+## are `static var`, and nothing frees a static — so a run this suite entered in one test
+## is still recorded when the next one calls `Enter`, and `_can_enter()` refuses it
+## `no_map` for a reason that has nothing to do with the test being run. That is the same
+## class of leak as an un-freed node, one layer up, and it is the order coupling behind
+## `the screen's Enter was accepted a second time`.
+##
+## The root's `teardown()` frees the TREE; this frees the STATE the tree was only drawing.
+## It runs AFTER the harness teardown so the observer seam is gone before the state is
+## dropped, and it is idempotent, so a test that never entered a domain costs one cheap
+## dictionary clear. Nothing is asserted here: `teardown()` runs after the last test, where
+## a counted failure would be charged to whichever test happened to be last.
 func teardown() -> void:
 	if _harness != null:
 		if _harness.app != null and is_instance_valid(_harness.app):
@@ -702,4 +748,6 @@ func teardown() -> void:
 	if _harness != null:
 		_harness.teardown()
 		_harness = null
+	# The static run state, cleared last so nothing above can read a half-dropped run.
+	DomainBoot.reset()
 	_hero = null

@@ -37,6 +37,20 @@ sea_component = &"sea_of_consciousness"
 awareness_pool_id = &"awareness"
 health_pool_id = &"health"
 mind_deviation_stat = "mind_technique_power"
+; The BASE status gate, MOVED here from `CombatExchange.STATUS_GATE_CHANCE` (DEF-0145).
+; ADR 0105 recorded this exact move as its standing debt and said so verbatim: "add
+; `@export var status_gate_chance: float = 0.0` to `CombatTuning`, author it in
+; `combat_damage.tres` at `1.0`, and make this read `CombatEngineApi.tuning()
+; .status_gate_chance` -- the call site below is already shaped for exactly that
+; substitution". ADR 0087's consequence makes it a `.tres` field rather than a `.gd`
+; constant: its numbers are "provisional ... re-tuned by an edit, never by an ADR".
+;
+; THE VALUE IS UNCHANGED AT 1.0. This change moved the dial, it did not move the dial's
+; value: 1.0 is what shipped and the shipped rate is what was measured. What 1.0 still
+; means is unchanged too -- `apply_chance` is `gate * (1 - STATUS_RESISTANCE) * (1 -
+; elem_resist)`, so an unresisted actor short-circuits to certainty and consumes no
+; draw. A balance pass now edits this ONE line rather than editing a `.gd`.
+status_gate_chance = 1.0
 status_min_apply = 0.01
 ; Status potency, retuned as TUNING. ADR 0087's own note calls these provisional
 ; numbers, so a rebalance is a `.tres` edit and never a literal in logic. The shape is

@@ -247,16 +247,29 @@ func test_breakthrough_condition_passes_once_prepared() -> void:
 	assert_eq(condition.can_breakthrough(actor, actor.path(MindPath.PATH_ID), {}), true, "ready")
 
 
+## One generator PER PRESS, never one generator looped.
+##
+## This is the trap `MindAttemptRoll` exists to document, and these three cases are
+## where it bites. A caller's `rng` is a SEED SOURCE: the commit stores `rng.seed`
+## and the resolve replays that stored seed from a fresh generator. So thirty
+## attempts handed the SAME generator store the SAME seed thirty times and replay one
+## roll thirty times — the searches below could never reach the other outcome, and
+## they only ever passed because the shipped path was drawing seed 0, which won every
+## realm. Re-seeding per press is what makes the loop a search again.
+func _press_rng(press: int) -> RandomNumberGenerator:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = press + 1
+	return rng
+
+
 func test_breakthrough_succeeds_and_advances() -> void:
 	var actor := _actor()
 	var state := actor.path(MindPath.PATH_ID)
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 2024
 	var succeeded := false
-	for _attempt in 30:
+	for press in 30:
 		if _prepare(actor) == null:
 			break
-		if MindAdvancement.try_breakthrough(actor, rng):
+		if MindAdvancement.try_breakthrough(actor, _press_rng(press)):
 			succeeded = true
 			break
 	assert_eq(succeeded, true, "breakthrough eventually succeeded")
@@ -265,16 +278,14 @@ func test_breakthrough_succeeds_and_advances() -> void:
 
 func test_breakthrough_consumes_the_pill() -> void:
 	var actor := _actor()
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 88
 	var succeeded := false
 	var pill: StringName = &""
-	for _attempt in 30:
+	for press in 30:
 		var seed := _prepare(actor)
 		if seed == null:
 			break
 		pill = seed.breakthrough_item
-		if MindAdvancement.try_breakthrough(actor, rng):
+		if MindAdvancement.try_breakthrough(actor, _press_rng(press)):
 			succeeded = true
 			break
 	assert_eq(succeeded, true, "breakthrough succeeded")
@@ -287,17 +298,16 @@ func test_deviation_turbulates_the_sea_and_damages_a_channel() -> void:
 	assert_ne(seed, null, "seed loaded")
 	var state := actor.path(MindPath.PATH_ID)
 	var start_rank := state.rank_id
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 13
 	# Rolls are not forced, so keep re-preparing until one deviates. A success
 	# only moves the target realm; it does not invalidate the search. Bounded by
-	# the `for`, and the assertion below names what was never found.
+	# the `for`, and the assertion below names what was never found. Each press
+	# carries its OWN seed — see `_press_rng`.
 	var deviated := false
-	for _attempt in 40:
+	for press in 40:
 		var current := _prepare(actor)
 		if current == null:
 			break
-		if MindAdvancement.try_breakthrough(actor, rng):
+		if MindAdvancement.try_breakthrough(actor, _press_rng(press)):
 			# A success advances the realm, so the next _prepare would target a
 			# different realm and the search would eventually run off the top of
 			# the ladder without ever rolling a deviation. Rewind and keep testing

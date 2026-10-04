@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"foundation"
 rarity = &"common"
-vitality = 64.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"marine_abyssal_kraken", "table_id": &"loot_marine_abyssal_kraken"},
 	{"boss_id": &"d3_krakenling", "table_id": &"loot_d3_krakenling"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"foundation"
 rarity = &"rare"
-vitality = 102.4
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"marine_abyssal_kraken", "table_id": &"loot_marine_abyssal_kraken"},
 	{"boss_id": &"d3_krakenling", "table_id": &"loot_d3_krakenling"},

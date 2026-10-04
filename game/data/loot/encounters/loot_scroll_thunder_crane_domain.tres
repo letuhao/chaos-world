@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"core_formation"
 rarity = &"common"
-vitality = 152.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"scroll_thunder_crane", "table_id": &"loot_scroll_thunder_crane"},
 	{"boss_id": &"d5_thunder_crane", "table_id": &"loot_d5_thunder_crane"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"core_formation"
 rarity = &"rare"
-vitality = 243.2
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"scroll_thunder_crane", "table_id": &"loot_scroll_thunder_crane"},
 	{"boss_id": &"d5_thunder_crane", "table_id": &"loot_d5_thunder_crane"},

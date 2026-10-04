@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"Y4_divine_acanthus_primed"
 display_name = "Divine Acanthus Primed"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([

@@ -421,7 +421,7 @@ func test_the_authored_aim_meridian_is_the_only_new_field_and_both_routes_agree(
 	# An authored id reads as `named`, and reaches the resolver through `builder`.
 	var authored := _technique(100.0, &"lung")
 	var ctx := _context(attacker, target, authored)
-	BodyDamage.builder(authored, null, &"").call(ctx)
+	BodyDamage.builder(authored, &"").call(ctx)
 	assert_eq(
 		StringName(ctx.data_value(BodyDamage.AIM_MERIDIAN_KEY, &"")),
 		&"lung",
@@ -534,10 +534,31 @@ func test_a_body_with_no_acupoints_is_a_neutral_site_and_still_a_location_axis()
 	# `random` on such a body answers a real channel rather than the empty site.
 	var random_parts := _parts(attacker, hollow, BodyLocation.MODE_RANDOM)
 	assert_eq(int(random_parts["sites"].size()), 1, "a random aim resolves one real channel")
+	# ## THE LEDGER IS A COMPONENT, NOT A `ctx.data` KEY (ADR 0195)
+	#
+	# This row used to assert `BodyLocation.new().wounds_of(hollow) != null`, which could
+	# never fail: the function's own fallthrough was `BodyWounds.new()`, so it answered a
+	# non-null ledger for EVERY input including one with no ledger at all — a deleted test
+	# wearing an assertion's clothes. The function and its `WOUNDS_KEY` are DELETED, and
+	# the channel was never read by anything: wounds settle through
+	# `CombatEffectApply._wound` -> `CombatEngineApi.wounds_of`, off the bound component.
+	#
+	# What replaces it is the claim that can actually fail, in both directions: a body
+	# with no ledger reads NULL rather than a silently minted one, and a body with one
+	# reads BACK THE BOUND OBJECT BY IDENTITY — not an equal copy, because a ledger that
+	# re-created itself per read could never accumulate a wound and this suite would stay
+	# green while ADR 0070's whole arc was dead.
 	assert_eq(
-		BodyLocation.new().wounds_of(hollow) != null,
+		CombatEngineApi.wounds_of(hollow),
+		null,
+		"a body nobody attached a ledger to reads null, never a silently minted one"
+	)
+	var bound := CombatEngineApi.attach_wounds(hollow, _tuning)
+	assert_ne(bound, null, "and `attach_wounds` is the one writer that does bind it")
+	assert_eq(
+		CombatEngineApi.wounds_of(hollow) == bound,
 		true,
-		"and wounds_of answers, unbound included"
+		"and the read is BY IDENTITY -- a ledger re-minted per read could never accumulate"
 	)
 
 

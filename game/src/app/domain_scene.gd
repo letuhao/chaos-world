@@ -839,202 +839,57 @@ static func _box_of(value: Array) -> Rect2i:
 	return Rect2i(int(value[0]), int(value[1]), int(value[2]), int(value[3]))
 
 
-# ── the realized world. Built here, parented by the caller, freed by the caller ──
+# ── the realized world ───────────────────────────────────────────────────────
 #
-# Everything below is `static` on `DomainScene` rather than on `DomainBoot`, because it is the
-# ENGINE side of a `DomainMap` and this is the engine file: `DomainScene` already owns "where
-# is this map in pixels", and a world that had to ask a different class where its own tiles
-# are has split one question in two. It is also here so the run's STATE stays out of `app/`:
-# `app_state_signals` fires on two of {persistence, tick-loop, state-table} in a file under
-# `app/`, and `DomainBoot` already carries `persistence`. The roster arrives here as an
-# ARGUMENT, so this file has no `module_data` call, no `Array` member and no tick — it cannot
-# become a second thing that knows what is standing where. And no `_ready`, no `await`, no
-# deferred work: the adapter is configured by EXPLICIT setters.
+# The four verbs below and the two placement helpers used to be declared HERE,
+# at the bottom of this file, under the banner "# ── the realized world. Built here,
+# parented by the caller, freed by the caller ──". They pushed this file past the
+# thousand-line ceiling, and they are not this class's job: `DomainScene` is the VIEW of
+# one `DomainMap`, while the world that CONTAINS that view — plus one body per
+# inhabitant and one player — is a separate concern that never touches a field of this
+# one. `DomainWorld` now holds those bodies; these six are the FORWARDS that keep every
+# existing spelling working.
+#
+# ## Why forwards rather than a move
+#
+# GDScript cannot alias a static from one script onto another, so a caller writing
+# `DomainScene.release_world(parent)` — which `DomainBoot` does, and which any probe may
+# — has to keep resolving. Each forward is one line, passes its arguments through
+# unchanged, and returns the delegate's dictionary verbatim, so the return SHAPE and the
+# free path (`remove_child()` then `free()`, never `queue_free()`) are the originals. The
+# bodies, their comments and their ~40 lines of rationale moved verbatim into
+# `domain_world.gd`; nothing else in either file changed.
 
 
-## REALIZE `map` as a walkable world under `parent` — the production call that makes this
-## class reachable at all. Three things, in order: a `DomainScene` built from the map
-## itself; ONE body per inhabitant in `inhabitants`, at the position
-## [method DomainSpawner.placement] ALREADY recorded on that `Actor`; and a `PlayerAdapter`
-## at the entry centre, bounded to the drawn cells by [method map_bounds].
-##
-## Named `realize_world`, NOT `realize`: the instance [method realize] above already owns that
-## word for the map-only build `_init()` calls, and GDScript rejects a redefined function
-## outright — so the overload would have cost this file its `class_name`.
-##
-## ## Why the placements are REUSED and never re-derived
-##
-## The spawner resolved each slot and wrote it into `actor.module_data`, which round-trips
-## through `Actor.to_dict()`. Reading it back is what makes the drawn world and the saved
-## world the same world; a second placement rule would produce two answers that agree until a
-## load, and then only one of them.
-##
-## Refuses `no_parent`, `no_map` and `no_actor` BY NAME and writes NOTHING before all three
-## resolve, so a refusal leaves the caller's tree exactly as it found it. A second call frees
-## the previous world first ([method release_world]), so re-entering cannot stack a second
-## set of floor tiles under a second set of inhabitants.
+## REALIZE `map` as a walkable world under `parent`. See [method DomainWorld.realize_world]
+## for the placement rule, the three named refusals and why a second call frees the first.
 static func realize_world(
 	parent: Node, map: DomainMap, player: Actor, inhabitants: Array
 ) -> Dictionary:
-	if parent == null:
-		return {"ok": false, "reason": "no_parent"}
-	if map == null:
-		return {"ok": false, "reason": "no_map"}
-	if player == null:
-		return {"ok": false, "reason": "no_actor"}
-	release_world(parent)
-	var world := Node2D.new()
-	world.name = WORLD_NODE
-	parent.add_child(world)
-	var scene := DomainScene.new(map)
-	scene.name = WORLD_SCENE_NODE
-	world.add_child(scene)
-	var bodies := place_inhabitants(world, inhabitants)
-	place_player(world, player, scene)
-	return {
-		"ok": true,
-		"reason": "",
-		"world": world,
-		"scene": scene,
-		"player": world.get_node_or_null(NodePath(WORLD_PLAYER_NODE)) as PlayerAdapter,
-		"bounds": scene.map_bounds(),
-		"entry": [scene.entry_position().x, scene.entry_position().y],
-		"inhabitants_placed": bodies,
-	}
+	return DomainWorld.realize_world(parent, map, player, inhabitants)
 
 
-## One body per inhabitant in `inhabitants`, at the placement the spawner recorded on it,
-## carrying that same `Actor` plus the room and role the spawner stamped.
-##
-## A bare `Node2D` and not a sprite, a `CharacterBody2D` or a physics body: what a caller
-## needs is a node that EXISTS at the recorded point and names who stands there, and a body
-## that could be collided or damaged would be a second inhabitant simulation — a shape the
-## `domain` module owns and this file does not.
+## One body per inhabitant in `inhabitants`, at the placement the spawner recorded on it.
 static func place_inhabitants(world: Node2D, inhabitants: Array) -> int:
-	if world == null or inhabitants.is_empty():
-		return 0
-	var holder := world.get_node_or_null(NodePath(WORLD_INHABITANTS_NODE)) as Node2D
-	if holder == null:
-		holder = Node2D.new()
-		holder.name = WORLD_INHABITANTS_NODE
-		world.add_child(holder)
-	var placed := 0
-	for inhabitant in inhabitants:
-		var actor := inhabitant as Actor
-		if actor == null:
-			continue
-		var body := Node2D.new()
-		body.name = "Inhabitant_%s" % String(actor.id)
-		body.position = DomainSpawner.placement(actor)
-		body.set_meta(&"actor", actor)
-		body.set_meta(&"room_id", String(DomainSpawner.room_of(actor)))
-		body.set_meta(&"role", String(DomainSpawner.role_of(actor)))
-		holder.add_child(body)
-		placed += 1
-	return placed
+	return DomainWorld.place_inhabitants(world, inhabitants)
 
 
-## Put a `PlayerAdapter` for `player` into `world` at the entry centre, bounded to the
-## cells the floor actually drew.
-##
-## `set_map_bounds` is the seam [method map_bounds] exists for, applied through the EXPLICIT
-## setter rather than by relying on `_ready()` — which the runner never delivers to a node
-## under `root`, so an adapter that bound itself there would stand up in a running game and
-## never in a test. Idempotent: an adapter already standing is returned, not doubled.
+## Put a `PlayerAdapter` for `player` into `world` at the entry centre.
 static func place_player(world: Node2D, player: Actor, scene: DomainScene) -> PlayerAdapter:
-	if world == null or player == null:
-		return null
-	var existing := world.get_node_or_null(NodePath(WORLD_PLAYER_NODE)) as PlayerAdapter
-	if existing != null:
-		return existing
-	var body := PlayerAdapter.new(player)
-	body.name = WORLD_PLAYER_NODE
-	world.add_child(body)
-	if scene != null:
-		body.set_map_bounds(scene.map_bounds())
-		body.global_position = scene.entry_position()
-	return body
+	return DomainWorld.place_player(world, player, scene)
 
 
 ## FREE the realized world under `parent`. Idempotent, and a no-op when nothing was ever
 ## realized, so a `teardown()` may call it without asking first.
-##
-## `remove_child()` then `free()`, NEVER `queue_free()`: the runner never processes a frame,
-## so a deferred free leaks for the life of the process — the shape that took a run to 67 GB
-## and forced a power-cycle (INC-0004/0005), and what
-## `tests/arch_rules/test_no_deferred_free.gd` rejects in `res://src`. Every node created
-## here is named in [constant WORLD_BORN], so the free is bounded AND self-describing: the
-## root goes last, and `stranded` reports any child that was NOT in that list.
 static func release_world(parent: Node) -> Dictionary:
-	if parent == null:
-		return {"ok": false, "reason": "no_parent", "freed": 0}
-	var world := parent.get_node_or_null(NodePath(WORLD_NODE))
-	if world == null:
-		return {"ok": true, "reason": "", "freed": 0, "present": false}
-	var freed := 0
-	for child_name in WORLD_BORN:
-		var child := world.get_node_or_null(NodePath(child_name))
-		if child == null:
-			continue
-		world.remove_child(child)
-		child.free()
-		freed += 1
-	var stranded := world.get_child_count()
-	parent.remove_child(world)
-	world.free()
-	return {"ok": true, "reason": "", "freed": freed, "stranded": stranded, "present": true}
+	return DomainWorld.release_world(parent)
 
 
-## Whether a world is currently realized under `parent` — the one question a caller and a
-## test both ask, asked of the name this file publishes rather than of a tree walk neither
-## can describe.
+## Whether a world is currently realized under `parent`.
 static func world_realized(parent: Node) -> bool:
-	return parent != null and parent.get_node_or_null(NodePath(WORLD_NODE)) != null
+	return DomainWorld.world_realized(parent)
 
 
-## The realized world's read model, primitives only: what is drawn, who is standing in it,
-## where, and whether a player is in it. Every value is coerced because a `summary()` holding
-## a `Node2D` or a `Rect2` is a testable surface that quietly stops being testable.
-##
-## `{}` when nothing is realized — the repo's does-not-exist vocabulary, so "no world" can
-## never read like "a world with no inhabitants in it".
+## The realized world's read model, primitives only, or `{}` when nothing is realized.
 static func world_summary(parent: Node) -> Dictionary:
-	if not world_realized(parent):
-		return {}
-	var world := parent.get_node_or_null(NodePath(WORLD_NODE))
-	if world == null:
-		return {}
-	var scene := world.get_node_or_null(NodePath(WORLD_SCENE_NODE)) as DomainScene
-	var player := world.get_node_or_null(NodePath(WORLD_PLAYER_NODE)) as PlayerAdapter
-	var bodies := 0
-	var placed: Array = []
-	var holder := world.get_node_or_null(NodePath(WORLD_INHABITANTS_NODE))
-	if holder != null:
-		for body in holder.get_children():
-			if not body is Node2D:
-				continue
-			bodies += 1
-			var point := (body as Node2D).position
-			placed.append([point.x, point.y])
-	var bounds := Rect2()
-	var entry := Vector2.ZERO
-	if scene != null:
-		bounds = scene.map_bounds()
-		entry = scene.entry_position()
-	var stand := Vector2.ZERO
-	if player != null:
-		stand = player.global_position
-	return {
-		"realized": true,
-		"floor_cells": scene.floor_layer().get_used_cells().size() if scene != null else 0,
-		"wall_cells": scene.wall_layer().get_used_cells().size() if scene != null else 0,
-		"spawn_markers": scene.spawn_markers().size() if scene != null else 0,
-		"zone_areas": scene.zone_areas().size() if scene != null else 0,
-		"has_navigation": scene != null and scene.navigation_region() != null,
-		"bounds": [bounds.position.x, bounds.position.y, bounds.size.x, bounds.size.y],
-		"entry": [entry.x, entry.y],
-		"has_player": player != null,
-		"player_position": [stand.x, stand.y],
-		"inhabitant_bodies": bodies,
-		"inhabitant_positions": placed,
-	}
+	return DomainWorld.world_summary(parent)

@@ -24,9 +24,40 @@ const AXES: Array[StringName] = [QI, BODY, MIND]
 ## balance pass can drift across without meaning to, and then a test fails for a reason
 ## nobody chose.
 const HARD_CEILING_ORDINAL := 30
-## `RaceDef`'s own default lifespan — the frame a body is born into when nothing shortens
-## it, and therefore the rung below which a body is outlived by the ladder.
+## `RaceDef`'s own default lifespan — the authored default a body is born into when
+## nothing shortens it, and therefore the rung below which an author has made a body
+## short-lived.
+##
+## ## It is an AUTHORING rung, not an ENFORCED one (BL-0772)
+##
+## Nothing ages an actor and nothing dies of old age: there is no `age`, `elapsed_days`
+## or `born_year` field on `Actor` at all, and ADR 0109 records the gap as owned and
+## ADR 0169 defers it explicitly. So a lifespan is currently inert — an authored number
+## with nothing to compare it against — and this constant may only ever be used to read
+## what an author WROTE. It is not evidence that the number is enforced, and it must
+## never appear in a branch that claims to prove a race is refused. That would be an
+## enforcement claim dressed as an authoring one, which is the defect BL-0772 is about.
+## `test_race_lifespan_is_authored_and_reaches_a_stat_but_enforces_nothing` pins the
+## honest shape; read that test before using this constant in a new one.
 const DEFAULT_LIFESPAN_DAYS := 36500.0
+
+## ## Why this file holds no STRENGTH RANKING (BL-0279)
+##
+## An earlier version of this file scored each race ("lead attribute, less half of every
+## loss on that axis, a closed path worth `-1000.0`") and failed the build when more than
+## `MAX_TOP_AXES := 2` races led every axis. That cap was a constant invented in the test
+## file, with no ADR behind it, and the score it replaced could not express the claim ADR
+## 0062 actually makes. It scored leading a path the body is FORBIDDEN to enter as an
+## artefact of the arithmetic, so `commonborn` led all three axes and still passed.
+##
+## So the cap is gone rather than retuned: there is no ADR that states a number of top
+## axes, and inventing a different one would repeat the same defect. What is left is what
+## the ADRs do state — every race is genuinely refused SOMEWHERE
+## (`test_every_authored_race_is_genuinely_refused_somewhere`) — plus the axis-lead
+## partition that IS derivable from content alone, in
+## `test_the_baseline_leads_no_axis_and_leads_nothing_a_specialist_leads`
+## (`test_race_body_plan.gd`), stated as what the author intended per body rather than as
+## a cap on a tally.
 
 
 ## These are deliberately NOT isolated with a fixture catalog: the point is to hold the
@@ -94,16 +125,18 @@ func test_every_authored_race_inherits_the_reproduction_fields_race_def_replaced
 # --- Race x path is a partition ----------------------------------------------
 
 
-func test_every_authored_race_closes_at_least_one_of_the_three_paths() -> void:
-	var catalog := _catalog()
-	var ids := catalog.race_ids()
-	for race_id in ids:
-		var def := catalog.race_definition(race_id)
-		# `is_empty()` is true when the race closes nothing, so the partition
-		# rule is "not empty" — which is `assert_eq(..., false)`, NOT `assert_ne`.
-		# Written as assert_ne it asserts "is empty", which is the opposite rule
-		# and fails on correct content.
-		assert_eq(def.closed_paths.is_empty(), false, "'%s' closes something" % [race_id])
+func test_every_authored_race_closes_only_paths_that_exist() -> void:
+	# The rule is NOT "every race closes a path" — ADR 0062's claim is that every race is
+	# REFUSED somewhere, which `test_every_authored_race_is_genuinely_refused_somewhere`
+	# below asserts properly against the gate. A body may legitimately close nothing and
+	# pay in a realm ceiling instead (`emberblood_touched` is exactly that: an altered
+	# frame that walks two paths and is capped at the last Mortal realm).
+	#
+	# What must hold unconditionally is the weaker half: a closed path, if there is one, is
+	# a REAL path. That is what a typo in `closed_paths` would break, and it is why this
+	# test exists rather than the stricter form it replaced.
+	for race_id in _catalog().race_ids():
+		var def := _catalog().race_definition(race_id)
 		for path_id in def.closed_paths:
 			assert_eq(AXES.has(path_id), true, "'%s' closes a real path (%s)" % [race_id, path_id])
 
@@ -165,16 +198,10 @@ func test_every_authored_race_is_genuinely_refused_somewhere() -> void:
 		var def := catalog.race_definition(race_id)
 		# (a) a closed path, asked through the gate rather than off `def.closed_paths`, so
 		# the assertion holds the refusal the breakthrough seam really hands a player.
-		var refused_a_path := false
-		for path_id in AXES:
-			if not _path_refusal_for(def, path_id).is_empty():
-				refused_a_path = true
-		assert_eq(refused_a_path, true, "'%s' is refused a cultivation path" % [race_id])
-		# (b) a ceiling that stops the body inside the ladder, and (c) a life too short to
-		# climb it. `lifespan` is data nothing enforces yet — ADR 0109 records that gap as
-		# owned — so (c) is the one branch read straight off the definition, and (b) is
-		# asked of the gate so the ceiling the author wrote and the ceiling the game
-		# enforces cannot drift apart.
+		# A body that closes nothing is NOT this failure — it pays in a ceiling instead,
+		# which is the second branch. Only a body refused by NO enforced mechanism at all
+		# is the content bug.
+		# (b) a ceiling that stops the body inside the ladder.
 		#
 		# This is the rule `commonborn` broke for so long: it leads all three axes and was
 		# refused only where no real actor stands — a `race_allows_path` gate at a realm its
@@ -183,14 +210,26 @@ func test_every_authored_race_is_genuinely_refused_somewhere() -> void:
 		# where a refusal is one a player could actually have met, and branch (b) is left to
 		# the ladder: the probe stands on the last realm, which no ceiling is above, so
 		# every authored ceiling refuses and a body with no ceiling does not.
+		#
+		# ## (c) is GONE, and its removal is the point (BL-0772)
+		#
+		# This branch once read `def.lifespan < DEFAULT_LIFESPAN_DAYS`. It read as if the
+		# game refuses a short-lived body, and it does not: nothing ages an actor, there
+		# is no age field to compare a lifespan against, and ADR 0109 records that gap as
+		# owned. So the branch could make a race PASS this test on a refusal the game never
+		# performs — the opposite of what this test claims to prove. A test named "is
+		# genuinely refused somewhere" must only accept a refusal the gate really produces.
+		#
+		# `emberblood` is what that costs, and paying it is the point: it closes
+		# `mind_cultivation` (branch (a)), so it still passes honestly. A hypothetical race
+		# that relied on a SHORT LIFE alone would now go red — which is correct, because
+		# today such a race is not refused at all. Whether lifespan becomes the third
+		# enforced gate is ADR 0109's open question and its owner's decision, and it is
+		# pinned as inert, not faked, in `test_race_body_plan.gd`.
 		assert_eq(
-			(
-				_refuses_the_path_of(def)
-				or _capped_a_realm(def)
-				or def.lifespan < DEFAULT_LIFESPAN_DAYS
-			),
+			_refuses_the_path_of(def) or _capped_a_realm(def),
 			true,
-			"'%s' is refused nowhere: no path, no ceiling, a full life" % [race_id]
+			"'%s' is refused nowhere: no path it could have taken, and no ceiling" % [race_id]
 		)
 
 

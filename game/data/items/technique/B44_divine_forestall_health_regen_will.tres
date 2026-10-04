@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"B44_divine_forestall_health_regen_will"
 display_name = "Divine Forestall Health Regen Will"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([

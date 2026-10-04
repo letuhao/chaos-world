@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G25_divine_iconoclast_evasion_health_regen"
 display_name = "Divine Iconoclast Evasion Health regen"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"
 fixed_modifiers = Array[Dictionary]([

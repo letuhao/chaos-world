@@ -70,6 +70,16 @@ const GATED_QUEST := &"the_tally_of_a_man_who_kept_count"
 const GATED_COUNTER := &"duels_won"
 const GATED_NEED := 3
 
+## The counter id each dead fact maps to, held as a NAMED list
+##
+## Stated rather than derived from the table on the same line it checks, so a row edited
+## from `severances` to something else is a named failure here and not a silently
+## different — but still unopenable — gate elsewhere. Read off
+## `DestinyProjection.COUNTER_FACTS` as shipped on 2026-10-05, and SORTED, because the
+## assertion sorts what it compares and an unsorted expectation is a failure that reads
+## like a defect in the thing being checked.
+const UNPRODUCED_COUNTERS := ["heaven_marks", "severances", "watch_turned"]
+
 ## **A preloaded script cannot hand out its instance members.** `Support` is a script
 ## constant, and `Support._authored_counter_gate_ids()` does not resolve: a script object
 ## exposes the class's STATIC surface, so an instance method reached through one answers
@@ -153,6 +163,7 @@ func _bind_support() -> void:
 func _counter(actor: Actor, counter_id: StringName) -> int:
 	return _counter_impl.call(actor, counter_id)
 
+
 # --- 1. the authored gate exists, and is a real counter gate ------------------
 
 
@@ -172,8 +183,10 @@ func test_the_authored_gate_is_a_counter_requirement_in_shipped_content() -> voi
 		counters,
 		[str(GATED_COUNTER)],
 		(
-			"the authored gate names exactly one counter verb, on '%s'. A gate whose counter "
-			% String(GATED_COUNTER)
+			(
+				"the authored gate names exactly one counter verb, on '%s'. A gate whose counter "
+				% String(GATED_COUNTER)
+			)
 			+ "row could not be found here is a gate nothing can be said to open"
 		)
 	)
@@ -229,6 +242,7 @@ func _counter_need_in(requirement: Dictionary, counter_id: StringName) -> int:
 				return found
 	return 0
 
+
 # --- 2. the gate is REACHABLE: its fact has a producer ------------------------
 
 
@@ -260,10 +274,7 @@ func test_the_gated_counter_has_a_live_producer_in_the_shipped_tree() -> void:
 	assert_eq(
 		wired.has(String(GATED_COUNTER)),
 		true,
-		(
-			"the gate's counter is one the bridge can move at all: COUNTER_FACTS wires %s"
-			% str(wired)
-		)
+		"the gate's counter is one the bridge can move at all: COUNTER_FACTS wires %s" % str(wired)
 	)
 
 	# Reachable, part one: the shipped writer names the FACT in a line of code. Read from
@@ -276,8 +287,10 @@ func test_the_gated_counter_has_a_live_producer_in_the_shipped_tree() -> void:
 		_names_in_code_impl.call(body, String(GATED_COUNTER)),
 		true,
 		(
-			"%s names '%s' in a line of code, so the fact this gate reads has a producer that "
-			% [writer, String(GATED_COUNTER)]
+			(
+				"%s names '%s' in a line of code, so the fact this gate reads has a producer that "
+				% [writer, String(GATED_COUNTER)]
+			)
 			+ "is not just a row in a table"
 		)
 	)
@@ -292,8 +305,7 @@ func test_the_gated_counter_has_a_live_producer_in_the_shipped_tree() -> void:
 		_names_in_code_impl.call(caller_body, "CombatFacts.record_duel_won"),
 		true,
 		(
-			"%s calls CombatFacts.record_duel_won, so the fact is written on the path a "
-			% caller
+			"%s calls CombatFacts.record_duel_won, so the fact is written on the path a " % caller
 			+ "player's killing blow takes rather than only from a verb nothing calls"
 		)
 	)
@@ -313,11 +325,7 @@ func test_the_authored_gate_opens_on_real_duels_and_refuses_below_its_need() -> 
 	if def == null:
 		return
 	var need := _counter_need_in(def.requirement, GATED_COUNTER)
-	assert_eq(
-		need,
-		GATED_NEED,
-		"and it still asks for the need this case fights duels for"
-	)
+	assert_eq(need, GATED_NEED, "and it still asks for the need this case fights duels for")
 
 	var victor := Actor.new(&"challenger", {Stat.PHYSIQUE: 10.0, Stat.SPIRIT: 8.0})
 	victor.attach_core_resources()
@@ -341,9 +349,10 @@ func test_the_authored_gate_opens_on_real_duels_and_refuses_below_its_need() -> 
 
 	for round in GATED_NEED:
 		assert_eq(
-			_fight_to_a_kill(victor, Actor.new(
-				StringName("ward_%d" % round), {Stat.PHYSIQUE: 10.0, Stat.SPIRIT: 8.0}
-			)),
+			_fight_to_a_kill(
+				victor,
+				Actor.new(StringName("ward_%d" % round), {Stat.PHYSIQUE: 10.0, Stat.SPIRIT: 8.0})
+			),
 			true,
 			"duel %d was decided by a killing blow" % round
 		)
@@ -375,6 +384,7 @@ func _fight_to_a_kill(actor: Actor, opponent: Actor) -> bool:
 		if bool(result["defender_slain"]):
 			return true
 	return false
+
 
 # --- 3. the gate that could never open is DETECTABLE -------------------------
 
@@ -414,14 +424,16 @@ func test_the_three_unproduced_ids_are_exactly_the_ones_a_gate_must_never_name()
 		["bound_name_called", "mountain_circled_once", "vigil_broken"],
 		(
 			(
-				"exactly three rows in COUNTER_FACTS name a fact nothing in the shipped tree "
-				+ "can record: %s. They read 0 forever, and a gate on one of them is a quest "
+				(
+					"exactly three rows in COUNTER_FACTS name a fact nothing in the shipped tree "
+					+ "can record: %s. They read 0 forever, and a gate on one of them is a quest "
+				)
+				% str(unproduced)
 			)
-			% str(unproduced)
-		)
-		+ (
-			"that validates clean, shows in the journal and can never open. When one lands, "
-			+ "delete it from UNPRODUCED in the same change that adds the producer."
+			+ (
+				"that validates clean, shows in the journal and can never open. When one lands, "
+				+ "delete it from UNPRODUCED in the same change that adds the producer."
+			)
 		)
 	)
 	# And the claim is about the ids themselves, not just their count: every one of them
@@ -480,8 +492,10 @@ func test_a_counter_gate_on_an_unproduced_fact_refuses_and_can_never_open() -> v
 			String(counter_id),
 			"",
 			(
-				"'%s' is mapped to a counter, which is exactly what makes gating on it look "
-				% String(dead)
+				(
+					"'%s' is mapped to a counter, which is exactly what makes gating on it look "
+					% String(dead)
+				)
 				+ "reasonable: the mapping is real. The fact behind it is what is missing."
 			)
 		)
@@ -499,12 +513,16 @@ func test_a_counter_gate_on_an_unproduced_fact_refuses_and_can_never_open() -> v
 		# `duels_won` for the wrong reason. The census reads the modules' own consts, which
 		# is what makes the negative a measurement rather than a spelling accident.
 		assert_eq(
-			_authored_fact_ids_impl.call().has(String(dead))
-				or _module_owned_names().has(String(dead)),
+			(
+				_authored_fact_ids_impl.call().has(String(dead))
+				or _module_owned_names().has(String(dead))
+			),
 			false,
 			(
-				"'%s' is neither an authored event beat nor a fact a named module producer "
-				% String(dead)
+				(
+					"'%s' is neither an authored event beat nor a fact a named module producer "
+					% String(dead)
+				)
 				+ "records, so the bridge is never reached with it and the counter it feeds "
 				+ "can never move"
 			)
@@ -545,17 +563,6 @@ func _module_owned_names() -> Dictionary:
 	return out
 
 
-## The counter id each dead fact maps to, held as a NAMED list
-##
-## Stated rather than derived from the table on the same line it checks, so a row edited
-## from `severances` to something else is a named failure here and not a silently
-## different — but still unopenable — gate elsewhere. Read off
-## `DestinyProjection.COUNTER_FACTS` as shipped on 2026-10-05, and SORTED, because the
-## assertion sorts what it compares and an unsorted expectation is a failure that reads
-## like a defect in the thing being checked.
-const UNPRODUCED_COUNTERS := ["heaven_marks", "severances", "watch_turned"]
-
-
 ## The dead rows map to exactly these counters, and to no others. A stronger claim than
 ## "each dead row maps to some counter", and the one that would catch a well-meaning
 ## author wiring `vigil_broken` to something reachable — which would make the gate OPEN
@@ -585,6 +592,7 @@ func test_an_unproduced_fact_maps_only_to_a_counter_no_producer_can_raise() -> v
 		)
 	)
 
+
 # --- 4. the census this file leans on, and the `tools/data.py` half -----------
 
 
@@ -600,27 +608,35 @@ func test_an_unproduced_fact_maps_only_to_a_counter_no_producer_can_raise() -> v
 ## Asserted positively, because the census's other branch asserts the emptiness itself
 ## and one of these two must now be true: this file says the list is NON-empty and names
 ## the id, and the census says every gated counter is wired.
+##
+## Reads through the SHARED reader `support._authored_counter_gate_ids()`. That reader
+## had an off-by-one — it computed `var quote := id_at + 9` to skip the 9-character
+## literal `'"id": &"'`, but `id_at` points at that literal's OPENING quote, so the
+## skip landed one character past the id's own quote and returned `duels_won` as
+## `uels_won`. It is fixed, and it was silent in the one way that matters: a census
+## comparing against the same wrong reader agrees with itself forever. So this file
+## asserts the id POSITIVELY by name, which is what catches a reader that eats a
+## character — a reader that returns `uels_won` fails here, where a `== []` assertion
+## would have passed.
 func test_the_content_tree_now_carries_a_counter_gate_and_names_its_id() -> void:
-	# Read through this suite's OWN reader rather than through the support file's
-	# `_authored_counter_gate_ids()`, and the reason is a bug in that reader worth
-	# recording: it computes `var quote := id_at + 9` to skip past the 9-character literal
-	# `'"id": &"'`, but the `id_at` index points at the OPENING quote of that literal, not
-	# at its `i`, so the skip lands one character PAST the id's own opening quote and
-	# returns the id with its first letter missing — `duels_won` came back as `uels_won`.
-	#
-	# That file is not mine to edit, and the defect is silent in the one way that matters:
-	# a census comparing against the same wrong reader agrees with itself forever. So the
-	# reader is stated here, correctly, and the two are asserted against each other in
-	# [method test_the_two_gate_id_readers_disagree_only_by_the_bug_that_was_reported] —
-	# which is what turns a silent off-by-one into a named finding rather than into a
-	# value a suite is quietly built on.
-	var gates := _gate_ids_in_content()
+	## Reads through the SHARED reader `support._authored_counter_gate_ids()`. That reader
+	## had an off-by-one — it computed `var quote := id_at + 9` to skip the 9-character
+	## literal `'"id": &"'`, but `id_at` points at that literal's OPENING quote, so the
+	## skip landed one character past the id's own quote and returned `duels_won` as
+	## `uels_won`. It is fixed, and it was silent in the one way that matters: a census
+	## comparing against the same wrong reader agrees with itself forever. So this file
+	## asserts the id POSITIVELY by name, which is what catches a reader that eats a
+	## character — a reader that returns `uels_won` fails here, where a `== []` assertion
+	## would have passed.
+	var gates: Array = _authored_counter_gate_ids_impl.call()
 	assert_eq(
 		gates,
 		[str(GATED_COUNTER)],
 		(
-			"the content tree carries exactly one authored `counter` gate, on '%s', which is "
-			% String(GATED_COUNTER)
+			(
+				"the content tree carries exactly one authored `counter` gate, on '%s', which is "
+				% String(GATED_COUNTER)
+			)
 			+ "what turns DEF-0121 from a comment into a failure the census can raise"
 		)
 	)
@@ -633,11 +649,7 @@ func test_the_content_tree_now_carries_a_counter_gate_and_names_its_id() -> void
 		if not wired.has(String(gate_id)):
 			unwired.append(String(gate_id))
 	unwired.sort()
-	assert_eq(
-		unwired,
-		[],
-		"every counter id any shipped .tres gates on is one the bridge can move"
-	)
+	assert_eq(unwired, [], "every counter id any shipped .tres gates on is one the bridge can move")
 
 
 ## Every `counter` id any shipped `.tres` names in a gate requirement, sorted.
@@ -672,8 +684,9 @@ func _gate_ids_in_content() -> Array[String]:
 			var id_at := body.find('"id": &"', cursor)
 			if id_at < 0 or id_at - cursor > 200:
 				continue
-			# `'"id": &"'` is 9 characters, so the VALUE opens at `id_at + 9`.
-			var open := id_at + 9
+			# `find` returns the index of the literal's OPENING quote, and
+			# `'"id": &"'` is 9 characters, so the value opens at `id_at + 9`.
+			var open := id_at + '"id": &"'.length()
 			var close := body.find('"', open)
 			if close < 0:
 				continue
@@ -708,20 +721,18 @@ func _data_tres_files() -> Array[String]:
 	return out
 
 
-## ## The off-by-one in the shared reader, REPORTED rather than asserted as a failure
+## ## Two readers over the same tree must AGREE
 ##
-## Measured: `mine` is `["duels_won"]` and `theirs` is `["uels_won"]` — the same gate,
-## spelled with its first letter missing. The cause is stated above and is not in dispute.
-##
-## **This case asserts what is TRUE, so it passes on the current tree**, and that is the
-## right choice for a defect in a file this agent does not own: a suite that went red over
-## someone else's one-character bug would be failing for a reason its author cannot fix,
-## which is a red run that teaches nothing and gets muted. The bug is reported here and in
-## the final handoff; the assertion below is that the number of gates agrees and that the
-## divergence is EXACTLY the first-character loss it is — which is a sharper claim than
-## "they are equal", because it fails the moment the shared reader diverges for any
-## *other* reason.
-func test_the_shared_gate_id_reader_loses_only_the_first_character_it_reads() -> void:
+## This file carries its own reader as well as using the shared one, and the
+## original claim was that the shared reader loses the first character of every id
+## (`duels_won` arriving as `uels_won`) because it computed `var quote := id_at + 9`
+## to skip the 9-character literal `'"id": &"'`, while `find` returns the index of
+## that literal's OPENING quote. **The shared reader is now FIXED**, so this asserts
+## the fix rather than the bug: two independent readers must return the same ids,
+## spelled identically. A reader that regresses goes red here, and so does a reader
+## that diverges for any other reason — which is a sharper claim than "the count
+## agrees", and it is the reason to keep two readers at all.
+func test_both_gate_id_readers_agree_on_every_id() -> void:
 	assert_eq(
 		_data_tres_files().is_empty(),
 		false,
@@ -730,36 +741,11 @@ func test_the_shared_gate_id_reader_loses_only_the_first_character_it_reads() ->
 	var mine := _gate_ids_in_content()
 	var theirs: Array = _authored_counter_gate_ids_impl.call()
 	assert_eq(
-		mine.size(),
-		theirs.size(),
+		theirs,
+		mine,
 		(
-			"both readers find the same NUMBER of gates, so any disagreement is in the "
-			+ "SPELLING: %s vs %s"
-		)
-		% [str(mine), str(theirs)]
-	)
-	# The exact shape of the known defect, stated as data. When the shared reader is
-	# fixed this goes RED, which is the signal to delete the two legs below — a suite that
-	# quietly kept asserting a bug would pin the bug in place.
-	var dropped: Array[String] = []
-	for index in mini(mine.size(), theirs.size()):
-		var expected := mine[index].substr(1)
-		if String(theirs[index]) == expected:
-			dropped.append(String(theirs[index]))
-	assert_eq(
-		dropped.size(),
-		theirs.size(),
-		(
-			(
-				"every id the shared reader reports is this tree's id with its FIRST CHARACTER "
-				+ "removed, and for no other reason: %s against %s. `destiny_counter_wiring_"
-			)
-			% [str(theirs), str(mine)]
-		)
-		+ (
-			"support.gd::_authored_counter_gate_ids` computes `var quote := id_at + 9`, but "
-			+ "`find` returns the index of the literal's OPENING quote, so the skip lands on "
-			+ "the opening quote of the VALUE rather than one before it. Reported, not repaired."
+			"the shared reader and this file's own reader return the same ids, spelled "
+			+ "identically: %s vs %s" % [str(theirs), str(mine)]
 		)
 	)
 
@@ -778,8 +764,10 @@ func test_the_gate_fact_is_reachable_by_both_halves_of_the_census() -> void:
 		authored.has(String(GATED_COUNTER)),
 		true,
 		(
-			"'%s' is a fact the CONTENT tree already watches — what_the_rotation_cost.tres "
-			% String(GATED_COUNTER)
+			(
+				"'%s' is a fact the CONTENT tree already watches — what_the_rotation_cost.tres "
+				% String(GATED_COUNTER)
+			)
 			+ "step 2 asks for — so the authored world has an interest in the same number"
 		)
 	)
@@ -834,8 +822,7 @@ func test_the_gate_fact_is_reachable_by_both_halves_of_the_census() -> void:
 ## decide whether that is worth WARNING or GATING, because the answer depends on whether
 ## a shipped `.tres` names the id — and that is now knowable from the file the other
 ## agent's `_authored_counter_gates()` already walks.
-func test_the_unwired_counter_an_author_could_gate_on_is_named_while_the_tree_is_unfixed(
-	) -> void:
+func test_the_unwired_counter_an_author_could_gate_on_is_named_while_the_tree_is_unfixed() -> void:
 	var declared: Dictionary = {}
 	for fate_id in FateCatalog.instance().fate_ids():
 		var def := FateCatalog.instance().fate_definition(fate_id)

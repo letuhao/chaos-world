@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"C6_mortal_clench_base"
 display_name = "Mortal Clench Base"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"spirit_transformation"
 fixed_modifiers = Array[Dictionary]([

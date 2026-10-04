@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"K29_divine_wing_refined"
 display_name = "Divine Wing Refined"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

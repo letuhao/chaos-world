@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=26 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_pool_earth_immortal"
+id = &"d3_thunder_ape_young_pool_body_integration"
 kind = &"table"
 item_id = &""
-table_id = &"loot_d3_thunder_ape_young_pool_earth_immortal"
-weight = 1.0
+table_id = &"loot_d3_thunder_ape_young_pool_body_integration"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -17,11 +17,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_pool_heaven_immortal"
+id = &"d3_thunder_ape_young_pool_dao_fruit"
 kind = &"table"
 item_id = &""
-table_id = &"loot_d3_thunder_ape_young_pool_heaven_immortal"
-weight = 1.0
+table_id = &"loot_d3_thunder_ape_young_pool_dao_fruit"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -29,11 +29,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_2"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_pool_immortal_sovereign"
+id = &"d3_thunder_ape_young_pool_earth_immortal"
 kind = &"table"
 item_id = &""
-table_id = &"loot_d3_thunder_ape_young_pool_immortal_sovereign"
-weight = 1.0
+table_id = &"loot_d3_thunder_ape_young_pool_earth_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -41,11 +41,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_3"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_pool_spirit_ascension"
+id = &"d3_thunder_ape_young_pool_golden_immortal"
 kind = &"table"
 item_id = &""
-table_id = &"loot_d3_thunder_ape_young_pool_spirit_ascension"
-weight = 1.0
+table_id = &"loot_d3_thunder_ape_young_pool_golden_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -53,11 +53,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_4"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_4"
-kind = &"item"
-item_id = &"A31_divine_diehouse_gemseal"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_great_luo"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_great_luo"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -65,11 +65,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_5"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_5"
-kind = &"item"
-item_id = &"B9_immortal_burnous_primed"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_heaven_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_heaven_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -77,11 +77,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_6"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_6"
-kind = &"item"
-item_id = &"C6_heaven_purificate"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_immortal_sovereign"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_immortal_sovereign"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -89,11 +89,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_7"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_7"
-kind = &"item"
-item_id = &"F10_earth_dowle_agility_aptitude_attack_speed_dao_heart"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_mystic_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_mystic_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -101,11 +101,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_8"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_8"
-kind = &"item"
-item_id = &"F35_mortal_frackle_breakthrough_chance_crit_chance_qi_cost_reduction_stamina_regen"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_primordial_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_primordial_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -113,11 +113,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_9"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_9"
-kind = &"item"
-item_id = &"G13_spirit_glasswort_health_regen_loot_bonus"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_primordial_origin"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_primordial_origin"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -125,11 +125,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_10"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_10"
-kind = &"item"
-item_id = &"H5_mortal_agility_greave"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_spirit_ascension"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_spirit_ascension"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -137,11 +137,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_11"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_11"
-kind = &"item"
-item_id = &"I63_earth_gridiron_perfected"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_spirit_condensation"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_spirit_condensation"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -149,11 +149,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_12"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_12"
-kind = &"item"
-item_id = &"M22_immortal_vellum_aged"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_spirit_domain"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_spirit_domain"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -161,11 +161,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_13"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_13"
-kind = &"item"
-item_id = &"Q1_divine_courier_sliver"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_spirit_unity"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_spirit_unity"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -173,11 +173,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_14"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_14"
-kind = &"item"
-item_id = &"R8_mortal_mango_chit"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_transcendent"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_transcendent"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -185,95 +185,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_15"]
 script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_15"
-kind = &"item"
-item_id = &"U15_immortal_thrush_refined"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_16"]
-script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_16"
-kind = &"item"
-item_id = &"W3_immortal_apse_emery"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_17"]
-script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_17"
-kind = &"item"
-item_id = &"X5_immortal_acanthus_base"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_18"]
-script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_18"
-kind = &"item"
-item_id = &"Z2_divine_atelier_aged"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_19"]
-script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_19"
-kind = &"item"
-item_id = &"bladework_tide_edge"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_20"]
-script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_20"
-kind = &"item"
-item_id = &"girdle_plate_ore"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_21"]
-script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_21"
-kind = &"item"
-item_id = &"petal_iris"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_22"]
-script = ExtResource("2_entry")
-id = &"d3_thunder_ape_young_domain_22"
-kind = &"item"
-item_id = &"shield_boar"
-table_id = &""
-weight = 1.0
+id = &"d3_thunder_ape_young_pool_void_refinement"
+kind = &"table"
+item_id = &""
+table_id = &"loot_d3_thunder_ape_young_pool_void_refinement"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -303,12 +219,5 @@ entries = Array[LootEntry]([
 	SubResource("entry_12"),
 	SubResource("entry_13"),
 	SubResource("entry_14"),
-	SubResource("entry_15"),
-	SubResource("entry_16"),
-	SubResource("entry_17"),
-	SubResource("entry_18"),
-	SubResource("entry_19"),
-	SubResource("entry_20"),
-	SubResource("entry_21"),
-	SubResource("entry_22")
+	SubResource("entry_15")
 ])

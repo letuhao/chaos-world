@@ -14,6 +14,14 @@ const TRANSCENDENT := 4
 ## (see the note in `_all()`).
 const POWER := preload("res://src/core/realm_power_table.tres")
 
+## The authored per-REALM-TIER lifespan multipliers (ADR 0169), beside `POWER` and for
+## the same reason: reading a file calls nothing here. NOT `RealmDef.power` and NOT a
+## ladder position, so it is deliberately NOT assigned in `_all()` like power is — a
+## realm's lifespan is a function of its BAND, so the lookup happens where an actor's
+## tier is known (`RaceProvider.contribute`, through
+## `RealmLifespan.effective_days`), not once per realm at ladder build time.
+const LIFESPAN := preload("res://src/core/realm_lifespan_table.tres")
+
 static var _ladder: RealmLadder
 
 

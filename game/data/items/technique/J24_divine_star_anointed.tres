@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"J24_divine_star_anointed"
 display_name = "Divine Star Anointed"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

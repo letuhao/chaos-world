@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"W12_divine_birchen_base"
 display_name = "Divine Birchen Base"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G26_heaven_idyll_penetration_qi_absorption"
 display_name = "Heaven Idyll Penetration Qi absorption"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"earth_immortal"
 fixed_modifiers = Array[Dictionary]([

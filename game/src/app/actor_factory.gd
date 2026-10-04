@@ -143,6 +143,15 @@ static func _attach_founding_fund(actor: Actor) -> void:
 ## An `attach` that CONVERTED money would make every factory-built actor — every npc,
 ## every mob, every test — spend its purse into a pool nobody can read. A conversion is
 ## an act with a cost, so it stays an act a caller asks for.
+##
+## ## AND IT IS REACHABLE: the audit found it with ZERO callers
+##
+## An independent re-audit measured this verb shipping with no production call path at
+## all, which is what left founding doubly unwired: `SectApi.found` had no caller either,
+## so a player who could afford a sect could not found one at any price. A pool the
+## player cannot fill is a price nobody can pay, and BL-0174 prices an institution's
+## existence ON PURPOSE, so an unreachable price deleted the feature rather than
+## debalancing it.
 static func fund_sect_from_purse(actor: Actor, coins: int) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "moved": 0, "purse": 0, "funds": 0.0, "reason": "no_actor"}
@@ -170,11 +179,28 @@ static func fund_sect_from_purse(actor: Actor, coins: int) -> Dictionary:
 	# cap is lifted to the new balance before the change rather than after: growing the
 	# pool first and charging second means the fund can never be silently truncated by a
 	# cap nobody authored.
+	#
+	# The coins are SPENT here, by CONSUMING them — not by calling `EconomyApi.trade`
+	# with a null counterparty and discarding the result, which is what this did.
+	# `EconomyExchange.exchange` refuses a null `to_actor`
+	# (`economy_exchange.gd:47-48`) and refuses self-trade outright as a money printer
+	# (`:49-51`), so that call ALWAYS failed while the verb went on reporting
+	# `ok: true, moved: 900`: the founding pool grew, the purse never shrank, and the
+	# docstring promised a conversion that was atomic.
+	#
+	# `consume_item` is all-or-nothing, so the debit either happens in full or not at
+	# all — which is what "atomic" has to mean for a conversion between two resources.
+	# The pool is credited only after it, so a short purse leaves both sides untouched.
+	if not ItemsApi.consume_item(actor, EconomyValuation.numeraire_id(), moved):
+		return {
+			"ok": false,
+			"moved": 0,
+			"purse": EconomyApi.purse(actor),
+			"funds": SectFounding.funds(actor),
+			"reason": "purse_short",
+		}
 	fund.set_maximum(fund.maximum + float(moved))
 	fund.change(float(moved))
-	EconomyApi.trade(
-		actor, null, [{"def_id": String(EconomyValuation.numeraire_id()), "quantity": moved}], []
-	)
 	return {
 		"ok": true,
 		"moved": moved,
@@ -209,6 +235,28 @@ static func with_fertility(actor: Actor) -> Actor:
 ## `app/`. The Callable is idempotent and cheap, so re-running it is free.
 static func install_fertility_actor_builder() -> void:
 	FertilityApi.set_actor_builder(_build_fertility_child)
+
+
+## The founding-fund conversion, as a `Callable`, for a screen that may not name `app/`.
+##
+## ## Why this exists rather than a screen calling the verb itself
+##
+## `SectScreen` is a pure consumer and `app/` is a `PRIVATE_UNIT`, so a screen can
+## neither reach `ActorFactory` nor convert between the economy's numéraire and
+## `sect`'s own funding pool — the two modules each deliberately refuse to know the
+## other's currency. Handing the FUNCTION OBJECT over is ADR 0143's bridge and the same
+## shape `install_fertility_actor_builder` uses, so the conversion keeps exactly one
+## implementation and a screen can only ever reach the one that pays the authored price.
+##
+## ## It is a plain accessor, not a stored seam, and that is deliberate
+##
+## A `static var` holding a `Callable` would be process-wide state in a factory that is
+## otherwise pure, would be counted as state by `app_state_warnings`, and would make
+## "is this bridge installed?" a second question the screen had to ask. Returning it on
+## demand means there is nothing to install, nothing to go stale, and nothing to leak
+## across a save restore.
+static func sect_funding_bridge() -> Callable:
+	return Callable(ActorFactory, "fund_sect_from_purse")
 
 
 static func _build_fertility_child(actor_id: StringName, base: Dictionary) -> Actor:

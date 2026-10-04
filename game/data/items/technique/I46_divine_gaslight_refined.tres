@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"I46_divine_gaslight_refined"
 display_name = "Divine Gaslight Refined"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

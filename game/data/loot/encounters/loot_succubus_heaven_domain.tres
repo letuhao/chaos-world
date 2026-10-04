@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"foundation"
 rarity = &"common"
-vitality = 192.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"succubus_heaven_guardian", "table_id": &"loot_succubus_heaven_guardian"},
 	{"boss_id": &"d5_heaven_bloom", "table_id": &"loot_d5_heaven_bloom"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"foundation"
 rarity = &"rare"
-vitality = 307.2
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"succubus_heaven_guardian", "table_id": &"loot_succubus_heaven_guardian"},
 	{"boss_id": &"d5_heaven_bloom", "table_id": &"loot_d5_heaven_bloom"},

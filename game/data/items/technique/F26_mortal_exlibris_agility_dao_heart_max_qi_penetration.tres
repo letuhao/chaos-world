@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F26_mortal_exlibris_agility_dao_heart_max_qi_penetration"
 display_name = "Mortal Exlibris Agility Dao heart Max qi Penetration"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"body_integration"
 fixed_modifiers = Array[Dictionary]([

@@ -18,6 +18,12 @@ extends RefCounted
 static var _shared: NpcRegistry = null
 
 var _live: Dictionary = {}
+## Where each live actor was minted, keyed by the same instance key as `_live`.
+## NOT part of `_live` itself: `Actor` has no place field, and a tracked npc's place is
+## already remembered on its roster entry — this is how the UNTRACKED one (which has no
+## roster entry at all) records where it was stood up, so a location read can find it
+## (ADR 0092, BL-0715). A row that records no place is invisible to a filtered read.
+var _locations: Dictionary = {}
 var _instance_counts: Dictionary = {}
 
 
@@ -35,8 +41,19 @@ func next_instance_key(def_id: StringName) -> StringName:
 	return StringName("%s#%d" % [String(def_id), count])
 
 
-func set_present(instance_key: StringName, actor: Actor) -> void:
+## `set_present` and the instance key are minted together by `NpcApi.spawn`, so the
+## location is a second write rather than a separate verb: a caller that forgot it would
+## record a body standing nowhere, which is the shape of BL-0715.
+func set_present(instance_key: StringName, actor: Actor, location_id: StringName = &"") -> void:
 	_live[String(instance_key)] = actor
+	_locations[String(instance_key)] = location_id
+
+
+## Where the body behind `instance_key` was minted. Empty when it was stood up without
+## naming a place, and an empty `location_id` is also what a "everywhere" read asks
+## for — so this never rejects an id, it only answers.
+func location_of(instance_key: StringName) -> StringName:
+	return _locations.get(String(instance_key), &"")
 
 
 func present(instance_key: StringName) -> Actor:
@@ -66,6 +83,9 @@ func release(instance_key: StringName) -> Actor:
 		return null
 	var actor: Actor = _live[String(instance_key)]
 	_live.erase(String(instance_key))
+	# The place goes with the body. Leaving it behind would grow the table with rows no
+	# live actor answers for — an unbounded dict cleaned only by `release_all`.
+	_locations.erase(String(instance_key))
 	return actor
 
 
@@ -74,10 +94,12 @@ func release(instance_key: StringName) -> Actor:
 func release_all() -> int:
 	var count := _live.size()
 	_live.clear()
+	_locations.clear()
 	_instance_counts.clear()
 	return count
 
 
 func reset() -> void:
 	_live.clear()
+	_locations.clear()
 	_instance_counts.clear()

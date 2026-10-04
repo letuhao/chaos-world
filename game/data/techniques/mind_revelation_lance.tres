@@ -21,4 +21,5 @@ cooldown = 15.0
 mastery_rungs = 5
 magnitude = 2.0
 element_share = 0.9
+mind_kind = &"obscure"
 

@@ -83,10 +83,12 @@ static func unpaid_verdict(
 ## declaration and the counter cannot decide a war between them.
 ##
 ## `forced` is what `resolve_conflict` decided ends this war early, or `""` for the
-## ordinary case where the declared quota is what decided it. A war that did not
-## reach its quota has no winner to pay, so `winner` is `""` on that path and both
-## sides pay nothing at all: the declared deltas name the sides, and a side that
-## was not in the war cannot be paid out of it.
+## ordinary case where the declared quota is what decided it. It distinguishes the
+## two kinds of early end: a `withdrawal` names the side that broke, and the OTHER
+## side is still owed the declared prize — a surrender is a loss, and ADR 0085 pays
+## it as one. A `stalemate` names no winner, so `winner` is `""` on that path and
+## both sides pay nothing at all: the declared deltas name the sides, and a side
+## that was not in the war cannot be paid out of it.
 static func close(
 	actor: Actor,
 	ledger: Dictionary,
@@ -99,13 +101,23 @@ static func close(
 ) -> Dictionary:
 	var tuning := _tuning()
 	var deltas: Dictionary = (standoff["prize"] as Dictionary).get("standing", {})
-	var won := forced == "" and winner != "" and loser != ""
-	var winner_gain := int(deltas.get(winner, int(tuning.standing_on_win))) if won else 0
-	var loser_cost := absi(int(deltas.get(loser, -int(tuning.standing_on_loss)))) if won else 0
-	var outcome := NationState.OUTCOME_RESOLVED if won else forced
-	if forced == NationState.OUTCOME_WITHDRAWAL:
-		# A broken side pays the surrender cost and moves nothing. The WINNER is
-		# paid nothing either: the war was not won, it was stopped.
+	var withdrew := forced == NationState.OUTCOME_WITHDRAWAL
+	# Whether the war produced a winner who is owed the prize. A `contest` that met
+	# its quota wins; a war that ended in a withdrawal also has a winner (the side
+	# that did not break) and the ADR pays it. Only a `stalemate` — closed with no
+	# winner — pays nobody, because inventing a victor is the one thing this module
+	# may not do.
+	var paid := (forced == "" or withdrew) and winner != "" and loser != ""
+	var winner_gain := int(deltas.get(winner, int(tuning.standing_on_win))) if paid else 0
+	var loser_cost := absi(int(deltas.get(loser, -int(tuning.standing_on_loss)))) if paid else 0
+	var outcome := NationState.OUTCOME_RESOLVED if (forced == "" and paid) else forced
+	if withdrew:
+		# A broken side withdraws: the loser pays the DECLARED surrender cost and the
+		# winner is paid the prize's declared standing for it (ADR 0085). It is a
+		# CLOSED war with a winner, so both halves of the declared prize move — the
+		# surrendered side's cost is authored (`standing_on_surrender`) to be worse
+		# than a fought loss. **No ground moves**: a withdrawal forfeits nothing but
+		# standing, and `_transfer` is gated on `OUTCOME_RESOLVED` below.
 		loser_cost = absi(int(deltas.get(loser, int(tuning.standing_on_surrender))))
 	var gained := _pay(ledger, winner, winner_gain, String(standoff.get("home_id", "")))
 	var lost := _pay(ledger, loser, -loser_cost, String(standoff.get("home_id", "")))

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"C19_mortal_compote_breakthrough_chance_max_stamina_aptitude"
 display_name = "Mortal Compote Breakthrough Chance Max Stamina Aptitude"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"tribulation"
 fixed_modifiers = Array[Dictionary]([

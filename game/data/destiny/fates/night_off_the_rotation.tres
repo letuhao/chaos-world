@@ -12,4 +12,4 @@ tier = 1
 visibility = &"revealed"
 percent_modifiers = {"move_speed": 0.05}
 counters = Array[StringName]([&"watch_turned"])
-tags = Array[StringName]([&"desertion", &"unbound"])
+tags = Array[StringName]([&"desertion"])

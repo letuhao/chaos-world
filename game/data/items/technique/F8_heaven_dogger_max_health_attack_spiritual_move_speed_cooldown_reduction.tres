@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F8_heaven_dogger_max_health_attack_spiritual_move_speed_cooldown_reduction"
 display_name = "Heaven Dogger Max Health Attack Spiritual Move Speed Cooldown Reduction"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"heaven_immortal"
 fixed_modifiers = Array[Dictionary]([

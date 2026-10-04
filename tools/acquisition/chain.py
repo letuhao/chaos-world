@@ -261,7 +261,7 @@ class Graph:
 
     def __init__(self, root: Path = DATA_ROOT) -> None:
         self.root = root
-        self.records, self.malformed = _load(root)
+        self.records, self.malformed, _ = _load(root)
         self._authored_drops_cache: dict[str, set[str]] | None = None
         self._gatherable_cache: frozenset[str] | None = None
         self.items = self.records.get("item", {})

@@ -49,8 +49,14 @@ def float_text(value: float) -> str:
     `40` would load as an int, and the shipped content writes `100.0`, so a
     generated `vitality` that reads back as an int is a shape difference a reader
     would trip over.
+
+    **NOT `%g`.** `%g` switches to scientific notation at 1e6 and trims to six
+    significant digits, and ADR 0197's vitality runs to `25 * 75 * 551.46` = 1033987.5
+    at R30 -- so `%g` emitted `1.03399e+06`, which is a DIFFERENT number AND a shape
+    no shipped `.tres` uses. A boss's pool is read by a parser and a test, not by
+    eyeball, so losing four significant digits of it is silent corruption.
     """
-    text = f"{value:g}"
+    text = f"{value:.10f}".rstrip("0")
     return text if "." in text else f"{text}.0"
 
 
@@ -179,20 +185,32 @@ def encounter(
     domain_id: str,
     boss_ids: tuple[str, ...],
     realm_id: str,
-    realm_index: int,
+    ladder: bool,
     bindings: list[dict],
 ) -> str:
     """A `LootEncounterDef` with one authored band per `design.TIERS` entry.
 
     Every band binds every boss, because the loot validator reports a band that
     leaves a boss unbound as content that cannot be fought.
+
+    ## `ladder`, not `realm_index`
+    `ladder=True` is a LADDER trial, whose `realm_id` is a canonical realm and a claim
+    about the fight. `ladder=False` is a WORLD domain, whose `realm_id` is
+    `Graph.band_realm`'s derived drop-context LABEL -- the lowest realm any of its drops
+    belongs to, which says nothing about the creature's strength (see
+    [constant design.WORLD_DOMAIN_FLOOR]). The two must not be priced identically.
+
+    This argument REPLACES the `realm_index` the old signature took, and that is the
+    point of ADR 0197: an index is not a ladder position the runtime can resolve, so
+    pricing a fight off one mis-scales a retuned ladder and cannot see that a band's
+    label under-reports. `RealmPowerTable` is keyed by realm ID.
     """
     tiers = "".join(
         _tier(
             f"tier_{index}",
             tier,
             realm_id,
-            design.vitality(realm_index, tier),
+            design.vitality(realm_id, tier, ladder=ladder),
             bindings,
         )
         for index, tier in enumerate(design.TIERS)

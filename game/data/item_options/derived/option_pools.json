@@ -136,6 +136,14 @@
   },
   "pools": {
     "consumed:base": [
+      "element_resistance_dark",
+      "element_resistance_earth",
+      "element_resistance_fire",
+      "element_resistance_ice",
+      "element_resistance_lightning",
+      "element_resistance_metal",
+      "element_resistance_water",
+      "element_resistance_wood",
       "restore_awareness",
       "restore_body_integrity",
       "restore_desire",
@@ -147,6 +155,14 @@
       "restore_tribulation_essence"
     ],
     "consumed:postfix": [
+      "element_resistance_dark",
+      "element_resistance_earth",
+      "element_resistance_fire",
+      "element_resistance_ice",
+      "element_resistance_lightning",
+      "element_resistance_metal",
+      "element_resistance_water",
+      "element_resistance_wood",
       "restore_awareness",
       "restore_body_integrity",
       "restore_desire",
@@ -158,6 +174,14 @@
       "restore_tribulation_essence"
     ],
     "consumed:prefix": [
+      "element_resistance_dark",
+      "element_resistance_earth",
+      "element_resistance_fire",
+      "element_resistance_ice",
+      "element_resistance_lightning",
+      "element_resistance_metal",
+      "element_resistance_water",
+      "element_resistance_wood",
       "restore_awareness",
       "restore_body_integrity",
       "restore_desire",
@@ -224,7 +248,15 @@
       "element_mastery_metal",
       "element_mastery_water",
       "element_mastery_wind",
-      "element_mastery_wood"
+      "element_mastery_wood",
+      "element_resistance_dark",
+      "element_resistance_earth",
+      "element_resistance_fire",
+      "element_resistance_ice",
+      "element_resistance_lightning",
+      "element_resistance_metal",
+      "element_resistance_water",
+      "element_resistance_wood"
     ],
     "equipped:postfix": [
       "base_agility",

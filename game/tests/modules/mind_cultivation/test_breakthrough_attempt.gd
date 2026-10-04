@@ -9,6 +9,10 @@ extends TestCase
 
 const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
 
+## How far a seed search looks. Bounded and RETURNING: neither search below appends
+## to anything, so this cannot be outgrown.
+const SEED_BOUND := 256
+
 
 func _actor() -> Actor:
 	var actor := Actor.new(
@@ -69,32 +73,49 @@ func _rng(seed_value: int) -> RandomNumberGenerator:
 	return rng
 
 
-## A seed whose first roll wins the evaluated chance. Each probe is fully
-## prepared, so preparation is identical and the roll is the only variable.
-func _winning_seed() -> int:
-	for candidate in range(1, 64):
-		var probe := _actor()
-		if _prepare(probe) == null:
-			continue
-		var rng := _rng(candidate)
-		if MindAdvancement.start(probe, rng) == null:
-			continue
-		if MindAdvancement.resolve_attempt(probe, rng):
+## A seed whose first draw wins the evaluated chance.
+##
+## PURE ARITHMETIC over the module's own `MindAttemptRoll.replay`, which is exactly
+## what `resolve_attempt` builds its generator from. It used to drive the whole
+## prepare-and-resolve pipeline once per candidate, making this search the single
+## largest source of assertions in the suite, and it searched for something weaker
+## than it claimed: the resolve it drove was handed the generator rather than the
+## record. Probing the helper directly asks the same question exactly.
+##
+## Bounded by `SEED_BOUND` and RETURNING, so neither search can be the loop that
+## fails to terminate.
+func _winning_seed(chance: float) -> int:
+	for candidate in range(MindAttemptRoll.MIN_SEED, SEED_BOUND):
+		if MindAttemptRoll.replay(candidate).randf() < chance:
 			return candidate
 	return 0
 
 
-func _losing_seed() -> int:
-	for candidate in range(1, 64):
-		var probe := _actor()
-		if _prepare(probe) == null:
-			continue
-		var rng := _rng(candidate)
-		if MindAdvancement.start(probe, rng) == null:
-			continue
-		if not MindAdvancement.resolve_attempt(probe, rng):
+## And the first seed that loses it, so the refusing resolve path is reached
+## deterministically instead of by a roll that happens to fail.
+func _losing_seed(chance: float) -> int:
+	for candidate in range(MindAttemptRoll.MIN_SEED, SEED_BOUND):
+		if MindAttemptRoll.replay(candidate).randf() >= chance:
 			return candidate
 	return 0
+
+
+## The chance a prepared actor commits against, paired with a seed that beats it.
+## Every determinate case here goes through one of these two, so the search and the
+## commit can never be asked about different numbers.
+func _winning(actor: Actor) -> RandomNumberGenerator:
+	var chance := float(MindAdvancement.preview(actor).get("chance", 0.0))
+	var found := _winning_seed(chance)
+	assert_ne(found, 0, "a winning seed exists for chance %.4f" % chance)
+	return _rng(found)
+
+
+## And the seed that loses, against that same published chance.
+func _losing(actor: Actor) -> RandomNumberGenerator:
+	var chance := float(MindAdvancement.preview(actor).get("chance", 0.0))
+	var found := _losing_seed(chance)
+	assert_ne(found, 0, "a losing seed exists for chance %.4f" % chance)
+	return _rng(found)
 
 
 func _injured_channel(actor: Actor, seed: MindRealmSeed) -> StringName:
@@ -208,17 +229,17 @@ func test_start_chances_a_fixed_preparation_and_rolls_nothing() -> void:
 
 
 func test_resolve_without_an_attempt_is_a_noop() -> void:
-	assert_eq(MindAdvancement.resolve_attempt(_actor(), _rng(1)), false, "nothing to resolve")
+	assert_eq(MindAdvancement.resolve_attempt(_actor()), false, "nothing to resolve")
 
 
 func test_resolve_success_grants_the_award_once() -> void:
 	var actor := _actor()
 	var seed := _prepare(actor)
 	var will := actor.stats.get_base(Stat.WILL)
-	var rng := _rng(_winning_seed())
+	var rng := _winning(actor)
 	var started := MindAdvancement.start(actor, rng)
 	assert_ne(started, null, "attempt started")
-	assert_eq(MindAdvancement.resolve_attempt(actor, rng), true, "resolved as a success")
+	assert_eq(MindAdvancement.resolve_attempt(actor), true, "resolved as a success")
 	assert_eq(actor.path(MindPath.PATH_ID).rank_id, seed.id, "advanced exactly one realm")
 	assert_eq(actor.stats.get_base(Stat.WILL), will + _award(seed), "award granted")
 	var resolved := MindAdvancement.attempt(actor)
@@ -232,14 +253,14 @@ func test_resolving_twice_does_not_grant_twice() -> void:
 	var actor := _actor()
 	var seed := _prepare(actor)
 	var will := actor.stats.get_base(Stat.WILL)
-	var rng := _rng(_winning_seed())
+	var rng := _winning(actor)
 	assert_ne(MindAdvancement.start(actor, rng), null, "attempt started")
-	assert_eq(MindAdvancement.resolve_attempt(actor, rng), true, "first resolve grants")
+	assert_eq(MindAdvancement.resolve_attempt(actor), true, "first resolve grants")
 	var after_first := actor.stats.get_base(Stat.WILL)
 	assert_eq(after_first, will + _award(seed), "award granted once")
 	# The award is keyed on the attempt's identity, so a second resolve of the
 	# same record cannot grant again even though the path already moved.
-	assert_eq(MindAdvancement.resolve_attempt(actor, rng), true, "already granted, same answer")
+	assert_eq(MindAdvancement.resolve_attempt(actor), true, "already granted, same answer")
 	assert_eq(actor.stats.get_base(Stat.WILL), after_first, "no second award")
 	assert_eq(actor.path(MindPath.PATH_ID).rank_id, seed.id, "no second advance")
 	assert_eq(actor.path(MindPath.PATH_ID).progress, 0.0, "progress untouched by the replay")
@@ -248,9 +269,9 @@ func test_resolving_twice_does_not_grant_twice() -> void:
 func test_failure_keeps_the_realm_and_is_recoverable() -> void:
 	var actor := _actor()
 	var seed := _prepare(actor)
-	var rng := _rng(_losing_seed())
+	var rng := _losing(actor)
 	assert_ne(MindAdvancement.start(actor, rng), null, "attempt started")
-	assert_eq(MindAdvancement.resolve_attempt(actor, rng), false, "the trial deviated")
+	assert_eq(MindAdvancement.resolve_attempt(actor), false, "the trial deviated")
 	var sea := MindCultivationApi.sea(actor)
 	assert_eq(actor.path(MindPath.PATH_ID).rank_id, &"qi_refining", "realm kept")
 	assert_eq(sea.turbulence > 0.0, true, "the sea clouded")
@@ -266,19 +287,19 @@ func test_failure_keeps_the_realm_and_is_recoverable() -> void:
 	assert_eq(sea.turbulence, 0.0, "turbulence cleared")
 	assert_eq(actor.meridians.get_meridian(burned).is_injured(), false, "channel repaired")
 	assert_ne(_prepare(actor), null, "prepared again after the deviation")
-	var retry := _rng(_winning_seed())
+	var retry := _winning(actor)
 	assert_ne(MindAdvancement.start(actor, retry), null, "retry started")
-	assert_eq(MindAdvancement.resolve_attempt(actor, retry), true, "retry succeeds")
+	assert_eq(MindAdvancement.resolve_attempt(actor), true, "retry succeeds")
 
 
 func test_resolving_a_failed_attempt_again_owes_no_second_deviation() -> void:
 	var actor := _actor()
 	var seed := _prepare(actor)
-	var rng := _rng(_losing_seed())
+	var rng := _losing(actor)
 	assert_ne(MindAdvancement.start(actor, rng), null, "attempt started")
-	assert_eq(MindAdvancement.resolve_attempt(actor, rng), false, "deviated")
+	assert_eq(MindAdvancement.resolve_attempt(actor), false, "deviated")
 	var turbulence := MindCultivationApi.sea(actor).turbulence
-	assert_eq(MindAdvancement.resolve_attempt(actor, rng), false, "still no award")
+	assert_eq(MindAdvancement.resolve_attempt(actor), false, "still no award")
 	assert_eq(MindCultivationApi.sea(actor).turbulence, turbulence, "no second deviation")
 	assert_eq(_injured_channel(actor, seed) != &"", true, "the first burn stands")
 
@@ -299,9 +320,7 @@ func test_cancel_keeps_the_realm_and_owes_no_deviation() -> void:
 	assert_eq(cancelled.trial_complete, false, "no trial ran")
 	assert_eq(cancelled.outcome_granted, false, "no outcome granted")
 	assert_eq(MindAdvancement.cancel(actor), false, "nothing left to cancel")
-	assert_eq(
-		MindAdvancement.resolve_attempt(actor, _rng(2)), false, "a cancelled attempt never resolves"
-	)
+	assert_eq(MindAdvancement.resolve_attempt(actor), false, "a cancelled attempt never resolves")
 	assert_eq(MindAdvancement.active_attempt(actor) == null, true, "the next attempt may start")
 	# The pill stayed spent, so recovery costs a fresh one.
 	assert_ne(_prepare(actor), null, "prepared again")
@@ -316,7 +335,7 @@ func test_a_stale_attempt_is_cancelled_without_firing() -> void:
 	# Something else moved this actor on, so the committed trial cannot fire.
 	actor.path(MindPath.PATH_ID).rank_id = &"core_formation"
 	var will := actor.stats.get_base(Stat.WILL)
-	assert_eq(MindAdvancement.resolve_attempt(actor, _rng(6)), false, "stale attempt did not fire")
+	assert_eq(MindAdvancement.resolve_attempt(actor), false, "stale attempt did not fire")
 	assert_eq(actor.path(MindPath.PATH_ID).rank_id, &"core_formation", "rank untouched")
 	assert_eq(actor.stats.get_base(Stat.WILL), will, "no award granted")
 	assert_eq(MindAdvancement.attempt(actor).status, MindAttempt.STATUS_CANCELLED, "cancelled")
@@ -329,11 +348,11 @@ func test_the_once_only_guard_lives_in_its_own_suite() -> void:
 	var actor := _actor()
 	_prepare(actor)
 	var will := actor.stats.get_base(Stat.WILL)
-	var rng := _rng(_winning_seed())
+	var rng := _winning(actor)
 	var started := MindAdvancement.start(actor, rng)
 	assert_ne(started, null, "attempt started")
 	assert_eq(started.outcome_granted, false, "the record, not the path, carries the guard")
-	assert_eq(MindAdvancement.resolve_attempt(actor, rng), true, "granted once")
+	assert_eq(MindAdvancement.resolve_attempt(actor), true, "granted once")
 	assert_eq(actor.stats.get_base(Stat.WILL) > will, true, "the award landed on the actor")
 
 
@@ -341,7 +360,7 @@ func test_try_breakthrough_is_the_one_shot_wrapper() -> void:
 	var actor := _actor()
 	var seed := _prepare(actor)
 	var will := actor.stats.get_base(Stat.WILL)
-	var rng := _rng(_winning_seed())
+	var rng := _winning(actor)
 	assert_eq(MindAdvancement.try_breakthrough(actor, rng), true, "one shot succeeded")
 	assert_eq(actor.path(MindPath.PATH_ID).rank_id, seed.id, "advanced")
 	assert_eq(actor.stats.get_base(Stat.WILL), will + _award(seed), "granted once")
@@ -352,11 +371,34 @@ func test_try_breakthrough_is_the_one_shot_wrapper() -> void:
 # --- Persistence ------------------------------------------------------------
 
 
+## The saved attempt resolves from ITS OWN seed, which is the whole point of storing
+## one.
+##
+## It used to commit with seed 21 and then resolve with a hand-searched WINNING seed,
+## asserting a victory the record never licensed — so the `rng_state` it round-tripped
+## above was decorative, and this case was green through a resolve that ignored it.
+## That is the shape that hid the defect: a test that names the field in an assertion
+## and then does not use it.
+##
+## So the outcome asserted here is the one seed 21 actually produces, read off the
+## record, and the twin actor committed with the SAME seed is resolved alongside it.
+## If the resolve ever takes a generator again, or draws from the commit's stream
+## rather than the stored seed, the two answers part and this goes red.
 func test_a_pending_attempt_survives_save_and_load() -> void:
 	var actor := _actor()
-	var seed := _prepare(actor)
+	_prepare(actor)
 	var started := MindAdvancement.start(actor, _rng(21))
 	assert_ne(started, null, "attempt started")
+	var stored_chance := float(started.preparation.get("chance", 0.0))
+	var stored_seed := started.rng_state
+	assert_eq(stored_seed, 21, "the record names the seed it was given")
+	# The twin is the answer this attempt WOULD have had with no save in between.
+	var twin := _actor()
+	_prepare(twin)
+	assert_ne(MindAdvancement.start(twin, _rng(21)), null, "the twin committed the same seed")
+	var without_reload := MindAdvancement.resolve_attempt(twin)
+	var expected := MindAttemptRoll.replay(stored_seed).randf() < stored_chance
+	assert_eq(without_reload, expected, "seed 21 alone decides the verdict")
 	var restored := Actor.from_dict(actor.to_dict())
 	var reloaded := MindAdvancement.attempt(restored)
 	assert_ne(reloaded == null, true, "attempt restored")
@@ -368,24 +410,34 @@ func test_a_pending_attempt_survives_save_and_load() -> void:
 	assert_eq(
 		reloaded.preparation.get("chance"), started.preparation.get("chance"), "chance survived"
 	)
+	assert_eq(reloaded.rng_state, stored_seed, "and the SEED survived, which is the roll")
 	assert_eq(MindAdvancement.active_attempt(restored) == null, false, "still active after load")
 	# Re-attach as the composition root would, then resolve the loaded attempt.
 	MindCultivationApi.attach(restored)
 	MindCultivationApi.attach_sea(restored)
 	ItemsApi.attach(restored)
 	MindTraining.synchronize(restored)
-	var rng := _rng(_winning_seed())
-	assert_eq(MindAdvancement.resolve_attempt(restored, rng), true, "restored attempt resolves")
-	assert_eq(restored.path(MindPath.PATH_ID).rank_id, seed.id, "restored actor advanced")
+	var after_reload := MindAdvancement.resolve_attempt(restored)
+	assert_eq(after_reload, without_reload, "a reload did not re-roll the attempt")
+	assert_eq(
+		after_reload,
+		expected,
+		"and the reloaded verdict is the one the stored roll names, not a fresh one"
+	)
+	assert_eq(
+		String(restored.path(MindPath.PATH_ID).rank_id) == started.target_rank,
+		after_reload,
+		"the realm the restored actor stands in is the verdict"
+	)
 
 
 func test_a_terminal_attempt_survives_save_and_load() -> void:
 	var actor := _actor()
 	var seed := _prepare(actor)
-	var rng := _rng(_winning_seed())
+	var rng := _winning(actor)
 	var started := MindAdvancement.start(actor, rng)
 	assert_ne(started, null, "attempt started")
-	assert_eq(MindAdvancement.resolve_attempt(actor, rng), true, "resolved")
+	assert_eq(MindAdvancement.resolve_attempt(actor), true, "resolved")
 	var restored := Actor.from_dict(actor.to_dict())
 	var reloaded := MindAdvancement.attempt(restored)
 	assert_ne(reloaded == null, true, "resolved record restored")
@@ -393,5 +445,5 @@ func test_a_terminal_attempt_survives_save_and_load() -> void:
 	assert_eq(reloaded.status, MindAttempt.STATUS_SUCCESS, "still successful")
 	assert_eq(reloaded.outcome_granted, true, "outcome flag survived")
 	# The flag is what stops a reload from granting the same award twice.
-	assert_eq(MindAdvancement.resolve_attempt(restored, rng), true, "same answer")
+	assert_eq(MindAdvancement.resolve_attempt(restored), true, "same answer")
 	assert_eq(restored.path(MindPath.PATH_ID).rank_id, seed.id, "no second advance")

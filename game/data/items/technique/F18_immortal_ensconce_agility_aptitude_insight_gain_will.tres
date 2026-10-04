@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F18_immortal_ensconce_agility_aptitude_insight_gain_will"
 display_name = "Immortal Ensconce Agility Aptitude Insight gain Will"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"earth_immortal"
 fixed_modifiers = Array[Dictionary]([

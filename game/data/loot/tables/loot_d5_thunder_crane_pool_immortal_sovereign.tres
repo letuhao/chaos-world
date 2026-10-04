@@ -9,7 +9,7 @@ id = &"d5_thunder_crane_immortal_sovereign_0"
 kind = &"item"
 item_id = &"L5_thunder_crane_gale_manual"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_thunder_crane_pool_immortal_sovereign"
-display_name = "Thunder Crane Lesser salvage (immortal_sovereign)"
+display_name = "Thunder Crane salvage (immortal_sovereign)"
 realm = &"immortal_sovereign"
 rarity = &""
 rolls = 1

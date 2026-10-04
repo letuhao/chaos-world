@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"C9_earth_cochineal_refined"
 display_name = "Earth Cochineal Refined"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_unity"
 fixed_modifiers = Array[Dictionary]([

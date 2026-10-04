@@ -36,6 +36,16 @@ def register(subparsers) -> None:
         help="discard any saved session and start from a clean actor",
     )
     drive.add_argument(
+        "--technique",
+        default="",
+        metavar="ID",
+        help=(
+            "fire a shipped TechniqueDef .tres by id instead of the "
+            "driver's synthetic drill swing, so a drive can measure "
+            "AUTHORED content (aim_meridian, element, mind_kind)"
+        ),
+    )
+    drive.add_argument(
         "--cmd",
         action="append",
         default=[],
@@ -85,6 +95,8 @@ def _drive(args) -> int:
     ]
     if args.actor_path:
         cmd += ["--path", args.actor_path]
+    if args.technique:
+        cmd += ["--technique", args.technique]
     if args.fresh:
         cmd.append("--fresh")
     for verb in args.cmd:

@@ -58,8 +58,8 @@ const LINEAGE := &"tideborn"
 ## ## Why the number, and why it is not a tuned constant
 ##
 ## `FertilityApi._gestation_step` divides by an authored gestation length in DAYS, and
-## `StatusLoop` converts a frame to a day at `SECONDS_PER_GESTATION_DAY = 1.0`, so a
-## raceless 30-day pregnancy at the boot hero's `gestation_speed` of 1.26 needs about
+## `StatusLoop` converts a frame to a day at `SECONDS_PER_GESTATION_DAY_TURN = 1.0`, so
+## a raceless 30-day pregnancy at the boot hero's `gestation_speed` of 1.26 needs about
 ## 1 / (1.26 * (1/60) / 30) = 1429 frames of gestation, plus one frame each for the
 ## CONCEIVED -> GESTATING and GESTATING -> LABOR transitions. This is deliberately well
 ## above that arithmetic rather than equal to it, so a content retune that lengthens a

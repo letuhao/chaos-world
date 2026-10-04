@@ -12,15 +12,24 @@ extends RefCounted
 ##   `{verb: &"has_fate",     id: &"oath_breaker"}`
 ##   `{verb: &"has_destiny",  id: &"chosen_one"}`   — an alias also answers true
 ##   `{verb: &"counter",      id: &"duels_won", need: 3}`
+##   `{verb: &"tagged",       id: &"oath"}` — holds ANY fate carrying that tag
 ##   `{verb: &"all_of",       of: [ ...requirements ]}`
 ##   `{verb: &"any_of",       of: [ ...requirements ]}`
 ##   `{verb: &"none_of",      of: [ ...requirements ]}`
 ##
-## A requirement with no verb, or a verb that is not one of the six, refuses
+## A requirement with no verb, or a verb that is not one of the seven, refuses
 ## closed and names itself — and so does a composite whose `of` list holds
 ## anything that is not itself a requirement. Refuse-with-cause is the house
 ## rule: content that is malformed must fail loudly and locally, never open a
 ## door it cannot read.
+##
+## ## `tagged` refuses `unknown_tag`, and that is NOT an `unmet`
+##
+## The `id` of a `tagged` gate must be inside [constant FateDef.TAGS]. A tag
+## outside the closed vocabulary refuses with `reason: "unknown_tag"` and names
+## itself, exactly as an unknown verb does — because an unknown tag is a content
+## bug (a coined lineage nothing carries), and degrading it to a plain `unmet`
+## would report it forever as though a player could go and earn it (ADR 0196, fate tag vocabulary).
 ##
 ## **One alias rule, every place a destiny is asked about.** `holds_destiny()`
 ## below is the single resolver, and EVERY read of the question routes through it:
@@ -30,6 +39,20 @@ extends RefCounted
 ## ledger key instead, that call site stops believing in `gate_aliases` and the
 ## feature silently stops existing for exactly the author it was written for.
 ## `DestinyApi.has_destiny` asks this same method rather than keeping a copy.
+
+## ## The reasons that POISON a composite rather than failing as one child
+##
+## A leaf that refuses closed because the requirement could not be READ is not a
+## player being told no, and it must not be counted as one: it is returned
+## verbatim so the parent carries the cause instead of accumulating it into an
+## `unmet` list that reads as though the player could go and earn the answer.
+##
+## **`unknown_tag` is a member and that is the half that is easy to miss.** A
+## `tagged` leaf naming a coined lineage was correct to refuse; dropping it from
+## this list degrades it to a plain `unmet` the instant it is nested, so
+## `all_of:[{tagged:"oath"},{tagged:"not_a_tag"}]` reports "you need an oath fate"
+## — an actionable, false cause — instead of the content bug it is (ADR 0196, fate tag vocabulary).
+const POISON_REASONS: Array[String] = ["malformed", "unknown_verb", "unknown_tag"]
 
 
 ## The full verdict, always this shape:
@@ -49,6 +72,8 @@ static func evaluate(actor: Actor, requirement: Dictionary) -> Dictionary:
 			return _has_destiny(actor, requirement)
 		&"counter":
 			return _counter(actor, requirement)
+		&"tagged":
+			return _tagged(actor, requirement)
 		&"all_of":
 			return _composite(actor, requirement, true, false)
 		&"any_of":
@@ -195,6 +220,57 @@ static func _counter(actor: Actor, requirement: Dictionary) -> Dictionary:
 	return _fail(&"counter", counter_id, need, total, "'%s' %d of %d" % [counter_id, total, need])
 
 
+## ## `tagged` — the lineage verb. OR across fates, over a CLOSED vocabulary.
+##
+## Satisfied by holding **any one** fate that carries `tag_id`. Tags are unordered
+## and have no primary, so there is no defensible per-fate reading: a gate that
+## wanted a specific fate writes `has_fate`, which already says exactly that. The
+## one question this verb adds is "does this actor carry any fate OF THIS KIND",
+## and the answer is a disjunction over the ledger.
+##
+## Three refusals, kept apart on purpose (ADR 0196, fate tag vocabulary):
+##   no `id`           -> `malformed`. It NEVER defaults to "any tagged fate
+##                        satisfies this", which would make a half-written gate
+##                        silently open for anyone holding one tagged fate.
+##   `id` outside
+##   [constant FateDef.TAGS] -> `unknown_tag`, naming the tag. NEVER `unmet`:
+##                        nothing in the tree carries a coined tag, so `unmet`
+##                        would be a permanent lie with no cause an author could
+##                        act on.
+##   in vocabulary,
+##   carried by nobody held -> `unmet`, and the entry names THE TAG THE AUTHOR
+##                        WROTE, never a resolved fate id — the same rule
+##                        [method unmet_prerequisites] states for aliases.
+##
+## It only READS the ledger. `DestinyState.has_fate` is a lookup, and a tag is
+## consulted rather than consumed, so a `tagged` gate can never remove a fate
+## (ADR 0065 earn-only).
+static func _tagged(actor: Actor, requirement: Dictionary) -> Dictionary:
+	var tag_id := StringName(requirement.get("id", ""))
+	if tag_id == &"":
+		return _refuse("malformed", requirement, "A tagged gate names no tag id.")
+	if not FateDef.TAGS.has(tag_id):
+		return _refuse(
+			"unknown_tag",
+			requirement,
+			(
+				"Gate tag '%s' is not one of the lineage vocabulary (ADR 0196, fate tag vocabulary)."
+				% tag_id
+			)
+		)
+	var ledger := _ledger(actor)
+	for fate_id in FateCatalog.instance().fate_ids():
+		var def := FateCatalog.instance().fate_definition(fate_id)
+		# A `null` definition is not a match and not a crash: the catalog answers
+		# `null` for an id it does not hold, and a gate must not be the thing that
+		# turns that into an abort.
+		if def == null or not def.tags.has(tag_id):
+			continue
+		if DestinyState.has_fate(ledger, fate_id):
+			return _pass()
+	return _fail(&"tag", tag_id, true, false, "Requires a fate marked '%s'" % tag_id)
+
+
 ## One composite verb over a list of child requirements.
 ##
 ## The three verbs are distinct in TWO ways, not one, which is the whole reason
@@ -235,10 +311,9 @@ static func _composite(
 		if bool(verdict.get("ok", false)):
 			passed += 1
 			continue
-		# A malformed child poisons the whole composite: refuse-with-cause means a
-		# nested gate that cannot be read is never treated as satisfied.
+		# An unreadable child poisons the whole composite; see [constant POISON_REASONS].
 		var nested_reason := String(verdict.get("reason", ""))
-		if nested_reason == "malformed" or nested_reason == "unknown_verb":
+		if POISON_REASONS.has(nested_reason):
 			return verdict
 		for entry in verdict.get("unmet", []) as Array:
 			unmet.append(entry)

@@ -224,6 +224,38 @@ const ROUTES: Array[Dictionary] = [
 		"root": false,
 	},
 	{
+		# The fight (ADR 0197). The engine was complete, reachable and GREEN, and a
+		# player still could not fight: the only surface combat happened on was
+		# `combat_readout.tscn`, which fires one blow at a stationary drill body and
+		# resolves no contest. This is the route that opens one — two sides, alternating
+		# blows, a verdict, a record. Every verb arrives as a Callable because `ui/` may
+		# neither name `FightLoop` (an `app/` type, a `PRIVATE_UNIT`) nor mint an
+		# opponent; the root owns the loop and hands its verbs over.
+		"id": &"fight",
+		"node": "FightScreen",
+		"label": "Fight",
+		"hint": "Take a fight, exchange blows, and win or lose it.",
+		"scene": "res://src/ui/screens/fight_screen.tscn",
+		"key": "f",
+		"root": false,
+	},
+	{
+		# The gather surface (ADR 0097). `HoldingsApi.claim` had no production caller
+		# repo-wide, so a node was never held and `ForageAction.workable` could never
+		# answer true: the sixteen authored nodes, the yield table covering every one
+		# of them, and the harvest verb behind them were reachable by nothing a player
+		# can press. `tools data audit` nonetheless reported `gather` live, because
+		# `app/forage_action.gd` is a call site a scan can see and a player cannot.
+		# This is the route that opens it — claim, work, give up.
+		"id": &"forage",
+		"node": "ForageScreen",
+		"label": "Gather",
+		"hint": "Take a resource node, work it, and gather what it yields.",
+		"scene": "res://src/ui/screens/forage_screen.tscn",
+		"key": "y",
+		"root": false,
+	},
+	{
 		# The soul and hearth page (ADR 0127 / 0129 / 0146 / 0128). `soul`,
 		# `difficulty`, `anchor` and `save` shipped their verbs, their content and
 		# their suites, and nothing in the shipped program ever rendered any of

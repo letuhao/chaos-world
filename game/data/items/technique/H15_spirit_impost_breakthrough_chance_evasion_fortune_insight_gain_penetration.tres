@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"H15_spirit_impost_breakthrough_chance_evasion_fortune_insight_gain_penetration"
 display_name = "Spirit Impost Breakthrough chance Evasion Fortune Insight gain Penetration"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_manifestation"
 fixed_modifiers = Array[Dictionary]([

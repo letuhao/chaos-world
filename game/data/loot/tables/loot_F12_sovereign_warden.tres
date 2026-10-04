@@ -5,23 +5,23 @@
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"F12_sovereign_warden_pool_spirit_condensation"
-kind = &"table"
-item_id = &""
-table_id = &"loot_F12_sovereign_warden_pool_spirit_condensation"
-weight = 1.0
+id = &"F12_sovereign_warden_core_0"
+kind = &"item"
+item_id = &"qi_spirit_sovereign_breakthrough_pill"
+table_id = &""
+weight = 1.
 chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
 
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
-id = &"F12_sovereign_warden_pool_spirit_sovereign"
+id = &"F12_sovereign_warden_pool_body_integration"
 kind = &"table"
 item_id = &""
-table_id = &"loot_F12_sovereign_warden_pool_spirit_sovereign"
-weight = 1.0
+table_id = &"loot_F12_sovereign_warden_pool_body_integration"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -29,11 +29,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_2"]
 script = ExtResource("2_entry")
-id = &"F12_sovereign_warden_pool_spirit_unity"
+id = &"F12_sovereign_warden_pool_earth_immortal"
 kind = &"table"
 item_id = &""
-table_id = &"loot_F12_sovereign_warden_pool_spirit_unity"
-weight = 1.0
+table_id = &"loot_F12_sovereign_warden_pool_earth_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -41,23 +41,23 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_3"]
 script = ExtResource("2_entry")
-id = &"F12_sovereign_warden_core_0"
-kind = &"item"
-item_id = &"qi_spirit_sovereign_breakthrough_pill"
-table_id = &""
-weight = 1.0
+id = &"F12_sovereign_warden_pool_spirit_condensation"
+kind = &"table"
+item_id = &""
+table_id = &"loot_F12_sovereign_warden_pool_spirit_condensation"
+weight = 1.
 chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &"magic"
+guaranteed = false
+quantity = 1
+rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_4"]
 script = ExtResource("2_entry")
-id = &"F12_sovereign_warden_domain_4"
-kind = &"item"
-item_id = &"Q8_immortal_dogwood_cavern"
-table_id = &""
-weight = 1.0
+id = &"F12_sovereign_warden_pool_spirit_sovereign"
+kind = &"table"
+item_id = &""
+table_id = &"loot_F12_sovereign_warden_pool_spirit_sovereign"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -65,13 +65,13 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_5"]
 script = ExtResource("2_entry")
-id = &"F12_sovereign_warden_mortal_gear"
-kind = &"item"
-item_id = &"E1_mortal_cresses_base"
-table_id = &""
-weight = 1.0
+id = &"F12_sovereign_warden_pool_spirit_unity"
+kind = &"table"
+item_id = &""
+table_id = &"loot_F12_sovereign_warden_pool_spirit_unity"
+weight = 1.
 chance = -1.0
-guaranteed = true
+guaranteed = false
 quantity = 1
 rarity_floor = &""
 

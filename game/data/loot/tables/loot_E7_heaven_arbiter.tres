@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=29 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_pool_golden_immortal"
+id = &"E7_heaven_arbiter_pool_dao_fruit"
 kind = &"table"
 item_id = &""
-table_id = &"loot_E7_heaven_arbiter_pool_golden_immortal"
-weight = 1.0
+table_id = &"loot_E7_heaven_arbiter_pool_dao_fruit"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -17,11 +17,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_pool_great_luo"
+id = &"E7_heaven_arbiter_pool_earth_immortal"
 kind = &"table"
 item_id = &""
-table_id = &"loot_E7_heaven_arbiter_pool_great_luo"
-weight = 1.0
+table_id = &"loot_E7_heaven_arbiter_pool_earth_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -29,11 +29,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_2"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_pool_mystic_immortal"
+id = &"E7_heaven_arbiter_pool_golden_immortal"
 kind = &"table"
 item_id = &""
-table_id = &"loot_E7_heaven_arbiter_pool_mystic_immortal"
-weight = 1.0
+table_id = &"loot_E7_heaven_arbiter_pool_golden_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -41,11 +41,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_3"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_3"
-kind = &"item"
-item_id = &"A14_heaven_barcar_base"
-table_id = &""
-weight = 1.0
+id = &"E7_heaven_arbiter_pool_great_ascension"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E7_heaven_arbiter_pool_great_ascension"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -53,11 +53,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_4"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_4"
-kind = &"item"
-item_id = &"B35_heaven_chasse_base"
-table_id = &""
-weight = 1.0
+id = &"E7_heaven_arbiter_pool_great_luo"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E7_heaven_arbiter_pool_great_luo"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -65,11 +65,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_5"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_5"
-kind = &"item"
-item_id = &"C28_heaven_smeltery_bullionbar"
-table_id = &""
-weight = 1.0
+id = &"E7_heaven_arbiter_pool_immortal_sovereign"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E7_heaven_arbiter_pool_immortal_sovereign"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -77,11 +77,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_6"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_6"
-kind = &"item"
-item_id = &"E17_earth_mossbank_dicranum"
-table_id = &""
-weight = 1.0
+id = &"E7_heaven_arbiter_pool_mystic_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E7_heaven_arbiter_pool_mystic_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -89,11 +89,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_7"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_7"
-kind = &"item"
-item_id = &"F25_earth_exchequer_agility_cooldown_reduction_physique_poise"
-table_id = &""
-weight = 1.0
+id = &"E7_heaven_arbiter_pool_primordial_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E7_heaven_arbiter_pool_primordial_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -101,11 +101,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_8"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_8"
-kind = &"item"
-item_id = &"F50_earth_grouch_breakthrough_chance_insight_gain_qi_regen"
-table_id = &""
-weight = 1.0
+id = &"E7_heaven_arbiter_pool_primordial_origin"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E7_heaven_arbiter_pool_primordial_origin"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -113,11 +113,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_9"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_9"
-kind = &"item"
-item_id = &"H10_immortal_healthbroth"
-table_id = &""
-weight = 1.0
+id = &"E7_heaven_arbiter_pool_spirit_domain"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E7_heaven_arbiter_pool_spirit_domain"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -125,11 +125,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_10"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_10"
-kind = &"item"
-item_id = &"I38_mortal_fraternal_primed"
-table_id = &""
-weight = 1.0
+id = &"E7_heaven_arbiter_pool_spirit_sea"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E7_heaven_arbiter_pool_spirit_sea"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -137,11 +137,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_11"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_11"
-kind = &"item"
-item_id = &"K22_heaven_dao_aged"
-table_id = &""
-weight = 1.0
+id = &"E7_heaven_arbiter_pool_spirit_sovereign"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E7_heaven_arbiter_pool_spirit_sovereign"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -149,169 +149,13 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_12"]
 script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_12"
-kind = &"item"
-item_id = &"P11_heaven_calamus_aged"
-table_id = &""
-weight = 1.0
+id = &"E7_heaven_arbiter_pool_spirit_unity"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E7_heaven_arbiter_pool_spirit_unity"
+weight = 1.
 chance = -1.0
 guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_13"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_13"
-kind = &"item"
-item_id = &"R18_heaven_pampas_base"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_14"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_14"
-kind = &"item"
-item_id = &"T23_earth_vervain_primed"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_15"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_15"
-kind = &"item"
-item_id = &"V28_earth_arterial_primed"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_16"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_16"
-kind = &"item"
-item_id = &"X19_immortal_benefice_decree"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_17"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_17"
-kind = &"item"
-item_id = &"Z10_immortal_barge_perfected"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_18"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_18"
-kind = &"item"
-item_id = &"Z4_divine_aurum_perfected"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_19"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_19"
-kind = &"item"
-item_id = &"draft_tide_page"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_20"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_20"
-kind = &"item"
-item_id = &"mind_spirit_domain_sea_catalyst"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_21"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_21"
-kind = &"item"
-item_id = &"robe_heaven_silk_robe"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_22"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_22"
-kind = &"item"
-item_id = &"votive_void_relic"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_23"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_23"
-kind = &"item"
-item_id = &"E3_spirit_leatherworks_shoulder"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_24"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_domain_24"
-kind = &"item"
-item_id = &"F42_immortal_geyser_cooldown_reduction_max_stamina_qi_absorption"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_25"]
-script = ExtResource("2_entry")
-id = &"E7_heaven_arbiter_mortal_gear"
-kind = &"item"
-item_id = &"B16_mortal_calliope_aged"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
 quantity = 1
 rarity_floor = &""
 
@@ -336,18 +180,5 @@ entries = Array[LootEntry]([
 	SubResource("entry_9"),
 	SubResource("entry_10"),
 	SubResource("entry_11"),
-	SubResource("entry_12"),
-	SubResource("entry_13"),
-	SubResource("entry_14"),
-	SubResource("entry_15"),
-	SubResource("entry_16"),
-	SubResource("entry_17"),
-	SubResource("entry_18"),
-	SubResource("entry_19"),
-	SubResource("entry_20"),
-	SubResource("entry_21"),
-	SubResource("entry_22"),
-	SubResource("entry_23"),
-	SubResource("entry_24"),
-	SubResource("entry_25")
+	SubResource("entry_12")
 ])

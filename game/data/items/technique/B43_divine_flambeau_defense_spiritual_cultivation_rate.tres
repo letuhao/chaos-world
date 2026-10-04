@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"B43_divine_flambeau_defense_spiritual_cultivation_rate"
 display_name = "Divine Flambeau Defense Spiritual Cultivation Rate"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"
 fixed_modifiers = Array[Dictionary]([

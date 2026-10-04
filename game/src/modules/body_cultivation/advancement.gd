@@ -12,7 +12,9 @@ extends RefCounted
 ## The award is keyed on the record's identity (`outcome_granted`), not on the
 ## path's progress, so re-resolving one attempt can never grant twice. The roll
 ## reads the chance stored in the record's `preparation`, so an attempt that
-## spans a save resolves against the body it paid for.
+## spans a save resolves against the body it paid for — and the seed that decides
+## the roll lives in the record too (`BodyAttemptRoll`), so it resolves to the same
+## outcome as well.
 ##
 ## `try_breakthrough` stays as the one-shot convenience wrapper over both steps
 ## and is the path the UI takes: it is the same two calls, so a saved-then-
@@ -165,6 +167,13 @@ static func _id(value: BodyAttempt) -> String:
 ## `cultivate`/`strengthen`/`recover` on the same huyệt set. `try_breakthrough`
 ## holds `busy` across both halves and therefore calls `_start` directly — which reads
 ## the same gate, so holding `busy` buys no way around it.
+##
+## **`rng` is an optional SEED SOURCE, and the record is what resolves.** Whatever it
+## is handed, the seed this call stores is the only randomness the attempt will ever
+## have, and `resolve_attempt` replays it without taking a generator of its own. The
+## shipped facade passes none, so a real player press draws its own seed — see
+## `BodyAttemptRoll` for why the seed is drawn here rather than at resolve, and why it
+## can never be the constant this module used to write.
 static func start_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> BodyAttempt:
 	var points: AcupointSet = actor.component(&"acupoints")
 	if points != null and points.busy:
@@ -228,8 +237,16 @@ static func _start(actor: Actor, rng: RandomNumberGenerator) -> BodyAttempt:
 	committed.costs_paid = true
 	# The attempt is rolled against the preparation it paid for, never against a
 	# later one, and the chance is fixed here instead of drifting at resolve time.
+	#
+	# THE SEED IS DRAWN HERE AND STORED, never supplied by the caller and never
+	# defaulted. `rng_state = 0 if rng == null else rng.seed` wrote the one seed whose
+	# first draw (0.202272) sits BELOW every authored `chance_base` on the ladder, so
+	# `randf() >= chance` never fired: every shipped attempt was a certain success and
+	# the deviation loop could not run. A resolve that took a generator of its own made
+	# it worse, because the roll then came off a stream the record never named. See
+	# `BodyAttemptRoll`.
 	var points: AcupointSet = actor.component(&"acupoints")
-	committed.rng_state = 0 if rng == null else rng.seed
+	committed.rng_state = BodyAttemptRoll.seed_for(rng)
 	committed.preparation = {
 		"chance": _chance(points, seed),
 		"average_quality": 0.0 if points == null else points.average_quality(),
@@ -259,7 +276,14 @@ static func _next_sequence(actor: Actor) -> int:
 ## Resolve the stored attempt: roll it, then grant its award once or apply its
 ## recoverable deviation. True only when the outcome was granted, so re-resolving
 ## a granted attempt is a no-op that reports the same answer.
-static func resolve_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
+##
+## **NO GENERATOR, BY DESIGN.** The roll comes from the seed the commit stored, and
+## nothing else — that is what makes an attempt that spans a save resolve to the
+## outcome it was committed with. This used to accept one and prefer it, so a
+## resolve took its draw off a stream the record never named: a caller could roll
+## differently in the same session than the record claims, and the record was a lie
+## about the trial it described. One door for randomness into a durable decision.
+static func resolve_attempt(actor: Actor) -> bool:
 	var committed := attempt(actor)
 	if committed == null:
 		return false
@@ -290,7 +314,10 @@ static func resolve_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> 
 		_end(actor, committed, false)
 		return false
 	committed.mark_trial_complete()
-	var generator := rng if rng != null else _replay(committed)
+	# Rebuilt from the record, never from a live stream: the roll and the huyệt a
+	# deviation jams both come off this one generator, so a resolve after a reload
+	# lands on the same body as a resolve without one.
+	var generator := BodyAttemptRoll.replay(committed.rng_state)
 	var chance := float(committed.preparation.get("chance", _chance(points, seed)))
 	if generator.randf() >= chance:
 		_deviate(actor, state, seed, points, generator)
@@ -323,28 +350,50 @@ static func resolve_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> 
 	# `grant_origin`. Fate is a write target, never a listener (ADR 0065).
 	#
 	# It sits on the GRANTED branch, after `try_advance_gated` has already said yes:
-	# a refused advance returns three lines earlier, so nothing can earn a fate for a
+	# a refused advance returned three lines earlier, so nothing can earn a fate for a
 	# breakthrough that never happened. It sits before `_end(actor, committed, true)`
 	# so the fate's stat modifiers are re-projected onto a body whose realm has
 	# already advanced, not onto the one it is leaving.
-	#
-	# `earn_fate` returns the LEDGER, never a verdict, and every refusal path is
-	# byte-identical in shape and queues nothing (ADR 0134) — so the earn is
-	# VERIFIED with `has_fate` rather than trusted, which is what
-	# `character_creation_flow.gd:280-284` does and `event_prize.gd:95-96` does not.
-	DestinyApi.earn_fate(actor, FATE_BARRIER, EARN_SOURCE)
-	if not DestinyApi.has_fate(actor, FATE_BARRIER):
-		push_warning(
-			(
-				(
-					"body_cultivation: a breakthrough was granted but %s was not earned (id unknown "
-					+ "to the fate catalog?). Nothing records the debt and nothing retries it."
-				)
-				% String(FATE_BARRIER)
-			)
-		)
+	earn_breakthrough_oath(actor)
 	_end(actor, committed, true)
 	return true
+
+
+## Earn this path's breakthrough fate for `actor`, and VERIFY it. The one place the
+## id, the source string and the verification live, so every body entry point pays
+## identically — `try_breakthrough`, and the two-phase
+## `BodyCultivationApi.begin_breakthrough` / `resolve_breakthrough` lifecycle, all of
+## which arrive here through `resolve_attempt`.
+##
+## ## Why the verification IS the body
+##
+## `DestinyApi.earn_fate` returns the LEDGER, never a verdict, and every refusal
+## path is byte-identical in shape — an unknown id, an already-held entry and a null
+## actor all hand back the same unchanged ledger. Nothing is queued and nothing
+## retries (ADR 0134), so a call trusted as an "already offered" silently never
+## fires. `has_fate` afterwards is the only honest answer: the idiom
+## `character_creation_flow.gd:280-284` takes and `event_prize.gd:95-96` does not.
+##
+## Nothing branches on the returned boolean — a breakthrough is not rolled back
+## because its narrative receipt failed, and the refusal is an authoring bug rather
+## than a player-facing outcome — but it makes the seam assertable without a test
+## reaching into the ledger.
+static func earn_breakthrough_oath(actor: Actor) -> bool:
+	if actor == null:
+		return false
+	DestinyApi.earn_fate(actor, FATE_BARRIER, EARN_SOURCE)
+	if DestinyApi.has_fate(actor, FATE_BARRIER):
+		return true
+	push_warning(
+		(
+			(
+				"body_cultivation: a breakthrough was granted but %s was not earned (id unknown "
+				+ "to the fate catalog?). Nothing records the debt and nothing retries it."
+			)
+			% String(FATE_BARRIER)
+		)
+	)
+	return false
 
 
 ## End the attempt and persist the record. `granted` sets the once-only outcome
@@ -371,14 +420,6 @@ static func cancel(actor: Actor) -> bool:
 	return true
 
 
-## The generator the record was committed with, so a persisted attempt resolves
-## to the same outcome after a reload instead of rerolling.
-static func _replay(committed: BodyAttempt) -> RandomNumberGenerator:
-	var generator := RandomNumberGenerator.new()
-	generator.seed = committed.rng_state
-	return generator
-
-
 # --- Convenience -------------------------------------------------------------
 
 
@@ -388,6 +429,10 @@ static func _replay(committed: BodyAttempt) -> RandomNumberGenerator:
 ##
 ## `busy` is held across both halves so a body cultivation action cannot
 ## interleave on the same huyệt set, and cleared on every exit.
+##
+## `rng` reaches `start_attempt` and stops there: the resolve reads the record, so
+## the one press and the save-spanning attempt roll from the same seed by
+## construction rather than by agreement.
 static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	var points: AcupointSet = actor.component(&"acupoints")
 	if points == null or points.busy:
@@ -397,7 +442,7 @@ static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) ->
 	if committed == null:
 		points.busy = false
 		return false
-	var granted := resolve_attempt(actor, rng)
+	var granted := resolve_attempt(actor)
 	points.busy = false
 	return granted
 

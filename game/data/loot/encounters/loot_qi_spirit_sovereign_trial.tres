@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"spirit_sovereign"
 rarity = &"common"
-vitality = 168.0
+vitality = 22856.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_spirit_sovereign_warden", "table_id": &"loot_qi_spirit_sovereign_warden"},
 	{"boss_id": &"F12_sovereign_warden", "table_id": &"loot_F12_sovereign_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"spirit_sovereign"
 rarity = &"rare"
-vitality = 268.8
+vitality = 36570.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_spirit_sovereign_warden", "table_id": &"loot_qi_spirit_sovereign_warden"},
 	{"boss_id": &"F12_sovereign_warden", "table_id": &"loot_F12_sovereign_warden"},

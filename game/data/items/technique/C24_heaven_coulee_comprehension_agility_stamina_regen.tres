@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"C24_heaven_coulee_comprehension_agility_stamina_regen"
 display_name = "Heaven Coulee Comprehension Agility Stamina Regen"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"mystic_immortal"
 fixed_modifiers = Array[Dictionary]([

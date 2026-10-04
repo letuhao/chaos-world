@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F21_earth_equerry_agility_attack_speed_breakthrough_chance_crit_damage"
 display_name = "Earth Equerry Agility Attack speed Breakthrough chance Crit damage"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_domain"
 fixed_modifiers = Array[Dictionary]([

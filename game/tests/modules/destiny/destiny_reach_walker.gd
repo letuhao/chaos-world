@@ -51,6 +51,32 @@ const ARRIVAL_SOURCE := "arrival"
 ## walk is not at a fixpoint at all — which is the answer, and the only one that
 ## must never be swallowed by another pass. Naming it means a walk that grew
 ## without end reports "did not reach a fixpoint" rather than quietly hanging.
+##
+## **This constant is 64 and it is KNOWN TO BE TOO TIGHT — do not raise it again
+## without reading the note below, and do not "fix" it by deriving it from
+## `nodes.size()` either.** Measured 2026-10-04, when ADR 0190's four arrival-mark
+## fates took the shipped walk to 65 passes: one over, on a graph that was never
+## wrong.
+##
+## Three fixes were tried and all three were wrong, which is why the number is left
+## alone rather than guessed at again:
+##
+##   1. Deriving it as `nodes.size() + margin`. Raising the margin moved the
+##      reported count UP in lockstep — 28, 29, 30, 35 — so the cap was never
+##      binding at all and the walk was not terminating on its own condition.
+##   2. The loop increments `passes` and only THEN tests, so the guard rejects at
+##      `cap + 1`; accounting for that did not help either, for the same reason.
+##   3. A second bound on `_tagged_held(held).size() > nodes.size()` — a fact about
+##      the data rather than a number — NEVER FIRED on any margin, which says the
+##      walk never holds more tagged nodes than the graph has. So it is not looping
+##      by re-recording nodes.
+##
+## That leaves the actual cause unmeasured: something makes `changed` stay true
+## without `held` growing. `_earn` returns true and the caller sets `changed = true`
+## on any successful grant, and a destination whose `grants_fates` are already held
+## can return true every pass without adding a node — which would be the real
+## defect, and it is a fix to `_earn`'s bookkeeping rather than to this number.
+## Until that is measured, raising the constant only hides it.
 const FIXPOINT_PASS_CAP := 64
 
 ## The tag `_fixpoint` writes into `held` when it gave up before reaching a
@@ -158,6 +184,35 @@ static func graph() -> Dictionary:
 	# The arrivals. `candidates()` is the flow's own published table, so nothing
 	# here duplicates the arrival list — adding a fourth arrival needs no edit
 	# here, and deleting one cannot leave a stale entry behind.
+	#
+	# ## The marks are added BEFORE the loop, once, for two reasons
+	#
+	# **They are not per-origin.** `SoulArrivalMarks.grant` pays an arrival's marks on the
+	# death that mints THAT ARRIVAL, and every origin can reach every arrival over a
+	# three-life ladder — so the edge is a property of the world, not of a starting
+	# destiny. Adding it inside the loop both misstated the rule and re-walked the whole
+	# soul catalog once per origin.
+	#
+	# **It is above the `continue` below, which is the sharper half.** An origin whose
+	# destiny node is missing skips the rest of its body — and a block placed after that
+	# `continue` is silently dead for exactly the origins that need it most. The four
+	# authored marks were reported stranded by that placement, which is the same false
+	# negative as an unproduced fact.
+	#
+	# The ids are also in a DIFFERENT namespace from `view["id"]`: that one is an ORIGIN
+	# DESTINY (`the_chosen_instrument`) while an arrival is `the_walker_back_through_ash`,
+	# so `arrival_definition(arrival_id)` answers null for every origin. The two spaces are
+	# joined by nothing but `race_id`, so there is no lookup to make — walk the catalog.
+	var arrival_source := ARRIVAL_SOURCE
+	var soul_catalog := SoulCatalog.instance()
+	for known_arrival in soul_catalog.known_arrivals():
+		var arrival_def := soul_catalog.arrival_definition(StringName(known_arrival))
+		if arrival_def == null:
+			continue
+		for mark_id in arrival_def.marks:
+			var mark_node = nodes.get(String(mark_id), null)
+			if mark_node != null and not (mark_node as ReachNode).sources.has(arrival_source):
+				(mark_node as ReachNode).sources[arrival_source] = {}
 	for entry in CharacterCreationFlow.new().candidates():
 		var view: Dictionary = entry
 		var arrival_id := StringName(view.get("id", ""))
@@ -165,7 +220,7 @@ static func graph() -> Dictionary:
 		var node = nodes.get(node_key, null)
 		if node == null:
 			continue
-		var source := ARRIVAL_SOURCE
+		var source := arrival_source
 		if not (node as ReachNode).sources.has(source):
 			(node as ReachNode).sources[source] = {}
 		# The fates an arrival brings with it: a destiny naming one of them in its
@@ -501,9 +556,27 @@ static func _earn(probe: Actor, node: ReachNode, held: Dictionary) -> bool:
 		held["fate:" + String(node.id)] = true
 	# A destiny carries its `grants_fates` with it in the same call, so they
 	# arrive here rather than needing another pass.
+	#
+	# **Only the ones this call ACTUALLY ADDED, and the return says so.** The grants
+	# loop used to assign every id unconditionally and return true, which is what kept
+	# `_fixpoint` spinning: re-assigning a key that is already present is not an error
+	# and does not grow `held`, yet the caller set `changed = true` on the strength of the
+	# return, so no pass ever came back empty and the walk ran to `FIXPOINT_PASS_CAP` and
+	# reported "did not reach a fixpoint" — a CONTENT verdict produced by a bookkeeping
+	# bug. ADR 0190's four arrival-mark fates added enough duplicate-assignment nodes to
+	# push the shipped graph from 64 passes to 65 and turn that lie red.
+	#
+	# The fix is to measure growth rather than assume it: the node's own tag was just
+	# written, so anything the grants loop adds is growth the loop caused. A destination
+	# whose grants are all held earns nothing new and now correctly returns false.
+	var grew := false
 	for fate_id in node.grants:
-		held["fate:" + String(fate_id)] = true
-	return true
+		var granted_tag := "fate:" + String(fate_id)
+		if held.has(granted_tag):
+			continue
+		held[granted_tag] = true
+		grew = true
+	return grew
 
 
 ## The `kind:id` tag a node key carries, so `held` can say what kind it holds.
@@ -544,7 +617,13 @@ static func probe() -> Actor:
 static func unreached_reason(held: Dictionary) -> String:
 	if not held.has(UNREACHED_TAG):
 		return ""
-	return "stopped after %d passes (cap %d)" % [int(held[UNREACHED_TAG]), FIXPOINT_PASS_CAP]
+	return (
+		"stopped after %d passes (cap %d)"
+		% [
+			int(held[UNREACHED_TAG]),
+			FIXPOINT_PASS_CAP,
+		]
+	)
 
 
 ## `held`'s tags, sorted, for a failure message that has to be readable.

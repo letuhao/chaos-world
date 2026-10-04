@@ -7,7 +7,7 @@ extends RefCounted
 ## ## What difficulty is allowed to move
 ##
 ## **A fraction of what the player already holds. Never a magnitude the game computes.** The
-## five scalars are all multipliers or caps on player-side quantities; nothing here may scale a
+## four scalars are all multipliers or caps on player-side quantities; nothing here may scale a
 ## realm, a cultivation rate, a damage share or a pool maximum. That is not a style preference
 ## — this repo has three power-shaped tables and a written rule that a fourth needs an ADR,
 ## because reading one number as two is what produced the realm power ladder in the first place.
@@ -21,22 +21,53 @@ extends RefCounted
 ## `APP_STATE_MARKERS` shape the arch gate warns about, and `app/` is the composition root that
 ## wires rather than owns rules.
 ##
-## ## Why `scalars()` is one verb and not five
+## ## Why `scalars()` is one verb and not four
 ##
 ## Fifteen modules already sit at `MAX_FACADE_PUBLIC_METHODS`. A per-scalar getter would spend
-## four of twelve slots answering one question, so every consumer reads the row instead.
+## three of twelve slots answering one question, so every consumer reads the row instead.
 
 ## The `actor.module_data` key the selection persists under (ADR 0027).
 const MODULE_KEY := DifficultyState.MODULE_KEY
+
+## The scalar `preparation_credit_for` publishes to `core`. Named here so the seam's
+## signature and the closed set cannot disagree about the key they share.
+const PREPARATION_CREDIT := "tribulation_preparation_credit"
 
 
 ## Attach the module to `actor`: restore and normalize whatever a prior `Actor.from_dict`
 ## carried, so the very first read after a load is the same shape as every other read.
 ## Idempotent, and safe before a difficulty has been chosen.
+##
+## ## Why `attach` is also where `tribulation_preparation_credit` is wired
+##
+## That scalar's consumer is `core/tribulation.gd`, and `LAYER_DEPS` holds `core` to
+## `{"core", "contracts"}` — so `core` may not name `difficulty`, and the credit has to be
+## injected as a `Callable` from out here. **`difficulty` declares `core` in
+## `tools/arch/registry.json`** (it already does, for `DifficultyCatalog`'s `ContentScan`), so
+## naming `Tribulation` from this module is a legal downward edge and not a new one.
+##
+## It is installed on `attach` rather than from `app/` for two reasons. A `static var` seam
+## is process-wide, so a one-shot install is enough and a second boot must be idempotent —
+## `attach` is already that, and it is the ONE list every fresh, restored and reborn body
+## reaches, so there is no caller who can be built, restored or adopted without the credit.
+## And `app/` is the only layer allowed to wire, so this is the one place in the tree where
+## the wiring and the rule sit side by side and cannot drift: the callable it hands over is
+## [method preparation_credit_for], the same function `app/` would have named.
 static func attach(actor: Actor) -> void:
 	if actor == null:
 		return
 	actor.set_module_data(MODULE_KEY, DifficultyState.normalize(actor.get_module_data(MODULE_KEY)))
+	Tribulation.set_preparation_credit(Callable(DifficultyApi, "preparation_credit_for"))
+
+
+## What preparation this actor is credited for, as a plain float — the shape
+## `Tribulation.set_preparation_credit` calls. `1.0` when there is no actor and when no
+## difficulty has been chosen, so an unfought or unconfigured run is priced exactly as it
+## was before the seam existed.
+static func preparation_credit_for(actor: Actor) -> float:
+	if actor == null:
+		return 1.0
+	return float(scalars(actor).get(PREPARATION_CREDIT, 1.0))
 
 
 ## Choose `difficulty_id` for `actor`. The one setter.

@@ -19,6 +19,10 @@ const DANTIAN_READ := "(?:[A-Za-z_][A-Za-z0-9_]*)?[Dd]antian\\s*\\.\\s*([A-Za-z_
 ## parenthesis.
 var members: Dictionary = _dantian_members()
 
+## True while a `"""` block literal is open. A member rather than a local because such a
+## literal spans lines and the blanking has to carry across them.
+var _in_block_string := false
+
 
 func _dantian_members() -> Dictionary:
 	var out: Dictionary = {}
@@ -42,11 +46,6 @@ func _dantian_members() -> Dictionary:
 	# call site, so the member set stays the single answer.
 	out["new"] = true
 	return out
-
-
-## True while a `"""` block literal is open. A member rather than a local because such a
-## literal spans lines and the blanking has to carry across them.
-var _in_block_string := false
 
 
 ## The line reduced to CODE: comments removed, string literals blanked. The defect this

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"W11_divine_belfry_refined"
 display_name = "Divine Belfry Refined"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

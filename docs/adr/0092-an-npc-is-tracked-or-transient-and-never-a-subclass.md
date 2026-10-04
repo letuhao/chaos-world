@@ -46,7 +46,99 @@ The three-stage story elder is the ladder's worked example, so what it *does* in
 - Four tiers of npc cost a def and a stage ladder, not a code change. A new creature is data, exactly as ADR 0074 promised.
 - A tracked story npc carries their stage, their actor payload and their last location across a save, with no new persistence code.
 - The transient path cannot leak, because the untracked code path never receives the player actor and so never writes to `module_data`.
+- **A row mints only where it was placed.** A spawned npc's `location_id` is the place the CALLER stood it up in, recorded at `spawn` time and never inferred later — so a presence read filtered by location and the spawn that fed it are one invariant, not two facts that can drift (BL-0715; this line carried BL-0790 in an earlier edit — see the correction appended below). The roster's `location_id` remains "where you last met them" and is published only for somebody with no live body; a filter with nothing to match answers nobody, which is how a settlement once reported four occupants as zero.
 - `NpcApi` sits at exactly the twelve-method facade cap, so the first new verb forces a split rather than a thirteenth method.
 - **Deliberately not decided here:** dialogue. The repo defers it (`DEF-0014`), and a tier system that wanted dialogue would have to reopen this ADR rather than smuggle a conversation tree through `NpcStageDef`.
 - **Deliberately not decided here:** whether a tracked npc is tracked per quest-line. `tracked` is a single boolean today, and the first feature that needs "tracked but on cooldown" will have to widen it here.
 - The cap values (`MAX_ROSTER` 256, `MAX_ROOM_POPULATION` 8, `MAX_PRESENCE_READ` 16, `MAX_TALLY_KEYS` 16) are named constants that refuse rather than trim, so an overflow fails loudly instead of writing a save that grows without limit.
+
+### Clarification (N1, 2026-10-04) — appended, nothing above is edited
+
+**Line 49's "where you last met them" is the DECISION, and it is now measured.**
+
+The audit question was whether `despawn` leaving `entry.location_id` set is a leak of a
+stale location: `npc_read_model.gd:70` publishes `live_location_id if is_live else
+entry.location_id`, so an off-stage tracked npc's row reads back the room they were last
+minted in, and `test_npc_tier.gd:121-126` asserted the presence half of that transition
+without ever looking at the place — so nothing pinned the intent either way.
+
+**It is correct, and the reason is that the remembered place cannot reach a room read.**
+`presence_here()` iterates `NpcRegistry.present_ids()` — live bodies only — and `despawn`
+releases the registry entry on the same call, so a departed npc is gone from the table the
+filter walks. The remembered `location_id` is therefore reachable **only** through
+`summary()` for somebody with no live body, which is precisely the case line 49 says it is
+published for. The two facts answer two different questions and cannot be confused:
+`NpcRegistry`'s place is *where the body is standing now*, the roster's is *where you last
+met them* — the memory a content author needs for "where do I go to find this person next",
+and explicitly never distance input (ADR 0072).
+
+**Clearing it on despawn would be the actual regression.** It would discard the memory
+ADR 0092's whole "remembered, not forgotten" contract for tracked npcs holds, and fix
+nothing, because there is no leak to fix. Both halves are now pinned by
+`tests/modules/npc/test_npc_despawn_place.gd`: two tests assert the last-met place IS
+published and survives a save round trip, and two assert the other side — that a departed
+npc does not haunt the room they left, and that the room filter is genuinely working while
+they are in it, so the first pair cannot pass against a filter broken to match nobody.
+
+### Correction (N6, 2026-10-04) — the location fix is BL-0715, not BL-0790
+
+**Line 49's id was wrong. It now reads BL-0715, which is what the code has always said.**
+
+The audit flagged a doc-vs-code disagreement: line 49 attributed the location fix to
+`BL-0790`, while the code comments carrying the same claim named `BL-0715`
+(`npc/api.gd:189`, `npc/api.gd:378`, `npc/api.gd:412`, `npc_read_model.gd:22`,
+`npc_read_model.gd:82`, `npc_registry.gd:25`, `app/npc_boot.gd:121`, `app/npc_boot.gd:150`).
+One of the two was stale. **The ADR was the stale one.**
+
+Determined from `docs/backlog.jsonl` rather than by a vote:
+
+- **`BL-0790` covers `F1` and `F4`** — "a spawned npc row must record the location it was
+  minted for" (F1) plus two shipped cast members authoring a `faction` that is really a
+  LOCATION (F4). Its guard is `test_npc_room_location.gd` and
+  `test_npc_faction_resolution.gd`.
+- The sibling entry opens "A **spawned row records the location it was minted for**
+  (BL-0715, F1)" at `test_npc_room_location.gd:3`, and `test_npc_faction_resolution.gd:3`
+  cites "BL-0715, F4". **So F1 was filed under two ids**, and the module's comments and test
+  headers consistently used the older one.
+- **`BL-0715` as it stands in `backlog.jsonl` is a DIFFERENT finding** — the
+  fertility/seduction `can_meet` standing floor, "UNWIRED+VACUOUS", nothing to do with npcs.
+
+So there are **two** stale references rather than one, and they point the same way:
+
+1. **`docs/adr/0092` line 49** said `BL-0790` where every code comment says `BL-0715`.
+   Corrected here to `BL-0715`.
+2. **`docs/backlog.jsonl`'s `BL-0715`** is the fertility entry and does not describe the npc
+   location fix at all. **`game/src/modules/npc/**` is owned by another agent and was NOT
+   edited, and neither was that backlog row** — rewriting a finding another agent may be
+   working from is exactly the collision this repo's safety rules exist to prevent. **That
+   row is left for its owner**, and is recorded here as a known mismatch rather than
+   silently absorbed: the correct home for "a spawned row records where it was minted" is an
+   npc-module backlog entry, and the two npc guard suites already cite `BL-0715, F1` /
+   `BL-0715, F4` in their headers.
+
+**The ADR and the code now agree on `BL-0715`** — the id the module's own tests and comments
+have used since the fix landed. Whether the backlog entry behind that id is correctly
+*filed* is the separate, deliberately unfixed half above.
+
+### Note (N6 follow-up, 2026-10-04) — which side was wrong, stated as a verdict
+
+**The ADR was the wrong side, and the correction above is not in dispute.** Line 49 said
+`BL-0790`; the code said `BL-0715`; line 49 now says `BL-0715`. That much is settled by
+reading two artifacts.
+
+The second half of the correction above — that `backlog.jsonl`'s `BL-0715` is a fertility
+entry rather than an npc one — was left open because rewriting a finding another agent may
+be working from is the collision this repo's rules exist to prevent. **It is still open and
+still deliberately so:** `BL-0715` in `docs/backlog.jsonl` remains the
+fertility/seduction `can_meet` finding, and it is **not** the npc location fix. The npc
+fix is properly `BL-0790` (F1 + F4), which is why both ids appear in this story and why
+neither can simply be deleted.
+
+**The honest statement of where the disagreement now lives:** the code comments and the
+npc guard test headers cite an id (`BL-0715`) that the backlog defines as something else.
+That is a citation defect in code this slice does not own (`game/src/modules/npc/**` and
+`tests/modules/social/**` are other agents' live paths), so it was not touched here. The
+first agent who owns those files should repoint them at `BL-0790`. Until then, treat
+`BL-0715` in those comments as **meaning BL-0790**, and treat the backlog row itself as the
+thing that is wrong — it should have carried a distinct id, which is why the fix is filed
+under two.

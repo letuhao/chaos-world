@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"S5_divine_drover_base"
 display_name = "Divine Drover Base"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([

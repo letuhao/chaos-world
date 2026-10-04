@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G19_divine_hessian_evasion_insight_gain"
 display_name = "Divine Hessian Evasion Insight gain"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_ancestor"
 fixed_modifiers = Array[Dictionary]([

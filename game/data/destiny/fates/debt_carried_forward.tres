@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="FateDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/destiny/fate_def.gd" id="1_fate"]
+
+[resource]
+script = ExtResource("1_fate")
+id = &"debt_carried_forward"
+display_name = "Debt Carried Forward"
+description = "This body did not walk here under its own power. Somebody else finished the journey, and the account of it did not close with them. It is still open, and the name on it is still yours."
+category = &"rebirth"
+tier = 2
+visibility = &"revealed"
+counters = Array[StringName]([])
+tags = Array[StringName]([&"rebirth"])

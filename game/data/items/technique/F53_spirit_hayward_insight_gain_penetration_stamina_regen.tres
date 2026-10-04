@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F53_spirit_hayward_insight_gain_penetration_stamina_regen"
 display_name = "Spirit Hayward Insight gain Penetration Stamina regen"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_condensation"
 fixed_modifiers = Array[Dictionary]([

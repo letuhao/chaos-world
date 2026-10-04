@@ -214,6 +214,71 @@ var _claim_button: Button = null
 var _fixture_label: Label = null
 var _message_label: Label = null
 var _actions: ActionSet = null
+## Who is standing in the room the player is actually in (DEF-0261). Fed through a
+## [NpcRosterBridge] because `npc` and `world_spawn` are both outside
+## `rules.UI_MODULES` and `app/` is a private unit — the same door `DomainBridge` and
+## `WorldPulseBridge` are.
+##
+## ## Null until the composition root fills it, and that is the honest default
+##
+## An unbound panel reports "the roster of this place is not wired to anything" rather
+## than an empty room, because "nobody is here" and "this screen cannot ask" are
+## different facts and a player must be able to tell them apart.
+var _roster: NpcRosterBridge = null
+var _roster_panel: NpcRosterPanel = null
+
+
+## Inject the settlement roster. Safe to call again; the screen re-reads and repaints,
+## which is the point rather than a convenience — a surface bound after its first paint
+## would otherwise show the state it had BEFORE the binding.
+##
+## ## The panel is re-read on EVERY refresh, never cached
+##
+## The roster is a function of where the player is standing, and the player moves. A
+## panel that read once at bind time would show the room they left, which is the stale-
+## settlement defect DEF-0261 exists to end — reproduced one layer up. So [method
+## _refresh_roster] runs on every [method refresh] and asks the bridge about the room
+## the actor is in NOW.
+func bind_roster(roster: NpcRosterBridge) -> void:
+	_bind_nodes()
+	_roster = roster
+	refresh()
+
+
+## Adopt the roster reader the composition root installed, if any. Called from
+## [method _bind_nodes] so a screen mounted through ANY door — the route table, the
+## stack, or a test — carries a live roster without the binder having to know the roster
+## exists.
+##
+## ## Why the screen resolves its own bridge rather than waiting to be handed one
+##
+## Every other seam in this program is handed over in `_bind_route_screen`. This one
+## cannot be: that arm lives in `item_workbench_app.gd`, which is mid-refactor by another
+## agent and read-only here, so adding a `bind_roster` call there was not available. The
+## bridge's own `static var` (the `NpcApi.set_minter` idiom) makes the seam available to
+## whoever mounts the screen, which is strictly more robust: a screen bound by a route
+## AND a screen bound by a test both get the roster, and neither can end up half-wired.
+func _adopt_roster_bridge() -> void:
+	if _roster != null and _roster.wired():
+		return
+	_roster = NpcRosterBridge.shared()
+
+
+## Ask the bridge where the player is and hand the whole answer to the panel.
+##
+## The panel keys on the location the bridge reports — never on a cast read of its own
+## and never on the boot-time settlement [code]ItemWorkbenchPlay.npc_presence()[/code]
+## publishes. That payload is minted once into [code]mortal_plains[/code] and never
+## restocked, so a roster keyed on it shows a stale cast as though it were the room the
+## player is standing in, with nothing on screen to tell the reader so.
+func _refresh_roster() -> void:
+	if _roster_panel == null:
+		return
+	_adopt_roster_bridge()
+	if _actor == null:
+		_roster_panel.show_room({})
+		return
+	_roster_panel.show_room(_roster.read_room_roster(_actor) if _roster != null else {})
 
 
 func _ready() -> void:
@@ -287,6 +352,10 @@ func _summary() -> Dictionary:
 	place["fixture_text"] = _text_of(_fixture_label)
 	place["enabled"] = _enabled()
 	place["actions"] = _actions.summary() if _actions != null else {}
+	# The roster, nested under the panel's own key rather than merged key by key: it
+	# already reports its own count, its own rows and the two sentences it painted, so
+	# listing them here would be the second copy of one fact.
+	place["roster"] = _roster_panel.summary() if _roster_panel != null else {}
 	return place
 
 
@@ -299,6 +368,10 @@ func _refresh_view() -> void:
 	_fill_templates()
 	_fill_rooms()
 	_fill_fixtures()
+	# The roster is a function of WHERE THE PLAYER IS, so it is re-read on every
+	# refresh rather than cached at bind time. Everything above is the domain's own run;
+	# this is the settlement outside it, and the player can walk between them at any time.
+	_refresh_roster()
 
 
 func _render() -> void:
@@ -402,6 +475,7 @@ func _bind_nodes() -> void:
 	_fixture_label = get_node_or_null("%FixtureLabel") as Label
 	_message_label = get_node_or_null("%MessageLabel") as Label
 	_actions = get_node_or_null("%Actions") as ActionSet
+	_roster_panel = get_node_or_null("%Roster") as NpcRosterPanel
 	if _actions != null and not _actions.action_requested.is_connected(_on_action_requested):
 		_actions.action_requested.connect(_on_action_requested)
 	_connect_select(_template_option, _on_template_selected)

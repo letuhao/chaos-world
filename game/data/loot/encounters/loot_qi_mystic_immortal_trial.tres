@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"mystic_immortal"
 rarity = &"common"
-vitality = 208.0
+vitality = 84637.5
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_mystic_immortal_warden", "table_id": &"loot_qi_mystic_immortal_warden"},
 	{"boss_id": &"F17_mystic_warden", "table_id": &"loot_F17_mystic_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"mystic_immortal"
 rarity = &"rare"
-vitality = 332.8
+vitality = 135420.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_mystic_immortal_warden", "table_id": &"loot_qi_mystic_immortal_warden"},
 	{"boss_id": &"F17_mystic_warden", "table_id": &"loot_F17_mystic_warden"},

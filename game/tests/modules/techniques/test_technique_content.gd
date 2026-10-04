@@ -566,7 +566,26 @@ func test_a_passive_has_no_cost_block_and_an_active_has_one() -> void:
 		)
 
 
-func test_an_element_is_a_real_element_and_its_share_agrees() -> void:
+## Every path that resolves through a MECHANISM authors a share; a path that is only
+## ever a pose authors none.
+##
+## `element_share` is ADR 0069's qi field and ADR 0071's mind `share` — the ONE authored
+## field on ONE content type that both of those mechanisms read, `QiDamage` through
+## `ELEMENT_SHARE_KEY` and `MindDamage` through `SHARE_KEY`. **Body is the only path that
+## reads neither**, and ADR 0070 rules the elemental shape out of it outright: "What body
+## must NOT share with qi. Not the element table and not the multiplicative elemental
+## shape." `BodyDamage.builder` writes four keys (`aim_meridian`, `aim_mode`,
+## `body_wounds`, `tuning`) and no share, so a share on a body technique reached nothing
+## at all — while this guard, which predates the gap, made a share MANDATORY on any row
+## carrying an element, so the two together were the defect: content the design forbids
+## was the only legal content.
+##
+## So the requirement is scoped to the paths that CONSUME a share, which is what
+## `mechanism_for_hit` can route at `QiDamage` or `MindDamage`. A body-exclusive row
+## carries an `element` for status (ADR 0105) and search vocabulary only, and is now
+## allowed to author its share as absent; the field's default `0.0` means "use the
+## module's default" and is not "no element".
+func test_a_path_that_resolves_a_share_authors_one() -> void:
 	var elements := {}
 	for def in _defs():
 		if def.element == &"":
@@ -596,6 +615,15 @@ func test_an_element_is_a_real_element_and_its_share_agrees() -> void:
 			true,
 			"'%s' names the real element '%s'" % [def.id, def.element]
 		)
+		if not _reads_a_share(def):
+			# An element with no consuming share is the correct body/mind shape, not a
+			# gap: nothing reads it, and a value here would be decoration.
+			assert_eq(
+				def.element_share,
+				0.0,
+				"'%s' resolves no share, so it authors none (ADR 0070)" % def.id
+			)
+			continue
 		assert_eq(
 			def.element_share > 0.0 and def.element_share <= 1.0,
 			true,
@@ -605,6 +633,136 @@ func test_an_element_is_a_real_element_and_its_share_agrees() -> void:
 	assert_eq(
 		elements.size() >= 5, true, "the tree uses at least five elements: %s" % [elements.keys()]
 	)
+
+
+## Whether this def's mechanism consumes `element_share`: `QiDamage` through
+## `ELEMENT_SHARE_KEY`, `MindDamage` through `SHARE_KEY`, body through NEITHER. A DUAL
+## counts when it includes qi or mind, because `mechanism_for_hit` walks `path_ids()` in
+## authored order and asks each in turn.
+##
+## Kept as its own function so the rule is stated once: a guard whose exemption is
+## scattered through the loop is a guard whose exemption nobody can find.
+static func _reads_a_share(def: TechniqueDef) -> bool:
+	for path_id in def.path_ids():
+		if path_id == PathState.QI or path_id == PathState.MIND:
+			return true
+	return false
+
+
+# --- the two authored hit intents (ADR 0070's aim, ADR 0071's kind) --------------
+#
+# Read on the SHIPPED `.tres` deliberately. A fixture built inside a test authors the
+# very field it is asserting about, so it can only ever prove the mechanism reads a
+# value — never that the content ships one. These two guards close the authored-content
+# half of that, which is the half that was missing.
+
+
+## Every `aim_meridian` names a meridian that EXISTS, on both sides.
+##
+## The name must be one of `MeridianDefaults`' 20 AND one of the `meridian_id`s the
+## authored huyệt carry, because those are the two vocabularies `BodyLocation` resolves
+## against: `_channel_of` for the channel and `_points_of` -> `meridian_of_point` for
+## the point inside it. A meridian with a channel but no huyệt resolves `locked` at a
+## neutral `1.0`, and one with neither is a `named` aim at nothing, which
+## `site_of` refuses outright — so both are content defects wearing a valid-looking id.
+##
+## And the ORDER matters: an aim whose channel unlocks DEEPER than the technique's own
+## floor is a strike that resolves `random` for every actor below that tier, which is the
+## silent form of this same gap. `body_crane_dance`'s first authoring was exactly that —
+## `yang_qiao`, tier 12, under a technique that opens at 11.
+func test_every_authored_aim_meridian_is_a_meridian_that_exists_and_can_be_unlocked() -> void:
+	var authored: Dictionary = {}
+	for state in MeridianDefaults.all():
+		authored[String(state.id)] = int(state.tier)
+	for def in _defs():
+		var aim := String(def.aim_meridian)
+		if aim.is_empty():
+			continue
+		assert_eq(
+			authored.has(aim),
+			true,
+			"'%s' aims at '%s', which is not one of the 20 meridians" % [def.id, aim]
+		)
+		if not authored.has(aim):
+			continue
+		assert_eq(
+			_acupoint_meridians().has(aim),
+			true,
+			(
+				"'%s' aims at '%s', which carries no authored huyệt, so every strike lands "
+				+ "on it at the neutral multiplier" % [def.id, aim]
+			)
+		)
+		# A DUAL row's floor is the DEEPEST of its paths, and a named aim below that
+		# floor is the same defect; the deepest is the only floor that binds.
+		var floor := 0
+		for realm in def.min_path_realm.values():
+			floor = maxi(floor, int(realm))
+		assert_eq(
+			int(authored[aim]) <= maxi(floor, 0),
+			true,
+			(
+				(
+					"'%s' aims at '%s', which unlocks at tier %d, deeper than its own floor "
+					+ "of %d - the aim resolves as random for every actor who can learn it"
+				)
+				% [def.id, aim, int(authored[aim]), floor]
+			)
+		)
+
+
+## Every `mind_kind` is one of the three words `MindDamage._kind_of` branches on.
+##
+## A fourth spelling is not a new kind and not an error the mechanism raises: `_kind_of`
+## answers `DISRUPT` for anything it does not recognise, so a typo silently turns an
+## authored `attend` back into the plain strike. The vocabulary is therefore asserted
+## HERE, where a typo is a content failure by name, and read once in
+## `mind_damage.gd` — two places, and the second cannot grow a fourth without this one
+## noticing.
+##
+## It is NOT asserted that every mind technique authors one. `TechniqueDef.mind_kind`'s
+## own contract says `&""` means "no authored intent" and reads as `disrupt`, and 46 of
+## the authored `.tres` are not mind techniques at all — so "author a kind or be a
+## non-mind row" would be a rule about coverage, not about correctness. `still_water`'s
+## own description ("it does no damage to anybody") is the honest `disrupt`, and forcing
+## it to a kind would be the author inventing an intent the fiction does not claim.
+func test_every_authored_mind_kind_is_one_of_the_three_real_kinds() -> void:
+	for def in _defs():
+		var kind := String(def.mind_kind)
+		if kind.is_empty():
+			continue
+		assert_eq(
+			["disrupt", "obscure", "attend"].has(kind),
+			true,
+			(
+				(
+					"'%s' authors the kind '%s', which is not one of disrupt/obscure/attend - "
+					+ "MindDamage._kind_of reads anything else as disrupt"
+				)
+				% [def.id, kind]
+			)
+		)
+
+
+## Every `meridian_id` the authored huyệt carry, read off the shipped files rather than
+## restated. Read through the same directory `CombatTuning.acupoint_data_dir` names, so
+## adding a twenty-first meridian needs no edit here.
+static func _acupoint_meridians() -> Dictionary:
+	var out: Dictionary = {}
+	var directory := CombatTuning.shipped().acupoint_data_dir
+	var dir := DirAccess.open(directory)
+	if dir == null:
+		return out
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while not entry.is_empty():
+		if not entry.begins_with(".") and entry.ends_with(".tres"):
+			var def: Variant = ResourceLoader.load("%s/%s" % [directory, entry])
+			if def is Object:
+				out[String((def as Object).get(&"meridian_id"))] = true
+		entry = dir.get_next()
+	dir.list_dir_end()
+	return out
 
 
 func test_every_defines_five_mastery_rungs_and_no_sixth() -> void:

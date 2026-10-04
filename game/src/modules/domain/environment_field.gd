@@ -1,14 +1,23 @@
 class_name EnvironmentField
 extends RefCounted
 
+## The `status` module's FACADE, preloaded because it is the one cross-module edge this
+## file owns. `tools arch` reads the `res://` reference and `rules.is_facade` names this
+## path `api.gd`, so the edge is legal exactly as `combat -> status` and `loot -> status`
+## already are; the preload is what makes it VISIBLE to that checker at all, since a
+## bare `StatusApi.` out of `modules/*` is in neither `res://` nor `extends` and
+## `BARE_REF_UNITS` excludes every module (`tools/arch/rules.py:61`).
+const StatusApi := preload("res://src/modules/status/api.gd")
+
 ## What standing inside an environment zone DOES (ADR 0075, AC4).
 ##
 ## A zone applies ONE status id and this class resolves what that status means for the
 ## actor who received it. **It never subtracts health, qi or stamina directly** — there
 ## is no `health -= f(x)` here and there never will be, because a second damage channel
 ## outside `StatusEffect` is exactly what ADR 0075 forbids. `apply` hands the status to
-## `Actor.add_status`; the consequences unfold under `Actor.tick_statuses`, so a hazard
-## obeys the same duration, stacking and cleanse rules as every other status.
+## `Actor.add_status` AND to the `status` module's runtime (see below); the consequences
+## unfold under `StatusApi.tick_statuses`, so a hazard obeys the same duration, stacking
+## and cleanse rules as every other status.
 ##
 ## ## The status is not a label; it carries the resolved strength
 ##
@@ -17,6 +26,19 @@ extends RefCounted
 ## worth something and a re-entry is a refresh rather than an unbounded stack. A caller
 ## that only checks `has_status` is reading presence, not consequence: the load-bearing
 ## assertions live on `magnitude` and on what `tick_statuses` actually pays.
+##
+## ## `add_status` is not enough, and that was the live defect
+##
+## This docblock once claimed "the consequences unfold under `Actor.tick_statuses`". They
+## did not. `Actor.add_status` is `core`'s ADR 0086 merge — it appends, merges and ages
+## — and the pulse lives in the `status` module's own per-actor runtime table, which only
+## `StatusApi.apply` / `apply_cultivation` ever populated. A zone that called
+## `add_status` alone landed a status that `has_status` reported, `Actor.tick_statuses`
+## aged out on the authored budget, and never cost a single point of health — a furnace
+## the player could stand in forever. Every zone now hands the effect to
+## [method _resolve] as well, which is the seam, and `apply_cultivation` is deliberately
+## NOT used instead: it REFUSES a COMBAT-scope def, and a zone is CULTIVATION scope for
+## a reason.
 ##
 ## The load-bearing rule is ONE status id and THREE structurally different substrates.
 ## qi, body and mind share exactly ONE power ladder (`RealmRate`) and must otherwise
@@ -272,13 +294,20 @@ const MIN_DURATION := 0.5
 ##
 ## ## Why `res://src/data/` and not `res://data/statuses/`
 ##
-## `StatusCatalog.STATUSES_ROOT` is `res://data/statuses` (`status_catalog.gd:31`) and
+## `StatusCatalog.STATUSES_ROOT` is `res://data/statuses` (`status_catalog.gd:35`) and
 ## that tree is a CLOSED twenty whose exact id set is pinned by
 ## `tests/modules/status/test_status_catalogue.gd:60` — adding a twenty-first id breaks
 ## that suite, which is not this file's to change. `env_scourge` could not live there in
-## any case: it rides NO element, and `StatusDef.problems()` refuses a def that declares
-## none (`status_def.gd:186`), because every status in that catalogue is inflicted by an
-## element-bearing blow. A hazard is not a blow — it is a place.
+## any case: it rides NO element, because a hazard is hostile to whichever elements its
+## ZONE names rather than to one of its own, and naming `fire` here would be a lie the
+## shipped catalogue would act on (`StatusApi.status_for_element` would answer with it
+## for every fire blow in the game).
+##
+## Both reasons are now answered by the `status` module rather than worked around here:
+## `env_scourge.tres` authors `ambient = true`, which is the def's own statement that a
+## place — not a blow — inflicts it, and `StatusCatalog.AMBIENT_SOURCES_ROOT` is this
+## path. So the def loads through the SAME `StatusDef.problems()` gate as the twenty and
+## [method _resolve]'s facade call resolves it, with the twenty untouched.
 ##
 ## `domain` keeps its authored content under `res://src/data/` for the same reason
 ## `domain/api.gd:28-33` gives: `tools data audit` scans `game/data`, so a domain def
@@ -293,6 +322,14 @@ const PULSES_PER_STAY := 4
 ## The cadence the hazard falls back to when the def cannot be read. Matches the
 ## authored `tick_interval` in `env_scourge.tres` so the degradation is invisible, and
 ## is `stay_budget / PULSES_PER_STAY` for the shipped `8.0` budget.
+##
+## **Authored CONTENT cadence, deliberately not on the clock.** ADR 0090's claim is that
+## retuning the hazard is a `.tres` edit, and this is the value that `.tres` holds
+## (`tick_interval = 2.0`) — the literal here exists so a MISSING def degrades to the
+## shipped cadence rather than to a zero interval. It is not a magnitude of world time:
+## the hazard is applied by `StatusLoop`'s frame delta, not by a period, and no
+## `TimeLadder` ratio is two seconds. Deriving it would put content balance on the
+## world's clock, so it stays authored and is reported to the single-source guard.
 const TICK_INTERVAL := 2.0
 
 ## The strongest hazard this field can resolve, and the ceiling a re-application is held
@@ -393,8 +430,16 @@ static func apply(actor: Actor, zone: EnvironmentZoneDef, path_id: StringName) -
 		# band is authored BELOW what is already held cannot be talked up by refresh.
 		existing.remaining = duration
 		existing.magnitude = minf(amount, existing.magnitude)
+		# The refresh reaches the tick channel too, or a re-application would lower the
+		# pulse WITHOUT touching the runtime that pays it. This is the measured defect
+		# this module had: `actor.add_status` alone left no `StatusRuntime` record, so
+		# `StatusApi.tick_statuses` skipped the status entirely and a furnace cost zero
+		# health however long a player stood in it.
+		_resolve(actor, existing)
 		return _result(false, zone.status_id, amount, lever, "refreshed an existing status")
-	actor.add_status(_hazard(zone, duration, amount))
+	var effect := _hazard(zone, duration, amount)
+	actor.add_status(effect)
+	_resolve(actor, effect)
 	return _result(true, zone.status_id, amount, lever, "")
 
 
@@ -675,6 +720,42 @@ static func _status(actor: Actor, status_id: StringName) -> StatusEffect:
 		if status.id == status_id:
 			return status
 	return null
+
+
+## Hand the hazard to the `status` module's own runtime bookkeeping. The ONE place
+## this file crosses that boundary, and it is a FACADE call (`modules/status/api.gd`),
+## never a reach into `StatusRuntime` — the same edge `combat` and `loot` already hold.
+##
+## ## Why the hazard cannot be applied through `StatusApi.apply`
+##
+## `apply` builds its own `StatusEffect` from the def it resolves
+## (`status/api.gd:_effect_for`), so it would spend the def's `share_per_pulse` against
+## the def's `magnitude_cap` and throw away the residual THIS actor resolved against
+## their own mitigation (`_amount`). `env_scourge` is also an AMBIENT def
+## (`ambient = true`) and `apply` resolves the element-riding catalogue alone, so it
+## refuses the hazard by name — which is correct: a landed blow can never inflict a
+## place. `resolve` is the verb that keeps the instance this file built and gives it the
+## runtime the tick path reads, and it resolves from either tree.
+##
+## ## Why a REFUSAL here is a loud failure, never a silent no-op
+##
+## A hazard that cannot register its runtime is exactly the defect this seam exists to
+## close — a furnace that ages out and pays nothing — so it says so rather than
+## returning the ordinary success shape. `tools arch` cannot see a refusal, only the edge.
+## This is now a state the shipped content never reaches: `env_scourge` is an admitted
+## ambient def, so a refusal here means an authored hazard stopped loading.
+static func _resolve(actor: Actor, effect: StatusEffect) -> void:
+	var answer := StatusApi.resolve(actor, effect)
+	if not bool(answer.get("ok", false)):
+		push_error(
+			(
+				(
+					"EnvironmentField: status '%s' is on the actor but the status module refused "
+					+ "to resolve it (%s); the hazard will age out without paying a pulse"
+				)
+				% [String(effect.id), String(answer.get("reason", "unknown"))]
+			)
+		)
 
 
 static func _result(

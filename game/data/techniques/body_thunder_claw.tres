@@ -20,5 +20,5 @@ stamina_cost = 70.0
 cooldown = 22.0
 mastery_rungs = 5
 magnitude = 4.3
-element_share = 0.9
+aim_meridian = &"du_mai"
 

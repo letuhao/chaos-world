@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G24_divine_hyacinth_cooldown_reduction_evasion"
 display_name = "Divine Hyacinth Cooldown reduction Evasion"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

@@ -150,7 +150,31 @@ func _recompute() -> void:
 	_put(Stat.QI_REGEN, aptitude * 0.2 + spirit * 0.1, buckets)
 	_put(Stat.STAMINA_REGEN, 10.0 + agility * 0.5, buckets)
 	_put(Stat.ATTACK_PHYSICAL, physique * 2.0, buckets)
-	_put(Stat.ATTACK_SPIRITUAL, spirit * 2.0 + aptitude * 0.5, buckets)
+	# `spirit` AND `aptitude`, and — since ADR 0183 — `will`.
+	#
+	# **Why `will` is here, and why it was a defect that it was not.** Both terms of
+	# `QiDamage` multiply this stat (`t_0 = m_0 * a_0`, ADR 0069), so whatever reads
+	# zero here makes the qi mechanism propose nothing and leaves S8's chip floor
+	# doing all the work. `spirit` and `aptitude` are NOT attributes every body in
+	# this game is born with: `stoneborn.tres` — a shipped origin, and the FIRST one
+	# `CharacterCreationFlow.RACE_BY_ORIGIN` maps — grants `{physique: 4.0,
+	# will: 1.0}` and nothing else. Its `ATTACK_SPIRITUAL` was therefore exactly
+	# `0.0`, and a stoneborn could enrol on the qi path (only `mind_cultivation` is
+	# closed to it) and swing for nothing.
+	#
+	# `will` is not a new constant smuggled in to paper over that. It is core's
+	# EXISTING spiritual attribute and the line directly below already reads it
+	# (`DEFENSE_SPIRITUAL = spirit * 1.2 + will * 0.6`), as do `POISE`,
+	# `STATUS_RESISTANCE`, `DAO_HEART` and `BREAKTHROUGH_CHANCE`. The defect was that
+	# the offence and defence halves of the same spiritual contest disagreed about
+	# which attributes were spiritual: a body could DEFEND against qi without being
+	# able to throw it. `will` carries the same `0.6` on both sides so the pair
+	# cannot drift apart again.
+	#
+	# This is realm-scaled (`RealmScaling.SCALED_STATS`), so it moves every actor's
+	# qi numbers by `0.6 x will x realm power`. Every actor with `will == 0` is
+	# bit-for-bit unchanged, which is every fixture that pins this stat's value.
+	_put(Stat.ATTACK_SPIRITUAL, spirit * 2.0 + aptitude * 0.5 + will * 0.6, buckets)
 	_put(Stat.CRIT_CHANCE, minf(0.75, 0.05 + fortune * 0.002 + agility * 0.0005), buckets)
 	_put(Stat.CRIT_DAMAGE, 1.5 + comprehension * 0.004, buckets)
 	_put(Stat.PENETRATION, spirit * 0.5, buckets)

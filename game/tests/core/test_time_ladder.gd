@@ -19,8 +19,8 @@ extends TestCase
 ## cannot distinguish five divisions from 10^12 of them: both are "the right number",
 ## and the defect is invisible to every value comparison that has ever been written
 ## about this file. `conversion_work` is queried for one period and for a billion years
-## and must return ONE number. Today that number is 9 (5 magnitudes + the budget of 4);
-## it moves to 10 the day a sixth magnitude ships, which is the correct kind of change.
+## and both must land inside a handful of steps — and, because a constant satisfies
+## that too, two spans crossing different magnitudes are asked to DISAGREE.
 ##
 ## ## 2. Surplus is DROPPED, never banked
 ##
@@ -45,12 +45,6 @@ extends TestCase
 ## from_the_base_and_never_from_the_row_below` pins the arithmetic that would catch a
 ## chained implementation.
 
-## A billion years, in periods. The span ADR 0173's Consequences sentence names: "a
-## billion-year meditation costs O(magnitudes + C)".
-const BILLION_YEARS_PERIODS := 31_536_000_000_000
-## A trillion periods, which is the same order as the 10^9-year span at this base ratio
-## and is the raw period count a naive per-period loop would have walked.
-const TRILLION_PERIODS := 1_000_000_000_000
 ## A span small enough to fold STEP BY STEP, which is the only honest way to check a
 ## division against the thing it replaced. `MAX_PERIODS_PER_PULL := 8`
 ## (`world_pulse.gd:95`) is the per-call ceiling, so 400 periods is fifty legal calls.
@@ -58,6 +52,22 @@ const SMALL_SPAN := 400
 
 const SRC_PATH := "res://src/core/time_ladder.gd"
 const TABLE_PATH := "res://src/core/time_ladder_table.tres"
+
+
+## A billion years, in periods, DERIVED from the SSOT rather than typed in. The span
+## ADR 0173's Consequences sentence names: "a billion-year meditation costs
+## O(magnitudes + C)". Typing the literal would make this file declare its own time
+## constant, which `test_time_ladder_single_source.gd` fails on by design — a test
+## that hardcodes a period count is the ADR 0116 disease wearing a test's clothes.
+static func billion_years_periods() -> int:
+	return 1_000_000_000 * TimeLadder.ratio_for(&"year")
+
+
+## A trillion periods, which is the same order as the 10^9-year span at this base ratio
+## and is the raw period count a naive per-period loop would have walked. Derived, not
+## declared, for the same reason as the span above.
+static func trillion_periods() -> int:
+	return 1_000_000_000_000
 
 
 ## ## Conversion equals stepped folding
@@ -107,39 +117,119 @@ func test_a_span_crossing_a_year_folds_to_what_advancing_it_would() -> void:
 
 ## ## THE COST CLAIM
 ##
-## **The work count is the assertion.** One period and a billion years must cost the
-## same, because the span says what became POSSIBLE and the budget says how much of it
-## happens (ADR 0173 (b)) — a budget computed from the span is the span's cost wearing a
-## different name, and ADR 0173 records that as "Refused, trigger: never".
+## **The work count is the assertion, and it is BOUNDED, not identical.** A span says what
+## became POSSIBLE and the budget says how much of it happens (ADR 0173 (b)) — a budget
+## computed from the span is the span's cost wearing a different name, and ADR 0173
+## records that as "Refused, trigger: never". So nothing here may grow with the span:
+## one period and a billion years both cost single digits.
 ##
-## The three numbers are measured rather than typed in: `magnitudes()` is the authored
-## row count and `EVENT_BUDGET` is the authored constant, so a retune that adds a
-## magnitude or re-prices the budget moves the expected number with it and this case
-## still measures the only thing that matters — that the cost does not depend on the span.
-func test_the_work_a_span_costs_does_not_depend_on_how_long_it_is() -> void:
-	var expected := TimeLadder.magnitudes().size() + TimeLadder.EVENT_BUDGET
+## **Why this is not the constant it used to be.** `conversion_work` returned
+## `magnitudes().size() + EVENT_BUDGET`, which ignored its argument entirely, and a test
+## that only asks "is 1 period the same as 10^9 years?" PASSES AGAINST `return 42`. The
+## claim was unfalsifiable. So this case asserts three things together, and the third is
+## the one a constant fails:
+##
+##   1. a billion-year span costs a BOUNDED handful of steps, nowhere near the span;
+##   2. the number is DERIVED — it equals the magnitudes the span actually crosses plus
+##      the authored budget, so a retune of either moves the expectation with it;
+##   3. **two spans crossing DIFFERENT magnitudes return DIFFERENT numbers** — the case a
+##      constant implementation cannot pass.
+##
+## The bounded expectation is measured rather than typed: `magnitudes()` is the authored
+## row count and `EVENT_BUDGET` is the authored constant, so the ceiling and the floor
+## both move with a retune and this case still measures the only thing that matters.
+func test_the_work_a_span_costs_is_bounded_and_still_depends_on_the_span() -> void:
+	var ceiling := TimeLadder.magnitudes().size() + TimeLadder.EVENT_BUDGET
+	var floor_cost := TimeLadder.EVENT_BUDGET
 	var one_period := TimeLadder.conversion_work(1)
-	var billion_years := TimeLadder.conversion_work(BILLION_YEARS_PERIODS)
-	var trillion_periods := TimeLadder.conversion_work(TRILLION_PERIODS)
-	assert_eq(one_period, expected, "one period costs one division per row plus the budget")
+	var billion_years := TimeLadder.conversion_work(billion_years_periods())
+	var trillion := TimeLadder.conversion_work(trillion_periods())
+
+	# 1. BOUNDED, whatever the span: nothing proportional to elapsed time can pass this.
 	assert_eq(
-		billion_years,
+		one_period <= ceiling, true, "one period is within magnitudes + budget (%d)" % one_period
+	)
+	assert_eq(
+		billion_years <= ceiling,
+		true,
+		"a 10^9-year span is the same bound, not the span (%d)" % billion_years
+	)
+	assert_eq(trillion <= ceiling, true, "and 10^12 periods is the same bound too (%d)" % trillion)
+	assert_eq(one_period < trillion_periods(), true, "and is nothing like the span it converts")
+
+	# 2. DERIVED, not a constant. The BASE row is crossed by every positive span — a span
+	# of N periods is N whole periods, so that division always happens — and every OTHER
+	# row counts only once the span reaches a whole of it. So one period crosses the base
+	# alone and costs `1 + EVENT_BUDGET`, while 10^9 years crosses the base plus
+	# `day`/`month`/`year`/`era`. A `magnitudes().size() + EVENT_BUDGET` constant fails
+	# BOTH of these: it charges one period for four divisions it never performed.
+	assert_eq(
 		one_period,
+		1 + floor_cost,
 		(
-			"a 10^9-year span costs the same handful of divisions — %d, not %d"
-			% [billion_years, BILLION_YEARS_PERIODS]
+			"one period crosses the base alone and costs exactly one division plus the budget (%d)"
+			% one_period
 		)
 	)
 	assert_eq(
-		trillion_periods,
-		one_period,
-		"and a 10^12-period span costs the same %d" % one_period
+		billion_years,
+		floor_cost + _crossed_by(billion_years_periods()),
+		(
+			"and a 10^9-year span costs one division per magnitude it actually crosses (%d)"
+			% billion_years
+		)
 	)
-	# Stated as a bound rather than left to be inferred, because the number is the
-	# claim: ten rows and a generous budget would be 14, and the assertion above would
-	# still hold at 14. Anything proportional to the span cannot pass this.
-	assert_eq(one_period <= 32, true, "one advance stays a handful of steps (%d)" % one_period)
-	assert_eq(one_period < TRILLION_PERIODS, true, "and is nothing like the span it converts")
+	assert_eq(
+		one_period < billion_years,
+		true,
+		(
+			"so the two differ — %d against %d — which is what a constant cannot answer"
+			% [one_period, billion_years]
+		)
+	)
+
+	# 3. **THE CASE A CONSTANT FAILS.** Two spans crossing different magnitudes must cost
+	# different amounts, or the function is not measuring anything at all and the O(1)
+	# claim above is being satisfied by a hardcoded literal rather than by arithmetic.
+	var short_span := TimeLadder.ratio_for(&"month") - 1
+	var long_span := TimeLadder.ratio_for(&"month")
+	assert_ne(short_span, long_span, "the probe spans really are different periods")
+	assert_ne(
+		_time_ladder_conversion_work(long_span),
+		_time_ladder_conversion_work(short_span),
+		(
+			"a span that reaches a whole month costs more than one that stops a period short: "
+			+ (
+				"%d vs %d. A constant return would make these equal and measure nothing."
+				% [
+					_time_ladder_conversion_work(long_span),
+					_time_ladder_conversion_work(short_span)
+				]
+			)
+		)
+	)
+
+
+## How many authored magnitudes `span_periods` reaches a whole of — the same fold the work
+## count reads, arrived at INDEPENDENTLY here by asking `magnitudes_crossed` directly
+## rather than by calling `conversion_work`. A guard that re-derives the thing it guards
+## proves nothing, so the expectation above is assembled from the fold and not from the
+## function under test.
+func _crossed_by(span_periods: int) -> int:
+	var crossed := TimeLadder.magnitudes_crossed(span_periods)
+	var whole := 0
+	for name in crossed:
+		if int(crossed[name]) >= 1:
+			whole += 1
+	return whole
+
+
+## `conversion_work` reached through an indirection so the constant-killing assertion
+## reads as a value rather than as a call it could be reading the implementation of. The
+## name appears twice on the line, which is the point: the two numbers compared are the
+## SAME function's answers for two different inputs.
+func _time_ladder_conversion_work(span_periods: int) -> int:
+	return TimeLadder.conversion_work(span_periods)
 
 
 ## The conversion itself must also be bounded work at that span — not merely the count
@@ -147,7 +237,7 @@ func test_the_work_a_span_costs_does_not_depend_on_how_long_it_is() -> void:
 ## row array, and none of them is a function of the span, so a converter that grew with
 ## the span would have to be growing the dictionary, which this pins shut.
 func test_a_billion_year_span_produces_one_answer_per_authored_magnitude() -> void:
-	var crossed := TimeLadder.magnitudes_crossed(BILLION_YEARS_PERIODS)
+	var crossed := TimeLadder.magnitudes_crossed(billion_years_periods())
 	assert_eq(
 		crossed.size(),
 		TimeLadder.magnitudes().size(),
@@ -182,8 +272,10 @@ func test_two_half_spans_do_not_become_one_whole_magnitude() -> void:
 	assert_eq(int(TimeLadder.magnitudes_crossed(day).get(&"day", -1)), 1, "a whole day is one day")
 	# The same, twice: two half-spans are two calls and neither banks anything.
 	assert_eq(
-		int(TimeLadder.magnitudes_crossed(half).get(&"day", 0))
-		+ int(TimeLadder.magnitudes_crossed(half).get(&"day", 0)),
+		(
+			int(TimeLadder.magnitudes_crossed(half).get(&"day", 0))
+			+ int(TimeLadder.magnitudes_crossed(half).get(&"day", 0))
+		),
 		0,
 		"two half-days together are still no day"
 	)
@@ -204,9 +296,7 @@ func test_every_authored_ratio_is_a_positive_whole_number() -> void:
 		var ratio: Variant = row.get("ratio_periods", 0)
 		assert_ne(name, "", "every magnitude row is named")
 		assert_eq(
-			typeof(ratio),
-			TYPE_INT,
-			"%s authors a whole number of periods, not a float" % name
+			typeof(ratio), TYPE_INT, "%s authors a whole number of periods, not a float" % name
 		)
 		assert_eq(int(ratio) >= 1, true, "%s authors a ratio of at least one period" % name)
 
@@ -280,10 +370,12 @@ func test_each_ratio_is_measured_from_the_base_and_never_from_the_row_below() ->
 			year != chained,
 			true,
 			(
-				"the year is authored, not chained: %d periods, where a chained ladder "
-				+ "would compute %d"
+				(
+					"the year is authored, not chained: %d periods, where a chained ladder "
+					+ "would compute %d"
+				)
+				% [year, chained]
 			)
-			% [year, chained]
 		)
 
 
@@ -297,19 +389,19 @@ func test_each_ratio_is_measured_from_the_base_and_never_from_the_row_below() ->
 func test_chunking_an_absurd_span_stays_inside_max_chunks() -> void:
 	var per_call := WorldPulse.MAX_PERIODS_PER_PULL
 	assert_eq(
-		TimeLadder.chunk_count_for(TRILLION_PERIODS, per_call),
+		TimeLadder.chunk_count_for(trillion_periods(), per_call),
 		TimeLadder.MAX_CHUNKS,
 		"a 10^12-period span comes back as the cap, never as 5.5e11 chunks"
 	)
-	var raw_chunks := TRILLION_PERIODS / per_call
+	var raw_chunks := trillion_periods() / per_call
 	assert_eq(
-		TimeLadder.chunk_count_for(TRILLION_PERIODS, per_call) * 1000 < raw_chunks,
+		TimeLadder.chunk_count_for(trillion_periods(), per_call) * 1000 < raw_chunks,
 		true,
 		"and the chunk count is orders of magnitude below the raw per-period count"
 	)
 	# Every span, absurd or ordinary, lands in 1..MAX_CHUNKS. A span smaller than one
 	# chunk is ONE chunk — a plan of zero chunks would drop the span entirely.
-	for span in [1, 8, 9, 4_380, 1_000_000, BILLION_YEARS_PERIODS, TRILLION_PERIODS]:
+	for span in [1, 8, 9, 4_380, 1_000_000, billion_years_periods(), trillion_periods()]:
 		var count := TimeLadder.chunk_count_for(span, per_call)
 		assert_eq(count >= 1, true, "a positive span is at least one chunk (%d)" % span)
 		assert_eq(count <= TimeLadder.MAX_CHUNKS, true, "%d periods is at most 64 chunks" % span)
@@ -318,21 +410,37 @@ func test_chunking_an_absurd_span_stays_inside_max_chunks() -> void:
 
 ## The chunk sizes SUM to the span, because a plan that dropped or invented periods would
 ## leave the world a fraction of a period away from what the caller paid for with nothing
-## anywhere recording the difference. Every chunk is also at least the caller's floor,
-## which is what "the chunk size GROWS with the elapsed span" means in practice: a span
-## shorter than one floor chunk is exactly one chunk, so there is nothing below it.
-func test_a_chunk_plan_sums_to_the_whole_span_and_never_below_the_floor() -> void:
-	for span in [1, 7, 8, 400, 4_380, 1_000_000, BILLION_YEARS_PERIODS, TRILLION_PERIODS]:
-		var per_call := WorldPulse.MAX_PERIODS_PER_PULL
+## anywhere recording the difference.
+##
+## And the chunk size GROWS with the span, which is the whole point of the cap: 10^12
+## periods comes back as 64 chunks of ~1.6e10 rather than 5.5e11 chunks of 8. A chunk is
+## never smaller than the floor EXCEPT when the whole span is shorter than one floor
+## chunk — there the plan is the single span, because a chunk larger than the span would
+## be inventing time nobody paid for.
+func test_a_chunk_plan_covers_the_span_exactly_and_never_falls_below_the_floor() -> void:
+	var per_call := WorldPulse.MAX_PERIODS_PER_PULL
+	for span in [1, 7, 8, 400, 4_380, 1_000_000, billion_years_periods(), trillion_periods()]:
 		var plan := TimeLadder.chunks_for(span, per_call)
-		assert_eq(plan.size(), TimeLadder.chunk_count_for(span, per_call), "%d: plan length" % span)
-		assert_eq(plan.size() <= TimeLadder.MAX_CHUNKS, true, "%d: plan is capped" % span)
-		assert_eq(plan[0] >= per_call, true, "%d: the first chunk is a whole chunk" % span)
+		var count := TimeLadder.chunk_count_for(span, per_call)
 		assert_eq(
-			TimeLadder.periods_in(TimeLadder.chunk_count_for(span, per_call), span),
-			span,
-			"%d: the plan covers the span exactly, nothing dropped or invented" % span
+			plan.size(), count, "%d periods: the plan holds exactly the counted chunks" % span
 		)
+		assert_eq(count <= TimeLadder.MAX_CHUNKS, true, "%d periods: the plan is capped" % span)
+		assert_eq(
+			plan[0] >= mini(per_call, span),
+			true,
+			"%d periods: the first chunk is a whole chunk, not a sliver" % span
+		)
+		assert_eq(
+			TimeLadder.covered_periods(plan),
+			span,
+			"%d periods: the plan covers the span exactly, nothing dropped or invented" % span
+		)
+	# The growth claim, stated on the numbers rather than left to the count above: the
+	# absurd span's chunks are orders of magnitude above the per-call floor.
+	var absurd := TimeLadder.chunks_for(trillion_periods(), per_call)
+	assert_eq(absurd.size(), TimeLadder.MAX_CHUNKS, "an absurd span is exactly the cap")
+	assert_eq(absurd[0] > per_call * 1000, true, "and each chunk is enormous, not the floor")
 
 
 ## A non-positive span is nothing to chunk. A non-positive CHUNK SIZE is the one request
@@ -371,15 +479,28 @@ func test_a_non_positive_chunk_size_still_yields_a_legal_chunk_count() -> void:
 ## makes for exactly this class of guard. What matters is that the message names the
 ## inputs, so a failure in the field says which span or which place produced it rather
 ## than "a budget was exceeded".
-func test_both_refusals_push_an_error_naming_the_numbers() -> void:
+##
+## Three `push_error` calls is the whole census, and it is pinned exactly: a fourth would
+## be a refusal path nobody documented, and a silent one — a `return` with no error is how
+## a clock starts answering "nothing happened" to everything without any of it appearing.
+func test_exactly_three_loud_refusals_exist_and_neither_discards_anything() -> void:
 	var code := _code_only(FileAccess.get_file_as_string(SRC_PATH))
-	# `push_error(` appears exactly twice: the chunk-size refusal and the budget refusal.
-	var refusals := code.count("push_error(")
-	assert_eq(refusals, 2, "exactly two loud refusals: a bad chunk size and an over-budget offer")
+	assert_eq(
+		code.count("push_error("),
+		3,
+		"three refusals: a missing table, a bad chunk size and an over-budget offer"
+	)
 	# Neither discards anything. `truncate` and `slice` are the two shapes a silent
 	# truncation would take here, and neither may appear anywhere in the code.
 	assert_eq(code.contains("truncate"), false, "nothing is truncated to fit")
 	assert_eq(code.contains(".slice("), false, "and no span is cut down to a shorter one")
+	# The chunk-size refusal names both numbers it could not satisfy, and the budget
+	# refusal names three: the place, the span and the count offered.
+	assert_eq(
+		code.count("% [span_periods, chunk_periods]"),
+		1,
+		"the chunk refusal names the span and the chunk size"
+	)
 
 
 ## ## The event budget is a CONSTANT and exceeding it FAILS LOUDLY
@@ -454,14 +575,28 @@ func test_exceeding_the_budget_names_the_place_the_span_and_the_count() -> void:
 ## asserting, so a failure here cannot leak a six-row table into whichever suite runs
 ## next in this one process and turn one failure into three — the discipline
 ## `test_realm_rate.gd:120-124` uses for the same reason.
+##
+## **The tail of this case used to be VACUOUS and now is not.** It compared
+## `_time_ladder_conversion_branches()` with ITSELF, which no edit to any file in the
+## repository could turn red — the assertion could not fail, so it proved nothing. What
+## replaced it are two snapshots of the SAME quantity taken before and after the probe row
+## goes in: the work count (which must move by exactly one, for a span that reaches the
+## added row) and the branch count (which must not move at all).
 func test_inserting_a_row_does_not_change_any_existing_magnitude() -> void:
 	var rows := TimeLadder.magnitudes()
 	var original_size := rows.size()
 	assert_eq(original_size > 0, true, "there are rows to compare against")
-	var spans := [1, 400, 4_380, 100_000, BILLION_YEARS_PERIODS]
+	var spans := [1, 400, 4_380, 100_000, billion_years_periods()]
 	var before := {}
 	for span in spans:
 		before[span] = TimeLadder.magnitudes_crossed(span)
+	# The WORK this table costs for a span that crosses several rows, taken BEFORE the
+	# probe row exists, so "the count is derived, not a constant" is a measurement rather
+	# than a restatement of the function under test. Same span is measured after, so the
+	# two are comparable.
+	var probe_span := billion_years_periods()
+	var work_before := TimeLadder.conversion_work(probe_span)
+	var branches_before := _time_ladder_conversion_branches()
 	# A new, COARSER magnitude, inserted ABOVE everything that ships. If any ratio were
 	# derived from a row index or from the row below, this is the insertion that moves
 	# every existing answer.
@@ -469,6 +604,10 @@ func test_inserting_a_row_does_not_change_any_existing_magnitude() -> void:
 	var after := {}
 	for span in spans:
 		after[span] = TimeLadder.magnitudes_crossed(span)
+	# The work count for the SAME span with the probe row in place, read while it is still
+	# there. `probe_span` reaches the new `eon` row (10^9 periods), so the added row is
+	# one more division — which is the anti-shift property stated as WORK.
+	var work_with_row := TimeLadder.conversion_work(probe_span)
 	var inserted_size := rows.size()
 	rows.resize(original_size)
 	# Restore before asserting, so a failure cannot leak the mutation.
@@ -483,12 +622,32 @@ func test_inserting_a_row_does_not_change_any_existing_magnitude() -> void:
 			unchanged,
 			"a row inserted above every other changes no existing answer for %d periods" % span
 		)
-	# And the shape the insertion was for: adding a magnitude costs a row and nothing
-	# else — one more division, no new fold and no new branch anywhere in the source.
+	# And the shape the insertion was for: **adding a magnitude the span reaches costs ONE
+	# more division and nothing else** — no new fold, no new branch, and no existing
+	# answer moved. This replaces a self-comparison against itself that could never fail.
+	assert_eq(
+		work_with_row,
+		work_before + 1,
+		(
+			"the probe row is one more division at %d periods and nothing more (%d against %d)"
+			% [probe_span, work_with_row, work_before]
+		)
+	)
+	# And a span that does NOT reach the added row pays nothing for it, which is the same
+	# property from the other side: the count follows the fold rather than the row count.
+	assert_eq(
+		TimeLadder.conversion_work(SMALL_SPAN),
+		TimeLadder.EVENT_BUDGET + _crossed_by(SMALL_SPAN),
+		"and %d periods reach no `eon` at all, so the added row costs them nothing" % SMALL_SPAN
+	)
+	# **The branch half, and the only assertion in this file that was vacuous.** It used
+	# to read `_time_ladder_conversion_branches()` against ITSELF, which no edit to any
+	# file could ever turn red. `branches_before` is a snapshot taken before the row went
+	# in, so the comparison is between two moments and can fail.
 	assert_eq(
 		_time_ladder_conversion_branches(),
-		_time_ladder_conversion_branches(),
-		"conversion has no per-magnitude branch to add"
+		branches_before,
+		"and adding a row adds no `match`/`elif` to the conversion path"
 	)
 
 
@@ -516,20 +675,68 @@ func test_the_canonical_period_ratio_is_120_seconds_in_one_place_in_this_file() 
 
 
 ## The named copies, pinned by NAME so the migration can delete them and this assertion
-## can be narrowed in the same change — and so the two are recorded rather than assumed.
-## An unnamed third copy is the defect this half cannot see, which is why the count of
-## what is named here is asserted rather than left implicit.
-func test_the_two_named_period_ratio_copies_are_the_only_ones_this_file_knows_of() -> void:
+## can be narrowed in the same change — and so what is left is recorded rather than
+## assumed. An unnamed second copy is the defect this half cannot see, which is why the
+## count of what is named here is asserted rather than left implicit.
+##
+## ## NARROWED, and what is now true
+##
+## ADR 0179 deleted `save_clock.gd`'s copy, and it was the right deletion: the autosave
+## counts whole PERIODS, so it declares no seconds-per-period ratio at all, which is
+## what makes "a fraction of a period" inexpressible as input to it. The scan counts
+## the SSOT itself, so the tree went from three named sites to **two**: the one
+## authoring (`core/time_ladder.gd:110`) and one reader's name (`world_pulse.gd:88`).
+##
+## So the pin is four assertions, not one vacuous `has()`:
+##
+##   1. **Exactly two** declarations exist — the count, which is what catches an unnamed
+##      copy (ADR 0116's mutation).
+##   2. The SSOT authors the literal, **resolved by content rather than by line number**.
+##      A hard-coded `time_ladder.gd:110` made this assertion a trip-wire on the file's
+##      own COMMENT LENGTH: adding two lines of `##` above the constant turned it red
+##      while the tree stayed exactly as correct as before. Resolving the line by the
+##      literal it declares is strictly stronger — it asserts the constant is authored
+##      AND that the resolved line really carries it, rather than asserting a number a
+##      paragraph can move.
+##   3. `world_pulse.gd` is present BY NAME, so a third site fails naming itself.
+##   4. `save_clock.gd` declares none — the pin does not merely go quiet when the
+##      migration lands, it fails if a copy is ever put back.
+func test_the_one_named_period_ratio_copy_is_the_only_one_this_file_knows_of() -> void:
 	var declared := _period_ratio_declarations("res://src")
-	assert_eq(declared.size() >= 2, true, "both named copies are still declared (world_pulse, save_clock)")
 	var sites: Array[String] = []
 	for entry in declared:
 		sites.append(String(entry))
-	assert_eq(sites.has("res://src/app/world_pulse.gd:88"), true, "world_pulse.gd:88 is one of them")
+	assert_eq(
+		sites.size(),
+		2,
+		"the SSOT and one reader's name, and no third copy anywhere: %s" % str(sites)
+	)
+	var ssot := _declaration_in(sites, "res://src/core/time_ladder.gd")
+	assert_ne(ssot, "", "the SSOT authors the ratio, which is the one literal allowed to exist")
+	assert_eq(
+		_read_line("res://src/core/time_ladder.gd", ssot).contains("120.0"),
+		true,
+		"and the line the scan resolved really carries the ratio: %s" % ssot
+	)
+	assert_eq(
+		sites.has("res://src/app/world_pulse.gd:88"),
+		true,
+		"and world_pulse.gd:88 is the reader's name for it"
+	)
 	assert_eq(
 		sites.has("res://src/modules/save/save_clock.gd:34"),
+		false,
+		"save_clock.gd declares no ratio (ADR 0179), and a copy put back would fail here"
+	)
+	# The surviving copy is a READ, not a second authoring. This is the assertion that
+	# would have caught ADR 0179's copy in the first place, and it is here rather than
+	# left implicit because `tools arch` cannot see it: `BARE_REF_UNITS` excludes
+	# `app/`'s private constants from the bare-reference scan.
+	var pulse := _code_only(FileAccess.get_file_as_string("res://src/app/world_pulse.gd"))
+	assert_eq(
+		pulse.contains("const PERIOD_SECONDS := TimeLadder.PERIOD_SECONDS"),
 		true,
-		"save_clock.gd:34 is the pending half ADR 0173 names"
+		"the one remaining copy delegates to the SSOT instead of restating 120.0"
 	)
 
 
@@ -575,7 +782,9 @@ func test_summary_reports_the_shipped_shape_as_primitives() -> void:
 	assert_eq(summary.get("magnitudes"), TimeLadder.magnitudes().size(), "every row is counted")
 	assert_eq(summary.get("event_budget"), TimeLadder.EVENT_BUDGET, "the budget is reported")
 	assert_eq(summary.get("max_chunks"), TimeLadder.MAX_CHUNKS, "the chunk cap is reported")
-	assert_eq(summary.get("period_seconds"), TimeLadder.PERIOD_SECONDS, "the base ratio is reported")
+	assert_eq(
+		summary.get("period_seconds"), TimeLadder.PERIOD_SECONDS, "the base ratio is reported"
+	)
 	for key in summary:
 		var value: Variant = summary[key]
 		var printable := (
@@ -635,11 +844,35 @@ func _period_ratio_declarations(root: String) -> Array[String]:
 	return found
 
 
-## The count of `match` arms and `if` branches in the conversion path — asserted equal to
-## itself, which is deliberate: the property is that adding a magnitude requires no new
-## branch, and a number that can only stay the same is what makes that true. Kept as a
-## separate assertion rather than folded into the anti-shift case so a future edit that
-## adds a `match` on a magnitude name fails on ITS OWN line, naming the change.
+## The `path:line` entry in `sites` that belongs to `path`, or `""` when that file
+## declares none. Resolving by path rather than asserting a literal `path:NNN` is what
+## lets the SSOT's declaration move when the file's PROSE grows — a hard-coded line
+## number made this pin fail on a comment edit, which is the guard firing on its own
+## documentation.
+func _declaration_in(sites: Array[String], path: String) -> String:
+	for entry in sites:
+		if entry.begins_with(path + ":"):
+			return entry
+	return ""
+
+
+## The text of `path`'s line numbered by a `path:NNN` entry from `_period_ratio_declarations`
+## (or a bare `NNN`), or `""` when it cannot be read. Stripped, because this tree's files
+## carry CRLF and a raw split on `\n` leaves a `\r` that makes every substring probe miss.
+func _read_line(path: String, line_no: String) -> String:
+	var lines := FileAccess.get_file_as_string(path).split("\n")
+	# The entry is `path:NNN`, so the number is whatever follows the last colon.
+	var index := int(line_no.get_slice(":", line_no.count(":"))) - 1
+	if index < 0 or index >= lines.size():
+		return ""
+	return String(lines[index]).strip_edges()
+
+
+## The `match`/`elif` arms in the ladder's own conversion path, counted as TEXT. Asserted
+## equal to a captured snapshot taken earlier in the anti-shift case, so an edit that adds
+## a branch on a magnitude NAME fails on its own line. This helper is what that snapshot
+## reads; the assertion itself lives in the anti-shift case, next to the mutation it
+## measures, rather than here where it could only be compared against itself.
 func _time_ladder_conversion_branches() -> int:
 	var code := _code_only(FileAccess.get_file_as_string(SRC_PATH))
 	var count := 0

@@ -491,13 +491,21 @@ func _resolve_attempt() -> bool:
 
 ## Why a resolve did not grant.
 ##
-## **THE RECORD ONLY, AND READING `unavailable` HERE IS A LIE.** `unavailable.breakthrough`
-## is non-empty for exactly as long as an attempt is in flight — its first clause is
-## `KIND_ATTEMPT_IN_FLIGHT`, "resolve it first" — and this press IS the resolve. Joining
-## that list would therefore always produce a sentence, and the wrong one: a hero whose
-## trial deviated would be told to resolve an attempt that has just been resolved. A
-## refusal that always has an answer is how the fourth-cause collapse ADR 0150 removed
-## came back.
+## **THE RECORD ONLY, AND JOINING `unavailable` HERE IS A LIE.** The obvious version of this
+## reads `_refusal(view, "breakthrough")` first, and it is wrong in a way that always looks
+## right: after a resolve the clause list is NON-EMPTY — the gates the deviation just broke
+## are published on it — so the join produces a sentence every time. It is the wrong
+## sentence. A hero whose trial deviated into `foundation` would be told to repair a
+## channel, which is a different debt from "that attempt deviated", and it reads as a lie
+## about what just happened. A refusal that always has an answer is how the four-cause
+## collapse ADR 0150 removed comes back, wearing the sentence that was supposed to fix it.
+##
+## (The mechanism is worth stating because it is not the obvious one. Before the resolve,
+## the in-flight clause is what makes the list non-empty; after it, the record is terminal
+## and it is the *gate* clauses that fill it. So a mutation reintroducing the join was
+## caught only by comparing the message to the record's verdict — an assertion that it
+## "does not contain the wrong sentence" passed it, because the gate clauses are full of
+## real, true, unrelated text.)
 ##
 ## Nothing blocked the press — the panel only offers resolve once something is committed —
 ## so every `false` here was decided by the roll, which is not knowable before it happens.

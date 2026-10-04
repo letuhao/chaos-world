@@ -189,12 +189,18 @@ func _technique(magnitude: float = 100.0, aim_meridian: StringName = &"") -> Tec
 ## `mode` is the per-HIT aim choice (`BodyDamage.AIM_MODE_KEY`), which is deliberately
 ## not `TechniqueDef.aim_meridian`: one authored id means `named` and its absence means
 ## `random`, while `broad` is a per-hit choice the author cannot make.
+##
+## There is deliberately NO wounds parameter, and it was removed with the channel it fed:
+## `ctx.data[BodyDamage.WOUNDS_KEY]` was written and never read (ADR 0195), and the
+## ledger a fixture actually wants is the one BOUND on the target — `CombatEngineApi
+## .attach_wounds` is the only writer, and `BodyDamage.apply_wounds` /
+## `CombatEffectApply._wound` read that. A `ctx` channel could only ever have been a
+## second answer about the same state.
 func _context(
 	attacker: Actor,
 	target: Actor,
 	technique: TechniqueDef,
 	mode: StringName = &"",
-	wounds: BodyWounds = null,
 	tuning: CombatTuning = null,
 	p_magnitude: float = NAN
 ) -> AttackContext:
@@ -208,8 +214,6 @@ func _context(
 		ctx.set_data(BodyDamage.AIM_MERIDIAN_KEY, technique.aim_meridian)
 	if mode != &"":
 		ctx.set_data(BodyDamage.AIM_MODE_KEY, mode)
-	if wounds != null:
-		ctx.set_data(BodyDamage.WOUNDS_KEY, wounds)
 	if tuning != null:
 		ctx.set_data(BodyDamage.TUNING_KEY, tuning)
 	return ctx

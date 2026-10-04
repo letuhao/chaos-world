@@ -58,11 +58,11 @@ extends RefCounted
 
 ## `NpcBoot.where_is(actor)` -> Dictionary. The tracked current room AND the presence
 ## for that room, in one read: `{has_actor, location_id, display_name, located, here}`.
-var read_room: Callable
 
 ## The reader the composition root installed. Empty until `NpcBoot.install` runs, and
 ## private because [method install_room_reader] is the only legal way to fill it.
 static var _reader: Callable = Callable()
+var read_room: Callable
 
 
 ## Hand the roster reader over. Called by `NpcBoot.install`; refused when the reader is

@@ -49,7 +49,22 @@ extends RefCounted
 ## here, where a frame is the thing that has seconds. Authored as a constant rather than
 ## inlined so the cadence is greppable: a pregnancy of N days must last N * this many
 ## frames, and that relation should be checkable by reading one line.
-const SECONDS_PER_GESTATION_DAY := 1.0
+##
+## **Turn tier, deliberately NOT a world period** (ADR 0173:48, "frame delta converted
+## where a frame has seconds"). Pregnancy resolves on the COMBAT clock, inside one
+## period, with the world frozen while it does — so a gestation day is one second of
+## combat time. Reading it off the ladder (`PERIOD_SECONDS / 12` periods per day) would
+## make every pregnancy 120x longer: a balance change, not a migration. There is no
+## `TimeLadder` magnitude equal to one second, so it is authored here and stays.
+##
+## **`_TURN` is the unit, spelled in the NAME because that is all a reader has.** A
+## constant called `SECONDS_PER_*` reads as "seconds per something on the ladder", which
+## is the conversion ratio this file deliberately is not: two units cross here, and the
+## single-source guard's vocabulary cannot tell which one without the suffix. The suffix
+## is what keeps the guard STRICT rather than exempted — `test_time_ladder_single_source`
+## names this file as the near-miss that proves the vocabulary gap was closed by
+## renaming the declaration and not by waving it through.
+const SECONDS_PER_GESTATION_DAY_TURN := 1.0
 
 ## Seconds above `RUPTURE_THRESHOLD` a sea must hold CONTINUOUSLY full turbulence before
 ## `MindDamage.tick_collapse` demotes it. This loop is the CALLER that owns the
@@ -57,7 +72,14 @@ const SECONDS_PER_GESTATION_DAY := 1.0
 ## own), so the timer lives here. `&""` actor carries no sea, and a sea that changes
 ## under `attach` starts the window over -- a timer that survived a target swap would be
 ## a collapse credited to a sea that never held the turbulence.
-const MAX_COLLAPSE_HELD := 3600.0
+##
+## **An hour, expressed as whole PERIODS off the SSOT rather than retyped** (ADR
+## 0173:49, "a held window in seconds"). It is the ceiling on an accumulator rather than
+## a cadence the world runs on, and the shipped 3600.0 was thirty 120-second periods —
+## so the ladder's base ratio is the one number this reads now, exactly as
+## `RealmRate.RATE_STEP` is read rather than copied. Value unchanged; a retuned period
+## carries the belt with it instead of leaving it pinned to a stale world.
+const MAX_COLLAPSE_HELD := TimeLadder.PERIOD_SECONDS * 30.0
 
 var _actor: Actor
 
@@ -164,7 +186,7 @@ func tick(delta: float) -> Dictionary:
 	# The ids whose suspension state flipped, so a caller can react to a suspension
 	# without re-reading the whole loadout.
 	result["technique_suspensions"] = _strings(TechniquesApi.settle_upkeep(_actor, step))
-	result["born"] = FertilityApi.advance(_actor, step * SECONDS_PER_GESTATION_DAY)
+	result["born"] = FertilityApi.advance(_actor, step * SECONDS_PER_GESTATION_DAY_TURN)
 	_tick_combat(step, result)
 	return result
 

@@ -252,6 +252,104 @@ static func harvest(
 	}
 
 
+## The read model: every node with an authored yield, whether or not the ledger
+## has ever heard of it, with the LIVE custody read off the holdings ledger beside
+## the authored figures. `{}` when there is no actor.
+##
+## ## Why this folds a second module's answer into this facade
+##
+## A gather screen has to show a node and a CLAIM in one row, and those are two
+## ledgers: `ForageApi` owns the yield table and `HoldingsApi` owns who holds
+## what. A screen allowed to name both would have to call both and reconcile them,
+## and the reconciliation -- "does the ledger's row for this node outrank the
+## catalog's?" -- is a rule, and a rule a screen owns is a rule two screens will
+## disagree about. So the fold happens HERE, beside the table it is folding in, for
+## the same reason ADR 0083 folds every read into `summary()` rather than growing
+## a facade past its twelve-method cap.
+##
+## **Precedence, stated once because it is the whole answer.** The ledger is the
+## truth about custody, so a node the ledger knows is reported from the ledger and
+## never from the catalog's `vacant` default; a node the ledger has never seen is
+## reported from the ledger's own ADR 0083 FIRST state (`vacant: true`), which
+## `HoldingsApi.claim` records for a node it is about to take. Either way `held`
+## is decided by whether the ledger names THIS holder.
+##
+## `known` is the flag that separates the two: false for a node this build does
+## not author at all, true for every other row whatever its custody. `workable` is
+## this screen's OWN conjunction of `held` and `permits` and is published beside
+## the inputs rather than instead of them, so a reader can see WHY a row is not
+## workable instead of only that it is not.
+static func view(actor: Actor, node_id: StringName) -> Dictionary:
+	var node_id_text := String(node_id)
+	var def := ResourceNodeCatalog.instance().definition(node_id)
+	var authored: String = ""
+	if _yields.has(node_id_text):
+		var candidates: Array = _yields[node_id_text] as Array
+		if not candidates.is_empty():
+			authored = String(candidates[0])
+	var out := {
+		"node_id": node_id_text,
+		"display_name": "",
+		"kind": "",
+		"realm": "",
+		"yield_per_period": 0,
+		"upkeep_per_period": 0,
+		"depletion": 0,
+		"claim_floor": 0,
+		"item_id": authored,
+		# `known` is whether this build AUTHORS the node at all, which is a different
+		# question from whether the ledger has heard of it and a different one again
+		# from whether anybody holds it. Three states, never collapsed.
+		"known": def != null,
+		"held": false,
+		"vacant": true,
+		"contested": false,
+		"condition": 0,
+		"resting": 0,
+		"accrued": 0,
+		"permits": false,
+		"workable": false,
+	}
+	if def != null:
+		out["display_name"] = def.display_name if def.display_name != "" else node_id_text
+		out["kind"] = String(def.normalized_kind())
+		out["realm"] = String(def.realm)
+		out["yield_per_period"] = def.yield_per_period
+		out["upkeep_per_period"] = def.upkeep_per_period
+		out["depletion"] = def.depletion
+		out["claim_floor"] = def.claim_floor
+		out["permits"] = actor != null and def.permits(actor.realm())
+	if actor == null:
+		return out
+	var nodes: Dictionary = HoldingsApi.summary(actor).get("nodes", {}) as Dictionary
+	var entry: Dictionary = nodes.get(node_id_text, {}) as Dictionary
+	# The custody decision is the ledger's, read through the SAME [_holds] the verb
+	# compares against, so the row a panel shows and the refusal the verb returns
+	# cannot disagree about who the holder is.
+	out["held"] = _holds(actor, node_id, {"id": String(actor.id)}) == ""
+	out["vacant"] = entry.is_empty() or bool(entry.get("vacant", false))
+	out["contested"] = bool(entry.get("contested", false))
+	out["condition"] = int(entry.get("condition", 0))
+	out["resting"] = int(entry.get("resting", 0))
+	out["accrued"] = int(entry.get("accrued", 0))
+	# **`workable` agrees with `ForageAction.workable` term for term**, and the
+	# granter is one of those terms. That is the whole reason it is published: a
+	# button whose enabled state is computed here while the verb refuses
+	# `no_granter` is a control that lies, and the granter is the term easiest to
+	# forget because nothing about a node or a claim mentions it.
+	out["workable"] = bool(out["held"]) and bool(out["permits"]) and _granter.is_valid()
+	return out
+
+
+## Every node with an authored yield, as [method view] rows, sorted by id so a
+## panel's order is the table's and not a dictionary's.
+static func views(actor: Actor) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for node_id in yieldable_node_ids():
+		out.append(view(actor, node_id))
+	return out
+
+
 ## Whether `actor` holds `node_id` under `owner`, as the ids `accrue` itself uses.
 ##
 ## Returns `""` when the custody is good, and holdings' OWN refusal id when it is not —

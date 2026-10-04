@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F43_mortal_gibbet_crit_chance_spirit_will"
 display_name = "Mortal Gibbet Crit chance Spirit Will"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"body_integration"
 fixed_modifiers = Array[Dictionary]([

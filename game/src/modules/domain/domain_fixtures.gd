@@ -1,6 +1,12 @@
 class_name DomainFixtures
 extends RefCounted
 
+## The `status` module's FACADE, preloaded for the reason `EnvironmentField` states: a
+## bare `StatusApi.` out of `modules/*` is invisible to `tools arch`
+## (`rules.BARE_REF_UNITS`), and the `res://` reference below is what makes the
+## `domain -> status` edge both legal and counted.
+const StatusApi := preload("res://src/modules/status/api.gd")
+
 ## What an AUTHORED FIXTURE does when a player walks onto it (ADR 0073, ADR 0075).
 ##
 ## `RoomDef.fixtures` was authored on seven rooms and read by nobody. Four code paths
@@ -34,10 +40,20 @@ extends RefCounted
 ## dictionary would silently break every save. Statuses are session-only
 ## (ADR 0089), so a trap's potency is re-resolved on arrival rather than stored.
 ##
+## ## `add_status` alone left the trap inert, and that was the measured defect
+##
+## This file used to say the cost of a trap was "the `StatusEffect` `_fire` builds" and
+## nothing more. `Actor.add_status` only merges and ages; the pulse is paid by the
+## `status` module out of its own per-actor runtime table, which nothing in `domain`
+## populated. A trap therefore fired, reported `OK_FIRED`, sat on the actor, passed every
+## presence assertion, and cost zero health. `_fire` now hands the effect to
+## [method _resolve] as well — that is the seam, and it is a facade call.
+##
 ## ## What this module deliberately does NOT do
 ##
-## `domain` declares `core` + `contracts` only (`tools/arch/registry.json:60`), so
-## this file names no sibling module's class — the same constraint
+## `domain` declares `core` + `contracts` + `status` (`tools/arch/registry.json:70`), so
+## this file reaches exactly ONE sibling module, and only through its facade
+## ([constant StatusApi]). It still names no `items` class — the same constraint
 ## `EnvironmentField` wrote a whole docblock about and `DomainSpawner` solved with
 ## [method set_minter]. Reading a key reach and handing over an item both need the
 ## items module, so both arrive through ONE injected pair of `Callable`s installed by
@@ -346,6 +362,43 @@ static func state_of(actor: Actor, room_id: StringName, fixture_id: StringName) 
 # ── resolution ───────────────────────────────────────────────────────────────
 
 
+## Hand the trap's status to the `status` module's own runtime bookkeeping, so it
+## actually pays. The ONE place this file crosses that boundary, and it is a FACADE call
+## (`modules/status/api.gd`) for exactly the reason `EnvironmentField._resolve` is — the
+## pulse lives in that module's per-actor runtime table, and `Actor.add_status` is only
+## `core`'s merge-and-age half of it.
+##
+## ## Why a trap cannot be applied through `StatusApi.apply`
+##
+## Two reasons, and the second is the one that would have bitten later. `apply` rebuilds
+## the effect from the def it resolves, so it would spend the def's own
+## `share_per_pulse` and discard the fixture's `damage_share` this file just resolved
+## against the actor's mitigation — the number `_fire` reports back. And `apply_cultivation`
+## REFUSES a COMBAT-scope def, which is what `fire_immolation` (a trap's own authored
+## status, `scope = combat`) is; a trap is forced to CULTIVATION scope here only because
+## `StatusApply`'s resistance gate never drew on it, and that is a fact about how the trap
+## is AUTHORED rather than about which verb receives it. The scope the def declares wins,
+## so the trap keeps spending health and stays clearable by combat exit.
+##
+## ## Why a REFUSAL is loud
+##
+## A trap that fired, reported `OK_FIRED`, and then cost nothing is the defect this seam
+## closes, so a status the status module will not resolve is an error rather than an
+## ordinary answer.
+static func _settle(actor: Actor, effect: StatusEffect) -> void:
+	var answer := StatusApi.resolve(actor, effect)
+	if not bool(answer.get("ok", false)):
+		push_error(
+			(
+				(
+					"DomainFixtures: trap status '%s' is on the actor but the status module "
+					+ "refused to resolve it (%s); the trap will age out without paying a pulse"
+				)
+				% [String(effect.id), String(answer.get("reason", "unknown"))]
+			)
+		)
+
+
 ## `{fixture, key}` on success, or an ANSWER dictionary on refusal — never a bare `{}`.
 ##
 ## The refusal is non-empty on purpose: every verb tests it with `get("ok", false)`
@@ -378,7 +431,8 @@ static func _resolve(actor: Actor, room_id: StringName, fixture_id: StringName) 
 
 ## Fire the trap: resolve the residual for THIS actor, build the status and hand it
 ## to `Actor.add_status`. It subtracts nothing here and never will — the whole cost is
-## what `Actor.tick_statuses` pays under the authored `duration_s`.
+## what `StatusApi.tick_statuses` pays under the authored `duration_s`, which is why
+## [method _resolve] runs immediately after the add (see that method's docblock).
 static func _fire(
 	actor: Actor, fixture: Dictionary, key: String, room_id: StringName
 ) -> Dictionary:
@@ -401,6 +455,7 @@ static func _fire(
 	# to `StatusEffect.has_mitigation()` instead of looking like nothing answers it.
 	effect.mitigation_tags = _levers(fixture)
 	actor.add_status(effect)
+	_settle(actor, effect)
 	_write(actor, key, {"armed": true, "spent": true})
 	return _answer(
 		true,

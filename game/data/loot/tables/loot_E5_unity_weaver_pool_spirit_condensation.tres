@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -7,21 +7,21 @@
 script = ExtResource("2_entry")
 id = &"E5_unity_weaver_spirit_condensation_0"
 kind = &"item"
-item_id = &"L1_iron_titan_bellows_heart"
+item_id = &"C28_earth_smeltery_ingotbar"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
-rarity_floor = &"magic"
+rarity_floor = &"rare"
 
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
 id = &"E5_unity_weaver_spirit_condensation_1"
 kind = &"item"
-item_id = &"V4_spirit_abscissa_bevor"
+item_id = &"L1_iron_titan_bellows_heart"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -29,20 +29,44 @@ rarity_floor = &"magic"
 
 [sub_resource type="Resource" id="entry_2"]
 script = ExtResource("2_entry")
-id = &"E5_unity_weaver_domain_20"
+id = &"E5_unity_weaver_spirit_condensation_2"
+kind = &"item"
+item_id = &"O9_earth_basalt_refined"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"E5_unity_weaver_spirit_condensation_3"
+kind = &"item"
+item_id = &"V4_spirit_abscissa_bevor"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
+
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"E5_unity_weaver_spirit_condensation_4"
 kind = &"item"
 item_id = &"mind_spirit_condensation_mind_herb"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
-guaranteed = true
-quantity = 6
+guaranteed = false
+quantity = 1
 rarity_floor = &"magic"
 
 [resource]
 script = ExtResource("1_table")
 id = &"loot_E5_unity_weaver_pool_spirit_condensation"
-display_name = "Unity Weaver (spirit_condensation)"
+display_name = "Unity Weaver salvage (spirit_condensation)"
 realm = &"spirit_condensation"
 rarity = &""
 rolls = 1
@@ -51,4 +75,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
 	SubResource("entry_2"),
+	SubResource("entry_3"),
+	SubResource("entry_4")
 ])

@@ -244,6 +244,35 @@ extends Resource
 # subtracts the SAME stat, so a build cannot be a great penetrationist against damage
 # and a useless one against statuses -- and, more importantly, penetration is not
 # applied to POTENCY anywhere, so the one investment never double-dips.
+## The BASE gate chance, before ADR 0087's resist terms are subtracted, for an
+## application this repo cannot author a per-technique `status_chance` for.
+##
+## ## Why this field exists, and what it is NOT
+##
+## ADR 0087 named a per-attack authored `status_chance` and ADR 0105 REPLACED it: the
+## carrier is now the ELEMENT (`StatusDef.element` + its `on_landed_blow` flag), so a
+## status cannot be authored per blow and the encounter path has no attack def to read a
+## chance off. ADR 0105 left the number as `CombatExchange.STATUS_GATE_CHANCE` and
+## recorded exactly this one-line fix as its debt: "add `@export var status_gate_chance`
+## to `CombatTuning`, author it in `combat_damage.tres` at `1.0`, and make this read
+## `CombatEngineApi.tuning().status_gate_chance`." This is that fix. The value SHIPPED is
+## unchanged at `1.0` -- moving it is the work; retuning it is a balance pass's, and
+## ADR 0087's consequence ("provisional … re-tuned by an edit, never by an ADR") is
+## precisely why it belongs here rather than in a `.gd`.
+##
+## ## `1.0` does NOT mean resistance is ignored
+##
+## `StatusApply.apply_chance` is `clampf(gate * (1 - STATUS_RESISTANCE) * (1 -
+## elem_resist), status_min_apply, 1.0)`, so a gate of `1.0` hands the whole decision to
+## the two resist terms and the roll -- which is what ADR 0087's formula is FOR. What it
+## DOES mean is that the base rate is unconditional, so an unresisted actor's `chance`
+## short-circuits to `1.0` and consumes no draw: every landed blow of that element
+## inflicts with certainty. That saturation is the value a balance pass moves first.
+##
+## Clamped to `[0, 1]` on read by `StatusApi`/`CombatExchange` callers: above one the
+## formula's own `clampf(..., 1.0)` makes it unreachable arithmetic, and a gate below
+## `0.0` is the CLOSED gate (ADR 0087), which spends no draw at all.
+@export var status_gate_chance: float = 0.0
 ## Floor on the apply chance of a gate that is OPEN. The multiplicative form
 ## `chance * (1 - STATUS_RESISTANCE) * (1 - elem_resist)` cannot go negative, so a
 ## defender can slow application to a crawl but can never make it impossible: this

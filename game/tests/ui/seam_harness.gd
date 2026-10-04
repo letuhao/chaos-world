@@ -117,8 +117,7 @@ func _mount() -> void:
 		unusable = "MISSING SEAM: %s has no instantiable root" % APP_SCENE
 	elif app.get_script() == null:
 		unusable = (
-			"MISSING SEAM: %s instantiated a root whose SCRIPT did not load, so the "
-			% APP_SCENE
+			"MISSING SEAM: %s instantiated a root whose SCRIPT did not load, so the " % APP_SCENE
 			+ "composition root never ran. The node tree parsed; the script it names failed "
 			+ "to compile or to resolve a base class. Read the parse error above this — it is "
 			+ "the cause, and it is not a missing navigation seam."

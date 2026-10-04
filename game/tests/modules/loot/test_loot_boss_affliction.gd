@@ -75,11 +75,71 @@ const RATE_GAP := 0.15
 ## the first three that genuinely diverge are used, which is why the list is the same sweep
 ## the rate cases measure over: one seed space, two claims about it.
 const _DIVERGENT_SEEDS: Array[int] = [
-	4001, 4008, 4015, 4022, 4029, 4036, 4043, 4050, 4057, 4064, 4071, 4078, 4085, 4092, 4099,
-	4106, 4113, 4120, 4127, 4134, 4141, 4148, 4155, 4162, 4169, 4176, 4183, 4190, 4197, 4204,
-	4211, 4218, 4225, 4232, 4239, 4246, 4253, 4260, 4267, 4274, 4281, 4288, 4295, 4302, 4309,
-	4316, 4323, 4330, 4337, 4344, 4351, 4358, 4365, 4372, 4379, 4386, 4393, 4400, 4407, 4414,
-	4421, 4428, 4435, 4442, 4449,
+	4001,
+	4008,
+	4015,
+	4022,
+	4029,
+	4036,
+	4043,
+	4050,
+	4057,
+	4064,
+	4071,
+	4078,
+	4085,
+	4092,
+	4099,
+	4106,
+	4113,
+	4120,
+	4127,
+	4134,
+	4141,
+	4148,
+	4155,
+	4162,
+	4169,
+	4176,
+	4183,
+	4190,
+	4197,
+	4204,
+	4211,
+	4218,
+	4225,
+	4232,
+	4239,
+	4246,
+	4253,
+	4260,
+	4267,
+	4274,
+	4281,
+	4288,
+	4295,
+	4302,
+	4309,
+	4316,
+	4323,
+	4330,
+	4337,
+	4344,
+	4351,
+	4358,
+	4365,
+	4372,
+	4379,
+	4386,
+	4393,
+	4400,
+	4407,
+	4414,
+	4421,
+	4428,
+	4435,
+	4442,
+	4449,
 ]
 
 # --- fixtures ------------------------------------------------------------------
@@ -561,8 +621,8 @@ func test_the_affliction_roll_does_not_disturb_the_boss_own_answer() -> void:
 			float(closed_result["share_taken"]),
 			float(open_result["share_taken"]),
 			(
-				"seed %d, whose gates diverge: the boss's answer is the same share whether or not a status landed"
-				% seed_value
+				"seed %d, whose gates diverge: the boss's answer is the same share "
+				+ "whether or not a status landed" % seed_value
 			)
 		)
 		assert_eq(
@@ -614,25 +674,37 @@ func test_every_shipped_affliction_names_a_def_the_catalogue_knows() -> void:
 
 
 func test_the_gate_is_one_dial_and_the_resist_formula_is_the_only_arithmetic() -> void:
-	# The `STATUS_GATE_CHANCE` decision, pinned so it cannot silently regress into a literal
-	# in logic. The constant stays in `combat` because this wave's charter forbids editing
-	# `modules/combat_engine/**`, where a `CombatTuning` `@export` would properly live; what
-	# is asserted here is the CONTRACT that makes that migration mechanical — one named
-	# constant, read in exactly the two places that spend a status gate, and the resolved
-	# chance is the spine's own `apply_chance` rather than a second opinion about what
-	# `status_resistance` means.
+	# The status GATE decision, pinned so it cannot silently regress into a literal in
+	# logic. DEF-0145 moved the number OFF the `CombatExchange.STATUS_GATE_CHANCE`
+	# constant and ONTO `CombatTuning.status_gate_chance` in `combat_damage.tres`, which
+	# is where ADR 0105 said it belonged and ADR 0087's consequence ("provisional …
+	# re-tuned by an edit, never by an ADR") requires it. Two assertions replace the one,
+	# and both are STRONGER than the single one they supersede:
+	#
+	#   1. the SHIPPED rate is still pinned at the value that shipped — the balance
+	#      decision is not weakened by the move, only relocated; and
+	#   2. the exchange reads the TUNABLE, proved by editing the tuning and watching the
+	#      gate follow. The old assertion could not tell a dial from a constant, which is
+	#      precisely the defect: it passed on a literal forever.
+	var tuning := CombatEngineApi.tuning()
 	assert_eq(
-		float(CombatExchange.STATUS_GATE_CHANCE),
+		tuning.status_gate_chance,
 		1.0,
 		"the shipped base gate is saturated, so the resist terms decide both rolls alone"
+	)
+	# The dial is real: retuning the `.tres` moves the gate, so this is a balance number
+	# and not a `.gd` literal wearing a tuning-shaped hat.
+	var retuned := CombatEngineApi.tuning()
+	retuned.status_gate_chance = 0.6
+	assert_eq(
+		CombatExchange._status_gate(retuned),
+		0.6,
+		"the gate follows the authored tuning, so editing the `.tres` retunes both paths"
 	)
 	# The formula itself, read through the spine: a resisted actor's resolved chance must be
 	# strictly below an open one's at the same gate. This is the claim the rate test above
 	# measures end to end, asserted here at its source so a failure localises.
-	var tuning := CombatEngineApi.tuning()
-	var open_chance := StatusApply.apply_chance(
-		CombatExchange.STATUS_GATE_CHANCE, null, tuning, 0.0
-	)
+	var open_chance := StatusApply.apply_chance(tuning.status_gate_chance, null, tuning, 0.0)
 	var closed_chance := StatusApply.apply_chance(0.0, null, tuning, 0.0)
 	assert_eq(float(open_chance), 1.0, "an unresisted actor at the shipped gate rolls at 1.0")
 	assert_eq(

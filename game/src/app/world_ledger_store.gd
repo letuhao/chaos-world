@@ -67,6 +67,12 @@ const _KEY_CONTAINERS := {
 	"custody": ["claims"],
 	"soul": ["incarnation", "origins"],
 	"anchor": ["raised"],
+	# DEF-0119. `polity` is the world-scoped root for facts between institutions, and it
+	# exists because `core/world_polity_ledger.gd` may not name this store and this store may
+	# not name that file. The containers are AUTHORED here and asserted equal to
+	# `WorldPolityLedger.CONTAINERS` by `tests/core/test_world_polity_ledger.gd` — a routing
+	# table, not a normalizer, for exactly the reason the paragraph above gives.
+	"polity": ["institutions", "debts"],
 }
 
 ## The one envelope key this view reads and writes. Fixed at construction, never a field a

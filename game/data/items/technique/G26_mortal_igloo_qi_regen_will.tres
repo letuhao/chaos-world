@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G26_mortal_igloo_qi_regen_will"
 display_name = "Mortal Igloo Qi regen Will"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"nascent_soul"
 fixed_modifiers = Array[Dictionary]([

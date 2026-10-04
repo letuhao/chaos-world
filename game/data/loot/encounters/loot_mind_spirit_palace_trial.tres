@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"spirit_palace"
 rarity = &"common"
-vitality = 128.0
+vitality = 8456.2
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_spirit_palace_warden", "table_id": &"loot_mind_spirit_palace_warden"},
 	{"boss_id": &"F7_palace_warden", "table_id": &"loot_F7_palace_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"spirit_palace"
 rarity = &"rare"
-vitality = 204.8
+vitality = 13530.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_spirit_palace_warden", "table_id": &"loot_mind_spirit_palace_warden"},
 	{"boss_id": &"F7_palace_warden", "table_id": &"loot_F7_palace_warden"},

@@ -9,11 +9,11 @@ tier = 1
 label = "Warded"
 realm = &"spirit_severing"
 rarity = &"common"
-vitality = 100.0
+vitality = 12843.8
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"loot_ember_vault_warden", "table_id": &"loot_ember_warden_t1"},
-	{"boss_id": &"loot_ember_vault_cinder_hound", "table_id": &"loot_ember_hound_t1", "vitality": 80.0},
-	{"boss_id": &"loot_ember_vault_ash_pilgrim", "table_id": &"loot_ember_pilgrim_t1", "vitality": 45.0}
+	{"boss_id": &"loot_ember_vault_cinder_hound", "table_id": &"loot_ember_hound_t1", "vitality": 10275.0},
+	{"boss_id": &"loot_ember_vault_ash_pilgrim", "table_id": &"loot_ember_pilgrim_t1", "vitality": 5777.8}
 ])
 
 [sub_resource type="Resource" id="tier_1"]
@@ -22,11 +22,11 @@ tier = 2
 label = "Kindled"
 realm = &"spirit_unity"
 rarity = &"magic"
-vitality = 170.0
+vitality = 20550.0
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"loot_ember_vault_warden", "table_id": &"loot_ember_warden_t2"},
-	{"boss_id": &"loot_ember_vault_cinder_hound", "table_id": &"loot_ember_hound_t2", "vitality": 140.0},
-	{"boss_id": &"loot_ember_vault_ash_pilgrim", "table_id": &"loot_ember_pilgrim_t2", "vitality": 60.0}
+	{"boss_id": &"loot_ember_vault_cinder_hound", "table_id": &"loot_ember_hound_t2", "vitality": 16440.0},
+	{"boss_id": &"loot_ember_vault_ash_pilgrim", "table_id": &"loot_ember_pilgrim_t2", "vitality": 9244.4}
 ])
 
 [resource]

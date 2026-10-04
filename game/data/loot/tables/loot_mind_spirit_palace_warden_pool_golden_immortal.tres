@@ -5,24 +5,24 @@
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"mind_spirit_palace_warden_domain_22"
+id = &"mind_spirit_palace_warden_golden_immortal_0"
 kind = &"item"
 item_id = &"qi_golden_immortal_cultivation_herb"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &""
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
 
 [resource]
 script = ExtResource("1_table")
 id = &"loot_mind_spirit_palace_warden_pool_golden_immortal"
-display_name = "Discernment Warden (golden_immortal)"
+display_name = "Discernment Warden salvage (golden_immortal)"
 realm = &"golden_immortal"
 rarity = &""
-rolls = 0
+rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
-	SubResource("entry_0"),
+	SubResource("entry_0")
 ])

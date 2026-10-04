@@ -57,18 +57,19 @@ func _prepare(actor: Actor) -> MindRealmSeed:
 	return target_seed
 
 
-## A seed whose first roll wins the evaluated chance. Preparation is identical
-## for every probe, so the roll is the only variable.
+## A seed whose first draw wins the evaluated chance.
+##
+## Arithmetic over `MindAttemptRoll.replay` — the generator `resolve_attempt` itself
+## builds — rather than a full prepare-and-resolve per candidate. Preparation was
+## identical for every probe, so the roll was always the only variable; asking the
+## helper directly asks the same question without rebuilding a hero 63 times.
 func _winning_seed() -> int:
-	for candidate in range(1, 64):
-		var probe := _actor()
-		if _prepare(probe) == null:
-			continue
-		var rng := RandomNumberGenerator.new()
-		rng.seed = candidate
-		if MindAdvancement.start(probe, rng) == null:
-			continue
-		if MindAdvancement.resolve_attempt(probe, rng):
+	var probe := _actor()
+	if _prepare(probe) == null:
+		return 0
+	var chance := float(MindAdvancement.preview(probe).get("chance", 0.0))
+	for candidate in range(MindAttemptRoll.MIN_SEED, 256):
+		if MindAttemptRoll.replay(candidate).randf() < chance:
 			return candidate
 	return 0
 
@@ -162,9 +163,18 @@ func test_restored_actor_can_resolve_the_loaded_attempt() -> void:
 	assert_eq(
 		float(committed.preparation.get("chance")) > 0.0, true, "the chance travelled with it"
 	)
-	var rng := RandomNumberGenerator.new()
-	rng.seed = committed.rng_state
-	assert_eq(MindAdvancement.resolve_attempt(restored, rng), true, "the loaded attempt resolved")
+	# No generator is handed in: the roll comes out of the record, which is the
+	# property under test. This used to rebuild a generator FROM `rng_state` and
+	# pass it in, which agreed with the record by construction and so could not
+	# tell a resolve that reads the record from one that was handed a stream.
+	assert_eq(
+		MindAdvancement.resolve_attempt(restored),
+		(
+			MindAttemptRoll.replay(committed.rng_state).randf()
+			< float(committed.preparation.get("chance"))
+		),
+		"the loaded attempt resolved on the roll its own record names"
+	)
 	assert_eq(restored.path(MindPath.PATH_ID).rank_id, &"foundation", "advanced once")
 
 

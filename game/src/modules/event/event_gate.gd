@@ -15,6 +15,7 @@ extends RefCounted
 ##   `{verb: "declare",    other_id: &"<polity>"}`      — the war's sides and prize
 ##   `{verb: "has_fate",   id: &"<fate_id>"}`           — DestinyApi, delegated
 ##   `{verb: "counter",    id: &"<counter_id>", need: 3}` — DestinyApi, delegated
+##   `{verb: "tagged",     id: &"<lineage_tag>"}`        — DestinyApi, delegated
 ##   `{verb: "all_of",     of: [...]}`
 ##   `{verb: "any_of",     of: [...]}`
 ##   `{verb: "none_of",    of: [...]}`
@@ -59,9 +60,20 @@ const VERB_DECLARE := &"declare"
 
 ## The verbs `DestinyGate` owns and this module therefore DELEGATES rather than
 ## re-implements. Listed so `catalog_report` can tell a typo from a delegation.
-const DELEGATED_VERBS: Array[StringName] = [&"has_fate", &"has_destiny", &"counter"]
+##
+## **`tagged` is here because it is a `DestinyGate` verb, not because this module
+## reads it.** Both lists below must name it or the two disagree: the runtime would
+## delegate an event trigger and open it, while `EventReadModel.unknown_verbs`
+## reported the same row as a typo — a tool/runtime disagreement about content
+## that is fine (ADR 0196, fate tag vocabulary).
+const DELEGATED_VERBS: Array[StringName] = [
+	&"has_fate",
+	&"has_destiny",
+	&"counter",
+	&"tagged",
+]
 
-## The full vocabulary this module reads: the two it contributes plus the three it
+## The full vocabulary this module reads: the two it contributes plus the four it
 ## delegates. A verb outside this set is a content bug and is named as one.
 const KNOWN_VERBS: Array[StringName] = [
 	EventFacts.VERB_FACT,
@@ -72,6 +84,7 @@ const KNOWN_VERBS: Array[StringName] = [
 	&"has_fate",
 	&"has_destiny",
 	&"counter",
+	&"tagged",
 ]
 
 
@@ -212,8 +225,14 @@ static func _composite(
 			continue
 		# A malformed child poisons the whole composite: refuse-with-cause means a
 		# nested requirement that cannot be read is never treated as satisfied.
+		#
+		# `unknown_tag` is here for the delegated `tagged` verb's sake: a coined
+		# lineage refused correctly by `DestinyGate` must not become a plain unmet
+		# just because an event trigger happened to compose it (ADR 0196, fate tag vocabulary). The other
+		# two are this module's own, and `DestinyGate.POISON_REASONS` is the one list
+		# for all three — a second copy here is the ADR 0066 shape.
 		var nested_reason := String(verdict.get("reason", ""))
-		if nested_reason == "malformed" or nested_reason == "unknown_verb":
+		if DestinyGate.POISON_REASONS.has(nested_reason):
 			return verdict
 		for entry in verdict.get("unmet", []) as Array:
 			if entry is Dictionary:

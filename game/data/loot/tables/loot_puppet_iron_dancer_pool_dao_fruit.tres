@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -7,9 +7,9 @@
 script = ExtResource("2_entry")
 id = &"puppet_iron_dancer_dao_fruit_0"
 kind = &"item"
-item_id = &"marionette_iron_needle"
+item_id = &"Z35_heaven_millstone_spessartine"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -19,13 +19,37 @@ rarity_floor = &"rare"
 script = ExtResource("2_entry")
 id = &"puppet_iron_dancer_dao_fruit_1"
 kind = &"item"
+item_id = &"marionette_iron_needle"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_dao_fruit_2"
+kind = &"item"
 item_id = &"puppet_iron_dancer_eye"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
 rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"puppet_iron_dancer_dao_fruit_3"
+kind = &"item"
+item_id = &"succubus_heaven_essence"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
 
 [resource]
 script = ExtResource("1_table")
@@ -37,5 +61,7 @@ rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
-	SubResource("entry_1")
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3")
 ])

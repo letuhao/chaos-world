@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"T9_divine_shrike_base"
 display_name = "Divine Shrike Base"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

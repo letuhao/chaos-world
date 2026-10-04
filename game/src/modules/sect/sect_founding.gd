@@ -39,8 +39,39 @@ extends RefCounted
 const FUNDING_POOL := &"sect_founding_funds"
 ## What founding starts a sect's treasury with, in periods. An opening balance is a
 ## starting state rather than a grant: the sect owes the world nothing on day one
-## and everybody in it something from the day they walk in.
+## and everybody in them something from the day they walk in.
 const TREASURY_OPENING_PERIODS := 1
+
+## ## The FIRST RUNG: a founding member is RECOGNISED by their own school
+##
+## `teach` is the ONLY verb that writes `fit` (`sect_teaching.gd:79`), it refuses a
+## teacher below the doctrine's `affinity_floor`, and fit starts at 0 — so the ladder
+## had no rung a player could stand on: a fresh founder held fit 0, every shippable
+## doctrine authors a floor above 0, and `teacher_unfit` was the only reachable
+## verdict. The gate itself is load-bearing and STAYS (ADR 0084: fit is a gate that
+## projects no stat). What was missing is the state the gate reads.
+##
+## ## Why a grant, and not a lower floor or an exemption
+##
+## The three options weighed were a doctrine-level floor of 0 for a school's own
+## doctrine, a first-teacher exemption, and an authored grant at founding. The floor
+## of 0 is rejected because it is exactly "weaken a gate to make this pass": it makes
+## EVERY member of the house teachable with no transmission at all, not just the one
+## who made the school. The first-teacher exemption is rejected because it hands the
+## floor to whoever happens to hold the top office, which is a vacancy a succession
+## walks — so the exemption would follow a SEAT, not a person, and `declare_schism`
+## would let a rival house promote somebody into it.
+##
+## The grant is the one that is about the FOUNDING ACT rather than about a seat or a
+## doctrine's number: founding a school is authoring a curriculum, and the person who
+## authored it is recognised as the one who can first deliver it. It is capped at the
+## doctrine's own floor, so it never buys a teaching post above the bar and never
+## projects a stat (ADR 0084).
+const FOUNDER_FIT_POINTS := 35
+## The cap the grant stops at. **The doctrine's own `affinity_floor`, never a number
+## of its own**: a school that authors a floor of 20 still yields a founder who may
+## teach that school and no more, and the floor remains the thing that decides.
+const FOUNDER_FIT_CAP := FOUNDER_FIT_POINTS
 
 ## The named reason each refusal of `found` uses. Declared once and reused verbatim
 ## by the facade's constants, so the vocabulary is authored in one file and a panel
@@ -150,6 +181,11 @@ static func write(
 	ledger[SectState.FOUNDER_KEY] = String(founder_id)
 	ledger["roster"] = {String(top.id): [String(founder_id)]}
 	ledger["treasury"] = treasury_lines(def)
+	# The first rung of the teaching ladder, written on the founder's own ledger. See
+	# `FOUNDER_FIT_POINTS` for why this is a grant rather than a lower floor or an
+	# exemption: the ladder has to have a rung somebody can stand on, and founding is
+	# the one act that recognises somebody with their own school.
+	grant_founder_fit(ledger, doctrine)
 	# A founding obligation is what the FOUNDER owes to hold the top office, which is
 	# the office's own rate stacked on the membership rate — not a fresh invention.
 	var duties := def.member_obligation_lines()
@@ -160,3 +196,37 @@ static func write(
 		)
 	ledger["obligation"] = duties
 	return ledger
+
+
+## ## The points the founding grant actually writes, and never more than the floor
+##
+## Capped at `min(FOUNDER_FIT_CAP, doctrine.floor_fit())` for two reasons, and the
+## second is the one that keeps ADR 0084 honest. A floor of 0 would hand the grant
+## nothing (there is no rung to stand on in a school that authors no floor — refusing
+## is then the correct answer), and a floor of 35 gets exactly 35: the founder may
+## teach the school they founded and may teach nothing else they have not been taught.
+## The cap is applied HERE rather than trusting the caller, because a caller's number
+## would be a number the module cannot check.
+static func founder_fit(doctrine: SectDoctrineDef) -> int:
+	if doctrine == null:
+		return 0
+	return clampi(FOUNDER_FIT_POINTS, 0, mini(FOUNDER_FIT_CAP, doctrine.floor_fit()))
+
+
+## Write [method founder_fit] onto `ledger`'s `fit` for this doctrine, and report how
+## many points actually landed. The ONE writer of the founding grant, so the cap above
+## is applied exactly once and a second caller cannot re-derive a looser number.
+##
+## `apply_fit` is the same writer `teach` uses, deliberately: the grant is a fit like
+## any other, so it lands on the same ledger key, is clamped at the same `FIT_CAP`, and
+## is read back by `SectState.fit` — there is no second fit store to drift.
+static func grant_founder_fit(ledger: Dictionary, doctrine: SectDoctrineDef) -> int:
+	if ledger == null or doctrine == null:
+		return 0
+	var points := founder_fit(doctrine)
+	if points <= 0:
+		return 0
+	# `apply_fit`'s `points` argument is a FLAT amount and its `periods` is a
+	# multiplier, so one period keeps the grant equal to the cap above rather than
+	# granting the doctrine's per-session rate times the cap.
+	return SectTeaching.apply_fit(ledger, doctrine.id, points, 1)

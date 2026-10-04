@@ -18,6 +18,10 @@ const TERM := "t_blood_price"
 ## An id that is NOT an institution, to prove the boundary rule bites.
 const PERSON := "t_founder_actor"
 
+## A player's regard line, spelled as the bad shape. It is one id and no pair, which is
+## exactly what a per-actor fact looks like and exactly what may NOT be written here.
+const TEXT_PERSON_LINE := "t_house->t_founder_actor"
+
 # --- The slot and the boundary ------------------------------------------------
 
 
@@ -56,11 +60,6 @@ func test_an_inter_institution_line_is_institutional_and_a_person_line_is_not() 
 		WorldPolityLedger.is_institutional(HOUSE), false, "a single institution is not a pair"
 	)
 	assert_eq(WorldPolityLedger.is_institutional(""), false, "nothing is not a pair")
-
-
-## A player's regard line, spelled as the bad shape. It is one id and no pair, which is
-## exactly what a per-actor fact looks like and exactly what may NOT be written here.
-const TEXT_PERSON_LINE := "t_house->t_founder_actor"
 
 
 func test_a_self_pair_is_not_institutional_because_it_has_no_order() -> void:
@@ -337,7 +336,7 @@ func test_no_copy_of_a_debt_exists_on_the_actor_payload() -> void:
 
 ## Write the pair through the ledger the way `SectApi` will, so the suite exercises the
 ## shipped normalizer rather than a hand-built dictionary the normalizer never sees.
-func _write_a_debt(actor: Actor) -> Dictionary:
+func _write_a_debt(_actor: Actor) -> Dictionary:
 	var ledger := WorldPolityLedger.empty()
 	ledger["institutions"][HOUSE] = {"kind": "sect", "standing": 40, "standing_cap": 100}
 	ledger["institutions"][RIVAL] = {"kind": "sect", "standing": 10, "standing_cap": 80}

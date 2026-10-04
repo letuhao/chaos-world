@@ -105,8 +105,6 @@ extends DamageMechanism
 const AIM_MODE_KEY := &"aim_mode"
 ## `ctx.data` key carrying the authored aim id.
 const AIM_MERIDIAN_KEY := &"aim_meridian"
-## `ctx.data` key carrying the defender's `BodyWounds` ledger.
-const WOUNDS_KEY := &"body_wounds"
 ## `ctx.data` key overriding the tuning for one hit. `CombatTuning` is this module's own
 ## type, so it is named here and nowhere else on the body path.
 const TUNING_KEY := &"tuning"
@@ -269,19 +267,33 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 	}
 
 
-## A `ctx_builder` for `CombatSpine.resolve_hit`: carries this mechanism's inputs and the
-## defender's wound ledger through the ONE context, so the spine needs no sixth stage and
-## no knowledge of what a body hit is (ADR 0067).
+## A `ctx_builder` for `CombatSpine.resolve_hit`: carries this mechanism's inputs through
+## the ONE context, so the spine needs no sixth stage and no knowledge of what a body hit
+## is (ADR 0067).
 ##
 ## ```
 ## CombatSpine.resolve_hit(attacker, target, technique, tuning, rng,
-##     BodyDamage.builder(technique, BodyWounds.new()))
+##     BodyDamage.builder(technique, BodyLocation.MODE_NAMED))
 ## ```
+##
+## ## There is deliberately NO ledger parameter, and it was DELETED (ADR 0195)
+##
+## This used to take a `p_wounds` and write it to `ctx.data[WOUNDS_KEY]`, on the stated
+## reason that "the wound layer rides `ctx.data`". **Nothing ever read that key.**
+## `breakdown` reads `AIM_MERIDIAN_KEY` / `AIM_MODE_KEY` / `TUNING_KEY` and never it,
+## production passed `null` (`combat_boot.gd` has always called this with `null`), and
+## wounds settle by a different and correct route: `CombatEffectApply._wound` reads
+## `CombatEngineApi.wounds_of(target)` off the `body_wounds` COMPONENT. So the channel
+## was a second, unwritten, unread path to state that is already bound on the actor —
+## a live trap rather than a dormant one, because a caller who passed a ledger would see
+## it silently ignored and could conclude the applier had a bug.
+##
+## Deletion over wiring, deliberately: there is nothing to wire TO. Wounds are component
+## state (ADR 0140) and `Actor._wounds_dict` serialises them, so a context channel could
+## only ever disagree with the thing a save carries. A caller that wants to settle a
+## proposal uses [method apply_wounds], which reads the bound ledger by construction.
 static func builder(
-	p_technique: Variant = null,
-	p_wounds: Variant = null,
-	p_mode: StringName = &"",
-	p_tuning: Variant = null
+	p_technique: Variant = null, p_mode: StringName = &"", p_tuning: Variant = null
 ) -> Callable:
 	return func(ctx: AttackContext) -> AttackContext:
 		if ctx == null:
@@ -290,8 +302,6 @@ static func builder(
 			ctx.set_data(AIM_MERIDIAN_KEY, (p_technique as Object).get(&"aim_meridian"))
 		if p_mode != &"":
 			ctx.set_data(AIM_MODE_KEY, p_mode)
-		if p_wounds != null:
-			ctx.set_data(WOUNDS_KEY, p_wounds)
 		if p_tuning is CombatTuning:
 			ctx.set_data(TUNING_KEY, p_tuning)
 		return ctx

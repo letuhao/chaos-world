@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F44_mortal_gittern_crit_chance_dao_heart_health_regen"
 display_name = "Mortal Gittern Crit chance Dao heart Health regen"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"nascent_soul"
 fixed_modifiers = Array[Dictionary]([

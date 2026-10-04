@@ -122,32 +122,42 @@ const LEVERS: Array[StringName] = [&"affinity", &"gear", &"technique", &"pill"]
 ## Pools a status may spend. A bounded pool write is a channel, not a damage formula.
 const POOLS: Array[StringName] = [&"health", &"qi", &"stamina"]
 const OPS: Array[StringName] = [&"flat", &"percent"]
-## Stats a PERCENT modifier on is a GUARANTEED no-op, because
-## `ActorStats._put` resolves `(base + flat) * (1 + percent)` and their baseline
-## reads `0.0` for every actor the shipped content can build (ADR 0022).
+## Stats a PERCENT modifier on is refused for, because authoring one is a mistake:
+## `ActorStats._put` resolves `(base + flat) * (1 + percent)`, and for every id below a
+## PERCENT is either a guaranteed no-op or an author-confusing rounding error. **The
+## list is a single authoring convention covering FIVE differently-shaped stats**, and
+## the note on each is what tells a designer which of the two they are in.
 ##
-## ## Why this list is longer than the literal `0.0`
+## ## The two shapes in this list, MEASURED rather than asserted (DEF-0262, 2026-10-04)
 ##
-## `damage_reduction` is the only one whose baseline is the CONSTANT `0.0`. The other
-## four are `minf(cap, attribute * k)` — the shape ADR 0022 calls `attribute-gated` and
-## keeps in `Stat.RATE_STATS`, correctly, because a cap term makes FLAT the worse error.
-## But "zero when the attribute is low" and "zero at every attribute this game builds"
-## are different claims, and only the second makes PERCENT a guaranteed no-op. Measured
-## over the numbers actually authored under `game/data`, the split is:
+## - `damage_reduction` is the ONLY one whose baseline is the CONSTANT `0.0`. A PERCENT
+##   there is the literal ADR 0022 defect: `(0.0 + 0.0) * (1 + p) = 0.0` for every `p`,
+##   44 items once granted nothing at all.
+## - The other four are `minf(cap, attribute * k)` — ADR 0022's `attribute-gated` shape,
+##   which stays in `Stat.RATE_STATS` because the cap term makes FLAT the worse error.
+##   Their baseline is a small NON-ZERO number, so a PERCENT is not *literally* inert, and
+##   an earlier revision of this comment claimed they read `0.0` for every actor and
+##   that PERCENT was "meaningful in normal play". **Both halves were wrong.** Measured
+##   through a real `ActorStats`: `status_resistance` on a shipped race's own `will` of
+##   `2.0` reads `0.006`, not `0.0`.
 ##
-## - `evasion`      = `minf(0.6, agility * 0.0015)`           needs agility 400; authored 1..15
-## - `status_resistance` = `minf(0.8, will * 0.003)`          needs will 250;    authored -2..24
+## So for the attribute-gated four the refusal is a CONVENTION, not an arithmetic
+## necessity: the lever is much smaller than the author of `percent 0.2` will picture,
+## and a FLAT states the same intent on a 0..1 stat unambiguously. Refusing it anyway is
+## what stops five ids from spelling the same number two ways.
+##
+## Per-stat gate arithmetic, each measured against the authored content:
+## - `evasion`        = `minf(0.6, agility * 0.0015)`        needs agility 400;   authored 1..15
+## - `status_resistance` = `minf(0.8, will * 0.003)`       needs will 250;      authored 3..52.9
 ## - `cooldown_reduction` = `minf(0.4, comprehension * 0.002)`
 ##   needs comprehension 500; authored 0..18
-## - `qi_cost_reduction` = `minf(0.5, aptitude * 0.001)`      needs aptitude 500; authored 1..13
-## - `damage_reduction`  = `0.0`                              needs nothing
+## - `qi_cost_reduction` = `minf(0.5, aptitude * 0.001)`   needs aptitude 500;  authored 1..13
+## - `damage_reduction`  = `0.0`                           needs nothing
 ##
-## Every gate is one to two orders of magnitude past the top of its authored range, so
-## these are not "degrade for a low-agility build" — they are zero for EVERY actor, and a
-## PERCENT on any of them reads `(0.0 + 0.0) * (1 + p) = 0.0` forever. This is exactly
-## the defect ADR 0022 measured for `damage_reduction` (44 items granting nothing at all)
-## still present under four other ids, and `Stat.RATE_STATS` cannot catch it because
-## membership there is a claim about FLAT, not about PERCENT.
+## Every gate is one to two orders of magnitude past the top of its authored range. The
+## attribute-gated four therefore sit at a SMALL fraction of their cap in real play, and
+## that is the stat's shape working: ADR 0087's multiplicative form still bottoms out at
+## `1.0 * (1 - 0.8) = 0.2` and `status_min_apply` is the floor under THAT.
 ##
 ## The audit is checked against the STAT, never against the status that carries it
 ## (ADR 0090). `tests/modules/status/test_status_refusals.gd` pins each id against a
@@ -170,6 +180,24 @@ const DURATION_FOREVER := -1.0
 ## mapping of ADR 0105, authored; see the docblock above for why it is not derived and
 ## why `false` is the safe default.
 @export var on_landed_blow: bool = false
+## Whether this status is inflicted by BEING SOMEWHERE rather than by a landed blow:
+## an ADR 0075 environment zone, an ADR 0073 trap. An ambient def is a PLACE and not a
+## blow, so it answers to the zone's or fixture's own `kind` rather than to one element,
+## and `problems()` stops requiring one — see that method for why that is a relaxation
+## of a gate rather than the deletion of one.
+##
+## ## Why this is authored rather than inferred from an empty element
+##
+## Inference would make every future typo into a hazard: a def whose `element` was
+## forgotten would quietly become an ambient status and pass. Authored, the refusal is
+## the same one thing everywhere — a def that has neither an element nor an ambient
+## claim is an incomplete authoring, not a hazard.
+##
+## ## `false` is the safe default, for [member StatusDef.on_landed_blow]'s reason
+##
+## An ambient status is never reachable from `status_for_element`, because it declares
+## no element to claim one.
+@export var ambient: bool = false
 @export var kind: StringName = &"dot"
 @export var scope: StringName = &"combat"
 @export var stacking: StringName = &"refresh"
@@ -218,8 +246,33 @@ func problems() -> Array[String]:
 	var out: Array[String] = []
 	if id == &"":
 		out.append("has no id")
+	# ## The element gate is conditional, and the condition is AUTHORED
+	#
+	# Every one of the twenty in `res://data/statuses/` is inflicted by a landed blow
+	# carrying an element, so naming one is how a def says which. An AMBIENT def is not:
+	# an ADR 0075 zone applies it by the actor STANDING THERE, and what the zone is
+	# hostile to is the zone's own `kind` -> element table
+	# (`EnvironmentField.HOSTILE_ELEMENTS`), not a property of the status. Forcing
+	# `fire` onto a furnace would be a lie the shipped catalogue would act on —
+	# `StatusApi.status_for_element` would answer with it for every fire blow in the
+	# game — so the gate asks the def which of the two it is instead of assuming.
+	#
+	# The relaxation is bounded in both directions: an AMBIENT def may name an element,
+	# and is still checked against [constant AUTHORED_ELEMENTS] if it does; and a
+	# non-ambient def names nothing and is refused exactly as before. Every other rule
+	# below is untouched, so an ambient hazard still owes non-empty `mitigation_tags`
+	# (ADR 0075), a resolvable channel and a positive cadence.
 	if element == &"":
-		out.append("declares no element")
+		if not ambient:
+			(
+				out
+				. append(
+					(
+						"declares no element and does not claim to be ambient; every status a landed "
+						+ "blow inflicts names the element it rides (author `ambient = true` for a hazard)"
+					)
+				)
+			)
 	elif not AUTHORED_ELEMENTS.has(element):
 		out.append(
 			(
@@ -273,6 +326,8 @@ func to_dict() -> Dictionary:
 	return {
 		"id": String(id),
 		"element": String(element),
+		"ambient": ambient,
+		"on_landed_blow": on_landed_blow,
 		"kind": String(kind),
 		"scope": String(scope),
 		"stacking": String(stacking),

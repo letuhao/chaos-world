@@ -20,5 +20,5 @@ stamina_cost = 26.0
 cooldown = 6.0
 mastery_rungs = 5
 magnitude = 1.0
-element_share = 0.35
+aim_meridian = &"bladder"
 

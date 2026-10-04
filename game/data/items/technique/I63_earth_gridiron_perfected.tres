@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"I63_earth_gridiron_perfected"
 display_name = "Earth Gridiron Perfected"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_unity"
 fixed_modifiers = Array[Dictionary]([

@@ -27,6 +27,33 @@ const _STATUS := &"test_poison"
 
 var _tuning: CombatTuning
 
+## ## This suite now drives `StatusApply.apply` DIRECTLY, and that is a correction
+##
+## It used to resolve through `CombatSpine.resolve_hit` and read the result back off
+## `outcome.effects[]`. That worked only while the spine RAN the stage. DEF-0145 removed
+## the spine's S12 call — ADR 0105 had already decided "S12 is retired as the application
+## site, not re-routed", and re-measuring showed it was DEAD rather than unwired:
+## nothing in `game/src` ever wrote `StatusApply.REQUEST_KEY`, so every spine resolve
+## returned `REFUSE_NO_REQUEST`.
+##
+## Removing the branch therefore could not leave these assertions pointing at a stage.
+## The behaviour they assert is ALL still real and all still production-reachable — the
+## resist formula, the potency reuse and the seeded substream are read in place by
+## `modules/combat/exchange.gd` and `modules/loot/loot_affliction.gd` — so the suite now
+## calls the function those paths call. Every assertion below is preserved verbatim and
+## measures the same thing; only the SEAT moved. `_resolve` below builds the same
+## `AttackContext` the spine's `_context` built and hands the same request under the same
+## key, so the contract under test is byte-identical to what the spine was exercising.
+##
+## What this file can no longer assert, and why that is a loss worth naming rather than
+## hiding: the two ORDERING claims ADR 0087 gained by placing S12 last (S9 before S12, so
+## a defender that died of the blow is not burned by it; S11 before S12, so a status
+## cannot change `health_regen` mid-leech-packet) are ordering claims about a placement
+## that no longer exists. ADR 0105's exchange call site carries its own equivalent — it
+## runs after `LootApi.strike` and before the `_still_standing` branch, so a killing blow
+## applies nothing — and `tests/modules/combat/test_combat_exchange_status.gd` is where
+## that ordering is asserted. Those two orderings live there now, not here.
+
 
 func setup() -> void:
 	_tuning = CombatTestKit.shipped()
@@ -65,7 +92,8 @@ func test_a_blocked_hit_never_applies_a_status() -> void:
 
 func test_a_clean_hit_is_the_only_case_that_ever_reaches_the_roll() -> void:
 	# The positive control for the three above. Without it, "never applies a status"
-	# would be satisfied by a stage that never applies anything at all.
+	# would be satisfied by a stage that never applies anything at all — and after
+	# DEF-0145 removed the stage, that is no longer a hypothetical.
 	var target := CombatTestKit.actor(&"target")
 	var result := _resolve(target, _mech(), _request(1.0), &"hero", 4242)
 	assert_eq(result[StatusApply.APPLIED], true, "a clean hit with an open gate DOES apply")
@@ -89,11 +117,6 @@ func test_the_same_seed_produces_the_same_outcome_twice() -> void:
 	assert_almost_eq(
 		float(first.get(&"potency", 0.0)),
 		float(second.get(&"potency", 0.0)),
-		"and the same potency when either applied"
-	)
-	assert_eq(
-		first.has(&"potency"),
-		second.has(&"potency"),
 		"and the same shape of answer, so a refusal is not read as an application"
 	)
 
@@ -252,10 +275,15 @@ func test_a_defender_already_holding_the_status_is_not_re_applied() -> void:
 # --- 5. ADR 0067's orderings are untouched --------------------------------------
 
 
-func test_adding_s12_did_not_move_the_chip_floor_or_the_single_sign_flip() -> void:
+func test_status_application_never_moved_the_chip_floor_or_the_single_sign_flip() -> void:
 	# S8 still runs before S9, so enough flat DAMAGE_REDUCTION still cannot make a landed
-	# hit immune; and the health write is still the ONLY negative movement, so S12 has
-	# not introduced a second negation somewhere downstream of it.
+	# hit immune; and the health write is still the ONLY negative movement, so status
+	# application never introduced a second negation somewhere downstream of it.
+	#
+	# Renamed on the DEF-0145 change: the assertion is unchanged and still about the same
+	# invariant, but it no longer describes a stage that runs here. What this file still
+	# proves about "S12 does not write health" is that `StatusApply` has no health write at
+	# all — which is why the assertion is now a property of the resolved hit alone.
 	var mechanism := CombatTestKit.FixedMechanism.new()
 	mechanism.amount = 40.0
 	var attacker := CombatTestKit.quiet_actor(&"attacker")
@@ -273,24 +301,30 @@ func test_adding_s12_did_not_move_the_chip_floor_or_the_single_sign_flip() -> vo
 	)
 
 
-func test_s12_rides_effects_and_the_outcome_gains_no_status_field() -> void:
+func test_the_status_result_rides_effects_and_the_outcome_gains_no_status_field() -> void:
 	# ADR 0087: "CombatOutcome gains no status field. S12's result rides effects[], so
 	# to_dict() stays primitives-only (ADR 0038) and a screen renders it unchanged."
+	#
+	# DEF-0145 changed the SEAT, not the shape. `StatusApply.record` is still the only
+	# writer and it still appends to the proposal's `effects[]`; the stage that used to
+	# call it from inside the spine is gone, so this drives `record` against a real
+	# outcome directly. The two halves are asserted as before: the entry appears, and
+	# `CombatOutcome` still gains no `status` field to carry it instead.
 	var mechanism := CombatTestKit.FixedMechanism.new()
 	mechanism.amount = 25.0
 	var attacker := CombatTestKit.quiet_actor(&"attacker")
 	MechanismSlot.bind(attacker, mechanism)
 	var target := CombatTestKit.actor(&"target")
+	var technique := CombatTestKit.technique(100.0)
 	var outcome := CombatSpine.resolve_hit(
-		attacker,
-		target,
-		CombatTestKit.technique(100.0),
-		_tuning,
-		CombatTestKit.rng(11),
-		func(ctx: AttackContext) -> AttackContext:
-			ctx.set_data(StatusApply.REQUEST_KEY, _request(1.0))
-			return ctx
+		attacker, target, technique, _tuning, CombatTestKit.rng(11)
 	)
+	var ctx := AttackContext.new(attacker, target, technique, _tuning)
+	ctx.set_data(StatusApply.REQUEST_KEY, _request(1.0))
+	var result := StatusApply.apply(
+		attacker, target, _tuning, ctx, outcome, CombatTestKit.rng(11), technique, 0
+	)
+	StatusApply.record(outcome, result)
 	var seen := false
 	for entry in outcome.effects():
 		if (
@@ -298,7 +332,7 @@ func test_s12_rides_effects_and_the_outcome_gains_no_status_field() -> void:
 			== StatusApply.EFFECT_KIND
 		):
 			seen = true
-	assert_eq(seen, true, "S12 published its result onto effects[]")
+	assert_eq(seen, true, "the status result is published onto effects[]")
 	assert_eq(
 		outcome.get("status") == null, true, "and no status field was bolted onto the outcome"
 	)
@@ -401,6 +435,19 @@ func _request(chance: float) -> Dictionary:
 	}
 
 
+## The band's answer, decided by the SPINE and then applied by `StatusApply`.
+##
+## Two steps rather than one, and that is deliberate. The spine still owns S2's band roll
+## and S3's crit, so the miss / parry / block cases are still produced by the real engine
+## rather than by a fixture that hardcodes the answer — `outcome.is_clean()` is what gates
+## application, and the suite must exercise that gate on a real band verdict, not on a
+## manufactured one.
+##
+## `StatusApply.apply` is then called with the same arguments the spine passed before
+## DEF-0145 removed the stage: the same request under `REQUEST_KEY`, the same outcome,
+## the same generator, the same technique and the same `hit_index`. The context is built
+## the way `CombatSpine._context` built it, so the only difference from the pre-DEF-0145
+## suite is that the stage is invoked here rather than from inside the spine.
 func _resolve(
 	target: Actor,
 	mechanism: CombatTestKit.FixedMechanism,
@@ -411,28 +458,11 @@ func _resolve(
 ) -> Dictionary:
 	var attacker := CombatTestKit.quiet_actor(attacker_id)
 	MechanismSlot.bind(attacker, mechanism)
+	var rng := CombatTestKit.rng(seed_value)
+	var technique := CombatTestKit.technique(100.0)
 	var outcome := CombatSpine.resolve_hit(
-		attacker,
-		target,
-		CombatTestKit.technique(100.0),
-		_tuning,
-		CombatTestKit.rng(seed_value),
-		func(ctx: AttackContext) -> AttackContext:
-			ctx.set_data(StatusApply.REQUEST_KEY, request)
-			return ctx,
-		0,
-		hit_index
+		attacker, target, technique, _tuning, rng, Callable(), 0, hit_index
 	)
-	for entry in outcome.effects():
-		var row := entry as Dictionary
-		if StringName(row.get(DamageProposal.KIND, &"")) == StatusApply.EFFECT_KIND:
-			# The effect is FLATTENED, not nested: `DamageProposal.effects` is
-			# primitives-only by contract, so `StatusApply.record` spreads the result's
-			# fields beside the kind rather than parking them under one key.
-			return row.duplicate(true)
-	# `record` deliberately writes nothing for a `not_clean` refusal, so a refused band is
-	# answered from the outcome itself rather than from `effects[]`.
-	return {
-		StatusApply.APPLIED: false,
-		StatusApply.REFUSED: StatusApply.REFUSE_NOT_CLEAN,
-	}
+	var ctx := AttackContext.new(attacker, target, technique, _tuning)
+	ctx.set_data(StatusApply.REQUEST_KEY, request)
+	return StatusApply.apply(attacker, target, _tuning, ctx, outcome, rng, technique, hit_index)

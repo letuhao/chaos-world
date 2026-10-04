@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"grimoire_void"
 display_name = "Void Grimoire"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"immortal_sovereign"
 fixed_modifiers = Array[Dictionary]([

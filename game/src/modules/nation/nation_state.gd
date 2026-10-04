@@ -375,27 +375,57 @@ static func is_mode(mode: String) -> bool:
 ## came to abort their bodies while their suite reported green.
 ##
 ## `detail` carries what the CALLER knows that the standoff cannot: the id it asked
-## about, and the standing a settlement just paid. It wins the merge, because those
-## are its own facts. Everything else is this stage's answer, which is why a caller
+## about, and the standing a settlement just paid. Those two amounts are PUBLISHED
+## when `closed` and forced to zero when it is not, because that is the one fact that
+## distinguishes a war still being fought from one that has ended — see the comment
+## on `gained` below. Everything else is this stage's answer, which is why a caller
 ## that only ever reads this cannot be surprised by an absent key.
 static func verdict_view(
 	standoff: Dictionary, closed: bool, outcome: String, detail: Dictionary = {}
 ) -> Dictionary:
 	var loser := String(detail.get("loser_id", ""))
 	var stored: Dictionary = standoff.get("sides", {}) as Dictionary
+	# The standing this view publishes, decided ONCE, from the single fact that
+	# knows whether the war ended. **A CLOSED war reports what its settlement
+	# actually paid**: the closing path computes the amounts and hands them in
+	# `detail`, and they are read back here rather than zeroed, because a withdrawal
+	# IS a closed war and ADR 0085 says a withdrawal pays — the winner takes the
+	# prize's declared standing, the loser pays the surrender cost, and NO ground
+	# moves. Zeroing these for a closed war is what made a paid withdrawal read as a
+	# war that paid nobody.
+	#
+	# An **OPEN** war reports `0`, whatever `detail` carries. Nothing is paid and
+	# nothing moves until a war actually ends, so a caller passing
+	# `"standing_gained": 7` on the first of a contest's three verdicts is talking
+	# about a war still being fought and must not be able to publish a number.
+	var gained := int(detail.get("standing_gained", 0)) if closed else 0
+	var lost := int(detail.get("standing_lost", 0)) if closed else 0
 	var view := {
 		"closed": closed,
 		"outcome": outcome,
 		"winner_id": String(detail.get("winner_id", "")),
 		"loser_id": loser,
 		"verdicts": int((stored[loser] as Dictionary).get("lost", 0)) if loser != "" else 0,
-		# Nothing is paid and nothing moves until a war actually ends, which is what
-		# an open war means and what a stalemate means once it has.
-		"standing_gained": 0,
-		"standing_lost": 0,
+		"standing_gained": gained,
+		"standing_lost": lost,
 		"territory_transferred": String(detail.get("territory_transferred", "")),
 	}
+	# The caller's `detail` is merged first and the verdict keys are written AFTER,
+	# so they win. Merged last, a caller passing `"standing_gained": 7` in its own
+	# detail would overwrite the stage's own answer; `gained`/`lost` above decide
+	# that answer from `closed`, so writing them again here restores exactly what
+	# this function decided and nothing the caller supplied. `detail` still supplies
+	# everything this view does not own (`standoff_id`, `exhausted_id`, `war_break`,
+	# `exhaustion`), which is the whole point of taking it.
 	view.merge(detail, true)
+	view["closed"] = closed
+	view["outcome"] = outcome
+	view["winner_id"] = String(detail.get("winner_id", ""))
+	view["loser_id"] = loser
+	view["verdicts"] = int((stored[loser] as Dictionary).get("lost", 0)) if loser != "" else 0
+	view["standing_gained"] = gained
+	view["standing_lost"] = lost
+	view["territory_transferred"] = String(detail.get("territory_transferred", ""))
 	return view
 
 

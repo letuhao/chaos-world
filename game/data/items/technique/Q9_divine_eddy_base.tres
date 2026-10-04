@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"Q9_divine_eddy_base"
 display_name = "Divine Eddy Base"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"transcendent"
 fixed_modifiers = Array[Dictionary]([

@@ -27,8 +27,99 @@ extends RefCounted
 ## live in a `WeakRef` table inside [code]StatusRuntime[/code], never on the actor, and
 ## nothing this module writes is reachable from `to_dict()`. Later bumps (ADR 0140, for
 ## wounds) are not this module's, and do not reach it.
+##
+## ## The tenth public method is [method cleanse], and its trigger FIRED
+##
+## ADR 0107 deferred the verb until "the first authored CONSUMABLE that answers a
+## mitigation lever" existed, then restated that as a greppable predicate: a `.tres`
+## under `game/data/items` carrying `subcategory = "pill"` AND a non-empty
+## `cleanse_lever` field whose id is a member of [member StatusDef.LEVERS]. The census
+## behind that deferral found 237 pills and **0** of them carrying a lever.
+##
+## `data/items/consumable/cleansing_jade_pill.tres` is the first that does, so the verb
+## is built in the same change and `items` gains `status` in `registry.json` — which is
+## exactly what ADR 0107 said would happen and when. Ten public methods, under
+## `MAX_FACADE_PUBLIC_METHODS = 12`.
+##
+## ## The vocabulary is spent, not extended
+##
+## `mitigation_tags` is still the ONE purge vocabulary. `cleanse` takes one lever in and
+## reads `mitigation_tags` out; it introduces no percentage, no strength roll and no
+## second dialect. `EnvironmentField._lever_for` already read the same field to CHOOSE a
+## mitigation at apply time, so this is the vocabulary's second reader and not a new one.
+##
+## ## The ELEVENTH public method is [method resolve], and it is the one that makes a
+## ## caller-BUILT status pay
+##
+## Measured 2026-10-04: a hazard status landed with `actor.add_status` — ADR 0075's
+## environment zones (`modules/domain/environment_field.gd:405`) and ADR 0073's traps
+## (`modules/domain/domain_fixtures.gd:403`) — never reached a `StatusRuntime` record,
+## because only [method apply] and [method apply_cultivation] build one
+## (`api.gd:100-104`, `:218-222`). `tick_statuses` skips any status whose record is absent
+## (`api.gd:136-141`), so a furnace and a trap aged out and paid nothing: the status was on
+## the actor, `has_status` answered true, and no health moved. Every caller had done the
+## work `apply` exists to do — resolved a magnitude, a cadence, a stacking mode and the
+## zone's own levers — and none of it was reachable, because building the `StatusEffect`
+## by hand and REGISTERING it are two different acts.
+##
+## ## Why `apply` and `apply_cultivation` cannot express this
+##
+## Both build the effect themselves through [method _effect_for], which resolves a def's
+## `magnitude`, `tick_interval`, `mitigation_tags`, `scope` and `stacking`. A zone and a
+## trap do not have those numbers: `domain` declares `core` + `contracts` only and authors
+## its own hazard def under `res://src/data/statuses/` (`environment_field.gd:286`), and
+## a trap carries a fixture's own `damage_share`. Routing either through `apply` would
+## hand it a pulse that spends `magnitude * share_per_pulse` off the def and discard the
+## strength this game resolved for this actor — and `apply` additionally REFUSES a
+## COMBAT-scope def through `apply_cultivation`, which `fire_immolation` (a trap's own
+## authored status) is. Neither verb can express "keep the instance the caller built, and
+## give it the runtime it needs to pulse".
+##
+## ## What it does and does NOT do
+##
+## It registers exactly one runtime record for the LIVE instance carrying
+## `effect.id` — the one [method _runtime] already keyed by id — and re-derives that
+## instance's strength from its own `magnitude`, because REFRESH keeps the STRONGER of
+## the two (`core/status_registry.gd:151`): a re-application resolved weaker must lower
+## the pulse, which is the rule `EnvironmentField.apply` already honours by hand
+## (`environment_field.gd:402-403`). It never adds a status to the actor, never ages one,
+## never spends a pool and runs no loop of its own: the caller still calls
+## [method apply] or `Actor.add_status`, and the ONE tick loop ADR 0089 mandates is still
+## this module's. Returns the same `{ok, id, magnitude, duration}` shape the two apply
+## verbs answer with, so a caller reads one shape either way.
+##
+## ## TWO TREES, and `status_ids` is still the closed twenty
+##
+## `StatusCatalog` reads two content roots through one loader and one gate. The first
+## (`res://data/statuses`) is the twenty element-riding statuses a landed blow can
+## inflict, and [method status_ids] answers exactly those and nothing else. The second
+## ([constant StatusCatalog.AMBIENT_SOURCES_ROOT], `res://src/data/statuses`) holds
+## statuses inflicted by a PLACE — ADR 0075's `env_scourge`, which `domain` authors
+## because it owns the hazard — and is reached through [method StatusApi.resolve] and
+## [method apply_cultivation] only.
+##
+## They are separate because the two questions are separate: "what does this blow
+## inflict" has a pinned answer of twenty, and "what does standing in this do" has no
+## such bound. Folding the hazard into the first would have made a landed `fire` blow
+## able to inflict `env_scourge`, which is a lie the game would then act on. Folding the
+## catalogue into the second would have emptied [method status_ids] of its claim.
 
 # --- Catalogue ---------------------------------------------------------------
+
+## The most channel pulses ONE status may spend in a single [method tick_statuses]
+## call. Far above what a real frame delta owes: the authored cadences are whole
+## seconds and a frame is a fraction of one, so the ceiling is there to be
+## UNREACHABLE rather than to be a budget — and a caller that reaches it is told so
+## through the answer's `truncated` key instead of silently under-paying.
+##
+## ## Why a fixed number and not the caller's delta
+##
+## The bound is read here, never derived from the accumulator the loop below drains: a
+## loop whose count is the value its own body reduces is the shape that reached 67 GB
+## resident (INC-0002), and `tests/arch_rules/test_no_unbounded_wait.gd` exists because
+## that judgement shipped. 64 pulses is 128 seconds at the slowest authored cadence
+## (`water_deluge`, 2.0s), which no frame delta reaches.
+const PULSES_PER_FRAME := 64
 
 
 ## Every authored status id, canonically ordered.
@@ -104,6 +195,24 @@ static func apply(
 ## Ordering is load-bearing: the channels fire BEFORE the age pass, so a status that
 ## expires on this frame still spends its last pulse. A status that expired on the
 ## previous frame is already gone from the actor's array.
+##
+## ONE channel pulse per call, and why the loop below is bounded the way it is
+##
+## `StatusRegistry._pulses_due` owes one entry per interval a hitched frame crossed, so
+## `core` already pays per pulse; what the old shape here did NOT was drain the whole
+## accumulator, and it read `ticks_elapsed` for the escalating burn's curve BEFORE the
+## increment. A long delta therefore paid ONE pulse of a stale curve and then threw the
+## rest of the accumulator away — measured on ADR 0075's furnace, one `delta = 8.0` for
+## an 8s status at a 2s cadence: `0.02163` spent where `0.0903` was owed, one pulse of
+## four. The escalation was compounding one step per FRAME rather than one step per
+## PULSE, which is the opposite of what `escalation_per_tick` names.
+##
+## So the accumulator is DRAINED here, and the bound is not a guess: `PULSES_PER_FRAME`
+## is far above the most a real frame delta can owe, and a caller that genuinely needed
+## more is answered by `truncated` rather than by a longer loop. The alternative —
+## repeating this whole function until the accumulator clears — would be a `while` whose
+## exit condition a status can refuse to meet, which is the shape ADR 0002's loop rules
+## and `test_no_unbounded_wait.gd` exist to catch.
 static func tick_statuses(actor: Actor, delta: float) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor", "ticked": 0, "damage": 0.0, "expired": 0}
@@ -111,6 +220,7 @@ static func tick_statuses(actor: Actor, delta: float) -> Dictionary:
 	var runtimes := _runtime(actor)
 	var damage := 0.0
 	var ticks := 0
+	var truncated := 0
 	for status in actor.statuses:
 		var runtime := runtimes.get(String(status.id)) as StatusRuntime
 		if runtime == null:
@@ -119,26 +229,38 @@ static func tick_statuses(actor: Actor, delta: float) -> Dictionary:
 			# below. It contributes no channel here rather than being mis-resolved
 			# against a def that is not its own.
 			continue
-		runtime.tick_elapsed += delta
-		var interval := maxf(0.001, runtime.def.tick_interval)
-		if runtime.tick_elapsed < interval:
-			continue
-		runtime.tick_elapsed -= interval
 		# A BURST spends itself AT ARRIVAL (`apply` called `_pulse` once) and never again.
 		# The guard lives HERE rather than inside `_pulse` because `_pulse` is also the
 		# arrival path: suppressing by kind there stopped the wave landing at all, while
 		# suppressing here leaves the one legitimate spend intact and removes only the
 		# re-spend that made one wave land twice. `spends_on_apply` is the authored
-		# statement of that intent.
+		# statement of that intent. It is checked BEFORE the accumulator is drained, so a
+		# burst's leftover elapsed time is not spent either.
 		if runtime.def.kind == &"burst" and bool(runtime.def.payload.get("spends_on_apply", false)):
 			continue
-		runtime.ticks_elapsed += 1
-		ticks += 1
-		damage += _pulse(actor, runtime)
+		var interval := maxf(0.001, runtime.def.tick_interval)
+		runtime.tick_elapsed += delta
+		# Bounded `for` over a count read from a FIXED cap, never a `while` on the
+		# accumulator: a loop whose bound is the value its own body drains is the shape
+		# that reached 67 GB (INC-0002). `owed` is snapshotted from the accumulator
+		# before the first pulse, and the `>=` comparison is what drains a remainder
+		# smaller than one interval to nothing rather than leaving it owed.
+		var owed := int(floor(runtime.tick_elapsed / interval))
+		if owed > PULSES_PER_FRAME:
+			truncated += owed - PULSES_PER_FRAME
+			owed = PULSES_PER_FRAME
+		for _pulse in owed:
+			runtime.tick_elapsed -= interval
+			runtime.ticks_elapsed += 1
+			ticks += 1
+			damage += _pulse(actor, runtime)
 	actor.tick_statuses(delta)
 	var expired := _count_lost(before, _live_ids(actor))
 	_prune(actor, _live_ids(actor))
-	return {"ok": true, "ticked": ticks, "damage": damage, "expired": expired}
+	var answer := {"ok": true, "ticked": ticks, "damage": damage, "expired": expired}
+	if truncated > 0:
+		answer["truncated"] = truncated
+	return answer
 
 
 ## Apply a CULTIVATION-scope status: a permanent blessing the game PAYS OUT rather than
@@ -180,12 +302,25 @@ static func tick_statuses(actor: Actor, delta: float) -> Dictionary:
 ## what a caller gets by default. A CULTIVATION def authoring `DURATION_FOREVER` (`-1.0`)
 ## is a permanent blessing that survives combat exit — ADR 0089's purge rule clears COMBAT
 ## scope and never touches this — and that is authored content, not a rule restated here.
+##
+## ## `apply` is NOT widened, and `apply_cultivation` is
+##
+## The two verbs reach different trees on purpose. `apply` is the landed-blow verb and
+## stays on the catalogue, because an AMBIENT def can never be what a blow inflicts —
+## `StatusCatalog` refuses `on_landed_blow` on an ambient def at load
+## (`_admit_ambient`), so nothing this verb resolved could name one. `apply_cultivation`
+## resolves from EITHER tree, because its remit is by SCOPE rather than by source: it
+## applies a CULTIVATION-scope status the game does not inflict with a blow, and an ADR
+## 0075 hazard is exactly that — `env_scourge` authors `scope = cultivation` for the
+## reason [method EnvironmentField._hazard]'s comment gives. Before this change the
+## hazard was refused here by name too, so the verb this scope claims to hold could not
+## reach the only content that uses the scope, which is what made the hazard cost nothing.
 static func apply_cultivation(
 	actor: Actor, status_id: StringName, magnitude: float = 1.0, duration: float = -1.0
 ) -> Dictionary:
 	if actor == null:
 		return {"ok": false, "reason": "no_actor"}
-	var def := StatusCatalog.instance().definition(status_id)
+	var def := StatusCatalog.instance().any_definition(status_id)
 	if def == null:
 		return {"ok": false, "reason": "unknown_status", "id": String(status_id)}
 	if def.is_combat_scope():
@@ -211,9 +346,86 @@ static func apply_cultivation(
 	}
 
 
+## Register the `StatusEffect` a CALLER built — an ADR 0075 environment zone, an
+## ADR 0073 trap — so it actually pays under [method tick_statuses]. Returns the same
+## `{ok, id, magnitude, duration}` shape [method apply] answers with.
+##
+## ## What the caller has already done, and what it has not
+##
+## The caller resolved a magnitude against THIS actor's mitigation, an authored cadence,
+## a stacking mode and the zone's or fixture's own levers, and handed the result to
+## `Actor.add_status`. That is every field [method tick_statuses] reads — and none of it
+## is reachable, because the tick path reads a [code]StatusRuntime[/code] record keyed by
+## id, not the effect on the actor. This method is the half that was missing: it resolves
+## the authored def and writes that one record, and the existing tick loop does the rest.
+##
+## ## Why the magnitude is re-derived rather than taken from `effect`
+##
+## A REFRESH merge keeps the STRONGER of the held and incoming magnitudes
+## (`core/status_registry.gd:151`), so the LIVE instance is the honest number to read
+## back, not the one this call arrived with: a weaker re-application of a hazard must
+## lower the pulse it will pay, which is the rule `EnvironmentField.apply` honours by
+## hand at its own refresh branch. `magnitude_cap` still bounds it, so a caller cannot
+## raise what a def says is the ceiling.
+##
+## ## Refusals, in this module's existing vocabulary
+##
+## `{reason = "no_effect"}` is a caller that built nothing, `{reason = "empty_id"}` one
+## that built a nameless status, and `{reason = "def_not_on_actor"}` one whose instance
+## the actor REFUSED — three different faults, all named, and none of them a silent
+## return. The last is the load-bearing half: it is answered by reading the actor rather
+## than by trusting the caller, so a rejected status is never left with a live record
+## that pulses nothing.
+##
+## ## The def is resolved from EITHER tree, and that is what makes a hazard pay
+##
+## `any_definition` rather than `definition`, so an AMBIENT def resolves here as
+## readily as a catalogue one. Measured before this change: `env_scourge` — authored by
+## `domain` under `res://src/data/statuses`, because `res://data/statuses` is a closed
+## twenty whose id set another suite pins and whose every member rides an element — was
+## refused here by name (`unknown_status`), and so was `apply_cultivation`, because both
+## verbs looked it up in the element-riding tree. The hazard sat on the actor,
+## `has_status` answered true, and `tick_statuses` skipped it: a furnace that cost
+## nothing. `StatusCatalog.AMBIENT_SOURCES_ROOT` is the second tree, read by the same
+## loader and the same `StatusDef.problems()` gate, and the twenty is untouched.
+static func resolve(actor: Actor, effect: StatusEffect) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": "no_actor"}
+	if effect == null:
+		return {"ok": false, "reason": "no_effect"}
+	if effect.id == &"":
+		return {"ok": false, "reason": "empty_id"}
+	var def := StatusCatalog.instance().any_definition(effect.id)
+	if def == null:
+		return {"ok": false, "reason": "unknown_status", "id": String(effect.id)}
+	var live := _live(actor, effect.id)
+	if live == null:
+		return {"ok": false, "reason": "def_not_on_actor", "id": String(effect.id)}
+	var runtime := StatusRuntime.new()
+	runtime.def = def
+	runtime.source = StatusRuntime.source_for(def.id)
+	runtime.magnitude = minf(maxf(live.magnitude, 0.0), def.magnitude_cap)
+	_runtime(actor)[String(effect.id)] = runtime
+	StatusRuntime.apply_modifiers(actor, runtime)
+	return {
+		"ok": true,
+		"id": String(effect.id),
+		"magnitude": runtime.magnitude,
+		"duration": live.remaining,
+		"mechanic": String(def.mechanic()),
+	}
+
+
 ## The COMBAT-scope statuses are cleared on combat exit by the same caller that ticks
 ## them (ADR 0089); CULTIVATION-scope statuses are never purged by combat state.
 ## Returns the ids that were cleared.
+##
+## ## `clear_combat_scope` is not the cleanse and is not renamed (ADR 0107)
+##
+## `clear_combat_scope` is a combat-lifecycle fact — combat exit happened, so every
+## COMBAT-scope status goes. `cleanse` is a player action against ONE authored lever.
+## Two verbs, two meanings. Conflating them would let a combat exit silently answer a
+## poison pill, which is precisely the bug this module exists to avoid.
 static func clear_combat_scope(actor: Actor) -> Array[String]:
 	if actor == null:
 		return []
@@ -227,6 +439,67 @@ static func clear_combat_scope(actor: Actor) -> Array[String]:
 		cleared.append(String(runtime.def.id))
 	_purge(actor, cleared)
 	return cleared
+
+
+## ## The ONE removal verb ADR 0107 deferred, built because its trigger FIRED
+##
+## Removes every live status whose authored `mitigation_tags` contains `lever`,
+## releasing its modifiers through the same `_purge` path `clear_combat_scope` uses.
+## One lever in, `mitigation_tags` out: there is no percentage, no strength and no
+## second purge dialect, so the vocabulary that ADR 0086 made "the ONE purge vocabulary"
+## is finally the one a verb spends.
+##
+## ## Why this is nine-and-thirty methods and not a spare tenth
+##
+## The trigger was a predicate, not a phrase, and the predicate is now TRUE: an
+## authored pill under `game/data/items` carries `subcategory = pill` AND a non-empty
+## `cleanse_lever` whose id is a member of `StatusDef.LEVERS`
+## (`data/items/consumable/cleansing_jade_pill.tres`). Before that pill existed, this
+## method would have been the ADR 0089 defect class — a public verb whose only caller is
+## its own test — and ADR 0107 was right to defer it. The consumer arriving is what
+## makes the verb real, and that ordering is the whole point of the deferral.
+##
+## ## SCOPE is NOT filtered, and that is deliberate
+##
+## `clear_combat_scope` is a combat-exit fact. A cleanse is not: a pill that answers
+## `pill` removes what the pill names, and a CULTIVATION-scope status that names `pill`
+## has published that it can be answered. Filtering by scope here would give the player
+## a pill that silently does nothing to the blessing they are looking at, which is the
+## "read model advertising counterplay the game cannot deliver" defect ADR 0086's
+## `mitigation_tags` exists to prevent. What the authored tag set says is what happens.
+##
+## ## Refusals are NAMED, in this module's existing vocabulary
+##
+## `apply` returns `{ok, id, reason}` and this matches it, because a caller that spends a
+## real pill needs to tell "you were not afflicted" from "that is not a lever this game
+## has" — and both from a bug. `{reason = "unknown_lever"}` names the second and the
+## list is the closed `StatusDef.LEVERS` set, so a typo is a refusal rather than a
+## cleanse that changes nothing and says nothing.
+static func cleanse(actor: Actor, lever: StringName) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "lever": String(lever), "reason": "no_actor"}
+	var named := String(lever)
+	if not StatusDef.LEVERS.has(lever):
+		return {"ok": false, "lever": named, "reason": "unknown_lever"}
+	# Bounded `for` over the actor's live status list, which `tick_statuses` prunes. A
+	# status this module did not author carries no `StatusDef`, so it has no authored
+	# `mitigation_tags` to match and is simply never removed: guessing at a foreign
+	# status's lever set is how a cleanse would start eating somebody else's state.
+	var runtimes := _runtime(actor)
+	var cleared: Array[String] = []
+	for status in actor.statuses:
+		var runtime := runtimes.get(String(status.id)) as StatusRuntime
+		if runtime == null or not runtime.def.mitigation_tags.has(lever):
+			continue
+		StatusRuntime.clear_modifiers(actor, runtime.def.id)
+		cleared.append(String(runtime.def.id))
+	_purge(actor, cleared)
+	return {
+		"ok": true,
+		"lever": named,
+		"cleared": cleared,
+		"count": cleared.size(),
+	}
 
 
 ## The element→status mapping of ADR 0105: the id whose def claims
@@ -267,11 +540,26 @@ static func status_for_element(element: StringName, chance: float = 1.0) -> Stri
 
 ## Primitives only, so a screen and a test read the same shape (AGENTS.md's
 ## testable contract). `{}` when there is no actor or no catalogue row to report.
+##
+## `ids` is still the closed twenty and `count` its size, because that is the claim
+## every consumer of this report is making. The ambient tree is reported beside it under
+## `ambient_ids` / `ambient_count`, never folded in: a screen listing "every status this
+## game has" must be able to say which of the two a row came from.
 static func summary(actor: Actor = null) -> Dictionary:
 	var ids := StatusCatalog.instance().status_ids()
-	var report := {"count": ids.size(), "ids": [], "active": [], "rejected": []}
+	var ambient := StatusCatalog.instance().ambient_ids()
+	var report := {
+		"count": ids.size(),
+		"ids": [],
+		"ambient_count": ambient.size(),
+		"ambient_ids": [],
+		"active": [],
+		"rejected": [],
+	}
 	for status_id in ids:
 		(report["ids"] as Array).append(String(status_id))
+	for status_id in ambient:
+		(report["ambient_ids"] as Array).append(String(status_id))
 	for entry in StatusCatalog.instance().rejected():
 		(report["rejected"] as Array).append(entry)
 	if actor == null:
@@ -517,6 +805,17 @@ static func _feeds(def: StatusDef) -> bool:
 	if def == null:
 		return false
 	return def.magnitude_unit == &"health_share" or def.magnitude_unit == &"element_power"
+
+
+## The ONE live instance carrying `status_id`, or null — the same question
+## `Actor.has_status` answers, except it hands back the instance the merge rule chose so
+## a caller can read the strength that will actually pulse. Bounded `for` over the
+## actor's live status list, which `tick_statuses` prunes.
+static func _live(actor: Actor, status_id: StringName) -> StatusEffect:
+	for status in actor.statuses:
+		if status.id == status_id:
+			return status
+	return null
 
 
 static func _live_ids(actor: Actor) -> Array[String]:

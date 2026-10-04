@@ -9,7 +9,7 @@ id = &"d5_thunder_crane_spirit_unity_0"
 kind = &"item"
 item_id = &"scroll_thunder_crane_wing"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -18,7 +18,7 @@ rarity_floor = &"rare"
 [resource]
 script = ExtResource("1_table")
 id = &"loot_d5_thunder_crane_pool_spirit_unity"
-display_name = "Thunder Crane Lesser salvage (spirit_unity)"
+display_name = "Thunder Crane salvage (spirit_unity)"
 realm = &"spirit_unity"
 rarity = &""
 rolls = 1

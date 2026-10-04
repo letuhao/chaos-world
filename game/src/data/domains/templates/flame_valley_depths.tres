@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://src/modules/domain/template_pin.gd" id="4_pin"]
 [ext_resource type="Resource" path="res://src/data/domains/rooms/ash_camp.tres" id="5_camp"]
 [ext_resource type="Resource" path="res://src/data/domains/rooms/ash_furnace.tres" id="6_furnace"]
+[ext_resource type="Resource" path="res://src/data/domains/rooms/ash_gate.tres" id="7_gate"]
+[ext_resource type="Resource" path="res://src/data/domains/rooms/ash_arena.tres" id="8_arena"]
 
 [sub_resource type="Resource" id="pin_camp"]
 script = ExtResource("4_pin")
@@ -42,11 +44,17 @@ loop_gap_tiles = 6
 corridor_tiles = 2
 min_rooms = 6
 max_rooms = 16
+# Every def in the 6-room pool is built on every seed, or the seed is refused rather
+# than shipped with a hole in its kit. Six leaves are guaranteed and six defs have to
+# fit them, with both pins naming distinct pool defs.
+requires_full_kit = true
 entry_anchor = Vector2i(3, 3)
 room_pool = Array[RoomDef]([
 	ExtResource("2_floor"),
 	ExtResource("3_chamber"),
 	ExtResource("5_camp"),
-	ExtResource("6_furnace")
+	ExtResource("6_furnace"),
+	ExtResource("7_gate"),
+	ExtResource("8_arena")
 ])
 pins = Array[TemplatePin]([SubResource("pin_camp"), SubResource("pin_furnace")])

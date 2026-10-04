@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"U13_divine_scupper_aged"
 display_name = "Divine Scupper Manual"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

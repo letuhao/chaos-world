@@ -121,6 +121,82 @@ func test_the_trap_status_pays_and_then_expires() -> void:
 	actor.status_ticked.disconnect(handler)
 
 
+## ## THE CONSEQUENCE. The test above proves the trap PULSES; this one proves the pulse
+## COSTS HEALTH, in points.
+##
+## `actor.tick_statuses(duration)` is `core`'s merge-and-age half: it emits one
+## `status_ticked` per authored interval and removes the status on its budget while
+## spending nothing. That is why the whole suite above was green while a trap cost a
+## player exactly zero health — the pulse lives in the `status` module's own runtime
+## table, and `_fire` used to hand the status to `Actor.add_status` alone, so no record
+## was ever written and the tick channel skipped the status outright.
+##
+## So this drives the PRODUCTION tick ([method StatusApi.tick_statuses], the one call
+## `StatusLoop.tick` makes per frame) and asserts a specific number of health points,
+## derived from the shipped fixture and the status def it names rather than pinned as a
+## literal: a content retune moves the expectation with it.
+func test_a_fired_trap_costs_health_by_the_authored_amount() -> void:
+	var actor := _in_domain()
+	var room_id := _room_of(TRAP)
+	var authored := _authored(TRAP)
+	var status_id := StringName(authored.get("status_id", ""))
+	var def := StatusApi.definition(status_id)
+	assert_eq(def != null, true, "the trap's status_id is a def this game ships: %s" % status_id)
+
+	DomainFixtures.arm(actor, room_id, TRAP, 0.0)
+	DomainFixtures.arm(actor, room_id, TRAP, float(authored.get("telegraph_s", 0.0)) + 0.1)
+	assert_eq(actor.has_status(status_id), true, "the trap landed")
+
+	var before := actor.resource(&"health").current
+	var duration := float(authored.get("duration_s", 0.0))
+	# The trap's magnitude is the fixture's `damage_share`, mitigated by whatever the
+	# actor carries; `_fire` reported it, so the expectation reads the same number
+	# rather than re-deriving the lever table.
+	var share := float(DomainFixtures.residual_share(actor, authored).get("amount", 0.0))
+	assert_eq(share > 0.0, true, "the fixture authors a damage_share worth spending")
+	assert_almost_eq(
+		actor.statuses[0].magnitude,
+		share,
+		"and the landed status carries it as its magnitude",
+		0.0001
+	)
+
+	StatusApi.tick_statuses(actor, duration)
+
+	# `element_power` is the trap's channel: the pulse spends `magnitude` scaled by the
+	# def's escalation curve, NOT by `share_per_pulse` — a hazard with an authored
+	# magnitude already in it pays that magnitude. The floor is therefore ONE un-escalated
+	# pulse, and the ceiling is every pulse at full escalation.
+	var escalation := float(def.payload.get("escalation_per_tick", 0.0))
+	var cap := maxf(1.0, float(def.payload.get("escalation_cap", 1.0)))
+	var owed := int(floor(duration / maxf(0.001, def.tick_interval)))
+	assert_eq(owed > 0, true, "the authored duration owes at least one pulse")
+
+	var spent := before - actor.resource(&"health").current
+	# The floor is what the LANDED STATUS owes, not what the fixture authored before
+	# mitigation: the pulse spends the effect's magnitude, and that magnitude is already
+	# the mitigated residual. Comparing against the un-mitigated `share` would fail a
+	# correctly-mitigated trap for working — which is the opposite of what this guards.
+	var floor_spend := float(actor.statuses[0].magnitude)
+	var ceil_spend := share * owed * (1.0 + escalation * float(owed) / cap)
+	assert_eq(spent > 0.0, true, "walking into a trap COSTS HEALTH — presence is not consequence")
+	assert_eq(
+		spent >= floor_spend,
+		true,
+		"at least the one un-escalated pulse of %f (spent %f)" % [floor_spend, spent]
+	)
+	assert_eq(
+		spent <= ceil_spend,
+		true,
+		"and no more than %d fully escalated pulses of %f (spent %f)" % [owed, share, spent]
+	)
+	assert_eq(
+		actor.has_status(status_id),
+		false,
+		"the trap's status ends on its authored duration once it has been paid"
+	)
+
+
 ## ADR 0075's other half, and the reason a telegraph exists: **a player must be able to
 ## LEAVE during the window.** A long frame still only arms — nothing fires on the frame
 ## the trap spawns, because a trap that bites the instant it becomes visible is a trap

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F8_heaven_doffing_defense_physical_attack_physical_max_stamina_max_health"
 display_name = "Heaven Doffing Defense Physical Attack Physical Max Stamina Max Health"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"true_immortal"
 fixed_modifiers = Array[Dictionary]([

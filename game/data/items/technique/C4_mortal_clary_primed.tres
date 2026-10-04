@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"C4_mortal_clary_primed"
 display_name = "Mortal Clary Primed"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"foundation"
 fixed_modifiers = Array[Dictionary]([

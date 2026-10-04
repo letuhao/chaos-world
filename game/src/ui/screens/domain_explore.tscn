@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://src/ui/screens/domain_explore.gd" id="1"]
 [ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
 [ext_resource type="PackedScene" path="res://src/ui/panels/action_set.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/npc_roster_panel.tscn" id="4"]
 
 [node name="DomainExploreScreen" type="PanelContainer"]
 anchors_preset = 15
@@ -108,6 +109,10 @@ text = ""
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Roster" parent="Layout/Columns/SidePanel" instance=ExtResource("4")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="SideVBox" type="VBoxContainer" parent="Layout/Columns/SidePanel"]
 layout_mode = 2

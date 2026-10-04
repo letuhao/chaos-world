@@ -170,11 +170,25 @@ static func learn(
 		var state := actor.path(path_id)
 		state.progress = maxf(0.0, state.progress - float(owed[path_id]))
 	var codex := codex(actor)
-	# Drawn BEFORE `learn` writes, and only ever for a row that has none: the
-	# margin is a property of the copy the actor is holding, so a second copy of
+	# Drawn BEFORE `learn` writes, and only ever for a row that carries NO margin:
+	# the margin is a property of the copy the actor is holding, so a second copy of
 	# the same manual re-teaches the technique without re-drawing its numbers.
+	#
+	# ## Why the gate tests the ARRAY and not the KEY
+	#
+	# `TechniqueCodex.record` writes `"realized"` on every row, so `has("realized")`
+	# is true for every row that has ever been written — including one recorded
+	# directly (`codex.learn(id)`) and including a v1 row that `migrate` gave an
+	# empty `[]` because it has no seed to replay. Gating on the KEY therefore made
+	# a margin unreachable for any technique not learned through this method, and
+	# `test_the_codex_list_marks_which_rows_are_annotated` caught exactly that: a row
+	# learned by hand reported `annotated: false` forever.
+	#
+	# The gate is "carries no annotations", which is the same question
+	# `CodexEntry.realized` and `TechniqueReadModel`'s `annotated` flag already ask,
+	# and it is the question that keeps a second copy from re-rolling an investment.
 	var margin: Array[Dictionary] = []
-	if not codex.row(def.id).has("realized"):
+	if codex.row(def.id).get("realized", []).is_empty():
 		margin = TechniqueMarginalia.draw(def, rng)
 	codex.learn(def.id, rung, margin)
 	_commit(actor)

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"Q19_heaven_grist_refined"
 display_name = "Heaven Grist Refined"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"earth_immortal"
 fixed_modifiers = Array[Dictionary]([

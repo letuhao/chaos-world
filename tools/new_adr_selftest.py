@@ -11,7 +11,9 @@ not. `tools/selftest_cases.py` imports this module for the same reason it import
 only refuses when the *slug* collides too, and two agents writing two different titles
 never produce the same slug — so both agents got the same number and both files landed.
 "ADR NNNN" then cited two different decisions and neither reader could tell which.
-0183 and 0189 were both shared on disk before this was fixed.
+0183 and 0189 were both shared on disk before this was fixed. Both have since been
+renumbered (0183 -> 0194, 0189 -> 0196 on the fate-tag file, which kept the
+number); the allocator fix is what stops the next one.
 
 The fix cannot prevent the race — there is no lock in `tools/common.py` — so it repairs
 afterwards: an exclusive create, then a RE-READ of the directory, and if a rival took the

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G26_spirit_idyll_dao_heart_poise"
 display_name = "Spirit Idyll Dao heart Poise"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_condensation"
 fixed_modifiers = Array[Dictionary]([

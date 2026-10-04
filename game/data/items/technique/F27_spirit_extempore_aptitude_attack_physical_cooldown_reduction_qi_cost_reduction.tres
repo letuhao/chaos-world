@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F27_spirit_extempore_aptitude_attack_physical_cooldown_reduction_qi_cost_reduction"
 display_name = "Spirit Extempore Aptitude Attack physical Cooldown reduction Qi cost reduction"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"
 fixed_modifiers = Array[Dictionary]([

@@ -292,12 +292,10 @@ func test_the_composite_verbs_are_reused_not_reimplemented() -> void:
 
 
 func test_the_declare_verb_is_readable_because_the_shipped_war_authors_one() -> void:
-	# A `sect_war` authors its declaration inside its own trigger, and that row is a
+	# A `sect_war` authors its declaration inside its own trigger, so `declare` is a
 	# verb in the requirement language. The gate did not know it, so every authored
-	# `sect_war` refused its OWN trigger with `unknown_verb` and could not open — a
-	# war that exists in content, in a test and in a catalog report and cannot
-	# happen in the game. `catalog_report` reported it as an unknown verb too, so
-	# the tree was unauditable as well as unopenable.
+	# `sect_war` refused its OWN trigger and `catalog_report` called it a typo — a war
+	# that exists in content and cannot happen in the game.
 	assert_eq(
 		EventGate.KNOWN_VERBS.has(EventGate.VERB_DECLARE),
 		true,
@@ -316,9 +314,31 @@ func test_the_declare_verb_is_readable_because_the_shipped_war_authors_one() -> 
 	)
 
 
+## ## `tagged` is a DELEGATED verb too, and both halves must be in step.
+##
+## `DestinyGate` grew `tagged` over `FateDef.tags` (ADR 0196, fate tag vocabulary); this
+## module hands it to `DestinyApi.gate` verbatim. Two lists must name it and the failure
+## modes are OPPOSITES: `DELEGATED_VERBS` alone leaves the runtime refusing a valid trigger,
+## `KNOWN_VERBS` alone leaves `EventReadModel` calling a row the runtime evaluates a
+## typo — the same disagreement `declare` above was added for.
+func test_the_tagged_verb_is_delegated_and_known_so_the_tool_and_runtime_agree() -> void:
+	for vocabulary in [EventGate.DELEGATED_VERBS, EventGate.KNOWN_VERBS]:
+		assert_eq(vocabulary.has(&"tagged"), true, "`tagged` is delegated, so both name it")
+	assert_eq(
+		EventReadModel.unknown_verbs(),
+		[] as Array[Dictionary],
+		"and no shipped .tres reports an unknown verb, so the two cannot disagree"
+	)
+	assert_eq(
+		String(EventGate.evaluate(_actor(), {"verb": &"tagged", "id": "nope"})["reason"]),
+		"unknown_tag",
+		"a coined lineage keeps DestinyGate's own refusal, not an event re-shaped one"
+	)
+
+
 func test_a_declaration_naming_no_other_side_is_malformed_never_passed() -> void:
 	# A war whose sides cannot be read must not open with no declared prize
-	# (ADR 0085). Passing it would let `begin` write the active row and then be
+	# (ADR 0085): passing it would let `begin` write the active row and then be
 	# refused by `_declare` a few lines later — a war that exists for one call.
 	var verdict := EventGate.evaluate(_actor(), {"verb": &"declare", "mode": &"siege"})
 	assert_eq(bool(verdict.get("ok", false)), false, "a declare row with no other_id is refused")

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G19_divine_hessian_fortune_qi_regen"
 display_name = "Divine Hessian Fortune Qi regen"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

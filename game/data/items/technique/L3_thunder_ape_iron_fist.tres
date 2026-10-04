@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"L3_thunder_ape_iron_fist"
 display_name = "Thunder Ape Iron Fist"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"spirit_ascension"
 fixed_modifiers = Array[Dictionary]([

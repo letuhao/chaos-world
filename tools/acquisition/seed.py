@@ -250,7 +250,11 @@ def _seed_trial(graph: Graph, trial: Trial, written: Written, force: bool) -> li
             trial.domain_id,
             tuple(binding["boss_id"] for binding in bindings),
             trial.realm_id,
-            trial.index,
+            # `trial.ladder` is the flag `design.WORLD_DOMAIN_FLOOR` keys on: a ladder
+            # trial's realm is a canonical claim about the fight, a world domain's is a
+            # derived drop label. `trial.index` used to travel here and price the fight
+            # off a ladder POSITION; ADR 0197 replaced it with the band's own realm id.
+            trial.ladder,
             bindings,
         ),
         written,

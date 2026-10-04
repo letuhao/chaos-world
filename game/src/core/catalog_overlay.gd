@@ -10,21 +10,24 @@ extends RefCounted
 ## Static, pure: same stack, same result. Nothing here caches, clocks, or
 ## reaches outside `core`.
 
-## One stack row: `{dir, owner, declared_overrides}` — `dir` is the absolute
-## directory to scan for this family, `owner` the mod id ("base" for the
-## res://data root), `declared_overrides` the ids this root may replace.
-## A missing `dir` degrades to an empty contribution, as catalogs today
-## treat an absent directory as an empty one.
+## One stack row: `{dir, owner, declared_overrides, id_field?}` — `dir` is the
+## absolute directory to scan for this family, `owner` the mod id ("base" for
+## the res://data root), `declared_overrides` the ids this root may replace,
+## and `id_field` the def property holding this family's id when it is not
+## "id" (e.g. WorldLocationDef's "location_id"). A missing `dir` degrades
+## to an empty contribution, as catalogs today treat an absent directory as
+## an empty one.
 
 
-## Merge `stack` for defs of `script_class` (e.g. "ItemDef"). On success:
+## Merge `stack` for defs of `script_class` (e.g. "ItemDef"), reading each
+## def's id from `id_field` (default "id"; a row may override it). On success:
 ## `{ok: true, reason: "", detail: "", merged, paths, owners}` where `merged`
 ## is an Array of `{id, path, owner}` in overlay order (an overridden id keeps
 ## its EARLIER position while its def is REPLACED), `paths` maps id -> winning
 ## path, and `owners` maps id -> winning root's owner.
 ## On a collision nobody declared: `{ok: false, reason: "undeclared_override",
 ## detail}` naming the id, the owner and BOTH paths.
-static func merge(stack: Array, script_class: String) -> Dictionary:
+static func merge(stack: Array, script_class: String, id_field: String = "id") -> Dictionary:
 	var merged: Array[Dictionary] = []
 	var positions := {}  # id -> index into `merged`; snapshot of size, so the
 	# override pass never re-tests a structure it is itself growing.
@@ -34,6 +37,7 @@ static func merge(stack: Array, script_class: String) -> Dictionary:
 		var declared := _declared_set(root)
 		var dir := String(root.get("dir", ""))
 		var owner := String(root.get("owner", ""))
+		var row_id_field := String(root.get("id_field", id_field))
 		var files := ContentScan.files_under(dir)
 		for path in files:
 			if not path.ends_with(".tres"):
@@ -43,7 +47,7 @@ static func merge(stack: Array, script_class: String) -> Dictionary:
 			var def: Resource = load(path)
 			if def == null:
 				continue
-			var id := String(def.get("id"))
+			var id := String(def.get(row_id_field))
 			if id.is_empty():
 				continue
 			if positions.has(id):

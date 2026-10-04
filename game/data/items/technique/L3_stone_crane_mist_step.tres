@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"L3_stone_crane_mist_step"
 display_name = "Stone Crane Mist Step"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_manifestation"
 fixed_modifiers = Array[Dictionary]([

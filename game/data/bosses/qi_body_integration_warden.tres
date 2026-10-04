@@ -7,4 +7,3 @@ script = ExtResource("1_boss")
 id = &"qi_body_integration_warden"
 display_name = "Body Integration Warden"
 domain_id = &"qi_body_integration_trial"
-loot = Array[StringName]([&"vial_mending_elixir"])

@@ -31,14 +31,35 @@ extends DamageMechanism
 ## all (ADR 0067), and it is what lets a test observe "the mechanism produced X" and "the
 ## defence of X is Y" independently rather than only one fused number.
 ##
-## ## `structural_capacity` is the denominator, and why
+## ## `structural_capacity` is the denominator, and what it does NOT buy
 ##
 ## `MENTAL_ATTACK` is a bounded RATE (`MindProvider`: `(perception*2 + clarity*1.5) *
-## RealmRate.factor`, so 62.5 -> 110.9903 at R30, `1.02^29 = 1.775845`). `sea_capacity` is
-## the AUTHORED magnitude, 100.0 -> 825.0 across the 30 `MindRealmSeed` `.tres`. Those two
-## do not share a scale, and dividing one by the other without normalising makes the deep
-## realms a one-hit kill. Dividing by `structural_capacity` makes "one full strike" the same
-## SHARE of that sea at every realm — which is the property the suite asserts.
+## RealmRate.factor`). On a stock actor ADR 0183's `_or_core_fall` resolves both base
+## attributes to `Stat.WILL`, so production reads `3.5 * will * rate` — the `62.5 ->
+## 110.9903` pair this docblock used to quote was a TEST FIXTURE's authored
+## `perception 20 / clarity 15`, a value no actor the game builds carries. `sea_capacity`
+## is the AUTHORED magnitude: 100.0 -> 825.0 across the 30 `MindRealmSeed` `.tres`, a
+## linear ladder of step 25. The rate spans `1.02^29 = 1.775845`.
+##
+## Dividing by `structural_capacity` makes the erosion a SHARE of that sea and stops the
+## DEFENDER's realm leaking into the arithmetic. It does NOT make "one full strike" the
+## same share at every realm, because the ATTACKER's own rate is still in the numerator
+## against an 8.25x denominator. Over the 30 shipped seeds the share falls strictly at
+## every realm, and the DECAY is build-independent: exactly `cap_span / rate_span`
+## (`8.25 / 1.775845`) = `4.6457x`. A deep sea therefore takes ~4.6x more strikes to reach
+## the same turbulence, so the raw numerator at R30 is the SMALLER share, not a one-hit
+## kill.
+##
+## The share's ABSOLUTE level is a function of the attacker's build, not of the realm: on
+## the `test_mind_power_curve` fixture's authored base of `62.5` it reads `0.625` at R1 and
+## `0.1345` at R30, and on a stock body `0.35` and `0.0753`. Only the RATIO is a property
+## of the ladder, which is why that is the half this docblock claims.
+##
+## That gradient is UNRULED. ADR 0071 justified this denominator by claiming the share was
+## realm-invariant — the claim these numbers refute — so no ADR and no test ever asked for
+## the decay. Closing it is a `sea_capacity` re-author, not a rate edit, and it is not this
+## file's to make. `test_mind_damage_share_gradient.gd` pins the decay's DIRECTION and its
+## rate/magnitude derivation so neither can move without someone ruling on it.
 ##
 ## ## The 40% floor is STRUCTURAL
 ##
@@ -464,13 +485,34 @@ static func apply_deviation(actor: Variant, tuning: CombatTuning = null) -> Stri
 ##
 ## Both are `Variant` and read through `get()`, because a caller in another module hands over
 ## its own authored content type and this file must not acquire a compile-time edge to it.
-static func builder(p_kind: Variant = Kind.DISRUPT, p_sea: Variant = null) -> Callable:
+##
+## ## Why `p_technique` is a THIRD parameter, and why it is the authored share
+##
+## The authored field on `TechniqueDef` is spelled `element_share` — ONE field on ONE
+## content type, set by every authored `.tres` on all three paths (`qi_gale_step.tres`
+## `0.5`, `body_crane_dance.tres` `0.35`, `mind_still_water.tres` `0.1`). This file's
+## [constant SHARE_KEY] is `&"mind_share"`, and `builder` never wrote it, so every mind
+## strike in the game resolved at `CombatTuning.default_mind_share` (`1.0`) and all seven
+## authored mind shares were INERT: `mind_still_water.tres` (`0.1`) and
+## `mind_prime_autopsy.tres` (`1.0`) were the same blow. That is the key mismatch, and the
+## read below is the whole of the fix.
+##
+## It mirrors `QiDamage.builder` (`qi_damage.gd:236`) exactly, including the `is Object`
+## guard and the `get()` spelling, so the two mechanisms read the SAME authored field by
+## the SAME shape and cannot drift apart on a technique authored before one of them moved.
+## An unauthored share still answers `0.0`, and `_share_of`'s `<= 0.0` rule sends it to the
+## tuning default — unchanged, which is why the non-positive `.tres` entries stay legal.
+static func builder(
+	p_kind: Variant = Kind.DISRUPT, p_sea: Variant = null, p_technique: Variant = null
+) -> Callable:
 	return func(ctx: AttackContext) -> AttackContext:
 		if ctx == null:
 			return ctx
 		ctx.set_data(KIND_KEY, p_kind)
 		if p_sea != null:
 			ctx.set_data(SEA_KEY, p_sea)
+		if p_technique is Object:
+			ctx.set_data(SHARE_KEY, (p_technique as Object).get(&"element_share"))
 		return ctx
 
 
@@ -602,8 +644,13 @@ func _awareness_ratio_of(ctx: AttackContext, tuning: CombatTuning) -> float:
 	return clampf(_finite(_number(_read(pool, &"current", 0.0))) / maximum, 0.0, 1.0)
 
 
-## The sea's `structural_capacity` — ADR 0071's denominator and the reason the mechanism is
-## realm-invariant. Read through `get()` off the injected sea, never off a named type.
+## The sea's `structural_capacity` — ADR 0071's denominator, and the reason the erosion is
+## a share of THAT sea rather than an absolute. Read through `get()` off the injected sea,
+## never off a named type.
+##
+## It removes the DEFENDER's realm from the arithmetic and nothing more; the attacker's own
+## realm rate is still in the numerator, so the share is NOT realm-invariant. See the
+## module docblock for the measured `4.6457x` decay that follows from the two ladders.
 func _structural_capacity_of(ctx: AttackContext, tuning: CombatTuning) -> float:
 	var state: Variant = _sea_of(ctx, tuning)
 	return 0.0 if state == null else _capacity_of(state)

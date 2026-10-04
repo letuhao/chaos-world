@@ -22,8 +22,35 @@ extends StatProvider
 
 
 func contribute(context: StatContext) -> Dictionary:
-	var perception := context.value(MindStats.PERCEPTION)
-	var mental_clarity := context.value(MindStats.MENTAL_CLARITY)
+	# ## The FALLBACK, and why mind was as dead as qi on a real actor
+	#
+	# `perception` and `mental_clarity` are this module's OWN base attributes, and
+	# `MindStats` is the only place their ids are declared — but **nothing in
+	# `game/data` ever allocates them.** No `RaceDef.base_attributes` names either
+	# (all five races grant only core's seven), so on any actor the game can build
+	# both read `0.0`. They are reachable only through an authored `StatModifier`
+	# (`cult_perception` / `cult_mental_clarity`), and the only `.tres` that carry
+	# one are passives a player must equip.
+	#
+	# So `MENTAL_ATTACK` read exactly `(0 + 0) * factor == 0.0`, `base` was `0.0`,
+	# `erosion` was `0.0`, and ADR 0171's whole mind mechanism proposed nothing on a
+	# stock actor — the identical bug class qi had, one module over. `MENTAL_DEFENSE`
+	# was half-alive: it has a `will` term, and every race grants `will`.
+	#
+	# `Stat.WILL` is core's own resolve, and it is ALREADY the defensive term on the
+	# line below, so this makes the mind path's two base attributes resolve to the
+	# one attribute every body in this game actually has, instead of leaving the
+	# authored attributes as unreachable ids that only an equipped passive can move.
+	# An authored `cult_perception` still works exactly as before — it is a FLAT
+	# added on top of this baseline, which is the ADR 0022 shape, not a replacement.
+	#
+	# The coefficients are the module's OWN and unchanged: `MENTAL_ATTACK` is still
+	# `perception * 2.0 + mental_clarity * 1.5`, and a stock body is read as
+	# `perception == clarity == will`. `test_mind_provider.gd`'s pinned fixtures set
+	# these attributes explicitly and are therefore bit-for-bit unchanged, which is
+	# what keeps this a fallback rather than a rebalance. ADR 0183.
+	var perception := _or_core_fall(context, MindStats.PERCEPTION, Stat.WILL)
+	var mental_clarity := _or_core_fall(context, MindStats.MENTAL_CLARITY, Stat.WILL)
 	var will := context.value(Stat.WILL)
 
 	## `mind_power_ratio` was computed here and thrown away, as was a `spirit`
@@ -64,6 +91,18 @@ func contribute(context: StatContext) -> Dictionary:
 		MindStats.MIND_TECHNIQUE_POWER:
 		(perception * 1.5 + mental_clarity * 1.0) * technique_factor * (1.0 + meridian_power),
 	}
+
+
+## `own` when the body carries it, else `core` — the fallback that keeps mind's
+## offence alive on a stock actor. See the docblock at the top of [method contribute].
+##
+## A NEGATIVE `own` reads as the fallback too, not as a negative attribute: the
+## baseline is a body-plan term, so a body with no mind faculty reads the resolve
+## rather than subtracting from it. This is the same "degrade, never throw" shape
+## every other read in this repository uses.
+func _or_core_fall(context: StatContext, own: StringName, core: StringName) -> float:
+	var authored := context.value(own)
+	return authored if authored > 0.0 else maxf(0.0, context.value(core))
 
 
 ## The network's power bonus, through the one accessor ADR 0057 added for it.

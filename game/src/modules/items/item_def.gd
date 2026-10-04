@@ -32,6 +32,11 @@ extends Resource
 ## Optional requirement profile (ADR 0052). Null or empty means no restriction:
 ## requirements are opt-in, and rarity never implies demand.
 @export var requirement: ItemRequirement = null
+## The ONE mitigation lever this consumable answers, or `&""` when it answers none.
+## Empty on every one of the 3000-odd authored items; `cleanse` is the verb that spends
+## it. See `ItemUse.CLEANSE_LEVER_FIELD` for why it is a named field rather than a key
+## dug out of `fixed_modifiers`, and ADR 0107 for the deferral it discharged.
+@export var cleanse_lever: StringName = &""
 
 
 func is_equipment() -> bool:

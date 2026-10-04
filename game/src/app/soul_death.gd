@@ -36,6 +36,13 @@ extends RefCounted
 ##    `_rebind` so the composition root's `DestinyApi.attach` re-derives every projection
 ##    from what is already there. Nothing is re-earned and nothing is reset: a fate earned by
 ##    a person was earned by the soul, and the next body is wearing the same ledger.
+## 6. **Then the arrival's MARKS are granted, on the body the death just earned them on**
+##    (ADR 0190). Between the carry and the rebind — never at the mint, never at birth, never
+##    on a guardian death, never on an out-of-lives death, and never on the incarnation-0
+##    body: `the_walker_back_through_ash` is deliberately BOTH the first arrival and the
+##    initial body, so a birth-path grant would claim a death that never happened.
+##    `DestinyApi.earn_fate` and nothing else; an arrival is a receipt, not a claim
+##    (ADR 0159).
 
 ## The authored base cost of a death before difficulty scales it. A constant here and not on
 ## the arrival, because a death costs what it costs regardless of which arrival is next.
@@ -109,9 +116,13 @@ func _init(mint_body: Callable = Callable(), rebind: Callable = Callable()) -> v
 ## Resolve a death for `actor`. The ONE entry point; every other method here is its step.
 ##
 ## Returns `{ok, reason, died, guardian, damage, soul, arrival, body_id, incarnated, fact,
-## fact_count}`. `ok` is true whenever a death was resolved — a death the player survived via a
-## guardian is a resolved death, not a refusal — and `reason` names what happened so a screen
-## can say it without inferring an outcome from a message.
+## fact_count, marks, ungranted_marks}`. `ok` is true whenever a death was resolved — a death
+## the player survived via a guardian is a resolved death, not a refusal — and `reason` names
+## what happened so a screen can say it without inferring an outcome from a message. `marks`
+## are the fate ids this death's arrival authored and `ungranted_marks` the ones not held
+## afterwards (ADR 0190); both are ADDITIVE keys, because the rest of the verdict is consumed
+## by `SoulLedgerPanel.DEATH_TEXT` and the `last_death` envelope and renaming or removing one
+## of those is a UI break.
 ##
 ## **A guardian death is not a death.** It returns early, ABOVE the fact write, because the
 ## body never fell: the item was spent and the player keeps the body they had. Counting it
@@ -137,6 +148,11 @@ func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 			"incarnated": false,
 			"fact": "",
 			"fact_count": WorldFact.count(actor, FACT_ID),
+			# A guardian death is not a death, so no arrival was earned and no mark was granted.
+			# The keys are present rather than absent so a consumer reading the verdict never has
+			# to ask which branch it came from (ADR 0190).
+			"marks": [] as Array[StringName],
+			"ungranted_marks": [] as Array[StringName],
 		}
 	# No guardian: the soul pays. Difficulty supplies the FRACTION; this class supplies the
 	# amount, which is why a difficulty row can never decide how much a death costs.
@@ -162,6 +178,11 @@ func resolve(actor: Actor, base_cost: int = BASE_DEATH_COST) -> Dictionary:
 			"incarnated": false,
 			"fact": String(FACT_ID),
 			"fact_count": spent,
+			# Out of lives: the arrival is named on the verdict but never lived in, so no mark
+			# was granted. The gate owed an arrival this soul had no body left to arrive into
+			# (ADR 0190).
+			"marks": [] as Array[StringName],
+			"ungranted_marks": [] as Array[StringName],
 		}
 	return _rebody(actor, arrival, damaged)
 
@@ -358,6 +379,14 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 			"incarnated": false,
 			"fact": String(FACT_ID),
 			"fact_count": _record_death(actor),
+			# No body, so nothing to earn onto. `marks` names what the ARRIVAL owed, so a
+			# caller can tell "the mint refused" from "the mint worked and the marks silently
+			# vanished" (ADR 0190) - and `ungranted_marks` names the SAME ids, because every
+			# one of them is ungranted. Reporting an empty `ungranted_marks` here would claim
+			# the mint cost the player nothing, which is the one reading this branch must not
+			# be able to produce.
+			"marks": SoulArrivalMarks.marks_for(arrival),
+			"ungranted_marks": SoulArrivalMarks.marks_for(arrival),
 		}
 	var minted := _mint_body.call(String(arrival), next_incarnation) as Dictionary
 	if not bool(minted.get("ok", false)):
@@ -373,6 +402,8 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 			"incarnated": false,
 			"fact": String(FACT_ID),
 			"fact_count": _record_death(actor),
+			"marks": SoulArrivalMarks.marks_for(arrival),
+			"ungranted_marks": SoulArrivalMarks.marks_for(arrival),
 		}
 	var body := minted.get("actor", null) as Actor
 	var body_id := "" if body == null else String(body.id)
@@ -380,6 +411,11 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 	# ledger it can write, and the new body is minted EMPTY — so the write happens against the
 	# falling body and the carry below moves it. See `_record_death`.
 	var death_count := _record_death(actor)
+	# `marks` is empty unless a body came back from the mint at all; a null body has nothing to
+	# earn onto and `SoulArrivalMarks.grant` is the one place that says so rather than the
+	# verdict reporting an empty success.
+	var marks: Array[StringName] = []
+	var ungranted_marks: Array[StringName] = []
 	if body != null:
 		_carry_facts(actor, body)
 		# Beside the fact carry, above the rebind, and for the same reason it is not below it:
@@ -390,11 +426,32 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 		# ledger, and the codex would render an oath whose numbers never reached the stat stack.
 		# ADR 0181: fate belongs to the soul, and this is the line that makes it so.
 		_carry_destiny(actor, body)
+		# SECOND, and the order is the whole design (ADR 0190). The carry above is a WHOLESALE
+		# OVERWRITE — `to.set_module_data(DestinyState.MODULE_KEY, ledger.duplicate(true))` — so
+		# a grant placed before it is silently erased, and a grant placed after `_rebind` never
+		# reaches the projection. Between the two is the only window in which an arrival mark both
+		# survives the copy and is on the body `attach_actor` is about to adopt.
+		var granted := SoulArrivalMarks.grant(body, arrival)
+		marks = granted.get("marks", []) as Array[StringName]
+		ungranted_marks = granted.get("ungranted", []) as Array[StringName]
 	var reborn := SoulApi.reincarnate(actor, body_id)
 	if body != null and _rebind.is_valid():
 		# Every screen, roster and attached module follows the body. A half-swapped body is the
 		# failure this names: the game reads two different actors and no test fails.
 		_rebind.call(body)
+	# VERIFY LAST, after `_rebind` — not after the earn above. `DestinyApi.attach` calls
+	# `DestinyState.normalize`, which DROPS any fate id not in `_known_fates()`
+	# (destiny/api.gd:321-327, destiny_state.gd:72). A typo'd mark therefore passes `has_fate`
+	# at grant time and VANISHES at adopt, so a verification placed there would report the mark
+	# held and the codex would not have it. Re-reading after the rebind catches the typo and the
+	# null-body refusal in one place.
+	if body != null:
+		var still_missing: Array[StringName] = []
+		for mark_id in marks:
+			if not DestinyApi.has_fate(body, mark_id):
+				still_missing.append(mark_id)
+		if not still_missing.is_empty():
+			ungranted_marks = still_missing
 	return {
 		"ok": bool(reborn.get("ok", false)),
 		"reason": String(reborn.get("reason", "")),
@@ -407,6 +464,11 @@ func _rebody(actor: Actor, arrival: StringName, damaged: Dictionary) -> Dictiona
 		"incarnated": bool(reborn.get("ok", false)),
 		"fact": String(FACT_ID),
 		"fact_count": death_count,
+		# ADDITIVE keys (ADR 0190). The verdict keys above are consumed by
+		# `SoulLedgerPanel.DEATH_TEXT` and the `last_death` envelope; adding to them breaks
+		# nothing, and renaming or removing one would be a UI break.
+		"marks": marks,
+		"ungranted_marks": ungranted_marks,
 	}
 
 
@@ -423,4 +485,6 @@ func _refuse(reason: String) -> Dictionary:
 		"incarnated": false,
 		"fact": "",
 		"fact_count": 0,
+		"marks": [] as Array[StringName],
+		"ungranted_marks": [] as Array[StringName],
 	}

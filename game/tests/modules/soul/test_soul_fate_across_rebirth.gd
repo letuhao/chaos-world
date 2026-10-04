@@ -24,6 +24,10 @@ extends TestCase
 ## `teardown()` removes it again by identity: the runner shares one process, and a subscriber left
 ## behind moves counters for every later suite in the run.
 ##
+## `test_soul_arrival_ladder` proves the three arrivals are distinct; this file proves the ledgers
+## ride the swap. ADR 0190 then made an arrival GRANT something, and guard 3 below is amended by
+## it — the amendment is stated in full at that case and nowhere else, so it is read there.
+##
 ## ## Assertion style
 ##
 ## `assert_eq` / `assert_ne` / `assert_almost_eq`, each with a label; a boolean asserts against its
@@ -45,6 +49,10 @@ var _fallen: Actor
 ## How many `WorldFact` subscribers this suite found. A DELTA is observable here, a zero is not:
 ## a sibling suite may legitimately hold one of its own.
 var _baseline_subscribers: int = 0
+## Every ledger snapshot this suite holds a free-standing reference to, released from
+## [method teardown]. The runner shares one process across every suite and a retained ledger is
+## a retained dictionary, so nothing a case captures may outlive the case that captured it.
+var _scanned: Array = []
 
 
 func setup() -> void:
@@ -84,6 +92,7 @@ func teardown() -> void:
 	for born in _minted:
 		(born as Actor).resources.clear()
 	_minted.clear()
+	_scanned.clear()
 	_actor = null
 	_fallen = null
 	_soul_store = null
@@ -185,26 +194,51 @@ func test_fate_and_destiny_cross_and_their_projection_is_rebuilt_on_the_new_body
 # --- 3. THE EARN-ONLY INVARIANT IS STILL ONE-WAY -----------------------------
 
 
-func test_the_normalized_ledger_is_byte_equal_across_the_swap_and_a_second_death_lowers_nothing(
+## **Amended by ADR 0190: this case is a MONOTONE SUPERSET, not byte equality.**
+##
+## It used to assert `DestinyApi.state(_actor) == held` — BYTE equality — after each death,
+## and both halves went red the moment an arrival started granting its authored marks, because
+## the new ledger is a strict SUPERSET of the old one. **The assertion was stronger than the
+## invariant it was written for:** byte-equality encodes "the carry is a pure copy", which stops
+## being true the moment the arrival grants anything, and that was never the claim being guarded.
+## The claim is ADR 0065's earn-only invariant — nothing the game does takes a fate back — and
+## that is restated below BY EXPLICIT SET DIFFERENCE:
+##
+## - every `fates` / `destinies` key present BEFORE the death is present AFTER;
+## - every counter is `>=` its prior value;
+## - the pre-death history is a PREFIX of the post-death history, row for row.
+##
+## A STRICT-superset assertion is deliberately kept, so a ledger that fails to grow still fails
+## (an equality assertion would have been satisfied by a grant that silently no-oped).
+##
+## **The wrong fix, recorded here so the next agent does not reach for it:** deleting the case,
+## or softening it to `assert_true`, is ADR 0188's "a guard that cannot fail" failure verbatim.
+## A guard that can no longer fail is not a relaxed guard; it is a missing guard.
+func test_the_normalized_ledger_only_ever_grows_across_the_swap_and_a_second_death_lowers_nothing(
 ) -> void:
 	# ADR 0065: nothing the game does takes a fate back. A carry is not a removal — it ADDS rows
-	# to the new body's ledger — so the whole normalized ledger must be identical on both sides
-	# of the swap and identical again after the next death.
+	# to the new body's ledger — so every key held before must be held after, no counter may
+	# lower, and the trail is an append-only extension.
 	WorldFact.record(_actor, DUELS, 2)
 	DestinyApi.earn_fate(_actor, &"first_blood_duel", "combat")
 	var held := DestinyApi.state(_actor)
+	_scanned.append(held)
 	_die()
+	var after_first := DestinyApi.state(_actor)
+	_assert_is_superset_of(after_first, held, "the first death")
 	assert_eq(
-		DestinyApi.state(_actor),
-		held,
-		"the new body's normalized ledger is the falling body's, row for row"
+		_missing(after_first, held, "fates").size() > 0,
+		true,
+		(
+			"and the superset is STRICT: an arrival grants its authored marks on the death that "
+			+ "earned it (ADR 0190), so the new ledger must GROW. Every line above would also "
+			+ "pass on a ledger that gained nothing, which is why this one exists"
+		)
 	)
+	var held_second := after_first
 	_die()
-	assert_eq(
-		DestinyApi.state(_actor),
-		held,
-		"a second death lowers no counter and drops no entry: the ledger is only ever a copy"
-	)
+	var after_second := DestinyApi.state(_actor)
+	_assert_is_superset_of(after_second, held_second, "the second death")
 	assert_eq(
 		_world_fact_ledger(),
 		{
@@ -423,6 +457,90 @@ func _code_only(text: String) -> String:
 			continue
 		out.append(line)
 	return "\n".join(out)
+
+
+## `after` must be a MONOTONE SUPERSET of `before`, asserted BY DIFFERENCE and never by
+## equality. This is the restated form of guard 3 (ADR 0190): every `fates` / `destinies` key
+## present before is present after, every counter is `>=` its prior value, and `before`'s
+## history is a PREFIX of `after`'s, row for row.
+##
+## Asserting by difference rather than equality is the point, not a convenience. Byte-equality
+## reads "the carry is a pure copy", which is false the moment an arrival grants anything — and
+## it is ALSO false in the other direction: a ledger that grew by a row nobody can name would
+## pass an equality check on its pre-death half and hide a removal elsewhere. Both failures are
+## invisible to `==` and visible to a difference.
+func _assert_is_superset_of(after: Dictionary, before: Dictionary, when: String) -> void:
+	for section in ["fates", "destinies"]:
+		var missing := _missing(after, before, section)
+		assert_eq(
+			missing.size(),
+			0,
+			(
+				(
+					"%s: every %s key held BEFORE is held AFTER. Missing: %s. A ledger that loses a "
+					+ "row across a swap breaks the earn-only invariant whatever it gains"
+				)
+				% [when, section, ", ".join(missing)]
+			)
+		)
+	var counters_after := after["counters"] as Dictionary
+	var counters_before := before["counters"] as Dictionary
+	for counter_id in counters_before.keys():
+		assert_eq(
+			int(counters_after.get(counter_id, 0)) >= int(counters_before[counter_id]),
+			true,
+			(
+				(
+					"%s: counter %s never lowers: %d -> %d. Counters are monotone with no refund "
+					+ "(ADR 0065, ADR 0113), so a wrong count here is permanent"
+				)
+				% [
+					when,
+					counter_id,
+					int(counters_before[counter_id]),
+					int(counters_after.get(counter_id, 0))
+				]
+			)
+		)
+	var history_before := before["history"] as Array
+	var history_after := after["history"] as Array
+	assert_eq(
+		history_before.size() <= history_after.size(),
+		true,
+		(
+			"%s: the trail never shrinks: %d rows before, %d after"
+			% [when, history_before.size(), history_after.size()]
+		)
+	)
+	# The bound is SNAPSHOT BEFORE THE LOOP: the body only reads, so this terminates at the
+	# shorter of the two. Written as a bounded `for` rather than a `while` so
+	# `test_no_unbounded_wait.gd` has nothing to reason about.
+	for index in range(history_before.size()):
+		assert_eq(
+			history_after[index],
+			history_before[index],
+			(
+				(
+					"%s: row %d of the trail is UNCHANGED. The history is append-only — an "
+					+ "earn-only ledger that reorders or edits its own record has a removal path "
+					+ "nobody named"
+				)
+				% [when, index]
+			)
+		)
+
+
+## `before[section]`'s keys that `after[section]` does not hold, as plain strings so a failure
+## prints ids rather than `StringName`s.
+func _missing(after: Dictionary, before: Dictionary, section: String) -> Array[String]:
+	var held: Array[String] = []
+	for key in (after.get(section, {}) as Dictionary).keys():
+		held.append(String(key))
+	var out: Array[String] = []
+	for key in (before.get(section, {}) as Dictionary).keys():
+		if not held.has(String(key)):
+			out.append(String(key))
+	return out
 
 
 ## One counter, read off the ledger `DestinyApi.state` publishes rather than off a facade verb.

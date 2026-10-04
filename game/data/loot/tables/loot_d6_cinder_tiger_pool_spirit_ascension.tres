@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -7,9 +7,9 @@
 script = ExtResource("2_entry")
 id = &"d6_cinder_tiger_spirit_ascension_0"
 kind = &"item"
-item_id = &"V3_spirit_abjuration_morion"
+item_id = &"F37_spirit_fuchsite_loot_bonus_qi_absorption_will"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -19,9 +19,21 @@ rarity_floor = &"magic"
 script = ExtResource("2_entry")
 id = &"d6_cinder_tiger_spirit_ascension_1"
 kind = &"item"
+item_id = &"V3_spirit_abjuration_morion"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"d6_cinder_tiger_spirit_ascension_2"
+kind = &"item"
 item_id = &"tome_cinder_tiger_palm"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -37,5 +49,6 @@ rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0"),
-	SubResource("entry_1")
+	SubResource("entry_1"),
+	SubResource("entry_2")
 ])

@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"dao_fruit"
 rarity = &"common"
-vitality = 240.0
+vitality = 256950.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_dao_fruit_warden", "table_id": &"loot_mind_dao_fruit_warden"},
 	{"boss_id": &"F14_dao_fruit_warden", "table_id": &"loot_F14_dao_fruit_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"dao_fruit"
 rarity = &"rare"
-vitality = 384.0
+vitality = 411120.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"mind_dao_fruit_warden", "table_id": &"loot_mind_dao_fruit_warden"},
 	{"boss_id": &"F14_dao_fruit_warden", "table_id": &"loot_F14_dao_fruit_warden"},

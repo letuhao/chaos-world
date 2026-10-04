@@ -59,6 +59,15 @@ static var _stores: Dictionary = {}
 static func persist(actor: Actor, difficulty_id: String = "") -> Dictionary:
 	var world := _snapshot_world()
 	var payload := actor.to_dict() if actor != null else {}
+	# ## The v6 stamp is written HERE, at the one place that knows both halves.
+	# ## `Actor.to_dict` copies `module_data` verbatim and never invents a version, so a
+	# ## body that was never told which world slot its save expects carries none — and
+	# ## this is where a save's world and its stamp are made consistent with each other.
+	# ## Writing it on the actor instead would let a body carry a stamp about a world it
+	# ## never saw, which is a second copy of a save-shape fact that could disagree.
+	if actor != null and actor.polity_version() < 0:
+		actor.set_polity_version(WorldPolityLedger.SCHEMA_VERSION)
+		payload = actor.to_dict()
 	var generation := SaveStore.generation() + 1
 	var envelope := SaveSlot.build(payload, world, difficulty_id, generation)
 	var outcome := SaveStore.persist(envelope, generation)
@@ -117,9 +126,16 @@ static func store_for(key: String) -> RefCounted:
 ## A key with no store installed is skipped and named, not invented: writing a world into
 ## nothing is how a ledger is believed saved and is not.
 static func publish_world() -> Dictionary:
-	var envelope := _live_envelope()
-	if envelope.is_empty():
+	var live := _live_envelope()
+	if live.is_empty():
 		return {"ok": false, "reason": "no_readable_save", "restored": []}
+	# The ONE migration step, run on the way IN. A save this build may not touch is
+	# refused by name rather than half-published, and an old one is folded onto the
+	# current world shape rather than trusted (ADR 0037's precedent, `SaveMigrate`).
+	var envelope := SaveMigrate.prepare(live)
+	var refusal := SaveMigrate.refusal(live)
+	if not refusal.is_empty():
+		return {"ok": false, "reason": refusal, "restored": []}
 	var world := envelope.get("world", {}) as Dictionary
 	var restored: Array[String] = []
 	for key in WORLD_KEYS:

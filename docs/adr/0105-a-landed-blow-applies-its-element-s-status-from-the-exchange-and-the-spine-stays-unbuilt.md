@@ -105,3 +105,109 @@ and those two are what 0086,
 - The contract test is the seam, not a population: a landed blow with an open gate is
   reported applied and the actor answers `has_status`; an avoided blow applies nothing and
   consumes no draw from the shared stream.
+
+## Amendment 2026-10-04 (DEF-0145): the spine's S12 call is DELETED, not left unwired
+
+**Recorded here rather than in a new ADR because this is an amendment to a decision this
+ADR already made, not a new one.** The Decision above said S12 is "retired as the
+application site, not re-routed"; what it left implicit is what happens to the call site
+that still existed. DEF-0145 measured it and found the stage DEAD rather than merely
+idle:
+
+- `StatusApply.apply` reads its request from `ctx.data[StatusApply.REQUEST_KEY]`.
+- `app/combat_boot.gd`'s `ctx_builder_for` is the only shipped `ctx_builder`. It routes
+  to `QiDamage.builder`, `BodyDamage.builder` and `MindDamage.builder`, and each sets only
+  its own mechanism inputs. None writes `REQUEST_KEY`.
+- ADR 0105 explicitly refused `TechniqueDef` a status field, so the other documented
+  producer is ruled out by this ADR itself rather than merely unimplemented.
+- Every `set_data(REQUEST_KEY, …)` in the tree is under `game/tests/`.
+
+So `CombatSpine.resolve_hit` ran a stage on every landed blow — rebuilding the context a
+second time through `ctx_builder` — which then returned `REFUSE_NO_REQUEST` and called
+`StatusApply.record` with a refusal that `record` itself suppresses. **The spine's S12
+applied nothing, ever, on any shipped content.** DEF-0145's charter offered two fixes:
+give the spine a real request producer, or record the supersession and refuse the dead
+path.
+
+**Both ADRs point the same way, so the second is taken.** This ADR's Decision is
+explicit that S12 "is retired as the application site, not re-routed" and that the
+production producer is the exchange. Adding a `REQUEST_KEY` producer would create a
+SECOND application site — two `StatusEffect` construction paths, two potency paths, two
+reports — for a stage this ADR retired, and would require either the `TechniqueDef` field
+this ADR refused or a `ctx_builder` change owned by a different program. The resist and
+potency arithmetic it needs (`elemental_resist`, `apply_chance`, `potency_of`) is already
+read in place by the exchange. A second producer would buy a duplicate, not coverage.
+
+**What ships:**
+
+1. `CombatSpine.resolve_hit` no longer calls `StatusApply.apply` / `StatusApply.record`,
+   and no longer rebuilds the context for it. `hit_index` — the eighth parameter, and the
+   only thing S12 consumed — is now unread and is **kept**, because it is a defaulted
+   parameter of a public entry point and retrofitting a signature to remove dead weight
+   would break callers written against ADR 0087 for no behavioural gain. That it is
+   unread is documented at the parameter, since an unstated dead parameter is the defect
+   class this whole entry is about.
+2. `StatusApply` survives as the ARITHMETIC the exchange reads: `elemental_resist`,
+   `apply_chance`, `potency_of` and `status_seed` are all live production reads from
+   `modules/combat/exchange.gd` and `modules/loot/loot_affliction.gd`. This ADR's own
+   consequence required exactly this ("it stays as the `combat_engine` stage it is …
+   the stage is retired as the *player path*, not deleted"), so nothing is lost.
+3. `StatusApply.apply`'s docblock now states that it has no shipped caller, and names the
+   measurement rather than leaving a reader to re-derive it. A public method whose only
+   caller is its own test is the defect class ADR 0089 recorded five times; it is recorded
+   as a retired stage rather than left to look like a live one.
+4. A spine that ships later re-adopts the stage from `StatusApply` and drops the
+   exchange's call site, exactly as the Consequence above already said. Nothing about this
+   amendment forecloses that; it only refuses to pay for it twice in the meantime.
+
+`CombatExchange.STATUS_GATE_CHANCE` is also retired in the same change, for the reason
+this ADR's `modules/combat/exchange.gd` docblock had already conceded: the constant was a
+documented stand-in for a `CombatTuning.status_gate_chance` that could not be authored
+while the wave was barred from editing `modules/combat_engine/**`. The field now exists and
+is authored at the same `1.0` in `combat_damage.tres`. **The value did not move; only its
+home did.**
+
+## Amendment 2026-10-04: the S12 call was never deleted, and the producer is still absent
+
+**This corrects the amendment immediately above it, which was wrong on its central claim.**
+It was written on a measurement that did not survive re-measurement. Both of its factual
+premises are false against the tree:
+
+- **The spine's S12 call was NOT removed.** `CombatSpine.resolve_hit` calls
+  `StatusApply.apply` today, at `game/src/modules/combat_engine/spine.gd:194-197`, and it
+  has ALWAYS done so in the committed history: `git diff` on `spine.gd` shows the working
+  tree REORDERED the call (reading the context S4 already built instead of rebuilding one)
+  and rewrote the surrounding docblock, but the `-` side of the diff still contains the
+  `StatusApply.apply(` call. The stage was never deleted from `spine.gd`.
+- **No shipped `ctx_builder` writes `REQUEST_KEY`, so the stage is still dead.** A sweep of
+  every `.gd` in the tree for a writer of `StatusApply.REQUEST_KEY` finds the constant
+  declared (`status_apply.gd:143`), read (`status_apply.gd:513`), and named in prose — and
+  **every `set_data(REQUEST_KEY, …)` call site is under `game/tests/`** (three sites). The
+  amendment's own claim, repeated verbatim at `status_apply.gd:139`, is the accurate one.
+
+**So the situation this ADR described has NOT come to pass, and the "retired" wording in the
+Decision above is still the live description of the boss-exchange half.** What is true now:
+
+- The exchange call site is live, exactly as the Decision says:
+  `CombatExchange._status_on_landing` (`modules/combat/exchange.gd:329`, invoked from
+  `exchange.gd:170`) and `_boss_affliction_numbers` (`exchange.gd:494`) both read the
+  authored catalogue through `StatusApi.status_for_element` (`exchange.gd:345`).
+- The spine's stage is present in source and unreachable in play, which is the state
+  DEF-0145 measured. The producer is what is missing, and it is still missing.
+- `spine.gd:104` names `combat_boot.gd:_with_status_request` as the producer. **No such
+  function exists.** `CombatBoot.ctx_builder_for` (`combat_boot.gd:879-889`) returns the
+  mechanism builder unwrapped in all three arms; nothing composes a status request over it.
+
+**What is therefore owed, and is NOT owed by re-deciding anything here:** a producer that
+writes `REQUEST_KEY` onto the context the spine already built. The shape is settled — this
+ADR's element-carrier decision is the right one and is unchanged. `game/tests/app/
+test_combat_boot_status_producer.gd` states it and pins it, and it is currently RED: 6
+assertions fail, including `REQUEST_KEY rides ctx.data after the shipped builder: expected
+true, got false` and `the status APPLIED: no_request: expected true, got false`. Those rows
+are the honest measurement of the gap this amendment describes.
+
+**Not corrected here, on purpose:** the `CombatExchange.STATUS_GATE_CHANCE` retirement IS
+real and verified — the constant is gone from `exchange.gd` (only `OUTCOME_BOSS_DEFEATED` and
+`OUTCOME_PLAYER_LOST` remain, `exchange.gd:56,58`), the reader is `_status_gate`
+(`exchange.gd:94-97`) reading `CombatTuning.status_gate_chance`, and the field is authored at
+`1.0` in `combat_engine/combat_damage.tres:53`. That half of the amendment stands.

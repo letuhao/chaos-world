@@ -410,7 +410,14 @@ static func start(actor: Actor, rng: RandomNumberGenerator = null) -> MindAttemp
 	committed.costs_paid = true
 	# The attempt is rolled against the preparation it paid for, never against a
 	# later one, and the chance is fixed here instead of drifting at resolve time.
-	committed.rng_state = 0 if rng == null else rng.seed
+	#
+	# THE SEED IS DRAWN HERE AND STORED, never supplied by the caller and never
+	# defaulted. `rng_state = 0 if rng == null else rng.seed` wrote the one seed whose
+	# first draw (0.202272) sits BELOW every chance this ladder can commit — see
+	# `MindAttemptRoll` for the measurement — so `randf() >= chance` never fired:
+	# every shipped mind breakthrough was a certain success and the deviation leg
+	# could not run.
+	committed.rng_state = MindAttemptRoll.seed_for(rng)
 	committed.preparation = {
 		"chance": _chance(actor, sea),
 		"clarity": sea.clarity,
@@ -435,7 +442,15 @@ static func _next_sequence(actor: Actor) -> int:
 ## Resolve the stored attempt: roll it, then grant its award once or apply its
 ## recoverable deviation. True only when the outcome was granted, so re-resolving
 ## a granted attempt is a no-op that reports the same answer.
-static func resolve_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
+##
+## **NO GENERATOR, BY DESIGN.** The roll comes from the seed the commit stored, and
+## nothing else — that is what makes an attempt that spans a save resolve to the
+## outcome it was committed with. This used to accept one and prefer it, so a
+## resolve took its draw off a stream the record never named: `try_breakthrough`
+## handed the SAME generator to both halves, so the commit stored `rng.seed` while
+## the resolve drew the generator's already-advanced stream, and the record was a lie
+## about the trial it described. One door for randomness into a durable decision.
+static func resolve_attempt(actor: Actor) -> bool:
 	var committed := attempt(actor)
 	if committed == null:
 		return false
@@ -468,7 +483,10 @@ static func resolve_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> 
 		_end(actor, committed, false)
 		return false
 	committed.mark_trial_complete()
-	var generator := rng if rng != null else _replay(committed)
+	# Rebuilt from the record, never from a live stream: the roll and the meridian a
+	# deviation burns both come off this one generator, so a resolve after a reload
+	# lands on the same sea as a resolve without one.
+	var generator := MindAttemptRoll.replay(committed.rng_state)
 	var chance := float(committed.preparation.get("chance", _chance(actor, sea)))
 	if generator.randf() >= chance:
 		_deviate(actor, state, seed, sea, generator)
@@ -514,19 +532,47 @@ static func resolve_attempt(actor: Actor, rng: RandomNumberGenerator = null) -> 
 	# byte-identical in shape and queues nothing (ADR 0134) — so the earn is
 	# VERIFIED with `has_fate` rather than trusted, which is what
 	# `character_creation_flow.gd:280-284` does and `event_prize.gd:95-96` does not.
-	DestinyApi.earn_fate(actor, FATE_BARRIER, EARN_SOURCE)
-	if not DestinyApi.has_fate(actor, FATE_BARRIER):
-		push_warning(
-			(
-				(
-					"mind_cultivation: a breakthrough was granted but %s was not earned (id unknown "
-					+ "to the fate catalog?). Nothing records the debt and nothing retries it."
-				)
-				% String(FATE_BARRIER)
-			)
-		)
+	earn_breakthrough_oath(actor)
 	_end(actor, committed, true)
 	return true
+
+
+## Earn this path's breakthrough fate for `actor`, and VERIFY it. The one place the
+## id, the source string and the verification live, so every mind entry point pays
+## identically — `MindCultivationApi.try_breakthrough`,
+## `app/mind_cultivation_ui.gd`'s own Breakthrough button, and the two-phase
+## `start`/`resolve_attempt` lifecycle, all of which arrive here through
+## `resolve_attempt`.
+##
+## ## Why the verification IS the body
+##
+## `DestinyApi.earn_fate` returns the LEDGER, never a verdict, and every refusal
+## path is byte-identical in shape — an unknown id, an already-held entry and a null
+## actor all hand back the same unchanged ledger. Nothing is queued and nothing
+## retries (ADR 0134), so a call trusted as an "already offered" silently never
+## fires. `has_fate` afterwards is the only honest answer: the idiom
+## `character_creation_flow.gd:280-284` takes and `event_prize.gd:95-96` does not.
+##
+## Nothing branches on the returned boolean — a breakthrough is not rolled back
+## because its narrative receipt failed, and the refusal is an authoring bug rather
+## than a player-facing outcome — but it makes the seam assertable without a test
+## reaching into the ledger.
+static func earn_breakthrough_oath(actor: Actor) -> bool:
+	if actor == null:
+		return false
+	DestinyApi.earn_fate(actor, FATE_BARRIER, EARN_SOURCE)
+	if DestinyApi.has_fate(actor, FATE_BARRIER):
+		return true
+	push_warning(
+		(
+			(
+				"mind_cultivation: a breakthrough was granted but %s was not earned (id unknown "
+				+ "to the fate catalog?). Nothing records the debt and nothing retries it."
+			)
+			% String(FATE_BARRIER)
+		)
+	)
+	return false
 
 
 ## End the attempt and persist the record. `granted` sets the once-only outcome
@@ -552,14 +598,6 @@ static func cancel(actor: Actor) -> bool:
 	return true
 
 
-## The seed the attempt committed to, so a persisted attempt resolves to the same
-## outcome after a reload instead of rerolling.
-static func _replay(committed: MindAttempt) -> RandomNumberGenerator:
-	var generator := RandomNumberGenerator.new()
-	generator.seed = committed.rng_state
-	return generator
-
-
 # --- Convenience -------------------------------------------------------------
 
 
@@ -569,10 +607,17 @@ static func _replay(committed: MindAttempt) -> RandomNumberGenerator:
 ## This is an entry point in its own right, not a convenience over a gated one:
 ## `app/mind_cultivation_ui.gd` calls it directly, so the ADR 0109 gate has to be
 ## read at or below it rather than at the facade this call happens to bypass.
+##
+## `rng` reaches `start` and STOPS there. It was handed to `resolve_attempt` as
+## well, which is what made this wrapper the worst case of the old shape: the commit
+## stored `rng.seed` and the resolve then drew from that generator's stream, already
+## advanced by the tribulation fight `start` ran on the way through. Both halves
+## answered from one generator and neither matched the record. The resolve now reads
+## the record, so the one rng here is a SEED SOURCE and nothing more.
 static func try_breakthrough(actor: Actor, rng: RandomNumberGenerator = null) -> bool:
 	if start(actor, rng) == null:
 		return false
-	return resolve_attempt(actor, rng)
+	return resolve_attempt(actor)
 
 
 ## Whether this actor's body plan permits a mind breakthrough at all (ADR 0109).

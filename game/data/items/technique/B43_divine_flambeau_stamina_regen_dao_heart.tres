@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"B43_divine_flambeau_stamina_regen_dao_heart"
 display_name = "Divine Flambeau Stamina Regen Dao Heart"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

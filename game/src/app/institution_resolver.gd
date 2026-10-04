@@ -45,6 +45,22 @@ extends RefCounted
 ## shipped `.tres` the whole budget is exactly those three divisors, so **a sect's duty
 ## is served `near + distant + strategic` periods per real period** and the three
 ## constants are one series rather than three folklore numbers.
+##
+## ## These three are CONTENT CADENCE in the SSOT's own unit, and they stay authored
+##
+## **A count of periods cannot drift from a ratio of seconds-per-period**: converting one
+## to the other needs seconds, and the unit is already spent. They are divisors, not
+## ratios — `_every(periods, NEAR_PERIODS)` is how often a tier reaches a count someone
+## else decided elapsed (ADR 0145, `InstitutionBudget`'s "the tier buys FREQUENCY, never
+## SIZE"), and no ladder magnitude is 4 or 16 either.
+##
+## `near` IS the base — every period is `TimeLadder.ratio_for(BASE)` — and **GDScript will
+## not let a `const` say so**: `ratio_for` reads the shipped `.tres`, so it is not a
+## constant expression and the compiler refuses outright ("Assigned value for constant
+## `NEAR_PERIODS` isn't a constant expression"). `TimeLadder.PERIOD_SECONDS` and
+## `TimeLadder.BASE` ARE constant expressions; anything behind a `static func` is not.
+## So it is written as the base it is and the base row is checked against it at runtime
+## (`_check_base_row`) rather than by the compiler.
 const NEAR_PERIODS := 1
 const DISTANT_PERIODS := 4
 const STRATEGIC_PERIODS := 16
@@ -65,6 +81,22 @@ const STRATEGIC_TIER := InstitutionBudget.TIERS[2]
 ## says elapsed and none that it decided for itself (DEF-0111). How often each TIER
 ## reaches that count is the tier's own business — see the cadence note below and the
 ## budget it is bounded by.
+##
+## ## The SSOT's magnitudes arrive here as the SPAN, not as a second calendar
+##
+## `crossed` is [code]TimeLadder.magnitudes_crossed[/code] over the periods that were
+## PAID, handed down by the caller that owns time. It is what an action's declared cost
+## becomes in the clock's own authored units (ADR 0173), and it reaches a consumer that
+## already exists: the tier cadence below is a frequency folded out of a period count,
+## which is exactly what `_every` does. **So the coarse magnitudes are folded through
+## the same helper, never a second cadence function of its own** — a ladder walked twice
+## by two helpers is the drift ADR 0066 exists to refuse, and `InstitutionResolver`
+## already states that no ladder magnitude is 4 or 16 (`institution_resolver.gd:49-55`).
+##
+## A missing `crossed` is not an error: it reads as the base row only, so a caller that
+## settles a plain count — every advance in the tree except the retreat — settles on the
+## cadence it always did and the fold of magnitudes is a no-op rather than a change of
+## rate nobody authored.
 ##
 ## The return is primitives-only and carries the per-tier counts, so a caller can
 ## assert the budget was respected rather than trusting it — `SocialApi.tick`'s
@@ -93,7 +125,7 @@ const STRATEGIC_TIER := InstitutionBudget.TIERS[2]
 ## is three dispatches against caps of `4 + 2 + 1`, so one real period costs at most
 ## seven actions however large `periods` grows — ADR 0085's two-transfer-passes rule is
 ## upheld by the shipped budget rather than by a clamp that was never needed.
-static func settle(actor: Actor, periods: int) -> Dictionary:
+static func settle(actor: Actor, periods: int, crossed: Dictionary = {}) -> Dictionary:
 	var out := {
 		"ok": actor != null,
 		"periods": periods,
@@ -108,6 +140,7 @@ static func settle(actor: Actor, periods: int) -> Dictionary:
 		# move, not a refusal — the same reading `WorldPulse.pull` gives a zero delta.
 		out["ok"] = true
 		return out
+	_check_base_row()
 	_apply_tier(actor, _every(periods, NEAR_PERIODS), InstitutionBudget.TIERS[0], out["near"])
 	# ## Why one period is paid THREE times, by design
 	#
@@ -127,7 +160,30 @@ static func settle(actor: Actor, periods: int) -> Dictionary:
 	# each tier is still re-checked against its own cap before every dispatch and
 	# `tests/arch_rules/test_no_unbounded_wait.gd` has nothing new to refuse.
 	_apply_tier(actor, _every(periods, DISTANT_PERIODS), DISTANT_TIER, out["distant"])
-	_apply_tier(actor, _every(periods, STRATEGIC_PERIODS), STRATEGIC_TIER, out["strategic"])
+	# ## The coarse magnitudes REACH a cadence, on the STRATEGIC rung
+	#
+	# `distant` and `strategic` are authored divisors — a content decision nobody asked
+	# the ladder about, which is why they stay constants. The coarse rows are not: they
+	# are the SSOT's own answer to "how much time passed", handed down by the caller that
+	# owns it, and a strategic act is the one tier whose cadence is meant to name a
+	# political AGE rather than a number of ticks.
+	#
+	# So the period count reaching this tier is the span in the ladder's own base units
+	# **plus every coarser magnitude that span covers** — one year of periods counts as
+	# one year's worth here, not as however many period-sized steps it happened to be cut
+	# into. `crossed` arrives already folded by division per row, so this is a sum over
+	# the AUTHORED rows and the loop bound is the ladder's row count, never the span
+	# (`TimeLadder.magnitudes_crossed`, `core/time_ladder.gd:199-208`).
+	#
+	# The floor is the count the authored divisor already reaches, so an ordinary advance
+	# is untouched: the magnitudes only ever ADD to a coarse act, never replace a per-
+	# period one.
+	_apply_tier(
+		actor,
+		_every(periods, STRATEGIC_PERIODS) + _magnitude_periods(crossed),
+		STRATEGIC_TIER,
+		out["strategic"]
+	)
 	# ## The two headline counts are SUMMED, never left at their initial zeros
 	#
 	# `acted` and `refused` are the only figures `WorldPulse` keeps
@@ -147,6 +203,43 @@ static func settle(actor: Actor, periods: int) -> Dictionary:
 			out["acted"] = int(out["acted"]) + int(row["acted"])
 			out["refused"] = int(out["refused"]) + int(row["refused"])
 	return out
+
+
+## How many BASE-periods `crossed` says elapsed, once each coarser magnitude is restated in
+## the base the tiers above are counted in. **Zero on an ordinary advance**, so this is
+## invisible until a caller declares a coarse cost.
+##
+## ## What it deliberately does NOT do
+##
+## It does not replay the finer steps inside a coarser bucket, and it does not bank a
+## surplus: `TimeLadder.magnitudes_crossed` already truncated each row independently
+## (`core/time_ladder.gd:181-208`), so what is summed here is what the ladder DROPPED the
+## remainder of. Two half-months are not one month, and neither is one month and a half
+## (`time_ladder.gd:48-52`).
+##
+## The base row is excluded because it is `periods` itself, which the tier cadence above
+## already counts — counting it twice would hand a verb four periods because two elapsed,
+## the rule this file's own `settle` docstring is about.
+##
+## The `for` walks the SSOT's authored row array (`TimeLadder.magnitudes()`, a fixed set
+## of keys, not a count anybody hands in), so the bound is the ladder's own length and
+## never the elapsed span: the shape `tests/arch_rules/test_no_unbounded_wait.gd`
+## accepts and the shape the 67 GB incident was not.
+static func _magnitude_periods(crossed: Dictionary) -> int:
+	if crossed.is_empty():
+		return 0
+	var base := TimeLadder.ratio_for(TimeLadder.BASE)
+	var total := 0
+	for row in TimeLadder.magnitudes():
+		var magnitude := StringName(str(row.get("name", "")))
+		var ratio := int(row.get("ratio_periods", 0))
+		# A row the caller named but this table does not author, a row whose ratio is
+		# not a positive count, and the base itself all contribute zero rather than
+		# being guessed at — the same "0 rather than 1" discipline `ratio_for` keeps.
+		if magnitude == StringName() or magnitude == TimeLadder.BASE or ratio < 1:
+			continue
+		total += maxi(0, int(crossed.get(magnitude, 0))) * ratio
+	return total
 
 
 ## Every `step`-th period of the `total` that elapsed, counting from the first: three
@@ -252,6 +345,32 @@ static func _resolve(actor: Actor, periods: int, intent: Dictionary) -> bool:
 			# added without somebody deciding what it resolves to.
 			push_warning("InstitutionResolver: no verb '%s' -- refused closed" % String(verb))
 			return false
+
+
+## The base cadence against the ladder's own base row, checked rather than asserted.
+##
+## `NEAR_PERIODS` is `1` because "every period" IS the base, and `ratio_for` reads the
+## shipped `.tres` so the compiler cannot prove it (`const` above). **The claim is only
+## true if the base row still says 1**, and a `.tres` retune that moved it would leave a
+## constant that is silently wrong — the `RealmProfile` copy that stayed green under
+## every value assertion (ADR 0116). So the conformance is MACHINE-CHECKED here, at the
+## one place a period count is already being handed down, and it fails loudly.
+##
+## Only the BASE row is compared: `distant`/`strategic` are content divisors with no row
+## to check them against, which is the whole of the difference between them and this.
+static func _check_base_row() -> void:
+	var base := TimeLadder.ratio_for(TimeLadder.BASE)
+	if base != NEAR_PERIODS:
+		push_error(
+			(
+				(
+					"InstitutionResolver: NEAR_PERIODS is %d but the ladder's base row is %d — "
+					+ "a cadence that no longer reaches every period. Refusing rather than "
+					+ "settling a wrong frequency (ADR 0173)."
+				)
+				% [NEAR_PERIODS, base]
+			)
+		)
 
 
 ## Whether `actor` lives under a polity of the given tier. Read through the facades

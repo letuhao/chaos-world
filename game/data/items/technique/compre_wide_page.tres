@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"compre_wide_page"
 display_name = "Wide Page Manual"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"golden_immortal"
 fixed_modifiers = Array[Dictionary]([

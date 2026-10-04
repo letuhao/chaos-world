@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -7,13 +7,49 @@
 script = ExtResource("2_entry")
 id = &"F16_heaven_storm_serpent_great_luo_0"
 kind = &"item"
-item_id = &"mantle_supernova"
+item_id = &"I43_immortal_gainsay_aged"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
 rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"F16_heaven_storm_serpent_great_luo_1"
+kind = &"item"
+item_id = &"Z9_immortal_balustrade_primed"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"F16_heaven_storm_serpent_great_luo_2"
+kind = &"item"
+item_id = &"mantle_supernova"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"F16_heaven_storm_serpent_great_luo_3"
+kind = &"item"
+item_id = &"necklace_dragon_eye"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
 
 [resource]
 script = ExtResource("1_table")
@@ -24,5 +60,8 @@ rarity = &""
 rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
-	SubResource("entry_0")
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3")
 ])

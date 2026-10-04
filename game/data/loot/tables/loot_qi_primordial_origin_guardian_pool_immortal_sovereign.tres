@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"qi_primordial_origin_guardian_immortal_sovereign_0"
+kind = &"item"
+item_id = &"C22_heaven_corbie_spirit_qi_cost_reduction_move_speed"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"qi_primordial_origin_guardian_immortal_sovereign_1"
+kind = &"item"
+item_id = &"F19_heaven_epergne_agility_attack_physical_breakthrough_chance_dao_heart"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"qi_primordial_origin_guardian_immortal_sovereign_2"
+kind = &"item"
+item_id = &"F44_heaven_gimball_cooldown_reduction_crit_chance_move_speed"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_qi_primordial_origin_guardian_pool_immortal_sovereign"
+display_name = "Primordial Origin Guardian salvage (immortal_sovereign)"
+realm = &"immortal_sovereign"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2")
+])

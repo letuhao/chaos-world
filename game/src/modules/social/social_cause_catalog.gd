@@ -33,9 +33,28 @@ func _install_defaults() -> void:
 	# honours it only once the axes have earned a confidant. A brotherhood sworn by a pair
 	# the world has not seen trust in is recorded and not granted — which is the whole
 	# reason `promotes_to` is a ceiling and not an outcome (BL-0659).
+	#
+	# **`kind` is named explicitly, and it is load-bearing rather than cosmetic.** Left to
+	# the `_first_tag` fallback this cause has NO authored tag at all, so its kind became
+	# its own id `shared_brotherhood` — a bucket that does not exist anywhere else in the
+	# catalog — while `accepted_the_oath` / `refused_the_oath` / `witnessed_an_oath` all
+	# carry `kind: oath`. The result was that four oaths filed under FOUR kinds, so
+	# `SocialBondClass.FRIEND_DISTINCT_CAUSES` counted an oath farm as four different acts
+	# of act and cleared a friendship. **The rule counts distinct KINDS precisely so that
+	# the same act wearing two labels cannot buy a rung** (ADR 0091), so the name is
+	# authored here rather than derived, and the guard is
+	# `tests/modules/social/test_brotherhood_exchange.gd`
+	# `::test_a_history_of_nothing_but_oaths_never_reaches_sworn`.
 	_add(
 		&"shared_brotherhood",
-		{"standing": 5.0, "trust": 0.15, "persistent": true, "promotes_to": SocialBondClass.SWORN}
+		{
+			"standing": 5.0,
+			"trust": 0.15,
+			"persistent": true,
+			"kind": &"oath",
+			"tags": [&"oath", &"deed"],
+			"promotes_to": SocialBondClass.SWORN
+		}
 	)
 	_add(&"robbed", {"standing": -6.0, "tags": [&"harm"]})
 	_add(&"attacked_unprovoked", {"standing": -8.0, "tags": [&"combat", &"harm"]})
@@ -43,6 +62,7 @@ func _install_defaults() -> void:
 	_add(&"betrayed_oath", {"standing": -12.0, "trust": -0.4, "tags": [&"oath", &"harm"]})
 	_add(&"slandered", {"standing": -4.0, "trust": -0.12, "tags": [&"harm"]})
 	_add_intimacy()
+	_add_oath()
 	_add_auction()
 	_install_institutional()
 
@@ -154,6 +174,66 @@ func _add_intimacy() -> void:
 	)
 
 
+## ## The oath vocabulary: the promise, the mirror, the refusal and the witness
+##
+## `shared_brotherhood` itself is authored inline at the top of this file, where every
+## other personal cause lives, because it predates the exchange and three tests read it
+## there by name. These three are what make it **reachable**: a cause no production verb
+## applies is inert vocabulary (the mirror defect), and `BrotherhoodOath` / `BrotherhoodOathApp`
+## apply each of these exactly where its docstring says.
+##
+## ## All four share `kind: oath`, and that is the anti-farm rule doing its job
+##
+## An oath made, an oath answered, an oath refused and an oath witnessed are all **one
+## kind of act**. So a pair whose entire relationship history is oaths — made, broken,
+## renewed, refused — still tops out at an acquaintance however large the total, because
+## `SocialBondClass.FRIEND_DISTINCT_CAUSES` counts distinct KINDS and that history has
+## one. The ladder is climbed by deeds and gifts alongside the oath, never by the oath
+## itself.
+##
+## ## The magnitudes are the refusal-cost argument, in data
+##
+## `refused_the_oath` is **-4.0 standing and -0.15 trust**. Sized against the ladder:
+## - `FRIEND_AT` is 6.0, so a single refusal is a real dent in a working friendship.
+## - `CONFIDANT_TRUST` is 0.5, so refusing costs **a third of the trust the player has
+##   with a confidant** — a refusal is not free, and the axis it bites is the axis that
+##   gates teaching and future oaths, so it compounds.
+## - `CONFIDANT_AT` is 14.0, and `shared_brotherhood` itself is +5.0. So refusing cannot
+##   by itself demote a confidant out of range under ordinary play — the cost is felt,
+##   not fatal, which is the right register for "he said not yet" rather than "you have
+##   been cast out".
+##
+## `accepted_the_oath` and `witnessed_an_oath` are **not persistent**: a mirror of an
+## oath and a witness who stood surety are both facts that mean more than any scalar,
+## and the class ladder already refuses to let an unearned oath lift a bond (that is what
+## `promotes_to` being a ceiling means). Keeping them transient means the *only* promise
+## that can lift a rung is `shared_brotherhood`, so a future author cannot quietly grant
+## the top of the ladder by mirroring the act onto the wrong ledger.
+func _add_oath() -> void:
+	_add(
+		&"accepted_the_oath",
+		{
+			"standing": 5.0,
+			"trust": 0.15,
+			"kind": &"oath",
+			"tags": [&"oath", &"deed"],
+		}
+	)
+	_add(
+		&"refused_the_oath",
+		{
+			"standing": -4.0,
+			"trust": -0.15,
+			"kind": &"oath",
+			"tags": [&"oath", &"harm"],
+		}
+	)
+	_add(
+		&"witnessed_an_oath",
+		{"standing": 1.0, "trust": 0.04, "kind": &"oath", "tags": [&"oath", &"deed"]}
+	)
+
+
 ## ## Institutional causes: the bond between an actor and an INSTITUTION
 ##
 ## ## An institution is a legal `partner_id`, and that is the whole trick
@@ -176,11 +256,12 @@ func _add_intimacy() -> void:
 ##
 ## ## `persistent` on the ones an institution can never take back
 ##
-## An oath sworn to a sect and a war fought for a nation are facts the world keeps
-## after the membership ends; a resignation and an expulsion are the institution's
-## verdict and decay with it. The FLOOR is the mechanism (ADR 0091's decay clause):
-## `SocialBond.apply` raises the floor only on a persistent cause, so time moves a
-## broken bond toward the promise it was given rather than back to a stranger.
+## An oath sworn to a sect, a war fought for a nation and entry into a house are
+## facts the world keeps after the membership ends; a resignation and an expulsion
+## are the institution's verdict and decay with it. The FLOOR is the mechanism
+## (ADR 0091's decay clause): `SocialBond.apply` raises the floor only on a
+## persistent cause, so time moves a broken bond toward the promise it was given
+## rather than back to a stranger.
 ##
 ## ## The magnitudes are deliberately SMALL
 ##
@@ -241,9 +322,40 @@ func _install_institutional() -> void:
 			"standing": 3.0,
 			"trust": 0.05,
 			"persistent": true,
-			"tags": [&"institution", &"nation", &"deed"]
+			"tags": [&"institution", &"nation", &"deed"],
 		}
 	)
+	# ## A clan — the third leg, and the one that shipped last
+	#
+	# ADR 0064 calls a clan's relationship to a member "a standing with obligations",
+	# and `SocialState.regard`'s own note already named a clan as the institution this
+	# read model was opened for. `sect/` and `nation/` bridged; `clan/` held no regard
+	# number at all, so the social advantage a house was designed to confer existed in
+	# prose only. These are the two acts that close it.
+	#
+	# **The magnitudes are a deliberate tier BELOW the sect pair.** A sworn oath is a
+	# chosen public commitment; entry to a house is usually inherited, bought or
+	# arranged by someone else before the member could refuse it, and a line persists
+	# across generations in a way a sect's roster does not. So entry is worth 1.5 where
+	# `sworn_to_sect` is 2.0, and a member who never chose the house starts slightly
+	# ahead of a stranger rather than a third of the way to a friendship.
+	#
+	# `sworn_to_a_clan` is persistent for the same reason `sworn_to_sect` is: the house
+	# remembers having had you, and ADR 0091's floor is what makes time drift toward
+	# that record rather than back to a stranger. `left_a_clan` is transient and small,
+	# matching `left_a_sect` exactly — walking out of a house is a choice and always
+	# permitted, so the cost is the standing and nothing else. There is deliberately no
+	# `expelled_from_clan`: the clan module publishes no expulsion verb, and authoring a
+	# cause no call site can apply is the inert-vocabulary defect ADR 0076's catalog
+	# exists to prevent.
+	#
+	# `kind` is `clan` for both, so the anti-farm rule counts a whole career of house
+	# membership as ONE kind of act and the class ladder can never be climbed by
+	# re-joining houses.
+	_institutional(
+		&"sworn_to_a_clan", {"standing": 1.5, "trust": 0.03, "persistent": true, "kind": &"clan"}
+	)
+	_institutional(&"left_a_clan", {"standing": -1.0, "kind": &"clan"})
 
 
 ## `_add` with `institutional` forced on. **The flag is set here rather than in each

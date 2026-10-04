@@ -20,12 +20,33 @@ const LINE := &"hearthborn"
 ## bare-pipeline figures of 150.0 and 1.4 are already scaled to 157.5 and 1.442. The
 ## bloodline is what moved them, not the clan — that is the whole point of the test, so
 ## the baseline is measured *with* the lineage rather than without it.
+##
+## **These are measurements, not constants.** Each is the shipped pipeline's output for
+## `_born()`'s exact build, and every one is written below as the arithmetic that
+## produces it, so a rebalance moves the number *and* the note together and a reader can
+## see which term did it. `hearthborn` publishes only `max_health` and `qi_regen`, so no
+## combat id below is touched by the lineage at all — every combat figure here is the
+## bare `core/actor_stats.gd` value for `{physique 10, will 5, spirit 4, agility 6,
+## comprehension 3, aptitude 3}`.
+##
+## `attack_spiritual` is the one that moved, and it moved in `core`, not in `bloodline`:
+## ADR 0183 made it read `spirit * 2.0 + aptitude * 0.5 + will * 0.6` so a body whose
+## race grants no `spirit` can still throw qi (`actor_stats.gd:177`). `9.5` was
+## `4 * 2 + 3 * 0.5`; with the `will` term it is `4 * 2 + 3 * 0.5 + 5 * 0.6` = `12.5`.
+## Nothing about the clan is in either figure — the clan reads no combat stat — which is
+## the point: the baseline moves with core balance, and the clan test still holds.
 const COMBAT_STATS := {
+	# 50 + physique * 10 = 150.0, then hearthborn's `max_health` PERCENT +0.05.
 	"max_health": 157.5,
+	# physique * 2.0.
 	"attack_physical": 20.0,
-	"attack_spiritual": 9.5,
+	# spirit * 2.0 + aptitude * 0.5 + will * 0.6, since ADR 0183.
+	"attack_spiritual": 12.5,
+	# min(2.5, 1.0 + agility * 0.008).
 	"attack_speed": 1.048,
+	# physique * 1.5.
 	"defense_physical": 15.0,
+	# physique * 0.5 + will * 0.5.
 	"poise": 7.5,
 }
 

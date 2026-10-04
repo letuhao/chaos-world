@@ -10,4 +10,4 @@ description = "The third return. By now the record of what you were outlives the
 bearing = "The record is longer than you are. Carry it or do not."
 race_id = &"emberblood"
 order = 2
-marks = Array[StringName]([&"the_ledger_knows_your_name"])
+marks = Array[StringName]([&"soul_marked_thrice"])

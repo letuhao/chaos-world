@@ -79,6 +79,38 @@ func _rooted_in(path_id: StringName, element: StringName) -> Actor:
 	return actor
 
 
+## Spend `seconds` through the PRODUCTION tick: [method StatusApi.tick_statuses], the
+## one call `StatusLoop.tick` makes every frame (`app/status_loop.gd:184`).
+##
+## `actor.tick_statuses` alone is NOT enough, and that is the whole point: it is `core`'s
+## merge-and-age half, so it ages a hazard out on its authored budget and emits
+## `status_ticked` while spending nothing at all. Every assertion in this file that is
+## about CONSEQUENCE drives the module instead, so a status that never registers a runtime
+## fails here rather than looking like a healthy hazard.
+func _ticks(actor: Actor, seconds: float) -> void:
+	StatusApi.tick_statuses(actor, seconds)
+
+
+## The health `magnitude` spends over `seconds` against `def`, read off the def's own
+## authored curve rather than restated as a literal: `share_per_pulse` per pulse, the
+## pulse count the authored `tick_interval` owes, and `escalation_per_tick` applied
+## ONE-based because `tick_statuses` increments `ticks_elapsed` before it pulses
+## (`status/api.gd`) — a pulse that has not fired cannot have escalated. Mirrors
+## `StatusRuntime.pulse_magnitude`; a bounded `for` over a pulse count derived from two
+## authored numbers, never a `while`.
+func _expected_spend(magnitude: float, def: StatusDef, seconds: float) -> float:
+	if def == null:
+		return 0.0
+	var owed := int(floor(seconds / maxf(0.001, def.tick_interval)))
+	var share := float(def.payload.get("share_per_pulse", 0.0))
+	var escalation := float(def.payload.get("escalation_per_tick", 0.0))
+	var cap := maxf(1.0, float(def.payload.get("escalation_cap", 1.0)))
+	var total := 0.0
+	for pulse in owed:
+		total += magnitude * (1.0 + escalation * float(pulse + 1) / cap) * share
+	return total
+
+
 ## The authored races read through the content tree, so a retuned `.tres` moves these
 ## tests with it instead of leaving a stale literal behind. Returns an empty dict on a
 ## missing file rather than asserting: a content-loading failure is reported by the
@@ -689,6 +721,95 @@ func test_the_tick_path_consumes_the_hazard() -> void:
 		"and re-entering pays a full second window rather than dying for good"
 	)
 	actor.status_ticked.disconnect(handler)
+
+
+## ## THE CONSEQUENCE. The section above proves the hazard PULSES; this one proves the
+## pulse COSTS HEALTH.
+##
+## A signal is not a consequence. `Actor.tick_statuses` emits `status_ticked` for any
+## status with a `tick_interval` — `core/status_registry.gd:109` does that with no
+## knowledge of a pulse channel — so the whole suite above went green while a furnace
+## cost a player exactly nothing: the status was on the actor, `has_status` answered
+## true, `status_ticked` fired four times per window, and `resource(&"health").current`
+## never moved, because the pulse lives in the `status` module's runtime table and
+## nothing in `domain` ever registered one.
+##
+## So the assertion is a NUMBER OF HEALTH POINTS, computed from the authored def rather
+## than pinned as a literal, and driven through the PRODUCTION tick path
+## (`StatusApi.tick_statuses`, which is what `StatusLoop.tick` calls once per frame) and
+## never through `actor.tick_statuses` alone — the direct call ages a status without
+## ever spending it, which is precisely how the defect survived.
+func test_standing_in_the_hazard_costs_health_by_the_authored_amount() -> void:
+	var actor := _cultivator(PathState.QI)
+	var zone := _furnace()
+	var def := EnvironmentField.hazard_def()
+	assert_eq(def != null, true, "the hazard def is authored under res://src/data/statuses")
+	var applied := EnvironmentField.apply(actor, zone, PathState.QI)
+	var magnitude := float(applied["amount"])
+	assert_eq(magnitude > 0.0, true, "the zone resolved to a real residual")
+
+	var before := actor.resource(&"health").current
+	# One stay window, spent through the production tick. The status expires inside the
+	# same call, so nothing can be left paying after the assertion.
+	_ticks(actor, zone.stay_budget)
+
+	# The expected spend is read off the def, not restated: `share_per_pulse` per pulse,
+	# the pulse count the authored cadence owes, and the def's own
+	# `escalation_per_tick` curve applied one-based (a pulse that has not fired cannot
+	# have escalated). A retune of the `.tres` moves this assertion with it.
+	var expected := _expected_spend(magnitude, def, zone.stay_budget)
+
+	var spent := before - actor.resource(&"health").current
+	assert_almost_eq(
+		spent,
+		expected,
+		"standing in a furnace for one stay window costs exactly what the def authors",
+		0.001
+	)
+	assert_eq(spent > 0.0, true, "and that is a real amount of health, not a rounding dust")
+	assert_eq(
+		actor.has_status(&"env_scourge"),
+		false,
+		"the hazard expires on its own budget once it has been paid"
+	)
+
+
+## The CONTROL, and the reason the assertion above is trustworthy: the SAME status, the
+## SAME def, the SAME drive, applied through the status module's own public verb already
+## spends health. So a zero delta in the case above is this module's seam, not a harness
+## that cannot see a pulse at all — which is the difference between "my fix is wrong" and
+## "my test proves nothing".
+func test_the_same_def_through_the_status_facade_already_costs_health() -> void:
+	var def := EnvironmentField.hazard_def()
+	var share := float(def.payload.get("share_per_pulse", 0.0))
+	var window := 8.0
+
+	var via_facade := _cultivator(PathState.QI)
+	var untouched := _cultivator(PathState.QI)
+	# `env_scourge` is CULTIVATION scope, so `apply_cultivation` is the verb that takes
+	# it, and it is what the CONTROL drives.
+	var applied := StatusApi.apply_cultivation(via_facade, &"env_scourge", 1.0)
+	assert_eq(
+		bool(applied.get("ok", false)),
+		true,
+		"the hazard def resolves through the status module's own verb"
+	)
+
+	_ticks(via_facade, window)
+	_ticks(untouched, window)
+
+	# UNTREATED minus TREATED: the treated actor has lost health the untouched one kept,
+	# so this is positive exactly when the pulse landed. The other order would make a
+	# working pulse read as a failure.
+	var spent := untouched.resource(&"health").current - via_facade.resource(&"health").current
+	assert_eq(
+		spent > 0.0,
+		true,
+		"the status module's own verb already spends health — the harness can see a pulse"
+	)
+	# The floor any single pulse owes: one un-escalated share of a full-strength
+	# application. Over several intervals the def escalates, so the real spend is higher.
+	assert_eq(spent >= share, true, "and at least the authored per-pulse share of %.4f" % share)
 
 
 ## A re-entry must not raise the damage. STACK would compound on every re-apply, so a

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G19_heaven_hessian_breakthrough_chance_insight_gain"
 display_name = "Heaven Hessian Breakthrough chance Insight gain"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"dao_fruit"
 fixed_modifiers = Array[Dictionary]([

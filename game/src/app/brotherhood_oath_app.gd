@@ -61,6 +61,13 @@ static func offer(
 	var accepted := BrotherhoodOath.offer_brotherhood(player, partner, witness_id, witnessed)
 	if not bool(accepted.get("ok", false)):
 		return accepted
+	# ## Both beats are keyed on the id the CALLER held, not on `partner.id`.
+	#
+	# `npc_id` is a def id and `partner.id` is the actor id the minter minted for it
+	# (`npc_elder_wei`), and the two are what a consent row, an authored gate and a panel
+	# each mean. The collaborator resolves it itself; this file passes the id the caller
+	# already typed so both beats address the same row instead of one of them naming a
+	# ledger entry nothing will ever read.
 	var answered := BrotherhoodOath.answer_offer(player, partner)
 	answered["offered"] = true
 	return answered

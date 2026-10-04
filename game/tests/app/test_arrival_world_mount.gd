@@ -145,6 +145,31 @@ func test_the_programs_own_summary_reports_the_place() -> void:
 	assert_ne(String(summary.get("location_id", "")), "", "and names the place it stands in")
 
 
+## CREATION IS UNCHANGED BY THE RESTORE FIX (ADR 0192). A committed arrival still stands in
+## the place the CREATION program DREW, on the creation program's OWN stage — not on a
+## restore stage reading a save it never had. This is the one assertion that goes red if
+## someone "unifies" the two paths and hands a new hero the read-the-save behaviour: a
+## freshly created actor carries no `world_spawn_state`, so a read-first mount would refuse
+## it `not_located` and the arrival would report itself unmounted.
+func test_the_creation_path_still_stands_the_hero_on_its_own_drawn_stage() -> void:
+	_commit()
+	var stage := WorldStage.instance()
+	assert_ne(stage, null, "the commit mounted a stage")
+	if stage == null:
+		return
+	var summary := _app.creation_summary()
+	assert_eq(
+		String(stage.summary().get("location_id", "")),
+		String(summary.get("location_id", "")),
+		"the mounted stage IS the creation program's own, still holding its drawn place"
+	)
+	assert_eq(
+		String(WorldSpawnApi.current(_app.actor()).get("source", "")),
+		WorldSpawnApi.SOURCE_RANDOM,
+		"and creation still DRAWS: a new hero is placed, not resumed from a save"
+	)
+
+
 # --- The event half. THIS is the assertion that proves the chain came alive -----
 
 

@@ -20,5 +20,4 @@ stamina_cost = 30.0
 cooldown = 10.0
 mastery_rungs = 5
 magnitude = 0.6
-element_share = 0.2
 

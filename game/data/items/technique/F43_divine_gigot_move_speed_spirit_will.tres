@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F43_divine_gigot_move_speed_spirit_will"
 display_name = "Divine Gigot Move speed Spirit Will"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

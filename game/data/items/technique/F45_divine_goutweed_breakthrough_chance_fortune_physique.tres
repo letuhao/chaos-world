@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F45_divine_goutweed_breakthrough_chance_fortune_physique"
 display_name = "Divine Goutweed Breakthrough chance Fortune Physique"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"primordial_origin"
 fixed_modifiers = Array[Dictionary]([

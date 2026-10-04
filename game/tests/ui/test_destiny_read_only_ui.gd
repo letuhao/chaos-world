@@ -168,7 +168,7 @@ const EARN_FIXTURE := {
 		+ "## system that decided the deed happened, not to a screen.\n"
 		+ "func _grant(destiny_id: StringName) -> void:\n"
 		+ "\tvar live := DestinyApi.summary(_actor)\n"
-		+ "\tvar ledger := DestinyApi.earn_destiny(_actor, destiny_id, \"ui\")\n"
+		+ '\tvar ledger := DestinyApi.earn_destiny(_actor, destiny_id, "ui")\n'
 		+ "\tif not DestinyApi.has_destiny(_actor, destiny_id):\n"
 		+ "\t\treturn\n"
 		+ "\tprint(live.size() + ledger.size())\n"
@@ -191,7 +191,7 @@ const EARN_FIXTURE_CLEAN := {
 		+ "## is not what the guard is looking for either.\n"
 		+ "func _refresh() -> void:\n"
 		+ "\tvar live := DestinyApi.summary(_actor)\n"
-		+ "\tif DestinyApi.has_destiny(_actor, &\"the_severed\"):\n"
+		+ '\tif DestinyApi.has_destiny(_actor, &"the_severed"):\n'
 		+ "\t\trefresh()\n"
 	),
 }
@@ -226,7 +226,7 @@ const BUTTON_FIXTURE := {
 		+ "var _equip: Button = null\n"
 		+ "\n"
 		+ "func _bind_nodes() -> void:\n"
-		+ "\t_equip = get_node_or_null(\"%Equip\") as Button\n"
+		+ '\t_equip = get_node_or_null("%Equip") as Button\n'
 		+ "\t_equip.pressed.connect(_on_equip)\n"
 		+ "\n"
 		+ "func _on_equip() -> void:\n"
@@ -247,7 +247,7 @@ const BUTTON_FIXTURE_CLEAN := {
 		+ "\n"
 		+ "## No Button here, and this comment is not what the guard is looking for.\n"
 		+ "func _bind_nodes() -> void:\n"
-		+ "\t_head_label = get_node_or_null(\"%HeadLabel\") as Label\n"
+		+ '\t_head_label = get_node_or_null("%HeadLabel") as Label\n'
 	),
 }
 
@@ -275,9 +275,7 @@ func test_no_ui_script_earns_or_records_through_the_destiny_facade() -> void:
 		"the walk visited res://src/ui, so the verdict below is about real files"
 	)
 	assert_eq(
-		scanned.size() > 20,
-		true,
-		"and it visited the whole UI program, not one directory of it"
+		scanned.size() > 20, true, "and it visited the whole UI program, not one directory of it"
 	)
 	var offenders: Array[String] = []
 	for entry in scanned:
@@ -290,10 +288,12 @@ func test_no_ui_script_earns_or_records_through_the_destiny_facade() -> void:
 		offenders,
 		[],
 		(
-			"ui/ may READ fate and it may never WRITE it: ADR 0065, and ADR 0134 §1 — \"write "
-			+ "verbs belong to the owner of the moment, never to destiny\". Found: %s"
+			(
+				'ui/ may READ fate and it may never WRITE it: ADR 0065, and ADR 0134 §1 — "write '
+				+ 'verbs belong to the owner of the moment, never to destiny". Found: %s'
+			)
+			% str(offenders)
 		)
-		% str(offenders)
 	)
 
 
@@ -346,10 +346,7 @@ func test_the_codex_reaches_the_facade_through_reads_and_that_is_allowed() -> vo
 	assert_eq(
 		_destiny_verbs(screen),
 		["events", "summary"],
-		(
-			"the codex reaches the facade through exactly these verbs today, and both are "
-			+ "reads"
-		)
+		"the codex reaches the facade through exactly these verbs today, and both are " + "reads"
 	)
 
 
@@ -414,9 +411,7 @@ func _uses_only_allowed(text: String) -> bool:
 func test_the_split_covers_the_facades_whole_public_surface() -> void:
 	var published := _public_methods(FACADE)
 	assert_eq(
-		published.is_empty(),
-		false,
-		"the facade publishes methods, so this case is not vacuous"
+		published.is_empty(), false, "the facade publishes methods, so this case is not vacuous"
 	)
 	var uncovered: Array[String] = []
 	for method_name in published:
@@ -587,6 +582,7 @@ func test_the_earn_guard_still_sees_an_earn_and_ignores_a_comment_that_names_one
 		)
 	)
 
+
 # --- 2. the read-only shape of the codex --------------------------------------
 
 
@@ -611,12 +607,14 @@ func test_the_codex_mounts_no_pressable_widget_and_handles_no_press() -> void:
 			found,
 			[],
 			(
-				"%s carries %s; a fate is earned and cannot be chosen, equipped or given up "
-				% [path, str(found)]
-			)
-			+ (
-				"(ADR 0065), so the codex publishes no control and handles no press — the "
-				+ "codex screen's own header says \"There is no button anywhere on this surface\""
+				(
+					"%s carries %s; a fate is earned and cannot be chosen, equipped or given up "
+					% [path, str(found)]
+				)
+				+ (
+					"(ADR 0065), so the codex publishes no control and handles no press — the "
+					+ 'codex screen\'s own header says "There is no button anywhere on this surface"'
+				)
 			)
 		)
 
@@ -644,9 +642,7 @@ func test_the_control_guard_still_sees_a_codex_row_that_mounts_a_button() -> voi
 		"a codex row that mounts a Button really does carry the token in executable code"
 	)
 	assert_eq(
-		pressing.contains("pressed."),
-		true,
-		"and connecting it really does carry the handler token"
+		pressing.contains("pressed."), true, "and connecting it really does carry the handler token"
 	)
 	assert_eq(
 		_pressables_in(pressing).has("gui_input"),
@@ -681,9 +677,7 @@ func test_the_codex_still_mounts_the_two_rows_it_is_read_only_about() -> void:
 		"the codex screen still builds destiny rows, so its read-only shape is a live claim"
 	)
 	assert_eq(
-		screen.contains("FateRow"),
-		true,
-		"and fate rows, which is the other half of the codex"
+		screen.contains("FateRow"), true, "and fate rows, which is the other half of the codex"
 	)
 	assert_eq(
 		screen.contains(BRANCH_ROW_CLASS) and screen.contains(FATE_ROW_CLASS),
@@ -698,6 +692,87 @@ func test_the_codex_still_mounts_the_two_rows_it_is_read_only_about() -> void:
 			+ "is actionable, so ui_cancel stays free for ScreenStack to pop"
 		)
 	)
+
+
+# --- 3. a `tagged` gate must not grow the codex an affordance ------------------
+
+
+## ## The `tagged` verb (ADR 0196, fate tag vocabulary) changed the GATE language, not the codex.
+##
+## A lineage gate is the obvious seed for a codex feature: "show me the fates that
+## satisfy this gate", or a tag chip per row the player can filter by. Both would
+## be a player-facing AFFORDANCE on a surface that is read-only by construction, and
+## both would be legal — a filter is a `Control` property, not a `Button`, and
+## `gate()` is on the ALLOWED list above, so neither guard above would catch them.
+##
+## So the property is asserted directly rather than inferred from the two scans:
+## the row still MIRRORS `tags` (a published field a panel may carry) and nothing
+## more — it does not sort, group or select by them — and the screen still publishes
+## `read_only: true` with NO filter state of any kind.
+func test_a_tag_gate_adds_no_affordance_to_the_read_only_codex() -> void:
+	# The row still mirrors the published field. This is the CONTROL half: a guard
+	# satisfied by an empty result proves nothing, so the row must demonstrably
+	# carry tags through, or the "and nothing more" below is vacuous.
+	var row_source := _code_only(_read(CODEX_SCRIPTS[2]))
+	assert_ne(row_source, "", "%s ships, so this is not a silent skip" % CODEX_SCRIPTS[2])
+	assert_eq(
+		row_source.contains('"tags"'),
+		true,
+		"the fate row still mirrors the published `tags` field, which is a report and not a control"
+	)
+	assert_eq(
+		_pressables_in(row_source),
+		[],
+		"and it still mounts no widget a tag could be attached to as a pressable affordance"
+	)
+	# The row does not ACT on a tag. A row that sorted, filtered, grouped or
+	# highlighted by lineage would be building the affordance this case forbids.
+	for verb in ["sort", "filter", "group", "select", "pressed", "gui_input", "Button"]:
+		assert_eq(
+			_code_only(_read(CODEX_SCRIPTS[2])).contains(verb),
+			false,
+			(
+				(
+					"the fate row never acts on a tag: it may REPORT 'oath' but must not offer, order or "
+					+ "switch on it, because a fate is earned and never chosen (ADR 0065)"
+				)
+				if verb in ["sort", "filter", "group", "select"]
+				else "and carries no %s, as the control scan already requires" % verb
+			)
+		)
+	# The screen: still exactly the two facade verbs it used before the verb landed.
+	# `gate()` is on ALLOWED and a lineage gate is precisely the thing a codex might
+	# be tempted to call, so this is the leg that says it still does not.
+	assert_eq(
+		_destiny_verbs(_read(CODEX_SCRIPTS[0])),
+		["events", "summary"],
+		(
+			"the codex still reaches the facade through exactly `events` and `summary`; a `tagged` "
+			+ "gate is evaluated by the quest/event that owns it, never by a read-only screen"
+		)
+	)
+	# And no filter state at all: the whole of `_summary()`'s keys, so a future
+	# `filter_tag` or `selected_tag` is a visible diff against this list rather
+	# than a silent new affordance.
+	var screen := _read(CODEX_SCRIPTS[0])
+	for token in ["filter", "selected_tag", "active_tag", "tag_filter", "sort_mode"]:
+		assert_eq(
+			_code_only(screen).contains(token),
+			false,
+			(
+				(
+					"the codex publishes no '%s': a read-only surface has nothing to filter, because "
+					% token
+				)
+				+ "nothing here is a player choice (ADR 0065)"
+			)
+		)
+	assert_eq(
+		_code_only(screen).contains('"read_only": true'),
+		true,
+		"and it still declares itself read-only in its own published summary"
+	)
+
 
 # --- Plumbing ------------------------------------------------------------------
 

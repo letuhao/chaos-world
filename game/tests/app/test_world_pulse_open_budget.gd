@@ -39,7 +39,6 @@ extends TestCase
 ## This suite belongs in `tests/app/`: the behaviour is the composition root's pull
 ## budget, and `tests/modules/npc/` is another agent's live surface.
 
-
 const ELDER := &"elder_wei"
 const EVENT := &"the_favour_of_elder_wei"
 const LOCATION := "mortal_plains"
@@ -47,6 +46,13 @@ const PULSE := WorldPulse.PERIOD_SECONDS
 
 ## The ambient fact both contending events are triggered by, at period 1.
 const TRIGGER_FACT := &"storm_front_sighted"
+
+## Ids the hand-built probes register under. Deliberately NOT shipped ids: BL-0747
+## closed the branch where `register` refused by erasing the shipped def for the id it
+## claimed, so a probe under a shipped id is now safe — but it still could not be
+## REMOVED, and a probe this suite owns has no business being confusable with content.
+const REFUSED_ID := &"a_refused_probe_for_the_open_budget"
+const OPENABLE_ID := &"b_openable_probe_for_the_open_budget"
 
 ## How many pulls [method test_every_event_the_world_allows_is_reachable_by_pulling]
 ## may spend. The competition is several events over a budget of one, so two is the
@@ -99,12 +105,14 @@ func test_every_event_the_world_allows_is_reachable_by_pulling() -> void:
 		competing.size() > 1,
 		true,
 		(
-			"the shipped tree offers more than one event at "
-			+ LOCATION
-			+ " behind the shared trigger, so this suite measures the CONTENDED budget"
+			(
+				"the shipped tree offers more than one event at "
+				+ LOCATION
+				+ " behind the shared trigger, so this suite measures the CONTENDED budget"
+			)
+			+ " rather than a single-event world: "
+			+ str(competing)
 		)
-		+ " rather than a single-event world: "
-		+ str(competing)
 	)
 
 	var player := _player()
@@ -122,11 +130,13 @@ func test_every_event_the_world_allows_is_reachable_by_pulling() -> void:
 		EventState.is_active(EventApi.state(player), EVENT),
 		true,
 		(
-			"the elder's event is reachable by pulling, within "
-			+ str(PULL_BUDGET)
-			+ " pulls after a competing event took the single open -- a REFUSAL must not"
+			(
+				"the elder's event is reachable by pulling, within "
+				+ str(PULL_BUDGET)
+				+ " pulls after a competing event took the single open -- a REFUSAL must not"
+			)
+			+ " spend the budget, or the event behind the winner is never asked about again"
 		)
-		+ " spend the budget, or the event behind the winner is never asked about again"
 	)
 	assert_eq(
 		EventFacts.count_of(player, &"elder_wei_petition_opened"),
@@ -176,6 +186,72 @@ func test_an_event_a_pull_did_not_open_is_still_available_rather_than_refused() 
 	)
 
 
+## **The invariant `_open_available` actually owns: a REFUSAL does not spend the
+## budget.** This is the only assertion here that separates the two budgets, and the
+## shipped content alone cannot demonstrate it — which is why it needs a hand-built def.
+##
+## Two hand-built events are registered on top of the shipped tree, both at
+## `mortal_plains`, both behind a trigger this actor already satisfies, and
+## `MAX_OPENS_PER_PULL` is 1:
+##
+##   - `a_refused_...` — well-formed enough for the catalog to admit it, so it IS a
+##     candidate, but authors no stage, so `begin` refuses it with a NAMED reason.
+##   - `b_openable_...` — the same, plus one stage, so `begin` opens it.
+##
+## Both sort ahead of the shipped `beast_tide_of_the_mortal_plains`, so the pair sits at
+## the very front of `available` and the pull meets them first. A refusal must not cost
+## the budget, so the pull's one open goes to `b_openable_`.
+##
+## Mutate `_open_available` to charge the budget to candidates ASKED — break out once any
+## `begin` call has been made, regardless of its answer — and this goes RED: `b_openable_`
+## is never asked about, `opened` is 0, and the failure reads "a refusal spent the pull's
+## only open". The suite's other two budget assertions stay GREEN under that mutation,
+## because with the shipped tree the first candidate always opens and the two budgets
+## coincide — which is exactly why they are not sufficient on their own.
+##
+## Both defs are registered under ids the tree does not ship and are dropped by
+## `reload()` in `setup()` and `teardown`, so they cannot reach any other suite.
+func test_a_refused_candidate_does_not_spend_the_pulls_single_open() -> void:
+	var refused := _probe_def(REFUSED_ID)
+	var openable := _probe_def(OPENABLE_ID)
+	EventCatalog.instance().register(refused)
+	EventCatalog.instance().register(openable)
+
+	var player := _player()
+	WorldFact.record(player, TRIGGER_FACT, 1)
+	var candidates := _available_ids(player)
+	assert_eq(
+		candidates.size() >= 2 and candidates[0] == REFUSED_ID,
+		true,
+		(
+			"the refused probe sorts FIRST in `available`, with the openable one right"
+			+ " behind it: "
+			+ str(candidates)
+		)
+	)
+
+	var pulse := WorldPulse.new(player, BeatDirector.new())
+	var report := pulse.pull(PULSE)
+	assert_eq(
+		EventState.has_resolved(EventApi.state(player), REFUSED_ID),
+		false,
+		"the refusable def is not resolved either: `begin` simply declined to open it"
+	)
+	assert_eq(
+		int(report["opened"]),
+		1,
+		"the pull still opened its one event despite the refusal ahead of it"
+	)
+	assert_eq(
+		EventState.is_active(EventApi.state(player), OPENABLE_ID),
+		true,
+		(
+			"and the event BEHIND the refused candidate is the one that opened -- a"
+			+ " refusal must not spend the pull's single open"
+		)
+	)
+
+
 ## **The order that decides the single open is the STRING order, not load order.**
 ## Asserted rather than assumed: a reader who believes the order is unspecified will
 ## read the symptom as nondeterminism and go bisecting a suite that is deterministically
@@ -191,8 +267,7 @@ func test_the_order_deciding_the_single_open_is_the_string_order() -> void:
 	assert_eq(
 		as_strings,
 		by_string,
-		"the catalog's order decides which event takes a pull's single open: "
-		+ str(as_strings)
+		"the catalog's order decides which event takes a pull's single open: " + str(as_strings)
 	)
 	var at_here := EventCatalog.instance().at_location(StringName(LOCATION))
 	assert_eq(
@@ -225,3 +300,24 @@ func _available_ids(player: Actor) -> Array[StringName]:
 	for row in EventApi.available(player):
 		out.append(StringName((row as Dictionary).get("event_id", "")))
 	return out
+
+
+## A WELL-FORMED def — `EventCatalog.register` refuses anything with `problems()`, so
+## an unusable probe would never become a candidate and the test would prove nothing.
+## The ONLY difference between the refused and the openable probe is whether `stages` is
+## empty, which is what `EventApi.begin` refuses on. Both sort ahead of the shipped
+## `beast_tide_of_the_mortal_plains` and sit at the same location behind the same
+## trigger, which is what puts a refusal directly in front of the pull's single open.
+func _probe_def(id: StringName) -> EventDef:
+	var def := EventDef.new()
+	def.id = id
+	def.display_name = "A Probe For The Open Budget"
+	def.kind = EventDef.KIND_DISASTER
+	def.trigger = {"verb": &"fact", "id": TRIGGER_FACT, "need": 1}
+	def.location_id = StringName(LOCATION)
+	if id == OPENABLE_ID:
+		var stage := EventStageDef.new()
+		stage.stage_id = &"only"
+		stage.display_name = "Only"
+		def.stages.append(stage)
+	return def

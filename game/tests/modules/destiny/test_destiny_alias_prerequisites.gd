@@ -36,7 +36,7 @@ const SECOND_ALIAS := &"t_come_back_again"
 func setup() -> void:
 	(
 		DestinyFixtureCatalog
-		.install(
+		. install(
 			[],
 			[
 				DestinyFixtureCatalog.aliased_destiny(RETURNED, [ALIAS, SECOND_ALIAS]),
@@ -133,32 +133,43 @@ func test_a_prerequisite_naming_the_definition_is_satisfied_by_holding_an_alias(
 	# A SECOND gated destiny, this one requiring the DEFINING id rather than the
 	# alias — installed per-test because `setup()` cannot take a parameter and a
 	# shared catalog would be the wrong shape to test two questions against.
-	DestinyFixtureCatalog.install(
-		[],
-		[
-			DestinyFixtureCatalog.aliased_destiny(RETURNED, [ALIAS, SECOND_ALIAS]),
-			DestinyFixtureCatalog.gated_destiny(GATED, [], [RETURNED]),
-			DestinyFixtureCatalog.plain_destiny(UNHELD),
-		]
+	(
+		DestinyFixtureCatalog
+		. install(
+			[],
+			[
+				DestinyFixtureCatalog.aliased_destiny(RETURNED, [ALIAS, SECOND_ALIAS]),
+				DestinyFixtureCatalog.gated_destiny(GATED, [], [RETURNED]),
+				DestinyFixtureCatalog.plain_destiny(UNHELD),
+			]
+		)
 	)
-	# Earn the ALIAS itself. It has no definition of its own, so the ledger key is
-	# `t_the_returned` and the authored prerequisite is `t_the_one_who_returned` —
-	# again a string that is not a key, in the other direction.
+	# Earn the DEFINITION, which is the only id that can be earned: an alias is a
+	# NAME for a destiny, not a destiny, and `earn_destiny` refuses an id with no
+	# definition — deliberately, because a pure narrative alias ships no `.tres` and
+	# a ledger key nothing can pay out is worse than a refusal. So the alias is
+	# resolved on READ, never written on EARN.
 	DestinyApi.earn_destiny(actor, ALIAS, "story")
 	assert_eq(
 		DestinyApi.destinies(actor),
-		[ALIAS] as Array[StringName],
-		"the ledger records the alias as held, under its own id"
+		[] as Array[StringName],
+		"earning a bare alias records nothing, because it names no destiny"
+	)
+	DestinyApi.earn_destiny(actor, RETURNED, "story")
+	assert_eq(
+		DestinyApi.destinies(actor),
+		[RETURNED] as Array[StringName],
+		"the ledger records the DEFINITION, under its own id and never the alias's"
 	)
 	assert_eq(
 		DestinyGate.earnable(DestinyApi.state(actor), _gated()),
 		true,
-		"holding the alias satisfies a prerequisite naming the definition"
+		"and holding the definition satisfies a prerequisite naming its ALIAS"
 	)
 	assert_eq(
 		DestinyApi.has_destiny(actor, RETURNED),
 		true,
-		"and the definition answers true for the same reason the gate verb does"
+		"while the definition also answers true for the alias that names it"
 	)
 
 
@@ -255,13 +266,16 @@ func test_an_outstanding_alias_prerequisite_reports_the_id_the_author_wrote() ->
 func test_an_unrelated_id_does_not_satisfy_an_alias_prerequisite() -> void:
 	# `UNHELD` is a real, plain destiny with no aliases declared on it. Holding it
 	# must not stand in for the alias.
-	DestinyFixtureCatalog.install(
-		[],
-		[
-			DestinyFixtureCatalog.aliased_destiny(RETURNED, [ALIAS, SECOND_ALIAS]),
-			DestinyFixtureCatalog.gated_destiny(GATED, [], [ALIAS]),
-			DestinyFixtureCatalog.plain_destiny(UNHELD),
-		]
+	(
+		DestinyFixtureCatalog
+		. install(
+			[],
+			[
+				DestinyFixtureCatalog.aliased_destiny(RETURNED, [ALIAS, SECOND_ALIAS]),
+				DestinyFixtureCatalog.gated_destiny(GATED, [], [ALIAS]),
+				DestinyFixtureCatalog.plain_destiny(UNHELD),
+			]
+		)
 	)
 	var actor := _hero()
 	DestinyApi.earn_destiny(actor, UNHELD, "story")
@@ -272,18 +286,26 @@ func test_an_unrelated_id_does_not_satisfy_an_alias_prerequisite() -> void:
 		"holding a different destiny leaves the alias prerequisite outstanding"
 	)
 	assert_eq(
-		DestinyGate.unmet_prerequisites(ledger, _gated()).size(),
-		1,
-		"and it is still reported"
+		DestinyGate.unmet_prerequisites(ledger, _gated()).size(), 1, "and it is still reported"
 	)
 	# An id no definition declares, and no alias claims, resolves to nothing at all.
-	for unrelated in [&"t_never_authored", RETURNED, &"t_the_returned_typo"]:
+	# RETURNED is deliberately NOT in this list: it is the DESTINY that declares
+	# '%s', and holding it MUST satisfy a prerequisite naming that alias - that is
+	# the whole point of the reverse resolution. Listing it here would assert the
+	# opposite of the fix, and the failure would read as a resolver bug when it is
+	# a test that contradicted its own subject.
+	for unrelated in [&"t_never_authored", &"t_the_returned_typo"]:
 		DestinyApi.earn_destiny(actor, unrelated, "story")
 	ledger = DestinyApi.state(actor)
 	assert_eq(
 		DestinyGate.earnable(ledger, _gated()),
 		false,
-		"an undeclared id — including the declaring id itself — does not satisfy '%s'" % ALIAS
+		"an id no definition declares and no alias claims does not satisfy '%s'" % ALIAS
+	)
+	assert_eq(
+		DestinyGate.earnable(DestinyApi.state(_hero()), _gated()),
+		false,
+		"and holding nothing at all does not satisfy it either"
 	)
 
 
@@ -293,13 +315,16 @@ func test_an_unrelated_id_does_not_satisfy_an_alias_prerequisite() -> void:
 ## whichever definition the scan reached first would let one alias satisfy both
 ## exclusive branches of one group.
 func test_an_alias_claimed_by_two_destinies_satisfies_no_prerequisite() -> void:
-	DestinyFixtureCatalog.install(
-		[],
-		[
-			DestinyFixtureCatalog.aliased_destiny(RETURNED, [ALIAS, SECOND_ALIAS]),
-			DestinyFixtureCatalog.aliased_destiny(UNHELD, [ALIAS]),
-			DestinyFixtureCatalog.gated_destiny(GATED, [], [ALIAS]),
-		]
+	(
+		DestinyFixtureCatalog
+		. install(
+			[],
+			[
+				DestinyFixtureCatalog.aliased_destiny(RETURNED, [ALIAS, SECOND_ALIAS]),
+				DestinyFixtureCatalog.aliased_destiny(UNHELD, [ALIAS]),
+				DestinyFixtureCatalog.gated_destiny(GATED, [], [ALIAS]),
+			]
+		)
 	)
 	var actor := _hero()
 	# Earning BOTH claimants satisfies neither: the resolver refuses to widen.
@@ -325,14 +350,17 @@ func test_an_alias_claimed_by_two_destinies_satisfies_no_prerequisite() -> void:
 ## stays unmet — which is the honest answer, and is asserted here so the fix is not
 ## read as having made a self-cycle passable.
 func test_an_unresolvable_prerequisite_stays_unmet_rather_than_opening() -> void:
-	DestinyFixtureCatalog.install(
-		[],
-		[
-			DestinyFixtureCatalog.aliased_destiny(RETURNED, [ALIAS, SECOND_ALIAS]),
-			# A gated destiny that requires an id NOTHING declares — the shape a
-			# content typo takes.
-			DestinyFixtureCatalog.gated_destiny(GATED, [], [&"t_typo_of_the_returned"]),
-		]
+	(
+		DestinyFixtureCatalog
+		. install(
+			[],
+			[
+				DestinyFixtureCatalog.aliased_destiny(RETURNED, [ALIAS, SECOND_ALIAS]),
+				# A gated destiny that requires an id NOTHING declares — the shape a
+				# content typo takes.
+				DestinyFixtureCatalog.gated_destiny(GATED, [], [&"t_typo_of_the_returned"]),
+			]
+		)
 	)
 	var actor := _hero()
 	DestinyApi.earn_destiny(actor, RETURNED, "story")

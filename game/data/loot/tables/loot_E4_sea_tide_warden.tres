@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=31 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -7,9 +7,9 @@
 script = ExtResource("2_entry")
 id = &"E4_sea_tide_warden_core_0"
 kind = &"item"
-item_id = &"body_spirit_sea_tempering_herb"
+item_id = &"body_spirit_sea_breakthrough_pill"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = true
 quantity = 6
@@ -17,23 +17,35 @@ rarity_floor = &"magic"
 
 [sub_resource type="Resource" id="entry_1"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_pool_spirit_ascension"
-kind = &"table"
-item_id = &""
-table_id = &"loot_E4_sea_tide_warden_pool_spirit_ascension"
-weight = 1.0
+id = &"E4_sea_tide_warden_core_1"
+kind = &"item"
+item_id = &"body_spirit_sea_channel_elixir"
+table_id = &""
+weight = 1.
 chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
 
 [sub_resource type="Resource" id="entry_2"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_pool_spirit_condensation"
+id = &"E4_sea_tide_warden_core_2"
+kind = &"item"
+item_id = &"body_spirit_sea_tempering_herb"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"E4_sea_tide_warden_pool_dao_ancestor"
 kind = &"table"
 item_id = &""
-table_id = &"loot_E4_sea_tide_warden_pool_spirit_condensation"
-weight = 1.0
+table_id = &"loot_E4_sea_tide_warden_pool_dao_ancestor"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -41,11 +53,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_4"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_4"
-kind = &"item"
-item_id = &"A12_immortal_backstaff_primed"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_dao_fruit"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_dao_fruit"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -53,11 +65,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_5"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_5"
-kind = &"item"
-item_id = &"B33_divine_charactery_primed"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_foundation"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_foundation"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -65,11 +77,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_6"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_6"
-kind = &"item"
-item_id = &"C28_earth_cupellationhouse_ingotbar"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_golden_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_golden_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -77,11 +89,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_7"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_7"
-kind = &"item"
-item_id = &"E16_immortal_splitbank_phyllite"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_great_luo"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_great_luo"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -89,11 +101,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_8"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_8"
-kind = &"item"
-item_id = &"F24_immortal_euphony_agility_attack_spiritual_defense_spiritual_penetration"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_heaven_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_heaven_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -101,11 +113,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_9"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_9"
-kind = &"item"
-item_id = &"F4_earth_cutbank_attack_spiritual_move_speed_cooldown_reduction_crit_chance"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_immortal_sovereign"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_immortal_sovereign"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -113,11 +125,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_10"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_10"
-kind = &"item"
-item_id = &"G8_heaven_concoction"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_mystic_immortal"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_mystic_immortal"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -125,11 +137,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_11"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_11"
-kind = &"item"
-item_id = &"I37_mortal_frackle_aged"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_primordial_origin"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_primordial_origin"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -137,11 +149,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_12"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_12"
-kind = &"item"
-item_id = &"K20_heaven_spirit_perfected"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_qi_refining"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_qi_refining"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -149,11 +161,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_13"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_13"
-kind = &"item"
-item_id = &"O9_earth_basalt_perfected"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_spirit_ascension"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_spirit_ascension"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -161,11 +173,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_14"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_14"
-kind = &"item"
-item_id = &"R16_heaven_osprey_primed"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_spirit_condensation"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_spirit_condensation"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -173,11 +185,11 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_15"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_15"
-kind = &"item"
-item_id = &"T22_earth_turf_aged"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_spirit_manifestation"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_spirit_manifestation"
+weight = 1.
 chance = -1.0
 guaranteed = false
 quantity = 1
@@ -185,157 +197,13 @@ rarity_floor = &""
 
 [sub_resource type="Resource" id="entry_16"]
 script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_16"
-kind = &"item"
-item_id = &"V27_earth_arpeggio_aged"
-table_id = &""
-weight = 1.0
+id = &"E4_sea_tide_warden_pool_void_refinement"
+kind = &"table"
+item_id = &""
+table_id = &"loot_E4_sea_tide_warden_pool_void_refinement"
+weight = 1.
 chance = -1.0
 guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_17"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_17"
-kind = &"item"
-item_id = &"X18_divine_beadle_manorial"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_18"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_18"
-kind = &"item"
-item_id = &"Y8_immortal_agger_refined"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_19"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_19"
-kind = &"item"
-item_id = &"Z41_immortal_hornfels_mohair"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_20"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_20"
-kind = &"item"
-item_id = &"draft_iron_page"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_21"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_21"
-kind = &"item"
-item_id = &"mind_heaven_immortal_recovery_elixir"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_22"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_22"
-kind = &"item"
-item_id = &"rite_swift_form"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_23"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_23"
-kind = &"item"
-item_id = &"votive_divine_relic"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_24"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_24"
-kind = &"item"
-item_id = &"C31_heaven_skeleton_metacarpal"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_25"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_domain_25"
-kind = &"item"
-item_id = &"F17_immortal_eleemosynary_agility_aptitude_health_regen_max_qi"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_26"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_core_1"
-kind = &"item"
-item_id = &"body_spirit_sea_breakthrough_pill"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &"magic"
-
-[sub_resource type="Resource" id="entry_27"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_core_2"
-kind = &"item"
-item_id = &"body_spirit_sea_channel_elixir"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &"magic"
-
-[sub_resource type="Resource" id="entry_28"]
-script = ExtResource("2_entry")
-id = &"E4_sea_tide_warden_mortal_gear"
-kind = &"item"
-item_id = &"H7_mortal_fortune_idol"
-table_id = &""
-weight = 1.0
-chance = -1.0
-guaranteed = true
 quantity = 1
 rarity_floor = &""
 
@@ -351,6 +219,7 @@ entries = Array[LootEntry]([
 	SubResource("entry_0"),
 	SubResource("entry_1"),
 	SubResource("entry_2"),
+	SubResource("entry_3"),
 	SubResource("entry_4"),
 	SubResource("entry_5"),
 	SubResource("entry_6"),
@@ -363,17 +232,5 @@ entries = Array[LootEntry]([
 	SubResource("entry_13"),
 	SubResource("entry_14"),
 	SubResource("entry_15"),
-	SubResource("entry_16"),
-	SubResource("entry_17"),
-	SubResource("entry_18"),
-	SubResource("entry_19"),
-	SubResource("entry_20"),
-	SubResource("entry_21"),
-	SubResource("entry_22"),
-	SubResource("entry_23"),
-	SubResource("entry_24"),
-	SubResource("entry_25"),
-	SubResource("entry_26"),
-	SubResource("entry_27"),
-	SubResource("entry_28")
+	SubResource("entry_16")
 ])

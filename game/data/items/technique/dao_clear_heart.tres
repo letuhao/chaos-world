@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"dao_clear_heart"
 display_name = "Clear Dao Heart Slip"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_domain"
 fixed_modifiers = Array[Dictionary]([

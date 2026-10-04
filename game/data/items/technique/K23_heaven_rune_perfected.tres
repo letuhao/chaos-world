@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"K23_heaven_rune_perfected"
 display_name = "Heaven Rune Perfected"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"great_luo"
 fixed_modifiers = Array[Dictionary]([

@@ -12,4 +12,4 @@ tier = 2
 visibility = &"revealed"
 percent_modifiers = {"cultivation_rate": 0.05, "breakthrough_chance": 0.02}
 counters = Array[StringName]([&"heaven_marks"])
-tags = Array[StringName]([&"marked", &"fast_path"])
+tags = Array[StringName]([])

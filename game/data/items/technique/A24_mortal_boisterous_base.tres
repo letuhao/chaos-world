@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"A24_mortal_boisterous_base"
 display_name = "Mortal Boisterous Base"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"body_integration"
 fixed_modifiers = Array[Dictionary]([

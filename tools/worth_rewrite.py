@@ -211,7 +211,7 @@ def run(args) -> int:
         )
 
     data._load_realms()
-    records, malformed = data._load(root)
+    records, malformed, _ = data._load(root)
     if malformed:
         fail(f"{len(malformed)} content file(s) are malformed and were not read: {malformed[:3]}")
     items = records.get("item", {})

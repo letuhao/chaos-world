@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"I32_spirit_foley_base"
 display_name = "Spirit Foley Base"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_sea"
 fixed_modifiers = Array[Dictionary]([

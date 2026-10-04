@@ -44,7 +44,7 @@ func teardown() -> void:
 func _member(standing: int = 0, actor_id: StringName = &"member") -> Actor:
 	var actor := (
 		Actor
-		.new(
+		. new(
 			actor_id,
 			{
 				Stat.PHYSIQUE: 10.0,

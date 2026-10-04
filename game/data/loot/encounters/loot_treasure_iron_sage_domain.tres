@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"core_formation"
 rarity = &"common"
-vitality = 136.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"treasure_iron_sage", "table_id": &"loot_treasure_iron_sage"},
 	{"boss_id": &"d6_iron_sage", "table_id": &"loot_d6_iron_sage"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"core_formation"
 rarity = &"rare"
-vitality = 217.6
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"treasure_iron_sage", "table_id": &"loot_treasure_iron_sage"},
 	{"boss_id": &"d6_iron_sage", "table_id": &"loot_d6_iron_sage"},

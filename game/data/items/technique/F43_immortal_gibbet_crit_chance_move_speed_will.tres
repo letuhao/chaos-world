@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F43_immortal_gibbet_crit_chance_move_speed_will"
 display_name = "Immortal Gibbet Crit chance Move speed Will"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"
 fixed_modifiers = Array[Dictionary]([

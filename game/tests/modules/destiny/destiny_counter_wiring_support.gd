@@ -313,7 +313,12 @@ func _authored_counter_gate_ids() -> Array[String]:
 			var id_at := body.find('"id": &"', cursor)
 			if id_at < 0 or id_at - cursor > 200:
 				continue
-			var quote := id_at + 9
+			# One PAST the opening quote. `'"id": &"'` is itself 9 characters, so
+			# `id_at + 9` lands ON the quote and the slice returns the value with
+			# its first character eaten — which reads as a typo'd counter id
+			# (`duels_won` arriving as `uels_won`) rather than as an off-by-one
+			# in the reader. A test that names its own bug is worse than useless.
+			var quote := id_at + '"id": &"'.length()
 			found.append(body.substr(quote, body.find('"', quote) - quote))
 	found.sort()
 	return found

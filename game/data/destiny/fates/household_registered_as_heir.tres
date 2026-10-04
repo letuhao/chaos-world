@@ -11,4 +11,4 @@ category = &"blood"
 tier = 1
 visibility = &"revealed"
 counters = Array[StringName]([&"oaths_sworn"])
-tags = Array[StringName]([&"heir", &"blood", &"household"])
+tags = Array[StringName]([&"blood"])

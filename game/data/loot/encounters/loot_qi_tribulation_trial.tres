@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"tribulation"
 rarity = &"common"
-vitality = 104.0
+vitality = 4650.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_tribulation_warden", "table_id": &"loot_qi_tribulation_warden"},
 	{"boss_id": &"F6_tribulation_warden", "table_id": &"loot_F6_tribulation_warden"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"tribulation"
 rarity = &"rare"
-vitality = 166.4
+vitality = 7440.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"qi_tribulation_warden", "table_id": &"loot_qi_tribulation_warden"},
 	{"boss_id": &"F6_tribulation_warden", "table_id": &"loot_F6_tribulation_warden"},

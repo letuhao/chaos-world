@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F52_mortal_hauberk_dao_heart_fortune_insight_gain"
 display_name = "Mortal Hauberk Dao heart Fortune Insight gain"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"foundation"
 fixed_modifiers = Array[Dictionary]([

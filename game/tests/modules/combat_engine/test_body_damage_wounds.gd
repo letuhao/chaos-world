@@ -287,7 +287,7 @@ func test_a_landed_hit_carries_its_wound_as_an_effect_after_health() -> void:
 		technique,
 		_tuning,
 		null,
-		BodyDamage.builder(technique, null, BodyLocation.MODE_NAMED)
+		BodyDamage.builder(technique, BodyLocation.MODE_NAMED)
 	)
 	assert_eq(outcome.missed, false, "a null rng lands every attack")
 	assert_eq(outcome.health_delta < 0.0, true, "health was spent")

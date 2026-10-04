@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"C19_mortal_compote_spirit_qi_cost_reduction_move_speed"
 display_name = "Mortal Compote Spirit Qi Cost Reduction Move Speed"
-category = &"technique"
+category = &"consumable"
 rarity = &"common"
 realm = &"core_formation"
 fixed_modifiers = Array[Dictionary]([

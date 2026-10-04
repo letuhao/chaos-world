@@ -51,11 +51,11 @@ func set_state(state: Dictionary) -> void:
 ## ## Why this is a SEPARATE verb and not another `set_state` key
 ##
 ## The blessing is not part of `state()`: `TribulationFight.state` reads the record, and
-## a record does not carry what was paid for it — the award is once-guarded on the actor
-## (`TribulationBlessing.REWARDED_KEY`), so a second read of the same decided record
-## answers `already_rewarded` and a player who re-opens this screen would see their
-## blessing replaced by a refusal. The action result is the one place the award is
-## observable exactly once, and this panel renders it from there.
+## a record does not carry what was paid for it — the award is once-guarded per SESSION on the
+## actor (`TribulationBlessing.REWARDED_KEY`, session-only per ADR 0186), so a second read of
+## the same decided record within one session answers `already_rewarded` and a player who
+## re-opens this screen would see their blessing replaced by a refusal. The action result is the
+## one place the award is observable exactly once, and this panel renders it from there.
 func show_blessing(blessing: Dictionary) -> void:
 	_bind_nodes()
 	_blessing = blessing if blessing != null else {}

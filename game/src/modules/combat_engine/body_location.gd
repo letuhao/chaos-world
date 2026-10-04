@@ -56,10 +56,6 @@ const MODE_BROAD := &"broad"
 const AIM_MODE_KEY := &"aim_mode"
 ## The `ctx.data` key carrying the authored aim id.
 const AIM_MERIDIAN_KEY := &"aim_meridian"
-## The `ctx.data` key carrying a `BodyWounds` ledger for the defender, so the wound layer
-## rides `ctx.data` — where a mechanism's own state crosses the seam — instead of a
-## component lookup that `Actor.component()` would answer null for.
-const WOUNDS_KEY := &"body_wounds"
 ## The `ctx.data` key overriding the tuning for one hit, matching `QiDamage.TUNING_KEY`:
 ## two mechanisms reading the same field by the same name is a feature.
 const TUNING_KEY := &"tuning"
@@ -75,18 +71,6 @@ const EMPTY_SITE := {"meridian_id": &"", "point_id": &"", "multiplier": 1.0}
 static var _shipped: CombatTuning = null
 static var _cached_dir: String = ""
 static var _cached_map: Dictionary = {}
-
-
-## The wound ledger for `actor`: the one already bound on the context, the one on the
-## actor as a component, or a fresh one. A missing ledger is a supported state, not a
-## failure — the caller binds one and the next hit finds it.
-func wounds_of(target: Variant, _tuning: CombatTuning = null) -> BodyWounds:
-	var existing: Variant = _read(target, &"components", null)
-	if existing is Dictionary:
-		var bound: Variant = (existing as Dictionary).get(WOUNDS_KEY, null)
-		if bound is BodyWounds:
-			return bound as BodyWounds
-	return BodyWounds.new()
 
 
 ## Whether `actor` has a location axis at all. The honest question the contract asks,

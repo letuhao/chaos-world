@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"F3_tribulation_warden_transcendent_0"
+kind = &"item"
+item_id = &"F29_divine_fireside_breakthrough_chance_comprehension_defense_physical_qi_cost_reduction"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"F3_tribulation_warden_transcendent_1"
+kind = &"item"
+item_id = &"H15_divine_impost_breakthrough_chance_fortune_penetration_physique_qi_regen"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_F3_tribulation_warden_pool_transcendent"
+display_name = "Tribulation Warden salvage (transcendent)"
+realm = &"transcendent"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1")
+])

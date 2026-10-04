@@ -5,37 +5,37 @@
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"F5_ascension_warden_pool_body_integration"
-kind = &"table"
-item_id = &""
-table_id = &"loot_F5_ascension_warden_pool_body_integration"
-weight = 1.0
-chance = -1.0
-guaranteed = false
-quantity = 1
-rarity_floor = &""
-
-[sub_resource type="Resource" id="entry_1"]
-script = ExtResource("2_entry")
 id = &"F5_ascension_warden_core_0"
 kind = &"item"
 item_id = &"qi_great_ascension_breakthrough_pill"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
 guaranteed = true
 quantity = 6
 rarity_floor = &"common"
 
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"F5_ascension_warden_pool_body_integration"
+kind = &"table"
+item_id = &""
+table_id = &"loot_F5_ascension_warden_pool_body_integration"
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
 [sub_resource type="Resource" id="entry_2"]
 script = ExtResource("2_entry")
-id = &"F5_ascension_warden_mortal_gear"
-kind = &"item"
-item_id = &"R24_mortal_poplar_aged"
-table_id = &""
-weight = 1.0
+id = &"F5_ascension_warden_pool_void_refinement"
+kind = &"table"
+item_id = &""
+table_id = &"loot_F5_ascension_warden_pool_void_refinement"
+weight = 1.
 chance = -1.0
-guaranteed = true
+guaranteed = false
 quantity = 1
 rarity_floor = &""
 

@@ -16,7 +16,13 @@ offspring_variance = 0.2
 closed_paths = Array[StringName]([&"mind_cultivation"])
 realm_ceiling = 0
 lifespan = 18250.0
-base_attributes = {"spirit": 2.0, "aptitude": 3.0, "agility": 1.0}
+; The attributes this body does not specialise in are the plain mortal 1.0 that
+; `commonborn` writes for all seven, except where this body says otherwise below.
+; Physique is AUTHORED rather than left out because an omitted grant is a grant of 0.0 —
+; `_grant` only ever ADDS, since a modifier cannot lower a base — and ATTACK_PHYSICAL is
+; `physique * 2.0`. Omitting it does not make this body even-framed, it makes it unable to
+; hit anything. A body that runs hot can still swing a fist; it is simply not built for it.
+base_attributes = {"physique": 1.0, "spirit": 2.0, "aptitude": 3.0, "agility": 1.0}
 percent_modifiers = {"cultivation_rate": 0.15, "qi_regen": 0.2, "attack_spiritual": 0.1, "max_health": -0.1, "defense_spiritual": -0.15}
 affinities = {"fire": 10.0}
 tags = Array[StringName]([&"qi", &"short_lived", &"volatile"])

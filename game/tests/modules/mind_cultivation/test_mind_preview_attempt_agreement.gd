@@ -268,19 +268,18 @@ func _press_lands(rolls_above_the_chance: bool) -> bool:
 
 
 ## The first seed whose FIRST draw lands below the chance `preview` published,
-## searched rather than hoped for: `resolve_attempt` draws exactly once, so the
-## seed follows from the module's own number rather than a value copied out of a
-## previous run.
+## searched rather than hoped for: `resolve_attempt` draws exactly once off a
+## generator rebuilt from the seed the COMMIT stored, so the seed follows from the
+## module's own number rather than a value copied out of a previous run.
 ##
-## It returns the SEED and never the generator it tested with. `resolve_attempt`
-## draws from whatever generator it is handed, so handing back one whose first
-## roll had already been consumed would roll the SECOND value and quietly test
-## something other than what the search matched.
+## It returns the SEED and never the generator it probed with. The commit takes a
+## seed source and stores `rng.seed` verbatim, and the resolve then replays that
+## stored seed from a fresh generator — so handing back a generator whose first draw
+## had been consumed would roll the SECOND value and quietly test something other
+## than what the search matched.
 func _seed_below(chance: float) -> int:
-	for candidate in range(1, ROLL_BOUND + 1):
-		var probe := RandomNumberGenerator.new()
-		probe.seed = candidate
-		if probe.randf() < chance:
+	for candidate in range(MindAttemptRoll.MIN_SEED, ROLL_BOUND + 1):
+		if MindAttemptRoll.replay(candidate).randf() < chance:
 			return candidate
 	return 0
 
@@ -288,9 +287,7 @@ func _seed_below(chance: float) -> int:
 ## And the first seed that lands at or above it, so the refusing resolve path is
 ## reached deterministically instead of by a roll that happens to fail.
 func _seed_at_or_above(chance: float) -> int:
-	for candidate in range(1, ROLL_BOUND + 1):
-		var probe := RandomNumberGenerator.new()
-		probe.seed = candidate
-		if probe.randf() >= chance:
+	for candidate in range(MindAttemptRoll.MIN_SEED, ROLL_BOUND + 1):
+		if MindAttemptRoll.replay(candidate).randf() >= chance:
 			return candidate
 	return 0

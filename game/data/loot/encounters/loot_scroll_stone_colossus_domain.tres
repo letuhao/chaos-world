@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"qi_refining"
 rarity = &"common"
-vitality = 72.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"scroll_stone_colossus", "table_id": &"loot_scroll_stone_colossus"},
 	{"boss_id": &"d5_stone_colossus", "table_id": &"loot_d5_stone_colossus"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"qi_refining"
 rarity = &"rare"
-vitality = 115.2
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"scroll_stone_colossus", "table_id": &"loot_scroll_stone_colossus"},
 	{"boss_id": &"d5_stone_colossus", "table_id": &"loot_d5_stone_colossus"},

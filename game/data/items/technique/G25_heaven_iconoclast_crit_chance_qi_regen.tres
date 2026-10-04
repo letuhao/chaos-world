@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G25_heaven_iconoclast_crit_chance_qi_regen"
 display_name = "Heaven Iconoclast Crit chance Qi regen"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"immortal_sovereign"
 fixed_modifiers = Array[Dictionary]([

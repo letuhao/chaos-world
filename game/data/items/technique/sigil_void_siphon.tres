@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"sigil_void_siphon"
 display_name = "Void Siphon Sigil"
-category = &"technique"
+category = &"consumable"
 rarity = &"legendary"
 realm = &"dao_fruit"
 fixed_modifiers = Array[Dictionary]([

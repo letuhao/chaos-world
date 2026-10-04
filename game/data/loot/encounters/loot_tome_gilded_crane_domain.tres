@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"qi_refining"
 rarity = &"common"
-vitality = 112.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"tome_gilded_crane", "table_id": &"loot_tome_gilded_crane"},
 	{"boss_id": &"d6_gilded_crane", "table_id": &"loot_d6_gilded_crane"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"qi_refining"
 rarity = &"rare"
-vitality = 179.2
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"tome_gilded_crane", "table_id": &"loot_tome_gilded_crane"},
 	{"boss_id": &"d6_gilded_crane", "table_id": &"loot_d6_gilded_crane"},

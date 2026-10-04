@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"G25_heaven_iconoclast_defense_spiritual_physique"
 display_name = "Heaven Iconoclast Defense spiritual Physique"
-category = &"technique"
+category = &"consumable"
 rarity = &"rare"
 realm = &"immortal_sovereign"
 fixed_modifiers = Array[Dictionary]([

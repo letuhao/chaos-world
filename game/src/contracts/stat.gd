@@ -144,21 +144,41 @@ const TECHNIQUE_POWER := &"technique_power"
 ## ## Why the four gated ids are listed as NON-ZERO here and refused anyway
 ##
 ## `evasion`, `cooldown_reduction`, `qi_cost_reduction` and `status_resistance` DO have
-## an attribute-gated baseline — but the gate needs comprehension 500 / agility 500 /
-## aptitude 500 / will 250, and every authored stat tops out an order of magnitude below
-## that. So the baseline reads `0.0` for EVERY actor the game can build, and a PERCENT on
-## any of them is `(0.0 + 0.0) * (1 + p) = 0.0` forever: the modifier applies, shows in
-## `summary()`, and changes nothing. This is the ADR 0022 defect measured once and still
-## live under four other ids.
+## an attribute-gated baseline — but the gate sits one to two orders of magnitude past
+## the top of the AUTHORED attribute range, so the baseline contributes a small positive
+## number and never the cap. **MEASURED 2026-10-04 (DEF-0262), through a real
+## `ActorStats` and the real `StatusApply.apply_chance`, off `combat_damage.tres`:**
 ##
-## So the STRICTER rule is the correct one, and it is the one
+## | actor | `will` | `status_resistance` | apply chance at gate 1.0 |
+## | --- | --- | --- | --- |
+## | a shipped race's own grant | 2.0 | 0.006 | 0.994 |
+## | plus the best 5 equipment slots | 2.0 | 0.156 | 0.844 |
+## | the largest authored `base_will` | 54.9 | 0.1647 | 0.8353 |
+##
+## `base_will` is authored over **3.0..52.9** across 199 items, so the `0.8` cap needs
+## `will >= 250` and is simply not reachable from authored content. That is the SHAPE of
+## the stat working as intended: `status_resistance` is a small defensive edge a build
+## *tilts*, not a wall it reaches. ADR 0087's multiplicative form then bottoms out at
+## `1.0 * (1 - 0.8) = 0.2`, and `tests/modules/combat_engine/
+## test_status_application.gd` drives exactly that with a FLAT and proves it. **So this
+## is NOT the ADR 0022 defect the older revision of this comment described.** That
+## comment claimed these ids read `0.0` and that PERCENT was "meaningful in normal
+## play"; both halves were wrong — a PERCENT here multiplies a small NON-ZERO number and
+## so does something, just very little.
+##
+## `ZERO_BASELINE_STATS` therefore refuses PERCENT on these ids for a DIFFERENT and
+## correct reason: it is one authoring convention for all five, and `damage_reduction`
+## is the one whose baseline really is the constant `0.0`. See the block above for the
+## per-stat gate arithmetic.
+##
+## So the STRICTER rule is the one that is right, and it is the one
 ## `StatusDef.ZERO_BASELINE_STATS` enforces: a PERCENT on any of these five ids is a
-## refused `.tres`, not a silent no-op
-## (`tests/modules/status/test_status_refusals.gd`). An earlier version of this comment
-## said PERCENT was "fine in normal play" on the attribute-gated four — that was the
-## contracts layer telling designers a modifier works when nothing ships it. Membership
-## below is unchanged (`RATE_STATS` is a claim about FLAT); the sentence above is a
-## claim about PERCENT, and the two are different questions.
+## refused `.tres`, not a silent no-op (`tests/modules/status/test_status_refusals.gd`).
+## An earlier version of this comment said PERCENT was "fine in normal play" on the
+## attribute-gated four — that was the contracts layer telling designers a modifier
+## works when it moves almost nothing. Membership below is unchanged (`RATE_STATS` is a
+## claim about FLAT); the sentence above is a claim about PERCENT, and the two are
+## different questions.
 ##
 ## The list is ONE flat literal on purpose: `tools/data.py:2085` extracts it with
 ## `\[(.*?)\]`, which stops at the first `]`, so concatenating two arrays here would

@@ -47,18 +47,27 @@ func _fighter(actor_id: StringName) -> Actor:
 	return ActorFactory.build(actor_id, {Stat.PHYSIQUE: 12.0, Stat.AGILITY: 8.0, Stat.WILL: 6.0})
 
 
-## A `PlayerAdapter` fighting `ward`, with the full combat stack installed.
-func _in_a_fight(hero: Actor, ward: Actor) -> PlayerAdapter:
+## A `PlayerAdapter` fighting `ward`, with the full combat stack installed. The opponent's
+## node is returned too, because a case that stages a SECOND opponent needs to take the
+## first one off the registry — `interact` presses the NEAREST interactable, so two nodes at
+## the same distance make the second press land on the one already spared.
+func _in_a_fight(hero: Actor, ward_node: Node2D) -> PlayerAdapter:
 	CombatBoot.install(hero)
 	var adapter := PlayerAdapter.new(hero)
 	adapter.set_state(PlayerAdapter.State.COMBAT)
 	adapter.global_position = Vector2.ZERO
+	adapter.add_interactable(ward_node)
+	return adapter
+
+
+## The node an opponent stands as. Carries its `Actor` under the `&"actor"` meta the
+## adapter already reads (`_defender_of`), so no subclass and no spawner is needed.
+func _opponent_node(ward: Actor) -> Node2D:
 	var target := Node2D.new()
 	target.name = String(ward.id)
 	target.global_position = Vector2(PlayerAdapter.INTERACTION_RANGE * 0.5, 0.0)
-	adapter.add_interactable(target)
 	target.set_meta(&"actor", ward)
-	return adapter
+	return target
 
 
 # --- the wiring, which is the whole point --------------------------------------
@@ -68,7 +77,7 @@ func _in_a_fight(hero: Actor, ward: Actor) -> PlayerAdapter:
 func test_pressing_interact_on_an_opponent_while_fighting_spares_them() -> void:
 	var hero := _fighter(&"challenger")
 	var ward := _fighter(&"ward")
-	var adapter := _in_a_fight(hero, ward)
+	var adapter := _in_a_fight(hero, _opponent_node(ward))
 	# The press is the ONLY caller exercised here — `CombatApi.spare` is never named.
 	adapter.interact()
 
@@ -114,15 +123,16 @@ func test_the_fact_is_not_already_true_and_an_exploration_press_does_not_clear_i
 func test_two_mercies_clears_the_need_two_step() -> void:
 	var hero := _fighter(&"challenger")
 	var first := _fighter(&"ward_one")
-	var adapter := _in_a_fight(hero, first)
+	var first_node := _opponent_node(first)
+	var adapter := _in_a_fight(hero, first_node)
 	adapter.interact()
 
 	var second := _fighter(&"ward_two")
-	var target := Node2D.new()
-	target.name = String(second.id)
-	target.global_position = Vector2(PlayerAdapter.INTERACTION_RANGE * 0.5, 0.0)
-	adapter.add_interactable(target)
-	target.set_meta(&"actor", second)
+	# `interact` presses the NEAREST interactable, so the first opponent is taken OFF the
+	# registry first: two nodes at the same distance would make this press land on the one
+	# already spared, which is refused `already_spared` and records nothing.
+	adapter.remove_interactable(first_node)
+	adapter.add_interactable(_opponent_node(second))
 	adapter.interact()
 
 	assert_eq(
@@ -137,7 +147,7 @@ func test_two_mercies_clears_the_need_two_step() -> void:
 func test_a_spared_opponent_cannot_then_be_killed_by_the_next_swing() -> void:
 	var hero := _fighter(&"challenger")
 	var ward := _fighter(&"ward")
-	var adapter := _in_a_fight(hero, ward)
+	var adapter := _in_a_fight(hero, _opponent_node(ward))
 	adapter.interact()
 
 	var landed: Variant = CombatBoot.strike(hero, ward, SEED)
@@ -157,7 +167,7 @@ func test_a_spared_opponent_cannot_then_be_killed_by_the_next_swing() -> void:
 func test_the_press_is_refused_on_a_corpse_and_on_an_already_spared_opponent() -> void:
 	var hero := _fighter(&"challenger")
 	var ward := _fighter(&"ward")
-	var adapter := _in_a_fight(hero, ward)
+	var adapter := _in_a_fight(hero, _opponent_node(ward))
 	adapter.interact()
 
 	# A second press on the same opponent: the mercy already happened.
@@ -170,7 +180,7 @@ func test_the_press_is_refused_on_a_corpse_and_on_an_already_spared_opponent() -
 
 	var corpse := _fighter(&"corpse")
 	CombatBoot.duel_blow(hero, corpse, SEED)
-	var corpse_adapter := _in_a_fight(hero, corpse)
+	var corpse_adapter := _in_a_fight(hero, _opponent_node(corpse))
 	corpse_adapter.interact()
 
 	assert_eq(

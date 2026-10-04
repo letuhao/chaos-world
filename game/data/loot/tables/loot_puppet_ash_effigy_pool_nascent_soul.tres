@@ -5,23 +5,23 @@
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"puppet_ash_effigy_domain_21"
+id = &"puppet_ash_effigy_nascent_soul_0"
 kind = &"item"
 item_id = &"qi_nascent_soul_cultivation_herb"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &""
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
 
 [resource]
 script = ExtResource("1_table")
 id = &"loot_puppet_ash_effigy_pool_nascent_soul"
-display_name = "Ash Effigy (nascent_soul)"
+display_name = "Ash Effigy salvage (nascent_soul)"
 realm = &"nascent_soul"
 rarity = &""
-rolls = 0
+rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
 	SubResource("entry_0")

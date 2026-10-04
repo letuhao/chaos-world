@@ -5,24 +5,24 @@
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"mind_spirit_condensation_warden_domain_21"
+id = &"mind_spirit_condensation_warden_foundation_0"
 kind = &"item"
 item_id = &"qi_foundation_cultivation_herb"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &""
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
 
 [resource]
 script = ExtResource("1_table")
 id = &"loot_mind_spirit_condensation_warden_pool_foundation"
-display_name = "Contemplation Warden (foundation)"
+display_name = "Contemplation Warden salvage (foundation)"
 realm = &"foundation"
 rarity = &""
-rolls = 0
+rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
-	SubResource("entry_0"),
+	SubResource("entry_0")
 ])

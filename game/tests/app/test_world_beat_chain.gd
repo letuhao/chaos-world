@@ -16,12 +16,13 @@ extends TestCase
 ##
 ## So nothing below constructs a `BeatDirector`, hands a `WorldBeat` to one, or
 ## records a fact by hand. Every assertion reads state that only exists because
-## [code]ItemWorkbenchApp._ready[/code] wired it and the app's own `_process`
+## [code]ItemWorkbenchApp._ready[/code] wired it and the app's own `advance_world`
 ## advanced it.
 ##
 ## ## What "the chain is live" means here, precisely
 ##
-##   `_process(delta)` -> `WorldPulse.pull` -> a whole period elapses
+##   `advance_world(periods)` -> `WorldPulse.advance_periods(periods)`
+##     -> a whole period elapses
 ##     -> `EventApi.advance(actor, periods)`  (the world's own ladder)
 ##     -> a beat minted by the OWNER OF THE MOMENT
 ##        -> `BeatDirector.offer` -> `WorldFact.record`
@@ -29,6 +30,15 @@ extends TestCase
 ##
 ## Removing any link turns one of the assertions below red, and each mutation was
 ## run and observed.
+##
+## ## `_process` is NOT in that chain any more
+##
+## It used to be the first link, through `WorldPulse.pull(delta)`. **There is no
+## real-time clock for the world (ADR 0167, ADR 0173)**: idle is frozen and the world
+## moves only when the player acts. `_process` keeps the TURN TIER and the death poll
+## and nothing else, so the two tests below that still drive it are pinning the
+## ABSENCE of movement — "a frame moves the world by nothing" — rather than a
+## conversion. `advance_world` is the only way time moves in this suite.
 
 ## The period the composition root accrues. Read from the pulse rather than typed
 ## here, so a retune of the cadence cannot make this suite lie about which fact it
@@ -236,43 +246,127 @@ func test_a_frame_that_elapsed_nothing_advances_nothing() -> void:
 	assert_eq(WorldFact.count(actor, PERIOD_FACT), 0, "and no beat was offered")
 
 
-## The elapsed-time half of the tick, driven through the app's OWN `_process` — the
-## one tick caller in the game. A partial period is owed, not spent.
-func test_elapsed_time_accrues_a_period_only_once_it_is_whole() -> void:
+## The fractional half of the old pull is GONE, and this is what is left of it.
+##
+## The property this test used to hold — "a partial period is owed, not spent" — was
+## real, but it was a property of `WorldPulse._elapsed`, the fractional carry of a
+## SECONDS converter. **There is no real-time clock for the world (ADR 0167,
+## ADR 0173)**: idle is frozen, so there is no elapsed time arriving in fractions and
+## nothing is owed between one frame and the next. A "partial period" is no longer
+## expressible as input, which is the same reason `SaveClock` lost its ratio
+## (ADR 0179) — the input that made the old call-count bug unrepresentable is the one
+## this test no longer supplies.
+##
+## ## The property that DOES survive, and is stronger
+##
+## **Idle is frozen.** Frame after frame after frame, at any `delta` the engine can
+## hand a hitch, the world does not move and offers nothing. That is the ADR 0167
+## bullet this suite exists to pin, and it is a claim about an ABSENCE, so it has to be
+## driven with a large enough delta to be meaningful: a single frame of one hundred
+## periods' worth of seconds is what would have converted whole under the old pull.
+func test_idle_frames_do_not_move_the_world_at_any_delta() -> void:
 	var harness := _boot()
 	if harness.boot_error != "":
 		return
 	var actor := _accept_watcher(harness)
 
-	harness.app.call("_process", WorldPulse.PERIOD_SECONDS * 0.5)
-	assert_eq(WorldFact.count(actor, PERIOD_FACT), 0, "half a period is owed, not spent")
+	for _frame in 3:
+		harness.app.call("_process", WorldPulse.PERIOD_SECONDS * 100.0)
 
-	harness.app.call("_process", WorldPulse.PERIOD_SECONDS * 0.5)
-	assert_eq(WorldFact.count(actor, PERIOD_FACT), 1, "the other half completes one period")
+	var world := (harness.app.summary() as Dictionary)["world"] as Dictionary
+	assert_eq(
+		int(world["periods"]), 0, "a thousand periods worth of seconds moved the world by nothing"
+	)
+	assert_eq(WorldFact.count(actor, PERIOD_FACT), 0, "and no beat was offered for any of it")
 
 
-## A hitch is bounded. One enormous delta is clamped rather than converted, so a
-## breakpoint cannot walk an authored event ladder to its end in a single frame — and
-## the surplus is dropped rather than banked, because a banked surplus pays out later
-## at a rate nobody chose.
-func test_one_enormous_delta_is_clamped_rather_than_converted() -> void:
+## A frame with no delta at all is not a world event either, so `_process(0.0)` is a
+## no-op rather than a refusal. This is the case the whole `_elapsed` buffer used to be
+## guarding, kept because the guard is still here and a reader will ask.
+func test_a_frame_with_no_delta_is_still_not_an_error() -> void:
 	var harness := _boot()
 	if harness.boot_error != "":
 		return
 	var actor := _accept_watcher(harness)
 
-	harness.app.call("_process", WorldPulse.PERIOD_SECONDS * 1000.0)
+	harness.app.call("_process", 0.0)
+
+	assert_eq(WorldFact.count(actor, PERIOD_FACT), 0, "nothing elapsed, so nothing was offered")
+
+
+## Bounded work: **the intent of the old hitch test, kept and tightened.** A caller that
+## asks for a thousand periods in ONE call pays for all of them and does so in a BOUNDED
+## number of spends, not a thousand iterations.
+##
+## ## What changed, and why this assertion got STRONGER rather than weaker
+##
+## It used to read `clampi(count, 0, MAX_PERIODS_PER_PULL)` and assert the world moved
+## **8 periods** from a 1000-period ask. That is the silent truncation ADR 0173 refuses
+## ("Exceeding the budget FAILS LOUDLY. It never truncates"): a player declaring a long
+## retreat got 8 periods, no error, and no budget spend, and the test called it correct.
+## The ceiling is now `_advance`'s per-call bound and the DECLARED span goes through
+## `TimeLadder.chunks_for`.
+##
+## So this now asserts the three things that make the fix load-bearing, and each one goes
+## red if the clamp ever comes back:
+##
+##   1. the world moved the WHOLE declared span, not a prefix of it;
+##   2. it moved it in at most `MAX_CHUNKS` spends, so the work is bounded by authored
+##      data and not by the ask;
+##   3. the beats offered are bounded by `EVENT_BUDGET` per spend — a thousand periods
+##      cost a handful of beats, which is ADR 0173 (b)'s whole claim.
+##
+## `game/tests/core/test_time_ladder.gd` pins the SSOT half; this keeps the
+## composition-root half, where the player would meet it.
+func test_an_enormous_ask_is_paid_in_full_through_a_bounded_chunk_plan() -> void:
+	var harness := _boot()
+	if harness.boot_error != "":
+		return
+	var actor := _accept_watcher(harness)
+	var ask := 1000
+
+	var report := harness.app.call("advance_world", ask) as Dictionary
 
 	var world := (harness.app.summary() as Dictionary)["world"] as Dictionary
 	assert_eq(
 		int(world["periods"]),
+		ask,
+		(
+			"the WHOLE declared span moved — a clamp to %d here is the silent truncation"
+			% WorldPulse.MAX_PERIODS_PER_PULL
+		)
+	)
+	assert_eq(int(report["periods"]), ask, "and the report says what MOVED, not what was asked")
+	# Bounded spends: at most MAX_CHUNKS, and never one per period.
+	var offered := WorldFact.count(actor, PERIOD_FACT)
+	assert_eq(
+		offered <= TimeLadder.MAX_CHUNKS * TimeLadder.EVENT_BUDGET,
+		true,
+		(
+			(
+				"a thousand periods cost %d beats, bounded by MAX_CHUNKS x EVENT_BUDGET (%d): "
+				% [offered, TimeLadder.MAX_CHUNKS * TimeLadder.EVENT_BUDGET]
+			)
+			+ "a per-period loop would be 1000"
+		)
+	)
+	assert_eq(
+		offered < ask,
+		true,
+		(
+			"and strictly fewer beats than periods — the span says what became possible,"
+			+ " the budget what happened"
+		)
+	)
+	assert_eq(
+		int(report["periods"]),
 		WorldPulse.MAX_PERIODS_PER_PULL,
-		"a hitch is clamped to the ceiling, not converted whole"
+		"and the report says what MOVED, which is the clamped count, not the ask"
 	)
 	assert_eq(
 		WorldFact.count(actor, PERIOD_FACT),
 		int(WorldPulse.MAX_PERIODS_PER_PULL),
-		"and exactly that many beats were offered, so the ledger matches the report"
+		"exactly that many beats were offered, so the ledger matches the report"
 	)
 
 

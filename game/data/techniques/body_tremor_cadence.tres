@@ -20,5 +20,5 @@ stamina_cost = 40.0
 cooldown = 12.0
 mastery_rungs = 5
 magnitude = 1.9
-element_share = 0.6
+aim_meridian = &"kidney"
 

@@ -6,7 +6,7 @@
 script = ExtResource("1_item")
 id = &"F21_spirit_epitrite_agility_attack_speed_breakthrough_chance_cultivation_rate"
 display_name = "Spirit Epitrite Agility Attack speed Breakthrough chance Cultivation rate"
-category = &"technique"
+category = &"consumable"
 rarity = &"magic"
 realm = &"spirit_manifestation"
 fixed_modifiers = Array[Dictionary]([

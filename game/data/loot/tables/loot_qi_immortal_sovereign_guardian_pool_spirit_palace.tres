@@ -5,24 +5,24 @@
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"qi_immortal_sovereign_guardian_domain_20"
+id = &"qi_immortal_sovereign_guardian_spirit_palace_0"
 kind = &"item"
 item_id = &"qi_spirit_palace_qi_herb"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &""
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
 
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_immortal_sovereign_guardian_pool_spirit_palace"
-display_name = "Immortal Sovereign Guardian (spirit_palace)"
+display_name = "Immortal Sovereign Guardian salvage (spirit_palace)"
 realm = &"spirit_palace"
 rarity = &""
-rolls = 0
+rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
-	SubResource("entry_0"),
+	SubResource("entry_0")
 ])

@@ -5,24 +5,24 @@
 
 [sub_resource type="Resource" id="entry_0"]
 script = ExtResource("2_entry")
-id = &"qi_dao_ancestor_guardian_domain_20"
+id = &"qi_dao_ancestor_guardian_qi_refining_0"
 kind = &"item"
 item_id = &"qi_qi_refining_cultivation_herb"
 table_id = &""
-weight = 1.0
+weight = 1.
 chance = -1.0
-guaranteed = true
-quantity = 6
-rarity_floor = &""
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
 
 [resource]
 script = ExtResource("1_table")
 id = &"loot_qi_dao_ancestor_guardian_pool_qi_refining"
-display_name = "Dao Ancestor Guardian (qi_refining)"
+display_name = "Dao Ancestor Guardian salvage (qi_refining)"
 realm = &"qi_refining"
 rarity = &""
-rolls = 0
+rolls = 1
 allow_empty = false
 entries = Array[LootEntry]([
-	SubResource("entry_0"),
+	SubResource("entry_0")
 ])

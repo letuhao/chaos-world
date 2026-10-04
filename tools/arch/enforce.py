@@ -107,7 +107,19 @@ def _class_index(files) -> dict[str, tuple[str, str | None, bool]]:
 def _references(text, scan_bare: bool = False):
     seen = set()
     for match in RES_RE.finditer(text):
-        seen.add((text.count("\n", 0, match.start()) + 1, match.group(0)))
+        ref = match.group(0)
+        # A format placeholder is not a path. `MODULE_REGISTRY.gd` builds one
+        # per module at run time — `"res://src/modules/%s/api.gd" % name` — and
+        # reading `%s` as a module name reported an undeclared dependency on a
+        # module called "%s", which is not in the registry and never could be.
+        # The dependency is REAL (the file does reach that module's facade), so
+        # the right answer is to report it once by module rather than as a
+        # placeholder: `deps/.../modules/<name>/` below already reads the
+        # registry, so simply skipping the unresolved placeholder keeps the
+        # boundary check honest without inventing a dependency.
+        if "%" in ref:
+            continue
+        seen.add((text.count("\n", 0, match.start()) + 1, ref))
     for match in EXTENDS_RE.finditer(text):
         seen.add((text.count("\n", 0, match.start()) + 1, match.group(1)))
     if scan_bare:

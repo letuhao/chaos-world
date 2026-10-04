@@ -9,7 +9,7 @@ tier = 1
 label = "Gate"
 realm = &"nascent_soul"
 rarity = &"common"
-vitality = 120.0
+vitality = 3300.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"relic_stone_colossus", "table_id": &"loot_relic_stone_colossus"},
 	{"boss_id": &"d4_stone_colossus", "table_id": &"loot_d4_stone_colossus"},
@@ -21,7 +21,7 @@ tier = 2
 label = "Depths"
 realm = &"nascent_soul"
 rarity = &"rare"
-vitality = 192.0
+vitality = 5280.
 boss_tables = Array[Dictionary]([
 	{"boss_id": &"relic_stone_colossus", "table_id": &"loot_relic_stone_colossus"},
 	{"boss_id": &"d4_stone_colossus", "table_id": &"loot_d4_stone_colossus"},
