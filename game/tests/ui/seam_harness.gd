@@ -98,34 +98,37 @@ func _mount() -> void:
 		boot_error = "MISSING SEAM: %s does not load" % APP_SCENE
 		return
 	app = scene.instantiate() as Control
-	if app == null:
-		boot_error = "MISSING SEAM: %s has no instantiable root" % APP_SCENE
-		return
-	root.add_child(app)
-	# A scene whose SCRIPT failed to load still instantiates: the root comes back as a
-	# bare `Control`, with no `navigate_to`, no `_ready`, nothing. Everything below then
-	# misses — and misses SILENTLY, because the `call("_ready")` on the next line is an
-	# `Invalid call` error that ABORTS this function, so no `boot_error` guard is ever
-	# reached and `boot_error` stays "". `navigate()` then sees a non-null `app`, asks it
-	# for a method the script never got to declare, and reports BL-0121: that the
-	# composition root publishes no `navigate_to` and nothing in `src/` can navigate.
-	# That claim is FALSE — the declaration is right there at
+	# ONE branch for all three ways the root is unusable, so the count of returns in
+	# this function stays where the repo's lint budget wants it.
+	#
+	# The second half is the interesting one. A scene whose SCRIPT failed to load still
+	# INSTANTIATES: the node tree parsed, so the root comes back a bare `Control` with
+	# no `navigate_to`, no `_ready`, nothing. Everything below then misses — and misses
+	# SILENTLY, because `call("_ready")` on a bare `Control` is an `Invalid call` that
+	# ABORTS this function, so no later `boot_error` guard is ever reached and
+	# `boot_error` stays "". `navigate()` then sees a non-null `app`, asks it for a
+	# method the script never got to declare, and reports BL-0121: that the composition
+	# root publishes no `navigate_to` and nothing in `src/` can move the player between
+	# screens. That claim is FALSE — the declaration is right there at
 	# `src/app/item_workbench_app.gd:679`. The cause is a load failure, so it is named
 	# as one: a mount that lost its script is a build problem, never a product verdict.
-	if app.get_script() == null:
-		boot_error = (
+	var unusable: String = ""
+	if app == null:
+		unusable = "MISSING SEAM: %s has no instantiable root" % APP_SCENE
+	elif app.get_script() == null:
+		unusable = (
 			"MISSING SEAM: %s instantiated a root whose SCRIPT did not load, so the "
 			% APP_SCENE
-			+ "composition root never ran. Its node tree parsed; the script it names "
-			+ "failed to compile or to resolve a base class. Read the parse error above "
-			+ "this — it is the cause, and it is not a missing navigation seam."
+			+ "composition root never ran. The node tree parsed; the script it names failed "
+			+ "to compile or to resolve a base class. Read the parse error above this — it is "
+			+ "the cause, and it is not a missing navigation seam."
 		)
+	elif not app.has_method(&"_ready"):
+		unusable = "MISSING SEAM: %s mounted a root that has no _ready() to drive" % APP_SCENE
+	if unusable != "":
+		boot_error = unusable
 		return
-	if not app.has_method(&"_ready"):
-		boot_error = (
-			"MISSING SEAM: %s mounted a root that has no _ready() to drive" % APP_SCENE
-		)
-		return
+	root.add_child(app)
 	# The runner gives us a `root` that is not yet inside the tree, so the engine
 	# will not deliver `_ready()`. Drive it once, here, and nowhere else.
 	app.call("_ready")
