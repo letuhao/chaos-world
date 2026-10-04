@@ -32,6 +32,11 @@ func _initialize() -> void:
 	var total_passed := 0
 	var total_failed := 0
 	var ran := 0
+	# How much of THIS run had a declared `expect_assertions()` floor, so the printed
+	# result states the reach of the abort guard instead of asserting a reach it does
+	# not have. See the block comment at the `_test_begin` call.
+	var total_tests := 0
+	var floored_tests := 0
 	_write_tally(total_passed, total_failed, ran)
 	for script_path in _find_tests(TEST_ROOT):
 		if not suite_filter.is_empty() and not script_path.contains(suite_filter):
@@ -58,7 +63,37 @@ func _initialize() -> void:
 			total_failed += 1
 			continue
 		for method_name in _test_methods(suite):
+			# ## `_test_begin` runs BEFORE `setup`, and that order is the whole fix
+			#
+			# `expect_assertions()` is called from `setup()`, so a `_test_begin`
+			# after it zeroed the floor the suite had just declared and the
+			# `asserted < declared` guard could never fire. The runner's own comment
+			# claimed the declaration worked; it was inert for every suite that
+			# declared in `setup`.
+			#
+			# Beginning first makes `_test_begin` a reset rather than a second
+			# overwrite: whatever `setup` declares next is the floor that counts.
+			#
+			# ## …and that is NOT the same as "the declaration works everywhere"
+			#
+			# An earlier version of this comment ended "which is all of them". It was
+			# false: 7 of 495 `test_*.gd` suites in this repo call
+			# `expect_assertions()` at all, and none of the qi suites do. The floor is
+			# therefore a per-suite opt-in, not a property of the run, and the run used
+			# to print nothing that said so — a reader could only take the claim on
+			# trust, which is the failure mode this whole file exists to remove.
+			#
+			# So the reach is MEASURED and printed as `Floors: N of M`, where M is every
+			# test that ran. A count in prose decays (BL-0619); a count the run prints
+			# cannot. The universal coverage claim is retracted, not restated: the net
+			# that covers the other M-N tests is the `SCRIPT ERROR` scan in
+			# `tools/test.py`, which catches an abort but cannot name the test that
+			# died. That asymmetry is the real reason to read the `Floors:` line.
+			suite.call("_test_begin")
 			suite.call("setup")
+			total_tests += 1
+			if int(suite.call("_test_expected")) > 0:
+				floored_tests += 1
 			# ## Why this counts assertions at all
 			#
 			# "Passed" and "never ran" are the same event to a per-assertion tally: a
@@ -79,7 +114,6 @@ func _initialize() -> void:
 			# here at all, and is caught at stderr level by `tools/test.py`. What this
 			# file guarantees is that nothing reports green while having skipped the
 			# bulk of a body.
-			suite.call("_test_begin")
 			var asserted_before: int = suite.assertion_count()
 			suite.call(method_name)
 			if not _assert_ran(suite, script_path, method_name, asserted_before):
@@ -95,6 +129,18 @@ func _initialize() -> void:
 		for failure in suite.failures():
 			push_error("%s :: %s" % [script_path, failure])
 		_write_tally(total_passed, total_failed, ran)
+	# Printed BEFORE `Results:` and on its own line, so `tools/test.py`'s
+	# `^Results: ` match is untouched by it.
+	print(
+		(
+			(
+				"Floors: %d of %d test(s) ran under a declared expect_assertions() floor; the rest "
+				% [floored_tests, total_tests]
+			)
+			+ "are covered only by the SCRIPT ERROR scan in tools/test.py, which catches an abort "
+			+ "without naming the test"
+		)
+	)
 	print("Results: %d passed, %d failed (%d suite(s))" % [total_passed, total_failed, ran])
 	quit(1 if total_failed > 0 else 0)
 

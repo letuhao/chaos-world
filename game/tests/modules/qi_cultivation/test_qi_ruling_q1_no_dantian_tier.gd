@@ -2,6 +2,92 @@ extends TestCase
 
 const Probe := preload("res://tests/modules/qi_cultivation/qi_gate_probe.gd")
 
+const DANTIAN_SCRIPT := "res://src/modules/qi_cultivation/dantian.gd"
+
+## A read of a member on any expression whose name ends in `dantian`, capturing the
+## member name. Deliberately name-free on the field side: the field is compared
+## against what `Dantian` declares, so nothing here has to be updated when a ruling
+## deletes another member. The leading `(?:...)?` keeps it off an identifier that
+## merely *starts* with `dantian` — `to_seed.dantian_quality_required` has no dot after
+## `dantian` and never matches.
+const DANTIAN_READ := "(?:[A-Za-z_][A-Za-z0-9_]*)?[Dd]antian\\s*\\.\\s*([A-Za-z_][A-Za-z0-9_]*)"
+
+## Every member `Dantian` declares, read off the class rather than listed here: a
+## name list is a list of the members deleted *so far*, and the next deletion would
+## sail straight past it. Fields and methods are one set, so `dantian.damage()` is
+## legal and `dantian.set_tier()` is not — the shape of the defect decides, not the
+## parenthesis.
+var members: Dictionary = _dantian_members()
+
+
+func _dantian_members() -> Dictionary:
+	var out: Dictionary = {}
+	var text := FileAccess.get_file_as_string(DANTIAN_SCRIPT)
+	# Bounded by the file's own line count; the body appends to `out`, which it is not
+	# walking (INC-0002).
+	for line in text.split("\n"):
+		var code := line.strip_edges()
+		if code.begins_with("#"):
+			continue
+		if code.begins_with("@export "):
+			code = code.substr("@export ".length())
+		for decl in ["static func ", "var ", "const ", "signal ", "func "]:
+			if not code.begins_with(decl):
+				continue
+			var head := code.substr(decl.length()).split("(")[0].strip_edges()
+			out[head.split(":")[0].strip_edges()] = true
+			break
+	# `new` is the engine's constructor rather than a member anyone declared, and
+	# `Dantian.new()` is how a test obtains one. Listed here, not special-cased at the
+	# call site, so the member set stays the single answer.
+	out["new"] = true
+	return out
+
+
+## True while a `"""` block literal is open. A member rather than a local because such a
+## literal spans lines and the blanking has to carry across them.
+var _in_block_string := false
+
+
+## The line reduced to CODE: comments removed, string literals blanked. The defect this
+## scan hunts is an EXECUTED read, so neither prose nor a message handed to an
+## assertion is code — this file's own record (`"Dantian.tier is back"`, and the
+## `dantian.gd` path inside an assertion label) is what a bare grep trips on, which is
+## how the first version of this guard caught its own documentation.
+## Bounded by the line's own length with the index advancing every pass (INC-0002).
+func _code_only(line: String) -> String:
+	var out := ""
+	var in_string := ""
+	var index := 0
+	while index < line.length():
+		var ch := line[index]
+		if _in_block_string:
+			if ch == '"' and line.substr(index, 3) == '"""':
+				_in_block_string = false
+				index += 3
+				continue
+			index += 1
+			continue
+		if in_string != "":
+			if ch == in_string:
+				in_string = ""
+			index += 1
+			continue
+		if ch == "#":
+			break
+		if ch == '"' or ch == "'":
+			if line.substr(index, 3) == '"""' or line.substr(index, 3) == "'''":
+				_in_block_string = true
+				index += 3
+				continue
+			in_string = ch
+			index += 1
+			continue
+		out += ch
+		index += 1
+	return out
+
+
 ## ADR 0180, ruling Q1: `dantian_tier` is DELETED, and this suite is what stops
 ## it coming back ungated.
 ##
@@ -124,7 +210,7 @@ func test_qi_stats_declares_no_dantian_tier_constant() -> void:
 	)
 
 
-## The qi TESTS must not READ the field either, which is where it actually survived.
+## ## The qi TESTS must not READ the field either, which is where it survived.
 ##
 ## The runtime greps above cover `src/`, and they were all green while
 ## `tests/modules/qi_cultivation/test_qi_training.gd` still read it. That read is
@@ -133,55 +219,147 @@ func test_qi_stats_declares_no_dantian_tier_constant() -> void:
 ## run, the aborted test reports no failure, and the suite prints `0 failed` while a
 ## test silently verifies nothing.
 ##
-## ## Why this greps CODE LINES ONLY
+## ## Why the scan is now STRUCTURAL, and why it covers every directory
 ##
-## The defect is an EXECUTED read, so comment lines are stripped before the match.
-## Otherwise the guard fires on any sentence documenting the ruling — including the
-## one in the file it had just fixed, which is how this test first ran and caught its
-## own documentation. Prose must stay free to say what was deleted and why:
-## `dantian.gd:9-20` and the `historic` map below depend on it.
+## It used to grep `res://tests/modules/qi_cultivation` for the literal `dantian.tier`.
+## Both halves of that were narrower than the claim. The *directory* was one of six:
+## qi tests now live in `tests/modules/qi_cultivation`, `tests/app`, `tests/ui`,
+## `tests/acquisition`, `tests/modules/combat_engine` and `tests/modules/race` — the
+## same bug, one directory over. And the *name* was a list of the fields deleted so
+## far, so the next deletion would have sailed straight past it.
 ##
-## The match is CASE-SENSITIVE so this file's own assertion text (`Dantian.tier is
-## back`, in the test above) does not trip it, and this file is excluded anyway as the
+## So the guard no longer knows any deleted name. It reads the member set `Dantian`
+## actually declares and reports **any read of a `Dantian` member it does not** — one
+## rule that covers `tier`, `set_tier`, and every field a future ruling deletes. A
+## directory list is a name list too, so the walk is the whole `res://tests` tree via
+## `ContentScan`, which is already depth-capped at `MAX_DEPTH`.
+##
+## ## Why strings and comments are blanked, not just comments
+##
+## The defect is an EXECUTED read. A comment is prose; a string literal is a message
+## passed to an assertion. This file's own record — `"Dantian.tier is back"` and
+## `"res://src/modules/qi_cultivation/dantian.gd"` — is exactly the text a bare grep
+## trips on, and it is why the first version of this guard caught its own
+## documentation. Both are removed before the match; the file is also excluded as the
 ## ruling's record.
-func test_no_qi_test_reads_a_dantian_tier() -> void:
-	var dir := DirAccess.open("res://tests/modules/qi_cultivation")
-	assert_ne(dir, null, "the qi test tree is readable")
-	if dir == null:
-		return
-	var reader := RegEx.new()
-	reader.compile("dantian\\s*\\.\\s*tier")
-	var scanned := 0
-	# Bounded by the directory's own entry count and the body appends nothing, so
-	# nothing here grows its own bound (INC-0002).
-	for file_name in dir.get_files():
-		if not file_name.ends_with(".gd"):
-			continue
-		if file_name == "test_qi_ruling_q1_no_dantian_tier.gd":
-			continue
-		var text := FileAccess.get_file_as_string(
-			"res://tests/modules/qi_cultivation/%s" % file_name
-		)
-		var offender := ""
-		for line in text.split("\n"):
-			if line.strip_edges().begins_with("#"):
-				continue
-			if reader.search(line) != null:
-				offender = line.strip_edges()
-				break
+
+
+## The live half of the guarantee. `QiAccess.dantian()` returns a statically typed
+## `Dantian`, so a read of a member it does not declare is a COMPILE error and the
+## suite fails to LOAD — loud, named, and fatal to the whole file. That only holds
+## while `Dantian` exposes no dynamic property surface: `_get`/`_set` would answer a
+## missing name at run time and turn every future deleted field back into the silent
+## abort this ruling closed. This is the assertion that makes the scans below a
+## backstop rather than the primary mechanism.
+func test_the_dantian_has_no_dynamic_property_surface() -> void:
+	var text := FileAccess.get_file_as_string(DANTIAN_SCRIPT)
+	assert_eq(
+		text.contains("class_name Dantian"),
+		true,
+		"Dantian is still declared, so the hook scan below is reading a real file"
+	)
+	for hook in [
+		"func _get(", "func _set(", "func _get_property_list(", "func _validate_property("
+	]:
 		assert_eq(
-			offender.is_empty(),
-			true,
+			text.contains(hook),
+			false,
 			(
 				(
-					"%s READS the deleted dantian tier (%s): a live read aborts the function so "
-					+ "every assertion after it is silently skipped (ADR 0180)"
+					"Dantian grew %s: a read of a removed member answers at run time again and "
+					% hook
 				)
-				% [file_name, offender]
+				+ "aborts the enclosing function silently (ADR 0180)"
 			)
 		)
+	# And the member set this file derives is not empty, so a `dantian.gd` that lost
+	# the qi surface cannot pass the hook scan by being unrecognisable.
+	assert_eq(
+		members.has("structural_capacity"),
+		true,
+		"capacity is still declared, so the hook scan is reading a real surface"
+	)
+
+
+## The scan's own matcher, proved against a synthetic line. A guard whose regex fails
+## to compile, or matches nothing, is green forever — this is the check that says the
+## pattern still recognises a read, that the member it found is one `Dantian` does NOT
+## declare, and that a DECLARED member passes, so the rule is "not declared" and not
+## "any dot at all". Nothing here touches shipped content.
+func test_the_dantian_read_matcher_fires_on_a_removed_member() -> void:
+	var reader := RegEx.new()
+	reader.compile(DANTIAN_READ)
+	var read := reader.search("	var tier := dantian.tier", 0)
+	assert_ne(read, null, "the matcher still recognises a property read on a dantian")
+	assert_eq(
+		members.has(read.get_string(1)),
+		false,
+		"and the member it found is one Dantian does not declare, which is the defect"
+	)
+	var gone := reader.search("	dantian.set_tier(1)", 0)
+	assert_ne(gone, null, "an undeclared METHOD call is recognised too")
+	assert_eq(
+		members.has(gone.get_string(1)),
+		false,
+		"and it is the same defect: nothing on Dantian answers to set_tier"
+	)
+	var kept := reader.search("	dantian.set_quality(1.0)", 0)
+	assert_eq(
+		members.has(kept.get_string(1)),
+		true,
+		"a declared method passes, so the scan is not banning every dot on a dantian"
+	)
+	var real := reader.search("	dantian.quality = 1.0", 0)
+	assert_eq(
+		members.has(real.get_string(1)),
+		true,
+		"and a declared field passes too, which is why 134 live reads stay legal"
+	)
+
+
+## No file anywhere under `res://tests` reads a member `Dantian` does not declare.
+func test_no_test_reads_a_removed_dantian_member() -> void:
+	var reader := RegEx.new()
+	reader.compile(DANTIAN_READ)
+	var self_path := "res://tests/modules/qi_cultivation/test_qi_ruling_q1_no_dantian_tier.gd"
+	var offenders: Array[String] = []
+	var scanned := 0
+	# `ContentScan.files_under` is the one recursive walk and is depth-capped at
+	# MAX_DEPTH; the body appends to a list it is not walking, so nothing here grows
+	# its own bound (INC-0002).
+	for path in ContentScan.files_under("res://tests", ".gd"):
+		if path == self_path:
+			continue
+		var text := FileAccess.get_file_as_string(path)
+		var line_number := 0
+		for line in text.split("\n"):
+			line_number += 1
+			var found := reader.search(_code_only(line), 0)
+			if found == null:
+				continue
+			if members.has(found.get_string(1)):
+				continue
+			offenders.append("%s:%d reads '%s'" % [path, line_number, found.get_string(1)])
 		scanned += 1
-	assert_eq(scanned > 4, true, "and it graded the qi suites, not a sample (%d)" % scanned)
+	assert_eq(
+		offenders.is_empty(),
+		true,
+		(
+			(
+				"%d file(s) read a Dantian member it does not declare: %s — a read of a removed "
+				% [offenders.size(), ", ".join(offenders)]
+			)
+			+ "member aborts the enclosing function, so every assertion after it is silently "
+			+ "skipped and the suite reports 0 failed (ADR 0180)"
+		)
+	)
+	# Self-consistent rather than a hardcoded count: every `.gd` under `res://tests`
+	# except this one was graded, so a directory added later cannot fall out of the walk.
+	assert_eq(
+		scanned,
+		ContentScan.files_under("res://tests", ".gd").size() - 1,
+		"and it graded every test file in the tree, not one directory of them (%d)" % scanned
+	)
 
 
 ## WHY deletion, restated as a measurement over the corpus rather than an argument.
