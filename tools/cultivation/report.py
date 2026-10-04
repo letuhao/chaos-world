@@ -9,6 +9,7 @@ produce byte-identical output.
 from __future__ import annotations
 
 import re
+from pathlib import Path
 
 from ..common import REPO_ROOT, ToolError, info, ok
 from .ladder import attempt_band
@@ -49,7 +50,17 @@ def load(realm_id: str) -> dict:
     path = REALM_DIR / f"{realm_id}.tres"
     if not path.is_file():
         raise ToolError(f"missing realm seed: {path.relative_to(REPO_ROOT).as_posix()}")
-    text = path.read_text(encoding="utf-8")
+    return load_seed(path)
+
+
+def load_seed(path) -> dict:
+    """`load` for a seed at an explicit path, so a probe can aim at its own copy.
+
+    Split out because the qi ladder's seeds live in a different directory and a
+    fixture has to be readable without moving `REALM_DIR`, which every body-side
+    probe resolves through.
+    """
+    text = Path(path).read_text(encoding="utf-8")
     scalars: dict[str, object] = {}
     for key, raw in re.findall(r'(?m)^([a-z_]+)\s*=\s*&"([^"]*)"$', text):
         scalars[key] = raw

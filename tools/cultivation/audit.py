@@ -8,30 +8,46 @@ tool instead of surfacing as an unreachable realm in play:
 - every entry gate is reachable from the previous realm's training ceiling;
 - every entry gate can actually fail (ADR 0036's reachability rule has a
   counterpart, and a gate nothing can fail is not a gate);
-- the craft chain for each realm pill and elixir is closed.
+- the craft chain for each realm pill and elixir is closed;
+- every qi boundary is walkable by pressing verbs and worth pressing
+  (`qi_gate_ladder_findings`).
 
 Gate soundness is separate from gate reachability. A gate above what the path
 can produce is unreachable; a gate below what the ladder already grants is
 unfailable. Both were invisible here: this file asserted that gates lined up
 with each other and never asked whether the number could matter.
+
+Satisfiable is separate again, and it is a third thing: 26 of the 30 qi seeds
+demanded channel DEPTH, `channel_met` composes state AND depth, and every test
+went through the facade to ask whether the gate was enforced. None asked whether
+it could be met by pressing buttons, so the depth ladder read `open` only, every
+boundary past seed 4 was skipped, `refine_meridian` was unreachable and 25 of 29
+transitions were unwalkable under a green suite.
 """
 
 from __future__ import annotations
 
 import re
+from pathlib import Path
 
 from ..common import REPO_ROOT, ToolError
 from . import ladder as ladder_module
-from .report import DERIVED_FIELDS, REALM_DIR, chance_range, load
+from .report import DERIVED_FIELDS, REALM_DIR, chance_range, load, load_seed
 from .seed import realms as ladder_realms
 
 DATA = REPO_ROOT / "game" / "data"
 QI_REALM_DIR = DATA / "qi_cultivation" / "realms"
+MERIDIAN_DIR = DATA / "meridians"
 # The one runtime file whose arithmetic the gate-soundness checks mirror. It is
 # read, never edited: the tool's model of the runtime is only allowed to be as
 # good as its evidence.
 QI_TRAINING = REPO_ROOT / "game/src/modules/qi_cultivation/training.gd"
 TOLERANCE = 1e-6
+# The three consumable roles a qi seed names. `training_item` is the one that
+# matters to the ladder: `train_channel` refuses without it, so a realm whose
+# elixir does not resolve has no verb to press and every boundary above it is
+# unwalkable no matter what the other two gates say.
+QI_ITEM_ROLES = ("training_item", "breakthrough_item", "recovery_item")
 
 
 def _ids(*parts: str) -> set[str]:
@@ -205,6 +221,7 @@ def validate() -> list[str]:
             )
     findings.extend(_gate_soundness_findings(ladder, seeds))
     findings.extend(_qi_gate_soundness_findings(ladder))
+    findings.extend(qi_gate_ladder_findings(ladder))
     return findings
 
 
@@ -329,6 +346,191 @@ def _qi_gate_soundness_findings(ladder: list) -> list[str]:
                     f"qi_gate_unsatisfiable: {realm_id}: {name} {value} is outside (0, 1.0]; the "
                     "dantian's quality and fill are ratios, so no amount of circulating qi "
                     "reaches it"
+                )
+    return findings
+
+
+def _successors(ladder: list) -> dict[str, str]:
+    """Realm id -> the id of the next realm up, the relation `ladder.next()` gives.
+
+    Keyed by id, never carried as an index the caller compares against: an
+    inserted realm must not shift every realm below it (ADR 0050), and an
+    index-keyed check is exactly the shape that would.
+    """
+    out: dict[str, str] = {}
+    for index, (realm_id, _name, _tier) in enumerate(ladder):
+        if index + 1 < len(ladder):
+            out[realm_id] = ladder[index + 1][0]
+    return out
+
+
+def _meridian_tiers(directory) -> dict[str, int]:
+    """Meridian id -> the realm index that unlocks it (`MeridianNetwork.unlock_for_realm`)."""
+    tiers: dict[str, int] = {}
+    root = Path(directory)
+    if not root.is_dir():
+        return tiers
+    for path in root.glob("*.tres"):
+        scalars = load_seed(path)["scalars"]
+        if "id" in scalars and "tier" in scalars:
+            tiers[str(scalars["id"])] = int(scalars["tier"])
+    return tiers
+
+
+def qi_gate_ladder_findings(
+    ladder: list,
+    realm_dir=None,
+    meridian_dir=None,
+    items: set[str] | None = None,
+) -> list[str]:
+    """Every qi boundary must be walkable by pressing verbs, and worth pressing.
+
+    Two independent facts, and they fail separately: a boundary whose gate no
+    elixir count reaches is a dead end, and a boundary whose gate a fresh actor
+    already passes is a formality. Every test in the repo went through the facade
+    and asserted the gate was ENFORCED, never that it was SATISFIABLE BY BUTTONS,
+    so a flat `open` demand passed the whole suite while 25 of 29 boundaries were
+    unwalkable and `refine_meridian` was unreachable.
+
+    ## What is checked, and why that is enough without simulating the press loop
+
+    `QiTraining.train_channel` walks a channel closed -> open -> expanded ->
+    strengthened and then deepens it, refusing depth at the STANDING realm's
+    `channel_refinement_cap`; `QiBreakthroughCondition` then asks the NEXT realm's
+    seed. So for boundary R -> R+1 the gate is reachable by pressing buttons iff
+    all of these hold, and each is asserted separately because each has its own
+    cause and its own fix:
+
+    - `R+1.required_channel_refinement <= R.channel_refinement_cap`. This is the
+      one whose absence let the defect through: depth past the standing cap is
+      refused before the elixir is spent, so no count of presses reaches it.
+    - depth is only ever demanded on a channel at `strengthened`, because
+      `MeridianNetwork.refine_meridian` refuses any other state.
+    - `required_channel_state` names a real rung, and one the climb can reach:
+      the verb walks the rungs in `MeridianState.STATE_ORDER` order, so a name
+      the runtime does not know reads as rank 0 (`STATE_ORDER.get(required, 0)`)
+      and SILENTLY WEAKENS the gate rather than failing it.
+    - every named channel is unlocked while standing in R
+      (`MeridianNetwork.unlock_for_realm`), or `get_meridian` returns null and
+      `channel_met(null)` is false at any refinement.
+    - the three consumables resolve in content, or `train_channel` refuses on
+      `has_item` before it ever advances anything.
+
+    The loop itself is NOT simulated: it needs an actor, an inventory and an
+    item economy, none of which exist in Python. `tests/modules/qi_cultivation/
+    test_qi_channel_ladder.gd` walks it through the real verbs. This guard asserts
+    the structural property that makes such a walk terminate in success, so a
+    content edit that breaks it is caught by `tools check` without an engine.
+
+    Every input is injectable so a probe can aim this at a fixture; the defaults
+    are the shipped corpus.
+    """
+    findings: list[str] = []
+    ranks = ladder_module.channel_state_ranks()
+    arrival = ladder_module.fresh_channel()
+    if ranks is None or arrival is None:
+        return [
+            "gate_ladder_premise_unreadable: cannot read MeridianState's rung order or the"
+            f" state a fresh channel arrives in ({_label(ladder_module.MERIDIAN_STATE)},"
+            f" {_label(ladder_module.MERIDIAN_NETWORK)}), so the qi gate ladder was not"
+            " checked"
+        ]
+    fresh_state, fresh_depth = arrival
+    seeds_dir = Path(QI_REALM_DIR if realm_dir is None else realm_dir)
+    tiers = _meridian_tiers(MERIDIAN_DIR if meridian_dir is None else meridian_dir)
+    known_items = _ids("items", "consumable") if items is None else items
+    position = {realm_id: index for index, (realm_id, _n, _t) in enumerate(ladder)}
+
+    seeds: dict[str, dict] = {}
+    for realm_id, _name, _tier in ladder:
+        path = seeds_dir / f"{realm_id}.tres"
+        # A missing or malformed seed is `qi_gate_missing`'s finding, not a second
+        # one from here: two findings for one defect is two fixes.
+        if path.is_file():
+            seeds[realm_id] = load_seed(path)
+
+    for realm_id, _name, _tier in ladder:
+        seed = seeds.get(realm_id)
+        if not seed:
+            continue
+        scalars = seed["scalars"]
+        channels = seed["arrays"].get("required_meridians", [])
+        state = str(scalars.get("required_channel_state", ""))
+        depth = int(scalars.get("required_channel_refinement", 0))
+        cap = int(scalars.get("channel_refinement_cap", 0))
+
+        if state not in ranks:
+            findings.append(
+                f"qi_gate_channel_state_unknown: {realm_id}: required_channel_state {state!r} is"
+                f" not one of MeridianState's rungs ({', '.join(sorted(ranks))}), and the"
+                " runtime reads an unknown rung as 0, so this gate is silently weaker than"
+                " it reads"
+            )
+        if depth > 0 and state != "strengthened":
+            findings.append(
+                f"qi_gate_depth_below_strengthened: {realm_id} demands channel depth {depth} but"
+                f" gates on {state or '(none)'!r}; MeridianNetwork.refine_meridian refuses a"
+                " channel that is not strengthened, so the depth is unreachable at any elixir"
+                " count"
+            )
+        if depth > cap:
+            findings.append(
+                f"qi_gate_demands_more_depth_than_its_own_cap: {realm_id} demands depth {depth}"
+                f" above its own cap {cap}, so even standing in this realm the last {depth - cap}"
+                " step cannot be trained"
+            )
+        if not channels:
+            findings.append(
+                f"qi_gate_names_no_channel: {realm_id} names no required channel, so its"
+                " channel gate checks zero channels and can never be unmet"
+            )
+        elif state in ranks and ranks[state] <= ranks[fresh_state] and depth <= fresh_depth:
+            findings.append(
+                f"qi_gate_vacuous_for_a_bare_actor: {realm_id} asks only for {state} at depth"
+                f" {depth}, and every channel an actor arrives with is {fresh_state} at depth"
+                f" {fresh_depth}, so the gate is passed without training"
+            )
+        for role in QI_ITEM_ROLES:
+            item = str(scalars.get(role, ""))
+            if not item or item not in known_items:
+                findings.append(
+                    f"qi_gate_item_missing: {realm_id}: {role} is {item or '(unauthored)'!r} and"
+                    " does not resolve in items/consumable, so the verb that advances this gate"
+                    " is refused before it does anything"
+                )
+        for meridian_id in channels:
+            if meridian_id not in tiers:
+                findings.append(
+                    f"qi_gate_channel_unknown: {realm_id} names channel {meridian_id}, which is"
+                    " not a meridian definition"
+                )
+
+    # The boundary walk. Bounded by the ladder's own length: each id is visited
+    # once, and no body appends to the container it is walking (INC-0002).
+    successors = _successors(ladder)
+    for standing, target_id in successors.items():
+        standing_seed = seeds.get(standing)
+        target_seed = seeds.get(target_id)
+        if not standing_seed or not target_seed:
+            continue
+        standing_cap = int(standing_seed["scalars"].get("channel_refinement_cap", 0))
+        target_scalars = target_seed["scalars"]
+        wanted = int(target_scalars.get("required_channel_refinement", 0))
+        if wanted > standing_cap:
+            findings.append(
+                f"qi_gate_demands_more_depth_than_the_realm_below_offers: {target_id} demands"
+                f" depth {wanted}, but an actor standing in {standing} can only reach"
+                f" {standing_cap}: train_channel refuses depth at the standing realm's cap"
+                " before it spends the elixir, so no count of presses reaches this boundary"
+            )
+        standing_index = position[standing]
+        for meridian_id in target_seed["arrays"].get("required_meridians", []):
+            if meridian_id in tiers and tiers[meridian_id] > standing_index:
+                findings.append(
+                    f"qi_gate_channel_never_unlocks: {target_id} names channel {meridian_id},"
+                    f" which unlocks at tier {tiers[meridian_id]}, but an actor standing in"
+                    f" {standing} (index {standing_index}) does not hold it, so the gate can"
+                    " never be met"
                 )
     return findings
 

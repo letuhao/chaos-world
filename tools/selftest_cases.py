@@ -35,6 +35,7 @@ from . import (
     unique_characters,
 )
 from .acquisition import selftest_case  # noqa: F401  registers its cases on import
+from .cultivation import selftest_case as cultivation_selftest_case  # noqa: F401  same
 from .lore.context import character_draft, readiness_gaps, resolve_context
 from .selftest import case, expect, write
 
