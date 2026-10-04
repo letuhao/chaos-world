@@ -2016,48 +2016,72 @@ def _duplicate_refusal_is_actionable() -> None:
 
     # A draft shell: the message must name the file AND say the catalog as a whole
     # fails, because that is the part no agent can infer from the message alone.
-    shell_id = ""
-    for path in sorted((unique_characters.INDEX_PATH.parent).glob("unique-index*.jsonl")):
-        for line in path.read_text(encoding="utf-8").splitlines():
-            if not line.strip():
-                continue
-            try:
-                row = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            if row.get("status") != "canon":
-                shell_id = row["id"]
-                break
-        if shell_id:
-            break
-    if not shell_id:
-        expect(
-            False,
-            "no draft shell exists anywhere in the catalog, so the split-wave refusal "
-            "message has no fixture. Add a draft row before deleting the last one - the "
-            "whole split-a-wave-across-agents workflow depends on this branch",
+    # The other refusal: a draft carrying AUTHORED content must not be filled, and
+    # the message must say why. An empty shell is now promoted in place instead - see
+    # the "`add` FILLS an empty shell" case - so the only draft left to refuse is a
+    # half-written one, and overwriting that silently is how written prose is lost.
+    #
+    # Runs against a TEMPORARY catalog. This case previously scanned the real catalog
+    # for a fixture and then called `_add` against it, so the test rewrote a live
+    # shard. It happened to write identical bytes, `git status` stayed clean, and the
+    # side effect was invisible - which is exactly why a test that mutates the
+    # repository cannot rely on status output to reveal itself.
+    with tempfile.TemporaryDirectory() as raw:
+        shard = Path(raw) / "unique-index.jsonl"
+        shard.write_text(
+            json.dumps(
+                {
+                    "id": "unique-0171",
+                    "name": "Already Started",
+                    "status": "draft",
+                    "identity": {"role": "npc", "path": "qi"},
+                    "appearance": {"race": "races.marshfolk"},
+                    "tags": [],
+                    "canon": {"lore": "Already written prose that must survive."},
+                },
+                ensure_ascii=False,
+            )
+            + "\n",
+            encoding="utf-8",
         )
-        return
+        untouched = shard.read_text(encoding="utf-8")
 
-    args = Args()
-    args.character_id = shell_id
-    try:
-        unique_characters._add(args)
-    except unique_characters.ToolError as exc:
-        shell_message = str(exc)
-    else:
-        expect(False, f"adding existing draft shell {shell_id} did not raise")
-        return
-    expect(
-        "unique-index-" in shell_message and shell_id in shell_message,
-        f"the shell refusal does not identify the file holding the shell: {shell_message!r}",
-    )
-    expect(
-        "catalog" in shell_message,
-        f"the shell refusal does not say the failure is catalog-wide: "
-        f"{shell_message!r}. An agent told only that its own id is taken will assume "
-        f"a local problem, and the gate stays red for everyone behind it",
-    )
+        real_index = unique_characters.INDEX_PATH
+        real_paths = unique_characters._catalog_paths
+        unique_characters.INDEX_PATH = shard
+        unique_characters._catalog_paths = lambda: [shard]
+        try:
+            args = Args()
+            args.character_id = "unique-0171"
+            args.shard = None
+            try:
+                unique_characters._add(args)
+            except unique_characters.ToolError as exc:
+                refusal = str(exc)
+            else:
+                refusal = ""
+        finally:
+            unique_characters.INDEX_PATH = real_index
+            unique_characters._catalog_paths = real_paths
+
+        after = shard.read_text(encoding="utf-8")
+        expect(
+            bool(refusal),
+            "filling a draft that carries authored content did not raise. That is the "
+            "one case where `add` must refuse: the row holds written prose, and "
+            "overwriting it loses bytes permanently",
+        )
+        expect(
+            "authored content" in refusal and "overwrite" in refusal,
+            f"the refusal does not say the draft carries content that would be "
+            f"overwritten: {refusal!r}. Without that an agent cannot tell a safe shell "
+            f"from an unsafe one",
+        )
+        expect(
+            after == untouched,
+            f"a refused add still modified the file: {after!r}. A refusal must leave "
+            f"the catalog byte-identical",
+        )
 
 
 @case("unique_characters: the path gate demands EQUALITY, and reports the exact quota")
