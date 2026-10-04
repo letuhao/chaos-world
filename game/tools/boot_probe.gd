@@ -185,19 +185,22 @@ func _run() -> void:
 			break
 		cell["equip"] = equip_report.get("why", "could not be worn")
 		sweep.append(cell)
-		if String(equip_report.get("baseline_wearable", "")).is_empty():
-			# Nothing at all equips, so the Equip control itself is dead. That is a
-			# fault and repeating it would multiply one red.
+		if equip_report.has("baseline_wearable") and _seam_is_dead(equip_report):
+			# The control accepted nothing at all, so the SEAM is dead rather than the
+			# content being stingy. Only a report that actually MEASURED the baseline can
+			# say that, which is why the key's presence is part of the condition: three of
+			# _equip's five returns never set it, and reading an absent key as an empty
+			# one made those paths break the sweep for a fault they never claimed. That is
+			# the same error as the full bag impersonating a dead control - an unmeasured
+			# thing reported in the vocabulary of a measured one.
 			#
-			# `wearable` is NOT the condition. It is false whenever THIS fight's drops
-			# cannot be worn, and measured over the entry band that is the common case:
-			# 264 of 331 tables a tier-1 hero can enter stock no mortal gear at all, and
-			# the 67 that do carry it at median 4.2% per roll (BL-0625). Breaking on it
-			# stopped the sweep after its first fight, which is what made 24 hunts and
-			# 160 cells dead code and turned one unlucky roll into a claim about the
-			# whole corpus -- the slice mistake that created BL-0625 in the first place.
-			# A drop the hero's own control rejects is CONTENT; the control accepting
-			# nothing at all is the seam.
+			# `wearable` is NOT the condition either. It is false whenever THIS fight's
+			# drops cannot be worn, and measured over the entry band that is the common
+			# case: 264 of 331 tables a tier-1 hero can enter stock no mortal gear at all,
+			# and the 67 that do carry it at median 4.2% per roll (BL-0625). Breaking on it
+			# stopped the sweep after its first fight, which is what made 24 hunts and 160
+			# cells dead code and turned one unlucky roll into a claim about the whole
+			# corpus - the slice mistake that created BL-0625 in the first place.
 			break
 	if not best.is_empty():
 		hunt_report = best["hunt"] as Dictionary
@@ -691,6 +694,15 @@ func _baseline_wearable(screen: Node, bar: Node) -> String:
 ## in the probe. A button the production action bar disabled is the real answer to
 ## "can this be worn", so asking it keeps the probe honest about the shipped
 ## wiring instead of duplicating the rule that wiring enforces.
+## Whether the equip SEAM is dead, as opposed to this fight simply paying nothing
+## wearable. True only when the baseline was actually measured and came back empty.
+##
+## Separated out because the distinction is the whole point and it is easy to lose:
+## an ABSENT key means nobody asked, and "nobody asked" is not "the answer is no".
+func _seam_is_dead(equip: Dictionary) -> bool:
+	return String(equip.get("baseline_wearable", "")).is_empty()
+
+
 func _wear_one(app: Node, def_ids: Array, claim_note: String = "") -> Dictionary:
 	if not bool((await _goto(app, HOME_ROUTE)).get("ok", false)):
 		return {"ok": false, "why": "could not return to the bag"}
