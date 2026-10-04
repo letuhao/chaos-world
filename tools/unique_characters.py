@@ -266,6 +266,39 @@ def readable_catalog() -> list[dict]:
     return records
 
 
+def _separators_of(target: Path) -> tuple[str, str]:
+    """Match the JSON separator style already used in `target`.
+
+    Shards in this catalog are not written consistently: some were authored with
+    `json.dumps` defaults (a space after `:` and `,`), some compact. A writer that
+    hardcodes one style silently rewrites every OTHER row in the shard whenever it
+    touches it, so a two-character edit reads as twenty changed lines.
+
+    That is not cosmetic. It is the reason an agent filling six inherited shells saw a
+    20-row diff, could not tell which rows it had actually changed, and had to
+    re-serialise the file by hand to prove it had preserved five pre-existing canon
+    records. Byte-identity is the only evidence that a merge preserved what it claimed
+    to preserve, and destroying it destroys the evidence.
+
+    Detection re-serialises the first existing row with default separators and
+    compares. A new or empty file gets the compact style, which is what `add` has
+    always written.
+    """
+    compact = (",", ":")
+    if not target.is_file():
+        return compact
+    for line in target.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            existing = json.loads(line)
+        except json.JSONDecodeError:
+            return compact
+        spaced = json.dumps(existing, ensure_ascii=False)
+        return (", ", ": ") if spaced == line else compact
+    return compact
+
+
 def _atomic_write(records: list[dict], path: Path | None = None) -> None:
     """Write `records` to one shard, MERGING with whatever is already in it.
 
@@ -293,7 +326,7 @@ def _atomic_write(records: list[dict], path: Path | None = None) -> None:
             order.append(key)
         by_id[key] = record
     content = "".join(
-        json.dumps(by_id[key], ensure_ascii=False, separators=(",", ":")) + "\n"
+        json.dumps(by_id[key], ensure_ascii=False, separators=_separators_of(target)) + "\n"
         for key in sorted(order, key=lambda item: str(item))
     )
     temporary: Path | None = None

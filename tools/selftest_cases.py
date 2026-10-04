@@ -2084,6 +2084,74 @@ def _duplicate_refusal_is_actionable() -> None:
         )
 
 
+@case("unique_characters: writing to a shard preserves its separator style and untouched rows")
+def _atomic_write_preserves_style_and_rows() -> None:
+    """A two-character edit read as twenty changed lines, and that destroyed the only
+    evidence a merge is supposed to produce.
+
+    `_atomic_write` hardcoded compact separators. Shards in this catalog are not
+    written consistently - some use `json.dumps` defaults, some compact - so writing
+    to a default-separated shard rewrote every row in it. An agent filling six
+    inherited shells hit exactly this: a 20-row diff on a six-row edit, no way to tell
+    which rows it had actually changed, and a hand re-serialisation of the whole file
+    to prove it had preserved five pre-existing canon records.
+
+    Byte-identity is not cosmetic. It is the only evidence that a merge preserved what
+    it claimed to preserve, and a validator cannot supply it: the output PARSED fine
+    both before and after, so every gate passed while the evidence was gone.
+
+    So the property asserted is the one that matters - an untouched row comes back
+    byte-identical - tested against BOTH styles, because a fix that only handles the
+    style the writer happens to emit would leave the trap armed for the other.
+    """
+    base = {
+        "id": "unique-0001",
+        "name": "A",
+        "status": "canon",
+        "identity": {"role": "npc", "path": "qi"},
+        "appearance": {"race": "races.marshfolk"},
+        "tags": ["a:b"],
+    }
+    sibling = dict(base, id="unique-0002", name="B")
+
+    for label, separators in (("compact", (",", ":")), ("default", (", ", ": "))):
+        with tempfile.TemporaryDirectory() as raw:
+            shard = Path(raw) / "unique-index.jsonl"
+            original = "".join(
+                json.dumps(row, ensure_ascii=False, separators=separators) + "\n"
+                for row in (base, sibling)
+            )
+            shard.write_text(original, encoding="utf-8")
+            sibling_before = next(line for line in original.splitlines() if '"unique-0002"' in line)
+
+            unique_characters._atomic_write([dict(base, name="A Renamed")], shard)
+
+            after = shard.read_text(encoding="utf-8")
+            rows = {json.loads(line)["id"]: line for line in after.splitlines() if line.strip()}
+            expect(
+                rows.get("unique-0002") == sibling_before,
+                f"writing one row to a {label}-separated shard rewrote an untouched "
+                f"row. The merge preserved the DATA but destroyed the byte-identity a "
+                f"reviewer needs to prove it did, and no validator catches that "
+                f"because the output parses either way",
+            )
+            expect(
+                len(rows) == 2,
+                f"writing to a {label}-separated shard lost a row: {sorted(rows)}",
+            )
+            expect(
+                "Renamed" in rows.get("unique-0001", ""),
+                f"the edit did not land in a {label}-separated shard",
+            )
+
+    # A brand-new shard gets the compact style, which is what `add` always wrote.
+    expect(
+        unique_characters._separators_of(Path("/nonexistent/never-written.jsonl")) == (",", ":"),
+        "a file that does not exist yet did not get the compact style, so `add` would "
+        "start writing a different format than it always has",
+    )
+
+
 @case("unique_characters: the path gate demands EQUALITY, and reports the exact quota")
 def _path_gate_demands_equality() -> None:
     """Four paths each at or under 25% sum to 100%, so the gate cannot be cleared by
