@@ -8,7 +8,7 @@ extends TestCase
 ## healed 6 health — a pool the pill was never for — and deleted the only copy of
 ## the price of an attempt. A button that decrements a number is not acquisition.
 ##
-## Four independent things are proved here, and each fails on its own:
+## Three independent things are proved here, and each fails on its own:
 ##
 ##   1. CONTENT. Every item a realm seed names as a progression input carries a
 ##      role, and every role in the table is named by a seed. Both directions,
@@ -16,10 +16,13 @@ extends TestCase
 ##      a role be invented for an item nothing consumes.
 ##   2. THE REFUSAL. A held progression pill is refused by name, keeps its unit,
 ##      and applies nothing to any pool.
-##   3. THE ALLOWANCE. A genuinely expendable consumable still succeeds from the
-##      same prior state, so the gate is a gate and not a wall.
-##   4. NON-TRIVIALITY. A bare actor is refused before the gate is even reached, so
+##   3. NON-TRIVIALITY. A bare actor is refused before the gate is even reached, so
 ##      half 2 is not the only way to fail and the guard is not vacuous.
+##
+## THE ALLOWANCE — that the gate is a gate and not a wall — is the half a refusal
+## test structurally cannot see, so it lives beside this one in
+## `test_progression_allowance.gd`. A verb that refuses everything passes every
+## assertion below.
 ##
 ## The seed sweep reads `data/*/realms/*.tres` as TEXT: a bounded, one-way read of
 ## authored content in a test, not a runtime edge. It is what makes the table
@@ -44,16 +47,6 @@ const PILL_BY_ROLE := {
 	"qi_breakthrough": "qi_core_formation_breakthrough_pill",
 	"mind_breakthrough": "mind_core_formation_breakthrough_pill",
 }
-## An authored, unruled consumable whose FIXED modifiers carry a restoration, so
-## whether it restores is decided by content and not by a random roll. Gathered,
-## which is the real acquisition route, and `food`, so it is nothing like a pill.
-const EXPENDABLE := "F46_mortal_grainery_attack_speed_evasion_fortune"
-## An authored pill no seed names. Its role is empty and its subtype is the same one
-## the progression pills use, which is what makes it the control for the gate.
-const UNRULED_PILL := "H1_mortal_breakthrough_pill"
-## An authored, unruled consumable whose only fixed option is one its own category
-## refuses, so the definition resolves to no effects at all.
-const BASE_ONLY_TINCTURE := "A15_heaven_barmbrack_base"
 
 
 func setup() -> void:
@@ -251,101 +244,7 @@ func test_equipment_and_material_still_refuse_for_their_own_reason() -> void:
 		)
 
 
-# --- 3. The allowance -------------------------------------------------------
-
-
-func test_a_genuinely_expendable_consumable_is_still_spent() -> void:
-	# Without this half the fix is indistinguishable from disabling the verb, and a
-	# test that only proves refusals proves nothing about whether the game works.
-	var def := _def(EXPENDABLE)
-	assert_ne(def, null, "%s resolves" % EXPENDABLE)
-	if def == null:
-		return
-	assert_eq(ProgressionRoles.role_of(def.id), &"", "%s is authored as expendable" % EXPENDABLE)
-	var actor := _hero()
-	var pool := actor.resource(&"health")
-	pool.change(-30.0)
-	var wounded := pool.current
-	ItemsApi.inventory(actor).add(def, 3)
-	var result := ItemsApi.use_item(actor, def.id)
-	assert_eq(bool(result.get("ok", false)), true, "an expendable consumable is spent")
-	assert_eq(ItemsApi.inventory(actor).count(def.id), 2, "exactly one unit was consumed")
-	assert_eq(pool.current > wounded, true, "and a pool actually rose")
-
-
-func test_the_gate_leaves_an_unruled_pill_alone() -> void:
-	# The distinction is the ROLE, not the shape. Two authored pills, one ruled and
-	# one not: if the refusal keyed off the subtype, off the category, or off the
-	# `restore_health` option every one of them carries, the unruled pill would be
-	# gated too and a real heal would be lost. Read at the gate rather than through
-	# `use_item`, because what this asserts is the DECISION -- what this item is
-	# allowed to be spent on -- not the effect its random roll happened to produce.
-	var ruled := _def(String(PILL_BY_ROLE["mind_breakthrough"]))
-	var unruled := _def(UNRULED_PILL)
-	assert_ne(unruled, null, "%s resolves" % UNRULED_PILL)
-	if unruled == null:
-		return
-	assert_eq(unruled.subcategory, ruled.subcategory, "both are the same authored subtype")
-	assert_eq(unruled.category, ruled.category, "and the same authored category")
-	assert_eq(ProgressionRoles.role_of(unruled.id), &"", "only the ruled one is ruled")
-	assert_eq(
-		String(ItemUse.spend_gate(unruled).get("reason", "")),
-		"",
-		"so the gate lets an ordinary pill through"
-	)
-	assert_eq(bool(ItemUse.preview(unruled, null)["spendable"]), true, "and preview agrees")
-	assert_eq(
-		String(ItemUse.spend_gate(ruled).get("reason", "")),
-		String(ItemUse.REASON_PROGRESSION_INPUT),
-		"while the ruled one is refused by the same question"
-	)
-
-
-func test_a_consumable_that_restores_nothing_is_refused_and_kept() -> void:
-	# The third member of this family, and the one easiest to miss: a consumable
-	# whose options resolve to nothing at all must not cost a unit. Reporting `ok`
-	# there is BL-0110 one category over -- the verb decrements the stack and the
-	# actor is identical afterwards.
-	#
-	# The subject is an authored tincture whose fixed `base_spirit` the catalog
-	# declares for `equipment`/`technique`, so the `consumed` channel refuses the
-	# option and the item resolves to no effects whatsoever. That is real shipped
-	# content, not a fixture, and it is why the verb has nothing to charge for.
-	#
-	# Asked on a COPY with its roll spec dropped, because every authored consumable
-	# rolls and a roll decides for itself whether this press lands. Copying rather
-	# than mutating matters: the loaded resource is shared with every other suite in
-	# the process, and clearing a spec on it would change what they roll too.
-	var authored := _def(BASE_ONLY_TINCTURE)
-	assert_ne(authored, null, "%s resolves" % BASE_ONLY_TINCTURE)
-	if authored == null:
-		return
-	var fixed_only := authored.duplicate(true) as ItemDef
-	fixed_only.roll_spec = {}
-	fixed_only.id = &"fixed_only_tincture"
-	assert_eq(ItemUse.spend_gate(fixed_only).is_empty(), true, "the gate allows it through")
-	assert_eq(
-		ItemEffects.resolve(fixed_only, null).size(),
-		0,
-		"its fixed option is refused by its own category, so it carries nothing at all"
-	)
-	var actor := _hero()
-	var pool := actor.resource(&"health")
-	pool.change(-50.0)
-	var wounded := pool.current
-	ItemsApi.inventory(actor).add(fixed_only, 1)
-	var result := ItemsApi.use_item(actor, fixed_only.id)
-	assert_eq(bool(result.get("ok", false)), false, "so there is nothing to restore")
-	assert_eq(
-		String(result.get("reason", "")),
-		String(ItemUse.REASON_NO_EFFECT),
-		"so it is refused by name"
-	)
-	assert_eq(ItemsApi.inventory(actor).count(fixed_only.id), 1, "and the unit was kept")
-	assert_almost_eq(pool.current, wounded, "and no pool moved")
-
-
-# --- 4. Non-triviality ------------------------------------------------------
+# --- 3. Non-triviality ------------------------------------------------------
 
 
 func test_a_bare_actor_is_refused_before_the_gate_is_reached() -> void:
