@@ -45,6 +45,10 @@ const UNCLAIMED := &"the_stone_that_answering"
 ## A kind outside `EventDef.KINDS`, which is what makes a probe MALFORMED. The malformed
 ## branch is the one that used to erase; a well-formed duplicate takes a different line.
 const BAD_KIND := &"doomsday"
+## The same word as it appears in a refusal line. A `problems()` entry that names a
+## kind outside `EventDef.KINDS` is this file's own refused probe being REPORTED, not a
+## shipped def failing to open — see [method _shipped_problems].
+const BAD_KIND_TEXT := "doomsday"
 
 
 ## ## 1. The malformed branch, asserted on the catalogue's OWN bookkeeping
@@ -86,11 +90,7 @@ func test_a_malformed_probe_never_removes_a_shipped_def_from_the_catalog_or_its_
 	# a regression that restored the `_admit` erase puts the def in NEITHER list, and
 	# the surviving assertions below name it by id.
 	var problems := _shipped_problems()
-	assert_eq(
-		problems,
-		{},
-		"and every SHIPPED def is still healthy: %s" % str(catalog.problems())
-	)
+	assert_eq(problems, {}, "and every SHIPPED def is still healthy: %s" % str(catalog.problems()))
 
 	assert_eq(catalog.has(ELDER_EVENT), true, "the shipped def is still in `_events`")
 	assert_eq(
@@ -278,9 +278,17 @@ func _order_of_a_reload_with_probes() -> Array[String]:
 	for suffix in ["zz_probe_third", "zz_probe_first", "zz_probe_second"]:
 		var def := _def(&"probe_%s" % suffix, "Probe %s" % suffix, EventDef.KIND_DISASTER)
 		assert_eq(catalog.register(def), true, "the well-formed probe '%s' is admitted" % suffix)
+	# Read back the AUTHORED ids only, not `event_ids()`. The probes were just admitted
+	# and are sitting in `_ids` beside the shipped tree, so a plain read returns them too
+	# and the comparison below would be "eleven ids vs eight" — which fails while saying
+	# nothing about the order bug this file exists to catch. What is under test is that
+	# admitting a probe did not DISTURB the shipped ids' order.
+	var authored := _authored_ids()
 	var out: Array[String] = []
 	for event_id in catalog.event_ids():
-		out.append(String(event_id))
+		var as_text := String(event_id)
+		if authored.has(as_text):
+			out.append(as_text)
 	return out
 
 
@@ -295,24 +303,52 @@ func _def(id: StringName, display_name: String, kind: StringName) -> EventDef:
 	return def
 
 
-## Every `problems()` line that describes a SHIPPED id, as `{id: line}`.
+## Every `problems()` line that describes a SHIPPED def that CANNOT OPEN, as
+## `{id: line}` — and NOT a line that merely reports this file's own refused probe.
 ##
-## `problems()` folds `_rejected` in beside the `_ids` walk, so holding a refusal of
-## your own probe makes it non-empty BY CONSTRUCTION — the line even names the shipped
-## id the probe was registered under. Filtering to the shipped ids is what turns that
-## list back into the whole-tree health check it was reached for: a line here is a
-## shipped def that cannot open, which is the thing this file's probes must never
-## cause. (A refusal of a def that is NOT shipped is another file's business — see
-## `test_event_content.gd`.)
+## `problems()` folds `_rejected` in beside the `_ids` walk. This file's first test
+## registers a MALFORMED probe deliberately UNDER THE SHIPPED ID
+## `the_favour_of_elder_wei`, so its refusal is keyed to a shipped id and no
+## id-based filter can separate the two: filtering to authored ids still lets that
+## line through, because the id IS authored. Only the KIND distinguishes them — the
+## shipped def loads from disk and has a legal one, while the refusal text names
+## `doomsday`, which `EventDef.KINDS` does not contain.
+##
+## So the filter is: a line is a real defect only if the def it names RESOLVES from
+## disk with a kind this module reads. A line naming an unresolvable kind is this
+## file's own probe being reported, and `test_a_malformed_def_is_rejected_and_
+## reported_rather_than_silently_absent` is the test that pins that it is reported.
 func _shipped_problems() -> Dictionary:
-	var shipped: Array[String] = []
-	for event_id in EventCatalog.instance().event_ids():
-		shipped.append(String(event_id))
 	var out := {}
 	for line in EventCatalog.instance().problems():
 		var head := String(line).split(":")[0]
-		if shipped.has(head):
-			out[head] = String(line)
+		if not _authored_ids().has(head):
+			continue
+		if line.contains(BAD_KIND_TEXT):
+			# This file's own refusal, reported against a shipped id because that is
+			# where it was registered on purpose. Not a shipped def failing to open.
+			continue
+		out[head] = String(line)
+	return out
+
+
+## The ids actually authored under `res://data/event/events`, read from disk.
+##
+## Deliberately NOT `EventCatalog.event_ids()`: that list is what the probes dirty,
+## which is the entire reason this helper exists. Reading the directory is the only
+## source that cannot be polluted by the test that is asking the question.
+func _authored_ids() -> Array[String]:
+	var out: Array[String] = []
+	var dir := DirAccess.open("res://data/event/events")
+	if dir == null:
+		return out
+	dir.list_dir_begin()
+	var entry := dir.get_next()
+	while entry != "":
+		if entry.ends_with(".tres"):
+			out.append(entry.trim_suffix(".tres"))
+		entry = dir.get_next()
+	dir.list_dir_end()
 	return out
 
 
