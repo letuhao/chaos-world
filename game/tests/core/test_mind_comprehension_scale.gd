@@ -39,10 +39,10 @@ extends TestCase
 ## `comprehension_required` is a different field on a different path, authored
 ## linearly, and is out of scope for a ruling about the MIND gate.
 ##
-## MUTATION NOTE: each structural leg was proved RED by breaking the tree it guards
-## (one seed literal, the `SCALE` declaration, and a reinstated ordinal-based
-## computation), not by reading it. A green guard that cannot fail is worse than no
-## guard (INC-0016).
+## Each structural leg was proved RED by breaking the tree it guards (one seed
+## literal, the `SCALE` declaration, and a reinstated ordinal-based computation),
+## not by reading it. A green guard that cannot fail is worse than no guard
+## (INC-0016).
 
 const SRC_ROOT := "res://src"
 const SEED_DIR := "res://data/mind_cultivation/realms"

@@ -144,7 +144,7 @@ func test_the_cap_survives_the_credit() -> void:
 	var record := _rated(_fighter())
 	(record["record"] as Tribulation).preparation = {"formation": 5.0, "environment": 5.0}
 	assert_eq(
-		_credits(record["record"] as Tribulation),
+		_credits(record["record"] as Tribulation, _actor),
 		Tribulation.PREPARATION_FLOOR,
 		"an unbounded aid is still capped at the authored floor"
 	)
@@ -154,7 +154,7 @@ func test_the_cap_survives_the_credit() -> void:
 	var harder := _rated(_actor)
 	(harder["record"] as Tribulation).preparation = {"formation": 5.0, "environment": 5.0}
 	assert_eq(
-		_credits(harder["record"] as Tribulation),
+		_credits(harder["record"] as Tribulation, _actor),
 		Tribulation.PREPARATION_FLOOR,
 		"a credit below one cannot lift the cap either"
 	)
@@ -205,6 +205,14 @@ func _fighter() -> Actor:
 		actor.meridians.open_meridian(meridian.id)
 		actor.meridians.expand_meridian(meridian.id)
 	actor.inside_world = InsideWorld.new(InsideWorld.SEED)
+	# ENDURANCE, NOT JUST RATING. `TribulationEndurance.endurance` is
+	# `MIN + dao_heart * DAO_HEART_TO_ENDURANCE - price * RATING_TO_ENDURANCE` clamped to
+	# `[MIN_ENDURANCE, MAX_ENDURANCE]`, so a stock actor with zero comprehension sits pinned AT
+	# the floor and no rating change of any size can move its survival odds. The suite asserted
+	# the direction of the endurance term against a body that could not express it - the
+	# assertion was measuring the clamp, not the credit. Enough comprehension lifts the body
+	# off the floor so the term is live and the direction is a real observation.
+	actor.stats.set_base(Stat.COMPREHENSION, 40.0)
 	return actor
 
 
@@ -229,7 +237,7 @@ func _rated(actor: Actor) -> Dictionary:
 	return {
 		"record": record,
 		"rating": record.difficulty,
-		"reduction": _credits(record),
+		"reduction": _credits(record, actor),
 		"endurance": TribulationEndurance.endurance(actor, record),
 	}
 
@@ -258,14 +266,20 @@ func _unsealed_endurance() -> float:
 
 ## What `_preparation_reduction` returns, recomputed HERE rather than reached into: the
 ## private helper is the thing under test, and a test that calls it proves nothing about what
-## `rate` did with it. This is `rate`'s own two terms — the recorded aid summed, then capped
-## at `PREPARATION_FLOOR` — spelled out, so a credit that reached the cap and a credit that
-## did not are two different observations.
-func _credits(record: Tribulation) -> float:
+## `rate` did with it. This is `rate`'s own two terms — the recorded aid summed, multiplied by
+## the actor's credit, then capped at `PREPARATION_FLOOR` — spelled out, so a credit that
+## reached the cap and a credit that did not are two different observations.
+##
+## **The multiplication was missing.** The first version summed the aids and capped, which is
+## `_preparation_reduction` as it stood BEFORE the seam. It therefore returned the same number
+## for every preset, and "hard credits less preparation" failed for the honest reason that the
+## assertion was measuring the pre-wire function rather than the wired one. A helper that
+## re-derives a rule must be updated when the rule changes, or it silently tests history.
+func _credits(record: Tribulation, actor: Actor) -> float:
 	var total := 0.0
 	for aid in Tribulation.PREPARATION_AIDS:
 		total += float(record.preparation.get(aid, 0.0))
-	return minf(total, Tribulation.PREPARATION_FLOOR)
+	return minf(total * DifficultyApi.preparation_credit_for(actor), Tribulation.PREPARATION_FLOOR)
 
 
 ## `source` with every comment line removed, so a structural guard reads CODE and not the

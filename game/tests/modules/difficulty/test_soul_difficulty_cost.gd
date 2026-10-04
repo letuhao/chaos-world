@@ -53,25 +53,19 @@ func _death_cost(difficulty_id: StringName, base_cost: int) -> int:
 	## clamp by `death_loss_cap` — which is why it went red when `scalars()` stopped answering
 	## and why it would have stayed green if production had drifted instead. A test that owns a
 	## second copy of the rule tests the copy. `SoulDeath._scaled_cost` is the only writer, so
-	## the fixture drives the real death and reads what it charged.
+	## the fixture drives a real death and reads what it charged.
+	##
+	## The body is the one `setup` already built with a soul and a difficulty. A SECOND body was
+	## the first attempt and it read back 20 for every preset, because `SoulApi.attach` on a
+	## fresh actor starts the ledger at full integrity with no soul ledger wired, so `damage`
+	## clamped at whatever that body happened to carry — a fixture bug wearing the costume of
+	## a production bug. Reusing `_actor` also keeps `teardown` honest: one body, one teardown.
 	DifficultyApi.select(_actor, difficulty_id)
-	var body := _prober()
-	var pool := body.resource(&"health")
-	pool.change(-pool.maximum)
-	var out := SoulDeath.new(_mint, _adopt).resolve(body, base_cost)
-	return int(out.get("damage", 0))
-
-
-## A fresh body carrying a body plan, so `_scaled_cost` and the guardian branch both see a real
-## actor rather than one the resolver refuses.
-func _prober() -> Actor:
-	var body := ActorFactory.build(&"difficulty_cost_prober")
-	RaceApi.attach(body)
-	RaceApi.set_race(body, &"stoneborn")
-	body.attach_core_resources()
-	SoulApi.attach(body)
-	_minted.append(body)
-	return body
+	var before := int(SoulApi.soul(_actor).get("integrity", 0))
+	var out := SoulDeath.new(_mint, _adopt).resolve(_actor, base_cost)
+	if bool(out.get("guardian_spent", false)):
+		return 0
+	return before - int(SoulApi.soul(_actor).get("integrity", 0))
 
 
 func _mint(_arrival_id: String, _incarnation: int) -> Dictionary:
