@@ -268,7 +268,10 @@ static func on_location_selected(
 ) -> Dictionary:
 	if _current == null or _mounted_player == null:
 		return {"ok": false, "reason": "no_mounted_stage"}
-	var answer := _current.mount(_mounted_player, location_id, bounds)
+	# Typed through `as` rather than inferred: `_current` is a RefCounted holding a plain
+	# script, so `mount()` answers a Variant and an inferred type from it is a warning this
+	# project treats as an error. Same rule as every other Variant-typed call in this file.
+	var answer := _current.call(&"mount", _mounted_player, location_id, bounds) as Dictionary
 	if not bool(answer["ok"]):
 		return answer
 	if screen != null and screen.has_method(&"set_message"):
@@ -391,8 +394,22 @@ func summary() -> Dictionary:
 		"location_publisher_installed": _location_publisher.is_valid(),
 		"world_told": bool(_published.get("ok", false)),
 		"world_told_reason": String(_published.get("reason", "")),
-		"last_interaction": last_interaction(),
+		# FLATTENED, not the dictionary [method last_interaction] returns. ADR 0038's
+		# contract is that a screen's `summary()` is primitives all the way down, and a
+		# nested dictionary in it is read by a panel as `null` or as nothing at all. The
+		# accessor stays the rich shape for a caller that wants the row; the summary
+		# carries the same facts as scalars a panel can print.
+		"last_interaction_target": String(_last_row().get("target", "")),
+		"last_interaction_ok": bool(_last_row().get("ok", false)),
+		"last_interaction_reason": String(_last_row().get("reason", "")),
+		"last_interaction_count": _interactions.size(),
 	}
+
+
+## The last routed press, or `{}`. Internal, so [method summary] can flatten it
+## without the public accessor and the summary carrying different shapes.
+func _last_row() -> Dictionary:
+	return {} if _interactions.is_empty() else (_interactions[-1] as Dictionary)
 
 
 ## Route one interaction — the consumer of `PlayerAdapter.interacted`.
