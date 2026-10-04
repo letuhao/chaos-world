@@ -8,6 +8,8 @@ extends TestCase
 ## directly, because the claim being tested is that a *player* can do this — not
 ## that a harness holding the screen object can.
 
+const SCREEN_SCRIPT := "res://src/ui/screens/loot_encounter.gd"
+
 var _rig: LootScreenRig = null
 
 
@@ -258,15 +260,30 @@ func test_every_outstanding_payload_is_eventually_listed_and_claimable() -> void
 	assert_eq(_claimed_ids(actor).size(), 2, "so both bosses really paid, in the ledger")
 
 
-## The screen names no module type, no item type and no theme override, and formats
-## no number of its own: the panels do that, and `tools arch` fails the first two.
+## Stage: the screen's own text. The screen reaches gameplay through the bridge the
+## composition root injects, so it never names the loot facade itself: a bare
+## `LootApi.` call would hard-wire a concrete module type into the UI program and take
+## the bridge seam away.
+##
+## The rule is about CODE, and this used to assert it over the whole file. The arch
+## checker that owns the same rule (`tools arch`, the bare-reference scan in
+## `tools/arch/enforce.py:_references`) reads `_code_only(text)`, which drops
+## comments before it looks for a class name -- so a `##` line NAMING `LootApi` to
+## explain why the bridge exists was never a violation to the rule's owner. Scanning
+## the raw text made this STRICTER than the rule it exists to enforce, and it reddened
+## on the screen's own explanation of the seam.
 func test_the_screen_names_no_module_type_and_formats_no_number() -> void:
 	var view := _rig.screen(_rig.hero())
 	var scene := FileAccess.get_file_as_string(LootScreenRig.SCREEN_SCENE)
 	assert_eq(scene.contains("LootApi"), false, "the scene names no module type")
 	assert_eq(scene.contains("theme_override"), false, "and no theme override anywhere")
-	var script := FileAccess.get_file_as_string("res://src/ui/screens/loot_encounter.gd")
-	assert_eq(script.contains("LootApi"), false, "nor does the script")
+	var script := FileAccess.get_file_as_string(SCREEN_SCRIPT)
+	var named := _code_lines_naming(script, "LootApi")
+	assert_eq(
+		named.is_empty(),
+		true,
+		"%s names no module type in code; found %s" % [SCREEN_SCRIPT, ", ".join(named)]
+	)
 	assert_eq(script.contains("ItemDef"), false, "nor any item type")
 	assert_eq(script.contains("theme_override"), false, "nor a theme override")
 	assert_eq(script.contains("%d"), false, "the screen writes no %d")
@@ -280,6 +297,34 @@ func test_the_screen_names_no_module_type_and_formats_no_number() -> void:
 		view.get_node_or_null("%RewardList") != view.get_node_or_null("%StashList"),
 		true,
 		"and the reward and the world container are two lists, so one cannot hide the other"
+	)
+
+
+## The cut the guard above rests on, proved on BOTH sides, because a helper that
+## dropped everything would satisfy only half of it: a `##` line that NAMES the facade
+## to explain the seam is documentation and must NOT be found, and a real CALL is the
+## violation and must be. The trailing-comment case is the one a line-prefix test alone
+## gets wrong, so it is asserted here rather than assumed.
+func test_the_module_type_scan_ignores_prose_and_still_finds_a_call() -> void:
+	var prose := "## Every slot is a `LootApi` verb.\nvar bridge: LootBridge = null"
+	assert_eq(
+		_code_lines_naming(prose, "LootApi").is_empty(),
+		true,
+		"a doc line naming the facade is documentation, not a reference"
+	)
+	var trailed := "var held := 0  # see LootApi for the verb it forwards"
+	assert_eq(
+		_code_lines_naming(trailed, "LootApi").is_empty(),
+		true,
+		"and so is a mention sitting after code on the same line"
+	)
+	var call := "func refresh() -> void:\n\tLootApi.strike(actor)"
+	var found := _code_lines_naming(call, "LootApi")
+	assert_eq(found.size(), 1, "a real call is the violation, and is found exactly once")
+	assert_eq(
+		String(found[0]),
+		"2: LootApi.strike(actor)",
+		"reported with the line it is on, so a red names where"
 	)
 
 
@@ -397,3 +442,28 @@ func _row_named(view: LootEncounterScreen, drop_id: String) -> Dictionary:
 		if String((row as Dictionary).get("drop_id", "")) == drop_id:
 			return row as Dictionary
 	return {}
+
+
+## The CODE lines of `text` naming `token`, as `"<line>: <code>"`, in file order, so a
+## failure names the line rather than only the file.
+##
+## A comment is cut before the token is looked for, exactly as `tools arch` cuts one
+## (`COMMENT_RE = #.*$` in `tools/arch/enforce.py`). Detection and the cut are kept
+## apart on purpose: a helper that dropped everything would pass the caller, and one
+## that cut nothing could not be told apart from a raw `contains`.
+##
+## Bounded by `text.split("\n")` -- a finite snapshot taken BEFORE the loop and never
+## appended to, so the loop cannot grow the container it walks. Every branch advances
+## `number` by the iterator, so there is no `while` here to bound.
+func _code_lines_naming(text: String, token: String) -> Array[String]:
+	var out: Array[String] = []
+	var lines := text.split("\n")
+	for number in lines.size():
+		var line := String(lines[number])
+		if line.strip_edges().begins_with("#"):
+			continue
+		var hash := line.find("#")
+		var code := line if hash < 0 else line.substr(0, hash)
+		if code.contains(token):
+			out.append("%d: %s" % [number + 1, code.strip_edges()])
+	return out
