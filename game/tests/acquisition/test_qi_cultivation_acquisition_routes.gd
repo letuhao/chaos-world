@@ -2,10 +2,17 @@ extends "res://tests/acquisition/qi_cultivation_acquisition_fixture.gd"
 
 
 func test_no_qi_chain_item_rests_only_on_a_route_kind_nothing_ships() -> void:
+	var chain := _chain_items()
+	# "Every chain item" is unfalsifiable without a size: a recipe that quietly loses an
+	# input shrinks the graph this file audits, and every walk below would still pass over
+	# the smaller one. Pinned like CHAIN_DOMAIN_COUNT, so the audit's own width is asserted.
+	assert_eq(
+		chain.size(), CHAIN_ITEM_COUNT, "the qi chain is CHAIN_ITEM_COUNT items wide, as pinned"
+	)
 	var unshipped: Array[String] = []
 	var other: Array[String] = []
 	var exercised: Array[String] = []
-	for item_id in _chain_items():
+	for item_id in chain:
 		for kind in _kinds(item_id):
 			if not exercised.has(kind):
 				exercised.append(kind)
@@ -37,8 +44,12 @@ func test_no_qi_chain_item_rests_only_on_a_route_kind_nothing_ships() -> void:
 	)
 	assert_eq(
 		exercised,
-		["boss", "craft", "domain", "gather", "quest"] as Array[String],
-		"the qi chain declares only kinds the backward walk and the catalog both know"
+		PINNED_CHAIN_KINDS,
+		(
+			"the exact route kinds the qi chain exercises, as a SET: a kind that stops being"
+			+ " declared and one that starts both name themselves in this diff. No item has ever"
+			+ " declared `quest`, so pinning it asserted the impossible and looked like coverage"
+		)
 	)
 
 

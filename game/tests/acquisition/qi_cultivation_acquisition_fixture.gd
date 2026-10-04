@@ -10,11 +10,14 @@ extends TestCase
 ##
 ## ## The ladder is obtainable. It is obtainable EVERY time.
 ##
-## 1. **Obtainable — 210 of 210 chain items.** All 90 consumables resolve to an
-##    `ItemDef`, a recipe that outputs it and inputs that resolve, and every hop
-##    CLOSES. Nothing rests only on `gather`/`quest`, both `shipped: false`. That
-##    was DEF-0188's finding and it no longer holds: `6f141711` gave those 41
-##    materials a real `domain:` route with a bound table, so the pin is 0.
+## 1. **Obtainable — 210 of 210 chain items.** The width is [constant
+##    CHAIN_ITEM_COUNT], asserted, so "every" names a size: a recipe that quietly loses an
+##    input shrinks the graph and the walks below would audit less and still pass. All 90
+##    consumables resolve to an `ItemDef`, a recipe that outputs it and inputs that
+##    resolve, and every hop CLOSES on a kind the chain actually declares —
+##    [constant PINNED_KINDS], pinned as a set. DEF-0188's finding was material resting
+##    only on `gather`/`quest`; both kinds now ship, so there is no unshipped kind left
+##    to rest on, and the pin is 0.
 ## 2. **Obtainable on EVERY clear — 90 of 90.** A cleared band grants no second run
 ##    (loot rule E2), so "a table can yield this" is not enough: every hop must be
 ##    `guaranteed`, INCLUDING the hop into a nested pool. A guaranteed entry inside a
@@ -41,6 +44,13 @@ const MAX_TABLE_DEPTH := 4
 const MAX_CRAFT_DEPTH := 4
 
 const CHAIN_DOMAIN_COUNT := 77
+## The qi chain's own width: 90 consumables plus every recipe input they name, deduped.
+## Measured from the engine, not typed by hand — the assertion is what keeps the header's
+## "every chain item" from being unfalsifiable, since a recipe that quietly loses an input
+## would otherwise shrink the audited graph and still pass.
+const CHAIN_ITEM_COUNT := 210
+## The route kinds the chain actually declares, measured, as a SET pin.
+const PINNED_CHAIN_KINDS: Array[String] = ["boss", "craft", "domain", "gather"]
 const UNSHIPPED_PREFIX := "%s: every route is unshipped [%s]"
 const UNSHIPPED_MARKER := "every route is unshipped"
 

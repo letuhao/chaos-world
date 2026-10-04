@@ -211,12 +211,14 @@ func test_a_required_step_the_world_never_records_blocks_the_item_grant_too() ->
 ## on a flag someone is about to flip is either red or a landmine, and both are the
 ## stale alibi this file's own header warns about.
 ##
-## Asserting equality with the delivery was tried and MEASURED instead, and it goes red
-## today: `shipped` is `false` while `QuestGrants.pay` delivers. That is the ADR 0065
-## lie in its exact shape — a flag with no verb behind it — and it is the flip that is
-## owed, in `game/src/modules/items/item_sources.gd`, not a defect this suite can settle.
-## **`tools/data.py::_route_agreement_problems` owns that claim**, because only it sees
-## the gate's side too; the header says so. What is asserted here holds either way.
+## Asserting equality with the delivery was tried and MEASURED instead, and it was red:
+## `shipped` read `false` while `QuestGrants.pay` delivered, which is the ADR 0065 lie in
+## its exact shape — a flag with no verb behind it. That flip has since landed
+## (`item_sources.gd:97` reads `true`), so the measurement is history and the flag now
+## agrees with the code it claims to describe. The VALUE stays unasserted here on purpose:
+## a flag is a claim about `game/src`, and only
+## **`tools/data.py::_route_agreement_problems`** sees the gate's side too; the header
+## says so. What is asserted below holds either way.
 func test_the_runtime_reads_the_shipped_flag_and_the_unshipped_list_from_one_table() -> void:
 	assert_eq(
 		ItemSources.knows(ItemSources.KIND_QUEST),
