@@ -13,6 +13,16 @@ const STORM_TIER := 3
 ## The item the acquisition test inspects: a real, non-stackable drop, so a
 ## delivered instance can be compared field by field.
 const MARK := &"amulet_iron_sage_eye"
+## The rung `MARK` is AUTHORED at, read off
+## `data/items/equipment/amulet_iron_sage_eye.tres`. Deliberately not the rung of the
+## band it drops in, and far enough below it to be a different number rather than a
+## near miss — which is what lets the acquisition test tell the two rules apart on
+## shipped content alone instead of on a probe.
+const MARK_REALM := &"void_refinement"
+## The rung of the band the mark actually falls in: Ember Vault at tier 1, declared by
+## `data/loot/encounters/loot_ember_vault.tres` and again by its warden table
+## `loot_ember_warden_t1`, so the two independent authors of a band's realm agree.
+const EMBER_TIER_REALM := &"spirit_severing"
 
 
 func _hero(fortune: float = 0.0, capacity: int = 24) -> Actor:
@@ -627,7 +637,20 @@ func test_a_boss_is_defeated_and_its_drop_is_genuinely_acquired() -> void:
 	assert_eq(
 		mark.def_ref.effects(mark).is_empty(), false, "its effects resolve through the items module"
 	)
-	assert_eq(String(mark.realm), "spirit_severing", "it rolled for the band it fell in")
+	var band := String(reward["realm"])
+	# ADR 0166 on shipped content, not on a probe: a drop pays the rung of its OWN
+	# item, and the band keeps only what it legitimately owns, which is rarity. Both
+	# sides are literals read off the shipped `.tres` files, so neither can drift into
+	# the other unnoticed, and the `assert_ne` below is what stops the comparison from
+	# passing by coincidence if they ever did. Restoring `copy.realm = realm` in
+	# `LootRewards.contextualize` fails the last assertion on the value.
+	assert_eq(band, String(EMBER_TIER_REALM), "the band it fell in pays its own rung")
+	assert_ne(String(MARK_REALM), band, "and that band is genuinely not the mark's rung")
+	assert_eq(
+		String(mark.realm),
+		String(MARK_REALM),
+		"it rolls for its own rung %s, not the band's %s" % [MARK_REALM, band]
+	)
 	assert_eq(bool(ItemsApi.has_item(actor, MARK)), true, "the items facade sees it too")
 	assert_eq(
 		bool(ItemsApi.equip_item(actor, Equipment.ACCESSORY_A, mark.def_ref)), true, "it equips"
