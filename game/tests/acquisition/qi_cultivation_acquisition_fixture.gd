@@ -31,10 +31,17 @@ extends TestCase
 const REALM_DIR := "res://data/qi_cultivation/realms/"
 const RECIPE_DIR := "res://data/recipes/"
 const REALM_COUNT := 30
-const STRIKE_DAMAGE := 25.0
-## Stops when a boss's authored vitality stops falling: the deepest lowest band any
-## domain here hunts costs 272.0, so 64 x 25.0 clears every one of them.
-
+## One strike spends this share of the boss's OWN authored vitality — the arithmetic
+## `exchange.gd` spends a landed blow with (a share of `vitality_max`), so this file
+## tracks the corpus instead of betting on a constant. Measured 2026-10-05: the
+## deepest LOWEST band any domain this chain hunts authors 1,033,987.5
+## (`loot_{qi,mind,body}_primordial_origin_trial` tier 1), so the 25.0 this file used
+## to spend per blow would need 41,360 strikes to clear one boss. The constant was
+## stale, not the band, and raising MAX_STRIKES to 41,360 would have papered over it.
+const STRIKE_SHARE := 1.0
+## Bounded by BOSSES, not by vitality: every encounter spawns 2 or 3 (measured across
+## all 160), and one strike now spends the whole pool, so a run needs at most 3. 64 is
+## the guard against a boss whose vitality never falls — named, small, and unraised.
 const MAX_STRIKES := 64
 const MAX_CLAIMS := 16
 const INVENTORY_SLOTS := 256
@@ -599,6 +606,8 @@ func _hunt(actor: Actor, domain_id: String, tier: int) -> String:
 	if not bool(entered.get("ok", false)):
 		return "enter:" + String(entered.get("reason", "?"))
 	var strikes := 0
+	# `strikes` only ever moves here, so MAX_STRIKES is a real guard and the loop ends
+	# whatever the data says (never test a bound this loop grows itself, INC-0002).
 	while strikes < MAX_STRIKES:
 		var active := LootApi.summary(actor)["active"] as Dictionary
 		# Defeating the last boss ends the run and clears the live boss (rule E3).
@@ -606,7 +615,11 @@ func _hunt(actor: Actor, domain_id: String, tier: int) -> String:
 		# so the run ends by claiming rather than by reporting an exit.
 		if not bool(active.get("in_domain", false)) or bool(active.get("defeated", false)):
 			return _claim_all(actor)
-		var result := LootApi.strike(actor, STRIKE_DAMAGE, HUNT_SEED)
+		# A share of the boss's OWN authored vitality, read off the live run rather than
+		# a typed constant, so a retuned band cannot make this fixture's bound stale.
+		var result := LootApi.strike(
+			actor, float(active.get("vitality_max", 0.0)) * STRIKE_SHARE, HUNT_SEED
+		)
 		if not bool(result.get("ok", false)):
 			return "strike:" + String(result.get("reason", "?"))
 		if bool(result.get("duplicate", false)):
