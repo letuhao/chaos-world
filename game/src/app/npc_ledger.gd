@@ -413,7 +413,13 @@ static func restored_ids() -> Array[String]:
 ## and never from here. **If this file ever grew a per-npc row carrying tier or stage, that
 ## would be exactly the second copy of the truth this work was warned about**, and
 ## `tests/app/test_npc_event_subscribers.gd` is written to go red if it does.
-static func restored() -> Dictionary:
+## Renamed from `restored`, which GDScript cannot do twice: `restored` is also the
+## `npc_restored` subscriber above, and the engine has no function overloading, so the
+## second declaration was a hard parse error that surfaced only as `Could not resolve class
+## "NpcLedger"` from `npc_boot.gd`'s five `.connect` lines (DEF-0281). The subscriber keeps
+## the signal-matching name; this reader is the summary, and `restored_count` /
+## `restored_ids` are its two parts.
+static func restored_summary() -> Dictionary:
 	return {"count": restored_count(), "ids": restored_ids()}
 
 
