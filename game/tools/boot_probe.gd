@@ -185,8 +185,19 @@ func _run() -> void:
 			break
 		cell["equip"] = equip_report.get("why", "could not be worn")
 		sweep.append(cell)
-		if not bool(equip_report.get("wearable", false)):
-			# A fault rather than bad luck: repeating it would multiply one red.
+		if String(equip_report.get("baseline_wearable", "")).is_empty():
+			# Nothing at all equips, so the Equip control itself is dead. That is a
+			# fault and repeating it would multiply one red.
+			#
+			# `wearable` is NOT the condition. It is false whenever THIS fight's drops
+			# cannot be worn, and measured over the entry band that is the common case:
+			# 264 of 331 tables a tier-1 hero can enter stock no mortal gear at all, and
+			# the 67 that do carry it at median 4.2% per roll (BL-0625). Breaking on it
+			# stopped the sweep after its first fight, which is what made 24 hunts and
+			# 160 cells dead code and turned one unlucky roll into a claim about the
+			# whole corpus -- the slice mistake that created BL-0625 in the first place.
+			# A drop the hero's own control rejects is CONTENT; the control accepting
+			# nothing at all is the seam.
 			break
 	if not best.is_empty():
 		hunt_report = best["hunt"] as Dictionary
