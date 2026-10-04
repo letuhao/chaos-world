@@ -6,8 +6,8 @@ extends PanelContainer
 ## ## Why the picture is a `TextureRect` and the words are a row of labels
 ##
 ## ADR 0131 hands `ui/` a primitives-only dictionary of layer paths and a palette
-## KEY, never a `PortraitDef` and never an asset index row. So this panel applies
-## the first layer path it can load, sizes itself inside its container, and prints
+## KEY, never a `PortraitDef` and never an asset index row. So this panel composes
+## those layer paths back to front, sizes itself inside its container, and prints
 ## the resolution `source` — `chosen` / `race` / `generated` / `placeholder` —
 ## beside the id. **The source is the load-bearing part**: a fallback that looked
 ## deliberate is how a content gap hides, and ADR 0131 names exactly that as the
@@ -47,6 +47,10 @@ var _layer_label: Label = null
 var _missing_label: Label = null
 var _texture: TextureRect = null
 var _bound: bool = false
+## Layers that load but do not match the base canvas, recorded DURING the paint rather
+## than recomputed: `summary()` asks on every read, and reloading every layer to answer
+## a question the paint already knew the answer to is a second decode per frame.
+var _mismatched: Array = []
 
 
 func _ready() -> void:
@@ -79,8 +83,10 @@ func summary() -> Dictionary:
 		"is_placeholder": bool(_view.get("is_placeholder", false)),
 		"layer_paths": _paths(),
 		"layer_count": _paths().size(),
+		"composited": _paths().size() - _missing().size() - _mismatched.size(),
 		"drawn": _texture != null and _texture.texture != null,
 		"missing_layers": _missing(),
+		"mismatched_layers": _mismatched.duplicate(),
 		"id_line": _id_line,
 		"source_line": _source_line,
 		"layer_line": _layer_line,
@@ -133,38 +139,88 @@ func _render() -> void:
 	_paint()
 
 
-## Load the FIRST layer path that resolves and leave the box empty otherwise. First
-## rather than last: a composable portrait is authored back to front, so the first
-## layer is the one that identifies the face and the others are the finish.
+## Paint the portrait by COMPOSING every layer that loads, back to front.
+##
+## `PortraitDef.layer_paths` is "the composable layers, back to front... which is
+## what lets the same body plan read differently per occasion"
+## (`core/portrait_def.gd:37-39`), and this used to load the FIRST loadable layer
+## and return — so a regalia overlay, a faction variant or a second expression
+## frame was structurally addressable and visually discarded (ADR 0177). One
+## layer still composes to exactly itself, so the single-layer case is unchanged.
+##
+## **The first layer that loads is the base and it defines the canvas.** A later
+## layer of a different size is SKIPPED and reported rather than scaled or
+## cropped: `tools/unique_characters.py:_validate_image` already refuses an
+## installed PNG that does not match its shot's declared canvas exactly, so a
+## mismatched layer is a content gap by the same rule, and silently fitting it
+## would hide it twice.
 ##
 ## Two loaders, because a layer path is a plain authored string and the repo has no
 ## import guarantee over it: an IMPORTED resource resolves through `ResourceLoader`,
-## and a raw file the generator wrote resolves through `Image.load_from_file`. The
-## typed `Variant` is deliberate — a `:=` on an untyped load is a warning-as-error in
-## this project, and an image that fails to load must read as "no texture" rather
-## than abort the repaint.
+## and a raw file the generator wrote resolves through `Image.load_from_file`.
+## Returned as `Image` and NOT as `Variant`, because a Variant return makes the
+## caller's `:=` infer Variant — which this project treats as a warning-as-error —
+## and makes `get_size()` untyped, which `Rect2i`'s constructor rejects. A path
+## that cannot be loaded returns null and must read as "no texture" rather than
+## abort the repaint.
 func _paint() -> void:
 	if _texture == null:
 		return
 	_texture.texture = null
+	_mismatched = []
+	# Snapshot of the authored array; the body reads it and never grows it, so the
+	# `for` is bounded by data rather than by anything this loop can change.
+	var base: Image = null
 	for path in _paths():
-		var image = _load_texture(String(path))
-		if image != null:
-			_texture.texture = image as Texture2D
-			return
+		var layer: Image = _load_image(String(path))
+		if layer == null:
+			continue
+		if base == null:
+			# Duplicated because `blend_rect` mutates its destination, and a layer that
+			# came from `ResourceLoader` is shared with the engine's cache.
+			base = layer.duplicate()
+			continue
+		if layer.get_size() != base.get_size():
+			_mismatched.append(String(path))
+			continue
+		base = _over(base, layer)
+	if base != null:
+		_texture.texture = ImageTexture.create_from_image(base)
 
 
-## A layer path as a texture, or null. Never throws: a path that cannot be loaded is
+## `top` composited over `bottom`, both the same size, returning a NEW image.
+##
+## Written out longhand rather than via `Image.blend_rect` on purpose. The engine's argument
+## order for that call does not match the documented `(src, src_rect, blend)` — it rejects a
+## `float` third argument and asks for a `Vector2i` — and guessing at it would put a
+## silently-wrong blend in the one place a face is drawn. `Color.blend` is stable, and
+## [method test_two_layers_are_both_drawn_not_just_the_first] asserts the resulting PIXEL, so
+## this is verified by evidence rather than by an API assumption.
+##
+## LOOP GUARD: the bounds are read from the two images BEFORE either `for`, and neither loop
+## changes a width or a height, so each runs exactly `width * height` times. Nothing here can
+## grow the thing being measured — the INC-0002 shape.
+func _over(bottom: Image, top: Image) -> Image:
+	var width := bottom.get_width()
+	var height := bottom.get_height()
+	var out := Image.create_empty(width, height, false, bottom.get_format())
+	for y in height:
+		for x in width:
+			out.set_pixel(x, y, top.get_pixel(x, y).blend(bottom.get_pixel(x, y)))
+	return out
+
+
+## A layer path as an `Image`, or null. Never throws: a path that cannot be loaded is
 ## a content gap, and [method _missing_text] is what reports it.
-func _load_texture(path: String) -> Variant:
+func _load_image(path: String) -> Image:
 	if ResourceLoader.exists(path):
 		var resource = ResourceLoader.load(path)
 		if resource is Texture2D:
-			return resource
+			return (resource as Texture2D).get_image()
 	var image := Image.load_from_file(path)
 	if image == null or image.is_empty():
 		return null
-	return ImageTexture.create_from_image(image)
+	return image
 
 
 ## The authored display name when the resolver published one, else the id. The
@@ -215,9 +271,12 @@ func _layer_text() -> String:
 ## blank box: resolution is total, so a path that will not load is not "no face".
 func _missing_text() -> String:
 	var missing := _missing()
-	if missing.is_empty():
-		return ""
-	return "Not on disk: %s" % ", ".join(missing)
+	var parts: Array[String] = []
+	if not missing.is_empty():
+		parts.append("Not on disk: %s" % ", ".join(missing))
+	if not _mismatched.is_empty():
+		parts.append("Wrong size for this portrait: %s" % ", ".join(_mismatched))
+	return "  ".join(parts)
 
 
 func _paths() -> Array:
@@ -231,9 +290,17 @@ func _paths() -> Array:
 
 ## Every authored layer path that will not load. A `for` over a data array, never a
 ## `while` whose bound the body could grow.
+##
+## Checks BOTH ways a layer can exist, because [method _load_image] accepts both: an IMPORTED
+## resource resolves through `ResourceLoader`, and a raw PNG the generator wrote resolves only as
+## a file. This used to test `ResourceLoader.exists` alone, so every raw generator-written
+## portrait was drawn correctly and simultaneously reported "Not on disk" — a file that is on
+## disk, on screen, and reported missing. Existence is tested rather than a decode, because
+## `summary()` asks on every read and decoding a PNG per query is a second decode per frame.
 func _missing() -> Array:
 	var out: Array = []
 	for path in _paths():
-		if not ResourceLoader.exists(path):
-			out.append(String(path))
+		var name := String(path)
+		if not ResourceLoader.exists(name) and not FileAccess.file_exists(name):
+			out.append(name)
 	return out
