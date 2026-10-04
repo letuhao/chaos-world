@@ -78,7 +78,9 @@ def _run_check(args: argparse.Namespace) -> int:
         "correct. Restore the intended line BY HAND in the working tree, then commit the "
         "repair: `git restore` and `git checkout` take every other agent's uncommitted work "
         "with them and have destroyed finished work here. This check goes green the moment "
-        "the tip is clean, which is what makes it usable every commit."
+        "the tip is clean, which is what makes it usable every commit. Prose that NAMES a "
+        "mutation is not a finding: only code in front of the marker, or a marker that is "
+        "the first content of its comment, counts (see mutation_history.is_documentation)."
     )
     if args.fail_on == "error":
         fail(f"{detail} INC-0013: {len(probes)} carried probe(s)")

@@ -39,6 +39,40 @@ denylist, so a new agent tool inventing a namespace cannot silently widen or nar
 guard. `skipped_ref_namespaces()` names what was left out, so the blind spot is printed
 rather than assumed.
 
+## Prose that NAMES a mutation is not a probe, and the cut between them is adjacency
+
+A shipped tip legitimately writes about its own mutation tests. `MUTATION-A`/`MUTATION-B` are
+ids that outlive the probe and end up in the sentence explaining which assertion each one
+defended, and three lines in `test_mind_stat_reachability.gd` are exactly that. Matching them
+left the gate permanently red on FALSE POSITIVES - the same "a permanently-red gate is a gate
+people learn to ignore" failure the state-not-history design exists to avoid, arriving by the
+other door: the gate was red, the tree was correct, and the next person to hit it deletes it.
+
+There is no lexical difference between the two things, so the cut has to be positional.
+`is_documentation()` draws it at the marker's own offset:
+
+- **Nothing but whitespace before it** - documentation. In GDScript that position is a
+  multi-line string, and a tombstone string is a tombstone.
+- **Code before it** - a live probe. `if not is_bound() and false:  # MUTATION-M6` is
+  BL-0615's shape and nothing here may touch it.
+- **Inside a comment** - live only when the marker is the comment's FIRST content. `#MUT-1`,
+  `# MUT-1 removed` and `## MUT-1` are a probe LABELLED; `## ... MUT-B (the defence
+  published)` is a sentence mentioning one.
+
+Adjacency is the shape a probe author actually uses, because a probe comment exists to be
+found by grepping it: the marker goes first. Prose puts the id where the sentence needs it.
+
+This is deliberately NOT "ignore comments": `var x := 1  # MUT-1` carries a comment before
+the marker too, and code in front of it, and stays red. What it gives up is a probe that is
+ONLY a comment mentioning a mutation mid-sentence - byte-identical to the prose it now
+clears, so no line-shaped rule can have both. `_live_marker` walks every match on the line
+rather than `search`ing once, because a line can carry a documentation match first and a live
+one after it.
+
+`sweep()` keeps using `_marker_in()`, which is adjacency-blind on purpose: `report` is
+forensic, so naming every line that ever held a marker is what makes it useful for locating
+the commit, and it never gates.
+
 ## What this deliberately does NOT catch
 
 MARKED probes only, exactly like the tree guard. A probe that deletes a function, renames a
@@ -121,6 +155,15 @@ AGENT_LOCAL_NAMESPACES: tuple[str, ...] = (
     "refs/filter-repo/",
 )
 
+#: The comment introducers GDScript uses. `##`, `###` and `#!` are the same one repeated, so
+#: a run of `#` is skipped rather than compared against a single character.
+COMMENT_OPENERS: tuple[str, ...] = ("//", "#")
+
+#: How much of a finding's own line to echo. Long enough to show the code in front of the
+#: marker - which is what makes the liveness call auditable - and short enough that a
+#: minified line cannot flood the report.
+SNIPPET_LIMIT = 72
+
 #: Named findings per tip, then only counted, so a ref carrying hundreds cannot produce a
 #: wall of output where the first few are what matter.
 MAX_REPORTED = 12
@@ -128,15 +171,19 @@ MAX_REPORTED = 12
 
 @dataclass(frozen=True)
 class CarriedMarker:
-    """One marker present in the tree of one shipped ref's tip."""
+    """One LIVE marker present in the tree of one shipped ref's tip."""
 
     ref: str
     path: str
     line: int
     shape: str
+    text: str
 
     def describe(self) -> str:
-        return f"{self.ref}:{self.path}:{self.line}  ({self.shape})"
+        snippet = self.text.strip()
+        if len(snippet) > SNIPPET_LIMIT:
+            snippet = snippet[: SNIPPET_LIMIT - 3] + "..."
+        return f"{self.ref}:{self.path}:{self.line}  ({self.shape})  {snippet}"
 
 
 @dataclass(frozen=True)
@@ -207,21 +254,66 @@ def skipped_ref_namespaces() -> list[str]:
 
 
 def carried() -> list[CarriedMarker]:
-    """Every marker carried by a shipped ref's TIP. This is what `check` gates on.
+    """Every LIVE marker carried by a shipped ref's TIP. This is what `check` gates on.
 
     One `git grep` per tip: git walks that tree and returns only the lines holding a root
     literal, so nothing here reads thousands of blobs one subprocess at a time, and the
     whole two-root sweep of `main` costs ~140ms. The line is then filtered through
-    `SHAPE_RE`, which is what keeps the guard's own documentation and the tree's ~172 lines of
-    lower-case prose about mutation testing out of the findings.
+    `_live_marker`, which is what keeps the guard's own documentation, the tree's ~172 lines
+    of lower-case prose about mutation testing, and the shipped prose that NAMES a mutation
+    id mid-sentence out of the findings.
     """
     found: list[CarriedMarker] = []
     for ref in shipped_refs():
         for path, number, text in _candidate_lines(ref):
-            hit = SHAPE_RE.search(text)
+            hit = _live_marker(text)
             if hit is not None:
-                found.append(CarriedMarker(ref, path, number, hit.group(0)))
+                found.append(CarriedMarker(ref, path, number, hit.group(0), text))
     return found
+
+
+def is_documentation(line: str, start: int) -> bool:
+    """True when the marker at `start` is prose that NAMES a mutation rather than a probe.
+
+    Three cases, and the reasoning for each is in the module docstring. Line-bounded by
+    construction: the only slice is `line[:start]`, and every branch returns, so this has no
+    loop to bound.
+    """
+    before = line[:start].strip()
+    if not before:
+        return True
+    if not before.startswith(COMMENT_OPENERS):
+        # Code in front of the marker: BL-0615's shape, whatever else the line also holds.
+        return False
+    # `##` and `###` are one introducer repeated, so skip the whole run, then the gap.
+    opener = 2 if before.startswith("//") else len(before) - len(before.lstrip("#"))
+    # Comment text in front of the marker means the comment is TALKING ABOUT a mutation.
+    return bool(before[opener:].strip())
+
+
+def _live_marker(text: str) -> re.Match[str] | None:
+    """The first LIVE marker on `text`, or None when the line only talks about one.
+
+    `finditer`, not `search`: a line can carry a documentation match first and a live one
+    after it, and taking the first match would clear it. Bounded by the match count on a
+    finite line, and a malformed shape matches nothing at all rather than looping.
+    """
+    for hit in SHAPE_RE.finditer(text):
+        if not is_documentation(text, _root_offset(hit)):
+            return hit
+    return None
+
+
+def _root_offset(hit: re.Match[str]) -> int:
+    """Where the marker token itself starts, not where the match starts.
+
+    The two comment shapes include the introducer (`# MUTATION`, `// MUTATION`), so
+    `hit.start()` points at the `#` and every commented marker then reads as documentation -
+    the tree guard's own `#MUTATION-M1` and the shipped probes alike. `XXX MUTAT` carries no
+    root token, so a miss means the match already begins at the marker.
+    """
+    inside = hit.group(0).find(MARKER)
+    return hit.start() + (inside if inside >= 0 else 0)
 
 
 def _candidate_lines(ref: str) -> list[tuple[str, int, str]]:
@@ -325,6 +417,13 @@ def _blob_at(commit: str, path: str) -> str:
 
 
 def _marker_in(text: str) -> re.Match[str] | None:
+    """The first marker SHAPE anywhere in `text`, adjacency-blind.
+
+    Deliberately NOT `is_documentation`. This is the forensic reader: `sweep()` uses it to
+    name every line a commit ever held a marker on, and for that question "the shape is in
+    here" is the right answer even when the line is prose - narrowing it would hide the very
+    commit a reader is hunting. The gate is `carried()`, which asks the sharper question.
+    """
     for shape in SHAPES:
         found = re.search(shape, text)
         if found:
