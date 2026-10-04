@@ -213,7 +213,12 @@ func _ensure_loaded() -> void:
 		var race := _tag_value(row, RACE_TAG)
 		if race.is_empty():
 			continue
-		var known: Array[StringName] = _by_race.get(race, []) as Array[StringName]
+		# Built explicitly rather than `as Array[StringName]` on the default: `[] as Array[...]`
+		# yields an UNTYPED array, so the first row of every race assigned an untyped Array into a
+		# typed field and every later reader had to cast it back.
+		var known: Array[StringName] = []
+		for existing in _by_race.get(race, []) as Array:
+			known.append(StringName(existing))
 		known.append(StringName(character_id))
 		_by_race[race] = known
 	# Sorted AFTER collection, so the first match is the lowest id rather than the first line.

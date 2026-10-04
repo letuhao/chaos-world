@@ -15,23 +15,30 @@ extends TestCase
 ##
 ## **A slot is installed at either status and at no other.** One constant, read by the reader AND
 ## the audit, so the two cannot drift apart a second time.
+##
+## ## Why every test re-asserts the fixture root
+##
+## The runner calls `setup` ONCE per suite (`run_tests.gd:61`) and `teardown` after EVERY test
+## (`:92`). A teardown that deleted the fixture therefore emptied it after the first test, and
+## every later assertion read a catalog that no longer existed — which is how a suite of negative
+## assertions passes on nothing. So: write once, re-point per test, and never delete.
 
 const FIXTURE := "user://test_portrait_index_fixture.jsonl"
 const MISSING := "res://assets/characters/portraits/no_such_file.png"
-const PRESENT := "res://assets/characters/portraits/tidecaller.png"
+## A path that EXISTS, so "installed art on disk is not a gap" means something. It is not a PNG
+## because `validate` only asks `FileAccess.file_exists`; the shipped portraits directory does not
+## exist, so there is no portrait file to name. The file under test is the one guaranteed present.
+const PRESENT := "res://src/core/portrait_index.gd"
 
 
 func setup() -> void:
 	_write_fixture()
-	PortraitIndex.set_index_root(FIXTURE)
 
 
 func teardown() -> void:
-	# The singleton outlives the suite, and the resolver reads it. Leaving the fixture root
-	# installed would hand the next suite this suite's rows.
+	# Hand the real catalog back to whatever runs next, and drop the cache so no test reuses the
+	# previous test's rows.
 	PortraitIndex.set_index_root("")
-	if FileAccess.file_exists(FIXTURE):
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(FIXTURE))
 	PortraitIndex.instance().invalidate()
 
 
@@ -42,17 +49,17 @@ func test_the_fixture_is_actually_read() -> void:
 	# Without this the whole suite can pass on an EMPTY catalog: every negative assertion
 	# ("a planned portrait does not resolve") is satisfied by a catalog that loaded nothing.
 	# A green guard that discriminates nothing is worse than a red one (INC-0016).
+	_use_fixture()
 	assert_eq(FileAccess.file_exists(FIXTURE), true, "the fixture was written")
-	assert_eq(
-		FileAccess.get_file_as_string(FIXTURE).split("\n", false).size(),
-		5,
-		"the fixture is five lines, one row each"
-	)
-	var read := PortraitIndex.instance().ids()
-	assert_eq(read.size(), 5, "every fixture row was parsed; read " + str(read))
+	assert_eq(_read_ids(), 5, "every fixture row was parsed")
+
+
+func _read_ids() -> int:
+	return PortraitIndex.instance().ids().size()
 
 
 func test_an_installed_generated_portrait_resolves() -> void:
+	_use_fixture()
 	assert_eq(
 		PortraitIndex.instance().portrait_path(&"character-0002"), PRESENT, "generated is installed"
 	)
@@ -61,6 +68,7 @@ func test_an_installed_generated_portrait_resolves() -> void:
 func test_an_approved_portrait_resolves_too() -> void:
 	# THE REGRESSION. `install` writes `approved`, so a `generated`-only filter silently drops
 	# every portrait the shipped command produces.
+	_use_fixture()
 	assert_eq(
 		PortraitIndex.instance().portrait_path(&"character-0001"), PRESENT, "approved is installed"
 	)
@@ -68,15 +76,22 @@ func test_an_approved_portrait_resolves_too() -> void:
 
 func test_a_planned_portrait_does_not_resolve() -> void:
 	# The other half of the invariant: widening the filter must not admit unrendered art.
-	assert_eq(PortraitIndex.instance().portrait_path(&"character-0003"), "", "planned is not installed")
+	_use_fixture()
+	assert_eq(
+		PortraitIndex.instance().portrait_path(&"character-0003"), "", "planned is not installed"
+	)
 
 
 # --- The audit --------------------------------------------------------------
 
 
 func test_validate_reports_a_planned_portrait() -> void:
+	_use_fixture()
+	var found := _problems()
 	assert_eq(
-		_problems().has("character-0003 portrait is planned"), true, "a gap is reported, not hidden"
+		found.has("character character-0003 portrait is planned"),
+		true,
+		"a gap is reported: " + str(found)
 	)
 
 
@@ -84,18 +99,22 @@ func test_validate_reports_an_installed_portrait_whose_file_is_missing() -> void
 	# Existence, not just a non-empty array: the shipped portraits directory does not exist and
 	# `PortraitResolver.validate` only checked emptiness, so the gate was green on four portraits
 	# that cannot load.
+	_use_fixture()
 	assert_eq(
-		_problems().has("character-0004 portrait file is missing: " + MISSING),
+		_problems().has("character character-0004 portrait file is missing: " + MISSING),
 		true,
 		"a missing file is a content gap"
 	)
 
 
 func test_validate_accepts_an_installed_portrait_whose_file_exists() -> void:
+	_use_fixture()
+	# Spelled with the full prefix the format string emits, so this asserts the ABSENCE of a
+	# message that would otherwise appear — not the absence of a string that never existed.
 	assert_eq(
-		_problems().has("character-0001 portrait file is missing: " + PRESENT),
+		_problems().has("character character-0001 portrait file is missing: " + PRESENT),
 		false,
-		"installed art on disk is not a gap"
+		"installed art on disk is not a gap: " + str(_problems())
 	)
 
 
@@ -104,7 +123,10 @@ func test_validate_accepts_an_installed_portrait_whose_file_exists() -> void:
 
 func test_a_race_resolves_to_the_lowest_id_in_sorted_order() -> void:
 	# Never in file order: a `DirAccess`-shaped read is not stable, and two runs must not
-	# disagree about which face a race has.
+	# disagree about which face a race has. `character-0000` is written LAST and is the LOWEST
+	# id, so a file-order reader would answer `character-0001` and this row is what tells the
+	# two behaviours apart.
+	_use_fixture()
 	assert_eq(
 		PortraitIndex.instance().character_for_race(&"tidecaller"),
 		&"character-0000",
@@ -113,6 +135,14 @@ func test_a_race_resolves_to_the_lowest_id_in_sorted_order() -> void:
 
 
 # --- Internals --------------------------------------------------------------
+
+
+## Point the singleton at the fixture and drop the cache, in that order. The index latches
+## `_loaded` on its first read, so a cache left over from another test is indistinguishable from
+## a correct one until an assertion disagrees — which is why this is per test, not per suite.
+func _use_fixture() -> void:
+	PortraitIndex.set_index_root(FIXTURE)
+	PortraitIndex.instance().invalidate()
 
 
 func _problems() -> Array[String]:
@@ -128,18 +158,14 @@ func _write_fixture() -> void:
 		_row("character-0002", "emberblood", "generated", PRESENT),
 		_row("character-0003", "stoneborn", "planned", ""),
 		_row("character-0004", "commonborn", "approved", MISSING),
-		# Written LAST and with the LOWEST id, so a reader that took file order would answer
-		# `character-0001` and this row is what tells the two behaviours apart.
+		# Written LAST and with the LOWEST id: see the sorted-order test.
 		_row("character-0000", "tidecaller", "approved", PRESENT),
 	]
-	var lines: Array[String] = []
-	for row in rows:
-		lines.append(JSON.stringify(row))
 	var file := FileAccess.open(FIXTURE, FileAccess.WRITE)
 	if file == null:
 		return
-	for line in lines:
-		file.store_line(line)
+	for row in rows:
+		file.store_line(JSON.stringify(row))
 	file.close()
 
 
@@ -147,7 +173,8 @@ func _row(character_id: String, race: String, status: String, path: String) -> D
 	return {
 		"id": character_id,
 		"tags": ["race:" + race, "palette:neutral", "build:slender"],
-		"assets": {
+		"assets":
+		{
 			"dialogue_portrait": {"status": status, "path": path},
 		},
 	}
