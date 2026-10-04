@@ -175,7 +175,7 @@ func _run() -> void:
 			cell["claim"] = claim_report.get("why", "nothing claimed")
 			sweep.append(cell)
 			continue
-		equip_report = await _equip(app, claim_report.get("def_ids", []))
+		equip_report = await _equip(app, claim_report.get("def_ids", []), _claim_note(claim_report))
 		report["equip"] = equip_report
 		if bool(equip_report.get("ok", false)):
 			cell["worn"] = equip_report.get("def_id", "")
@@ -504,13 +504,13 @@ func _claim(app: Node, rows_at_boot: int) -> Dictionary:
 ## have RISEN. Comparing published stats rather than the actor's internals is the
 ## point — this is the observable a player can see, so it cannot pass by reaching past
 ## the UI the way a test with the actor in hand could.
-func _equip(app: Node, def_ids: Array) -> Dictionary:
+func _equip(app: Node, def_ids: Array, claim_note: String = "") -> Dictionary:
 	if def_ids.is_empty():
 		return {"ok": false, "why": "the reward named no item, so there is nothing to wear"}
 	var before := await _published_stats(app)
 	if before.is_empty():
 		return {"ok": false, "why": "the hero screen publishes no stats to compare against"}
-	var worn := await _wear_one(app, def_ids)
+	var worn := await _wear_one(app, def_ids, claim_note)
 	if not bool(worn.get("ok", false)):
 		# `wearable` must survive the rewrap: it is what tells the hunt loop that
 		# another boss is worth fighting, and dropping it here made every failure
@@ -691,7 +691,7 @@ func _baseline_wearable(screen: Node, bar: Node) -> String:
 ## in the probe. A button the production action bar disabled is the real answer to
 ## "can this be worn", so asking it keeps the probe honest about the shipped
 ## wiring instead of duplicating the rule that wiring enforces.
-func _wear_one(app: Node, def_ids: Array) -> Dictionary:
+func _wear_one(app: Node, def_ids: Array, claim_note: String = "") -> Dictionary:
 	if not bool((await _goto(app, HOME_ROUTE)).get("ok", false)):
 		return {"ok": false, "why": "could not return to the bag"}
 	var screen := _live_screen(app)
@@ -702,7 +702,26 @@ func _wear_one(app: Node, def_ids: Array) -> Dictionary:
 		return {"ok": false, "why": "the workbench composes no action bar to equip through"}
 	var bagged := _bagged_candidates(screen, def_ids)
 	if bagged.is_empty():
-		return {"ok": false, "why": "no claimed drop is in the bag to wear"}
+		# The bag does not hold these drops, and there are two very different reasons
+		# for that which read identically from here. Either the pickup never reached
+		# the bag — in which case the cause is already sitting in `claim.refusals` as
+		# a named refusal such as "Inventory full" — or it did and the bag is not
+		# listing it. Reporting a bare "not in the bag" throws away the one fact that
+		# separates them, which is how a full bag read as a missing drop: this
+		# function cannot see `claim`, so the caller passes what it already collected.
+		return {
+			"ok": false,
+			"wearable": false,
+			"baseline_wearable": "",
+			"why":
+			(
+				"no claimed drop is in the bag to wear (%s); pickups reported: %s"
+				% [
+					", ".join(def_ids),
+					claim_note if not claim_note.is_empty() else "the claim published no refusal",
+				]
+			),
+		}
 	return await _try_each_drop(screen, bar, bagged)
 
 
@@ -741,6 +760,21 @@ func _try_each_drop(screen: Node, bar: Node, bagged: Array[String]) -> Dictionar
 			% [bagged.size(), ", ".join(bagged), baseline]
 		),
 	}
+
+
+## What the pickup itself reported, as one deduped clause.
+##
+## Collected per fight rather than read once at the end, because the sweep keeps
+## fighting after a cell fails: a refusal from cell 1 would otherwise be lost behind
+## cell 9's. Order is the order the presses happened, so the reader sees the first
+## refusal before its repeats rather than a sorted set.
+func _claim_note(claim: Dictionary) -> String:
+	var seen: Array[String] = []
+	for refusal in claim.get("refusals", []) as Array:
+		var said := String(refusal)
+		if not said.is_empty() and not seen.has(said):
+			seen.append(said)
+	return "; ".join(seen)
 
 
 ## The first stat key that went UP, or "" when nothing rose. Sorted so the reported
