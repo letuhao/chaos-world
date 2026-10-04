@@ -20,7 +20,16 @@ import tempfile
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from . import gate_reach, godot, loop_guard, lore, map_theme, mutation_history, unique_characters
+from . import (
+    gate_reach,
+    godot,
+    godot_bypass,
+    loop_guard,
+    lore,
+    map_theme,
+    mutation_history,
+    unique_characters,
+)
 from .acquisition import selftest_case  # noqa: F401  registers its cases on import
 from .lore.context import character_draft, readiness_gaps, resolve_context
 from .selftest import case, expect, write
@@ -1308,3 +1317,179 @@ def _lock_publishes_and_clears_its_holder() -> None:
             )
         finally:
             godot.PROJECT_LOCK, godot.PROJECT_LOCK_OWNER = original
+
+
+# --- INC-0009: a committed script that starts the engine by path has NO ceiling. The two
+# --- cases below are a PAIR on purpose, and the pair is the guard. One asserts the red
+# --- path; the other asserts `tools/godot.py` itself is still exempt. A guard with no
+# --- second half passes the first while flagging the only file that is allowed to name the
+# --- binary, and a guard that fires on the real tree stops being read within a run.
+
+
+#: INC-0009's six invocations, spelled as PowerShell — the exact one-liner an agent
+#: composes to "see the error the tool swallowed".
+_POWERSHELL_BYPASS = r"""
+$g = (Get-Content .godot-bin).Trim()
+& $g --headless --path game -s res://tests/_probe.gd
+"""
+
+
+def _bypass_findings(*pairs: tuple[str, str]) -> list[godot_bypass.Finding]:
+    """Scan fixture files through the guard's own `scan_text`, keyed by path and text.
+
+    `scan_text` rather than `scan`, on purpose: `scan` lists files through `git ls-files`,
+    and building a temporary repository would make these cases depend on git being
+    configured — so the first version of this suite "passed" a deleted git as a clean
+    tree. What is actually under test is the RULE, and the rule reads text.
+    """
+    findings: list[godot_bypass.Finding] = []
+    for path, text in pairs:
+        if godot_bypass.exempt(path):
+            continue
+        findings.extend(godot_bypass.scan_text(path, text))
+    return findings
+
+
+@case("godot_bypass: a script that resolves .godot-bin and runs the binary FAILS")
+def _power_shell_bypass_is_reported() -> None:
+    """The red path: INC-0009's own mechanism, still refused.
+
+    Both halves are asserted because the shape has two halves and a guard that only
+    matched one would still catch the obvious case while letting a probe that hard-codes
+    the config file's name — or a script that finds the binary on PATH — through.
+    """
+    findings = _bypass_findings(("scratchpad/probe.ps1", _POWERSHELL_BYPASS))
+    rules = {finding.rule for finding in findings}
+    expect(
+        rules,
+        "a PowerShell script that reads .godot-bin and launches the engine by path was "
+        "reported clean. That is INC-0009's verbatim one-liner, and a run it starts has "
+        "no --log-file redirect, no RAM_CEILING_BYTES, no wall-clock ceiling, no log-byte "
+        "ceiling and no silence ceiling",
+    )
+    expect(
+        "godot-bypass:config-path" in rules,
+        f"the `.godot-bin` read was not reported, so a probe can still resolve the binary "
+        f"through the config file the resolver owns: {sorted(rules)}",
+    )
+    expect(
+        "godot-bypass:bare-invocation" in rules,
+        f"the direct invocation was not reported, so a path invocation with no flag on "
+        f"the same line would sail through: {sorted(rules)}",
+    )
+    for finding in findings:
+        expect(
+            finding.path == "scratchpad/probe.ps1" and finding.line > 0,
+            f"the finding does not name a file and line, so it is not attributable and "
+            f"cannot be found in a 19000-file tree: {finding!r}",
+        )
+
+
+@case("godot_bypass: a script that shells out to godot/godot4 directly FAILS")
+def _bare_executable_invocations_are_reported() -> None:
+    """The committed-script half of the task, one shape at a time.
+
+    Each pair below is a spelling that has actually been used here or is the obvious
+    next one, and none of them mentions `.godot-bin` — so a guard that only watched the
+    config file would report all of these clean.
+    """
+    for path, text, rule in (
+        (
+            "scratchpad/probe.py",
+            'subprocess.run(["godot", "--headless", "--path", "game"])\n',
+            "godot-bypass:bare-invocation",
+        ),
+        (
+            "scratchpad/import.py",
+            'subprocess.Popen(["godot4", "--headless", "--import"])\n',
+            "godot-bypass:bare-invocation",
+        ),
+        (
+            "scratchpad/sweep.bat",
+            "@echo off\r\nGodot_v4.7.2-stable_win64_console.exe --headless --path game\r\n",
+            "godot-bypass:bare-invocation",
+        ),
+        (
+            "scratchpad/which.py",
+            'found = shutil.which("godot")\n',
+            "godot-bypass:execution-context",
+        ),
+        (
+            "scratchpad/env.sh",
+            "GODOT_BIN=/opt/godot/godot ./suite.sh\n",
+            "godot-bypass:env-resolve",
+        ),
+    ):
+        rules = {finding.rule for finding in _bypass_findings((path, text))}
+        expect(
+            rule in rules,
+            f"{path} was reported clean for {rule!r}. A script that starts the engine "
+            f"outside tools/godot.py opts out of every ceiling at once, and a silent "
+            f"allocating loop passes all of them because they measure output",
+        )
+
+
+@case("godot_bypass: tools/godot.py itself is EXEMPT, and a doc may NAME the rule")
+def _resolver_and_naming_prose_are_not_findings() -> None:
+    """The half that decides whether the guard above is usable at all.
+
+    `tools/godot.py` reads `.godot-bin`, reads `GODOT_BIN` and searches PATH for
+    `godot`/`godot4` — it trips all four rules and is exempt by exact path. Flagging it
+    would make `tools check` permanently red over the file that is the fix.
+
+    The prose below is taken from the repository's own committed documentation: AGENTS.md
+    and `docs/handoff-foundation-gaps.md` both NAME the resolver and its sources while
+    forbidding the bypass. A doc that says so must be silent; a doc that instead ships a
+    runnable command line must not be.
+    """
+    resolver = godot_bypass.exempt(godot_bypass.RESOLVER)
+    expect(
+        resolver is not None,
+        "tools/godot.py is no longer exempt, so the guard fires on the only file in the "
+        "repository that is allowed to read .godot-bin and GODOT_BIN. A permanently-red "
+        "gate is a gate people learn to ignore",
+    )
+    findings = _bypass_findings((godot_bypass.RESOLVER, godot.GODOT_BYPASS_EXEMPT_PROBE))
+    expect(
+        not findings,
+        "tools/godot.py was flagged despite its exemption; findings were "
+        f"{[f.describe() for f in findings]}",
+    )
+
+    for name, text in (
+        (
+            "AGENTS.md",
+            "**Never invoke the Godot binary directly:** go through `tools/godot.py` "
+            "(`tools test`, `run`, `ui`, `export`), which passes `--log-file "
+            "build/godot.log` and enforces a 900 s ceiling. `tools/godot.py` resolves it "
+            "from `GODOT_BIN`, else the gitignored `.godot-bin` file, else `PATH`.\n",
+        ),
+        (
+            "docs/handoff-foundation-gaps.md",
+            "`tools/godot.py` does not export anything, and it does not log. It resolves "
+            "Godot via `GODOT_BIN`, the gitignored `.godot-bin`, or `PATH`. None is "
+            "exported, so none lands in the build directory.\n",
+        ),
+    ):
+        findings = _bypass_findings((name, text))
+        expect(
+            not findings,
+            f"{name} was flagged for NAMING the rule, which is what the documentation is "
+            f"supposed to do: {[f.describe() for f in findings]}. Refusing prose would "
+            "force this project to delete the rule it keeps re-learning",
+        )
+
+    # And the other side of the same distinction, asserted on the real text: a doc that
+    # HANDS the next agent a runnable direct invocation is a finding, whatever its tone.
+    findings = _bypass_findings(
+        (
+            "docs/quickstart.md",
+            "To run the suite:\n\n    godot --headless --path game --import\n\n",
+        )
+    )
+    expect(
+        any(finding.rule == "godot-bypass:bare-invocation" for finding in findings),
+        "a document shipping a runnable `godot --headless` line was accepted. Prose that "
+        "names the rule is allowed; prose that hands over the bypass is the same hazard "
+        "in a different file extension",
+    )

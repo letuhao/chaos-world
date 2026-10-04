@@ -43,6 +43,7 @@ difficulty = _load("difficulty")
 export = _load("export")
 fmt = _load("fmt")
 gate_reach = _load("gate_reach")
+godot_bypass = _load("godot_bypass")
 incident = _load("incident")
 item_derive = _load("item_derive")
 lint = _load("lint")
@@ -70,6 +71,7 @@ from .common import ToolError, fail  # noqa: E402  (after the task modules load)
 COMMANDS = {
     "fmt": fmt,
     "gate_reach": gate_reach,
+    "godot_bypass": godot_bypass,
     "lint": lint,
     "loop_guard": loop_guard,
     "lore": lore,

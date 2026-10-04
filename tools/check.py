@@ -124,6 +124,14 @@ PREAMBLE_STEPS: tuple[tuple[str, list[str]], ...] = (
     # history: history is immutable, so an event-shaped gate is permanently red once a probe
     # is ever committed, and a permanently-red gate is a gate people learn to ignore.
     ("mutation_history", ["check"]),
+    # Committed automation that starts the Godot binary itself (INC-0009): the shape
+    # behind the 73 GB run and the reset in INC-0004. Every ceiling - --log-file,
+    # RAM_CEILING_BYTES, the clock, the log bytes, the silence - lives in the launcher
+    # PROCESS, so a path invocation has none of them and a silent allocating loop passes
+    # all of them. A guard about machine damage reads files only and launches nothing, so
+    # it belongs in the hoisted phase rather than after the first stage a routine edit can
+    # red-flag. Engine-free and sub-second.
+    ("godot_bypass", []),
 )
 
 

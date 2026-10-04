@@ -405,6 +405,20 @@ SILENCE_GRACE_SECONDS = 120
 _STARTED: dict[int, float] = {}
 
 
+## The three lines below, verbatim, as a self-test fixture. `tools/godot_bypass.py` exempts
+## THIS file from the rules that catch `.godot-bin`, `GODOT_BIN` and a PATH search for
+## `godot`/`godot4` — reading them is this module's job, and it is the only thing every
+## other rule there routes toward. Exempting a file by path is a hole in a guard, so
+## `tools selftest run` asserts the exemption still holds (INC-0016): a guard that has been
+## narrowed to nothing and a guard that fires on the resolver are equally broken, and only
+## the pair of cases separates them.
+GODOT_BYPASS_EXEMPT_PROBE = (
+    'CONFIG_FILE = REPO_ROOT / ".godot-bin"\n'
+    '    env = os.environ.get("GODOT_BIN")\n'
+    '    found = shutil.which("godot") or shutil.which("godot4")\n'
+)
+
+
 def find_godot() -> str:
     """Resolve Godot from GODOT_BIN, the local .godot-bin file, or PATH; fail loudly."""
     env = os.environ.get("GODOT_BIN")
