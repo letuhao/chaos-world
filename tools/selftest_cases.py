@@ -4046,6 +4046,89 @@ def _loot_ledger(root: Path, *, second_session_hours_ago: float) -> Path:
     )
 
 
+@case("claim_guard: a REPEATED --paths flag keeps every path instead of the last")
+def _repeated_paths_flags_accumulate() -> None:
+    """The red path for the argparse default that ate two of three claims.
+
+    `--paths` had no `action="append"`, so argparse kept the LAST occurrence and dropped
+    the rest: three flags recorded one path and printed `ok ... recorded 1 path(s)`. No
+    error fired, so the session went on believing it held all three while `check` could
+    not see two of them - and a peer may claim a path this session thinks is its own. That
+    is INC-0023 arriving through a flag rather than through a dispatch, which is why it
+    needed a case at all.
+
+    Asserted through `claim_guard.run`, not through `_arg_paths`, because the defect is
+    in the ARGPARSE wiring: a helper that flattened a list perfectly still drops paths if
+    the parser never hands it more than one. Only the CLI's own parse can see that.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        ledger = Path(raw) / "claims.jsonl"
+        wanted = [
+            "game/src/modules/quest",
+            "game/tests/modules/quest",
+            "game/src/modules/items/item_sources.gd",
+        ]
+
+        # The argv is PARSED by the tool's own `register`, not hand-built into a
+        # Namespace. A hand-built Namespace hands `_arg_paths` a list whether or not the
+        # argument declares action="append", so the first version of this case passed
+        # with `action="append"` deleted — it asserted the helper while the defect was
+        # in the wiring. Only the real parser can tell those apart.
+        outer = argparse.ArgumentParser()
+        claim_guard.register(outer.add_subparsers())
+        args = outer.parse_args(
+            [
+                "claim_guard",
+                "claim",
+                "--session",
+                "s",
+                "--paths",
+                wanted[0],
+                "--paths",
+                wanted[1],
+                "--paths",
+                wanted[2],
+                "--ledger",
+                str(ledger),
+            ]
+        )
+        code = claim_guard.run(args)
+        recorded = claim_guard.read_claims(ledger)
+        expect(code == 0, f"a repeated-flag claim exited {code}")
+        expect(
+            len(recorded) == 1 and list(recorded[0].paths) == wanted,
+            f"--paths repeated three times recorded {[list(c.paths) for c in recorded]} "
+            f"instead of {wanted}. argparse OVERWRITES a repeated flag with the last "
+            'occurrence unless the argument declares action="append", so the session '
+            "believed it held all three while the ledger held one and the gate was blind "
+            "to the other two. That is a claim that under-covers and still says ok",
+        )
+
+        # The comma spelling is the one AGENTS.md documents, so it must survive too: the
+        # fix must not have narrowed the accepted forms to satisfy this case.
+        comma = Path(raw) / "comma.jsonl"
+        args = outer.parse_args(
+            [
+                "claim_guard",
+                "claim",
+                "--session",
+                "s",
+                "--paths",
+                ",".join(wanted),
+                "--ledger",
+                str(comma),
+            ]
+        )
+        expect(claim_guard.run(args) == 0, "a comma-separated claim exited non-zero")
+        expect(
+            [list(c.paths) for c in claim_guard.read_claims(comma)] == [wanted],
+            f"the comma spelling recorded "
+            f"{[list(c.paths) for c in claim_guard.read_claims(comma)]}; it is the spelling "
+            "AGENTS.md documents, and a parser fix that only accepted the repeated form "
+            "would have broken it silently",
+        )
+
+
 @case("claim_guard: TWO live sessions over one path FAILS the gate")
 def _overlapping_live_claims_are_red() -> None:
     """The red path: INC-0023's own ledger, still refused.

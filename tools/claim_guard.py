@@ -367,8 +367,23 @@ def write_claims(claims: list[Claim], path: Path | None = None) -> Path:
     return target
 
 
-def _arg_paths(raw: str) -> tuple[str, ...]:
-    return tuple(part for part in re.split(r"[,\s]+", raw.strip()) if part)
+def _arg_paths(raw: object) -> tuple[str, ...]:
+    """Every path from `--paths`, whether given once or repeated.
+
+    argparse's default is to OVERWRITE a repeated flag with the last occurrence, so
+    `--paths a --paths b` used to record `b` alone and print `ok ... recorded 1
+    path(s)`. That is the worst shape a claim can fail in: the session believes it
+    holds `a`, no error fires, and a peer may claim it. The two spellings are
+    therefore both accepted and neither drops a path - repeated flags accumulate,
+    and each one may still carry commas or spaces.
+    """
+    if raw is None:
+        return ()
+    parts = [raw] if isinstance(raw, str) else list(raw)  # type: ignore[call-overload]
+    out: list[str] = []
+    for part in parts:
+        out.extend(piece for piece in re.split(r"[,\s]+", str(part).strip()) if piece)
+    return tuple(out)
 
 
 def register(subparsers: argparse._SubParsersAction) -> None:
@@ -394,7 +409,10 @@ def register(subparsers: argparse._SubParsersAction) -> None:
     claim = actions.add_parser("claim", help="record or extend this session's claim")
     claim.add_argument("--session", required=True, help="the id this session is known by")
     claim.add_argument(
-        "--paths", required=True, help="repo-relative paths, comma or space separated"
+        "--paths",
+        required=True,
+        action="append",
+        help="repo-relative paths, comma or space separated; repeat to add more",
     )
     claim.add_argument(
         "--orphaned",
@@ -415,7 +433,8 @@ def register(subparsers: argparse._SubParsersAction) -> None:
     release.add_argument("--session", required=True)
     release.add_argument(
         "--paths",
-        default="",
+        default=None,
+        action="append",
         help="paths to drop; omit to release EVERY path this session holds",
     )
     release.add_argument("--ledger", default=None)
