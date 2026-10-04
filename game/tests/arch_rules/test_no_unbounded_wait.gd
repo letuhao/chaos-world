@@ -26,12 +26,18 @@ extends TestCase
 ## 4. its body breaks or returns, so an unreachable condition still ends the loop;
 ## 5. it fills a container toward a fixed count, proven by an `append` to that
 ##    container at the loop's own indentation -- not nested in a branch, because
-##    an append behind a branch that never holds is the same defect.
+##    an append behind a branch that never holds is the same defect;
+## 6. it advances a SEARCH INDEX strictly past its own match, proven by
+##    `<index> = <text>.find(<needle>, <index> + <needle>.length())` in the body's
+##    own assignment to the identifier the condition tests.
 ##
-## None of the five can express the original defect, which was `while <a state
+## None of the six can express the original defect, which was `while <a state
 ## value that never becomes true>`. Note the honest limit -- a `break` or an
 ## `append` behind a condition that never holds is still an unbounded wait, and no
 ## static scan can see that. This catches the shape; it does not prove convergence.
+## The older note about the five being the whole list was wrong the moment
+## `test_screen_reachability.gd` grew a `find()` scan that the first five could
+## not name, which is INC-0022.
 
 const SRC_ROOT := "res://src"
 const TESTS_ROOT := "res://tests"
@@ -127,17 +133,14 @@ func _paren_depth(text: String) -> int:
 	return depth
 
 
-func _is_bounded(condition: String, source: String) -> bool:
-	# 2. The DirAccess terminator: `get_next()` returns "" at the end of a listing,
-	# written either as `!= ""` or as `not entry.is_empty()`.
-	if condition.contains('!= ""'):
-		return true
-	if _is_dir_access_sentinel(condition, source):
-		return true
+## Rules 1, 3, 5 and 6, in one predicate each. They are gathered here so
+## `_is_bounded` can stay a readable list without tripping `max-returns` -- the
+## `if ...: return true` chain this grew would not lint at seven statements, and
+## a guard that cannot be formatted and linted cannot be changed safely.
+func _bounded_by_shape(condition: String, source: String) -> bool:
 	# 1. A counter this loop moves.
-	for identifier in _identifiers(condition):
-		if source.contains(identifier + " += ") or source.contains(identifier + " -= "):
-			return true
+	if _moves_a_counter(condition, source):
+		return true
 	# 3. A container the body provably shrinks.
 	var drained := _drained_container(condition)
 	if drained != "" and _shrinks_container(_loop_body(source, condition), drained):
@@ -145,8 +148,206 @@ func _is_bounded(condition: String, source: String) -> bool:
 	# 5. A container the body provably fills toward a fixed count.
 	if _fills_unconditionally(source, condition):
 		return true
+	# 6. A search index the body advances strictly past the match it just took.
+	return _advances_search_index(source, condition)
+
+
+func _is_bounded(condition: String, source: String) -> bool:
+	# 2. The DirAccess terminator: `get_next()` returns "" at the end of a listing,
+	# written either as `!= ""` or as `not entry.is_empty()`.
+	if condition.contains('!= ""'):
+		return true
+	if _is_dir_access_sentinel(condition, source):
+		return true
+	if _bounded_by_shape(condition, source):
+		return true
 	# 4. A body that leaves the loop on its own.
 	return _body_contains_exit(source, condition)
+
+
+## Rule 1 on its own: the condition reads an identifier the loop moves with
+## `+=` / `-=`. Whole-file, as it has always been -- an assignment is not a step,
+## which is the whole reason rule 6 had to be written separately.
+func _moves_a_counter(condition: String, source: String) -> bool:
+	for identifier in _identifiers(condition):
+		if source.contains(identifier + " += ") or source.contains(identifier + " -= "):
+			return true
+	return false
+
+
+## 6. `while at != -1:` whose body sets `at = <text>.find(<needle>, at +
+## <needle>.length())` -- INC-0022, in `tests/app/test_screen_reachability.gd`.
+## A scan index is a counter, only the counter is an index into a String and the
+## step is the match it just took, so the first five accept paths could not name
+## it and the guard cried wolf on a loop that terminates.
+##
+## WHAT THIS ADMITS, EXACTLY. The condition must test an identifier the body
+## assigns, and that assignment must hand `find` a second argument of the form
+## `<index> + <needle>.length()`: the same index, plus the length of the needle
+## being searched for. `find` then reports a match at `>= index + needle.length()`,
+## so `index` strictly grows on every pass by at least one character, and it
+## starts at or above 0 -- so it passes the end of the text, where `find` returns
+## -1 and the loop ends. Iterations are therefore at most
+## `<text>.length() / <needle>.length()`; nothing about the loop's exit condition
+## can change that.
+##
+## WHY IT CANNOT ADMIT AN UNBOUNDED WAIT. INC-0001's shape is `while <a state
+## value that never becomes true>`, where the loop has no `while` body that moves
+## anything. Here the body moves a name the condition itself tests, on EVERY
+## pass and with no branch in front of it -- a branch would be the same defect an
+## append behind one is. A strictly positive step is the whole proof: a body that
+## assigns the tested index and does not advance it is rejected (rule 1's counter
+## search only reads `+=` / `-=`, so an assignment-based spin reaches none of the
+## five other paths either), which is why `at = s.find(n, at)` and
+## `at = s.find(n, at - 1)` are declined -- the first stands still, the second runs
+## backwards, and neither can revisit the match it just took.
+##
+## HONEST LIMITS. The needle must be a plain name, because the rule reads
+## `<needle>.length()` as the step and a computed needle such as
+## `s.find(n.strip_edges(), ...)` is not one. The step is assumed positive, which
+## holds because `String.length()` is non-negative, and an empty needle is the one
+## input that breaks the reasoning -- `find` returns its `from` for an empty needle,
+## so the scan never walks off the end. That is a defect in the CALLER, not
+## something this rule can see from source text; `tests/app/test_screen_reachability.gd`
+## builds its needle from a method name and cannot be empty. If a loop wants a
+## step this rule cannot name, the fix is the loop, not a wider rule here.
+
+
+## The machine behind rule 6, and nothing else. Proved on the body's own lines
+## so a `find()` in a DIFFERENT function cannot be read as this loop advancing
+## anything -- the same scoping hole the drain rule had (INC-0016's finding).
+func _advances_search_index(source: String, condition: String) -> bool:
+	var lines := _loop_body_lines(source, condition)
+	if lines.is_empty():
+		return false
+	var shallowest := 1 << 30
+	for entry in lines:
+		shallowest = mini(shallowest, int(entry.split("|", true, 1)[0]))
+	for index in _identifiers(condition):
+		if not condition.contains(index):
+			continue
+		for entry in lines:
+			var parts := entry.split("|", true, 1)
+			if int(parts[0]) != shallowest:
+				continue
+			if _advance_steps_past_match(parts[1], index):
+				return true
+	return false
+
+
+## `<index> = <text>.find(<needle>, <index> + <needle>.length())`, on ONE line,
+## to a bare name, with the same needle on both sides of the step.
+##
+## Narrow on purpose, and the narrowness IS the rule: `find(needle, at)` leaves
+## the index where it was so the same match is found again, and `find(needle,
+## at - 1)` walks backwards so the match is found forever. Neither is a scan, and
+## a loop written over either spins -- which is why there is no general "the body
+## reassigns the tested identifier" rule here to wave them through.
+func _advance_steps_past_match(line: String, index: String) -> bool:
+	var needle := _find_needle(line)
+	if needle == "":
+		return false
+	var step := index + " + " + needle + ".length()"
+	for arguments in _find_calls(line, 1) + _find_calls(line, 2):
+		if _scan_step(arguments, step) != "":
+			return true
+	return false
+
+
+## Every `.find(` call in `line`, grouped by which argument `from` is: the
+## one-argument form, then the two-argument one. Scanning the CALLS rather than
+## the whole line is what keeps an unrelated `find(` from being read as a scan;
+## the argument count comes from the source text because a GDScript `find` takes
+## `from` optionally and the scan does not know the value.
+func _find_calls(line: String, wanted_arguments: int) -> Array[String]:
+	var out: Array[String] = []
+	var cursor := 0
+	while true:
+		var at := line.find(".find(", cursor)
+		if at < 0:
+			break
+		var start := at + 6
+		var depth := 1
+		var end := start
+		while end < line.length():
+			match line[end]:
+				"(":
+					depth += 1
+				")":
+					depth -= 1
+			if depth == 0:
+				break
+			end += 1
+		var arguments := line.substr(start, end - start)
+		if _argument_count(arguments) == wanted_arguments:
+			out.append(arguments)
+		cursor = end + 1
+	return out
+
+
+## The arguments of a call, split on commas at depth 0 so `find(x, a + f(b))`
+## stays two arguments rather than four.
+func _argument_count(arguments: String) -> int:
+	var count := 1 if arguments.strip_edges() != "" else 0
+	var depth := 0
+	for index in arguments.length():
+		match arguments[index]:
+			"(", "[", "{":
+				depth += 1
+			")", "]", "}":
+				depth -= 1
+			",":
+				if depth == 0:
+					count += 1
+	return count
+
+
+## The first argument of a `find` call when it is a bare name, else `""`. A
+## computed needle (`a + "b"`, `n.strip_edges()`) is declined on purpose: the
+## proof that the step is non-negative is `needle.length()`, which needs a
+## needle.
+func _find_needle(line: String) -> String:
+	# The needle is the FIRST argument of the call the step lives in, so the
+	# two-argument form must be read too: the shipped line is
+	# `at = calls.find(needle, at + needle.length())`, which carries no
+	# one-argument call at all. Reading only the one-argument form made the rule
+	# decline the very loop it was written to accept (INC-0022), so the guard
+	# cried wolf on a bounded scan and rule 6 could never fire.
+	for arguments in _find_calls(line, 1) + _find_calls(line, 2):
+		var first := _split_arguments(arguments)[0]
+		if _identifiers(first).size() == 1:
+			return first
+	return ""
+
+
+## The `<needle>.length()` term of the second argument, when that argument is
+## exactly the one the rule admits. `at - 1`, `at + 2`, `at + n.size()` and a
+## trailing `+ 1` all read here as something other than a step past the match, so
+## they are declined rather than approximated.
+func _scan_step(arguments: String, step: String) -> String:
+	var parts := _split_arguments(arguments)
+	return step if parts.size() == 2 and parts[1].strip_edges() == step else ""
+
+
+## Comma-separated arguments at depth 0, each stripped.
+func _split_arguments(arguments: String) -> PackedStringArray:
+	var out := PackedStringArray()
+	var current := ""
+	var depth := 0
+	for index in arguments.length():
+		var character := arguments[index]
+		match character:
+			"(", "[", "{":
+				depth += 1
+			")", "]", "}":
+				depth -= 1
+		if character == "," and depth == 0:
+			out.append(current.strip_edges())
+			current = ""
+			continue
+		current += character
+	out.append(current.strip_edges())
+	return out
 
 
 ## `while not entry.is_empty():` fed by `entry = dir.get_next()`. The empty-string
@@ -225,8 +426,23 @@ func _body_contains_exit(source: String, condition: String) -> bool:
 	return false
 
 
+## The `_while` line carrying `condition`, reassembled across its continuation
+## lines. `""` when the scan cannot locate one -- `_loop_body_lines` used to carry
+## this and returns "" when the reassembled line holds no `while ` at all, which
+## is how a bare `while at < 0:` in an `if` used to read as a loop header.
+func _while_line(source: String, condition: String) -> String:
+	var lines := source.split("\n")
+	for index in lines.size():
+		var line := lines[index]
+		if not line.strip_edges().begins_with("while "):
+			continue
+		if _reassembled(line, lines, index).contains(condition):
+			return line
+	return ""
+
+
 ## The indented block under the `while` that carries `condition`, by indentation.
-## Empty when the body cannot be located, which makes rules 4 and 5 decline
+## Empty when the body cannot be located, which makes rules 4, 5 and 6 decline
 ## rather than wave the loop through.
 func _loop_body(source: String, condition: String) -> String:
 	var parts := _loop_body_lines(source, condition)
@@ -238,19 +454,20 @@ func _loop_body(source: String, condition: String) -> String:
 
 ## The same block, one `"<indent>|<stripped line>"` string per line, so a caller
 ## can tell a statement at the loop's own level from one nested in a branch.
+## Scoped by the `while` LINE rather than by the bare condition text, because a
+## continuation line of some earlier condition can repeat those words: the file's
+## own `_reassembled` helper is what proves they belong to a loop header.
 func _loop_body_lines(source: String, condition: String) -> PackedStringArray:
 	var out := PackedStringArray()
 	var lines := source.split("\n")
 	var start := -1
 	var base_indent := 0
+	var header := _while_line(source, condition)
 	for index in lines.size():
-		var line := lines[index]
-		if not line.strip_edges().begins_with("while "):
-			continue
-		if not _reassembled(line, lines, index).contains(condition):
+		if lines[index] != header:
 			continue
 		start = index
-		base_indent = _indent_of(line)
+		base_indent = _indent_of(lines[index])
 		break
 	if start < 0:
 		return out
