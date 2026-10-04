@@ -1020,7 +1020,18 @@ def _owning_shard(character_id: str) -> Path:
 
 
 def _add(args) -> int:
-    records = _load_index() if _catalog_paths() else []
+    # Validate against the READABLE catalog, not the strict one. An agent that wrote
+    # its shard by hand left a torn line, and because `_add` validated the whole
+    # catalog first, that one bad row made `add` unusable for every OTHER agent - one
+    # reported being unable to use the tool for three of its four batches and writing
+    # rows by hand instead, which is how the next torn shard happened.
+    #
+    # The clobber risk lives in WRITING a partial view, not in validating one. This
+    # function writes only its own record to its own shard via a merging
+    # `_atomic_write`, so a foreign unreadable shard cannot lose anybody's rows. The
+    # cost is that this agent's own duplicate check is slightly weaker while another
+    # shard is torn, which is the right way round: `check` still fails loudly.
+    records = readable_catalog()
     if any(record.get("id") == args.character_id for record in records):
         raise ToolError(f"{args.character_id} already exists")
     record = _blank_character(args.character_id, args.name, args.role, args.path, args.style)

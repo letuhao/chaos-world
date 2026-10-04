@@ -1503,6 +1503,74 @@ def _ingest_is_deterministic() -> None:
         expect(False, "no named figure imported as a stub, so the stub flag is untested")
 
 
+@case("unique_characters: one agent's torn shard must not block ANOTHER agent's add")
+def _torn_shard_does_not_block_writers() -> None:
+    """The failure that made agents hand-write rows, which caused the next torn shard.
+
+    `_add` validated the whole catalog through the strict reader, so one agent's
+    half-written shard made `unique_characters add` unusable for everyone. An agent
+    reported being unable to use the tool for three of its four batches and writing
+    its rows by hand instead - which is precisely how the torn shard arose in the
+    first place, so the strict validation was not protecting anything; it was
+    manufacturing the next incident.
+
+    The distinction that resolves it: the CLOBBER risk lives in WRITING a partial
+    view, not in validating one. `add` writes one record to one shard through a
+    merging `_atomic_write`, so a foreign unreadable shard cannot cost anyone their
+    rows - proven here by the valid neighbour still being present afterwards.
+
+    The trade is deliberate and worth stating: while another shard is torn, this
+    agent's own duplicate check is slightly weaker, because the torn rows are
+    invisible to it. That is the right way round. `check` still fails loudly and
+    names the file, so nothing is lost silently - it is only `add` that proceeds.
+
+    The fixture uses a REAL `_blank_character` record. An earlier version of this
+    probe used `{"id","name"}`, which the validator rejects for a missing `status`,
+    so the block under test was indistinguishable from a bad fixture.
+    """
+    original = unique_characters.INDEX_PATH
+    with tempfile.TemporaryDirectory() as raw:
+        root = pathlib.Path(raw).resolve()
+        unique_characters.INDEX_PATH = root / "unique-index.jsonl"
+        try:
+            good = unique_characters._shard_path("good")
+            neighbour = unique_characters._blank_character("unique-0001", "Valid", "npc", "qi", "")
+            unique_characters._atomic_write([neighbour], good)
+            torn = unique_characters._shard_path("bad")
+            torn.write_text('{"id":"unique-0002","name":"torn\n', encoding="utf-8")
+
+            class _Args:
+                character_id = "unique-0003"
+                name = "Probe"
+                role = "npc"
+                path = "qi"
+                style = ""
+                shard = "probe"
+
+            added = True
+            try:
+                unique_characters._add(_Args())
+            except Exception as exc:  # noqa: BLE001 - the message is the assertion
+                added = False
+                detail = f"{type(exc).__name__}: {exc}"
+            expect(
+                added,
+                f"`add` was blocked by another agent's torn shard ({detail if not added else ''}). "
+                f"Strict validation here does not protect the catalog - it pushes agents to "
+                f"hand-write rows, which is what creates torn shards",
+            )
+
+            survivors = {r["id"] for r in unique_characters.readable_catalog()}
+            expect(
+                {"unique-0001", "unique-0003"} <= survivors,
+                f"the add did not survive alongside its neighbour: {sorted(survivors)}. "
+                f"Writing through a merging _atomic_write must never cost a foreign shard "
+                f"its rows",
+            )
+        finally:
+            unique_characters.INDEX_PATH = original
+
+
 @case("unique_characters: a TORN shard blocks writers but never blocks readers")
 def _torn_shard_is_skipped_not_fatal() -> None:
     """A half-written shard blocked three agents for four minutes before this.
