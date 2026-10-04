@@ -2,7 +2,7 @@ extends TestCase
 
 const Probe := preload("res://tests/modules/qi_cultivation/qi_gate_probe.gd")
 
-## ADR 0165, ruling Q1: `dantian_tier` is DELETED, and this suite is what stops
+## ADR 0180, ruling Q1: `dantian_tier` is DELETED, and this suite is what stops
 ## it coming back ungated.
 ##
 ## The defect it closes (DEF-0228): the field was authored on all 30 seeds, written
@@ -43,7 +43,7 @@ func test_no_qi_seed_declares_a_dantian_tier() -> void:
 		assert_eq(
 			text.contains("dantian_tier"),
 			false,
-			"%s declares dantian_tier: a ladder no gate reads (ADR 0165)" % realm.id
+			"%s declares dantian_tier: a ladder no gate reads (ADR 0180)" % realm.id
 		)
 		checked += 1
 	assert_eq(checked, 30, "and it graded the whole ladder, not a sample")

@@ -2,7 +2,19 @@ extends TestCase
 
 const Probe := preload("res://tests/modules/qi_cultivation/qi_gate_probe.gd")
 
-## ADR 0165, ruling Q3: there is NO voluntary-deviation verb on the qi path, and
+## The deviation is still REACHABLE. Deleting the voluntary verb must not have
+## quietly deleted the consequence: a failed roll still halves progress, scars the
+## dantian and burns a channel. This is the half of Q3 that was already sound and
+## had to be preserved.
+##
+## The roll is not forced by poking the generator's state — that couples the test to
+## Godot's PCG internals. Instead it searches a SMALL, BOUNDED span of seeds for one
+## whose first `randf` loses against this actor's real chance, and reports if none
+## does. `ROLL_SEED_BOUND` is the canary: the loop cannot run away, because it moves
+## a counter it reads and stops at the bound (INC-0002).
+const ROLL_SEED_BOUND := 64
+
+## ADR 0180, ruling Q3: there is NO voluntary-deviation verb on the qi path, and
 ## this suite fails the build if one returns.
 ##
 ## The brief recorded the defect correctly and named the wrong fix. `QiAdvancement.
@@ -69,7 +81,10 @@ func test_the_transaction_has_no_cancel() -> void:
 	assert_eq(
 		script.contains("func cancel("),
 		false,
-		"QiBreakthroughTransaction.cancel is back; the qi path is single-phase and has no attempt to abandon"
+		(
+			"QiBreakthroughTransaction.cancel is back; the qi path is single-phase and has "
+			+ "no attempt to abandon"
+		)
 	)
 
 
@@ -93,19 +108,6 @@ func test_deviate_is_reachable_only_from_a_failed_roll() -> void:
 			roll_branch = String(lines[index + 1]).strip_edges().begins_with("_deviate(")
 	assert_eq(calls, 1, "_deviate must have exactly one call site, the failed roll")
 	assert_eq(roll_branch, true, "and that call site must be the failed-roll branch")
-
-
-## The deviation is still REACHABLE. Deleting the voluntary verb must not have
-## quietly deleted the consequence: a failed roll still halves progress, scars the
-## dantian and burns a channel. This is the half of Q3 that was already sound and
-## had to be preserved.
-##
-## The roll is not forced by poking the generator's state — that couples the test to
-## Godot's PCG internals. Instead it searches a SMALL, BOUNDED span of seeds for one
-## whose first `randf` loses against this actor's real chance, and reports if none
-## does. `ROLL_SEED_BOUND` is the canary: the loop cannot run away, because it moves
-## a counter it reads and stops at the bound (INC-0002).
-const ROLL_SEED_BOUND := 64
 
 
 func test_a_failed_roll_still_deviates() -> void:

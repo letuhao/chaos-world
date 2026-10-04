@@ -2,7 +2,7 @@ extends TestCase
 
 const Probe := preload("res://tests/modules/qi_cultivation/qi_gate_probe.gd")
 
-## ADR 0165: `owed_channels` and `training_price` and `train_next_channel` share ONE
+## ADR 0180: `owed_channels` and `training_price` and `train_next_channel` share ONE
 ## candidate list. This suite is what stops them diverging again (BL-0757).
 ##
 ## The latent divergence, as filed: `QiCultivationApi._training_candidates` returned
@@ -35,7 +35,10 @@ func test_the_read_model_and_the_verb_share_one_candidate_list() -> void:
 	assert_eq(
 		body.contains("MeridianDefaults"),
 		false,
-		"_training_candidates walks every meridian again; owed_channels can then exceed what the verb attempts"
+		(
+			"_training_candidates walks every meridian again; owed_channels can then "
+			+ "exceed what the verb attempts"
+		)
 	)
 	assert_eq(
 		body.contains("gate.required_meridians"),

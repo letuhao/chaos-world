@@ -50,7 +50,7 @@ func test_seed_items_exist_in_content() -> void:
 			assert_eq(ResourceLoader.exists(path), true, "item %s exists" % item_id)
 
 
-## ADR 0165 deleted `dantian_tier`, so this is the half of that ruling the data can
+## ADR 0180 deleted `dantian_tier`, so this is the half of that ruling the data can
 ## carry: no qi seed declares a dantian tier any more. A re-added field with no gate
 ## reading it is the exact defect DEF-0228 recorded, and the module guard
 ## (`test_qi_ruling_q1_no_dantian_tier.gd`) is what fails the build on one.
@@ -64,7 +64,7 @@ func test_no_seed_declares_a_dantian_tier() -> void:
 		assert_eq(
 			text.contains("dantian_tier"),
 			false,
-			"%s declares dantian_tier, a ladder nothing gates on (ADR 0165)" % realm.id
+			"%s declares dantian_tier, a ladder nothing gates on (ADR 0180)" % realm.id
 		)
 
 

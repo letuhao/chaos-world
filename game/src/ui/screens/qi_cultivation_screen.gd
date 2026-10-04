@@ -152,7 +152,7 @@ func _feed_children(live: Dictionary) -> void:
 ## to say so.
 ##
 ## It used to name the dantian's tier here, over a `dantian_tier` key the facade
-## published for a ladder nothing read and the realm line already prints (ADR 0165).
+## published for a ladder nothing read and the realm line already prints (ADR 0180).
 func _dantian_label(live: Dictionary) -> String:
 	var name := "Dantian quality"
 	if bool(live.get("dantian_injured", false)):

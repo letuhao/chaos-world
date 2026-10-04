@@ -24,7 +24,7 @@ extends TestCase
 ## names) is the realm every assertion is made at, because it disagrees with the
 ## defaults a bare `attach` leaves: `dantian_capacity = 200.0` against the reservoir's
 ## flat `100.0`, and a full tier of meridian unlocks against an empty network. The
-## dantian's structural tier was deleted (ADR 0165), so capacity, pool ceiling,
+## dantian's structural tier was deleted (ADR 0180), so capacity, pool ceiling,
 ## meridian count and the preview are what discriminate here.
 
 const INHABITANT_DIR := "res://src/data/domains/inhabitants"

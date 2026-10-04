@@ -17,7 +17,7 @@ extends RefCounted
 ## (upper)` are two boundaries where a tier floor could never be met, because the
 ## only writer is `synchronize` reading the realm the actor is standing in — so
 ## gating on it would have walled off exactly the two band crossings and left the
-## other 27 free (ADR 0165).
+## other 27 free (ADR 0180).
 
 signal changed
 

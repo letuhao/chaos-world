@@ -2,7 +2,7 @@ extends TestCase
 
 const Probe := preload("res://tests/modules/qi_cultivation/qi_gate_probe.gd")
 
-## ADR 0165, ruling Q2: `cultivate` stays FREE, and this suite is the ruling made
+## ADR 0180, ruling Q2: `cultivate` stays FREE, and this suite is the ruling made
 ## executable.
 ##
 ## The finding (DEF-0214) was real and the re-measurement confirmed it: `QiTraining.
