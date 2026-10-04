@@ -46,6 +46,7 @@ from .acquisition import selftest_case  # noqa: F401  registers its cases on imp
 from .common import ToolError
 from .cultivation import selftest_case as cultivation_selftest_case  # noqa: F401  same
 from .data_selftest import *  # noqa: F403  same, for the tools/data.py legs
+from .new_adr_selftest import *  # noqa: F403  same, for the ADR number allocator
 from .lore.context import character_draft, readiness_gaps, resolve_context
 from .selftest import case, expect, write
 
