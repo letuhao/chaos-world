@@ -463,6 +463,47 @@ static func has_attack_resolver() -> bool:
 	return _resolver.is_valid()
 
 
+## ## THE MERCY SEAM — `spare`, and why it sits beside the blow resolver
+##
+## `CombatApi.spare` records `third_man_spared`, which `the_tally_of_a_man_who_kept_count`
+## (need 2), `what_the_rotation_cost` and the AUTHORED fate `the_third_man_spared` all watch,
+## and it shipped with **zero production callers**: the fact existed and nothing in the game
+## could ever write it. The authored fate's own line names the moment exactly — *"stood at
+## killing distance with the advantage held and did not close"* — so the honest caller is the
+## one place in the shipped game where that decision is physically available to the player:
+## `PlayerAdapter.interact`, the press on an opponent you are already fighting.
+##
+## It is installed here, beside `duel_blow`, for the same reason that one is: **this is the
+## combat composition root, so it is where the module facade is named and nowhere else.**
+## `PlayerAdapter` reaches it through this file and still names no module of its own.
+static var _spare_resolver: Callable = Callable()
+
+
+## Install the callable a mercy is recorded through, and report the install. A
+## `CombatApi.spare` Callable is the intended value; passing an empty Callable clears the
+## binding, so a test can uninstall deterministically rather than only overwrite.
+static func set_spare_resolver(resolver: Callable) -> Dictionary:
+	_spare_resolver = resolver
+	return {"ok": _spare_resolver.is_valid(), "reason": "" if _spare_resolver.is_valid() else "no_resolver"}
+
+
+## Whether a mercy seam is installed. The same ONE-conjunct read `has_attack_resolver`
+## documents — `is_valid()` is false for a null callable AND for one naming a dead object,
+## so `or` here would answer "yes" before anything had been installed.
+static func has_spare_resolver() -> bool:
+	return _spare_resolver.is_valid()
+
+
+## End a duel without a killing blow and let `loser` walk. `{ok, reason, result}`, with the
+## refusal named and the resolver's own dictionary passed through UNCHANGED.
+static func spare(winner: Actor, loser: Actor) -> Dictionary:
+	if not has_spare_resolver():
+		return {"ok": false, "reason": "no_resolver", "result": {}}
+	var called: Variant = _spare_resolver.call(winner, loser)
+	var answer: Dictionary = called if called is Dictionary else {}
+	return {"ok": true, "reason": "", "result": answer}
+
+
 ## One blow through the installed resolver. `{ok, reason, result}`: the refusal is named
 ## and the resolver's own dictionary is passed through UNCHANGED, because the resolver
 ## answers for a module (`combat`) and this file only injects it.
@@ -510,13 +551,19 @@ static func install(actor: Actor) -> Dictionary:
 	# that make that split the honest one.
 	var resolver: Dictionary = set_attack_resolver(Callable(CombatBoot, "duel_blow"))
 	var hits: Dictionary = set_hit_resolver(Callable(CombatBoot, "resolve_hit"))
+	# The mercy seam, third and last. Installed HERE rather than lazily on the first
+	# press so `PlayerAdapter.interact` can ask "is a mercy available" without a null
+	# dereference, and so a boot order that never reached this line leaves both seams
+	# uniformly unbound — which is what the report below then says.
+	var mercy: Dictionary = set_spare_resolver(Callable(CombatBoot, "mercy"))
 	return {
-		"ok": bool(bound["ok"]) and bool(resolver["ok"]) and bool(hits["ok"]),
+		"ok": bool(bound["ok"]) and bool(resolver["ok"]) and bool(hits["ok"]) and bool(mercy["ok"]),
 		"bound": bool(bound["bound"]),
 		"mechanism": bound["mechanism"],
 		"wounds": bool(bound["wounds"]),
 		"resolver": bool(resolver["ok"]),
 		"hit_resolver": bool(hits["ok"]),
+		"spare_resolver": bool(mercy["ok"]),
 		"reason": "",
 	}
 
@@ -641,6 +688,45 @@ static func duel_blow(attacker: Actor, defender: Actor, seed_value: int = 0) -> 
 		"model": &"combat_engine",
 		"amount": float(outcome.amount),
 		"health_delta": float(outcome.health_delta),
+	}
+
+
+## ## THE PLAYER'S CHOICE, made at the one moment it is available
+##
+## `duel_blow` answers "the player swung". This answers "the player, holding the
+## advantage against an opponent still on their feet, chose to stop" — which is the
+## moment the authored fate `the_third_man_spared` describes to the word. The bare swing
+## above resolves through the SPINE; this one deliberately resolves **nothing**: it asks
+## the defender whether they are still standing and hands the decision to the installed
+## `CombatApi.spare`, which is the module's own writer of the terminal mercy state
+## (`CombatDuel.record_spare`) and of the fact.
+##
+## ## Why it is a refusal rather than a confirmation
+##
+## `already_spared`, `loser_slain`, `same_actor` and `no_actor` are all returned here as
+## **our own refusals**, before the resolver is called at all, so the module is never asked
+## to answer a question it would have to refuse. That also means `spared` can be reached
+## only for an opponent who is alive and unspared — which is what keeps the press
+## non-trivial: a hero who has never fought cannot spend a mercy.
+static func mercy(winner: Actor, loser: Actor) -> Dictionary:
+	if winner == null or loser == null:
+		return {"ok": false, "reason": "no_actor", "spared": false}
+	if winner == loser:
+		return {"ok": false, "reason": "same_actor", "spared": false}
+	var standing := CombatDuelHit.alive(loser)
+	if not bool(standing["ok"]):
+		return {"ok": false, "reason": "loser_slain", "spared": false}
+	var duel := CombatDuel.normalize(loser.get_module_data(CombatDuel.MODULE_KEY))
+	if CombatDuel.spared(duel):
+		return {"ok": false, "reason": "already_spared", "spared": false}
+	var called: Variant = _spare_resolver.call(winner, loser)
+	var answer: Dictionary = called if called is Dictionary else {}
+	return {
+		"ok": bool(answer.get("ok", false)),
+		"reason": String(answer.get("reason", "")),
+		"spared": bool(answer.get("spared", false)),
+		"loser_id": String(answer.get("loser_id", "")),
+		"winner_id": String(answer.get("winner_id", "")),
 	}
 
 
@@ -872,13 +958,103 @@ static func ctx_builder_for(
 	attacker: Actor, target: Actor, technique: Variant, selected: StringName = &""
 ) -> Callable:
 	var chosen := selected if selected != &"" else mechanism_for_hit(attacker, technique)
+	var inner: Callable = _mechanism_builder_for(chosen, target, technique)
+	# S12's producer rides ON TOP of whichever builder won, not inside one of the three.
+	# The stage is mechanism-agnostic by ADR 0105's own rule — the carrier is the
+	# ELEMENT, so a lightning `BodyDamage` blow and a lightning `QiDamage` blow both
+	# inflict `lightning_arc` — and putting it in one arm would make the status a
+	# property of the mechanism rather than of the blow.
+	return _with_status_request(inner, technique)
+
+
+## The one mechanism's own `ctx_builder`: its authored inputs and nothing else. Split
+## out of [method ctx_builder_for] so the status producer has one place to compose over
+## all three, rather than being repeated in each `match` arm and forgotten in one.
+static func _mechanism_builder_for(
+	chosen: StringName, target: Actor, technique: Variant
+) -> Callable:
 	match chosen:
 		_BODY_MECHANISM:
 			return BodyDamage.builder(technique, null, &"", CombatEngineApi.tuning())
 		_MIND_MECHANISM:
-			return MindDamage.builder(_mind_kind_of(technique), MindCultivationApi.sea(target))
+			return MindDamage.builder(
+				_mind_kind_of(technique), MindCultivationApi.sea(target), technique
+			)
 		_:
 			return QiDamage.builder(ElementsApi.default_rules(), technique)
+
+
+## ADR 0105's producer for spine stage S12: put ADR 0087's request on `ctx.data` so
+## `StatusApply.apply` has something to resolve, and wrap `inner` so it still runs.
+##
+## ## Why this shape and not a `TechniqueDef` status field
+##
+## ADR 0105 decided the carrier is the ELEMENT, not the technique: "an element-tagged
+## status applies to any blow carrying that element", with `StatusDef.on_landed_blow` as
+## the AUTHORED selector and `StatusApi.status_for_element` as the one place that asks the
+## question. So the producer reads `TechniqueDef.element` — the field that already exists
+## and that `QiDamage` already consumes — and asks the status module which def claims it.
+## A status field on `TechniqueDef` would be a second gate answering a question the
+## element already answers, and the two could disagree.
+##
+## ## Why the GATE is the tuning field and not a number here
+##
+## ADR 0087's `status_chance` was per-technique; ADR 0105 replaced it and recorded the
+## replacement as a debt — "add `@export var status_gate_chance` to `CombatTuning`" —
+## which has since been paid (`combat_tuning.gd:275`, authored `1.0` in
+## `combat_damage.tres:53`). So the gate is read from the shipped tuning rather than
+## restated, and S12's own `apply_chance` stays the ONLY place ADR 0087's resist terms are
+## applied: this function never pre-computes a chance and hands it down, because a second
+## roll here would be a second opinion about the same decision.
+##
+## ## Why `&""` is a NORMAL answer and writes NOTHING
+##
+## `status_for_element` returns `""` for an empty/unknown element, a closed gate, and an
+## element no def claims — ordinary outcomes of a blow that simply carries no status.
+## Leaving the key off means S12 answers the same question without a dictionary in flight
+## and the readout prints its own refusal reason. Nothing is invented.
+static func _with_status_request(inner: Callable, technique: Variant) -> Callable:
+	var element := _element_of(technique)
+	var gate := CombatEngineApi.tuning().status_gate_chance
+	# Asked EAGERLY rather than inside the returned lambda: the catalogue caches its walk,
+	# and an unelemental blow has no mapping to ask for, so the common case costs one
+	# comparison and writes nothing.
+	var status_id := &"" if element == &"" else StatusApi.status_for_element(element, gate)
+	if status_id == &"":
+		return inner
+	return func(ctx: AttackContext) -> AttackContext:
+		var carried: AttackContext = inner.call(ctx) if inner.is_valid() else ctx
+		if carried == null:
+			return ctx
+		# `StatusApply.KEY_*` is spelled here rather than imported because `combat_engine`
+		# names no `status` edge (ADR 0105's own registry note), and this file already
+		# reaches across the same seam by string name for `aim_meridian`.
+		(
+			carried
+			. set_data(
+				&"status_request",
+				{
+					"id": status_id,
+					"chance": gate,
+					"element": element,
+					"scope": "combat",
+				}
+			)
+		)
+		return carried
+
+
+## The element `technique` carries, or `&""`. The `Variant` read is the one
+## `QiDamage.builder`, `BodyDamage.builder` and [method _mind_kind_of] already make, for
+## the reason they state: a def that predates the field — or is not an object at all —
+## degrades to the unelemental answer rather than crashing a combat tick, and an
+## unauthored `.tres` then writes no request at all.
+static func _element_of(technique: Variant) -> StringName:
+	if technique is Object:
+		var authored: Variant = (technique as Object).get(&"element")
+		if authored is StringName or authored is String:
+			return StringName(authored)
+	return &""
 
 
 ## The erosion kind `technique` authors, or `DISRUPT` when it authors none.

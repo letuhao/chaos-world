@@ -150,6 +150,34 @@ func interact() -> void:
 	var target := _nearest_interactable()
 	if target == null:
 		return
+	# ## THE MERCY PRESS, and why it is on the interaction key
+	#
+	# While fighting, the press on the opponent you are holding at arm's length is the
+	# moment the authored fate `the_third_man_spared` names: *"stood at killing distance
+	# with the advantage held and did not close."* Outside combat the same press is an
+	# ordinary look at a thing, which is why the branch is on `_state` and not on the
+	# target — an exploration press must keep meaning what it always meant.
+	#
+	# It resolves nothing and takes no life: it hands the CHOICE to `CombatBoot`, which
+	# is the combat composition root and the only layer here allowed to name
+	# `CombatApi.spare`. The state it writes — a terminal mercy on the loser's duel
+	# record, which the next swing is refused against — is the module's, not this file's.
+	# A mercy nobody bound or did not earn is refused by name and reported as it refuses,
+	# for the same reason `attack` above does: a choice that did not happen is not a
+	# silent no-op.
+	if _state == State.COMBAT:
+		var duellist := _defender_of(target)
+		if duellist != null and _actor != null and CombatBoot.has_spare_resolver():
+			var shown: Variant = CombatBoot.spare(_actor, duellist)
+			var answered: Dictionary = shown if shown is Dictionary else {}
+			if not bool(answered.get("ok", false)):
+				push_warning(
+					(
+						"PlayerAdapter.interact: the mercy press was refused (%s)"
+						% String(answered.get("reason", "unknown"))
+					)
+				)
+			return
 	interacted.emit(target.name)
 
 
