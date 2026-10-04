@@ -28,13 +28,12 @@ extends ItemWorkbenchReadout
 ## **Every addition is charged against that ceiling.** Two wires added here — the
 ## interaction seam and travel — took this file back over 1000 lines, so each carries
 ## its rule here and its RATIONALE in the file that owns the contract
-## (`WorldStage.has_interaction_handler`), not again at the call site.
+## (`WorldStage.has_interaction_handler`), not at the call site.
 ##
 ## **Inheritance, not delegation, and that is the whole reason it works.** Every verb on
-## any half is called on the mounted root — a screen asks the root to advance a period,
-## a probe asks it for the world — so a delegation would leave every caller naming a
-## method that is not there. As base scripts the root still answers all of them, and
-## `get_script_method_list()` reports inherited declarations too, so
+## any half is called on the mounted root, so a delegation would leave every caller
+## naming a method that is not there. As base scripts the root still answers all of them,
+## and `get_script_method_list()` reports inherited declarations too, so
 ## `tests/app/test_screen_reachability.gd` still sees the whole door surface. **No
 ## public method was moved off this class or renamed**, and no signature changed.
 ##
@@ -45,11 +44,10 @@ extends ItemWorkbenchReadout
 ## slices this file between the `restore_actor` and `restored_from_save` declarations.
 ## Both still hold. So did the third: `tests/arch_rules/test_fact_ledger_writers.gd`
 ## pins the exact set of files calling the fact ledger's one writer, and this root is
-## the eighth — which is why `adopt_actor` and `_register_birth` stayed rather than
-## moving with the attach list. Both restore declarations are named above WITHOUT
-## their `func ` prefix on purpose: that suite finds its slice with a `source.find` of
-## that literal, and naming them in prose would put the FIRST match above the real
-## declarations.
+## the eighth — which is why `adopt_actor` and `_register_birth` stayed. Both restore
+## declarations are named above WITHOUT their `func ` prefix on purpose: that suite
+## finds its slice by that literal, and naming them in prose would put the FIRST match
+## above the real declarations.
 
 ## The routes whose screen needs more than `setup(actor)`. Every other route is a
 ## `UiScreen`, which is bound by the default arm below.
@@ -59,19 +57,6 @@ const ROUTE_SOCKET := &"socket_forge"
 ## callers, so no player could ever be on a quest; this route plus `_quests` is
 ## what makes a quest something a player can SEE and take.
 const ROUTE_QUEST := &"quest"
-## The names a press may carry to mean "show me the quest board", mapped to the quest
-## id each one offers. Both are CONTENT names, so a new board is one `.tres` and one
-## row here rather than a new branch in the handler — and a name absent from this
-## dictionary is refused by name rather than silently doing nothing.
-##
-## **`quest_board` is an authored inhabited type**, which is what makes it a real press
-## target rather than an invented one; `quest` is the same idea spelled as a route. An
-## UNKNOWN author may publish no quest at all, so an empty board is a correct answer and
-## not a gap. This is a HAND-OVER of what the module offers, never a second offer rule.
-const _QUEST_BOARD_ALIASES: Dictionary = {
-	&"quest_board": &"the_terms_you_drafted",
-	&"quest": &"the_terms_you_drafted",
-}
 const ROUTE_BODY := &"body_cultivation"
 const ROUTE_WORLD_MAP := &"world_map"
 const ROUTE_CRAFTING := &"crafting"
@@ -155,6 +140,17 @@ var _creation: CharacterCreationProgram = null
 ## Whether the live actor came from a save rather than from creation. A boot flow reads this
 ## through [method restored_from_save] to decide whether to offer arrival at all.
 var _recovered_from_save: bool = false
+## The playfield a RESTORED body is stood into, and the body standing in it (ADR 0192).
+## ONE stage and ONE adapter per root, in fields rather than a list: `WorldStage._current`
+## and `._mounted_player` are STATIC, so a stage built per restore leaves the newest in
+## `_current` and the previous adapter orphaned — the half-swapped world
+## `CharacterCreationProgram._stand_in_the_world` refuses to create. A boot takes exactly
+## one of the two branches, so each may keep its own. Singular fields, never
+## `Array[WorldStage]`: `tools/arch`'s `APP_CONTENT_ARRAY_RE` reads a member array as the
+## `state-table` signal and this file already carries `tick-loop`, so one fails
+## `APP_STATE_MIN_SIGNALS`.
+var _restore_stage: WorldStage = null
+var _restore_body: PlayerAdapter = null
 
 ## The stack and the bar the scene declares. Resolved by unique name; the root
 ## never builds a second one, because two stacks means two answers to "which
@@ -394,12 +390,19 @@ func restore_actor() -> Dictionary:
 	# `_attach_body_modules` replaces it and the payload's `item_state` is what a second
 	# mount restores -- exactly the branch this save took.
 	_mount_player_modules(actor)
+	# The restored body is put where its save SAYS it was (ADR 0192) — AFTER the attach
+	# list, because `EventApi.attach` normalizes the whole event ledger. Additive keys
+	# only: `test_cultivation_boot_round_trip` slices this function as TEXT.
+	var standing := _stand_restored_in_the_world(actor)
 	return {
 		"ok": true,
 		"reason": "",
 		"recovered": bool(restored.get("recovered", false)),
 		"generation": int(envelope.get("generation", 0)),
 		"difficulty": String(envelope.get("difficulty", "")),
+		"located": bool(standing.get("located", false)),
+		"location_id": String(standing.get("location_id", "")),
+		"world_told": bool(standing.get("world_told", false)),
 	}
 
 
@@ -414,6 +417,51 @@ func restore_actor() -> Dictionary:
 ## read for a probe that wants to know which of the two produced it.
 func restored_from_save() -> bool:
 	return _recovered_from_save
+
+
+## Stand `body` in the place its save CARRIES, and report what happened (ADR 0192).
+##
+## `WorldStage.new()` had exactly ONE hit in `game/src` — creation's `_stand_in_the_world`
+## — so a RESTORED hero was rebuilt, fully mounted, and left standing NOWHERE. The event
+## ledger's copy of the place stayed `EventApi.NOWHERE` (`""`) and `EventApi.available`'s
+## location filter (`event/api.gd:93`) dropped every authored event before its trigger was
+## read: `EventPrize.apply` was unreachable for EVERY returning player.
+##
+## **The place is READ, never DRAWN.** It comes from `WorldSpawnApi.current(body)` — the
+## durable `world_spawn_state` ledger, which survives `Actor.to_dict`/`from_dict` because
+## core writes every `module_data` key except two named ones (`core/actor.gd:301-307`) and
+## restores all of them (`:397-398`). `WorldSpawnApi.random` is NEVER called here: a draw
+## increments `visits` and rewrites `source`/`seed`/`display_name` on that ledger
+## (`world_spawn_state.gd:145-158`), so "restore" would TELEPORT a returning player and
+## persist the teleport as where they left off. Any diff bringing `random` in IS the bug.
+##
+## **The STAGE publishes; this never does.** `app/` installs `Callable(EventApi,
+## "set_location")` and the stage fires it, so `app/` never writes `event`'s ledger and
+## `event/` is never edited (ADR 0117). **An unlocatable body is REFUSED BY NAME, before
+## any publish** — publishing `""` is legal, so a naive version writes a row, reports
+## `ok`, and the bug looks fixed while `available()` stays empty all session.
+func _stand_restored_in_the_world(body: Actor) -> Dictionary:
+	if body == null:
+		return {"ok": false, "reason": "no_actor", "location_id": "", "world_told": false}
+	var location_id := StringName(WorldSpawnApi.current(body).get("location_id", ""))
+	if location_id == &"":
+		return {
+			"ok": false,
+			"reason": "not_located",
+			"located": false,
+			"location_id": "",
+			"world_told": false,
+		}
+	# Lazily, ONCE per root (the fields above). `PlayerAdapter` is never parented — `mount`
+	# only calls `set_map_bounds` and assigns `global_position`, both legal unparented.
+	if _restore_stage == null:
+		_restore_stage = WorldStage.new()
+	if _restore_body == null:
+		_restore_body = PlayerAdapter.new(body)
+	var answer := _restore_stage.mount(_restore_body, location_id)
+	answer["world_told"] = bool(answer.get("world_told", false))
+	answer["located"] = bool(answer.get("ok", false))
+	return answer
 
 
 ## The one tick caller in the game (ADR 0106, read against ADR 0089).
@@ -573,7 +621,11 @@ func adopt_actor(body: Actor) -> void:
 	# The ONE attach list, shared verbatim with the fresh build and the restore.
 	_attach_body_modules(body)
 	_status_loop = StatusLoop.new(body)
-	_world = WorldPulse.new(body, BeatDirector.new())
+	# Through `adopt_world`, not a bare assignment: the fresh fold's total starts at zero,
+	# and the autosave's `_periods_seen` must reset with it or the first
+	# `AUTOSAVE_PERIODS` world-moving periods after a rebirth read as `maxi(0, small -
+	# large)` — zero periods moved, silently, on the save schedule (ADR 0179).
+	adopt_world(WorldPulse.new(body, BeatDirector.new()))
 	# Both seams are re-pointed at the NEW body rather than left on the old one. The
 	# offer resolver names a `WorldPulse`, and `_ready` just replaced that object; a
 	# seam left pointing at the first one would offer the reborn hero's beats into a
@@ -921,72 +973,6 @@ func _on_world_location_selected(location_id: StringName) -> void:
 	WorldStage.on_location_selected(screen, location_id)
 	if screen != null:
 		screen.call("refresh")
-
-
-## THE BOOT WIRE. `WorldStage.interact` hands every press to an INJECTED callable and
-## had **no production caller**, so every press in the shipped game answered
-## `{"ok": false, "reason": "no_handler"}`. Why a press OFFERS rather than ACCEPTS, why
-## nothing navigates, and why the program is read through the field rather than
-## captured are stated at `WorldStage.has_interaction_handler`; the vocabulary a press
-## may carry is `_QUEST_BOARD_ALIASES` above.
-func _install_interaction_handler() -> void:
-	WorldStage.set_interaction_handler(Callable(self, "_interact_in_the_world"))
-
-
-## Answer one press from the world stage. `func(actor, location_id, target_name)
-## -> Dictionary`, which is the signature `WorldStage.interact` calls.
-func _interact_in_the_world(
-	actor: Actor, location_id: StringName, target_name: String
-) -> Dictionary:
-	if actor == null:
-		return {"ok": false, "reason": "no_actor", "target": target_name}
-	if _quests == null:
-		return {"ok": false, "reason": "no_quest_program", "target": target_name}
-	var board := String(_QUEST_BOARD_ALIASES.get(target_name, ""))
-	if board.is_empty():
-		return {"ok": false, "reason": "not_a_quest_board", "target": target_name}
-	# Read the CURRENT ledger rather than a figure remembered at boot: a press is a
-	# question about the hero standing there, and a hero who has since taken a quest
-	# on must not be offered it again.
-	var offered: Array[Dictionary] = _quests.offered()
-	var rows: Array[Dictionary] = []
-	for view in offered:
-		if String(view.get("id", "")) != board:
-			continue
-		var steps: Array[Dictionary] = []
-		for step in QuestApi.steps(actor, StringName(board)):
-			(
-				steps
-				. append(
-					{
-						"fact": String((step as Dictionary)["fact"]),
-						"need": int((step as Dictionary)["need"]),
-						"done": bool((step as Dictionary)["done"]),
-					}
-				)
-			)
-		(
-			rows
-			. append(
-				{
-					"quest_id": board,
-					"display_name": String(view.get("display_name", "")),
-					"tier": int(view.get("tier", 0)),
-					"steps": steps,
-				}
-			)
-		)
-	if rows.is_empty():
-		return {"ok": false, "reason": "quest_not_offered", "target": target_name}
-	return {
-		"ok": true,
-		"reason": "",
-		"target": target_name,
-		"location_id": String(location_id),
-		"quest_id": board,
-		"offered": rows,
-		"offered_count": offered.size(),
-	}
 
 
 ## Mark the live route on the bar, so the player can see where they are without

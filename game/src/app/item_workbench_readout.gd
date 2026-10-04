@@ -148,3 +148,77 @@ func _readout_context() -> Dictionary:
 		"actor": CombatEngineApi.summary(_actor),
 		"mechanism": CombatBoot.mechanism_for_hit(_actor, _readout_technique()),
 	}
+
+
+# --- The world interaction seam -----------------------------------------------
+#
+# These live here rather than in the shell for the reason the rest of this file is
+# here: they are a CONVERSATION with a screen, not the shell's own bookkeeping.
+# `WorldStage.interact` hands every press to an injected callable and had **no
+# production caller**, so every press in the shipped game answered
+# `{"ok": false, "reason": "no_handler"}` — a body standing in a world with
+# nothing to press and nothing to answer.
+
+
+## THE BOOT WIRE. Why a press OFFERS rather than ACCEPTS, why nothing navigates,
+## and why the program is read through the field rather than captured are stated at
+## `WorldStage.has_interaction_handler`; the vocabulary a press may carry is
+## `_QUEST_BOARD_ALIASES`.
+func _install_interaction_handler() -> void:
+	WorldStage.set_interaction_handler(Callable(self, "_interact_in_the_world"))
+
+
+## Answer one press from the world stage. `func(actor, location_id, target_name)
+## -> Dictionary`, which is the signature `WorldStage.interact` calls.
+func _interact_in_the_world(
+	actor: Actor, location_id: StringName, target_name: String
+) -> Dictionary:
+	if actor == null:
+		return {"ok": false, "reason": "no_actor", "target": target_name}
+	if _quests == null:
+		return {"ok": false, "reason": "no_quest_program", "target": target_name}
+	var board := String(_QUEST_BOARD_ALIASES.get(target_name, ""))
+	if board.is_empty():
+		return {"ok": false, "reason": "not_a_quest_board", "target": target_name}
+	# Read the CURRENT ledger rather than a figure remembered at boot: a press is a
+	# question about the hero standing there, and a hero who has since taken a quest
+	# on must not be offered it again.
+	var offered: Array[Dictionary] = _quests.offered()
+	var rows: Array[Dictionary] = []
+	for view in offered:
+		if String(view.get("id", "")) != board:
+			continue
+		var steps: Array[Dictionary] = []
+		for step in QuestApi.steps(actor, StringName(board)):
+			(
+				steps
+				. append(
+					{
+						"fact": String((step as Dictionary)["fact"]),
+						"need": int((step as Dictionary)["need"]),
+						"done": bool((step as Dictionary)["done"]),
+					}
+				)
+			)
+		(
+			rows
+			. append(
+				{
+					"quest_id": board,
+					"display_name": String(view.get("display_name", "")),
+					"tier": int(view.get("tier", 0)),
+					"steps": steps,
+				}
+			)
+		)
+	if rows.is_empty():
+		return {"ok": false, "reason": "quest_not_offered", "target": target_name}
+	return {
+		"ok": true,
+		"reason": "",
+		"target": target_name,
+		"location_id": String(location_id),
+		"quest_id": board,
+		"offered": rows,
+		"offered_count": offered.size(),
+	}

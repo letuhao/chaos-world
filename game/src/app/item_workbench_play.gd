@@ -73,8 +73,13 @@ var _death_armed: String = ""
 ## screen re-deriving it.
 var _last_death: Dictionary = {}
 ## The world fold's running period total as of the last [method advance_world], so the autosave
-## is told what MOVED rather than what was asked for — `WorldPulse` clamps a long skip
-## (ADR 0179).
+## is told what MOVED rather than what was asked for (ADR 0179).
+##
+## **Reset by [method adopt_world], and that reset is load-bearing.** `adopt_actor` builds a
+## fresh `WorldPulse` whose total starts at zero, so without the reset the first
+## `AUTOSAVE_PERIODS` world-moving periods after a rebirth read `maxi(0, total - _periods_seen)`
+## as `maxi(0, small - large)` = **0** — the autosave schedule silently under-counts for
+## that many periods and no player is told. The delta is only meaningful within ONE fold.
 var _periods_seen: int = 0
 
 
@@ -84,11 +89,10 @@ var _periods_seen: int = 0
 ##
 ## ## The autosave rides the SAME count, on the SAME path
 ##
-## `WorldPulse` clamps to `MAX_PERIODS_PER_PULL`, and the save must be told what the WORLD
-## actually advanced rather than what was asked for: a caller asking for 8 into a clamp of 8
-## agrees, but a caller asking for more than the clamp took has moved fewer periods than it
-## paid for. The report's `periods` is the world fold's own running TOTAL, so the delta
-## against the last one seen is exactly what moved.
+## The save must be told what the WORLD actually advanced rather than what was asked for.
+## The report's `periods` is the world fold's own running TOTAL, so the delta against the
+## last one seen is exactly what moved — which is how a chunked long skip (ADR 0173) reports
+## the whole span it paid for rather than one ceiling's worth of it.
 func advance_world(periods: int) -> Dictionary:
 	if _world == null:
 		return {"ok": false, "reason": "no_world"}
@@ -98,13 +102,29 @@ func advance_world(periods: int) -> Dictionary:
 
 
 ## How many whole periods this advance moved the world by, read from the report the world fold
-## returns. A report whose total did not RISE moved nothing — which is the case after a body
-## swap, because `adopt_actor` builds a fresh `WorldPulse` whose total starts at zero.
+## returns. A report whose total did not RISE moved nothing.
+##
+## **The clamp is gone from this method's reasoning, because the clamp is gone from the
+## fold.** It used to sit here as the reason the delta existed at all; now the fold pays a
+## declared span in full through its chunk plan (`world_pulse.gd:255-271`), so the delta
+## measures a real movement rather than a shortfall against a ceiling.
 func _advanced_by(outcome: Dictionary) -> int:
 	var total := int(outcome.get("periods", 0))
 	var moved := maxi(0, total - _periods_seen)
 	_periods_seen = total
 	return moved
+
+
+## Point this root at a new world fold and reset the delta with it.
+##
+## **One door, so a body swap cannot forget the reset.** `adopt_actor` builds a fresh
+## `WorldPulse` whose running total starts at zero; a `_periods_seen` left on the old
+## body's total would swallow the next `AUTOSAVE_PERIODS` world-moving periods into a
+## `maxi(0, total - _periods_seen)` of zero — a silent under-count of the schedule
+## (ADR 0179), with nothing anywhere reporting that periods went unrecorded.
+func adopt_world(world: WorldPulse) -> void:
+	_world = world
+	_periods_seen = 0
 
 
 ## Advance the world by exactly ONE period. **The verb a screen's "wait a season"
