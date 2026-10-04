@@ -193,6 +193,21 @@ const ROUTES: Array[Dictionary] = [
 		"key": "d",
 		"root": false,
 	},
+	{
+		# The quest journal (BL-0663 / BL-0664). `QuestApi` shipped twelve verbs and
+		# 476 green assertions with nothing in `src/` ever calling `accept`, so the
+		# active set `QuestBeatHandler` reads was always empty and
+		# `QuestGrants.pay -> DestinyApi.earn_fate(actor, id, "quest:<id>")` was dead
+		# code. This is the route that makes a quest something a player can SEE and
+		# ACCEPT; the commit itself goes through `QuestProgram`, the one caller.
+		"id": &"quest",
+		"node": "QuestScreen",
+		"label": "Quests",
+		"hint": "What the world is offering, and what you are carrying.",
+		"scene": "res://src/ui/screens/quest_screen.tscn",
+		"key": "j",
+		"root": false,
+	},
 ]
 
 

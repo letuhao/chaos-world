@@ -125,6 +125,17 @@ UI_MODULES: dict[str, list[str]] = {
     # reach for the same reason `race` and `custody` carry none — the status module
     # reads no sibling module, and a readout therefore adds no edge it would need.
     "status": [],
+    # The quest journal (ADR 0113 / ADR 0114 / ADR 0143). A quest screen is a pure
+    # read of the facade: `offered`, `active`, `steps`, `gates_for` and `summary`
+    # all return primitive dicts, and every step count comes out of the shared
+    # `WorldFact` ledger rather than a counter the UI owns. Granted with no module
+    # dependency for the same reason `race` and `custody` carry none — the quest
+    # module declares `core` and `contracts` in registry.json and reads no sibling
+    # module, so a journal adds no edge it would need. The COMMIT is not here: `ui/`
+    # may not name `app/`, so `QuestScreen` takes its accept verb as a `Callable`
+    # from `QuestProgram` (ADR 0143's bridge), and that file is the only thing in
+    # `src/` that calls `QuestApi.accept`.
+    "quest": [],
 }
 
 # Dependencies granted to a newly scaffolded module.
