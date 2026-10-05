@@ -11,7 +11,7 @@
       "hazard_surface",
       "magma_and_ice"
     ],
-    "actual_count": 42
+    "actual_count": 45
   },
   {
     "id": "path_and_way",
@@ -25,7 +25,7 @@
       "crossing_and_pier",
       "stairs_and_ramps"
     ],
-    "actual_count": 46
+    "actual_count": 52
   },
   {
     "id": "architecture_and_building",
@@ -41,7 +41,7 @@
       "ghost_market",
       "shrine_and_temple"
     ],
-    "actual_count": 74
+    "actual_count": 102
   },
   {
     "id": "rift_and_portal",
@@ -55,7 +55,7 @@
       "void_portal",
       "abyss_gateway"
     ],
-    "actual_count": 32
+    "actual_count": 34
   },
   {
     "id": "obstacle_and_hazard",
@@ -70,7 +70,7 @@
       "cauldron_and_miasma",
       "mechanical_trap"
     ],
-    "actual_count": 58
+    "actual_count": 63
   },
   {
     "id": "destructible_and_container",
@@ -85,7 +85,7 @@
       "chest_and_coffin",
       "karma_pillar"
     ],
-    "actual_count": 58
+    "actual_count": 59
   },
   {
     "id": "creature_and_denizen",
@@ -100,7 +100,7 @@
       "nether_beast",
       "elite_demon"
     ],
-    "actual_count": 78
+    "actual_count": 99
   },
   {
     "id": "interactive_and_puzzle",
@@ -115,7 +115,7 @@
       "dial_and_wheel",
       "altar_and_font"
     ],
-    "actual_count": 52
+    "actual_count": 62
   },
   {
     "id": "cultivation_and_resource",
@@ -129,7 +129,7 @@
       "wood_and_bamboo",
       "spiritual_relic"
     ],
-    "actual_count": 48
+    "actual_count": 57
   },
   {
     "id": "decoration_and_ambience",
@@ -144,6 +144,6 @@
       "mist_and_glow",
       "ambient_decal"
     ],
-    "actual_count": 55
+    "actual_count": 56
   }
 ]
