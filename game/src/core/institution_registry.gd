@@ -23,12 +23,13 @@ extends RefCounted
 ##
 ## ## How a def type is registered without `core/` referencing `modules/`
 ##
-## **By handing the registry an opaque `Script` and a plain label, never a
-## `res://` path and never a class name.** `LAYER_DEPS["core"]` is
-## `{"core", "contracts"}` and the resolver reads a `res://` literal as a real edge,
-## so a `preload("res://src/modules/sect/sect_def.gd")` here would be a violation the
-## gate reports. It is also the dependency wearing a disguise — the shape
-## `WorldFact` explicitly rejected ("a `res://` preload with a lazy resolve").
+## **By handing the registry an opaque `Script` and a plain label, never a path and
+## never a class name.** `LAYER_DEPS["core"]` is `{"core", "contracts"}` and the
+## resolver in `tools/arch/enforce.py` reads a **`res://` literal as a real edge** —
+## including one inside a docstring, which is why this paragraph spells the scheme out
+## in words and never writes one. A `preload` of a module's def script here would be a
+## violation the gate reports, and it is also the dependency wearing a disguise: the
+## shape `WorldFact` explicitly rejected ("a preload with a lazy resolve").
 ##
 ## So the row holds `def_type` as a **String label** (`"SectDef"`) and `def_script`
 ## as an **already-loaded `Script` value** the registering unit resolved in its OWN
@@ -155,11 +156,20 @@ static func instance() -> InstitutionRegistry:
 ## duplicate is refused even when the row would be identical — see the class note.
 ##
 ## `def_script` may be `null`: the kind is registered and its def type is named, and
-## the script is bound later. Nothing here resolves a `res://` path, so a caller that
-## has not loaded its def yet is not blocked.
+## the script is bound later. Nothing here resolves a path, so a caller that has not
+## loaded its def yet is not blocked.
+## ## Why `def_type` is a `Variant`, not a `String`
+##
+## Typed `String`, the function cannot do the one job it exists for: GDScript raises
+## `Cannot convert argument 2 from float to String` **before the body runs**, so a
+## wrong-typed label ABORTS the caller instead of being refused here. A test cannot even
+## express the case — a cast at the call site is a PARSE error, and an untyped helper
+## declared `-> String` errors on its own `return`. **A refusal that cannot receive the
+## corrupt value cannot refuse it**, so the parameter takes what it will be handed and
+## `_text` decides.
 func register(
 	kind: StringName,
-	def_type: String,
+	def_type: Variant,
 	capabilities: Array[StringName] = [],
 	def_script: Script = null
 ) -> Dictionary:

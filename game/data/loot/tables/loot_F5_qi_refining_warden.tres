@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=23 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -243,6 +243,18 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_entry_band_gear"]
+script = ExtResource("2_entry")
+id = &"F5_qi_refining_warden_entry_band_gear"
+kind = &"item"
+item_id = &"blade_iron"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F5_qi_refining_warden"
@@ -271,5 +283,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_16"),
 	SubResource("entry_17"),
 	SubResource("entry_18"),
-	SubResource("entry_19")
+	SubResource("entry_19"),
+	SubResource("entry_entry_band_gear"),
 ])

@@ -120,6 +120,55 @@ static func earn_destiny(actor: Actor, destiny_id: StringName, source: String = 
 ## Record progress on a named counter. Counters only ever rise: fate accrues,
 ## it is never refunded. Returns the value after the delta. A negative `amount`
 ## is clamped to zero movement rather than unwinding a counter.
+## Register the starter pack `destiny_id` hands a body, REPLACING the default kit.
+##
+## The replacement is the whole contract and it is deliberate: a pack is one
+## complete answer to "what does this body begin holding", so filing a second one
+## under the same destiny overwrites the first. Re-running this verb on every boot
+## is therefore how a pack is corrected, and a pack authored twice is a fix, not
+## a doubled kit. See [method DestinyStarterPacks.register].
+##
+## Refused — writing nothing — for an empty `destiny_id`, for a `destiny_id` the
+## catalog does not ship (a pack filed under a destiny no body can ever hold can
+## never be resolved, so storing it would read as a working registration), and for
+## a malformed row set, which [method DestinyStarterPack.make] names by reason.
+##
+## Registering grants nothing. The pack is DATA — authored item ids and counts —
+## and turning rows into real instances is the composition root's call to
+## `ItemsApi.generate`, which is why this module declares no `items` dependency
+## for a feature about what a player starts holding.
+static func register_starter_pack(destiny_id: StringName, rows: Array) -> Dictionary:
+	return DestinyStarterPacks.instance().register(
+		destiny_id, rows, FateCatalog.instance().destiny_definition(destiny_id) != null
+	)
+
+
+## What `actor` begins holding: `{pack_id, source, replaced, destiny_id, entries}`,
+## primitives only, one entry per authored role.
+##
+## `replaced` is true exactly when a destiny this actor holds has registered a
+## pack, and `entries` then carries the REGISTERED kit and nothing else — the
+## default's rows are absent, not merged in. That is the property a caller can
+## assert and a test can mutate, and it is the reason the read exists as a
+## dictionary rather than a pack object: a caller mints from `entries` without
+## ever holding a reference this module could mutate underneath it.
+##
+## A null actor is answered with the default rather than refused, because "what
+## would this body start with" has an answer before the body exists and a
+## composition root that builds the actor and asks in one breath must not have to
+## order those two calls.
+static func starter_pack(actor: Actor) -> Dictionary:
+	var destiny_ids: Array[StringName] = []
+	if actor != null:
+		destiny_ids = DestinyState.destiny_ids(_ledger(actor))
+	var answer := DestinyStarterPacks.instance().resolve(destiny_ids)
+	var view := (answer["pack"] as DestinyStarterPack).to_dict()
+	view["replaced"] = bool(answer["replaced"])
+	view["destiny_id"] = String(answer["destiny_id"])
+	view["has_actor"] = actor != null
+	return view
+
+
 static func record(actor: Actor, counter_id: StringName, amount: int = 1) -> int:
 	# A null actor is refused rather than scored against the empty ledger: without
 	# this the call returned `amount` for an actor that does not exist, so a

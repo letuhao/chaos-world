@@ -40,10 +40,11 @@ from . import (
     map_theme,
     mutation_history,
     mutation_history_cmd,
+    path_guard,
     unique_characters,
 )
-from .arch import enforce
 from .acquisition import selftest_case  # noqa: F401  registers its cases on import
+from .arch import enforce
 from .common import ToolError
 from .cultivation import selftest_case as cultivation_selftest_case  # noqa: F401  same
 from .data_selftest import *  # noqa: F403  same, for the tools/data.py legs
@@ -4763,6 +4764,100 @@ def _unreadable_ledger_is_not_clean() -> None:
                     f"{name} was reported as a clean ledger. A claim the guard cannot parse is "
                     "a claim it cannot see, and seeing no claims is green",
                 )
+
+
+@case("path_guard: a repo-shaped tree is GREEN, and the NEAR-ceiling band WARNS")
+def _path_guard_measures_the_real_margin() -> None:
+    """The tree's own headroom, and the band where a rename is still cheap.
+
+    INC-0031 blamed a peer's long asset path for a commit failure. Measured, that
+    was wrong — this tree's longest path is 181 absolute against a 260 limit — so
+    the guard's job is to keep publishing the real number rather than to catch a
+    hazard that never arrived.
+
+    The fixture is a NEAR-ceiling path and not an over-long one, because an
+    over-long path cannot be the fixture: git refuses to TRACK it (`git add`
+    exits 128), so it never reaches a commit and the guard would never see it.
+    Measured at this root length: 255 absolute tracks, 265 does not. So the band
+    that matters is warn-but-green — a path that still commits while leaving
+    little room — and failing it would break a commit that works.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        root = Path(raw)
+        for argv in (
+            ["init", "-q"],
+            ["config", "user.email", "selftest@local"],
+            ["config", "user.name", "selftest"],
+        ):
+            subprocess.run(["git", *argv], cwd=root, capture_output=True, timeout=60)
+
+        near = "n" * (path_guard.MARGIN + 40 - len(str(root)) - len(".txt")) + ".txt"
+        (root / near).write_text("x\n", encoding="utf-8")
+        added = subprocess.run(
+            ["git", "add", "-A"], cwd=root, capture_output=True, text=True, timeout=60
+        )
+        expect(
+            added.returncode == 0,
+            f"could not stage a near-ceiling fixture, so the warn band is untested: "
+            f"{added.stderr.strip()[:120]}",
+        )
+
+        original_root = path_guard.REPO_ROOT
+        original_longest = path_guard.longest_paths
+        try:
+            path_guard.REPO_ROOT = root
+
+            def fake(limit: int = 8) -> list[tuple[int, str]]:
+                raw_paths = subprocess.run(
+                    ["git", "ls-files", "-z"], cwd=root, capture_output=True, text=True, timeout=60
+                ).stdout
+                entries = [(len(str(root / r)), r) for r in raw_paths.split("\0") if r.strip()]
+                entries.sort(reverse=True)
+                return entries[:limit]
+
+            path_guard.longest_paths = fake
+            verdict = path_guard.run(argparse.Namespace(path_guard_action="check", limit=8))
+            longest = fake(8)[0][0]
+            expect(
+                verdict == 0,
+                "a path in the warn band FAILED the gate. It still commits, so failing "
+                "it would block a commit that works",
+            )
+            expect(
+                longest >= path_guard.MARGIN,
+                f"the fixture landed at {longest}, below the {path_guard.MARGIN} warning "
+                "line, so the band was never exercised",
+            )
+        finally:
+            path_guard.REPO_ROOT = original_root
+            path_guard.longest_paths = original_longest
+
+    # And the real tree, which is the number an agent actually reads.
+    entries = path_guard.longest_paths()
+    expect(bool(entries), "git ls-files returned nothing, so the measurement is vacuous")
+    worst = entries[0][0]
+    expect(
+        worst < path_guard.CEILING,
+        f"the repository's longest tracked path is {worst} absolute chars, at or over "
+        f"the {path_guard.CEILING} limit. A commit containing it would fail for whoever "
+        "commits next rather than for whoever added it (INC-0031)",
+    )
+
+
+@case("path_guard: the REAL repository has MAX_PATH headroom")
+def _real_tree_has_path_headroom() -> None:
+    """The assertion INC-0031's own claim failed, kept as a standing fact.
+
+    Not decoration: the tree accumulates asset paths wave by wave, and the day the
+    margin closes this is what says so before a peer is blocked mid-commit.
+    """
+    entries = path_guard.longest_paths()
+    expect(bool(entries), "no tracked paths, so nothing was measured")
+    worst, rel = entries[0]
+    expect(
+        worst < path_guard.CEILING,
+        f"{rel} is {worst} absolute chars, at or over the {path_guard.CEILING} limit",
+    )
 
 
 @case("claim_guard: an ORPHANED claim is REPORTED, and never fails the gate")

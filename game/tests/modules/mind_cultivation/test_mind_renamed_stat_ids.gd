@@ -12,6 +12,14 @@ extends TestCase
 ## duplicate it would be. A re-planted twin is the exact hazard BL-0114 reported,
 ## so the retirement is asserted rather than remembered.
 ##
+## ## ADR 0215 RENAMED THE REPLACEMENTS AGAIN, and this file is the guard for that too
+##
+## `mind_focus_chance` / `mind_avoidance` became `mind_clarity` / `mind_veil`, so
+## they joined `RETIRED` rather than replacing the two already on it. A rename that
+## REPLACED the list would have quietly narrowed the guard to the newest pair and let
+## ADR 0071's own two ids come back unnoticed — which is the same failure shape as the
+## one this file exists to catch, one generation down.
+##
 ## ## Why a guard and not a note
 ##
 ## BL-0114's hazard was never the duplication itself -- it was AMBIGUITY, a second
@@ -32,11 +40,23 @@ extends TestCase
 
 const Probe := preload("res://tests/modules/mind_cultivation/mind_gate_probe.gd")
 
-## The two names ADR 0071 retired. `critical_chance` and `dodge_chance` were
-## different StringNames from core's `Stat.CRIT_CHANCE` / `Stat.EVASION`, which is
-## what made them a second dial on one idea. Fixed at two on purpose: a shorter
-## list is a guard that has quietly stopped guarding.
-const RETIRED := [&"critical_chance", &"dodge_chance"]
+## The names the mind module RETIRED across two renames, oldest first.
+## `critical_chance` and `dodge_chance` were different StringNames from core's
+## `Stat.CRIT_CHANCE` / `Stat.EVASION` (ADR 0071), which is what made them a
+## second dial on one idea. ADR 0215 then renamed the two ids that replaced them
+## AGAIN -- `mind_focus_chance` / `mind_avoidance` became `mind_clarity` /
+## `mind_veil` -- and retired the intermediate pair the same way `StatusDef`'s
+## `status_resistance` was retired in favour of `status_defense`.
+##
+## Fixed at four on purpose: a shorter list is a guard that has quietly stopped
+## guarding, and an LONGER one would let the newest rename be forgotten while the
+## first two keep it green.
+const RETIRED := [
+	&"critical_chance",
+	&"dodge_chance",
+	&"mind_focus_chance",
+	&"mind_avoidance",
+]
 
 # --- Liveness: this guard is pointed at something real -------------------------
 
@@ -47,11 +67,11 @@ const RETIRED := [&"critical_chance", &"dodge_chance"]
 func test_the_retirement_guard_is_pointed_at_the_renamed_code() -> void:
 	var code := Probe.module_code_all()
 	assert_ne(code.strip_edges(), "", "the module source scan returned code to check")
-	assert_eq(RETIRED.size(), 2, "both renamed ids are still on the retired list")
+	assert_eq(RETIRED.size(), 4, "all four renamed ids are still on the retired list")
 	assert_eq(
 		(
-			code.contains(String(MindStats.MIND_FOCUS_CHANCE))
-			and code.contains(String(MindStats.MIND_AVOIDANCE))
+			code.contains(String(MindStats.MIND_CLARITY))
+			and code.contains(String(MindStats.MIND_VEIL))
 		),
 		true,
 		"both replacements are still declared in the module's code"
@@ -103,7 +123,7 @@ func test_a_mind_actor_derives_the_replacements_the_rename_installed() -> void:
 	MindCultivationApi.attach_sea(actor)
 	actor.mark_stats_dirty()
 	var derived := actor.stats.derived_all()
-	for current in [MindStats.MIND_FOCUS_CHANCE, MindStats.MIND_AVOIDANCE]:
+	for current in [MindStats.MIND_CLARITY, MindStats.MIND_VEIL]:
 		assert_eq(derived.has(current), true, "%s is derived" % String(current))
 
 
@@ -133,9 +153,12 @@ func test_core_still_owns_the_two_concepts_under_its_own_names() -> void:
 ## It used to compare against both, and inferring ownership from `RATE_STATS` was wrong
 ## twice over. Membership there is a claim about an id's SHAPE, not about who owns it:
 ## BL-0675 registered `mind_focus_chance`, `mind_avoidance` and `illusion_resistance`
-## there because a FLAT on a fraction must be refused and that array is the only list
-## both content gates read. An id being listed there says nothing about who derives it,
-## so the comparison below would have failed on ids that are perfectly the module's own.
+## there because a FLAT on a fraction had to be refused and that array is the only list
+## both content gates read. ADR 0215 then deleted all three caps, so all three became
+## MAGNITUDES and left the list entirely -- which is exactly what this test above would
+## have reported as "no longer the module's ids". An id being listed there says nothing
+## about who derives it, so the comparison below would have failed on ids that are
+## perfectly the module's own.
 ##
 ## Ownership is therefore PROBED, which is what `test_combat_stats_shape.gd:116` had to
 ## do for the same reason and after the same class of false green (BL-0362: the old
@@ -149,8 +172,8 @@ func test_no_mind_stat_id_is_also_a_core_stat_id() -> void:
 		MindStats.MENTAL_ATTACK,
 		MindStats.MENTAL_DEFENSE,
 		MindStats.SPIRITUAL_SENSE_RANGE,
-		MindStats.MIND_FOCUS_CHANCE,
-		MindStats.MIND_AVOIDANCE,
+		MindStats.MIND_CLARITY,
+		MindStats.MIND_VEIL,
 		MindStats.MIND_TECHNIQUE_POWER,
 		MindStats.ILLUSION_RESISTANCE,
 	]

@@ -87,16 +87,18 @@ func _hero(actor_id: StringName = &"keeper") -> Actor:
 func test_the_facade_exposes_no_removal_or_choice_verb_at_all() -> void:
 	var public := _public_methods()
 	assert_eq(public.is_empty(), false, "the facade's public method list is readable")
-	# 1. The public set is EXACTLY the earn-and-read surface ADR 0065 describes.
-	#    Naming all twelve means an unlisted verb added later fails here instead of
-	#    slipping past the word list below.
+	# 1. The public set is EXACTLY the earn-and-read surface ADR 0065 describes,
+	#    plus the two starter-pack verbs. Naming every verb means an unlisted one
+	#    added later fails here instead of slipping past the word list below.
 	#
-	#    Still twelve, and still earn-and-read: `events` took the slot `counter`
-	#    held. `events` is how a consumer OBSERVES an earn rather than performing
-	#    one, so it grants and revokes nothing and belongs to this surface; `counter`
-	#    was a read of a ledger key that `state()` already returns. The facade is
-	#    at its twelve-method cap either way, so the two verbs cannot both be here
-	#    — see `test_destiny_events_facade.gd` for the new one's own contract.
+	#    The starter pair is here rather than behind a narrower door because the
+	#    facade WIDTH cap is deleted (`rules.MAX_FACADE_PUBLIC_METHODS` is gone;
+	#    coupling is measured by `MAX_FACADE_FAN_IN` instead), and both verbs are
+	#    earn-adjacent in the sense that matters here: `register_starter_pack`
+	#    writes a module-level registry and `starter_pack` reads it. Neither
+	#    grants nor revokes a fate or a destiny, which is what check 2 measures —
+	#    and the registry is CONTENT, reset by nulling the singleton exactly as
+	#    `FateCatalog` is, not player state a save could carry.
 	assert_eq(
 		public,
 		[
@@ -110,10 +112,15 @@ func test_the_facade_exposes_no_removal_or_choice_verb_at_all() -> void:
 			"has_destiny",
 			"has_fate",
 			"record",
+			"register_starter_pack",
+			"starter_pack",
 			"state",
 			"summary",
 		],
-		"the facade is the earn-and-read surface ADR 0065 describes, and nothing else"
+		(
+			"the facade is the earn-and-read surface ADR 0065 describes plus the starter"
+			+ " pack pair, and nothing else"
+		)
 	)
 	# 2. No public name carries a removal or selection verb, in any position and
 	#    under any prefix. This is the part that catches a *renamed* verb, which

@@ -19,6 +19,7 @@ INDEX_PATH = GAME_DIR / "assets" / "map-asset-index.jsonl"
 ASSET_ROOT = GAME_DIR / "assets" / "world_map"
 MIN_ASSETS = 1000
 GRID_UNIT_PX = map_layout.GRID_UNIT_PX
+ALPHA_CROP_THRESHOLD = 16
 
 # Each environment gets one large terrain surface and a coherent 64-asset kit.
 # Region-specific art changes materials and silhouettes, not just hue.
@@ -613,7 +614,10 @@ def _install(records: list[dict], args) -> None:
     if record["alpha"] == "transparent":
         if alpha.getextrema()[0] != 0:
             raise ToolError("source PNG has no fully transparent pixels")
-        bounds = alpha.getbbox()
+        # Ignore nearly invisible background haze when sizing the sprite, while keeping the
+        # original soft alpha fringe inside the crop. Otherwise haze can shrink the subject.
+        crop_mask = alpha.point(lambda value: 255 if value >= ALPHA_CROP_THRESHOLD else 0)
+        bounds = crop_mask.getbbox()
         if bounds is None:
             raise ToolError("source PNG is fully transparent")
         source_image = source_image.crop(bounds)

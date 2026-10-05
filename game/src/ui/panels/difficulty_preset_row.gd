@@ -41,7 +41,6 @@ const LEAD_LABEL := "Soul damage"
 ## rather than printing a raw multiplier and letting a player read 1.0 as "double".
 const PERCENT_SCALE := 100.0
 const SHARE_SUFFIX := "x what a death takes"
-const CAP_SUFFIX := "x the most a death can take"
 const NEUTRAL_MARK := " - the shipped baseline, and arithmetically a no-op"
 const NO_PRESETS := "No difficulty preset is authored, so nothing here can be selected."
 
@@ -86,7 +85,6 @@ func summary() -> Dictionary:
 		"difficulty_id": difficulty_id(),
 		"selected": is_selected(),
 		"soul_damage_share": float(_view.get(LEAD_SCALAR, 1.0)),
-		"death_loss_cap": float(_view.get("death_loss_cap", 1.0)),
 		"guardian_effectiveness": float(_view.get("guardian_effectiveness", 1.0)),
 		"tribulation_preparation_credit": float(_view.get("tribulation_preparation_credit", 1.0)),
 		"scalar_count": _view.size() - 1,
@@ -193,15 +191,11 @@ func _lead_text() -> String:
 	if _view.is_empty():
 		return ""
 	var share := float(_view.get(LEAD_SCALAR, 1.0))
-	var cap := float(_view.get("death_loss_cap", 1.0))
-	return (
-		"%s %s, capped at %s"
-		% [
-			LEAD_LABEL,
-			_share_text(LEAD_SCALAR, share),
-			_share_text("death_loss_cap", cap),
-		]
-	)
+	# NOT "capped at X" any more. `death_loss_cap` was cut (BL-0887) because it bound on no
+	# shipped preset, so the row used to promise a ceiling the arithmetic never applied — a
+	# player reading "capped at 150%" while paying 150% either way was told a fact about the
+	# game that was not true. The share alone is now the whole of what a death costs.
+	return "%s %s" % [LEAD_LABEL, _share_text(LEAD_SCALAR, share)]
 
 
 ## Whether this row is the live preset, and whether selecting it would be a no-op.
@@ -220,14 +214,11 @@ func _share_text(name: String, value: float) -> String:
 	return "%d%%" % percent if absf(percent - 100.0) > 0.001 else "100%" + _suffix(name)
 
 
-## The suffix that says what a share is a share OF. Only the two scalars a player
-## feels on a death carry one; the rest are named by their own column.
+## The suffix that says what a share is a share OF. Only the lead scalar a player feels on a
+## death carries one; the rest are named by their own column.
 func _suffix(name: String) -> String:
-	match name:
-		LEAD_SCALAR:
-			return SHARE_SUFFIX
-		"death_loss_cap":
-			return CAP_SUFFIX
+	if name == LEAD_SCALAR:
+		return SHARE_SUFFIX
 	return ""
 
 

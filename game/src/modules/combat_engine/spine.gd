@@ -151,7 +151,7 @@ static func resolve_hit(
 	if band.missed:
 		return outcome
 	# --- S3: a SECOND draw, clean hits only. A parried or blocked hit never crits. ---
-	var crit := band.is_clean() and _crit(attacker, rng)
+	var crit := band.is_clean() and _crit(attacker, target, rng)
 	outcome.crit = crit
 	# --- S4 / S5: the seam. Two virtuals, one shape, three implementations. ---
 	var ctx := _context(ctx_builder, attacker, target, technique, tuning, outcome.base, true, crit)
@@ -166,7 +166,7 @@ static func resolve_hit(
 	if not is_finite(amount):
 		amount = 0.0
 	if crit:
-		amount *= _crit_damage(attacker)
+		amount *= _crit_damage(attacker, target)
 	outcome.amount = maxf(0.0, amount)
 	# --- S7: one mitigation shape for all three paths, linear and floored at zero. ---
 	outcome.amount = maxf(
@@ -392,24 +392,28 @@ static func _scaled_core_reduction(target: Actor, tuning: CombatTuning) -> float
 	return clampf(_stat(target, Stat.DAMAGE_REDUCTION), 0.0, tuning.amp_scale)
 
 
-## S3's draw. `Stat.CRIT_CHANCE` already caps itself at 0.75 in
-## `core/actor_stats.gd`, so a non-negative roll cannot crit.
-static func _crit(attacker: Actor, rng: Variant) -> bool:
+## S3's draw. The crit CHANCE contest: attacker's `Stat.CRIT_CHANCE` against the
+## defender's `Stat.CRIT_RESIST`, through [method CombatStats.contest_of] — the same
+## ratio shape as the hit, parry and block contests. ADR 0215 converted parry and
+## block but missed this one; the bare `rng.randf() < crit_chance` left the
+## defence half unread, so a player could invest in crit chance with no answer.
+static func _crit(attacker: Actor, target: Actor, rng: Variant) -> bool:
 	if rng == null:
 		return false
-	return rng.randf() < maxf(0.0, _stat(attacker, Stat.CRIT_CHANCE))
+	var p := CombatStats.contest_of(Stat.CRIT_CHANCE, attacker, Stat.CRIT_RESIST, target)
+	return rng.randf() < p
 
 
-## S2's `p_hit`: the landed chance, from the DEFENDER's `Stat.EVASION` less the
-## attacker's `CombatStats.ACCURACY`. That subtraction is the only thing `accuracy`
-## does, and it is why `Stat.EVASION`'s 0.6 cap is a real bound: even at zero accuracy
-## the landed chance is at least 0.4, so there is no second miss channel.
+## S2's `p_hit`: the landed chance, as the ratio contest
+## `accuracy / (accuracy + evasion)` through [method CombatStats.contest_of].
+## ADR 0215 converted parry and block to this shape but missed the hit contest —
+## the old `1 - (evasion - accuracy) / rate_scale` saturated as the ladder widened
+## the gap, so a high-agility defender drove `p_hit` to exactly `0.0`.
 ## The landed probability for one attack, `p_hit` for the band roll. Public because a
 ## preview must quote the exact chance a screen shows, and a caller reaching into the
 ## spine's internals to get it would be a second, divergent copy of this line.
 static func landed_chance(attacker: Actor, target: Actor, tuning: CombatTuning) -> float:
-	var evasion := maxf(0.0, _stat(target, Stat.EVASION) - _stat(attacker, CombatStats.ACCURACY))
-	return clampf(1.0 - evasion / tuning.rate_scale, 0.0, 1.0)
+	return CombatStats.contest_of(CombatStats.ACCURACY, attacker, Stat.EVASION, target)
 
 
 ## S2's `p_parry`. Linear-from-zero, so an unstatted defender parries 0% and never a
@@ -438,8 +442,34 @@ static func _block(attacker: Actor, target: Actor, tuning: CombatTuning) -> floa
 ## S6's multiplier. `Stat.CRIT_DAMAGE` is a MULTIPLIER with a 1.5 baseline, not a
 ## bonus, and it is read here exactly once: the CHANCE was resolved at S3, so a second
 ## `Stat.CRIT_CHANCE` read here would make the ladder a second crit dial.
-static func _crit_damage(attacker: Actor) -> float:
-	return maxf(0.0, _stat(attacker, Stat.CRIT_DAMAGE))
+##
+## ## ADR 0215. The two halves of the crit-DAMAGE contest, and why the second read is here
+## `Stat.CRIT_RESIST_DAMAGE` is the DEFENCE half and it was declared with no baseline
+## anywhere, so this line was the attacker half of a contest the defender had no side of:
+## a player could raise crit size and nothing could answer it, which `AGENTS.md`'s
+## yin-yang rule calls a defect rather than a pending item.
+##
+## ## Why SUBTRACTION and not a ratio, stated so it is not "fixed" later
+## Every OTHER contest in this module is `offense / (offense + defense)` — `landed_chance`
+## for the hit, `CombatBand.ratio` for parry and block. This one is not, and the reason
+## is that its two halves are not the same kind of number: `CRIT_DAMAGE` is a `1.0`-means-
+## no-change MULTIPLIER and `CRIT_RESIST_DAMAGE` is a share of it, not another attack
+## rate. There is no "share of a crit" for a ratio to return — the ratio answer to
+## `crit_resist` already exists and is a different pair (`CRIT_CHANCE` / `CRIT_RESIST`).
+## So the answer here is a REDUCTION of the multiplier, `1.0 - resist`, floored at `0.0`.
+##
+## ## Why the floor at `0.0` is the design and not an omission
+## A fully invested defender refusing every crit is a REACHABLE limit. `crit_resist_damage`
+## is unbounded, so no ladder makes it asymptotic — the alternative (a soft curve that
+## never reaches zero) is the ADR 0215 saturation failure in a fourth uniform, and it is
+## what makes "you cannot crit me" a free immunity instead of an investment.
+##
+## Both reads are TOTAL through [method _stat], so a half-built actor contests nothing
+## rather than crashing a hit that has already committed to mutating both of them.
+static func _crit_damage(attacker: Actor, target: Actor) -> float:
+	var magnitude := maxf(0.0, _stat(attacker, Stat.CRIT_DAMAGE))
+	var resist := _stat(target, Stat.CRIT_RESIST_DAMAGE)
+	return magnitude * maxf(0.0, 1.0 - resist)
 
 
 # --- context ------------------------------------------------------------------

@@ -35,8 +35,8 @@ const PROVIDER_SURFACE := [
 	MindStats.MENTAL_ATTACK,
 	MindStats.MENTAL_DEFENSE,
 	MindStats.SPIRITUAL_SENSE_RANGE,
-	MindStats.MIND_FOCUS_CHANCE,
-	MindStats.MIND_AVOIDANCE,
+	MindStats.MIND_CLARITY,
+	MindStats.MIND_VEIL,
 	MindStats.ILLUSION_RESISTANCE,
 	MindStats.MIND_TECHNIQUE_POWER,
 ]
@@ -111,11 +111,13 @@ func test_no_sea_component_means_no_contribution() -> void:
 ## This used to build `shared` from `Stat.RATE_STATS` and assert no published key was in
 ## it. That inferred OWNERSHIP from a list whose membership is a claim about SHAPE: BL-0675
 ## registered `mind_focus_chance`, `mind_avoidance` and `illusion_resistance` there — they
-## are genuinely rates, and a FLAT on one must be refused — so the guard would have failed
-## on this module's own ids. `test_mind_renamed_stat_ids.gd` had the same inference and
-## the same repair; `test_combat_stats_shape.gd:116` is where the probe idiom came from,
-## after BL-0362 recorded that the list comparison had passed a real `penetration`
-## collision because core's derived ids are in no list at all.
+## were genuinely rates, and a FLAT on one had to be refused. ADR 0215 removed their caps,
+## so all three are MAGNITUDES and left `RATE_STATS` entirely; the ids in this file moved
+## with that (they are `mind_clarity` / `mind_veil` now), which is why the list-comparison
+## version would have quietly stopped guarding anything. `test_mind_renamed_stat_ids.gd`
+## had the same inference and the same repair; `test_combat_stats_shape.gd:116` is where
+## the probe idiom came from, after BL-0362 recorded that the list comparison had passed a
+## real `penetration` collision because core's derived ids are in no list at all.
 func test_the_module_publishes_no_second_dial_on_a_shared_rate() -> void:
 	var actor := _actor()
 	var emitted: Dictionary = MindProvider.new().contribute(actor.stats._context)

@@ -225,6 +225,13 @@ func test_a_def_script_may_be_unbound_and_that_is_distinguishable_from_a_missing
 ## A wrong-typed def label reads as ABSENT rather than aborting the registration. The
 ## reasoning is `String(42.0)` RAISING in GDScript, which a corrupt profile would turn
 ## into a script error at a caller rather than a refusal here.
+##
+## The value is handed over DIRECTLY, with no cast and no helper. A `bad as String` at
+## the call site is a PARSE error — the suite would not compile, so the case would assert
+## nothing while reading as a passing one — and a helper declared `-> String` errors on
+## its own `return` for a float, a Dictionary, an Array and a `Vector2`, which prints
+## five SCRIPT ERRORs and hands the callee a null. `register` takes a `Variant` for
+## exactly this reason, which is why the case CAN be written at all.
 func test_a_wrong_typed_def_label_reads_as_absent_rather_than_raising() -> void:
 	var report := _registry.register(&"thing", 42.0, [], DEF)
 	assert_eq(String(report["reason"]), InstitutionRegistry.R_EMPTY_DEF_TYPE, "it refuses")
@@ -310,13 +317,11 @@ func test_the_registry_publishes_no_derived_foundable_flag_to_disagree_with() ->
 
 # --- ADR 0084: the refusal is STRUCTURAL --------------------------------------
 
+
 ## Every verb a kind registry must never grow. If one of these appears on
 ## `InstitutionRegistry`, an institution has grown a way to hand out a stat, and
 ## ADR 0084 says it never may. `tools arch` cannot see a method that does not exist,
 ## so the guard is this test — the same shape `test_sect_no_power.gd` uses.
-const FORBIDDEN_VERBS_UNUSED := []
-
-
 ## A capability is a DESCRIPTOR of what a kind IS, never a magnitude it hands out.
 ## So the registry has no number in its published surface at all — the one structural
 ## statement that keeps "a percent, never a flat" from being restated here.
@@ -347,7 +352,7 @@ func test_the_registry_publishes_no_power_granting_verb_and_no_magnitude() -> vo
 func test_a_wrong_typed_value_is_refused_rather_than_raising() -> void:
 	# Every one of these would RAISE under a raw `String(...)` cast.
 	for bad in [42.0, {"a": 1}, [1, 2], Vector2(1.0, 2.0)]:
-		var report := _registry.register(&"thing", bad as String, [], DEF)
+		var report := _registry.register(&"thing", bad, [], DEF)
 		assert_eq(
 			String(report["reason"]),
 			InstitutionRegistry.R_EMPTY_DEF_TYPE,

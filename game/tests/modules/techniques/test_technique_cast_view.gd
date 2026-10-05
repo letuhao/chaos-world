@@ -612,5 +612,3 @@ func test_the_readback_writes_no_pool_of_its_own() -> void:
 		60.0,
 		"and the readback observed that rather than moving it again"
 	)
-t again"
-	)

@@ -28,6 +28,7 @@ const BASE_DEPS := {
 	"custody": ["economy"],
 	"destiny": [],
 	"difficulty": [],
+	"doctrine": ["destiny", "economy", "items", "quest"],
 	"domain": [],
 	"dual_cultivation": [],
 	"economy": ["items"],

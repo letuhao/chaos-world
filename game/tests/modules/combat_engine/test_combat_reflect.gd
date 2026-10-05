@@ -141,8 +141,8 @@ func test_a_resister_above_parity_leaves_less_than_half_and_never_zero() -> void
 	# against two authored pairs rather than a restated number, so a saturating or a
 	# zeroing formula fails here.
 	var steeper := _resolve(_resisting(7.0), target, 40.0)
-	assert_eq(steepper.reflected < strong.reflected, true, "more resist, strictly less bounce")
-	assert_eq(steepper.reflected > 0.0, true, "and still never zero")
+	assert_eq(steeper.reflected < strong.reflected, true, "more resist, strictly less bounce")
+	assert_eq(steeper.reflected > 0.0, true, "and still never zero")
 
 
 # --- the chain ------------------------------------------------------------------

@@ -33,9 +33,13 @@ extends Resource
 
 ## The closed scalar vocabulary. A consumer may read these and nothing else, and the guard
 ## fails a table carrying a key outside this set.
+##
+## `death_loss_cap` was the fifth and it is deleted (BL-0887), on the same grounds as
+## `loot_ceiling` before it (BL-0779): measured against the authored table the cap bound on NO
+## preset, so its reader was a no-op rather than absent — a shape the earlier sweep, which
+## looked only for scalars nothing read, did not catch.
 const SCALARS: Array[String] = [
 	"soul_damage_share",
-	"death_loss_cap",
 	"guardian_effectiveness",
 	"tribulation_preparation_credit",
 ]

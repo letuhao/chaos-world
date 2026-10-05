@@ -299,7 +299,7 @@ func test_a_refused_cast_reports_nothing_moved() -> void:
 ## naming the class.
 func test_the_readback_is_reached_through_the_facade_constant_not_a_thirteenth_verb() -> void:
 	var published: Array[String] = []
-	for method in TechniquesApi.new().get_script().get_script_method_list():
+	for method in load("res://src/modules/techniques/api.gd").get_script_method_list():
 		var method_name := String(method.get("name", ""))
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)

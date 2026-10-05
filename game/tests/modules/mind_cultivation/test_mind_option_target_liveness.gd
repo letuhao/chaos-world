@@ -42,12 +42,16 @@ const CATALOG_PATH := "res://data/item_options/master_option_pool.jsonl"
 const OPTION_POOL_DIRS := ["res://data/item_options", "res://data/item_options/derived"]
 const OPTION_ID := &"cult_dodge_chance"
 
-## The names ADR 0071 retired. Literals, and a SECOND copy of the list in
-## `test_mind_renamed_stat_ids.gd`, on purpose: that file guards `res://src` and
-## this one guards `res://data`, and no constant exists for a name that was
-## deleted. Derived from `Stat` it could not be — neither id is a core id, which
-## is the whole reason ADR 0071 renamed rather than folded.
-const RETIRED := [&"critical_chance", &"dodge_chance"]
+## The names ADR 0071 and ADR 0215 retired, in `res://data`. Literals, and a SECOND
+## copy of the list in `test_mind_renamed_stat_ids.gd`, on purpose: that file guards
+## `res://src` and this one guards `res://data`, and no constant exists for a name that
+## was deleted. Derived from `Stat` it could not be — none of the four is a core id,
+## which is the whole reason ADR 0071 renamed rather than folded.
+##
+## ADR 0215's pair is here for the same reason ADR 0071's is: `cult_dodge_chance` is
+## ALREADY residue against a name no provider has published, and authored content
+## pointing at the intermediate pair would be the identical defect one generation on.
+const RETIRED := [&"critical_chance", &"dodge_chance", &"mind_focus_chance", &"mind_avoidance"]
 
 const ROLL_REALM := &"qi_refining"
 const ROLL_RARITY := 3
@@ -64,16 +68,17 @@ func _mind_stat_ids() -> Array:
 		MindStats.MENTAL_ATTACK,
 		MindStats.MENTAL_DEFENSE,
 		MindStats.SPIRITUAL_SENSE_RANGE,
-		MindStats.MIND_FOCUS_CHANCE,
-		MindStats.MIND_AVOIDANCE,
+		MindStats.MIND_CLARITY,
+		MindStats.MIND_VEIL,
 		MindStats.MIND_TECHNIQUE_POWER,
 		MindStats.ILLUSION_RESISTANCE,
 	]
 
 
 ## A mind actor with the module and the sea attached and nothing earned. The
-## `PERCEPTION` floor is load-bearing: `MindProvider` derives `mind_avoidance` as
-## `minf(0.6, perception * 0.002 + awareness_ratio * 0.05)`, so a zero-perception
+## `PERCEPTION` floor is load-bearing: `MindProvider` derives `mind_veil` as
+## `perception * 0.002 + awareness_ratio * 0.05` (ADR 0215 deleted the `minf(0.6, …)`
+## around it, so the term is unchanged and only the ceiling is gone), so a zero-perception
 ## actor has an identically-zero baseline and a PERCENT on it would be a no-op for
 ## a reason that has nothing to do with the defect under test.
 func _mind_actor() -> Actor:
@@ -253,11 +258,11 @@ func test_rolling_the_option_moves_the_stat_it_targets() -> void:
 	assert_eq(effect.get("op", "") == &"PERCENT", true, "the rolled op is PERCENT")
 
 	var actor := _mind_actor()
-	var before := actor.stats.derived(MindStats.MIND_AVOIDANCE)
+	var before := actor.stats.derived(MindStats.MIND_VEIL)
 	assert_eq(before > 0.0, true, "the module publishes a non-zero baseline to scale")
 	for modifier in ItemEffects.stat_modifiers([effect], SOURCE):
 		actor.stats.add_modifier(modifier)
-	var after := actor.stats.derived(MindStats.MIND_AVOIDANCE)
+	var after := actor.stats.derived(MindStats.MIND_VEIL)
 
 	assert_eq(after > before, true, "the option moved the stat it targets")
 	assert_almost_eq(

@@ -201,7 +201,6 @@ const ALL_IDS: Array[StringName] = [
 ## "this id is a magnitude half of a contest", and every id in the list below is read
 ## through [method contest] or [method CombatBand.ratio].
 const RATE_IDS: Array[StringName] = [
-	ACCURACY,
 	ABSORPTION,
 	PENETRATION,
 	PARRY_RATE,
@@ -220,7 +219,6 @@ const RATE_IDS: Array[StringName] = [
 ## `0.0` rather than a sigmoid's unchosen 0.5 (ADR 0068). Nothing here is shipped
 ## balance — the values arrive as `StatModifier`s; this is only the neutral reading.
 const RATE_DEFAULTS: Dictionary = {
-	ACCURACY: 0.0,
 	ABSORPTION: 0.0,
 	PENETRATION: 0.0,
 	PARRY_RATE: 0.0,

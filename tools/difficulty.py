@@ -39,7 +39,6 @@ TABLE_SCRIPT = "res://src/modules/difficulty/difficulty_table.gd"
 # scalar it quietly ignores.
 SCALARS = (
     "soul_damage_share",
-    "death_loss_cap",
     "guardian_effectiveness",
     "tribulation_preparation_credit",
 )

@@ -312,8 +312,22 @@ func test_every_mind_control_stat_is_registered_as_a_rate() -> void:
 		)
 	# The positive control, so the loop above is not vacuously true over an empty set.
 	assert_eq(derived.size(), 12, "four shapes and two channels, each with a pair of halves")
+	# ADR 0215. The assertion used to read `mind_avoidance` is registered, which was
+	# true while that stat still carried its `minf(0.6, …)` and was therefore a rate.
+	# ADR 0215 deleted the cap and renamed the id to `mind_veil`, so BOTH halves of that
+	# fact moved at once: the old spelling is no longer published, and the new one is an
+	# unbounded MAGNITUDE rather than a rate — so it correctly LEFT `RATE_STATS` with
+	# `mind_clarity`. Asserting the new id here would be asserting the OPPOSITE of what
+	# the twelve above prove, which is why this line now pins the retirement instead.
 	assert_eq(
-		Stat.RATE_STATS.has(&"mind_avoidance"), true, "and the pre-existing rates still register"
+		Stat.RATE_STATS.has(&"mind_avoidance"),
+		false,
+		"and ADR 0215's de-capped, renamed mind pair left the registration list"
+	)
+	assert_eq(
+		Stat.RATE_STATS.has(&"mind_veil"),
+		false,
+		"mind_veil is an unbounded magnitude, so a FLAT on it is legal content"
 	)
 
 

@@ -469,16 +469,28 @@ func _heal(actor: Actor) -> void:
 	pool.change(target - pool.current)
 
 
-## What this death costs the soul, from the authored base and difficulty's share, clamped by
-## difficulty's cap. Refuses `no_difficulty` by falling back to the BASE cost rather than to
-## zero: a missing preset must be inert, never a free death.
+## What this death costs the soul: the authored base scaled by difficulty's share. Refuses
+## `no_difficulty` by falling back to the BASE cost rather than to zero: a missing preset must
+## be inert, never a free death.
+##
+## `death_loss_cap` is GONE (BL-0887), and this is why the signature is unchanged while the
+## body is shorter. Measured from the authored table, the cap bound on NO preset: story is
+## share 0.5 / cap 1.0 so the share was already the binding term, standard is 1.0 / 1.0, and
+## hard is 1.5 / 1.5 so the clamp computed `min(30, 30)`. A column whose reader is a no-op is
+## the same defect as a column with no reader, and the BL-0779 sweep missed it because it
+## looked for the second shape only.
+##
+## What is lost, stated plainly: a cap is the right shape when a preset wants a damage
+## multiplier that stops partway — share 3.0 with cap 2.0 means "twice as painful, never more".
+## No shipped preset expressed that intent, so the programme has no damage ceiling. A future
+## one arrives as a preset setting share ABOVE cap, which is why `DifficultyTable` carries a
+## guard asserting every row has share <= cap.
 func _scaled_cost(actor: Actor, base_cost: int) -> int:
 	var scalars := DifficultyApi.scalars(actor)
 	if scalars.is_empty():
 		return base_cost
 	var share := float(scalars.get("soul_damage_share", 1.0))
-	var cap := float(scalars.get("death_loss_cap", 1.0))
-	return maxi(1, mini(int(float(base_cost) * share), int(float(base_cost) * cap)))
+	return maxi(1, int(float(base_cost) * share))
 
 
 ## Mint the new body through the gate's arrival and swap every binding to it.

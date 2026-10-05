@@ -238,7 +238,7 @@ var kind: Kind = Kind.DISRUPT
 ## of ADR 0067 splitting them.
 ##
 ## `ctx.crit` is deliberately NOT read: S6 multiplies the AMOUNT and a mind amount is zero,
-## so the shared crit channel is simply inert here. Mind crit is `MIND_FOCUS_CHANCE`, and
+## so the shared crit channel is simply inert here. Mind crit is `MIND_CLARITY`, and
 ## [method _focus_of] is its only implementation in the engine — one draw on `ctx.rng`, and
 ## NO draw at all when `rng` is null, because a deterministic caller is asking for the one
 ## answer that consults no randomness.
@@ -729,7 +729,7 @@ static func _penetration_of(ctx: AttackContext) -> float:
 	return maxf(0.0, CombatStats.default_of(id) + _finite(ctx.attacker_value(id)))
 
 
-## `1 - COHERENCE_DAMP * awareness_ratio`, less whatever a `mind_avoidance` spend removes.
+## `1 - COHERENCE_DAMP * awareness_ratio`, less whatever a `mind_veil` spend removes.
 ##
 ## The DEPLETING reserve is the mind path's first defensive lever and the only term that
 ## moves with it: a defender who spends awareness to take a mind strike takes the next one
@@ -737,7 +737,7 @@ static func _penetration_of(ctx: AttackContext) -> float:
 ## stack. At the shipped `0.5` a full reserve halves the incoming coherence and an empty one
 ## does not.
 ##
-## `mind_avoidance`'s spend removes exactly `COHERENCE_DAMP` of the coherence, which at the
+## `mind_veil`'s spend removes exactly `COHERENCE_DAMP` of the coherence, which at the
 ## shipped `0.5` is half of it — deliberately different from a crit, which SPENDS
 ## `FOCUS_MULT`. Avoidance is a STEADIER, not a refusal, so it can be as cheap as a half and
 ## can never become a second miss channel the way an `EVASION` stat could. `ATTEND` is
@@ -752,33 +752,46 @@ func _coherence_of(
 	return clampf(maxf(coherence, refund), 0.0, 1.0)
 
 
-## `FOCUS_MULT` when the `mind_focus_chance` roll came up, `1.0` otherwise.
+## `FOCUS_MULT` when the `mind_clarity` roll came up, `1.0` otherwise.
 ##
-## The ONLY consumer of `MIND_FOCUS_CHANCE` in the engine. One draw on `ctx.rng`, the ADR
+## The ONLY consumer of `MIND_CLARITY` in the engine. One draw on `ctx.rng`, the ADR
 ## 0067 determinism rule: a null `rng` spends NO draw and answers `1.0`, because a
 ## deterministic caller is asking for the one answer that consults no randomness and a
 ## silent `randf()` fallback would make the same hit replay differently.
+##
+## ## ADR 0215. The id it reads, and why it is a MAGNITUDE now
+## The stat was `mind_focus_chance` and is `mind_clarity`: the contest finally has a
+## name for both halves (`mind_clarity` attacks, `mind_veil` hides), which is what ADR
+## 0215 renamed it for. The `clampf` below is the SHAPE this read has always had -- a
+## `[0, 1]` fraction a roll compares against -- and ADR 0215's `minf(0.75, …)` was
+## deleted at the PUBLISH end (`MindProvider`), not here. The clamp is therefore NOT a
+## cap on the stat and must not be read as one: an unbounded `mind_clarity` reads `1.0`
+## through it, which is a fully invested attacker critting every mind strike it lands.
 func _focus_of(ctx: AttackContext, tuning: CombatTuning) -> float:
 	# Hole 5: a multiplier below 1.0 would make a crit a WEAKER strike, so the read floor is
 	# 1.0 rather than a clamp at 0.0 -- the neutral is 1.0 and the dial only ever adds.
 	var mult := maxf(1.0, _finite(tuning.focus_mult))
 	if ctx.rng == null:
 		return 1.0
-	var chance := clampf(
-		_finite(ctx.attacker_value(_mind_stat(tuning, "mind_focus_chance"))), 0.0, 1.0
-	)
+	var chance := clampf(_finite(ctx.attacker_value(_mind_stat(tuning, "mind_clarity"))), 0.0, 1.0)
 	if chance <= 0.0:
 		return 1.0
 	return mult if ctx.rng.randf() < chance else 1.0
 
 
-## Whether the defender's `mind_avoidance` roll came up, as the coherence share it is worth.
+## Whether the defender's `mind_veil` roll came up, as the coherence share it is worth.
 ## The twin of [method _focus_of] on the other side of the exchange, and it shares that
 ## function's null-`rng` rule: no generator, no draw, no answer.
+##
+## ## ADR 0215. Same rename, same reason the clamp is a shape and not a cap
+## `mind_avoidance` is `mind_veil`, and its `minf(0.6, …)` is deleted at the publish end.
+## `_share(tuning.coherence_damp)` — not the stat itself — is what this roll is worth, so
+## an unbounded `mind_veil` buys a MORE reliable spend of the reserve rather than a
+## bigger one; the ceiling that bounded the RELIABILITY is the thing ADR 0215 removed.
 func _avoidance_of(ctx: AttackContext, tuning: CombatTuning, kind_value: Kind) -> float:
 	if kind_value == Kind.ATTEND or ctx.rng == null:
 		return 0.0
-	var chance := clampf(_finite(ctx.target_value(_mind_stat(tuning, "mind_avoidance"))), 0.0, 1.0)
+	var chance := clampf(_finite(ctx.target_value(_mind_stat(tuning, "mind_veil"))), 0.0, 1.0)
 	if chance <= 0.0 or ctx.rng.randf() >= chance:
 		return 0.0
 	return _share(tuning.coherence_damp)
@@ -1097,8 +1110,9 @@ static func _number(value: Variant) -> float:
 ## - `tick_collapse` read a sea's `tier` as `""`, found no successor in the ladder and
 ##   REFUSED every collapse (hole 8, wrongly — the sea was demotable the whole time);
 ## - `_mind_stat` built the bare name `"mental_attack"` instead of `&"mental_attack"`, which
-##   no provider contributes, so `mental_attack`, `mental_defense`, `mind_focus_chance`,
-##   `mind_avoidance` and `illusion_resistance` ALL read `0.0` — which is why
+##   no provider contributes, so `mental_attack`, `mental_defense`, `mind_clarity`
+##   (ADR 0215's rename of `mind_focus_chance`), `mind_veil` (of `mind_avoidance`) and
+##   `illusion_resistance` ALL read `0.0` — which is why
 ##   "defense 0.0 saturates at the cap" could pass with a `0.0` on BOTH sides of the
 ##   assertion and the `40%` floor check beside it, and the fixture's sea silently stopped
 ##   being read at all;

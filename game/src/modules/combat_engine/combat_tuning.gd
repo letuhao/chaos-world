@@ -217,8 +217,10 @@ extends Resource
 ## **The shipped value is the EMPTY prefix, and that is correct rather than broken.**
 ## Unlike `element_power_<e>`, mind's ids carry no per-instance suffix: the mechanism reads
 ## `<prefix>mental_attack`, `<prefix>mental_defense`, `<prefix>illusion_resistance`,
-## `<prefix>mind_focus_chance` and `<prefix>mind_avoidance`, which at `""` are exactly the
-## bare ids `MindProvider.contribute` already emits. The field exists so the EDGE stays a
+## `<prefix>mind_clarity` and `<prefix>mind_veil`, which at `""` are exactly the
+## bare ids `MindProvider.contribute` already emits. The last two are ADR 0215's renames
+## of `mind_focus_chance` and `mind_avoidance`; an author who sets a non-empty prefix
+## must set the `MindProvider` side to match. The field exists so the EDGE stays a
 ## string concatenation instead of a class reference, not because there is something to
 ## prepend -- an author who sets it must set the `MindProvider` side to match.
 @export var mind_stat_prefix: String = ""

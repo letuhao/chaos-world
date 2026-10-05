@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LootTableDef" load_steps=21 format=3]
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
 [ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
@@ -219,6 +219,18 @@ guaranteed = false
 quantity = 1
 rarity_floor = &""
 
+[sub_resource type="Resource" id="entry_entry_band_gear"]
+script = ExtResource("2_entry")
+id = &"F9_ascension_warden_entry_band_gear"
+kind = &"item"
+item_id = &"I5_mortal_drayage_perfected"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
 [resource]
 script = ExtResource("1_table")
 id = &"loot_F9_ascension_warden"
@@ -245,5 +257,6 @@ entries = Array[LootEntry]([
 	SubResource("entry_14"),
 	SubResource("entry_15"),
 	SubResource("entry_16"),
-	SubResource("entry_17")
+	SubResource("entry_17"),
+	SubResource("entry_entry_band_gear"),
 ])

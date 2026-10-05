@@ -98,7 +98,7 @@ func _bound(actor: Actor) -> DamageMechanism:
 ## `AttackContext` takes one `Actor` per side and reads the live derived cache, so
 ## attacker and target being the same actor needs no second fixture and no hand-copied
 ## stat. `rng` stays null, which ADR 0067 makes the deterministic answer, so
-## `mind_focus_chance` and `mind_avoidance` are exercised at their READ rather than at a
+## `mind_clarity` and `mind_veil` are exercised at their READ rather than at a
 ## dice outcome.
 func _context(actor: Actor, kind_value: MindDamage.Kind) -> AttackContext:
 	var mechanism := _bound(actor)

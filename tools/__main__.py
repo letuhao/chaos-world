@@ -55,6 +55,8 @@ no_caller_verbs_selftest = _load("arch.no_caller_verbs_selftest")
 # in `selftest_cases.py`: that file is shared and busy, so an append there cannot be committed
 # without sweeping another session's in-flight cases (INC-0041), and an uncommittable red path is
 # not a red path.
+art_index = _load("art_index")
+art_index_selftest = _load("art_index_selftest")
 png_provenance = _load("png_provenance")
 png_provenance_selftest = _load("png_provenance_selftest")
 race_from_lore = _load("race_from_lore")
@@ -90,6 +92,7 @@ mutation_history = _load("mutation_history_cmd")
 selftest_cases = _load("selftest_cases")
 selftest = _load("selftest")
 map_theme = _load("map_theme")
+path_guard = _load("path_guard")
 new_adr = _load("new_adr")
 new_module = _load("new_module")
 portrait_fallback = _load("portrait_fallback")
@@ -115,6 +118,7 @@ COMMANDS = {
     "mutation_history": mutation_history,
     "selftest": selftest,
     "map_theme": map_theme,
+    "path_guard": path_guard,
     "arch": arch,
     "facade_constants": facade_constants,
     "no_caller_verbs": no_caller_verbs,
@@ -132,6 +136,7 @@ COMMANDS = {
     "export": export,
     "ui": ui,
     "new_module": new_module,
+    "art_index": art_index,
     "png_provenance": png_provenance,
     "portrait_fallback": portrait_fallback,
     "race_from_lore": race_from_lore,

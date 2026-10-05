@@ -74,20 +74,37 @@ func contribute(context: StatContext) -> Dictionary:
 		MindStats.MENTAL_DEFENSE:
 		(mental_clarity * 2.0 + will * 0.5) * technique_factor * (1.0 + meridian_power),
 		MindStats.SPIRITUAL_SENSE_RANGE: 50.0 + perception * 5.0 + technique_factor * 10.0,
-		# ADR 0071 / BL-0114: `MIND_FOCUS_CHANCE` and `MIND_AVOIDANCE` are the RENAMED
-		# `critical_chance` / `dodge_chance`. Neither is core's `Stat.CRIT_CHANCE` or
-		# `Stat.EVASION` and neither may ever gate a non-mind hit -- folding them into core
-		# would have made every mind stat boost every qi and body hit, which is why ADR
-		# 0071 ruled RENAME rather than fold. Their ONLY consumer is ADR 0071's
-		# `MindDamage`, which reads the first to spend `FOCUS_MULT` on the TURBULENCE term
-		# alone and the second to remove `COHERENCE_DAMP` of the coherence term. That
-		# mechanism is not written: the formulas below are unchanged by the rename, and
-		# `combat_tuning.gd` already carries its nine tuning numbers defaulted to 0.0.
-		# The formulas are UNCHANGED by the rename -- same perception and awareness terms,
-		# same caps -- so this is a save-affecting rename and nothing else.
-		MindStats.MIND_FOCUS_CHANCE: minf(0.75, 0.05 + perception * 0.003 + awareness_ratio * 0.1),
-		MindStats.MIND_AVOIDANCE: minf(0.6, perception * 0.002 + awareness_ratio * 0.05),
-		MindStats.ILLUSION_RESISTANCE: minf(0.8, mental_clarity * 0.004 + will * 0.002),
+		# ADR 0071 / BL-0114, then ADR 0215. `MIND_FOCUS_CHANCE` and `MIND_AVOIDANCE`
+		# were ADR 0071's RENAMED `critical_chance` / `dodge_chance`, and ADR 0215 renamed
+		# them AGAIN to `MIND_CLARITY` / `MIND_VEIL` so the contest has a name for both
+		# halves: `mind_clarity` attacks and `mind_veil` hides. Neither is core's
+		# `Stat.CRIT_CHANCE` or `Stat.EVASION` and neither may ever gate a non-mind hit --
+		# folding them into core would have made every mind stat boost every qi and body
+		# hit, which is why ADR 0071 ruled RENAME rather than fold, and why ADR 0215 kept
+		# that ruling instead of folding them into core's crit pair.
+		#
+		# ## ADR 0215 deleted the `minf` on all THREE of these, and that is the
+		# ## load-bearing half of the rename
+		# `minf(0.75, …)`, `minf(0.6, …)` and `minf(0.8, …)` were every one of them
+		# rate-shaped by the shape rule, every one of them a half of a CONTEST, and every
+		# one of them a cap whose only effect was to stop the defender's half growing. ADR
+		# 0200 deliberately KEPT caps on rate axes; ADR 0215 is the decision that that
+		# rule was applied to the wrong question for a contest, because a rate contest is
+		# `offense / (offense + defense)` and a cap there bounds a HALF of a ratio rather
+		# than a rate axis nothing contests. So the caps are deleted rather than retuned:
+		# the attribute terms are unchanged, they simply have no ceiling, which is why all
+		# three left `Stat.RATE_STATS` and why a FLAT on any of them is legal content
+		# rather than +1000%.
+		#
+		# ## Why the formula bodies are otherwise bit-for-bit unchanged
+		# This is a rename and a de-capping and nothing else. `perception`, `awareness_ratio`
+		# and `mental_clarity` are the same three inputs with the same three coefficients,
+		# so a save written against the old ids keeps the same numbers -- which is the
+		# testable claim `test_mind_clarity_veil_pair.gd` makes, and it makes it by
+		# measuring both halves rather than restating them.
+		MindStats.MIND_CLARITY: 0.05 + perception * 0.003 + awareness_ratio * 0.1,
+		MindStats.MIND_VEIL: perception * 0.002 + awareness_ratio * 0.05,
+		MindStats.ILLUSION_RESISTANCE: mental_clarity * 0.004 + will * 0.002,
 		MindStats.MIND_TECHNIQUE_POWER:
 		(perception * 1.5 + mental_clarity * 1.0) * technique_factor * (1.0 + meridian_power),
 	}

@@ -207,6 +207,10 @@ transparent and exactly the declared canvas.
 
 ### 9. Validate
 
+**Two separate gates, and the second one is the one that matters.**
+
+#### 9a. Schema — machine, authoritative
+
 ```bash
 uv run python -m tools unique_characters check
 uv run python -m tools lore validate
@@ -223,6 +227,49 @@ catalog exists. Verifying `to` in step 7 is the agent's job; nothing enforces it
 `lore validate` fails on the bible's own problems: dangling references, `slot`-independent schema
 faults, and self-reference. `lore challenge` never fails; its findings are questions the bible
 cannot answer about itself. Read it, and answer in the record.
+
+#### 9b. The render — visual, and the gate cannot do it
+
+```bash
+uv run python -m tools art_fidelity check     # prefilter ONLY
+```
+
+**A green `art_fidelity check` is not a passing render.** It proves bounds — canvas, alpha
+share, palette containment, one-subject — and nothing about content. On the first character
+built with this skill it passed **21 of 21** renders that every inspector rejected.
+
+**You must open each PNG and look at it before that shot may be indexed `generated`.** No
+exceptions, no percentage allowance, no delegating it to a gate.
+
+Check, in this order — first because everything else is measured against it:
+
+1. **Right person?** age, sex, build. The first character's two reference plates both
+   depicted a young man instead of a 41-year-old woman, which invalidated the whole set.
+2. **Hair** blade-cropped, uneven. A styled bob or fringe is a fail.
+3. **Flush** on the cheeks is a fail.
+4. **Ornament** — any button, clasp, brooch, buckle, tassel, pendant, chain or embroidered
+   motif. The model invents one on most renders even when the negative says "no jewellery".
+5. **Eyes** dark, level, no catchlight.
+6. **Coverage** high collar closed at the front, full sleeves, shoulders covered.
+7. **Framing** matches the shot's `Composition`. "Full figure" means feet are in frame.
+8. **The distinguishing feature is present.** A missing doorway is indistinguishable from a
+   present one to any automated measure.
+9. **Alpha edges** — opaque slab against one edge, or a matte halo on the silhouette. These
+   composite as black rectangles in-game.
+10. **No text**, nothing sexualised.
+
+Write the verdict into the index. A rejected shot returns to `planned` with its defects in
+the `withdrawn` field, and its PNG leaves the install directory.
+
+#### 9c. Know when to stop re-rendering
+
+Some traits are **model capability limits**. Measured on the first character: apparent age
+**0/21** correct, hair cut **0/21**, ornament **0/21**, flush ~17/21 wrong, eyes ~19/21 wrong.
+Four extra attempts on one shot moved none of them.
+
+**If a trait has failed three times, amend the criteria — do not spend a fourth render.**
+Full detail, including the prompt traps, is in
+`game/assets/characters/unique/WORKFLOW.md` under *Verified Findings*.
 
 ### 10. Promote and register
 

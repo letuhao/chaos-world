@@ -149,6 +149,13 @@ PREAMBLE_STEPS: tuple[tuple[str, list[str]], ...] = (
     # STALE_AFTER in tools/claim_guard.py for why 8h). Reads one small file, launches
     # nothing, so it belongs in the hoisted phase with the other machine-safety guards.
     ("claim_guard", ["check"]),
+    # Windows MAX_PATH is 260 for the whole ABSOLUTE path, and a tree of deep asset
+    # paths accumulates them without bound. The failure is GLOBAL -- it blocks whoever
+    # commits next, not whoever added the path -- and the message names the wrong
+    # file, so it reads as your own commit being malformed (INC-0031). Measuring the
+    # margin here makes it visible while a rename is still cheap. Reads git's file
+    # list, launches nothing.
+    ("path_guard", ["check"]),
 )
 
 

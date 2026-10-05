@@ -1,0 +1,67 @@
+exit=1  fmt --check
+exit=1  lint
+exit=1  arch
+exit=0  mutation_history check
+exit=0  godot_bypass
+exit=0  deferred validate
+exit=0  incident validate
+exit=0  backlog validate
+exit=0  data audit
+exit=0  gate_reach check
+exit=0  map_theme check
+exit=0  unique_characters check
+exit=0  lore validate
+exit=0  realm_power check
+exit=0  technique_power check
+exit=0  difficulty check
+exit=0  cultivation validate
+exit=0  cultivation mutate
+exit=0  acquisition validate
+
+PASSING: 16 of 19
+FAILING: fmt --check, lint, arch
+
+=== fmt --check (0 findings) ===
+
+=== lint (31 findings) ===
+  D:\Works\source\chaos-world\game\src\app\item_workbench_app.gd:1423: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  D:\Works\source\chaos-world\game\src\app\item_workbench_body.gd:1103: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  D:\Works\source\chaos-world\game\src\core\actor.gd:1: Error: "Class global scope" has more than 20 public methods (functions) (max-public-methods)
+  D:\Works\source\chaos-world\game\src\modules\combat_engine\mind_damage.gd:1141: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  D:\Works\source\chaos-world\game\src\modules\combat_engine\mind_damage.gd:687: Error: Definition out of order in global scope (class-definitions-order)
+  D:\Works\source\chaos-world\game\src\modules\domain\domain_generator.gd:1017: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  D:\Works\source\chaos-world\game\src\modules\npc\npc_read_model.gd:287: Error: Definition out of order in global scope (class-definitions-order)
+  D:\Works\source\chaos-world\game\src\modules\npc\npc_read_model.gd:292: Error: Definition out of order in global scope (class-definitions-order)
+  D:\Works\source\chaos-world\game\src\modules\npc\npc_read_model.gd:297: Error: Definition out of order in global scope (class-definitions-order)
+  D:\Works\source\chaos-world\game\src\modules\npc\npc_read_model.gd:298: Error: Definition out of order in global scope (class-definitions-order)
+  D:\Works\source\chaos-world\game\src\modules\npc\npc_read_model.gd:299: Error: Definition out of order in global scope (class-definitions-order)
+  D:\Works\source\chaos-world\game\src\ui\screens\custody_screen.gd:1: Error: "Class global scope" has more than 20 public methods (functions) (max-public-methods
+  D:\Works\source\chaos-world\game\src\ui\screens\custody_screen.gd:1032: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  D:\Works\source\chaos-world\game\src\ui\screens\domain_explore.gd:1189: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  Failure: 14 problems found
+  D:\Works\source\chaos-world\game\tests\app\test_cast_view_readback_reachable.gd:36: Error: Max allowed line length (100) exceeded (max-line-length)
+  D:\Works\source\chaos-world\game\tests\app\test_zz_soul_age_probe.gd:31: Error: Function name "test_probe_a_non_numeric_age_on_a_TYPED_float_field" is not valid
+  D:\Works\source\chaos-world\game\tests\core\test_zzr_probe2.gd:5: Error: Max allowed line length (100) exceeded (max-line-length)
+  D:\Works\source\chaos-world\game\tests\core\test_zzr_probe3.gd:6: Error: Max allowed line length (100) exceeded (max-line-length)
+  D:\Works\source\chaos-world\game\tests\core\test_zzr_probe4.gd:5: Error: Max allowed line length (100) exceeded (max-line-length)
+  D:\Works\source\chaos-world\game\tests\modules\combat_engine\test_qi_damage.gd:1219: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  D:\Works\source\chaos-world\game\tests\modules\destiny\destiny_reach_walker.gd:1144: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  D:\Works\source\chaos-world\game\tests\modules\npc\test_npc_alive.gd:420: Error: Max allowed line length (100) exceeded (max-line-length)
+  D:\Works\source\chaos-world\game\tests\modules\npc\test_npc_alive.gd:1143: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  D:\Works\source\chaos-world\game\tests\modules\status\test_mind_status_no_lock.gd:1157: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  D:\Works\source\chaos-world\game\tests\modules\techniques\test_technique_active.gd:156: Error: Max allowed line length (100) exceeded (max-line-length)
+  D:\Works\source\chaos-world\game\tests\modules\techniques\test_technique_marginalia.gd:1111: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  D:\Works\source\chaos-world\game\tests\ui\test_domain_explore.gd:1184: Error: Max allowed file lines num (1000) exceeded (max-file-lines)
+  D:\Works\source\chaos-world\game\tests\ui\test_technique_screens.gd:692: Error: Max allowed line length (100) exceeded (max-line-length)
+  D:\Works\source\chaos-world\game\tests\ui\test_technique_screens.gd:688: Error: duplicated loading of "res://src/modules/techniques/api.gd" (duplicated-load)
+  Failure: 17 problems found
+
+=== arch (8 findings) ===
+  fail src/core/institution_registry.gd:29: 'core/' must not depend on 'modules/sect/'
+  fail no_caller_allowlist.json: EventApi.resolve is declared caller-less but D:/Works/source/chaos-world/game/src/app/beat_director.gd calls it. The verb found i
+  fail no_caller_allowlist.json: WorldSpawnApi.set_current is declared as a deliberate caller-less verb but no such verb exists on any facade. Remove the entry: a
+  fail BASE_DEPS drift: conflict: BASE_DEPS has [], registry.json has ['holdings']
+  fail BASE_DEPS drift: doctrine: BASE_DEPS has [], registry.json has ['destiny', 'economy', 'items', 'quest']
+  fail BASE_DEPS drift: domain: BASE_DEPS has [], registry.json has ['status']
+  fail BASE_DEPS drift: items: BASE_DEPS has [], registry.json has ['destiny', 'status']
+  fail BASE_DEPS drift: social: BASE_DEPS has [], registry.json has ['economy', 'items']

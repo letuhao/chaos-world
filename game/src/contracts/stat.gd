@@ -52,6 +52,15 @@ const CRIT_RESIST := &"crit_resist"
 ## [constant CRIT_RESIST] — the pair that keeps "you cannot crit me" from being a free
 ## immunity. `0.5` means a crit against this defender lands at half. A FLAT is therefore
 ## still a content error on it and it REMAINS a `RATE_STATS` member.
+##
+## Published by `core/actor_stats.gd` as `1.0 + will * 0.004` — `will`, not a module's
+## `composure`, because core has no composure attribute and the pair has to be the same
+## kind of number on both sides (`CRIT_DAMAGE` reads `comprehension`). The contest that
+## reads it is `CombatSpine._crit_damage`: `crit_damage * (1 - CRIT_RESIST_DAMAGE)`,
+## floored at `0.0`. Subtraction rather than ADR 0215's ratio is deliberate and is
+## argued at the call site — the two halves are a multiplier and a share of it, not two
+## attack rates, so there is no "share of a crit" for `offense / (offense + defense)` to
+## return.
 const CRIT_RESIST_DAMAGE := &"crit_resist_damage"
 const PENETRATION := &"penetration"
 const ATTACK_SPEED := &"attack_speed"
@@ -212,7 +221,7 @@ const MIND_CONTROL_RATES := [
 ## Shape proof, one line each — a cap under `1.0`, or a `1.0 +`/`1.0 *` term that
 ## makes `1.0` mean no change:
 ##   conception_chance        fertility/provider.gd:18    clampf(0.05 + fertility*0.02, 0.0, 0.95)
-##   crit_resist_damage       core/actor_stats.gd         1.0 + composure * 0.002   (ADR 0215)
+##   crit_resist_damage       core/actor_stats.gd         1.0 + will * 0.004      (ADR 0215)
 ##   dual_cultivation_rate    dual_cultivation/provider.gd:31
 ##     (1.0 + aptitude * 0.02) * (1.0 - deviation * 0.5)
 ##   gestation_speed          fertility/provider.gd:19    1.0 + (physique+spirit+aptitude)*0.01

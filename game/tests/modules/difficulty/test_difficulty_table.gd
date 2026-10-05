@@ -29,11 +29,6 @@ const SCALAR_CONSUMERS := {
 		"file": "res://src/app/soul_death.gd",
 		"func": "_scaled_cost",
 	},
-	"death_loss_cap":
-	{
-		"file": "res://src/app/soul_death.gd",
-		"func": "_scaled_cost",
-	},
 	"guardian_effectiveness":
 	{
 		"file": "res://src/app/soul_death.gd",
@@ -123,17 +118,29 @@ func test_an_unknown_id_reads_neutral_rather_than_a_zero() -> void:
 func test_the_scalar_set_is_closed_so_a_fifth_column_cannot_appear_silently() -> void:
 	# A fifth scalar would be a fourth power curve wearing a difficulty label (ADR 0050). The
 	# set shrank from five to four (BL-0779): `loot_ceiling` was cut because a `LootTier` is
-	# ORDINAL, and the fourth that remains is wired to `Tribulation` through an injected
+	# ORDINAL, and the fourth that remained is wired to `Tribulation` through an injected
 	# Callable so `core` need not name `difficulty`.
+	#
+	# And from four to THREE (BL-0887): `death_loss_cap` was cut for the SAME kind of reason,
+	# one layer in. Measured against the authored table the cap bound on no preset at all —
+	# story is share 0.5 / cap 1.0 so the share was already binding, standard is 1.0 / 1.0, and
+	# hard is 1.5 / 1.5 so the clamp computed `min(30, 30)`. A column whose reader is a NO-OP is
+	# the same defect as one with no reader, and the BL-0779 sweep missed it because it looked
+	# only for the absent shape. That is why this test now asserts the cap is GONE rather than
+	# merely absent from the table.
 	var expected := [
 		"soul_damage_share",
-		"death_loss_cap",
 		"guardian_effectiveness",
 		"tribulation_preparation_credit",
 	]
-	assert_eq(DifficultyTable.SCALARS.size(), expected.size(), "exactly four scalars")
+	assert_eq(DifficultyTable.SCALARS.size(), expected.size(), "exactly three scalars")
 	for scalar in expected:
 		assert_eq(DifficultyTable.SCALARS.has(scalar), true, "%s is in the set" % scalar)
+	assert_eq(
+		DifficultyTable.SCALARS.has("death_loss_cap"),
+		false,
+		"and the cap that bound on no preset stays cut"
+	)
 	assert_eq(
 		DifficultyTable.SCALARS.has("loot_ceiling"),
 		false,
@@ -272,66 +279,51 @@ func test_the_preparation_credit_census_names_a_seam_not_the_publisher() -> void
 	)
 
 
-func test_the_loss_cap_is_inert_on_every_shipped_preset_and_the_test_says_so() -> void:
-	# **MEASURED FINDING (BL-0885/BL-0887), recorded as a guard rather than a note.**
-	# `_scaled_cost` computes `mini(base*share, base*cap)`. The authored table carries
+func test_the_loss_cap_is_gone_and_neither_the_vocabulary_nor_the_reader_brings_it_back() -> void:
+	# **MEASURED FINDING (BL-0885/BL-0887), and the CUT that answered it.**
+	# `_scaled_cost` used to compute `mini(base*share, base*cap)`. The authored table carried
 	# story 0.5/1.0, standard 1.0/1.0, hard 1.5/1.5, so `share <= cap` everywhere and the cap
-	# NEVER changes the outcome — on `hard` it computes min(30, 30), which is arithmetically
-	# inert on the only preset that moves the multiplier. Without this case the suite implies the
-	# clamp does something, and a reader cannot tell that from a passing run.
+	# NEVER changed the outcome — on `hard` it computed min(30, 30), arithmetically inert on the
+	# only preset that moves the multiplier.
 	#
-	# The DECISION, recorded here: this is ACCEPTED as authored. A cap is the right shape for a
-	# future preset that wants "twice as painful, never more"; what is not acceptable is a
-	# column nobody can tell is inert. So the invariant is pinned as `share <= cap` on every
-	# preset — the cap's intended meaning — plus the measured observation that the shipped
-	# table leaves the cap inert wherever the two terms agree. Retune the authored numbers and
-	# this goes RED until the reading is restated, which is the point.
+	# This case USED TO PIN that inertness, which was a guard against a defect the owner then
+	# chose to remove instead. It is rewritten rather than deleted, because deleting it would
+	# leave the cut unguarded and the next author would have no way to know the column was
+	# removed ON PURPOSE. It now asserts the cut, at all three layers the cut touched:
+	# the vocabulary, the authored table, and the reader.
 	var catalog := DifficultyCatalog.instance()
 	assert_eq(catalog.is_loaded(), true, "the authored table is loaded")
 	var rows := catalog.rows()
 	assert_eq(rows.is_empty(), false, "the authored table carries presets")
-	var inert_on: Array[String] = []
-	var ordered: Array[String] = []
 	for difficulty_id in rows.keys():
-		ordered.append(String(difficulty_id))
-	ordered.sort()
-	for difficulty_id in ordered:
 		var row := rows[difficulty_id] as Dictionary
-		var share := float(row["soul_damage_share"])
-		var cap := float(row["death_loss_cap"])
 		assert_eq(
-			share <= cap,
-			true,
+			row.has("death_loss_cap"),
+			false,
 			(
 				(
-					"%s sets soul_damage_share %.2f above death_loss_cap %.2f: the clamp then binds "
-					% [difficulty_id, share, cap]
+					"%s no longer authors the cap. A preset that wants 'twice as painful, never more'"
+					% difficulty_id
 				)
-				+ "and the share, not the cap, is the term a preset is expressing — restate the rule"
+				+ " arrives as a new scalar with a reader that binds, not as a column nobody can tell is inert"
 			)
 		)
-		# Equal share and cap is what makes the cap inert, so the observation is a comparison
-		# and not a hardcoded preset list.
-		if is_equal_approx(share, cap):
-			inert_on.append(difficulty_id)
-	# `standard` is inert too, but with nothing to express: share 1.0 and cap 1.0 leave
-	# min(20, 20) = 20 = the authored cost, so the finding worth naming is the narrower one —
-	# `hard` is the only preset on which the cap is inert WHILE THE MULTIPLIER MOVES. That is
-	# a clamp that never binds on the only preset that exercises it.
-	assert_eq(
-		inert_on,
-		["hard", "standard"],
-		(
-			"`hard` and `standard` have share == cap, so on both the clamp changes nothing; "
-			+ "`hard` is the one that also moves the multiplier, which is the inertness that "
-			+ "matters. Any other preset here is new information about the clamp"
-		)
+	# The READER, which is the layer the vocabulary alone does not prove. If the clamp came back
+	# without the column, `_scaled_cost` would read a defaulted 1.0 and the share would silently
+	# pass through unclamped — the same defect wearing the opposite sign.
+	var reader := _function_body(
+		_code_only(FileAccess.get_file_as_string("res://src/app/soul_death.gd")), "_scaled_cost"
 	)
-	# And the clamp itself, computed the way production computes it, so the claim above is
-	# about the real expression rather than about the authored numbers in isolation.
-	var clamped := mini(20 * 1.5, 20 * 1.5)
-	assert_eq(clamped, 30, "hard clamps 30, which is the share uncapped — the cap is inert")
-	assert_eq(mini(20 * 3.0, 20 * 2.0), 40, "a preset above the cap would be bound by it")
+	assert_eq(
+		reader.contains("death_loss_cap"),
+		false,
+		"and _scaled_cost does not read a cap that no preset authors"
+	)
+	assert_eq(
+		reader.contains("int(float(base_cost) * share)"),
+		true,
+		"so the share alone decides what a death costs"
+	)
 
 
 ## The CODE of `func <name>` — instance or `static func` — up to the next top-level `func`,

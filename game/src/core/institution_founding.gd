@@ -66,39 +66,36 @@ const TREASURY_OPENING_PERIODS := 1
 ## in one silently re-stamp the others (`InstitutionLedger` records the full
 ## reasoning).
 
-## The refusals, declared once and reused verbatim so the vocabulary is authored in
-## one file and a panel renders a reason it did not have to invent (ADR 0084).
+## The refusals, ALIASED from `InstitutionLedger` rather than restated.
 ##
-## **Strings and not an `enum`**, because every one of these is a value that crosses a
-## facade as a `String` and is written into a ledger, a signal and a history record.
-## An enum ordinal in any of those places would be a number that changes meaning the
-## moment somebody reorders this file — `sect_founding.gd` states the same reason for
-## its own six.
-const R_NO_ACTOR := "no_actor"
-const R_UNKNOWN_KIND := "unknown_kind"
-const R_KIND_CANNOT_BE_FOUNDED := "kind_cannot_be_founded"
-const R_UNKNOWN_INSTITUTION := "unknown_institution"
-const R_ALREADY_FOUNDED := "already_founded"
-const R_NO_TOP_POSITION := "no_top_position"
-const R_FOUNDING_COST_UNMET := "founding_cost_unmet"
+## **Strings and not an `enum`**, because every one of these crosses a facade as a `String`
+## and is written into a ledger, a signal and a history record; an enum ordinal in any of
+## those places would be a number that changes meaning the moment somebody reorders a file
+## (`sect_founding.gd` states the same reason for its own six).
+##
+## The first version wrote all seven strings out again, which is the ADR 0066 failure mode
+## inside the file that exists to stop it: `InstitutionLedger` already owns this exact
+## vocabulary, so a reason renamed in one place and not the other leaves a panel rendering
+## a string no gate ever returns. These are the SAME constants under a second name, so a
+## caller writing `InstitutionFounding.R_NO_TOP_POSITION` and a caller writing
+## `InstitutionLedger.R_NO_TOP_POSITION` are holding one value.
+const R_NO_ACTOR := InstitutionLedger.R_NO_ACTOR
+const R_UNKNOWN_KIND := InstitutionLedger.R_UNKNOWN_KIND
+const R_KIND_CANNOT_BE_FOUNDED := InstitutionLedger.R_KIND_CANNOT_BE_FOUNDED
+const R_UNKNOWN_INSTITUTION := InstitutionLedger.R_UNKNOWN_INSTITUTION
+const R_ALREADY_FOUNDED := InstitutionLedger.R_ALREADY_FOUNDED
+const R_NO_TOP_POSITION := InstitutionLedger.R_NO_TOP_POSITION
+const R_FOUNDING_COST_UNMET := InstitutionLedger.R_FOUNDING_COST_UNMET
 
-## This file's own ledger version. **Not shared with any other ledger** — four
-## ledgers have four migration histories, and one constant would make a schema bump
-## in one silently re-stamp the others (`InstitutionLedger` records the full
-## reasoning).
+## This file's own ledger version. **Not shared with any other ledger** — four ledgers
+## have four migration histories, and one constant would make a schema bump in one
+## silently re-stamp the others (`InstitutionLedger` records the full reasoning).
 const LEDGER_VERSION := 1
 
-## The same reasons keyed by the name each is written with, so a caller can look one
-## up without holding the constant.
-const REASONS := {
-	R_NO_ACTOR: R_NO_ACTOR,
-	R_UNKNOWN_KIND: R_UNKNOWN_KIND,
-	R_KIND_CANNOT_BE_FOUNDED: R_KIND_CANNOT_BE_FOUNDED,
-	R_UNKNOWN_INSTITUTION: R_UNKNOWN_INSTITUTION,
-	R_ALREADY_FOUNDED: R_ALREADY_FOUNDED,
-	R_NO_TOP_POSITION: R_NO_TOP_POSITION,
-	R_FOUNDING_COST_UNMET: R_FOUNDING_COST_UNMET,
-}
+## Every refusal this verb can return, keyed by the name it is written with, so a caller
+## can look one up without holding a constant. The SAME TABLE the ledger publishes — not a
+## second one filtered to this file's seven, which is a list that has to be kept in step.
+const REASONS := InstitutionLedger.REASONS
 
 
 ## Whether `ledger` already names an institution.
@@ -359,7 +356,10 @@ static func _roster(top_position: String, founder_id: String) -> Dictionary:
 ## profile's `treasury` and opens the opening line rather than inventing a spelling.
 static func _treasury(profile: Dictionary) -> Dictionary:
 	var out := InstitutionLedger.positive_lines(profile.get("treasury", {}) as Dictionary)
-	out["%shall" % _treasury_prefix(profile)] = TREASURY_OPENING_PERIODS
+	# `"%shall"` would be `%s` applied to the literal `hall`, NOT `%s` then `all`:
+	# GDScript reads the two-character verb and hands it the rest of the string. That
+	# shipped a key named `treasury_t_house_hall`, a treasury line nothing can ask for.
+	out["%sall" % _treasury_prefix(profile)] = TREASURY_OPENING_PERIODS
 	return out
 
 

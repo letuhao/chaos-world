@@ -21,22 +21,35 @@ func test_derived_stat_ids() -> void:
 	assert_eq(
 		String(MindStats.SPIRITUAL_SENSE_RANGE), "spiritual_sense_range", "spiritual_sense_range id"
 	)
-	# ADR 0071 / BL-0114: RENAMED. These are NOT core's `Stat.CRIT_CHANCE` /
-	# `Stat.EVASION`, and ADR 0071's `MindDamage` is their only consumer -- so the
-	# ids are asserted here as a RESERVATION, which is what the rename bought: no
+	# ADR 0071 / BL-0114, then ADR 0215: RENAMED twice. These are NOT core's
+	# `Stat.CRIT_CHANCE` / `Stat.EVASION`, and `MindDamage` is their only consumer --
+	# so the ids are asserted here as a RESERVATION, which is what the rename bought: no
 	# qi/body surface may read them, and a second combat module cannot adopt them by
-	# accident.
-	assert_eq(String(MindStats.MIND_FOCUS_CHANCE), "mind_focus_chance", "mind_focus_chance id")
-	assert_eq(String(MindStats.MIND_AVOIDANCE), "mind_avoidance", "mind_avoidance id")
+	# accident. ADR 0215 renamed the pair a second time (`mind_focus_chance` /
+	# `mind_avoidance` -> `mind_clarity` / `mind_veil`) so the contest has a name for
+	# both halves, and the reservation is re-asserted against the NEW strings rather
+	# than moved to a new test.
+	assert_eq(String(MindStats.MIND_CLARITY), "mind_clarity", "mind_clarity id")
+	assert_eq(String(MindStats.MIND_VEIL), "mind_veil", "mind_veil id")
 	assert_eq(
-		String(MindStats.MIND_FOCUS_CHANCE) == String(Stat.CRIT_CHANCE),
+		String(MindStats.MIND_CLARITY) == String(Stat.CRIT_CHANCE),
 		false,
-		"mind focus chance is NOT core's crit chance"
+		"mind clarity is NOT core's crit chance"
 	)
 	assert_eq(
-		String(MindStats.MIND_AVOIDANCE) == String(Stat.EVASION),
+		String(MindStats.MIND_VEIL) == String(Stat.EVASION),
 		false,
-		"mind avoidance is NOT core's evasion"
+		"mind veil is NOT core's evasion"
+	)
+	# The retired spellings stay DECLARED and are asserted as distinct strings, so a
+	# future wave that quietly aliases one to the other fails here rather than
+	# collapsing two vocabularies into one id.
+	assert_eq(String(MindStats.MIND_FOCUS_CHANCE), "mind_focus_chance", "retired spelling")
+	assert_eq(String(MindStats.MIND_AVOIDANCE), "mind_avoidance", "retired spelling")
+	assert_eq(
+		String(MindStats.MIND_CLARITY) == String(MindStats.MIND_FOCUS_CHANCE),
+		false,
+		"ADR 0215's rename is a rename and not an alias of the old id"
 	)
 	assert_eq(
 		String(MindStats.ILLUSION_RESISTANCE), "illusion_resistance", "illusion_resistance id"

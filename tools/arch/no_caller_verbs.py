@@ -80,6 +80,29 @@ Three ways this pass could measure nothing, each a FAILURE: no facades found, no
 production source read, or no published verb enumerated. A guard that reports
 nothing because it read nothing is indistinguishable from a clean tree at
 exactly the moment the tree is broken (ADR 0226's own clause 3).
+
+## SCOPE, and why it is narrow: this pass grades `quest` and `event` only
+
+Run across all 36 facades this guard reports **103** caller-less verbs. That number
+is a DEFECT REPORT against the whole tree, not a verdict this guard may hand the
+next agent. ADR 0188 says the rule is "Applied per member, not in bulk" and gives
+the exact reason a bulk application is unsafe: "Each deletion is a two-sided
+change, and landing half of it turns the tree red." 103 deletions across ~20
+modules owned by ~10 concurrent sessions is half a tree.
+
+So the default grade set is the two modules whose census this rule was written
+from and whose surface this program owns — `quest` and `event`, 21 published
+verbs — and the rest is ONE FILED SWEEP (`no_caller_verbs` in the backlog), not 103
+reds. `--modules all` runs the whole sweep for whoever picks it up.
+
+This is deliberately the option that makes the rule trusted on day one rather than
+the one that reports the most. The measured risk of going wide is not theoretical:
+while the reader was being fixed, the tree was at 103 findings and 126 of the 300
+verbs it read as *reached* were being credited by the exact bug the `##` note on
+`_bare_call_is_this_verb` describes. A gate whose half its answers came from a
+file-level token test has not earned the right to fail someone else's session.
+Every verb still reads as caller-less until then, so a narrow gate loses nothing
+except the temptation to act on a sweep nobody has done.
 """
 
 from __future__ import annotations
@@ -93,6 +116,11 @@ from pathlib import Path
 
 FACADE_NAME = "api.gd"
 ALLOWLIST_NAME = "no_caller_allowlist.json"
+
+#: The modules this pass grades unless `--modules` says otherwise. See SCOPE_NOTE.
+DEFAULT_MODULES: frozenset[str] = frozenset({"quest", "event"})
+#: The sentinel `--modules` takes to grade every facade it finds.
+SCOPE_ALL = "all"
 
 COMMENT_RE = re.compile(r"#.*$", re.MULTILINE)
 # `class_name Foo` — the spelling callers actually write.
@@ -141,6 +169,8 @@ class Report:
 
     src: Path = Path(".")
     facades: int = 0
+    #: The module DIRECTORIES this pass grades, or None for every facade found.
+    modules: frozenset[str] | None = None
     verbs: list[Verb] = field(default_factory=list)
     scanned_files: int = 0
     test_files: int = 0
@@ -151,6 +181,10 @@ class Report:
     reached: dict[str, list[str]] = field(default_factory=dict)
     seams: dict[str, list[str]] = field(default_factory=dict)
     tests: dict[str, list[str]] = field(default_factory=dict)
+    #: `path:line` of every bare call that was ACCEPTED as a caller. A bare call is
+    #: the weakest shape the guard accepts, so the line it was accepted on is what
+    #: a reviewer checks when a verdict is disputed.
+    bare_hits: dict[str, list[str]] = field(default_factory=dict)
     #: ADR 0188's second keeper: a verb named by a committed guard in `tools/` that
     #: checks for its call. `game/tests` cannot see Python, so a Python guard
     #: naming a verb is a live dependency on it, not documentation about it.
@@ -158,7 +192,16 @@ class Report:
 
     @property
     def published(self) -> list[Verb]:
-        return [v for v in self.verbs if v.public]
+        """Every public facade verb, or only those in the modules this pass grades.
+
+        `facades` still counts every facade READ, because a facade outside the scope
+        must still be parsed for `class_name` — the graded set is a filter on what is
+        REPORTED, never on what was read. A scope that silently skipped the read is
+        how a guard goes vacuous.
+        """
+        if self.modules is None:
+            return [v for v in self.verbs if v.public]
+        return [v for v in self.verbs if v.public and v.module in self.modules]
 
     def caller_less(self) -> list[Verb]:
         """Published verbs with no production caller and no declaration."""
@@ -329,7 +372,10 @@ def _ambiguous_verbs(verbs: list[Verb]) -> set[str]:
 
 
 def _bare_call_is_this_verb(
-    text: str, verb: Verb, ambiguous: set[str]
+    text: str,
+    verb: Verb,
+    ambiguous: set[str],
+    span: tuple[int, int] | None = None,
 ) -> bool:
     """Is the bare `verb(` in this body a call of THIS verb, or of a namesake?
 
@@ -348,23 +394,52 @@ def _bare_call_is_this_verb(
     Two namesexes are discarded and two shapes kept:
 
     - a file that DECLARES `verb` owns the name, so its call is its own;
-    - an AMBIGUOUS name (declared by several facades) counts only where the file
-      also names the facade CLASS, because that is the one spelling that picks a
-      facade out of the ambiguity;
+    - an AMBIGUOUS name (declared by several facades) counts only where the
+      FACADE CLASS appears **in the matched call's own line**, because that is the
+      one spelling that picks a facade out of the ambiguity;
     - a UNIQUE name counts wherever it is called, since nothing else can own it.
+
+    ## The class token must be ON THE CALL'S LINE, not anywhere in the file
+
+    This is the false green that reported a shipped verb as caller-less while
+    calling it reached, and it is worth its own clause because the obvious fix is
+    the wrong one. `span` is the match `scan()` found; without it the answer was
+    `"EventApi" in text` — *somewhere in the whole file*.
+
+    `item_workbench_body.gd` proves the size of that error. It holds one
+    COMPOSITION TABLE whose rows are code and each name the class as a suffix:
+
+        {"name": &"event", "run": func(a): EventApi.attach(a)},
+
+    and a row for craft resolution 700 lines below:
+
+        return Crafting.resolve(item_id)
+
+    So `EventApi` appears in the file, the bare `resolve(` matches, and
+    `EventApi.resolve` — the single entry whose real consequence is DEF-0315's
+    unsettled sect war — read as alive. Two independent mistakes had to line up:
+    the class token belongs to a DIFFERENT call, and the bare name belongs to a
+    DIFFERENT class (`Crafting`). Demanding both on ONE line rejects both.
 
     This cuts both ways and both cuts were measured. Dropping the bare shape
     outright was tried and reports 117 caller-less verbs, including live ones like
     `NpcApi.spawn` and `QuickUseApi.attach`, which are reached through an instance
-    alias rather than a class name. A false red on a boot verb sends an agent to
-    author a caller that already exists (INC-0012), so the shape stays and the
-    attribution is what narrows.
+    alias rather than a class name. Keeping the shape and anchoring the class
+    token to the call's own line keeps those and rejects the pairing above.
+    A false red on a boot verb sends an agent to author a caller that already
+    exists (INC-0012), so the shape stays and the attribution is what narrows.
     """
     if re.search(rf"^\s*(?:static\s+)?func\s+{re.escape(verb.name)}\s*\(", text, re.MULTILINE):
         return False
-    if verb.cls in text:
+    if verb.name not in ambiguous:
         return True
-    return verb.name not in ambiguous
+    if span is None:
+        return verb.cls in text
+    line_start = text.rfind("\n", 0, span[0]) + 1
+    line_end = text.find("\n", span[1])
+    if line_end == -1:
+        line_end = len(text)
+    return re.search(rf"\b{re.escape(verb.cls)}\b", text[line_start:line_end]) is not None
 
 
 def _guard_callers(guards_dir: Path, verbs: list[Verb]) -> dict[str, list[str]]:
@@ -409,16 +484,19 @@ def scan(
     tests: Path | None = None,
     allowlist_path: Path | None = None,
     guards_dir: Path | None = None,
+    modules: frozenset[str] | None = None,
 ) -> Report:
     """Enumerate facade verbs and measure production callers for each.
 
-    `src`/`tests` are parameters so a fixture can be scanned without the
-    repository, which is what makes this guard testable at all.
+    `src`/`tests`/`guards_dir` are parameters so a fixture can be scanned without
+    the repository, which is what makes this guard testable at all. `modules`, when
+    given, is the set of module DIRECTORIES this pass grades — see `SCOPE_NOTE`.
     """
     report = Report(src=src)
     facades = facade_paths(src)
     report.facades = len(facades)
     report.verbs = enumerate_verbs(facades)
+    report.modules = frozenset(modules) if modules is not None else None
 
     sources = script_paths(src)
     report.scanned_files = len(sources)
@@ -474,12 +552,22 @@ def scan(
             qualified = path in qualified_index.get(
                 f"{verb.cls}.{verb.name}", set()
             ) or path in qualified_index.get(f"{verb.module}.{verb.name}", set())
-            if qualified or (
-                path.parent != module_dir
-                and bare.search(text)
-                and _bare_call_is_this_verb(text, verb, ambiguous)
-            ):
+            if qualified:
                 direct.append(path.as_posix())
+            elif path.parent != module_dir and bare.search(text):
+                # The bare shape counts only on a hit that ATTRIBUTES, and an
+                # ambiguous name needs the facade class on that hit's own line.
+                hits = [
+                    m
+                    for m in bare.finditer(text)
+                    if _bare_call_is_this_verb(text, verb, ambiguous, m.span())
+                ]
+                if hits:
+                    direct.append(path.as_posix())
+                    for m in hits:
+                        report.bare_hits.setdefault(verb.qualified, []).append(
+                            f"{path.as_posix()}:{text.count(chr(10), 0, m.start()) + 1}"
+                        )
         report.callers[verb.qualified] = sorted(set(direct))
         # The caller set is direct PLUS seam. Splitting the two is for the
         # message, not for the verdict.
@@ -576,6 +664,18 @@ def vacuity_failures(report: Report) -> list[str]:
             "is public: the population this guard grades has vanished, which is a change to the "
             "shape, not a clean tree"
         )
+    elif report.modules is not None:
+        # A scope that grades a module DIRECTORY that exists no longer is a narrower
+        # rule; it is a guard that stopped reading. Renaming a module would otherwise
+        # turn the gate green without a word.
+        found = {v.module for v in report.verbs}
+        absent = sorted(report.modules - found)
+        if absent:
+            problems.append(
+                f"scope {sorted(report.modules)} names module directory/directories {absent} that "
+                f"no facade provides. A scope naming a module that is gone reports nothing and "
+                f"looks clean; widen it with --modules {SCOPE_ALL} once the rename lands"
+            )
     return problems
 
 
@@ -584,11 +684,19 @@ def evaluate(
     tests: Path | None = None,
     allowlist_path: Path | None = None,
     guards_dir: Path | None = None,
+    modules: frozenset[str] | None = None,
 ) -> tuple[list[str], Report]:
     """Return `(problems, report)`. Empty `problems` is the only clean verdict."""
-    report = scan(src, tests, allowlist_path, guards_dir)
+    report = scan(src, tests, allowlist_path, guards_dir, modules)
     problems = [*vacuity_failures(report), *findings(report), *stale_allowlist_findings(report)]
     return problems, report
+
+
+def parse_modules(raw: str | None) -> frozenset[str] | None:
+    """`--modules` text to a grade set. `all` and empty mean every facade found."""
+    if raw is None or raw.strip() == SCOPE_ALL:
+        return None
+    return frozenset(part.strip() for part in raw.split(",") if part.strip())
 
 
 def register(subparsers) -> None:
@@ -603,13 +711,21 @@ def register(subparsers) -> None:
         default=None,
         help=f"the declared exception list (default: tools/arch/{ALLOWLIST_NAME})",
     )
+    parser.add_argument(
+        "--modules",
+        default=None,
+        help="comma-separated module directories to grade, or `all`. Default: "
+        f"{','.join(sorted(DEFAULT_MODULES))} — the sweep beyond that scope is FILED, not graded "
+        "(see SCOPE_NOTE in this module)",
+    )
 
 
 def run(args) -> int:
     """`uv run python -m tools no_caller_verbs` — the standalone entry point.
 
     `tools arch` runs the same `evaluate()` in-process; this exists so the guard
-    can be pointed at a fixture tree from the command line.
+    can be pointed at a fixture tree or at the whole-tree sweep from the command
+    line, and so the finding count of either scope is reproducible in one command.
     """
     from ..common import SRC_DIR, TESTS_DIR, fail, ok
 
@@ -617,13 +733,16 @@ def run(args) -> int:
     allow = (
         Path(args.allowlist) if args.allowlist else Path(__file__).resolve().parent / ALLOWLIST_NAME
     )
-    problems, report = evaluate(src, TESTS_DIR, allow, Path(__file__).resolve().parents[1])
+    modules = parse_modules(args.modules)
+    scope = "all modules" if modules is None else "modules " + ",".join(sorted(modules))
+    problems, report = evaluate(src, TESTS_DIR, allow, Path(__file__).resolve().parents[1], modules)
     for problem in problems:
-        fail(problem)
+        fail(f"[{scope}] {problem}")
     if problems:
         return 1
     ok(
-        f"no-caller verbs ok ({report.facades} facades, {len(report.published)} published verbs, "
+        f"no-caller verbs ok on {scope} ({report.facades} facades read, "
+        f"{len(report.published)} published verbs graded, "
         f"{len(report.caller_less())} caller-less with {len(report.allowlist)} declared, "
         f"{report.scanned_files} production files read, {report.test_files} test files read)"
     )
@@ -1002,9 +1121,162 @@ def register_selftest_cases(case, expect, write) -> None:
                 "the fixture did not register the seam, so the pass above would be vacuous",
             )
 
+    # --- The two directions the skill names, against the REAL tree ---------------
+    #
+    # The fixtures above prove the reader works on a tree invented to suit it. The
+    # next two assert against the repository itself, because the defect this pass
+    # had was a reader that was wrong about the repository and right about its own
+    # fixtures — the exact shape INC-0012 records.
+
+    @case("no_caller_verbs: on the REAL tree, the scope's caller-less verbs are the declared ones")
+    def _real_tree_scope_is_clean() -> None:
+        """A gate that reports 103 on its first run gets deleted, so the graded scope must be clean.
+
+        Read against the repository rather than a fixture: the point is that the
+        fixture cannot be tuned into agreement, so the fixture must not be what
+        proves the scope.
+        """
+        repo = Path(__file__).resolve().parents[3]
+        allow = Path(__file__).resolve().parent / ALLOWLIST_NAME
+        problems, report = evaluate(
+            repo / "game" / "src",
+            repo / "game" / "tests",
+            allow,
+            repo / "tools",
+            DEFAULT_MODULES,
+        )
+        expect(
+            not problems,
+            f"the graded scope {sorted(DEFAULT_MODULES)} is NOT clean on the real tree: "
+            f"{problems!r}. A gate that reports its own first run is deleted, and the sweep "
+            "beyond this scope belongs in the backlog, not in a red",
+        )
+        expect(
+            len(report.published) > 0,
+            "the graded scope enumerated no published verb, so the pass above is vacuous",
+        )
+        expect(
+            report.scanned_files > 100,
+            f"the real tree read {report.scanned_files} production files; a small number means "
+            "the caller index was not the whole tree and the pass above proves nothing",
+        )
+
+    @case("no_caller_verbs: on the REAL tree, `QuestApi.complete` has NO production caller")
+    def _real_tree_true_positive() -> None:
+        """The mutation, in the direction that must go RED.
+
+        `QuestApi.complete` is BL-0907's true positive and it is kept only by ADR
+        0188's second keeper — a committed guard in `tools/` names it. Point the
+        reader at the module alone, with no `tools/` to keep it, and it must report.
+        If this ever passes silently the scope is vacuous and the gate is decorative.
+        """
+        repo = Path(__file__).resolve().parents[3]
+        problems, report = evaluate(
+            repo / "game" / "src",
+            repo / "game" / "tests",
+            None,
+            Path(""),  # no tools/ guard may keep it
+            DEFAULT_MODULES,
+        )
+        expect(
+            any("QuestApi.complete" in p for p in problems),
+            f"QuestApi.complete was not reported on the real tree: {problems!r}. It has no "
+            "production caller and is the one true positive the sweep was written from",
+        )
+        expect(
+            report.tests.get("QuestApi.complete"),
+            "the fixture does not know whether any test names the verb, so the tail of the "
+            "finding cannot be proven to discriminate",
+        )
+
+    @case("no_caller_verbs: on the REAL tree, a Callable-wired verb is NOT reported")
+    def _real_tree_callable_wired_is_not_reported() -> None:
+        """The mutation, in the direction that must stay GREEN.
+
+        `EventApi.set_location` is installed through
+        `WorldStage.set_location_publisher(Callable(EventApi, "set_location"))`. A
+        reader that cannot see that reports a shipped trigger as dead, which is
+        INC-0012 verbatim, and sends an agent to author a caller that already exists.
+        """
+        repo = Path(__file__).resolve().parents[3]
+        _, report = evaluate(
+            repo / "game" / "src",
+            repo / "game" / "tests",
+            Path(__file__).resolve().parent / ALLOWLIST_NAME,
+            repo / "tools",
+            None,
+        )
+        for qualified in ("EventApi.set_location", "NpcApi.set_minter"):
+            expect(
+                not report.reached.get(qualified),
+                f"{qualified} is reported caller-less on the real tree, and it is installed "
+                'through Callable(Api, "name"). A reader that cannot see a Callable seam '
+                "reports four shipped triggers as dead — INC-0012",
+            )
+        expect(
+            report.seams.get("EventApi.set_location"),
+            "the real tree's Callable seam was not registered, so the passes above are vacuous",
+        )
+
+    @case(
+        "no_caller_verbs: on the REAL tree, a verb named only in a COMMENT is NOT reported as called"
+    )
+    def _real_tree_comment_is_not_a_caller() -> None:
+        """The false-positive direction, on the real tree.
+
+        `item_workbench_body.gd` names `EventApi.attach`, `EventApi.NOWHERE` and
+        `EventApi.available` in prose, and its composition table is CODE. Under the
+        bug this guard shipped with, the class token counted ANYWHERE in the file,
+        so an unrelated `Crafting.resolve(item_id)` seven hundred lines below
+        credited `EventApi.resolve` — and an allowlisted verb whose entry is
+        deliberate read as live. `EventApi.resolve` must be caller-less on the real
+        tree, and every seam it has must be empty.
+        """
+        repo = Path(__file__).resolve().parents[3]
+        _, report = evaluate(
+            repo / "game" / "src",
+            repo / "game" / "tests",
+            Path(__file__).resolve().parent / ALLOWLIST_NAME,
+            repo / "tools",
+            None,
+        )
+        expect(
+            "EventApi.resolve" in [v.qualified for v in report.caller_less()],
+            "EventApi.resolve is NOT caller-less on the real tree. It has no code-level caller, "
+            "so something is still crediting a comment or a namesake; the allowlist entry for it "
+            "is not what is being measured here",
+        )
+        expect(
+            not report.reached.get("EventApi.resolve"),
+            f"the real tree credits EventApi.resolve with {report.reached.get('EventApi.resolve')!r}. "
+            "The only `resolve(` in item_workbench_body.gd is `Crafting.resolve(item_id)`, and the "
+            "only `EventApi` on a code line is `EventApi.attach(a)` — two different calls",
+        )
+        expect(
+            not report.seams.get("EventApi.resolve"),
+            "a Callable/dispatch seam was read for EventApi.resolve in a file with no such call",
+        )
+
+    @case("no_caller_verbs: a scope naming a module that no longer exists FAILS")
+    def _scope_naming_a_missing_module_fails() -> None:
+        """The scope must not be able to go quietly green by being pointed at nothing."""
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            _fixture(root, write, body=PUBLISHED)
+            write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
+            problems, _ = evaluate(root / "src", root / "tests", None, None, frozenset({"event"}))
+            expect(
+                any("no facade provides" in p for p in problems),
+                f"a scope naming a module directory that does not exist reported clean: "
+                f"{problems!r}. A narrow gate that silently reads nothing is the worst shape "
+                "this rule can take",
+            )
+
 
 __all__ = [
     "ALLOWLIST_NAME",
+    "DEFAULT_MODULES",
+    "SCOPE_ALL",
     "AllowEntry",
     "Report",
     "Verb",
@@ -1014,6 +1286,7 @@ __all__ = [
     "facade_paths",
     "findings",
     "load_allowlist",
+    "parse_modules",
     "register",
     "register_selftest_cases",
     "run",

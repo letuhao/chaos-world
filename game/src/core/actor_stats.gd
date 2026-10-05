@@ -182,8 +182,53 @@ func _recompute() -> void:
 	# re-tuned here either: ADR 0215 decides what a rate contest reads, and this change
 	# must not collide with it. Until then the channel is simply unbounded, which is
 	# strictly better than a ceiling a player can reach.
-	_put(Stat.CRIT_CHANCE, 0.05 + fortune * 0.002 + agility * 0.0005, buckets)
+	# ADR 0215: the crit CHANCE contest is now `crit_chance / (crit_chance + crit_resist)`,
+	# so the baseline is 0.0 (like ACCURACY / EVASION) rather than a bare 0.05 — the
+	# contest ratio supplies the baseline, not a constant term.
+	_put(Stat.CRIT_CHANCE, fortune * 0.002 + agility * 0.0005, buckets)
+	# ADR 0215: the DEFENCE half of the crit-CHANCE contest. `CRIT_CHANCE` was published
+	# with no counterpart, so a player could invest in crit chance with no answer — the
+	# yin-yang defect. `will` is core's spiritual DEFENCE attribute (same reason as
+	# CRIT_RESIST_DAMAGE below). Unbounded magnitude: a cap here would be the ADR 0200
+	# defect in a fourth uniform.
+	_put(Stat.CRIT_RESIST, will * 0.003, buckets)
 	_put(Stat.CRIT_DAMAGE, 1.5 + comprehension * 0.004, buckets)
+	# ADR 0215: the DEFENCE half of the CRIT-DAMAGE contest, and the half that did not
+	# exist. `CRIT_DAMAGE` was published here with no counterpart anywhere, so a player
+	# could buy crit size and had no way to resist it -- `AGENTS.md`'s yin-yang rule
+	# makes that a DEFECT rather than a pending item, and ADR 0215 names the id.
+	#
+	# ## Why it is a MAGNITUDE and not a `minf`-ed fraction, on CRIT_DAMAGE's own rule
+	# `CRIT_DAMAGE` carries a constant `1.5` term, and the `1.0`-baseline MULTIPLIER is
+	# what makes this stat a RATE regardless of its scale (`contracts/stat.gd:346`): `+10`
+	# means a crit lands ten times as hard, not "+10%". So this one is unbounded — a cap
+	# here would be the ADR 0200 defect in a third uniform, and the stat it answers must
+	# be able to grow against a 551x ladder.
+	#
+	# ## Why `will`, and why it is NOT on `RealmScaling.SCALED_STATS`
+	# The pair must be the SAME KIND of number on both sides, so the defence half reads
+	# the attribute its offensive twin already reads (`comprehension`) rather than a
+	# module-owned `composure` core does not have. `will` is core's own spiritual
+	# DEFENCE attribute and the line two below already reads it (`DEFENSE_SPIRITUAL`),
+	# as do `POISE`, `STATUS_DEFENSE` and `BREAKTHROUGH_CHANCE` -- so a body may DEFEND
+	# against a crit without being able to throw one, which is the exact asymmetry ADR
+	# 0183 fixed on the qi side. `elements/provider.gd`'s `CRIT_RESIST_WILL_STEP` chose
+	# `will` for the same reason: it is the one defence term a build with no combat
+	# attribute of its own can move.
+	#
+	# ## Why it is NOT realm-scaled, stated rather than assumed
+	# `CRIT_DAMAGE` is not on `SCALED_STATS` either, and the two halves must move
+	# TOGETHER or the contest is not a contest: scaling only one side would make a
+	# defender's answer to a deep-realm crit grow while the crit it answers did not, so
+	# `1.0 - crit_resist_damage` would climb past `0.0` on its own. Both are magnitudes in
+	# the attacker's own comprehension/will terms, and both ride the ladder the same way.
+	#
+	# `0.5` means a crit against this defender lands at half: the S6 multiplier is
+	# `crit_damage * (1 - CRIT_RESIST_DAMAGE)` floored at `0.0`, NOT a division, so a
+	# fully invested defender refusing every crit is a REACHABLE limit and not an
+	# asymptotic one -- which is deliberate, and is what keeps "you cannot crit me" from
+	# being a free immunity that the ladder can never beat.
+	_put(Stat.CRIT_RESIST_DAMAGE, 1.0 + will * 0.004, buckets)
 	_put(Stat.PENETRATION, spirit * 0.5, buckets)
 	# `ATTACK_SPEED` is one of the three caps ADR 0200 DELIBERATELY KEEPS. See below.
 	_put(Stat.ATTACK_SPEED, minf(2.5, 1.0 + agility * 0.008), buckets)

@@ -537,7 +537,7 @@ func test_a_rebirth_clears_the_aim_rather_than_leaving_it_pointed_at_the_old_foe
 ## are reached, and the target seam is a method on a SCREEN.
 func test_neither_gap_added_a_thirteenth_facade_method() -> void:
 	var published: Array[String] = []
-	for method in TechniquesApi.new().get_script().get_script_method_list():
+	for method in load("res://src/modules/techniques/api.gd").get_script_method_list():
 		var method_name := String(method.get("name", ""))
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)

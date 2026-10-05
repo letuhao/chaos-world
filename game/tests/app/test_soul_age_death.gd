@@ -8,11 +8,11 @@ extends TestCase
 ## the decisions that are not derivable from reading the code:
 ##
 ##   1. **A guardian beats age.** The two causes may not both apply, and this says which wins.
-##   2. **A missing seam expires nobody.** `age_years` does not exist on `Actor` yet and the
-##      parallel age agent owns `core/actor.gd`, so the first block of cases is about the
-##      REFUSALS — and a refusal that read as "infinitely old" would kill every hero in the game
-##      on the first frame. That is the hazard those assertions exist to catch, and they are
-##      written so they go RED the moment the seam lands wired to the wrong zero.
+##   2. **A missing seam expires nobody.** The first block of cases is about the REFUSALS — and a
+##      refusal that read as "infinitely old" would kill every hero in the game on the first
+##      frame, while one that read as `0.0` would call every body a newborn. Neither hazard is
+##      reachable from a real `Actor` now (see the note below), so these cases keep `SoulAge`'s
+##      refusal reachable on purpose rather than leaving the guard unexercised.
 ##   3. **Out of bodies is named.** A run that ended is still a run that happened.
 ##
 ## ## Why the age cases set the field on a PLAIN actor rather than on a subclass
@@ -24,13 +24,23 @@ extends TestCase
 ##
 ## ## What "the field is missing" is tested with instead, and why not a subclass
 ##
-## The absent-field refusal needs a body with no `age_years`, and a subclass cannot produce one
-## now that `Actor` declares it (a diamond cannot remove an inherited member). `test_an_age_that_is_
-## not_a_number_is_refused_by_name_and_expires_nobody` therefore drives the same guard through the
-## other branch of `SoulAge.age_years` — a field present and unreadable — which is the refusal that
-## survives on every tree. The production rule the absent-field case would have pinned is that
-## `age_years < 0.0` is a REFUSAL rather than an age, and that rule is live in `SoulAge.age_years`
-## and asserted through the non-numeric case.
+## The refusal the absent-field case would have pinned — that `age_years < 0.0` is a REFUSAL
+## rather than an age — is live in `SoulAge.age_years` and asserted by the negative case below,
+## and the hazard that actually reaches a player is the CLOCK, which `test_a_missing_clock_is_
+## refused_by_name_and_is_never_read_as_zero` covers with the shipped seam.
+
+## ## A TYPED FIELD MAKES MOST OF THIS UNREACHABLE, so the fake is built deliberately
+##
+## ADR 0258 §2's field is `var age_years: float` on `core/actor.gd:126`, and a typed `float`
+## silently COERCES on `Object.set`: a `String` becomes `0.0` and a negative becomes `0.0`.
+## So `actor.get(AGE_FIELD)` cannot observe what the game cannot store, and these cases build a
+## body whose field genuinely disagrees with the declared type. That is a seam ONLY a test can
+## open — which is precisely the point: it is how `SoulAge`'s type guard is proven to work on a
+## body the engine would otherwise have repaired behind its back.
+##
+## `actor.AGE_FIELD` is one field, not an overlay, so a fake carrying `age_years` cannot also
+## carry a plan; `TestAgeUntypedBody` assembles it explicitly instead and is tracked in `_born`
+## so `teardown()` can end its life.
 
 ## The full verdict key set, every branch of which must carry all of them.
 const VERDICT_KEYS: Array[String] = [
@@ -62,6 +72,10 @@ var _aged: Array = []
 func setup() -> void:
 	_soul_store = SoulWorldLedger.new()
 	SoulApi.set_store(_soul_store)
+	# The composition root's clock, installed under the envelope key it publishes at
+	# `item_workbench_app.gd:306`. `SoulAge` reaches the world through `SaveApi.store_for` and
+	# holds no second reference to it (`soul_age.gd:118-127`), so this line is the WHOLE of the
+	# age seam: without it every read below is `no_world_clock` and `cause` is `death`.
 	_clock = WorldClock.new()
 	SaveApi.install_store(WorldClock.WORLD_KEY, _clock)
 	_minted.clear()
@@ -75,6 +89,13 @@ func setup() -> void:
 ## process-wide and the runner shares one process across every suite, so a clock left installed
 ## here is the next suite's world. Idempotent, and safe after an early return — which is why
 ## the bookkeeping arrays are emptied HERE rather than at each call site.
+##
+## **The erase is UNCONDITIONAL**, and it is the only way a clock leaves this process:
+## `SaveApi.install_store(key, null)` REFUSES a null store and leaves the previous entry in place
+## (`save/api.gd:105-108`), so a suite that "cleans up" with it has cleaned up nothing. Erasing
+## whatever is under the key also un-installs a clock another suite left behind, which is the
+## only correct thing to do here: the world age belongs to no suite but this one, and a stale
+## entry is a leak whichever side installed it.
 func teardown() -> void:
 	for born in _born:
 		(born as Actor).resources.clear()
@@ -88,6 +109,7 @@ func teardown() -> void:
 	_aged.clear()
 	_minted.clear()
 	_actor = null
+	_clock = null
 	SoulApi.set_store(null)
 	SaveApi._stores.erase(WorldClock.WORLD_KEY)
 
@@ -101,14 +123,39 @@ func test_an_age_that_is_not_a_number_is_refused_by_name_and_expires_nobody() ->
 	# from a build that wrote something else — and `0` or "infinitely old" would both be a claim
 	# about a body nobody has said anything true of. A refusal is the only honest answer, and it
 	# expires nobody.
-	var broken := _hero(&"not_an_age")
-	broken.set(SoulAge.AGE_FIELD, "a long time")
+	#
+	# ## THE SUBJECT CANNOT BE A REAL `Actor`, and that is the whole reason this case exists
+	#
+	# `age_years` is `var age_years: float`, and `Object.set` coerces to the declared type: this
+	# body cannot be handed the `String` below, because it would silently become `0.0` — a REAL
+	# age, and the exact confusion the refusal exists to prevent. `_broken_age_hero` is therefore
+	# a body whose field genuinely disagrees with its own declaration, which is the only way to
+	# reach `SoulAge`'s type guard at all.
+	var broken := _broken_age_hero(&"not_an_age", "a long time")
+	# A REAL `Actor` is built here and asserted against, so this case still pins what the game
+	# stores: the coercion is the engine's, and it is worth knowing the game cannot express a
+	# non-numeric age even if a save asks for one.
+	var real := _hero(&"real_age_holder")
+	real.set(SoulAge.AGE_FIELD, "a long time")
+	assert_eq(
+		float(real.get(SoulAge.AGE_FIELD)), 0.0, "a real Actor coerces a bad age to a real age"
+	)
 	assert_eq(SoulAge.age_years(broken) < 0.0, true, "a non-numeric age is a negative sentinel")
 	var answer := SoulAge.answer_for(broken)
 	assert_eq(bool(answer["expired"]), false, "so nobody has expired")
 	assert_eq(bool(answer["ok"]), false, "and the read refuses rather than answering")
 	assert_eq(String(answer["reason"]), SoulAge.REASON_NO_AGE_FIELD, "by name")
 	assert_eq(_death.is_dead(broken), false, "and the poll predicate expires nobody either")
+
+
+func test_a_negative_age_is_refused_rather_than_clamped_away() -> void:
+	# The rule the absent-field case would have pinned, still worth stating on its own: below
+	# `STARTING_AGE_YEARS` is not an age the engine can store — `Actor.age_years` coerces a
+	# negative to `0.0` — so the shipped field makes it unreachable and only this subject can
+	# show it. `0.0` would read as "born today", which is a different claim from "unknown".
+	var broken := _broken_age_hero(&"negative_age", -12.5)
+	assert_eq(SoulAge.age_years(broken) < 0.0, true, "a negative age is a negative sentinel")
+	assert_eq(String(SoulAge.answer_for(broken)["reason"]), SoulAge.REASON_NO_AGE_FIELD, "by name")
 
 
 func test_a_missing_clock_is_refused_by_name_and_is_never_read_as_zero() -> void:
@@ -189,7 +236,16 @@ func test_a_body_that_reached_its_lifespan_is_dead_and_the_cause_is_named() -> v
 	var outcome := _death.resolve(aged)
 	assert_eq(String(outcome["cause"]), SoulAge.CAUSE_AGE, "the cause is named, not inferred")
 	assert_eq(bool(outcome["died"]), true, "the body ended")
-	assert_ne(String(outcome["reason"]), "", "and the verdict names what happened")
+	# ## `ok` IS THE NAME, ON A SUCCESSFUL RE-BODY, and that is the shipped contract
+	#
+	# A resolver reports what it DID through `reason`, so a body the lifespan reached and that
+	# was re-embodied into a new one carries the NEW body's id there. Asserting a non-empty
+	# `reason` therefore asserts the opposite of this case: every successful re-body lands on
+	# `reincarnate`'s own `{"ok": true, "reason": ""}`, which is how it reaches the panel with
+	# no new row to add. So the name to assert is `ok` — the thing that says the verdict is a
+	# completed resolution rather than a refusal — and the non-empty name lives on the refusal
+	# branches, which `test_a_soul_out_of_bodies_` and the guardian case cover.
+	assert_eq(bool(outcome["ok"]), true, "and the verdict names what happened")
 
 
 func test_a_wound_death_still_reports_the_wound_cause() -> void:
@@ -275,21 +331,37 @@ func test_a_soul_out_of_bodies_is_named_when_age_ends_it_rather_than_stopping_si
 	# check sits ABOVE the gate precisely so the verdict names the CAUSE as well as the refusal —
 	# an age death reporting a bare `soul_spent` would be a run that ended for a reason no caller
 	# could read.
-	var aged := _aged_hero(&"the_last_of_the_lived", 10_000.0)
-	# Each death RE-CARRIES the world fact onto whatever body now stands (`_carry_facts`), and
-	# `_reincarnate` is handed a deliberately UNKNOWN body id so this helper's answer is a
-	# `no_arrival` refusal and the body is never swapped. So `aged` holds every death of the run
-	# rather than only its first — which is what makes this `before + 1` rather than `1`.
+	# ## THE LOOP HAS TO FOLLOW THE SWAP, and that is what this case was missing
+	#
+	# With a mint installed the gate really does hand a new body back, so `_die_away` RETURNS
+	# the body the soul is now wearing and the next pass kills THAT one. While the helper's mint
+	# was invalid it could spend no life at all — it returned at `no_body_mint` before
+	# `reincarnate` — so the loop spent nothing and this case asserted a refusal on a soul that
+	# still held all three of its lives. The re-bodies it got instead are what `expected soul_spent,
+	# got ""` and `expected , got player_incarnation_1` were reporting.
+	#
+	# `SoulState.DEFAULT_LIVES` is an authored constant read BEFORE the loop; the body is not
+	# something the pass grows, so the bound is a number of lives and not a number of rows.
+	var holder := _aged_hero(&"the_last_of_the_lived", 10_000.0)
 	for _i in range(SoulState.DEFAULT_LIVES):
-		_die_away(aged)
-	var before := WorldFact.count(aged, SoulDeath.FACT_ID)
-	var outcome := _death.resolve(aged)
+		holder = _die_away(holder)
+	# Age is a BODY fact (ADR 0258 §2) and the swap just handed this soul a newborn, so the body
+	# that stands is re-aged before the final resolve — which is what makes the last death an AGE
+	# death and not merely the last life. Re-asserting `lives == 0` first is what makes the
+	# refusal below attributable to exhaustion rather than to which body the loop happened to end
+	# on, and it is asserted BEFORE the resolve because the resolve is what records the death.
+	assert_eq(int(SoulApi.soul(holder)["lives"]), 0, "the ledger is spent")
+	holder.set(SoulAge.AGE_FIELD, 10_000.0)
+	var before := WorldFact.count(holder, SoulDeath.FACT_ID)
+	var outcome := _death.resolve(holder)
 	assert_eq(String(outcome["reason"]), "soul_spent", "the refusal is named")
 	assert_eq(String(outcome["cause"]), SoulAge.CAUSE_AGE, "and the CAUSE is named with it")
 	assert_eq(bool(outcome["died"]), true, "on a death")
 	assert_eq(bool(outcome["incarnated"]), false, "nothing re-embodied")
 	assert_eq(String(outcome["body_id"]), "", "no body was handed back")
-	assert_eq(WorldFact.count(aged, SoulDeath.FACT_ID), before + 1, "and the world heard about it")
+	assert_eq(
+		WorldFact.count(holder, SoulDeath.FACT_ID), before + 1, "and the world heard about it"
+	)
 
 
 func test_an_age_death_re_bodies_into_the_gate_s_answer_and_keeps_the_run() -> void:
@@ -350,23 +422,20 @@ func _missing_from(keys: Array[String]) -> Array[String]:
 	return out
 
 
-## Resolve a death for `body` without adopting, so a loop of deaths does not walk the
-## composition root's swap and leave this suite holding a chain of bodies.
+## ## Resolve a death for `body` and hand back the body the soul is now WEARING
 ##
-## ## `no_rebind`, because a swap is a JUMP here
-##
-## `_mint_body` is left INVALID, so `_rebody` returns at its `no_body_mint` exit before the
-## carry, before the marks window and before `reincarnate` — and the only thing it did to the
-## soul was the damage. Each pass therefore costs exactly one life, which is what makes
-## `range(SoulState.DEFAULT_LIVES)` the right number of passes and what lets the out-of-bodies
-## case spend the whole ledger and stop on a `no_lives` gate rather than on a mint failure.
-## The exit is also an honest one to pass through: it is the real branch a composition root with
-## no builder installed takes.
-func _die_away(body: Actor) -> Dictionary:
+## Returns whatever the adopt callback was handed, so a caller that loops deaths follows the
+## swap instead of striking a body that no longer exists. Striking the falling body repeatedly
+## instead would look correct — the health pool still reads zero — and would silently never
+## spend a second life, which is the failure `test_a_soul_out_of_bodies_` was reporting.
+func _die_away(body: Actor) -> Actor:
 	var pool := body.resource(&"health")
 	if pool != null:
 		pool.change(-pool.maximum)
-	return SoulDeath.new().resolve(body)
+	var holder := {"body": body}
+	var stood := body
+	SoulDeath.new(_mint, func(new_body: Actor) -> void: holder["body"] = new_body).resolve(stood)
+	return holder["body"] as Actor
 
 
 ## Take the body to zero health, through the pool's own `change` so the signal fires.
@@ -399,6 +468,22 @@ func _aged_hero(actor_id: StringName, years: float) -> Actor:
 	var body := _hero(actor_id)
 	body.set(SoulAge.AGE_FIELD, years)
 	_aged.append(body)
+	return body
+
+
+## ## A body whose `age_years` genuinely disagrees with the declared `float`
+##
+## `_hero` cannot build one: `Object.set` coerces to `Actor.age_years`'s declared type, so a
+## `String` becomes `0.0` and a negative becomes `0.0` — both REAL ages, and both the exact
+## confusion `SoulAge`'s type guard exists to prevent. `TestAgeUntypedBody` declares the same
+## field as a `Variant`, which is the only way the stored value is the value written.
+##
+## It carries no body plan, because `age_years` is one field rather than an overlay and a diamond
+## cannot remove the inherited one: the lifespan refusal is asserted by
+## `test_a_body_with_no_body_plan_reads_a_zero_lifespan_and_expires_nobody` instead.
+func _broken_age_hero(actor_id: StringName, value: Variant) -> Actor:
+	var body := TestAgeUntypedBody.new(actor_id, value)
+	_born.append(body)
 	return body
 
 

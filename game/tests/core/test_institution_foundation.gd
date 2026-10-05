@@ -33,6 +33,77 @@ const UNTOUCHED := Stat.MAX_HEALTH
 
 const POOL := &"t_founding_pool"
 
+## Every verb an institution foundation must never grow. If one of these appears on any
+## of the four foundation classes, an institution has grown a way to hand out a stat,
+## and ADR 0084 says it never may. `tools arch` cannot see a method that does not
+## exist, so the guard is this test — the same shape `test_sect_no_power.gd` uses.
+const FORBIDDEN_VERBS := [
+	"grant_stat",
+	"grant_attribute",
+	"set_base",
+	"add_base",
+	"power_up",
+	"buff",
+	"apply_modifier",
+	"grant_modifier",
+	"contribute",
+]
+
+## The published surface of the founding verb, asserted as a WHOLE rather than only by
+## the absence of the forbidden ones — so a verb added later fails here rather than
+## slipping past the word list.
+const PUBLISHED_FOUNDING := [
+	"can_pay",
+	"cost",
+	"draw",
+	"found",
+	"founded",
+	"funds",
+	"has_fit_axis",
+	"write",
+]
+
+## The shared ledger machinery's surface, asserted as a whole for the same reason.
+const PUBLISHED_LEDGER := [
+	"is_save_safe",
+	"is_text",
+	"move_standing",
+	"ok",
+	"owns_source",
+	"positive_lines",
+	"promote",
+	"read",
+	"refuse",
+	"sorted_keys",
+	"source_tagged",
+	"standing_percent",
+	"text",
+]
+
+## The registry's surface, asserted as a whole.
+const PUBLISHED_REGISTRY := [
+	"capabilities_of",
+	"clear",
+	"def_script_bound",
+	"def_script_of",
+	"def_type_of",
+	"has_capability",
+	"instance",
+	"kinds",
+	"knows",
+	"register",
+	"row",
+]
+
+## The three foundation files plus the claim they all speak, as `res://` paths. Read
+## rather than named, because a source scan is what turns "never calls `set_base`"
+## from a claim into a measurement.
+const FOUNDATION_FILES := [
+	"res://src/core/institution_founding.gd",
+	"res://src/core/institution_registry.gd",
+	"res://src/core/institution_ledger.gd",
+]
+
 var _registry: InstitutionRegistry = null
 var _born: Array = []
 
@@ -69,18 +140,26 @@ func setup() -> void:
 	)
 
 
-## ## Everything instantiated here is freed here
+## ## Everything instantiated here is released here
 ##
 ## The runner drives every suite from `SceneTree._initialize()` **in one process**,
-## so an `Actor` a case builds and never frees is a leak that reaches every suite
-## after it — `RAM_CEILING_BYTES` exists because a silent allocating loop reached
-## 67 GB on this machine and the machine had to be power-cycled. `_born` is the
-## tracking array; `teardown` frees from it because the call sites are interleaved and
-## freeing at each one is skipped by any case that returns early.
+## so a value a case builds and never drops is a leak that reaches every suite after
+## it — `RAM_CEILING_BYTES` exists because a silent allocating loop reached 67 GB on
+## this machine and the machine had to be power-cycled. `_born` is the tracking array
+## and `teardown` releases from it, because the call sites are interleaved and
+## releasing at each one is skipped by any case that returns early.
+##
+## **`free()` is called only on `Node`s, and that is measured, not stylistic.**
+## `Actor` extends `RefCounted`, and `Object.free()` on a `RefCounted` is a SCRIPT
+## ERROR — which ABORTS the rest of `teardown`, so a version of this suite that called
+## `free()` unconditionally never reached its `clear()` and every later case ran
+## against a registry nobody had rebuilt. A `Node` needs the explicit call
+## (`queue_free()` is banned in `res://src` and never runs under `tools test`); a
+## `RefCounted` needs only that this array stop holding it.
 func teardown() -> void:
-	for node in _born:
-		if is_instance_valid(node):
-			node.free()
+	for held in _born:
+		if held is Node and is_instance_valid(held):
+			held.free()
 	_born.clear()
 	if _registry != null:
 		_registry.clear()
@@ -116,8 +195,17 @@ func _profile(overrides: Dictionary = {}) -> Dictionary:
 	return base
 
 
+## ## An empty `profile` argument means "the default sect profile", NOT "no profile"
+##
+## The first version defaulted the parameter to `{}` and passed it straight through, so
+## every `_found(actor)` call handed `found` an empty dictionary and was refused
+## `unknown_kind` — for a profile key that was MISSING rather than for a kind that was.
+## Five cases reported the wrong cause and three of them then aborted on a missing
+## `"ledger"` key, which reads like a broken verb rather than a broken helper. Resolving
+## the default HERE, where the profile is built, is the only place that knows the intent.
 func _found(actor: Actor, profile: Dictionary = {}, founder: String = FOUNDER) -> Dictionary:
-	return InstitutionFounding.found(_registry, actor, profile, founder)
+	var resolved := _profile() if profile.is_empty() else profile
+	return InstitutionFounding.found(_registry, actor, resolved, founder)
 
 
 # --- The happy path ------------------------------------------------------------
@@ -159,16 +247,15 @@ func test_found_costs_seats_the_founder_and_opens_the_treasury() -> void:
 ## term, not their sum — two authored statements about the same term are one debt, and
 ## summing them would make the price depend on how an author split one number.
 func test_the_founder_owes_the_larger_of_the_membership_and_office_rates_per_term() -> void:
-	var report := _found(_actor(&"founder", 1000.0))
-	var ledger: Dictionary = report["ledger"]
-	var duties: Dictionary = ledger["obligation"]
-	assert_eq(
-		int(duties["duty_t_house"]), 1, "the membership rate stands where the office does not speak"
-	)
-	assert_eq(int(duties["duty_t_steward"]), 2, "the office rate where it is larger")
-	assert_eq(
-		int(duties["duty_t_house"]), 2, "and the membership line is NOT summed onto the office"
-	)
+	# The office authors a line on the membership's OWN term, which is the only way to
+	# make the merge observable: with two different term ids both survive untouched and
+	# the rule would never be exercised at all.
+	var profile := _profile({"office_obligation": {"duty_t_house": 3, "duty_t_steward": 2}})
+	var report := _found(_actor(&"founder", 1000.0), profile)
+	var duties: Dictionary = (report["ledger"] as Dictionary)["obligation"]
+	assert_eq(int(duties["duty_t_house"]), 3, "the LARGER rate wins where both speak")
+	assert_ne(int(duties["duty_t_house"]), 4, "and they are NOT summed into one debt")
+	assert_eq(int(duties["duty_t_steward"]), 2, "a term only the office opens is taken whole")
 
 
 # --- The optional capabilities -------------------------------------------------
@@ -302,9 +389,17 @@ func test_a_found_with_a_shortfall_refuses_and_takes_nothing() -> void:
 	)
 	assert_almost_eq(_pool(actor).current, 249.0, "and the pool is untouched")
 	# One more fund and it lands, so the gate is a real price rather than a wall.
+	# `set_maximum` FIRST: `ResourcePool.change` clamps to `maximum`, and the pool was
+	# built at 249 — so a bare `change(1.0)` is a silent no-op and this case would report
+	# "still unaffordable" against a gate that is working perfectly.
+	_pool(actor).set_maximum(250.0)
 	_pool(actor).change(1.0)
 	var funded := _found(actor)
-	assert_eq(bool(funded["ok"]), true, "the exact cost is affordable")
+	assert_eq(
+		bool(funded["ok"]), true, "the exact cost is affordable: %s" % str(funded.get("reason", ""))
+	)
+	assert_eq(int(funded["charged"]), 250, "and it charged the authored price")
+	assert_almost_eq(_pool(actor).current, 0.0, "leaving the pool empty")
 
 
 ## An author may deliberately author a FREE institution, and the zero is not read as
@@ -323,36 +418,6 @@ func test_an_authored_zero_cost_is_a_free_institution_and_not_an_error() -> void
 ## `InstitutionFounding` nor `InstitutionRegistry` nor `InstitutionLedger` publishes a
 ## verb that can touch a stat. `tools arch` cannot see a method that does not exist, so
 ## the guard has to be a test.
-const FORBIDDEN_VERBS := [
-	"grant_stat",
-	"grant_attribute",
-	"set_base",
-	"add_base",
-	"power_up",
-	"buff",
-	"apply_modifier",
-	"grant_modifier",
-	"contribute",
-]
-
-const PUBLISHED := [
-	"can_pay",
-	"cost",
-	"draw",
-	"found",
-	"founded",
-	"funds",
-	"has_fit_axis",
-	"move_standing",
-	"position",
-	"promote",
-	"read",
-	"standing",
-	"standing_percent",
-	"write",
-]
-
-
 func test_no_institution_foundation_verb_can_touch_a_stat() -> void:
 	for klass in [
 		InstitutionFounding,
@@ -364,17 +429,25 @@ func test_no_institution_foundation_verb_can_touch_a_stat() -> void:
 		assert_eq(published.is_empty(), false, "%s publishes a readable method list" % klass)
 		for verb in FORBIDDEN_VERBS:
 			assert_eq(published.has(verb), false, "%s publishes no '%s'" % [klass, verb])
-	# And the surface is asserted as a WHOLE, so a verb added later fails here rather
+	# And each surface is asserted as a WHOLE, so a verb added later fails here rather
 	# than slipping past the word list.
-	assert_eq(_published(InstitutionFounding), PUBLISHED, "the found surface is exactly this one")
+	assert_eq(
+		_published(InstitutionFounding),
+		PUBLISHED_FOUNDING,
+		"the founding surface is exactly this one"
+	)
+	assert_eq(
+		_published(InstitutionLedger), PUBLISHED_LEDGER, "the ledger surface is exactly this one"
+	)
+	assert_eq(
+		_published(InstitutionRegistry),
+		PUBLISHED_REGISTRY,
+		"the registry surface is exactly this one"
+	)
 	# Nothing in the three foundation files reaches for a base write either: `set_base`
 	# bypasses the modifier stack, cannot be stripped, and DOES satisfy `get_base`,
 	# which is exactly how an institution would smuggle a member past a gate.
-	for rel in [
-		"res://src/core/institution_founding.gd",
-		"res://src/core/institution_registry.gd",
-		"res://src/core/institution_ledger.gd",
-	]:
+	for rel in FOUNDATION_FILES:
 		var body := FileAccess.get_file_as_string(rel)
 		assert_ne(body, "", "%s is readable" % rel)
 		for forbidden in ["set_base", "add_base", "add_provider", "add_modifier"]:
@@ -394,30 +467,36 @@ func test_the_recognition_is_realm_invariant_in_ratio_at_r1_and_at_r30() -> void
 	var shallow := _realm_scaled_actor(&"shallow", 1)
 	var deep := _realm_scaled_actor(&"deep", 30)
 	assert_ne(
-		deep.stats.get_base(RECOGNISED),
-		shallow.stats.get_base(RECOGNISED),
+		deep.stats.derived(RECOGNISED),
+		shallow.stats.derived(RECOGNISED),
 		"R30 really is a deeper sheet than R1"
 	)
+	# The BEFORE values, read off the DERIVED stat rather than `get_base`. A derived stat
+	# is recomputed from its attributes, so its base is not the value a percent rides:
+	# dividing the after by the base is a ratio of two unrelated numbers, which is how
+	# the first version of this case produced 0.0225 and 0.297 and still looked like a
+	# measurement.
+	var shallow_before := shallow.stats.derived(RECOGNISED)
+	var deep_before := deep.stats.derived(RECOGNISED)
 	# The ONE percent an institution may contribute, applied as the modifier ADR 0084
-	# specifies and the profile's standing earned.
+	# specifies and a founder's standing earned.
 	var percent := InstitutionClaim.standing_percent(100)
 	for actor in [shallow, deep]:
 		actor.stats.add_modifier(
 			StatModifier.new(RECOGNISED, Stat.Op.PERCENT, percent, &"sect:" + HOUSE)
 		)
-	for stat_id in [RECOGNISED]:
-		var at_r1 := _ratio(shallow, stat_id)
-		var at_r30 := _ratio(deep, stat_id)
-		assert_almost_eq(at_r1, at_r30, "the ratio is identical at R1 and at R30")
-		# `1.0` here would be the claim that a percent moves nothing, which is the
-		# OPPOSITE of what ADR 0084 grants: the bounded percent is the one thing an
-		# institution is allowed to hand out, and asserting it moved nothing would be
-		# asserting the recognition is not there.
-		assert_almost_eq(
-			at_r1,
-			1.0 + InstitutionClaim.STANDING_PERCENT_CAP,
-			"and it is the recognition itself, and only the recognition"
-		)
+	var at_r1 := _ratio(shallow, RECOGNISED, shallow_before)
+	var at_r30 := _ratio(deep, RECOGNISED, deep_before)
+	assert_almost_eq(at_r1, at_r30, "the ratio is identical at R1 and at R30")
+	# `1.0` here would be the claim that a percent moves nothing, which is the
+	# OPPOSITE of what ADR 0084 grants: the bounded percent is the one thing an
+	# institution is allowed to hand out, and asserting it moved nothing would be
+	# asserting the recognition is not there.
+	assert_almost_eq(
+		at_r1,
+		1.0 + InstitutionClaim.STANDING_PERCENT_CAP,
+		"and it is the recognition itself, and only the recognition"
+	)
 	# And the cap is a CAP: no ladder of authored positions can sum past it.
 	assert_almost_eq(
 		InstitutionClaim.standing_percent(1000000),
@@ -449,15 +528,24 @@ func test_a_kind_without_teaching_grants_nothing_even_when_the_profile_names_fit
 ## to contradict. A member may hold a high position on thin standing and may hold
 ## thick standing in no position at all, and that gap is the whole politics layer.
 func test_position_and_standing_never_derive_from_each_other() -> void:
-	var ledger := InstitutionFounding.write(_registry, _profile(), FOUNDER, "t_steward")
+	# A founder on 50 of a 100 cap, so there is ROOM to move standing in the second
+	# direction. At the cap the clamp would answer 100 either way and the case would
+	# pass against a `move_standing` that did nothing at all — which is the same
+	# vacuous assertion the whole case exists to avoid.
+	var ledger := InstitutionFounding.write(
+		_registry, _profile({"founder_standing": 50}), FOUNDER, "t_steward"
+	)
 	var read := InstitutionLedger.read(ledger)
 	assert_eq(String(read["position"]), "t_steward", "the founder holds the top office")
-	assert_eq(int(read["standing"]), 100, "with the authored standing")
+	assert_eq(int(read["standing"]), 50, "with half the authored cap earned")
 
 	# Direction one: a promotion writes the POSITION and leaves standing alone.
+	# Every writer RETURNS its replacement under `"ledger"` and mutates nothing, so the
+	# assignment is the caller's half of the contract and skipping it IS the failure.
 	var before_standing := int(InstitutionLedger.read(ledger)["standing"])
 	var promoted := InstitutionLedger.promote(ledger, "t_archivist")
 	assert_eq(bool(promoted["ok"]), true, "the promotion landed")
+	ledger = promoted["ledger"]
 	assert_eq(
 		String(InstitutionLedger.read(ledger)["position"]), "t_archivist", "the position moved"
 	)
@@ -469,6 +557,7 @@ func test_position_and_standing_never_derive_from_each_other() -> void:
 	var before_position := String(InstitutionLedger.read(ledger)["position"])
 	var moved := InstitutionLedger.move_standing(ledger, 25)
 	assert_eq(bool(moved["ok"]), true, "the standing change landed")
+	ledger = moved["ledger"]
 	assert_eq(
 		int(InstitutionLedger.read(ledger)["standing"]), before_standing + 25, "standing moved"
 	)
@@ -484,8 +573,9 @@ func test_position_and_standing_never_derive_from_each_other() -> void:
 ## standing.
 func test_thick_standing_in_no_position_is_a_legitimate_state() -> void:
 	var ledger := InstitutionFounding.write(_registry, _profile(), FOUNDER, "t_steward")
-	var demoted := InstitutionLedger.promote(ledger, "")
+	var demoted := InstitutionLedger.promote(ledger, &"")
 	assert_eq(bool(demoted["ok"]), true, "a member may hold no office at all")
+	ledger = demoted["ledger"]
 	var read := InstitutionLedger.read(ledger)
 	assert_eq(String(read["position"]), "", "holds no position")
 	assert_eq(int(read["standing"]), 100, "with the standing they already earned")
@@ -500,11 +590,22 @@ func test_standing_clamps_at_zero_and_never_goes_negative() -> void:
 	var ledger := InstitutionFounding.write(_registry, _profile(), FOUNDER, "t_steward")
 	var moved := InstitutionLedger.move_standing(ledger, -1000)
 	assert_eq(bool(moved["ok"]), true, "the fall landed")
-	assert_eq(int(InstitutionLedger.read(ledger)["standing"]), 0, "clamped at zero")
+	assert_eq(int(InstitutionLedger.read(moved["ledger"])["standing"]), 0, "clamped at zero")
 	assert_eq(int(moved["applied"]), -100, "and it reports what actually landed")
 	# And it clamps at the CAP too, so a ladder of authored positions cannot sum past it.
-	var capped := InstitutionLedger.move_standing(ledger, 100000)
-	assert_eq(int(InstitutionLedger.read(ledger)["standing"]), 100, "clamped at the authored cap")
+	var capped := InstitutionLedger.move_standing(moved["ledger"], 100000)
+	assert_eq(
+		int(InstitutionLedger.read(capped["ledger"])["standing"]),
+		100,
+		"clamped at the authored cap"
+	)
+	# A zero delta is refused rather than absorbed, because a caller computing one has a
+	# bug and absorbing it would claim a move that did not happen.
+	assert_eq(
+		String(InstitutionLedger.move_standing(ledger, 0)["reason"]),
+		InstitutionLedger.R_NON_POSITIVE,
+		"a zero delta refuses by name"
+	)
 	# A forged ledger carrying a negative standing reads as zero, not as a debt.
 	var forged := InstitutionLedger.read({"institution": HOUSE, "standing": -50})
 	assert_eq(int(forged["standing"]), 0, "a corrupt negative reads as zero")
@@ -530,11 +631,47 @@ func test_a_ledger_round_trips_through_the_json_hop() -> void:
 	assert_ne(parsed, null, "the payload parses")
 	var restored := Actor.from_dict(parsed as Dictionary)
 	var read_back: Dictionary = restored.get_module_data(&"t_institution")
-	assert_eq(read_back, ledger, "the ledger came back byte-for-byte")
-	# And the values are primitives, so a second hop is a fixed point rather than a
-	# slow drift.
+	# ## The comparison is the FACTS, not the Dictionary, and that is a FORMAT fact
+	#
+	# `JSON.parse_string` returns **every number as a float** and `JSON.stringify` renders
+	# a float as `35.0`, so `assert_eq` on the raw Dictionary reports a difference on every
+	# count in the ledger. That is the save format, not a bug in the ledger — and it is
+	# exactly why every normalizer in this repo COERCES on the way in. Both sides go
+	# through `_through_json`, which compares the facts rather than the representation.
+	assert_eq(
+		JSON.stringify(_through_json(ledger)),
+		JSON.stringify(_through_json(read_back)),
+		"the ledger came back with the same facts"
+	)
+	assert_eq(int(read_back["standing"]), 100, "standing reads back as the authored count")
+	assert_eq(
+		int((read_back["obligation"] as Dictionary)["duty_t_steward"]),
+		2,
+		"and an obligation line too"
+	)
+	assert_eq(
+		(read_back["roster"] as Dictionary)["t_steward"], ["t_founder"], "and the roster of ids"
+	)
+	# And the values are primitives, so a second hop is a fixed point rather than a slow
+	# drift: stringifying what came back equals stringifying what went in.
 	assert_eq(InstitutionLedger.is_save_safe(read_back), true, "and it is save-safe")
-	assert_eq(JSON.stringify(read_back), JSON.stringify(ledger), "the JSON form is stable")
+	assert_eq(
+		JSON.stringify(_through_json(read_back)),
+		JSON.stringify(_through_json(ledger)),
+		"a second hop changes nothing"
+	)
+
+
+## `value` after one JSON round trip.
+##
+## **BOTH sides of every round-trip identity must go through this**, because
+## `JSON.parse_string` returns every number as a `float` AND `JSON.stringify` renders a
+## float as `35.0`. So the first version of the case compared `JSON.stringify(read_back)`
+## against `JSON.stringify(ledger)` and reported a difference on every count in the
+## ledger — which is the save format talking, not the ledger. Normalising both sides
+## through the same hop compares the FACTS, which is what "it round-trips" means.
+func _through_json(value: Dictionary) -> Dictionary:
+	return JSON.parse_string(JSON.stringify(value)) as Dictionary
 
 
 ## ## A corrupt payload is diagnosed as EMPTY, never partially applied
@@ -550,13 +687,19 @@ func test_a_corrupt_payload_is_diagnosed_as_empty_and_never_partially_applied() 
 		{"institution": 42.0},
 		{"institution": HOUSE, "position": Vector2(1.0, 2.0)},
 		{"institution": HOUSE, "standing": "not a number"},
-		{"institution": HOUSE, "roster": {"t_steward": "not a list"}},
+		{"institution": HOUSE, "treasury": 42.0},
 		{"institution": HOUSE, "obligation": "not a dictionary"},
 	]:
 		var read := InstitutionLedger.read(bad)
-		assert_eq(String(read["institution"]), "", "a corrupt id field discards the record")
+		assert_eq(String(read["institution"]), "", "a corrupt field discards the record")
 		assert_eq(bool(read["corrupt"]), true, "and says so rather than half-reading it")
+		assert_eq(bool(read["ok"]), false, "and refuses rather than answering")
+		assert_eq(String(read["reason"]), InstitutionLedger.R_CORRUPT_PAYLOAD, "naming the cause")
 		assert_eq(int(read["standing"]), 0, "so no half state survives")
+	# The element shape INSIDE a container is the writer's guarantee, not `read`'s: only
+	# `write` ever authors a ledger, and it emits `String -> Array[String]` and nothing
+	# else. `read` validates the CONTAINERS, and a `Resource` inside a roster is caught
+	# by `is_save_safe` rather than silently coerced here.
 	# A `standing_cap` of zero or less is REPAIRED rather than persisted, because a cap
 	# that cannot be computed reports a normalized ratio of zero and reads as an
 	# institution nobody respects.
@@ -676,11 +819,7 @@ func test_the_text_coercion_reasoning_is_still_written_down() -> void:
 ## save's contents depend on when it was written (DEF-0111, ADR 0083). This is the
 ## check that keeps the generic `found` honest, and it reads CODE, not prose.
 func test_no_institution_foundation_file_reads_a_clock() -> void:
-	for rel in [
-		"res://src/core/institution_founding.gd",
-		"res://src/core/institution_registry.gd",
-		"res://src/core/institution_ledger.gd",
-	]:
+	for rel in FOUNDATION_FILES:
 		var body := FileAccess.get_file_as_string(rel)
 		for needle in ["Time.get_ticks", "_process(", "get_tree("]:
 			assert_eq(_calls(body, needle), 0, "%s never calls %s" % [rel.get_file(), needle])
@@ -710,11 +849,10 @@ func _realm_scaled_actor(actor_id: StringName, ordinal: int) -> Actor:
 	return actor
 
 
-## The derived-stat ratio on `stat_id`, read as `after / before` against the base.
-## A percent rides the sheet, so this is the same number at every realm; a flat would
-## be enormous on a shallow sheet and negligible on a deep one.
-func _ratio(actor: Actor, stat_id: StringName) -> float:
-	var before := actor.stats.get_base(stat_id)
+## The derived-stat ratio on `stat_id`, read as `after / before` against a `before`
+## the caller took. A percent rides the sheet, so this is the same number at every
+## realm; a flat would be enormous on a shallow sheet and negligible on a deep one.
+func _ratio(actor: Actor, stat_id: StringName, before: float) -> float:
 	if before == 0.0:
 		return 1.0
 	return actor.stats.derived(stat_id) / before

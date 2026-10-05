@@ -154,9 +154,22 @@ func test_the_mechanism_never_sees_crit_as_an_input() -> void:
 	assert_almost_eq(
 		outcome.proposed_amount(), 40.0, "S4/S5 produced exactly what the mechanism returned"
 	)
-	var expected := 40.0 * attacker.stats.derived(Stat.CRIT_DAMAGE)
+	# ADR 0215. The expected value is the WHOLE crit-damage contest, both halves read
+	# off the two actors rather than restated: `CRIT_DAMAGE * (1 - CRIT_RESIST_DAMAGE)`.
+	# It used to assert `40.0 * CRIT_DAMAGE` alone, which was correct when the offence
+	# half was the entire contest and wrong the moment `CRIT_RESIST_DAMAGE` had a
+	# baseline — and a stat that a stat is compared against changes the comparison.
+	# Nothing is weakened by this: the number is still derived, not pasted, so the
+	# assertion still fails if either actor's stat moves.
+	var expected := (
+		40.0
+		* attacker.stats.derived(Stat.CRIT_DAMAGE)
+		* maxf(0.0, 1.0 - target.stats.derived(Stat.CRIT_RESIST_DAMAGE))
+	)
 	assert_almost_eq(
-		outcome.amount, expected, "S6 multiplied the mechanism's output by CRIT_DAMAGE"
+		outcome.amount,
+		expected,
+		"S6 multiplied by CRIT_DAMAGE less the target's CRIT_RESIST_DAMAGE"
 	)
 
 

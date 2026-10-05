@@ -21,8 +21,10 @@ extends TestCase
 ## - `mental_attack`       -> `mind_damage.gd:228` (`_mind_stat`, attacker side)
 ## - `mental_defense`      -> `mind_damage.gd:230` (`_mind_stat`, target side)
 ## - `illusion_resistance` -> `mind_damage.gd:575` (`_mind_stat`, OBSCURE only)
-## - `mind_focus_chance`   -> `mind_damage.gd:550` (`_mind_stat`, spends FOCUS_MULT)
-## - `mind_avoidance`      -> `mind_damage.gd:563` (`_mind_stat`, damps coherence)
+## - `mind_clarity`        -> `mind_damage.gd:550` (`_mind_stat`, spends FOCUS_MULT)
+## - `mind_veil`           -> `mind_damage.gd:563` (`_mind_stat`, damps coherence)
+##                            (ADR 0215 renamed the last two from `mind_focus_chance`
+##                            and `mind_avoidance`; the resolution sites are unchanged.)
 ## - `mind_technique_power`-> `combat_damage.tres:39` `mind_deviation_stat`, read at
 ##                            `mind_damage.gd:415-418` (`apply_deviation` zeroing it)
 ## - `spiritual_sense_range`-> NO reader. `ui/panels/stat_presenter.gd:134` only,
@@ -54,8 +56,8 @@ const COMBAT_BOOT_PATH := "res://src/app/combat_boot.gd"
 const RESOLVED_IDS := [
 	MindStats.MENTAL_ATTACK,
 	MindStats.MENTAL_DEFENSE,
-	MindStats.MIND_FOCUS_CHANCE,
-	MindStats.MIND_AVOIDANCE,
+	MindStats.MIND_CLARITY,
+	MindStats.MIND_VEIL,
 	MindStats.ILLUSION_RESISTANCE,
 ]
 
@@ -66,12 +68,16 @@ const DISPLAY_ONLY_IDS := [
 	MindStats.SEA_CAPACITY,
 ]
 
-## ADR 0071's nine numbers, by field name. A zero here is not a neutral default,
-## it is a formula with a term switched off -- which is exactly what the docblock
-## in `provider.gd` used to claim the shipped state was.
+## ADR 0071's numbers, by field name, MINUS the two ADR 0200 deleted.
+##
+## `mental_defense_cap` and `illusion_resistance_cap` were on this list and are GONE from
+## `CombatTuning` -- ADR 0200 replaced both with unbounded magnitudes and the docblock at
+## `combat_tuning.gd:143` says so. Keeping them here was not a stale comment: `tuning.get`
+## returned `null` for both and the very next line called `float(null)`, which is a
+## `Nonexistent 'float' constructor` script error that ABORTED this test mid-function.
+## An aborted test reports no failure, so the run above it still read as passing -- the
+## whole reason the assertion below now checks the property that was actually meant.
 const ADR_0071_NUMBERS := [
-	"mental_defense_cap",
-	"illusion_resistance_cap",
 	"coherence_damp",
 	"focus_mult",
 	"turbulence_to_clarity",
@@ -141,8 +147,8 @@ func _actor() -> Actor:
 ## Self-duel on purpose: `AttackContext` takes an `Actor` per side and reads the
 ## live derived cache off it, so attacker and target being the same actor needs no
 ## second fixture and no hand-copied stat. `rng` is left null, which ADR 0067
-## makes the deterministic answer -- no draw, no roll -- so `mind_focus_chance`
-## and `mind_avoidance` are exercised at their READ and not at a dice outcome.
+## makes the deterministic answer -- no draw, no roll -- so `mind_clarity`
+## and `mind_veil` are exercised at their READ and not at a dice outcome.
 func _bound_parts(actor: Actor) -> Dictionary:
 	var report: Dictionary = CombatBoot.bind_mechanisms(actor)
 	assert_eq(bool(report.get("bound", false)), true, "the composition root bound a mechanism")
@@ -240,6 +246,14 @@ func test_the_shipped_tuning_resolves_the_bare_ids_and_carries_live_numbers() ->
 	)
 	for field in ADR_0071_NUMBERS:
 		var value: Variant = tuning.get(field)
+		# `is float` and not `float(value)`: a field ADR deleted reads `null` from
+		# `tuning.get`, and `float(null)` is a script error that aborts the test rather
+		# than failing it -- which is how a stale entry here hid for as long as it did.
+		assert_eq(
+			value is float,
+			true,
+			"ADR 0071's %s is still a field on the shipped tuning" % String(field)
+		)
 		assert_eq(
 			float(value) > 0.0,
 			true,
@@ -270,7 +284,7 @@ func test_every_resolved_id_is_published_under_that_exact_spelling() -> void:
 			break
 		MindCultivationApi.cultivate(actor)
 	for id in RESOLVED_IDS:
-		# `mind_focus_chance` and `mind_avoidance` are floors (`0.05 +` and
+		# `mind_clarity` and `mind_veil` are floors (`0.05 +` and
 		# `perception * 0.002`), so a published one is never `0.0` on this fixture
 		# and a strict non-zero discriminates rather than fudges.
 		assert_ne(

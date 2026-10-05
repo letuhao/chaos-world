@@ -689,8 +689,10 @@ func test_binding_a_target_added_no_facade_method() -> void:
 		var method_name := String(method.get("name", ""))
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)
-	assert_true(
-		published.size() > 0, "the facade really publishes something, so the count read nothing"
+	assert_eq(
+		published.size() > 0,
+		true,
+		"the facade really publishes something, so the count read nothing"
 	)
 
 

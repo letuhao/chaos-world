@@ -43,23 +43,23 @@ script = ExtResource("3_round")
 slot_id = &"at_the_sparring_ground"
 index = 0
 activity = "watching you spar, and correcting nothing he could correct"
-location_id = &"forge_yard"
-tell_id = &"watches_the_sleeve"
+location_id = &"mortal_plains"
+tell_id = ""
 
 [sub_resource type="Resource" id="Round_terrace"]
 script = ExtResource("3_round")
 slot_id = &"on_the_terrace"
 index = 1
 activity = "drinking alone and leaving the seat beside him conspicuously empty"
-location_id = &"qi_dao"
-tell_id = &"leaves_the_seat"
+location_id = &"mortal_plains"
+tell_id = ""
 
 [sub_resource type="Resource" id="Round_gate"]
 script = ExtResource("3_round")
 slot_id = &"at_the_gate_again"
 index = 2
 activity = "standing where he can see the road and you cannot see his face"
-location_id = &"qi_dao"
+location_id = &"mortal_plains"
 tell_id = &""
 
 [sub_resource type="Resource" id="Tell_stranger"]

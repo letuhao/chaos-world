@@ -42,9 +42,9 @@ MUTATIONS: tuple[tuple[str, str, str], ...] = (
     ),
     (
         "a_drifted_neutral_row",
-        '"soul_damage_share": 1.0,\n"death_loss_cap": 1.0,\n"guardian_effectiveness": 1.0,\n'
+        '"soul_damage_share": 1.0,\n"guardian_effectiveness": 1.0,\n'
         '"tribulation_preparation_credit": 1.0\n},\n&"hard"',
-        '"soul_damage_share": 0.95,\n"death_loss_cap": 1.0,\n"guardian_effectiveness": 1.0,\n'
+        '"soul_damage_share": 0.95,\n"guardian_effectiveness": 1.0,\n'
         '"tribulation_preparation_credit": 1.0\n},\n&"hard"',
     ),
     (
@@ -54,8 +54,17 @@ MUTATIONS: tuple[tuple[str, str, str], ...] = (
     ),
     (
         "an_out_of_bounds_scalar",
-        '"death_loss_cap": 1.5,',
-        '"death_loss_cap": 400.0,',
+        '"guardian_effectiveness": 0.85,',
+        '"guardian_effectiveness": 400.0,',
+    ),
+    (
+        # BL-0887: the cap was cut because it bound on no shipped preset, so its reader was a
+        # no-op rather than absent. This mutation is the SECOND guard on that cut — the first is
+        # `a_resurrected_loot_ceiling`'s sibling for `loot_ceiling` — and it exists so putting
+        # `death_loss_cap` back fails loudly instead of passing as an unknown-but-ignored key.
+        "a_resurrected_death_loss_cap",
+        '"soul_damage_share": 1.5,\n"guardian_effectiveness": 0.85,',
+        '"soul_damage_share": 1.5,\n"death_loss_cap": 1.5,\n"guardian_effectiveness": 0.85,',
     ),
 )
 
