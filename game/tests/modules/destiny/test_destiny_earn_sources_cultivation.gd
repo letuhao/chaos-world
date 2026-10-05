@@ -64,6 +64,17 @@ const OATH_BREAKER := &"oath_breaker"
 ## and never moved by it.
 const SEED_CAP := 256
 
+## ## `roll_draw` is a NAMED CONSTANT per path, because a transaction may take a
+## ## different number of draws before its own roll
+##
+## The three constants and DRAW_CAP are declared ONCE, beside `_seed_deciding` where
+## the search that reads them lives. Two earlier passes each left a copy here as well,
+## and each duplicate was a PARSE ERROR - "Constant 'DRAW_CAP' has the same name as a
+## previously declared constant" - so the suite failed to LOAD and reported 0 passed /
+## 1 failed with every test in the file silently uncounted. A duplicated const makes the
+## tally UNDERSTATE, which is the more dangerous direction: a green file can hide a
+## whole suite.
+
 ## The one body fixture this suite drives, as an INSTANCE.
 ##
 ## Typed as the fixture's own script so `:=` still infers at the call sites — a
@@ -408,13 +419,50 @@ func actor_rank(actor: Actor) -> StringName:
 	return actor.path(BodyPath.PATH_ID).rank_id
 
 
-## A prepared qi hero whose first roll decides the way `winning` asks.
+## A prepared qi hero whose roll decides the way `winning` asks.
 ##
-## The roll is resolved against a THROWAWAY probe and only its seed is replayed on
-## the actor under test. Preparation is the module's own probe and is deterministic,
-## so the committed chance is a fixed number; searching seeds costs no playthroughs
-## and never leaves a hero mid-ladder. `SEED_CAP` is the bound and it is taken before
-## the search.
+## ## The chance is read off the PRODUCTION preview, never off `QiAdvancement.chance`
+##
+## `QiBreakthroughTransaction.preview` publishes the very number the transaction's own
+## roll is computed out of (`breakthrough_transaction.gd:76` and `:134` both call
+## `QiChance.of(dantian)`), so reading it is a differential against the code under
+## test rather than a second opinion from a pass-through DEF-0259 records as
+## test-only. **Measured** on the prepared `qi_refining` hero: `chance` 0.300000,
+## `QiAdvancement.chance` 0.300000, `can_attempt` true, `unmet_conditions` empty,
+## progress 140.00/100.00, comprehension 10.46/10.00, dantian quality 0.5000/0.5000,
+## dantian ratio 1.0000/1.0000, `injured` false, pill held, and
+## `Breakthrough.can_advance` true — a LEGAL prior state on every gate the
+## transaction enforces.
+##
+## ## The verdict is a FRESH generator at the searched seed, never the search's own
+##
+## This is the defect DEF-0295 measured, and it is the whole of it. The search drew
+## `probe.randf()` and then **returned that same, already-consumed `probe`** — while
+## its own docstring claimed "only its seed is replayed". So the number it decided on
+## and the number the real breakthrough read were consecutive draws of one stream.
+## Nothing about `_qi_prepare` was wrong.
+##
+## Two measured facts make the fix correct, and both are asserted by
+## `test_the_qi_roll_is_judged_on_the_draw_the_transaction_really_reads` rather than
+## left as a comment:
+##
+##   1. The roll is the FIRST draw. `Breakthrough.face_tribulation`
+##      (`breakthrough_transaction.gd:115`) runs before the roll (`:135`), but below
+##      the Immortal threshold it returns at `breakthrough.gd:201` **without drawing**,
+##      and `_deviate`'s meridian `_pick` draws only after a roll has already lost.
+##      Measured over seeds 1..8 x skip 0..3, a fresh hero per trial: skip 0 is the only
+##      offset consistent with every outcome, so `QI_ROLL_DRAW` is 0.
+##   2. A generator is deterministic per seed from a fresh construction — two
+##      separately built generators at seed 1 both read 0.329559 first — so rebuilding
+##      at the searched seed replays the judged draw. Re-assigning `.seed` on the
+##      consumed object would NOT: that rewrites the seed without rewinding the state,
+##      which is why `_seed_deciding` returns a rebuilt `_rng(candidate)`.
+##
+## Measured consequence at the prepared chance of 0.30: the old search chose seed 1
+## for a losing roll (draw 0 = 0.329559, above 0.30), and the attempt then read draw
+## 1 = 0.276595, below 0.30, so it **won**. Every "the attempt deviated" case was
+## handed a winning generator and every "the breakthrough was granted" case a losing
+## one. `SEED_CAP` and `DRAW_CAP` are the bounds and both are taken before their loop.
 func _qi_roll(hero: Actor, winning: bool) -> RandomNumberGenerator:
 	var target := RealmDefaults.ladder().next(hero.path(QiPath.PATH_ID).rank_id)
 	if target == null:
@@ -422,14 +470,30 @@ func _qi_roll(hero: Actor, winning: bool) -> RandomNumberGenerator:
 	var seed := QiRealmSeed.for_realm(target.id)
 	if seed == null or not _qi_prepare(hero, seed):
 		return null
-	var chance := float(QiAdvancement.chance(hero))
-	return _seed_deciding(chance, winning)
+	# `preview` is refused on an unmeetable gate (`chance` is still published, but a
+	# hero that cannot attempt is not a hero this case can roll), so the emptiness of
+	# `unmet_conditions` is part of the model rather than a convenience.
+	var preview := QiBreakthroughTransaction.preview(hero)
+	if not bool(preview.get("can_attempt", false)):
+		return null
+	return _seed_deciding(float(preview.get("chance", 0.0)), winning, QI_ROLL_DRAW)
 
 
 ## Bring a qi hero to the brink of `seed`'s realm through the production actions, in
 ## the order `qi_gate_probe`'s own `prepared` uses — recovery first so nothing an
 ## earlier attempt wounded refuses to climb, and the pill re-stocked last because
 ## `prepare`'s own note says a top-up before cultivation is undone by it.
+##
+## ## Re-measured, and left exactly as it stands
+##
+## DEF-0295 records this order as suspect. It is not: all nine steps return true, and
+## the state they leave is one `QiBreakthroughTransaction.preview` reports as
+## `can_attempt` with an empty `unmet_conditions` — progress 140.00/100.00,
+## comprehension 10.46/10.00, dantian quality 0.5000/0.5000, dantian ratio
+## 1.0000/1.0000, `injured` false, pill held, `Breakthrough.can_advance` true. The
+## red cases were the roll MODEL, not this order, and
+## `test_the_prepared_qi_hero_is_a_legal_prior_state` now holds that state down as a
+## fact rather than as a comment.
 func _qi_prepare(hero: Actor, seed: QiRealmSeed) -> bool:
 	var ready := (
 		QiProbe.recover_all(hero)
@@ -445,6 +509,97 @@ func _qi_prepare(hero: Actor, seed: QiRealmSeed) -> bool:
 		and QiProbe.stock(hero, seed.breakthrough_item, 8)
 	)
 	return ready
+
+
+## ## The prepared hero is a LEGAL prior state, asserted rather than described
+##
+## DEF-0295 blamed `_qi_prepare` for the red. It is exonerated here, on the
+## transaction's own verdict rather than on the fixture's own report: an empty
+## `unmet_conditions` is the statement that nothing the real breakthrough enforces is
+## outstanding, which is the half of "satisfiable from a legal prior state" this
+## suite needs and the half that was silently untested.
+##
+## The chance is asserted against the published formula rather than hard-typed, so a
+## retune of `QiChance` does not turn this into a lie — the same rule
+## `test_qi_breakthrough_chance.gd` follows.
+func test_the_prepared_qi_hero_is_a_legal_prior_state() -> void:
+	var hero := _qi_hero()
+	var target := RealmDefaults.ladder().next(hero.path(QiPath.PATH_ID).rank_id)
+	assert_ne(target, null, "a first-rung qi hero has a realm after it")
+	var seed := QiRealmSeed.for_realm(target.id)
+	assert_ne(seed, null, "that realm is authored with a seed")
+
+	assert_eq(_qi_prepare(hero, seed), true, "every preparation step converged")
+
+	var preview := QiBreakthroughTransaction.preview(hero)
+	assert_eq(
+		(preview["unmet_conditions"] as Array).size(),
+		0,
+		(
+			"the real transaction is owed nothing, so the prior state is legal: %s"
+			% str(preview["unmet_conditions"])
+		)
+	)
+	assert_eq(bool(preview["can_attempt"]), true, "and it would attempt")
+	var dantian := QiAccess.dantian(hero)
+	assert_eq(
+		float(preview["chance"]),
+		clampf(
+			QiChance.MIN_CHANCE + dantian.quality * QiChance.QUALITY_TO_CHANCE,
+			QiChance.MIN_CHANCE,
+			QiChance.MAX_CHANCE
+		),
+		"the roll is the dantian's own quality and nothing else"
+	)
+	# The model's chance source and the published one are the same number. This is the
+	# differential against the test-only pass-through DEF-0259 names: `_qi_roll` reads
+	# `preview`, so a pass-through that had drifted from `QiChance.of` could no longer
+	# quietly disagree with what the transaction rolls.
+	assert_eq(float(preview["chance"]), QiAdvancement.chance(hero), "the pass-through agrees")
+
+
+## ## The judged draw IS the played draw — the defect DEF-0295 was
+##
+## The old search judged `probe.randf()` and then returned that same consumed probe,
+## so the case played a different draw than the one it had decided on. This drives the
+## REAL transaction at several seeds and requires the outcome to equal
+## `draws[QI_ROLL_DRAW] < chance` every time.
+##
+## **NON-TRIVIAL by construction**: the seeds below include ones whose first draw wins
+## and ones whose first draw loses at the prepared chance of 0.30, so a suite that
+## silently flipped the direction would be caught on the seeds that disagree rather
+## than passing on the ones that agree. If `QI_ROLL_DRAW` were wrong the assertions
+## fire; it is not checked against a hard-typed `0`, because the CLAIM is "the draw
+## named by the constant is the draw the transaction read", and the constant is where
+## a re-measurement belongs.
+func test_the_qi_roll_is_judged_on_the_draw_the_transaction_really_reads() -> void:
+	# Seed 1 loses at chance 0.30 (0.329559) and seed 13 wins (0.062118): both
+	# directions, so this case cannot pass on one branch alone.
+	for candidate in [1, 2, 13, 14]:
+		var draws: Array[float] = []
+		var expected := _rng(candidate)
+		for _step in QI_ROLL_DRAW + 1:
+			draws.append(expected.randf())
+
+		var hero := _qi_hero()
+		var target := RealmDefaults.ladder().next(hero.path(QiPath.PATH_ID).rank_id)
+		var seed := QiRealmSeed.for_realm(target.id)
+		assert_eq(_qi_prepare(hero, seed), true, "seed %d prepared" % candidate)
+		var chance := float(QiBreakthroughTransaction.preview(hero).get("chance", 0.0))
+		var roll := _rng(candidate)
+		for _step in QI_ROLL_DRAW:
+			roll.randf()
+
+		var granted := QiAdvancement.try_breakthrough(hero, roll)
+
+		assert_eq(
+			granted,
+			draws[QI_ROLL_DRAW] < chance,
+			(
+				"seed %d: the transaction decided on draw %d (%.6f against chance %.6f)"
+				% [candidate, QI_ROLL_DRAW + 1, draws[QI_ROLL_DRAW], chance]
+			)
+		)
 
 
 ## A prepared body hero whose first roll decides the way `winning` asks.
@@ -465,7 +620,7 @@ func _body_roll(hero: Actor, winning: bool) -> RandomNumberGenerator:
 	var chance := float(committed.preparation.get("chance", 0.0))
 	BodyAdvancement.cancel(hero)
 	_body().prepare(hero)
-	return _seed_deciding(chance, winning)
+	return _seed_deciding(chance, winning, BODY_ROLL_DRAW)
 
 
 ## A prepared mind hero whose first roll decides the way `winning` asks. The chance
@@ -480,17 +635,67 @@ func _mind_roll(hero: Actor, winning: bool) -> RandomNumberGenerator:
 	if _prepare_mind(hero) == null:
 		return null
 	var chance := float(MindAdvancement.preview(hero).get("chance", 0.0))
-	return _seed_deciding(chance, winning)
+	return _seed_deciding(chance, winning, MIND_ROLL_DRAW)
 
 
-## The smallest seed in `1..SEED_CAP` whose first draw decides the way `winning`
-## asks, or null when none does. Null names the condition rather than looping, and
-## every caller asserts on it so a model that cannot be rolled never reads as green.
-func _seed_deciding(chance: float, winning: bool) -> RandomNumberGenerator:
+## The smallest seed in `1..SEED_CAP` whose draw at `roll_draw` decides the way
+## `winning` asks, or null when none does. Null names the condition rather than
+## looping, and every caller asserts on it, so a model that cannot be rolled never
+## reads as green.
+##
+## ## The SEED is searched; a FRESH generator carrying it is returned
+##
+## This is the whole of the DEF-0295 fix. The old shape judged `probe.randf()` and
+## then returned **that same, already-consumed `probe`** — despite a docstring
+## claiming "only its seed is replayed". The transaction therefore read the draw
+## AFTER the one that had been decided on, and every case was handed a roll of the
+## opposite outcome. Measured at the prepared chance of 0.30 on seed 1: draw 0 is
+## 0.329559 and **loses**, draw 1 is 0.276595 and **wins** — so the search correctly
+## classified seed 1 as a losing seed and the attempt then won. That is the 7 red
+## cases, exactly.
+##
+## A fresh `_rng(candidate)` is deterministic per seed — two separately built
+## generators at seed 1 both read 0.329559 first — so the returned object replays the
+## judged draw rather than continuing past it. **Re-assigning `.seed` on the consumed
+## generator would not do**: that rewrites the seed without rewinding the state. The
+## value is rebuilt, not reseeded.
+##
+## ## `roll_draw` is a NAMED CONSTANT per path, because a transaction may take a
+## ## different number of draws before its own roll
+##
+## **Measured** by intersecting the offsets consistent with real outcomes, a fresh
+## hero per trial: **body** survivors narrow to `[0]` over seeds 2, 3, 4; **mind** to
+## `[0]` over seeds 2, 3, 9, 11; and `QI_ROLL_DRAW` is pinned by
+## `test_the_qi_roll_is_judged_on_the_draw_the_transaction_really_reads`. All three
+## read their FIRST draw on these prepared states. Three named constants rather than
+## one shared literal because that measurement is what would have to be REDONE if a
+## transaction ever began consuming a draw of its own, and a single hard-wired `0`
+## would let such a change silently desynchronise this search from every roll.
+const QI_ROLL_DRAW := 0
+const BODY_ROLL_DRAW := 0
+const MIND_ROLL_DRAW := 0
+## The most draws any path is allowed to be judged on, taken BEFORE the loop. A
+## caller naming a draw the transaction does not have is clamped rather than trusted,
+## so the replay can never be the thing that fails to terminate.
+const DRAW_CAP := 8
+
+
+func _seed_deciding(
+	chance: float, winning: bool, roll_draw: int = QI_ROLL_DRAW
+) -> RandomNumberGenerator:
+	var target_draw := clampi(roll_draw, 0, DRAW_CAP)
 	for candidate in range(1, SEED_CAP):
 		var probe := _rng(candidate)
-		if (probe.randf() < chance) == winning:
-			return probe
+		# `target_draw + 1` draws are taken to REACH the one being judged, and the last
+		# of them is the one judged, so `roll_draw = 0` means "the roll is the first
+		# draw" — which is what all three paths measure.
+		var decided := false
+		for _step in target_draw + 1:
+			decided = probe.randf() < chance
+		if decided == winning:
+			# REBUILT, never the consumed `probe`: a transaction handed a spent
+			# generator reads one draw later than the one just decided on.
+			return _rng(candidate)
 	return null
 
 
