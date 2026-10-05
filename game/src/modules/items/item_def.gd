@@ -37,6 +37,20 @@ extends Resource
 ## it. See `ItemUse.CLEANSE_LEVER_FIELD` for why it is a named field rather than a key
 ## dug out of `fixed_modifiers`, and ADR 0107 for the deferral it discharged.
 @export var cleanse_lever: StringName = &""
+## The fate this item grants when it is EQUIPPED, or `&""` when it grants none
+## (ADR 0135). Earned exactly once: `DestinyApi.earn_fate` is already once-only, so
+## equipping and unequipping a unique a hundred times holds the fate once and needs no
+## guard of its own here.
+##
+## **A plain fate id in the destiny catalog. Never `item:<id>`, never a new namespace.**
+## A namespaced id would read as a working reference and grant nothing, which is the
+## silent-failure shape `tools data audit` now fails the build on (DEF-0194).
+##
+## The field is honoured for any item that names one, not only for a `&"unique"`-tagged
+## one: identity is a tag (ADR 0025/0033) but the AUTHORING here is explicit, and a tag
+## check that silently dropped a hand-authored grant would be a second, invisible rule
+## about what this field means. Unequipping revokes nothing — the ledger is monotone.
+@export var grants_fate: StringName = &""
 
 
 func is_equipment() -> bool:

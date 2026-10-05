@@ -134,12 +134,44 @@ const ROUTES: Array[Dictionary] = [
 		"root": false,
 	},
 	{
+		# The lineage page (ADR 0030 / 0062 / 0063 / 0064). `RaceApi`, `BloodlineApi`
+		# and `ClanApi` each published a primitives-only `summary(actor)` and each
+		# shipped a green suite, while NO route mounted a screen that read any of
+		# them: a hero's body, the lineages it carries and the house it owes were
+		# three reach models no player could open. `BloodlineProjection` keeps the
+		# `bloodline:<id>` trait mirror on while a lineage is dormant, so a sleeping
+		# ancestry was a LIVE trait on the actor with no visible cause anywhere.
+		# This is the route that reads all three, and the dormant row is the reason
+		# the page is worth opening at all.
+		"id": &"lineage",
+		"node": "LineageScreen",
+		"label": "Lineage",
+		"hint": "The body you were born into, the blood you carry, and your house.",
+		"scene": "res://src/ui/screens/lineage_screen.tscn",
+		"key": "g",
+		"root": false,
+	},
+	{
 		"id": &"sect",
 		"node": "SectScreen",
 		"label": "Sect",
 		"hint": "The institution you are sworn to, and what the office obliges.",
 		"scene": "res://src/ui/screens/sect_screen.tscn",
 		"key": "q",
+		"root": false,
+	},
+	{
+		# The clan page (ADR 0239 / DEF-0229 / DEF-0286). `ClanHeir.register` is the SOLE
+		# writer of `household_heir_registered` and had zero production callers: `ui/`
+		# shipped `sect_screen` and `nation_screen` and no clan screen at all, so a house
+		# had no way to speak and four authored quests could never complete. This is the
+		# route that gives `app/clan_registry.gd`'s unwired seam a caller.
+		"id": &"clan",
+		"node": "ClanScreen",
+		"label": "Clan",
+		"hint": "Your house, your standing in it, and the register it keeps.",
+		"scene": "res://src/ui/screens/clan_screen.tscn",
+		"key": "h",
 		"root": false,
 	},
 	{
@@ -253,6 +285,76 @@ const ROUTES: Array[Dictionary] = [
 		"hint": "Take a resource node, work it, and gather what it yields.",
 		"scene": "res://src/ui/screens/forage_screen.tscn",
 		"key": "y",
+		"root": false,
+	},
+	{
+		# The shop surface (ADR 0100 / DEF-0218). `ShopCounter` shipped the whole
+		# priced read model — `summary(shop_id)`, `at_location(location_id, player)`,
+		# a shelf priced by the one reader settlement uses, and a `can_buy` per
+		# shop — and called itself "the door a caller actually walks through" while
+		# nothing walked through it. `MarketApi.buy`/`sell` both take a `shop_actor:
+		# Actor` and only `ShopCounter`, an `app/` type, can mint one, so the verbs
+		# had no argument a screen could produce. This is the route that opens it.
+		"id": &"market",
+		"node": "MarketScreen",
+		"label": "Market",
+		"hint": "The stalls here, their priced shelves, and buying and selling.",
+		"scene": "res://src/ui/screens/market_screen.tscn",
+		"key": "m",
+		"root": false,
+	},
+	{
+		# The auction surface (ADR 0102). `MarketApi.list` / `bid` / `settle_lot`
+		# shipped with the whole escrow discipline, and `AuctionReadModel`
+		# published a primitives-only row for every lot in the world — and no
+		# screen read any of it, so who was winning, what a bid had to be and what
+		# a lot was frozen at were all computed and invisible.
+		"id": &"auction",
+		"node": "AuctionScreen",
+		"label": "Auction",
+		"hint": "Every lot, the high bidder, and what the next bid has to be.",
+		"scene": "res://src/ui/screens/auction_screen.tscn",
+		"key": "b",
+		"root": false,
+	},
+	{
+		# The floor (DEF-0309). `MarketApi.drop`, `take` and `settle` shipped a
+		# bounded, decaying, per-location container of realized instances, and
+		# `MarketApi.summary` publishes the whole ledger as `floor` — while
+		# `market_screen.gd` said out loud that the floor was "deliberately NOT on
+		# this surface". So a dropped item was a ledger row only a test could reach:
+		# one player put goods down and nothing in the shipped program could pick
+		# them up again. Every argument of all three verbs is the bound actor plus
+		# plain ids, so `market` being a `UI_MODULES` grant is enough on its own and
+		# this route's binding arm is the PLAIN default `setup(actor)`.
+		"id": &"floor",
+		"node": "FloorScreen",
+		"label": "Floor",
+		"hint": "What lies on the floor here, and what you may take or leave.",
+		"scene": "res://src/ui/screens/floor_screen.tscn",
+		"key": "n",
+		"root": false,
+	},
+	{
+		# The custody page (ADR 0104). `CustodyApi.capture`, `transfer`, `release`,
+		# `settle_term` and `subject` shipped, passed 63 assertions, and had NO
+		# production caller: the brief asked that captured actors and mobs be
+		# reachable, ADR 0094 refused a captive as a tradeable thing, and ADR 0104
+		# answered "a custody CLAIM" -- and then nothing a player can press opened,
+		# moved or ended one. So a captive was a ledger row and no surface, which is
+		# the UNWIRED shape the gather audit found on the other side of the program.
+		# `custody` is in `rules.UI_MODULES` with no module reach, so the screen
+		# calls `CustodyApi` by bare name and the composition root's binding arm is
+		# the PLAIN default `setup(actor)`: every verb takes primitives plus an
+		# actor the screen already holds, so custody is the one surface with no
+		# injected seam, and this route is the proof that a granted facade reach is
+		# enough on its own.
+		"id": &"custody",
+		"node": "CustodyScreen",
+		"label": "Custody",
+		"hint": "The claims you hold, and the terms they carry.",
+		"scene": "res://src/ui/screens/custody_screen.tscn",
+		"key": "v",
 		"root": false,
 	},
 	{

@@ -24,6 +24,14 @@ const MAX_CAPACITY := 4096
 ## default — a session's work deleted with no error. Version 1 predates the
 ## instance rows.
 const SCHEMA_VERSION := 3
+## ## ## `items` reaches `destiny` through ONE preload
+##
+## `BARE_REF_UNITS` is `{ui, app, contracts}` — `modules/*` is excluded, so a bare
+## `DestinyApi` reference out of here would report ZERO violations and an
+## `items -> destiny` cycle would be invisible to `_find_cycle` (the `quest` case). The
+## `preload` below is the single `res://` edge the resolver DOES read, and
+## `registry.json` declares `destiny` so the edge is declared rather than merely present.
+const DESTINY_FACADE := preload("res://src/modules/destiny/api.gd")
 
 
 static func attach(actor: Actor, capacity: int = DEFAULT_CAPACITY) -> void:
@@ -103,7 +111,46 @@ static func equip_item(actor: Actor, slot: StringName, def: ItemDef) -> bool:
 				eq.equip(actor, slot, current_def, current)
 			inv.add_instance(current)
 			return false
+	_grant_fate(actor, def)
 	return true
+
+
+## The ONE grant site for [member ItemDef.grants_fate], called only on the path where
+## `equip_item` has decided the equip actually landed (ADR 0135).
+##
+## ## ## Why here and not right after `eq.equip(...)`
+##
+## `equip_item` has a rollback return between the `eq.equip` success and its final
+## `return true` — the replaced item having nowhere to go. A grant placed at `eq.equip`
+## would fire for an equip that was then UNDONE, so a player would hold a permanent fate
+## for a slot holding nothing. This is the last line before `return true`, which is the
+## only point where the slot, the inventory and the ledger agree.
+##
+## ## ## And never on an attempt
+##
+## Every refusal above returns before reaching here, so an invalid equip grants nothing —
+## which is the whole of ADR 0135's "rejection over silence": a content bug must not cost
+## a player their gear, and a bad grant must not cost them the slot.
+##
+
+
+## Grant this definition's authored fate, if it names one.
+##
+## ## ## A REFUSAL HERE IS EXPECTED, and it is not an error
+##
+## `earn_fate` refuses an id the catalog does not define and returns the ledger
+## unchanged, because a fate nothing can resolve would be a permanent entry nothing can
+## pay out (ADR 0065). The result is deliberately discarded here: the equip already
+## succeeded and the player keeps the item, and a typo in a `.tres` is a CONTENT defect
+## that `tools data audit` fails the build on (DEF-0194) rather than a runtime condition a
+## player should be punished for. Refusing loudly here would abort an equip over bad
+## content, which is the trade ADR 0135 explicitly declines.
+static func _grant_fate(actor: Actor, def: ItemDef) -> void:
+	if actor == null or def == null:
+		return
+	if def.grants_fate == &"":
+		return
+	DESTINY_FACADE.earn_fate(actor, def.grants_fate, "unique:%s" % String(def.id))
 
 
 ## Unequip `slot` back into the inventory, preserving the instance. Returns
