@@ -146,20 +146,15 @@ static func install(registry: InstitutionRegistry = null) -> Dictionary:
 static func register_def(registry: InstitutionRegistry, def: InstitutionDef) -> Dictionary:
 	if registry == null or def == null:
 		return InstitutionLedger.refuse(InstitutionRegistry.R_UNKNOWN_KIND)
-	if def.kind == &"":
-		return InstitutionLedger.refuse(InstitutionDef.R_NO_KIND)
-	if def.id == &"":
-		return InstitutionLedger.refuse(InstitutionDef.R_NO_ID)
-	for capability in def.authored_capabilities():
-		if not InstitutionRegistry.CAPABILITIES.has(capability):
-			return InstitutionLedger.refuse(InstitutionDef.R_UNKNOWN_CAPABILITY)
-	# ## The CONTENT faults run BEFORE the row exists
+	# ## The CONTENT faults run BEFORE the row exists, and they are ONE authority
 	#
-	# `def.check(registry)` cannot gate a first `.tres`: its registry half asks
-	# whether the kind is registered, and a brand-new kind is not. So the registry-free
-	# half runs here instead, and a `.tres` whose offices contradict its own declared
+	# `def.check(registry)` cannot gate a first `.tres`: its registry half asks whether
+	# the kind is registered, and a brand-new kind is not. So the registry-free half
+	# runs here instead, and a `.tres` whose offices contradict its own declared
 	# capabilities never becomes a live row — a row is not a warning, because other
-	# systems consult it.
+	# systems consult it. It also owns `no_kind`, `no_id` and `unknown_capability`: an
+	# earlier version re-checked all three here, which is two authorities for one
+	# refusal (ADR 0066's shape inside the file that exists to remove it).
 	var content := def.check_content()
 	if not bool(content["ok"]):
 		return content
