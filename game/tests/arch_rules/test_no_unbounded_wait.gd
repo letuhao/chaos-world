@@ -133,6 +133,101 @@ func _paren_depth(text: String) -> int:
 	return depth
 
 
+## A `for` whose iteration count is a SPAN, a magnitude, or any count a caller can
+## grow without limit — the shape this scan was blind to.
+##
+## **Why this is a separate rule and not a seventh clause of `_is_bounded`.** Every one
+## of the six existing clauses reasons about a `while` CONDITION; there is no condition
+## on a `for`, only a range, so the predicate has nothing to read. And the omission was
+## not academic: a mutation that turned `TimeLadder.magnitudes_crossed` from one division
+## per authored row into `for _step in span_periods` — precisely the per-period loop ADR
+## 0173 exists to remove — **ran for 420 seconds and nothing went red.** `tools arch`
+## stayed green. That is this repo's recorded memory incident (67 GB, two power-cycles)
+## in the exact shape the existing guard cannot see, so the gap is closed here rather
+## than documented.
+##
+## The test is deliberately narrow, because a false positive on every `for` in the tree
+## would make this guard as untrusted as the one it replaces. A `for` is flagged only
+## when its bound NAMES a span, and never when it walks an authored collection —
+## `for realm in ladder.realms()` and `for row in rows` are the shapes the repo wants.
+func test_no_for_loop_is_bounded_by_a_span() -> void:
+	var span_words := ["span", "periods_elapsed", "elapsed", "magnitude_count", "years"]
+	var audited := 0
+	for path in _gdscript_files(SRC_ROOT) + _gdscript_files(TESTS_ROOT):
+		var text := FileAccess.get_file_as_string(path)
+		assert_ne(text.is_empty(), true, "%s is readable" % path)
+		for line in _span_bounded_for_lines(text):
+			audited += 1
+			var lowered := line.to_lower()
+			var offender := ""
+			for word in span_words:
+				if lowered.contains(word):
+					offender = word
+					break
+			# An AUTHORED collection is not a span. `for realm in ladder.realms()` walks
+			# 30 rows forever; `for step in span_periods` walks whatever the caller said.
+			#
+			# A LITERAL array is authored too, and this is the shape that made the guard
+			# cry wolf on 33 cases across three files: `for span in [1, 8, 9, 4_380,
+			# billion_years_periods()]` in test_time_ladder.gd and
+			# test_realm_lifespan_table.gd, and the guard's own source. The old test was
+			# `lowered.contains(" in [")` — a literal ` in [`, with the space — and
+			# GDScript writes `in [1,` after `strip_edges()`, so NONE of them matched and
+			# every one was reported as an unbounded span. A guard that fires 33 times on
+			# its own test file gets muted, and then it catches nothing.
+			#
+			# Spacing-tolerant on purpose: `in [`, `in[`, and `in\t[` all name a literal.
+			# Tested as "a `[` opens the bound" rather than as the two literal
+			# spellings: `for span in spans:` has NEITHER `in [` nor `in[`, so the
+			# narrower test read a real span walk as unbounded. What makes a
+			# collection AUTHORED is that its elements are written down, and a `[`
+			# after the bound is exactly that. `for span in _retreat_spans` has no
+			# bracket and stays flagged, which is the correct reading.
+			var opens_literal := lowered.contains("in [") or lowered.contains("in[")
+			if not opens_literal:
+				var bound := lowered.split(" in ", true, 1)
+				if bound.size() == 2:
+					opens_literal = bound[1].begins_with("[")
+			var walks_authored := lowered.contains(".realms()") or opens_literal
+			# These three live INSIDE the `for line` body, which is deliberate and was
+			# previously broken by one missing tab: declared one level too far out, they
+			# died at the loop's end and the assert below could not see them, so the file
+			# failed to COMPILE — "Identifier 'walks_authored' not declared in the current
+			# scope" — which takes the whole guard down silently. A loop-safety guard that
+			# does not compile is worse than none, because `--suite arch_rules` reports the
+			# suite as `failed to load suite` and every other arch rule looks green.
+			assert_eq(
+				walks_authored or offender == "",
+				true,
+				(
+					(
+						"%s iterates a SPAN (`%s`), so its length is data the caller controls — "
+						+ "fold instead (ADR 0173), or clamp it"
+					)
+					% [path, offender]
+				)
+			)
+	# A rule that scans nothing is a rule nobody trusts (INC-0016). Prove the scan
+	# reaches `for` lines at all rather than trusting the population is non-empty.
+	assert_eq(
+		audited > 0,
+		true,
+		"the span-bounded `for` scan inspected at least one line, or it guards nothing"
+	)
+
+
+## Every `for` header in a file, comments stripped, as `"<line>"`.
+func _span_bounded_for_lines(text: String) -> Array[String]:
+	var found: Array[String] = []
+	for raw in text.split("\n"):
+		var line := raw.strip_edges()
+		if line.begins_with("#"):
+			continue
+		if line.begins_with("for ") and line.contains(" in "):
+			found.append(line)
+	return found
+
+
 ## Rules 1, 3, 5 and 6, in one predicate each. They are gathered here so
 ## `_is_bounded` can stay a readable list without tripping `max-returns` -- the
 ## `if ...: return true` chain this grew would not lint at seven statements, and
