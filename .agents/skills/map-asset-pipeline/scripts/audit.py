@@ -1,176 +1,222 @@
-"""Audit the derived cell matrices. Does the occupancy model hold?
+"""Validate serialized diagnostic matrices; loops visit finite input snapshots.
 
-Checks, per the proposal:
-  1. no occluder cell has coverage < cov_gate (a blocker with no art)
-  2. no passable_under asset has a FULLY covered cell (nothing to walk under)
-  3. ground_contact never blocks more than the footprint's bottom row
-  4. tree trunks land on 1 cell, not 4  (the claim that motivated the rules)
-  5. bridges/arches keep a passable surface (walk_surface / core_ring work)
+Fixture gate: uv run python -m tools selftest run --suite map-geometry.
+This checks stored geometry consistency, not runtime integration or input freshness.
 """
 
 from __future__ import annotations
 
 import json
-from collections import defaultdict
-from pathlib import Path
 
-def _find_repo_root() -> Path:
-    p = Path(__file__).resolve()
-    for parent in [p, *p.parents]:
-        if (parent / "game" / "project.godot").exists() or (parent / "pyproject.toml").exists():
-            return parent
-    return p.parents[4]
+if __package__:
+    from .geometry import CELL_PX, find_repo_root
+else:
+    from geometry import CELL_PX, find_repo_root
 
-ROOT = _find_repo_root()
+ROOT = find_repo_root(__file__)
 CELLS = ROOT / "build/mapdata/cells.json"
 SUBCELL = ROOT / "build/mapdata/subcell.json"
+TREES = frozenset({"flora.canopy_tree", "flora.slender_tree", "flora.ancient_tree"})
 
 
-def show(mask: list[list[bool]]) -> str:
-    return "\n".join("      " + "".join("#" if v else "." for v in line) for line in mask)
+def _pair(value: object) -> bool:
+    return (
+        isinstance(value, list)
+        and len(value) == 2
+        and all(type(number) is int and number > 0 for number in value)
+    )
+
+
+def _matrix(value: object, grid: list[int], boolean: bool = True) -> bool:
+    if not isinstance(value, list) or len(value) != grid[1]:
+        return False
+    for row in value:
+        if not isinstance(row, list) or len(row) != grid[0]:
+            return False
+        for number in row:
+            if boolean:
+                if type(number) is not bool:
+                    return False
+            elif type(number) not in (int, float) or not 0 <= number <= 1:
+                return False
+    return True
+
+
+def _rect(value: object, footprint: list[int]) -> bool:
+    return value is None or (
+        isinstance(value, list)
+        and len(value) == 4
+        and all(type(number) is int for number in value)
+        and 0 <= value[0] <= value[2] < footprint[0]
+        and 0 <= value[1] <= value[3] < footprint[1]
+    )
+
+
+def _records(data: object, label: str, findings: list[str]) -> list[dict]:
+    if not isinstance(data, dict) or not isinstance(data.get("assets"), list):
+        findings.append(f"{label}: expected an object with an assets array")
+        return []
+    for field in ("failed", "issues"):
+        if data.get(field):
+            findings.append(f"{label}: unresolved {field}")
+    records = data["assets"]
+    if not records:
+        findings.append(f"{label}: no assets were measured")
+    if "asset_count" in data and data["asset_count"] != len(records):
+        findings.append(f"{label}: asset_count does not match records")
+    return records
+
+
+def validate(cells: object, subcell: object) -> list[str]:
+    """Return all structural and geometry findings; malformed input is never a clean audit."""
+    findings: list[str] = []
+    records = _records(cells, "cells", findings)
+    by_id: dict[str, dict] = {}
+    for asset in records:
+        if not isinstance(asset, dict) or not isinstance(asset.get("id"), str):
+            findings.append("cells: every asset needs a string id")
+            continue
+        label = asset["id"]
+        if not label or label in by_id:
+            findings.append(f"{label}: empty or duplicate cell asset id")
+            continue
+        by_id[label] = asset
+        grid = asset.get("grid")
+        if not _pair(grid):
+            findings.append(f"{label}: grid must contain two positive integers")
+            continue
+        shape_ok = True
+        for field in ("coverage", "blocks", "walk_surface"):
+            if not _matrix(asset.get(field), grid, field != "coverage"):
+                findings.append(f"{label}: invalid {field} matrix shape or values")
+                shape_ok = False
+        sem = asset.get("sem")
+        if not isinstance(sem, dict):
+            findings.append(f"{label}: missing semantics")
+            continue
+        gate = sem.get("cov_gate")
+        if type(gate) not in (int, float) or not 0 <= gate <= 1:
+            findings.append(f"{label}: invalid coverage gate")
+            continue
+        rule = sem.get("occluder_rule")
+        if rule not in ("none", "ground_contact", "full_body", "core_ring"):
+            findings.append(f"{label}: unknown occluder rule")
+            continue
+        if type(sem.get("walk_surface", False)) is not bool:
+            findings.append(f"{label}: walk_surface declaration must be boolean")
+        opening = sem.get("authored_open", "")
+        if opening not in ("", "bottom_centre"):
+            findings.append(f"{label}: unknown authored opening")
+        if not shape_ok:
+            continue
+        blocks, coverage, walk = asset["blocks"], asset["coverage"], asset["walk_surface"]
+        count = sum(sum(row) for row in blocks)
+        if asset.get("block_cell_count") != count:
+            findings.append(f"{label}: block_cell_count does not match mask")
+        for y, row in enumerate(blocks):
+            for x, blocked in enumerate(row):
+                if blocked and coverage[y][x] < gate:
+                    findings.append(f"{label}: phantom blocker at ({x},{y})")
+                if blocked and rule == "none":
+                    findings.append(f"{label}: nonblocking archetype has a blocker")
+                if blocked and rule == "ground_contact" and y != grid[1] - 1:
+                    findings.append(f"{label}: ground contact blocks above bottom row")
+                if walk[y][x] and rule == "ground_contact" and y != grid[1] - 1:
+                    findings.append(f"{label}: ground-contact walk surface above bottom row")
+                if walk[y][x] and (not sem.get("walk_surface") or coverage[y][x] < 0.10):
+                    findings.append(f"{label}: unsupported walk surface at ({x},{y})")
+        if sem.get("walk_surface") and not any(any(row) for row in walk):
+            findings.append(f"{label}: declared walk surface is empty")
+        if opening == "bottom_centre":
+            columns = [0] if grid[0] == 1 else [grid[0] // 2 - 1, grid[0] // 2]
+            if any(blocks[-1][x] for x in columns):
+                findings.append(f"{label}: authored bottom opening is blocked")
+
+    seen: set[str] = set()
+    for asset in _records(subcell, "subcell", findings):
+        if not isinstance(asset, dict) or not isinstance(asset.get("id"), str):
+            findings.append("subcell: every asset needs a string id")
+            continue
+        label = asset["id"]
+        if not label or label in seen:
+            findings.append(f"{label}: empty or duplicate subcell asset id")
+            continue
+        seen.add(label)
+        footprint = asset.get("footprint")
+        if not _pair(footprint):
+            findings.append(f"{label}: invalid subcell footprint")
+            continue
+        original = by_id.get(label)
+        if original is None:
+            findings.append(f"{label}: subcell asset missing from cells")
+        elif footprint != original.get("grid"):
+            findings.append(f"{label}: cell and subcell footprints disagree")
+        if original and asset.get("archetype") != original.get("archetype"):
+            findings.append(f"{label}: cell and subcell archetypes disagree")
+        sem = original.get("sem") if original else None
+        rule = sem.get("occluder_rule") if isinstance(sem, dict) else None
+        sub_grid = asset.get("sub_grid")
+        if not _pair(sub_grid) or not _matrix(asset.get("sub_fill"), sub_grid, False):
+            findings.append(f"{label}: invalid subcell fill matrix")
+        rect = asset.get("block_rect")
+        if not _rect(rect, footprint):
+            findings.append(f"{label}: contact rectangle is outside its footprint")
+            continue
+        if rect is not None:
+            # Authored footprint, not cropped sub-grid width, owns this check.
+            archetype = original.get("archetype") if original else None
+            if isinstance(archetype, str) and archetype in TREES and footprint[0] > 1:
+                if rect[2] - rect[0] + 1 >= footprint[0]:
+                    findings.append(f"{label}: tree contact spans the full footprint width")
+            if rule == "none":
+                findings.append(f"{label}: nonblocking archetype has contact")
+            if rule == "ground_contact" and (
+                rect[1] != footprint[1] - 1 or rect[3] != footprint[1] - 1
+            ):
+                findings.append(f"{label}: ground-contact rectangle is above bottom row")
+        elif rule == "ground_contact":
+            findings.append(f"{label}: ground-contact asset has no measurable contact")
+        scales = asset.get("blocked_by_scale")
+        if not isinstance(scales, dict) or "1.0" not in scales:
+            findings.append(f"{label}: missing base-scale contact")
+        elif scales["1.0"] != rect:
+            findings.append(f"{label}: contact disagrees with base scale")
+        if isinstance(scales, dict):
+            for scale, scaled_rect in scales.items():
+                if not _rect(scaled_rect, footprint):
+                    findings.append(f"{label}: invalid rectangle at scale {scale}")
+                if rule == "none" and scaled_rect is not None:
+                    findings.append(f"{label}: nonblocking archetype has contact at scale {scale}")
+        if "block_rect_px" in asset:
+            expected = (
+                None
+                if rect is None
+                else [
+                    rect[0] * CELL_PX,
+                    rect[1] * CELL_PX,
+                    (rect[2] + 1) * CELL_PX,
+                    (rect[3] + 1) * CELL_PX,
+                ]
+            )
+            if asset["block_rect_px"] != expected:
+                findings.append(f"{label}: pixel bounds disagree with cell rectangle")
+    for label in sorted(set(by_id) - seen):
+        findings.append(f"{label}: missing subcell asset")
+    return findings
 
 
 def main() -> int:
-    data = json.loads(CELLS.read_text(encoding="utf-8"))
-    assets = data["assets"]
-    by_arch: dict[str, list[dict]] = defaultdict(list)
-    for a in assets:
-        by_arch[a["archetype"]].append(a)
-
-    print(f"assets={len(assets)}  cell_px={data['cell_px']}")
-
-    # 1. blocker with no art
-    bad = []
-    for a in assets:
-        gate = a["sem"]["cov_gate"]
-        for y, line in enumerate(a["blocks"]):
-            for x, v in enumerate(line):
-                if v and a["coverage"][y][x] < gate:
-                    bad.append(f"{a['id']} cell({x},{y}) cov={a['coverage'][y][x]} < gate={gate}")
-    print(f"\n1. occluder cells with coverage below their gate: {len(bad)}")
-    for line in bad[:8]:
-        print("   ", line)
-
-    # 2. passable_under with a fully covered cell
-    bad2 = []
-    for a in assets:
-        if not a["sem"]["passable_under"]:
-            continue
-        for y, line in enumerate(a["coverage"]):
-            for x, v in enumerate(line):
-                if v >= 0.95 and a["blocks"][y][x]:
-                    bad2.append(f"{a['id']} cell({x},{y}) cov={v} blocks AND passable_under")
-    print(f"\n2. passable_under cells that are both full and blocking: {len(bad2)}")
-    for line in bad2[:8]:
-        print("   ", line)
-
-    # 3. ground_contact only touches the bottom row
-    bad3 = 0
-    for a in assets:
-        if a["sem"]["occluder_rule"] != "ground_contact":
-            continue
-        rows = len(a["blocks"])
-        for y in range(rows - 1):
-            bad3 += sum(1 for v in a["blocks"][y] if v)
-    print(f"\n3. ground_contact blockers above the bottom row: {bad3}")
-
-    # 4. THE claim: trees must not fill their footprint
-    print("\n4. trees: strict-vs-derived blocking, per archetype")
-    print(f"      {'archetype':<26}{'fp_cells':>9}{'derived':>9}{'ratio':>8}")
-    for arch in ["flora.canopy_tree", "flora.slender_tree", "flora.ancient_tree", "flora.shrub"]:
-        items = by_arch.get(arch, [])
-        if not items:
-            continue
-        sample = items[0]
-        cols, rows = sample["grid"]
-        fp = cols * rows
-        derived = sum(1 for line in sample["blocks"] for v in line if v)
-        strict = sum(1 for line in sample["coverage"] for v in line if v > 0.0)
-        print(
-            f"      {arch:<26}{fp:>9}{derived:>9}"
-            f"{derived / fp:>8.0%}   (strict alpha would give {strict}/{fp})"
-        )
-
-    print("\n   canopy_tree derived masks, 4 samples:")
-    for a in by_arch["flora.canopy_tree"][:4]:
-        print(f"      {a['id']}")
-        print(show(a["blocks"]))
-
-    # 5. walk surfaces + arches
-    print("\n5. walk_surface archetypes: cells a unit can stand on")
-    for arch in [
-        "travel_and_wayfinding.stone_bridge",
-        "travel_and_wayfinding.wooden_bridge",
-        "flora.fallen_log",
-        "terrain_transition.slope_ramp",
-    ]:
-        items = by_arch.get(arch, [])
-        if not items:
-            continue
-        sample = items[0]
-        total = sum(1 for line in sample["walk_surface"] for v in line if v)
-        print(f"      {arch:<44} {total}/{sample['grid'][0] * sample['grid'][1]}  id={sample['id']}")
-
-    print("\n6. SUB-CELL: a ground_contact prop must not block its whole footprint")
-    # The regression this guards: canopy_tree measured 2 blocked cells of a 2x2
-    # footprint, because a ~30px trunk straddles the 128px cell boundary and
-    # lands faintly in both bottom cells. subcell.py now emits a precise rect.
     try:
-        sub = json.loads((SUBCELL).read_text(encoding="utf-8"))
-    except FileNotFoundError:
-        print("      SKIP: subcell.json not built (run subcell.py)")
-        sub = {"assets": []}
-    wide = []
-    empty = 0
-    for a in sub["assets"]:
-        if a["archetype"] not in ("flora.canopy_tree", "flora.slender_tree", "flora.ancient_tree"):
-            continue
-        rect = a["block_rect"]
-        if rect is None:
-            empty += 1
-            continue
-        cols, rows = a["grid"] if "grid" in a else (0, 0)
-        del cols, rows
-        width = rect[2] - rect[0] + 1
-        fp_w = max(1, a["sub_grid"][0] // 4)
-        if width >= fp_w and fp_w > 1:
-            wide.append(f"{a['id']} rect={rect} fp_width={fp_w}")
-    trees = [a for a in sub["assets"] if a["archetype"] in
-             ("flora.canopy_tree", "flora.slender_tree", "flora.ancient_tree")]
-    print(f"      {len(trees)} tree assets measured; {len(wide)} still block their full footprint width")
-    for line in wide[:6]:
-        print("        ", line)
-    print(f"      trees with no measurable ground contact: {empty}")
-    print("      RESULT:", "FAIL" if wide else "PASS")
-
-    print("\n7. core_ring (openings must stay passable):")
-    for arch in [
-        "landmark_and_environment_detail.ruined_arch",
-        "landmark_and_environment_detail.cave_entrance",
-        "travel_and_wayfinding.portal_frame",
-        "travel_and_wayfinding.path_gate",
-    ]:
-        items = by_arch.get(arch, [])
-        if not items:
-            continue
-        sample = items[0]
-        cells = sample["grid"][0] * sample["grid"][1]
-        blocked = sum(1 for line in sample["blocks"] for v in line if v)
-        print(f"      {arch:<48} blocks {blocked}/{cells} ({blocked / cells:.0%})")
-        print(show(sample["blocks"]))
-
-    print("\n7. blocking summary by archetype (greenwood only, the POC env)")
-    greenwood = [a for a in assets if a["environment"] == "mortal_greenwood"]
-    print(f"      greenwood assets: {len(greenwood)}")
-    print(f"      {'archetype':<50}{'n':>4}{'avg_blocks':>12}")
-    gag: dict[str, list[dict]] = defaultdict(list)
-    for a in greenwood:
-        gag[a["archetype"]].append(a)
-    for arch in sorted(gag):
-        items = gag[arch]
-        avg = sum(a["block_cell_count"] for a in items) / len(items)
-        print(f"      {arch:<50}{len(items):>4}{avg:>12.2f}")
-    return 0
+        cells = json.loads(CELLS.read_text(encoding="utf-8"))
+        subcell = json.loads(SUBCELL.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        print(f"FAIL: missing or unreadable matrix input: {exc}")
+        return 2
+    findings = validate(cells, subcell)
+    for finding in findings[:20]:
+        print(f"FAIL: {finding}")
+    print(f"RESULT: {'FAIL' if findings else 'PASS'} ({len(findings)} finding(s))")
+    return 1 if findings else 0
 
 
 if __name__ == "__main__":

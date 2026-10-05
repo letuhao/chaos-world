@@ -26,6 +26,7 @@ prove a point is the stranded-mutation hazard wearing a different hat.
 from __future__ import annotations
 
 import argparse
+import importlib
 import traceback
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -88,9 +89,15 @@ class Report:
     errors: list[tuple[str, str]] = field(default_factory=list)
 
 
-def run_all() -> Report:
+def run_all(suite: str | None = None) -> Report:
+    importlib.import_module(".map_asset_geometry_selftest", __package__)
+    selected = [(name, fn) for name, fn in CASES if suite is None or suite in name]
+    if not selected:
+        from .common import ToolError
+
+        raise ToolError(f"no self-tests match suite {suite!r}")
     report = Report()
-    for name, fn in CASES:
+    for name, fn in selected:
         try:
             fn()
         except Failure as exc:
@@ -107,7 +114,8 @@ def register(subparsers: argparse._SubParsersAction) -> None:
         "selftest", help="regression tests for the guards that live in Python"
     )
     actions = parser.add_subparsers(dest="action", required=True)
-    actions.add_parser("run", help="run every self-test (default)")
+    run_parser = actions.add_parser("run", help="run every self-test (default)")
+    run_parser.add_argument("--suite", help="run only cases whose names contain this substring")
 
 
 def run(args: argparse.Namespace) -> int:
@@ -116,7 +124,7 @@ def run(args: argparse.Namespace) -> int:
 
         raise ToolError(f"unknown action {args.action}")
 
-    report = run_all()
+    report = run_all(getattr(args, "suite", None))
     for name, detail in report.failures:
         fail(f"{name}\n      {detail}")
     for name, detail in report.errors:
@@ -125,7 +133,7 @@ def run(args: argparse.Namespace) -> int:
     if report.failures or report.errors:
         fail(
             f"{len(report.failures)} assertion(s) and {len(report.errors)} error(s) "
-            f"across {len(CASES)} self-tests"
+            f"across {report.passed + len(report.failures) + len(report.errors)} self-tests"
         )
         return 1
 

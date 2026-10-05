@@ -1,35 +1,15 @@
-"""Per-archetype semantics: the authored (LLM-classified) layer.
+"""Authored diagnostic candidates, separate from per-file pixel measurements.
 
-One row per archetype, 65 total, matching tools/map_assets.ASSET_ROLES.
-This is the ONCE-authored answer to "what does this art mean in a map", as
-opposed to build/mapdata/measure.py which is per-file pixel truth.
-
-Rules, and why each exists (all derived from measured per-cell coverage):
-  ground_contact  only the bottom row blocks; the art above is overhang.
-                  canopy_tree coverage is 0.44 top / 0.12 bottom -- the trunk
-                  is at the bottom, so a full-body mask over-blocks 2x.
-                  NOTE its gate is 0.05, not 0.20: _install centers the art in
-                  the canvas, so a ~30px trunk straddles the 128px cell boundary
-                  and lands ~0.12 in BOTH bottom cells. A 0.20 gate deleted both
-                  halves of every tree and made the whole forest walkable.
-                  Whether a trunk "should" be 1 cell cannot be decided at 128px;
-                  it straddles, so it is 2. See the sub-cell note in the plan.
-  full_body       every cell with coverage >= cov_gate blocks.
-  core_ring      cells >= cov_gate block; thinner art (an arch opening,
-                  ruined walls) stays passable, which is how an arch gets a
-                  doorway without authoring one.
-  none           never blocks. Ground, decals, effects, shallow water.
-
-cov_gate is the minimum coverage for a cell to count as body. 0.20 separates a
-mass from an open cell for full_body props; 0.02 is required for ground_contact,
-where the art is a pole a few pixels wide. A failed background-removal pass is
-NOT caught by cov_gate -- real trunks and failed cutouts overlap at the bottom
-row (measured canopy p50=0.198 vs failures 0.001-0.083). It is caught by the
-max-coverage test in derive.py, which looks at the whole frame.
+ground_contact gates the bottom coverage row; full_body and core_ring gate all
+rows, with authored openings applied afterward; none never blocks. The subcell
+contact projection is a separate artifact. Thresholds live in the rows below.
+Destruction, vision, audio, resources and cultivation values are descriptions,
+not implemented gameplay contracts. Each row owns its nested mutable data.
 """
 
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Any
 
 # occluder_rule values
@@ -109,50 +89,53 @@ def _row(
         else:
             vulns = []
 
-    return {
-        "archetype": archetype,
-        "occluder_rule": rule,
-        "cov_gate": cov_gate,
-        "small_cov_gate": small_gate if small_gate is not None else min(cov_gate, 0.10),
-        "passable_under": passable_under,
-        "walk_surface": walk_surface,
-        "blocks_sight": blocks_sight,
-        "blocks_projectile": blocks_projectile,
-        "vision_mode": vision_mode,
-        "acoustic_profile": acoustic_profile,
-        "material": material,
-        "elevation": elevation,
-        "authored_open": authored_open,
-        "destructible": {
-            "enabled": destructible,
-            "tier": tier,
-            "hp": hp if destructible else 0,
-            "on_destroy": reveals if destructible else None,
-            "unique_destroyed_archetype": unique_destroyed,
-            "elemental_vulnerabilities": vulns or [],
-            "reveals_loot_category": reveals_loot,
-        },
-        "interact": {"verb": verb, "reach_cells": reach, "from_adjacent": adjacent}
-        if verb
-        else None,
-        "cultivation": cultivation
-        or {
-            "element": "none",
-            "qi_affinity": "neutral",
-            "qi_density_modifier": 1.0,
-            "resonance_radius_cells": 0,
-            "feng_shui_direction": "neutral",
-        },
-        "resource": resource,
-        "scale_profile": scale_profile
-        or {
-            "min_scale": 1.0,
-            "max_scale": 1.0,
-            "default_scale": 1.0,
-            "scale_mode": "constant",
-            "contact_rule": "constant_subcell",
-        },
-    }
+    # Each archetype owns its nested data; changing one tree must not alter its siblings.
+    return deepcopy(
+        {
+            "archetype": archetype,
+            "occluder_rule": rule,
+            "cov_gate": cov_gate,
+            "small_cov_gate": small_gate if small_gate is not None else min(cov_gate, 0.10),
+            "passable_under": passable_under,
+            "walk_surface": walk_surface,
+            "blocks_sight": blocks_sight,
+            "blocks_projectile": blocks_projectile,
+            "vision_mode": vision_mode,
+            "acoustic_profile": acoustic_profile,
+            "material": material,
+            "elevation": elevation,
+            "authored_open": authored_open,
+            "destructible": {
+                "enabled": destructible,
+                "tier": tier,
+                "hp": hp if destructible else 0,
+                "on_destroy": reveals if destructible else None,
+                "unique_destroyed_archetype": unique_destroyed,
+                "elemental_vulnerabilities": vulns or [],
+                "reveals_loot_category": reveals_loot,
+            },
+            "interact": {"verb": verb, "reach_cells": reach, "from_adjacent": adjacent}
+            if verb
+            else None,
+            "cultivation": cultivation
+            or {
+                "element": "none",
+                "qi_affinity": "neutral",
+                "qi_density_modifier": 1.0,
+                "resonance_radius_cells": 0,
+                "feng_shui_direction": "neutral",
+            },
+            "resource": resource,
+            "scale_profile": scale_profile
+            or {
+                "min_scale": 1.0,
+                "max_scale": 1.0,
+                "default_scale": 1.0,
+                "scale_mode": "constant",
+                "contact_rule": "constant_subcell",
+            },
+        }
+    )
 
 
 TREE = dict(
@@ -479,11 +462,7 @@ assert len(SEMANTICS) == 65, f"expected 65 archetypes, got {len(SEMANTICS)}"
 
 
 # --- authored footprint: the cell size of the KIND ----------------------
-# Emitted by author_footprint.py. Do not hand-edit; edit OVERRIDES there.
-#
-# This replaces `canvas_px / 128`, which made collision a property of the
-# PNG's resolution. See author_footprint.py for the three measurements
-# that forced the change.
+# Diagnostic kind sizes in reference cells, independent of PNG resolution.
 FOOTPRINT: dict[str, tuple[int, int]] = {
     "flora.ancient_tree": (3, 3),  # the chunk's landmark; 4x4 overstates a 480px sprite
     "flora.canopy_tree": (2, 2),  # a full tree; its art is 178px into a 2x2 box
@@ -502,6 +481,7 @@ FOOTPRINT: dict[str, tuple[int, int]] = {
     "ground_tile.soft_ground": (1, 1),
     "ground_tile.stone_paving": (1, 1),
     "landmark_and_environment_detail.banner": (1, 2),  # a banner is tall and thin
+    "landmark_and_environment_detail.ambient_effect": (1, 1),  # nonblocking surface detail
     "landmark_and_environment_detail.cave_entrance": (4, 4),
     "landmark_and_environment_detail.cliff_formation": (3, 3),  # a cliff face
     "landmark_and_environment_detail.domain_entrance": (4, 4),
@@ -550,3 +530,5 @@ FOOTPRINT: dict[str, tuple[int, int]] = {
     "water_feature.water_plant": (1, 1),  # surface detail
     "water_feature.waterfall": (2, 2),  # a fall has height
 }
+
+assert set(FOOTPRINT) == set(SEMANTICS), "every diagnostic archetype needs an authored footprint"

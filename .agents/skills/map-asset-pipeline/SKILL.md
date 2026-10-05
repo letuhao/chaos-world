@@ -13,7 +13,7 @@ Deliver coherent, reviewed map layers with traceable sources and declared footpr
 - The catalog is `game/assets/map-asset-index.jsonl`; command behavior belongs to [map_assets.py](../../../tools/map_assets.py), [map_generate.py](../../../tools/map_generate.py), and [map_layout.py](../../../tools/map_layout.py). Code wins when this skill disagrees.
 - Read [the data and geometry reference](references/data-matrix-spec.md) for index fields, composition layouts, source recovery, or matrix work. Do not load the bundled scripts for ordinary art generation.
 - Use only `uv run python -m tools <task>` entrypoints. Run gates in the background with output under `build/`, as required by `AGENTS.md`.
-- The scripts in this skill are diagnostic prototypes. They describe possible collision, destruction, vision, audio, and cultivation semantics; their JSON output does not establish runtime support. Trace the actual consumer before promising gameplay behavior.
+- The bundled scripts measure diagnostic geometry and validate its consistency. Their authored collision, destruction, vision, audio, and cultivation fields do not establish runtime support. Trace the actual consumer before promising gameplay behavior.
 
 ## 1. Inspect and choose a small slice
 
@@ -90,6 +90,14 @@ uv run python -m tools check
 Inspect `build/map-compositions/<layout-id>.png`. Check pivots, relative scale, art overlap, quiet walkable ground, clear routes, and readable interactions. A composite is a preview; retain its terrain and individual sprites. The composer's alpha overlap mask is a placement check, not a navigation, projectile, or sight mask.
 
 An asset-only task can finish with visual review and catalog validation. Report in-game scale/collision as unverified unless the real consumer and representative gameplay patch were exercised. Run relevant gameplay suites when changing a consumer, and run the full repository gate before committing. If unrelated work blocks that gate, name the failing stage and do not repair foreign dirty paths.
+
+When changing the bundled measurement or audit helpers, run their isolated fixture gate:
+
+```text
+uv run python -m tools selftest run --suite map-geometry
+```
+
+It tests crop offsets, alpha noise, partial subcells, cutout failures, contact projection, matrix shape, and failing audits without altering the catalog or art. See the reference for coordinate spaces and remaining limitations.
 
 ## 5. Preserve and recover sources
 

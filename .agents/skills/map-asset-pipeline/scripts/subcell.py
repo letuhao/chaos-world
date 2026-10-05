@@ -1,83 +1,79 @@
-"""Sub-cell occupancy: the precise footprint of a prop, at 32px.
+"""Diagnostic subcell fill and cell-granular contact bounds.
 
-Gap this closes
----------------
-A 128px cell cannot express a tree trunk. `_install` centres the art in its
-canvas, so a ~30px trunk straddles the cell boundary and lands faintly in BOTH
-bottom cells -- which is why `canopy_tree` measured 2 blocked cells out of a 4
-cell footprint. Widening the cell does not fix it either: the trunk's width is a
-property of the art, not of the grid.
-
-Method
-------
-Cell-level coverage is the wrong measurement for a thin vertical object. What
-distinguishes a trunk from the canopy edge is FILL, not presence: a trunk
-sub-cell is a solid column (mostly opaque), while a canopy sub-cell at its
-lower corner is sparse foliage that happens to touch the cell. So this module
-computes per-SUBCELL fill ratio at 32px -- which is also the size of the
-existing Godot TileSet region (`texture_region_size = Vector2i(32, 32)`), so
-one grid serves both -- and reads the ground-contact column run off it.
-
-A sub-cell is opaque at >= SUB_ALPHA (the same 128 threshold the rest of the
-pipeline uses), and a sub-cell is SOLID at >= SOLID_FILL of that.
+Native 32px fill and bottom-row trunk columns describe the cropped art.
+The shared native contact run is uniformly projected into the authored reference
+footprint. That projection owns every emitted contact rectangle; subcell columns
+are a separate density diagnostic. Neither representation proves runtime collision.
 
 Outputs per asset
 -----------------
   sub_fill        fill ratio per 32px sub-cell, row 0 = TOP
   sub_grid        [sub_cols, sub_rows]
   trunk_columns   sub-cell columns on the bottom sub-row that are solid
-  block_rect      [x0, y0, x1, y1] in CELL units: the precise blocked rect
-                  the chunk grid uses, which is narrower than footprint_cells
-                  whenever the art is narrower than its declared footprint
-  block_rect_px   the same rect in pixels, for a sub-cell collision layer
+  block_rect      inclusive cell bounds, equal to blocked_by_scale["1.0"]
+  block_rect_px   half-open pixel bounds of those cells, not pixel-exact collision
 
-Run: uv run python build/mapdata/subcell.py            # summary + measure
-     uv run python build/mapdata/subcell.py --measure  # threshold sweep
+Fixture gate: uv run python -m tools selftest run --suite map-geometry
 """
 
 from __future__ import annotations
 
+import argparse
 import json
+import math
 import sys
 from collections import defaultdict
 from pathlib import Path
 
-from PIL import Image
+if __package__:
+    from .geometry import (
+        ALPHA_THRESHOLD,
+        CELL_PX,
+        SUB_PX,
+        art_bbox,
+        contact_run,
+        find_repo_root,
+        read_alpha,
+    )
+    from .semantics import FOOTPRINT, GROUND_CONTACT, SEMANTICS
+else:
+    from geometry import (
+        ALPHA_THRESHOLD,
+        CELL_PX,
+        SUB_PX,
+        art_bbox,
+        contact_run,
+        find_repo_root,
+        read_alpha,
+    )
+    from semantics import FOOTPRINT, GROUND_CONTACT, SEMANTICS
 
-def _find_repo_root() -> Path:
-    p = Path(__file__).resolve()
-    for parent in [p, *p.parents]:
-        if (parent / "game" / "project.godot").exists() or (parent / "pyproject.toml").exists():
-            return parent
-    return p.parents[4]
-
-ROOT = _find_repo_root()
+ROOT = find_repo_root(__file__)
 GAME = ROOT / "game"
 INDEX = GAME / "assets/map-asset-index.jsonl"
 CELLS = ROOT / "build/mapdata/cells.json"
 OUT = ROOT / "build/mapdata/subcell.json"
 
-SUB_PX = 32          # matches the Godot TileSet texture_region_size
-CELL_PX = 128
-SUB_ALPHA = 128
-SOLID_FILL = 0.35   # a trunk is a solid column; canopy fringe is not
+SUB_ALPHA = ALPHA_THRESHOLD
+SOLID_FILL = 0.35  # a trunk is a solid column; canopy fringe is not
 # Archetypes whose art is a thin pole. A 1-cell pole spread over a 32px sub-cell
 # lands ~0.2-0.3 fill, so the mass threshold would erase them entirely -- which
 # is what happened: 16/16 shrubs and 18/19 signposts came back with an empty
 # rect, i.e. shrubs and signposts became walkable. These keep a lower gate; the
-# distinction from canopy fringe is the SHAPE of the run (a narrow continuous
-# column reaching the frame's bottom), which trunk_columns already requires.
+# bottom-row contiguous run is diagnostic; it does not prove vertical continuity.
 POLE_FILL = 0.12
-POLE_ARCHETYPES = frozenset({
-    "flora.shrub",
-    "flora.root_cluster",
-    "flora.fallen_log",
-    "travel_and_wayfinding.signpost",
-    "travel_and_wayfinding.trail_marker",
-    "landmark_and_environment_detail.banner",
-    "stone_and_ore.standing_stone",
-    "travel_and_wayfinding.stone_waypoint",
-})
+POLE_ARCHETYPES = frozenset(
+    {
+        "flora.shrub",
+        "flora.root_cluster",
+        "flora.fallen_log",
+        "travel_and_wayfinding.signpost",
+        "travel_and_wayfinding.trail_marker",
+        "landmark_and_environment_detail.banner",
+        "stone_and_ore.standing_stone",
+        "travel_and_wayfinding.stone_waypoint",
+    }
+)
 
 
 def subcell_fill(path: Path) -> tuple[list[list[float]], int, int, int, int, bool]:
@@ -92,47 +88,31 @@ def subcell_fill(path: Path) -> tuple[list[list[float]], int, int, int, int, boo
     trunk read at 0.07-0.22 fill instead of the ~0.6 it actually occupies.
     Measuring the art rather than the frame is what makes SOLID_FILL meaningful.
     """
-    with Image.open(path) as img:
-        img = img.convert("RGBA")
-        w, h = img.size
-        alpha = img.getchannel("A")
-        ext = alpha.getextrema()
-        is_opaque = ext[0] == 255
-        if is_opaque:
-            cols, rows = w // SUB_PX, h // SUB_PX
-            return ([[1.0] * cols for _ in range(rows)], cols, rows, 0, 0, True)
-
-        bbox = alpha.getbbox()
-        if bbox is None:
-            return ([], 0, 0, 0, 0, False)
-        crop_x, crop_y = bbox[0], bbox[1]
-        alpha = alpha.crop(bbox)
-        cw, ch = alpha.size
-        cols, rows = cw // SUB_PX, ch // SUB_PX
-        grid: list[list[float]] = []
-        for ry in range(rows):
-            line: list[float] = []
-            for rx in range(cols):
-                box = (rx * SUB_PX, ry * SUB_PX, (rx + 1) * SUB_PX, (ry + 1) * SUB_PX)
-                sub = alpha.crop(box)
-                hist = sub.histogram()
-                px_total = sub.width * sub.height
-                solid = px_total - hist[0] - sum(hist[1:SUB_ALPHA])
-                line.append(round(solid / px_total, 3))
-            grid.append(line)
-        return grid, cols, rows, crop_x, crop_y, False
+    alpha = read_alpha(path)
+    is_opaque = alpha.getextrema()[0] == 255
+    bbox = art_bbox(alpha)
+    if bbox is None:
+        return ([], 0, 0, 0, 0, False)
+    crop_x, crop_y = bbox[:2]
+    alpha = alpha.crop(bbox)
+    cw, ch = alpha.size
+    # Include partial edge cells: floor division discarded narrow poles and the ground band.
+    cols, rows = (cw + SUB_PX - 1) // SUB_PX, (ch + SUB_PX - 1) // SUB_PX
+    grid: list[list[float]] = []
+    for ry in range(rows):
+        line: list[float] = []
+        for rx in range(cols):
+            box = (rx * SUB_PX, ry * SUB_PX, min(cw, (rx + 1) * SUB_PX), min(ch, (ry + 1) * SUB_PX))
+            sub = alpha.crop(box)
+            hist = sub.histogram()
+            px_total = sub.width * sub.height
+            line.append(round(sum(hist[SUB_ALPHA:]) / px_total, 3))
+        grid.append(line)
+    return grid, cols, rows, crop_x, crop_y, is_opaque
 
 
 def trunk_columns(fill: list[list[float]], solid: float = SOLID_FILL) -> list[int]:
-    """Sub-cell columns on the bottom row that carry a solid vertical body.
-
-    The bottom sub-row is the one touching the ground plane. Only its SOLID
-    sub-cells count: a signpost's pole is solid, its crossbar's tips are not.
-
-    The run is then CLIPPED to the columns that form the contiguous body, so a
-    detached speck of foliage on the same row cannot drag the rect wider than
-    the trunk it belongs to.
-    """
+    """Longest contiguous solid-fill run on the bottom row; no vertical-continuity claim."""
     if not fill:
         return []
     bottom = fill[-1]
@@ -153,73 +133,12 @@ def trunk_columns(fill: list[list[float]], solid: float = SOLID_FILL) -> list[in
     return runs[0]
 
 
-def block_rect_from_columns(
-    cols: list[int],
-    sub_cols: int,
-    sub_rows: int,
-    crop_x: int,
-    crop_y: int,
-    canvas_cells: list[int],
-) -> list[int]:
-    """Map solid bottom-row sub-columns to a precise rect in CELL units.
-
-    A cell counts as blocked when the solid run covers at least half of its
-    width: a trunk clipping a cell by 20% should not seal a walkable cell, and
-    one filling 60% of it should. `crop_x/crop_y` put the cropped sub-cell
-    indices back into canvas space before dividing down to cells.
-    """
-    if not cols:
-        # None, not [0,0,0,0]. A 1x1 prop's real rect IS [0,0,0,0] (it blocks
-        # its only cell), so the zero rect was indistinguishable from "no ground
-        # contact" -- which silently reported every shrub and signpost as having
-        # no blocker and made them walkable.
-        return None
-    per_cell = CELL_PX // SUB_PX
-    cell_cols = max(1, canvas_cells[0])
-    solid_px = [(crop_x + cx * SUB_PX, crop_x + (cx + 1) * SUB_PX) for cx in cols]
-
-    blocked: list[int] = []
-    for c in range(cell_cols):
-        lo, hi = c * CELL_PX, (c + 1) * CELL_PX
-        # overlap of the solid run with this cell, in PIXELS
-        covered = sum(max(0, min(hi, b) - max(lo, a)) for a, b in solid_px)
-        if covered * 2 >= CELL_PX:
-            blocked.append(c)
-    if not blocked:
-        # The solid run is narrower than half a cell -- a pole, or a prop whose
-        # art is genuinely small inside its canvas. Anchor to the cell holding
-        # the run's centre instead of giving up. An earlier version had no
-        # fallback and every shrub and signpost came back EMPTY, i.e. silently
-        # walkable, while its bottom sub-row measured 0.55-1.0 fill: the run
-        # simply never reached half a cell's width, which is the normal case
-        # for a single 32px sub-cell inside a 128px cell.
-        mid = (solid_px[len(solid_px) // 2][0] + solid_px[len(solid_px) // 2][1]) // 2
-        blocked = [min(cell_cols - 1, mid // CELL_PX)]
-
-    # The rect's vertical extent is the BOTTOM CELL ROW of the declared
-    # footprint. A ground_contact prop is bottom-anchored, so its trunk is
-    # always in the last row -- deriving the row from the crop arithmetic gave
-    # row 0 for a 2-row tree, which is the canopy.
-    bottom_row = max(0, canvas_cells[1] - 1)
-    return [min(blocked), bottom_row, max(blocked), bottom_row]
-
-
 def measure(thresholds: list[float]) -> None:
     """Sweep the solid-fill threshold against ground_contact archetypes."""
     rows = [json.loads(ln) for ln in INDEX.read_text(encoding="utf-8").splitlines() if ln.strip()]
     live = sorted([r for r in rows if r["status"] != "planned"], key=lambda r: r["id"])
     ground_contact = {
-        "flora.canopy_tree",
-        "flora.slender_tree",
-        "flora.ancient_tree",
-        "flora.shrub",
-        "flora.root_cluster",
-        "flora.fallen_log",
-        "stone_and_ore.standing_stone",
-        "travel_and_wayfinding.signpost",
-        "travel_and_wayfinding.trail_marker",
-        "travel_and_wayfinding.stone_waypoint",
-        "landmark_and_environment_detail.banner",
+        arch for arch, sem in SEMANTICS.items() if sem["occluder_rule"] == GROUND_CONTACT
     }
 
     cache: dict[str, tuple] = {}
@@ -239,9 +158,8 @@ def measure(thresholds: list[float]) -> None:
     print(f"\n{'archetype':<30}{'n':>4}{'fp_cells':>9}{header}")
     for arch in sorted(by_arch):
         items = by_arch[arch]
-        grid_cols = items[0][1][1]
-        grid_rows = items[0][1][2]
-        fp_cells = (grid_cols // 4) * (grid_rows // 4)
+        fp_cols, fp_rows = FOOTPRINT[arch]
+        fp_cells = fp_cols * fp_rows
         counts = []
         for t in thresholds:
             hits = 0
@@ -267,56 +185,40 @@ CONTACT_STEP_SCALE = 1.35
 def contact_px(path: Path, band: int = 16) -> int:
     """Widest opaque horizontal run over the lowest `band` rows of the art.
 
-    This is the prop's contact patch -- the part of it that touches the ground --
-    and it is the only honest basis for how much ground a scaled prop blocks.
+    This is an alpha-based estimate; baked shadows or stray solid art can widen it.
     """
-    with Image.open(path) as img:
-        a = img.convert("RGBA").getchannel("A")
-    bbox = a.getbbox()
-    if bbox is None:
-        return 0
-    a = a.crop(bbox)
-    w, h = a.size
-    px = a.load()
-    best = 0
-    for y in range(max(0, h - band), h):
-        run = 0
-        for x in range(w):
-            if px[x, y] >= SUB_ALPHA:
-                run += 1
-                if run > best:
-                    best = run
-            else:
-                run = 0
-    return best
+    run = contact_run(path, band)
+    return run[1] - run[0] if run else 0
 
 
 def rect_at_scale(
-    contact: int, scale: float, fp_cols: int, fp_rows: int, min_cells: int = 1
+    contact: float,
+    scale: float,
+    fp_cols: int,
+    fp_rows: int,
+    min_cells: int = 1,
+    *,
+    center_px: float | None = None,
 ) -> list[int] | None:
     """Cells blocked when the contact patch is drawn at `scale`.
 
-    The patch is centred on the prop's box, and a cell seals once the patch
-    covers at least half its width -- so scale is DYNAMIC, not cosmetic: a
-    canopy tree can hold one cell at 1.0 and two at 1.6, and a forest gets a
-    specimen that genuinely occupies more ground than its neighbours.
+    A cell seals once the projected patch covers at least half its width.
+    `center_px` preserves the measured anchor; omitting it uses the box center.
 
-    `min_cells` is the floor, and it is the important part. The generated art
-    has inverted contact widths -- the landmark ancient tree's trunk is 11px
-    while a shrub's is 64px -- so a purely pixel-derived rect makes a tree
-    WALKABLE THROUGH at 1.0 and lets a shrub block more ground than a landmark.
-    That is not a measurement, it is a broken tree.
-
-    So the authored footprint is the floor for a prop that has ground contact:
-    it blocks at least one cell, and scale raises it from there. A prop with
-    `occluder_rule: none` passes min_cells=0 and stays walkable, because a
-    flower you can walk through is correct and a tree you can walk through is
-    not. When the pixels cannot justify the authored size, that is recorded as
-    an ART DEFECT for the generator to fix, not silently honoured.
+    Existing diagnostic policy clamps contact to one reference subcell through
+    CONTACT_STEP_SCALE and floors measurable ground contact to `min_cells`.
+    Zero contact stays empty. The caller records thin-contact warnings separately.
     """
-    if min_cells <= 0 and contact <= 0:
+    if any(type(value) is not int or value < 1 for value in (fp_cols, fp_rows)):
+        raise ValueError("footprint dimensions must be positive integers")
+    if type(min_cells) is not int or not 0 <= min_cells <= fp_cols:
+        raise ValueError("minimum contact cells must fit the footprint")
+    if not math.isfinite(scale) or scale <= 0 or not math.isfinite(contact) or contact < 0:
+        raise ValueError(
+            "scale must be finite and positive; contact must be finite and nonnegative"
+        )
+    if contact <= 0:
         return None
-    # VISUAL SCALE vs CONTACT SCALE (map-asset-pipeline skill, section E).
     # Under `contact_rule: constant_subcell` the physical trunk stays clamped to
     # ONE sub-cell (32px) while the visual canopy grows, and only past the
     # 1.35x threshold does the true contact patch start counting. Without the
@@ -328,9 +230,13 @@ def rect_at_scale(
         effective = min(contact, SUB_PX)
     width = effective * scale
     box = fp_cols * CELL_PX
-    centre = box / 2.0
+    centre = box / 2.0 if center_px is None else center_px
+    if not math.isfinite(centre):
+        raise ValueError("contact center must be finite")
     lo = centre - width / 2.0
     hi = centre + width / 2.0
+    if hi <= 0 or lo >= box:
+        return None
     blocked = []
     for c in range(fp_cols):
         cell_lo, cell_hi = c * CELL_PX, (c + 1) * CELL_PX
@@ -340,12 +246,10 @@ def rect_at_scale(
     if not blocked:
         if min_cells <= 0:
             return None
-        # Anchor the floor at the centre of the footprint: the trunk is there.
-        mid = fp_cols // 2
-        blocked = [mid] if fp_cols == 1 else [mid - (min_cells // 2), mid + (min_cells // 2)]
-        blocked = [c for c in blocked if 0 <= c < fp_cols]
-        if not blocked:
-            blocked = [fp_cols // 2]
+        # An exact cell-boundary tie selects its right-hand cell; off-center art keeps its anchor.
+        mid = max(0, min(fp_cols - 1, int(centre // CELL_PX)))
+        start = max(0, min(fp_cols - min_cells, mid - min_cells // 2))
+        blocked = list(range(start, start + min_cells))
     bottom = fp_rows - 1
     return [min(blocked), bottom, max(blocked), bottom]
 
@@ -363,21 +267,22 @@ def build() -> dict:
         if not path.exists():
             failed.append(f"{a['id']}: missing {rel}")
             continue
-        fill, sub_cols, sub_rows, crop_x, crop_y, is_opaque = subcell_fill(path)
+        fill, sub_cols, sub_rows, crop_x, crop_y, _is_opaque = subcell_fill(path)
         rule = a["sem"]["occluder_rule"]
 
+        run = contact_run(path) if rule == "ground_contact" else None
         if rule == "ground_contact":
             arch = a["archetype"]
             gate = POLE_FILL if arch in POLE_ARCHETYPES else SOLID_FILL
             cols = trunk_columns(fill, gate)
-            rect = block_rect_from_columns(cols, sub_cols, sub_rows, crop_x, crop_y, a["grid"])
+            rect = None  # The scale projection below owns the emitted contact rectangle.
         else:
             # full_body / core_ring already fill their declared footprint; the
             # sub-cell grid is recorded for the collision layer but does not
             # narrow the cell mask.
             cols = []
             rect = [0, 0, max(0, a["grid"][0] - 1), max(0, a["grid"][1] - 1)]
-            if is_opaque or not any(any(row) for row in fill):
+            if not any(any(row) for row in fill):
                 rect = None
             # `none` means NEVER BLOCKS -- ground, decals, effects, flowers. It
             # must yield None unconditionally, because a 1x1 prop's full
@@ -387,21 +292,19 @@ def build() -> dict:
             if rule == "none":
                 rect = None
 
-        if rect is None:
-            stats["empty"] += 1
-        elif (rect[2] - rect[0] + 1) < a["grid"][0]:
-            stats["narrowed"] += 1
-        else:
-            stats["unchanged"] += 1
-
-        # Dynamic scale. For a contact-measured prop the blocked rect at each
-        # scale tier is precomputed, because the patch is centred and a wider
-        # patch simply seals more cells -- the generator then picks a tier and
-        # the walkable grid follows the sprite it actually drew. full_body and
-        # core_ring props block their whole declared footprint at every scale,
-        # since scaling them does not change what part of them is solid.
+        # Contact keeps its measured offset through uniform canvas fit and visual scale.
+        # Full-body/ring rectangles retain the prototype's coarse footprint policy.
         fp_cols, fp_rows = a["grid"]
-        contact = contact_px(path) if rule == "ground_contact" else 0
+        contact = run[1] - run[0] if run else 0
+        canvas_width, canvas_height = read_alpha(path).size
+        reference_scale = min(fp_cols * CELL_PX / canvas_width, fp_rows * CELL_PX / canvas_height)
+        contact_reference = contact * reference_scale
+        box_center = fp_cols * CELL_PX / 2
+        contact_center = (
+            box_center + ((run[0] + run[1]) / 2 - canvas_width / 2) * reference_scale
+            if run
+            else box_center
+        )
         if rule in ("full_body", "core_ring"):
             by_scale = {str(s): rect for s in SCALES}
         else:
@@ -412,20 +315,36 @@ def build() -> dict:
             floor_cells = 1 if rule == "ground_contact" else 0
             by_scale = {}
             for s in SCALES:
-                r = rect_at_scale(contact, s, fp_cols, fp_rows, min_cells=floor_cells)
+                center = box_center + (contact_center - box_center) * s
+                r = rect_at_scale(
+                    contact_reference, s, fp_cols, fp_rows, min_cells=floor_cells, center_px=center
+                )
                 by_scale[str(s)] = r
-                if floor_cells and r is not None and contact * s < CELL_PX / 2:
+                if floor_cells and r is not None and contact_reference * s < CELL_PX / 2:
                     art_defects.append(
                         f"{a['id']}: {a['archetype']} claims {a['grid']} cells but its "
-                        f"contact patch is only {contact}px ({contact * s:.0f}px at {s}x); "
+                        f"contact patch is {contact_reference:.1f} reference px "
+                        f"({contact_reference * s:.0f}px at {s}x); "
                         f"floored to one cell -- regenerate the art with a thicker trunk"
                     )
-        widest = max(
-            (r[2] - r[0] + 1) for r in by_scale.values() if r is not None
-        ) if any(r is not None for r in by_scale.values()) else 0
-        narrowest = min(
-            (r[2] - r[0] + 1) for r in by_scale.values() if r is not None
-        ) if any(r is not None for r in by_scale.values()) else 0
+        # One projection owns both fields; measured art position must not be replaced by box center.
+        rect = by_scale["1.0"]
+        if rect is None:
+            stats["empty"] += 1
+        elif (rect[2] - rect[0] + 1) < fp_cols:
+            stats["narrowed"] += 1
+        else:
+            stats["unchanged"] += 1
+        widest = (
+            max((r[2] - r[0] + 1) for r in by_scale.values() if r is not None)
+            if any(r is not None for r in by_scale.values())
+            else 0
+        )
+        narrowest = (
+            min((r[2] - r[0] + 1) for r in by_scale.values() if r is not None)
+            if any(r is not None for r in by_scale.values())
+            else 0
+        )
         if widest > narrowest:
             stats["scaled_up"] += 1
 
@@ -442,6 +361,8 @@ def build() -> dict:
                 if rule == "ground_contact"
                 else None,
                 "contact_px": contact,
+                "contact_reference_px": contact_reference,
+                "contact_center_reference_px": contact_center,
                 "footprint": [fp_cols, fp_rows],
                 "scales": list(SCALES),
                 "blocked_by_scale": by_scale,
@@ -449,8 +370,12 @@ def build() -> dict:
                 "block_rect_px": (
                     None
                     if rect is None
-                    else [rect[0] * CELL_PX, rect[1] * CELL_PX,
-                          (rect[2] + 1) * CELL_PX, (rect[3] + 1) * CELL_PX]
+                    else [
+                        rect[0] * CELL_PX,
+                        rect[1] * CELL_PX,
+                        (rect[2] + 1) * CELL_PX,
+                        (rect[3] + 1) * CELL_PX,
+                    ]
                 ),
             }
         )
@@ -473,11 +398,15 @@ def build() -> dict:
 
 
 def main(argv: list[str]) -> int:
-    if "--measure" in argv:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--measure", action="store_true")
+    args = parser.parse_args(argv)
+    if args.measure:
         measure([0.20, 0.30, 0.35, 0.45, 0.55, 0.65])
         return 0
 
     data = build()
+    OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(data, indent=1), encoding="utf-8")
     s = data["stats"]
     print(f"sub_px={SUB_PX} solid_fill={SOLID_FILL}")
@@ -487,8 +416,10 @@ def main(argv: list[str]) -> int:
     print(f"  rect empty (no solid ground contact):       {s['empty']}")
     print(f"  assets whose blocked cells GROW with scale: {s['scaled_up']}")
     if data.get("art_defects"):
-        print(f"\nART DEFECTS ({len(data['art_defects'])}): contact patch too thin "
-              f"for the authored footprint")
+        print(
+            f"\nART DEFECTS ({len(data['art_defects'])}): contact patch too thin "
+            f"for the authored footprint"
+        )
         for line in data["art_defects"][:6]:
             print("    ", line)
         if len(data["art_defects"]) > 6:
@@ -498,7 +429,7 @@ def main(argv: list[str]) -> int:
         for line in data["failed"][:10]:
             print("    ", line)
     print(f"wrote {OUT.relative_to(ROOT)}")
-    return 0
+    return 1 if data["failed"] else 0
 
 
 if __name__ == "__main__":

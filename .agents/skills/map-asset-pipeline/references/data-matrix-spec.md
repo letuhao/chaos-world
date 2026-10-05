@@ -98,14 +98,19 @@ For any requested runtime change, trace the responsible facade and consumer firs
 
 ## Bundled diagnostic scripts
 
-These scripts are retained for inspection of existing experiments. They are not registered `tools` entrypoints; do not run them directly or cite a successful process exit as a quality gate.
+These helpers retain the experimental geometry model. They are imported by `uv run python -m tools selftest run --suite map-geometry`, with synthetic images and isolated output under temporary `build/` directories. They are not registered production matrix tasks; do not run them directly against live data.
 
 | Script | Actual role and limitation |
 | --- | --- |
 | [semantics.py](../scripts/semantics.py) | Archetype-level authored candidates for contact, interaction, material, destruction, vision, audio, cultivation, resources, and scale. Values are not engine contracts. |
-| [derive.py](../scripts/derive.py) | Builds `mapdata/cells@1` in `build/mapdata/cells.json`: coverage, blocking/walk masks, semantic metadata, and `issues`/`failed`. It measures runtime art; it does not re-bake images or emit dedicated projectile/vision masks. Findings do not produce a failure exit. |
-| [subcell.py](../scripts/subcell.py) | Builds `mapdata/subcell@2` in `build/mapdata/subcell.json`: cropped 32 px fill, contact estimates, rectangles, and scale variants. Read `failed` and `art_defects`; reported output is not an enforced gate. |
-| [audit.py](../scripts/audit.py) | Prints geometry diagnostics. It returns success even with findings, can skip missing subcell output, and samples some archetypes. It is not proof of zero defects. |
+| [geometry.py](../scripts/geometry.py) | Shared 128 px reference cells, 32 px subcells, alpha threshold 128, thresholded bbox, and contact-run measurements. Missing repository markers fail clearly. |
+| [derive.py](../scripts/derive.py) | Builds `mapdata/cells@1` in `build/mapdata/cells.json` from the catalog and runtime PNGs: coverage, blocking/walk masks, semantic metadata, actual canvas size, and `issues`/`failed`. Findings return 1. It does not re-bake images or emit dedicated projectile/vision masks. |
+| [subcell.py](../scripts/subcell.py) | Reads `cells.json` and its runtime PNGs to build `mapdata/subcell@2` in `build/mapdata/subcell.json`: cropped 32 px fill including partial edge cells, native/reference contact estimates, rectangles, and scale variants. Missing PNGs return 1; `art_defects` remains a heuristic warning. |
+| [audit.py](../scripts/audit.py) | Requires both JSON artifacts. Checks record parity, matrix shapes/values, phantom blockers, ground rows, walk surfaces, authored openings, contact bounds and scale agreement. Tree width uses the authored footprint. Returns 0 for clean stored data, 1 for findings, 2 for missing/unreadable input. It does not prove freshness or gameplay behavior. |
+
+Coverage partitions the solid-alpha art bbox independently along each axis. It is a density measurement, not the compositor's aspect-preserving fit. `sub_fill` uses native cropped pixels; the last row/column is measured against its actual partial area. Contact uses the widest solid run in the lowest 16 native art rows; alpha below 128 cannot move the crop or contact anchor.
+
+Contact projection uniformly fits the whole PNG canvas to the authored reference footprint and preserves the measured horizontal offset from its center. `contact_px` is native width; `contact_reference_px` and `contact_center_reference_px` use the 128 px reference space. `block_rect` equals `blocked_by_scale["1.0"]`. An exact cell-boundary tie selects the right-hand cell. Zero measured contact stays empty; the existing minimum-cell policy for measurable thin props is reported through `art_defects`.
 
 The prototype scale list and thresholds belong to `subcell.py`. Its `block_rect` is in inclusive 128 px cell coordinates; `block_rect_px` expands those cells, rather than preserving a subcell-precise trunk shape. For `core_ring`, the subcell bounding rectangle can fill an opening that the cell mask leaves clear. Compare the actual representation used by the consumer instead of combining incompatible masks.
 

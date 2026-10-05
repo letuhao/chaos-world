@@ -1,40 +1,27 @@
-"""Derive per-asset CELL MATRICES from pixel truth + archetype semantics.
+"""Diagnostic cell matrices. Fixture gate: tools selftest run --suite map-geometry.
 
-measure.py  -> raster truth (coverage grids, per file)
-semantics.py-> authored meaning (per archetype, 65 rows)
-derive.py   -> the product: an occlusion mask + interaction footprint per asset
-
-Run:  uv run python build/mapdata/derive.py [--env mortal_greenwood]
-Writes build/mapdata/cells.json
-
-Every loop here is bounded by a snapshot taken before iteration. There is no
-`while` on a container this module also grows.
+Every loop is bounded by an image dimension or a snapshot of input records.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
 
-from PIL import Image
+if __package__:
+    from .geometry import ALPHA_THRESHOLD, CELL_PX, art_bbox, find_repo_root, read_alpha
+    from .semantics import CORE_RING, FOOTPRINT, FULL_BODY, GROUND_CONTACT, SEMANTICS
+else:
+    from geometry import ALPHA_THRESHOLD, CELL_PX, art_bbox, find_repo_root, read_alpha
+    from semantics import CORE_RING, FOOTPRINT, FULL_BODY, GROUND_CONTACT, SEMANTICS
 
-sys.path.insert(0, str(Path(__file__).parent))
-from semantics import CORE_RING, FOOTPRINT, FULL_BODY, GROUND_CONTACT, SEMANTICS  # noqa: E402
-
-def _find_repo_root() -> Path:
-    p = Path(__file__).resolve()
-    for parent in [p, *p.parents]:
-        if (parent / 'game' / 'project.godot').exists() or (parent / 'pyproject.toml').exists():
-            return parent
-    return p.parents[4]
-
-ROOT = _find_repo_root()
+ROOT = find_repo_root(__file__)
 GAME = ROOT / "game"
 INDEX = GAME / "assets/map-asset-index.jsonl"
 OUT = ROOT / "build/mapdata/cells.json"
-CELL_PX = 128
-ALPHA_T = 128  # mirrors tools/map_layout.ALPHA_OCCUPANCY_THRESHOLD
+ALPHA_T = ALPHA_THRESHOLD
 
 
 def coverage_grid(
@@ -42,66 +29,46 @@ def coverage_grid(
 ) -> tuple[list[list[float]], int, int, float]:
     """Per-cell fraction of pixels with alpha >= ALPHA_T. Row 0 is the TOP row.
 
-    `fp_cols`/`fp_rows` are the AUTHORED footprint in cells. The art is FIT to
-    that box: the alpha bounding box is mapped onto the declared grid, so the
-    measurement is about the art rather than about the canvas it was pasted
-    into.
-
-    This is the change that makes size a property of the KIND. Previously the
-    grid was `canvas_px / CELL_PX`, so a 96px herb and a 480px tree each got a
-    footprint from their own resolution -- and `small_rock` came out (1,1) in one
-    environment and (2,2) in another. Re-rolling a prop at a new `target_size`
-    silently changed its collision.
-
-    Also returns frac_zero, the fraction of the WHOLE frame with alpha == 0,
-    which is how a failed cutout is recognised.
+    Authored dimensions partition the thresholded art bbox independently along
+    each axis. This is a density diagnostic, not the compositor's uniform fit.
+    Without authored dimensions, partition the entire canvas in reference cells.
+    Also returns frac_zero, the fraction of the whole canvas with alpha == 0.
     """
-    with Image.open(path) as img:
-        img = img.convert("RGBA")
-        w, h = img.size
-        alpha = img.getchannel("A")
-        hist = alpha.histogram()
-        frac_zero = hist[0] / (w * h)
-        # 1 for opaque rows (no alpha channel / all 255), else the threshold test
-        opaque = hist[0] == 0 and alpha.getextrema()[0] == 255
+    alpha = read_alpha(path)
+    w, h = alpha.size
+    frac_zero = alpha.histogram()[0] / (w * h)
+    authored = fp_cols is not None
+    if (fp_cols is None) != (fp_rows is None):
+        raise ValueError("both footprint dimensions are required")
+    if fp_cols is None:
+        cols, rows = (w + CELL_PX - 1) // CELL_PX, (h + CELL_PX - 1) // CELL_PX
+        ox = oy = 0
+        span_w, span_h = w, h
+    else:
+        cols, rows = fp_cols, fp_rows
+        if any(type(value) is not int or value < 1 for value in (fp_cols, fp_rows)):
+            raise ValueError("footprint dimensions must be positive integers")
+        bbox = art_bbox(alpha)
+        if bbox is None:
+            return [[0.0] * cols for _ in range(rows)], cols, rows, round(frac_zero, 4)
+        # Apply the bbox origin before partitioning; padding cannot shift the measured art.
+        ox, oy, bx1, by1 = bbox
+        span_w, span_h = bx1 - ox, by1 - oy
 
-        if fp_cols is None or fp_rows is None:
-            cols, rows = w // CELL_PX, h // CELL_PX
-            ox = oy = 0
-            span_w, span_h = w, h
-        else:
-            cols, rows = fp_cols, fp_rows
-            bbox = alpha.getbbox()
-            if bbox is None:
-                return [], cols, rows, 1.0
-            # fit the ART into the declared box, preserving aspect on the longest
-            # side so a 480px square tree and a 96px square herb are measured the
-            # same way
-            ox, oy, bx0, by0, bx1, by1 = 0, 0, bbox[0], bbox[1], bbox[2], bbox[3]
-            span_w, span_h = bx1 - bx0, by1 - by0
-
-        px = alpha.load()
-        grid: list[list[float]] = []
-        for cy in range(rows):
-            line: list[float] = []
-            y0 = oy + (cy * span_h) // rows
-            y1 = oy + ((cy + 1) * span_h) // rows
-            cell_h = max(1, y1 - y0)
-            for cx in range(cols):
-                if opaque:
-                    line.append(1.0)
-                    continue
-                x0 = ox + (cx * span_w) // cols
-                x1 = ox + ((cx + 1) * span_w) // cols
-                cell_w = max(1, x1 - x0)
-                hit = 0
-                for y in range(y0, y1):
-                    for x in range(x0, x1):
-                        if px[x, y] >= ALPHA_T:
-                            hit += 1
-                line.append(round(hit / (cell_w * cell_h), 3))
-            grid.append(line)
-        return grid, cols, rows, round(frac_zero, 4)
+    grid: list[list[float]] = []
+    for cy in range(rows):
+        line: list[float] = []
+        y0 = oy + (cy * span_h) // rows if authored else cy * CELL_PX
+        y1 = oy + ((cy + 1) * span_h) // rows if authored else min(h, (cy + 1) * CELL_PX)
+        for cx in range(cols):
+            x0 = ox + (cx * span_w) // cols if authored else cx * CELL_PX
+            x1 = ox + ((cx + 1) * span_w) // cols if authored else min(w, (cx + 1) * CELL_PX)
+            # A footprint finer than the source samples its nearest source pixel.
+            cell = alpha.crop((x0, y0, max(x0 + 1, x1), max(y0 + 1, y1)))
+            hit = sum(cell.histogram()[ALPHA_T:])
+            line.append(round(hit / (cell.width * cell.height), 3))
+        grid.append(line)
+    return grid, cols, rows, round(frac_zero, 4)
 
 
 def occluder_mask(rule: str, cov: list[list[float]], gate: float) -> list[list[bool]]:
@@ -136,11 +103,13 @@ def occluder_mask(rule: str, cov: list[list[float]], gate: float) -> list[list[b
 
 def walk_surface_mask(cov: list[list[float]], rule: str, enabled: bool) -> list[list[bool]]:
     """Cells a unit may STAND ON (bridge decks, log tops)."""
-    if not enabled:
-        return [[False] * len(cov[0]) for _ in cov]
+    mask = [[False] * len(line) for line in cov]
+    if not enabled or not cov:
+        return mask
     if rule == GROUND_CONTACT:
         bottom = len(cov) - 1
-        return [[cov[bottom][cx] >= 0.10 for cx in range(len(cov[bottom]))]]
+        mask[bottom] = [value >= 0.10 for value in cov[bottom]]
+        return mask
     return [[v >= 0.10 for v in line] for line in cov]
 
 
@@ -204,6 +173,11 @@ def build(env_filter: str | None) -> dict:
                 f"fell back to the index's {list(fp)}"
             )
         cov, cols, rows_n, frac_zero = coverage_grid(path, fp[0], fp[1])
+        if row["alpha"] == "transparent":
+            alpha = read_alpha(path)
+            if alpha.getextrema()[0] != 0 or art_bbox(alpha) is None:
+                failed.append(f"{row['id']}: cutout needs transparent background and visible art")
+                continue
         # A 1-cell footprint concentrates its art; a 4-cell one spreads it. Use
         # the low gate for the former so a solid small_rock actually blocks.
         gate = sem["cov_gate"] if cols * rows_n > 1 else sem["small_cov_gate"]
@@ -212,7 +186,6 @@ def build(env_filter: str | None) -> dict:
             mask = apply_authored_open(mask, sem["authored_open"])
         deck = walk_surface_mask(cov, sem["occluder_rule"], sem["walk_surface"])
 
-        _art_cells = sum(1 for line in cov for v in line if v > 0.0)
         occ_cells = sum(1 for line in mask for v in line if v)
         # A failed background-removal pass is detected by how much of the FILE is
         # opaque, not by per-cell coverage. Both earlier tests were wrong for
@@ -248,7 +221,7 @@ def build(env_filter: str | None) -> dict:
                 "category": row["category"],
                 "name": row["name"],
                 "path": row["path"],
-                "canvas_px": [cols * CELL_PX, rows_n * CELL_PX],
+                "canvas_px": list(read_alpha(path).size),
                 "cell_px": CELL_PX,
                 "grid": [cols, rows_n],
                 "pivot": row["pivot"],
@@ -294,11 +267,10 @@ def build(env_filter: str | None) -> dict:
 
 
 def main(argv: list[str]) -> int:
-    env = None
-    if "--env" in argv:
-        env = argv[argv.index("--env") + 1]
-
-    data = build(env)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--env")
+    args = parser.parse_args(argv)
+    data = build(args.env)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(data, indent=1), encoding="utf-8")
 
@@ -318,7 +290,7 @@ def main(argv: list[str]) -> int:
     print(f"\nassets that block at least one cell: {len(blocking)}")
     print(f"assets passable beneath: {len(under)}")
     print(f"wrote {OUT.relative_to(ROOT)}")
-    return 0
+    return 1 if data["issues"] or data["failed"] else 0
 
 
 if __name__ == "__main__":
