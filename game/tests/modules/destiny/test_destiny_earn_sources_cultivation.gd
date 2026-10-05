@@ -75,6 +75,26 @@ const SEED_CAP := 256
 ## tally UNDERSTATE, which is the more dangerous direction: a green file can hide a
 ## whole suite.
 
+## ## `roll_draw` is a NAMED CONSTANT per path, because a transaction may take a
+## ## different number of draws before its own roll
+##
+## **Measured** by intersecting the offsets consistent with real outcomes, a fresh
+## hero per trial: **body** survivors narrow to `[0]` over seeds 2, 3, 4; **mind** to
+## `[0]` over seeds 2, 3, 9, 11; and `QI_ROLL_DRAW` is pinned by
+## `test_the_qi_roll_is_judged_on_the_draw_the_transaction_really_reads`. All three
+## read their FIRST draw on these prepared states. Three named constants rather than
+## one shared literal because that measurement is what would have to be REDONE if a
+## transaction ever began consuming a draw of its own, and a single hard-wired `0`
+## would let such a change silently desynchronise this search from every roll.
+const QI_ROLL_DRAW := 0
+const BODY_ROLL_DRAW := 0
+const MIND_ROLL_DRAW := 0
+
+## The most draws any path is allowed to be judged on, taken BEFORE the loop. A
+## caller naming a draw the transaction does not have is clamped rather than trusted,
+## so the replay can never be the thing that fails to terminate.
+const DRAW_CAP := 8
+
 ## The one body fixture this suite drives, as an INSTANCE.
 ##
 ## Typed as the fixture's own script so `:=` still infers at the call sites — a
@@ -690,24 +710,6 @@ func _mind_roll(hero: Actor, winning: bool) -> RandomNumberGenerator:
 ## generator would not do**: that rewrites the seed without rewinding the state. The
 ## value is rebuilt, not reseeded.
 ##
-## ## `roll_draw` is a NAMED CONSTANT per path, because a transaction may take a
-## ## different number of draws before its own roll
-##
-## **Measured** by intersecting the offsets consistent with real outcomes, a fresh
-## hero per trial: **body** survivors narrow to `[0]` over seeds 2, 3, 4; **mind** to
-## `[0]` over seeds 2, 3, 9, 11; and `QI_ROLL_DRAW` is pinned by
-## `test_the_qi_roll_is_judged_on_the_draw_the_transaction_really_reads`. All three
-## read their FIRST draw on these prepared states. Three named constants rather than
-## one shared literal because that measurement is what would have to be REDONE if a
-## transaction ever began consuming a draw of its own, and a single hard-wired `0`
-## would let such a change silently desynchronise this search from every roll.
-const QI_ROLL_DRAW := 0
-const BODY_ROLL_DRAW := 0
-const MIND_ROLL_DRAW := 0
-## The most draws any path is allowed to be judged on, taken BEFORE the loop. A
-## caller naming a draw the transaction does not have is clamped rather than trusted,
-## so the replay can never be the thing that fails to terminate.
-const DRAW_CAP := 8
 
 
 func _seed_deciding(
