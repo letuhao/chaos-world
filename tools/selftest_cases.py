@@ -4970,3 +4970,125 @@ def _art_art_root_resolves_a_moved_folder() -> None:
     finally:
         art_fidelity.ART_ROOT_CANDIDATES = original
         art_fidelity.ART_ROOT = art_fidelity.art_root()
+
+
+@case("unique_characters: a relationship target and both identity anchors must RESOLVE")
+def _references_must_resolve() -> None:
+    """A reference is only a reference if it lands.
+
+    `relationships[].to`, `identity.faction` and `identity.home` are pointers into the
+    bible, and nothing checked them for as long as the catalog existed. Every agent brief
+    has said so and asked authors to verify by hand instead, which is why a stream of
+    agents has reported catching their own typo - `religions.sealed_core` for
+    `religion.sealed_core`, `mysteries.the_payer_nobody_names` for
+    `mysteries.the_second_payer_of_the_first_tier`. Each would otherwise have shipped,
+    because a non-empty string is a valid target in exactly the way a non-empty string was
+    a valid `appearance.race` - and that second gap had already been closed once.
+
+    The two empty cases below are the point, not a footnote. EMPTY MUST STAY LEGAL: a
+    thornline symbionte has no organization because its habitat is a species, a cast
+    template is keyed to a place rather than a body, and eleven records carry no faction at
+    all. A guard that required an anchor would push those into inventing one, which is a
+    worse defect than the dangling reference it prevents. So both are asserted to PASS.
+    """
+
+    entries = unique_characters._lore_entries()
+    expect(entries is not None, "the Lore Bible could not be read, so the rule is untested")
+    if entries is None:
+        return
+
+    species = next(
+        race_id
+        for race_id, entity in entries.items()
+        if isinstance(entity, dict)
+        and entity.get("domain") == "races"
+        and entity.get("type") not in unique_characters.BLOODLINE_RACE_TYPES
+        and "body_cultivation" not in (entity.get("attributes") or {}).get("closed_paths", [])
+    )
+    organization = next(
+        eid
+        for eid, entity in entries.items()
+        if isinstance(entity, dict) and entity.get("domain") == "organizations"
+    )
+    settlement = next(
+        eid
+        for eid, entity in entries.items()
+        if isinstance(entity, dict) and entity.get("domain") == "geography"
+    )
+
+    def record(target: str, faction: str, home: str) -> dict:
+        return {
+            "id": "unique-0001",
+            "name": "Probe",
+            "status": "canon",
+            "identity": {
+                "role": "npc",
+                "path": "body",
+                "faction": faction,
+                "home": home,
+                "realm": "",
+            },
+            "appearance": {key: "" for key in unique_characters.APPEARANCE_KEYS}
+            | {"race": species, "age": "forty"},
+            "tags": [],
+            "canon": {
+                "role_in_story": "",
+                "first_appearance": "",
+                "lore": "A body on a plain.",
+                "history": [],
+                "personality": {
+                    k: [] if isinstance(v, list) else v
+                    for k, v in (
+                        ("summary", ""),
+                        ("traits", []),
+                        ("mannerisms", []),
+                        ("motivations", []),
+                        ("flaws", []),
+                        ("voice", ""),
+                        ("taboos", []),
+                    )
+                },
+                "relationships": [{"to": target, "kind": "knows", "note": "n"}],
+            },
+            "reference_stats": {
+                "summary": "",
+                "strengths": [],
+                "weaknesses": [],
+                "combat_read": "",
+                "notes": "",
+            },
+            "art": {"style": "s", "palette_notes": "", "shots": []},
+            "published_as": {"portrait_id": "", "def_path": ""},
+        }
+
+    def reference_issues(rec: dict) -> list[str]:
+        return [
+            issue
+            for issue in unique_characters._validate([rec], check_files=False)
+            if "identity anchor" in issue or "relationship target" in issue
+        ]
+
+    expect(
+        not reference_issues(record(organization, organization, settlement)),
+        "a record whose relationship target and both anchors are real lore ids was reported "
+        "as broken, so the rule rejects valid references and cannot be trusted on the rest",
+    )
+    expect(
+        bool(reference_issues(record("religions.sealed_core", organization, settlement))),
+        "a relationship target of `religions.sealed_core` passed. Nothing else resolves "
+        "these, so a wrong id ships silently and reads as a link to nothing",
+    )
+    expect(
+        bool(reference_issues(record(organization, "organizations.does_not_exist", settlement))),
+        "an unresolvable `identity.faction` passed, so the same hole survives on the anchors",
+    )
+    expect(
+        not reference_issues(record(organization, "", "")),
+        "EMPTY anchors were rejected. A thornline symbionte has no organization and a cast "
+        "template is keyed to a place; eleven records carry no faction. Requiring an anchor "
+        "would push those into inventing one",
+    )
+    expect(
+        not reference_issues(record("", organization, settlement)),
+        "an empty relationship target was rejected. An absent link is not a broken one",
+    )
