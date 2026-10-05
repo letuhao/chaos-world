@@ -40,7 +40,6 @@ citation, the symbol, and a reason code from `REASONS`. A waived finding is prin
 
 from __future__ import annotations
 
-import argparse
 import json
 import re
 from dataclasses import dataclass

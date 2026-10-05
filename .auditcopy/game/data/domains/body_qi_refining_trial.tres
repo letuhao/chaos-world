@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="DomainDef" load_steps=2 format=3]
-
-[ext_resource type="Script" path="res://src/modules/world/domain_def.gd" id="1_domain"]
-
-[resource]
-script = ExtResource("1_domain")
-id = &"body_qi_refining_trial"
-display_name = "Skin Tempering Trial"
-boss_ids = Array[StringName]([&"body_qi_refining_guardian", &"E1_qi_refinement_warden"])

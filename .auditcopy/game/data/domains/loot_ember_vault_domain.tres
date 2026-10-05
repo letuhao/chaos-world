@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="DomainDef" load_steps=2 format=3]
-
-[ext_resource type="Script" path="res://src/modules/world/domain_def.gd" id="1_domain"]
-
-[resource]
-script = ExtResource("1_domain")
-id = &"loot_ember_vault_domain"
-display_name = "Ember Vault"
-boss_ids = Array[StringName]([&"loot_ember_vault_warden", &"loot_ember_vault_cinder_hound", &"loot_ember_vault_ash_pilgrim"])

@@ -32,6 +32,11 @@ __pycache__/
 # Local agent state (not shared)
 .pi/
 .remember/
+# A stray recursive copy of the whole repo, committed by accident in 972b01f2e
+# ("add"). It duplicates every tracked path and `godot_bypass` correctly reads it
+# as 11 bare Godot invocations — the exact INC-0009 shape. The two ADRs it held
+# and nothing else did (0240, 0241) have been recovered to `docs/adr/`.
+.auditcopy/
 
 # Harness-local skill installs — canonical copy is .agents/ + skills-lock.json
 .claude/

@@ -1,4 +1,0 @@
-SCRIPT ERROR: Parse Error: Could not resolve class "ItemWorkbenchReadout".
-   at: GDScript::reload (res://src/app/item_workbench_app.gd:1)
-ERROR: Failed to load script "res://src/app/item_workbench_app.gd" with error "Parse error".
-   at: load (modules/gdscript/gdscript_resource_format.cpp:46)

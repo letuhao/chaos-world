@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="DomainDef" load_steps=2 format=3]
-
-[ext_resource type="Script" path="res://src/modules/world/domain_def.gd" id="1_domain"]
-
-[resource]
-script = ExtResource("1_domain")
-id = &"tome_abyssal_serpent_domain"
-display_name = "Abyssal Serpent Domain"
-boss_ids = Array[StringName]([&"tome_abyssal_serpent", &"d6_abyssal_serpent"])

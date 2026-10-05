@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="InstitutionBudget" load_steps=2 format=3]
-
-[ext_resource type="Script" path="res://src/core/institution_budget.gd" id="1"]
-
-[resource]
-script = ExtResource("1")
-near_cap = 4
-distant_cap = 2
-strategic_cap = 1

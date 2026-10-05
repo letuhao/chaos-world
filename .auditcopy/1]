@@ -1,8 +1,0 @@
---- git status docs ---
- M docs/adr/0065-fate-is-earned-never-chosen-and-never-removed.md
- M docs/backlog.jsonl
- M docs/deferred.jsonl
-?? docs/adr/0133-combat-engine-is-the-single-source-of-truth-for-damage.md
-?? docs/adr/0134-destiny-is-a-hub-and-a-consumer-declares-the-dependency.md
-?? docs/adr/0135-equipping-a-unique-earns-a-fate-once-and-unequipping-never-takes-it-back.md
-?? docs/adr/0136-the-earned-fate-bus-is-a-reserved-surface-and-it-is-currently-unobserved.md

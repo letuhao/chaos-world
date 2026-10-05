@@ -1,4 +1,0 @@
-usage: tools [-h]
-             {fmt,gate_reach,lint,lore,mutation_history,selftest,map_theme,arch,assets,character_assets,unique_characters,test,boot,check,run,export,ui,new_module,realm_power,technique_power,difficulty,new_adr,deferred,incident,backlog,cultivation,acquisition,item_derive,data,worth_rewrite}
-             ...
-tools: error: unrecognized arguments: ; findstr /C:^fail /C:ok   boundaries /C:anchor /C:soul /C:save /C:difficulty archout.txt

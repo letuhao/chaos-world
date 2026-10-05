@@ -293,7 +293,9 @@ def load_family_roots() -> dict[str, str]:
 
 
 def load_families() -> dict[str, dict]:
-    """The content-family declaration (ADR 0184): family -> {data_dir, def_class, module, path?, root?}.
+    """The content-family declaration (ADR 0184).
+
+    family -> {data_dir, def_class, module, path?, root?}.
 
     Read, never hand-edited into a second copy: the gates that walk the content roots
     key off this file so an unknown content family fails loudly instead of being

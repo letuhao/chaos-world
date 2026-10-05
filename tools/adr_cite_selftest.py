@@ -27,7 +27,6 @@ No case edits the repository: every fixture is a temp directory, and the real
 
 from __future__ import annotations
 
-import argparse
 import contextlib
 import io
 import json
@@ -114,7 +113,8 @@ def _right_line_wrong_symbol_fails() -> None:
 
 
 @case(
-    "adr-cite: a correct citation stays GREEN, so the red cases are not a checker that fails everything"
+    "adr-cite: a correct citation stays GREEN, so the red cases are not a checker "
+    "that fails everything"
 )
 def _correct_citation_passes() -> None:
     with _tree(_FIXTURE_ADR) as root, _quiet():

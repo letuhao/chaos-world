@@ -7,10 +7,8 @@ script = ExtResource("1_boss")
 id = &"qi_qi_refining_warden"
 display_name = "Qi Refining Warden"
 domain_id = &"qi_qi_refining_trial"
-## The consumable guardian (ADR 0130): the ONE item that lets a death cost the bag instead
-## of the soul. Boss drops are declared in exactly one place - `BossDef.loot` - or in an
-## authored loot TIER, and no tiers directory exists in this repo, so this array IS the
-## declaration. Adding the item to a `pool_qi_refining` sub-table instead changed nothing a
-## player can reach: the encounter pays this boss the table id `loot_qi_qi_refining_warden`
-## and the pool tables are resolved by the draw, not by the encounter.
-loot = Array[StringName]([&"guardian_vigil_ash"])
+## The consumable guardian (ADR 0130): the ONE item that lets a death cost the bag
+## instead of the soul. Declared in `loot_qi_qi_refining_warden` and the pools it
+## draws, which the encounter binds by name. `BossDef.loot` is NOT also a
+## declaration: it is the LEGACY projection, and a boss carrying both leaves two
+## authorities answering what it drops, which `acquisition validate` rejects.

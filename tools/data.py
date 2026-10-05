@@ -265,6 +265,12 @@ _FAMILY_TO_DEFCLASS: dict[str, str | None] = {
 _DEFCLASS_TO_SCHEMA: dict[str, str] = {
     "ItemDef": "items",
     "LootTableDef": "loot_table",
+    # The boss -> authored-table binding lives ONLY on the encounter's tier
+    # sub-resources (`boss_tables`). With no entry here `LootEncounterDef` has no
+    # schema, all 160 encounter files load into nothing, `_authored_boss_drops`
+    # resolves zero pairs, and every table-hosted boss reports each of its drops
+    # as a missing one — 1501 false gaps while the runtime resolves all of them.
+    "LootEncounterDef": "loot_tier",
     "LootTierDef": "loot_tier",
     "RecipeDef": "recipes",
     "BossDef": "bosses",
@@ -284,6 +290,9 @@ _DEFCLASS_TO_SCHEMA: dict[str, str] = {
 _DEFCLASS_TO_TYPE: dict[str, str] = {
     "ItemDef": "item",
     "LootTableDef": "loot_table",
+    # Same entry as in `_DEFCLASS_TO_SCHEMA`, for the type name the loaded records
+    # are keyed under.
+    "LootEncounterDef": "loot_tier",
     "LootTierDef": "loot_tier",
     "RecipeDef": "recipe",
     "BossDef": "boss",
@@ -675,7 +684,11 @@ def _extract_bindings(text: str) -> list[tuple[str, str, float | None]]:
     table_ids = re.findall(r'"table_id":\s*&"([^"]*)"', text)
     raw_vitality = re.findall(r'"vitality":\s*(-?[\d.]+)', text)
     return [
-        (boss_id, table_id, float(vitality[index]) if index < len(raw_vitality) else None)
+        (
+            boss_id,
+            table_id,
+            float(raw_vitality[index]) if index < len(raw_vitality) else None,
+        )
         for index, (boss_id, table_id) in enumerate(zip(boss_ids, table_ids, strict=False), start=0)
     ]
 
@@ -754,7 +767,14 @@ def _authored_boss_drops(records: dict) -> dict[str, set[str]]:
         return found
 
     for tier in records.get("loot_tier", {}).values():
-        for boss_id, table_id in tier.get("bindings", []):
+        # `boss_tables` is an array of DICTIONARIES, and the dict extractor yields
+        # `(key, value, payload)` per row — so the pair is the first TWO elements and
+        # unpacking two raised "too many values to unpack" the moment any encounter
+        # loaded at all.
+        for binding in tier.get("bindings", []):
+            boss_id, table_id = binding[0], binding[1]
+            if not boss_id or not table_id:
+                continue
             drops.setdefault(boss_id, set()).update(collect(table_id, set()))
     return drops
 

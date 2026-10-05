@@ -23,6 +23,8 @@
     "body_acupoints": {"data_dir": "body_cultivation/acupoints", "def_class": "AcupointDef", "module": "body_cultivation"},
     "body_weapons": {"data_dir": "body_cultivation/weapons", "def_class": "WeaponKindDef", "module": "body_cultivation"},
     "body_material_arts": {"data_dir": "body_cultivation/materials", "def_class": "MaterialArtDef", "module": "body_cultivation"},
+    "body_injury_tuning": {"data_dir": "body_cultivation", "def_class": "InjuryTuning", "module": "body_cultivation"},
+    "npc_personas": {"data_dir": "npc/personas", "def_class": "NpcDef", "module": "npc"},
     "qi_realms": {"data_dir": "qi_cultivation/realms", "def_class": "QiRealmSeed", "module": "qi_cultivation", "path": "qi"},
     "mind_realms": {"data_dir": "mind_cultivation/realms", "def_class": "MindRealmSeed", "module": "mind_cultivation", "path": "mind"},
     "fixture_cultivation_realms": {"data_dir": "tests/fixtures/mods/cultivation_path/realms", "def_class": "FixtureCultivationRealmSeed", "module": "mods"},

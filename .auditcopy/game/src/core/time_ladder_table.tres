@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="TimeLadder" load_steps=2 format=3]
-
-[ext_resource type="Script" path="res://src/core/time_ladder.gd" id="1"]
-
-[resource]
-script = ExtResource("1")
-magnitude_rows = Array[Dictionary]([{"name": &"period", "ratio_periods": 1}, {"name": &"day", "ratio_periods": 12}, {"name": &"month", "ratio_periods": 360}, {"name": &"year", "ratio_periods": 4380}, {"name": &"era", "ratio_periods": 4380000}])

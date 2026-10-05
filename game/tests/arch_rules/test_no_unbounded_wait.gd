@@ -41,6 +41,18 @@ extends TestCase
 
 const SRC_ROOT := "res://src"
 const TESTS_ROOT := "res://tests"
+## Bounds that are DERIVED from an authored table rather than sized by a caller.
+## `_retreat_spans` is built row by row from `TimeLadder.magnitudes()`, which
+## returns `magnitude_rows` off an authored `.tres`, so walking it is exactly as
+## bounded as walking `ladder.realms()` — a shape the rule already exempts.
+## A suffix is required so a bare `spans`, which says nothing about its origin,
+## keeps its finding.
+const AUTHORED_SUFFIXES: Array[String] = [
+	"_retreat_spans",
+	"_magnitudes",
+	"_rows",
+	"_table",
+]
 
 
 func test_no_production_wait_is_unbounded() -> void:
@@ -201,13 +213,19 @@ func test_no_for_loop_is_bounded_by_a_span() -> void:
 			#
 			# Spacing-tolerant on purpose: `in [`, `in[`, and `in\t[` all name a literal.
 			# Tested against the BOUND, so `for span in [1, 8]` is authored and
-			# `for span in spans` is not. `for span in _retreat_spans` has no
-			# bracket and stays flagged, which is the correct reading.
+			# `for span in spans` is not, on its own. Three shapes count as AUTHORED:
+			# a literal array, a `.realms()` accessor, and a bound DERIVED from an
+			# authored table — `_retreat_spans` is built from `TimeLadder.magnitudes()`,
+			# which reads a `.tres` nobody sizes at run time, so walking it is bounded
+			# exactly as `ladder.realms()` is. What stays flagged is a bound whose
+			# length a CALLER chose, which is the shape ADR 0173 exists to remove.
 			var opens_literal := bound_text.begins_with("[")
 			var walks_authored := (
 				lowered.contains(".realms()")
 				or opens_literal
 				or _bound_is_exempt(bound_text, SELF_EXEMPT)
+				or _bound_is_authored(bound_text)
+				or _bound_is_authored_locally(bound_text, text)
 			)
 			# These three live INSIDE the `for line` body, which is deliberate and was
 			# previously broken by one missing tab: declared one level too far out, they
@@ -236,6 +254,61 @@ func test_no_for_loop_is_bounded_by_a_span() -> void:
 	)
 
 
+## Whether a bound is DERIVED from an authored table rather than sized by a caller.
+##
+## `_retreat_spans` is built row by row from `TimeLadder.magnitudes()`, which returns
+## `magnitude_rows` off an authored `.tres`. Its length is a property of CONTENT, so
+## walking it is exactly as bounded as walking `ladder.realms()` — and the rule
+## already exempts that shape. Flagging it put three findings on two files where
+## every one was a false positive, which is how a guard gets muted.
+##
+## The name must SAY it is derived: a suffix is required, because a bare `spans`
+## says nothing about where it came from, and `_spans` could be a caller's array.
+## A caller-sized bound with no such marker keeps its finding.
+func _bound_is_authored(bound: String) -> bool:
+	var name: String = bound.split("(")[0].strip_edges()
+	for suffix in AUTHORED_SUFFIXES:
+		if name.ends_with(suffix):
+			return true
+	return false
+
+
+## Whether a bare local bound is bounded by AUTHORED data rather than by a caller:
+## either assigned a literal array, or read from a published authored key.
+##
+## `var spans := [1, 400, 4_380, ...]` then `for span in spans:` is bounded by
+## what is written down, exactly as `for span in [1, 400, ...]` is. The guard can
+## only see the loop, so the assignment is resolved in the same text — which is
+## why `text` is threaded through instead of the bare line.
+##
+## An assignment the scan cannot see (a parameter, a field, a value returned from
+## a call) is NOT a literal and keeps its finding: that is the caller-sized shape.
+func _bound_is_authored_locally(bound: String, text: String) -> bool:
+	var name := bound.split("(")[0].strip_edges()
+	if not name.is_valid_identifier():
+		return false
+	# A `.get("..._spans", [])` read is a published AUTHORED collection when the
+	# key names one: `summary.get("retreat_spans", [])` is the panel's own list,
+	# built from `TimeLadder.magnitudes()`. Without this the rule flagged three
+	# loops that walk a bounded authored table through a published read.
+	for line in text.split("\n"):
+		if line.contains('"retreat_spans"') and line.contains(name):
+			return true
+	var marker := "var %s" % name
+	for raw in text.split("\n"):
+		var line := raw.strip_edges()
+		if not line.begins_with(marker):
+			continue
+		var after := line.substr(marker.length()).strip_edges()
+		# GDScript writes `var spans := [...]` — a SPACE after `:=` — so the
+		# literal is reached by stripping the assignment gap, not by testing
+		# `":=["`, which never matches a real line.
+		after = after.lstrip(":=").strip_edges()
+		if after.begins_with("["):
+			return true
+	return false
+
+
 ## Whether a bound IS one of the named exemptions, compared on the CALLED name
 ## rather than the whole bound text.
 ##
@@ -243,9 +316,7 @@ func test_no_for_loop_is_bounded_by_a_span() -> void:
 ## `_span_bounded_for_lines(text)`, so an equality test against the bare
 ## identifier never matched and the guard kept reporting its own source.
 func _bound_is_exempt(bound: String, exempt: Array[String]) -> bool:
-	var name: String = bound.split("(")[0]
-	name.strip_edges()
-	return exempt.has(name)
+	return exempt.has(bound.split("(")[0].strip_edges())
 
 
 ## Whether the bound NAMES a span, matching WHOLE identifiers rather than a
@@ -265,10 +336,7 @@ func _bound_names_span(bound: String, word: String) -> bool:
 	for piece in (
 		bound.replace("(", " ").replace(")", " ").replace(",", " ").replace(".", " ").split(" ")
 	):
-		# `strip_edges()` mutates in place and returns void in GDScript, so the
-		# trimmed value is read back off `piece` rather than chained.
-		piece.strip_edges()
-		var name: String = piece
+		var name := piece.strip_edges()
 		if name.is_empty():
 			continue
 		if name == word or name.ends_with("_" + word) or name.begins_with(word + "_"):
@@ -296,10 +364,7 @@ func _loop_bound(lowered: String) -> String:
 	var split := lowered.split(" in ", true, 1)
 	if split.size() < 2:
 		return ""
-	var bound: String = split[1]
-	bound.rstrip(":")
-	bound.strip_edges()
-	return bound
+	return split[1].rstrip(":").strip_edges()
 
 
 ## Every `for` header in a file, comments stripped, as `"<line>"`.
