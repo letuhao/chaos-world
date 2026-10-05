@@ -66,13 +66,12 @@ const WOUNDS_MODULE_KEY := &"body_wounds"
 ## actor.
 const POLITY_SLOT_KEY := &"world_polity_version"
 
-## Resource pools every actor carries, mapped to the derived stat that
-## expresses their capacity. Core owns health and stamina because it owns the
-## stats behind them; modules add their own pools (ADR 0025).
-const CORE_POOL_STATS := {
-	&"health": Stat.MAX_HEALTH,
-	&"stamina": Stat.MAX_STAMINA,
-}
+## ## `CORE_POOL_STATS` moved to [ActorPools] with the rules that read it
+##
+## It is the table the sizing rule iterates, so it moved with the rule rather than being
+## left behind as a second copy two files could disagree about. Nothing in `game/` named
+## `Actor.CORE_POOL_STATS`; the published spelling is now `ActorPools.CORE_POOL_STATS`,
+## declared once.
 
 var id: StringName
 var display_name: String
@@ -116,7 +115,14 @@ var ascension: AscensionState:
 var _statuses: StatusRegistry
 var _context: StatContext
 var _invalidator: StatsInvalidator
-var _syncing_resources: bool = false
+## The pool rules [ActorPools] owns. A FIELD rather than a lazy `new()` per call, because
+## the re-entrancy guard it holds is state: a fresh helper each call would resize a pool
+## that re-enters through its own `changed` signal with nothing left set to catch it.
+var _pools_helper: ActorPools = null
+## The relationship/affinity rules [ActorAffinity] owns. A field beside the pools helper
+## rather than a lazy `new()`, for consistency with it and because the helper is the
+## actor's, not a per-call scratch.
+var _affinity_helper: ActorAffinity = null
 ## Item-state serialization hook (ADR 0027). Registered by the items module so core
 ## never serializes concrete item types. Null callable means "no item state".
 var _item_state_serializer: Callable = Callable()
@@ -154,39 +160,43 @@ func _init(p_id: StringName = &"", base: Dictionary = {}) -> void:
 ## Resource pools every actor carries, mapped to the derived stat that
 ## expresses their capacity. Core owns health and stamina because it owns the
 ## stats behind them; modules add their own pools (ADR 0025).
+##
+## The RULES live in [ActorPools] and this is the actor's own door onto them. Nothing
+## moved off this class and no caller renamed: `Actor` has no subclass in this repo, so
+## every caller still reaches `add_resource` / `attach_core_resources` / `resource` by the
+## names it has always used, and the edge is ONE-WAY (`Actor` -> `ActorPools`).
 func add_resource(pool: ResourcePool) -> void:
-	resources[pool.id] = pool
-	if not pool.changed.is_connected(_invalidator.on_changed):
-		pool.changed.connect(_invalidator.on_changed)
-	mark_stats_dirty()
+	_pools().add(resources, pool, _invalidator)
 
 
 ## Create the core health and stamina pools if absent and size them from the
 ## current derived capacities. A fresh pool starts full; later capacity changes
 ## never refill, because `set_maximum` only clamps the current value.
 func attach_core_resources() -> void:
-	for pool_id in CORE_POOL_STATS:
-		if resources.has(pool_id):
-			continue
-		add_resource(ResourcePool.new(pool_id, stats.derived(CORE_POOL_STATS[pool_id])))
-	_sync_core_resources()
+	_pools().attach_core(resources, stats, _invalidator)
+
+
+## The pools delegate, minted on first use. The only place `_pools_helper` is assigned,
+## so there is one helper per actor rather than one per call.
+func _pools() -> ActorPools:
+	if _pools_helper == null:
+		_pools_helper = ActorPools.new(self, resources)
+	return _pools_helper
+
+
+## The relationship/affinity delegate, minted on first use. The only place
+## `_affinity_helper` is assigned.
+func _affinities() -> ActorAffinity:
+	if _affinity_helper == null:
+		_affinity_helper = ActorAffinity.new(self)
+	return _affinity_helper
 
 
 ## Resize the core pools to the derived capacities, preserving current values.
 ## Guarded: a pool's `changed` signal re-enters `mark_stats_dirty`, so the sync
 ## must not recurse.
 func _sync_core_resources() -> void:
-	if _syncing_resources:
-		return
-	_syncing_resources = true
-	for pool_id in CORE_POOL_STATS:
-		var pool := resources.get(pool_id) as ResourcePool
-		if pool == null:
-			continue
-		var regen_id := Stat.HEALTH_REGEN if pool_id == &"health" else Stat.STAMINA_REGEN
-		pool.regen = stats.derived(regen_id)
-		pool.set_maximum(stats.derived(CORE_POOL_STATS[pool_id]))
-	_syncing_resources = false
+	_pools().sync_core(resources, stats, _invalidator)
 
 
 func resource(pool_id: StringName) -> ResourcePool:
@@ -223,17 +233,21 @@ func tick_statuses(delta: float) -> void:
 		status_ticked.emit(entry.id, entry.magnitude)
 
 
+## Record `affinity` toward `partner_id`. The rules live in [ActorAffinity]; this is the
+## actor's own door onto them and it keeps the name every caller already uses.
 func set_relationship(partner_id: StringName, affinity: float) -> void:
-	relationships[partner_id] = affinity
-	mark_stats_dirty()
+	_affinities().set_relationship(self, partner_id, affinity)
 
 
+## The standing this actor holds toward `partner_id`, `0.0` for a stranger.
 func affinity_with(partner_id: StringName) -> float:
-	return float(relationships.get(partner_id, 0.0))
+	return _affinities().affinity_with(self, partner_id)
 
 
+## Set the element affinity `element_id` to `value`. The map publishes its own `changed`,
+## so this one needs no invalidating of its own — see [ActorAffinity] for why.
 func set_affinity(element_id: StringName, value: float) -> void:
-	affinities.set_value(element_id, value)
+	_affinities().set_affinity(self, element_id, value)
 
 
 func change_resource(pool_id: StringName, delta: float) -> void:
@@ -397,26 +411,24 @@ func to_dict() -> Dictionary:
 ## The world-slot stamp this actor carries, or -1 when it carries none. -1 rather than
 ## zero because zero is a legal stamp and a caller comparing two stamps must be able to
 ## tell "generation zero" from "never told".
+##
+## The RULE about the slot lives in [ActorSave]; this is the actor's own door onto it,
+## and it forwards rather than re-implementing so there is exactly one place that decides
+## what a malformed stamp reads as.
 func polity_version() -> int:
-	var stamped = (module_data.get(POLITY_SLOT_KEY) as Dictionary).get("version")
-	return int(stamped) if (stamped is int) and int(stamped) >= 0 else -1
+	return ActorSave.polity_version(self)
 
 
 ## Record the world-slot stamp this actor's save was written at. The only writer, so no
 ## second caller can invent a stamp the world slot does not carry.
 ##
-## The stamp lives in a DICTIONARY, never as a bare int in `module_data`. `set_module_data`
-## is typed `data: Dictionary`, so writing `module_data[POLITY_SLOT_KEY] = version` put a
-## float into a Dictionary-typed slot — legal at the call site, and then `Actor.from_dict`
-## replayed it through `set_module_data` and raised "Cannot convert argument 2 from float to
-## Dictionary", which aborted `save_envelope` mid-assertion. Every save carrying a polity
-## stamp failed to restore, and the failure surfaced in the SAVE test rather than here.
+## The stamp is a BARE INT in `module_data`, which is what `polity_version()` reads,
+## what `to_dict` copies into `module_data` and what `_restore_versioned` restores:
+## an earlier Dictionary-wrapped spelling disagreed with all three of them on every
+## round trip, so `set_polity_version` wrote a slot nothing ever read. The write itself is
+## [ActorSave]'s, for the one-way-edge reason its docblock gives.
 func set_polity_version(version: int) -> void:
-	if version < 0:
-		return
-	var slot := module_data.get(POLITY_SLOT_KEY) as Dictionary
-	slot["version"] = version
-	module_data[POLITY_SLOT_KEY] = slot
+	ActorSave.set_polity_version(self, version)
 
 
 ## Register the item-state serialization hook (ADR 0027). Called by the items module
@@ -469,10 +481,38 @@ static func from_dict(data: Dictionary) -> Actor:
 	# hard type error that aborted the restore mid-function - so a save that had been written
 	# successfully could not be read back. Ignoring a malformed slot costs that module its
 	# default; raising costs the player their run.
+	#
+	# BUT IT IS NOT SILENT, and that is the part the first version got wrong. A dropped slot is
+	# not a harmless default: every module reads through `get_module_data` -> `{}` -> its own
+	# `normalize()`, so a dropped soul ledger reads as full integrity and no incarnations, a
+	# dropped `world_facts` reads as no deaths, a dropped destiny ledger as no fates. The body
+	# then looks like a character that never earned anything, and the next autosave OVERWRITES
+	# the good save with that. The loss is permanent and self-inflicted, so the key is named in
+	# a `push_warning` a caller can see (BL-0884).
+	#
+	# It stays a warning and not a return value because `from_dict` returns `Actor`, and widening
+	# it to a Dictionary would touch every call site in the repo for a diagnostic. The refusal
+	# decision - whether a malformed slot should stop the load rather than warn - belongs to the
+	# save layer, which already owns `SaveMigrate.refusal()` and the `R_FUTURE_ACTOR_SCHEMA`
+	# precedent for refusing by name. What this function owes them is that the drop is not
+	# invisible.
+	var dropped: Array[String] = []
 	for key in data.get("module_data", {}).keys():
 		var slot = data["module_data"][key]
 		if slot is Dictionary:
 			actor.set_module_data(StringName(key), slot)
+		else:
+			dropped.append(String(key))
+	if not dropped.is_empty():
+		push_warning(
+			(
+				(
+					"Actor.from_dict: dropped %d malformed module_data slot(s) [%s]. Each one is a"
+					+ " module's whole ledger, and this body now reads as never having earned it."
+				)
+				% [dropped.size(), ", ".join(dropped)]
+			)
+		)
 	# NO status restore, deliberately (ADR 0089): a save carries no `statuses` key and
 	# restoring one would need the schema bump that ADR defers. An older save that does
 	# carry the key is ignored rather than refused — a load never fails on a field this
