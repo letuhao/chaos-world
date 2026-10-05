@@ -507,8 +507,17 @@ func _terms_line(codex: Dictionary) -> String:
 ## The published terms as a sorted plain array. `summary()` already hands them sorted;
 ## this only flattens the array-of-strings the module returns into an `Array` a test can
 ## compare.
+##
+## **Typed on the way IN, not cast on the way out.** `source as Array` is a RUNTIME
+## conversion and it raised `Invalid cast: could not convert value to 'Array'` on every
+## repaint — `summary()` publishes `patronage`/`duty` as `{}` for an actor whose house
+## publishes no terms, and a dictionary cannot be forced into an array. `is Array` reads
+## the same fact without raising, and a page that cannot draw is worse than a page that
+## draws nothing.
 func _term_list(source: Variant) -> Array:
 	var out: Array = []
+	if not source is Array:
+		return out
 	for term in source as Array:
 		out.append(String(term))
 	return out
