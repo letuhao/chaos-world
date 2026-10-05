@@ -525,6 +525,41 @@ def module_inventory_warnings(registry) -> list[str]:
     return warnings
 
 
+def base_deps_drift() -> list[str]:
+    """Compare ModuleRegistry.BASE_DEPS against registry.json.
+
+    BASE_DEPS is a static mirror of registry.json with layer deps stripped.
+    test_module_registry asserts the seam, but there is no tools arch check
+    that fails when they drift. This reads both and reports any difference.
+    """
+    findings: list[str] = []
+    registry_path = SRC_DIR / "modules" / "mods" / "module_registry.gd"
+    if not registry_path.is_file():
+        return findings
+    text = registry_path.read_text(encoding="utf-8", errors="replace")
+    match = re.search(r"const BASE_DEPS := \{(.*?)\}", text, re.DOTALL)
+    if not match:
+        return findings
+    body = match.group(1)
+    base_deps: dict[str, set[str]] = {}
+    for m in re.finditer(r'"(\w+)":\s*\[([^\]]*)\]', body):
+        name = m.group(1)
+        deps = set(re.findall(r'"(\w+)"', m.group(2)))
+        base_deps[name] = deps
+    registry = rules.load_registry()
+    for name in sorted(set(base_deps) | set(registry)):
+        base = base_deps.get(name, set())
+        reg = set(registry.get(name, []))
+        # Strip layer deps from registry (BASE_DEPS excludes them).
+        reg -= {"contracts", "core"}
+        if base != reg:
+            findings.append(
+                f"BASE_DEPS drift: {name}: BASE_DEPS has {sorted(base)}, "
+                f"registry.json has {sorted(reg)}"
+            )
+    return findings
+
+
 def run(args) -> int:
     if not SRC_DIR.is_dir():
         warn("game/src not found; nothing to check")
@@ -568,13 +603,26 @@ def run(args) -> int:
     # seam, dispatch seam, `ui/` through the facade) because this repo wires every
     # seam through an indirection, and INC-0012 is the incident for a census that
     # reported a live trigger as dead.
+    #
+    # GRADED SCOPE: `quest` and `event` only. Run across all 36 facades the pass
+    # reports 103 caller-less verbs, which ADR 0188 calls out as the failure mode
+    # ("Applied per member, not in bulk ... each deletion is a two-sided change,
+    # and landing half of it turns the tree red") across ~20 modules owned by ~10
+    # concurrent sessions. The rest of the sweep is ONE filed backlog item, and
+    # `uv run python -m tools no_caller_verbs --modules all` reproduces it. The
+    # scope is read from `DEFAULT_MODULES` so the two cannot drift.
     verbs, verb_report = no_caller_verbs.evaluate(
         SRC_DIR,
         TESTS_DIR,
         Path(__file__).resolve().parent / no_caller_verbs.ALLOWLIST_NAME,
         Path(__file__).resolve().parents[1],
+        no_caller_verbs.DEFAULT_MODULES,
     )
     violations.extend(verbs)
+    # BASE_DEPS mirror drift: the static mirror in module_registry.gd must
+    # match registry.json (with layer deps stripped). test_module_registry
+    # asserts the seam, but no tools arch check fails when they drift.
+    violations.extend(base_deps_drift())
     warnings = structural_warnings
     warnings.extend(resource_home_warnings(files))
     # The replacement for the deleted facade-width cap: fan-in, not width.

@@ -365,6 +365,54 @@ def mod_cultivation_path_findings(
     return findings
 
 
+def mod_provider_source_findings(
+    families: dict[str, dict] | None = None,
+) -> list[str]:
+    """Validate every mod-declared cultivation path's provider source (ADR 0241).
+
+    A mod adding a new cultivation path declares a family with `path` set in
+    `tools/arch/families.json`. The path's provider (at
+    `game/src/modules/<module>/provider.gd`) must call `RealmRate.factor`
+    and must NOT declare its own rate constant or read `RealmDefaults.ladder()`.
+    This is the same contract `CultivationPathContract.validate_provider_source`
+    enforces at registration time, so a mod with a bad provider fails `tools check`,
+    not just boot.
+    """
+    findings: list[str] = []
+    if families is None:
+        from ..arch.rules import load_families  # noqa: PLC0415
+
+        families = load_families()
+    for _info in families.values():
+        if "path" not in _info or _info["path"] in ("body", "qi", "mind"):
+            continue
+        module_name = _info.get("module", "")
+        if not module_name:
+            continue
+        provider_path = REPO_ROOT / "game" / "src" / "modules" / module_name / "provider.gd"
+        if not provider_path.is_file():
+            findings.append(
+                f"{_info['path']}: no provider at {provider_path.relative_to(REPO_ROOT).as_posix()}"
+            )
+            continue
+        source = provider_path.read_text(encoding="utf-8", errors="replace")
+        # Strip comment-only lines (ADR 0188's rule for every guard).
+        code_lines = [line for line in source.splitlines() if not line.lstrip().startswith("#")]
+        code = "\n".join(code_lines)
+        if "RealmRate.factor(" not in code:
+            findings.append(f"{_info['path']}: provider does not call RealmRate.factor")
+        if "const RATE_STEP" in code or "const NEUTRAL" in code:
+            findings.append(
+                f"{_info['path']}: provider declares its own RATE_STEP or NEUTRAL; use RealmRate"
+            )
+        if "RealmDefaults.ladder()" in code:
+            findings.append(
+                f"{_info['path']}: provider reads RealmDefaults.ladder(); "
+                "use RealmRate.factor instead"
+            )
+    return findings
+
+
 def validate() -> list[str]:
     """Every finding in the body-cultivation content contract.
 
@@ -525,6 +573,8 @@ def validate() -> list[str]:
     )
     # Mod-declared cultivation paths: validate their seeds against the contract.
     findings.extend(mod_cultivation_path_findings(ladder))
+    # Mod-declared cultivation paths: validate their provider source (ADR 0241).
+    findings.extend(mod_provider_source_findings())
     return findings
 
 

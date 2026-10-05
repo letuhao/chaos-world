@@ -3014,6 +3014,10 @@ def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
     # nothing about whether the route a new player can take ever pays gear.
     for level, message in _entry_band_gear_findings():
         info(message) if level == "info" else warn(message)
+    # Mod content roots under user://mods are not audited (ADR 0184). The audit
+    # walks game/data and game/src/data only; a mod declaring a content root
+    # outside those trees is invisible to every gate here.
+    warn("mod content roots under user://mods are not audited")
     # The measurement prints BEFORE the verdict and nothing returns early above
     # it. A content gap used to `return 1` before this readout, so one bad
     # `sources` entry silently erased the deliverable count -- the single number

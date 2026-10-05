@@ -42,6 +42,7 @@ from . import (
     mutation_history_cmd,
     unique_characters,
 )
+from .arch import enforce
 from .acquisition import selftest_case  # noqa: F401  registers its cases on import
 from .common import ToolError
 from .cultivation import selftest_case as cultivation_selftest_case  # noqa: F401  same
@@ -5409,3 +5410,87 @@ def _references_must_resolve() -> None:
         not reference_issues(record("", organization, settlement)),
         "an empty relationship target was rejected. An absent link is not a broken one",
     )
+
+
+# --- ADR 0265: facade FAN-IN is the coupling guard (replaces the deleted width cap) ---
+#
+# `MAX_FACADE_PUBLIC_METHODS` was deleted because it was a bad proxy for coupling: it
+# fired on facades with many verbs (which is only a problem if those verbs are unrelated)
+# and never fired on the thing that matters (a facade everyone imports). `fan_in_warnings`
+# measures what the cap was a proxy for: how many distinct units reach a facade by name.
+# This selftest asserts the guard still goes RED when fan-in exceeds the threshold.
+
+
+@case("arch: a facade reached by more than MAX_FACADE_FAN_IN units WARNS")
+def _facade_fan_in_over_threshold_warns() -> None:
+    """The replacement for the deleted width cap, and it must still fire.
+
+    ADR 0265 deleted `MAX_FACADE_PUBLIC_METHODS` and replaced it with
+    `MAX_FACADE_FAN_IN`. The old cap counted verbs on one facade; the new guard
+    counts units that reach a facade by name. A facade imported by many modules
+    is a coupling problem however many verbs it publishes, so the guard must
+    warn when fan-in exceeds the threshold.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        src = Path(raw) / "src"
+        write(src / "modules" / "target" / "api.gd", """
+class_name TargetApi
+extends RefCounted
+
+
+static func summary(actor: Actor) -> Dictionary:
+    return {}
+""")
+        for i in range(9):
+            write(src / "modules" / f"reacher{i}" / "api.gd", f"""
+class_name Reacher{i}Api
+extends RefCounted
+
+
+static func reach(actor: Actor) -> Dictionary:
+    return TargetApi.summary(actor)
+""")
+        files = sorted(src.rglob("*.gd"))
+        warnings = enforce.fan_in_warnings(files)
+        expect(
+            any("TargetApi" in w for w in warnings),
+            f"a facade reached by 9 units produced no fan-in warning; got {warnings!r}. "
+            "MAX_FACADE_FAN_IN is the coupling guard that replaced the deleted width cap.",
+        )
+
+
+@case("arch: a facade reached by FEWER than MAX_FACADE_FAN_IN units does NOT warn")
+def _facade_fan_in_under_threshold_is_quiet() -> None:
+    """The negative case: fan-in under the threshold is not a coupling problem.
+
+    Without this, a guard that warns on every facade would pass the positive case
+    above while being useless — it would send an agent to split a facade that
+    nothing imports.
+    """
+    with tempfile.TemporaryDirectory() as raw:
+        src = Path(raw) / "src"
+        write(src / "modules" / "target" / "api.gd", """
+class_name TargetApi
+extends RefCounted
+
+
+static func summary(actor: Actor) -> Dictionary:
+    return {}
+""")
+        for i in range(3):
+            write(src / "modules" / f"reacher{i}" / "api.gd", f"""
+class_name Reacher{i}Api
+extends RefCounted
+
+
+static func reach(actor: Actor) -> Dictionary:
+    return TargetApi.summary(actor)
+""")
+        files = sorted(src.rglob("*.gd"))
+        warnings = enforce.fan_in_warnings(files)
+        expect(
+            not any("TargetApi" in w for w in warnings),
+            f"a facade reached by 3 units warned anyway; got {warnings!r}. "
+            "A guard that warns on every facade is a line-count proxy wearing a "
+            "coupling costume.",
+        )
