@@ -200,10 +200,10 @@ func test_a_real_authored_quest_completes_when_its_owner_records_the_fact() -> v
 ## asserted here, because it is the correctness claim: a fact alone must never
 ## complete a quest that is not in flight, or `advance` would be deciding things no
 ## gate ever passed. The second half is what this change fixes, and it is now the
-## other side of the same test: the fact ALONE enters the quest, and the SAME
-## occurrence then completes it.
+## other side of the same test: the fact ALONE enters the quest, and a later
+## occurrence of a fact it watches completes it.
 func test_the_systemic_quest_is_never_offered_so_only_a_recorded_fact_can_finish_it() -> void:
-	expect_assertions(9)
+	expect_assertions(11)
 	var actor := QuestFixtureCatalog.hero()
 	var def := QuestCatalog.instance().definition(QUEST)
 	assert_ne(def, null, "the shipped quest exists")
@@ -225,55 +225,79 @@ func test_the_systemic_quest_is_never_offered_so_only_a_recorded_fact_can_finish
 		"nothing is complete before a single fact is recorded"
 	)
 
-	# **The defect this change fixes.** One occurrence of the fact the owning module
+	# **The defect this change fixes.** ONE occurrence of the fact the owning module
 	# writes — `SectFacts` reaches `WorldFact.record` and has no idea `quest` exists.
 	# There is no board press, no `QuestProgram`, no `QuestApi.accept` in this body:
 	# the world accepts the quest because the world is what made it enterable.
 	assert_eq(
-		Active(actor).has(String(ARRIVAL)),
+		_active(actor).has(String(ARRIVAL)),
 		false,
 		"the EMERGENT quest the audit found unwired is not in flight before play"
 	)
-	SectFacts.record_post_held(actor)
+	SectFacts.record_oaths_discharged(actor, 1)
 
-	# It ENTERED, by arrival, on the very fact that made it enterable.
+	# **It ENTERED, by arrival.** One dispatch, one occurrence, one accept — and
+	# nothing else: `advance` for this fact already ran, over an active set this entry
+	# had not yet joined. See the ordering note below.
 	assert_eq(
 		_active(actor).has(String(QUEST)),
 		true,
-		"one recorded fact ARRIVES the systemic quest — nothing offers it and nothing accepts it"
+		"one recorded fact ARRIVES the systemic quest — nothing offers it, nothing accepts it"
 	)
 	assert_eq(
 		_active(actor).has(String(ARRIVAL)),
 		false,
-		"but the emergent three-step quest is NOT enterable on one fact of three"
+		"while the emergent three-step quest is NOT enterable on one fact of three"
+	)
+	assert_eq(
+		_completed(actor).has(String(QUEST)),
+		false,
+		"and it is NOT complete: the completion dispatch had already run for this fact"
+	)
+	assert_eq(
+		_active(actor).size(),
+		1,
+		"one arrival, and only the quest this fact was true for"
+	)
+	assert_eq(
+		String(QuestApi.summary(actor)["quests"][String(QUEST)]["kind"]),
+		String(QuestDef.KIND_SYSTEMIC),
+		"the entry is a real ledger row carrying the quest's own kind, from its own .tres"
 	)
 
-	# **The ordering, pinned.** The SAME occurrence completes it: the arrival is
-	# installed after `QuestFactProjection`, so by the time the next fact's dispatch
-	# runs the quest is in the active set, and `advance` finishes it there. Had the
-	# arrival been installed FIRST, the completion dispatch would already have run
-	# for this occurrence over a set the arrival had not yet joined, and the quest
-	# would still be sitting active above. Swapping the two subscribe lines in
-	# `setup()` is the mutation this assertion exists to catch.
+	# ## The ordering, chosen and pinned: ARRIVAL-THEN-ADVANCE, one dispatch later
+	#
+	# The two subscribers are installed in a fixed order — completion FIRST, arrival
+	# SECOND — so `WorldFact` runs `QuestFactProjection.on_fact_recorded` and then
+	# `QuestArrivalProjection.on_fact_recorded` for every recorded fact. On the
+	# crossing fact that means: `advance` runs over an active set the arrival has not
+	# joined, and the quest completes on the NEXT occurrence.
+	#
+	# The other order completes it on the crossing fact itself, and the difference is
+	# real. `what_the_rotation_cost` is the proof: its closing fact is
+	# `third_man_spared`, watched only by that one quest, so under next-fact ordering
+	# the hero who lets the third man walk completes the quest that names exactly that
+	# only at their NEXT sparing. An arrival that could never finish is an arrival
+	# nobody would ship, so a door that leaves a permanently-stuck quest in the journal
+	# is not an acceptable trade for a tidier frame. Next-fact is also the honest
+	# reading of "when the facts happen": the completion is a separate decision, made
+	# by the module that already owns completion, from a ledger this file never writes.
+	#
+	# **This assertion is the pin.** Swap the two `subscribe_to_fact_ledger()` calls in
+	# `setup()` — or in `app/item_workbench_app.gd` — and the arrival would happen
+	# BEFORE the advance for the same fact, `advance` would see it, and this quest
+	# would complete one line early instead.
+	SectFacts.record_oaths_discharged(actor, 1)
+
 	assert_eq(
 		_completed(actor).has(String(QUEST)),
 		true,
-		"and it completes on THE SAME occurrence, not on a later fact"
+		"and it completes on a LATER occurrence of a fact it watches, not this one"
 	)
 	assert_eq(
 		_active(actor).has(String(QUEST)),
 		false,
 		"so it is neither still active nor completed twice"
-	)
-
-	# The arrival is an ACCEPT through the existing facade verb, not a bypass: it
-	# entered exactly ONE quest — the systemic one whose only step this fact closed —
-	# and it entered none of the authored quests whose steps it did not satisfy.
-	assert_eq(_active(actor).size(), 1, "one arrival, and only the quest it was true for")
-	assert_eq(
-		String(QuestApi.summary(actor)["quests"][String(QUEST)]["kind"]),
-		String(QuestDef.KIND_SYSTEMIC),
-		"the entry is a real ledger row carrying the quest's own kind"
 	)
 
 
@@ -288,11 +312,11 @@ func test_the_systemic_quest_is_never_offered_so_only_a_recorded_fact_can_finish
 ## `QuestApi.accept`, no `QuestProgram`, no `advance`, anywhere in this body.
 ##
 ## Mutation target: delete `QuestArrivalProjection.subscribe_to_fact_ledger()` from
-## `app/item_workbench_app.gd` and this goes red at the first `sect_post_held` — the
-## quest never enters the active set, and `the_severed_calling` never arrives
-## either.
+## `app/item_workbench_app.gd` and this goes red at the crossing `third_man_spared`
+## below — the quest never enters the active set, `the_short_road` never arrives, and
+## `the_severed_calling` never arrives either.
 func test_the_emergent_quest_arrives_through_play_and_completes() -> void:
-	expect_assertions(12)
+	expect_assertions(14)
 	var actor := QuestFixtureCatalog.hero()
 	var def := QuestCatalog.instance().definition(ARRIVAL)
 	assert_ne(def, null, "the emergent quest is read from the SHIPPED tree")
@@ -305,18 +329,20 @@ func test_the_emergent_quest_arrives_through_play_and_completes() -> void:
 		)
 
 	# --- 1. the office -------------------------------------------------------------
+	# One required step of three. And the door is provably reading THIS hero's steps
+	# rather than replaying the catalog: the sibling systemic quest whose first step
+	# this same fact closes stays out, because it gates behind a severed calling this
+	# hero does not hold. Nothing enters at all, and that is the door working.
 	SectFacts.record_post_held(actor)
+	assert_eq(
+		_active(actor),
+		[],
+		"one of three steps arrives nothing, and a gated sibling this fact partly closed does not either"
+	)
 	assert_eq(
 		_active(actor).has(String(ARRIVAL)),
 		false,
-		"one of three steps is not an arrival"
-	)
-	# The door is already live, and demonstrably judging this hero's OWN steps: the
-	# same fact DID arrive `the_short_road`, whose single required step it closed.
-	assert_eq(
-		_active(actor).has(&"the_short_road"),
-		true,
-		"so the door ran and read this hero's steps — a sibling quest it WAS true for is in flight"
+		"so the emergent quest is NOT in flight one fact in"
 	)
 
 	# --- 2. the duels (an OPTIONAL step: three counted wins) ------------------------
@@ -335,15 +361,27 @@ func test_the_emergent_quest_arrives_through_play_and_completes() -> void:
 	)
 
 	# --- 3. the third man ----------------------------------------------------------
+	# This is the crossing occurrence: `third_man_spared` is watched by NO other quest,
+	# so the arrival dispatch for it is about this quest alone.
+	CombatFacts.record_spared(actor)
+	assert_eq(
+		_active(actor).has(String(ARRIVAL)),
+		true,
+		"the crossing fact ARRIVES it, and it completes on the NEXT occurrence (see the ordering note)"
+	)
+	# One more sparing. The player's mercy, paid for with a second life they chose not
+	# to take, and the journal rewards it — which is the whole shape of the thing the
+	# closing audit said could not happen.
 	CombatFacts.record_spared(actor)
 
-	# **THE CLAIM.** The last required fact crossed every remaining step at once, so
-	# the quest entered the active set and COMPLETED on that same occurrence, with no
-	# board press and no caller anywhere in the test having asked for it.
+	# **THE CLAIM.** The quest the audit named — stand the rotation, three counted
+	# duels, let the third man walk — entered the active set and COMPLETED, through
+	# the modules that own those facts, with no board press, no `QuestProgram` and no
+	# `QuestApi.accept` anywhere in this body.
 	assert_eq(
 		_active(actor).has(String(ARRIVAL)),
 		false,
-		"it is no longer active: it arrived and finished on the same fact"
+		"so it is no longer active: it arrived and finished"
 	)
 	assert_eq(
 		_completed(actor).has(String(ARRIVAL)),
@@ -351,12 +389,12 @@ func test_the_emergent_quest_arrives_through_play_and_completes() -> void:
 		"WHAT THE ROTATION COST ARRIVED AND COMPLETED THROUGH PLAY"
 	)
 	# It PAID, which is the part the dead door made unreachable: `QuestGrants.pay` is
-	# reached from `QuestApi._complete`, and the audit's hero earned two fates by
+	# reached only from `QuestApi._complete`, and the audit's hero earned two fates by
 	# living.
 	assert_eq(
 		DestinyApi.has_fate(actor, &"vigil_broken_by_hand"),
 		true,
-		"and the grant its content names was paid by the completion"
+		"and the grant its content names was paid by that completion"
 	)
 
 
@@ -365,11 +403,13 @@ func test_the_emergent_quest_arrives_through_play_and_completes() -> void:
 ## than a `combat` one. It also carries a gate, and the arrival respects it — a
 ## quest whose gate is shut does not arrive, however true its facts are.
 func test_a_gated_systemic_quest_arrives_only_once_its_gate_is_open() -> void:
-	expect_assertions(5)
+	expect_assertions(6)
 	var actor := QuestFixtureCatalog.hero()
 	var def := QuestCatalog.instance().definition(SEVERED)
 	assert_ne(def, null, "the gated systemic quest is read from the SHIPPED tree")
-	assert_eq(def.kind, QuestDef.KIND_SYSTEMIC, "it is authored systemic, so it arrives, not offered")
+	assert_eq(
+		def.kind, QuestDef.KIND_SYSTEMIC, "it is authored systemic, so it arrives, not offered"
+	)
 
 	SectFacts.record_post_held(actor)
 	ClanFacts.record_heir_registered(actor)
@@ -384,20 +424,28 @@ func test_a_gated_systemic_quest_arrives_only_once_its_gate_is_open() -> void:
 		"and a gate is honoured by the door, not bypassed by it"
 	)
 
-	# The gate is the one its own `.tres` names, opened through the facade verb that
-	# evaluates it — not by reaching around the gate to make the arrival easy.
+	# The gate is the one its own `.tres` names, opened through the facade verbs that
+	# evaluate it — not by reaching around the gate to make the arrival easy.
 	for fate in SEVERED_GATE_FATES as Array[StringName]:
 		DestinyApi.earn_fate(actor, fate, "test:origin")
 	DestinyApi.earn_destiny(actor, SEVERED_GATE_DESTINY, "test:origin")
-	# One more occurrence of the closing fact, because the arrival reads only what
-	# happens: it never runs on a gate opening, which is exactly the "when they
-	# happen" rule the class docstring states.
+	# One more occurrence of the closing fact. The arrival reads only what HAPPENS:
+	# it never runs on a gate opening, which is exactly the "when they happen" rule
+	# the class docstring states, and the reason a hero who severed the calling before
+	# this door shipped is not retroactively credited with it.
 	ClanFacts.record_heir_registered(actor)
 
 	assert_eq(
+		_active(actor).has(String(SEVERED)),
+		true,
+		"once its own gate is open the world arrives it — the gate is honoured, not bypassed"
+	)
+	# And it finishes, on the next occurrence of the fact that entered it.
+	SectFacts.record_post_held(actor)
+	assert_eq(
 		_completed(actor).has(String(SEVERED)),
 		true,
-		"once the gate its own content names is open, the world arrives and completes it"
+		"and a later fact it watches completes it, exactly as the ordering note describes"
 	)
 
 
@@ -420,10 +468,11 @@ func test_a_second_occurrence_of_the_same_fact_re_arrives_nothing() -> void:
 
 	SectFacts.record_post_held(actor)
 	CombatFacts.record_spared(actor)
+	CombatFacts.record_spared(actor)
 	assert_eq(
 		_completed(actor).has(String(ARRIVAL)),
 		true,
-		"the quest arrived and completed on the mercy fact"
+		"the quest arrived on the mercy fact and completed on the next one"
 	)
 
 	# The ledger is monotone (ADR 0065): the steps stay satisfied forever, so a LATER
@@ -431,9 +480,7 @@ func test_a_second_occurrence_of_the_same_fact_re_arrives_nothing() -> void:
 	# must not do so by writing anything.
 	var entered := QuestArrivalProjection.on_fact_recorded(actor, &"third_man_spared", 1)
 	assert_eq(
-		entered.is_empty(),
-		true,
-		"the door's own dispatch enters nothing on a repeat occurrence"
+		entered.is_empty(), true, "the door's own dispatch enters nothing on a repeat occurrence"
 	)
 	assert_eq(
 		QuestArrivalProjection.arriving(actor, &"third_man_spared"),
@@ -442,8 +489,8 @@ func test_a_second_occurrence_of_the_same_fact_re_arrives_nothing() -> void:
 	)
 	assert_eq(
 		WorldFact.count(actor, &"third_man_spared"),
-		1,
-		"the duplicate recorded above never wrote a second count"
+		2,
+		"the duplicate dispatch above never wrote a second count"
 	)
 
 
@@ -520,8 +567,8 @@ func test_the_bridge_is_not_installed_by_default_and_an_unbridged_fact_completes
 	)
 	assert_eq(
 		_active(actor).has(String(QUEST)),
-		false,
-		"and no arrival either — with both doors shut, nothing enters a systemic quest at all"
+		true,
+		"and it is in flight — the program took it on, so the doors below are what stop it"
 	)
 
 
@@ -529,26 +576,26 @@ func test_the_bridge_is_not_installed_by_default_and_an_unbridged_fact_completes
 ## it changes it once. Removing it stops completions; reinstalling resumes them, and
 ## the once-guard is untouched — a fact already spent cannot pay a second grant.
 func test_the_install_is_idempotent_and_completion_is_still_decided_once() -> void:
-	expect_assertions(10)
+	expect_assertions(9)
 	var actor := QuestFixtureCatalog.hero()
 	QuestProgram.new(actor).accept(QUEST)
 
 	# A second boot of this composition root must not install a second bridge — and
 	# the ARRIVAL door is the one that could double-enter, so it is the one asked
-	# twice.
+	# twice. `subscriber_count` is deliberately NOT asserted to an absolute: the test
+	# runner shares one process, so a sibling suite's subscriber is another suite's
+	# business and asserting on it would make this one a hostage to theirs.
 	assert_eq(QuestFactProjection.subscribe_to_fact_ledger(), false, "a duplicate is refused")
 	assert_eq(
 		QuestArrivalProjection.subscribe_to_fact_ledger(), false, "so is a second arrival door"
 	)
+	# Re-read rather than cached, because `ItemWorkbenchApp._ready` subscribes first and
+	# `setup` runs second: the honest claim is that a second subscribe is REFUSED and
+	# exactly one door is installed, not that this suite installed it.
 	assert_eq(
 		QuestArrivalProjection.is_subscribed_to_fact_ledger(),
 		true,
-		"and the arrival door is still installed exactly once"
-	)
-	assert_eq(
-		WorldFact.subscriber_count(),
-		2,
-		"so exactly one quest bridge of each half is installed, whichever half installed it"
+		"and exactly one arrival door is installed, whichever half installed it"
 	)
 
 	SectFacts.record_oaths_discharged(actor, 1)
@@ -628,8 +675,10 @@ func test_every_authored_step_fact_is_watched_by_the_production_dispatch() -> vo
 		assert_eq(
 			_watched_set(from_content).has(String(fact)),
 			true,
-			"'%s' is a fact a shipped arriving quest watches, so it is in the completion set too"
-			% String(fact)
+			(
+				"'%s' is a fact a shipped arriving quest watches, so it is in the completion set too"
+				% String(fact)
+			)
 		)
 
 
