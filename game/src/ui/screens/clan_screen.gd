@@ -20,7 +20,11 @@ extends UiScreen
 ## `clan` is declared in `rules.UI_MODULES`, so this screen may name `ClanApi` bare and
 ## read everything the page shows — the house, the rank, the standing, the recognised
 ## standing and both sides of the terms — out of one `summary()` call. No `preload`, no
-## `extends`, no second accessor.
+## `extends`, no second accessor. `ClanApi.join` and `ClanApi.admission_unmet` are
+## reached the same way `SectScreen` reaches `SectApi.join`: both are PUBLISHED verbs on
+## a GRANTED module, so naming them by bare name is the whole of the seam and a Callable
+## wrapping a facade call the screen may already make would be ceremony (the
+## `ROUTE_FLOOR` arm's argument).
 ##
 ## **The registration is the one thing this screen may NOT name.** `ClanHeir` is a
 ## module interior, `clan` publishes twelve verbs and `rules.MAX_FACADE_PUBLIC_METHODS`
@@ -29,6 +33,38 @@ extends UiScreen
 ## `ROUTE_QUEST` and `ROUTE_SOUL_HEARTH` use, and the exact seam `app/clan_registry.gd`
 ## was written for. A screen mounted without it refuses `no_register_seam` rather than
 ## pretending the house spoke.
+##
+## ## ## THE JOIN LIVES HERE, and ADR 0239 named this slice as owed
+##
+## `ClanApi.join` shipped with ZERO production callers, so no player was ever a member
+## of a house and `ClanRegistry.available` refused `not_a_member` for every real actor.
+## The page the same ADR built was therefore a route to a page whose only action
+## refused by construction. **This is the owner of that moment.**
+##
+## Why the page and not somewhere else, in the ADR's own terms: joining a house is
+## something a player DOES, with a house they have chosen, at a place the game asks them
+## about it. ADR 0113's rule is that the owner of the moment writes and never a poller —
+## and a timer that admitted somebody would be the political layer deciding its own
+## outcomes, which is the reading ADR 0239 rejected in writing. So the press is a
+## control, and this page is where the control lives, beside `SectScreen.act_join` and
+## `NationScreen`'s own entry verb.
+##
+## ## ## And the JOIN costs nothing but what the house already publishes
+##
+## **There is no economy here, deliberately.** A house's price for admitting somebody is
+## authored on the house itself — `min_purity` against its own founding bloodline, plus
+## `required_race` / `min_realm` — and `ClanGate.admission_unmet` already reads all three
+## and returns the complaints by name. So joining **GATES** on an authored requirement the
+## game already models and **COSTS** nothing this slice had to invent: no currency, no
+## stat, no tax, no new field on `ClanDef`. A member arrives at the house's own
+## `entry_rank` and at standing 0, which is ADR 0064's split stated as a fact — joining
+## is being RECOGNISED, not being RESPECTED.
+##
+## `join` itself re-runs the same gate before it writes, so a screen that pre-judged it
+## would be guessing at a rule the module owns. This page asks the gate only to decide
+## whether to OFFER the press, and renders the module's own refusal when it does — the
+## same "`sect_screen` leaves the button live and lets the module say `already_sworn`"
+## argument, read one level down: the player is told WHICH lineage a house wants.
 ##
 ## ## ## The verb is a REGISTRATION, and it moves the position and nothing else
 ##
@@ -51,6 +87,15 @@ extends UiScreen
 ## the order the player sees.
 const ACTION_REGISTER := &"register_heir"
 
+## ## The action that ADDS a hero to a house, and the one that takes them out again.
+##
+## Both are here rather than in a second screen because a clan is a STANDING with
+## obligations (ADR 0064): you have to be able to walk out of it from the same page you
+## walked into, or `leave` is a verb no player can reach — the mirror of the gap this
+## slice closes. `SectScreen` publishes the same pair.
+const ACTION_JOIN := &"join"
+const ACTION_LEAVE := &"leave"
+
 ## The refusals this screen raises ITSELF, before the seam is asked. One is a wiring gap
 ## and one is a player outcome; both are named rather than silently doing nothing, and
 ## they are the screen's OWN words because no module publishes them.
@@ -60,11 +105,19 @@ const NO_ACTOR := "no_actor"
 ## rather than guessed around — the same `no_register_seam` the quest and soul screens
 ## refuse, so one renderer covers all of them.
 const NO_REGISTER_SEAM := "no_register_seam"
+## A `join` was asked for with no house picked. The refusal of the SCREEN's own seam,
+## authored here for the reason `sect_screen` authors its own two: a silent no-op is not
+## a refusal, and a screen that fell back to the first house in the list would admit
+## somebody to a house nobody chose.
+const NO_HOUSE_PICKED := "no_house_picked"
 
 const NO_ACTOR_TEXT := "No hero bound."
 const NO_ACTOR_FOOTER := ""
 const FOOTER_TEXT := "Enter names the member in the house's register as its heir."
 const TERMS_EMPTY := "This house publishes no terms."
+const NO_HOUSE_TEXT := "You belong to no house."
+## What a hero who has not yet been admitted is told instead of a silently dead bar.
+const JOIN_HINT_TEXT := "Pick a house you are admitted to, and press Ask."
 
 var _house: Label = null
 var _terms: Label = null
@@ -81,8 +134,21 @@ var _bound: bool = false
 ## exact thing ADR 0064's `has_rank` refusal exists to refuse.
 var _register: Callable = Callable()
 var _register_available: Callable = Callable()
-## The last verdict, carried through verbatim. `{}` before any action, so a test reads "no
-## action yet" rather than a refusal that never happened.
+## The catalog row [method act_join] would ask this hero to enter. `""` means nothing is
+## picked, and a `join` with nothing picked is refused [constant NO_HOUSE_PICKED] rather
+## than silently admitting them to the first house in the list.
+##
+## Picked by the CALLER (a panel, a row, a probe) rather than by a screen-internal widget:
+## `ClanScreen` has no roster scene of its own and a screen that grew its own would be a
+## second house list beside the catalog the facade already publishes in `summary`.
+var _selected_clan: String = ""
+## Every read model this screen PUBLISHES that is computed from the facade's snapshot
+## rather than from the widget tree. Adopted in `_render` and `_summary` so
+## [method select_clan] reads the SAME catalog the page paints and cannot accept an id
+## the facade does not publish. `{}` before the first read.
+var _codex: Dictionary = {}
+## The last verb's verdict, carried through verbatim. `{}` before any action, so a test
+## reads "no action yet" rather than a refusal that never happened.
 var _last_result: Dictionary = {}
 ## The standing this hero held before the last registration and after it, so the ADR 0064
 ## split is readable without a second facade call. `""` until a registration has run.
@@ -115,6 +181,9 @@ func _summary() -> Dictionary:
 	if _actor == null:
 		return {}
 	var codex := ClanApi.summary(_actor)
+	# Adopted here rather than in `_bind_nodes`, so `select_clan` reads the SAME catalog
+	# the page renders and cannot pass an id the facade does not publish.
+	_codex = codex.duplicate(true)
 	return {
 		"actor": String(_actor.id),
 		"read_only": false,
@@ -132,6 +201,19 @@ func _summary() -> Dictionary:
 		"patronage": _term_list(codex.get("patronage", {})),
 		"duty": _term_list(codex.get("duty", {})),
 		"clan_count": int(codex.get("clan_count", 0)),
+		# The membership half, published as the FACADE's own two numbers so a probe can
+		# read "is this hero a member" without reaching into `actor.module_data`, and so
+		# the join is observable at both ends: the ledger before and after a press.
+		"is_member": String(codex.get("clan", "")) != "",
+		# Which house the next `act_join` would use, and whether the control is live.
+		"selected_clan": _selected_clan,
+		"can_join": can_join(),
+		"can_leave": can_leave(),
+		# What the MODULE's gate says about the picked house. Kept as a count plus the
+		# authored complaints, never a boolean, so a hero turned away is told WHICH
+		# lineage the house wants rather than merely that a press failed.
+		"join_unmet_count": join_unmet().size(),
+		"join_unmet": _complaint_list(join_unmet()),
 		"register_seam_bound": register_seam_bound(),
 		# What the seam says RIGHT NOW, so a test and a probe can assert the gate without
 		# pressing it: a member of a house publishing no `heir` rung must read
@@ -156,6 +238,98 @@ func _summary() -> Dictionary:
 
 
 # --- Actions. Each calls the injected verb, and reports what came back ---------
+
+
+## ## ## THE ONLY CALLER OF `ClanApi.join` IN THE SHIPPED PROGRAM
+##
+## Before this method, `ClanApi.join` had zero production callers: every player belonged
+## to no house, `ClanRegistry.available` refused `not_a_member` for every real actor, and
+## the three authored quests watching `household_heir_registered` were permanently
+## unfinishable. This press is what closes that, and it is here because a house admits a
+## person in response to the person CHOOSING it — not on a timer (ADR 0113).
+##
+## Returns `ClanApi.join`'s own verdict `{ok, reason, unmet}` unchanged, so a caller
+## reads the module's refusal (`unmet` with the authored `{kind, id, required, actual,
+## label}` entries) rather than a sentence this screen composed about it.
+##
+## **`standing` is deliberately NOT passed.** `join` defaults it to 0 and a member who
+## has just been admitted has earned nothing yet — ADR 0064's split, and passing a
+## number from a button would let a screen hand out standing by typing a literal.
+func act_join(clan_id: String = "") -> Dictionary:
+	_bind_nodes()
+	var wanted := clan_id if clan_id != "" else _selected_clan
+	if _actor == null:
+		return _verdict(NO_ACTOR)
+	if wanted == "":
+		return _verdict(NO_HOUSE_PICKED)
+	# The gate is asked once more here than the button needs, and that is the point:
+	# `join` re-runs it itself, so a press on a house this hero is not admitted to is
+	# REFUSED BY NAME and writes nothing, rather than the button being the only thing
+	# stopping it. The module decides; this screen only reports.
+	return _settle(ClanApi.join(_actor, StringName(wanted)))
+
+
+## Walk out of the house this hero belongs to. Returns `ClanApi.leave`'s verdict.
+##
+## Live for every member, always: leaving is always permitted and always costs, and the
+## cost is the standing, which does not survive the membership (ADR 0064). A page that
+## could only admit you would be a house with no door.
+func act_leave() -> Dictionary:
+	_bind_nodes()
+	if _actor == null:
+		return _verdict(NO_ACTOR)
+	return _settle({"ok": ClanApi.leave(_actor), "reason": ""})
+
+
+## Pick the house [method act_join] would ask this hero to enter. Returns false for an
+## id the facade's catalog does not carry, so a caller can never "select" a house that
+## does not exist; `""` clears the selection rather than leaving a stale one behind.
+##
+## **The catalog is the facade's, read out of `summary()["clans"]`** — the same dict the
+## module already publishes for a screen to compare houses with, so this is not a second
+## roster and not a list this file could drift from.
+func select_clan(clan_id: String) -> bool:
+	_bind_nodes()
+	if clan_id == "":
+		_selected_clan = ""
+	elif (_codex.get("clans", {}) as Dictionary).has(clan_id):
+		_selected_clan = clan_id
+	else:
+		return false
+	_render()
+	return true
+
+
+## The house the next [method act_join] would use, or `""`. Published in `summary()` so a
+## caller reads the same fact the button acts on rather than a second accessor that can
+## go stale against the pick.
+func selected_clan() -> String:
+	return _selected_clan
+
+
+## Whether a hero may ask to be admitted to a house from here right now. **Only** an
+## actor and a house being picked gate the control: whether this hero is ADMITTED is the
+## module's refusal to name (`ClanApi.admission_unmet`), not a reason to grey out a
+## button — a hero turned away should be told WHICH lineage a house wants by pressing,
+## not by a control that silently does nothing. The same argument `sect_screen` makes
+## about `already_sworn`.
+func can_join() -> bool:
+	return _actor != null and _selected_clan != ""
+
+
+## Whether a hero may walk out of their house from here.
+func can_leave() -> bool:
+	return _actor != null and ClanApi.clan_of(_actor) != &""
+
+
+## What the module's OWN admission gate says about the picked house, as the
+## `{kind, id, required, actual, label}` complaints `ClanGate` produces. `[]` means the
+## admission is open; a screen that re-derived any of it would be a second copy of the
+## house's policy, which is the exact thing ADR 0064's refusals exist to prevent.
+func join_unmet() -> Array:
+	if _actor == null or _selected_clan == "":
+		return []
+	return ClanApi.admission_unmet(_actor, StringName(_selected_clan)) as Array
 
 
 ## Ask the house to enter this hero in its register as its heir. Returns the seam's own
@@ -192,13 +366,44 @@ func _available() -> Dictionary:
 	return called if called is Dictionary else {}
 
 
-## `ui_accept` on the screen: the one action this page has. Declared in one place because
-## two consumers (`on_stack_input` and the action bar) must agree on what a press means.
+## `ui_accept` on the screen: the action this page's primary button runs. Declared in
+## one place because two consumers (`on_stack_input` and the action bar) must agree on
+## what a press means.
+##
+## Which verb `ui_accept` runs is read off the SAME [method _primary_action] the action bar
+## publishes, so the keyboard and the button can never mean different things — the bug
+## that `sect_screen` avoids by matching its bar's `primary` to `can_join()`.
 func _accept() -> bool:
-	if _actor == null or not register_seam_bound():
+	var verb := _primary_action()
+	if _actor == null or verb == &"":
 		return false
-	act_register_heir()
+	match verb:
+		ACTION_JOIN:
+			act_join()
+		ACTION_LEAVE:
+			act_leave()
+		ACTION_REGISTER:
+			act_register_heir()
+		_:
+			return false
 	return true
+
+
+## The verb a bare `ui_accept` runs, or `&""` when none is live.
+##
+## **Join first, then leave, then the register.** A hero who belongs to no house has
+## nothing to register in and nothing to leave, so `join` is the only candidate they can
+## reach — which is what makes this page the owner of the admission moment rather than a
+## page that happens to also admit people. A member gets `leave` and, once the seam's gate
+## agrees, `register`.
+func _primary_action() -> StringName:
+	if can_join():
+		return ACTION_JOIN
+	if can_leave():
+		return ACTION_LEAVE
+	if _actor != null and register_seam_bound() and bool(_available().get("ok", false)):
+		return ACTION_REGISTER
+	return &""
 
 
 # --- Internals ---------------------------------------------------------------
@@ -238,10 +443,30 @@ func _render() -> void:
 		_publish_actions()
 		return
 	var codex := ClanApi.summary(_actor)
+	_codex = codex.duplicate(true)
+	var footer := _footer_line(codex)
 	_house.text = _house_line(codex)
 	_terms.text = _terms_line(codex)
-	_footer.text = FOOTER_TEXT
+	_footer.text = String(footer.get("text", ""))
 	_publish_actions()
+
+
+## The line under the terms. **A hero who belongs to no house is told so and told what to
+## do about it**, which is what makes the join reachable rather than merely present: a
+## page that showed a dead button and no instruction would leave the one verb that closes
+## this gap unpressable in practice.
+##
+## The refusal text is the MODULE's own `label` on the complaint it raised — a house says
+## which lineage it admits, and this screen restates none of it.
+func _footer_line(codex: Dictionary) -> Dictionary:
+	var held := String(codex.get("clan", ""))
+	if held == "":
+		var unmet := join_unmet()
+		if unmet.is_empty():
+			return {"text": JOIN_HINT_TEXT}
+		var complaint: Dictionary = unmet[0]
+		return {"text": String(complaint.get("label", ""))}
+	return {"text": FOOTER_TEXT}
 
 
 ## The one line naming the house. **Every number is the facade's own**, formatted here
@@ -250,7 +475,7 @@ func _render() -> void:
 func _house_line(codex: Dictionary) -> String:
 	var house := String(codex.get("display_name", ""))
 	if house == "":
-		return "You belong to no house."
+		return NO_HOUSE_TEXT
 	return (
 		"%s — %s, standing %d (recognised %d)."
 		% [
@@ -289,6 +514,17 @@ func _term_list(source: Variant) -> Array:
 	return out
 
 
+## The module's admission complaints as an `Array[Dictionary]`, left in the facade's own
+## `{kind, id, required, actual, label}` shape rather than flattened to strings. A panel
+## renders `label`; a test compares `kind` and `required`; neither needs this screen to
+## have invented a vocabulary for the same eight failures.
+func _complaint_list(unmet: Array) -> Array:
+	var out: Array = []
+	for entry in unmet as Array:
+		out.append(entry as Dictionary)
+	return out
+
+
 ## Declare this screen's actions and their live state. Only ids and booleans go down;
 ## `ActionSet` owns the button text and the result line.
 func _publish_actions() -> void:
@@ -299,28 +535,53 @@ func _publish_actions() -> void:
 		. set_state(
 			{
 				"actions": _action_ids(),
-				"labels": {ACTION_REGISTER: "Enter as the house's heir"},
+				"labels":
+				{
+					ACTION_JOIN: "Ask the picked house to admit you",
+					ACTION_LEAVE: "Walk out of your house",
+					ACTION_REGISTER: "Enter as the house's heir",
+				},
 				"enabled": _enabled_actions(),
-				"primary": ACTION_REGISTER,
+				"primary": _primary_action(),
 			}
 		)
 	)
 
 
+## The action ids, in the order the bar shows them. Read off the constants above so the
+## order a test reads is the order the player sees. **Join and leave LEAD**, because they
+## are the acts that put the hero on and off a ladder; the register is third because it is
+## only meaningful to somebody already on one.
 func _action_ids() -> Array:
-	return [String(ACTION_REGISTER)]
+	return [String(ACTION_JOIN), String(ACTION_LEAVE), String(ACTION_REGISTER)]
 
 
-## The press is live only when the seam is bound AND the seam's own gate says this hero
-## could honestly be entered. A button that could mean nothing is a button that teaches a
+## Which of the three is live right now.
+##
+## `register` is live only when the seam is bound AND the seam's own gate says this hero
+## could honestly be entered: a button that could mean nothing is a button that teaches a
 ## player that the page does not work.
+##
+## `join` is live on a hero + a pick and **NOT** on whether the hero is admitted — the
+## module owns that verdict and a player turned away deserves to be told WHICH lineage the
+## house wants, which only a press can say. `leave` is live for every member, always.
 func _enabled_actions() -> Dictionary:
 	var gate := _available()
-	return {String(ACTION_REGISTER): _actor != null and bool(gate.get("ok", false))}
+	return {
+		String(ACTION_JOIN): can_join(),
+		String(ACTION_LEAVE): can_leave(),
+		String(ACTION_REGISTER): _actor != null and bool(gate.get("ok", false)),
+	}
 
 
+## The button press, routed to the verb. `ActionSet.request` refuses a disabled action,
+## so this cannot fire a verb the control does not offer.
 func _on_action_requested(action: StringName) -> void:
 	match action:
+		ACTION_JOIN:
+			act_join()
+		ACTION_LEAVE:
+			act_leave()
 		ACTION_REGISTER:
 			act_register_heir()
 

@@ -15,7 +15,28 @@ extends RefCounted
 ## path, called by the one player action that owns the moment — and this file is the
 ## `clan` half of it.
 ##
-## ## The moment, and why no caller exists yet (DEFERRED, not guessed)
+##
+## ## CLOSED. Both halves now have an owner, and neither of them is a timer.
+##
+## The three gaps the paragraphs below record as measured are all gone, and none of them
+## was closed with a sweep - ADR 0113's rule is that the OWNER OF THE MOMENT writes, and a
+## timer that manufactured the appointment would be the political layer deciding its own
+## outcomes:
+##
+## - `ClanScreen` (ADR 0239) is the page, and `act_join` on it is the ONLY production caller
+##   of `ClanApi.join`. A player can therefore be a member, and [method available] below
+##   stops refusing `not_a_member` for every real actor.
+## - The `ROUTE_CLAN` arm of `item_workbench_app.gd` installs this seam at route mount and
+##   hands the page BOTH halves (`commit` and `available`) - ADR 0239's rule 1, because a
+##   screen given only `commit` would have to re-derive the gate to decide whether to OFFER
+##   the press, which is a second authority on who may be heir.
+##
+## `game/tests/app/test_clan_join_production_path.gd` drives the whole thing through the real
+## mounted app, so the claim above is MEASURED rather than asserted, and
+## `game/tests/modules/clan/test_clan_heir_registry_seam.gd` pins the caller count at ONE
+## file, so a sweep can never be added beside the page.
+##
+## ## The moment, and why no caller existed yet (CLOSED - see the note below)
 ##
 ## `ClanHeir`'s own docstring names it: *"Entering a member in their household's
 ## register as its heir"*, and *"Registration is a political act, not an earned one."*

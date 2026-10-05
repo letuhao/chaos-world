@@ -1,8 +1,8 @@
 extends TestCase
 
-## `household_heir_registered` has a WRITER and a seam, and still no caller — this suite
-## holds both halves of that claim apart, so the gap cannot be closed by accident and
-## cannot be papered over either.
+## `household_heir_registered` has a WRITER, a seam, and NOW A PRODUCTION CALLER — this
+## suite holds both halves of that claim apart, so the gap cannot be closed by accident
+## and cannot be papered over either.
 ##
 ## Named `clan_heir` so `tools test --suite clan_heir` runs it beside
 ## `test_clan_heir.gd`: the module's own tests and the seam's belong to one subject.
@@ -10,23 +10,39 @@ extends TestCase
 ## ## What these hold
 ##
 ## 1. The seam WORKS. `ClanRegistry.commit` drives `ClanHeir.register` through an
-##    installed verb and the fact lands — so when a clan surface does get built, the
-##    one call it needs is already known to work, and the four `household_heir_registered`
-##    quest steps become completable the moment somebody calls it.
-## 2. The seam is NOT a fabricated consumer. Nothing in `game/src/` calls
-##    `ClanRegistry.commit`, no boot installs it, and no timer sweeps for it — asserted
-##    here by walking the source tree, the same walk `test_clan_heir.gd` already uses
-##    for the same fact.
+##    installed verb and the fact lands.
+## 2. The seam IS reached, from ONE page, installed by the composition root. `ClanScreen`
+##    (ADR 0239) is the caller; the `ROUTE_CLAN` arm of `item_workbench_app.gd` installs
+##    the verb at route mount and hands the page both halves of it. The whole thing is
+##    driven through the real app by `game/tests/app/test_clan_join_production_path.gd`,
+##    which is also where `ClanApi.join` — the door into membership the registration needs
+##    — is proved.
 ##
-## ## Why the second half is an assertion and not a comment
+## ## Why the second half is still an assertion and not a comment
 ##
 ## ADR 0113's rule is that the OWNER OF THE MOMENT writes. A poller for "has anybody
 ## become an heir" is the shape this repo refuses on sight, and the cheapest way to
 ## smuggle one past review is to add a call and describe it as boot. So the caller count
-## is pinned at zero: if a future owner adds the real call, THIS test fails and they
-## update it in the same commit, which is the review surface the change deserves.
+## is pinned at exactly ONE — not at "at least one" — and the one is a page rather than a
+## sweep. A future owner adding a second appointment moment turns THIS test red, which is
+## the review surface that change deserves.
 
 const HOUSE := &"t_house"
+
+## The boot file that installs the seam at route mount and hands the page both halves of
+## it. `app/` is a `PRIVATE_UNIT`, so this is the only file in `src/` that may NAME the
+## seam at all; the screen receives it as a `Callable`. Read by path rather than by
+## scanning for `ClanRegistry.commit`, because the root binds the verb as
+## `Callable(ClanRegistry, "commit")` — a dotted-call scan would find this seam's own
+## definition and nothing else.
+const COMPOSITION_ROOT := "res://src/app/item_workbench_app.gd"
+## The exact binding the root ships: a bare `Callable` static reference, because a typed
+## lambda whose body calls another script's static function killed the process with an
+## access violation on the shell's first frame (the reason every other seam in that file
+## is a bare reference too). Pinned as a SHAPE, not just as a verb name, because a lambda
+## would pass a scan looking for `"commit"` and then crash the game on its first frame.
+const ROOT_BINDS_SEAM := 'Callable(ClanRegistry, "commit")'
+const ROOT_BINDS_GATE := 'Callable(ClanRegistry, "available")'
 
 
 func setup() -> void:
@@ -151,49 +167,63 @@ func test_registration_through_the_seam_still_moves_the_position_and_not_the_sta
 	assert_eq(ClanApi.rank_of(actor), ClanHeir.HEIR_RANK, "and the position is what moved")
 
 
-# --- and it is not a fabricated consumer ---------------------------------------
+# --- and it is reached from a page, not fabricated into a sweep ----------------
 
 
-func test_nothing_in_game_src_calls_the_seam_so_the_gap_is_still_an_open_one() -> void:
-	# The load-bearing assertion of this suite. `ClanRegistry` exists and works, which
-	# is exactly when a fabricated caller becomes tempting; pinning the count at zero
-	# means adding one is a deliberate act that turns THIS test red.
+func test_the_seam_is_reached_from_production_and_from_exactly_one_page() -> void:
+	# The load-bearing assertion of this suite, and the one that used to say ZERO.
 	#
-	# `game/src/app` is excluded on purpose: this file IS in `app`, and its own
-	# definition would otherwise be counted as a caller of itself. Only the module
-	# half and the other layers are walked — which is the same reasoning
-	# `test_clan_heir.gd` uses when it asks whether `app/` names the FACT.
+	# `ClanScreen` is the caller the audit said was missing; the composition root installs
+	# the verb at route mount. Pinned at EXACTLY ONE caller rather than "at least one",
+	# because a second appointment moment — a sweep, an ambient pass, a boot hook — is
+	# exactly the shape ADR 0113 refuses, and the cheapest way to smuggle one past review
+	# is to add a call and describe it as boot.
+	#
+	# `game/src/app` is walked TOO and it is the only layer allowed to name the seam, so
+	# this file's own directory is the one excluded: it IS in `app`, and its own
+	# definition would otherwise be counted as a caller of itself.
 	var callers: Array[String] = []
-	for root in ["res://src/modules", "res://src/core", "res://src/ui", "res://src/contracts"]:
+	var roots := ["res://src/modules", "res://src/core", "res://src/ui", "res://src/contracts"]
+	roots.append("res://src/app")
+	for root in roots:
 		for path in _gdscript_files(root):
 			if path.ends_with("app/clan_registry.gd"):
 				continue
-			if _names_in_code(path, "ClanRegistry.commit"):
+			# CODE only: `clan_screen.gd` and this file DISCUSS the seam by name in prose,
+			# and `test_clan_heir.gd` cites it, so a scan over raw text reports every file
+			# that has read the documentation as a caller of it.
+			if _code_only(FileAccess.get_file_as_string(path)).contains("ClanRegistry."):
 				callers.append(path)
+	callers.sort()
 	assert_eq(
-		callers.size(),
-		0,
+		callers,
+		[COMPOSITION_ROOT],
 		(
-			"no module, core, contract or ui file calls the seam — the appointment moment "
-			+ "does not exist in the shipped game, which is what DEF entry for clan_heir "
-			+ "records. If this fails, a real caller was added: update the deferral too."
+			"exactly one file in src/ names the seam in code, and it is the composition "
+			+ "root that binds it at route mount — `app/` is a PRIVATE_UNIT, so the page "
+			+ "receives it as a Callable and is the only thing that presses it. A second "
+			+ "caller is a second appointment moment (ADR 0113). Found: %s"
 		)
+		% [", ".join(callers)]
 	)
 
 
-func test_no_boot_path_installs_the_seam_yet() -> void:
-	# The mirror of the assertion above on the other half of the seam. `CombatMercy` is
-	# installed at `combat_boot.gd:519`; this one has no equivalent line yet because the
-	# boot file that would carry it (`item_workbench_app.gd`) belongs to another slice.
-	var installs: Array[String] = []
-	for root in ["res://src/modules", "res://src/core", "res://src/ui", "res://src/contracts"]:
-		for path in _gdscript_files(root):
-			if _names_in_code(path, "ClanRegistry.install"):
-				installs.append(path)
-	assert_eq(
-		installs.size(),
-		0,
-		"nothing outside this seam installs it either — the install belongs to the boot path"
+func test_the_composition_root_installs_the_seam_and_hands_the_page_both_halves() -> void:
+	# The mirror of the assertion above on the OTHER half of the seam: ADR 0239's rule 1
+	# is "both halves or neither", because a screen given only `commit` would have to
+	# re-derive the gate to decide whether to OFFER the press — a second authority on who
+	# may be heir, which is precisely what `no_heir_rank` refuses.
+	#
+	# Read over `_code_only`, so this file's own prose about the binding is not mistaken for
+	# the binding and a future author cannot silence the check by writing about it.
+	var root := _code_only(FileAccess.get_file_as_string(COMPOSITION_ROOT))
+	assert_ne(
+		root.find(ROOT_BINDS_SEAM),
+		-1,
+		"the root binds `commit` as a bare static reference, not a lambda"
+	)
+	assert_ne(
+		root.find(ROOT_BINDS_GATE), -1, "and the `available` gate beside it — both halves or neither"
 	)
 
 
@@ -229,3 +259,43 @@ func _gdscript_files(root: String) -> Array[String]:
 		entry = dir.get_next()
 	dir.list_dir_end()
 	return found
+
+
+## `text` with every `#` comment and every double-quoted string literal blanked, so a
+## source scan reads CODE and never prose.
+##
+## ## WHY THIS EXISTS HERE, in a file that was already scanning for callers
+##
+## The seam is DISCUSSED by name in `clan_registry.gd`'s docstring, in every paragraph of
+## `clan_screen.gd`, and in this file. `_names_in_code` above splits on `#`, which handles
+## a comment on a line of code but leaves the seam's own constants — `ClanHeir.R_NO_ACTOR`
+## is a same-file const, so the scan would count THIS FILE's definitions — and leaves
+## anything in a string literal. Strings are blanked FIRST so a `#` inside a literal is not
+## mistaken for a comment, which is the order `tools/arch/enforce.py:_code_only` applies
+## them (`COMMENT_RE`, then `STRING_RE`) and the reason this is the repo's own shape rather
+## than a second one.
+##
+## ## WHAT IT DOES NOT BUY
+##
+## It cannot tell a string on a code line from an identifier, which is why the callers here
+## scan for the SYMBOL `ClanRegistry.` and not for prose: no code path reaches the seam
+## without naming that token, and no honest file mentions it in a literal.
+func _code_only(text: String) -> String:
+	var without_strings := ""
+	var at := 0
+	while true:
+		var open := text.find('"', at)
+		if open < 0:
+			without_strings += text.substr(at)
+			break
+		var close := text.find('"', open + 1)
+		if close < 0:
+			without_strings += text.substr(at)
+			break
+		without_strings += text.substr(at, open - at) + '""'
+		at = close + 1
+	var out: Array[String] = []
+	for line in without_strings.split("\n"):
+		var at_hash := line.find("#")
+		out.append(line if at_hash < 0 else line.substr(0, at_hash))
+	return "\n".join(out)
