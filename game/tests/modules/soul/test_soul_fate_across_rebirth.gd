@@ -170,8 +170,26 @@ func test_fate_and_destiny_cross_and_their_projection_is_rebuilt_on_the_new_body
 	)
 	_actor = hero
 	_die()
-	assert_eq(DestinyApi.fates(_actor), fates_before, "every fate crossed the death")
-	assert_eq(DestinyApi.destinies(_actor), destinies_before, "and every destiny with it")
+	# AMENDED, and the reason is ADR 0190: this was byte equality, which encodes "the carry is a
+	# pure copy" — a claim that stops being true the moment an arrival grants its authored marks.
+	# The invariant actually guarded is ADR 0065's: nothing the game does takes a fate back. That
+	# is a SUPERSET, and it is restated here the same way the sibling case below restates it, so
+	# a grant on the death that earned it does not read as a carry that lost something.
+	#
+	# The wrong fix, recorded so the next agent does not reach for it: deleting this line. A guard
+	# that can no longer fail is not a relaxed guard, it is a missing guard (ADR 0188).
+	var fates_after := DestinyApi.fates(_actor)
+	for fate_id in fates_before:
+		assert_eq(
+			fates_after.has(fate_id),
+			true,
+			"every fate crossed the death, and none was taken back: " + str(fate_id)
+		)
+	assert_eq(
+		DestinyApi.destinies(_actor).size() >= destinies_before.size(),
+		true,
+		"and every destiny with it"
+	)
 	# THE OTHER HALF, and the reason this is one test rather than two: a carry that copied the
 	# rows without letting `attach` re-project would satisfy the two lines above and fail here.
 	# The numbers would be in the ledger and missing from the stat stack, and nothing else in
@@ -226,14 +244,29 @@ func test_the_normalized_ledger_only_ever_grows_across_the_swap_and_a_second_dea
 	_die()
 	var after_first := DestinyApi.state(_actor)
 	_assert_is_superset_of(after_first, held, "the first death")
+	# INVERTED, and this was a guard that could not fail. The assertion read
+	# `_missing(after, held, "fates").size() > 0` with the label "the superset is STRICT", but
+	# `_missing` returns the keys present BEFORE and ABSENT AFTER — so `> 0` asserted that the
+	# ledger LOST a fate. `_assert_is_superset_of` on the line above already proves nothing was
+	# lost, which is why both halves passed together for as long as the content was wrong: one
+	# demanded a loss, the other forbade it, and the arrival grant is what finally made them
+	# disagree.
+	#
+	# The claim being guarded is ADR 0190's: an arrival grants its authored marks on the death
+	# that earned it, so the ledger must GROW. That is the count of fates AFTER exceeding BEFORE.
+	var fates_gained := (
+		(after_first.get("fates", {}) as Dictionary).size()
+		- (held.get("fates", {}) as Dictionary).size()
+	)
 	assert_eq(
-		_missing(after_first, held, "fates").size() > 0,
-		true,
-		(
-			"and the superset is STRICT: an arrival grants its authored marks on the death that "
-			+ "earned it (ADR 0190), so the new ledger must GROW. Every line above would also "
-			+ "pass on a ledger that gained nothing, which is why this one exists"
-		)
+		fates_gained,
+		1,
+		"and the superset is STRICT: the earned arrival granted exactly its one authored mark"
+	)
+	assert_eq(
+		_missing(after_first, held, "fates").size(),
+		0,
+		"while losing nothing — a grant is an addition, never a removal"
 	)
 	var held_second := after_first
 	_die()
