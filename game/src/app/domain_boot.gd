@@ -1,5 +1,5 @@
 class_name DomainBoot
-extends DomainWards
+extends DomainWorldBoot
 
 ## The composition root's domain wiring (ADR 0072-0075). Wiring, not rules: `app/`
 ## injects the constructor; the `domain` module owns what a map, a room and an inhabitant
@@ -16,8 +16,6 @@ extends DomainWards
 ## every other status uses (ADR 0089); a second `_process` would be the stateful-`app/`
 ## shape `tools/arch/rules.py` rejects.
 
-## The item property a fixture's key is measured by. Spelled once so the granter seam
-## below and the loot module's own entry gate cannot drift onto different properties.
 const KEY_REACH := &"key_reach"
 
 ## The source tag on the `Stat.MAX_HEALTH` offset a placed creature's authored
@@ -57,6 +55,29 @@ const WORLD_BORN: Array[StringName] = [
 	WORLD_SCENE_NODE,
 ]
 
+## ## The run's three statics, and WHY they are declared here rather than on the base
+##
+## `_run`, `_layout` and `_roster` outlive every `Node`, so what clears them is neither a
+## free nor a `teardown()`: it is [method reset]. `leave_domain` covers the path a PLAYER
+## takes; `reset` covers a run that ended without the player asking.
+##
+## They were cut into `DomainWorldBoot` with the WORLD half and had to come back,
+## because **GDScript inherits neither `static var` nor `static func`**: every write and
+## most of the reads are in THIS file (`enter_domain` assigns `_run` and `_layout`,
+## `leave_domain` clears all three), and a bare `_run` here cannot see a `static var`
+## declared on a base. The compiler's own words for the sibling case were
+## `Static function "has_world_observer()" not found in base "DomainBoot"`. One owner,
+## one name, no second copy — the base reaches them through `_run_state()`, `_layout_state()`
+## and `_roster_state()`.
+static var _layout: Dictionary = {}
+static var _run: DomainMap = null
+
+## The bodies [method enter_domain] minted for `_run`, as `instance id -> Actor` — a
+## handle, not a table, and NOT keyed by `actor id`, which is the SPECIES
+## (`spawn_inhabitant` hands `def.inhabitant_id` to `Actor.new` unchanged, so every
+## `cinder_hound` shares one id). Keying by id collapsed a `count: 2` room to ONE entry.
+static var _roster: Dictionary = {}
+
 ## This file passed the thousand-line ceiling, and the section that moved is the one whose
 ## own banner drew the cut: "the two facts a domain run needs from outside its own module"
 ## — the authored template weather, the wardrobe / codex / bag ward tags, the inhabitant
@@ -85,55 +106,127 @@ const WORLD_BORN: Array[StringName] = [
 ## booting a bare `Control` and the module suite calling a function that was never there.
 ## One declaration per name is also what makes the "each side can drift" argument moot:
 ## there is no second list to drift from.
-
-## The run being populated: its laid-out rects, keyed by room id as a `String` — exactly
-## what `DomainPaths.layout` publishes, which is the ONE layout in the repo
-## (`domain_paths.gd:182`) — and the map itself.
 ##
-## Both are statics because the spawner hands `position_of` a room id, a ref id and an
-## index and nothing else (`domain_spawner.gd:116`), so the map those are read out of has
-## to be reachable without an actor in hand. They are set immediately before a
-## `spawn_map` and on every room visit, and cleared on `leave_domain`, so a discarded run
-## is never read by the next one. `_layout` is `{}` outside a run, which is what makes an
-## unplaced spawn read as `Vector2.ZERO` rather than as a position in some other domain.
+## ## The chain this class EXTENDS, top to bottom
 ##
-## ## WHY THEY SURVIVE A `teardown()`, AND WHY THAT IS A LEAK
+## `DomainBoot` -> `DomainWorldBoot` -> `DomainWards`. `DomainWards` holds the contacts a
+## domain run needs from outside its own module; `DomainWorldBoot` holds the statics a
+## realized world is built FROM — the run itself and the optional observer that stands it
+## up — plus every verb that answers a question about a NODE in the tree rather than about
+## the run. Both are bases rather than delegates for the reason `DomainWards`' own
+## docblock gives: GDScript cannot alias a static from one script onto another and cannot
+## extend two classes, so **DELEGATION** is the shape that keeps `DomainBoot.<name>`
+## resolving for every caller that already spells it that way. Every name declared on
+## either base is declared ONCE, there — a redeclared member is a hard parse error in
+## GDScript, and one unresolved class cascades into everything naming it.
 ##
-## These three outlive every `Node`, so what clears them is neither a free nor a
-## `teardown()`: it is [method reset]. `leave_domain` covers the path a PLAYER takes;
-## `reset` covers the ones where a run ended without the player asking.
-static var _layout: Dictionary = {}
-static var _run: DomainMap = null
-## The bodies [method enter_domain] minted for `_run`, as `instance id -> Actor` — a
-## handle, not a table, and NOT keyed by `actor id`, which is the SPECIES
-## (`spawn_inhabitant` hands `def.inhabitant_id` to `Actor.new` unchanged, so every
-## `cinder_hound` shares one id). Keying by id collapsed a `count: 2` room to ONE entry:
-## that is the 11-authored / 2-drawn figure, and `_last_inhabitants` — the only thing
-## `realize_world` reads — is where it happened while `spawn_map` minted all eleven.
-static var _roster: Dictionary = {}
-
-## Who stands the realized world up once a run exists. A `Callable`, not a reference, and
-## for the reason `install` documents: `enter_domain` is a STATIC on this file, and the
-## node that can parent a `Node2D` in the tree is the composition ROOT, which is an
-## instance. `NpcApi.set_minter` and `CustodyApi.set_resolver` are the same seam one layer
-## down; this is the same seam a layer up.
+## ## Why DELEGATION and not INHERITANCE — measured, not assumed
 ##
-## OPTIONAL, and its refusal is REPORTED rather than swallowed: a caller that entered a run
-## with nothing listening still got a run — the world is a view of it, not a condition of
-## it — so `enter_domain` records that nobody realized and carries on.
-static var _world_observer: Callable = Callable()
+## This file `extends DomainWorldBoot`, and that was the first attempt. **GDScript does
+## not inherit `static` members.** The compiler says so directly:
+## `Static function "has_world_observer()" not found in base "DomainBoot".` Every one of
+## the 23 `DomainBoot.<static>` call sites across `item_workbench_app.gd`,
+## `item_workbench_body.gd`, `domain_world.gd`, `domain_scene.gd`, `domain_fight.gd` and
+## two suites stopped resolving at once. The wrappers below are what makes `extends` +
+## delegation correct: `DomainBoot` owns the public name, and each wrapper hands the call
+## to the one definition on the base.
+##
+## ## The run's own three statics moved down that chain, with the section that reads them
+##
+## `_run`, `_layout` and `_roster` are declared on `DomainWorldBoot`, which is why the
+## note in [method reset] about outliving every `Node` sits there. `DomainBoot` reads and
+## writes all three by their own spellings, and `DomainBoot._run` is the same member — one
+## run, one layout, one roster, exactly as before the cut.
+
+## ## The WORLD half, delegated to [class DomainWorldBoot]
+##
+## GDScript cannot inherit a static, so each verb the world half owns is re-spelled here
+## as a one-line forward. These are not second implementations: every body below is a
+## call, and the definition it reaches is the ONLY one. The docblock on each forward lives
+## on `DomainWorldBoot` beside the body it forwards to.
 
 
-## Install (or, with an empty `Callable`, uninstall) the seam `enter_domain` fires once a
-## run exists. Idempotent, and safe to call again after a re-mount.
+## ## The `DomainWards` half, forwarded
+##
+## `DomainWards` is the BASE of this class, and **GDScript inherits neither
+## `static func` nor `static var`**. Every body below is reached by a bare name
+## from this file, and a bare name resolves against THIS class only — the
+## compiler's words for the sibling case were `Static function
+## "has_world_observer()" not found in base "DomainBoot"`. So each verb the wards
+## half owns is re-spelled here as a one-line forward. Not a second
+## implementation: each body is a call, and the definition it reaches is the only
+## one.
+
+static func _template_weather(template_id: StringName) -> StringName:
+	return DomainWards._template_weather(template_id)
+
+
+static func publish_ward_tags(player: Actor) -> Dictionary:
+	return DomainWards.publish_ward_tags(player)
+
+
+static func _inhabitant_catalogue() -> Dictionary:
+	return DomainWards._inhabitant_catalogue()
+
+
+static func realize_world(parent: Node, player: Actor) -> Dictionary:
+	return DomainWorldBoot.realize_world(parent, player)
+
+
+static func register_targets(parent: Node) -> Dictionary:
+	return DomainWorldBoot.register_targets(parent)
+
+
+static func release_world(parent: Node) -> Dictionary:
+	return DomainWorldBoot.release_world(parent)
+
+
+static func world_realized(parent: Node) -> bool:
+	return DomainWorldBoot.world_realized(parent)
+
+
+static func has_run() -> bool:
+	return DomainWorldBoot.has_run()
+
+
+static func world_summary(parent: Node) -> Dictionary:
+	return DomainWorldBoot.world_summary(parent)
+
+
+static func placed_inhabitants() -> Array:
+	return DomainWorldBoot.placed_inhabitants()
+
+
 static func set_world_observer(observer: Callable) -> void:
-	_world_observer = observer
+	DomainWorldBoot.set_world_observer(observer)
 
 
-## Whether a world observer is installed, published so a caller can tell "nothing is
-## listening" from "the listener refused".
 static func has_world_observer() -> bool:
-	return _world_observer.is_valid()
+	return DomainWorldBoot.has_world_observer()
+
+
+## The private half of the WORLD cut, forwarded for the same reason: GDScript inherits
+## neither `static` functions nor `static var`, so every private the cut moved down is
+## re-spelled here. `enter_domain` (line ~343/346) and `leave_domain` (line ~379) reach
+## these by bare name, and a bare name resolves against THIS class only.
+static func _announce_run() -> Dictionary:
+	return DomainWorldBoot._announce_run()
+
+
+static func _tear_down_run() -> Dictionary:
+	return DomainWorldBoot._tear_down_run()
+
+
+static func _last_inhabitants() -> Array:
+	return DomainWorldBoot._last_inhabitants()
+
+
+static func _remember_inhabitants(inhabitants: Array) -> void:
+	DomainWorldBoot._remember_inhabitants(inhabitants)
+
+
+static func _world_of(parent: Node) -> Node2D:
+	return DomainWorldBoot._world_of(parent)
 
 
 ## FORGET the current run: clear `_run`, `_layout` and `_roster`, and answer what was
@@ -153,11 +246,7 @@ static func has_world_observer() -> bool:
 ## for a run that should have been drawn. `set_world_observer` replaces it, exactly as
 ## `_tear_down_run`'s note says. The minter `install` puts in place is a seam too.
 static func reset() -> Dictionary:
-	var forgotten := {"had_run": _run != null, "inhabitants": _roster.size()}
-	_run = null
-	_layout = {}
-	_roster = {}
-	return forgotten
+	return DomainWorldBoot.reset()
 
 
 ## Install the inhabitant constructor AND the fixtures' two contacts with the items
@@ -839,245 +928,3 @@ static func _active_map(player: Actor) -> DomainMap:
 	if not state is Dictionary or not (state as Dictionary).has("map"):
 		return null
 	return DomainMap.from_dict((state as Dictionary)["map"])
-
-
-## The realized world's root node under `parent`, or null when nothing is standing there.
-## Split from [method _active_map] because one is a RUN and the other is a TREE, and
-## `reset()` clears the first while the second can still be standing: a caller asking "what
-## can I reach" wants the tree whether or not a run is loaded.
-static func _world_of(parent: Node) -> Node2D:
-	if parent == null:
-		return null
-	return parent.get_node_or_null(NodePath(WORLD_NODE)) as Node2D
-
-
-# ── the world. Built here, parented by the caller, freed by the caller ────────
-#
-# ADR 0072:14 said it plainly — "A domain you cannot walk is a spreadsheet." Before this
-# section `DomainScene` was a complete walkable tile scene whose only caller was its own
-# `_init`, and `DomainSpawner`'s placement record — a real `Vector2` per inhabitant, written
-# into `actor.module_data` by `_place` and read by nobody — was a dead field.
-#
-# ## WHY THE WORLD IS AN ARGUMENT AND NOT A FIELD
-#
-# `tools/arch/rules.py` rejects a stateful system in `app/` (`app_state_signals`). This file
-# already carries `persistence`, so there is NO `var _world: Node2D` here: the world is
-# BUILT by [method realize_world], PARENTED by whoever asked, FREED by
-# [method release_world]. `item_workbench_app.gd` holds no handle — it finds the world by
-# name under the screen it is showing, so no second reference can outlive the node.
-#
-# Everything touching a `Node2D`, a tile or an adapter stays in `DomainScene`, which already
-# owns "where is this map in pixels". The verbs below resolve the two facts only this file
-# knows — which run is active, which bodies were minted — and pass them as ARGUMENTS;
-# nothing is read back out of a node.
-#
-# ## NO `_ready`, NO `await`, NO DEFERRED WORK
-#
-# The headless runner drives tests from `SceneTree._initialize()`, which returns before the
-# first frame: `_ready()` is never delivered to a node parented to `root`. So the build
-# happens in the caller's frame — `DomainScene` builds in `_init()` and the adapter is
-# configured by explicit setters.
-
-
-## REALIZE the active run as a walkable world under `parent`, and answer what happened.
-##
-## Builds a `DomainScene` from `_run`, places one body per minted inhabitant at the
-## placement `DomainSpawner` already recorded, and adds a bounded `PlayerAdapter` at the
-## entry centre. Refuses `no_map` BY NAME and writes nothing before it resolves, so a
-## refusal leaves the caller's tree exactly as it found it.
-##
-## ## And registers the hostile targets, which is the `intent` stage
-##
-## A creature node that exists but is on nobody's list is the shape the ADR 0228 audit
-## measured as "nothing the player does in a domain resolves": `PlayerAdapter.attack`
-## reads a list the `InteractionArea` fills, a placed creature is a bare `Node2D` no
-## physics body ever enters, and so the list was empty on every real run. Registration
-## happens HERE rather than in `place_inhabitants` because the adapter does not exist until
-## `place_player` has run — so the two must be joined by the caller that owns both, which
-## is this one.
-static func realize_world(parent: Node, player: Actor) -> Dictionary:
-	if _run == null:
-		return {"ok": false, "reason": "no_map"}
-	var realized := DomainScene.realize_world(parent, _run, player, _last_inhabitants())
-	if not bool(realized.get("ok", false)):
-		return realized
-	var world := realized.get("world") as Node2D
-	var adapter := realized.get("player") as PlayerAdapter
-	if adapter != null:
-		adapter.clear_targets()
-	realized["targets"] = DomainScene.register_targets(world)
-	return realized
-
-
-## Register the placed hostiles the player's next press can reach under `parent`, and
-## answer how many. The `intent` READ, callable on its own so a probe or a screen can
-## refresh the list after a move without rebuilding the world.
-static func register_targets(parent: Node) -> Dictionary:
-	var world := _world_of(parent)
-	if world == null:
-		return {"ok": false, "reason": "no_world", "registered": 0}
-	var registered := DomainScene.register_targets(world)
-	return {
-		"ok": true,
-		"reason": "",
-		"registered": registered,
-		"in_reach": DomainScene.targets_in_reach(world),
-	}
-
-
-## FREE the realized world under `parent`. Idempotent, and a no-op when nothing was ever
-## realized, so a `teardown()` may call it without asking first.
-static func release_world(parent: Node) -> Dictionary:
-	return DomainScene.release_world(parent)
-
-
-## Whether a world is currently realized under `parent`. Read by the composition root and by
-## `test_domain_playable.gd` through this one verb, so neither walks for a node name this
-## file does not publish.
-static func world_realized(parent: Node) -> bool:
-	return DomainScene.world_realized(parent)
-
-
-## Whether a run is active right now.
-##
-## The half of "is there a domain" that does NOT depend on a scene tree. `world_realized`
-## answers whether a world is STANDING, which is false for a run entered headlessly or on
-## a screen that realizes nothing — so a caller asking "is the player inside a domain?"
-## and getting `false` from that verb would be told the run does not exist when it does.
-## Reads the same `_run` every other verb here does, so it cannot disagree with them.
-static func has_run() -> bool:
-	return _run != null
-
-
-## The realized world's read model, primitives only, or `{}` when nothing is realized.
-static func world_summary(parent: Node) -> Dictionary:
-	return DomainScene.world_summary(parent)
-
-
-## TELL the installed observer that a run now exists, and answer what it did with it.
-##
-## ## Why the seam is optional and its refusal is REPORTED
-##
-## The world is a VIEW of a run, not a condition of one. A caller that entered a run with
-## nothing listening still has a real map, a real roster and real hazards — so this returns
-## `{"ok": false, "reason": "no_observer"}` rather than refusing the run, and the reason is
-## NAMED so a caller can tell "nobody is listening" from "the listener refused". That
-## distinction is the whole reason this returns a dictionary instead of a bool: an
-## unobserved run is a legitimate state (every headless probe that drives `enter_domain`
-## directly gets one) and it must be distinguishable from a failure.
-##
-## `_world_observer` is a `Callable`, never a reference, because `enter_domain` is a STATIC
-## on this file and the node that can parent a `Node2D` is the composition ROOT, which is an
-## instance. `NpcApi.set_minter` and `CustodyApi.set_resolver` are the same seam one layer
-## down; this is the same seam a layer up.
-##
-## The observer's own answer is passed back UNTOUCHED, because a listener that reports
-## `no_surface` (the run exists but nothing is showing the domain) has said something the
-## composition root needs to see and this file cannot improve on it.
-static func _announce_run() -> Dictionary:
-	if not _world_observer.is_valid():
-		return {"ok": false, "reason": "no_observer"}
-	return _world_observer.call(&"realize") as Dictionary
-
-
-## TELL the installed observer that the run has ended, and answer what it freed.
-##
-## Called BEFORE `_run` / `_layout` / `_roster` are cleared, so a listener that still wants
-## the floor's geometry can still reach the map this run realized from. Clearing first
-## would hand the teardown a map that has already stopped existing.
-##
-## The observer is NOT installed-over here: leaving a stale observer would let a run entered
-## later be realized under a screen the composition root has since navigated away from.
-## `set_world_observer` is what replaces it, and `_install_domain_world_observer` calls it
-## on every mount of the domain route.
-##
-## Same optional-seam contract as [method _announce_run]: no observer is
-## `{"ok": true, "freed": 0}` — "nothing was realized" is the honest answer for a run
-## entered through a headless probe rather than through the screen, and it is reported as a
-## success because nothing had to be undone.
-static func _tear_down_run() -> Dictionary:
-	if not _world_observer.is_valid():
-		return {"ok": true, "reason": "no_observer", "freed": 0}
-	var answer: Dictionary = _world_observer.call(&"release") as Dictionary
-	if answer.is_empty():
-		# The listener had no screen standing a world under. That is a no-op rather than a
-		# failure, and a fabricated `freed` count would be a number nobody could check.
-		return {"ok": true, "reason": "no_surface", "freed": 0}
-	return answer
-
-
-## Every inhabitant the LAST `enter_domain` minted, as `Actor`s.
-##
-## Published rather than kept private because the fight seam has to answer "which band
-## entry does this fallen body belong to", and a fallen body is identified by its species
-## id — which is NOT unique inside a run (`spawn_inhabitant` hands `def.inhabitant_id` to
-## `Actor.new` unchanged, so every `cinder_hound` shares one). The roster is the only
-## place a placed body's room and role are both on hand, so `DomainFight` asks here rather
-## than re-deriving provenance the spawner already recorded.
-static func placed_inhabitants() -> Array:
-	return _last_inhabitants()
-
-
-## Every inhabitant the LAST `enter_domain` minted, as `Actor`s.
-##
-## ## Why a handle and not a re-derivation
-##
-## `spawn_map` RETURNS the bodies it minted and leaves no index behind: it stamps
-## `role` / `inhabitant_id` / `room_id` / `ref_id` / `position` onto each `Actor`'s own
-## `module_data`, but nothing on the module can be walked to FIND them, because an
-## `Actor` is not enumerable from the run. So the roster is held here, beside `_run` and
-## `_layout`, and is written in the same statement that assigns them.
-##
-## ## Why this is a `Dictionary` and NOT an `Array`
-##
-## `tools/arch/rules.py`'s `APP_UNSHAPED_ARRAY_RE` and `APP_CONTENT_ARRAY_RE` read a
-## member `Array` (untyped, or typed by a repo class) as a `state-table` signal, and
-## `app_state_warnings` fires at two signals. This file already carries `persistence`
-## (`_active_map` calls `get_module_data`), so an `Array[Actor]` member here would be the
-## second signal and would turn this composition-root wiring into a flagged stateful
-## system. A `Dictionary` is a HANDLE — one entry, replaced wholesale on every entry,
-## emptied on leave — not a slot table that the file grows and decays. The walk that
-## reads it is bounded by the authored spawn refs, which
-## `DomainSpawner.MAX_COUNT_PER_REF` already caps at 64 per ref.
-static func _last_inhabitants() -> Array:
-	var out: Array = []
-	for actor in _roster.values():
-		if actor is Actor:
-			out.append(actor)
-	return out
-
-
-## Every inhabitant as `instance id -> Actor`, the one place the roster is written. Split
-## from `_last_inhabitants` so `enter_domain` assigns it in a single statement with the
-## map it belongs to. **The key is `get_instance_id()`, NOT `String(actor.id)`** — see the
-## note on `_roster`, and [method _forget] for the silence that hid that mistake.
-static func _remember_inhabitants(inhabitants: Array) -> void:
-	var out: Dictionary = {}
-	for inhabitant in inhabitants:
-		var actor := inhabitant as Actor
-		if actor == null:
-			continue
-		out[actor.get_instance_id()] = actor
-	_roster = out
-	_forget(inhabitants.size())
-
-
-## REPORT the bodies a roster handle did not keep, by name. A handle is lossy the moment
-## its key is not unique, so "how many did this run mint?" can only be answered HERE,
-## where the minted count and the stored size are both in hand. Reported, never repaired:
-## a roster quietly holding fewer bodies than the map authored is exactly the "the roster
-## reads 6 and the world holds 0" failure this program exists to prevent.
-static func _forget(minted: int) -> void:
-	var held := _roster.size()
-	if held == minted:
-		return
-	push_error(
-		(
-			(
-				"DomainBoot: a run minted %d inhabitant(s) and the roster kept %d; %d were dropped "
-				% [minted, held, maxi(0, minted - held)]
-			)
-			+ " rather than realized. A world drawing fewer creatures than the map authored is a "
-			+ "silent shortfall, so it is named here."
-		)
-	)
