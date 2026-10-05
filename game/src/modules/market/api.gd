@@ -293,11 +293,14 @@ static func settle(actor: Actor, location_id: StringName, periods: int) -> Dicti
 ## The read model: every shop remembered, the floor at every location, every open lot,
 ## and the spread a panel labels itself with. `{}` when there is no actor.
 ##
-## **`lots` is here because ADR 0102's settlement loop needs it and this facade is at its
-## cap**: the ADR says "summary() reports which lots are due; the caller loops and calls
-## settle(seller, lot_id, winner, periods)", and a thirteenth accessor would fail
-## `tools arch`. `AuctionReadModel` shapes each row as primitives and answers the two
-## questions the caller actually has — `required_bid` and whether it is still `open`.
+## **`lots` is here because ADR 0102's settlement loop needs it and the caller needs the
+## row, not the bare lot**: the ADR says "summary() reports which lots are due; the
+## caller loops and calls settle(seller, lot_id, winner, periods)". `AuctionReadModel`
+## shapes each row as primitives and answers the two questions the caller actually has
+## — `required_bid` and whether it is still `open`. There is no width cap on this facade
+## any more, so that is a cohesion decision rather than a gate: the caller is already
+## looping the due lots to settle them, so a second call per lot to read two fields
+## would be a worse answer than one row carrying both.
 static func summary(actor: Actor) -> Dictionary:
 	if actor == null:
 		return {}
