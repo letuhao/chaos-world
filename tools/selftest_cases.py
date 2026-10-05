@@ -5433,23 +5433,29 @@ def _facade_fan_in_over_threshold_warns() -> None:
     """
     with tempfile.TemporaryDirectory() as raw:
         src = Path(raw) / "src"
-        write(src / "modules" / "target" / "api.gd", """
+        write(
+            src / "modules" / "target" / "api.gd",
+            """
 class_name TargetApi
 extends RefCounted
 
 
 static func summary(actor: Actor) -> Dictionary:
     return {}
-""")
+""",
+        )
         for i in range(9):
-            write(src / "modules" / f"reacher{i}" / "api.gd", f"""
+            write(
+                src / "modules" / f"reacher{i}" / "api.gd",
+                f"""
 class_name Reacher{i}Api
 extends RefCounted
 
 
 static func reach(actor: Actor) -> Dictionary:
     return TargetApi.summary(actor)
-""")
+""",
+            )
         files = sorted(src.rglob("*.gd"))
         warnings = enforce.fan_in_warnings(files)
         expect(
@@ -5469,23 +5475,29 @@ def _facade_fan_in_under_threshold_is_quiet() -> None:
     """
     with tempfile.TemporaryDirectory() as raw:
         src = Path(raw) / "src"
-        write(src / "modules" / "target" / "api.gd", """
+        write(
+            src / "modules" / "target" / "api.gd",
+            """
 class_name TargetApi
 extends RefCounted
 
 
 static func summary(actor: Actor) -> Dictionary:
     return {}
-""")
+""",
+        )
         for i in range(3):
-            write(src / "modules" / f"reacher{i}" / "api.gd", f"""
+            write(
+                src / "modules" / f"reacher{i}" / "api.gd",
+                f"""
 class_name Reacher{i}Api
 extends RefCounted
 
 
 static func reach(actor: Actor) -> Dictionary:
     return TargetApi.summary(actor)
-""")
+""",
+            )
         files = sorted(src.rglob("*.gd"))
         warnings = enforce.fan_in_warnings(files)
         expect(
