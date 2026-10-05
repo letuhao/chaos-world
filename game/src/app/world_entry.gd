@@ -34,12 +34,43 @@ func _bind_nodes() -> void:
 	# headless test and a streamed scene both do - then read a null marker and
 	# silently fell back to `Vector2.ZERO`.
 	_spawn_point = get_node_or_null("SpawnPoint") as Marker2D
-	_npc_spawn_points = _collect_nodes("NPCSpawnPoints", Marker2D)
-	_enemy_spawn_zones = _collect_nodes("EnemySpawnZones", Area2D)
-	_resource_nodes = _collect_nodes("ResourceNodes", Area2D)
-	_entry_points = _collect_nodes("EntryPoints", Marker2D)
-	_exit_points = _collect_nodes("ExitPoints", Marker2D)
-	_location_markers = _collect_nodes("LocationMarkers", Marker2D)
+	# Each call is TYPED at the call site, because [method _collect_nodes] returns an
+	# untyped `Array` and assigning one into `Array[Marker2D]` is a runtime ABORT in
+	# Godot 4.7, not a parse error: `Trying to assign an array of type "Array" to a
+	# variable of type "Array[Marker2D]"`. That abort killed `_bind_nodes` at the
+	# first assignment, so `_resource_nodes` was never filled, `interactables()`
+	# read an empty list, and every scene-authored node was invisible — while the
+	# suites still reported green, because the assertions after it ran against a
+	# half-initialised entry. A wrapper that returns the right type is the fix; the
+	# alternative (declaring `_collect_nodes` per type) would need six overloads.
+	_npc_spawn_points = _as_markers(_collect_nodes("NPCSpawnPoints", Marker2D))
+	_enemy_spawn_zones = _as_areas(_collect_nodes("EnemySpawnZones", Area2D))
+	_resource_nodes = _as_areas(_collect_nodes("ResourceNodes", Area2D))
+	_entry_points = _as_markers(_collect_nodes("EntryPoints", Marker2D))
+	_exit_points = _as_markers(_collect_nodes("ExitPoints", Marker2D))
+	_location_markers = _as_markers(_collect_nodes("LocationMarkers", Marker2D))
+
+
+## `_collect_nodes` answers an untyped `Array`, and these are the two typed shapes
+## this file stores. The conversion is by append, not by casting the container: a
+## cast does not re-type an array in GDScript, and the assignment that follows is
+## the line that raises.
+func _as_markers(source: Array) -> Array[Marker2D]:
+	var out: Array[Marker2D] = []
+	for node in source:
+		var marker := node as Marker2D
+		if marker != null:
+			out.append(marker)
+	return out
+
+
+func _as_areas(source: Array) -> Array[Area2D]:
+	var out: Array[Area2D] = []
+	for node in source:
+		var area := node as Area2D
+		if area != null:
+			out.append(area)
+	return out
 
 
 ## Every child of `group_name` that is an instance of `type`.
