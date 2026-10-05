@@ -91,7 +91,9 @@ static func set_resolver(resolver: Callable) -> void:
 
 
 ## Take an unheld `node_id` for `owner_ref`. Charges `claim_cost` as obligation TERMS and
-## needs the owner's standing at or above the node's `claim_floor`.
+## needs the holder to already hold at least `claim_floor` nodes — ADR 0248's
+## concentration gate, answered from this ledger rather than from a political number a
+## `{kind, id}` ref does not carry.
 ##
 ## **On a held node this opens a standoff instead**: one challenger row, and `holder` is
 ## untouched (ADR 0085). Returns `{ok, reason, contested}` so a caller can tell a claim from
@@ -122,7 +124,7 @@ static func claim(actor: Actor, node_id: StringName, owner: Dictionary) -> Dicti
 	if not bool(resolved["ok"]):
 		return _refuse(actor, node_id, String(resolved["reason"]), state)
 	var def := ResourceNodeCatalog.instance().definition(node_id)
-	if not _meets_floor(def, owner):
+	if not _meets_floor(state, def, owner):
 		return _refuse(actor, node_id, HoldingsState.CLAIM_BELOW_FLOOR, state)
 	_ensure_entry(state, node_id)
 	state["nodes"][String(node_id)]["owner"] = owner.duplicate(true)
@@ -382,15 +384,59 @@ static func _resolve(owner: Dictionary) -> Dictionary:
 	return {"ok": true, "reason": ""}
 
 
-## Whether the holder's standing meets the node's authored floor. Only an `actor` has a
-## standing this module can read; an institution's is its own module's business, so an
-## institution claim with a floor is refused rather than assumed to pass.
-static func _meets_floor(def: ResourceNodeDef, owner: Dictionary) -> bool:
+## ## What `claim_floor` counts, and why it is not a standing (ADR 0248)
+##
+## **The count of resource nodes the holder ALREADY holds.** It is a concentration gate:
+## you consolidate shallow ground before you may take the deep vein, and every number it
+## is read against is in this ledger. Nothing outside this module is consulted, so the
+## answer cannot drift from the world it describes.
+##
+## It used to read `owner.get("standing", 0)`, and that was an unreachable gate: an
+## `OwnerRef` is `{kind, id}` (`contracts/owner_ref.gd`) and both production producers
+## build exactly that, so the read was always 0 and **7 of the 16 authored nodes** refused
+## `claim_below_floor` forever. There is no actor-global `standing` to have read instead —
+## every `standing` in this repo is one institution's capped ledger (`ClanState`,
+## `SectState`, `NationState`, `social`'s bond), so "the holder's standing" names no single
+## number and a resource node has no business choosing one. See ADR 0248 for the rejected
+## alternatives; the short version is that the ref shape is right and the GATE was wrong.
+##
+## **The floor is kind-agnostic on purpose.** The old rule refused every non-`actor` holder
+## outright, which meant an institution could never take a floored node — a gate that
+## answers one kind is not a gate, it is a type check. A count of ledger rows is a fact for
+## all four `OwnerRef.KINDS` equally, and `_held_by` is that count.
+static func _meets_floor(state: Dictionary, def: ResourceNodeDef, owner: Dictionary) -> bool:
 	if def == null or def.claim_floor <= 0:
 		return true
-	if StringName(owner.get("kind", "")) != &"actor":
-		return false
-	return int(owner.get("standing", 0)) >= def.claim_floor
+	return _held_by(state, owner) >= def.claim_floor
+
+
+## How many nodes `owner` holds in this ledger. Counted from the ledger's OWN rows rather
+## than from a summary of the catalog, so a node the ledger has never heard of contributes
+## nothing — the gate is about ground actually taken, which is what `claim` writes.
+##
+## Keyed by [method OwnerRef.storage_key] rather than by bare `id`, because a clan and an
+## actor may share an id and a count that collapsed them would answer one holder's floor
+## with another's ground.
+static func _held_by(state: Dictionary, owner: Dictionary) -> int:
+	var key := _storage_key_of(owner)
+	if key == "":
+		return 0
+	var held := 0
+	for node_id in (state["nodes"] as Dictionary).keys():
+		var holder = HoldingsState.holder(state, StringName(node_id))
+		if holder.is_empty() or OwnerRef.is_vacant(holder):
+			continue
+		if _storage_key_of(holder) == key:
+			held += 1
+	return held
+
+
+## `OwnerRef.storage_key` for a plain dictionary, or `""` for one naming nobody. The empty
+## string is the refusal because a ledger key is never empty: `storage_key` is
+## `"%s:%s"`, so no holder can produce one, and a nameless ref therefore matches nothing.
+static func _storage_key_of(owner: Dictionary) -> String:
+	var ref := OwnerRef.from_dict(owner)
+	return "" if ref.is_empty() else ref.storage_key()
 
 
 static func _charge_claim_cost(state: Dictionary, def: ResourceNodeDef, owner: Dictionary) -> void:

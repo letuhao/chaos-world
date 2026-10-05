@@ -50,7 +50,17 @@ const DEFAULT_KIND := &"ore"
 ## authored rather than as a large number.
 @export var depletion: int = 0
 
-## The standing a claim requires. A claim without one would let anyone take a vein.
+## How many resource nodes a holder must ALREADY hold before this one opens to them
+## (ADR 0248). A claim without one would let a first-day hero walk onto the deepest vein
+## in the corpus.
+##
+## **A count of ground, never a standing.** It used to read the owner ref's `standing`,
+## which a `{kind, id}` ref does not carry, so every authored value above 0 refused
+## forever; and there is no actor-global `standing` in this repo to have read instead —
+## every one belongs to a single institution's capped ledger, and a resource node has no
+## business naming an institution. The gate is now answered from the holdings ledger, so
+## it is satisfiable, kind-agnostic and free of a module edge. Zero is authored as zero
+## and means "anyone may take this".
 @export var claim_floor: int = 0
 
 

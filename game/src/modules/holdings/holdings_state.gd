@@ -33,6 +33,9 @@ const UNKNOWN_NODE := "unknown_node"
 const ALREADY_HELD := "already_held"
 const NO_HOLDER := "no_holder"
 const HOLDER_MISMATCH := "holder_mismatch"
+## The holder does not yet hold `claim_floor` nodes (ADR 0248). The rule kept its name
+## when what it counts changed from a standing to a count of ground already held — the
+## refusal is still "your claim is under the floor", never "your standing is too low".
 const CLAIM_BELOW_FLOOR := "claim_below_floor"
 const CLAIM_COST_UNPAID := "claim_cost_unpaid"
 const CANNOT_RELEASE_FOREIGN := "cannot_release_foreign"
