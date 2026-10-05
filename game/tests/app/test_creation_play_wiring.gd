@@ -256,7 +256,7 @@ func test_a_reborn_body_is_social_attached_so_bonds_do_not_vanish() -> void:
 	assert_ne(
 		SocialApi.social_state(second), null, "a reborn body has a social ledger to bond into"
 	)
-	assert_ne(SocialApi.summary(second).is_empty(), false, "and the bond summary answers for it")
+	assert_ne(SocialApi.summary(second).is_empty(), true, "and the bond summary answers for it")
 
 
 func test_a_reborn_body_is_npc_attached_so_the_roster_binds_to_it() -> void:
@@ -441,12 +441,32 @@ func _program() -> CharacterCreationProgram:
 
 ## The origin id the shipped catalog offers, asked of the catalog rather than hardcoded, so a
 ## content rename fails here by name instead of silently turning every case into a refusal test.
+##
+## ## An EARNABLE origin, not merely the first one
+##
+## `destinies_in_group` orders by string, so `ids[0]` is `the_chosen_instrument` — which
+## authors `requires_fates = [&"reborn_in_a_lesser_vessel"]`. `earn_destiny` refuses it on a
+## fresh boot body, and a refused earn returns the ledger unchanged with NO error, so
+## `_earn_an_origin` silently earned nothing and the two cases below it failed on a body that
+## never held a destiny. Skipped by the gate, not worked around: the FIRST EARNABLE one is
+## still the shipped catalog's answer, read through the shipped gate.
 func _first_origin() -> StringName:
-	var ids := FateCatalog.instance().destinies_in_group(&"origin")
-	assert_ne(ids.size() > 0, true, "the catalog ships at least one origin")
-	if ids.is_empty():
-		return &""
-	return StringName(ids[0])
+	var catalog := FateCatalog.instance()
+	var ids := catalog.destinies_in_group(&"origin")
+	# `assert_eq`, NOT `assert_ne`: `assert_ne(actual, unexpected)` FAILS when the two
+	# are EQUAL, so `assert_ne(ids.size() > 0, true, ...)` passes on an EMPTY catalog and
+	# fails on a healthy one. It ran as a proof that content was MISSING, so every
+	# `_earn_an_origin` call below silently earned nothing and 20 cases cascaded off it
+	# (ADR 0188: a guard that cannot fail is a missing guard — this one failed backwards).
+	assert_eq(ids.size() > 0, true, "the catalog ships at least one origin")
+	for id in ids:
+		var def := catalog.destiny_definition(id)
+		if def != null and DestinyGate.earnable({}, def):
+			return id
+	# None is earnable from nothing. That is authored content, not a harness failure, so it
+	# is reported by name rather than swallowed into a refusal test.
+	assert_eq(ids.size() > 0, false, "and at least one of them is earnable from nothing")
+	return &""
 
 
 ## Earn one origin destiny on `body`, through the facade rather than by hand-editing
