@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EncounterDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/encounter/encounter_def.gd" id="1_enc"]
+
+[resource]
+script = ExtResource("1_enc")
+id = &"the_mysterious_stranger"
+display_name = "The Mysterious Stranger"
+description = "A hooded figure approaches with a cryptic warning. They speak of a fate that awaits, and offer a choice that will shape your path."
+trigger_type = &"always"
+trigger_value = &""
+weight = 0.8
+cooldown = 5
+fate_choices = Array[StringName]([&"heaven_s_warning_unread", &"heaven_eye_circled_once"])
+prophecy_id = &"prophecy_of_the_duel"
+unique = true

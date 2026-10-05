@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EncounterDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/encounter/encounter_def.gd" id="1_enc"]
+
+[resource]
+script = ExtResource("1_enc")
+id = &"the_ancient_shrine"
+display_name = "The Ancient Shrine"
+description = "An ancient shrine hums with spiritual energy. A vision floods your mind — a glimpse of a destiny not yet earned."
+trigger_type = &"always"
+trigger_value = &""
+weight = 0.5
+cooldown = 10
+fate_choices = Array[StringName]([&"heaven_s_chosen_instrument", &"bound_name_called_once"])
+prophecy_id = &"prophecy_of_the_chosen"
+unique = true

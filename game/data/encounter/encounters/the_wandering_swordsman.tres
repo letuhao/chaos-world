@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EncounterDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/encounter/encounter_def.gd" id="1_enc"]
+
+[resource]
+script = ExtResource("1_enc")
+id = &"the_wandering_swordsman"
+display_name = "The Wandering Swordsman"
+description = "A lone swordsman blocks your path, eyes sharp. He offers a duel — win, and you earn his respect. Lose, and you learn humility."
+trigger_type = &"always"
+trigger_value = &""
+weight = 1.0
+cooldown = 3
+fate_choices = Array[StringName]([&"first_blood_duel", &"meridian_cut_at_the_shoulder"])
+prophecy_id = &""
+unique = true

@@ -133,6 +133,13 @@
         "core"
       ]
     },
+    "encounter": {
+      "deps": [
+        "contracts",
+        "core",
+        "destiny"
+      ]
+    },
     "event": {
       "deps": [
         "contracts",

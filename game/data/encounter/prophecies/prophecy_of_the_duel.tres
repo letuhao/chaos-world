@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ProphecyDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/encounter/prophecy_def.gd" id="1_pro"]
+
+[resource]
+script = ExtResource("1_pro")
+id = &"prophecy_of_the_duel"
+display_name = "Prophecy of the Duel"
+description = "A cryptic vision of a duel that will define your path."
+hint_fate_id = &"first_blood_duel"
+hint_text = "Steel will cross steel, and the first blow struck will mark you forever."

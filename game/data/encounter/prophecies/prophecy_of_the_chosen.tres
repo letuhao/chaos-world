@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ProphecyDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/encounter/prophecy_def.gd" id="1_pro"]
+
+[resource]
+script = ExtResource("1_pro")
+id = &"prophecy_of_the_chosen"
+display_name = "Prophecy of the Chosen"
+description = "A vision of a destiny that calls to you from beyond."
+hint_fate_id = &"heaven_s_chosen_instrument"
+hint_text = "A name will be spoken in the halls of heaven, and you will answer."
