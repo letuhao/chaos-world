@@ -1,0 +1,7 @@
+{
+  "stats": [
+    {"id": "accuracy", "op": "percent", "resource": "w8_template_mark", "zero_baseline": true},
+    {"id": "evasion", "op": "percent", "resource": "w8_template_mark"}
+  ],
+  "resources": [{"id": "w8_template_mark"}]
+}

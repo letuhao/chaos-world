@@ -61,14 +61,19 @@ func test_load_order_loads_both_fixtures_in_priority_order() -> void:
 	assert_eq(bool(out["ok"]), true, "both fixtures load clean")
 	assert_eq(
 		out["order"],
-		["w8_third_party_data", "w8_first_party_module", "w8_fixture_cultivation_path"],
+		[
+			"w8_third_party_data",
+			"w8_first_party_module",
+			"w8_fixture_cultivation_path",
+			"w8_fixture_doctrine_system",
+		],
 		"priority order"
 	)
 
 
 func test_contexts_are_stamped_for_both_mods() -> void:
 	var out := _load_fixtures()
-	assert_eq(out["contexts"].size(), 3, "one ctx per mod")
+	assert_eq(out["contexts"].size(), 4, "one ctx per mod")
 	var ctx_a := out["contexts"][0] as RegistrationContext
 	var ctx_b := out["contexts"][1] as RegistrationContext
 	assert_eq(ctx_a.mod_id, "w8_third_party_data", "first ctx is the data mod")

@@ -1,0 +1,16 @@
+{
+  "id": "w8_fixture_doctrine_system",
+  "version": "1.0",
+  "priority": 40,
+  "requires_api": 1,
+  "depends_on": [],
+  "provides": ["doctrine_system"],
+  "modules": [
+    {
+      "name": "w8_fixture_doctrine",
+      "api_gd": "res://tests/fixtures/mods/doctrine_system/api.gd",
+      "deps": [],
+      "provides": ["doctrine_system"]
+    }
+  ]
+}
