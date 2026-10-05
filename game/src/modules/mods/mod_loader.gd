@@ -102,6 +102,22 @@ static func discover(roots: Array) -> Dictionary:
 				"mods": [],
 			}
 		seen[manifest["id"]] = path
+		if not String(manifest["engine_version"]).is_empty():
+			var running := Engine.get_version_info()
+			var running_version := (
+				"%d.%d.%d" % [int(running["major"]), int(running["minor"]), int(running["patch"])]
+			)
+			if ModManifest.version_lt(running_version, String(manifest["engine_version"])):
+				return {
+					"ok": false,
+					"reason": "engine_version_mismatch",
+					"detail":
+					(
+						"'%s' requires engine >= %s, this engine is %s"
+						% [manifest["id"], manifest["engine_version"], running_version]
+					),
+					"mods": [],
+				}
 		mods.append(manifest)
 	return {"ok": true, "reason": "", "detail": "", "mods": mods}
 
@@ -110,7 +126,8 @@ static func discover(roots: Array) -> Dictionary:
 ## RegistrationContext per mod, filled through the five seams. On success:
 ## `{ok:true, order:[ids], mods:[manifests], contexts:[RegistrationContext]}`.
 ## On failure: `{ok:false, reason, detail}` with a named cause — cycle,
-## missing dep, version mismatch, api mismatch — and NO silent skips.
+## missing dep, version mismatch, api mismatch, engine version mismatch —
+## and NO silent skips.
 static func load_order(roots: Array) -> Dictionary:
 	var found := discover(roots)
 	if not bool(found.get("ok", false)):

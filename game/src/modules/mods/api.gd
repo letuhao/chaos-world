@@ -30,8 +30,8 @@ static func discover_mods(roots: Array) -> Dictionary:
 
 ## Discover, validate and sort: the deterministic load order, or a NAMED
 ## cause (cycle, missing dependency, version mismatch, api mismatch,
-## duplicate id, bad manifest). On success also returns the per-mod
-## RegistrationContext rows recorded through the five seams.
+## engine version mismatch, duplicate id, bad manifest). On success also
+## returns the per-mod RegistrationContext rows recorded through the five seams.
 static func load_order(roots: Array) -> Dictionary:
 	return ModLoader.load_order(roots)
 

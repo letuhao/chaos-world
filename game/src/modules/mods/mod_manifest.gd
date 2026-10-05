@@ -41,8 +41,16 @@ static func parse(text: String, source_path: String = "") -> Dictionary:
 		)
 	if not _is_whole_number(raw["requires_api"]):
 		return _fail("bad_requires_api", "%s: 'requires_api' must be an integer" % source_path)
-	if raw.has("engine_version") and typeof(raw["engine_version"]) != TYPE_STRING:
-		return _fail("bad_engine_version", "%s: 'engine_version' must be a string" % source_path)
+	if raw.has("engine_version"):
+		if typeof(raw["engine_version"]) != TYPE_STRING:
+			return _fail(
+				"bad_engine_version", "%s: 'engine_version' must be a string" % source_path
+			)
+		if not is_digits_and_dots(String(raw["engine_version"])):
+			return _fail(
+				"bad_engine_version",
+				"%s: 'engine_version' must be dot-separated numbers" % source_path
+			)
 	var depends := _parse_depends_on(raw.get("depends_on", []), source_path)
 	if not depends[0]:
 		return depends[1]
