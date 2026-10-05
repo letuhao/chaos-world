@@ -1,0 +1,40 @@
+{
+  "_readme": [
+    "DELIBERATE caller-less published facade verbs (ADR 0188).",
+    "",
+    "Every entry must carry a `reason`, and a `ticket` where one exists: an entry",
+    "without a reason is a parse FAILURE, because the whole value of this list is",
+    "that somebody had to say why. Keys are exact `Class.verb` names - there is no",
+    "wildcard and no module-level suppression, so a verb that is not named here and",
+    "has no caller still fails.",
+    "",
+    "An entry whose verb has since found a caller is reported STALE, so this list",
+    "cannot grow into a description of a different tree than the one it gates.",
+    "",
+    "This is not a backlog of work to do. It records verbs whose zero-caller state",
+    "is CORRECT because the moment that would call them does not ship yet, and names",
+    "the decision that is waiting on it."
+  ],
+  "entries": {
+    "EventApi.resolve": {
+      "reason": "DEF-0315. The only caller of NationApi.resolve_conflict, so the declared war_of_the_nine_fords standoff can never be settled and the river march never changes hands. ADR 0085 forbids making the political layer decide the winner, so no call site may be invented: no shipped moment produces a verdict.",
+      "ticket": "DEF-0315"
+    },
+    "WorldSpawnApi.set_current": {
+      "reason": "A pure alias: `set_current` is `return selected(actor, location_id)` with no added behaviour, so keeping it publishes a second name for one verb. Production reaches the move through `WorldSpawnApi.selected` (app/world_stage.gd:473). ADR 0188 says a member that computes nothing no other published surface computes is DELETED; the repair is a one-line deletion in game/src and is filed, not made here.",
+      "ticket": "BL-0908"
+    },
+    "QuestApi.catalog": {
+      "reason": "BL-0907. The authored quest catalog is read by the quest module's own `_known()` and published through `offered`/`summary`, which a screen calls. `catalog()` is the raw authored table with no player-facing consumer of its own shape, and quests now complete in production through `advance` (BL-0907), so this is harmless surface rather than a dead feature.",
+      "ticket": "BL-0907"
+    },
+    "EventApi.catalog": {
+      "reason": "BL-0907. The authored event definitions are read inside the module through `_catalog()` and reach a player through `available`/`summary`. `catalog()` is the raw authored table; it has no separate consumer, and `EventApi.events` - which DOES need one - is reported rather than exempted.",
+      "ticket": "BL-0907"
+    },
+    "EventApi.active": {
+      "reason": "BL-0907. The in-flight event rows are folded into `EventApi.summary`, which a screen calls, so the read model ships through the verb that has a caller. `active()` is the unfiltered form of a summary key.",
+      "ticket": "BL-0907"
+    }
+  }
+}

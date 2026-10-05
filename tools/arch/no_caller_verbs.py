@@ -314,39 +314,57 @@ def _qualified_index(bodies: dict[Path, str]) -> dict[str, set[Path]]:
     return index
 
 
-def _bare_call_is_this_verb(path: Path, text: str, verb: Verb) -> bool:
-    """Is the bare `verb(` in `path` a call of THIS verb, or a namesake?
+def _ambiguous_verbs(verbs: list[Verb]) -> set[str]:
+    """Verb names declared by MORE THAN ONE facade, where a bare call cannot be attributed.
+
+    `events` is declared by five facades and `resolve` by three, so `events(` in
+    `mods/mod_loader.gd` is `ModsApi.events` and `resolve(` in `owner_resolver.gd`
+    is its own resolver. For those names a bare call proves nothing and is
+    discarded unless the file also names the facade class.
+    """
+    counts: dict[str, int] = {}
+    for verb in verbs:
+        counts[verb.name] = counts.get(verb.name, 0) + 1
+    return {name for name, count in counts.items() if count > 1}
+
+
+def _bare_call_is_this_verb(
+    text: str, verb: Verb, ambiguous: set[str]
+) -> bool:
+    """Is the bare `verb(` in this body a call of THIS verb, or of a namesake?
 
     A bare call is ambiguous, and an unguarded one is how a reader reports a dead
-    verb as alive. Two namesexes on this tree proved it while the rule was being
-    written:
+    verb as ALIVE. Two namesexes on this tree proved it while the rule was being
+    written, and both are the subject of BL-0907:
 
-    - `EventApi.events` — the bus accessor. Its bare name matches `mods`' own
-      `func events(` in `mod_manifest.gd`, so 7 unrelated files read as callers
-      and the one true positive in BL-0907 passed clean.
+    - `EventApi.events` — the event BUS, which has no production subscriber. Its
+      bare name matches `ModsApi.events` in `mods`, so an unguarded reader credits
+      seven unrelated files and the one true positive with "real consequences"
+      passes clean.
     - `EventApi.resolve` — DEF-0315's whole subject, the verb that settles a
-      sect-war verdict. `resolve(` matches `owner_resolver.gd`'s own `resolve`
-      and `beat_director.gd`'s, so 23 namesexes credited it and the deferred
-      decision read as shipped.
+      sect-war verdict. `resolve(` matches `owner_resolver.gd`'s own `resolve`,
+      so 23 namesexes credit it and a deferred decision reads as shipped.
 
-    Two namesexes are discarded, and one kept:
+    Two namesexes are discarded and two shapes kept:
 
-    - a file that DECLARES `verb` itself owns that name, so its call is its own
-      and not the facade's;
-    - a file whose module declares a sibling of the SAME name is a namesake, not
-      a caller;
-    - everything else that names the facade CLASS and calls the verb bare is kept,
-      because that is the aliasing a caller does when it holds the facade.
+    - a file that DECLARES `verb` owns the name, so its call is its own;
+    - an AMBIGUOUS name (declared by several facades) counts only where the file
+      also names the facade CLASS, because that is the one spelling that picks a
+      facade out of the ambiguity;
+    - a UNIQUE name counts wherever it is called, since nothing else can own it.
 
-    A bare call from a file with no relationship to the facade is NOT a caller.
-    Deleting it is the direction that makes the rule honest; a false green on the
-    two verbs BL-0907 actually names would leave the whole guard decorative.
+    This cuts both ways and both cuts were measured. Dropping the bare shape
+    outright was tried and reports 117 caller-less verbs, including live ones like
+    `NpcApi.spawn` and `QuickUseApi.attach`, which are reached through an instance
+    alias rather than a class name. A false red on a boot verb sends an agent to
+    author a caller that already exists (INC-0012), so the shape stays and the
+    attribution is what narrows.
     """
     if re.search(rf"^\s*(?:static\s+)?func\s+{re.escape(verb.name)}\s*\(", text, re.MULTILINE):
         return False
     if verb.cls in text:
         return True
-    return False
+    return verb.name not in ambiguous
 
 
 def _guard_callers(guards_dir: Path, verbs: list[Verb]) -> dict[str, list[str]]:
@@ -360,9 +378,22 @@ def _guard_callers(guards_dir: Path, verbs: list[Verb]) -> dict[str, list[str]]:
     """
     if not guards_dir.is_dir():
         return {}
+    # THIS FILE IS NOT A GUARD CALLER. It names every published verb in its own
+    # messages, its allowlist prose and its selftest cases, so counting itself
+    # would make every verb in the tree look reached and the rule would pass
+    # vacuously — the exact shape INC-0012 records. A guard that reads itself as
+    # evidence is not a guard.
+    #
+    # The selftest is excluded for a different and honest reason: it names a verb
+    # to PROVE the rule fires on it, which is not a dependency. A committed guard
+    # that calls the verb in production code is a real keeper.
+    self_path = Path(__file__).resolve()
+    excluded = {self_path}
+    excluded.update(self_path.parent.glob("*_selftest.py"))
     text_by_file = {
         path: code_only(path.read_text(encoding="utf-8", errors="replace"))
         for path in sorted(guards_dir.rglob("*.py"))
+        if path.resolve() not in excluded
     }
     found: dict[str, list[str]] = {}
     for verb in verbs:
@@ -414,6 +445,8 @@ def scan(
     test_names = _index(test_bodies)
     test_qualified = _qualified_index(test_bodies)
 
+    ambiguous = _ambiguous_verbs(report.published)
+    report.ambiguous = sorted(ambiguous)
     for verb in report.published:
         facade = Path(verb.facade)
         module_dir = facade.parent
@@ -444,7 +477,7 @@ def scan(
             if qualified or (
                 path.parent != module_dir
                 and bare.search(text)
-                and _bare_call_is_this_verb(path, text, verb)
+                and _bare_call_is_this_verb(text, verb, ambiguous)
             ):
                 direct.append(path.as_posix())
         report.callers[verb.qualified] = sorted(set(direct))
@@ -857,6 +890,93 @@ def register_selftest_cases(case, expect, write) -> None:
                 any("no module facade" in p for p in problems),
                 f"a tree with zero facades was reported clean: {problems!r}. A guard that scanned "
                 "nothing must FAIL, not pass",
+            )
+
+    @case("no_caller_verbs: a NAMESECKE bare call does NOT clear the verb")
+    def _namesake_does_not_clear() -> None:
+        """The false-GREEN direction, and the one that would have made this decorative.
+
+        `mods/mod_manifest.gd` declares its own `func events(` and `mods/mod_loader.gd`
+        calls it, while `EventApi.events` is the event BUS with no subscriber. A bare
+        `events(` accepted anywhere credits the two, and the one true positive BL-0907
+        calls "real consequences" passes clean. The same holds for `EventApi.resolve`
+        against `owner_resolver.gd`'s own `resolve`.
+        """
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            _fixture(
+                root,
+                write,
+                module="event",
+                cls="EventApi",
+                body="static func events() -> WorldEvents:\n\treturn WorldEvents.new()\n",
+            )
+            # A DIFFERENT module that declares its own `events(` and calls it.
+            _fixture(
+                root,
+                write,
+                module="mods",
+                cls="ModsApi",
+                body="static func events(source_path: String) -> Array:\n\treturn []\n",
+                extra=[
+                    (
+                        "src/modules/mods/mod_loader.gd",
+                        "extends RefCounted\n\n\nstatic func _read(manifest) -> void:\n"
+                        '\tprint(ModsApi.events("mods/x.json"))\n',
+                    )
+                ],
+            )
+            write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
+            problems, report = evaluate(root / "src", root / "tests")
+            expect(
+                any("EventApi.events" in p for p in problems),
+                f"a namesake bare call cleared the verb: {problems!r}. `mods` declaring its "
+                "own `events(` says nothing about the event BUS, which is exactly the false "
+                "green that leaves this guard decorative",
+            )
+            expect(
+                not any("ModsApi.events" in p for p in problems),
+                f"the namesake's own verb was reported too, so the case cannot tell the two "
+                f"apart: {problems!r}",
+            )
+            expect(
+                not report.reached.get("EventApi.events"),
+                "the namesake was still credited as a caller, so the guard cannot report it",
+            )
+
+    @case("no_caller_verbs: a verb a COMMITTED GUARD names is KEPT (ADR 0188 clause 2)")
+    def _committed_guard_keeps_a_verb() -> None:
+        """`QuestApi.complete` is called by `tools/` and by no production file.
+
+        It is kept for the second of ADR 0188's three reasons — "it is the unique
+        seam a committed guard needs" — and `game/tests` can never evidence that,
+        because GDScript cannot see Python.
+        """
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            _fixture(root, write, body=PUBLISHED)
+            write(root / "tests" / "t.gd", "extends TestCase\n\n\nfunc it() -> void:\n\tpass\n")
+            guards = write(
+                root / "tools" / "data.py",
+                'ROUTES = [("quest", "res://src/modules/quest/api.gd", ["complete"], '
+                '["src/app/quest_program.gd"]), ("quest", "other", ["offered"], ["src/app/x.gd"])]\n',
+            )
+            problems, report = evaluate(root / "src", root / "tests", None, guards)
+            expect(
+                report.guards.get("QuestApi.complete"),
+                "the fixture's committed guard naming the verb was not registered, so the pass "
+                "below would be vacuous",
+            )
+            expect(
+                not any("QuestApi.complete" in p for p in problems),
+                f"a verb a committed guard depends on was reported dead: {problems!r}. ADR 0188 "
+                "keeps a member that is the unique seam a committed guard needs, and deleting it "
+                "would break the gate that names it",
+            )
+            expect(
+                any("QuestApi.offered" in p for p in problems),
+                f"the guard keeper swallowed a verb it never named: {problems!r}. The keeper is "
+                "exact-keyed like the allowlist",
             )
 
     @case("no_caller_verbs: a dispatch seam (.call / has_signal) IS a caller")
