@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F30_immortal_florilegium_breakthrough_chance_crit_damage_qi_cost_reduction_stamina_regen"
+display_name = "Immortal Florilegium Breakthrough chance Crit damage Qi cost reduction Stamina regen"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.03},
+	{"option_id": &"core_crit_damage", "value": 0.05},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+	{"option_id": &"core_stamina_regen", "value": 32.72},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"syrup"
+grade = &"immortal"
+sources = Array[StringName]([&"quest", &"domain:body_core_formation_trial"])

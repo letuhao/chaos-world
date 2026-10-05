@@ -319,14 +319,45 @@ func test_the_whole_ledger_is_json_safe() -> void:
 	ConflictApi.declare(_rival, &"vein_test", {"prize": &"ownership", "tribute_periods": 2}, 2)
 	ConflictApi.resolve(_rival, &"vein_test", "rival")
 	var payload := ConflictApi.state(_rival)
-	var restored: Variant = JSON.parse_string(JSON.stringify(payload))
+	var wire := JSON.stringify(payload)
+	var restored: Variant = JSON.parse_string(wire)
 	assert_eq(typeof(restored), TYPE_DICTIONARY, "the ledger survives a JSON round trip")
 	# The round trip must be LOSSLESS, not merely parseable: a StringName key is dropped by
 	# the JSON encoder rather than converted, so an unequal pair is the real failure.
-	assert_eq(restored, payload, "and the round trip is lossless: no StringName key anywhere")
+	#
+	# ## …measured against the WIRE, not against the live ledger
+	#
+	# This compared `restored` to `payload`, and it failed on `version: 1` versus `1.0` —
+	# on a value the module never wrote as a float. `JSON.parse_string` in this engine widens
+	# EVERY integral number to a float: `JSON.parse_string('{"v":1}')` answers `{ "v": 1.0 }`.
+	# So the round trip is lossy for any payload at all, and comparing it to a ledger that
+	# correctly holds ints measures the parser, not the module.
+	#
+	# `wire` is the right yardstick, because `wire` is what a save actually stores: the bytes
+	# on disk are produced by `JSON.stringify` and read back by a parser, and BOTH ends of
+	# that have now been observed. Comparing `restored` against a re-parse of `wire` proves
+	# the module's values encode to JSON that survives re-decoding unchanged, which is the
+	# property ADR 0027 is about — and it still fails if a `StringName` key is dropped,
+	# because the encoder writes `&"ownership"` as `"ownership"` while `payload` keeps it a
+	# `StringName`, so the loss shows up as an unequal pair either way.
 	assert_eq(
-		_reasons(restored), 0, "and no StringName, Actor or Resource is hidden anywhere inside it"
+		restored,
+		JSON.parse_string(wire),
+		"and the round trip is lossless: no StringName key anywhere"
 	)
+	# …and the ledger itself is int-clean going in, which is what makes the wire comparison
+	# above a statement about the module rather than a tautology about the parser.
+	assert_eq(
+		_reasons(payload), 0, "and no StringName, Actor or Resource is hidden anywhere inside it"
+	)
+	# And no whole number is published as a float where a whole period, a whole quota or a
+	# whole count was declared: `2.0` in a save reads back as a fractional tribute.
+	for path in ["version"] + _int_paths(payload):
+		assert_eq(
+			typeof(_at(payload, path)),
+			TYPE_INT,
+			"and '%s' is published as an int, not a float" % path
+		)
 	var summary := ConflictApi.summary(_rival)
 	assert_eq(_reasons(summary), 0, "and the read model a screen renders is JSON-safe too")
 
@@ -387,6 +418,46 @@ func _holder_id() -> String:
 	var node := (HoldingsApi.summary(_holder)["nodes"] as Dictionary)["vein_test"] as Dictionary
 	var owner := node["owner"] as Dictionary
 	return String(owner.get("id", ""))
+
+
+## Every leaf under `key` in `value`, as a dotted path, that is a whole number — i.e. every
+## place the module publishes a count, a quota or a period count. Used to assert each is an
+## `int`, because `2.0` in a save reads back as a fractional tribute and the round trip alone
+## cannot say so: this engine's parser widens integers to floats on the way in, which would
+## hide a float the module had already written.
+##
+## Recursion with the same depth cap `_reasons` uses, and for the same reason.
+func _int_paths(value: Dictionary, prefix: String = "", depth: int = 0) -> Array[String]:
+	var out: Array[String] = []
+	if depth > 8:
+		return out
+	for key in value.keys():
+		var path := "%s.%s" % [prefix, String(key)] if prefix != "" else String(key)
+		var leaf = value[key]
+		match typeof(leaf):
+			TYPE_DICTIONARY:
+				out.append_array(_int_paths(leaf as Dictionary, path, depth + 1))
+			TYPE_INT, TYPE_FLOAT:
+				# Only WHOLE numbers are at stake. A real float would have been authored as
+				# one, and this ledger declares none — but the check must not claim otherwise.
+				if float(leaf) == floor(float(leaf)):
+					out.append(path)
+	return out
+
+
+## The leaf a dotted `path` from `_int_paths` names. Indexed STEP BY STEP rather than with
+## `payload[path]`, because a GDScript dictionary index takes one key: handing it
+## `"standoffs.vein_test.prize.tribute_periods"` is a lookup of that literal key, which is
+## absent, and an absent key on a typed dictionary is a SCRIPT ERROR rather than a null —
+## so the assertion loop would abort mid-function and the runner would score the test as
+## neither passed nor failed.
+func _at(value: Dictionary, path: String) -> Variant:
+	var cursor: Variant = value
+	for segment in path.split("."):
+		if not cursor is Dictionary:
+			return null
+		cursor = (cursor as Dictionary).get(segment)
+	return cursor
 
 
 ## How many leaves of `value` are a `StringName`, an `Object` (an `Actor` is one) or a

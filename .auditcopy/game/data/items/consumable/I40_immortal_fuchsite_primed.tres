@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I40_immortal_fuchsite_primed"
+display_name = "Immortal Fuchsite Primed"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 19.34},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"syrup"
+grade = &"immortal"
+sources = Array[StringName]([&"craft:I40_immortal_fuchsite_primed_recipe", &"domain:mind_earth_immortal_trial"])

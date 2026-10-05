@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F37_divine_fuchsite_cooldown_reduction_loot_bonus_will"
+display_name = "Divine Fuchsite Cooldown reduction Loot bonus Will"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.023},
+	{"option_id": &"core_loot_bonus", "value": 0.032},
+	{"option_id": &"base_will", "value": 22.18},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"grease"
+grade = &"divine"
+sources = Array[StringName]([&"gather", &"domain:orb_void_serpent_domain"])

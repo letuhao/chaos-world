@@ -273,12 +273,34 @@ def load_registry() -> dict[str, list[str]]:
     return {name: list(entry.get("deps", [])) for name, entry in modules.items()}
 
 
-def load_families() -> dict[str, dict]:
-    """The content-family declaration (ADR 0184): family -> {data_dir, def_class, module, path?}.
+def load_family_roots() -> dict[str, str]:
+    """The content ROOTS the families are declared against (ADR 0233).
 
-    Read, never hand-edited into a second copy: the gates that walk `game/data/`
+    A second root, declared beside the families rather than beside the audit that walks
+    it, so the declaration stays one machine-managed file. `game/src/data` exists because
+    `domain/api.gd:28-31` put the authored domain content there deliberately: the 160
+    legacy `DomainDef` records under `game/data/domains` are a DIFFERENT, older content
+    set, and pointing `DATA_ROOT` at both would grade one with the other's schemas.
+
+    Every family with no `root` belongs to `data` — the default is the historical root, so
+    adding a second one is purely additive and no existing family changes meaning.
+    """
+    if not FAMILIES_PATH.is_file():
+        return {}
+    data = json.loads(FAMILIES_PATH.read_text(encoding="utf-8"))
+    roots = data.get("roots", {})
+    return {"data": "game/data", **{name: rel for name, rel in roots.items() if name != "data"}}
+
+
+def load_families() -> dict[str, dict]:
+    """The content-family declaration (ADR 0184): family -> {data_dir, def_class, module, path?, root?}.
+
+    Read, never hand-edited into a second copy: the gates that walk the content roots
     key off this file so an unknown content family fails loudly instead of being
     silently skipped. A family with no entry here is undeclared content.
+
+    `root` names which of [function load_family_roots]' directories this family lives
+    under, and defaults to `data` — the historical single-root shape, unchanged.
     """
     if not FAMILIES_PATH.is_file():
         return {}

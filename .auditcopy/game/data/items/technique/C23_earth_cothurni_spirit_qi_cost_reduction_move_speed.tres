@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"C23_earth_cothurni_spirit_qi_cost_reduction_move_speed"
+display_name = "Earth Cothurni Spirit Qi Cost Reduction Move Speed"
+category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 15.68},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+	{"option_id": &"core_move_speed", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"treaty"
+grade = &"earth"
+sources = Array[StringName]([&"quest", &"domain:qi_spirit_condensation_domain"])

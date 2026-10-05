@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"P19_spirit_colza_primed"
+display_name = "Spirit Colza Primed"
+category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
+subcategory = &"powder"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:P19_spirit_colza_primed_recipe", &"domain:mind_nascent_soul_trial"])

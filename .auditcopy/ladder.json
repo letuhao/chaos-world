@@ -1,0 +1,972 @@
+{
+ "ladder": [
+  "qi_refining",
+  "foundation",
+  "core_formation",
+  "nascent_soul",
+  "spirit_transformation",
+  "void_refinement",
+  "body_integration",
+  "great_ascension",
+  "tribulation",
+  "spirit_condensation",
+  "spirit_sea",
+  "spirit_palace",
+  "spirit_manifestation",
+  "spirit_severing",
+  "spirit_unity",
+  "spirit_domain",
+  "spirit_sovereign",
+  "spirit_ascension",
+  "earth_immortal",
+  "heaven_immortal",
+  "golden_immortal",
+  "mystic_immortal",
+  "true_immortal",
+  "primordial_immortal",
+  "great_luo",
+  "dao_fruit",
+  "immortal_sovereign",
+  "transcendent",
+  "dao_ancestor",
+  "primordial_origin"
+ ],
+ "data": {
+  "qi": [
+   {
+    "progress_required": 100.0,
+    "comprehension_required": 10.0,
+    "dantian_capacity": 100.0
+   },
+   {
+    "progress_required": 100.0,
+    "comprehension_required": 10.0,
+    "dantian_capacity": 125.0
+   },
+   {
+    "progress_required": 200.0,
+    "comprehension_required": 12.0,
+    "dantian_capacity": 150.0
+   },
+   {
+    "progress_required": 300.0,
+    "comprehension_required": 14.0,
+    "dantian_capacity": 175.0
+   },
+   {
+    "progress_required": 400.0,
+    "comprehension_required": 16.0,
+    "dantian_capacity": 200.0
+   },
+   {
+    "progress_required": 500.0,
+    "comprehension_required": 18.0,
+    "dantian_capacity": 225.0
+   },
+   {
+    "progress_required": 600.0,
+    "comprehension_required": 20.0,
+    "dantian_capacity": 250.0
+   },
+   {
+    "progress_required": 700.0,
+    "comprehension_required": 22.0,
+    "dantian_capacity": 275.0
+   },
+   {
+    "progress_required": 800.0,
+    "comprehension_required": 24.0,
+    "dantian_capacity": 300.0
+   },
+   {
+    "progress_required": 900.0,
+    "comprehension_required": 26.0,
+    "dantian_capacity": 325.0
+   },
+   {
+    "progress_required": 1000.0,
+    "comprehension_required": 28.0,
+    "dantian_capacity": 350.0
+   },
+   {
+    "progress_required": 1100.0,
+    "comprehension_required": 30.0,
+    "dantian_capacity": 375.0
+   },
+   {
+    "progress_required": 1200.0,
+    "comprehension_required": 32.0,
+    "dantian_capacity": 400.0
+   },
+   {
+    "progress_required": 1300.0,
+    "comprehension_required": 34.0,
+    "dantian_capacity": 425.0
+   },
+   {
+    "progress_required": 1400.0,
+    "comprehension_required": 36.0,
+    "dantian_capacity": 450.0
+   },
+   {
+    "progress_required": 1500.0,
+    "comprehension_required": 38.0,
+    "dantian_capacity": 475.0
+   },
+   {
+    "progress_required": 1600.0,
+    "comprehension_required": 40.0,
+    "dantian_capacity": 500.0
+   },
+   {
+    "progress_required": 1700.0,
+    "comprehension_required": 42.0,
+    "dantian_capacity": 525.0
+   },
+   {
+    "progress_required": 1800.0,
+    "comprehension_required": 44.0,
+    "dantian_capacity": 550.0
+   },
+   {
+    "progress_required": 1900.0,
+    "comprehension_required": 46.0,
+    "dantian_capacity": 575.0
+   },
+   {
+    "progress_required": 2000.0,
+    "comprehension_required": 48.0,
+    "dantian_capacity": 600.0
+   },
+   {
+    "progress_required": 2100.0,
+    "comprehension_required": 50.0,
+    "dantian_capacity": 625.0
+   },
+   {
+    "progress_required": 2200.0,
+    "comprehension_required": 52.0,
+    "dantian_capacity": 650.0
+   },
+   {
+    "progress_required": 2300.0,
+    "comprehension_required": 54.0,
+    "dantian_capacity": 675.0
+   },
+   {
+    "progress_required": 2400.0,
+    "comprehension_required": 56.0,
+    "dantian_capacity": 700.0
+   },
+   {
+    "progress_required": 2500.0,
+    "comprehension_required": 58.0,
+    "dantian_capacity": 725.0
+   },
+   {
+    "progress_required": 2600.0,
+    "comprehension_required": 60.0,
+    "dantian_capacity": 750.0
+   },
+   {
+    "progress_required": 2700.0,
+    "comprehension_required": 62.0,
+    "dantian_capacity": 775.0
+   },
+   {
+    "progress_required": 2800.0,
+    "comprehension_required": 64.0,
+    "dantian_capacity": 800.0
+   },
+   {
+    "progress_required": 2900.0,
+    "comprehension_required": 66.0,
+    "dantian_capacity": 825.0
+   }
+  ],
+  "mind": [
+   {
+    "progress_required": 100.0,
+    "comprehension_required": 10.0,
+    "insight_required": 5.0,
+    "sea_capacity": 100.0,
+    "sea_milestone_work": 20.0,
+    "meridian_milestone_work": 15.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 100.0,
+    "comprehension_required": 18.0,
+    "insight_required": 9.0,
+    "sea_capacity": 125.0,
+    "sea_milestone_work": 53.0,
+    "meridian_milestone_work": 40.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 273.0,
+    "comprehension_required": 30.0,
+    "insight_required": 15.0,
+    "sea_capacity": 150.0,
+    "sea_milestone_work": 93.0,
+    "meridian_milestone_work": 70.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 492.0,
+    "comprehension_required": 46.0,
+    "insight_required": 23.0,
+    "sea_capacity": 175.0,
+    "sea_milestone_work": 139.0,
+    "meridian_milestone_work": 104.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 746.0,
+    "comprehension_required": 66.0,
+    "insight_required": 33.0,
+    "sea_capacity": 200.0,
+    "sea_milestone_work": 190.0,
+    "meridian_milestone_work": 143.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 1032.0,
+    "comprehension_required": 90.0,
+    "insight_required": 45.0,
+    "sea_capacity": 225.0,
+    "sea_milestone_work": 246.0,
+    "meridian_milestone_work": 184.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 1344.0,
+    "comprehension_required": 118.0,
+    "insight_required": 59.0,
+    "sea_capacity": 250.0,
+    "sea_milestone_work": 305.0,
+    "meridian_milestone_work": 229.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 1680.0,
+    "comprehension_required": 150.0,
+    "insight_required": 75.0,
+    "sea_capacity": 275.0,
+    "sea_milestone_work": 368.0,
+    "meridian_milestone_work": 276.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 2039.0,
+    "comprehension_required": 186.0,
+    "insight_required": 93.0,
+    "sea_capacity": 300.0,
+    "sea_milestone_work": 433.0,
+    "meridian_milestone_work": 325.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 2419.0,
+    "comprehension_required": 226.0,
+    "insight_required": 113.0,
+    "sea_capacity": 325.0,
+    "sea_milestone_work": 502.0,
+    "meridian_milestone_work": 377.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 2818.0,
+    "comprehension_required": 270.0,
+    "insight_required": 135.0,
+    "sea_capacity": 350.0,
+    "sea_milestone_work": 574.0,
+    "meridian_milestone_work": 431.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 3236.0,
+    "comprehension_required": 318.0,
+    "insight_required": 159.0,
+    "sea_capacity": 375.0,
+    "sea_milestone_work": 648.0,
+    "meridian_milestone_work": 486.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 3671.0,
+    "comprehension_required": 370.0,
+    "insight_required": 185.0,
+    "sea_capacity": 400.0,
+    "sea_milestone_work": 725.0,
+    "meridian_milestone_work": 544.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 4123.0,
+    "comprehension_required": 426.0,
+    "insight_required": 213.0,
+    "sea_capacity": 425.0,
+    "sea_milestone_work": 805.0,
+    "meridian_milestone_work": 603.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 4591.0,
+    "comprehension_required": 486.0,
+    "insight_required": 243.0,
+    "sea_capacity": 450.0,
+    "sea_milestone_work": 886.0,
+    "meridian_milestone_work": 665.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 5074.0,
+    "comprehension_required": 550.0,
+    "insight_required": 275.0,
+    "sea_capacity": 475.0,
+    "sea_milestone_work": 970.0,
+    "meridian_milestone_work": 728.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 5572.0,
+    "comprehension_required": 618.0,
+    "insight_required": 309.0,
+    "sea_capacity": 500.0,
+    "sea_milestone_work": 1056.0,
+    "meridian_milestone_work": 792.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 6083.0,
+    "comprehension_required": 690.0,
+    "insight_required": 345.0,
+    "sea_capacity": 525.0,
+    "sea_milestone_work": 1144.0,
+    "meridian_milestone_work": 858.0,
+    "resonance_required": 0.0
+   },
+   {
+    "progress_required": 6609.0,
+    "comprehension_required": 766.0,
+    "insight_required": 383.0,
+    "sea_capacity": 550.0,
+    "sea_milestone_work": 1234.0,
+    "meridian_milestone_work": 925.0,
+    "resonance_required": 1.0
+   },
+   {
+    "progress_required": 7148.0,
+    "comprehension_required": 846.0,
+    "insight_required": 423.0,
+    "sea_capacity": 575.0,
+    "sea_milestone_work": 1326.0,
+    "meridian_milestone_work": 994.0,
+    "resonance_required": 2.0
+   },
+   {
+    "progress_required": 7700.0,
+    "comprehension_required": 930.0,
+    "insight_required": 465.0,
+    "sea_capacity": 600.0,
+    "sea_milestone_work": 1420.0,
+    "meridian_milestone_work": 1065.0,
+    "resonance_required": 3.0
+   },
+   {
+    "progress_required": 8265.0,
+    "comprehension_required": 1018.0,
+    "insight_required": 509.0,
+    "sea_capacity": 625.0,
+    "sea_milestone_work": 1515.0,
+    "meridian_milestone_work": 1136.0,
+    "resonance_required": 4.0
+   },
+   {
+    "progress_required": 8841.0,
+    "comprehension_required": 1110.0,
+    "insight_required": 555.0,
+    "sea_capacity": 650.0,
+    "sea_milestone_work": 1612.0,
+    "meridian_milestone_work": 1209.0,
+    "resonance_required": 5.0
+   },
+   {
+    "progress_required": 9430.0,
+    "comprehension_required": 1206.0,
+    "insight_required": 603.0,
+    "sea_capacity": 675.0,
+    "sea_milestone_work": 1711.0,
+    "meridian_milestone_work": 1283.0,
+    "resonance_required": 6.0
+   },
+   {
+    "progress_required": 10030.0,
+    "comprehension_required": 1306.0,
+    "insight_required": 653.0,
+    "sea_capacity": 700.0,
+    "sea_milestone_work": 1812.0,
+    "meridian_milestone_work": 1359.0,
+    "resonance_required": 7.0
+   },
+   {
+    "progress_required": 10642.0,
+    "comprehension_required": 1410.0,
+    "insight_required": 705.0,
+    "sea_capacity": 725.0,
+    "sea_milestone_work": 1914.0,
+    "meridian_milestone_work": 1436.0,
+    "resonance_required": 8.0
+   },
+   {
+    "progress_required": 11264.0,
+    "comprehension_required": 1518.0,
+    "insight_required": 759.0,
+    "sea_capacity": 750.0,
+    "sea_milestone_work": 2018.0,
+    "meridian_milestone_work": 1514.0,
+    "resonance_required": 9.0
+   },
+   {
+    "progress_required": 11898.0,
+    "comprehension_required": 1630.0,
+    "insight_required": 815.0,
+    "sea_capacity": 775.0,
+    "sea_milestone_work": 2123.0,
+    "meridian_milestone_work": 1593.0,
+    "resonance_required": 10.0
+   },
+   {
+    "progress_required": 12542.0,
+    "comprehension_required": 1746.0,
+    "insight_required": 873.0,
+    "sea_capacity": 800.0,
+    "sea_milestone_work": 2230.0,
+    "meridian_milestone_work": 1673.0,
+    "resonance_required": 11.0
+   },
+   {
+    "progress_required": 13197.0,
+    "comprehension_required": 1866.0,
+    "insight_required": 933.0,
+    "sea_capacity": 825.0,
+    "sea_milestone_work": 2339.0,
+    "meridian_milestone_work": 1754.0,
+    "resonance_required": 12.0
+   }
+  ],
+  "body": [
+   {
+    "progress_required": 40.0,
+    "work_required": 40.0,
+    "physique_required": 10.0,
+    "insight_required": 10.0,
+    "acupoint_work": 10.0,
+    "meridian_work": 10.0,
+    "quality_required": 0.4,
+    "quality_target": 0.4,
+    "integrity_target": 0.45,
+    "integrity_maximum": 100.0,
+    "required_refinement": 1.0,
+    "refinement_cap": 1.0,
+    "chance_base": 0.55,
+    "chance_cap": 0.95,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 42.0,
+    "work_required": 42.0,
+    "physique_required": 10.0,
+    "insight_required": 18.0,
+    "acupoint_work": 11.0,
+    "meridian_work": 5.0,
+    "quality_required": 0.4,
+    "quality_target": 0.415,
+    "integrity_target": 0.465,
+    "integrity_maximum": 110.0,
+    "required_refinement": 1.0,
+    "refinement_cap": 2.0,
+    "chance_base": 0.56,
+    "chance_cap": 0.94,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 44.0,
+    "work_required": 44.0,
+    "physique_required": 12.0,
+    "insight_required": 30.0,
+    "acupoint_work": 6.0,
+    "meridian_work": 4.0,
+    "quality_required": 0.415,
+    "quality_target": 0.43,
+    "integrity_target": 0.48,
+    "integrity_maximum": 120.0,
+    "required_refinement": 2.0,
+    "refinement_cap": 3.0,
+    "chance_base": 0.57,
+    "chance_cap": 0.93,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 47.0,
+    "work_required": 47.0,
+    "physique_required": 14.0,
+    "insight_required": 46.0,
+    "acupoint_work": 4.0,
+    "meridian_work": 3.0,
+    "quality_required": 0.43,
+    "quality_target": 0.445,
+    "integrity_target": 0.495,
+    "integrity_maximum": 130.0,
+    "required_refinement": 3.0,
+    "refinement_cap": 4.0,
+    "chance_base": 0.57,
+    "chance_cap": 0.93,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 51.0,
+    "work_required": 51.0,
+    "physique_required": 16.0,
+    "insight_required": 66.0,
+    "acupoint_work": 3.0,
+    "meridian_work": 3.0,
+    "quality_required": 0.445,
+    "quality_target": 0.46,
+    "integrity_target": 0.51,
+    "integrity_maximum": 140.0,
+    "required_refinement": 4.0,
+    "refinement_cap": 5.0,
+    "chance_base": 0.58,
+    "chance_cap": 0.92,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 55.0,
+    "work_required": 55.0,
+    "physique_required": 18.0,
+    "insight_required": 90.0,
+    "acupoint_work": 3.0,
+    "meridian_work": 2.0,
+    "quality_required": 0.46,
+    "quality_target": 0.475,
+    "integrity_target": 0.525,
+    "integrity_maximum": 150.0,
+    "required_refinement": 5.0,
+    "refinement_cap": 6.0,
+    "chance_base": 0.59,
+    "chance_cap": 0.91,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 60.0,
+    "work_required": 60.0,
+    "physique_required": 20.0,
+    "insight_required": 118.0,
+    "acupoint_work": 3.0,
+    "meridian_work": 2.0,
+    "quality_required": 0.475,
+    "quality_target": 0.49,
+    "integrity_target": 0.54,
+    "integrity_maximum": 160.0,
+    "required_refinement": 6.0,
+    "refinement_cap": 7.0,
+    "chance_base": 0.6,
+    "chance_cap": 0.9,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 66.0,
+    "work_required": 66.0,
+    "physique_required": 22.0,
+    "insight_required": 150.0,
+    "acupoint_work": 2.0,
+    "meridian_work": 2.0,
+    "quality_required": 0.49,
+    "quality_target": 0.505,
+    "integrity_target": 0.555,
+    "integrity_maximum": 170.0,
+    "required_refinement": 7.0,
+    "refinement_cap": 8.0,
+    "chance_base": 0.61,
+    "chance_cap": 0.89,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 73.0,
+    "work_required": 73.0,
+    "physique_required": 24.0,
+    "insight_required": 186.0,
+    "acupoint_work": 2.0,
+    "meridian_work": 2.0,
+    "quality_required": 0.505,
+    "quality_target": 0.52,
+    "integrity_target": 0.57,
+    "integrity_maximum": 180.0,
+    "required_refinement": 8.0,
+    "refinement_cap": 9.0,
+    "chance_base": 0.61,
+    "chance_cap": 0.89,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 82.0,
+    "work_required": 82.0,
+    "physique_required": 26.0,
+    "insight_required": 226.0,
+    "acupoint_work": 2.0,
+    "meridian_work": 2.0,
+    "quality_required": 0.52,
+    "quality_target": 0.535,
+    "integrity_target": 0.585,
+    "integrity_maximum": 190.0,
+    "required_refinement": 9.0,
+    "refinement_cap": 10.0,
+    "chance_base": 0.62,
+    "chance_cap": 0.88,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 92.0,
+    "work_required": 92.0,
+    "physique_required": 28.0,
+    "insight_required": 270.0,
+    "acupoint_work": 2.0,
+    "meridian_work": 2.0,
+    "quality_required": 0.535,
+    "quality_target": 0.55,
+    "integrity_target": 0.6,
+    "integrity_maximum": 200.0,
+    "required_refinement": 10.0,
+    "refinement_cap": 11.0,
+    "chance_base": 0.63,
+    "chance_cap": 0.87,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 105.0,
+    "work_required": 105.0,
+    "physique_required": 30.0,
+    "insight_required": 318.0,
+    "acupoint_work": 2.0,
+    "meridian_work": 2.0,
+    "quality_required": 0.55,
+    "quality_target": 0.565,
+    "integrity_target": 0.615,
+    "integrity_maximum": 210.0,
+    "required_refinement": 11.0,
+    "refinement_cap": 12.0,
+    "chance_base": 0.64,
+    "chance_cap": 0.86,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 120.0,
+    "work_required": 120.0,
+    "physique_required": 32.0,
+    "insight_required": 370.0,
+    "acupoint_work": 3.0,
+    "meridian_work": 2.0,
+    "quality_required": 0.565,
+    "quality_target": 0.58,
+    "integrity_target": 0.63,
+    "integrity_maximum": 220.0,
+    "required_refinement": 12.0,
+    "refinement_cap": 13.0,
+    "chance_base": 0.65,
+    "chance_cap": 0.85,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 138.0,
+    "work_required": 138.0,
+    "physique_required": 34.0,
+    "insight_required": 426.0,
+    "acupoint_work": 3.0,
+    "meridian_work": 2.0,
+    "quality_required": 0.58,
+    "quality_target": 0.595,
+    "integrity_target": 0.645,
+    "integrity_maximum": 230.0,
+    "required_refinement": 13.0,
+    "refinement_cap": 14.0,
+    "chance_base": 0.65,
+    "chance_cap": 0.85,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 161.0,
+    "work_required": 161.0,
+    "physique_required": 36.0,
+    "insight_required": 486.0,
+    "acupoint_work": 3.0,
+    "meridian_work": 3.0,
+    "quality_required": 0.595,
+    "quality_target": 0.61,
+    "integrity_target": 0.66,
+    "integrity_maximum": 240.0,
+    "required_refinement": 14.0,
+    "refinement_cap": 15.0,
+    "chance_base": 0.66,
+    "chance_cap": 0.84,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 188.0,
+    "work_required": 188.0,
+    "physique_required": 38.0,
+    "insight_required": 550.0,
+    "acupoint_work": 3.0,
+    "meridian_work": 3.0,
+    "quality_required": 0.61,
+    "quality_target": 0.625,
+    "integrity_target": 0.675,
+    "integrity_maximum": 250.0,
+    "required_refinement": 15.0,
+    "refinement_cap": 16.0,
+    "chance_base": 0.67,
+    "chance_cap": 0.83,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 222.0,
+    "work_required": 222.0,
+    "physique_required": 40.0,
+    "insight_required": 618.0,
+    "acupoint_work": 3.0,
+    "meridian_work": 3.0,
+    "quality_required": 0.625,
+    "quality_target": 0.64,
+    "integrity_target": 0.69,
+    "integrity_maximum": 260.0,
+    "required_refinement": 16.0,
+    "refinement_cap": 17.0,
+    "chance_base": 0.68,
+    "chance_cap": 0.82,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 265.0,
+    "work_required": 265.0,
+    "physique_required": 42.0,
+    "insight_required": 690.0,
+    "acupoint_work": 4.0,
+    "meridian_work": 4.0,
+    "quality_required": 0.64,
+    "quality_target": 0.655,
+    "integrity_target": 0.705,
+    "integrity_maximum": 270.0,
+    "required_refinement": 17.0,
+    "refinement_cap": 18.0,
+    "chance_base": 0.69,
+    "chance_cap": 0.81,
+    "resonance_rank": 0.0
+   },
+   {
+    "progress_required": 318.0,
+    "work_required": 318.0,
+    "physique_required": 44.0,
+    "insight_required": 766.0,
+    "acupoint_work": 4.0,
+    "meridian_work": 4.0,
+    "quality_required": 0.655,
+    "quality_target": 0.67,
+    "integrity_target": 0.72,
+    "integrity_maximum": 280.0,
+    "required_refinement": 18.0,
+    "refinement_cap": 19.0,
+    "chance_base": 0.69,
+    "chance_cap": 0.81,
+    "resonance_rank": 1.0
+   },
+   {
+    "progress_required": 385.0,
+    "work_required": 385.0,
+    "physique_required": 46.0,
+    "insight_required": 846.0,
+    "acupoint_work": 5.0,
+    "meridian_work": 5.0,
+    "quality_required": 0.67,
+    "quality_target": 0.685,
+    "integrity_target": 0.735,
+    "integrity_maximum": 290.0,
+    "required_refinement": 19.0,
+    "refinement_cap": 20.0,
+    "chance_base": 0.7,
+    "chance_cap": 0.8,
+    "resonance_rank": 2.0
+   },
+   {
+    "progress_required": 469.0,
+    "work_required": 469.0,
+    "physique_required": 48.0,
+    "insight_required": 930.0,
+    "acupoint_work": 6.0,
+    "meridian_work": 6.0,
+    "quality_required": 0.685,
+    "quality_target": 0.7,
+    "integrity_target": 0.75,
+    "integrity_maximum": 300.0,
+    "required_refinement": 20.0,
+    "refinement_cap": 21.0,
+    "chance_base": 0.71,
+    "chance_cap": 0.79,
+    "resonance_rank": 3.0
+   },
+   {
+    "progress_required": 577.0,
+    "work_required": 577.0,
+    "physique_required": 50.0,
+    "insight_required": 1018.0,
+    "acupoint_work": 7.0,
+    "meridian_work": 7.0,
+    "quality_required": 0.7,
+    "quality_target": 0.715,
+    "integrity_target": 0.765,
+    "integrity_maximum": 310.0,
+    "required_refinement": 21.0,
+    "refinement_cap": 22.0,
+    "chance_base": 0.72,
+    "chance_cap": 0.78,
+    "resonance_rank": 4.0
+   },
+   {
+    "progress_required": 714.0,
+    "work_required": 714.0,
+    "physique_required": 52.0,
+    "insight_required": 1110.0,
+    "acupoint_work": 8.0,
+    "meridian_work": 8.0,
+    "quality_required": 0.715,
+    "quality_target": 0.73,
+    "integrity_target": 0.78,
+    "integrity_maximum": 320.0,
+    "required_refinement": 22.0,
+    "refinement_cap": 23.0,
+    "chance_base": 0.73,
+    "chance_cap": 0.77,
+    "resonance_rank": 5.0
+   },
+   {
+    "progress_required": 892.0,
+    "work_required": 892.0,
+    "physique_required": 54.0,
+    "insight_required": 1206.0,
+    "acupoint_work": 10.0,
+    "meridian_work": 9.0,
+    "quality_required": 0.73,
+    "quality_target": 0.745,
+    "integrity_target": 0.795,
+    "integrity_maximum": 330.0,
+    "required_refinement": 23.0,
+    "refinement_cap": 24.0,
+    "chance_base": 0.73,
+    "chance_cap": 0.77,
+    "resonance_rank": 6.0
+   },
+   {
+    "progress_required": 1123.0,
+    "work_required": 1123.0,
+    "physique_required": 56.0,
+    "insight_required": 1306.0,
+    "acupoint_work": 12.0,
+    "meridian_work": 11.0,
+    "quality_required": 0.745,
+    "quality_target": 0.76,
+    "integrity_target": 0.81,
+    "integrity_maximum": 340.0,
+    "required_refinement": 24.0,
+    "refinement_cap": 25.0,
+    "chance_base": 0.74,
+    "chance_cap": 0.76,
+    "resonance_rank": 7.0
+   },
+   {
+    "progress_required": 1425.0,
+    "work_required": 1425.0,
+    "physique_required": 58.0,
+    "insight_required": 1410.0,
+    "acupoint_work": 14.0,
+    "meridian_work": 14.0,
+    "quality_required": 0.76,
+    "quality_target": 0.775,
+    "integrity_target": 0.825,
+    "integrity_maximum": 350.0,
+    "required_refinement": 25.0,
+    "refinement_cap": 26.0,
+    "chance_base": 0.75,
+    "chance_cap": 0.75,
+    "resonance_rank": 8.0
+   },
+   {
+    "progress_required": 1823.0,
+    "work_required": 1823.0,
+    "physique_required": 60.0,
+    "insight_required": 1518.0,
+    "acupoint_work": 18.0,
+    "meridian_work": 17.0,
+    "quality_required": 0.775,
+    "quality_target": 0.79,
+    "integrity_target": 0.84,
+    "integrity_maximum": 360.0,
+    "required_refinement": 26.0,
+    "refinement_cap": 27.0,
+    "chance_base": 0.76,
+    "chance_cap": 0.74,
+    "resonance_rank": 9.0
+   },
+   {
+    "progress_required": 2350.0,
+    "work_required": 2350.0,
+    "physique_required": 62.0,
+    "insight_required": 1630.0,
+    "acupoint_work": 22.0,
+    "meridian_work": 21.0,
+    "quality_required": 0.79,
+    "quality_target": 0.805,
+    "integrity_target": 0.855,
+    "integrity_maximum": 370.0,
+    "required_refinement": 27.0,
+    "refinement_cap": 28.0,
+    "chance_base": 0.77,
+    "chance_cap": 0.73,
+    "resonance_rank": 10.0
+   },
+   {
+    "progress_required": 3054.0,
+    "work_required": 3054.0,
+    "physique_required": 64.0,
+    "insight_required": 1746.0,
+    "acupoint_work": 27.0,
+    "meridian_work": 26.0,
+    "quality_required": 0.805,
+    "quality_target": 0.82,
+    "integrity_target": 0.87,
+    "integrity_maximum": 380.0,
+    "required_refinement": 28.0,
+    "refinement_cap": 29.0,
+    "chance_base": 0.77,
+    "chance_cap": 0.73,
+    "resonance_rank": 11.0
+   },
+   {
+    "progress_required": 4000.0,
+    "work_required": 4000.0,
+    "physique_required": 66.0,
+    "insight_required": 1866.0,
+    "acupoint_work": 34.0,
+    "meridian_work": 33.0,
+    "quality_required": 0.82,
+    "quality_target": 0.835,
+    "integrity_target": 0.885,
+    "integrity_maximum": 390.0,
+    "required_refinement": 29.0,
+    "refinement_cap": 30.0,
+    "chance_base": 0.78,
+    "chance_cap": 0.72,
+    "resonance_rank": 12.0
+   }
+  ]
+ }
+}

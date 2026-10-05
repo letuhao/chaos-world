@@ -103,7 +103,7 @@ const MAX_SEED_ATTEMPTS := 8
 const ACTION_IDS: Array[StringName] = [
 	&"enter",
 	&"visit",
-	&"arm",
+	&"inspect",
 	&"attempt",
 	&"claim",
 	&"leave",
@@ -112,7 +112,7 @@ const ACTION_IDS: Array[StringName] = [
 const ACTION_LABELS := {
 	&"enter": "Enter domain",
 	&"visit": "Visit room",
-	&"arm": "Arm trap",
+	&"inspect": "Inspect fixture",
 	&"attempt": "Strike node",
 	&"claim": "Open treasure",
 	&"leave": "Leave",
@@ -129,50 +129,74 @@ const ACTION_HANDLERS := {
 	&"enter": "act_enter",
 	&"leave": "act_leave",
 	&"visit": "act_visit",
-	&"arm": "act_arm",
+	&"inspect": "act_inspect",
 	&"attempt": "act_attempt",
 	&"claim": "act_claim",
 }
 
 ## The three fixture kinds, as the MODULE publishes them, paired with the BRIDGE VERB
-## that acts on each. A trap is armed, a puzzle is struck, a treasure is opened: a
+## that acts on each. A trap is INSPECTED, a puzzle is struck, a treasure is opened: a
 ## button that offered the wrong verb for a fixture would push the player into a
 ## refusal to learn something the authored content already said.
 ##
-## The values are the SEAM's action ids (`arm_fixture` / `attempt_fixture` /
+## ## Why a trap reads rather than acts (ADR 0211)
+##
+## The trap's verb is `inspect_fixture`, which is FREE and mutates nothing. Presence inside
+## the authored bounds is the only trigger, so there is no button left to fire one: a
+## button that armed a trap made the player pay for having INSPECTED it rather than for
+## having ENTERED it, and closed the telegraph window inside a single press. Reading a
+## trap tells a player its footprint, its harm and its window; it costs nothing, so the
+## floor is worth reading before it is worth crossing.
+##
+## The values are the SEAM's action ids (`inspect_fixture` / `attempt_fixture` /
 ## `claim_fixture`), not the shorter button ids the `ActionSet` row publishes, because
 ## the only reader is [method _can_fixture] — and it is handed a bridge action. Holding
 ## the button ids here instead made all three comparisons unequal, so every fixture verb
-## was gated off permanently: a trap could never be armed from a button, the armed/spent
-## ledger was unreachable, and a refusal reported a reason the player never caused
+## was gated off permanently: a trap could never be read, the armed/spent ledger was
+## unreachable, and a refusal reported a reason the player never caused
 ## (`authors_no_status_id`, `unknown_node`, `missing_key` — each a gate that does not
 ## exist). Two vocabularies, so two tables: [constant ACTION_IDS] is the button row's,
 ## this one is the seam's.
 const FIXTURE_VERB := {
-	"trap": &"arm_fixture",
+	"trap": &"inspect_fixture",
 	"puzzle": &"attempt_fixture",
 	"treasure": &"claim_fixture",
 }
 
-## Seconds one `Arm` press advances a trap's telegraph by. Small and stated: the FIRST
-## press always arms whatever this says, so the window is visible before the second press
-## crosses it. Never a clock read — the module keeps no clock (ADR 0089), and a screen
-## that invented one would be a second cadence for one status.
+## The `RoomDef.kind` a settlement room carries. One string, in one place, for one kind —
+## the same discipline `domain_settlement.gd` follows, and `ui/` may not name a domain
+## type, so the kind is carried as a plain word rather than read off a class.
+const SETTLEMENT_KIND := "settlement"
+
+## Seconds one `presence` tick advances a trap's telegraph by. Small and stated: the
+## FIRST call always arms whatever this says, so the window is visible before the second
+## call crosses it. Never a clock read — the module keeps no clock (ADR 0089), and a
+## screen that invented one would be a second cadence for one status.
 ##
-## Sized to CROSS the authored window in one step, not merely to nudge it. The authored
-## traps telegraph for 0.9s to 1.6s (`src/data/domains/rooms/*.tres`), and
-## `DomainFixtures.arm` fires only once `elapsed >= telegraph_s`; a tick below the
-## shortest window meant a second press re-armed the same trap and no press count ever
-## fired one, so the whole armed/spent ledger was unreachable from a button. Two presses
-## is the interaction this screen offers, so two presses must arm and then fire.
+## ## Why the name survives a button it no longer serves
+##
+## This used to be how far one `Arm` PRESS advanced the telegraph, and the press is gone
+## (ADR 0211: the button is now a free `inspect`). It stays, under the name
+## `core/time_ladder_ssot_base.gd`'s census allowlists it by, because it is now the
+## per-frame step the COMPOSITION ROOT hands `presence` — the same authored trap windows
+## are crossable by one frame's worth of `delta`, and the value is still this screen's
+## contribution to how quickly a hero who is standing on a trap finds out. Renaming it
+## would leave a core census row naming a declaration that no longer exists, and editing
+## that core test to unpin it is not mine to do.
 const ARM_TICK := 2.0
 
 ## What a fixture verb that SUCCEEDED did. The module's own reason ids are the whole
-## vocabulary — `telegraphing`, `fired`, `advanced`, `wrong_node`, `claimed` — and each
-## names the state it left behind, so an acceptance that changed nothing is visibly
-## different from one that paid out.
+## vocabulary — `advanced`, `wrong_node`, `claimed` — and each names the state it left
+## behind, so an acceptance that changed nothing is visibly different from one that paid
+## out.
+##
+## `telegraphing` and `fired` are NOT here: no verb on this screen produces them any
+## more. A trap is telegraphed by `presence`, which the composition root calls, and this
+## screen's trap verb is the free `inspect` that answers with an EMPTY reason. They stay
+## named because the fixture line still has to word a trap the player just triggered
+## elsewhere, and a wording this file invented would be a second account of the module's.
 const OUTCOME_TEXT := {
-	"telegraphing": "telegraphing — step on it again to be hit",
+	"telegraphing": "telegraphing — leave before the window closes",
 	"fired": "fired",
 	"advanced": "advanced",
 	"wrong_node": "wrong node — the sequence resets",
@@ -208,7 +232,7 @@ var _population_label: Label = null
 var _zones_label: Label = null
 var _fixture_option: OptionButton = null
 var _node_option: OptionButton = null
-var _arm_button: Button = null
+var _inspect_button: Button = null
 var _attempt_button: Button = null
 var _claim_button: Button = null
 var _fixture_label: Label = null
@@ -226,6 +250,44 @@ var _actions: ActionSet = null
 ## different facts and a player must be able to tell them apart.
 var _roster: NpcRosterBridge = null
 var _roster_panel: NpcRosterPanel = null
+## The floor plan, DRAWN (ADR 0206). Fed the module's payload WHOLE; it reads the
+## geometry and draws it, so the only shape a player sees is the module's own.
+var _map_view: DomainMapView = null
+## A settlement, shown as the SELECTED room (ADR 0209). Keyed on the room the player is
+## looking at, exactly as `_roster_panel` is keyed on where they stand.
+var _settlement: SettlementPanel = null
+## The settlement seam. Null until the composition root fills it, and the honest default
+## is a panel that says so rather than one that claims this room holds no settlement.
+var _settlement_bridge: SettlementBridge = null
+## What the SELECTED fixture WOULD cost, shown before anything lands (ADR 0211).
+##
+## Fed the module's `telegraph` payload WHOLE and owns every word, decimal and width on
+## this surface — the screen hands it primitives and formats nothing (AGENTS.md, UI
+## standard). It lives here rather than as another line in this file because the screen is
+## already past its line budget, and because a telegraph that the same screen could also
+## mute is a telegraph nobody has to be able to rely on.
+var _telegraph: DomainTelegraphPanel = null
+
+
+## Inject the settlement seam. Safe to call again; the screen re-reads and repaints.
+## Kept beside [method bind_roster] rather than folded into [method bind_bridge] because
+## it is a different seam: `DomainSettlement` is a settlement-class read, not a domain
+## verb, and ADR 0209 installs it behind its own `Callable` pair.
+func bind_settlement(bridge: SettlementBridge) -> void:
+	_bind_nodes()
+	_settlement_bridge = bridge
+	refresh()
+
+
+## The settlement seam this screen holds, adopting the shared one when nobody handed it
+## over. The same `NpcApi.set_minter` idiom `_adopt_roster_bridge` uses: a screen bound
+## by a route and a screen bound by a test both get the seam, and neither can end up
+## half-wired. Guarded rather than fatal because a program that never installed the
+## settlement seam must still show the room — it just says the settlement is unwired.
+func _adopt_settlement_bridge() -> void:
+	if _settlement_bridge != null and _settlement_bridge.has(&"read_settlement"):
+		return
+	_settlement_bridge = SettlementBridge.shared()
 
 
 ## Inject the settlement roster. Safe to call again; the screen re-reads and repaints,
@@ -313,7 +375,7 @@ func focus_initial() -> void:
 	if _actions != null and not _enabled().is_empty():
 		_actions.focus_initial()
 		return
-	for control in [_enter_button, _visit_button, _arm_button]:
+	for control in [_enter_button, _visit_button, _inspect_button]:
 		var target := control as Control
 		if target == null or target.disabled:
 			continue
@@ -356,6 +418,18 @@ func _summary() -> Dictionary:
 	# already reports its own count, its own rows and the two sentences it painted, so
 	# listing them here would be the second copy of one fact.
 	place["roster"] = _roster_panel.summary() if _roster_panel != null else {}
+	# The floor plan, nested under its own key: it publishes its own counts, its own
+	# scale and its own fog partition, so listing them here would be the second copy of
+	# one fact. `layout_digest` in particular is the VIEW's to answer and the only honest
+	# way a test can check a second layout never appeared.
+	place["minimap_view"] = _map_view.summary() if _map_view != null else {}
+	# The settlement of the SELECTED room. Nested for the same reason, and its `reason`
+	# carries the module's refusal id verbatim when it refuses — never a blank.
+	place["settlement"] = _settlement.summary() if _settlement != null else {}
+	# The telegraph of the SELECTED fixture. Nested for the same reason: it publishes its
+	# own boundary, its own window and its own ledger booleans, so listing them here would
+	# be the second copy of one fact — and the one that could disagree with the panel.
+	place["telegraph"] = _telegraph.summary() if _telegraph != null else {}
 	return place
 
 
@@ -368,10 +442,137 @@ func _refresh_view() -> void:
 	_fill_templates()
 	_fill_rooms()
 	_fill_fixtures()
+	# The floor plan and the settlement are both functions of WHERE THE PLAYER IS LOOKING
+	# and WHAT THE MODULE PUBLISHED, so both are re-read on every refresh rather than
+	# cached at bind time — a panel that read once would show the room the player left,
+	# which is the stale-settlement defect DEF-0261 exists to end, reproduced one layer up.
+	_refresh_map()
+	_refresh_settlement()
 	# The roster is a function of WHERE THE PLAYER IS, so it is re-read on every
 	# refresh rather than cached at bind time. Everything above is the domain's own run;
 	# this is the settlement outside it, and the player can walk between them at any time.
 	_refresh_roster()
+	# The telegraph is re-read on every refresh for the same reason and one more: a trap
+	# is telegraphed by PRESENCE, which the composition root calls on its own tick, so the
+	# screen did nothing to cause the state it is about to paint. A panel that only
+	# refreshed on a press would show a quiet floor while the trap under the player's feet
+	# was already counting down — which is the untelegraphed hazard ADR 0075 refuses.
+	_refresh_telegraph()
+
+
+## Re-read the SELECTED fixture's telegraph and hand it to the panel WHOLE.
+##
+## ## Why this is a re-read and not a cache of the last press
+##
+## `inspect` is free and mutates nothing, so it is safe to call on every refresh and its
+## answer is the truth right now rather than the truth when a button was last hit. That is
+## the whole reason this panel can show a telegraph that a press did not produce — the
+## player walked onto the trap, the composition root's tick armed it, and the next refresh
+## picks that up.
+##
+## `{}` clears the panel whenever there is nothing to read, rather than leaving the last
+## fixture's footprint standing next to a different selection.
+func _refresh_telegraph() -> void:
+	if _telegraph == null:
+		return
+	if _actor == null or _selected_room_id().is_empty() or _selected_fixture_id().is_empty():
+		_telegraph.show_telegraph({})
+		return
+	_telegraph.show_telegraph(_read_telegraph())
+
+
+## The module's own telegraph for the selected fixture, or `{}` when it will not answer.
+##
+## Routed through the bridge's `inspect_fixture` rather than a separate read verb, because
+## ADR 0211 made `inspect` and `telegraph` the same call by construction
+## (`domain_fixtures.gd:290`) — two ids for one read would be two things that could drift.
+## No `delta` is passed and none can be: there is no argument here that would advance a
+## window, which is what makes calling this from a repaint safe rather than a second
+## button in disguise.
+func _read_telegraph() -> Dictionary:
+	var seam := _bridge()
+	if seam == null or not seam.has(&"inspect_fixture"):
+		return {}
+	return seam.call_action(
+		&"inspect_fixture", [_actor, _selected_room_id(), _selected_fixture_id()]
+	)
+
+
+## Hand the module's floor-plan payload to the view, WHOLE, plus the room the player is
+## standing in.
+##
+## ## Why the player room is the SELECTION, and why that is honest
+##
+## The module publishes no tracked current room and no intra-room position (ADR 0206
+## says so outright), and the facade is at its twelve-method cap, so there is nothing to
+## read that would be more true than this. After a `Visit` the selection IS the room the
+## actor walked into, so the marker lands where the player is standing; before one, the
+## selection is where they are LOOKING, which is the same room surface every other verb
+## on this screen acts through. It is named in `summary()` as `player_room`, so a reader
+## can see which room the mark follows rather than having to infer it.
+func _refresh_map() -> void:
+	if _map_view == null:
+		return
+	var model := _read_model()
+	var payload: Dictionary = model.minimap() if model != null else {}
+	_map_view.show_map(payload, _selected_room_id_for_map())
+	# AFTER `show_map`, because the seam is computed against the authored list: the
+	# payload's own `rooms[]` is the DISCOVERED subset, so the frontier needs the second
+	# read to have anything to reach.
+	_refresh_authored_rooms()
+
+
+## The room the player's mark follows, as a plain string for the view's one door. The
+## module publishes no tracked current room (ADR 0206 says so outright) and the facade
+## is at its cap, so the SELECTION is the honest stand-in: after a `Visit` it is the
+## room the actor walked into, and before one it is the room they are LOOKING at — the
+## same room surface every other verb here acts through. Named `player_room` in the
+## view's `summary()` so a reader sees which room the mark follows.
+func _selected_room_id_for_map() -> String:
+	return String(_selection().get("room", ""))
+
+
+## Ask the view for the room list the run AUTHORED. The payload's `rooms[]` is the
+## DISCOVERED subset, and the frontier seam is computed against the rooms fog hid
+## (ADR 0207) — a seam asked of a fogged list is permanently empty, which is the whole
+## failure ADR 0207 exists to end.
+func _refresh_authored_rooms() -> void:
+	if _map_view == null:
+		return
+	var model := _read_model()
+	_map_view.set_authored_rooms(model.authored_rooms() if model != null else [])
+
+
+## The settlement of the SELECTED room, or `{}` for any room that is not one. Keyed on
+## the room the player is looking at rather than on a run of its own: a settlement is a
+## `RoomDef.kind`, so it needs no route and no nav action (ADR 0209).
+func _refresh_settlement() -> void:
+	if _settlement == null:
+		return
+	_adopt_settlement_bridge()
+	var room_id := _selected_room_id()
+	if _actor == null or room_id.is_empty() or _settlement_bridge == null:
+		_settlement.show_settlement({})
+		return
+	# `kind` is checked FIRST and by the payload's own word: a settlement is a room KIND,
+	# and asking the settlement class about an ordinary room would only ever produce a
+	# refusal the player has no action for. The institution itself never comes from this
+	# payload — it comes from `DomainSettlement`, which resolves the fixture ref and
+	# refuses it by name (ADR 0209).
+	if _map_view == null or _map_view.kind_of({"room_id": String(room_id)}) != SETTLEMENT_KIND:
+		_settlement.show_settlement({})
+		return
+	var about := _settlement_bridge.read_room(_actor, room_id)
+	(
+		_settlement
+		. show_settlement(
+			about,
+			{
+				"residents": about.get("residents", []),
+				"truncated": bool(about.get("residents_truncated", false)),
+			}
+		)
+	)
 
 
 func _render() -> void:
@@ -388,7 +589,7 @@ func _render() -> void:
 	_enter_button.disabled = not _can_enter()
 	_leave_button.disabled = not _can_leave()
 	_visit_button.disabled = not _can_visit()
-	_arm_button.disabled = not _can_arm()
+	_inspect_button.disabled = not _can_inspect()
 	_attempt_button.disabled = not _can_attempt()
 	_claim_button.disabled = not _can_claim()
 	_publish_actions()
@@ -469,13 +670,16 @@ func _bind_nodes() -> void:
 	_zones_label = get_node_or_null("%ZonesLabel") as Label
 	_fixture_option = get_node_or_null("%FixtureOption") as OptionButton
 	_node_option = get_node_or_null("%NodeOption") as OptionButton
-	_arm_button = get_node_or_null("%ArmButton") as Button
+	_inspect_button = get_node_or_null("%InspectButton") as Button
 	_attempt_button = get_node_or_null("%AttemptButton") as Button
 	_claim_button = get_node_or_null("%ClaimButton") as Button
 	_fixture_label = get_node_or_null("%FixtureLabel") as Label
 	_message_label = get_node_or_null("%MessageLabel") as Label
 	_actions = get_node_or_null("%Actions") as ActionSet
 	_roster_panel = get_node_or_null("%Roster") as NpcRosterPanel
+	_map_view = get_node_or_null("%MapView") as DomainMapView
+	_settlement = get_node_or_null("%Settlement") as SettlementPanel
+	_telegraph = get_node_or_null("%Telegraph") as DomainTelegraphPanel
 	if _actions != null and not _actions.action_requested.is_connected(_on_action_requested):
 		_actions.action_requested.connect(_on_action_requested)
 	_connect_select(_template_option, _on_template_selected)
@@ -485,7 +689,7 @@ func _bind_nodes() -> void:
 	_connect_pressed(_enter_button, act_enter)
 	_connect_pressed(_leave_button, act_leave)
 	_connect_pressed(_visit_button, act_visit)
-	_connect_pressed(_arm_button, act_arm)
+	_connect_pressed(_inspect_button, act_inspect)
 	_connect_pressed(_attempt_button, act_attempt)
 	_connect_pressed(_claim_button, act_claim)
 
@@ -588,15 +792,33 @@ func act_visit() -> bool:
 	return _settle(reached, "Reached %s" % String(_selected_room_id()))
 
 
-## Arm a trap's telegraph, or fire it when the authored window has already elapsed.
-func act_arm(delta: float = ARM_TICK) -> bool:
+## Look at one fixture WITHOUT touching it. This is what the `Arm` button BECAME
+## (ADR 0211): free, no `delta`, and mutating nothing.
+##
+## ## Why it must not be able to fire a trap
+##
+## Presence inside the authored footprint is the ONLY trigger, and the trap fires from
+## `presence` on the composition root's tick. A button that reached `arm` made the player
+## pay for having INSPECTED a trap rather than for having ENTERED one, and it opened and
+## closed the telegraph window inside a single press — so the warning was unreachable and
+## the unarmed player was the one who paid. So there is no `delta` parameter here at all:
+## the verb has no way to express "fire it", which is the property that makes the rule
+## structural rather than a matter of this screen's discipline.
+##
+## ## What the press DOES
+##
+## It asks the module what this fixture would cost and hands the answer WHOLE to
+## [DomainTelegraphPanel], which owns every word and decimal on this surface. The answer
+## is `telegraph`, so what the panel shows is the module's own payload rather than a
+## second reading of the same fixture.
+func act_inspect() -> bool:
 	_bind_nodes()
-	if not _can_arm():
-		return _reject(_arm_reason())
-	var armed := _bridge().call_action(
-		&"arm_fixture", [_actor, _selected_room_id(), _selected_fixture_id(), delta]
+	if not _can_inspect():
+		return _reject(_inspect_reason())
+	var read := _bridge().call_action(
+		&"inspect_fixture", [_actor, _selected_room_id(), _selected_fixture_id()]
 	)
-	return _settle_fixture(armed)
+	return _settle_inspect(read)
 
 
 ## Strike one node of a formation puzzle. A wrong node costs the ATTEMPT and never
@@ -704,8 +926,8 @@ func _can_visit() -> bool:
 	return _live() and seam != null and seam.has(&"visit") and not _selected_room_id().is_empty()
 
 
-func _can_arm() -> bool:
-	return _can_fixture(&"arm_fixture")
+func _can_inspect() -> bool:
+	return _can_fixture(&"inspect_fixture")
 
 
 func _can_attempt() -> bool:
@@ -754,8 +976,12 @@ func _visit_reason() -> String:
 	return "unknown_room"
 
 
-func _arm_reason() -> String:
-	return _fixture_reason(&"arm_fixture", "authors_no_status_id")
+## A refusal of the READ rather than of an action. `unknown_fixture` is the honest
+## fallback: `inspect` touches nothing and refuses nothing an actor could have caused,
+## so the only reasons it can carry are "this seam is not wired" and "this fixture is
+## not the one the verb reads".
+func _inspect_reason() -> String:
+	return _fixture_reason(&"inspect_fixture", "unknown_fixture")
 
 
 func _attempt_reason() -> String:
@@ -795,7 +1021,7 @@ func _enabled() -> Dictionary:
 		"enter": _can_enter(),
 		"leave": _can_leave(),
 		"visit": _can_visit(),
-		"arm": _can_arm(),
+		"inspect": _can_inspect(),
 		"attempt": _can_attempt(),
 		"claim": _can_claim(),
 		"panel_enter": bool(flags.get("enter", false)),
@@ -945,6 +1171,33 @@ func _settle_fixture(result: Dictionary) -> bool:
 	set_message(_fixture_message, _fixture_tone)
 	refresh()
 	return accepted
+
+
+## The free read's outcome, which is NOT [method _settle_fixture] and deliberately so.
+##
+## `inspect` answers with an EMPTY reason on success (`domain_fixtures.gd:533`), because
+## nothing happened: no state moved, no health was spent, nothing is owed. Routing it
+## through the action path would print an empty id beside the fixture name and leave a
+## driver pattern-matching for a token that cannot exist. So an acceptance says what it
+## DID — read — and the payload itself goes to the panel, which is the only place the
+## numbers are worded.
+##
+## ## Why the panel is fed BEFORE the repaint
+##
+## [method refresh] re-reads the telegraph from the bridge anyway
+## ([method _refresh_telegraph]), so the panel cannot be showing a stale payload even if
+## this press did not happen. The explicit feed is what makes the press IMMEDIATE rather
+## than next-refresh.
+func _settle_inspect(result: Dictionary) -> bool:
+	if not bool(result.get("ok", false)):
+		return _reject(String(result.get("reason", "unknown_fixture")))
+	if _telegraph != null:
+		_telegraph.show_telegraph(result)
+	_fixture_message = _fixture_sentence("read — nothing was touched")
+	_fixture_tone = TONE_OK
+	set_message(_fixture_message, _fixture_tone)
+	refresh()
+	return true
 
 
 ## A refusal. The reason is the MODULE'S and the sentence is the bridge's table — never

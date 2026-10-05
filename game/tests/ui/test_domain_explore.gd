@@ -488,9 +488,13 @@ func test_a_refused_treasure_names_the_gate_and_consumes_nothing() -> void:
 ## screen before it can reach the module, and the ledger it should have written stays
 ## empty. A trap then never fires, and the refusal a player sees names a gate that does
 ## not exist (`authors_no_status_id`, `unknown_node`, `missing_key`).
+##
+## `trap` names `inspect_fixture` and not `arm_fixture` (ADR 0211): a trap is READ by the
+## button and FIRED by presence, so a `trap -> arm_fixture` row here would be the old
+## wiring described as a rule, and the button would pay for being noticed.
 func test_each_fixture_kind_enables_exactly_the_one_verb_that_acts_on_it() -> void:
 	var expected := {
-		"trap": &"arm_fixture",
+		"trap": &"inspect_fixture",
 		"puzzle": &"attempt_fixture",
 		"treasure": &"claim_fixture",
 	}
@@ -566,38 +570,427 @@ func _select_template(screen: DomainExploreScreen, template_id: StringName) -> v
 			return
 
 
-## A trap that has already fired refuses a second time, by name. A trap firing twice in
-## one run is a rule the module enforces and this screen must not route around.
-func test_a_trap_that_has_fired_is_refused_a_second_time() -> void:
-	var run := _generated()
-	if run.is_empty():
-		assert_eq(true, true, "no domain generated; nothing to arm")
-		return
-	var hero := run["hero"] as Actor
+## ── ADR 0211: presence is the trigger, and the button is a free read ────────────
+##
+## These five replace the old `test_a_trap_that_has_fired_is_refused_a_second_time`,
+## which drove the trap from two button presses. That test asserted a real rule (one-way
+## `armed -> telegraphing -> spent`, never re-armed in a run) through a mechanism the ADR
+## forbids, so it could only ever prove the button worked. The rule is pinned here
+## through PRESENCE, and each case asserts a CONSEQUENCE rather than a signal: health that
+## moved, a ledger that will not reopen, a fixture whose record is byte-identical before
+## and after a press.
+
+
+## A hero inside a run, standing on a real trap's footprint, with the screen aimed at it.
+## `{}` when the authored catalogue holds nothing this suite can drive, which is a
+## content fact rather than a failure.
+func _trap_standing(hero: Actor, screen: DomainExploreScreen) -> Dictionary:
 	var trap := _fixture_of_kind(hero, "trap")
 	if trap.is_empty():
-		assert_eq(true, true, "this domain authors no trap; nothing to arm")
-		return
+		return {}
+	var at := _footprint_tile(trap["row"] as Dictionary)
+	if at == Vector2i(-1, -1):
+		return {}
 	DomainApi.visit_room(hero, trap["room_id"])
+	_select(screen, trap["room_id"], trap["fixture_id"])
+	return {"trap": trap, "at": at}
+
+
+## A tile provably inside `bounds`. The ORIGIN when the fixture authors no footprint at
+## all, and `(-1, -1)` when it authors an empty one — the two are different facts, so the
+## sentinel is distinct from a real coordinate rather than being `Vector2i.ZERO`, which
+## would silently aim a hero at tile 0,0.
+func _footprint_tile(row: Dictionary) -> Vector2i:
+	var box: Rect2i = row.get("bounds", Rect2i())
+	if box.size.x <= 0 or box.size.y <= 0:
+		return Vector2i(-1, -1)
+	return box.position
+
+
+## STEP 3.1 — a trap fires from PRESENCE, and the consequence is HEALTH that moved.
+##
+## ## Why `StatusApi.tick_statuses` is driven here rather than left to a frame
+##
+## `_fire` adds the status; the health is paid under the authored `duration_s` by the
+## status module's own tick, which is the production call `StatusLoop.tick` makes. A test
+## that asserted the status landed and stopped there would prove a SIGNAL, not the
+## consequence — so this drives the real tick and asserts the number moved DOWN, and that
+## it moved by the landed magnitude rather than by zero or by a rounding of it.
+func test_a_trap_fires_from_presence_and_costs_health() -> void:
+	var run := _generated()
+	if run.is_empty():
+		assert_eq(true, true, "no domain generated; nothing to stand on")
+		return
+	var hero := run["hero"] as Actor
 	var screen := _entered(hero)
 	if screen == null:
 		return
-	_select(screen, trap["room_id"], trap["fixture_id"])
-	# Two presses: the first arms, the second crosses the authored window and fires.
-	screen.act_arm()
-	screen.act_arm()
-	var spent := bool(
-		DomainFixtures.state_of(hero, trap["room_id"], trap["fixture_id"]).get("spent", false)
-	)
-	assert_eq(spent, true, "the second press fired the trap")
-	assert_eq(screen.act_arm(), false, "a third press is refused")
-	var view := screen.summary()
-	assert_eq(String(view["fixture_tone"]), "error", "in the refusal tone")
+	var placed := _trap_standing(hero, screen)
+	if placed.is_empty():
+		assert_eq(true, true, "this domain authors no trap with a footprint; nothing to fire")
+		return
+	var trap: Dictionary = placed["trap"]
+	var at: Vector2i = placed["at"]
+	var room_id: StringName = trap["room_id"]
+	var fixture_id: StringName = trap["fixture_id"]
+	var row: Dictionary = trap["row"]
+	var window := float(row.get("telegraph_s", 0.0))
+
+	# INSIDE the window: presence arms, and a long frame still only arms.
+	DomainBoot.presence_fixture(hero, room_id, fixture_id, at, 0.0)
+	var armed := DomainFixtures.state_of(hero, room_id, fixture_id)
+	assert_eq(bool(armed.get("armed", false)), true, "presence armed it")
+	assert_eq(bool(armed.get("spent", false)), false, "and a first frame never fires")
+
+	# PAST the window: presence crosses it and the trap lands.
+	var before := hero.resource(&"health").current
+	DomainBoot.presence_fixture(hero, room_id, fixture_id, at, window + 0.1)
+	var spent := DomainFixtures.state_of(hero, room_id, fixture_id)
+	assert_eq(bool(spent.get("spent", false)), true, "presence fired it once the window closed")
+
+	# THE CONSEQUENCE. Health moved, and moved by at least one pulse of what landed.
+	var after := hero.resource(&"health").current
+	var landed := 0.0
+	for effect in hero.statuses:
+		if String(effect.status_id) == String(row.get("status_id", "")):
+			landed = effect.magnitude
+	assert_eq(landed > 0.0, true, "the fired trap landed a status worth paying")
+	StatusApi.tick_statuses(hero, float(row.get("duration_s", 0.0)))
+	var paid := before - hero.resource(&"health").current
 	assert_eq(
-		str(view["fixture_message"]).contains(DomainFixtures.ERR_ALREADY_FIRED),
+		paid > 0.0,
 		true,
-		"naming the module's own reason"
+		"walking onto a trap COSTS HEALTH (%f -> %f) — presence is not a signal" % [before, after]
 	)
+	assert_eq(
+		paid >= landed,
+		true,
+		"and it paid at least the landed magnitude of %f (paid %f)" % [landed, paid]
+	)
+
+
+## STEP 3.2 — the telegraph is VISIBLE BEFORE the damage lands, and stops being visible
+## after. This is the whole of ADR 0075's "telegraph before damage", asserted through the
+## panel a player reads rather than through a signal nothing renders.
+##
+## Inside the window the panel is `telegraphing`, not spent, and it is showing the
+## AUTHORED window and magnitude — never the actor's mitigated residual, which the module
+## refuses to publish (`domain_fixtures.gd:519`).
+func test_the_telegraph_is_visible_before_the_damage_lands() -> void:
+	var run := _generated()
+	if run.is_empty():
+		assert_eq(true, true, "no domain generated; nothing to telegraph")
+		return
+	var hero := run["hero"] as Actor
+	var screen := _entered(hero)
+	if screen == null:
+		return
+	var placed := _trap_standing(hero, screen)
+	if placed.is_empty():
+		assert_eq(true, true, "this domain authors no trap with a footprint")
+		return
+	var trap: Dictionary = placed["trap"]
+	var at: Vector2i = placed["at"]
+	var room_id: StringName = trap["room_id"]
+	var fixture_id: StringName = trap["fixture_id"]
+	var row: Dictionary = trap["row"]
+	var window := float(row.get("telegraph_s", 0.0))
+
+	# INSIDE: armed, not spent, and the panel says so.
+	DomainBoot.presence_fixture(hero, room_id, fixture_id, at, 0.0)
+	screen.refresh()
+	var during: Dictionary = screen.summary()["telegraph"] as Dictionary
+	assert_eq(bool(during.get("shown", false)), true, "the panel is showing a fixture")
+	assert_eq(bool(during.get("armed", false)), true, "INSIDE the window it is armed")
+	assert_eq(bool(during.get("spent", false)), false, "and not yet spent")
+	assert_eq(String(during.get("state", "")), "telegraphing", "the panel words that state")
+	assert_eq(float(during.get("telegraph_s", 0.0)), window, "and shows the AUTHORED window")
+	assert_eq(
+		float(during.get("damage_share", 0.0)),
+		float(row.get("damage_share", 0.0)),
+		"and the AUTHORED magnitude, never the mitigated residual"
+	)
+	# The window is named in WORDS on the surface, because a player has to be able to
+	# read it: a number in a summary nothing renders would not be a warning.
+	assert_ne(
+		String(during.get("window_line", "")).is_empty(),
+		true,
+		"the window is worded for a player, not merely published"
+	)
+
+	# PAST: spent, and the panel stops reading as a live warning.
+	var before := hero.resource(&"health").current
+	DomainBoot.presence_fixture(hero, room_id, fixture_id, at, window + 0.1)
+	screen.refresh()
+	var after: Dictionary = screen.summary()["telegraph"] as Dictionary
+	assert_eq(bool(after.get("spent", false)), true, "PAST the window it is spent")
+	assert_eq(String(after.get("state", "")), "spent", "and the panel says so")
+	# Health has not moved YET at this instant — the trap pays under the status tick,
+	# not on the frame it fires. Asserting "damaged" here would be asserting the wrong
+	# moment; what this pins is that the TELEGRAPH ended, which is the visible half.
+	assert_eq(
+		hero.resource(&"health").current,
+		before,
+		"and the panel stopped warning before the burn is paid, not after"
+	)
+	StatusApi.tick_statuses(hero, float(row.get("duration_s", 0.0)))
+	assert_eq(
+		before - hero.resource(&"health").current > 0.0,
+		true,
+		"which is when the damage actually lands"
+	)
+
+
+## STEP 3.3 — LEAVING IS FREE. Step in, step back out before the window closes, and
+## assert BOTH halves: no damage, and the trap is still armable on return.
+##
+## The second half is the one a "it did not fire" assertion misses. A trap that went
+## `spent` without landing damage, or a ledger that lost the `armed` flag on the way out,
+## would pass a health check and still have charged the player the one thing ADR 0211
+## exists to prevent: paying twice for one mistake.
+func test_leaving_before_the_window_closes_is_free() -> void:
+	var run := _generated()
+	if run.is_empty():
+		assert_eq(true, true, "no domain generated; nothing to leave")
+		return
+	var hero := run["hero"] as Actor
+	var screen := _entered(hero)
+	if screen == null:
+		return
+	var placed := _trap_standing(hero, screen)
+	if placed.is_empty():
+		assert_eq(true, true, "this domain authors no trap with a footprint")
+		return
+	var trap: Dictionary = placed["trap"]
+	var at: Vector2i = placed["at"]
+	var box: Rect2i = (trap["row"] as Dictionary).get("bounds", Rect2i())
+	var room_id: StringName = trap["room_id"]
+	var fixture_id: StringName = trap["fixture_id"]
+	var before := hero.resource(&"health").current
+
+	# Step IN: arms.
+	DomainBoot.presence_fixture(hero, room_id, fixture_id, at, 0.0)
+	assert_eq(
+		bool(DomainFixtures.state_of(hero, room_id, fixture_id).get("armed", false)),
+		true,
+		"stepping in armed it"
+	)
+
+	# Step OUT to a tile one past the footprint's far edge — not merely "a different
+	# tile", which could still be inside, which would make the case prove nothing.
+	var outside := Vector2i(box.position.x + box.size.x + 2, box.position.y)
+	DomainBoot.presence_fixture(
+		hero,
+		room_id,
+		fixture_id,
+		outside,
+		float((trap["row"] as Dictionary).get("telegraph_s", 0.0)) + 0.1
+	)
+	var after_leaving := DomainFixtures.state_of(hero, room_id, fixture_id)
+	assert_eq(bool(after_leaving.get("spent", false)), false, "stepping out did NOT fire it")
+	assert_eq(hero.resource(&"health").current, before, "and cost no health at all")
+	# ONE-WAY: it did not go back to quiet either. Once armed it stays armed, so a player
+	# who walks back in is walking back onto a live window rather than a fresh one.
+	assert_eq(
+		bool(after_leaving.get("armed", false)),
+		true,
+		"and it stayed ARMED — the machine never runs backwards"
+	)
+
+
+## STEP 3.4 — the button no longer fires anything. It is FREE and mutates NOTHING.
+##
+## Asserted over the WHOLE fixture record rather than one boolean, because `state_of`
+## returns the ledger and a verb that changed any field of it would show up here. The
+## health check beside it is the consequence half: a read that cost health would be a
+## press that pays, which is the exact defect the ADR names.
+##
+## ## Why the method's ARITY is asserted too
+##
+## `act_inspect` takes no `delta`. A signature that accepted one would be a verb that can
+## still express "advance the telegraph", which is the whole door the ADR closes — so the
+## arity is pinned structurally, because a future `act_inspect(delta)` compiles fine and
+## would otherwise pass every behavioural case above.
+func test_the_button_is_a_free_read_and_mutates_nothing() -> void:
+	var run := _generated()
+	if run.is_empty():
+		assert_eq(true, true, "no domain generated; nothing to read")
+		return
+	var hero := run["hero"] as Actor
+	var screen := _entered(hero)
+	if screen == null:
+		return
+	var placed := _trap_standing(hero, screen)
+	if placed.is_empty():
+		assert_eq(true, true, "this domain authors no trap with a footprint")
+		return
+	var trap: Dictionary = placed["trap"]
+	var room_id: StringName = trap["room_id"]
+	var fixture_id: StringName = trap["fixture_id"]
+
+	# The verb takes no delta, so it cannot be asked to advance anything.
+	assert_eq(
+		(
+			(
+				(
+					screen
+					. get_method_list()
+					. filter(
+						func(entry: Dictionary) -> bool:
+							return String(entry["name"]) == "act_inspect"
+					)
+					. size()
+				)
+				> 0
+			)
+			and _arity_of(screen, "act_inspect")
+		),
+		0,
+		"'act_inspect' takes no delta — a verb that can express 'advance it' is the door"
+	)
+	assert_eq(
+		screen.has_method("act_arm"), false, "and the old firing verb is GONE, not merely unwired"
+	)
+
+	# Nothing is armed or spent before the press, so any change below is the press's.
+	var before_state := DomainFixtures.state_of(hero, room_id, fixture_id)
+	assert_eq(bool(before_state.get("armed", false)), false, "quiet to begin with")
+	var before_health := hero.resource(&"health").current
+
+	assert_eq(screen.act_inspect(), true, "the press is accepted")
+
+	# The whole ledger, byte for byte.
+	assert_eq(
+		DomainFixtures.state_of(hero, room_id, fixture_id),
+		before_state,
+		"a free read wrote NOTHING to the fixture ledger"
+	)
+	assert_eq(hero.resource(&"health").current, before_health, "and cost no health")
+	assert_eq(hero.statuses.is_empty(), true, "and landed no status")
+	# And it was still a REAL read: the panel now shows what the trap would cost, so the
+	# press is not a no-op that merely refuses to mutate.
+	var shown: Dictionary = screen.summary()["telegraph"] as Dictionary
+	assert_eq(bool(shown.get("shown", false)), true, "the press published a telegraph")
+	assert_eq(
+		float(shown.get("telegraph_s", 0.0)),
+		float((trap["row"] as Dictionary).get("telegraph_s", 0.0)),
+		"carrying the authored window"
+	)
+
+
+## STEP 3.5 — a trap that has already fired refuses presence a second time, BY NAME.
+## The one-way machine, pinned through the verb that is now allowed to drive it.
+func test_a_spent_trap_refuses_presence_a_second_time() -> void:
+	var run := _generated()
+	if run.is_empty():
+		assert_eq(true, true, "no domain generated; nothing to fire")
+		return
+	var hero := run["hero"] as Actor
+	var screen := _entered(hero)
+	if screen == null:
+		return
+	var placed := _trap_standing(hero, screen)
+	if placed.is_empty():
+		assert_eq(true, true, "this domain authors no trap with a footprint")
+		return
+	var trap: Dictionary = placed["trap"]
+	var at: Vector2i = placed["at"]
+	var room_id: StringName = trap["room_id"]
+	var fixture_id: StringName = trap["fixture_id"]
+	var row: Dictionary = trap["row"]
+	var step := float(row.get("telegraph_s", 0.0)) + 0.1
+
+	DomainBoot.presence_fixture(hero, room_id, fixture_id, at, 0.0)
+	DomainBoot.presence_fixture(hero, room_id, fixture_id, at, step)
+	assert_eq(
+		bool(DomainFixtures.state_of(hero, room_id, fixture_id).get("spent", false)),
+		true,
+		"it fired"
+	)
+
+	# A THIRD presence, still standing on it, is refused BY NAME and spends nothing twice.
+	var health := hero.resource(&"health").current
+	var again := DomainBoot.presence_fixture(hero, room_id, fixture_id, at, step)
+	assert_eq(bool(again.get("ok", false)), false, "a spent trap refuses presence again")
+	assert_eq(
+		String(again.get("reason", "")),
+		DomainFixtures.ERR_ALREADY_FIRED,
+		"naming the module's own reason id"
+	)
+	StatusApi.tick_statuses(hero, float(row.get("duration_s", 0.0)))
+	assert_eq(
+		hero.resource(&"health").current,
+		health,
+		"and standing on it again costs nothing — a player is never taxed twice"
+	)
+	# And the SCREEN's own read still works on a spent trap, because reading is free and
+	# stays available for the rest of the run.
+	assert_eq(screen.act_inspect(), true, "inspecting a spent trap still reads")
+
+
+## STEP 3.6 — `tick_presence` is the composition root's per-frame door, and it is
+## REFUSING rather than firing for every trap the actor is not standing on.
+##
+## Without this, `tick_presence` could be wired but never reached: a tick that returns
+## `{}` always, or one that fires every trap in the room regardless of the tile, would
+## both leave every case above green while the production path is broken. The refusal id
+## is asserted per fixture, so "it refused for the right reason" is distinct from "it
+## returned nothing".
+func test_the_roots_presence_tick_refuses_traps_outside_the_footprint() -> void:
+	var run := _generated()
+	if run.is_empty():
+		assert_eq(true, true, "no domain generated; nothing to tick")
+		return
+	var hero := run["hero"] as Actor
+	var screen := _entered(hero)
+	if screen == null:
+		return
+	var placed := _trap_standing(hero, screen)
+	if placed.is_empty():
+		assert_eq(true, true, "this domain authors no trap with a footprint")
+		return
+	var trap: Dictionary = placed["trap"]
+	var room_id: StringName = trap["room_id"]
+	var fixture_id: StringName = trap["fixture_id"]
+	var box: Rect2i = (trap["row"] as Dictionary).get("bounds", Rect2i())
+
+	var far_away := Vector2i(box.position.x - 64, box.position.y - 64)
+	var answers := DomainBoot.tick_presence(hero, room_id, far_away, 99.0)
+	assert_ne(answers.has(String(fixture_id)), false, "the tick reached the trap")
+	var answer: Dictionary = answers[String(fixture_id)] as Dictionary
+	assert_eq(bool(answer.get("ok", false)), false, "far away, presence refuses")
+	assert_eq(
+		String(answer.get("reason", "")),
+		DomainFixtures.ERR_OUTSIDE,
+		"because the actor is outside the footprint, which is the whole rule"
+	)
+	assert_eq(
+		bool(DomainFixtures.state_of(hero, room_id, fixture_id).get("armed", false)),
+		false,
+		"and standing far away does not arm it"
+	)
+
+	# Standing ON it, the same door arms it — the same call, only the tile differs.
+	var standing := DomainBoot.tick_presence(hero, room_id, box.position, 0.0)
+	assert_eq(
+		bool((standing[String(fixture_id)] as Dictionary).get("ok", false)),
+		true,
+		"and on the footprint the same tick is accepted"
+	)
+
+
+## The declared parameter count of `method` on `object`, or -1 when it is not there.
+## Read from the method list rather than by calling it, so the assertion needs no
+## arguments and cannot itself fire a trap.
+func _arity_of(object: Object, method: String) -> int:
+	for entry in object.get_method_list():
+		if String(entry["name"]) != method:
+			continue
+		var args: Array = entry.get("args", []) as Array
+		# `get_method_list` reports the bound call's arg count; a method with only
+		# optional parameters still declares them, so the DEFAULTED ones count here.
+		return args.size()
+	return -1
 
 
 ## The happy path a player takes: enter, walk into a second room, and watch it appear on

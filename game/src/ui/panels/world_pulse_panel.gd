@@ -20,18 +20,29 @@ extends PanelContainer
 ## standard). `summary()` reports both the raw counts and the text actually set on the
 ## labels, so a headless test asserts the wording instead of pixels.
 ##
-## ## The button
+## ## The two buttons
 ##
-## The panel emits [signal advance_requested] rather than calling anything. The pulse
-## lives in `app/`, which `ui/` may not reference, so the screen holds the bridge and
-## the panel only says "the player asked". The button is disabled — with the reason on
-## the message line — when the caller wired nothing, so an unreachable tick reads as
-## unreachable instead of as a control that renders and does nothing.
+## The panel emits [signal advance_requested] and [signal retreat_requested] rather than
+## calling anything. The pulse lives in `app/`, which `ui/` may not reference, so the
+## screen holds the bridge and the panel only says "the player asked". Both are disabled —
+## with the reason on the message line — when the caller wired nothing, so an unreachable
+## tick reads as unreachable instead of as a control that renders and does nothing.
+##
+## **The retreat's selector is what makes ADR 0167's season-scale class a CHOICE.** The
+## wait button pays exactly one period and says so; the selector offers the lengths the
+## clock itself authors (read from `TimeLadder`, never from a list written here) and
+## prices the chosen one in periods and crossed magnitudes BEFORE the press. That cost
+## line is the whole difference between a skip button and an action with a price.
 ##
 ## Contract: `summary()` is the testable surface.
 
 ## The player asked for one more world period. Whoever holds the bridge calls it.
 signal advance_requested
+
+## The player asked to sit for the chosen number of periods. ADR 0167's season-scale
+## action: the chosen length IS the cost, so the payload is the ask and nobody here
+## decides what it is worth.
+signal retreat_requested(periods: int)
 
 ## Wording for each reason a caller can hand back. The UI program owns no rule, so it
 ## only says what was reported.
@@ -41,6 +52,8 @@ const REASON_TEXT := {
 	"no_director": "No one is listening for what happens",
 	"no_world": "The world has no clock",
 	"no_world_clock": "This screen is not wired to the world clock",
+	"no_retreat": "This screen cannot ask for a longer sit",
+	"unplannable_span": "The clock cannot cover a sit that long, and will not shorten it",
 }
 
 ## What the readout says when no clock is wired. Named rather than blank so the missing
@@ -50,9 +63,23 @@ const UNWIRED_CADENCE := "The world's cadence is not published here."
 const EMPTY_MEMORY := "The world remembers nothing yet."
 const WAIT_LABEL := "Wait a season"
 const UNAVAILABLE_SUFFIX := " (unavailable)"
+## The heading over the season-scale control. Named rather than inlined so the wording a
+## player reads is one string a test can pin.
+const RETREAT_TITLE := "Sit (the world moves while you do)"
+const RETREAT_LABEL := "Sit for this long"
+const RETREAT_EMPTY := "No sit length is published by the clock."
+## Shown instead of a cost line when nothing is selected or no clock is wired — an empty
+## line under a selector reads as "free", which is the one thing this control must never
+## suggest.
+const RETREAT_NO_COST := "Choose how long to sit."
 
 var _wired: bool = false
 var _can_advance: bool = false
+var _can_retreat: bool = false
+## One `{magnitude, periods, crossed}` row per offered length, in the reader's order, and
+## the index of the chosen one. Raw counts: this panel owns every `%d` and every width.
+var _retreat_spans: Array[Dictionary] = []
+var _retreat_index: int = -1
 var _periods: int = 0
 var _period_count: int = 0
 ## The authored cadence in seconds, as the caller reported it. Kept as a field rather
@@ -77,6 +104,10 @@ var _news_box: VBoxContainer = null
 var _pulse_label: Label = null
 var _message_label: Label = null
 var _wait_button: Button = null
+var _retreat_title_label: Label = null
+var _retreat_option: OptionButton = null
+var _retreat_cost_label: Label = null
+var _retreat_button: Button = null
 
 
 func _ready() -> void:
@@ -85,14 +116,18 @@ func _ready() -> void:
 
 
 ## Render one world view. `view` is the raw primitives the screen read: counts, the
-## cadence in seconds, one `{fact, recorded}` row per news item, and whether the
-## player may ask for another period. Nothing here is interpreted — a count of zero
+## cadence in seconds, one `{fact, recorded}` row per news item, whether the
+## player may ask for another period, and the one `{magnitude, periods, crossed}` row
+## per sit length the clock publishes. Nothing here is interpreted — a count of zero
 ## and a count nobody reported both read as zero, which is the honest answer for a
 ## readout and the reason every figure arrives already resolved.
 func show_world(view: Dictionary) -> void:
 	_bind_nodes()
 	_wired = bool(view.get("wired", false))
 	_can_advance = _wired and bool(view.get("can_advance", false))
+	_can_retreat = _wired and bool(view.get("can_retreat", false))
+	_retreat_spans = _spans_of(view.get("retreat_spans", []))
+	_retreat_index = _resolve_selection()
 	_periods = int(view.get("periods", 0))
 	_period_count = int(view.get("period_count", 0))
 	_period_seconds = float(view.get("period_seconds", 0.0))
@@ -109,10 +144,30 @@ func show_world(view: Dictionary) -> void:
 
 ## Everything this panel shows, as primitives. The rendered strings are included
 ## alongside the counts so a test reads the sentence a player reads.
+##
+## **The retreat's half is the declared cost, not the world time it already spent.**
+## `retreat_declared_periods` and `retreat_crossed` describe the row the player has
+## selected and can still back out of; `retreat_paid` and `retreat_unpaid` describe the
+## last one they actually paid for. A preview that only reported the paid figures would
+## read as "free" until the button was pressed.
 func summary() -> Dictionary:
+	var chosen := _chosen_span()
 	return {
 		"wired": _wired,
 		"can_advance": _can_advance,
+		"can_retreat": _can_retreat,
+		"retreat_spans": _retreat_spans,
+		"retreat_span_count": _retreat_spans.size(),
+		"retreat_labels": _retreat_labels(),
+		"retreat_index": _retreat_index,
+		"retreat_declared_periods": int(chosen.get("periods", 0)),
+		"retreat_declared_magnitude": String(chosen.get("magnitude", "")),
+		"retreat_crossed": _crossed_of(chosen),
+		"retreat_crossed_text": _retreat_cost_text(),
+		"retreat_option_enabled": _retreat_option != null and not _retreat_option.disabled,
+		"retreat_button_enabled": _retreat_button != null and not _retreat_button.disabled,
+		"retreat_button_label": "" if _retreat_button == null else _retreat_button.text,
+		"retreat_cost_label": _text_of(_retreat_cost_label),
 		"periods": _periods,
 		"period_count": _period_count,
 		"offered": _offered,
@@ -157,8 +212,19 @@ func _bind_nodes() -> void:
 	_pulse_label = get_node_or_null("%PulseLabel") as Label
 	_message_label = get_node_or_null("%MessageLine") as Label
 	_wait_button = get_node_or_null("%WaitButton") as Button
+	_retreat_title_label = get_node_or_null("%RetreatTitle") as Label
+	_retreat_option = get_node_or_null("%RetreatLength") as OptionButton
+	_retreat_cost_label = get_node_or_null("%RetreatCost") as Label
+	_retreat_button = get_node_or_null("%RetreatButton") as Button
 	if _wait_button != null and not _wait_button.pressed.is_connected(_on_wait_pressed):
 		_wait_button.pressed.connect(_on_wait_pressed)
+	if _retreat_button != null and not _retreat_button.pressed.is_connected(_on_retreat_pressed):
+		_retreat_button.pressed.connect(_on_retreat_pressed)
+	if (
+		_retreat_option != null
+		and not _retreat_option.item_selected.is_connected(_on_span_selected)
+	):
+		_retreat_option.item_selected.connect(_on_span_selected)
 
 
 func _render() -> void:
@@ -171,6 +237,7 @@ func _render() -> void:
 	_pulse_label.text = _pulse_text()
 	_wait_button.disabled = not _can_advance
 	_wait_button.text = WAIT_LABEL + ("" if _can_advance else UNAVAILABLE_SUFFIX)
+	_render_retreat()
 	# The panel's own tone is only its own: a refusal the caller reported is painted
 	# in the error ink, and nothing else here is a failure.
 	if _tone == &"error":
@@ -178,6 +245,32 @@ func _render() -> void:
 	else:
 		_message_label.theme_type_variation = &"MetaLabel"
 	_message_label.text = _message
+
+
+## ## The season-scale row, and why the choice lives on the PANEL
+##
+## The panel emits `retreat_requested(periods)`; it does not call anything. Same rule as
+## the wait button — the pulse lives in `app/`, which `ui/` may not reference — so the
+## cost line is this file's and the ask is the screen's.
+##
+## **Rebuilt from scratch every repaint, and the selection is re-applied after the
+## rebuild rather than before it.** `OptionButton.clear()` drops the selected index to
+## -1, so a rebuild that kept the player's choice by re-selecting first would restore
+## nothing and the cost line would silently revert to the first row — a control that
+## forgets a player's choice on the next repaint is worse than no control.
+func _render_retreat() -> void:
+	if _retreat_option == null:
+		return
+	_retreat_title_label.text = RETREAT_TITLE
+	_retreat_option.clear()
+	for label in _retreat_labels():
+		_retreat_option.add_item(label)
+	_retreat_option.disabled = not _can_retreat
+	if _retreat_index >= 0:
+		_retreat_option.select(_retreat_index)
+	_retreat_cost_label.text = _retreat_cost_text()
+	_retreat_button.disabled = not _can_retreat or _retreat_index < 0
+	_retreat_button.text = RETREAT_LABEL + ("" if _can_retreat else UNAVAILABLE_SUFFIX)
 
 
 ## One label per news row, rebuilt from scratch.
@@ -253,6 +346,96 @@ func _duration_text(seconds: float) -> String:
 	return "%dm %02ds" % [whole / 60, whole % 60]
 
 
+## ## What the chosen sit COSTS, in the clock's own authored magnitudes
+##
+## **A period count, never a duration in seconds.** The elapsed wall-clock figure would
+## be a second calendar computed here from a cadence `ui/` may not hold, and a month
+## printed as "10 days" is exactly the private copy ADR 0050 and ADR 0116 exist to stop
+## (`tests/core/test_time_ladder_single_source.gd`). What a player is told is the span in
+## periods and the magnitudes it CROSSES, both read from `TimeLadder` by the reader and
+## handed over as raw counts.
+##
+## Magnitudes are listed finest-first, as the ladder authors them, and each is named with
+## its own count, because "4380 periods - day x365 - month x12 - year x1" says what the
+## player is about to live through and no invented unit says it better. Zero counts are
+## dropped rather than printed, so a short sit does not read as if it also covered a year.
+func _retreat_cost_text() -> String:
+	var chosen := _chosen_span()
+	if _retreat_spans.is_empty():
+		return RETREAT_EMPTY if _can_retreat else UNWIRED_CLOCK
+	if chosen.is_empty():
+		return RETREAT_NO_COST
+	var crossed := _crossed_of(chosen)
+	var parts: Array[String] = ["%d periods" % int(chosen.get("periods", 0))]
+	for entry in crossed:
+		var count := int(crossed[entry])
+		if count < 1:
+			continue
+		parts.append("%s x%d" % [String(str(entry)), count])
+	return "This sit costs %s" % " - ".join(parts)
+
+
+## The selector's own entry per offered length, in the reader's order. A raw period count
+## rather than a coined unit word, for the reason [method _retreat_cost_text] gives.
+func _retreat_labels() -> Array[String]:
+	var out: Array[String] = []
+	for span in _retreat_spans:
+		out.append(
+			"%s - %d periods" % [String(span.get("magnitude", "")), int(span.get("periods", 0))]
+		)
+	return out
+
+
+## The chosen row, or `{}` when nothing is chosen. Index-clamped rather than trusted:
+## the list is rebuilt from the caller's payload on every repaint and a caller that
+## publishes a different set of lengths must not leave this holding an index past its end.
+func _chosen_span() -> Dictionary:
+	if _retreat_index < 0 or _retreat_index >= _retreat_spans.size():
+		return {}
+	return _retreat_spans[_retreat_index]
+
+
+## The chosen row's crossed magnitudes as a primitive `{magnitude: count}` copy, so
+## `summary()` hands back a dictionary no caller can mutate into the panel's state.
+func _crossed_of(span: Dictionary) -> Dictionary:
+	return (span.get("crossed", {}) as Dictionary).duplicate()
+
+
+## The index to show: whatever the player last chose while it is still on offer, else the
+## shortest length. **A retreat with no default is a retreat nobody starts**, and a
+## disabled button is how a control reads as broken rather than as a choice.
+func _resolve_selection() -> int:
+	if _retreat_spans.is_empty():
+		return -1
+	if _retreat_index >= 0 and _retreat_index < _retreat_spans.size():
+		return _retreat_index
+	return 0
+
+
+## The rows a caller published as sit lengths, coerced into the one shape this panel
+## renders. A row with no positive period count is dropped rather than offered: a sit of
+## zero periods is the wait button under another name.
+func _spans_of(rows: Array) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for entry in rows:
+		if not entry is Dictionary:
+			continue
+		var row := entry as Dictionary
+		if String(row.get("magnitude", "")).is_empty() or int(row.get("periods", 0)) < 1:
+			continue
+		(
+			out
+			. append(
+				{
+					"magnitude": String(row.get("magnitude", "")),
+					"periods": int(row.get("periods", 0)),
+					"crossed": (row.get("crossed", {}) as Dictionary).duplicate(),
+				}
+			)
+		)
+	return out
+
+
 ## How many listed facts the world has heard. Read off the rows rather than off a
 ## separate counter so the headline and the rows can never disagree.
 func _heard() -> int:
@@ -293,3 +476,21 @@ func _on_wait_pressed() -> void:
 	# A pressed button is a request, never an advance: the panel has no clock and no
 	# ledger, so it hands the request up and lets whoever owns the bridge answer.
 	advance_requested.emit()
+
+
+## The chosen sit, as a REQUEST carrying the player's own period count. Nothing is
+## clamped and nothing is checked here — the cost is what the player chose, and the
+## clock is the only thing allowed to say whether it can be paid (ADR 0173 refuses to
+## truncate, so a span it cannot cover comes back as a named refusal).
+func _on_retreat_pressed() -> void:
+	var chosen := _chosen_span()
+	if chosen.is_empty():
+		return
+	retreat_requested.emit(int(chosen.get("periods", 0)))
+
+
+## Re-render only the cost line: picking a length changes the price and nothing else, so
+## a full repaint would rebuild the news rows a player is reading for no reason.
+func _on_span_selected(_index: int) -> void:
+	if _retreat_cost_label != null:
+		_retreat_cost_label.text = _retreat_cost_text()

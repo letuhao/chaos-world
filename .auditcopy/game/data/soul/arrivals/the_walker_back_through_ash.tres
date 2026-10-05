@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SoulDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/soul/soul_def.gd" id="1_soul"]
+
+[resource]
+script = ExtResource("1_soul")
+id = &"the_walker_back_through_ash"
+display_name = "The Walker Back Through Ash"
+description = "The first return. Whatever the body was doing when it stopped, the soul arrives walking, and the world is measurably older than it was."
+bearing = "You came back. Nothing was waiting for you, and nothing objected."
+race_id = &"stoneborn"
+order = 0
+marks = Array[StringName]([&"soul_marked_once"])

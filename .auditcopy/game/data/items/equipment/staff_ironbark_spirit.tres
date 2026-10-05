@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"staff_ironbark_spirit"
+display_name = "Ironbark Spirit Staff"
+category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_domain"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 25},
+	{"option_id": &"core_max_qi", "value": 24.22},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
+subcategory = &"weapon"
+stackable = false
+grade = &"spirit"
+sources = Array[StringName]([&"craft:staff_ironbark_spirit_recipe", &"domain:mind_qi_refining_trial"])

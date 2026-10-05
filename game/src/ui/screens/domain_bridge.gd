@@ -53,6 +53,8 @@ const REASON_TEXT := {
 	"unknown_fixture": "That fixture is not in this room",
 	"unknown_fixture_kind": "That fixture declares a kind this build cannot run",
 	"wrong_kind_for_this_verb": "That fixture does not answer this action",
+	"outside_the_footprint": "You are standing clear of its reach",
+	"authors_no_footprint": "That trap authors no ground to stand on",
 	"already_fired": "That trap has already fired this run",
 	"already_claimed": "That is already claimed",
 	"unknown_node": "That node is not part of this formation",
@@ -83,6 +85,14 @@ var minimap: Callable
 var rooms: Callable
 ## `DomainFixtures.arm(actor, room_id, fixture_id, delta)` -> Dictionary: a trap's telegraph.
 var arm_fixture: Callable
+## `DomainFixtures.inspect(actor, room_id, fixture_id)` -> Dictionary: what a fixture WOULD
+## cost, WITHOUT touching it. This is what the `Arm` button became (ADR 0211) — free and
+## non-mutating, so reading a trap is the right play rather than a mistake.
+var inspect_fixture: Callable
+## `DomainFixtures.presence(actor, room_id, fixture_id, at, delta)` -> Dictionary: the ONLY
+## thing that may arm or fire a trap (ADR 0211). Carried here so the composition root owns
+## the call rather than a screen's draw path.
+var presence_fixture: Callable
 ## `DomainFixtures.attempt(actor, room_id, fixture_id, node_id)` -> Dictionary: a puzzle node.
 var attempt_fixture: Callable
 ## `DomainFixtures.claim(actor, room_id, fixture_id)` -> Dictionary: open a treasure.
@@ -160,6 +170,8 @@ func _action_ids() -> Array:
 		"minimap",
 		"rooms",
 		"arm_fixture",
+		"inspect_fixture",
+		"presence_fixture",
 		"attempt_fixture",
 		"claim_fixture",
 	]
@@ -175,6 +187,8 @@ func _actions() -> Dictionary:
 		"minimap": minimap,
 		"rooms": rooms,
 		"arm_fixture": arm_fixture,
+		"inspect_fixture": inspect_fixture,
+		"presence_fixture": presence_fixture,
 		"attempt_fixture": attempt_fixture,
 		"claim_fixture": claim_fixture,
 	}

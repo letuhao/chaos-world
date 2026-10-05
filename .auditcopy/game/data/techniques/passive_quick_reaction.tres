@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"passive_quick_reaction"
+delivered_by = &"compre_deep_page"
+display_name = "Quick Reaction Drill"
+description = "Repetition at speed until the first answer arrives before the question finishes. Dodge chance and mental attack, which is what a technique-carrying duellist wants."
+tags = Array[StringName]([&"passive", &"mind", &"reaction"])
+grade = &"earth"
+rarity = &"magic"
+element = &""
+schools = Array[StringName]([&"mind"])
+active = false
+path = &"mind_cultivation"
+min_path_realm = {&"mind_cultivation": 19}
+mastery_rungs = 5
+magnitude = 1.0
+passive_options = Array[Dictionary]([
+	{"option_id": &"cult_dodge_chance", "value": 5.0},
+	{"option_id": &"cult_mental_attack", "value": 8.0},
+])
+

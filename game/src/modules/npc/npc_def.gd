@@ -41,6 +41,37 @@ extends Resource
 ## Where this individual starts. Must be a stage this def declares, or the first one.
 @export var initial_stage: StringName = &""
 
+## ## The custody term this individual may be TAKEN on (ADR 0247)
+##
+## An empty `capture_term` means **this individual is not capturable at all** — not "capturable
+## with a default". So capturability is CONTENT, and a cast that authors no term ships a custody
+## page whose primary verb has nothing to press rather than a free grab with no cause.
+##
+## It is a TERM and a COUNT OF PERIODS, exactly as ADR 0104 defines a custody claim, and never a
+## price: there is no `RARITY_WEIGHT` on a person and no realm scaling behind these two fields.
+## Mechanical and clinical, like every other field on this def.
+@export var capture_term: StringName = &""
+
+## The periods this individual is owed when taken. Zero falls back to a single authored period
+## at the seam, so a half-authored term is a one-period claim and fails as `no_terms` rather than
+## as a capture with no term at all.
+@export var capture_periods: int = 0
+
+
+## Whether this individual may be taken at all: a def authors a custody term, or it is not
+## capturable. One question, one conjunction, so nothing can be capturable by accident.
+func capturable() -> bool:
+	return capture_term != &""
+
+
+## This def's capture beat as primitives, or `{}` when it is not capturable. The shape is
+## `{term_id, periods}` and nothing else — no prose field, because ADR 0104's rule that a custody
+## record carries no `description`, `flavor` or `display_name` holds on the AUTHORED side too.
+func capture_term_row() -> Dictionary:
+	if not capturable():
+		return {}
+	return {"term_id": String(capture_term), "periods": maxi(1, capture_periods)}
+
 
 func tracked() -> bool:
 	return NpcTier.is_tracked(NpcTier.normalize(tier))

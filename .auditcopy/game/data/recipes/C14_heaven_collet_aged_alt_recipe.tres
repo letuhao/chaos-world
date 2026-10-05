@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"C14_heaven_collet_aged_alt_recipe"
+display_name = "Heaven Collet Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"C14_heaven_collet_refined", &"vial_star_essence", &"W5_heaven_ashlar_gossan"])
+outputs = Array[StringName]([&"C14_heaven_collet_aged"])

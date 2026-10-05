@@ -362,7 +362,7 @@ static func tally(npc_id: StringName, verb: StringName, source: String = &"") ->
 	return {"ok": true, "reason": ""}
 
 
-## Mint a room's worth of UNTRACKED population. Bounded by `MAX_ROOM_POPULATION` and never
+## The room's worth of UNTRACKED population. Bounded by `MAX_ROOM_POPULATION` and never
 ## by a loop over an open-ended list. Each one leaves no roster entry, so a settlement can
 ## be busy without a save remembering a single face.
 ##

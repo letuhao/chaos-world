@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="NationTerritoryDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/nation/nation_territory_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"ashen_wold"
+display_name = "The Ashen Wold"
+tier_index = 1
+location_ids = Array[StringName]([&"spirit_peaks"])
+seat_location_id = &"spirit_peaks"
+seat_kind = &"stone_seat"
+tags = Array[StringName]([&"highland", &"cinder", &"forge"])

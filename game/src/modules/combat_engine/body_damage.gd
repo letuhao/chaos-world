@@ -10,12 +10,44 @@ extends DamageMechanism
 ## meridian     = resolve_location(...)          # 20 meridians, not 60 acupoints
 ## point        = the acupoint within it
 ## channel      = target.meridians.get_meridian(meridian_id)
-## resistance   = DEFENSE_PHYSICAL * MERIDIAN_ARMOUR_STEP * channel.state_rank()
-##              + tissue_defence(meridian_id, target)
-## penetration  = maxf(gross - resistance, gross * MIN_PENETRATION_RATIO)   # 0.10
+## D            = DEFENSE_PHYSICAL * MERIDIAN_ARMOUR_STEP * channel.state_rank()
+##              + tissue_defence(meridian_id, target)          (a MAGNITUDE, ADR 0200)
+## D_eff        = D * 1 / (1 + max(0, mastery_pen) / pierce_scale)
+## K            = defense_divisor_k * gross      (scales with the ATTACKER)
+## m            = mitigation_ceiling * D_eff / (K + D_eff)    for D_eff >= 0
+## m            = mitigation_ceiling * (2 - K / (K + |D_eff|))   for D_eff < 0
+## penetration  = maxf(gross * (1 - m), gross * MIN_PENETRATION_RATIO)   # 0.10
 ## mitigated    = penetration * point_multiplier(point) * channel_multiplier(channel)
 ## damage       = mitigated * (1 - DAMAGE_REDUCTION)
 ## ```
+##
+## ## ADR 0200 moved body onto the same curve, and the FLOOR is what it preserved
+##
+## Body was the LAST mechanism still on a flat subtraction, and ADR 0200 retires that:
+## a flat subtraction against a flat defense is a constant contest, and the offense side
+## rides the ladder while the defense side does not. Body now reads the same
+## `mitigation_ceiling` / `defense_divisor_k` / `pierce_scale` every other mechanism does.
+##
+## **What changed:** `gross - defence` became `gross * (1 - m)`. The armour magnitude `D`
+## is unchanged — `DEFENSE_PHYSICAL * meridian_armour_step * state_rank + tissue` is still
+## read exactly once per site and is still ADR 0070's formula — but it is now the `D` of a
+## ratio rather than hit points subtracted from a blow, so it SCALES WITH THE LADDER
+## through the same mechanism qi and mind use.
+##
+## **What did NOT change, and why that is not a contradiction:** `MIN_PENETRATION_RATIO`
+## stays, at `0.10`, and it is the only mechanism in the game allowed a `0.0`. The four
+## reasons body refused a *pure* ratio are all still true and none of them argues against
+## a floor — see the section below. ADR 0070's refusal was of a ratio with NO vocabulary
+## for "this point is not defended"; ADR 0200 supplies the vocabulary as a FLOOR, which is
+## a distributional claim rather than a truncation.
+##
+## **Penetration stopped being subtracted from the gross.** It used to read
+## `maxf(gross - resistance - pen, gross * ratio)`, and ADR 0200 names that as
+## dimensionally wrong: penetration is a share of a defender's ARMOUR, so taking hit
+## points off a blow made a deep defender's penetration scale with how hard they were hit
+## rather than with how well they were guarded. It is now a bounded reciprocal on `D`:
+## `D * 1/(1 + pen/pierce_scale)`, which lies in `(0, 1]` and so can push defense
+## arbitrarily close to zero and NEVER negative.
 ##
 ## ## `ctx.magnitude` is IN the gross, and it was missing
 ##
@@ -45,7 +77,7 @@ extends DamageMechanism
 ## every unlocked meridian at `BROAD_MULT`", implemented as one sum rather than twenty
 ## proposals so a single strike is still one packet and one effect.
 ##
-## ## Flat subtraction, NOT Keepverse's ratio, and the four reasons that decide it
+## ## A ratio WITH a floor, and the four reasons ADR 0070 gave for refusing one WITHOUT
 ##
 ## (1) A ratio never reaches zero, so it has no vocabulary for "this point is not
 ## defended" — and refusing a strike outright is this path's whole premise. (2) Body's
@@ -55,12 +87,31 @@ extends DamageMechanism
 ## designer can read it off the data. (4) A flat number IS a hit-point value, which is the
 ## only form a balance table can be reviewed in.
 ##
+## ### What ADR 0200 did to these four, stated rather than quietly overwritten
+##
+## **All four still hold, and three of them now argue for a different thing.** ADR 0200
+## landed a ratio here, so the honest reading is that reasons (1) and (2) were refusals of
+## a ratio WITHOUT A FLOOR rather than of ratios as such: a ratio with
+## `MIN_PENETRATION_RATIO` under it has exactly the vocabulary reason (1) asks for, and it
+## still leaves body the one mechanism permitted a `0.0`, which is reason (2). Reason (3)
+## is the one ADR 0200 CONTRADICTS on its own terms, and this file says so plainly: under
+## `m = mitigation_ceiling * D/(K+D)` doubling `DEFENSE_PHYSICAL` does move the result by
+## LESS than doubling. The mitigation is now a share rather than a hit-point value, so a
+## balance table reviews `D` and `K` rather than a subtraction. That is a real cost and
+## reason (4) is genuinely weaker here than it was — it is the price ADR 0200 pays for
+## mitigation growing WITH the ladder instead of being authored flat against it. Reason (3)
+## is also why [method breakdown] now publishes `defense`, `defense_effective`,
+## `divisor_k` and `mitigation_rate` as four separate terms: an unauthorable SUM is not a
+## reason to publish no TERMS.
+##
 ## ## `MIN_PENETRATION_RATIO` is load-bearing, and this is where it is proved
 ##
-## Without the floor, enough `DEFENSE_PHYSICAL` and tissue drive `penetration` to `0.0`,
-## the location multiplier multiplies nothing, and a stat the defender already had deletes
-## the entire mechanic. The suite asserts the floor twice: against armour that REFUSES,
-## and against armour that would otherwise floor to zero.
+## Without the floor, a defender with enough `DEFENSE_PHYSICAL` and tissue drives `m`
+## toward `mitigation_ceiling`, drives `gross * (1 - m)` toward zero, has the location
+## multiplier multiply nearly nothing, and deletes the entire mechanic with a stat they
+## already had. It is the one piece of ADR 0070 that survives the ratio intact, and the
+## suite asserts it twice: against armour that REFUSES, and against armour that saturates
+## the mitigation without ever reaching it.
 ##
 ## ## The one refusal, and it is bounded below by the spine
 ##
@@ -177,23 +228,38 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 	var gross := magnitude * maxf(0.0, _finite(ctx.attacker_value(Stat.ATTACK_PHYSICAL)))
 	var tissue := _tissue_of(ctx, tuning)
 	var sites := _sites_of(ctx, tuning)
-	# ONE penetration figure for the whole hit: `resistance` is a single sum, and a
-	# `broad` sweep whose twenty sites each subtracted their own armour would be a
-	# different formula from the ADR's rather than the ADR's formula applied twenty times.
+	# ONE defense figure for the whole hit: `D` is a single sum, and a `broad` sweep
+	# whose twenty sites each computed their own mitigation would be a different formula
+	# from the ADR's rather than the ADR's formula applied twenty times.
 	# `tissue` is READ for the readout row below and is ALREADY inside `_resistance_of`'s
 	# per-site sum (`base * step * rank + tissue`), which is ADR 0070's formula with each
 	# term counted once. Adding it to that result as well — as this line used to — priced
 	# every defender's tissue defence twice, silently inflating every body's armour and
 	# making body the strongest of the three mechanisms to defend against for no design
 	# reason. The README of this lane is the formula at the top of this file, not this line.
-	var defence := _finite(_resistance_of(ctx, tuning, sites))
+	var armour := _finite(_resistance_of(ctx, tuning, sites))
+	# ADR 0200: `K = defense_divisor_k * gross`, which scales with the ATTACKER, and
+	# penetration is a bounded reciprocal ON THE ARMOUR rather than hit points off the
+	# blow. Both are read before the floor, because the floor is applied to the RESULT and
+	# a floor taken against an intermediate would be a second, different constant.
+	var penetration_of_attacker := _penetration_of(ctx)
+	var defense_effective := _pierced_defense(armour, penetration_of_attacker, tuning)
+	var divisor_k := maxf(0.0, _finite(tuning.defense_divisor_k) * gross)
+	var mitigation_rate := _mitigation_of(defense_effective, divisor_k, tuning)
 	var floor := maxf(0.0, gross * _share(tuning.min_penetration_ratio))
-	var penetration := _finite(maxf(0.0, gross - defence))
+	var penetration := _finite(maxf(gross * (1.0 - mitigation_rate), floor))
 	# `MIN_PENETRATION_RATIO` applied ONCE, so the floor is a share of the GROSS and never
 	# grows with the strike. Applying it per site — as a `broad` sum of twenty floors —
 	# would make an area technique's floor twenty times a single hit's at no extra price,
 	# which is the opposite of what "a sweep is coverage" means.
-	var struck := _finite(maxf(penetration, floor))
+	#
+	# `struck` IS `penetration` and is kept as a separate name because three suites read
+	# `parts["penetration"]` as the figure the location multipliers act on, and a rename
+	# would have them asserting against a key that no longer means "what the armour left".
+	# The second `maxf` this used to carry was the floor applied TWICE — the floor is
+	# already taken on the line above, so the outer one could never bind and only hid
+	# which of the two terms was actually deciding the answer.
+	var struck := penetration
 	# A body with no location axis has no SITE to carry a multiplier, and the location
 	# multiplier is where ADR 0070's entire location axis lives — a subtraction that
 	# produced nothing at all because the target has no meridians would delete the hit
@@ -248,7 +314,15 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 		"armour_step": maxf(0.0, _finite(tuning.meridian_armour_step)),
 		"channel_rank": float(_rank_of(sites)),
 		"tissue": tissue,
-		"resistance": defence,
+		# `resistance` is KEPT as a key name because three suites and the cross-mechanism
+		# readout assert on it, but it is no longer a subtracted quantity: it is `D`, the
+		# armour MAGNITUDE ADR 0200's ratio is built from. The three new keys beside it are
+		# what the ratio added, and publishing them is what keeps ADR 0070's reason (3)
+		# — "defense is un-authorable under a ratio" — honest rather than merely ignored.
+		"resistance": armour,
+		"defense_effective": defense_effective,
+		"divisor_k": divisor_k,
+		"mitigation_rate": mitigation_rate,
 		"floor": floor,
 		"penetration": struck,
 		# Whether the STRIKE was refused, not whether the penetration figure is positive.
@@ -385,25 +459,105 @@ func _aim_of(ctx: AttackContext) -> Variant:
 	return {"aim_meridian": StringName(ctx.data_value(AIM_MERIDIAN_KEY, &""))}
 
 
-## ADR 0070's `resistance`: the channel's armour PLUS the tissue weighting.
+## ADR 0070's armour: the channel's armour PLUS the tissue weighting, now named `D` --
+## the MAGNITUDE ADR 0200's ratio is built from.
 ##
 ## `DEFENSE_PHYSICAL * MERIDIAN_ARMOUR_STEP * channel.state_rank()` for `named` /
-## `random`, and the DEFENDER'S BEST channel for `broad` — the single figure the average
+## `random`, and the DEFENDER'S BEST channel for `broad` -- the single figure the average
 ## over a sweep has to beat. Two properties follow and both are asserted: armour rises
 ## monotonically with `state_rank`, so training a channel makes it a harder place, and a
-## `closed` channel is refused outright, which is the vocabulary a ratio cannot express.
+## `closed` channel is refused outright, which is the vocabulary the ratio cannot express
+## on its own and which [method mitigation_of]'s curve plus `MIN_PENETRATION_RATIO`
+## together supply.
+##
+## ## Why it returns a NEGATIVE-capable figure
+##
+## The SIGN is preserved rather than clamped at zero, because a defence DEBUFF is the
+## case ADR 0200 names: `D < 0` must reach [method mitigation_of]'s mirror branch or the
+## glass cannon silently exceeds its own ceiling. `DEFENSE_PHYSICAL` itself is read
+## `maxf(0.0, ...)` because core derives it that way, so only a DEBUFF modifier can make
+## the sum negative -- which is exactly the intended author.
 func _resistance_of(ctx: AttackContext, tuning: CombatTuning, sites: Array) -> float:
 	var base := maxf(0.0, _finite(ctx.target_value(Stat.DEFENSE_PHYSICAL)))
 	var step := maxf(0.0, _finite(tuning.meridian_armour_step))
 	var tissue := _tissue_of(ctx, tuning)
 	if sites.is_empty():
 		return _finite(tissue)
-	var best := 0.0
+	var best := -INF
 	for site in sites:
 		var meridian_id := StringName(site.get("meridian_id", &""))
 		var value := _finite(base * step * float(int(site.get("state_rank", 0))) + tissue)
 		best = maxf(best, value)
-	return best
+	return _finite(best)
+
+
+## The attacker's penetration against this body's armour, as a magnitude on
+## `CombatTuning.pierce_scale`'s scale. Zero when nothing was authored and never
+## negative: a negative penetration would be a defence BONUS wearing an attacker's name.
+func _penetration_of(ctx: AttackContext) -> float:
+	var id := CombatStats.PENETRATION
+	return maxf(0.0, CombatStats.default_of(id) + _finite(ctx.attacker_value(id)))
+
+
+## ADR 0200's bounded reciprocal ON THE ARMOUR: `D_eff = D / (1 + max(0, pen) /
+## pierce_scale)`.
+##
+## ## Why the old subtraction off the gross was wrong, and is gone
+##
+## `body_damage.gd` used to subtract penetration from the GROSS. ADR 0200 names that as
+## dimensionally wrong and the arithmetic agrees: penetration is a share of a defender's
+## ARMOUR, so taking hit points off a blow made a deep defender's penetration scale with
+## how hard they were hit rather than with how well they were guarded -- two defenders
+## with identical armour answered a light blow and a heavy one differently. Here it
+## scales the ARMOUR, which is the quantity it names.
+##
+## ## Bounded, which is the property the subtraction never had
+##
+## The reciprocal lies in `(0, 1]`, so `D_eff` keeps `D`'s sign and shrinks toward zero
+## WITHOUT crossing it. The old form could subtract straight past a defended point into a
+## free one; this one can push armour arbitrarily close to zero and never negative.
+##
+## A non-positive or non-finite `pierce_scale` reads as "penetration does nothing", never
+## as a division.
+static func _pierced_defense(armour: float, penetration: float, tuning: CombatTuning) -> float:
+	var scale := _finite(tuning.pierce_scale)
+	if scale <= 0.0:
+		return armour
+	var pen := maxf(0.0, _finite(penetration))
+	return _finite(armour / (1.0 + pen / scale))
+
+
+## ADR 0200's mitigation curve, the same shape `QiDamage` and `MindDamage` use:
+##
+## ```
+## m = mitigation_ceiling * D / (K + D)                 for D >= 0
+## m = mitigation_ceiling * (2 - K / (K + |D|))        for D <  0
+## ```
+##
+## Here `K = defense_divisor_k * gross`, and the OWNER'S RULING is that `K` is PER
+## MECHANISM: body authors its own so the three mechanisms stay independent and a qi
+## rebalance cannot move a body's answer.
+##
+## `m` APPROACHES `mitigation_ceiling` and never reaches it, so every further point of
+## armour still pays -- the property `MIN_PENETRATION_RATIO` then sits UNDER as a floor,
+## which is the whole of ADR 0200's answer to ADR 0070's first objection: the ratio has
+## no vocabulary for "this point is not defended", and the floor supplies it.
+##
+## The mirror branch is what makes a glass cannon real: a body under a defence debuff
+## takes `gross * (1 - m)` with `m` ABOVE the ceiling, so it deals strictly MORE than an
+## undefended body. Both branches give exactly `mitigation_ceiling` at `D == 0`, so the
+## function is CONTINUOUS there.
+static func _mitigation_of(armour: float, divisor_k: float, tuning: CombatTuning) -> float:
+	var ceiling := clampf(_finite(tuning.mitigation_ceiling), 0.0, 1.0)
+	if ceiling <= 0.0:
+		return 0.0
+	var k := maxf(0.0, _finite(divisor_k))
+	var magnitude := absf(_finite(armour))
+	var denominator := k + magnitude
+	if denominator <= 0.0:
+		return 0.0
+	var share := magnitude / denominator if armour >= 0.0 else 2.0 - k / denominator
+	return _finite(ceiling * share)
 
 
 ## The best `state_rank` among the struck channels, for the readout. The armour term uses
@@ -554,6 +708,9 @@ static func _empty_parts() -> Dictionary:
 		"channel_rank": 0.0,
 		"tissue": 0.0,
 		"resistance": 0.0,
+		"defense_effective": 0.0,
+		"divisor_k": 0.0,
+		"mitigation_rate": 0.0,
 		"floor": 0.0,
 		"penetration": 0.0,
 		"refused": true,

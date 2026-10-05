@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F8_heaven_dogger_physique_dao_heart_loot_bonus_health_regen"
+display_name = "Heaven Dogger Physique Dao Heart Loot Bonus Health Regen"
+category = &"consumable"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 29.7},
+	{"option_id": &"core_dao_heart", "value": 29.7},
+	{"option_id": &"core_loot_bonus", "value": 0.05},
+	{"option_id": &"core_health_regen", "value": 29.7},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"mantra"
+grade = &"heaven"
+sources = Array[StringName]([&"gather", &"domain:body_void_refinement_trial"])

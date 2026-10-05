@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"K27_immortal_ash_perfected"
+display_name = "Immortal Ash Perfected"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 48.15},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"grimoire"
+grade = &"immortal"
+sources = Array[StringName]([&"craft:K27_immortal_ash_perfected_recipe"])

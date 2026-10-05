@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B38_divine_drowlat_health_regen_will"
+display_name = "Divine Drowlat Health Regen Will"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 37.54},
+	{"option_id": &"base_will", "value": 37.54},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"talisman"
+grade = &"divine"
+sources = Array[StringName]([&"gather", &"domain:mind_immortal_sovereign_trial"])

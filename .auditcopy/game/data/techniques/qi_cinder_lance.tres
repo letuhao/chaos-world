@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"qi_cinder_lance"
+delivered_by = &"tome_cinder_tiger_claw"
+display_name = "Cinder Lance"
+description = "A narrow spear of fire that overheats the air it crosses. Almost all of it is elemental, so fire resistance eats the hit and water doubles what gets through."
+tags = Array[StringName]([&"technique", &"fire", &"projectile"])
+grade = &"mortal"
+rarity = &"magic"
+element = &"fire"
+schools = Array[StringName]([&"emitting", &"elemental"])
+active = true
+path = &"qi_cultivation"
+min_path_realm = {&"qi_cultivation": 3}
+qi_cost = 30.0
+stamina_cost = 10.0
+cooldown = 6.0
+mastery_rungs = 5
+magnitude = 0.8
+element_share = 0.9
+

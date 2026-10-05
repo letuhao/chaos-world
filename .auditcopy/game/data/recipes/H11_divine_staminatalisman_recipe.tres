@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"H11_divine_staminatalisman_recipe"
+display_name = "Divine Stamina Talisman Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"divine_chaosvine", &"divine_netherbloom"])
+outputs = Array[StringName]([&"H11_divine_staminatalisman"])

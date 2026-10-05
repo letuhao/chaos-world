@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I52_mortal_gigot_perfected"
+display_name = "Mortal Gigot Perfected"
+category = &"consumable"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"sigil"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:I52_mortal_gigot_perfected_recipe", &"domain:body_earth_immortal_trial"])

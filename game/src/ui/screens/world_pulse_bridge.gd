@@ -23,13 +23,20 @@ extends RefCounted
 ## receives [LootBridge]. The composition root fills this; a screen never names
 ## `WorldPulse`, `EventApi` or `WorldAmbient`.
 ##
-## ## Two slots, on purpose
+## ## Three slots, and the third is the season-scale one
 ##
-## [method read_state] and [method advance] are the whole seam. An earlier draft also
+## [method read_state] and [method advance] were the whole seam. An earlier draft also
 ## carried a slot for `WorldPulse.available_events`, and it was cut: the event COUNT is
 ## already inside [method read_state]'s payload, and every extra slot is another line
 ## the composition root has to be edited for. A seam nobody lands is a feature that
-## measures as dead.
+## measures as dead — which is exactly how ADR 0167's season-scale class stayed dead
+## until a `retreat` slot gave it somewhere to land.
+##
+## **The `retreat` slot is the difference between a wait and a chosen duration.** ADR
+## 0167 decides that the player CHOOSES how long to sit and that the chosen length IS
+## the cost, so this seam is the one action in the program whose argument is the price.
+## It is a `Callable`, not a new panel and not a new route, because `ui/` may reach
+## `app/` only through this file (`app` is a [code]PRIVATE_UNIT[/code]).
 ##
 ## Every callable returns primitives only, and an unwired callable reads as "not
 ## available" rather than as a failure — which is how a screen disables an action
@@ -43,6 +50,13 @@ var read_state: Callable
 ## world on demand, with no elapsed time at all. Takes no argument on purpose: a
 ## button and a headless driver can both say "one period" without knowing the cadence.
 var advance: Callable
+## `ItemWorkbenchPlay.retreat(periods: int)` -> Dictionary. The SEASON-SCALE verb
+## (ADR 0167): `periods` is what the player chose to sit for and is paid through
+## `advance_world`, so the report answers `declared`, `paid`, `unpaid` and the
+## `magnitudes` the span crossed. One argument, an int — a duration is a COUNT of the
+## clock's own unit here, never seconds, because nothing in `ui/` may hold a cadence
+## (`tests/core/test_time_ladder_single_source.gd`'s UI clause).
+var retreat: Callable
 
 
 ## Whether an action is wired. A screen reads this before it offers the action.
@@ -56,7 +70,7 @@ func _callable_for(action: StringName) -> Callable:
 
 
 func _actions() -> Dictionary:
-	return {"state": read_state, "advance": advance}
+	return {"state": read_state, "advance": advance, "retreat": retreat}
 
 
 ## Invoke `action` with `args`, returning an empty dictionary when the callable is

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="QuestDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/quest/quest_def.gd" id="1_quest"]
+[ext_resource type="Script" path="res://src/modules/quest/quest_step_def.gd" id="2_step"]
+
+[sub_resource type="Resource" id="QuestStep_the_spared_two"]
+script = ExtResource("2_step")
+step_id = &"the_spared_two"
+fact = &"third_man_spared"
+need = 2
+display_name = "Let two of them walk, and be the one both of them can name"
+
+[resource]
+script = ExtResource("1_quest")
+id = &"the_tally_of_a_man_who_kept_count"
+display_name = "The Tally of a Man Who Kept Count"
+description = "The sect's rotation clerk kept a book of every duel decided on the pass, and the book has a column for the ones that ended without a killing blow. A name in that column is not a victory and not a defeat; it is the only entry the clerk could not file under either, and clerks do not forget a line they cannot classify. Nobody assigned you this. The book has three decided duels in your hand and two opponents still standing, and it is waiting to see whether the two cancel."
+kind = &"authored"
+tier = 3
+requirement = {"verb": &"all_of", "of": [{"verb": &"tagged", "id": &"duel"}, {"verb": &"counter", "id": &"duels_won", "need": 3}]}
+steps = Array[ExtResource("2_step")]([SubResource("QuestStep_the_spared_two")])
+grants = Array[Dictionary]([{"kind": &"fate", "id": &"oath_of_the_empty_hand", "amount": 1}])

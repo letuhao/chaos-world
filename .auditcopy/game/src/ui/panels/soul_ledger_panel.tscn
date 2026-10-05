@@ -1,0 +1,82 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/ui/panels/soul_ledger_panel.gd" id="1"]
+[ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
+
+[node name="SoulLedgerPanel" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Layout"]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "The soul"
+
+[node name="SoulLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"OkLabel"
+text = ""
+
+[node name="LivesLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"EffectLabel"
+text = ""
+
+[node name="IncarnationLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = ""
+
+[node name="ArrivalLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"EffectLabel"
+autowrap_mode = 2
+text = ""
+
+[node name="DeathLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"WarnLabel"
+autowrap_mode = 2
+text = ""
+
+[node name="Separator" type="HSeparator" parent="Layout"]
+layout_mode = 2
+
+[node name="SaveTitle" type="Label" parent="Layout"]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "The save"
+
+[node name="SaveLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"OkLabel"
+text = ""
+
+[node name="BackupLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = ""
+
+[node name="NoRestoreNote" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = "The game saves itself on a boundary you never see, and you never choose to read an earlier one."

@@ -102,15 +102,24 @@ static func observe(stamps: Dictionary, location_id: StringName, span_periods: i
 	var span := maxi(0, span_periods)
 	var stamped_before := ReconcileStamp.knows_place(stamps, location_id)
 	var was := ReconcileStamp.folded_periods(stamps, location_id)
+	# **Only the UNFOLDED remainder crosses.** A second observation of a span this place
+	# has already folded must be a no-op — "a place returning to scope is FOLDED, never
+	# replayed" (ADR 0170), and a stamp that stores a fold count rather than a period
+	# watermark exists precisely so this subtraction is possible. Dividing the raw span
+	# again on every visit made a place re-cross the same month on its second look, which
+	# is the replay this rule refuses, and it is what made
+	# `test_a_re_observed_place_does_not_pay_a_second_bucket` red.
+	#
 	# Advance FIRST, unconditionally, before any read of the place's state is returned.
 	# There is no presence check in front of this line and there may never be one.
-	var crossed := TimeLadder.magnitudes_crossed(span)
+	var outstanding := maxi(0, span - was)
+	var crossed := TimeLadder.magnitudes_crossed(outstanding)
 	var out := ReconcileStamp.fold_all(stamps, location_id, crossed)
 	return {
 		"location_id": String(location_id),
 		"span_periods": span,
 		"stamped_before": stamped_before,
-		"elapsed_periods": maxi(0, span - was),
+		"elapsed_periods": outstanding,
 		"crossed": crossed,
 		"advanced": ReconcileStamp.folded_periods(out, location_id) > was,
 		"stamps": out,

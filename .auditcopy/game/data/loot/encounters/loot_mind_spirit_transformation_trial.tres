@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"spirit_transformation"
+rarity = &"common"
+vitality = 2943.8
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"mind_spirit_transformation_warden", "table_id": &"loot_mind_spirit_transformation_warden"},
+	{"boss_id": &"F3_transformation_warden", "table_id": &"loot_F3_transformation_warden"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"spirit_transformation"
+rarity = &"rare"
+vitality = 4710.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"mind_spirit_transformation_warden", "table_id": &"loot_mind_spirit_transformation_warden"},
+	{"boss_id": &"F3_transformation_warden", "table_id": &"loot_F3_transformation_warden"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_mind_spirit_transformation_trial"
+display_name = "Enlightenment Trial"
+domain_id = &"mind_spirit_transformation_trial"
+boss_ids = Array[StringName]([&"mind_spirit_transformation_warden", &"F3_transformation_warden"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

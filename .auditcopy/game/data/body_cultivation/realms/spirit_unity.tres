@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BodyRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"spirit_unity"
+breakthrough_item = &"body_spirit_unity_breakthrough_pill"
+strengthening_item = &"body_spirit_unity_channel_elixir"
+recovery_item = &"body_spirit_unity_recovery_elixir"
+progress_required = 161.0
+physique_required = 86.2
+quality_required = 0.687000
+quality_target = 0.767000
+integrity_target = 0.817000
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao"])
+required_refinement = 14
+refinement_cap = 15
+integrity_maximum = 240.0
+rewards = {
+"physique": 2.0,
+"bone_density": 1.0
+}
+insight_required = 486.0
+resonance_rank = 0
+chance_base = 0.3780
+chance_cap = 0.8115
+channel_training = Array[StringName]([])

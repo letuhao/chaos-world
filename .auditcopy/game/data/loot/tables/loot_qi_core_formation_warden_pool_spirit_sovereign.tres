@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_spirit_sovereign_0"
+kind = &"item"
+item_id = &"D9_earth_pierce_talon"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_spirit_sovereign_1"
+kind = &"item"
+item_id = &"F29_earth_fireside_defense_physical_fortune_qi_cost_reduction_qi_regen"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"qi_core_formation_warden_spirit_sovereign_2"
+kind = &"item"
+item_id = &"H15_earth_impala_breakthrough_chance_evasion_fortune_penetration_qi_regen"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_qi_core_formation_warden_pool_spirit_sovereign"
+display_name = "Core Formation Warden salvage (spirit_sovereign)"
+realm = &"spirit_sovereign"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2")
+])

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"ash_furnace_key_recipe"
+display_name = "Furnace Key Recipe"
+# The sequence bargain of `ash_furnace_hoard` (ADR 0217 SATISFIABLE, ADR 0218
+# KEYED): the gate is on HAVING GONE AND MADE IT, not on luck. Both inputs are
+# gatherable materials any hero pays early, so the key is cheap and the price is
+# the walk and the smelt, which is exactly the bargain the hoard is for.
+station = &"forge"
+inputs = Array[StringName]([&"sap_resin", &"wood_whisper_bark"])
+outputs = Array[StringName]([&"ash_furnace_key"])

@@ -1,0 +1,119 @@
+class_name AttachPipeline
+extends RefCounted
+
+## Ordered attach phases with named hook slots (ADR 0184 §6).
+##
+## The composition root builds one pipeline per boot with one phase per attach
+## step; a mod's attach hook is staked to a phase NAME through
+## `RegistrationContext.add_attach_hook` and fires when the pipeline runs that
+## phase. The pipeline is a wiring container and nothing more: it holds no
+## game state, no clocks and no feature arrays — only the order and the hook
+## slots, so `app/`'s state scanners read it as wiring (ADR 0002).
+##
+## ## Hook semantics
+##
+## A hook added with `before = true` runs immediately BEFORE its phase's own
+## `run`; the default (`before = false`) runs immediately AFTER it. Both fire
+## inside the same phase visit, in registration order, and both receive the
+## actor the pipeline is run against.
+##
+## ## Empty callables
+##
+## W2 stakes an empty `Callable()` for every manifest attach hook (the mod's
+## own entry point binds the real one in W3+). An empty or invalid Callable is
+## SKIPPED, never an error, so a stub cannot break a boot; a valid one is
+## called. This is the tolerance that lets the through-path exist before any
+## real mod exists to bind it.
+
+## The ordered phases. Each row is `{name: StringName, run: Callable,
+## before: Array[Callable], after: Array[Callable]}`; the hook arrays are
+## written only through `add_hook` so a caller cannot smuggle a slot the
+## pipeline did not open.
+var _phases: Array[Dictionary] = []
+
+
+## Append one phase to the end of the order. `run` is called with the actor
+## when the pipeline runs; it is the phase's own attach step.
+func add_phase(name: StringName, run: Callable) -> void:
+	_phases.append({"name": name, "run": run, "before": [], "after": []})
+
+
+## Stake `hook` to the phase named `phase_name`. Returns true when the phase
+## existed and the hook was registered. An unknown phase is a NAMED LOUD
+## ERROR — `push_error` naming the missing phase — and returns false, so the
+## caller can refuse the registration (ADR 0184 §8: a manifest error aborts
+## boot with a named cause, never a silent skip).
+func add_hook(phase_name: StringName, hook: Callable, before: bool = false) -> bool:
+	for phase in _phases:
+		if String(phase["name"]) == String(phase_name):
+			var slot: Array = phase["before"] if before else phase["after"]
+			slot.append(hook)
+			return true
+	push_error("AttachPipeline: no phase named '%s' — attach hook refused" % String(phase_name))
+	return false
+
+
+## The declared phase names, in order. Read-only: the sequence is the contract a
+## mod's attach hook is staked to (ADR 0184 §6), so the composition root's wiring
+## is assertable without running a boot.
+func phase_names() -> Array[StringName]:
+	var out: Array[StringName] = []
+	for phase in _phases:
+		out.append(StringName(phase["name"]))
+	return out
+
+
+## Run every phase in declared order: each phase's before-hooks, the phase
+## itself, then its after-hooks. Bounded by the phase count — one pass over
+## `_phases`, no re-entry.
+func run(actor) -> void:
+	for phase in _phases:
+		_fire(phase["before"], actor)
+		(phase["run"] as Callable).call(actor)
+		_fire(phase["after"], actor)
+
+
+## Call each valid hook with the actor. An empty or invalid Callable (the W2
+## stub) is skipped rather than called, so a boot never dies on a hook no mod
+## has bound yet.
+func _fire(hooks: Array, actor) -> void:
+	for hook in hooks:
+		var callable := hook as Callable
+		if callable.is_valid():
+			callable.call(actor)
+
+
+## Attach one registered mod module by loading its api script and calling
+## `attach(actor)` when the script declares it. Returns a result dictionary:
+## `{ok, name, reason, detail}`. A module whose api script is missing or has
+## no `attach` is skipped (not an error) — the base modules are already
+## attached by the pipeline phases, so a mod module that adds nothing is
+## legal. Bounded: one load, one call, no loops.
+func attach_module(name: String, api_path: String, actor) -> Dictionary:
+	if api_path == "":
+		return {"ok": false, "name": name, "reason": "no_api_path", "detail": ""}
+	if not FileAccess.file_exists(api_path):
+		return {
+			"ok": false,
+			"name": name,
+			"reason": "api_not_found",
+			"detail": api_path,
+		}
+	var script := load(api_path)
+	if script == null:
+		return {
+			"ok": false,
+			"name": name,
+			"reason": "load_failed",
+			"detail": api_path,
+		}
+	var api: Object = script.new()
+	if api == null or not api.has_method("attach"):
+		return {
+			"ok": true,
+			"name": name,
+			"reason": "no_attach",
+			"detail": "",
+		}
+	api.attach(actor)
+	return {"ok": true, "name": name, "reason": "", "detail": ""}

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"C20_mortal_confetti_breakthrough_chance_max_stamina_aptitude"
+display_name = "Mortal Confetti Breakthrough Chance Max Stamina Aptitude"
+category = &"consumable"
+rarity = &"common"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.03},
+	{"option_id": &"core_max_stamina", "value": 7.75},
+	{"option_id": &"base_aptitude", "value": 7.75},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"salve"
+grade = &"mortal"
+sources = Array[StringName]([&"quest", &"domain:puppet_marionette_king_domain"])

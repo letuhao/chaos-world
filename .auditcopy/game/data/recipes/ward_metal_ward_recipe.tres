@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"ward_metal_ward_recipe"
+display_name = "Metal Ward Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"talisman_cinnabar_ore"])
+outputs = Array[StringName]([&"ward_metal_ward"])

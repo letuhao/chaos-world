@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"C12_heaven_coign_perfected_recipe"
+display_name = "Heaven Coign Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"C12_heaven_coign_primed", &"dagger_starfall_ore", &"Z35_heaven_isostasy_chrysoberyl"])
+outputs = Array[StringName]([&"C12_heaven_coign_perfected"])

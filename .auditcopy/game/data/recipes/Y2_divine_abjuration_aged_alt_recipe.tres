@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Y2_divine_abjuration_aged_alt_recipe"
+display_name = "Divine Abjuration Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Y2_divine_abjuration_refined", &"Q1_divine_courier_sliver", &"qi_primordial_origin_qi_herb"])
+outputs = Array[StringName]([&"Y2_divine_abjuration_aged"])

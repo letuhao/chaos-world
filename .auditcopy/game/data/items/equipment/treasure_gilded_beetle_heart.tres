@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"treasure_gilded_beetle_heart"
+display_name = "Beetle Heart"
+category = &"equipment"
+rarity = &"legendary"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 20},
+	{"option_id": &"core_health_regen", "value": 29.84},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
+subcategory = &"artifact"
+stackable = false
+grade = &"immortal"
+sources = Array[StringName]([&"boss:treasure_gilded_beetle", &"boss:d6_gilded_beetle", &"boss:E7_golden_regent"])

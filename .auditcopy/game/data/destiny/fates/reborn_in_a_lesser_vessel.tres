@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FateDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/destiny/fate_def.gd" id="1_fate"]
+
+[resource]
+script = ExtResource("1_fate")
+id = &"reborn_in_a_lesser_vessel"
+display_name = "Reborn in a Lesser Vessel"
+description = "Came back after a failure at the barrier in a body the sect records as a downgrade. The technique survived. The archive notes the discrepancy and declines to reconcile it."
+category = &"rebirth"
+tier = 2
+visibility = &"revealed"
+flat_modifiers = {"physique": 2.0, "will": 3.0}
+counters = Array[StringName]([&"breakthroughs"])
+tags = Array[StringName]([&"rebirth"])

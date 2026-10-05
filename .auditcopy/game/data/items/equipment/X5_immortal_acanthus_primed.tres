@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"X5_immortal_acanthus_primed"
+display_name = "Immortal Acanthus Primed"
+category = &"equipment"
+rarity = &"legendary"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 28.88},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
+subcategory = &"greaves"
+stackable = false
+grade = &"immortal"
+sources = Array[StringName]([&"craft:X5_immortal_acanthus_primed_recipe", &"domain:relic_ash_wyrm_domain"])

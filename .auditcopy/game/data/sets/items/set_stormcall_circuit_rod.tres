@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"set_stormcall_circuit_rod"
+display_name = "Stormcall Rod"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"spirit"
+stackable = false
+tags = Array[StringName]([&"set:stormcall_circuit"])
+sources = Array[StringName]([&"boss:body_spirit_severing_guardian"])
+description = "A severing-edge rod that keeps a partial discharge in the circuit."
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 10.0},
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}

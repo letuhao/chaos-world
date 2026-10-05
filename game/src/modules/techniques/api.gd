@@ -32,21 +32,30 @@ const UPKEEP_COMPONENT := &"technique_upkeep"
 ## `TechniqueUpkeep` is — as a component, named here. See `technique_casting.gd`.
 const CASTING_COMPONENT := &"technique_casting"
 
-## The DELIVERY seam: how a `category = &"technique"` item becomes a `CodexEntry`
-## (ADR 0053, DEF-0151). NOT a facade method either, for the same reason: the cap
-## is 12 and this module publishes 12.
+## ## The DELIVERY seam, and why there is no `DELIVERY` constant here
 ##
-## It is a named constant rather than a component because it is not per-actor state
-## — it is a process-wide binding the composition root installs, exactly the shape
-## `NpcApi.set_minter` and `CustodyApi.set_resolver` already use. `app/` binds it
-## once and `items` calls `TechniqueDelivery.study`; neither `items` nor `app/` can
-## reach it through this file, and that is deliberate: the seam is one-way.
+## How a `category = &"technique"` item becomes a `CodexEntry` is NOT a facade
+## method either, for the reason the two constants above give: the cap is 12 and
+## this module publishes 12. It is reached as a named type — `TechniqueDelivery` —
+## installed as a process-wide binding by the composition root and called by
+## `items`. Neither `items` nor `app/` can reach it through this file, and that is
+## deliberate: the seam is one-way.
 ##
 ## ```
 ## # app/, at boot:
 ## TechniqueDelivery.install(Callable(TechniqueDelivery, "bind_learner"))
 ## ```
-const DELIVERY := &"technique_delivery"
+##
+## This file used to publish `const DELIVERY := &"technique_delivery"` for that
+## reach, and it was inert: the string was not a component key, not a save key, and
+## not the `ProjectSettings` key the seam actually travels under
+## (`TechniqueDelivery.SETTING == "technique/delivery_seam"`). Nothing in `res://src`
+## read it and nothing ever could, because no code path consumes that literal —
+## which is the defect `tools/arch`'s facade-constant guard exists to name. The
+## binding itself was never affected: it is `TechniqueDelivery.install` that makes
+## the seam live, and `app/item_workbench_body.gd` calls it on every actor it
+## builds. `tools arch`'s own `GATED_EXACT` still names `DELIVERY`, because the
+## rule is about the SHAPE a cap-bound module publishes, not about this module.
 
 ## The ACTIVATION READBACK: what one landed cast actually moved, as primitives.
 ##
@@ -349,6 +358,10 @@ static func inspect(actor: Actor, def_or_id) -> Dictionary:
 ## The actor's versioned technique payload, exactly as core persists it:
 ## `StringName` def ids and mastery rungs, never a serialized definition
 ## (ADR 0056), so a designer retuning a technique cannot rewrite every save.
+##
+## The twelfth public method and the one that closes the cap: `TechniquesApi` is at
+## `MAX_FACADE_PUBLIC_METHODS` and publishes twelve (ADR 0056), so this is the only
+## way a caller outside the module reads the payload in the shape `core` writes it.
 static func technique_state(actor: Actor) -> Dictionary:
 	if actor == null:
 		return TechniqueCodex.empty()

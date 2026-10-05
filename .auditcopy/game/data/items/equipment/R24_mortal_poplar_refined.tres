@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"R24_mortal_poplar_refined"
+display_name = "Mortal Poplar Refined"
+category = &"equipment"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
+subcategory = &"weapon"
+stackable = false
+grade = &"mortal"
+sources = Array[StringName]([&"craft:R24_mortal_poplar_refined_recipe", &"domain:mind_transcendent_trial"])

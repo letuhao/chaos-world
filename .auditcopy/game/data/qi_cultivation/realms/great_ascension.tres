@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="QiRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/qi_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"great_ascension"
+breakthrough_item = &"qi_great_ascension_breakthrough_pill"
+training_item = &"qi_great_ascension_channel_elixir"
+recovery_item = &"qi_great_ascension_recovery_elixir"
+dantian_catalyst = &"qi_great_ascension_dantian_catalyst"
+meridian_catalyst = &"qi_great_ascension_meridian_catalyst"
+progress_required = 700.0
+comprehension_required = 22.0
+dantian_quality_required = 0.56
+dantian_fill_required = 1.0
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver"])
+required_channel_state = &"strengthened"
+required_channel_refinement = 4
+channel_refinement_cap = 8
+dantian_capacity = 275.0
+rewards = {
+"spirit": 2.0
+}

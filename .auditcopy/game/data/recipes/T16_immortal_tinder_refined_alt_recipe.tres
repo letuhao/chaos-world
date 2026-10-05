@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"T16_immortal_tinder_refined_alt_recipe"
+display_name = "Immortal Tinder Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"T16_immortal_tinder_base", &"petal_magnolia", &"filament_starlinen"])
+outputs = Array[StringName]([&"T16_immortal_tinder_refined"])

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"cloak_heaven"
+display_name = "Heaven Cloak"
+category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 15},
+	{"option_id": &"core_damage_reduction", "value": 0.05},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"armor"
+stackable = false
+grade = &"heaven"
+sources = Array[StringName]([&"craft:cloak_heaven_recipe", &"domain:qi_spirit_manifestation_trial"])

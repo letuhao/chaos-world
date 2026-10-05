@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"spirit_transformation"
+rarity = &"common"
+vitality = 3300.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"manual_thunder_ape", "table_id": &"loot_manual_thunder_ape"},
+	{"boss_id": &"d3_thunder_ape_young", "table_id": &"loot_d3_thunder_ape_young"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"spirit_transformation"
+rarity = &"rare"
+vitality = 5280.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"manual_thunder_ape", "table_id": &"loot_manual_thunder_ape"},
+	{"boss_id": &"d3_thunder_ape_young", "table_id": &"loot_d3_thunder_ape_young"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_manual_thunder_ape_domain"
+display_name = "Thunder Ape Domain"
+domain_id = &"manual_thunder_ape_domain"
+boss_ids = Array[StringName]([&"manual_thunder_ape", &"d3_thunder_ape_young"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

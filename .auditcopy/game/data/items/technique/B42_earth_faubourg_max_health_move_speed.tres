@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B42_earth_faubourg_max_health_move_speed"
+display_name = "Earth Faubourg Max Health Move Speed"
+category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 21.46},
+	{"option_id": &"core_move_speed", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"sigil"
+grade = &"earth"
+sources = Array[StringName]([&"gather", &"domain:body_immortal_sovereign_trial"])

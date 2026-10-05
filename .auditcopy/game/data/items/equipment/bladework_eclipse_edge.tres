@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"bladework_eclipse_edge"
+display_name = "Eclipse Edge Bladework"
+category = &"equipment"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 48},
+	{"option_id": &"core_attack_spiritual", "value": 52},
+	{"option_id": &"core_poise", "value": 11},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
+subcategory = &"weapon"
+stackable = false
+grade = &"immortal"
+sources = Array[StringName]([&"gather"])

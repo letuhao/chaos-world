@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="TechniqueDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_tech"]
+
+[resource]
+script = ExtResource("1_tech")
+id = &"test_mod_technique"
+display_name = "Test Mod Technique"
+description = "A test technique from a mod fixture."
+tags = Array[StringName]([&"test"])
+delivered_by = &""
+grade = &"mortal"
+rarity = &"common"
+element = &""
+schools = Array[StringName]([])
+active = true
+path = &"qi"
+min_path_realm = {}
+qi_cost = 0.0
+stamina_cost = 0.0
+cooldown = 0.0
+upkeep = {}
+upkeep_interval = 60.0
+mastery_rungs = 5
+magnitude = 1.0
+element_share = 0.0
+aim_meridian = &""
+mind_kind = &""
+passive_options = []

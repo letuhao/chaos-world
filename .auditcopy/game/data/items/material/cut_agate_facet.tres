@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"cut_agate_facet"
+display_name = "Cut Agate Facet"
+category = &"material"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"gemstone"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:cut_agate_facet_recipe", &"boss:F4_coreformation_warden"])

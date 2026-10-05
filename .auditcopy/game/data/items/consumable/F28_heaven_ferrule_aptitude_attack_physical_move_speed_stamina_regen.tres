@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F28_heaven_ferrule_aptitude_attack_physical_move_speed_stamina_regen"
+display_name = "Heaven Ferrule Aptitude Attack physical Move speed Stamina regen"
+category = &"consumable"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 25.58},
+	{"option_id": &"core_attack_physical", "value": 25.58},
+	{"option_id": &"core_move_speed", "value": 0.05},
+	{"option_id": &"core_stamina_regen", "value": 25.58},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"tincture"
+grade = &"heaven"
+sources = Array[StringName]([&"gather", &"domain:mind_body_integration_trial"])

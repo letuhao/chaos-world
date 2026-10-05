@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"cloak_moonweave"
+display_name = "Moonweave Cloak"
+category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 8},
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
+subcategory = &"armor"
+stackable = false
+grade = &"spirit"
+sources = Array[StringName]([&"craft:cloak_moonweave_recipe", &"domain:qi_spirit_palace_trial"])

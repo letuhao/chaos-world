@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"Y17_divine_freehold_hexagram"
+display_name = "Divine Freehold Hexagram"
+category = &"key"
+rarity = &"legendary"
+realm = &"primordial_origin"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 18.42},
+	{"option_id": &"trade_value", "value": 12},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
+subcategory = &"sigil"
+grade = &"divine"
+sources = Array[StringName]([&"quest", &"domain:puppet_marionette_king_domain"])

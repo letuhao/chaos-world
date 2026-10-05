@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"dark_wane"
+element = &"dark"
+kind = &"stat_modifier"
+scope = &"combat"
+stacking = &"refresh"
+duration = 16.0
+magnitude_unit = &"stat_modifier"
+magnitude_cap = 0.65
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique"])
+payload = {
+"mechanic": &"sunder",
+"text": "The light goes out of a fight. Strike, sea and timing all thin at once, and the longer it stays the less there is left to take.",
+"modifiers": [
+{"stat": &"attack_spiritual", "op": &"percent", "value": -0.35},
+{"stat": &"qi_regen", "op": &"flat", "value": -1.5},
+{"stat": &"attack_speed", "op": &"percent", "value": -0.2}
+]
+}

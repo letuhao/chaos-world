@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"M5_mortal_echo_primed_recipe"
+display_name = "Mortal Echo primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"M5_mortal_echo_aged", &"orb_copper_ore", &"jade_white"])
+outputs = Array[StringName]([&"M5_mortal_echo_primed"])

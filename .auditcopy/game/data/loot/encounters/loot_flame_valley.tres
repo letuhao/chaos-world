@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"core_formation"
+rarity = &"common"
+vitality = 3300.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"flame_dragon", "table_id": &"loot_flame_dragon"},
+	{"boss_id": &"d3_flame_drake", "table_id": &"loot_d3_flame_drake"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"core_formation"
+rarity = &"rare"
+vitality = 5280.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"flame_dragon", "table_id": &"loot_flame_dragon"},
+	{"boss_id": &"d3_flame_drake", "table_id": &"loot_d3_flame_drake"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_flame_valley"
+display_name = "Flame Valley"
+domain_id = &"flame_valley"
+boss_ids = Array[StringName]([&"flame_dragon", &"d3_flame_drake"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

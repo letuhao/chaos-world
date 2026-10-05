@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F13_spirit_dudman_agility_aptitude_crit_damage_cultivation_rate"
+display_name = "Spirit Dudman Agility Aptitude Crit damage Cultivation rate"
+category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 15.82},
+	{"option_id": &"base_aptitude", "value": 15.82},
+	{"option_id": &"core_crit_damage", "value": 0.03},
+	{"option_id": &"core_cultivation_rate", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
+subcategory = &"bandolier"
+stackable = false
+grade = &"spirit"
+sources = Array[StringName]([&"quest", &"domain:mind_body_integration_trial"])

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F15_heaven_edelweiss_agility_aptitude_defense_physical_health_regen"
+display_name = "Heaven Edelweiss Agility Aptitude Defense physical Health regen"
+category = &"consumable"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 27.22},
+	{"option_id": &"base_aptitude", "value": 27.22},
+	{"option_id": &"core_defense_physical", "value": 27.22},
+	{"option_id": &"core_health_regen", "value": 27.22},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"broth"
+grade = &"heaven"
+sources = Array[StringName]([&"quest", &"domain:mind_spirit_manifestation_trial"])

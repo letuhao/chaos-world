@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="RoomDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/room_def.gd" id="1_room"]
+[ext_resource type="Script" path="res://src/modules/domain/environment_zone_def.gd" id="2_zone"]
+
+[sub_resource type="Resource" id="zone_furnace"]
+script = ExtResource("2_zone")
+zone_id = &"furnace_bed"
+kind = &"super_hot"
+intensity = 2
+status_id = &"env_scourge"
+stay_budget = 8.0
+tags = Array[StringName]([&"fire"])
+mitigation_tags = Array[StringName]([&"technique", &"pill"])
+bounds = Rect2i(4, 3, 4, 4)
+
+[resource]
+script = ExtResource("1_room")
+room_id = &"ash_furnace"
+display_name = "Ash Furnace"
+kind = &"chamber"
+roster_band = &"trial"
+tags = Array[StringName]([&"inland", &"hot", &"furnace"])
+size = Vector2i(10, 8)
+actor_spawn_refs = Array[Dictionary]([
+	{"ref_id": &"furnace_golem", "inhabitant_id": &"stone_golem", "role": &"miniboss", "count": 1}
+])
+fixtures = Array[Dictionary]([
+	{"fixture_id": &"ash_furnace_hoard", "kind": &"treasure", "tags": Array[StringName]([&"treasure_keyed", &"deep"]), "position": Vector2i(7, 5), "bounds": Rect2i(7, 5, 2, 2), "reward_item_id": &"ash_furnace_sealed_jade", "reward_count": 1, "key_item_id": &"ash_furnace_key", "requires_realm": &"core_formation", "telegraph_s": 0.0, "damage_share": 0.0, "status_id": &"", "duration_s": 0.0, "mitigation_tags": Array[StringName]([])}
+])
+environment_zones = Array[EnvironmentZoneDef]([SubResource("zone_furnace")])

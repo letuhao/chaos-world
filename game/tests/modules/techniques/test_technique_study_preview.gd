@@ -93,3 +93,57 @@ func test_a_shared_technique_is_never_charged_so_there_is_no_price_to_show() -> 
 	assert_eq(bool(view.get("can_pay", false)), true, "a shared manual is free")
 	assert_eq(bool(view.get("can_pay_known", false)), true, "and that answer is real")
 	assert_eq((view.get("learn_short", []) as Array).size(), 0, "with nothing owed")
+
+
+# --- ONE door to a learn preview (DEF-0300) -----------------------------------
+
+
+## There is exactly one projection a screen can read a learn through, and it is
+## `inspect`.
+##
+## `learn_preview` used to sit beside it, publishing the same facts under different
+## names (`price` for `learn_price`, `can_learn` for `known && can_learn`). Two
+## projections of one learn can only ever disagree about what a learn costs, and the
+## only caller `learn_preview` had was one assertion in another program's suite — so
+## it was a second door that nobody walked through, which is worse than a door that
+## is actually used: a future caller would have found it and used it, and got the
+## wrong key names and none of the affordability that `inspect` publishes.
+##
+## So it was deleted rather than wired, and this asserts the deletion on the tree's
+## own terms: the read model publishes ONE public preview shape, and it is `inspect`'s.
+func test_the_read_model_has_exactly_one_preview_and_inspect_is_it() -> void:
+	var published: Array[String] = []
+	for method in TechniqueReadModel.new().get_script().get_script_method_list():
+		var method_name := String(method.get("name", ""))
+		if not method_name.begins_with("_") and method_name.ends_with("_preview"):
+			published.append(method_name)
+	assert_eq(published, [], "the read model publishes no second preview door")
+
+	# And the ONE shape a screen reads carries the whole learn preview, under the
+	# names a screen actually uses. Asserted as values, because the point is not
+	# that a method exists but that a learn's terms are reachable.
+	var actor := _hero(40.0)
+	var def := _technique()
+	var view := TechniquesApi.inspect(actor, def.id)
+	for key in [
+		"learn_price",
+		"learn_unmet",
+		"can_pay",
+		"can_pay_known",
+		"learn_short",
+		"known",
+		"marginal_band",
+	]:
+		assert_eq(view.has(key), true, "'%s' is on the one preview" % key)
+
+
+## A second door is only closed if the whole thing is refused, not just the one
+## call site: the word must not come back as a method, and the module must not be
+## reachable through a second name for the same projection.
+func test_no_alias_of_inspect_exists_on_the_read_model() -> void:
+	for alias in ["preview", "learn_view", "study_preview", "learn_price_for"]:
+		assert_eq(
+			TechniqueReadModel.new().has_method(alias),
+			false,
+			"the read model publishes no '%s' alias for a learn preview" % alias
+		)

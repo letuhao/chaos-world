@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F40_mortal_gaslight_cooldown_reduction_dao_heart_loot_bonus"
+display_name = "Mortal Gaslight Cooldown reduction Dao heart Loot bonus"
+category = &"equipment"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.034},
+	{"option_id": &"core_dao_heart", "value": 8.8},
+	{"option_id": &"core_loot_bonus", "value": 0.051},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
+subcategory = &"greaves"
+stackable = false
+grade = &"mortal"
+sources = Array[StringName]([&"quest", &"domain:mind_spirit_severing_trial"])

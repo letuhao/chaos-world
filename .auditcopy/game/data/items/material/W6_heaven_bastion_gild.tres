@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"W6_heaven_bastion_gild"
+display_name = "Heaven Bastion Gild"
+category = &"material"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"fragment"
+grade = &"heaven"
+sources = Array[StringName]([&"gather", &"domain:manual_iron_tortoise_domain"])

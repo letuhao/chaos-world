@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"J12_earth_silk_refined"
+display_name = "Earth Silk Refined"
+category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"accessory"
+stackable = false
+grade = &"earth"
+sources = Array[StringName]([&"craft:J12_earth_silk_refined_recipe", &"domain:mind_spirit_sovereign_trial"])

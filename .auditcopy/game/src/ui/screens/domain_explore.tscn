@@ -1,0 +1,187 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/ui/screens/domain_explore.gd" id="1"]
+[ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/action_set.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/npc_roster_panel.tscn" id="4"]
+
+[node name="DomainExploreScreen" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")
+
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HeaderLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ScreenTitle"
+text = "Domains"
+
+[node name="StatusLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = "Not inside a domain"
+
+[node name="Entry" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="TemplateLabel" type="Label" parent="Layout/Entry"]
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = "Domain"
+
+[node name="TemplateOption" type="OptionButton" parent="Layout/Entry"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EnterButton" type="Button" parent="Layout/Entry"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"PrimaryButton"
+text = "Enter domain"
+
+[node name="LeaveButton" type="Button" parent="Layout/Entry"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"DangerButton"
+text = "Leave"
+
+[node name="Room" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="RoomLabel" type="Label" parent="Layout/Room"]
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+text = "Room"
+
+[node name="RoomOption" type="OptionButton" parent="Layout/Room"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VisitButton" type="Button" parent="Layout/Room"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Visit"
+
+[node name="Separator" type="HSeparator" parent="Layout"]
+layout_mode = 2
+
+[node name="Columns" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MapPanel" type="PanelContainer" parent="Layout/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MapVBox" type="VBoxContainer" parent="Layout/Columns/MapPanel"]
+layout_mode = 2
+
+[node name="MapTitle" type="Label" parent="Layout/Columns/MapPanel/MapVBox"]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "Floor plan"
+
+[node name="MapLabel" type="Label" parent="Layout/Columns/MapPanel/MapVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = ""
+
+[node name="RoomsLabel" type="Label" parent="Layout/Columns/MapPanel/MapVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = ""
+
+[node name="SidePanel" type="PanelContainer" parent="Layout/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Roster" parent="Layout/Columns/SidePanel" instance=ExtResource("4")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SideVBox" type="VBoxContainer" parent="Layout/Columns/SidePanel"]
+layout_mode = 2
+
+[node name="PopulationTitle" type="Label" parent="Layout/Columns/SidePanel/SideVBox"]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "Population by role"
+
+[node name="PopulationLabel" type="Label" parent="Layout/Columns/SidePanel/SideVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = ""
+
+[node name="ZonesTitle" type="Label" parent="Layout/Columns/SidePanel/SideVBox"]
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "Severe environments"
+
+[node name="ZonesLabel" type="Label" parent="Layout/Columns/SidePanel/SideVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+autowrap_mode = 2
+text = ""
+
+[node name="FixtureRow" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="FixtureLabel" type="Label" parent="Layout/FixtureRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MetaLabel"
+text = ""
+
+[node name="FixtureOption" type="OptionButton" parent="Layout/FixtureRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NodeOption" type="OptionButton" parent="Layout/FixtureRow"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ArmButton" type="Button" parent="Layout/FixtureRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Arm"
+
+[node name="AttemptButton" type="Button" parent="Layout/FixtureRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Strike node"
+
+[node name="ClaimButton" type="Button" parent="Layout/FixtureRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Open treasure"
+
+[node name="MessageLabel" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MetaLabel"
+autowrap_mode = 2
+text = ""
+
+[node name="Actions" parent="Layout" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2

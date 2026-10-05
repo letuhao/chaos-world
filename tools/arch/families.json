@@ -1,6 +1,13 @@
 {
   "version": 1,
+  "roots": {
+    "data": "game/data",
+    "src/data": "game/src/data"
+  },
   "families": {
+    "domain_templates": {"data_dir": "domains/templates", "def_class": "DomainTemplateDef", "module": "domain", "root": "src/data"},
+    "domain_rooms": {"data_dir": "domains/rooms", "def_class": "RoomDef", "module": "domain", "root": "src/data"},
+    "domain_inhabitants": {"data_dir": "domains/inhabitants", "def_class": "InhabitantDef", "module": "domain", "root": "src/data"},
     "items": {"data_dir": "items", "def_class": "ItemDef", "module": "items", "targets": ["craft_potency", "craft_yield", "key_reach", "quest_potency", "trade_value"]},
     "socket_items": {"data_dir": "socket", "def_class": "ItemDef", "module": "socket"},
     "set_items": {"data_dir": "sets/items", "def_class": "ItemDef", "module": "set_bonus"},
@@ -14,8 +21,11 @@
     "destinies": {"data_dir": "destiny/destinies", "def_class": "DestinyDef", "module": "destiny"},
     "body_realms": {"data_dir": "body_cultivation/realms", "def_class": "BodyRealmSeed", "module": "body_cultivation", "path": "body"},
     "body_acupoints": {"data_dir": "body_cultivation/acupoints", "def_class": "AcupointDef", "module": "body_cultivation"},
+    "body_weapons": {"data_dir": "body_cultivation/weapons", "def_class": "WeaponKindDef", "module": "body_cultivation"},
+    "body_material_arts": {"data_dir": "body_cultivation/materials", "def_class": "MaterialArtDef", "module": "body_cultivation"},
     "qi_realms": {"data_dir": "qi_cultivation/realms", "def_class": "QiRealmSeed", "module": "qi_cultivation", "path": "qi"},
     "mind_realms": {"data_dir": "mind_cultivation/realms", "def_class": "MindRealmSeed", "module": "mind_cultivation", "path": "mind"},
+    "fixture_cultivation_realms": {"data_dir": "tests/fixtures/mods/cultivation_path/realms", "def_class": "FixtureCultivationRealmSeed", "module": "mods"},
     "meridians": {"data_dir": "meridians", "def_class": "MeridianDef", "module": "qi_cultivation"},
     "anchors": {"data_dir": "anchor/anchors", "def_class": "AnchorDef", "module": "anchor"},
     "bloodlines": {"data_dir": "bloodlines", "def_class": "BloodlineDef", "module": "bloodline"},

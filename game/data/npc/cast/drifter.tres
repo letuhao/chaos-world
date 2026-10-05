@@ -14,3 +14,5 @@ realm_id = &"qi_refining"
 base = {"physique": 10.0, "spirit": 10.0}
 stages = Array[NpcStageDef]([])
 initial_stage = &""
+capture_term = &"custody"
+capture_periods = 4

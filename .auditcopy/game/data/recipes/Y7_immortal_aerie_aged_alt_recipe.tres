@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Y7_immortal_aerie_aged_alt_recipe"
+display_name = "Immortal Aerie Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Y7_immortal_aerie_refined", &"W4_immortal_arbour_glazing", &"qi_dao_fruit_qi_herb"])
+outputs = Array[StringName]([&"Y7_immortal_aerie_aged"])

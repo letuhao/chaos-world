@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="NpcDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/npc/npc_def.gd" id="1_def"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_stage_def.gd" id="2_stage"]
+
+[sub_resource type="Resource" id="Stage_seated"]
+script = ExtResource("2_stage")
+stage_id = &"seated"
+index = 0
+display_name = "Seated"
+stat_multipliers = {}
+tags = Array[StringName]([&"elder", &"council"])
+advance_after = 0
+terminal = false
+
+[sub_resource type="Resource" id="Stage_surety"]
+script = ExtResource("2_stage")
+stage_id = &"standing_surety"
+index = 1
+display_name = "Standing Surety"
+stat_multipliers = {}
+tags = Array[StringName]([&"elder", &"council", &"witness", &"surety"])
+advance_after = 0
+terminal = true
+
+[resource]
+script = ExtResource("1_def")
+npc_id = &"elder_qin"
+display_name = "Elder Qin"
+inhabitant_id = &"azure_disciple"
+tier = &"story"
+faction = &"qi_dao"
+tags = Array[StringName]([&"elder", &"witness", &"qi_dao", &"surety"])
+realm_id = &"core_formation"
+base = {"physique": 11.0, "spirit": 14.0, "aptitude": 15.0, "comprehension": 14.0, "will": 17.0}
+stages = Array[NpcStageDef]([SubResource("Stage_seated"), SubResource("Stage_surety")])
+initial_stage = &"seated"

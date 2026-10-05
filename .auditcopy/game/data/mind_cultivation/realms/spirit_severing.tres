@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MindRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/mind_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"spirit_severing"
+breakthrough_item = &"mind_spirit_severing_breakthrough_pill"
+training_item = &"mind_spirit_severing_channel_elixir"
+sea_catalyst = &"mind_spirit_severing_sea_catalyst"
+recovery_item = &"mind_spirit_severing_recovery_elixir"
+progress_required = 4123.0
+comprehension_required = 188.0
+clarity_required = 0.59
+purity_required = 0.65
+sea_fill_required = 1.0
+sea_tier = &"deep"
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao"])
+required_channel_state = &"strengthened"
+channel_refinement_cap = 14
+sea_capacity = 425.0
+insight_required = 94.0
+rewards = {
+"will": 2.0
+}

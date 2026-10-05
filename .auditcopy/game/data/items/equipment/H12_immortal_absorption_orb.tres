@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"H12_immortal_absorption_orb"
+display_name = "Immortal Absorption Orb"
+category = &"equipment"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 26.95},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
+subcategory = &"orb"
+stackable = false
+grade = &"immortal"
+sources = Array[StringName]([&"craft:H12_immortal_absorption_orb_recipe", &"domain:mind_dao_fruit_trial"])

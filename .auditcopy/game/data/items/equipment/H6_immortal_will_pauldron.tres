@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"H6_immortal_will_pauldron"
+display_name = "Immortal Will Pauldron"
+category = &"equipment"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 31.76},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
+subcategory = &"armor"
+stackable = false
+grade = &"immortal"
+sources = Array[StringName]([&"craft:H6_immortal_will_pauldron_recipe", &"domain:relic_stone_colossus_domain"])

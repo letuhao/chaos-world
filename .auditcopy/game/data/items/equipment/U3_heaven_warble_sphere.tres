@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"U3_heaven_warble_sphere"
+display_name = "Heaven Warble Sphere"
+category = &"equipment"
+rarity = &"rare"
+realm = &"mystic_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_poise", "value": 25.58},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"weapon"
+stackable = false
+grade = &"heaven"
+sources = Array[StringName]([&"boss:qi_heaven_immortal_warden"])

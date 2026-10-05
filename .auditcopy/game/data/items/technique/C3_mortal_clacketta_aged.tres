@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"C3_mortal_clacketta_aged"
+display_name = "Mortal Clacketta Aged"
+category = &"consumable"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.02},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"rite"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:C3_mortal_clacketta_aged_recipe", &"domain:artifact_storm_phoenix_domain"])

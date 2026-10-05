@@ -1,4 +1,5 @@
 {
+  "version": 1,
   "modules": {
     "anchor": {
       "deps": [
@@ -46,6 +47,13 @@
       "deps": [
         "contracts",
         "core"
+      ]
+    },
+    "conflict": {
+      "deps": [
+        "contracts",
+        "core",
+        "holdings"
       ]
     },
     "custody": {
@@ -137,6 +145,7 @@
       "deps": [
         "contracts",
         "core",
+        "destiny",
         "status"
       ]
     },
@@ -248,7 +257,9 @@
     "social": {
       "deps": [
         "contracts",
-        "core"
+        "core",
+        "economy",
+        "items"
       ]
     },
     "socket": {
@@ -291,6 +302,5 @@
         "world"
       ]
     }
-  },
-  "version": 1
+  }
 }

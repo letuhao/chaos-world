@@ -44,6 +44,24 @@ func portrait_definition(portrait_id: StringName) -> PortraitDef:
 	return _portraits.get(String(portrait_id))
 
 
+## Add a definition to the LOADED set, bypassing the authored tree. This exists for exactly one
+## caller: a test that must prove a guard FIRES (INC-0016) once the shipped content is clean.
+## A guard asserted against real content cannot be distinguished from that content being
+## broken — the check either fires because it works or because the art is missing, and only
+## one of those is evidence.
+##
+## The pair `with_probe` / `clear_probe` exists so a caller cannot leave a synthetic portrait
+## in a process-wide singleton: the headless runner drives every suite in ONE process, so a
+## probe left registered would be visible to every later suite.
+func with_probe(definition: PortraitDef) -> void:
+	_ensure_loaded()
+	_portraits[String(definition.id)] = definition
+
+
+func clear_probe(portrait_id: StringName) -> void:
+	_portraits.erase(String(portrait_id))
+
+
 ## The first portrait authored for `race_id`, in id order, or null when that body plan has no
 ## face of its own.
 ##

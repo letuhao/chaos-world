@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"bounty_hermit_mark"
+display_name = "Frost Hermit Bounty Mark"
+category = &"quest"
+rarity = &"rare"
+realm = &"golden_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"quest_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base"]}
+subcategory = &"bounty"
+grade = &"heaven"
+sources = Array[StringName]([&"domain:scroll_thunder_crane_domain"])

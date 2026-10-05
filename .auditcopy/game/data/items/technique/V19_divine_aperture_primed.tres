@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"V19_divine_aperture_primed"
+display_name = "Divine Aperture Primed"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 36.57},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"mantra"
+grade = &"divine"
+sources = Array[StringName]([&"craft:V19_divine_aperture_primed_recipe", &"domain:body_nascent_soul_trial"])

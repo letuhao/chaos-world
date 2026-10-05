@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="QuestDef" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/modules/quest/quest_def.gd" id="1_quest"]
+[ext_resource type="Script" path="res://src/modules/quest/quest_step_def.gd" id="2_step"]
+
+[sub_resource type="Resource" id="QuestStep_channel_carried"]
+script = ExtResource("2_step")
+step_id = &"channel_carried"
+fact = &"oaths_discharged"
+need = 1
+display_name = "Carry the term you were handed instead of the one you were owed"
+
+[sub_resource type="Resource" id="QuestStep_channel_closed"]
+script = ExtResource("2_step")
+step_id = &"channel_closed"
+fact = &"sect_post_held"
+need = 1
+display_name = "Sit the post that was opened for somebody else, and close it"
+
+[resource]
+script = ExtResource("1_quest")
+id = &"the_channel_closed"
+display_name = "The Channel You Closed"
+description = "A lineage passes a channel down by opening one for its successor and carrying it until the handover. You were not the successor, and the register does not show why you were given it. You carried it anyway, discharged the term under somebody else's name, and closed the office that ran on it. What taught you the technique is no longer in a position to teach it, because the technique now lives in one body and that body is yours."
+kind = &"authored"
+tier = 2
+requirement = {}
+steps = Array[ExtResource("2_step")]([SubResource("QuestStep_channel_carried"), SubResource("QuestStep_channel_closed")])
+grants = Array[Dictionary]([{"kind": &"destiny", "id": &"the_severed", "amount": 1}])

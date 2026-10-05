@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"D4_divine_fortune_charm_recipe"
+display_name = "Divine Fortune Charm Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"divine_void_essence", &"filament_chaosweave"])
+outputs = Array[StringName]([&"D4_divine_fortune_charm"])

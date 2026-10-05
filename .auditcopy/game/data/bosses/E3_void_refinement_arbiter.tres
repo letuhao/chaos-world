@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BossDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/boss_def.gd" id="1_boss"]
+
+[resource]
+script = ExtResource("1_boss")
+id = &"E3_void_refinement_arbiter"
+display_name = "Void Refinement Arbiter"
+domain_id = &"body_void_refinement_trial"
+loot = Array[StringName]([])

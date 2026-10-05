@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="QuestDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/quest/quest_def.gd" id="1_quest"]
+
+[resource]
+script = ExtResource("1_quest")
+id = &"test_mod_quest"
+display_name = "Test Mod Quest"
+description = "A test quest from a mod fixture."
+kind = &"authored"
+tier = 1

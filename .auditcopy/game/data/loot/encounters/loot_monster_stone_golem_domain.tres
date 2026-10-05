@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"nascent_soul"
+rarity = &"common"
+vitality = 3300.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"monster_stone_golem", "table_id": &"loot_monster_stone_golem"},
+	{"boss_id": &"d3_boulder_golem", "table_id": &"loot_d3_boulder_golem"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"nascent_soul"
+rarity = &"rare"
+vitality = 5280.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"monster_stone_golem", "table_id": &"loot_monster_stone_golem"},
+	{"boss_id": &"d3_boulder_golem", "table_id": &"loot_d3_boulder_golem"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_monster_stone_golem_domain"
+display_name = "Stone Golem Domain"
+domain_id = &"monster_stone_golem_domain"
+boss_ids = Array[StringName]([&"monster_stone_golem", &"d3_boulder_golem"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

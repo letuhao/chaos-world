@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F36_spirit_freckle_attack_speed_attack_spiritual_comprehension_cultivation_rate_defense_spiritual_stamina_regen"
+display_name = "Spirit Freckle Attack speed Attack spiritual Comprehension Cultivation rate Defense spiritual Stamina regen"
+category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_speed", "value": 0.04},
+	{"option_id": &"core_attack_spiritual", "value": 16.5},
+	{"option_id": &"base_comprehension", "value": 16.5},
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+	{"option_id": &"core_defense_spiritual", "value": 16.5},
+	{"option_id": &"core_stamina_regen", "value": 9.74},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
+subcategory = &"broth"
+grade = &"spirit"
+sources = Array[StringName]([&"gather", &"domain:monster_venom_scorpion_domain"])

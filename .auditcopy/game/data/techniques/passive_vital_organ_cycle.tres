@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"passive_vital_organ_cycle"
+delivered_by = &"anima_spirit_leaf"
+display_name = "Vital Organ Cycle"
+description = "A breathing cycle that keeps the organs supplied under strain. Organ vitality and general regeneration, bought with a slow, dull price that has to be paid forever."
+tags = Array[StringName]([&"passive", &"body", &"organs"])
+grade = &"spirit"
+rarity = &"magic"
+element = &""
+schools = Array[StringName]([&"body"])
+active = false
+path = &"body_cultivation"
+min_path_realm = {&"body_cultivation": 9}
+mastery_rungs = 5
+magnitude = 1.0
+passive_options = Array[Dictionary]([
+	{"option_id": &"cult_organ_vitality", "value": 6.0},
+	{"option_id": &"cult_regeneration", "value": 4.0},
+])
+upkeep = {&"stamina": 3.0}
+upkeep_interval = 60.0
+

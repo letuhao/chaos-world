@@ -1,0 +1,122 @@
+{"from": "worlds.hollow_baseline", "rel": "part_of", "to": "cosmology.mortal_world", "note": "the frame belongs to the tier profile it instantiates"}
+{"from": "worlds.hollow_baseline", "rel": "requires", "to": "cosmology.physical_law", "note": "seated at 1.4, the only seat that can cage a core"}
+{"from": "worlds.hollow_baseline", "rel": "requires", "to": "cosmology.life_law", "note": "seated at 0.62, spent twice over: herb_common and the humanoid exclusion"}
+{"from": "worlds.hollow_baseline", "rel": "requires", "to": "cosmology.qi_law", "note": "seated at the 0.1 floor, so it is strained rather than absent"}
+{"from": "worlds.hollow_baseline", "rel": "depends_on", "to": "cosmology.mortal_law_availability", "note": "the three-slot contract this frame is the worked example of"}
+{"from": "worlds.hollow_baseline", "rel": "depends_on", "to": "cosmology.strained_law", "note": "its qi is present and wired to the floor, which is the gap between this frame and a void"}
+{"from": "history.founding_the_first_tier", "rel": "caused", "to": "worlds.hollow_baseline", "since": "history.founding_the_first_tier", "note": "someone paid three seats to open a world at all and could not afford a fourth"}
+{"from": "geography.mortal_plains", "rel": "located_in", "to": "worlds.hollow_baseline", "note": "the plains are ground inside this frame, not merely inside the tier"}
+{"from": "geography.cairn_field", "rel": "located_in", "to": "worlds.hollow_baseline", "note": "the ring sits on the only tier that cannot produce anyone who would stand in it"}
+{"from": "geography.hollow_measure", "rel": "located_in", "to": "worlds.hollow_baseline", "note": "the anomaly is the spatial vacancy being visible on the ground"}
+{"from": "ecology.ironhide_bear", "rel": "native_to", "to": "worlds.hollow_baseline", "note": "the tier's authored beast, and the reason the qi seat had to be spent at all"}
+{"from": "cultures.plain_dweller", "rel": "depends_on", "to": "worlds.hollow_baseline", "note": "the culture's whole custom of measurement by flood post follows from the temporal vacancy"}
+{"from": "worlds.quartermark", "rel": "part_of", "to": "cosmology.mortal_world", "note": "the second worked instance of the same three-seat budget"}
+{"from": "worlds.quartermark", "rel": "requires", "to": "cosmology.physical_law", "note": "seated at 4.2, three times the baseline, and the whole identity of the frame"}
+{"from": "worlds.quartermark", "rel": "requires", "to": "cosmology.life_law", "note": "seated at 0.09, barely coherent, which is why the frame cannot feed a visitor"}
+{"from": "worlds.quartermark", "rel": "requires", "to": "cosmology.qi_law", "note": "seated at the same 0.1 floor as everywhere mortal, so the comparison against the plains is fair"}
+{"from": "worlds.quartermark", "rel": "depends_on", "to": "cosmology.mortal_law_availability", "note": "same budget, opposite spending order, and the difference is the lesson"}
+{"from": "cosmology.strained_law", "rel": "applies_in", "to": "worlds.quartermark", "note": "its qi is on the floor exactly as on the plains, so the ground is the only variable"}
+{"from": "history.disaster_the_iron_grief", "rel": "applies_in", "to": "worlds.quartermark", "since": "history.disaster_the_iron_grief", "note": "it lost a seam too, later, and abandoned the face rather than working it to nothing"}
+{"from": "worlds.quartermark", "rel": "trades_with", "to": "worlds.hollow_baseline", "note": "the only exchange a two-seat-per-person world supports: bodies for food"}
+{"from": "worlds.long_count", "rel": "part_of", "to": "cosmology.mortal_world", "note": "the third worked instance, and the one that proves the budget is a choice"}
+{"from": "worlds.long_count", "rel": "requires", "to": "cosmology.temporal_law", "note": "seated at 0.9, and that seat was bought with the ability to be alive"}
+{"from": "worlds.long_count", "rel": "requires", "to": "cosmology.physical_law", "note": "held at 2.2, enough to work stone and nothing else"}
+{"from": "worlds.long_count", "rel": "requires", "to": "cosmology.qi_law", "note": "held at 0.1, so a resident body could have attempted a gate before there was nothing resident to attempt it"}
+{"from": "worlds.long_count", "rel": "depends_on", "to": "cosmology.unwritten_law", "note": "life_law is on its vacant list, and an unwritten group has no dial at all"}
+{"from": "worlds.long_count", "rel": "influenced_by", "to": "cosmology.slot_budget", "note": "the frame exists only because somebody read the budget and spent the third seat on a clock"}
+{"from": "history.discovery_the_law_census", "rel": "caused", "to": "worlds.long_count", "since": "history.discovery_the_law_census", "note": "counting laws against seats is what made the choice visible and therefore choosable"}
+{"from": "cultures.debt_line", "rel": "migrated_from", "to": "worlds.long_count", "note": "the households that carried the record-books off it kept its exact dating and lost its ground"}
+{"from": "worlds.first_ward_chamber", "rel": "located_in", "to": "worlds.hollow_baseline", "note": "a pocket inside a three-slot frame, seated over that frame's budget by one"}
+{"from": "worlds.first_ward_chamber", "rel": "descended_from", "to": "worlds.echo_of_the_ward", "note": "the version of the attempt that did not tear the parent, learned from the one that did"}
+{"from": "worlds.first_ward_chamber", "rel": "requires", "to": "cosmology.spatial_law", "note": "the illegal fourth seat, and the reason a survey inside it agrees with itself"}
+{"from": "worlds.first_ward_chamber", "rel": "conflicts_with", "to": "cosmology.slot_budget", "note": "four imprints in a three-slot frame is the rule being broken daily rather than once"}
+{"from": "worlds.first_ward_chamber", "rel": "depends_on", "to": "cosmology.law_imprint", "note": "the pocket is sustained as four held imprints rather than one, which is the expensive part"}
+{"from": "worlds.echo_of_the_ward", "rel": "located_in", "to": "worlds.hollow_baseline", "note": "the tear is still on the parent frame even though the pocket is not there any more"}
+{"from": "history.disaster_the_iron_grief", "rel": "caused", "to": "worlds.echo_of_the_ward", "since": "history.disaster_the_iron_grief", "note": "an exhaustion problem produced an attempt to write spatial law by hand and carry ore through it"}
+{"from": "worlds.echo_of_the_ward", "rel": "requires", "to": "cosmology.spatial_law", "note": "written at 1.4, above what a held imprint carries, so the group stopped holding"}
+{"from": "worlds.echo_of_the_ward", "rel": "depends_on", "to": "cosmology.rift", "note": "a tear is the only event that makes two things adjacent, and this one opened onto its own parent"}
+{"from": "worlds.echo_of_the_ward", "rel": "influenced_by", "to": "geography.hollow_measure", "note": "unmeasured ground is what made the carve possible and is what the tear left behind"}
+{"from": "worlds.echo_of_the_ward", "rel": "caused", "to": "cosmology.law_scar", "note": "the outline of a withdrawn imprint is exactly what a torn one leaves behind"}
+{"from": "worlds.tithe_remainder", "rel": "part_of", "to": "cosmology.spirit_world", "note": "the frame that first spent all six seats on all six groups"}
+{"from": "worlds.tithe_remainder", "rel": "requires", "to": "cosmology.spatial_law", "note": "seated at 1.3, the seat that turns a claim into a line"}
+{"from": "worlds.tithe_remainder", "rel": "requires", "to": "cosmology.temporal_law", "note": "seated at 0.9, near the floor on purpose, so the cycle runs without being generous"}
+{"from": "worlds.tithe_remainder", "rel": "requires", "to": "cosmology.elemental_law", "note": "seated at 0.45, which is the only reason a season and a pass timetable exist here"}
+{"from": "worlds.tithe_remainder", "rel": "requires", "to": "cosmology.life_law", "note": "seated at 0.71, the first reading that licenses a humanoid anywhere in the setting"}
+{"from": "worlds.tithe_remainder", "rel": "requires", "to": "cosmology.qi_law", "note": "seated at 4.6, the only group with enough range to fund a tier at all"}
+{"from": "worlds.tithe_remainder", "rel": "depends_on", "to": "cosmology.spirit_law_availability", "note": "the first full-set budget is what makes this frame possible and what makes it thin"}
+{"from": "worlds.tithe_remainder", "rel": "depends_on", "to": "cosmology.slot_budget", "note": "six imprints over six groups leaves nothing to put in a second layer, so it stays one layer"}
+{"from": "geography.spirit_peaks", "rel": "located_in", "to": "worlds.tithe_remainder", "note": "the ridge is ground inside this frame"}
+{"from": "geography.sixth_seat_grounds", "rel": "located_in", "to": "worlds.tithe_remainder", "note": "the ring is where a breakthrough can be scheduled rather than attempted"}
+{"from": "history.era_the_full_composition", "rel": "applies_in", "to": "worlds.tithe_remainder", "since": "history.era_the_full_composition", "note": "the era where all six are present and none is doubled is this frame's condition"}
+{"from": "history.consequence_the_density_ceiling", "rel": "applies_in", "to": "worlds.tithe_remainder", "since": "history.consequence_the_density_ceiling", "note": "a dense body stops at realm seventeen here because no group is duplicated to open the cavity"}
+{"from": "worlds.hollow_baseline", "rel": "depends_on", "to": "worlds.tithe_remainder", "note": "the plains' only departure is an arrival in a fuller frame, and the stair is measured because of it"}
+{"from": "worlds.glazed_margin", "rel": "trades_with", "to": "worlds.tithe_remainder", "note": "the only two spirit frames that will deal with each other, and they deal about the border"}
+{"from": "worlds.glazed_margin", "rel": "part_of", "to": "cosmology.spirit_world", "note": "a spirit frame with five of six seats spent"}
+{"from": "worlds.glazed_margin", "rel": "requires", "to": "cosmology.spatial_law", "note": "seated at 1.6, which is what makes the near border worth standing on"}
+{"from": "worlds.glazed_margin", "rel": "requires", "to": "cosmology.temporal_law", "note": "seated at 0.8: time runs, but nothing cycles, because there is no elemental group to make a season"}
+{"from": "worlds.glazed_margin", "rel": "requires", "to": "cosmology.life_law", "note": "seated at 0.6, enough for a settlement and not enough for a surplus"}
+{"from": "worlds.glazed_margin", "rel": "requires", "to": "cosmology.physical_law", "note": "seated at 2.4, hard glazed ground where the border is fought"}
+{"from": "worlds.glazed_margin", "rel": "requires", "to": "cosmology.qi_law", "note": "seated at 3.0, enough to cross the border and not enough to hold the far side"}
+{"from": "worlds.glazed_margin", "rel": "depends_on", "to": "cosmology.unwritten_law", "note": "elemental is on its vacant list and its spare seat, and the vacancy is the reason a commission exists"}
+{"from": "worlds.glazed_margin", "rel": "depends_on", "to": "cosmology.spirit_law_availability", "note": "a six-seat budget is available to it and it declines one seat, which is the only refusal on record"}
+{"from": "history.collapse_the_eighteenth_bed", "rel": "applies_in", "to": "worlds.glazed_margin", "since": "history.collapse_the_eighteenth_bed", "note": "the unmortared bed is on the far side of this frame's border"}
+{"from": "cultures.threshold_builders", "rel": "requires", "to": "worlds.glazed_margin", "note": "a border that cannot be scheduled has to be built and kept by hand all year"}
+{"from": "cultures.door_liturgy", "rel": "influenced_by", "to": "worlds.glazed_margin", "note": "a house marks its own threshold because the frame beside it will not guarantee welcome"}
+{"from": "worlds.glazed_margin", "rel": "conflicts_with", "to": "worlds.nine_seats_court", "note": "the near side and the far side of the only border anybody still crosses one person at a time"}
+{"from": "worlds.the_unwritable_ledger", "rel": "part_of", "to": "cosmology.spirit_world", "note": "a spirit frame that used to hold all six groups"}
+{"from": "worlds.the_unwritable_ledger", "rel": "requires", "to": "cosmology.qi_law", "note": "held at 118.0 against an authored ceiling of 100.0, so the group stopped holding"}
+{"from": "worlds.the_unwritable_ledger", "rel": "depends_on", "to": "cosmology.rift", "note": "the tear it opened met a frame it agreed with on nothing, which is a wall"}
+{"from": "worlds.the_unwritable_ledger", "rel": "depends_on", "to": "cosmology.law_scar", "note": "the frame is held together by an outline no group occupies any more"}
+{"from": "cultures.weight_and_name", "rel": "migrated_from", "to": "worlds.the_unwritable_ledger", "note": "the settlement that abandoned its ledger rather than write a number that would not fit"}
+{"from": "cultures.unfiled", "rel": "migrated_from", "to": "worlds.the_unwritable_ledger", "note": "the paperless culture is the descendant of a community whose books broke first"}
+{"from": "worlds.the_cutaway_isle", "rel": "located_in", "to": "worlds.tithe_remainder", "note": "a severed piece, still seated in its parent frame's right"}
+{"from": "worlds.the_cutaway_isle", "rel": "part_of", "to": "cosmology.spirit_world", "note": "counted beside its tier because its size is an order of magnitude under the band floor"}
+{"from": "worlds.the_cutaway_isle", "rel": "depends_on", "to": "geography.cloudshelf_sea", "note": "it was cut out of that shelf's floor to reach the jade beneath it"}
+{"from": "worlds.the_cutaway_isle", "rel": "requires", "to": "cosmology.qi_law", "note": "held at 4.9 where the parent reads 4.6, and the disagreement is the commercial point"}
+{"from": "worlds.the_cutaway_isle", "rel": "depends_on", "to": "cosmology.spirit_law_availability", "note": "six seats over six groups, legal and simply wrong"}
+{"from": "cultures.weight_and_name", "rel": "trades_with", "to": "worlds.the_cutaway_isle", "note": "the last settlement of the people who left that frame keeps its counting houses on vessels here"}
+{"from": "worlds.nine_seats_court", "rel": "part_of", "to": "cosmology.immortal_world", "note": "the frame where ten seats sit over six groups"}
+{"from": "worlds.nine_seats_court", "rel": "depends_on", "to": "cosmology.immortal_law_availability", "note": "four surplus imprints and four unfillable seats, which is the tier's defining arithmetic"}
+{"from": "worlds.nine_seats_court", "rel": "depends_on", "to": "cosmology.world_layer", "note": "two layers, because ten imprints over six groups have to go somewhere"}
+{"from": "geography.immortal_court", "rel": "located_in", "to": "worlds.nine_seats_court", "note": "the district is ground inside the frame"}
+{"from": "geography.terrace_of_nine_seats", "rel": "located_in", "to": "worlds.nine_seats_court", "note": "the nine cut terraces are where the vacancies are physically observed"}
+{"from": "history.era_the_nine_empty_seats", "rel": "applies_in", "to": "worlds.nine_seats_court", "since": "history.era_the_nine_empty_seats", "note": "an era whose defining fact is a set of unfillable high seats"}
+{"from": "history.decree_the_unfilled_seats", "rel": "applies_in", "to": "worlds.nine_seats_court", "since": "history.decree_the_unfilled_seats", "note": "the rule that the highest office may name a seat and may not take one"}
+{"from": "worlds.surplus_shelf", "rel": "part_of", "to": "worlds.nine_seats_court", "note": "layer two, named separately because its law list is a different list"}
+{"from": "worlds.surplus_shelf", "rel": "part_of", "to": "cosmology.immortal_world", "note": "counted beside the tier, since a layer is a place with its own laws"}
+{"from": "worlds.surplus_shelf", "rel": "depends_on", "to": "cosmology.world_layer", "note": "a layer carries its own law list and its own share of the volume"}
+{"from": "worlds.surplus_shelf", "rel": "depends_on", "to": "cosmology.immortal_law_availability", "note": "the four imprints it holds are exactly the tier's four duplicates"}
+{"from": "worlds.surplus_shelf", "rel": "depends_on", "to": "cosmology.unwritten_law", "note": "spatial and temporal are inherited from below rather than declared here"}
+{"from": "geography.overlayer_shelf", "rel": "located_in", "to": "worlds.surplus_shelf", "note": "the only ground where a law written twice has the second writing win"}
+{"from": "worlds.patient_hold", "rel": "part_of", "to": "cosmology.transcendent_world", "note": "the frame with fifteen imprints and nine surplus"}
+{"from": "worlds.patient_hold", "rel": "depends_on", "to": "cosmology.transcendent_law_availability", "note": "three layers and a credit bill against the authored upkeep ceiling"}
+{"from": "worlds.patient_hold", "rel": "depends_on", "to": "cosmology.slot_budget", "note": "fifteen imprints is a surplus nobody holds at once, so the ground was assembled by merging"}
+{"from": "worlds.patient_hold", "rel": "requires", "to": "cosmology.temporal_law", "note": "held at 44.0, which is what makes a lifetime a unit of measurement"}
+{"from": "geography.transcendent_realm", "rel": "located_in", "to": "worlds.patient_hold", "note": "the realm is the top frame's surface"}
+{"from": "geography.third_layer_hold", "rel": "located_in", "to": "worlds.patient_hold", "note": "the layer where nine surplus imprints have nowhere to go but up"}
+{"from": "history.era_the_still_point", "rel": "applies_in", "to": "worlds.patient_hold", "since": "history.era_the_still_point", "note": "the only composition with real slack, and the clock that makes attention expensive"}
+{"from": "cultures.quiet_hour", "rel": "depends_on", "to": "worlds.patient_hold", "note": "the hour is a custom that only this frame's clock makes necessary"}
+{"from": "worlds.the_held_note", "rel": "located_in", "to": "worlds.patient_hold", "note": "the hidden domain is a pocket inside the third layer, paid for out of the surplus"}
+{"from": "worlds.the_matching_shore", "rel": "located_in", "to": "cosmology.transcendent_world", "note": "the far side of the only tear, counted beside the tier it opens from"}
+{"from": "worlds.the_matching_shore", "rel": "requires", "to": "cosmology.qi_law", "note": "the single group written at 7.2 on both sides, and the only reason a body can cross"}
+{"from": "worlds.the_matching_shore", "rel": "depends_on", "to": "cosmology.rift", "note": "a tear opens when an imprint is pushed out of range; the top budget is the only one that can push one"}
+{"from": "worlds.the_matching_shore", "rel": "depends_on", "to": "cosmology.world_boundary", "note": "a boundary is the edge of a budget, so what crosses is a tolerance rather than a body"}
+{"from": "worlds.the_matching_shore", "rel": "trades_with", "to": "worlds.patient_hold", "note": "the only exchange recorded across a tear, and it is not recorded by anybody on the far side"}
+{"from": "worlds.the_matching_shore", "rel": "resembles", "to": "worlds.the_unwritable_ledger", "note": "two frames sealed off by an agreement that holds nothing anybody can use"}
+{"from": "worlds.the_held_note", "rel": "requires", "to": "cosmology.temporal_law", "note": "fifteen imprints pressed into one dial at 96.0, which is the whole mechanism"}
+{"from": "worlds.the_held_note", "rel": "depends_on", "to": "cosmology.qi_tide", "note": "attention has to be fed, so the hold runs on a separate qi imprint rather than on the temporal one"}
+{"from": "worlds.the_held_note", "rel": "depends_on", "to": "cosmology.unwritten_law", "note": "four groups are absent and the pocket works anyway, because it never needed a body"}
+{"from": "worlds.the_held_note", "rel": "hidden_from", "to": "cosmology.transcendent_law_availability", "note": "the availability record describes the tier, and the pocket is deliberately absent from every reading of it"}
+{"from": "cultures.quiet_hour", "rel": "influenced_by", "to": "worlds.the_held_note", "note": "the hum is a transformed reading of the same law value, performed rather than described"}
+{"from": "history.era_the_still_point", "rel": "applies_in", "to": "worlds.the_held_note", "since": "history.era_the_still_point", "note": "holding one reading past the life of a civilisation is the era's mechanical content"}
+{"from": "history.collapse_the_refused_seating", "rel": "caused", "to": "worlds.seventh_ward", "since": "history.collapse_the_refused_seating", "note": "the attempt gave the failure a name, and a searchable name cannot be proposed twice"}
+{"from": "worlds.seventh_ward", "rel": "influenced_by", "to": "cosmology.slot_budget", "note": "a slot is one law at one value, and a seventh law is not a value of anything"}
+{"from": "worlds.seventh_ward", "rel": "conflicts_with", "to": "cosmology.slot_budget", "note": "a slot consumed by an absence cannot afterwards be told from an empty one"}
+{"from": "worlds.seventh_ward", "rel": "conflicts_with", "to": "cosmology.world_boundary", "note": "the edge of a budget cannot be marked at a place that was never seated"}
+{"from": "worlds.seventh_ward", "rel": "resembles", "to": "cosmology.unwritten_law", "note": "what the attempt produced is indistinguishable from nothing having been written"}
+{"from": "cultures.door_liturgy", "rel": "influenced_by", "to": "worlds.seventh_ward", "note": "a community needing certainty of welcome reads the attempt rather than the outcome"}
+{"from": "cultures.deadroad", "rel": "influenced_by", "to": "organizations.field_registry", "note": "the culture's whole claim is that the record is an audit and not a hope, which needs an office"}
+{"from": "history.discovery_the_realm_nine_verdict", "rel": "caused", "to": "organizations.field_registry", "since": "history.discovery_the_realm_nine_verdict", "note": "once the ceiling was established as a limit nobody was issued, a life needed a frame reading"}
+{"from": "history.discovery_the_realm_nine_verdict", "rel": "caused", "to": "organizations.reckoning_seat", "since": "history.discovery_the_realm_nine_verdict", "note": "a ceiling established as a limit needs an office to certify what was attempted against it"}
+{"from": "history.decree_the_unfilled_seats", "rel": "caused", "to": "organizations.nine_seat_notary", "since": "history.decree_the_unfilled_seats", "note": "the rule that the highest office may name a seat and may not take one is the office's charter"}
+{"from": "history.era_the_still_point", "rel": "applies_in", "to": "organizations.held_hour_assembly", "since": "history.era_the_still_point", "note": "the era's mechanical content is the office's daily work"}

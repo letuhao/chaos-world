@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"divinealt_divine_voidwyrm_core_recipe"
+display_name = "Divine Voidwyrm Core Alternate Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"divine_voidwyrm_core", &"shard_singularity"])
+outputs = Array[StringName]([&"glaive_void"])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"G3_earth_shard_recipe"
+display_name = "Earth Shard Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"gemstone_turquoise", &"gem_earthjade"])
+outputs = Array[StringName]([&"G3_earth_shard"])

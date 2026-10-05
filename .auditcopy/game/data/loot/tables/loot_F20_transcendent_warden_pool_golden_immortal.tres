@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"F20_transcendent_warden_golden_immortal_0"
+kind = &"item"
+item_id = &"C30_heaven_stonefruit_testa"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"F20_transcendent_warden_golden_immortal_1"
+kind = &"item"
+item_id = &"F28_immortal_fetch_aptitude_attack_physical_spirit_stamina_regen"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"F20_transcendent_warden_golden_immortal_2"
+kind = &"item"
+item_id = &"F53_immortal_hawser_dao_heart_penetration_qi_regen"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"F20_transcendent_warden_golden_immortal_3"
+kind = &"item"
+item_id = &"nectar_heaven"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"F20_transcendent_warden_golden_immortal_4"
+kind = &"item"
+item_id = &"whistle_star_ore"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_F20_transcendent_warden_pool_golden_immortal"
+display_name = "Transcendent Warden salvage (golden_immortal)"
+realm = &"golden_immortal"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3"),
+	SubResource("entry_4")
+])

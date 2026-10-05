@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"mind_revelation_lance"
+delivered_by = &"codex_void_serpent_fang"
+display_name = "Revelation Lance"
+description = "A single named fact, driven hard enough to be believed. Almost pure light and carried on the intent rather than the will, so it lands on illusions and sceptics alike."
+tags = Array[StringName]([&"technique", &"mind", &"light", &"pierce"])
+grade = &"earth"
+rarity = &"rare"
+element = &"light"
+schools = Array[StringName]([&"mind", &"elemental"])
+active = true
+path = &"mind_cultivation"
+min_path_realm = {&"mind_cultivation": 20}
+qi_cost = 58.0
+stamina_cost = 6.0
+cooldown = 15.0
+mastery_rungs = 5
+magnitude = 2.0
+element_share = 0.9
+mind_kind = &"obscure"
+

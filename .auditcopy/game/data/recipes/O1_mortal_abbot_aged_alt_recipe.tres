@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"O1_mortal_abbot_aged_alt_recipe"
+display_name = "Mortal Abbot Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"O1_mortal_abbot_refined", &"mask_night_hide", &"wood_iron_bark"])
+outputs = Array[StringName]([&"O1_mortal_abbot_aged"])

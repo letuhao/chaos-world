@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"powder_storm_dust"
+display_name = "Storm Dust Powder"
+category = &"consumable"
+rarity = &"rare"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 23.1},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"powder"
+grade = &"heaven"
+sources = Array[StringName]([&"gather", &"domain:elemental_spirit_domain"])

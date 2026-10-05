@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"F6_transformation_warden_great_ascension_0"
+kind = &"item"
+item_id = &"D5_mortal_spirit_lamp"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"F6_transformation_warden_great_ascension_1"
+kind = &"item"
+item_id = &"V7_mortal_aerie_baetyl"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_F6_transformation_warden_pool_great_ascension"
+display_name = "Transformation Warden salvage (great_ascension)"
+realm = &"great_ascension"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1")
+])

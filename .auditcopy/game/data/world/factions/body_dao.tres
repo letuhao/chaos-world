@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WorldFactionDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/world_faction_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+faction_id = &"body_dao"
+display_name = "Body Dao"
+dao_alignment = &"body"
+home_tier = &"mortal_world"
+philosophy = "Preservation through form. The body is the foundation of all cultivation; a perfect form endures beyond worlds."
+relationships = Array[Dictionary]([{"faction_id": &"qi_dao", "stance": &"neutral"}, {"faction_id": &"mind_dao", "stance": &"hostile"}])

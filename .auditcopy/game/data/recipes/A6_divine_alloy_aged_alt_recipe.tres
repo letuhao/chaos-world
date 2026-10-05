@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A6_divine_alloy_aged_alt_recipe"
+display_name = "Divine Alloy Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"A6_divine_alloy_refined", &"Q1_divine_courier_sliver", &"X21_divine_mesne_ark"])
+outputs = Array[StringName]([&"A6_divine_alloy_aged"])

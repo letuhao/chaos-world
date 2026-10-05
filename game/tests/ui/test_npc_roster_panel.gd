@@ -23,6 +23,10 @@ const BOOT_ROOM := "mortal_plains"
 ## A room the authored content ships and the boot cast was never stocked into, so a panel
 ## showing this room's roster cannot be showing the boot cast.
 const OTHER_ROOM := "spirit_peaks"
+## The route a player takes to reach the place they are standing in, and so the screen
+## the roster panel is mounted under. The app BOOTS on the workbench, so a mounted test
+## has to navigate here to see the panel a player sees.
+const EXPLORE_ROUTE := &"domain_explore"
 
 var _born: Array = []
 
@@ -63,6 +67,13 @@ func test_the_shipped_panel_publishes_a_primitives_only_summary() -> void:
 ## With no room handed to it, the panel reports that it was not wired — NOT an empty
 ## room. "Nobody is here" and "this panel cannot ask" are different facts, and a panel
 ## that collapses them tells a player a room is empty when the truth is that it is mute.
+##
+## The `room_line` is the seam note, so it is deliberately NON-EMPTY while
+## `roster_line` is deliberately EMPTY — see `test_the_unwired_line_names_the_missing_seam`,
+## which pins both halves of that split. A player reads the line beside the list, so
+## which of the two carries the sentence is a layout choice, not a contract; the
+## contract is that ONE of them says the seam is missing and neither says the room is
+## empty. Asserted here on the half that carries it, and not duplicated on both.
 func test_an_unwired_panel_says_so_rather_than_claiming_an_empty_room() -> void:
 	var panel := _new_panel()
 	panel.show_room({})
@@ -70,12 +81,12 @@ func test_an_unwired_panel_says_so_rather_than_claiming_an_empty_room() -> void:
 	assert_eq(summary["wired"], false, "the panel knows nothing was wired to it")
 	assert_eq(summary["count"], 0, "so it names nobody")
 	assert_eq(
-		String(summary["roster_line"]) == NpcRosterPanel.EMPTY_ROOM_TEXT,
+		String(summary["room_line"]) == NpcRosterPanel.EMPTY_ROOM_TEXT,
 		false,
 		"a muted panel must not read as an empty room"
 	)
 	assert_ne(
-		String(summary["roster_line"]).is_empty(),
+		String(summary["room_line"]).is_empty(),
 		true,
 		"and it must say something a player can act on"
 	)
@@ -108,7 +119,7 @@ func test_the_panel_shows_the_cast_of_the_room_the_player_stands_in() -> void:
 		return
 
 	_stock(actor, BOOT_ROOM)
-	var panel := _panel_of(harness)
+	var panel := _panel_of(_explore_of(harness))
 	panel.show_room(NpcBoot.where_is(actor))
 	var stocked := panel.summary()
 	assert_eq(stocked["wired"], true, "the tracked room fact reached the panel")
@@ -138,7 +149,7 @@ func test_no_name_from_the_room_the_player_left_survives_the_move() -> void:
 	if actor == null:
 		return
 	_stock(actor, BOOT_ROOM)
-	var panel := _panel_of(harness)
+	var panel := _panel_of(_explore_of(harness))
 	panel.show_room(NpcBoot.where_is(actor))
 	var before := _names(panel.summary())
 
@@ -158,6 +169,17 @@ func test_no_name_from_the_room_the_player_left_survives_the_move() -> void:
 ## An empty location must not borrow a neighbour's cast, and must not fall back to
 ## "everywhere". `NpcApi.presence_here("")` is the everywhere answer and is the exact
 ## shape a lazy panel would show; this asserts the panel never receives one.
+##
+## ## Why the neighbour's room reads 4 and not 0
+##
+## The last assertion used to expect `0` for the hero that really is standing in a
+## stocked room, and it failed with 4 — correctly. Two different actors occupy two
+## different rooms, and the neighbour is standing in [constant BOOT_ROOM] with four
+## people in it; filtering by the ROOM a hero stands in does not empty the room that
+## hero is standing in. The assertion this case is really about is the one above it:
+## the hero who is NOWHERE gets an explicit `0`, never the neighbours' four. The
+## neighbour's own roster is asserted to be intact here, because a panel that reached
+## into a neighbouring room to fill an empty one would leave it emptied.
 func test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast() -> void:
 	var harness := _mount()
 	var actor := harness.actor
@@ -179,8 +201,10 @@ func test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast(
 		0,
 		"and the empty room is an explicit zero, not a borrowed list"
 	)
-	# And the stocked neighbour is still standing in its own room, untouched.
-	assert_eq(
+	# And the stocked neighbour is still standing in its own room, untouched — the cast
+	# in [constant BOOT_ROOM] is filtered BY that room, not merged into nowhere, and not
+	# drained by nowhere having a reader.
+	assert_ne(
 		int((NpcBoot.where_is(actor)["here"] as Dictionary).get("count", 0)),
 		0,
 		"the neighbour's own roster is filtered by its own room, not merged into nowhere"
@@ -240,7 +264,15 @@ func test_the_panel_has_no_door_that_could_be_handed_the_boot_settlement() -> vo
 	if panel == null:
 		return
 	var mutators: Array[String] = []
-	for method in panel.get_script_method_list():
+	# **Read off the SCRIPT, not off the instance.** `get_script_method_list()` is a
+	# method of `Script`/`GDScript`; a `Node` has no such method, so calling it on the
+	# panel is an `Invalid call` that aborts the test before it asserts anything. The
+	# guard below is what turns a lost script into a counted failure instead.
+	var script: GDScript = panel.get_script() as GDScript
+	assert_ne(script, null, "the shipped panel has its script, so the surface can be read")
+	if script == null:
+		return
+	for method in script.get_script_method_list():
 		var name := String(method.name)
 		if name.begins_with("_") or name in ["summary", "has_roster"]:
 			continue
@@ -269,14 +301,17 @@ func test_the_panel_has_no_door_that_could_be_handed_the_boot_settlement() -> vo
 ## The composition root's tracked fact is a SEPARATE verb from the boot settlement, so a
 ## reader can see at the call site which one a screen is being handed.
 func test_the_tracked_room_verb_is_distinct_from_the_boot_settlement_verb() -> void:
-	# Read off an INSTANCE: `get_script_method_list()` is not a static, and asking the
-	# CLASS for it is a parse error rather than a runtime one.
-	var probe := _hero()
-	assert_ne(probe, null, "a probe hero exists, so the verb surface can be read")
-	if probe == null:
-		return
+	# **Read the CLASS's script, not an instance's.** `where_is` is a STATIC verb, and
+	# `NpcBoot` is a `RefCounted` — there is no instance of it to hand, so `NpcBoot.new()`
+	# would be the wrong shape and reading an unrelated object's script would enumerate
+	# THAT object's methods and answer `false` for ever. This case used to read the
+	# surface off a probe `Actor`, which is why it asserted `where_is` was absent from a
+	# list that never held it and from a class that has always declared it. This is the
+	# same class-vs-instance correction BL-0871 (3) made to
+	# `test_the_panel_has_no_door_that_could_be_handed_the_boot_settlement`, which reads
+	# `panel.get_script() as GDScript` because a panel IS an instance.
 	var declared: Array[String] = []
-	for method in (probe.get_script() as GDScript).get_script_method_list():
+	for method in (NpcBoot as GDScript).get_script_method_list():
 		declared.append(String(method.name))
 	assert_eq(
 		declared.has("where_is"), true, "NpcBoot declares where_is(): the tracked current-room fact"
@@ -295,7 +330,9 @@ func test_the_tracked_room_verb_is_distinct_from_the_boot_settlement_verb() -> v
 
 
 ## The panel is a CHILD of the screen that renders the place you stand in, so it is
-## reachable by a player without a route of its own.
+## reachable by a player without a route of its own. The panel test drives THAT screen
+## — which is what makes the two mounted cases below prove the panel is reachable
+## rather than merely present in a scene file.
 func test_the_panel_is_mounted_in_the_screen_that_shows_the_place_you_stand_in() -> void:
 	var text := _read("res://src/ui/screens/domain_explore.tscn")
 	assert_eq(
@@ -316,11 +353,11 @@ func test_the_panel_is_mounted_in_the_screen_that_shows_the_place_you_stand_in()
 ## across every suite, so a leak here is a leak everywhere.
 func test_the_panel_mounts_headless_through_the_seam_harness_and_reports_a_summary() -> void:
 	var harness := _mount()
-	var screen := harness.live_screen()
+	var screen := _explore_of(harness)
 	assert_ne(screen, null, "a screen is mounted")
 	if screen == null:
 		return
-	var panel := _panel_of(harness)
+	var panel := _panel_of(screen)
 	assert_ne(panel, null, "and the roster panel is mounted under it")
 	if panel == null:
 		return
@@ -337,7 +374,7 @@ func test_the_panel_mounts_headless_through_the_seam_harness_and_reports_a_summa
 ## larger dictionary.
 func test_the_screen_nests_the_roster_under_the_panel_key() -> void:
 	var harness := _mount()
-	var screen := harness.live_screen()
+	var screen := _explore_of(harness)
 	if screen == null or not screen.has_method(&"summary"):
 		return
 	var summary := screen.call(&"summary") as Dictionary
@@ -354,11 +391,42 @@ func test_the_screen_nests_the_roster_under_the_panel_key() -> void:
 # ── Plumbing ─────────────────────────────────────────────────────────────────
 
 
-## The real composition root, mounted through the harness. Freed by `teardown()`.
+## The real composition root, mounted through the harness, WITH THE EXPLORE ROUTE
+## DRIVEN. Freed by `teardown()`.
+##
+## ## Why the route is navigated rather than accepting the boot screen
+##
+## The app boots on the workbench, so `live_screen()` is the workbench — which is not
+## the screen the roster panel lives in. Reading the boot screen here would have proved
+## nothing: the mounted panel would be absent because it is genuinely not on that
+## screen, and the assertion would have been failing for the wrong reason the whole
+## time. So the mounted cases drive the route a player takes to reach the place they
+## stand in, and `harness.navigate` REFUSES rather than asserting (a route table that
+## stopped naming this screen fails loudly instead of quietly showing the workbench).
 func _mount() -> SeamHarness:
 	var harness := SeamHarness.mount_new()
 	_born.append(harness.app)
+	# **The verdict is ASSERTED, not discarded.** `SeamHarness.navigate` answers
+	# `{ok, note}` precisely so a caller records a real failure instead of silently
+	# reading the wrong screen — dropping the return here would leave every case below
+	# pointing at "the panel is missing" when the true cause is "the route no longer
+	# reaches this screen", which is the same class of wrong-reason failure this helper
+	# exists to end.
+	var reached := harness.navigate(EXPLORE_ROUTE)
+	var note := String(reached.get("note", ""))
+	assert_eq(
+		bool(reached.get("ok", false)),
+		true,
+		note if not note.is_empty() else "the explore route did not answer"
+	)
 	return harness
+
+
+## The explore screen the player can actually reach, or null. Fails through
+## [method _mount]'s `navigate` when the route is gone, so a null here is a mount that
+## never produced a screen rather than a screen this panel is missing from.
+func _explore_of(harness: SeamHarness) -> Control:
+	return harness.live_screen()
 
 
 ## A panel instantiated the way a headless test may. Detached, and freed by `teardown()`.
@@ -376,8 +444,7 @@ func _new_panel() -> NpcRosterPanel:
 ## The panel off the MOUNTED tree, never one this suite built for itself. A test that
 ## instantiates its own screen proves the scene parses; it proves nothing about the app a
 ## player runs.
-func _panel_of(harness: SeamHarness) -> NpcRosterPanel:
-	var screen := harness.live_screen()
+func _panel_of(screen: Control) -> NpcRosterPanel:
 	if screen == null:
 		return null
 	return screen.get_node_or_null("%Roster") as NpcRosterPanel

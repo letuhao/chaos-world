@@ -1,0 +1,357 @@
+extends TestCase
+
+## Full-inventory safety: a pickup that cannot fit must never lose a drop and never
+## spend a claim (rule E5).
+##
+## The bounded world drop container is the overflow, `Reclaim` is the way back, and a
+## full container refuses the pickup outright — which means the drop has to still be
+## there afterwards, and taking it must still work once room is made.
+
+## Bound on the drain loop: enough passes for the world container to empty and be re-parked,
+## and short enough that a control which stops moving anything fails the test instead of
+## running it out.
+const DRAIN_PASSES := 20
+
+var _rig: LootScreenRig = null
+
+
+func setup() -> void:
+	_rig = LootScreenRig.new()
+
+
+## Free whatever the rig minted. Every test here mounts a screen, and the runner shares
+## one process across every suite, so an unfreed one stays resident for the rest of the
+## run. Idempotent, so it is safe after a test that returned early.
+func teardown() -> void:
+	if _rig != null:
+		_rig.release()
+		_rig = null
+
+
+## One slot, already spent, and a drop that needs one: the pickup overflows to the
+## world instead of failing, the claim is untouched, and the drop is in the stash.
+func test_a_full_inventory_overflows_to_the_world_and_keeps_the_claim() -> void:
+	var actor := _rig.hero(1)
+	_fill_inventory(actor)
+	var view := _rig.screen(actor)
+	_rig.enter_domain(view, LootScreenRig.EMBER_DOMAIN, LootScreenRig.EMBER_TIER)
+	var dead := _rig.defeat_boss(view)
+	var listed := _rig.listed_reward(view)
+	var rows := listed["rows"] as Array
+	assert_eq(rows.is_empty(), false, "the payload has a row to take")
+
+	assert_eq(_rig.pick_up_row(view, 0), true, "the row's Pick up control drives the pickup")
+	var world := view.summary()
+	assert_eq(
+		int(world["world_drop_count"]), 1, "the drop overflowed into the world drop container"
+	)
+	var stashed := world["stashed"] as Dictionary
+	assert_eq(String(stashed["mode"]), "stashed", "the stash list is in its stash mode")
+	assert_eq(int(stashed["row_count"]), 1, "with the drop listed")
+	assert_eq(String((stashed["rows"] as Array)[0]["action"]), "Reclaim", "offered for reclaim")
+	assert_eq(
+		int((world["reward"] as Dictionary)["row_count"]),
+		rows.size(),
+		"and no drop was discarded: the reward still lists all of them"
+	)
+	assert_eq(int(world["claimed_encounters"]), 0, "while the encounter's claim is still unspent")
+	assert_eq(
+		bool(LootApi.reward(actor, dead)["ok"]),
+		true,
+		"so the payload is still claimable at the facade"
+	)
+
+
+## `Reclaim` puts the drop back in the inventory with the realization the payload was
+## built with, and only then is the claim settled.
+func test_reclaim_delivers_the_overflowed_drop_with_its_rolls_intact() -> void:
+	var actor := _rig.hero(1)
+	_fill_inventory(actor)
+	var view := _rig.screen(actor)
+	_rig.enter_domain(view, LootScreenRig.EMBER_DOMAIN, LootScreenRig.EMBER_TIER)
+	var dead := _rig.defeat_boss(view)
+	var listed := _rig.listed_reward(view)
+	var row := (listed["rows"] as Array)[0] as Dictionary
+	var realized := _rig.realized_for(actor, dead, String(row["drop_id"]))
+
+	assert_eq(_rig.pick_up_row(view, 0), true, "the pickup overflows")
+	assert_eq(int(view.summary()["world_drop_count"]), 1, "the drop is in the world")
+
+	# Make room, then reclaim through the stash list's own control.
+	ItemsApi.inventory(actor).clear()
+	assert_eq(_rig.reclaim_row(view, 0), true, "the Reclaim control exists")
+	var after := view.summary()
+	assert_eq(
+		String(after["message"]).begins_with("Rejected:"),
+		false,
+		"and the reclaim was not refused: %s" % String(after["message"])
+	)
+	assert_eq(int(after["world_drop_count"]), 0, "the world drop container is empty again")
+
+	var carried := _rig.carried_drop(actor, row)
+	assert_ne(carried.is_empty(), true, "the exact realized drop is in the inventory")
+	assert_eq(String(carried.get("rarity", "")), String(realized["rarity"]), "rarity intact")
+	assert_eq(String(carried.get("realm", "")), String(realized["realm"]), "realm intact")
+	assert_eq(
+		carried.get("rolled", []),
+		realized["rolled"],
+		"and the rolled affixes survived the round trip"
+	)
+
+	# The payload settles only once EVERY drop is claimed, and a drop the bag cannot
+	# take is parked in the world container rather than lost — so draining means reclaiming as
+	# well as picking up. It has to: the warden's table now holds many more candidates than
+	# the bag has slots, so a payload can carry more drops than this delver can ever hold at
+	# once. Bounded by DRAIN_PASSES and it stops the moment the facade reports the claim
+	# spent, so a control that moves nothing ends the drain instead of spinning.
+	ItemsApi.inventory(actor).clear()
+	var passes := 0
+	while bool(LootApi.reward(actor, dead)["ok"]) and passes < DRAIN_PASSES:
+		passes += 1
+		ItemsApi.inventory(actor).clear()
+		for index in _claimable_rows(view):
+			_rig.pick_up_row(view, int(index))
+		var stashed := _stashable_rows(view)
+		var taken := 0
+		while taken < stashed:
+			taken += 1
+			_rig.reclaim_row(view, 0)
+	assert_eq(passes < DRAIN_PASSES, true, "the drain converged on its own, not on the bound")
+	var settled := view.summary()
+	assert_eq(int(settled["pending_drops"]), 0, "and no drop of that payload is still waiting")
+	assert_eq(int(settled["world_drop_count"]), 0, "with nothing left parked in the world")
+	assert_eq(int(settled["claimed_encounters"]), 1, "so the claim settled, and only now")
+	assert_eq(bool(LootApi.reward(actor, dead)["ok"]), false, "and the claim is now spent")
+
+
+## Reclaiming into a still-full inventory refuses and keeps the drop where it was: no
+## discard, no claim spent.
+func test_a_refused_reclaim_keeps_the_drop_and_the_claim() -> void:
+	var actor := _rig.hero(1)
+	_fill_inventory(actor)
+	var view := _rig.screen(actor)
+	_rig.enter_domain(view, LootScreenRig.EMBER_DOMAIN, LootScreenRig.EMBER_TIER)
+	_rig.defeat_boss(view)
+	assert_eq(_rig.pick_up_row(view, 0), true, "the pickup overflows")
+	var before := view.summary()
+
+	assert_eq(_rig.reclaim_row(view, 0), true, "the Reclaim control exists")
+	var refused := view.summary()
+	assert_eq(String(refused["message"]), "Rejected: inventory_full", "the reclaim is refused")
+	assert_eq(
+		int(refused["world_drop_count"]), int(before["world_drop_count"]), "the drop stayed put"
+	)
+	assert_eq(int(refused["claimed_encounters"]), 0, "and the encounter's claim is still unspent")
+	assert_eq(
+		int((refused["reward"] as Dictionary)["row_count"]) > 0,
+		true,
+		"so the drop is still reachable in the reward too"
+	)
+
+
+## When the world container is full too, the pickup is refused outright: the container
+## does not grow, the drop is not discarded, and no claim is spent — so making room and
+## pressing the same control again still works.
+##
+## The full container is a *prior state*, not something this run produces: one
+## three-boss run at the shallow band owes fewer drops than the container holds, so
+## draining it can never fill it. `LootState.WORLD_DROP_CAPACITY` and the refusal it
+## causes are proved at the facade in `test_the_world_drop_container_is_bounded`; what
+## this suite owes the screen is that the player is told, rather than left pressing a
+## button that quietly does nothing.
+func test_a_full_world_container_refuses_without_discarding_or_spending() -> void:
+	var actor := _rig.hero(1)
+	_fill_inventory(actor)
+	_fill_world_container(actor)
+	var view := _rig.screen(actor)
+	_rig.enter_domain(view, LootScreenRig.EMBER_DOMAIN, LootScreenRig.EMBER_TIER)
+	for _boss in LootScreenRig.EMBER_BOSS_COUNT:
+		_rig.defeat_boss(view)
+
+	var full := view.summary()
+	assert_eq(
+		bool(full["world_drops_full"]),
+		true,
+		"the bounded world drop container reads as full before anything is offered to it"
+	)
+	assert_eq(
+		int(full["world_drop_count"]), LootState.WORLD_DROP_CAPACITY, "at exactly its capacity"
+	)
+
+	var owed := _claimable_rows(view)
+	assert_eq(owed.is_empty(), false, "and there is still a drop waiting to be taken")
+	if owed.is_empty():
+		# Nothing left to press: every assertion below is about what a press does, so
+		# stop here rather than index past the end and lose the ones that were fine.
+		return
+
+	var drops_before := int(_rig.listed_reward(view)["row_count"])
+	_rig.pick_up_row(view, owed[0] as int)
+	var refused := view.summary()
+	# `world_drops_full`, not `inventory_full`: nothing was parked here, and the
+	# overflow sentence tells the player the drop IS in the world. One reason id for
+	# both refusals is how a container-full refusal came to read as a parked drop.
+	assert_eq(
+		String(refused["message"]), "Rejected: world_drops_full", "the pickup is refused by name"
+	)
+	assert_eq(String(refused["tone"]), "error", "with the error tone, so it reads as a refusal")
+	assert_eq(
+		int(refused["world_drop_count"]),
+		LootState.WORLD_DROP_CAPACITY,
+		"the container did not grow past its bound"
+	)
+	assert_eq(
+		int(_rig.listed_reward(view)["row_count"]),
+		drops_before,
+		"the drop was not discarded: it is still listed in the reward"
+	)
+	assert_eq(int(refused["claimed_encounters"]), 0, "and not one claim was spent by the refusal")
+
+	# The refusal cost nothing: make room and press the same control again on a drop that
+	# is still genuinely waiting.
+	ItemsApi.inventory(actor).clear()
+	var waiting := _claimable_rows(view)
+	assert_eq(waiting.is_empty(), false, "a drop is still waiting to be taken")
+	if waiting.is_empty():
+		return
+	var pending_before := int(view.summary()["pending_drops"])
+	_rig.pick_up_row(view, int(waiting[0]))
+	var retried := view.summary()
+	assert_eq(
+		int(retried["pending_drops"]),
+		pending_before - 1,
+		"so the very same pickup goes through once there is room"
+	)
+
+
+## The two "make room" outcomes are DIFFERENT facts and are named differently, at the
+## facade rather than only in the panel's wording.
+##
+## A full bag with room in the world container PARKS the drop: it is in the world, the
+## claim is untouched, and reclaim is the way back. A full bag with a full container
+## REFUSES it: nothing is parked, so the drop is nowhere, and the only way forward is to
+## empty the bag. One reason id for both reported the second as the first, so the
+## sentence the player read claimed the drop was safely in the world when it was not —
+## and `ERR_WORLD_FULL`, which the panel already words for exactly this case, was
+## emitted by nothing at all.
+func test_a_parked_drop_and_a_refused_drop_are_named_differently() -> void:
+	var parking := _rig.hero(1)
+	_fill_inventory(parking)
+	var parked_view := _rig.screen(parking)
+	_rig.enter_domain(parked_view, LootScreenRig.EMBER_DOMAIN, LootScreenRig.EMBER_TIER)
+	_rig.defeat_boss(parked_view)
+	var parked := _first_pickup(parking, parked_view)
+	assert_eq(
+		String(parked.get("status", "")), LootState.OK_OVERFLOW, "a roomy container parks the drop"
+	)
+	assert_eq(
+		String(parked.get("reason", "")),
+		LootState.ERR_INVENTORY_FULL,
+		"and names the bag, because the bag is what has no room"
+	)
+	assert_eq(
+		int(_rig.listed_reward(parked_view)["stashed_count"]),
+		1,
+		"so the drop really is in the world"
+	)
+
+	var jammed := _rig.hero(1)
+	_fill_inventory(jammed)
+	_fill_world_container(jammed)
+	var jammed_view := _rig.screen(jammed)
+	_rig.enter_domain(jammed_view, LootScreenRig.EMBER_DOMAIN, LootScreenRig.EMBER_TIER)
+	_rig.defeat_boss(jammed_view)
+	var refused := _first_pickup(jammed, jammed_view)
+	assert_eq(String(refused.get("status", "")), "refused", "a full container refuses instead")
+	assert_eq(
+		String(refused.get("reason", "")),
+		LootState.ERR_WORLD_FULL,
+		"and names the container, because nothing was parked"
+	)
+	assert_eq(
+		int(_rig.listed_reward(jammed_view)["stashed_count"]),
+		0,
+		"so the drop is nowhere, and the reason may not claim otherwise"
+	)
+	assert_eq(int(jammed_view.summary()["pending_drops"]) > 0, true, "and it is still owed")
+
+
+## `LootApi.pickup` for the first drop of whatever the screen currently lists, read
+## through the facade rather than through the panel, because the reason id is what a
+## reader is given and the panel only words it.
+func _first_pickup(actor: Actor, view: LootEncounterScreen) -> Dictionary:
+	var reward := view.summary().get("reward", {}) as Dictionary
+	var rows := reward.get("rows", []) as Array
+	var index := 0
+	# Bounded by the row count, which is read once: the body does not add rows, so this
+	# terminates on the first claimable one and names the condition it stopped on.
+	while index < rows.size():
+		var row := rows[index] as Dictionary
+		if bool(row.get("claimable", false)):
+			return LootApi.pickup(actor, String(reward["encounter_id"]), String(row["drop_id"]))
+		index += 1
+	return {"ok": false, "reason": "no claimable row was listed"}
+
+
+## Park `WORLD_DROP_CAPACITY` drops in the world container as a legal prior state —
+## the same shape a player reaches by overflowing a long series of earlier fights.
+## This writes module state directly because there is no play that fills the container
+## inside one run; it fabricates no loot, every stash names an encounter the player is
+## already owed.
+func _fill_world_container(actor: Actor) -> void:
+	var state := LootState.normalize(actor.get_module_data(LootState.MODULE_KEY))
+	var stashes: Array = []
+	for index in LootState.WORLD_DROP_CAPACITY:
+		(
+			stashes
+			. append(
+				{
+					"stash_id": "prior_s%d" % index,
+					"encounter_id": "prior/encounter",
+					"drop_id": "prior/d%d" % index,
+				}
+			)
+		)
+	state["world_drops"] = stashes
+	actor.set_module_data(LootState.MODULE_KEY, state)
+
+
+## Spend every inventory slot, so every pickup has to overflow.
+##
+## It fills to `capacity` rather than adding one item, because "the bag is full" is the
+## whole premise of this suite and the hero's capacity is a rig argument: a helper that
+## spends one slot is only correct at capacity 1, and a reader who reached for the rig's
+## default would get a pickup that SUCCEEDS and a suite that quietly stops testing
+## overflow. The item is non-stackable, so one `add` spends exactly one slot.
+func _fill_inventory(actor: Actor) -> void:
+	var inventory := ItemsApi.inventory(actor)
+	var def := Crafting.resolve(&"armor_iron_helm")
+	if def == null or inventory == null:
+		return
+	# The bound is `capacity`, read ONCE before the loop, and `spent` is advanced
+	# unconditionally: a bag the item stops fitting into then ends the walk at the bound
+	# rather than filling forever. Re-reading `used_slots()` each pass is the shape that
+	# grows with the thing it tests.
+	var slots := inventory.capacity
+	var spent := 0
+	while spent < slots:
+		spent += 1
+		inventory.add(def, 1)
+
+
+## The row indices of the listed reward that are still claimable.
+func _claimable_rows(view: LootEncounterScreen) -> Array:
+	var out: Array = []
+	var rows := _rig.listed_reward(view)["rows"] as Array
+	for index in rows.size():
+		if bool((rows[index] as Dictionary)["claimable"]):
+			out.append(index)
+	return out
+
+
+## How many rows the world drop container is still listing.
+##
+## A reclaim removes the row it reclaimed, so the indices shift under any ascending walk —
+## which is why the caller reclaims index 0 rather than iterating a snapshot.
+func _stashable_rows(view: LootEncounterScreen) -> int:
+	return (view.summary().get("stashed", {}) as Dictionary).get("row_count", 0) as int

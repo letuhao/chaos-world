@@ -921,10 +921,19 @@ func cast_target_summary() -> Dictionary:
 ## would skip the ambient news, the one-open-per-pull budget and the institution settling
 ## that `WorldPulse.pull` owns. The pulse is the only thing allowed to decide what a period
 ## means, so a screen asks the pulse and not the module.
+##
+## ## The third slot is the one ADR 0167 could not reach
+##
+## `retreat` was complete, correct and reachable from no player, because the seam had
+## nowhere to carry it: `grep retreat game/src/ui` returned nothing at all. It is
+## `ItemWorkbenchPlay.retreat` bound here and nowhere else, so the panel that offers a
+## chosen duration and the headless probe that drives it meet the SAME verb the wait
+## button's path ends in (`advance_world`) — there is still one dispatcher for a period.
 func _world_bridge() -> WorldPulseBridge:
 	var bridge := WorldPulseBridge.new()
 	bridge.read_state = Callable(self, "world_summary")
 	bridge.advance = Callable(self, "advance_one_period")
+	bridge.retreat = Callable(self, "retreat")
 	return bridge
 
 

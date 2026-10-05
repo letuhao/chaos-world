@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"K6_mortal_moss_refined_alt_recipe"
+display_name = "K6 Mortal Moss Refined Alt Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"K6_mortal_moss_base", &"feather_swallow", &"tincture_herb"])
+outputs = Array[StringName]([&"K6_mortal_moss_refined"])

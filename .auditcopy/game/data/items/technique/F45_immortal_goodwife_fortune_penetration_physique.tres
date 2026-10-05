@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F45_immortal_goodwife_fortune_penetration_physique"
+display_name = "Immortal Goodwife Fortune Penetration Physique"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"formula"
+grade = &"immortal"
+sources = Array[StringName]([&"quest", &"domain:qi_spirit_palace_trial"])

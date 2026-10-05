@@ -208,7 +208,7 @@ func act_take(drop_id: String = "") -> Dictionary:
 		return _verdict(NO_LOCATION)
 	if wanted == "":
 		return _verdict(NO_DROP_PICKED)
-	return _settle(_decorate(MarketApi.take(_actor, _location_id, wanted)))
+	return _settle(_decorate(MarketApi.take(_actor, _location_id, wanted), wanted))
 
 
 ## Put `quantity` of `def_id` from the hero's bag onto the floor of this location,

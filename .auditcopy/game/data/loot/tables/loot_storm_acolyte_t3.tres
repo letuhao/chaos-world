@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"sa3_veil"
+kind = &"item"
+item_id = &"amulet_iron_sage_eye"
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = ""
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"sa3_relics"
+kind = &"table"
+table_id = &"loot_storm_material_pool"
+weight = 4.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = ""
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"sa3_charms"
+kind = &"table"
+table_id = &"loot_storm_charm_pool"
+weight = 1.2
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = ""
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"sa3_crown"
+kind = &"item"
+item_id = &"artifact_storm_phoenix_crown"
+weight = 1.0
+chance = 0.20
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_storm_acolyte_t3"
+display_name = "Storm Crypt Static Acolyte (Squall)"
+realm = &"heaven_immortal"
+rarity = &"rare"
+rolls = 1
+rolls_max = 2
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3")
+])

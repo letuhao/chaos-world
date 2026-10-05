@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I19_spirit_enkindle_primed_recipe"
+display_name = "Spirit Enkindle Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I19_spirit_enkindle_aged", &"Z35_spirit_millstone_demantoid", &"formation_silver_ore", &"Z38_spirit_tufa_colluvium"])
+outputs = Array[StringName]([&"I19_spirit_enkindle_primed"])

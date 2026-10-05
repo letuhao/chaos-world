@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"J17_heaven_silver_anointed"
+display_name = "Heaven Silver Anointed"
+category = &"equipment"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_move_speed", "value": 0.02},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"accessory"
+stackable = false
+grade = &"heaven"
+sources = Array[StringName]([&"craft:J17_heaven_silver_anointed_recipe", &"domain:qi_body_integration_trial"])

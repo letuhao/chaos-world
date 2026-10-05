@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"altmat_crystal_emerald_recipe"
+display_name = "Emerald Crystal Alternate Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"crystal_emerald", &"gem_celestite"])
+outputs = Array[StringName]([&"lens_moon"])

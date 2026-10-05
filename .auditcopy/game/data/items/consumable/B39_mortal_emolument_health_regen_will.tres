@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B39_mortal_emolument_health_regen_will"
+display_name = "Mortal Emolument Health Regen Will"
+category = &"consumable"
+rarity = &"common"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 5.5},
+	{"option_id": &"base_will", "value": 5.5},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"food"
+grade = &"mortal"
+sources = Array[StringName]([&"quest", &"domain:qi_transcendent_trial"])

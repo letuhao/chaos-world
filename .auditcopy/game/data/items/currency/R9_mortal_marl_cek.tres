@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"R9_mortal_marl_cek"
+display_name = "Mortal Marl Cek"
+category = &"currency"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
+subcategory = &"token"
+grade = &"mortal"
+sources = Array[StringName]([&"quest", &"domain:succubus_immortal_domain"])

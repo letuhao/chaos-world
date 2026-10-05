@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F13_immortal_dudman_agility_aptitude_crit_damage_defense_physical"
+display_name = "Immortal Dudman Agility Aptitude Crit damage Defense physical"
+category = &"equipment"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 26.95},
+	{"option_id": &"base_aptitude", "value": 26.95},
+	{"option_id": &"core_crit_damage", "value": 0.04},
+	{"option_id": &"core_defense_physical", "value": 26.95},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
+subcategory = &"bandolier"
+stackable = false
+grade = &"immortal"
+sources = Array[StringName]([&"quest", &"domain:marine_abyssal_kraken_domain"])

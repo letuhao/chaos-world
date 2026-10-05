@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I26_spirit_fireside_refined_alt_recipe"
+display_name = "Spirit Fireside Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I26_spirit_fireside_base", &"ore_silver_vein", &"qi_spirit_unity_cultivation_herb"])
+outputs = Array[StringName]([&"I26_spirit_fireside_refined"])

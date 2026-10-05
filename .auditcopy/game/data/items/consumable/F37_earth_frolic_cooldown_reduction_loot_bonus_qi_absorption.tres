@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F37_earth_frolic_cooldown_reduction_loot_bonus_qi_absorption"
+display_name = "Earth Frolic Cooldown reduction Loot bonus Qi absorption"
+category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.021},
+	{"option_id": &"core_loot_bonus", "value": 0.023},
+	{"option_id": &"core_qi_absorption", "value": 18.16},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"grease"
+grade = &"earth"
+sources = Array[StringName]([&"gather", &"domain:scroll_frost_serpent_domain"])

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F3_mortal_cummin_dao_heart_loot_bonus_health_regen_qi_absorption"
+display_name = "Mortal Cummin Dao Heart Loot Bonus Health Regen Qi Absorption"
+category = &"consumable"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 8.8},
+	{"option_id": &"core_loot_bonus", "value": 0.03},
+	{"option_id": &"core_health_regen", "value": 8.8},
+	{"option_id": &"core_qi_absorption", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"syrup"
+grade = &"mortal"
+sources = Array[StringName]([&"gather", &"domain:mind_foundation_trial"])

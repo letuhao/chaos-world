@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponKindDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/weapon_kind_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"spear"
+display_name = "Spear"
+best_against = "Swarm and reach: the point enters a body that never let a bludgeon land."
+demand = &"leverage"
+lean = &"balance"
+counter_demands = [&"speed", &"mass"]
+counters = &"guard"
+practice_gain = 1.0
+demand_delta = 0.5
+min_realm_index = 0

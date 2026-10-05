@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B43_divine_fealty_max_health_move_speed"
+display_name = "Divine Fealty Max Health Move Speed"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 21.04},
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"formula"
+grade = &"divine"
+sources = Array[StringName]([&"quest", &"domain:body_spirit_ascension_trial"])

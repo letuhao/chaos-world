@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I51_mortal_gibbet_primed_recipe"
+display_name = "Mortal Gibbet Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I51_mortal_gibbet_aged", &"C30_mortal_stonefruit_carpel", &"soul_mist_herb", &"Z38_mortal_tufa_druse"])
+outputs = Array[StringName]([&"I51_mortal_gibbet_primed"])

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"orb_storm_phoenix_feather"
+display_name = "Storm Phoenix Feather"
+category = &"equipment"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 37.2},
+	{"option_id": &"core_max_qi", "value": 43.68},
+	{"option_id": &"core_qi_regen", "value": 26.4},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"artifact"
+stackable = false
+grade = &"heaven"
+sources = Array[StringName]([&"boss:orb_storm_phoenix", &"boss:d4_storm_phoenix"])

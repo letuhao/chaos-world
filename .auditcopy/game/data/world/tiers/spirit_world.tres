@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WorldTierDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/world_tier_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+tier_id = &"spirit_world"
+display_name = "Spirit World"
+realm_min = 10
+realm_max = 18
+law_slots = 6
+available_life_forms = Array[StringName]([&"plant", &"beast", &"humanoid"])
+upkeep_rate_min = 0.5
+upkeep_rate_max = 1.0
+time_flow_min = 1.0
+time_flow_max = 10.0
+size_min = 100.0
+size_max = 1000.0

@@ -1,0 +1,152 @@
+[gd_resource type="Resource" script_class="CombatTuning" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/combat_engine/combat_tuning.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+min_chip_abs = 1.0
+min_chip_share = 0.01
+avoidance_band_cap = 0.95
+chain_depth_limit = 6
+rate_scale = 1000.0
+amp_scale = 10.0
+lifesteal_pool = &"health"
+default_element_share = 0.8
+resist_divisor = 100.0
+resist_cap = 0.75
+damage_reduction_cap = 0.9
+element_power_prefix = "element_power_"
+resist_resistance_prefix = "element_defense_"
+default_mind_share = 1.0
+mental_defense_cap = 0.6
+illusion_resistance_cap = 0.8
+coherence_damp = 0.5
+focus_mult = 2.0
+turbulence_to_clarity = 0.5
+rupture_threshold = 0.7
+rupture_bleed = 0.15
+rupture_collapse_time = 3.0
+collapse_clarity_floor = 0.15
+collapse_capacity_floors = {
+"deep": 300.0,
+"shallow": 100.0
+}
+collapse_deviation_duration = 60.0
+mind_stat_prefix = ""
+sea_component = &"sea_of_consciousness"
+awareness_pool_id = &"awareness"
+health_pool_id = &"health"
+mind_deviation_stat = "mind_technique_power"
+; The BASE status gate, MOVED here from `CombatExchange.STATUS_GATE_CHANCE` (DEF-0145).
+; ADR 0105 recorded this exact move as its standing debt and said so verbatim: "add
+; `@export var status_gate_chance: float = 0.0` to `CombatTuning`, author it in
+; `combat_damage.tres` at `1.0`, and make this read `CombatEngineApi.tuning()
+; .status_gate_chance` -- the call site below is already shaped for exactly that
+; substitution". ADR 0087's consequence makes it a `.tres` field rather than a `.gd`
+; constant: its numbers are "provisional ... re-tuned by an edit, never by an ADR".
+;
+; THE VALUE IS UNCHANGED AT 1.0. This change moved the dial, it did not move the dial's
+; value: 1.0 is what shipped and the shipped rate is what was measured. What 1.0 still
+; means is unchanged too -- `apply_chance` is `gate * (1 - STATUS_RESISTANCE) * (1 -
+; elem_resist)`, so an unresisted actor short-circuits to certainty and consumes no
+; draw. A balance pass now edits this ONE line rather than editing a `.gd`.
+status_gate_chance = 1.0
+status_min_apply = 0.01
+; Status potency, retuned as TUNING. ADR 0087's own note calls these provisional
+; numbers, so a rebalance is a `.tres` edit and never a literal in logic. The shape is
+; UNCHANGED and still `StatusApply.potency_of`'s:
+;   `potency = maxf(status_potency_floor, element_power_<e> * status_potency_scale)`.
+;
+; Measured before this edit: `element_power_<e>` spans 0.10 (the shipped `commonborn`
+; race at 2.0 affinity, mastery 0) to 1.20 (affinity 1.0 at mastery 10, tier 1). At the
+; old scale of 0.25 that whole band mapped to 0.025..0.30 against a floor of 1.0, so
+; potency had to see power > 4.0 to leave the floor and EVERY build in the game landed at
+; exactly 1.0 — two different attackers dealt identical status damage. Both numbers move
+; together for one reason: a floor above the top of the realistic band is a CEILING.
+;
+; `status_potency_floor` 1.0 -> 0.1. It is the potency an actor with no elemental power
+; at all still inflicts, and 0.1 keeps that guarantee (ADR 0088's reason for having a
+; floor) while moving it below the bottom of the band, so the channel is live for every
+; build rather than for none. The two shapes that could have fixed this WITHOUT moving a
+; floor were rejected: raising `status_potency_scale` alone still floors every shipped
+; build (you would need ~10.0, which overruns the authored `magnitude_cap` of every
+; shipped `element_power` def), and `1 + scale * power` would have left potency at 1.0
+; for a body with no elemental power — strictly weaker than a floor.
+;
+; `status_potency_scale` 2.5 -> 1.5. Over the realistic band this maps 0.10..1.20 onto
+; 0.15..1.80: a ~12x spread across builds, and the top of the band stays under EVERY
+; authored `magnitude_cap` of the shipped DoTs, not just the biggest one. At 2.5 the
+; band top read 10.0, which OVERRAN `wind_gust`'s authored cap of 7.0 and
+; `lightning_arc`'s 9.0 outright -- a cap is authored data
+; (`modules/status/status_def.gd`: "the one ceiling that IS authored") and potency has
+; no way to honour one it does not know about, so a balance pass would have had to audit
+; all twenty status `.tres` to retune its own. The binding ceiling is the SMALLEST
+; `element_power` cap in the catalogue, not the largest; 1.5 keeps the whole 7.0..10.0
+; range reachable and the spread this tuning exists to produce, and going higher needs a
+; cap audit on every authored def; going lower flattens the spread.
+;
+; ## ADR 0088 is untouched by either number
+;
+; Potency still reads ONLY `element_power_<e>` — no new stat id, no new authored option,
+; no new read site — and mastery still reaches potency exactly once, through the provider's
+; existing `affinity * (1 + mastery * 0.1 / tier_divisor)` contribution. Penetration is
+; still `CombatStats.PENETRATION`, read once in `elemental_resist` and never in
+; `potency_of`, so one investment buys "your status lands more often" and never also
+; "your status hits harder".
+status_potency_scale = 1.5
+status_potency_floor = 0.1
+status_default_duration = 6.0
+min_penetration_ratio = 0.1
+meridian_armour_step = 0.35
+point_quality_step = 0.5
+channel_mult_step = 0.15
+injured_mult_step = 0.25
+; `blocked_mult` 1.5 -> 1.6. ADR 0070's inversion and `combat_tuning.gd`'s own
+; PRECONDITION of this field both say a jammed huyệt must outrank EVERY open one,
+; and the whole quality range IS the maximum open point: `1 + point_quality_step x 1.0`
+; = 1.5. The shipped `1.5` therefore TIED the best-trained huyệt exactly, so `random`
+; aim could only ever find a jam on the lowest-id tie-break, not because the jam was
+; the better aim point. `1.6` is the smallest change that makes the ordering STRICT,
+; and it keeps the quality range the 50% swing it was authored as: an untrained point
+; reads 1.0, a perfectly trained one 1.5, and the jam is worth a further 0.1 above the
+; best of them. A larger figure would make the whole quality axis irrelevant to aim,
+; which is the other way to break ADR 0070 rather than satisfy it.
+blocked_mult = 1.6
+broad_mult = 0.35
+tissue_scale = 1.0
+tissue_stat_divisor = 10.0
+tissue_stat_ids = PackedStringArray("bone_density", "muscle_fiber", "organ_vitality")
+meridian_archetypes = {
+"bladder": "skeletal",
+"chong_mai": "visceral",
+"dai_mai": "visceral",
+"du_mai": "skeletal",
+"gallbladder": "visceral",
+"heart": "vascular",
+"kidney": "skeletal",
+"large_intestine": "muscular",
+"liver": "visceral",
+"lung": "vascular",
+"pericardium": "vascular",
+"ren_mai": "visceral",
+"small_intestine": "muscular",
+"spleen": "visceral",
+"stomach": "muscular",
+"triple_burner": "visceral",
+"yang_qiao": "skeletal",
+"yang_wei": "muscular",
+"yin_qiao": "skeletal",
+"yin_wei": "muscular"
+}
+tissue_weights = {
+"muscular": [0.5, 1.5, 0.5],
+"skeletal": [1.5, 0.5, 0.5],
+"vascular": [0.5, 0.75, 1.25],
+"visceral": [0.75, 0.5, 1.5]
+}
+integrity_pool_id = &"body_integrity"
+acupoint_data_dir = "res://data/body_cultivation/acupoints"
+wound_threshold = 0.05
+necrosis_threshold = 0.25
+necrosis_quality = 0.3
+wound_decay = 0.01

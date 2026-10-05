@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"staff_moonwhisper_heaven"
+display_name = "Moonwhisper Heaven Staff"
+category = &"equipment"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 23.92},
+	{"option_id": &"core_max_qi", "value": 33.72},
+	{"option_id": &"core_cooldown_reduction", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"weapon"
+stackable = false
+grade = &"heaven"
+sources = Array[StringName]([&"craft:staff_moonwhisper_heaven_recipe", &"domain:mind_spirit_domain_trial"])

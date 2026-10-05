@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"belt_dragon_scale"
+display_name = "Dragon Scale"
+category = &"equipment"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 18},
+	{"option_id": &"core_poise", "value": 15},
+	{"option_id": &"core_max_health", "value": 12},
+	{"option_id": &"core_status_resistance", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"armor"
+stackable = false
+grade = &"heaven"
+sources = Array[StringName]([&"craft:belt_dragon_scale_recipe", &"domain:crown_iron_monarch_domain"])

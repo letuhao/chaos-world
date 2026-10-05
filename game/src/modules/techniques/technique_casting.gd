@@ -53,6 +53,17 @@ extends RefCounted
 ## rebuilds a passive contribution: the three states stay three states, and using a
 ## technique is not an acquisition or a build choice.
 
+## The `mastery_by` an ACTIVE technique's ladder is published under: a rung per
+## fired activation, which is what `_grant_mastery` has always granted and what ADR
+## 0053's "mastery accrues through use" means.
+##
+## Paired with `TechniqueUpkeep.MASTERY_BY` (ADR 0247), which is the passive's. Both
+## are published so the codex screen can say which of the two a row is climbed by
+## rather than printing the same ladder for a technique that fires and one that
+## cannot — the read model picks between them, and the settle loop is the thing that
+## has to agree.
+const MASTERY_BY := &"cast"
+
 ## The pool ids an activation drains. Core owns both: stamina is a core pool
 ## (ADR 0025) and qi is the path's reservoir, which is created by the qi module and
 ## read here through `Actor.resource`.

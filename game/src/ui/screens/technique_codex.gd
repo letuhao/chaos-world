@@ -187,6 +187,12 @@ func _entry_view(entry: Dictionary) -> Dictionary:
 		"display_name",
 		"learn_unmet",
 		"equip_unmet",
+		# The two MARGIN columns, so the row can print the sheet beside the range a
+		# copy of it may read without projecting them itself. The codex summary row
+		# carries neither, and a row that showed the band with nothing to band would
+		# be telling a hero a range around a figure nobody printed.
+		"authored_effects",
+		"marginal",
 	]:
 		if detail.has(key):
 			view[key] = detail[key]
@@ -204,7 +210,50 @@ func _entry_view(entry: Dictionary) -> Dictionary:
 	view["learn_short"] = _shortfall(detail.get("learn_short", []))
 	view["can_pay"] = bool(detail.get("can_pay", false))
 	view["can_pay_known"] = detail.has("can_pay") or detail.has("learn_short")
+	# The RANGE a copy of this manual may read, relayed whole. The SCREEN never
+	# widens or narrows it and never multiplies an authored figure by an edge of its
+	# own — the two numbers arrive from `inspect`, which read them through the one
+	# declaration in `TechniqueMarginalia.band_for`. A screen that computed the band
+	# would be a second reader of a roll rule, which is the whole defect DEF-0302
+	# names (the roll was wired; nothing published it).
+	if detail.has("marginal_band") and detail["marginal_band"] is Dictionary:
+		view["marginal_band"] = {
+			"floor": float((detail["marginal_band"] as Dictionary).get("floor", 1.0)),
+			"ceiling": float((detail["marginal_band"] as Dictionary).get("ceiling", 1.0)),
+		}
+	view["marginal_banded"] = bool(detail.get("marginal_banded", false))
+	view["marginal_band_figures"] = _band_figures(detail.get("marginal_band_figures", []))
 	return view
+
+
+## The module's per-option range as primitives, so the row formats the module's
+## figures rather than receiving module dictionaries. Normalised rather than copied
+## because every dictionary crossing out of a screen is normalised here, and a
+## consumer must never have to reach back into the module to read a band.
+func _band_figures(figures: Array) -> Array:
+	var out: Array = []
+	for figure in figures:
+		if not figure is Dictionary:
+			continue
+		var entry: Dictionary = figure as Dictionary
+		var option_id := String(entry.get("option_id", ""))
+		var label := String(entry.get("label", ""))
+		var authored := float(entry.get("authored", 0.0))
+		var low := float(entry.get("floor", 0.0))
+		var high := float(entry.get("ceiling", 0.0))
+		(
+			out
+			. append(
+				{
+					"option_id": option_id,
+					"label": label,
+					"authored": authored,
+					"floor": low,
+					"ceiling": high,
+				}
+			)
+		)
+	return out
 
 
 ## The gate's reason, one label per unmet requirement. The label is the module's

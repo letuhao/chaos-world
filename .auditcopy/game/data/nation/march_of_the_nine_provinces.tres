@@ -1,0 +1,79 @@
+[gd_resource type="Resource" script_class="NationDef" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://src/modules/nation/nation_def.gd" id="1_nation"]
+[ext_resource type="Script" path="res://src/modules/nation/nation_office_def.gd" id="2_office"]
+[ext_resource type="Script" path="res://src/core/institution_claim.gd" id="3_claim"]
+
+[sub_resource type="Resource" id="office_marshal"]
+script = ExtResource("2_office")
+id = &"marshal"
+display_name = "Marshal of the March"
+description = "Commands nothing that can be counted. The Marshal may close the river crossings and call the levy, and the levy is answered by people who may say no; what the Marshal has is authority over passage, never authority over a body."
+powers = Array[StringName]([&"close_the_fords", &"call_the_levy", &"judge_the_boundary"])
+capacity = 1
+succession_method = &"trial"
+succession_param = {"stages": ["sworn_at_the_ford", "held_the_bridge", "named_by_the_march"]}
+standing_percent_stats = {"defense_physical": 0.0, "max_health": 0.0}
+
+[sub_resource type="Resource" id="office_reeve"]
+script = ExtResource("2_office")
+id = &"reeve"
+display_name = "Reeve of the Nine Provinces"
+description = "The only seat that touches a number, and it still grants recognition rather than power: the Reeve is recognised on the body the province actually maintains, which is a percent on the holder's own growth rather than a flat that would be decisive at one realm and rounding to nothing at another."
+powers = Array[StringName]([&"assess_the_tithe", &"grant_seat_of_hearing"])
+capacity = 1
+succession_method = &"appointed"
+succession_param = {"naming_body": "the_marshals"}
+standing_percent_stats = {"max_health": 0.0, "qi_regen": 0.0}
+
+[sub_resource type="Resource" id="office_lantern_keeper"]
+script = ExtResource("2_office")
+id = &"lantern_keeper"
+display_name = "Keeper of the River Lantern"
+description = "One seat, and on this build it is the one nobody has sat in for two generations. It exists to be legible when vacant, which is why an absent holder is a visible row with its own tone and never a zero."
+powers = Array[StringName]([&"light_the_beacons"])
+capacity = 1
+succession_method = &"heir"
+succession_param = {"charter": "the_march_charter"}
+standing_percent_stats = {"evasion": 0.0}
+
+[sub_resource type="Resource" id="office_auditor"]
+script = ExtResource("2_office")
+id = &"auditor"
+display_name = "Auditor of Tributes"
+description = "More than one at a time, because an audit nobody can replace is a private accounting rather than an office. Three may sit at once and the fourth is refused on capacity, which is a different refusal from the single-seat Marshal's and produces a different situation for whoever is refused."
+powers = Array[StringName]([&"read_the_ledger", &"call_the_debt"])
+capacity = 3
+succession_method = &"appointed"
+succession_param = {"naming_body": "the_reeve"}
+standing_percent_stats = {"comprehension": 0.0, "insight_gain": 0.0}
+
+[sub_resource type="Resource" id="office_quartermaster"]
+script = ExtResource("2_office")
+id = &"quartermaster"
+display_name = "Quartermaster of the Wold"
+description = "Holds the granaries and recognises nothing else. An office with an empty allowlist is legal content and projects no modifier at all, which is how a polity can have a seat whose whole purpose is administrative."
+powers = Array[StringName]([&"open_the_granary"])
+capacity = 1
+succession_method = &"contest"
+succession_param = {"quota": 3}
+standing_percent_stats = {}
+
+[sub_resource type="Resource" id="claim_march"]
+script = ExtResource("3_claim")
+position = &"march"
+standing = 80
+standing_cap = 120
+obligation = {"ford_dues": 2, "winter_grain": 1}
+
+[resource]
+script = ExtResource("1_nation")
+id = &"march_of_the_nine_provinces"
+display_name = "The March of the Nine Provinces"
+description = "A river polity that governs where water can be crossed rather than who owns it. Its seats are filled from sects that were never related to one another, and its land is a claim over places that may be contested by anyone holding the standing to contest them."
+offices = Array[NationOfficeDef]([SubResource("office_marshal"), SubResource("office_reeve"), SubResource("office_lantern_keeper"), SubResource("office_auditor"), SubResource("office_quartermaster")])
+territory_ids = Array[StringName]([&"river_march", &"ashen_wold", &"nine_province_reach"])
+sect_ids = Array[StringName]([&"iron_vine", &"jade_court"])
+initial_offices = {"marshal": "mira_of_the_ford", "reeve": "", "lantern_keeper": "", "auditor": "hollis_third", "quartermaster": ""}
+claim = SubResource("claim_march")
+tags = Array[StringName]([&"riverine", &"warlike", &"tributary"])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"B17_spirit_cambist_primed_recipe"
+display_name = "Spirit Cambist Primed Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"B17_spirit_cambist_aged", &"shard_desert", &"W9_spirit_caltrops_ochre", &"gemstone_garnet"])
+outputs = Array[StringName]([&"B17_spirit_cambist_primed"])

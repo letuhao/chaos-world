@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I68_immortal_hackbutter_aged_alt_recipe"
+display_name = "Immortal Hackbutter Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I68_immortal_hackbutter_refined", &"qi_great_luo_qi_herb", &"W3_immortal_apse_ewer"])
+outputs = Array[StringName]([&"I68_immortal_hackbutter_aged"])

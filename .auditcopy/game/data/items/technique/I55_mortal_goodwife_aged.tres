@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I55_mortal_goodwife_aged"
+display_name = "Mortal Goodwife Aged"
+category = &"consumable"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"formula"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:I55_mortal_goodwife_aged_recipe", &"domain:body_spirit_condensation_trial"])

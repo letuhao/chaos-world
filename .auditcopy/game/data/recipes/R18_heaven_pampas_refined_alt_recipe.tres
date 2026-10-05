@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"R18_heaven_pampas_refined_alt_recipe"
+display_name = "Heaven Pampas Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"R18_heaven_pampas_base", &"panacea_silkcap_herb", &"fungus_silvercap"])
+outputs = Array[StringName]([&"R18_heaven_pampas_refined"])

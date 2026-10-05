@@ -32,7 +32,7 @@ extends RefCounted
 ##
 ## ```
 ## gate    = the attack's authored status_chance           (0.0 means "applies nothing")
-## elem_r  = clampf(defender element_resistance_<e> / resist_divisor
+## elem_r  = clampf(defender element_defense_<e> / resist_divisor
 ##                  - CombatStats.PENETRATION, 0, resist_cap)
 ## p_apply = clampf(gate * (1 - Stat.STATUS_RESISTANCE) * (1 - elem_r),
 ##                  status_min_apply, 1.0)                  (only when gate > 0)
@@ -55,7 +55,7 @@ extends RefCounted
 ##
 ## ## The resist formula is ADR 0069's, read once and not restated
 ##
-## `QiDamage._resistance_of` already computes `clampf(element_resistance_<e> /
+## `QiDamage._resistance_of` already computes `clampf(element_defense_<e> /
 ## resist_divisor - penetration, 0, resist_cap)` for the damage formula, and S12 reads
 ## the SAME `CombatTuning` fields rather than a second pair that could drift. One
 ## resistance vocabulary in the game: a defender's fire resistance answers a fire hit
@@ -295,7 +295,7 @@ static func record(outcome: CombatOutcome, result: Dictionary) -> void:
 # --- the arithmetic, exposed so each term is a two-line test --------------------
 
 
-## ADR 0069's elemental resist, for a STATUS: `clampf(element_resistance_<e> /
+## ADR 0069's elemental resist, for a STATUS: `clampf(element_defense_<e> /
 ## resist_divisor - CombatStats.PENETRATION, 0, resist_cap)`.
 ##
 ## The divisor and cap are the SAME `CombatTuning` fields `QiDamage._resistance_of`
@@ -313,9 +313,6 @@ static func elemental_resist(
 ) -> float:
 	if element == &"" or tuning == null or target == null or target.stats == null:
 		return 0.0
-	var divisor := _finite(tuning.resist_divisor)
-	if divisor <= 0.0:
-		return 0.0
 	var raw := _finite(target.stats.derived(_suffixed(tuning.resist_resistance_prefix, element)))
 	var penetration := maxf(
 		0.0,
@@ -324,7 +321,18 @@ static func elemental_resist(
 			+ _finite(_stat(attacker, CombatStats.PENETRATION))
 		)
 	)
-	return clampf(raw / divisor - penetration, 0.0, clampf(_finite(tuning.resist_cap), 0.0, 1.0))
+	# ADR 0200. `resist_cap` is gone: mitigation is a RATIO of two magnitudes, never an
+	# authored percent, so there is no ceiling to clamp a resistance to. Penetration now
+	# scales the DEFENSE VALUE (`pierce_scale`) rather than subtracting points off it,
+	# which is the dimensionally-wrong shape the ADR names by name.
+	var divisor := _finite(tuning.resist_divisor)
+	if divisor <= 0.0:
+		return 0.0
+	var defense := maxf(0.0, raw / divisor)
+	var pierce_scale := _finite(tuning.pierce_scale)
+	if pierce_scale > 0.0:
+		defense *= 1.0 / (1.0 + maxf(0.0, penetration) / pierce_scale)
+	return defense
 
 
 ## The chance an OPEN gate actually applies: `clampf(chance * (1 - STATUS_RESISTANCE) *
@@ -345,7 +353,7 @@ static func elemental_resist(
 ##
 ## ADR 0086: "`Scope.COMBAT` is resisted by `Stat.STATUS_RESISTANCE`; `Scope.CULTIVATION`
 ## is not — a blessing the game pays out must not tax the player for receiving it." The
-## elemental term is deliberately NOT gated: `element_resistance_<e>` is a defender's
+## elemental term is deliberately NOT gated: `element_defense_<e>` is a defender's
 ## BUILD answering an element rather than a combat-games dial, so a cultivation effect
 ## naming an element is still answered by that element's resistance. Gating both would
 ## make `STATUS_RESISTANCE` a status-tax instead of a piece of combat vocabulary.

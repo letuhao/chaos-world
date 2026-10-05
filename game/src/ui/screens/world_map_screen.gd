@@ -15,6 +15,15 @@ extends UiScreen
 ## failure `tests/core/test_realm_rate.gd` exists to catch. `WorldPulseReader` does the
 ## reading; this screen binds it, forwards the raw view, nests the panel's summary.
 ##
+## ## The two clock verbs, and why they are shaped differently
+##
+## [method act_wait_season] pays one period and takes nothing, because a button and a
+## headless driver should both be able to say "one period" without knowing the cadence.
+## [method act_retreat_periods] is ADR 0167's season-scale class: the player CHOOSES how
+## long to sit, so the argument IS the cost. The choice itself lives in the panel's
+## selector and the periods come from the panel's summary, so there is exactly one
+## answer to "how long is this" on the screen and it is the one a player is looking at.
+##
 ## Contract: `summary()` is the testable surface with node and edge data.
 signal location_selected(location_id: StringName)
 
@@ -93,6 +102,61 @@ func act_wait_season() -> bool:
 	return true
 
 
+## Sit for the length the panel's selector is showing. The season-scale half of ADR
+## 0167, and the only verb in this program whose ARGUMENT is the price: the chosen
+## duration is the cost, so it reaches the clock as a period count and the clock is the
+## only thing allowed to say whether it can be paid.
+##
+## **Drivable with `call:` and no argument, so a probe's answer does not depend on a
+## click.** `tools ui drive --cmd call:act_retreat_periods` takes whatever the selector
+## currently holds, which is what a headless probe wants to measure; a caller who wants a
+## specific length passes it (`call:act_retreat_periods=360`) and the panel follows. Also
+## reachable under `--cmd retreat`, which pays the selected length.
+func act_retreat_periods(periods: int = 0) -> bool:
+	_bind_nodes()
+	if _actor == null:
+		return _refuse_world("no_actor")
+	var asked := int(periods) if int(periods) > 0 else _selected_retreat_periods()
+	if asked <= 0:
+		return _refuse_world("no_retreat")
+	var result := _world.request_retreat(asked)
+	if not bool(result.get("ok", false)):
+		return _refuse_world(String(result.get("reason", "")))
+	# A retreat the world interrupted paid in part, and a player who was cut short has to
+	# be able to tell that from a cost they paid in full — so the wording names what was
+	# PAID beside what was asked, never the ask alone.
+	_world_message = _retreat_text(result)
+	_world_tone = TONE_OK
+	refresh()
+	return true
+
+
+## The selector's current period count, or `0` when the panel publishes none. Asked of the
+## PANEL's own summary rather than of the widget, so the driver's answer and the player's
+## are one number rather than two reads of a dropdown.
+func _selected_retreat_periods() -> int:
+	if _world_panel == null:
+		return 0
+	return int((_world_panel.summary() as Dictionary).get("retreat_declared_periods", 0))
+
+
+## ## What the retreat actually cost, on the clock's own message line
+##
+## `declared`, `paid` and `unpaid` are the clock's own primitives, so this words them
+## rather than computing them: a fully-paid sit and an interrupted one are different
+## sentences because they are different costs (ADR 0167 — gain is proportional to the
+## periods PAID, not the periods declared).
+func _retreat_text(result: Dictionary) -> String:
+	var unpaid := int(result.get("unpaid", 0))
+	var paid := int(result.get("paid", 0))
+	if unpaid <= 0:
+		return "You sat for %d periods." % paid
+	return (
+		"You sat %d of the %d periods you chose - %d were not paid for."
+		% [paid, int(result.get("declared", 0)), unpaid]
+	)
+
+
 ## Everything this screen displays. Primitives only; `{}` with no actor.
 func _summary() -> Dictionary:
 	_bind_nodes()
@@ -152,6 +216,13 @@ func _bind_nodes() -> void:
 	_world_panel = get_node_or_null("%WorldPulsePanel") as WorldPulsePanel
 	if _world_panel != null and not _world_panel.advance_requested.is_connected(act_wait_season):
 		_world_panel.advance_requested.connect(act_wait_season)
+	# Bound beside the wait, behind the same null guard, so a panel nobody wired still
+	# reads as unwired rather than raising while connecting a signal.
+	if (
+		_world_panel != null
+		and not _world_panel.retreat_requested.is_connected(act_retreat_periods)
+	):
+		_world_panel.retreat_requested.connect(act_retreat_periods)
 	_map_area = get_node_or_null("Layout/MapArea") as Control
 	_map_graph = get_node_or_null("Layout/MapArea/MapGraph") as Control
 	_info_name = get_node_or_null("Layout/InfoPanel/InfoVBox/InfoName") as Label

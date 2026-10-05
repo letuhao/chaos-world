@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"body_void_refinement_elixir_recipe"
+display_name = "Organ Tempering Elixir Formula"
+station = &"alchemy"
+inputs = Array[StringName]([&"body_void_refinement_tempering_herb", &"body_void_refinement_guardian_core"])
+outputs = Array[StringName]([&"body_void_refinement_channel_elixir"])

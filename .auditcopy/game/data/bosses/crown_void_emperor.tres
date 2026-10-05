@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BossDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/boss_def.gd" id="1_boss"]
+
+[resource]
+script = ExtResource("1_boss")
+id = &"crown_void_emperor"
+display_name = "Void Emperor"
+domain_id = &"crown_void_emperor_domain"
+loot = Array[StringName]([])
+; The light goes out of a fight: strike, sea and timing all thin at once. The dark pair's
+; sunder half — `dark_corrosion`, the escalating acid, is what the player's own blow
+; inflicts, so this creature takes the body apart rather than bleeding it.
+affliction = &"dark_wane"

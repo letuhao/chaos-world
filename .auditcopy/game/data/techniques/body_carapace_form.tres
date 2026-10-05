@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"body_carapace_form"
+delivered_by = &"manual_iron_tortoise_gourd"
+display_name = "Carapace Form"
+description = "Hardens the outer frame until qi runs along it like wire. Half elemental, so the form holds against wood and cracks against fire."
+tags = Array[StringName]([&"technique", &"body", &"metal", &"guard"])
+grade = &"heaven"
+rarity = &"rare"
+element = &"metal"
+schools = Array[StringName]([&"body", &"guard"])
+active = true
+path = &"body_cultivation"
+min_path_realm = {&"body_cultivation": 25}
+qi_cost = 24.0
+stamina_cost = 52.0
+cooldown = 18.0
+mastery_rungs = 5
+magnitude = 2.5
+aim_meridian = &"dai_mai"
+

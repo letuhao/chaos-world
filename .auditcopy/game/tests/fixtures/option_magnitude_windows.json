@@ -1,0 +1,1477 @@
+{
+  "scales": {
+    "body_integration": 1.6,
+    "core_formation": 1.2,
+    "dao_ancestor": 3.8,
+    "dao_fruit": 3.5,
+    "earth_immortal": 2.8,
+    "foundation": 1.1,
+    "golden_immortal": 3.0,
+    "great_ascension": 1.7,
+    "great_luo": 3.4,
+    "heaven_immortal": 2.9,
+    "immortal_sovereign": 3.6,
+    "mystic_immortal": 3.1,
+    "nascent_soul": 1.3,
+    "primordial_immortal": 3.3,
+    "primordial_origin": 3.9,
+    "qi_refining": 1.0,
+    "spirit_ascension": 2.7,
+    "spirit_condensation": 1.9,
+    "spirit_domain": 2.5,
+    "spirit_manifestation": 2.2,
+    "spirit_palace": 2.1,
+    "spirit_sea": 2.0,
+    "spirit_severing": 2.3,
+    "spirit_sovereign": 2.6,
+    "spirit_transformation": 1.4,
+    "spirit_unity": 2.4,
+    "transcendent": 3.7,
+    "tribulation": 1.8,
+    "true_immortal": 3.2,
+    "void_refinement": 1.5
+  },
+  "version": 2,
+  "windows": {
+    "fraction:body_integration:0": [
+      0.0106,
+      0.0636
+    ],
+    "fraction:body_integration:1": [
+      0.010812,
+      0.064872
+    ],
+    "fraction:body_integration:2": [
+      0.011024,
+      0.066144
+    ],
+    "fraction:body_integration:3": [
+      0.011236,
+      0.067416
+    ],
+    "fraction:core_formation:0": [
+      0.0102,
+      0.0612
+    ],
+    "fraction:core_formation:1": [
+      0.010404,
+      0.062424
+    ],
+    "fraction:core_formation:2": [
+      0.010608,
+      0.063648
+    ],
+    "fraction:core_formation:3": [
+      0.010812,
+      0.064872
+    ],
+    "fraction:dao_ancestor:0": [
+      0.0128,
+      0.0768
+    ],
+    "fraction:dao_ancestor:1": [
+      0.013056,
+      0.078336
+    ],
+    "fraction:dao_ancestor:2": [
+      0.013312,
+      0.079872
+    ],
+    "fraction:dao_ancestor:3": [
+      0.013568,
+      0.081408
+    ],
+    "fraction:dao_fruit:0": [
+      0.0125,
+      0.075
+    ],
+    "fraction:dao_fruit:1": [
+      0.01275,
+      0.0765
+    ],
+    "fraction:dao_fruit:2": [
+      0.013,
+      0.078
+    ],
+    "fraction:dao_fruit:3": [
+      0.01325,
+      0.0795
+    ],
+    "fraction:earth_immortal:0": [
+      0.0118,
+      0.0708
+    ],
+    "fraction:earth_immortal:1": [
+      0.012036,
+      0.072216
+    ],
+    "fraction:earth_immortal:2": [
+      0.012272,
+      0.073632
+    ],
+    "fraction:earth_immortal:3": [
+      0.012508,
+      0.075048
+    ],
+    "fraction:foundation:0": [
+      0.0101,
+      0.0606
+    ],
+    "fraction:foundation:1": [
+      0.010302,
+      0.061812
+    ],
+    "fraction:foundation:2": [
+      0.010504,
+      0.063024
+    ],
+    "fraction:foundation:3": [
+      0.010706,
+      0.064236
+    ],
+    "fraction:golden_immortal:0": [
+      0.012,
+      0.072
+    ],
+    "fraction:golden_immortal:1": [
+      0.01224,
+      0.07344
+    ],
+    "fraction:golden_immortal:2": [
+      0.01248,
+      0.07488
+    ],
+    "fraction:golden_immortal:3": [
+      0.01272,
+      0.07632
+    ],
+    "fraction:great_ascension:0": [
+      0.0107,
+      0.0642
+    ],
+    "fraction:great_ascension:1": [
+      0.010914,
+      0.065484
+    ],
+    "fraction:great_ascension:2": [
+      0.011128,
+      0.066768
+    ],
+    "fraction:great_ascension:3": [
+      0.011342,
+      0.068052
+    ],
+    "fraction:great_luo:0": [
+      0.0124,
+      0.0744
+    ],
+    "fraction:great_luo:1": [
+      0.012648,
+      0.075888
+    ],
+    "fraction:great_luo:2": [
+      0.012896,
+      0.077376
+    ],
+    "fraction:great_luo:3": [
+      0.013144,
+      0.078864
+    ],
+    "fraction:heaven_immortal:0": [
+      0.0119,
+      0.0714
+    ],
+    "fraction:heaven_immortal:1": [
+      0.012138,
+      0.072828
+    ],
+    "fraction:heaven_immortal:2": [
+      0.012376,
+      0.074256
+    ],
+    "fraction:heaven_immortal:3": [
+      0.012614,
+      0.075684
+    ],
+    "fraction:immortal_sovereign:0": [
+      0.0126,
+      0.0756
+    ],
+    "fraction:immortal_sovereign:1": [
+      0.012852,
+      0.077112
+    ],
+    "fraction:immortal_sovereign:2": [
+      0.013104,
+      0.078624
+    ],
+    "fraction:immortal_sovereign:3": [
+      0.013356,
+      0.080136
+    ],
+    "fraction:mystic_immortal:0": [
+      0.0121,
+      0.0726
+    ],
+    "fraction:mystic_immortal:1": [
+      0.012342,
+      0.074052
+    ],
+    "fraction:mystic_immortal:2": [
+      0.012584,
+      0.075504
+    ],
+    "fraction:mystic_immortal:3": [
+      0.012826,
+      0.076956
+    ],
+    "fraction:nascent_soul:0": [
+      0.0103,
+      0.0618
+    ],
+    "fraction:nascent_soul:1": [
+      0.010506,
+      0.063036
+    ],
+    "fraction:nascent_soul:2": [
+      0.010712,
+      0.064272
+    ],
+    "fraction:nascent_soul:3": [
+      0.010918,
+      0.065508
+    ],
+    "fraction:primordial_immortal:0": [
+      0.0123,
+      0.0738
+    ],
+    "fraction:primordial_immortal:1": [
+      0.012546,
+      0.075276
+    ],
+    "fraction:primordial_immortal:2": [
+      0.012792,
+      0.076752
+    ],
+    "fraction:primordial_immortal:3": [
+      0.013038,
+      0.078228
+    ],
+    "fraction:primordial_origin:0": [
+      0.0129,
+      0.0774
+    ],
+    "fraction:primordial_origin:1": [
+      0.013158,
+      0.078948
+    ],
+    "fraction:primordial_origin:2": [
+      0.013416,
+      0.080496
+    ],
+    "fraction:primordial_origin:3": [
+      0.013674,
+      0.082044
+    ],
+    "fraction:qi_refining:0": [
+      0.01,
+      0.06
+    ],
+    "fraction:qi_refining:1": [
+      0.0102,
+      0.0612
+    ],
+    "fraction:qi_refining:2": [
+      0.0104,
+      0.0624
+    ],
+    "fraction:qi_refining:3": [
+      0.0106,
+      0.0636
+    ],
+    "fraction:spirit_ascension:0": [
+      0.0117,
+      0.0702
+    ],
+    "fraction:spirit_ascension:1": [
+      0.011934,
+      0.071604
+    ],
+    "fraction:spirit_ascension:2": [
+      0.012168,
+      0.073008
+    ],
+    "fraction:spirit_ascension:3": [
+      0.012402,
+      0.074412
+    ],
+    "fraction:spirit_condensation:0": [
+      0.0109,
+      0.0654
+    ],
+    "fraction:spirit_condensation:1": [
+      0.011118,
+      0.066708
+    ],
+    "fraction:spirit_condensation:2": [
+      0.011336,
+      0.068016
+    ],
+    "fraction:spirit_condensation:3": [
+      0.011554,
+      0.069324
+    ],
+    "fraction:spirit_domain:0": [
+      0.0115,
+      0.069
+    ],
+    "fraction:spirit_domain:1": [
+      0.01173,
+      0.07038
+    ],
+    "fraction:spirit_domain:2": [
+      0.01196,
+      0.07176
+    ],
+    "fraction:spirit_domain:3": [
+      0.01219,
+      0.07314
+    ],
+    "fraction:spirit_manifestation:0": [
+      0.0112,
+      0.0672
+    ],
+    "fraction:spirit_manifestation:1": [
+      0.011424,
+      0.068544
+    ],
+    "fraction:spirit_manifestation:2": [
+      0.011648,
+      0.069888
+    ],
+    "fraction:spirit_manifestation:3": [
+      0.011872,
+      0.071232
+    ],
+    "fraction:spirit_palace:0": [
+      0.0111,
+      0.0666
+    ],
+    "fraction:spirit_palace:1": [
+      0.011322,
+      0.067932
+    ],
+    "fraction:spirit_palace:2": [
+      0.011544,
+      0.069264
+    ],
+    "fraction:spirit_palace:3": [
+      0.011766,
+      0.070596
+    ],
+    "fraction:spirit_sea:0": [
+      0.011,
+      0.066
+    ],
+    "fraction:spirit_sea:1": [
+      0.01122,
+      0.06732
+    ],
+    "fraction:spirit_sea:2": [
+      0.01144,
+      0.06864
+    ],
+    "fraction:spirit_sea:3": [
+      0.01166,
+      0.06996
+    ],
+    "fraction:spirit_severing:0": [
+      0.0113,
+      0.0678
+    ],
+    "fraction:spirit_severing:1": [
+      0.011526,
+      0.069156
+    ],
+    "fraction:spirit_severing:2": [
+      0.011752,
+      0.070512
+    ],
+    "fraction:spirit_severing:3": [
+      0.011978,
+      0.071868
+    ],
+    "fraction:spirit_sovereign:0": [
+      0.0116,
+      0.0696
+    ],
+    "fraction:spirit_sovereign:1": [
+      0.011832,
+      0.070992
+    ],
+    "fraction:spirit_sovereign:2": [
+      0.012064,
+      0.072384
+    ],
+    "fraction:spirit_sovereign:3": [
+      0.012296,
+      0.073776
+    ],
+    "fraction:spirit_transformation:0": [
+      0.0104,
+      0.0624
+    ],
+    "fraction:spirit_transformation:1": [
+      0.010608,
+      0.063648
+    ],
+    "fraction:spirit_transformation:2": [
+      0.010816,
+      0.064896
+    ],
+    "fraction:spirit_transformation:3": [
+      0.011024,
+      0.066144
+    ],
+    "fraction:spirit_unity:0": [
+      0.0114,
+      0.0684
+    ],
+    "fraction:spirit_unity:1": [
+      0.011628,
+      0.069768
+    ],
+    "fraction:spirit_unity:2": [
+      0.011856,
+      0.071136
+    ],
+    "fraction:spirit_unity:3": [
+      0.012084,
+      0.072504
+    ],
+    "fraction:transcendent:0": [
+      0.0127,
+      0.0762
+    ],
+    "fraction:transcendent:1": [
+      0.012954,
+      0.077724
+    ],
+    "fraction:transcendent:2": [
+      0.013208,
+      0.079248
+    ],
+    "fraction:transcendent:3": [
+      0.013462,
+      0.080772
+    ],
+    "fraction:tribulation:0": [
+      0.0108,
+      0.0648
+    ],
+    "fraction:tribulation:1": [
+      0.011016,
+      0.066096
+    ],
+    "fraction:tribulation:2": [
+      0.011232,
+      0.067392
+    ],
+    "fraction:tribulation:3": [
+      0.011448,
+      0.068688
+    ],
+    "fraction:true_immortal:0": [
+      0.0122,
+      0.0732
+    ],
+    "fraction:true_immortal:1": [
+      0.012444,
+      0.074664
+    ],
+    "fraction:true_immortal:2": [
+      0.012688,
+      0.076128
+    ],
+    "fraction:true_immortal:3": [
+      0.012932,
+      0.077592
+    ],
+    "fraction:void_refinement:0": [
+      0.0105,
+      0.063
+    ],
+    "fraction:void_refinement:1": [
+      0.01071,
+      0.06426
+    ],
+    "fraction:void_refinement:2": [
+      0.01092,
+      0.06552
+    ],
+    "fraction:void_refinement:3": [
+      0.01113,
+      0.06678
+    ],
+    "magnitude:body_integration:0": [
+      1.6,
+      16.0
+    ],
+    "magnitude:body_integration:1": [
+      2.0,
+      20.0
+    ],
+    "magnitude:body_integration:2": [
+      2.4,
+      24.0
+    ],
+    "magnitude:body_integration:3": [
+      2.8,
+      28.0
+    ],
+    "magnitude:core_formation:0": [
+      1.2,
+      12.0
+    ],
+    "magnitude:core_formation:1": [
+      1.5,
+      15.0
+    ],
+    "magnitude:core_formation:2": [
+      1.8,
+      18.0
+    ],
+    "magnitude:core_formation:3": [
+      2.1,
+      21.0
+    ],
+    "magnitude:dao_ancestor:0": [
+      3.8,
+      38.0
+    ],
+    "magnitude:dao_ancestor:1": [
+      4.75,
+      47.5
+    ],
+    "magnitude:dao_ancestor:2": [
+      5.7,
+      57.0
+    ],
+    "magnitude:dao_ancestor:3": [
+      6.65,
+      66.5
+    ],
+    "magnitude:dao_fruit:0": [
+      3.5,
+      35.0
+    ],
+    "magnitude:dao_fruit:1": [
+      4.375,
+      43.75
+    ],
+    "magnitude:dao_fruit:2": [
+      5.25,
+      52.5
+    ],
+    "magnitude:dao_fruit:3": [
+      6.125,
+      61.25
+    ],
+    "magnitude:earth_immortal:0": [
+      2.8,
+      28.0
+    ],
+    "magnitude:earth_immortal:1": [
+      3.5,
+      35.0
+    ],
+    "magnitude:earth_immortal:2": [
+      4.2,
+      42.0
+    ],
+    "magnitude:earth_immortal:3": [
+      4.9,
+      49.0
+    ],
+    "magnitude:foundation:0": [
+      1.1,
+      11.0
+    ],
+    "magnitude:foundation:1": [
+      1.375,
+      13.75
+    ],
+    "magnitude:foundation:2": [
+      1.65,
+      16.5
+    ],
+    "magnitude:foundation:3": [
+      1.925,
+      19.25
+    ],
+    "magnitude:golden_immortal:0": [
+      3.0,
+      30.0
+    ],
+    "magnitude:golden_immortal:1": [
+      3.75,
+      37.5
+    ],
+    "magnitude:golden_immortal:2": [
+      4.5,
+      45.0
+    ],
+    "magnitude:golden_immortal:3": [
+      5.25,
+      52.5
+    ],
+    "magnitude:great_ascension:0": [
+      1.7,
+      17.0
+    ],
+    "magnitude:great_ascension:1": [
+      2.125,
+      21.25
+    ],
+    "magnitude:great_ascension:2": [
+      2.55,
+      25.5
+    ],
+    "magnitude:great_ascension:3": [
+      2.975,
+      29.75
+    ],
+    "magnitude:great_luo:0": [
+      3.4,
+      34.0
+    ],
+    "magnitude:great_luo:1": [
+      4.25,
+      42.5
+    ],
+    "magnitude:great_luo:2": [
+      5.1,
+      51.0
+    ],
+    "magnitude:great_luo:3": [
+      5.95,
+      59.5
+    ],
+    "magnitude:heaven_immortal:0": [
+      2.9,
+      29.0
+    ],
+    "magnitude:heaven_immortal:1": [
+      3.625,
+      36.25
+    ],
+    "magnitude:heaven_immortal:2": [
+      4.35,
+      43.5
+    ],
+    "magnitude:heaven_immortal:3": [
+      5.075,
+      50.75
+    ],
+    "magnitude:immortal_sovereign:0": [
+      3.6,
+      36.0
+    ],
+    "magnitude:immortal_sovereign:1": [
+      4.5,
+      45.0
+    ],
+    "magnitude:immortal_sovereign:2": [
+      5.4,
+      54.0
+    ],
+    "magnitude:immortal_sovereign:3": [
+      6.3,
+      63.0
+    ],
+    "magnitude:mystic_immortal:0": [
+      3.1,
+      31.0
+    ],
+    "magnitude:mystic_immortal:1": [
+      3.875,
+      38.75
+    ],
+    "magnitude:mystic_immortal:2": [
+      4.65,
+      46.5
+    ],
+    "magnitude:mystic_immortal:3": [
+      5.425,
+      54.25
+    ],
+    "magnitude:nascent_soul:0": [
+      1.3,
+      13.0
+    ],
+    "magnitude:nascent_soul:1": [
+      1.625,
+      16.25
+    ],
+    "magnitude:nascent_soul:2": [
+      1.95,
+      19.5
+    ],
+    "magnitude:nascent_soul:3": [
+      2.275,
+      22.75
+    ],
+    "magnitude:primordial_immortal:0": [
+      3.3,
+      33.0
+    ],
+    "magnitude:primordial_immortal:1": [
+      4.125,
+      41.25
+    ],
+    "magnitude:primordial_immortal:2": [
+      4.95,
+      49.5
+    ],
+    "magnitude:primordial_immortal:3": [
+      5.775,
+      57.75
+    ],
+    "magnitude:primordial_origin:0": [
+      3.9,
+      39.0
+    ],
+    "magnitude:primordial_origin:1": [
+      4.875,
+      48.75
+    ],
+    "magnitude:primordial_origin:2": [
+      5.85,
+      58.5
+    ],
+    "magnitude:primordial_origin:3": [
+      6.825,
+      68.25
+    ],
+    "magnitude:qi_refining:0": [
+      1.0,
+      10.0
+    ],
+    "magnitude:qi_refining:1": [
+      1.25,
+      12.5
+    ],
+    "magnitude:qi_refining:2": [
+      1.5,
+      15.0
+    ],
+    "magnitude:qi_refining:3": [
+      1.75,
+      17.5
+    ],
+    "magnitude:spirit_ascension:0": [
+      2.7,
+      27.0
+    ],
+    "magnitude:spirit_ascension:1": [
+      3.375,
+      33.75
+    ],
+    "magnitude:spirit_ascension:2": [
+      4.05,
+      40.5
+    ],
+    "magnitude:spirit_ascension:3": [
+      4.725,
+      47.25
+    ],
+    "magnitude:spirit_condensation:0": [
+      1.9,
+      19.0
+    ],
+    "magnitude:spirit_condensation:1": [
+      2.375,
+      23.75
+    ],
+    "magnitude:spirit_condensation:2": [
+      2.85,
+      28.5
+    ],
+    "magnitude:spirit_condensation:3": [
+      3.325,
+      33.25
+    ],
+    "magnitude:spirit_domain:0": [
+      2.5,
+      25.0
+    ],
+    "magnitude:spirit_domain:1": [
+      3.125,
+      31.25
+    ],
+    "magnitude:spirit_domain:2": [
+      3.75,
+      37.5
+    ],
+    "magnitude:spirit_domain:3": [
+      4.375,
+      43.75
+    ],
+    "magnitude:spirit_manifestation:0": [
+      2.2,
+      22.0
+    ],
+    "magnitude:spirit_manifestation:1": [
+      2.75,
+      27.5
+    ],
+    "magnitude:spirit_manifestation:2": [
+      3.3,
+      33.0
+    ],
+    "magnitude:spirit_manifestation:3": [
+      3.85,
+      38.5
+    ],
+    "magnitude:spirit_palace:0": [
+      2.1,
+      21.0
+    ],
+    "magnitude:spirit_palace:1": [
+      2.625,
+      26.25
+    ],
+    "magnitude:spirit_palace:2": [
+      3.15,
+      31.5
+    ],
+    "magnitude:spirit_palace:3": [
+      3.675,
+      36.75
+    ],
+    "magnitude:spirit_sea:0": [
+      2.0,
+      20.0
+    ],
+    "magnitude:spirit_sea:1": [
+      2.5,
+      25.0
+    ],
+    "magnitude:spirit_sea:2": [
+      3.0,
+      30.0
+    ],
+    "magnitude:spirit_sea:3": [
+      3.5,
+      35.0
+    ],
+    "magnitude:spirit_severing:0": [
+      2.3,
+      23.0
+    ],
+    "magnitude:spirit_severing:1": [
+      2.875,
+      28.75
+    ],
+    "magnitude:spirit_severing:2": [
+      3.45,
+      34.5
+    ],
+    "magnitude:spirit_severing:3": [
+      4.025,
+      40.25
+    ],
+    "magnitude:spirit_sovereign:0": [
+      2.6,
+      26.0
+    ],
+    "magnitude:spirit_sovereign:1": [
+      3.25,
+      32.5
+    ],
+    "magnitude:spirit_sovereign:2": [
+      3.9,
+      39.0
+    ],
+    "magnitude:spirit_sovereign:3": [
+      4.55,
+      45.5
+    ],
+    "magnitude:spirit_transformation:0": [
+      1.4,
+      14.0
+    ],
+    "magnitude:spirit_transformation:1": [
+      1.75,
+      17.5
+    ],
+    "magnitude:spirit_transformation:2": [
+      2.1,
+      21.0
+    ],
+    "magnitude:spirit_transformation:3": [
+      2.45,
+      24.5
+    ],
+    "magnitude:spirit_unity:0": [
+      2.4,
+      24.0
+    ],
+    "magnitude:spirit_unity:1": [
+      3.0,
+      30.0
+    ],
+    "magnitude:spirit_unity:2": [
+      3.6,
+      36.0
+    ],
+    "magnitude:spirit_unity:3": [
+      4.2,
+      42.0
+    ],
+    "magnitude:transcendent:0": [
+      3.7,
+      37.0
+    ],
+    "magnitude:transcendent:1": [
+      4.625,
+      46.25
+    ],
+    "magnitude:transcendent:2": [
+      5.55,
+      55.5
+    ],
+    "magnitude:transcendent:3": [
+      6.475,
+      64.75
+    ],
+    "magnitude:tribulation:0": [
+      1.8,
+      18.0
+    ],
+    "magnitude:tribulation:1": [
+      2.25,
+      22.5
+    ],
+    "magnitude:tribulation:2": [
+      2.7,
+      27.0
+    ],
+    "magnitude:tribulation:3": [
+      3.15,
+      31.5
+    ],
+    "magnitude:true_immortal:0": [
+      3.2,
+      32.0
+    ],
+    "magnitude:true_immortal:1": [
+      4.0,
+      40.0
+    ],
+    "magnitude:true_immortal:2": [
+      4.8,
+      48.0
+    ],
+    "magnitude:true_immortal:3": [
+      5.6,
+      56.0
+    ],
+    "magnitude:void_refinement:0": [
+      1.5,
+      15.0
+    ],
+    "magnitude:void_refinement:1": [
+      1.875,
+      18.75
+    ],
+    "magnitude:void_refinement:2": [
+      2.25,
+      22.5
+    ],
+    "magnitude:void_refinement:3": [
+      2.625,
+      26.25
+    ],
+    "rate:body_integration:0": [
+      0.0103,
+      0.0515
+    ],
+    "rate:body_integration:1": [
+      0.010403,
+      0.052015
+    ],
+    "rate:body_integration:2": [
+      0.010506,
+      0.05253
+    ],
+    "rate:body_integration:3": [
+      0.010609,
+      0.053045
+    ],
+    "rate:core_formation:0": [
+      0.0101,
+      0.0505
+    ],
+    "rate:core_formation:1": [
+      0.010201,
+      0.051005
+    ],
+    "rate:core_formation:2": [
+      0.010302,
+      0.05151
+    ],
+    "rate:core_formation:3": [
+      0.010403,
+      0.052015
+    ],
+    "rate:dao_ancestor:0": [
+      0.0114,
+      0.057
+    ],
+    "rate:dao_ancestor:1": [
+      0.011514,
+      0.05757
+    ],
+    "rate:dao_ancestor:2": [
+      0.011628,
+      0.05814
+    ],
+    "rate:dao_ancestor:3": [
+      0.011742,
+      0.05871
+    ],
+    "rate:dao_fruit:0": [
+      0.01125,
+      0.05625
+    ],
+    "rate:dao_fruit:1": [
+      0.011362,
+      0.056813
+    ],
+    "rate:dao_fruit:2": [
+      0.011475,
+      0.057375
+    ],
+    "rate:dao_fruit:3": [
+      0.011588,
+      0.057938
+    ],
+    "rate:earth_immortal:0": [
+      0.0109,
+      0.0545
+    ],
+    "rate:earth_immortal:1": [
+      0.011009,
+      0.055045
+    ],
+    "rate:earth_immortal:2": [
+      0.011118,
+      0.05559
+    ],
+    "rate:earth_immortal:3": [
+      0.011227,
+      0.056135
+    ],
+    "rate:foundation:0": [
+      0.01005,
+      0.05025
+    ],
+    "rate:foundation:1": [
+      0.01015,
+      0.050752
+    ],
+    "rate:foundation:2": [
+      0.010251,
+      0.051255
+    ],
+    "rate:foundation:3": [
+      0.010351,
+      0.051757
+    ],
+    "rate:golden_immortal:0": [
+      0.011,
+      0.055
+    ],
+    "rate:golden_immortal:1": [
+      0.01111,
+      0.05555
+    ],
+    "rate:golden_immortal:2": [
+      0.01122,
+      0.0561
+    ],
+    "rate:golden_immortal:3": [
+      0.01133,
+      0.05665
+    ],
+    "rate:great_ascension:0": [
+      0.01035,
+      0.05175
+    ],
+    "rate:great_ascension:1": [
+      0.010453,
+      0.052267
+    ],
+    "rate:great_ascension:2": [
+      0.010557,
+      0.052785
+    ],
+    "rate:great_ascension:3": [
+      0.01066,
+      0.053302
+    ],
+    "rate:great_luo:0": [
+      0.0112,
+      0.056
+    ],
+    "rate:great_luo:1": [
+      0.011312,
+      0.05656
+    ],
+    "rate:great_luo:2": [
+      0.011424,
+      0.05712
+    ],
+    "rate:great_luo:3": [
+      0.011536,
+      0.05768
+    ],
+    "rate:heaven_immortal:0": [
+      0.01095,
+      0.05475
+    ],
+    "rate:heaven_immortal:1": [
+      0.011059,
+      0.055297
+    ],
+    "rate:heaven_immortal:2": [
+      0.011169,
+      0.055845
+    ],
+    "rate:heaven_immortal:3": [
+      0.011279,
+      0.056392
+    ],
+    "rate:immortal_sovereign:0": [
+      0.0113,
+      0.0565
+    ],
+    "rate:immortal_sovereign:1": [
+      0.011413,
+      0.057065
+    ],
+    "rate:immortal_sovereign:2": [
+      0.011526,
+      0.05763
+    ],
+    "rate:immortal_sovereign:3": [
+      0.011639,
+      0.058195
+    ],
+    "rate:mystic_immortal:0": [
+      0.01105,
+      0.05525
+    ],
+    "rate:mystic_immortal:1": [
+      0.011161,
+      0.055802
+    ],
+    "rate:mystic_immortal:2": [
+      0.011271,
+      0.056355
+    ],
+    "rate:mystic_immortal:3": [
+      0.011382,
+      0.056907
+    ],
+    "rate:nascent_soul:0": [
+      0.01015,
+      0.05075
+    ],
+    "rate:nascent_soul:1": [
+      0.010252,
+      0.051257
+    ],
+    "rate:nascent_soul:2": [
+      0.010353,
+      0.051765
+    ],
+    "rate:nascent_soul:3": [
+      0.010455,
+      0.052272
+    ],
+    "rate:primordial_immortal:0": [
+      0.01115,
+      0.05575
+    ],
+    "rate:primordial_immortal:1": [
+      0.011262,
+      0.056308
+    ],
+    "rate:primordial_immortal:2": [
+      0.011373,
+      0.056865
+    ],
+    "rate:primordial_immortal:3": [
+      0.011484,
+      0.057423
+    ],
+    "rate:primordial_origin:0": [
+      0.01145,
+      0.05725
+    ],
+    "rate:primordial_origin:1": [
+      0.011565,
+      0.057823
+    ],
+    "rate:primordial_origin:2": [
+      0.011679,
+      0.058395
+    ],
+    "rate:primordial_origin:3": [
+      0.011794,
+      0.058968
+    ],
+    "rate:qi_refining:0": [
+      0.01,
+      0.05
+    ],
+    "rate:qi_refining:1": [
+      0.0101,
+      0.0505
+    ],
+    "rate:qi_refining:2": [
+      0.0102,
+      0.051
+    ],
+    "rate:qi_refining:3": [
+      0.0103,
+      0.0515
+    ],
+    "rate:spirit_ascension:0": [
+      0.01085,
+      0.05425
+    ],
+    "rate:spirit_ascension:1": [
+      0.010959,
+      0.054793
+    ],
+    "rate:spirit_ascension:2": [
+      0.011067,
+      0.055335
+    ],
+    "rate:spirit_ascension:3": [
+      0.011176,
+      0.055878
+    ],
+    "rate:spirit_condensation:0": [
+      0.01045,
+      0.05225
+    ],
+    "rate:spirit_condensation:1": [
+      0.010554,
+      0.052772
+    ],
+    "rate:spirit_condensation:2": [
+      0.010659,
+      0.053295
+    ],
+    "rate:spirit_condensation:3": [
+      0.010763,
+      0.053817
+    ],
+    "rate:spirit_domain:0": [
+      0.01075,
+      0.05375
+    ],
+    "rate:spirit_domain:1": [
+      0.010857,
+      0.054288
+    ],
+    "rate:spirit_domain:2": [
+      0.010965,
+      0.054825
+    ],
+    "rate:spirit_domain:3": [
+      0.011072,
+      0.055363
+    ],
+    "rate:spirit_manifestation:0": [
+      0.0106,
+      0.053
+    ],
+    "rate:spirit_manifestation:1": [
+      0.010706,
+      0.05353
+    ],
+    "rate:spirit_manifestation:2": [
+      0.010812,
+      0.05406
+    ],
+    "rate:spirit_manifestation:3": [
+      0.010918,
+      0.05459
+    ],
+    "rate:spirit_palace:0": [
+      0.01055,
+      0.05275
+    ],
+    "rate:spirit_palace:1": [
+      0.010656,
+      0.053277
+    ],
+    "rate:spirit_palace:2": [
+      0.010761,
+      0.053805
+    ],
+    "rate:spirit_palace:3": [
+      0.010867,
+      0.054332
+    ],
+    "rate:spirit_sea:0": [
+      0.0105,
+      0.0525
+    ],
+    "rate:spirit_sea:1": [
+      0.010605,
+      0.053025
+    ],
+    "rate:spirit_sea:2": [
+      0.01071,
+      0.05355
+    ],
+    "rate:spirit_sea:3": [
+      0.010815,
+      0.054075
+    ],
+    "rate:spirit_severing:0": [
+      0.01065,
+      0.05325
+    ],
+    "rate:spirit_severing:1": [
+      0.010757,
+      0.053782
+    ],
+    "rate:spirit_severing:2": [
+      0.010863,
+      0.054315
+    ],
+    "rate:spirit_severing:3": [
+      0.01097,
+      0.054848
+    ],
+    "rate:spirit_sovereign:0": [
+      0.0108,
+      0.054
+    ],
+    "rate:spirit_sovereign:1": [
+      0.010908,
+      0.05454
+    ],
+    "rate:spirit_sovereign:2": [
+      0.011016,
+      0.05508
+    ],
+    "rate:spirit_sovereign:3": [
+      0.011124,
+      0.05562
+    ],
+    "rate:spirit_transformation:0": [
+      0.0102,
+      0.051
+    ],
+    "rate:spirit_transformation:1": [
+      0.010302,
+      0.05151
+    ],
+    "rate:spirit_transformation:2": [
+      0.010404,
+      0.05202
+    ],
+    "rate:spirit_transformation:3": [
+      0.010506,
+      0.05253
+    ],
+    "rate:spirit_unity:0": [
+      0.0107,
+      0.0535
+    ],
+    "rate:spirit_unity:1": [
+      0.010807,
+      0.054035
+    ],
+    "rate:spirit_unity:2": [
+      0.010914,
+      0.05457
+    ],
+    "rate:spirit_unity:3": [
+      0.011021,
+      0.055105
+    ],
+    "rate:transcendent:0": [
+      0.01135,
+      0.05675
+    ],
+    "rate:transcendent:1": [
+      0.011464,
+      0.057318
+    ],
+    "rate:transcendent:2": [
+      0.011577,
+      0.057885
+    ],
+    "rate:transcendent:3": [
+      0.011691,
+      0.058453
+    ],
+    "rate:tribulation:0": [
+      0.0104,
+      0.052
+    ],
+    "rate:tribulation:1": [
+      0.010504,
+      0.05252
+    ],
+    "rate:tribulation:2": [
+      0.010608,
+      0.05304
+    ],
+    "rate:tribulation:3": [
+      0.010712,
+      0.05356
+    ],
+    "rate:true_immortal:0": [
+      0.0111,
+      0.0555
+    ],
+    "rate:true_immortal:1": [
+      0.011211,
+      0.056055
+    ],
+    "rate:true_immortal:2": [
+      0.011322,
+      0.05661
+    ],
+    "rate:true_immortal:3": [
+      0.011433,
+      0.057165
+    ],
+    "rate:void_refinement:0": [
+      0.01025,
+      0.05125
+    ],
+    "rate:void_refinement:1": [
+      0.010352,
+      0.051762
+    ],
+    "rate:void_refinement:2": [
+      0.010455,
+      0.052275
+    ],
+    "rate:void_refinement:3": [
+      0.010557,
+      0.052788
+    ]
+  }
+}

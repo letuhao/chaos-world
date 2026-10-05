@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"mantra_silver_form"
+display_name = "Silver Mantra"
+category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_insight_gain", "value": 0.05},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
+subcategory = &"mantra"
+grade = &"spirit"
+sources = Array[StringName]([&"gather", &"boss:F7_sea_warden"])

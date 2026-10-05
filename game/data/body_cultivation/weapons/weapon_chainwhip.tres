@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponKindDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/weapon_kind_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"chainwhip"
+display_name = "Chain Whip"
+best_against = "Reach and circles: the tip lands where the body is not."
+demand = &"speed"
+lean = &"precision"
+counter_demands = [&"brace", &"balance"]
+counters = &"ward"
+practice_gain = 0.9
+min_realm_index = 4

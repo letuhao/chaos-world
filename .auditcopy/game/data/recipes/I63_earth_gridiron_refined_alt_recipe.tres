@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I63_earth_gridiron_refined_alt_recipe"
+display_name = "Earth Gridiron Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I63_earth_gridiron_base", &"rune_thunder_ore", &"astral_comet_tail_ore"])
+outputs = Array[StringName]([&"I63_earth_gridiron_refined"])

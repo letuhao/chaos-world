@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"foundation"
+rarity = &"common"
+vitality = 2100.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"mind_foundation_warden", "table_id": &"loot_mind_foundation_warden"},
+	{"boss_id": &"F1_foundation_warden", "table_id": &"loot_F1_foundation_warden"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"foundation"
+rarity = &"rare"
+vitality = 3360.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"mind_foundation_warden", "table_id": &"loot_mind_foundation_warden"},
+	{"boss_id": &"F1_foundation_warden", "table_id": &"loot_F1_foundation_warden"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_mind_foundation_trial"
+display_name = "Focus Trial"
+domain_id = &"mind_foundation_trial"
+boss_ids = Array[StringName]([&"mind_foundation_warden", &"F1_foundation_warden"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"treaty_fifth_clause_recipe"
+display_name = "Fifth Treaty Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"tablet_iron", &"shard_desert"])
+outputs = Array[StringName]([&"treaty_fifth_clause"])

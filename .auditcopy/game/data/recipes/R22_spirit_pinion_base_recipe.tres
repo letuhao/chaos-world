@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"R22_spirit_pinion_base_recipe"
+display_name = "Spirit Pinion Base Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"scepter_silver_essence", &"fungus_ironbark_fungus"])
+outputs = Array[StringName]([&"R22_spirit_pinion_base"])

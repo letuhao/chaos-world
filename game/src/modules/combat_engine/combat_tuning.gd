@@ -78,19 +78,41 @@ extends Resource
 ## `TechniqueDef.element_share == 0.0` means "use the default" and not "use none".
 ## The only balance number on this resource the qi path may not tune per technique.
 @export var default_element_share: float = 0.0
-## The divisor on a defender's authored `element_resistance_<e>`, turning a stat
-## scaled in points into the `[0, 1]` rate `RESIST_CAP` is expressed in. Non-positive
-## reads as "no contest", never as a division by zero.
+## The divisor that converts a defender's authored `element_defense_<e>` MAGNITUDE into
+## the same magnitude space as the attacker's `element_power_<e>`, so `D` and the `offense`
+## `K` is derived from are the same kind of number. ADR 0200 retires the old reading of
+## this field -- a fixed divisor meeting a growing `D` is exactly the defect that
+## collapsed defense to noise at depth -- and the VALUE is unchanged, because the formula
+## that replaced it is `m = mitigation_ceiling * D / (K + D)`, where `D` is a magnitude and
+## `K` rides the attacker. Non-positive reads as "no scale, so no defense", never as a
+## division by zero.
 @export var resist_divisor: float = 0.0
-## The most of an elemental term resistance may ever remove. A defender at this value is
-## a HARD counter even to a `STRONG` 1.5 matchup, which is ADR 0069's anti-"fire is
-## always strong" property; mastery is subtracted before the clamp, so it can only ever
-## move this down. Clamped to `[0, 1]` on read: above 1.0 the mitigation goes negative
-## and S9's one sign flip would spend the elemental term as a heal.
-@export var resist_cap: float = 0.0
+## ADR 0200. The MULTIPLIER every mechanism's mitigation curve carries, NEVER a clamp:
+## `m = mitigation_ceiling * D / (K + D)`, so `m` APPROACHES this and never arrives, and
+## every further point of defense still raises `m`. `min(0.95, D/(K+D))` is the exact
+## failure this field exists to remove -- it makes defense a dead stat one number higher.
+##
+## Read into `[0, 1]` so an authoring mistake above one cannot hand a mitigation above
+## 100%, whose complement is negative and S9's one sign flip would spend the term as a
+## HEAL. That clamp is on the CEILING the author typed; the curve's OUTPUT is never
+## clamped, which is the whole distinction the ADR turns on.
+@export var mitigation_ceiling: float = 0.0
+## ADR 0200. `K = defense_divisor_k * offense` -- the share of the ATTACKER's own
+## magnitude a defender's defense is measured against. The owner's ruling is that `K` is
+## PER MECHANISM: qi, body and mind each author their own here, so the three mechanisms
+## stay independent of one another's balance and one path cannot be retuned by another.
+@export var defense_divisor_k: float = 0.0
+## ADR 0200. The scale penetration is measured against ON THE DEFENSE VALUE:
+## `D_eff = D * 1 / (1 + max(0, pen) / pierce_scale)`. Bounded in `(0, 1]`, so
+## penetration can push defense arbitrarily close to zero and can NEVER grant negative
+## defense -- which would turn mitigation into a second damage source. This is never a
+## subtraction from the damage, which is dimensionally wrong: `body_damage.gd` used to do
+## exactly that and the ADR says so by name. Non-positive reads as "penetration does
+## nothing", never as a division.
+@export var pierce_scale: float = 0.0
 ## The most `Stat.DAMAGE_REDUCTION` may remove at S5. Flat and `0.0`-baselined
 ## (ADR 0022), so the spine's S8 chip floor -- not this -- is what keeps a landed hit
-## non-zero. Clamped to `[0, 1]` on read for the same sign reason as `resist_cap`.
+## non-zero. Clamped to `[0, 1]` on read for the same sign reason as `mitigation_ceiling`.
 @export var damage_reduction_cap: float = 0.0
 ## The authored prefixes of the `elements` module's per-element stat ids, read by the
 ## qi path so it does not have to name that module's classes to name its stats
@@ -116,12 +138,20 @@ extends Resource
 # knob beside it would be the first step toward exactly the seam `DamageMechanism`
 # refuses to offer mind -- a stage where a shared stat could reach a mind hit.
 #
-# **`MENTAL_DEFENSE_CAP` is the load-bearing one.** `mental_defense` enters only
-# through the saturating `d/(d+base)`, hard-capped here, which is what makes the
-# 40% floor STRUCTURAL: 40% of every mind strike lands at any `mental_clarity` and at
-# any realm, exactly as ADR 0067's chip floor makes immunity unreachable. See
-# `MindDamage._mitigation_of` for the whole argument and `MindDamage.defense_floor()`
-# for the number itself, which is published rather than recomputed by a caller.
+# ## What ADR 0200 RETIRED from this block
+#
+# **`MENTAL_DEFENSE_CAP` and `ILLUSION_RESISTANCE_CAP` are GONE**, and with them the 40%
+# floor they used to make structural. Both were authored CEILINGS ON AN INPUT, and an
+# input is what has to grow: the attacker's `MENTAL_ATTACK` rides the ladder while a
+# `0.6`-capped `d/(d+base)` stopped mattering past R3, so 40% of every mind strike landed
+# forever. Mitigation is now the shared ADR 0200 curve over the shared
+# `mitigation_ceiling` / `defense_divisor_k`, so `m` is asymptotic rather than clamped and
+# the deepest defence is the best defence with no number at which investment stops paying.
+#
+# The floor did not survive as immunity. It survived as the ASYMPTOTE: a mind strike lands
+# at least `1 - mitigation_ceiling` of itself at any defense and any realm, because
+# `m < mitigation_ceiling` strictly for every finite `D`. `MindDamage.defense_floor()`
+# publishes that number and is where a caller reads it.
 
 ## The share of `MENTAL_ATTACK` this attack carries, as ADR 0071's `share` term.
 ## Clamped to `[0, 1]` on read: a share above one would make the erosion exceed a
@@ -129,19 +159,6 @@ extends Resource
 ## clarity budget. `0.0` is the degenerate default, meaning "this tuning has not
 ## chosen a share" -- which erodes nothing, the visibly-broken state.
 @export var default_mind_share: float = 0.0
-## ADR 0071's `MENTAL_DEFENSE_CAP`. The asymptote of `d/(d+base)`, so it IS the floor
-## a defender gets: a landed mind strike always erodes at least `1 - cap` of itself.
-## `0.6` is the ADR's own number and the reason the mind analogue of the immunity
-## invariant exists. Clamped to `[0, 1]` on read: at 1.0 nothing lands at all, which
-## would be hard immunity reached by one ordinary stat, and above it the erosion goes
-## NEGATIVE and the mechanism would sharpen the sea it was supposed to erode.
-@export var mental_defense_cap: float = 0.0
-## ADR 0071's `ILLUSION_RESISTANCE_CAP`, and the ceiling the `OBSCURE` floor is
-## re-clamped into after it is taken as a `maxf`. The hard `0.8` on
-## `MindProvider`'s own `ILLUSION_RESISTANCE` contribution is the module's; this is
-## the combat-side clamp, and `minf` of the two is what is read, so the two cannot
-## disagree about how much an illusion can ever be worth.
-@export var illusion_resistance_cap: float = 0.0
 ## ADR 0071's `COHERENCE_DAMP`: how much a FULL awareness pool costs an incoming
 ## strike. `coh = 1 - COHERENCE_DAMP * awareness_ratio`, so at 0.5 coherence is
 ## exactly 0.5 at a full reserve and 1.0 at an empty one. Clamped to `[0, 1]`: above
@@ -223,6 +240,18 @@ extends Resource
 ## 0071: the loser is disarmed, not killed, and a disarm that is not a real `StatusEffect`
 ## carrying a real zero is a bespoke mind flag rather than something the engine ticks.
 @export var mind_deviation_stat: String = "mind_technique_power"
+## ADR 0200. The stat-id `StatusApply` reads for the COMBAT half of the status gate.
+## It used to be core's `Stat.STATUS_RESISTANCE`, a PERCENT capped at `0.8`; it is now
+## `Stat.STATUS_DEFENSE`, an unbounded MAGNITUDE the ladder scales, and a FLAT on it is
+## legal content rather than a contract error.
+##
+## It is a STRING in DATA for the same reason `mind_stat_prefix` above is: `StatusApply`
+## may not name a core const it would then have to keep in step with, and the shape the
+## gate wants is "whatever the defense magnitude is called today". `contracts/stat.gd`
+## declares both spellings so a stale reference compiles and reads `0.0` rather than
+## silently answering with the wrong number — which is the failure this indirection is
+## guarding against, not enabling.
+@export var status_defense_stat: String = "status_defense"
 
 # --- S12: status application (ADR 0087, ADR 0088) ------------------------------
 #

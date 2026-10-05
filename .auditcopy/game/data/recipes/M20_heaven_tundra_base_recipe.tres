@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"M20_heaven_tundra_base_recipe"
+display_name = "M20_heaven_tundra_base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"jade_star", &"filament_stormspun"])
+outputs = Array[StringName]([&"M20_heaven_tundra_base"])

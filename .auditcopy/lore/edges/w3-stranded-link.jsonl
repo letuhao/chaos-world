@@ -1,0 +1,82 @@
+{"from":"economy.iron_ore_bed","rel":"located_in","to":"geography.mortal_plains","status":"active","note":"iron_ore is listed as the Mortal Plains' resource, so the bed is that ground"}
+{"from":"economy.iron_ore_bed","rel":"depends_on","to":"cosmology.physical_law","status":"active","note":"metal answers to physical law, and an unwritten one leaves no ore to dig"}
+{"from":"economy.spirit_stone_bed","rel":"located_in","to":"geography.spirit_peaks","status":"active","note":"spirit_stone is the Spirit Peaks' listed resource"}
+{"from":"economy.spirit_stone_bed","rel":"depends_on","to":"cosmology.qi_law","status":"active","note":"stone holds qi, so a bed is only a bed where qi is seated"}
+{"from":"economy.immortal_essence_pool","rel":"located_in","to":"geography.immortal_court","status":"active","note":"immortal_essence is the Immortal Court's listed resource"}
+{"from":"economy.immortal_essence_pool","rel":"participated_in","to":"history.era_the_still_point","status":"active","note":"a pool of essence is a thing a settled frame can hold, which is what the Still Point is"}
+{"from":"economy.dao_fragment_window","rel":"located_in","to":"geography.transcendent_realm","status":"active","note":"dao_fragment is the Transcendent Realm's listed resource"}
+{"from":"economy.dao_fragment_window","rel":"depends_on","to":"cosmology.law_imprint","status":"active","note":"a fragment only exists where a law was imprinted and then came loose"}
+{"from":"economy.scrub_commons","rel":"located_in","to":"geography.bitter_scrub","status":"active","note":"the commons is the scrub's grazing, which is also its medicine and its calories"}
+{"from":"economy.scrub_commons","rel":"depends_on","to":"ecology.ironhide_bear","status":"active","note":"the grazer that defends the crop is also the thing that eats it"}
+{"from":"economy.spoil_hauler","rel":"member_of","to":"organizations.quarrywright","status":"active","note":"moving spoil is what the quarry guild hires men for"}
+{"from":"economy.spoil_hauler","rel":"participated_in","to":"history.disaster_the_iron_grief","status":"active","note":"spoil that will not disperse where spatial law is unspent is a forty-year heap nobody moved"}
+{"from":"economy.jade_ration","rel":"located_in","to":"geography.jade_cleft","status":"active","note":"jade holds qi, so the cleft is the tier's best refinement ground and its worst farmland"}
+{"from":"economy.passage_tariff","rel":"located_in","to":"geography.rift_shore","status":"active","note":"the only road between worlds is the only thing worth taxing"}
+{"from":"economy.passage_tariff","rel":"trades_with","to":"economy.gale_window","status":"active","note":"a crossing fee and a pass schedule are the same trade at two ends"}
+{"from":"economy.gale_window","rel":"located_in","to":"geography.gale_pass","status":"active","note":"the window IS the pass's schedule, and a pass that closes on a calendar has a price"}
+{"from":"economy.ferry_dues","rel":"located_in","to":"geography.hollow_measure","status":"active","note":"where distance is not conserved the crossing is the only fixed quantity"}
+{"from":"economy.ferry_dues","rel":"trades_with","to":"economy.passage_tariff","status":"active","note":"both are the price of moving a body across a distance nothing else can measure"}
+{"from":"economy.gate_fee","rel":"located_in","to":"geography.cairn_field","status":"active","note":"the gate is where the tier that licenses no humanoid collects from everyone who crosses"}
+{"from":"economy.gate_fee","rel":"depends_on","to":"cosmology.body_dao","status":"active","note":"a Body Dao practitioner in the mortal tier is a visitor, and visitors pay"}
+{"from":"economy.quiet_count_ledger","rel":"located_in","to":"civilizations.quarry_company","status":"active","note":"the company that stopped writing one name down keeps the ledger that shows it"}
+{"from":"economy.quiet_count_ledger","rel":"depends_on","to":"history.consequence_the_unfilled_ledger","status":"active","note":"the ledger is empty BECAUSE of the consequence, not before it"}
+{"from":"economy.ladder_price","rel":"located_in","to":"geography.tier_stair","status":"active","note":"one price across four tiers, so the stair is the ladder"}
+{"from":"economy.ladder_price","rel":"depends_on","to":"cosmology.slot_budget","status":"active","note":"what a seat costs sets what a rung is worth, and the budget is the seat count"}
+{"from":"economy.ladder_price","rel":"trades_with","to":"economy.dao_fragment_window","status":"active","note":"the top rung is priced in the one good nobody can corner"}
+{"from":"economy.weight_standard","rel":"depends_on","to":"economy.scrub_commons","status":"active","note":"a weight is only a standard where something everyone eats is weighed"}
+{"from":"economy.weight_standard","rel":"located_in","to":"civilizations.plainstoll","status":"active","note":"the standard follows the town that arbitrates it, and the town is the toll"}
+{"from":"economy.weight_standard","rel":"conflicts_with","to":"economy.jade_ration","status":"active","note":"jade is weighed by refinement worth and ore by mass, and one scale cannot do both"}
+{"from":"economy.weight_standard","rel":"located_in","to":"geography.cairn_field","status":"active","note":"a standard of weight is a claim about what a body's worth is, so it starts where bodies are counted"}
+{"from":"economy.weight_standard","rel":"conflicts_with","to":"economy.gate_fee","status":"active","note":"the gate charges for passage and the standard decides what is being weighed; a toll that weighs people is a dispute"}
+{"from":"economy.weight_standard","rel":"depends_on","to":"economy.iron_ore_bed","status":"active","note":"every weight descends from the one good that is easiest to divide"}
+{"from":"politics.office_of_the_star_regent","rel":"member_of","to":"civilizations.star_regent","status":"active","note":"sits where the crown is claimed to sit, which is a claim and not a crown"}
+{"from":"politics.office_of_the_star_regent","rel":"influenced_by","to":"cosmology.slot_budget","status":"active","note":"may name a seat and may not take one: the office exists because slack seats do"}
+{"from":"politics.office_of_the_marshal","rel":"member_of","to":"civilizations.marshal","status":"active","note":"the Marshal of the March is an office and the March is the polity that holds it"}
+{"from":"politics.office_of_the_marshal","rel":"participated_in","to":"history.decree_the_unfilled_seats","status":"active","note":"the vacancy decree is what made the office survivable and the succession doubtful"}
+{"from":"politics.crown_claim","rel":"member_of","to":"politics.office_of_the_star_regent","status":"active","note":"a claim to a seat is a claim ON the office, not a second office"}
+{"from":"politics.crown_claim","rel":"conflicts_with","to":"politics.seat_trial_rule","status":"active","note":"the trial is what makes the claim uncertain, which is the point of the trial"}
+{"from":"politics.seat_trial_rule","rel":"located_in","to":"geography.terrace_of_nine_seats","status":"active","note":"nine cut holes nobody has ever filled, and the rule is administered above them"}
+{"from":"politics.seat_trial_rule","rel":"influenced_by","to":"cosmology.slot_budget","status":"active","note":"ten seats against six laws is slack, and slack is a political problem rather than a gift"}
+{"from":"politics.march_claim","rel":"participated_in","to":"politics.trial_of_the_ford","status":"active","note":"the march's reach is exactly the ground the ford trial decides"}
+{"from":"politics.trial_of_the_ford","rel":"located_in","to":"geography.hollow_measure","status":"active","note":"where a border cannot be measured, a trial is the only instrument that works"}
+{"from":"politics.quartermaster_contest","rel":"conflicts_with","to":"politics.auditor_capacity","status":"active","note":"a quartermaster buys what the auditor counts, and both want the same shelf"}
+{"from":"politics.exclusivity_petition","rel":"member_of","to":"civilizations.gale_toll","status":"active","note":"the petition is how a second holder of the toll is argued about"}
+{"from":"politics.exclusivity_petition","rel":"conflicts_with","to":"organizations.quiethouse","status":"active","note":"a published exclusivity contradicted by a living second route is a petition"}
+{"from":"politics.passage_tariff_treaty","rel":"located_in","to":"geography.rift_shore","status":"active","note":"the treaty governs the only road between worlds"}
+{"from":"politics.passage_tariff_treaty","rel":"trades_with","to":"economy.passage_tariff","status":"active","note":"the treaty IS the tariff, and one is the other's enforcement"}
+{"from":"politics.precedent_tier","rel":"member_of","to":"politics.auditor_capacity","status":"active","note":"the tier decides which doctrine a case may be heard under: access, never power"}
+{"from":"politics.visitor_office","rel":"depends_on","to":"cosmology.mortal_law_availability","status":"active","note":"an office for people who are legally elsewhere only exists where the law says they are"}
+{"from":"politics.vacant_lantern_seat","rel":"located_in","to":"geography.terrace_of_nine_seats","status":"active","note":"a vacant seat is still a seat, and it is still on the terrace"}
+{"from":"politics.outer_seat_hermit","rel":"member_of","to":"politics.vacant_lantern_seat","status":"active","note":"somebody holds the lantern seat without sitting in it, which is the vacancy"}
+{"from":"politics.outer_seat_hermit","rel":"depends_on","to":"cultures.unfiled","status":"active","note":"an unlisted holder is the political form of an unfiled practice"}
+{"from":"politics.auditor_capacity","rel":"member_of","to":"civilizations.quarry_company","status":"active","note":"the auditor counts the shelf the company sells, which is the whole problem"}
+{"from":"politics.auditor_capacity","rel":"conflicts_with","to":"civilizations.fragmentshelf_claim","status":"active","note":"counting a claim is the first way of refusing it"}
+{"from":"civilizations.plainstoll","rel":"located_in","to":"geography.mortal_plains","status":"active","note":"the toll sits on the only ground where a border cannot be measured"}
+{"from":"civilizations.plainstoll","rel":"controls","to":"economy.gate_fee","status":"active","note":"a toll town exists to collect"}
+{"from":"civilizations.plainstoll","rel":"depends_on","to":"economy.scrub_commons","status":"active","note":"the commons feeds the town; the town fences nothing"}
+{"from":"civilizations.gale_toll","rel":"located_in","to":"geography.gale_pass","status":"active","note":"the holdfast holds the only supply route to the Cleft and Flame Valley"}
+{"from":"civilizations.gale_toll","rel":"allied_with","to":"civilizations.ford_assembly","status":"active","note":"both need the pass open and neither can hold it alone"}
+{"from":"civilizations.ford_assembly","rel":"located_in","to":"geography.hollow_measure","status":"active","note":"a ford is a fixed crossing in a place where nothing else is"}
+{"from":"civilizations.ford_assembly","rel":"depends_on","to":"economy.ferry_dues","status":"active","note":"the assembly's authority is exactly the reach it can charge for"}
+{"from":"civilizations.jade_holdfast","rel":"located_in","to":"geography.jade_cleft","status":"active","note":"every claim on the cleft is made from somewhere else"}
+{"from":"civilizations.jade_holdfast","rel":"controls","to":"economy.jade_ration","status":"active","note":"the ration is the holdfast's revenue and its leash"}
+{"from":"civilizations.shelf_confederacy","rel":"located_in","to":"geography.fragmentshelf","status":"active","note":"the shelf is the resource that gets worse while you hold it"}
+{"from":"civilizations.shelf_confederacy","rel":"enemy_of","to":"civilizations.gale_toll","status":"active","note":"one holds a resource that improves, the other one that decays"}
+{"from":"civilizations.shelf_confederacy","rel":"conflicts_with","to":"civilizations.fragmentshelf_claim","status":"active","note":"a claim is a claim until somebody is appointed to hold it"}
+{"from":"civilizations.fragmentshelf_claim","rel":"caused","to":"politics.seat_trial_rule","status":"active","note":"the appointment is what created the rival claim"}
+{"from":"civilizations.brine_reach","rel":"member_of","to":"races.brinecaller","status":"active","note":"a reach is administered by whoever can metabolise both waters"}
+{"from":"civilizations.brine_reach","rel":"controls","to":"economy.ferry_dues","status":"active","note":"who holds the reach decides who may cross and therefore what the crossing costs"}
+{"from":"civilizations.quarry_company","rel":"located_in","to":"geography.spiritscar_quarry","status":"active","note":"a chartered company is a claim with a fence around it"}
+{"from":"civilizations.quarry_company","rel":"depends_on","to":"economy.scrub_commons","status":"active","note":"the quarry's workforce eats from the commons nobody can fence"}
+{"from":"civilizations.unfiled_anchorage","rel":"participated_in","to":"cultures.unfiled","status":"active","note":"the culture and the anchorage are the same practice seen from two sides"}
+{"from":"civilizations.marshal","rel":"controls","to":"civilizations.forward_fort","status":"active","note":"the fort is the Marshal's reach, and the reach is why the office exists"}
+{"from":"civilizations.seat_terrace_council","rel":"located_in","to":"geography.terrace_of_nine_seats","status":"active","note":"the council is the terrace's only permanent institution"}
+{"from":"civilizations.seat_terrace_council","rel":"depends_on","to":"politics.seat_trial_rule","status":"active","note":"the council exists to administer the seats, which is how it can be captured"}
+{"from":"civilizations.star_regent","rel":"member_of","to":"cosmology.transcendent_world","status":"active","note":"the Regent sits where the crown is claimed to sit, in the realm that claims it"}
+{"from":"civilizations.star_regent","rel":"member_of","to":"civilizations.seat_terrace_council","status":"active","note":"the two institutions claim the same vacant ground and cannot both administer it"}
+{"from":"civilizations.forward_fort","rel":"located_in","to":"geography.mortal_plains","status":"active","note":"the fort stands on the only tier that licenses no humanoid, so it is held by outsiders"}
+{"from":"civilizations.marshal","rel":"member_of","to":"cosmology.body_dao","status":"active","note":"the March answers to the Dao whose home tier licenses no humanoid, so every officer is a visitor"}
+{"from":"civilizations.forward_fort","rel":"participated_in","to":"history.disaster_the_iron_grief","status":"active","note":"a forward fort exists because something ahead of it stopped being reachable"}
+{"from":"civilizations.forward_fort","rel":"depends_on","to":"economy.iron_ore_bed","status":"active","note":"the fort is manned to hold a bed, not for the ground"}
+{"from":"civilizations.forward_fort","rel":"located_in","to":"geography.cairn_field","status":"active","note":"a forward fort is a claim that expects to be answered"}
+{"from":"civilizations.forward_fort","rel":"participated_in","to":"history.decree_the_unfilled_seats","status":"active","note":"the fort was built for a march that stopped claiming its far end"}

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"K8_spirit_bone_base"
+display_name = "Spirit Bone Base"
+category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 15.82},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
+subcategory = &"food"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:K8_spirit_bone_base_recipe", &"domain:mind_spirit_manifestation_trial"])

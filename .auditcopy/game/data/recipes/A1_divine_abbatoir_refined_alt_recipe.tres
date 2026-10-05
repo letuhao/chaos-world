@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A1_divine_abbatoir_refined_alt_recipe"
+display_name = "Divine Abbatoir Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"A1_divine_abbatoir_base", &"divine_netherbloom", &"X21_divine_mesne_attest"])
+outputs = Array[StringName]([&"A1_divine_abbatoir_refined"])

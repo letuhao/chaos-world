@@ -128,20 +128,21 @@ static func declare(
 	actor: Actor, node_id: StringName, prize: Dictionary, quota: int = ConflictState.DEFAULT_QUOTA
 ) -> Dictionary:
 	var ledger := _state(actor)
-	var contest := _contest(actor, node_id)
-	if contest.is_empty():
-		return _refuse(actor, node_id, ConflictState.NO_CONTEST)
-	var challenger = contest.get("challenger", {})
-	if not challenger is Dictionary or (challenger as Dictionary).is_empty():
-		return _refuse(actor, node_id, ConflictState.NO_CHALLENGER)
-	# ## The prize is DECLARED or it is refused (ADR 0085)
+	# ## A CALLER'S OWN ARGUMENT is validated before anything is read of the world
 	#
-	# "A conflict is a declaration of sides and a prize, and never a formula." A prize outside
-	# the closed vocabulary is refused `undeclared_prize` rather than resolved to the nearest
-	# shape, because silently picking a prize is the module deciding what was at stake — the
-	# one thing ADR 0085 says it may never do. Validating HERE rather than only in
-	# `ConflictState.open` matters: `open` is the ledger, this is the door, and a refusal a
-	# caller has to reach into the ledger to discover is a refusal nobody will find.
+	# The prize and the quota are what this call HANDS OVER. `no_contest` and `no_challenger`
+	# are facts about the world, and the world is the same either way — so when a caller hands
+	# over a prize outside the closed vocabulary AND the node happens to be uncontested,
+	# answering `no_contest` names a rule about the ground and buries the one about the
+	# declaration. That is not pedantry: this suite's event contract calls
+	# `declare(&"conquest")` over a node nobody claimed, and with the checks in world-first
+	# order the announcement read `no_contest`, so the panel rendered a rule the caller could
+	# not act on while the declaration it had just written was refused for something else
+	# entirely.
+	#
+	# Validating the argument first costs nothing — both refusals still write nothing and both
+	# are still named — and it makes the answer depend on the CALL, not on what the world
+	# happened to look like when the caller made it.
 	if (
 		not prize is Dictionary
 		or not ConflictState.PRIZES.has(StringName((prize as Dictionary).get("prize", "")))
@@ -149,6 +150,21 @@ static func declare(
 		return _refuse(actor, node_id, ConflictState.UNDECLARED_PRIZE)
 	if quota <= 0 or quota > ConflictState.MAX_QUOTA:
 		return _refuse(actor, node_id, ConflictState.BAD_QUOTA)
+	var contest := _contest(actor, node_id)
+	if contest.is_empty():
+		return _refuse(actor, node_id, ConflictState.NO_CONTEST)
+	var challenger = contest.get("challenger", {})
+	if not challenger is Dictionary or (challenger as Dictionary).is_empty():
+		return _refuse(actor, node_id, ConflictState.NO_CHALLENGER)
+	# ## The prize was checked at the DOOR; `ConflictState.open` checks it again
+	#
+	# "A conflict is a declaration of sides and a prize, and never a formula." A prize outside
+	# the closed vocabulary is refused `undeclared_prize` rather than resolved to the nearest
+	# shape, because silently picking a prize is the module deciding what was at stake — the
+	# one thing ADR 0085 says it may never do. Validating HERE rather than only in
+	# `ConflictState.open` matters: `open` is the ledger, this is the door, and a refusal a
+	# caller has to reach into the ledger to discover is a refusal nobody will find. `open`
+	# keeps its own check because it is reachable without passing this door.
 	var opened := ConflictState.open(
 		ledger,
 		node_id,
@@ -283,9 +299,16 @@ static func summary(actor: Actor) -> Dictionary:
 		"actor_id": String(actor.id),
 		"standoffs": rows,
 		"standoff_count": rows.size(),
-		"open_count": _open_count(ledger),
-		"resolved_count": _resolved_count(ledger),
-		"prizes": ConflictState.PRIZES.duplicate(),
+		"open_count": int(_open_count(ledger)),
+		"resolved_count": int(_resolved_count(ledger)),
+		# `PRIZES` is authored `Array[StringName]`. Duplicating it verbatim put three
+		# `StringName`s into the read model a screen renders, and `JSON.stringify` emits a
+		# `StringName` as the STRING it holds rather than converting it the way `String()` does
+		# — so they survived the round trip as values a strict consumer cannot type, which is
+		# the JSON hazard ADR 0027 records, one layer out from the ledger it was written for.
+		# Widened here rather than at the constant, because `ConflictState.PRIZES` is a
+		# membership list that must stay `StringName` for `.has(&"ownership")` to read right.
+		"prizes": _prizes_out(),
 		# ADR 0165: a caller must be able to tell "no store is wired" from "a store holding
 		# an empty world", which before this were the same answer.
 		"store_installed": _store != null,
@@ -293,6 +316,17 @@ static func summary(actor: Actor) -> Dictionary:
 
 
 # --- internals ---------------------------------------------------------------
+
+
+## The closed prize vocabulary as the read model publishes it: `String` per entry, in the
+## authored order. Separate from the constant rather than widening it, because `PRIZES` is
+## typed `Array[StringName]` on purpose — that is what makes `.has(&"ownership")` at every
+## declaration a correct membership test rather than a comparison that happens to hold.
+static func _prizes_out() -> Array:
+	var out: Array = []
+	for kind in ConflictState.PRIZES:
+		out.append(String(kind))
+	return out
 
 
 ## One standoff row as a screen reads it: who holds, who is challenging, what is at stake and

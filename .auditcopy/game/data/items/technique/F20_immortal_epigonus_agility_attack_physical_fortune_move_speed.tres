@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F20_immortal_epigonus_agility_attack_physical_fortune_move_speed"
+display_name = "Immortal Epigonus Agility Attack physical Fortune Move speed"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 34.65},
+	{"option_id": &"core_attack_physical", "value": 34.65},
+	{"option_id": &"base_fortune", "value": 34.65},
+	{"option_id": &"core_move_speed", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"sigil"
+grade = &"immortal"
+sources = Array[StringName]([&"gather", &"domain:qi_body_integration_domain"])

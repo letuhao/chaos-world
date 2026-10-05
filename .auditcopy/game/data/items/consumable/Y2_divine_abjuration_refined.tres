@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"Y2_divine_abjuration_refined"
+display_name = "Divine Abjuration Refined"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 35.62},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"grease"
+grade = &"divine"
+sources = Array[StringName]([&"craft:Y2_divine_abjuration_refined_recipe", &"domain:loot_storm_crypt_domain"])

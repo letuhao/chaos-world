@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"staff_starfall_earth"
+display_name = "Starfall Earth Staff"
+category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 18.16},
+	{"option_id": &"core_qi_regen", "value": 6},
+	{"option_id": &"core_crit_chance", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"weapon"
+stackable = false
+grade = &"earth"
+sources = Array[StringName]([&"craft:staff_starfall_earth_recipe", &"domain:mind_spirit_severing_trial"])

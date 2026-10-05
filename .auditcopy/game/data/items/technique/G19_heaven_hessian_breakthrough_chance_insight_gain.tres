@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"G19_heaven_hessian_breakthrough_chance_insight_gain"
+display_name = "Heaven Hessian Breakthrough chance Insight gain"
+category = &"consumable"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"formula"
+grade = &"heaven"
+sources = Array[StringName]([&"quest", &"domain:mind_spirit_severing_trial"])

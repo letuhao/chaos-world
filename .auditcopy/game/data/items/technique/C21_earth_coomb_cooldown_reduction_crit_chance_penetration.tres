@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"C21_earth_coomb_cooldown_reduction_crit_chance_penetration"
+display_name = "Earth Coomb Cooldown Reduction Crit Chance Penetration"
+category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_condensation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.03},
+	{"option_id": &"core_crit_chance", "value": 0.05},
+	{"option_id": &"core_penetration", "value": 15.68},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"rite"
+grade = &"earth"
+sources = Array[StringName]([&"quest", &"domain:qi_great_luo_trial"])

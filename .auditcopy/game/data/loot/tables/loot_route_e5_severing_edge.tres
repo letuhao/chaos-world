@@ -1,0 +1,350 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=29 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_unique"]
+script = ExtResource("2_entry")
+id = &"guaranteed_unique"
+kind = &"item"
+item_id = &"unique_stormcall_thunder_seal"
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"drop_1"
+kind = &"item"
+item_id = &"dagger_glass_needle"
+weight = 5.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"drop_2"
+kind = &"item"
+item_id = &"L4_void_serpent_null_fang"
+weight = 4.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"drop_3"
+kind = &"item"
+item_id = &"trinket_war_trophy"
+weight = 3.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"drop_4"
+kind = &"item"
+item_id = &"V3_spirit_abjuration_mace"
+weight = 2.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_5"
+kind = &"item"
+item_id = &"B27_earth_cataclysm_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_6"
+kind = &"item"
+item_id = &"C25_mortal_coutil_cooldown_reduction_crit_chance_penetration"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_7"
+kind = &"item"
+item_id = &"E14_heaven_gutward_rennetmesh"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_8"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_8"
+kind = &"item"
+item_id = &"F21_immortal_epitrite_agility_attack_speed_breakthrough_chance_evasion"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_9"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_9"
+kind = &"item"
+item_id = &"F47_immortal_grandam_dao_heart_fortune_penetration"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_10"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_10"
+kind = &"item"
+item_id = &"G25_spirit_iconoclast_qi_regen_spirit"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_11"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_11"
+kind = &"item"
+item_id = &"I30_spirit_flotsam_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_12"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_12"
+kind = &"item"
+item_id = &"K14_earth_star_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_13"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_13"
+kind = &"item"
+item_id = &"O2_mortal_alder_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_14"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_14"
+kind = &"item"
+item_id = &"R11_mortal_mastic_request"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_15"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_15"
+kind = &"item"
+item_id = &"T17_immortal_tithe_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_16"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_16"
+kind = &"item"
+item_id = &"V19_divine_aperture_refined"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_17"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_17"
+kind = &"item"
+item_id = &"X15_immortal_assay_relictum"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_18"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_18"
+kind = &"item"
+item_id = &"Y22_immortal_yeomanry_signet"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_19"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_19"
+kind = &"item"
+item_id = &"Z39_mortal_whetstone_album"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_20"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_20"
+kind = &"item"
+item_id = &"currency_tribute_scroll"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_21"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_21"
+kind = &"item"
+item_id = &"mantra_jade_form"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_22"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_22"
+kind = &"item"
+item_id = &"refill_deep_essence"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_23"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_domain_23"
+kind = &"item"
+item_id = &"trinket_jade_curio"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_24"]
+script = ExtResource("2_entry")
+id = &"E5_severing_edge_core_0"
+kind = &"item"
+item_id = &"body_spirit_severing_breakthrough_pill"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 6
+rarity_floor = &"magic"
+
+[sub_resource type="Resource" id="entry_25"]
+script = ExtResource("2_entry")
+id = &"route_e5_severing_edge_mortal_gear"
+kind = &"item"
+item_id = &"L2_iron_monarch_seal"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_route_e5_severing_edge"
+display_name = "Severing Edge spoils"
+realm = &"spirit_severing"
+rarity = &"legendary"
+rolls = 2
+rolls_max = 3
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_unique"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3"),
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7"),
+	SubResource("entry_8"),
+	SubResource("entry_9"),
+	SubResource("entry_10"),
+	SubResource("entry_11"),
+	SubResource("entry_12"),
+	SubResource("entry_13"),
+	SubResource("entry_14"),
+	SubResource("entry_15"),
+	SubResource("entry_16"),
+	SubResource("entry_17"),
+	SubResource("entry_18"),
+	SubResource("entry_19"),
+	SubResource("entry_20"),
+	SubResource("entry_21"),
+	SubResource("entry_22"),
+	SubResource("entry_23"),
+	SubResource("entry_24"),
+	SubResource("entry_25")
+])

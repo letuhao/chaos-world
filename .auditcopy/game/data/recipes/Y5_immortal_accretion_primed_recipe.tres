@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Y5_immortal_accretion_primed_recipe"
+display_name = "Immortal Accretion Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Y5_immortal_accretion_aged", &"Q8_immortal_dogwood_chalk", &"qi_earth_immortal_qi_herb", &"body_heaven_immortal_tempering_herb"])
+outputs = Array[StringName]([&"Y5_immortal_accretion_primed"])

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F49_divine_grimly_fortune_insight_gain_qi_regen"
+display_name = "Divine Grimly Fortune Insight gain Qi regen"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 35.6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"talisman"
+grade = &"divine"
+sources = Array[StringName]([&"quest", &"domain:totem_stone_guardian_domain"])

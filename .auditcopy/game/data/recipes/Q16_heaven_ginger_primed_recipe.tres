@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Q16_heaven_ginger_primed_recipe"
+display_name = "Heaven Ginger Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Q16_heaven_ginger_aged", &"petal_azalea", &"herb_starfall_blossom", &"bow_moonstone_ore"])
+outputs = Array[StringName]([&"Q16_heaven_ginger_primed"])

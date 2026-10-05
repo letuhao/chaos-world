@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"tribulation"
+rarity = &"common"
+vitality = 4650.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"body_tribulation_guardian", "table_id": &"loot_body_tribulation_guardian"},
+	{"boss_id": &"E3_tribulation_arbiter", "table_id": &"loot_E3_tribulation_arbiter"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"tribulation"
+rarity = &"rare"
+vitality = 7440.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"body_tribulation_guardian", "table_id": &"loot_body_tribulation_guardian"},
+	{"boss_id": &"E3_tribulation_arbiter", "table_id": &"loot_E3_tribulation_arbiter"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_body_tribulation_trial"
+display_name = "Copper Body Trial"
+domain_id = &"body_tribulation_trial"
+boss_ids = Array[StringName]([&"body_tribulation_guardian", &"E3_tribulation_arbiter"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

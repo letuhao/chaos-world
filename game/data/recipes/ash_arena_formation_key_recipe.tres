@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"ash_arena_formation_key_recipe"
+display_name = "Arena Formation Key Recipe"
+# `ash_arena_formation_key` is the ARENA PUZZLE's payout, not a gate on it, so
+# its recipe is not a key route a hoard depends on — it is the price of the
+# wrong-node retry the formation charges. Iron ore and pine resin: two
+# gatherables, no boss behind either, so the reward is repeatable friction
+# rather than a lottery (ADR 0216 rejects a `treasure_chance` field outright).
+station = &"forge"
+inputs = Array[StringName]([&"ore_iron_vein", &"sap_resin"])
+outputs = Array[StringName]([&"ash_arena_formation_key"])

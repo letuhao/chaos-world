@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"flame_dragon_heart_seal"
+display_name = "Heartseal of the Flame Dragon"
+category = &"equipment"
+rarity = &"legendary"
+realm = &"spirit_unity"
+## `ash_heart_hoard`'s reward — the thing the boss was GUARDING, not a second
+## reward for the fight (ADR 0218: a boss's prize is its `LootTier` table; the core
+## room's hoard is for what stood over it). ADR 0218 keeps `requires_realm:
+## core_formation` on this fixture as a CEILING on the deepest prize in the
+## domain, which is a bargain about timing rather than one about sequence.
+## `legendary` is the magnitude the deepest object in the authored kit earns, and
+## the counterplay the yin-yang rule requires is the `grade` gate: `earth` is tier
+## 2, so the relic is unwearable until the hero is actually where the room is.
+## One realized instance, realized through `ItemsApi.generate` seeded from the
+## fixture id — the loot module's own defeat-time behaviour, not a bare
+## `inventory.add(def, count)` (ADR 0216 §4).
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 24.0},
+	{"option_id": &"core_max_qi", "value": 40.0},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
+subcategory = &"artifact"
+stackable = false
+grade = &"earth"
+sources = Array[StringName]([&"domain:flame_valley"])

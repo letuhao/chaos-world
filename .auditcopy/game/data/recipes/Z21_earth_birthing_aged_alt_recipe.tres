@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Z21_earth_birthing_aged_alt_recipe"
+display_name = "Earth Birthing Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Z21_earth_birthing_refined", &"pendant_silk_herb", &"armor_gale_essence"])
+outputs = Array[StringName]([&"Z21_earth_birthing_aged"])

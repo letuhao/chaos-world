@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A5_divine_alkalis_aged_recipe"
+display_name = "Divine Alkalis Aged Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"A5_divine_alkalis_refined", &"W1_divine_alcove_bitumen", &"W2_divine_antler_chalcedony"])
+outputs = Array[StringName]([&"A5_divine_alkalis_aged"])

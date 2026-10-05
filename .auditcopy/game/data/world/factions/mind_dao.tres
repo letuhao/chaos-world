@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WorldFactionDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/world_faction_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+faction_id = &"mind_dao"
+display_name = "Mind Dao"
+dao_alignment = &"mind"
+home_tier = &"transcendent_world"
+philosophy = "Transcendence through spirit. The mind is the seed of the Dao; to refine the self is to touch the infinite."
+relationships = Array[Dictionary]([{"faction_id": &"qi_dao", "stance": &"allied"}, {"faction_id": &"body_dao", "stance": &"hostile"}])

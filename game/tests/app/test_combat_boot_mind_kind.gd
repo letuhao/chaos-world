@@ -168,7 +168,9 @@ func _production_parts(
 	var actors: Dictionary = pair if not pair.is_empty() else _pair()
 	var attacker: Actor = actors["attacker"]
 	var defender: Actor = actors["defender"]
-	var technique := def if def is Object else _technique(kind, def_id)
+	# Typed, not `:=`: `def` is a Variant, so the ternary infers Variant and this
+	# project treats that warning as an error (parse failure, suite never loads).
+	var technique: TechniqueDef = def if def is Object else _technique(kind, def_id)
 	var ctx := AttackContext.new(attacker, defender, technique, CombatEngineApi.tuning(), 100.0)
 	var builder := CombatBoot.ctx_builder_for(attacker, defender, technique)
 	var staged: Variant = builder.call(ctx)

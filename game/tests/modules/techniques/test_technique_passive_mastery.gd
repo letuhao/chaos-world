@@ -3,6 +3,13 @@ extends TestCase
 ## DEF-0207: mastery REACHES a passive, through ADR 0055's `power` column and
 ## through nothing else.
 ##
+## **Every case here reaches its rung through `TechniquesApi.raise_mastery`, which no
+## production caller holds** — `activate` refuses a passive, so this file proves what
+## a rung DOES to a passive and could never prove that a player can GET one. That
+## half is DEF-0304 and it lives in `test_technique_passive_worn_mastery.gd`, which
+## reaches the same multiplier through `settle_upkeep` (ADR 0247). Read the two
+## together: this file is the effect, that one is the input.
+##
 ## The decision, with the evidence that made it:
 ##
 ## - **`power` scales the stat channel.** `POWER_STEP = 1.15` compounding is the

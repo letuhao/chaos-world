@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"P14_earth_cassia_aged_recipe"
+display_name = "Earth Cassia Aged Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"P14_earth_cassia_refined", &"scepter_glow_herb", &"gemstone_aquamarine"])
+outputs = Array[StringName]([&"P14_earth_cassia_aged"])

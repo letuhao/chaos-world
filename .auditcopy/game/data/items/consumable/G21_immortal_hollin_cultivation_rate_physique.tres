@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"G21_immortal_hollin_cultivation_rate_physique"
+display_name = "Immortal Hollin Cultivation rate Physique"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 33.7},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"decree"
+grade = &"immortal"
+sources = Array[StringName]([&"gather", &"domain:qi_golden_immortal_trial"])

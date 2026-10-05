@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"socket_rune_spirit_defense"
+display_name = "Spirit Defensive Rune"
+category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 17.88},
+	{"option_id": &"core_poise", "value": 17.88},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
+subcategory = &"gem"
+stackable = false
+grade = &"spirit"
+sources = Array[StringName]([&"gather", &"domain:manual_thunder_ape_domain"])
+tags = Array[StringName]([&"socket_item", &"socket_kind:defense"])
+description = "Socket item. Defensive rune; while its host is worn it adds physical defence and poise."

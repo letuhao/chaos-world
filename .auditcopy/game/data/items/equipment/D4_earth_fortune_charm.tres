@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"D4_earth_fortune_charm"
+display_name = "Earth Fortune Charm"
+category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_fortune", "value": 19.8},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"accessory"
+stackable = false
+grade = &"earth"
+sources = Array[StringName]([&"craft:D4_earth_fortune_charm_recipe", &"domain:mind_earth_immortal_trial"])

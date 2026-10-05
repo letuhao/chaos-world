@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="QiRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/qi_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"spirit_sovereign"
+breakthrough_item = &"qi_spirit_sovereign_breakthrough_pill"
+training_item = &"qi_spirit_sovereign_channel_elixir"
+recovery_item = &"qi_spirit_sovereign_recovery_elixir"
+dantian_catalyst = &"qi_spirit_sovereign_dantian_catalyst"
+meridian_catalyst = &"qi_spirit_sovereign_meridian_catalyst"
+progress_required = 1600.0
+comprehension_required = 40.0
+dantian_quality_required = 0.65
+dantian_fill_required = 1.0
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
+required_channel_state = &"strengthened"
+required_channel_refinement = 13
+channel_refinement_cap = 17
+dantian_capacity = 500.0
+rewards = {
+"spirit": 2.0
+}

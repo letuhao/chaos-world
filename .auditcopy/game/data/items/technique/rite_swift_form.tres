@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"rite_swift_form"
+display_name = "Swift Rite"
+category = &"consumable"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 28.05},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"rite"
+grade = &"heaven"
+sources = Array[StringName]([&"gather", &"domain:body_spirit_sea_trial"])

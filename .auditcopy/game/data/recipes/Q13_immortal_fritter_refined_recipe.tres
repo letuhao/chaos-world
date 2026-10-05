@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Q13_immortal_fritter_refined_recipe"
+display_name = "Immortal Fritter Refined Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Q13_immortal_fritter_base", &"crystal_diamond"])
+outputs = Array[StringName]([&"Q13_immortal_fritter_refined"])

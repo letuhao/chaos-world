@@ -243,6 +243,20 @@ static func can_credit(actor_id: String) -> bool:
 	return actor_id != "" and _body(actor_id) != null
 
 
+## The live `Actor` `actor_id` names, or null — [method _body] as a PUBLIC answer,
+## because "whose body is this bidder" is no longer only the social ladder's question.
+##
+## `MarketApi.settle_lot(winner_actor, bidder_of, lot_id, periods)` walks its settlement
+## by asking a resolver to turn each recorded `actor_id` back into a wallet, and `ui/`
+## may neither hold that registry nor mint an `Actor` (`app` is the only entry in
+## `rules.PRIVATE_UNITS`). The composition root hands the screen a Callable over this,
+## so **the body that gets PAID is found by the same lookup that credits the sale** —
+## two answers to "who is this bidder" could disagree, and the disagreeing one would be
+## the one deciding whose coins leave.
+static func body_of(actor_id: String) -> Actor:
+	return _body(actor_id)
+
+
 ## Test seam: drop the recorded player and the trail. **Only a harness calls this** — the
 ## bus is process-wide, and a suite that outbid somebody would otherwise leave a bond
 ## standing for whichever suite runs next and read a standing that is not its own.

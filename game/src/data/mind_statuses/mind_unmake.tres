@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MindStatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/mind_status_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = &"mind_unmake"
+display_name = "Unmake"
+role = &"control"
+description = "The target's damage reduction is inverted: they take MORE."
+payload = {
+"class": &"control",
+"shape": &"invert",
+"battlefield": "mind_status_mastery_invert",
+"resist_stat": "mind_composure_",
+"beat": 3.0,
+"steepness": 0.28,
+"floor_resist": 0.7,
+"headroom": 0.25,
+"duration": 4.0,
+"magnitude_cap": 0.3,
+"text": "Unmake. The body's own guard is turned against it: what it had braced for now opens, and what it had refused now lands.",
+"modifiers": [{"stat": &"damage_reduction", "op": &"flat", "value": -0.25}]
+}

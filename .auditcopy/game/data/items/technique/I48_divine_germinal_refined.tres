@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I48_divine_germinal_refined"
+display_name = "Divine Germinal Refined"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_loot_bonus", "value": 0.02},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"talisman"
+grade = &"divine"
+sources = Array[StringName]([&"craft:I48_divine_germinal_refined_recipe", &"domain:qi_tribulation_trial"])

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BossDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/boss_def.gd" id="1_boss"]
+
+[resource]
+script = ExtResource("1_boss")
+id = &"manual_iron_tortoise"
+display_name = "Iron Tortoise"
+domain_id = &"manual_iron_tortoise_domain"
+loot = Array[StringName]([])

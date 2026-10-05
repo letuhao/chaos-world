@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"light_brand"
+element = &"light"
+on_landed_blow = true
+kind = &"dot"
+scope = &"combat"
+stacking = &"stack"
+duration = 13.0
+magnitude_unit = &"health_share"
+magnitude_cap = 8.0
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
+payload = {
+"mechanic": &"bleed",
+"text": "Nothing about them stays hidden. Light finds every place a body keeps covered and keeps those places open, so what lands next is never a surprise.",
+"pool": &"health",
+"share_per_pulse": 0.02,
+"modifiers": [
+	{"stat": &"defense_spiritual", "op": "flat", "value": -8.0},
+	{"stat": &"attack_speed", "op": "percent", "value": -0.25}
+]
+}

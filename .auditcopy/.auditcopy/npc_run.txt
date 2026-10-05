@@ -1,0 +1,250 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+SCRIPT ERROR: Parse Error: Could not resolve class "LootContentTables".
+   at: GDScript::reload (res://src/modules/loot/loot_content.gd:1)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/loot/loot_validator.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/loot/api.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/combat/exchange.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/combat/api.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/combat_mercy.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/player_adapter.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/world_stage.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/item_workbench_body.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/item_workbench_readout.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/item_workbench_fight.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:0)
+ERROR: Failed to load script "res://src/app/item_workbench_app.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+ERROR: EventBeatWriter: an npc_tally beat named 'elder_wei' but no tally resolver is installed; call EventBeatWriter.set_tally_resolver from app/ (NpcBoot.install does)
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _tally_npc (res://src/modules/event/event_beat_writer.gd:242)
+       [1] offer (res://src/modules/event/event_beat_writer.gd:162)
+       [2] _offer (res://tests/modules/npc/test_npc_tally_production_path.gd:597)
+       [3] test_a_tally_beat_with_no_resolver_installed_is_refused_and_names_why (res://tests/modules/npc/test_npc_tally_production_path.gd:346)
+       [4] _initialize (res://tests/run_tests.gd:118)
+ERROR: NpcApi.spawn: npc 'elder_wei' is retired and must not spawn
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] spawn (res://src/modules/npc/api.gd:166)
+       [1] test_a_terminal_stage_retires_the_npc_and_they_never_spawn_again (res://tests/modules/npc/test_npc_tier.gd:185)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: NpcApi.spawn: no minter installed; call NpcApi.set_minter first
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] spawn (res://src/modules/npc/api.gd:154)
+       [1] test_spawning_without_a_minter_fails_loudly_rather_than_returning_nothing_silent (res://tests/modules/npc/test_npc_tier.gd:294)
+       [2] _initialize (res://tests/run_tests.gd:118)
+ERROR: NpcApi.spawn: no minter installed; call NpcApi.set_minter first
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] spawn (res://src/modules/npc/api.gd:154)
+       [1] test_spawning_without_a_minter_fails_loudly_rather_than_returning_nothing_silent (res://tests/modules/npc/test_npc_tier.gd:295)
+       [2] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Parse Error: Could not resolve class "LootContentTables".
+   at: GDScript::reload (res://src/modules/loot/loot_content.gd:1)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/loot/loot_validator.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/loot/api.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/combat/exchange.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/combat/api.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/combat_mercy.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/player_adapter.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/world_stage.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/item_workbench_body.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/item_workbench_readout.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/item_workbench_fight.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/item_workbench_app.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+ERROR: Failed to load script "res://src/app/item_workbench_app.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _mount (res://tests/ui/seam_harness.gd:96)
+       [1] mount_new (res://tests/ui/seam_harness.gd:82)
+       [2] _mount (res://tests/ui/test_npc_roster_panel.gd:359)
+       [3] test_an_empty_location_shows_an_empty_roster_and_never_the_neighbours_cast (res://tests/ui/test_npc_roster_panel.gd:162)
+       [4] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'show_room' in base 'Nil'.
+   at: test_no_name_from_the_room_the_player_left_survives_the_move (res://tests/ui/test_npc_roster_panel.gd:142)
+   GDScript backtrace (most recent call first):
+       [0] test_no_name_from_the_room_the_player_left_survives_the_move (res://tests/ui/test_npc_roster_panel.gd:142)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/ui/test_npc_roster_panel.gd :: test_no_name_from_the_room_the_player_left_survives_the_move asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid call. Nonexistent function 'get_script_method_list' in base 'PanelContainer (NpcRosterPanel)'.
+   at: test_the_panel_has_no_door_that_could_be_handed_the_boot_settlement (res://tests/ui/test_npc_roster_panel.gd:243)
+   GDScript backtrace (most recent call first):
+       [0] test_the_panel_has_no_door_that_could_be_handed_the_boot_settlement (res://tests/ui/test_npc_roster_panel.gd:243)
+       [1] _initialize (res://tests/run_tests.gd:118)
+SCRIPT ERROR: Invalid call. Nonexistent function 'show_room' in base 'Nil'.
+   at: test_the_panel_shows_the_cast_of_the_room_the_player_stands_in (res://tests/ui/test_npc_roster_panel.gd:112)
+   GDScript backtrace (most recent call first):
+       [0] test_the_panel_shows_the_cast_of_the_room_the_player_stands_in (res://tests/ui/test_npc_roster_panel.gd:112)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/ui/test_npc_roster_panel.gd :: the neighbour's own roster is filtered by its own room, not merged into nowhere: expected 0, got 4
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/ui/test_npc_roster_panel.gd :: and it must say something a player can act on: expected not true, got true
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/ui/test_npc_roster_panel.gd :: and the roster panel is mounted under it: expected not <null>, got <null>
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/ui/test_npc_roster_panel.gd :: the screen publishes the roster under `roster`: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/ui/test_npc_roster_panel.gd :: holding the panel's own count: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+ERROR: res://tests/ui/test_npc_roster_panel.gd :: NpcBoot declares where_is(): the tracked current-room fact: expected true, got false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:130)
+WARNING: 699 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 90 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+fail 15 script error(s) aborted a test mid-function; those tests reported no failure, so the run above is incomplete
+warn 12 script(s) failed to LOAD; the errors above are mostly their dependants:
+warn   res://src/modules/loot/loot_content.gd
+warn   res://src/modules/loot/loot_validator.gd
+warn   res://src/modules/loot/api.gd
+warn   res://src/modules/combat/exchange.gd
+warn   res://src/modules/combat/api.gd
+warn   res://src/app/combat_mercy.gd
+warn   res://src/app/player_adapter.gd
+warn   res://src/app/world_stage.gd
+warn   res://src/app/item_workbench_body.gd
+warn   res://src/app/item_workbench_readout.gd
+warn   ... and 2 more
+warn SCRIPT ERROR: Parse Error: Could not resolve class "LootContentTables".
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+warn ... and 5 more
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game --import --log-file D:\Works\source\chaos-world\build\logs\005255-22776-1-run.log
+$ C:\Users\NeneScarlet\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\Works\source\chaos-world\game -s res://tests/run_tests.gd --log-file D:\Works\source\chaos-world\build\logs\005304-22776-2-run.log -- --suite test_npc
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Floors: 3 of 161 test(s) ran under a declared expect_assertions() floor; the rest are covered only by the SCRIPT ERROR scan in tools/test.py, which catches an abort without naming the test
+Results: 656 passed, 7 failed (15 suite(s))

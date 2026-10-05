@@ -1,0 +1,39 @@
+Comparing files GAME\SRC\MODULES\COMBAT_ENGINE\spine.gd and BUILD\BASELINE\GAME\SRC\MODULES\COMBAT_ENGINE\SPINE.GD
+***** GAME\SRC\MODULES\COMBAT_ENGINE\spine.gd
+    4:  ## The one damage pipeline every hit passes through (ADR 0067). Eleven stages, in
+    5:  ## order, unchangeable without an ADR. Nine are SHARED; S4 and S5 are the seam. ADR
+    6:  ## 0067's `effects[]` step follows them, in `CombatEffectApply`, and is not a numbered
+    7:  ## stage: it is the path's own state writes, applied after health.
+    8:  ##
+***** BUILD\BASELINE\GAME\SRC\MODULES\COMBAT_ENGINE\SPINE.GD
+    4:  ## The one damage pipeline every hit passes through (ADR 0067). Eleven stages, in
+    5:  ## order, unchangeable without an ADR. Nine are SHARED; S4 and S5 are the seam.
+    6:  ##
+*****
+
+***** GAME\SRC\MODULES\COMBAT_ENGINE\spine.gd
+   27:  ## stub for qi is one `app/` line and zero combat edits. That is a property of THIS
+   28:  ## file, so it is a test: `tests/modules/combat_engine/test_combat_mechanism_seam.gd`
+   29:  ## drives
+   30:  ## three stub mechanisms with three distinct returns through the identical code.
+***** BUILD\BASELINE\GAME\SRC\MODULES\COMBAT_ENGINE\SPINE.GD
+   25:  ## stub for qi is one `app/` line and zero combat edits. That is a property of THIS
+   26:  ## file, so it is a test: `tests/modules/combat/test_combat_mechanism_seam.gd` drives
+   27:  ## three stub mechanisms with three distinct returns through the identical code.
+*****
+
+***** GAME\SRC\MODULES\COMBAT_ENGINE\spine.gd
+  178:          )
+  179:          # --- ADR 0067's `effects[]` step, LAST of all: after health (S9), after reflect
+  180:          # (S10), after leech (S11) and after status (S12). Every mechanism computes its own
+  181:          # state writes and NOTHING applied them, so a body hit left no wound and a mind
+  182:          # erosion was discarded -- see `effect_apply.gd`. Kept here rather than inside
+  183:          # `_spend` so the "effects land after the HP write" ordering is asserted at the ONE
+  184:          # call site that decides it, beside S12 rather than four branches deep.
+  185:          CombatEffectApply.apply(target, CombatProposalReader.effects_of(proposal), tuning)
+  186:          return outcome
+***** BUILD\BASELINE\GAME\SRC\MODULES\COMBAT_ENGINE\SPINE.GD
+  175:          )
+  176:          return outcome
+*****
+

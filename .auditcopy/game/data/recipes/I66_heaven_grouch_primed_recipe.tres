@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I66_heaven_grouch_primed_recipe"
+display_name = "Heaven Grouch Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I66_heaven_grouch_aged", &"Z40_heaven_ejecta_cippus", &"crystal_ruby", &"bangle_heaven_jade"])
+outputs = Array[StringName]([&"I66_heaven_grouch_primed"])

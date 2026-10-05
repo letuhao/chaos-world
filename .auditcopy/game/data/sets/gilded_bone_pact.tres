@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/set_bonus/set_def.gd" id="1_set"]
+
+[resource]
+script = ExtResource("1_set")
+id = &"gilded_bone_pact"
+display_name = "Gilded Bone Pact"
+description = "A transcendent-band pact filed in bone. Each threshold settles one more entry against the wearer's breakthrough record."
+realm = &"transcendent"
+rarity = &"legendary"
+counting = &"distinct_definition"
+pieces = Array[StringName]([&"set_gilded_bone_helm", &"set_gilded_bone_charm", &"set_gilded_bone_relic"])
+uniques = Array[StringName]([&"unique_gilded_bone_pact_ledger"])
+tiers = Array[Dictionary]([
+	{"count": 2, "label": "Bone Pact", "options": [{"option_id": &"core_max_health", "value": 25.0}, {"option_id": &"core_breakthrough_chance", "value": 0.02}]},
+	{"count": 3, "label": "Gilded Pact", "options": [{"option_id": &"core_dao_heart", "value": 18.0}, {"option_id": &"core_insight_gain", "value": 0.03}]},
+	{"count": 4, "label": "Ledger Settled", "options": [{"option_id": &"core_damage_reduction", "value": 0.05}, {"option_id": &"core_breakthrough_chance", "value": 0.05}, {"option_id": &"core_dao_heart", "value": 24.0}]},
+])

@@ -42,32 +42,24 @@ static func summary(
 	}
 
 
-## Whether `def` is learnable, what it would cost, and what would stop both the
-## learn and the equip. `{}` when either is missing, so a panel never renders a row
-## it cannot fill.
-static func learn_preview(
-	actor: Actor, codex: TechniqueCodex, def: TechniqueDef, learn_unmet: Array, equip_unmet: Array
-) -> Dictionary:
-	if actor == null or def == null:
-		return {}
-	return {
-		"id": String(def.id),
-		"display_name": def.display_name,
-		"grade": String(def.grade),
-		"rarity": String(def.rarity),
-		"active": def.active,
-		"path": String(def.path),
-		"shared": def.is_shared(),
-		"known": codex.knows(def.id),
-		"can_learn": learn_unmet.is_empty(),
-		"price": TechniqueGate.learn_price_for(actor, def),
-		"learn_unmet": learn_unmet,
-		"equip_unmet": equip_unmet,
-	}
-
-
 ## One technique in full: identity, grade, path, costs, the mastery ladder, the
 ## effects it would contribute and both gates.
+##
+## ## THE ONE DOOR to a learn preview (DEF-0300)
+##
+## This used to sit beside a second `learn_preview`, which published the same shape
+## under different key names (`price` for `learn_price`, `can_learn` for
+## `known && can_learn`). Nothing in the tree called it but one assertion in another
+## program's suite, so it was not a second door anyone walked through — it was a
+## second SHAPE of the same door, and the two had already drifted on the one key
+## they both answered. A second reader of a learn's terms is the hazard ADR 0196
+## names about margins and ADR 0053 names about learning: a preview is worth exactly
+## what the learn it predicts is worth, and two predictions can only disagree.
+##
+## So the second one is deleted rather than wired, and this function is the whole
+## preview — including `learn_price`, `learn_unmet`, `can_pay`, `learn_short` and
+## `marginal_band`. The only caller it had read nothing this did not, and read it
+## through the door a player would.
 static func inspect(
 	actor: Actor,
 	codex: TechniqueCodex,
@@ -131,6 +123,25 @@ static func inspect(
 		"rung_count": def.mastery_rungs,
 		"mastery": mastery_view(def, rung),
 		"mastery_ladder": ladder_view(def),
+		# ## How THIS technique's ladder is climbed, and why it had to be published
+		#
+		# The player-visible half of DEF-0304 was not the missing input but the
+		# ladder: `mastery_ladder` rendered five rungs of a passive with no verb
+		# behind any of them, because an active climbs by firing and a passive had
+		# nothing to fire. ADR 0247 gave it one — `worn`, a rung per settled upkeep
+		# interval while equipped — and this is the key a panel prints next to the
+		# ladder so the rows are not an aspiration.
+		#
+		# Read from `TechniqueUpkeep.MASTERY_BY` rather than spelled here, so the
+		# projection and the settle loop cannot disagree about the verb: a screen
+		# told `worn` while the settle loop earned it by casting would be the same
+		# "one stat, two answers" hazard ADR 0160 refuses.
+		"mastery_by":
+		(
+			String(TechniqueCasting.MASTERY_BY)
+			if not def.is_passive()
+			else String(TechniqueUpkeep.MASTERY_BY)
+		),
 		"effects": effect_view(def, entry),
 		# The printed text against this copy's ANNOTATIONS (ADR 0196): what the
 		# sheet says and what this copy says. `marginal` is empty for an active
@@ -138,6 +149,18 @@ static func inspect(
 		# authored column alone rather than a difference nobody can compute.
 		"authored_effects": effect_view(def, null),
 		"marginal": effect_view(def, entry, true),
+		# The RANGE a copy of this manual may read (ADR 0196/0204): the two edges
+		# `TechniqueMarginalia.draw` rolls between, read through `band_for` so a
+		# screen and the roll can never disagree about how wide the band is.
+		# Published even when this row has no margin yet — a hero deciding whether
+		# to spend a manual on it needs to know what the sheet is worth varying by.
+		# `marginal_banded` says whether the edges bite at all: a COMMON copy spans
+		# `1.0 .. 1.0`, and a player told "1.0-1.0" would read a precision nobody
+		# authored. A capacity option is carried at its authored value and is not
+		# banded, so a manual whose options are all capacity reads unbanded too.
+		"marginal_band": _band(def),
+		"marginal_banded": _band_bites(def, entry),
+		"marginal_band_figures": _band_figures(def, entry),
 		"learn_unmet": learn_unmet,
 		"equip_unmet": equip_unmet,
 		"claimable_slots":
@@ -168,13 +191,21 @@ static func _owed(actor: Actor, def: TechniqueDef) -> Dictionary:
 ## Every pool this study cannot pay, with what it owed and what it held — the shape
 ## `TechniquesApi.learn` refuses on, published so a panel can say "you need 100,
 ## you have 40" rather than only "not affordable".
+##
+## The SAME loop `TechniquesApi._short` runs, in the same order and over the same
+## `{path_id: price}` map, and the same epsilon it allows — so the shortfall a hero
+## reads on the codex is by construction the shortfall the `learn` refuses on. This
+## is the one place that sameness is asserted: `test_technique_study_preview.gd`
+## drives a real short actor through both and compares the owed figure.
 static func _short(actor: Actor, owed: Dictionary) -> Array:
 	var out: Array = []
+	if actor == null:
+		return out
 	for path_id in owed.keys():
 		var state := actor.path(path_id)
 		var held := 0.0 if state == null else state.progress
 		var required := float(owed[path_id])
-		if held + 0.0001 >= required:
+		if held + TechniquesApi.EPSILON >= required:
 			continue
 		out.append({"resource": String(path_id), "required": required, "current": held})
 	return out
@@ -204,6 +235,130 @@ static func ladder_view(def: TechniqueDef) -> Array[Dictionary]:
 	return out
 
 
+## The band's two edges as primitives, `{floor, ceiling}` — a multiplier pair, not
+## a `Vector2`, because every dictionary this file returns is primitives-only and a
+## consumer must never have to reach back into the module to read it.
+##
+## Read through `TechniqueMarginalia.band_for`, which is the one place the width is
+## declared. A caller that re-derived `1.0 ± rarity * reach` here would be a SECOND
+## reader of a rule the roll owns, and the two would drift the first time a designer
+## retuned the reach (DEF-0302).
+static func _band(def: TechniqueDef) -> Dictionary:
+	if def == null:
+		return {"floor": 1.0, "ceiling": 1.0}
+	var band := TechniqueMarginalia.band_for(def.rarity)
+	return {"floor": float(band.x), "ceiling": float(band.y)}
+
+
+## Whether the band is worth telling a player about for THIS row: the rarity's reach
+## is non-zero AND at least one authored option may be moved.
+##
+## The second half is the honest answer for the three cases that would otherwise
+## read as a promise the module cannot keep: an ACTIVE manual authors no options at
+## all (so its margin is empty and nothing can vary), a capacity option is carried at
+## its authored value by ADR 0160's refusal (`TechniqueMarginalia.draw`), and a
+## COMMON manual's rarity reach is `0.0`, so its two edges are the same number.
+##
+## The ANSWER is `_band_figures`' — one reader, so the flag a row checks and the list
+## a row prints cannot disagree about whether there was anything to print.
+static func _band_bites(def: TechniqueDef, entry: CodexEntry) -> bool:
+	if def == null:
+		return false
+	var band := _band(def)
+	if float(band["ceiling"]) - float(band["floor"]) <= 0.0:
+		return false
+	return not _band_figures(def, entry).is_empty()
+
+
+## The ACTUAL PRICE WIDTHS, not the multipliers — what a player can be told.
+##
+## `marginal_band` publishes the two multipliers a copy is rolled between. This
+## publishes what they MEAN on this technique's own authored option values: the
+## lowest and highest figure any copy of this manual may read. Both are read through
+## `band_for` and applied to the module's own `authored_effects`, so a row shows a
+## range in the same units as the sheet beside it — which is the claim ADR 0204 made
+## and nothing made true.
+##
+## One entry per authored option that the band can actually move (ADR 0160 refuses
+## the capacity channel), each carrying its `option_id`, `label` and the authored
+## `authored`, `floor` and `ceiling` figures. Empty for a technique whose options
+## cannot vary — which is why `marginal_banded` exists as the flag and this is the
+## data behind it.
+static func _band_figures(def: TechniqueDef, entry: CodexEntry) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	if def == null:
+		return out
+	var band := _band(def)
+	var floor_edge := float(band["floor"])
+	var ceiling_edge := float(band["ceiling"])
+	var authored := effect_view(def, null)
+	# A drawn copy is the authority on what it moved: asking the catalog again would
+	# answer about a DIFFERENT copy, and a capacity option was carried at its
+	# authored value precisely because the band was refused on it.
+	var rollable := 0
+	if entry != null and not entry.realized.is_empty():
+		# The SHEET figure comes from the authored options, never from the drawn
+		# effect: `authored` is what the manual prints, and a copy that rolled to
+		# 5.67 must still be reported against the 6.0 it was copied from. Passing the
+		# realized effect here made the sheet column read 5.67 and the floor/ceiling
+		# scale off the same wrong base, so the published window silently described
+		# this copy rather than the band.
+		var sheet := {}
+		for option in authored:
+			sheet[String(option.get("option_id", ""))] = option
+		for effect in entry.realized:
+			var rolled := effect as Dictionary
+			var target_id := StringName(rolled.get("target_id", &""))
+			if TechniqueMarginalia.is_capacity_effect(target_id):
+				continue
+			rollable += 1
+			var option_id := String(rolled.get("option_id", ""))
+			var printed: Dictionary = sheet.get(option_id, rolled)
+			_append_band_figure(out, option_id, rolled, floor_edge, ceiling_edge, printed)
+		return out
+	for effect in authored:
+		if TechniqueMarginalia.is_capacity_effect(StringName(effect.get("target_id", ""))):
+			continue
+		rollable += 1
+		_append_band_figure(
+			out, String(effect.get("option_id", "")), effect, floor_edge, ceiling_edge
+		)
+	if rollable > 0 and ceiling_edge - floor_edge <= 0.0:
+		return []
+	return out
+
+
+static func _append_band_figure(
+	out: Array[Dictionary],
+	option_id: String,
+	effect: Dictionary,
+	floor_edge: float,
+	ceiling_edge: float,
+	printed: Dictionary = {}
+) -> void:
+	var resolved := (
+		String(option_id) if not option_id.is_empty() else String(effect.get("option_id", ""))
+	)
+	if resolved.is_empty():
+		return
+	var authored := float(printed.get("value", effect.get("value", 0.0)))
+	var low := authored * floor_edge
+	var high := authored * ceiling_edge
+	var label := String(printed.get("label", resolved))
+	(
+		out
+		. append(
+			{
+				"option_id": resolved,
+				"label": label,
+				"authored": authored,
+				"floor": low,
+				"ceiling": high,
+			}
+		)
+	)
+
+
 ## The normalized effects a technique contributes, as primitives, with the value the
 ## ACTOR has. `realized` says whether the row came from this copy's annotations or
 ## from the authored passive options.
@@ -222,7 +377,20 @@ static func effect_view(
 		# `marginal_only` with nothing realized IS the authored sheet, so the
 		# authored read is the honest answer rather than an empty row nobody can
 		# fill.
-		effects = def.effects() if not marginal_only else []
+		#
+		# Element-typed explicitly on the `else` arm rather than letting `:=`
+		# infer it. `def.effects()` is declared `Array[Dictionary]` but `[]` is an
+		# untyped `Array`, so the inferred local is untyped and the ternary
+		# re-boxes an authored sheet as a plain `Array` — which throws "Trying to
+		# assign an array of type Array to a variable of type Array[Dictionary]"
+		# at RUNTIME, INSIDE `inspect`, before the dictionary is ever returned. The
+		# whole read model was silently unreachable for every technique that
+		# authored a passive option, and every key below this line — `can_pay`,
+		# `learn_short`, and the band — was lost with it (DEF-0301/DEF-0302).
+		if marginal_only:
+			effects = [] as Array[Dictionary]
+		else:
+			effects = def.effects()
 	elif marginal_only:
 		for effect in entry.realized:
 			effects.append(effect)

@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://src/ui/screens/domain_explore.gd" id="1"]
 [ext_resource type="Theme" path="res://src/ui/theme/chaos_world_theme.tres" id="2"]
 [ext_resource type="PackedScene" path="res://src/ui/panels/action_set.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://src/ui/panels/npc_roster_panel.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/domain_map_view.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/settlement_panel.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://src/ui/panels/domain_telegraph_panel.tscn" id="7"]
 
 [node name="DomainExploreScreen" type="PanelContainer"]
 anchors_preset = 15
@@ -92,6 +95,10 @@ layout_mode = 2
 theme_type_variation = &"SectionTitle"
 text = "Floor plan"
 
+[node name="MapView" parent="Layout/Columns/MapPanel/MapVBox" instance=ExtResource("5")]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="MapLabel" type="Label" parent="Layout/Columns/MapPanel/MapVBox"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -111,6 +118,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Roster" parent="Layout/Columns/SidePanel" instance=ExtResource("4")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Settlement" parent="Layout/Columns/SidePanel" instance=ExtResource("6")]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -160,10 +171,10 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ArmButton" type="Button" parent="Layout/FixtureRow"]
+[node name="InspectButton" type="Button" parent="Layout/FixtureRow"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Arm"
+text = "Inspect"
 
 [node name="AttemptButton" type="Button" parent="Layout/FixtureRow"]
 unique_name_in_owner = true
@@ -183,5 +194,9 @@ autowrap_mode = 2
 text = ""
 
 [node name="Actions" parent="Layout" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Telegraph" parent="Layout" instance=ExtResource("7")]
 unique_name_in_owner = true
 layout_mode = 2

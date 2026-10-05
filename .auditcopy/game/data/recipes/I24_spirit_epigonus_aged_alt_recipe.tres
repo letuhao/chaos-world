@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I24_spirit_epigonus_aged_alt_recipe"
+display_name = "Spirit Epigonus Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I24_spirit_epigonus_refined", &"body_spirit_palace_tempering_herb", &"mind_spirit_condensation_mind_herb"])
+outputs = Array[StringName]([&"I24_spirit_epigonus_aged"])

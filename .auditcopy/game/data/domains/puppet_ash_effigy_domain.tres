@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DomainDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/domain_def.gd" id="1_domain"]
+
+[resource]
+script = ExtResource("1_domain")
+id = &"puppet_ash_effigy_domain"
+display_name = "Ash Effigy Domain"
+boss_ids = Array[StringName]([&"puppet_ash_effigy", &"d4_ash_effigy"])

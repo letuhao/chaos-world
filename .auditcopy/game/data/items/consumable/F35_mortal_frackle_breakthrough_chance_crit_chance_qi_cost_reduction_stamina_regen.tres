@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F35_mortal_frackle_breakthrough_chance_crit_chance_qi_cost_reduction_stamina_regen"
+display_name = "Mortal Frackle Breakthrough chance Crit chance Qi cost reduction Stamina regen"
+category = &"consumable"
+rarity = &"common"
+realm = &"void_refinement"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.03},
+	{"option_id": &"core_crit_chance", "value": 0.05},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+	{"option_id": &"core_stamina_regen", "value": 4.87},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"broth"
+grade = &"mortal"
+sources = Array[StringName]([&"quest", &"domain:manual_thunder_ape_domain"])

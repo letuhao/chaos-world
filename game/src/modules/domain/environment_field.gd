@@ -360,6 +360,11 @@ const MAX_MAGNITUDE := 2.0
 const GEAR_TAGS_KEY := &"env_gear_tags"
 const TECHNIQUE_TAGS_KEY := &"env_technique_tags"
 const PILL_TAGS_KEY := &"env_pill_tags"
+## The marker slot the run's weather element is published under. See [method
+## effective_band]: `domain` is reached by callers that hold no `DomainMap`, so the
+## weather travels as plain data on the `Actor`, exactly the seam `GEAR_TAGS_KEY` and its
+## two siblings already use.
+const WEATHER_ELEMENT_KEY := &"env_weather_element"
 
 ## The authored def, cached after the first read, or null when the file is missing or
 ## unreadable. A missing def is NOT fatal: `_hazard` falls back to `TICK_INTERVAL` so a
@@ -447,6 +452,10 @@ static func apply(actor: Actor, zone: EnvironmentZoneDef, path_id: StringName) -
 ## touching them. Separate from `apply` so the same actor on the same zone can be
 ## measured before and after a mitigation is equipped, which is what proves a lever is
 ## real rather than merely asserted.
+##
+## Weather composes HERE exactly as it does in [method apply], because both call
+## `_amount` — so a preview and the hazard it previews cannot disagree about which band
+## the room is running at (ADR 0213).
 static func residual_amount(
 	actor: Actor, zone: EnvironmentZoneDef, path_id: StringName = &""
 ) -> float:
@@ -492,6 +501,141 @@ static func mitigates(lever: StringName, path_id: StringName, kind: StringName) 
 	return _moves(String(lever), effect_for(path_id, kind))
 
 
+## How hard this actor's spirit root bears on `element`, `0.0` when it does not.
+##
+## ## The same `_affinity_weight` the field uses, on ONE argument fewer
+##
+## [method _affinity_weight] takes a ZONE and walks `HOSTILE_ELEMENTS[kind]`, which is
+## right for a zone: a zone declares which elements it is hostile to, so a kind IS the
+## question. ADR 0212 needs the OTHER question for a trap — the fixture authors no
+## element (`ember`, `stone`, `ruined` belong to no `HOSTILE_ELEMENTS` row) but the
+## STATUS it lands is element-riding and does (`fire_immolation.tres:8 element = &"fire"`),
+## so the trap's identity is its status's element, not its room vocabulary.
+##
+## So the strength-vs-element arithmetic is factored here and both callers share it:
+## one place decides how strong a root must be to count (`AFFINITY_STRONG` /
+## `AFFINITY_FLOOR`), so a future retune of the race scale moves the zone and the trap
+## together rather than leaving two scales that disagree.
+static func affinity_strength(actor: Actor, element: StringName) -> float:
+	if actor == null or element == &"":
+		return 0.0
+	var strength := actor.affinities.get_value(element)
+	if strength >= AFFINITY_STRONG:
+		return 1.0
+	if strength >= AFFINITY_FLOOR:
+		return strength / AFFINITY_STRONG
+	return 0.0
+
+
+## Whether this actor's spirit root is strong enough on `element` to be credited at all.
+## The [constant AFFINITY_FLOOR] test, under [method affinity_strength]'s normalisation:
+## a root too weak to specialise against the element is not a mitigation.
+static func affinity_covers(actor: Actor, element: StringName) -> bool:
+	return affinity_strength(actor, element) >= AFFINITY_FLOOR / AFFINITY_STRONG
+
+
+## The band a zone's hazard is RESOLVED at for `actor`: the authored band shifted by
+## the run's weather, clamped to `EnvironmentZoneDef.BANDS` (ADR 0213).
+##
+## ## This is the ONE seam weather composes through
+##
+## `apply`'s signature is `(actor, zone, path_id)` and gains NO parameter — the hazard
+## must be reachable by a caller that holds no `DomainMap` at all, so a map parameter
+## would leave it unreachable at the one moment it spends. Instead the run's weather
+## ELEMENT is PUBLISHED on the `Actor` by whoever owns the map (`DomainMap.publish_bands`),
+## under [constant WEATHER_ELEMENT_KEY], and every reader — [method hazard_magnitude],
+## `_amount`, [method telegraph] — resolves through this one function. Three readers of
+## one number is the whole defect ADR 0213 closes; a second reader that re-derived the
+## shift is the same bug renamed.
+##
+## ## Why the ELEMENT is published rather than the shift
+##
+## A shift is a per-ZONE conclusion; the weather is a per-RUN fact. Publishing the shift
+## would make every zone in a fire-weathered domain move, including the `sorrow` hollow
+## that authors no fire — which is exactly the "weather is a global flag" shape ADR 0075
+## forbids. So the run publishes what it knows (one element id, or none) and the match
+## against a zone's own `tags` is made HERE, per zone, at the point the band is read.
+##
+## ## The authored band is NEVER touched
+##
+## `zone.intensity` stays exactly as the `.tres` authored it, so "this room was authored
+## at band 2" remains a fact a player can be told and a designer can revert (ADR 0213).
+## Only this derived value moves.
+static func effective_band(zone: EnvironmentZoneDef, actor: Actor = null) -> int:
+	if zone == null:
+		return EnvironmentZoneDef.BAND_SCORCH
+	var authored := zone.resolved_intensity()
+	return clampi(
+		authored + weather_shift_for(zone, actor),
+		EnvironmentZoneDef.BAND_SCORCH,
+		EnvironmentZoneDef.BAND_ANNIHILATING
+	)
+
+
+## The band shift `zone` takes under the weather published on `actor`: `0` or `+1`.
+##
+## ## The one-directional +1, and why the docblock that promised -1 was wrong
+##
+## It moved UP or not at all, and it moved only for a zone that authors the published
+## element in its own `tags`. Never down: a player may have routed around a hazard on the
+## promise this room was authored at band 2, and a weather that softened it would
+## silently invalidate that promise. `DomainMap.weather_shift_for` states the same rule
+## over the closed weather vocabulary; this is the same rule over a published element, so
+## the two cannot disagree about direction.
+##
+## NEVER more than one band, so [method effective_band] stays inside the authored ladder.
+static func weather_shift_for(zone: EnvironmentZoneDef, actor: Actor) -> int:
+	if zone == null or actor == null:
+		return 0
+	var element := weather_element_of(actor)
+	if element == &"":
+		return 0
+	# Bounded `for` over the zone's own authored element tags, which are small authored
+	# content. A zone authoring no element is biased by no weather.
+	for tag in zone.tags:
+		if tag == element:
+			return 1
+	return 0
+
+
+## The authoritative magnitude of `zone` right now for `actor`: its band-ladder row at
+## the EFFECTIVE band ([method effective_band]), not at the authored one.
+##
+## `EnvironmentZoneDef.magnitude()` reads `resolved_intensity()`, which is the AUTHORED
+## band — so before this existed, a run whose weather had moved a fire zone from band 2 to
+## band 3 measured `0.700000` in both calm and weathered weather. Every caller in this
+## file that wants "what does this hazard cost" reads here instead; a caller that wants
+## "what did the designer author" reads `zone.magnitude()` and is then deliberately
+## looking at the pre-weather value.
+static func hazard_magnitude(zone: EnvironmentZoneDef, actor: Actor = null) -> float:
+	if zone == null:
+		return 0.0
+	var row: Array = EnvironmentZoneDef.MAGNITUDES.get(zone.kind, [])
+	if row.is_empty():
+		return 0.0
+	var index := clampi(effective_band(zone, actor) - 1, 0, row.size() - 1)
+	return float(row[index])
+
+
+## The weather element currently published on `actor`, or `&""` for no weather.
+static func weather_element_of(actor: Actor) -> StringName:
+	if actor == null:
+		return &""
+	return StringName(str(actor.get_module_data(WEATHER_ELEMENT_KEY).get("element", "")))
+
+
+## Publish the run's weather element on `actor` and answer what was applied.
+##
+## `&""` is the honest answer for a run with no weather, and it is published rather than
+## left unwritten: an actor entering a second domain must not inherit the first domain's
+## weather through a key nobody cleared.
+static func publish_weather_element(actor: Actor, element: StringName) -> StringName:
+	if actor == null:
+		return &""
+	actor.set_module_data(WEATHER_ELEMENT_KEY, {"element": element})
+	return element
+
+
 ## The boundary a scene draws BEFORE anything is applied (ADR 0075: telegraph before
 ## damage). Primitives only, so it crosses into a Node without this module knowing one
 ## exists.
@@ -499,21 +643,33 @@ static func mitigates(lever: StringName, path_id: StringName, kind: StringName) 
 ## `touches` is the entry test. `false` for an actor outside `bounds`, and the status
 ## is NOT applied. That ordering is the point: a hazard that cannot be seen before it
 ## bites is a trap, not an environment.
-static func telegraph(zone: EnvironmentZoneDef, touches: bool = false) -> Dictionary:
+##
+## `actor` is the one standing at the boundary, and it is what makes the telegraph
+## ADR 0213's: without it the band read here would be the authored one, so a screen
+## would draw "band 2" on a room running at band 3 today. `null` is answered as "no
+## weather", which is the honest default for a caller holding no run at all.
+static func telegraph(
+	zone: EnvironmentZoneDef, touches: bool = false, actor: Actor = null
+) -> Dictionary:
 	if zone == null:
 		return {}
 	var box := zone.bounds
 	return {
 		"zone_id": String(zone.zone_id),
 		"kind": String(zone.kind),
-		"intensity": zone.resolved_intensity(),
+		# The EFFECTIVE band, so the boundary a player is shown is the band they will
+		# actually stand in (ADR 0213). `authored_intensity` below is the truthful
+		# pre-weather fact, and both are published because a screen must be able to say
+		# "authored at 2, running at 3 today" rather than pick one and lie about the other.
+		"intensity": effective_band(zone, actor),
+		"authored_intensity": zone.resolved_intensity(),
 		"status_id": String(zone.status_id),
 		# Tiles, relative to the owning room's origin — the frame `bounds` is already in.
 		"bounds": [box.position.x, box.position.y, box.size.x, box.size.y],
 		"stay_budget": zone.stay_budget,
-		# The authored magnitude UNMITIGATED. Telegraphing the number this particular
-		# actor would suffer would leak their own gear to the UI.
-		"amount": zone.magnitude(),
+		# The hazard magnitude UNMITIGATED and at the EFFECTIVE band. Telegraphing the
+		# residual this particular actor would suffer would leak their own gear to the UI.
+		"amount": hazard_magnitude(zone, actor),
 		"mitigation_levers": _lever_names(zone.mitigation_tags),
 		# Visible whether or not the actor is already inside: the boundary is what makes
 		# it possible to leave in time.
@@ -637,12 +793,17 @@ static func _lever_for(actor: Actor, zone: EnvironmentZoneDef, path_id: StringNa
 static func _amount(
 	zone: EnvironmentZoneDef, lever: String, actor: Actor, path_id: StringName
 ) -> float:
+	# ADR 0213: the hazard composes at THIS line. `hazard_magnitude` is the effective
+	# band, so a weathered run spends a band-3 number on a room authored at band 2, and a
+	# calm run spends the authored one. This is the one call that makes weather cost
+	# health; every other reader is a preview of this number.
+	var magnitude := hazard_magnitude(zone, actor)
 	var cap := _cap_for(lever)
 	if cap <= 0.0:
 		# The lever is published but structurally inert on this substrate, so it was
 		# never credited. Subtracting from it anyway would report a mitigation that did
 		# not happen.
-		return zone.magnitude()
+		return magnitude
 	var held := 1.0
 	if lever == String(LEVER_AFFINITY):
 		held = _affinity_weight(actor, zone)
@@ -650,7 +811,7 @@ static func _amount(
 		held = BODY_GEAR_FACTOR
 	# A tagged source counts once, not per tag: the cap is the authored strength of the
 	# lever, so a full set of gear is exactly as good as the data claims and no more.
-	return zone.magnitude() * (1.0 - cap * minf(1.0, held))
+	return magnitude * (1.0 - cap * minf(1.0, held))
 
 
 ## The share of a zone's magnitude `lever` removes at full strength, 0.0 when the lever
@@ -687,20 +848,41 @@ static func _lever_applies(actor: Actor, lever: StringName, zone: EnvironmentZon
 	return false
 
 
+## The strongest hazard this field can resolve as a SHARE, and the floor one lever may
+## leave behind (ADR 0212).
+##
+## ## Why a share and not a magnitude
+##
+## A lever answers "how much of this hazard did I remove", so it is a proportion of the
+## authored number and never a number of its own. The strongest of the four caps, not
+## their sum and not their mean: ADR 0212's rule that AT MOST ONE lever is credited per
+## hazard instance is what makes the strongest single cap the real bound, and that rule
+## is enforced structurally by `_lever_for` returning on first match rather than by a
+## sum anyone could later restore.
+static func lever_floor_share() -> float:
+	var strongest := 0.0
+	# Bounded `for` over the closed four-lever cap table.
+	for lever in LEVER_CAPS:
+		strongest = maxf(strongest, float(LEVER_CAPS[lever]))
+	return strongest
+
+
 ## How hard this actor's spirit root bears on this zone, 0.0 when it does not.
 ## Scaled against `AFFINITY_STRONG` so a fully-rooted actor gets the full cap and a
 ## partial one is proportionally worth less.
+##
+## The per-element test is [method affinity_strength], the SAME one a trap reads against
+## its landed status (ADR 0212), so a root strong enough to answer a fire zone is strong
+## enough to answer a fire trap and neither can drift from the other.
 static func _affinity_weight(actor: Actor, zone: EnvironmentZoneDef) -> float:
 	if actor == null:
 		return 0.0
 	# Bounded `for` over the element ids this kind is hostile to. A kind with no entry
 	# is hostile to nothing, so no spirit root can answer it.
 	for entry in HOSTILE_ELEMENTS.get(zone.kind, []):
-		var strength := actor.affinities.get_value(StringName(str(entry)))
-		if strength >= AFFINITY_STRONG:
-			return 1.0
-		if strength >= AFFINITY_FLOOR:
-			return strength / AFFINITY_STRONG
+		var strength := affinity_strength(actor, StringName(str(entry)))
+		if strength > 0.0:
+			return strength
 	return 0.0
 
 

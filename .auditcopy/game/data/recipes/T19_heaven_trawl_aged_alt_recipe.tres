@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"T19_heaven_trawl_aged_alt_recipe"
+display_name = "Heaven Trawl Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"T19_heaven_trawl_refined", &"scale_dragon", &"tablet_storm"])
+outputs = Array[StringName]([&"T19_heaven_trawl_aged"])

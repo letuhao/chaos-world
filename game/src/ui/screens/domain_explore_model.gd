@@ -403,6 +403,23 @@ func _minimap() -> Dictionary:
 	return _bridge.call_action(&"minimap", [_actor])
 
 
+## The floor plan as the DRAWING panel takes it. Same read as [method _minimap] and
+## deliberately its own door rather than a widened [method summary]: the view is handed
+## the payload WHOLE and reads the geometry itself, so nothing about the map's shape
+## passes through a second summariser on the way to the screen.
+func minimap() -> Dictionary:
+	return _minimap()
+
+
+## Every room the run AUTHORED, fog notwithstanding. The same list [method _rooms]
+## returns and the same list [method _authored_rooms] already wraps, published for the
+## map view because the payload's `rooms[]` is the DISCOVERED subset — the frontier seam
+## is computed against the rooms fog hid, and asking a fogged list for them makes the
+## seam permanently empty (ADR 0207).
+func authored_rooms() -> Array:
+	return _rooms()
+
+
 ## The minimap's own room layer. `{}` has no `rooms` key, so the empty case is named
 ## rather than indexed — an absent key and an empty map must not read alike.
 func _drawn_rooms(minimap: Dictionary) -> Array:

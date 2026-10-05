@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"qi_mystic_immortal_recovery_recipe"
+display_name = "Mystic Immortal Renewal Elixir Formula"
+station = &"alchemy"
+inputs = Array[StringName]([&"qi_mystic_immortal_cultivation_herb", &"qi_mystic_immortal_guardian_core"])
+outputs = Array[StringName]([&"qi_mystic_immortal_recovery_elixir"])

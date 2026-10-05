@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BossDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/boss_def.gd" id="1_boss"]
+
+[resource]
+script = ExtResource("1_boss")
+id = &"d1_ironhide_bear_cub"
+display_name = "Ironhide Bear Cub Lesser"
+domain_id = &"beast_ironhide_bear_domain"
+loot = Array[StringName]([])

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"passive_second_wind"
+delivered_by = &"sigil_storm_call"
+display_name = "Second Wind Discipline"
+description = "Trains the body to keep a larger share of its load, so less of each effort has to be paid for out of qi. Greater carry and faster recovery than the frame it sits on."
+tags = Array[StringName]([&"passive", &"body", &"endurance"])
+grade = &"heaven"
+rarity = &"rare"
+element = &""
+schools = Array[StringName]([&"body"])
+active = false
+path = &"body_cultivation"
+min_path_realm = {&"body_cultivation": 22}
+mastery_rungs = 5
+magnitude = 1.0
+passive_options = Array[Dictionary]([
+	{"option_id": &"cult_carry_capacity", "value": 8.0},
+	{"option_id": &"cult_regeneration", "value": 7.0},
+])
+upkeep = {&"stamina": 6.0}
+upkeep_interval = 60.0
+

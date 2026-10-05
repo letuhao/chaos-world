@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"unique_ironhide_hearthguard"
+display_name = "Hearthguard of the Ironhide Vigil"
+category = &"equipment"
+subcategory = &"artifact"
+grade = &"mortal"
+stackable = false
+tags = Array[StringName]([&"unique", &"unique_route:E2_nascent_soul_herald", &"set:ironhide_vigil"])
+sources = Array[StringName]([&"boss:E2_nascent_soul_herald"])
+description = "A warden's hearthstone, banked to a still body. Locks a fixed body-tempering signature; the ward survives the wearer."
+rarity = &"legendary"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 18.0},
+	{"option_id": &"core_dao_heart", "value": 6.0},
+	{"option_id": &"core_damage_reduction", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}

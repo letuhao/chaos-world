@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"distil_mortal_cordial_recipe"
+display_name = "Mortal Cordial Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"herb_bloodroot", &"sap_amber"])
+outputs = Array[StringName]([&"distil_mortal_cordial"])

@@ -508,6 +508,100 @@ func test_a_malformed_stamp_is_dropped_rather_than_coerced() -> void:
 		)
 
 
+func test_the_json_hop_returns_the_stamp_as_a_float_and_it_is_still_read() -> void:
+	# ## WHAT THE JSON HOP ACTUALLY PRODUCES — measured here, not assumed.
+	#
+	# The claim the reader is built on is that JSON has no integer type, so a file-backed
+	# save hands the reader a FLOAT. This asserts the claim itself first: if a future
+	# build's parser ever did return an int, this test goes red and says the reader's
+	# float tolerance is now unnecessary rather than leaving it as folklore. Without this
+	# assertion the round-trip test would pass for the wrong reason and nobody would know
+	# which branch actually carried the stamp.
+	var actor := Actor.new(&"json_hop", {Stat.PHYSIQUE: 10.0})
+	actor.set_polity_version(WorldPolityLedger.SCHEMA_VERSION)
+	var in_memory: Variant = (actor.to_dict()["module_data"] as Dictionary)["world_polity_version"]
+	assert_eq(typeof(in_memory), TYPE_INT, "in memory the stamp is an INT")
+	var from_disk: Variant = (
+		(JSON.parse_string(JSON.stringify(actor.to_dict())) as Dictionary)["module_data"]
+		as Dictionary
+	)["world_polity_version"]
+	assert_eq(typeof(from_disk), TYPE_FLOAT, "after the JSON hop it is a FLOAT, as claimed")
+	assert_eq(from_disk, float(WorldPolityLedger.SCHEMA_VERSION), "carrying the same value")
+	# And that is the whole tolerance: same value, accepted. `4.5` and a negative float
+	# are still refused, so "integral float" is a shape rule and not a rounding.
+	assert_eq(
+		ActorSave.stamp_of(float(WorldPolityLedger.SCHEMA_VERSION)),
+		WorldPolityLedger.SCHEMA_VERSION,
+		"the integral float is read as the int it is"
+	)
+	assert_eq(ActorSave.stamp_of(4.5), -1, "a fractional number is still refused")
+	assert_eq(ActorSave.stamp_of(-2.0), -1, "and so is a negative one")
+
+
+func test_a_malformed_module_slot_is_still_dropped_and_named() -> void:
+	# ## PROOF THE MALFORMATION GUARD STILL REFUSES AN UNTRUSTED SAVE.
+	#
+	# The fix for the stamp exempted ONE key from the guard, because that key is not a
+	# module ledger and `ActorSave` owns its shape. Nothing else was exempted, and this
+	# is what says so: a genuine module ledger that arrives as a string, a nested array
+	# or a negative must still be DROPPED and NAMED, or BL-0884's self-inflicted,
+# permanent data loss is back — the next autosave overwrites the good save with a
+	# body that reads as never having earned anything.
+	#
+	# Each case is checked on both halves the guard owes: the slot is absent afterwards
+	# (`get_module_data` answers `{}`, so the module normalizes to its own default), and
+	# the key is not silently swallowed. The stamp key is asserted UNAFFECTED in the same
+	# payloads, so a future exemption cannot creep back in unnoticed.
+	for bogus in ["not a ledger", [1, 2, 3], -7, 4.5]:
+		var key := "t_slot_%s" % typeof(bogus)
+		var payload := {
+			"version": Actor.SCHEMA_VERSION,
+			"id": "corrupt_modules",
+			"base": {},
+			"module_data":
+			{
+				key: bogus,
+				String(Actor.POLITY_SLOT_KEY): WorldPolityLedger.SCHEMA_VERSION,
+			},
+		}
+		var restored := Actor.from_dict(payload)
+		assert_eq(
+			restored.get_module_data(StringName(key)).is_empty(),
+			true,
+			"a %s module slot is dropped, not replayed" % typeof(bogus)
+		)
+		# The stamp in the SAME payload is still restored, so the exemption is provably
+		# scoped to the one key rather than having disabled the guard wholesale.
+		assert_eq(
+			restored.polity_version(),
+			WorldPolityLedger.SCHEMA_VERSION,
+			"and the stamp beside it still rides the versioned path"
+		)
+
+
+func test_the_stamp_is_not_carried_as_a_dictionary() -> void:
+	# The canonical shape is a BARE INT, and this pins it so the Dictionary spelling
+	# cannot creep back in. It is the assertion that would have failed before the fix:
+	# `set_polity_version` wrote `{"version": N}` and `to_dict` wrote a bare int, so the
+	# two ends of one round trip disagreed and the saved stamp was dropped on load.
+	var actor := Actor.new(&"shape", {Stat.PHYSIQUE: 10.0})
+	actor.set_polity_version(WorldPolityLedger.SCHEMA_VERSION)
+	var slot: Variant = actor.module_data.get(ActorSave.POLITY_SLOT_KEY)
+	assert_eq(typeof(slot), TYPE_INT, "the live slot is a bare int in memory")
+	assert_eq(
+		typeof((actor.to_dict()["module_data"] as Dictionary)[String(ActorSave.POLITY_SLOT_KEY)]),
+		TYPE_INT,
+		"and a bare int on the wire"
+	)
+	# And it is excluded from the generic `module_data` path entirely: `set_module_data`
+	# is typed `(id, data: Dictionary)`, so an int could never ride it.
+	assert_eq(
+		actor.get_module_data(ActorSave.POLITY_SLOT_KEY).is_empty(),
+		true,
+		"the stamp is not a module ledger and never answers as one"
+	)
+
+
 # --- The core/ boundary -------------------------------------------------------
 
 

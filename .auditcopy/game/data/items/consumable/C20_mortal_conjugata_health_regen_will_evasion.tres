@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"C20_mortal_conjugata_health_regen_will_evasion"
+display_name = "Mortal Conjugata Health Regen Will Evasion"
+category = &"consumable"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 7.7},
+	{"option_id": &"base_will", "value": 4.54},
+	{"option_id": &"core_evasion", "value": 0.05},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"salve"
+grade = &"mortal"
+sources = Array[StringName]([&"gather", &"domain:qi_earth_immortal_domain"])

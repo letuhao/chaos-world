@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F19_mortal_entozoon_agility_aptitude_poise_will"
+display_name = "Mortal Entozoon Agility Aptitude Poise Will"
+category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_agility", "value": 7.15},
+	{"option_id": &"base_aptitude", "value": 7.15},
+	{"option_id": &"core_poise", "value": 7.15},
+	{"option_id": &"base_will", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"scroll"
+grade = &"mortal"
+sources = Array[StringName]([&"gather", &"domain:qi_spirit_domain_domain"])

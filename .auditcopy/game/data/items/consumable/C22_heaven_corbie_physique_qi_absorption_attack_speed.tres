@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"C22_heaven_corbie_physique_qi_absorption_attack_speed"
+display_name = "Heaven Corbie Physique Qi Absorption Attack Speed"
+category = &"consumable"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 16.57},
+	{"option_id": &"core_qi_absorption", "value": 16.57},
+	{"option_id": &"core_attack_speed", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"decree"
+grade = &"heaven"
+sources = Array[StringName]([&"quest", &"domain:qi_mystic_immortal_domain"])

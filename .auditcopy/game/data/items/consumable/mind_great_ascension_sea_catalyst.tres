@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"mind_great_ascension_sea_catalyst"
+display_name = "Concentration Sea Catalyst"
+category = &"consumable"
+rarity = &"common"
+realm = &"great_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"tonic"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:mind_great_ascension_sea_recipe"])
+description = "Strengthens the sea of consciousness toward the realm's clarity and purity targets."

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"O13_heaven_starfall_base"
+display_name = "Heaven Starfall Base"
+category = &"consumable"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_damage", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"talisman"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:O13_heaven_starfall_base_recipe", &"domain:qi_nascent_soul_domain"])

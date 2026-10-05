@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DomainDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/domain_def.gd" id="1_domain"]
+
+[resource]
+script = ExtResource("1_domain")
+id = &"mind_golden_immortal_trial"
+display_name = "Inspiration Trial"
+boss_ids = Array[StringName]([&"mind_golden_immortal_warden", &"F13_golden_warden"])

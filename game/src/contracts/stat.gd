@@ -42,6 +42,26 @@ const DEFENSE_SPIRITUAL := &"defense_spiritual"
 const EVASION := &"evasion"
 const DAMAGE_REDUCTION := &"damage_reduction"
 const POISE := &"poise"
+## ADR 0200: `status_resistance` was a PERCENT capped at `0.8` and renamed to this
+## MAGNITUDE, because mitigation is now derived from a pair of magnitudes and the percent
+## is an output that may never be authored. The gate it needs is
+## `will * 0.003 * (1 + ...)` over `(offender_power - defender_defense)` with the output
+## bounded — an authored input that must grow, which is the whole distinction the ADR
+## turns on. It is on `RealmScaling.SCALED_STATS`, so it climbs with the ladder instead of
+## being authored flat against it.
+##
+## ## The id STRING changed and that is the load-bearing part
+##
+## `&"status_defense"` is a different id from `&"status_resistance"`, so a FLAT authored on
+## the old string now lands on nothing. That is a deliberate, visible migration cost and not
+## a silent one: `tools arch` / `tools deferred validate` both fail on an authored stat id
+## no code declares, and `tests/modules/status` pins the refusal surface. Content that
+## wants a flat mitigation budget says `core_status_defense` now.
+const STATUS_DEFENSE := &"status_defense"
+## Retired by ADR 0200 in favour of [constant STATUS_DEFENSE]. Declared so a reference to
+## the old id fails to COMPILE with a name rather than silently reading `0.0` off an
+## unbacked stat -- the exact shape `test_combat_stats_shape.gd` exists to catch. Do not
+## add a read site for it; that is how a second vocabulary starts.
 const STATUS_RESISTANCE := &"status_resistance"
 const MOVE_SPEED := &"move_speed"
 const CULTIVATION_RATE := &"cultivation_rate"
@@ -90,6 +110,53 @@ const MIND_FOCUS_CHANCE := &"mind_focus_chance"
 const TECHNIQUE_COST_REDUCTION := &"technique_cost_reduction"
 const TECHNIQUE_POWER := &"technique_power"
 
+## The MIND-CONTROL vocabulary's eight contest stats, as the `SPELLING` rather than
+## eight registrations.
+##
+## `MindVocabulary` (same directory) builds every one of them from a prefix and a
+## suffix — an OFFENCE half `mind_status_mastery_<suffix>` and a DEFENCE half
+## `mind_composure_<suffix>` over the four control shapes and the two expression
+## channels. They are rate-shaped for the shape reason the nine above are: every one
+## is `minf(CAP, attribute * step)` with `CAP` under `1.0`, published by
+## `mind_cultivation/mind_mastery_provider.gd`.
+##
+## ## Why they are restated here rather than generated, and what keeps them honest
+##
+## The list must stay ONE flat literal for the reason the note on [constant RATE_STATS]
+## gives (`tools/data.py:2085` extracts it with `\[(.*?)\]`, which stops at the first
+## `]`), so a concatenation would hide every entry after the break from the fate gate.
+## But eight hand-written ids is a hand-written list, and this file's own docblock
+## records that hand-lists are how BL-0675 happened.
+##
+## So `tests/modules/mind_cultivation/test_mind_mastery_streams.gd` derives the
+## expected set from [class MindVocabulary] — `SHAPES + CHANNELS` crossed with the two
+## prefixes — and asserts this list EQUALS it. A shape or a channel added without a
+## registration fails there, naming the id; a registration left behind by a rename
+## fails there too. The literal is what the gates read; the derivation is what keeps
+## it true.
+##
+## **The twelve ids are SPELLED, not generated.** `MindVocabulary.offence_id(&"slow")`
+## reads as the obvious thing to write here and it cannot be: a `static func` call is
+## not a constant expression in GDScript, so `const X := [MindVocabulary.offence_id(...)]`
+## fails to parse and takes `actor.gd` and every dependent with it. The same reason
+## the ladder below indexes `MIND_CONTROL_RATES[n]` rather than spreading it — both
+## spellings are dictated by what a `const` accepts, and the derivation test above is
+## what makes the spelling safe to hand-maintain.
+const MIND_CONTROL_RATES := [
+	&"mind_status_mastery_slow",
+	&"mind_status_mastery_cost",
+	&"mind_status_mastery_falsify",
+	&"mind_status_mastery_invert",
+	&"mind_status_mastery_voice",
+	&"mind_status_mastery_intent",
+	&"mind_composure_slow",
+	&"mind_composure_cost",
+	&"mind_composure_falsify",
+	&"mind_composure_invert",
+	&"mind_composure_voice",
+	&"mind_composure_intent",
+]
+
 ## ## Why each one above is rate-shaped, and which three are deliberately NOT
 ##
 ## The test for membership is the BASELINE, never the `unit:` an option declares:
@@ -113,11 +180,14 @@ const TECHNIQUE_POWER := &"technique_power"
 ## gap: that is the whole reachability argument, and the registration test asserts it
 ## rather than trusting this paragraph.
 ##
-## The three that declare `unit: "rate"` and are still magnitudes, so a FLAT on them
+## The two that declare `unit: "rate"` and are still magnitudes, so a FLAT on them
 ## is LEGAL content and registering them would refuse good work:
 ##   move_speed            core/actor_stats.gd:163   100.0 + agility * 2.0
 ##   penetration           core/actor_stats.gd:156   spirit * 0.5
-##   element_resistance_*  elements/provider.gd:67   maxf(0.0, affinity * 0.5 + will * 0.2)
+## `element_defense_<e>` (elements/provider.gd:67, `maxf(0.0, affinity * 0.5 + will *
+## 0.2)`) used to be the third such id and no longer is: ADR 0200 replaces the capped
+## percent `element_resistance_<e>` with an unbounded MAGNITUDE, so its ten options now
+## declare `op: FLAT` / `unit: magnitude` and a FLAT on them is what the content means.
 ## `loot_bonus` (core/actor_stats.gd:169, `fortune * 0.01`) is 0..4 bonus points clamped
 ## by `LootBonus.MAX_INPUT`, so `+0.5` there is an authored number rather than 50%.
 
@@ -125,43 +195,48 @@ const TECHNIQUE_POWER := &"technique_power"
 ## The module-owned ids at the top of this file are members too, on the shape test
 ## proved there; everything below this line is core's and is derived in
 ## core/actor_stats.gd from these scales:
-##   crit_chance 0.05 (cap 0.75), evasion (cap 0.6), status_resistance (cap 0.8),
-##   cooldown_reduction (cap 0.4), qi_cost_reduction (cap 0.5), damage_reduction 0.0,
 ##   crit_damage 1.5, attack_speed 1.0 (cap 2.5), cultivation_rate 1.0,
-##   insight_gain 1.0, breakthrough_chance 0.1.
-## A FLAT modifier on any of these is a content error: `+10` means 1000%, not +10.
-## PERCENT is always valid on any stat; only FLAT on a rate stat is wrong.
+##   insight_gain 1.0, breakthrough_chance 0.1,
+##   cooldown_reduction (cap 0.4), qi_cost_reduction (cap 0.5), damage_reduction 0.0.
+## ADR 0200 deleted `crit_chance`'s `0.75`, `evasion`'s `0.6` and `status_resistance`'s
+## `0.8`, so none of the three is a member any more and all three are MAGNITUDES. The three
+## that kept their caps are a RATE axis, which is the ADR's own test: a cap on a mitigation
+## or defense axis dies because that axis must scale, a cap on a rate axis stays.
+## A FLAT modifier on any of the remaining ids is a content error: `+10` means 1000%, not
+## +10. PERCENT is always valid on any stat; only FLAT on a rate stat is wrong.
 ## Membership requires a baseline that is not identically zero: actor_stats.gd
 ## resolves a stat as `(base + flat) * (1 + percent)`, so PERCENT on an
 ## always-zero baseline is a no-op. Two baseline shapes qualify:
-##   constant term     - crit_chance/crit_damage/attack_speed/cultivation_rate/
+##   constant term     - crit_damage/attack_speed/cultivation_rate/
 ##                       insight_gain/breakthrough_chance are non-zero always.
-##   attribute-gated   - evasion/cooldown_reduction/qi_cost_reduction/
-##                       status_resistance are gated on an attribute, but the gate
-##                       is OUT OF REACH: see the note below.
+##   attribute-gated   - cooldown_reduction/qi_cost_reduction are gated on an
+##                       attribute, but the gate is OUT OF REACH: see the note below.
 ## `damage_reduction` has baseline 0.0 and is deliberately absent (ADR 0022).
 ##
-## ## Why the four gated ids are listed as NON-ZERO here and refused anyway
+## ## Why the two remaining gated ids are listed as NON-ZERO here and refused anyway
 ##
-## `evasion`, `cooldown_reduction`, `qi_cost_reduction` and `status_resistance` DO have
-## an attribute-gated baseline — but the gate sits one to two orders of magnitude past
-## the top of the AUTHORED attribute range, so the baseline contributes a small positive
-## number and never the cap. **MEASURED 2026-10-04 (DEF-0262), through a real
-## `ActorStats` and the real `StatusApply.apply_chance`, off `combat_damage.tres`:**
+## `cooldown_reduction` and `qi_cost_reduction` DO have an attribute-gated baseline — but
+## the gate sits one to two orders of magnitude past the top of the AUTHORED attribute
+## range, so the baseline contributes a small positive number and never the cap.
+## **MEASURED 2026-10-04 (DEF-0262), through a real `ActorStats` and the real
+## `StatusApply.apply_chance`, off `combat_damage.tres`:**
 ##
-## | actor | `will` | `status_resistance` | apply chance at gate 1.0 |
+## | actor | `will` | `status_resistance` (now `status_defense`) | apply chance at gate 1.0 |
 ## | --- | --- | --- | --- |
 ## | a shipped race's own grant | 2.0 | 0.006 | 0.994 |
 ## | plus the best 5 equipment slots | 2.0 | 0.156 | 0.844 |
 ## | the largest authored `base_will` | 54.9 | 0.1647 | 0.8353 |
 ##
-## `base_will` is authored over **3.0..52.9** across 199 items, so the `0.8` cap needs
-## `will >= 250` and is simply not reachable from authored content. That is the SHAPE of
-## the stat working as intended: `status_resistance` is a small defensive edge a build
-## *tilts*, not a wall it reaches. ADR 0087's multiplicative form then bottoms out at
-## `1.0 * (1 - 0.8) = 0.2`, and `tests/modules/combat_engine/
-## test_status_application.gd` drives exactly that with a FLAT and proves it. **So this
-## is NOT the ADR 0022 defect the older revision of this comment described.** That
+## That table is the whole argument ADR 0200 makes about `status_resistance` in one place:
+## `base_will` is authored over **3.0..52.9** across 199 items, so the `0.8` cap needed
+## `will >= 250` and was simply not reachable from authored content. The stat was a small
+## defensive edge a build *tilts* rather than a wall it reaches, which was read as "the
+## stat working as intended" and is in fact the defect: a mitigation axis authored flat
+## against a 551x ladder. The coefficient is unchanged (`will * 0.003`) and the value at
+## a race's own `will == 2.0` is still `0.006` at R1; what is gone is the cap, and
+## `status_defense` is now on `RealmScaling.SCALED_STATS` so it climbs with the ladder.
+##
+## **So this is NOT the ADR 0022 defect the older revision of this comment described.** That
 ## comment claimed these ids read `0.0` and that PERCENT was "meaningful in normal
 ## play"; both halves were wrong — a PERCENT here multiplies a small NON-ZERO number and
 ## so does something, just very little.
@@ -180,6 +255,28 @@ const TECHNIQUE_POWER := &"technique_power"
 ## claim about FLAT); the sentence above is a claim about PERCENT, and the two are
 ## different questions.
 ##
+## ## ADR 0200 removed three entries, and the removals are the interesting part
+##
+## `CRIT_CHANCE`, `EVASION` and `STATUS_RESISTANCE` are GONE from this list because their
+## `minf(cap, attribute * k)` caps are gone: `0.05 + fortune*0.002 + agility*0.0005`,
+## `agility * 0.0015`, and `will * 0.003` are all unbounded MAGNITUDES now. `+10` on any of
+## them is an authored number, not 1000%, so a FLAT is legal content and refusing it would
+## be refusing good work.
+##
+## `tests/contracts/test_rate_stats_registration.gd` DERIVES membership from the published
+## baseline rather than trusting this list, so the three had to leave on their own: the
+## scanner classifies `minf(...)`/`clampf(...)` carrying a literal at or under `1.0` as
+## rate-shaped, and with the `minf` gone none of the three is any more. That test is the
+## gate ADR 0200 names for this list and it is updated in the same change.
+##
+## ## What STAYS, and the rule that decides it
+##
+## `ATTACK_SPEED` (2.5), `COOLDOWN_REDUCTION` (0.4) and `QI_COST_REDUCTION` (0.5) keep
+## their caps and therefore keep their entries: a cap on a mitigation or defense axis dies
+## because that axis must scale with the ladder, and a cap on a RATE axis stays because
+## rate is not what power creep rides. An unbounded attack speed is a broken game, not a
+## balance problem.
+##
 ## The list is ONE flat literal on purpose: `tools/data.py:2085` extracts it with
 ## `\[(.*?)\]`, which stops at the first `]`, so concatenating two arrays here would
 ## silently hide every entry after the break from the fate gate.
@@ -188,11 +285,9 @@ const RATE_STATS := [
 	BREAKTHROUGH_CHANCE,
 	COOLDOWN_REDUCTION,
 	CONCEPTION_CHANCE,
-	CRIT_CHANCE,
 	CRIT_DAMAGE,
 	CULTIVATION_RATE,
 	DUAL_CULTIVATION_RATE,
-	EVASION,
 	GESTATION_SPEED,
 	ILLUSION_RESISTANCE,
 	INSIGHT_GAIN,
@@ -200,7 +295,18 @@ const RATE_STATS := [
 	MIND_AVOIDANCE,
 	MIND_FOCUS_CHANCE,
 	QI_COST_REDUCTION,
-	STATUS_RESISTANCE,
 	TECHNIQUE_COST_REDUCTION,
 	TECHNIQUE_POWER,
+	MIND_CONTROL_RATES[0],
+	MIND_CONTROL_RATES[1],
+	MIND_CONTROL_RATES[2],
+	MIND_CONTROL_RATES[3],
+	MIND_CONTROL_RATES[4],
+	MIND_CONTROL_RATES[5],
+	MIND_CONTROL_RATES[6],
+	MIND_CONTROL_RATES[7],
+	MIND_CONTROL_RATES[8],
+	MIND_CONTROL_RATES[9],
+	MIND_CONTROL_RATES[10],
+	MIND_CONTROL_RATES[11],
 ]

@@ -61,11 +61,19 @@ func _hero() -> Actor:
 
 
 ## A passive manual inscribing one stat option and one capacity option.
+##
+## `rarity` is LEGENDARY deliberately: the band's WIDTH is rarity
+## (`ItemRarity.magnitude_budget`, adopted by ADR 0204), so a def left at the
+## default COMMON carries `budget = 0.0` and therefore NO variance at all. Every
+## assertion in this file about two copies differing would then be vacuous, and
+## it would pass for the wrong reason. The `test_a_common_copy_carries_no_variance`
+## case is the one that pins the narrow end, explicitly.
 func _manual() -> TechniqueDef:
 	var def := TechniqueDef.new()
 	def.id = _fresh_id("manual")
 	def.display_name = "Marrow Circulation Primer"
 	def.grade = ItemGrade.MORTAL
+	def.rarity = ItemRarity.LEGENDARY
 	def.active = false
 	def.path = PathState.QI
 	def.magnitude = 1.6
@@ -171,9 +179,9 @@ func test_the_band_is_both_sided_so_a_copy_is_on_average_the_sheet() -> void:
 	assert_eq(above > 0, true, "some copies run above it (%d of 400)" % above)
 	# ## The band is CONTAINMENT, not attainment
 	#
-	# `randf()` returns `[0.0, 1.0)`, so `lerpf(FLOOR_SPAN, CEILING_SPAN, randf())`
-	# reaches exactly `FLOOR_SPAN` only on an exact `0.0` draw and exactly
-	# `CEILING_SPAN` never. Over 200 seeds the realized extremes are therefore strictly
+	# `randf()` returns `[0.0, 1.0)`, so `lerpf(band.x, band.y, randf())` reaches
+	# exactly `band.x` only on an exact `0.0` draw and exactly
+	# `band.y` never. Over 200 seeds the realized extremes are therefore strictly
 	# INSIDE the band — measured, the observed floor was `6.0 * 0.756667 = 4.54`
 	# against a declared floor of `4.5`, and the observed ceiling likewise sat under
 	# `7.5`. This case previously asserted `lowest == floor` and `highest == ceiling`,
@@ -186,13 +194,17 @@ func test_the_band_is_both_sided_so_a_copy_is_on_average_the_sheet() -> void:
 	# is "inside the band", and asserting equality to the EDGE is a claim about
 	# the generator's luck that no implementation can honour.
 	var slack := STAT_VALUE * 0.01
+	# The declared window for the rarity these copies carry. Read through the one
+	# published reader rather than two constants, so the assertion and the drawer
+	# cannot disagree about how wide the band is.
+	var band := TechniqueMarginalia.band_for(ItemRarity.LEGENDARY)
 	assert_eq(
-		lowest >= STAT_VALUE * TechniqueMarginalia.FLOOR_SPAN,
+		lowest >= STAT_VALUE * band.x,
 		true,
 		"the worst of 200 copies is at or above the declared floor"
 	)
 	assert_eq(
-		highest <= STAT_VALUE * TechniqueMarginalia.CEILING_SPAN,
+		highest <= STAT_VALUE * band.y,
 		true,
 		"the best of 200 copies is at or below the declared ceiling"
 	)
@@ -200,12 +212,12 @@ func test_the_band_is_both_sided_so_a_copy_is_on_average_the_sheet() -> void:
 	# which is what distinguishes "sampled from this band" from "a much wider band
 	# that happens to have drawn twice in the middle".
 	assert_eq(
-		absf(lowest - STAT_VALUE * TechniqueMarginalia.FLOOR_SPAN) < slack,
+		absf(lowest - STAT_VALUE * band.x) < slack,
 		true,
 		"the worst of 200 copies is near the declared floor"
 	)
 	assert_eq(
-		absf(highest - STAT_VALUE * TechniqueMarginalia.CEILING_SPAN) < slack,
+		absf(highest - STAT_VALUE * band.y) < slack,
 		true,
 		"the best of 200 copies is near the declared ceiling"
 	)
@@ -217,6 +229,69 @@ func test_the_band_is_both_sided_so_a_copy_is_on_average_the_sheet() -> void:
 		true,
 		"the copies spread (%.4f .. %.4f)" % [lowest, highest]
 	)
+
+
+# --- Rarity decides how wide the band is ---------------------------------------
+
+
+## ADR 0204: the band's width is `ItemRarity.magnitude_budget`, adopted from what
+## was dead code (one declaration, zero callers). The band is no longer a constant,
+## so both ends are pinned by RARITY rather than by number.
+func test_rarity_decides_the_band_and_a_common_copy_carries_no_variance() -> void:
+	var common := _manual()
+	common.rarity = ItemRarity.COMMON
+	var legendary := _manual()
+
+	# The published edges, per rarity.
+	var c := TechniqueMarginalia.band_for(ItemRarity.COMMON)
+	var l := TechniqueMarginalia.band_for(ItemRarity.LEGENDARY)
+	assert_almost_eq(c.x, 1.0, "a common copy starts at the authored figure", 0.0001)
+	assert_almost_eq(c.y, 1.0, "and cannot rise above it", 0.0001)
+	assert_almost_eq(l.x, 0.75, "a legendary copy may sit 25% under it", 0.0001)
+	assert_almost_eq(l.y, 1.25, "and 25% over", 0.0001)
+	# Rarity is the ONLY thing that moves the width: the ladder is ordered, so a
+	# rarer book is never the narrower one.
+	assert_eq(l.y - l.x > c.y - c.x, true, "rarity widens, never narrows")
+
+	# And the drawer agrees with the published edges — a common copy over 200 seeds
+	# is the authored figure every time, which is a real statement and not a band
+	# that failed to draw.
+	#
+	# AGGREGATED, not 200 separate assertions. One assertion per draw means a band
+	# that is wrong trips `framework.gd`'s `MAX_FAILURES = 200` backstop on the
+	# exact iteration that proves the bug, which kills the process and loses the
+	# report: the mutation is caught, but as a crash instead of a failure. The
+	# extremes are the claim; every draw landing on the sheet is what the band being
+	# zero-width actually means.
+	var common_values: Array[float] = []
+	for seed_value in 200:
+		for effect in TechniqueMarginalia.draw(common, _rng(seed_value)):
+			if StringName(effect.get("option_id", &"")) == STAT_OPTION:
+				common_values.append(float(effect.get("value", 0.0)))
+	assert_eq(common_values.size() > 0, true, "the common copy still annotates its option")
+	var worst := 0.0
+	for value in common_values:
+		worst = maxf(worst, absf(value - STAT_VALUE))
+	assert_almost_eq(worst, 0.0, "every common copy reads exactly the sheet", 0.01)
+
+
+## The magnitude_budget this adopted is one number the tree now READS. It was dead
+## for the life of the item program, and a guard that only ever counted references
+## would not have noticed that adopting it was optional — so this pins the
+## adoption, which is what stops it drifting back to dead.
+func test_the_rarity_budget_is_read_rather_than_dead() -> void:
+	var def := _manual()
+	var band := TechniqueMarginalia.band_for(def.rarity)
+	assert_eq(
+		band != Vector2(1.0, 1.0), true, "a legendary def gets a real band, so the budget is read"
+	)
+	# Every rarity resolves, and none is inverted or out of range.
+	for rarity in ItemRarity.ALL:
+		var b := TechniqueMarginalia.band_for(rarity)
+		assert_eq(b.x > 0.0, true, "%s has a positive lower edge" % rarity)
+		assert_eq(b.x <= 1.0, true, "%s does not band below the sheet" % rarity)
+		assert_eq(b.y >= 1.0, true, "%s does not band above the sheet" % rarity)
+		assert_eq(b.x <= b.y, true, "%s is ordered" % rarity)
 
 
 # --- A roll never moves an authored ladder -------------------------------------
@@ -381,9 +456,8 @@ func test_the_catalogs_own_bounds_clamp_the_band_when_they_are_tighter_than_it()
 	# declares rather than re-deriving the band independently.
 	var fired := 0
 	for seed_value in 200:
-		var span := lerpf(
-			TechniqueMarginalia.FLOOR_SPAN, TechniqueMarginalia.CEILING_SPAN, randf_from(seed_value)
-		)
+		var band := TechniqueMarginalia.band_for(ItemRarity.LEGENDARY)
+		var span := lerpf(band.x, band.y, randf_from(seed_value))
 		var rolled := snappedf(STAT_VALUE * span, 0.01)
 		var clamped := OptionCatalog.clamp_to_bounds(tight, rolled)
 		assert_eq(
@@ -411,9 +485,8 @@ func test_the_catalogs_own_bounds_clamp_the_band_when_they_are_tighter_than_it()
 	floored["bounds"] = {"min": floor, "max": 9999.0}
 	var lifted := 0
 	for seed_value in 200:
-		var span := lerpf(
-			TechniqueMarginalia.FLOOR_SPAN, TechniqueMarginalia.CEILING_SPAN, randf_from(seed_value)
-		)
+		var band := TechniqueMarginalia.band_for(ItemRarity.LEGENDARY)
+		var span := lerpf(band.x, band.y, randf_from(seed_value))
 		var rolled := snappedf(STAT_VALUE * span, 0.01)
 		var clamped := OptionCatalog.clamp_to_bounds(floored, rolled)
 		assert_eq(
@@ -454,6 +527,7 @@ func test_a_rolled_value_stays_inside_the_options_own_bounds_at_the_extremes() -
 	assert_eq(high > 0.0, true, "the option declares a ceiling")
 	# Measured at both extremes of the band, on the authored values actually
 	# shipped across the corpus rather than on one fixture.
+	var band := TechniqueMarginalia.band_for(ItemRarity.LEGENDARY)
 	for seed_value in [1, 2, 3, 7, 11, 97, 2147483646]:
 		for authored in _shipped_option_values(STAT_OPTION):
 			var def := _manual()
@@ -467,12 +541,12 @@ func test_a_rolled_value_stays_inside_the_options_own_bounds_at_the_extremes() -
 					value <= high, true, "%.4f is under the ceiling on %.2f" % [value, authored]
 				)
 				assert_eq(
-					value >= authored * TechniqueMarginalia.FLOOR_SPAN - 0.01,
+					value >= authored * band.x - 0.01,
 					true,
 					"%.4f is inside the declared band" % value
 				)
 				assert_eq(
-					value <= authored * TechniqueMarginalia.CEILING_SPAN + 0.01,
+					value <= authored * band.y + 0.01,
 					true,
 					"%.4f is inside the declared band" % value
 				)
@@ -565,7 +639,7 @@ func test_a_roll_is_identical_across_rebuilds_and_across_a_save_and_load() -> vo
 
 	# The published shape is exactly what a save writes, so this is the payload a
 	# save module would round-trip rather than a copy of it built here.
-	var saved := TechniquesApi.technique_state(hero)
+	var saved := TechniquesApi.codex(hero).to_dict()
 	var envelope: Dictionary = hero.to_dict()
 	envelope["module_data"]["technique_state"] = saved
 	var restored := Actor.from_dict(envelope)
@@ -654,6 +728,175 @@ func test_an_active_manual_realizes_nothing_because_it_annotates_nothing() -> vo
 	assert_eq(
 		TechniqueMarginalia.draw(def, _rng(9)).size(), 0, "and the drawer agrees outside a codex"
 	)
+
+
+# --- The band is PUBLISHED, not merely drawn (DEF-0302) ------------------------
+#
+# `band_for` existed and `draw` used it, so the roll was WIRED — and nothing
+# published the window to a player. ADR 0204 promised "a panel showing a player the
+# range they may see" and no surface did it. Every assertion below reads the window
+# through `band_for` itself, so a panel and the roll cannot disagree about how wide
+# the band is, and each asserts a VALUE rather than that a function was called.
+
+
+## The two edges reach `inspect` as primitives, and they are the edges `band_for`
+## declares — read from that one function, never restated as a literal here.
+##
+## A panel showing a range it computed itself would be a second reader of a roll
+## rule, which is the hazard ADR 0196 names; a test holding its own copy of
+## `0.75 .. 1.25` would be the same hazard one layer down, and would go green after
+## a retune that the roll had already adopted.
+func test_the_band_reaches_inspect_as_the_two_edges_band_for_declares() -> void:
+	var hero := _hero()
+	var def := _manual()
+	_study(hero, def, 21)
+	var declared := TechniqueMarginalia.band_for(def.rarity)
+	var band: Dictionary = TechniquesApi.inspect(hero, def.id).get("marginal_band", {})
+
+	assert_eq(band.has("floor"), true, "the lower edge is published")
+	assert_eq(band.has("ceiling"), true, "and the upper one")
+	assert_almost_eq(
+		float(band["floor"]), float(declared.x), "the floor is band_for's floor", 0.000001
+	)
+	assert_almost_eq(
+		float(band["ceiling"]), float(declared.y), "and the ceiling is band_for's ceiling", 0.000001
+	)
+	# Primitives only, because every dictionary this module hands a screen is
+	# primitives-only and a consumer must never reach back into the module.
+	assert_eq(band["floor"] is float or band["floor"] is int, true, "the floor is a number")
+	assert_eq(band["ceiling"] is float or band["ceiling"] is int, true, "and so is the ceiling")
+
+
+## The window is published in the sheet's OWN UNITS, not only as multipliers: for
+## every option the band may move, the lowest and highest figure any copy of this
+## manual may read. This is the "this sheet says 6.0, a copy may read 4.50-7.50"
+## claim, and it is the module's arithmetic — the panel formats it and never
+## multiplies.
+func test_the_published_range_is_this_manuals_own_figures() -> void:
+	var hero := _hero()
+	var def := _manual()
+	_study(hero, def, 34)
+	var declared := TechniqueMarginalia.band_for(def.rarity)
+	var view := TechniquesApi.inspect(hero, def.id)
+	assert_eq(bool(view.get("marginal_banded", false)), true, "this copy carries variance")
+
+	var figures: Array = view.get("marginal_band_figures", [])
+	assert_eq(figures.size(), 1, "only the stat option may be banded — see the next case")
+	var row: Dictionary = figures[0]
+	assert_eq(String(row["option_id"]), String(STAT_OPTION), "and it is the inscribed option")
+	assert_almost_eq(float(row["authored"]), STAT_VALUE, "the sheet's own figure is quoted", 0.0001)
+	assert_almost_eq(
+		float(row["floor"]),
+		STAT_VALUE * float(declared.x),
+		"the low end of the range is the band applied to THAT figure",
+		0.0001
+	)
+	assert_almost_eq(
+		float(row["ceiling"]), STAT_VALUE * float(declared.y), "and the high end likewise", 0.0001
+	)
+	# The range really is a range: a player told "may read" needs the two ends apart.
+	assert_eq(float(row["ceiling"]) > float(row["floor"]), true, "and it is two-sided")
+	# The authored figure sits INSIDE its own window, which is what makes a band a
+	# band rather than a replacement.
+	assert_eq(
+		(
+			float(row["floor"]) <= float(row["authored"])
+			and float(row["authored"]) <= float(row["ceiling"])
+		),
+		true,
+		"the sheet's figure is inside the range a copy may read"
+	)
+
+
+## ADR 0160 refuses the capacity channel, so a capacity option is NOT in the
+## published range — and saying otherwise would promise a variance `draw` never
+## produced. The test is over the SHIPPED catalog rather than a fixture, so a new
+## capacity option cannot quietly join the range.
+func test_a_capacity_option_is_never_inside_the_published_range() -> void:
+	var hero := _hero()
+	var def := _manual()
+	_study(hero, def, 8)
+	var figures: Array = TechniquesApi.inspect(hero, def.id).get("marginal_band_figures", [])
+	var ids: Array[String] = []
+	for figure in figures:
+		ids.append(String((figure as Dictionary)["option_id"]))
+	assert_eq(ids.has(String(CAPACITY_OPTION)), false, "a capacity option is carried as authored")
+	assert_eq(ids.has(String(STAT_OPTION)), true, "while the stat option is banded")
+
+
+## The three rows that have nothing to vary say so with an EMPTY line rather than a
+## range around a figure nobody may vary. Each is a different reason, and each would
+## otherwise print a promise the module cannot keep.
+func test_a_manual_that_cannot_vary_publishes_no_range() -> void:
+	# (a) A COMMON copy: rarity reach `0.0`, so the two edges are the same number.
+	var common := _manual()
+	common.rarity = ItemRarity.COMMON
+	TechniqueCatalog.instance().register(common)
+	var common_view := TechniquesApi.inspect(_hero(), common.id)
+	assert_eq(bool(common_view.get("marginal_banded", false)), false, "a common copy cannot vary")
+	assert_eq((common_view.get("marginal_band_figures", []) as Array).size(), 0, "and says so")
+
+	# (b) An ACTIVE manual: it authors no options at all, so there is nothing to band
+	# however wide its rarity band is.
+	var active := _manual()
+	active.active = true
+	active.passive_options = []
+	TechniqueCatalog.instance().register(active)
+	var active_view := TechniquesApi.inspect(_hero(), active.id)
+	assert_eq(
+		bool(active_view.get("marginal_banded", false)), false, "an active manual has no margin"
+	)
+	assert_eq((active_view.get("marginal_band_figures", []) as Array).size(), 0, "and says so")
+
+	# (c) A capacity-only manual: every option is on the refused channel.
+	var capped := _manual()
+	capped.passive_options = [{"option_id": CAPACITY_OPTION, "value": CAPACITY_VALUE}]
+	TechniqueCatalog.instance().register(capped)
+	var capped_view := TechniquesApi.inspect(_hero(), capped.id)
+	assert_eq(
+		bool(capped_view.get("marginal_banded", false)), false, "a capacity-only manual cannot vary"
+	)
+	assert_eq((capped_view.get("marginal_band_figures", []) as Array).size(), 0, "and says so")
+
+
+## The roll still lands inside the window this publication promises. A band published
+## to a player and a band the roll ignores would be the worst of both — a lie on the
+## panel — so the window is asserted to CONTAIN real draws, at both ends of the
+## rarity ladder, rather than merely to exist.
+func test_every_drawn_copy_lands_inside_the_published_range() -> void:
+	for rarity in [ItemRarity.MAGIC, ItemRarity.LEGENDARY]:
+		var def := _manual()
+		def.rarity = rarity
+		TechniqueCatalog.instance().register(def)
+		var hero := _hero()
+		var declared := TechniqueMarginalia.band_for(rarity)
+		# Twelve seeds: enough to reach both ends of the window rather than landing
+		# in the middle by luck. A single draw would pass for a broken band too.
+		for seed_value in 12:
+			var copy := _study(hero, def, seed_value * 97 + 13)
+			var rolled: Dictionary = copy.get("margin", {})
+			var value := float(rolled[String(STAT_OPTION)])
+			var figures: Array = TechniquesApi.inspect(hero, def.id).get(
+				"marginal_band_figures", []
+			)
+			var row: Dictionary = figures[0]
+			assert_almost_eq(float(row["authored"]), STAT_VALUE, "the sheet is unbanded", 0.0001)
+			assert_eq(
+				float(row["floor"]) <= value and value <= float(row["ceiling"]),
+				true,
+				(
+					"seed %d drew %.4f, outside the published %.4f-%.4f (rarity %s, band %.2f-%.2f)"
+					% [
+						seed_value,
+						value,
+						float(row["floor"]),
+						float(row["ceiling"]),
+						String(rarity),
+						float(declared.x),
+						float(declared.y),
+					]
+				)
+			)
 
 
 func test_the_read_model_reports_the_sheet_and_the_margin_as_two_columns() -> void:

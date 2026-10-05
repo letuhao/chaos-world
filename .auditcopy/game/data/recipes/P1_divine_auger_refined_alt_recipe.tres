@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"P1_divine_auger_refined_alt_recipe"
+display_name = "Divine Auger Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"P1_divine_auger_base", &"divine_voidlotus", &"astral_galactic_core_ore"])
+outputs = Array[StringName]([&"P1_divine_auger_refined"])

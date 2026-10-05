@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I67_immortal_gruffalo_base_recipe"
+display_name = "Immortal Gruffalo Base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Z33_immortal_crotal_parchment", &"Z35_immortal_isostasy_spinel"])
+outputs = Array[StringName]([&"I67_immortal_gruffalo_base"])

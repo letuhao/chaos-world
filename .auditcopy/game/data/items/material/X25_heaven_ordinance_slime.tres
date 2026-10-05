@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"X25_heaven_ordinance_slime"
+display_name = "Heaven Ordinance Slime"
+category = &"material"
+rarity = &"rare"
+realm = &"true_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"gemstone"
+grade = &"heaven"
+sources = Array[StringName]([&"gather", &"domain:codex_iron_sage_domain"])

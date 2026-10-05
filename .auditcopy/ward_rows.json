@@ -1,0 +1,72 @@
+[
+ {
+  "element": "earth",
+  "value": 13.0,
+  "rarity": "magic",
+  "realm": "spirit_condensation",
+  "grade": "spirit",
+  "subcategory": "accessory",
+  "roll": "{\"count\": 2, \"contexts\": [\"base\", \"prefix\", \"postfix\"]}",
+  "path": "game/data/items/equipment\\ward_earth_ward.tres"
+ },
+ {
+  "element": "fire",
+  "value": 27.0,
+  "rarity": "legendary",
+  "realm": "earth_immortal",
+  "grade": "heaven",
+  "subcategory": "accessory",
+  "roll": "{\"count\": 4, \"contexts\": [\"base\", \"prefix\", \"postfix\"]}",
+  "path": "game/data/items/equipment\\ward_fire_ward.tres"
+ },
+ {
+  "element": "ice",
+  "value": 24.0,
+  "rarity": "rare",
+  "realm": "spirit_domain",
+  "grade": "spirit",
+  "subcategory": "accessory",
+  "roll": "{\"count\": 3, \"contexts\": [\"base\", \"prefix\", \"postfix\"]}",
+  "path": "game/data/items/equipment\\ward_ice_ward.tres"
+ },
+ {
+  "element": "lightning",
+  "value": 31.0,
+  "rarity": "legendary",
+  "realm": "true_immortal",
+  "grade": "immortal",
+  "subcategory": "accessory",
+  "roll": "{\"count\": 4, \"contexts\": [\"base\", \"prefix\", \"postfix\"]}",
+  "path": "game/data/items/equipment\\ward_lightning_ward.tres"
+ },
+ {
+  "element": "metal",
+  "value": 6.0,
+  "rarity": "common",
+  "realm": "qi_refining",
+  "grade": "mortal",
+  "subcategory": "accessory",
+  "roll": "{\"count\": 1, \"contexts\": [\"base\", \"prefix\", \"postfix\"]}",
+  "path": "game/data/items/equipment\\ward_metal_ward.tres"
+ },
+ {
+  "element": "water",
+  "value": 21.0,
+  "rarity": "rare",
+  "realm": "spirit_domain",
+  "grade": "spirit",
+  "subcategory": "accessory",
+  "roll": "{\"count\": 3, \"contexts\": [\"base\", \"prefix\", \"postfix\"]}",
+  "path": "game/data/items/equipment\\ward_water_ward.tres"
+ },
+ {
+  "element": "wood",
+  "value": 15.0,
+  "rarity": "magic",
+  "realm": "spirit_severing",
+  "grade": "spirit",
+  "subcategory": "accessory",
+  "roll": "{\"count\": 2, \"contexts\": [\"base\", \"prefix\", \"postfix\"]}",
+  "path": "game/data/items/equipment\\ward_wood_ward.tres"
+ }
+]

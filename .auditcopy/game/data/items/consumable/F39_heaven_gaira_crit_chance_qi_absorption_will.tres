@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F39_heaven_gaira_crit_chance_qi_absorption_will"
+display_name = "Heaven Gaira Crit chance Qi absorption Will"
+category = &"consumable"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.026},
+	{"option_id": &"core_qi_absorption", "value": 28.88},
+	{"option_id": &"base_will", "value": 28.88},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"ferment"
+grade = &"heaven"
+sources = Array[StringName]([&"quest", &"domain:manual_stone_crane_domain"])

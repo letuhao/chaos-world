@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="RaceDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/race/race_def.gd" id="1_race"]
+
+[resource]
+script = ExtResource("1_race")
+id = &"stoneborn"
+display_name = "Stoneborn"
+description = "A dense, slow body assembled for load-bearing work. It carries more physique and stamina than anything else here and it stops at the Immortal tier, because the density that makes it durable is the same density that will not let a dantian form. Mind cultivation is closed outright."
+dominance = 0.8
+manifestation_threshold = 0.15
+gestation_days = 42.0
+base_fertility = 0.35
+base_potency = 0.4
+offspring_variance = 0.05
+closed_paths = Array[StringName]([&"mind_cultivation"])
+; The density that makes this body durable is the same density that will not let a
+; dantian form, so it stops at ordinal 17 — Immortal Sovereign, the last of the nine
+; Immortal realms. It reaches further than a commonborn's 8 for a reason no item buys:
+; the ceiling is anatomy, and nobody has written the surgery that changes it.
+realm_ceiling = 17
+lifespan = 54000.0
+base_attributes = {"physique": 4.0, "will": 1.0}
+percent_modifiers = {"max_health": 0.15, "defense_physical": 0.2, "poise": 0.1, "max_qi": -0.15, "insight_gain": -0.2}
+affinities = {"earth": 9.0, "metal": 4.0}
+tags = Array[StringName]([&"body", &"durable", &"heavy"])

@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="3_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("3_tier")
+tier = 3
+label = "Squall"
+realm = &"heaven_immortal"
+rarity = &"rare"
+vitality = 36806.2
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"loot_storm_crypt_tempest_warden", "table_id": &"loot_storm_warden_t3"},
+	{"boss_id": &"loot_storm_crypt_static_acolyte", "table_id": &"loot_storm_acolyte_t3", "vitality": 29445.0}
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("3_tier")
+tier = 4
+label = "Tempest"
+realm = &"great_ascension"
+rarity = &"legendary"
+vitality = 41437.5
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"loot_storm_crypt_tempest_warden", "table_id": &"loot_storm_warden_t4"},
+	{"boss_id": &"loot_storm_crypt_static_acolyte", "table_id": &"loot_storm_acolyte_t4", "vitality": 33150.0}
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_storm_crypt"
+display_name = "Storm Crypt"
+domain_id = &"loot_storm_crypt_domain"
+boss_ids = Array[StringName]([&"loot_storm_crypt_tempest_warden", &"loot_storm_crypt_static_acolyte"])
+key_reach = 6
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

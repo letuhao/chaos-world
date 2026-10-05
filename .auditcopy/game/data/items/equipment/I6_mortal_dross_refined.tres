@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"I6_mortal_dross_refined"
+display_name = "Mortal Dross Refined"
+category = &"equipment"
+rarity = &"common"
+realm = &"body_integration"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 8.8},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
+subcategory = &"lens"
+stackable = false
+grade = &"mortal"
+sources = Array[StringName]([&"craft:I6_mortal_dross_refined_recipe", &"domain:flame_valley"])

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"qi_golden_immortal_dantian_catalyst"
+display_name = "Golden Law Matrix"
+category = &"consumable"
+subcategory = &"tonic"
+grade = &"immortal"
+sources = Array[StringName]([&"craft:qi_golden_immortal_dantian_catalyst_recipe"])
+description = "Spent on a Golden Immortal sitting that overflows a full dantian. The overflow becomes dantian quality past the next realm's floor, and every gate is met without one."

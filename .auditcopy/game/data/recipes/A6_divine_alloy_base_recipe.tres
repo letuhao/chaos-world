@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"A6_divine_alloy_base_recipe"
+display_name = "Divine Alloy Base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"W2_divine_antler_cobble", &"W2_divine_antler_dyer"])
+outputs = Array[StringName]([&"A6_divine_alloy_base"])

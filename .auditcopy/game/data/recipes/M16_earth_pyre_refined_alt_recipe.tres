@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"M16_earth_pyre_refined_alt_recipe"
+display_name = "M16 Earth Pyre Refined Alt Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"M16_earth_pyre_base", &"C34_earth_sealroom_menhirlet", &"ore_adamantine"])
+outputs = Array[StringName]([&"M16_earth_pyre_refined"])

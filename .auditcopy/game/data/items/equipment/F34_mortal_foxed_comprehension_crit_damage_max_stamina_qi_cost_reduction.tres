@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F34_mortal_foxed_comprehension_crit_damage_max_stamina_qi_cost_reduction"
+display_name = "Mortal Foxed Comprehension Crit damage Max stamina Qi cost reduction"
+category = &"equipment"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 6.05},
+	{"option_id": &"core_crit_damage", "value": 0.04},
+	{"option_id": &"core_max_stamina", "value": 3.57},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.05},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
+subcategory = &"lens"
+stackable = false
+grade = &"mortal"
+sources = Array[StringName]([&"quest", &"domain:elemental_earth_domain"])

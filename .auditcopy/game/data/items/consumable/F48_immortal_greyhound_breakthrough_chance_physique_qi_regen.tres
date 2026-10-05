@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F48_immortal_greyhound_breakthrough_chance_physique_qi_regen"
+display_name = "Immortal Greyhound Breakthrough chance Physique Qi regen"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 34.6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"salve"
+grade = &"immortal"
+sources = Array[StringName]([&"quest", &"domain:succubus_transcendent_domain"])

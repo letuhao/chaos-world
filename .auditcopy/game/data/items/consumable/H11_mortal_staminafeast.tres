@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"H11_mortal_staminafeast"
+display_name = "Mortal Stamina Feast"
+category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"food"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:H11_mortal_staminafeast_recipe", &"domain:qi_spirit_unity_trial"])

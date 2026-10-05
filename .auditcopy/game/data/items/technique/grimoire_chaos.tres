@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"grimoire_chaos"
+display_name = "Chaos Grimoire"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"grimoire"
+grade = &"divine"
+sources = Array[StringName]([&"craft:grimoire_chaos_recipe", &"domain:mind_body_integration_trial"])

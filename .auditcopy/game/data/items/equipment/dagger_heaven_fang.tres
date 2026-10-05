@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"dagger_heaven_fang"
+display_name = "Heaven Fang"
+category = &"equipment"
+rarity = &"rare"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_physical", "value": 30},
+	{"option_id": &"core_evasion", "value": 0.04},
+	{"option_id": &"core_crit_chance", "value": 0.05},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"weapon"
+stackable = false
+grade = &"heaven"
+sources = Array[StringName]([&"craft:dagger_heaven_fang_recipe", &"domain:loot_storm_crypt_domain"])

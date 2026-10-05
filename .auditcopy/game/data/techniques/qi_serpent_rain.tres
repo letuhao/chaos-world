@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"qi_serpent_rain"
+delivered_by = &"scroll_frost_serpent_fang"
+display_name = "Serpent Rain"
+description = "Condenses falling moisture into a field of downward strokes. Three quarters elemental: strong against fire, thin against anything that drinks."
+tags = Array[StringName]([&"technique", &"water", &"area"])
+grade = &"spirit"
+rarity = &"common"
+element = &"water"
+schools = Array[StringName]([&"emitting", &"elemental"])
+active = true
+path = &"qi_cultivation"
+min_path_realm = {&"qi_cultivation": 9}
+qi_cost = 48.0
+stamina_cost = 14.0
+cooldown = 9.0
+mastery_rungs = 5
+magnitude = 1.4
+element_share = 0.75
+

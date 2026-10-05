@@ -496,7 +496,7 @@ func test_mastery_is_persisted_with_the_codex_rather_than_beside_it() -> void:
 	var actor := _actor()
 	var def := _active(actor)
 	_casting(actor).activate(actor, def)
-	var payload := TechniquesApi.technique_state(actor)
+	var payload := TechniquesApi.codex(actor).to_dict()
 	assert_eq(int((payload["entries"][0] as Dictionary)["rung"]), 1, "the codex payload moved")
 
 
@@ -550,9 +550,7 @@ func test_the_payload_stores_ids_and_numbers_and_never_a_definition() -> void:
 			key in ["id", "remaining", "total"], true, "'%s' is not authored content" % String(key)
 		)
 	# And it rides beside the codex under its own key rather than inside it.
-	assert_eq(
-		TechniquesApi.technique_state(actor).has("cooldowns"), false, "the codex shape is untouched"
-	)
+	assert_eq(TechniquesApi.codex(actor).has("cooldowns"), false, "the codex shape is untouched")
 	assert_eq(
 		String(TechniqueCasting.STATE_KEY) != String(TechniquesApi.STATE_KEY),
 		true,

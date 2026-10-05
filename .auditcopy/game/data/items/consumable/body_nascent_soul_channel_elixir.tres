@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"body_nascent_soul_channel_elixir"
+display_name = "Marrow Cleansing Channel Elixir"
+category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"restore_health", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"elixir"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:body_nascent_soul_elixir_recipe", &"boss:body_nascent_soul_guardian"])
+description = "Restores one damaged channel or trains one channel step and its linked acupoint quality."

@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3]
+
+; ADR 0072's `DomainScene`: the tile scene a `DomainMap` is realized into.
+;
+; The node tree is deliberately EMPTY. Every layer, region, marker and zone is built by
+; `res://src/app/domain_scene.gd` from the map, because a `TileMapLayer`'s CELLS are data:
+; hand-authoring a tile map here would make this file a second description of a domain's
+; shape, and ADR 0072's whole claim is that the map is the only one.
+;
+; The tileset is NOT bound here on purpose. `realize()` loads
+; `res://src/data/tilesets/chaos_world_domain.tres` so a bare `DomainScene.new()` and a
+; `.tscn` instance share one tileset object identity, and so a test can assert the layer's
+; tileset is that file rather than trusting a binding it cannot see.
+;
+; Nothing is reached by unique name here either — there is nothing to reach. `floor_layer()`,
+; `wall_layer()`, `navigation_region()`, `spawn_markers()`, `exit_markers()` and
+; `zone_areas()` are the scene's API, and each returns a node built from the map.
+
+[ext_resource type="Script" path="res://src/app/domain_scene.gd" id="1_domain_scene"]
+
+[node name="DomainScene" type="Node2D"]
+script = ExtResource("1_domain_scene")

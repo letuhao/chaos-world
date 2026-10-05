@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"P19_spirit_colza_aged_recipe"
+display_name = "Spirit Colza Aged Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"P19_spirit_colza_refined", &"body_spirit_domain_tempering_herb", &"sap_balsam"])
+outputs = Array[StringName]([&"P19_spirit_colza_aged"])

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"mind_still_water"
+delivered_by = &"sigil_still_water"
+display_name = "Still Water"
+description = "Flattens the surface of the mind so an incoming impression has nothing to break against. Almost no element, because it does no damage to anybody."
+tags = Array[StringName]([&"technique", &"mind", &"shield", &"no_element"])
+grade = &"mortal"
+rarity = &"common"
+element = &"water"
+schools = Array[StringName]([&"mind"])
+active = true
+path = &"mind_cultivation"
+min_path_realm = {&"mind_cultivation": 2}
+qi_cost = 12.0
+stamina_cost = 6.0
+cooldown = 14.0
+mastery_rungs = 5
+magnitude = 0.5
+element_share = 0.1
+

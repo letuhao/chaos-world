@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"M14_earth_nettle_perfected_recipe"
+display_name = "Earth Nettle Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"M14_earth_nettle_primed", &"filament_jute", &"tablet_gold"])
+outputs = Array[StringName]([&"M14_earth_nettle_perfected"])

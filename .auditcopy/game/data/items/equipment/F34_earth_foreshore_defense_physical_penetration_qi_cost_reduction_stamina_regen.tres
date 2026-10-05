@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F34_earth_foreshore_defense_physical_penetration_qi_cost_reduction_stamina_regen"
+display_name = "Earth Foreshore Defense physical Penetration Qi cost reduction Stamina regen"
+category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 17.33},
+	{"option_id": &"core_penetration", "value": 17.33},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.05},
+	{"option_id": &"core_stamina_regen", "value": 17.33},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"lens"
+stackable = false
+grade = &"earth"
+sources = Array[StringName]([&"gather", &"domain:elemental_mortal_domain"])

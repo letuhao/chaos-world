@@ -48,10 +48,16 @@ func _node(
 	return node
 
 
-func _owner(
-	id: StringName = &"player", kind: StringName = &"actor", standing: int = 0
-) -> Dictionary:
-	return {"kind": String(kind), "id": String(id), "standing": standing}
+## ## The PRODUCTION owner ref, verbatim (ADR 0248)
+##
+## `{kind, id}` and nothing else — exactly what `ForageScreen._owner()` and
+## `ForageAction.owner_ref()` build. This helper used to accept a `standing` argument and
+## put it in the ref, and every node it claimed was floor-0, so a suite could carry a ref
+## shape no player path supplies and still be green. That is how a floor gate nobody could
+## satisfy survived four audits. The parameter is gone so it cannot come back, and
+## `test_holdings_claim_floor.gd` exercises the gate over the real authored corpus.
+func _owner(id: StringName = &"player", kind: StringName = &"actor") -> Dictionary:
+	return {"kind": String(kind), "id": String(id)}
 
 
 func test_an_unheld_node_is_vacant_not_absent() -> void:

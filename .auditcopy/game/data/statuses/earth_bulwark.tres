@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"earth_bulwark"
+element = &"earth"
+kind = &"stat_modifier"
+scope = &"cultivation"
+stacking = &"refresh"
+duration = -1.0
+magnitude_unit = &"stat_modifier"
+magnitude_cap = 1.0
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"gear", &"technique"])
+payload = {
+"mechanic": &"brace",
+"text": "Stone stance. The body refuses to yield and keeps ground it would otherwise lose.",
+"modifiers": [
+{"stat": &"defense_physical", "op": &"flat", "value": 12.0},
+{"stat": &"damage_reduction", "op": &"flat", "value": 0.12}
+]
+}

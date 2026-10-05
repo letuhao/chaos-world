@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WeaponKindDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/weapon_kind_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"tower_shield"
+display_name = "Tower Shield"
+best_against = "A single strong body made to commit: the wall refuses what a duellist cannot."
+demand = &"brace"
+lean = &"mass"
+counter_demands = [&"mass", &"leverage"]
+counters = &"ward"
+practice_gain = 0.85
+min_realm_index = 1

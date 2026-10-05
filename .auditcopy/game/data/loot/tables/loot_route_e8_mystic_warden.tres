@@ -1,0 +1,349 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=29 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_unique"]
+script = ExtResource("2_entry")
+id = &"guaranteed_unique"
+kind = &"item"
+item_id = &"unique_void_coil_coiled_heart"
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"drop_0"
+kind = &"item"
+item_id = &"anima_immortal_leaf"
+weight = 6.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"drop_1"
+kind = &"item"
+item_id = &"qiabs_immortal_tincture"
+weight = 5.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"drop_2"
+kind = &"item"
+item_id = &"curr_immortal_seal"
+weight = 4.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"drop_3"
+kind = &"item"
+item_id = &"V4_immortal_abscissa_polder"
+weight = 3.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"drop_4"
+kind = &"item"
+item_id = &"set_void_coil_sigil"
+weight = 2.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+
+[sub_resource type="Resource" id="entry_5"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_5"
+kind = &"item"
+item_id = &"B27_earth_cataclysm_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_6"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_6"
+kind = &"item"
+item_id = &"C25_mortal_coutil_cultivation_rate_attack_physical_attack_spiritual"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_7"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_7"
+kind = &"item"
+item_id = &"E14_heaven_rennetworks_rennetmesh"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_8"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_8"
+kind = &"item"
+item_id = &"F21_mortal_epitrite_agility_attack_physical_fortune_qi_absorption"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_9"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_9"
+kind = &"item"
+item_id = &"F47_mortal_grandam_attack_speed_fortune_physique"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_10"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_10"
+kind = &"item"
+item_id = &"G26_divine_idyll_defense_spiritual_insight_gain"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_11"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_11"
+kind = &"item"
+item_id = &"I30_spirit_flotsam_base"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_12"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_12"
+kind = &"item"
+item_id = &"K14_earth_star_primed"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_13"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_13"
+kind = &"item"
+item_id = &"O2_mortal_alder_perfected"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_14"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_14"
+kind = &"item"
+item_id = &"R11_mortal_mastic_riddle"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_15"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_15"
+kind = &"item"
+item_id = &"T18_heaven_toadflax_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_16"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_16"
+kind = &"item"
+item_id = &"V20_divine_apogee_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_17"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_17"
+kind = &"item"
+item_id = &"X15_immortal_assay_remainder"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_18"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_18"
+kind = &"item"
+item_id = &"Y2_divine_abjuration_aged"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_19"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_19"
+kind = &"item"
+item_id = &"Z39_mortal_xenolith_album"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_20"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_20"
+kind = &"item"
+item_id = &"cut_sapphire_facet"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_21"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_21"
+kind = &"item"
+item_id = &"mantra_moon_form"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_22"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_22"
+kind = &"item"
+item_id = &"refill_iron"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_23"]
+script = ExtResource("2_entry")
+id = &"E8_mystic_warden_domain_23"
+kind = &"item"
+item_id = &"trinket_luck_token"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &""
+
+[sub_resource type="Resource" id="entry_24"]
+script = ExtResource("2_entry")
+id = &"route_e8_mystic_warden_mortal_gear"
+kind = &"item"
+item_id = &"L4_ash_effigy_string_ward"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_route_e8_mystic_warden"
+display_name = "Mystic Warden spoils"
+realm = &"mystic_immortal"
+rarity = &"legendary"
+rolls = 2
+rolls_max = 3
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_unique"),
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3"),
+	SubResource("entry_4"),
+	SubResource("entry_5"),
+	SubResource("entry_6"),
+	SubResource("entry_7"),
+	SubResource("entry_8"),
+	SubResource("entry_9"),
+	SubResource("entry_10"),
+	SubResource("entry_11"),
+	SubResource("entry_12"),
+	SubResource("entry_13"),
+	SubResource("entry_14"),
+	SubResource("entry_15"),
+	SubResource("entry_16"),
+	SubResource("entry_17"),
+	SubResource("entry_18"),
+	SubResource("entry_19"),
+	SubResource("entry_20"),
+	SubResource("entry_21"),
+	SubResource("entry_22"),
+	SubResource("entry_23"),
+	SubResource("entry_24")
+])

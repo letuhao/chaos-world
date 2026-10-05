@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"J22_immortal_dao_base"
+display_name = "Immortal Dao Base"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"earth_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 15.92},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"talisman"
+grade = &"immortal"
+sources = Array[StringName]([&"craft:J22_immortal_dao_base_recipe", &"domain:qi_mystic_immortal_domain"])

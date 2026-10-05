@@ -163,6 +163,12 @@ static func answer_offer(player: Actor, partner: Actor) -> Dictionary:
 ## Split from `answer_offer` so that refusing is a legitimate ANSWER to an offer rather
 ## than a private path onto the top of the ladder: the two are different verbs in the
 ## fiction, and only one of them is an oath.
+##
+## `witness_id` is for the DIRECT beat (`BrotherhoodOathApp.swear`), which never offered.
+## **On the offered path the witness is read off the consent row**, because that is where
+## `offer_brotherhood` recorded it and `answer_offer` does not thread it through. A
+## `witnessed: true` oath therefore always writes the `CAUSE_WITNESSED` bond — the flag on
+## the consent row is never the only record that a witness stood there.
 static func swear_brotherhood(
 	player: Actor, partner: Actor, witness_id: StringName = &""
 ) -> Dictionary:
@@ -177,26 +183,61 @@ static func swear_brotherhood(
 	var key := _bond_key(partner)
 	var row := ledger.row(key)
 	var witnessed := bool(row.get("witnessed", false))
+	# ## The witness is resolved from the CONSENT ROW, not from the caller's argument
+	#
+	# `offer_brotherhood` records `witness_id` on the row at OFFER time — that is the whole
+	# point of recording it there, since the answer happens in a different call. The
+	# argument below is for the direct `BrotherhoodOathApp.swear` beat, which never offered
+	# and therefore has no row to read. **When the caller passes nothing and the row knows
+	# who stood there, the row wins.**
+	#
+	# This is a real bug that was live in the production path, not a test artefact:
+	# `answer_offer` calls `swear_brotherhood(player, partner)` with no witness argument, so
+	# `witness_id` was `&""` at exactly the moment the witness leg should have been written.
+	# `BrotherhoodOathApp.offer(player, elder, witness, true)` therefore returned
+	# `"witnessed": true`, wrote it to the consent row, and left **no bond at all** against
+	# the witness — the ceremony was recorded as a flag on a consent row and never as a
+	# fact in the world, which is the precise defect this function's docstring refuses. An
+	# authored `caused_by: witnessed_an_oath` gate could not open on it.
+	var named_witness := witness_id
+	if named_witness == &"":
+		named_witness = StringName(String(row.get("witness_id", "")))
 	# ## BOTH SIDES MOVE. This is the whole mutuality contract.
 	#
 	# The player's bond records `shared_brotherhood`, whose `promotes_to: SWORN` is the
 	# promise the ladder decides on. The partner's bond records `accepted_the_oath` —
-	# the mirror, on THEIR ledger, naming the player. Two `apply_cause` calls, two
-	# actors, one agreement. A one-sided version would leave the elder's regard
-	# untouched while the player's read `Sworn`, which is the shape the ADR 0091 design
-	# question named and refused.
+	# the mirror, on THEIR ledger, naming the player. One agreement, two `Actor`s, two
+	# ledgers. A one-sided version would leave the elder's regard untouched while the
+	# player's read `Sworn`, which is the shape the ADR 0091 design question named and
+	# refused.
 	#
 	# **Both are keyed through `_bond_key`, which is the load-bearing half of mutuality.**
 	# An npc's counterparty id is the DEF id and the player's is their actor id, so
 	# writing `partner.id` put the player's promise on a `npc_elder_wei` row while every
 	# reader asked about `elder_wei` — the pact existed and nothing could see it.
-	var player_side := SocialApi.apply_cause(player, key, CAUSE_SWORN)
-	var partner_side := SocialApi.apply_cause(partner, _bond_key(player), CAUSE_ACCEPTED)
-	if witnessed and witness_id != &"":
+	#
+	# ## ## AND BOTH KEYS, because the producer does not agree with the ladder
+	#
+	# `_bond_key` answers the id every READER names — a roster entry, a consent row, an
+	# authored gate, a panel. `partner.id` is the id the engine minted (`npc_elder_wei`),
+	# and `Seduction.can_meet` asks the gate for exactly that string
+	# (`modules/fertility/seduction.gd`, `"partner": String(partner.id)`).
+	#
+	# So the def-keyed row is the one the ladder and every panel read, and the actor-keyed
+	# row is the one the one lineage producer that reads a PERSON'S standing reads. A pact
+	# filed under only the first is sworn, mirrored, saved and printed — and still cannot
+	# open the gate it was written to open. `_apply_both_keys` writes both rows in the same
+	# call, the same way `SocialFavour._settle` does, so the ladder, the panel and the
+	# producer answer from one act.
+	var player_side := _apply_both_keys(player, key, partner.id, CAUSE_SWORN)
+	var partner_side := _apply_both_keys(partner, _bond_key(player), player.id, CAUSE_ACCEPTED)
+	if witnessed and named_witness != &"":
 		# The witness stands surety, so the player holds a real bond against THEM for
 		# having vouched — the third leg, and the one an authored gate can name. Keyed on
-		# the id the caller named, which is already a def id: it came off the roster.
-		SocialApi.apply_cause(player, witness_id, CAUSE_WITNESSED)
+		# the resolved id, which is either what the caller named (the direct `swear` beat) or
+		# what the consent row recorded at offer time. Both are def ids off the roster, and
+		# the actor-id alias is written beside them for the same reason as the other two.
+		_apply_both_keys(player, named_witness, named_witness, CAUSE_WITNESSED)
 	ledger.answer(key, ConsentLedger.OUTCOME_ACCEPTED, CAUSE_SWORN, witnessed)
 	_persist(ledger, player)
 	return {
@@ -204,7 +245,7 @@ static func swear_brotherhood(
 		"outcome": String(ConsentLedger.OUTCOME_ACCEPTED),
 		"cost": String(CAUSE_SWORN),
 		"witnessed": witnessed,
-		"witness_id": String(witness_id),
+		"witness_id": String(named_witness),
 		"player_class": String(SocialApi.bond_entry(player, key).get("bond", "")),
 		"partner_class": String(SocialApi.bond_entry(partner, _bond_key(player)).get("bond", "")),
 	}
@@ -318,7 +359,7 @@ static func _gate(
 ## `elder_wei#1`), so the **prefix match is tried before the exact match** and the first
 ## def whose live body IS this actor wins. Bounded by the registry, which is bounded by
 ## the room.
-static func _bond_key(other: Actor) -> StringName:
+static func bond_key(other: Actor) -> StringName:
 	if other == null:
 		return &""
 	for key in NpcRegistry.instance().present_ids():
@@ -329,6 +370,40 @@ static func _bond_key(other: Actor) -> StringName:
 		if hash_at >= 0:
 			return StringName(text.substr(0, hash_at))
 	return other.id
+
+
+## Apply `cause_id` to `actor`'s bond with `other_id`, under BOTH keys that identify
+## that other party: the roster DEF id (`bond_key`) and the actor id the engine minted.
+##
+## Both rows are required and neither is redundant. The ladder, the panels and
+## `SocialFavour` all read the DEF-keyed row, because that is what the roster authors.
+## `Seduction.can_meet` asks its gate for `String(partner.id)` — the ENGINE id — so the
+## actor-keyed row is the one that opens the lineage producer's gate. A pact filed under
+## only one of the two is sworn, mirrored, saved and printed, and still cannot open the
+## thing it was written to open.
+##
+## Returns the def-keyed result, which is the one whose `class` the caller reports.
+## Writing two rows is not a second source of truth: they are two keys onto ONE bond, and
+## the class is read back through `SocialApi.bond_entry` on each side rather than invented
+## here.
+static func _apply_both_keys(
+	actor: Actor, other_key: StringName, other_id: StringName, cause_id: StringName
+) -> Dictionary:
+	if actor == null or other_key == &"":
+		return {"ok": false, "reason": "no_subject"}
+	var result := SocialApi.apply_cause(actor, other_key, cause_id)
+	# The engine id is only a second key when it actually differs from the def id;
+	# writing the same row twice would double-count the cause.
+	if other_id != &"" and other_id != other_key:
+		SocialApi.apply_cause(actor, other_id, cause_id)
+	return result
+
+
+## The private spelling of [method bond_key], used by every verb in this file. One name,
+## one behaviour: a public alias that could drift from the private one would reintroduce
+## exactly the split-brain this function exists to close.
+static func _bond_key(other: Actor) -> StringName:
+	return bond_key(other)
 
 
 ## The player's consent ledger, restored from `module_data` on first read.

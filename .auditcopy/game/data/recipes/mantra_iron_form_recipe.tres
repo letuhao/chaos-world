@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"mantra_iron_form_recipe"
+display_name = "Iron Mantra Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"wood_iron_bark", &"monster_stone_golem_essence"])
+outputs = Array[StringName]([&"mantra_iron_form"])

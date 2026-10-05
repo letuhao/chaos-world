@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ShopDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/market/shop_def.gd" id="1_shop"]
+
+[resource]
+script = ExtResource("1_shop")
+shop_id = &"qi_refining_ore_stall"
+display_name = "Qi Refining Ore Stall"
+kind = &"stall"
+stock = Array[Dictionary]([{"def_id": &"alchemy_cinder_ore", "quantity": 12}, {"def_id": &"armor_iron_ore", "quantity": 8}, {"def_id": &"bangle_copper_ore", "quantity": 6}])
+buys = Array[StringName]([&"alchemy_cinder_ore", &"armor_iron_ore"])
+location_id = &"qi_refining_ore_row"
+capacity = 16

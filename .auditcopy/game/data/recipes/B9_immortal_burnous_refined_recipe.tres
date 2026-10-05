@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"B9_immortal_burnous_refined_recipe"
+display_name = "Immortal Burnous Refined Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"B9_immortal_burnous_base", &"Z40_immortal_breccia_pillar"])
+outputs = Array[StringName]([&"B9_immortal_burnous_refined"])

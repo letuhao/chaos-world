@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"panacea_surge_pill_recipe"
+display_name = "Surge Pill Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"panacea_moonleaf_herb", &"panacea_silkcap_herb", &"panacea_starwell_essence"])
+outputs = Array[StringName]([&"panacea_surge_pill"])

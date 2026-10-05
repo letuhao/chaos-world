@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FateDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/destiny/fate_def.gd" id="1_fate"]
+
+[resource]
+script = ExtResource("1_fate")
+id = &"one_hundredth_slain"
+display_name = "The Hundredth"
+description = "One hundred dead, counted by the sect and not by the hand. The record closes a ledger nobody asked it to open. It takes no further note."
+category = &"blood"
+tier = 2
+visibility = &"revealed"
+flat_modifiers = {"attack_physical": 9.0, "will": -2.0}
+counters = Array[StringName]([&"kills"])
+tags = Array[StringName]([])

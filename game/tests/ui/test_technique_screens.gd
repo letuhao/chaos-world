@@ -171,6 +171,27 @@ func _rows_of(loadout: UiScreen) -> Array:
 	return rows
 
 
+## The codex entry view for one technique id, or `{}` when the page does not list it.
+## Read off `summary()`, which is the screen's own contract, so a test asserts what a
+## consumer of the page sees rather than reaching into the screen's fields.
+func _entry_for(screen: UiScreen, technique_id: StringName) -> Dictionary:
+	for entry in screen.summary()["entries"] as Array:
+		var view: Dictionary = entry as Dictionary
+		if String(view.get("id", "")) == String(technique_id):
+			return view
+	return {}
+
+
+## The row NODE the codex used for one technique, so a label can be asserted on the
+## real widget rather than on the row's own summary — a value in `summary()` that no
+## label ever shows is published-but-unreachable, which is the defect class here.
+func _row_of(screen: UiScreen, technique_id: StringName) -> Control:
+	for row in screen.get(&"_rows") as Array:
+		if String(row.call(&"entry_id")) == String(technique_id):
+			return row as Control
+	return null
+
+
 # --- The empty-summary contract ---------------------------------------------
 
 
@@ -669,6 +690,159 @@ func test_binding_a_target_added_no_facade_method() -> void:
 		if not method_name.begins_with("_") and not published.has(method_name):
 			published.append(method_name)
 	assert_eq(published.size(), 12, "still exactly twelve, found %d" % published.size())
+
+
+# --- The codex shows the range a copy may read (DEF-0302) ----------------------
+#
+# `band_for` was WIRED (draw rolled it) and UNPUBLISHED: no surface told a hero that
+# the sheet saying 6.0 might arrive as 4.5. These drive the real screen and assert the
+# rendered VALUE, and every expected number is read from `band_for` — the one
+# declaration of the width — so a test cannot drift from the roll it is guarding.
+
+
+## The codex row publishes the two edges AND the range in the sheet's own figures,
+## and they are `TechniqueMarginalia.band_for`'s edges. A row that published a band
+## of its own would be a second reader of ADR 0196's rule, in `ui/`.
+func test_the_codex_publishes_the_band_band_for_declares() -> void:
+	var actor := _actor()
+	var def := _technique(&"qi_band", PathState.QI)
+	# A band needs something to band. `_technique` authors no inscribed options, and
+	# a manual with nothing to vary is correctly reported UNBANDED (`1.0 .. 1.0`) —
+	# so without an option on the fixture this case asserted a sentinel and passed
+	# for the wrong reason, which is the same inertness it was written to catch.
+	def.rarity = ItemRarity.LEGENDARY
+	def.passive_options = [{"option_id": &"cult_qi_control", "value": 6.0}]
+	TechniquesApi.codex(actor).learn(def.id)
+	var codex := _codex()
+	codex.setup(actor)
+
+	var declared := TechniqueMarginalia.band_for(def.rarity)
+	var row: Dictionary = _entry_for(codex, def.id)
+	# Read the row's OWN published `marginal_band`. The defect this case now guards
+	# was inside `band_view()` itself: it read a `marginal_band` key out of the
+	# MODULE's view — which the module never wrote — so it returned its `1.0 .. 1.0`
+	# default for every row and the surface was inert while the assertion passed
+	# against the sentinel. Reading the row's published value is what makes the
+	# wiring part of the claim rather than a coincidence.
+	assert_eq(bool(row.get("marginal_banded", false)), true, "and the row says the band bites")
+	# `marginal_span` is the MULTIPLIER window `band_for` declares; `marginal_band`
+	# beside it is the PRICE window on this manual's own values (4.5 and 7.5 on a
+	# 6.0 sheet). Comparing the price window against 0.75/1.25 is what made this
+	# case look like a broken surface when the numbers under the right key were
+	# correct all along.
+	var span: Dictionary = row.get("marginal_span", {})
+	assert_almost_eq(
+		float(span.get("floor", -1.0)),
+		float(declared.x),
+		"the row publishes band_for's floor",
+		0.000001
+	)
+	assert_almost_eq(
+		float(span.get("ceiling", -1.0)), float(declared.y), "and band_for's ceiling", 0.000001
+	)
+	# ## Why the WIDTH is re-derived here rather than read from `band_for` again
+	#
+	# `declared` above and the value under test both come from `band_for`, so on
+	# their own they agree even if `band_for` is wrong — a `band_for` hard-wired to
+	# the identity `1.0 .. 1.0` left this whole case GREEN while the surface it
+	# guards reported "a copy may read exactly the sheet", which is the one thing
+	# the publication exists to contradict. Asserting the span against `declared`
+	# also cannot distinguish "no band" from "the right band".
+	#
+	# So the edges are re-derived from the two published CONSTANTS — the rarity's
+	# reach and `BAND_REACH` — which are inputs rather than the rule being tested.
+	# `reach * BAND_REACH` is the half-width ADR 0204's rule is, and these two
+	# numbers can only both hold if the row really published the declared window.
+	var reach := clampf(ItemRarity.magnitude_budget(def.rarity), 0.0, 1.0)
+	var half_width := reach * TechniqueMarginalia.BAND_REACH
+	assert_almost_eq(
+		float(span.get("floor", -1.0)),
+		1.0 - half_width,
+		"the floor is the declared half-width below the sheet",
+		0.000001
+	)
+	assert_almost_eq(
+		float(span.get("ceiling", -1.0)),
+		1.0 + half_width,
+		"and the ceiling the same half-width above it",
+		0.000001
+	)
+	# And the window is WIDE: an identity span would satisfy nothing above, because
+	# every expected figure would have collapsed onto 1.0.
+	assert_eq(half_width > 0.0, true, "a legendary manual's band is not the identity")
+	assert_eq(float(span.get("ceiling", 0.0)) > float(span.get("floor", 0.0)), true, "two-sided")
+	# And the price window is a real, separate figure in the sheet's own units.
+	var price: Dictionary = row.get("marginal_band", {})
+	assert_almost_eq(
+		float(price.get("floor", -1.0)), 4.5, "and the price window below the sheet", 0.000001
+	)
+	assert_almost_eq(float(price.get("ceiling", -1.0)), 7.5, "and above it", 0.000001)
+
+
+## The authored column and the range a copy may read sit on the SAME row, and the
+## row quotes the module's own figures. This is the promise ADR 0204 made — "this
+## sheet says 6.0; a copy may read 4.5-7.5" — so the assertion is that the rendered
+## line contains BOTH the sheet's figure and the range's, and reaches a label.
+##
+## A fixture manual with no inscribed options has nothing to band, so the option is
+## authored here: an option the catalog knows, on a passive, at a known value.
+func test_the_row_prints_the_sheet_beside_the_range_a_copy_may_read() -> void:
+	var actor := _actor()
+	var def := _technique(&"qi_sheet", PathState.QI)
+	def.rarity = ItemRarity.LEGENDARY
+	def.passive_options = [{"option_id": &"cult_qi_control", "value": 6.0}]
+	TechniquesApi.codex(actor).learn(def.id)
+	var codex := _codex()
+	codex.setup(actor)
+
+	var declared := TechniqueMarginalia.band_for(def.rarity)
+	var row: Dictionary = _entry_for(codex, def.id)
+	assert_eq(bool(row.get("marginal_banded", false)), true, "this row carries variance")
+
+	# The module's own figures, one per bandable option, in the sheet's units.
+	var figures: Array = row.get("marginal_band_figures", [])
+	assert_eq(figures.size(), 1, "the range names the option it may move")
+	var figure: Dictionary = figures[0]
+	assert_almost_eq(float(figure["authored"]), 6.0, "against the authored sheet", 0.0001)
+	assert_almost_eq(
+		float(figure["floor"]), 6.0 * float(declared.x), "the low end is the band applied", 0.0001
+	)
+	assert_almost_eq(
+		float(figure["ceiling"]), 6.0 * float(declared.y), "and the high end likewise", 0.0001
+	)
+
+	# Rendered: the sheet's figure and the range are BOTH in the line, and the line
+	# is on a label — because a value in `summary()` that no label shows is the
+	# published-but-unreachable defect this test exists to close.
+	var line := String(row.get("band_line", ""))
+	assert_ne(line, "", "the row owns a margin line")
+	assert_ne(line.find("6.00"), -1, "which quotes the authored sheet")
+	assert_ne(line.find("%.2f" % float(figure["floor"])), -1, "and the low end a copy may read")
+	assert_ne(line.find("%.2f" % float(figure["ceiling"])), -1, "and the high end")
+	var label := _row_of(codex, def.id).get_node_or_null("%BandLabel") as Label
+	assert_ne(label, null, "the row has a band label")
+	assert_eq(label.text, line, "and the label shows what summary publishes")
+
+
+## A row whose range cannot bite prints NOTHING rather than "1.00x - 1.00x". The
+## three such rows are a COMMON manual, an ACTIVE one (no options to vary) and a
+## capacity-only one (ADR 0160's refusal). A common manual is the interesting case:
+## its rarity band is legitimately `1.0 .. 1.0`, and printing it would promise a
+## precision nobody authored.
+func test_a_row_that_cannot_vary_prints_no_band_at_all() -> void:
+	var actor := _actor()
+	var def := _technique(&"qi_common_band", PathState.QI)
+	def.rarity = ItemRarity.COMMON
+	def.passive_options = [{"option_id": &"cult_qi_control", "value": 6.0}]
+	TechniquesApi.codex(actor).learn(def.id)
+	var codex := _codex()
+	codex.setup(actor)
+
+	var row: Dictionary = _entry_for(codex, def.id)
+	assert_eq(bool(row.get("marginal_banded", false)), false, "a common copy cannot vary")
+	assert_eq(String(row.get("band_line", "")), "", "so the row says nothing about a band")
+	var label := _row_of(codex, def.id).get_node_or_null("%BandLabel") as Label
+	assert_eq(label.text, "", "and the label is cleared rather than showing 1.00x")
 
 
 # --- The ScreenStack contract -----------------------------------------------

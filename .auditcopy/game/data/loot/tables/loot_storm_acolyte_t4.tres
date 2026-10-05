@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"sa4_veil"
+kind = &"item"
+item_id = &"artifact_void_leviathan_eye"
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = ""
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"sa4_relics"
+kind = &"table"
+table_id = &"loot_storm_material_pool"
+weight = 3.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = ""
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"sa4_crowns"
+kind = &"table"
+table_id = &"loot_storm_crown_pool"
+weight = 2.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = ""
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"sa4_plate"
+kind = &"item"
+item_id = &"artifact_iron_titan_plate"
+weight = 1.0
+chance = 0.20
+guaranteed = false
+quantity = 1
+rarity_floor = ""
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_storm_acolyte_t4"
+display_name = "Storm Crypt Static Acolyte (Tempest)"
+realm = &"great_ascension"
+rarity = &"legendary"
+rolls = 2
+rolls_max = 3
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3")
+])

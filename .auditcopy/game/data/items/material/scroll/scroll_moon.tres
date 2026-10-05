@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"scroll_moon"
+display_name = "Moon Scroll"
+category = &"material"
+rarity = &"rare"
+realm = &"spirit_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_attack_spiritual", "value": 18},
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+	{"option_id": &"core_insight_gain", "value": 0.04},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"scroll"
+grade = &"earth"
+tags = Array[StringName]([&"rare"])
+sources = Array[StringName]([&"craft:scroll_moon_recipe", &"domain:artifact_storm_phoenix_domain"])
+description = "A scroll glowing with lunar essence. Earth-grade with moon affinity."

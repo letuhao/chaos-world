@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F30_immortal_florilegium_comprehension_crit_chance_max_stamina_qi_cost_reduction"
+display_name = "Immortal Florilegium Comprehension Crit chance Max stamina Qi cost reduction"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 31.76},
+	{"option_id": &"core_crit_chance", "value": 0.05},
+	{"option_id": &"core_max_stamina", "value": 31.76},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"syrup"
+grade = &"immortal"
+sources = Array[StringName]([&"quest", &"domain:body_dao_fruit_trial"])

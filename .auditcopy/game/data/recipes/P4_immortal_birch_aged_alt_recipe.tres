@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"P4_immortal_birch_aged_alt_recipe"
+display_name = "Immortal Birch Aged (Alt) Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"P4_immortal_birch_refined", &"orb_divine_ore", &"body_heaven_immortal_tempering_herb"])
+outputs = Array[StringName]([&"P4_immortal_birch_aged"])

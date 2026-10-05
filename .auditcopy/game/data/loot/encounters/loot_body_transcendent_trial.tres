@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"transcendent"
+rarity = &"common"
+vitality = 491793.8
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"body_transcendent_guardian", "table_id": &"loot_body_transcendent_guardian"},
+	{"boss_id": &"E10_transcendent_oracle", "table_id": &"loot_E10_transcendent_oracle"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"transcendent"
+rarity = &"rare"
+vitality = 786870.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"body_transcendent_guardian", "table_id": &"loot_body_transcendent_guardian"},
+	{"boss_id": &"E10_transcendent_oracle", "table_id": &"loot_E10_transcendent_oracle"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_body_transcendent_trial"
+display_name = "Body of Humanity Trial"
+domain_id = &"body_transcendent_trial"
+boss_ids = Array[StringName]([&"body_transcendent_guardian", &"E10_transcendent_oracle"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

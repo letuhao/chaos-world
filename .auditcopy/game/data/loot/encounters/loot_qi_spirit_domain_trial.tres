@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"spirit_domain"
+rarity = &"common"
+vitality = 18731.2
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"qi_spirit_domain_warden", "table_id": &"loot_qi_spirit_domain_warden"},
+	{"boss_id": &"F12_domain_warden", "table_id": &"loot_F12_domain_warden"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"spirit_domain"
+rarity = &"rare"
+vitality = 29970.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"qi_spirit_domain_warden", "table_id": &"loot_qi_spirit_domain_warden"},
+	{"boss_id": &"F12_domain_warden", "table_id": &"loot_F12_domain_warden"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_qi_spirit_domain_trial"
+display_name = "Spirit Domain Trial"
+domain_id = &"qi_spirit_domain_trial"
+boss_ids = Array[StringName]([&"qi_spirit_domain_warden", &"F12_domain_warden"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

@@ -33,6 +33,24 @@ extends PanelContainer
 ## reading `summary()` must never conclude that holding a technique costs money
 ## (DEF-0244).
 ##
+## ## The MARGIN line: what the sheet says, and what a copy may say instead
+##
+## ADR 0196/0204 make a copied manual a BAND around an authored figure rather than a
+## different authored figure, and that band used to be drawn (`draw` rolled it) and
+## published nowhere — a player was told `6.0` and had no way to learn that a copy
+## might read `4.5`. `inspect` now publishes the two edges as `marginal_band`
+## `{floor, ceiling}`, and this row prints them BESIDE the authored column so the
+## two statements sit together: *this sheet says 6.0; a copy may read 4.5-7.5.*
+##
+## **The row does not compute the band, and it does not apply it.** Both numbers are
+## the module's, arrived at through the one declaration in
+## `TechniqueMarginalia.band_for`; multiplying the authored figure by an edge derived
+## here would be a second reader of a roll rule, which is the defect this line closes
+## (DEF-0302). The row also never says `1.0-1.0` for a copy that cannot vary: the
+## module's `marginal_banded` says whether the edges bite at all, and a COMMON manual,
+## an active manual and a capacity-only manual all read as the sheet, which is what
+## they are.
+##
 ## The row owns every format it shows — the `d2/5` rung, the price, the shortfall,
 ## the "known"/"not learned" wording — so a screen never renders a number.
 ##
@@ -46,7 +64,7 @@ const SUSPENDED_TEXT := "SUSPENDED"
 const MASTERY_TEXT := "Mastery"
 const KNOWN_TEXT := "Known"
 
-## The three study statements. Every `%d` is a module figure; this panel formats
+## The study statements. Every `%d` is a module figure; this panel formats
 ## them and never produces one.
 const UNKNOWN_TEXT := "Not learned"
 const COST_TEXT := "Not learned - costs %d progress"
@@ -54,6 +72,12 @@ const FREE_TEXT := "Not learned - free to learn"
 const GATE_MARK := " (gated)"
 const SHORT_TEXT := "Short on %s: needs %d, held %d"
 const GATE_TEXT := "Not yet: %s"
+
+## The margin line. `%.2f` because the band is a MULTIPLIER on an authored figure,
+## not a figure itself — it is printed to two decimals so `0.75` never reads as
+## `0.8` next to a six-point option.
+const BAND_TEXT := "This sheet says %s; a copy may read %s"
+const NOTHING_AUTHORED := "no inscribed figure"
 
 ## The path ids a shortfall is reported against, in a hero's words rather than the
 ## module's. `qi_cultivation` is machine vocabulary; "the qi path" is not, and a
@@ -71,11 +95,13 @@ var _head: String = ""
 var _meta: String = ""
 var _mastery: String = ""
 var _price: String = ""
+var _band: String = ""
 var _note: String = ""
 var _head_label: Label = null
 var _meta_label: Label = null
 var _mastery_label: Label = null
 var _price_label: Label = null
+var _band_label: Label = null
 var _note_label: Label = null
 
 
@@ -96,6 +122,7 @@ func show_entry(view: Dictionary) -> void:
 	_meta = _meta_text(_view)
 	_mastery = _mastery_text(_view)
 	_price = _price_text(_view)
+	_band = _band_text(_view)
 	_note = _note_text(_view)
 	_render()
 
@@ -132,10 +159,28 @@ func summary() -> Dictionary:
 		"can_pay": false if known else bool(_view.get("can_pay", false)),
 		"learn_blocked_by": _string_list(_view.get("learn_unmet", [])),
 		"learn_short": short_list(),
+		# The RANGE a copy may read, and whether it means anything for this row.
+		# Published RELAYED, never derived here: a consumer compares these against
+		# `marginal_band_figures` itself, so no screen had to work out either edge
+		# (DEF-0302).
+		#
+		# Two units, because a player reads both and conflating them is the bug this
+		# separates. `marginal_span` is the MULTIPLIER window the module declares for
+		# this rarity — 0.75 and 1.25 — which is the RULE. `marginal_band` is the
+		# PRICE window it works out on this manual's own values — 4.5 and 7.5 on a
+		# sheet that says 6.0 — and is what `_band_text` prints beside the figure.
+		# Reading the price window as if it were the multiplier is what made this
+		# surface report `1.0 .. 1.0` for every manual while the numbers it returned
+		# for the right key were plain correct.
+		"marginal_band": band_view(),
+		"marginal_span": _span_view(),
+		"marginal_banded": bool(_view.get("marginal_banded", false)),
+		"marginal_band_figures": band_figures(),
 		"head": _head,
 		"meta": _meta,
 		"mastery_line": _mastery,
 		"price_line": _price,
+		"band_line": _band,
 		"note_line": _note,
 		"empty": false,
 	}
@@ -171,6 +216,7 @@ func _bind_nodes() -> void:
 	_meta_label = get_node_or_null("%MetaLabel") as Label
 	_mastery_label = get_node_or_null("%MasteryLabel") as Label
 	_price_label = get_node_or_null("%PriceLabel") as Label
+	_band_label = get_node_or_null("%BandLabel") as Label
 	_note_label = get_node_or_null("%NoteLabel") as Label
 
 
@@ -187,6 +233,9 @@ func _render() -> void:
 	_mastery_label.text = _mastery
 	_price_label.text = _price
 	_price_label.theme_type_variation = &"MetaLabel" if known_entry() else &"EffectLabel"
+	if _band_label == null:
+		return
+	_band_label.text = _band
 	if _note_label == null:
 		return
 	_note_label.text = _note
@@ -251,6 +300,142 @@ func _price_text(view: Dictionary) -> String:
 	if bool(view.get("can_learn", false)):
 		return quoted
 	return quoted + GATE_MARK
+
+
+## The MARGIN line: the authored figure and the range a copy of it may read.
+##
+## ## Why it prints the module's FIGURES, not a multiplication of its own
+##
+## `marginal_band` is a pair of multipliers, but a player is owed the range in the
+## SAME UNITS as the sheet beside it — "this sheet says 6.0; a copy may read
+## 4.50-7.50" — and multiplying `6.0` by `0.75` in a PANEL would mean the panel
+## computed a figure ADR 0196's rule owns, in `ui/`, from an edge it read two keys
+## away. Two readers of one roll is the defect DEF-0302 exists to close. So the
+## module publishes the per-option figures (`marginal_band_figures`) and this row
+## only formats them.
+##
+## Empty — and the label cleared — for a row whose range cannot bite. That is the
+## module's `marginal_banded` answer, not this panel's: a COMMON copy spans
+## `1.0 .. 1.0`, an ACTIVE manual authors no options to vary, and a capacity-only
+## manual is carried at its authored value. A line reading "1.00x - 1.00x" would
+## promise a precision no author declared.
+func _band_text(view: Dictionary) -> String:
+	if not bool(view.get("marginal_banded", false)):
+		return ""
+	var figures := band_figures()
+	if figures.is_empty():
+		return ""
+	return BAND_TEXT % [_sheet_text(figures), _edges_text(figures, band_view())]
+
+
+## The sheet's own column, quoted from the module's figures rather than recomputed
+## from `authored_effects` and the edges.
+func _sheet_text(figures: Array) -> String:
+	var parts: Array[String] = []
+	for figure in figures:
+		var entry: Dictionary = figure as Dictionary
+		var label := String(entry.get("label", ""))
+		var value := float(entry.get("authored", 0.0))
+		parts.append("%s %.2f" % [label, value])
+	return " ".join(parts)
+
+
+## The range, in the sheet's units, with the multiplier pair beside it when it is not
+## the identity — the two edges are the module's statement about copies of this
+## manual rather than about this one option, and a hero buying a copy wants both.
+func _edges_text(figures: Array, band: Dictionary) -> String:
+	var parts: Array[String] = []
+	for figure in figures:
+		var entry: Dictionary = figure as Dictionary
+		var low := float(entry.get("floor", 0.0))
+		var high := float(entry.get("ceiling", 0.0))
+		parts.append("%.2f-%.2f" % [low, high])
+	var floor_edge := float(band["floor"])
+	var ceiling_edge := float(band["ceiling"])
+	if floor_edge == 1.0 and ceiling_edge == 1.0:
+		return " ".join(parts)
+	return "%s (x%.2f-x%.2f)" % [" ".join(parts), floor_edge, ceiling_edge]
+
+
+## The module's per-option range, normalised to primitives so a `summary()` consumer
+## never receives whatever dictionary shape the caller happened to hold.
+func band_figures() -> Array:
+	var out: Array = []
+	var published: Variant = _view.get("marginal_band_figures", [])
+	if not published is Array:
+		return out
+	for figure in published as Array:
+		if not figure is Dictionary:
+			continue
+		var entry: Dictionary = figure as Dictionary
+		var option_id := String(entry.get("option_id", ""))
+		var label := String(entry.get("label", ""))
+		var authored := float(entry.get("authored", 0.0))
+		var low := float(entry.get("floor", 0.0))
+		var high := float(entry.get("ceiling", 0.0))
+		(
+			out
+			. append(
+				{
+					"option_id": option_id,
+					"label": label,
+					"authored": authored,
+					"floor": low,
+					"ceiling": high,
+				}
+			)
+		)
+	return out
+
+
+## The module's two edges, normalised to primitives so a `summary()` consumer never
+## receives whatever dictionary shape the caller happened to hold. `1.0 .. 1.0` when
+## nothing was published, which `marginal_banded` then says is meaningless.
+##
+## Read from `marginal_band_figures` — the key the module ACTUALLY publishes. It
+## previously read a `marginal_band` key nothing has ever written, so every row
+## fell through to the `1.0 .. 1.0` default and the screen reported no band for
+## any manual: the surface was built, wired, and inert, which is the DEF-0302 shape
+## the read model was written to close. The widest figure wins, because a manual
+## with several options shows the envelope a copy could land anywhere inside.
+func band_view() -> Dictionary:
+	var figures := band_figures()
+	if figures.is_empty():
+		return {"floor": 1.0, "ceiling": 1.0}
+	# Seeded from the FIRST figure, not from the neutral `1.0 .. 1.0`. Folding a
+	# floor of 4.5 into a seed of 1.0 with `minf` can never move it — 1.0 is below
+	# every price a band can reach — so the window came back `1.0 .. 7.5`: a real
+	# ceiling and a floor that was never the module's at all. The neutral default
+	# belongs to the EMPTY case only, which is the branch above.
+	var first: Dictionary = figures[0]
+	var out := {
+		"floor": float(first.get("floor", 1.0)),
+		"ceiling": float(first.get("ceiling", 1.0)),
+	}
+	for index in range(1, figures.size()):
+		var row: Dictionary = figures[index]
+		out["floor"] = minf(float(out["floor"]), float(row.get("floor", 1.0)))
+		out["ceiling"] = maxf(float(out["ceiling"]), float(row.get("ceiling", 1.0)))
+	return out
+
+
+## The MULTIPLIER window the module declares for this manual's rarity, relayed.
+##
+## `ui/` may not call `TechniqueMarginalia.band_for` itself — the band is the
+## module's rule, and a panel that re-derived it would be a second reader of ADR
+## 0204. The read model publishes it as `marginal_band`; this relays it under a
+## name that says which unit it is, because the PRICE window is published beside it
+## and reading one as the other is how this surface came to report `1.0 .. 1.0` for
+## every manual.
+func _span_view() -> Dictionary:
+	var out := {"floor": 1.0, "ceiling": 1.0}
+	var published: Variant = _view.get("marginal_band", {})
+	if not published is Dictionary:
+		return out
+	var span: Dictionary = published as Dictionary
+	out["floor"] = float(span.get("floor", 1.0))
+	out["ceiling"] = float(span.get("ceiling", 1.0))
+	return out
 
 
 ## The line that makes the price actionable: what the hero is short of, or why the

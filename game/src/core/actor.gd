@@ -496,8 +496,22 @@ static func from_dict(data: Dictionary) -> Actor:
 	# save layer, which already owns `SaveMigrate.refusal()` and the `R_FUTURE_ACTOR_SCHEMA`
 	# precedent for refusing by name. What this function owes them is that the drop is not
 	# invisible.
+	# ## The polity stamp is NOT a malformed slot, and that is the fix this loop records.
+	# The stamp is the one key under `module_data` that is deliberately NOT a Dictionary —
+	# `ActorSave` states why, and `set_module_data` is typed `(id, data: Dictionary)`, so
+	# the stamp can never travel the generic module path at all. It is restored by its own
+	# versioned branch in `_restore_versioned`. So it is EXCLUDED here rather than warned
+	# about: warning on it claimed "this body now reads as never having earned [a module's
+	# whole ledger]" about a value that is not a module ledger and that was in fact
+	# restored, which buried the real signal in a lie (DEF-0119).
+	#
+	# The guard is otherwise UNCHANGED and still refuses an untrusted save: anything else
+	# that is not a Dictionary is dropped and NAMED, which is the whole point of the
+	# warning. Only this one key, whose shape `ActorSave` owns, is spared.
 	var dropped: Array[String] = []
 	for key in data.get("module_data", {}).keys():
+		if StringName(key) == POLITY_SLOT_KEY:
+			continue
 		var slot = data["module_data"][key]
 		if slot is Dictionary:
 			actor.set_module_data(StringName(key), slot)
@@ -571,15 +585,20 @@ static func _restore_versioned(data: Dictionary, actor: Actor, version: int) -> 
 	# ##     ONE thing in this payload that is not the world ledger's content, so restoring
 	# ##     it into `module_data` cannot drag a second copy of the ledger onto the actor:
 	# ##     that is what the no-duplication test asserts.
-	# ## A malformed stamp (a string, a dictionary, a negative) is dropped rather than
-	# ## coerced, so an untrusted save cannot hand a caller a version to compare against.
+	# ## A malformed stamp (a string, a nested array, a negative, a fractional number) is
+	# ## dropped rather than coerced, so an untrusted save cannot hand a caller a version to
+	# ## compare against. An INTEGRAL FLOAT is not malformed: it is what `JSON.parse_string`
+	# ## returns for the int this branch is about, because JSON has one number type, and a
+	# ## file-backed save goes through that hop. `ActorSave.stamp_of` is the one place that
+	# ## decides, and this branch asks it rather than repeating the rule.
 	var module_payload: Variant = data.get("module_data", {})
 	var stamp_data: Variant = (
 		(module_payload as Dictionary).get(String(POLITY_SLOT_KEY))
 		if (module_payload is Dictionary)
 		else null
 	)
-	if stamp_data is int and int(stamp_data) >= 0:
+	var restored_stamp := ActorSave.stamp_of(stamp_data)
+	if restored_stamp >= 0:
 		# Routed through `set_polity_version`, which owns this slot's assignment, rather
 		# than written into `module_data` a second time here. `set_module_data` is typed
 		# `(id, data: Dictionary)` and this stamp is deliberately NOT a dictionary - the
@@ -587,7 +606,7 @@ static func _restore_versioned(data: Dictionary, actor: Actor, version: int) -> 
 		# error. GDScript attributes it upward, so the failure surfaced as
 		# `Could not resolve class LootContentTables` and then `DomainFixtures`, both
 		# innocent, then a failed load of everything importing Actor (DEF-0277).
-		actor.set_polity_version(int(stamp_data))
+		actor.set_polity_version(restored_stamp)
 
 
 ## The wound ledger's raw payload, read through the component the body path binds it

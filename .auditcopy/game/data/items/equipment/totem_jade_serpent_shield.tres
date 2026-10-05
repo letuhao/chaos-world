@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"totem_jade_serpent_shield"
+display_name = "Jade Serpent Shield"
+category = &"equipment"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_spiritual", "value": 21.25},
+	{"option_id": &"core_damage_reduction", "value": 0.04},
+])
+roll_spec = {"count": 2, "contexts": ["prefix", "postfix"]}
+subcategory = &"artifact"
+stackable = false
+grade = &"spirit"
+sources = Array[StringName]([&"boss:totem_jade_serpent", &"boss:d6_jade_serpent"])

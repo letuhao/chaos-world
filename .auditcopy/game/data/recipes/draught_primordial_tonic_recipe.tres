@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"draught_primordial_tonic_recipe"
+display_name = "Primordial Tonic Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"wood_immortal_core", &"filament_primordial_thread"])
+outputs = Array[StringName]([&"draught_primordial_tonic"])

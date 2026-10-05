@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BodyRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"great_luo"
+breakthrough_item = &"body_great_luo_breakthrough_pill"
+strengthening_item = &"body_great_luo_channel_elixir"
+recovery_item = &"body_great_luo_recovery_elixir"
+progress_required = 1123.0
+physique_required = 163.2
+quality_required = 0.792000
+quality_target = 0.872000
+integrity_target = 0.922000
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai", &"yin_qiao", &"yang_qiao", &"yin_wei", &"yang_wei"])
+required_refinement = 24
+refinement_cap = 25
+integrity_maximum = 340.0
+rewards = {
+"physique": 2.0,
+"organ_vitality": 1.0
+}
+insight_required = 1306.0
+resonance_rank = 7
+chance_base = 0.2980
+chance_cap = 0.7840
+channel_training = Array[StringName]([])

@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="TechniqueDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[ext_resource type="Script" path="res://src/modules/items/item_requirement.gd" id="2_req"]
+
+[sub_resource type="Resource" id="Requirement"]
+script = ExtResource("2_req")
+min_realm_index = 9
+
+[resource]
+script = ExtResource("1_def")
+id = &"shared_qi_recovery_breath"
+delivered_by = &"tome_cinder_tiger_breath"
+display_name = "Recovery Breath"
+description = "A five-breath pattern that returns a usable amount of qi in a few seconds. Unelemental, restorative, and gated on the best path rather than any one of them."
+tags = Array[StringName]([&"technique", &"shared", &"universal_slot", &"recovery", &"no_element"])
+grade = &"spirit"
+rarity = &"magic"
+element = &""
+schools = Array[StringName]([&"foundation"])
+active = true
+path = &"shared"
+qi_cost = 0.0
+stamina_cost = 0.0
+cooldown = 30.0
+mastery_rungs = 5
+magnitude = 1.0
+requirement = SubResource("Requirement")

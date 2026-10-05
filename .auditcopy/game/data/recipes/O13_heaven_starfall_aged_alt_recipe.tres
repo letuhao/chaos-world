@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"O13_heaven_starfall_aged_alt_recipe"
+display_name = "Heaven Starfall Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"O13_heaven_starfall_refined", &"fungus_shadow_truffle", &"bracer_heaven_ore"])
+outputs = Array[StringName]([&"O13_heaven_starfall_aged"])

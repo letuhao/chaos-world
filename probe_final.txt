@@ -1,0 +1,229 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: Cannot access non-static variable "weather" from the static function "publish_bands()".
+   at: GDScript::reload (res://src/modules/domain/domain_map.gd:308)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_map.gd:309)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_map.gd:347)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Invalid argument for "set_module_data()" function: argument 2 should be "Dictionary" but is "float".
+   at: GDScript::reload (res://src/core/cultivation_gain.gd:108)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/domain/environment_zone_def.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/domain/room_def.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/domain/domain_template_def.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:94)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Assigned value for constant "SUBSTRATE" isn't a constant expression.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:94)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "SUBSTRATE" constant because the value doesn't have a set type.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:94)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:508)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:509)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:690)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:691)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:692)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:996)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:1025)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:1030)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:1031)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:1032)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:1033)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:1034)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:1035)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:1036)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:1060)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/modules/domain/domain_fixtures.gd:1062)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/domain/api.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/modules/domain/run_api.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "DomainWards".
+   at: GDScript::reload (res://src/app/domain_boot.gd:1)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/app/domain_boot.gd:656)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "path_id" variable because the value doesn't have a set type.
+   at: GDScript::reload (res://src/app/domain_boot.gd:656)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/app/domain_boot.gd:657)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Parse Error: Could not resolve class "EnvironmentField", because of a parser error.
+   at: GDScript::reload (res://src/app/domain_boot.gd:663)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://src/app/domain_fight.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://tests/test_zz_probe_verdict.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+ERROR: Failed to load script "res://tests/test_zz_probe_verdict.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] _initialize (res://tests/run_tests.gd:44)
+
+
+@@@@@@@@@@ ZZ PROBE [2] FIXTURE BODY — BEGIN @@@@@@@@@@
+SCRIPT ERROR: Invalid call. Nonexistent function 'install' in base 'GDScript'.
+   at: _enter (res://tests/test_zz_probe_verdict.gd:364)
+   GDScript backtrace (most recent call first):
+       [0] _enter (res://tests/test_zz_probe_verdict.gd:364)
+       [1] _enter_with (res://tests/test_zz_probe_verdict.gd:369)
+       [2] test_zz_probe_fixture_body (res://tests/test_zz_probe_verdict.gd:106)
+       [3] _initialize (res://tests/run_tests.gd:118)
+band.bosses     = []
+band.domain_id  = ''
+fixture _boss_rooms() = []
+
+--- the fixture body ---
+  id=warden room_of= BOSS tag=true
+  _door_for() using the hero THIS body was entered with = '/'
+  _door_for() using the `_hero_actor` FIELD              = '/'
+
+--- _placed_boss's TWO guards, one at a time ---
+SCRIPT ERROR: Invalid call. Nonexistent function 'placed_inhabitants' in base 'GDScript'.
+   at: _roster_has_id (res://tests/test_zz_probe_verdict.gd:326)
+   GDScript backtrace (most recent call first):
+       [0] _roster_has_id (res://tests/test_zz_probe_verdict.gd:326)
+       [1] test_zz_probe_fixture_body (res://tests/test_zz_probe_verdict.gd:128)
+       [2] _initialize (res://tests/run_tests.gd:118)
+  roster has a body with id 'warden'? false
+SCRIPT ERROR: Invalid call. Nonexistent function 'placed_inhabitants' in base 'GDScript'.
+   at: _id_cardinality (res://tests/test_zz_probe_verdict.gd:336)
+   GDScript backtrace (most recent call first):
+       [0] _id_cardinality (res://tests/test_zz_probe_verdict.gd:336)
+       [1] test_zz_probe_fixture_body (res://tests/test_zz_probe_verdict.gd:129)
+       [2] _initialize (res://tests/run_tests.gd:118)
+  roster cardinality: 
+SCRIPT ERROR: Invalid call. Nonexistent function 'placed_inhabitants' in base 'GDScript'.
+   at: _placed_boss (res://src/app/domain_fight.gd:309)
+   GDScript backtrace (most recent call first):
+       [0] _placed_boss (res://src/app/domain_fight.gd:309)
+       [1] test_zz_probe_fixture_body (res://tests/test_zz_probe_verdict.gd:130)
+       [2] _initialize (res://tests/run_tests.gd:118)
+  _placed_boss() = ''
+SCRIPT ERROR: Invalid call. Nonexistent function 'placed_inhabitants' in base 'GDScript'.
+   at: _placed_boss (res://src/app/domain_fight.gd:309)
+   GDScript backtrace (most recent call first):
+       [0] _placed_boss (res://src/app/domain_fight.gd:309)
+       [1] _door_of (res://src/app/domain_fight.gd:287)
+       [2] test_zz_probe_fixture_body (res://tests/test_zz_probe_verdict.gd:131)
+       [3] _initialize (res://tests/run_tests.gd:118)
+  _door_of()     = ''
+  DomainRun.record_kill(correct door)   -> ok=false reason='band_empty'
+  DomainRun.record_kill(_hero_actor door) -> ok=false reason='band_empty'
+@@@@@@@@@@ ZZ PROBE [2] FIXTURE BODY — END @@@@@@@@@@
+
+ERROR: res://tests/test_zz_probe_verdict.gd :: test_zz_probe_fixture_body asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid call. Nonexistent function 'reset' in base 'GDScript'.
+   at: teardown (res://tests/test_zz_probe_verdict.gd:29)
+   GDScript backtrace (most recent call first):
+       [0] teardown (res://tests/test_zz_probe_verdict.gd:29)
+       [1] _initialize (res://tests/run_tests.gd:126)
+
+
+@@@@@@@@@@ ZZ PROBE [1] GENERATED BOSS — BEGIN @@@@@@@@@@
+SCRIPT ERROR: Invalid call. Nonexistent function 'install' in base 'GDScript'.
+   at: test_zz_probe_generated_boss (res://tests/test_zz_probe_verdict.gd:64)
+   GDScript backtrace (most recent call first):
+       [0] test_zz_probe_generated_boss (res://tests/test_zz_probe_verdict.gd:64)
+       [1] _initialize (res://tests/run_tests.gd:118)
+ERROR: res://tests/test_zz_probe_verdict.gd :: test_zz_probe_generated_boss asserted nothing
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _assert_ran (res://tests/run_tests.gd:172)
+       [1] _initialize (res://tests/run_tests.gd:119)
+SCRIPT ERROR: Invalid call. Nonexistent function 'reset' in base 'GDScript'.
+   at: teardown (res://tests/test_zz_probe_verdict.gd:29)
+   GDScript backtrace (most recent call first):
+       [0] teardown (res://tests/test_zz_probe_verdict.gd:29)
+       [1] _initialize (res://tests/run_tests.gd:126)
+Floors: 0 of 2 test(s) ran under a declared expect_assertions() floor; the rest are covered only by the SCRIPT ERROR scan in tools/test.py, which catches an abort without naming the test
+Results: 0 passed, 2 failed (1 suite(s))

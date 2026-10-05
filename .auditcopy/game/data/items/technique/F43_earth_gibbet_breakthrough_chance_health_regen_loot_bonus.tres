@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F43_earth_gibbet_breakthrough_chance_health_regen_loot_bonus"
+display_name = "Earth Gibbet Breakthrough chance Health regen Loot bonus"
+category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.022},
+	{"option_id": &"core_health_regen", "value": 18.16},
+	{"option_id": &"core_loot_bonus", "value": 0.04},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"manual"
+grade = &"earth"
+sources = Array[StringName]([&"gather", &"domain:qi_golden_immortal_trial"])

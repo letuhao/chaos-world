@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"K23_heaven_rune_perfected_recipe"
+display_name = "Heaven Rune Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"K23_heaven_rune_primed", &"nectar_star_essence"])
+outputs = Array[StringName]([&"K23_heaven_rune_perfected"])

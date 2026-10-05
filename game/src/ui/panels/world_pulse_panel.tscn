@@ -61,6 +61,34 @@ theme_type_variation = &"PrimaryButton"
 disabled = true
 text = "Wait a season (unavailable)"
 
+[node name="RetreatTitle" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"SectionTitle"
+text = "Sit (the world moves while you do)"
+
+[node name="RetreatRow" type="HBoxContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="RetreatLength" type="OptionButton" parent="Layout/RetreatRow"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+
+[node name="RetreatButton" type="Button" parent="Layout/RetreatRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"PrimaryButton"
+disabled = true
+text = "Sit for this long (unavailable)"
+
+[node name="RetreatCost" type="Label" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MetaLabel"
+text = ""
+
 [node name="MessageLine" type="Label" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2

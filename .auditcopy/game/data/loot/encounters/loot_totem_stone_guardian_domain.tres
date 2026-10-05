@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"foundation"
+rarity = &"common"
+vitality = 3300.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"totem_stone_guardian", "table_id": &"loot_totem_stone_guardian"},
+	{"boss_id": &"d6_stone_guardian", "table_id": &"loot_d6_stone_guardian"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"foundation"
+rarity = &"rare"
+vitality = 5280.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"totem_stone_guardian", "table_id": &"loot_totem_stone_guardian"},
+	{"boss_id": &"d6_stone_guardian", "table_id": &"loot_d6_stone_guardian"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_totem_stone_guardian_domain"
+display_name = "Stone Guardian Totem Domain"
+domain_id = &"totem_stone_guardian_domain"
+boss_ids = Array[StringName]([&"totem_stone_guardian", &"d6_stone_guardian"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

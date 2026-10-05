@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"B31_divine_cavesson_perfected_recipe"
+display_name = "Divine Cavesson Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"B31_divine_cavesson_primed", &"Q4_divine_cumin_ailette", &"W2_divine_antler_clast"])
+outputs = Array[StringName]([&"B31_divine_cavesson_perfected"])

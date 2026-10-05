@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"W3_immortal_apse_emery"
+display_name = "Immortal Apse Emery"
+category = &"material"
+rarity = &"legendary"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 34.65},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"gemstone"
+grade = &"immortal"
+sources = Array[StringName]([&"gather", &"domain:manual_thunder_ape_domain"])

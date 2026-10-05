@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I46_divine_gaslight_primed_recipe"
+display_name = "Divine Gaslight Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I46_divine_gaslight_aged", &"Q4_divine_cumin_array", &"W2_divine_antler_dyer", &"qi_dao_ancestor_qi_herb"])
+outputs = Array[StringName]([&"I46_divine_gaslight_primed"])

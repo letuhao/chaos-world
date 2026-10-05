@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"A31_divine_matricespress_chancer"
+display_name = "Divine Matricespress Chancer"
+category = &"currency"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 36.58},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
+subcategory = &"seal"
+grade = &"divine"
+sources = Array[StringName]([&"quest", &"domain:puppet_iron_dancer_domain"])

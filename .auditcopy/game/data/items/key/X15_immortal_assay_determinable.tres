@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"X15_immortal_assay_determinable"
+display_name = "Immortal Assay Determinable"
+category = &"key"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 12},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
+subcategory = &"seal"
+grade = &"immortal"
+sources = Array[StringName]([&"quest", &"domain:relic_ash_wyrm_domain"])

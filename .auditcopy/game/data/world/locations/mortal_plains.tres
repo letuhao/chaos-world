@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WorldLocationDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/world_location_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+location_id = &"mortal_plains"
+display_name = "Mortal Plains"
+tier = &"mortal_world"
+faction_id = &"body_dao"
+resources = Array[StringName]([&"iron_ore", &"herb_common"])
+inhabitant_types = Array[StringName]([&"beast", &"quest_board"])
+danger_level = 2

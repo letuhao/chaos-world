@@ -12,4 +12,4 @@ yield_per_period = 10
 upkeep_per_period = 8
 claim_cost = {"tribute": 4}
 depletion = 72
-claim_floor = 50
+claim_floor = 7

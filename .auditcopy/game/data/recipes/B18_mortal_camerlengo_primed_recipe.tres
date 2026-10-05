@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"B18_mortal_camerlengo_primed_recipe"
+display_name = "Mortal Camerlengo Primed Talisman Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"B18_mortal_camerlengo_aged", &"spirit_herb", &"shield_iron_ore", &"scale_carp"])
+outputs = Array[StringName]([&"B18_mortal_camerlengo_primed"])

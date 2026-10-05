@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"alchemy_ash_herb"
+display_name = "Ash Herb"
+category = &"material"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"herb"
+grade = &"mortal"
+sources = Array[StringName]([&"gather", &"domain:qi_core_formation_trial", &"domain:qi_qi_refining_trial"])

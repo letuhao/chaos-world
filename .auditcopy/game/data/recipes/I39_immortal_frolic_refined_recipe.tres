@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I39_immortal_frolic_refined_recipe"
+display_name = "Immortal Frolic Refined Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I39_immortal_frolic_base", &"orb_heaven_shard"])
+outputs = Array[StringName]([&"I39_immortal_frolic_refined"])

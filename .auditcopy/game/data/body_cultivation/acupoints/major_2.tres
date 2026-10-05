@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AcupointDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/acupoint_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"major_2"
+display_name = "Chong Mai Major Node 03"
+tier = &"major"
+unlock_index = 9
+meridian_id = &"chong_mai"
+base_capacity = 200.0

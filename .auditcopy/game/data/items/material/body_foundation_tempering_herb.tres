@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"body_foundation_tempering_herb"
+display_name = "Muscle Forging Tempering Herb"
+category = &"material"
+rarity = &"common"
+realm = &"foundation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"herb"
+grade = &"mortal"
+sources = Array[StringName]([&"gather", &"boss:E1_foundation_warden"])
+description = "Gathered tempering reagent."

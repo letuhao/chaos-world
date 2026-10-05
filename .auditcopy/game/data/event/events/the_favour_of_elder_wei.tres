@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="EventDef" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/modules/event/event_def.gd" id="1_event"]
+[ext_resource type="Script" path="res://src/modules/event/event_stage_def.gd" id="2_stage"]
+
+[sub_resource type="Resource" id="Stage_the_petition"]
+script = ExtResource("2_stage")
+stage_id = &"the_petition"
+display_name = "The Petition Is Heard"
+requires = {}
+duration_periods = 1
+on_enter = [{"fact": &"elder_wei_petition_heard", "amount": 1}]
+
+[sub_resource type="Resource" id="Stage_the_favour"]
+script = ExtResource("2_stage")
+stage_id = &"the_favour"
+display_name = "The Favour Is Owed"
+requires = {"verb": &"fact", "id": &"elder_wei_petition_heard", "need": 1}
+duration_periods = 0
+on_enter = [{"fact": &"elder_wei_favour_counted", "amount": 1}, {"fact": &"elder_wei_favours_shown", "amount": 1, "kind": &"npc_tally", "npc_id": &"elder_wei", "verb": &"favours"}]
+
+[sub_resource type="Resource" id="Stage_the_oath"]
+script = ExtResource("2_stage")
+stage_id = &"the_oath"
+display_name = "The Oath Is Sworn"
+requires = {"verb": &"fact", "id": &"elder_wei_favours_shown", "need": 1}
+duration_periods = 0
+on_enter = [{"fact": &"elder_wei_oath_taken", "amount": 1, "kind": &"npc_tally", "npc_id": &"elder_wei", "verb": &"oaths_sworn"}]
+
+[resource]
+script = ExtResource("1_event")
+id = &"the_favour_of_elder_wei"
+display_name = "The Favour of Elder Wei"
+description = "An elder takes a petition, and then a favour, and the third one is the one that changes what he is to you. The world records that it happened; the ROSTER counts it, through NpcApi.tally, where elder_wei's gatekeeper stage names advance_after = 3 and advance_verb = \"favours\". The final stage is the other half of the ladder: its beat names \"oaths_sworn\", which is what elder_wei's SWORN SERVANT rung counts (advance_after = 5), and without it the elder tops out one rung below the story he is written for. Nothing here decides a stage — the roster's own thresholds do, and a beat naming any other verb cannot walk him up his ladder."
+kind = &"disaster"
+trigger = {"verb": &"fact", "id": &"storm_front_sighted", "need": 1}
+location_id = &"mortal_plains"
+on_enter = [{"fact": &"elder_wei_petition_opened", "amount": 1}]
+stages = Array[EventStageDef]([SubResource("Stage_the_petition"), SubResource("Stage_the_favour"), SubResource("Stage_the_oath")])
+pay = Array[Dictionary]([])

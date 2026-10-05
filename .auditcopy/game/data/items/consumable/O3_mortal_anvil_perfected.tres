@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"O3_mortal_anvil_perfected"
+display_name = "Mortal Anvil Perfected"
+category = &"consumable"
+rarity = &"common"
+realm = &"tribulation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 15.98},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"salve"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:O3_mortal_anvil_perfected_recipe", &"domain:loot_storm_crypt_domain"])

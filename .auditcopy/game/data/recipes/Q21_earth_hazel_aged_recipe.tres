@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Q21_earth_hazel_aged_recipe"
+display_name = "Earth Hazel Aged Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Q21_earth_hazel_refined", &"boots_gale_essence", &"lantern_glow_herb"])
+outputs = Array[StringName]([&"Q21_earth_hazel_aged"])

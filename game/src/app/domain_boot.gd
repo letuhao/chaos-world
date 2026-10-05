@@ -20,6 +20,20 @@ extends DomainWards
 ## below and the loot module's own entry gate cannot drift onto different properties.
 const KEY_REACH := &"key_reach"
 
+## The source tag on the `Stat.MAX_HEALTH` offset a placed creature's authored
+## `blows_to_survive` buys. DISTINCT from `FightLoop.FIGHT_POOL_SOURCE` and from
+## `RealmScaling.SOURCE`, because `remove_modifiers_from` wipes a source wholesale: a
+## shared tag would let the next breakthrough erase the pool a spawn just priced, and
+## the creature would be back to one-press.
+const INHABITANT_POOL_SOURCE := &"inhabitant_pool"
+
+## The interval a boss announces on when its spec authors none — `FightLoop`'s own neutral
+## blow interval, read rather than restated. Spelled here as a FORWARD because a static
+## constant may not be initialised from another class's constant at parse time on this
+## engine; the value is `FightLoop.BASE_BLOW_INTERVAL` and the test that proves the two
+## agree is in `game/tests/modules/domain/test_domain_run_boss.gd`.
+const NEUTRAL_BLOW_INTERVAL := 2.380952380952381
+
 ## The realized world, by name. [method realize_world] builds a `Node2D` under a parent the
 ## CALLER chose, so the composition root owns the node that draws the world and the world
 ## goes away with it; these four names are how anyone finds it afterwards.
@@ -286,6 +300,16 @@ static func enter_domain(player: Actor, template_id: StringName, seed_value: int
 	var inhabitants := DomainSpawner.spawn_map(
 		map, _inhabitant_catalogue(), Callable(DomainBoot, "_spawn_point")
 	)
+	# **Every minted body is made FIGHTABLE here, and nowhere else** (ADR 0228, 0230,
+	# 0235). `spawn_map` mints `Actor`s through `ActorFactory`, which builds the same
+	# provider spine the player gets but does NOT bind a `DamageMechanism` — and
+	# `MechanismSlot.of` ASSERTS when nothing is bound (`spine.gd:139`), so an
+	# un-installed creature is a crash at the first blow rather than a chip. So the
+	# spawn seam installs it, which is a line in `app/` and not a new module: the same
+	# `mint -> enrol -> install -> size -> begin` order `FightLoop.start_fight` already
+	# documents (`fight_loop.gd:206-222`).
+	for inhabitant in inhabitants:
+		_prepare_inhabitant(inhabitant as Actor, player)
 	# **The world is realized HERE, at the moment a run exists.** Before this the run was
 	# a `Vector2` per inhabitant in `module_data` that nothing outside a test ever read, and
 	# `DomainScene` was a walkable tile scene with no production caller at all. The seam is
@@ -384,6 +408,141 @@ static func visit_room(player: Actor, room_id: StringName, weather: StringName =
 # ── the population and the environment. Both are wiring, neither is a rule ──────
 
 
+## Make one minted inhabitant FIGHTABLE, and report what it now carries.
+##
+## ## Why this is the whole of "a domain creature can be fought"
+##
+## The audit ADR 0228 measured found a domain inhabitant **unkillable**: `PlayerAdapter`
+## is the only thing that mounts it, nothing ever published a target, and nothing routed a
+## spine outcome back into a run. Three pieces were missing and all three live here,
+## because `app/` is the composition root and is the only layer allowed to name a concrete
+## `CombatSpine`, a `StatModifier` and a `BossEncounter` at once:
+##
+## 1. **`CombatBoot.install`** — binds the `DamageMechanism` and the wound ledger. Without
+##    it `MechanismSlot.of` asserts at S4 and a creature is a crash, not a chip.
+## 2. **the survivability offset** — `Stat.MAX_HEALTH` FLAT, sized in BLOWs read off the
+##    def (`DomainSpawner.blows_to_survive_of`). A FLAT offset rather than an assignment, so
+##    it COMPOSES with `RealmScaling`'s realm MULT and both sides move together up the
+##    ladder (ADR 0230). `FightLoop._size_opponent` does exactly this and says it is for
+##    MINTED opponents only; this is that line moved to where authored content is read.
+## 3. **the boss component** — only for a species that AUTHORS a spec. A `boss` role with
+##    no spec gets nothing and fights arithmetically like a mob, which is ADR 0235's own
+##    fail-safe.
+##
+## ## The order is not negotiable
+##
+## `install` reads `acupoints` / `sea_of_consciousness` to CHOOSE a mechanism, and
+## `DomainSpawner` enrols BEFORE it hands the actor back — so install-after-enrol is the
+## only order in which a cultivator's body or mind path can be measured as present.
+## Sizing comes LAST, because it reads the installed actor's own blow price.
+##
+## `player` is the hero the pool is priced AGAINST, and it is the parameter rather than a
+## static so a headless probe can price a creature against a body of its own instead of
+## against whatever hero happens to be in `app/`.
+static func _prepare_inhabitant(inhabitant: Actor, player: Actor = null) -> Dictionary:
+	if inhabitant == null:
+		return {"ok": false, "reason": "no_actor"}
+	var installed := CombatBoot.install(inhabitant)
+	var sized := _size_inhabitant(inhabitant, player)
+	var boss := _bind_boss(inhabitant)
+	inhabitant.mark_stats_dirty()
+	return {
+		"ok": bool(installed.get("ok", false)),
+		"reason": String(installed.get("reason", "")),
+		"mechanism": String(installed.get("mechanism", "")),
+		"blows_to_survive": float(sized.get("blows_to_survive", 0.0)),
+		"health_max": float(sized.get("health_max", 0.0)),
+		"boss": bool(boss.get("ok", false)),
+		"punish_window_blows": int(boss.get("punish_window_blows", 0)),
+	}
+
+
+## The `Stat.MAX_HEALTH` offset a placed creature's authored blows_to_survive buys,
+## applied once. `0.0` authored means UNSIZED and the pool is left exactly as minted.
+##
+## **The blow is priced against the hero, and against a CLONE of the creature.** The clone
+## is `to_dict`/`from_dict` rather than `duplicate()` for `FightLoop._price_blow`'s reason:
+## `Actor` is `RefCounted` and has no `duplicate`, and its own save round-trip is the copy
+## already specified to carry every stat-bearing surface the spine reads — which is exactly
+## the set a body blow prices off (`BodyDamage.breakdown`). Pricing against the live
+## creature would measure a different body than the first blow actually hits.
+##
+## Bounded by no loop at all: one sample, one offset, one `set_maximum`. A hero who cannot
+## be priced leaves the pool alone rather than guessing at a magnitude, for
+## `FightLoop._size_opponent`'s reason — a pool of `0.0` is a fight that is over before it
+## opens.
+static func _size_inhabitant(inhabitant: Actor, player: Actor = null) -> Dictionary:
+	var authored := DomainSpawner.blows_to_survive_of(inhabitant)
+	if authored <= 0.0:
+		var pool := inhabitant.resource(&"health") as ResourcePool
+		return {
+			"ok": true,
+			"reason": "unsized",
+			"blows_to_survive": 0.0,
+			"health_max": 0.0 if pool == null else pool.maximum,
+		}
+	var blow := _price_inhabitant_blow(inhabitant, player)
+	if blow <= 0.0:
+		return {"ok": false, "reason": "no_blow_to_price", "blows_to_survive": authored}
+	inhabitant.stats.add_modifier(
+		StatModifier.new(Stat.MAX_HEALTH, Stat.Op.FLAT, blow * authored, INHABITANT_POOL_SOURCE)
+	)
+	var pool := inhabitant.resource(&"health") as ResourcePool
+	if pool == null:
+		inhabitant.attach_core_resources()
+		pool = inhabitant.resource(&"health") as ResourcePool
+	if pool != null:
+		pool.set_maximum(inhabitant.stats.derived(Stat.MAX_HEALTH))
+	return {
+		"ok": true,
+		"reason": "",
+		"blows_to_survive": authored,
+		"health_max": 0.0 if pool == null else pool.maximum,
+	}
+
+
+## What one hero blow is worth against an un-sized body like this creature's, or `0.0`
+## when there is nothing to price. `player` may be null, in which case the creature is
+## priced against ITSELF — which is the honest degenerate case a headless probe gets, and
+## a weaker answer than a real comparison rather than a fabricated one.
+static func _price_inhabitant_blow(inhabitant: Actor, player: Actor) -> float:
+	var attacker := player if player != null else inhabitant
+	var sample := Actor.from_dict(inhabitant.to_dict())
+	if sample == null:
+		return 0.0
+	var technique := TechniqueDef.new()
+	technique.path = PathState.QI
+	technique.magnitude = CombatBoot.BARE_SWING_MAGNITUDE
+	technique.element_share = CombatBoot.BARE_SWING_SHARE
+	# A NULL generator, so the spine's S2 band lands every strike and S3's crit never
+	# fires (ADR 0087's S12) — the blow's NORMAL value rather than one sample of a roll.
+	var outcome := CombatBoot.resolve_hit(
+		attacker, sample, technique, CombatEngineApi.tuning(), null
+	)
+	return maxf(0.0, float(outcome.amount))
+
+
+## Bind the authored boss turn to a creature that authors one, and report it. `{}`-spec
+## species are left ALONE: ADR 0235's fail-safe is that an absent spec means no component
+## is installed and the actor is a mob with a big pool, so this is a no-op on the majority
+## of a domain's roster.
+##
+## The component's interval defaults to the NEUTRAL blow interval rather than the hero's
+## own: a boss announces on the rate gate ADR 0197's anchor is built on, and a boss that
+## inherited the hero's `attack_speed` would be a second rate this file invented.
+static func _bind_boss(inhabitant: Actor) -> Dictionary:
+	var spec := DomainSpawner.boss_spec_of(inhabitant)
+	if spec.is_empty():
+		return {"ok": false, "reason": "no_boss_spec", "punish_window_blows": 0}
+	var answer := BossEncounter.bind(
+		inhabitant,
+		float(spec.get("interval", NEUTRAL_BLOW_INTERVAL)),
+		int(spec.get("punish_window_blows", 0))
+	)
+	answer["punish_window_blows"] = int(spec.get("punish_window_blows", 0))
+	return answer
+
+
 ## Where [method DomainSpawner.spawn_map] puts instance `index` of `ref_id` in `room_id`.
 ##
 ## A pure function of the map's OWN layout and of the ref's canonical slot: the same map,
@@ -470,6 +629,16 @@ static func _refs_of(room_id: StringName) -> Array:
 ## there, and the one actor a run's environment acts on at its entry point is the hero who
 ## entered it. The inhabitants standing in the same volume take the same hazard through
 ## combat resolution, which is the module's business and not this file's.
+##
+## ## And the run's WEATHER is published here, which is what makes it cost health
+##
+## The measured defect ADR 0213 closed was `calm 0.700000 == weathered 0.700000`: the
+## weather was resolved by `DomainMap` and read by the minimap, and the hazard read the
+## AUTHORED band because `EnvironmentField` holds no map. So the one composition-root
+## line that owns both the map and the hero publishes the weather element onto the hero
+## immediately before the zones resolve against it — a domain's storm now makes its
+## furnace's band-2 residual into a band-3 one, and the minimap's `intensity` and the
+## health the player loses are the same number.
 static func _apply_zones(player: Actor, map: DomainMap, room_id: StringName) -> Dictionary:
 	var out: Dictionary = {}
 	if player == null or map == null or room_id == &"" or not map.has_room(room_id):
@@ -477,6 +646,13 @@ static func _apply_zones(player: Actor, map: DomainMap, room_id: StringName) -> 
 	var room := map.room(room_id)
 	if room == null:
 		return out
+	# The weather is a property of the RUN, so it is published from here rather than
+	# from a per-room verb — and `bind_shift_holder` does the publish AND the binding the
+	# map's own `zones()` read model needs, so the minimap and the hazard cannot disagree
+	# about the band (ADR 0213). `DomainMap` is re-derived from the player's state on
+	# every `visit_room`, so this republishes on every room reached, which is correct:
+	# a hero who walks into a second domain must not keep the first one's weather.
+	map.bind_shift_holder(player)
 	var path_id := EnvironmentField.primary_path(player)
 	if not EnvironmentField.PATHS.has(path_id):
 		# A hero who cultivates nothing cannot be taxed by a hazard, and `apply` refuses
@@ -546,6 +722,8 @@ static func bridge() -> DomainBridge:
 	seam.minimap = Callable(DomainBoot, "minimap")
 	seam.rooms = Callable(DomainBoot, "rooms")
 	seam.arm_fixture = Callable(DomainBoot, "arm_fixture")
+	seam.inspect_fixture = Callable(DomainBoot, "inspect_fixture")
+	seam.presence_fixture = Callable(DomainBoot, "presence_fixture")
 	seam.attempt_fixture = Callable(DomainBoot, "attempt_fixture")
 	seam.claim_fixture = Callable(DomainBoot, "claim_fixture")
 	return seam
@@ -563,10 +741,81 @@ static func _templates() -> Array[Dictionary]:
 ## `delta` is the caller's, never a wall-clock read, because the module keeps no clock
 ## of its own (ADR 0089). A screen drives it with an explicit tick; a headless test
 ## drives it with the number it means.
+##
+## **NOT a UI verb any more.** ADR 0211 makes PRESENCE the only thing that may arm a
+## trap; this stays because [method presence_fixture] ends in exactly this call, and a
+## second time machine beside it is how the old `Arm` button became reachable.
 static func arm_fixture(
 	player: Actor, room_id: StringName, fixture_id: StringName, delta: float = 0.0
 ) -> Dictionary:
 	return DomainFixtures.arm(player, room_id, fixture_id, delta)
+
+
+## Read one fixture WITHOUT touching it: exactly what its telegraph publishes, and not
+## one byte more. Free and non-mutating by construction (ADR 0211).
+##
+## This is what the screen's `Arm` button BECAME. A trap is worth reading before it is
+## worth crossing, and reading it costs nothing — so the button is no longer a way to
+## pay for having noticed a hazard.
+static func inspect_fixture(
+	player: Actor, room_id: StringName, fixture_id: StringName
+) -> Dictionary:
+	return DomainFixtures.inspect(player, room_id, fixture_id)
+
+
+## The ONLY thing that may arm or fire a trap (ADR 0211): the caller passes where the
+## actor IS and how long a frame was, never a verb.
+##
+## ## Why `at` is this method's parameter and not the module's to find
+##
+## `DomainFixtures._placed_tile` reads the tile `DomainSpawner` recorded, and the
+## PLAYER is never spawned by `spawn_map` — so that record is empty for the hero and
+## the position is the caller's to pass. A screen does not track one (the module
+## publishes no intra-room position, ADR 0206), so the composition root does.
+##
+## ## Why the composition root owns the call
+##
+## A trap fires on a MOVEMENT STEP, so it must be called per-frame from the ONE tick
+## caller, never from a screen's draw path: a `_process` in `ui/` would be a second
+## clock, which is exactly what [method item_workbench_app.gd:_process]'s own docblock
+## refuses. `delta` stays a parameter so a replay fires exactly as it was driven,
+## matching `StatusRegistry.tick`.
+static func presence_fixture(
+	player: Actor, room_id: StringName, fixture_id: StringName, at: Vector2i, delta: float = 0.0
+) -> Dictionary:
+	return DomainFixtures.presence(player, room_id, fixture_id, at, delta)
+
+
+## Every trap in the room the actor is standing in, offered to `presence` in turn.
+##
+## The TICK half of ADR 0211, and the seam the composition root actually calls: one
+## call per frame from the one `_process` in the game, feeding every authored trap its
+## `Vector2i` so a caller never has to know which room holds one. Each fixture is
+## answered by its OWN `presence` call, so a trap outside the actor's tile refuses by
+## name (`outside_the_footprint`) and contributes nothing — the loop is over the
+## room's AUTHORED fixtures and terminates on that list, never on a countdown.
+##
+## Results are keyed by fixture id and carry only what a screen can render as
+## primitives, so a caller can show a telegraph without naming a domain type.
+static func tick_presence(
+	player: Actor, room_id: StringName, at: Vector2i, delta: float = 0.0
+) -> Dictionary:
+	var out: Dictionary = {}
+	if player == null or room_id == &"":
+		return out
+	for room in DomainApi.rooms(player):
+		if StringName(room.get("room_id", "")) != room_id:
+			continue
+		for entry in room.get("fixtures", []):
+			var fixture := entry as Dictionary
+			var fixture_id := StringName(fixture.get("fixture_id", ""))
+			if fixture_id == &"" or StringName(fixture.get("kind", "")) != DomainFixtures.KIND_TRAP:
+				continue
+			out[String(fixture_id)] = DomainFixtures.presence(
+				player, room_id, fixture_id, at, delta
+			)
+		break
+	return out
 
 
 ## Strike one node of a formation puzzle.
@@ -590,6 +839,16 @@ static func _active_map(player: Actor) -> DomainMap:
 	if not state is Dictionary or not (state as Dictionary).has("map"):
 		return null
 	return DomainMap.from_dict((state as Dictionary)["map"])
+
+
+## The realized world's root node under `parent`, or null when nothing is standing there.
+## Split from [method _active_map] because one is a RUN and the other is a TREE, and
+## `reset()` clears the first while the second can still be standing: a caller asking "what
+## can I reach" wants the tree whether or not a run is loaded.
+static func _world_of(parent: Node) -> Node2D:
+	if parent == null:
+		return null
+	return parent.get_node_or_null(NodePath(WORLD_NODE)) as Node2D
 
 
 # ── the world. Built here, parented by the caller, freed by the caller ────────
@@ -626,10 +885,44 @@ static func _active_map(player: Actor) -> DomainMap:
 ## placement `DomainSpawner` already recorded, and adds a bounded `PlayerAdapter` at the
 ## entry centre. Refuses `no_map` BY NAME and writes nothing before it resolves, so a
 ## refusal leaves the caller's tree exactly as it found it.
+##
+## ## And registers the hostile targets, which is the `intent` stage
+##
+## A creature node that exists but is on nobody's list is the shape the ADR 0228 audit
+## measured as "nothing the player does in a domain resolves": `PlayerAdapter.attack`
+## reads a list the `InteractionArea` fills, a placed creature is a bare `Node2D` no
+## physics body ever enters, and so the list was empty on every real run. Registration
+## happens HERE rather than in `place_inhabitants` because the adapter does not exist until
+## `place_player` has run — so the two must be joined by the caller that owns both, which
+## is this one.
 static func realize_world(parent: Node, player: Actor) -> Dictionary:
 	if _run == null:
 		return {"ok": false, "reason": "no_map"}
-	return DomainScene.realize_world(parent, _run, player, _last_inhabitants())
+	var realized := DomainScene.realize_world(parent, _run, player, _last_inhabitants())
+	if not bool(realized.get("ok", false)):
+		return realized
+	var world := realized.get("world") as Node2D
+	var adapter := realized.get("player") as PlayerAdapter
+	if adapter != null:
+		adapter.clear_targets()
+	realized["targets"] = DomainScene.register_targets(world)
+	return realized
+
+
+## Register the placed hostiles the player's next press can reach under `parent`, and
+## answer how many. The `intent` READ, callable on its own so a probe or a screen can
+## refresh the list after a move without rebuilding the world.
+static func register_targets(parent: Node) -> Dictionary:
+	var world := _world_of(parent)
+	if world == null:
+		return {"ok": false, "reason": "no_world", "registered": 0}
+	var registered := DomainScene.register_targets(world)
+	return {
+		"ok": true,
+		"reason": "",
+		"registered": registered,
+		"in_reach": DomainScene.targets_in_reach(world),
+	}
 
 
 ## FREE the realized world under `parent`. Idempotent, and a no-op when nothing was ever
@@ -711,6 +1004,18 @@ static func _tear_down_run() -> Dictionary:
 		# failure, and a fabricated `freed` count would be a number nobody could check.
 		return {"ok": true, "reason": "no_surface", "freed": 0}
 	return answer
+
+
+## Every inhabitant the LAST `enter_domain` minted, as `Actor`s.
+##
+## Published rather than kept private because the fight seam has to answer "which band
+## entry does this fallen body belong to", and a fallen body is identified by its species
+## id — which is NOT unique inside a run (`spawn_inhabitant` hands `def.inhabitant_id` to
+## `Actor.new` unchanged, so every `cinder_hound` shares one). The roster is the only
+## place a placed body's room and role are both on hand, so `DomainFight` asks here rather
+## than re-deriving provenance the spawner already recorded.
+static func placed_inhabitants() -> Array:
+	return _last_inhabitants()
 
 
 ## Every inhabitant the LAST `enter_domain` minted, as `Actor`s.

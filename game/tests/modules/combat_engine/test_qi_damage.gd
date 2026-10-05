@@ -567,7 +567,7 @@ func test_a_cap_above_one_cannot_turn_a_hit_into_a_heal() -> void:
 	# `_suffixed("", "fire")` names the stat `&"fire"`, which nothing derives — the cap
 	# assertions below were reading a resistance of 0.0 and passing for the wrong reason.
 	greedy.element_power_prefix = "element_power_"
-	greedy.resist_resistance_prefix = "element_resistance_"
+	greedy.resist_resistance_prefix = "element_defense_"
 	var mech := QiDamage.new()
 	mech.rules = _rules
 	mech.tuning = greedy
@@ -649,7 +649,7 @@ func test_the_mechanism_names_no_class_of_the_elements_module() -> void:
 		)
 	# The stat ids it DOES read are named in DATA, which is BRIEF 1.7's whole rule.
 	assert_eq(_tuning.element_power_prefix, "element_power_", "the prefix lives in the .tres")
-	assert_eq(_tuning.resist_resistance_prefix, "element_resistance_", "and so does the other one")
+	assert_eq(_tuning.resist_resistance_prefix, "element_defense_", "and so does the other one")
 
 
 ## The two injection routes agree, and neither is a special case: bound on the mechanism,
@@ -732,9 +732,10 @@ func test_element_share_round_trips_through_the_resource_and_the_read_model() ->
 		float(ctx.data_value(QiDamage.ELEMENT_SHARE_KEY, 0.0)), 0.35, "carried verbatim"
 	)
 	assert_almost_eq(float(QiDamage.new().breakdown(ctx)["share"]), 0.35, "and used as the share")
-	# And the surface a screen reads carries it too.
-	var view := TechniqueReadModel.learn_preview(attacker, TechniqueCodex.new(), def, [], [])
-	assert_eq(view.size() > 0, true, "the preview renders")
+	# And the surface a screen reads carries it too. `inspect` is the read model
+	# a screen actually reaches; it used to be preceded by a `learn_preview` call,
+	# which published the same shape under a second name and was deleted as a second
+	# door to a learn (DEF-0300). The assertion below is the one that matters.
 	var inspect := TechniqueReadModel.inspect(
 		attacker, TechniqueCodex.new(), TechniqueSlots.new(), TechniqueUpkeep.new(), def, [], []
 	)

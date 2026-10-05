@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"U4_earth_weald_nucleus"
+display_name = "Earth Weald Nucleus"
+category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_regen", "value": 17.33},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"tonic"
+grade = &"earth"
+sources = Array[StringName]([&"boss:qi_spirit_sovereign_guardian"])

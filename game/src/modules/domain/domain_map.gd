@@ -35,7 +35,10 @@ const SCHEMA_VERSION := 1
 ## 2. **WITHIN AUTHORED BOUNDS.** The bias moves a zone by AT MOST one authored band
 ##    and never below band 1, so a domain's authored ceiling is a floor the weather
 ##    cannot undercut and an authored scorch can never be talked up to annihilating.
-##    Weather re-weights authored content; it never invents intensity.
+##    Weather re-weights authored content; it never invents intensity. It is also
+##    ONE-DIRECTIONAL — it moves a zone UP or leaves it alone, never down (ADR 0213),
+##    because a player may have routed around a hazard on the promise that this room was
+##    authored at band 2.
 ## 3. **ELEMENT-KEYED, NOT ZONE-KEYED.** Each weather declares the ELEMENT it carries,
 ##    and it moves a zone only when the zone authors that same element in its own
 ##    `tags` (`EnvironmentZoneDef.tags` is already the "elements this zone is hostile
@@ -45,6 +48,15 @@ const SCHEMA_VERSION := 1
 ## 4. **NO WEATHER, NO BIAS.** `&""` means the run has no weather and every effective
 ##    intensity equals its authored band. That is the state a caller with nothing
 ##    authored is in, and it must be a no-op rather than a default bias.
+##
+## ## And it REACHES the hazard, which is what it did not used to do
+##
+## The bias was resolved here and read by the minimap, the explore line and this
+## method — and by NOTHING that spent, because `EnvironmentField` holds no `DomainMap`
+## and built its residual from the AUTHORED band. Measured, that was `calm 0.700000 ==
+## weathered 0.700000`: a label on the minimap. [method publish_bands] now hands the
+## shift to `EnvironmentField.effective_band`, which is the one place a band is read
+## (ADR 0213), so the read model and the hazard agree by construction.
 ##
 ## Deliberately NOT done here: weather does not create a zone, does not apply a
 ## status of its own, and does not touch mitigation. It re-weights a magnitude
@@ -84,6 +96,15 @@ var seed: int = 0
 ## [method effective_intensity] silently answer "no bias", so [method accepts_weather]
 ## is the question to ask before assigning and the tests assert the refusal.
 var weather: StringName = WEATHER_NONE
+
+## The `Actor` this map's weather was published against, or null when nothing holds it.
+##
+## `zones()` is a READ MODEL called by the minimap, the facade and a screen, and none of
+## them IS the player — yet the effective amount it publishes is the number the player's
+## hazard is resolved from. So the map keeps the one body it published onto and reads its
+## own shift back through `EnvironmentField`, rather than each reader passing a
+## possibly-different actor and the three disagreeing about the same zone (ADR 0213).
+var _shift_holder: Actor = null
 
 
 func _init(p_extent: Vector2i = Vector2i.ZERO, p_seed: int = 0) -> void:
@@ -199,16 +220,21 @@ func accepts_weather(id: StringName) -> bool:
 	return id == WEATHER_NONE or WEATHERS.has(id)
 
 
-## The band shift this map's weather applies to a zone, as `-1`, `0` or `+1`.
+## The band shift this map's weather applies to a zone: `0`, or `+1`.
 ##
-## `+1` when the weather carries an element the zone authors in its own `tags`, and
-## `0` in every other case. The shift is one-directional on purpose: only an authored
-## elemental zone moves, and it moves UP, so a run's weather can intensify the hazards
-## the content actually declared and can never soften one a player may have routed
-## around on the promise that it was authored at band 2.
+## ## The `−1` THIS DOCBLOCK ONCE PROMISED IS DELETED, AND THE PROSE WAS WRONG
 ##
-## Never more than one band, so [method effective_intensity] stays inside the authored
-## ladder. `WEATHER_NONE` is `0` by definition.
+## It said `-1, 0 or +1` for as long as the field existed, and the code has only ever
+## returned `0` or `+1`. The one-directional behaviour is the CORRECT one — a player may
+## have routed around a hazard on the promise it was authored at band 2, and a weather
+## that softened it would silently invalidate that promise — so the DOCBLOCK was fixed,
+## not the code (ADR 0213). An agent reading the old sentence would have implemented a
+## downward shift and broken the one property the design depends on.
+##
+## `+1` when the weather carries an element the zone authors in its own `tags`, and `0`
+## in every other case. Never more than one band, so [method effective_intensity] stays
+## inside the authored ladder. `WEATHER_NONE` is `0` by definition, and so is an id this
+## build does not know — a typo biases nothing rather than defaulting to a known weather.
 func weather_shift_for(zone: EnvironmentZoneDef) -> int:
 	if zone == null or weather == WEATHER_NONE or not WEATHERS.has(weather):
 		return 0
@@ -225,15 +251,24 @@ func weather_shift_for(zone: EnvironmentZoneDef) -> int:
 ## THE ONE READ EVERY CONSUMER GOES THROUGH. `zone.intensity` is the AUTHORED band and
 ## stays exactly as authored; this is the effective value, and it is what `zones()`
 ## publishes and what a caller must use to answer "how bad is this zone, right now".
-## Anything less would leave weather a field nobody acts on — the exact failure ADR
-## 0075's promise was written to prevent.
+##
+## ## What makes it reachable rather than merely correct
+##
+## The measurement this closed was `calm 0.700000 == weathered 0.700000`: the shift was
+## resolved here and nothing that SPENT read it, because `EnvironmentField.apply` builds
+## its residual from `zone.magnitude()` — the AUTHORED band — and holds no `DomainMap`.
+## So the band is now HANDED to the field rather than re-derived inside it:
+## [method publish_bands] writes this shift onto the `Actor` under
+## [constant EnvironmentField.BAND_SHIFT_KEY], and `EnvironmentField.effective_band`
+## resolves the effective band from the published `int`. One number, two readers that
+## cannot disagree — `DomainMap` still owns the weather vocabulary and the element match,
+## and the field still owns the band ladder, so neither grows a copy of the other's rule.
 ##
 ## Clamped to the authored ladder on BOTH sides: never below [constant
 ## EnvironmentZoneDef.BAND_SCORCH], never above [constant
-## EnvironmentZoneDef.BAND_ANNIHILATING], and never above the band a shift of `+1`
-## could reach. A zone authored at band 3 is already at the ceiling, so weather cannot
-## make it worse than the author allowed; a zone authored at band 1 cannot be talked
-## below the floor into a band the ladder has no name for.
+## EnvironmentZoneDef.BAND_ANNIHILATING]. A zone authored at band 3 is already at the
+## ceiling, so weather cannot make it worse than the author allowed; a zone authored at
+## band 1 cannot be talked below the floor into a band the ladder has no name for.
 func effective_intensity(zone: EnvironmentZoneDef) -> int:
 	if zone == null:
 		return 0
@@ -242,12 +277,63 @@ func effective_intensity(zone: EnvironmentZoneDef) -> int:
 	return clampi(shifted, EnvironmentZoneDef.BAND_SCORCH, EnvironmentZoneDef.BAND_ANNIHILATING)
 
 
+## Publish this map's weather onto `actor` as the ELEMENT it carries, and answer the
+## element published (ADR 0213).
+##
+## ## Why the ELEMENT travels and not the shift
+##
+## The first cut published the map's ceiling shift — `+1` for a fire weather — which is
+## wrong the moment a run contains a zone the weather does not match: a `sorrow` hollow in
+## an `ashfall` domain would have been shifted with the fire beds beside it. The element
+## is the only thing a per-zone decision can be made from, and it is a single `StringName`,
+## so the ELEMENT travels and `EnvironmentField.effective_band` asks each zone whether it
+## authors it. `weather_shift_for` stays the one place the match is written down.
+##
+## That also keeps the field free of the weather vocabulary: it receives one element id
+## and asks a zone about its own `tags`, exactly as `HOSTILE_ELEMENTS` already asks a
+## zone about its `kind`. A second copy of `WEATHERS` in the field would be the drift
+## ADR 0213 names as the defect.
+##
+## ## Why nothing more travels
+##
+## Publishing the map's whole weather OBJECT would make every hazard resolution carry the
+## weather vocabulary with it, and would give each reader a second place to re-derive the
+## match this method already performs.
+##
+## Called on every room visit alongside `publish_ward_tags`, because the weather is a
+## property of the run rather than of a room.
+func publish_bands(actor: Actor) -> StringName:
+	if actor == null:
+		return &""
+	var element := StringName(WEATHERS.get(weather, &""))
+	return EnvironmentField.publish_weather_element(actor, element)
+
+
+## Bind the `Actor` whose hazard resolution this map's weather is published against,
+## publish onto it, and answer the element published.
+##
+## The two halves are ONE call on purpose: `zones()` resolves its effective band through
+## `_shift_holder`, so a map that published an element but never bound the holder would
+## print the authored number on the minimap and charge the effective one in play — the
+## read model and the hazard disagreeing, which is the defect ADR 0213 exists to close.
+## Idempotent, so it may be re-run on every room visit.
+func bind_shift_holder(actor: Actor) -> StringName:
+	_shift_holder = actor
+	return publish_bands(actor)
+
+
 ## Every severe environment in the map, flattened, canonical order. Weather is NOT
 ## included as a zone: it biases these, it is not itself a zone.
 ##
 ## `intensity` here is the EFFECTIVE band ([method effective_intensity]) and
 ## `authored_intensity` is what the `.tres` says, so a consumer can show both and can
 ## tell a weathered domain from an authored one without re-deriving anything.
+##
+## The two MAGNITUDES travel beside them for the same reason: `amount` is what the
+## hazard costs at the band the player will actually stand in, `authored_amount` is what
+## the room was authored to cost. A screen that prints only one of them is choosing which
+## half of ADR 0213's promise to keep, and the read model publishes both so the choice
+## is explicit rather than a reader's accident.
 func zones() -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	for room_id in room_ids_sorted():
@@ -257,6 +343,8 @@ func zones() -> Array[Dictionary]:
 			entry["room_id"] = String(room_id)
 			entry["authored_intensity"] = zone.resolved_intensity()
 			entry["intensity"] = effective_intensity(zone)
+			entry["authored_amount"] = zone.magnitude()
+			entry["amount"] = EnvironmentField.hazard_magnitude(zone, _shift_holder)
 			out.append(entry)
 	return out
 

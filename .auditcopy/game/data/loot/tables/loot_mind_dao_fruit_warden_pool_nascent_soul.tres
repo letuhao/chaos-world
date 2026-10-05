@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"mind_dao_fruit_warden_nascent_soul_0"
+kind = &"item"
+item_id = &"U2_mortal_sennit_regalia"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"mind_dao_fruit_warden_nascent_soul_1"
+kind = &"item"
+item_id = &"grimoire_paper_herb"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"common"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_mind_dao_fruit_warden_pool_nascent_soul"
+display_name = "Dao of Mind Warden salvage (nascent_soul)"
+realm = &"nascent_soul"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1")
+])

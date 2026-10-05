@@ -215,16 +215,44 @@ static func normalize_payload(payload: Dictionary) -> Dictionary:
 				continue
 			if not is_institutional(pair_key(ids[0], ids[1])):
 				continue
-			var row := _debt_row((debts as Dictionary)[key], directed)
-			var canonical := directed
+			# ## THE FOLD: one row per unordered PAIR, stored under its canonical
+			# ## DIRECTED spelling, so both spellings collide on one row.
+			#
+			# `a->b` and `b->a` name one obligation, so the fold reduces both to the
+			# lexicographically-ordered pair and re-spells it as a directed key whose
+			# OBLIGOR is the smaller id. That single stored key is what `owed` reads:
+			# `owed(A, B)` looks up `directed_key(A, B)` and `owed(B, A)` looks up the
+			# opposite spelling, so the debtor's side finds the row and the creditor's side
+			# correctly finds none. One row, two directions, no second opinion (BL-0192).
+			#
+			# The earlier version stored under `directed` — the spelling that ARRIVED — so
+			# two spellings of one pair landed as two rows and each side could read a
+			# different answer, which is the one-sided opinion this fold exists to forbid.
+			#
+			# The row is built from the CANONICAL spelling, so `debtor_id`/`creditor_id`
+			# always agree with the key they are stored under, whichever spelling arrived.
+			var pair_ids := split_pair_key(undirected_of(directed))
+			if pair_ids.size() != 2:
+				continue
+			var canonical := directed_key(pair_ids[0], pair_ids[1])
+			if canonical == "":
+				continue
+			var row := _debt_row((debts as Dictionary)[key], canonical)
 			var held = (out["debts"] as Dictionary).get(canonical)
 			if (
 				held is Dictionary
-				and int((held as Dictionary).get("sequence", 0)) >= int(row["sequence"])
+				and int((held as Dictionary).get("sequence", 0)) <= int(row["sequence"])
 			):
-				# Two spellings of one pair: the LOWER sequence is the earlier
-				# declaration and wins. A hand-edited save cannot make the later one
-				# overwrite the earlier, and a pair written once is untouched.
+				# Two spellings of one pair. The row ALREADY HELD under this canonical key
+				# is the one with the LOWER sequence, and the lower sequence is the earlier
+				# declaration, so it is kept and this later one is dropped. A hand-edited
+				# save therefore cannot raise a debt by writing the losing spelling with a
+				# bigger count, and a pair written once is untouched.
+				#
+				# Comparing `sequence` rather than arrival order is what makes that hold no
+				# matter which spelling the payload happened to spell first: `_sorted_keys`
+				# walks lexicographically, so `t_house->...` is visited before
+				# `t_rival_house->...` regardless of the sequences they carry.
 				continue
 			(out["debts"] as Dictionary)[canonical] = row
 	return out

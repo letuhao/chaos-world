@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F4_earth_curtilage_qi_absorption_spirit_attack_speed_will"
+display_name = "Earth Curtilage Qi Absorption Spirit Attack Speed Will"
+category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 26.74},
+	{"option_id": &"base_spirit", "value": 18.98},
+	{"option_id": &"core_attack_speed", "value": 0.03},
+	{"option_id": &"base_will", "value": 26.74},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"ferment"
+grade = &"earth"
+sources = Array[StringName]([&"quest", &"domain:body_spirit_condensation_trial"])

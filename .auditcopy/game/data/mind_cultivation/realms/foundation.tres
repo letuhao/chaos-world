@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MindRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/mind_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"foundation"
+breakthrough_item = &"mind_foundation_breakthrough_pill"
+training_item = &"mind_foundation_channel_elixir"
+sea_catalyst = &"mind_foundation_sea_catalyst"
+recovery_item = &"mind_foundation_recovery_elixir"
+progress_required = 100.0
+comprehension_required = 31.0
+clarity_required = 0.42
+purity_required = 0.47
+sea_fill_required = 1.0
+sea_tier = &"shallow"
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen"])
+required_channel_state = &"strengthened"
+channel_refinement_cap = 2
+sea_capacity = 125.0
+insight_required = 16.0
+rewards = {
+"will": 2.0
+}

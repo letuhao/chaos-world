@@ -12,14 +12,65 @@ rate_scale = 1000.0
 amp_scale = 10.0
 lifesteal_pool = &"health"
 default_element_share = 0.8
+; ADR 0200. `resist_divisor` still puts `element_defense_<e>` into the same magnitude
+; space as `element_power_<e>`, and it stays at `100.0` because the shipped
+; `ElementProvider` still contributes defense as `affinity * 0.5 + will * 0.2` against
+; power as `affinity * (1 + mastery * 0.1 / tier_divisor)`. The arithmetic around it is
+; what changed: the defense term is no longer divided into a `[0, 1]` percent by a FIXED
+; divisor and clamped, it is the `D` of a ratio whose other half rides the attacker.
 resist_divisor = 100.0
-resist_cap = 0.75
+; ADR 0200. THE CEILING IS A MULTIPLIER, NEVER A CLAMP.
+;
+; `resist_cap = 0.75` is deleted. It was `min(0.75, D/100 - pen)`, and a clamp on an
+; INPUT is the defect: at one point of defense past the clamp the stat was simply dead,
+; forever, at every realm. The replacement is `m = mitigation_ceiling * D / (K + D)` with
+; `K = defense_divisor_k * offense`, so `m` APPROACHES `mitigation_ceiling` and never
+; reaches it -- every further point of defense still pays, which is the property the cap
+; destroyed.
+;
+; `0.95` is the ADR's own number. The old three caps (0.75 elemental, 0.6 mental,
+; 0.8 illusion) are all one number now, and it is a multiplier on a curve rather than a
+; bound on a stat.
+mitigation_ceiling = 0.95
+; ADR 0200. `K = defense_divisor_k * offense`, the fraction of the ATTACKER's own
+; magnitude the defender's defense is measured against. `0.45` is the ADR's number and
+; it is PER MECHANISM: the owner ruled that qi, body and mind each set their own so the
+; three stay independent. This line is qi's.
+;
+; Reading it at the shipped values: an R1 qi attacker carries `element_power_lightning`
+; of `10.0` (fixture affinity `10.0`, mastery 0) against a defender whose
+; `element_defense_lightning` is `5.0`, so `K = 4.5`, `D = 5.0` and
+; `m = 0.95 * 5.0 / 9.5 = 0.5000`. A stock actor's `affinity 2.0` race reads
+; `element_defense = 1.0` against the same attacker, so `m = 0.95 * 1.0 / 5.5 = 0.1727` --
+; and both RISE with the ladder rather than pinning at a ceiling, which is the whole
+; point. `resist_cap` at the same two cases read a flat `0.01` and `0.75`.
+defense_divisor_k = 0.45
+; ADR 0200. `D_eff = D * 1 / (1 + max(0, pen) / pierce_scale)`. Bounded in `(0, 1]`: a
+; penetration of `10.0` halves any defense, `100.0` cuts it to a tenth, and it can never
+; drive defense NEGATIVE. `10.0` is the ADR's number.
+;
+; This replaces a subtraction FROM THE DAMAGE, which is dimensionally wrong -- penetration
+; is a share of the defender's armor, not hit points off the gross -- and the old shape's
+; real failure was that a big enough penetration subtracted straight past zero and turned
+; a defended point into a free one. `body_damage.gd` is where that defect lived.
+pierce_scale = 10.0
 damage_reduction_cap = 0.9
 element_power_prefix = "element_power_"
-resist_resistance_prefix = "element_resistance_"
+resist_resistance_prefix = "element_defense_"
 default_mind_share = 1.0
-mental_defense_cap = 0.6
-illusion_resistance_cap = 0.8
+; ADR 0200. `mental_defense_cap = 0.6` and `illusion_resistance_cap = 0.8` are both
+; DELETED, and mind now reads the same `mitigation_ceiling` / `defense_divisor_k` /
+; `pierce_scale` every other mechanism does. Those two numbers were ceilings on INPUTS:
+; `mind_damage.gd` hard-clamped `d/(d+base)` at `0.6`, so 40% of every mind strike landed
+; at any `mental_clarity` and at any realm, and no amount of `mental_defense` ever moved
+; that. With the clamp gone, `m = 0.95 * D / (K + D)` keeps RISING with defense and
+; approaches `0.95` asymptotically.
+;
+; What survives of the 40% floor is the ASYMPTOTE rather than the clamp: a mind strike
+; lands at least `1 - 0.95 = 0.05` of itself at every defense, because `m` is strictly
+; below the ceiling for every finite `D`. That is the mind analogue of the spine's chip
+; floor and it is now a property of the curve rather than of an authored number.
+; `MindDamage.defense_floor()` publishes it.
 coherence_damp = 0.5
 focus_mult = 2.0
 turbulence_to_clarity = 0.5

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F41_heaven_germinal_cooldown_reduction_loot_bonus_max_stamina"
+display_name = "Heaven Germinal Cooldown reduction Loot bonus Max stamina"
+category = &"equipment"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.037},
+	{"option_id": &"core_loot_bonus", "value": 0.053},
+	{"option_id": &"core_max_stamina", "value": 28.05},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"bandolier"
+stackable = false
+grade = &"heaven"
+sources = Array[StringName]([&"gather", &"domain:monster_frost_wolf_domain"])

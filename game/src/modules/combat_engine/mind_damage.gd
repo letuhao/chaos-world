@@ -7,15 +7,34 @@ extends DamageMechanism
 ##
 ## ```
 ## base = attacker MENTAL_ATTACK * share
-## d    = defender MENTAL_DEFENSE
-## mit  = clampf(d/(d+base), 0, MENTAL_DEFENSE_CAP)          # 0 at d=0, ->0.6 asymptotic
-## if OBSCURE: mit = maxf(mit, defender ILLUSION_RESISTANCE)  # illusions read THEIR stat
-## mit  = clampf(mit, 0, ILLUSION_RESISTANCE_CAP)
+## d    = defender MENTAL_DEFENSE                                  (a MAGNITUDE)
+## D    = d / resist_divisor
+## D_eff= D * 1 / (1 + max(0, mastery_pen) / pierce_scale)         (bounded in (0, 1])
+## K    = defense_divisor_k * base                                 (rides the ATTACKER)
+## m    = mitigation_ceiling * D_eff / (K + D_eff)                  for D_eff >= 0
+## m    = mitigation_ceiling * (2 - K / (K + |D_eff|))             for D_eff <  0
+## if OBSCURE: D_eff = maxf(D_eff, defender ILLUSION_RESISTANCE / resist_divisor)
 ## coh  = 1 - COHERENCE_DAMP * awareness_ratio(defender)     # 1.0 -> 0.5 at full awareness
-## g    = base * (1-mit) * coh * (FOCUS_MULT if focused else 1.0)
+## g    = base * (1-m) * coh * (FOCUS_MULT if focused else 1.0)
 ## g   /= defender_sea.structural_capacity                   # a SHARE of THAT sea
 ## clarity_delta = -TURBULENCE_TO_CLARITY * g                # every kind, floored at 0
 ## ```
+##
+## ## ADR 0200: `MENTAL_DEFENSE_CAP` and `ILLUSION_RESISTANCE_CAP` are GONE
+##
+## Mind was the worst of the three: `clampf(d/(d+base), 0, 0.6)` meant 40% of every mind
+## strike landed at ANY `mental_clarity` and at ANY realm, forever. The denominator was
+## already a ratio — the defect was the CLAMP on it and the `d` that never grew with the
+## ladder. Both caps are deleted rather than re-tuned, and mind now reads the same
+## `mitigation_ceiling` / `defense_divisor_k` / `pierce_scale` every other mechanism does.
+## See the "the floor is now the ASYMPTOTE" section below for what replaced the 40%.
+##
+## ## `K` is MIND'S OWN, by the owner's ruling
+##
+## `K = defense_divisor_k * base` where `base` is mind's own offense (`MENTAL_ATTACK *
+## share`). `CombatTuning` carries ONE `defense_divisor_k`, and each mechanism multiplies
+## it by ITS OWN offense, which is what "per-mechanism" means here: the three mechanisms
+## stay independent of one another's balance and a qi rebalance cannot move a mind answer.
 ##
 ## ## `amount` is ALWAYS `0.0`, and that is the design, not a limitation
 ##
@@ -61,13 +80,33 @@ extends DamageMechanism
 ## file's to make. `test_mind_damage_share_gradient.gd` pins the decay's DIRECTION and its
 ## rate/magnitude derivation so neither can move without someone ruling on it.
 ##
-## ## The 40% floor is STRUCTURAL
+## ## The floor is now the ASYMPTOTE, and that is the whole change
 ##
-## `mental_defense` enters only through the saturating `d/(d+base)`, hard-capped at
-## `MENTAL_DEFENSE_CAP`, so **40% of every mind strike always lands at any
-## `mental_clarity` and at any realm**. This is the mind analogue of the spine's chip-floor
-## immunity invariant and it obeys ADR 0051's rule that the breakthrough roll must not read
-## a quantity the entry gate already pins. See [method defense_floor].
+## This section used to read: "`mental_defense` enters only through the saturating
+## `d/(d+base)`, hard-capped at `MENTAL_DEFENSE_CAP`, so **40% of every mind strike always
+## lands at any `mental_clarity` and at any realm**." Every word of that is still true
+## EXCEPT the reason, and the reason was the defect.
+##
+## The old floor was `1 - MENTAL_DEFENSE_CAP` because the mitigation was CLAMPED at the
+## cap: past `d/(d+base) == 0.6` more `mental_defense` bought exactly nothing, so `0.4`
+## was a wall rather than a bound. ADR 0200 deletes the clamp, and with it the wall.
+## `m = mitigation_ceiling * D/(K + D)` is strictly BELOW `mitigation_ceiling` for every
+## finite `D` and strictly RISING in `D`, so:
+##
+## - **no amount of `mental_defense` reaches immunity** -- `m < mitigation_ceiling` always,
+##   so a strike always lands at least `1 - mitigation_ceiling` of itself; and
+## - **no amount of `mental_defense` stops paying** -- there is no longer a number past
+##   which the stat is dead, which is the half of the old floor that was never a property.
+##
+## The immunity invariant SURVIVES as a property of the CURVE rather than of an authored
+## number, which is a stronger claim than the one it replaces: the old `0.4` was true by
+## construction of a constant, and `1 - mitigation_ceiling` is true for every finite pair
+## of magnitudes at every realm forever. See [method defense_floor].
+##
+## This is also the mind analogue of the spine's chip-floor invariant, and it obeys ADR
+## 0051's rule that the breakthrough roll must not read a quantity the entry gate already
+## pins: clarity can be eroded to zero by a fight, but it can never be protected to zero
+## damage by a defence stat.
 ##
 ## ## `Stat.DAMAGE_REDUCTION` is NEVER read here
 ##
@@ -94,14 +133,18 @@ extends DamageMechanism
 ##
 ## ## The holes ADR 0071's own arithmetic leaves, each closed without a new constant
 ##
-## 1. **`d == 0` and `base == 0` together divide by zero.** `mit = d/(d+base)` is
+## 1. **`K + |D| == 0` divides by zero.** `m = mitigation_ceiling * D/(K+D)` is
 ##    `0.0 / 0.0 == NaN` for an unattacked unstatted target and a `NaN` survives every
 ##    `clampf`. A non-positive denominator reads `0.0` — no contest, never a division, the
-##    same degradation `QiDamage._resistance_of` gives a 0.0 divisor.
+##    same degradation `QiDamage._defense_of` gives a `0.0` divisor. (ADR 0200 REPLACED
+##    the old `d/(d+base)` hole with this one; the guard is the same and the reason is the
+##    same.)
 ## 2. **`structural_capacity <= 0.0`** divides by zero. A sea nobody trained has no scale, so
 ##    the erosion reads `0.0` — visibly inert rather than `INF`.
-## 3. **`MENTAL_DEFENSE_CAP > 1`** would make `(1 - mit)` negative and the mechanism would
-##    SHARPEN the sea it exists to erode. Clamped to `[0, 1]` on read.
+## 3. **(RETIRED) `MENTAL_DEFENSE_CAP > 1`** would have made `(1 - mit)` negative and the
+##    mechanism would have SHARPENED the sea it exists to erode. There is no cap on an
+##    input any more; what replaced it is `mitigation_ceiling`, which is read clamped to
+##    `[0, 1]` for the same sign reason.
 ## 4. **`coherence_damp > 1.0`** makes `coh` negative at a full reserve and a negative
 ##    multiplier hands the defender a share of the attacker's erosion as a heal. Clamped.
 ## 5. **`focus_mult < 1.0`** would make a crit a WEAKER strike, which no chance stat should
@@ -231,9 +274,10 @@ func mitigate(ctx: AttackContext, proposal: DamageProposal) -> DamageProposal:
 ## Every primitive this mechanism computed, for a UI readout (ADR 0038: primitives in a
 ## `summary()` payload, never an engine object or a module type).
 ##
-## `{kind, share, mental_attack, base, mental_defense, mitigation, illusion_resistance,
-## awareness_ratio, coherence, focused, erosion, defence, turbulence, clarity_delta,
-## awareness_delta, structural_capacity, subtotal, total, sea_bound, rng_bound}`.
+## `{kind, share, mental_attack, base, mental_defense, defense, divisor_k, mitigation,
+## illusion_resistance, awareness_ratio, coherence, focused, erosion, defence,
+## turbulence, clarity_delta, awareness_delta, structural_capacity, subtotal, total,
+## sea_bound, rng_bound}`.
 ##
 ## `erosion` is what S4 produced and `turbulence` / `clarity_delta` / `awareness_delta` are
 ## what it costs; `subtotal` and `total` are the erosion after and before the defence, so a
@@ -248,8 +292,10 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 	var share := _share_of(ctx, tuning)
 	var mental_attack := maxf(0.0, _finite(ctx.attacker_value(_mind_stat(tuning, "mental_attack"))))
 	var base := _finite(mental_attack * share)
-	var mental_defense := maxf(0.0, _finite(ctx.target_value(_mind_stat(tuning, "mental_defense"))))
-	var mitigation := _mitigation_of(ctx, tuning, base, mental_defense, resolved)
+	var mental_defense := _finite(ctx.target_value(_mind_stat(tuning, "mental_defense")))
+	var defense := _defense_of(ctx, tuning, mental_defense, resolved)
+	var divisor_k := maxf(0.0, _finite(tuning.defense_divisor_k) * base)
+	var mitigation := _mitigation_of(defense, divisor_k, tuning)
 	var awareness := _awareness_ratio_of(ctx, tuning)
 	var coherence := _coherence_of(ctx, tuning, resolved, awareness)
 	var focused := _focus_of(ctx, tuning)
@@ -263,6 +309,8 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 		"mental_attack": mental_attack,
 		"base": base,
 		"mental_defense": mental_defense,
+		"defense": defense,
+		"divisor_k": divisor_k,
 		"mitigation": mitigation,
 		"illusion_resistance": _illusion_resistance_of(ctx, tuning, resolved),
 		"awareness_ratio": awareness,
@@ -281,19 +329,28 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 
 
 ## The share of a mind strike that lands at ANY `mental_clarity` and at ANY realm:
-## `1 - MENTAL_DEFENSE_CAP`. `0.4` at the shipped value.
+## `1 - mitigation_ceiling`. `0.05` at the shipped value.
 ##
 ## Published rather than left to every caller to re-derive, because this number IS the mind
 ## analogue of the spine's `min_chip_abs` and a second copy of the arithmetic is a second
 ## place for a rebalance to miss. It is what makes a mind fight's difficulty come from
 ## coherence, awareness and the matchup of intent rather than from stacking `mental_clarity`.
+##
+## ## It used to be `1 - MENTAL_DEFENSE_CAP`, and the difference is the ADR
+##
+## The OLD floor was `1 - 0.6 = 0.4`, true because the mitigation was CLAMPED at `0.6`:
+## it was a WALL, and past it more `mental_defense` bought literally nothing. The new floor
+## is `1 - mitigation_ceiling = 0.05`, true because the curve is ASYMPTOTIC: `m` is
+## strictly below the ceiling for every finite `D` and strictly rising in it. So the number
+## is a much smaller bound, and what it bounds is much harder to reach -- which is the
+## point. Both halves of the immunity invariant survive; the dead-stat half does not.
 static func defense_floor(tuning: CombatTuning = null) -> float:
 	var source := tuning
 	if source == null:
 		source = CombatTuning.shipped()
 	if source == null:
 		return 0.0
-	return clampf(1.0 - _share(source.mental_defense_cap), 0.0, 1.0)
+	return clampf(1.0 - _share(source.mitigation_ceiling), 0.0, 1.0)
 
 
 ## THE ONLY thing on the mind path that moves health (ADR 0071). A COMBAT TICK, not a hit:
@@ -530,27 +587,84 @@ static func kind_name(value: Kind) -> String:
 # --- the formula's terms --------------------------------------------------------
 
 
-## `clampf(d/(d+base), 0, MENTAL_DEFENSE_CAP)` — saturating, so enormous `mental_defense` is
-## refused only up to the cap and `1 - cap` of the strike always lands.
+## ADR 0200's `D`: the defender's mind-defense MAGNITUDE, in the same space `K` lives in.
 ##
-## `OBSCURE` takes a `maxf` against `ILLUSION_RESISTANCE`, which is what makes an
-## illusion-resistance build and a clarity build DIFFERENT defenders of the same skill: an
-## `ILLUSION_RESISTANCE` build is flat `0.0` against `DISRUPT` and `ATTEND`, while a high
-## `mental_clarity` build answers every kind. The `maxf` is taken BEFORE the
-## `ILLUSION_RESISTANCE_CAP` re-clamp so a hand-edited `.tres` cannot author a cap of `4.0`
-## and have the mitigation go negative.
+## `mental_defense` is put on `resist_divisor`'s scale so `D` and `K` are the same kind of
+## number -- the divisor is NOT making `D` a percent, which is the whole difference between
+## the two regimes. A non-positive or non-finite divisor reads as `0.0` rather than dividing.
+##
+## ## The SIGN is preserved, for the glass cannon
+##
+## `maxf(0.0, ...)` is NOT applied to `mental_defense` here. ADR 0200's mirror branch is
+## `m = mitigation_ceiling * (2 - K/(K + |D|))` for `D < 0`, and a defender under a
+## composure-sunder debuff must be able to REACH it: a mind strike against one takes
+## strictly more than it would against an undefended sea. Clamping at zero here is how a
+## glass cannon silently exceeds its own ceiling while every test still passes.
+##
+## ## `OBSCURE` still reads its OWN stat, and it reads it as a MAGNITUDE
+##
+## ADR 0071's `maxf` against `ILLUSION_RESISTANCE` is preserved verbatim -- it is what
+## makes an illusion-resistance build and a clarity build DIFFERENT defenders of the same
+## skill, and it is the one asymmetry `test_mind_damage.gd` pins most sharply. What changed
+## is the unit: `ILLUSION_RESISTANCE` is divided by the same `resist_divisor` before the
+## `maxf`, so the two halves of the contest are comparable MAGNITUDES. `ILLUSION_RESISTANCE_CAP`
+## is gone; nothing is re-clamped afterwards, so a deep illusion-resistance build now keeps
+## buying mitigation past the point where it used to stop dead.
+func _defense_of(
+	ctx: AttackContext, tuning: CombatTuning, defense: float, kind_value: Kind
+) -> float:
+	var divisor := _finite(tuning.resist_divisor)
+	var scale := divisor if divisor > 0.0 else 1.0
+	var out := _finite(defense) / scale
+	if kind_value == Kind.OBSCURE:
+		out = maxf(out, _illusion_resistance_of(ctx, tuning, kind_value) / scale)
+	var pen := maxf(0.0, _finite(_penetration_of(ctx)))
+	var pierce := _finite(tuning.pierce_scale)
+	if pierce > 0.0:
+		out = out / (1.0 + pen / pierce)
+	return _finite(out)
+
+
+## ADR 0200's mitigation curve, the same shape `QiDamage` and `BodyDamage` use:
+##
+## ```
+## m = mitigation_ceiling * D / (K + D)                 for D >= 0
+## m = mitigation_ceiling * (2 - K / (K + |D|))        for D <  0
+## ```
+##
+## `K = defense_divisor_k * base` is MIND'S OWN offense, per the owner's ruling that `K` is
+## per-mechanism: the three stay independent and a qi rebalance cannot move a mind answer.
+##
+## `m` APPROACHES `mitigation_ceiling` and never reaches it, so a defender's
+## `mental_defense` never stops paying -- the property `MENTAL_DEFENSE_CAP` destroyed, and
+## the reason the published floor fell from `0.4` to `1 - 0.95 = 0.05`.
+##
+## The mirror branch is what makes a composure-sundered sea a real glass cannon: `m` goes
+## ABOVE the ceiling and `1 - m` goes negative, so the erosion GROWS. Both branches give
+## exactly `mitigation_ceiling` at `D == 0`, so the function is CONTINUOUS there, and that
+## agreement is the assertion that catches a missing or mis-signed branch.
 ##
 ## Hole 1 is here: `0.0 / 0.0` is `NaN` and a `NaN` survives every `clampf`, so a
 ## non-positive denominator is caught rather than passed on.
-func _mitigation_of(
-	ctx: AttackContext, tuning: CombatTuning, base: float, defense: float, kind_value: Kind
-) -> float:
-	var denominator := defense + base
-	var saturated := 0.0 if denominator <= 0.0 else defense / denominator
-	var rate := clampf(saturated, 0.0, _share(tuning.mental_defense_cap))
-	if kind_value == Kind.OBSCURE:
-		rate = maxf(rate, _illusion_resistance_of(ctx, tuning, kind_value))
-	return clampf(rate, 0.0, _share(tuning.illusion_resistance_cap))
+static func _mitigation_of(defense: float, divisor_k: float, tuning: CombatTuning) -> float:
+	var ceiling := clampf(_finite(tuning.mitigation_ceiling), 0.0, 1.0)
+	if ceiling <= 0.0:
+		return 0.0
+	var k := maxf(0.0, _finite(divisor_k))
+	var magnitude := absf(_finite(defense))
+	var denominator := k + magnitude
+	if denominator <= 0.0:
+		return 0.0
+	var share := magnitude / denominator if defense >= 0.0 else 2.0 - k / denominator
+	return _finite(ceiling * share)
+
+
+## The attacker's penetration against this sea's defense, as a magnitude on
+## `CombatTuning.pierce_scale`'s scale. Zero when nothing was authored and never negative:
+## a negative penetration would be a defence BONUS wearing an attacker's name.
+static func _penetration_of(ctx: AttackContext) -> float:
+	var id := CombatStats.PENETRATION
+	return maxf(0.0, CombatStats.default_of(id) + _finite(ctx.attacker_value(id)))
 
 
 ## `1 - COHERENCE_DAMP * awareness_ratio`, less whatever a `mind_avoidance` spend removes.
@@ -918,6 +1032,8 @@ static func _empty_parts() -> Dictionary:
 		"mental_attack": 0.0,
 		"base": 0.0,
 		"mental_defense": 0.0,
+		"defense": 0.0,
+		"divisor_k": 0.0,
 		"mitigation": 0.0,
 		"illusion_resistance": 0.0,
 		"awareness_ratio": 0.0,

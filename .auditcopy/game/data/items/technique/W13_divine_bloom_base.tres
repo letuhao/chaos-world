@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"W13_divine_bloom_base"
+display_name = "Divine Bloom Base"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 21.61},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"mantra"
+grade = &"divine"
+sources = Array[StringName]([&"craft:W13_divine_bloom_base_recipe", &"domain:qi_core_formation_trial"])

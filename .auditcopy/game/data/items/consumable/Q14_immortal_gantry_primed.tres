@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"Q14_immortal_gantry_primed"
+display_name = "Immortal Gantry Primed"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_absorption", "value": 27.92},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"draught"
+grade = &"immortal"
+sources = Array[StringName]([&"craft:Q14_immortal_gantry_primed_recipe", &"domain:body_tribulation_trial"])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"S4_divine_cooper_refined_alt_recipe"
+display_name = "Divine Cooper Refined (Alt) Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"S4_divine_cooper_base", &"Q4_divine_cumin_truss", &"Q4_divine_cumin_couter"])
+outputs = Array[StringName]([&"S4_divine_cooper_refined"])

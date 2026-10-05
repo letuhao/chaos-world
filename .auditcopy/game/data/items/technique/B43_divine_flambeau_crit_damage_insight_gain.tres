@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B43_divine_flambeau_crit_damage_insight_gain"
+display_name = "Divine Flambeau Crit Damage Insight Gain"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_damage", "value": 0.04},
+	{"option_id": &"core_insight_gain", "value": 0.03},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"formula"
+grade = &"divine"
+sources = Array[StringName]([&"gather", &"domain:body_spirit_manifestation_trial"])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"B3_earth_bort_primed_recipe"
+display_name = "Earth Bort Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"B3_earth_bort_aged", &"X26_earth_outlay_stein", &"charm_moonwhisper_essence", &"venom_fang_core"])
+outputs = Array[StringName]([&"B3_earth_bort_primed"])

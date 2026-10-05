@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="StatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/status_def.gd" id="1_status"]
+
+[resource]
+script = ExtResource("1_status")
+id = &"dark_corrosion"
+element = &"dark"
+on_landed_blow = true
+kind = &"dot"
+scope = &"combat"
+stacking = &"stack"
+duration = 16.0
+magnitude_unit = &"health_share"
+magnitude_cap = 9.0
+tick_interval = 1.0
+mitigation_tags = Array[StringName]([&"affinity", &"technique", &"pill"])
+payload = {
+"mechanic": &"escalating_burn",
+"text": "Not a wound. Acid, eating whatever the guard was made of and the flesh under it, deeper for every breath it is left breathing.",
+"pool": &"health",
+"share_per_pulse": 0.022,
+"escalation_per_tick": 0.06,
+"escalation_cap": 2.0,
+"modifiers": [
+{"stat": &"defense_physical", "op": &"percent", "value": -0.3},
+{"stat": &"health_regen", "op": &"flat", "value": -1.5}
+]
+}

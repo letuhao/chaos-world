@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F34_mortal_foxed_crit_damage_fortune_qi_cost_reduction_stamina_regen"
+display_name = "Mortal Foxed Crit damage Fortune Qi cost reduction Stamina regen"
+category = &"equipment"
+rarity = &"common"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_damage", "value": 0.05},
+	{"option_id": &"base_fortune", "value": 5.5},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.03},
+	{"option_id": &"core_stamina_regen", "value": 3.24},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
+subcategory = &"lens"
+stackable = false
+grade = &"mortal"
+sources = Array[StringName]([&"quest", &"domain:elemental_spirit_domain"])

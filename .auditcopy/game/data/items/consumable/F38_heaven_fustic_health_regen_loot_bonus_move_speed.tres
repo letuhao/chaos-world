@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F38_heaven_fustic_health_regen_loot_bonus_move_speed"
+display_name = "Heaven Fustic Health regen Loot bonus Move speed"
+category = &"consumable"
+rarity = &"rare"
+realm = &"dao_fruit"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 28.88},
+	{"option_id": &"core_loot_bonus", "value": 0.034},
+	{"option_id": &"core_move_speed", "value": 0.022},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"syrup"
+grade = &"heaven"
+sources = Array[StringName]([&"gather", &"domain:treasure_iron_sage_domain"])

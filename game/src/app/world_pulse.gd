@@ -79,6 +79,26 @@ extends RefCounted
 ## existed `EventBeatSink` was registered at [method bind_director] and never
 ## consulted for an authored event beat (DEF-0171), and `EventBeatSink` stopped
 ## being decoration.
+##
+## ## The reconcile stamp, and why it lives HERE rather than in `app/` proper
+##
+## ADR 0170 put staleness in `core/reconcile_stamp.gd` and the epoch beside it in
+## `core/world_epoch.gd`, and both had **zero production callers** — a place never aged
+## while you were away. [method observe_place] is ADR 0170's trigger (a), and
+## `WorldStage` carries a player's arrival to it through an injected `Callable`
+## (`WorldStage.set_reconciler`, the `set_location_publisher` inversion one layer down).
+##
+## **The holder is this file because this file is the OWNER OF TIME.** ADR 0170: the
+## staleness stamp is "a per-tier stamp held by the owner of time"; `_periods` is what an
+## observation has to be measured against, and a second accumulator beside it would be the
+## second clock in the one layer allowed to know time (ADR 0089). `_stamps` is a COUNT
+## like every other field here and is written once per observation, so `app/` still
+## holds no ledger — `WorldReconcile` owns the folding, this file owns the number.
+##
+## **And the hazard is why the wiring is unconditional.** ADR 0173 (c): an
+## observation-driven clock deadlocks if every advance source is gated on someone being
+## present. The fold already is unconditional; what this file must not add is a presence
+## check IN FRONT OF IT. See [method observe_place].
 
 ## Seconds of elapsed time in one world period. **No longer authored here:** it reads
 ## `TimeLadder.PERIOD_SECONDS` (`core/time_ladder.gd:110`), where ADR 0173 moved the
@@ -165,6 +185,18 @@ var _institution_refused: int = 0
 ## `TimeLadder.magnitudes_crossed` published them. Kept as the fold's own answer so
 ## `summary()` reports what the clock crossed rather than a second copy of the ladder.
 var _crossed: Dictionary = {}
+## How stale each place is, per authored magnitude (ADR 0170). The OWNER OF TIME holds
+## it, because `core/` is a layer and `app/` holds no ledger — this is the same shape
+## `WorldPulse._periods` is, and one magnitude of arithmetic per observation.
+##
+## **Session state, exactly like `_elapsed`**: "a conversion buffer, not a save"
+## (`:142-144`). The stamp is DERIVED and DISCARDABLE — delete it and the next
+## observation is a full pass (`reconcile_stamp.gd`'s whole argument for existing).
+var _stamps: Dictionary = ReconcileStamp.empty()
+## Which history each world is currently living (ADR 0170, "The epoch"). The sibling of
+## `_stamps`, same owner and the same discardability: drop it and every world resolves to
+## epoch 1, which is a full re-read rather than a corruption.
+var _epochs: Dictionary = WorldEpoch.empty()
 
 
 func _init(actor: Actor = null, director: BeatDirector = null) -> void:
@@ -312,6 +344,85 @@ func available_events() -> Array[Dictionary]:
 	return EventApi.available(_actor)
 
 
+## ## THE OBSERVATION TRIGGER (ADR 0170 trigger (a), ADR 0173 (c))
+##
+## Someone is standing in `location_id`: fold this place's clock up to the span the fold
+## has actually moved, and answer what it became. **O(1) in places and O(magnitudes) in
+## arithmetic** — one division per authored row against a stored stamp, never a walk over
+## the world — so nothing ticks while nobody is there and nothing walks with the span.
+##
+## ## THE HAZARD THIS METHOD IS ORDERED TO NOT SHIP — READ IT BEFORE EDITING
+##
+## ADR 0173 (c), verbatim: "an observation-driven clock DEADLOCKS if every advance source
+## is itself gated on someone being present. The world freezes forever, every elapsed
+## calculation returns zero, and the failure is silent."
+##
+## **THE RULE: ANY observation advances FIRST, then reads.** The rule is in the ORDER of
+## the three lines below, not in a guard on them, because a guard is the defect: `if
+## visited: fold()` answers false for every place nobody stood in, which is a silent zero
+## and a frozen world. So `WorldReconcile.observe` is called with NO presence check in
+## front of it, its result is written back UNCONDITIONALLY, and only then is `elapsed`
+## read out of the answer. **A reader is a trigger, never a precondition of the trigger,
+## and there must never be an `if` between this method's entry and `_stamps = ...`.**
+## `tests/app/test_reconcile_reachability.gd` pins it by reading a place nobody has
+## visited and requiring a NON-ZERO elapsed — the one assertion that cannot be softened.
+##
+## ## `span` is the fold's OWN delta, not a second clock
+##
+## `_periods` is what this pulse has handed down since boot, so the span is the same
+## count the beat offer, the event advance and the institution settle were paid on. A
+## separate accumulator here would be a second clock in the one layer allowed to know
+## time (ADR 0089), and the two could disagree — which is the "period count not owned by
+## anything" defect DEF-0171 measured, one layer down from this one.
+func observe_place(location_id: StringName) -> Dictionary:
+	# The span is this fold's own running total, read BEFORE the fold so a re-entry
+	# cannot pay a span the world has not moved yet.
+	var span := _periods
+	# ADVANCE FIRST, unconditionally. No presence check, ever — see the hazard above.
+	var seen := WorldReconcile.observe(_stamps, location_id, span)
+	_stamps = seen["stamps"]
+	# And only now, SECOND, is the place read. The stamp is folded, so the read answers
+	# the place's whole folded age rather than this observation's contribution.
+	return {
+		"ok": true,
+		"reason": "",
+		"location_id": String(location_id),
+		"span_periods": int(seen["span_periods"]),
+		"stamped_before": bool(seen["stamped_before"]),
+		"elapsed_periods": int(seen["elapsed_periods"]),
+		"crossed": (seen["crossed"] as Dictionary).duplicate(),
+		"advanced": bool(seen["advanced"]),
+		"folded_periods": ReconcileStamp.folded_periods(_stamps, location_id),
+	}
+
+
+## What `location_id` IS NOW, derived from (ledger, epoch) — ADR 0170's epoch overlay
+## and its only read shape. Never stored and never decremented: `state_of` computes, so
+## the monotone ledger keeps every occurrence a retired world ever recorded while a
+## successor reads the history it is actually living.
+##
+## `occurrences` is the caller's list, handed in UNMODIFIED. A reconcile READS the
+## ledger's count for a place and never rewrites it, which is the same rule the fold
+## holds: "reconciliation changes what a place HAS BECOME, never what it PROMISES".
+func place_state(location_id: StringName, occurrences: Array = []) -> Dictionary:
+	return WorldEpoch.state_of(_epochs, location_id, occurrences)
+
+
+## Read `location_id`'s own epoch. Separate from [method place_state] because "which
+## history is this world living" is answerable without any occurrence at all, and a
+## panel asking that question should not have to build a ledger to ask it.
+func epoch_of(world_id: StringName) -> int:
+	return WorldEpoch.current(_epochs, world_id)
+
+
+## Advance `world_id`'s epoch over `span_periods` of history and report whether it was
+## allowed. The budget check is `WorldEpoch`'s own, routed through
+## `TimeLadder.exceeds_budget` so there is ONE event budget in the repository.
+func retire_world(world_id: StringName, successor_id: StringName) -> Dictionary:
+	_epochs = WorldEpoch.successor(_epochs, world_id, successor_id)
+	return {"ok": true, "reason": "", "world_id": String(world_id), "epoch": epoch_of(world_id)}
+
+
 ## The whole pulse as primitives: the period count, the beats, the sinks registered,
 ## and what the world is doing. A test asserts this rather than reaching into the
 ## object, and `tools ui drive` prints it as part of the app's own summary.
@@ -331,6 +442,13 @@ func summary() -> Dictionary:
 		# re-derived by a reader: `tools ui drive` prints it and a test asserts on it,
 		# and a panel that restated the ladder would be a second calendar.
 		"magnitudes": _crossed.duplicate(true),
+		# ADR 0170's read model, primitives all the way down so `tools ui drive` prints a
+		# place's age with no display at all (ADR 0038's contract, the same one
+		# `WorldStage.summary` keeps). DELEGATED rather than re-derived: two copies of a
+		# summary is how this repo got four copies of `RATE_STEP` (ADR 0116).
+		"reconciled": WorldReconcile.summary(_stamps, _epochs),
+		"stamps": _stamps.duplicate(),
+		"epochs": _epochs.duplicate(),
 		"sinks": [] if _director == null else _director.sink_names(),
 		"period_fact": String(PERIOD_FACT),
 		"period_count": WorldFact.count(_actor, PERIOD_FACT) if _actor != null else 0,

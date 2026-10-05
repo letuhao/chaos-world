@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I10_mortal_duffel_refined_recipe"
+display_name = "Mortal Duffel Refined Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I10_mortal_duffel_base", &"fungus_embercap"])
+outputs = Array[StringName]([&"I10_mortal_duffel_refined"])

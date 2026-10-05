@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="BodyRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/realm_seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"spirit_manifestation"
+breakthrough_item = &"body_spirit_manifestation_breakthrough_pill"
+strengthening_item = &"body_spirit_manifestation_channel_elixir"
+recovery_item = &"body_spirit_manifestation_recovery_elixir"
+progress_required = 120.0
+physique_required = 73.2
+quality_required = 0.666000
+quality_target = 0.746000
+integrity_target = 0.796000
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach", &"spleen", &"heart", &"small_intestine", &"bladder", &"kidney", &"pericardium", &"triple_burner", &"gallbladder", &"liver", &"du_mai", &"ren_mai", &"chong_mai", &"dai_mai"])
+required_refinement = 12
+refinement_cap = 13
+integrity_maximum = 220.0
+rewards = {
+"physique": 2.0,
+"organ_vitality": 1.0
+}
+insight_required = 370.0
+resonance_rank = 0
+chance_base = 0.3940
+chance_cap = 0.8170
+channel_training = Array[StringName]([&"yin_qiao", &"yang_qiao"])

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"A21_earth_birza_base"
+display_name = "Earth Birza Base"
+category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_will", "value": 18.98},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"rite"
+grade = &"earth"
+sources = Array[StringName]([&"craft:A21_earth_birza_base_recipe", &"domain:qi_primordial_origin_trial"])

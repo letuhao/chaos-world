@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"N1_mortal_acorn_perfected_recipe"
+display_name = "Mortal Acorn Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"N1_mortal_acorn_primed", &"bracer_iron_ore", &"carvebone_rib"])
+outputs = Array[StringName]([&"N1_mortal_acorn_perfected"])

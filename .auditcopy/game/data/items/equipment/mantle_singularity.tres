@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"mantle_singularity"
+display_name = "Singularity Mantle"
+category = &"equipment"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 35.62},
+	{"option_id": &"core_max_qi", "value": 35.62},
+])
+roll_spec = {"count": 4, "contexts": ["prefix", "postfix"]}
+subcategory = &"armor"
+stackable = false
+grade = &"divine"
+sources = Array[StringName]([&"gather", &"domain:relic_stone_colossus_domain"])

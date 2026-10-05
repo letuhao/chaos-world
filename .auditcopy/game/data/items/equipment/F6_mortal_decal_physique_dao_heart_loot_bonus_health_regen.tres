@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F6_mortal_decal_physique_dao_heart_loot_bonus_health_regen"
+display_name = "Mortal Decal Physique Dao Heart Loot Bonus Health Regen"
+category = &"equipment"
+rarity = &"common"
+realm = &"great_ascension"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 9.35},
+	{"option_id": &"core_dao_heart", "value": 9.35},
+	{"option_id": &"core_loot_bonus", "value": 0.03},
+	{"option_id": &"core_health_regen", "value": 9.35},
+])
+roll_spec = {"count": 1, "contexts": ["prefix", "postfix"]}
+subcategory = &"bandolier"
+stackable = false
+grade = &"mortal"
+sources = Array[StringName]([&"quest", &"domain:body_foundation_trial"])

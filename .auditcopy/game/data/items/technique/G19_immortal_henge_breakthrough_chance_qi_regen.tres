@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"G19_immortal_henge_breakthrough_chance_qi_regen"
+display_name = "Immortal Henge Breakthrough chance Qi regen"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"formula"
+grade = &"immortal"
+sources = Array[StringName]([&"quest", &"domain:mind_spirit_transformation_trial"])

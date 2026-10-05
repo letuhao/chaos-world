@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"C22_heaven_corbie_spirit_qi_cost_reduction_move_speed"
+display_name = "Heaven Corbie Spirit Qi Cost Reduction Move Speed"
+category = &"consumable"
+rarity = &"rare"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_spirit", "value": 29.7},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.05},
+	{"option_id": &"core_move_speed", "value": 0.03},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"decree"
+grade = &"heaven"
+sources = Array[StringName]([&"quest", &"domain:qi_transcendent_domain"])

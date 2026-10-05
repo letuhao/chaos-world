@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"qi_nascent_soul_cultivation_herb"
+display_name = "Nascent Soul Herb"
+category = &"material"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 6},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"herb"
+grade = &"mortal"
+sources = Array[StringName]([&"gather", &"domain:puppet_ash_effigy_domain"])
+description = "Cultivation herb for Nascent Soul. Gathered from the wild."

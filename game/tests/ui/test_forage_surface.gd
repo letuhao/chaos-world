@@ -101,11 +101,12 @@ func _hero() -> Actor:
 
 
 ## A node this hero can ACTUALLY take: vacant, on a band its realm permits, and with no
-## authored `claim_floor`. `HoldingsApi.claim` refuses `claim_below_floor` for a node that
-## declares one, because `_meets_floor` reads the OWNER ref's standing — a figure the
-## holdings module does not own and a bare `{kind, id}` ref can only ever report as 0. So
-## the claimable node is read off the facade rather than typed in: picking any deep node
-## would make every case in this file measure the floor rule instead of the surface.
+## authored `claim_floor`. The floor filter is still here, but it is now a CHOICE rather
+## than a necessity — ADR 0248 made `claim_floor` a count of ground already held, so every
+## floored node in the corpus is reachable by a hero who has consolidated the shallow
+## ones, and `tests/modules/holdings/test_holdings_claim_floor.gd` proves that order over
+## the real `.tres` files. This suite still picks a floor-0 node so its cases measure the
+## SURFACE rather than the gate; the gate is measured where it is measured.
 func _claimable_node() -> String:
 	for row in ForageApi.views(_actor):
 		var view: Dictionary = row as Dictionary

@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"d5_frost_serpent_spirit_manifestation_0"
+kind = &"item"
+item_id = &"F37_earth_frolic_cooldown_reduction_loot_bonus_qi_absorption"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"d5_frost_serpent_spirit_manifestation_1"
+kind = &"item"
+item_id = &"Q21_earth_hazel_refined"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"d5_frost_serpent_spirit_manifestation_2"
+kind = &"item"
+item_id = &"scroll_frost_serpent_fang"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"d5_frost_serpent_spirit_manifestation_3"
+kind = &"item"
+item_id = &"sigil_clear_mind"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_d5_frost_serpent_pool_spirit_manifestation"
+display_name = "Frost Serpent Lesser salvage (spirit_manifestation)"
+realm = &"spirit_manifestation"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3")
+])

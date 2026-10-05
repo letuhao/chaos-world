@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"qi_marrow_surge"
+delivered_by = &"draft_iron_page"
+display_name = "Marrow Surge"
+description = "Forces qi down the opened channels all at once instead of spending it evenly. Raw output, no element, so nothing resists it and nothing amplifies it either."
+tags = Array[StringName]([&"technique", &"burst", &"no_element"])
+grade = &"mortal"
+rarity = &"common"
+element = &""
+schools = Array[StringName]([&"emitting"])
+active = true
+path = &"qi_cultivation"
+qi_cost = 22.0
+stamina_cost = 8.0
+cooldown = 4.0
+mastery_rungs = 5
+magnitude = 0.5
+

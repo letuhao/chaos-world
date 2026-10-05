@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"S3_divine_cobbler_perfected_recipe"
+display_name = "Divine Cobbler Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"S3_divine_cobbler_primed", &"divine_nether_essence", &"Q3_divine_crook_bristle"])
+outputs = Array[StringName]([&"S3_divine_cobbler_perfected"])

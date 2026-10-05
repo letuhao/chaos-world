@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"H11_immortal_staminafeast"
+display_name = "Immortal Stamina Feast"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"heaven_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 27.92},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"food"
+grade = &"immortal"
+sources = Array[StringName]([&"craft:H11_immortal_staminafeast_recipe", &"domain:qi_spirit_manifestation_trial"])

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B37_divine_dower_max_stamina_aptitude"
+display_name = "Divine Dower Max Stamina Aptitude"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"transcendent"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 35.62},
+	{"option_id": &"base_aptitude", "value": 13.76},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"treaty"
+grade = &"divine"
+sources = Array[StringName]([&"quest", &"domain:mind_heaven_immortal_trial"])

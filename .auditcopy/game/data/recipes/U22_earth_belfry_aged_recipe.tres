@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"U22_earth_belfry_aged_recipe"
+display_name = "Earth Belfry Aged Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"U22_earth_belfry_refined", &"panacea_moonleaf_herb", &"filament_wool"])
+outputs = Array[StringName]([&"U22_earth_belfry_aged"])

@@ -103,6 +103,18 @@ const WRONG_GATE := 1.0
 ## author gets by accident — the same floor `EnvironmentField.MIN_DURATION` uses.
 const MIN_DURATION := 0.5
 
+## The ceiling on the tile walk [method _segment_touches] takes while sweeping a
+## movement step across a footprint.
+##
+## ## WHY A CEILING AT ALL, AND WHY THIS ONE
+##
+## The walk is bounded by the step's own length, so it terminates on authored data — but
+## a step expressed in TILES can be as long as the map, and a data-derived bound is not
+## a small one. This caps the work per call at a number far above any authored room's
+## diagonal, so the cap can never change an answer while still naming the condition: the
+## walk exceeded its ceiling (which for authored content is unreachable).
+const MAX_FOOTPRINT_WALK := 4096
+
 # --- reasons. Every refusal has a stable id a reader can show. ---------------
 
 const OK_TELEGRAPHING := "telegraphing"
@@ -120,6 +132,15 @@ const ERR_UNKNOWN_KIND := "unknown_fixture_kind"
 const ERR_WRONG_KIND := "wrong_kind_for_this_verb"
 const ERR_ALREADY_FIRED := "already_fired"
 const ERR_ALREADY_CLAIMED := "already_claimed"
+## Presence is the trigger, so "the body is not in the footprint" is an ORDINARY answer
+## rather than a failure: the actor is standing somewhere else. Reported by name because a
+## caller driving a movement step needs to tell "you are elsewhere" from "this trap is
+## spent" — the first is free and the second is a one-way state.
+const ERR_OUTSIDE := "outside_the_footprint"
+## A trap authoring an empty `bounds` cannot be entered, so presence refuses it rather
+## than treating an absent footprint as "everywhere" (ADR 0075: a zone is a volume you
+## route around, and a volume of nothing is not a volume). An AUTHORING error.
+const ERR_NO_FOOTPRINT := "authors_no_footprint"
 const ERR_UNKNOWN_NODE := "unknown_node"
 const ERR_MISSING_KEY := "missing_key"
 const ERR_REALM_TOO_LOW := "realm_below_the_floor"
@@ -128,6 +149,47 @@ const ERR_INVENTORY_FULL := "inventory_full"
 const ERR_NO_STATUS := "authors_no_status_id"
 const ERR_NO_SHARE := "authors_no_damage_share"
 const ERR_NOTHING_TO_GRANT := "authors_nothing_to_grant"
+## The reward names no item the corpus can resolve. Reported BY NAME, never folded
+## into [constant ERR_INVENTORY_FULL]: the player is being told their bag is full
+## for a bag that had nothing to do with it. It is an AUTHORING error, and it reads
+## as one because the reason says so — `QuestGrants.ITEM_UNKNOWN` is the same
+## distinction and the same spelling, for the same reason.
+const ERR_UNKNOWN_ITEM := "unknown_item"
+## The reward resolves and the key does too, but the actor has no `items` module at
+## all. Distinct from a full bag for `QuestGrants`' reason (`quest_grants.gd:58`):
+## an actor with no inventory cannot have one that is full.
+const ERR_NO_INVENTORY := "no_inventory"
+
+## The currencies a domain pays in (ADR 0216), named by WHERE the reward sits in the
+## run and never by a roll. A fixture pays ONE of these; the fixture's own `kind`
+## and tags decide which, and `_pays_lore` is the only reader.
+const PAY_EQUIPMENT := "equipment"
+const PAY_LORE := "lore"
+
+## The three gate shapes (ADR 0218), named by WHAT THE PLAYER HAS ALREADY SPENT by
+## the time they arrive. **A treasure carries AT MOST ONE** — keyed *and* realm-gated
+## on the same container is two walls on one box, and the second is invisible to the
+## player because the first is what stops them. `GATE_OPEN` is the honest name for
+## "no gate": the ROOM is the gate (ADR 0217), not a flag.
+const GATE_OPEN := "open"
+const GATE_KEYED := "keyed"
+const GATE_REALM := "realm"
+
+## The formation puzzle's payout is a LEDGER ROW, not an item: the thing a solved
+## formation hands over is what the player now knows, so the id it records is
+## derived from the fixture and is stable across machines and runs.
+const LORE_PREFIX := "fixture_formation_solved"
+
+## How much insight one solved formation records. **A counter, not a currency
+## magnitude** (ADR 0216: the lore row is "deliberately the thinnest"), so it is one
+## per solve and a re-solve is refused by `already_claimed` rather than paying
+## twice.
+const LORE_INSIGHT := 1
+
+## The one unit a fixture pays (ADR 0216 §3). `reward_count` leaves the vocabulary:
+## a hoard holds a relic, not a stack of relics, and every authored `ItemDef` of
+## equipment shape is `stackable = false`, so a second unit has no delivery at all.
+const ONE_UNIT := 1
 
 ## The two injected contacts with the items module, mirroring `DomainSpawner._minter`
 ## (`domain_spawner.gd:48`). Declared `static var` and below the consts because
@@ -141,9 +203,23 @@ static var _granter: Callable = Callable()
 ##
 ## `keys` is `Callable(actor, item_id) -> float`, answering the `key_reach` a carried
 ## `item_id` is worth (0.0 when it is not carried). `granter` is
-## `Callable(actor, item_id, count) -> int`, answering the LEFTOVER count — the same
-## all-or-nothing convention `LootRewards.deliver` uses, so a full bag leaves the
-## claim untouched rather than consuming it over a delivery that did not happen.
+## `Callable(actor, item_id, count) -> int`, answering the LEFTOVER count — the shape
+## `DomainBoot.grant_item` (`domain_boot.gd:234`) actually implements. A granter that
+## answers `{leftover, reason, instance_id}` instead is ALSO read, and its named `reason`
+## is passed through, so the richer seam is a refinement rather than a second
+## vocabulary; see [method _grant] for why the integer is what ships.
+##
+## ## WHY AN INTEGER LEFTOVER AND NOT AN ANSWER DICTIONARY
+##
+## The docblock here once named a `-> Dictionary` seam, which no caller implemented, so
+## every delivery raised a type error and returned `{}` — a treasure reported
+## `already_claimed` having claimed nothing. The documented shape had to become the
+## SHIPPED shape, which is why [method _grant] reads the answer's type rather than
+## coercing it.
+##
+## All-or-nothing is unchanged and still load-bearing: `leftover > 0` leaves the
+## claim untouched rather than consuming it over a delivery that did not happen,
+## which is `LootRewards.deliver`'s convention.
 ##
 ## Bare static functions, not typed lambdas: `app/domain_boot.gd:31-33` records a
 ## process-killing access violation from a typed lambda forwarding to another
@@ -154,15 +230,155 @@ static func set_minter(keys: Callable, granter: Callable) -> void:
 	_granter = granter
 
 
-## Advance a trap by `delta` seconds and arm, telegraph or fire it. The ONLY trap
-## entry point, because "is it armed yet" is a question about time and this module
-## keeps no clock of its own.
+## Advance a trap standing on `footprint` by `delta` seconds: arm, telegraph or fire
+## it. THE ONLY TRIGGER, because ADR 0211 makes a trap fire on PRESENCE and a button may
+## never detonate one.
 ##
-## The first call ALWAYS arms, whatever `delta` says: a caller that crossed the
-## telegraph window in one long frame still owes the player the warning, and a trap
-## that fires on the frame it spawns is the untelegraphed hazard ADR 0075 refuses.
+## ## WHY `presence` AND NOT `arm` IS THE ENTRY POINT
+##
+## `arm` used to be the only entry point and its caller was a button: a player pressed
+## `Arm` twice. That made the cost payable for having INSPECTED a trap rather than for
+## having ENTERED one — a player who walked over a trap was free and a player who read
+## the room paid — and it made the telegraph unreachable, because the window opened and
+## closed inside a single press. `presence` is the same time machine with the trigger
+## condition moved onto the body: the caller passes where the actor IS, never a verb.
+##
+## ## THE ONE-WAY STATE MACHINE
+##
+## `armed -> telegraphing -> spent`, never re-armed within a run. A trap is fired ONCE
+## by presence and refused BY NAME afterwards, so a player is never taxed twice for one
+## mistake, and a second run starts armed because `DomainApi.enter` clears the ledger.
+##
+## ## A STEP THAT ENTERS AND FULLY CROSSES STILL ARMS
+##
+## A movement step is not a point sample: it can start outside the footprint and end
+## outside it, having crossed the whole thing in one frame. Sweeping the SEGMENT rather
+## than testing the endpoint is what keeps such a step honest — and [method arm] always
+## arms on its first call whatever `delta` says, so a single long frame still owes the
+## player the authored warning rather than biting the moment the trap becomes visible.
+##
 ## `delta` is a parameter rather than a wall-clock read so a replay arms and fires
 ## exactly as it was driven, matching `StatusRegistry.tick`.
+static func presence(
+	actor: Actor, room_id: StringName, fixture_id: StringName, at: Vector2i, delta: float = 0.0
+) -> Dictionary:
+	var found := _resolve(actor, room_id, fixture_id)
+	if not found.get("ok", false):
+		return found
+	var fixture: Dictionary = found["fixture"]
+	var record := _record(actor, String(found["key"]))
+	if StringName(fixture.get("kind", "")) != KIND_TRAP:
+		# A fixture that genuinely needs an ACTION is an authoring error, not a new code
+		# path (ADR 0211). `attempt` and `claim` are the verbs for those kinds, and a
+		# puzzle answers wrong with an interruption and never with health.
+		return _answer(false, ERR_WRONG_KIND, _about(fixture, room_id))
+	var outside := _outside_footprint(actor, fixture, at)
+	if outside:
+		return outside
+	return arm(actor, room_id, fixture_id, delta)
+
+
+## Look at one fixture WITHOUT touching it: exactly what [method telegraph] already
+## returns, and not one byte more. Free and non-mutating by construction — it reads the
+## ledger and writes nothing — which is what makes inspecting a trap the RIGHT play
+## rather than a mistake (ADR 0211).
+##
+## This is what the `Arm` button became. Reading a trap tells a player its footprint, its
+## kind of harm, its authored magnitude and its window; it never arms, never fires and
+## never costs health, so the floor is worth reading before it is worth crossing.
+static func inspect(actor: Actor, room_id: StringName, fixture_id: StringName) -> Dictionary:
+	return telegraph(actor, room_id, fixture_id)
+
+
+## Whether `actor` is inside `fixture`'s authored footprint, tested over the whole
+## MOVEMENT STEP and not over one point: a step from one side to the other crosses the
+## volume, and a step that crosses it in a single frame is exactly the "enters and fully
+## crosses in one frame" rule ADR 0211 preserves.
+##
+## ## WHY A `Rect2i` TEST AND NOT THE REALIZED `Area2D`
+##
+## `DomainScene._place_zones` realizes a ZONE as an `Area2D` (`domain_scene.gd:724`), and
+## a fixture has no area at all — so the overlap against a physics node would have to be
+## invented before it could be used, in a module that may not depend on `app/` where
+## `DomainScene` lives. The authored `bounds` IS the footprint, it is what
+## [method telegraph] publishes to the scene that DRAWS it, and it is what
+## `test_domain_scene.gd:589` already pins as "the authored rect, not a heuristic". So
+## the test is made here against the same authored data the drawing reads, and the two
+## cannot disagree — which is the whole point of a telegraph that names a boundary the
+## player is then held to.
+##
+## `actor`'s last recorded tile is the segment's start, so a caller that only knows where
+## the actor is NOW still gets the crossing. An actor with no recorded position is tested
+## as a single point at `at`, which is the honest reading: nothing said it moved.
+static func _outside_footprint(actor: Actor, fixture: Dictionary, at: Vector2i) -> Dictionary:
+	var box: Rect2i = fixture.get("bounds", Rect2i())
+	if box.size.x <= 0 or box.size.y <= 0:
+		# A fixture authoring no footprint cannot be entered, so presence never arms it.
+		# Refused BY NAME rather than treated as "everywhere", which would make an
+		# unauthored trap fire from the whole room — the defect ADR 0075 refuses.
+		return _answer(false, ERR_NO_FOOTPRINT, _about(fixture, &""))
+	var from := at
+	var placed := _placed_tile(actor)
+	if not placed.is_empty():
+		from = Vector2i(int(placed[0]), int(placed[1]))
+	if _segment_touches(box, from, at):
+		return {}
+	return _answer(false, ERR_OUTSIDE, _about(fixture, &""))
+
+
+## Whether the straight run `from -> to` meets `box` at all, sampled per TILE rather than
+## by a float segment query: the grid is the map's own unit (`EnvironmentZoneDef.bounds`
+## is authored in tiles, `environment_zone_def.gd:92`), and a tile walk is exact at any
+## distance where a float intersection test would need an epsilon nobody authored.
+##
+## Bounded by the box's own diagonal in tile steps plus the two endpoints, so a long
+## map cannot make this a long loop: the walk stops the moment it leaves the box, and a
+## start already outside contributes its single tile.
+static func _segment_touches(box: Rect2i, from: Vector2i, to: Vector2i) -> bool:
+	if box.has_point(from) or box.has_point(to):
+		return true
+	# The sign of each axis, taken ONCE: a zero component is copied straight rather than
+	# stepping, so an axis-aligned walk terminates on its other axis instead of dividing
+	# by zero or looping forever on a degenerate step.
+	var step := Vector2i(signi(to.x - from.x), signi(to.y - from.y))
+	var remaining := maxi(absi(to.x - from.x), absi(to.y - from.y))
+	var walked := 0
+	while walked < remaining and walked < MAX_FOOTPRINT_WALK:
+		walked += 1
+		if step.x != 0:
+			from.x += step.x
+		if step.y != 0:
+			from.y += step.y
+		if box.has_point(from):
+			return true
+	return false
+
+
+## Where the run last placed `actor`, as `[x, y]`, or `[]` when nothing placed it.
+## Read from the SAME `module_data` key `DomainSpawner` writes
+## (`DomainSpawner.MODULE_KEY`, `domain_spawner.gd:49`), so "where the body is" has one
+## answer in the game rather than a second one derived here.
+##
+## The PLAYER is not spawned by `spawn_map`, so this is empty for them — which is why
+## `at` is the caller's to pass: a screen and a tick know where the body is this frame,
+## and a module that never ran the spawn cannot invent it.
+static func _placed_tile(actor: Actor) -> Array:
+	if actor == null:
+		return []
+	var placed: Variant = actor.get_module_data(DomainSpawner.MODULE_KEY).get("position", null)
+	if placed is Array and (placed as Array).size() >= 2:
+		return [int((placed as Array)[0]), int((placed as Array)[1])]
+	return []
+
+
+## Advance an armed trap's telegraph by `delta` and fire it when the window has elapsed.
+## The TIME HALF of the trigger, and deliberately NOT the entry point: ADR 0211 makes
+## presence the only thing that may call this, so no button can reach a trap through it.
+## [method presence] is the seam a scene, a tick and a test all go through.
+##
+## The first call ALWAYS arms, whatever `delta` says: a caller that crossed the telegraph
+## window in one long frame still owes the player the warning, and a trap that fires on
+## the frame it spawns is the untelegraphed hazard ADR 0075 refuses.
 static func arm(
 	actor: Actor, room_id: StringName, fixture_id: StringName, delta: float = 0.0
 ) -> Dictionary:
@@ -232,7 +448,7 @@ static func attempt(
 			OK_ADVANCED,
 			_merged(_about(fixture, room_id), {"progress": progress, "complete": false})
 		)
-	var payout := _grant(actor, fixture)
+	var payout := _grant(actor, fixture, key)
 	if not payout.get("ok", false):
 		return payout
 	_write(actor, key, {"progress": progress, "complete": true, "claimed": true})
@@ -257,7 +473,7 @@ static func claim(actor: Actor, room_id: StringName, fixture_id: StringName) -> 
 	var realm_gate := _realm_gate(actor, fixture, about)
 	if not realm_gate.is_empty():
 		return realm_gate
-	var payout := _grant(actor, fixture)
+	var payout := _grant(actor, fixture, key)
 	if not payout.get("ok", false):
 		return payout
 	_write(actor, key, {"claimed": true})
@@ -267,6 +483,18 @@ static func claim(actor: Actor, room_id: StringName, fixture_id: StringName) -> 
 ## What this actor would carry from this fixture, WITHOUT touching them: the same
 ## measure-before-and-after `EnvironmentField.residual_amount` exists for, so a screen
 ## can show the authored number and the actor's real one side by side.
+##
+## ## At most ONE lever is ever credited, whatever the actor carries (ADR 0212)
+##
+## `_lever_for` returns on first match in identity order, so a hero with all four levers
+## gets ONE cap — the strongest that actually fires for them — never a sum. That is the
+## per-instance floor: holding everything does not reduce the cost below
+## `authored * (1 - strongest_single_cap)`, because a hazard that four budgets had
+## cancelled out would have stopped being a hazard.
+##
+## The affinity share is scaled by the ROOT's strength, the same
+## `EnvironmentField.affinity_strength` a zone uses, so a partial root blunts a trap by
+## proportionally less and a full one gets the authored cap.
 static func residual_share(actor: Actor, fixture: Dictionary) -> Dictionary:
 	var lever := _lever_for(actor, fixture)
 	var share := maxf(0.0, float(fixture.get("damage_share", 0.0)))
@@ -276,7 +504,12 @@ static func residual_share(actor: Actor, fixture: Dictionary) -> Dictionary:
 		# and subtracting from the number anyway would report a mitigation that did not
 		# happen (`environment_field.gd:_amount`).
 		return _amounts(share, share, "")
-	return _amounts(share, share * (1.0 - cap), lever)
+	var held := 1.0
+	if lever == String(EnvironmentField.LEVER_AFFINITY):
+		held = EnvironmentField.affinity_strength(
+			actor, _status_element(StringName(fixture.get("status_id", "")))
+		)
+	return _amounts(share, share * (1.0 - cap * minf(1.0, held)), lever)
 
 
 ## The boundary a scene draws BEFORE anything lands, as primitives, for one fixture.
@@ -310,6 +543,13 @@ static func telegraph(actor: Actor, room_id: StringName, fixture_id: StringName)
 				"armed": bool(record.get("armed", false)),
 				"spent": bool(record.get("spent", false)),
 				"claimed": bool(record.get("claimed", false)),
+				# ADR 0217's two tests, answered per fixture so a screen can render
+				# "sealed — needs a furnace key" BEFORE the player spends the walk.
+				# `gate` is the ONE shape this fixture uses (ADR 0218), named here
+				# rather than left for a reader to infer from two fields that could
+				# both be set.
+				"gate": _gate_shape(fixture),
+				"currency": _pays_lore(fixture) and PAY_LORE or PAY_EQUIPMENT,
 				# Visible whether or not the actor is already standing in it: the
 				# boundary is what makes leaving in time possible at all.
 				"boundary_visible": true,
@@ -560,23 +800,175 @@ static func _realm_gate(actor: Actor, fixture: Dictionary, about: Dictionary) ->
 	return {}
 
 
-## Hand `reward_item_id` x `reward_count` to the granter. `{}` never — it returns an
-## answer dictionary, because a delivery that fails must NOT consume the claim.
-static func _grant(actor: Actor, fixture: Dictionary) -> Dictionary:
+## Pay this fixture's reward in the currency its PLACE in the run names (ADR 0216),
+## ONE unit, realized by the injected granter. `{}` never — it returns an answer
+## dictionary, because a delivery that fails must NOT consume the claim.
+##
+## ## THE SEAM IS `(Actor, StringName, int) -> int`, AND NOTHING ELSE
+##
+## This method's docblock once described a `-> Dictionary` seam answering
+## `{ok, reason, leftover}` — a shape NO caller in the repo implements. The two that
+## exist both answer an INTEGER LEFTOVER: `DomainBoot.grant_item`
+## (`domain_boot.gd:234`) and the suite's own kit (`domain_fixture_kit.gd:182`). This
+## body was calling it with a THIRD shape — `(actor, item_id, String(fixture_id))` — so
+## the runtime bound a `String` where both callers declare `count: int`, raised
+## `Invalid type ... Cannot convert argument 3 from String to int` on every delivery, and
+## returned `{}`. Every treasure then reported `already_claimed` with nothing claimed:
+## 42 assertions red across `test_domain_fixtures.gd` and `test_domain_fixture_reads.gd`.
+## A documented seam that nobody implements is worse than no seam, so the DOCUMENTATION
+## is what changed here — the third argument is [constant ONE_UNIT] and the return is
+## read as the leftover integer both callers already return.
+##
+## ## WHY THE INTEGER IS NOT ENOUGH, AND WHY IT IS THE ONE WE KEEP
+##
+## An integer leftover cannot say WHY nothing was handed over, so an unresolvable
+## `reward_item_id` and a full bag produce the same answer and the player is told their
+## bag is full for a bag that had nothing to do with it. A `-> Dictionary` seam was the
+## right FIX and the wrong SEAM: fixing it inside this method, against a caller that does
+## not exist, traded a working delivery path for a permanently-failing one. The named
+## refusals below stay, and a granter that DOES answer a dictionary still has its name
+## passed through — so the richer seam is accepted when one is installed rather than
+## being a second vocabulary.
+static func _grant(actor: Actor, fixture: Dictionary, ledger_key: String) -> Dictionary:
 	var item_id := StringName(fixture.get("reward_item_id", ""))
-	var count := int(fixture.get("reward_count", 0))
-	if item_id == &"" or count <= 0:
-		return _answer(false, ERR_NOTHING_TO_GRANT, {"item_id": String(item_id), "count": count})
+	var count := ONE_UNIT
+	if item_id == &"":
+		return _answer(false, ERR_NOTHING_TO_GRANT, {"item_id": "", "count": 0, "pays": ""})
+	# A formation ALSO pays LORE, the thinnest of the five currencies (ADR 0216), and it
+	# pays it IN ADDITION to the authored `reward_item_id` rather than instead of it: a
+	# ledger row costs no bag slot, so routing a puzzle AROUND the granter meant the
+	# authored reward of every solved formation was silently undelivered while the
+	# fixture still reported `claimed`. The two assertions that caught it
+	# (`test_the_correct_sequence_completes_and_grants_its_reward`,
+	# `test_a_wrong_node_resets_and_never_costs_health`) name the contract as "the SAME
+	# granter a treasure uses, because one delivery path in the game is the whole point",
+	# and a second delivery path that skips it is that defect under a new name.
+	var lore_fields: Dictionary = {}
+	if _pays_lore(fixture):
+		var lore := _lore(actor, fixture, ledger_key, item_id)
+		if not bool(lore.get("ok", false)):
+			return lore
+		# Carried into the final answer below rather than returned here, so a formation's
+		# LORE row and its `reward_item_id` travel in ONE answer: a caller reading `pays`
+		# sees the currency the fixture is about, and `lore_id`/`insight` still answer
+		# what the formation taught.
+		lore_fields = {
+			"pays": PAY_LORE, "lore_id": lore.get("lore_id", ""), "insight": lore.get("insight", 0)
+		}
 	if _granter.is_null():
-		return _answer(false, ERR_NO_BRIDGE, {"item_id": String(item_id), "count": count})
-	var leftover := int(_granter.call(actor, item_id, count))
-	if leftover > 0:
 		return _answer(
 			false,
-			ERR_INVENTORY_FULL,
-			{"item_id": String(item_id), "count": count, "leftover": leftover}
+			ERR_NO_BRIDGE,
+			{"item_id": String(item_id), "count": count, "pays": PAY_EQUIPMENT}
 		)
-	return _answer(true, OK_CLAIMED, {"item_id": String(item_id), "count": count, "leftover": 0})
+	var instance_id := ""
+	var leftover := count
+	var reason := ""
+	# Both shapes accepted, because the richer one is the FIX and the integer is what
+	# ships: a granter answering a dictionary is read for its named reason, and anything
+	# else is read as the leftover integer `DomainBoot.grant_item` returns. Reading the
+	# answer's TYPE is what keeps one call site serving two seams — and what a lone
+	# `as Dictionary` did not, since it silently yielded `{}` for the integer case and
+	# every caller then read a default leftover of the full count.
+	var answer: Variant = _granter.call(actor, item_id, count)
+	if answer is Dictionary:
+		var named := answer as Dictionary
+		leftover = int(named.get("leftover", count))
+		reason = String(named.get("reason", ""))
+		instance_id = String(named.get("instance_id", ""))
+	else:
+		leftover = int(answer)
+	if leftover > 0:
+		# A refusal whose own reason is EMPTY is the integer seam, so it is named here
+		# rather than guessed at: an integer granter can only mean "it did not fit".
+		return _answer(
+			false,
+			ERR_INVENTORY_FULL if reason == "" else reason,
+			{
+				"item_id": String(item_id),
+				"count": count,
+				"leftover": leftover,
+				"pays": PAY_EQUIPMENT,
+			}
+		)
+	return _answer(
+		true,
+		OK_CLAIMED,
+		_merged(
+			{
+				"item_id": String(item_id),
+				"count": count,
+				"leftover": 0,
+				"pays": PAY_EQUIPMENT,
+				"instance_id": instance_id,
+			},
+			lore_fields
+		)
+	)
+
+
+## Whether this fixture pays LORE rather than an object, read off the fixture's own
+## `kind` and never off a tag.
+##
+## A **formation** and a **hazard** pay the thin currency; a **treasure** pays the
+## object the room is about. `kind` rather than a tag because ADR 0073 froze the
+## fixture vocabulary to three kinds and a tag set is free text — the defect ADR 0218
+## is about, where `treasure_boss_sealed` was applied by hand and was simply false.
+static func _pays_lore(fixture: Dictionary) -> bool:
+	return String(fixture.get("kind", "")) == String(KIND_PUZZLE)
+
+
+## Which of ADR 0218's three gate shapes this fixture carries — the read
+## [method telegraph] publishes so a screen renders "sealed — needs a furnace key" BEFORE
+## the player spends the walk.
+##
+## **Read off the two AUTHORED fields, never off a tag.** ADR 0218's whole finding is
+## that `treasure_keyed` was applied by hand to a hoard with an empty `key_item_id` and
+## was simply false, so the tags are not an input here — a shape derived from them would
+## inherit the exact defect the ADR exists to end.
+##
+## `key_item_id` is first because a treasure carries AT MOST ONE gate (rule 4), and the
+## key is the one a player can go and get: reporting `realm` on a container that is also
+## keyed would name the wall the player cannot see yet.
+static func _gate_shape(fixture: Dictionary) -> String:
+	if String(fixture.get("key_item_id", "")) != "":
+		return GATE_KEYED
+	if String(fixture.get("requires_realm", "")) != "":
+		return GATE_REALM
+	return GATE_OPEN
+
+
+## Record the ledger row a solved formation pays. One row, keyed by the SAME ledger
+## key the run already persists, and written by the SAME `_write` — so it costs
+## nothing: no new module, no new persistence, one more field of a record `attempt`
+## was already writing.
+##
+## A formation pays LORE because what a solved formation hands over is what the
+## player now KNOWS, and a thing you know does not occupy a bag slot. `insight` is
+## the carried axis `contracts/stat.gd` already declares (`Stat.INSIGHT_GAIN`), so
+## this is a counter and not a new resource — ADR 0216's "deliberately the thinnest".
+##
+## The ledger KEY is the parameter rather than re-derived, because a fixture carries
+## no `room_id`: the key is `"<room>/<fixture>"` and only the caller knows the room.
+static func _lore(
+	actor: Actor, fixture: Dictionary, ledger_key: String, item_id: StringName
+) -> Dictionary:
+	var lore_id := StringName("%s_%s" % [LORE_PREFIX, String(fixture.get("fixture_id", ""))])
+	var record := _record(actor, ledger_key)
+	var earned := int(record.get("insight", 0)) + LORE_INSIGHT
+	_write(actor, ledger_key, {"insight": earned, "lore_id": lore_id})
+	return _answer(
+		true,
+		OK_CLAIMED,
+		{
+			"item_id": String(item_id),
+			"count": ONE_UNIT,
+			"leftover": 0,
+			"pays": PAY_LORE,
+			"lore_id": String(lore_id),
+			"insight": earned,
+		}
+	)
 
 
 ## Which lever actually reduces this fixture for this actor, or `""`.
@@ -586,6 +978,12 @@ static func _grant(actor: Actor, fixture: Dictionary) -> Dictionary:
 ## vocabulary in the game. A lever has to be PUBLISHED by the fixture, has to MOVE the
 ## trap's substrate per `EnvironmentField.LEVER_SUBSTRATES`, and has to be one this
 ## actor actually carries.
+##
+## **Returns on FIRST match, which is ADR 0212's rule made structural**: at most one lever
+## is credited per hazard instance, so a hero holding all four gets the identity-first
+## answer and never a summed 0.95. The loop is the enforcement — a version that collected
+## every match and summed the caps is the "four magnitudes of one number" failure the ADR
+## names, and there is no test that would be more specific than this structure.
 static func _lever_for(actor: Actor, fixture: Dictionary) -> String:
 	var levers := _levers(fixture)
 	for lever in EnvironmentZoneDef.LEVERS:
@@ -597,7 +995,7 @@ static func _lever_for(actor: Actor, fixture: Dictionary) -> String:
 		# invention `residual_amount`'s docblock refuses.
 		if not (EnvironmentField.LEVER_SUBSTRATES.get(lever, []) as Array).has(SUBSTRATE):
 			continue
-		if _holds(actor, lever):
+		if _holds(actor, lever, fixture):
 			return String(lever)
 	return ""
 
@@ -605,15 +1003,31 @@ static func _lever_for(actor: Actor, fixture: Dictionary) -> String:
 ## Whether this actor carries `lever`. The three non-affinity levers are read from
 ## the marker keys `EnvironmentField` itself publishes and reads
 ## (`environment_field.gd:250-254`), so this file authors no fourth tag slot.
-static func _holds(actor: Actor, lever: StringName) -> bool:
+##
+## ## `affinity` reads the LANDED STATUS's element, not the fixture's tags (ADR 0212)
+##
+## This branch used to `return false` unconditionally, justified by "a trap authors no
+## element" — which is true of its `tags` (`ember`, `stone`, `ruined` belong to no
+## `HOSTILE_ELEMENTS` row) and false of what it actually LANDS. Every shipped trap names a
+## status that DOES ride an element: `ash_chamber_vein` -> `fire_immolation`
+## (`element = &"fire"`), `storm_gallery_arc` -> `lightning_arc` (`&"lightning"`),
+## `storm_gallery_vent` -> `wind_gust` (`&"wind"`). Two of those three even author
+## `affinity` in their own `mitigation_tags`. So the read model was advertising counterplay
+## the game could not deliver — precisely the defect ADR 0075's mandatory
+## `mitigation_tags` exists to prevent — and a fire-rooted cultivator could not blunt a
+## fire trap in a room authored for them.
+##
+## The strength test is `EnvironmentField.affinity_covers`, the SAME floor the field applies
+## to a zone, so a root strong enough to answer a fire zone answers a fire trap and neither
+## scale can drift from the other.
+static func _holds(actor: Actor, lever: StringName, fixture: Dictionary) -> bool:
 	match lever:
 		EnvironmentField.LEVER_AFFINITY:
-			# INERT on every shipped fixture, and honestly so. A trap authors no
-			# element — its `tags` are `ember` / `stone` / `ruined`, none of which any
-			# `HOSTILE_ELEMENTS` row names — so no spirit root can answer it. This branch
-			# exists so a fixture authored with an element tag lights up on its own; it
-			# is not credited a mitigation it did not earn.
-			return false
+			var element := _status_element(StringName(fixture.get("status_id", "")))
+			# An element-free status is hostile to no root, exactly as a kind with no
+			# `HOSTILE_ELEMENTS` row is: a trap that lands `env_scourge` has no affinity
+			# answer and is not credited one it did not earn.
+			return element != &"" and EnvironmentField.affinity_covers(actor, element)
 		EnvironmentField.LEVER_GEAR:
 			return not _tags(actor, EnvironmentField.GEAR_TAGS_KEY).is_empty()
 		EnvironmentField.LEVER_TECHNIQUE:
@@ -621,6 +1035,22 @@ static func _holds(actor: Actor, lever: StringName) -> bool:
 		EnvironmentField.LEVER_PILL:
 			return not _tags(actor, EnvironmentField.PILL_TAGS_KEY).is_empty()
 	return false
+
+
+## The element `status_id` rides, or `&""` for a def that rides none (or names one this
+## build does not ship).
+##
+## Read through `StatusApi` — the facade this file already preloads for `_settle` — so the
+## answer is the SAME def the trap will actually land, resolved from the same catalogue.
+## Parsing the `.tres` text here would be a second copy of the content tree, and a trap
+## whose status moved would keep resolving against the old file.
+static func _status_element(status_id: StringName) -> StringName:
+	if status_id == &"":
+		return &""
+	var def := StatusApi.definition(status_id) as StatusDef
+	if def == null:
+		return &""
+	return StringName(def.element)
 
 
 ## The share `lever` removes at full strength, straight out of `EnvironmentField`'s
@@ -666,6 +1096,12 @@ static func _record_of(raw: Dictionary) -> Dictionary:
 		"wrong": maxi(0, int(raw.get("wrong", 0))),
 		"complete": int(raw.get("complete", 0)) != 0,
 		"claimed": int(raw.get("claimed", 0)) != 0,
+		# The two fields the LORE currency writes (ADR 0216). Same ledger, same
+		# `_write`, same JSON round trip — normalised through `int()` / `String()` for
+		# the same reason the rest of this row is: a save has no bools and no
+		# int/float distinction.
+		"insight": maxi(0, int(raw.get("insight", 0))),
+		"lore_id": StringName(str(raw.get("lore_id", ""))),
 	}
 
 
@@ -707,6 +1143,17 @@ static func _payout_fields(payout: Dictionary) -> Dictionary:
 		"item_id": String(payout.get("item_id", "")),
 		"count": int(payout.get("count", 0)),
 		"leftover": int(payout.get("leftover", 0)),
+		# WHICH of ADR 0216's five currencies this was, named so a panel can render
+		# "you gained insight" against "you gained a relic" without re-deriving which
+		# fixture it came from. `equipment` is the default because a bare `true`
+		# payout that omits it would read as nothing at all.
+		"pays": String(payout.get("pays", PAY_EQUIPMENT)),
+		# The REALIZED object, when one was minted: the instance id is what a save
+		# and a reader both need, and a bare `inventory.add(def, count)` had none.
+		"instance_id": String(payout.get("instance_id", "")),
+		# The lore currency's own two fields. Empty on an equipment payout.
+		"lore_id": String(payout.get("lore_id", "")),
+		"insight": int(payout.get("insight", 0)),
 	}
 
 

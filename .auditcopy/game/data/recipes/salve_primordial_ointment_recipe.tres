@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"salve_primordial_ointment_recipe"
+display_name = "Primordial Ointment Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"herb_phoenix_feather", &"filament_chaosweave"])
+outputs = Array[StringName]([&"salve_primordial_ointment"])

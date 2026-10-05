@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"N5_mortal_ember_perfected"
+display_name = "Mortal Ember Perfected"
+category = &"consumable"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"tincture"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:N5_mortal_ember_perfected_recipe", &"domain:qi_earth_immortal_trial"])

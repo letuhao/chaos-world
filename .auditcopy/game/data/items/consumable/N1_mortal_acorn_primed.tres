@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"N1_mortal_acorn_primed"
+display_name = "Mortal Acorn Primed"
+category = &"consumable"
+rarity = &"common"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_physique", "value": 6.62},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"elixir"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:N1_mortal_acorn_primed_recipe", &"domain:orb_cinder_wyrm_domain"])

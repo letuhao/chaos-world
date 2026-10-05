@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"mind_dao_ancestor_warden_dao_ancestor_0"
+kind = &"item"
+item_id = &"A7_divine_apocrypha_refined"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"mind_dao_ancestor_warden_dao_ancestor_1"
+kind = &"item"
+item_id = &"D4_divine_fortune_charm"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"mind_dao_ancestor_warden_dao_ancestor_2"
+kind = &"item"
+item_id = &"Q3_divine_crook_chaff"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"mind_dao_ancestor_warden_dao_ancestor_3"
+kind = &"item"
+item_id = &"divine_nether_essence"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"mind_dao_ancestor_warden_dao_ancestor_4"
+kind = &"item"
+item_id = &"divine_netherbloom"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_mind_dao_ancestor_warden_pool_dao_ancestor"
+display_name = "Mind Dao Ancestor Warden salvage (dao_ancestor)"
+realm = &"dao_ancestor"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3"),
+	SubResource("entry_4")
+])

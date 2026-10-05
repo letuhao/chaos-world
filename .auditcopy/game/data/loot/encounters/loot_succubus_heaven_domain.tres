@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="LootEncounterDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_encounter_def.gd" id="1_encounter"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="tier_0"]
+script = ExtResource("2_tier")
+tier = 1
+label = "Gate"
+realm = &"foundation"
+rarity = &"common"
+vitality = 3300.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"succubus_heaven_guardian", "table_id": &"loot_succubus_heaven_guardian"},
+	{"boss_id": &"d5_heaven_bloom", "table_id": &"loot_d5_heaven_bloom"},
+])
+
+[sub_resource type="Resource" id="tier_1"]
+script = ExtResource("2_tier")
+tier = 2
+label = "Depths"
+realm = &"foundation"
+rarity = &"rare"
+vitality = 5280.
+boss_tables = Array[Dictionary]([
+	{"boss_id": &"succubus_heaven_guardian", "table_id": &"loot_succubus_heaven_guardian"},
+	{"boss_id": &"d5_heaven_bloom", "table_id": &"loot_d5_heaven_bloom"},
+])
+
+[resource]
+script = ExtResource("1_encounter")
+id = &"loot_succubus_heaven_domain"
+display_name = "Heaven Bloom Domain"
+domain_id = &"succubus_heaven_domain"
+boss_ids = Array[StringName]([&"succubus_heaven_guardian", &"d5_heaven_bloom"])
+key_reach = 0
+tiers = Array[LootTier]([
+	SubResource("tier_0"),
+	SubResource("tier_1")
+])

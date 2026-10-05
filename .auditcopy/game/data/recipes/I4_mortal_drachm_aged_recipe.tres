@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I4_mortal_drachm_aged_recipe"
+display_name = "Mortal Drachm Aged Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"I4_mortal_drachm_refined", &"mind_void_refinement_mind_herb", &"shard_river"])
+outputs = Array[StringName]([&"I4_mortal_drachm_aged"])

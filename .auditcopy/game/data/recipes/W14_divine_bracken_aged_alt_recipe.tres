@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"W14_divine_bracken_aged_alt_recipe"
+display_name = "Divine Bracken Aged (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"W14_divine_bracken_refined", &"divine_voidwyrm_hide", &"Q6_divine_daphne_dolmen"])
+outputs = Array[StringName]([&"W14_divine_bracken_aged"])

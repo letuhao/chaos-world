@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"G15_divine_glissade_fortune_move_speed"
+display_name = "Divine Glissade Fortune Move speed"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_fortune", "value": 36.58},
+	{"option_id": &"core_move_speed", "value": 0.052},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"ferment"
+grade = &"divine"
+sources = Array[StringName]([&"quest", &"domain:succubus_mortal_domain"])

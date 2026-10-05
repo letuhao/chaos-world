@@ -106,7 +106,7 @@ func test_a_learn_the_actor_cannot_afford_is_refused_by_name_and_writes_nothing(
 	var def := _technique()
 	# 40.0 against a 100.0 price: genuinely short, not short by an epsilon.
 	var actor := _hero(40.0)
-	var codex_before := TechniquesApi.technique_state(actor)
+	var codex_before := TechniquesApi.codex(actor).to_dict()
 
 	var refused := TechniquesApi.learn(actor, def)
 	assert_eq(bool(refused.get("ok")), false, "the learn is refused")
@@ -128,7 +128,7 @@ func test_a_learn_the_actor_cannot_afford_is_refused_by_name_and_writes_nothing(
 		actor.path(PathState.QI).progress, 40.0, "no progress was deducted on a refusal"
 	)
 	assert_eq(TechniquesApi.codex(actor).knows(def.id), false, "and nothing was learned")
-	assert_eq(TechniquesApi.technique_state(actor), codex_before, "the payload is byte-identical")
+	assert_eq(TechniquesApi.codex(actor).to_dict(), codex_before, "the payload is byte-identical")
 
 
 func test_a_refused_learn_leaves_the_gate_refusing_rather_than_half_paying() -> void:

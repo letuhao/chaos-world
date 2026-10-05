@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"J4_mortal_cloud_anointed"
+display_name = "Mortal Cloud Anointed"
+category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 10.08},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"broth"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:J4_mortal_cloud_anointed_recipe"])

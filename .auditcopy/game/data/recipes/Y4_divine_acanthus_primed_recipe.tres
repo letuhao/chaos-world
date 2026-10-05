@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Y4_divine_acanthus_primed_recipe"
+display_name = "Divine Acanthus Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Y4_divine_acanthus_aged", &"X22_divine_messor_slime", &"X22_divine_messor_spore", &"X21_divine_mesne_residue"])
+outputs = Array[StringName]([&"Y4_divine_acanthus_primed"])

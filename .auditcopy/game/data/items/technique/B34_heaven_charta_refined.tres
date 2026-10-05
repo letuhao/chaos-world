@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B34_heaven_charta_refined"
+display_name = "Heaven Charta Refined"
+category = &"consumable"
+rarity = &"rare"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_health", "value": 27.22},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"draft"
+grade = &"heaven"
+sources = Array[StringName]([&"craft:B34_heaven_charta_refined_recipe", &"domain:body_earth_immortal_trial"])

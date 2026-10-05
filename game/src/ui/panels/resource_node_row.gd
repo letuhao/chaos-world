@@ -14,10 +14,10 @@ extends PanelContainer
 ##
 ## ## It owns EVERY number on the row
 ##
-## `yield_per_period`, `upkeep_per_period`, `condition`, `depletion`, `claim_floor`
-## and `accrued` all arrive raw and are printed HERE, as AGENTS.md's UI standard
-## requires: "no number formatting in a screen — the panel owns `%d/%d`, decimals and
-## widths." The screen hands this row a primitives dictionary and formats nothing.
+## `yield_per_period`, `upkeep_per_period`, `condition`, `depletion`, `claim_floor`,
+## `meets_floor` and `accrued` all arrive raw and are printed HERE, as AGENTS.md's UI
+## standard requires: "no number formatting in a screen — the panel owns `%d/%d`, decimals
+## and widths." The screen hands this row a primitives dictionary and formats nothing.
 ##
 ## ## `{}` is the FIRST state, not a blank row
 ##
@@ -118,6 +118,10 @@ func summary() -> Dictionary:
 		"condition": int(_view.get("condition", 0)),
 		"depletion": int(_view.get("depletion", 0)),
 		"claim_floor": int(_view.get("claim_floor", 0)),
+		# ADR 0248: the gate the floor imposes, already evaluated against THIS hero's
+		# holding count. Published beside the floor it is read against so a row can say
+		# "not yet" rather than leaving a panel to re-derive the rule.
+		"meets_floor": bool(_view.get("meets_floor", false)),
 		"accrued": int(_view.get("accrued", 0)),
 		# The row's OWN sentences, so a test reads the rendered figure and not only
 		# the raw number behind it — which is the half of "the panel owns the format"

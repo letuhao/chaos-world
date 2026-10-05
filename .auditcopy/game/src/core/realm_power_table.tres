@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="RealmPowerTable" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/realm_power_table.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+multipliers = {
+&"qi_refining": 1.00,
+&"foundation": 1.12,
+&"core_formation": 1.25,
+&"nascent_soul": 1.40,
+&"spirit_transformation": 1.57,
+&"void_refinement": 1.76,
+&"body_integration": 1.97,
+&"great_ascension": 2.21,
+&"tribulation": 2.48,
+&"spirit_condensation": 3.03,
+&"spirit_sea": 3.70,
+&"spirit_palace": 4.51,
+&"spirit_manifestation": 5.50,
+&"spirit_severing": 6.71,
+&"spirit_unity": 8.19,
+&"spirit_domain": 9.99,
+&"spirit_sovereign": 12.19,
+&"spirit_ascension": 14.87,
+&"earth_immortal": 19.63,
+&"heaven_immortal": 25.91,
+&"golden_immortal": 34.20,
+&"mystic_immortal": 45.14,
+&"true_immortal": 59.58,
+&"primordial_immortal": 78.65,
+&"great_luo": 103.82,
+&"dao_fruit": 137.04,
+&"immortal_sovereign": 180.89,
+&"transcendent": 262.29,
+&"dao_ancestor": 380.32,
+&"primordial_origin": 551.46
+}

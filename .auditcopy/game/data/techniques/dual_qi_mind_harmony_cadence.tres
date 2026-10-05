@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"dual_qi_mind_harmony_cadence"
+delivered_by = &"treaty_seventh_clause"
+display_name = "Harmony Cadence"
+description = "A counting pattern that keeps the two halves from drifting apart over a long practice. Steadier qi control and slightly better dual-path progress; it is the only passive that pays qi control AND a dual-path rate."
+tags = Array[StringName]([&"passive", &"dual", &"qi_mind", &"harmony"])
+grade = &"earth"
+rarity = &"magic"
+element = &""
+schools = Array[StringName]([&"cultivation", &"dual"])
+active = false
+path = &"qi_cultivation+mind_cultivation"
+min_path_realm = {&"qi_cultivation": 19, &"mind_cultivation": 19}
+mastery_rungs = 5
+magnitude = 1.0
+passive_options = Array[Dictionary]([
+	{"option_id": &"cult_qi_control", "value": 6.0},
+	{"option_id": &"cult_dual_cultivation_rate", "value": 8.0},
+])
+

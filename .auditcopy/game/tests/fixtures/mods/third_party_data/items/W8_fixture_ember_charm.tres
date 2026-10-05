@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"W8_fixture_ember_charm"
+display_name = "Ember Charm"
+category = &"misc"
+rarity = &"common"
+realm = &"mortal"
+subcategory = &"token"
+grade = &"mortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 5},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
+sources = Array[StringName]([&"quest"])

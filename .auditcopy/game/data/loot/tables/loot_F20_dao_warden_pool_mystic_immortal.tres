@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"F20_dao_warden_mystic_immortal_0"
+kind = &"item"
+item_id = &"C30_heaven_orchard_testa"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"F20_dao_warden_mystic_immortal_1"
+kind = &"item"
+item_id = &"F53_heaven_hayward_dao_heart_insight_gain_penetration"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"F20_dao_warden_mystic_immortal_2"
+kind = &"item"
+item_id = &"T4_heaven_reedmace_cameo"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_F20_dao_warden_pool_mystic_immortal"
+display_name = "Dao Warden salvage (mystic_immortal)"
+realm = &"mystic_immortal"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2")
+])

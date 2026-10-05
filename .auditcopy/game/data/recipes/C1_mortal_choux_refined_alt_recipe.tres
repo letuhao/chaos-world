@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"C1_mortal_choux_refined_alt_recipe"
+display_name = "Mortal Choux Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"C1_mortal_choux_base", &"rune_cinder_ore", &"Z40_mortal_conglomerate_cippus"])
+outputs = Array[StringName]([&"C1_mortal_choux_refined"])

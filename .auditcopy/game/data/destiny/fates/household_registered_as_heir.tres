@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="FateDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/destiny/fate_def.gd" id="1_fate"]
+
+[resource]
+script = ExtResource("1_fate")
+id = &"household_registered_as_heir"
+display_name = "Registered as Heir"
+description = "Named in a household register with no living elder of that line. The sect countersigned it because a name in a register is cheaper than a succession dispute."
+category = &"blood"
+tier = 1
+visibility = &"revealed"
+counters = Array[StringName]([&"oaths_sworn"])
+tags = Array[StringName]([&"blood"])

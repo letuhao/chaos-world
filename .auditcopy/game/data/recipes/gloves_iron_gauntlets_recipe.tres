@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"gloves_iron_gauntlets_recipe"
+display_name = "Iron Gauntlets Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"gloves_iron_ore", &"gloves_boar_hide"])
+outputs = Array[StringName]([&"gloves_iron_gauntlets"])

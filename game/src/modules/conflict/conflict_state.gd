@@ -135,7 +135,13 @@ static func _normalize_row(row: Dictionary) -> Dictionary:
 		# The DECLARED prize, verbatim, and never recomputed for display or for payment.
 		"prize": _prize_out(prize as Dictionary),
 		"quota": quota,
-		"verdicts": maxi(0, int(row.get("verdicts", 0))),
+		# `verdicts`, like `quota`, is written with `maxi` NOT because it needs clamping —
+		# it does not — but because `maxi` takes a `Variant` and returns one, so a `0` written
+		# through it is a FLOAT the moment it lands in the dictionary. `int(...)` around it is
+		# what keeps an int an int, and an int is what makes `JSON.stringify` emit `0` rather
+		# than `0.0`. See `quota` above and ADR 0027: only the OUTER `module_data` key is
+		# converted on the way to a save, so a float down here survives into the file.
+		"verdicts": int(maxi(0, int(row.get("verdicts", 0)))),
 		"last_winner_id": String(row.get("last_winner_id", "")),
 		"resolved": (row.get("resolved", {}) as Dictionary).duplicate(true) if paid else {},
 	}

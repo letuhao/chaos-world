@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F43_earth_gibbet_cooldown_reduction_dao_heart_health_regen"
+display_name = "Earth Gibbet Cooldown reduction Dao heart Health regen"
+category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_severing"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cooldown_reduction", "value": 0.045},
+	{"option_id": &"core_dao_heart", "value": 18.98},
+	{"option_id": &"core_health_regen", "value": 18.98},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"manual"
+grade = &"earth"
+sources = Array[StringName]([&"gather", &"domain:qi_body_integration_domain"])

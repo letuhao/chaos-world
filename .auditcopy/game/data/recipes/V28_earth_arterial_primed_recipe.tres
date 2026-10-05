@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"V28_earth_arterial_primed_recipe"
+display_name = "Earth Arterial Primed Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"V28_earth_arterial_aged", &"dagger_night_hide", &"gloves_mithril_ore", &"orb_moon_ore"])
+outputs = Array[StringName]([&"V28_earth_arterial_primed"])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I55_mortal_goodwife_primed_recipe"
+display_name = "Mortal Goodwife Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I55_mortal_goodwife_aged", &"Z36_mortal_relict_hilum", &"C34_mortal_sealroom_castlet", &"W10_mortal_candelabrum_plumb"])
+outputs = Array[StringName]([&"I55_mortal_goodwife_primed"])

@@ -1,0 +1,77 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"eh1_pelt"
+kind = &"item"
+item_id = &"beast_venom_serpent_hide"
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = ""
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"eh1_salvage"
+kind = &"table"
+table_id = &"loot_ember_material_pool"
+weight = 3.0
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = ""
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"eh1_venom"
+kind = &"item"
+item_id = &"beast_venom_serpent_essence"
+weight = 1.0
+chance = 0.35
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
+
+[sub_resource type="Resource" id="entry_3"]
+script = ExtResource("2_entry")
+id = &"eh1_core"
+kind = &"item"
+item_id = &"beast_venom_serpent_core"
+weight = 1.0
+chance = 0.20
+guaranteed = false
+quantity = 1
+rarity_floor = &"magic"
+
+[sub_resource type="Resource" id="entry_4"]
+script = ExtResource("2_entry")
+id = &"ember_hound_t1_mortal_gear"
+kind = &"item"
+item_id = &"F14_mortal_ebb_agility_aptitude_crit_damage_qi_absorption"
+table_id = &""
+weight = 1.0
+chance = -1.0
+guaranteed = true
+quantity = 1
+rarity_floor = &""
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_ember_hound_t1"
+display_name = "Ember Vault Cinder Hound (Warded)"
+realm = &"spirit_severing"
+rarity = &"common"
+rolls = 1
+rolls_max = 2
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2"),
+	SubResource("entry_3"),
+	SubResource("entry_4")
+])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I15_spirit_eelgrass_perfected_recipe"
+display_name = "Spirit Eelgrass Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I15_spirit_eelgrass_primed", &"feather_falcon", &"herb_thunderleaf"])
+outputs = Array[StringName]([&"I15_spirit_eelgrass_perfected"])

@@ -296,6 +296,11 @@ static func view(actor: Actor, node_id: StringName) -> Dictionary:
 		"upkeep_per_period": 0,
 		"depletion": 0,
 		"claim_floor": 0,
+		# ADR 0248: whether this hero may claim the node at all, published beside the
+		# floor it is read against. `claim` answers `claim_below_floor` in prose, and a row
+		# that only learns the gate closed after the button was pressed is a control that
+		# was live and is now dead.
+		"meets_floor": false,
 		"item_id": authored,
 		# `known` is whether this build AUTHORS the node at all, which is a different
 		# question from whether the ledger has heard of it and a different one again
@@ -321,8 +326,14 @@ static func view(actor: Actor, node_id: StringName) -> Dictionary:
 		out["permits"] = actor != null and def.permits(actor.realm())
 	if actor == null:
 		return out
+	# Read ONCE: the custody fold below asks the ledger about every node, and a second
+	# walk for the floor would be a second copy of the same question.
 	var nodes: Dictionary = HoldingsApi.summary(actor).get("nodes", {}) as Dictionary
 	var entry: Dictionary = nodes.get(node_id_text, {}) as Dictionary
+	# ADR 0248's gate, asked against the hero's OWN rows and not against a ref field no
+	# producer fills. `vacant` and `held` are the two facts the count is made of, so the
+	# row reports a floor it has already evaluated rather than one a reader must infer.
+	out["meets_floor"] = (def != null and def.claim_floor <= _held_by(actor, nodes))
 	# The custody decision is the ledger's, read through the SAME [_holds] the verb
 	# compares against, so the row a panel shows and the refusal the verb returns
 	# cannot disagree about who the holder is.
@@ -369,6 +380,24 @@ static func _holds(actor: Actor, node_id: StringName, owner: Dictionary) -> Stri
 	if String(held.get("id", "")) != String(owner.get("id", "")):
 		return HoldingsState.HOLDER_MISMATCH
 	return ""
+
+
+## How many of `nodes`' rows this actor holds — ADR 0248's `claim_floor` figure.
+##
+## Counted here, in the READ MODEL, rather than published by `HoldingsApi`: the facade is
+## at its twelve-method cap, and a count a screen needs is a fold into `view()` rather than
+## a thirteenth verb. The terms are the ones `_holds` and `claim` already use — a row is
+## the hero's when `owner.id` is their id and the row is not the vacant marker — so the row
+## and the verb cannot disagree about whether the gate is open.
+static func _held_by(actor: Actor, nodes: Dictionary) -> int:
+	var held := 0
+	for row in nodes.values():
+		var owner: Dictionary = (row as Dictionary).get("owner", {}) as Dictionary
+		if OwnerRef.is_vacant(owner) or owner.is_empty():
+			continue
+		if String(owner.get("id", "")) == String(actor.id):
+			held += 1
+	return held
 
 
 ## The item id `node_id` yields, or `&""` when it yields nothing.

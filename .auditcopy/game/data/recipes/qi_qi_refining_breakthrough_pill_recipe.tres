@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"qi_qi_refining_breakthrough_pill_recipe"
+display_name = "Qi Qi Refining Breakthrough Pill Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"qi_qi_refining_guardian_core", &"qi_qi_refining_cultivation_herb"])
+outputs = Array[StringName]([&"qi_qi_refining_breakthrough_pill"])

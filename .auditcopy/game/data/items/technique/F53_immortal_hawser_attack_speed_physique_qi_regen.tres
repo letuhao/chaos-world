@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F53_immortal_hawser_attack_speed_physique_qi_regen"
+display_name = "Immortal Hawser Attack speed Physique Qi regen"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"immortal_sovereign"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_comprehension", "value": 34.65},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"treaty"
+grade = &"immortal"
+sources = Array[StringName]([&"gather", &"domain:qi_primordial_origin_trial"])

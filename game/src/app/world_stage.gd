@@ -55,6 +55,23 @@ extends RefCounted
 ## event module's own copy because `event` cannot depend on `world_spawn` (its
 ## declared deps are contracts/core/destiny/nation/npc/world), so this is the
 ## inversion ADR 0002 describes: the owner of the moment pushes, nobody polls.
+##
+## ## The reconcile is its OWN file, and this one DELEGATES it
+##
+## ADR 0170's reconcile concern — the two seams, the observation on arrival and the
+## epoch reader — lives in `world_stage_reconcile.gd`, beside this file and reached
+## through [WorldStageReconcile]. It was moved out whole, hazard prose and all, because
+## the seam stopped being a couple of injected callables and became a folded age per
+## place, which is state: `tools/arch/rules.py:239` says `app/` wires and does not own
+## it, and this file went over `gdlint`'s 1000-line cap and past the 400-line SRP
+## budget while holding it.
+##
+## `set_reconciler` / `has_reconciler` / `set_epoch_reader` / `has_epoch_reader` /
+## `place_state` / `place_epoch` keep working under their own names HERE, so a caller
+## cannot tell they moved — `item_workbench_app.gd:372-373` installs both seams exactly
+## where it always did. What this file keeps is the ARRIVAL, which is the only moment a
+## place changes and therefore the only place the fold may fire: `mount` and `enter` say
+## so by delegating, and nowhere else on this file does.
 
 ## Where an interactable row came from, so a panel can render it differently.
 const SOURCE_AUTHORED := "authored"
@@ -126,6 +143,12 @@ var _actor: Actor = null
 ## because the two ways this can fail are different: no seam installed is a wiring
 ## gap, while a named refusal is the event module saying `unknown_location`.
 var _published: Dictionary = {"ok": false, "reason": "not_published"}
+## ADR 0170's reconcile concern, as its own object: the two injected seams and this
+## stage's folded answer, reached through [WorldStageReconcile]. Built here rather than
+## on demand so every verb — `place_state`, `place_epoch`, `summary`, the arrival —
+## reads ONE answer for this stage, and so a stage that never reconciles still has the
+## epoch floor to answer with.
+var _reconcile: WorldStageReconcile = WorldStageReconcile.new()
 ## Every press this stage has ROUTED, oldest first and bounded by
 ## `MAX_INTERACTIONS_LOGGED`. Kept rather than a single last-answer so a probe can see
 ## that TWO presses produced TWO answers — the N-times symptom an unguarded
@@ -203,6 +226,47 @@ static func set_location_publisher(publisher: Callable) -> void:
 ## event module refused the place".
 static func has_location_publisher() -> bool:
 	return _location_publisher.is_valid()
+
+
+## Install the seam that folds a place's clock when somebody arrives (ADR 0170 (a)).
+## `app/` passes `Callable(WorldPulse, "observe_place")`, the callable being
+## `func(location_id: StringName) -> Dictionary`; passing a null `Callable` clears it.
+##
+## **This name is the one callers spell, and it is not the seam's home.** The contract —
+## installed at boot beside `set_location_publisher` rather than at the arrival, clearable
+## so an unwired boot reports `no_reconciler` instead of guessing around — belongs to
+## [WorldStageReconcile.set_reconciler], and so does the hazard its fold must never grow a
+## guard in front of.
+static func set_reconciler(reconciler: Callable) -> void:
+	WorldStageReconcile.set_reconciler(reconciler)
+
+
+## Install the seam that answers which epoch a place is LIVING (ADR 0170's overlay).
+## `app/` passes `Callable(WorldPulse, "place_state")`, the callable being
+## `func(location_id: StringName, occurrences: Array = []) -> Dictionary`.
+##
+## **A SEPARATE seam from the reconciler, and the reason is the two questions are
+## different.** `observe_place` MUTATES — it folds a clock and is a trigger, fired only
+## on arrival. `place_state` DERIVES — it is a READ, answerable at any moment for any
+## place. Firing the reader only on arrival is the half-built version of ADR 0170 (c) this
+## must not ship: a panel asking "what is this world NOW" about a place nobody is standing
+## in would get nothing at all, which is the deadlock in a read-only costume. The full
+## contract is [WorldStageReconcile.set_epoch_reader]'s.
+static func set_epoch_reader(reader: Callable) -> void:
+	WorldStageReconcile.set_epoch_reader(reader)
+
+
+## Whether a place's clock has an owner at all. Published on `summary()` so a probe
+## can tell the missing seam from a seam that answered.
+static func has_reconciler() -> bool:
+	return WorldStageReconcile.has_reconciler()
+
+
+## Whether the epoch overlay has a reader. Published on `summary()` for the same reason
+## `has_reconciler` is: "the world resolves to epoch 1 because nothing retired it" and
+## "nothing can answer" must not be the same reading.
+static func has_epoch_reader() -> bool:
+	return WorldStageReconcile.has_epoch_reader()
 
 
 ## The stage `app/` installed, or null. A consumer that only has a location id
@@ -421,6 +485,13 @@ func mount(
 	# on this very mount, so publishing after `_rebuild_rows` would report an
 	# interactable list built against a stale location.
 	_published = _publish_location(actor, location_id)
+	# The same fold, on the same moment, for the same reason: arriving somewhere is the
+	# observation ADR 0170 trigger (a) names, and the place's clock is what has to move
+	# when a player walks into a district that has been standing still. Unconditional —
+	# `WorldStageReconcile.observe_place` names the ADR 0173 (c) hazard its own guard could
+	# reintroduce, so this line asks nothing of the place and fires the fold either way.
+	_reconcile.stand_at(location_id, actor)
+	_reconcile.observe_place(location_id)
 	_current = self
 	_mounted_player = player
 	_player.set_map_bounds(_bounds)
@@ -442,6 +513,14 @@ func mount(
 		"interactable_count": _interactables.size(),
 		"world_told": _published["ok"],
 		"world_told_reason": String(_published.get("reason", "")),
+		# The place's AGE, so an arrival can report how far behind the world was here
+		# rather than only that a fold happened. `reconciled_periods` is the whole span
+		# this arrival paid for; `place_periods` is the place's folded age afterward, which
+		# is what a panel prints as the place's date (ADR 0170's read model).
+		"reconciled": _reconcile.reconciled()["ok"],
+		"reconciled_reason": String(_reconcile.reconciled().get("reason", "")),
+		"reconciled_periods": int(_reconcile.reconciled().get("elapsed_periods", 0)),
+		"place_periods": int(_reconcile.reconciled().get("folded_periods", 0)),
 	}
 
 
@@ -493,6 +572,12 @@ func enter(actor: Actor) -> Dictionary:
 	# headless half of a mount and a caller driving the game with no scene tree
 	# must reach exactly the same events as one with a body.
 	_published = _publish_location(actor, _location_id)
+	# And the reconcile, on the same argument as the publish above: `enter` is the
+	# headless half of a mount, so a caller driving the game with no scene tree must age
+	# the place exactly as one with a body does. A headless run that never folds is how
+	# ADR 0170's trigger (a) would read as inert in every test that uses this door.
+	_reconcile.stand_at(_location_id, actor)
+	_reconcile.observe_place(_location_id)
 	_rebuild_rows()
 	return {
 		"ok": true,
@@ -503,6 +588,13 @@ func enter(actor: Actor) -> Dictionary:
 		"interactable_count": _interactables.size(),
 		"world_told": _published["ok"],
 		"world_told_reason": String(_published.get("reason", "")),
+		# Same age keys `mount` returns, for the same reason: `enter` answers the same
+		# question a mount answers, and a headless caller reading only `enter` must still
+		# be able to say how old the place it arrived at is.
+		"reconciled": _reconcile.reconciled()["ok"],
+		"reconciled_reason": String(_reconcile.reconciled().get("reason", "")),
+		"reconciled_periods": int(_reconcile.reconciled().get("elapsed_periods", 0)),
+		"place_periods": int(_reconcile.reconciled().get("folded_periods", 0)),
 	}
 
 
@@ -522,10 +614,40 @@ func leave() -> Dictionary:
 	_actor = null
 	_location_id = &""
 	_bounds = DEFAULT_BOUNDS
+	# The reconcile answer goes with the place, for the reason the press log does: it
+	# belongs to the actor that stood HERE, and a stage carrying a REBORN hero's fold
+	# would report an age for a place it is no longer standing in. The STAMP itself is
+	# not undone — `WorldPulse` owns it and it is monotone — so the next arrival reads
+	# how far behind the world really is rather than folding the span a second time.
+	_reconcile.forget()
 	if _current == self:
 		_current = null
 		_mounted_player = null
 	return {"ok": true, "reason": "", "location_id": was, "interactable_count": 0}
+
+
+## ## THE EPOCH READER — what this place IS NOW, not what is standing in it
+##
+## Delegates to [WorldStageReconcile.place_state], which holds the reader seam, the
+## ledger read and the epoch floor. The name, the default argument and the answer are
+## unchanged; only the file that computes them moved. Read about [method place_epoch]
+## and [method summary] for why it is a seam at all.
+func place_state(occurrences: Array = []) -> Dictionary:
+	return _reconcile.place_state(occurrences)
+
+
+## The epoch this place is living, as a primitive. Separate from [method place_state]
+## because "which history is this world living" is answerable without any occurrence, and
+## [method summary] is primitives all the way down (ADR 0038's contract).
+##
+## **The floor is spelled HERE rather than moved with the reader.** [method place_state]
+## delegates to [WorldStageReconcile] and so the reader, the ledger read and the seam all
+## live there, but `summary()` is THIS file's read model and `WorldEpoch.FIRST` is the
+## figure a panel prints for a world nobody has rebuilt — so the stage keeps naming the
+## constant it guarantees. `test_reconcile_reachability.gd:174` pins exactly this: the
+## stage reads the epoch through `WorldEpoch`, not through whatever the reader returns.
+func place_epoch() -> int:
+	return int(place_state().get("epoch", WorldEpoch.FIRST))
 
 
 ## Declare that `npc` is standing in this stage.
@@ -571,7 +693,7 @@ func interactables() -> Array[Dictionary]:
 ## `no_handler` refusal leaves behind, so the presence of a press is told from the
 ## COUNT and not from the key.
 func summary() -> Dictionary:
-	return {
+	var answer := {
 		"mounted": _player != null,
 		"has_actor": _actor != null,
 		"actor_id": "" if _actor == null else String(_actor.id),
@@ -597,6 +719,15 @@ func summary() -> Dictionary:
 		"last_interaction_reason": String(_last_row().get("reason", "")),
 		"last_interaction_count": _interactions.size(),
 	}
+	# ## The reconcile seam's own health, this place's age through it, and the DERIVED
+	# state under the epoch overlay — MERGED rather than written inline, for the reason
+	# [WorldStageReconcile.summary] names: one place builds those eight keys, so the read
+	# model cannot carry seven of them without the eighth, and a future key lands beside
+	# the concern that owns it. They are FLATTENED there, not nested, for the reason
+	# ADR 0038's contract gives: a panel reads this dictionary, and a nested one is read
+	# as `null`.
+	answer.merge(_reconcile.summary())
+	return answer
 
 
 ## The last routed press, or `{}`. Internal, so [method summary] can flatten it

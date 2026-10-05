@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"R15_immortal_mullein_perfected_recipe"
+display_name = "Immortal Mullein Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"R15_immortal_mullein_primed", &"panacea_dawnstone_ore", &"mind_earth_immortal_mind_herb"])
+outputs = Array[StringName]([&"R15_immortal_mullein_perfected"])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"M18_heaven_rill_refined_alt_recipe"
+display_name = "M18 Heaven Rill Refined Alt Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"M18_heaven_rill_base", &"X25_heaven_ordinance_pulp", &"orb_flame_ore"])
+outputs = Array[StringName]([&"M18_heaven_rill_refined"])

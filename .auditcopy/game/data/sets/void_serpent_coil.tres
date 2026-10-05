@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="SetDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/set_bonus/set_def.gd" id="1_set"]
+
+[resource]
+script = ExtResource("1_set")
+id = &"void_serpent_coil"
+display_name = "Void Serpent Coil"
+description = "An immortal-band coil wound from void iron. The set's cutting bonus belongs to the coil, so unwinding one member never removes it. Six members are authored but a body has five places to wear them: the two weapon members compete for one, so five is a full set."
+realm = &"mystic_immortal"
+rarity = &"legendary"
+counting = &"distinct_definition"
+pieces = Array[StringName]([&"set_void_coil_sigil", &"set_void_coil_ring", &"set_void_coil_hides", &"set_void_coil_anchor", &"set_void_coil_fang"])
+uniques = Array[StringName]([&"unique_void_coil_coiled_heart"])
+tiers = Array[Dictionary]([
+	{"count": 2, "label": "Coil Closed", "options": [{"option_id": &"core_defense_physical", "value": 12.0}, {"option_id": &"core_status_resistance", "value": 0.02}]},
+	{"count": 3, "label": "Coil Wound", "options": [{"option_id": &"core_attack_physical", "value": 16.0}, {"option_id": &"core_crit_chance", "value": 0.03}]},
+	{"count": 4, "label": "Coil Reversed", "options": [{"option_id": &"core_penetration", "value": 20.0}, {"option_id": &"core_damage_reduction", "value": 0.05}, {"option_id": &"core_attack_speed", "value": 0.05}]},
+	{"count": 5, "label": "Coil Sealed", "options": [{"option_id": &"core_attack_physical", "value": 26.0}, {"option_id": &"core_damage_reduction", "value": 0.05}, {"option_id": &"core_max_health", "value": 40.0}]},
+])

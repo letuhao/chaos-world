@@ -11,20 +11,50 @@ extends DamageMechanism
 ## m_0      = magnitude * (1 - share)        (raw share -- THIS IS THE FLOOR)
 ## a_0      = attacker ATTACK_SPIRITUAL
 ## a_e      = attacker element_power_<e>
-## resist   = clampf(defender element_resistance_<e>/RESIST_DIVISOR - mastery_pen, 0, RESIST_CAP)
-## mit      = 1 - resist
+## D        = defender element_defense_<e> / resist_divisor      (a MAGNITUDE, not a percent)
+## D_eff    = D * 1 / (1 + max(0, mastery_pen) / pierce_scale)   (bounded in (0, 1])
+## K        = defense_divisor_k * a_e        (scales with the ATTACKER)
+## m_rate   = mitigation_ceiling * D_eff / (K + D_eff)   for D_eff >= 0   -- NEVER a clamp
+## m_rate   = mitigation_ceiling * (2 - K / (K + |D_eff|))   for D_eff < 0  (the mirror)
+## mit      = 1 - m_rate
 ## match    = rules.multiplier(attacker_element, defender_element)
 ## t_e      = m_e * a_e * match * mit
 ## t_0      = m_0 * a_0
 ## total    = (t_0 + t_e) * (1 - clampf(defender DAMAGE_REDUCTION, 0, CAP))
 ## ```
 ##
+## ## `mitigation_ceiling` is a MULTIPLIER, and that is the load-bearing word
+##
+## `mitigation_ceiling * D/(K+D)` approaches `0.95` and NEVER reaches it, so every further
+## point of `element_defense_<e>` still raises the mitigation. The shape this replaced --
+## `clampf(D/divisor - pen, 0, RESIST_CAP)` -- is the same dead stat one number higher: at
+## the cap the defender is finished, and the cap was `RESIST_CAP = 0.75` at every realm
+## while the attacker's power rode a 551x ladder. So `RESIST_CAP` is deleted rather than
+## re-tuned, and `minf(0.95, D/(K+D))` must never be reintroduced here.
+##
+## ## NEGATIVE defense MIRRORS rather than clamping
+##
+## `mitigation_ceiling * (2 - K/(K + |D|))` for `D < 0`. Both branches give exactly
+## `mitigation_ceiling` at `D == 0`, so the function is CONTINUOUS there, and `m` rises
+## above the ceiling as `D` goes negative: a body cultivator under a defence debuff is a
+## genuine GLASS CANNON and deals MORE than an undefended one. Omitting this branch is how
+## a glass cannon silently exceeds its own ceiling while every test still passes.
+##
+## ## PENETRATION is a bounded reciprocal ON `D`, never a subtraction from the damage
+##
+## `D * 1/(1 + pen/pierce_scale)` is in `(0, 1]`, so penetration can push defense
+## arbitrarily close to zero and can never grant NEGATIVE defense -- which would be a
+## second damage source wearing a defender's name. The old form subtracted penetration
+## from the RESISTANCE, and `body_damage.gd` subtracted it from the GROSS; the ADR says
+## the second is dimensionally wrong, because penetration is a share of a defender's armor
+## and not hit points off a blow.
+##
 ## ## `match` sits BETWEEN the elemental magnitude and mitigation
 ##
-## Resistance is applied to the elemental term AFTER the matchup has been read, so
-## a defender at `RESIST_CAP` is a hard counter even to a `STRONG` 1.5. That is the
-## anti-"fire is always strong" property: the rule scales the ATTACKER's element, and
-## the defender's build answers it. Two rejections, from the ADR:
+## Mitigation is applied to the elemental term AFTER the matchup has been read, so
+## a defender with deep `element_defense_<e>` is a hard counter even to a `STRONG` 1.5.
+## That is the anti-"fire is always strong" property: the rule scales the ATTACKER's
+## element, and the defender's build answers it. Two rejections, from the ADR:
 ##
 ## - Applying the matchup to the WHOLE sum guts `m_0` and punishes a realm-scaled
 ##   magnitude with a vocabulary rule. `tests/modules/combat_engine/test_qi_damage.gd`
@@ -57,7 +87,7 @@ extends DamageMechanism
 ## of the `elements` module at all -- not `ElementRules`, not `ElementStats` -- so
 ## `tools/arch/registry.json` keeps `combat_engine` at `["contracts", "core"]` and the
 ## registry does not have to lie about an edge that exists only in prose. The
-## `element_power_` / `element_resistance_` id PREFIXES are authored on `CombatTuning`
+## `element_power_` / `element_defense_` id PREFIXES are authored on `CombatTuning`
 ## (BRIEF 1.7: tuning in DATA), which is the one honest way to name another module's
 ## stat ids without naming its types.
 ##
@@ -72,22 +102,28 @@ extends DamageMechanism
 ##
 ## ## The holes the ADR's own arithmetic leaves, and what is done about them
 ##
-## Four, all in [method breakdown] / [method _resistance_of], each closed without
-## inventing a new constant and each asserted in this module's suite:
+## Five, all in [method breakdown] / [method _defense_of] / [method _mitigation_of],
+## each closed without inventing a new constant and each asserted in this module's suite.
+## ADR 0200 REPLACED hole 2 outright, and the replacement introduces one of its own:
 ##
-## 1. **`RESIST_DIVISOR = 0` divides by zero.** A bare `CombatTuning.new()` (or an
+## 1. **`resist_divisor == 0` divides by zero.** A bare `CombatTuning.new()` (or an
 ##    author who forgot the `.tres`) would read `0.0 / 0.0 == NaN` and NaN survives
 ##    every clamp. A non-positive or non-finite divisor means the contest has no
-##    scale, so resistance reads 0.0 — the same shape `CombatBand.rate` gives a null
-##    tuning.
-## 2. **`RESIST_CAP > 1` makes the amount NEGATIVE.** `mit = 1 - resist` goes below
-##    zero, the elemental term goes negative, and S9's single sign flip spends it as a
-##    HEAL. `mitigation` is clamped to `[0, 1]`, and `resist_cap` is read clamped to
-##    `[0, 1]`, because a mitigation above 100% has no meaning.
+##    scale, so the defense MAGNITUDE reads 0.0 — the same shape `CombatBand.rate` gives
+##    a null tuning.
+## 2. **(RETIRED) `RESIST_CAP > 1` made the amount NEGATIVE.** ADR 0200 deletes
+##    `RESIST_CAP`; there is no cap on an input to be greedy about. What replaces it is
+##    `mitigation_ceiling` above `1.0`, which is read clamped to `[0, 1]` — a mitigation
+##    above 100% has no meaning and `mit = 1 - m` would go negative, the elemental term
+##    with it, and S9's single sign flip would spend it as a HEAL.
 ## 3. **`DAMAGE_REDUCTION_CAP > 1` does the same to the total.** Clamped the same way.
 ## 4. **`element_share` out of `[0, 1]`** makes `m_0` negative. Clamped. `NaN` in the
 ##    authored share fails the `<= 0.0` test an ordinary comparison would reject, so it
 ##    is caught by [method _finite] first and falls back to the tuning default.
+## 5. **`K + D == 0` divides by zero** — the new denominator. `K` is non-negative and
+##    `|D|` is taken on the mirror branch, so the only way to reach it is a `0.0`
+##    offense against a `0.0` defense, i.e. no contest at all. It reads `0.0`
+##    mitigation, which is "nothing is mitigated", rather than dividing.
 ##
 ## One thing this file does NOT fix, because fixing it would need a decision the ADR
 ## has not made: at `element_share == 1.0` there is no raw share left, so an attacker
@@ -155,8 +191,13 @@ func mitigate(ctx: AttackContext, proposal: DamageProposal) -> DamageProposal:
 ## a `summary()` payload, never an engine object or a module type).
 ##
 ## `{element, share, magnitude, raw, elemental_power, matchup, defender_element,
-## resistance, penetration, mitigation, raw_term, elemental_term, subtotal,
-## damage_reduction, mitigated, total, rules_bound}`.
+## defense, defense_effective, divisor_k, mitigation_rate, penetration, mitigation,
+## raw_term, elemental_term, subtotal, damage_reduction, mitigated, total, rules_bound}`.
+##
+## `resistance` is GONE and is not spelled by a second key: it named a PERCENT, and the
+## percent is now an OUTPUT of the ratio. `defense` is `D`, `defense_effective` is `D_eff`
+## after penetration, `divisor_k` is `K` and `mitigation_rate` is `m` — so a panel can
+## show which of the four moved rather than only the difference between two rows.
 ##
 ## `subtotal` is what S4 returned and `total` is what S5 returned, so a panel can show
 ## the reduction line as the difference between two rows rather than recomputing it.
@@ -170,17 +211,22 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 	var share := 0.0 if element == &"" else _share_of(ctx, tuning)
 	var magnitude := maxf(0.0, _finite(ctx.magnitude))
 	var matchup := _matchup_of(ctx, element)
-	var resistance := _resistance_of(ctx, tuning, element)
-	# Clamped to [0, 1]: a `RESIST_CAP` above 1.0 would make `mitigation` negative and
-	# the elemental term with it, and S9's one sign flip would spend that as a heal.
-	var mitigation := clampf(1.0 - resistance, 0.0, 1.0)
-	var penetration := _penetration_of(ctx)
 	var raw_attack := _finite(ctx.attacker_value(Stat.ATTACK_SPIRITUAL))
 	var elemental_power := _element_power_of(ctx, tuning, element)
+	var defense := _defense_of(ctx, tuning, element)
+	var defense_effective := _pierced_defense(defense, _penetration_of(ctx), tuning)
+	var divisor_k := maxf(0.0, _finite(tuning.defense_divisor_k) * elemental_power)
+	var mitigation_rate := _mitigation_of(defense_effective, divisor_k, tuning)
+	# Clamped to [0, 1]: a `mitigation_ceiling` above 1.0 would make `mitigation` negative
+	# and the elemental term with it, and S9's one sign flip would spend that as a heal.
+	# The CEILING is clamped; the CURVE is not, and `mitigation_rate` above is the
+	# unclamped reading a panel or a test asserts against.
+	var mitigation := clampf(1.0 - mitigation_rate, 0.0, 1.0)
+	var penetration := _penetration_of(ctx)
 	var reduction := clampf(_finite(ctx.target_value(Stat.DAMAGE_REDUCTION)), 0.0, 1.0)
 	var cap := clampf(_finite(tuning.damage_reduction_cap), 0.0, 1.0)
 	var mitigated := clampf(1.0 - minf(reduction, cap), 0.0, 1.0)
-	# `t_0` takes NEITHER the matchup NOR the resistance NOR the reduction's own
+	# `t_0` takes NEITHER the matchup NOR the defense NOR the reduction's own
 	# element lever: it is the floor, and ADR 0069's whole rejection of a separate
 	# floor constant is that there is nothing below it to be pushed under.
 	var raw_term := _finite(magnitude * (1.0 - share) * raw_attack)
@@ -194,7 +240,10 @@ func breakdown(ctx: AttackContext) -> Dictionary:
 		"elemental_power": elemental_power,
 		"matchup": matchup,
 		"defender_element": String(_defender_element_of(ctx)),
-		"resistance": resistance,
+		"defense": defense,
+		"defense_effective": defense_effective,
+		"divisor_k": divisor_k,
+		"mitigation_rate": mitigation_rate,
 		"penetration": penetration,
 		"mitigation": mitigation,
 		"raw_attack": raw_attack,
@@ -342,33 +391,100 @@ func _defender_element_of(ctx: AttackContext) -> StringName:
 	return best
 
 
-## `clampf(defender element_resistance_<e> / RESIST_DIVISOR - mastery_pen, 0, RESIST_CAP)`.
+## ADR 0200's `D`: the defender's authored `element_defense_<e>`, a MAGNITUDE in points
+## rather than the `[0, 1]` PERCENT this used to read.
 ##
-## The penetration is subtracted BEFORE the clamp, so mastery can only ever move
-## resistance DOWN and can never amplify a hit past `RESIST_CAP` (ADR 0069). It is read
-## from `CombatStats.PENETRATION`, the combat-owned channel ADR 0068 defines as exactly
-## this lever ("how hard the attacker cuts the defender's guard, a read-only input to a
-## mechanism's mitigate"), in the same `[0, 1]` space as `resist`. `element_mastery_<e>`
-## itself is an input to the attacker's `element_power_<e>` inside `ElementProvider`, so
-## mastery moves the elemental term from both ends and this term from neither.
+## It is divided by `CombatTuning.resist_divisor` only to share a magnitude space with the
+## attacker's `element_power_<e>` — NOT to become a fraction, and that is the whole
+## difference between the two regimes. A constant divisor meeting two growing numbers is
+## the defect that made mitigation collapse to zero at depth; here `D` only ever meets a
+## `K` that rides the attacker's own ladder, so the mitigated FRACTION is scale-invariant.
 ##
-## A non-positive or non-finite divisor reads as 0.0 rather than dividing: see the
-## first hole in the module docblock.
-func _resistance_of(ctx: AttackContext, tuning: CombatTuning, element: StringName) -> float:
+## A non-positive or non-finite divisor reads as `0.0` rather than dividing — hole 1 in
+## the module docblock.
+##
+## The SIGN is preserved deliberately. `ElementProvider` publishes `maxf(0.0, ...)` so no
+## shipped actor carries a negative today, but a defence DEBUFF is the case ADR 0200 names
+## and a `maxf(0.0, ...)` here would erase it before the mirror branch ever saw it.
+func _defense_of(ctx: AttackContext, tuning: CombatTuning, element: StringName) -> float:
 	if element == &"":
 		return 0.0
 	var divisor := _finite(tuning.resist_divisor)
-	var raw := 0.0
-	if divisor > 0.0:
-		raw = _finite(ctx.target_value(_suffixed(tuning.resist_resistance_prefix, element)))
-		var penalty := _penetration_of(ctx)
-		raw = clampf(raw / divisor - penalty, 0.0, clampf(_finite(tuning.resist_cap), 0.0, 1.0))
-	return raw
+	if divisor <= 0.0:
+		return 0.0
+	return _finite(ctx.target_value(_suffixed(tuning.resist_resistance_prefix, element))) / divisor
 
 
-## The attacker's penetration against this element's resistance, in resist's own
-## `[0, 1]` space. Zero when nothing was authored, and never negative: a negative
-## penetration would be a resistance BONUS wearing an attacker's name.
+## ADR 0200's penetration, as a bounded reciprocal ON THE DEFENSE VALUE:
+## `D_eff = D * 1 / (1 + max(0, pen) / pierce_scale)`.
+##
+## ## Why this and not a subtraction from the DAMAGE
+##
+## `body_damage.gd` used to subtract penetration from the gross, which ADR 0200 calls out
+## by name as dimensionally wrong: penetration is a share of a defender's ARMOUR, so
+## subtracting hit points off a blow made a deep defender's penetration scale with how
+## hard they were hit rather than with how well they were guarded. Here it scales the
+## DEFENSE, which is the quantity it means.
+##
+## ## Why it can never go NEGATIVE
+##
+## The reciprocal is in `(0, 1]` for every finite `pen >= 0`, so `D_eff` keeps `D`'s sign
+## and shrinks toward zero WITHOUT crossing it — bounded, as the ADR requires, and never a
+## second damage source wearing a defender's name.
+##
+## It is read from `CombatStats.PENETRATION`, the combat-owned channel ADR 0068 defines as
+## exactly this lever ("how hard the attacker cuts the defender's guard, a read-only input
+## to a mechanism's mitigate"). A non-positive or non-finite `pierce_scale` reads as
+## "penetration does nothing", never as a division.
+static func _pierced_defense(defense: float, penetration: float, tuning: CombatTuning) -> float:
+	var scale := _finite(tuning.pierce_scale)
+	if scale <= 0.0:
+		return defense
+	var pen := maxf(0.0, _finite(penetration))
+	return _finite(defense / (1.0 + pen / scale))
+
+
+## ADR 0200's mitigation curve:
+##
+## ```
+## m = mitigation_ceiling * D / (K + D)                 for D >= 0
+## m = mitigation_ceiling * (2 - K / (K + |D|))        for D <  0
+## ```
+##
+## Three properties, each load-bearing and each asserted BY MEASUREMENT rather than by a
+## value check:
+##
+## 1. **Scale-invariant.** `K = defense_divisor_k * offense` grows with the ATTACKER, so
+##    doubling offense and defense together doubles `K` and leaves the mitigated FRACTION
+##    unchanged. A constant divisor meeting two growing numbers cannot do this.
+## 2. **Asymptotic, and the ceiling is a MULTIPLIER not a clamp.** `m` approaches
+##    `mitigation_ceiling` and never reaches it, so every further point of defense still
+##    pays. `minf(ceiling, D/(K+D))` would be the same dead stat one number higher, which
+##    is the precise failure ADR 0200 exists to remove.
+## 3. **The mirror branch is what makes a glass cannon work.** For `D < 0` the curve goes
+##    ABOVE the ceiling and `mit = 1 - m` goes negative, so a defender under a defence
+##    debuff takes strictly MORE than an undefended one. Both branches give exactly
+##    `mitigation_ceiling` at `D == 0`, so the function is CONTINUOUS there — and that
+##    agreement is the assertion which catches a missing or mis-signed branch.
+##
+## `K + |D| == 0` (hole 5) reads `0.0` mitigation: no contest, never a division.
+static func _mitigation_of(defense: float, divisor_k: float, tuning: CombatTuning) -> float:
+	var ceiling := clampf(_finite(tuning.mitigation_ceiling), 0.0, 1.0)
+	if ceiling <= 0.0:
+		return 0.0
+	var k := maxf(0.0, _finite(divisor_k))
+	var magnitude := absf(_finite(defense))
+	var denominator := k + magnitude
+	if denominator <= 0.0:
+		return 0.0
+	var share := magnitude / denominator if defense >= 0.0 else 2.0 - k / denominator
+	return _finite(ceiling * share)
+
+
+## The attacker's penetration against this element's DEFENSE, as a magnitude on
+## `CombatTuning.pierce_scale`'s own scale rather than in the old resistance's `[0, 1]`
+## space. Zero when nothing was authored, and never negative: a negative penetration
+## would be a defence BONUS wearing an attacker's name.
 func _penetration_of(ctx: AttackContext) -> float:
 	var id := CombatStats.PENETRATION
 	return maxf(0.0, CombatStats.default_of(id) + _finite(ctx.attacker_value(id)))
@@ -447,7 +563,10 @@ static func _empty_parts() -> Dictionary:
 		"elemental_power": 0.0,
 		"matchup": NEUTRAL,
 		"defender_element": "",
-		"resistance": 0.0,
+		"defense": 0.0,
+		"defense_effective": 0.0,
+		"divisor_k": 0.0,
+		"mitigation_rate": 0.0,
 		"penetration": 0.0,
 		"mitigation": 1.0,
 		"raw_attack": 0.0,

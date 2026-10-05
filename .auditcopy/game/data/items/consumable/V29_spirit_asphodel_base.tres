@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"V29_spirit_asphodel_base"
+display_name = "Spirit Asphodel Base"
+category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_sea"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_breakthrough_chance", "value": 0.03},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
+subcategory = &"ferment"
+grade = &"spirit"
+sources = Array[StringName]([&"craft:V29_spirit_asphodel_base_recipe"])

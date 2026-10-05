@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="NpcDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/npc/npc_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+npc_id = &"drifter"
+display_name = "A Drifter"
+inhabitant_id = &"azure_disciple"
+tier = &"transient"
+faction = &""
+tags = Array[StringName]([&"wanderer", &"opportunist"])
+realm_id = &"qi_refining"
+base = {"physique": 10.0, "spirit": 10.0}
+stages = Array[NpcStageDef]([])
+initial_stage = &""

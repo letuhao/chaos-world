@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ResourceNodeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/holdings/resource_node_def.gd" id="1_node"]
+
+[resource]
+script = ExtResource("1_node")
+node_id = &"heaven_immortal_primordial_timber"
+display_name = "Primordial Timber"
+kind = &"timber"
+realm = &"heaven_immortal"
+yield_per_period = 12
+upkeep_per_period = 9
+claim_cost = {"tribute": 5}
+depletion = 0
+claim_floor = 60

@@ -175,15 +175,34 @@ func _recompute() -> void:
 	# qi numbers by `0.6 x will x realm power`. Every actor with `will == 0` is
 	# bit-for-bit unchanged, which is every fixture that pins this stat's value.
 	_put(Stat.ATTACK_SPIRITUAL, spirit * 2.0 + aptitude * 0.5 + will * 0.6, buckets)
-	_put(Stat.CRIT_CHANCE, minf(0.75, 0.05 + fortune * 0.002 + agility * 0.0005), buckets)
+	# ADR 0200: `CRIT_CHANCE`'s `minf(0.75, …)` is DELETED. A cap on an INPUT is the defect
+	# the ADR exists to remove — 0.75 made crit a solved fraction past R3 — and the load
+	# bearing distinction is not "percent" but "which axis": this is a RATE contest, and
+	# AGENTS.md's rule is that a rate must never track a magnitude. It is deliberately NOT
+	# re-tuned here either: ADR 0215 decides what a rate contest reads, and this change
+	# must not collide with it. Until then the channel is simply unbounded, which is
+	# strictly better than a ceiling a player can reach.
+	_put(Stat.CRIT_CHANCE, 0.05 + fortune * 0.002 + agility * 0.0005, buckets)
 	_put(Stat.CRIT_DAMAGE, 1.5 + comprehension * 0.004, buckets)
 	_put(Stat.PENETRATION, spirit * 0.5, buckets)
+	# `ATTACK_SPEED` is one of the three caps ADR 0200 DELIBERATELY KEEPS. See below.
 	_put(Stat.ATTACK_SPEED, minf(2.5, 1.0 + agility * 0.008), buckets)
 	_put(Stat.DEFENSE_PHYSICAL, physique * 1.5, buckets)
 	_put(Stat.DEFENSE_SPIRITUAL, spirit * 1.2 + will * 0.6, buckets)
-	_put(Stat.EVASION, minf(0.6, agility * 0.0015), buckets)
+	# ADR 0200: `EVASION`'s `minf(0.6, …)` is DELETED, same reason as CRIT_CHANCE above.
+	# The comment on `_crit` in `spine.gd` and the S2 docblock both quote this cap, so both
+	# are corrected in the same change rather than left asserting a number that no longer
+	# exists.
+	_put(Stat.EVASION, agility * 0.0015, buckets)
 	_put(Stat.POISE, physique * 0.5 + will * 0.5, buckets)
-	_put(Stat.STATUS_RESISTANCE, minf(0.8, will * 0.003), buckets)
+	# ADR 0200: `STATUS_RESISTANCE` was `minf(0.8, will * 0.003)` and the cap needed
+	# `will >= 250` against an authored `base_will` topping out at 54.9 (DEF-0262) — so it
+	# was a dead stat at every realm a player could actually reach, and `0.8` was the only
+	# number a designer could read. It is now `STATUS_DEFENSE`: the SAME authored
+	# coefficient, unbounded, and it is the `D` of ADR 0200's ratio rather than a percent.
+	# The value at a race's own `will == 2.0` is therefore still `0.006` at R1, and the
+	# id is on `RealmScaling.SCALED_STATS` so it climbs with the ladder from there.
+	_put(Stat.STATUS_DEFENSE, will * 0.003, buckets)
 	_put(Stat.MOVE_SPEED, 100.0 + agility * 2.0, buckets)
 	_put(Stat.CULTIVATION_RATE, 1.0 + aptitude * 0.02, buckets)
 	_put(Stat.QI_ABSORPTION, aptitude * 0.5 + spirit * 0.2, buckets)
@@ -191,6 +210,16 @@ func _recompute() -> void:
 	_put(Stat.DAO_HEART, will, buckets)
 	_put(Stat.INSIGHT_GAIN, 1.0 + comprehension * 0.01, buckets)
 	_put(Stat.LOOT_BONUS, fortune * 0.01, buckets)
+	# ADR 0200: `COOLDOWN_REDUCTION` (0.4) and `QI_COST_REDUCTION` (0.5) KEEP their caps,
+	# deliberately and by the ADR's own stated test rather than by omission.
+	#
+	# The test: *a cap on a mitigation or defense axis DIES, because that axis must scale
+	# with the ladder; a cap on a RATE axis STAYS, because rate is not what power creep
+	# rides.* These three bound degenerate stacking on axes that do not scale with realm --
+	# an unbounded attack speed is a broken game rather than a power-creep problem, and
+	# removing their ceilings would cost a player nothing the ladder would otherwise have
+	# given them. AGENTS.md says it more sharply: a rate must never track a magnitude
+	# (ADR 0050), which is why these are the three that survive and not a rounding error.
 	_put(Stat.COOLDOWN_REDUCTION, minf(0.4, comprehension * 0.002), buckets)
 	_put(Stat.QI_COST_REDUCTION, minf(0.5, aptitude * 0.001), buckets)
 	_put(Stat.DAMAGE_REDUCTION, 0.0, buckets)

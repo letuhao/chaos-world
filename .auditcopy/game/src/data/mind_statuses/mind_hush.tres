@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="MindStatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/mind_status_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = &"mind_hush"
+display_name = "Hush"
+role = &"control"
+description = "The next technique costs more of the target's own reserve."
+payload = {
+"class": &"control",
+"shape": &"cost",
+"battlefield": "mind_status_mastery_cost",
+"resist_stat": "mind_composure_",
+"beat": 2.0,
+"steepness": 0.3,
+"floor_resist": 0.72,
+"headroom": 0.35,
+"duration": 6.0,
+"magnitude_cap": 0.35,
+"text": "Hush. The mind lays a thumb on the reservoir: the next technique costs more of what the body has banked, and the cost goes up with every beat it survives.",
+"modifiers": [{"stat": &"qi_cost_reduction", "op": &"flat", "value": -0.16}]
+}
+
+; `floor_resist` is `0.72`, not `0.5`, and that is a DESIGN number rather than a
+; coincidence. The naive `0.5 sigmoid neutral point` this whole vocabulary exists to
+; replace left a defender with NOTHING invested refusing exactly half of every
+; throw, and half is a coin flip: re-applied on every beat it is a perma-lock, which
+; the source design measured at 329% of baseline kill time. `test_a_non_investor_is_not_
+; coin_flipped` therefore holds every shipped control to at least `0.5 + 0.2 = 0.7`
+; at parity, and `0.72` is the smallest clean value above that line which still
+; leaves `0.28` of headroom for `headroom` to work with.
+;
+; `hush` is the CC group at its WEAKEST authored floor, because it is also the one
+; with the widest consequence: it taxes the target's own reserve rather than its
+; reactions, so a lock here compounds every technique the target throws while it is
+; held. The three sharper shapes (`falsify` 0.6, `unmake` 0.7, `daze` 0.55) are the
+; ones a player meets first and the ones whose parity rate already clears the margin.

@@ -1,0 +1,393 @@
+warning: in the working copy of 'tools/data.py', CRLF will be replaced by LF the next time Git touches it
+diff --git a/tools/data.py b/tools/data.py
+index bbf9e276..24371d1e 100644
+--- a/tools/data.py
++++ b/tools/data.py
+@@ -51,0 +52,17 @@ _NONE_OF_OPEN = re.compile(r'"verb":\s*&"none_of".{0,200}?"of":\s*\[', re.S)
++## `{verb: &"has_fate"|&"has_destiny", id: &"<id>", ...}`, one alternation per
++## verb rather than one regex per verb, because the two answer the SAME question —
++## "does this id resolve to a FateDef/DestinyDef (or an authored alias)" — and a
++## caller that has to know which of two scanners found a row is a caller that can
++## only resolve one of them. Same `{0,200}?` window as the two gates above so all
++## three readers accept the same field orderings of an authored gate row; the
++## alternation is inside the verb slot so `"verb": &"has_fate"` cannot be matched
++## by the `has_destiny` arm and vice versa.
++_HAS_GATE = re.compile(r'"verb":\s*&"(?:has_fate|has_destiny)".{0,200}?"id":\s*&"([^"]*)"', re.S)
++## The composite verbs a `has_fate`/`has_destiny` row nests inside. `_NONE_OF_OPEN`
++## above names only `none_of` because that ONE composite is what makes a nested
++## `tagged` row a one-way door; the resolver here asks a different question — does
++## the id resolve at all — and a row nested two composites deep is just as dangling
++## as one nested in none. Matching the open row and counting the closing bracket
++## is the brace-tolerant walk `_children_of` already performs, because a
++## non-greedy `"of": \[(.*?)\]` cannot cross the `]` a sibling `of` entry carries.
++_COMPOSITE_OPEN = re.compile(r'"verb":\s*&"(?:all_of|any_of|none_of)".{0,200}?"of":\s*\[', re.S)
+@@ -177,0 +195,26 @@ SCHEMA = {
++    # ── the second root: authored DOMAIN content (ADR 0233) ─────────────────────
++    # Three schemas, and NONE of them is item-shaped. `DomainTemplateDef` is a
++    # generated-graph description with a `pins`/`room_pool` contract no existing schema
++    # models, so shoe-horning it into `items` would grade it with acquisition rules and
++    # produce false passes — the trade-off ADR 0226 named and rejected. They are keyed off
++    # their own `def_class` under the `src/data` root instead.
++    #
++    # `bindings` is the field `room_pool` resolves through: the pool is authored as
++    # `ExtResource("<id>")` references into the header's `[ext_resource]` table, so
++    # reading reachability needs the ext-id -> path map, which `_extract_bindings` builds.
++    "domain_template": {
++        "id": "template_id",
++        "arrays": [],
++        "scalars": ["weather"],
++        "bindings": "room_pool",
++    },
++    "domain_room": {
++        "id": "room_id",
++        "arrays": ["tags"],
++        "scalars": ["kind", "roster_band"],
++    },
++    "domain_inhabitant": {
++        "id": "inhabitant_id",
++        "arrays": ["tags"],
++        "scalars": ["realm_id"],
++    },
+@@ -186,0 +230 @@ from .arch.rules import load_families as _load_families  # noqa: E402, PLC0415
++from .arch.rules import load_family_roots as _load_family_roots  # noqa: E402, PLC0415
+@@ -188,0 +233,12 @@ _FAMILIES: dict[str, dict] = _load_families()
++# Every content root this audit walks, named -> directory (ADR 0233). `game/data` is the
++# historical root and stays the DEFAULT one; `game/src/data` is a SECOND root taught here
++# rather than a second walk function, because `domain/api.gd:28-31` put the authored
++# domain content there deliberately — the 160 legacy `DomainDef` records under
++# `game/data/domains` are a different, older content set, so pointing `DATA_ROOT` at both
++# would grade one with the other's schemas. Two roots, one gate, one registry.
++_ROOTS: dict[str, Path] = {name: REPO_ROOT / rel for name, rel in _load_family_roots().items()} or {
++    "data": DATA_ROOT
++}
++# The root a family belongs to when it declares none. DEFAULT rather than a required field,
++# so adding a second root is purely additive and no existing family changes meaning.
++DEFAULT_ROOT = "data"
+@@ -194,0 +251,9 @@ for _name, _info in _FAMILIES.items():
++# (root, data_dir) -> family. KEYED BY ROOT because two roots may each hold a `domains/`
++# folder: `game/data/domains` is the legacy `DomainDef` hunt-tier index (ADR 0223) and
++# `game/src/data/domains` is the authored template/room/inhabitant corpus. Keyed by
++# data_dir alone they would collide, and the legacy family would grade the new corpus
++# with `DomainDef` rules — the exact mis-grading ADR 0226 refused.
++_ROOT_DIR_TO_FAMILY: dict[tuple[str, str], str] = {
++    (_info.get("root", DEFAULT_ROOT), _info["data_dir"]): _name
++    for _name, _info in _FAMILIES.items()
++}
+@@ -209,0 +275,8 @@ _DEFCLASS_TO_SCHEMA: dict[str, str] = {
++    # The second root's three (ADR 0233). A distinct type name each, NOT `domain` — that
++    # one is the legacy `DomainDef` hunt-tier index under `game/data/domains`
++    # (ADR 0223), and reusing it would put 3 templates + 9 rooms + 9 inhabitants into the
++    # same records dict as 160 `DomainDef` rows, where the cross-references between them
++    # would be graded by the acquisition rules that connect a domain to its BOSSES.
++    "DomainTemplateDef": "domain_template",
++    "RoomDef": "domain_room",
++    "InhabitantDef": "domain_inhabitant",
+@@ -220,0 +294,3 @@ _DEFCLASS_TO_TYPE: dict[str, str] = {
++    "DomainTemplateDef": "domain_template",
++    "RoomDef": "domain_room",
++    "InhabitantDef": "domain_inhabitant",
+@@ -579,2 +655,44 @@ def _extract_tokens(text: str, field: str) -> list[str]:
+-def _extract_bindings(text: str) -> list[tuple[str, str]]:
+-    """`{boss_id, table_id}` pairs from a tier's `boss_tables` array.
++def _extract_bindings(text: str) -> list[tuple[str, str, float | None]]:
++    """`{boss_id, table_id, vitality}` triples from a tier's `boss_tables` array.
++
++    ## Why `vitality` is read and not dropped (ADR 0234)
++    #
++    ## This reader used to return pairs, so the third authored field was invisible to
++    ## every gate: `LootTier.vitality_for(boss_id)` reads a per-binding `vitality` FIRST
++    ## and falls back to the band's, which means a binding that authors one changes the
++    ## boss's attack AND defense (`LootTier.attack_for`/`defense_for` are both
++    /// `vitality * 0.25`) and NOTHING in `tools/` could see it. Measured: 6 of 662
++    # bindings across 2 shipped encounters author one, in 2 of ~140 encounters — small
++    # enough that a count-based audit reads the corpus as uniform and the reader as
++    # complete, which is exactly why the defect survived: the count was never wrong, the
++    # READER was.
++
++    `None` rather than `0.0` for a binding that authors none, because "the band prices
++    this boss" and "this boss is priced at zero" are different facts and collapsing them
++    would let a defaulted value read as an authored one.
++    """
++    boss_ids = re.findall(r'"boss_id":\s*&"([^"]*)"', text)
++    table_ids = re.findall(r'"table_id":\s*&"([^"]*)"', text)
++    raw_vitality = re.findall(r'"vitality":\s*(-?[\d.]+)', text)
++    return [
++        (boss_id, table_id, float(vitality[index]) if index < len(raw_vitality) else None)
++        for index, (boss_id, table_id) in enumerate(zip(boss_ids, table_ids, strict=False), start=0)
++    ]
++
++
++def _ext_resource_paths(text: str) -> dict[str, str]:
++    """`ExtResource("<id>")` -> that resource's path, from the header block only.
++
++    Header only, and the header is delimited by the first `[sub_resource` rather than by
++    the first `[resource]`: a template pins its `TemplatePin`s as sub-resources whose
++    `room_def` is also an `ExtResource`, and a header that ran on would resolve those
++    against the same table — harmless here, but the header IS the table and reading past
++    it is how a reader starts answering from a file it was not pointed at.
++    """
++    header = text.split("[sub_resource", 1)[0]
++    pairs = re.findall(r'\[ext_resource[^\]]*?path="([^"]*)"[^\]]*?id="([^"]*)"\]', header)
++    return {resource_id: res_path for res_path, resource_id in pairs}
++
++
++def _extract_ext_resources(text: str, field: str) -> list[str]:
++    """The resource PATHS a `room_pool`-style array references, resolved through the header.
+@@ -582,2 +700,9 @@ def _extract_bindings(text: str) -> list[tuple[str, str]]:
+-    Read as ordered token runs rather than per-line fields, because each binding
+-    is authored as one inline dictionary.
++    Returns paths, not ext ids, because a path is the thing the room catalogue is keyed
++    by. An id that resolves to nothing is DROPPED rather than passed through: an
++    unresolvable reference is reported by the caller as a dangling pool entry, and
++    inventing a stem for it here would let it match a real room by coincidence.
++
++    The array is found by COUNTING brackets, not by a line-anchored `^\]\)`: the engine
++    writes the closing `])` on the same line as the last entry, so an anchored anchor
++    reads every pool as empty. The scan is a `while` over a fixed string that either
++    breaks at the matching close or runs out of file, so it terminates on any input.
+@@ -585,3 +710,22 @@ def _extract_bindings(text: str) -> list[tuple[str, str]]:
+-    boss_ids = re.findall(r'"boss_id":\s*&"([^"]+)"', text)
+-    table_ids = re.findall(r'"table_id":\s*&"([^"]+)"', text)
+-    return list(zip(boss_ids, table_ids, strict=False))
++    opener = re.search(rf"(?m)^\s*{re.escape(field)}\s*=\s*Array\[[^\]]*\]\(\s*\[", text)
++    if opener is None:
++        return []
++    depth = 1
++    index = opener.end()
++    end = len(text)
++    while index < len(text):
++        char = text[index]
++        if char in "[{":
++            depth += 1
++        elif char in "]}":
++            depth -= 1
++            if depth == 0:
++                end = index
++                break
++        index += 1
++    paths = _ext_resource_paths(text)
++    return [
++        paths[ref]
++        for ref in re.findall(r'ExtResource\("([^"]*)"\)', text[opener.end() : end])
++        if ref in paths
++    ]
+@@ -638 +782,18 @@ def _extract_roll_spec(text: str) -> dict:
+-def _folder_key(rel: Path) -> str | None:
++def _root_name_for(root: Path) -> str:
++    """Which declared content root a directory IS, or `data` when it is none of them.
++
++    Resolved by PATH rather than by the caller passing a name, so `data audit --root <dir>`
++    still grades the tree it was pointed at with that tree's families. The fallback is the
++    historical root, not a refusal: a caller pointing the audit at a copy of `game/data`
++    is doing something the single-root audit always supported, and a family lookup that
++    answered "no root" would grade the copy with nothing and report it clean (ADR 0133's
++    "reports ok because it looked at nothing").
++    """
++    resolved = root.resolve()
++    for name, directory in _ROOTS.items():
++        if directory.resolve() == resolved:
++            return name
++    return DEFAULT_ROOT
++
++
++def _folder_key(rel: Path, root: str = DEFAULT_ROOT) -> str | None:
+@@ -643,2 +804,8 @@ def _folder_key(rel: Path) -> str | None:
+-    the data_dir of the matching declared family, or None when the file's folder
+-    is not a declared content family (ADR 0184).
++    the data_dir of the matching declared family IN THIS ROOT, or None when the
++    file's folder is not a declared content family (ADR 0184).
++
++    Root-scoped, not global: `domains` is declared under BOTH roots (ADR 0233) with
++    different `def_class` each, so an unscoped lookup would resolve
++    `src/data/domains/rooms/ash_floor.tres` to the legacy `DomainDef` family and grade a
++    `RoomDef` with the hunt-tier index's rules. The root is part of the key for exactly
++    that reason.
+@@ -648 +815 @@ def _folder_key(rel: Path) -> str | None:
+-        if key in DECLARED_DIRS:
++        if (root, key) in _ROOT_DIR_TO_FAMILY:
+@@ -658,0 +826,4 @@ def _load(root: Path) -> tuple[dict, list[str], list[str]]:
++    # Which root this tree IS, so `_folder_key` resolves against the families declared
++    # there. The root's own name, not its path, so a caller pointing `--root` at a copy of
++    # another root still gets that root's families rather than the default's.
++    root_name = _root_name_for(root)
+@@ -661 +832 @@ def _load(root: Path) -> tuple[dict, list[str], list[str]]:
+-        folder = _folder_key(rel)
++        folder = _folder_key(rel, root_name)
+@@ -667 +838 @@ def _load(root: Path) -> tuple[dict, list[str], list[str]]:
+-        family = _DIR_TO_FAMILY[folder]
++        family = _ROOT_DIR_TO_FAMILY[(root_name, folder)]
+@@ -700 +871,12 @@ def _load(root: Path) -> tuple[dict, list[str], list[str]]:
+-            record["bindings"] = _extract_bindings(text)
++            # TWO readers behind one field, decided by WHICH field the schema names, because
++            # a loot tier's `boss_tables` and a template's `room_pool` are authored in
++            # different shapes: the first is inline dictionaries carrying their own ids, the
++            # second is `ExtResource("<id>")` references whose paths live in the header.
++            # One reader over both would resolve neither correctly — the dict reader finds
++            # no `"boss_id"` in a pool and the ext reader finds no ext table in a tier.
++            field = schema["bindings"]
++            record["bindings"] = (
++                _extract_ext_resources(text, field)
++                if field == "room_pool"
++                else _extract_bindings(text)
++            )
+@@ -1992 +2174 @@ def _none_of_tagged_gates(root: Path | None = None) -> list[tuple[str, str]]:
+-            for tag in _children_of(text, start.end()):
++            for tag in _children_of(text, start.end(), _TAGGED_GATE):
+@@ -1997,2 +2179,2 @@ def _none_of_tagged_gates(root: Path | None = None) -> list[tuple[str, str]]:
+-def _children_of(text: str, start: int) -> list[str]:
+-    """The `&"..."` values a composite's `of` list holds, from the `[` at `start`.
++def _children_of(text: str, start: int, row: re.Pattern[str]) -> list[str]:
++    """The rows of shape `row` a composite's `of` list holds, from the `[` at `start`.
+@@ -2003,0 +2186,7 @@ def _children_of(text: str, start: int) -> list[str]:
++
++    `row` is a REQUIRED argument rather than a default so that every composite
++    reader states the shape it is looking for at its own call site. There is one
++    bracket counter here and both readers pass through it, because a second
++    brace-tolerant walk is a second thing to keep correct: the bug this replaces
++    (a non-greedy `"of": \[(.*?)\]` stopping at the `]` a sibling `of` entry
++    carries) is a bug you get once, not once per caller.
+@@ -2016 +2205,45 @@ def _children_of(text: str, start: int) -> list[str]:
+-    return _TAGGED_GATE.findall(text[start:end])
++    return row.findall(text[start:end])
++
++
++def _authored_has_gates(root: Path | None = None) -> list[tuple[str, str]]:
++    """Every `(file, id)` a `has_fate`/`has_destiny` gate names, across the WHOLE tree.
++
++    The same whole-tree walk as `_authored_counter_gates` and
++    `_authored_tagged_gates`, for the same reason and with the same consequence: a
++    gate requirement is authored on quests, events and destinies alike and no one
++    catalog exposes them all, so a scan limited to `game/data/destiny/` would
++    report nothing here and pass for the WRONG REASON — "no dangling ids" instead
++    of "no ids at all". Honours `root`, for the reason its docstring gives.
++
++    **Composites are descended, because nesting is what the requirement really
++    looks like and a reader that only saw top-level rows would under-report.**
++    `has_fate` nests inside `all_of`/`any_of`/`none_of`, so the census takes the
++    union of a flat scan and a `_COMPOSITE_OPEN`-driven descent through
++    `_children_of`, and de-duplicates per file.
++
++    The union rather than the descent ALONE is deliberate, and the flat half is
++    what guarantees the no-false-negative property rather than the other way
++    round: `_children_of` brackets the composite by COUNTING, so a `]` inside an
++    authored string value truncates the span early and drops rows after it — the
++    same class of false negative as the non-greedy regex it replaced, reached a
++    different way. The flat scan has no span to truncate, and the descent is kept
++    because it is the walk an author reads and the one that stays correct when a
++    row's own field order puts `id` far enough from `verb` to leave the
++    `{0,200}?` window. Neither half alone is the guarantee; the union is.
++
++    One finding per `(file, id)` rather than one per authored ROW: the repair is
++    to fix the id, and a file naming the same dangling id three times is one
++    defect reported once, not three an author triages separately.
++    """
++    base = Path(root) if root is not None else DATA_ROOT
++    if not base.is_dir():
++        return []
++    out: list[tuple[str, str]] = []
++    for path in sorted(base.rglob("*.tres")):
++        text = path.read_text(encoding="utf-8", errors="replace")
++        where = path.relative_to(base).as_posix()
++        ids = set(_HAS_GATE.findall(text))
++        for start in _COMPOSITE_OPEN.finditer(text):
++            ids.update(_children_of(text, start.end(), _HAS_GATE))
++        out.extend((where, gate_id) for gate_id in sorted(ids))
++    return out
+@@ -2094,0 +2328,59 @@ def _tag_notes(root: Path | None = None) -> list[str]:
++## **A `has_fate`/`has_destiny` GATE naming an id no FateDef/DestinyDef defines (and
++## no alias claims) FAILS the audit.**
++##
++## Same severity as `_counter_findings` and `_tag_gate_findings` and for the same
++## reason: this closes a player door permanently. `DestinyGate._has_fate` /
++## `_has_destiny` look the id up in the ledger and, finding nothing, return an
++## ordinary `unmet` — indistinguishable from "you have not earned it yet". There
++## is no producer, no beat and no authoring action that can put an id no
++## definition declares into that ledger, so the quest silently never offers and
++## the author has nothing to read.
++##
++## **An ALIAS IS A LEGAL AUTHORED ID**, and that is the one thing a naive reader
++## gets wrong in the direction that turns a correct tree red.
++## `DestinyDef.gate_aliases` exists so story can be authored before the destiny it
++## answers for exists (ADR 0113), and `DestinyGate.holds_destiny` resolves one in
++## BOTH directions: a gate may name the alias OR the declaring destiny and both
++## answer true. Resolving against the `.tres` records alone FAILed the exact
++## prerequisite the feature exists to permit — the audit and the runtime
++## disagreeing about whether a content author may write something, which is the
++## error the same `requires_destinies` check above already records. So the
++## resolver is `records["fate"] | records["destiny"] | aliases`, in ONE place.
++##
++## Deliberately the whole tree (quests, events and destinies alike) and not
++## `game/data/destiny/`: a `has_fate` is authored on a QUEST far more often than
++## on a destiny, so a destiny-only scan would report nothing at all on the content
++## that most needs checking. That scan would not merely under-report — it would
++## pass for the wrong reason, the same failure `_authored_counter_gates`'s
++## docstring names.
++def _has_gate_findings(records: dict, root: Path | None = None) -> list[str]:
++    """Dangling `has_fate`/`has_destiny` gate ids, resolved against fate ∪ destiny ∪ alias."""
++    fates = set(records.get("fate", {}))
++    destinies = set(records.get("destiny", {}))
++    # The SAME alias set `_destiny_findings` builds for `requires_destinies`, for
++    # the same reason, so an id that is legal in one field cannot be illegal in
++    # the other. Read from the records rather than re-parsed from `.tres` text.
++    aliases = {
++        alias
++        for destiny in records.get("destiny", {}).values()
++        for alias in destiny["arrays"].get("gate_aliases", [])
++    }
++    known = fates | destinies | aliases
++    # NOTE there is deliberately no "nothing to check, return []" guard here, even
++    # when `known` is empty. An empty catalog means the tree the audit was pointed
++    # at resolved no ids at all, so every authored id really IS dangling and
++    # reporting each one is the correct answer; a reader that short-circuits there
++    # gives a green audit on a tree whose every gate is broken — the vacuous-green
++    # shape `_destiny_findings`' early-return docstring is written against.
++    gaps: list[str] = []
++    for where, gate_id in _authored_has_gates(root):
++        if gate_id not in known:
++            gaps.append(
++                f"{where}: a `has_fate`/`has_destiny` gate names '{gate_id}', which no "
++                "authored FateDef or DestinyDef defines and no `gate_aliases` claims; "
++                "nothing can ever earn an id no definition declares, so the gate reads "
++                f"unmet forever as though the player had not got there yet (ADR 0113)"
++            )
++    return gaps
++
++
+@@ -2308,0 +2601 @@ def _destiny_findings(records: dict, root: Path | None = None) -> tuple[list[str
++    gaps.extend(_has_gate_findings(records, root))
+@@ -2848 +3141,16 @@ def _resolve_rate_stats() -> set[str]:
+-    """Map RATE_STATS const names through their &"id" values."""
++    """Map RATE_STATS const names through their &"id" values.
++
++    Most entries are plain `CONST` references resolved by name. Two spellings need
++    more than that:
++
++    - `MindVocabulary.offence_id(&"slow")` / `.defence_id(...)` are the mind-control
++      contest stats. They are BUILT from a prefix and a suffix rather than declared,
++      so no `const SLOW := &"slow"` exists to match, and resolving them by name would
++      silently drop every one -- which is the failure this function's own predecessor
++      documented for hand-written lists (BL-0675).
++    - A bare `MIND_CONTROL_RATES[n]` index is a generated id reached through the
++      array, so it is resolved from the array's own generator calls.
++
++    Both fall back to the generator calls rather than a second hand-written id list,
++    so a shape or channel added to the vocabulary registers itself and cannot drift.
++    """
+@@ -2855,0 +3164,8 @@ def _resolve_rate_stats() -> set[str]:
++    # `MIND_CONTROL_RATES[n]` entries: resolve every generator call in the array.
++    # Capture ONLY the identifier. `^\s*MIND_CONTROL_RATES\[` matched the leading
++    # tab and the `[` as well, so the "name" carried `\tMIND_CONTROL_RATES[` and
++    # was interpolated raw into the pattern below — where the `(` of `([a-z_]+)`
++    # then closed against nothing and every caller raised `unbalanced
++    # parenthesis at position 40`. This took `_destiny_findings`, and with it
++    # every `data audit` self-test and the audit gate itself.
++    names |= set(re.findall(r"^\s*(MIND_CONTROL_RATES)\[", match.group(1), re.M))
+@@ -2860,0 +3177,8 @@ def _resolve_rate_stats() -> set[str]:
++    vocabulary = STAT_DEFS.parent / "mind_vocabulary.gd"
++    if vocabulary.is_file():
++        body = vocabulary.read_text(encoding="utf-8", errors="replace")
++        prefixes = dict(re.findall(r'const (OFFENCE_PREFIX|DEFENCE_PREFIX) := "([a-z_]+)"', body))
++        suffixes = re.findall(r'const (?:SHAPE_|CHANNEL_)\w+ := &"([a-z_]+)"', body)
++        for prefix in prefixes.values():
++            for suffix in suffixes:
++                ids.add(prefix + suffix)

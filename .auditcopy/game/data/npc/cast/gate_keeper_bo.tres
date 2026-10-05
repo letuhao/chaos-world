@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="NpcDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/modules/npc/npc_def.gd" id="1_def"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_stage_def.gd" id="2_stage"]
+
+[sub_resource type="Resource" id="Stage_silent"]
+script = ExtResource("2_stage")
+stage_id = &"silent"
+index = 0
+display_name = "Silent"
+stat_multipliers = {}
+tags = Array[StringName]([&"souled_beast"])
+advance_after = 0
+terminal = false
+
+[sub_resource type="Resource" id="Stage_watching"]
+script = ExtResource("2_stage")
+stage_id = &"watching"
+index = 1
+display_name = "Watching"
+stat_multipliers = {}
+tags = Array[StringName]([&"souled_beast", &"patient"])
+advance_after = 0
+terminal = false
+
+[resource]
+script = ExtResource("1_def")
+npc_id = &"gate_keeper_bo"
+display_name = "Gatekeeper Bo"
+inhabitant_id = &"azure_disciple"
+tier = &"minor"
+faction = &"body_dao"
+tags = Array[StringName]([&"gatekeeper", &"souled_beast", &"opportunist"])
+realm_id = &"qi_refining"
+base = {"physique": 12.0, "will": 14.0}
+stages = Array[NpcStageDef]([SubResource("Stage_silent"), SubResource("Stage_watching")])
+initial_stage = &"silent"

@@ -1,0 +1,249 @@
+## REALIZE the active run as a walkable world under `parent`, and answer what happened.
+##
+## This is the production call that makes `DomainScene` reachable. It does the three
+## things the audit found missing, in this order:
+##
+##  1. builds a `DomainScene` from the run's own `DomainMap` — the map is the source of
+##     truth and this is a view of it, so there is no second layout here;
+##  2. places ONE inhabitant body per minted `Actor` at the position
+##     [method DomainSpawner.placement] already recorded. **It reuses that record and
+##     invents no second position source**: the spawner resolved the slot and wrote it
+##     onto the actor in `module_data`, and this reads it back rather than re-deriving it.
+##     A world that placed bodies by a second rule would disagree with the placement the
+##     save carries, and the disagreement would be invisible until a load;
+##  3. adds a `PlayerAdapter` at the entry room's centre, bounded to the drawn cells by
+##     `set_map_bounds` — the clamp the stage documents and the adapter does not do.
+##
+## The run must already be ACTIVE (`enter_domain` has been called): this reads the same
+## `_run` the spawner read, so a caller cannot realize a world for a run that is not
+## standing, and cannot realize two worlds disagreeing about which map is the map.
+##
+## Refuses `no_parent`, `no_actor` and `no_map` BY NAME. Nothing is written before the
+## parent resolves, so a refused call leaves the tree exactly as it found it — there is no
+## half-built world for a caller to clean up.
+##
+## Idempotent in the sense that matters: calling it twice on the same parent frees the
+## previous world first ([method release_world] runs at the top), so it stacks nothing.
+static func realize_world(parent: Node, player: Actor) -> Dictionary:
+	if parent == null:
+		return {"ok": false, "reason": "no_parent"}
+	if player == null:
+		return {"ok": false, "reason": "no_actor"}
+	if _run == null:
+		return {"ok": false, "reason": "no_map"}
+	# **Free the previous world before building the next.** A second realization that
+	# stacked would leave the first run's floor tiles drawn under the second run's
+	# inhabitants, which is exactly the leak shape `tests/arch_rules/
+	# test_no_deferred_free.gd` records.
+	release_world(parent)
+	var world := Node2D.new()
+	world.name = WORLD_NODE
+	parent.add_child(world)
+	var scene := DomainScene.new(_run)
+	scene.name = WORLD_SCENE_NODE
+	world.add_child(scene)
+	var bodies := world_place_inhabitants(world, player)
+	world_place_player(world, player, scene)
+	return {
+		"ok": true,
+		"reason": "",
+		"world": world,
+		"scene": scene,
+		"player": world.get_node_or_null(NodePath(WORLD_PLAYER_NODE)) as PlayerAdapter,
+		"bounds": scene.map_bounds(),
+		"entry": [scene.entry_position().x, scene.entry_position().y],
+		"inhabitants_placed": bodies,
+	}
+
+
+## One body per inhabitant minted by the LAST `enter_domain`, at the placement the
+## spawner recorded. Exposed as its own verb because the number a player reads on
+## `module_data` has to become a visible thing, and a caller that only wants to know
+## WHERE the creatures stand should not have to build a floor to ask.
+##
+## Returns how many bodies were placed. `Node2D` rather than a sprite or a
+## `CharacterBody2D`: what a test can assert is that a node EXISTS at the placement the
+## spawner recorded, and a body that could be damaged or collided would be a second
+## inhabitant simulation — a shape `domain/` owns and this file does not.
+##
+## `player` is the hero the run belongs to, and it is checked rather than merely accepted:
+## a world realized for a hero that has no roster behind it would place nothing and still
+## answer `ok`, which is how "0 inhabitants" reads as a map nobody populated. The roster
+## itself is process-wide (`_roster`) because the spawner has no per-actor index, so this
+## check is the only thing tying a realized world to the body that entered it.
+static func world_place_inhabitants(world: Node2D, player: Actor) -> int:
+	if world == null or player == null:
+		return 0
+	var holder := world.get_node_or_null(NodePath(WORLD_INHABITANTS_NODE)) as Node2D
+	if holder == null:
+		holder = Node2D.new()
+		holder.name = WORLD_INHABITANTS_NODE
+		world.add_child(holder)
+	var placed := 0
+	for inhabitant in _last_inhabitants():
+		var actor := inhabitant as Actor
+		if actor == null:
+			continue
+		# **The ONE placement source.** `DomainSpawner.placement` reads the record `_place`
+		# wrote onto this very actor from the same `_spawn_point` the save round-trips, so
+		# the body a player walks into is standing exactly where the data says it stands.
+		var point := DomainSpawner.placement(actor)
+		var body := Node2D.new()
+		body.name = "Inhabitant_%s" % String(actor.id)
+		body.position = point
+		body.set_meta(&"actor", actor)
+		body.set_meta(&"room_id", String(DomainSpawner.room_of(actor)))
+		body.set_meta(&"role", String(DomainSpawner.role_of(actor)))
+		holder.add_child(body)
+		placed += 1
+	return placed
+
+
+## Put a `PlayerAdapter` for `player` into `world`, at the entry room's centre and
+## bounded to the cells the floor layer actually drew.
+##
+## `set_map_bounds` is the seam `DomainScene.map_bounds` was written for: `DomainScene`
+## sizes the rect from the DRAWN cells rather than from `DomainMap.extent`, which is the
+## generator's grid and is `Vector2i.ZERO` on a handcrafted map (domain_minimap.gd:215).
+##
+## The adapter is created bare and configured by EXPLICIT setters rather than by relying
+## on `_ready()`: the headless runner never delivers `_ready()` to a node parented to
+## `root`, so an adapter that only bound its own camera and input map there would stand up
+## in the editor and never in a test. There is no camera in this world — nothing is
+## scrolling — so `_ready()` has nothing to do that these setters do not.
+static func world_place_player(world: Node2D, player: Actor, scene: DomainScene) -> PlayerAdapter:
+	if world == null or player == null:
+		return null
+	var existing := world.get_node_or_null(NodePath(WORLD_PLAYER_NODE)) as PlayerAdapter
+	if existing != null:
+		return existing
+	var body := PlayerAdapter.new(player)
+	body.name = WORLD_PLAYER_NODE
+	world.add_child(body)
+	if scene != null:
+		body.set_map_bounds(scene.map_bounds())
+		body.global_position = scene.entry_position()
+	return body
+
+
+## FREE the realized world under `parent`. Idempotent, and a no-op when nothing was ever
+## realized — so a `teardown()` may call it without asking first.
+##
+## `remove_child()` then `free()`, never `queue_free()`. The headless runner never
+## processes a frame, so a deferred free leaks for the life of the process: that is the
+## shape that took a run to 67 GB resident and forced a power-cycle (INC-0004/0005), and
+## `tests/arch_rules/test_no_deferred_free.gd` rejects `queue_free()` in `res://src` for
+## exactly this reason. The children are named in [constant WORLD_BORN] rather than walked,
+## so the free is bounded and names the failure condition: a child this file created that
+## is NOT in that list is a leak, and `pushed_nodes` counts it so the caller can see.
+static func release_world(parent: Node) -> Dictionary:
+	if parent == null:
+		return {"ok": false, "reason": "no_parent", "freed": 0}
+	var world := parent.get_node_or_null(NodePath(WORLD_NODE))
+	if world == null:
+		return {"ok": true, "reason": "", "freed": 0, "present": false}
+	var freed := 0
+	for child_name in WORLD_BORN:
+		var child := world.get_node_or_null(NodePath(child_name))
+		if child == null:
+			continue
+		world.remove_child(child)
+		child.free()
+		freed += 1
+	# The world root last, so its own children are already gone by the time it is freed
+	# and no `NOTIFICATION_PREDELETE` sees a half-torn subtree.
+	parent.remove_child(world)
+	world.free()
+	return {"ok": true, "reason": "", "freed": freed, "present": true}
+
+
+## Whether a world is currently realized under `parent`. The answer a caller and a test
+## both read, so neither has to walk for a node name this file already publishes.
+static func world_realized(parent: Node) -> bool:
+	return parent != null and parent.get_node_or_null(NodePath(WORLD_NODE)) != null
+
+
+## Tell the installed observer a run now exists, and hand back what it answered verbatim.
+##
+## The seam is OPTIONAL and its refusal is REPORTED, never swallowed. A run entered
+## through a headless probe that never opened the domain route has no observer, and the
+## run is entirely real — `no_map`, `no_actor` and `no_surface` are the shapes a refusal
+## takes, and a refusal here means "nobody is drawing this", not "this failed".
+##
+## An observer answering with something other than a dictionary is refused BY NAME rather
+## than coerced, for the same posture [method DomainBoot.interact] and `WorldStage` take
+## on an injected seam: a wiring bug that silently becomes `{}` is a wiring bug that ships.
+static func _announce_run() -> Dictionary:
+	if not _world_observer.is_valid():
+		return {"ok": false, "reason": "no_observer"}
+	var answered: Variant = _world_observer.call()
+	if not answered is Dictionary:
+		return {"ok": false, "reason": "observer_returned_nothing"}
+	return (answered as Dictionary).duplicate()
+
+
+## Free the realized world, wherever its parent is. Reports how many nodes it took with it.
+##
+## How it FINDS the parent is the interesting part. The world is a child of the domain
+## screen, and this file may not name a `ui/` type — but the observer that parented it is
+## the one that knows, so the parent is asked back through the SAME seam. That keeps one
+## mechanism in both directions rather than a second, differently-guessed lookup that could
+## disagree with the first about where the world went.
+static func _tear_down_run() -> Dictionary:
+	if not _world_observer.is_valid():
+		return {"ok": true, "reason": "", "freed": 0}
+	var answered: Variant = _world_observer.call(&"release")
+	if not answered is Dictionary:
+		return {"ok": false, "reason": "observer_returned_nothing", "freed": 0}
+	return (answered as Dictionary).duplicate()
+
+
+## The realized world's read model, as primitives: what is standing in it, where, and
+## whether a player is in it. Every value is a primitive because a `summary()` holding a
+## `Node2D` or a `Vector2` is a testable surface that quietly stops being testable.
+##
+## `{}` when nothing is realized — the repo's does-not-exist vocabulary, so "no world" can
+## never read like "a world with no inhabitants in it".
+static func world_summary(parent: Node) -> Dictionary:
+	if not world_realized(parent):
+		return {}
+	var world := parent.get_node_or_null(NodePath(WORLD_NODE))
+	if world == null:
+		return {}
+	var scene := world.get_node_or_null(NodePath(WORLD_SCENE_NODE)) as DomainScene
+	var player := world.get_node_or_null(NodePath(WORLD_PLAYER_NODE)) as PlayerAdapter
+	var bodies := 0
+	var placed := []
+	var holder := world.get_node_or_null(NodePath(WORLD_INHABITANTS_NODE))
+	if holder != null:
+		for body in holder.get_children():
+			if not body is Node2D:
+				continue
+			bodies += 1
+			var point := (body as Node2D).position
+			placed.append([point.x, point.y])
+	var bounds := Rect2()
+	if scene != null:
+		bounds = scene.map_bounds()
+	var entry := Vector2.ZERO
+	if scene != null:
+		entry = scene.entry_position()
+	var stand := Vector2.ZERO
+	if player != null:
+		stand = player.global_position
+	return {
+		"realized": true,
+		"floor_cells": scene.floor_layer().get_used_cells().size() if scene != null else 0,
+		"wall_cells": scene.wall_layer().get_used_cells().size() if scene != null else 0,
+		"spawn_markers": scene.spawn_markers().size() if scene != null else 0,
+		"zone_areas": scene.zone_areas().size() if scene != null else 0,
+		"bounds": [bounds.position.x, bounds.position.y, bounds.size.x, bounds.size.y],
+		"entry": [entry.x, entry.y],
+		"player_position": [stand.x, stand.y],
+		"has_player": player != null,
+		"has_navigation": scene != null and scene.navigation_region() != null,
+		"inhabitant_bodies": bodies,
+		"inhabitant_positions": placed,
+	}
+
+

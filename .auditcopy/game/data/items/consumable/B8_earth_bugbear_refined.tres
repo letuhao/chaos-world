@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"B8_earth_bugbear_refined"
+display_name = "Earth Bugbear Refined"
+category = &"consumable"
+rarity = &"rare"
+realm = &"spirit_manifestation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"base_aptitude", "value": 10.73},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"ferment"
+grade = &"earth"
+sources = Array[StringName]([&"craft:B8_earth_bugbear_refined_recipe", &"domain:manual_iron_tortoise_domain"])

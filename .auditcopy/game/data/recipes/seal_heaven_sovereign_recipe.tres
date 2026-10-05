@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"seal_heaven_sovereign_recipe"
+display_name = "Seal Heaven Sovereign Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"seal_heaven_jade_ore", &"seal_goldthread_herb", &"seal_moon_essence"])
+outputs = Array[StringName]([&"seal_heaven_sovereign"])

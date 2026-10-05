@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"jade_pill"
+display_name = "Jade Pill"
+category = &"consumable"
+rarity = &"common"
+realm = &"core_formation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_cultivation_rate", "value": 0.04},
+	{"option_id": &"core_insight_gain", "value": 0.04},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"pill"
+grade = &"mortal"
+sources = Array[StringName]([&"craft:jade_pill_recipe", &"domain:qi_great_luo_domain"])
+

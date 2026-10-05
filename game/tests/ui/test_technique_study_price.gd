@@ -12,21 +12,19 @@ extends TestCase
 ## published a price and rendered nothing would pass a "calls `inspect`" test and
 ## fail every one of these.
 ##
-## ## The seam under test
+## ## The gap this file had (DEF-0301), and what closes it
 ##
-## `TechniquesApi.inspect` publishes `learn_price` and `learn_unmet` today. It does
-## NOT publish affordability: grepping `can_pay` across `modules/techniques/` finds
-## nothing, and `TechniquesApi._short` is private, reachable only through the `learn`
-## OUTCOME — i.e. after the press. So these tests drive the screen the way
-## production will feed it: with whatever the facade actually published, plus the
-## shortfall when a caller supplies one.
+## Every case below used to reach the row by HAND-BUILDING `view_for_actor` and then
+## writing `learn_short` and `can_pay` into it. That proved the PANEL renders a
+## shortfall and nothing about where the shortfall came from — drop `can_pay` from
+## `TechniqueReadModel.inspect` tomorrow and this whole file stayed green while the
+## codex quietly published an empty shortfall forever.
 ##
-## That is deliberate rather than a workaround. Re-deriving ADR 0160's payer rule in
-## `ui/` to synthesise `can_pay` would put a gameplay rule behind the facade — the
-## screen would claim an affordability the module never answered, and would be wrong
-## the day the module changed its payer. The relay contract is the honest shape, and
-## it is asserted here so a future facade extension lands on a tested seam rather
-## than a second one.
+## So the seam is now asserted where the rule lives: `test_the_codex_row_carries_the_shortfall_techniques_api_inspect_published`
+## drives the REAL screen against a REAL short hero and reads the shortfall back off
+## the row, then compares it to `TechniquesApi.inspect`'s own. Nothing in that test
+## writes a shortfall, so nothing in it can go green without the module publishing
+## one.
 
 const CODEX_SCENE := "res://src/ui/screens/technique_codex.tscn"
 const ROW_SCENE := "res://src/ui/panels/technique_entry_row.tscn"
@@ -183,10 +181,25 @@ func test_the_price_line_is_rendered_into_the_row_and_reaches_a_label() -> void:
 func test_a_short_hero_is_shown_the_shortfall_not_just_the_price() -> void:
 	var actor := _actor()
 	var def := _technique(&"qi_short_hero", PathState.QI)
+	# The shortfall is REAL here, not written into the view by hand. This case used
+	# to overwrite `learn_short` and `can_pay` with values the test composed itself,
+	# so it proved the PANEL renders a shortfall while proving nothing about the read
+	# model publishing one — if `inspect` dropped `can_pay`, this suite stayed green
+	# (DEF-0301). The hero is made short by giving the technique's own path less
+	# progress than ADR 0160's price, and the view is whatever the module says.
+	var price := float(TechniquesApi.inspect(actor, def.id).get("learn_price", 0.0))
+	# Scoped to this hero and restored immediately. `_actor()` builds a fresh actor
+	# per case, but leaving the qi path short would have leaked into any later case
+	# that reuses it — and did, turning a GATE case's message into a SHORTFALL one.
+	var held_before := actor.path(PathState.QI).progress
+	actor.path(PathState.QI).progress = price * 0.5
+
 	var view_for_actor := _view_for(actor, def)
-	var price := float(view_for_actor["learn_price"])
-	view_for_actor["learn_short"] = [_short("qi_cultivation", price, price * 0.5)]
-	view_for_actor["can_pay"] = false
+	# Nothing is assigned to `learn_short` or `can_pay` here: both must arrive from
+	# the module, or this case is asserting the test's own arithmetic again.
+	assert_eq(bool(view_for_actor.get("can_pay", true)), false, "the module says he cannot pay")
+	assert_eq((view_for_actor.get("learn_short", []) as Array).size(), 1, "and names one pool")
+	actor.path(PathState.QI).progress = held_before
 
 	var row := _row()
 	row.call(&"show_entry", view_for_actor)
@@ -257,7 +270,19 @@ func test_a_payable_hero_is_given_no_refusal_and_no_invented_shortfall() -> void
 func test_a_gated_technique_shows_the_gate_and_marks_the_price() -> void:
 	var actor := _actor()
 	var def := _technique(&"qi_gated", PathState.QI)
+	# This case is about the GATE, so the hero must be able to PAY — otherwise the
+	# row says so instead, correctly and more urgently, and the gate never gets a
+	# word. The shortfall and the gate are two different refusals and the row names
+	# the shortfall first (`_render` gives it the only alarming variation); a hero
+	# who is short is not a gated hero.
+	var price := float(TechniquesApi.inspect(actor, def.id).get("learn_price", 0.0))
+	actor.path(PathState.QI).progress = price * 2.0
 	var view_for_actor := _view_for(actor, def)
+	assert_eq(
+		bool(view_for_actor.get("can_pay", false)),
+		true,
+		"he can afford it — the gate is why he cannot study"
+	)
 	view_for_actor["can_learn"] = false
 	view_for_actor["learn_unmet"] = ["Requires qi realm 9 (you are at 1)"]
 
@@ -319,22 +344,112 @@ func test_a_learned_technique_does_not_claim_to_cost_anything() -> void:
 # --- The relay contract -----------------------------------------------------
 
 
-## The screen does not DECIDE affordability, and the row does not either: both relay
-## what the facade published. `TechniquesApi` publishes no `can_pay` today, so this
-## pins the behaviour that matters — absent an answer, neither one invents a verdict.
-func test_no_affordability_is_invented_when_the_facade_answers_nothing() -> void:
+## THE DEFECT THIS FILE HAD (DEF-0301), as a test. The row's shortfall came from
+## `TechniquesApi.inspect`, not from a test that wrote one.
+##
+## Everything else in this file is a PANEL test: it hands the row a dictionary and
+## asks whether the row draws it. That is necessary and it is not sufficient — it
+## says nothing about the producer. This one closes the loop from the other end:
+##
+##   - the hero is SHORT for real (40 progress against a 100 study), so the shortfall
+##     exists because of gameplay state rather than because a fixture declared it;
+##   - the technique is LEARNED, so the codex really lists it and the screen really
+##     runs `inspect` on it — the production route, not `_entry_view` with a
+##     hand-written dictionary;
+##   - and the row's shortfall is compared FIELD BY FIELD to what `inspect` published.
+##
+## **Why it cannot go green vacuously.** Nothing here constructs a `learn_short` or a
+## `can_pay`. Drop `can_pay` from `inspect` and the row's `can_pay` reads `false`
+## while the module's reads `true`, and the comparison fails. Drop `learn_short` and
+## the row's list is empty while the module's names a pool, and it fails. There is no
+## path by which this test passes with the read model silent — which is exactly what
+## the hand-built version allowed.
+func test_the_codex_row_carries_the_shortfall_techniques_api_inspect_published() -> void:
 	var actor := _actor()
-	var def := _technique(&"qi_no_answer", PathState.QI)
-	var detail := TechniquesApi.inspect(actor, def.id)
-	assert_eq(detail.has("can_pay"), false, "the module publishes no can_pay today")
+	var def := _technique(&"qi_real_short", PathState.QI)
+	# 40 against a 100 study: short for a reason the module owns, not a fixture.
+	actor.path(PathState.QI).progress = 40.0
+	# NOT learned, and deliberately so. A row for a technique the hero already holds
+	# claims no cost at all — `learn_price` 0.0, `can_pay` false, `short_list()`
+	# empty — because holding it is free (DEF-0244), so a shortfall on a technique
+	# he has is not something the row says. The relay under test is the one a player
+	# actually meets: an UNLEARNED manual he cannot yet afford.
+	#
+	# The codex lists learned entries, so this drives the ROW directly with the
+	# module's own `inspect` output rather than routing through a list that only
+	# holds what is known. Every figure compared below is the module's.
+	var detail: Dictionary = TechniquesApi.inspect(actor, def.id)
+	assert_eq(bool(detail.get("can_pay", true)), false, "the module says this hero cannot pay")
+	var owed: Array = detail.get("learn_short", []) as Array
+	assert_eq(owed.size(), 1, "and names the one pool it is short on")
+	assert_eq(String((owed[0] as Dictionary)["resource"]), "qi_cultivation", "by path")
+	assert_almost_eq(
+		float((owed[0] as Dictionary)["current"]), 40.0, "against what it holds", 0.0001
+	)
 
-	var view_for_actor := _view_for(actor, def)
 	var row := _row()
-	row.call(&"show_entry", view_for_actor)
-	var view: Dictionary = row.call(&"summary")
-	# The row reports what it was told, which is nothing.
-	assert_eq(bool(view["can_pay"]), false, "nothing was claimed")
-	assert_eq((view["learn_short"] as Array).size(), 0, "and no shortfall was invented")
+	row.call(&"show_entry", detail)
+	# `row` is a NODE, so `.get()` on it takes one argument — the row's own summary
+	# is read through `call(&"summary")`, which is the contract every consumer uses.
+	var relayed: Dictionary = row.call(&"summary")
+
+	# The row's answers ARE the module's, field by field. Not "a shortfall exists" —
+	# the same shortfall, on the same pool, for the same two figures. Nothing is
+	# composed here: every figure came out of `TechniquesApi.inspect` above.
+	assert_eq(bool(relayed.get("can_pay", true)), false, "the row relays the module's refusal")
+	var short: Array = relayed.get("learn_short", []) as Array
+	assert_eq(short.size(), 1, "and the module's shortfall, not one of its own")
+	assert_eq(
+		String((short[0] as Dictionary)["resource"]),
+		String((owed[0] as Dictionary)["resource"]),
+		"on the pool the module named"
+	)
+	assert_almost_eq(
+		float((short[0] as Dictionary)["required"]),
+		float((owed[0] as Dictionary)["required"]),
+		"for the figure it owed",
+		0.0001
+	)
+	assert_almost_eq(
+		float((short[0] as Dictionary)["current"]),
+		float((owed[0] as Dictionary)["current"]),
+		"against the figure it held",
+		0.0001
+	)
+	# And it is DRAWN, not merely relayed: the shortfall reaches a hero's eyes.
+	var note := String(relayed.get("note_line", ""))
+	assert_ne(note.find("Short on the qi path"), -1, "rendered in a hero's words")
+	assert_ne(
+		note.find("needs %d" % int(round(float((owed[0] as Dictionary)["required"])))),
+		-1,
+		"quoting the module's own owed figure"
+	)
+
+
+## The relay contract, both directions. A row that DECIDED affordability would pass
+## the case above by coincidence whenever the two happened to agree, so the other
+## direction is asserted too: a hero who CAN pay is given no refusal and no shortfall,
+## because the module published none. Silence here is the module's answer.
+func test_a_payable_hero_is_given_no_refusal_because_the_module_published_none() -> void:
+	var actor := _actor()
+	var def := _technique(&"qi_real_pays", PathState.QI)
+	TechniquesApi.codex(actor).learn(def.id)
+	actor.path(PathState.QI).progress = 100000.0
+
+	# The module answers "you can pay" and owes nothing.
+	var detail := TechniquesApi.inspect(actor, def.id)
+	assert_eq(bool(detail.get("can_pay", false)), true, "the module says it is payable")
+	assert_eq((detail.get("learn_short", []) as Array).size(), 0, "and nothing is short")
+
+	var codex := _codex()
+	codex.setup(actor)
+	var row := _entry_for(codex, def.id)
+	# The hero already holds it, so the row claims no cost whatever the module says
+	# about a duplicate — which is the rule, not a silence (DEF-0244). What matters
+	# here is that it INVENTS no shortfall: the module published none.
+	assert_eq(bool(row.get("can_pay", false)), false, "a held technique claims no cost")
+	assert_eq((row.get("learn_short", []) as Array).size(), 0, "and invents no shortfall")
+	assert_eq(String(row.get("note_line", "")), "", "so no refusal is drawn")
 
 
 ## And the screen relays the facade's answer when there IS one, so the seam a future

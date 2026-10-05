@@ -23,7 +23,9 @@ extends RefCounted
 ## **No `WorldPulse` id or `PERIOD_SECONDS` literal appears here or anywhere else in
 ## `src/ui/`.** Both are `app/`'s, a second copy would stay numerically identical and go
 ## silently wrong the day the cadence is retuned, and `tests/ui/test_world_pulse.gd`
-## fails the build if one appears.
+## fails the build if one appears. The retreat lengths below come from `TimeLadder`
+## instead, which is the ONE calendar (`core/` is a layer `ui/` may depend on), so the
+## cost line a player reads and the answer a retreat pays are two reads of one table.
 
 ## The root's callables. Null until the composition root fills it.
 var _bridge: WorldPulseBridge = null
@@ -50,6 +52,58 @@ func request_advance() -> Dictionary:
 	return _bridge.call_action(&"advance", [])
 
 
+## Whether the SEASON-SCALE verb is wired. Same decision as [method can_advance] and for
+## the same reason: an unwired action must read as unavailable rather than as a button
+## that renders and does nothing.
+func can_retreat() -> bool:
+	return _bridge != null and _bridge.has(&"retreat")
+
+
+## Ask to sit for `periods` — the player's chosen duration, which ADR 0167 makes the
+## cost rather than a menu entry. Returns the clock's own report, which answers
+## `declared`, `paid`, `unpaid` and the crossed `magnitudes`.
+func request_retreat(periods: int) -> Dictionary:
+	if not can_retreat():
+		return {"ok": false, "reason": "no_retreat"}
+	return _bridge.call_action(&"retreat", [periods])
+
+
+## ## The retreat lengths a player may choose, as primitives
+##
+## **Read from `TimeLadder.magnitudes()`, never from a list written here.** The ladder is
+## the one calendar (`core/` is a layer `ui/` may depend on, so this is legal), and a
+## second list of spans would be a second calendar that stays numerically identical until
+## the day someone retunes the authored `.tres`. Each row is a whole period count the
+## ladder itself authors, so every one of them is a span `TimeLadder.chunks_for` covers.
+##
+## **The base row is left out on purpose**: `period` is one period, which is what
+## [method request_advance] already pays and what the wait button says out loud. A
+## selector offering it would give a player two words for one verb.
+func retreat_spans() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for row in TimeLadder.magnitudes():
+		var magnitude := StringName(str(row.get("name", "")))
+		var ratio := int(row.get("ratio_periods", 0))
+		if magnitude == StringName() or magnitude == TimeLadder.BASE or ratio < 1:
+			continue
+		out.append({"magnitude": String(magnitude), "periods": ratio, "crossed": _crossed(ratio)})
+	return out
+
+
+## What `span_periods` crosses, as `{magnitude: whole count}`. The SSOT's own division,
+## so a preview and the paid report are two reads of one calendar rather than a forecast
+## computed beside the answer. The single fold is read back once per key — the loop walks
+## the dictionary that fold returned, which is the shape
+## `tests/arch_rules/test_no_unbounded_wait.gd` accepts.
+func _crossed(span_periods: int) -> Dictionary:
+	var out: Dictionary = {}
+	var crossed := TimeLadder.magnitudes_crossed(span_periods)
+	for entry in crossed:
+		if int(crossed[entry]) > 0:
+			out[String(str(entry))] = int(crossed[entry])
+	return out
+
+
 ## The whole world view as primitives. Every key is a primitive and nothing here is
 ## formatted — the panel owns every `%d`, every duration and every sentence.
 ##
@@ -60,6 +114,8 @@ func view(actor: Actor) -> Dictionary:
 	return {
 		"wired": not state.is_empty(),
 		"can_advance": can_advance(),
+		"can_retreat": can_retreat(),
+		"retreat_spans": retreat_spans(),
 		"periods": int(state.get("periods", 0)),
 		"period_count": int(state.get("period_count", 0)),
 		"period_seconds": float(state.get("period_seconds", 0.0)),

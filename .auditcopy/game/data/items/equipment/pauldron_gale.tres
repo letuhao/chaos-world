@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"pauldron_gale"
+display_name = "Gale Pauldrons"
+category = &"equipment"
+rarity = &"rare"
+realm = &"spirit_palace"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_defense_physical", "value": 18},
+	{"option_id": &"core_defense_spiritual", "value": 8},
+	{"option_id": &"core_poise", "value": 5},
+])
+roll_spec = {"count": 3, "contexts": ["prefix", "postfix"]}
+subcategory = &"armor"
+stackable = false
+grade = &"earth"
+sources = Array[StringName]([&"craft:pauldron_gale_recipe", &"domain:beast_venom_serpent_domain"])

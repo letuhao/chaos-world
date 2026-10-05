@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"cloak_traveler_recipe"
+display_name = "Traveler Cloak Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"cloak_moonweave_silk"])
+outputs = Array[StringName]([&"cloak_traveler"])

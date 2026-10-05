@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+; App-owned entry point for the item workbench. The screen itself — and every
+; widget in it — is composed in `res://src/ui/screens/item_workbench.tscn`,
+; which owns the root script. This scene exists so the composition root can mount
+; the UI program without `src/ui/` knowing anything about app wiring.
+
+[ext_resource type="PackedScene" path="res://src/ui/screens/item_workbench.tscn" id="1"]
+
+[node name="ItemWorkbench" instance=ExtResource("1")]

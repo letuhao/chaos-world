@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"M24_divine_zephyr_refined_alt_recipe"
+display_name = "M24 Divine Zephyr Refined Alt Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"M24_divine_zephyr_base", &"Q6_divine_daphne_cromlech", &"Q3_divine_crook_patina"])
+outputs = Array[StringName]([&"M24_divine_zephyr_refined"])

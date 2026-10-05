@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DestinyDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/destiny/destiny_def.gd" id="1_destiny"]
+
+[resource]
+script = ExtResource("1_destiny")
+group = &"origin"
+id = &"the_chosen_instrument"
+display_name = "The Chosen Instrument"
+description = "Heaven named a tool and the tool was made of you. The sect trains you accordingly, on the assumption that the instruction will not be withdrawn."
+bearing = "You are not a disciple who earned a title. You are equipment the sky requisitioned, and you have started answering to the requisition."
+tier = 2
+visibility = &"revealed"
+grants_fates = Array[StringName]([&"heaven_s_chosen_instrument", &"heaven_eye_circled_once"])
+requires_fates = Array[StringName]([&"reborn_in_a_lesser_vessel"])

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"Y22_immortal_seigneury_signet"
+display_name = "Immortal Seigneury Signet"
+category = &"currency"
+rarity = &"legendary"
+realm = &"primordial_immortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"trade_value", "value": 6},
+])
+roll_spec = {"count": 4, "contexts": ["base"]}
+subcategory = &"seal"
+grade = &"immortal"
+sources = Array[StringName]([&"gather", &"domain:qi_true_immortal_trial"])

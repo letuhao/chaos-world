@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"I59_spirit_grandam_perfected_recipe"
+display_name = "Spirit Grandam Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"I59_spirit_grandam_primed", &"Z37_spirit_spicule_metatarsal", &"qi_spirit_sea_cultivation_herb"])
+outputs = Array[StringName]([&"I59_spirit_grandam_perfected"])

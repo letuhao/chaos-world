@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"A11_immortal_azurite_refined"
+display_name = "Immortal Azurite Refined"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_damage_reduction", "value": 0.06},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"formula"
+grade = &"immortal"
+sources = Array[StringName]([&"craft:A11_immortal_azurite_refined_recipe", &"domain:body_tribulation_trial"])

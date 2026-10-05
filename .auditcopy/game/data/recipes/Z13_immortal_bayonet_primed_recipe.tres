@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Z13_immortal_bayonet_primed_recipe"
+display_name = "Immortal Bayonet Primed Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"Z13_immortal_bayonet_aged", &"qi_dao_fruit_qi_herb", &"qi_dao_fruit_cultivation_herb", &"Q8_immortal_dogwood_karst"])
+outputs = Array[StringName]([&"Z13_immortal_bayonet_primed"])

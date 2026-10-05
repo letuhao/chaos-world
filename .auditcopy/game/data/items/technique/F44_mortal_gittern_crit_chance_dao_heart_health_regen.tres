@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F44_mortal_gittern_crit_chance_dao_heart_health_regen"
+display_name = "Mortal Gittern Crit chance Dao heart Health regen"
+category = &"consumable"
+rarity = &"common"
+realm = &"nascent_soul"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_crit_chance", "value": 0.046},
+	{"option_id": &"core_dao_heart", "value": 7.15},
+	{"option_id": &"core_health_regen", "value": 7.15},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"jade_slip"
+grade = &"mortal"
+sources = Array[StringName]([&"gather", &"domain:qi_spirit_domain_domain"])

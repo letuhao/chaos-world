@@ -180,6 +180,13 @@ static func _pois(map: DomainMap, rects: Dictionary, discovered: Dictionary) -> 
 ## to you is a property of the room, and routing AROUND a hazard is only possible if
 ## you can see it before you are standing in it. Fearing the unknown is a different
 ## design from knowing where the lava is.
+##
+## `intensity` is the EFFECTIVE band and `authored_intensity` is what the `.tres` says,
+## so a weathered domain draws differently from an authored one and a screen can name
+## which it is showing (ADR 0213). `amount` and `authored_amount` are the same pair of
+## numbers one layer down — the cost rather than the band — because a floor plan that
+## draws "band 2" on a room running at band 3 today is the read model lying to the
+## player in the one place they use it to decide whether to walk in.
 static func _zones(map: DomainMap) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	for row in map.zones():
@@ -191,8 +198,12 @@ static func _zones(map: DomainMap) -> Array[Dictionary]:
 					"zone_id": String(row.get("zone_id", "")),
 					"kind": String(row.get("kind", "")),
 					"intensity": int(row.get("intensity", 1)),
+					"authored_intensity":
+					int(row.get("authored_intensity", row.get("intensity", 1))),
 					"severity":
 					String(SEVERITY_BY_INTENSITY.get(int(row.get("intensity", 1)), "low")),
+					"amount": float(row.get("amount", 0.0)),
+					"authored_amount": float(row.get("authored_amount", row.get("amount", 0.0))),
 					"mitigation_tags": _strings(row.get("mitigation_tags", [])),
 					"bounds": _box(row.get("bounds", [])),
 				}

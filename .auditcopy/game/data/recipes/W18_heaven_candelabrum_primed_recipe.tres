@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"W18_heaven_candelabrum_primed_recipe"
+display_name = "Heaven Candelabrum Primed Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"W18_heaven_candelabrum_aged", &"whistle_star_ore", &"scabbard_star_ore", &"gem_celestite"])
+outputs = Array[StringName]([&"W18_heaven_candelabrum_primed"])

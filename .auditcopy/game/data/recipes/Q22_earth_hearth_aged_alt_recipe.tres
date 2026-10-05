@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"Q22_earth_hearth_aged_alt_recipe"
+display_name = "Earth Hearth Aged (Alt) Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"Q22_earth_hearth_refined", &"ring_jade_ore", &"tablet_gold"])
+outputs = Array[StringName]([&"Q22_earth_hearth_aged"])

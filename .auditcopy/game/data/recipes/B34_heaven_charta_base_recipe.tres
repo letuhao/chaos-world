@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"B34_heaven_charta_base_recipe"
+display_name = "Heaven Charta Base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"belt_heaven_jade", &"X25_heaven_ordinance_rhyolite"])
+outputs = Array[StringName]([&"B34_heaven_charta_base"])

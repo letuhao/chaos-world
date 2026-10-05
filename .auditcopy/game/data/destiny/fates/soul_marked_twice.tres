@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="FateDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/destiny/fate_def.gd" id="1_fate"]
+
+[resource]
+script = ExtResource("1_fate")
+id = &"soul_marked_twice"
+display_name = "Soul Marked Twice"
+description = "Twice now the line has been written, and written by the same hand each time. The second mark is not the first one again; it is the first one acknowledged."
+category = &"rebirth"
+tier = 2
+visibility = &"revealed"
+counters = Array[StringName]([])
+tags = Array[StringName]([&"rebirth"])

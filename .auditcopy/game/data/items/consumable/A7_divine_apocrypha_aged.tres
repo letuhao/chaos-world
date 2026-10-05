@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"A7_divine_apocrypha_aged"
+display_name = "Divine Apocrypha Aged"
+category = &"consumable"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_max_stamina", "value": 56.52},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"talisman"
+grade = &"divine"
+sources = Array[StringName]([&"craft:A7_divine_apocrypha_aged_recipe", &"domain:marine_coral_leviathan_domain"])

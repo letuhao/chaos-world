@@ -91,6 +91,31 @@ const MAGNITUDES: Dictionary = {
 ## volume you route around, never a whole-domain flag.
 @export var bounds: Rect2i = Rect2i()
 
+## How QI-RICH this place is, as a bounded MULTIPLIER on cultivation gain (ADR 0214).
+##
+## ## A multiplier on the gain, never a magnitude and never a stat
+##
+## `1.0` is neutral — this place is neither rich nor thin. The authored band is
+## `[0.75, 1.25]` (`CultivationGain.QI_DENSITY_MIN`/`MAX`) and the value is CLAMPED on the
+## way in rather than refused, so a `.tres` authoring `3.0` gets the ceiling and the
+## content audit reports it.
+##
+## ## Why `verdant` finally means something
+##
+## `verdant` was authored with `SUBSTRATE_OVERGROWTH` on the qi path — "ambient qi flows
+## in unbidden and clogs a cultivator's channels" — and had NO reward attached to it, so a
+## zone that was pure hazard. With this field it is a trade: the qi path's cost is the
+## overgrowth, the reward is faster cultivation inside it. Under ADR 0210 leaving is free
+## and always correct, so a rich zone is the ONLY reason a player would ever stand in one,
+## and this is the field that pays them for it.
+##
+## ## NOT `inside_world_qi_density`
+##
+## That stat is the actor's PERSONAL inner-world reservoir (ADR 0018), published by
+## `core/inside_world_provider.gd:15`. This is a PLACE's ambient richness. Separate
+## numbers, separate homes; neither reads the other (`CultivationGain`'s docblock).
+@export var qi_density: float = CultivationGain.NEUTRAL
+
 
 func resolved_intensity() -> int:
 	return intensity if BANDS.has(intensity) else BAND_SCORCH
@@ -135,6 +160,10 @@ func to_dict() -> Dictionary:
 		"tags": tag_out,
 		"mitigation_tags": levers,
 		"bounds": [bounds.position.x, bounds.position.y, bounds.size.x, bounds.size.y],
+		# ADR 0214: the place's ambient cultivation multiplier travels with the zone,
+		# because a run is serialised through `RoomDef.to_dict` and a density that
+		# vanished on save would make a rich room worth nothing after a reload.
+		"qi_density": qi_density,
 	}
 
 
@@ -156,5 +185,11 @@ static func from_dict(data: Dictionary) -> EnvironmentZoneDef:
 	var box: Array = data.get("bounds", [0, 0, 0, 0])
 	zone.bounds = (
 		Rect2i(int(box[0]), int(box[1]), int(box[2]), int(box[3])) if box.size() == 4 else Rect2i()
+	)
+	# Clamped HERE as well as at publish, because this is the path a SAVED run takes: an
+	# out-of-band value must degrade to the authored ceiling on reload exactly as it does
+	# on first entry, or a hand-edited save would buy a multiplier the ADR forbids.
+	zone.qi_density = CultivationGain.clamp_density(
+		float(data.get("qi_density", CultivationGain.NEUTRAL))
 	)
 	return zone

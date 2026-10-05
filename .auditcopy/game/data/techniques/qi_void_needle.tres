@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"qi_void_needle"
+delivered_by = &"codex_void_serpent_coil"
+display_name = "Void Needle"
+description = "Sends one thread of qi past a body's defences instead of through them. Dark is strong against light and nothing else, so it is a specialist answer, not a default."
+tags = Array[StringName]([&"technique", &"dark", &"execute"])
+grade = &"immortal"
+rarity = &"rare"
+element = &"dark"
+schools = Array[StringName]([&"emitting", &"elemental"])
+active = true
+path = &"qi_cultivation"
+min_path_realm = {&"qi_cultivation": 27}
+qi_cost = 140.0
+stamina_cost = 16.0
+cooldown = 16.0
+mastery_rungs = 5
+magnitude = 3.2
+element_share = 0.8
+

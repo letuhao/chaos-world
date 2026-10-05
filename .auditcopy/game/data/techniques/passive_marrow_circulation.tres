@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"passive_marrow_circulation"
+delivered_by = &"dao_deep_heart"
+display_name = "Marrow Circulation Primer"
+description = "Teaches qi to take the short route through the long bones. Steadier qi control and better affinity to outside energy, and nothing that helps a strike land."
+tags = Array[StringName]([&"passive", &"qi", &"circulation"])
+grade = &"spirit"
+rarity = &"magic"
+element = &""
+schools = Array[StringName]([&"cultivation"])
+active = false
+path = &"qi_cultivation"
+min_path_realm = {&"qi_cultivation": 9}
+mastery_rungs = 5
+magnitude = 1.0
+passive_options = Array[Dictionary]([
+	{"option_id": &"cult_qi_control", "value": 6.0},
+	{"option_id": &"cult_qi_affinity", "value": 4.0},
+])
+

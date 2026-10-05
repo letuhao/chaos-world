@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"K26_immortal_tide_refined_alt_recipe"
+display_name = "K26 Immortal Tide Refined Alt Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"K26_immortal_tide_base", &"ore_phoenix_ash", &"grimoire_void_ink"])
+outputs = Array[StringName]([&"K26_immortal_tide_refined"])

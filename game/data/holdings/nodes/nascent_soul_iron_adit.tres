@@ -12,4 +12,4 @@ yield_per_period = 6
 upkeep_per_period = 2
 claim_cost = {"survey": 2}
 depletion = 40
-claim_floor = 20
+claim_floor = 2

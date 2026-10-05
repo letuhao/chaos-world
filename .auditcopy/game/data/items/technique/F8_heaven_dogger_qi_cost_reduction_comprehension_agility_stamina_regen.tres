@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F8_heaven_dogger_qi_cost_reduction_comprehension_agility_stamina_regen"
+display_name = "Heaven Dogger Qi Cost Reduction Comprehension Agility Stamina Regen"
+category = &"consumable"
+rarity = &"rare"
+realm = &"great_luo"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_qi_cost_reduction", "value": 0.05},
+	{"option_id": &"base_comprehension", "value": 28.05},
+	{"option_id": &"base_agility", "value": 28.05},
+	{"option_id": &"core_stamina_regen", "value": 28.05},
+])
+roll_spec = {"count": 3, "contexts": ["base", "prefix"]}
+subcategory = &"mantra"
+grade = &"heaven"
+sources = Array[StringName]([&"quest", &"domain:codex_iron_sage_domain"])

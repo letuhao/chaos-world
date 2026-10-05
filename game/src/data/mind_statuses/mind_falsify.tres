@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MindStatusDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/status/mind_status_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = &"mind_falsify"
+display_name = "Falsify"
+role = &"control"
+description = "The target's read of the world is authored false."
+payload = {
+"class": &"control",
+"shape": &"falsify",
+"battlefield": "mind_status_mastery_falsify",
+"resist_stat": "mind_composure_",
+"beat": 2.0,
+"steepness": 0.32,
+"floor_resist": 0.6,
+"headroom": 0.3,
+"duration": 5.0,
+"magnitude_cap": 0.4,
+"text": "Falsify. The eye is made to lie: the world is still where it was, but the mind has written a different account of it and the body believes the mind.",
+"modifiers": [{"stat": &"evasion", "op": &"flat", "value": -0.25}, {"stat": &"accuracy", "op": &"flat", "value": -0.2}]
+}

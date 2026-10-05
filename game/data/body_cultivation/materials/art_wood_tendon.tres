@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MaterialArtDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/body_cultivation/material_art_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"wood_tendon"
+display_name = "Wooden Tendon"
+best_against = "Snap and shear: a fibre body bends where bone breaks."
+material = &"wood"
+transforms_into = &"calf"
+draws_demand = &"speed"
+base_gain = 1.5
+price_drain = 6.0
+material_cost = 2
+material_item = &"wood_iron_bark"
+min_realm_index = 1

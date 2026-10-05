@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"U12_divine_sallet_primed_recipe"
+display_name = "Divine Sallet Primed Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"U12_divine_sallet_aged", &"Q3_divine_crook_bran", &"body_transcendent_tempering_herb", &"Q5_divine_cutlass_phylactery"])
+outputs = Array[StringName]([&"U12_divine_sallet_primed"])

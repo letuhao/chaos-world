@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"Y19_divine_laity_hoodoo"
+display_name = "Divine Laity Hoodoo"
+category = &"misc"
+rarity = &"legendary"
+realm = &"dao_ancestor"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"craft_potency", "value": 36.58},
+	{"option_id": &"trade_value", "value": 18},
+])
+roll_spec = {"count": 4, "contexts": ["base", "prefix"]}
+subcategory = &"charm"
+grade = &"divine"
+sources = Array[StringName]([&"quest", &"domain:qi_great_luo_domain"])

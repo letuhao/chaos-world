@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"regalia_serpent_coil_recipe"
+display_name = "Serpent Coil Regalia Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"ore_dragonbone", &"sap_ooze"])
+outputs = Array[StringName]([&"regalia_serpent_coil"])

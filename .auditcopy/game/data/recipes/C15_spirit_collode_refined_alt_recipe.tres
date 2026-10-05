@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"C15_spirit_collode_refined_alt_recipe"
+display_name = "Spirit Collode Refined (Alt) Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"C15_spirit_collode_base", &"W9_spirit_caltrops_malachite", &"herb_frostmint"])
+outputs = Array[StringName]([&"C15_spirit_collode_refined"])

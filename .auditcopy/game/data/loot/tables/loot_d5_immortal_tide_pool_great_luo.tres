@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"d5_immortal_tide_great_luo_0"
+kind = &"item"
+item_id = &"F11_heaven_dross_agility_aptitude_attack_spiritual_evasion"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"d5_immortal_tide_great_luo_1"
+kind = &"item"
+item_id = &"I66_heaven_grouch_base"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"rare"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"d5_immortal_tide_great_luo_2"
+kind = &"item"
+item_id = &"W4_immortal_arbour_fawn"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_d5_immortal_tide_pool_great_luo"
+display_name = "Immortal Tide Lesser salvage (great_luo)"
+realm = &"great_luo"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2")
+])

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F44_spirit_gimball_dao_heart_health_regen_spirit"
+display_name = "Spirit Gimball Dao heart Health regen Spirit"
+category = &"consumable"
+rarity = &"magic"
+realm = &"spirit_unity"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_dao_heart", "value": 16.5},
+	{"option_id": &"core_health_regen", "value": 16.5},
+	{"option_id": &"base_spirit", "value": 16.5},
+])
+roll_spec = {"count": 2, "contexts": ["base", "prefix"]}
+subcategory = &"jade_slip"
+grade = &"spirit"
+sources = Array[StringName]([&"quest", &"domain:qi_spirit_condensation_domain"])

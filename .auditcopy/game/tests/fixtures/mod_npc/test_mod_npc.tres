@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="NpcDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/npc/npc_def.gd" id="1_npc"]
+
+[resource]
+script = ExtResource("1_npc")
+npc_id = &"test_mod_npc"
+display_name = "Test Mod NPC"
+inhabitant_id = &"ironhide_bear"
+tier = &"minor"
+faction = &"body_dao"
+tags = Array[StringName]([&"test"])
+realm_id = &"qi_refining"
+base = {}
+stages = []
+initial_stage = &""

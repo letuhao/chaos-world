@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"K27_immortal_ash_perfected_recipe"
+display_name = "Immortal Ash Perfected Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"K27_immortal_ash_primed", &"qi_true_immortal_qi_herb"])
+outputs = Array[StringName]([&"K27_immortal_ash_perfected"])

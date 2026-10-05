@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"G11_heaven_bloom_recipe"
+display_name = "Heaven Bloom Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"G11_earth_bloom", &"ore_heavenly_jade"])
+outputs = Array[StringName]([&"G11_heaven_bloom"])

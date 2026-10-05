@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"G7_earth_leather_recipe"
+display_name = "Earth Leather Recipe"
+station = &"forge"
+inputs = Array[StringName]([&"scale_basilisk", &"scale_wyvern"])
+outputs = Array[StringName]([&"G7_earth_leather"])

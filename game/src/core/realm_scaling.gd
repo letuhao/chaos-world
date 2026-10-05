@@ -11,6 +11,44 @@ extends RefCounted
 ## next door to this one.
 
 const SOURCE := &"realm"
+
+## ## ADR 0200: every RESISTANCE-LIKE magnitude moved onto this list
+##
+## This list used to be seven ids: the four attack/defense halves plus hp, qi and stamina.
+## That is exactly the asymmetry that made mitigation collapse: the attacker's elemental
+## power rode a 551x ladder while the defender's elemental mitigation stayed where it was
+## authored, so by R3 the defense term was noise and the only thing a designer could read
+## as "the mitigation number" was a CAP.
+##
+## ## `STATUS_DEFENSE`, and why the old `STATUS_RESISTANCE` cap had to die with it
+##
+## `status_resistance` was `minf(0.8, will * 0.003)` — a percent whose ceiling needed
+## `will >= 250` against an authored `base_will` topping out at 54.9 (DEF-0262), so it was
+## a dead stat at every realm a player could reach. It is now `status_defense`, an
+## unbounded MAGNITUDE feeding ADR 0200's ratio, and it is here on the ladder because a
+## magnitude is exactly what the ladder SHOULD scale. `mind_cultivation` and
+## `status/mind_*` are other live sessions' files, so `StatusApply` keeps reading the id it
+## has always read through `CombatTuning`'s prefix rather than a renamed const landing here
+## under them; the id STRING is what changed, and the const name records the new shape.
+##
+## ## `element_defense_<e>` is NOT here, and cannot be
+##
+## The per-element ids are built from the element id at read time, so a static list cannot
+## hold them. `elements/api.gd:apply_realm_modifiers` writes that channel's realm `MULT`
+## itself, in the same shape and under this same `SOURCE`, which is why it also has to
+## re-write the half after every `RealmScaling.apply` (that call clears `SOURCE`
+## wholesale). That is the same arrangement `element_power_<e>` already had, and
+## `test_element_stat_publication.gd` pins both halves' behaviour.
+##
+## ## What is deliberately NOT here
+##
+## Every RATE: `ATTACK_SPEED`, `COOLDOWN_REDUCTION`, `QI_COST_REDUCTION`, `EVASION`,
+## `CRIT_CHANCE`. ADR 0200's own test is the distinction — "a cap on a mitigation or defense
+## axis dies because that axis must scale with the ladder; a cap on a rate axis stays,
+## because rate is not what power creep rides" — and AGENTS.md's realm-scale section is
+## sharper still: a rate must NEVER track a magnitude (ADR 0050). `MOVE_SPEED` is a
+## magnitude but is left out because nothing on the combat path reads it and scaling it is
+## a movement decision, not a combat one.
 const SCALED_STATS := [
 	Stat.MAX_HEALTH,
 	Stat.MAX_QI,
@@ -19,6 +57,7 @@ const SCALED_STATS := [
 	Stat.ATTACK_SPIRITUAL,
 	Stat.DEFENSE_PHYSICAL,
 	Stat.DEFENSE_SPIRITUAL,
+	Stat.STATUS_DEFENSE,
 ]
 
 

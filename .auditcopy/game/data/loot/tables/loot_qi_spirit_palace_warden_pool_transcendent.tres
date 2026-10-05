@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="LootTableDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/modules/loot/loot_table_def.gd" id="1_table"]
+[ext_resource type="Script" path="res://src/modules/loot/loot_entry.gd" id="2_entry"]
+
+[sub_resource type="Resource" id="entry_0"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_palace_warden_transcendent_0"
+kind = &"item"
+item_id = &"T12_divine_spelt_perfected"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_1"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_palace_warden_transcendent_1"
+kind = &"item"
+item_id = &"T2_divine_linden_threshold"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[sub_resource type="Resource" id="entry_2"]
+script = ExtResource("2_entry")
+id = &"qi_spirit_palace_warden_transcendent_2"
+kind = &"item"
+item_id = &"Z5_divine_aval_refined"
+table_id = &""
+weight = 1.
+chance = -1.0
+guaranteed = false
+quantity = 1
+rarity_floor = &"legendary"
+
+[resource]
+script = ExtResource("1_table")
+id = &"loot_qi_spirit_palace_warden_pool_transcendent"
+display_name = "Spirit Palace Warden salvage (transcendent)"
+realm = &"transcendent"
+rarity = &""
+rolls = 1
+allow_empty = false
+entries = Array[LootEntry]([
+	SubResource("entry_0"),
+	SubResource("entry_1"),
+	SubResource("entry_2")
+])

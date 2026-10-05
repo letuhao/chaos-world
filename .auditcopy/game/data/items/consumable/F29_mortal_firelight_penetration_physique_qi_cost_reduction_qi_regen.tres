@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"F29_mortal_firelight_penetration_physique_qi_cost_reduction_qi_regen"
+display_name = "Mortal Firelight Penetration Physique Qi cost reduction Qi regen"
+category = &"consumable"
+rarity = &"common"
+realm = &"spirit_transformation"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_penetration", "value": 7.7},
+	{"option_id": &"base_physique", "value": 7.7},
+	{"option_id": &"core_qi_cost_reduction", "value": 0.04},
+	{"option_id": &"core_qi_regen", "value": 7.7},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"grease"
+grade = &"mortal"
+sources = Array[StringName]([&"quest", &"domain:qi_tribulation_trial"])

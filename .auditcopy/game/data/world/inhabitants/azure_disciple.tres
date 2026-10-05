@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WorldInhabitantDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/world/world_inhabitant_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+inhabitant_id = &"azure_disciple"
+display_name = "Azure Disciple"
+type = &"humanoid"
+tier_ids = Array[StringName]([&"spirit_world", &"immortal_world", &"transcendent_world"])
+loyalty_min = 0.3
+loyalty_max = 0.9
+combat_power_min = 20.0
+combat_power_max = 200.0

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TechniqueDef" format=3]
+
+[ext_resource type="Script" path="res://src/modules/techniques/technique_def.gd" id="1_def"]
+[resource]
+script = ExtResource("1_def")
+id = &"mind_illusion_lattice"
+delivered_by = &"codex_storm_phoenix_wing"
+display_name = "Illusion Lattice"
+description = "Builds a lattice of false readings and leaves it standing around the practitioner. Unelemental, sustained, and priced by clarity rather than by qi."
+tags = Array[StringName]([&"technique", &"mind", &"illusion", &"no_element"])
+grade = &"spirit"
+rarity = &"rare"
+element = &""
+schools = Array[StringName]([&"mind"])
+active = true
+path = &"mind_cultivation"
+min_path_realm = {&"mind_cultivation": 16}
+qi_cost = 44.0
+stamina_cost = 8.0
+cooldown = 24.0
+mastery_rungs = 5
+magnitude = 1.5
+mind_kind = &"obscure"
+

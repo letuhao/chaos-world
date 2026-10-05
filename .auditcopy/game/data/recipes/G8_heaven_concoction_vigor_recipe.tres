@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"G8_heaven_concoction_vigor_recipe"
+display_name = "Refined Vigor Elixir Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"G8_heaven_concoction", &"herb_dragonwhisker"])
+outputs = Array[StringName]([&"panacea_vigor_elixir"])

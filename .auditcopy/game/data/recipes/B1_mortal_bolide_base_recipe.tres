@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RecipeDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/recipe_def.gd" id="1_recipe"]
+
+[resource]
+script = ExtResource("1_recipe")
+id = &"B1_mortal_bolide_base_recipe"
+display_name = "Mortal Bolide Base Recipe"
+station = &"alchemy"
+inputs = Array[StringName]([&"venom_nightshade_herb", &"Z40_mortal_dolomite_cippus"])
+outputs = Array[StringName]([&"B1_mortal_bolide_base"])
