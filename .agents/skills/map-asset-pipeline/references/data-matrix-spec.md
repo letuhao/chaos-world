@@ -1,229 +1,114 @@
-# World Map Asset Data Matrix Specification
+# Map asset data and geometry
 
-This document defines the normative data structure, schemas, and semantic invariants for all Chaos World top-down map assets. It bridges raw generative art cutouts and engine gameplay systems (Godot 4 action RPG with cultivation, pathfinding, combat physics, environmental destruction, and domain management).
+Read this when inspecting catalog records, composing a kit, recovering sources, or working on collision metadata. [Map assets](../../../../tools/map_assets.py), [composition](../../../../tools/map_layout.py), and the [art direction](../../../../docs/art-direction.md) own the supported contract; this reference identifies decisions that pixel coverage cannot make.
 
----
+## Catalog versus diagnostic output
 
-## 1. Storage & Provenance Contract
+`game/assets/map-asset-index.jsonl` is the supported asset catalog. The skill's scripts emit experimental analysis under `build/mapdata/`. These are separate schemas: do not paste diagnostic records into the catalog or treat authored semantics as implemented gameplay.
 
-To prevent git repository bloat while preserving 100% loss-free derivation reversibility:
+| Catalog field | Meaning and review |
+| --- | --- |
+| `id`, `archetype` | Asset identity and reusable role; select existing catalog IDs rather than inventing them during installation. |
+| `environment`, `environment_name`, `environment_theme`, `world_tier` | Generation context. `map_theme check` compares the theme with the authored tool data. |
+| `type`, `category`, `name` | Rendering role and catalog classification. Read accepted values from the CLI/code. |
+| `path` | PNG under `res://assets/world_map/`; `res://` resolves inside `game/`. |
+| `canvas_px` | Actual PNG dimensions, independent of its world footprint. |
+| `footprint_cells` | Authored positive `[columns, rows]` in the 128 px reference unit. |
+| `alpha` | `opaque` or `transparent`; use the declared mode, including for tiles. |
+| `pivot` | `center` or `bottom_center`, not a numeric pixel coordinate. |
+| `collision` | `none` or `solid`; a coarse role, not a detailed geometry mask. |
+| `status` | `planned`, `generated`, or `approved`; approval also needs `approved_by`. |
+| `source`, `license`, `generated_on`, `prompt_ref`, `prompt`, `reference_ids` | Verifiable origin, actual terms, ISO date, exact production prompt, and guidance references. |
+| `negative_prompt`, `generation_settings` | Written by direct local generation: model, seed, sampling, LoRA and cutout settings. Manual installation does not populate them automatically. |
+| `source_images` | Archived PNGs with repository-relative `path`, full `sha256`, `size_px`, and copied provenance. |
 
-| Tier | Path | VCS Status | Description |
-| :--- | :--- | :--- | :--- |
-| **Original (Lossless)** | `art-source/map-originals/<env>/<cat>/<asset_id>__<sha256_16>.png` | **Gitignored** | Full-resolution ComfyUI output (1024–2048px) containing generation metadata (prompt, seed, model parameters). |
-| **Runtime (Lossy/Trimmed)** | `game/assets/world_map/<env>/<cat>/<suffix>.png` | **Committed** | Scaled, alpha-trimmed, alpha-padded ($16\text{px}$ border, bottom-aligned) runtime sprite fitted to cell multiples ($128\text{px}$). |
-| **Index (Ledger)** | `game/assets/map-asset-index.jsonl` | **Committed** | Single source of truth registering every asset, its authored grid footprint, and the SHA-256 digest of its source image. |
+`assets map audit` checks identity/path uniqueness and containment, declared fields, generated files, dimensions, alpha mode, and provenance. It checks hashes and dimensions when `source_images` is present, but does not require that field on every legacy record. New installations archive their source; identify legacy provenance gaps explicitly. The audit cannot judge the camera, subject, cutout quality, or whether a gameplay system reads an asset.
 
-### Reversibility Invariant
-Every committed runtime asset must trace to its raw source via `source_images[].sha256`. If alpha erode passes, cutout algorithms, or color grading are refined in future iterations, runtime assets are re-derived deterministically without regenerating prompts:
-```bash
-uv run python -m tools assets map recover-originals
-uv run python .agents/skills/map-asset-pipeline/scripts/derive.py
-```
+## Editable grid composition
 
----
-
-## 2. Master Asset Data Schema
-
-When processed by `derive.py` and `subcell.py`, every asset produces a structured dictionary matching the JSON specification below:
+Choose actual generated/approved IDs from one environment. This example is a layout template; replace its placeholders and save it under `build/`:
 
 ```json
 {
-  "id": "mortal_greenwood.settlement_and_domain_prop.storehouse",
-  "archetype": "settlement_and_domain_prop.storehouse",
-  "category": "settlement_and_domain_prop",
-  "environment": "mortal_greenwood",
-  "path": "res://assets/world_map/mortal_greenwood/settlement_and_domain_prop/storehouse.png",
-  "canvas_px": [512, 512],
-  "cell_px": 128,
-  "grid": [4, 4],
-  "pivot": [256, 512],
-  "coverage": [
-    [0.0, 0.12, 0.45, 0.0],
-    [0.15, 0.88, 0.95, 0.22],
-    [0.42, 1.0, 1.0, 0.55],
-    [0.11, 0.92, 0.94, 0.18]
-  ],
-  "blocks": [
-    [false, false, true, false],
-    [false, true, true, false],
-    [true, true, true, true],
-    [false, true, true, false]
-  ],
-  "walk_surface": [
-    [false, false, false, false],
-    [false, false, false, false],
-    [false, false, false, false],
-    [false, false, false, false]
-  ],
-  "block_cell_count": 8,
-  "sem": {
-    "archetype": "settlement_and_domain_prop.storehouse",
-    "occluder_rule": "full_body",
-    "cov_gate": 0.20,
-    "small_cov_gate": 0.10,
-    "passable_under": false,
-    "walk_surface": false,
-    "blocks_sight": true,
-    "blocks_projectile": true,
-    "vision_mode": "solid",
-    "acoustic_profile": "wood",
-    "material": "wood",
-    "elevation": 1,
-    "authored_open": "",
-    "destructible": {
-      "enabled": true,
-      "tier": 2,
-      "hp": 60,
-      "on_destroy": "stone_and_ore.rubble",
-      "unique_destroyed_archetype": null,
-      "elemental_vulnerabilities": ["fire", "slash"],
-      "reveals_loot_category": "timber"
-    },
-    "interact": {
-      "verb": "enter",
-      "reach_cells": 1,
-      "from_adjacent": true
-    },
-    "cultivation": {
-      "element": "wood",
-      "qi_affinity": "ambient_absorb",
-      "qi_density_modifier": 1.0,
-      "resonance_radius_cells": 0,
-      "feng_shui_direction": "neutral"
-    },
-    "resource": null,
-    "scale_profile": {
-      "min_scale": 0.85,
-      "max_scale": 1.6,
-      "default_scale": 1.0,
-      "scale_mode": "stepped",
-      "contact_rule": "constant_subcell"
-    }
-  }
+  "id": "environment_scale_review",
+  "terrain_id": "<opaque-terrain-texture-id>",
+  "grid": {"cell_px": 128, "columns": 8, "rows": 8},
+  "show_grid": true,
+  "placements": [
+    {"asset_id": "<blocker-id>", "cell": [1, 1], "scale": 1.0, "overlap": "forbid"},
+    {"asset_id": "<resource-node-id>", "cell": [5, 5], "scale": 1.0, "overlap": "allow"}
+  ]
 }
 ```
 
----
+- Grid extent, optionally offset by `grid.origin_px`, must fit inside the terrain image; the example assumes 1024×1024 terrain.
+- `cell` names the top-left footprint cell. The compositor fits the entire sprite canvas to `footprint_cells × grid.cell_px`, then applies placement scale and pivot alignment.
+- `center` centers in the footprint; `bottom_center` aligns to its bottom edge. Visible pixels must fit the grid and canvas even after scaling.
+- `overlap: forbid` reserves grid cells touched by alpha at least 128. `allow` permits intentional visual layering. Default overlap depends on the catalog's coarse `collision` role.
+- The overlap mask counts canopy art and painted shadows too. It is not contact geometry. A canopy may overlap a path visually while its trunk still blocks navigation.
+- Output: `build/map-compositions/<id>.png`. Preserve the JSON and independent sprites as editable layers; inspect the actual image before reporting acceptance.
 
-## 3. Subsystem Field Definitions
+## Storage and source identity
 
-### 3.1 Spatial & Collision Geometry
+| Storage | Purpose |
+| --- | --- |
+| `build/map-generated/` | Local candidates; disposable generation output. |
+| `art-source/map-originals/<environment>/<category>/` | Gitignored archive of untouched input PNG bytes. File names contain the asset ID with dots replaced by double underscores and a 16-character hash prefix. |
+| `game/assets/world_map/<environment>/<category>/` | Normalized runtime PNGs; commit with generated import sidecars when present. |
+| `game/assets/map-asset-index.jsonl` | Committed catalog and source mappings; no separate provenance ledger. |
 
-* **`grid`** `[cols: int, rows: int]`: Authored footprint in data cells ($128\times 128\text{ px}$).
-* **`occluder_rule`** `str`:
-  * `"ground_contact"`: Only the bottom cell row can block; all cells above are canopy overhang or upper trunk.
-  * `"full_body"`: Standard solid body; cells block if alpha coverage $\ge \text{cov\_gate}$.
-  * `"core_ring"`: Outer boundary blocks, central opening stays passable (doors, ruined arches, gates).
-  * `"none"`: Never blocks navigation regardless of visual density (grass, decals, leaves, flowers).
-* **`cov_gate`** `float`: Minimum alpha coverage threshold ($0.0\text{--}1.0$) for a cell to block. Defaults to $0.20$; single-cell props use $0.10$; ground-contact props use $0.02$.
-* **`passable_under`** `bool`: `true` if characters can navigate beneath the upper sprite canopy/roof.
-* **`walk_surface`** `bool`: `true` for bridges, ramps, and fallen logs that provide a valid walking surface above water or elevation drops.
-* **`block_rect`** `[x0, y0, x1, y1] | null`: Precise sub-cell contact patch derived by `subcell.py` at $32\text{ px}$ resolution. Decouples narrow trunks ($30\text{ px}$) from wide canopies ($256\text{ px}$).
+Transparent installation crops at the tool's alpha crop threshold, keeps soft edges within that crop, fits inside a 16 px margin without enlarging the subject, and pads at the indexed pivot. Opaque installation requires full opacity and resizes to the indexed canvas. Both can lose source detail; PNG encoding itself is lossless.
 
----
+`source_images[].sha256` hashes the archived bytes, not the normalized runtime sprite. Archival is byte-preserving for the supplied PNG; it does not guarantee embedded prompt/seed metadata, a pre-cutout source, or reproducible diffusion output across different model/runtime versions. Direct local generation normally supplies the workflow's final output, including background removal for transparent props.
 
-### 3.2 Combat, Projectiles & Vision (Cross-Genre Layer)
+Archive a known source for an existing generated/approved asset:
 
-* **`blocks_projectile`** `bool`:
-  * `false`: Arrows, throwing daggers, martial qi blasts, and flying swords can fly over this cell (e.g. low fences, streams, shallow water, low fallen logs, floor traps).
-  * `true`: Solid obstacles that collide with and intercept projectiles (boulders, thick trees, walls).
-* **`vision_mode`** `str`:
-  * `"solid"`: Completely opaque to RayCast Line-of-Sight and Fog of War (walls, large cliffs).
-  * `"canopy"`: Vision raycasts pass through underneath; canopy alpha fades when the player enters the footprint.
-  * `"brush"`: Concealment zone (e.g., tall bamboo, shrubs, reed beds). Characters inside gain stealth; units outside cannot target or see inside unless within detection range.
-  * `"transparent"`: Clear vision (open ground, paths, low details).
-* **`acoustic_profile`** `str`: Footstep and impact sound group (`"earth"`, `"foliage"`, `"wood"`, `"stone"`, `"metal"`, `"crystal"`, `"water"`, `"spirit"`, `"cloth"`). Drives audio bus DSP filters and stealth detection radiuses.
-
----
-
-### 3.3 Destruction & Interactive States (Cost-Optimized Hybrid Model)
-
-To avoid astronomical image generation costs for hundreds of bespoke destroyed states:
-
-* **Generic Fallback Archetype (`on_destroy`)**:
-  * Instead of generating an individualized broken PNG for every rock, crate, and tree, destruction replaces the prop with a shared generic archetype:
-    * Wood / Stone / Metal / Crystal $\to$ `"stone_and_ore.rubble"`
-    * Earth / Mud $\to$ `"ground_tile.cracked_ground"`
-    * Foliage / Crops $\to$ `"landmark_and_environment_detail.ground_decal"`
-  * Swapping to the fallback immediately frees upper blocked cells and lowers elevation.
-* **Unique Broken Archetypes (`unique_destroyed_archetype`)**:
-  * Reserved strictly for high-impact landmarks, story shrines, or boss arena anchors (e.g. `"unique_ruined_altar"`). Defaults to `null`.
-* **Break Requirements & Vulnerabilities**:
-  * **`tier`** `int`: Required cultivation or tool grade:
-    * Tier 1: Mortal hands / basic tools
-    * Tier 2: Refined mortal iron / Qi Condensation stage
-    * Tier 3: Foundation Establishment spiritual weapons
-    * Tier 4: Core Formation / Spirit Treasure grade
-  * **`hp`** `int`: Durability pool before transitioning to the destroyed state.
-  * **`elemental_vulnerabilities`** `list[str]`: Extra damage multipliers (`"fire"`, `"water"`, `"earth"`, `"metal"`, `"wood"`, `"slash"`, `"crush"`, `"corrosion"`).
-  * **`reveals_loot_category`** `str | null`: Item family dropped upon demolition (`"timber"`, `"ore"`, `"stone"`, `"herb"`).
-
----
-
-### 3.4 Cultivation Leyline & Spiritual Resonance
-
-Integrates world-map props into the cultivation progression loop (*Amazing Cultivation Simulator* / *Tale of Immortal* paradigms):
-
-* **`element`** `str`: Five Elements system (`"metal"`, `"wood"`, `"water"`, `"fire"`, `"earth"`, `"spirit"`, `"void"`, `"none"`).
-* **`qi_affinity`** `str`:
-  * `"ambient_absorb"`: Siphon spiritual qi from the surrounding chunk (e.g. withered demonic trees).
-  * `"ambient_emit"`: Radiates spiritual aura into neighboring cells (e.g. spirit springs, ancient spirit trees).
-  * `"condensed_vein"`: Static leyline anchor cell; provides cultivation speed multipliers during breakthrough meditation.
-  * `"neutral"`: Ordinary mundane matter.
-* **`qi_density_modifier`** `float`: Base multiplier on cell spiritual density ($0.5\times\text{ to }3.0\times$).
-* **`resonance_radius_cells`** `int`: Aura propagation radius in cells ($0\text{--}4$).
-* **`feng_shui_direction`** `str`: Elemental polarity (`"yin"`, `"yang"`, `"neutral"`).
-
----
-
-### 3.5 Resource Nodes & Reversibility
-
-* **`resource_type`** `str`: Node classification (`"herb"`, `"ore"`, `"crystal"`, `"timber"`, `"water"`, `"qi_shard"`, `"relic"`).
-* **`base_yield`** `int`: Base item quantity harvested.
-* **`respawn_turns`** `int`: Turn count or in-game hours before the node regenerates. If $0$, non-renewable until world realm shifts.
-* **`min_realm_tier`** `int`: Minimum character realm rank ($1\text{--}30$) required to harvest without backlash or destruction.
-* **`harvest_tool_tag`** `str`: Tool requirement (`"sickle"`, `"pickaxe"`, `"spiritual_gourd"`, `"axe"`, `"bare_hands"`).
-* **State Preservation & Reversibility**:
-  * Harvested nodes maintain an in-memory state tracking `(cell_x, cell_y, original_archetype, depleted_turns_left)`.
-  * Allows non-destructive restoration upon game load or seasonal spiritual resets.
-
----
-
-### 3.6 Dynamic Scale Profiles
-
-Decouples visual sprite scale from physical contact collision:
-
-* **Tiers**: `[0.85, 1.0, 1.15, 1.35, 1.6]`.
-* **`contact_rule`**:
-  * `"constant_subcell"`: Between $0.85\times$ and $1.35\times$, physical trunk collision is locked to $1$ sub-cell ($32\text{ px}$). The canopy scales visually, but the player pathing corridor remains unaffected.
-  * Only past the $1.35\times$ threshold does `rect_at_scale()` expand the blocked footprint.
-* **`scale_mode`**: `"stepped"` (discrete tiers for deterministic collision pre-computation) vs `"constant"`.
-
----
-
-## 4. Verification & Quality Invariants
-
-Quality verification is divided between **Agent Computer Vision Inspection** and **Automated Mathematical Tool Verification**:
-
-### 4.1 Generating Agent Computer Vision Review Checklist
-The generating/reviewing agent must visually inspect every rendered sprite using multimodal vision to verify:
-1. **Single Subject**: Strictly one centered prop; no secondary objects, floating fragments, or frames.
-2. **Oblique Perspective**: Top-down $\sim 45^\circ$ angle matching the world-map camera standard (never flat side-view).
-3. **Lighting Vector**: Consistent upper-left ($315^\circ$) directional illumination and cast shadows.
-4. **Palette Adherence**: Color tones conform to the target environment without out-of-lore saturation.
-5. **Clean Contours**: No halo fringing, white borders, or green-screen matting artifacts.
-6. **Bottom Alignment**: Trunk or base cleanly anchors to the bottom margin for ground placement.
-
-### 4.2 Automated Mathematical Tool Invariants
-The data matrix and pixel geometry are mathematically audited by running:
-```bash
-uv run python .agents/skills/map-asset-pipeline/scripts/audit.py
+```text
+uv run python -m tools assets map preserve-original --asset-id <catalog-id> --source "<known-original.png>"
 ```
-All assets must satisfy:
-1. **Zero Phantom Occlusion**: No cell may be marked `blocks=True` if measured alpha coverage $< \text{cov\_gate}$.
-2. **Canopy Openings**: Tree canopies with `passable_under=True` must not have fully covered blocking cells.
-3. **Bottom-Row Trunk Anchor**: Ground-contact props must never block rows above `rows - 1`.
-4. **Footprint Narrowing**: $100\%$ of single-stem trees must block $\le 1$ cell wide at $1.0\times$ scale.
-5. **Passable Archways**: Gates and arches with `core_ring` must maintain passable passage cells.
-6. **Contact Width Thresholds**: `subcell.py` checks that contact width is sufficient for the declared cell footprint.
+
+`preserve-original` copies the record's provenance onto that source; verify the source belongs to the recorded run before using it. When a pre-cutout render exists, preserve it in addition to the installed cutout. Different hashes can coexist in `source_images`; distinguish them by inspected content and run evidence. Do not invent an unavailable original or substitute the runtime sprite as raw generation evidence.
+
+For legacy assets without mapped originals:
+
+```text
+uv run python -m tools assets map recover-originals --source-root "<local-original-directory>"
+```
+
+Inspect `build/map-original-recovery.jsonl` and compare candidate images. The matcher uses a generated-date window and alpha profile, not exact content identity; `high_confidence` is a heuristic. Ambiguous or missing matches remain unresolved. Prefer `preserve-original` for a verified source. `recover-originals --apply` archives only high-confidence proposals; review all of those before applying because it has no asset-ID selection flag. Existing mappings are skipped.
+
+Recovery does not remove backgrounds, resize sprites, or rebuild collision. Re-normalizing a verified source uses the normal installer and its replacement rules. Lost pre-cutout pixels cannot be recovered from an archived cutout. Local originals must be restored separately on a fresh checkout because catalog auditing verifies the files they reference.
+
+## Geometry and gameplay review
+
+Treat these as acceptance criteria for a requested collision workflow, not as a statement that the current game implements them:
+
+- Rendering canvas, visual footprint, ground contact, and interaction reach are different quantities. Resolution changes must not silently change authored world size.
+- Navigation, walk surfaces, projectiles, and sight need separately owned rules. A water obstacle can block walking while allowing projectiles; alpha alone cannot establish either behavior.
+- `none` must stay nonblocking at every supported scale. Decorative density or a painted shadow cannot create a blocker.
+- `ground_contact` describes a base/trunk distinct from canopy overhang. Validate a measurable contact region at the pivot; do not turn a sparse or failed cutout into a healthy blocker by silently imposing a minimum.
+- `full_body` uses authored coverage thresholds; test the resulting collision against intended solid material.
+- `core_ring` needs a traversable authored opening. A bounding rectangle around pillars cannot represent a doorway; preserve the opening in every consumer and scale profile.
+- `walk_surface` must provide a connected usable surface and access from its surroundings. A coverage count alone does not prove a bridge is traversable.
+- Check coordinate space, crop/padding offset, pivot and scale together. Inclusive cell rectangles `[x0,y0,x1,y1]` differ from half-open pixel rectangles `[left,top,right,bottom]`.
+- Keep visual scale separate from contact scale. Use the consumer's authored rule; do not claim that a 32 px measurement implies 32 px runtime collision.
+- After harvesting or destruction, verify the resolved replacement/state and resulting geometry; no stale blocker or disconnected interaction. These tests belong to the actual runtime owner.
+
+For any requested runtime change, trace the responsible facade and consumer first. Test observable behavior: a unit can pass the arch but cannot enter a pillar, travel across the bridge from both ends, collide with the intended trunk under its canopy, and navigate after destruction/restoration. Only add the cases relevant to the requested feature.
+
+## Bundled diagnostic scripts
+
+These scripts are retained for inspection of existing experiments. They are not registered `tools` entrypoints; do not run them directly or cite a successful process exit as a quality gate.
+
+| Script | Actual role and limitation |
+| --- | --- |
+| [semantics.py](../scripts/semantics.py) | Archetype-level authored candidates for contact, interaction, material, destruction, vision, audio, cultivation, resources, and scale. Values are not engine contracts. |
+| [derive.py](../scripts/derive.py) | Builds `mapdata/cells@1` in `build/mapdata/cells.json`: coverage, blocking/walk masks, semantic metadata, and `issues`/`failed`. It measures runtime art; it does not re-bake images or emit dedicated projectile/vision masks. Findings do not produce a failure exit. |
+| [subcell.py](../scripts/subcell.py) | Builds `mapdata/subcell@2` in `build/mapdata/subcell.json`: cropped 32 px fill, contact estimates, rectangles, and scale variants. Read `failed` and `art_defects`; reported output is not an enforced gate. |
+| [audit.py](../scripts/audit.py) | Prints geometry diagnostics. It returns success even with findings, can skip missing subcell output, and samples some archetypes. It is not proof of zero defects. |
+
+The prototype scale list and thresholds belong to `subcell.py`. Its `block_rect` is in inclusive 128 px cell coordinates; `block_rect_px` expands those cells, rather than preserving a subcell-precise trunk shape. For `core_ring`, the subcell bounding rectangle can fill an opening that the cell mask leaves clear. Compare the actual representation used by the consumer instead of combining incompatible masks.
+
+`sem` fields such as `blocks_projectile`, `vision_mode`, `acoustic_profile`, `destructible`, `cultivation`, and `resource` remain authored descriptions until wired and tested. Do not infer combat multipliers, concealment, audio DSP, loot drops, respawn clocks, or realm limits from these fields. Realm requirements must use the current gameplay ladder and identifiers rather than a copied fixed realm count.
+
+If the user requests production matrix tooling, extend the responsible `tools` task with validated input/output and meaningful non-zero failures, and add red-path tests through `tools selftest run`. Verify freshness against current asset IDs, image bytes, footprint/pivot metadata and semantic inputs before accepting derived data; reject missing records and stale analysis. Do not run old prototypes against live data and call them integrated.

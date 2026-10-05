@@ -1,159 +1,104 @@
 ---
 name: map-asset-pipeline
-description: Plan, generate, normalize, index, and audit top-down world-map assets and multi-layer gameplay collision matrices for Chaos World. Supports dual-tier lossy/original storage, dynamic scale profiles, destruction states, variants, and cultivation/resource metadata.
+description: Plan, generate, visually review, normalize, index, compose, and recover Chaos World top-down terrain, tiles, props, and environment kits. Use for world-map art and contact/collision metadata review; use the character or item pipeline for those assets.
 ---
 
 # Map Asset Pipeline
 
-Turn generative AI concept renders and top-down map cutouts into deterministic, engine-ready world-map assets with full gameplay collision, destruction states, dynamic sizing, and cultivation metadata.
+Deliver coherent, reviewed map layers with traceable sources and declared footprints. Match the requested mode: planning, generation, installation, composition, recovery, or audit. An audit request does not authorize a generation batch or replacement of existing art.
 
----
+## Sources and boundaries
 
-## 1. Storage & Provenance Architecture
+- Read the top-down world-map section of [art direction](../../../docs/art-direction.md) before preparing prompts or judging art.
+- The catalog is `game/assets/map-asset-index.jsonl`; command behavior belongs to [map_assets.py](../../../tools/map_assets.py), [map_generate.py](../../../tools/map_generate.py), and [map_layout.py](../../../tools/map_layout.py). Code wins when this skill disagrees.
+- Read [the data and geometry reference](references/data-matrix-spec.md) for index fields, composition layouts, source recovery, or matrix work. Do not load the bundled scripts for ordinary art generation.
+- Use only `uv run python -m tools <task>` entrypoints. Run gates in the background with output under `build/`, as required by `AGENTS.md`.
+- The scripts in this skill are diagnostic prototypes. They describe possible collision, destruction, vision, audio, and cultivation semantics; their JSON output does not establish runtime support. Trace the actual consumer before promising gameplay behavior.
 
-To prevent repo bloat while maintaining non-destructive, lossless source re-derivation, asset storage is divided into two tiers:
+## 1. Inspect and choose a small slice
 
-```
-art-source/map-originals/                 <-- GITIGNORED (Raw ComfyUI 1024-2048px outputs)
-  ├── <environment>/<category>/
-  │     └── <asset_id>__<sha256_16>.png   (Untouched original PNGs with prompt & seed payload)
-  └── provenance_ledger.jsonl              (Local mapping of image hashes to generation runs)
-
-game/assets/world_map/                     <-- COMMITTED (Engine-ready, normalized runtime sprites)
-  └── <environment>/<category>/
-        └── <suffix>.png                   (Normalized, trimmed, alpha-padded to declared cell unit)
-```
-
-### Invariant Rules
-1. **Never commit raw full-res originals to `game/`**: High-resolution renders stay in `art-source/map-originals/` (enforced by `.gitignore`).
-2. **Every installed runtime asset links to its original**: The record in `game/assets/map-asset-index.jsonl` tracks `source_images: [{"path": "...", "sha256": "...", "size_px": [1024, 1024]}]`.
-3. **Idempotent Re-derivation**: If background removal, alpha erode thresholds, or color grading rules change, runtime assets can be completely re-baked from the archived originals using `tools assets map recover-originals` and `scripts/derive.py`.
-
----
-
-## 2. Comprehensive Asset Data Matrix
-
-Each archetype and asset record defines a multi-layered matrix consumed by rendering, pathfinding, combat, and cultivation systems. See [data-matrix-spec.md](references/data-matrix-spec.md) for the complete JSON schema.
-
-### A. Spatial & Collision Geometry
-* **Data Cell**: Standard tile unit ($128\times 128\text{ px}$).
-* **Sub-Cell Precision**: Collision is evaluated on a $32\times 32\text{ px}$ sub-grid ($4\times 4$ sub-cells per data cell, matching Godot's TileSet region size).
-* **`occluder_rule`**:
-  * `ground_contact`: Only the bottom row blocks; upper cells are treated as canopy overhang. (Canopy trees measure $\sim 0.44$ top coverage vs $0.12$ bottom coverage).
-  * `full_body`: Blocks if coverage $\ge \text{cov\_gate}$ ($0.20$ default, $0.10$ for single-cell props).
-  * `core_ring`: Openwork gates/arches maintain passable central openings while side pillars block.
-  * `none`: Completely non-blocking (decals, ground textures, shallow water).
-* **`passable_under`**: True for tree canopies and bridge decks.
-* **`walk_surface`**: True for bridges, fallen logs, and ramps that turn blocked water or elevation gaps into walkable paths.
-
-### B. Combat & Vision Layers (Cross-Genre Extensibility)
-* **`blocks_projectile`**:
-  * `false` for shallow water, deep water, low fences, and low fallen logs — allowing ranged martial arts, arrows, and flying swords to traverse chasms.
-  * `true` for dense boulders, tree trunks, and buildings.
-* **`vision_mode`**:
-  * `solid`: Blocks raycasts for Fog of War and Line-of-Sight.
-  * `canopy`: Line-of-Sight passes underneath; canopy fades when the player walks below it.
-  * `brush`: Stealth/concealment zone (e.g. dense shrubs, tall bamboo); hides units inside from outside sight.
-  * `transparent`: Free line-of-sight (decals, paths, shallow water).
-* **`acoustic_profile`**: Acoustic footstep/impact category (`earth`, `stone`, `wood`, `foliage`, `water`, `crystal`, `metal`, `cloth`).
-
-### C. Destruction & Environmental States (Cost-Optimized Hybrid Model)
-To avoid unnecessary AI generation costs for hundreds of bespoke broken assets:
-* **Generic Fallback Archetype (`on_destroy`)**:
-  * Demolished props default to swapping with a shared generic archetype (`stone_and_ore.rubble`, `ground_tile.cracked_ground`, `landmark_and_environment_detail.ground_decal`), freeing upper blocked cells immediately.
-* **Unique Destroyed Sprites (`unique_destroyed_archetype`)**:
-  * Reserved strictly for key landmark structures and story anchors (defaults to `null`).
-* **Destruction Parameters**:
-  * `material`: Material type (`earth`, `foliage`, `wood`, `stone`, `metal`, `crystal`, `spirit`, `cloth`).
-  * `tier`: Required cultivation/tool tier to break (Tier 1: Mortal hands/tools, Tier 2: Refined tools, Tier 3: Foundation qi weapons, Tier 4: Spirit treasures).
-  * `hp`: Health points before state transition.
-  * `elemental_vulnerabilities`: Fire burns wood/foliage; Earth/Crushing shatters crystal and stone; Metal cuts wood; Acid/Corrosion pits metal.
-  * `reveals_loot_category`: Item category dropped on destruction (`timber`, `stone`, `herb`, `ore`, `crystal`).
-
-### D. Cultivation Leyline & Resource Fields
-* **Five Elements & Qi Affinity**:
-  * `element`: `wood`, `fire`, `earth`, `metal`, `water`, `spirit`, `void`, or `none`.
-  * `qi_affinity`: `ambient_absorb`, `ambient_emit`, `condensed_vein`, or `neutral`.
-  * `qi_density_modifier`: Multiplier on local cell spiritual concentration (e.g., $1.25\times$ for spirit bamboo, $2.0\times$ for cultivation altars).
-  * `resonance_radius_cells`: Aura propagation distance in cells ($0\text{--}3$).
-  * `feng_shui_direction`: Polarity of environmental Qi (`yin`, `yang`, `neutral`).
-* **Resource Yields & State Reversion**:
-  * `resource_type`: `herb`, `ore`, `crystal`, `timber`, `water`, `qi_shard`, or `relic`.
-  * `base_yield`: Harvest quantity.
-  * `respawn_turns`: Regeneration period ($0$ for non-renewable nodes until world reset).
-  * `min_realm_tier`: Cultivation realm required to extract safely (Realms 1–30).
-  * `harvest_tool_tag`: Tool requirement (`sickle`, `pickaxe`, `axe`, `spiritual_gourd`, `bare_hands`).
-  * Harvest state preserves original archetype to enable non-destructive restoration upon seasonal cycles or game loading.
-
-### E. Dynamic Size Profiles
-* **Scale Separation**: Distinguishes **Visual Scale** (sprite size) from **Contact Scale** (trunk/base ground contact):
-  * Props support discrete scale tiers: `[0.85, 1.0, 1.15, 1.35, 1.6]`.
-  * Under `contact_rule: constant_subcell`, an ancient tree scaled up to $1.25\times$ expands its visual canopy while its physical trunk remains clamped to $1$ sub-cell ($32\text{ px}$).
-  * Only when visual scale crosses major thresholds ($> 1.35\times$) does the blocked cell footprint step up.
-
----
-
-## 3. Computer Vision & Visual Quality Verification
-
-Computer Vision checks are split deliberately between **Agent Multimodal Perception** (the generating agent who inspects visual semantics) and **Automated Tool Support** (deterministic pixel math and boundary auditing):
-
-### A. Agent Visual Inspection Role (Multimodal Review)
-The agent generating or reviewing renders must visually inspect generated assets using the following inspection criteria:
-1. **Single-Subject Isolation**: Confirm the cutout depicts strictly one prop centered in the frame. Reject renders with hallucinated secondary props, ground tiles, framing borders, or floating fragments.
-2. **Perspective Consistency**: Verify an orthographic top-down / oblique ($\sim 45^\circ$) projection matching the world map camera standard. Reject flat 2D side-views or 3D ground-level perspective.
-3. **Lighting & Shadow Direction**: Verify that primary highlights and directional cast shadows come consistently from the **upper-left ($315^\circ$)**.
-4. **Palette & Environmental Atmosphere**: Verify color harmony adheres to the environment's palette (e.g., emerald moss for Greenwood, scorched basalt/ember for Flame Valley, pale jade/silver for Immortal Cloud Isles). Reject out-of-gamut saturated or modern colors.
-5. **Silhouette & Contour Cleanliness**: Visually verify there are no white halos, green-screen fringes, or semi-transparent artifacts around the alpha boundary.
-6. **Ground Contact Anchor**: Verify the base/trunk reaches down to the bottom margin so that when installed with bottom-alignment, it rests naturally on ground tiles.
-
-### B. Automated Tool Support Role (Mathematical Backstop)
-The Python tools provide mathematical measurements and hard quality gates to back the agent's inspection:
-* `subcell.py`: Measures the physical horizontal ground contact width (`contact_px`) and flags **ART DEFECTS** when a trunk is too narrow ($< 16\text{px}$) for its declared footprint.
-* `derive.py`: Calculates whole-frame alpha histogram distribution (`frac_zero`) to mathematically detect failed background removal (white/opaque backgrounds).
-* `audit.py`: Mathematically asserts zero phantom occluders (no blocker with coverage $< \text{cov\_gate}$), canopy passability (canopy cells must not be solid blockers), and bottom-row trunk constraints.
-
----
-
-## 4. Tool Scripts & Pipelines
-
-The skill bundle provides tested Python tools under `scripts/`:
-
-```
-.agents/skills/map-asset-pipeline/
-  ├── SKILL.md
-  ├── references/
-  │     └── data-matrix-spec.md    # Master specification of all data fields
-  └── scripts/
-        ├── semantics.py           # Per-archetype authored semantics (65 roles)
-        ├── derive.py              # Raster coverage & multi-layer matrix generator
-        ├── audit.py               # Structural quality gates for occlusion & passability
-        └── subcell.py             # 32px contact patch extractor & trunk rect calculator
-```
-
-### Derivation & Audit Execution:
-```bash
-# 1. Derive cell coverage matrices, projectile/vision masks, and destruction data
-uv run python .agents/skills/map-asset-pipeline/scripts/derive.py
-
-# 2. Calculate 32px sub-cell contact patch and narrow trunk rects
-uv run python .agents/skills/map-asset-pipeline/scripts/subcell.py
-
-# 3. Audit all matrix rules and ensure zero occluder leakage
-uv run python .agents/skills/map-asset-pipeline/scripts/audit.py
-```
-
----
-
-## 5. Main Toolchain Integration
-
-Map assets integrate with the root tools runner:
-```bash
-# Check catalog coverage across 19 environments and 9 categories
+```text
 uv run python -m tools assets map report
-
-# Select next 12 underrepresented map assets prioritizing gaps
-uv run python -m tools assets map next --count 12
-
-# Audit map asset index integrity
-uv run python -m tools assets map audit
+uv run python -m tools assets map next --count 6
+uv run python -m tools assets map generate --help
 ```
+
+Read the selected index records, including `environment_theme`, `alpha`, `pivot`, `canvas_px`, `footprint_cells`, and `collision`. Use existing art when it fits. `next` suggests coverage gaps; it does not choose the user's scope. Counts and environment lists come from the live catalog, not this skill.
+
+For a new environment kit, start with its opaque terrain surface, then a representative blocker, resource node, route/entrance, and landmark. Compare them together before scaling the batch. Optional tiles follow the base surface. Make variants differ in silhouette, material, or structure; a hue-only recolor is not new art.
+
+Before installation, claim the index and destination paths and check their working-tree state. The installer rewrites the whole index: serialize index writers, inspect the current diff, and do not merge or overwrite another session's uncommitted entries. Use `scaffold` only when the catalog is absent; it refuses an existing index. Use `migrate` only for missing legacy alpha/footprint metadata, not to refresh environment themes.
+
+## 2. Generate with a concrete brief
+
+Describe the indexed subject, environment materials, distinguishing silhouette, and intended footprint. Preserve the shared gouache finish, dark ink contours, broad value planes, and restrained upper-left light. The local generator adds production framing and the catalog's environment theme; do not add contradictory camera instructions.
+
+- Camera: orthographic, strictly straight down. No horizon, isometric or 45-degree view, perspective convergence, or ground-level view.
+- Terrain: continuous, opaque surface with quiet detail; no embedded props, framed platform, or focal object. A terrain texture need not tile seamlessly.
+- Repeatable tile: joined edges without border seams; use the indexed alpha mode.
+- Prop: one complete indexed subject or intentional cluster, clear silhouette and padding, transparent surroundings, short attached shadows, and the indexed pivot. Keep ground contact visually credible without changing the camera angle.
+- No baked text, UI, frame, watermark, unrelated objects, or explicit sexual content.
+
+A local generation request uses the configured ComfyUI workflow. Do not silently change provider, install models, or change shared checkpoint/LoRA settings. If the workflow is unavailable, report the dependency and finish any independent planning or review work.
+
+Use a fixed seed for comparable candidates. Set `--target-size` deliberately for direct installation: it defaults to `--size`, which can otherwise install a 1024 px prop. Use the selected record's intended runtime canvas; this flag accepts a square side, a multiple of 16 in 64–2048. `install` uses the record's existing canvas and also supports rectangular records. Resolution never determines `footprint_cells`.
+
+```text
+uv run python -m tools assets map generate --asset-id <catalog-id> --prompt "<subject brief>" --seed <seed> --size 1024 --target-size <runtime-side> --preview-only
+```
+
+The placeholders above are a command template. `--preview-only` creates a source under `build/map-generated/` and leaves the catalog unchanged. Use it for experiments and replacement candidates. For an established recipe and a new `planned` asset, direct `generate` may install a provisional `generated` result; review that installed result before calling it accepted.
+
+Render sequentially. Review the first candidate before the next. When comparing cutout models, add `--compare-rembg` to the preview run so installed removers share one prompt and seed; choose the result that preserves fine detail. Source filenames include the asset ID, seed, remover and LoRA settings, and existing filenames are refused. Reuse an existing candidate rather than blindly rerunning it. Do not strip a background by color-key guessing or erode away real trunks, leaves, or arch openings.
+
+Default retry budget: the initial candidate plus two targeted retries per asset, unless the user specifies another budget. Name the defect and change one relevant factor per retry. A timeout or submission error may leave a ComfyUI job running: inspect the existing job/history before resubmitting. Stop repeated failures, preserve their artifacts, and report the unresolved dependency or defect.
+
+## 3. Inspect the pixels, then install
+
+Open actual source and runtime images with an image-viewing tool; filenames, generation success, and audit output cannot prove visual quality. Review every candidate at its intended display scale and on contrasting backgrounds or a checkerboard:
+
+- Correct subject, environment materials, strictly overhead projection, and shared lighting.
+- Complete silhouette; no clipped crown/base, stray fragments, opaque backdrop, checkerboard baked into pixels, white halo, or cutout holes.
+- Fine contact details survive normalization; padding and pivot seat the object correctly.
+- Terrain stays quieter than blockers, harvest nodes, routes, and landmarks. Check seams in a repeated preview only for assets intended to repeat.
+- Neighboring assets share scale and contrast; distinguish visual overhang from physical ground contact. Record concrete defects by asset ID.
+
+Install a reviewed preview without generating it again:
+
+```text
+uv run python -m tools assets map install --asset-id <catalog-id> --source "<reviewed-source.png>" --source-name "<actual tool/model>" --license "<actual terms>" --generated-on <YYYY-MM-DD> --prompt-ref "<generation identifier>" --prompt "<exact production prompt>" --reference-id "docs/art-direction.md#top-down-world-map"
+uv run python -m tools assets map preview --asset-id <catalog-id>
+```
+
+For local preview-only runs, recover the expanded production prompt and run details from source workflow metadata or ComfyUI history; the short subject brief alone is not the exact production prompt. Record only provenance you can verify. Reference IDs document guidance; they do not imply the generator consumed a reference image.
+
+The installer normalizes alpha/padding and archives the exact PNG supplied to it. Review the normalized output again: cropping and resizing can damage an otherwise good source. `planned` becomes `generated`; `approved` requires real approval attribution. An agent's visual review does not invent user approval or prove an in-game review.
+
+Use `--replace-generated` only for an explicitly requested replacement or correction of this task's own provisional output, after preserving and comparing the old result. The tool refuses replacement of `approved` assets. Do not downgrade status to bypass that protection.
+
+## 4. Compose and verify
+
+For an environment kit, create an editable JSON layout under `build/` using the reference's grid contract, then compose the reviewed layers:
+
+```text
+uv run python -m tools assets map compose --layout build/map-layout.json
+uv run python -m tools assets map audit
+uv run python -m tools map_theme check
+uv run python -m tools check
+```
+
+Inspect `build/map-compositions/<layout-id>.png`. Check pivots, relative scale, art overlap, quiet walkable ground, clear routes, and readable interactions. A composite is a preview; retain its terrain and individual sprites. The composer's alpha overlap mask is a placement check, not a navigation, projectile, or sight mask.
+
+An asset-only task can finish with visual review and catalog validation. Report in-game scale/collision as unverified unless the real consumer and representative gameplay patch were exercised. Run relevant gameplay suites when changing a consumer, and run the full repository gate before committing. If unrelated work blocks that gate, name the failing stage and do not repair foreign dirty paths.
+
+## 5. Preserve and recover sources
+
+Runtime layers belong in `game/assets/world_map/`; untouched source PNGs belong in gitignored `art-source/map-originals/`. `source_images` in the catalog records paths, full SHA-256 hashes, dimensions, and provenance. There is no separate provenance ledger written by this pipeline. A gitignored archive is local storage, not a backup available from a fresh clone.
+
+The installer may receive a PNG that already had its background removed. Preserve the pre-cutout render separately when it exists and re-cutting may be needed. Archiving a cutout cannot reconstruct removed pixels. `recover-originals` proposes source matches by date/alpha heuristics; it neither proves their identity nor re-bakes runtime sprites. `derive.py` measures geometry and does not reprocess images.
+
+Use recovery without `--apply` first, inspect `build/map-original-recovery.jsonl`, and visually verify candidate identity. Archive a known source with `preserve-original`; apply recovery only to verified matches. See the reference for commands and limitations.
+
+## Completion
+
+Report accepted/reused asset IDs and paths, unresolved visual defects, source/provenance gaps, validation results, and whether gameplay was actually checked. Commit only this task's files and imported sidecars after reviewing the diff; keep generated previews and source archives out of Git. Do not create status notes or claim engine integration from diagnostic matrices.
