@@ -19,11 +19,11 @@ script = ExtResource("1_room")
 room_id = &"ash_furnace"
 display_name = "Ash Furnace"
 kind = &"chamber"
-roster_band = &"trial"
+roster_band = &"boss"
 tags = Array[StringName]([&"inland", &"hot", &"furnace"])
 size = Vector2i(10, 8)
 actor_spawn_refs = Array[Dictionary]([
-	{"ref_id": &"furnace_golem", "inhabitant_id": &"stone_golem", "role": &"miniboss", "count": 1}
+	{"ref_id": &"furnace_golem", "inhabitant_id": &"stone_golem", "role": &"boss", "count": 1}
 ])
 fixtures = Array[Dictionary]([
 	{"fixture_id": &"ash_furnace_hoard", "kind": &"treasure", "tags": Array[StringName]([&"treasure_keyed", &"deep"]), "position": Vector2i(7, 5), "bounds": Rect2i(7, 5, 2, 2), "reward_item_id": &"ash_furnace_sealed_jade", "reward_count": 1, "key_item_id": &"ash_furnace_key", "requires_realm": &"core_formation", "telegraph_s": 0.0, "damage_share": 0.0, "status_id": &"", "duration_s": 0.0, "mitigation_tags": Array[StringName]([])}

@@ -4,6 +4,13 @@ game/.godot/
 # Build output
 build/
 
+# A probe redirect whose env var did not expand created a directory LITERALLY named
+# "%GODOT_LOG_DIR%" at the repo root, and a blanket `git add -A` (1ae260003) committed
+# 40 of its gate dumps — 1.4 MB of regenerable output. `*.log` below did not catch them
+# because the redirect named them `.txt`. Probes belong under `build/` (INC-0021).
+%GODOT_LOG_DIR%/
+%GODOT_LOG_DIR%*/
+
 # Private generated character asset folders. Keep the catalog and tags at the parent path tracked.
 game/assets/characters/*/
 
