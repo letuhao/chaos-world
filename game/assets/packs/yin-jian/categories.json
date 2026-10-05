@@ -1,0 +1,149 @@
+[
+  {
+    "id": "terrain_and_surface",
+    "name": "Terrain & Ground Surfaces",
+    "vietnamese_name": "Địa Hình & Mặt Đất",
+    "description": "Base terrain tiles, fluids, ash beds, and ambient ground layers of the Netherworld.",
+    "sub_categories": [
+      "base_ground",
+      "fluid_and_water",
+      "edge_transition",
+      "hazard_surface",
+      "magma_and_ice"
+    ],
+    "actual_count": 42
+  },
+  {
+    "id": "path_and_way",
+    "name": "Paths, Roads & Bridges",
+    "vietnamese_name": "Đường Đi & Cầu Nại Hà",
+    "description": "Walkable trails, paved imperial roads of ghosts, bone bridges, stepping stones, and floating lotus paths.",
+    "sub_categories": [
+      "trail",
+      "paved_road",
+      "bridge",
+      "crossing_and_pier",
+      "stairs_and_ramps"
+    ],
+    "actual_count": 46
+  },
+  {
+    "id": "architecture_and_building",
+    "name": "Architecture & Judicial Halls",
+    "vietnamese_name": "Kiến Trúc & Thập Điện Diêm La",
+    "description": "Yama judicial tribunals, reincarnation halls, Meng Po teahouses, bone pagodas, and ghost market structures.",
+    "sub_categories": [
+      "ten_courts_of_yama",
+      "tribunal_pavilion",
+      "bone_pagoda",
+      "watchtower_gatehouse",
+      "torture_chamber",
+      "ghost_market",
+      "shrine_and_temple"
+    ],
+    "actual_count": 74
+  },
+  {
+    "id": "rift_and_portal",
+    "name": "Rift Gates & Portals",
+    "vietnamese_name": "Quỷ Môn Quan & Luân Hồi Trận",
+    "description": "Spatial warp gates, Ghost Gate Pass, Six Realms Reincarnation Wheels, abyss fissures, and mirror rifts.",
+    "sub_categories": [
+      "grand_gate",
+      "six_realms_wheel",
+      "dimensional_fissure",
+      "void_portal",
+      "abyss_gateway"
+    ],
+    "actual_count": 32
+  },
+  {
+    "id": "obstacle_and_hazard",
+    "name": "Obstacles & Environmental Hazards",
+    "vietnamese_name": "Chướng Ngại & Cạm Bẫy U Minh",
+    "description": "Soul-reaping spikes, iron brambles, weeping ghost willows, miasma cauldrons, copper pillars, and grinding millstones.",
+    "sub_categories": [
+      "vegetation_hazard",
+      "spikes_and_blade",
+      "fire_and_copper",
+      "ice_and_frost",
+      "cauldron_and_miasma",
+      "mechanical_trap"
+    ],
+    "actual_count": 58
+  },
+  {
+    "id": "destructible_and_container",
+    "name": "Destructibles & Reliquaries",
+    "vietnamese_name": "Vật Phá Hủy & Rương Hồn",
+    "description": "Soul jars, joss paper braziers, bone cages, sacrificial effigies, cursed sarcophagi, and talisman pillars.",
+    "sub_categories": [
+      "soul_jar_and_urn",
+      "brazier_and_burner",
+      "cage_and_shackle",
+      "effigy_and_paper",
+      "chest_and_coffin",
+      "karma_pillar"
+    ],
+    "actual_count": 58
+  },
+  {
+    "id": "creature_and_denizen",
+    "name": "Denizens, Spirits & Jailers",
+    "vietnamese_name": "Quỷ Tộc & Diêm La Quán",
+    "description": "Ox-Head, Horse-Face, Black & White Impermanence, Yama Judges, wandering ghosts, preta, and nether beasts.",
+    "sub_categories": [
+      "judge_and_official",
+      "jailer_and_guard",
+      "wandering_spirit",
+      "hungry_ghost_preta",
+      "nether_beast",
+      "elite_demon"
+    ],
+    "actual_count": 78
+  },
+  {
+    "id": "interactive_and_puzzle",
+    "name": "Interactive Puzzle & World Devices",
+    "vietnamese_name": "Cơ Quan Câu Đố & Phong Thủy Trận",
+    "description": "Karma balance scales, Bagua yin-yang alignment mirrors, blood sluices, wailing bell chimes, and memory altars.",
+    "sub_categories": [
+      "judgment_device",
+      "bagua_mirror_puzzle",
+      "bell_and_chime",
+      "water_and_blood_sluice",
+      "dial_and_wheel",
+      "altar_and_font"
+    ],
+    "actual_count": 52
+  },
+  {
+    "id": "cultivation_and_resource",
+    "name": "Cultivation Nodes & Leyline Resources",
+    "vietnamese_name": "Tài Nguyên & Linh Mạch Âm Khí",
+    "description": "Yin qi fissures, nether spirit bamboo, corpse-flower herbs, blood marrow ores, and soulstone veins.",
+    "sub_categories": [
+      "yin_qi_spring",
+      "herb_and_fungus",
+      "mineral_and_ore",
+      "wood_and_bamboo",
+      "spiritual_relic"
+    ],
+    "actual_count": 48
+  },
+  {
+    "id": "decoration_and_ambience",
+    "name": "Ambient Decoration & Dressing",
+    "vietnamese_name": "Trang Trí & Khí Quyển U Ám",
+    "description": "Floating ghost lanterns, spilled paper money, skull heaps, soul banners, incense braziers, and phantom puddles.",
+    "sub_categories": [
+      "lantern_and_light",
+      "banner_and_fabric",
+      "bone_and_skull",
+      "paper_and_offering",
+      "mist_and_glow",
+      "ambient_decal"
+    ],
+    "actual_count": 55
+  }
+]
