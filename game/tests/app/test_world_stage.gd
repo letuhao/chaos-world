@@ -128,7 +128,19 @@ func test_interaction_pulls_a_drifted_body_back_inside() -> void:
 	var adapter := _mounted()
 	adapter.global_position = Vector2(-5000, 8000)
 	var answer := _stage.interact("herb_common")
-	assert_eq(answer["ok"], true, "the bridge answered")
+	# Asserted against THIS suite's own fixture shape, not `["ok"]`. This file
+	# installs `_note_interaction`, whose answer is [constant HANDLED]
+	# (`{&"answered": true}`) — so indexing `answer["ok"]` read a missing key, which
+	# is a SCRIPT ERROR rather than a failed assertion: it aborted the body and the
+	# runner reported the suite green while the drift clamp went unverified.
+	# `WorldStage.interact` passes the handler's dictionary through verbatim, so the
+	# keys to assert are the ones the handler publishes.
+	assert_eq(
+		bool(answer.get("answered", false)),
+		true,
+		"the bridge answered with the fixture's own shape: %s" % answer
+	)
+	assert_eq(_key_presses, 1, "the handler was called once")
 	assert_eq(adapter.global_position.x, BOUNDS.position.x, "x pulled back to the left edge")
 	assert_eq(adapter.global_position.y, BOUNDS.end.y, "y pulled back to the bottom edge")
 
@@ -162,7 +174,15 @@ func test_mount_refuses_an_unknown_location() -> void:
 	var answer := _stage.mount(_adapter, &"atlantis", BOUNDS)
 	assert_eq(answer["ok"], false, "a location nothing authors is refused")
 	assert_eq(answer["reason"], "unknown_location", "refusal is named")
-	assert_eq(_stage.summary()["mounted"], false, "nothing was mounted")
+	# `summary()` is a FULL primitives dictionary even with nothing mounted — that
+	# is the UI contract (ADR 0038: primitives, `{}` only when there is no actor to
+	# describe). So the claim is that it reports an UNMOUNTED stage, not that it is
+	# empty; indexing `["mounted"]` on an assumed-empty dict was a missing-key
+	# SCRIPT ERROR that aborted the body and let the suite report green.
+	var summary := _stage.summary()
+	assert_eq(bool(summary.get("mounted", true)), false, "nothing was mounted")
+	assert_eq(bool(summary.get("has_actor", true)), false, "and nothing is holding an actor")
+	assert_eq(String(summary.get("location_id", "")), "", "so no place was published")
 
 
 func test_mount_refuses_a_player_with_no_actor() -> void:
@@ -174,10 +194,19 @@ func test_mount_refuses_a_player_with_no_actor() -> void:
 
 
 func test_mount_places_the_player_and_names_the_place() -> void:
-	var answer := _mounted()
-	assert_eq(String(answer["location_id"]), "mortal_plains", "mounted the named place")
-	assert_eq(String(answer["location_name"]), "Mortal Plains", "with its authored name")
-	assert_eq(_stage.summary()["mounted"], true, "the stage reports a body")
+	# Read the STAGE, not the helper's return. `_mounted()` answers a
+	# `PlayerAdapter` (`:80`, `:87`) — indexing that for `"location_id"` is a
+	# missing-key SCRIPT ERROR, which aborts the body and lets the suite report
+	# green while the assertion it stood for never ran.
+	_mounted()
+	var summary := _stage.summary()
+	assert_eq(String(summary.get("location_id", "")), "mortal_plains", "mounted the named place")
+	assert_eq(
+		String(summary.get("actor_id", "")),
+		"player",
+		"and the stage is holding the actor it mounted for"
+	)
+	assert_eq(bool(summary.get("mounted", false)), true, "the stage reports a body")
 
 
 func test_mount_writes_the_durable_location() -> void:
@@ -294,8 +323,15 @@ func test_interact_routes_through_the_injected_handler() -> void:
 	var adapter := _mounted()
 	adapter.global_position = Vector2(100, 100)
 	var answer := _stage.interact("elder_qi")
-	assert_eq(answer["ok"], true, "the handler answered")
-	assert_eq(answer["answered"], true, "and its payload came back verbatim")
+	# The fixture's shape, not `["ok"]` — `_note_interaction` publishes
+	# `{&"answered": true}` and `interact` passes it through verbatim, so reading
+	# `answer["ok"]` was a missing-key SCRIPT ERROR that aborted the body.
+	assert_eq(bool(answer.get("answered", false)), true, "the handler answered")
+	assert_eq(
+		String(answer.get("location_id", "")),
+		"mortal_plains",
+		"and the stage stamped ITS OWN place beside the handler's answer"
+	)
 	assert_eq(_calls.size(), 1, "exactly one call")
 	assert_eq(String(_calls[0]["target"]), "elder_qi", "the target name crossed the seam")
 	assert_eq(String(_calls[0]["location_id"]), "mortal_plains", "so did the place")

@@ -640,8 +640,12 @@ func interact(target_name: String) -> Dictionary:
 ## WHERE a press happened cannot tell two different places apart.
 func _remember(answer: Dictionary) -> Dictionary:
 	var row := answer.duplicate()
-	row["location_id"] = String(row.get("location_id", _location_id))
-	row["target"] = String(row.get("target", ""))
+	# `location_id` is stamped from the STAGE's own ledger, not from whatever the
+	# handler's dictionary happens to carry: taking it from the answer meant a
+	# handler could overwrite the place with its own stale copy, and a row that
+	# cannot say WHERE a press happened cannot tell two places apart. `target` is
+	# different — the handler knows it, so its value wins when it publishes one.
+	row["location_id"] = String(_location_id)
 	_interactions.append(row)
 	while _interactions.size() > MAX_INTERACTIONS_LOGGED:
 		_interactions.pop_front()
