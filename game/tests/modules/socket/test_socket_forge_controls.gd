@@ -54,7 +54,7 @@ func teardown() -> void:
 
 ## A forge hero carrying one host, plus whatever reagents the case asks for, with
 ## the screen mounted and bound to the facade's own read model.
-func _forge(*content: StringName) -> SocketForgeScreen:
+func _forge(content: Array[StringName] = []) -> SocketForgeScreen:
 	_actor = _rig.forge_hero()
 	assert_ne(_rig.acquire(_actor, HOST, 5150), null, "the socket host is acquired")
 	for def_id in content:
@@ -91,30 +91,39 @@ func _play_last() -> bool:
 	match action:
 		&"create_slot":
 			committed = bool(
-				SocketApi.create_slot(_actor, StringName(host), StringName(String(args["reagent_id"])))[
-					"ok"
-				]
+				(
+					SocketApi
+					. create_slot(_actor, StringName(host), StringName(String(args["reagent_id"])))["ok"]
+				)
 			)
 		&"impute_slot":
 			committed = bool(
-				SocketApi.impute_slot(
-					_actor,
-					StringName(host),
-					int(args["index"]),
-					StringName(String(args["reagent_id"]))
-				)["ok"]
+				(
+					SocketApi
+					. impute_slot(
+						_actor,
+						StringName(host),
+						int(args["index"]),
+						StringName(String(args["reagent_id"]))
+					)["ok"]
+				)
 			)
 		&"insert_socket":
 			committed = bool(
-				SocketApi.insert_socket(
-					_actor,
-					StringName(host),
-					int(args["index"]),
-					StringName(String(args["gem_instance_id"]))
-				)["ok"]
+				(
+					SocketApi
+					. insert_socket(
+						_actor,
+						StringName(host),
+						int(args["index"]),
+						StringName(String(args["gem_instance_id"]))
+					)["ok"]
+				)
 			)
 		&"extract_socket":
-			committed = bool(SocketApi.extract_socket(_actor, StringName(host), int(args["index"]))["ok"])
+			committed = bool(
+				SocketApi.extract_socket(_actor, StringName(host), int(args["index"]))["ok"]
+			)
 	_push()
 	return committed
 
@@ -126,7 +135,7 @@ func _play_last() -> bool:
 ## a slot on the host. Read from the socket program's own state, not from the
 ## screen's rendering, so a screen that painted a slot nobody owns cannot pass.
 func test_pressing_open_socket_creates_a_slot_on_the_host() -> void:
-	var forge := _forge(SLOT_REAGENT)
+	var forge := _forge([SLOT_REAGENT])
 	assert_ne(forge, null, "the forge scene mounts")
 	assert_eq(int(SocketApi.panel_state(_actor).get("slot_count", 0)), 0, "no slot yet")
 	assert_eq(bool(forge.summary()["can_create"]), true, "the action is offered")
@@ -138,16 +147,14 @@ func test_pressing_open_socket_creates_a_slot_on_the_host() -> void:
 		"the observable outcome: the host now carries a slot"
 	)
 	assert_eq(
-		ItemsApi.inventory(_actor).count(SLOT_REAGENT),
-		1,
-		"and one reagent was spent to open it"
+		ItemsApi.inventory(_actor).count(SLOT_REAGENT), 1, "and one reagent was spent to open it"
 	)
 
 
 ## And the screen republishes it, so the slot the player just opened is on the
 ## surface rather than only in the ledger.
 func test_the_opened_slot_is_on_the_screen_after_the_press() -> void:
-	var forge := _forge(SLOT_REAGENT, INK)
+	var forge := _forge([SLOT_REAGENT, INK])
 	_rig.press_action(forge, &"create_slot")
 	_play_last()
 	var view := forge.summary()
@@ -165,7 +172,7 @@ func test_the_opened_slot_is_on_the_screen_after_the_press() -> void:
 ## different ids would show different buttons and fail here rather than silently
 ## offering nothing.
 func test_the_three_buttons_open_impute_and_fill_a_socket() -> void:
-	var forge := _forge(SLOT_REAGENT, INK)
+	var forge := _forge([SLOT_REAGENT, INK])
 	assert_ne(_rig.acquire(_actor, GEM, 5252), null, "a socket item is carried")
 	_push()
 	assert_eq(_rig.press_action(forge, &"create_slot"), true, "Open socket is pressable")
@@ -193,7 +200,7 @@ func test_the_three_buttons_open_impute_and_fill_a_socket() -> void:
 ## The gem that lands is the one the SELECTOR chose. Two socket items are carried
 ## so index 0 is not the only answer, and the press must take the second.
 func test_the_gem_selector_chooses_which_socket_item_is_seated() -> void:
-	var forge := _forge(SLOT_REAGENT)
+	var forge := _forge([SLOT_REAGENT])
 	var first := _rig.acquire(_actor, GEM, 5353)
 	var second := _rig.acquire(_actor, GEM, 5354)
 	_push()
@@ -215,7 +222,7 @@ func test_the_gem_selector_chooses_which_socket_item_is_seated() -> void:
 ## Extract, from the button. A dark Extract that quietly did nothing would leave
 ## the occupied flag above set forever.
 func test_pressing_extract_empties_the_slot_and_keeps_the_imputation() -> void:
-	var forge := _forge(SLOT_REAGENT, INK)
+	var forge := _forge([SLOT_REAGENT, INK])
 	_rig.acquire(_actor, GEM, 5454)
 	_push()
 	for action in [&"create_slot", &"impute_slot", &"insert_socket"]:
@@ -267,7 +274,7 @@ func test_a_disabled_action_is_a_dark_button_and_pressing_it_moves_nothing() -> 
 ## Without this, a case above could fail for a reason that has nothing to do with
 ## sockets — an `ActionSet` that built no buttons at all.
 func test_every_offered_action_is_a_button_on_the_screen() -> void:
-	var forge := _forge(SLOT_REAGENT, INK, WASH)
+	var forge := _forge([SLOT_REAGENT, INK, WASH])
 	_push()
 	var actions := forge.summary()["actions"] as Dictionary
 	assert_eq((actions["actions"] as Array).size(), 5, "the forge declares five actions")
@@ -285,7 +292,7 @@ func test_every_offered_action_is_a_button_on_the_screen() -> void:
 ## Enchant, through the button. The observable outcome is the treatment count on
 ## the host's own channel, which is what a player pays a reagent for.
 func test_pressing_enchant_spends_a_treatment_on_the_host() -> void:
-	var forge := _forge(WASH)
+	var forge := _forge([WASH])
 	assert_ne(forge, null, "the forge scene mounts")
 	_push()
 	var view := forge.summary()
