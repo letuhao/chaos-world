@@ -7,3 +7,7 @@ script = ExtResource("1_boss")
 id = &"qi_body_integration_warden"
 display_name = "Body Integration Warden"
 domain_id = &"qi_body_integration_trial"
+## The hearth's authored cost (ADR 0146): a player must be able to afford the structure that
+## repairs a damaged soul. Same declaration rule as every other boss - `BossDef.loot` is the
+## only place a drop is declared, since no loot tiers exist in this repo.
+loot = Array[StringName]([&"vial_mending_elixir"])
