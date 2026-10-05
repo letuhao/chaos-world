@@ -63,6 +63,24 @@ const UNWIRED_CADENCE := "The world's cadence is not published here."
 const EMPTY_MEMORY := "The world remembers nothing yet."
 const WAIT_LABEL := "Wait a season"
 const UNAVAILABLE_SUFFIX := " (unavailable)"
+
+## ## The open-event heading, and the sentence under it
+##
+## **Three wordings, because "no rows" is two different things and only one of them is
+## news.** A world with nothing open is an ordinary quiet state and is titled plainly; a
+## screen nobody published event rows to is a MISSING SEAM and says so, because rendering
+## it as "nothing is happening" would turn a broken wiring into a world that looks calm —
+## which is the exact failure the bridge slot exists to make visible. A third, middle
+## wording covers the case a panel cannot honestly call either: rows published, none of
+## them nameable.
+const EVENTS_TITLE_OPEN := "What is happening in the world"
+const EVENTS_TITLE_EMPTY := "Nothing is happening in the world right now"
+const EVENTS_TITLE_UNWIRED := "The world's events are not published to this screen"
+const EVENTS_TITLE_UNNAMED := "Something is open, and this screen cannot name it"
+const EVENTS_EMPTY_LINE := "No event is open. The world is waiting on its next one."
+const EVENTS_UNWIRED_LINE := "No world event row reaches this screen; it cannot say what is open."
+const EVENTS_UNNAMED_LINE := "An open event arrived with no name. This screen cannot say which."
+
 ## The heading over the season-scale control. Named rather than inlined so the wording a
 ## player reads is one string a test can pin.
 const RETREAT_TITLE := "Sit (the world moves while you do)"
@@ -91,6 +109,18 @@ var _claimed: int = 0
 var _opened: int = 0
 var _active_events: int = 0
 var _available_events: int = 0
+## One row per world event that is OPEN, as the root handed it over: `display_name`,
+## `stage_name`, `stage_index`, `stage_count`, `periods_held`, `duration_periods`,
+## `standoff_id`, `is_final_stage` and the rest of the event module's own row shape. Raw
+## primitives — this panel owns every `%d` and every sentence built from them.
+var _open_events: Array[Dictionary] = []
+## Whether the caller published the event SEAM at all, which `[]` cannot say on its own.
+## Held apart from the rows so "a world with nothing open" and "a screen nobody wired"
+## stay two different sentences.
+var _events_wired: bool = false
+## How many published rows carried no display name. Non-zero means something is open and
+## this panel cannot say what, which is a third state and not the quiet one.
+var _unnamed_events: int = 0
 ## One `{fact, recorded}` row per thing the world has heard of, in the order the
 ## caller listed them. Never rebuilt into widgets, so the readout has no rows to leak.
 var _news: Array[Dictionary] = []
@@ -101,6 +131,8 @@ var _clock_label: Label = null
 var _cadence_label: Label = null
 var _news_title: Label = null
 var _news_box: VBoxContainer = null
+var _events_title: Label = null
+var _events_box: VBoxContainer = null
 var _pulse_label: Label = null
 var _message_label: Label = null
 var _wait_button: Button = null
@@ -108,6 +140,10 @@ var _retreat_title_label: Label = null
 var _retreat_option: OptionButton = null
 var _retreat_cost_label: Label = null
 var _retreat_button: Button = null
+## Set for the length of the rebuild that re-applies the selection, so the resulting
+## `item_selected` cannot be taken for a click and ask the cost line to answer for a
+## selector the player has not touched. See `_render_retreat`.
+var _restoring_selection: bool = false
 
 
 func _ready() -> void:
@@ -121,13 +157,28 @@ func _ready() -> void:
 ## per sit length the clock publishes. Nothing here is interpreted — a count of zero
 ## and a count nobody reported both read as zero, which is the honest answer for a
 ## readout and the reason every figure arrives already resolved.
+##
+## ## The two event keys, and why they arrive as a PAIR
+##
+## `events_wired` says the root published the seam at all, and `open_events` carries one
+## row per event that is open. They are separate keys because neither answers the other:
+## `[]` is both "nothing is open" (ordinary) and "nothing reaches this screen" (a defect),
+## and only the caller can tell those apart. A screen that passed the rows without the flag
+## would render a missing seam as a quiet world, which is the failure this pair exists to
+## make impossible. See [method _events_title_text].
+##
+## `retreat_index` is the caller's echo of the index this panel last reported in
+## `summary()`, handed back so a repaint can tell "the player chose this" from "this row
+## is still offered". Absent, the panel keeps what it already held — which is the
+## difference between a selector that survives a refresh and one that silently returns
+## to the shortest length every time the world ticks.
 func show_world(view: Dictionary) -> void:
 	_bind_nodes()
 	_wired = bool(view.get("wired", false))
 	_can_advance = _wired and bool(view.get("can_advance", false))
 	_can_retreat = _wired and bool(view.get("can_retreat", false))
 	_retreat_spans = _spans_of(view.get("retreat_spans", []))
-	_retreat_index = _resolve_selection()
+	_retreat_index = _resolve_selection(int(view.get("retreat_index", _retreat_index)))
 	_periods = int(view.get("periods", 0))
 	_period_count = int(view.get("period_count", 0))
 	_period_seconds = float(view.get("period_seconds", 0.0))
@@ -136,6 +187,19 @@ func show_world(view: Dictionary) -> void:
 	_opened = int(view.get("opened", 0))
 	_active_events = int(view.get("active_events", 0))
 	_available_events = int(view.get("available_events", 0))
+	# ## `events_wired` is read BEFORE the rows, deliberately
+	#
+	# An empty roster is two things and only the caller can tell them apart: a world with
+	# nothing open, and a screen the root published nothing to. Absent the flag, `[]` would
+	# render as the first and a missing seam would read as a calm world — which is the
+	# empty list this readout exists not to be. So the flag is taken on its own terms, not
+	# inferred from the rows' size.
+	_events_wired = bool(view.get("events_wired", false))
+	_open_events = _event_rows_of(view.get("open_events", []))
+	_unnamed_events = 0
+	for row in _open_events:
+		if String(row.get("display_name", "")).is_empty():
+			_unnamed_events += 1
 	_news = _rows_of(view.get("news", []))
 	_message = String(view.get("message", ""))
 	_tone = StringName(view.get("tone", ""))
@@ -175,6 +239,20 @@ func summary() -> Dictionary:
 		"opened": _opened,
 		"active_events": _active_events,
 		"available_events": _available_events,
+		# ## The open-event half, published BOTH raw and worded
+		#
+		# `open_events` is the row roster this panel is holding, so a test asserts on the
+		# event's own vocabulary rather than on a sentence; `open_event_lines` is what a
+		# player reads, so a rename of the wording is a failure rather than a silent change.
+		# Both are here because a panel that published only the first would let a reader
+		# verify the data while the text went stale, and one that published only the second
+		# would make every assertion a string match.
+		"events_wired": _events_wired,
+		"open_events": _open_events,
+		"open_event_count": _open_events.size(),
+		"unnamed_event_count": _unnamed_events,
+		"open_event_lines": _event_lines(),
+		"events_title": _text_of(_events_title),
 		"news": _news,
 		"news_count": _news.size(),
 		"heard_count": _heard(),
@@ -209,6 +287,8 @@ func _bind_nodes() -> void:
 	_cadence_label = get_node_or_null("%CadenceLabel") as Label
 	_news_title = get_node_or_null("%NewsTitle") as Label
 	_news_box = get_node_or_null("%NewsBox") as VBoxContainer
+	_events_title = get_node_or_null("%EventsTitle") as Label
+	_events_box = get_node_or_null("%EventsBox") as VBoxContainer
 	_pulse_label = get_node_or_null("%PulseLabel") as Label
 	_message_label = get_node_or_null("%MessageLine") as Label
 	_wait_button = get_node_or_null("%WaitButton") as Button
@@ -234,6 +314,12 @@ func _render() -> void:
 	_cadence_label.text = _cadence_text()
 	_news_title.text = _news_title_text()
 	_render_news()
+	# The event rows render AFTER the news and BEFORE the pulse tally, so a player reads
+	# "what is happening" above the counters that describe how it got there — the same
+	# order the beat tally has always been in, with the thing it counts moved up.
+	if _events_title != null:
+		_events_title.text = _events_title_text()
+	_render_events()
 	_pulse_label.text = _pulse_text()
 	_wait_button.disabled = not _can_advance
 	_wait_button.text = WAIT_LABEL + ("" if _can_advance else UNAVAILABLE_SUFFIX)
@@ -258,16 +344,29 @@ func _render() -> void:
 ## -1, so a rebuild that kept the player's choice by re-selecting first would restore
 ## nothing and the cost line would silently revert to the first row — a control that
 ## forgets a player's choice on the next repaint is worse than no control.
+##
+## **The re-select runs behind `_restoring_selection`, because a programmatic
+## re-select is not a click.** The engine emits `item_selected` from the
+## `Button` group's selection change as well as from a click, so a `select()` that moved
+## the highlight reaches `_on_span_selected` with no player behind it. That costs
+## nothing while the handler only re-reads the cost line — it is the same number either
+## way — and it stops being free the moment the handler can reach anything else: the
+## caller is mid-`show_world()` and a re-entrant rebuild from here is a repaint that
+## repaints. `DomainExploreScreen._sync_selections()` solves the same hazard by keeping
+## the index in the model instead of in the widget; this panel has no model, so the
+## window is the guard.
 func _render_retreat() -> void:
 	if _retreat_option == null:
 		return
 	_retreat_title_label.text = RETREAT_TITLE
+	_restoring_selection = true
 	_retreat_option.clear()
 	for label in _retreat_labels():
 		_retreat_option.add_item(label)
 	_retreat_option.disabled = not _can_retreat
 	if _retreat_index >= 0:
 		_retreat_option.select(_retreat_index)
+	_restoring_selection = false
 	_retreat_cost_label.text = _retreat_cost_text()
 	_retreat_button.disabled = not _can_retreat or _retreat_index < 0
 	_retreat_button.text = RETREAT_LABEL + ("" if _can_retreat else UNAVAILABLE_SUFFIX)
@@ -293,6 +392,173 @@ func _render_news() -> void:
 		)
 		label.text = _news_line(row)
 		_news_box.add_child(label)
+
+
+## One label per OPEN event row, rebuilt from scratch, plus the one line that stands in for
+## an empty roster. Freed with [method free] exactly as [method _render_news] does, and for
+## the same reason: a `queue_free()` row would stay parented under this runner and stack one
+## more copy on every repaint.
+##
+## ## The empty roster renders a SENTENCE, never nothing
+##
+## A world with no open event gets [constant EVENTS_EMPTY_LINE] under a heading that says
+## so in the title. An empty list with no line is the shape a player reads as a bug — a
+## heading with nothing under it looks like the panel failed to load its data — whereas one
+## honest sentence is the difference between "the world is quiet" and "this surface is
+## broken". The three wordings are the three honest answers; see [method _events_title_text].
+func _render_events() -> void:
+	if _events_box == null:
+		return
+	for child in _events_box.get_children():
+		_events_box.remove_child(child)
+		child.free()
+	for line in _event_lines():
+		var label := Label.new()
+		label.theme_type_variation = &"EffectLabel"
+		label.text = line
+		_events_box.add_child(label)
+
+
+## The heading over the event rows, and the FIRST of the three empty-state wordings.
+##
+## Chosen in this order, and the order is the whole point:
+##
+##  1. **Unwired** — the caller published no seam. Not rendered as "nothing is happening",
+##     because a world that looks calm is a world nobody warns about, and a missing seam
+##     that reads as calm is worse than a visible one. This is the ADR 0143 rule applied to
+##     a read slot: "a screen with an unfilled bridge names the missing seam rather than
+##     showing zeros."
+##  2. **Open** — there is at least one row. Even if every row is unnamed, a live event
+##     exists and the heading should say the world is busy.
+##  3. **Unnamed** — rows exist but none carries a `display_name`. A fourth state the panel
+##     can actually detect, and worth naming: something IS happening and this surface cannot
+##     say what, which is neither "quiet" nor "fine".
+##  4. **Empty** — wired, rows published, zero of them. An ordinary quiet world, stated
+##     plainly.
+func _events_title_text() -> String:
+	if not _events_wired:
+		return EVENTS_TITLE_UNWIRED
+	if _open_events.is_empty():
+		return EVENTS_TITLE_EMPTY
+	if _unnamed_events >= _open_events.size():
+		return EVENTS_TITLE_UNNAMED
+	return EVENTS_TITLE_OPEN
+
+
+## The lines under the heading: one per open event, or the ONE line that stands in for an
+## empty roster. Kept as a function so `summary()` reports exactly what was rendered —
+## a summary that published the rows but not the lines would let the wording rot
+## unobserved, and a test asserting on data alone would never notice.
+func _event_lines() -> Array[String]:
+	var out: Array[String] = []
+	if _open_events.is_empty():
+		out.append(EVENTS_UNWIRED_LINE if not _events_wired else EVENTS_EMPTY_LINE)
+		return out
+	for row in _open_events:
+		out.append(_event_line(row))
+	return out
+
+
+## One open event, as a single readable line: its name, the stage it has reached, how long
+## it has held, and what it pays. Every `%d` on this surface is this file's (AGENTS.md — a
+## screen passes raw values, a panel owns the formatting), and every value is read straight
+## off the row the root published rather than derived here.
+##
+## ## The four pieces a player could not see before, and why each is worded the way it is
+##
+##  - **WHICH**: `display_name`, falling back to the `event_id`. An event whose def the
+##    module no longer authors still has an id, and "the id" is a worse answer than no
+##    answer but an honest one.
+##  - **WHAT STAGE**: `stage_name` with its position as "stage 2 of 3" when the module
+##    publishes a `stage_count`. The count is what turns a stage name into progress: "Oath
+##    Taking" alone does not say how far along the world is.
+##  - **HOW LONG**: `periods_held`, in the clock's own unit, never in seconds. Same reason
+##    [method _retreat_cost_text] gives: `ui/` may not hold a cadence, so a duration here
+##    would be a second calendar.
+##  - **WHAT IT PAYS**: the `standoff_id` the event is currently in, which is the world
+##    event's own answer to "what is at stake". The id is printed as the module's own
+##    vocabulary (the same way the news rows print a fact id) rather than being looked up
+##    or translated, because `ui/` may not name the event module that authored it.
+##
+## `is_final_stage` is published by the module and is NOT rendered as prose here: the stage
+## position already says "3 of 3", and a second phrase saying "final" would be a second
+## claim about the same fact that could disagree with the first. It is carried in the row
+## and in `summary()` for a caller that wants the flag itself.
+func _event_line(row: Dictionary) -> String:
+	var name := String(row.get("display_name", ""))
+	if name.is_empty():
+		name = String(row.get("event_id", ""))
+	if name.is_empty():
+		name = "an unnamed event"
+	var parts: Array[String] = [name]
+	var stage := _stage_text(row)
+	if not stage.is_empty():
+		parts.append(stage)
+	var held := _held_text(row)
+	if not held.is_empty():
+		parts.append(held)
+	var payoff := String(row.get("standoff_id", ""))
+	if not payoff.is_empty():
+		parts.append("standoff %s" % payoff)
+	return " - ".join(parts)
+
+
+## "Oath Taking (stage 2 of 3)", or just the stage name when the module publishes no
+## `stage_count`. Returns `""` when the row names no stage, which the caller reads as "this
+## event has no stage to report" rather than printing an empty parenthetical.
+func _stage_text(row: Dictionary) -> String:
+	var stage := String(row.get("stage_name", ""))
+	var total := int(row.get("stage_count", 0))
+	if stage.is_empty():
+		return ""
+	if total < 1:
+		return stage
+	return "%s (stage %d of %d)" % [stage, _stage_position(row), total]
+
+
+## The stage position as a 1-based number for a player. `stage_index` is 0-based — the
+## module's own indexing — so a raw print would say "stage 0 of 3" and read as a bug. A row
+## whose `stage_index` is out of range (negative, or past `stage_count`) prints as `1`
+## rather than as a clamped lie about a stage the module did not report; the alternative is
+## "stage 0", which is worse.
+func _stage_position(row: Dictionary) -> int:
+	var index := int(row.get("stage_index", -1))
+	var total := int(row.get("stage_count", 0))
+	if index < 0:
+		return 1
+	if total > 0 and index >= total:
+		return total
+	return index + 1
+
+
+## "held 12 periods", or `""` when the module published no count. A count of zero is a real
+## answer — an event that opened this instant — and prints as "held 0 periods" rather than
+## being dropped, because "just started" and "we do not know" are different facts and only
+## the second should be silent.
+func _held_text(row: Dictionary) -> String:
+	if not row.has("periods_held"):
+		return ""
+	return "held %d periods" % int(row.get("periods_held", 0))
+
+
+## The open-event rows a caller published, coerced into the one shape this panel renders.
+##
+## ## Coerced, NOT re-derived
+##
+## Every field is copied out of the row as-is; nothing is computed, defaulted from another
+## field, or invented. A row is dropped only if it is not a dictionary at all — an unnamed
+## event is KEPT and rendered with its id, because an event the player can see but not
+## identify is a real state this panel has a wording for. Dropping it would turn "something
+## is open and I cannot name it" into "nothing is open", which is the false calm this whole
+## seam exists to prevent.
+##
+## Duplicated so `summary()` hands back rows no caller can mutate back into this panel.
+func _event_rows_of(rows: Array) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for entry in rows:
+		if entry is Dictionary:
+			out.append((entry as Dictionary).duplicate())
+	return out
 
 
 ## The period readout. Two figures, not one: the pulse's own running count and the
@@ -404,9 +670,17 @@ func _crossed_of(span: Dictionary) -> Dictionary:
 ## The index to show: whatever the player last chose while it is still on offer, else the
 ## shortest length. **A retreat with no default is a retreat nobody starts**, and a
 ## disabled button is how a control reads as broken rather than as a choice.
-func _resolve_selection() -> int:
+##
+## `offered` is the caller's echo of [method summary]'s `retreat_index` rather than the
+## widget's own `selected`, because the widget's value is written BY this rebuild
+## (`_render_retreat` re-selects) and reading it back would make the rebuild its own
+## input: every repaint would restore whatever the previous repaint left, and a screen
+## that never echoed the index could never move it off the default at all.
+func _resolve_selection(offered: int = -1) -> int:
 	if _retreat_spans.is_empty():
 		return -1
+	if offered >= 0 and offered < _retreat_spans.size():
+		return offered
 	if _retreat_index >= 0 and _retreat_index < _retreat_spans.size():
 		return _retreat_index
 	return 0
@@ -489,8 +763,25 @@ func _on_retreat_pressed() -> void:
 	retreat_requested.emit(int(chosen.get("periods", 0)))
 
 
+## ## The click, recorded
+##
 ## Re-render only the cost line: picking a length changes the price and nothing else, so
 ## a full repaint would rebuild the news rows a player is reading for no reason.
-func _on_span_selected(_index: int) -> void:
+##
+## **The index is stored here, and until it was, it was stored nowhere.** `_retreat_index`
+## was only ever written by `_resolve_selection`'s fallback, so a player who picked the
+## widest sit length got the shortest one priced on the next repaint and the next one
+## after that — the panel's own `_render_retreat` note claimed the choice survived the
+## rebuild and it did not, because nothing between the click and the rebuild ever copied
+## it. ADR 0167's whole claim is that the duration is the player's CHOICE.
+##
+## Silenced during a rebuild's own re-select: that emission carries an index this panel
+## just wrote, and `clear()` leaves the widget at -1, so honouring it would erase the
+## choice the rebuild was restoring. See `_render_retreat`.
+func _on_span_selected(index: int) -> void:
+	if _restoring_selection:
+		return
+	if index >= 0 and index < _retreat_spans.size():
+		_retreat_index = index
 	if _retreat_cost_label != null:
 		_retreat_cost_label.text = _retreat_cost_text()

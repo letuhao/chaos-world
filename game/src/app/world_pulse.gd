@@ -197,6 +197,19 @@ var _stamps: Dictionary = ReconcileStamp.empty()
 ## `_stamps`, same owner and the same discardability: drop it and every world resolves to
 ## epoch 1, which is a full re-read rather than a corruption.
 var _epochs: Dictionary = WorldEpoch.empty()
+## ## The world's PERSISTED clock (ADR 0259), held OUTSIDE every fold's own count.
+##
+## **`null` means UNWIRED, and that is a state a probe legitimately wants.** A headless
+## probe or a unit test of the fold's own behaviour builds a `WorldPulse` with no clock and
+## asserts on `_periods`, which is the right thing for it to assert on. Production installs
+## one clock in the composition root's boot and hands this seam the SAME instance every time
+## it builds a fold — see [method attach_clock] for why the instance has to be the same one.
+var _clock: WorldClock = null
+## What the clock last REFUSED, as one of `WorldClock`'s reasons or `""`. Published so a
+## probe can tell "the world advanced and the count was kept" from "the world advanced and
+## the count was refused" — the second is a persistence failure a player would otherwise
+## never learn about, and `summary()` is where a status line reads it.
+var _clock_refusal: String = ""
 
 
 func _init(actor: Actor = null, director: BeatDirector = null) -> void:
@@ -210,6 +223,73 @@ func _init(actor: Actor = null, director: BeatDirector = null) -> void:
 ## pulse stays a pure wire either way.
 func attach(actor: Actor) -> void:
 	_actor = actor
+
+
+## ## The world's persisted clock (ADR 0259) — the seam, and where the base is seeded
+##
+## `clock` is the composition root's ONE `WorldClock`, handed here on every fold it builds.
+##
+## ## WHY IT IS HANDED IN RATHER THAN BUILT HERE
+##
+## **This object is REPLACED on a body swap.** `app/item_workbench_app.gd:adopt_actor` builds
+## a fresh `WorldPulse` for the reborn hero, so a clock created in `_init` would die with the
+## fold and the world would get younger every time the hero changed — which is the exact
+## defect `app/` ADR 0259 exists to close, reached through a different door. The root keeps
+## ONE instance for the life of the process and passes it to each new fold; that is what
+## makes "the world does not get younger when the hero does" a structural property rather
+## than a convention.
+##
+## ## WHY THE BASE IS SEEDED HERE AND NOT ADDED BY A CALLER
+##
+## `_periods` is this fold's own running total and starts at zero on a fresh fold. A session
+## restored at 5,000 periods that then counted from zero would hand the clock a span on top
+## of nothing, and every later reader would be off by the whole age of the world. So the
+## restored count is the floor here and `_periods` is seeded with it — the fold's total and
+## the world's total are then ONE number from the first advance on, rather than two that a
+## caller must remember to add.
+##
+## ## SEEDING IS FROM THE CLOCK ITSELF, NEVER FROM A COUNT A CALLER TYPES
+##
+## `base_periods` defaults to `-1`, meaning "ask the clock". A caller naming a number here
+## would be AUTHORS a count rather than restoring one, which is the thing ADR 0259 clause 5
+## forbids outright: a restore reads the persisted count and never authors one. Passing an
+## explicit non-negative value is therefore only meaningful for a test that has already
+## written that count into a ledger.
+func attach_clock(clock: WorldClock = null, base_periods: int = -1) -> Dictionary:
+	_clock = clock
+	_clock_refusal = ""
+	var base := 0
+	if _clock != null:
+		base = _clock.periods() if base_periods < 0 else base_periods
+	_periods = maxi(0, base)
+	return {"ok": true, "reason": "", "base_periods": _periods, "periods": _periods}
+
+
+## The world's total period count as this fold holds it: the restored base plus everything
+## this fold has advanced. What a reader asks when it wants to know how old the world is, and
+## what a caller converting to years hands to `TimeLadder.magnitudes_crossed`.
+##
+## ## THE CONVERSION IS THE READER'S, NEVER THIS FILE'S AND NEVER THE SAVE'S
+##
+## This is a COUNT. A caller wanting years calls
+## `TimeLadder.magnitudes_crossed(world_periods())` (ADR 0259 clause 4), because
+## `TimeLadder` is the only converter: storing a converted value would put the authored ratio
+## in the save format, where a retune of `time_ladder_table.tres` would silently disagree
+## with every existing save.
+func world_periods() -> int:
+	return _periods
+
+
+## What the CLOCK itself holds, as opposed to what this fold counts. Normally the same
+## number — which is the point, and the divergence is why both are published rather than
+## one being assumed: a clock that REFUSED an advance leaves this fold's total ahead of the
+## saved count, and a status line reporting only one of them would report a world older than
+## its own save.
+##
+## `0` when no clock is wired, which is what an unwired fold means rather than a clock at
+## zero — `clock_wired` is the disambiguation, and `summary()` carries it for that reason.
+func _clock_periods() -> int:
+	return 0 if _clock == null else _clock.periods()
 
 
 ## The director this pulse offers to, or null before one is wired.
@@ -344,6 +424,31 @@ func available_events() -> Array[Dictionary]:
 	return EventApi.available(_actor)
 
 
+## Every world event that is OPEN RIGHT NOW, as primitives, one row per open event.
+## Published so a screen can NAME what the world is doing rather than count it — the
+## sibling of [method available_events], and the seam the world readout's event rows land
+## on (BL-0906).
+##
+## ## Why this is a DELEGATE and not a second read model
+##
+## The rows are `EventReadModel.open_rows` and they are already computed: [method summary]
+## holds them under `open_event_rows`, read out of the same `EventApi.summary` call that
+## publishes `active_events`. This method exists so the bridge has a NAMED verb to bind —
+## the composition root binds a method reference, not a dictionary key, and a callable whose
+## body spelled out which key to reach into would be a second place to know the payload's
+## shape. It reads that one key and copies, and nothing else.
+##
+## **A row is copied deeply, never handed out.** The module's read model is built per call
+## and nobody else holds it, so a shallow hand-off would still be a writer into a
+## dictionary this layer does not own.
+func open_events() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for row in summary().get("open_event_rows", []) as Array:
+		if row is Dictionary:
+			out.append((row as Dictionary).duplicate(true))
+	return out
+
+
 ## ## THE OBSERVATION TRIGGER (ADR 0170 trigger (a), ADR 0173 (c))
 ##
 ## Someone is standing in `location_id`: fold this place's clock up to the span the fold
@@ -430,6 +535,12 @@ func summary() -> Dictionary:
 	var world: Dictionary = EventApi.summary(_actor) if _actor != null else {}
 	return {
 		"periods": _periods,
+		# ADR 0259: the persisted clock's own reading, and whether the last advance's
+		# count was REFUSED. Both are published rather than reached for, so `tools ui drive`
+		# prints them and a test asserts on them without touching the object.
+		"clock_wired": _clock != null,
+		"clock_periods": _clock_periods(),
+		"clock_refusal": _clock_refusal,
 		"elapsed_seconds": snappedf(_elapsed, 0.001),
 		"period_seconds": PERIOD_SECONDS,
 		"offered": _offered,
@@ -459,7 +570,38 @@ func summary() -> Dictionary:
 		"world_period": int(world.get("period", 0)),
 		"active_events": int(world.get("active_count", 0)),
 		"available_events": (world.get("available", []) as Array).size(),
+		# ## The event ROWS, not their count — BL-0906
+		#
+		# `active_events` above is the only thing a screen could read about what the world
+		# is doing, so a player saw "live now 1" and could not learn WHICH event was open,
+		# what STAGE it had reached, how long it had held, or what its standoff paid. The
+		# rows were already correct and already computed: `EventApi.summary` answers `open`
+		# with `EventReadModel.open_rows`, and this file already holds that dictionary in
+		# `world`. Collapsing it to an integer was the whole defect.
+		#
+		# PUBLISHED, never re-derived. Each row is a DEEP COPY, because a caller that could
+		# write into the module's own read model through this payload would be a second
+		# writer to the event ledger — the direction ADR 0093 draws for a module's
+		# subscribers, and the same rule `summary()`'s `magnitudes` already follows with
+		# `.duplicate(true)`. No re-derivation, no new module verb, no second copy of the
+		# row shape: a panel that wanted a seventh field would be inventing vocabulary the
+		# event module does not publish.
+		"open_event_rows": _open_event_rows(world),
 	}
+
+
+## [method summary]'s `open_event_rows`, copied out of the module's read model.
+##
+## Delegated and copied rather than recomputed, for the reason the key above gives. An
+## absent actor leaves `world` empty and answers `[]`, which is the same shape a world with
+## nothing open answers — a count and a roster of rows must agree, and they are read from
+## one `EventApi.summary` call so they cannot.
+func _open_event_rows(world: Dictionary) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for row in world.get("open", []) as Array:
+		if row is Dictionary:
+			out.append((row as Dictionary).duplicate(true))
+	return out
 
 
 ## Offer one AUTHORED EVENT beat through the director, and report what it decided.
@@ -533,6 +675,42 @@ func _advance(periods: int, is_spend: bool = false) -> Dictionary:
 	# asks for: the module has no clock, and this file has no rules.
 	var pulled := EventApi.advance(_actor, periods)
 	_periods += periods
+	## ## The world clock records HERE, at the ONE place a whole advance happens (ADR 0259)
+	##
+	## Not in `pull`, not in `advance_periods`, and not in `app/item_workbench_play.gd`: all
+	## three fold through [method _advance], so a count recorded in any of them would be a
+	## SECOND record of a moment this function already has. It is beside `_periods += periods`
+	## rather than after the whole advance because the clock is the world's AGE and an
+	## advance that opens nothing still ages the world — a refusal to open an event is not a
+	## refusal of time.
+	##
+	## ## The SPAN is handed, and only a forward-only clock can accept one
+	##
+	## `WorldClock` deliberately exposes no setter that takes a total, so the only shape it
+	## will take is a NON-NEGATIVE SPAN (ADR 0259 clause 5). Handing it `_periods` — the
+	## world total, already seeded with the restored base — would be the `append` half of the
+	## same mistake: every advance would add the world's whole age again, and the count would
+	## run away as a quadratic of itself. The span is this advance's own `periods`, and the
+	## clock is the one place that decides what the world now totals.
+	##
+	## ## A REFUSAL IS A REPORT, NOT A CRASH
+	##
+	## A clock that refused (a count over the cap) leaves the fold untouched and says so
+	## under `clock_refusal` — the world's other ledgers have already advanced, so aborting
+	## here would make a persistence guard throw away a session's play.
+	if _clock != null:
+		var recorded := _clock.advance(periods)
+		if not bool(recorded.get("ok", true)):
+			_clock_refusal = String(recorded.get("reason", ""))
+			push_error(
+				(
+					(
+						"WorldPulse: the world clock refused %d periods (%s). The world still "
+						+ "advanced; the count is not persisted."
+					)
+					% [periods, _clock_refusal]
+				)
+			)
 	# ## The SSOT's magnitudes reach the institution cadence HERE
 	#
 	# This is the one place an elapsed span is converted into the clock's own authored

@@ -210,6 +210,28 @@ var _forge: SocketForgeProgram = null
 ## field keeps its whole life across the split.
 var _route: StringName = &""
 
+## ## The world's persisted period count (ADR 0259) — ONE instance, this root's whole life.
+##
+## Declared HERE rather than in the play half because both places that need it are in this
+## half: `_ready` installs it as the `world_time` store and builds the first fold against it,
+## and `adopt_actor` builds every later fold against the SAME instance. A field the base
+## declared would be readable from both (INC-0020's rule — declare a member in the BASE only)
+## with no upside, since nothing in the base touches it.
+##
+## **It is never rebuilt and never re-restored after boot.** Rebuilding it per fold is what
+## would make the world get younger when the hero does, and re-restoring it per body swap
+## would re-seed the world from the last SAVE rather than from the count that has moved since
+## — see the `adopt_actor` site, which is the assertion that keeps both true.
+##
+## ## IT IS ALSO THE SAVE'S `world_time` STORE
+##
+## Installing this object as the store is what persists the count: `SaveApi._snapshot_world`
+## reads `read_ledger()` off the installed store, and `SaveApi.publish_world` restores it by
+## calling `write_ledger`. That is why no save code changed — the clock rides the existing
+## mechanism (ADR 0259 clause 2), and the fold and the save cannot drift into two answers
+## because they are the same object.
+var _world_clock: WorldClock = null
+
 
 func _ready() -> void:
 	_stack = get_node_or_null("%ScreenStack") as ScreenStack
@@ -259,6 +281,29 @@ func _ready() -> void:
 		WorldPolityLedger.WORLD_KEY,
 		WorldLedgerStore.new(WorldPolityLedger.WORLD_KEY, WorldPolityLedger.SCHEMA_VERSION)
 	)
+	# ## The world clock (ADR 0259), installed in the same block and for the same reason.
+	#
+	# A period count is true of the WORLD, not of whoever is carrying it, so per-actor storage
+	# would be a copy every body could contradict — and a player who quit and returned would
+	# resume at period zero holding a full ledger.
+	#
+	# ## THE STORE IS THE CLOCK, AND THAT IS THE WHOLE PERSISTENCE ARGUMENT
+	#
+	# `_world_clock` is installed here AS the `world_time` store rather than a `WorldLedgerStore`
+	# view of the file, and the reason is that `_snapshot_world` reads `read_ledger()` off the
+	# installed store: installing the live clock is therefore what puts the count on disk, with
+	# **no change to any save code**. A `WorldLedgerStore` would have been correct for the
+	# economy ledgers — whose truth lives in the file and is read from it — and wrong here,
+	# because a clock's truth lives in the object the fold advances and the file is only where
+	# it is KEPT. A store that re-read the file per advance would never see the count at all.
+	#
+	# **Before `publish_world` below, with the rest.** A world published before its store is
+	# installed is a world nobody reads back — the ledger is believed saved and is not, which is
+	# the silent-loss failure this whole class of fix exists to prevent. And because this is the
+	# SAME object the fold advances, the restore and the advance cannot drift into two answers.
+	if _world_clock == null:
+		_world_clock = WorldClock.new()
+	SaveApi.install_store(WorldClock.WORLD_KEY, _world_clock)
 	# ## The one place a fact becomes a fate counter (ADR 0149)
 	#
 	# `core/world_fact.gd` publishes a post-write hook slot and names nothing in it —
@@ -348,6 +393,21 @@ func _ready() -> void:
 	# `_world`, which the play half's `advance_world` / `world_summary` read — a local
 	# copy here would leave the screen advancing a clock the root does not hold.
 	_world = WorldPulse.new(_actor, BeatDirector.new())
+	# ## The world's OWN clock, and the reason it lives HERE (ADR 0259)
+	#
+	# `_world_clock` is this root's ONE `WorldClock` for the life of the process, and it is
+	# handed to every fold this file builds — including the fresh one `adopt_actor` makes for
+	# a reborn hero. That is the whole body-independence argument: a fold is replaced on a
+	# body swap, so a clock created per fold would die with it and **the world would get
+	# younger every time the hero changed**. The clock is a world fact (ADR 0127's argument,
+	# applied to time), so it outlives the body and is not rebuilt with it.
+	#
+	## `publish_world` above has already pushed the persisted count into it (it is the
+	# installed `world_time` store), so `attach_clock` reads the base off the clock itself —
+	# no caller types a count, because a restore reads one and never authors one (ADR 0259
+	# clause 5). A session that resumes at 5,000 periods continues from 5,000 rather than
+	# counting from zero and overwriting the world's age on the first autosave.
+	_world.attach_clock(_world_clock)
 	# The event module's beats go through the director, and this is the seam that makes
 	# that true. `EventBeatWriter` records the ledger itself, so re-offering from
 	# `WorldPulse` would double-count a monotone fact (ADR 0117 line 51); routing the
@@ -706,6 +766,19 @@ func adopt_actor(body: Actor) -> void:
 	# `AUTOSAVE_PERIODS` world-moving periods after a rebirth read as `maxi(0, small -
 	# large)` — zero periods moved, silently, on the save schedule (ADR 0179).
 	adopt_world(WorldPulse.new(body, BeatDirector.new()))
+	# ## The world clock goes WITH the fold, not through it (ADR 0259)
+	#
+	# `adopt_world` replaced the fold, so the fresh one needs the seam. `_world_clock` is
+	# deliberately NOT republished here and deliberately NOT rebuilt: it holds the world's
+	# LIVE count, which is exactly what must survive the hero's death, and republishing would
+	# re-seed the fresh fold from the last SAVE rather than from the count that has moved
+	# since — so the reborn hero would be born into a world younger than the one it just
+	# left. The base is the clock's own current total.
+	#
+	# **This is the assertion a well-meaning convenience breaks.** A refactor that moved this
+	# into `_world_clock = WorldClock.new()` would pass every single-actor test and quietly
+	# reset the age of the world at every rebirth.
+	_world.attach_clock(_world_clock)
 	# Both seams are re-pointed at the NEW body rather than left on the old one. The
 	# offer resolver names a `WorldPulse`, and `_ready` just replaced that object; a
 	# seam left pointing at the first one would offer the reborn hero's beats into a
@@ -1315,3 +1388,36 @@ func _on_world_location_selected(location_id: StringName) -> void:
 func _announce_route() -> void:
 	if _nav != null:
 		_nav.set_active(_route)
+
+
+## ## The world bridge, and the FOURTH slot (BL-0906)
+##
+## An OVERRIDE of the inherited builder rather than an edit to it: the base assembles the
+## three verb slots, this one assembles those and adds the read slot. It calls `super()` so
+## the verb wiring stays literally the parent's — a hand-written second copy of three
+## `Callable(self, ...)` lines would be a second place for the root's own seams to drift.
+##
+## **Why a slot, when `world_summary()` already carries `open_event_rows`** — because the
+## count and the rows are different ANSWERS, and the panel must be able to say which it
+## got. `active_events` answers "how many"; a roster of rows answers "which, at what stage,
+## held how long, paying what". Publishing them inside a payload the screen already reads
+## would have been a smaller diff, and it would have left a missing seam indistinguishable
+## from a quiet world, because `[]` is both. A named slot is checkable from `has_events()`,
+## which is what makes the empty state honest rather than merely empty.
+##
+## The callable is `WorldPulse.open_events`, delegated: the rows are the event module's read
+## model, and `app/` is the one layer allowed to hold them on a screen's behalf. The bridge
+## binds the METHOD; the screen still never names the module.
+func _world_bridge() -> WorldPulseBridge:
+	var bridge: WorldPulseBridge = super()
+	bridge.events = Callable(self, "_world_open_events")
+	return bridge
+
+
+## Every world event that is open right now, as primitives, for the bridge's read slot.
+## `[]` when no world is attached — which the bridge and the panel both read as "wired,
+## nothing open", the honest answer for a root that has not built a pulse yet.
+func _world_open_events() -> Array[Dictionary]:
+	if _world == null:
+		return []
+	return _world.open_events()

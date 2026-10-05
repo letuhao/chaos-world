@@ -24,6 +24,14 @@ extends UiScreen
 ## selector and the periods come from the panel's summary, so there is exactly one
 ## answer to "how long is this" on the screen and it is the one a player is looking at.
 ##
+## ## And a READ slot, which is not a verb
+##
+## The bridge also carries the world's OPEN EVENTS as rows (BL-0906). The screen reads them
+## on every repaint and forwards them raw under `events_wired` / `open_events`; it formats
+## nothing and decides nothing. It holds the bridge reference itself rather than reaching
+## through the reader, because the reader answers counts — and a count cannot say which
+## event is open, what stage it has reached, how long it has held, or what it pays.
+##
 ## Contract: `summary()` is the testable surface with node and edge data.
 signal location_selected(location_id: StringName)
 
@@ -71,6 +79,13 @@ var _selected_location: StringName = &""
 ## Resolves the world's clock through the root's callables. Its own file because
 ## drawing a graph and reading a clock are two reasons to change this screen.
 var _world: WorldPulseReader = WorldPulseReader.new()
+## The bridge itself, kept beside the reader that calls it. The reader answers COUNTS; the
+## event ROWS are a roster rather than a report, so they are read through the bridge's own
+## `open_event_rows()` and handed to the panel as a separate pair of keys. Held here rather
+## than added to the reader because this seam is the ONE legal edge from `ui/` to `app/`
+## (ADR 0143), and a screen holding a reference to the edge it was given is not a second
+## path — it is the same path, named.
+var _world_bridge: WorldPulseBridge = null
 var _world_panel: WorldPulsePanel = null
 ## The panel's last line, so `summary()` reports what the player read about their last
 ## action on the clock. The map's own `MessageLine` is a different subject.
@@ -82,6 +97,7 @@ var _world_tone: StringName = &""
 ## bound after its first paint would otherwise show the state it had before the binding.
 func bind_world(bridge: WorldPulseBridge) -> void:
 	_bind_nodes()
+	_world_bridge = bridge
 	_world.bind(bridge)
 	refresh()
 
@@ -188,7 +204,35 @@ func _refresh_view() -> void:
 		var view := _world.view(_actor)
 		view["message"] = _world_message
 		view["tone"] = String(_world_tone)
+		# ## The open-event rows, forwarded RAW (BL-0906)
+		#
+		# Two keys and no formatting: `events_wired` says the root published the seam at
+		# all, `open_events` carries one row per open event. This screen does not build
+		# either — the panel owns every `%d` and every sentence (AGENTS.md / ADR 0038), and a
+		# screen that formatted an event would put a `%d` in `ui/` a second place to get
+		# wrong. The count the reader already forwarded (`active_events`) is left beside
+		# them: the pulse tally still reads "live now 1", and now the row under it says
+		# which one.
+		view["events_wired"] = _world_bridge != null and _world_bridge.has_events()
+		view["open_events"] = _world_bridge.open_event_rows() if _world_bridge != null else []
+		# The panel's selector is the player's CHOSEN sit length, and this screen feeds
+		# it a freshly published list on every repaint. Without the key the panel has no
+		# way to tell "the player picked this" from "this row is still there", and
+		# `_resolve_selection` then falls back to the shortest — so a player who chose a
+		# year was shown a season after any refresh, and the cost line they read was no
+		# longer the price the button would pay. Published here, beside the payload the
+		# screen already forwards, rather than set imperatively on the widget afterwards.
+		view["retreat_index"] = _retreat_index_of()
 		_world_panel.show_world(view)
+
+
+## The player's chosen sit length, as an index into the panel's published rows. `-1`
+## until one has been chosen, so the panel applies its own default on the first repaint
+## rather than this screen inventing a row the clock never offered.
+func _retreat_index_of() -> int:
+	if _world_panel == null:
+		return -1
+	return int((_world_panel.summary() as Dictionary).get("retreat_index", -1))
 
 
 func _render() -> void:
