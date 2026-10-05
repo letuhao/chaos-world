@@ -297,7 +297,18 @@ static func _parse_attach_hooks(value, source_path: String) -> Array:
 					"%s: an 'attach_hooks' entry needs a string 'phase'" % source_path
 				),
 			]
-		out.append({"phase": String(entry["phase"])})
+		var row := {"phase": String(entry["phase"])}
+		if entry.has("callable"):
+			if typeof(entry["callable"]) != TYPE_STRING or String(entry["callable"]).is_empty():
+				return [
+					false,
+					_fail(
+						"bad_attach_hooks",
+						"%s: an 'attach_hooks' 'callable' must be a non-empty string" % source_path
+					),
+				]
+			row["callable"] = String(entry["callable"])
+		out.append(row)
 	return [true, out]
 
 

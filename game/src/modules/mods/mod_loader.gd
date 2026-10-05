@@ -10,19 +10,79 @@ extends RefCounted
 const API_VERSION := 1
 
 
+## Mount .pck files found in roots and return the extended roots list.
+## After mounting, the .pck contents are available at res://, so res:// is
+## added to the roots. If a .pck fails to mount, returns a named error.
+static func mount_pcks(roots: Array) -> Dictionary:
+	var pck_paths: Array[String] = []
+	for root in roots:
+		for path in ContentScan.files_under(String(root), ".pck"):
+			pck_paths.append(path)
+	if pck_paths.is_empty():
+		return {"ok": true, "roots": roots}
+	var out_roots: Array = roots.duplicate()
+	if not out_roots.has("res://"):
+		out_roots.append("res://")
+	for path in pck_paths:
+		var mounted := ProjectSettings.load_resource_pack(path, true)
+		if not mounted:
+			return {
+				"ok": false,
+				"reason": "pck_mount_failed",
+				"detail": "%s: failed to mount" % path,
+			}
+	return {"ok": true, "roots": out_roots}
+
+
+## Resolve a "path/to/script.gd:method_name" string into a Callable.
+## Returns an empty Callable if the format is invalid or the script fails to load.
+static func _resolve_callable(spec: String) -> Callable:
+	var parts := spec.split(":")
+	if parts.size() != 2:
+		return Callable()
+	var script_path := String(parts[0])
+	var method_name := String(parts[1])
+	if script_path.is_empty() or method_name.is_empty():
+		return Callable()
+	var script: Resource = load(script_path)
+	if script == null:
+		return Callable()
+	var obj: Object = script.new()
+	if not obj.has_method(method_name):
+		obj.free()
+		return Callable()
+	return Callable(obj, method_name)
+
+
 ## Find every `mod.json` under `roots` and parse each. First failure wins:
 ## `{ok:false, reason:"bad_manifest", detail:"<path>: <reason>"}` or
 ## `{ok:false, reason:"duplicate_mod_id", ...}`. Later passes trust every
 ## manifest that survived this one.
 static func discover(roots: Array) -> Dictionary:
+	var mounted := mount_pcks(roots)
+	if not bool(mounted.get("ok", false)):
+		return {
+			"ok": false,
+			"reason": String(mounted.get("reason", "")),
+			"detail": String(mounted.get("detail", "")),
+			"mods": [],
+		}
+	var effective_roots: Array = mounted["roots"]
 	var paths: Array[String] = []
-	for root in roots:
+	for root in effective_roots:
 		for path in ContentScan.files_under(String(root), "mod.json"):
 			paths.append(path)
 	paths.sort()
+	# Deduplicate paths (same file found via multiple roots)
+	var seen_paths := {}
+	var unique_paths: Array[String] = []
+	for path in paths:
+		if not seen_paths.has(path):
+			seen_paths[path] = true
+			unique_paths.append(path)
 	var mods: Array[Dictionary] = []
 	var seen := {}
-	for path in paths:
+	for path in unique_paths:
 		var text := FileAccess.get_file_as_string(path)
 		var parsed := ModManifest.parse(text, path)
 		if not bool(parsed.get("ok", false)):
@@ -202,7 +262,10 @@ static func _stamp_context(mod: Dictionary, registry: ModuleRegistry) -> Registr
 			module.get("seed_dir", "")
 		)
 	for hook in mod["attach_hooks"]:
-		ctx.add_attach_hook(hook["phase"], Callable())
+		var callable := Callable()
+		if hook.has("callable"):
+			callable = _resolve_callable(String(hook["callable"]))
+		ctx.add_attach_hook(hook["phase"], callable)
 	for screen in mod["screens"]:
 		ctx.register_screen(screen["id"], screen["scene"], screen["label"])
 	if not (mod["events"] as Array).is_empty():
