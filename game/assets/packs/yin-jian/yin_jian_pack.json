@@ -14333,7 +14333,18 @@
       "destructible": false,
       "material": "wood",
       "cultivation_element": "neutral",
-      "prompt_summary": "Top-down 45 degree colossal ancient sacred Yanluo divine tree, gnarled black-gold bark, luminous golden leaves radiating soft halo, dangling glowing crimson and jade Dao fruits."
+      "prompt_summary": "Top-down 45 degree colossal ancient sacred Yanluo divine tree, gnarled black-gold bark, luminous golden leaves radiating soft halo, dangling glowing crimson and jade Dao fruits.",
+      "runtime_path": "res://assets/packs/yin-jian/runtime/diem_la_divine_tree.png",
+      "original_path": "assets/packs/yin-jian/original/diem_la_divine_tree_original.jpg",
+      "pivot": "bottom_center",
+      "cv_validation": {
+        "status": "passed",
+        "perspective": "strictly_overhead",
+        "lighting": "315_degrees",
+        "subcells_covered": 256,
+        "total_subcells": 256,
+        "coverage_ratio": 1.0
+      }
     },
     {
       "id": "yin_jian.interactive_and_puzzle.diem_la_life_death_seal",
@@ -14463,7 +14474,18 @@
       "destructible": false,
       "material": "fluid",
       "cultivation_element": "blood",
-      "prompt_summary": "Top-down 45 degree ornate stone font brimming with thick bubbling crimson holy blood, surrounded by red blood-vein moss and floating red mist."
+      "prompt_summary": "Top-down 45 degree ornate stone font brimming with thick bubbling crimson holy blood, surrounded by red blood-vein moss and floating red mist.",
+      "runtime_path": "res://assets/packs/yin-jian/runtime/bat_tu_blood_holy_spring.png",
+      "original_path": "assets/packs/yin-jian/original/bat_tu_blood_holy_spring_original.jpg",
+      "pivot": "center",
+      "cv_validation": {
+        "status": "passed",
+        "perspective": "strictly_overhead",
+        "lighting": "315_degrees",
+        "subcells_covered": 112,
+        "total_subcells": 144,
+        "coverage_ratio": 0.778
+      }
     },
     {
       "id": "yin_jian.architecture_and_building.bat_tu_blood_god_altar",
@@ -15165,7 +15187,18 @@
       "destructible": false,
       "material": "stone",
       "cultivation_element": "earth",
-      "prompt_summary": "Top-down 45 degree cracked giant geode hollow revealing radiant golden-amber earth core crystals, surrounded by heavy stone prayer slabs."
+      "prompt_summary": "Top-down 45 degree cracked giant geode hollow revealing radiant golden-amber earth core crystals, surrounded by heavy stone prayer slabs.",
+      "runtime_path": "res://assets/packs/yin-jian/runtime/thach_toc_core_crystal_sanctuary.png",
+      "original_path": "assets/packs/yin-jian/original/thach_toc_core_crystal_sanctuary_original.jpg",
+      "pivot": "center",
+      "cv_validation": {
+        "status": "passed",
+        "perspective": "strictly_overhead",
+        "lighting": "315_degrees",
+        "subcells_covered": 96,
+        "total_subcells": 144,
+        "coverage_ratio": 0.667
+      }
     },
     {
       "id": "yin_jian.creature_and_denizen.thach_toc_obsidian_colossus",
@@ -15217,7 +15250,18 @@
       "destructible": true,
       "material": "stone",
       "cultivation_element": "dark",
-      "prompt_summary": "Top-down 45 degree razor-sharp needle obelisk of pure matte black stone, absorbing all nearby light into a dark visual vortex, tendrils of shadow creeping outward."
+      "prompt_summary": "Top-down 45 degree razor-sharp needle obelisk of pure matte black stone, absorbing all nearby light into a dark visual vortex, tendrils of shadow creeping outward.",
+      "runtime_path": "res://assets/packs/yin-jian/runtime/hac_am_light_devouring_obelisk.png",
+      "original_path": "assets/packs/yin-jian/original/hac_am_light_devouring_obelisk_original.jpg",
+      "pivot": "center",
+      "cv_validation": {
+        "status": "passed",
+        "perspective": "strictly_overhead",
+        "lighting": "315_degrees",
+        "subcells_covered": 38,
+        "total_subcells": 64,
+        "coverage_ratio": 0.594
+      }
     },
     {
       "id": "yin_jian.architecture_and_building.hac_am_abyssal_temple",
@@ -15347,7 +15391,18 @@
       "destructible": false,
       "material": "metal",
       "cultivation_element": "fate",
-      "prompt_summary": "Top-down 45 degree intricate brass and jade loom spinning glowing gold and scarlet threads of destiny, complex gearwork and astrolabe rings."
+      "prompt_summary": "Top-down 45 degree intricate brass and jade loom spinning glowing gold and scarlet threads of destiny, complex gearwork and astrolabe rings.",
+      "runtime_path": "res://assets/packs/yin-jian/runtime/van_menh_loom_of_fate.png",
+      "original_path": "assets/packs/yin-jian/original/van_menh_loom_of_fate_original.jpg",
+      "pivot": "center",
+      "cv_validation": {
+        "status": "passed",
+        "perspective": "strictly_overhead",
+        "lighting": "315_degrees",
+        "subcells_covered": 112,
+        "total_subcells": 144,
+        "coverage_ratio": 0.778
+      }
     },
     {
       "id": "yin_jian.architecture_and_building.van_menh_death_sub_fane",
