@@ -106,9 +106,9 @@ static func refuse(reason: String) -> Dictionary:
 	return {"ok": false, "reason": reason}
 
 
-## The success shape. `ok` and `reason` are present on EVERY answer so a caller reads
-## one key without knowing which verb it called, and `reason` is `""` on success
-## because an empty reason and a missing key are a different thing to a panel.
+## The success shape. `ok` and `reason` are present on EVERY answer so a caller reads one
+## key without knowing which verb it called, and `reason` is `""` on success because an
+## empty reason and a missing key are a different thing to a panel.
 static func ok(extra: Dictionary = {}) -> Dictionary:
 	var out := {"ok": true, "reason": ""}
 	for key in extra.keys():
@@ -116,9 +116,9 @@ static func ok(extra: Dictionary = {}) -> Dictionary:
 	return out
 
 
-## `value` when it really is text — a `String` or a `StringName` — otherwise
-## `fallback`. See the class note for why a raw `String(...)` cast is the wrong tool
-## on a save payload: it RAISES on a float rather than yielding text.
+## `value` when it really is text — a `String` or a `StringName` — otherwise `fallback`.
+## See the class note for why a raw `String(...)` cast is the wrong tool on a save payload:
+## it RAISES on a float rather than yielding text.
 static func text(value: Variant, fallback: String = "") -> String:
 	if value is String or value is StringName:
 		return String(value)
@@ -377,11 +377,7 @@ static func move_standing(ledger: Dictionary, delta: int) -> Dictionary:
 	var before := int(read_out["standing"])
 	out["standing"] = clampi(before + delta, 0, cap)
 	return ok(
-		{
-			"ledger": out,
-			"standing": int(out["standing"]),
-			"applied": int(out["standing"]) - before,
-		}
+		{"ledger": out, "standing": int(out["standing"]), "applied": int(out["standing"]) - before}
 	)
 
 
