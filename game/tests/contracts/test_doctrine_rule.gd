@@ -1,6 +1,6 @@
 extends TestCase
 
-## ADR NNNN: the registrable System contract, and its defaults, asserted.
+## ADR 0267: the registrable System contract, and its defaults, asserted.
 ##
 ## Two halves, and the second is the one that exists to prove anything:
 ##

@@ -2,7 +2,7 @@ class_name DoctrineRule
 extends RefCounted
 
 ## One registrable System (道統): a transmitted body of rules a practitioner opts
-## into, farms on its own counter, and spends (ADR NNNN).
+## into, farms on its own counter, and spends (ADR 0267).
 ##
 ## ## What a System IS, and why its counter is not the ladder
 ##
@@ -86,7 +86,7 @@ extends RefCounted
 ##
 ## So the actor is `Variant` and every implementation casts it once at the top. Note
 ## the asymmetry with `StatProvider.contribute(context: StatContext)`: a contract MAY
-## type a parameter typed when the type lives in `contracts/` (see `PathState` in
+## type a parameter when the type lives in `contracts/` (see `PathState` in
 ## `ProgressionModel`). The loose signature here is not a looser style — it is the
 ## rule.
 ##
