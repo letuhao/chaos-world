@@ -824,6 +824,41 @@ def _validate(records: list[dict], *, check_files: bool) -> list[str]:
                         f"({', '.join(sorted(closed))}). The species record is the "
                         f"authority on what its body can do."
                     )
+            # Every relationship target, and both identity anchors, are REFERENCES into the
+            # bible, and nothing checked them. Every agent brief has said so for weeks and
+            # asked authors to verify by hand instead, which is why a stream of agents has
+            # reported catching their own typo - `religions.sealed_core` for
+            # `religion.sealed_core`, `mysteries.the_payer_nobody_names` for
+            # `mysteries.the_second_payer_of_the_first_tier` - each of which would
+            # otherwise have shipped, because a non-empty string is a valid target exactly
+            # as it was a valid race. The manual step was never the safeguard; it was the
+            # only safeguard.
+            #
+            # Measured before adding: 2238 relationship targets, 0 unresolving. `faction`
+            # 0 unresolving with 11 empty, `home` 0 with 4 empty. So this is GREEN today
+            # and is here to catch tomorrow. EMPTY IS ALLOWED and must stay allowed - a
+            # thornline symbionte has no organization and a cast template is keyed to a
+            # place, so a blank anchor is often the accurate answer and an earlier version
+            # of this idea would have forced a fiction into fifteen records.
+            if lore_entries is not None:
+                for anchor in (identity.get("faction"), identity.get("home")):
+                    value = str(anchor or "").strip()
+                    if value and value not in lore_entries:
+                        issues.append(
+                            f"{label}: identity anchor {value!r} is not a lore id, so the "
+                            f"record points at nothing. Use a bare entity id, or leave it "
+                            f"empty if the honest answer is that there is none."
+                        )
+                for relation in canon.get("relationships") or []:
+                    if not isinstance(relation, dict):
+                        continue
+                    target = str(relation.get("to") or "").strip()
+                    if target and target not in lore_entries:
+                        issues.append(
+                            f"{label}: relationship target {target!r} is not a lore id. "
+                            f"`check` does not resolve these anywhere else, so a wrong one "
+                            f"ships silently and reads as a link to nothing."
+                        )
 
     # Duplicates are checked across the whole catalog rather than per record,
     # because the defect is a RELATIONSHIP between two rows and neither row can
