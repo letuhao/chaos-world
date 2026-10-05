@@ -144,21 +144,6 @@ extends Resource
 ## ladder (ADR 0050). See `NpcMinorComposer`.
 @export_range(0.0, 100.0, 0.1) var minor_power_scale: float = 0.0
 
-
-## The four authored halves as a digest, so a content guard can walk the cast without
-## reaching into five arrays. One place, so a missing round and a missing opinion list
-## cannot disagree about being empty.
-func alive_digest() -> Dictionary:
-	return {
-		"tier": String(normalized_tier()),
-		"round_slots": daily_round.size(),
-		"opinions": opinions.size(),
-		"recalls": recalls.size(),
-		"tells": tells.size(),
-		"power_scale": minor_power_scale,
-	}
-
-
 ## ## The custody term this individual may be TAKEN on (ADR 0247)
 ##
 ## An empty `capture_term` means **this individual is not capturable at all** — not "capturable
@@ -188,6 +173,20 @@ func alive_digest() -> Dictionary:
 ## `TimeLadder`'s. Zero means this def ships no round at all, which is a real state and
 ## not an error.
 @export var round_slot_ratio_periods: int = 0
+
+
+## The four authored halves as a digest, so a content guard can walk the cast without
+## reaching into five arrays. One place, so a missing round and a missing opinion list
+## cannot disagree about being empty.
+func alive_digest() -> Dictionary:
+	return {
+		"tier": String(normalized_tier()),
+		"round_slots": daily_round.size(),
+		"opinions": opinions.size(),
+		"recalls": recalls.size(),
+		"tells": tells.size(),
+		"power_scale": minor_power_scale,
+	}
 
 
 ## Whether this individual may be taken at all: a def authors a custody term, or it is not
