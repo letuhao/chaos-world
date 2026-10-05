@@ -23,9 +23,7 @@ Usage: `uv run python -m tools portrait_fallback --write`
 
 from __future__ import annotations
 
-import argparse
 import re
-from pathlib import Path
 
 from .common import GAME_DIR, ToolError, fail, info, ok
 
@@ -59,7 +57,8 @@ def authored_races() -> list[tuple[str, tuple[int, int, int]]]:
 
     Text rather than `load()` for the reason `PortraitCatalog` reads its tree by text: this process
     has no Godot runtime, and a `.tres` of another type in the same directory must be skipped rather
-    than mis-cast. `sorted` over a materialised listing so the order never depends on the filesystem.
+    than mis-cast. `sorted` over a materialised listing so the order never depends on the
+    filesystem.
     """
     root = GAME_DIR / "data" / "races"
     if not root.is_dir():
@@ -87,8 +86,8 @@ def authored_races() -> list[tuple[str, tuple[int, int, int]]]:
     return found
 
 
-def draw_silhouette(rgb: tuple[int, int, int]) -> "Image.Image":  # noqa: F821
-    """A head-and-shoulders silhouette at [CANVAS], transparent outside the figure.
+def draw_silhouette(rgb: tuple[int, int, int]):
+    """A head-and-shoulders RGBA silhouette at [CANVAS], transparent outside the figure.
 
     Drawn from primitives rather than traced from a render: a fallback that resembles a specific
     person is a fallback that will eventually be mistaken for them. Two ellipses and a rounded
