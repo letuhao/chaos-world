@@ -689,7 +689,13 @@ static func _record_win(attacker: Actor, defender: Actor) -> void:
 				"outcome": "duel_won",
 				"opponent_id": String(defender.id),
 				"wins": int(duel.get("wins", 0)) + 1,
-			}
+			},
+			# THE ACTOR, and this is the SECOND copy of DEF-0320: `duel_hit.gd`'s
+			# `_record_win` had the identical omission, so two of the three production
+			# win-recording sites recorded the win and paid nothing. Omitting it takes
+			# `record_win`'s `actor: Actor = null` default, whose `if actor != null:`
+			# skips the earn with no refusal, no warning and no type error.
+			attacker
 		)
 	)
 	attacker.set_module_data(CombatDuel.MODULE_KEY, duel)

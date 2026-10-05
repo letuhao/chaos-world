@@ -211,7 +211,249 @@ func test_the_detector_ignores_comments_and_reads_code() -> void:
 	)
 
 
-## `-- Fixtures and readers -----------------------------------------------------`
+## ## An earn site whose PARTICIPANT is a defaulted parameter is an earn site
+## ## that can be wired to nothing and still typecheck.
+##
+## DEF-0320 was exactly this, and it survived a census that counted earn CALL
+## SITES and found twelve of them. `CombatDuelHit._record_win` called
+## `CombatDuel.record_win(duel, entry)` without the third argument, and
+## `record_win`'s signature is `(duel, entry, actor: Actor = null)` with
+## `if actor != null:` guarding the earn — so a duel closed with a killing blow
+## moved the `wins` counter, wrote `duel_won` into the history, recorded the duel
+## fact, and granted NO fate. The call site compiled, read as correct, and paid
+## nothing. Counting sites proves a call EXISTS; it never proves the call is
+## REACHED.
+##
+## So the rule here is about the SHAPE of the earn's own signature: a function
+## that can earn must not make its participant optional. A default of `null` on
+## the actor is legal GDScript and it is exactly what makes the failure silent —
+## there is no refusal, no warning, and no type error.
+func test_no_earn_bearing_function_makes_its_participant_optional() -> void:
+	# The verbs that PAY, and the participant each one needs. `source` is a string
+	# and `amount` a number, so neither can be the null that silently skips a
+	# reward. `record` is here because `DestinyApi.record` is the counter earn and
+	# `CombatDuel.record_win` / `record_defeat` are the fate earns; the match is on
+	# the verb name with a WORD BOUNDARY after it, because a bare `record` substring
+	# also matches `record_duel_won`, and matching the wrong family would make this
+	# guard's population a guess.
+	var verbs := ["earn_fate", "earn_destiny", "record", "grant", "pay"]
+	var optional_sites: Array[String] = []
+	var signatures := 0
+	for path in _gdscript_files(SRC_ROOT):
+		var text := FileAccess.get_file_as_string(path)
+		for line in text.split("\n"):
+			var code: String = line.strip_edges()
+			if code.begins_with("#"):
+				continue
+			if not code.begins_with("static func ") and not code.begins_with("func "):
+				continue
+			# Only a DEFINITION line, not a call: a definition names the verb after
+			# `func`, and the `(` follows the name. `code.contains("(")` alone would
+			# match every line that merely mentions the verb.
+			var open := code.find("(")
+			if open < 0:
+				continue
+			var name := code.substr(code.find("func ") + 5, open - (code.find("func ") + 5))
+			if not _pays_by_name(name, verbs):
+				continue
+			signatures += 1
+			# The optional-participant signatures are NAMES, not an accusation. A
+			# bare-ledger write with no body is a real shape —
+			# `test_the_ledger_writers_still_work_without_an_actor` proves a duel record
+			# can be written with no actor at all — so `actor: Actor = null` is legal
+			# HERE. What was never legal is a PRODUCTION CALLER omitting it, and that
+			# is the second case below. Recording the names is what lets the caller
+			# check know its population is non-empty, so the rule cannot pass by
+			# scanning nothing.
+			if code.contains("= null"):
+				optional_sites.append("%s: %s" % [path.get_file(), name])
+	assert_eq(
+		signatures > 0,
+		true,
+		(
+			"the scan found at least one earn signature, or it is guarding nothing "
+			+ "(INC-0016: a green guard nobody watched go red)"
+		)
+	)
+	# The optional signatures are NAMES, not an accusation: the rule is about callers,
+	# and a function may keep a null default for the bare-ledger shape.
+	assert_eq(
+		optional_sites.size() > 0,
+		true,
+		(
+			"the scan found at least one earn with a null-defaulted participant, or the "
+			+ "caller check above is inspecting nothing (INC-0016)"
+		)
+	)
+
+
+## Every PRODUCTION call of an earn whose participant can be null must PASS one.
+##
+## This is DEF-0320's exact shape, and it is the check that would have caught it:
+## `CombatDuelHit._record_win` and `CombatBoot._record_win` each called
+## `CombatDuel.record_win(duel, entry)` with two arguments against a signature whose
+## third is `actor: Actor = null`, and the `if actor != null:` guard turned that into
+## a silent skip. Counting call SITES proved twelve earns existed; it never proved
+## any was REACHED with its participant.
+func test_no_production_caller_omits_an_optional_earn_participant() -> void:
+	var offenders: Array[String] = []
+	var checked := 0
+	# The optional-participant earns, by NAME and fully qualified. Bare `record_win(`
+	# also matches `_record_win(`, which is the CALLER HELPER of the same name and
+	# takes `(attacker, defender)` legitimately — matching it would flag the very
+	# functions that are supposed to pass the actor on. So the class name is required.
+	#
+	# And the class name is followed by WHITESPACE, not a dot, because the house call
+	# style splits them across lines:
+	#     CombatDuel
+	#       . record_win(
+	# A literal `CombatDuel.record_win(` never appears, so an adjacency match reports
+	# a clean tree over every real call site. Measured: with adjacency this file
+	# passed 18/18 against a tree where `duel_hit.gd` passed an explicit `null`
+	# participant — the exact defect the guard exists to catch.
+	var callee := "CombatDuel"
+	for path in _gdscript_files(SRC_ROOT):
+		var text := FileAccess.get_file_as_string(path)
+		# A CALL SPANS LINES in this codebase — `CombatDuel\n\t\t.record_win(\n\t\t\tduel,`
+		# is the house style — so the search is over the whole file with comments
+		# stripped per line, not line by line. A line-by-line read sees `record_win(`
+		# alone and counts its arguments as zero, which is the false positive this
+		# shape produces.
+		var stripped: Array[String] = []
+		for raw in text.split("\n"):
+			var line: String = raw.strip_edges()
+			stripped.append("" if line.begins_with("#") else line)
+		var body := "\n".join(stripped)
+		var cursor := 0
+		while true:
+			var at := body.find(callee, cursor)
+			if at < 0:
+				break
+			cursor = at + callee.length()
+			# The verb follows the class name across WHITESPACE and an optional `.`,
+			# because the house style puts `CombatDuel` and `. record_win(` on
+			# separate lines. The gap is bounded so a distant verb cannot be paired
+			# with this class name by accident.
+			var verb := ""
+			var open := -1
+			for candidate in ["record_win", "record_defeat"]:
+				var probe := cursor
+				var gap := 0
+				while probe < body.length() and gap < 24:
+					var ch: String = body[probe]
+					if ch == "(":
+						break
+					if not (ch == " " or ch == "\t" or ch == "\n" or ch == "."):
+						break
+					probe += 1
+					gap += 1
+				if probe + candidate.length() < body.length():
+					if body.substr(probe, candidate.length()) == candidate:
+						if body.substr(probe + candidate.length(), 1) == "(":
+							verb = candidate
+							open = probe + candidate.length()
+							break
+			if verb == "":
+				continue
+			checked += 1
+			var depth := 0
+			var commas := 0
+			var closed := false
+			# Where the LAST argument STARTS, so its VALUE can be read. Counting
+			# arguments alone is not enough and this file learned that by mutation:
+			# passing an explicit `null` is still three arguments, so an arg-count
+			# check reports a clean tree while the participant is exactly as absent as
+			# before. The defect is a participant that IS null, not one that is
+			# missing, so the third argument's text is what has to be inspected.
+			var last_argument_at := -1
+			for position in range(open, body.length()):
+				var ch := body[position]
+				if ch == "(":
+					depth += 1
+				elif ch == ")":
+					depth -= 1
+					if depth == 0:
+						closed = true
+						break
+				elif ch == "," and depth == 1:
+					commas += 1
+					last_argument_at = position + 1
+			if not closed:
+				continue
+			if commas < 2:
+				offenders.append(
+					(
+						"%s passes %d argument(s) to %s (the participant is MISSING)"
+						% [path.get_file(), commas + 1, verb]
+					)
+				)
+				continue
+			var participant := body.substr(last_argument_at).strip_edges()
+			# Take the FIRST LINE of the span and strip a trailing comment from it.
+			# Both are load-bearing and the second one was found by mutation: the real
+			# call site puts the participant after a NINE-LINE explanatory comment
+			# (`# THE ACTOR. Without it ...`), so reading the whole span and trimming
+			# its ends yields the comment's text and never `null` — the guard reported a
+			# clean tree against the exact defect it exists to catch. A line, then the
+			# code before any `#`, is the only read that survives that layout.
+			var newline := participant.find("\n")
+			if newline >= 0:
+				participant = participant.substr(0, newline)
+			var hash := participant.find("#")
+			if hash >= 0:
+				participant = participant.substr(0, hash)
+			participant = participant.strip_edges()
+			participant = participant.trim_suffix(")").strip_edges()
+			participant = participant.trim_suffix(",").strip_edges()
+			if participant == "null":
+				(
+					offenders
+					. append(
+						(
+							"%s passes an explicit null participant to %s (the reward is silently unpaid)"
+							% [path.get_file(), verb]
+						)
+					)
+				)
+	assert_eq(
+		checked > 0,
+		true,
+		(
+			"the scan found at least one call of an optional-participant earn, or it is "
+			+ "guarding nothing (INC-0016)"
+		)
+	)
+	assert_eq(
+		offenders.size(),
+		0,
+		(
+			(
+				"a production caller omits an earn's participant, so the reward is silently "
+				+ "unpaid (DEF-0320): %s"
+			)
+			% str(offenders)
+		)
+	)
+
+
+## `-- Fixtures and readers -----------------------------------------------------
+
+
+## Whether a function NAME is one of the paying verbs, on a WORD BOUNDARY.
+##
+## `record` alone would also match `record_duel_won` and `record_restored`, which are
+## not earns, so a bare `contains` makes this guard's population a guess — and a
+## guard that inspects the wrong family is worse than no guard, because it reports
+## a green it has not earned. The boundary is checked on BOTH sides: the name must
+## equal the verb, or continue with `_` after it.
+func _pays_by_name(name: String, verbs: Array) -> bool:
+	for verb in verbs:
+		var word := String(verb)
+		if name == word:
+			return true
+		if name.begins_with(word) and name.substr(word.length(), 1) == "_":
+			return true
+	return false
 
 
 ## `tools/arch/registry.json`'s module map. Asserted to be a Dictionary by its caller.

@@ -244,7 +244,20 @@ static func _record_win(attacker: Actor, defender: Actor) -> void:
 				"outcome": "duel_won",
 				"opponent_id": String(defender.id),
 				"wins": int(duel.get("wins", 0)) + 1,
-			}
+			},
+			# THE ACTOR. Without it `record_win`'s `actor: Actor = null` default takes
+			# the branch that SKIPS the earn entirely, so a duel closed with a killing
+			# blow recorded the win and paid nothing: the `wins` counter moved, the duel
+			# history read `duel_won`, and `first_blood_duel` was never granted. That is
+			# the whole UNWIRED class — the site exists, verifies nothing, and no player
+			# can reach it — and it survived because the signature made the actor
+			# OPTIONAL, so the call site compiled and read as correct.
+			#
+			# `record_defeat`'s caller passes it (and DEF-0105's earn was verified there),
+			# so this was the only one of the two that did not. The lesson is the
+			# signature's: an earn site whose participant is a defaulted parameter is a
+			# site that can be wired to nothing and still typecheck.
+			attacker
 		)
 	)
 	attacker.set_module_data(CombatDuel.MODULE_KEY, duel)
