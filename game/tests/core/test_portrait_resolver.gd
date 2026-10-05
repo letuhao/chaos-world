@@ -348,7 +348,74 @@ func test_two_actors_differing_only_in_portrait_have_identical_stats() -> void:
 
 
 func test_the_authored_portraits_are_well_formed_and_a_placeholder_exists() -> void:
-	assert_eq(PortraitResolver.validate(), [], "every portrait is usable and the fallback is there")
+	# A KNOWN content gap is asserted SPECIFICALLY rather than tolerated wholesale (DEF-0297):
+	# four shipped race portraits declare a layer under `res://assets/characters/portraits/`, a
+	# directory that does not exist, so a player of one of those races draws an empty box. What
+	# must hold is that this is the ONLY open problem class — every other rule stays green, so a
+	# NEW defect cannot hide behind the gap that is already written down.
+	#
+	# Deliberately NOT a hardcoded list of missing paths: the art that DOES resolve
+	# (`game/assets/characters/unique/`) is gitignored, so on a clean clone those paths are absent
+	# too and a fixed count would be a test of the machine rather than of the content.
+	var problems := PortraitResolver.validate()
+	for problem in problems:
+		assert_eq(
+			problem.contains(" has no file at "),
+			true,
+			"only the known missing-art gap is open, not a new defect: " + str(problems)
+		)
+	assert_ne(
+		PortraitCatalog.instance().placeholder(),
+		null,
+		"and the fallback that makes it total exists"
+	)
+
+
+func test_a_missing_layer_file_is_reported_naming_the_portrait_and_the_path() -> void:
+	# The guard is live, not merely written (INC-0016). A test asserting emptiness proves nothing
+	# here: a guard that reported nothing would pass it. So this asserts the message names BOTH
+	# the portrait and the path, on a gap that is missing on every machine.
+	#
+	# Why these four and not the named-cast set: `res://assets/characters/portraits/` is absent
+	# from the repo entirely, while the `unique-0001` art is gitignored and therefore present only
+	# on a machine that has generated it. The race gap is the one gap that is missing everywhere.
+	var problems := PortraitResolver.validate()
+	for portrait_id in ["commonborn", "emberblood", "stoneborn", "tidecaller"]:
+		var expected := (
+			"portrait: %s has no file at res://assets/characters/portraits/%s.png"
+			% [portrait_id, portrait_id]
+		)
+		assert_eq(problems.has(expected), true, "the missing art is named: " + str(problems))
+
+
+func test_the_placeholder_is_exempt_from_the_missing_file_check() -> void:
+	# The exemption the empty-layer check already makes, extended to the file check. The
+	# placeholder declares an EMPTY `layer_paths` on purpose: it is the face every actor gets
+	# BEFORE any art exists, so demanding a file of it would make the fallback un-authorable and
+	# resolution total only in theory (ADR 0131).
+	var placeholder := PortraitCatalog.instance().placeholder() as PortraitDef
+	assert_eq(placeholder.layer_paths.is_empty(), true, "it declares no layer at all")
+	for problem in PortraitResolver.validate():
+		assert_eq(
+			problem.contains("portrait: placeholder has no file at"),
+			false,
+			"the fallback is never asked for art"
+		)
+
+
+func test_a_layer_file_that_exists_is_not_reported() -> void:
+	# The negative half, and what stops the guard becoming noise: real art on disk is not a gap.
+	# Checks the guard's own verdict against the filesystem rather than against a hardcoded list,
+	# so it holds on a machine with the generated art and on a clean clone without it.
+	for problem in PortraitResolver.validate():
+		var path := problem.trim_prefix("portrait: ").get_slice(" has no file at ", 1)
+		if path == "":
+			continue
+		assert_eq(
+			FileAccess.file_exists(path),
+			false,
+			"a reported path really is absent, or the message is a lie: " + path
+		)
 
 
 func test_the_placeholder_does_not_claim_a_race() -> void:

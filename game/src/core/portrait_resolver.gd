@@ -23,7 +23,12 @@ extends RefCounted
 ## Because the generator is optional. The resolver reads authored `.tres` resources; the
 ## generator writes a PNG and an index row, and a sync step bridges them. Delete the index and
 ## every actor still resolves — which is the property that lets a rendering tool land later
-## without a refactor. A test asserts this file names no filesystem call at all.
+## without a refactor. A test asserts this file names no index.
+##
+## `validate()` asks the filesystem ONE question — does a declared layer have a file — because a
+## non-empty `layer_paths` is what let four portraits name art that does not exist (DEF-0297). It
+## asks about a path AUTHORED IN the `.tres` and never opens an index, so the property above is
+## untouched: deleting the index still resolves every actor.
 
 ## The `actor.module_data` key a chosen portrait id persists under.
 const APPEARANCE_KEY := &"appearance"
@@ -150,6 +155,28 @@ static func validate() -> Array[String]:
 		# in theory. Every other portrait must have something to draw.
 		if def.layer_paths.is_empty() and not def.is_placeholder():
 			problems.append("portrait: %s has no layer to draw" % portrait_id)
+		# Existence, never only a NON-EMPTY list: the four shipped race portraits declare a layer
+		# under `res://assets/characters/portraits/`, a directory that does not exist, so a
+		# non-empty array is exactly what let four portraits draw nothing while this audit was
+		# green (DEF-0297). The message names the path, because "missing art" without it is what
+		# lets the same gap survive review a second time.
+		#
+		# The placeholder is exempt for the SAME reason the empty-list check above exempts it, and
+		# the exemption is extended rather than replaced: it is the face every actor gets before
+		# any art exists and it declares no layer, so there is no file of it to ask for. Requiring
+		# one would make the fallback un-authorable and resolution total only in theory (ADR 0131).
+		#
+		# A `for` over `layer_paths` and nothing else: no `while`, and neither loop grows the
+		# array it walks.
+		#
+		# NOT wired into `tools check`, deliberately (DEF-0297, same reasoning as ADR 0193 for
+		# `art_fidelity`): four portraits have no art and cannot get any from here, so a build
+		# gate would be permanently red over a content gap and would stop being read. Report it
+		# here; only gate on it once at least one race portrait resolves.
+		if not def.is_placeholder():
+			for layer_path in def.layer_paths:
+				if not FileAccess.file_exists(layer_path):
+					problems.append("portrait: %s has no file at %s" % [portrait_id, layer_path])
 		# A placeholder that also claims a race is a face that fails for exactly the actors who
 		# most need one.
 		if def.is_placeholder() and def.race_id != &"":
