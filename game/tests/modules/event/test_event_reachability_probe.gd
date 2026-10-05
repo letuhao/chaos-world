@@ -18,9 +18,10 @@ extends "res://tests/modules/event/event_director_fixture.gd"
 ## - `the_stone_that_answering`: opens and runs its ladder through `EventApi` with
 ##   NO test-only gate relaxation — no pre-recorded fact, no relaxed trigger, not a
 ##   hand-built def. Whatever the ledger happens to hold is what the world offers.
-## - `war_of_the_nine_fords`: the declared standoff must have a reachable caller.
-##   A war whose declaration is wired and whose settlement is not is the defect
-##   ADR 0085 exists to keep visible.
+## - `war_of_the_nine_fords`: the declared standoff is either SETTLED by a real
+##   production caller, or its gap is on the record as `DEF-0315`. It is never
+##   simply "red for a reason nobody can check" — both halves of that test can go
+##   red, and the test says which half it is on.
 
 const STONE := &"the_stone_that_answering"
 
@@ -30,11 +31,28 @@ const STONE := &"the_stone_that_answering"
 ## extends the fixture for its actor plumbing and names its own ids here.
 const CONFLICT := &"war_of_the_nine_fords"
 
+## The recorded deferral that owns the open half of this probe.
+##
+## DEF-0315 is the debt this file GUARDS, not a comment about it: while the war has
+## no verdict source the gap must be on the record, and if somebody deletes the
+## record while the gap is still open the debt is untracked and this test goes RED.
+## The one-line `tools deferred update` that closes it is the same edit that must
+## come with a real caller, and the second half of this test is what notices if it
+## does not.
+const DEFERRAL_ID := "DEF-0315"
+
 ## The production tree, which is the whole scope of a reachability claim: `res://src`
 ## only. `res://tests` is deliberately NOT walked, because a suite that only calls
 ## itself is not reachability — `tools/arch/facade_constants.py:365` says so in
 ## those words and this file obeys it.
 const PRODUCTION_ROOT := "res://src"
+
+## The debt ledger, reached by GLOBALIZING `res://..`: `docs/` is outside `res://`,
+## and a naive `res://../docs/deferred.jsonl` resolves to nothing without error, so
+## a read of it would assert its own failure
+## (`tests/arch_rules/test_arch_rules.gd:648` documents the seam and why
+## `simplify_path()` is load-bearing).
+const DEFERRAL_FILE := "docs/deferred.jsonl"
 
 
 ## Every `.gd` under `root`, found iteratively and sorted.
@@ -86,6 +104,26 @@ func _production_callers_of_resolve() -> Array[String]:
 			hits.append("%s:%d" % [path.get_file(), line])
 			from = at + 1
 	return hits
+
+
+## The one `docs/deferred.jsonl` row for [constant DEFERRAL_ID], or `{}`.
+##
+## Read as TEXT and matched on the row's own id, not parsed as JSON and indexed by
+## key: the file is append-only and ordered by id, so a `JSON.parse_string` over the
+## whole thing would hand back an ARRAY, and re-implementing the tool's own loader
+## here would be a second parser to drift from it. A line-level match is also the
+## shape that survives somebody inserting a row above this one.
+func _deferral_row(id: String) -> Dictionary:
+	var root := ProjectSettings.globalize_path("res://..").replace("\\", "/").simplify_path()
+	var path := root.path_join(DEFERRAL_FILE)
+	if not FileAccess.file_exists(path):
+		return {}
+	for line in FileAccess.get_file_as_string(path).split("\n"):
+		if not ('"id": "%s"' % id) in line:
+			continue
+		var parsed = JSON.parse_string(line)
+		return parsed if parsed is Dictionary else {}
+	return {}
 
 
 # --- GAP 1: the stone event ---------------------------------------------------
@@ -293,10 +331,41 @@ func test_no_shipped_event_demands_a_fact_only_its_own_ladder_produces() -> void
 ##
 ## `EventApi.resolve` is the ONE place `NationApi.resolve_conflict` is called from
 ## (`event/api.gd:432`), so if nothing in production calls `resolve`, the whole
-## program's one political conflict is unresolvable. This asserts the call site
-## EXISTS — it is a reachability probe over `res://src`, not a test of `resolve`
-## itself.
-func test_the_declared_war_has_a_production_caller_that_can_settle_it() -> void:
+## program's one political conflict is unresolvable.
+##
+## ## WHY THIS IS NOT A FLAT "there must be a caller" ASSERTION
+##
+## There is no such moment to wire it to, and inventing one is the defect:
+## `NationApi.resolve_conflict` refuses a `winner_id` that is not one of the
+## standoff's two INSTITUTION ids (`nation/api.gd:468`), and both of this war's —
+## `march_of_the_nine_provinces`, `court_of_the_star` — appear **nowhere** in
+## `game/src`, only in tests. Every shipped combat verdict (`CombatApi.exchange` in
+## `ui/screens/loot_encounter.gd`, `FightLoop` in `app/`) decides over two ACTORS,
+## never two polities, so it has no `winner_id` this standoff would accept. Wiring
+## `resolve` to one of them would mean either fabricating a verdict source or making
+## the political layer roll — both forbidden by ADR 0085. That is DEF-0315, and it
+## is a content-and-app build, not a one-line call.
+##
+## ## WHY A FLAT ASSERTION IS ALSO WRONG — and this is the shape INC-0012 names
+##
+## `assert callers.size() > 0` can NEVER go green, and a test that can never go
+## green is not a test: it is a permanently red build whose real content has been
+## drowned by one known debt, which is how a genuine regression hides behind it. A
+## `skip` has the opposite failure — it silences the whole assertion, so the day the
+## caller DOES ship, nothing notices (a dead guard is not a guard: INC-0016).
+##
+## So the probe states BOTH halves of the one true fact, and lets which half is
+## asserted be decided by the tree rather than by a human:
+##
+## - **gap open** (no production caller): DEF-0315 must EXIST and be open. Delete the
+##   debt record while the gap stands and this goes RED — the debt became untracked.
+## - **gap closed** (a caller exists): DEF-0315 must NOT still be open. Ship the
+##   caller, then close the record; closing the record without shipping the caller
+##   goes RED. That is the arm that catches the quiet lie.
+##
+## The test can go red either way. What it can no longer do is read as an
+## unexplained failure while the debt is honestly recorded.
+func test_the_declared_war_is_settled_or_its_gap_is_on_the_record() -> void:
 	# `assert_eq`, never `assert_gt`: this runner's `TestCase` has no `assert_gt`,
 	# and a name the base class does not own is a PARSE ERROR, not a missing
 	# assertion. `size > 0` as an equality is the same claim either way.
@@ -314,17 +383,57 @@ func test_the_declared_war_has_a_production_caller_that_can_settle_it() -> void:
 	)
 
 	var callers := _production_callers_of_resolve()
+	var row := _deferral_row(DEFERRAL_ID)
+	# The read is not vacuous either: a lookup that silently matched nothing would
+	# make the "debt is recorded" arm below pass for the wrong reason.
 	assert_eq(
-		callers.size() > 0,
+		not row.is_empty(),
 		true,
 		(
-			"NO production file calls `EventApi.resolve`. It is the only caller of "
-			+ "`NationApi.resolve_conflict` (event/api.gd:432), so the standoff that "
-			+ "`war_of_the_nine_fords` DECLARES (transfer: ownership, territory_id: "
-			+ "river_march) can never be settled: the river march never changes hands "
-			+ "and the standoff row is never closed. ADR 0085 forbids inventing a "
-			+ "verdict source inside the political layer, so the missing moment is a "
-			+ "content and app-layer build - see docs/deferred.jsonl DEF-0315."
+			(
+				"`docs/deferred.jsonl` has no row for %s, so a production caller for "
+				+ "`EventApi.resolve` cannot be told apart from the debt being untracked. "
+				+ "Either wire a caller at the moment that already decides the verdict, or "
+				+ "record the deferral: `uv run python -m tools deferred add`."
+			)
+			% DEFERRAL_ID
+		)
+	)
+	var deferred := String(row.get("status", "")) == "deferred"
+
+	if callers.size() > 0:
+		# The gap is CLOSED. The record must follow, or it is a stale lie.
+		assert_eq(
+			deferred,
+			false,
+			(
+				(
+					"a production caller now exists for `EventApi.resolve` (%s), so the war "
+					+ "of the nine fords CAN be settled — but %s is still `deferred`. Close it "
+					+ "with `uv run python -m tools deferred update`, or the tracker will "
+					+ "report a fixed gap forever."
+				)
+				% [str(callers), DEFERRAL_ID]
+			)
+		)
+		return
+
+	# The gap is OPEN. The debt must be on the record, naming the war it strands.
+	assert_eq(
+		deferred,
+		true,
+		(
+			(
+				"NO production file calls `EventApi.resolve`. It is the only caller of "
+				+ "`NationApi.resolve_conflict` (event/api.gd:432), so the standoff that "
+				+ "`war_of_the_nine_fords` DECLARES (transfer: ownership, territory_id: "
+				+ "river_march) can never be settled: the river march never changes hands "
+				+ "and the standoff row is never closed — AND %s is not an open deferral, "
+				+ "so that gap is unrecorded. ADR 0085 forbids inventing a verdict source "
+				+ "inside the political layer: the call belongs at a moment that already "
+				+ "knows the winner and names a SIDE of the standoff."
+			)
+			% DEFERRAL_ID
 		)
 	)
 
