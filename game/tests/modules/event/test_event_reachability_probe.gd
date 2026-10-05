@@ -23,13 +23,19 @@ extends "res://tests/modules/event/event_director_fixture.gd"
 ##   ADR 0085 exists to keep visible.
 
 const STONE := &"the_stone_that_answering"
-const WAR := &"war_of_the_nine_fords"
+
+## The war id, named LOCALLY rather than taken from the fixture. The fixture already
+## declares `WAR`, and a subclass that redeclares a parent's constant is a PARSE
+## ERROR ("the member already exists in parent class"), not a shadow — so this file
+## extends the fixture for its actor plumbing and names its own ids here.
+const CONFLICT := &"war_of_the_nine_fords"
 
 ## The production tree, which is the whole scope of a reachability claim: `res://src`
 ## only. `res://tests` is deliberately NOT walked, because a suite that only calls
 ## itself is not reachability — `tools/arch/facade_constants.py:365` says so in
 ## those words and this file obeys it.
 const PRODUCTION_ROOT := "res://src"
+
 
 ## Every `.gd` under `root`, found iteratively and sorted.
 ##
@@ -119,10 +125,7 @@ func test_the_stone_event_is_offered_and_opens_with_no_gate_relaxation() -> void
 		ids.has(String(STONE)),
 		true,
 		(
-			(
-				"`available` never offers the stone on a hero who has done nothing. "
-				+ "offered=%s"
-			)
+			("`available` never offers the stone on a hero who has done nothing. " + "offered=%s")
 			% str(ids)
 		)
 	)
@@ -193,10 +196,13 @@ func test_the_stone_event_runs_its_ladder_and_pays_through_the_pull_based_advanc
 ## EXISTS — it is a reachability probe over `res://src`, not a test of `resolve`
 ## itself.
 func test_the_declared_war_has_a_production_caller_that_can_settle_it() -> void:
+	# `assert_eq`, never `assert_gt`: this runner's `TestCase` has no `assert_gt`,
+	# and a name the base class does not own is a PARSE ERROR, not a missing
+	# assertion. `size > 0` as an equality is the same claim either way.
 	var scanned := _gd_files(PRODUCTION_ROOT).size()
-	assert_gt(
-		scanned,
-		0,
+	assert_eq(
+		scanned > 0,
+		true,
 		(
 			(
 				"the production walk read %d files. A probe that scanned nothing passes "
@@ -207,9 +213,9 @@ func test_the_declared_war_has_a_production_caller_that_can_settle_it() -> void:
 	)
 
 	var callers := _production_callers_of_resolve()
-	assert_gt(
-		callers.size(),
-		0,
+	assert_eq(
+		callers.size() > 0,
+		true,
 		(
 			(
 				"NO production file calls `EventApi.resolve`. It is the only caller of "
@@ -229,7 +235,7 @@ func test_the_declared_war_has_a_production_caller_that_can_settle_it() -> void:
 ## through `_declare` (`api.gd:697`), so a reachable declaration with an unreachable
 ## settlement is the honest state to measure against.
 func test_the_war_still_declares_its_standoff_and_the_territory_is_still_its_prize() -> void:
-	var def := EventCatalog.instance().event_definition(WAR)
+	var def := EventCatalog.instance().event_definition(CONFLICT)
 	assert_ne(def, null, "the catalog serves the shipped war")
 	assert_eq(String(def.kind), "sect_war", "and it is the conflict kind")
 
