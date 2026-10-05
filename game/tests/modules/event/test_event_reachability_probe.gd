@@ -182,6 +182,107 @@ func test_the_stone_event_runs_its_ladder_and_pays_through_the_pull_based_advanc
 	)
 
 
+## Every fact the shipped def's own opening and stages WRITE, as primitives.
+##
+## `EventDef.opening_beats` is the def's own folding of its first stage's `on_enter`
+## in beside its own, so one read covers both writers. Read off the SHIPPED catalog,
+## not off a def this file builds.
+func _facts_this_event_produces(def: EventDef) -> Array[StringName]:
+	var out: Array[StringName] = []
+	for beat in def.opening_beats():
+		var fact := StringName((beat as Dictionary).get("fact", ""))
+		if fact != &"" and not out.has(fact):
+			out.append(fact)
+	for stage in def.stages:
+		for beat in stage.on_enter:
+			var fact := StringName((beat as Dictionary).get("fact", ""))
+			if fact != &"" and not out.has(fact):
+				out.append(fact)
+	return out
+
+
+## Every `fact` id the authored trigger READS, composites included.
+##
+## `EventGate.verbs_in` only answers "which VERBS", so this is its own walk over the
+## trigger dictionary. `none_of` is walked exactly like `all_of` — the tree used to
+## hide this defect behind a soft tier precisely because a guard that stopped at
+## `none_of` never looked inside it.
+func _facts_the_trigger_demands(trigger: Dictionary) -> Array[StringName]:
+	var out: Array[StringName] = []
+	if trigger.is_empty():
+		return out
+	var verb := StringName(trigger.get("verb", ""))
+	if verb == EventFacts.VERB_FACT:
+		var fact := StringName(trigger.get("id", ""))
+		if fact != &"" and not out.has(fact):
+			out.append(fact)
+		return out
+	if not EventGate.COMPOSITE_VERBS.has(verb):
+		return out
+	var children = trigger.get("of", [])
+	if not (children is Array):
+		return out
+	for child in children as Array:
+		if not (child is Dictionary):
+			continue
+		for nested in _facts_the_trigger_demands(child as Dictionary):
+			if not out.has(nested):
+				out.append(nested)
+	return out
+
+
+## **THE RED PROOF FOR GAP 1.** The shipped def, read off the production catalog.
+##
+## The gate this event used to author was
+## `none_of(fact treasure_stone_read)`, and `treasure_stone_read` is written by this
+## event's OWN stage 0 and by nothing else in the tree. That is BL-0896 exactly: the
+## demand sits behind the door that would satisfy it.
+##
+## **`none_of` is why the assertion is about the AUTHORED DEMAND, not the verdict.**
+## A prohibition needs no producer — it is OPEN on any hero who has never read the
+## stone — so a runtime verdict test passes ON the defect and the dead content ships.
+## ADR 0217's SATISFIABLE test is about the DEMAND: a legal prior state must produce
+## the fact it asks for, and here the only producer is the event itself. Demand and
+## producers are read off the same shipped def, so this goes red on a trigger this
+## ladder satisfies by itself and green on one that asks the world for something.
+func test_no_shipped_event_demands_a_fact_only_its_own_ladder_produces() -> void:
+	var def := EventCatalog.instance().event_definition(STONE)
+	assert_ne(def, null, "the catalog serves the shipped stone def")
+
+	var demands := _facts_the_trigger_demands(def.trigger)
+	var produces := _facts_this_event_produces(def)
+
+	# The walk is not vacuous: the def really does write facts, or a def that wrote
+	# none would pass this for the wrong reason.
+	assert_eq(
+		produces.size() > 0,
+		true,
+		(
+			"the def writes %d facts, so the comparison below is against a real producer set"
+			% produces.size()
+		)
+	)
+
+	var circular: Array[String] = []
+	for fact in demands:
+		if produces.has(fact):
+			circular.append(String(fact))
+
+	assert_eq(
+		circular.size(),
+		0,
+		(
+			(
+				"the authored trigger of '%s' demands %s, and that fact is written ONLY by "
+				+ "this event's own opening/stages. The gate is satisfied only by its own "
+				+ "opening (ADR 0217 SATISFIABLE), so the event can never open on a legal "
+				+ "prior state. demands=%s produces=%s"
+			)
+			% [String(STONE), str(circular), str(demands), str(produces)]
+		)
+	)
+
+
 # --- GAP 2: the war's standoff ------------------------------------------------
 
 
@@ -217,15 +318,13 @@ func test_the_declared_war_has_a_production_caller_that_can_settle_it() -> void:
 		callers.size() > 0,
 		true,
 		(
-			(
-				"NO production file calls `EventApi.resolve`. It is the only caller of "
-				+ "`NationApi.resolve_conflict` (event/api.gd:432), so the standoff that "
-				+ "`war_of_the_nine_fords` DECLARES (transfer: ownership, territory_id: "
-				+ "river_march) can never be settled: the river march never changes hands "
-				+ "and the standoff row is never closed. ADR 0085 forbids inventing a "
-				+ "verdict source inside the political layer, so the missing moment is a "
-				+ "content and app-layer build - see docs/deferred.jsonl DEF-0315."
-			)
+			"NO production file calls `EventApi.resolve`. It is the only caller of "
+			+ "`NationApi.resolve_conflict` (event/api.gd:432), so the standoff that "
+			+ "`war_of_the_nine_fords` DECLARES (transfer: ownership, territory_id: "
+			+ "river_march) can never be settled: the river march never changes hands "
+			+ "and the standoff row is never closed. ADR 0085 forbids inventing a "
+			+ "verdict source inside the political layer, so the missing moment is a "
+			+ "content and app-layer build - see docs/deferred.jsonl DEF-0315."
 		)
 	)
 

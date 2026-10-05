@@ -542,7 +542,14 @@ func test_the_rare_treasure_refuses_itself_a_second_time_through_the_ledger() ->
 
 	# gate was carrying — 'read once, and then it stops' — the ledger already owns.
 
-	var actor := _actor(&"transcendent_realm")
+	# **`founded: true`** because the prize pays a `nation_standing` row and
+	# `EventPrize` refuses `unknown_nation` to an actor with no nation — the refusal
+
+	# is on the pay row, not on `closed`, so a hero who never founded would still
+
+	# close the event and this test would pass while the prize silently did not land.
+
+	var actor := _actor(&"transcendent_realm", true)
 
 	assert_eq(
 		EventGate.evaluate(actor, {}).get("ok", false),
@@ -576,7 +583,16 @@ func test_the_rare_treasure_refuses_itself_a_second_time_through_the_ledger() ->
 
 	var closed := EventApi.resolve(actor, TREASURE)
 
-	assert_eq(bool(closed.get("ok", false)), true, "and once read, it resolves: %s" % closed)
+	# `_pay`'s success answer carries `closed`/`paid` but **no `ok`** — see the
+	# `already_paid` branch's own note that the shape of a successful no-op is its
+	# mirror, minus the cause. So `closed` is the claim, not `ok`.
+	assert_eq(bool(closed.get("closed", false)), true, "and once read, it resolves: %s" % closed)
+
+	assert_eq(
+		bool(closed.get("paid", false)),
+		true,
+		"paying the prize, which is the whole of a one-stage event"
+	)
 
 	var again := EventApi.begin(actor, TREASURE)
 
