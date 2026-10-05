@@ -2988,6 +2988,12 @@ def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
     # (FLAT on a rate stat). Nothing re-reads the field after load, so the audit
     # is the only place the mistake can still be caught.
     gaps.extend(_destiny_findings(records, root)[0])
+    # A mod's stat/resource declaration block (ADR 0275). GATED, not warned: an
+    # unknown stat id is a modifier nobody can attribute and an unknown resource id
+    # is a pool that resolves 0.0 forever — both invisible after load, and both the
+    # reason the declaration seam exists. The in-repo mod root is walked; `user://`
+    # is not reachable from a checkout and the warning below still says so.
+    gaps.extend(_mod_stat_findings())
     # Report out-of-window fixed values here too. `data distribution` computes
     # them, but a green audit that silently omits thousands of illegal authored
     # values is worse than a red one: the count has to be impossible to miss.
@@ -3017,7 +3023,10 @@ def _audit_command(root: Path, fail_on_unreachable: bool = False) -> int:
     # Mod content roots under user://mods are not audited (ADR 0184). The audit
     # walks game/data and game/src/data only; a mod declaring a content root
     # outside those trees is invisible to every gate here.
-    warn("mod content roots under user://mods are not audited")
+    warn(
+        "mod content roots under user://mods are not audited; the in-repo mod root's "
+        "stats.json declaration blocks ARE checked (ADR 0275)"
+    )
     # The measurement prints BEFORE the verdict and nothing returns early above
     # it. A content gap used to `return 1` before this readout, so one bad
     # `sources` entry silently erased the deliverable count -- the single number
@@ -3233,6 +3242,348 @@ def _resolve_zero_baseline_stats() -> set[str]:
         if found:
             ids.add(found.group(1))
     return ids
+
+
+# --- Mod stat/resource declaration blocks (ADR 0275) --------------------------
+# A mod's stat rows and the pools they read live in ONE block, a `stats.json` sibling
+# of its `mod.json`. It is JSON rather than GDScript for the reason that is the whole
+# justification for the seam existing: **`tools/data.py` cannot execute GDScript**, so
+# a mod that declares its numbers in code is invisible to every Python gate and its
+# ids are unchecked. The GDScript loader reads the same file
+# (`mods/declaration_block.gd`), so one file has two readers and one answer.
+#
+# The mod ROOTS are read out of the boot's own declaration
+# (`app/mod_boot.gd:FIRST_PARTY_ROOT`) rather than a second list here: a root the gate
+# invents is a root the loader never walks, and then the gate is checking a tree that
+# does not boot. The external `user://mods` root is NOT auditable from the repository
+# and `_audit_command` says so in its warning rather than implying coverage.
+MOD_BOOT = SRC_DIR / "app" / "mod_boot.gd"
+## In-repo mod roots, read from `ModBoot`. `FIRST_PARTY_ROOT` is the historical one;
+## `EXTERNAL_ROOT` is `user://`, which does not exist in a checkout, so it is resolved
+## relative to `game/` and simply finds nothing when no mod is installed there.
+MOD_ROOT_CONST = "FIRST_PARTY_ROOT"
+DECLARATION_FILE = "stats.json"
+# `mods/declaration_block.gd` owns the closed key sets and the reason names. Read as
+# TEXT like `_valid_stats` reads `stat.gd`: a second literal of the reason names here
+# would be a second set of strings the GDScript and Python gates each report under,
+# which is exactly the disagreement the gates exist to prevent.
+DECLARATION_BLOCK = SRC_DIR / "modules" / "mods" / "declaration_block.gd"
+# The pools core owns, read out of `core/actor_pools.gd`'s own table.
+ACTOR_POOLS = REPO_ROOT / "game" / "src" / "core" / "actor_pools.gd"
+
+
+def _mod_roots() -> list[Path]:
+    """In-repo roots the loader actually walks, from `ModBoot`'s own constant."""
+    if not MOD_BOOT.is_file():
+        return []
+    text = MOD_BOOT.read_text(encoding="utf-8", errors="replace")
+    match = re.search(rf'{MOD_ROOT_CONST}\s*:=\s*"([^"]+)"', text)
+    if not match:
+        return []
+    relative = match.group(1).removeprefix("res://")
+    root = REPO_ROOT / "game" / relative
+    return [root] if root.is_dir() else []
+
+
+def _declared_resource_ids() -> set[str]:
+    """Pool ids core owns, from `ActorPools.CORE_POOL_STATS`.
+
+    A mod may REFERENCE one of these without re-declaring it: core sizes the pool from
+    a derived stat, so declaring it would be claiming a pool the mod does not own.
+    Read from the table rather than restated, for ADR 0066.
+    """
+    if not ACTOR_POOLS.is_file():
+        return set()
+    text = ACTOR_POOLS.read_text(encoding="utf-8", errors="replace")
+    block = re.search(r"(?ms)^const CORE_POOL_STATS\s*:?=\s*\{(.*?)^\}", text)
+    if not block:
+        return set()
+    return set(re.findall(r'&"([a-z_]+)"\s*:', block.group(1)))
+
+
+@functools.lru_cache(maxsize=1)
+def _declaration_key_sets() -> dict[str, list[str]] | None:
+    """`{STAT_KEYS, RESOURCE_KEYS}` out of `declaration_block.gd`.
+
+    `None` for the whole map when the constants cannot be read, which the caller
+    treats as UNKNOWN and refuses on — the `_read_fate_tags` distinction: an empty
+    answer for a present file is a gate that reports ok on a tree it never checked.
+
+    The closing bracket is matched NON-GREEDILY rather than at column zero, because
+    `STAT_KEYS` is authored on ONE line while `REASONS` spans many. A `^\\]` anchor
+    reads the one-line form as "no such constant", which is exactly the
+    unknown-vocabulary refusal this function exists to distinguish from an empty set.
+    Both forms are flat string lists, so stopping at the first `]` is correct.
+
+    `[^=]*=` before the bracket rather than `:?=`, because these constants carry a
+    TYPE ANNOTATION (`const STAT_KEYS: Array[String] = [...]`) while
+    `_resolve_rate_stats`'s target does not. Matching the annotation as optional
+    whitespace reads every annotated constant in this file as absent — which is the
+    unknown-vocabulary path, so the mistake would have refused every mod rather than
+    passing them. Measured: that is exactly what it did before this line changed.
+    """
+    if not DECLARATION_BLOCK.is_file():
+        return None
+    text = DECLARATION_BLOCK.read_text(encoding="utf-8", errors="replace")
+    keys: dict[str, list[str]] = {}
+    for name in ("STAT_KEYS", "RESOURCE_KEYS"):
+        found = re.search(rf"(?ms)^const {name}\b[^=]*=\s*\[(.*?)\]", text)
+        if not found:
+            return None
+        keys[name] = re.findall(r'"([^"]+)"', found.group(1))
+    return keys
+
+
+def _declaration_reasons() -> set[str]:
+    """The refusal reason names, from `declaration_block.gd`'s `REASONS` block.
+
+    A finding quotes the reason, and a reader comparing a Python finding against a
+    GDScript one needs them to be the SAME strings — so they are read out of the
+    parser rather than typed here a second time. Non-greedy bracket for the same
+    reason as `_declaration_key_sets`: a column-zero anchor does not read a one-line
+    list.
+    """
+    if not DECLARATION_BLOCK.is_file():
+        return set()
+    text = DECLARATION_BLOCK.read_text(encoding="utf-8", errors="replace")
+    block = re.search(r"(?ms)^const REASONS\b[^=]*=\s*\[(.*?)\]", text)
+    if not block:
+        return set()
+    return set(re.findall(r"^\t([A-Z_]+),", block.group(1), re.M))
+
+
+def _mod_stat_findings() -> list[str]:
+    """Every defect in a mod's `stats.json` declaration block (ADR 0275).
+
+    ## Why this walk is separate from the family walk, and needs no family
+
+    `_load` keys content off `load_families()`: a fixed `data_dir` under a declared
+    root, parsed as `.tres` against a `def_class`. A declaration block satisfies none
+    of that — it is JSON, beside a `mod.json`, in a directory the family registry has
+    no entry for and never will, because a mod's location is not a content family.
+    It is found the way `ModLoader.discover` finds it: WALK FOR `mod.json`. That is
+    also why adding a `families.json` entry would be wrong rather than merely
+    redundant — it would claim a fixed directory that third-party mods do not have.
+
+    ## What it refuses, and why each is a FAILURE rather than a note
+
+    - an unknown **stat** id: nothing re-reads the field after load, so a typo is a
+      modifier nobody can attribute (the same defect `_destiny_findings` reports for
+      a fate, and for the same reason);
+    - an unknown **resource** id: the whole point of ADR 0275. `ensure_resources`
+      mints a pool for ANY id, so a typo used to resolve to a silent `0.0`;
+    - an unknown **key**: a `resorce` field is a declaration that reads as working
+      and governs nothing;
+    - a non-boolean `zero_baseline`: the flag decides whether an absent pool is an
+      error, and `"false"` is a string that means neither.
+
+    ## An UNREADABLE key set refuses everything, never passes everything
+
+    `declaration_block.gd` moved or lost a constant and this gate would otherwise
+    wave every row through — a green audit on a tree it never checked.
+    """
+    keys = _declaration_key_sets()
+    roots = _mod_roots()
+    findings: list[str] = []
+    for root in roots:
+        # Sorted, so a finding list is deterministic and two runs of one tree agree.
+        for manifest in sorted(root.rglob("mod.json")):
+            findings.extend(_one_mod_block(manifest.parent, keys))
+    return findings
+
+
+def _one_mod_block(mod_dir: Path, keys: dict[str, list[str]] | None) -> list[str]:
+    """The findings for one mod's directory. `keys` is `None` when UNREADABLE."""
+    block = mod_dir / DECLARATION_FILE
+    if not block.is_file():
+        # An absent block declares nothing, which is legal (ADR 0083: does-not-exist
+        # is not the same answer as exists-and-refused). Not a finding.
+        return []
+    where = block.as_posix()
+    try:
+        parsed = json.loads(block.read_text(encoding="utf-8", errors="replace"))
+    except (OSError, ValueError) as error:
+        return [f"{where}: unreadable declaration block: {error}"]
+    if not isinstance(parsed, dict):
+        return [f"{where}: declaration block must be an object"]
+    mod_id = _manifest_id(mod_dir) or mod_dir.name
+    if keys is None:
+        return [
+            f"{where}: no STAT_KEYS/RESOURCE_KEYS could be read from {DECLARATION_BLOCK.name}, "
+            f"so mod '{mod_id}' cannot be checked"
+        ]
+    return _check_block(parsed, mod_id, where, keys)
+
+
+def _manifest_id(mod_dir: Path) -> str:
+    """The `id` field of a mod's own `mod.json`, or `""` when unreadable."""
+    manifest = mod_dir / "mod.json"
+    if not manifest.is_file():
+        return ""
+    try:
+        parsed = json.loads(manifest.read_text(encoding="utf-8", errors="replace"))
+    except (OSError, ValueError):
+        return ""
+    return str(parsed.get("id", "")) if isinstance(parsed, dict) else ""
+
+
+def _check_block(block: dict, mod_id: str, where: str, keys: dict[str, list[str]]) -> list[str]:
+    """One block's findings. Empty is legal; unrecognised is not.
+
+    Three answers, not two, and collapsing any pair of them is how a gate starts
+    passing a file it never read: no file declares nothing, `{}` and `{"stats": []}`
+    declare nothing, and `{"nope": true}` is a shape this parser cannot interpret.
+    `DeclarationBlock._refuse_unreadable_block` draws the same line on the GDScript
+    side and the two must not drift — a Python finding a GDScript run would call clean
+    is worse than no gate at all.
+    """
+    findings: list[str] = []
+    if not block:
+        return findings
+    if "stats" not in block and "resources" not in block:
+        return [
+            f"{where}: mod '{mod_id}' declares neither 'stats' nor 'resources' but carries "
+            f"{sorted(block)}; an EMPTY block declares nothing, and this one is not empty"
+        ]
+    resources, resource_findings = _check_resources(block.get("resources", []), mod_id, where, keys)
+    findings.extend(resource_findings)
+    findings.extend(_check_stats(block.get("stats", []), mod_id, where, keys, resources))
+    return findings
+
+
+def _check_resources(
+    rows: object, mod_id: str, where: str, keys: dict[str, list[str]]
+) -> tuple[set[str], list[str]]:
+    """The pools this mod declares, and the defects in the rows that declared none.
+
+    A malformed `resources[]` row is REPORTED, not skipped. Skipping was tempting — a
+    row that declares nothing cannot make a later `resource` reference legal anyway —
+    but the GDScript parser refuses those rows (`DeclarationBlock.BAD_ROW` /
+    `BAD_RESOURCE` / `UNKNOWN_KEY`), so a gate that stayed quiet would report a tree
+    clean that a boot then refuses. A gate that says OK where the game says no is worse
+    than no gate, which is the whole reason this reader exists.
+    """
+    if not isinstance(rows, list):
+        return set(), [f"{where}: mod '{mod_id}' has a 'resources' that is not an array"]
+    allowed = keys["RESOURCE_KEYS"]
+    pools: set[str] = set()
+    findings: list[str] = []
+    for row in rows:
+        if not isinstance(row, dict):
+            findings.append(
+                f"{where}: mod '{mod_id}' has a 'resources' entry that is not an object"
+            )
+            continue
+        extra = [key for key in row if key not in allowed]
+        if extra:
+            findings.append(
+                f"{where}: mod '{mod_id}' has a 'resources' entry carrying unknown key '{extra[0]}'"
+            )
+            continue
+        pool_id = row.get("id")
+        if not isinstance(pool_id, str) or not pool_id:
+            findings.append(
+                f"{where}: mod '{mod_id}' has a 'resources' entry with no non-empty 'id'"
+            )
+            continue
+        pools.add(pool_id)
+    return pools, findings
+
+
+def _check_stats(
+    rows: object,
+    mod_id: str,
+    where: str,
+    keys: dict[str, list[str]],
+    resources: set[str],
+) -> list[str]:
+    """Every stat-row defect, each naming the mod AND the bad id.
+
+    `rows` is the AUTHORED list and this loop appends to `findings`, a different
+    container, so it cannot outrun its input (INC-0002). The bound is the list the
+    file supplied, snapshotted by the `for` itself.
+    """
+    if not isinstance(rows, list):
+        return [f"{where}: mod '{mod_id}' has a 'stats' that is not an array"]
+    valid_stats = _valid_stats()
+    valid_ops = {op.lower() for op in _stat_op_keys()}
+    core_pools = _declared_resource_ids()
+    allowed = keys["STAT_KEYS"]
+    findings: list[str] = []
+    for row in rows:
+        if not isinstance(row, dict):
+            findings.append(f"{where}: mod '{mod_id}' has a 'stats' entry that is not an object")
+            continue
+        extra = [key for key in row if key not in allowed]
+        if extra:
+            findings.append(
+                f"{where}: mod '{mod_id}' has a 'stats' entry carrying unknown key '{extra[0]}'"
+            )
+            continue
+        stat_id = row.get("id")
+        if not isinstance(stat_id, str) or not stat_id:
+            findings.append(f"{where}: mod '{mod_id}' has a 'stats' entry with no non-empty 'id'")
+            continue
+        if stat_id not in valid_stats:
+            findings.append(
+                f"{where}: mod '{mod_id}' names unknown stat '{stat_id}'; "
+                f"contracts/stat.gd declares no such id and nothing re-reads it after load"
+            )
+            continue
+        if "op" not in row:
+            findings.append(
+                f"{where}: mod '{mod_id}' declares stat '{stat_id}' with no 'op', "
+                f"one of {', '.join(sorted(valid_ops))}"
+            )
+            continue
+        op = str(row.get("op", "")).lower()
+        if op not in valid_ops:
+            findings.append(
+                f"{where}: mod '{mod_id}' declares stat '{stat_id}' with unknown op "
+                f"'{op}', one of {', '.join(sorted(valid_ops))}"
+            )
+            continue
+        resource = str(row.get("resource", ""))
+        if resource and resource not in resources and resource not in core_pools:
+            findings.append(
+                f"{where}: mod '{mod_id}' has stat '{stat_id}' reading resource "
+                f"'{resource}', which it declares in neither 'resources' nor a pool "
+                f"core owns; CultivationPathDef.ensure_resources would mint it and the "
+                f"read site would resolve 0.0 forever"
+            )
+            continue
+        zero_baseline = row.get("zero_baseline", False)
+        if not isinstance(zero_baseline, bool):
+            findings.append(
+                f"{where}: mod '{mod_id}' has stat '{stat_id}' whose 'zero_baseline' is "
+                f"not a bool; the flag decides whether an absent pool is an error"
+            )
+            continue
+        if zero_baseline and not resource:
+            findings.append(
+                f"{where}: mod '{mod_id}' has stat '{stat_id}' declaring 'zero_baseline' "
+                f"with no 'resource' to apply it to"
+            )
+    return findings
+
+
+def _stat_op_keys() -> tuple[str, ...]:
+    """`Stat.Op`'s own enum keys, from `contracts/stat.gd`.
+
+    The SAME reader the GDScript seam uses (`Stat.Op.keys()`), so the two accept the
+    same spellings. A missing enum yields `()`, which makes every op unknown — the
+    loud direction, per the `_read_fate_tags` reasoning above.
+    """
+    if not STAT_DEFS.is_file():
+        return ()
+    text = STAT_DEFS.read_text(encoding="utf-8", errors="replace")
+    # `enum Op { FLAT, PERCENT, MULT }` is ONE line, so a column-zero `\}` anchor
+    # reads it as "no such enum" — which would make every declared op unknown and
+    # turn a correct tree red. `[^}]*` is right for a flat enum.
+    match = re.search(r"(?m)^enum Op\s*\{([^}]*)\}", text)
+    if not match:
+        return ()
+    return tuple(re.findall(r"\b([A-Z][A-Z_]*)\b", match.group(1)))
 
 
 def _out_of_band(items: dict, catalog: dict) -> list[str]:
