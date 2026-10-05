@@ -419,6 +419,15 @@ class Supply:
     #: True once a code-owned verb has been shown reachable from production code, which is
     #: what lets `total` mean "no ceiling" rather than "one occurrence".
     repeatable: bool = False
+    #: Code-owned writer sites that exist but are NOT driven from production code. Kept apart
+    #: from `sites` because these are the ones that turn a gate into `unbacked_in_play`: the
+    #: writer is real, and nothing in `game/src` can reach it. A separate list is what lets
+    #: `judge` report that grade rather than conflating it with "no writer exists" - and
+    #: conflating them is how a real producer gets deleted (INC-0012).
+    unbacked_sites: list[str] = field(default_factory=list)
+    #: True once at least one writer for this fact was found at all. A fact with no writer is
+    #: `unbacked_demand`; a fact whose every writer is undriven is `unbacked_in_play`.
+    has_writer: bool = False
 
 
 @dataclass
@@ -674,6 +683,7 @@ def code_owned_supply(supply: dict[str, Supply]) -> None:
                 continue
             amount = int(amount_expr) if amount_expr.isdigit() else DEFAULT_AMOUNT
             row = supply.setdefault(fact, Supply(fact=fact))
+            row.has_writer = True
             row.total += max(0, amount)
             row.sites.append(f"{relative}:{index + 1} ({amount}, code const)")
             _note_reachability(row, relative)
@@ -681,6 +691,7 @@ def code_owned_supply(supply: dict[str, Supply]) -> None:
     for roster_relative, ids, start in _roster_files(dispatched):
         for fact in ids:
             row = supply.setdefault(fact, Supply(fact=fact))
+            row.has_writer = True
             row.total += DEFAULT_AMOUNT
             row.sites.append(f"{roster_relative}:{start} ({DEFAULT_AMOUNT}, code roster)")
 
@@ -699,78 +710,245 @@ def code_owned_supply(supply: dict[str, Supply]) -> None:
 REPEATABLE = -1  # "callable again", so no authored ceiling applies
 
 
-def _record_verb_is_reachable(relative: str) -> bool:
-    """Is the writer's MODULE reached from production code outside it?
+#: A caller-graph node is one `class_name.method` pair, which is the smallest thing a
+#: GDScript static call can name. `Callable(Foo, "bar")` and `Foo.bar(` are the same edge in
+#: practice; the census reads the parenthesised form because that is the one an author writes
+#: when wiring a seam, and ADR 0083's `app/` seams are written exactly that way.
+_CALL_EDGE = re.compile(r"\b([A-Z][A-Za-z0-9_]*)\s*\.\s*([a-z_][A-Za-z0-9_]*)\s*\(")
 
-    Reachability is a property of the module, not of the declaring class. My first version
-    asked whether the declaring CLASS is referenced elsewhere, which is wrong the moment a
-    module routes its own writes through a component:
+#: How far the transitive caller walk may go before it is declared unresolved. Three hops is
+#: the depth ADR 0239's `clan` chain needed (`ui/clan_screen -> app/ClanRegistry.commit ->
+#: modules/clan/ClanHeir.register -> modules/clan/ClanFacts.record_heir_registered`) plus one
+#: for the entry frame. The bound exists so a mutual recursion between two classes cannot make
+#: the walk unbounded; it is a LIMIT on how deep the search goes, never a substitute for
+#: answering the question, and exceeding it is reported rather than assumed reachable.
+_CALL_DEPTH = 6
 
-        app/institution_resolver.gd -> SectDuty.serve -> SectFacts.record_oaths_discharged
 
-    `SectFacts` is named only inside `modules/sect/`, so the class test reported the verb
-    unreachable even though `app/` drives it - and `oaths_discharged` stayed red for exactly
-    the wrong reason after ADR 0145 had wired it. The module test is the honest one: if a
-    file outside `modules/sect/` mentions `SectDuty`, the sect module is driven, and the
-    writer behind it is reachable.
+def _is_composition_root(module_dir: str) -> bool:
+    """Is `module_dir` the composition root, where a verb is driven by the ENGINE?
 
-    Two things this must still get right, both of which I got wrong first:
+    `src/app/` is where Godot mounts scenes and boots the game, so a verb there is reached by
+    the engine's own lifecycle rather than by another class's `Class.method(` call. Treating
+    `src/app/` as needing an outside caller is what made `character_creation_flow.gd`,
+    `soul_death.gd` and their facts (`character_created`, `soul_died`, `child_born`) read as
+    undriven: nothing CALLS `CharacterCreationFlow.build_forced`, because the scene mounts it.
 
-    - the identity is the `class_name`, not the filename. `combat_facts.gd` declares
-      `CombatFacts` and a caller writes `CombatFacts.` - matching the snake_case stem as a
-      substring finds nothing and silently reports every site unreachable.
-    - "outside" means outside the MODULE. A writer only its own module calls is the dead
-      writer this exists to catch, so sibling files inside the module do not count.
+    Those facts produced no finding only because no authored gate demands them yet. That is a
+    latent false red - the INC-0012 shape arriving through the new door: a real producer that
+    the game plainly runs, graded dead because the call graph cannot see the engine.
     """
-    module_dir = str(Path(relative).parent)
-    names = _module_public_names(module_dir)
-    if not names:
-        return False
-    for path in sorted(SRC_DIR.rglob("*.gd")):
-        candidate = path.relative_to(GAME_DIR).as_posix()
-        if str(Path(candidate).parent) == module_dir:
+    return module_dir.strip("/").replace("\\", "/") in ("src/app", "app")
+
+
+def _caller_graph() -> dict[tuple[str, str], set[str]]:
+    """Which production files statically call each `class.method`.
+
+    Built once per (GAME_DIR, SRC_DIR) pair and cached on the module, because it reads every
+    `.gd` under the game root and `code_owned_supply` asks the reachability question once per
+    writer site. The cache is KEYED on both roots rather than being a bare module global: the
+    self-test points `GAME_DIR`/`SRC_DIR` at a temp fixture, and a cache filled from the
+    repository would answer the fixture's question with the real tree's callers - a test that
+    reads the wrong tree is worse than no test, because it looks like coverage.
+    """
+    global _CALLER_GRAPH_CACHE
+    key = (str(GAME_DIR), str(SRC_DIR))
+    if _CALLER_GRAPH_CACHE.get("__key__") == key:
+        return dict(_CALLER_GRAPH_CACHE["graph"])  # type: ignore[index]
+    graph: dict[tuple[str, str], set[tuple[str, str]]] = {}
+    test_classes = _test_classes()
+    for path in sorted(_all_gd_files()):
+        text = _strip_comments(path.read_text(encoding="utf-8", errors="replace"))
+        own = _CLASS_NAME.search(text)
+        if own is None or own.group(1) in test_classes:
             continue
-        if _names_any(path.read_text(encoding="utf-8"), names):
-            return True
-    return False
+        # Posix-normalised for the same reason `_record_verb_is_reachable` normalises: this
+        # value is compared against a normalised module dir, and a Windows-separator path can
+        # never equal a posix one, so every outside-module test would silently pass.
+        caller_dir = str(path.relative_to(GAME_DIR).parent).replace("\\", "/").strip("/")
+        for cls, method in _CALL_EDGE.findall(text):
+            graph.setdefault((cls, method), set()).add((own.group(1), caller_dir))
+    _CALLER_GRAPH_CACHE.clear()
+    _CALLER_GRAPH_CACHE["__key__"] = key
+    _CALLER_GRAPH_CACHE["graph"] = graph
+    return graph
 
 
-def _names_any(text: str, names: set[str]) -> bool:
-    """Does `text` CALL one of `names`, rather than merely mention it?
+_CALLER_GRAPH_CACHE: dict[str, object] = {}
 
-    Comment-stripped, and matched on `Name.` rather than the bare name. Both are needed and
-    both were found by mutation, not by reading: `MUTATION-G2` deleted the one line that
-    drives `SectDuty` and the gate stayed green, because the ADR 0145 comment two lines above
-    still named `SectDuty`. A reachability check that matches prose reports the shape of the
-    wiring rather than the wiring.
-    """
-    code = text.split("\n")
-    stripped = []
-    for line in code:
+
+def _all_gd_files() -> list[Path]:
+    """Every `.gd` under the game root that a reachability question may read."""
+    return sorted((GAME_DIR / "src").rglob("*.gd")) + sorted((GAME_DIR / "tests").rglob("*.gd"))
+
+
+def _relative(path: Path) -> str:
+    return path.relative_to(GAME_DIR).as_posix()
+
+
+def _strip_comments(text: str) -> str:
+    """`text` with every `#` comment removed, line by line (ADR 0188: code lines only)."""
+    out: list[str] = []
+    for line in text.split("\n"):
         cut = line.find("#")
-        stripped.append(line if cut == -1 else line[:cut])
-    body = "\n".join(stripped)
-    for name in names:
-        if re.search(rf"\b{re.escape(name)}\s*\.\s*[a-z_][A-Za-z0-9_]*\s*\(", body):
-            return True
-    return False
+        out.append(line if cut == -1 else line[:cut])
+    return "\n".join(out)
 
 
-def _module_public_names(module_dir: str) -> set[str]:
-    """Every `class_name` the module declares, which is what an outside caller can name."""
-    root = GAME_DIR / module_dir
-    if not root.is_dir():
-        return set()
+def _test_classes() -> set[str]:
+    """Every `class_name` declared by a file under `game/tests`."""
     names: set[str] = set()
-    for path in root.rglob("*.gd"):
-        found = _CLASS_NAME.search(path.read_text(encoding="utf-8"))
+    tests_dir = GAME_DIR / "tests"
+    if not tests_dir.is_dir():
+        return names
+    for path in tests_dir.rglob("*.gd"):
+        found = _CLASS_NAME.search(path.read_text(encoding="utf-8", errors="replace"))
         if found:
             names.add(found.group(1))
     return names
 
 
+def _declaring_class(relative: str) -> str:
+    """The `class_name` of the file at `relative`, or "" when it declares none."""
+    path = GAME_DIR / relative
+    if not path.is_file():
+        return ""
+    found = _CLASS_NAME.search(_strip_comments(path.read_text(encoding="utf-8", errors="replace")))
+    return found.group(1) if found else ""
+
+
+def _writer_verb(relative: str) -> str:
+    """The verb of the code-owned writer in `relative` that calls `WorldFact.record`.
+
+    The writer file may declare several `record_`-style verbs but only ONE of them calls the
+    ledger; returning the verb by locating the `WorldFact.record` call keeps the reachability
+    question about the specific verb rather than about the class, which is the whole fix.
+    """
+    path = GAME_DIR / relative
+    if not path.is_file():
+        return ""
+    for line in _strip_comments(path.read_text(encoding="utf-8", errors="replace")).split("\n"):
+        if "WorldFact.record" in line:
+            found = re.search(r"static\s+func\s+([a-z_][A-Za-z0-9_]*)\s*\(", line)
+            if found is None:
+                # A multi-line `static func` signature: the verb is the nearest one above the
+                # writer call. Read the whole file once and take the LAST declared verb, which
+                # is the one whose body contains the record call for a single-writer file.
+                continue
+            return found.group(1)
+    # Fall back to scanning the file for the verb whose body holds the writer call. Kept as an
+    # explicit second pass so an unwrapped signature is answered rather than guessed.
+    text = _strip_comments(path.read_text(encoding="utf-8", errors="replace"))
+    for match in re.finditer(r"static\s+func\s+([a-z_][A-Za-z0-9_]*)\s*\(", text):
+        start = match.end()
+        nxt = re.search(r"\nstatic\s+func\s+", text[start:])
+        end = start + nxt.start() if nxt else len(text)
+        if "WorldFact.record" in text[start:end]:
+            return match.group(1)
+    return ""
+
+
+def _record_verb_is_reachable(relative: str) -> bool:
+    """Is the writer's VERB reached from production code, transitively?
+
+    This replaces a module-granularity question that produced the false green BL-0899 names.
+    The old test asked "does any file outside `modules/clan/` call any `Clan*` class?" and
+    `actor_factory.gd:25 ClanApi.attach(actor)` answered yes, so `ClanFacts.record_heir_registered`
+    was graded `repeatable` while the only route to it (`ClanRegistry.commit`, itself uncalled)
+    was dead. ADR 0226 is the decision being implemented: a declaration is never evidence of
+    its own reachability, and a sibling verb in the same module is not evidence of THIS verb's.
+
+    The walk is now from the writer outward, over PRODUCTION callers only, to a fixed depth:
+
+        ui/clan_screen.gd -> app/clan_registry.gd -> modules/clan/clan_heir.gd -> THIS
+
+    Every hop is a real `Class.method(` in real code, so a docstring that quotes the chain
+    (there are several) cannot make a dead writer look driven.
+
+    There is deliberately NO module-granularity fallback here. The version this replaces
+    asked "does any file outside this module call any of this module's classes?" and answered
+    yes for `clan` because `actor_factory.gd` calls `ClanApi.attach` - a verb with nothing to
+    do with the heir registration. That is ADR 0226's forbidden inference in its exact form: a
+    sibling's reachability used as evidence of THIS writer's. A narrow fallback was tried
+    first and still returned True for the same reason, because the clan module IS driven, just
+    not through the heir seam. The instance seam of ADR 0145 needs no fallback: it is a real
+    `Class.method(` edge and the walk follows it.
+
+    A verb in the composition root is driven by the engine, not by a caller. Without that,
+    every `src/app/` producer reads as undriven and a real producer gets graded dead. The path
+    is normalised because `Path(...).parent` renders Windows separators on this platform and
+    the comparison is against posix - a guard that works on Linux and silently stops matching
+    on the tree it was written for is worse than no guard.
+    """
+    normalised = str(Path(relative).parent).replace("\\", "/").strip("/")
+    verb = _writer_verb(relative)
+    declaring = _declaring_class(relative)
+    if _is_composition_root(normalised):
+        return bool(verb or declaring)
+    return bool(verb and declaring and _verb_reachable(declaring, verb, _CALL_DEPTH, normalised))
+
+
+def _verb_reachable(cls: str, verb: str, depth: int, outside_module: str) -> bool:
+    """Whether `cls.verb` is called, transitively, by production code OUTSIDE `outside_module`.
+
+    "Reachable" here means: the transitive closure of PRODUCTION callers of `(cls, verb)`
+    contains at least one caller that lives in a different module directory. That caller is the
+    evidence production code drives this writer.
+
+    No "entry point" requirement, deliberately. I first terminated the walk at a caller that
+    nothing else calls (an engine entry), and it returned False for genuinely reachable writers
+    like `CombatFacts.record_duel_won`: its real chain runs `CombatDuelHit.resolve <- CombatApi
+    <- ...` through classes that are themselves called, because one shared utility (`RealmDefaults`)
+    is referenced by ~40 files and makes every node "called". With no clean roots in the static
+    GDScript call graph, requiring an entry would false-red every deep producer - the INC-0012
+    failure. So the honest, safe definition is the weaker one: SOME outside-module production
+    code can reach the verb. That is exactly the ADR 0226 question (a declaration is not
+    evidence of its own reachability) and it does not over-reach.
+
+    The depth bound keeps a mutual recursion finite. Exceeding it is NOT treated as reachable.
+    """
+    graph = _caller_graph()
+    seen: set[str] = set()
+    frontier = {(cls, verb)}
+    for _ in range(depth):
+        nxt: set[tuple[str, str]] = set()
+        for node in frontier:
+            for caller, caller_dir in graph.get(node, set()):
+                if caller_dir != outside_module:
+                    return True
+                if caller in seen:
+                    continue
+                seen.add(caller)
+                nxt |= {(caller, m) for (t, m) in graph if t == caller}
+        if not nxt:
+            return False
+        frontier = sorted(nxt)
+    return False
+
+
+def _record_verb_is_reachable_through_module(relative: str) -> bool:
+    """REMOVED, and kept here as a tombstone naming why.
+
+    This was the module-granularity test - "does any file outside this module call any of this
+    module's classes?" - and it is the inference ADR 0226 forbids. It shipped BL-0899: the clan
+    module IS driven (`actor_factory.gd` calls `ClanApi.attach`, `clan_screen.gd` calls
+    `ClanApi.summary`), so it answered True for `ClanFacts.record_heir_registered`, whose only
+    callers were inside `modules/clan/` and `tests/`.
+
+    A narrow variant was tried first - "fall back to the module test only when the verb walk
+    fails" - and it still returned True, for exactly the same reason: the module really is
+    driven, just not through the heir seam. A fallback cannot fix a test whose question is the
+    wrong one, and keeping the function callable would let the wrong question back in through
+    the next edit. The verb walk answers the question ADR 0226 actually asks.
+    """
+    raise NotImplementedError(
+        "the module-granularity reachability test was removed by ADR 0226; "
+        "use _record_verb_is_reachable"
+    )
+
+
 def _note_reachability(row: Supply, relative: str) -> None:
-    """Upgrade a code-owned site's ceiling to REPEATABLE, but only if its module is driven.
+    """Upgrade a code-owned site's ceiling to REPEATABLE, but only if its writer is DRIVEN.
 
     No guard on the amount expression. My first version skipped a site whose amount was the
     literal `1`, on the reasoning that an authored quantity stands on its own - and that
@@ -779,15 +957,36 @@ def _note_reachability(row: Supply, relative: str) -> None:
     note explaining why. A literal at a code-owned writer is an amount PER OCCURRENCE. The
     ceiling is a property of how many times the game can call the verb, never of the number
     written at one call site.
+
+    The unreachable branch is now RECORDED, and its occurrence is REMOVED from `total`.
+    Recording alone was not enough, and the reason is the shape of the comparison in `judge`:
+    `code_owned_supply` adds the writer's amount to `total` BEFORE this function runs, so an
+    undriven writer left the total at 1, a `need: 1` gate passed `need <= total`, and the
+    finding never fired. That is BL-0899 exactly - `household_heir_registered` with
+    `findings: 0`. An occurrence the game cannot cause is not supply, so it is subtracted here
+    and the fact's in-play ceiling is honestly zero, which is what makes the grade fire.
+
+    The subtraction is guarded by the same early return as the upgrade: once a fact is
+    REPEATABLE another undriven writer for the same fact changes nothing, and removing its
+    one occurrence would understate a fact the game can genuinely repeat.
     """
     if row.repeatable:
         return
     if not _record_verb_is_reachable(relative):
-        row.sites.append(f"{relative} (UNDECLARED CEILING: module reached only from itself)")
+        row.unbacked_sites.append(relative)
+        row.sites.append(f"{relative} (UNDECLARED CEILING: writer not reachable in production)")
+        # The amount this site contributed, refunded. It is the last append and the only
+        # unbacked one, so `total` is reduced by exactly what the undriven writer added.
+        head, _, tail = row.sites[-2].rpartition(" (")
+        if head:
+            try:
+                row.total -= max(0, int(head.rsplit(" ", 1)[-1]))
+            except ValueError:
+                row.total = 0
         return
     row.total += REPEATABLE
     row.repeatable = True
-    row.sites.append(f"{relative} (repeatable: module called from production code)")
+    row.sites.append(f"{relative} (repeatable: writer called from production code)")
 
 
 def _roster_files(dispatched: set[str]) -> list[tuple[str, list[str], int]]:
@@ -925,6 +1124,14 @@ def judge(
                 f"the authored tree offers {total} in total and this gate asks for "
                 f"{demand.need}; nothing can raise it"
             )
+        elif offered is not None and offered.has_writer and offered.unbacked_sites:
+            code = "unbacked_in_play"
+            note = (
+                "a writer exists for this fact but nothing in production can reach it ("
+                + ", ".join(offered.unbacked_sites)
+                + "); the fix is a caller in game/src, not a smaller number and NOT deleting "
+                "the writer - the writer is real"
+            )
         else:
             code = "unbacked_demand"
             note = (
@@ -981,10 +1188,16 @@ def _report(
 def _check(args) -> int:
     supply, demands, unread, scanned = census()
     findings = judge(supply, demands, unread)
-    counts = {code: 0 for code in ("dead_gate", "unbacked_demand", "unread_gate")}
+    counts = {code: 0 for code in ("dead_gate", "unbacked_in_play", "unbacked_demand", "unread_gate")}
     for finding in findings:
         counts[finding.code] += 1
 
+    # `unbacked_in_play` is graded with the unbacked class, not with `dead_gate`. The two are
+    # both hard failures and both are reported the same way, but they are kept in separate
+    # buckets so the headline numbers say WHICH kind of deadness exists: a fact with no writer
+    # needs a producer, a fact with an undriven writer needs a caller, and an agent sent to the
+    # wrong one either authors a duplicate producer or deletes a working writer (INC-0012).
+    unbacked_total = counts["unbacked_demand"] + counts["unbacked_in_play"]
     if counts["dead_gate"] or counts["unread_gate"]:
         fail(
             f"{counts['dead_gate']} dead gate(s) the authored world cannot open, "
@@ -994,23 +1207,28 @@ def _check(args) -> int:
         return 1
     ok("every hard gate the tree authors is satisfiable by a beat the tree authors")
 
-    if counts["unbacked_demand"] == 0:
+    if unbacked_total == 0:
         ok("and every one of them names a fact some authored beat produces")
         return 0
 
     if getattr(args, "allow_unbacked", False):
         warn(
-            f"ALLOW-UNBACKED: {counts['unbacked_demand']} gate(s) name a fact no "
-            f"authored beat produces. Suppressed by flag; each is a gate that cannot "
-            f"open until a producer exists:"
+            f"ALLOW-UNBACKED: {unbacked_total} gate(s) name a fact the shipped game cannot "
+            f"put on the ledger ({counts['unbacked_demand']} with no producer at all, "
+            f"{counts['unbacked_in_play']} whose only writer nothing in game/src can reach). "
+            f"Suppressed by flag; each is a gate that cannot open until a producer exists or "
+            f"a caller drives it:"
         )
         _report(findings, supply, demands, scanned)
         return 0
 
     fail(
-        f"{counts['unbacked_demand']} gate(s) name a fact no authored beat produces. "
-        f"With the writer set pinned by tests/arch_rules/test_fact_ledger_writers.gd, "
-        f"zero supply means the gate can never open."
+        f"{unbacked_total} gate(s) name a fact the shipped game cannot put on the ledger "
+        f"({counts['unbacked_demand']} with no producer at all, {counts['unbacked_in_play']} "
+        f"whose only writer nothing in game/src can reach). With the writer set pinned by "
+        f"tests/arch_rules/test_fact_ledger_writers.gd, a gate on such a fact can never open: "
+        f"`unbacked_demand` needs a producer, `unbacked_in_play` needs a CALLER - the writer "
+        f"already exists and deleting it would be INC-0012."
     )
     _report(findings, supply, demands, scanned)
     return 1
