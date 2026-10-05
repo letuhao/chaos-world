@@ -107,10 +107,20 @@ func _ensure_loaded() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	var merged := _overlay_merge()
-	if not bool(merged.get("ok", false)):
-		push_error("DifficultyCatalog: %s" % String(merged.get("detail", "")))
-		return
-	for entry in merged["merged"]:
-		_table = load(String(entry["path"])) as DifficultyTable
-		return
+	# `DifficultyTable` is a single resource with a `presets` dictionary, not an id-keyed
+	# def. `CatalogOverlay.merge` skips defs with no `id` property (405acf5f8), so it
+	# cannot load this table. Scan the overlay stack directly instead.
+	var stack := _merge_stack()
+	# Scan in reverse so later (overlay) roots win.
+	for i in range(stack.size() - 1, -1, -1):
+		var root = stack[i]
+		var dir := String(root.get("dir", ""))
+		var files := ContentScan.files_under(dir)
+		for path in files:
+			if not FileAccess.get_file_as_string(path).contains('script_class="%s"' % SCRIPT_CLASS):
+				continue
+			var def = load(path)
+			if not (def is Resource):
+				continue
+			_table = def as DifficultyTable
+			return
