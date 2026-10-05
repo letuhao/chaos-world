@@ -152,6 +152,21 @@ func _paren_depth(text: String) -> int:
 ## `for realm in ladder.realms()` and `for row in rows` are the shapes the repo wants.
 func test_no_for_loop_is_bounded_by_a_span() -> void:
 	var span_words := ["span", "periods_elapsed", "elapsed", "magnitude_count", "years"]
+	# The guard's OWN two walks name a span and are bounded anyway: `span_words` and
+	# `_span_bounded_for_lines` are both written down above, not sized by a caller.
+	# A guard that reports itself is a guard authors learn to mute, so it exempts
+	# exactly these two identifiers — named, never a blanket skip of this file, which
+	# would blind the rule to a real span walk added to it later.
+	# TYPED, because the callee is: `_bound_is_exempt(bound: String, exempt:
+	# Array[String])` cannot take an untyped `Array`, and the mismatch is a RUNTIME
+	# error rather than a parse error — the suite still loads and still passes 1258
+	# assertions while every call raises "Invalid type in function
+	# '_bound_is_exempt'. The array of argument 2 (Array) does not have the same
+	# element type as the expected typed array argument". A guard that errors on the
+	# one path that exempts itself is a guard whose self-exemption silently does
+	# nothing, which is how the two identifiers above stop being exempt and the guard
+	# starts reporting itself.
+	const SELF_EXEMPT: Array[String] = ["span_words", "_span_bounded_for_lines"]
 	var audited := 0
 	for path in _gdscript_files(SRC_ROOT) + _gdscript_files(TESTS_ROOT):
 		var text := FileAccess.get_file_as_string(path)
@@ -159,9 +174,17 @@ func test_no_for_loop_is_bounded_by_a_span() -> void:
 		for line in _span_bounded_for_lines(text):
 			audited += 1
 			var lowered := line.to_lower()
+			# The word must be in the BOUND, not anywhere in the line. Testing the whole
+			# line matched the word inside an unrelated identifier: every
+			# `for tier in RealmLifespan.AUTHORED_TIERS` reads as a span walk because
+			# "Lifespan" CONTAINS "span", which fired 45 times across four files and
+			# three of them are the guard's own fixtures. A substring rule that
+			# cannot tell `RealmLifespan` from `span` catches nothing an author can
+			# act on, so the bound is what gets matched.
+			var bound_text := _loop_bound(lowered)
 			var offender := ""
 			for word in span_words:
-				if lowered.contains(word):
+				if _bound_names_span(bound_text, word):
 					offender = word
 					break
 			# An AUTHORED collection is not a span. `for realm in ladder.realms()` walks
@@ -177,18 +200,15 @@ func test_no_for_loop_is_bounded_by_a_span() -> void:
 			# its own test file gets muted, and then it catches nothing.
 			#
 			# Spacing-tolerant on purpose: `in [`, `in[`, and `in\t[` all name a literal.
-			# Tested as "a `[` opens the bound" rather than as the two literal
-			# spellings: `for span in spans:` has NEITHER `in [` nor `in[`, so the
-			# narrower test read a real span walk as unbounded. What makes a
-			# collection AUTHORED is that its elements are written down, and a `[`
-			# after the bound is exactly that. `for span in _retreat_spans` has no
+			# Tested against the BOUND, so `for span in [1, 8]` is authored and
+			# `for span in spans` is not. `for span in _retreat_spans` has no
 			# bracket and stays flagged, which is the correct reading.
-			var opens_literal := lowered.contains("in [") or lowered.contains("in[")
-			if not opens_literal:
-				var bound := lowered.split(" in ", true, 1)
-				if bound.size() == 2:
-					opens_literal = bound[1].begins_with("[")
-			var walks_authored := lowered.contains(".realms()") or opens_literal
+			var opens_literal := bound_text.begins_with("[")
+			var walks_authored := (
+				lowered.contains(".realms()")
+				or opens_literal
+				or _bound_is_exempt(bound_text, SELF_EXEMPT)
+			)
 			# These three live INSIDE the `for line` body, which is deliberate and was
 			# previously broken by one missing tab: declared one level too far out, they
 			# died at the loop's end and the assert below could not see them, so the file
@@ -214,6 +234,72 @@ func test_no_for_loop_is_bounded_by_a_span() -> void:
 		true,
 		"the span-bounded `for` scan inspected at least one line, or it guards nothing"
 	)
+
+
+## Whether a bound IS one of the named exemptions, compared on the CALLED name
+## rather than the whole bound text.
+##
+## `for line in _span_bounded_for_lines(text):` has the bound
+## `_span_bounded_for_lines(text)`, so an equality test against the bare
+## identifier never matched and the guard kept reporting its own source.
+func _bound_is_exempt(bound: String, exempt: Array[String]) -> bool:
+	var name: String = bound.split("(")[0]
+	name.strip_edges()
+	return exempt.has(name)
+
+
+## Whether the bound NAMES a span, matching WHOLE identifiers rather than a
+## substring.
+##
+## `contains` cannot tell `spans` from `realmlifespan.authored_tiers`: "Lifespan"
+## CONTAINS "span" while saying nothing about the loop's length, and matching it
+## fired the rule on every authored-tier walk in the tree. A span is named when the
+## word stands alone as an identifier of its own — `span`, `spans`,
+## `span_periods`, `_retreat_spans` — so each identifier in the bound is tested for
+## being the word or for carrying it as a whole `_`-delimited component. Matching
+## per identifier is what keeps `spans` (a real span walk, still flagged) apart from
+## `Lifespan` (an authored table, not flagged).
+func _bound_names_span(bound: String, word: String) -> bool:
+	if bound.is_empty():
+		return false
+	for piece in (
+		bound.replace("(", " ").replace(")", " ").replace(",", " ").replace(".", " ").split(" ")
+	):
+		# `strip_edges()` mutates in place and returns void in GDScript, so the
+		# trimmed value is read back off `piece` rather than chained.
+		piece.strip_edges()
+		var name: String = piece
+		if name.is_empty():
+			continue
+		if name == word or name.ends_with("_" + word) or name.begins_with(word + "_"):
+			return true
+		# The plural is the same noun: `for span in spans` is as much a span walk
+		# as `for span in span_periods`, and a rule that misses it fires on the
+		# composed names while staying quiet on the plain one.
+		if name == word + "s" or name.ends_with("_" + word + "s"):
+			return true
+		# `_retreat_spans` / `span_periods`: the word is a component of the identifier.
+		if ("_" + name).contains("_" + word + "_") or name.contains("_" + word):
+			return true
+	return false
+
+
+## The collection a `for` header walks: everything after its FIRST ` in `, so the
+## rule reads the bound and never the whole line.
+##
+## `for tier in RealmLifespan.AUTHORED_TIERS:` returns `realm_lifespan.authored_tiers:`
+## — the trailing colon is stripped, but a leading `[` is KEPT, because that is how
+## `opens_literal` below recognises an authored array. Matching the LINE instead is
+## what made the guard fire 45 times on four files, because "Lifespan" contains
+## "span" while naming nothing about the loop's length.
+func _loop_bound(lowered: String) -> String:
+	var split := lowered.split(" in ", true, 1)
+	if split.size() < 2:
+		return ""
+	var bound: String = split[1]
+	bound.rstrip(":")
+	bound.strip_edges()
+	return bound
 
 
 ## Every `for` header in a file, comments stripped, as `"<line>"`.
