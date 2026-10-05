@@ -15,12 +15,15 @@
 {"session": "fix-b-pck", "paths": ["game/src/modules/mods/mod_loader.gd", "game/src/modules/mods/mod_manifest.gd", "game/tests/modules/mods/test_mod_pck.gd", "game/tests/modules/mods/test_attach_hook_callable.gd", "game/tests/modules/mods/fixtures/hook_script.gd"], "heartbeat": "2026-10-04T23:20:20.855916+00:00"}
 {"session": "fix-callable", "paths": ["game/src/modules/mods/mod_loader.gd"], "heartbeat": "2026-10-05T00:29:58.633644+00:00"}
 {"session": "fix-test-sigs", "paths": ["game/tests/modules/mods"], "heartbeat": "2026-10-05T01:46:38.249432+00:00"}
-{"session": "clock-gap-a", "paths": ["game/src/app/world_reconcile.gd", "game/src/core/world_reconcile.gd", "game/src/app/world_stage.gd"], "heartbeat": "2026-10-05T02:20:16.579413+00:00"}
 {"session": "py-domain-driver-0231", "paths": ["tools/domain.py", "game/tools/domain_driver.gd", "tools/arch/families.json", "tools/data.py", "docs/adr/0232-the-domain-driver-asserts-invariants-and-exits-non-zero-and-a-driver-that-only-prints-is-a-viewer.md", "docs/adr/0233-domain-content-is-audited-where-it-is-authored-by-a-second-root-the-data-audit-is-taught.md", "docs/adr/0234-the-domain-source-census-is-sound-and-the-blind-spot-is-in-the-loot-tier-reader-not-the-count.md"], "heartbeat": "2026-10-05T02:21:05.408572+00:00"}
 {"session": "close-three-gaps", "paths": ["game/src/modules/clan", "game/src/modules/items", "game/src/modules/sect", "game/src/app/screen_routes.gd", "tools/arch/registry.json", "game/src/ui/screens/clan_screen.gd", "game/src/ui/screens/clan_screen.tscn", "game/tests/modules/clan"], "heartbeat": "2026-10-05T02:22:58.565960+00:00"}
 {"session": "clock-split", "paths": ["game/src/app/world_stage_reconcile.gd"], "heartbeat": "2026-10-05T03:53:01.981905+00:00"}
 {"session": "clock-retreat-fix", "paths": ["game/tests/ui/test_world_pulse_retreat_reachable.gd", "game/src/ui/screens/world_map_screen.gd", "game/src/ui/panels/world_pulse_panel.gd"], "heartbeat": "2026-10-05T06:39:19.731649+00:00"}
-{"session": "wave-24a", "paths": ["game/assets/characters/unique-index-wave-9.jsonl"], "heartbeat": "2026-10-05T07:08:45.629767+00:00"}
+{"session": "wave-24a", "paths": ["game/assets/characters/unique-index-wave-9.jsonl"], "heartbeat": "2026-10-05T08:28:42.776557+00:00"}
 {"session": "wave-24b", "paths": ["game/assets/characters/unique-index-wave-24b.jsonl"], "heartbeat": "2026-10-05T07:10:11.870567+00:00"}
-{"session": "wave-24c", "paths": ["game/assets/characters/unique-index-wave-24c.jsonl"], "heartbeat": "2026-10-05T07:10:59.665960+00:00"}
-{"session": "wave-24d", "paths": ["game/assets/characters/unique-index-wave-24d.jsonl"], "heartbeat": "2026-10-05T07:11:59.001291+00:00"}
+{"session": "wave-25b", "paths": ["game/assets/characters/unique-index-wave-25b.jsonl"], "heartbeat": "2026-10-05T07:56:42.918582+00:00"}
+{"session": "wave-25c", "paths": ["game/assets/characters/unique-index-wave-25c.jsonl"], "heartbeat": "2026-10-05T07:57:22.032506+00:00"}
+{"session": "wave-25d", "paths": ["game/assets/characters/unique-index-wave-25d.jsonl"], "heartbeat": "2026-10-05T07:58:25.062532+00:00"}
+{"session": "domain-size-budget", "paths": ["game/src/app/domain_boot.gd", "game/src/modules/domain/domain_fixtures.gd", "game/src/modules/domain/domain_generator.gd", "game/src/ui/screens/domain_explore.gd", "game/tests/ui/test_domain_explore.gd"], "heartbeat": "2026-10-05T07:59:53.919392+00:00"}
+{"session": "sect-duty-def0196", "paths": ["game/src/modules/sect", "game/src/app/institution_resolver.gd", "game/tests/modules/sect", "game/tests/modules/destiny/test_destiny_earn_sources_cultivation.gd", "game/tests/modules/qi_cultivation", "docs/adr"], "heartbeat": "2026-10-05T08:05:26.908821+00:00"}
+{"session": "clock-reconcile-fix", "paths": ["game/src/core/reconcile_stamp.gd", "game/src/core/world_reconcile.gd", "game/tests/core/test_reconcile_stamp.gd", "game/tests/app/test_reconcile_reachability.gd"], "heartbeat": "2026-10-05T08:11:57.704837+00:00"}
