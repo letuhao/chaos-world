@@ -25,6 +25,11 @@ WORD_RE = re.compile(r"\b([A-Z][A-Za-z0-9_]*)\b")
 # references, so prose and user-facing strings never count as dependencies.
 COMMENT_RE = re.compile(r"#.*$", re.MULTILINE)
 STRING_RE = re.compile(r'"[^"\n]*"')
+# A comment OUTSIDE a string literal. The string alternative consumes a literal's
+# contents first, so a `#` inside a string is never read as a comment start.
+# Used for the `res://` scan, where a path in prose is noise but a path in a
+# string (`preload("res://...")`) is the real edge.
+COMMENT_OUTSIDE_STRING_RE = re.compile(r'"[^"\n]*"|#.*$', re.MULTILINE)
 # An authored content type: a direct `extends Resource`. Caught only where it
 # belongs, so a `Resource` is read as a placement question and not an edge.
 RESOURCE_RE = re.compile(r"^\s*extends\s+Resource\s*$", re.MULTILINE)
@@ -123,7 +128,17 @@ def _class_index(files) -> dict[str, tuple[str, str | None, bool]]:
 
 def _references(text, scan_bare: bool = False):
     seen = set()
-    for match in RES_RE.finditer(text):
+    # Comments are stripped before the `res://` scan: a path named in prose is
+    # not a dependency. `institution_registry.gd`'s class note records this
+    # resolver reading a `res://` literal "as a real edge — including one inside
+    # a docstring", which forced that file's prose to never write a path at
+    # all. String literals are KEPT: real references live there
+    # (`preload("res://...")`, `path="res://..."`), and stripping them too
+    # leaves 5 of 26,801 `res://` matches tree-wide — a vacuous gate.
+    no_comments = COMMENT_OUTSIDE_STRING_RE.sub(
+        lambda m: m.group(0) if m.group(0).startswith('"') else "", text
+    )
+    for match in RES_RE.finditer(no_comments):
         ref = match.group(0)
         # A format placeholder is not a path. `MODULE_REGISTRY.gd` builds one
         # per module at run time — `"res://src/modules/%s/api.gd" % name` — and
@@ -136,7 +151,7 @@ def _references(text, scan_bare: bool = False):
         # boundary check honest without inventing a dependency.
         if "%" in ref:
             continue
-        seen.add((text.count("\n", 0, match.start()) + 1, ref))
+        seen.add((no_comments.count("\n", 0, match.start()) + 1, ref))
     for match in EXTENDS_RE.finditer(text):
         seen.add((text.count("\n", 0, match.start()) + 1, match.group(1)))
     if scan_bare:
