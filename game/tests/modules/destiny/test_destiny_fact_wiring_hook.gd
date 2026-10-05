@@ -94,6 +94,16 @@ func setup() -> void:
 ##
 ## The watcher is released before the delta is measured, so a subscriber this suite
 ## installed for a case never counts as one this suite leaked.
+##
+## **All THREE bridges, not just destiny's.** The mounted composition root installs
+## three subscribers into the one process-wide slot — `DestinyProjection` at
+## item_workbench_app.gd:318, plus `QuestFactProjection` at :337 and
+## `QuestArrivalProjection` at :349 — and this teardown used to unsubscribe only the
+## first. That is why this suite reported a delta of 2 with NOTHING else in the
+## process: it was measuring its own two, not a neighbour's. The slot is shared state
+## and the subscriber set is not destiny's alone, so the teardown has to name every
+## bridge it caused. Measured before the fix: `expected 0, got 2` even with this suite
+## run ALONE, which is the evidence that ruled out a foreign leaker.
 func teardown() -> void:
 	if SeamHarness.live != null:
 		SeamHarness.live.teardown()
@@ -101,6 +111,8 @@ func teardown() -> void:
 		WorldFact.unsubscribe(_listener)
 		_listener = Callable()
 	DestinyProjection.unsubscribe_from_fact_ledger()
+	QuestFactProjection.unsubscribe_from_fact_ledger()
+	QuestArrivalProjection.unsubscribe_from_fact_ledger()
 	assert_eq(
 		WorldFact.subscriber_count(),
 		_baseline_subscribers,
