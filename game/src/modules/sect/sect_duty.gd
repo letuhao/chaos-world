@@ -51,9 +51,9 @@ const R_NOT_A_MEMBER := SectApi.NOT_A_MEMBER
 ##
 ## **Max, never sum.** A line the member already owes more of is left alone: an office
 ## raises what a seat obliges a member to, it does not charge the arrears of the same
-## seat a second time. This is the merge `SectFounding.write` already used for a
-## founder's own duty, and it lives here so the founding path and the promotion path
-## cannot disagree about what a seat costs.
+## seat a second time. This is the merge `InstitutionFounding._obligation` already uses
+## for a founder's own duty, and it lives here so the founding path and the promotion
+## path cannot disagree about what a seat costs.
 ##
 ## ## The lines of an office the member no longer holds are NOT closed
 ##

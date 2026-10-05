@@ -437,16 +437,18 @@ static func _sect_id(ledger: Dictionary) -> StringName:
 
 
 ## `value` when it really is text (a `String` or a `StringName`), otherwise
-## `fallback`.
+## `fallback`. **A DELEGATE, and the copy that used to live here is deleted.**
 ##
-## The one text coercion in this module. A raw `String(...)` is not safe on a save
-## payload: it raises at runtime on a float or a dictionary, so a corrupt ledger
-## would abort the attach rather than read as empty — the one thing a corrupt save
-## is allowed to do.
+## Three files carried this and the reasoning (`InstitutionLedger.text` owns it): a raw
+## `String(...)` is not safe on a save payload, because it raises at runtime on a float
+## or a dictionary, so a corrupt ledger would abort the attach rather than read as empty
+## — the one thing a corrupt save is allowed to do. `ClanState._text` was a third copy
+## and documents itself as "`sect_state.gd`'s `_text`, carried over unchanged", so the
+## pair is now one rule read from two call sites rather than two rules that could drift.
+## The call sites still read `_text` rather than the long class name because this is the
+## hot path of every attach; what matters is that there is no body here to disagree.
 static func _text(value: Variant, fallback: String) -> String:
-	if value is String or value is StringName:
-		return String(value)
-	return fallback
+	return InstitutionLedger.text(value, fallback)
 
 
 ## Whether the fields that ARE the claim arrive as the types they must be.

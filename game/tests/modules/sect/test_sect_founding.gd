@@ -231,6 +231,18 @@ func test_a_sect_with_no_walkable_office_refuses_founding_with_no_top_position()
 ## plain id and a count — so retuning a rate never rewrites a save — and every line
 ## is namespaced through the sect id, because the ledger belongs to a person and two
 ## sects may both owe the same actor's save.
+##
+## ## `treasury_t_foundry_all`, and why the old `_hall` line is GONE
+##
+## The migration moved the founding writer into `core/institution_founding.gd`, which
+## opens `<prefix>all` for the institution itself. `sect` used to open `<prefix>hall`
+## as well — the SAME line under a second name, which is the ADR 0066 failure mode
+## inside the file that exists to prevent it — so exactly one of the two survives and
+## the surviving name is the generic one. **This is the only observable change the
+## migration makes**, and it is a line id rather than a number: nothing settles a
+## treasury line (`SectDuty` settles `claim.obligation`, a different map), and
+## `SectState.normalize` filters on the `treasury_<id>_` PREFIX, so a save written
+## before the migration still keeps its `_hall` line instead of losing it silently.
 func test_the_treasury_is_a_ledger_of_obligation_lines_and_never_a_pile_of_items() -> void:
 	var actor := _founder()
 	SectApi.found(actor, FOUNDRY, DOCTRINE, "keeper")
@@ -240,12 +252,34 @@ func test_the_treasury_is_a_ledger_of_obligation_lines_and_never_a_pile_of_items
 	# "an empty treasury is the surprising answer". Written the plain way so the
 	# assertion and its label say the same thing.
 	assert_eq(treasury.is_empty(), false, "founding opens a treasury")
-	var expected := SectFounding.treasury_lines(_def())
-	assert_eq(treasury, expected, "every line is authored, and only those lines")
-	for line_id in treasury.keys():
-		assert_eq(typeof(line_id), TYPE_STRING, "a treasury line id is a String key")
-		assert_eq(typeof(treasury[line_id]), TYPE_INT, "and holds a count, never an amount")
-		assert_eq(int(treasury[line_id]) > 0, true, "and only a positive one is stored")
+	var authored := SectFounding.treasury_lines(_def())
+	# Every AUTHORED line is present, at the office's own rate — a case asserting a
+	# hard-coded count would be asserting the fixture rather than the rule.
+	for line_id in authored.keys():
+		assert_eq(
+			int(treasury.get(String(line_id), -1)),
+			int(authored[line_id]),
+			"'%s' carries its own authored rate" % line_id
+		)
+	assert_eq(authored.size() > 0, true, "and the fixture authors at least one office line")
+	# And the institution's OWN opening line is the generic writer's, by that writer's
+	# name and that writer's number — the two are asserted equal rather than restated,
+	# because a second copy of the number is the thing this migration removed.
+	assert_eq(
+		int(treasury["treasury_%s_all" % String(FOUNDRY)]),
+		InstitutionFounding.TREASURY_OPENING_PERIODS,
+		"and the institution's own line is opened by the generic writer"
+	)
+	assert_eq(
+		SectFounding.TREASURY_OPENING_PERIODS,
+		InstitutionFounding.TREASURY_OPENING_PERIODS,
+		"under the sect's alias of the shared number, not a copy of it"
+	)
+	assert_eq(
+		(treasury as Dictionary).has("treasury_%s_hall" % String(FOUNDRY)),
+		false,
+		"and the second name for that one line is gone rather than doubled"
+	)
 	# The lines the vault of each office opens are the office's OWN authored rates,
 	# read off the def — a case asserting a hard-coded count would be asserting the
 	# fixture rather than the rule.
@@ -254,7 +288,15 @@ func test_the_treasury_is_a_ledger_of_obligation_lines_and_never_a_pile_of_items
 		_def().position(STEWARD).duty_per_period,
 		"the top office's duty line carries its own authored rate"
 	)
-	assert_eq(int(treasury["treasury_%s_hall" % String(FOUNDRY)]), 1, "and the hall opens one line")
+	assert_eq(
+		int(treasury["treasury_%s_patronage_%s" % [String(FOUNDRY), String(STEWARD)]]),
+		_def().position(STEWARD).patronage_per_period,
+		"and so does its patronage line, the other half of the pair"
+	)
+	for line_id in treasury.keys():
+		assert_eq(typeof(line_id), TYPE_STRING, "a treasury line id is a String key")
+		assert_eq(typeof(treasury[line_id]), TYPE_INT, "and holds a count, never an amount")
+		assert_eq(int(treasury[line_id]) > 0, true, "and only a positive one is stored")
 	# Nothing in here is an item, a stat, or a quantity of anything a `ResourcePool`
 	# would have been the right home for.
 	for line_id in treasury.keys():
@@ -280,8 +322,11 @@ func test_a_treasury_line_from_another_sect_is_dropped_rather_than_kept() -> voi
 		false,
 		"a foreign treasury line is dropped"
 	)
+	# The surviving line of the institution's own is the generic writer's `_all`, for
+	# the reason the class doc above states. Filtered on the PREFIX, so the old name
+	# in a pre-migration save is kept rather than vanishing on load.
 	assert_eq(
-		(SectApi.state(actor)["treasury"] as Dictionary).has("treasury_%s_hall" % String(FOUNDRY)),
+		(SectApi.state(actor)["treasury"] as Dictionary).has("treasury_%s_all" % String(FOUNDRY)),
 		true,
 		"and this sect's own line survives"
 	)

@@ -244,33 +244,22 @@ static func join(actor: Actor, sect_id: StringName) -> Dictionary:
 ##
 ## `SectApi.found(actor, sect_id, doctrine_id, founder_id)` is the one verb that can
 ## bring a sect into being (BL-0174). It consumes the authored `founding_cost`, seats
-## the founder in the top office, and writes the four founder-owned ledger lines: the
-## founder id, the roster, the treasury and the founder's own duty.
+## the founder in the top office, and writes the four founder-owned ledger lines. The
+## founder id is a plain actor id **STRING** — an `Actor` in a ledger reaches the save
+## untouched and no checker here can see it — and it is the roster's first entry.
 ##
-## ## The founder id is a STRING, never an `Actor`
+## ## The refusals, in the order they are asked: `no_actor`, `unknown_sect`,
+## `unknown_doctrine`, `already_founded`, `no_top_position`, `founding_cost_unmet`. Each
+## writes **nothing at all**, so a refused founding leaves the actor byte-for-byte as
+## found (ADR 0084). The order is not arbitrary: a cost is never mentioned first.
 ##
-## `founder_id` is recorded as a plain actor id **string**. An `Actor` reference in a
-## ledger reaches the save untouched — `Actor.to_dict` copies `module_data` verbatim
-## with a hook only for items — and no checker in this repo can see it. The same
-## string is the first entry in the roster, which is why the founder is the first
-## entry in the sect's own ledger rather than a special case hanging off it.
+## ## The verb is PROFILE ASSEMBLY plus the generic `found`
 ##
-## ## The four refusals, in the order they are asked
-##
-## `no_actor`, `unknown_sect`, `unknown_doctrine`, `founding_cost_unmet`,
-## `already_founded`. Each writes **nothing at all** — not the pool, not the ledger,
-## not the trail — so a refused founding leaves the actor byte-for-byte as found
-## (ADR 0084). The order matters and is not arbitrary: a cost is never mentioned
-## before the sect that charges it, and an existing sect is never re-founded just
-## because the price was met.
-##
-## ## The cost is read, not charged
-##
-## `SectDef.founding_cost` is authored as `{found, outstanding}` and read against
-## `SectFounding.funds(actor)`. This module **records** the cost and never settles
-## it: a debt an economy verb has not written yet must not be paid by a sect, and
-## `sect` declares no `items` dependency on purpose. What is charged is the funding
-## pool — an institution's existence being free would make founding a free action.
+## Everything that decides a founding is in `core/institution_founding.gd`; what stays here
+## is the half only `sect` can do, and `SectFounding` holds the reasoning. **The pool is
+## charged by the generic writer, not here**: a gate and a draw written twice is two
+## numbers, and a founding that drew here and refused there would be the one way ADR
+## 0044 could fail.
 static func found(
 	actor: Actor, sect_id: StringName, doctrine_id: StringName, founder_id: String
 ) -> Dictionary:
@@ -290,10 +279,25 @@ static func found(
 	if top == null:
 		return _refuse(NO_TOP_POSITION, read)
 	var price := SectFounding.cost(def)
-	if SectFounding.funds(actor) < float(price["outstanding"]):
-		return _found_unmet(read, def, price)
-	SectFounding.draw(actor, float(price["outstanding"]))
-	var ledger := SectFounding.write(def, doctrine, founder_id, top)
+	var report := InstitutionFounding.found(
+		SectFounding.registry(), actor, SectFounding.profile(def, doctrine), founder_id, read
+	)
+	if not bool(report["ok"]):
+		return _found_refused(String(report["reason"]), read, def, price)
+	# ## The generic writer returns a CLAIM; this module owns the ENVELOPE
+	#
+	# `write` builds the eleven keys a claim is; `SectState.normalize` builds the sixteen
+	# the whole sect adds — `doctrine`, `succession`, `schisms`, `history`,
+	# `applied_standing`, `granted_percent`. The deleted writer opened with
+	# `SectState.normalize({})` and filled it, so NOT normalizing drops half the ledger
+	# and every reader of those keys reads a missing key as an empty one. The
+	# known-content filter is left EMPTY on purpose: the position came off this same def,
+	# and an empty filter means "accept what you were handed" rather than "deny".
+	var ledger := SectState.normalize(report["ledger"] as Dictionary)
+	# The one key the generic writer does not know: a school is sworn to a DOCTRINE, and
+	# transmission is `sect` content (ADR 0084). Written on the returned ledger rather
+	# than passed in, so the row and this key cannot come from two versions of it.
+	ledger["doctrine"] = String(doctrine.id)
 	_record(ledger, "found", def.id, String(doctrine.id))
 	# Founding is a stronger act than swearing: you are the one the sect answers to,
 	# so it moves regard under the DEED cause rather than the membership one. Same
@@ -445,10 +449,9 @@ static func promote(
 	var seated := SectState.position(read) != office.id
 	ledger["position"] = String(office.id)
 	# Taking the seat OPENS what the seat obliges, at the office's own authored rate.
-	# Founding has always done this for the founder's top office
-	# (`SectFounding.write`); a promotion that did not would leave `SectGate`'s
-	# `duty_owed` gate reading zero for every office holder on earth, which is a gate
-	# answering `yes` to everybody rather than one that refuses.
+	# Founding does this for the founder's top office (`InstitutionFounding` merges the
+	# membership and office lines on `found`); a promotion that did not would leave
+	# `SectGate`'s `duty_owed` gate reading zero for every office holder on earth.
 	ledger["obligation"] = SectDuty.open_office(ledger["obligation"] as Dictionary, office)
 	_record(ledger, "promote" if not force else "promote_forced", office.id, "")
 	# Holding an office is PUBLIC recognition, which is the one thing ADR 0083
@@ -948,9 +951,16 @@ static func _below_floor(ledger: Dictionary, office: SectPositionDef) -> Diction
 ## `founding_cost_unmet`, with both numbers so a panel can show the shortfall rather
 ## than only the refusal. `force` is absent on purpose: there is no override for
 ## founding. BL-0174 prices an institution's existence and an override would make
-## the price decorative.
-static func _found_unmet(ledger: Dictionary, def: SectDef, price: Dictionary) -> Dictionary:
-	return SectPayloads.found_unmet(ledger, def, price)
+## the price decorative. Also the funnel for a refusal the GENERIC writer returned: the
+## reason needs no mapping, but the PAYLOAD does, because the shortfall's two numbers
+## and the authored coin are this tier's to publish. Any other reason passes through the
+## ordinary refusal shape, so a future generic refusal cannot be swallowed.
+static func _found_refused(
+	reason: String, ledger: Dictionary, def: SectDef, price: Dictionary
+) -> Dictionary:
+	if reason == FOUNDING_COST_UNMET:
+		return SectPayloads.found_unmet(ledger, def, price)
+	return _refuse(reason, ledger)
 
 
 ## A refused `declare_schism`, naming the half it was refused for. The half id is

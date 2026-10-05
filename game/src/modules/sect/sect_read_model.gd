@@ -102,6 +102,12 @@ static func doctrine_view(def: SectDoctrineDef) -> Dictionary:
 
 ## One sect as a screen reads it, with every authored office nested under
 ## `positions`. A board renders this without asking the facade for anything else.
+##
+## `treasury_lines` is the AUTHORED office rates — what content declares, not what a
+## member's own ledger currently owes. The live lines, including the opening line the
+## generic founding writer opens, come from `summary()["treasury"]`, which reads the
+## ledger: this class's own rule is "read the line, do not rebuild it", and a
+## reconstructed opening line beside the real one is exactly the drift it refuses.
 static func sect_view(def: SectDef) -> Dictionary:
 	if def == null:
 		return {}
