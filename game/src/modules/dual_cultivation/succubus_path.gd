@@ -8,7 +8,7 @@ extends RefCounted
 ## It is the path with no realm seeds of its own, which makes it the one in-tree system
 ## shaped like a MOD's — so it is also where `RealmMapper` is used: the correspondence
 ## between its stage vocabulary and the shared ladder is STATED by formula rather than
-## assumed to be 30 == 30 (ADR 0266).
+## assumed to be 30 == 30 (ADR 0268).
 
 const PATH_ID := &"succubus"
 

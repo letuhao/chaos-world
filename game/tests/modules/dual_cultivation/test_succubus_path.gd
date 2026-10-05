@@ -30,6 +30,45 @@ func test_path_vocabulary() -> void:
 	assert_eq(def.stage_name(&"dao_ancestor"), "Desire Dao Ancestor", "transcendent stage")
 
 
+## The 30 stage names line up with the 30 realms because `RealmMapper` MAPS stage `i`
+## onto ladder position `i` at equal lengths - not because anyone counted, and not
+## because the two arrays are edited together. This path is the one with no realm seeds
+## of its own, so it is the in-tree system shaped like a MOD's, and this is the
+## assertion that keeps the correspondence stated rather than assumed (ADR 0268).
+##
+## The practical failure it closes: a 31st stage name added for flavour would shift
+## every stage name after it onto the wrong realm, and the three assertions above would
+## still pass because they only probe first/middle/last.
+func test_the_stage_vocabulary_maps_onto_the_shared_ladder() -> void:
+	var realms := RealmDefaults.ladder().realms()
+	assert_eq(
+		SuccubusPath.stage_count(),
+		realms.size(),
+		"the path and the ladder are the same length today, which is what makes the map the identity"
+	)
+	for stage in SuccubusPath.stage_count():
+		assert_eq(
+			SuccubusPath.realm_id_for_stage(stage),
+			realms[stage].id,
+			"stage %d maps onto %s" % [stage, realms[stage].id]
+		)
+
+
+## A stage's rate is the ONE shared curve on the realm it maps onto, never a curve this
+## module authors. Same number the provider multiplies by, reached the other way round,
+## so the two cannot drift apart.
+func test_a_stage_rate_is_the_shared_rate_of_the_realm_it_maps_onto() -> void:
+	assert_almost_eq(
+		SuccubusPath.stage_factor(10),
+		RealmRate.factor(&"spirit_sea"),
+		"stage 10 is the rate of spirit_sea",
+		0.0001
+	)
+	assert_almost_eq(
+		SuccubusPath.stage_factor(0), RealmRate.NEUTRAL, "the first stage is neutral", 0.0001
+	)
+
+
 ## Every realm-scaled contribution is priced by the ONE shared rate,
 ## `RealmRate.factor` — the same call the other three providers make. It used to be
 ## a private `1.0 + ladder_ordinal * 0.05` in the provider: a fourth rate curve with

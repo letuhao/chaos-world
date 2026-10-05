@@ -2,7 +2,7 @@ class_name RealmMapper
 extends RefCounted
 
 ## Project a cultivation system's OWN ordinal onto the shared standard ladder
-## (ADR 0266).
+## (ADR 0268).
 ##
 ## A path keeps its own progression array and is not required to share the standard
 ## ladder's LENGTH. A partial ladder is already legal at registration —
@@ -37,6 +37,7 @@ extends RefCounted
 ## reads the `RealmDef.power` of the realm it maps onto, unchanged — so extending a
 ## path adds no fourth magnitude table. The only thing a path's own length changes is
 ## how finely it samples the one shared rate.
+
 
 ## The standard-ladder ordinal a path ordinal maps onto, or -1 for a negative ordinal
 ## or an empty ladder. Clamped, so a caller that walks one step past its own top lands

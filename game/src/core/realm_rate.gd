@@ -41,7 +41,7 @@ extends RefCounted
 ## LENGTH — 1.776 at 30 realms, 1.99988 at 36 (a 5e-5 margin), 2.040 at 37, and
 ## extending the ladder was a balance decision made by arithmetic nobody chose.
 ## Here the top realm is worth `rate_span()` whether the ladder holds 30 realms or
-## 100 (ADR 0266).
+## 100 (ADR 0268).
 ##
 ## Compounding per realm rather than stepping per tier is deliberate. A tier step
 ## makes the first realm of a new tier CHEAPER, because the price of a
@@ -129,7 +129,15 @@ static func rate_span() -> float:
 static func rate_step() -> float:
 	var size := RealmDefaults.ladder().size()
 	if size != _step_size:
-		_step = pow(rate_span(), 1.0 / float(maxi(1, size - 1)))
+		# At the AUTHORED ladder length the answer IS the authored constant, returned
+		# verbatim rather than recomputed. `pow(pow(RATE_STEP, n), 1.0 / n)` is
+		# algebraically `RATE_STEP` but not bit-exact, and a 1e-16 drift is enough to
+		# tip a threshold a caller reads as a count — which is how an unchanged ladder
+		# length stopped a body trial's hunt from resolving inside its strike budget.
+		if size == AUTHORED_LADDER_SIZE:
+			_step = RATE_STEP
+		else:
+			_step = pow(rate_span(), 1.0 / float(maxi(1, size - 1)))
 		_step_size = size
 	return _step
 

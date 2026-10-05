@@ -32,13 +32,19 @@ extends TestCase
 ## finally saw it. A new shape needs a new pin; that is the standing cost of a
 ## numeric copy surviving as an idiom rather than as a copy.
 ##
-## The rest is carried coverage: the rate rises strictly at every realm; the span
-## is a consequence of the authored step rather than a pasted number and stays a
-## gain; an unknown or empty realm id degrades to `NEUTRAL`; the step fits inside
-## the AUTHORED work budget, computed from the seeds rather than typed in; and the
+## The rest is carried coverage: the rate rises strictly at every realm; the span is
+## the AUTHORED NUMBER and is INVARIANT to ladder length rather than a consequence of
+## it; an unknown or empty realm id degrades to `NEUTRAL`; the step fits inside the
+## AUTHORED work budget, computed from the seeds rather than typed in; and the
 ## rate/magnitude split is MACHINE-CHECKED — `RealmScaling` reads the authored
 ## `RealmDef.power`, `RealmRate` must not, or the two would count the same realm
 ## twice.
+##
+## Nothing here asserts a ladder LENGTH. This file used to say `30` in two places, and
+## the first realm anyone added would have turned them into no-ops — the guard would
+## have kept passing while checking less and less of the thing it names. The rate is
+## a curve over a ladder whose length content is allowed to change (ADR 0268), so the
+## assertions are derived from `RealmDefaults.ladder()` and the rate's own span.
 
 const FIRST := &"qi_refining"
 const LAST := &"primordial_origin"
@@ -68,6 +74,11 @@ const SEED_PATH_DIRS := ["body_cultivation", "qi_cultivation", "mind_cultivation
 ## three paths and the bound is checked against one uniform field.
 const BUDGET_FIELD := "progress_required"
 
+## Where `_smallest_work_step()` found its tightest step, as a failure message. A bare
+## number sends the next agent hunting for the smallest ratio in three authored ladders;
+## this names the path and the transition. Written by the helper, read by the bound test.
+var _tightest_at := ""
+
 
 ## The rate is a gain at every realm on the ladder. A flat or falling rate would
 ## make a breakthrough worth less the deeper you were, which is how the deep
@@ -85,7 +96,7 @@ func test_the_rate_rises_at_every_realm_on_the_ladder() -> void:
 	assert_eq(counted, RealmDefaults.ladder().size(), "the whole ladder was walked")
 
 
-## R1 is the neutral rate: it is ordinal 0, so `RATE_STEP^0` is exactly 1.0. If it
+## R1 is the neutral rate: it is ordinal 0, so `rate_step()^0` is exactly 1.0. If it
 ## were not, every other number in the curve would be relative to a fiction and
 ## an unstarted path would silently contribute a fraction of a unit.
 func test_the_first_realm_is_the_neutral_rate() -> void:
@@ -93,26 +104,76 @@ func test_the_first_realm_is_the_neutral_rate() -> void:
 	assert_almost_eq(RealmRate.factor(FIRST), RealmRate.NEUTRAL, "R1 equals NEUTRAL", 0.0001)
 
 
-## A rate must stay a rate. The span is a CONSEQUENCE of the authored step
-## compounded over the ladder, not a pasted number, so retuning `RATE_STEP` is a
-## one-line data change and never requires editing this suite.
+## A rate must stay a rate, and the span must be the AUTHORED NUMBER rather than a
+## consequence of how many realms the ladder happens to have.
+##
+## The span used to be `pow(RATE_STEP, size - 1)`, so the total was a function of ladder
+## LENGTH: 1.776 at 30 realms, 1.99988 at 36, and 2.040 at 37 - which is to say adding
+## seven realms took a gain past the ceiling a gain is held to, by arithmetic rather than
+## by decision. `rate_step()` normalises the step over the transitions there are, so the
+## span is `rate_span()` at every length and extending the ladder is not a balance edit
+## (ADR 0268).
 func test_the_span_is_the_authored_step_and_stays_a_gain() -> void:
 	var realms := RealmDefaults.ladder().realms()
 	var span := RealmRate.factor(realms[realms.size() - 1].id) / RealmRate.factor(realms[0].id)
 	assert_almost_eq(
 		span,
-		pow(RealmRate.RATE_STEP, float(realms.size() - 1)),
-		"the span is the authored step compounded over the ladder",
+		pow(RealmRate.rate_step(), float(realms.size() - 1)),
+		"the span is the step compounded over the ladder",
+		0.0001
+	)
+	assert_almost_eq(
+		span,
+		RealmRate.rate_span(),
+		"and the span is the authored number, whatever the ladder's length",
 		0.0001
 	)
 	assert_eq(span < 2.0, true, "the whole ladder is under 2x, not a magnitude (%s)" % span)
 	assert_eq(span > 1.0, true, "and it still rises, or cultivation stops paying")
 
 
-## Off the ladder means neutral, never zero. A rate of 0 would delete the stat it
-## scales instead of leaving it alone, and a missing entry must fail safe. All three
-## paths reach this one function through their seam, so this also pins the behaviour
-## every `*Provider._realm_factor` relies on for a stale rank.
+## The INVARIANCE itself, at ladder lengths that are not the shipped one.
+##
+## `RealmDefaults.register_realms` really can lengthen the ladder, and doing that here
+## would leave a mutated global behind for every suite that shares the process. So this
+## proves the identity arithmetically instead - `rate_span()^(1/(n-1))` compounded back
+## over `n-1` transitions - at the four lengths that matter: the shipped one, the two
+## that used to breach the ceiling, and a hundred realms.
+func test_the_span_is_the_authored_number_at_every_ladder_length() -> void:
+	var authored := RealmRate.rate_span()
+	assert_eq(authored < 2.0, true, "the authored span is a gain, not a magnitude (%s)" % authored)
+	# Every probed step must stay inside the AUTHORED work-budget ceiling. That is the
+	# claim the design rests on, so it is asserted rather than left to the derivation:
+	# `ln(step) = ln(span)/(n-1)` has a positive numerator, so a LONGER ladder always
+	# moves the step AWAY from the ceiling and only a shorter one can walk up onto it.
+	var ceiling := _smallest_work_step()
+	var previous := INF
+	# 0 extra realms (the shipped ladder), then the two lengths at which the old bare
+	# step breached 2x, then a hundred-realm ladder. Typed so `size` infers as int.
+	var extra_realms: Array[int] = [0, 6, 7, 70]
+	for extra in extra_realms:
+		var size := RealmRate.AUTHORED_LADDER_SIZE + extra
+		var step := pow(authored, 1.0 / float(size - 1))
+		assert_almost_eq(
+			pow(step, float(size - 1)),
+			authored,
+			"%d realms span the authored number" % size,
+			0.0001
+		)
+		assert_eq(step > 1.0, true, "%d realms is still a gain (%s)" % [size, step])
+		assert_eq(step < previous, true, "%d realms takes a smaller step than a shorter one" % size)
+		previous = step
+		assert_eq(
+			step <= ceiling + 0.000001,
+			true,
+			"%d realms stays inside the authored work step (%s vs %s)" % [size, step, ceiling]
+		)
+
+
+## An unknown or empty realm id degrades to neutral, never zero. A rate of 0 would
+## delete the stat it scales instead of leaving it alone, and a missing entry must fail
+## safe. All three paths reach this one function through their seam, so this also pins
+## the behaviour every `*Provider._realm_factor` relies on for a stale rank.
 func test_an_unknown_or_empty_realm_is_neutral() -> void:
 	for realm_id in [&"", UNKNOWN]:
 		assert_eq(RealmRate.factor(realm_id), RealmRate.NEUTRAL, "rate for '%s'" % realm_id)
@@ -160,7 +221,7 @@ func test_the_curve_reads_the_ladder_ordinal_and_nothing_else() -> void:
 		assert_eq(ordinal, index, "%s is ordinal %d" % [realm.id, index])
 		assert_almost_eq(
 			RealmRate.factor(realm.id),
-			pow(RealmRate.RATE_STEP, float(ordinal)),
+			pow(RealmRate.rate_step(), float(ordinal)),
 			"rate for %s is the step at its ordinal" % realm.id,
 			0.0001
 		)
@@ -371,11 +432,11 @@ func _module_source(path_dir: String) -> String:
 	return joined
 
 
-## `RATE_STEP` is authored, but the bound it must respect is not: it has to stay at or
+## `rate_step()` is authored, but the bound it must respect is not: it has to stay at or
 ## below the smallest per-realm step in the AUTHORED work budget, or the rate outruns the
 ## price of a breakthrough and the deep realms get cheap. The check this replaces compared
-## it against a typed-in `1.05`, which is LOOSER than the data — it permitted a retune that
-## broke qi's last transition.
+## it against a typed-in `1.05`, which is LOOSER than the data - it permitted a retune
+## that broke qi's last transition.
 ##
 ## This reads all three authored ladders from the realm seeds and takes the smallest step
 ## any of them prices a transition at. It is a cross-path bound, so no single path's suite
@@ -388,37 +449,52 @@ func _module_source(path_dir: String) -> String:
 ## predecessor realm to be cheaper than and a bound taken over it would be vacuously 1.0.
 ## All three per-path suites skip it for exactly this reason.
 func test_the_rate_step_fits_inside_the_smallest_authored_work_step() -> void:
+	var smallest := _smallest_work_step()
+	assert_eq(
+		smallest < INF, true, "every authored ladder was walked, so the bound is a real number"
+	)
+	assert_eq(RealmRate.rate_step() > 1.0, true, "the rate is still a gain")
+	assert_eq(
+		RealmRate.rate_step() <= smallest + 0.000001,
+		true,
+		(
+			"rate_step() %s outruns the authored work step %s at %s — the rate outruns the price"
+			% [RealmRate.rate_step(), smallest, _tightest_at]
+		)
+	)
+
+
+## Where `_smallest_work_step()` found its tightest step is recorded on `_tightest_at`
+## so a failure names the path and transition, not just a ratio.
+##
+## The tightest per-realm step any of the three authored `progress_required` ladders
+## prices a transition at. Factored out because the bound is now needed in two places:
+## once against the shipped ladder's step, and once against each hypothetical length in
+## `test_the_span_is_the_authored_number_at_every_ladder_length`.
+##
+## `INF` when nothing was walked, so a caller that forgot to check fails its own
+## comparison loudly instead of silently passing against a sentinel.
+func _smallest_work_step() -> float:
 	var smallest := INF
-	var tightest := ""
+	_tightest_at = ""
+	var ladder := RealmDefaults.ladder().realms()
 	for path_dir in SEED_PATH_DIRS:
 		var budgets := _authored_budgets(path_dir)
-		assert_eq(budgets.size(), 30, "%s authored a budget for every realm" % path_dir)
+		assert_eq(
+			budgets.size(),
+			RealmDefaults.ladder().size(),
+			"%s authored a budget for every realm on the ladder" % path_dir
+		)
+		# The bound is over CONSECUTIVE ratios, so it is undefined under three entries;
+		# the ladder always has far more.
 		if budgets.size() < 3:
 			continue
 		for index in range(2, budgets.size()):
 			var step := budgets[index] / budgets[index - 1]
 			if step < smallest:
 				smallest = step
-				tightest = (
-					"%s %s->%s"
-					% [
-						path_dir,
-						RealmDefaults.ladder().realms()[index - 1].id,
-						RealmDefaults.ladder().realms()[index].id,
-					]
-				)
-	assert_eq(
-		smallest < INF, true, "every authored ladder was walked, so the bound is a real number"
-	)
-	assert_eq(RealmRate.RATE_STEP > 1.0, true, "the rate is still a gain")
-	assert_eq(
-		RealmRate.RATE_STEP <= smallest + 0.000001,
-		true,
-		(
-			"RATE_STEP %s outruns the authored work step %s at %s — the rate would outrun the price"
-			% [RealmRate.RATE_STEP, smallest, tightest]
-		)
-	)
+				_tightest_at = ("%s %s->%s" % [path_dir, ladder[index - 1].id, ladder[index].id])
+	return smallest
 
 
 ## The per-realm training budget as AUTHORED, in ladder order. Loaded as a resource and
