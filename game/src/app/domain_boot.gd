@@ -145,7 +145,6 @@ static var _roster: Dictionary = {}
 ## call, and the definition it reaches is the ONLY one. The docblock on each forward lives
 ## on `DomainWorldBoot` beside the body it forwards to.
 
-
 ## ## The `DomainWards` half, forwarded
 ##
 ## `DomainWards` is the BASE of this class, and **GDScript inherits neither
@@ -156,6 +155,7 @@ static var _roster: Dictionary = {}
 ## half owns is re-spelled here as a one-line forward. Not a second
 ## implementation: each body is a call, and the definition it reaches is the only
 ## one.
+
 
 static func _template_weather(template_id: StringName) -> StringName:
 	return DomainWards._template_weather(template_id)
