@@ -9,6 +9,12 @@
         "soul"
       ]
     },
+    "base_grant": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
     "bloodline": {
       "deps": [
         "contracts",
@@ -31,6 +37,22 @@
         "contracts",
         "core",
         "race",
+        "social"
+      ]
+    },
+    "clan_building": {
+      "deps": [
+        "contracts",
+        "core"
+      ]
+    },
+    "collection": {
+      "deps": [
+        "contracts",
+        "core",
+        "destiny",
+        "dual_cultivation",
+        "fertility",
         "social"
       ]
     },
@@ -241,6 +263,13 @@
         "nation",
         "sect",
         "world"
+      ]
+    },
+    "relationships": {
+      "deps": [
+        "contracts",
+        "core",
+        "social"
       ]
     },
     "save": {
