@@ -36,38 +36,43 @@ extends TestCase
 ##
 ## ## What is deliberately NOT modelled, and why
 ##
-## **World facts.** A fact is written by the system that owns the moment
-## (ADR 0113) — a quest step, an event stage — and none of those is a fate, so a
-## walk through the fate tree cannot say whether one is on the hero's ledger. It
-## does not guess: `Walker.verdict` answers `fact` **unreadable**, which is the
-## same answer `DestinyGate.evaluate` gives (`fact` is not one of the six verbs),
-## and a rule carrying one therefore stays shut. `tools gate_reach check` is the
-## census that judges fact supply; `tools/selftest_cases.py` already carries
-## `storm_front_sighted`, `void_seam_sounded`, `tournament_called`,
-## `sect_war_called` and `court_invitation_received` as case names, and
-## `WorldAmbient.ROSTER` is where four of them are produced. This suite's
-## obligation is to say which ids that leaves stranded, which is what its census
-## assertion prints — not to invent a supply for them.
+## **World facts are modelled, and modelled as what they are.** A fact is a thing
+## that happened (ADR 0113), it lives in `WorldFact`'s ledger, and a gate reads it
+## through `EventGate._has_fact` → `EventFacts.count_of` → `WorldFact.count`. So the
+## walk reads it off the real ledger on the real probe rather than refusing it, and
+## `Walker.seed_world_facts` puts the world's own ambient news there first — the
+## ids `WorldAmbient.due` publishes, and nothing else, so the walk never invents a
+## producer.
 ##
-## ## Why inventing one was worse than reporting it
+## ## A fact the world has not said is 0, and 0 is an ANSWER
 ##
-## Answering `fact` `true` is what produced the ten failures this file carried. A
-## quest gated on `{}` (`the_station_you_held`) and an event triggered on a fact
-## the world happens to produce (`tournament_of_the_spirit_peaks`,
-## `beast_tide_of_the_mortal_plains`, `the_dawn_descent`) all became open, so a
-## hero holding `the_chosen_instrument` was also handed the fates of a branch it
-## cannot have — and the suite then reported that branch's whole existence
-## unreachable. Answering `fact` `false` for a fact the world owns reports the
-## SAME events dead. Neither answer is honest; "unreadable" is.
+## `the_stone_that_answering.tres:20` triggers on
+## `{verb: none_of, of: [{verb: fact, id: treasure_stone_read, need: 1}]}`. On a
+## fresh ledger that fact is 0, `none_of` is true, `EventApi.begin` accepts it, the
+## event opens, and its own `on_enter` writes the fact — which closes its gate for
+## every later attempt. That is a gate the content was written to use, and the
+## previous version of this suite could not see it: it answered `fact` **unreadable**
+## for every fact, so four of the eight authored events were invisible to it and it
+## then named two REACHABLE fates permanently unearnable (DEF-0279). Both answers
+## were wrong for the same reason — neither asked anything.
+##
+## ## Why there is no exemption list here, and what replaced it
+##
+## `KNOWN_UNREACHABLE_FATES` certified two reachable fates as unearnable, so the
+## day someone fixed those `.tres` files the suite would have gone red with a
+## message telling them to delete a defect that no longer existed, and nothing would
+## ever have told them the fix landed. It is gone. The union assertion below now
+## asks the walker and asserts its answer — **nothing stranded** — and the
+## capabilities it is standing on are asserted next, so a walk that could not read
+## something says WHICH, in the measured language of facts, rather than in a
+## hand-maintained list of fate ids.
 ##
 ## ## Counters and declarations
 ##
-## `{verb: counter}` reads `DestinyState`, whose producers are DEF-0105/0106, and
-## the module DOES own that verb, so it is asked of the module with the engine's
-## own `need` semantics. No shipped gate names one. `declare` is an event payload
-## (`EventGate._declaration`) rather than a question about the hero, so it is
-## refused — and nothing on the fate tree is paid by `war_of_the_nine_fords`, so
-## no fate turns on it either way.
+## `{verb: counter}` reads `DestinyState`, `{verb: tagged}` reads the fate ledger's
+## tag vocabulary, and `{verb: declare}` is `EventGate._declaration`. All three are
+## asked of the module that owns them, through `EventGate.evaluate`, for the reason
+## in [method Walker.gate_answers]. No shipped fate gate names a counter or a tag.
 ##
 ## ## Exclusivity is real and enforced here
 ##
@@ -96,38 +101,27 @@ const Walker := preload("res://tests/modules/destiny/destiny_reach_walker.gd")
 ## this suite covers a fourth arrival without editing itself.
 const ORIGIN_GROUP := &"origin"
 
-## ## The TWO authored fates no walk can reach, and the `.tres` each needs changed
+## ## What `heaven_s_warning_unread` and `night_off_the_rotation` turned out to be
 ##
-## Both are genuine content defects and neither is the walker's. They are named
-## here rather than left as a red assertion, because a red assertion on a correct
-## walker is exactly what this suite spent three iterations being: a walk that
-## cannot read a world fact has to say WHICH ids that leaves, and which file to
-## open, or it is reporting the symptom. Each is asserted as the exact expected
-## list, so a NEW stranded id fails the suite and a FIXED one does too — the
-## constant goes out of date the moment the `.tres` does.
+## Both were on `KNOWN_UNREACHABLE_FATES`, a hand-maintained list certifying them as
+## permanently unearnable. Both are reachable in a normal run, and the list is gone
+## (DEF-0279):
 ##
-## **`heaven_s_warning_unread`** — paid only by `the_stone_that_answering`, whose
-## trigger is `{"verb": &"none_of", "of": [{"verb": &"fact", "id": &"treasure_stone_read"}]}`.
-## `treasure_stone_read` has no producer in `game/src`, so the gate is open in
-## principle and dead in practice. Fix at
-## `game/data/event/events/the_stone_that_answering.tres:11` — replace the trigger
-## with `{}`, or with a fact `WorldAmbient.ROSTER` publishes.
+##   - `night_off_the_rotation` is paid by `auction_at_the_immortal_court.tres:36`,
+##     whose trigger is a bare `{verb: has_fate, id: first_blood_duel}`, and
+##     `first_blood_duel` is paid by `tournament_of_the_spirit_peaks.tres:40` —
+##     reachable because `tournament_called` is one of the four facts
+##     `WorldAmbient` publishes, which is also what the duel pays
+##     (`combat/duel.gd:146`).
+##   - `heaven_s_warning_unread` is paid by `the_stone_that_answering.tres:24`,
+##     whose trigger is `none_of([fact treasure_stone_read])`. On a fresh ledger that
+##     fact is 0, `none_of` is true, the event opens and its own `on_enter` writes
+##     the fact — which closes the gate for every later attempt. The event is
+##     written to be opened exactly once.
 ##
-## **`night_off_the_rotation`** — paid only by `auction_at_the_immortal_court`,
-## whose trigger is
-## `{"verb": &"any_of", "of": [{"verb": &"has_fate", "id": &"first_blood_duel"},
-## {"verb": &"fact", "id": &"court_invitation_received"}]}`.
-## `court_invitation_received` has no producer in `game/src` **and is not on
-## `WorldAmbient.ROSTER`**, so the one alternate branch that would carry it is the
-## `has_fate` on `first_blood_duel` — and that fate is paid by
-## `tournament_of_the_spirit_peaks`, which is itself fact-gated. The chain is real
-## and only one break deep: once `tournament_called` is on a hero's ledger (period 3)
-## both fates pay. Fix at `game/data/event/events/auction_at_the_immortal_court.tres:36`
-## — add `&"court_invitation_received"` to `WorldAmbient.ROSTER`.
-##
-## `Array[String]` so it is handed straight to an `assert_eq` against a computed
-## list without a conversion, and so adding a fourth entry is one line.
-const KNOWN_UNREACHABLE_FATES: Array[String] = ["heaven_s_warning_unread", "night_off_the_rotation"]
+## Neither needed a `.tres` fix. Both were the WALKER's blindness: it refused every
+## `fact` verb as unreadable, so it could not see four of the eight authored events
+## open at all.
 
 
 ## ## The load-bearing one. Every authored fate and destiny is obtainable by a hero
@@ -161,15 +155,17 @@ const KNOWN_UNREACHABLE_FATES: Array[String] = ["heaven_s_warning_unread", "nigh
 ##     from any arrival satisfies this one.
 ##   - **the census**, `test_the_shipped_content_is_reachable_from_arrivals_reports_what_is_not`,
 ##     which states the exact per-arrival shape so the next reader is told which
-##     branch carries what instead of rediscovering it. It asserts nothing; it
-##     names the ids that belong to a branch a hero did not choose.
+##     branch carries what instead of rediscovering it. It asserts the union again
+##     and prints the split.
 ##
-## ## What `heaven_s_warning_unread` is, and why it is the union this needs
+## ## Why the expected value is `[]`, and why that is a real assertion
 ##
-## Its only route is `the_stone_that_answering`, triggered by
-## `{verb: none_of, of: [{verb: fact, id: treasure_stone_read}]}` — a fact no
-## producer in `game/src` writes. No walk reaches it, so it is the one id this
-## suite states as KNOWN-UNREACHABLE and names the `.tres` to change for it.
+## It used to be `KNOWN_UNREACHABLE_FATES` — a hand-maintained list naming two
+## fates this walk could not reach, and both of them reachable (DEF-0279). A
+## hand-maintained list is only ever right twice: while nothing changes, and if the
+## reader remembers to update it. Asserting the walker's own answer means a content
+## fix turns this red with a message naming what the walk now reaches, and a
+## content break turns it red naming what stopped reaching.
 func test_every_authored_fate_and_destiny_is_reachable_from_some_arrival() -> void:
 	var shipped := Walker.shipped()
 	# Both sets asserted NON-EMPTY first: a fixpoint over an empty catalog is
@@ -204,31 +200,83 @@ func test_every_authored_fate_and_destiny_is_reachable_from_some_arrival() -> vo
 		walks[origin_id] = held
 
 	var unreachable := Walker.unreachable(walks, arrivals, false)
-	# Two kinds of "no walk reached this", and they are NOT interchangeable. An id
-	# whose only rule waits on a fact the WORLD produces is openable — a period
-	# passes and the fact is on the hero's ledger — so a walk that could not read it
-	# is not allowed to call it unreachable. An id whose rule waits on a fact
-	# nothing produces, or which no rule at all opens, is a content defect, and the
-	# ones that may sit there are named in [constant KNOWN_UNREACHABLE_FATES] with
-	# the `.tres` to change. Asserting a flat allow-list over `unreachable` instead
-	# would have passed on all four being fact-gated, which is the opposite finding.
-	var fact_gated := Walker.world_gated(unreachable)
-	var stranded: Array[String] = []
-	for id in unreachable:
-		if not fact_gated.has(String(id)):
-			stranded.append(String(id))
+	# Nothing here exempts a single id. A fate the walk reaches is reachable and one
+	# it does not is stranded, and the fix for the second is in `game/data/` rather
+	# than in this file. If the walk ever declines to answer a rule again, the
+	# capability assertion below names WHICH facts it could not read — so the
+	# failure is a fact-supply question and never a list of fates somebody forgot.
 	assert_eq(
-		stranded,
-		KNOWN_UNREACHABLE_FATES,
+		unreachable,
+		[] as Array[String],
 		(
 			(
-				"every authored fate and destiny is either obtainable from some arrival or"
-				+ " opens on a fact the world produces (DEF-0181, DEF-0182). Stranded with"
-				+ " neither route, across ALL of %s: %s. That is the complete list of ids"
-				+ " whose only rule waits on a fact no producer writes — each needs the .tres"
-				+ " named on its constant to change."
+				"every authored fate and destiny is obtainable from some arrival, across ALL"
+				+ " of %s (DEF-0181, DEF-0182, DEF-0279). Unreachable, with no exemption list:"
+				+ " %s. Each is a broken grant edge, a gate waiting on itself, or a rule the"
+				+ " walker could not read — and the facts this walk does not model are: %s."
 			)
-			% [", ".join(arrivals), ", ".join(stranded)]
+			% [", ".join(arrivals), ", ".join(unreachable), ", ".join(Walker.abstain_on())]
+		)
+	)
+
+
+## ## What the walk above is standing on, stated so it cannot be widened by accident
+##
+## Two measured facts about the shipped tree, both recomputed on every run:
+##
+##   - the world facts the walk answers for. They are `WorldAmbient.due` at
+##     `WORLD_PERIODS` — the world's own publisher rather than a list restated here
+##     — so the hero the walk models has actually been told what those four say.
+##   - the facts it DECLINES to answer for: a fact some rule ASSERTS is present,
+##     which the walk can only satisfy by inventing a producer. It is the one
+##     honest refusal left, and it is EMPTY on the shipped tree — which is the whole
+##     claim: an ungated quest is not a fact problem, so treating its `QuestStepDef`
+##     rows as gates would have invented one.
+##
+## The second assertion is the exemption list this suite used to keep by hand,
+## re-expressed in the only terms that can carry one. Content that asserts a fact
+## nobody publishes turns it red and names the fact, which a list of fate ids could
+## never do (ADR 0198). The quest-step count beside it is counted from the tree, so
+## a tenth step needs no edit here and the number can only move when content does.
+func test_the_walk_answers_every_fact_the_authored_content_asserts() -> void:
+	assert_eq(
+		Walker.WORLD_PERIODS,
+		WorldAmbient.ROSTER.size(),
+		(
+			(
+				"the walk assumes %d periods of world history, which is exactly the length of"
+				+ " WorldAmbient.ROSTER. Raise the constant with the roster, not instead of it."
+			)
+			% Walker.WORLD_PERIODS
+		)
+	)
+	var ambient := Walker.ambient_facts()
+	for fact_id in WorldAmbient.ids():
+		assert_eq(
+			ambient.has(StringName(fact_id)),
+			true,
+			"the world publishes '%s' and the walk's ledger carries it" % fact_id
+		)
+	assert_eq(
+		Walker.abstain_on(),
+		[] as Array[StringName],
+		(
+			(
+				"the walker answers every fact the authored content asserts, so no fate is"
+				+ " reported unreachable for a reason this walk chose. Demanded: %s."
+			)
+			% Walker.fact_demand_report()
+		)
+	)
+	assert_eq(
+		Walker.quest_step_count(),
+		19,
+		(
+			(
+				"the authored quests carry %d quest steps, all of them player actions a pure"
+				+ " fate walk does not take (DEF-0183). Counted from the tree, not listed."
+			)
+			% Walker.quest_step_count()
 		)
 	)
 
@@ -238,20 +286,10 @@ func test_every_authored_fate_and_destiny_is_reachable_from_some_arrival() -> vo
 ## It prints the exact per-arrival shape — which fate belongs to which branch, and
 ## which is the gift of a sibling the hero did not choose — so a reader looking at
 ## a missing id is told that instead of handed a fixpoint to re-derive. Asserting
-## nothing is deliberate: the per-arrival obligation is a statement the shipped
-## design does not make (see the test above), and a census that fails on a correct
-## content tree is the same defect this suite spent three iterations fixing.
-##
-## It is also where `heaven_s_warning_unread` is named. That id is unreachable from
-## every arrival and this suite does not pretend otherwise: its only route is the
-## `the_stone_that_answering` event, whose trigger reads the `treasure_stone_read`
-## fact, and no producer for that fact exists in `game/src`. **`fact` is not
-## `DestinyApi.gate`'s to answer** — it is not one of the six verbs — so this
-## suite cannot decide the question, and the right place for it is
-## `tools gate_reach check`, which owns fact supply. The content fix, for whoever
-## takes it, is `game/data/event/events/the_stone_that_answering.tres:33`: replace
-## `{"verb": &"none_of", "of": [{"verb": &"fact", "id": &"treasure_stone_read", "need": 1}]}`
-## with a trigger the world owns — `{}`, or a `fact` from `WorldAmbient.ROSTER`.
+## nothing per-arrival is deliberate: the per-arrival obligation is a statement the
+## shipped design does not make (see the test above), and a census that fails on a
+## correct content tree is the same defect this suite spent three iterations
+## fixing. It DOES assert the union, because that claim is the one being made.
 func test_the_shipped_content_is_reachable_from_arrivals_reports_what_is_not() -> void:
 	var arrivals := Walker.arrivals()
 	assert_eq(arrivals.is_empty(), false, "the composition root still ships an arrival")
@@ -260,38 +298,15 @@ func test_the_shipped_content_is_reachable_from_arrivals_reports_what_is_not() -
 		var missing := Walker.unreachable(
 			{origin_id: Walker.reachable_from(origin_id)}, arrivals, true
 		)
-		var world_gated := Walker.world_gated(missing)
-		var world_note := ""
-		if not world_gated.is_empty():
-			world_note = (
-				(
-					"  (of which the only route waits on a fact the WORLD produces: %s —"
-					+ " grantable once that fact is on the hero's ledger)"
-				)
-				% Walker.world_gated_report(world_gated)
-			)
 		print(
 			(
-				("reachability from '%s': %d shipped, %d obtainable here, %d not — %s%s")
-				% [
-					origin_id,
-					total,
-					total - missing.size(),
-					missing.size(),
-					", ".join(missing),
-					world_note,
-				]
+				("reachability from '%s': %d shipped, %d obtainable here, %d not — %s")
+				% [origin_id, total, total - missing.size(), missing.size(), ", ".join(missing)]
 			)
 		)
+	print("facts the authored content reads: %s" % Walker.fact_demand_report())
 	assert_eq(
-		Walker.known_unreachable(),
-		KNOWN_UNREACHABLE_FATES,
-		(
-			(
-				"'%s' are the authored fates whose only route waits on a fact no producer"
-				+ " writes. If this assertion fails, the .tres was fixed and the constant"
-				+ " should go with it; if it fails the OTHER way, a new fate is stranded."
-			)
-			% ", ".join(KNOWN_UNREACHABLE_FATES)
-		)
+		Walker.stranded_ids(),
+		[] as Array[String],
+		"the union of the arrival walks reaches the whole shipped catalog (DEF-0279)"
 	)

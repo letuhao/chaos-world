@@ -84,6 +84,18 @@ const FIXPOINT_PASS_CAP := 64
 ## reading `held` can count it as one — its only job is to be visible.
 const UNREACHED_TAG := "unreached:fixpoint"
 
+## How many periods of world history this walk assumes have already passed.
+##
+## MEASURED, not chosen, and it cannot drift: `test_the_walk_reads_every_fact_the_authored_content_reads`
+## asserts this equals [constant WorldAmbient.ROSTER]'s length, so a roster edit that
+## outgrows this number turns the suite red rather than quietly narrowing the walk.
+## Four is what that length is today — one ambient fact per period, first due at
+## period 1 — and four is the whole point: reachability asks "is there a hero who can
+## hold it", not "can it be held in the first turn". A `const` cannot hold
+## `WorldAmbient.ROSTER.size()` (not a constant expression in GDScript), which is why
+## the number is written down and asserted rather than derived.
+const WORLD_PERIODS := 4
+
 
 ## One node of the authored graph: a fate or a destiny the catalog ships.
 ##
@@ -278,53 +290,46 @@ static func strings(values: Array) -> Array:
 ## for. The three are kept apart because `none_of` treats them differently, and
 ## collapsing them is what opened `the_stone_that_answering`.
 ##
-## ## What `fact` answers, and why it is not `true`
+## ## Every verb is asked of the module that OWNS it, and none of them is refused
 ##
-## `fact` and `declare` are NOT gate verbs — `DestinyGate` reads six verbs and
-## `fact` is not among them, so `evaluate()` refuses it outright. The previous
-## version answered `true`, and a COMPOSITE walked by hand over that answer is what
-## produced the ten failures this function is being rewritten for:
-## `tournament_of_the_spirit_peaks.tres` triggers on
-## `{verb: fact, id: tournament_called}`, and open meant "this event may open", so
-## the first arrival walk earned `the_chosen_instrument` through the tournament
-## while already holding it. `the_dawn_descent` and `beast_tide_of_the_mortal_plains`
-## did the same to `heaven_s_chosen_instrument` and `one_hundredth_slain`. Those are
-## **the fates of a sibling arrival** — a hero holding `the_chosen_instrument`
-## cannot ever hold them, because its `grants_fates` already paid them — so the
-## walk reported content reachable that the engine has handed the player already,
-## and then reported the whole branch unreachable from an arrival that earned it.
+## The previous version refused three of the six authored verbs as "not this walk's
+## to answer" — `fact`, `declare` and `tagged` — and that refusal is what produced
+## DEF-0279. It reported two REACHABLE fates as permanently unearnable
+## (`heaven_s_warning_unread`, `night_off_the_rotation`) and could not see four of
+## the eight authored events open at all. The requirement language is EVALUATED by
+## two modules and every verb in it already has an owner that answers it:
+## `DestinyGate` reads `has_fate`, `has_destiny`, `counter`, `tagged` and the three
+## composites, and `EventGate` contributes `fact` and `declare` while DELEGATING
+## those four verbatim to `DestinyApi.gate`. So `_answer` asks `EventGate.evaluate`,
+## which is production's own flat answer to the whole language — there is no second
+## evaluator here and no hand-kept verb set that can drift from that one.
 ##
-## So a fact is asked of the world's own answer, not assumed. `WorldAmbient.ROSTER`
-## is production's published table of the facts the WORLD reaches and reports on
-## its own (`storm_front_sighted`, `void_seam_sounded`, `tournament_called`,
-## `sect_war_called`), it is read rather than restated so the walk cannot drift from
-## it, and one of them being in the roster is what makes the rule openable: the
-## world will say it, so a player can be holding it. A fact with no producer here
-## and no route out of the fate tree (the nine quest step facts of DEF-0183, and
-## `treasure_stone_read` behind `the_stone_that_answering`) is refused, and what it
-## pays is reported unreachable — which is a finding about content, not a walker
-## that guessed.
+## ## Why `fact` is READABLE, and what it reads
 ##
-## ## The three siblings
+## A fact is a thing that happened (ADR 0113), and the world answers the question
+## through `EventGate._has_fact` → `EventFacts.count_of` → `WorldFact.count`: a real
+## read of the real ledger on the real probe. A fact with no recorded value is 0, and
+## a fact the world has not yet published is 0 too — so `the_stone_that_answering.tres:20`,
+## whose trigger is `none_of([fact treasure_stone_read])`, is OPEN on a fresh hero,
+## which is what its own `on_enter` writing that fact one stage later means it was
+## authored to be. Answering `true` and answering `unreadable` were both wrong for
+## the same reason: neither asked anything. The value that reaches the ledger is the
+## walk's only modelling decision, and production's own publisher makes it — see
+## [method seed_world_facts].
 ##
-## `counter` is asked of the module, which owns it, with the same `need` semantics
-## the engine uses; no shipped destiny gate names one, so the question is empty
-## today. `declare` is an event payload (`EventGate._declaration`) and a war that
-## has to be declared against another polity is not something this walk can
-## honestly assume open.
+## `declare` is the same argument: `EventGate._declaration` passes a declaration that
+## names its `other_id` and refuses one that does not, because ADR 0085 makes a war
+## with no readable prize the defect. The walk takes that answer rather than its own.
 ##
-## ## `_verdict` rather than a bool, and why
+## ## `_answer` rather than a bool, and why
 ##
-## The old hand-rolled composite collapsed a fact into a plain yes/no, and for
-## `none_of` that inverts into a false OPEN. `the_stone_that_answering.tres:33`
-## triggers on `{verb: none_of, of: [{verb: fact, id: treasure_stone_read}]}`, and
-## "no one has read the stone" read as satisfied-by-default — so the walk paid
-## `heaven_s_warning_unread` to every hero, and the suite could not tell the
-## difference between a paid-out fate and a wrongly-open gate. `DestinyGate`
-## already distinguishes the two: a child that is `malformed` or `unknown_verb`
-## POISONS its parent, and only a plain `unmet` child counts as a plain no. So
-## this mirrors that three-valued shape rather than a boolean — which is also what
-## `the_stone_that_answering` is now correctly reported as: refused, not open.
+## A leaf's verdict is `{ok, reason, unmet}`, and the reason is what distinguishes a
+## player being told no from a requirement nobody could READ.
+## [constant DestinyGate.POISON_REASONS] already draws that line, so `_answer` reads
+## it rather than inventing one: a poisoned leaf is UNREADABLE (`read: false`) and
+## closes its composite, because `none_of` over an unreadable child would otherwise
+## open the gate. The composite recursion is the one thing kept here rather than
+## delegated, and only because it needs `null` to stay DISTINCT from `false`.
 ##
 ## ## Why the answer is read off a Dictionary rather than returned per branch
 ##
@@ -335,8 +340,7 @@ static func strings(values: Array) -> Array:
 ## exactly the answer that verb deserves and RETURNS once. `verdict()` reads that
 ## one answer off the dictionary and no longer decides anything itself, so the
 ## number of return statements is no longer a function of how many verbs a future
-## gate adds. Callers still see the identical three-valued answer — nothing about
-## what the walker decides has changed.
+## gate adds.
 static func verdict(requirement: Dictionary, probe: Actor) -> Variant:
 	var answer: Dictionary = gate_answers(requirement, probe)
 	# `read: false` is the UNREADABLE verdict and must be handed back as `null`,
@@ -351,10 +355,17 @@ static func verdict(requirement: Dictionary, probe: Actor) -> Variant:
 ## recursion below has a single return path.
 ##
 ## The shape is `{read: bool, ok: bool}`: `read` is whether the engine could answer
-## at all, and `ok` is what it answered when it could. A requirement this walk
-## cannot read — a `fact`, an unknown verb, a malformed composite — is `read: false`,
-## which `verdict()` turns back into `null`. An `ok` of `false` on a READABLE
-## requirement is a genuine "no": the hero does not hold it.
+## at all, and `ok` is what it answered when it could. An `ok` of `false` on a
+## READABLE requirement is a genuine "no": the hero does not hold it, or the world
+## has not said it yet.
+##
+## **A leaf's answer is production's, never this file's.** `_answer` hands the whole
+## requirement to `EventGate.evaluate` — the flat evaluator over the whole authored
+## language, which owns `fact` and `declare` and DELEGATES `has_fate`,
+## `has_destiny`, `counter` and `tagged` to `DestinyApi.gate`. Reading one
+## evaluator means a `tagged` gate no fate carries refuses `unknown_tag` (ADR 0196)
+## rather than reading as an ordinary "no", so the walk can never mistake a content
+## bug for a hero who has not earned the thing yet.
 static func gate_answers(requirement: Dictionary, probe: Actor) -> Dictionary:
 	# An UNGATED rule. Empty on purpose, so a quest that pays nothing anyone must
 	# earn is openable exactly as `DestinyGate.evaluate` treats an empty map.
@@ -362,24 +373,50 @@ static func gate_answers(requirement: Dictionary, probe: Actor) -> Dictionary:
 		return {"read": true, "ok": true}
 	if not (requirement is Dictionary):
 		return {"read": false, "ok": false}
-	var verb := StringName((requirement as Dictionary).get("verb", ""))
-	if verb == &"has_fate" or verb == &"has_destiny" or verb == &"counter":
-		# The module's own answer, aliases and all. An unreadable gate arrives here
-		# as `{ok: false, reason: "malformed"}`, and is a plain no to a walk that can
-		# only act on what the hero holds.
-		return {"read": true, "ok": bool(DestinyApi.gate(probe, requirement as Dictionary)["ok"])}
-	if verb == &"fact":
-		# UNREADABLE, not open and not closed: this is a question about the WORLD,
-		# not about the hero, and the world's ledger is not this walk's to read.
-		# Every fact route — a quest step, an event stage, a `pay` — is the moment
-		# that owns it (ADR 0113), and none of them is a fate.
-		return {"read": false, "ok": false}
+	# `none_of` is the ONE composite this walk cannot delegate: `EventGate._composite`
+	# is not reachable without its leaves, and collapsing an unreadable child to a
+	# plain false INVERTS a `none_of` into an open gate. So composites are walked
+	# here, over leaves production answers.
+	var entry := requirement as Dictionary
+	var verb := StringName(entry.get("verb", ""))
 	if verb == &"all_of" or verb == &"any_of" or verb == &"none_of":
-		return _composite_answer(requirement as Dictionary, verb, probe)
-	# No verb at all, or one the module does not own: refused, as `DestinyGate`
-	# refuses it. An unreadable gate is a content bug, and treating it as open would
-	# let it silently hand over a destiny.
-	return {"read": false, "ok": false}
+		return _composite_answer(entry, verb, probe)
+	# ## The exception, and it is DERIVED rather than kept by hand
+	#
+	# A fact this walk carries no row for is a fact it declines to answer for, and
+	# [method abstain_on] names that set: every `fact` id the authored content reads,
+	# minus the ambient roster [method seed_world_facts] puts on the ledger. The list
+	# is computed from the shipped tree on every call rather than written down,
+	# because a written-down list of fates is what certified two reachable ones as
+	# dead (DEF-0279) — and because a fact, unlike a fate, can be reachable through
+	# a rule whose own `on_enter` is the producer, which no id list can express.
+	#
+	# `abstain_on()` is reached once per leaf verdict, so it is read on the way IN
+	# through the composite (a `none_of` needs to know a child is unreadable before
+	# it can refuse) and once per leaf OUT of it.
+	if verb == EventFacts.VERB_FACT and not _answers_facts(probe, entry):
+		return {"read": false, "ok": false}
+	var read := EventGate.evaluate(probe, entry)
+	if DestinyGate.POISON_REASONS.has(String(read.get("reason", ""))):
+		return {"read": false, "ok": false}
+	return {"read": true, "ok": bool(read.get("ok", false))}
+
+
+## Whether this walk can answer for the fact `entry` names.
+##
+## The ledger is the answer whenever the world has published one — the ambient
+## roster [method seed_world_facts] wrote, or a row any earlier `record` left — so a
+## recorded fact is read off the real ledger and nothing else is consulted. A fact
+## with no row is 0, and 0 is an answer ONLY for a rule that requires it to be
+## ABSENT: `none_of(fact treasure_stone_read)` is open on a hero who has never read
+## the stone, which is the gate `the_stone_that_answering` was authored around.
+static func _answers_facts(probe: Actor, entry: Dictionary) -> bool:
+	var fact_id := StringName((entry as Dictionary).get("id", ""))
+	if fact_id == &"":
+		return true
+	if WorldFact.count(probe, fact_id) > 0:
+		return true
+	return not abstain_on().has(fact_id)
 
 
 static func _composite_answer(
@@ -392,12 +429,26 @@ static func _composite_answer(
 	var all_passed := true
 	var readable := true
 	for child in children as Array:
-		# Typed, never inferred: `_verdict` answers `true` / `false` / `null` and
-		# `:=` on that would be a Variant, which this project treats as an error.
+		# Typed, never inferred: `verdict` answers `true` / `false` / `null` and `:=`
+		# on that would be a Variant, which this project treats as an error.
 		var child_verdict: Variant = verdict(child, probe)
 		# A malformed child poisons the whole composite: refuse-with-cause means a
 		# nested gate that cannot be read is never treated as satisfied.
 		if child_verdict == null:
+			# ## A fact with no ledger row is a genuine NO, not an unreadable rule
+			#
+			# `EventGate._has_fact` compares a COUNT against a `need`, and
+			# `WorldFact.count` answers 0 for a row nobody wrote — so the engine counts
+			# such a child as plain `unmet` and carries on, and so does this. That is
+			# the whole difference between `none_of` opening and refusing: treating the
+			# 0 as unreadable made `the_stone_that_answering`'s trigger poison itself,
+			# which is how a fate with a working route was reported as dead (DEF-0279).
+			# Only `malformed`, `unknown_verb` and `unknown_tag` poison a composite, and
+			# [method _fact_no_ledger_row] is the discriminator that keeps a plain 0 out
+			# of that set.
+			if _fact_no_ledger_row(child, probe):
+				all_passed = false
+				continue
 			readable = false
 			break
 		if child_verdict:
@@ -414,6 +465,20 @@ static func _composite_answer(
 	return {"read": true, "ok": ok}
 
 
+## Whether `requirement` is a `fact` leaf the hero's ledger carries NO row for. The
+## one unreadable child that still means something specific: its count is 0, so a
+## `none_of` over it is satisfied and an `any_of` over it is not — which is exactly
+## what `EventGate._composite` decides for itself when it sees a plain `unmet`.
+static func _fact_no_ledger_row(requirement, probe: Actor) -> bool:
+	if not (requirement is Dictionary):
+		return false
+	var entry := requirement as Dictionary
+	if StringName(entry.get("verb", "")) != EventFacts.VERB_FACT:
+		return false
+	var fact_id := StringName(entry.get("id", ""))
+	return fact_id != &"" and WorldFact.count(probe, fact_id) == 0
+
+
 # --- The fixpoint walk -------------------------------------------------------
 
 
@@ -424,6 +489,7 @@ static func _composite_answer(
 ## REAL flow, so an arrival the engine would refuse is not silently seeded here.
 static func reachable_from(origin_id: StringName) -> Dictionary:
 	var hero := probe()
+	seed_world_facts(hero, WORLD_PERIODS)
 	var held: Dictionary = {}
 	var outcome := CharacterCreationFlow.new().grant_origin(hero, origin_id)
 	if bool(outcome.get("ok", false)):
@@ -475,6 +541,7 @@ static func reachable_bare(
 	seed_fates: Array, seed_destinies: Array, arrival_fates: Array = []
 ) -> Dictionary:
 	var hero := probe()
+	seed_world_facts(hero, WORLD_PERIODS)
 	var held: Dictionary = {}
 	for fate_id in seed_fates:
 		DestinyApi.earn_fate(hero, StringName(fate_id), "reachability")
@@ -698,63 +765,232 @@ static func unreachable(walks: Dictionary, arrivals: Array, per_arrival: bool) -
 	return out
 
 
-## Every shipped fate and destiny id no walk reached AND no fact gate could open —
-## the ids that are stranded in CONTENT rather than behind a world fact.
+## Every shipped fate and destiny id the union of the arrival walks does not reach.
 ##
-## The trigger is each suite's own `KNOWN_UNREACHABLE_FATES` constant, because a
-## walk that reaches one means the `.tres` was fixed and this should say so rather
-## than keep asserting the gap forever.
-static func known_unreachable() -> Array[String]:
-	var missing := unreachable(all_arrival_walks(), arrivals(), false)
-	var fact_gated := world_gated(missing)
-	var out: Array[String] = []
-	for id in missing:
-		if not fact_gated.has(String(id)):
-			out.append(String(id))
+## The claim this asserts is "some arrival can earn everything", so the walker's own
+## answer is the answer: an id it reaches is reachable and an id it does not is
+## stranded, with no exemption list standing between the two. See ADR 0198.
+static func stranded_ids() -> Array[String]:
+	return unreachable(all_arrival_walks(), arrivals(), false)
+
+
+# --- World facts -------------------------------------------------------------
+
+
+## Every ambient fact this walk pretends the world has published, in roster order.
+##
+## Read from [constant WorldAmbient.ROSTER] and truncated to [constant
+## WORLD_PERIODS] entries — never restated, so a roster edit shows up here without a
+## second list to keep in step. Four ids on the shipped tree:
+## `storm_front_sighted`, `void_seam_sounded`, `tournament_called`,
+## `sect_war_called`.
+static func ambient_facts() -> Array[StringName]:
+	var out: Array[StringName] = []
+	for index in range(mini(WORLD_PERIODS, WorldAmbient.ROSTER.size())):
+		out.append(StringName((WorldAmbient.ROSTER[index] as Dictionary).get("fact", &"")))
 	return out
 
 
-# --- World-fact census -------------------------------------------------------
-
-
-## Whether the WORLD produces `fact_id` on its own, whatever this hero has earned.
+## Every fact a reachable grant rule NAMES, as `fact_id -> the sources naming it`,
+## over every quest requirement, every event trigger and every quest STEP the graph
+## reads.
 ##
-## Read from `WorldAmbient.ROSTER` — the one published list of facts that need no
-## hero to have earned them, because a period passes and the world reports what it
-## saw — and restated nowhere, so this walk cannot drift from it.
-##
-## The census uses this to SPLIT the ids it could not reach into two kinds: one
-## whose only route waits on a fact the world does report, and one waiting on a
-## fact nobody writes. It never uses it to OPEN a grant rule — a walk cannot hold a
-## fact it never recorded — but it can say which of the two it is looking at, and
-## the first kind is content a `.tres` edit settles.
-static func _world_says(fact_id: StringName) -> bool:
-	if fact_id == &"":
-		return false
-	return WorldAmbient.ids().has(String(fact_id))
-
-
-## Which of `missing` has its only route behind a fact the WORLD produces, as
-## `fate -> the fact it waits on`.
-##
-## `heaven_s_warning_unread` is the counter-example the census exists to separate:
-## its only rule is `the_stone_that_answering`, whose trigger is
-## `none_of(fact treasure_stone_read)`, and no producer anywhere writes that fact.
-## A walker that granted it would be inventing a ledger it does not have; one that
-## reported it flat would be reporting a fact-supply defect as a fate defect.
-static func world_gated(missing: Array) -> Dictionary:
+## This is the MEASUREMENT that replaced the hand-maintained exemption list. A list
+## of fate ids cannot say which facts the content tree reads, because that answer is
+## a property of the tree at the moment of the walk. See [method abstain_on] for what
+## the walk does with the difference.
+static func fact_demand() -> Dictionary:
 	var out: Dictionary = {}
-	var nodes := graph()
-	for id in missing as Array:
-		var node = nodes.get(key(StringName(String(id)), is_destiny_id(String(id))), null)
-		if node == null:
+	var catalog := QuestCatalog.instance()
+	for quest_id in catalog.quest_ids():
+		var def := catalog.definition(quest_id)
+		if def == null:
 			continue
-		for source in (node as ReachNode).sources.keys():
-			var facts := _fact_gates((node as ReachNode).sources[source])
-			for fact_id in facts:
-				if _world_says(StringName(fact_id)):
-					out[String(id)] = String(fact_id)
+		for fact_id in _fact_gates(def.requirement):
+			_name_fact(out, fact_id, "quest:%s" % String(quest_id))
+		# A quest step names a fact in the same ledger and nothing in `game/src` writes
+		# one — the player does, which is why DEF-0183's nine steps are named here and
+		# the walker is told they are beyond a pure fate walk. `the_station_you_held`
+		# needs `sect_post_held` 1, `oaths_discharged` 3 and `household_heir_registered`
+		# 1 before its ungated `pay` fires.
+		for step in def.steps as Array:
+			var step_id := String((step as QuestStepDef).step_id)
+			var fact_id := String((step as QuestStepDef).fact)
+			if fact_id != "":
+				_name_fact(out, fact_id, "quest:%s/step:%s" % [quest_id, step_id])
+	var events := EventCatalog.instance()
+	for event_id in events.event_ids():
+		var def := events.event_definition(event_id)
+		if def != null:
+			for fact_id in _fact_gates(def.trigger):
+				_name_fact(out, fact_id, "event:%s" % String(event_id))
 	return out
+
+
+## Record `fact_id` as demanded, under `source`. One writer, because a second is how
+## the demand map and its report could disagree about who waits on what.
+static func _name_fact(out: Dictionary, fact_id: String, source: String) -> void:
+	var named: Array = out.get(fact_id, [])
+	if not named.has(source):
+		named.append(source)
+	out[fact_id] = named
+
+
+## Put this walk's world facts on `probe`, through the ONLY verb that writes the
+## ledger ([method WorldFact.record]) and the only publisher that produces them
+## ([method WorldAmbient.due]).
+##
+## Called once per walk, before the fixpoint, so a `fact` gate reads the same ledger
+## an event's `on_enter` would read in a real run. No producer is invented: the ids
+## come from `WorldAmbient`'s own roster and the amounts from `record`'s own default
+## of one occurrence. A hero whose quest steps have written a fact first — the walk
+## does not run quest stages — keeps its row, because `due` skips anything
+## `WorldFact.count` already answers above zero.
+static func seed_world_facts(probe: Actor, periods: int) -> void:
+	for fact_id in WorldAmbient.due(probe, periods):
+		WorldFact.record(probe, fact_id)
+
+
+## ## The exception set, and why it is measured rather than guessed
+##
+## A fact is a COUNT and `WorldFact.count` answers 0 for a row nobody wrote, so a
+## `none_of` over a fact the walk cannot reach is still OPEN — the honest answer,
+## and what makes `the_stone_that_answering` openable: that event writes
+## `treasure_stone_read` from its own `on_enter` one stage after opening. What the
+## walk genuinely cannot answer is a rule that ASSERTS a fact is PRESENT, because
+## there is no reading of "this happened" that becomes a yes without inventing a
+## producer. So the exception set is the facts such a rule names, minus the ambient
+## roster [method seed_world_facts] puts on the ledger — computed from the shipped
+## tree on every call, never written down.
+##
+## **It cannot be a list of fate ids.** The question such a list cannot answer is
+## "what does this fact belong to", and it has no single answer: `treasure_stone_read`
+## is written by `the_stone_that_answering` — the same event whose trigger names it —
+## so a `none_of` over it is open on a fresh ledger and shut for ever after, while
+## `{fact: storm_front_sighted}` is unmet until a period passes. Both read as 0 to a
+## hero who has just arrived, and they are different claims about the game.
+static func assertions() -> Dictionary:
+	var ambient := ambient_facts()
+	var unpublished: Array[StringName] = []
+	var demand := fact_demand()
+	for fact_id in sorted_tags(demand):
+		if _only_absent_names(demand[fact_id] as Array, StringName(fact_id)):
+			continue
+		if not ambient.has(StringName(fact_id)):
+			unpublished.append(StringName(fact_id))
+	return {"unpublished": unpublished}
+
+
+## Whether every source naming `fact_id` reads it only to ask that it is ABSENT, or
+## whether nothing in the content names it at all.
+##
+## The asymmetry is the engine's, not a walker's convenience. `EventGate._composite`
+## counts failed children and `none_of` inverts that count, so a failed `fact` child
+## makes a `none_of` over it TRUE; a positive `{fact: X}` child inside `all_of` or
+## `any_of` is a different question, and one whose answer is an assertion the walk
+## would have to invent. A fact nothing reads is not an assertion at all, and lands
+## on the same side as the absent ones.
+static func _only_absent_names(sources: Array, fact_id: StringName) -> bool:
+	for source in sources:
+		var entry := String(source)
+		if entry.contains("/step:"):
+			# A quest STEP is a player action, so the walk does not act. A REQUIRED
+			# step is an assertion it cannot make; an `optional` one is not a gate at
+			# all (`QuestStepDef.is_satisfied` ignores it), so neither is this file's
+			# problem. Read per step rather than per quest for exactly that reason.
+			if _step_is_required(entry) and fact_id != &"":
+				return false
+			continue
+		if _reads_fact_presence(_authored_trigger(entry), fact_id):
+			return false
+	return true
+
+
+## Whether the authored quest step named in `"quest:<id>/step:<step_id>"` is a
+## REQUIRED one. False when the step cannot be read, which keeps a missing definition
+## out of the exception set rather than inventing a gate over it.
+static func _step_is_required(source: String) -> bool:
+	var quest_id := StringName(source.get_slice(":", 0).get_slice(":", 1).get_file())
+	var step_id := source.get_file()
+	var def := QuestCatalog.instance().definition(quest_id)
+	if def == null:
+		return false
+	for step in def.steps as Array:
+		if String((step as QuestStepDef).step_id) == step_id:
+			return not (step as QuestStepDef).optional
+	return false
+
+
+## The authored requirement behind `"quest:<id>"` or `"event:<id>"`, or an empty
+## dictionary when the source names a definition the catalogs do not hold. Never
+## throws: an unresolvable source is content this walk does not model, and an empty
+## answer keeps it on the absent side rather than opening a gate.
+static func _authored_trigger(source: String) -> Dictionary:
+	var kind := source.get_slice(":", 0)
+	var id := StringName(source.get_slice(":", 0).get_slice(":", 1).get_file())
+	if kind == "quest":
+		var def := QuestCatalog.instance().definition(id)
+		return {} if def == null else (def.requirement as Dictionary)
+	if kind == "event":
+		var event_def := EventCatalog.instance().event_definition(id)
+		return {} if event_def == null else (event_def.trigger as Dictionary)
+	return {}
+
+
+## Whether `requirement` reads `fact_id` as something that must be SATISFIED, as
+## opposed to inside the `of` list of a `none_of` asking for its absence. Bounded by
+## the authored nesting of one requirement, which is a few levels deep and is
+## snapshotted from the tree rather than grown by the walk.
+static func _reads_fact_presence(requirement: Dictionary, fact_id: StringName) -> bool:
+	if requirement.is_empty():
+		return false
+	var verb := StringName(requirement.get("verb", ""))
+	if verb == EventFacts.VERB_FACT:
+		return StringName(requirement.get("id", "")) == fact_id
+	var children = requirement.get("of", [])
+	if verb == &"none_of" or not (children is Array):
+		return false
+	for child in children as Array:
+		if child is Dictionary and _reads_fact_presence(child as Dictionary, fact_id):
+			return true
+	return false
+
+
+## The facts this walk declines to answer for, from [method assertions].
+static func abstain_on() -> Array[StringName]:
+	return assertions()["unpublished"] as Array[StringName]
+
+
+## How many quest steps the authored quests carry. Bounded by the shipped content:
+## one per `QuestStepDef` in `game/data/quest/quests`, and it is counted rather than
+## written down so a new step cannot desynchronise the number from the tree.
+static func quest_step_count() -> int:
+	var total := 0
+	var catalog := QuestCatalog.instance()
+	for quest_id in catalog.quest_ids():
+		var def := catalog.definition(quest_id)
+		if def != null:
+			total += (def.steps as Array).size()
+	return total
+
+
+## Every fact id the authored content names, sorted by its STRING value so a report
+## reads the same on every run. Bounded by the shipped content: one entry per `fact`
+## leaf in a quest requirement or event trigger, and one per quest step.
+static func _fact_demand_ids() -> Array[StringName]:
+	var out: Array[StringName] = []
+	for fact_id in sorted_tags(fact_demand()):
+		out.append(StringName(fact_id))
+	return out
+
+
+## `fact_id -> the sources naming it`, as one readable line for a census message.
+static func fact_demand_report() -> String:
+	var demand := fact_demand()
+	var parts: Array[String] = []
+	for fact_id in sorted_tags(demand):
+		parts.append("%s <- %s" % [fact_id, ", ".join(demand[fact_id] as Array)])
+	return "; ".join(parts)
 
 
 ## Every `fact` id named anywhere in a requirement, at any nesting.
@@ -779,15 +1015,6 @@ static func _collect_fact_gates(node, out: Array[String]) -> void:
 	if children is Array:
 		for child in children as Array:
 			_collect_fact_gates(child, out)
-
-
-## `fate -> fact` pairs as one line, so a census message can say which route it
-## is talking about instead of naming ids twice.
-static func world_gated_report(pairs: Dictionary) -> String:
-	var parts: Array[String] = []
-	for id in sorted_tags(pairs):
-		parts.append("%s behind '%s'" % [id, String(pairs[id])])
-	return "; ".join(parts)
 
 
 # --- Gate-shape helpers ------------------------------------------------------
