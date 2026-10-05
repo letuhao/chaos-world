@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="InstitutionDef" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://src/core/institution_def.gd" id="1_def"]
+[ext_resource type="Script" path="res://src/core/institution_position_def.gd" id="2_position"]
+
+[sub_resource type="Resource" id="position_clerk"]
+script = ExtResource("2_position")
+id = &"clerk"
+display_name = "Clerk"
+description = "Every member of the Exchange who holds no other office. It is uncapped by design: a guild that limited its ordinary members would be charging to belong, and the whole of the Exchange's recognition is that anybody who can carry a seal may."
+capacity = 0
+duties = Array[StringName]([&"carry_the_seal", &"attend_the_roll"])
+authorities = Array[StringName]([&"use_the_commons"])
+duty_per_period = 1
+patronage_per_period = 0
+
+[sub_resource type="Resource" id="position_factor"]
+script = ExtResource("2_position")
+id = &"factor"
+display_name = "Factor"
+description = "Five at a time, and the cap is the point. A factor extends credit, so the office is a room that can FILL rather than a seat somebody must vacate: when the five are taken the Exchange is simply shut until a season passes. It pays twice what it asks, because an office that only takes is a debt collector."
+capacity = 5
+duties = Array[StringName]([&"price_a_lot", &"settle_a_credit"])
+authorities = Array[StringName]([&"extend_credit", &"call_a_lot"])
+duty_per_period = 2
+patronage_per_period = 2
+
+[sub_resource type="Resource" id="position_first_ledger"]
+script = ExtResource("2_position")
+id = &"first_ledger"
+display_name = "First Ledger"
+description = "The single seat of the Exchange, and deliberately a SEAT rather than a rank. Whoever holds it can be put out by any three Factors acting together, which is the one exit from a hierarchy an institution needs; the seat exists so that removal is a political event a player can watch rather than a number that moves."
+capacity = 1
+duties = Array[StringName]([&"weigh_the_ledger", &"call_the_settlement"])
+authorities = Array[StringName]([&"name_a_factor", &"freeze_a_credit", &"expel"])
+duty_per_period = 3
+patronage_per_period = 3
+
+[resource]
+script = ExtResource("1_def")
+kind = &"trading_guild"
+capabilities = Array[StringName]([&"has_offices"])
+id = &"lantern_exchange"
+display_name = "The Lantern Exchange"
+description = "A counting house on the mortal plains: it weighs lots, calls settlements and extends credit. It claims no ground and teaches nothing, so the whole of what it confers is recognition and access to the commons - which is why it is also the most expensive organization in this build to found. A building, a seal and a ledger that has to survive its founder."
+positions = Array[InstitutionPositionDef]([SubResource("position_clerk"), SubResource("position_factor"), SubResource("position_first_ledger")])
+top_position_id = &"first_ledger"
+standing_cap = 150
+founder_standing = 40
+founding_cost = 2400
+member_duty_per_period = 1
+tags = Array[StringName]([&"trade", &"credit", &"mortal_plains"])

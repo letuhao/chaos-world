@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="InstitutionDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/core/institution_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+kind = &"farmers_circle"
+capabilities = Array[StringName]([&"has_territory"])
+id = &"torrent_field_circle"
+display_name = "The Torrent Field Circle"
+description = "A farmers' organization, and the one kind here that authors NO offices at all. The ring-irrigation duty rotates by season and belongs to nobody once the season turns, so there is no seat to contest and a founder holds thick standing in no position whatsoever - which is a legitimate state and not a gap (ADR 0064). Cheapest thing in this directory to found: land, seed and a ditch. Thinnest recognition too, because a ditch does not make anybody's name."
+positions = Array[InstitutionPositionDef]([])
+top_position_id = &""
+standing_cap = 60
+founder_standing = 25
+founding_cost = 700
+member_duty_per_period = 1
+territory_ids = Array[StringName]([&"torrent_field_high_shelf", &"torrent_field_terrace", &"torrent_field_lower_dyke"])
+tags = Array[StringName]([&"farm", &"irrigation", &"torrent_field"])
