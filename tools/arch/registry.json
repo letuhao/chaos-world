@@ -75,6 +75,16 @@
         "core"
       ]
     },
+    "doctrine": {
+      "deps": [
+        "contracts",
+        "core",
+        "destiny",
+        "economy",
+        "items",
+        "quest"
+      ]
+    },
     "domain": {
       "deps": [
         "contracts",

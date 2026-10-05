@@ -167,6 +167,19 @@ UI_MODULES: dict[str, list[str]] = {
     # from `QuestProgram` (ADR 0143's bridge), and that file is the only thing in
     # `src/` that calls `QuestApi.accept`.
     "quest": [],
+    # A doctrine board (the `doctrine` module). A board screen is a pure read of the
+    # facade on the same shape as the quest journal: `available`, `boards`, `price` and
+    # `summary` all return primitive dicts, and a board row carries its own label, cost
+    # and effect rather than making the panel price anything. Granted with no module
+    # reach for the reason `quest` and `custody` carry none — a screen that renders a
+    # doctrine reaches nothing else, because the stat a row grants is applied through
+    # `Actor.add_status` (core) rather than by the panel naming `items`.
+    #
+    # The COMMIT is not here, and the reason is the one `quest` records: `ui/` may not
+    # name `app/`, so a doctrine screen takes `earn` and `redeem` as injected `Callable`s
+    # from the composition root, exactly as `QuestScreen.bind_quests` takes the quest
+    # commit from `QuestProgram` (ADR 0143's bridge).
+    "doctrine": [],
     # The soul and hearth surface (ADR 0127 / 0129 / 0146). Two grants, and the
     # split between them is the design rather than an accident:
     #   - `difficulty` reads no sibling module and stores nothing a screen must
