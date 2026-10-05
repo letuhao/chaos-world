@@ -150,8 +150,30 @@ func test_a_committed_body_is_a_node_in_a_tree() -> void:
 	if adapter == null:
 		return
 	assert_ne(adapter.get_parent(), null, "the body is parented")
-	assert_eq(adapter.is_inside_tree(), true, "and that parent is in the live tree")
-	assert_ne(adapter.get_parent() as WorldEntry, null, "parented under a WorldEntry")
+	# ## `is_inside_tree()` is UNREACHABLE under this runner, so it is not asserted here
+	#
+	# **Measured, not assumed:** `Engine.get_main_loop().root.is_inside_tree()` is `false`
+	# for the process's own root window while `run_tests.gd` drives the suites from
+	# `SceneTree._initialize()` — and `root.get_tree()` answers `Parameter "data.tree" is
+	# null`, because the Window's cached tree pointer is not assigned until the engine
+	# finishes initialising. `is_inside_tree()` walks up to that pointer, so **no node
+	# parented under `root` can report true here**, including the harness's own mounted app.
+	# Asserting it would assert something about the ENGINE, not about the arrival, and the
+	# only way to make it pass would be to move the body somewhere `root` is not — i.e. to
+	# delete the claim the audit made.
+	#
+	# What the audit actually found is a body with NO PLAYFIELD behind it, and that is
+	# asserted directly below: a `WorldEntry` parent, reached through the tree from the
+	# harness's own root, with its authored markers bound. A body parented under a
+	# `WorldEntry` that is itself a child of the live `root` window is the production claim.
+	var entry := adapter.get_parent() as WorldEntry
+	assert_ne(entry, null, "parented under a WorldEntry")
+	if entry == null:
+		return
+	assert_eq(
+		entry.get_parent(), _harness.root, "the playfield itself is parented under the live root"
+	)
+	assert_ne(entry.spawn_position(), Vector2.ZERO, "and its authored spawn marker is bound")
 
 
 func test_a_committed_body_carries_the_playfields_interactables() -> void:

@@ -96,6 +96,13 @@ const MAX_INTERACTABLES := 64
 ## object is a leak, and a press per frame would make a run grow by the frame rate.
 const MAX_INTERACTIONS_LOGGED := 8
 
+## How deep the playfield walk goes looking for interactable nodes when the entry's own
+## accessor answers with nothing. The authored `ResourceNodes` group is one level of
+## markers below the entry, so this is slack for a scene that nests further — and a
+## ceiling, because an unbounded walk is an open-ended loop the moment a scene is
+## authored with a cycle. `tools/arch`'s recursive-walk rule requires a cap of some kind.
+const RESOURCE_SCAN_DEPTH := 8
+
 static var _handler: Callable = Callable()
 ## The stage `app/` installed, and the most recently mounted body. Both exist so
 ## a signal-driven consumer — `WorldMapScreen`'s `location_selected` — can reach
@@ -271,6 +278,16 @@ func adopt_body(body: PlayerAdapter) -> Dictionary:
 ## `queue_free()` never runs under the headless runner — the deferred free is processed at
 ## the end of a frame the runner does not reach — so a deferred entry stays parented to
 ## `root` for the rest of the process and leaks a subtree per arrival (INC-0002).
+##
+## ## A standing body is also handed to the live stage
+##
+## `stand_in_the_tree` is static and only ever wrote the STATIC `_mounted_player`, so a body
+## it parented was in the tree and still invisible to every verb that reads the INSTANCE
+## field `_player` — `_world_entry`, `_register_nodes`, `interactables`, `interact`. The
+## body therefore stood in the world with no playfield behind it. The live stage is told
+## here, at the one moment the body is known to be parented, which is also why this file
+## keeps `mount` as the only path that mounts a body from scratch: a bare body still has to
+## go through `mount`, and `adopt_body` refuses one that is not already standing.
 static func stand_in_the_tree(
 	body: PlayerAdapter, scene_path: String = ARRIVAL_SCENE
 ) -> Dictionary:
@@ -280,9 +297,19 @@ static func stand_in_the_tree(
 	if parent == null:
 		return {"ok": false, "reason": "no_tree"}
 	# Idempotent, the `place_player` way: a body already standing is returned, not doubled.
+	#
+	# The reuse check names the ENTRY the standing body actually sits on, rather than the
+	# entry parent: a body that is still standing but whose entry node was released would
+	# otherwise be handed back with a parent that is not a playfield at all.
 	var standing := parent.get_node_or_null(NodePath(STAGE_BODY_NODE)) as PlayerAdapter
 	if standing != null:
-		return {"ok": true, "reason": "", "entry": parent, "player": standing, "reused": true}
+		return {
+			"ok": true,
+			"reason": "",
+			"entry": parent.get_node_or_null(NodePath(STAGE_ENTRY_NODE)),
+			"player": standing,
+			"reused": true,
+		}
 	var packed := load(scene_path) as PackedScene
 	if packed == null:
 		return {"ok": false, "reason": "no_scene"}
@@ -675,15 +702,74 @@ func _world_entry() -> WorldEntry:
 ## near one can actually reach it through `interact()`. `WorldEntry` publishes
 ## them as `Array[Area2D]`; the adapter's registry is `Array[Node2D]`, so the
 ## rows are the def's and this is the only node source.
+##
+## ## `resource_nodes()` is read THROUGH A FALLBACK, and it has to be
+##
+## **`WorldEntry.resource_nodes()` answers an EMPTY list for a scene that plainly has
+## `ResourceNodes` in it**, and `_register_nodes` — the only caller in this repo — therefore
+## handed the adapter nothing, so `_interactables` stayed empty and `interact()` had nothing
+## to walk. The cause is in the callee: `WorldEntry._collect_nodes` builds an UNTYPED `Array`
+## and `_bind_nodes` assigns it into `Array[Marker2D]` / `Array[Area2D]` fields, which the
+## engine refuses (`Trying to assign an array of type "Array" to a variable of type
+## "Array[Marker2D]"`). `_bind_nodes` ABORTS at the first assignment, so every list after it
+## is left unbound — `_resource_nodes` among them.
+##
+## That is a real defect in `world_entry.gd`, and it is NOT repaired here, because that file
+## is outside what this change is allowed to touch. What is done here is the part that
+## belongs to the stage anyway: **the stage does not let a callee's own read failure turn into
+## a silently empty playfield.** The authored nodes are read directly off the entry's subtree,
+## which is the same set `resource_nodes()` intends to publish, and the typed accessor is
+## consulted first so a fixed `WorldEntry` keeps authority over its own naming.
+##
+## The guard is deliberately `is_empty()` and not "the accessor failed": an entry with
+## genuinely no resource nodes has an empty list and an empty walk, and both agree.
 func _register_nodes() -> void:
 	var entry := _world_entry()
 	if _player == null or entry == null:
 		return
-	for node in entry.resource_nodes():
+	for node in _resource_nodes_of(entry):
 		if node == null:
+			continue
+		if _nodes.has(node):
 			continue
 		_nodes.append(node)
 		_player.add_interactable(node)
+
+
+## The playfield's interactable nodes: the entry's own typed accessor when it answers with
+## anything, and the authored `ResourceNodes` subtree when it answers empty.
+##
+## Written as its own function rather than inlined into `_register_nodes` so the fallback is
+## one named, testable step instead of a branch buried in a loop.
+func _resource_nodes_of(entry: WorldEntry) -> Array:
+	var published: Array[Area2D] = []
+	# `resource_nodes()` re-binds lazily and can answer with a fresh array, so it is read
+	# into a local rather than trusted to carry the entry's typed field.
+	published = entry.resource_nodes()
+	if not published.is_empty():
+		return published
+	var authored := entry.get_node_or_null(&"ResourceNodes")
+	if authored == null:
+		return published
+	var out: Array = []
+	# Depth-capped for the same reason `tools/arch`'s recursive-walk rule requires it of any
+	# walk: an unbounded traversal is an open-ended loop the moment the scene is authored
+	# with a cycle, and the while-scanning rules cannot see a helper either.
+	out.append_array(_interactables_under(authored, 0))
+	return out
+
+
+## Every `Area2D` at or under `node`, breadth-first and bounded by [constant RESOURCE_SCAN_DEPTH].
+func _interactables_under(node: Node, depth: int) -> Array:
+	var out: Array = []
+	if node == null or depth > RESOURCE_SCAN_DEPTH:
+		return out
+	if node is Area2D:
+		out.append(node)
+		return out
+	for child in node.get_children():
+		out.append_array(_interactables_under(child, depth + 1))
+	return out
 
 
 ## Connect `interacted` exactly once. Connecting per mount would fire the
