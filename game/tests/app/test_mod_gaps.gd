@@ -249,6 +249,78 @@ func test_events_subscription_invalid_callable_skipped() -> void:
 	assert_eq(true, true, "invalid callable did not break the boot")
 
 
+# --- Gap 4 (audit): ConflictEvents resolves to the shared bus -------------------
+
+
+func test_conflict_events_resolves_to_the_shared_bus() -> void:
+	# The eighth bus in contracts/ (conflict_events.gd) was missing from
+	# _resolve_events_bus, so a mod subscription to it resolved to null and was
+	# skipped. It must resolve to the ConflictApi.events() singleton — the exact
+	# instance ConflictApi emits through — or the subscription is dead.
+	var bus: RefCounted = _app.call("_resolve_events_bus", "ConflictEvents")
+	assert_ne(bus, null, "ConflictEvents resolves to a bus")
+	assert_eq(bus, ConflictApi.events(), "the resolved bus is the ConflictApi singleton")
+
+
+# --- Gap 5 (audit): unwired families are recorded, not silent ----------------
+
+
+func test_unwired_family_is_recorded() -> void:
+	# recipes has no overlay-capable catalog, so _wire_content_roots skips it.
+	# The skip must be observable: recorded in _unwired_families and announced
+	# with a push_warning, never silent.
+	var registrations := ModBoot.active_registrations.duplicate(true)
+	registrations["content_roots"] = {
+		&"recipes":
+		[{"dir": "res://tests/fixtures/mod_items", "owner": "test_mod", "declared_overrides": []}],
+	}
+	ModBoot.active_registrations = registrations
+	_app.call("_attach_body_modules", _fresh_actor())
+	assert_eq(
+		_app._unwired_families.has(&"recipes"),
+		true,
+		"an unwired family is recorded so the skip is not silent"
+	)
+
+
+func test_wired_family_is_not_recorded_as_unwired() -> void:
+	# items IS wired (Crafting.set_overlay_roots), so it must not appear in
+	# _unwired_families.
+	var registrations := ModBoot.active_registrations.duplicate(true)
+	registrations["content_roots"] = {
+		&"items":
+		[{"dir": "res://tests/fixtures/mod_items", "owner": "test_mod", "declared_overrides": []}],
+	}
+	ModBoot.active_registrations = registrations
+	_app.call("_attach_body_modules", _fresh_actor())
+	assert_eq(
+		_app._unwired_families.has(&"items"), false, "a wired family is not recorded as unwired"
+	)
+
+
+func test_unwired_families_cleared_between_boots() -> void:
+	# _unwired_families is cleared at the top of every _wire_content_roots call,
+	# so a second boot with only wired families empties it.
+	var registrations := ModBoot.active_registrations.duplicate(true)
+	registrations["content_roots"] = {
+		&"recipes":
+		[{"dir": "res://tests/fixtures/mod_items", "owner": "test_mod", "declared_overrides": []}],
+	}
+	ModBoot.active_registrations = registrations
+	_app.call("_attach_body_modules", _fresh_actor())
+	assert_eq(_app._unwired_families.size(), 1, "the unwired family is recorded on the first boot")
+	registrations = ModBoot.active_registrations.duplicate(true)
+	registrations["content_roots"] = {
+		&"items":
+		[{"dir": "res://tests/fixtures/mod_items", "owner": "test_mod", "declared_overrides": []}],
+	}
+	ModBoot.active_registrations = registrations
+	_app.call("_attach_body_modules", _fresh_actor())
+	assert_eq(
+		_app._unwired_families.size(), 0, "a second boot with only wired families empties the list"
+	)
+
+
 # --- Plumbing ----------------------------------------------------------------
 
 

@@ -182,6 +182,12 @@ var _restore_body: PlayerAdapter = null
 ## connects the callable to the signal, guarded by `is_connected`.
 var _mod_subscriptions: Array = []
 
+## Content families with no overlay-capable catalog, recorded on each boot so
+## the skip in `_wire_content_roots` is observable rather than silent (audit
+## Gap 5). Cleared at the top of every `_wire_content_roots` call, so the array
+## always reflects the most recent boot.
+var _unwired_families: Array[StringName] = []
+
 # --- mount_and_attach ----------------------------------------------------
 ## Mount every module a hero carries, over an actor that already exists.
 ##
@@ -347,8 +353,10 @@ func _attach_body_modules(actor: Actor) -> void:
 ## scans its base root first, then the overlay roots in order, so mod content
 ## is visible. The `id_field` on each stack row is carried through to the
 ## catalog's scan. Families without overlay support are skipped — never a boot
-## failure.
+## failure — but each is recorded in `_unwired_families` and announced with a
+## `push_warning`, so the skip is never silent (audit Gap 5).
 func _wire_content_roots(content_roots: Dictionary) -> void:
+	_unwired_families.clear()
 	for family in content_roots:
 		var stack: Array = content_roots[family]
 		match String(family):
@@ -369,8 +377,16 @@ func _wire_content_roots(content_roots: Dictionary) -> void:
 			&"elements":
 				ElementCatalog.set_overlay_roots(stack)
 			_:
-				# Family not yet wired — skip, don't break boot.
-				pass
+				# Family has no overlay-capable catalog — warn and record, never
+				# skip silently (audit Gap 5).
+				var family_name := StringName(family)
+				_unwired_families.append(family_name)
+				push_warning(
+					(
+						"ItemWorkbenchBody: content family '%s' has no overlay catalog — skipped"
+						% String(family_name)
+					)
+				)
 
 
 ## Attach mod modules after all base phases (ADR 0184). Each module name is
@@ -413,12 +429,14 @@ func _wire_subscriptions(subscriptions: Array) -> void:
 
 
 ## Resolve an events bus by class name. Buses with a `shared()` accessor
-## (NpcEvents, AuctionEvents) return the process-wide instance; others get a
+## (NpcEvents, AuctionEvents) and ConflictEvents (via `ConflictApi.events()`)
+## return the process-wide instance a subscriber must reach; others get a
 ## fresh instance. Returns null for an unknown bus name.
 func _resolve_events_bus(bus_name: String) -> RefCounted:
 	var factories := {
 		&"NpcEvents": func(): return NpcEvents.shared(),
 		&"AuctionEvents": func(): return AuctionEvents.shared(),
+		&"ConflictEvents": func(): return ConflictApi.events(),
 		&"WorldEvents": func(): return WorldEvents.new(),
 		&"DestinyEvents": func(): return DestinyEvents.new(),
 		&"NationEvents": func(): return NationEvents.new(),
