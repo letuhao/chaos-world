@@ -75,8 +75,8 @@ func _clear_disk() -> void:
 ##
 ## Before the fix the second span reported `maxi(0, SPAN - SPAN) = 0`: the schedule was
 ## handed "nothing moved" for a world that had just moved a full span, so it never reached
-## its boundary and no save landed. Restore the old `adopt_actor` line
-## (`_world = WorldPulse.new(...)` with no reset) and this goes red.
+## its boundary and no save landed. Restore the bare `_world = WorldPulse.new(...)` line in
+## [method ItemWorkbenchPlay.adopt_world], with no reset beside it, and this goes red.
 func test_a_body_swap_does_not_swallow_the_periods_the_world_just_moved() -> void:
 	var root := _play()
 	_attach_world(root, _actor(&"first_body"))
@@ -90,7 +90,7 @@ func test_a_body_swap_does_not_swallow_the_periods_the_world_just_moved() -> voi
 	)
 
 	# The rebirth: a NEW body and a NEW fold, exactly as `adopt_actor` builds them.
-	root.call("adopt_actor", _actor(&"reborn_body"))
+	_swap_body(root, &"reborn_body")
 
 	root.call("advance_world", SPAN)
 	assert_eq(
@@ -108,28 +108,39 @@ func test_a_body_swap_does_not_swallow_the_periods_the_world_just_moved() -> voi
 
 
 ## **The whole `AUTOSAVE_PERIODS` window, which is the size of the drift.** The first case
-## advances past the boundary so a save fires either way; this one advances by LESS than a
-## full schedule on each side of the swap, so a swallowed window leaves the clock short and
-## the boundary unreached.
+## advances past the boundary so a save fires either way; this one pays the schedule in
+## three advances of a HALF WINDOW each, with the swap between the first and the second, so
+## a swallowed post-swap window leaves the clock short of the boundary and nothing lands.
 func test_a_swap_does_not_cost_up_to_a_whole_autosave_window() -> void:
-	var half := maxi(1, SCHEDULE / 2)
+	var half := _half_span()
+	var saves_before := SaveApi.clock.saves()
+
 	var root := _play()
 	_attach_world(root, _actor(&"first_body"))
 
 	root.call("advance_world", half)
-	root.call("adopt_actor", _actor(&"reborn_body"))
-	var saved := root.call("advance_world", half) as Dictionary
+	_swap_body(root, &"reborn_body")
+	var accepted := _advance_by_half_window(root, half, 2)
 
-	assert_eq(bool(saved.get("ok", true)), true, "the post-swap advance is accepted")
 	assert_eq(
-		SaveApi.exists(),
+		accepted,
 		true,
 		(
+			"both post-swap advances are accepted: a span the fold REFUSES moves nothing "
+			+ "at all, so a refusal would make this case assert about the fold's budget "
+			+ "rather than about the schedule"
+		)
+	)
+	assert_eq(
+		SaveApi.clock.saves() - saves_before,
+		1,
+		(
 			(
-				"%d periods before the swap plus %d after is a whole %d-period schedule, so a "
-				+ "save landed: swallowing the post-swap half would leave the clock short of it"
+				"three %d-period windows are %d whole schedules, so a save landed: swallowing "
+				+ "the %d-period window after the swap would leave the clock %d periods short "
+				+ "of the boundary"
 			)
-			% [half, half, SCHEDULE]
+			% [half, half * 3, half, half]
 		)
 	)
 
@@ -143,7 +154,7 @@ func test_the_boundary_lands_on_the_schedule_period_across_a_swap() -> void:
 	root.call("advance_world", SCHEDULE - 1)
 	assert_eq(SaveApi.exists(), false, "one period short of the boundary, nothing written yet")
 
-	root.call("adopt_actor", _actor(&"reborn_body"))
+	_swap_body(root, &"reborn_body")
 	root.call("advance_world", 1)
 
 	assert_eq(
@@ -159,15 +170,18 @@ func test_the_boundary_lands_on_the_schedule_period_across_a_swap() -> void:
 	)
 
 
-## A swap that is never followed by an advance costs nothing and changes nothing: this is
-## the shape `adopt_actor` is actually called in, and it must not write a save by itself.
+## A swap that is never followed by an advance costs nothing and changes nothing — and
+## that is only legible with the disk already CLEARED, because the case needs a truth
+## about a world that HAD moved. The advance above is what makes the two answers below
+## mean anything: `no save` is only evidence if a save was reachable, and the total that
+## restarts at zero is only evidence if it stood somewhere else first.
 func test_a_body_swap_on_its_own_moves_no_periods_and_writes_no_save() -> void:
 	var root := _play()
 	_attach_world(root, _actor(&"first_body"))
 	root.call("advance_world", 1)
 	_clear_disk()
 
-	root.call("adopt_actor", _actor(&"reborn_body"))
+	_swap_body(root, &"reborn_body")
 
 	assert_eq(SaveApi.exists(), false, "a rebirth is not a period, so no save lands")
 	assert_eq(
@@ -208,18 +222,77 @@ func test_the_body_swap_adopts_the_fold_through_the_door_that_resets_the_delta()
 # --- Fixtures ----------------------------------------------------------------
 
 
-## A bare `ItemWorkbenchPlay` with no screen stack and no modules. The autosave delta is
-## this half's own arithmetic and needs none of the shell's wiring, so mounting the whole
-## composition root here would only add another way for an unrelated break to black this
-## file out.
+## A bare `ItemWorkbenchPlay`: the play half of the composition root, with no screen
+## stack and no modules.
+##
+## ## Why the shell is not mounted here
+##
+## A swap is driven through [method ItemWorkbenchPlay.adopt_world] rather than through
+## [method ItemWorkbenchApp.adopt_actor], which is where the swap lives now that the
+## root was split. `adopt_actor` did nothing else this suite's claim depended on — its
+## own body is mostly `_attach_body_modules`, a rebind the delta knows nothing about —
+## and the reset it exists to reach is set in [method ItemWorkbenchPlay.adopt_world].
+##
+## The alternatives were weighed and rejected. Mounting the shipped scene would prove
+## the parent ROUTES the call, which is worth having — but the root's `_ready` installs
+## static seams no teardown undoes: `*Api.set_store` for six world keys, three
+## fact-ledger subscribers that refuse a duplicate install, and the `WorldStage`
+## resolvers. `ItemWorkbenchApp.teardown` releases the domain world and nothing else, so
+## a mount here would hand the rest of the process another app's world store, which is
+## an order of magnitude of collateral damage to save exactly as much as these cases
+## already cover. And the routing this file would gain is pinned structurally below,
+## where it costs no mount at all.
 func _play() -> ItemWorkbenchPlay:
 	var root := ItemWorkbenchPlay.new()
 	_born.append(root)
 	return root
 
 
-## Point the root at a fold over `body`, the same shape `adopt_actor` builds: the root
-## under test owns the reset, so the fixture must go through it too.
+## ## The body swap, through the door `adopt_actor` goes through
+##
+## `ItemWorkbenchApp.adopt_actor` calls exactly this on a NEW fold over a NEW body: a
+## body that fell takes its `_periods_seen` with it, and the reborn hero's fold restarts
+## at zero. Everything else `adopt_actor` does — the module rebind, the status loop, the
+## seam repointing — is orthogonal to the autosave delta, which is why this file pins the
+## fold swap and not the whole shell.
+func _swap_body(root: ItemWorkbenchPlay, body_id: StringName) -> void:
+	_attach_world(root, _actor(body_id))
+
+
+## **The half of the schedule that ONE advance may legally move.**
+##
+## Both the schedule and the fold's own ceilings are read off the module rather than
+## restated, so a retune of either moves this suite with it. A span the fold REFUSES would
+## make this case assert about a refusal instead of about the schedule, and the two would
+## be indistinguishable in the failure label — the bound that keeps the two apart is the
+## one thing here that cannot be arithmetic.
+##
+## A period the fold pays for is ONE budget spend (`TimeLadder.EVENT_BUDGET`), and the
+## `WorldPulse` refusal is a plain comparison against it: a span above it moves nothing at
+## all, no period counted and no save scheduled (`world_pulse.gd:521`). A chunk of a
+## PLANNED long skip is the one span that may exceed it, and only above
+## `MAX_PERIODS_PER_PULL` — so a half inside `(EVENT_BUDGET, MAX_PERIODS_PER_PULL]` is the
+## band that cannot be bought with one advance at all. Read from the modules rather than
+## written down, because a stale copy here is a case that passes by never running.
+func _half_span() -> int:
+	return clampi(SCHEDULE / 2, 1, mini(TimeLadder.EVENT_BUDGET, WorldPulse.MAX_PERIODS_PER_PULL))
+
+
+## ## `windows` advances of `half` each, stopping at the FIRST refusal
+##
+## so the caller can name which span the fold turned down. Returns false the moment one
+## report answers `{"ok": false}`. The bound is `windows` itself — a FIXED count the loop
+## decrements, never a container it grows — so it terminates (`test_no_unbounded_wait.gd`).
+func _advance_by_half_window(root: ItemWorkbenchPlay, half: int, windows: int) -> bool:
+	for left in range(windows):
+		var report := root.call("advance_world", half) as Dictionary
+		if not bool(report.get("ok", false)):
+			return false
+	return true
+
+
+## Point the root at a fold over `body`: the door under test, which sets the fold AND
+## resets the delta it owns with it, so a swap made through it cannot forget the reset.
 func _attach_world(root: ItemWorkbenchPlay, body: Actor) -> void:
 	root.call("adopt_world", WorldPulse.new(body, BeatDirector.new()))
 
