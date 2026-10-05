@@ -11,7 +11,8 @@
 what the dictionary inside is *keyed by*.
 
 That gap was invisible until a template mod tried to persist a counter and found it
-vanishing. `DoctrineLedger.normalize` rebuilds its dictionary from its own key list and
+vanishing. `DoctrineLedger.normalize` (`modules/doctrine/doctrine_ledger.gd:57`) rebuilds
+its dictionary from its own key list and
 copies nothing else, so a counter stored under a System's own key name is **erased by the
 next write** — no error, no refusal, just a counter that resets.
 

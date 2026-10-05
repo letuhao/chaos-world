@@ -53,7 +53,7 @@ the sink is part of the earn's definition rather than a later slice.
 explicit `periods` from a caller that owns time, which is what makes a System testable at
 all.
 
-**An unnamed System has no state key.** `data_key` (`contracts/doctrine_rule.gd:234`) is
+**An unnamed System has no state key.** `data_key` (`contracts/doctrine_rule.gd:277`) is
 empty rather than shared, because
 two unnamed Systems writing one dictionary restores one System's board into another's.
 
@@ -68,7 +68,7 @@ two unnamed Systems writing one dictionary restores one System's board into anot
   mod scene; the framework's job is to make an unbalanced System *legible*, not to prevent it.
 - Placement follows coupling, not width. ADR 0265 removed the 12-verb cap precisely so a
   coherent feature is not contorted to fit an interface budget; `MAX_FACADE_FAN_IN`
-  (`tools/arch/rules.py:241`) is the
+  (`tools/arch/rules.py:244`) is the
   measure that predicts a god object.
 - **A base-stat writer IS owed, and this was wrong when first written here.** The obvious
   answer looked settled: `ItemUse._apply_learned` reads base gains and calls `set_base`

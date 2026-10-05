@@ -19,7 +19,7 @@ The cap did produce four good local designs: `MindAccess` (ADR 0095), `MarketFav
 ## Decision
 
 1. `MAX_FACADE_PUBLIC_METHODS` is deleted from `tools/arch/rules.py`, and the width check is deleted from `enforce.py::_structural_checks`. A module publishes the verbs it needs.
-2. `rules.MAX_FACADE_FAN_IN = 8` replaces it. `enforce.fan_in_warnings` counts, per facade, the number of distinct *units* that reach it by name, and warns above the threshold.
+2. `rules.MAX_FACADE_FAN_IN = 8` replaces it (`tools/arch/rules.py:244`). `enforce.fan_in_warnings` counts, per facade, the number of distinct *units* that reach it by name, and warns above the threshold.
 3. One unit counts once however many of its files touch the facade. A module's own files never count against its own facade — that is cohesion, not coupling.
 4. Fan-in counts `modules/*` bare references even though the boundary check deliberately excludes them (`BARE_REF_UNITS`). That exclusion is right for reporting a violation and wrong for measuring coupling.
 5. `game/tools/` (`harness`) is excluded: it drives screens headlessly and is built to touch many facades.
