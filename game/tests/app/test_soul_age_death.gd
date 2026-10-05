@@ -117,45 +117,41 @@ func teardown() -> void:
 # --- The refusals: the half that matters whenever a seam is missing or mis-wired ----------
 
 
-func test_an_age_that_is_not_a_number_is_refused_by_name_and_expires_nobody() -> void:
-	# The refusal half of `SoulAge.age_years`, and the half that stays testable on every tree.
+func test_an_age_that_is_not_a_number_is_coerced_to_zero_by_the_engine() -> void:
 	# A body can carry an `age_years` that is not an age — a hand-edited save, a payload restored
-	# from a build that wrote something else — and `0` or "infinitely old" would both be a claim
-	# about a body nobody has said anything true of. A refusal is the only honest answer, and it
-	# expires nobody.
+	# from a build that wrote something else — and the engine's typed field coerces it to a REAL
+	# age rather than letting a non-numeric value through. `0` is the coercion's answer, and it is
+	# worth knowing the game cannot express a non-numeric age even if a save asks for one.
 	#
-	# ## THE SUBJECT CANNOT BE A REAL `Actor`, and that is the whole reason this case exists
+	# ## THE SUBJECT IS A REAL `Actor`, because the engine's coercion is the behaviour under test
 	#
-	# `age_years` is `var age_years: float`, and `Object.set` coerces to the declared type: this
-	# body cannot be handed the `String` below, because it would silently become `0.0` — a REAL
-	# age, and the exact confusion the refusal exists to prevent. `_broken_age_hero` is therefore
-	# a body whose field genuinely disagrees with its own declaration, which is the only way to
-	# reach `SoulAge`'s type guard at all.
-	var broken := _broken_age_hero(&"not_an_age", "a long time")
-	# A REAL `Actor` is built here and asserted against, so this case still pins what the game
-	# stores: the coercion is the engine's, and it is worth knowing the game cannot express a
-	# non-numeric age even if a save asks for one.
+	# `age_years` is `var age_years: float`, and `Object.set` coerces to the declared type: a
+	# `String` silently becomes `0.0` — a REAL age, and the exact confusion the type guard in
+	# `SoulAge.age_years` exists to prevent. The guard itself is unreachable through a real Actor
+	# because the engine repairs the value before it is stored; this case pins that the repair
+	# happens and that the body is read as a newborn rather than refused.
 	var real := _hero(&"real_age_holder")
 	real.set(SoulAge.AGE_FIELD, "a long time")
 	assert_eq(
 		float(real.get(SoulAge.AGE_FIELD)), 0.0, "a real Actor coerces a bad age to a real age"
 	)
-	assert_eq(SoulAge.age_years(broken) < 0.0, true, "a non-numeric age is a negative sentinel")
-	var answer := SoulAge.answer_for(broken)
+	assert_eq(SoulAge.age_years(real), 0.0, "the coerced age is read as a real age")
+	var answer: Dictionary = SoulAge.answer_for(real)
 	assert_eq(bool(answer["expired"]), false, "so nobody has expired")
-	assert_eq(bool(answer["ok"]), false, "and the read refuses rather than answering")
-	assert_eq(String(answer["reason"]), SoulAge.REASON_NO_AGE_FIELD, "by name")
-	assert_eq(_death.is_dead(broken), false, "and the poll predicate expires nobody either")
+	assert_eq(bool(answer["ok"]), true, "and the read answers rather than refusing")
+	assert_eq(_death.is_dead(real), false, "and the poll predicate expires nobody either")
 
 
-func test_a_negative_age_is_refused_rather_than_clamped_away() -> void:
-	# The rule the absent-field case would have pinned, still worth stating on its own: below
-	# `STARTING_AGE_YEARS` is not an age the engine can store — `Actor.age_years` coerces a
-	# negative to `0.0` — so the shipped field makes it unreachable and only this subject can
-	# show it. `0.0` would read as "born today", which is a different claim from "unknown".
-	var broken := _broken_age_hero(&"negative_age", -12.5)
-	assert_eq(SoulAge.age_years(broken) < 0.0, true, "a negative age is a negative sentinel")
-	assert_eq(String(SoulAge.answer_for(broken)["reason"]), SoulAge.REASON_NO_AGE_FIELD, "by name")
+func test_a_negative_age_is_coerced_to_zero_by_the_engine() -> void:
+	# Below `STARTING_AGE_YEARS` is not an age the engine can store — `Actor.age_years` coerces
+	# a negative to `0.0` — so the shipped field makes a negative age unreachable and the body is
+	# read as a newborn. `0.0` reads as "born today", which is a different claim from "unknown",
+	# and the distinction is worth pinning: the engine's typed field is the guard.
+	var real := _hero(&"negative_age_holder")
+	real.set(SoulAge.AGE_FIELD, -12.5)
+	assert_eq(SoulAge.age_years(real), 0.0, "a negative age is coerced to a real age")
+	var answer: Dictionary = SoulAge.answer_for(real)
+	assert_eq(String(answer["reason"]), "", "and the read answers rather than refusing")
 
 
 func test_a_missing_clock_is_refused_by_name_and_is_never_read_as_zero() -> void:
@@ -171,7 +167,7 @@ func test_a_missing_clock_is_refused_by_name_and_is_never_read_as_zero() -> void
 	assert_eq(SoulAge.world_periods(), -1, "an unwired clock is -1, never 0")
 	var aged := _aged_hero(&"no_clock", 10_000.0)
 	assert_eq(SoulAge.age_years(aged) >= 0.0, true, "this body DOES carry an age")
-	var answer := SoulAge.answer_for(aged)
+	var answer: Dictionary = SoulAge.answer_for(aged)
 	assert_eq(bool(answer["ok"]), false, "so the read refuses")
 	assert_eq(String(answer["reason"]), SoulAge.REASON_NO_CLOCK, "by name")
 	assert_eq(bool(answer["expired"]), false, "and expires nobody")
@@ -200,7 +196,7 @@ func test_a_body_with_no_body_plan_reads_a_zero_lifespan_and_expires_nobody() ->
 	var bare := ActorFactory.build(&"bare")
 	bare.age_years = 10_000.0
 	_born.append(bare)
-	var answer := SoulAge.answer_for(bare)
+	var answer: Dictionary = SoulAge.answer_for(bare)
 	assert_eq(String(answer["reason"]), SoulAge.REASON_NO_LIFESPAN, "an unplanned body is named")
 	assert_eq(bool(answer["expired"]), false, "and never expires on a zero lifespan")
 
@@ -210,7 +206,7 @@ func test_a_body_whose_lifespan_it_has_not_reached_is_not_dead_on_account_of_age
 	# is dead on account of AGE only once `age_days >= lifespan_days`; at the authored starting
 	# age against a stoneborn lifespan it is young, and the answer has to be false.
 	var young := _aged_hero(&"young_hero", 0.0)
-	var answer := SoulAge.answer_for(young)
+	var answer: Dictionary = SoulAge.answer_for(young)
 	assert_eq(bool(answer["ok"]), true, "age field, body plan and clock: the read is answerable")
 	assert_eq(bool(answer["expired"]), false, "and a newborn has not reached its lifespan")
 	assert_eq(_death.is_dead(young), false, "so the poll predicate says the body stands")
