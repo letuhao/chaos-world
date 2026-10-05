@@ -492,9 +492,38 @@ func test_the_grant_lives_in_app_and_creates_no_soul_to_destiny_edge() -> void:
 	# The WHOLE soul tree, walked rather than listed: a new file under `soul/` that reached for
 	# destiny would not be in a hand-written list of five.
 	var paths := _files_under("res://src/modules/soul")
-	assert_ne(
-		paths.is_empty(), false, "the soul tree was walked, so an empty scan cannot pass this"
+	assert_eq(
+		paths.is_empty(),
+		false,
+		(
+			(
+				"the soul tree was walked, so an empty scan cannot pass this. This read "
+				+ "assert_ne(paths.is_empty(), false), and `assert_ne` FAILS when actual EQUALS "
+				+ "unexpected — so it asserted the scan WAS empty: it failed on every healthy walk "
+				+ "and would have PASSED on the empty scan it exists to catch. Found %d path(s)."
+			)
+			% paths.size()
+		)
 	)
+	# STRONGER than non-empty, because both are ways the no-destiny scan below passes
+	# vacuously: a walk that returned one lucky file, and a walk whose entries are all
+	# UNREADABLE — the offender loop skips empty text, so an unreadable path is invisible
+	# to it. `assert_ne(x.is_empty(), true)` is the repo's readable idiom; the `false`
+	# above was its mirror image, which is exactly the shape that cannot fail.
+	assert_eq(
+		paths.has("res://src/modules/soul/api.gd"),
+		true,
+		"and the walk reached the facade, so this is not a one-file scan that proves nothing"
+	)
+	for path in paths:
+		assert_ne(
+			FileAccess.get_file_as_string(path).is_empty(),
+			true,
+			(
+				"%s is readable: the offender scan below skips empty text, so an unreadable " % path
+				+ "path would let this boundary pass on a file it never read"
+			)
+		)
 	var offenders: Array[String] = []
 	for path in paths:
 		var text := _code_only(FileAccess.get_file_as_string(path))
