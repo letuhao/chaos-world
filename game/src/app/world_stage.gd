@@ -748,7 +748,7 @@ func _resource_nodes_of(entry: WorldEntry) -> Array:
 	published = entry.resource_nodes()
 	if not published.is_empty():
 		return published
-	var authored := entry.get_node_or_null(&"ResourceNodes")
+	var authored := entry.get_node_or_null(NodePath("ResourceNodes"))
 	if authored == null:
 		return published
 	var out: Array = []
