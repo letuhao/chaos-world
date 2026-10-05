@@ -16,6 +16,7 @@ realm = &"core_formation"
 ## Smelted from a bar and a gem, both of which any early hero already pays.
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 3},
+	{"option_id": &"trade_value", "value": 5},
 ])
 roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"key"

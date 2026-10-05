@@ -15,6 +15,7 @@ realm = &"spirit_condensation"
 ## option, so it is what makes the def carry a channel at all.
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"key_reach", "value": 6},
+	{"option_id": &"trade_value", "value": 10.5},
 ])
 roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"key"

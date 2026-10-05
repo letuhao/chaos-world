@@ -11,6 +11,7 @@ rarity = &"legendary"
 realm = &"dao_fruit"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"quest_potency", "value": 33.69},
+	{"option_id": &"trade_value", "value": 34},
 ])
 roll_spec = {"count": 4, "contexts": ["base"]}
 subcategory = &"bounty"

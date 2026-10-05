@@ -11,6 +11,7 @@ rarity = &"rare"
 realm = &"heaven_immortal"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"quest_potency", "value": 6},
+	{"option_id": &"trade_value", "value": 27},
 ])
 roll_spec = {"count": 3, "contexts": ["base"]}
 subcategory = &"relic"

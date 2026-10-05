@@ -11,6 +11,7 @@ rarity = &"common"
 realm = &"tribulation"
 fixed_modifiers = Array[Dictionary]([
 	{"option_id": &"quest_potency", "value": 6},
+	{"option_id": &"trade_value", "value": 10},
 ])
 roll_spec = {"count": 1, "contexts": ["base"]}
 subcategory = &"instrument"
