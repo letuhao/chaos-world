@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"dlc_example_sword"
+display_name = "DLC Example Sword"
+category = &"equipment"
+rarity = &"uncommon"
+realm = &"mortal"
+subcategory = &"weapon"
+grade = &"mortal"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"attack_power", "value": 10},
+])
+roll_spec = {"count": 1, "contexts": ["base"]}
+sources = Array[StringName]([&"quest"])

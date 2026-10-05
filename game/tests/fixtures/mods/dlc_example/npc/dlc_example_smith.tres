@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="NpcDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/npc/npc_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+npc_id = &"dlc_example_smith"
+display_name = "DLC Example Smith"
+inhabitant_id = &"blacksmith"
+tier = &"minor"
+faction = &"body_dao"
+tags = Array[StringName]([&"smith", &"quest_giver"])
+realm_id = &"mortal"
+base = {}
+initial_stage = &""

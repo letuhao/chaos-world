@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DlcExampleRealmSeed" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/fixtures/mods/dlc_example/seed.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"foundation"
+breakthrough_item = &"dlc_example_foundation_pill"
+recovery_item = &"dlc_example_foundation_recovery"
+progress_required = 200.0
+required_meridians = Array[StringName]([&"lung", &"large_intestine", &"stomach"])
+rewards = {
+	"spirit": 3.0
+}
