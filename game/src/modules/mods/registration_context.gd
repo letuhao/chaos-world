@@ -56,11 +56,17 @@ func _init(id: String = "", manifest: Dictionary = {}, registry: ModuleRegistry 
 ## is stored per family in CatalogOverlay's stack shape so finalize merges ctxs
 ## in load order without re-shaping. A mod may not register content outside its
 ## declared roots — enforced when the seams are wired.
-func add_content_root(family: String, dir: String) -> Array[Dictionary]:
+##
+## `id_field` names the def property holding this family's id when it is not
+## "id" (e.g. WorldLocationDef's "location_id", NpcDef's "npc_id"). The value
+## is carried on the stack row so CatalogOverlay.merge and the catalog's own
+## scan read the correct property per root.
+func add_content_root(family: String, dir: String, id_field: String = "id") -> Array[Dictionary]:
 	var row := {
 		"dir": dir,
 		"owner": mod_id,
 		"declared_overrides": _manifest.get("overrides", []),
+		"id_field": id_field,
 	}
 	if not content_roots.has(family):
 		content_roots[family] = []
@@ -120,10 +126,13 @@ func register_screen(id: String, scene: String, label: String) -> Array[Dictiona
 	return screens
 
 
-## Subscribe an events bus (the app folds the declaration onto the bus after
-## finalize; the ctx never names the bus).
-func subscribe(events_bus) -> Array:
-	subscriptions.append(events_bus)
+## Subscribe to an events bus. The subscription shape is
+## `{event_bus: String, event_name: String, callable: Callable}` where
+## `event_bus` names the bus class (e.g. "NpcEvents"), `event_name` is the
+## signal to connect, and `callable` is the handler. The app folds the
+## declaration onto the bus after finalize; the ctx never names the bus.
+func subscribe(subscription: Dictionary) -> Array:
+	subscriptions.append(subscription)
 	return subscriptions
 
 

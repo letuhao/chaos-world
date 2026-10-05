@@ -177,9 +177,9 @@ var _stack: ScreenStack = null
 var _restore_stage: WorldStage = null
 var _restore_body: PlayerAdapter = null
 
-## Mod event subscriptions stored for the events bus (ADR 0184). The bus
-## integration is not yet wired — the subscription shape is unclear, so they
-## are stored here for a later wave to consume.
+## Mod event subscriptions (ADR 0184). Each row is `{event_bus, event_name,
+## callable}`; `_wire_subscriptions` resolves the bus by class name and
+## connects the callable to the signal, guarded by `is_connected`.
 var _mod_subscriptions: Array = []
 
 # --- mount_and_attach ----------------------------------------------------
@@ -331,17 +331,23 @@ func _attach_body_modules(actor: Actor) -> void:
 	for row in registrations.get("attach_hooks", []):
 		pipeline.add_hook(StringName(row.get("phase", "")), row.get("callable", Callable()))
 	pipeline.run(actor)
+	# Register mod screens into the ScreenRegistry route table (ADR 0184 §6).
+	# The ScreenStack mounts by id through ScreenRegistry.path_of(), so
+	# registering here makes mod screens mountable via push_registered().
+	ScreenRegistry.register_from_contexts(ModBoot.active_contexts)
 	# Wire content roots into catalogs (ADR 0184 §5).
 	_wire_content_roots(registrations.get("content_roots", {}))
 	# Attach mod modules after all base phases (ADR 0184).
 	_attach_mod_modules(pipeline, actor, registrations.get("modules", {}))
-	# Store subscriptions for the events bus (ADR 0184).
+	# Wire mod event subscriptions onto the events buses (ADR 0184).
 	_wire_subscriptions(registrations.get("subscriptions", []))
 
 
-## Push content roots to their family catalogs (ADR 0184 §5). Items use the
-## existing Crafting pilot; quest and event catalogs have set_overlay_roots.
-## Families without overlay support are skipped — never a boot failure.
+## Push content roots to their family catalogs (ADR 0184 §5). Each catalog
+## scans its base root first, then the overlay roots in order, so mod content
+## is visible. The `id_field` on each stack row is carried through to the
+## catalog's scan. Families without overlay support are skipped — never a boot
+## failure.
 func _wire_content_roots(content_roots: Dictionary) -> void:
 	for family in content_roots:
 		var stack: Array = content_roots[family]
@@ -352,6 +358,16 @@ func _wire_content_roots(content_roots: Dictionary) -> void:
 				QuestCatalog.set_overlay_roots(stack)
 			&"event":
 				EventCatalog.set_overlay_roots(stack)
+			&"world":
+				WorldLocationCatalog.set_overlay_roots(stack)
+			&"npc":
+				NpcCatalog.set_overlay_roots(stack)
+			&"race":
+				RaceCatalog.set_overlay_roots(stack)
+			&"techniques":
+				TechniqueCatalog.set_overlay_roots(stack)
+			&"elements":
+				ElementCatalog.set_overlay_roots(stack)
 			_:
 				# Family not yet wired — skip, don't break boot.
 				pass
@@ -373,11 +389,45 @@ func _attach_mod_modules(pipeline: AttachPipeline, actor: Actor, modules: Dictio
 			pipeline.attach_module(module_name, api_path, actor)
 
 
-## Store mod event subscriptions for the events bus (ADR 0184). The bus
-## integration is not yet wired — the subscription shape is unclear, so they
-## are stored here for a later wave to consume.
+## Wire mod event subscriptions onto the events buses (ADR 0184). Each
+## subscription is `{event_bus: String, event_name: String, callable:
+## Callable}`. The bus is resolved by class name — buses with a `shared()`
+## accessor (NpcEvents, AuctionEvents) use it; others get a fresh instance.
+## Connections are guarded by `is_connected` so a repeated boot never
+## double-connects (AGENTS.md).
 func _wire_subscriptions(subscriptions: Array) -> void:
 	_mod_subscriptions = subscriptions
+	for sub in subscriptions:
+		if not (sub is Dictionary):
+			continue
+		var bus_name := String(sub.get("event_bus", ""))
+		var event_name := StringName(sub.get("event_name", ""))
+		var callable: Callable = sub.get("callable", Callable())
+		if bus_name == "" or event_name == &"" or not callable.is_valid():
+			continue
+		var bus := _resolve_events_bus(bus_name)
+		if bus == null:
+			continue
+		if not bus.is_connected(event_name, callable):
+			bus.connect(event_name, callable)
+
+
+## Resolve an events bus by class name. Buses with a `shared()` accessor
+## (NpcEvents, AuctionEvents) return the process-wide instance; others get a
+## fresh instance. Returns null for an unknown bus name.
+func _resolve_events_bus(bus_name: String) -> RefCounted:
+	var factories := {
+		&"NpcEvents": func(): return NpcEvents.shared(),
+		&"AuctionEvents": func(): return AuctionEvents.shared(),
+		&"WorldEvents": func(): return WorldEvents.new(),
+		&"DestinyEvents": func(): return DestinyEvents.new(),
+		&"NationEvents": func(): return NationEvents.new(),
+		&"SectEvents": func(): return SectEvents.new(),
+		&"HoldingsEvents": func(): return HoldingsEvents.new(),
+	}
+	if factories.has(bus_name):
+		return factories[bus_name].call()
+	return null
 
 
 # --- build_actor ---------------------------------------------------------

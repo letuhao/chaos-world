@@ -45,8 +45,29 @@ const NPC_SCRIPT_CLASS := "NpcDef"
 
 static var _shared: NpcCatalog = null
 
+## Overlay stack for the npc family (ADR 0184 §5). Empty means "not wired
+## yet": `load_authored` scans only the authored CAST_ROOT. When set, the
+## overlay roots are scanned AFTER the base root so mod content is visible.
+static var _overlay_stack: Array = []
+
 var _defs: Dictionary = {}
 var _loaded: bool = false
+
+
+## Set the family's overlay stack: ordered rows of `{dir, owner,
+## declared_overrides, id_field}`. Later rows overlay earlier ones.
+static func set_overlay_roots(stack: Array) -> void:
+	_overlay_stack = stack
+
+
+## The directories to scan: base root first, then overlay roots in order.
+func _scan_roots() -> Array[String]:
+	var out: Array[String] = [CAST_ROOT]
+	for row in _overlay_stack:
+		var dir := String(row.get("dir", ""))
+		if dir != "":
+			out.append(dir)
+	return out
 
 
 static func instance() -> NpcCatalog:
@@ -65,19 +86,22 @@ func load_authored() -> int:
 	if _loaded:
 		return _defs.size()
 	_loaded = true
-	for path in _scan(CAST_ROOT):
-		if not path.get_file().ends_with(".tres"):
-			continue
-		if not FileAccess.get_file_as_string(path).contains('script_class="%s"' % NPC_SCRIPT_CLASS):
-			continue
-		var def := load(path) as NpcDef
-		if def == null:
-			push_warning("NpcCatalog: skipped '%s', which is not an NpcDef" % path)
-			continue
-		if def.npc_id == &"":
-			push_warning("NpcCatalog: skipped '%s', which carries no npc_id" % path)
-			continue
-		_defs[String(def.npc_id)] = def
+	for root in _scan_roots():
+		for path in _scan(root):
+			if not path.get_file().ends_with(".tres"):
+				continue
+			if not FileAccess.get_file_as_string(path).contains(
+				'script_class="%s"' % NPC_SCRIPT_CLASS
+			):
+				continue
+			var def := load(path) as NpcDef
+			if def == null:
+				push_warning("NpcCatalog: skipped '%s', which is not an NpcDef" % path)
+				continue
+			if def.npc_id == &"":
+				push_warning("NpcCatalog: skipped '%s', which carries no npc_id" % path)
+				continue
+			_defs[String(def.npc_id)] = def
 	return _defs.size()
 
 

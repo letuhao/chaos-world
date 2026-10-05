@@ -17,12 +17,34 @@ const TECHNIQUE_SCRIPT_CLASS := "TechniqueDef"
 
 static var shared: TechniqueCatalog = null
 
+## Overlay stack for the techniques family (ADR 0184 §5). Empty means "not
+## wired yet": `_ensure_loaded` scans only the authored TECHNIQUES_ROOT. When
+## set, the overlay roots are scanned AFTER the base root so mod content is
+## visible.
+static var _overlay_stack: Array = []
+
 var _definitions: Dictionary = {}
 ## item id -> the technique id delivered by it, from every def's `delivered_by`.
 ## Built with the definitions and never on its own, so the two maps cannot describe
 ## different content (DEF-0203).
 var _deliveries: Dictionary = {}
 var _loaded: bool = false
+
+
+## Set the family's overlay stack: ordered rows of `{dir, owner,
+## declared_overrides, id_field}`. Later rows overlay earlier ones.
+static func set_overlay_roots(stack: Array) -> void:
+	_overlay_stack = stack
+
+
+## The directories to scan: base root first, then overlay roots in order.
+func _scan_roots() -> Array[String]:
+	var out: Array[String] = [TECHNIQUES_ROOT]
+	for row in _overlay_stack:
+		var dir := String(row.get("dir", ""))
+		if dir != "":
+			out.append(dir)
+	return out
 
 
 static func instance() -> TechniqueCatalog:
@@ -62,13 +84,15 @@ func definition(technique_id: StringName) -> TechniqueDef:
 	var id := String(technique_id)
 	if _definitions.has(id):
 		return _definitions[id]
-	var direct := "%s/%s.tres" % [TECHNIQUES_ROOT, id]
-	var def: TechniqueDef = null
-	if ResourceLoader.exists(direct):
-		def = load(direct) as TechniqueDef
-	if def != null:
-		_adopt(def)
-	return def
+	# Lazy per-id load: check base root first, then overlay roots in order.
+	for root in _scan_roots():
+		var direct := "%s/%s.tres" % [root, id]
+		if ResourceLoader.exists(direct):
+			var def := load(direct) as TechniqueDef
+			if def != null:
+				_adopt(def)
+				return def
+	return null
 
 
 ## The technique a manual `item_id` delivers, or null.
@@ -100,20 +124,17 @@ func _ensure_loaded() -> void:
 	if _loaded:
 		return
 	_loaded = true
-	if not DirAccess.dir_exists_absolute(TECHNIQUES_ROOT):
-		return
-	var dir := DirAccess.open(TECHNIQUES_ROOT)
-	if dir == null:
-		return
-	dir.list_dir_begin()
-	var entry := dir.get_next()
-	while not entry.is_empty():
-		if not entry.begins_with(".") and entry.ends_with(".tres"):
-			var def := load("%s/%s" % [TECHNIQUES_ROOT, entry]) as TechniqueDef
+	for root in _scan_roots():
+		for path in ContentScan.files_under(root):
+			if not path.get_file().ends_with(".tres"):
+				continue
+			if not FileAccess.get_file_as_string(path).contains(
+				'script_class="%s"' % TECHNIQUE_SCRIPT_CLASS
+			):
+				continue
+			var def := load(path) as TechniqueDef
 			if def != null and def.id != &"":
 				_adopt(def)
-		entry = dir.get_next()
-	dir.list_dir_end()
 
 
 ## Take one definition into BOTH maps. Every path into the catalog goes through here
