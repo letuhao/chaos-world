@@ -22,6 +22,26 @@ extends TestCase
 ## modules does not redden a guard while a walk covering a fraction of the tree still does.
 const SOURCE_FILE_FLOOR := 200
 
+## The census needs a floor of its own, so "no offenders" cannot be reported over an empty
+## population. Deliberately ONE below the measured four: the file scan has a 200-file floor for
+## "the walk covers the tree" and this has a 4-read floor for "the walk found the slot".
+const BACKUP_READER_FLOOR := 3
+
+## `save/store.gd`'s own private recovery, the one admissible content read. Compared by full
+## `res://` path rather than by `get_file()`, so a second `save_store.gd` elsewhere in the
+## tree cannot inherit the exemption — the allow-list in the version this replaced was
+## `path.get_file()`-keyed, which any directory could satisfy.
+const SAVE_STORE_PATH := "res://src/modules/save/save_store.gd"
+
+## The only spelling that names the backup's CONTENT. `SavePaths` publishes `PRIMARY`,
+## `BACKUP`, `TEMP` and no verb, so a read that hands this to anything is a read of the spare
+## generation whatever the caller calls it afterwards.
+const BACKUP_READER := "SavePaths.BACKUP"
+
+## Argument names that would let a caller name a slot, matched as SUBSTRINGS so `p_slot`,
+## `slot` and `path` are all caught and a typed `path: String` is caught with its annotation.
+const _SLOT_ARGUMENT_NAMES := ["path", "slot", "file_name", "filename", "backup", "save_id"]
+
 var _actor: Actor
 var _store: SoulWorldLedger
 
@@ -377,41 +397,128 @@ func test_the_autosave_is_fed_by_the_world_fold_and_nothing_else() -> void:
 
 
 func test_no_shipped_caller_can_name_the_backup_slot() -> void:
-	# The guard that makes "the user cannot decide to load the backup" an INVARIANT rather than
-	# an intention. `SaveStore` is allow-listed because its private fallback is the recovery
-	# path this rule exists to keep unreachable from a player affordance.
-	var allow_listed: Array[String] = ["save_store.gd"]
+	# ## What this guard measures, and what it used to measure
+	#
+	# It used to grep CODE for five forbidden VERB SPELLINGS (`load_backup`, `restore_backup`,
+	# `rollback`, `revert_save`, `SLOT_BACKUP`). **A name list cannot tell a working guard from
+	# a deleted one**: `SaveStore._read(SavePaths.BACKUP)` handed to a screen contains none of
+	# them and passes completely, and so does any differently-spelled affordance. That is BL-0886
+	# — the predicate is theatre while the population was sound.
+	#
+	# It now enumerates every READ of the backup VALUE in `res://src` and classifies each one.
+	# The needle is `SavePaths.BACKUP`, the only way to name the slot's content — `SavePaths`
+	# publishes `PRIMARY`, `BACKUP`, `TEMP` and nothing else — so this is a census of readers,
+	# not a list of forbidden words: a NEW verb, a new caller, a new module all appear in the
+	# census and must classify.
+	#
+	# ## The two admissible shapes, and why each is safe
+	#
+	# 1. a `FileAccess.file_exists` PROBE — reports whether a file is there, never what is in
+	#    it. `api.gd:171` (the `backup_present` summary flag) and `world_ledger_store.gd:343`
+	#    (the "is any save on disk" probe) are the two shipped examples.
+	# 2. `save/store.gd`'s own PRIVATE RECOVERY inside `restore()` — reached only when the
+	#    primary is unreadable, and it returns an envelope to the restore path, not to a
+	#    player-selectable verb.
+	#
+	# Anything else is a read of backup CONTENT outside the save module, and it fails here.
 	var sources := _source_files("res://src")
 	# **The population assertion belongs IN this guard, not beside it.** An empty walk would
-	# otherwise report `offenders == []` — byte-identical to a tree with no backup affordance,
-	# and therefore an all-clear that no player action could ever turn red. This is the guard
-	# that was vacuous for exactly this reason: `_source_files` walked `.tres` files, so its
-	# `.gd` filter discarded every file it found. "Found nothing" is only a verdict once
-	# "found something" is asserted, and asserting it here is what stops the two drifting apart.
+	# otherwise report `unreaders == []` — byte-identical to a tree with no backup reader at
+	# all, and therefore an all-clear that no player action could ever turn red.
 	assert_eq(
-		sources.size() > 0,
+		sources.size() >= SOURCE_FILE_FLOOR,
 		true,
 		(
-			"the backup guard walked zero .gd files under res://src, so `offenders == []` "
-			+ "is an empty list, not a clean tree. `ContentScan.files_under` defaults its "
-			+ "suffix to `.tres` — pass `.gd` EXPLICITLY in `_source_files`."
+			(
+				"the backup guard read %d .gd files under res://src, below the floor of %d: its "
+				% [sources.size(), SOURCE_FILE_FLOOR]
+			)
+			+ (
+				"census would be an empty list rather than a clean tree. `ContentScan.files_under` "
+				+ "defaults its suffix to `.tres` — pass `.gd` EXPLICITLY in `_source_files`."
+			)
 		)
 	)
+	var read: Array[String] = []
 	var offenders: Array[String] = []
 	for path in sources:
-		var file_name := path.get_file()
-		if allow_listed.has(file_name):
-			continue
-		# Read CODE, not raw text: every forbidden verb is named in this suite's own docstring and
-		# in `SaveStore`'s, so scanning unstripped text matches the prose and reports correct code
-		# as an affordance. A guard that fires on its own documentation is one nobody trusts.
+		# Read CODE, not raw text: this suite's own docstring names the backup slot and every
+		# forbidden verb, so an unstripped scan matches the prose and reports correct code as
+		# an affordance. A guard that fires on its own documentation is one nobody trusts.
 		var source := _code_only(FileAccess.get_file_as_string(path))
-		for forbidden in [
-			"load_backup", "restore_backup", "rollback", "revert_save", "SLOT_BACKUP"
-		]:
-			if source.contains(forbidden):
-				offenders.append("%s names %s" % [file_name, forbidden])
-	assert_eq(offenders, [], "no shipped caller can reach the backup")
+		if not source.contains(BACKUP_READER):
+			continue
+		for line in source.split("\n"):
+			var code := String(line).strip_edges()
+			if not code.contains(BACKUP_READER):
+				continue
+			read.append("%s: %s" % [path.get_file(), code])
+			if _is_an_admissible_backup_read(path, code, source):
+				continue
+			offenders.append(
+				(
+					(
+						"%s reads the backup CONTENT and is not one of the two admissible shapes "
+						% path.get_file()
+					)
+					+ "(a `file_exists` probe, or save/store.gd's private fallback): %s" % code
+				)
+			)
+	# The census must FIND the readers, or "classified every reader legally" is an empty list.
+	# Measured 2026-10-05: four code sites name the backup in res://src — save_store.gd:92
+	# (rotation write), save_store.gd:122 (private fallback), api.gd:171 (exists probe) and
+	# app/world_ledger_store.gd:343 (exists probe). The floor is ONE below that, so a reader
+	# that stops existing is caught rather than silently shrinking the population the verdict
+	# is read against.
+	assert_eq(
+		read.size() >= BACKUP_READER_FLOOR,
+		true,
+		(
+			(
+				"the backup census found %d read(s) of %s in res://src, below the floor of %d: a "
+				% [read.size(), BACKUP_READER, BACKUP_READER_FLOOR]
+			)
+			+ (
+				"shrinking census is a blind guard, and an empty one is indistinguishable from a "
+				+ "clean tree. Check the shipped readers, then say which became unnecessary."
+			)
+		)
+	)
+	assert_eq(offenders, [], "no shipped caller can obtain backup CONTENT")
+
+
+## Whether `code` is one of the two admissible shapes, spelled out rather than matched by name.
+##
+## `file` and `source` are both needed because the private-fallback half is a POSITION
+## question — "inside `restore()`" cannot be read off the single line — and answering it
+## requires the file's function layout.
+func _is_an_admissible_backup_read(file: String, code: String, source: String) -> bool:
+	# Shape 1: a probe. It asks whether a file is there and never what is in it, so no caller
+	# can obtain an envelope from it however the result is used.
+	if code.contains("FileAccess.file_exists("):
+		return true
+	# Shape 2: the save module's own private recovery. `save/store.gd` is inside the module
+	# that OWNS the rotation, so the writer and the recovery reader are the same file by
+	# design; what must not exist is a second reader anywhere else.
+	if file != SAVE_STORE_PATH:
+		return false
+	return _function_body(source, "restore").contains(BACKUP_READER)
+
+
+## The CODE of `func <name>` — instance or `static func` — up to the next top-level `func`,
+## with comments already stripped. GDScript has no nested `func`, so a trimmed line beginning
+## `func ` is always a top-level declaration and no brace counting is needed.
+func _function_body(source: String, func_name: String) -> String:
+	var collecting := false
+	var out: PackedStringArray = []
+	var header := "func %s(" % func_name
+	for line in source.split("\n"):
+		var code := String(line).strip_edges()
+		if code.begins_with("func ") or code.begins_with("static func "):
+			collecting = code.contains(header)
+		if collecting:
+			out.append(String(line))
+	return "\n".join(out)
 
 
 func test_the_facade_exposes_no_backup_slot_constant() -> void:
@@ -421,6 +528,99 @@ func test_the_facade_exposes_no_backup_slot_constant() -> void:
 	var source := _code_only(FileAccess.get_file_as_string("res://src/modules/save/api.gd"))
 	assert_eq(source.contains('&"backup"'), false, "the facade names no backup slot")
 	assert_eq(String(SaveApi.SLOT), "primary", "the one slot is the live one")
+
+
+func test_no_facade_verb_takes_a_path_or_a_slot_a_caller_could_name_the_backup_with() -> void:
+	# ## Why a census is not sufficient on its own
+	#
+	# The census above enumerates readers that EXIST today. It cannot see a verb that does not
+	# exist yet — and the shape ADR 0128 forbids is exactly that: a facade method
+	# `restore(slot)` or `load(path)` would let a caller pass `SavePaths.BACKUP` in a way no
+	# reader census can see, because the backup would then be named by the CALLER's argument
+	# rather than by a literal inside `res://src`.
+	#
+	# So this asserts the second half structurally: **no shipped save facade or store method
+	# takes a path or slot parameter at all.** `restore()` takes nothing and answers for the
+	# live slot; `_read(path)` is the store's own private helper and is the only thing that
+	# accepts one. Adding a parameter is a design change to ADR 0128 and this turns it RED.
+	#
+	# Read from CODE, because every one of these files documents the backup in prose that a
+	# raw scan would match.
+	for path in [
+		"res://src/modules/save/api.gd",
+		"res://src/modules/save/save_store.gd",
+		"res://src/modules/save/save_paths.gd",
+		"res://src/modules/save/save_slot.gd",
+		"res://src/modules/save/save_migrate.gd",
+		"res://src/modules/save/save_clock.gd",
+	]:
+		var offenders: Array[String] = []
+		var source := _code_only(FileAccess.get_file_as_string(path))
+		assert_eq(source.is_empty(), false, "%s is readable" % path)
+		for line in source.split("\n"):
+			var code := String(line).strip_edges()
+			if not code.begins_with("func "):
+				continue
+			# The ONE sanctioned parameterised read, and it is the store's private helper:
+			# `_read(path)` is what `restore()` and the generation probes call, and it is
+			# underscore-private, so a caller outside the module cannot reach it.
+			# `save_store.gd` by full path, matching [constant SAVE_STORE_PATH] rather than by
+			# file name.
+			if path == SAVE_STORE_PATH and code.contains("func _read("):
+				continue
+			for parameter in _slot_naming_parameters(code):
+				offenders.append("%s: %s" % [path.get_file(), code])
+		assert_eq(
+			offenders,
+			[],
+			(
+				(
+					"no save facade or store verb takes a %s argument, so no caller can name a "
+					% _SLOT_ARGUMENT_NAMES[0]
+				)
+				+ (
+					"slot it did not get from the game (ADR 0128). Found: "
+					+ str(offenders)
+					+ ". The private store helper `_read(path)` is the sole exception and is "
+					+ "underscore-private by name."
+				)
+			)
+		)
+
+
+## The slot-naming parameters in one `func` signature line, as the declared parameter names.
+## Split on top-level commas so a defaulted `slot: StringName = &""` stays one parameter, and
+## an untyped `path)` still yields `path`.
+func _slot_naming_parameters(code: String) -> Array[String]:
+	var open := code.find("(")
+	var close := code.rfind(")")
+	if open < 0 or close <= open:
+		return []
+	var found: Array[String] = []
+	var depth := 0
+	var current := ""
+	for index in range(open + 1, close):
+		var character := code[index]
+		if character == "(" or character == "[" or character == "{":
+			depth += 1
+		elif character == ")" or character == "]" or character == "}":
+			depth -= 1
+		if character == "," and depth == 0:
+			found.append(current.strip_edges())
+			current = ""
+			continue
+		current += character
+	if not current.strip_edges().is_empty():
+		found.append(current.strip_edges())
+	var out: Array[String] = []
+	for parameter in found:
+		var name := parameter.split(":")[0].strip_edges()
+		var lowered := name.to_lower()
+		for candidate in _SLOT_ARGUMENT_NAMES:
+			if lowered.contains(candidate):
+				out.append(name)
+				break
+	return out
 
 
 func test_the_summary_reports_the_backup_exists_without_reaching_it() -> void:
