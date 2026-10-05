@@ -2003,6 +2003,73 @@ def _first_unused_framing(pool: tuple[str, ...], used: set[str], index: int) -> 
     return next((item for item in pool if item not in used), pool[index % len(pool)])
 
 
+def _unpublish_command(records: list[dict], args) -> int:
+    """Clear a `published_as` claim whose authored resource does not exist (DEF-0293).
+
+    `published_as` is the ONLY field in this catalog that points at game content, and
+    `tools/unique_characters.py:17-20` documents it as staying "empty until a deliberate sync
+    step writes an authored resource". A non-empty value is therefore a CLAIM that a file exists,
+    and 18 records carried one for a portrait that was never written.
+
+    Cleared by MISSING FILE rather than by a hardcoded id list, for two reasons. The list goes
+    stale the moment a session publishes a twentieth false claim, and a list cannot tell the
+    difference between a claim that is false and one that is merely late. Asking the filesystem is
+    the same question the field's own documentation makes the field answer.
+
+    Writes back only to the shard that already OWNS each record, read from disk rather than
+    recomputed, so a record is never duplicated into a second shard - the bug `_backfill_command`
+    documents at length. Idempotent: a second run finds nothing and changes nothing.
+    """
+    catalog = readable_catalog()
+    dangling: list[str] = []
+    by_id: dict[str, dict] = {}
+    for record in catalog:
+        if not isinstance(record, dict):
+            continue
+        published_as = record.get("published_as") or {}
+        def_path = str(published_as.get("def_path", ""))
+        if def_path == "":
+            continue
+        by_id[str(record.get("id", ""))] = record
+        if not def_path.startswith("res://"):
+            dangling.append(str(record.get("id", "")))
+            continue
+        if not (GAME_DIR / def_path.removeprefix("res://")).is_file():
+            dangling.append(str(record.get("id", "")))
+
+    if args.limit:
+        dangling = dangling[: int(args.limit)]
+    if not dangling:
+        ok("every published_as claim names a file that exists; nothing to clear")
+        return 0
+
+    shard_ids: dict[Path, list[str]] = {}
+    for character_id in dangling:
+        shard_ids.setdefault(_owning_shard(character_id), []).append(character_id)
+
+    cleared = 0
+    for shard, ids in sorted(shard_ids.items(), key=lambda item: str(item[0])):
+        ids = sorted(ids)
+        owned = set(ids)
+        merged = [record for record in catalog if record.get("id") in owned]
+        found = {str(record.get("id", "")) for record in merged}
+        if found != owned:
+            raise ToolError(
+                f"{_display_path(shard)}: expected {len(owned)} record(s), found {len(found)}. "
+                "Refusing to write rather than guess which record the claim belongs to."
+            )
+        for record in merged:
+            record["published_as"] = {"portrait_id": "", "def_path": ""}
+            cleared += 1
+        _atomic_write(merged, shard)
+        ok(f"{_display_path(shard)}: cleared {len(merged)} false published_as claim(s)")
+
+    print(f"\ncleared {cleared} false claim(s)")
+    for character_id in sorted(dangling):
+        print(f"  {character_id}")
+    return 0
+
+
 def _diversity_command(records: list[dict], args) -> int:
     """The read-only view of cast composition, and the number that steers a wave.
 
@@ -2411,6 +2478,13 @@ def register(subparsers) -> None:
         default=0,
         help="stop after this many records (0 = all); for a dry run on a few",
     )
+    unpublish = actions.add_parser(
+        "unpublish",
+        help="clear a published_as claim whose authored resource does not exist",
+    )
+    unpublish.add_argument(
+        "--limit", type=int, default=0, help="stop after this many records (0 = all)"
+    )
     species_pick = actions.add_parser(
         "species",
         help="list species that may legally carry a given cultivation path, least-used first",
@@ -2510,6 +2584,8 @@ def run(args) -> int:
         return _species_command(readable_catalog(), args)
     if action == "backfill":
         return _backfill_command(readable_catalog(), args)
+    if action == "unpublish":
+        return _unpublish_command(readable_catalog(), args)
     if action == "daily-family":
         return _daily_family_command(readable_catalog(), args)
     records = _load_index()
