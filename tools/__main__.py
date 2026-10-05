@@ -46,10 +46,17 @@ facade_constants = _load("arch.facade_constants")
 # guard that was never tested (INC-0016). Assigned to a name so ruff reads the
 # import as used rather than stripping it.
 facade_constants_selftest = _load("arch.facade_constants_selftest")
+# The VERB census (ADR 0188). Same reason and the same shape as the constant guard
+# above, and it is a separate gate in its own right: `tools check` reaches it
+# through `arch`, and a human can ask the question alone.
+no_caller_verbs = _load("arch.no_caller_verbs")
+no_caller_verbs_selftest = _load("arch.no_caller_verbs_selftest")
 # Same reason, and the same reason `race_from_lore` keeps its cases in their own module rather than
 # in `selftest_cases.py`: that file is shared and busy, so an append there cannot be committed
 # without sweeping another session's in-flight cases (INC-0041), and an uncommittable red path is
 # not a red path.
+png_provenance = _load("png_provenance")
+png_provenance_selftest = _load("png_provenance_selftest")
 race_from_lore = _load("race_from_lore")
 race_from_lore_selftest = _load("race_from_lore_selftest")
 art_fidelity = _load("art_fidelity")
@@ -110,6 +117,7 @@ COMMANDS = {
     "map_theme": map_theme,
     "arch": arch,
     "facade_constants": facade_constants,
+    "no_caller_verbs": no_caller_verbs,
     "art_fidelity": art_fidelity,
     "assets": assets,
     "assets-sweep": assets_sweep,
@@ -124,6 +132,7 @@ COMMANDS = {
     "export": export,
     "ui": ui,
     "new_module": new_module,
+    "png_provenance": png_provenance,
     "portrait_fallback": portrait_fallback,
     "race_from_lore": race_from_lore,
     "realm_power": realm_power,
