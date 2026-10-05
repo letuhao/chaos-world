@@ -194,6 +194,49 @@ const EARN_KEYS: Array[StringName] = [&"ok", &"reason", &"pool", &"amount"]
 ## bounds it: `AGENTS.md` bounds the OUTPUT, never the INPUT.
 const PROGRESS_KEYS: Array[StringName] = [&"points", &"points_max"]
 
+## The names a System PERSISTS its counter under, in the dictionary it reaches through
+## `Actor.set_module_data` at its own `data_key()`.
+##
+## These are declared here rather than left to the framework because the framework is
+## STRICT about them: the ledger normaliser rebuilds its dictionary from its own key
+## list and copies nothing else, so a counter stored under a System's own key name is
+## silently erased by the next write. A System has no way to discover that from the
+## reads above — `points`, `points_max` and `owned` coincide with `PROGRESS_KEYS` and
+## `PRICE_KEYS` by coincidence rather than by declaration, and `version`, `joined`,
+## `balance`, `balances`, `earnings` and `redemptions` are published nowhere at all.
+##
+## That left a mod reaching one module class past this contract to learn which strings
+## its own state is keyed by, which is precisely the coupling `contracts/` exists to
+## prevent. A System therefore MUST use these names for its own half of the record —
+## `points`, `points_max` and `owned` — and MUST NOT assume it may add keys of its own.
+const PERSIST_KEYS: Array[StringName] = [
+	&"version",
+	&"joined",
+	&"points",
+	&"points_max",
+	&"balance",
+	&"balances",
+	&"owned",
+	&"earnings",
+	&"redemptions",
+]
+
+## The subset a SYSTEM owns, as opposed to the framework half. `DoctrineRule.earn`
+## returns a proposal and writes nothing, so the counter is the System's to advance
+## inside its own `redeem`; `balance`, `joined`, `earnings` and `redemptions` are the
+## framework's to move.
+const SYSTEM_OWNED_PERSIST_KEYS: Array[StringName] = [&"points", &"points_max", &"owned"]
+
+const VERSION_KEY := &"version"
+const JOINED_KEY := &"joined"
+const POINTS_KEY := &"points"
+const POINTS_MAX_KEY := &"points_max"
+const BALANCE_KEY := &"balance"
+const BALANCES_KEY := &"balances"
+const OWNED_KEY := &"owned"
+const EARNINGS_KEY := &"earnings"
+const REDEMPTIONS_KEY := &"redemptions"
+
 ## The keys `tier_for()` returns. `tiers` is how many the System has authored, and
 ## `next_tier_points` is `0` at the top tier — the two together are what a panel
 ## needs to draw a progress bar without asking a question this contract does not

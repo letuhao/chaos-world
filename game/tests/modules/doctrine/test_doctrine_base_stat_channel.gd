@@ -31,20 +31,20 @@ extends TestCase
 
 
 ## A def whose only content is a FLAT gain on a real base attribute.
+##
+## The modifier names an `option_id`, not inline target fields: `ItemDef.effects()`
+## resolves every entry through `OptionCatalog.fixed_effect(option_id, value)`, so a
+## synthetic `{target_type, op, target_id, value}` dictionary is silently ignored and
+## the def resolves to NO effects at all. `base_physique` is the real registered option
+## — a FLAT on `physique` with `unit: magnitude`, which is the only shape that means
+## anything here.
 func _base_stat_def(category: StringName, stat_id: StringName, value: float) -> ItemDef:
 	var def := ItemDef.new()
 	def.id = &"test_base_stat_channel"
 	def.category = category
 	def.rarity = &"common"
 	def.realm = &"qi_refining"
-	def.fixed_modifiers = [
-		{
-			"target_type": OptionTarget.STAT,
-			"op": &"FLAT",
-			"target_id": stat_id,
-			"value": value,
-		}
-	]
+	def.fixed_modifiers = [{"option_id": StringName("base_%s" % stat_id), "value": value}]
 	return def
 
 
@@ -85,28 +85,34 @@ func test_a_learned_item_with_a_base_stat_goes_to_the_technique_seam_and_writes_
 	)
 
 
-func test_a_consumable_whose_only_content_is_a_base_attribute_refuses_and_still_reports() -> void:
+func test_a_base_attribute_option_cannot_even_be_attached_to_a_consumable() -> void:
+	# The stronger half, measured rather than assumed. `base_physique` declares
+	# `categories: ["equipment", "technique"]`, so `activations_for` never yields
+	# CONSUMED and `ItemDef.effects()` drops the modifier before any use path sees it.
+	# That means `ItemUse._apply_consumed`'s base-gain refusal is unreachable by
+	# CONSTRUCTION, not merely untriggered: a consumable cannot carry the content that
+	# would trip it. Two independent reasons, either sufficient.
+	var catalog := OptionCatalog.instance()
+	assert_eq(
+		catalog.allows_activation(&"base_physique", ItemActivation.CONSUMED),
+		false,
+		"a base-attribute option is attachable to a consumable, so the refusal below is the only guard"
+	)
+	assert_eq(
+		catalog.allows_activation(&"base_physique", ItemActivation.LEARNED),
+		true,
+		"and it IS attachable as learned, which is exactly why the dead branch matters"
+	)
+
 	var actor := _hero()
 	var before := actor.stats.get_base(Stat.PHYSIQUE)
 	var def := _base_stat_def(ItemCategory.CONSUMABLE, Stat.PHYSIQUE, 3.0)
 	var result := ItemUse.apply(actor, def, ItemInstance.new(def.id, &"channel_probe"))
-	assert_eq(bool(result.get("ok", false)), false, "a base-attribute consumable applies nothing")
-	assert_eq(
-		String(result.get("reason", "")),
-		ItemUse.REASON_NO_EFFECT,
-		"and it says why: there was no applicable effect"
-	)
+	assert_eq(bool(result.get("ok", false)), false, "a consumable carrying nothing applies nothing")
 	assert_eq(
 		actor.stats.get_base(Stat.PHYSIQUE),
 		before,
-		"a consumable must not persist a base attribute - it is spent and gone"
-	)
-	# The numbers still ride along so a caller can show what the item carries, which
-	# is the half of ADR 0001 that makes the refusal informative rather than opaque.
-	assert_eq(
-		float((result.get("stat_gains", {}) as Dictionary).get(String(Stat.PHYSIQUE), 0.0)),
-		3.0,
-		"and the refused gain is still reported in the payload"
+		"and a base attribute is never persisted through it - it is spent and gone"
 	)
 
 
