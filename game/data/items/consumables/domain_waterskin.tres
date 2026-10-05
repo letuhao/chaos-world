@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"domain_waterskin"
+display_name = "Domain Waterskin"
+category = &"consumable"
+rarity = &"common"
+realm = &"qi_condensation"
+subcategory = &"elixir"
+grade = &"mortal"
+stackable = true
+max_stack = 10
+tags = Array[StringName]([&"domain", &"survival", &"water"])
+sources = Array[StringName]([&"domain:entry", &"gather:domain_cache"])
+description = "A sturdy waterskin. Restores 3 water when consumed."
+# resource: water
+# depletion_rate: 1 per room entered
+# duration: 3 rooms
+# cost_when_empty: dehydration (health DOT)
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_stamina_regen", "value": 0.5},
+])
+roll_spec = {"count": 0, "contexts": []}

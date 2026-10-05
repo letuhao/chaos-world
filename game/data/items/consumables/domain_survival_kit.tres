@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"domain_survival_kit"
+display_name = "Domain Survival Kit"
+category = &"consumable"
+rarity = &"uncommon"
+realm = &"qi_condensation"
+subcategory = &"food"
+grade = &"mortal"
+stackable = true
+max_stack = 5
+tags = Array[StringName]([&"domain", &"survival", &"food", &"water", &"torch"])
+sources = Array[StringName]([&"domain:entry", &"gather:domain_cache", &"craft:domain_survival_kit_recipe"])
+description = "A bundled kit. Restores 2 food, 2 water, and 2 torch when consumed."
+# resource: food, water, torch
+# depletion_rate: 1 per room entered (each resource)
+# duration: 2 rooms (all resources)
+# cost_when_empty: starvation, dehydration, darkness
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"core_health_regen", "value": 0.3},
+	{"option_id": &"core_stamina_regen", "value": 0.3},
+])
+roll_spec = {"count": 0, "contexts": []}

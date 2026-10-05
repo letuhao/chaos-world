@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="RoomDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/room_def.gd" id="1_room"]
+[ext_resource type="Script" path="res://src/modules/domain/environment_zone_def.gd" id="2_zone"]
+
+[sub_resource type="Resource" id="zone_larder"]
+script = ExtResource("2_zone")
+zone_id = &"ember_larder_heat"
+kind = &"super_hot"
+intensity = 1
+status_id = &"env_scourge"
+stay_budget = 7.0
+tags = Array[StringName]([&"fire", &"ember"])
+mitigation_tags = Array[StringName]([&"gear", &"affinity"])
+bounds = Rect2i(2, 2, 4, 3)
+
+[resource]
+script = ExtResource("1_room")
+room_id = &"ember_larder"
+display_name = "Ember Larder"
+kind = &"chamber"
+roster_band = &"contact"
+tags = Array[StringName]([&"inland", &"ember", &"storage"])
+size = Vector2i(8, 6)
+actor_spawn_refs = Array[Dictionary]([
+	{"ref_id": &"larder_hound", "inhabitant_id": &"cinder_hound", "role": &"mob", "count": 2},
+	{"ref_id": &"larder_guard", "inhabitant_id": &"ember_warden", "role": &"miniboss", "count": 1}
+])
+fixtures = Array[Dictionary]([
+	{"fixture_id": &"ember_larder_hoard", "kind": &"treasure", "tags": Array[StringName]([&"treasure_unkeyed", &"ember", &"storage"]), "position": Vector2i(5, 3), "bounds": Rect2i(5, 3, 2, 2), "reward_item_id": &"ember_larder_sealed_ration", "reward_count": 1, "key_item_id": &"", "requires_realm": &"", "telegraph_s": 0.0, "damage_share": 0.0, "status_id": &"", "duration_s": 0.0, "mitigation_tags": Array[StringName]([])}
+])
+environment_zones = Array[EnvironmentZoneDef]([SubResource("zone_larder")])

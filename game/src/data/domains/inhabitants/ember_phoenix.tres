@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="InhabitantDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/inhabitant_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+inhabitant_id = &"ember_phoenix"
+display_name = "Ember Phoenix"
+realm_id = &"spirit_transformation"
+base = {&"physique": 25.0, &"spirit": 28.0, &"aptitude": 14.0, &"comprehension": 16.0, &"agility": 18.0, &"will": 22.0, &"fortune": 7.0}
+cultivates = true
+hostile = true
+# ADR 0230: the survivability a species is priced in BLOWS, not vitality.
+blows_to_survive = 6.0
+# ADR 0235's authored boss turn. Absent, a `boss` role fights arithmetically like a mob.
+boss_spec = {
+	"interval": 1.4,
+	"punish_window_blows": 2
+}
+tags = Array[StringName]([&"beast", &"ember", &"avian", &"ancient"])

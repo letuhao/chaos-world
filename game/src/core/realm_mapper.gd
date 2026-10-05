@@ -50,7 +50,7 @@ static func standard_ordinal(path_ordinal: int, path_size: int) -> int:
 	# the division below is by zero and `roundi(INF)` is not an int.
 	if path_size <= 1:
 		return 0
-	var scaled := roundi(float(path_ordinal) * float(standard_size - 1) / float(path_size - 1))
+	var scaled: int = roundi(float(path_ordinal) * float(standard_size - 1) / float(path_size - 1))
 	return clampi(scaled, 0, standard_size - 1)
 
 

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="InhabitantDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/domain/inhabitant_def.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+inhabitant_id = &"void_leviathan"
+display_name = "Void Leviathan"
+realm_id = &"nascent_soul"
+base = {&"physique": 20.0, &"spirit": 22.0, &"aptitude": 12.0, &"comprehension": 14.0, &"agility": 10.0, &"will": 18.0, &"fortune": 6.0}
+cultivates = true
+hostile = true
+# ADR 0230: the survivability a species is priced in BLOWS, not vitality. The void
+# shrine door is `roster_band: contact`, so this species is what stands in it.
+blows_to_survive = 4.0
+# ADR 0235's authored boss turn. Absent, a `miniboss` role fights arithmetically like a mob.
+boss_spec = {
+	"interval": 1.5,
+	"punish_window_blows": 2
+}
+tags = Array[StringName]([&"beast", &"void", &"abyssal", &"deep"])
