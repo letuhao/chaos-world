@@ -40,7 +40,7 @@ none is implemented. A framework that ships an example has decided the shape; th
 publishes the contract and gets out of the way.
 
 **The counter is one int; the tiers are the mechanic.** Persisted through
-`Actor.set_module_data` (`core/actor.gd:328`) under `doctrine/<id>`, with tiers derived from
+`Actor.set_module_data` (`core/actor.gd:336`) under `doctrine/<id>`, with tiers derived from
 it and grants banded by tier. A million levels
 must be representable, so there is never a million-entry table. The counter is flavour and
 progression feel; the tiers are what a board row actually reads.
@@ -70,8 +70,16 @@ two unnamed Systems writing one dictionary restores one System's board into anot
   coherent feature is not contorted to fit an interface budget; `MAX_FACADE_FAN_IN`
   (`tools/arch/rules.py:241`) is the
   measure that predicts a god object.
-- Nothing here needs a base-stat writer. A permanent base-attribute grant is a *learned*
-  item — `ItemUse._apply_learned` (`modules/items/item_use.gd:176`) — and a transient one is
-  a consumable through `Actor.add_status` (`core/actor.gd:257`); only a paired *transfer* is a
-  real gap, and it is owed, not built
-  (DEF-0321).
+- **A base-stat writer IS owed, and this was wrong when first written here.** The obvious
+  answer looked settled: `ItemUse._apply_learned` reads base gains and calls `set_base`
+  (`modules/items/item_use.gd:211`), so a learned item is the delivery and no verb is
+  needed. That branch is unreachable. `ItemActivation.BY_CATEGORY` maps exactly one
+  category to `LEARNED` — `TECHNIQUE` — and `_apply_learned` sends `TECHNIQUE` to
+  `_study_technique` on its first line, which calls an injected `Callable` and writes no
+  stat. A consumable refuses outright (`modules/items/item_use.gd:136-140`, ADR 0001: a
+  base-attribute consumable "restores nothing and applies nothing"). So **no item channel
+  grants a permanent base attribute at all**, and a board row saying "+1 physique" has
+  nothing to call. A transient grant still goes through `Actor.add_status`
+  (`core/actor.gd:265`), which is not a base attribute and never was.
+  `game/tests/modules/doctrine/test_doctrine_base_stat_channel.gd` pins the reachability
+  and is expected to fail once a channel exists (DEF-0321).
