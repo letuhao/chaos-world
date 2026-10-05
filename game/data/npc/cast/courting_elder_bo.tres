@@ -1,0 +1,119 @@
+[gd_resource type="Resource" script_class="NpcDef" load_steps=16 format=3]
+
+[ext_resource type="Script" path="res://src/modules/npc/npc_def.gd" id="1_def"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_stage_def.gd" id="2_stage"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_round_def.gd" id="3_round"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_tell_def.gd" id="4_tell"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_recall_def.gd" id="5_recall"]
+
+[sub_resource type="Resource" id="Stage_sighting"]
+script = ExtResource("2_stage")
+stage_id = &"kept_at_a_distance"
+index = 0
+display_name = "Kept At A Distance"
+stat_multipliers = {}
+tags = Array[StringName]([&"courts", &"observant"])
+advance_after = 3
+advance_verb = &"courtship_talks"
+terminal = false
+
+[sub_resource type="Resource" id="Stage_declared"]
+script = ExtResource("2_stage")
+stage_id = &"declared"
+index = 1
+display_name = "Declared"
+stat_multipliers = {}
+tags = Array[StringName]([&"courts", &"surety"])
+advance_after = 2
+advance_verb = &"claims_made"
+terminal = false
+
+[sub_resource type="Resource" id="Stage_answered"]
+script = ExtResource("2_stage")
+stage_id = &"answered"
+index = 2
+display_name = "Answered"
+stat_multipliers = {}
+tags = Array[StringName]([&"courts", &"pledged"])
+advance_after = 0
+terminal = true
+
+[sub_resource type="Resource" id="Round_sparring"]
+script = ExtResource("3_round")
+slot_id = &"at_the_sparring_ground"
+index = 0
+activity = "watching you spar, and correcting nothing he could correct"
+location_id = &"forge_yard"
+tell_id = &"watches_the_sleeve"
+
+[sub_resource type="Resource" id="Round_terrace"]
+script = ExtResource("3_round")
+slot_id = &"on_the_terrace"
+index = 1
+activity = "drinking alone and leaving the seat beside him conspicuously empty"
+location_id = &"qi_dao"
+tell_id = &"leaves_the_seat"
+
+[sub_resource type="Resource" id="Round_gate"]
+script = ExtResource("3_round")
+slot_id = &"at_the_gate_again"
+index = 2
+activity = "standing where he can see the road and you cannot see his face"
+location_id = &"qi_dao"
+tell_id = &""
+
+[sub_resource type="Resource" id="Tell_stranger"]
+script = ExtResource("4_tell")
+trigger = &"bond_class"
+matches = &"stranger"
+verb = &"nods_once"
+body = "nods once and looks past you at the road, which is a thing he does to everyone"
+consequence = &"dismisses"
+priority = 0
+plausible_tiers = Array[String]([])
+
+[sub_resource type="Resource" id="Tell_acquaintance"]
+script = ExtResource("4_tell")
+trigger = &"bond_class"
+matches = &"acquaintance"
+verb = &"finds_a_reason_to_stay"
+body = "asks you a question he already knows the answer to, so the conversation has no end in it"
+consequence = &"lingers"
+priority = 5
+plausible_tiers = Array[String]([])
+
+[sub_resource type="Resource" id="Tell_sworn"]
+script = ExtResource("4_tell")
+trigger = &"bond_class"
+matches = &"sworn"
+verb = &"stops_performing"
+body = "stops watching the door and looks at you instead, which you have not seen him do for anyone"
+consequence = &"accepts"
+priority = 10
+plausible_tiers = Array[String]([])
+
+[sub_resource type="Resource" id="Recall_kin"]
+script = ExtResource("5_recall")
+cause_id = &"killed_their_kin"
+anchors = Array[String](["the winter the road closed"])
+prose = "the winter the road closed — you came through with their brother on your sword and you never once looked at him"
+short_prose = "you never once looked at me"
+plausible_tiers = Array[String]([])
+
+[resource]
+script = ExtResource("1_def")
+npc_id = &"courting_elder_bo"
+display_name = "Bo of the Ninth House"
+inhabitant_id = &"azure_disciple"
+tier = &"major"
+faction = &"qi_dao"
+tags = Array[StringName]([&"courts", &"house", &"observant"])
+realm_id = &"core_formation"
+base = {"physique": 15.0, "spirit": 12.0, "aptitude": 13.0, "comprehension": 15.0, "will": 16.0}
+stages = Array[NpcStageDef]([SubResource("Stage_sighting"), SubResource("Stage_declared"), SubResource("Stage_answered")])
+initial_stage = &"kept_at_a_distance"
+daily_round = Array[NpcRoundDef]([SubResource("Round_sparring"), SubResource("Round_terrace"), SubResource("Round_gate")])
+tells = Array[NpcTellDef]([SubResource("Tell_stranger"), SubResource("Tell_acquaintance"), SubResource("Tell_sworn")])
+recalls = Array[NpcRecallDef]([SubResource("Recall_kin")])
+round_slot_ratio_periods = 6
+minor_power_scale = 0.0

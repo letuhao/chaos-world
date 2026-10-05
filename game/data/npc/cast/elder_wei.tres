@@ -1,7 +1,11 @@
-[gd_resource type="Resource" script_class="NpcDef" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="NpcDef" load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://src/modules/npc/npc_def.gd" id="1_def"]
 [ext_resource type="Script" path="res://src/modules/npc/npc_stage_def.gd" id="2_stage"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_round_def.gd" id="3_round"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_opinion_def.gd" id="4_opinion"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_recall_def.gd" id="5_recall"]
+[ext_resource type="Script" path="res://src/modules/npc/npc_tell_def.gd" id="6_tell"]
 
 [sub_resource type="Resource" id="Stage_gatekeeper"]
 script = ExtResource("2_stage")
@@ -35,6 +39,66 @@ tags = Array[StringName]([&"absent"])
 advance_after = 0
 terminal = true
 
+[sub_resource type="Resource" id="Round_at_gate"]
+script = ExtResource("3_round")
+slot_id = &"at_the_gate"
+index = 0
+activity = "watching the gate for the third watch"
+location_id = &"mortal_plains"
+tell_id = &""
+
+[sub_resource type="Resource" id="Round_at_forge"]
+script = ExtResource("3_round")
+slot_id = &"at_the_forge"
+index = 1
+activity = "listing blades to a boy who cannot afford one"
+location_id = &"mortal_plains"
+tell_id = &"eyes_the_sleeve_first"
+
+[sub_resource type="Resource" id="Round_at_roof"]
+script = ExtResource("3_round")
+slot_id = &"on_the_roof"
+index = 2
+activity = "sitting where the whole valley can see him and nothing can reach him"
+location_id = &"mortal_plains"
+tell_id = &""
+
+[sub_resource type="Resource" id="Opinion_qin"]
+script = ExtResource("4_opinion")
+subject_id = &"elder_qin"
+stance = &"contest"
+prose = "Qin teaches that a promise is a debt and a debt is a chain. I teach that it is a door."
+opinion_seed = 0
+plausible_tiers = Array[String]([])
+
+[sub_resource type="Resource" id="Recall_kin"]
+script = ExtResource("5_recall")
+cause_id = &"killed_their_kin"
+anchors = Array[String](["third month of the grey year"])
+prose = "the grey one, third month of the grey year — you walked past my gate while I was burying my brother, and you did not stop"
+short_prose = "you did not stop at the gate"
+plausible_tiers = Array[String]([])
+
+[sub_resource type="Resource" id="Tell_shrine"]
+script = ExtResource("6_tell")
+trigger = &"bond_class"
+matches = &"stranger"
+verb = &"nods_once"
+body = "nods once, the way you nod at weather"
+consequence = &"dismisses"
+priority = 0
+plausible_tiers = Array[String]([])
+
+[sub_resource type="Resource" id="Tell_sworn"]
+script = ExtResource("6_tell")
+trigger = &"bond_class"
+matches = &"sworn"
+verb = &"takes_the_gift"
+body = "takes the cup in both hands, which he does not do for guests"
+consequence = &"accepts"
+priority = 10
+plausible_tiers = Array[String]([])
+
 [resource]
 script = ExtResource("1_def")
 npc_id = &"elder_wei"
@@ -47,3 +111,9 @@ realm_id = &"core_formation"
 base = {"physique": 14.0, "spirit": 16.0, "aptitude": 12.0, "comprehension": 18.0, "will": 20.0}
 stages = Array[NpcStageDef]([SubResource("Stage_gatekeeper"), SubResource("Stage_sworn"), SubResource("Stage_retired")])
 initial_stage = &"gatekeeper"
+daily_round = Array[NpcRoundDef]([SubResource("Round_at_gate"), SubResource("Round_at_forge"), SubResource("Round_at_roof")])
+opinions = Array[NpcOpinionDef]([SubResource("Opinion_qin")])
+recalls = Array[NpcRecallDef]([SubResource("Recall_kin")])
+tells = Array[NpcTellDef]([SubResource("Tell_shrine"), SubResource("Tell_sworn")])
+round_slot_ratio_periods = 6
+minor_power_scale = 0.0
