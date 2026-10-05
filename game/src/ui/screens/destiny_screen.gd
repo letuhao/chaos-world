@@ -146,7 +146,38 @@ func _summary() -> Dictionary:
 		"earned_notices": earned_notices(),
 		"earned_notice_count": _earned_ids.size(),
 		"foreign_earns": _foreign_earns,
+		# Fate choice at earn time (ADR 0389). The choice is a UI presentation of
+		# implicit eligibility: when multiple fates in a choice group are eligible,
+		# the UI presents them as a choice. The backend resolves it through existing
+		# earn logic.
+		"choice_groups": _choice_groups(),
 	}
+
+
+## The fate choice groups for this actor (ADR 0389). A choice group is a set of
+## fates that can be offered together when one of their triggers fires. The UI
+## presents the choice when multiple fates in the group are eligible.
+##
+## Returns a dictionary mapping each fate id in a choice group to the list of
+## eligible fates in that group. Only groups with multiple eligible fates are
+## included.
+func _choice_groups() -> Dictionary:
+	var out := {}
+	if _actor == null:
+		return out
+	var fates: Dictionary = _codex.get("fates", {})
+	for fate_id in fates.keys():
+		var view: Dictionary = fates[fate_id]
+		var choices: Array = view.get("eligible_choices", [])
+		if choices.is_empty():
+			continue
+		var eligible: Array = DestinyApi.eligible_choices(_actor, StringName(fate_id))
+		if eligible.size() > 1:
+			var names: Array = []
+			for c in eligible:
+				names.append(String(c))
+			out[String(fate_id)] = names
+	return out
 
 
 ## Re-read the facade and hand raw values down. The rows own every format.

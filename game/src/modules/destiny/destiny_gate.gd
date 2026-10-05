@@ -118,6 +118,22 @@ static func earnable(ledger: Dictionary, def: DestinyDef) -> bool:
 	return true
 
 
+## Whether `def` may be earned by `actor` right now: every synergy prerequisite
+## (`FateDef.requires`) is held. A fate with no requirements is always earnable.
+##
+## This is the fate-level counterpart to [method earnable] (which checks destiny
+## prerequisites). The synergy tree is a prerequisite graph, not a grant: holding
+## a fate makes its `unlocks` targets earnable, but each must still be earned
+## through its own deed path (ADR 0383).
+static func fate_earnable(ledger: Dictionary, def: FateDef) -> bool:
+	if def == null:
+		return false
+	for required_id in def.requires:
+		if not DestinyState.has_fate(ledger, required_id):
+			return false
+	return true
+
+
 ## Every prerequisite `def` names that the actor does not yet hold, as
 ## `{kind, id, required, actual, label}` entries. Empty means earnable, so a UI
 ## can show why a destiny has not arrived without re-deriving the rule.

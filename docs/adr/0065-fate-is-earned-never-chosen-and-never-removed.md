@@ -18,6 +18,9 @@ new stat pipeline, a save field, or a new kind of equipped slot.
   reset, not for a debug tool. Nothing in the module removes anything.
   `normalize()` may drop an entry only when it is unreadable or names content the
   catalog no longer ships — never because the player did something.
+- **Fates are permanent reactive modifiers, not resources.** They cannot be spent,
+  traded, or sacrificed. Fate is what the PC reacts to and what the world reacts
+  to. A fate is a consequence of a deed, not a currency or a consumable.
 - **A ledger, not direct stat writes.** `destiny_state` under `actor.module_data`
   is the single source of truth; `DestinyProjection` rebuilds every modifier and
   trait from it. So restore, replay and re-attach cannot double-count or drift.
