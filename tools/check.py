@@ -5,6 +5,7 @@ from __future__ import annotations
 import subprocess
 import sys
 
+from . import institution_family
 from .common import ADR_DIR, REPO_ROOT, fail, info, ok
 from .new_adr import _numbered
 
@@ -177,6 +178,39 @@ def _check_adr_numbers() -> bool:
     return ok_flag
 
 
+def _check_content_families() -> bool:
+    """Every declared content family, and every content root a mod registers.
+
+    ADR 0184 §9 and its acceptance criterion: "an unrecognized family fails loudly".
+    Nothing enforced that before — `_wire_content_roots` has a `_:` arm that only records
+    the offender with a `push_warning`, so a mod shipping content into a family no gate
+    grades was announced, ignored, and green.
+
+    ## In-process, NOT a STEPS entry, and the reason is the loader
+    A STEPS entry spawns `python -m tools <name>`, which needs the subcommand in
+    `__main__.py`. That file is a shared, currently-dirty dispatch table, so registering
+    there was not available — and a STEPS entry naming an unregistered command exits 2,
+    which is a PERMANENTLY RED gate (INC-0017). Same reason `_check_adr_numbers` is
+    in-process, and the same reason this is hoisted above `fmt --check`: a guard one
+    stray space can switch off is not a guard.
+
+    ## Importing the module is what registers its red paths
+    `tools/institution_family.py` carries its own `@case` blocks (INC-0016). This import
+    is therefore load-bearing twice — it makes the gate reachable AND makes
+    `selftest run` below execute its proof. Removing it silently disarms both.
+    """
+    families = institution_family.load_families(REPO_ROOT / "tools" / "arch" / "families.json")
+    manifests = institution_family.find_mod_manifests(REPO_ROOT / "game")
+    return (
+        institution_family.report(
+            institution_family.findings(families, manifests),
+            institution_family.exemptions(families, manifests),
+            True,
+        )
+        == 0
+    )
+
+
 def run(args) -> int:
     failed: list[str] = []
 
@@ -228,6 +262,13 @@ def run(args) -> int:
             return 1
     info("== adr ==")
     if not _gate("adr", _check_adr_numbers()):
+        return 1
+    # Content declarations before any stage a routine edit can red-flag: a mod shipping
+    # content into an undeclared family, or a manifest claiming a tree that is not its
+    # own, is a content bug that costs milliseconds to name and minutes to find later.
+    # Any exemption it spends is printed here on every run (ADR 0184's "loudly exempt").
+    info("== content families ==")
+    if not _gate("content_families", _check_content_families()):
         return 1
     for name, extra in STEPS:
         info(f"== {name} ==")

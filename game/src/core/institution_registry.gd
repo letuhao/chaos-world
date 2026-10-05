@@ -192,11 +192,14 @@ func register(
 		# two owners of one identity.
 		if not flags.has(name):
 			flags.append(name)
-	flags.sort()
+	# Stored through the SAME canon as `capabilities_of` reads it back through.
+	# Sorting here directly was the DEF-0334 half of the defect: a row ordered by
+	# one rule and read back by another is two sources of truth for one list, and
+	# the reader could not see which rule the stored order came from.
 	_rows[key] = {
 		"def_type": label,
 		"def_script": def_script,
-		"capabilities": flags,
+		"capabilities": _canonical(flags),
 	}
 	return {"ok": true, "reason": ""}
 
@@ -243,19 +246,15 @@ func has_capability(kind: StringName, capability: StringName) -> Dictionary:
 ## a kind nobody registered, which is the honest empty because the caller asked about
 ## something that does not exist rather than about a kind with nothing.
 ##
-## `Array[StringName].sort()` is not specified to order by string value and the ids
-## are interned, so the sort happens on `Array[String]` and converts afterwards — the
-## reason `WorldFact.ids` sorts strings first.
+## The order comes from [method _canonical], and the docstring on THAT method is the
+## authority on what "canonically ordered" means. This method states the same rule in
+## one line rather than re-deriving it, because two copies of a sort is the ADR 0066
+## shape inside the file that exists to remove it.
 func capabilities_of(kind: StringName) -> Array[StringName]:
 	var found = _rows.get(String(kind))
-	var out: Array[StringName] = []
 	if not (found is Dictionary):
-		return out
-	var rows := (found as Dictionary)["capabilities"] as Array
-	for capability in rows:
-		out.append(StringName(String(capability)))
-	out.sort()
-	return out
+		return [] as Array[StringName]
+	return _canonical((found as Dictionary)["capabilities"] as Array)
 
 
 ## Every registered kind id, canonically ordered by its STRING value. Canonised for
@@ -296,6 +295,48 @@ func def_script_bound(kind: StringName) -> bool:
 
 
 # --- Internals ---------------------------------------------------------------
+
+
+## ## THE authority on capability order, and the DEF-0334 fix
+##
+## `capabilities_of`'s docstring has always claimed the list is ordered by STRING
+## value and that the sort happens on `Array[String]` before converting back — and the
+## code did neither. It sorted an `Array[StringName]`, and **MEASURED: this engine does
+## not order interned ids by their string value.** A def declaring
+## `[has_offices, has_territory]` read back `[has_territory, has_offices]`.
+##
+## **The docstring was authoritative and the code was the defect.** Three reasons, in
+## order of weight:
+##
+## 1. **The same rule is already implemented correctly twice in the same layer** —
+##    `InstitutionDef.authored_capabilities` and `InstitutionLedger.sorted_keys` both
+##    sort on `Array[String]` for this stated reason. A third divergent copy is the
+##    ADR 0066 trap the registry's own class note is written against.
+## 2. **A documented order that a reader relies on is a contract; an unspecified engine
+##    ordering is not.** Interned-id order is an implementation artefact — it can change
+##    between engine versions and between the order ids happened to be interned — so code
+##    depending on it is depending on something the engine never promised.
+## 3. **The failure was measured and had teeth.** A positional comparison of two
+##    capability lists refuses the second `.tres` a modder drops into the directory —
+##    exactly the silent-failure class this programme exists to prevent — so the
+##    difference is a shipped refutation on one side and a correctness improvement on
+##    the other, not a matter of taste.
+##
+## So the order lives HERE, once. `register` stores through it and `capabilities_of`
+## reads back through it, which is why a row cannot be written under one rule and read
+## under another.
+func _canonical(capabilities: Array) -> Array[StringName]:
+	# A `for` over the caller's snapshot writing into TWO fresh arrays: the body never
+	# touches the array being walked, so there is no shape here for a loop to grow in
+	# lockstep with its own bound (`test_no_unbounded_wait.gd`).
+	var text: Array[String] = []
+	for capability in capabilities:
+		text.append(String(capability))
+	text.sort()
+	var out: Array[StringName] = []
+	for entry in text:
+		out.append(StringName(entry))
+	return out
 
 
 ## The registered keys, canonically ordered by their STRING value. See the class note
