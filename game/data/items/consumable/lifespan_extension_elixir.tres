@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/modules/items/item_def.gd" id="1_item"]
+
+[resource]
+script = ExtResource("1_item")
+id = &"lifespan_extension_elixir"
+display_name = "Lifespan Extension Elixir"
+description = "A shimmering elixir that raises the lifespan the body was born with. It moves the deadline; it does not stop the clock."
+category = &"consumable"
+rarity = &"rare"
+realm = &"qi_refining"
+fixed_modifiers = Array[Dictionary]([
+	{"option_id": &"extend_lifespan", "value": 3650.0},
+])
+roll_spec = {"count": 1, "contexts": ["base", "prefix"]}
+subcategory = &"elixir"
+grade = &"mortal"
+tags = Array[StringName]([&"lifespan"])
+sources = Array[StringName]([&"craft:lifespan_extension_elixir_recipe"])
