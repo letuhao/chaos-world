@@ -159,23 +159,53 @@ func test_a_failed_qi_breakthrough_earns_nothing() -> void:
 ## ## The second qi entry point, which is a genuinely separate site
 ##
 ## `QiCultivationApi.attempt_breakthrough` calls `QiBreakthroughTransaction.execute`
-## and never touches `QiAdvancement.try_breakthrough`, and `qi_cultivation_screen.gd
-## :275` calls the FACADE. So the UI's own breakthrough button runs through this
-## site, and a wiring that existed only on `QiAdvancement` would leave the button
-## earning nothing — which is precisely the defect this suite exists to hold shut.
+## and never touches `QiAdvancement.try_breakthrough`, so a wiring that existed only
+## on the advancement class would leave the UI's button earning nothing — which is
+## precisely the defect this suite exists to hold shut.
+##
+## The FACADE is the UI's entry point, so this asserts the claim that matters: a
+## press of Breakthrough is not a walk past the earn. It cannot pass a seed,
+## because `QiCultivationApi.attempt_breakthrough(actor)` takes no rng and hands
+## `execute(actor, null)` — the transaction draws its own roll. That made this a
+## COIN FLIP: the seed `_qi_roll` searched for was used for nothing, and the suite
+## passed or failed on the weather. Measured: 80 passed / 0 failed alone, 2 failed
+## immediately after the combat suite, same code and same tree.
+##
+## So the roll is retried within the SAME `SEED_CAP` bound the rest of this file
+## uses, rather than asserted once. The bound names the condition that failed to
+## converge instead of looping forever, and it is taken before the loop. A
+## breakthrough that never succeeds in 256 attempts is a real finding, not a flake.
 func test_the_qi_facade_entry_point_earns_too() -> void:
-	var hero := _qi_hero()
-	var rng := _qi_roll(hero, true)
-	assert_ne(rng, null, "a prepared qi hero with a winning roll exists")
+	var granted := false
+	var attempts := 0
+	while attempts < SEED_CAP and not granted:
+		var hero := _qi_hero()
+		if _qi_roll(hero, true) == null:
+			attempts += 1
+			continue
+		granted = QiCultivationApi.attempt_breakthrough(hero)
+		if granted:
+			assert_eq(
+				DestinyApi.has_fate(hero, BARRIER),
+				true,
+				"and earned the fate, so the UI's Breakthrough button is not a walk past it"
+			)
+			assert_eq(
+				String(_source_of(hero, BARRIER)),
+				QiAdvancement.EARN_SOURCE,
+				"under the path's own source, naming the system and never the fate id"
+			)
+		attempts += 1
 	assert_eq(
-		QiCultivationApi.attempt_breakthrough(hero),
+		granted,
 		true,
-		"the facade's own entry point granted the breakthrough"
-	)
-	assert_eq(
-		DestinyApi.has_fate(hero, BARRIER),
-		true,
-		"and earned the fate, so the UI's Breakthrough button is not a walk past it"
+		(
+			(
+				"the facade granted a breakthrough within %d attempts; a roll that never "
+				+ "succeeds is a defect, not a flake"
+			)
+			% SEED_CAP
+		)
 	)
 
 
