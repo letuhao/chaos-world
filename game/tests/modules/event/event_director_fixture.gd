@@ -146,9 +146,17 @@ func _actor(at: String = &"spirit_peaks", founded: bool = false) -> Actor:
 
 ## ADR 0066 tests below forbid.
 
+##
 
-func _remember(actor: Actor, fact_id: StringName, amount: int = 1) -> void:
-	WorldFact.record(actor, fact_id, amount)
+## Returns [code]WorldFact.record[/code]'s own answer rather than discarding it, so a
+
+## caller can assert the ledger ACCEPTED the accrual instead of assuming it did. The
+
+## old body returned nothing, which made "the fact is now true" untestable from here.
+
+
+func _remember(actor: Actor, fact_id: StringName, amount: int = 1) -> bool:
+	return bool((WorldFact.record(actor, fact_id, amount) as Dictionary).get("ok", false))
 
 
 func _stage_id(actor: Actor, event_id: StringName) -> String:

@@ -523,32 +523,74 @@ func test_an_event_that_authors_no_stage_is_refused_by_name() -> void:
 	assert_eq(_stage_id(actor, TREASURE), "read", "on the single stage it authors")
 
 
-func test_the_rare_treasure_refuses_itself_a_second_time_through_none_of() -> void:
-	# `none_of` over its own fact: once the stone has been read the event is finished
+func test_the_rare_treasure_refuses_itself_a_second_time_through_the_ledger() -> void:
+	# **The once-rule is the LEDGER's, not a trigger's (BL-0896, ADR 0217).**
 
-	# with, whether or not anyone advanced it. The gate is the once-rule, expressed as
+	# This gate used to be authored as `none_of(fact treasure_stone_read)`. That was
 
-	# data (ADR 0113: "adding a fact-gated content type is a content edit").
+	# a gate satisfied only by its own opening: `treasure_stone_read` is produced
+
+	# ONLY by this event's own stage 0, so the demand sat behind the door that would
+
+	# satisfy it — an authoring error ADR 0217's SATISFIABLE test refuses literally.
+
+	# It was ALSO already open on a bare hero, so it failed the NON-TRIVIAL test too.
+
+	# The stone is a DISCOVERY: it does not announce itself, so it is authored
+
+	# ungated and the price is the walk (`location_id: transcendent_realm`). What the
+
+	# gate was carrying — 'read once, and then it stops' — the ledger already owns.
 
 	var actor := _actor(&"transcendent_realm")
 
-	# A def with no stages cannot open at all, so the `none_of` gate is asserted on a
-
-	# ladder-bearing event instead: the same requirement shape, read the same way.
-
-	var verdict := EventGate.evaluate(
-		actor, {"verb": &"none_of", "of": [{"verb": &"fact", "id": &"treasure_stone_read"}]}
+	assert_eq(
+		EventGate.evaluate(actor, {}).get("ok", false),
+		true,
+		"an EMPTY requirement is ungated: the stone needs no summons"
 	)
 
-	assert_eq(bool(verdict.get("ok", false)), true, "the stone is unread, so the gate is open")
+	var first := EventApi.begin(actor, TREASURE)
 
-	_remember(actor, &"treasure_stone_read")
-
-	var after := EventGate.evaluate(
-		actor, {"verb": &"none_of", "of": [{"verb": &"fact", "id": &"treasure_stone_read"}]}
+	assert_eq(
+		bool(first.get("ok", false)),
+		true,
+		"the stone opens for a hero who has done nothing: %s" % first
 	)
 
-	assert_eq(bool(after.get("ok", false)), false, "and reading it closes the gate for good")
+	assert_eq(
+		_remember(actor, &"treasure_stone_read"),
+		true,
+		"the reading is recorded through the ledger's one writer, not asserted into being"
+	)
+
+	# The ledger, not a trigger, is what shuts it. `begin` refuses a resolved event
+
+	# and `available` filters it out, so 'once' is answered without a gate at all.
+
+	assert_eq(
+		_available_ids(actor).has(String(TREASURE)),
+		false,
+		"while it is open, `available` does not offer it a second time"
+	)
+
+	var closed := EventApi.resolve(actor, TREASURE)
+
+	assert_eq(bool(closed.get("ok", false)), true, "and once read, it resolves: %s" % closed)
+
+	var again := EventApi.begin(actor, TREASURE)
+
+	assert_eq(
+		String(again.get("reason", "")),
+		"already_resolved",
+		"a resolved stone refuses to open again — the once-rule with no trigger on it"
+	)
+
+	assert_eq(
+		_available_ids(actor).has(String(TREASURE)),
+		false,
+		"and `available` no longer offers it, so nothing reaches the door behind it"
+	)
 
 
 # --- 4. Pay fires EXACTLY ONCE (ADR 0061) -----------------------------------
