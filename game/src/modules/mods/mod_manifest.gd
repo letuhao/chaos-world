@@ -235,7 +235,10 @@ static func _parse_content_roots(value, source_path: String) -> Array:
 					"%s: a 'content_roots' entry needs string 'family' and 'dir'" % source_path
 				),
 			]
-		out.append({"family": String(entry["family"]), "dir": String(entry["dir"])})
+		var id_field := "id"
+		if entry.has("id_field") and typeof(entry["id_field"]) == TYPE_STRING:
+			id_field = String(entry["id_field"])
+		out.append({"family": String(entry["family"]), "dir": String(entry["dir"]), "id_field": id_field})
 	return [true, out]
 
 

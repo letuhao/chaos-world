@@ -269,7 +269,7 @@ static func _validate_and_depth(mods: Array[Dictionary]) -> Dictionary:
 static func _stamp_context(mod: Dictionary, registry: ModuleRegistry) -> RegistrationContext:
 	var ctx := RegistrationContext.new(mod["id"], mod, registry)
 	for row in mod["content_roots"]:
-		ctx.add_content_root(row["family"], row["dir"])
+		ctx.add_content_root(row["family"], row["dir"], row.get("id_field", "id"))
 	for module in mod["modules"]:
 		ctx.register_module(
 			module["name"],
