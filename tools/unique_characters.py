@@ -781,14 +781,40 @@ def _validate(records: list[dict], *, check_files: bool) -> list[str]:
                     )
             # A species can CLOSE a cultivation path, and a character cannot carry one
             # their own body makes impossible. Fifteen species do: commonborn closes
-            # mind, rootmarch closes body, unwritten and wake close all three, and
-            # `no-cultivation` closes everything without saying so in an attribute.
+            # mind, rootmarch closes body, unwritten closes mind, wake closes all three,
+            # and `no-cultivation` closes everything without saying so in an attribute.
+            #
+            # `unwritten and wake close all three` was wrong here and stayed wrong for
+            # weeks, because a comment is not checked against the data it describes.
+            # `species_closed_paths` read unwritten as mind-only the whole time and the
+            # sentence above it said otherwise; an agent trusting the prose over the tool
+            # would have skipped a legal path. Read the table, not the comment.
             #
             # Two characters were carrying a path their own lore forbids, and both
             # said so in their own prose - unique-0023 wrote "a rootmarch has no
             # heart-kidney channel and never gets past the fourth realm" while
             # carrying `path: body`. The record was self-refuting and `check` was
             # silent, because nothing compared the two fields.
+            # `appearance.race` is a LOOKUP KEY, not a prose field, and nothing said so.
+            # The bloodline guard above and the closed-path guard below both read it as
+            # an exact dictionary key into the bible, so a decorated value - "Brinecaller,
+            # the one documented crossing of the salt-adapted people" - misses BOTH sets
+            # at once and `check` passes. Ten records were written that way and were
+            # exempt from the only two rules that catch an impossible body: measured
+            # across the catalog, 10 decorated, 0 of 10 resolving, so no path had yet
+            # contradicted a species. Latent is not the same as absent - one more
+            # decorated tidecaller on `body` and the closed-path guard has silently
+            # stopped existing. The description belongs in a prose field; a lookup key
+            # cannot be a sentence.
+            if lore_entries is not None:
+                race_id = str(appearance.get("race", "")).strip()
+                if race_id not in lore_entries:
+                    issues.append(
+                        f"{label}: cannot be canon while appearance.race is {race_id!r}, "
+                        f"which is not a lore id, so neither the bloodline guard nor the "
+                        f"closed-path guard can see this record. Use the bare species id "
+                        f"(races.<slug>) and put the description in a prose field."
+                    )
             if lore_entries is not None:
                 closed = species_closed_paths(lore_entries).get(race_id)
                 if closed and str(identity.get("path", "")).strip() in closed:
