@@ -351,13 +351,34 @@ static func _entry_parent() -> Node:
 
 ## Free the subtree [method stand_in_the_tree] built, and detach `body` from it. `free()`,
 ## never `queue_free()` — see that method's closing note.
-static func release_the_tree(body: PlayerAdapter) -> void:
-	if body == null or not is_instance_valid(body):
+##
+## ## `body` is `Variant`, and that is deliberate
+##
+## **Every real caller passes `WorldStage.player()`, which is `_mounted_player`, and that is
+## null whenever nothing is standing** — a mount refused by name, a suite whose boot already
+## committed its arrival elsewhere, a teardown running after another suite released the
+## tree. Declared `PlayerAdapter`, the guard `body == null` below is unreachable as far as
+## the engine is concerned: the null is rejected by the TYPE at the call boundary and the
+## caller sees `Invalid type in function 'release_the_tree'` instead of a clean no-op. That
+## is an abort inside a caller's teardown, which is how a release that had nothing to
+## release became a script error attributed to whatever suite ran next.
+static func release_the_tree(body: Variant) -> void:
+	if not (body is PlayerAdapter):
 		return
-	var entry := body.get_parent()
-	if body.get_parent() != null:
-		body.get_parent().remove_child(body)
-	if entry != null and is_instance_valid(entry) and entry.is_inside_tree():
+	var standing := body as PlayerAdapter
+	if not is_instance_valid(standing):
+		return
+	var entry := standing.get_parent()
+	if standing.get_parent() != null:
+		standing.get_parent().remove_child(standing)
+	# Freed, not deferred, and NOT gated on `is_inside_tree()`. That gate was written when
+	# the only parent in play was the root window — which, under the headless runner, is
+	# never "inside a tree" (`SceneTree.root.get_tree()` is null while `_initialize()`
+	# runs), so the entry was NEVER freed and each arrival leaked a whole playfield
+	# subtree. `is_inside_tree()` answers "is this node reachable from a live SceneTree",
+	# which is not the question being asked here; the question is "is this a node this
+	# function owns", and an entry parented to the root window still is one.
+	if entry != null and is_instance_valid(entry):
 		entry.free()
 
 
