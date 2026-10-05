@@ -489,7 +489,17 @@ def _no_stat_numbers(block: object, label: str, stat_ids: set[str]) -> list[str]
     authored power table, `tools arch` reads the module graph, and neither can
     see a JSONL row. So the two ways a number gets in are refused here — a bare
     JSON number anywhere in the block, and a number assigned to one of the
-    authored stat ids, in a key or in prose (`physique: 40`).
+    authored stat ids by key (`physique: 40`, `physique=40`).
+
+    MEASURED, and narrower than an earlier version of this docstring claimed. It used to
+    say "in a key or in prose", which is false: an agent found that `physique 40` with a
+    SPACE and no separator passes, as does a free-standing number in prose ("carries 40",
+    "his jaw is 40"). Only the key-with-separator form and a whole-string number are caught.
+    The claim was corrected rather than the pattern widened, because widening it would
+    redden exactly one record - unique-0102, whose block reads "50 of the crown's 150" -
+    and that sentence is arguably the balance surface this function exists to refuse, so
+    closing the gap is a judgement about that record rather than a mechanical fix. Three
+    further records carry a digit in `canon` prose, which this function never sees at all.
 
     A digit that is merely part of a name ("the 9th Brother") is not a stat and
     still passes, which is why this matches stat ids rather than any digit.
