@@ -24,7 +24,7 @@ Item art uses reusable PNG and SVG families indexed by `game/assets/asset-index.
 
 ## Commands
 Prereqs: `uv` (https://docs.astral.sh/uv/) and a Godot 4.7.x binary. All of these are `uv run python -m tools <task>`.
-- `uv sync` — create/refresh `.venv` from `pyproject.toml` + `uv.lock`. `fmt` — format GDScript + Python (`--check` to verify only). `lint` — static lint. `arch` — enforce module boundaries + SOLID structure (facade surface, line budget).
+- `uv sync` — create/refresh `.venv` from `pyproject.toml` + `uv.lock`. `fmt` — format GDScript + Python (`--check` to verify only). **`fmt` with no paths REWRITES THE WHOLE TREE**, so always pass the paths you own (INC-0065: two agents reformatted seven peers' files that way), and never across `game/` or `tools/` bare — on this tree `ruff format` also joins implicitly-concatenated literals, which INC-0015 depends on staying joined. `lint` — static lint. `arch` — enforce module boundaries + SOLID structure (line budget), plus the fan-in guard that replaced the deleted width cap (ADR 0265).
 - `test` — run the Godot test suite headless; `test --suite <substring>` runs only matching suites. **Use this while iterating.**
 - `check` — full gate: `fmt --check -> lint -> arch -> deferred validate -> backlog validate -> data audit -> test`. Run before every commit; CI runs exactly this.
 - `run` — launch the game. `export <preset>` — export a build.
