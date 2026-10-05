@@ -362,12 +362,18 @@ static func _entry_parent() -> Node:
 ## caller sees `Invalid type in function 'release_the_tree'` instead of a clean no-op. That
 ## is an abort inside a caller's teardown, which is how a release that had nothing to
 ## release became a script error attributed to whatever suite ran next.
+##
+## The two guards are ORDERED, and the order is the fix: liveness before type.
 static func release_the_tree(body: Variant) -> void:
+	# `is_instance_valid()` comes FIRST, before the `is PlayerAdapter` test. A freed body is
+	# a dangling reference and testing its TYPE touches it, which the engine refuses with
+	# "Left operand of 'is' is a previously freed instance" — so the validity guard written
+	# to handle exactly that case could never be reached. Liveness, then type.
+	if not is_instance_valid(body):
+		return
 	if not (body is PlayerAdapter):
 		return
 	var standing := body as PlayerAdapter
-	if not is_instance_valid(standing):
-		return
 	var entry := standing.get_parent()
 	if standing.get_parent() != null:
 		standing.get_parent().remove_child(standing)
