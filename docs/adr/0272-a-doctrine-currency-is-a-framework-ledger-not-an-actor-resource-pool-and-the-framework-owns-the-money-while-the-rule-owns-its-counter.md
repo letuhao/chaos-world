@@ -9,7 +9,7 @@
 `CultivationPathDef.resource_ids` already creates lazily through `ensure_resources(actor)`".
 Measured, that promise cannot be kept and the arithmetic is why:
 
-- `ResourcePool.change` clamps to `maximum` (`contracts/resource_pool.gd:28`).
+- `ResourcePool.change` clamps to `maximum` (`contracts/resource_pool.gd:28-30`).
 - `CultivationPathDef.ensure_resources` mints a declared pool with `maximum = 0.0`
   (`core/cultivation_path_def.gd:44`).
 

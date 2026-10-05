@@ -7,7 +7,7 @@ extends RefCounted
 ##
 ## A doctrine currency is an ACCUMULATOR: a System you have not spent from still
 ## holds what you farmed. `ResourcePool` cannot be that, and the reason is arithmetic:
-## `change` clamps to `maximum` (`contracts/resource_pool.gd:28`) and
+## `change` clamps to `maximum` (`contracts/resource_pool.gd:28-30`) and
 ## `CultivationPathDef.ensure_resources` mints a declared pool with `maximum = 0.0`
 ## (`core/cultivation_path_def.gd:44`), so `change(+amount)` on any pool the game
 ## declares through that seam is `clampf(amount, 0.0, 0.0)` — a guaranteed `0.0`. A
@@ -47,12 +47,6 @@ const KEY_BALANCES := "balances"
 const KEY_OWNED := "owned"
 const KEY_EARNINGS := "earnings"
 const KEY_REDEMPTIONS := "redemptions"
-
-
-## An empty ledger. One spelling of the skeleton, so a new key cannot be half-written by
-## a caller — the rule `EconomyApi._normalize` states.
-static func fresh() -> Dictionary:
-	return normalize({})
 
 
 ## `raw` as this module's ledger, whatever a save or a rule handed over. Always a NEW
