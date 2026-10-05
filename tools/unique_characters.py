@@ -2334,7 +2334,13 @@ def register(subparsers) -> None:
         ),
     )
 
-    actions.add_parser("report", help="summarize the named cast and its shot coverage")
+    actions.add_parser(
+        "report",
+        help="summarize the WHOLE catalog: counts by status, role and path. Takes no "
+        "arguments - it has never taken a cast name, and an agent wasted time trying to "
+        "pass one because this string advertised it. For per-character shot coverage use "
+        "`plan <id>`; for what to render next use `next`.",
+    )
     backfill = actions.add_parser(
         "backfill",
         help="add a newly-required prompt slot to canon records that predate it",
