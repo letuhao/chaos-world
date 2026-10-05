@@ -132,10 +132,10 @@ func test_a_defaulting_high_bidder_hands_the_lot_to_the_next_bidder_at_their_own
 # --- 5. The structural pins -----------------------------------------------------
 
 
-## `market` names no `npc` type, and the facade is still at or under the twelve-method
-## cap. Both are read off the SOURCE rather than asserted by count-and-trust: the cap is
-## `MAX_FACADE_PUBLIC_METHODS` in `tools/arch/rules.py`, and this is the ADR 0102 shape
-## of the pin.
+## `market` names no `npc` type, and nothing about the facade's width decides that any
+## more. Both are read off the SOURCE rather than asserted by count-and-trust: ADR 0265
+## deleted `MAX_FACADE_PUBLIC_METHODS`, so there is no verb count that can make `market`
+## legal or illegal, and this is the ADR 0102 shape of the pin.
 ##
 ## **The `npc` scan reads executable text only.** `api.gd` cites `NpcState.ensure_entry` in a
 ## `##` comment as the shape `MAX_SHOPS` follows — a real cross-reference, since that

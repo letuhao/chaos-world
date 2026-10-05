@@ -181,7 +181,7 @@ Three tiers, one vocabulary, and each answers a question no other answers (ADR 0
 - **Focus** — implement the `ScreenStack` hooks (`focus_initial`, `on_screen_shown`, `on_screen_hidden`, `on_stack_input`), never `grab_focus()` in `_ready()`.
 - **Testable contract** — every screen/panel exposes `summary() -> Dictionary`: primitives only, `{}` when no actor, child summaries nested under the child's key. Tests assert that, not pixels.
 
-`tools arch` enforces the facade rule for `ui/` by scanning bare class references, so panels call the facade by name with no `preload` ceremony. Note `items` and `body_cultivation` are at the 12-method facade cap (`rules.MAX_FACADE_PUBLIC_METHODS`) — a new UI need there means splitting the facade, not growing it.
+`tools arch` enforces the facade rule for `ui/` by scanning bare class references, so panels call the facade by name with no `preload` ceremony. **There is no facade width cap** — it is measured by FAN-IN instead (`rules.MAX_FACADE_FAN_IN`): a facade many units import is a god object however many verbs it publishes. A new UI need goes on the facade; reach for a `summary()` read key or a named class when the verb is a read, not a split.
 
 **Split dev cycle** — gameplay and UI can be built in parallel: (1) gameplay publishes a facade method or `preview() -> Dictionary` answering "what is true now?"; (2) UI builds only against that contract, never module internals, and both stay green independently. Where a panel needs something the facade does not expose, add it to the facade — do not widen `ui/` to reach internals.
 
@@ -192,7 +192,7 @@ Contract-first; the composition root is the only place that knows concrete types
 - **O — extend, do not edit.** Add a module or component and wire it in `app/`; never put feature logic in `core/`. Changing a `contracts/` interface or `core/` behavior requires an ADR in the same change.
 - **L — substitutable implementations.** Any script implementing a `contracts/` interface must pass the same contract tests.
 
-Loop: contract -> implementation -> app wiring -> contract test -> `tools check`. Enforced by: `tools arch` for DIP/ISP (facade-only cross-module edges, no upward layer deps, `MAX_FACADE_PUBLIC_METHODS` on `api.gd`) and SRP (a warning past `LINE_BUDGET`); an ADR in the same change for OCP (`core/`/`contracts/`); contract tests under `game/tests/contracts/` for LSP.
+Loop: contract -> implementation -> app wiring -> contract test -> `tools check`. Enforced by: `tools arch` for DIP (facade-only cross-module edges, no upward layer deps) and fan-in plus SRP (warnings past `MAX_FACADE_FAN_IN` / `LINE_BUDGET`); an ADR in the same change for OCP (`core/`/`contracts/`); contract tests under `game/tests/contracts/` for LSP.
 
 ## Adding or changing a module
 1. Run `uv run python -m tools new_module <name>` (or create `game/src/modules/<name>/` with an `api.gd` facade), then set its allowed dependencies in `tools/arch/registry.json` (written by `new_module`; never edit Python for this) and run `tools arch`.

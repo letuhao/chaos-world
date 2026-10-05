@@ -35,7 +35,7 @@ Optional fields:
 - Each module entry points to an `api.gd` facade — the only file other modules may reference.
 - `deps` lists module ids this one depends on (facade-only references).
 - `provides` declares what the module offers (e.g. `["cultivation_path"]`).
-- Facade cap: 12 public methods (`rules.MAX_FACADE_PUBLIC_METHODS`).
+- No facade width cap. `tools arch` measures facade FAN-IN instead (`rules.MAX_FACADE_FAN_IN`): a facade imported by many units warns, because that is the coupling. Publish the verbs your module needs; if callers start needing a *class* you own, expose the class by name rather than re-exporting it as a verb.
 
 ## Cultivation paths
 

@@ -13,8 +13,10 @@ RES_RE = re.compile(r'res://[^"\'\s)]+')
 CLASS_RE = re.compile(r"^\s*class_name\s+([A-Za-z_]\w*)", re.MULTILINE)
 EXTENDS_RE = re.compile(r"^\s*extends\s+([A-Za-z_]\w*)", re.MULTILINE)
 # Every facade in this repo declares `static func`, so the optional `static`
-# prefix is required — without it the ISP cap silently counted zero methods on
-# all twelve facades and never fired.
+# prefix is required wherever a `func` is read by declaration. Kept after the
+# width cap was deleted: the reachability guard in `game/tests` and the
+# facade-constant census both count declarations the same way, and a regex that
+# drops `static` silently reads zero.
 FUNC_RE = re.compile(r"^(?:static\s+)?func\s+([A-Za-z_]\w*)", re.MULTILINE)
 # A bare class reference: the name used as a word, not part of a longer identifier.
 # `\b` after the name keeps `BodyTrainingX` from matching `BodyTraining`.
@@ -82,6 +84,21 @@ def is_facade(rel: str) -> bool:
         and parts[1] == "modules"
         and parts[3] == rules.FACADE_FILENAME
     )
+
+
+def _read_or_none(path) -> str | None:
+    """A file's text, or None if it went away between listing and reading.
+
+    The tree is shared with live sessions, so a file can be deleted while a sweep is
+    walking it — a probe created and removed mid-run is enough. A gate that raises
+    `FileNotFoundError` on that reports another session's churn as its own failure,
+    which is the one thing a gate must never do. Skipping is safe here because the
+    file no longer exists to be a dependency of anything.
+    """
+    try:
+        return path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return None
 
 
 def _iter_sources():
@@ -230,7 +247,13 @@ def _find_cycle(registry) -> list[str] | None:
 
 
 def _structural_checks(files) -> tuple[list[str], list[str]]:
-    """SOLID structural proxies: facade surface (ISP) and line budget (SRP)."""
+    """The SRP proxy: line budget. A warning, never a failure.
+
+    The ISP half that used to live here (facade public-method width) is DELETED.
+    `rules.MAX_FACADE_PUBLIC_METHODS` is gone and `fan_in_warnings` is the
+    replacement, because a facade many units import is a coupling problem at 12
+    methods or at 30 and width never predicted one.
+    """
     violations: list[str] = []
     warnings: list[str] = []
     for path in files:
@@ -238,17 +261,85 @@ def _structural_checks(files) -> tuple[list[str], list[str]]:
             continue
         rel = _relative_to_game(path)
         text = path.read_text(encoding="utf-8", errors="replace")
-        if is_facade(rel):
-            public = [name for name in FUNC_RE.findall(text) if not name.startswith("_")]
-            if len(public) > rules.MAX_FACADE_PUBLIC_METHODS:
-                violations.append(
-                    f"{rel}: facade exposes {len(public)} public methods "
-                    f"(max {rules.MAX_FACADE_PUBLIC_METHODS}); split the interface (ISP)"
-                )
         lines = text.count("\n") + 1
         if lines > rules.LINE_BUDGET:
             warnings.append(f"{rel}: {lines} lines exceeds budget {rules.LINE_BUDGET} (SRP signal)")
     return violations, warnings
+
+
+def fan_in_warnings(files) -> list[str]:
+    """Facades many units reach by name: the coupling the deleted width cap missed.
+
+    ## Why fan-in and not width
+
+    `MAX_FACADE_PUBLIC_METHODS` was a proxy for coupling, and the proxy was bad in
+    both directions: it never fired on the thing that matters (a facade everyone
+    imports) and it fired constantly on the thing that does not (a facade with
+    many verbs, which is only a problem if those verbs are unrelated). Coupling is
+    already guarded by the facade rule, the `BARE_REF_UNITS` scan and the cycle
+    check, none of which needed the number. So the guard measures what it was for.
+
+    ## What counts as a reacher
+
+    One UNIT is counted once however many of its files touch the facade — a module
+    with nine files calling `ItemsApi` is one dependent, not nine, and counting
+    files would make this a line-count proxy wearing a coupling costume.
+
+    A module's OWN files never count against its facade: a module reading its own
+    facade is cohesion. The rule is about who depends on whom.
+
+    ## Why `modules/*` is scanned for BARE references here
+
+    The boundary check deliberately excludes `modules/*` from bare-reference
+    scanning (`rules.BARE_REF_UNITS`), which is why a `nation` -> `sect` bare edge
+    is a review question and not a gate finding. That exclusion is right for
+    reporting a violation and wrong for measuring coupling: a module reaching a
+    sibling's facade by bare name is exactly the fan-in this counts, so the names
+    are read here without that exemption.
+
+    `harness` is excluded. `game/tools/` drives screens headlessly and is built to
+    touch many facades; counting it would put every wired module one over.
+    """
+    facades: dict[str, str] = {}  # facade class name -> its own unit
+    for path in files:
+        if path.suffix != ".gd":
+            continue
+        rel = _relative_to_game(path)
+        if not is_facade(rel):
+            continue
+        text = _read_or_none(path)
+        if text is None:
+            continue
+        unit = unit_of(rel)
+        for name in CLASS_RE.findall(text):
+            facades.setdefault(name, unit)
+    if not facades:
+        return []
+    reachers: dict[str, set[str]] = {name: set() for name in facades}
+    for path in files:
+        if path.suffix != ".gd":
+            continue
+        unit = unit_of(_relative_to_game(path))
+        if unit is None or unit == "harness":
+            continue
+        text = _read_or_none(path)
+        if text is None:
+            continue
+        # Comments and string literals are stripped for the same reason the
+        # bare-reference scan strips them: a facade named in prose or in a label
+        # is not a dependency.
+        bare = STRING_RE.sub('""', COMMENT_RE.sub("", text))
+        for name in set(WORD_RE.findall(bare)).intersection(facades):
+            if unit != facades[name]:
+                reachers[name].add(unit)
+    out: list[str] = []
+    for name, units in sorted(reachers.items()):
+        if len(units) > rules.MAX_FACADE_FAN_IN:
+            out.append(
+                f"{name}: reached by {len(units)} units "
+                f"(max {rules.MAX_FACADE_FAN_IN}); {', '.join(sorted(units))}"
+            )
+    return out
 
 
 def _is_resource_home(unit: str | None) -> bool:
@@ -469,6 +560,8 @@ def run(args) -> int:
     violations.extend(constants)
     warnings = structural_warnings
     warnings.extend(resource_home_warnings(files))
+    # The replacement for the deleted facade-width cap: fan-in, not width.
+    warnings.extend(fan_in_warnings(files))
     warnings.extend(app_state_warnings(files, classes))
     warnings.extend(module_inventory_warnings(registry))
     for warning in warnings:

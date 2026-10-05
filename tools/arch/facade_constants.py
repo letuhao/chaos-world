@@ -12,11 +12,17 @@ symbol's callers. **No gate failed, because no gate asked.** This module asks.
 
 ## Why a CONSTANT, and why only some constants
 
-`MAX_FACADE_PUBLIC_METHODS` is 12 and `TechniquesApi` publishes 12, so a
-cap-bound module publishes what it cannot add as methods: a named component id or
-a delivery seam, reached by NAME — `TechniquesApi.CASTING_COMPONENT`,
-`TechniquesApi.CAST_VIEW`. That pattern is correct (ADR 0056) and had no gate,
-which is how the four features shipped unreachable.
+The width cap is what MADE this pattern common: `TechniquesApi` sat at 12 published
+methods, so a module that could not add a method published what it had as a named
+component id or a delivery seam, reached by NAME —
+`TechniquesApi.CASTING_COMPONENT`, `TechniquesApi.CAST_VIEW`. That pattern was
+correct under ADR 0056 and had no gate, which is how four features shipped
+unreachable.
+
+**The cap is deleted, and this gate stays anyway**, because its finding does not
+depend on it: a constant published on a facade and named by nothing in `res://src`
+is dead surface whatever shape the module took. Publishing is not reaching, and the
+four features that proved it were never over any limit.
 
 So the gate is scoped to exactly that population — the constants that exist
 *because* an outside caller must name them, identified by the `_COMPONENT`
@@ -371,10 +377,9 @@ def findings(report: Report) -> list[str]:
             )
         out.append(
             f"{constant.facade}:{constant.line}: {constant.qualified} is a published facade "
-            f"CONSTANT with no caller in res://src. {constant.module} is at the "
-            "MAX_FACADE_PUBLIC_METHODS cap, so ADR 0056 publishes a component or seam type "
-            "as a CONSTANT instead of a method — but publishing is not reaching, and this "
-            f"one is reached by nothing.{tail}"
+            f"CONSTANT with no caller in res://src. {constant.module} publishes a component or "
+            "seam type as a CONSTANT rather than a method (ADR 0056) — but publishing is not "
+            f"reaching, and this one is reached by nothing.{tail}"
         )
     return out
 

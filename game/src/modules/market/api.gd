@@ -68,9 +68,11 @@ const MARKET_FULL := "market_full"
 static var _store: RefCounted = null
 
 ## The auction event bus. **Private and reached through [method _bus] rather than a
-## public `events()` accessor**, because this facade already publishes exactly
-## `MAX_FACADE_PUBLIC_METHODS` verbs and a thirteenth fails `tools arch` (ADR 0093).
-## `AuctionEvents.shared()` is the subscriber's door and hands back the same instance.
+## public `events()` accessor**, so a subscriber door is not also a published verb
+## (ADR 0093). `AuctionEvents.shared()` is that door and hands back the same instance.
+## There is no width cap on this facade any more, so the reason to keep the bus out
+## of the public surface is cohesion, not a gate: a facade that re-exports its own
+## collaborators has stopped being an interface.
 static var _events: AuctionEvents = null
 
 
@@ -307,11 +309,11 @@ static func summary(actor: Actor) -> Dictionary:
 		"actor_id": String(actor.id),
 		"purse": EconomyApi.purse(actor),
 		"spread": MarketSpread.view(),
-		# The buyer-dependent modifier (ADR 0250). A READ KEY rather than a thirteenth
-		# public method, because this facade publishes exactly `rules.MAX_FACADE_PUBLIC_METHODS`
-		# verbs and one more fails `tools arch`. The seam itself is `MarketFavour`, named as a
-		# class rather than reached through here, for the same reason `AuctionEvents.shared()`
-		# is the auction's door instead of an `events()` accessor.
+		# The buyer-dependent modifier (ADR 0250). A READ KEY rather than a published
+		# verb, because a value a caller reads once is a key on the read model, not an
+		# interface. The seam itself is `MarketFavour`, named as a class rather than
+		# reached through here, for the same reason `AuctionEvents.shared()` is the
+		# auction's door instead of an `events()` accessor.
 		"favour": MarketFavour.view(),
 		"shops": (state["shops"] as Dictionary).keys(),
 		"shop_count": (state["shops"] as Dictionary).size(),

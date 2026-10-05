@@ -29,10 +29,11 @@ extends TestCase
 const SCREEN_SOURCE := "res://src/ui/screens/destiny_screen.gd"
 const FACADE_SOURCE := "res://src/modules/destiny/api.gd"
 
-## The cap, read from the rule rather than retyped, so this cannot pass against a
-## cap the repo has moved. `tools arch` is the real enforcement; this is the
-## reason the verb exists, kept true in the place a reader of it will look.
-const MAX_FACADE_PUBLIC_METHODS := 12
+## The facade width cap is DELETED (ADR 0265), and with it the local copy that used to
+## live here. The comment above it claimed the cap was "read from the rule rather than
+## retyped" — it was retyped, because a GDScript suite cannot read a Python constant,
+## so a cap change could never have propagated here. Coupling is fan-in now, measured
+## Python-side by `tools arch`.
 
 ## A REAL authored fate — `earn_fate` refuses an id the catalog does not define, so
 ## a fabricated one would announce nothing and every assertion here would be green
@@ -190,12 +191,11 @@ func test_the_facade_is_still_within_its_twelve_method_cap() -> void:
 		if not name.begins_with("_"):
 			public.append(name)
 
-	assert_eq(public.size(), 12, "the facade exposes exactly twelve public verbs; %s" % str(public))
-	assert_eq(
-		public.size() <= MAX_FACADE_PUBLIC_METHODS,
-		true,
-		"and that is within MAX_FACADE_PUBLIC_METHODS"
-	)
+	assert_ne(public.is_empty(), true, "the facade exposes something; %s" % str(public))
+	# The exact verb count is NOT pinned. `assert_eq(public.size(), 12, ...)` was a
+	# de facto width cap: ADR 0265 removed `MAX_FACADE_PUBLIC_METHODS` precisely so a
+	# module can publish what it needs, and an exact-count assertion fails the first
+	# time anyone does. What this suite is for is the verb's EXISTENCE.
 	assert_eq(public.has("events"), true, "the verb this breach needed is one of them")
 
 

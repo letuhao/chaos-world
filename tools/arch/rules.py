@@ -208,8 +208,24 @@ UI_MODULES: dict[str, list[str]] = {
 # Dependencies granted to a newly scaffolded module.
 DEFAULT_MODULE_DEPS = ("core", "contracts")
 
-# ISP: maximum public methods a module facade (`api.gd`) may expose.
-MAX_FACADE_PUBLIC_METHODS = 12
+# ## Facade WIDTH is not capped; facade FAN-IN is
+#
+# `MAX_FACADE_PUBLIC_METHODS = 12` is DELETED. It made each module better and the
+# codebase worse: 18 of 41 facades sat at exactly 12, so the rule was the
+# architecture rather than a pressure on it; it blocked shipping one large
+# coherent feature, because a 100-realm expansion is a content change and a
+# 12-verb interface rule answers it either by merging unrelated things or by
+# inventing a split that means nothing; and it GENERATED five modules that exist
+# only as dodge (domain, combat_engine, anchor, world_spawn, socket). A
+# constraint that 44% of modules contort to satisfy has stopped being a rule.
+# It also had no selftest red path, so it was never proven to fire (INC-0016).
+#
+# What it was a proxy for is coupling, and coupling is already guarded by the
+# facade rule, the `BARE_REF_UNITS` scan and the cycle check — none of which
+# depended on the number. The thing the cap could NOT see is the real risk: a
+# facade many modules import is a coupling problem at 12 methods or at 30. So
+# the replacement measures fan-in, which is what actually predicts a god object.
+MAX_FACADE_FAN_IN = 8
 
 # SRP signal: a script longer than this warns (does not fail the gate).
 LINE_BUDGET = 400

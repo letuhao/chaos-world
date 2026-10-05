@@ -25,8 +25,9 @@ const MODULES_ROOT := "res://src/modules"
 ## The shipped program's own roots. `scenes/` is where the composition root lives, so
 ## a screen it mounts is named there rather than in `src/`.
 const PROGRAM_ROOTS := ["res://src", "res://scenes"]
-## ISP: the same cap `tools/arch/rules.py` enforces (MAX_FACADE_PUBLIC_METHODS).
-const MAX_FACADE_PUBLIC_METHODS := 12
+## The facade width cap (`MAX_FACADE_PUBLIC_METHODS`) is DELETED by ADR 0265, and with
+## it the local copy that used to live here. Coupling is measured as fan-in by
+## `tools arch`, which is a Python-side sweep and cannot be asserted from GDScript.
 ## Extensions, not suffixes: a `.uid` sibling sits next to every script, and reading
 ## those would add noise without adding coverage.
 ##
@@ -302,7 +303,11 @@ func test_the_reachability_table_names_no_screen_that_is_not_shipped() -> void:
 # --- 3. the facade cap ------------------------------------------------------
 
 
-func test_no_module_facade_exceeds_its_public_method_cap() -> void:
+func test_no_module_facade_is_an_empty_surface() -> void:
+	# The facade WIDTH cap is gone (ADR 0265), so this no longer counts methods. The
+	# rule that survives is the one the cap was never about: a facade that publishes
+	# nothing is dead code, and a module that lost its interface by accident looks
+	# exactly like a module that never had one.
 	var facades := _facade_scripts()
 	assert_eq(facades.is_empty(), false, "the modules publish facades")
 	for path in facades:
@@ -311,14 +316,6 @@ func test_no_module_facade_exceeds_its_public_method_cap() -> void:
 		if script == null:
 			continue
 		var public := _public_methods(script)
-		assert_eq(
-			public.size() <= MAX_FACADE_PUBLIC_METHODS,
-			true,
-			(
-				"%s exposes %d public methods (%s); the cap is %d"
-				% [path, public.size(), ", ".join(public), MAX_FACADE_PUBLIC_METHODS]
-			)
-		)
 		assert_ne(
 			public.is_empty(),
 			true,

@@ -28,10 +28,12 @@ extends TestCase
 ##
 ## ## Why the screen owns the pair, and the app owns nothing
 ##
-## `TechniquesApi` publishes 12 public methods at `MAX_FACADE_PUBLIC_METHODS`, so the
-## readback cannot become a thirteenth `static func`. It is reached as a named type the
-## facade publishes as the CONSTANT `CAST_VIEW`, exactly as `TechniqueCasting` and
-## `TechniqueDelivery` are reached — `game/src/ui/screens/technique_loadout.gd:121`
+## `TechniquesApi` used to publish exactly 12 public methods at `MAX_FACADE_PUBLIC_METHODS`,
+## so the readback could not become a thirteenth `static func`. ADR 0265 deleted that cap, so
+## the constraint is gone — but the SHAPE is kept deliberately, because a type reached by name
+## is a better seam than a thirteenth verb regardless of how many verbs a facade may publish.
+## It is reached as a named type the facade publishes as the CONSTANT `CAST_VIEW`, exactly as
+## `TechniqueCasting` and `TechniqueDelivery` are reached — `game/src/ui/screens/technique_loadout.gd:121`
 ## `_readback_type()` and `:595` `_snapshot_of()` / `:606` `_turn_of()`. `act_cast` takes
 ## the snapshot immediately before `activate` and the readback immediately after
 ## (`:380-382`), which is the only place that can see both sides of the call. The app
