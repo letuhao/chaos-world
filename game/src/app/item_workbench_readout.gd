@@ -46,8 +46,8 @@ extends ItemWorkbenchBody
 ## the whole claim of the readout is that what the engine computes is what a player
 ## sees.
 
-## The names a press may carry to mean "show me the quest board", mapped to the quest
-## id each one offers. Both are CONTENT names, so a new board is one `.tres` and one
+## The names a press may carry to mean "show me the quest board", mapped to the board
+## each one stands for. Both are CONTENT names, so a new board is one `.tres` and one
 ## row here rather than a new branch in the handler — and a name absent from this
 ## dictionary is refused by name rather than silently doing nothing.
 ##
@@ -55,6 +55,27 @@ extends ItemWorkbenchBody
 ## target rather than an invented one; `quest` is the same idea spelled as a route. An
 ## UNKNOWN author may publish no quest at all, so an empty board is a correct answer and
 ## not a gap. This is a HAND-OVER of what the module offers, never a second offer rule.
+##
+## ## Why a board is a ROSTER and not a single quest id (F1)
+##
+## It was one id: both names mapped to `the_terms_you_drafted`, which is tier 3 and
+## gated on `has_destiny: the_one_who_stayed` — a destiny granted ONLY by finishing
+## `the_station_you_held`. So the only quest thing in the world answered
+## `quest_not_offered` to every hero who had not already finished a chain, which is
+## precisely "a press reaches a handler and does nothing". The rows below are read in
+## order and the FIRST one the module actually offers is what the press names, so:
+##
+##   - a hero who has done nothing is handed `the_station_you_held` — tier 1, ungated;
+##   - a hero who already holds it is handed the next thing their ledger admits;
+##   - a hero at the end of the chain gets an honest `quest_not_offered`.
+##
+## The roster names every `authored` quest the catalog ships, in the order the chain is
+## meant to be walked. The three `systemic`/`emergent` quests are deliberately absent:
+## `QuestApi.offered` refuses them by kind, and that kind filter is `QuestDef.kind`'s
+## ONLY reader — listing one here would be naming a quest the module will never hand
+## over, which is the same vacuity this table just stopped having. The kind filter stays
+## (BL-0670 closed `kind` as read); what changed is that the door it guards is now a
+## door a player can walk through.
 ##
 ## ## Why it is declared HERE and not in the shell
 ##
@@ -64,10 +85,31 @@ extends ItemWorkbenchBody
 ## for the same reason `READOUT_MAGNITUDE` and `READOUT_SHARE` sit on
 ## [ItemWorkbenchBody] rather than in the shell: the constants move WITH their bodies,
 ## and nothing outside this chain reads either spelling.
+##
+## Ordered, and `the_station_you_held` is first because it is the chain's ungated root:
+## its own grant is the destiny that opens `the_terms_you_drafted`, which the old
+## one-id table asked for before anything had been earned.
+const _QUEST_BOARD_ROSTER: Array[StringName] = [
+	&"the_station_you_held",
+	&"the_terms_you_drafted",
+	&"the_returned_instrument",
+	&"the_account_left_open",
+	&"the_channel_closed",
+	&"the_same_quarter_hour",
+	&"the_tally_of_a_man_who_kept_count",
+]
+
 const _QUEST_BOARD_ALIASES: Dictionary = {
-	&"quest_board": &"the_terms_you_drafted",
-	&"quest": &"the_terms_you_drafted",
+	&"quest_board": _QUEST_BOARD_ROSTER,
+	&"quest": _QUEST_BOARD_ROSTER,
 }
+
+## What a press answers with so the OFFER can become a COMMITMENT. The press itself
+## never accepts (see `_interact_in_the_world`), so it hands back WHERE the player's own
+## button is — [constant QuestProgram.QUEST_ROUTE] — rather than pretending the moment
+## was enough. The key that opens that route is `ScreenRoutes`' own entry for it, so it
+## is not restated here and cannot drift from the one that is bound.
+const ACCEPT_HINT := "Open the quest journal and press the quest's own button to take it on."
 
 ## The quest program a press is answered out of. Held here, and RE-POINTED by the shell:
 ## `item_workbench_app.gd` assigns it in `_ready` and again in `adopt_actor` on a rebirth,
@@ -380,6 +422,24 @@ func _install_interaction_handler() -> void:
 
 ## Answer one press from the world stage. `func(actor, location_id, target_name)
 ## -> Dictionary`, which is the signature `WorldStage.interact` calls.
+##
+## ## The three answers it can give, and why the second one is the fix (F1/F3)
+##
+##   1. `not_a_quest_board` — the name a press carried is not a board at all.
+##   2. `quest_not_offered` — it IS a board, and this hero's ledger admits nothing on
+##      it. Only reachable once the roster below has been walked to its end, so it is
+##      a truthful "you have taken everything here" rather than the default a fresh
+##      hero used to get.
+##   3. `ok: true` with the rows — the offer, which is what a press is FOR.
+##
+## ## It still never ACCEPTS (F3, kept deliberately)
+##
+## A press changes what a player is OFFERED; it does not take a commitment on their
+## behalf. `QuestApi.accept` carries a once-guard and ADR 0065 pays grants at the one
+## place completion is decided, so the press ends at the offer and the answer NAMES the
+## door the player walks through themselves: `accept_via` is the quest journal route and
+## `accept_hint` says what to press there. Before this, the offer existed and the door
+## to it did not, which is why interaction could contribute to a quest chain not at all.
 func _interact_in_the_world(
 	actor: Actor, location_id: StringName, target_name: String
 ) -> Dictionary:
@@ -387,16 +447,22 @@ func _interact_in_the_world(
 		return {"ok": false, "reason": "no_actor", "target": target_name}
 	if _quests == null:
 		return {"ok": false, "reason": "no_quest_program", "target": target_name}
-	var board := String(_QUEST_BOARD_ALIASES.get(target_name, ""))
-	if board.is_empty():
+	var roster: Array = _QUEST_BOARD_ALIASES.get(target_name, [])
+	if roster.is_empty():
 		return {"ok": false, "reason": "not_a_quest_board", "target": target_name}
 	# Read the CURRENT ledger rather than a figure remembered at boot: a press is a
 	# question about the hero standing there, and a hero who has since taken a quest
-	# on must not be offered it again.
+	# on must not be offered it again. `QuestApi.offered` is the ONLY offer rule — the
+	# roster below chooses WHICH quest the board names, it never decides offerability.
 	var offered: Array[Dictionary] = _quests.offered()
+	var is_offered := func(quest_id: StringName) -> bool:
+		for view in offered:
+			if StringName(String(view.get("id", ""))) == quest_id:
+				return true
+		return false
 	var rows: Array[Dictionary] = []
-	for view in offered:
-		if String(view.get("id", "")) != board:
+	for board in roster:
+		if not bool(is_offered.call(StringName(board))):
 			continue
 		var steps: Array[Dictionary] = []
 		for step in QuestApi.steps(actor, StringName(board)):
@@ -414,21 +480,47 @@ func _interact_in_the_world(
 			rows
 			. append(
 				{
-					"quest_id": board,
-					"display_name": String(view.get("display_name", "")),
-					"tier": int(view.get("tier", 0)),
+					"quest_id": String(board),
+					"display_name": String(_display_name_of(board, offered)),
+					"tier": int(_tier_of(board, offered)),
 					"steps": steps,
 				}
 			)
 		)
 	if rows.is_empty():
-		return {"ok": false, "reason": "quest_not_offered", "target": target_name}
+		return {
+			"ok": false,
+			"reason": "quest_not_offered",
+			"target": target_name,
+			"location_id": String(location_id),
+		}
 	return {
 		"ok": true,
 		"reason": "",
 		"target": target_name,
 		"location_id": String(location_id),
-		"quest_id": board,
+		"quest_id": String(rows[0]["quest_id"]),
 		"offered": rows,
-		"offered_count": offered.size(),
+		"offered_count": rows.size(),
+		"available_count": offered.size(),
+		# The door out of the offer, named so a screen can route the player to it
+		# without re-deriving the vocabulary: the press offers, the journal commits.
+		"accept_via": QuestProgram.QUEST_ROUTE,
+		"accept_hint": ACCEPT_HINT,
 	}
+
+
+## The board's OWN first offer, from the module's view rather than from the catalog,
+## so a press never reports authored text the offer did not carry.
+func _display_name_of(board: StringName, offered: Array[Dictionary]) -> String:
+	for view in offered:
+		if StringName(String(view.get("id", ""))) == board:
+			return String(view.get("display_name", ""))
+	return String(board)
+
+
+func _tier_of(board: StringName, offered: Array[Dictionary]) -> int:
+	for view in offered:
+		if StringName(String(view.get("id", ""))) == board:
+			return int(view.get("tier", 0))
+	return 0

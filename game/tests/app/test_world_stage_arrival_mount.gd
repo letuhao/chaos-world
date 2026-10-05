@@ -206,14 +206,42 @@ func test_a_press_on_a_real_target_is_answered() -> void:
 		return
 	# `quest_board` is the one press the shipped handler maps to a board
 	# (`_QUEST_BOARD_ALIASES`), and it is authored into `mortal_plains.tres` so the row
-	# exists. Whatever the answer, it is NOT `no_handler`: that refusal means no seam was
-	# installed at all, which is a different defect from this one.
+	# exists. The claim being proved here is NOT "a handler exists" — `reason !=
+	# "no_handler"` stayed green while the handler answered `quest_not_offered` to every
+	# hero who had not already finished `the_station_you_held`, which is the defect
+	# itself. **A press that reaches a handler and is told "nothing here" is the bug,
+	# not the fix**, so the assertion below asks for a REAL offer: `ok`, and at least
+	# one row naming a quest the module actually offered this hero.
 	var answer := stage.interact("quest_board")
-	assert_ne(
-		String(answer.get("reason", "")), "no_handler", "the press reached an installed handler"
-	)
 	assert_eq(
-		String(answer.get("target", "")), "quest_board", "and the answer names what was pressed"
+		bool(answer.get("ok", false)),
+		true,
+		(
+			("the press reached a handler and was told nothing: %s. A fresh hero must be ") % answer
+			+ "handed the chain's ungated root, or the board is inert again."
+		)
+	)
+	var rows := answer.get("offered", []) as Array
+	assert_eq(rows.is_empty(), false, "and the offer carries at least one row: %s" % answer)
+	var board_id := String(answer.get("quest_id", ""))
+	assert_ne(board_id, "", "and names which quest it is handing over")
+	assert_eq(
+		rows[0].get("quest_id", ""),
+		board_id,
+		"and the named quest and the first row cannot disagree"
+	)
+	# The door out of the offer, so the offer can become a commitment: a press changes
+	# what a player is OFFERED and never accepts for them (ADR 0065's once-guard), which
+	# is only honest while the answer says where the player's own button is.
+	assert_eq(
+		String(answer.get("accept_via", "")),
+		QuestProgram.QUEST_ROUTE,
+		"so the press hands over the journal route, which is where accept lives"
+	)
+	assert_ne(
+		String(answer.get("accept_hint", "")),
+		"",
+		"and says in words what the player must do next"
 	)
 
 
