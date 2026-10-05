@@ -311,6 +311,17 @@ func test_the_systemic_quest_is_never_offered_so_only_a_recorded_fact_can_finish
 ## `app/item_workbench_app.gd` and this goes red at the crossing `third_man_spared`
 ## below — the quest never enters the active set, `the_short_road` never arrives, and
 ## `the_severed_calling` never arrives either.
+##
+## ## The seam itself, asserted separately, because the body cannot see it
+##
+## This body calls `subscribe_to_fact_ledger()` itself in `setup()`, which is what
+## lets it drive the module — and is exactly why it stayed GREEN when the
+## production install line was deleted (measured: 80 passed / 0 failed against a
+## build where no player could ever arrive). A suite that installs the thing it
+## is testing proves the MODULE works, never that the GAME installs it. So the
+## install is checked against the composition root's own source here, and
+## `test_the_composition_root_installs_the_arrival_door` below is that assertion
+## standing alone.
 func test_the_emergent_quest_arrives_through_play_and_completes() -> void:
 	expect_assertions(14)
 	var actor := QuestFixtureCatalog.hero()
@@ -721,6 +732,46 @@ func _need_of(quest_id: StringName, fact: StringName) -> int:
 		return 1
 	var step := def.step_for_fact(fact)
 	return 1 if step == null else step.required_count()
+
+
+## THE SEAM. The composition root installs the arrival door, read from ITS OWN source.
+##
+## Everything else in this file proves the module; this proves the GAME calls it.
+## The distinction is not pedantry — an audit deleted the single production line
+## `QuestArrivalProjection.subscribe_to_fact_ledger()` from
+## `res://src/app/item_workbench_app.gd` and this whole suite still reported
+## **80 passed, 0 failed**, because `setup()` installs both doors itself. A suite
+## that wires up the thing it is testing cannot fail when the wiring is absent.
+##
+## Read as CODE, not as raw text: the root's own docstrings NAME both doors in order
+## to say the root installs them, and a raw substring search would pass on the prose
+## alone — which is the opposite of what this assertion is for.
+func test_the_composition_root_installs_the_arrival_door() -> void:
+	expect_assertions(3)
+	var code := ""
+	for raw in FileAccess.get_file_as_string("res://src/app/item_workbench_app.gd").split("\n"):
+		var line := String(raw)
+		if line.strip_edges().begins_with("#"):
+			continue
+		var hash_at := line.find("#")
+		if hash_at >= 0:
+			line = line.substr(0, hash_at)
+		code += line + "\n"
+	assert_eq(
+		code.contains("QuestArrivalProjection.subscribe_to_fact_ledger()"),
+		true,
+		"the composition root installs the arrival door, so a systemic quest arrives in play"
+	)
+	assert_eq(
+		code.contains("QuestFactProjection.subscribe_to_fact_ledger()"),
+		true,
+		"and the completion door beside it, so a satisfied step finishes the quest"
+	)
+	assert_eq(
+		code.contains("QuestApi.accept("),
+		false,
+		"and the root names no quest verb itself: both doors reach the module, which is the only caller"
+	)
 
 
 ## The ambient fact ids the world's own news offers, as ids.
