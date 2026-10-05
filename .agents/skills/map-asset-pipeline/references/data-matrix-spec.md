@@ -103,6 +103,7 @@ These helpers retain the experimental geometry model. They are imported by `uv r
 | Script | Actual role and limitation |
 | --- | --- |
 | [semantics.py](../scripts/semantics.py) | Archetype-level authored candidates for contact, interaction, material, destruction, vision, audio, cultivation, resources, and scale. Values are not engine contracts. |
+| [rembg.py](../scripts/rembg.py) | ComfyUI RMBG-2.0 background removal and RGBA PNG normalizer. Detects existing alpha, skips redundant cutouts, extracts opaque backgrounds via ComfyUI, fits canvas with 16px margins, and enforces PNG output. |
 | [geometry.py](../scripts/geometry.py) | Shared 128 px reference cells, 32 px subcells, alpha threshold 128, thresholded bbox, and contact-run measurements. Missing repository markers fail clearly. |
 | [derive.py](../scripts/derive.py) | Builds `mapdata/cells@1` in `build/mapdata/cells.json` from the catalog and runtime PNGs: coverage, blocking/walk masks, semantic metadata, actual canvas size, and `issues`/`failed`. Findings return 1. It does not re-bake images or emit dedicated projectile/vision masks. |
 | [subcell.py](../scripts/subcell.py) | Reads `cells.json` and its runtime PNGs to build `mapdata/subcell@2` in `build/mapdata/subcell.json`: cropped 32 px fill including partial edge cells, native/reference contact estimates, rectangles, and scale variants. Missing PNGs return 1; `art_defects` remains a heuristic warning. |

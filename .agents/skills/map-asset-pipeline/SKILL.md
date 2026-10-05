@@ -33,7 +33,16 @@ Before installation, claim the index and destination paths and check their worki
 
 Describe the indexed subject, environment materials, distinguishing silhouette, and intended footprint. Preserve the shared gouache finish, dark ink contours, broad value planes, and restrained upper-left light. The local generator adds production framing and the catalog's environment theme; do not add contradictory camera instructions.
 
-- Camera: orthographic, strictly straight down. No horizon, isometric or 45-degree view, perspective convergence, or ground-level view.
+- Camera & Angle: 2D orthographic top-down ($\sim 45^\circ$) world-map angle with credible ground contact and base anchors, or strictly overhead per environment requirements.
+- Transparency & Background Prompting Strategy:
+  * Always prompt for `transparent background` first in the generation brief.
+  * If the diffusion generator cannot emit native alpha or produces solid backing, ensure the prompt explicitly appends `Solid plain white background` at the very end to guarantee a clean contrast edge for cutout.
+  * Only when the result lacks transparency support does the pipeline route through AI background removal (`scripts/rembg.py` using ComfyUI's `RMBG-2.0` node).
+- Strict File Format (PNG Enforcement):
+  * **All game-ready production runtime assets MUST be saved as PNG (`.png`).**
+  * JPG (`.jpg`) does not support alpha channels and is strictly forbidden for runtime assets (JPG is permitted ONLY for local, gitignored raw generation caches under `original/`).
+  * Dedicated background removal and normalization tool: `scripts/rembg.py`. Usage:
+    `uv run python .agents/skills/map-asset-pipeline/scripts/rembg.py --input <raw-image> --output <runtime.png> --size <w> <h> --pivot <center|bottom_center>`
 - Terrain: continuous, opaque surface with quiet detail; no embedded props, framed platform, or focal object. A terrain texture need not tile seamlessly.
 - Repeatable tile: joined edges without border seams; use the indexed alpha mode.
 - Prop: one complete indexed subject or intentional cluster, clear silhouette and padding, transparent surroundings, short attached shadows, and the indexed pivot. Keep ground contact visually credible without changing the camera angle.
